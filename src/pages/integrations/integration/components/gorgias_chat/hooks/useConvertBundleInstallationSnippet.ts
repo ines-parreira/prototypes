@@ -10,7 +10,7 @@ const CONVERT_BUNDLE_DEVELOPMENT_URL =
     process.env.CONVERT_BUNDLE_DEVELOPMENT_URL ??
     'https://bundle-<your-name>.eu.ngrok.io/loader.js'
 
-export const useConvertBundleInstallationSnippet = () => {
+export const useConvertBundleInstallationSnippet = (bundleId: string) => {
     const url = isProduction()
         ? CONVERT_BUNDLE_PRODUCTION_URL
         : isStaging()
@@ -18,7 +18,7 @@ export const useConvertBundleInstallationSnippet = () => {
           : CONVERT_BUNDLE_DEVELOPMENT_URL
     return (
         '<!--Bundle Start-->\n' +
-        `<script src="${url}" async></script>` +
+        `<script src="${url}?g_cvt_id=${bundleId}" async></script>` +
         '\n<!--Bundle End-->'
     )
 }

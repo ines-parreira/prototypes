@@ -5,7 +5,18 @@ import { fireEvent, render, screen } from '@testing-library/react'
 
 import '@testing-library/jest-dom/extend-expect'
 
+import { fromJS } from 'immutable'
+
+import { convertBundle } from 'fixtures/convertBundle'
+import { useListBundles } from 'models/convert/bundle/queries'
+import { assumeMock } from 'utils/testing'
+
 import GorgiasChatIntegrationManualInstallationCard from '../../GorgiasChatIntegrationManualInstallationCard'
+
+jest.mock('models/convert/bundle/queries')
+assumeMock(useListBundles).mockReturnValue({
+    data: [convertBundle],
+} as any)
 
 // Mock the queries
 jest.mock('models/integration/queries', () => ({
@@ -18,6 +29,7 @@ const queryClient = new QueryClient()
 
 describe('GorgiasChatIntegrationManualInstallationCard', () => {
     const defaultProps = {
+        integration: fromJS({ id: 1, meta: { shop_integration_id: 2 } }),
         applicationId: 'test-app-id',
         isConnected: false,
         isConnectedToShopify: false,

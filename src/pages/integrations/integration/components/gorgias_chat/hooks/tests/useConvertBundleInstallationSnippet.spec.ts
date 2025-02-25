@@ -12,20 +12,20 @@ describe('getConvertBundleInstallationSnippet', () => {
     it('should return production bundle URL when in production', () => {
         jest.spyOn(environment, 'isProduction').mockReturnValue(true)
         const { result } = renderHook(() =>
-            useConvertBundleInstallationSnippet(),
+            useConvertBundleInstallationSnippet('1'),
         )
         expect(result.current).toContain(
-            `<script src="${process.env.CONVERT_BUNDLE_PRODUCTION_URL ?? 'https://bundle.dyn-rev.app/loader.js'}" async></script>`,
+            `<script src="${process.env.CONVERT_BUNDLE_PRODUCTION_URL ?? 'https://bundle.dyn-rev.app/loader.js?g_cvt_id=1'}" async></script>`,
         )
     })
 
     it('should return staging bundle URL when in staging', () => {
         jest.spyOn(environment, 'isStaging').mockReturnValue(true)
         const { result } = renderHook(() =>
-            useConvertBundleInstallationSnippet(),
+            useConvertBundleInstallationSnippet('1'),
         )
         expect(result.current).toContain(
-            `<script src="${process.env.CONVERT_BUNDLE_STAGING_URL ?? 'https://bundle-staging.dyn-rev.app/loader.js'}" async></script>`,
+            `<script src="${process.env.CONVERT_BUNDLE_STAGING_URL ?? 'https://bundle-staging.dyn-rev.app/loader.js?g_cvt_id=1'}" async></script>`,
         )
     })
 
@@ -33,10 +33,10 @@ describe('getConvertBundleInstallationSnippet', () => {
         jest.spyOn(environment, 'isProduction').mockReturnValue(false)
         jest.spyOn(environment, 'isStaging').mockReturnValue(false)
         const { result } = renderHook(() =>
-            useConvertBundleInstallationSnippet(),
+            useConvertBundleInstallationSnippet('1'),
         )
         expect(result.current).toContain(
-            `<script src="${process.env.CONVERT_BUNDLE_DEVELOPMENT_URL ?? 'https://bundle-<your-name>.eu.ngrok.io/loader.js'}" async></script>`,
+            `<script src="${process.env.CONVERT_BUNDLE_DEVELOPMENT_URL ?? 'https://bundle-<your-name>.eu.ngrok.io/loader.js?g_cvt_id=1'}" async></script>`,
         )
     })
 })

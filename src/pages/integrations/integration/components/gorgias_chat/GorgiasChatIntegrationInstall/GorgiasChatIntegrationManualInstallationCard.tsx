@@ -1,10 +1,14 @@
 import React, { useEffect, useState } from 'react'
 
 import classnames from 'classnames'
+import { Map } from 'immutable'
+
+import { LoadingSpinner } from '@gorgias/merchant-ui-kit'
 
 import { useGetInstallationSnippet } from 'models/integration/queries'
 import IconButton from 'pages/common/components/button/IconButton'
 import Collapse from 'pages/common/components/Collapse/Collapse'
+import { useGetConvertBundle } from 'pages/convert/bundles/hooks/useGetConvertBundle'
 import { useConvertBundleInChatSnippetEnabled } from 'pages/integrations/integration/components/gorgias_chat/hooks/useConvertBundleInChatSnippetEnabled'
 import { useConvertBundleInstallationSnippet } from 'pages/integrations/integration/components/gorgias_chat/hooks/useConvertBundleInstallationSnippet'
 
@@ -15,6 +19,7 @@ import ManualInstallationShopifyWebsiteTab from './GorgiasChatIntegrationManualI
 import css from './GorgiasChatIntegrationManualInstallationCard.less'
 
 type Props = {
+    integration: Map<any, any>
     applicationId?: string
     isConnected: boolean
     isConnectedToShopify: boolean
@@ -28,6 +33,7 @@ enum Tab {
 }
 
 const GorgiasChatIntegrationManualInstallationCard = ({
+    integration,
     applicationId,
     isConnected,
     isConnectedToShopify,
@@ -50,7 +56,12 @@ const GorgiasChatIntegrationManualInstallationCard = ({
 
     const { snippet, appKey } = data || {}
 
-    const bundleSnippet = useConvertBundleInstallationSnippet()
+    const chatId = integration.get('id')
+    const storeId = integration.get('meta')?.get('shop_integration_id')
+
+    const { isLoading, bundle } = useGetConvertBundle(storeId, chatId)
+
+    const bundleSnippet = useConvertBundleInstallationSnippet(bundle?.id ?? '')
     const isBundleSnippetEnabled = useConvertBundleInChatSnippetEnabled()
 
     let code = snippet
@@ -165,7 +176,11 @@ const GorgiasChatIntegrationManualInstallationCard = ({
                             </div>
                         ))}
                     </div>
-                    {tabs[activeTab]}
+                    {isLoading ? (
+                        <LoadingSpinner size="big" />
+                    ) : (
+                        tabs[activeTab]
+                    )}
                 </div>
             </Collapse>
         </div>

@@ -231,6 +231,7 @@ const GorgiasChatIntegrationInstall = ({
                                     </>
                                 )}
                                 <GorgiasChatIntegrationManualInstallationCard
+                                    integration={integration}
                                     applicationId={applicationId}
                                     isConnected={isConnected}
                                     isConnectedToShopify={isConnectedToShopify}
