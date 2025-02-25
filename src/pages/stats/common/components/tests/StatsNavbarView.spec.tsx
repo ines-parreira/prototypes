@@ -224,6 +224,22 @@ describe('StatsNavbarView', () => {
         expect(newBadgeText).toBe('NEW')
     })
 
+    it('should render only the New Satisfaction Report when new-satisfaction-report is enabled', () => {
+        mockFlags({
+            [FeatureFlagKey.NewSatisfactionReport]: true,
+        })
+
+        const { getAllByText } = renderWithRouterAndDnD(
+            <Provider store={mockStore(defaultState)}>
+                <StatsNavbarView />
+            </Provider>,
+        )
+
+        const satisfactionReportLinks = getAllByText('Satisfaction')
+
+        expect(satisfactionReportLinks.length).toBe(1)
+    })
+
     it('should render the link to the Live Voice', () => {
         const { container } = renderWithRouterAndDnD(
             <Provider store={mockStore(defaultState)}>

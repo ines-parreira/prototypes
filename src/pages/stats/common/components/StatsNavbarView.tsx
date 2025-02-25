@@ -151,19 +151,21 @@ export default function StatsNavbarView() {
                         </NavbarLink>
                     </div>
 
-                    <div
-                        className={classNames(
-                            cssNavbar['link-wrapper'],
-                            cssNavbar.isNested,
-                        )}
-                    >
-                        <NavbarLink
-                            {...COMMON_NAV_LINK_PROPS}
-                            to={`${STATS_ROUTE_PREFIX}satisfaction`}
+                    {!isNewSatisfactionReportEnabled && (
+                        <div
+                            className={classNames(
+                                cssNavbar['link-wrapper'],
+                                cssNavbar.isNested,
+                            )}
                         >
-                            Satisfaction
-                        </NavbarLink>
-                    </div>
+                            <NavbarLink
+                                {...COMMON_NAV_LINK_PROPS}
+                                to={`${STATS_ROUTE_PREFIX}satisfaction`}
+                            >
+                                Satisfaction
+                            </NavbarLink>
+                        </div>
+                    )}
                     <div
                         className={classNames(
                             cssNavbar['link-wrapper'],
