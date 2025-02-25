@@ -50,7 +50,7 @@ const useBulkAction = (level: 'ticket' | 'view', ticketIds?: number[]) => {
         getNotificationPayload,
     })
 
-    const { mutateAsync, isLoading } = useCreateJob({
+    const { mutate, isLoading } = useCreateJob({
         mutation: {
             onSuccess: (response) => {
                 dispatch(
@@ -134,7 +134,7 @@ const useBulkAction = (level: 'ticket' | 'view', ticketIds?: number[]) => {
                     },
                 ) => {
                     createNotification(jobType, params)
-                    return mutateAsync({
+                    return mutate({
                         data: {
                             params: {
                                 view: viewParam,
@@ -159,7 +159,7 @@ const useBulkAction = (level: 'ticket' | 'view', ticketIds?: number[]) => {
                 },
             ) => {
                 createNotification(jobType, params)
-                return mutateAsync({
+                return mutate({
                     data: {
                         params: {
                             view_id: activeView.id,
@@ -184,7 +184,7 @@ const useBulkAction = (level: 'ticket' | 'view', ticketIds?: number[]) => {
             },
         ) => {
             createNotification(jobType, params)
-            return mutateAsync({
+            return mutate({
                 data: {
                     params: {
                         ticket_ids: ticketIds,

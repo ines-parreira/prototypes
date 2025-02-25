@@ -39,7 +39,7 @@ describe('useBulkArchiveMacros', () => {
     beforeEach(() => {
         useAppDispatchMock.mockReturnValue(dispatchMock)
         useBulkArchiveMacrosMock.mockReturnValue({
-            mutateAsync: mockMutateBulkArchive,
+            mutate: mockMutateBulkArchive,
         } as unknown as ReturnType<typeof useBulkArchiveMacros>)
         useQueryClientMock.mockImplementation(
             () =>
@@ -56,7 +56,7 @@ describe('useBulkArchiveMacros', () => {
         const { result } = renderHook(() =>
             useBulkArchiveMacros(macrosFixtures),
         )
-        void result.current.mutateAsync(
+        void result.current.mutate(
             { data: { ids: [1] } },
             {
                 onSettled,
@@ -109,7 +109,7 @@ describe('useBulkArchiveMacros', () => {
     it('should handle failed request with useBulkArchiveMacros', () => {
         const onError = jest.fn()
         const { result } = renderHook(() => useBulkArchiveMacros())
-        void result.current.mutateAsync(
+        void result.current.mutate(
             { data: { ids: [1, 2] } },
             {
                 onError,

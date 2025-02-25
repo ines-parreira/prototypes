@@ -100,19 +100,17 @@ export function MacrosSettingsTable({
         )
     }
 
-    const { mutateAsync: bulkUnarchiveMacros } = useBulkUnarchiveMacros()
-    const { mutateAsync: bulkArchiveMacros } = useBulkArchiveMacros(macros)
+    const { mutate: bulkUnarchiveMacros } = useBulkUnarchiveMacros()
+    const { mutate: bulkArchiveMacros } = useBulkArchiveMacros(macros)
 
-    const onBulkArchiveOrUnarchive = async () => {
-        try {
-            if (isArchiveTab) {
-                await bulkUnarchiveMacros({ data: { ids: selectedMacrosIds } })
-            } else {
-                await bulkArchiveMacros({ data: { ids: selectedMacrosIds } })
-            }
-        } finally {
-            setSelectedMacrosIds([])
+    const onBulkArchiveOrUnarchive = () => {
+        if (isArchiveTab) {
+            bulkUnarchiveMacros({ data: { ids: selectedMacrosIds } })
+        } else {
+            bulkArchiveMacros({ data: { ids: selectedMacrosIds } })
         }
+
+        setSelectedMacrosIds([])
     }
 
     const checkboxAllLabel = useMemo(

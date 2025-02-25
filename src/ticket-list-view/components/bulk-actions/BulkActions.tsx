@@ -43,14 +43,14 @@ export default function BulkActions({
     )
 
     const launchJob = useCallback(
-        async (
+        (
             job: Pick<Job, 'type' | 'event'>,
             params?: {
                 updates: XOR<Update>
             },
             action?: Action,
         ) => {
-            await createJob(job.type!, params)
+            createJob(job.type!, params)
             const [entry] = Object.entries(params?.updates ?? {})
 
             logEvent(SegmentEvent.BulkAction, {

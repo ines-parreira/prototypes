@@ -87,10 +87,10 @@ describe('<MacrosSettingsTable />', () => {
         mockUseRouteMatch.mockReturnValue(false)
         useAppDispatchMock.mockReturnValue(dispatchMock)
         useBulkArchiveMacrosMock.mockReturnValue({
-            mutateAsync: mockMutateBulkArchive,
+            mutate: mockMutateBulkArchive,
         } as unknown as ReturnType<typeof useBulkArchiveMacros>)
         useBulkUnarchiveMacrosMock.mockReturnValue({
-            mutateAsync: mockMutateBulkUnarchive,
+            mutate: mockMutateBulkUnarchive,
         } as unknown as ReturnType<typeof useBulkUnarchiveMacros>)
         useQueryClientMock.mockImplementation(
             () =>

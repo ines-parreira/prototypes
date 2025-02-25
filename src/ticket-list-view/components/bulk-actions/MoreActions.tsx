@@ -151,7 +151,7 @@ export default function MoreActions({
             updates: XOR<Update>
         },
         action?: Action,
-    ) => Promise<void>
+    ) => void
     onComplete: () => void
     selectionCount: number | null
     ticketIds: number[]

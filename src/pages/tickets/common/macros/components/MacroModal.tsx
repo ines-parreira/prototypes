@@ -101,7 +101,7 @@ const MacroModal = ({
 }: ModalProps) => {
     const dispatch = useAppDispatch()
     const isArchivingAvailable = useFlag(FeatureFlagKey.MacroArchives)
-    const { mutateAsync: bulkArchiveMacros } = useBulkArchiveMacros()
+    const { mutate: bulkArchiveMacros } = useBulkArchiveMacros()
 
     const modalRef = useRef<HTMLDivElement>(null)
     // We don't use directly `currentMacro` to avoid an out-of-sync state between
@@ -308,13 +308,9 @@ const MacroModal = ({
         }
     }
 
-    const handlArchiveMacro = async () => {
-        try {
-            await bulkArchiveMacros({ data: { ids: [currentMacro!.id!] } })
-            void fetchMacros(true)
-        } catch {
-            // handled in hook
-        }
+    const handlArchiveMacro = () => {
+        bulkArchiveMacros({ data: { ids: [currentMacro!.id!] } })
+        void fetchMacros(true)
     }
 
     const updateActions = (actions?: List<any> | null) => {

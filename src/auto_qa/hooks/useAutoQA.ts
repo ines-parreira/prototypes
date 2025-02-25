@@ -19,7 +19,7 @@ import useSaveState from './useSaveState'
 export default function useAutoQA(ticketId: number) {
     const { data, isError, isLoading, refetch } =
         useListTicketQaScoreDimensions(ticketId)
-    const { isLoading: isSaving, mutateAsync: upsertTicketQaScoreDimension } =
+    const { isLoading: isSaving, mutate: upsertTicketQaScoreDimension } =
         useUpsertTicketQaScoreDimension()
 
     const [values, setValues] = useState<{
@@ -132,23 +132,21 @@ export default function useAutoQA(ticketId: number) {
             if (!dirtyRef.current) return
             dirtyRef.current = false
 
-            void (async () => {
-                await upsertTicketQaScoreDimension(
-                    {
-                        data: {
-                            dimensions: [
-                                newDimensionValue as TicketQAScoreDimension,
-                            ],
-                        },
-                        ticketId,
+            upsertTicketQaScoreDimension(
+                {
+                    data: {
+                        dimensions: [
+                            newDimensionValue as TicketQAScoreDimension,
+                        ],
                     },
-                    {
-                        onSuccess: () => {
-                            void refetch()
-                        },
+                    ticketId,
+                },
+                {
+                    onSuccess: () => {
+                        void refetch()
                     },
-                )
-            })()
+                },
+            )
         },
         [newDimensionValue, ticketId, upsertTicketQaScoreDimension],
         1500,

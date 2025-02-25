@@ -147,7 +147,7 @@ describe('<MacroModal />', () => {
         )
         mockUseFlag.mockImplementation(() => false)
         useBulkArchiveMacrosMock.mockReturnValue({
-            mutateAsync: mockMutateBulkArchive,
+            mutate: mockMutateBulkArchive,
         } as unknown as ReturnType<typeof useBulkArchiveMacros>)
         mockUseCreateMacro.mockReturnValue({
             mutateAsync: mockMutateCreate,

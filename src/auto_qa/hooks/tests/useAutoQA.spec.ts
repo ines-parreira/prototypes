@@ -112,7 +112,7 @@ describe('useAutoQA', () => {
 
         useUpsertTicketQaScoreDimensionMock.mockReturnValue({
             isLoading: false,
-            mutateAsync: jest.fn(),
+            mutate: jest.fn(),
         })
     })
 
@@ -290,10 +290,10 @@ describe('useAutoQA', () => {
 
     it('should save changed values with a delay', () => {
         jest.useFakeTimers()
-        const mutateAsync = jest.fn()
+        const mutate = jest.fn()
         useUpsertTicketQaScoreDimensionMock.mockReturnValue({
             isLoading: false,
-            mutateAsync,
+            mutate,
         })
 
         const { result } = renderHook(() => useAutoQA(1))
@@ -307,7 +307,7 @@ describe('useAutoQA', () => {
             jest.advanceTimersByTime(1500)
         })
 
-        expect(mutateAsync).toHaveBeenCalledWith(
+        expect(mutate).toHaveBeenCalledWith(
             {
                 data: {
                     dimensions: [
@@ -325,20 +325,17 @@ describe('useAutoQA', () => {
             },
         )
         ;(
-            mutateAsync.mock.calls[0] as [
-                { data: [] },
-                { onSuccess: () => void },
-            ]
+            mutate.mock.calls[0] as [{ data: [] }, { onSuccess: () => void }]
         )[1].onSuccess()
         expect(refetchMock).toHaveBeenCalled()
     })
 
     it('should save an empty string when no explanation is passed - with a delay', () => {
         jest.useFakeTimers()
-        const mutateAsync = jest.fn()
+        const mutate = jest.fn()
         useUpsertTicketQaScoreDimensionMock.mockReturnValue({
             isLoading: false,
-            mutateAsync,
+            mutate,
         })
 
         const { result } = renderHook(() => useAutoQA(1))
@@ -353,7 +350,7 @@ describe('useAutoQA', () => {
             jest.advanceTimersByTime(1500)
         })
 
-        expect(mutateAsync).toHaveBeenCalledWith(
+        expect(mutate).toHaveBeenCalledWith(
             {
                 data: {
                     dimensions: [
@@ -371,10 +368,7 @@ describe('useAutoQA', () => {
             },
         )
         ;(
-            mutateAsync.mock.calls[0] as [
-                { data: [] },
-                { onSuccess: () => void },
-            ]
+            mutate.mock.calls[0] as [{ data: [] }, { onSuccess: () => void }]
         )[1].onSuccess()
         expect(refetchMock).toHaveBeenCalled()
     })

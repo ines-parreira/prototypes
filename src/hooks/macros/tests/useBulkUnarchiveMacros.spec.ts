@@ -37,7 +37,7 @@ describe('useBulkUnarchiveMacros', () => {
     beforeEach(() => {
         useAppDispatchMock.mockReturnValue(dispatchMock)
         useBulkUnarchiveMacrosMock.mockReturnValue({
-            mutateAsync: mockMutateBulkUnarchive,
+            mutate: mockMutateBulkUnarchive,
         } as unknown as ReturnType<typeof useBulkUnarchiveMacros>)
         useQueryClientMock.mockImplementation(
             () =>
@@ -50,7 +50,7 @@ describe('useBulkUnarchiveMacros', () => {
     it('should handle successsful request with useBulkUnarchiveMacros with a single macro', () => {
         const onSuccess = jest.fn()
         const { result } = renderHook(() => useBulkUnarchiveMacros())
-        void result.current.mutateAsync(
+        void result.current.mutate(
             { data: { ids: [1] } },
             {
                 onSuccess,
@@ -74,7 +74,7 @@ describe('useBulkUnarchiveMacros', () => {
     it('should handle successsful request with useBulkUnarchiveMacros with multiple macros', () => {
         const onSuccess = jest.fn()
         const { result } = renderHook(() => useBulkUnarchiveMacros())
-        void result.current.mutateAsync(
+        void result.current.mutate(
             { data: { ids: [1, 2] } },
             {
                 onSuccess,
@@ -104,7 +104,7 @@ describe('useBulkUnarchiveMacros', () => {
     it('should handle failed request with useBulkUnarchiveMacros', () => {
         const onError = jest.fn()
         const { result } = renderHook(() => useBulkUnarchiveMacros())
-        void result.current.mutateAsync(
+        void result.current.mutate(
             { data: { ids: [1, 2] } },
             {
                 onError,
