@@ -21,9 +21,23 @@ const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
 jest.mock(
     '../components/MacroModal',
     () =>
-        ({ fetchMacros, handleClickItem, onSearch }: ModalProps) => (
+        ({
+            fetchMacros,
+            handleClickItem,
+            onSearch,
+            searchParams,
+        }: ModalProps) => (
             <div>
                 MacroModal
+                <div>
+                    params:
+                    {Object.keys(searchParams).length === 0
+                        ? 'empty'
+                        : Object.entries(searchParams).map(
+                              ([key, value]) =>
+                                  `${key}: ${JSON.stringify(value)}`,
+                          )}
+                </div>
                 <div onClick={() => fetchMacros()}>fetchMacros</div>
                 <div onClick={() => fetchMacros(true)}>fetchMacrosReset</div>
                 <div onClick={() => handleClickItem(11)}>handleClickItem</div>
@@ -66,6 +80,18 @@ describe('<MacroContainer />', () => {
 
         expect(screen.getByText('MacroModal'))
         expect(useMacrosSearchMock).toHaveBeenCalledTimes(1)
+    })
+
+    it('should not set params when creating a new macro', () => {
+        render(
+            <Provider store={mockStore(defaultStore)}>
+                <MacroContainer {...props} isCreatingMacro />
+            </Provider>,
+        )
+
+        expect(
+            screen.getByText(new RegExp('params:empty', 'i')),
+        ).toBeInTheDocument()
     })
 
     it('should refetch macros', () => {

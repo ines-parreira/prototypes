@@ -41,7 +41,9 @@ const MacroContainer = ({
     const agents = useAppSelector(getHumanAgents)
 
     const [params, setParams] = useState<Filters>(() =>
-        !!selectedMacro ? { search: selectedMacro.name } : {},
+        !!selectedMacro && !isCreatingMacro
+            ? { search: selectedMacro.name }
+            : {},
     )
     const [selectedMacroId, setSelectedMacroId] = useState<number | null>(
         selectedMacro?.id ?? null,

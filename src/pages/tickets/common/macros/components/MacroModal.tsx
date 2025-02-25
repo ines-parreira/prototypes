@@ -1,4 +1,10 @@
-import React, { FormEvent, useEffect, useRef, useState } from 'react'
+import React, {
+    FormEvent,
+    useCallback,
+    useEffect,
+    useRef,
+    useState,
+} from 'react'
 
 import classnames from 'classnames'
 import { fromJS, List, Map } from 'immutable'
@@ -113,14 +119,29 @@ const MacroModal = ({
     )
     const [isModalOpen, setIsModalOpen] = useState(false)
 
+    const handleAddNewMacro = useCallback(() => {
+        if (!toggleCreateMacro) return
+
+        toggleCreateMacro(true)
+        setMacro({
+            actions: [],
+            name: '',
+        })
+        setName('')
+        setActions([])
+        setLanguage(null)
+    }, [toggleCreateMacro])
+
     useEffect(() => {
-        if (!!currentMacro) {
+        if (isCreatingMacro) {
+            handleAddNewMacro()
+        } else if (!!currentMacro) {
             setMacro(currentMacro)
             setName(currentMacro.name ?? '')
             setActions(currentMacro.actions ?? [])
             setLanguage(currentMacro.language ?? null)
         }
-    }, [currentMacro])
+    }, [currentMacro, handleAddNewMacro, isCreatingMacro])
 
     const getViewCount = useAppSelector(makeGetViewCount)
     const currentViewCount = activeView.isEmpty()
@@ -134,10 +155,6 @@ const MacroModal = ({
             open: true,
             name: 'macros',
         })
-
-        if (isCreatingMacro) {
-            handleAddNewMacro()
-        }
 
         setIsModalOpen(true)
 
@@ -187,18 +204,6 @@ const MacroModal = ({
         })
     }
 
-    const handleAddNewMacro = () => {
-        if (!toggleCreateMacro) return
-
-        toggleCreateMacro(true)
-        if (!!currentMacro) {
-            setMacro(currentMacro)
-            setName(currentMacro.name!)
-            setActions(currentMacro.actions!)
-            setLanguage(currentMacro.language!)
-        }
-    }
-
     const filterActions = (actions: MacroAction[]) =>
         actions.filter(
             (action) =>
@@ -210,20 +215,19 @@ const MacroModal = ({
     const { mutate: updateMacro } = useUpdateMacro()
     const { mutate: deleteMacro } = useDeleteMacro()
 
-    const handleCreateMacro = (e: FormEvent) => {
+    const handleCreateMacro = async (e: FormEvent) => {
         e.preventDefault()
         e.stopPropagation()
         const newMacro = {
-            ...currentMacro,
             actions: filterActions(actions),
             name,
             language: language === '' ? null : (language as Language),
         }
 
         try {
-            void createMacro({
-                data: newMacro,
-            })
+            const res = await createMacro({ data: newMacro })
+            onSearch({ search: res.data.name || '' })
+            toggleCreateMacro?.(false)
         } catch {
             // handled in hook
         }
@@ -363,7 +367,9 @@ const MacroModal = ({
                             className={classnames(css.list, css.content)}
                         >
                             <MacroModalList
-                                currentMacro={currentMacro}
+                                currentMacro={
+                                    isCreatingMacro ? undefined : currentMacro
+                                }
                                 searchResults={searchResults}
                                 searchParams={searchParams}
                                 fetchMacros={fetchMacros}
@@ -438,15 +444,18 @@ const MacroModal = ({
                                 ) : (
                                     <div>
                                         <div className="d-inline-block">
-                                            {isArchivingAvailable && (
-                                                <Button
-                                                    onClick={handlArchiveMacro}
-                                                    intent="secondary"
-                                                    className="d-inline-block mr-1"
-                                                >
-                                                    Archive macro
-                                                </Button>
-                                            )}
+                                            {isArchivingAvailable &&
+                                                !isCreatingMacro && (
+                                                    <Button
+                                                        onClick={
+                                                            handlArchiveMacro
+                                                        }
+                                                        intent="secondary"
+                                                        className="d-inline-block mr-1"
+                                                    >
+                                                        Archive macro
+                                                    </Button>
+                                                )}
                                             {!isCreatingMacro && (
                                                 <ConfirmButton
                                                     intent="destructive"

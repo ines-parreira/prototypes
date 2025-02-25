@@ -79,6 +79,7 @@ jest.mock(
                 {actions?.map((action: Map<any, any>, i) => (
                     <div key={i}>{action.get('name')}</div>
                 ))}
+                {`actions.size: ${actions?.size}`}
             </div>
         ),
 )
@@ -254,15 +255,16 @@ describe('<MacroModal />', () => {
 
         expect(toggleCreateMacro).toHaveBeenCalledWith(true)
         expect(
-            screen.getByText(new RegExp(macros[0].name!, 'i')),
+            screen.getByText(new RegExp('actions.size: 0', 'i')),
         ).toBeInTheDocument()
 
         screen.getByText(/Save new macro/i).click()
 
         expect(mockMutateCreate).toHaveBeenCalledWith({
             data: {
-                ...props.currentMacro,
-                language: undefined,
+                language: null,
+                name: '',
+                actions: [],
             },
         })
     })

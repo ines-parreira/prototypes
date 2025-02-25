@@ -90,7 +90,8 @@ export default function useMacrosSearch({ params, ticket }: Props) {
         staleTime: STALE_TIME_MS,
     })
 
-    const nextCursor = data?.pages[data?.pages.length - 1].data.meta.next_cursor
+    const nextCursor =
+        data?.pages[data?.pages.length - 1].data.meta?.next_cursor
 
     const macrosData = useMemo(
         () => _flatten(data?.pages.map((page) => page.data.data)),
