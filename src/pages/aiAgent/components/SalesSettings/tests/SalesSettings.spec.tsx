@@ -3,18 +3,23 @@ import React from 'react'
 import { render, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { Provider } from 'react-redux'
+import configureMockStore from 'redux-mock-store'
+import thunk from 'redux-thunk'
 
 import { StoreConfiguration } from 'models/aiAgent/types'
 import { getStoreConfigurationFixture } from 'pages/aiAgent/fixtures/storeConfiguration.fixtures'
+import { DiscountStrategy } from 'pages/aiAgent/Onboarding/components/steps/PersonalityStep/DiscountStrategy'
+import { PersuasionLevel } from 'pages/aiAgent/Onboarding/components/steps/PersonalityStep/PersuasionLevel'
 import { useAiAgentStoreConfigurationContext } from 'pages/aiAgent/providers/AiAgentStoreConfigurationContext'
-import { mockStore } from 'utils/testing'
 
-import { DiscountStrategy } from '../../../Onboarding/components/steps/PersonalityStep/DiscountStrategy'
+import { NotificationStatus } from '../../../../../state/notifications/types'
 import { SalesSettings } from '../SalesSettings'
+
+const mockStore = configureMockStore([thunk])()
 
 const renderComponent = () =>
     render(
-        <Provider store={mockStore({})}>
+        <Provider store={mockStore}>
             <SalesSettings />
         </Provider>,
     )
@@ -39,6 +44,18 @@ const mockUpdateStoreConfiguration = jest
     .mockImplementation((c: StoreConfiguration) => c)
     .mockReturnValue(newStoreConfig)
 
+const trackRect = {
+    left: 0,
+    width: 400,
+    right: 400,
+    top: 0,
+    bottom: 0,
+    height: 0,
+    x: 0,
+    y: 0,
+    toJSON: () => {},
+}
+
 describe('<SalesSettings />', () => {
     beforeEach(() => {
         mockedUseAiAgentStoreConfigurationContext.mockReturnValue({
@@ -50,20 +67,74 @@ describe('<SalesSettings />', () => {
         })
     })
 
-    it('should render', () => {
+    it('should render', async () => {
         renderComponent()
 
-        expect(screen.getByRole('button', { name: 'Save' })).toBeInTheDocument()
-        expect(
-            screen.getByRole('button', { name: 'Cancel' }),
-        ).toBeInTheDocument()
-        expect(screen.getByText(/Fine-tune how your AI Agent/))
+        await waitFor(() => {
+            expect(
+                screen.getByRole('button', { name: 'Save Changes' }),
+            ).toBeInTheDocument()
+            expect(
+                screen.getByRole('button', { name: 'Save Changes' }),
+            ).not.toBeAriaDisabled()
+            expect(
+                screen.getByRole('button', { name: 'Cancel' }),
+            ).toBeInTheDocument()
+            expect(
+                screen.getByRole('button', { name: 'Cancel' }),
+            ).not.toBeAriaDisabled()
+            expect(screen.getByText(/Fine-tune how your AI Agent/))
+        })
+    })
+
+    it('should render buttons disabled when it is the default value', async () => {
+        mockedUseAiAgentStoreConfigurationContext.mockReturnValue({
+            storeConfiguration: {
+                ...storeConfiguration,
+                salesDiscountMax: 0,
+                salesDiscountStrategyLevel: DiscountStrategy.Balanced,
+                salesPersuasionLevel: PersuasionLevel.Moderate,
+            },
+            isLoading: false,
+            updateStoreConfiguration: mockUpdateStoreConfiguration,
+            createStoreConfiguration: jest.fn(),
+            isPendingCreateOrUpdate: false,
+        })
+        renderComponent()
+
+        await waitFor(() => {
+            expect(
+                screen.getByRole('button', { name: 'Save Changes' }),
+            ).toBeAriaDisabled()
+            expect(
+                screen.getByRole('button', { name: 'Cancel' }),
+            ).toBeAriaDisabled()
+        })
+    })
+
+    it('should update persuasion level description when moving slider', async () => {
+        renderComponent()
+
+        await waitFor(() => {
+            const track = document.querySelectorAll('.track')[0]
+            track.getBoundingClientRect = jest.fn().mockReturnValue(trackRect)
+            // Try clicking beyond the end of track to select the last value
+            userEvent.click(track, {
+                clientX: 500,
+            })
+
+            expect(
+                screen.getByText(
+                    'Prioritizes driving the sale with a strong focus on persuasion and urgency.',
+                ),
+            ).toBeInTheDocument()
+        })
     })
 
     it('should not call updateStoreConfiguration when clicking on the save button', () => {
         renderComponent()
 
-        userEvent.click(screen.getByRole('button', { name: 'Save' }))
+        userEvent.click(screen.getByRole('button', { name: 'Save Changes' }))
 
         expect(mockUpdateStoreConfiguration).not.toHaveBeenCalled()
     })
@@ -104,7 +175,7 @@ describe('<SalesSettings />', () => {
 
         await waitFor(() => expect(maxDiscountInput.value).toBe('0'))
 
-        userEvent.click(screen.getByRole('button', { name: 'Save' }))
+        userEvent.click(screen.getByRole('button', { name: 'Save Changes' }))
 
         await waitFor(() =>
             expect(
@@ -136,13 +207,66 @@ describe('<SalesSettings />', () => {
                 screen.getByTestId('discount-max')
 
             await userEvent.type(maxDiscountInput, '2')
-            userEvent.click(screen.getByRole('button', { name: 'Save' }))
+            userEvent.click(
+                screen.getByRole('button', { name: 'Save Changes' }),
+            )
 
             await waitFor(() => {
                 expect(maxDiscountInput.value).toBe('2')
                 expect(mockUpdateStoreConfiguration).toHaveBeenCalledWith(
                     newStoreConfig,
                 )
+            })
+        })
+
+        it('should not call updateStoreConfiguration when there is not storeConfiguration', async () => {
+            mockedUseAiAgentStoreConfigurationContext.mockReturnValue({
+                storeConfiguration: undefined,
+                isLoading: false,
+                updateStoreConfiguration: mockUpdateStoreConfiguration,
+                createStoreConfiguration: jest.fn(),
+                isPendingCreateOrUpdate: false,
+            })
+
+            renderComponent()
+            const maxDiscountInput: HTMLInputElement =
+                screen.getByTestId('discount-max')
+
+            await userEvent.type(maxDiscountInput, '2')
+            userEvent.click(
+                screen.getByRole('button', { name: 'Save Changes' }),
+            )
+
+            await waitFor(() => {
+                expect(mockUpdateStoreConfiguration).not.toHaveBeenCalledWith(
+                    newStoreConfig,
+                )
+            })
+        })
+    })
+
+    describe('when user clicks on the save button with new settings and it fails', () => {
+        it('should call updateStoreConfiguration', async () => {
+            mockUpdateStoreConfiguration.mockRejectedValue('ERROR')
+
+            renderComponent()
+            const maxDiscountInput: HTMLInputElement =
+                screen.getByTestId('discount-max')
+
+            await userEvent.type(maxDiscountInput, '2')
+            userEvent.click(
+                screen.getByRole('button', { name: 'Save Changes' }),
+            )
+
+            await waitFor(() => {
+                expect(mockStore.getActions()).toMatchObject([
+                    {
+                        payload: {
+                            status: NotificationStatus.Error,
+                            message: 'Failed to save sales configuration state',
+                        },
+                    },
+                ])
             })
         })
     })
