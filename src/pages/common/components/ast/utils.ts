@@ -211,9 +211,9 @@ export const updateCodeAst = (
             fromJS(
                 Object.assign(
                     {},
-                    ...(
+                    (
                         immutableAst.getIn(immutablePath) as Map<any, any>
-                    ).toJS(),
+                    ).toJS() as Record<string, unknown>,
                     value
                 )
             )
