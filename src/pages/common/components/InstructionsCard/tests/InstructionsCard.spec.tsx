@@ -22,7 +22,7 @@ const tabB: InstructionTab = {
 
 const instructionsCardProps: InstructionsCardProps = {
     title: 'Instruction Card title',
-    description: <>Instruction Card description'</>,
+    description: <>Instruction Card description</>,
     tabs: [tabA, tabB],
 }
 

@@ -344,7 +344,7 @@ export const CampaignsTable = ({
             )
         },
         // There is no need to add here currentDate
-        // eslint-disable-next-line react-hooks/exhaustive-deps
+        /* eslint-disable react-hooks/exhaustive-deps */
         [
             integration,
             defaultLanguage,
@@ -360,7 +360,7 @@ export const CampaignsTable = ({
             setToggleState,
             toggleState,
         ]
-    )
+    ) /* eslint-enable react-hooks/exhaustive-deps */
 
     const start = (page - 1) * perPage
     const end = start + perPage

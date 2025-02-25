@@ -34,6 +34,27 @@ jobs:
       - name: Lint
         run: yarn lint
 
+  format:
+    name: Format
+    runs-on: gh-actions-default-runner-set
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Restore cache
+        uses: actions/cache@v4
+        with:
+          key: ${{ inputs.cache-key }}
+          path: node_modules
+
+      - name: Install node
+        uses: ./.github/actions/setup-node
+        with:
+          node-version: ${{ inputs.node-version }}
+
+      - name: Format
+        run: yarn format:check
+
   typecheck:
     name: Typecheck
     runs-on: gh-actions-small-runner-set

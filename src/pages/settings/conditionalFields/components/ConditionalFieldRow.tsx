@@ -79,7 +79,7 @@ export default function ConditionalFieldRow({
             history.push(
                 `/app/settings/ticket-field-conditions/${newCondition.data.id}`
             )
-        } catch (error) {
+        } catch {
             /* no-op */
         }
     }

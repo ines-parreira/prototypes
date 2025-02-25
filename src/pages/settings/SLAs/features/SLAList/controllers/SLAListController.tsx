@@ -91,7 +91,7 @@ export default function SLAListController() {
                         message: 'SLA policy toggled',
                     })
                 )
-            } catch (e) {
+            } catch {
                 void dispatch(
                     notify({
                         status: NotificationStatus.Error,
@@ -107,7 +107,7 @@ export default function SLAListController() {
             try {
                 await updateSLA({id, data: {priority: String(priority)}})
                 void refetchSLAPolicies()
-            } catch (e) {
+            } catch {
                 void dispatch(
                     notify({
                         status: NotificationStatus.Error,

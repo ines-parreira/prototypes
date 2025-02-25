@@ -138,7 +138,7 @@ export function PhoneNumberDetails({phoneNumber}: Props) {
                         status: NotificationStatus.Success,
                     })
                 )
-            } catch (error) {
+            } catch {
                 void dispatch(
                     notify({
                         message: 'Failed to update phone number',

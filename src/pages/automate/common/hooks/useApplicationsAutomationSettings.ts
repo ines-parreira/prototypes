@@ -75,7 +75,7 @@ const useApplicationsAutomationSettings = (applicationsIds: string[]) => {
                         status: NotificationStatus.Success,
                     })
                 )
-            } catch (error) {
+            } catch {
                 if (silentNotification) {
                     return
                 }

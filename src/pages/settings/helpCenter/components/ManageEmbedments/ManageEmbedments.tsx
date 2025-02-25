@@ -234,8 +234,8 @@ const ManageEmbedments = ({
                     Manage embedded pages
                 </h2>
                 <div>
-                    Edit the position of your Help Center or remove it from the
-                    page where it's currently embedded.
+                    {`Edit the position of your Help Center or remove it from the
+                    page where it's currently embedded.`}
                     <br />
                     Note: Please allow a few minutes for the embed to reflect on
                     your Shopify page. Manually embedded pages will not appear

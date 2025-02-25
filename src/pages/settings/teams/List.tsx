@@ -161,7 +161,7 @@ const TeamList = () => {
                         default on your account.
                         {teams.length === 0 && (
                             <span className="d-block">
-                                Your account doesn't have any teams yet.
+                                {`Your account doesn't have any teams yet.`}
                             </span>
                         )}
                     </p>

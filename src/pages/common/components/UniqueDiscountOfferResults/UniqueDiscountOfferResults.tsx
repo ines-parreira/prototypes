@@ -254,7 +254,7 @@ export default function UniqueDiscountCodeResults({
                             >
                                 settings page of your Shopify integration&nbsp;
                             </Link>
-                            and click on "Update App Permissions".
+                            {` and click on "Update App Permissions".`}
                         </Alert>
                     </div>
                 ) : (

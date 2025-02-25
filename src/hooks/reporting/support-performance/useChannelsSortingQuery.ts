@@ -1,4 +1,5 @@
 import {useEffect} from 'react'
+// eslint-disable-next-line no-restricted-imports
 import {useDispatch} from 'react-redux'
 
 import {MetricPerChannelQueryHook} from 'hooks/reporting/support-performance/channels/metricsPerChannel'

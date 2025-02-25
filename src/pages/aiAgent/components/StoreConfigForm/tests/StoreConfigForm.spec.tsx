@@ -387,7 +387,7 @@ describe('<StoreConfigForm />', () => {
                     },
                 })
             })
-        } catch (error) {}
+        } catch {}
     })
 
     it('should call deactivateAiAgent and dispatch notification when no knowledge base', async () => {

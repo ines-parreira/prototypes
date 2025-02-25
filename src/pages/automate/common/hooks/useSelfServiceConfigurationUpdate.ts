@@ -66,7 +66,7 @@ export const useSelfServiceConfigurationUpdate = ({
                         message: messages.success ?? 'Successfully updated',
                         status: NotificationStatus.Success,
                     })
-                } catch (error) {
+                } catch {
                     handleNotify({
                         message: messages.error ?? 'Failed to update',
                         status: NotificationStatus.Error,

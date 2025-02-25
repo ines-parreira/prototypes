@@ -63,7 +63,7 @@ export const DISCOUNT_HIGH_VALUE_CARTS: CampaignTemplate = {
                 DISCOUNT_CODE,
                 0.05
             )
-        } catch (e) {
+        } catch {
             return Promise.resolve(false)
         }
 

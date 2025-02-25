@@ -111,7 +111,7 @@ const DefaultRuleEditor = (
                     })
                 )
                 history.push(`/app/settings/rules/${newRule.id}`)
-            } catch (error) {
+            } catch {
                 void notify({
                     message: `Failed to duplicate rule.`,
                     status: NotificationStatus.Error,
@@ -234,10 +234,10 @@ const DefaultRuleEditor = (
                 <div className="mb-4">
                     <Alert type={AlertType.Info} icon>
                         <span>
-                            The rule has a "reply to customer" or "apply macro"
+                            {`The rule has a "reply to customer" or "apply macro"
                             action which will create billable tickets. To avoid
                             unwanted charges, make sure this rule is set up
-                            correctly and will reply only to intended tickets.
+                            correctly and will reply only to intended tickets.`}
                             <br />
                             <a
                                 href="https://docs.gorgias.com/en-US/auto-reply-rule-best-practices-435621"

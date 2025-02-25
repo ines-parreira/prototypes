@@ -5,28 +5,32 @@ It's built using ReactJS + Redux + many other smaller tools.
 
 ## Table of Contents
 
-- [Gorgias JavaScript Application](#gorgias-javascript-application)
-  - [Table of Contents](#table-of-contents)
-  - [Setup NPM to access private packages](#setup-npm-to-access-private-packages)
-  - [Prerequisites](#prerequisites)
-  - [Installation](#installation)
-  - [Development](#development)
-    - [Storybook](#storybook)
-    - [Design tokens](#design-tokens)
-  - [Testing](#testing)
-    - [General testing](#general-testing)
-    - [Static analysis](#static-analysis)
-      - [Deprecated entries](#deprecated-entries)
-        - [Generate new snapshot](#generate-new-snapshot)
-        - [Deprecated entries lint check](#deprecated-entries-lint-check)
-        - [Add new deprecated entries](#add-new-deprecated-entries)
-  - [Contributing](#contributing)
-  - [FAQ / Troubleshooting](#faq--troubleshooting)
-    - [yarn dependencies installation error](#yarn-dependencies-installation-error)
-      - [Possible solution](#possible-solution)
-    - [ERR\_OSSL\_EVP\_UNSUPPORTED](#err_ossl_evp_unsupported)
-      - [Possible solution](#possible-solution-1)
-    - [Revert PR was blocked by Codecov](#revert-pr-was-blocked-by-codecov)
+-   [Gorgias JavaScript Application](#gorgias-javascript-application)
+    -   [Table of Contents](#table-of-contents)
+    -   [Setup NPM to access private packages](#setup-npm-to-access-private-packages)
+    -   [Prerequisites](#prerequisites)
+    -   [Installation](#installation)
+    -   [Development](#development)
+        -   [Storybook](#storybook)
+        -   [Design tokens](#design-tokens)
+    -   [Testing](#testing)
+        -   [General testing](#general-testing)
+    -   [Linting](#linting)
+        -   [Adding Linting rules](#adding-linting-rules)
+        -   [Running Linting](#running-linting)
+    -   [Formatting](#formatting)
+        -   [Static analysis](#static-analysis)
+            -   [Deprecated entries](#deprecated-entries)
+                -   [Generate new snapshot](#generate-new-snapshot)
+                -   [Deprecated entries lint check](#deprecated-entries-lint-check)
+                -   [Add new deprecated entries](#add-new-deprecated-entries)
+    -   [Contributing](#contributing)
+    -   [FAQ / Troubleshooting](#faq--troubleshooting)
+        -   [yarn dependencies installation error](#yarn-dependencies-installation-error)
+            -   [Possible solution](#possible-solution)
+        -   [ERR_OSSL_EVP_UNSUPPORTED](#err_ossl_evp_unsupported)
+            -   [Possible solution](#possible-solution-1)
+        -   [Revert PR was blocked by Codecov](#revert-pr-was-blocked-by-codecov)
 
 ## Setup NPM to access private packages
 
@@ -87,10 +91,32 @@ Tokens are provided by the `@gorgias/design-tokens` package.
 
 ```bash
 yarn test
-yarn lint   # Only code all the linting scripts
 yarn typecheck  # Only type-check
 yarn jest   # Only unit tests
 ```
+
+## Linting
+
+Due to performance concerns, we use [Oxlint](https://oxc.rs/docs/guide/usage/linter/rules.html) to lint our code. This will require you to install the extension relevant to your IDE:
+
+-   [VSCode based IDE](https://oxc.rs/docs/guide/usage/linter.html#vscode-extension)
+-   [ZED](https://oxc.rs/docs/guide/usage/linter.html#zed-extension)
+
+For Neovim users, Oxlint should work [out of the box](https://github.com/neovim/nvim-lspconfig/pull/3586).
+
+### Adding Linting rules
+
+New linting [rules](https://oxc.rs/docs/guide/usage/linter/rules.html) can be added to the [oxlint.base.json](./scripts/oxlint-bridge/oxlint.base.json) file. The changes will be applied automatically when you run `yarn lint` via the `prelint` script.
+
+### Running Linting
+
+```bash
+yarn lint
+```
+
+## Formatting
+
+Formatting is done on save, via Prettier. Make sure to have the [Prettier extension](https://prettier.io/docs/editors) installed in your IDE.
 
 ### Static analysis
 

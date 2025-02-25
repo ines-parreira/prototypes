@@ -46,7 +46,7 @@ export default function Panels({
                 const shouldRenderHandle =
                     index > 0 && (min || 0) < (max || Infinity)
                 return (
-                    <Fragment>
+                    <Fragment key={index}>
                         {shouldRenderHandle && (
                             <Handle
                                 onResizeStart={resizeStartHandlers[index - 1]}

@@ -68,7 +68,7 @@ export default function RecoveryCodesStep({
     return (
         <>
             <div className={modalStepsCss.headingBold}>
-                Don't get locked out
+                {`Don't get locked out`}
             </div>
             <div
                 className={classnames(
@@ -76,9 +76,7 @@ export default function RecoveryCodesStep({
                     settingsCss.mb32
                 )}
             >
-                Recovery codes are your last resort for account access if you
-                can't receive two-factor codes. We recommend using a password
-                manager for security. Examples include{' '}
+                {`Recovery codes are your last resort for account access if you can't receive two-factor codes. We recommend using a password manager for security. Examples include`}{' '}
                 <a
                     href="https://1password.com/"
                     target="_blank"

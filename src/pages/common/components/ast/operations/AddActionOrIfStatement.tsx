@@ -131,7 +131,7 @@ export default function AddActionOrIfStatement({
                         Action
                     </DropdownItem>
                     <DropdownItem type="button" onClick={addIfStatement}>
-                        "IF" statement
+                        {`"IF" statement`}
                     </DropdownItem>
                     {removable ? (
                         <DropdownItem type="button" onClick={deleteStatement}>

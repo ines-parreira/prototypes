@@ -209,8 +209,7 @@ export function TicketMacros({
                             >
                                 <PopoverBody>
                                     <p>
-                                        Are you sure you want to delete '
-                                        {currentMacro?.name}'?
+                                        {`Are you sure you want to delete '${currentMacro?.name}'?`}
                                     </p>
                                     <Button
                                         onClick={handleDeleteMacro}

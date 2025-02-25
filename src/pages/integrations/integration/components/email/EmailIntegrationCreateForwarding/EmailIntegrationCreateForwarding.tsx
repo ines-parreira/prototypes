@@ -203,7 +203,7 @@ export class EmailIntegrationCreateForwarding extends Component<Props, State> {
                 />
 
                 <Container fluid className={settingsCss.pageContainer}>
-                    <h1>Let's setup email forwarding</h1>
+                    <h1>{`Let's setup email forwarding`}</h1>
 
                     {this._renderInstructions()}
                 </Container>

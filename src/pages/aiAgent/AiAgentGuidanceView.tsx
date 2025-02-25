@@ -73,7 +73,7 @@ export const AiAgentGuidanceView = ({
                     message: 'Guidance successfully deleted',
                 })
             )
-        } catch (err) {
+        } catch {
             void dispatch(
                 notify({
                     status: NotificationStatus.Error,
@@ -92,7 +92,7 @@ export const AiAgentGuidanceView = ({
                 {visibility: isVisible ? 'PUBLIC' : 'UNLISTED'},
                 {articleId, locale}
             )
-        } catch (err) {
+        } catch {
             void dispatch(
                 notify({
                     status: NotificationStatus.Error,

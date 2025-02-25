@@ -93,7 +93,7 @@ const ConnectedChannelAccordionBodyHelpCenter = ({channel}: Props) => {
                             status: NotificationStatus.Success,
                         })
                     )
-                } catch (err) {
+                } catch {
                     void dispatch(
                         notify({
                             message: 'Failed to update',

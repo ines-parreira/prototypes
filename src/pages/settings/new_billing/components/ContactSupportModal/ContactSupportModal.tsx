@@ -77,7 +77,7 @@ const ContactSupportModal = ({
                     showDismissButton: true,
                 })
             )
-        } catch (e) {
+        } catch {
             void dispatch(
                 notify({
                     status: NotificationStatus.Error,

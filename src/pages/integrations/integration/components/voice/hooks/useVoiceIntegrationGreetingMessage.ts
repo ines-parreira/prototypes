@@ -181,7 +181,7 @@ export default function useVoiceIntegrationGreetingMessage(
                 }
             }
             setIsGreetingMessageLoading(false)
-        } catch (error) {
+        } catch {
             setIsGreetingMessageLoading(false)
         }
 

@@ -221,7 +221,7 @@ export default function RuleCreationModalContent({onClose, team}: Props) {
                     message: 'Rule created',
                 })
             )
-        } catch (error) {
+        } catch {
             void dispatch(
                 notify({
                     status: NotificationStatus.Error,

@@ -68,7 +68,7 @@ export function RulesList() {
             try {
                 const res = await fetchRules()
                 dispatch(rulesFetched(res.data))
-            } catch (error) {
+            } catch {
                 void dispatch(
                     notify({
                         message: 'Failed to fetch rules',

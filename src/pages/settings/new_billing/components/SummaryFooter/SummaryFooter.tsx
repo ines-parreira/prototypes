@@ -139,8 +139,8 @@ const SummaryFooter = ({
 
             text = (
                 <label>
-                    You will be charged for the products and plan you've
-                    selected. Update your product and plan selection{' '}
+                    {`You will be charged for the products and plan you've
+                    selected. Update your product and plan selection `}
                     <Link to={BILLING_BASE_PATH}>here</Link>.
                 </label>
             )

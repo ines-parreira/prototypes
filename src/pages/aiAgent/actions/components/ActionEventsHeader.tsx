@@ -2,6 +2,7 @@ import {useFlags} from 'launchdarkly-react-client-sdk'
 import _noop from 'lodash/noop'
 import moment from 'moment'
 import React, {useEffect, useState} from 'react'
+// eslint-disable-next-line no-restricted-imports
 import {useDispatch} from 'react-redux'
 
 import {FeatureFlagKey} from 'config/featureFlags'

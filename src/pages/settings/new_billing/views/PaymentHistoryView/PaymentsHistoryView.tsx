@@ -3,6 +3,7 @@ import classNames from 'classnames'
 import {fromJS} from 'immutable'
 import moment from 'moment'
 import React, {useEffect, useState} from 'react'
+// eslint-disable-next-line no-restricted-imports
 import {useDispatch} from 'react-redux'
 import {Table} from 'reactstrap'
 

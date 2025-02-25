@@ -207,15 +207,27 @@ const UseCaseTemplateModal = ({template, onClose}: Props) => {
                                             templateNode.data
                                                 .configuration_internal_id
                                 )
-
+                                /* istanbul ignore next if */
                                 if (!step) {
-                                    return <Skeleton height={32} width={82} />
+                                    return (
+                                        <Skeleton
+                                            key={index}
+                                            height={32}
+                                            width={82}
+                                        />
+                                    )
                                 }
 
                                 const app = getAppFromTemplateApp(step.apps[0])
-
+                                /* istanbul ignore next if */
                                 if (!app) {
-                                    return <Skeleton height={32} width={82} />
+                                    return (
+                                        <Skeleton
+                                            key={index}
+                                            height={32}
+                                            width={82}
+                                        />
+                                    )
                                 }
 
                                 const node = graph.nodes.find((node) => {

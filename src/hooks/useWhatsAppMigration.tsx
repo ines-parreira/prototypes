@@ -245,7 +245,7 @@ function useMigration(): Migration {
                     await requestCode(phoneNumberId)
                     await fetchProgress(target!)
                     break
-                } catch (error) {
+                } catch {
                     return
                 }
             }
@@ -254,7 +254,7 @@ function useMigration(): Migration {
                 try {
                     await requestCode(progress?.waba_phone_number_id ?? '')
                     break
-                } catch (error) {
+                } catch {
                     return
                 }
             }
@@ -274,7 +274,7 @@ function useMigration(): Migration {
                     await verifyCode(code ?? '')
                     await register()
                     break
-                } catch (error) {
+                } catch {
                     return
                 }
             }
@@ -283,7 +283,7 @@ function useMigration(): Migration {
                 try {
                     await register()
                     break
-                } catch (error) {
+                } catch {
                     return
                 }
             }
@@ -328,7 +328,7 @@ function useMigration(): Migration {
                 phone_number: encodeURIComponent(target.phone_number),
             })
             setProgress(progress)
-        } catch (e) {
+        } catch {
             setProgress(null)
         }
     }

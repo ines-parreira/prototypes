@@ -31,7 +31,7 @@ export default function RequestApp() {
         e.preventDefault()
         try {
             await requestNewIntegration({description})
-        } catch (error) {
+        } catch {
             void dispatch(
                 notify({
                     message:
@@ -56,9 +56,9 @@ export default function RequestApp() {
 
     return (
         <footer className={css.footer}>
-            <h4 className={css.title}>Can’t find what you need?</h4>
+            <h4 className={css.title}>{`Can’t find what you need?`}</h4>
             <p className={css.incentive}>
-                If we're missing an app, let us know!
+                {`If we're missing an app, let us know!`}
             </p>
             <Button onClick={toggleIsOpen}>Request App</Button>
             <Modal isOpen={isOpen} onClose={toggleIsOpen} size="small">

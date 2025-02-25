@@ -61,7 +61,7 @@ export default function PreviewHeader({articleData, helpCenter}: Props) {
                         is_current: true,
                     },
                 ])
-            } catch (error) {
+            } catch {
                 void dispatch(
                     notify({
                         status: NotificationStatus.Error,

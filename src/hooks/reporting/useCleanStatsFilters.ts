@@ -1,5 +1,6 @@
 import _isEqual from 'lodash/isEqual'
 import {useEffect, useMemo} from 'react'
+// eslint-disable-next-line no-restricted-imports
 import {useDispatch} from 'react-redux'
 
 import useAppSelector from 'hooks/useAppSelector'

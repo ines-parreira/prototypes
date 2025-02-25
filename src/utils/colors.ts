@@ -25,7 +25,7 @@ export function getEnoughContrastedColor(
             count += 1
         }
         return textColor
-    } catch (err) {
+    } catch {
         return color
     }
 }

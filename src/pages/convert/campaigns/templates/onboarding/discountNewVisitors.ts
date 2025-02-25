@@ -54,7 +54,7 @@ export const DISCOUNT_NEW_VISITORS: CampaignTemplate = {
                 DISCOUNT_CODE,
                 0.05
             )
-        } catch (e) {
+        } catch {
             return Promise.resolve(false)
         }
         return Promise.resolve(true)

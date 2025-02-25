@@ -79,7 +79,7 @@ export class MembersListContainer extends Component<Props, State> {
             const res = await fetchTeam(parseInt(this.props.match.params.id))
             this.setState({team: res})
             this.props.fetchTeamSuccess(res)
-        } catch (error) {
+        } catch {
             void this.props.notify({
                 message:
                     'Failed to fetch team. Please refresh the page and try again.',
@@ -158,7 +158,7 @@ export class MembersListContainer extends Component<Props, State> {
                     status: NotificationStatus.Success,
                     message: 'Team member added',
                 })
-            } catch (error) {
+            } catch {
                 void this.props.notify({
                     status: NotificationStatus.Error,
                     message:
@@ -188,7 +188,7 @@ export class MembersListContainer extends Component<Props, State> {
                     status: NotificationStatus.Success,
                     message: 'Team member removed',
                 })
-            } catch (error) {
+            } catch {
                 void this.props.notify({
                     status: NotificationStatus.Error,
                     message:
@@ -374,7 +374,7 @@ export class MembersListContainer extends Component<Props, State> {
                             </p>
                         ) : (
                             <p className="text-center">
-                                No user matching "{search}" in this team.
+                                {`No user matching "${search}" in this team.`}
                             </p>
                         )}
                     </Container>

@@ -285,10 +285,10 @@ const GorgiasChatIntegrationVisibilityControls = (
                                 icon="report_problem"
                                 type={AlertType.Warning}
                             >
-                                The selected conditions are incompatible. To
+                                {`The selected conditions are incompatible. To
                                 make sure the chat is displayed correctly,
                                 select "At least one condition" filter or remove
-                                a condition.
+                                a condition.`}
                             </Alert>
                         )}
                     </div>

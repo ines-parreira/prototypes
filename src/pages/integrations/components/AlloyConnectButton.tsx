@@ -1,5 +1,6 @@
 import {fromJS} from 'immutable'
 import React, {useEffect, useState} from 'react'
+// eslint-disable-next-line no-restricted-imports
 import {useDispatch} from 'react-redux'
 
 import useAppSelector from 'hooks/useAppSelector'

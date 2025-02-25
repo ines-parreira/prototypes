@@ -231,7 +231,7 @@ function AppCTA({
             } else {
                 throw new Error(`Not disconnected`)
             }
-        } catch (error) {
+        } catch {
             void dispatch(
                 notify({
                     status: NotificationStatus.Error,

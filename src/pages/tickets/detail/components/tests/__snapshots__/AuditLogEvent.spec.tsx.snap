@@ -38,9 +38,7 @@ exports[`<AuditLogEvent/> render() should render when the rule has a triggering 
         <span
           class="filler"
         >
-          on "
-          ticket created
-          "
+          on "ticket created"
         </span>
       </div>
     </div>

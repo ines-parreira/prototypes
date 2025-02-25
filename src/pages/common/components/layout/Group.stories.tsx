@@ -31,7 +31,7 @@ const WithVerticalOrientationTemplate: Story<
         <IconButton>add</IconButton>
         <Button>Foo</Button>
         <Button>Bar</Button>
-        <ConfirmButton>I'm a long button label</ConfirmButton>
+        <ConfirmButton>{`I'm a long button label`}</ConfirmButton>
     </Group>
 )
 

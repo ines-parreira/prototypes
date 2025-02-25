@@ -208,7 +208,8 @@ const BillingStartView = () => {
                 description: (
                     <>
                         You are subscribed to a legacy plan that expires on{' '}
-                        <b>{periodEnd}</b> and you'll need to update your plan.
+                        <b>{periodEnd}</b>
+                        {` and you'll need to update your plan.`}
                     </>
                 ),
                 type: AlertType.Error,
@@ -325,9 +326,9 @@ const BillingStartView = () => {
                 setConvertBanner({
                     description: (
                         <>
-                            You've reached the limit for your Convert. As a
-                            result, your campaigns are currently on hold.
-                            Upgrade now to bring them back to your website.{' '}
+                            {`You've reached the limit for your Convert. As a
+                            result, your campaigns are currently on hold.`}
+                            {`Upgrade now to bring them back to your website.`}{' '}
                             {enterpriseCta}
                         </>
                     ),

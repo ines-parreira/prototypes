@@ -23,8 +23,8 @@ const AILibraryBanner = () => {
                         Get started with AI generated articles just for you
                     </div>
                     <div className={css.bannerDescription}>
-                        We used AI to generate pre-written articles based on
-                        your customer's most frequently asked questions.
+                        {`We used AI to generate pre-written articles based on
+                        your customer's most frequently asked questions.`}
                     </div>
                     <a
                         className={css.actionButton}

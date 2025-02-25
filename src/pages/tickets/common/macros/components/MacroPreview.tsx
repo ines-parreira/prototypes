@@ -16,8 +16,8 @@ const MacroPreview = ({currentMacro}: {currentMacro?: Macro}) =>
         <div className="MacroPreview">
             <div className="no-result-container">
                 <p>
-                    You don't have any macro you can apply on a batch of
-                    tickets.
+                    {`You don't have any macro you can apply on a batch of
+                    tickets.`}
                 </p>
             </div>
         </div>

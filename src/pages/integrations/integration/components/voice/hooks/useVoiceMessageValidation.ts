@@ -63,7 +63,7 @@ export default function useVoiceMessageValidation() {
                     )
                     return null
                 }
-            } catch (ex) {
+            } catch {
                 void dispatch(
                     notify({
                         message:

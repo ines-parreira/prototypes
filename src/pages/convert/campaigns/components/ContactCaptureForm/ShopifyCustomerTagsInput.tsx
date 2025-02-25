@@ -30,7 +30,7 @@ export function ShopifyCustomerTagsInput({value, onChange, className}: Props) {
                     ShopifyTags.customers
                 )
                 setOptions(tags.map((tag) => ({label: tag, value: tag})))
-            } catch (err) {
+            } catch {
                 // silent fail
                 return
             }

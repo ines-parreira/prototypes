@@ -212,7 +212,7 @@ export async function populateCurrentValuesForDNSRecords(
                     .catch(() => record)
             })
         )
-    } catch (e) {
+    } catch {
         return records
     }
 }
@@ -246,7 +246,7 @@ export async function getDNSRecord(
         }
 
         return response.data.Answer
-    } catch (error) {
+    } catch {
         return null
     }
 }

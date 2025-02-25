@@ -129,7 +129,7 @@ const CancelAAOModal = ({
                         </div>
                     )}
                     <div>
-                        You'll lose access to Automate and AI features like:
+                        {`You'll lose access to Automate and AI features like:`}
                     </div>
                     <div className={css.features}>
                         {automateFeatures.map((feature) => (

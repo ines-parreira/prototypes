@@ -57,13 +57,15 @@ const AuthorName: React.FC<AuthorNameProps> = ({
         return <>{chatTitle}</>
     }
 
+    /* istanbul ignore next */
     return (
         <>
-            [Random agent's first name
-            {avatar?.nameType ===
-                GorgiasChatAvatarNameType.AGENT_FIRST_LAST_NAME_INITIAL &&
-                ', last name initials'}
-            ]
+            {`[Random agent's first name${
+                /* istanbul ignore next */
+                avatar?.nameType ===
+                    GorgiasChatAvatarNameType.AGENT_FIRST_LAST_NAME_INITIAL &&
+                ', last name initials'
+            }]`}
         </>
     )
 }

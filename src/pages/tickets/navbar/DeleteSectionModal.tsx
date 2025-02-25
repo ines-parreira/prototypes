@@ -41,7 +41,7 @@ export default function DeleteSectionModal({
                             </span>{' '}
                             will move back under{' '}
                             {section.private ? 'Private Views' : 'Shared Views'}
-                            . This won't delete any view.
+                            . {`This won't delete any view.`}
                         </div>
                     </ModalBody>
                     <ModalActionsFooter>

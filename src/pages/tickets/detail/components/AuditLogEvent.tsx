@@ -110,7 +110,7 @@ const RuleActionName = ({
     return (
         <div id={`rule-code-${rule_id}-${context}`}>
             <ActionName>
-                Rule "
+                {`Rule "`}
                 <a
                     href={`/app/settings/rules/${data.get('id') as number}`}
                     target="_blank"
@@ -118,10 +118,12 @@ const RuleActionName = ({
                 >
                     {data.get('name')}
                 </a>
-                " executed
+                {`" executed`}
             </ActionName>
             {triggeringEventType && (
-                <Filler>on "{eventNameToLabel[triggeringEventType]}"</Filler>
+                <Filler>
+                    {`on "${eventNameToLabel[triggeringEventType]}"`}
+                </Filler>
             )}
         </div>
     )

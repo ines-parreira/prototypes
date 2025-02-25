@@ -16,7 +16,7 @@ export const validateCurrentUrl: ValidatorType = (value, operator) => {
 
     try {
         decodeURI(value)
-    } catch (e) {
+    } catch {
         throw new ValidationError(
             'The URL appears to be malformed. Please review and re-enter.'
         )

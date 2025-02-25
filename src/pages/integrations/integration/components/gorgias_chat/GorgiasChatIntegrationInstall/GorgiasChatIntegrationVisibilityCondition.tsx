@@ -40,8 +40,8 @@ const errorByUrlValidationResult: Record<
         <>
             <span>That URL is not supported.</span>
             <IconTooltip className={css.helpIcon} icon="help_outline">
-                Hash mark separators (e.g. "#example") in URLs are not
-                supported.
+                {`Hash mark separators (e.g. "#example") in URLs are not
+                supported.`}
             </IconTooltip>
         </>
     ),

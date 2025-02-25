@@ -468,9 +468,9 @@ export const HelpCenterInstallationView: React.FC = () => {
                                                             alt="warning icon"
                                                         />
                                                         <div>
-                                                            Don't forget to link
+                                                            {`Don't forget to link
                                                             the Help Center to
-                                                            your website.
+                                                            your website.`}
                                                         </div>
                                                     </div>
                                                 </LinkAlert>

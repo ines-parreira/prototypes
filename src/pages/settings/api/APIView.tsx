@@ -363,9 +363,7 @@ export class APIViewContainer extends Component<Props, State> {
                         </div>
                         <div className={classnames('body-regular', css.mb24)}>
                             <p>
-                                If you're using our API, we highly encourage you
-                                to subscribe to our developer newsletter. It
-                                contains updates about{' '}
+                                {`If you're using our API, we highly encourage you to subscribe to our developer newsletter. It contains updates about`}{' '}
                                 <b>
                                     upcoming changes and breaking changes to the
                                     API

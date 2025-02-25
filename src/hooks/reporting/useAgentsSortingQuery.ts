@@ -1,5 +1,6 @@
 import {PayloadAction} from '@reduxjs/toolkit'
 import {useEffect} from 'react'
+// eslint-disable-next-line no-restricted-imports
 import {useDispatch} from 'react-redux'
 
 import {useNewStatsFilters} from 'hooks/reporting/support-performance/useNewStatsFilters'

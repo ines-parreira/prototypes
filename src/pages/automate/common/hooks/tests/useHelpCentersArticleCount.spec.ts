@@ -138,7 +138,7 @@ describe('useHelpCentersArticleCount', () => {
         let err = false
         try {
             await waitForNextUpdate({timeout: 10})
-        } catch (e) {
+        } catch {
             err = true
         }
 

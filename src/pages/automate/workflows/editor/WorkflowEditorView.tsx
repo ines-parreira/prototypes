@@ -275,7 +275,7 @@ function WorkflowEditorViewWrapped({
                     storeIntegrationId
                 )
             }
-        } catch (e) {
+        } catch {
             notifyMerchant({
                 message:
                     'An error happened trying to save the flow, please try again or contact support',

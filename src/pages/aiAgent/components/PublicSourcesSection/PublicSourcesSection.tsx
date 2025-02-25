@@ -135,7 +135,7 @@ export const PublicSourcesSection = ({
                     message: 'Public URL successfully deleted',
                 })
             )
-        } catch (error) {
+        } catch {
             setSources((prev) => [...prev, source])
             void dispatch(
                 notify({
@@ -161,7 +161,7 @@ export const PublicSourcesSection = ({
                 logConnectedPublicUrl(url)
             }
             await addPublicResource([url])
-        } catch (error) {
+        } catch {
             setSources((prev) =>
                 prev.map((source) =>
                     source.id === sourceId
@@ -199,10 +199,11 @@ export const PublicSourcesSection = ({
                             placement: 'top-start',
                         }}
                     >
-                        Example sources: "<u>https://yourstore.com/faqs</u>" or
-                        "<u>https://yourstore.com/return-policy</u>". Please
-                        note that image, tables and video content will be
-                        ignored.
+                        {`Example sources: "`}
+                        <u>https://yourstore.com/faqs</u>
+                        {`" or "`}
+                        <u>https://yourstore.com/return-policy</u>
+                        {`". Please note that image, tables and video content will be ignored.`}
                     </IconTooltip>
                 </Label>
                 <div>

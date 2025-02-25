@@ -50,8 +50,7 @@ export function canReply(
                     To send a response, please go to Email Settings, select your
                     email and complete the outbound verification process.
                     <br />
-                    Once verified, you'll be able to communicate with customers
-                    using this email.
+                    {`Once verified, you'll be able to communicate with customers using this email.`}
                 </>
             ),
             status: NotificationStatus.Warning,

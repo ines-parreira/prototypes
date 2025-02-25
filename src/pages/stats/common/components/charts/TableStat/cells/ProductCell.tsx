@@ -17,7 +17,7 @@ const ProductCell = ({name, imageUrl}: Props) => {
         const checkImageFound = async (url: string) => {
             try {
                 await axios.head(url)
-            } catch (err) {
+            } catch {
                 setIsImageNotFound(true)
             }
         }

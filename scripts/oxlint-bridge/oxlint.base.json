@@ -1,0 +1,85 @@
+{
+    "$schema": "./node_modules/oxlint/configuration_schema.json",
+    "rules": {
+        "unicorn/*": "off",
+        "jsx-a11y/no-autofocus": "off",
+        "jsx-a11y/tabindex-no-positive": "off",
+        "jsx-a11y/click-events-have-key-events": "off",
+        "jsx-a11y/anchor-is-valid": "off",
+        "jsx-a11y/no-noninteractive-tabindex": "off",
+        "react-hooks/exhaustive-deps": "error",
+        "react/no-unescaped-entities": "error",
+        "react/no-find-dom-node": "off",
+        "react/jsx-key": [
+            "error",
+            {
+                "checkFragmentShorthand": true
+            }
+        ],
+        "no-prototype-builtins": "off",
+        "no-async-promise-executor": "off",
+        "no-useless-escape": "off",
+        "import/no-duplicates": "error",
+        "import/no-named-as-default": "warn",
+        "import/no-named-as-default-member": "off",
+        "import/default": "off",
+        "import/namespace": "off",
+        "no-unused-vars": "off",
+        "no-restricted-imports": [
+            "error",
+            {
+                "paths": [
+                    {
+                        "name": "react-redux",
+                        "importNames": ["useDispatch"],
+                        "message": "Please use useAppDispatch from /hooks/useAppDispatch instead."
+                    },
+                    {
+                        "name": "react-redux",
+                        "importNames": ["useSelector"],
+                        "message": "Please use useAppSelector from /hooks/useAppSelector instead."
+                    }
+                ]
+            }
+        ],
+        "@typescript-eslint/ban-ts-comment": "off",
+        "@typescript-eslint/no-unused-vars": [
+            "error",
+            {
+                "argsIgnorePattern": "^__",
+                "varsIgnorePattern": "^__"
+            }
+        ],
+        "@typescript-eslint/no-explicit-any": "off"
+    },
+    "env": {
+        "browser": true,
+        "es6": true,
+        "node": true,
+        "jest": true
+    },
+    "globals": {
+        "$": "off",
+        "FB": "off",
+        "Stripe": "off",
+        "amplitude": "off"
+    },
+    "plugins": ["typescript", "import", "react", "react-hooks", "jsx-a11y"],
+    "ignorePatterns": [
+        "src/types/**",
+        "src/rest_api/help_center_api/**",
+        "src/rest_api/migration_api/client.generated.d.ts",
+        "src/rest_api/revenue_addon_api/client.generated.d.ts",
+        "src/rest_api/ssp_api/client.generated.d.ts",
+        "src/rest_api/workflows_api/client.generated.d.ts",
+        "src/coverage/**"
+    ],
+    "overrides": [
+        {
+            "files": ["**/*.spec.ts", "**/*.spec.tsx"],
+            "rules": {
+                "react/no-unescaped-entities": "off"
+            }
+        }
+    ]
+}

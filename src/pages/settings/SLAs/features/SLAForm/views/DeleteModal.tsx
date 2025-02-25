@@ -39,7 +39,7 @@ export const DeleteModal = ({policyId, isOpen, onClose}: Props) => {
                 queryKey: queryKeys.slaPolicies.listSlaPolicies(),
             })
             history.push('/app/settings/sla')
-        } catch (error) {
+        } catch {
             void dispatch(
                 notify({
                     status: NotificationStatus.Error,

@@ -60,7 +60,7 @@ export default function VoiceIntegrationIvr(props: Props): JSX.Element | null {
                 await dispatch(updatePhoneIvrConfiguration(payloadOrDefault))
                 setIsLoading(false)
                 setInitialSettings(payloadOrDefault)
-            } catch (error) {
+            } catch {
                 setIsLoading(false)
             }
         },

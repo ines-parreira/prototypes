@@ -13,10 +13,7 @@ export const TICKET_PREVIEW: Record<
         message: (
             <div>
                 <p>
-                    We totally get it—sometimes things just don't work out. You
-                    can return your items within 30 days of purchase for a full
-                    refund or exchange, as long as they're unused and in their
-                    original packaging.
+                    {`We totally get it—sometimes things just don't work out. You can return your items within 30 days of purchase for a full refund or exchange, as long as they're unused and in their original packaging.`}
                 </p>
                 <p>Feel free to reach out if you have any questions!</p>
             </div>
@@ -59,8 +56,7 @@ export const TICKET_PREVIEW: Record<
         message: (
             <div>
                 <i>
-                    Click 'Generate Preview' to view a response using your
-                    custom tone of voice
+                    {`Click 'Generate Preview' to view a response using your custom tone of voice`}
                 </i>
             </div>
         ),

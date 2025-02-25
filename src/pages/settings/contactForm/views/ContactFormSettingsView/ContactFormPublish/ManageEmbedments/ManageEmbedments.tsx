@@ -246,8 +246,8 @@ const ManageEmbedments = ({
                     Manage embedded pages
                 </h2>
                 <div>
-                    Edit the position of the contact form or remove it from the
-                    page where it's currently embedded.
+                    {`Edit the position of the contact form or remove it from the
+                    page where it's currently embedded.`}
                     <br />
                     Note: Manually embedded pages will not appear in this list.
                 </div>

@@ -130,12 +130,13 @@ export const useModifierValues = ({
             handleValidate()
             setIsInitialValidationDone(true)
         }
+        /* eslint-disable react-hooks/exhaustive-deps */
     }, [
         handleValidate,
         initialModifierValues,
         isInitialValidationDone,
         modifierValues,
-    ])
+    ]) /* eslint-enable react-hooks/exhaustive-deps */
 
     return {modifierValues, modifierErrors, handleSetValue, handleValidate}
 }

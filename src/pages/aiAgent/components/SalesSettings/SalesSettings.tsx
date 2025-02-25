@@ -91,7 +91,7 @@ export const SalesSettings = () => {
                         : null,
                 })
             }
-        } catch (error) {
+        } catch {
             void dispatch(
                 notify({
                     status: NotificationStatus.Error,

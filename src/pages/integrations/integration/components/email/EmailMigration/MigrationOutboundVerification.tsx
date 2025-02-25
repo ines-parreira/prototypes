@@ -155,8 +155,8 @@ export default function MigrationOutboundVerification({onBackClick}: Props) {
                                 {
                                     message: (
                                         <>
-                                            <strong>Log in</strong> to your
-                                            hosting providers’ website
+                                            <strong>Log in</strong>
+                                            {` to your hosting providers’ website`}
                                         </>
                                     ),
                                 },
@@ -169,8 +169,8 @@ export default function MigrationOutboundVerification({onBackClick}: Props) {
                                             <strong>
                                                 DNS Management section
                                             </strong>
-                                            . This may be called "DNS
-                                            Management", "Domains", "DNS", etc.
+                                            {`. This may be called "DNS
+                                            Management", "Domains", "DNS", etc.`}
                                         </>
                                     ),
                                 },
@@ -191,8 +191,8 @@ export default function MigrationOutboundVerification({onBackClick}: Props) {
                                             Using the details we provided on the
                                             left under the domain,{' '}
                                             <strong>
-                                                set the record type (either
-                                                "TXT" or "MX")
+                                                {`set the record type (either
+                                                "TXT" or "MX")`}
                                             </strong>{' '}
                                             and{' '}
                                             <strong>
@@ -213,10 +213,10 @@ export default function MigrationOutboundVerification({onBackClick}: Props) {
                                 {
                                     message: (
                                         <>
-                                            All set! Check back later to see if
+                                            {`All set! Check back later to see if
                                             it's been successfully verified.
                                             Verification may take up to 72
-                                            hours.
+                                            hours.`}
                                         </>
                                     ),
                                 },

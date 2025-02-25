@@ -38,10 +38,10 @@ export default function MigrationEmailForwarding({
             <Col lg={6} xl={7}>
                 <h1>Set up email forwarding</h1>
                 <p>
-                    To continue receiving and responding to email tickets in
+                    {`To continue receiving and responding to email tickets in
                     Gorgias, set up email forwarding from your existing email
                     address to the Gorgias address below. You'll set this up in
-                    your email client, not in Gorgias.
+                    your email client, not in Gorgias.`}
                 </p>
                 <InputGroup>
                     <TextInput

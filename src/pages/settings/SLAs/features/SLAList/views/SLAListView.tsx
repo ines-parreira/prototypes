@@ -43,10 +43,10 @@ export default function SLAListView({
                 <TableHead>
                     {columnConfig.map((config, index) => (
                         <HeaderCellProperty
+                            key={index}
                             {...config}
                             className={css.headerCell}
                             titleClassName={css.headerCellTitle}
-                            key={index}
                             wrapContent
                         />
                     ))}

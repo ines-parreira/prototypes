@@ -206,7 +206,7 @@ export const IntegrationDetail = ({
             if (newNumbers) {
                 dispatch(newPhoneNumbersFetched(newNumbers.data))
             }
-        } catch (error) {
+        } catch {
             void dispatch(
                 notify({
                     message: 'Failed to fetch phone numbers',
@@ -270,7 +270,7 @@ export const IntegrationDetail = ({
                 if (installationStatus) {
                     dispatch(chatInstallationStatusFetched(installationStatus))
                 }
-            } catch (error) {
+            } catch {
                 reportError(
                     new Error(`Failed to fetch chat installation status`),
                     {

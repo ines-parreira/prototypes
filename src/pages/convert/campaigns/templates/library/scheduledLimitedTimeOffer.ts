@@ -55,7 +55,7 @@ export const SCHEDULE_LIMITED_TIME_OFFER: CampaignTemplate = {
                 DISCOUNT_CODE,
                 0.05
             )
-        } catch (e) {
+        } catch {
             return Promise.resolve(false)
         }
 

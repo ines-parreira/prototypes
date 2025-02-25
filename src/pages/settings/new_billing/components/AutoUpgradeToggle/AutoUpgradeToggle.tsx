@@ -164,13 +164,13 @@ const AutoUpgradeToggle = ({
                     </p>
                     <ul>
                         <li>
-                            You'll be charged a proportion of {nextTierAmount}{' '}
+                            {`You'll be charged a proportion of ${nextTierAmount} 
                             (plus tax) based on the number of days remaining in
-                            the billing period.
+                            the billing period.`}
                         </li>
                         <li>
-                            You'll stay on the new plan after the auto-upgrade (
-                            {nextTierName} for {nextTierAmount}).
+                            {`You'll stay on the new plan after the auto-upgrade (
+                            ${nextTierName} for ${nextTierAmount}).`}
                         </li>
                         <li>
                             Once upgraded, auto-upgrade will be deactivated and

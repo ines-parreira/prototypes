@@ -220,9 +220,9 @@ export const ClickTrackingCustomDomain = () => {
                                 }}
                                 content={
                                     <>
-                                        You are about to delete this custom
+                                        {`You are about to delete this custom
                                         domain, don't forget to delete CNAME
-                                        record in your DNS manager
+                                        record in your DNS manager`}
                                     </>
                                 }
                                 id="delete-button"

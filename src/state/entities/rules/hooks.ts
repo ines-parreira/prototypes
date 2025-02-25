@@ -24,7 +24,7 @@ export const useRules = (): [RulesState | null, boolean] => {
                     loading = false
                     dispatch(rulesFetched(res.data))
                 })
-            } catch (error) {
+            } catch {
                 void dispatch(
                     notify({
                         message: 'Failed to fetch rules',

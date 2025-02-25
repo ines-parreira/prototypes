@@ -94,7 +94,7 @@ export class TicketReplyCache {
     _deleteByKey(key: string) {
         try {
             this.storage.removeItem(key)
-        } catch (err) {
+        } catch {
             console.error('Failed to remove item from local storage')
         }
     }
@@ -169,7 +169,7 @@ export class TicketReplyCache {
                     return fromJS(
                         JSON.parse(this.storage.getItem(key) || '')
                     ) as Map<any, any>
-                } catch (err) {
+                } catch {
                     console.error('Failed to fetch item from local storage')
                     return defaultCachedTicket
                 }

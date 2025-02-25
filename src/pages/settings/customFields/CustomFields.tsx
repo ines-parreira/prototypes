@@ -231,7 +231,7 @@ export default function CustomFields({
                               (activeTab === 'archived' &&
                                   !hasArchivedFields) ? (
                                 <div className={css.emptyListTextWrapper}>
-                                    You don't have any{' '}
+                                    {`You don't have any`}{' '}
                                     {activeTab === 'active'
                                         ? 'active'
                                         : 'archived'}{' '}

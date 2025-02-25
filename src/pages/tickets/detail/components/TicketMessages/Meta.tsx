@@ -375,7 +375,7 @@ export default function Meta(props: Props) {
                 <b>
                     <Link to={sentViaLink} title="Campaign">
                         <i className="material-icons mr-1">settings</i>
-                        "Campaign"
+                        {`"Campaign"`}
                     </Link>
                 </b>
             </MetaLabel>

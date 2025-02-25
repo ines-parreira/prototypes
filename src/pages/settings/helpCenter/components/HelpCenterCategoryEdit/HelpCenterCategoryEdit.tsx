@@ -340,7 +340,7 @@ export const HelpCenterCategoryEdit = ({
         let categoryImageUrl: string | undefined | null = undefined
         try {
             categoryImageUrl = await getFileUploadURL(imageFile)
-        } catch (e) {
+        } catch {
             void dispatch(
                 notify({
                     message: 'Error during image upload',
@@ -901,8 +901,8 @@ export const HelpCenterCategoryEdit = ({
                 onSave={attemptSave}
             >
                 <span>
-                    Do you want to save the changes made to this category? All
-                    changes will be lost if you don't save them.
+                    {`Do you want to save the changes made to this category? All
+                    changes will be lost if you don't save them.`}
                 </span>
             </CloseModal>
         </Drawer>

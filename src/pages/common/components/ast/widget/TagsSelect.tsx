@@ -63,7 +63,7 @@ export const TagsSelectContainer = ({
         try {
             const newTag = await createTag(tag)
             void dispatch(tagCreated(newTag))
-        } catch (err) {
+        } catch {
             void dispatch(
                 notify({
                     message: 'Could not create tag',
@@ -82,7 +82,7 @@ export const TagsSelectContainer = ({
                     {cancelToken}
                 )
                 dispatch(tagsFetched(searchResults.data.data))
-            } catch (err) {
+            } catch {
                 void dispatch(
                     notify({
                         message: 'Could not create tag',

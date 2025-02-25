@@ -15,10 +15,10 @@ const ChurnMitigationOffer = ({canduContentId}: ChurnMitigationOfferProps) => {
                 <div className={css.container}>
                     <span>Need help staying with us?</span>
                     <span>
-                        If you would like to get help with the product, discuss
+                        {`If you would like to get help with the product, discuss
                         potential offers, or share further feedback, please
                         select “Accept Offer” below. Let's work together to keep
-                        you happy and satisfied.
+                        you happy and satisfied.`}
                     </span>
                 </div>
             )}

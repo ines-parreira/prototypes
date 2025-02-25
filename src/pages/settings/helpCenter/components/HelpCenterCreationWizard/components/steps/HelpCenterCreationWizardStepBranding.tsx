@@ -1,6 +1,7 @@
 import {Label} from '@gorgias/merchant-ui-kit'
 import {useFlags} from 'launchdarkly-react-client-sdk'
 import React from 'react'
+// eslint-disable-next-line no-restricted-imports
 import {useDispatch} from 'react-redux'
 
 import {FeatureFlagKey} from 'config/featureFlags'
@@ -72,7 +73,7 @@ const HelpCenterCreationWizardStepBranding: React.FC<Props> = ({
             const brandLogoUrl = await brandLogo.getFileUploadURL()
             handleFormUpdate({brandLogoUrl})
             return brandLogoUrl
-        } catch (error) {
+        } catch {
             dispatch(
                 notify({
                     status: NotificationStatus.Error,

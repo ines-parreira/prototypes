@@ -24,7 +24,7 @@ const MacroNoResults = ({searchParams, newAction}: Props) => {
                 {hasSearch ? (
                     <span>No macros found</span>
                 ) : (
-                    <span>You don't have any macros yet</span>
+                    <span>{`You don't have any macros yet`}</span>
                 )}
             </p>
             {hasRole(currentUser, UserRole.Agent) && (

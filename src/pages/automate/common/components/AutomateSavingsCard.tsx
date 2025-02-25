@@ -88,7 +88,7 @@ export const AutomateSavingsCard = ({
                                         </div>
                                         <div className="d-flex align-items-center">
                                             <p className={css.subheading}>
-                                                Of agents' time
+                                                {`Of agents' time`}
                                             </p>
                                             <HintTooltip
                                                 title="How much time your agents would have spent resolving all the customer questions that got instantly resolved by Automate. Based on your actual automated interactions and average handle time (AHT)."

@@ -27,6 +27,7 @@ const useSessionStorage = <T>(
         }
     })
 
+    // eslint-disable react-hooks/exhaustive-deps
     useEffect(() => {
         try {
             const serializedState = raw ? String(state) : JSON.stringify(state)

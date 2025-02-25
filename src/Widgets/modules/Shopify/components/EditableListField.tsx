@@ -89,7 +89,7 @@ export function EditableListField({
             let tags: string[] = []
             try {
                 tags = await fetchShopTags(integrationId, tagsType)
-            } catch (err) {
+            } catch {
                 // silent fail
                 return
             }

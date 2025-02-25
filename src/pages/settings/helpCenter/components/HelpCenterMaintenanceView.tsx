@@ -16,9 +16,9 @@ export const HelpCenterMaintenanceView = () => {
     return (
         <HelpCenterPageWrapper helpCenter={helpCenter}>
             <Alert type={AlertType.Warning} icon>
-                You're currently on an unlisted page used to perform maintenance
+                {`You're currently on an unlisted page used to perform maintenance
                 operations. If you're not an admin, you probably don't want to
-                use this page...
+                use this page...`}
             </Alert>
             <br />
             <ManageRedirects />

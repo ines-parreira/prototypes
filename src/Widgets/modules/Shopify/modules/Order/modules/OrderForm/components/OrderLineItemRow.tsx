@@ -118,7 +118,7 @@ function OrderLineItemRow({
                     {!!sku && <div className={css.subtitle}>SKU: {sku}</div>}
                     {!isRestockable && (
                         <div className="text-danger">
-                            This product can't be restocked.
+                            {`This product can't be restocked.`}
                         </div>
                     )}
                 </div>

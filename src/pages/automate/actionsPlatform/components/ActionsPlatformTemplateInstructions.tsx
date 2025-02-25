@@ -25,21 +25,13 @@ const ActionsPlatformTemplateInstructions = ({
                     isRequired
                     tooltip={
                         <>
-                            The Action description complements the Action name
-                            to help AI Agent match this Action with a customer’s
-                            question.
+                            {`The Action description complements the Action name to help AI Agent match this Action with a customer’s question.`}
                             <ul>
                                 <li>
-                                    Describe what the Action does and doesn't do
-                                    (e.g. This Action cancels the order and
-                                    refunds the customer with the full amount.
-                                    It does not partially cancel orders).
+                                    {`Describe what the Action does and doesn't do (e.g. This Action cancels the order and refunds the customer with the full amount. It does not partially cancel orders).`}
                                 </li>
                                 <li>
-                                    Describe scenario(s) in which the Action is
-                                    needed. It's also helpful to include
-                                    examples of a customer question that
-                                    requires this Action.
+                                    {`Describe scenario(s) in which the Action is needed. It's also helpful to include examples of a customer question that requires this Action.`}
                                 </li>
                             </ul>
                         </>

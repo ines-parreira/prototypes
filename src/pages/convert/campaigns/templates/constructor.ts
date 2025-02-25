@@ -98,7 +98,7 @@ export class CampaignConfigurationBuilder {
             }
 
             return createResponse.data.code
-        } catch (e) {
+        } catch {
             throw new CannotCreateDiscountCode()
         }
     }

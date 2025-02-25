@@ -17,8 +17,8 @@ const AIArticlesLibraryListReviewedState = () => {
                     🎉
                 </span>
                 <h3>Great work!</h3>
-                <div>You've reviewed every article.</div>
-                <div>We'll notify you when new articles are generated.</div>
+                <div>{`You've reviewed every article.`}</div>
+                <div>{`We'll notify you when new articles are generated.`}</div>
             </div>
         </div>
     )

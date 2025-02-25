@@ -119,7 +119,7 @@ export function RuleRow({
                         status: NotificationStatus.Success,
                     })
                 )
-            } catch (error) {
+            } catch {
                 void dispatch(
                     notify({
                         status: NotificationStatus.Error,
@@ -148,7 +148,7 @@ export function RuleRow({
                     message: `Successfully deleted rule ${rule.name}`,
                 })
             )
-        } catch (error) {
+        } catch {
             void dispatch(
                 notify({
                     status: NotificationStatus.Error,
@@ -180,7 +180,7 @@ export function RuleRow({
                     message: 'Rule deactivated successfully',
                 })
             )
-        } catch (error) {
+        } catch {
             void dispatch(
                 notify({
                     status: NotificationStatus.Error,
@@ -328,11 +328,12 @@ export function RuleRow({
                                                 setDescriptionOpen(false),
                                         }}
                                     >
-                                        The rule has a “reply to customer” or
+                                        {`The rule has a “reply to customer” or
                                         "apply macro" action which will create
                                         billable tickets. To avoid extra
                                         charges, make sure this rule is set up
-                                        to reply only to intended tickets.{' '}
+                                        to reply only to intended tickets.
+                                        `}
                                         <a
                                             href="https://docs.gorgias.com/en-US/rules---best-practices-81748#:~:text=messenger%20as%20well).-,Auto%2Dreply%20rules,-To%20further%20automate"
                                             target="_blank"

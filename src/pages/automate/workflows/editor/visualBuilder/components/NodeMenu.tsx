@@ -1194,14 +1194,14 @@ function useMenuItems(nodeId: string, floatingRef?: HTMLElement | null) {
 
     useEffect(() => {
         setMenuItems(initialMenuItems)
-        // eslint-disable-next-line react-hooks/exhaustive-deps
+        /* eslint-disable react-hooks/exhaustive-deps */
     }, [
         visualBuilderGraph.isTemplate,
         nodeId,
         floatingRef,
         triggerNode.type,
         visualBuilderGraph.nodes.length,
-    ])
+    ]) /* eslint-enable react-hooks/exhaustive-deps */
 
     return menuItems
 }

@@ -117,6 +117,7 @@ export default function AddInternalNoteAction({
                 </UncontrolledButtonDropdown>
             ) : (
                 <Button
+                    key={index}
                     color="link"
                     style={{color: 'inherit'}}
                     onClick={() => {

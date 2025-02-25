@@ -155,11 +155,7 @@ export class SmileIntegrationDetailComponent extends Component<Props, State> {
                                             </b>
                                         </p>
                                         <span>
-                                            We're currently importing all your
-                                            Smile customers. This way, you'll
-                                            see customer rewards points next to
-                                            tickets. We'll notify you via email
-                                            when the import is done.
+                                            {`We're currently importing all your Smile customers. This way, you'll see customer rewards points next to tickets. We'll notify you via email when the import is done.`}
                                         </span>
                                     </LinkAlert>
                                 ))}

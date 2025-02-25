@@ -203,9 +203,9 @@ export default class MergeCustomersModal extends React.Component<Props, State> {
                     <ModalBody>
                         <div className="content">
                             <p className="merge-instructions">
-                                Select what data you want to keep, then click
+                                {`Select what data you want to keep, then click
                                 the "Merge Customers" button. The fields in blue
-                                will be kept.
+                                will be kept.`}
                             </p>
                             <BinaryChoiceField
                                 label="Name"

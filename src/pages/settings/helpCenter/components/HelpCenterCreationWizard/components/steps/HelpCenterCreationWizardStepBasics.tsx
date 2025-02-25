@@ -315,9 +315,9 @@ const HelpCenterCreationWizardStepBasics: React.FC<Props> = ({
                                 Subdomain
                             </Label>
                             <IconTooltip className={css.iconTooltip}>
-                                This is the URL of your Help Center. If you
+                                {`This is the URL of your Help Center. If you
                                 don't provide a value, we will generate one for
-                                you.
+                                you.`}
                             </IconTooltip>
                             <InputGroup hasError={!!subdomainError}>
                                 <TextInput
@@ -341,8 +341,8 @@ const HelpCenterCreationWizardStepBasics: React.FC<Props> = ({
                             Default language
                         </Label>
                         <IconTooltip className={css.iconTooltip}>
-                            Used whenever the customer's language is not
-                            automatically detected or unavailable.
+                            {`Used whenever the customer's language is not
+                            automatically detected or unavailable.`}
                         </IconTooltip>
                         <LanguagePicker
                             languages={languagePickerLanguages}

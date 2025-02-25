@@ -109,7 +109,7 @@ export const GuidanceForm = ({
                 })
             )
             history.push(routes.guidance)
-        } catch (err) {
+        } catch {
             void dispatch(
                 notify({
                     status: NotificationStatus.Error,
@@ -146,7 +146,7 @@ export const GuidanceForm = ({
                 handleOnTriggerActivateAiAgentNotification()
             }
             history.push(redirectTo)
-        } catch (err) {
+        } catch {
             void dispatch(
                 notify({
                     status: NotificationStatus.Error,

@@ -85,7 +85,7 @@ const ObjectComponent = ({
 
                         return (
                             <div key={`${k}-${idx}`} className="field">
-                                <span className="string-key">"{k}": </span>
+                                <span className="string-key">{`"{k}"`}: </span>
                                 {isObject && leftBracket}
                                 {isArray && leftArrayBracket}
                                 {childNode}

@@ -85,9 +85,7 @@ export const AutoReplyReturnModal = ({
                                 <div>
                                     <p>Hi Client Name,</p>
                                     <p className="mb-0">
-                                        It looks like you'd like to return your
-                                        order. Access our return portal below to
-                                        start a return.
+                                        {`It looks like you'd like to return your order. Access our return portal below to start a return.`}
                                     </p>
                                     <Button className={css.button}>
                                         Start a return

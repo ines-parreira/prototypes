@@ -44,7 +44,7 @@ export const RuleTicketList = ({ruleId, numTickets = 10}: Props) => {
             })
             setTicketList(data)
             setPaginationMeta(meta)
-        } catch (error) {
+        } catch {
             void dispatch(
                 notify({
                     message: 'Failed to fetch ticket list',
@@ -175,7 +175,9 @@ export const RuleTicketList = ({ruleId, numTickets = 10}: Props) => {
                 }
             />
             {!ticketList.length && (
-                <div className={css.noTrigger}>This rule hasn't fired yet.</div>
+                <div
+                    className={css.noTrigger}
+                >{`This rule hasn't fired yet.`}</div>
             )}
         </>
     )

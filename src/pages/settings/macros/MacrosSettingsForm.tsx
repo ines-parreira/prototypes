@@ -78,7 +78,7 @@ export function MacrosSettingsFormContainer({
             try {
                 const res = await fetchMacro(parseInt(macroId))
                 macroFetched(res)
-            } catch (error) {
+            } catch {
                 void notify({
                     message: 'Failed to fetch macro',
                     status: NotificationStatus.Error,
@@ -176,7 +176,7 @@ export function MacrosSettingsFormContainer({
                     status: NotificationStatus.Success,
                 })
                 history.push(`/app/settings/macros/${res.id}`)
-            } catch (error) {
+            } catch {
                 void notify({
                     message: 'Failed to duplicate macro.',
                     status: NotificationStatus.Error,

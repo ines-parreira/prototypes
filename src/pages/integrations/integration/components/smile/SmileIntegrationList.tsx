@@ -31,7 +31,7 @@ export default function SmileIntegrationList({
         <div>
             <p>Smile is a reward program app for online businesses.</p>
 
-            <p>Here's what you can do with the Smile integration:</p>
+            <p>{`Here's what you can do with the Smile integration:`}</p>
             <ul>
                 <li>Display Smile customer profile next to tickets</li>
                 <li>Insert point balance of referral url in macros</li>

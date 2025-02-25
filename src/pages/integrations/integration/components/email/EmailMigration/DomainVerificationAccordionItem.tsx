@@ -106,7 +106,7 @@ export default function DomainVerificationAccordionItem({
                     )}
                     {isSingleSenderEnabled && (
                         <p className={css.switchMethod}>
-                            Don't have access to your domain?{' '}
+                            {`Don't have access to your domain? `}
                             <a onClick={handleSwitchMethod} href="#">
                                 Verify emails with your business address
                             </a>

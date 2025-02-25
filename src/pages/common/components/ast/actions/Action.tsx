@@ -86,9 +86,9 @@ export default function Action({
                         trigger={['hover']}
                         autohide={false}
                     >
-                        Reply to customer won’t trigger if the last message is
+                        {`Reply to customer won’t trigger if the last message is
                         from an agent. Use 'Apply macro' instead if you want to
-                        reply to all messages
+                        reply to all messages`}
                     </Tooltip>
                 </>
             )

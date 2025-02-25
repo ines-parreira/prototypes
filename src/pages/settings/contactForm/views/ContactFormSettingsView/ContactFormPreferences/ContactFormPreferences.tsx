@@ -2,6 +2,7 @@ import axios from 'axios'
 import classNames from 'classnames'
 import {get} from 'lodash'
 import React, {useState} from 'react'
+// eslint-disable-next-line no-restricted-imports
 import {useDispatch} from 'react-redux'
 import {useHistory} from 'react-router-dom'
 

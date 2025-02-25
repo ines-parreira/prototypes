@@ -31,7 +31,7 @@ export function PhoneNumbersListContainer() {
                 if (numbers) {
                     dispatch(newPhoneNumbersFetched(numbers.data))
                 }
-            } catch (error) {
+            } catch {
                 void dispatch(
                     notify({
                         message: 'Failed to fetch phone numbers',

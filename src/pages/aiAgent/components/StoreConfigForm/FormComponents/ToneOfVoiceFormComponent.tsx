@@ -79,20 +79,19 @@ export const ToneOfVoiceFormComponent = (
                     <br />
                     <ul>
                         <li>
-                            <b>Friendly</b>: "Hi, could you please send a
-                            picture of the damaged items? Thank you!"
+                            <b>Friendly</b>:{' '}
+                            {`"Hi, could you please send a picture of the damaged items? Thank you!"`}
                         </li>
                         <li>
-                            <b>Professional</b>: "Hello, could you provide a
-                            photo of the damaged items? Regards."
+                            <b>Professional</b>:{' '}
+                            {`"Hello, could you provide a photo of the damaged items? Regards."`}
                         </li>
                         <li>
-                            <b>Sophisticated</b>: "Hello, kindly provide an
-                            image of the damaged articles at your earliest
-                            convenience. Many thanks."
+                            <b>Sophisticated</b>:{' '}
+                            {`"Hello, kindly provide an image of the damaged articles at your earliest convenience. Many thanks."`}
                         </li>
                         <li>
-                            <b>Custom</b>: "Add you own instructions."
+                            <b>Custom</b>: {`"Add you own instructions."`}
                         </li>
                     </ul>
                 </IconTooltip>

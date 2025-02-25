@@ -46,7 +46,7 @@ export const AutoresponderViewButton = ({recipeSlug}: Props) => {
                     )
                 ).filter((tag) => !!tag)
                 return tags as TagDraft[]
-            } catch (e) {
+            } catch {
                 void dispatch(
                     notify({
                         message: 'Could not fetch tags',

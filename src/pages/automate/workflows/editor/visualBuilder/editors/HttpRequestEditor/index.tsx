@@ -309,10 +309,7 @@ export default function HttpRequestEditor({
                                             target={oauth2ToggleId}
                                             autohide={false}
                                         >
-                                            Enabling this will override any
-                                            existing 'Authorization' key and
-                                            apply a 'Bearer' prefix to the
-                                            authorization token.
+                                            {`Enabling this will override any existing 'Authorization' key and apply a 'Bearer' prefix to the authorization token.`}
                                         </Tooltip>
                                     </div>
                                 )}

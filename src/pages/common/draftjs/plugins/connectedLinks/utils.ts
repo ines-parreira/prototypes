@@ -47,7 +47,7 @@ export const parseUrl = (url = '', target = ''): string => {
 
     try {
         return decodeURI(a.href)
-    } catch (error) {
+    } catch {
         return a.href
     }
 }

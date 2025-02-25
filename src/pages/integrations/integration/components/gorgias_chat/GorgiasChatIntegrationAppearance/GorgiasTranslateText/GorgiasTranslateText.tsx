@@ -471,13 +471,13 @@ function GorgiasTranslateText({
         ) {
             migrateNonLocalizedTextsIfNeeded()
         }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
+        /* eslint-disable react-hooks/exhaustive-deps */
     }, [
         IsLegacyMonoLanguageMode,
         dependenciesLoaded,
         integrationDefaultLanguage,
         language,
-    ])
+    ]) /* eslint-enable react-hooks/exhaustive-deps */
 
     const handleLanguageChange = (
         language: LanguageChat,

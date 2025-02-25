@@ -570,7 +570,8 @@ export default class SelectField extends Component<Props, State> {
                                     >
                                         <i>
                                             {`Add ${singular} "`}
-                                            <b>{`${input}`}</b>"
+                                            <b>{`${input}`}</b>
+                                            {`"`}
                                         </i>
                                     </DropdownItem>
                                 ),

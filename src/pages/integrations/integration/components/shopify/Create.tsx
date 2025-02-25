@@ -40,10 +40,7 @@ export default function Create({redirectUri}: Props) {
             <Row>
                 <Col md="8">
                     <p>
-                        Let’s connect your store to Gorgias. We'll import your
-                        Shopify customers in Gorgias, along with their order
-                        information. This way, when they contact you, you'll be
-                        able to see their Shopify information next to tickets.
+                        {`Let’s connect your store to Gorgias. We'll import your Shopify customers in Gorgias, along with their order information. This way, when they contact you, you'll be able to see their Shopify information next to tickets.`}
                     </p>
                     <Form onSubmit={handleCreate}>
                         <div className="mb-4">

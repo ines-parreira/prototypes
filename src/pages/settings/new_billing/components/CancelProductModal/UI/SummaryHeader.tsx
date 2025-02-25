@@ -6,8 +6,8 @@ type SummaryHeaderProps = {
 const SummaryHeader = ({periodEnd}: SummaryHeaderProps) => {
     return (
         <div className="body-regular">
-            Once you confirm cancellation, you'll continue to have full access
-            until the end of your billing cycle on{' '}
+            {`Once you confirm cancellation, you'll continue to have full access
+            until the end of your billing cycle on `}
             <span className="body-semibold">{periodEnd}</span>.
         </div>
     )

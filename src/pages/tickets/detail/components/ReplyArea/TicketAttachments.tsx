@@ -123,7 +123,7 @@ export default class TicketAttachments extends Component<Props, State> {
                     '120x80'
                 )})`,
             }
-        } catch (error) {
+        } catch {
             return undefined
         }
     }
@@ -362,9 +362,8 @@ export default class TicketAttachments extends Component<Props, State> {
             <div className={classnames(css.component, className)}>
                 {failedAttachments.size > 0 && (
                     <div className="mb-2">
-                        <i className="material-icons mr-1">warning</i> There is{' '}
-                        {`${failedAttachments.size}`} attachment(s) to this
-                        message which we couldn't download.
+                        <i className="material-icons mr-1">warning</i>
+                        {`There is ${failedAttachments.size} attachment(s) to this message which we couldn't download.`}
                     </div>
                 )}
                 {(publicAttachments as List<any>).map(

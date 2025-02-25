@@ -496,11 +496,7 @@ export class FacebookIntegrationSetupContainer extends Component<Props, State> {
                                             className={settingsCss.mt16}
                                             icon
                                         >
-                                            Entire page or some features are
-                                            disabled because you didn't grant
-                                            all the permissions we asked for
-                                            when logging to Facebook. To fix
-                                            this, navigate to{' '}
+                                            {`Entire page or some features are disabled because you didn't grant all the permissions we asked for when logging to Facebook. To fix this, navigate to`}{' '}
                                             <a href="https://www.facebook.com/settings?tab=business_tools&ref=settings">
                                                 this URL
                                             </a>
@@ -839,9 +835,7 @@ export class FacebookIntegrationSetupContainer extends Component<Props, State> {
                         One last step: choose the pages you want to manage with
                         Gorgias.
                         <br />
-                        If you just wanted to re-activate your Facebook
-                        integration or update your permissions: it's done, you
-                        can leave this page.
+                        {`If you just wanted to re-activate your Facebook integration or update your permissions: it's done, you can leave this page.`}
                     </p>
 
                     <Form onSubmit={this._activateSelectedIntegrations}>

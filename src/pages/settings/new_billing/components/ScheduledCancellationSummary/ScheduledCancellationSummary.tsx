@@ -53,15 +53,14 @@ const ScheduledCancellationSummary = ({
                     cancelled.
                 </span>
                 <span>
-                    You'll continue to have full access to all your active
-                    products until the end of your billing cycle on{' '}
+                    {`You'll continue to have full access to all your active products until the end of your billing cycle on `}
                     <span className="body-semibold">
                         {scheduledToCancelAtDate}
                     </span>
                     .
                 </span>
                 <span>
-                    If you'd like to reactivate your subscription, please{' '}
+                    {`If you'd like to reactivate your subscription, please `}
                     <span
                         onClick={onContactUs}
                         className={classNames('text-primary', css.contactUs)}

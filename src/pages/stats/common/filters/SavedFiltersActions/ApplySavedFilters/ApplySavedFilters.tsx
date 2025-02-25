@@ -1,5 +1,6 @@
 import {Tooltip} from '@gorgias/merchant-ui-kit'
 import React, {useCallback, useMemo, useRef, useState} from 'react'
+// eslint-disable-next-line no-restricted-imports
 import {useDispatch} from 'react-redux'
 
 import {logEvent, SegmentEvent} from 'common/segment'

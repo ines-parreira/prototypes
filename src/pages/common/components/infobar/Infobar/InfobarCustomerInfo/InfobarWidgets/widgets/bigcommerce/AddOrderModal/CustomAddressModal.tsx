@@ -328,7 +328,7 @@ export function CustomAddressModal({
                                     )
                                 }}
                             >
-                                Save to customer's address book
+                                {`Save to customer's address book`}
                             </CheckBox>
                         </Form>
                     </div>

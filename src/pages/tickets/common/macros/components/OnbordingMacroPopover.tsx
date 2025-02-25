@@ -209,10 +209,10 @@ function MacroPopOver({
                                     {buttons.map((button) => {
                                         return (
                                             <Button
+                                                key={button.label}
                                                 {...button.buttonsProp}
                                                 className="mx-1"
                                                 onClick={button.onClick}
-                                                key={button.label}
                                             >
                                                 {button.label}
                                             </Button>

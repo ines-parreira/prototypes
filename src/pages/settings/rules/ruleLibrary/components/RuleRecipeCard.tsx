@@ -237,7 +237,7 @@ function RuleRecipeCard({
                     for (let i = 0; i < tags.length; i++) {
                         await handleCreateTag(tags[i])
                     }
-                } catch (error) {
+                } catch {
                     void dispatch(
                         notify({
                             message: 'Failed to create all rule tags',
@@ -255,7 +255,7 @@ function RuleRecipeCard({
                 )
                 try {
                     await Promise.all(promises)
-                } catch (error) {
+                } catch {
                     void dispatch(
                         notify({
                             status: NotificationStatus.Error,
@@ -302,7 +302,7 @@ function RuleRecipeCard({
                 views_installed: shouldCreateViews,
             })
             history.push(`/app/settings/rules/${newRule.id}`)
-        } catch (error) {
+        } catch {
             void dispatch(
                 notify({
                     status: NotificationStatus.Error,

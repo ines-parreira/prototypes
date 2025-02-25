@@ -13,9 +13,9 @@ const LibrarySkeleton = () => {
             <div className={listCss.container}>
                 <h3>AI Generated Articles</h3>
                 <div className={listCss.description}>
-                    Review, edit, and publish pre-written articles based on your
+                    {`Review, edit, and publish pre-written articles based on your
                     customers' top asked questions. New articles are generated
-                    every 90 days.
+                    every 90 days.`}
                 </div>
                 <div className={listCss.articleLink}>
                     <Button fillStyle="ghost" isDisabled>

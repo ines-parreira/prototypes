@@ -99,7 +99,7 @@ export default function StartMigration() {
                 )}
                 <div className={css.description}>
                     <p>
-                        We're transitioning to a new email provider to improve{' '}
+                        {`We're transitioning to a new email provider to improve `}
                         <strong>stability and reliability</strong>.
                     </p>
                     <p>

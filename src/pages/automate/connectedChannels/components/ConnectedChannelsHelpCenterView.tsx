@@ -97,7 +97,7 @@ export const ConnectedChannelsHelpCenterView = ({
                         status: NotificationStatus.Success,
                     })
                 )
-            } catch (err) {
+            } catch {
                 void dispatch(
                     notify({
                         message: `Failed to ${

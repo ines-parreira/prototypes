@@ -275,10 +275,10 @@ export const FontCatalogueModal = ({
                         ) : (
                             <div className={css.noFontFound}>
                                 <p>
-                                    Sorry, we didn't find a font matching your
-                                    search criteria
+                                    {`Sorry, we didn't find a font matching your
+                                    search criteria`}
                                     <br />
-                                    in our font's library.
+                                    {`in our font's library.`}
                                     <br />
                                     You can add a custom font in your help
                                     center following{' '}

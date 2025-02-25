@@ -48,7 +48,7 @@ const GenerateButton = ({sources, widgets}: GenerateButtonProps) => {
 
     return (
         <div className="no-result-container mt-5">
-            <p>You're not showing any widgets here yet.</p>
+            <p>{`You're not showing any widgets here yet.`}</p>
             <Button type="button" onClick={generateWidgets}>
                 Generate default widgets
             </Button>
@@ -106,6 +106,7 @@ const InfobarCustomerInfo = ({
                 clipboard.destroy()
             }
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 
     const contextWidgets = useMemo(() => {

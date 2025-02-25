@@ -77,8 +77,8 @@ export default function EmailForwardingTable({migrations}: Props) {
                         })
                     ) : (
                         <EmptyMigrationTableRow>
-                            All set! You don't have any email forwarding to set
-                            up.
+                            {`All set! You don't have any email forwarding to set
+                            up.`}
                         </EmptyMigrationTableRow>
                     )}
                 </TableBody>

@@ -15,7 +15,8 @@ const ManualInstallationShopifyWebsiteTab = ({code, alertMessage}: Props) => {
     return (
         <InstallationTab>
             <InstallationStep index={1}>
-                Go to your store's admin panel and search for <b>Themes</b>
+                {`Go to your store's admin panel and search for `}
+                <b>Themes</b>
             </InstallationStep>
             <InstallationStep index={2}>
                 Click the <b>three-dot menu</b> next to Customize, then click{' '}

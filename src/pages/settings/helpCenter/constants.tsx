@@ -183,8 +183,8 @@ export const MANUALLY_EMBED_TABS = [
 export const MANUALLY_EMBED_STEPS = {
     [ManuallyEmbedOptions.SHOPIFY]: [
         <InstallationStep index={1} key="shopify_step_1">
-            Go to your store's admin panel and under <b>Online Store</b>, select{' '}
-            <b>Pages</b>.
+            {`Go to your store's admin panel and under `}
+            <b>Online Store</b>, select <b>Pages</b>.
         </InstallationStep>,
         <InstallationStep index={2} key="shopify_step_2">
             Select the page where you want to embed your Help Center

@@ -67,7 +67,7 @@ export class BusinessHoursContainer extends Component<Props, State> {
 
         try {
             await this.props.submitSetting(setting)
-        } catch (error) {
+        } catch {
             // pass
         }
 

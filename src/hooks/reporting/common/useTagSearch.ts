@@ -66,7 +66,7 @@ export const useTagSearch = () => {
                     ...res.data.data.map((tag: Tag) => tag.id.toString()),
                 ])
                 setNextCursor(res.data.meta.next_cursor ?? undefined)
-            } catch (error) {
+            } catch {
                 void dispatch(
                     notify({
                         message: TAGS_FETCH_ERROR_MESSAGE,

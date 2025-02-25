@@ -1417,7 +1417,7 @@ export const findAndSetCustomer =
             const {data} = await getCustomer(id)
 
             return dispatch(setCustomer(fromJS(data)))
-        } catch (error) {
+        } catch {
             return dispatch(
                 notify({
                     message: 'Failed to fetch customer',

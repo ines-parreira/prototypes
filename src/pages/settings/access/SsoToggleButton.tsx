@@ -77,7 +77,7 @@ export const SsoToggleButton = (props: Props) => {
                 onClose={() => setSsoModalVisible(false)}
             >
                 <b>{userCount} users</b> are going to be impacted by this.
-                They'll need to create a password to access their account.
+                {`They'll need to create a password to access their account.`}
             </ConfirmationModal>
         </>
     )

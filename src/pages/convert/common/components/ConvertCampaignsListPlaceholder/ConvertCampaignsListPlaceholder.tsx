@@ -72,7 +72,7 @@ const ConvertCampaignsListPlaceholder = ({integration}: Props) => {
                 <div className={css.campaignsHeader}>
                     {!isLoading && allCampaigns.length === 0 ? (
                         <p>
-                            This integration doesn't display any campaigns yet.
+                            {`This integration doesn't display any campaigns yet.`}
                         </p>
                     ) : (
                         <p>Campaigns displayed through this Chat:</p>

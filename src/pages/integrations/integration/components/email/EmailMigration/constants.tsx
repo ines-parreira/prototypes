@@ -46,8 +46,8 @@ export const providerTutorials = [
             {
                 message: (
                     <span>
-                        Click <strong>'Forwarding'</strong> and tick{' '}
-                        <strong>'Enable forwarding'</strong>
+                        Click <strong>{`'Forwarding'`}</strong> and tick{' '}
+                        <strong>{`'Enable forwarding'`}</strong>
                     </span>
                 ),
             },
@@ -63,8 +63,8 @@ export const providerTutorials = [
                 message: (
                     <span>
                         Tick{' '}
-                        <strong>'Keep a copy of forwarded messages'</strong> and
-                        save.
+                        <strong>{`'Keep a copy of forwarded messages'`}</strong>{' '}
+                        and save.
                     </span>
                 ),
             },
@@ -102,7 +102,7 @@ export const providerTutorials = [
                         >
                             Gmail forwarding settings
                         </a>{' '}
-                        and click <strong>'Add forwarding address'</strong>
+                        and click <strong>{`'Add forwarding address'`}</strong>
                     </span>
                 ),
             },
@@ -140,8 +140,8 @@ export const providerTutorials = [
             {
                 message: (
                     <span>
-                        Click <strong>Edit settings</strong> {`->`}{' '}
-                        <strong>'Edit icon'</strong> (pencil)
+                        Click <strong>{`'Edit settings'`}</strong> {`->`}{' '}
+                        <strong>{`'Edit icon'`}</strong> (pencil)
                     </span>
                 ),
             },
@@ -149,9 +149,10 @@ export const providerTutorials = [
                 message: (
                     <span>
                         Enable{' '}
-                        <strong>'Publish posts to external source'</strong> and{' '}
+                        <strong>{`'Publish posts to external source'`}</strong>{' '}
+                        and{' '}
                         <strong>
-                            'Allow members outside your organization'
+                            {`'Allow members outside your organization'`}
                         </strong>
                     </span>
                 ),
@@ -159,12 +160,12 @@ export const providerTutorials = [
             {
                 message: (
                     <span>
-                        Save. Click <strong>'Add members'</strong> and{' '}
+                        Save. Click <strong>{`'Add members'`}</strong> and{' '}
                         <strong>paste the Gorgias email</strong> into the user
                         field.
                         <br />
                         <br />
-                        Then <strong>'Add to Group'</strong>{' '}
+                        Then <strong>{`'Add to Group'`}</strong>{' '}
                     </span>
                 ),
             },
@@ -211,7 +212,7 @@ export const providerTutorials = [
                 message: (
                     <span>
                         Select the relevant mailbox to set up forwarding for,
-                        and click <strong>'Edit'</strong>
+                        and click <strong>{`'Edit'`}</strong>
                     </span>
                 ),
             },
@@ -219,23 +220,23 @@ export const providerTutorials = [
                 message: (
                     <span>
                         In mailbox properties page, click{' '}
-                        <strong>'Mailbox Features'</strong>{' '}
+                        <strong>{`'Mailbox Features'`}</strong>{' '}
                     </span>
                 ),
             },
             {
                 message: (
                     <span>
-                        Under <strong>'Mail Flow'</strong> select{' '}
-                        <strong>'View details'</strong>
+                        Under <strong>{`'Mail Flow'`}</strong> select{' '}
+                        <strong>{`'View details'`}</strong>
                     </span>
                 ),
             },
             {
                 message: (
                     <span>
-                        Click <strong>'Enable forwarding'</strong>, then{' '}
-                        <strong>'Browse'</strong>
+                        Click <strong>{`'Enable forwarding'`}</strong>, then{' '}
+                        <strong>{`'Browse'`}</strong>
                     </span>
                 ),
             },
@@ -289,15 +290,15 @@ export const providerTutorials = [
                 message: (
                     <span>
                         <strong>Paste the Gorgias email</strong> into the{' '}
-                        <strong>'Add new email'</strong> field, then press{' '}
-                        <strong>'Enter'</strong>
+                        <strong>{`'Add new email'`}</strong> field, then press{' '}
+                        <strong>{`'Enter'`}</strong>
                     </span>
                 ),
             },
             {
                 message: (
                     <span>
-                        Click <strong>'Verify'</strong> and navigate to{' '}
+                        Click <strong>{`'Verify'`}</strong> and navigate to{' '}
                         <strong>Gorgias Tickets</strong>
                     </span>
                 ),
@@ -315,7 +316,7 @@ export const providerTutorials = [
                     <span>
                         In Zoho settings,{' '}
                         <strong>enter the verification code</strong>, then press{' '}
-                        <strong>'Confirm'</strong>
+                        <strong>{`'Confirm'`}</strong>
                     </span>
                 ),
             },

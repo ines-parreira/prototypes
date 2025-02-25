@@ -61,10 +61,7 @@ export const SignatureFormComponent = ({
             />
             {isSignatureValid && (
                 <div className={css.formInputFooterInfo}>
-                    At the end of emails you can disclose that the message was
-                    created by AI, or provide a custom name for AI Agent. Do not
-                    include greetings (e.g. "Best regards"). Greetings will
-                    already be included in the message above the signature.
+                    {`At the end of emails you can disclose that the message was created by AI, or provide a custom name for AI Agent. Do not include greetings (e.g. "Best regards"). Greetings will already be included in the message above the signature.`}
                 </div>
             )}
         </div>

@@ -259,10 +259,11 @@ const GorgiasChatIntegrationInstall = ({
                                             <br />
                                             For manually installed chats, you
                                             also need to
-                                            <b> delete the script</b> from the
+                                            <b> delete the script</b>
+                                            {` from the
                                             store's theme, website code, or
                                             Google Tag Manager to remove it from
-                                            your website.
+                                            your website.`}
                                         </span>
                                     )
                                 }

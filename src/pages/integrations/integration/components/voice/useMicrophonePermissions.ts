@@ -19,7 +19,7 @@ export default function useMicrophonePermissions(
             setPermissionState(permission.state)
 
             return permission
-        } catch (error) {
+        } catch {
             // Permission API not supported for older browser versions
             return null
         }

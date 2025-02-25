@@ -85,10 +85,7 @@ export default function Integration({
                                         type={AlertType.Loading}
                                         icon
                                     >
-                                        We're currently importing all your
-                                        Recharge customers. We will send you an
-                                        email once it is done. Feel free to
-                                        leave this page.
+                                        {`We're currently importing all your Recharge customers. We will send you an email once it is done. Feel free to leave this page.`}
                                     </Alert>
                                 ))}
 

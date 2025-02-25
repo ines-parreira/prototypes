@@ -102,7 +102,7 @@ export const useTopQuestionsArticles = (
                 ])
 
                 logEvent(SegmentEvent.AutomateTopQuestionsSectionDismissArticle)
-            } catch (error) {
+            } catch {
                 void appDispatch(
                     notify({
                         message: `An unexpected error occurred. Please try again later.`,
@@ -134,7 +134,7 @@ export const useTopQuestionsArticles = (
                     publish: false,
                     origin,
                 })
-            } catch (error) {
+            } catch {
                 void appDispatch(
                     notify({
                         message: `Article could not be created. Please try again later`,

@@ -107,7 +107,7 @@ export class OrderFooterComponent extends Component<Props, State> {
 
             try {
                 tags = await fetchShopTags(integrationId, ShopifyTags.orders)
-            } catch (e) {
+            } catch {
                 // silent fail
                 return
             }

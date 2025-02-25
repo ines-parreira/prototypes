@@ -75,14 +75,9 @@ export const ImportZendeskCreate = (
 
             <div className={css.pageContainer}>
                 <div className="col-sm-13 col-md-9 col-lg-6 pl-0 mb-5">
-                    <b>Let's connect your account to Gorgias.</b>
+                    <b>{`Let's connect your account to Gorgias.`}</b>
                     <br />
-                    We'll import your up to {
-                        ZENDESK_IMPORTED_TICKETS_FOR_YEARS
-                    }{' '}
-                    years of Zendesk's history, customers, macros & tags. Once
-                    the initial import is successful, the data from your Zendesk
-                    account will be synchronizing automatically.
+                    {`We'll import your up to ${ZENDESK_IMPORTED_TICKETS_FOR_YEARS} years of Zendesk's history, customers, macros & tags. Once the initial import is successful, the data from your Zendesk account will be synchronizing automatically.`}
                 </div>
 
                 <Form
@@ -129,9 +124,9 @@ export const ImportZendeskCreate = (
                     />
 
                     <Tooltip placement="top-start" target="api-key-info">
-                        In Zendesk, go to Settings / Channels / API, create a
+                        {`In Zendesk, go to Settings / Channels / API, create a
                         new token named "Gorgias Import", and copy/paste it
-                        here.
+                        here.`}
                     </Tooltip>
                     <Button
                         type="submit"

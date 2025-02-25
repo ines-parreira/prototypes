@@ -119,9 +119,9 @@ export default function EditCredentialsForm({integration}: Props) {
                     />
 
                     <Tooltip placement="top-start" target="api-key-info">
-                        In Zendesk, go to Settings / Channels / API, create a
+                        {`In Zendesk, go to Settings / Channels / API, create a
                         new token named "Gorgias Import", and copy/paste it
-                        here.
+                        here.`}
                     </Tooltip>
 
                     <Button

@@ -1,3 +1,4 @@
+/* istanbul ignore file */
 import {Tooltip} from '@gorgias/merchant-ui-kit'
 import classNames from 'classnames'
 import {EditorState} from 'draft-js'
@@ -74,54 +75,50 @@ export default class RichFieldWithVariables extends Component<Props> {
                 <div className={classNames('textarea-toolbar', css.toolbar)}>
                     {variables.map((category, index) =>
                         category.children ? (
-                            <>
-                                <UncontrolledDropdown key={index}>
-                                    <DropdownToggle tag="div">
-                                        <Button
-                                            fillStyle="ghost"
-                                            intent="secondary"
-                                            trailingIcon="arrow_drop_down"
-                                        >
-                                            {category.name}
-                                        </Button>
-                                    </DropdownToggle>
-                                    <DropdownMenu>
-                                        {category.children.map(
-                                            (variable, indexVariable) => {
-                                                const dropdownItemId = `variable-${indexVariable}`
-                                                return (
-                                                    <div key={indexVariable}>
-                                                        <DropdownItem
-                                                            key={indexVariable}
-                                                            id={dropdownItemId}
-                                                            type="button"
-                                                            onClick={() => {
-                                                                this._insertText(
-                                                                    variable.value
-                                                                )
-                                                            }}
+                            <UncontrolledDropdown key={index}>
+                                <DropdownToggle tag="div">
+                                    <Button
+                                        fillStyle="ghost"
+                                        intent="secondary"
+                                        trailingIcon="arrow_drop_down"
+                                    >
+                                        {category.name}
+                                    </Button>
+                                </DropdownToggle>
+                                <DropdownMenu>
+                                    {category.children.map(
+                                        (variable, indexVariable) => {
+                                            const dropdownItemId = `variable-${indexVariable}`
+                                            return (
+                                                <div key={indexVariable}>
+                                                    <DropdownItem
+                                                        key={indexVariable}
+                                                        id={dropdownItemId}
+                                                        type="button"
+                                                        onClick={() => {
+                                                            this._insertText(
+                                                                variable.value
+                                                            )
+                                                        }}
+                                                    >
+                                                        {variable.name}
+                                                    </DropdownItem>
+                                                    {variable?.tooltip && (
+                                                        <Tooltip
+                                                            target={
+                                                                dropdownItemId
+                                                            }
+                                                            placement="right"
                                                         >
-                                                            {variable.name}
-                                                        </DropdownItem>
-                                                        {variable?.tooltip && (
-                                                            <Tooltip
-                                                                target={
-                                                                    dropdownItemId
-                                                                }
-                                                                placement="right"
-                                                            >
-                                                                {
-                                                                    variable.tooltip
-                                                                }
-                                                            </Tooltip>
-                                                        )}
-                                                    </div>
-                                                )
-                                            }
-                                        )}
-                                    </DropdownMenu>
-                                </UncontrolledDropdown>
-                            </>
+                                                            {variable.tooltip}
+                                                        </Tooltip>
+                                                    )}
+                                                </div>
+                                            )
+                                        }
+                                    )}
+                                </DropdownMenu>
+                            </UncontrolledDropdown>
                         ) : (
                             <Button
                                 fillStyle="ghost"

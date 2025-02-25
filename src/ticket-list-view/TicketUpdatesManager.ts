@@ -128,7 +128,7 @@ export default class TicketUpdatesManager {
                 const {data, meta} = await this.getPage(this.sortOrder, null)
                 this.nextCursor = meta.next_cursor
                 this.tickets = data.map(transformApiTicketPartial)
-            } catch (err) {}
+            } catch {}
 
             if (this.listener && !this.isPaused) {
                 this.listener(this.tickets, this.nextCursor)
@@ -163,7 +163,7 @@ export default class TicketUpdatesManager {
                 .filter((t) => !newTicketIds[t.id])
 
             this.tickets = [...newTickets, ...oldTickets]
-        } catch (err) {}
+        } catch {}
 
         if (this.listener && !this.isPaused) {
             this.listener(this.tickets, this.nextCursor)

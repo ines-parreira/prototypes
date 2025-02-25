@@ -46,7 +46,7 @@ const useHelpCentersAutomationSettings = (helpCenterIds: number[]) => {
                             helpcentersSettings
                         )
                     )
-                } catch (error) {
+                } catch {
                     void dispatch(
                         notify({
                             message: 'Failed to fetch',
@@ -88,7 +88,7 @@ const useHelpCentersAutomationSettings = (helpCenterIds: number[]) => {
                         status: NotificationStatus.Success,
                     })
                 )
-            } catch (error) {
+            } catch {
                 void dispatch(
                     notify({
                         message: 'Failed to update',

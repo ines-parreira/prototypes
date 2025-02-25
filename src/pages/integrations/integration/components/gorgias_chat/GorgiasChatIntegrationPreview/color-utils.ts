@@ -23,7 +23,7 @@ export function getTextColorBasedOnBackground(
         return lightTextContrast >= contrastLevel
             ? CONSTRAST_COLORS.LIGHT
             : CONSTRAST_COLORS.DARK
-    } catch (err) {
+    } catch {
         return CONSTRAST_COLORS.LIGHT
     }
 }
@@ -39,7 +39,7 @@ export function getThemeBasedOnContrast(
         )
 
         return lightTextContrast >= contrastLevel ? 'light' : 'dark'
-    } catch (e) {
+    } catch {
         return 'light'
     }
 }

@@ -166,7 +166,7 @@ export function TicketNavbarContainer({
                     params.viewId != null ? params.viewId : (viewId as string)
                 )
                 viewsFetched(result)
-            } catch (error) {
+            } catch {
                 void notify({
                     message: 'Failed to fetch views',
                     status: NotificationStatus.Error,
@@ -181,7 +181,7 @@ export function TicketNavbarContainer({
             try {
                 const res = await fetchSections()
                 sectionsFetched(res.data)
-            } catch (error) {
+            } catch {
                 void notify({
                     message: 'Failed to fetch sections',
                     status: NotificationStatus.Error,
@@ -315,7 +315,7 @@ export function TicketNavbarContainer({
                     sectionUpdated(res)
                 }
                 handleSectionModalClose()
-            } catch (error) {
+            } catch {
                 void notify({
                     message: `Failed to ${
                         isNewSection ? 'create' : 'update'
@@ -334,7 +334,7 @@ export function TicketNavbarContainer({
                 await deleteSection(sectionForm.id)
                 sectionDeleted(sectionForm.id)
                 handleDeleteSectionModalClose()
-            } catch (error) {
+            } catch {
                 void notify({
                     message: 'Failed to delete the section',
                     status: NotificationStatus.Error,
@@ -362,7 +362,7 @@ export function TicketNavbarContainer({
                         section_id: nextElement.data.section_id,
                     })
                     viewUpdated(res)
-                } catch (error) {
+                } catch {
                     void notify({
                         message: 'Failed to add the view to the section',
                         status: NotificationStatus.Error,
@@ -396,7 +396,7 @@ export function TicketNavbarContainer({
                           }))
                     submitAccountSettingSuccess(resp.data, !!accountSetting)
                 }
-            } catch (error) {
+            } catch {
                 void notify({
                     message: 'Failed to change order',
                     status: NotificationStatus.Error,

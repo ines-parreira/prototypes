@@ -38,7 +38,9 @@ export const SimplifiedStepBuilder = ({
                     dispatch={dispatch}
                     steps={steps}
                 />
-                <div className={css.caption}>Don't see the app you need?</div>
+                <div className={css.caption}>
+                    {`Don't see the app you need?`}
+                </div>
                 <div className={css.buttons}>
                     <Button
                         fillStyle="ghost"

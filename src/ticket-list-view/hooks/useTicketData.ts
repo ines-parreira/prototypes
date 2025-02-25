@@ -77,7 +77,7 @@ export default function useTicketData(
                 )
 
                 markUpdated(visibleStaleTicketIds)
-            } catch (_err: unknown) {
+            } catch {
                 return
             }
         })()

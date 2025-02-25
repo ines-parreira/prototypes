@@ -120,7 +120,7 @@ export default function ShopifyProductLine({
                 )
             )
             setSubResults([])
-        } catch (error) {
+        } catch {
             void dispatch(
                 notify({
                     status: NotificationStatus.Error,

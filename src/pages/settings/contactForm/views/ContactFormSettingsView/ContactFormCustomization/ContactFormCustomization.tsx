@@ -1,6 +1,7 @@
 import classNames from 'classnames'
 import {useFlags} from 'launchdarkly-react-client-sdk'
 import React, {useEffect, useState} from 'react'
+// eslint-disable-next-line no-restricted-imports
 import {useDispatch} from 'react-redux'
 
 import {FeatureFlagKey} from 'config/featureFlags'

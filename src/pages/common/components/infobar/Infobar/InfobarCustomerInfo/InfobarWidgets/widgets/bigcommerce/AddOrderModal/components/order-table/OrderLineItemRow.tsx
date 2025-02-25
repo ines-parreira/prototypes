@@ -66,7 +66,7 @@ export default function OrderLineItemRow({
         _debounce(async (newQuantity: number, oldQuantity: number) => {
             try {
                 await onChange(index, newQuantity)
-            } catch (error) {
+            } catch {
                 setQuantity(oldQuantity)
             }
         }, 250),

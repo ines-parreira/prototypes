@@ -248,8 +248,7 @@ const ChatApplication = () => {
                             >
                                 <i className="material-icons">report_problem</i>
                             </span>
-                            You don't have any existing chat integration. Please
-                            create one to enable.
+                            {`You don't have any existing chat integration. Please create one to enable.`}
                         </div>
                     )}
 

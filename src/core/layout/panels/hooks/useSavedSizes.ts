@@ -18,7 +18,7 @@ function getSavedSizes() {
                     typeof entry[1] === 'number'
             )
             .reduce((acc, [k, v]) => ({...acc, [k]: v}), {} as Sizes)
-    } catch (_err: unknown) {
+    } catch {
         return {}
     }
 }

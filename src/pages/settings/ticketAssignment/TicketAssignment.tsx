@@ -209,9 +209,7 @@ export class TicketAssignmentContainer extends Component<Props, State> {
                                         }
                                         icon
                                     >
-                                        You haven't set up any teams yet. Create
-                                        your first team to configure auto
-                                        assignment.
+                                        {`You haven't set up any teams yet. Create your first team to configure auto assignment.`}
                                     </Alert>
                                 ) : (
                                     <>
@@ -263,12 +261,12 @@ export class TicketAssignmentContainer extends Component<Props, State> {
                                                     info_outline
                                                 </i>
                                                 <Tooltip target="limits-info">
-                                                    An agent is eligible for
+                                                    {`An agent is eligible for
                                                     auto-assignment if they are
                                                     “online”, set to "available"
                                                     and have fewer open tickets
                                                     assigned to them than the
-                                                    limits defined below
+                                                    limits defined below`}
                                                 </Tooltip>
                                             </Label>
                                             <div className={css.limits}>

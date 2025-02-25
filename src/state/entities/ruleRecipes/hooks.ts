@@ -24,7 +24,7 @@ export const useRuleRecipes = (): RuleRecipesState | null => {
                     dispatch(ruleRecipesFetched(res.data))
                     loading = false
                 })
-            } catch (error) {
+            } catch {
                 void dispatch(
                     notify({
                         message: 'Failed to fetch rules templates',

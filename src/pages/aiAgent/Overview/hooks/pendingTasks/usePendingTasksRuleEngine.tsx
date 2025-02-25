@@ -147,7 +147,7 @@ export const usePendingTasksRuleEngine = ({
                 )
             )
         }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
+        /* eslint-disable react-hooks/exhaustive-deps */
     }, [
         aiAgentStoreConfigurationData,
         faqHelpCentersData,
@@ -160,7 +160,8 @@ export const usePendingTasksRuleEngine = ({
         chatIntegrationsStatusData,
         ticketViewData,
         pageInteractionsData,
-    ])
+    ]) /* eslint-enable react-hooks/exhaustive-deps */
+    
 
     if (shouldFakeTasks) {
         return {

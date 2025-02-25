@@ -92,7 +92,7 @@ export function Event({integrationId, eventId}: Props) {
                 undefined,
                 4
             )
-        } catch (err) {}
+        } catch {}
     } else {
         requestFormParams = requestParams
     }
@@ -107,7 +107,7 @@ export function Event({integrationId, eventId}: Props) {
                 undefined,
                 4
             )
-        } catch (err) {}
+        } catch {}
     } else {
         requestFormBody = requestBody
     }
@@ -120,7 +120,7 @@ export function Event({integrationId, eventId}: Props) {
                 undefined,
                 4
             )
-        } catch (err) {}
+        } catch {}
     }
 
     return (

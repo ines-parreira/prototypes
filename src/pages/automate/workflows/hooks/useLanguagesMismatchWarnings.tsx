@@ -143,7 +143,7 @@ export default function useLanguagesMismatchWarnings(
                             This channel does not currently support multiple
                             languages. This Flow will be displayed only in the{' '}
                             <Link to={channelLanguageSettingsLink}>
-                                channel's selected language
+                                {`channel's selected language`}
                             </Link>
                             : {getChannelLanguageLabel(channelLanguages[0])}.
                         </>
@@ -194,7 +194,7 @@ export default function useLanguagesMismatchWarnings(
                                 ? 'add them as available languages in'
                                 : 'add it as an available language in'}{' '}
                             <Link to={channelLanguageSettingsLink}>
-                                this channel's preferences
+                                {`this channel's preferences`}
                             </Link>
                             .
                         </>

@@ -89,7 +89,7 @@ export const useAiAgentOnboardingNotification = ({
                     shopName,
                 }
                 result = await upsertOnboardingNotificationState(updatedValue)
-            } catch (error) {
+            } catch {
                 void dispatch(
                     notify({
                         status: NotificationStatus.Error,

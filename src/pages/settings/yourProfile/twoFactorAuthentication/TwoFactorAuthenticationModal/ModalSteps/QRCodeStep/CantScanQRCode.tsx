@@ -62,7 +62,7 @@ export default function CantScanQRCode({authenticatorData}: OwnProps) {
                     setDisplayAuthenticatorData(!displayAuthenticatorData)
                 }
             >
-                Can't scan the QR code?
+                {`Can't scan the QR code?`}
             </Button>
             {displayAuthenticatorData && (
                 <>

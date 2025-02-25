@@ -74,7 +74,7 @@ export default function DiscountCodeResults({
                 }
             )
             setDiscountResults(response.data.data)
-        } catch (error) {
+        } catch {
             void dispatch(
                 notify({
                     message: "Couldn't fetch discount codes",
@@ -202,7 +202,7 @@ export default function DiscountCodeResults({
                             >
                                 settings page of your Shopify integration&nbsp;
                             </Link>
-                            and click on "Update App Permissions".
+                            {`and click on "Update App Permissions".`}
                         </Alert>
                     </div>
                 ) : (

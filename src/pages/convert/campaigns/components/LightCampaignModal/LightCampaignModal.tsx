@@ -79,7 +79,7 @@ const LightCampaignModal = (props: Props) => {
             <ModalBody>
                 <>
                     <p>
-                        We've updated our campaign policies.{' '}
+                        {`We've updated our campaign policies. `}
                         <b>
                             With your current plan, you can now have up to 3
                             active campaigns.
@@ -98,18 +98,18 @@ const LightCampaignModal = (props: Props) => {
                     </ul>
                     <h2>Discover Convert</h2>
                     <p>
-                        To create and activate an unlimited number of campaigns,
-                        it's time to upgrade! Subscribe to Convert and enjoy the
-                        freedom to run as many campaigns as you need, with
+                        {`To create and activate an unlimited number of campaigns,
+                        it's time to upgrade! Subscribe to Convert and enjoy
+                        the freedom to run as many campaigns as you need, with
                         personalized targeting conditions, product
-                        recommendations, and more.
+                        recommendations, and more.`}
                     </p>
                     <CheckBox
                         isChecked={isDismissedChecked}
                         onChange={onDismissClick}
                         className={css.lightModalCheckbox}
                     >
-                        <b>Don't show this message again</b>
+                        <b>{`Don't show this message again`}</b>
                     </CheckBox>
                 </>
             </ModalBody>

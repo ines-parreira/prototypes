@@ -235,7 +235,7 @@ const CampaignsList = ({
 
                 {filteredCampaigns.length === 0 && campaigns.length === 0 && (
                     <div className={css.noCampaignsLayer}>
-                        This integration doesn't have any campaigns yet.
+                        {`This integration doesn't have any campaigns yet.`}
                     </div>
                 )}
 

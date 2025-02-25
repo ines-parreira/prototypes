@@ -139,8 +139,8 @@ const ShopifyBillingActive = ({subscriptionId}: {subscriptionId: string}) => (
             <i className={classNames('material-icons', css.successIcon)}>
                 check_circle
             </i>
-            Payment with Shopify is active (Subscription ID: {subscriptionId}).
-            You're all set.
+            {`Payment with Shopify is active (Subscription ID: ${subscriptionId}).
+            You're all set.`}
         </div>
     </>
 )

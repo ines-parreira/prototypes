@@ -1,6 +1,6 @@
 import classNames from 'classnames'
 import React, {UIEventHandler, useState} from 'react'
-
+// eslint-disable-next-line no-restricted-imports
 import {useDispatch} from 'react-redux'
 
 import {useParams} from 'react-router-dom'

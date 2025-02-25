@@ -35,8 +35,8 @@ export const DefaultLanguageSelect: React.FC = () => {
                 </Col>
             </Row>
             <Caption>
-                Used when selected language isn't available or cannot be
-                detected
+                {`Used when selected language isn't available or cannot be
+                detected`}
             </Caption>
         </div>
     )

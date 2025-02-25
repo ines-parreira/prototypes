@@ -1,6 +1,6 @@
 import classNames from 'classnames'
-
 import React, {FunctionComponent, UIEventHandler, useState} from 'react'
+// eslint-disable-next-line no-restricted-imports
 import {useDispatch} from 'react-redux'
 
 import {User} from 'config/types/user'

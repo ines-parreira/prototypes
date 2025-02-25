@@ -164,7 +164,7 @@ export const ManagedRuleEditor = (
                 })
             )
             setDeactivatedDatetime(null)
-        } catch (error) {
+        } catch {
             void dispatch(
                 notify({
                     status: NotificationStatus.Error,

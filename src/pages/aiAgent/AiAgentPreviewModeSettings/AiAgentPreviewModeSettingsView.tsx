@@ -160,7 +160,7 @@ const AiAgentPreviewModeSettingsView: React.FC<
             }
 
             setIsPristine(true)
-        } catch (error) {
+        } catch {
             void dispatch(
                 notify({
                     message: `Failed to ${

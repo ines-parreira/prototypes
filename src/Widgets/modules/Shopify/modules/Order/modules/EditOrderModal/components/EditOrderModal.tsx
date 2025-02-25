@@ -206,7 +206,7 @@ export function EditOrderModalContainer({
                     >
                         settings page of your Shopify integration&nbsp;
                     </Link>
-                    and click on "Update App Permissions".
+                    {`and click on "Update App Permissions".`}
                 </Alert>
             </Modal>
         )

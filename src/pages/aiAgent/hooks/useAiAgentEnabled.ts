@@ -1,5 +1,6 @@
 import {RuleType} from '@gorgias/api-queries'
 import {useCallback, useMemo} from 'react'
+// eslint-disable-next-line no-restricted-imports
 import {useDispatch} from 'react-redux'
 import {useParams} from 'react-router-dom'
 

@@ -71,8 +71,8 @@ export const ConvertSetupBanner = ({
                 type={AlertType.Warning}
                 icon
             >
-                Your campaigns won't be displayed on your store as long as you
-                haven't completed the campaign bundle installation.
+                {`Your campaigns won't be displayed on your store as long as you
+                haven't completed the campaign bundle installation.`}
             </Alert>
         </div>
     )

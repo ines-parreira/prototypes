@@ -1,5 +1,6 @@
 import {useQueryClient} from '@tanstack/react-query'
 import {useCallback, useEffect, useMemo, useState} from 'react'
+// eslint-disable-next-line no-restricted-imports
 import {useDispatch} from 'react-redux'
 
 import {isGorgiasApiError} from 'models/api/types'

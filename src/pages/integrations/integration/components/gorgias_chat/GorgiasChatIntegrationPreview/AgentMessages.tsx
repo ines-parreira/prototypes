@@ -44,10 +44,11 @@ const renderAgentMessage = ({
                         __html: content,
                     }}
                 />
-                {attachments.map((attachment) => {
+                {attachments.map((attachment, index) => {
                     if (isArticleAttachment(attachment)) {
                         return (
                             <ArticleAttachment
+                                key={index}
                                 title={attachment.title}
                                 description={attachment.summary}
                                 leadIcon={<FileIcon />}

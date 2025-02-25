@@ -62,10 +62,10 @@ export const ConvertLimitBanner = ({
         )
         message = (
             <>
-                You've reached the limit for your Convert plan - a sign of
+                {`You've reached the limit for your Convert plan - a sign of
                 success in driving conversions. As a result, your campaigns are
                 currently on hold. But there's a solution - upgrade now to bring
-                them back to your website
+                them back to your website`}
             </>
         )
     } else if (isExceedingUsage) {

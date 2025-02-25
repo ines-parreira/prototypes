@@ -130,9 +130,9 @@ const ContactFormMailtoReplacementSection = ({
 
             {isThemeExtensionInstallationRequired && (
                 <p className="mb-4">
-                    To replace email links in your Shopify store, click "Replace
+                    {`To replace email links in your Shopify store, click "Replace
                     Links" then "Save" in the new Shopify window without editing
-                    anything.
+                    anything.`}
                 </p>
             )}
 

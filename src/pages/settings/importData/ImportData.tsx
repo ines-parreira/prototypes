@@ -68,7 +68,9 @@ const ImportData = () => {
                         will be enabled automatically.{' '}
                     </LinkAlert>
                     {zendeskIntegrations.length === 0 ? (
-                        <span>You don't have any imports at the moment</span>
+                        <span>
+                            {`You don't have any imports at the moment`}
+                        </span>
                     ) : (
                         <ImportZendeskDataList />
                     )}

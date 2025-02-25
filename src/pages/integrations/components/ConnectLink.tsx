@@ -65,7 +65,7 @@ export default function ConnectLink({
         let url
         try {
             url = new URL(connectUrl)
-        } catch (e) {
+        } catch {
             url = new URL('https://docs.gorgias.com/')
         }
         url.searchParams.set('account', domain)

@@ -147,7 +147,8 @@ export default function MultiSelectOptionsField(props: Props) {
         const displayLabel = (
             <i>
                 {`Add ${singular} "`}
-                <b>{`${input}`}</b>"
+                <b>{`${input}`}</b>
+                {`"`}
             </i>
         )
         return {

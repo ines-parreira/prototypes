@@ -51,7 +51,7 @@ export default class JsonField extends DEPRECATED_InputField<Props, State> {
             if (value !== this.defaultValue) {
                 parsedValue = JSON.parse(value)
             }
-        } catch (e) {
+        } catch {
             isJsonValid = false
         }
 

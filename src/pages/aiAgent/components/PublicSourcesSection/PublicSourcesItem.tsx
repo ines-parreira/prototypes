@@ -15,7 +15,7 @@ const isUrlValid = (url?: string) => {
     try {
         new URL(url)
         return true
-    } catch (err) {
+    } catch {
         return false
     }
 }
@@ -55,7 +55,7 @@ const isUrlWithDocumentExtension = (url: string): boolean => {
         const urlObj = new URL(url)
         const extension = urlObj.pathname.split('.').pop()?.toLowerCase()
         return extension !== undefined && DOCUMENT_EXTENSIONS.has(extension)
-    } catch (_) {
+    } catch {
         return false
     }
 }

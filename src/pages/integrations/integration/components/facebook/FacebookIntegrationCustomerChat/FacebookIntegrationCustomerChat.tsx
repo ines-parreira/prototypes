@@ -71,10 +71,10 @@ const FacebookIntegrationCustomerChat = ({
                             integrationType={integration.get('type')}
                             description={
                                 <p>
-                                    To install the Messenger widget on your
+                                    {`To install the Messenger widget on your
                                     website manually, you first need to
                                     whitelist your website's domain for your
-                                    Facebook page on Facebook. You can do so{' '}
+                                    Facebook page on Facebook. You can do so`}{' '}
                                     <a
                                         target="_blank"
                                         rel="noopener noreferrer"

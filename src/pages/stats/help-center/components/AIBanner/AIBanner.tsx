@@ -27,9 +27,9 @@ const AIBanner = ({helpCenterId, className, from}: AIBannerProps) => {
                         New AI generated articles available
                     </div>
                     <div className={css.description}>
-                        We've generated new articles based on popular customer
+                        {`We've generated new articles based on popular customer
                         inquiries over the past 90 days that could help deflect
-                        customers.
+                        customers.`}
                     </div>
                 </div>
             </div>

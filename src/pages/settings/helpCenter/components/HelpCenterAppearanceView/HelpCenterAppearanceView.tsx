@@ -407,7 +407,7 @@ export const HelpCenterAppearanceView: React.FC = () => {
             <section className={css.sectionWrapper}>
                 <div className={css.heading}>
                     <h3>Branding</h3>
-                    <p>Set up your Help Center's logo, color and theme.</p>
+                    <p>{`Set up your Help Center's logo, color and theme.`}</p>
                 </div>
                 <div className={settingsCss.mb24}>
                     <InputField

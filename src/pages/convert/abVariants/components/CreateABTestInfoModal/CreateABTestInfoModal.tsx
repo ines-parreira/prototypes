@@ -67,14 +67,14 @@ const CreateABTestInfoModal: React.FC<Props> = (props) => {
                         </strong>
                     </p>
                     <p>
-                        Maximize the effectiveness of your campaign by testing
+                        {`Maximize the effectiveness of your campaign by testing
                         multiple messaging variations. When you initiate a test,
                         your original campaign will automatically become the
                         "Control Variant," retaining all your existing settings
                         and configurations. You can create up to two additional
                         variants, which will inherit the same properties (e.g.,
                         triggers) as the Control Variant, with the key
-                        difference being the messaging content.
+                        difference being the messaging content.`}
                     </p>
                     <p>
                         If your campaign is already running, it will continue to
@@ -92,7 +92,7 @@ const CreateABTestInfoModal: React.FC<Props> = (props) => {
                         isChecked={isDismissedChecked}
                         onChange={onDismissClick}
                     >
-                        <b>Don't show again</b>
+                        <b>{`Don't show again`}</b>
                     </CheckBox>
                 }
             >

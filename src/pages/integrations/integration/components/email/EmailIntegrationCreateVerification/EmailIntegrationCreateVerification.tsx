@@ -144,16 +144,13 @@ export class EmailIntegrationCreateVerification extends Component<
                             <i className="material-icons md-spin">autorenew</i>
                         }
                     >
-                        We're waiting to receive your verification email on{' '}
+                        {`We're waiting to receive your verification email on `}
                         <strong>{forwardingEmailAddress}</strong>.
                     </Alert>
                 )}
                 {isShowingManualEmailVerificationForm && (
                     <div>
-                        if you've received the verification email but your
-                        integration still reads "Verification in progress...",
-                        you can manually input the verification code listed in
-                        the verification email.
+                        {`if you've received the verification email but your integration still reads "Verification in progress...", you can manually input the verification code listed in the verification email.`}
                         <br />
                         <br />
                         <Form onSubmit={this._verifyEmailIntegrationManually}>
@@ -182,8 +179,7 @@ export class EmailIntegrationCreateVerification extends Component<
                     </div>
                 )}
                 <p>
-                    If you haven't set up the forwarding yet, you'll find the
-                    instructions{' '}
+                    {`If you haven't set up the forwarding yet, you'll find the instructions `}
                     <Link
                         to={`/app/settings/channels/email/${
                             integration.get('id') as number

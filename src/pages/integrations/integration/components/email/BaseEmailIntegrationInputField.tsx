@@ -30,7 +30,7 @@ export default function BaseEmailIntegrationInputField({label}: Props) {
                     title: 'Address copied to clipboard',
                 })
             )
-        } catch (err: unknown) {
+        } catch {
             void dispatch(
                 notify({
                     status: NotificationStatus.Error,

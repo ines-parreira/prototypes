@@ -987,7 +987,7 @@ export const validateWebhookURL = (
                           return parsedUrl.port
                               ? !/^(443|8\d|808\d)$/.test(parsedUrl.port)
                               : false
-                      } catch (error) {
+                      } catch {
                           return true
                       }
                   },

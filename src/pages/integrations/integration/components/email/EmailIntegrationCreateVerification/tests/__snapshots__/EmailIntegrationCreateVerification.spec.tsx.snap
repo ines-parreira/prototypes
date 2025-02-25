@@ -92,8 +92,7 @@ exports[`<EmailIntegrationCreateVerification/> render() should render instructio
         <br />
       </div>
       <p>
-        If you haven't set up the forwarding yet, you'll find the instructions
-         
+        If you haven't set up the forwarding yet, you'll find the instructions 
         <a
           to="/app/settings/channels/email/1/forwarding"
         >
@@ -283,8 +282,7 @@ exports[`<EmailIntegrationCreateVerification/> render() should render the regula
           <span
             class="label"
           >
-            We're waiting to receive your verification email on
-             
+            We're waiting to receive your verification email on 
             <strong>
               hmq29fh29zfmh29fzq2f3@emails-acme.gorgi.us
             </strong>
@@ -293,8 +291,7 @@ exports[`<EmailIntegrationCreateVerification/> render() should render the regula
         </div>
       </div>
       <p>
-        If you haven't set up the forwarding yet, you'll find the instructions
-         
+        If you haven't set up the forwarding yet, you'll find the instructions 
         <a
           to="/app/settings/channels/email/1/forwarding"
         >

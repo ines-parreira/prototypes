@@ -33,7 +33,7 @@ const useHelpCenterCustomDomainHostnames = (helpCenterId?: number) => {
             setCustomDomainHostnames(
                 activeCustomDomains.map((domain) => domain.hostname)
             )
-        } catch (err) {
+        } catch {
             void dispatch(
                 notify({
                     message: "Failed to fetch Help Center's custom domains",

@@ -235,7 +235,7 @@ const UsageAndPlansView = ({
                             <span>{periodEnd}</span>.
                         </div>
                     ) : (
-                        <>You don't have any active subscriptions.</>
+                        <>{`You don't have any active subscriptions.`}</>
                     )}
                 </div>
                 <div className={css.generalInfoItem}>

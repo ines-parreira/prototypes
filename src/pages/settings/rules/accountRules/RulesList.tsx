@@ -58,7 +58,7 @@ export function RulesList({
         try {
             await reorderRules(priorities)
             void dispatch(rulesReordered(priorities))
-        } catch (error) {
+        } catch {
             void dispatch(
                 notify({
                     message: 'Failed to reorder rules',
@@ -93,7 +93,7 @@ export function RulesList({
                     message: 'Rule activated successfully',
                 })
             )
-        } catch (error) {
+        } catch {
             void dispatch(
                 notify({
                     status: NotificationStatus.Error,

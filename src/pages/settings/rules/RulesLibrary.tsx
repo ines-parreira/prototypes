@@ -68,7 +68,7 @@ export function RulesLibraryContainer() {
             try {
                 const res = await fetchRules()
                 dispatch(rulesFetched(res.data))
-            } catch (error) {
+            } catch {
                 void dispatch(
                     notify({
                         message: 'Failed to fetch rules',
@@ -84,7 +84,7 @@ export function RulesLibraryContainer() {
             try {
                 const res = await fetchRuleRecipes()
                 dispatch(ruleRecipesFetched(res.data))
-            } catch (error) {
+            } catch {
                 void dispatch(
                     notify({
                         message: 'Failed to fetch template rules',

@@ -47,7 +47,7 @@ const AddVideo = ({getEditorState, setEditorState}: Props) => {
         let _url
         try {
             _url = new URL(url)
-        } catch (_) {
+        } catch {
             return false
         }
         return _url.protocol === 'http:' || _url.protocol === 'https:'

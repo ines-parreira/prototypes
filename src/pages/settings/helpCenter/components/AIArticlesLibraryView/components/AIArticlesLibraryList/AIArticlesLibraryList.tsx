@@ -107,9 +107,9 @@ const AIArticlesLibraryList = ({
         <div className={css.container} ref={containerRef} tabIndex={1}>
             <h3>AI Generated Articles</h3>
             <div className={css.description}>
-                Review, edit, and publish pre-written articles based on your
+                {`Review, edit, and publish pre-written articles based on your
                 customers' top asked questions. New articles are generated every
-                90 days.
+                90 days.`}
             </div>
             <a
                 className={css.articleLink}

@@ -24,7 +24,7 @@ class GenericTypeError extends Error {
         let withType = ''
         try {
             withType = printWithType('Received', received, printReceived)
-        } catch (e) {
+        } catch {
             // Can throw for Document:
             // https://github.com/jsdom/jsdom/issues/2304
         }

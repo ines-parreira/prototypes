@@ -288,7 +288,7 @@ export const HelpCenterArticlesView: React.FC = () => {
         }
 
         void updateSelectedArticleTranslations()
-        // eslint-disable-next-line react-hooks/exhaustive-deps
+        /* eslint-disable react-hooks/exhaustive-deps */
     }, [
         client,
         helpCenter,
@@ -297,7 +297,7 @@ export const HelpCenterArticlesView: React.FC = () => {
         selectedArticleTranslations,
         isFetchingArticleTranslations,
         dispatch,
-    ])
+    ]) /* eslint-enable react-hooks/exhaustive-deps */
 
     // update the selected article translations when the view language
     // or when the template changes

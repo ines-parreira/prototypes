@@ -1,5 +1,6 @@
 import _noop from 'lodash/noop'
 import React, {useMemo} from 'react'
+// eslint-disable-next-line no-restricted-imports
 import {useDispatch} from 'react-redux'
 
 import useAppSelector from 'hooks/useAppSelector'

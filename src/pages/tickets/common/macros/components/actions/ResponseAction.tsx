@@ -127,6 +127,7 @@ const ResponseActionToolbar: React.FC<ToolbarProps> = ({
                         </UncontrolledButtonDropdown>
                     ) : (
                         <Button
+                            key={index}
                             fillStyle="ghost"
                             intent="secondary"
                             style={{color: 'inherit'}}

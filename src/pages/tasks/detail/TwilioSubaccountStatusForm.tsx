@@ -36,7 +36,7 @@ const TwilioSubaccountStatusForm = (): JSX.Element => {
                 return
             }
             setFormData({...formData, ...res.data.data})
-        } catch (error) {
+        } catch {
             void dispatch(
                 notify({
                     message: 'Failed to fetch Twilio Subaccount data',

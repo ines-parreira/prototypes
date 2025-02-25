@@ -26,7 +26,7 @@ export function RuleDetailForm({
             try {
                 const res = await fetchRule(ruleId)
                 ruleFetched(res)
-            } catch (error) {
+            } catch {
                 void notify({
                     message: `Could not find rule with id: ${ruleId}`,
                     status: NotificationStatus.Error,

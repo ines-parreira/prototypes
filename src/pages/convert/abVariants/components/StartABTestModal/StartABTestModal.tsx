@@ -82,7 +82,7 @@ const StartABTestModal: React.FC<Props> = (props) => {
                         isChecked={isDismissedChecked}
                         onChange={onDismissClick}
                     >
-                        <b>Don't show again</b>
+                        <b>{`Don't show again`}</b>
                     </CheckBox>
                 }
             >

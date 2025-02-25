@@ -47,7 +47,7 @@ const UpdateReportLinkModal: React.FC<Props> = ({
             await onSubmit({
                 report_link: reportLink,
             })
-        } catch (e) {
+        } catch {
         } finally {
             setIsLoading(false)
         }

@@ -128,7 +128,7 @@ export const RuleFormEditor = ({rule}: Props) => {
                         })
                     )
                     history.push('/app/settings/rules')
-                } catch (error) {
+                } catch {
                     void dispatch(
                         notify({
                             status: NotificationStatus.Error,
@@ -147,7 +147,7 @@ export const RuleFormEditor = ({rule}: Props) => {
                         })
                     )
                     history.push('/app/settings/rules')
-                } catch (error) {
+                } catch {
                     void dispatch(
                         notify({
                             status: NotificationStatus.Error,
@@ -175,7 +175,7 @@ export const RuleFormEditor = ({rule}: Props) => {
                     status: NotificationStatus.Success,
                 })
             )
-        } catch (error) {
+        } catch {
             void dispatch(
                 notify({
                     status: NotificationStatus.Error,

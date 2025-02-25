@@ -50,8 +50,8 @@ export default function WhatsAppMessageTemplatesList({phoneNumberId}: Props) {
                     window.
                 </p>
                 <p>
-                    Only templates with an "Active" status from WhatsApp can be
-                    sent to customers.
+                    {`Only templates with an "Active" status from WhatsApp can be
+                    sent to customers.`}
                 </p>
             </div>
             <TableWrapper className={css.tableWrapper}>

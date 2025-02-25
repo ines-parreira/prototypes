@@ -158,7 +158,7 @@ export default function TeamCreationModal({
                 resetForm()
                 setActiveStep('ruleCreation')
                 onTeamCreated?.()
-            } catch (error) {
+            } catch {
                 void dispatch(
                     notify({
                         message:

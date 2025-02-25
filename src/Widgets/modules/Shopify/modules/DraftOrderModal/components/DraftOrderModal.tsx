@@ -248,9 +248,9 @@ export function DraftOrderModalContainer({
                     <Link
                         to={`/app/settings/integrations/shopify/${integrationId!}`}
                     >
-                        settings page of your Shopify integration
+                        settings page of your Shopify integration&nbsp;
                     </Link>{' '}
-                    and click on "Update App Permissions".
+                    {`and click on "Update App Permissions".`}
                 </Alert>
             </Modal>
         )

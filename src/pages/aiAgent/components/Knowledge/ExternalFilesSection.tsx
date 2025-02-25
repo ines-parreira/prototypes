@@ -134,7 +134,7 @@ export const ExternalFilesSection = ({
                 size_bytes: uploadedFile.size,
                 google_storage_url: uploadedFile.google_storage_key,
             })
-        } catch (e) {
+        } catch {
             setIsLoading(false)
 
             void dispatch(
@@ -218,10 +218,7 @@ export const ExternalFilesSection = ({
                                         title="Delete External Document?"
                                         content={
                                             <p>
-                                                Are you sure you want to delete
-                                                this document? AI Agent won't be
-                                                able to use this information
-                                                anymore.
+                                                {`Are you sure you want to delete this document? AI Agent won't be able to use this information anymore.`}
                                             </p>
                                         }
                                         onConfirm={async () => {
@@ -237,7 +234,7 @@ export const ExternalFilesSection = ({
                                                             'File deleted successfully',
                                                     })
                                                 )
-                                            } catch (e) {
+                                            } catch {
                                                 void dispatch(
                                                     notify({
                                                         status: NotificationStatus.Error,

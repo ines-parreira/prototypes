@@ -59,7 +59,7 @@ const useContactFormsAutomationSettings = (contactFormIds: number[]) => {
                         automationSettingsIdMap
                     )
                 )
-            } catch (error) {
+            } catch {
                 void dispatch(
                     notify({
                         message: 'Failed to fetch',
@@ -92,7 +92,7 @@ const useContactFormsAutomationSettings = (contactFormIds: number[]) => {
                         status: NotificationStatus.Success,
                     })
                 )
-            } catch (error) {
+            } catch {
                 void dispatch(
                     notify({
                         message: 'Failed to update',

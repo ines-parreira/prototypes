@@ -41,7 +41,7 @@ export default function CustomerNote({customer}: {customer: Map<any, any>}) {
             await dispatch(
                 submitCustomer({note} as CustomerDraft, customer.get('id'))
             )
-        } catch (err) {
+        } catch {
             setIsError(true)
             setTimeout(() => setIsError(false), 2000)
         } finally {

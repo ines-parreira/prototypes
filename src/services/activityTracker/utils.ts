@@ -14,7 +14,7 @@ export const checkIfTrackerIsEnabled = async () => {
         )
 
         return isActivityTrackerEnabled && !isSessionImpersonated()
-    } catch (error) {
+    } catch {
         return false
     }
 }

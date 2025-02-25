@@ -901,8 +901,8 @@ export class GorgiasChatIntegrationPreferencesComponent extends React.Component<
                             target={'dynamic-wait-time-option'}
                             autohide={false}
                         >
-                            Calculated based on your team's recent live chat
-                            response times.{' '}
+                            {`Calculated based on your team's recent live chat
+                            response times.`}{' '}
                             <a
                                 href="https://docs.gorgias.com/en-US/109858-dc67e62b040a4649aed68bdce7ffa4f5"
                                 target="_blank"
@@ -1041,9 +1041,9 @@ export class GorgiasChatIntegrationPreferencesComponent extends React.Component<
                                             to receive an email response.{' '}
                                             {chatMultiLanguagesEnabled ? (
                                                 <>
-                                                    You can customize offline
+                                                    {`You can customize offline
                                                     capture's copy and
-                                                    translations in the{' '}
+                                                    translations in the`}{' '}
                                                     <Link
                                                         to={`/app/settings/channels/gorgias_chat/${
                                                             integration.get(
@@ -1115,13 +1115,13 @@ export class GorgiasChatIntegrationPreferencesComponent extends React.Component<
                                                 }}
                                             >
                                                 <div className="mb-3">
-                                                    Hiding chat removes the
+                                                    {`Hiding chat removes the
                                                     widget from your website,
-                                                    but doesn't uninstall it.
+                                                    but doesn't uninstall it.`}
                                                 </div>
-                                                If you're getting too many live
+                                                {`If you're getting too many live
                                                 chat messages, you can change
-                                                your live chat settings above.
+                                                your live chat settings above.`}
                                             </Tooltip>
                                             <div className="form-text text-muted">
                                                 Remove widget from your website
@@ -1503,13 +1503,7 @@ export class GorgiasChatIntegrationPreferencesComponent extends React.Component<
                                         </h4>
 
                                         <p className="mb-3">
-                                            When customers don't see your live
-                                            chat response after an hour, Gorgias
-                                            will automatically send your message
-                                            to the customer's email address (if
-                                            available). Customers also receive
-                                            satisfaction surveys for chat
-                                            tickets via email.
+                                            {`When customers don't see your live chat response after an hour, Gorgias will automatically send your message to the customer's email address (if available). Customers also receive satisfaction surveys for chat tickets via email.`}
                                         </p>
                                         <Label
                                             className="control-label"
@@ -1611,11 +1605,7 @@ export class GorgiasChatIntegrationPreferencesComponent extends React.Component<
                                                 </b>
                                                 {sendChatTranscript && (
                                                     <div className="form-text text-muted">
-                                                        When customers don't see
-                                                        your message in chat, we
-                                                        automatically send them
-                                                        a transcript after 30
-                                                        minutes.
+                                                        {`When customers don't see your message in chat, we automatically send them a transcript after 30 minutes.`}
                                                     </div>
                                                 )}
                                             </div>

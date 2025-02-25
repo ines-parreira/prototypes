@@ -1353,8 +1353,7 @@ export const GorgiasChatIntegrationAppearanceComponent = ({
                                                         Avatar logo
                                                     </h3>
                                                     <p className="mb-4">
-                                                        Used as your team's or
-                                                        bot avatar.
+                                                        {`Used as your team's or bot avatar.`}
                                                     </p>
                                                     <ImageField
                                                         isDiscardable={true}
@@ -1380,9 +1379,7 @@ export const GorgiasChatIntegrationAppearanceComponent = ({
                                                 Company logo
                                             </h2>
                                             <p className="mb-4">
-                                                Customize your team's or robot
-                                                avatars by uploading your
-                                                company's logo.
+                                                {`Customize your team's or robot avatars by uploading your company's logo.`}
                                             </p>
                                             <ImageField
                                                 isDiscardable={true}

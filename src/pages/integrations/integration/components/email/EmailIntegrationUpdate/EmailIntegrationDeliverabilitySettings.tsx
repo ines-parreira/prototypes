@@ -78,25 +78,19 @@ export default function EmailIntegrationDeliverabilitySettings({
     const caption = canEnableEmailingViaInternalProvider(integration) ? (
         currentProvider === DeliverabilityProviderSetting.UseProviderAPI ? (
             <>
-                To avoid deliverability issues that can occur when using{' '}
-                {capitalizedIntegrationType}’s API, it is recommended to use
-                Gorgias’ email delivery platform to send your emails. This
-                ensures successful delivery and tracking.
+                {`To avoid deliverability issues that can occur when using ${capitalizedIntegrationType}’s API, it is recommended to use Gorgias’ email delivery platform to send your emails. This ensures successful delivery and tracking.`}
             </>
         ) : (
             <>
-                Your emails are now being sent via Gorgias’ email delivery
-                platform to prevent deliverability issues that can occur when
-                using {capitalizedIntegrationType}’s API with high email
-                volumes.
+                {`Your emails are now being sent via Gorgias’ email delivery platform to prevent deliverability issues that can occur when using ${capitalizedIntegrationType}’s API with high email volumes.`}
             </>
         )
     ) : (
         <>
-            To avoid deliverability issues that can occur when using{' '}
-            {capitalizedIntegrationType}'s API, complete{' '}
-            <Link to={domainVerificationPageLink}>Domain Verification</Link> to
-            enable Gorgias’ email delivery platform.
+            {`To avoid deliverability issues that can occur when using
+            ${capitalizedIntegrationType}'s API, complete`}
+            <Link to={domainVerificationPageLink}>Domain Verification</Link>
+            {` to enable Gorgias’ email delivery platform.`}
         </>
     )
 

@@ -221,7 +221,7 @@ const MacroModal = ({
             void createMacro({
                 data: newMacro,
             })
-        } catch (e) {
+        } catch {
             // handled in hook
         }
     }
@@ -305,7 +305,7 @@ const MacroModal = ({
         try {
             await bulkArchiveMacros({data: {ids: [currentMacro!.id!]}})
             void fetchMacros(true)
-        } catch (error) {
+        } catch {
             // handled in hook
         }
     }

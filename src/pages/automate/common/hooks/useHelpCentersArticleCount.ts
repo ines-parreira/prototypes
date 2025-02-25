@@ -29,7 +29,7 @@ export const useHelpCentersArticleCount = (helpCenterIds?: number[]) => {
                             helpCenterId,
                             count: data.data.meta.item_count,
                         }
-                    } catch (error) {
+                    } catch {
                         return {helpCenterId}
                     }
                 })

@@ -516,9 +516,9 @@ const GorgiasChatCreationWizardStepBasics: React.FC<Props> = ({
                                         target="default-language-icon"
                                         trigger={['hover']}
                                     >
-                                        Used whenever the customer's language is
+                                        {`Used whenever the customer's language is
                                         not automatically detected or
-                                        unavailable.
+                                        unavailable.`}
                                     </Tooltip>
                                     <i
                                         aria-label="Icon for default language info"

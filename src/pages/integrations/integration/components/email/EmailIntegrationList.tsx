@@ -119,10 +119,10 @@ export default function EmailIntegrationList(props: Props): JSX.Element {
             alert={
                 !areAllEmailIntegrationsVerified ? (
                     <Alert icon type={AlertType.Warning}>
-                        In order to verify your domains, click on the emails
+                        {`In order to verify your domains, click on the emails
                         with 'Action required: verify domain' status, go to the
                         Outbound Verification tab and complete the verification
-                        process.
+                        process.`}
                         <br />
                         If you need more information{' '}
                         <a

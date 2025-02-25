@@ -11,7 +11,9 @@ const storyConfig: Meta = {
 
 const Template: Story<ComponentProps<typeof WizardStep>> = (props) => (
     <Wizard startAt="foo" steps={['foo', 'bar']}>
-        <WizardStep {...props}>The current step is "{props.name}"</WizardStep>
+        <WizardStep {...props}>
+            {`The current step is "${props.name}"`}
+        </WizardStep>
     </Wizard>
 )
 

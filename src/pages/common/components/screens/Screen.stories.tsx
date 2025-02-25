@@ -20,7 +20,7 @@ const storyConfig: Meta = {
 const Template: Story<ComponentProps<typeof Screen>> = (props) => (
     <Screens activeScreen="artemis">
         <Screen {...props}>
-            The current screen is "{props.name}" <br />
+            {`The current screen is "${props.name}"`} <br />
             <span>
                 Screen allows users to conditionally render content while
                 controlling a wrapper Screens component.

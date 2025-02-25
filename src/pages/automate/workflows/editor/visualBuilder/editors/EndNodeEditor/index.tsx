@@ -109,11 +109,7 @@ export default function EndNodeEditor({nodeInEdition}: EndNodeEditorProps) {
                             <div>
                                 <WasThisHelpfulCard />
                                 <Caption>
-                                    Customers will be asked for feedback and a
-                                    ticket is created in the channel if
-                                    customers select "No, I need more help".
-                                    Feedback will always be requested in the
-                                    channel language.
+                                    {`Customers will be asked for feedback and a ticket is created in the channel if customers select "No, I need more help". Feedback will always be requested in the channel language.`}
                                 </Caption>
                             </div>
                         )}

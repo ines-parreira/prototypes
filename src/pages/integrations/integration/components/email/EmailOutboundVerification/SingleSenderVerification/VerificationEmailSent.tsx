@@ -94,14 +94,14 @@ export default function VerificationEmailSent({
                 className={classNames('my-4')}
                 icon={<i className="material-icons md-spin">autorenew</i>}
             >
-                We're waiting to receive your verification email on{' '}
+                {`We're waiting to receive your verification email on`}{' '}
                 <strong>{verification.email}</strong> from our email provider,{' '}
                 <span className="text-capitalize">{provider}</span>.
             </Alert>
             <p>
-                If you haven't received an email from our email provider after a
+                {`If you haven't received an email from our email provider after a
                 few minutes, please check that you have submitted the correct
-                email for single-sender verification.{' '}
+                email for single-sender verification.`}{' '}
             </p>
             <div className={classNames('mt-5', css.buttonsWrapper)}>
                 <div className={css.confirmButtonsWrapper}>

@@ -40,7 +40,7 @@ export default function FilterDropdownSearch({
                 if (data) {
                     onSearchSuccess(data)
                 }
-            } catch (error) {
+            } catch {
                 onSearchError()
             }
         },

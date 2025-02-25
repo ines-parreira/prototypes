@@ -449,10 +449,7 @@ export class FacebookIntegrationDetail extends Component<Props, State> {
                                     )}
                                     icon
                                 >
-                                    Entire page or some features are disabled
-                                    because you didn't grant all the permissions
-                                    we asked for when logging to Facebook. To
-                                    fix this, navigate to{' '}
+                                    {`Entire page or some features are disabled because you didn't grant all the permissions we asked for when logging to Facebook. To fix this, navigate to`}{' '}
                                     <a href="https://www.facebook.com/settings?tab=business_tools&ref=settings">
                                         this URL
                                     </a>
