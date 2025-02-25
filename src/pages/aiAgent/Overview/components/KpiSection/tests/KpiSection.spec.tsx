@@ -100,6 +100,15 @@ describe('KpiSection', () => {
                         prevValue: 90,
                         metricType: StatType.Number,
                     },
+                    {
+                        hidden: true,
+                        isLoading: false,
+                        title: `My hidden ${aiAgentType} metric`,
+                        hint: `My hidden ${aiAgentType} hint`,
+                        value: 100,
+                        prevValue: 90,
+                        metricType: StatType.Number,
+                    },
                 ],
             })
 
@@ -107,6 +116,9 @@ describe('KpiSection', () => {
             expect(
                 screen.queryByText(`My ${aiAgentType} metric`),
             ).toBeInTheDocument()
+            expect(
+                screen.queryByText(`My hidden ${aiAgentType} metric`),
+            ).not.toBeInTheDocument()
             expect(screen.queryByText('100')).toBeInTheDocument()
         })
     })

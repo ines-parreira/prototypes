@@ -2,6 +2,7 @@ import { StatType } from 'models/stat/types'
 import { MetricTrendFormat } from 'pages/stats/common/utils'
 
 export type KpiMetric = {
+    hidden?: boolean
     isLoading: boolean
     title: string
     hint: string

@@ -48,20 +48,22 @@ const KpiContainer = ({
 
     return (
         <div className={css.kpiContainer}>
-            {metrics.map((metric) => {
-                return (
-                    <Kpi
-                        key={metric.title}
-                        isLoading={metric.isLoading}
-                        value={metric.value ?? 0}
-                        prevValue={metric.prevValue ?? undefined}
-                        title={metric.title}
-                        hint={metric.hint}
-                        metricType={metric.metricType}
-                        metricFormat={metric.metricFormat}
-                    />
-                )
-            })}
+            {metrics
+                .filter((it) => !it.hidden)
+                .map((metric) => {
+                    return (
+                        <Kpi
+                            key={metric.title}
+                            isLoading={metric.isLoading}
+                            value={metric.value ?? 0}
+                            prevValue={metric.prevValue ?? undefined}
+                            title={metric.title}
+                            hint={metric.hint}
+                            metricType={metric.metricType}
+                            metricFormat={metric.metricFormat}
+                        />
+                    )
+                })}
         </div>
     )
 }
