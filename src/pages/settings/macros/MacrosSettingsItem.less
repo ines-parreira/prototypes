@@ -4,6 +4,14 @@
     .macroTitle {
         font-weight: 600;
         padding: 7px 0px;
+        display: flex;
+        align-items: center;
+
+        &:first-of-type {
+            > a > div {
+                padding-left: @layout-spacing-s;
+            }
+        }
     }
 
     .dateCell {
@@ -40,17 +48,6 @@
     .tags {
         display: flex;
         gap: @layout-spacing-xxs;
-    }
-
-    .wrapper {
-        display: flex;
-        align-items: center;
-
-        &:first-of-type {
-            > a > div {
-                padding-left: @layout-spacing-s;
-            }
-        }
     }
 
     .checkbox {

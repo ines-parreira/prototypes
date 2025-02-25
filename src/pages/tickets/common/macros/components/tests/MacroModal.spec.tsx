@@ -6,7 +6,6 @@ import MockDate from 'mockdate'
 
 import { Macro, MacroAction } from '@gorgias/api-queries'
 
-import { useFlag } from 'core/flags'
 import {
     useBulkArchiveMacros,
     useCreateMacro,
@@ -100,11 +99,6 @@ jest.mock('pages/common/components/modal/ModalBody', () => {
     )
 })
 
-jest.mock('core/flags', () => ({
-    useFlag: jest.fn(),
-}))
-const mockUseFlag = useFlag as jest.Mock
-
 const date = '2021-01-24T17:30:00.000Z'
 
 describe('<MacroModal />', () => {
@@ -145,7 +139,6 @@ describe('<MacroModal />', () => {
         mockCreateViewJob.mockImplementation(
             () => () => Promise.resolve({ id: 1 }),
         )
-        mockUseFlag.mockImplementation(() => false)
         useBulkArchiveMacrosMock.mockReturnValue({
             mutate: mockMutateBulkArchive,
         } as unknown as ReturnType<typeof useBulkArchiveMacros>)
@@ -169,12 +162,13 @@ describe('<MacroModal />', () => {
 
         const buttons = screen.getAllByRole('button')
 
-        expect(buttons).toHaveLength(5)
+        expect(buttons).toHaveLength(6)
         expect(buttons[0]).toHaveAccessibleName('Create macro')
-        expect(buttons[1]).toHaveAccessibleName('Delete macro')
-        expect(buttons[2]).toHaveAccessibleName('Discard Changes')
-        expect(buttons[3]).toHaveAccessibleName('Duplicate')
-        expect(buttons[4]).toHaveAccessibleName('Update')
+        expect(buttons[1]).toHaveAccessibleName('Archive macro')
+        expect(buttons[2]).toHaveAccessibleName('Delete macro')
+        expect(buttons[3]).toHaveAccessibleName('Discard Changes')
+        expect(buttons[4]).toHaveAccessibleName('Duplicate')
+        expect(buttons[5]).toHaveAccessibleName('Update')
     })
 
     it('should handle undefined current macro', () => {
@@ -445,7 +439,6 @@ describe('<MacroModal />', () => {
     })
 
     it('should archive macro', async () => {
-        mockUseFlag.mockImplementation(() => true)
         render(<MacroModal {...props} />)
 
         screen.getByText(/Archive macro/i).click()

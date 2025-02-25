@@ -9,7 +9,6 @@ import configureMockStore from 'redux-mock-store'
 
 import { useListMacros } from '@gorgias/api-queries'
 
-import { useFlag } from 'core/flags'
 import { macros as macrosFixtures } from 'fixtures/macro'
 import { user } from 'fixtures/users'
 import {
@@ -73,11 +72,6 @@ jest.mock(
 )
 const mockUseRouteMatch = useRouteMatch as jest.Mock
 
-jest.mock('core/flags', () => ({
-    useFlag: jest.fn(),
-}))
-const mockUseFlag = useFlag as jest.Mock
-
 jest.mock('@gorgias/api-queries', () => ({
     __esModule: true,
     useListMacros: jest.fn(),
@@ -125,10 +119,7 @@ describe('<MacrosSettingsContent/>', () => {
         useBulkUnarchiveMacrosMock.mockReturnValue({
             mutateAsync: mockMutateBulkUnarchive,
         } as unknown as ReturnType<typeof useBulkUnarchiveMacros>)
-        mockUseFlag.mockImplementation(() => false)
-        mockUseRouteMatch.mockReturnValue({
-            url: '/app/settings/macros',
-        })
+        mockUseRouteMatch.mockReturnValue(false)
     })
 
     it('should display list of macros', () => {
@@ -277,7 +268,8 @@ describe('<MacrosSettingsContent/>', () => {
             </Provider>,
         )
 
-        screen.getByText('delete').click()
+        screen.getByText('more_vert').click()
+        screen.getByText(/Delete/).click()
         screen.getByText('Confirm').click()
 
         expect(mockMutateDelete).toHaveBeenCalled()
@@ -336,6 +328,7 @@ describe('<MacrosSettingsContent/>', () => {
         )
 
         screen.getByText('keyboard_arrow_right').click()
+        screen.getByText('more_vert').click()
         screen.getByText('delete').click()
         screen.getByText('Confirm').click()
         ;(
@@ -367,7 +360,8 @@ describe('<MacrosSettingsContent/>', () => {
             </Provider>,
         )
 
-        screen.getAllByText('file_copy')[0].click()
+        screen.getAllByText('more_vert')[0].click()
+        screen.getByText(/Make a copy/).click()
 
         const id = 18
         ;(
@@ -444,7 +438,6 @@ describe('<MacrosSettingsContent/>', () => {
     })
 
     it('should reset selected macros on tab change', () => {
-        mockUseFlag.mockImplementation(() => true)
         render(
             <Provider
                 store={mockStore({
@@ -476,7 +469,6 @@ describe('<MacrosSettingsContent/>', () => {
     })
 
     it('should display list of archived macros', () => {
-        mockUseFlag.mockImplementation(() => true)
         mockUseRouteMatch.mockReturnValue({
             url: '/app/settings/macros/archived',
         })

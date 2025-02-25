@@ -11,8 +11,6 @@ import type { Language, Macro } from '@gorgias/api-queries'
 
 import { useAppNode } from 'appNode'
 import { DEFAULT_ACTIONS } from 'config'
-import { FeatureFlagKey } from 'config/featureFlags'
-import { useFlag } from 'core/flags'
 import { useBulkArchiveMacros, useBulkUnarchiveMacros } from 'hooks/macros'
 import useAsyncFn from 'hooks/useAsyncFn'
 import useHasAgentPrivileges from 'hooks/useHasAgentPrivileges'
@@ -59,7 +57,6 @@ export function MacrosSettingsFormContainer({
     const appNode = useAppNode()
     const hasAgentPrivileges = useHasAgentPrivileges()
     const { macroId } = useParams<{ macroId?: string }>()
-    const isArchivingAvailable = useFlag(FeatureFlagKey.MacroArchives)
     const location = useLocation<{
         isArchived?: boolean
     }>()
@@ -338,7 +335,7 @@ export function MacrosSettingsFormContainer({
                                 )}
                             </div>
                             <div className={css.sub}>
-                                {isArchivingAvailable && !!macroId && (
+                                {!!macroId && (
                                     <Button
                                         type="submit"
                                         intent="secondary"

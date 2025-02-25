@@ -20,8 +20,6 @@ import {
 
 import { logEvent, SegmentEvent } from 'common/segment'
 import { DEFAULT_ACTIONS } from 'config'
-import { FeatureFlagKey } from 'config/featureFlags'
-import { useFlag } from 'core/flags'
 import {
     useBulkArchiveMacros,
     useCreateMacro,
@@ -100,7 +98,6 @@ const MacroModal = ({
     toggleCreateMacro,
 }: ModalProps) => {
     const dispatch = useAppDispatch()
-    const isArchivingAvailable = useFlag(FeatureFlagKey.MacroArchives)
     const { mutate: bulkArchiveMacros } = useBulkArchiveMacros()
 
     const modalRef = useRef<HTMLDivElement>(null)
@@ -440,18 +437,15 @@ const MacroModal = ({
                                 ) : (
                                     <div>
                                         <div className="d-inline-block">
-                                            {isArchivingAvailable &&
-                                                !isCreatingMacro && (
-                                                    <Button
-                                                        onClick={
-                                                            handlArchiveMacro
-                                                        }
-                                                        intent="secondary"
-                                                        className="d-inline-block mr-1"
-                                                    >
-                                                        Archive macro
-                                                    </Button>
-                                                )}
+                                            {!isCreatingMacro && (
+                                                <Button
+                                                    onClick={handlArchiveMacro}
+                                                    intent="secondary"
+                                                    className="d-inline-block mr-1"
+                                                >
+                                                    Archive macro
+                                                </Button>
+                                            )}
                                             {!isCreatingMacro && (
                                                 <ConfirmButton
                                                     intent="destructive"

@@ -7,7 +7,6 @@ import { useLocation, useParams } from 'react-router-dom'
 
 import { Macro } from '@gorgias/api-queries'
 
-import { useFlag } from 'core/flags'
 import { macros as macrosFixtures } from 'fixtures/macro'
 import { useBulkArchiveMacros, useBulkUnarchiveMacros } from 'hooks/macros'
 import useHasAgentPrivileges from 'hooks/useHasAgentPrivileges'
@@ -79,11 +78,6 @@ const useHasAgentPrivilegesMock = useHasAgentPrivileges as jest.MockedFunction<
     typeof useHasAgentPrivileges
 >
 
-jest.mock('core/flags', () => ({
-    useFlag: jest.fn(),
-}))
-const mockUseFlag = useFlag as jest.Mock
-
 jest.mock('hooks/macros')
 const useBulkArchiveMacrosMock = assumeMock(useBulkArchiveMacros)
 const mockMutateBulkArchive = jest.fn()
@@ -154,7 +148,6 @@ describe('<MacrosSettingsForm/>', () => {
     } as unknown as ReturnType<typeof useBulkUnarchiveMacros>)
 
     beforeEach(() => {
-        mockUseFlag.mockReturnValue(false)
         mockedUseParams.mockReturnValue({ macroId: '1' })
         mockedUseLocation.mockReturnValue({
             state: {},
@@ -190,7 +183,7 @@ describe('<MacrosSettingsForm/>', () => {
         expect(screen.getByText('Update macro')).toBeInTheDocument()
         expect(screen.getByText('Duplicate macro')).toBeInTheDocument()
         expect(screen.getByText('Delete macro')).toBeInTheDocument()
-        expect(screen.queryByText('Archive macro')).not.toBeInTheDocument()
+        expect(screen.queryByText('Archive macro')).toBeInTheDocument()
     })
 
     it('should notify the user when failed to fetch the macro', async () => {
@@ -516,7 +509,6 @@ describe('<MacrosSettingsForm/>', () => {
     })
 
     it('should archive macro', async () => {
-        mockUseFlag.mockReturnValue(true)
         render(
             <MacrosSettingsFormContainer
                 {...minProps}
@@ -536,7 +528,6 @@ describe('<MacrosSettingsForm/>', () => {
     })
 
     it('should unarchive macro', async () => {
-        mockUseFlag.mockReturnValue(true)
         mockedUseLocation.mockReturnValue({
             state: {
                 isArchived: true,

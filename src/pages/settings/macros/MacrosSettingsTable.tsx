@@ -5,9 +5,7 @@ import { useRouteMatch } from 'react-router-dom'
 import { ListMacrosParams, Macro } from '@gorgias/api-queries'
 import { LoadingSpinner } from '@gorgias/merchant-ui-kit'
 
-import { FeatureFlagKey } from 'config/featureFlags'
 import { DateAndTimeFormatting } from 'constants/datetime'
-import { useFlag } from 'core/flags'
 import { useBulkArchiveMacros, useBulkUnarchiveMacros } from 'hooks/macros'
 import useGetDateAndTimeFormat from 'hooks/useGetDateAndTimeFormat'
 import useHasAgentPrivileges from 'hooks/useHasAgentPrivileges'
@@ -56,7 +54,6 @@ export function MacrosSettingsTable({
     setSelectedMacrosIds,
 }: Props) {
     const isArchiveTab = !!useRouteMatch('/app/settings/macros/archived')
-    const isArchivingAvailable = useFlag(FeatureFlagKey.MacroArchives)
 
     const selectedMacrosLength = useMemo(
         () => selectedMacrosIds.length,
@@ -197,51 +194,47 @@ export function MacrosSettingsTable({
                         />
                         <HeaderCell />
                     </tr>
-                    {isArchivingAvailable && (
-                        <tr>
-                            <HeaderCell className={css.actionsHeader}>
-                                <CheckBoxField
-                                    className={css.checkboxAll}
-                                    inputClassName={css.checkboxAllInput}
-                                    label={checkboxAllLabel}
-                                    name="Select all"
-                                    aria-label="Select all"
-                                    value={isAllSelected}
-                                    isIndeterminate={
-                                        !!selectedMacrosLength &&
-                                        !!macros?.length &&
-                                        selectedMacrosLength < macros?.length
+                    <tr>
+                        <HeaderCell className={css.actionsHeader}>
+                            <CheckBoxField
+                                className={css.checkboxAll}
+                                inputClassName={css.checkboxAllInput}
+                                label={checkboxAllLabel}
+                                name="Select all"
+                                aria-label="Select all"
+                                value={isAllSelected}
+                                isIndeterminate={
+                                    !!selectedMacrosLength &&
+                                    !!macros?.length &&
+                                    selectedMacrosLength < macros?.length
+                                }
+                                onChange={onChange}
+                            />
+                            <Button
+                                aria-label={
+                                    isArchiveTab ? 'Unarchive' : 'Archive'
+                                }
+                                intent="secondary"
+                                fillStyle="ghost"
+                                isDisabled={isDisabled}
+                                onClick={onBulkArchiveOrUnarchive}
+                                size="small"
+                            >
+                                <ButtonIconLabel
+                                    icon={
+                                        isArchiveTab ? 'unarchive' : 'archive'
                                     }
-                                    onChange={onChange}
-                                />
-                                <Button
-                                    aria-label={
-                                        isArchiveTab ? 'Unarchive' : 'Archive'
-                                    }
-                                    intent="secondary"
-                                    fillStyle="ghost"
-                                    isDisabled={isDisabled}
-                                    onClick={onBulkArchiveOrUnarchive}
-                                    size="small"
                                 >
-                                    <ButtonIconLabel
-                                        icon={
-                                            isArchiveTab
-                                                ? 'unarchive'
-                                                : 'archive'
-                                        }
-                                    >
-                                        {isArchiveTab ? 'Unarchive' : 'Archive'}
-                                    </ButtonIconLabel>
-                                </Button>
-                            </HeaderCell>
-                            <HeaderCell />
-                            <HeaderCell />
-                            <HeaderCell />
-                            <HeaderCell />
-                            <HeaderCell />
-                        </tr>
-                    )}
+                                    {isArchiveTab ? 'Unarchive' : 'Archive'}
+                                </ButtonIconLabel>
+                            </Button>
+                        </HeaderCell>
+                        <HeaderCell />
+                        <HeaderCell />
+                        <HeaderCell />
+                        <HeaderCell />
+                        <HeaderCell />
+                    </tr>
                 </thead>
                 <TableBody>
                     {isLoading ? (
@@ -257,7 +250,6 @@ export function MacrosSettingsTable({
                                     key={macro.id}
                                     datetimeFormat={datetimeFormat}
                                     hasAgentPrivileges={hasAgentPrivileges}
-                                    isArchivingAvailable={isArchivingAvailable}
                                     macro={macro}
                                     onMacroDelete={onMacroDelete}
                                     onMacroDuplicate={onMacroDuplicate}

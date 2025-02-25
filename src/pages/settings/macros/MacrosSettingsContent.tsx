@@ -5,8 +5,6 @@ import { NavLink, useRouteMatch } from 'react-router-dom'
 
 import { ListMacrosParams, Macro, useListMacros } from '@gorgias/api-queries'
 
-import { FeatureFlagKey } from 'config/featureFlags'
-import { useFlag } from 'core/flags'
 import { useCreateMacro, useDeleteMacro } from 'hooks/macros'
 import useAppDispatch from 'hooks/useAppDispatch'
 import { OrderDirection } from 'models/api/types'
@@ -31,7 +29,6 @@ export const STALE_TIME_MS = 15 * 60 * 1000 // 15 minutes
 
 export function MacrosSettingsContent() {
     const dispatch = useAppDispatch()
-    const isArchivingAvailable = useFlag(FeatureFlagKey.MacroArchives)
     const isArchiveTab = !!useRouteMatch('/app/settings/macros/archived')
 
     const [listMacrosParams, setListMacrosParams] = useState<ListMacrosParams>({
@@ -40,7 +37,7 @@ export function MacrosSettingsContent() {
     const { data, isLoading, isError } = useListMacros(
         {
             ...listMacrosParams,
-            ...(isArchivingAvailable && isArchiveTab ? { archived: true } : {}),
+            ...(isArchiveTab ? { archived: true } : {}),
         },
         {
             query: {
@@ -178,7 +175,6 @@ export function MacrosSettingsContent() {
             <div
                 className={classnames(
                     settingsCss.pageContainer,
-                    { [settingsCss.pb0]: !isArchivingAvailable },
                     'd-flex',
                     'justify-content-between',
                 )}
@@ -198,24 +194,22 @@ export function MacrosSettingsContent() {
                 <Video youtubeId="RevBOdLYeYo" legend="Working with macros" />
             </div>
 
-            {isArchivingAvailable && (
-                <SecondaryNavbar>
-                    <NavLink
-                        onClick={() => setSelectedMacrosIds([])}
-                        to="/app/settings/macros/active"
-                        exact
-                    >
-                        Active
-                    </NavLink>
-                    <NavLink
-                        onClick={() => setSelectedMacrosIds([])}
-                        to="/app/settings/macros/archived"
-                        exact
-                    >
-                        Archived
-                    </NavLink>
-                </SecondaryNavbar>
-            )}
+            <SecondaryNavbar>
+                <NavLink
+                    onClick={() => setSelectedMacrosIds([])}
+                    to="/app/settings/macros/active"
+                    exact
+                >
+                    Active
+                </NavLink>
+                <NavLink
+                    onClick={() => setSelectedMacrosIds([])}
+                    to="/app/settings/macros/archived"
+                    exact
+                >
+                    Archived
+                </NavLink>
+            </SecondaryNavbar>
 
             <div className={css.table}>
                 <MacrosSettingsTable

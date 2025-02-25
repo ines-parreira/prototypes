@@ -8,8 +8,6 @@ import { ListMacrosTagsItem, Macro } from '@gorgias/api-queries'
 import { DateTimeResultFormatType } from 'constants/datetime'
 import { ISO639English } from 'constants/languages'
 import { MacroActionName } from 'models/macroAction/types'
-import IconButton from 'pages/common/components/button/IconButton'
-import ConfirmationPopover from 'pages/common/components/popover/ConfirmationPopover'
 import bodyCellCss from 'pages/common/components/table/cells/BodyCell.less'
 import BodyCellContent from 'pages/common/components/table/cells/BodyCellContent'
 import TableBodyRow from 'pages/common/components/table/TableBodyRow'
@@ -24,7 +22,6 @@ import css from './MacrosSettingsItem.less'
 type Props = {
     datetimeFormat: DateTimeResultFormatType
     hasAgentPrivileges: boolean
-    isArchivingAvailable: boolean
     macro: Macro
     onMacroDelete: (id: number) => void
     onMacroDuplicate: (macro: Macro) => void
@@ -37,7 +34,6 @@ type Props = {
 export function MacrosSettingsItem({
     datetimeFormat,
     hasAgentPrivileges,
-    isArchivingAvailable,
     macro,
     onMacroDelete,
     onMacroDuplicate,
@@ -93,12 +89,8 @@ export function MacrosSettingsItem({
 
     return (
         <TableBodyRow className={css.tableBodyRow} key={macro.id}>
-            <td
-                className={classnames(css.macroTitle, bodyCellCss.wrapper, {
-                    [css.wrapper]: isArchivingAvailable,
-                })}
-            >
-                {isArchivingAvailable && (
+            <td className={classnames(css.macroTitle, bodyCellCss.wrapper)}>
+                {
                     <CheckBox
                         inputClassName={css.checkbox}
                         name={`${macro.id}`}
@@ -106,7 +98,7 @@ export function MacrosSettingsItem({
                         isChecked={isChecked}
                         onChange={handleMacroSelection}
                     />
-                )}
+                }
                 <Link to={to}>
                     <BodyCellContent>{name}</BodyCellContent>
                 </Link>
@@ -142,58 +134,13 @@ export function MacrosSettingsItem({
                 </Link>
             </td>
             <td className={classnames(bodyCellCss.wrapper, css.actions)}>
-                {isArchivingAvailable ? (
-                    <MoreActions
-                        hasAgentPrivileges={hasAgentPrivileges}
-                        macro={macro}
-                        onMacroDuplicate={onMacroDuplicate}
-                        onMacroDelete={onMacroDelete}
-                        onMacroArchiveOrUnarchived={onMacroArchiveOrUnarchived}
-                    />
-                ) : (
-                    <BodyCellContent>
-                        <IconButton
-                            className="mr-1"
-                            fillStyle="ghost"
-                            intent="secondary"
-                            onClick={() => {
-                                void onMacroDuplicate(macro)
-                            }}
-                            title="Duplicate macro"
-                            isDisabled={!hasAgentPrivileges}
-                        >
-                            file_copy
-                        </IconButton>
-                        <ConfirmationPopover
-                            buttonProps={{
-                                intent: 'destructive',
-                            }}
-                            content={
-                                <>
-                                    You are about to delete{' '}
-                                    <b>{name || 'this'}</b> macro.
-                                </>
-                            }
-                            id={`delete-button-${macro.id}`}
-                            onConfirm={() => onMacroDelete(macro.id!)}
-                            placement="left"
-                        >
-                            {({ uid, onDisplayConfirmation }) => (
-                                <IconButton
-                                    className="mr-1"
-                                    id={uid}
-                                    fillStyle="ghost"
-                                    intent="destructive"
-                                    onClick={onDisplayConfirmation}
-                                    title="Delete macro"
-                                    isDisabled={!hasAgentPrivileges}
-                                >
-                                    delete
-                                </IconButton>
-                            )}
-                        </ConfirmationPopover>
-                    </BodyCellContent>
-                )}
+                <MoreActions
+                    hasAgentPrivileges={hasAgentPrivileges}
+                    macro={macro}
+                    onMacroDuplicate={onMacroDuplicate}
+                    onMacroDelete={onMacroDelete}
+                    onMacroArchiveOrUnarchived={onMacroArchiveOrUnarchived}
+                />
             </td>
         </TableBodyRow>
     )

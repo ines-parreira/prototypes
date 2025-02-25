@@ -1,7 +1,7 @@
 import React, { ComponentProps } from 'react'
 
 import { QueryClient, useQueryClient } from '@tanstack/react-query'
-import { act, render, screen, waitFor } from '@testing-library/react'
+import { render, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { useRouteMatch } from 'react-router-dom'
 
@@ -137,29 +137,6 @@ describe('<MacrosSettingsTable />', () => {
         expect(screen.getByText('Usage count')).toBeInTheDocument()
         expect(screen.getByText(macrosFixtures[0].name!)).toBeInTheDocument()
         expect(screen.getByText(macrosFixtures[1].name!)).toBeInTheDocument()
-    })
-
-    it('should duplicate a macro', () => {
-        render(<MacrosSettingsTable {...minProps} macros={macrosFixtures} />)
-
-        userEvent.click(screen.getAllByTitle('Duplicate macro')[0])
-
-        expect(minProps.onMacroDuplicate).toHaveBeenCalledWith(
-            macrosFixtures[0],
-        )
-    })
-
-    it('should delete macro', () => {
-        render(<MacrosSettingsTable {...minProps} macros={macrosFixtures} />)
-
-        act(() => {
-            userEvent.click(screen.getAllByTitle('Delete macro')[0])
-        })
-        act(() => {
-            userEvent.click(screen.getByText('Confirm', { exact: false }))
-        })
-
-        expect(minProps.onMacroDelete).toHaveBeenCalledWith(1)
     })
 
     it.each([

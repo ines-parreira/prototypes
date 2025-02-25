@@ -2,7 +2,6 @@ import React from 'react'
 
 import { QueryClient, useQueryClient } from '@tanstack/react-query'
 import { act, render, screen } from '@testing-library/react'
-import userEvent from '@testing-library/user-event'
 import { useRouteMatch } from 'react-router-dom'
 
 import { macros } from 'fixtures/macro'
@@ -99,13 +98,15 @@ describe('<MacrosSettingsItem />', () => {
     it('should display a macro row', () => {
         render(<MacrosSettingsItem {...minProps} />)
 
+        expect(screen.getByText('archive')).toBeInTheDocument()
         expect(screen.getByText(minProps.macro.name!)).toBeInTheDocument()
     })
 
     it('should duplicate a macro', () => {
         render(<MacrosSettingsItem {...minProps} />)
 
-        userEvent.click(screen.getByTitle('Duplicate macro'))
+        screen.getByText('more_vert').click()
+        screen.getByText(/Make a copy/).click()
 
         expect(minProps.onMacroDuplicate).toHaveBeenCalledWith(minProps.macro)
     })
@@ -113,25 +114,20 @@ describe('<MacrosSettingsItem />', () => {
     it('should delete macro', () => {
         render(<MacrosSettingsItem {...minProps} />)
 
+        screen.getByText('more_vert').click()
         act(() => {
-            userEvent.click(screen.getByTitle('Delete macro'))
+            screen.getByText(/Delete/).click()
         })
         act(() => {
-            userEvent.click(screen.getByText('Confirm', { exact: false }))
+            screen.getByText('Confirm', { exact: false }).click()
         })
 
         expect(minProps.onMacroDelete).toHaveBeenCalledWith(1)
     })
 
-    it('should display new UI for archivable macros', () => {
-        render(<MacrosSettingsItem {...minProps} isArchivingAvailable />)
-
-        expect(screen.getByText('archive')).toBeInTheDocument()
-    })
-
-    it('should display new UI for active macros', () => {
+    it('should display proper UI for active macros', () => {
         mockUseRouteMatch.mockReturnValue(true)
-        render(<MacrosSettingsItem {...minProps} isArchivingAvailable />)
+        render(<MacrosSettingsItem {...minProps} />)
 
         expect(screen.getByText('unarchive')).toBeInTheDocument()
     })
