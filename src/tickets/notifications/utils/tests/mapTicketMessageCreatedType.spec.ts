@@ -12,6 +12,23 @@ describe('mapTicketMessageCreatedType', () => {
         expect(result).toBe('ticket-message.created.aircall')
     })
 
+    it.each([
+        TicketChannel.Chat,
+        TicketChannel.FacebookMessenger,
+        TicketChannel.InstagramDirectMessage,
+        TicketChannel.Sms,
+        TicketChannel.WhatsApp,
+    ])(
+        'should map to ticket-message.created.chat.unassigned if the channel is %s and other conditions are met',
+        (channel) => {
+            const result = mapTicketMessageCreatedType({
+                type: 'ticket-message.created',
+                payload: { ticket: { channel, assignee_user_id: null } },
+            } as Notification<TicketPayload>)
+            expect(result).toBe('ticket-message.created.chat.unassigned')
+        },
+    )
+
     it('should not map if the channel does not have a workflow defined', () => {
         const result = mapTicketMessageCreatedType({
             type: 'ticket-message.created',

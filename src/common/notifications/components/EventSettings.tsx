@@ -64,13 +64,11 @@ export default function EventSettings({
                                             settings.events[notificationType]
                                         }
                                         onChangeChannel={(channel, value) => {
-                                            notificationType !==
-                                                'legacy-chat-and-messaging' &&
-                                                onChangeChannel(
-                                                    notificationType,
-                                                    channel,
-                                                    value,
-                                                )
+                                            onChangeChannel(
+                                                notificationType,
+                                                channel,
+                                                value,
+                                            )
                                         }}
                                         onChangeSound={(sound) => {
                                             onChangeSound(

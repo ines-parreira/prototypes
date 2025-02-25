@@ -21,9 +21,28 @@ const channelTypeMap: Partial<Record<TicketChannel, string>> = {
     [TicketChannel.YotpoReview]: 'ticket-message.created.yotpo',
 }
 
+function isInstantChannel(channel: TicketChannel) {
+    return [
+        TicketChannel.Chat,
+        TicketChannel.FacebookMessenger,
+        TicketChannel.InstagramDirectMessage,
+        TicketChannel.Sms,
+        TicketChannel.WhatsApp,
+    ].includes(channel)
+}
+
 export default function mapTicketMessageCreatedType(
     notification: Notification<TicketPayload>,
 ) {
-    const { channel } = notification.payload.ticket
-    return channelTypeMap[channel] || notification.type
+    const { type } = notification
+    const { channel, assignee_user_id } = notification.payload.ticket
+
+    if (
+        assignee_user_id === null &&
+        isInstantChannel(channel) &&
+        type === 'ticket-message.created'
+    ) {
+        return 'ticket-message.created.chat.unassigned'
+    }
+    return channelTypeMap[channel] || type
 }

@@ -427,10 +427,10 @@ describe('receivedEvents', () => {
 
         const mockSocketManager = new MockSocketManager()
 
-        it.each([true, false])(
+        it(
             'should add ticket to recent chats because `shouldTicketBeDisplayedInRecentChats` ' +
                 'returned `true`, and not have marked it as read because the current user is not viewing the ticket',
-            (lastMessageFromAgent) => {
+            () => {
                 ;(
                     shouldTicketBeDisplayedInRecentChats as jest.MockedFunction<
                         typeof shouldTicketBeDisplayedInRecentChats
@@ -450,7 +450,7 @@ describe('receivedEvents', () => {
                     deleted_datetime: null,
                     assignee_user_id: 123,
                     is_unread: true,
-                    last_message_from_agent: lastMessageFromAgent,
+                    last_message_from_agent: false,
                 }
 
                 if (mockSocketManager.ticketMessageChatCreatedHandler) {
@@ -464,16 +464,16 @@ describe('receivedEvents', () => {
                 }
                 expect(chatActions.addChat).toHaveBeenCalledWith(
                     ticket,
-                    !lastMessageFromAgent,
-                    true,
+                    false,
+                    false,
                 )
             },
         )
 
-        it.each([true, false])(
+        it(
             'should add ticket to recent chats because `shouldTicketBeDisplayedInRecentChats` ' +
                 'returned `true`,  and have marked it as read because the current user is viewing the ticket ',
-            (lastMessageFromAgent) => {
+            () => {
                 ;(
                     shouldTicketBeDisplayedInRecentChats as jest.MockedFunction<
                         typeof shouldTicketBeDisplayedInRecentChats
@@ -493,7 +493,7 @@ describe('receivedEvents', () => {
                     deleted_datetime: null,
                     assignee_user_id: 123,
                     is_unread: true,
-                    last_message_from_agent: lastMessageFromAgent,
+                    last_message_from_agent: false,
                 }
 
                 const expectedTicket = {
@@ -512,8 +512,8 @@ describe('receivedEvents', () => {
                 }
                 expect(chatActions.addChat).toHaveBeenCalledWith(
                     expectedTicket,
-                    !lastMessageFromAgent,
-                    true,
+                    false,
+                    false,
                 )
             },
         )
@@ -550,51 +550,6 @@ describe('receivedEvents', () => {
                 expect(chatActions.removeChat).toHaveBeenCalledWith(ticket.id)
                 expect(chatActions.fetchChatsThrottled).toHaveBeenCalledWith(
                     typeSafeReduxStore.dispatch,
-                )
-            },
-        )
-
-        it.each([
-            [1, false],
-            [123, true],
-        ])(
-            'should call addChat with notify depending on the user id',
-            (userId, notifyExpect) => {
-                ;(
-                    shouldTicketBeDisplayedInRecentChats as jest.MockedFunction<
-                        typeof shouldTicketBeDisplayedInRecentChats
-                    >
-                ).mockReturnValue(true)
-                ;(
-                    isCurrentlyOnTicket as jest.MockedFunction<
-                        typeof isCurrentlyOnTicket
-                    >
-                ).mockReturnValue(false)
-
-                const ticket = {
-                    id: 1,
-                    status: TicketStatuses.OPEN,
-                    spam: false,
-                    trashed_datetime: null,
-                    deleted_datetime: null,
-                    assignee_user_id: userId,
-                    is_unread: true,
-                    last_message_from_agent: false,
-                }
-
-                if (mockSocketManager.ticketMessageChatCreatedHandler) {
-                    mockSocketManager.ticketMessageChatCreatedHandler({
-                        event: {
-                            type: SocketEventType.TicketMessageChatCreated,
-                            play_sound_notification: true,
-                        },
-                        data: ticket,
-                    } as any)
-                }
-                expect(chatActions.addChat).toHaveBeenCalledWith(
-                    ticket,
-                    notifyExpect,
-                    true,
                 )
             },
         )

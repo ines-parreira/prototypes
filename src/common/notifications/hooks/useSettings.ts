@@ -14,7 +14,7 @@ import { submitSetting } from 'state/currentUser/actions'
 import { getNotificationSettings } from 'state/currentUser/selectors'
 
 import { categories, channels, notifications } from '../data'
-import type { NotificationConfig, Settings } from '../types'
+import type { Settings } from '../types'
 
 export default function useSettings() {
     const dispatch = useAppDispatch()
@@ -58,36 +58,24 @@ export default function useSettings() {
                     ] || { sound: defaultSound.sound }
 
                     const workflowPreferences =
-                        config.type !== 'legacy-chat-and-messaging'
-                            ? preferences.workflows?.[
-                                  notifications[config.type].workflow
-                              ]
-                            : undefined
+                        preferences.workflows?.[
+                            notifications[config.type].workflow
+                        ]
 
                     return {
                         ...eventsAcc,
                         [config.type]: {
-                            sound:
-                                config.type === 'legacy-chat-and-messaging'
-                                    ? notificationSound.enabled
-                                        ? notificationSound.sound
-                                        : ''
-                                    : eventSettings.sound,
+                            sound: eventSettings.sound,
                             channels: channels.reduce(
                                 (channelsAcc, channel) => ({
                                     ...channelsAcc,
                                     [channel.type]:
-                                        config.type ===
-                                        'legacy-chat-and-messaging'
+                                        !workflowPreferences ||
+                                        typeof workflowPreferences === 'boolean'
                                             ? true
-                                            : !workflowPreferences ||
-                                                typeof workflowPreferences ===
-                                                    'boolean'
-                                              ? true
-                                              : workflowPreferences
-                                                    .channel_types[
-                                                    channel.type
-                                                ],
+                                            : workflowPreferences.channel_types[
+                                                  channel.type
+                                              ],
                                 }),
                                 eventsAcc[config.type]?.channels || {},
                             ),
@@ -147,31 +135,22 @@ export default function useSettings() {
     }, [])
 
     const save = useCallback(async () => {
-        const chatAndMessaging = settings.events['legacy-chat-and-messaging']
         const payload = {
             data: {
                 notification_sound: {
-                    enabled: chatAndMessaging.sound !== '',
-                    sound:
-                        chatAndMessaging.sound !== ''
-                            ? chatAndMessaging.sound
-                            : defaultSound.sound,
+                    enabled: false,
+                    sound: defaultSound.sound,
                     volume: settings.volume,
                 },
-                events: notificationsWithSettings
-                    .filter(
-                        (config): config is NotificationConfig =>
-                            config.type !== 'legacy-chat-and-messaging',
-                    )
-                    .reduce(
-                        (acc, config) => ({
-                            ...acc,
-                            [config.type]: {
-                                sound: settings.events[config.type].sound,
-                            },
-                        }),
-                        {},
-                    ),
+                events: notificationsWithSettings.reduce(
+                    (acc, config) => ({
+                        ...acc,
+                        [config.type]: {
+                            sound: settings.events[config.type].sound,
+                        },
+                    }),
+                    {},
+                ),
             },
             id: allSettings?.id,
             type: UserSettingType.NotificationPreferences,
@@ -183,29 +162,24 @@ export default function useSettings() {
                     [k: string]: boolean
                 }
             }
-        } = notificationsWithSettings
-            .filter(
-                (config): config is NotificationConfig =>
-                    config.type !== 'legacy-chat-and-messaging',
-            )
-            .reduce(
-                (eventsAcc, config) => ({
-                    ...eventsAcc,
-                    [notifications[config.type].workflow]: {
-                        channel_types: channels.reduce(
-                            (channelsAcc, channel) => ({
-                                ...channelsAcc,
-                                [channel.type]:
-                                    settings.events[config.type].channels[
-                                        channel.type
-                                    ],
-                            }),
-                            {},
-                        ),
-                    },
-                }),
-                {},
-            )
+        } = notificationsWithSettings.reduce(
+            (eventsAcc, config) => ({
+                ...eventsAcc,
+                [notifications[config.type].workflow]: {
+                    channel_types: channels.reduce(
+                        (channelsAcc, channel) => ({
+                            ...channelsAcc,
+                            [channel.type]:
+                                settings.events[config.type].channels[
+                                    channel.type
+                                ],
+                        }),
+                        {},
+                    ),
+                },
+            }),
+            {},
+        )
 
         await Promise.all([
             knockClient.preferences.set({

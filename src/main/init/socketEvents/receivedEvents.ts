@@ -406,17 +406,7 @@ const receivedEvents: ReceivedEvent[] = [
         name: SocketEventType.TicketMessageChatCreated,
         onReceive: function (json) {
             const state = reduxStore.getState() as RootState
-            const currentUserId = currentUserSelectors.getCurrentUserId(state)
             const ticket = (json as TicketMessageChatCreatedEvent).data
-
-            // send browser notifications only for new customer messages
-            const shouldNotify =
-                !ticket.last_message_from_agent &&
-                ticket.assignee_user_id !== currentUserId
-
-            const playSoundNotification = (
-                json as TicketMessageChatCreatedEvent
-            ).event.play_sound_notification
 
             const { currentUser } = state
 
@@ -443,11 +433,7 @@ const receivedEvents: ReceivedEvent[] = [
                 )
             ) {
                 reduxStore.dispatch(
-                    chatsActions.addChat(
-                        ticket,
-                        shouldNotify,
-                        playSoundNotification,
-                    ) as any,
+                    chatsActions.addChat(ticket, false, false) as any,
                 )
                 return
             }

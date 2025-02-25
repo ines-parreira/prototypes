@@ -11,12 +11,14 @@ registerCategory({
     typeLabel: 'Event',
 })
 registerNotification({
-    type: 'legacy-chat-and-messaging',
+    type: 'ticket-message.created.chat.unassigned',
     component: TicketNotification,
-    workflow: '',
+    workflow: 'ticket-message-created-chat-unassigned',
     settings: {
         type: 'ticket-updates',
         label: 'Chat & messaging tickets',
+        tooltip:
+            'Unassigned chats, social, etc. that appear at the top of your view panel.',
     },
 })
 registerNotification<TicketPayload>({

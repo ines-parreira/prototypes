@@ -10,6 +10,7 @@ type Ticket = {
     sender?: PickedActor
     status: TicketStatus
     subject: string
+    assignee_user_id?: number | null
 }
 
 export type TicketPayload = {

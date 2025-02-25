@@ -2,8 +2,6 @@ import React from 'react'
 
 import cn from 'classnames'
 
-import { Tooltip } from '@gorgias/merchant-ui-kit'
-
 import SourceIcon from 'pages/common/components/SourceIcon'
 import BodyCell from 'pages/common/components/table/cells/BodyCell'
 import TableBodyRow from 'pages/common/components/table/TableBodyRow'
@@ -62,25 +60,13 @@ export default function EventSettingsRow({
             {channels.map((channel) => (
                 <BodyCell key={channel.type} innerClassName={css.bodyCell}>
                     <CheckBox
-                        name={
-                            config.type === 'legacy-chat-and-messaging'
-                                ? 'legacy'
-                                : undefined
-                        }
-                        isDisabled={config.type === 'legacy-chat-and-messaging'}
                         isChecked={!!setting?.channels?.[channel.type]}
                         onChange={(value) => {
-                            config.type !== 'legacy-chat-and-messaging' &&
-                                onChangeChannel(channel.type, value)
+                            onChangeChannel(channel.type, value)
                         }}
                     />
                 </BodyCell>
             ))}
-            {config.type === 'legacy-chat-and-messaging' && (
-                <Tooltip target="legacy">
-                    This setting cannot be deselected
-                </Tooltip>
-            )}
         </TableBodyRow>
     )
 }

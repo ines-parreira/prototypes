@@ -15,7 +15,7 @@ describe('initTicketUpdates', () => {
         )
 
         const notifications = [
-            'legacy-chat-and-messaging',
+            'ticket-message.created.chat.unassigned',
             'user.mentioned',
             'ticket.snooze-expired',
             'ticket.assigned',

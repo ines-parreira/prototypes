@@ -1,16 +1,10 @@
-import React from 'react'
-
 import { useKnockClient } from '@knocklabs/react'
 import { waitFor } from '@testing-library/react'
 import { act, renderHook } from '@testing-library/react-hooks'
-import { Provider } from 'react-redux'
-import configureMockStore from 'redux-mock-store'
-import thunk from 'redux-thunk'
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import { submitSetting } from 'state/currentUser/actions'
-import { RootState, StoreDispatch } from 'state/types'
 import { getLDClient } from 'utils/launchDarkly'
 
 import { categories, notifications } from '../../data'
@@ -39,7 +33,7 @@ jest.mock('../../data', () => ({
             label: 'Ticket updates',
             description: 'Get notified when one of these events happen:',
             typeLabel: 'Event',
-            notifications: ['legacy-chat-and-messaging', 'user.mentioned'],
+            notifications: ['user.mentioned'],
         },
         {
             type: 'empty-category',
@@ -49,15 +43,6 @@ jest.mock('../../data', () => ({
         },
     ],
     notifications: {
-        'legacy-chat-and-messaging': {
-            type: 'legacy-chat-and-messaging',
-            component: () => null,
-            workflow: '',
-            settings: {
-                type: 'ticket-updates',
-                label: 'Chat & messaging tickets',
-            },
-        },
         'user.mentioned': {
             type: 'user.mentioned',
             component: () => null,
@@ -73,9 +58,9 @@ jest.mock('../../data', () => ({
 const notificationPreferences = {
     data: {
         notification_sound: {
-            enabled: true,
+            enabled: false,
             volume: 7,
-            sound: 'custom-sound',
+            sound: 'default',
         },
         events: {
             'user.mentioned': {
@@ -93,8 +78,6 @@ const notificationPreferences = {
 
 const mockGetKnockPreferences = jest.fn()
 const mockSetKnockPreferences = jest.fn()
-
-const mockStore = configureMockStore<RootState, StoreDispatch>([thunk])
 
 const notificationsWithSettings = categories
     .reduce((acc, c) => [...acc, ...(c.notifications || [])], [] as string[])
@@ -142,56 +125,6 @@ describe('useSettings', () => {
             ).toBeDefined()
         },
     )
-
-    it('should use the old notification format for the legacy-chat-and-messaging event', async () => {
-        const { result, waitForNextUpdate } = renderHook(() => useSettings())
-
-        await act(async () => await waitForNextUpdate())
-
-        expect(
-            result.current.settings.events['legacy-chat-and-messaging'].sound,
-        ).toBe('custom-sound')
-        expect(
-            result.current.settings.events['legacy-chat-and-messaging'].channels
-                .in_app_feed,
-        ).toBe(true)
-    })
-
-    it('should not return a sound if old user notification setting is disabled', async () => {
-        useAppSelectorMock.mockReturnValue({
-            data: {
-                notification_sound: {
-                    enabled: false,
-                    volume: 7,
-                    sound: 'custom-sound',
-                },
-            },
-        })
-
-        const { result, waitForNextUpdate } = renderHook(() => useSettings())
-
-        await act(async () => await waitForNextUpdate())
-
-        expect(
-            result.current.settings.events['legacy-chat-and-messaging'].sound,
-        ).toBe('')
-    })
-
-    it('should use the default sound for the legacy-chat-and-messaging event if old user settings are not available', async () => {
-        useAppSelectorMock.mockReturnValue({
-            data: {
-                events: {},
-            },
-        })
-
-        const { result, waitForNextUpdate } = renderHook(() => useSettings())
-
-        await act(async () => await waitForNextUpdate())
-
-        expect(
-            result.current.settings.events['legacy-chat-and-messaging'].sound,
-        ).toBe('default')
-    })
 
     it('should update settings according to knock-returned workflow preferences', async () => {
         mockGetKnockPreferences.mockResolvedValue({
@@ -269,31 +202,21 @@ describe('useSettings', () => {
 
         await waitFor(() => {
             expect(mockSetKnockPreferences).toHaveBeenCalled()
-            expect(useAppDispatchMock).toHaveBeenCalled()
+            expect(submitSettingMock).toHaveBeenCalledWith(
+                {
+                    data: {
+                        events: { 'user.mentioned': { sound: 'definite' } },
+                        notification_sound: {
+                            enabled: false,
+                            sound: 'default',
+                            volume: 7,
+                        },
+                    },
+                    id: undefined,
+                    type: 'notification-preferences',
+                },
+                true,
+            )
         })
-    })
-
-    it('should filter out legacy-chat-and-messaging event on save from settings and knock workflow preferences', async () => {
-        const { result, waitForNextUpdate } = renderHook(() => useSettings(), {
-            wrapper: ({ children }) => (
-                <Provider store={mockStore()}>{children}</Provider>
-            ),
-        })
-
-        await act(async () => await waitForNextUpdate())
-        await act(async () => {
-            await result.current.save()
-        })
-
-        expect(
-            // eslint-disable-next-line
-            submitSettingMock.mock.calls[0][0]['data']['events'][
-                'legacy-chat-and-messaging'
-            ],
-        ).not.toBeDefined()
-        expect(
-            // eslint-disable-next-line
-            mockSetKnockPreferences.mock.calls[0][0]['workflows'],
-        ).not.toHaveProperty('legacy-chat-and-messaging')
     })
 })

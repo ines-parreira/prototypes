@@ -35,19 +35,10 @@ jest.mock('../../data', () => ({
             label: 'Ticket updates',
             description: 'Get notified when one of these events happen:',
             typeLabel: 'Event',
-            notifications: ['legacy-chat-and-messaging', 'user.mentioned'],
+            notifications: ['user.mentioned'],
         },
     ],
     notifications: {
-        'legacy-chat-and-messaging': {
-            type: 'legacy-chat-and-messaging',
-            component: () => null,
-            workflow: '',
-            settings: {
-                type: 'ticket-updates',
-                label: 'Chat & messaging tickets',
-            },
-        },
         'user.mentioned': {
             type: 'user.mentioned',
             component: () => null,
@@ -131,7 +122,7 @@ describe('EventSettings', () => {
 
         await getLDClient()?.waitForInitialization()
 
-        const checkbox = getAllByRole('checkbox')[1]
+        const checkbox = getAllByRole('checkbox')[0]
         fireEvent.click(checkbox)
 
         expect(onChangeChannel).toHaveBeenCalledWith(
@@ -157,9 +148,6 @@ describe('EventSettings', () => {
         const combobox = getAllByRole('combobox')[0]
         fireEvent.change(combobox, { target: { value: 'sound 1' } })
 
-        expect(onChangeSound).toHaveBeenCalledWith(
-            'legacy-chat-and-messaging',
-            'sound 1',
-        )
+        expect(onChangeSound).toHaveBeenCalledWith('user.mentioned', 'sound 1')
     })
 })
