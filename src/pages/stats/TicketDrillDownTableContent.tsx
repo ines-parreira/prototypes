@@ -26,6 +26,7 @@ import {
 import { formatTicketDrillDownRowData } from 'pages/stats/DrillDownFormatters'
 import css from 'pages/stats/DrillDownTable.less'
 import { DrillDownTicketDetailsCell } from 'pages/stats/DrillDownTicketDetailsCell'
+import { CSAT_SCORE } from 'pages/stats/quality-management/satisfaction/SatisfactionMetricsConfig'
 import { SLAStatusCell } from 'pages/stats/sla/components/SlaStatusCell'
 import { AutoQAAgentsTableColumn } from 'pages/stats/support-performance/auto-qa/AutoQAAgentsTableConfig'
 import { AutoQACompletenessCell } from 'pages/stats/support-performance/auto-qa/AutoQACompletenessCell'
@@ -46,7 +47,11 @@ import {
     getDrillDownMetricColumn,
     SLA_FORMAT,
 } from 'state/ui/stats/drillDownSlice'
-import { AIInsightsMetric, AutoQAMetric } from 'state/ui/stats/types'
+import {
+    AIInsightsMetric,
+    AutoQAMetric,
+    SatisfactionMetric,
+} from 'state/ui/stats/types'
 import { TicketAIAgentFeedbackTab } from 'state/ui/ticketAIAgentFeedback/constants'
 
 const tooltipHints = {
@@ -123,6 +128,9 @@ export const TicketDrillDownTableContent = ({
     const isAutoQAReviewedClosedTickets =
         metricData.metricName === AutoQAMetric.ReviewedClosedTickets ||
         metricData.metricName === AutoQAAgentsTableColumn.ReviewedClosedTickets
+    const showSurveyScore =
+        metricData.metricName === SatisfactionMetric.SatisfactionScore
+
     const { showMetric, metricTitle, metricValueFormat } = useAppSelector(
         getDrillDownMetricColumn,
     )
@@ -158,6 +166,7 @@ export const TicketDrillDownTableContent = ({
     const columnWidths = {
         ticket: getTicketColumnWidth(),
         metric: 140,
+        surveyScore: 140,
         assignee: 180,
         created: 180,
         contactReason: 200,
@@ -167,6 +176,7 @@ export const TicketDrillDownTableContent = ({
     const columnWidthsForSkeleton = [
         columnWidths.ticket,
         columnWidths.metric,
+        ...(showSurveyScore ? [columnWidths.surveyScore] : []),
         columnWidths.assignee,
         columnWidths.created,
         columnWidths.contactReason,
@@ -196,6 +206,13 @@ export const TicketDrillDownTableContent = ({
                         width={columnWidths.metric}
                         className={css.headerCell}
                         tooltip={tooltipHints.metric}
+                    />
+                )}
+                {showSurveyScore && (
+                    <HeaderCellProperty
+                        title={CSAT_SCORE}
+                        width={columnWidths.surveyScore}
+                        className={css.headerCell}
                     />
                 )}
                 {isAutoQAResolutionCompleteness && (
@@ -375,6 +392,12 @@ export const TicketDrillDownTableContent = ({
                                                   item={item.rowData}
                                               />
                                           )}
+                                </BodyCell>
+                            )}
+                            {showSurveyScore && (
+                                <BodyCell width={columnWidths.surveyScore}>
+                                    {item.surveyScore ||
+                                        NOT_AVAILABLE_PLACEHOLDER}
                                 </BodyCell>
                             )}
                             {isAutoQAResolutionCompleteness && (

@@ -93,7 +93,10 @@ describe('satisfactionScoreDrillDownQueryFactory', () => {
         expect(query).toEqual({
             limit: DRILLDOWN_QUERY_LIMIT,
             measures: [TicketSatisfactionSurveyMeasure.SatisfactionScore],
-            dimensions: [TicketDimension.TicketId],
+            dimensions: [
+                TicketDimension.TicketId,
+                TicketSatisfactionSurveyDimension.SurveyScore,
+            ],
             segments: [],
             filters: [
                 ...statsFiltersToReportingFilters(
@@ -110,7 +113,7 @@ describe('satisfactionScoreDrillDownQueryFactory', () => {
         })
     })
 
-    it('should produce the query with sorting', () => {
+    it('should produce the query with sorting by SurveyScore', () => {
         const query = satisfactionScoreDrillDownQueryFactory(
             statsFilters,
             timezone,
@@ -120,7 +123,10 @@ describe('satisfactionScoreDrillDownQueryFactory', () => {
         expect(query).toEqual({
             limit: DRILLDOWN_QUERY_LIMIT,
             measures: [TicketSatisfactionSurveyMeasure.SatisfactionScore],
-            dimensions: [TicketDimension.TicketId],
+            dimensions: [
+                TicketDimension.TicketId,
+                TicketSatisfactionSurveyDimension.SurveyScore,
+            ],
             segments: [],
             filters: [
                 ...statsFiltersToReportingFilters(
@@ -134,9 +140,7 @@ describe('satisfactionScoreDrillDownQueryFactory', () => {
                 },
             ],
             timezone,
-            order: [
-                [TicketSatisfactionSurveyMeasure.SatisfactionScore, sorting],
-            ],
+            order: [[TicketSatisfactionSurveyDimension.SurveyScore, sorting]],
         })
     })
 })

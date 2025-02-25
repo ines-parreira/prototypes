@@ -49,6 +49,12 @@ export const satisfactionScoreDrillDownQueryFactory = (
             values: ['0'],
         },
     ],
-    dimensions: [TicketDimension.TicketId],
+    dimensions: [
+        TicketDimension.TicketId,
+        TicketSatisfactionSurveyDimension.SurveyScore,
+    ],
     limit: DRILLDOWN_QUERY_LIMIT,
+    ...(sorting && {
+        order: [[TicketSatisfactionSurveyDimension.SurveyScore, sorting]],
+    }),
 })

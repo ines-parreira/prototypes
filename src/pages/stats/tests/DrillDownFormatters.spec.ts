@@ -214,5 +214,40 @@ describe('DrillDownFormatters', () => {
                 metricValue: undefined,
             })
         })
+
+        it('should return the formatted row data with surveyScore', () => {
+            const row = {
+                'Ticket.assignee_user_id': null,
+                'Ticket.channel': 'chat',
+                'Ticket.contact_reason': 'Some reason',
+                'Ticket.created_datetime': '2024-12-19T17:13:00.291264',
+                'TicketEnriched.ticketId': '1',
+                'TicketSatisfactionSurveyEnriched.surveyScore': '5',
+            }
+            const result = formatTicketDrillDownRowData({
+                row,
+                metricField: 'metricField',
+                customFieldsIds: {
+                    intentCustomFieldId: 2,
+                },
+            })
+
+            expect(result).toEqual({
+                assignee: null,
+                ticket: {
+                    channel: 'chat',
+                    contactReason: 'Some reason',
+                    created: '2024-12-19T17:13:00.291264',
+                    description: null,
+                    id: null,
+                    isRead: false,
+                    status: null,
+                    subject: null,
+                },
+                outcome: undefined,
+                metricValue: undefined,
+                surveyScore: '5',
+            })
+        })
     })
 })

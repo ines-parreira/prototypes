@@ -67,6 +67,7 @@ export const getDrillDownMetricOrder = (
 ) => {
     return metricName === OverviewMetric.CustomerSatisfaction ||
         metricName === SatisfactionMetric.AverageSurveyScore ||
+        metricName === SatisfactionMetric.SatisfactionScore ||
         metricName === AgentsTableColumn.CustomerSatisfaction ||
         metricName === ChannelsTableColumns.CustomerSatisfaction ||
         metricName === AutoQAAgentsTableColumn.ResolutionCompleteness ||

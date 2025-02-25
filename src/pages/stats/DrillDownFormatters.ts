@@ -10,6 +10,7 @@ import {
     TicketQAScoreDimensionName,
     TicketQAScoreMeasure,
 } from 'models/reporting/cubes/auto-qa/TicketQAScoreCube'
+import { TicketSatisfactionSurveyDimension } from 'models/reporting/cubes/TicketSatisfactionSurveyCube'
 import { VoiceCallDimension } from 'models/reporting/cubes/VoiceCallCube'
 import { EnrichmentFields } from 'models/reporting/types'
 import { OrderConversionDimension } from 'pages/stats/convert/clients/constants'
@@ -48,6 +49,7 @@ export interface TicketDrillDownRowData extends BaseDrillDownRowData {
         | TicketQAScoreDimensionName.BrandVoice,
         string | undefined
     >
+    surveyScore?: string | null
     outcome?: string | null
     intent?: string | null
 }
@@ -145,6 +147,7 @@ export const formatTicketDrillDownRowData = ({
 }: DrillDownFormatterProps): TicketDrillDownRowData => {
     const outcome = getAIOutcome({ row, customFieldsIds })
     const intent = getAIIntent({ row, customFieldsIds })
+    const surveyScore = row[TicketSatisfactionSurveyDimension.SurveyScore]
 
     return {
         ticket: {
@@ -168,6 +171,7 @@ export const formatTicketDrillDownRowData = ({
                       )?.name || '',
               }
             : null,
+        ...(surveyScore ? { surveyScore } : {}),
         ...(row?.['slas'] ? { rowData: row['slas'] } : {}),
         ...(row?.[TicketQAScoreMeasure.QAScoreData]
             ? { rowData: row[TicketQAScoreMeasure.QAScoreData] }

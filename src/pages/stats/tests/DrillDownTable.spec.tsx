@@ -39,7 +39,12 @@ import {
     getDrillDownMetricColumn,
     SLA_FORMAT,
 } from 'state/ui/stats/drillDownSlice'
-import { AutoQAMetric, ConvertMetric, SlaMetric } from 'state/ui/stats/types'
+import {
+    AutoQAMetric,
+    ConvertMetric,
+    SatisfactionMetric,
+    SlaMetric,
+} from 'state/ui/stats/types'
 import { assumeMock } from 'utils/testing'
 
 const MOCK_SKELETON_TEST_ID = 'skeleton'
@@ -117,7 +122,7 @@ describe('<DrillDownTable />', () => {
                 description: 'description',
                 isRead: true,
                 subject: ticketSubject,
-                created: '22/12/2023',
+                created: '2025-09-01T10:11:12',
                 contactReason: 'reason',
                 status: TicketStatus.Closed,
             },
@@ -289,6 +294,31 @@ describe('<DrillDownTable />', () => {
             expect(
                 screen.getByText(SlaStatusLabel[metricStatus]),
             ).toBeInTheDocument()
+        })
+
+        it('should render surveyScore cell', () => {
+            const metricData: DrillDownMetric = {
+                metricName: SatisfactionMetric.SatisfactionScore,
+            }
+            const data = { ...exampleRow, surveyScore: '5' }
+
+            getDrillDownMetricColumnMock.mockReturnValue({
+                showMetric: false,
+                metricTitle: 'Satisfaction score',
+                metricValueFormat: 'decimal-to-percent',
+            })
+            useEnrichedDrillDownDataMock.mockReturnValue({
+                data: [data],
+                isFetching: false,
+            } as any)
+            useDataHookMock.mockReturnValue({
+                currentPage,
+                perPage: 1,
+            } as any)
+
+            renderTableForTicket(metricData)
+
+            expect(screen.getByText('5')).toBeInTheDocument()
         })
 
         it(`should render auto QA cells for ${AutoQAMetric.ReviewedClosedTickets} metric`, () => {
