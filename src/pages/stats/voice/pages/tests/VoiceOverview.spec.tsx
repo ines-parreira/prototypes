@@ -9,6 +9,7 @@ import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
 import { FeatureFlagKey } from 'config/featureFlags'
+import { useFlag } from 'core/flags'
 import { account } from 'fixtures/account'
 import { agents } from 'fixtures/agents'
 import { billingState } from 'fixtures/billing'
@@ -26,17 +27,21 @@ import FiltersPanelWrapper from 'pages/stats/common/filters/FiltersPanelWrapper'
 import * as VoiceCallCallerExperienceMetric from 'pages/stats/voice/components/VoiceCallerExperienceMetric/VoiceCallCallerExperienceMetric'
 import { VoiceOverviewDownloadDataButton } from 'pages/stats/voice/components/VoiceOverviewDownloadDataButton/VoiceOverviewDownloadDataButton'
 import {
+    ABANDONED_CALLS_METRIC_TITLE,
     ALL_CALLS_FILTER_LABEL,
     AVERAGE_TALK_TIME_METRIC_TITLE,
     AVERAGE_WAIT_TIME_METRIC_TITLE,
     CALL_LIST_TITLE,
     CALL_VOLUME_METRICS_TITLE,
     CALLER_EXPERIENCE_METRICS_TITLE,
+    CANCELLED_CALLS_METRIC_TITLE,
+    DEPRECATED_MISSED_CALLS_METRIC_TITLE,
     INBOUND_CALLS_FILTER_LABEL,
     INBOUND_CALLS_METRIC_TITLE,
     MISSED_CALLS_METRIC_TITLE,
     OUTBOUND_CALLS_METRIC_TITLE,
     TOTAL_CALLS_METRIC_TITLE,
+    UNANSWERED_CALLS_METRIC_TITLE,
     VOICE_OVERVIEW_PAGE_TITLE,
 } from 'pages/stats/voice/constants/voiceOverview'
 import { useVoiceCallAverageTimeTrend } from 'pages/stats/voice/hooks/useVoiceCallAverageTimeTrend'
@@ -89,6 +94,9 @@ const VoiceCallCallerExperienceMetricSpy = jest.spyOn(
     VoiceCallCallerExperienceMetric,
     'default',
 )
+
+jest.mock('core/flags', () => ({ useFlag: jest.fn() }))
+const useFlagMock = assumeMock(useFlag)
 
 describe('VoiceOverview', () => {
     beforeEach(() => {
@@ -151,8 +159,15 @@ describe('VoiceOverview', () => {
         )
     }
 
-    it('should render page title', () => {
-        const { queryByText, queryAllByText, getByText } = renderVoiceOverview()
+    it('should render page old way', () => {
+        useFlagMock.mockImplementation((flag) => {
+            if (flag === FeatureFlagKey.ShowNewUnansweredStatuses) {
+                return false
+            }
+        })
+
+        const { queryByText, queryAllByText, getAllByText } =
+            renderVoiceOverview()
 
         // header elements
         expect(queryByText(VOICE_OVERVIEW_PAGE_TITLE)).toBeInTheDocument()
@@ -173,21 +188,74 @@ describe('VoiceOverview', () => {
         // metric cards
         expect(queryByText(CALL_VOLUME_METRICS_TITLE)).toBeInTheDocument()
         expect(queryByText(TOTAL_CALLS_METRIC_TITLE)).toBeInTheDocument()
-        expect(queryByText(OUTBOUND_CALLS_METRIC_TITLE)).toBeInTheDocument()
-        expect(queryByText(INBOUND_CALLS_METRIC_TITLE)).toBeInTheDocument()
-        expect(queryByText(MISSED_CALLS_METRIC_TITLE)).toBeInTheDocument()
+        expect(queryAllByText(OUTBOUND_CALLS_METRIC_TITLE)).toHaveLength(2) // also as filter
+        expect(queryAllByText(INBOUND_CALLS_METRIC_TITLE)).toHaveLength(2) // also as filter
+        expect(
+            queryAllByText(DEPRECATED_MISSED_CALLS_METRIC_TITLE),
+        ).toHaveLength(2) // also as filter
 
         // list of calls section
         expect(queryByText(CALL_LIST_TITLE)).toBeInTheDocument()
 
         expect(queryAllByText(ALL_CALLS_FILTER_LABEL)).toHaveLength(2)
         fireEvent.click(queryAllByText(ALL_CALLS_FILTER_LABEL)[0])
-        expect(queryByText(INBOUND_CALLS_FILTER_LABEL)).toBeInTheDocument()
-        expect(queryByText(OUTBOUND_CALLS_METRIC_TITLE)).toBeInTheDocument()
-
-        fireEvent.click(getByText(INBOUND_CALLS_FILTER_LABEL))
-        expect(queryAllByText(ALL_CALLS_FILTER_LABEL)).toHaveLength(1)
         expect(queryAllByText(INBOUND_CALLS_FILTER_LABEL)).toHaveLength(2)
+        expect(queryAllByText(OUTBOUND_CALLS_METRIC_TITLE)).toHaveLength(2)
+
+        fireEvent.click(getAllByText(INBOUND_CALLS_FILTER_LABEL)[1])
+        expect(queryAllByText(ALL_CALLS_FILTER_LABEL)).toHaveLength(1)
+        expect(queryAllByText(INBOUND_CALLS_FILTER_LABEL)).toHaveLength(3)
+
+        // footer
+        expect(
+            queryByText('Analytics are using EST timezone'),
+        ).toBeInTheDocument()
+    })
+
+    it('should render page', () => {
+        useFlagMock.mockImplementation((flag) => {
+            if (flag === FeatureFlagKey.ShowNewUnansweredStatuses) {
+                return true
+            }
+        })
+
+        const { queryByText, queryAllByText, getAllByText } =
+            renderVoiceOverview()
+
+        // header elements
+        expect(queryByText(VOICE_OVERVIEW_PAGE_TITLE)).toBeInTheDocument()
+        expect(queryByText('Voice add-on features')).toBeNull()
+
+        // filters
+        expect(queryByText('All integrations')).toBeInTheDocument()
+        expect(queryByText('1 tag')).toBeInTheDocument()
+        expect(queryByText('1 agent')).toBeInTheDocument()
+        expect(queryByText('Dec 11, 2023')).toBeInTheDocument()
+        expect(VoiceOverviewDownloadDataButtonMock).toHaveBeenCalled()
+
+        expect(queryByText(TOTAL_CALLS_METRIC_TITLE)).toBeInTheDocument()
+        expect(queryAllByText(OUTBOUND_CALLS_METRIC_TITLE)).toHaveLength(2) // also as filter
+        expect(queryAllByText(INBOUND_CALLS_METRIC_TITLE)).toHaveLength(2) // also as filter
+
+        expect(queryByText(UNANSWERED_CALLS_METRIC_TITLE)).toBeInTheDocument()
+        expect(queryAllByText(MISSED_CALLS_METRIC_TITLE)).toHaveLength(2) // also as filter
+        expect(queryByText(CANCELLED_CALLS_METRIC_TITLE)).toBeInTheDocument()
+        expect(queryByText(ABANDONED_CALLS_METRIC_TITLE)).toBeInTheDocument()
+
+        expect(queryByText(AVERAGE_TALK_TIME_METRIC_TITLE)).toBeInTheDocument()
+        expect(queryByText(AVERAGE_WAIT_TIME_METRIC_TITLE)).toBeInTheDocument()
+
+        // list of calls section
+        expect(queryByText(CALL_LIST_TITLE)).toBeInTheDocument()
+
+        expect(queryAllByText(ALL_CALLS_FILTER_LABEL)).toHaveLength(2)
+        fireEvent.click(queryAllByText(ALL_CALLS_FILTER_LABEL)[0])
+        expect(queryAllByText(INBOUND_CALLS_FILTER_LABEL)).toHaveLength(2)
+        expect(queryAllByText(OUTBOUND_CALLS_METRIC_TITLE)).toHaveLength(2)
+
+        fireEvent.click(getAllByText(INBOUND_CALLS_FILTER_LABEL)[1])
+        expect(queryAllByText(ALL_CALLS_FILTER_LABEL)).toHaveLength(1)
+        expect(queryAllByText(INBOUND_CALLS_FILTER_LABEL)).toHaveLength(3)
 
         // footer
         expect(

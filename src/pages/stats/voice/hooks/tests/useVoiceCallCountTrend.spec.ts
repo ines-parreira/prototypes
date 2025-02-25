@@ -62,4 +62,36 @@ describe('VoiceCallCountTrend', () => {
             )
         },
     )
+
+    it.each([
+        {
+            segment: VoiceCallSegment.inboundUnansweredCalls,
+        },
+        {
+            segment: VoiceCallSegment.inboundMissedCalls,
+        },
+        {
+            segment: VoiceCallSegment.inboundAbandonedCalls,
+        },
+        {
+            segment: VoiceCallSegment.inboundCancelledCalls,
+        },
+    ])(
+        'should use fetchVoiceCallCountTrend to fetch voice call count of specific segment ($segment)',
+        async ({ segment }) => {
+            await fetchVoiceCallCountTrend(statsFilters, userTimezone, segment)
+
+            expect(fetchMetricTrendMock).toHaveBeenCalledWith(
+                voiceCallCountQueryFactory(statsFilters, userTimezone, segment),
+                voiceCallCountQueryFactory(
+                    {
+                        ...statsFilters,
+                        period: getPreviousPeriod(statsFilters.period),
+                    },
+                    userTimezone,
+                    segment,
+                ),
+            )
+        },
+    )
 })

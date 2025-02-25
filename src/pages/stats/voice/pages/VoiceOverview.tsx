@@ -2,6 +2,8 @@ import React, { useMemo } from 'react'
 
 import moment from 'moment/moment'
 
+import { FeatureFlagKey } from 'config/featureFlags'
+import { useFlag } from 'core/flags'
 import { useCleanStatsFiltersWithLogicalOperators } from 'hooks/reporting/useCleanStatsFilters'
 import useAppSelector from 'hooks/useAppSelector'
 import { ProductType } from 'models/billing/types'
@@ -37,6 +39,10 @@ import { getPageStatsFiltersWithLogicalOperators } from 'state/stats/selectors'
 import { getCleanStatsFiltersWithTimezone } from 'state/ui/stats/selectors'
 
 function VoiceOverview() {
+    const shouldShowNewUnansweredStatuses = useFlag(
+        FeatureFlagKey.ShowNewUnansweredStatuses,
+    )
+
     const { isAnalyticsNewFilters } = useNewVoiceStatsFilters()
 
     const { cleanStatsFilters: legacyStatsFilters } = useAppSelector(
@@ -91,6 +97,45 @@ function VoiceOverview() {
         ],
     )
 
+    const reportComponents = [
+        {
+            chart: VoiceOverviewChart.VoiceCallVolumeTotalCallCountTrendChart,
+            size: 4,
+        },
+        {
+            chart: VoiceOverviewChart.VoiceCallVolumeMetricOutboundCallsCountTrend,
+            size: 4,
+        },
+        {
+            chart: VoiceOverviewChart.VoiceCallVolumeMetricInboundCallsCountTrend,
+            size: 4,
+        },
+        {
+            chart: VoiceOverviewChart.VoiceCallVolumeMetricUnansweredCallsCountTrendChart,
+            size: 3,
+        },
+        {
+            chart: VoiceOverviewChart.VoiceCallVolumeMetricMissedCallsCountTrendChart,
+            size: 3,
+        },
+        {
+            chart: VoiceOverviewChart.VoiceCallVolumeMetricCancelledCallsCountTrendChart,
+            size: 3,
+        },
+        {
+            chart: VoiceOverviewChart.VoiceCallVolumeMetricAbandonedCallsCountTrendChart,
+            size: 3,
+        },
+        {
+            chart: VoiceOverviewChart.VoiceCallCallerExperienceAverageWaitTimeChart,
+            size: 6,
+        },
+        {
+            chart: VoiceOverviewChart.VoiceCallCallCallerExperienceAverageTalkTime,
+            size: 6,
+        },
+    ]
+
     return (
         <StatsPage
             title={VOICE_OVERVIEW_PAGE_TITLE}
@@ -124,58 +169,76 @@ function VoiceOverview() {
                 </DashboardSection>
             )}
 
-            <DashboardSection title={CALLER_EXPERIENCE_METRICS_TITLE}>
-                <DashboardGridCell size={6}>
-                    <CustomReportComponent
-                        chart={
-                            VoiceOverviewChart.VoiceCallCallerExperienceAverageWaitTimeChart
-                        }
-                        config={VoiceOverviewReportConfig}
-                    />
-                </DashboardGridCell>
-                <DashboardGridCell size={6}>
-                    <CustomReportComponent
-                        chart={
-                            VoiceOverviewChart.VoiceCallCallCallerExperienceAverageTalkTime
-                        }
-                        config={VoiceOverviewReportConfig}
-                    />
-                </DashboardGridCell>
-            </DashboardSection>
-            <DashboardSection title={CALL_VOLUME_METRICS_TITLE}>
-                <DashboardGridCell size={3}>
-                    <CustomReportComponent
-                        chart={
-                            VoiceOverviewChart.VoiceCallVolumeTotalCallCountTrendChart
-                        }
-                        config={VoiceOverviewReportConfig}
-                    />
-                </DashboardGridCell>
-                <DashboardGridCell size={3}>
-                    <CustomReportComponent
-                        chart={
-                            VoiceOverviewChart.VoiceCallVolumeMetricOutboundCallsCountTrend
-                        }
-                        config={VoiceOverviewReportConfig}
-                    />
-                </DashboardGridCell>
-                <DashboardGridCell size={3}>
-                    <CustomReportComponent
-                        chart={
-                            VoiceOverviewChart.VoiceCallVolumeMetricInboundCallsCountTrend
-                        }
-                        config={VoiceOverviewReportConfig}
-                    />
-                </DashboardGridCell>
-                <DashboardGridCell size={3}>
-                    <CustomReportComponent
-                        chart={
-                            VoiceOverviewChart.VoiceCallVolumeMetricMissedCallsCountTrendChart
-                        }
-                        config={VoiceOverviewReportConfig}
-                    />
-                </DashboardGridCell>
-            </DashboardSection>
+            {shouldShowNewUnansweredStatuses ? (
+                <DashboardSection>
+                    {reportComponents.map((reportComponent) => (
+                        <DashboardGridCell
+                            size={reportComponent.size}
+                            key={reportComponent.chart}
+                        >
+                            <CustomReportComponent
+                                chart={reportComponent.chart}
+                                config={VoiceOverviewReportConfig}
+                            />
+                        </DashboardGridCell>
+                    ))}
+                </DashboardSection>
+            ) : (
+                <>
+                    <DashboardSection title={CALLER_EXPERIENCE_METRICS_TITLE}>
+                        <DashboardGridCell size={6}>
+                            <CustomReportComponent
+                                chart={
+                                    VoiceOverviewChart.VoiceCallCallerExperienceAverageWaitTimeChart
+                                }
+                                config={VoiceOverviewReportConfig}
+                            />
+                        </DashboardGridCell>
+                        <DashboardGridCell size={6}>
+                            <CustomReportComponent
+                                chart={
+                                    VoiceOverviewChart.VoiceCallCallCallerExperienceAverageTalkTime
+                                }
+                                config={VoiceOverviewReportConfig}
+                            />
+                        </DashboardGridCell>
+                    </DashboardSection>
+                    <DashboardSection title={CALL_VOLUME_METRICS_TITLE}>
+                        <DashboardGridCell size={3}>
+                            <CustomReportComponent
+                                chart={
+                                    VoiceOverviewChart.VoiceCallVolumeTotalCallCountTrendChart
+                                }
+                                config={VoiceOverviewReportConfig}
+                            />
+                        </DashboardGridCell>
+                        <DashboardGridCell size={3}>
+                            <CustomReportComponent
+                                chart={
+                                    VoiceOverviewChart.VoiceCallVolumeMetricOutboundCallsCountTrend
+                                }
+                                config={VoiceOverviewReportConfig}
+                            />
+                        </DashboardGridCell>
+                        <DashboardGridCell size={3}>
+                            <CustomReportComponent
+                                chart={
+                                    VoiceOverviewChart.VoiceCallVolumeMetricInboundCallsCountTrend
+                                }
+                                config={VoiceOverviewReportConfig}
+                            />
+                        </DashboardGridCell>
+                        <DashboardGridCell size={3}>
+                            <CustomReportComponent
+                                chart={
+                                    VoiceOverviewChart.DEPRECATED_VoiceCallVolumeMetricMissedCallsCountTrendChart
+                                }
+                                config={VoiceOverviewReportConfig}
+                            />
+                        </DashboardGridCell>
+                    </DashboardSection>
+                </>
+            )}
             <DashboardSection title={CALL_ACTIVITY_TITLE}>
                 <DashboardGridCell>
                     <CustomReportComponent

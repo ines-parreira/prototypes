@@ -23,12 +23,14 @@ export const useVoiceCallCountTrend = (
 export const fetchVoiceCallCountTrend = (
     filters: StatsFilters,
     timezone: string,
+    segment?: VoiceCallSegment,
 ) =>
     fetchMetricTrend(
-        voiceCallCountQueryFactory(filters, timezone),
+        voiceCallCountQueryFactory(filters, timezone, segment),
         voiceCallCountQueryFactory(
             { ...filters, period: getPreviousPeriod(filters.period) },
             timezone,
+            segment,
         ),
     )
 

@@ -8,8 +8,8 @@ import { formatMetricValue } from 'pages/stats/common/utils'
 import {
     AVERAGE_TALK_TIME_METRIC_TITLE,
     AVERAGE_WAIT_TIME_METRIC_TITLE,
+    DEPRECATED_MISSED_CALLS_METRIC_TITLE,
     INBOUND_CALLS_METRIC_TITLE,
-    MISSED_CALLS_METRIC_TITLE,
     OUTBOUND_CALLS_METRIC_TITLE,
     TOTAL_CALLS_METRIC_TITLE,
     VOICE_OVERVIEW_CALL_EXPERIENCE_REPORT_FILE_NAME,
@@ -81,7 +81,7 @@ export const saveReport = (data: VoiceReportData, period: Period) => {
             inboundCallsCountTrend.data?.prevValue,
         ],
         [
-            MISSED_CALLS_METRIC_TITLE,
+            DEPRECATED_MISSED_CALLS_METRIC_TITLE,
             missedCallsCountTrend.data?.value,
             missedCallsCountTrend.data?.prevValue,
         ],

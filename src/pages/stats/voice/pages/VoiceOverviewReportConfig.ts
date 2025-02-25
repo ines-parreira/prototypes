@@ -1,3 +1,4 @@
+import { VoiceCallSegment } from 'models/reporting/cubes/VoiceCallCube'
 import { FilterComponentKey, FilterKey, StaticFilter } from 'models/stat/types'
 import { AUTO_QA_FILTER_KEYS } from 'pages/stats/common/filters/constants'
 import { OptionalFilter } from 'pages/stats/common/filters/FiltersPanel'
@@ -14,12 +15,18 @@ import { VoiceCallVolumeMetricMissedCallsCountTrendChart } from 'pages/stats/voi
 import { VoiceCallVolumeMetricOutboundCallsCountTrend } from 'pages/stats/voice/charts/VoiceCallVolumeMetricOutboundCallsCountTrend'
 import { VoiceCallVolumeTotalCallCountTrendChart } from 'pages/stats/voice/charts/VoiceCallVolumeTotalCallCountTrendChart'
 import {
+    ABANDONED_CALLS_METRIC_HINT,
+    ABANDONED_CALLS_METRIC_TITLE,
     AVERAGE_TALK_TIME_METRIC_HINT,
     AVERAGE_TALK_TIME_METRIC_TITLE,
     AVERAGE_WAIT_TIME_METRIC_HINT,
     AVERAGE_WAIT_TIME_METRIC_TITLE,
     CALL_LIST_HINT,
     CALL_LIST_TITLE,
+    CANCELLED_CALLS_METRIC_HINT,
+    CANCELLED_CALLS_METRIC_TITLE,
+    DEPRECATED_MISSED_CALLS_METRIC_HINT,
+    DEPRECATED_MISSED_CALLS_METRIC_TITLE,
     INBOUND_CALLS_METRIC_HINT,
     INBOUND_CALLS_METRIC_TITLE,
     MISSED_CALLS_METRIC_HINT,
@@ -28,6 +35,8 @@ import {
     OUTBOUND_CALLS_METRIC_TITLE,
     TOTAL_CALLS_METRIC_HINT,
     TOTAL_CALLS_METRIC_TITLE,
+    UNANSWERED_CALLS_METRIC_HINT,
+    UNANSWERED_CALLS_METRIC_TITLE,
 } from 'pages/stats/voice/constants/voiceOverview'
 import {
     fetchVoiceCallAverageTimeTalkTimeTrend,
@@ -40,6 +49,8 @@ import {
     fetchVoiceCallCountTrend,
 } from 'pages/stats/voice/hooks/useVoiceCallCountTrend'
 import { STATS_ROUTES } from 'routes/constants'
+
+import { VoiceCallVolumeMetricCallsCountTrendChart } from '../charts/VoiceCallVolumeMetricCallsCountTrendChart'
 
 export const VOICE_OVERVIEW_PERSISTENT_FILTERS: StaticFilter[] = [
     FilterKey.Period,
@@ -58,7 +69,11 @@ export enum VoiceOverviewChart {
     VoiceCallVolumeTotalCallCountTrendChart = 'VoiceCallVolumeTotalCallCountTrendChart',
     VoiceCallVolumeMetricOutboundCallsCountTrend = 'VoiceCallVolumeMetricOutboundCallsCountTrend',
     VoiceCallVolumeMetricInboundCallsCountTrend = 'VoiceCallVolumeMetricInboundCallsCountTrend',
-    VoiceCallVolumeMetricMissedCallsCountTrendChart = 'VoiceCallVolumeMetricMissedCallsCountTrendChart',
+    DEPRECATED_VoiceCallVolumeMetricMissedCallsCountTrendChart = 'DEPRECATED_VoiceCallVolumeMetricMissedCallsCountTrendChart',
+    VoiceCallVolumeMetricUnansweredCallsCountTrendChart = 'VoiceCallVolumeMetricUnaMissedlsCountTrendChart',
+    VoiceCallVolumeMetricMissedCallsCountTrendChart = 'VoiceCallVolumeMetricUnansweredCallsCountTrendChart',
+    VoiceCallVolumeMetricAbandonedCallsCountTrendChart = 'VoiceCallVolumeMetricAbandonedCallsCountTrendChart',
+    VoiceCallVolumeMetricCancelledCallsCountTrendChart = 'VoiceCallVolumeMetricCancelledCallsCountTrendChart',
     VoiceCallTableChart = 'VoiceCallTableChart',
 }
 
@@ -100,7 +115,8 @@ export const VoiceOverviewReportConfig: ReportConfig<VoiceOverviewChart> = {
             csvProducer: [
                 {
                     type: DataExportFormat.Trend,
-                    fetch: fetchVoiceCallCountTrend,
+                    fetch: (filters, timezone) =>
+                        fetchVoiceCallCountTrend(filters, timezone),
                     metricFormat: 'integer',
                 },
             ],
@@ -131,19 +147,125 @@ export const VoiceOverviewReportConfig: ReportConfig<VoiceOverviewChart> = {
                 },
             ],
         },
+        [VoiceOverviewChart.DEPRECATED_VoiceCallVolumeMetricMissedCallsCountTrendChart]:
+            {
+                chartComponent: VoiceCallVolumeMetricMissedCallsCountTrendChart,
+                label: DEPRECATED_MISSED_CALLS_METRIC_TITLE,
+                description: DEPRECATED_MISSED_CALLS_METRIC_HINT,
+                chartType: ChartType.Card,
+                csvProducer: [
+                    {
+                        type: DataExportFormat.Trend,
+                        fetch: fetchVoiceCallCountMissedTrend,
+                        metricFormat: 'integer',
+                    },
+                ],
+            },
+        [VoiceOverviewChart.VoiceCallVolumeMetricUnansweredCallsCountTrendChart]:
+            {
+                chartComponent: ({ chartId, dashboard }) =>
+                    VoiceCallVolumeMetricCallsCountTrendChart({
+                        chartId,
+                        dashboard,
+                        title: UNANSWERED_CALLS_METRIC_TITLE,
+                        hint: UNANSWERED_CALLS_METRIC_HINT,
+                        segment: VoiceCallSegment.inboundUnansweredCalls,
+                    }),
+                label: UNANSWERED_CALLS_METRIC_TITLE,
+                description: UNANSWERED_CALLS_METRIC_HINT,
+                chartType: ChartType.Card,
+                csvProducer: [
+                    {
+                        type: DataExportFormat.Trend,
+                        fetch: (filters, timezone) =>
+                            fetchVoiceCallCountTrend(
+                                filters,
+                                timezone,
+                                VoiceCallSegment.inboundUnansweredCalls,
+                            ),
+                        metricFormat: 'integer',
+                    },
+                ],
+            },
         [VoiceOverviewChart.VoiceCallVolumeMetricMissedCallsCountTrendChart]: {
-            chartComponent: VoiceCallVolumeMetricMissedCallsCountTrendChart,
+            chartComponent: ({ chartId, dashboard }) =>
+                VoiceCallVolumeMetricCallsCountTrendChart({
+                    chartId,
+                    dashboard,
+                    title: MISSED_CALLS_METRIC_TITLE,
+                    hint: MISSED_CALLS_METRIC_HINT,
+                    segment: VoiceCallSegment.inboundMissedCalls,
+                }),
             label: MISSED_CALLS_METRIC_TITLE,
             description: MISSED_CALLS_METRIC_HINT,
             chartType: ChartType.Card,
             csvProducer: [
                 {
                     type: DataExportFormat.Trend,
-                    fetch: fetchVoiceCallCountMissedTrend,
+                    fetch: (filters, timezone) =>
+                        fetchVoiceCallCountTrend(
+                            filters,
+                            timezone,
+                            VoiceCallSegment.inboundMissedCalls,
+                        ),
                     metricFormat: 'integer',
                 },
             ],
         },
+        [VoiceOverviewChart.VoiceCallVolumeMetricAbandonedCallsCountTrendChart]:
+            {
+                chartComponent: ({ chartId, dashboard }) =>
+                    VoiceCallVolumeMetricCallsCountTrendChart({
+                        chartId,
+                        dashboard,
+                        title: ABANDONED_CALLS_METRIC_TITLE,
+                        hint: ABANDONED_CALLS_METRIC_HINT,
+                        segment: VoiceCallSegment.inboundAbandonedCalls,
+                        hideWithAgentsFilter: true,
+                    }),
+                label: ABANDONED_CALLS_METRIC_TITLE,
+                description: ABANDONED_CALLS_METRIC_HINT,
+                chartType: ChartType.Card,
+                csvProducer: [
+                    {
+                        type: DataExportFormat.Trend,
+                        fetch: (filters, timezone) =>
+                            fetchVoiceCallCountTrend(
+                                filters,
+                                timezone,
+                                VoiceCallSegment.inboundAbandonedCalls,
+                            ),
+                        metricFormat: 'integer',
+                    },
+                ],
+            },
+        [VoiceOverviewChart.VoiceCallVolumeMetricCancelledCallsCountTrendChart]:
+            {
+                chartComponent: ({ chartId, dashboard }) =>
+                    VoiceCallVolumeMetricCallsCountTrendChart({
+                        chartId,
+                        dashboard,
+                        title: CANCELLED_CALLS_METRIC_TITLE,
+                        hint: CANCELLED_CALLS_METRIC_HINT,
+                        segment: VoiceCallSegment.inboundCancelledCalls,
+                        hideWithAgentsFilter: true,
+                    }),
+                label: CANCELLED_CALLS_METRIC_TITLE,
+                description: CANCELLED_CALLS_METRIC_HINT,
+                chartType: ChartType.Card,
+                csvProducer: [
+                    {
+                        type: DataExportFormat.Trend,
+                        fetch: (filters, timezone) =>
+                            fetchVoiceCallCountTrend(
+                                filters,
+                                timezone,
+                                VoiceCallSegment.inboundCancelledCalls,
+                            ),
+                        metricFormat: 'integer',
+                    },
+                ],
+            },
         [VoiceOverviewChart.VoiceCallTableChart]: {
             chartComponent: VoiceCallTableChart,
             label: CALL_LIST_TITLE,
