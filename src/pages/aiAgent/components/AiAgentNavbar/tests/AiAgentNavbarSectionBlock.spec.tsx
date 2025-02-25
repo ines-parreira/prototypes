@@ -47,6 +47,7 @@ describe('AiAgentNavbarSectionBlock', () => {
             navigationItems: [
                 { route: '/route1', title: 'Route 1', dataCanduId: 'candu-1' },
                 { route: '/route2', title: 'Route 2' },
+                { route: '/route3', title: 'Sales' },
             ],
         })
         mockUseAiAgentOnboardingState.mockReturnValue(OnboardingState.Onboarded)
@@ -65,6 +66,8 @@ describe('AiAgentNavbarSectionBlock', () => {
         expect(screen.getByAltText('shopify logo')).toBeInTheDocument()
         expect(screen.getByText('Route 1')).toBeInTheDocument()
         expect(screen.getByText('Route 2')).toBeInTheDocument()
+        expect(screen.getByText('Sales')).toBeInTheDocument()
+        expect(screen.getByText('BETA')).toBeInTheDocument()
         expect(screen.queryByText('Get Started')).not.toBeInTheDocument()
     })
 
@@ -83,6 +86,7 @@ describe('AiAgentNavbarSectionBlock', () => {
         expect(screen.getByText('Get Started')).toBeInTheDocument()
         expect(screen.queryByText('Route 1')).not.toBeInTheDocument()
         expect(screen.queryByText('Route 2')).not.toBeInTheDocument()
+        expect(screen.queryByText('Sales')).not.toBeInTheDocument()
     })
 
     test('does not render the component when loading', () => {
@@ -97,5 +101,24 @@ describe('AiAgentNavbarSectionBlock', () => {
         )
 
         expect(container.firstChild).toBeNull()
+    })
+
+    test('does not render the BETA badge when there is no Sales route', () => {
+        mockUseAiAgentNavigation.mockReturnValue({
+            // @ts-ignore We don't test this part
+            routes: { main: '/main' },
+            navigationItems: [
+                { route: '/route1', title: 'Route 1', dataCanduId: 'candu-1' },
+                { route: '/route2', title: 'Route 2' },
+            ],
+        })
+
+        render(
+            <BrowserRouter>
+                <AiAgentNavbarSectionBlock {...defaultProps} />
+            </BrowserRouter>,
+        )
+
+        expect(screen.queryByText('BETA')).not.toBeInTheDocument()
     })
 })

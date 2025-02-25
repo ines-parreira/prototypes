@@ -2,8 +2,11 @@ import React from 'react'
 
 import classNames from 'classnames'
 
+import { Badge } from '@gorgias/merchant-ui-kit'
+
 import cssNavbar from 'assets/css/navbar.less'
 import { ShopType } from 'models/selfServiceConfiguration/types'
+import { SALES } from 'pages/aiAgent/constants'
 import { useAiAgentNavigation } from 'pages/aiAgent/hooks/useAiAgentNavigation'
 import {
     OnboardingState,
@@ -35,6 +38,17 @@ export const AiAgentNavbarSectionBlock = ({
         return null
     }
 
+    const itemName = (item: any) => {
+        return item.title === SALES ? (
+            <div className={css.item}>
+                {item.title}
+                <Badge type="blue">BETA</Badge>
+            </div>
+        ) : (
+            item.title
+        )
+    }
+
     return (
         <NavbarSectionBlock
             icon={
@@ -61,7 +75,7 @@ export const AiAgentNavbarSectionBlock = ({
                     >
                         <NavbarLink to={item.route}>
                             <span className={cssNavbar['item-name']}>
-                                {item.title}
+                                {itemName(item)}
                             </span>
                         </NavbarLink>
                     </div>
