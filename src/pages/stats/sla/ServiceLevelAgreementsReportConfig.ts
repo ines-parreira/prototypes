@@ -83,7 +83,7 @@ export const ServiceLevelAgreementsReportConfig: ReportConfig<ServiceLevelAgreem
                         fetch: fetchBreachedSlaTicketsTrend,
                         title: TICKETS_WITH_BREACHED_SLAS_LABEL,
                         metricFormat:
-                            SlaMetricConfig[SlaMetric.AchievementRate]
+                            SlaMetricConfig[SlaMetric.BreachedTicketsRate]
                                 .metricFormat,
                     },
                 ],

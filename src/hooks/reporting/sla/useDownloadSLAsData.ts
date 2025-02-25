@@ -37,19 +37,22 @@ const slaOverviewSource = [
     {
         fetchTrend: fetchBreachedSlaTicketsTrend,
         title: TICKETS_WITH_BREACHED_SLAS_LABEL,
-        metricFormat: SlaMetricConfig[SlaMetric.AchievementRate].metricFormat,
+        metricFormat:
+            SlaMetricConfig[SlaMetric.BreachedTicketsRate].metricFormat,
     },
 ]
 const slaTicketsInPolicySource = [
     {
         fetchTrend: fetchBreachedSlaTicketsTrend,
-        metricFormat: SlaMetricConfig[SlaMetric.AchievementRate].metricFormat,
         title: BREACHED_SLA_LABEL,
+        metricFormat:
+            SlaMetricConfig[SlaMetric.BreachedTicketsRate].metricFormat,
     },
     {
         fetchTrend: fetchSatisfiedSlaTicketsTrend,
-        metricFormat: SlaMetricConfig[SlaMetric.AchievementRate].metricFormat,
         title: ACHIEVED_SLA_LABEL,
+        metricFormat:
+            SlaMetricConfig[SlaMetric.BreachedTicketsRate].metricFormat,
     },
 ]
 export const slaTrendSource = [
