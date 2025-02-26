@@ -63,8 +63,9 @@ const AuthorName: React.FC<AuthorNameProps> = ({
             {`[Random agent's first name${
                 /* istanbul ignore next */
                 avatar?.nameType ===
-                    GorgiasChatAvatarNameType.AGENT_FIRST_LAST_NAME_INITIAL &&
-                ', last name initials'
+                GorgiasChatAvatarNameType.AGENT_FIRST_LAST_NAME_INITIAL
+                    ? ', last name initials'
+                    : ''
             }]`}
         </>
     )
