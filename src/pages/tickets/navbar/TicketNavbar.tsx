@@ -36,10 +36,7 @@ import useAutoScrollOnDragging from 'pages/common/hooks/useAutoScrollOnDragging'
 import { tryLocalStorage } from 'services/common/utils'
 import GorgiasApi from 'services/gorgiasApi'
 import shortcutManager from 'services/shortcutManager/shortcutManager'
-import {
-    SplitTicketViewToggle,
-    useSplitTicketViewSwitcher,
-} from 'split-ticket-view-toggle'
+import { SplitTicketViewToggle } from 'split-ticket-view-toggle'
 import { submitSettingSuccess as submitAccountSettingSuccess } from 'state/currentAccount/actions'
 import { getViewsOrderingSetting } from 'state/currentAccount/selectors'
 import {
@@ -149,8 +146,6 @@ export function TicketNavbarContainer({
     )
 
     const viewsCount = useAppSelector((state) => state.entities.viewsCount)
-
-    useSplitTicketViewSwitcher()
 
     useEffect(() => {
         void (async () => {
