@@ -62,7 +62,7 @@ export const useCampaignPerformanceTableSetting = () => {
         }
 
         return settings[0].data
-    }, [settings]) as TableView<CampaignTableKeys, never>
+    }, [settings]) as TableView<CampaignTableKeys>
 
     return {
         isLoading: isChannelConnectionLoading || isSettingsLoading,
@@ -71,9 +71,7 @@ export const useCampaignPerformanceTableSetting = () => {
             (currentSettings.metrics || [])
                 .filter((metric) => metric.visibility !== false)
                 .map((metric) => metric.id) || [],
-        submitActiveView: async (
-            activeView: TableView<CampaignTableKeys, never>,
-        ) => {
+        submitActiveView: async (activeView: TableView<CampaignTableKeys>) => {
             const payload: SettingRequest = {
                 type: CampaignSettingType.PerformanceReportVisibleFields,
                 data: {

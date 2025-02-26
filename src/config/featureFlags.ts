@@ -113,7 +113,6 @@ export enum FeatureFlagKey {
     ProductCardDiscountedPrice = 'product-card-discounted-price',
     PubNubRealtime = 'pubnub-realtime',
     RedirectDeprecatedTicketRoutes = 'redirect-deprecated-ticket-routes',
-    ReportingAgentsTableAverageAndTotal = 'reporting-agents-table-average-and-total',
     RevenueBetaShopifyHeadless = 'revenue-beta-shopify-headless',
     RevenueBetaTesters = 'revenue-beta-testers',
     ReportingZeroTouchTicketsMetric = 'reporting-zero-touch-tickets-metric',

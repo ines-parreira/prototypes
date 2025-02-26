@@ -4,10 +4,8 @@ import { TicketChannel } from 'business/types/ticket'
 import { BannerNotificationFromBackend } from 'state/notifications/types'
 import {
     AgentsTableColumn,
-    AgentsTableRow,
     ChannelsTableColumns,
     TableColumnSet,
-    TableRowSet,
     TableSetting,
 } from 'state/ui/stats/types'
 
@@ -132,24 +130,21 @@ export type AccountSettingSatisfactionSurvey = {
 export type AccountSettingAgentsTableConfig = {
     id: number
     type: AccountSettingType.AgentsTableConfig
-    data: TableSetting<AgentsTableColumn, AgentsTableRow>
+    data: TableSetting<AgentsTableColumn>
 }
 
 export type AccountSettingChannelsTableConfig = {
     id: number
     type: AccountSettingType.ChannelsTableConfig
-    data: TableSetting<ChannelsTableColumns, never>
+    data: TableSetting<ChannelsTableColumns>
 }
 
-export type AccountSettingTableConfig<
-    T extends TableColumnSet,
-    R extends TableRowSet,
-> = {
+export type AccountSettingTableConfig<T extends TableColumnSet> = {
     id: number
     type:
         | AccountSettingType.AgentsTableConfig
         | AccountSettingType.ChannelsTableConfig
-    data: TableSetting<T, R>
+    data: TableSetting<T>
 }
 
 export type AccountViewsOrderingSettingData = {

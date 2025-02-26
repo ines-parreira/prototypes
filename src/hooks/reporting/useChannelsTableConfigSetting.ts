@@ -8,10 +8,9 @@ import { getChannelsTableConfigSettingsJS } from 'state/currentAccount/selectors
 import { ChannelsTableColumns } from 'state/ui/stats/types'
 
 export const useChannelsTableSetting = () =>
-    useTableConfigSetting<ChannelsTableColumns, never>(
+    useTableConfigSetting<ChannelsTableColumns>(
         getChannelsTableConfigSettingsJS,
         channelsReportTableActiveView,
         columnsOrder,
-        [],
         submitChannelsTableConfigView,
     )

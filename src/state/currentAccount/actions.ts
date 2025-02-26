@@ -24,7 +24,6 @@ import { Notification, NotificationStatus } from 'state/notifications/types'
 import { RootState, StoreDispatch } from 'state/types'
 import {
     AgentsTableColumn,
-    AgentsTableRow,
     ChannelsTableColumns,
     TableView,
 } from 'state/ui/stats/types'
@@ -121,7 +120,7 @@ export function submitSetting(
 }
 
 export function submitAgentTableConfigView(
-    activeView: TableView<AgentsTableColumn, AgentsTableRow>,
+    activeView: TableView<AgentsTableColumn>,
 ) {
     return (
         dispatch: StoreDispatch,
@@ -149,7 +148,7 @@ export function submitAgentTableConfigView(
 }
 
 export function submitChannelsTableConfigView(
-    activeView: TableView<ChannelsTableColumns, never>,
+    activeView: TableView<ChannelsTableColumns>,
 ) {
     return (
         dispatch: StoreDispatch,

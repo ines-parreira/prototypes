@@ -21,7 +21,6 @@ describe('useChannelsTableConfigSetting.ts', () => {
             getChannelsTableConfigSettingsJS,
             channelsReportTableActiveView,
             columnsOrder,
-            [],
             submitChannelsTableConfigView,
         )
     })

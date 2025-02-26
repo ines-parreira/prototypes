@@ -63,7 +63,6 @@ import {
 import { AgentMetricColumn } from 'state/ui/stats/drillDownSlice'
 import {
     AgentsTableColumn,
-    AgentsTableRow,
     AgentsTableViewIdentifier,
     TableSetting,
 } from 'state/ui/stats/types'
@@ -78,6 +77,10 @@ export const TableColumnsOrder: AgentsTableColumn[] = [
     AgentsTableColumn.MedianFirstResponseTime,
     AgentsTableColumn.MedianResolutionTime,
     AgentsTableColumn.OneTouchTickets,
+]
+
+export const TableColumnsOrderWithOnlineTime = [
+    ...TableColumnsOrder,
     AgentsTableColumn.OnlineTime,
     AgentsTableColumn.MessagesSentPerHour,
     AgentsTableColumn.RepliedTicketsPerHour,
@@ -85,47 +88,22 @@ export const TableColumnsOrder: AgentsTableColumn[] = [
     AgentsTableColumn.TicketHandleTime,
 ]
 
-export const TableRowsOrderWithoutRows: AgentsTableRow[] = [
-    AgentsTableRow.Average,
-]
+export const agentPerformanceMetrics = TableColumnsOrderWithOnlineTime.map(
+    (column) => ({
+        id: column,
+        visibility: true,
+    }),
+)
 
-export const TableRowsOrder: AgentsTableRow[] = [
-    AgentsTableRow.Total,
-    AgentsTableRow.Average,
-]
-
-export const agentPerformanceMetrics = TableColumnsOrder.map((column) => ({
-    id: column,
-    visibility: true,
-}))
-
-export const agentPerformanceRows = TableRowsOrder.map((row) => ({
-    id: row,
-    visibility: true,
-}))
-
-export const AgentsTableViews: TableSetting<AgentsTableColumn, AgentsTableRow> =
-    {
-        active_view: AgentsTableViewIdentifier.AgentPerformanceMetrics,
-        views: [],
-    }
-
-export const agentPerformanceTableActiveViewWithoutRows = {
-    id: AgentsTableViewIdentifier.AgentPerformanceMetrics,
-    name: 'Agent performance metrics',
-    metrics: agentPerformanceMetrics,
+export const AgentsTableViews: TableSetting<AgentsTableColumn> = {
+    active_view: AgentsTableViewIdentifier.AgentPerformanceMetrics,
+    views: [],
 }
 
 export const agentPerformanceTableActiveView = {
     id: AgentsTableViewIdentifier.AgentPerformanceMetrics,
     name: 'Agent performance metrics',
     metrics: agentPerformanceMetrics,
-    rows: agentPerformanceRows,
-}
-
-export const TableRowLabels: Record<AgentsTableRow, string> = {
-    [AgentsTableRow.Average]: 'Average',
-    [AgentsTableRow.Total]: 'Total',
 }
 
 export const TableLabels: Record<AgentsTableColumn, string> = {
@@ -155,20 +133,6 @@ export const MOBILE_METRIC_COLUMN_WIDTH = 120
 export const averageTooltip = {
     title: '',
     link: 'https://link.gorgias.com/a6l',
-}
-
-export const AgentsRowConfig: Record<
-    AgentsTableRow,
-    {
-        hint: TooltipData | null
-    }
-> = {
-    [AgentsTableRow.Total]: {
-        hint: null,
-    },
-    [AgentsTableRow.Average]: {
-        hint: null,
-    },
 }
 
 export const AgentsColumnConfig: Record<

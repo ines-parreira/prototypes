@@ -27,11 +27,6 @@ export enum AgentsTableColumn {
     TicketHandleTime = 'agent_ticket_handle_time',
 }
 
-export enum AgentsTableRow {
-    Average = 'average',
-    Total = 'total',
-}
-
 export enum AutoQAMetric {
     ReviewedClosedTickets = 'auto_qa_reviewed_closed_tickets',
     ResolutionCompleteness = 'auto_qa_resolution_completeness',
@@ -105,21 +100,20 @@ export enum ChannelsTableViewIdentifier {
     ChannelsReport = 'channelsReport',
 }
 
-export type TableViewItem<T> = {
+export type TableViewColumn<T> = {
     id: T
     visibility: boolean | null
 }
 
-export type TableView<T, R> = {
+export type TableView<T> = {
     id: string
     name: string
-    metrics: TableViewItem<T>[]
-    rows?: TableViewItem<R>[]
+    metrics: TableViewColumn<T>[]
 }
 
-export type TableSetting<T, R = never> = {
+export type TableSetting<T> = {
     active_view: string
-    views: TableView<T, R>[]
+    views: TableView<T>[]
 }
 
 export enum ChannelsTableColumns {
@@ -140,8 +134,6 @@ export type TableColumnSet =
     | ChannelsTableColumns
     | CampaignTableKeys
     | IntentTableColumn
-
-export type TableRowSet = AgentsTableRow
 
 export type StatsTablesState = {
     [AGENT_PERFORMANCE_SLICE_NAME]: AgentPerformanceState<AgentsTableColumn>

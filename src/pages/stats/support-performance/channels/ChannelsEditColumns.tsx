@@ -9,17 +9,15 @@ import {
     LeadColumn,
 } from 'pages/stats/support-performance/channels/ChannelsTableConfig'
 import { getChannelsTableConfigSettingsJS } from 'state/currentAccount/selectors'
-import { ChannelsTableColumns } from 'state/ui/stats/types'
 
 export const ChannelsEditColumns = () => {
     return (
-        <EditTableColumns<ChannelsTableColumns, never>
+        <EditTableColumns
             settingsSelector={getChannelsTableConfigSettingsJS}
             fallbackViews={ChannelsTableViews}
             tableLabels={ChannelsTableLabels}
             tooltips={ChannelColumnConfig}
             leadColumn={LeadColumn}
-            leadRow={undefined}
             useTableSetting={useChannelsTableSetting}
         />
     )
