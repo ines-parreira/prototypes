@@ -1,5 +1,7 @@
 import React, { ReactNode } from 'react'
 
+import { useHistory } from 'react-router-dom'
+
 import AlertBanners from 'AlertBanners'
 import { AppNode } from 'appNode'
 import { useDesktopOnlyShowGlobalNavFeatureFlag } from 'common/navigation/hooks/useShowGlobalNavFeatureFlag'
@@ -8,6 +10,7 @@ import { FeatureFlagKey } from 'config/featureFlags'
 import { useFlag } from 'core/flags'
 import { useApplyTheme } from 'core/theme'
 import useHasPhone from 'hooks/useHasPhone'
+import { isAiAgentOnboarding } from 'main/app/utils/isAiAgentOnboarding'
 import { AlertNotifications } from 'notifications'
 import EmailDisconnectedBanner from 'pages/common/components/EmailDisconnectedBanner'
 import EmailDomainVerificationBanner from 'pages/common/components/EmailDomainVerificationBanner/EmailDomainVerificationBanner'
@@ -34,6 +37,7 @@ type Props = {
 }
 
 export default function App({ children }: Props) {
+    const history = useHistory()
     const hasGlobalNav = useDesktopOnlyShowGlobalNavFeatureFlag()
     const hasPhone = useHasPhone()
     const bannerList: Record<string, boolean> = useFlag(
@@ -54,23 +58,31 @@ export default function App({ children }: Props) {
     useSharedLogic()
     useActivityTracker()
 
+    const isOnboarding = isAiAgentOnboarding(history.location.pathname)
+
     return (
         <AppNode className={hasGlobalNav ? 'globalNav' : undefined}>
             <UIKitRootNodeProvider>
                 <SessionChangeDetection />
                 <NotificationsToasts />
                 <AlertNotifications />
-                <AlertBanners />
-                {!bannerList?.scriptTagMigrationBanner && (
-                    <ScriptTagMigrationBanner />
+                {!isOnboarding && (
+                    <>
+                        <AlertBanners />
+                        {!bannerList?.scriptTagMigrationBanner && (
+                            <ScriptTagMigrationBanner />
+                        )}
+                        {!bannerList?.emailDomainVerificationBanner && (
+                            <EmailDomainVerificationBanner />
+                        )}
+                        {!bannerList?.emailDisconnectedBanner && (
+                            <EmailDisconnectedBanner />
+                        )}
+                        {!bannerList?.emailMigrationBanner && (
+                            <EmailMigrationBanner />
+                        )}
+                    </>
                 )}
-                {!bannerList?.emailDomainVerificationBanner && (
-                    <EmailDomainVerificationBanner />
-                )}
-                {!bannerList?.emailDisconnectedBanner && (
-                    <EmailDisconnectedBanner />
-                )}
-                {!bannerList?.emailMigrationBanner && <EmailMigrationBanner />}
                 <ScriptTagMigrationModal />
                 <Spotlight />
                 <div className={css.content}>
