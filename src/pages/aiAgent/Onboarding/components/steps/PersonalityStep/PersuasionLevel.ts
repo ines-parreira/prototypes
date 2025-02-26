@@ -1,7 +1,7 @@
 export enum PersuasionLevel {
     Educational = 'educational',
     Moderate = 'balanced',
-    Aggressive = 'aggressive',
+    Assertive = 'assertive',
 }
 
 type PersuasionLevelInfo = {
@@ -22,8 +22,8 @@ export const PersuasionLevelLabels: Record<
         description:
             'Strikes a balance between educating the customer and encouraging them to make a purchase.',
     },
-    [PersuasionLevel.Aggressive]: {
-        label: 'Aggressive',
+    [PersuasionLevel.Assertive]: {
+        label: 'Assertive',
         description:
             'Prioritizes driving the sale with a strong focus on persuasion and urgency.',
     },
