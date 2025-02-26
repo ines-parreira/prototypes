@@ -10,6 +10,7 @@ import {
     CUSTOM_FIELD_CONDITIONS_ROUTE,
     CUSTOM_FIELD_ROUTES,
 } from 'routes/constants'
+import { AutomateSettings } from 'settings/pages'
 import { assumeMock } from 'utils/testing'
 
 import { Billing } from '../Billing'
@@ -153,11 +154,17 @@ const testingMap = [
     {
         callOrder: 15,
         exact: undefined,
+        path: `${basePath}/automate`,
+        component: AutomateSettings,
+    },
+    {
+        callOrder: 16,
+        exact: undefined,
         path: `${basePath}/teams`,
         component: Teams,
     },
     {
-        callOrder: 16,
+        callOrder: 17,
         exact: undefined,
         path: `${basePath}/users`,
         component: Users,

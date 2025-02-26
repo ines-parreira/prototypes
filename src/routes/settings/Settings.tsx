@@ -27,6 +27,7 @@ import {
     CUSTOM_FIELD_CONDITIONS_ROUTE,
     CUSTOM_FIELD_ROUTES,
 } from 'routes/constants'
+import { AutomateSettings } from 'settings/pages'
 import { AccountFeature } from 'state/currentAccount/types'
 import { assetsUrl } from 'utils'
 
@@ -105,6 +106,11 @@ export function SettingRoutes() {
             </Route>
             <Route path={`${path}/sla`}>
                 <SLA />
+            </Route>
+            <Route path={`${path}/automate`}>
+                {renderAppSettings(AutomateSettings, {
+                    roleParams: [AGENT_ROLE],
+                })}
             </Route>
             <Route path={`${path}/teams`}>
                 <Teams />
