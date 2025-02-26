@@ -11,8 +11,8 @@ import { getStoreConfigurationFixture } from 'pages/aiAgent/fixtures/storeConfig
 import { DiscountStrategy } from 'pages/aiAgent/Onboarding/components/steps/PersonalityStep/DiscountStrategy'
 import { PersuasionLevel } from 'pages/aiAgent/Onboarding/components/steps/PersonalityStep/PersuasionLevel'
 import { useAiAgentStoreConfigurationContext } from 'pages/aiAgent/providers/AiAgentStoreConfigurationContext'
+import { NotificationStatus } from 'state/notifications/types'
 
-import { NotificationStatus } from '../../../../../state/notifications/types'
 import { SalesSettings } from '../SalesSettings'
 
 const mockStore = configureMockStore([thunk])()
@@ -55,6 +55,9 @@ const trackRect = {
     y: 0,
     toJSON: () => {},
 }
+
+const maxDiscountInput = (): HTMLInputElement =>
+    screen.getByLabelText(/Maximum Discount Percentage/)
 
 describe('<SalesSettings />', () => {
     beforeEach(() => {
@@ -131,6 +134,154 @@ describe('<SalesSettings />', () => {
         })
     })
 
+    it('should update discount strategy description when moving slider', async () => {
+        renderComponent()
+
+        await waitFor(() => {
+            const track = document.querySelectorAll('.track')[1]
+            track.getBoundingClientRect = jest.fn().mockReturnValue(trackRect)
+            // Try clicking beyond the end of track to select the last value
+            userEvent.click(track, {
+                clientX: 500,
+            })
+
+            expect(
+                screen.getByText(
+                    'The Sales AI Agent frequently uses discounts to maximize sales, prioritizing conversions over margins.',
+                ),
+            ).toBeInTheDocument()
+        })
+    })
+
+    it('should set max percentage to 0 when discount strategy is None', async () => {
+        renderComponent()
+
+        await waitFor(() => {
+            const track = document.querySelectorAll('.track')[1]
+            track.getBoundingClientRect = jest.fn().mockReturnValue(trackRect)
+            // Try clicking before the start of track to select the first value
+            userEvent.click(track, {
+                clientX: 0,
+            })
+
+            expect(
+                screen.getByText(
+                    'The Sales AI Agent will not offer any discounts under any circumstances.',
+                ),
+            ).toBeInTheDocument()
+        })
+
+        // Wait for maxDiscountPercentage to update in the DOM
+        await waitFor(() => {
+            expect(maxDiscountInput()).toBeInTheDocument()
+            expect(maxDiscountInput().getAttribute('value')).toBe('0') // Ensure value is 0
+        })
+    })
+
+    it('should disabled discount max input when discount strategy level is no-discount', async () => {
+        renderComponent()
+        const track = document.querySelectorAll('.track')[1]
+        track.getBoundingClientRect = jest.fn().mockReturnValue(trackRect)
+
+        userEvent.click(track, {
+            clientX: 0,
+        })
+
+        await waitFor(() => {
+            expect(screen.getByTestId('discount-max')).toBeDisabled()
+        })
+    })
+
+    it('should update the max percentage discount when valid discount', async () => {
+        renderComponent()
+
+        await userEvent.clear(maxDiscountInput())
+        await userEvent.type(maxDiscountInput(), '10')
+
+        await waitFor(() => {
+            expect(maxDiscountInput().value).toBe('10')
+            expect(
+                screen.queryByText(/Must be a number between 1 and 100/i),
+            ).not.toBeInTheDocument()
+        })
+    })
+
+    it('should set max percentage to 8 when discount strategy is not None', async () => {
+        renderComponent()
+
+        await waitFor(() => {
+            const track = document.querySelectorAll('.track')[1]
+            track.getBoundingClientRect = jest.fn().mockReturnValue(trackRect)
+            // Try clicking before the start of track to select the first value
+            userEvent.click(track, {
+                clientX: 0,
+            })
+
+            expect(
+                screen.getByText(
+                    'The Sales AI Agent will not offer any discounts under any circumstances.',
+                ),
+            ).toBeInTheDocument()
+        })
+
+        // Wait for maxDiscountPercentage to update in the DOM
+        await waitFor(() => {
+            expect(maxDiscountInput()).toBeInTheDocument()
+            expect(maxDiscountInput().getAttribute('value')).toBe('0') // Ensure value is 0
+        })
+
+        await waitFor(() => {
+            const track = document.querySelectorAll('.track')[1]
+            track.getBoundingClientRect = jest.fn().mockReturnValue(trackRect)
+            // Try clicking beyond the end of track to select the last value
+            userEvent.click(track, { clientX: 500 })
+
+            expect(
+                screen.getByText(
+                    'The Sales AI Agent frequently uses discounts to maximize sales, prioritizing conversions over margins.',
+                ),
+            ).toBeInTheDocument()
+        })
+
+        // Wait for maxDiscountPercentage to update in the DOM
+        await waitFor(() => {
+            const maxDiscountInput = screen.getByTestId('discount-max')
+            expect(maxDiscountInput).toBeInTheDocument()
+            expect(maxDiscountInput.getAttribute('value')).toBe('8') // Ensure value is 0
+        })
+    })
+
+    it('should update the max percentage discount and change the discount strategy when the value is 0', async () => {
+        renderComponent()
+
+        await userEvent.clear(maxDiscountInput())
+        userEvent.type(maxDiscountInput(), '0')
+
+        await waitFor(() => expect(maxDiscountInput().value).toBe('0'))
+
+        await userEvent.click(
+            screen.getByRole('button', { name: 'Save Changes' }),
+        )
+
+        await waitFor(() =>
+            expect(screen.queryByText(/Must be a number between 1 and 100/i)),
+        )
+    })
+
+    it('should update the max percentage discount and show an error message when discount to high (101)', async () => {
+        renderComponent()
+
+        await userEvent.clear(maxDiscountInput())
+        await userEvent.type(maxDiscountInput(), '101')
+
+        await waitFor(() => {
+            expect(maxDiscountInput().value).toBe('101')
+            expect(
+                screen.queryByText(/Must be a number between 1 and 100/i),
+            ).toBeInTheDocument()
+        })
+    })
+
     it('should not call updateStoreConfiguration when clicking on the save button', () => {
         renderComponent()
 
@@ -139,80 +290,18 @@ describe('<SalesSettings />', () => {
         expect(mockUpdateStoreConfiguration).not.toHaveBeenCalled()
     })
 
-    it('should set discount max input to 0 when discount strategy level is no-discount', async () => {
-        mockUpdateStoreConfiguration.mockReturnValue({
-            ...storeConfiguration,
-            salesDiscountStrategyLevel: DiscountStrategy.NoDiscount,
-        })
-
-        renderComponent()
-        const maxDiscountInput: HTMLInputElement =
-            screen.getByTestId('discount-max')
-
-        await waitFor(() => expect(maxDiscountInput.value).toBe('0'))
-    })
-
-    it('should update the max percentage discount when valid discount', async () => {
-        renderComponent()
-        const maxDiscountInput: HTMLInputElement =
-            screen.getByTestId('discount-max')
-
-        userEvent.clear(maxDiscountInput)
-        await userEvent.type(maxDiscountInput, '10')
-
-        await waitFor(() => {
-            expect(maxDiscountInput.value).toBe('10')
-            expect(
-                screen.queryByText(/Must be a number between 1 and 100/i),
-            ).not.toBeInTheDocument()
-        })
-    })
-
-    it('should update the max percentage discount and show an error message when discount to low (0)', async () => {
-        renderComponent()
-        const maxDiscountInput: HTMLInputElement =
-            screen.getByTestId('discount-max')
-
-        await waitFor(() => expect(maxDiscountInput.value).toBe('0'))
-
-        userEvent.click(screen.getByRole('button', { name: 'Save Changes' }))
-
-        await waitFor(() =>
-            expect(
-                screen.queryByText(/Must be a number between 1 and 100/i),
-            ).toBeInTheDocument(),
-        )
-    })
-
-    it('should update the max percentage discount and show an error message when discount to high (101)', async () => {
-        renderComponent()
-        const maxDiscountInput: HTMLInputElement =
-            screen.getByTestId('discount-max')
-
-        userEvent.clear(maxDiscountInput)
-        await userEvent.type(maxDiscountInput, '101')
-
-        await waitFor(() => {
-            expect(maxDiscountInput.value).toBe('101')
-            expect(
-                screen.queryByText(/Must be a number between 1 and 100/i),
-            ).toBeInTheDocument()
-        })
-    })
-
     describe('when user clicks on the save button with new settings', () => {
         it('should call updateStoreConfiguration', async () => {
             renderComponent()
-            const maxDiscountInput: HTMLInputElement =
-                screen.getByTestId('discount-max')
 
-            await userEvent.type(maxDiscountInput, '2')
+            await userEvent.clear(maxDiscountInput())
+            await userEvent.type(maxDiscountInput(), '2')
             userEvent.click(
                 screen.getByRole('button', { name: 'Save Changes' }),
             )
 
             await waitFor(() => {
-                expect(maxDiscountInput.value).toBe('2')
+                expect(maxDiscountInput().value).toBe('2')
                 expect(mockUpdateStoreConfiguration).toHaveBeenCalledWith(
                     newStoreConfig,
                 )
@@ -229,10 +318,9 @@ describe('<SalesSettings />', () => {
             })
 
             renderComponent()
-            const maxDiscountInput: HTMLInputElement =
-                screen.getByTestId('discount-max')
 
-            await userEvent.type(maxDiscountInput, '2')
+            await userEvent.clear(maxDiscountInput())
+            await userEvent.type(maxDiscountInput(), '2')
             userEvent.click(
                 screen.getByRole('button', { name: 'Save Changes' }),
             )
@@ -250,10 +338,9 @@ describe('<SalesSettings />', () => {
             mockUpdateStoreConfiguration.mockRejectedValue('ERROR')
 
             renderComponent()
-            const maxDiscountInput: HTMLInputElement =
-                screen.getByTestId('discount-max')
 
-            await userEvent.type(maxDiscountInput, '2')
+            await userEvent.clear(maxDiscountInput())
+            await userEvent.type(maxDiscountInput(), '2')
             userEvent.click(
                 screen.getByRole('button', { name: 'Save Changes' }),
             )
@@ -274,26 +361,12 @@ describe('<SalesSettings />', () => {
     it('should reset sales settings when user clicks on the cancel button', async () => {
         renderComponent()
 
-        await userEvent.type(screen.getByTestId('discount-max'), '2')
+        await userEvent.clear(maxDiscountInput())
+        await userEvent.type(maxDiscountInput(), '2')
         userEvent.click(screen.getByRole('button', { name: 'Cancel' }))
 
         await waitFor(() => {
             expect(storeConfiguration).toBe(storeConfiguration)
-        })
-    })
-
-    it('should disabled discount max input when user changes discount strategy level to no-discount', async () => {
-        renderComponent()
-        const maxDiscountInput: HTMLInputElement =
-            screen.getByTestId('discount-max')
-        const discountStrategyInput = screen.getByTestId('discount-strategy')
-
-        userEvent.clear(discountStrategyInput)
-        await userEvent.type(discountStrategyInput, DiscountStrategy.NoDiscount)
-
-        await waitFor(() => {
-            expect(maxDiscountInput).toBeDisabled()
-            expect(maxDiscountInput.value).toBe('0')
         })
     })
 })

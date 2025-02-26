@@ -4,10 +4,16 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { FormProvider, useForm } from 'react-hook-form'
 import { z } from 'zod'
 
+import { Label } from '@gorgias/merchant-ui-kit'
+
 import useAppDispatch from 'hooks/useAppDispatch'
 import { SalesSettingsData } from 'models/aiAgent/types'
 import { OnboardingSteppedSlider } from 'pages/aiAgent/Onboarding/components/OnboardingSteppedSlider/OnboardingSteppedSlider'
-import { DiscountStrategy } from 'pages/aiAgent/Onboarding/components/steps/PersonalityStep/DiscountStrategy'
+import {
+    DiscountStrategy,
+    DiscountStrategyLabels,
+    DiscountStrategySteps,
+} from 'pages/aiAgent/Onboarding/components/steps/PersonalityStep/DiscountStrategy'
 import {
     PersuasionLevel,
     PersuasionLevelLabels,
@@ -67,7 +73,10 @@ export const SalesSettings = () => {
                 storeConfiguration?.salesDiscountStrategyLevel ??
                 DiscountStrategy.Balanced,
             salesDiscountMax: formatDiscountMax(
-                (storeConfiguration?.salesDiscountMax ?? 0) * 100,
+                (storeConfiguration?.salesDiscountStrategyLevel ===
+                DiscountStrategy.NoDiscount
+                    ? 0
+                    : (storeConfiguration?.salesDiscountMax ?? 0.08)) * 100,
             ),
         },
         mode: 'onChange',
@@ -79,6 +88,7 @@ export const SalesSettings = () => {
         handleSubmit,
         setValue,
         reset,
+        trigger,
         formState: { errors },
     } = methods
 
@@ -91,6 +101,28 @@ export const SalesSettings = () => {
         value: PersuasionLevel | DiscountStrategy | number,
     ) => {
         setValue(field, value, { shouldValidate: true, shouldDirty: true })
+        if (
+            field === 'salesDiscountStrategyLevel' &&
+            value === DiscountStrategy.NoDiscount
+        ) {
+            setValue('salesDiscountMax', 0, {
+                shouldValidate: true,
+                shouldDirty: true,
+            })
+        }
+        if (
+            field === 'salesDiscountStrategyLevel' &&
+            value !== DiscountStrategy.NoDiscount &&
+            !salesDiscountMax
+        ) {
+            setValue('salesDiscountMax', 8, {
+                shouldValidate: true,
+                shouldDirty: true,
+            })
+        }
+        if (field === 'salesDiscountStrategyLevel') {
+            void trigger('salesDiscountMax')
+        }
     }
 
     const onSave = async () => {
@@ -115,6 +147,38 @@ export const SalesSettings = () => {
         }
     }
 
+    const onChangeDiscountMax = (value: string) => {
+        if (value === '') {
+            setValue('salesDiscountMax', value as any, {
+                shouldValidate: false,
+                shouldDirty: true,
+            })
+            return
+        }
+
+        const parsedValue = Number(value)
+        setValue(
+            'salesDiscountMax',
+            !value || isNaN(parsedValue) ? 0 : parsedValue,
+            {
+                shouldValidate: true,
+                shouldDirty: true,
+            },
+        )
+
+        if (parsedValue === 0) {
+            setValue(
+                'salesDiscountStrategyLevel',
+                DiscountStrategy.NoDiscount,
+                {
+                    shouldValidate: true,
+                    shouldDirty: true,
+                },
+            )
+            void trigger('salesDiscountMax')
+        }
+    }
+
     const onCancel = () => {
         reset()
     }
@@ -136,7 +200,7 @@ export const SalesSettings = () => {
                         with your strategy.
                     </Alert>
 
-                    <div className={css.card}>
+                    <section className={css.card}>
                         <div className={css.titleContainer}>
                             <div className={css.title}>
                                 Set Persuasion Level
@@ -162,52 +226,78 @@ export const SalesSettings = () => {
                                 fillStyle="fill"
                                 className={css.description}
                             >
-                                <div>
-                                    {
-                                        PersuasionLevelLabels[
-                                            salesPersuasionLevel
-                                        ]?.description
-                                    }
-                                </div>
+                                {
+                                    PersuasionLevelLabels[salesPersuasionLevel]
+                                        ?.description
+                                }
                             </AIBanner>
                         </div>
-                    </div>
+                    </section>
 
-                    {/* TODO update inputs to real one */}
-                    <input
-                        data-testid="discount-strategy"
-                        value={salesDiscountStrategyLevel}
-                        onChange={(e) =>
-                            setValue(
-                                'salesDiscountStrategyLevel',
-                                e.target.value as DiscountStrategy,
-                            )
-                        }
-                    />
-                    <InputField
-                        type="number"
-                        min={1}
-                        max={100}
-                        value={salesDiscountMax}
-                        data-testid="discount-max"
-                        onChange={(value: string) => {
-                            const parsedValue = Number(value)
-                            setValue(
-                                'salesDiscountMax',
-                                !value || isNaN(parsedValue) ? 0 : parsedValue,
+                    <section className={css.card}>
+                        <div className={css.titleContainer}>
+                            <div className={css.title}>
+                                Set your discount strategy
+                            </div>
+                            <IconTooltip>
+                                Define how often AI Agent should use discounts
+                                to encourage customers to complete a purchase.
+                            </IconTooltip>
+                        </div>
+                        <div>
+                            <OnboardingSteppedSlider
+                                steps={DiscountStrategySteps}
+                                stepKey={salesDiscountStrategyLevel}
+                                onChange={(value: string) => {
+                                    handleSliderChange(
+                                        'salesDiscountStrategyLevel',
+                                        value as DiscountStrategy,
+                                    )
+                                }}
+                            />
+
+                            <AIBanner
+                                fillStyle="fill"
+                                className={css.description}
+                            >
                                 {
-                                    shouldValidate: true,
-                                    shouldDirty: true,
-                                },
-                            )
-                        }}
-                        suffix={<IconInput icon="percent" />}
-                        error={errors.salesDiscountMax?.message}
-                        isDisabled={
-                            salesDiscountStrategyLevel ===
-                            DiscountStrategy.NoDiscount
-                        }
-                    />
+                                    DiscountStrategyLabels[
+                                        salesDiscountStrategyLevel
+                                    ]?.description
+                                }
+                            </AIBanner>
+                        </div>
+
+                        <hr className={css.separator} />
+
+                        <div className={css.maxDiscountContainer}>
+                            <Label htmlFor="percentage-discount">
+                                Maximum Discount Percentage
+                                <IconTooltip>
+                                    Set the maximum offer for first-time
+                                    customers
+                                </IconTooltip>
+                            </Label>
+
+                            <InputField
+                                id="percentage-discount"
+                                type="number"
+                                min={1}
+                                max={100}
+                                value={salesDiscountMax}
+                                data-testid="discount-max"
+                                onChange={onChangeDiscountMax}
+                                suffix={<IconInput icon="percent" />}
+                                error={errors.salesDiscountMax?.message}
+                                isDisabled={
+                                    salesDiscountStrategyLevel ===
+                                    DiscountStrategy.NoDiscount
+                                }
+                                className={css.maxDiscountInput}
+                            />
+                        </div>
+                    </section>
+
                     <div className={css.contentActions}>
                         <Button
                             onClick={handleSubmit(onSave)}
