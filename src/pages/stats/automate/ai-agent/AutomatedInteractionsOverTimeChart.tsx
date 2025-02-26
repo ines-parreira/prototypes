@@ -81,7 +81,7 @@ export function AutomatedInteractionsOverTimeChart({
     return (
         <ChartCard
             title={AUTOMATED_INTERACTIONS_OVER_TIME_CHART_TITLE}
-            hint={{ title: AUTOMATED_INTERACTION_TOOLTIP }}
+            hint={AUTOMATED_INTERACTION_TOOLTIP}
             {...getGreyAreaHint(greyArea)}
             chartId={chartId}
             dashboard={dashboard}

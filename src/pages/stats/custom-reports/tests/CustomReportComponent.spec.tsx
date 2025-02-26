@@ -68,6 +68,54 @@ describe('<CustomReportComponent />', () => {
         expect(screen.queryByText(chart)).not.toBeInTheDocument()
     })
 
+    it.each([true, undefined])(
+        'should pass menu props if withChartMenu is true (or not set)',
+        (withChartMenu) => {
+            mockFlags({
+                [FeatureFlagKey.AnalyticsCustomReports]: true,
+            })
+
+            render(
+                <CustomReportComponent
+                    chart={chart}
+                    dashboard={dashboard}
+                    config={config}
+                    withChartMenu={withChartMenu}
+                />,
+            )
+
+            expect(chartComponentMock).toHaveBeenCalledWith(
+                expect.objectContaining({
+                    chartId: chart,
+                    dashboard: dashboard,
+                }),
+                {},
+            )
+        },
+    )
+
+    it('should not pass menu props if withChartMenu is false', () => {
+        mockFlags({
+            [FeatureFlagKey.AnalyticsCustomReports]: true,
+        })
+
+        render(
+            <CustomReportComponent
+                chart={chart}
+                config={config}
+                withChartMenu={false}
+            />,
+        )
+
+        expect(chartComponentMock).toHaveBeenCalledWith({}, {})
+        expect(chartComponentMock).not.toHaveBeenCalledWith(
+            expect.objectContaining({
+                chartId: chart,
+                dashboard: dashboard,
+            }),
+        )
+    })
+
     it('should render chartId and dashboardId if dashboard exists and featureFlag is true', () => {
         mockFlags({
             [FeatureFlagKey.AnalyticsCustomReports]: true,

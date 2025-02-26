@@ -125,6 +125,7 @@ export default function AutomateAiAgentStatsReport() {
                         <CustomReportComponent
                             config={AutomateAiAgentsReportConfig}
                             chart={AutomateAiAgentsChart.AiAgentTable}
+                            withChartMenu={false}
                         />
                     </DashboardGridCell>
                 </DashboardSection>
@@ -143,6 +144,7 @@ export default function AutomateAiAgentStatsReport() {
                                 chart={
                                     AutomateAiAgentsChart.AiAgentTicketDistribution
                                 }
+                                withChartMenu={false}
                             />
                         </DashboardGridCell>
                         <DashboardGridCell size={getGridCellSize(8)}>
@@ -151,6 +153,7 @@ export default function AutomateAiAgentStatsReport() {
                                 chart={
                                     AutomateAiAgentsChart.AiAgentTicketInsightsFieldTrend
                                 }
+                                withChartMenu={false}
                             />
                         </DashboardGridCell>
                         <DashboardGridCell>
@@ -159,6 +162,7 @@ export default function AutomateAiAgentStatsReport() {
                                 chart={
                                     AutomateAiAgentsChart.AiAgentCustomFieldsTicketCountBreakdown
                                 }
+                                withChartMenu={false}
                             />
                         </DashboardGridCell>
                     </DashboardSection>
@@ -171,6 +175,7 @@ export default function AutomateAiAgentStatsReport() {
                             chart={
                                 AutomateAiAgentsChart.AiAgentAutomatedInteractionsMetric
                             }
+                            withChartMenu={false}
                         />
                     </DashboardGridCell>
 
@@ -180,6 +185,7 @@ export default function AutomateAiAgentStatsReport() {
                             chart={
                                 AutomateAiAgentsChart.AiAgentAutomatedInteractionsOverTime
                             }
+                            withChartMenu={false}
                         />
                     </DashboardGridCell>
                 </DashboardSection>

@@ -13,10 +13,16 @@ type Props<T extends string> = {
     chart: T
     config: ReportConfig<T>
     dashboard?: CustomReportSchema
+    withChartMenu?: boolean
 }
 
 export const CustomReportComponent = memo(
-    <T extends string>({ chart, dashboard, config }: Props<T>) => {
+    <T extends string>({
+        chart,
+        dashboard,
+        config,
+        withChartMenu = true,
+    }: Props<T>) => {
         const isAnalyticsCustomReports: FeatureFlagKey =
             useFlags()[FeatureFlagKey.AnalyticsCustomReports]
 
@@ -27,10 +33,13 @@ export const CustomReportComponent = memo(
         }
 
         if (isAnalyticsCustomReports) {
-            return createElement(config.charts[chart].chartComponent, {
-                chartId: chart,
-                dashboard,
-            })
+            const props = withChartMenu
+                ? {
+                      chartId: chart,
+                      dashboard,
+                  }
+                : {}
+            return createElement(config.charts[chart].chartComponent, props)
         }
 
         return createElement(config.charts[chart].chartComponent)

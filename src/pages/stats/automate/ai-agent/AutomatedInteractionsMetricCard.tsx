@@ -7,9 +7,13 @@ import useAppSelector from 'hooks/useAppSelector'
 import { FilterKey } from 'models/stat/types'
 import { AutomatedInteractionsMetric } from 'pages/automate/automate-metrics/AutomatedInteractionsMetric'
 import { LogicalOperatorEnum } from 'pages/stats/common/components/Filter/constants'
+import { DashboardChartProps } from 'pages/stats/custom-reports/types'
 import { getStatsFiltersWithLogicalOperators } from 'state/stats/selectors'
 
-export function AutomatedInteractionsMetricCard() {
+export function AutomatedInteractionsMetricCard({
+    chartId,
+    dashboard,
+}: DashboardChartProps) {
     const { userTimezone } = useNewAutomateFilters()
 
     const statsFilters = useAppSelector(getStatsFiltersWithLogicalOperators)
@@ -38,5 +42,11 @@ export function AutomatedInteractionsMetricCard() {
         userTimezone,
     )
 
-    return <AutomatedInteractionsMetric trend={automatedInteractionTrend} />
+    return (
+        <AutomatedInteractionsMetric
+            trend={automatedInteractionTrend}
+            chartId={chartId}
+            dashboard={dashboard}
+        />
+    )
 }
