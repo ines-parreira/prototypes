@@ -7,7 +7,7 @@ import { act, renderHook } from '@testing-library/react-hooks/dom'
 import { StatsFilters } from 'models/stat/types'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 
-import useGmvTrend from '../useGmvTrend'
+import { useGmvTrend } from '../useGmvTrend'
 
 const timezone = 'UTC'
 

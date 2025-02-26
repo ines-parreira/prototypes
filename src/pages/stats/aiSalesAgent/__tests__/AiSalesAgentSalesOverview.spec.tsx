@@ -51,6 +51,11 @@ jest.mock('pages/stats/aiSalesAgent/charts/AverageOrderValueCard', () => () => (
 ))
 
 jest.mock(
+    'pages/stats/aiSalesAgent/AiSalesAgentOverviewDownloadButton',
+    () => () => <div>download-button</div>,
+)
+
+jest.mock(
     'pages/stats/aiSalesAgent/charts/TotalNumberOfOrdersCard',
     () => () => <div>total-number-of-orders-card</div>,
 )
@@ -63,5 +68,6 @@ describe('AiSalesAgentSalesOverview', () => {
         renderComponent()
 
         expect(screen.getByText('AI Agent Sales Overview')).toBeInTheDocument()
+        expect(screen.getByText('download-button')).toBeInTheDocument()
     })
 })

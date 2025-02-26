@@ -7,7 +7,7 @@ import { act, renderHook } from '@testing-library/react-hooks/dom'
 import { StatsFilters } from 'models/stat/types'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 
-import useAverageOrderValue from '../useAverageOrderValue'
+import { useAverageOrderValue } from '../useAverageOrderValue'
 
 const timezone = 'UTC'
 

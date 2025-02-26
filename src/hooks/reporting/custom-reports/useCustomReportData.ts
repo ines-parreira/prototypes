@@ -16,6 +16,7 @@ import {
     TimeSeriesFetch,
     TimeSeriesPerDimensionFetch,
 } from 'hooks/reporting/useTimeSeries'
+import { AiSalesAgentReportConfig } from 'pages/stats/aiSalesAgent/AiSalesAgentReportConfig'
 import { AutomateOverviewReportConfig } from 'pages/stats/automate/overview/AutomateOverviewReportConfig'
 import { MetricTrendFormat, MetricValueFormat } from 'pages/stats/common/utils'
 import { CampaignsLegacyReportConfig } from 'pages/stats/convert/campaigns/CampaignsLegacyReportConfig'
@@ -60,6 +61,7 @@ const chartsLookupTable: Record<string, ChartConfig | undefined> = {
     ...AutomateOverviewReportConfig.charts,
     ...CampaignsLegacyReportConfig.charts,
     ...CampaignsPerformanceReportConfig.charts,
+    ...AiSalesAgentReportConfig.charts,
 }
 
 type Queries = {

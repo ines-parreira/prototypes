@@ -28,4 +28,18 @@ const useGmvTrend = (filters: StatsFilters, timezone: string): MetricTrend => {
     }
 }
 
-export default useGmvTrend
+const fetchGmvTrend = (
+    filters: StatsFilters,
+    timezone: string,
+): Promise<MetricTrend> => {
+    return Promise.resolve({
+        data: {
+            value: 32.41,
+            prevValue: 24.56,
+        },
+        isFetching: false,
+        isError: false,
+    })
+}
+
+export { useGmvTrend, fetchGmvTrend }

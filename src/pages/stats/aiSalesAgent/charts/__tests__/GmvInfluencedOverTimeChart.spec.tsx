@@ -9,7 +9,7 @@ import { useNewStatsFilters } from 'hooks/reporting/support-performance/useNewSt
 import { TimeSeriesDataItem } from 'hooks/reporting/useTimeSeries'
 import { ReportingGranularity } from 'models/reporting/types'
 import { StatsFilters } from 'models/stat/types'
-import useGmvInfluenceOverTimeSeries from 'pages/stats/aiSalesAgent/metrics/useGmvInfluenceOverTimeSeries'
+import { useGmvInfluenceOverTimeSeries } from 'pages/stats/aiSalesAgent/metrics/useGmvInfluenceOverTimeSeries'
 import LineChart from 'pages/stats/common/components/charts/LineChart/LineChart'
 import { formatReportingQueryDate } from 'utils/reporting'
 import { assumeMock } from 'utils/testing'

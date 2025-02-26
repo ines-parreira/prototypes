@@ -19,4 +19,5 @@ export enum ReportsIDs {
     CampaignsReportConfig = 'CampaignsReportConfig',
     VoiceAgentsReportConfig = 'VoiceAgentsReportConfig',
     VoiceOverviewReportConfig = 'VoiceOverviewReportConfig',
+    AiSalesAgentReportConfig = 'AiSalesAgentReportConfig',
 }

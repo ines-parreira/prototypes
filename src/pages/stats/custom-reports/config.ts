@@ -1,5 +1,7 @@
 import _flatten from 'lodash/flatten'
 
+import { AiSalesAgentChart } from 'pages/stats//aiSalesAgent/AiSalesAgentMetricsConfig'
+import { AiSalesAgentReportConfig } from 'pages/stats/aiSalesAgent/AiSalesAgentReportConfig'
 import {
     AutomateOverviewChart,
     AutomateOverviewReportConfig,
@@ -139,6 +141,11 @@ export const REPORTS_CONFIG: ReportsModalConfig = [
                 type: AutomateOverviewChart,
                 config: AutomateOverviewReportConfig,
                 id: ReportsIDs.AutomateOverviewReportConfig,
+            },
+            {
+                type: AiSalesAgentChart,
+                config: AiSalesAgentReportConfig,
+                id: ReportsIDs.AiSalesAgentReportConfig,
             },
         ],
     },

@@ -12,7 +12,11 @@ import GmvMetricCard from 'pages/stats/aiSalesAgent/charts/GmvMetricCard'
 import TotalAIConvMetricCard from 'pages/stats/aiSalesAgent/charts/TotalAIConvMetricCard'
 import TotalNumberOfOrdersCard from 'pages/stats/aiSalesAgent/charts/TotalNumberOfOrdersCard'
 import { ROUTE_AI_SALES_AGENT_OVERVIEW } from 'pages/stats/aiSalesAgent/constants'
-import { ChartType, ReportConfig } from 'pages/stats/custom-reports/types'
+import {
+    ChartType,
+    DataExportFormat,
+    ReportConfig,
+} from 'pages/stats/custom-reports/types'
 
 export const AI_SALES_AGENTS_PERSISTENT_FILTERS: StaticFilter[] = [
     FilterKey.Period,
@@ -59,7 +63,15 @@ export const AiSalesAgentReportConfig: ReportConfig<AiSalesAgentChart> = {
                     AiSalesAgentChart.AiSalesAgentGmvInfluenced
                 ].hint.title,
             chartComponent: GmvInfluencedMetricCard,
-            csvProducer: [],
+            csvProducer: [
+                {
+                    type: DataExportFormat.Trend,
+                    fetch: AiSalesAgentMetricConfig[
+                        AiSalesAgentChart.AiSalesAgentGmvInfluenced
+                    ].fetchTrend,
+                    metricFormat: 'decimal',
+                },
+            ],
         },
         [AiSalesAgentChart.AiSalesAgentRoiRate]: {
             chartType: ChartType.Card,

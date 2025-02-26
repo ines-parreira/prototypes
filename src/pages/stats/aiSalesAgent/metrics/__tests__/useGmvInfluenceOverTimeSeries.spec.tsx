@@ -8,7 +8,7 @@ import { ReportingGranularity } from 'models/reporting/types'
 import { StatsFilters } from 'models/stat/types'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 
-import useGmvInfluenceOverTimeSeries from '../useGmvInfluenceOverTimeSeries'
+import { useGmvInfluenceOverTimeSeries } from '../useGmvInfluenceOverTimeSeries'
 
 const timezone = 'UTC'
 

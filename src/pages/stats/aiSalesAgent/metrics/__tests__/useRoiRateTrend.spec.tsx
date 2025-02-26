@@ -7,7 +7,7 @@ import { act, renderHook } from '@testing-library/react-hooks/dom'
 import { StatsFilters } from 'models/stat/types'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 
-import useRoiRateTrend from '../useRoiRateTrend'
+import { useRoiRateTrend } from '../useRoiRateTrend'
 
 const timezone = 'UTC'
 

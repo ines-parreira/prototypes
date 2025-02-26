@@ -31,4 +31,18 @@ const useTotalAIConvTrend = (
     }
 }
 
-export default useTotalAIConvTrend
+const fetchTotalAIConvTrend = (
+    filters: StatsFilters,
+    timezone: string,
+): Promise<MetricTrend> => {
+    return Promise.resolve({
+        data: {
+            value: 32.41,
+            prevValue: 24.56,
+        },
+        isFetching: false,
+        isError: false,
+    })
+}
+
+export { useTotalAIConvTrend, fetchTotalAIConvTrend }

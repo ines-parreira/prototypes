@@ -7,7 +7,7 @@ import { act, renderHook } from '@testing-library/react-hooks/dom'
 import { StatsFilters } from 'models/stat/types'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 
-import useTotalNumberOfOrders from '../useTotalNumberOfOrders'
+import { useTotalNumberOfOrders } from '../useTotalNumberOfOrders'
 
 const timezone = 'UTC'
 

@@ -31,4 +31,18 @@ const useTotalNumberOfOrders = (
     }
 }
 
-export default useTotalNumberOfOrders
+const fetchTotalNumberOfOrders = (
+    filters: StatsFilters,
+    timezone: string,
+): Promise<MetricTrend> => {
+    return Promise.resolve({
+        data: {
+            value: 32.41,
+            prevValue: 24.56,
+        },
+        isFetching: false,
+        isError: false,
+    })
+}
+
+export { useTotalNumberOfOrders, fetchTotalNumberOfOrders }

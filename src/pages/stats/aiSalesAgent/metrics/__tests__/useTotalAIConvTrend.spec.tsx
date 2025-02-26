@@ -7,7 +7,7 @@ import { act, renderHook } from '@testing-library/react-hooks/dom'
 import { StatsFilters } from 'models/stat/types'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 
-import useTotalAIConvTrend from '../useTotalAIConvTrend'
+import { useTotalAIConvTrend } from '../useTotalAIConvTrend'
 
 const timezone = 'UTC'
 

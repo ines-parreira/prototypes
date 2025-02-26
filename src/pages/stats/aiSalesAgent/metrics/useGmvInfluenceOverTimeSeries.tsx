@@ -6,6 +6,34 @@ import { ReportingGranularity } from 'models/reporting/types'
 import { StatsFilters } from 'models/stat/types'
 import { getRealisticResponseTime } from 'pages/aiAgent/Overview/getRealisticResponseTime'
 
+const EXAMPLE_DATE = [
+    {
+        dateTime: '2025-02-13T00:00:00.000',
+        value: 0.9,
+        label: 'AiSalesAgent.GmvInfluencedOverTime',
+    },
+    {
+        dateTime: '2025-02-14T00:00:00.000',
+        value: 0.9,
+        label: 'AiSalesAgent.GmvInfluencedOverTime',
+    },
+    {
+        dateTime: '2025-02-15T00:00:00.000',
+        value: 0.04,
+        label: 'AiSalesAgent.GmvInfluencedOverTime',
+    },
+    {
+        dateTime: '2025-02-17T00:00:00.000',
+        value: 0.4,
+        label: 'AiSalesAgent.GmvInfluencedOverTime',
+    },
+    {
+        dateTime: '2025-02-18T00:00:00.000',
+        value: 0.06,
+        label: 'AiSalesAgent.GmvInfluencedOverTime',
+    },
+]
+
 const useGmvInfluenceOverTimeSeries = (
     filters: StatsFilters,
     timezone: string,
@@ -17,33 +45,7 @@ const useGmvInfluenceOverTimeSeries = (
             new Promise((resolve) => {
                 setTimeout(() => {
                     resolve({
-                        data: [
-                            {
-                                dateTime: '2025-02-13T00:00:00.000',
-                                value: 0.9,
-                                label: 'AiSalesAgent.GmvInfluencedOverTime',
-                            },
-                            {
-                                dateTime: '2025-02-14T00:00:00.000',
-                                value: 0.9,
-                                label: 'AiSalesAgent.GmvInfluencedOverTime',
-                            },
-                            {
-                                dateTime: '2025-02-15T00:00:00.000',
-                                value: 0.04,
-                                label: 'AiSalesAgent.GmvInfluencedOverTime',
-                            },
-                            {
-                                dateTime: '2025-02-17T00:00:00.000',
-                                value: 0.4,
-                                label: 'AiSalesAgent.GmvInfluencedOverTime',
-                            },
-                            {
-                                dateTime: '2025-02-18T00:00:00.000',
-                                value: 0.06,
-                                label: 'AiSalesAgent.GmvInfluencedOverTime',
-                            },
-                        ],
+                        data: EXAMPLE_DATE,
                     })
                 }, getRealisticResponseTime())
             }),
@@ -54,4 +56,12 @@ const useGmvInfluenceOverTimeSeries = (
     } as UseQueryResult<TimeSeriesDataItem[][]>
 }
 
-export default useGmvInfluenceOverTimeSeries
+const fetchGmvInflueceOverTimeSeries = (
+    filters: StatsFilters,
+    timezone: string,
+    granularity: ReportingGranularity,
+): Promise<TimeSeriesDataItem[][]> => {
+    return Promise.resolve([EXAMPLE_DATE])
+}
+
+export { useGmvInfluenceOverTimeSeries, fetchGmvInflueceOverTimeSeries }

@@ -31,4 +31,18 @@ const useAverageOrderValue = (
     }
 }
 
-export default useAverageOrderValue
+const fetchAverageOrderValue = (
+    filters: StatsFilters,
+    timezone: string,
+): Promise<MetricTrend> => {
+    return Promise.resolve({
+        data: {
+            value: 32.41,
+            prevValue: 24.56,
+        },
+        isFetching: false,
+        isError: false,
+    })
+}
+
+export { useAverageOrderValue, fetchAverageOrderValue }
