@@ -15,7 +15,68 @@ import {
 
 import { Category } from './types'
 
+const productivitySection: Category = {
+    name: 'Productivity',
+    icon: 'speed',
+    links: [
+        {
+            requiredRole: ADMIN_ROLE,
+            to: CUSTOM_FIELD_ROUTES[OBJECT_TYPES.CUSTOMER],
+            text: 'Customer Fields',
+            extra: (
+                <Badge type={'blue'} className={cssNavbar.badge}>
+                    BETA
+                </Badge>
+            ),
+        },
+        {
+            requiredRole: ADMIN_ROLE,
+            to: CUSTOM_FIELD_ROUTES[OBJECT_TYPES.TICKET],
+            text: 'Ticket Fields',
+        },
+        {
+            requiredRole: ADMIN_ROLE,
+            to: CUSTOM_FIELD_CONDITIONS_ROUTE,
+            text: 'Field Conditions',
+            requiredFeatureFlags: [FeatureFlagKey.TicketConditionalFields],
+            extra: (
+                <Badge type={'blue'} className={cssNavbar.badge}>
+                    BETA
+                </Badge>
+            ),
+        },
+        {
+            requiredRole: AGENT_ROLE,
+            to: 'manage-tags',
+            text: 'Tags',
+        },
+        {
+            requiredRole: AGENT_ROLE,
+            to: 'rules',
+            text: 'Rules',
+        },
+        {
+            to: 'macros',
+            text: 'Macros',
+        },
+        {
+            requiredRole: ADMIN_ROLE,
+            to: 'auto-merge',
+            text: 'Auto-merge',
+        },
+        {
+            requiredRole: AGENT_ROLE,
+            to: 'sla',
+            text: 'SLAs',
+        },
+    ],
+}
+
 export const NavbarConfig: Category[] = [
+    {
+        ...productivitySection,
+        shouldRender: (flags) => !!flags[FeatureFlagKey.AutomateSettingsRevamp],
+    },
     {
         name: 'Channels',
         icon: 'message',
@@ -73,60 +134,8 @@ export const NavbarConfig: Category[] = [
         ],
     },
     {
-        name: 'Productivity',
-        icon: 'speed',
-        links: [
-            {
-                requiredRole: ADMIN_ROLE,
-                to: CUSTOM_FIELD_ROUTES[OBJECT_TYPES.CUSTOMER],
-                text: 'Customer Fields',
-                extra: (
-                    <Badge type={'blue'} className={cssNavbar.badge}>
-                        BETA
-                    </Badge>
-                ),
-            },
-            {
-                requiredRole: ADMIN_ROLE,
-                to: CUSTOM_FIELD_ROUTES[OBJECT_TYPES.TICKET],
-                text: 'Ticket Fields',
-            },
-            {
-                requiredRole: ADMIN_ROLE,
-                to: CUSTOM_FIELD_CONDITIONS_ROUTE,
-                text: 'Field Conditions',
-                requiredFeatureFlags: [FeatureFlagKey.TicketConditionalFields],
-                extra: (
-                    <Badge type={'blue'} className={cssNavbar.badge}>
-                        BETA
-                    </Badge>
-                ),
-            },
-            {
-                requiredRole: AGENT_ROLE,
-                to: 'manage-tags',
-                text: 'Tags',
-            },
-            {
-                requiredRole: AGENT_ROLE,
-                to: 'rules',
-                text: 'Rules',
-            },
-            {
-                to: 'macros',
-                text: 'Macros',
-            },
-            {
-                requiredRole: ADMIN_ROLE,
-                to: 'auto-merge',
-                text: 'Auto-merge',
-            },
-            {
-                requiredRole: AGENT_ROLE,
-                to: 'sla',
-                text: 'SLAs',
-            },
-        ],
+        ...productivitySection,
+        shouldRender: (flags) => !flags[FeatureFlagKey.AutomateSettingsRevamp],
     },
     {
         name: 'Convert',

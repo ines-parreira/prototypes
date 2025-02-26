@@ -1,5 +1,7 @@
 import { ReactNode } from 'react'
 
+import type { LDFlagSet } from 'launchdarkly-react-client-sdk'
+
 import { FeatureFlagKey } from 'config/featureFlags'
 import { UserRole } from 'config/types/user'
 
@@ -18,4 +20,5 @@ export type Category = {
     icon: string
     links: CategoryLink[]
     name: string
+    shouldRender?: (flags: LDFlagSet) => boolean
 }

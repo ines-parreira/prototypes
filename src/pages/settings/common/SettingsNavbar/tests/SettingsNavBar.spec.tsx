@@ -60,6 +60,46 @@ describe('<SettingsNavbar />', () => {
         mockedHasRole.mockReturnValue(true)
     })
 
+    it('should render a category if the `shouldRender` function returns true', () => {
+        jest.replaceProperty(config, 'NavbarConfig', [
+            {
+                name: 'Category',
+                icon: 'speed',
+                shouldRender: () => true,
+                links: [
+                    {
+                        to: 'whatever',
+                        text: 'Link',
+                        requiredRole: 'toto' as UserRole,
+                    },
+                ],
+            },
+        ])
+        renderWithRouter(<SettingsNavbar />, { path: '/' })
+
+        expect(screen.getByText('Link')).toBeInTheDocument()
+    })
+
+    it('should not render a category if the `shouldRender` function returns false', () => {
+        jest.replaceProperty(config, 'NavbarConfig', [
+            {
+                name: 'Category',
+                icon: 'speed',
+                shouldRender: () => false,
+                links: [
+                    {
+                        to: 'whatever',
+                        text: 'Link',
+                        requiredRole: 'toto' as UserRole,
+                    },
+                ],
+            },
+        ])
+        renderWithRouter(<SettingsNavbar />, { path: '/' })
+
+        expect(screen.queryByText('Link')).not.toBeInTheDocument()
+    })
+
     it('should dispatch `closePanels` action when a link is clicked and call logEvent', () => {
         mockedGetCurrentAccountState.mockReturnValue(fromJS({}))
         renderWithRouter(<SettingsNavbar />, { path: '/' })
