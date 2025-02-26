@@ -274,8 +274,8 @@ export const SalesSettings = () => {
                             <Label htmlFor="percentage-discount">
                                 Maximum Discount Percentage
                                 <IconTooltip>
-                                    Set the maximum offer for first-time
-                                    customers
+                                    Set the maximum discount that AI Agent will
+                                    offer customers
                                 </IconTooltip>
                             </Label>
 
