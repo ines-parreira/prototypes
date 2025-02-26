@@ -16,8 +16,8 @@ It's built using ReactJS + Redux + many other smaller tools.
     -   [Testing](#testing)
         -   [General testing](#general-testing)
     -   [Linting](#linting)
-        -   [Adding Linting rules](#adding-linting-rules)
         -   [Running Linting](#running-linting)
+        -   [Adding Linting rules](#adding-linting-rules)
     -   [Formatting](#formatting)
         -   [Static analysis](#static-analysis)
             -   [Deprecated entries](#deprecated-entries)
@@ -104,15 +104,17 @@ Due to performance concerns, we use [Oxlint](https://oxc.rs/docs/guide/usage/lin
 
 For Neovim users, Oxlint should work [out of the box](https://github.com/neovim/nvim-lspconfig/pull/3586).
 
-### Adding Linting rules
-
-New linting [rules](https://oxc.rs/docs/guide/usage/linter/rules.html) can be added to the [oxlint.base.json](./scripts/oxlint-bridge/oxlint.base.json) file. The changes will be applied automatically when you run `yarn lint` via the `prelint` script.
+If you't editor doesn't support Oxc yet, please use the `yarn oxlint:watch` command to run it in watch mode while developping. It will run Oxlint with the --fix flag on the files you've changed.
 
 ### Running Linting
 
 ```bash
 yarn lint
 ```
+
+### Adding Linting rules
+
+New linting [rules](https://oxc.rs/docs/guide/usage/linter/rules.html) can be added to the [oxlint.base.json](./scripts/oxlint/oxlint.base.json) file. The changes will be applied automatically when you run `yarn lint` via the `prelint` script.
 
 ## Formatting
 
