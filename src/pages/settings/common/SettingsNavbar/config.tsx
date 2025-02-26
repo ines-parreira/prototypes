@@ -69,6 +69,12 @@ const productivitySection: Category = {
             to: 'sla',
             text: 'SLAs',
         },
+        {
+            requiredRole: AGENT_ROLE,
+            requiredFeatureFlags: [FeatureFlagKey.AutomateSettingsRevamp],
+            to: 'automate',
+            text: 'Automate',
+        },
     ],
 }
 
