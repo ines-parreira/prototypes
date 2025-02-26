@@ -12,10 +12,10 @@ describe('VoiceCallStatusLabel', () => {
         [VoiceCallDisplayStatus.InProgress, 'In Progress', 'greenStatus'],
         [VoiceCallDisplayStatus.Answered, 'Answered', 'greenStatus'],
         [VoiceCallDisplayStatus.Missed, 'Missed', 'redStatus'],
-        [VoiceCallDisplayStatus.Abandoned, 'Abandoned', 'orangeStatus'],
+        [VoiceCallDisplayStatus.Abandoned, 'Abandoned', 'redStatus'],
         [VoiceCallDisplayStatus.Cancelled, 'Cancelled', 'greyStatus'],
         [VoiceCallDisplayStatus.Failed, 'Failed', 'redStatus'],
-        [VoiceCallDisplayStatus.Unanswered, 'Unanswered', 'orangeStatus'],
+        [VoiceCallDisplayStatus.Unanswered, 'Unanswered', 'redStatus'],
     ])(
         'should render the ringing status',
         (displayStatus, prettyName, className) => {

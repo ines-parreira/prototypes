@@ -127,7 +127,7 @@ describe('utils', () => {
                 VoiceCallDimension.IntegrationId,
             ],
             [VoiceCallTableColumnName.Date, VoiceCallDimension.CreatedAt],
-            [VoiceCallTableColumnName.State, VoiceCallDimension.Status],
+            [VoiceCallTableColumnName.State, VoiceCallDimension.DisplayStatus],
             [VoiceCallTableColumnName.Duration, VoiceCallDimension.Duration],
             [VoiceCallTableColumnName.WaitTime, VoiceCallDimension.WaitTime],
             [VoiceCallTableColumnName.Ticket, VoiceCallDimension.TicketId],
@@ -149,9 +149,8 @@ describe('utils', () => {
             VoiceCallTableColumnName.Integration,
             VoiceCallTableColumnName.Recording,
             VoiceCallTableColumnName.Ticket,
-            VoiceCallTableColumnName.State,
         ])('should return false for %s', (columnName) => {
-            const result = isVoiceCallTableColumnSortable(columnName)
+            const result = isVoiceCallTableColumnSortable(columnName, true)
 
             expect(result).toBe(false)
         })
@@ -162,10 +161,20 @@ describe('utils', () => {
             VoiceCallTableColumnName.WaitTime,
             VoiceCallTableColumnName.TalkTime,
             VoiceCallTableColumnName.OngoingTime,
+            VoiceCallTableColumnName.State,
         ])('should return true for %s', (columnName) => {
-            const result = isVoiceCallTableColumnSortable(columnName)
+            const result = isVoiceCallTableColumnSortable(columnName, true)
 
             expect(result).toBe(true)
+        })
+
+        it('should return false for state if cannot order by state', () => {
+            const result = isVoiceCallTableColumnSortable(
+                VoiceCallTableColumnName.State,
+                false,
+            )
+
+            expect(result).toBe(false)
         })
     })
 })

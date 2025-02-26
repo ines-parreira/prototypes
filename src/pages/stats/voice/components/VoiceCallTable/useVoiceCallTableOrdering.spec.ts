@@ -1,5 +1,7 @@
 import { act, renderHook } from '@testing-library/react-hooks'
 
+import { FeatureFlagKey } from 'config/featureFlags'
+import { useFlag } from 'core/flags'
 import useOrderBy from 'hooks/useOrderBy'
 import { OrderDirection } from 'models/api/types'
 import { assumeMock } from 'utils/testing'
@@ -9,6 +11,9 @@ import useVoiceCallTableOrdering from './useVoiceCallTableOrdering'
 
 jest.mock('hooks/useOrderBy')
 const mockUseOrderBy = assumeMock(useOrderBy)
+
+jest.mock('core/flags', () => ({ useFlag: jest.fn() }))
+const useFlagMock = assumeMock(useFlag)
 
 const render = () => renderHook(() => useVoiceCallTableOrdering())
 
@@ -60,5 +65,22 @@ describe('useVoiceCallTableOrdering', () => {
         })
 
         expect(mockUseOrderBy().toggleOrderBy).not.toHaveBeenCalled()
+    })
+
+    it('should allow ordering by state if the FF is on', () => {
+        useFlagMock.mockImplementation((flag) => {
+            if (flag === FeatureFlagKey.ShowNewUnansweredStatuses) {
+                return true
+            }
+        })
+
+        const { result } = render()
+        const column = VoiceCallTableColumnName.State
+
+        act(() => {
+            result.current.onOrderChange(column)
+        })
+
+        expect(mockUseOrderBy().toggleOrderBy).toHaveBeenCalledWith(column)
     })
 })

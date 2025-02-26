@@ -105,7 +105,7 @@ export const voiceCallTableColumnNameToDimension = (
         case VoiceCallTableColumnName.Date:
             return VoiceCallDimension.CreatedAt
         case VoiceCallTableColumnName.State:
-            return VoiceCallDimension.Status
+            return VoiceCallDimension.DisplayStatus
         case VoiceCallTableColumnName.Duration:
             return VoiceCallDimension.Duration
         case VoiceCallTableColumnName.OngoingTime:
@@ -123,14 +123,16 @@ export const voiceCallTableColumnNameToDimension = (
 
 export const isVoiceCallTableColumnSortable = (
     columnName: VoiceCallTableColumnName,
+    canOrderByState: boolean = false,
 ): boolean => {
     switch (columnName) {
         case VoiceCallTableColumnName.Activity:
         case VoiceCallTableColumnName.Integration:
         case VoiceCallTableColumnName.Ticket:
         case VoiceCallTableColumnName.Recording:
-        case VoiceCallTableColumnName.State:
             return false
+        case VoiceCallTableColumnName.State:
+            return canOrderByState
         default:
             return true
     }

@@ -1,3 +1,5 @@
+import { FeatureFlagKey } from 'config/featureFlags'
+import { useFlag } from 'core/flags'
 import useOrderBy from 'hooks/useOrderBy'
 import { OrderDirection } from 'models/api/types'
 
@@ -8,6 +10,10 @@ import {
 } from './utils'
 
 export default function useVoiceCallTableOrdering() {
+    const shouldShowNewUnansweredStatuses = useFlag(
+        FeatureFlagKey.ShowNewUnansweredStatuses,
+    )
+
     const {
         orderBy: orderByColumnName,
         toggleOrderBy,
@@ -22,7 +28,12 @@ export default function useVoiceCallTableOrdering() {
         voiceCallTableColumnNameToDimension(orderByColumnName)
 
     const onOrderChange = (column: VoiceCallTableColumnName) => {
-        if (isVoiceCallTableColumnSortable(column)) {
+        if (
+            isVoiceCallTableColumnSortable(
+                column,
+                shouldShowNewUnansweredStatuses,
+            )
+        ) {
             toggleOrderBy(column)
         }
     }

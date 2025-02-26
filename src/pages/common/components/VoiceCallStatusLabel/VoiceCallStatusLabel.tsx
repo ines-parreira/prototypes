@@ -38,10 +38,9 @@ const getColorClass = (status: VoiceCallDisplayStatus) => {
             return css.greenStatus
         case VoiceCallDisplayStatus.Missed:
         case VoiceCallDisplayStatus.Failed:
-            return css.redStatus
-        case VoiceCallDisplayStatus.Abandoned:
         case VoiceCallDisplayStatus.Unanswered:
-            return css.orangeStatus
+        case VoiceCallDisplayStatus.Abandoned:
+            return css.redStatus
         case VoiceCallDisplayStatus.Ringing:
         case VoiceCallDisplayStatus.Cancelled:
         default:
