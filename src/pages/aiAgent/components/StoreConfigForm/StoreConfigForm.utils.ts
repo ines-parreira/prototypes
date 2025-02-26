@@ -10,7 +10,6 @@ export const getStoreConfigurationFromFormValues = (
 ): CreateStoreConfigurationPayload => {
     const {
         helpCenterId,
-        deactivatedDatetime,
         trialModeActivatedDatetime,
         previewModeActivatedDatetime,
         monitoredEmailIntegrations,
@@ -44,7 +43,6 @@ export const getStoreConfigurationFromFormValues = (
         storeName,
         ...monitoredEmailIntegrationDetails,
         ...dirtyFormValues,
-        deactivatedDatetime: deactivatedDatetime as string | null,
         trialModeActivatedDatetime,
         previewModeActivatedDatetime,
         previewModeValidUntilDatetime:
@@ -67,7 +65,6 @@ export const getStoreConfigurationFromFormValues = (
 export function isPreviewModeActivated({
     isPreviewModeActive,
     isTrialModeAvailable,
-    deactivatedDatetime,
     emailChannelDeactivatedDatetime,
     chatChannelDeactivatedDatetime,
     trialModeActivatedDatetime,
@@ -75,14 +72,12 @@ export function isPreviewModeActivated({
 }: {
     isPreviewModeActive: boolean | null | undefined
     isTrialModeAvailable: boolean
-    deactivatedDatetime: string | null | undefined
     emailChannelDeactivatedDatetime: string | null | undefined
     chatChannelDeactivatedDatetime: string | null | undefined
     trialModeActivatedDatetime: string | null | undefined
     previewModeValidUntilDatetime: string | null | undefined
 }): boolean {
     const isAiAgentEnabled =
-        deactivatedDatetime === null ||
         emailChannelDeactivatedDatetime === null ||
         chatChannelDeactivatedDatetime === null
 

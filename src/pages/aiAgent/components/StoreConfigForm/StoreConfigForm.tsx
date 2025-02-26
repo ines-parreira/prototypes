@@ -267,7 +267,6 @@ export const StoreConfigForm = ({
             !!storeConfiguration &&
             isPreviewModeActivated({
                 isPreviewModeActive: storeConfiguration.isPreviewModeActive,
-                deactivatedDatetime: formValues?.deactivatedDatetime,
                 emailChannelDeactivatedDatetime:
                     formValues?.emailChannelDeactivatedDatetime,
                 chatChannelDeactivatedDatetime:
@@ -301,7 +300,6 @@ export const StoreConfigForm = ({
             if (isCreate) return
 
             const deactivatedDatetime = new Date().toISOString()
-            updateValue('deactivatedDatetime', deactivatedDatetime)
             updateValue('emailChannelDeactivatedDatetime', deactivatedDatetime)
             updateValue('chatChannelDeactivatedDatetime', deactivatedDatetime)
             updateValue('trialModeActivatedDatetime', null)
@@ -311,7 +309,6 @@ export const StoreConfigForm = ({
             try {
                 await updateStoreConfiguration({
                     ...storeConfiguration,
-                    deactivatedDatetime,
                     chatChannelDeactivatedDatetime: deactivatedDatetime,
                     emailChannelDeactivatedDatetime: deactivatedDatetime,
                     trialModeActivatedDatetime: null,
@@ -398,7 +395,8 @@ export const StoreConfigForm = ({
             if (
                 publicURLs.length === 0 &&
                 storeConfiguration?.helpCenterId === null &&
-                storeConfiguration?.deactivatedDatetime === null
+                (storeConfiguration?.emailChannelDeactivatedDatetime === null ||
+                    storeConfiguration?.chatChannelDeactivatedDatetime === null)
             ) {
                 void deactivateAiAgent()
             }
@@ -409,11 +407,9 @@ export const StoreConfigForm = ({
     const shouldDisplayAiAgentConfigurationModal = useMemo(() => {
         const hasViewedModal = ticketModalViewed?.includes(shopName)
         const isAiAgentDeactivated =
-            storeConfiguration?.deactivatedDatetime !== null &&
             storeConfiguration?.emailChannelDeactivatedDatetime !== null &&
             storeConfiguration?.chatChannelDeactivatedDatetime !== null
         const isFormPendingActivation =
-            formValues.deactivatedDatetime === null ||
             formValues.emailChannelDeactivatedDatetime === null ||
             formValues.chatChannelDeactivatedDatetime === null
 
@@ -435,12 +431,10 @@ export const StoreConfigForm = ({
         )
     }, [
         formValues.chatChannelDeactivatedDatetime,
-        formValues.deactivatedDatetime,
         formValues.emailChannelDeactivatedDatetime,
         formValues.trialModeActivatedDatetime,
         shopName,
         storeConfiguration?.chatChannelDeactivatedDatetime,
-        storeConfiguration?.deactivatedDatetime,
         storeConfiguration?.emailChannelDeactivatedDatetime,
         storeConfiguration?.trialModeActivatedDatetime,
         ticketModalViewed,
@@ -453,9 +447,6 @@ export const StoreConfigForm = ({
     } = useAiAgentOnboardingNotification({ shopName })
 
     const onSubmit = () => {
-        const isAiAgentWasEnabled =
-            storeConfiguration?.deactivatedDatetime !== null &&
-            formValues.deactivatedDatetime === null
         const isAiAgentWasEnabledForChat =
             storeConfiguration?.chatChannelDeactivatedDatetime !== null &&
             formValues.chatChannelDeactivatedDatetime === null
@@ -464,9 +455,7 @@ export const StoreConfigForm = ({
             formValues.emailChannelDeactivatedDatetime === null
 
         const shouldCancelActivateNotification =
-            isAiAgentWasEnabled ||
-            isAiAgentWasEnabledForChat ||
-            isAiAgentWasEnabledForEmail
+            isAiAgentWasEnabledForChat || isAiAgentWasEnabledForEmail
 
         if (shouldCancelActivateNotification) {
             handleOnCancelActivateAiAgentNotification()
@@ -474,9 +463,7 @@ export const StoreConfigForm = ({
 
         const shouldUpdateSettingsAfterAiAgentEnabled =
             isAiAgentOnboardingWizardEnabled &&
-            (isAiAgentWasEnabled ||
-                isAiAgentWasEnabledForChat ||
-                isAiAgentWasEnabledForEmail)
+            (isAiAgentWasEnabledForChat || isAiAgentWasEnabledForEmail)
 
         void handleOnSave({
             publicUrls: externalKnowledgeSources.publicUrls,
@@ -539,11 +526,9 @@ export const StoreConfigForm = ({
             return false
         }
         if (
-            (storeConfiguration?.deactivatedDatetime !== null ||
-                storeConfiguration?.emailChannelDeactivatedDatetime !== null ||
-                storeConfiguration?.chatChannelDeactivatedDatetime) &&
-            (formValues.deactivatedDatetime === null ||
-                formValues.emailChannelDeactivatedDatetime === null ||
+            (storeConfiguration?.emailChannelDeactivatedDatetime !== null ||
+                storeConfiguration?.chatChannelDeactivatedDatetime !== null) &&
+            (formValues.emailChannelDeactivatedDatetime === null ||
                 formValues.chatChannelDeactivatedDatetime === null)
         ) {
             return true

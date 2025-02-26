@@ -23,7 +23,6 @@ const INITIAL_FORM_VALUES: FormValues = {
     customToneOfVoiceGuidance: null,
     chatChannelDeactivatedDatetime: undefined,
     emailChannelDeactivatedDatetime: undefined,
-    deactivatedDatetime: undefined,
     trialModeActivatedDatetime: null,
     previewModeActivatedDatetime: null,
     previewModeValidUntilDatetime: null,
@@ -221,7 +220,6 @@ describe('useConfigurationForm', () => {
                 initValues: {
                     monitoredChatIntegrations: [],
                     monitoredEmailIntegrations: [],
-                    deactivatedDatetime: '',
                     emailChannelDeactivatedDatetime: '',
                     chatChannelDeactivatedDatetime: '',
                     signature: 'valid signature',

@@ -39,7 +39,6 @@ export const DEFAULT_AI_AGENT_ENABLED_RATE = 50
 
 export const DEFAULT_FORM_VALUES: FormValues = {
     // Since null is a valid value for that field, we need to explicitly set it to undefined
-    deactivatedDatetime: undefined,
     emailChannelDeactivatedDatetime: undefined,
     chatChannelDeactivatedDatetime: undefined,
     trialModeActivatedDatetime: null,
@@ -137,7 +136,6 @@ export const INITIAL_FORM_VALUES = {
     trialModeActivatedDatetime: null,
     previewModeActivatedDatetime: null,
     previewModeValidUntilDatetime: null,
-    deactivatedDatetime: new Date().toISOString(),
     emailChannelDeactivatedDatetime: new Date().toISOString(),
     chatChannelDeactivatedDatetime: new Date().toISOString(),
     silentHandover: false,

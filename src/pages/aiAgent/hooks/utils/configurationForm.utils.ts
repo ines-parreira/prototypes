@@ -14,7 +14,6 @@ export function isAiAgentOnboardingWizardStep(
 export const getFormValuesFromStoreConfiguration = (
     storeConfig: StoreConfiguration,
 ): FormValues => ({
-    deactivatedDatetime: storeConfig.deactivatedDatetime,
     chatChannelDeactivatedDatetime: storeConfig.chatChannelDeactivatedDatetime,
     emailChannelDeactivatedDatetime:
         storeConfig.emailChannelDeactivatedDatetime,

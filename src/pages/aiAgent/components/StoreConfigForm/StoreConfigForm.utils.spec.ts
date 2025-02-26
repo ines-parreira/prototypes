@@ -16,7 +16,6 @@ describe('getStoreConfigurationFromFormValues', () => {
 
     const formValuesPartial = {
         helpCenterId: 123,
-        deactivatedDatetime: '2024-01-01',
         chatChannelDeactivatedDatetime: '2024-01-01',
         emailChannelDeactivatedDatetime: '2024-01-01',
         trialModeActivatedDatetime: '2024-02-01',
@@ -82,7 +81,6 @@ describe('getStoreConfigurationFromFormValues', () => {
             trialModeActivatedDatetime: '2023-10-01T00:00:00Z',
             emailChannelDeactivatedDatetime: '2023-10-01T00:00:00Z',
             chatChannelDeactivatedDatetime: '2023-10-01T00:00:00Z',
-            deactivatedDatetime: '2023-10-01T00:00:00Z',
         }
 
         it('returns true if trial mode is available and trialModeActivatedDatetime is set', () => {
@@ -202,8 +200,9 @@ describe('getStoreConfigurationFromFormValues', () => {
             expect(
                 isPreviewModeActivated({
                     ...aiAgentDisabledFormValues,
-                    deactivatedDatetime: null,
                     trialModeActivatedDatetime: '2023-10-01T00:00:00Z',
+                    emailChannelDeactivatedDatetime: null,
+                    chatChannelDeactivatedDatetime: null,
                     previewModeValidUntilDatetime: null,
                     isPreviewModeActive: isPreviewModeActive,
                     isTrialModeAvailable,

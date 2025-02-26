@@ -38,7 +38,6 @@ export type StoreConfigurationResponse = {
 }
 
 export type StoreConfiguration = {
-    deactivatedDatetime: string | null
     trialModeActivatedDatetime: string | null
     previewModeActivatedDatetime: string | null
     storeName: string
@@ -85,7 +84,6 @@ export type CreateStoreConfigurationPayload = Pick<
     | 'storeName'
     | 'helpCenterId'
     | 'monitoredEmailIntegrations'
-    | 'deactivatedDatetime'
     | 'trialModeActivatedDatetime'
     | 'previewModeActivatedDatetime'
     | 'previewModeValidUntilDatetime'

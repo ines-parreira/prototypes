@@ -365,7 +365,6 @@ describe('AiAgentPreviewModeSettingsView', () => {
 
         mockUseAiAgentStoreConfigurationContext.mockReturnValue({
             storeConfiguration: getStoreConfigurationFixture({
-                deactivatedDatetime: mockCurrentDate.toISOString(),
                 emailChannelDeactivatedDatetime: mockCurrentDate.toISOString(),
                 chatChannelDeactivatedDatetime: mockCurrentDate.toISOString(),
                 trialModeActivatedDatetime: mockCurrentDate.toISOString(),
@@ -442,7 +441,6 @@ describe('AiAgentPreviewModeSettingsView', () => {
 
         mockUseAiAgentStoreConfigurationContext.mockReturnValue({
             storeConfiguration: getStoreConfigurationFixture({
-                deactivatedDatetime: mockCurrentDate.toISOString(),
                 emailChannelDeactivatedDatetime: mockCurrentDate.toISOString(),
                 chatChannelDeactivatedDatetime: mockCurrentDate.toISOString(),
                 trialModeActivatedDatetime: mockCurrentDate.toISOString(),

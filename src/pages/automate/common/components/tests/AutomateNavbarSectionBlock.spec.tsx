@@ -93,7 +93,6 @@ describe('AutomateNavbarSectionBlock', () => {
             useStoreConfigurationMock.mockReturnValue({
                 storeConfiguration: {
                     ...defaultStoreConfiguration,
-                    deactivatedDatetime: '2024-10-01T00:00:00Z',
                     emailChannelDeactivatedDatetime: '2024-10-01T00:00:00Z',
                     chatChannelDeactivatedDatetime: '2024-10-01T00:00:00Z',
                     trialModeActivatedDatetime: '2024-10-01T00:00:00Z',
@@ -118,36 +117,10 @@ describe('AutomateNavbarSectionBlock', () => {
             expect(screen.getByText('PREVIEW')).toBeInTheDocument()
         })
 
-        it('should render the Live badge when AI Agent is enabled', () => {
-            useStoreConfigurationMock.mockReturnValue({
-                storeConfiguration: {
-                    ...defaultStoreConfiguration,
-                    deactivatedDatetime: null,
-                    emailChannelDeactivatedDatetime: '2024-10-01T00:00:00Z',
-                    chatChannelDeactivatedDatetime: '2024-10-01T00:00:00Z',
-                },
-                isLoading: false,
-            })
-
-            renderComponent(
-                <AutomateNavbarSectionBlock
-                    shopType={shopType}
-                    shopName={shopName}
-                    onToggle={onToggle}
-                    name={name}
-                    isExpanded={isExpanded}
-                    shouldRenderCanduIds={shouldRenderCanduIds}
-                />,
-            )
-
-            expect(screen.getByText('LIVE')).toBeInTheDocument()
-        })
-
         it('should render the Live badge when AI Agent is enabled in email channel', () => {
             useStoreConfigurationMock.mockReturnValue({
                 storeConfiguration: {
                     ...defaultStoreConfiguration,
-                    deactivatedDatetime: '2024-10-01T00:00:00Z',
                     emailChannelDeactivatedDatetime: null,
                     chatChannelDeactivatedDatetime: '2024-10-01T00:00:00Z',
                 },
@@ -172,7 +145,6 @@ describe('AutomateNavbarSectionBlock', () => {
             useStoreConfigurationMock.mockReturnValue({
                 storeConfiguration: {
                     ...defaultStoreConfiguration,
-                    deactivatedDatetime: '2024-10-01T00:00:00Z',
                     emailChannelDeactivatedDatetime: '2024-10-01T00:00:00Z',
                     chatChannelDeactivatedDatetime: null,
                 },
@@ -197,7 +169,6 @@ describe('AutomateNavbarSectionBlock', () => {
             useStoreConfigurationMock.mockReturnValue({
                 storeConfiguration: {
                     ...defaultStoreConfiguration,
-                    deactivatedDatetime: '2024-10-01T00:00:00Z',
                     chatChannelDeactivatedDatetime: '2024-10-01T00:00:00Z',
                     emailChannelDeactivatedDatetime: '2024-10-01T00:00:00Z',
                 },
@@ -260,7 +231,6 @@ describe('AutomateNavbarSectionBlock', () => {
             useStoreConfigurationMock.mockReturnValue({
                 storeConfiguration: {
                     ...defaultStoreConfiguration,
-                    deactivatedDatetime: '2024-10-01T00:00:00Z',
                     chatChannelDeactivatedDatetime: '2024-10-01T00:00:00Z',
                     emailChannelDeactivatedDatetime: '2024-10-01T00:00:00Z',
                     trialModeActivatedDatetime: '2024-10-01T00:00:00Z',

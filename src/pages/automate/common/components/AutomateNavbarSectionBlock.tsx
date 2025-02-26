@@ -64,7 +64,6 @@ const AutomateNavbarSectionBlock = ({
     const hasAiAgentTrialEnabled = isPreviewModeActivated({
         isPreviewModeActive: storeConfiguration?.isPreviewModeActive,
         isTrialModeAvailable: isTrialModeAvailable,
-        deactivatedDatetime: storeConfiguration?.deactivatedDatetime,
         emailChannelDeactivatedDatetime:
             storeConfiguration?.emailChannelDeactivatedDatetime,
         chatChannelDeactivatedDatetime:
@@ -77,8 +76,7 @@ const AutomateNavbarSectionBlock = ({
 
     const hasAiAgentEnabled = !!(
         storeConfiguration &&
-        (!storeConfiguration.deactivatedDatetime ||
-            !storeConfiguration.emailChannelDeactivatedDatetime ||
+        (!storeConfiguration.emailChannelDeactivatedDatetime ||
             !storeConfiguration.chatChannelDeactivatedDatetime) &&
         !hasAiAgentTrialEnabled
     )

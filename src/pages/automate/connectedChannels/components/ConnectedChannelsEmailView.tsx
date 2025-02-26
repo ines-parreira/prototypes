@@ -96,7 +96,6 @@ export const ConnectedChannelsEmailView = () => {
     const hasPreviewModeActivated = isPreviewModeActivated({
         isPreviewModeActive: storeConfiguration?.isPreviewModeActive,
         isTrialModeAvailable: isTrialModeAvailable,
-        deactivatedDatetime: storeConfiguration?.deactivatedDatetime,
         emailChannelDeactivatedDatetime:
             storeConfiguration?.emailChannelDeactivatedDatetime,
         chatChannelDeactivatedDatetime:

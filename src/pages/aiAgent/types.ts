@@ -21,7 +21,6 @@ export type WizardFormValues = {
 }
 
 export type FormValues = {
-    deactivatedDatetime: string | null | undefined
     chatChannelDeactivatedDatetime: string | null | undefined
     emailChannelDeactivatedDatetime: string | null | undefined
     trialModeActivatedDatetime: string | null

@@ -179,7 +179,7 @@ export const useConfigurationForm = ({
             if (
                 aiAgentMode === 'enabled' &&
                 initValues &&
-                (initValues.deactivatedDatetime !== null ||
+                (initValues.emailChannelDeactivatedDatetime !== null ||
                     initValues.trialModeActivatedDatetime !== null)
             ) {
                 logEvent(SegmentEvent.AiAgentEnabled, {

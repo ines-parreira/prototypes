@@ -148,7 +148,6 @@ describe('ConnectedChannelsEmailView', () => {
             trialModeActivatedDatetime: null,
             previewModeActivatedDatetime: null,
             previewModeValidUntilDatetime: null,
-            deactivatedDatetime: null,
             emailChannelDeactivatedDatetime: null,
         })
     })
@@ -255,7 +254,6 @@ describe('ConnectedChannelsEmailView', () => {
             trialModeActivatedDatetime: null,
             previewModeActivatedDatetime: null,
             previewModeValidUntilDatetime: null,
-            deactivatedDatetime: null,
             emailChannelDeactivatedDatetime: null,
         })
     })

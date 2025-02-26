@@ -15,7 +15,6 @@ import {
 } from '../store-configuration-validation.utils'
 
 const VALID_FORM_VALUES: ValidFormValues = {
-    deactivatedDatetime: undefined,
     chatChannelDeactivatedDatetime: undefined,
     emailChannelDeactivatedDatetime: undefined,
     trialModeActivatedDatetime: null,

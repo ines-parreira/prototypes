@@ -123,7 +123,6 @@ export const AiAgentKnowledgeContainer = () => {
         if (isCreate) return
 
         const deactivatedDatetime = new Date().toISOString()
-        updateValue('deactivatedDatetime', deactivatedDatetime)
         updateValue('emailChannelDeactivatedDatetime', deactivatedDatetime)
         updateValue('chatChannelDeactivatedDatetime', deactivatedDatetime)
         updateValue('trialModeActivatedDatetime', null)
@@ -135,7 +134,6 @@ export const AiAgentKnowledgeContainer = () => {
                 ...storeConfiguration,
                 chatChannelDeactivatedDatetime: deactivatedDatetime,
                 emailChannelDeactivatedDatetime: deactivatedDatetime,
-                deactivatedDatetime,
                 trialModeActivatedDatetime: null,
                 previewModeActivatedDatetime: null,
                 previewModeValidUntilDatetime: null,
@@ -175,7 +173,8 @@ export const AiAgentKnowledgeContainer = () => {
             hasExternalFiles === false &&
             publicUrls.length === 0 &&
             storeConfiguration?.helpCenterId === null &&
-            storeConfiguration?.deactivatedDatetime === null
+            (storeConfiguration?.emailChannelDeactivatedDatetime === null ||
+                storeConfiguration?.chatChannelDeactivatedDatetime === null)
         ) {
             void deactivateAiAgent()
         }
@@ -183,7 +182,8 @@ export const AiAgentKnowledgeContainer = () => {
         deactivateAiAgent,
         hasExternalFiles,
         publicUrls.length,
-        storeConfiguration?.deactivatedDatetime,
+        storeConfiguration?.emailChannelDeactivatedDatetime,
+        storeConfiguration?.chatChannelDeactivatedDatetime,
         storeConfiguration?.helpCenterId,
     ])
 

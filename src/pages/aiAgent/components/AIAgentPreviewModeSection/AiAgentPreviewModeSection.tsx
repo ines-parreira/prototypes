@@ -38,7 +38,6 @@ export const AiAgentPreviewModeSection = ({
         const date = new Date().toISOString()
         switch (value) {
             case 'enabled':
-                updateValue('deactivatedDatetime', null)
                 updateValue('chatChannelDeactivatedDatetime', null)
                 updateValue('emailChannelDeactivatedDatetime', null)
                 updateValue('trialModeActivatedDatetime', null)
@@ -46,7 +45,6 @@ export const AiAgentPreviewModeSection = ({
                 break
 
             case 'trial':
-                updateValue('deactivatedDatetime', date)
                 // We don't support trial mode in chat
                 updateValue('chatChannelDeactivatedDatetime', date)
                 updateValue('emailChannelDeactivatedDatetime', date)
@@ -56,7 +54,6 @@ export const AiAgentPreviewModeSection = ({
                 break
 
             case 'disabled':
-                updateValue('deactivatedDatetime', date)
                 updateValue('chatChannelDeactivatedDatetime', date)
                 updateValue('emailChannelDeactivatedDatetime', date)
                 updateValue('trialModeActivatedDatetime', null)
@@ -103,7 +100,6 @@ export const AiAgentPreviewModeSection = ({
     const hasAiAgentTrialEnabled = isPreviewModeActivated({
         isPreviewModeActive: storeConfiguration?.isPreviewModeActive,
         isTrialModeAvailable: isTrialModeAvailable,
-        deactivatedDatetime: storeConfiguration?.deactivatedDatetime,
         emailChannelDeactivatedDatetime:
             storeConfiguration?.emailChannelDeactivatedDatetime,
         chatChannelDeactivatedDatetime:

@@ -215,7 +215,6 @@ const renderComponent = (
 
 describe('<StoreConfigForm />', () => {
     const storeConfiguration = {
-        deactivatedDatetime: null,
         chatChannelDeactivatedDatetime: null,
         emailChannelDeactivatedDatetime: null,
         trialModeActivatedDatetime: '2024-07-30T12:33:02.750Z',
@@ -255,7 +254,6 @@ describe('<StoreConfigForm />', () => {
     }
 
     const initialFormValues: FormValues = {
-        deactivatedDatetime: null,
         chatChannelDeactivatedDatetime: null,
         emailChannelDeactivatedDatetime: null,
         trialModeActivatedDatetime: '2024-07-30T12:55:07.585Z',
@@ -394,7 +392,6 @@ describe('<StoreConfigForm />', () => {
         const mockStoreIntegration = {
             ...storeConfiguration,
             helpCenterId: null,
-            deactivatedDatetime: null,
         }
         mockedUseAiAgentStoreConfigurationContext.mockReturnValue({
             storeConfiguration: mockStoreIntegration,
@@ -423,7 +420,6 @@ describe('<StoreConfigForm />', () => {
         await waitFor(() => {
             expect(mockUpdateStoreConfiguration).toHaveBeenCalledWith({
                 ...mockStoreIntegration,
-                deactivatedDatetime: expect.any(String),
                 chatChannelDeactivatedDatetime: expect.any(String),
                 emailChannelDeactivatedDatetime: expect.any(String),
                 trialModeActivatedDatetime: null,
@@ -623,7 +619,7 @@ describe('<StoreConfigForm />', () => {
             storeConfiguration: {
                 ...storeConfiguration,
                 monitoredEmailIntegrations: [],
-                deactivatedDatetime: '2024-07-30T12:33:02.750Z',
+                emailChannelDeactivatedDatetime: '2024-07-30T12:33:02.750Z',
                 helpCenterId: 1,
             },
             isLoading: false,
@@ -640,7 +636,7 @@ describe('<StoreConfigForm />', () => {
             formValues: {
                 ...initialFormValues,
                 monitoredEmailIntegrations: [],
-                deactivatedDatetime: '2024-07-30T12:33:02.750Z',
+                emailChannelDeactivatedDatetime: '2024-07-30T12:33:02.750Z',
                 helpCenterId: 1,
             },
         })
@@ -724,7 +720,6 @@ describe('<StoreConfigForm />', () => {
             ...defaultUseConfigurationFormValues,
             formValues: {
                 ...initialFormValues,
-                deactivatedDatetime: '2024-07-30T12:33:02.750Z',
                 chatChannelDeactivatedDatetime: '2024-07-30T12:33:02.750Z',
                 emailChannelDeactivatedDatetime: '2024-07-30T12:33:02.750Z',
                 trialModeActivatedDatetime: null,
@@ -741,10 +736,10 @@ describe('<StoreConfigForm />', () => {
         userEvent.click(radioButton)
 
         // Check that updateValue was called with the correct arguments
-        // deactivatedDatetime + emailChannelDeactivatedDatetime + chatChannelDeactivatedDatetime + trialModeActivatedDatetime + previewModeActivatedDatetime
-        expect(updateValueMocked).toHaveBeenCalledTimes(5)
+        // emailChannelDeactivatedDatetime + chatChannelDeactivatedDatetime + trialModeActivatedDatetime + previewModeActivatedDatetime
+        expect(updateValueMocked).toHaveBeenCalledTimes(4)
         expect(updateValueMocked).toHaveBeenCalledWith(
-            'deactivatedDatetime',
+            'emailChannelDeactivatedDatetime',
             null,
         )
         expect(updateValueMocked).toHaveBeenCalledWith(
@@ -779,10 +774,10 @@ describe('<StoreConfigForm />', () => {
         userEvent.click(radioButton)
 
         // Check that updateValue was called with the correct arguments
-        // deactivatedDatetime + emailChannelDeactivatedDatetime + chatChannelDeactivatedDatetime + trialModeActivatedDatetime + previewModeActivatedDatetime
-        expect(updateValueMocked).toHaveBeenCalledTimes(5)
+        // emailChannelDeactivatedDatetime + chatChannelDeactivatedDatetime + trialModeActivatedDatetime + previewModeActivatedDatetime
+        expect(updateValueMocked).toHaveBeenCalledTimes(4)
         expect(updateValueMocked).toHaveBeenCalledWith(
-            'deactivatedDatetime',
+            'emailChannelDeactivatedDatetime',
             expect.any(String),
         )
         expect(updateValueMocked).toHaveBeenCalledWith(
@@ -807,10 +802,10 @@ describe('<StoreConfigForm />', () => {
         userEvent.click(radioButton)
 
         // Check that updateValue was called with the correct arguments
-        // deactivatedDatetime + emailChannelDeactivatedDatetime + chatChannelDeactivatedDatetime + trialModeActivatedDatetime + previewModeActivatedDatetime
-        expect(updateValueMocked).toHaveBeenCalledTimes(5)
+        // emailChannelDeactivatedDatetime + chatChannelDeactivatedDatetime + trialModeActivatedDatetime + previewModeActivatedDatetime
+        expect(updateValueMocked).toHaveBeenCalledTimes(4)
         expect(updateValueMocked).toHaveBeenCalledWith(
-            'deactivatedDatetime',
+            'emailChannelDeactivatedDatetime',
             expect.any(String),
         )
         expect(updateValueMocked).toHaveBeenCalledWith(
@@ -915,7 +910,6 @@ describe('<StoreConfigForm />', () => {
             isFormDirty: true,
             formValues: {
                 ...initialFormValues,
-                deactivatedDatetime: undefined,
                 emailChannelDeactivatedDatetime: undefined,
                 chatChannelDeactivatedDatetime: undefined,
             },
@@ -924,9 +918,6 @@ describe('<StoreConfigForm />', () => {
         renderComponent()
 
         await waitFor(() => {
-            expect(spyIsAiAgentEnabled).toHaveBeenCalledWith(
-                INITIAL_FORM_VALUES.deactivatedDatetime,
-            )
             expect(spyIsAiAgentEnabled).toHaveBeenCalledWith(
                 INITIAL_FORM_VALUES.emailChannelDeactivatedDatetime,
             )
@@ -1017,7 +1008,6 @@ describe('<StoreConfigForm />', () => {
             mockedUseAiAgentStoreConfigurationContext.mockReturnValue({
                 storeConfiguration: {
                     ...storeConfiguration,
-                    deactivatedDatetime: null,
                     chatChannelDeactivatedDatetime: null,
                     emailChannelDeactivatedDatetime: '2024-07-30T12:33:02.750Z',
                     trialModeActivatedDatetime: null,
@@ -1034,7 +1024,6 @@ describe('<StoreConfigForm />', () => {
                 formValues: {
                     ...initialFormValues,
                     trialModeActivatedDatetime: null,
-                    deactivatedDatetime: null,
                     chatChannelDeactivatedDatetime: null,
                     emailChannelDeactivatedDatetime: null,
                 },
@@ -1065,7 +1054,6 @@ describe('<StoreConfigForm />', () => {
             mockedUseAiAgentStoreConfigurationContext.mockReturnValue({
                 storeConfiguration: {
                     ...storeConfiguration,
-                    deactivatedDatetime: '2024-07-30T12:33:02.750Z',
                     chatChannelDeactivatedDatetime: '2024-07-30T12:33:02.750Z',
                     emailChannelDeactivatedDatetime: '2024-07-30T12:33:02.750Z',
                 },
@@ -1081,7 +1069,6 @@ describe('<StoreConfigForm />', () => {
                 formValues: {
                     ...initialFormValues,
                     trialModeActivatedDatetime: null,
-                    deactivatedDatetime: null,
                     chatChannelDeactivatedDatetime: null,
                     emailChannelDeactivatedDatetime: null,
                 },
@@ -1113,7 +1100,6 @@ describe('<StoreConfigForm />', () => {
             mockedUseAiAgentStoreConfigurationContext.mockReturnValue({
                 storeConfiguration: {
                     ...storeConfiguration,
-                    deactivatedDatetime: '2024-07-30T12:33:02.750Z',
                     chatChannelDeactivatedDatetime: '2024-07-30T12:33:02.750Z',
                     emailChannelDeactivatedDatetime: '2024-07-30T12:33:02.750Z',
                 },
@@ -1129,7 +1115,6 @@ describe('<StoreConfigForm />', () => {
                 formValues: {
                     ...initialFormValues,
                     trialModeActivatedDatetime: null,
-                    deactivatedDatetime: '2024-07-30T12:33:02.750Z',
                     chatChannelDeactivatedDatetime: null,
                     emailChannelDeactivatedDatetime: '2024-07-30T12:33:02.750Z',
                 },
@@ -1160,7 +1145,6 @@ describe('<StoreConfigForm />', () => {
             mockedUseAiAgentStoreConfigurationContext.mockReturnValue({
                 storeConfiguration: {
                     ...storeConfiguration,
-                    deactivatedDatetime: '2024-07-30T12:33:02.750Z',
                     chatChannelDeactivatedDatetime: '2024-07-30T12:33:02.750Z',
                     emailChannelDeactivatedDatetime: '2024-07-30T12:33:02.750Z',
                 },
@@ -1176,7 +1160,6 @@ describe('<StoreConfigForm />', () => {
                 formValues: {
                     ...initialFormValues,
                     trialModeActivatedDatetime: null,
-                    deactivatedDatetime: '2024-07-30T12:33:02.750Z',
                     chatChannelDeactivatedDatetime: null,
                     emailChannelDeactivatedDatetime: '2024-07-30T12:33:02.750Z',
                 },
@@ -1244,7 +1227,6 @@ describe('<StoreConfigForm />', () => {
             mockedUseAiAgentStoreConfigurationContext.mockReturnValue({
                 storeConfiguration: {
                     ...storeConfiguration,
-                    deactivatedDatetime: null,
                     chatChannelDeactivatedDatetime: null,
                     emailChannelDeactivatedDatetime: '2024-07-30T12:33:02.750Z',
                     trialModeActivatedDatetime: null,
@@ -1261,7 +1243,6 @@ describe('<StoreConfigForm />', () => {
                 formValues: {
                     ...initialFormValues,
                     trialModeActivatedDatetime: '2024-07-30T12:33:02.750Z',
-                    deactivatedDatetime: null,
                     chatChannelDeactivatedDatetime: null,
                     emailChannelDeactivatedDatetime: null,
                 },
@@ -1295,7 +1276,6 @@ describe('<StoreConfigForm />', () => {
             mockedUseAiAgentStoreConfigurationContext.mockReturnValue({
                 storeConfiguration: {
                     ...storeConfiguration,
-                    deactivatedDatetime: '2024-07-30T12:33:02.750Z',
                     chatChannelDeactivatedDatetime: '2024-07-30T12:33:02.750Z',
                     emailChannelDeactivatedDatetime: '2024-07-30T12:33:02.750Z',
                     trialModeActivatedDatetime: '2024-07-30T12:33:02.750Z',
@@ -1312,7 +1292,6 @@ describe('<StoreConfigForm />', () => {
                 formValues: {
                     ...initialFormValues,
                     trialModeActivatedDatetime: null,
-                    deactivatedDatetime: null,
                     chatChannelDeactivatedDatetime: null,
                     emailChannelDeactivatedDatetime: null,
                 },
@@ -1340,7 +1319,6 @@ describe('<StoreConfigForm />', () => {
             mockedUseAiAgentStoreConfigurationContext.mockReturnValue({
                 storeConfiguration: {
                     ...storeConfiguration,
-                    deactivatedDatetime: '2024-07-30T12:33:02.750Z',
                     chatChannelDeactivatedDatetime: '2024-07-30T12:33:02.750Z',
                     emailChannelDeactivatedDatetime: '2024-07-30T12:33:02.750Z',
                     trialModeActivatedDatetime: '2024-07-30T12:33:02.750Z',
@@ -1370,7 +1348,6 @@ describe('<StoreConfigForm />', () => {
                 storeConfiguration: {
                     ...storeConfiguration,
                     trialModeActivatedDatetime: null,
-                    deactivatedDatetime: '2024-07-30T12:33:02.750Z',
                     chatChannelDeactivatedDatetime: '2024-07-30T12:33:02.750Z',
                     emailChannelDeactivatedDatetime: '2024-07-30T12:33:02.750Z',
                     previewModeValidUntilDatetime: '2024-07-30T12:33:02.750Z',
@@ -1403,7 +1380,6 @@ describe('<StoreConfigForm />', () => {
             mockedUseAiAgentStoreConfigurationContext.mockReturnValue({
                 storeConfiguration: {
                     ...storeConfiguration,
-                    deactivatedDatetime: '2024-07-30T12:33:02.750Z',
                     chatChannelDeactivatedDatetime: '2024-07-30T12:33:02.750Z',
                     emailChannelDeactivatedDatetime: '2024-07-30T12:33:02.750Z',
                     trialModeActivatedDatetime: '2024-07-30T12:33:02.750Z',
@@ -1441,7 +1417,6 @@ describe('<StoreConfigForm />', () => {
             mockedUseAiAgentStoreConfigurationContext.mockReturnValue({
                 storeConfiguration: {
                     ...storeConfiguration,
-                    deactivatedDatetime: '2024-07-30T12:33:02.750Z',
                     chatChannelDeactivatedDatetime: '2024-07-30T12:33:02.750Z',
                     emailChannelDeactivatedDatetime: '2024-07-30T12:33:02.750Z',
                     trialModeActivatedDatetime: '2024-07-30T12:33:02.750Z',
