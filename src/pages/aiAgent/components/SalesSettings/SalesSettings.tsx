@@ -196,8 +196,8 @@ export const SalesSettings = () => {
             <div className={css.salesSettingsContent}>
                 <div className={css.settings}>
                     <Alert icon className={css.info}>
-                        Fine-tune how your AI Agent engages in sales to align
-                        with your strategy.
+                        Fine-tune how your AI Agent engages in sales
+                        conversations to align with your brand strategy.
                     </Alert>
 
                     <section className={css.card}>
