@@ -66,7 +66,7 @@ describe('CampaignPerformanceTable', () => {
         })
         useCampaignPerformanceTableSettingMock.mockReturnValue({
             isLoading: false,
-            currentView: {} as TableView<CampaignTableKeys>,
+            currentView: {} as TableView<CampaignTableKeys, never>,
             columnsOrder: Object.keys(
                 CAMPAIGN_TABLE_COLUMN_TITLES,
             ) as CampaignTableKeys[],

@@ -5,6 +5,8 @@ import { Dropdown, DropdownMenu, DropdownToggle } from 'reactstrap'
 import { Selector } from 'reselect'
 import { v4 as uuidv4 } from 'uuid'
 
+import { FeatureFlagKey } from 'config/featureFlags'
+import { useFlag } from 'core/flags'
 import useAppSelector from 'hooks/useAppSelector'
 import useDeepEffect from 'hooks/useDeepEffect'
 import Button from 'pages/common/components/button/Button'
@@ -16,9 +18,10 @@ import { AccountSettingTableConfig } from 'state/currentAccount/types'
 import { RootState, StoreDispatch } from 'state/types'
 import {
     TableColumnSet,
+    TableRowSet,
     TableSetting,
     TableView,
-    TableViewColumn,
+    TableViewItem,
 } from 'state/ui/stats/types'
 
 export const TOGGLE_LABEL = 'Edit Columns'
@@ -26,11 +29,11 @@ export const SAVE_TOOLTIP =
     'Clicking "Save" will update the table for all users.'
 export const SAVE_BUTTON_TEXT = 'Save'
 
-const dragToPosition = <T extends TableColumnSet>(
-    columnsList: TableViewColumn<T>[],
+const dragToPosition = <T extends TableColumnSet | TableRowSet>(
+    columnsList: TableViewItem<T>[],
     target: { id: string },
     from: { id: string },
-): TableViewColumn<T>[] => {
+): TableViewItem<T>[] => {
     const targetPosition = columnsList.findIndex(
         (column) => column.id === target.id,
     )
@@ -44,29 +47,40 @@ const dragToPosition = <T extends TableColumnSet>(
     return newList
 }
 
-export const EditTableColumns = <T extends TableColumnSet>({
+export const EditTableColumns = <
+    T extends TableColumnSet,
+    R extends TableRowSet,
+>({
     settingsSelector,
     fallbackViews,
     tableLabels,
+    rowLabels,
     useTableSetting,
     tooltips,
+    rowTooltips,
     leadColumn,
 }: {
     settingsSelector: Selector<
         RootState,
-        AccountSettingTableConfig<T> | undefined
+        AccountSettingTableConfig<T, R> | undefined
     >
-    fallbackViews: TableSetting<T>
+    fallbackViews: TableSetting<T, R>
     tableLabels: Record<T, string>
+    rowLabels?: Record<R, string>
     tooltips: Record<T, { hint: TooltipData | null }>
+    rowTooltips?: Record<R, { hint: TooltipData | null }>
     leadColumn: T
+    leadRow?: R
     useTableSetting: () => {
-        currentView: TableView<T>
+        currentView: TableView<T, R>
         submitActiveView: (
-            activeView: TableView<T>,
+            activeView: TableView<T, R>,
         ) => Promise<ReturnType<StoreDispatch>> | Promise<boolean>
     }
 }) => {
+    const isReportingAgentsTableAverageAndTotalEnabled = useFlag(
+        FeatureFlagKey.ReportingAgentsTableAverageAndTotal,
+    )
     const [dropdownOpen, setDropdownOpen] = useState(false)
     const [hasChanges, setHasChanges] = useState(false)
     const [isLoading, setIsLoading] = useState(false)
@@ -76,25 +90,49 @@ export const EditTableColumns = <T extends TableColumnSet>({
     const { currentView, submitActiveView } = useTableSetting()
 
     const [columnsVisibility, setColumnsVisibility] = useState<
-        TableViewColumn<T>[]
+        TableViewItem<T>[]
     >(currentView.metrics)
+    const [rowsVisibility, setRowsVisibility] = useState<TableViewItem<R>[]>(
+        currentView.rows ?? [],
+    )
 
     useDeepEffect(() => {
         setColumnsVisibility(currentView.metrics)
     }, [currentView.metrics])
 
+    useDeepEffect(() => {
+        setRowsVisibility(currentView.rows ?? [])
+    }, [currentView.rows])
+
     const toggle = () => setDropdownOpen((prevState) => !prevState)
 
     const closeDropdown = () => {
         setColumnsVisibility(currentView.metrics)
+        setRowsVisibility(currentView.rows ?? [])
         setHasChanges(false)
         setDropdownOpen(false)
     }
 
-    const handleChangeVisibility = (columnId: T) => (visibility: boolean) => {
-        setColumnsVisibility((prevValue) =>
+    const handleChangeColumnVisibility =
+        (columnId: T) => (visibility: boolean) => {
+            setColumnsVisibility((prevValue) =>
+                prevValue.map((item) => {
+                    if (item.id === columnId) {
+                        return {
+                            ...item,
+                            visibility,
+                        }
+                    }
+                    return item
+                }),
+            )
+            setHasChanges(true)
+        }
+
+    const handleChangeRowVisibility = (rowId: R) => (visibility: boolean) => {
+        setRowsVisibility((prevValue) =>
             prevValue.map((item) => {
-                if (item.id === columnId) {
+                if (item.id === rowId) {
                     return {
                         ...item,
                         visibility,
@@ -106,10 +144,16 @@ export const EditTableColumns = <T extends TableColumnSet>({
         setHasChanges(true)
     }
 
-    const dropBefore = (item: { id: string }, from: { id: string }) => {
+    const dropBeforeColumn = (item: { id: string }, from: { id: string }) => {
         setColumnsVisibility((prevState) =>
             dragToPosition(prevState, item, from),
         )
+        setHasChanges(true)
+        return from
+    }
+
+    const dropBeforeRow = (item: { id: string }, from: { id: string }) => {
+        setRowsVisibility((prevState) => dragToPosition(prevState, item, from))
         setHasChanges(true)
         return from
     }
@@ -129,6 +173,7 @@ export const EditTableColumns = <T extends TableColumnSet>({
                   }
                 : currentView),
             metrics: columnsVisibility,
+            ...(hasRows ? { rows: rowsVisibility } : {}),
         })
 
         setIsLoading(false)
@@ -137,6 +182,9 @@ export const EditTableColumns = <T extends TableColumnSet>({
         closeDropdown()
     }
 
+    const hasRows =
+        isReportingAgentsTableAverageAndTotalEnabled &&
+        rowsVisibility.length > 0
     return (
         <Dropdown isOpen={dropdownOpen} toggle={toggle}>
             <DropdownToggle
@@ -150,7 +198,25 @@ export const EditTableColumns = <T extends TableColumnSet>({
             </DropdownToggle>
 
             <DropdownMenu className={css.dropdownMenu}>
+                {hasRows && (
+                    <div className={css.dropdownMenuContainer}>
+                        <div>Edit rows</div>
+                        {rowsVisibility.map(({ id, visibility }) => (
+                            <EditColumnsItem
+                                key={id}
+                                title={rowLabels?.[id] ?? ''}
+                                isIndeterminate={visibility === null}
+                                isChecked={!!visibility}
+                                onChange={handleChangeRowVisibility(id)}
+                                tooltip={rowTooltips?.[id]?.hint?.title ?? ''}
+                                onDrop={dropBeforeRow}
+                                option={{ id }}
+                            />
+                        ))}
+                    </div>
+                )}
                 <div className={css.dropdownMenuContainer}>
+                    {hasRows && <div>Edit columns</div>}
                     {columnsVisibility.map(({ id, visibility }) => (
                         <EditColumnsItem
                             key={id}
@@ -158,14 +224,13 @@ export const EditTableColumns = <T extends TableColumnSet>({
                             isIndeterminate={visibility === null}
                             isChecked={!!visibility}
                             disabled={id === leadColumn}
-                            onChange={handleChangeVisibility(id)}
+                            onChange={handleChangeColumnVisibility(id)}
                             tooltip={tooltips[id]?.hint?.title}
-                            onDrop={dropBefore}
+                            onDrop={dropBeforeColumn}
                             option={{ id }}
                         />
                     ))}
                 </div>
-
                 <div className={css.dropdownFooter}>
                     <Button intent="secondary" onClick={closeDropdown}>
                         Cancel

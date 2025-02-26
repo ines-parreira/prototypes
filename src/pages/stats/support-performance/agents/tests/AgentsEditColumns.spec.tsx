@@ -8,6 +8,7 @@ import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
+import { useFlag } from 'core/flags'
 import {
     SAVE_BUTTON_TEXT,
     TOGGLE_LABEL,
@@ -20,6 +21,7 @@ import {
 import * as currentAccount from 'state/currentAccount/actions'
 import { RootState, StoreDispatch } from 'state/types'
 import { AgentsTableColumn } from 'state/ui/stats/types'
+import { assumeMock } from 'utils/testing'
 
 const manager = createDragDropManager(HTML5Backend, undefined, undefined)
 
@@ -28,6 +30,9 @@ const submitSettingSpy = jest.spyOn(
     'submitAgentTableConfigView',
 )
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
+
+jest.mock('core/flags')
+const useFlagMock = assumeMock(useFlag)
 
 describe('<AgentsEditColumns>', () => {
     const columnTitle = TableLabels[AgentsTableColumn.ClosedTickets]
@@ -80,6 +85,7 @@ describe('<AgentsEditColumns>', () => {
     })
 
     it('should dispatch submit setting on save', () => {
+        useFlagMock.mockReturnValue(true)
         render(
             <Provider store={mockStore({})}>
                 <DndProvider manager={manager}>
@@ -97,7 +103,7 @@ describe('<AgentsEditColumns>', () => {
         expect(submitSettingSpy).toBeCalledWith({
             id: expect.any(String),
             name: expect.any(String),
-            metrics: agentPerformanceTableActiveView?.metrics.map((metric) => {
+            metrics: agentPerformanceTableActiveView.metrics.map((metric) => {
                 if (metric.id === AgentsTableColumn.ClosedTickets) {
                     return {
                         ...metric,
@@ -106,10 +112,12 @@ describe('<AgentsEditColumns>', () => {
                 }
                 return metric
             }),
+            rows: agentPerformanceTableActiveView?.rows,
         })
     })
 
     it('should render items in expected order', () => {
+        useFlagMock.mockReturnValue(false)
         render(
             <Provider store={mockStore({})}>
                 <DndProvider manager={manager}>
@@ -128,6 +136,7 @@ describe('<AgentsEditColumns>', () => {
     })
 
     it('should allow changing order with drag and drop', () => {
+        useFlagMock.mockReturnValue(false)
         const firstOrderableItemLabel =
             TableLabels[agentPerformanceTableActiveView.metrics[1].id]
         const lastItemLabel =

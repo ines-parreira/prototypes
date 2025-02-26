@@ -18,7 +18,7 @@ import {
 } from 'pages/stats/support-performance/agents/AgentsTable'
 import {
     getColumnWidth,
-    TableColumnsOrderWithOnlineTime,
+    TableColumnsOrder,
     TableLabels,
 } from 'pages/stats/support-performance/agents/AgentsTableConfig'
 import { AgentsTableSummaryCell } from 'pages/stats/support-performance/agents/AgentsTableSummaryCell'
@@ -118,7 +118,7 @@ describe('<AgentsTable>', () => {
             )
 
             expect(screen.getByRole('table')).toBeInTheDocument()
-            TableColumnsOrderWithOnlineTime.forEach((column) => {
+            TableColumnsOrder.forEach((column) => {
                 expect(AgentsHeaderCellContentMock).toHaveBeenCalledWith(
                     expect.objectContaining({
                         title: TableLabels[column],

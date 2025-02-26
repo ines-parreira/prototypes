@@ -7,11 +7,14 @@ import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import { AccountSettingTableConfig } from 'state/currentAccount/types'
 import { RootState, StoreDispatch, StoreState } from 'state/types'
-import { TableColumnSet, TableView } from 'state/ui/stats/types'
+import { TableColumnSet, TableRowSet, TableView } from 'state/ui/stats/types'
 
-const getActiveViewFromTableSetting = <T extends TableColumnSet>(
-    setting: AccountSettingTableConfig<T> | undefined,
-): TableView<T> | undefined => {
+const getActiveViewFromTableSetting = <
+    T extends TableColumnSet,
+    R extends TableRowSet,
+>(
+    setting: AccountSettingTableConfig<T, R> | undefined,
+): TableView<T, R> | undefined => {
     if (setting !== undefined) {
         const currentSettings = setting.data
         return currentSettings.views.find(
@@ -21,15 +24,19 @@ const getActiveViewFromTableSetting = <T extends TableColumnSet>(
     return setting
 }
 
-export const useTableConfigSetting = <T extends TableColumnSet>(
+export const useTableConfigSetting = <
+    T extends TableColumnSet,
+    R extends TableRowSet,
+>(
     tableSettingSelector: Selector<
         RootState,
-        AccountSettingTableConfig<T> | undefined
+        AccountSettingTableConfig<T, R> | undefined
     >,
-    fallbackView: TableView<T>,
+    fallbackView: TableView<T, R>,
     columnsOrder: T[],
+    rowsOrder: R[],
     submitActiveViewAction: (
-        activeView: TableView<T>,
+        activeView: TableView<T, R>,
     ) => (
         dispatch: StoreDispatch,
         getState: () => CombinedState<StoreState>,
@@ -39,25 +46,36 @@ export const useTableConfigSetting = <T extends TableColumnSet>(
     const tableConfig = useAppSelector(tableSettingSelector)
 
     const submitActiveView = useCallback(
-        async (activeView: TableView<T>) => {
+        async (activeView: TableView<T, R>) => {
             await dispatch(submitActiveViewAction(activeView))
         },
         [dispatch, submitActiveViewAction],
     )
 
-    const response = useMemo(() => {
+    return useMemo(() => {
         const currentView =
             getActiveViewFromTableSetting(tableConfig) || fallbackView
         const currentViewColumnsInOrder = currentView.metrics
             .map((metric) => metric.id)
             .filter((column) => columnsOrder.includes(column))
+        const currentViewRowsInOrder = (currentView?.rows ?? [])
+            .map((row) => row.id)
+            .filter((rowId) => rowsOrder.includes(rowId))
         const columnsMissingInSettings = columnsOrder.filter(
             (column) => !currentViewColumnsInOrder.includes(column),
+        )
+        const rowsMissingInSettings = rowsOrder.filter(
+            (row) => !currentViewRowsInOrder.includes(row),
         )
 
         const columnsInOrder = [
             ...currentViewColumnsInOrder,
             ...columnsMissingInSettings,
+        ]
+
+        const rowsInOrder = [
+            ...currentViewRowsInOrder,
+            ...rowsMissingInSettings,
         ]
 
         currentView.metrics = columnsInOrder.map((metric) => {
@@ -72,17 +90,34 @@ export const useTableConfigSetting = <T extends TableColumnSet>(
                         : null,
             }
         })
-
         const filteredColumnsOrder = currentView?.metrics
             .filter((metric) => metric.visibility !== false)
             .map((metric) => metric.id)
 
+        if (rowsOrder.length > 0) {
+            currentView.rows = rowsInOrder.map((row) => {
+                const savedSetting = (currentView?.rows ?? []).find(
+                    (entry) => entry.id === row,
+                )
+                return {
+                    id: row,
+                    visibility:
+                        savedSetting?.visibility !== undefined
+                            ? savedSetting?.visibility
+                            : null,
+                }
+            })
+        }
+
+        const filteredRowsOrder = (currentView?.rows ?? [])
+            .filter((row) => row.visibility !== false)
+            .map((row) => row.id)
+
         return {
             currentView,
             columnsOrder: filteredColumnsOrder,
+            rowsOrder: filteredRowsOrder,
             submitActiveView,
         }
-    }, [columnsOrder, fallbackView, submitActiveView, tableConfig])
-
-    return response
+    }, [columnsOrder, fallbackView, rowsOrder, submitActiveView, tableConfig])
 }
