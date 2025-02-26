@@ -10,11 +10,13 @@ import {
     useTicketAverageHandleTimeMetric,
     useTicketsRepliedMetric,
 } from 'hooks/reporting/metrics'
-import { useOneTouchTicketsPercentageMetricTrend } from 'hooks/reporting/support-performance/agents/useOneTouchTicketsPercentageMetricTrend'
+import { useOneTouchTicketsPercentageMetricTrend } from 'hooks/reporting/support-performance/overview/useOneTouchTicketsPercentageMetricTrend'
 import { useNewStatsFilters } from 'hooks/reporting/support-performance/useNewStatsFilters'
 import { useMessagesSentPerHour } from 'hooks/reporting/useMessagesSentPerHour'
 import { useTicketsClosedPerHour } from 'hooks/reporting/useTicketsClosedPerHour'
 import { useTicketsRepliedPerHour } from 'hooks/reporting/useTicketsRepliedPerHour'
+
+import { useZeroTouchTicketsMetricTrend } from '../overview/useZeroTouchTicketsMetricTrend'
 
 export function useAgentsSummaryMetrics() {
     const { cleanStatsFilters, userTimezone } = useNewStatsFilters()
@@ -50,6 +52,10 @@ export function useAgentsSummaryMetrics() {
         cleanStatsFilters,
         userTimezone,
     )
+    const zeroTouchTicketsMetric = useZeroTouchTicketsMetricTrend(
+        cleanStatsFilters,
+        userTimezone,
+    )
     const repliedTicketsPerHourMetric = useTicketsRepliedPerHour(
         cleanStatsFilters,
         userTimezone,
@@ -81,6 +87,7 @@ export function useAgentsSummaryMetrics() {
             medianResolutionTimeMetric,
             ticketsRepliedMetric,
             oneTouchTicketsMetric,
+            zeroTouchTicketsMetric,
             repliedTicketsPerHourMetric,
             onlineTimeMetric,
             messagesSentPerHourMetric,
@@ -96,6 +103,7 @@ export function useAgentsSummaryMetrics() {
         medianResolutionTimeMetric,
         ticketsRepliedMetric,
         oneTouchTicketsMetric,
+        zeroTouchTicketsMetric,
         repliedTicketsPerHourMetric,
         onlineTimeMetric,
         messagesSentPerHourMetric,
@@ -113,6 +121,7 @@ export function useAgentsSummaryMetrics() {
             medianResolutionTimeMetric,
             ticketsRepliedMetric,
             oneTouchTicketsMetric,
+            zeroTouchTicketsMetric,
             repliedTicketsPerHourMetric,
             onlineTimeMetric,
             messagesSentPerHourMetric,

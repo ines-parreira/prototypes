@@ -13,9 +13,11 @@ import { fetchSatisfiedOrBreachedTicketsTimeSeries } from 'hooks/reporting/sla/u
 import { timeSeriesReportSource } from 'hooks/reporting/support-performance/overview/useDownloadOverviewData'
 import {
     fetchMessagesSentTimeSeries,
+    fetchOneTouchTicketsTimeSeries,
     fetchTicketsClosedTimeSeries,
     fetchTicketsCreatedTimeSeries,
     fetchTicketsRepliedTimeSeries,
+    fetchZeroTouchTicketsTimeSeries,
 } from 'hooks/reporting/timeSeries'
 import { TicketSLAStatus } from 'models/reporting/cubes/sla/TicketSLACube'
 import { TicketMeasure } from 'models/reporting/cubes/TicketCube'
@@ -44,6 +46,13 @@ const fetchTicketsRepliedTimeSeriesMock = assumeMock(
     fetchTicketsRepliedTimeSeries,
 )
 const fetchMessagesSentTimeSeriesMock = assumeMock(fetchMessagesSentTimeSeries)
+const useZeroTouchTicketsTimeSeriesMock = assumeMock(
+    fetchOneTouchTicketsTimeSeries,
+)
+const fetchZeroTouchTicketsTimeSeriesMock = assumeMock(
+    fetchZeroTouchTicketsTimeSeries,
+)
+
 jest.mock('hooks/reporting/sla/useSatisfiedOrBreachedTicketsTimeSeries')
 const fetchSatisfiedOrBreachedTicketsTimeSeriesMock = assumeMock(
     fetchSatisfiedOrBreachedTicketsTimeSeries,
@@ -85,6 +94,12 @@ describe('timeSeriesReportData', () => {
                 defaultTimeSeries.data,
             )
             fetchMessagesSentTimeSeriesMock.mockResolvedValue(
+                defaultTimeSeries.data,
+            )
+            useZeroTouchTicketsTimeSeriesMock.mockResolvedValue(
+                defaultTimeSeries.data,
+            )
+            fetchZeroTouchTicketsTimeSeriesMock.mockResolvedValue(
                 defaultTimeSeries.data,
             )
         })

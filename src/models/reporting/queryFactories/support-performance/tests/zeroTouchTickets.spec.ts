@@ -16,13 +16,18 @@ import {
     zeroTouchTicketsPerAgentQueryFactory,
     zeroTouchTicketsPerTicketQueryFactory,
     zeroTouchTicketsQueryFactory,
+    zeroTouchTicketsTimeSeriesQueryFactory,
 } from 'models/reporting/queryFactories/support-performance/zeroTouchTickets'
-import { ReportingFilterOperator } from 'models/reporting/types'
-import { LegacyStatsFilters } from 'models/stat/types'
+import {
+    ReportingFilterOperator,
+    ReportingGranularity,
+} from 'models/reporting/types'
+import { LegacyStatsFilters, StatsFilters } from 'models/stat/types'
 import { subtractDaysFromDate } from 'utils/date'
 import {
     DRILLDOWN_QUERY_LIMIT,
     formatReportingQueryDate,
+    getFilterDateRange,
     NotSpamNorTrashedTicketsFilter,
     TicketDrillDownFilter,
 } from 'utils/reporting'
@@ -241,6 +246,38 @@ describe('zeroTouchTicketsPerTicketQueryFactory', () => {
             ],
             limit: DRILLDOWN_QUERY_LIMIT,
             order: [[TicketDimension.CreatedDatetime, sorting]],
+        })
+    })
+})
+
+describe('zeroTouchTicketsTimeSeriesQueryFactory', () => {
+    const periodStart = formatReportingQueryDate(moment())
+    const periodEnd = formatReportingQueryDate(moment())
+    const statsFilters: StatsFilters = {
+        period: {
+            end_datetime: periodEnd,
+            start_datetime: periodStart,
+        },
+    }
+    const granularity = ReportingGranularity.Day
+    const timezone = 'someTimeZone'
+
+    it('should create a query', () => {
+        const query = zeroTouchTicketsTimeSeriesQueryFactory(
+            statsFilters,
+            timezone,
+            granularity,
+        )
+
+        expect(query).toEqual({
+            ...zeroTouchTicketsQueryFactory(statsFilters, timezone),
+            timeDimensions: [
+                {
+                    dateRange: getFilterDateRange(statsFilters.period),
+                    dimension: TicketDimension.ClosedDatetime,
+                    granularity: granularity,
+                },
+            ],
         })
     })
 })

@@ -23,6 +23,7 @@ import { TicketsCreatedVsClosedChart } from 'pages/stats/support-performance/ove
 import { TicketsRepliedGraph } from 'pages/stats/support-performance/overview/charts/TicketsRepliedGraph'
 import { TicketsRepliedTrendCard } from 'pages/stats/support-performance/overview/charts/TicketsRepliedTrendCard'
 import { WorkloadPerChannelChart } from 'pages/stats/support-performance/overview/charts/WorkloadPerChannelChart'
+import { ZeroTouchTicketsTrendCard } from 'pages/stats/support-performance/overview/charts/ZeroTouchTicketsTrendCard'
 import {
     OverviewChartConfig,
     OverviewMetric,
@@ -54,6 +55,7 @@ export enum OverviewChart {
     MessagesSentTrendCard = 'messages_sent_trend_card',
     TicketHandleTimeTrendCard = 'ticket_handle_time_trend_card',
     OneTouchTicketsTrendCard = 'one_touch_tickets_trend_card',
+    ZeroTouchTicketsTrendCard = 'zero_touch_tickets_trend_card',
     TicketsRepliedGraph = 'tickets_replied_graph',
     MessagesSentGraph = 'messages_sent_graph',
 }
@@ -322,6 +324,27 @@ export const SupportPerformanceOverviewReportConfig: ReportConfig<OverviewChart>
                 ],
                 description:
                     OverviewMetricConfig[OverviewMetric.OneTouchTickets].hint
+                        .title,
+                chartType: ChartType.Card,
+            },
+            [OverviewChart.ZeroTouchTicketsTrendCard]: {
+                chartComponent: ZeroTouchTicketsTrendCard,
+                label: OverviewMetricConfig[OverviewMetric.ZeroTouchTickets]
+                    .title,
+                csvProducer: [
+                    {
+                        type: DataExportFormat.Trend,
+                        fetch: OverviewMetricConfig[
+                            OverviewMetric.ZeroTouchTickets
+                        ].fetchTrend,
+                        metricFormat:
+                            OverviewMetricConfig[
+                                OverviewMetric.ZeroTouchTickets
+                            ].metricFormat,
+                    },
+                ],
+                description:
+                    OverviewMetricConfig[OverviewMetric.ZeroTouchTickets].hint
                         .title,
                 chartType: ChartType.Card,
             },

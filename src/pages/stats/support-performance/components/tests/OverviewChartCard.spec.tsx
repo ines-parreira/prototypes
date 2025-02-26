@@ -11,9 +11,11 @@ import { integrationsState } from 'fixtures/integrations'
 import { useNewStatsFilters } from 'hooks/reporting/support-performance/useNewStatsFilters'
 import {
     useMessagesSentTimeSeries,
+    useOneTouchTicketsTimeSeries,
     useTicketsClosedTimeSeries,
     useTicketsCreatedTimeSeries,
     useTicketsRepliedTimeSeries,
+    useZeroTouchTicketsTimeSeries,
 } from 'hooks/reporting/timeSeries'
 import { useTimeSeries } from 'hooks/reporting/useTimeSeries'
 import { ReportingGranularity } from 'models/reporting/types'
@@ -33,6 +35,12 @@ const useTicketsCreatedTimeSeriesMock = assumeMock(useTicketsCreatedTimeSeries)
 const useTicketsClosedTimeSeriesMock = assumeMock(useTicketsClosedTimeSeries)
 const useTicketsRepliedTimeSeriesMock = assumeMock(useTicketsRepliedTimeSeries)
 const useMessagesSentTimeSeriesMock = assumeMock(useMessagesSentTimeSeries)
+const useOneTouchTicketsTimeSeriesMock = assumeMock(
+    useOneTouchTicketsTimeSeries,
+)
+const useZeroTouchTicketsTimeSeriesMock = assumeMock(
+    useZeroTouchTicketsTimeSeries,
+)
 
 jest.mock('hooks/reporting/support-performance/useNewStatsFilters')
 const useNewStatsFiltersMock = assumeMock(useNewStatsFilters)
@@ -65,6 +73,8 @@ describe('<OverviewChartCard />', () => {
         useTicketsClosedTimeSeriesMock.mockReturnValue(defaultTimeSeries)
         useTicketsRepliedTimeSeriesMock.mockReturnValue(defaultTimeSeries)
         useMessagesSentTimeSeriesMock.mockReturnValue(defaultTimeSeries)
+        useOneTouchTicketsTimeSeriesMock.mockReturnValue(defaultTimeSeries)
+        useZeroTouchTicketsTimeSeriesMock.mockReturnValue(defaultTimeSeries)
         useNewStatsFiltersMock.mockReturnValue({
             cleanStatsFilters: defaultStatsFilters,
             userTimezone: DEFAULT_TIMEZONE,

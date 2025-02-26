@@ -108,6 +108,7 @@ describe('getDrillDownQuery', () => {
         { metricName: AgentsTableColumn.ClosedTickets, perAgentId: 123 },
         { metricName: AgentsTableColumn.RepliedTickets, perAgentId: 123 },
         { metricName: AgentsTableColumn.OneTouchTickets, perAgentId: 123 },
+        { metricName: AgentsTableColumn.ZeroTouchTickets, perAgentId: 123 },
         { metricName: AgentsTableColumn.TicketHandleTime, perAgentId: 123 },
     ]
     const autoQAMetrics: DrillDownMetric[] = [
@@ -212,6 +213,7 @@ describe('getDrillDownQuery', () => {
         { metricName: OverviewMetric.MedianFirstResponseTime },
         { metricName: OverviewMetric.CustomerSatisfaction },
         { metricName: OverviewMetric.OneTouchTickets },
+        { metricName: OverviewMetric.ZeroTouchTickets },
         { metricName: OverviewMetric.TicketHandleTime },
         { metricName: OverviewMetric.TicketHandleTime },
         { metricName: TagsMetric.TicketCount, tagId: 'TAG_ID' },

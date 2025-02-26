@@ -20,7 +20,8 @@ import {
     useTicketsCreatedTrend,
     useTicketsRepliedTrend,
 } from 'hooks/reporting/metricTrends'
-import { useOneTouchTicketsPercentageMetricTrend } from 'hooks/reporting/support-performance/agents/useOneTouchTicketsPercentageMetricTrend'
+import { useOneTouchTicketsPercentageMetricTrend } from 'hooks/reporting/support-performance/overview/useOneTouchTicketsPercentageMetricTrend'
+import { useZeroTouchTicketsMetricTrend } from 'hooks/reporting/support-performance/overview/useZeroTouchTicketsMetricTrend'
 import { useNewStatsFilters } from 'hooks/reporting/support-performance/useNewStatsFilters'
 import { MetricTrend } from 'hooks/reporting/useMetricTrend'
 import { ReportingGranularity } from 'models/reporting/types'
@@ -58,9 +59,11 @@ const trendBadgeMock = assumeMock(TrendBadge)
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
 jest.mock('hooks/reporting/metricTrends')
 jest.mock(
-    'hooks/reporting/support-performance/agents/useOneTouchTicketsPercentageMetricTrend',
+    'hooks/reporting/support-performance/overview/useOneTouchTicketsPercentageMetricTrend',
 )
-
+jest.mock(
+    'hooks/reporting/support-performance/overview/useZeroTouchTicketsMetricTrend',
+)
 const useCustomerSatisfactionTrendMock = assumeMock(
     useCustomerSatisfactionTrend,
 )
@@ -80,6 +83,7 @@ const useTicketHandleTimeTrendMock = assumeMock(useTicketHandleTimeTrend)
 const useOneTouchTicketTrendMock = assumeMock(
     useOneTouchTicketsPercentageMetricTrend,
 )
+const useZeroTouchTicketsTrendMock = assumeMock(useZeroTouchTicketsMetricTrend)
 jest.mock('hooks/reporting/support-performance/useNewStatsFilters')
 const useNewStatsFiltersMock = assumeMock(useNewStatsFilters)
 
@@ -173,6 +177,14 @@ describe('<TrendCard />', () => {
             prevValue,
         },
     }
+    const zeroTouchTicketsMetricTrend = {
+        ...defaultMetricTrend,
+        data: {
+            interpretAs: 'more-is-better',
+            value,
+            prevValue,
+        },
+    }
 
     beforeEach(() => {
         jest.resetAllMocks()
@@ -194,6 +206,9 @@ describe('<TrendCard />', () => {
         useTicketsRepliedTrendMock.mockReturnValue(repliedTicketsMetricTrend)
         useMessagesSentTrendMock.mockReturnValue(messagesSentMetricTrend)
         useOneTouchTicketTrendMock.mockReturnValue(oneTouchTicketsMetricTrend)
+        useZeroTouchTicketsTrendMock.mockReturnValue(
+            zeroTouchTicketsMetricTrend,
+        )
         useTicketHandleTimeTrendMock.mockReturnValue(ticketHandleTimeTrend)
 
         trendBadgeMock.mockImplementation(() => <>{DEFAULT_BADGE_TEXT}</>)

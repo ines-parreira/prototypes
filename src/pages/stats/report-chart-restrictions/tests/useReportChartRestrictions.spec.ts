@@ -162,7 +162,10 @@ describe('useReportChartRestrictions', () => {
             'RBAC_RESTRICTIONS',
             RBAC_RESTRICTIONS_MOCK as any,
         )
-        useReportRestrictionsMock.mockReturnValue({ restrictionsMap: {} })
+        useReportRestrictionsMock.mockReturnValue({
+            reportRestrictionsMap: {},
+            chartRestrictionsMap: {},
+        })
     })
 
     describe('isRouteRestrictedToCurrentUser', () => {
@@ -276,11 +279,12 @@ describe('useReportChartRestrictions', () => {
             permittedChartId,
         ])('should return true if path is restricted', (chartId) => {
             useReportRestrictionsMock.mockReturnValue({
-                restrictionsMap: {
+                reportRestrictionsMap: {
                     ['quality-management-satisfaction']: true,
                     [STATS_ROUTES.SUPPORT_PERFORMANCE_OVERVIEW]: true,
                     [STATS_ROUTES.SUPPORT_PERFORMANCE_AGENTS]: true,
                 },
+                chartRestrictionsMap: {},
             })
 
             mockUseAppSelector

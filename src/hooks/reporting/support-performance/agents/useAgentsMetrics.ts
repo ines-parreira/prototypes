@@ -10,8 +10,9 @@ import {
     useTicketAverageHandleTimePerAgent,
     useTicketsRepliedMetricPerAgent,
 } from 'hooks/reporting/metricsPerAgent'
-import { useOneTouchTicketsPercentageMetricPerAgent } from 'hooks/reporting/support-performance/agents/useOneTouchTicketsPercentageMetricPerAgent'
 import { usePercentageOfClosedTicketsMetricPerAgent } from 'hooks/reporting/support-performance/agents/usePercentageOfClosedTicketsMetricPerAgent'
+import { useOneTouchTicketsPercentageMetricPerAgent } from 'hooks/reporting/support-performance/overview/useOneTouchTicketsPercentageMetricPerAgent'
+import { useZeroTouchTicketsPercentageMetricPerAgent } from 'hooks/reporting/support-performance/overview/useZeroTouchTicketsPercentageMetricPerAgent'
 import { useNewStatsFilters } from 'hooks/reporting/support-performance/useNewStatsFilters'
 import { useMessagesSentPerHourPerAgent } from 'hooks/reporting/useMessagesSentPerHourPerAgent'
 import { useTicketsClosedPerHourPerAgent } from 'hooks/reporting/useTicketsClosedPerHourPerAgent'
@@ -54,6 +55,10 @@ export function useAgentsMetrics() {
         cleanStatsFilters,
         userTimezone,
     )
+    const zeroTouchTicketsMetric = useZeroTouchTicketsPercentageMetricPerAgent(
+        cleanStatsFilters,
+        userTimezone,
+    )
     const repliedTicketsPerHourMetric = useTicketsRepliedPerHourPerAgent(
         cleanStatsFilters,
         userTimezone,
@@ -85,6 +90,7 @@ export function useAgentsMetrics() {
             medianResolutionTimeMetric,
             ticketsRepliedMetric,
             oneTouchTicketsMetric,
+            zeroTouchTicketsMetric,
             repliedTicketsPerHourMetric,
             onlineTimeMetric,
             messagesSentPerHourMetric,
@@ -100,6 +106,7 @@ export function useAgentsMetrics() {
         medianResolutionTimeMetric,
         ticketsRepliedMetric,
         oneTouchTicketsMetric,
+        zeroTouchTicketsMetric,
         repliedTicketsPerHourMetric,
         onlineTimeMetric,
         messagesSentPerHourMetric,
@@ -117,6 +124,7 @@ export function useAgentsMetrics() {
             medianResolutionTimeMetric,
             ticketsRepliedMetric,
             oneTouchTicketsMetric,
+            zeroTouchTicketsMetric,
             repliedTicketsPerHourMetric,
             onlineTimeMetric,
             messagesSentPerHourMetric,

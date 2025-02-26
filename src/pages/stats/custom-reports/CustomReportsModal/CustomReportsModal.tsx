@@ -1,14 +1,13 @@
 import React, { useState } from 'react'
 
 import { logEvent, SegmentEvent } from 'common/segment'
-import { useReportRestrictions } from 'hooks/reporting/custom-reports/useReportRestrictions'
+import { useRestrictedReportsConfig } from 'hooks/reporting/custom-reports/useRestrictedReportsConfig'
 import Button from 'pages/common/components/button/Button'
 import Modal from 'pages/common/components/modal/Modal'
 import ModalActionsFooter from 'pages/common/components/modal/ModalActionsFooter'
 import ModalBody from 'pages/common/components/modal/ModalBody'
 import ModalHeader from 'pages/common/components/modal/ModalHeader'
 import { ChartsDefaultFrame } from 'pages/stats/custom-reports/ChartsDefaultFrame'
-import { REPORTS_CONFIG } from 'pages/stats/custom-reports/config'
 import { DASHBOARDS_DOCUMENTATION_URL } from 'pages/stats/custom-reports/constants'
 import css from 'pages/stats/custom-reports/CustomReportsModal/CustomReportsModal.less'
 import { ModalSearchBar } from 'pages/stats/custom-reports/CustomReportsModal/ModalSearchBar'
@@ -73,20 +72,14 @@ const ChartsSelector = ({
     onCancel,
     isLoading,
 }: ChartsSelectorProps) => {
+    const restrictedReports = useRestrictedReportsConfig()
+
     const [checkedCharts, setCheckedCharts] = useState(() =>
         getChildrenIds(charts),
     )
 
     const [selectedReport, setSelectedReport] =
         useState<null | ReportConfig<string>>(null)
-
-    const { restrictionsMap } = useReportRestrictions()
-    const restrictedReports = REPORTS_CONFIG.map((section) => ({
-        ...section,
-        children: section.children.filter(
-            (report) => !Boolean(restrictionsMap[report.config.reportPath]),
-        ),
-    }))
 
     const [config, setConfig] = useState<ReportsModalConfig | null>(
         restrictedReports,

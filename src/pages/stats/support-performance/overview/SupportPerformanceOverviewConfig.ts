@@ -23,16 +23,24 @@ import {
 import {
     fetchOneTouchTicketsPercentageMetricTrend,
     useOneTouchTicketsPercentageMetricTrend,
-} from 'hooks/reporting/support-performance/agents/useOneTouchTicketsPercentageMetricTrend'
+} from 'hooks/reporting/support-performance/overview/useOneTouchTicketsPercentageMetricTrend'
+import {
+    fetchZeroTouchTicketsMetricTrend,
+    useZeroTouchTicketsMetricTrend,
+} from 'hooks/reporting/support-performance/overview/useZeroTouchTicketsMetricTrend'
 import {
     fetchMessagesSentTimeSeries,
+    fetchOneTouchTicketsTimeSeries,
     fetchTicketsClosedTimeSeries,
     fetchTicketsCreatedTimeSeries,
     fetchTicketsRepliedTimeSeries,
+    fetchZeroTouchTicketsTimeSeries,
     useMessagesSentTimeSeries,
+    useOneTouchTicketsTimeSeries,
     useTicketsClosedTimeSeries,
     useTicketsCreatedTimeSeries,
     useTicketsRepliedTimeSeries,
+    useZeroTouchTicketsTimeSeries,
 } from 'hooks/reporting/timeSeries'
 import {
     MetricTrendFetch,
@@ -57,6 +65,7 @@ import {
     TICKETS_CREATED_LABEL,
     TICKETS_REPLIED_LABEL,
     TOTAL_WORKLOAD_BY_CHANNEL_LABEL,
+    ZERO_TOUCH_TICKETS_LABEL,
 } from 'services/reporting/constants'
 
 export enum OverviewMetric {
@@ -70,6 +79,7 @@ export enum OverviewMetric {
     TicketsCreated = 'tickets_created',
     TicketsReplied = 'tickets_replied',
     OneTouchTickets = 'one_touch_tickets',
+    ZeroTouchTickets = 'zero_touch_tickets',
     TicketHandleTime = 'ticket_handle_time',
 }
 
@@ -194,6 +204,17 @@ export const OverviewMetricConfig: Record<
         useTrend: useOneTouchTicketsPercentageMetricTrend,
         fetchTrend: fetchOneTouchTicketsPercentageMetricTrend,
     },
+    [OverviewMetric.ZeroTouchTickets]: {
+        title: ZERO_TOUCH_TICKETS_LABEL,
+        hint: {
+            title: 'Number of tickets closed without agent reply.',
+            link: '', // TODO: update link
+        },
+        interpretAs: 'neutral',
+        metricFormat: 'decimal',
+        useTrend: useZeroTouchTicketsMetricTrend,
+        fetchTrend: fetchZeroTouchTicketsMetricTrend,
+    },
     [OverviewMetric.TicketHandleTime]: {
         title: TICKET_HANDLE_TIME_LABEL,
         hint: {
@@ -212,6 +233,8 @@ export type TimeSeriesMetric =
     | OverviewMetric.TicketsClosed
     | OverviewMetric.TicketsReplied
     | OverviewMetric.MessagesSent
+    | OverviewMetric.OneTouchTickets
+    | OverviewMetric.ZeroTouchTickets
 
 export const OverviewChartConfig: Record<
     TimeSeriesMetric,
@@ -247,6 +270,20 @@ export const OverviewChartConfig: Record<
         hint: { title: 'Number of messages received by your customer' },
         useTimeSeries: useMessagesSentTimeSeries,
         fetchTimeSeries: fetchMessagesSentTimeSeries,
+    },
+    [OverviewMetric.OneTouchTickets]: {
+        title: ONE_TOUCH_TICKETS_LABEL,
+        hint: {
+            title: 'Percentage of tickets closed within the selected timeframe with exactly 1 message sent by an agent or rule.',
+        },
+        useTimeSeries: useOneTouchTicketsTimeSeries,
+        fetchTimeSeries: fetchOneTouchTicketsTimeSeries,
+    },
+    [OverviewMetric.ZeroTouchTickets]: {
+        title: ZERO_TOUCH_TICKETS_LABEL,
+        hint: { title: 'Number of tickets closed without agent reply.' },
+        useTimeSeries: useZeroTouchTicketsTimeSeries,
+        fetchTimeSeries: fetchZeroTouchTicketsTimeSeries,
     },
 }
 

@@ -21,7 +21,8 @@ import {
     useTicketsRepliedTrend,
 } from 'hooks/reporting/metricTrends'
 import { useAverageScoreTrend } from 'hooks/reporting/quality-management/satisfaction/useAverageScoreTrend'
-import { useOneTouchTicketsPercentageMetricTrend } from 'hooks/reporting/support-performance/agents/useOneTouchTicketsPercentageMetricTrend'
+import { useOneTouchTicketsPercentageMetricTrend } from 'hooks/reporting/support-performance/overview/useOneTouchTicketsPercentageMetricTrend'
+import { useZeroTouchTicketsMetricTrend } from 'hooks/reporting/support-performance/overview/useZeroTouchTicketsMetricTrend'
 import { useNewStatsFilters } from 'hooks/reporting/support-performance/useNewStatsFilters'
 import { MetricTrend } from 'hooks/reporting/useMetricTrend'
 import { ReportingGranularity } from 'models/reporting/types'
@@ -59,10 +60,13 @@ const trendBadgeMock = assumeMock(TrendBadge)
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
 jest.mock('hooks/reporting/metricTrends')
 jest.mock(
-    'hooks/reporting/support-performance/agents/useOneTouchTicketsPercentageMetricTrend',
+    'hooks/reporting/support-performance/overview/useOneTouchTicketsPercentageMetricTrend',
 )
 jest.mock(
     'hooks/reporting/quality-management/satisfaction/useAverageScoreTrend',
+)
+jest.mock(
+    'hooks/reporting/support-performance/overview/useZeroTouchTicketsMetricTrend',
 )
 
 const useCustomerSatisfactionTrendMock = assumeMock(
@@ -84,6 +88,7 @@ const useTicketHandleTimeTrendMock = assumeMock(useTicketHandleTimeTrend)
 const useOneTouchTicketTrendMock = assumeMock(
     useOneTouchTicketsPercentageMetricTrend,
 )
+const useZeroTouchTicketTrendMock = assumeMock(useZeroTouchTicketsMetricTrend)
 const useAverageScoreTrendMock = assumeMock(useAverageScoreTrend)
 jest.mock('hooks/reporting/support-performance/useNewStatsFilters')
 const useNewStatsFiltersMock = assumeMock(useNewStatsFilters)
@@ -203,6 +208,7 @@ describe('<AverageScoreTrend />', () => {
         useTicketsRepliedTrendMock.mockReturnValue(repliedTicketsMetricTrend)
         useMessagesSentTrendMock.mockReturnValue(messagesSentMetricTrend)
         useOneTouchTicketTrendMock.mockReturnValue(oneTouchTicketsMetricTrend)
+        useZeroTouchTicketTrendMock.mockReturnValue(oneTouchTicketsMetricTrend)
         useTicketHandleTimeTrendMock.mockReturnValue(ticketHandleTimeTrend)
         useAverageScoreTrendMock.mockReturnValue(averageScoreTrend)
 

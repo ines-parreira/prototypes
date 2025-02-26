@@ -15,8 +15,9 @@ import {
     useTicketsRepliedMetricPerAgent,
 } from 'hooks/reporting/metricsPerAgent'
 import { useAgentsMetrics } from 'hooks/reporting/support-performance/agents/useAgentsMetrics'
-import { useOneTouchTicketsPercentageMetricPerAgent } from 'hooks/reporting/support-performance/agents/useOneTouchTicketsPercentageMetricPerAgent'
 import { usePercentageOfClosedTicketsMetricPerAgent } from 'hooks/reporting/support-performance/agents/usePercentageOfClosedTicketsMetricPerAgent'
+import { useOneTouchTicketsPercentageMetricPerAgent } from 'hooks/reporting/support-performance/overview/useOneTouchTicketsPercentageMetricPerAgent'
+import { useZeroTouchTicketsPercentageMetricPerAgent } from 'hooks/reporting/support-performance/overview/useZeroTouchTicketsPercentageMetricPerAgent'
 import { useMessagesSentPerHourPerAgent } from 'hooks/reporting/useMessagesSentPerHourPerAgent'
 import { useTicketsClosedPerHourPerAgent } from 'hooks/reporting/useTicketsClosedPerHourPerAgent'
 import { useTicketsRepliedPerHourPerAgent } from 'hooks/reporting/useTicketsRepliedPerHourPerAgent'
@@ -29,7 +30,10 @@ import { assumeMock, mockStore } from 'utils/testing'
 jest.mock('hooks/reporting/metricsPerAgent')
 jest.mock('hooks/reporting/useMessagesSentPerHourPerAgent')
 jest.mock(
-    'hooks/reporting/support-performance/agents/useOneTouchTicketsPercentageMetricPerAgent',
+    'hooks/reporting/support-performance/overview/useOneTouchTicketsPercentageMetricPerAgent',
+)
+jest.mock(
+    'hooks/reporting/support-performance/overview/useZeroTouchTicketsPercentageMetricPerAgent',
 )
 jest.mock(
     'hooks/reporting/support-performance/agents/usePercentageOfClosedTicketsMetricPerAgent',
@@ -59,6 +63,9 @@ const useTicketsRepliedMetricPerAgentMock = assumeMock(
 )
 const useOneTouchTicketsPercentageMetricPerAgentMock = assumeMock(
     useOneTouchTicketsPercentageMetricPerAgent,
+)
+const useZeroTouchTicketsPercentageMetricPerAgentMock = assumeMock(
+    useZeroTouchTicketsPercentageMetricPerAgent,
 )
 const useTicketsRepliedPerHourPerAgentMock = assumeMock(
     useTicketsRepliedPerHourPerAgent,
@@ -100,6 +107,7 @@ describe('useAgentsMetric', () => {
             medianResolutionTimeMetric: metricData,
             ticketsRepliedMetric: metricData,
             oneTouchTicketsMetric: metricData,
+            zeroTouchTicketsMetric: metricData,
             repliedTicketsPerHourMetric: metricData,
             onlineTimeMetric: metricData,
             messagesSentPerHourMetric: metricData,
@@ -135,6 +143,9 @@ describe('useAgentsMetric', () => {
         useMedianResolutionTimeMetricPerAgentMock.mockReturnValue(metricData)
         useTicketsRepliedMetricPerAgentMock.mockReturnValue(metricData)
         useOneTouchTicketsPercentageMetricPerAgentMock.mockReturnValue(
+            metricData,
+        )
+        useZeroTouchTicketsPercentageMetricPerAgentMock.mockReturnValue(
             metricData,
         )
         useTicketsRepliedPerHourPerAgentMock.mockReturnValue(metricData)

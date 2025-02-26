@@ -31,6 +31,7 @@ import { oneTouchTicketsPerTicketQueryFactory } from 'models/reporting/queryFact
 import { openTicketsPerTicketDrillDownQueryFactory } from 'models/reporting/queryFactories/support-performance/openTickets'
 import { ticketsCreatedPerTicketDrillDownQueryFactory } from 'models/reporting/queryFactories/support-performance/ticketsCreated'
 import { ticketsRepliedMetricPerTicketDrillDownQueryFactory } from 'models/reporting/queryFactories/support-performance/ticketsReplied'
+import { zeroTouchTicketsPerTicketQueryFactory } from 'models/reporting/queryFactories/support-performance/zeroTouchTickets'
 import {
     aiInsightsCustomerSatisfactionMetricDrillDownQueryFactory,
     coverageRateTicketDrillDownQueryFactory,
@@ -170,6 +171,8 @@ export const getDrillDownQuery = (
             return ticketsCreatedPerTicketDrillDownQueryFactory
         case OverviewMetric.OneTouchTickets:
             return oneTouchTicketsPerTicketQueryFactory
+        case OverviewMetric.ZeroTouchTickets:
+            return zeroTouchTicketsPerTicketQueryFactory
         case OverviewMetric.TicketHandleTime:
             return ticketHandleTimePerTicketDrillDownQueryFactory
         case AgentsTableColumn.CustomerSatisfaction:
@@ -209,6 +212,11 @@ export const getDrillDownQuery = (
             return queryBuilderWithAgentFilter(
                 metricName.perAgentId,
                 oneTouchTicketsPerTicketQueryFactory,
+            )
+        case AgentsTableColumn.ZeroTouchTickets:
+            return queryBuilderWithAgentFilter(
+                metricName.perAgentId,
+                zeroTouchTicketsPerTicketQueryFactory,
             )
         case AgentsTableColumn.TicketHandleTime:
             return queryBuilderWithAgentFilter(

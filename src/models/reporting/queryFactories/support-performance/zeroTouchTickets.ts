@@ -11,12 +11,18 @@ import {
     TicketMessagesMember,
 } from 'models/reporting/cubes/TicketMessagesCube'
 import { CHANNEL_DIMENSION } from 'models/reporting/queryFactories/support-performance/constants'
-import { ReportingFilterOperator, ReportingQuery } from 'models/reporting/types'
+import {
+    ReportingFilterOperator,
+    ReportingGranularity,
+    ReportingQuery,
+    TimeSeriesQuery,
+} from 'models/reporting/types'
 import { StatsFilters } from 'models/stat/types'
 import { subtractDaysFromDate } from 'utils/date'
 import {
     DRILLDOWN_QUERY_LIMIT,
     formatReportingQueryDate,
+    getFilterDateRange,
     NotSpamNorTrashedTicketsFilter,
     perDimensionQueryFactory,
     statsFiltersToReportingFilters,
@@ -70,6 +76,21 @@ export const zeroTouchTicketsQueryFactory = (
             : {}),
     }
 }
+
+export const zeroTouchTicketsTimeSeriesQueryFactory = (
+    filters: StatsFilters,
+    timezone: string,
+    granularity: ReportingGranularity,
+): TimeSeriesQuery<HelpdeskMessageCubeWithJoins> => ({
+    ...zeroTouchTicketsQueryFactory(filters, timezone),
+    timeDimensions: [
+        {
+            dimension: TicketDimension.ClosedDatetime,
+            granularity,
+            dateRange: getFilterDateRange(filters.period),
+        },
+    ],
+})
 
 export const zeroTouchTicketsPerAgentQueryFactory = perDimensionQueryFactory(
     zeroTouchTicketsQueryFactory,

@@ -25,6 +25,8 @@ import {
     CustomReportSchema,
     CustomReportSectionSchema,
     DashboardInput,
+    ReportChildrenConfig,
+    ReportsModalConfig,
 } from 'pages/stats/custom-reports/types'
 import { BASE_STATS_PATH, STATS_ROUTES } from 'routes/constants'
 import { notNull } from 'utils/types'
@@ -398,3 +400,48 @@ export const getDashboardPath = (id: number) =>
         BASE_STATS_PATH,
         STATS_ROUTES.DASHBOARDS_PAGE.replace(':id', String(id)),
     ].join('/')
+
+export const getReportsConfigSearchResult = (
+    config: ReportsModalConfig,
+    searchTerm: string,
+): ReportsModalConfig | null => {
+    const searchValue = searchTerm.toLowerCase()
+
+    const filteredConfig: ReportsModalConfig = []
+
+    config.forEach((reportConfig) => {
+        const filteredChildren: ReportChildrenConfig = []
+
+        for (const report of reportConfig.children) {
+            const filteredCharts: Record<string, ChartConfig> = {}
+
+            for (const [chartId, chart] of Object.entries(
+                report.config.charts,
+            )) {
+                if (String(chart.label).toLowerCase().includes(searchValue)) {
+                    filteredCharts[chartId] = chart
+                }
+            }
+
+            if (Object.keys(filteredCharts).length > 0) {
+                filteredChildren.push({
+                    type: report.type,
+                    config: {
+                        ...report.config,
+                        charts: filteredCharts,
+                    },
+                    id: report.id,
+                })
+            }
+        }
+
+        if (filteredChildren.length > 0) {
+            filteredConfig.push({
+                category: reportConfig.category,
+                children: filteredChildren,
+            })
+        }
+    })
+
+    return filteredConfig.length ? filteredConfig : null
+}

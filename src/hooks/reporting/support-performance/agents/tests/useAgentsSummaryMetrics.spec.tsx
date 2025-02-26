@@ -11,7 +11,8 @@ import {
     useTicketsRepliedMetric,
 } from 'hooks/reporting/metrics'
 import { useAgentsSummaryMetrics } from 'hooks/reporting/support-performance/agents/useAgentsSummaryMetrics'
-import { useOneTouchTicketsPercentageMetricTrend } from 'hooks/reporting/support-performance/agents/useOneTouchTicketsPercentageMetricTrend'
+import { useOneTouchTicketsPercentageMetricTrend } from 'hooks/reporting/support-performance/overview/useOneTouchTicketsPercentageMetricTrend'
+import { useZeroTouchTicketsMetricTrend } from 'hooks/reporting/support-performance/overview/useZeroTouchTicketsMetricTrend'
 import { useMessagesSentPerHour } from 'hooks/reporting/useMessagesSentPerHour'
 import { useTicketsClosedPerHour } from 'hooks/reporting/useTicketsClosedPerHour'
 import { useTicketsRepliedPerHour } from 'hooks/reporting/useTicketsRepliedPerHour'
@@ -35,10 +36,16 @@ const useMedianResolutionTimeMetricMock = assumeMock(
 )
 const useTicketsRepliedMetricMock = assumeMock(useTicketsRepliedMetric)
 jest.mock(
-    'hooks/reporting/support-performance/agents/useOneTouchTicketsPercentageMetricTrend',
+    'hooks/reporting/support-performance/overview/useOneTouchTicketsPercentageMetricTrend',
 )
 const useOneTouchTicketsPercentageMetricTrendMock = assumeMock(
     useOneTouchTicketsPercentageMetricTrend,
+)
+jest.mock(
+    'hooks/reporting/support-performance/overview/useZeroTouchTicketsMetricTrend',
+)
+const useZeroTouchTicketsPercentageMetricTrendMock = assumeMock(
+    useZeroTouchTicketsMetricTrend,
 )
 jest.mock('hooks/reporting/useTicketsRepliedPerHour')
 const useTicketsRepliedPerHourMock = assumeMock(useTicketsRepliedPerHour)
@@ -80,6 +87,10 @@ describe('useAgentsSummaryMetrics', () => {
                 ...metricData,
                 data: { ...metricData.data, prevValue: 0 },
             },
+            zeroTouchTicketsMetric: {
+                ...metricData,
+                data: { ...metricData.data, prevValue: 0 },
+            },
             repliedTicketsPerHourMetric: metricData,
             onlineTimeMetric: metricData,
             messagesSentPerHourMetric: metricData,
@@ -97,6 +108,10 @@ describe('useAgentsSummaryMetrics', () => {
     useMedianResolutionTimeMetricMock.mockReturnValue(metricData)
     useTicketsRepliedMetricMock.mockReturnValue(metricData)
     useOneTouchTicketsPercentageMetricTrendMock.mockReturnValue({
+        ...metricData,
+        data: { ...metricData.data, prevValue: 0 },
+    })
+    useZeroTouchTicketsPercentageMetricTrendMock.mockReturnValue({
         ...metricData,
         data: { ...metricData.data, prevValue: 0 },
     })

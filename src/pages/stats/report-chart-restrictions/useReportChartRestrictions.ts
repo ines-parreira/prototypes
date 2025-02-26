@@ -47,7 +47,8 @@ export const getUserChartsRestrictions = (
 export const useReportChartRestrictions = () => {
     const currentAccountId = useAppSelector(getCurrentAccountId)
     const currentUser = useAppSelector(getCurrentUser)
-    const { restrictionsMap } = useReportRestrictions()
+    const { reportRestrictionsMap, chartRestrictionsMap } =
+        useReportRestrictions()
 
     const accountRestrictions = useMemo(
         () => getAccountRestrictions(currentAccountId),
@@ -73,7 +74,7 @@ export const useReportChartRestrictions = () => {
                         return false
                     }
 
-                    const isPathRestricted = !!restrictionsMap[path]
+                    const isPathRestricted = !!reportRestrictionsMap[path]
                     const isReportRestrictedToCurrentUser = isPartialPath
                         ? url === path
                         : url === `${STATS_ROUTE_PREFIX}${path}`
@@ -82,7 +83,7 @@ export const useReportChartRestrictions = () => {
                 }),
             )
         },
-        [restrictionsMap, userReportRestrictions],
+        [reportRestrictionsMap, userReportRestrictions],
     )
 
     const isChartRestrictedToCurrentUser = useCallback(
@@ -98,18 +99,21 @@ export const useReportChartRestrictions = () => {
                 return false
             }
             const path = reportConfig.reportPath
-            const isPathRestricted = !!restrictionsMap[path]
+            const isPathRestricted = !!reportRestrictionsMap[path]
+            const isChartRestricted = !!chartRestrictionsMap[chartId]
             const isChartPartOfRestrictedReport =
                 isRouteRestrictedToCurrentUser(path, true)
             return (
                 isChartStrictlyRestricted ||
                 isChartPartOfRestrictedReport ||
-                isPathRestricted
+                isPathRestricted ||
+                isChartRestricted
             )
         },
         [
             isRouteRestrictedToCurrentUser,
-            restrictionsMap,
+            reportRestrictionsMap,
+            chartRestrictionsMap,
             userChartRestrictions,
         ],
     )

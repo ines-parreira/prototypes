@@ -20,9 +20,11 @@ import {
     useTicketAverageHandleTimePerAgent,
     useTicketsRepliedMetricPerAgent,
 } from 'hooks/reporting/metricsPerAgent'
-import { useOneTouchTicketsPercentageMetricPerAgent } from 'hooks/reporting/support-performance/agents/useOneTouchTicketsPercentageMetricPerAgent'
-import { useOneTouchTicketsPercentageMetricTrend } from 'hooks/reporting/support-performance/agents/useOneTouchTicketsPercentageMetricTrend'
 import { usePercentageOfClosedTicketsMetricPerAgent } from 'hooks/reporting/support-performance/agents/usePercentageOfClosedTicketsMetricPerAgent'
+import { useOneTouchTicketsPercentageMetricPerAgent } from 'hooks/reporting/support-performance/overview/useOneTouchTicketsPercentageMetricPerAgent'
+import { useOneTouchTicketsPercentageMetricTrend } from 'hooks/reporting/support-performance/overview/useOneTouchTicketsPercentageMetricTrend'
+import { useZeroTouchTicketsMetricTrend } from 'hooks/reporting/support-performance/overview/useZeroTouchTicketsMetricTrend'
+import { useZeroTouchTicketsPercentageMetricPerAgent } from 'hooks/reporting/support-performance/overview/useZeroTouchTicketsPercentageMetricPerAgent'
 import { useMessagesSentPerHour } from 'hooks/reporting/useMessagesSentPerHour'
 import { useMessagesSentPerHourPerAgent } from 'hooks/reporting/useMessagesSentPerHourPerAgent'
 import { MetricWithDecile } from 'hooks/reporting/useMetricPerDimension'
@@ -56,6 +58,7 @@ import {
     TICKET_HANDLE_TIME_LABEL,
     TICKETS_CLOSED_LABEL,
     TICKETS_REPLIED_LABEL,
+    ZERO_TOUCH_TICKETS_LABEL,
 } from 'services/reporting/constants'
 import { AgentMetricColumn } from 'state/ui/stats/drillDownSlice'
 import {
@@ -136,6 +139,7 @@ export const TableLabels: Record<AgentsTableColumn, string> = {
     [AgentsTableColumn.RepliedTickets]: TICKETS_REPLIED_LABEL,
     [AgentsTableColumn.MessagesSent]: MESSAGES_SENT_LABEL,
     [AgentsTableColumn.OneTouchTickets]: ONE_TOUCH_TICKETS_LABEL,
+    [AgentsTableColumn.ZeroTouchTickets]: ZERO_TOUCH_TICKETS_LABEL,
     [AgentsTableColumn.OnlineTime]: ONLINE_TIME_LABEL,
     [AgentsTableColumn.MessagesSentPerHour]: MESSAGES_SENT_PER_HOUR,
     [AgentsTableColumn.RepliedTicketsPerHour]: REPLIED_TICKETS_PER_HOUR,
@@ -244,6 +248,14 @@ export const AgentsColumnConfig: Record<
         },
         perAgent: false,
     },
+    [AgentsTableColumn.ZeroTouchTickets]: {
+        format: 'decimal',
+        hint: {
+            title: 'Number of tickets closed without agent reply.',
+            link: '', // TODO: add link
+        },
+        perAgent: false,
+    },
     [AgentsTableColumn.OnlineTime]: {
         format: 'duration',
         hint: {
@@ -339,6 +351,8 @@ export const getQuery = (
             return useCustomerSatisfactionMetricPerAgent
         case AgentsTableColumn.OneTouchTickets:
             return useOneTouchTicketsPercentageMetricPerAgent
+        case AgentsTableColumn.ZeroTouchTickets:
+            return useZeroTouchTicketsPercentageMetricPerAgent
         case AgentsTableColumn.OnlineTime:
             return useOnlineTimePerAgent
         case AgentsTableColumn.MessagesSentPerHour:
@@ -380,6 +394,8 @@ export const getSummaryQuery = (column: AgentsTableColumn): MetricQueryHook => {
             return useCustomerSatisfactionMetric
         case AgentsTableColumn.OneTouchTickets:
             return useOneTouchTicketsPercentageMetricTrend
+        case AgentsTableColumn.ZeroTouchTickets:
+            return useZeroTouchTicketsMetricTrend
         case AgentsTableColumn.OnlineTime:
             return useOnlineTimeMetric
         case AgentsTableColumn.MessagesSentPerHour:

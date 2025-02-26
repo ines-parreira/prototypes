@@ -51,6 +51,7 @@ const metricBuilder = (data: any) => ({
     medianResolutionTimeMetric: buildMetric(data),
     ticketsRepliedMetric: buildMetric(data),
     oneTouchTicketsMetric: buildMetric(data),
+    zeroTouchTicketsMetric: buildMetric(data),
     repliedTicketsPerHourMetric: buildMetric(data),
     onlineTimeMetric: buildMetric(data),
     messagesSentPerHourMetric: buildMetric(data),

@@ -24,6 +24,7 @@ import { DrillDownModalTrigger } from 'pages/stats/DrillDownModalTrigger'
 import { OverviewChartCard } from 'pages/stats/support-performance/components/OverviewChartCard'
 import { TicketsCreatedVsClosedChart } from 'pages/stats/support-performance/overview/charts/TicketsCreatedVsClosedChart'
 import { WorkloadPerChannelChart } from 'pages/stats/support-performance/overview/charts/WorkloadPerChannelChart'
+import { ZeroTouchTicketsTrendCard } from 'pages/stats/support-performance/overview/charts/ZeroTouchTicketsTrendCard'
 import {
     OverviewMetric,
     PERFORMANCE_OVERVIEW_OPTIONAL_FILTERS,
@@ -86,6 +87,11 @@ jest.mock(
     },
 )
 
+jest.mock(
+    'pages/stats/support-performance/overview/charts/ZeroTouchTicketsTrendCard',
+)
+const ZeroTouchTicketsTrendCardMock = assumeMock(ZeroTouchTicketsTrendCard)
+
 const defaultState = {
     billing: fromJS(billingState),
 }
@@ -108,8 +114,10 @@ describe('<SupportPerformanceOverview />', () => {
         workloadPerChannelChartMock.mockImplementation(() => (
             <div>workloadPerChannelChartMock</div>
         ))
+        ZeroTouchTicketsTrendCardMock.mockImplementation(() => <div />)
         mockFlags({
             [FeatureFlagKey.AnalyticsNewFilters]: false,
+            [FeatureFlagKey.ReportingZeroTouchTicketsMetric]: true,
         })
     })
 
@@ -150,6 +158,20 @@ describe('<SupportPerformanceOverview />', () => {
                 }),
             ]),
         )
+    })
+
+    it('should render ZeroTouchTicketsTrendCard TrendCard', () => {
+        mockFlags({
+            [FeatureFlagKey.ReportingZeroTouchTicketsMetric]: true,
+        })
+
+        render(
+            <Provider store={mockStore(defaultState)}>
+                <SupportPerformanceOverviewReport />
+            </Provider>,
+        )
+
+        expect(ZeroTouchTicketsTrendCardMock).toHaveBeenCalled()
     })
 
     describe('Performance Tips', () => {

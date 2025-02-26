@@ -72,6 +72,7 @@ type PerformanceOverviewMetrics = {
         | OverviewMetric.MedianFirstResponseTime
         | OverviewMetric.CustomerSatisfaction
         | OverviewMetric.OneTouchTickets
+        | OverviewMetric.ZeroTouchTickets
         | OverviewMetric.TicketHandleTime
 } & CommonMetrics
 
@@ -84,6 +85,7 @@ export type AgentMetricColumn =
     | AgentsTableColumn.ClosedTickets
     | AgentsTableColumn.RepliedTickets
     | AgentsTableColumn.OneTouchTickets
+    | AgentsTableColumn.ZeroTouchTickets
     | AgentsTableColumn.RepliedTicketsPerHour
     | AgentsTableColumn.ClosedTicketsPerHour
     | AgentsTableColumn.TicketHandleTime
@@ -222,6 +224,7 @@ const hiddenMetrics: DrillDownMetric['metricName'][] = [
     OverviewMetric.TicketsReplied,
     OverviewMetric.MessagesSent,
     OverviewMetric.OneTouchTickets,
+    OverviewMetric.ZeroTouchTickets,
     TicketFieldsMetric.TicketCustomFieldsTicketCount,
     TagsMetric.TicketCount,
     AgentsTableColumn.ClosedTickets,
@@ -229,6 +232,7 @@ const hiddenMetrics: DrillDownMetric['metricName'][] = [
     AgentsTableColumn.RepliedTickets,
     AgentsTableColumn.MessagesSent,
     AgentsTableColumn.OneTouchTickets,
+    AgentsTableColumn.ZeroTouchTickets,
     AgentsTableColumn.RepliedTicketsPerHour,
     AgentsTableColumn.ClosedTicketsPerHour,
     AutoQAMetric.ReviewedClosedTickets,

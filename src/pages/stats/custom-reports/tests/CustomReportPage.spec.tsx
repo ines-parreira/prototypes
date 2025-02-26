@@ -160,7 +160,10 @@ describe('CustomReportPage', () => {
             isValid: true,
             isInvalid: false,
         } as any)
-        useReportRestrictionsMock.mockReturnValue({ restrictionsMap: {} })
+        useReportRestrictionsMock.mockReturnValue({
+            reportRestrictionsMap: {},
+            chartRestrictionsMap: {},
+        })
     })
 
     it('should render fallback when no charts are present', () => {

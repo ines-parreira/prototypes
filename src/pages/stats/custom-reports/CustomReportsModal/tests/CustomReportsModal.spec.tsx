@@ -110,7 +110,10 @@ describe('AddChartsModal', () => {
         useCustomReportActionsMock.mockReturnValue({
             updateDashboardHandler: mutateUpdateReportMock,
         } as any)
-        useReportRestrictionsMock.mockReturnValue({ restrictionsMap: {} })
+        useReportRestrictionsMock.mockReturnValue({
+            reportRestrictionsMap: {},
+            chartRestrictionsMap: {},
+        })
     })
 
     it('should render correctly', () => {

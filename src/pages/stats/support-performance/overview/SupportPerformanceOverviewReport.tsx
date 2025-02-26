@@ -27,6 +27,8 @@ import TipsToggle from 'pages/stats/TipsToggle'
 export default function SupportPerformanceOverviewReport() {
     const isAnalyticsNewFilters =
         !!useFlags()[FeatureFlagKey.AnalyticsNewFilters]
+    const isReportingZeroTouchTicketsMetricEnabled =
+        !!useFlags()[FeatureFlagKey.ReportingZeroTouchTicketsMetric]
 
     const [areTipsVisible, setAreTipsVisible] = useLocalStorage(
         STATS_TIPS_VISIBILITY_KEY,
@@ -147,30 +149,54 @@ export default function SupportPerformanceOverviewReport() {
                 </DashboardSection>
 
                 <DashboardSection title="Productivity">
-                    <DashboardGridCell size={getGridCellSize(3)}>
+                    <DashboardGridCell
+                        size={getGridCellSize(
+                            isReportingZeroTouchTicketsMetricEnabled ? 4 : 3,
+                        )}
+                    >
                         <CustomReportComponent
                             chart={OverviewChart.TicketsRepliedTrendCard}
                             config={SupportPerformanceOverviewReportConfig}
                         />
                     </DashboardGridCell>
-                    <DashboardGridCell size={getGridCellSize(3)}>
+                    <DashboardGridCell
+                        size={getGridCellSize(
+                            isReportingZeroTouchTicketsMetricEnabled ? 4 : 3,
+                        )}
+                    >
                         <CustomReportComponent
                             chart={OverviewChart.MessagesSentTrendCard}
                             config={SupportPerformanceOverviewReportConfig}
                         />
                     </DashboardGridCell>
-                    <DashboardGridCell size={getGridCellSize(3)}>
+                    <DashboardGridCell
+                        size={getGridCellSize(
+                            isReportingZeroTouchTicketsMetricEnabled ? 4 : 3,
+                        )}
+                    >
                         <CustomReportComponent
                             chart={OverviewChart.TicketHandleTimeTrendCard}
                             config={SupportPerformanceOverviewReportConfig}
                         />
                     </DashboardGridCell>
-                    <DashboardGridCell size={getGridCellSize(3)}>
+                    <DashboardGridCell
+                        size={getGridCellSize(
+                            isReportingZeroTouchTicketsMetricEnabled ? 6 : 3,
+                        )}
+                    >
                         <CustomReportComponent
                             chart={OverviewChart.OneTouchTicketsTrendCard}
                             config={SupportPerformanceOverviewReportConfig}
                         />
                     </DashboardGridCell>
+                    {isReportingZeroTouchTicketsMetricEnabled && (
+                        <DashboardGridCell size={getGridCellSize(6)}>
+                            <CustomReportComponent
+                                chart={OverviewChart.ZeroTouchTicketsTrendCard}
+                                config={SupportPerformanceOverviewReportConfig}
+                            />
+                        </DashboardGridCell>
+                    )}
                     <DashboardGridCell size={getGridCellSize(6)}>
                         <CustomReportComponent
                             chart={OverviewChart.TicketsRepliedGraph}
@@ -184,6 +210,7 @@ export default function SupportPerformanceOverviewReport() {
                         />
                     </DashboardGridCell>
                 </DashboardSection>
+
                 <AnalyticsFooter />
             </StatsPage>
         </div>

@@ -4,9 +4,9 @@ import moment from 'moment/moment'
 import { TicketChannel } from 'business/types/ticket'
 import {
     useClosedTicketsMetricPerAgent,
-    useZeroTouchTicketsMetricPerAgent,
+    useOneTouchTicketsMetricPerAgent,
 } from 'hooks/reporting/metricsPerAgent'
-import { useZeroTouchTicketsPercentageMetricPerAgent } from 'hooks/reporting/support-performance/agents/useZeroTouchTicketsPercentageMetricPerAgent'
+import { useOneTouchTicketsPercentageMetricPerAgent } from 'hooks/reporting/support-performance/overview/useOneTouchTicketsPercentageMetricPerAgent'
 import { OrderDirection } from 'models/api/types'
 import {
     TicketDimension,
@@ -16,14 +16,14 @@ import { LegacyStatsFilters } from 'models/stat/types'
 import { assumeMock } from 'utils/testing'
 
 jest.mock('hooks/reporting/metricsPerAgent')
-const useZeroTouchTicketsMetricPerAgentMock = assumeMock(
-    useZeroTouchTicketsMetricPerAgent,
+const useOneTouchTicketsMetricPerAgentMock = assumeMock(
+    useOneTouchTicketsMetricPerAgent,
 )
 const useClosedTicketsMetricPerAgentMock = assumeMock(
     useClosedTicketsMetricPerAgent,
 )
 
-describe('useZeroTouchTicketsPercentageMetricPerAgent', () => {
+describe('useOneTouchTicketsPercentageMetricPerAgent', () => {
     const periodStart = moment()
     const periodEnd = periodStart.add(7, 'days')
     const statsFilters: LegacyStatsFilters = {
@@ -70,7 +70,7 @@ describe('useZeroTouchTicketsPercentageMetricPerAgent', () => {
             isFetching: false,
         })
 
-        useZeroTouchTicketsMetricPerAgentMock.mockReturnValue({
+        useOneTouchTicketsMetricPerAgentMock.mockReturnValue({
             data: {
                 allData: [
                     {
@@ -91,7 +91,7 @@ describe('useZeroTouchTicketsPercentageMetricPerAgent', () => {
 
         const { result } = renderHook(
             () =>
-                useZeroTouchTicketsPercentageMetricPerAgent(
+                useOneTouchTicketsPercentageMetricPerAgent(
                     statsFilters,
                     timezone,
                     sorting,
@@ -134,7 +134,7 @@ describe('useZeroTouchTicketsPercentageMetricPerAgent', () => {
             isFetching: false,
         })
 
-        useZeroTouchTicketsMetricPerAgentMock.mockReturnValue({
+        useOneTouchTicketsMetricPerAgentMock.mockReturnValue({
             data: null,
             isError: false,
             isFetching: false,
@@ -142,7 +142,7 @@ describe('useZeroTouchTicketsPercentageMetricPerAgent', () => {
 
         const { result } = renderHook(
             () =>
-                useZeroTouchTicketsPercentageMetricPerAgent(
+                useOneTouchTicketsPercentageMetricPerAgent(
                     statsFilters,
                     timezone,
                     sorting,
@@ -170,7 +170,7 @@ describe('useZeroTouchTicketsPercentageMetricPerAgent', () => {
             isFetching: false,
         })
 
-        useZeroTouchTicketsMetricPerAgentMock.mockReturnValue({
+        useOneTouchTicketsMetricPerAgentMock.mockReturnValue({
             data: {
                 allData: [
                     {
@@ -191,7 +191,7 @@ describe('useZeroTouchTicketsPercentageMetricPerAgent', () => {
 
         const { result } = renderHook(
             () =>
-                useZeroTouchTicketsPercentageMetricPerAgent(
+                useOneTouchTicketsPercentageMetricPerAgent(
                     statsFilters,
                     timezone,
                     sorting,

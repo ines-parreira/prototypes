@@ -8,8 +8,10 @@ import { OrderDirection } from 'models/api/types'
 import { Cubes } from 'models/reporting/cubes'
 import { closedTicketsTimeSeriesQueryFactory } from 'models/reporting/queryFactories/support-performance/closedTickets'
 import { messagesSentTimeSeriesQueryFactory } from 'models/reporting/queryFactories/support-performance/messagesSent'
+import { oneTouchTicketsTimeSeriesQueryFactory } from 'models/reporting/queryFactories/support-performance/oneTouchTickets'
 import { ticketsCreatedTimeSeriesQueryFactory } from 'models/reporting/queryFactories/support-performance/ticketsCreated'
 import { ticketsRepliedTimeSeriesQueryFactory } from 'models/reporting/queryFactories/support-performance/ticketsReplied'
+import { zeroTouchTicketsTimeSeriesQueryFactory } from 'models/reporting/queryFactories/support-performance/zeroTouchTickets'
 import { customFieldsTicketCountTimeSeriesQueryFactory } from 'models/reporting/queryFactories/ticket-insights/customFieldsTicketCount'
 import { tagsTicketCountTimeSeriesFactory } from 'models/reporting/queryFactories/ticket-insights/tagsTicketCount'
 import { ReportingGranularity, TimeSeriesQuery } from 'models/reporting/types'
@@ -98,8 +100,25 @@ export const fetchTicketsRepliedTimeSeries = getTimeSeriesFetch(
 export const useMessagesSentTimeSeries = getTimeSeriesHook(
     messagesSentTimeSeriesQueryFactory,
 )
+
 export const fetchMessagesSentTimeSeries = getTimeSeriesFetch(
     messagesSentTimeSeriesQueryFactory,
+)
+
+export const useOneTouchTicketsTimeSeries = getTimeSeriesHook(
+    oneTouchTicketsTimeSeriesQueryFactory,
+)
+
+export const fetchOneTouchTicketsTimeSeries = getTimeSeriesFetch(
+    oneTouchTicketsTimeSeriesQueryFactory,
+)
+
+export const useZeroTouchTicketsTimeSeries = getTimeSeriesHook(
+    zeroTouchTicketsTimeSeriesQueryFactory,
+)
+
+export const fetchZeroTouchTicketsTimeSeries = getTimeSeriesFetch(
+    zeroTouchTicketsTimeSeriesQueryFactory,
 )
 
 export const useCustomFieldsTicketCountTimeSeries = (

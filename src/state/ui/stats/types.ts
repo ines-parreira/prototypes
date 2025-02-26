@@ -19,6 +19,7 @@ export enum AgentsTableColumn {
     ClosedTickets = 'agent_closed_tickets',
     RepliedTickets = 'agent_replied_tickets',
     OneTouchTickets = 'agent_one_touch_tickets',
+    ZeroTouchTickets = 'agent_zero_touch_tickets',
     OnlineTime = 'agent_online_time',
     MessagesSentPerHour = 'agent_messages_sent_per_hour',
     RepliedTicketsPerHour = 'agent_replied_tickets_per_hour',

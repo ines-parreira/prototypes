@@ -76,7 +76,10 @@ describe('CustomReports', () => {
         } as any)
 
         useNotifyMock.mockReturnValue({ error: notifyMock } as any)
-        useReportRestrictionsMock.mockReturnValue({ restrictionsMap: {} })
+        useReportRestrictionsMock.mockReturnValue({
+            reportRestrictionsMap: {},
+            chartRestrictionsMap: {},
+        })
     })
 
     afterEach(() => {
@@ -176,7 +179,7 @@ describe('CustomReports', () => {
             expect(createDashboardHandlerMock).toHaveBeenCalledWith(
                 expect.objectContaining({
                     dashboard: expect.objectContaining({
-                        name: 'Untitled-2025-01-15-12-10',
+                        name: createDashboardName(),
                     }),
                 }),
             )

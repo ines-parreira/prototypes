@@ -72,6 +72,7 @@ export interface AgentsPerformanceReportData<T = MetricWithDecile> {
     ticketsRepliedMetric: T
     messagesSentMetric: T
     oneTouchTicketsMetric: T
+    zeroTouchTicketsMetric: T
     repliedTicketsPerHourMetric: T
     onlineTimeMetric: T
     messagesSentPerHourMetric: T
@@ -215,6 +216,13 @@ export const getData = (
             idField: AssigneeUserId,
             metricField: TicketCount,
             summaryData: summary.oneTouchTicketsMetric.data?.value,
+        },
+        [AgentsTableColumn.ZeroTouchTickets]: {
+            column: AgentsTableColumn.ZeroTouchTickets,
+            metricData: data.zeroTouchTicketsMetric,
+            idField: AssigneeUserId,
+            metricField: TicketCount,
+            summaryData: summary.zeroTouchTicketsMetric.data?.value,
         },
         [AgentsTableColumn.RepliedTicketsPerHour]: {
             column: AgentsTableColumn.RepliedTicketsPerHour,

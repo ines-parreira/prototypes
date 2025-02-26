@@ -135,12 +135,6 @@ const reduceReport = (acc: Queries, child: CustomReportChild): Queries => {
                     title: String(config.label),
                 })
             }
-            if (producer.type === DataExportFormat.Table) {
-                acc.tables.push({
-                    fetchTable: producer.fetch,
-                    title: String(config.label),
-                })
-            }
         })
     }
     if (

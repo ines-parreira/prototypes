@@ -26,10 +26,12 @@ import {
     fetchOnlineTimePerAgent,
     fetchTicketAverageHandleTimePerAgent,
     fetchTicketsRepliedMetricPerAgent,
+    fetchZeroTouchTicketsMetricPerAgent,
 } from 'hooks/reporting/metricsPerAgent'
-import { fetchOneTouchTicketsPercentageMetricTrend } from 'hooks/reporting/support-performance/agents/useOneTouchTicketsPercentageMetricTrend'
 import { fetchPercentageOfClosedTicketsMetricPerAgent } from 'hooks/reporting/support-performance/agents/usePercentageOfClosedTicketsMetricPerAgent'
 import { getCsvFileNameWithDates } from 'hooks/reporting/support-performance/overview/useDownloadOverviewData'
+import { fetchOneTouchTicketsPercentageMetricTrend } from 'hooks/reporting/support-performance/overview/useOneTouchTicketsPercentageMetricTrend'
+import { fetchZeroTouchTicketsMetricTrend } from 'hooks/reporting/support-performance/overview/useZeroTouchTicketsMetricTrend'
 import { useNewStatsFilters } from 'hooks/reporting/support-performance/useNewStatsFilters'
 import { useAgentsTableConfigSetting } from 'hooks/reporting/useAgentsTableConfigSetting'
 import { fetchMessagesSentPerHour } from 'hooks/reporting/useMessagesSentPerHour'
@@ -60,6 +62,7 @@ export type AgentsReportMetricDataPoints =
     | 'ticketsRepliedMetric'
     | 'messagesSentMetric'
     | 'oneTouchTicketsMetric'
+    | 'zeroTouchTicketsMetric'
     | 'repliedTicketsPerHourMetric'
     | 'onlineTimeMetric'
     | 'messagesSentPerHourMetric'
@@ -108,6 +111,10 @@ export const agentsMetricsDataSources: TableDataSources<AgentsReportData> = [
     {
         fetchData: fetchOneTouchTicketsMetricPerAgent,
         title: 'oneTouchTicketsMetric',
+    },
+    {
+        fetchData: fetchZeroTouchTicketsMetricPerAgent,
+        title: 'zeroTouchTicketsMetric',
     },
     {
         fetchData: fetchTicketsRepliedPerHourPerAgent,
@@ -163,6 +170,10 @@ export const agentsSummaryDataSources: TableSummaryDataSources<AgentsReportData>
         {
             fetchData: fetchOneTouchTicketsPercentageMetricTrend,
             title: 'oneTouchTicketsMetric',
+        },
+        {
+            fetchData: fetchZeroTouchTicketsMetricTrend,
+            title: 'zeroTouchTicketsMetric',
         },
         {
             fetchData: fetchTicketsRepliedPerHour,

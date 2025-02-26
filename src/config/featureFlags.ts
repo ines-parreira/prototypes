@@ -116,6 +116,7 @@ export enum FeatureFlagKey {
     ReportingAgentsTableAverageAndTotal = 'reporting-agents-table-average-and-total',
     RevenueBetaShopifyHeadless = 'revenue-beta-shopify-headless',
     RevenueBetaTesters = 'revenue-beta-testers',
+    ReportingZeroTouchTicketsMetric = 'reporting-zero-touch-tickets-metric',
     RevenueDisableUtmParams = 'revenue-disable-utm-params',
     SendgridMigrationSingleSender = 'sendgrid-migration-single-sender-verification',
     SimplifiedStepBuilder = 'simplified-step-builder',
