@@ -11,7 +11,7 @@ type OnboardingDataWithoutId = Omit<OnboardingData, 'id'>
 export const defaultOnboardingData: OnboardingDataWithoutId = {
     salesPersuasionLevel: PersuasionLevel.Moderate,
     salesDiscountStrategyLevel: DiscountStrategy.Balanced,
-    salesDiscountMax: 0.8,
+    salesDiscountMax: 0.08,
     scopes: [AiAgentScopes.SUPPORT],
     shopName: '',
     shopType: 'shopify',

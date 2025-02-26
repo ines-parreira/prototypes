@@ -100,7 +100,10 @@ export const PersonalityStep: React.FC<StepProps> = ({
             salesDiscountStrategyLevel:
                 data?.salesDiscountStrategyLevel ?? DiscountStrategy.Balanced,
             salesDiscountMax: formatDiscountMax(
-                (data?.salesDiscountMax ?? 0) * 100,
+                (data?.salesDiscountStrategyLevel ===
+                DiscountStrategy.NoDiscount
+                    ? 0
+                    : (data?.salesDiscountMax ?? 0.08)) * 100,
             ),
         },
         mode: 'onChange',
@@ -134,7 +137,49 @@ export const PersonalityStep: React.FC<StepProps> = ({
                 shouldDirty: true,
             })
         }
+        if (
+            field === 'salesDiscountStrategyLevel' &&
+            value !== DiscountStrategy.NoDiscount &&
+            !salesDiscountMax
+        ) {
+            setValue('salesDiscountMax', 8, {
+                shouldValidate: true,
+                shouldDirty: true,
+            })
+        }
         if (field === 'salesDiscountStrategyLevel') {
+            void trigger('salesDiscountMax')
+        }
+    }
+
+    const onChangeDiscountMax = (value: string) => {
+        if (value === '') {
+            setValue('salesDiscountMax', value as any, {
+                shouldValidate: false,
+                shouldDirty: true,
+            })
+            return
+        }
+
+        const parsedValue = Number(value)
+        setValue(
+            'salesDiscountMax',
+            !value || isNaN(parsedValue) ? 0 : parsedValue,
+            {
+                shouldValidate: true,
+                shouldDirty: true,
+            },
+        )
+
+        if (parsedValue === 0) {
+            setValue(
+                'salesDiscountStrategyLevel',
+                DiscountStrategy.NoDiscount,
+                {
+                    shouldValidate: true,
+                    shouldDirty: true,
+                },
+            )
             void trigger('salesDiscountMax')
         }
     }
@@ -307,19 +352,7 @@ export const PersonalityStep: React.FC<StepProps> = ({
                                 id="percentage-discount"
                                 className={css.percentageInputWrapper}
                                 value={salesDiscountMax}
-                                onChange={(value: string) => {
-                                    const parsedValue = Number(value)
-                                    setValue(
-                                        'salesDiscountMax',
-                                        !value || isNaN(parsedValue)
-                                            ? 0
-                                            : parsedValue,
-                                        {
-                                            shouldValidate: true,
-                                            shouldDirty: true,
-                                        },
-                                    )
-                                }}
+                                onChange={onChangeDiscountMax}
                                 suffix={<IconInput icon="percent" />}
                                 error={errors.salesDiscountMax?.message}
                                 isDisabled={

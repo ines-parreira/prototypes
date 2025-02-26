@@ -4,6 +4,7 @@ import React, { ComponentProps } from 'react'
 
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { fireEvent, screen, waitFor } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
 import { createMemoryHistory } from 'history'
 import { fromJS, Map } from 'immutable'
 import { Provider } from 'react-redux'
@@ -258,20 +259,71 @@ describe('PersonalityStep - Empty state', () => {
     it('should update the max percentage discount when valid discount', async () => {
         renderComponent()
 
-        await waitFor(() => {
-            const maxDiscountInput = screen.getByLabelText<HTMLInputElement>(
-                /Maximum Discount Percentage/,
-            )
-            fireEvent.change(maxDiscountInput, { target: { value: '10' } })
-            expect(maxDiscountInput.value).toBe('10')
+        const maxDiscountInput = screen.getByLabelText<HTMLInputElement>(
+            /Maximum Discount Percentage/,
+        )
 
+        // Remove the default value
+        userEvent.clear(maxDiscountInput)
+        await userEvent.type(maxDiscountInput, '15')
+        expect(maxDiscountInput).toHaveValue(15)
+
+        await waitFor(() => {
             expect(
                 screen.queryByText(/Must be a number between 1 and 100/i),
             ).not.toBeInTheDocument()
         })
     })
 
-    it('should update the max percentage discount and show an error message when discount to low (0)', async () => {
+    it('should set max percentage to 8 when discount strategy is not None', async () => {
+        renderComponent()
+
+        await waitFor(() => {
+            const track = document.querySelectorAll('.track')[1]
+            track.getBoundingClientRect = jest.fn().mockReturnValue(trackRect)
+            // Try clicking before the start of track to select the first value
+            fireEvent.click(track, {
+                clientX: 0,
+            })
+
+            expect(
+                screen.getByText(
+                    'The Sales AI Agent will not offer any discounts under any circumstances.',
+                ),
+            ).toBeInTheDocument()
+        })
+
+        // Wait for maxDiscountPercentage to update in the DOM
+        await waitFor(() => {
+            const maxDiscountInput = screen.getByTestId('percentage-input')
+            expect(maxDiscountInput).toBeInTheDocument()
+            expect(maxDiscountInput.getAttribute('value')).toBe('0') // Ensure value is 0
+        })
+
+        await waitFor(() => {
+            const track = document.querySelectorAll('.track')[1]
+            track.getBoundingClientRect = jest.fn().mockReturnValue(trackRect)
+            // Try clicking beyond the end of track to select the last value
+            fireEvent.click(track, {
+                clientX: 500,
+            })
+
+            expect(
+                screen.getByText(
+                    'The Sales AI Agent frequently uses discounts to maximize sales, prioritizing conversions over margins.',
+                ),
+            ).toBeInTheDocument()
+        })
+
+        // Wait for maxDiscountPercentage to update in the DOM
+        await waitFor(() => {
+            const maxDiscountInput = screen.getByTestId('percentage-input')
+            expect(maxDiscountInput).toBeInTheDocument()
+            expect(maxDiscountInput.getAttribute('value')).toBe('8') // Ensure value is 0
+        })
+    })
+
+    it('should update the max percentage discount and change the discount strategy when the value is 0', async () => {
         renderComponent()
 
         await waitFor(() => {
@@ -281,10 +333,10 @@ describe('PersonalityStep - Empty state', () => {
             fireEvent.change(maxDiscountInput, { target: { value: '0' } })
             expect(maxDiscountInput.value).toBe('0')
 
-            fireEvent.click(screen.getByText(/Next/i))
-
             expect(
-                screen.queryByText(/Must be a number between 1 and 100/i),
+                screen.getByText(
+                    'The Sales AI Agent will not offer any discounts under any circumstances.',
+                ),
             ).toBeInTheDocument()
         })
     })
