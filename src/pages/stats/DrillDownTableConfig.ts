@@ -373,8 +373,7 @@ export const getDrillDownQuery = (
                 aiInsightsCustomerSatisfactionMetricDrillDownQueryFactory(
                     statsFilters,
                     timezone,
-                    String(metricName.customFieldId),
-                    String(metricName.perAgentId),
+                    metricName.perAgentId,
                     sorting,
                 )
 

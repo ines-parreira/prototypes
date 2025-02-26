@@ -349,7 +349,6 @@ describe('aiAgentMetrics', () => {
                     useCustomerSatisfactionMetricPerIntentLevel(
                         filters,
                         timezone,
-                        customField,
                         sorting,
                     ),
                 {},
@@ -360,7 +359,6 @@ describe('aiAgentMetrics', () => {
                     filters,
                     timezone,
                     sorting,
-                    customField.id,
                 ),
             )
         })

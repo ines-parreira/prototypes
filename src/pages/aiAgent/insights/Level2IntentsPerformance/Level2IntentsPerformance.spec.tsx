@@ -23,6 +23,7 @@ jest.mock(
     'pages/aiAgent/insights/IntentTableWidget/hooks/useGetCustomTicketsFieldsDefinitionData',
 )
 jest.mock('state/stats/selectors')
+jest.mock('hooks/reporting/automate/useAIAgentUserId')
 
 describe('Level2IntentsPerformance', () => {
     const mockUseParams = assumeMock(useParams)

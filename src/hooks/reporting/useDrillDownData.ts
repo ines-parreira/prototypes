@@ -32,6 +32,7 @@ import {
 } from 'state/ui/stats/selectors'
 import {
     AgentsTableColumn,
+    AIInsightsMetric,
     AutoQAMetric,
     ChannelsTableColumns,
     SatisfactionMetric,
@@ -127,6 +128,50 @@ export type DrillDownDataHook<T extends BaseDrillDownRowData> = (
     metricData: DrillDownMetric,
 ) => DrillDownData<T>
 
+export const filterCSATDataBasedOnIntent = (
+    metricData: DrillDownMetric,
+    data:
+        | (MergedRecord<any, EnrichmentFields | EnrichmentFields.TicketId> &
+              IDRecord<any>)[]
+        | null,
+) => {
+    const isTicketDrillDownMetric =
+        metricData.metricName ===
+        AIInsightsMetric.TicketDrillDownPerCustomerSatisfaction
+    if (
+        isTicketDrillDownMetric &&
+        metricData?.intentFieldValues &&
+        metricData.intentFieldValues.length > 0 &&
+        'intentFieldId' in metricData &&
+        metricData.intentFieldId &&
+        data &&
+        data.length > 0
+    ) {
+        const intentFieldId = metricData.intentFieldId
+        return data.filter((row) => {
+            const customFields = row[EnrichmentFields.CustomFields] as Record<
+                number,
+                string | undefined
+            >
+
+            const fieldValue = customFields[intentFieldId]
+
+            if (
+                typeof fieldValue === 'string' &&
+                metricData.intentFieldValues
+            ) {
+                return metricData.intentFieldValues.some((val) =>
+                    fieldValue.startsWith(val),
+                )
+            }
+
+            return false
+        })
+    }
+
+    return data
+}
+
 export function useEnrichedDrillDownData<T>(
     metricData: DrillDownMetric,
     enrichmentFields: EnrichmentFields[],
@@ -145,10 +190,11 @@ export function useEnrichedDrillDownData<T>(
 
     const customFieldsIds = useGetCustomTicketsFieldsDefinitionData()
 
-    const rowData = useMemo(
+    let rowData = useMemo(
         () => aggregateSlas(someData?.allData, metricData, query.dimensions[0]),
         [metricData, query.dimensions, someData?.allData],
     )
+    rowData = filterCSATDataBasedOnIntent(metricData, rowData) || []
     const totalResults = rowData.length
 
     return {

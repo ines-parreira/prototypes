@@ -216,8 +216,7 @@ export const coverageRateTicketDrillDownQueryFactory = (
 export const aiInsightsCustomerSatisfactionMetricDrillDownQueryFactory = (
     filters: StatsFilters,
     timezone: string,
-    customFieldId: string,
-    perAgentId: string | null,
+    perAgentId?: string,
     sorting?: OrderDirection,
 ): ReportingQuery<HelpdeskMessageCubeWithJoins> => {
     const baseQuery = customerSatisfactionMetricPerAgentQueryFactory(
@@ -236,25 +235,16 @@ export const aiInsightsCustomerSatisfactionMetricDrillDownQueryFactory = (
         ],
         filters: [
             ...baseQuery.filters,
-            {
-                member: TicketCustomFieldsMember.TicketCustomFieldsCustomFieldId,
-                operator: ReportingFilterOperator.Equals,
-                values: [customFieldId],
-            },
-            {
-                member: TicketCustomFieldsMember.TicketCustomFieldsCustomFieldUpdatedDatetime,
-                operator: ReportingFilterOperator.InDateRange,
-                values: [
-                    formatReportingQueryDate(filters.period.start_datetime),
-                    formatReportingQueryDate(filters.period.end_datetime),
-                ],
-            },
-            {
-                member: TicketMember.AssigneeUserId,
-                operator: ReportingFilterOperator.Equals,
-                values: [perAgentId],
-            },
             TicketDrillDownFilter,
+            ...(perAgentId
+                ? [
+                      {
+                          member: TicketMember.AssigneeUserId,
+                          operator: ReportingFilterOperator.Equals,
+                          values: [String(perAgentId)],
+                      },
+                  ]
+                : []),
         ],
         limit: DRILLDOWN_QUERY_LIMIT,
         ...(sorting

@@ -30,6 +30,7 @@ import { useAIAgentUserId } from 'hooks/reporting/automate/useAIAgentUserId'
 import { useMetric } from 'hooks/reporting/useMetric'
 import { useMetricPerDimension } from 'hooks/reporting/useMetricPerDimension'
 import { useMultipleMetricsTrends } from 'hooks/reporting/useMultipleMetricsTrend'
+import { OrderDirection } from 'models/api/types'
 import {
     RecommendedResourcesDimension,
     RecommendedResourcesMeasure,
@@ -391,6 +392,31 @@ describe('useAiAgentInsightsDataset', () => {
     describe('useCustomerSatisfactionPerIntent', () => {
         it('should return csat per intent correctly', () => {
             useMetricPerDimensionMock.mockReturnValueOnce(csatPerIntentMetric)
+            useMetricPerDimensionMock.mockReturnValueOnce({
+                data: {
+                    allData: [
+                        {
+                            'TicketCustomFieldsEnriched.valueString':
+                                'Marketing::Other',
+                            'TicketEnriched.ticketId': '1',
+                        },
+                        {
+                            'TicketCustomFieldsEnriched.valueString':
+                                'Feedback::Negative',
+                            'TicketEnriched.ticketId': '2',
+                        },
+                        {
+                            'TicketCustomFieldsEnriched.valueString':
+                                'Other::Other',
+                            'TicketEnriched.ticketId': '3',
+                        },
+                    ],
+                    value: null,
+                    decile: null,
+                },
+                isFetching: false,
+                isError: false,
+            })
 
             jest.spyOn(queryClient, 'invalidateQueries')
             const { result } = renderHook(
@@ -403,7 +429,94 @@ describe('useAiAgentInsightsDataset', () => {
                     ),
                 },
             )
-            expect(result.current).toEqual(csatPerIntentMetric)
+            expect(result.current).toEqual({
+                data: [
+                    {
+                        'TicketCustomFieldsEnriched.valueString':
+                            'Marketing::Other',
+                        'TicketSatisfactionSurveyEnriched.avgSurveyScore': '5',
+                        'TicketSatisfactionSurveyEnriched.ticketId': '1',
+                        decile: '9',
+                    },
+                    {
+                        'TicketCustomFieldsEnriched.valueString':
+                            'Feedback::Negative',
+                        'TicketSatisfactionSurveyEnriched.avgSurveyScore': '5',
+                        'TicketSatisfactionSurveyEnriched.ticketId': '2',
+                        decile: '6',
+                    },
+                    {
+                        'TicketCustomFieldsEnriched.valueString':
+                            'Other::Other',
+                        'TicketSatisfactionSurveyEnriched.avgSurveyScore':
+                            '2.3',
+                        'TicketSatisfactionSurveyEnriched.ticketId': '3',
+                        decile: '2',
+                    },
+                ],
+                isError: false,
+                isFetching: false,
+            })
+        })
+
+        it('should filter data based on intent', () => {
+            useMetricPerDimensionMock.mockReturnValueOnce(csatPerIntentMetric)
+            useMetricPerDimensionMock.mockReturnValueOnce({
+                data: {
+                    allData: [
+                        {
+                            'TicketCustomFieldsEnriched.valueString':
+                                'Marketing::Other',
+                            'TicketEnriched.ticketId': '1',
+                        },
+                        {
+                            'TicketCustomFieldsEnriched.valueString':
+                                'Feedback::Negative',
+                            'TicketEnriched.ticketId': '2',
+                        },
+                        {
+                            'TicketCustomFieldsEnriched.valueString':
+                                'Other::Other',
+                            'TicketEnriched.ticketId': '3',
+                        },
+                    ],
+                    value: null,
+                    decile: null,
+                },
+                isFetching: false,
+                isError: false,
+            })
+
+            jest.spyOn(queryClient, 'invalidateQueries')
+            const { result } = renderHook(
+                () =>
+                    useCustomerSatisfactionPerIntent(
+                        statsFilters,
+                        timezone,
+                        OrderDirection.Asc,
+                        'Marketing::Other',
+                    ),
+                {
+                    wrapper: ({ children }) => (
+                        <QueryClientProvider client={queryClient}>
+                            {children}
+                        </QueryClientProvider>
+                    ),
+                },
+            )
+            expect(result.current).toEqual({
+                data: [
+                    {
+                        'TicketCustomFieldsEnriched.valueString':
+                            'Marketing::Other',
+                        'TicketSatisfactionSurveyEnriched.avgSurveyScore': '5',
+                        'TicketSatisfactionSurveyEnriched.ticketId': '1',
+                        decile: '9',
+                    },
+                ],
+                isError: false,
+                isFetching: false,
+            })
         })
     })
 

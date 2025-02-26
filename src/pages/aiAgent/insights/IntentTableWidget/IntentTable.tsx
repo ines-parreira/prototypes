@@ -6,6 +6,7 @@ import { useDispatch } from 'react-redux'
 import { useParams } from 'react-router-dom'
 
 import { useAIAgentInsightsDataset } from 'hooks/reporting/automate/useAIAgentInsightsDataset'
+import { useAIAgentUserId } from 'hooks/reporting/automate/useAIAgentUserId'
 import useAppSelector from 'hooks/useAppSelector'
 import useMeasure from 'hooks/useMeasure'
 import {
@@ -76,6 +77,7 @@ export const IntentTable = ({
     const { intents, allIntents, currentPage, perPage } = paginatedIntents
 
     const isSortingLoading = useAppSelector(isSortingMetricLoading)
+    const aiAgentUserId = useAIAgentUserId()
 
     const { intentCustomFieldId } = useGetCustomTicketsFieldsDefinitionData()
 
@@ -125,6 +127,17 @@ export const IntentTable = ({
                     title: intentName,
                     customFieldValue: [intent.id],
                     customFieldId: intentCustomFieldId ?? null,
+                }
+            case IntentTableColumn.AvgCustomerSatisfaction:
+                return {
+                    metricName:
+                        AIInsightsMetric.TicketDrillDownPerCustomerSatisfaction,
+                    title: intentName,
+                    perAgentId: aiAgentUserId,
+                    intentFieldId: intentCustomFieldId ?? null,
+                    intentFieldValues: [intent.id],
+                    customFieldId: null,
+                    customFieldValue: null,
                 }
             default:
                 return null

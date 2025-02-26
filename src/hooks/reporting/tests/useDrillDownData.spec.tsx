@@ -11,6 +11,7 @@ import { agents } from 'fixtures/agents'
 import {
     defaultEnrichmentFields,
     DRILL_DOWN_PER_PAGE,
+    filterCSATDataBasedOnIntent,
     useDrillDownData,
     useEnrichedDrillDownData,
 } from 'hooks/reporting/useDrillDownData'
@@ -49,6 +50,7 @@ import {
     getCleanStatsFiltersWithTimezone,
 } from 'state/ui/stats/selectors'
 import {
+    AIInsightsMetric,
     ConvertMetric,
     SlaMetric,
     TicketFieldsMetric,
@@ -775,6 +777,75 @@ describe('DrillDownData hooks', () => {
                     payload: 2,
                 }),
             )
+        })
+    })
+
+    describe('filterCSATDataBasedOnIntent', () => {
+        it('should filter data based on intent field values', () => {
+            const metricData: DrillDownMetric = {
+                metricName:
+                    AIInsightsMetric.TicketDrillDownPerCustomerSatisfaction,
+                intentFieldValues: ['value1', 'value2'],
+                intentFieldId: 1,
+            } as unknown as DrillDownMetric
+
+            const data = [
+                {
+                    [EnrichmentFields.CustomFields]: {
+                        1: 'value1',
+                    },
+                },
+                {
+                    [EnrichmentFields.CustomFields]: {
+                        1: 'otherValue',
+                    },
+                },
+            ]
+
+            const result = filterCSATDataBasedOnIntent(metricData, data)
+            expect(result).toEqual([data[0]])
+        })
+
+        it('should return the original data if no intent field values are provided', () => {
+            const metricData: DrillDownMetric = {
+                metricName:
+                    AIInsightsMetric.TicketDrillDownPerCustomerSatisfaction,
+                intentFieldValues: [],
+                intentFieldId: 1,
+            } as unknown as DrillDownMetric
+
+            const data = [
+                {
+                    [EnrichmentFields.CustomFields]: {
+                        1: 'value1',
+                    },
+                },
+                {
+                    [EnrichmentFields.CustomFields]: {
+                        1: 'otherValue',
+                    },
+                },
+            ]
+
+            const result = filterCSATDataBasedOnIntent(metricData, data)
+            expect(result).toEqual(data)
+        })
+        it('should return false when fieldValue is not a string', () => {
+            const metricData = {
+                metricName:
+                    AIInsightsMetric.TicketDrillDownPerCustomerSatisfaction,
+                intentFieldId: 1,
+                intentFieldValues: ['value1'],
+            } as unknown as DrillDownMetric
+
+            const data = [
+                {
+                    [EnrichmentFields.CustomFields]: { intent1: 123 }, // not a string
+                },
+            ]
+
+            const result = filterCSATDataBasedOnIntent(metricData, data)
+            expect(result).toEqual([])
         })
     })
 })

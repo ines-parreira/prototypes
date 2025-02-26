@@ -239,13 +239,11 @@ export const useCustomerSatisfactionForIntentTrendMetric = ({
         intentId,
     )
     let customerSatisfactionPerIntentPerIntentLevel
-    if (customerSatisfactionPerIntent.data?.allData) {
+    if (customerSatisfactionPerIntent.data) {
         customerSatisfactionPerIntentPerIntentLevel =
             filterMetricDataByIntentLevel({
                 metricData:
-                    customerSatisfactionPerIntent.data?.allData?.filter(
-                        Boolean,
-                    ) || [],
+                    customerSatisfactionPerIntent.data?.filter(Boolean) || [],
                 level: intentLevel,
                 intentKey: 'TicketCustomFieldsEnriched.valueString',
                 valueKey: 'TicketSatisfactionSurveyEnriched.surveyScore',
@@ -265,13 +263,12 @@ export const useCustomerSatisfactionForIntentTrendMetric = ({
         intentId,
     )
     let prevCustomerSatisfactionPerIntentPerIntentLevel
-    if (prevCustomerSatisfactionPerIntent.data?.allData) {
+    if (prevCustomerSatisfactionPerIntent.data) {
         prevCustomerSatisfactionPerIntentPerIntentLevel =
             filterMetricDataByIntentLevel({
                 metricData:
-                    prevCustomerSatisfactionPerIntent.data?.allData?.filter(
-                        Boolean,
-                    ) || [],
+                    prevCustomerSatisfactionPerIntent.data?.filter(Boolean) ||
+                    [],
                 level: intentLevel,
                 intentKey: 'TicketCustomFieldsEnriched.valueString',
                 valueKey: 'TicketSatisfactionSurveyEnriched.surveyScore',

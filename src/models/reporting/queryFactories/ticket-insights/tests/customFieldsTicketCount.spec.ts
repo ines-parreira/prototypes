@@ -9,6 +9,7 @@ import {
     TicketCustomFieldsMember,
 } from 'models/reporting/cubes/TicketCustomFieldsCube'
 import {
+    aiInsightsCustomerSatisfactionMetricDrillDownQueryFactory,
     customFieldsTicketCountPerIntentLevelPerTicketDrillDownQueryFactory,
     customFieldsTicketCountPerTicketDrillDownQueryFactory,
     customFieldsTicketCountQueryFactory,
@@ -39,6 +40,7 @@ describe('customFieldsTicketCountQueryFactory', () => {
     const customFieldId = '123'
     const timezone = 'UTC'
     const sorting = OrderDirection.Asc
+    const perAgentId = '1'
 
     describe('customFieldsTicketCountQueryFactory', () => {
         it('should build expected query', () => {
@@ -569,6 +571,51 @@ describe('customFieldsTicketCountQueryFactory', () => {
 
             expect(query.order).toEqual([
                 ['TicketEnriched.ticketId', OrderDirection.Asc],
+            ])
+        })
+    })
+
+    describe('aiInsightsCustomerSatisfactionMetricDrillDownQueryFactory', () => {
+        it('should return a query with the correct base query structure for aiInsightsCustomerSatisfactionMetricDrillDownQueryFactory', () => {
+            const query =
+                aiInsightsCustomerSatisfactionMetricDrillDownQueryFactory(
+                    statsFilters,
+                    timezone,
+                    perAgentId,
+                    sorting,
+                )
+
+            expect(query.filters).toEqual([
+                {
+                    member: 'TicketEnriched.isTrashed',
+                    operator: 'equals',
+                    values: ['0'],
+                },
+                {
+                    member: 'TicketEnriched.isSpam',
+                    operator: 'equals',
+                    values: ['0'],
+                },
+                {
+                    member: 'TicketEnriched.periodStart',
+                    operator: 'afterDate',
+                    values: ['2021-05-29T00:00:00.000'],
+                },
+                {
+                    member: 'TicketEnriched.periodEnd',
+                    operator: 'beforeDate',
+                    values: ['2021-06-04T23:59:59.000'],
+                },
+                {
+                    member: 'TicketEnriched.ticketCount',
+                    operator: 'measureFilter',
+                    values: [],
+                },
+                {
+                    member: TicketMember.AssigneeUserId,
+                    operator: ReportingFilterOperator.Equals,
+                    values: [perAgentId],
+                },
             ])
         })
     })

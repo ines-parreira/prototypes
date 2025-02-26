@@ -72,6 +72,7 @@ export const IntentNameCellContent = ({
 export const IntentAvgCsatCellContent = ({
     intent,
     column,
+    drillDownMetricData,
 }: TableCellProps) => {
     const formatedValue = intent[column]
         ? Intl.NumberFormat(DEFAULT_LOCALE, {
@@ -85,7 +86,12 @@ export const IntentAvgCsatCellContent = ({
                 width: getColumnWidth(column),
             }}
         >
-            {formatedValue}
+            <DrillDownModalWrapper
+                drillDownMetricData={drillDownMetricData}
+                metricValue={intent[column] as number}
+            >
+                {formatedValue}
+            </DrillDownModalWrapper>
         </BodyCellWrapper>
     )
 }

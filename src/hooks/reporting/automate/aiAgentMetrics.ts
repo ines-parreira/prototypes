@@ -6,6 +6,7 @@ import {
     TicketCustomFieldsMember,
 } from 'models/reporting/cubes/TicketCustomFieldsCube'
 import {
+    aiAgentTicketsWithIntentQueryFactory,
     customerSatisfactionPerIntentLevelQueryFactory,
     recommendedResourceQueryFactory,
 } from 'models/reporting/queryFactories/ai-agent-insights/metrics'
@@ -19,12 +20,7 @@ import {
     ReportingFilterOperator,
 } from 'models/reporting/types'
 import { StatsFilters } from 'models/stat/types'
-import {
-    formatReportingQueryDate,
-    NotSpamNorTrashedTicketsFilter,
-    statsFiltersToReportingFilters,
-    TicketStatsFiltersMembers,
-} from 'utils/reporting'
+import { NotSpamNorTrashedTicketsFilter } from 'utils/reporting'
 
 import { useMetric } from '../useMetric'
 import { useMetricPerDimension } from '../useMetricPerDimension'
@@ -113,9 +109,7 @@ export const useAiAgentTicketCountPerIntent = (
 export const useCustomerSatisfactionMetricPerIntentLevel = (
     filters: StatsFilters,
     timezone: string,
-    customField: CustomField | undefined,
     sorting?: OrderDirection,
-    customFieldValue?: string,
     assigneeUserId?: string,
 ) => {
     return useMetricPerDimension(
@@ -123,8 +117,6 @@ export const useCustomerSatisfactionMetricPerIntentLevel = (
             filters,
             timezone,
             sorting,
-            customField?.id,
-            customFieldValue,
             assigneeUserId,
         ),
     )
@@ -136,6 +128,23 @@ export const useAIAgentTicketsWithIntent = (
     customFieldId: string | null,
     sorting?: OrderDirection,
     intentId?: string,
+) => {
+    return useMetricPerDimension(
+        aiAgentTicketsWithIntentQueryFactory(
+            filters,
+            timezone,
+            customFieldId,
+            sorting,
+            intentId,
+        ),
+    )
+}
+
+export const useGetTicketIntentsForTicketIds = (
+    timezone: string,
+    customFieldId: string | null,
+    sorting?: OrderDirection,
+    ticketIds?: string[] | null,
 ) => {
     return useMetricPerDimension({
         measures: [],
@@ -150,28 +159,16 @@ export const useAIAgentTicketsWithIntent = (
                 operator: ReportingFilterOperator.Equals,
                 values: [customFieldId],
             },
-            ...(intentId
+            ...(ticketIds
                 ? [
                       {
-                          member: TicketCustomFieldsMember.TicketCustomFieldsValueString,
-                          operator: ReportingFilterOperator.StartsWith,
-                          values: [intentId],
+                          member: TicketDimension.TicketId,
+                          operator: ReportingFilterOperator.Equals,
+                          values: ticketIds,
                       },
                   ]
                 : []),
             ...NotSpamNorTrashedTicketsFilter,
-            ...statsFiltersToReportingFilters(
-                TicketStatsFiltersMembers,
-                filters,
-            ),
-            {
-                member: TicketCustomFieldsMember.TicketCustomFieldsCustomFieldUpdatedDatetime,
-                operator: ReportingFilterOperator.InDateRange,
-                values: [
-                    formatReportingQueryDate(filters.period.start_datetime),
-                    formatReportingQueryDate(filters.period.end_datetime),
-                ],
-            },
         ],
         ...(sorting
             ? {

@@ -7,6 +7,7 @@ import { User } from 'config/types/user'
 import { createJob } from 'models/job/resources'
 import { Job, JobType } from 'models/job/types'
 import { closedTicketsQueryFactory } from 'models/reporting/queryFactories/support-performance/closedTickets'
+import { CSAT_DRILL_DOWN_LABEL } from 'pages/aiAgent/insights/IntentTableWidget/IntentTableConfig'
 import { LogicalOperatorEnum } from 'pages/stats/common/components/Filter/constants'
 import {
     CSAT_SCORE,
@@ -47,6 +48,7 @@ import {
 } from 'state/ui/stats/drillDownSlice'
 import {
     AgentsTableColumn,
+    AIInsightsMetric,
     AutoQAMetric,
     ChannelsTableColumns,
     ConvertMetric,
@@ -376,6 +378,17 @@ describe('drillDownSlice', () => {
                         SatisfactionTrendCardConfig[
                             SatisfactionMetric.AverageSurveyScore
                         ].metricFormat,
+                },
+            },
+            {
+                metricData: {
+                    metricName:
+                        AIInsightsMetric.TicketDrillDownPerCustomerSatisfaction,
+                },
+                expectedValues: {
+                    metricTitle: CSAT_DRILL_DOWN_LABEL,
+                    showMetric: true,
+                    metricValueFormat: 'decimal',
                 },
             },
             ...voiceAgentsMetricsWithExpectedValues,

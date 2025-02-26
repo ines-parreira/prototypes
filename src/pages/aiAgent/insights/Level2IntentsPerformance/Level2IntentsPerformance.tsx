@@ -3,6 +3,7 @@ import React from 'react'
 import { useParams } from 'react-router-dom'
 
 import { useInsightPerformanceMetrics } from 'hooks/reporting/automate/useAIAgentInsightsL2Dataset'
+import { useAIAgentUserId } from 'hooks/reporting/automate/useAIAgentUserId'
 import { useNewAutomateFilters } from 'hooks/reporting/automate/useNewAutomateFilters'
 import { transformIntentName } from 'hooks/reporting/automate/utils'
 import useAppSelector from 'hooks/useAppSelector'
@@ -11,7 +12,8 @@ import { IntentsPerformance } from 'pages/aiAgent/insights/widgets/IntentsPerfor
 import { getPageStatsFilters } from 'state/stats/selectors'
 import { AIInsightsMetric } from 'state/ui/stats/types'
 
-const INTENT_LEVEL = 1
+const INTENT_LEVEL = 2
+
 export const Level2IntentsPerformance = () => {
     const pageStatsFilters = useAppSelector(getPageStatsFilters)
 
@@ -28,6 +30,7 @@ export const Level2IntentsPerformance = () => {
         intentLevel: INTENT_LEVEL,
     })
 
+    const aiAgentUserId = useAIAgentUserId()
     const { intentCustomFieldId } = useGetCustomTicketsFieldsDefinitionData()
 
     return (
@@ -70,6 +73,13 @@ export const Level2IntentsPerformance = () => {
                     trend: aiAgentMetrics.customerSatisfactionPerIntent,
                     interpretAs: 'more-is-better',
                     metricFormat: 'decimal',
+                    drillDownMetric:
+                        AIInsightsMetric.TicketDrillDownPerCustomerSatisfaction,
+                    drillDownMetricAdditionalData: {
+                        perAgentId: aiAgentUserId,
+                        intentFieldId: intentCustomFieldId,
+                        intentFieldValues: [intentId],
+                    },
                 },
             ]}
         />

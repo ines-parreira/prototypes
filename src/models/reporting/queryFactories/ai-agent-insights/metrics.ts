@@ -6,7 +6,11 @@ import {
     RecommendedResourcesMeasure,
 } from 'models/reporting/cubes/automate_v2/RecommendedResourcesCube'
 import { HelpdeskMessageCubeWithJoins } from 'models/reporting/cubes/HelpdeskMessageCube'
-import { TicketMember } from 'models/reporting/cubes/TicketCube'
+import {
+    TicketCubeWithJoins,
+    TicketDimension,
+    TicketMember,
+} from 'models/reporting/cubes/TicketCube'
 import {
     TicketCustomFieldsDimension,
     TicketCustomFieldsMember,
@@ -19,6 +23,7 @@ import {
 import { ReportingFilterOperator, ReportingQuery } from 'models/reporting/types'
 import { StatsFilters } from 'models/stat/types'
 import {
+    formatReportingQueryDate,
     NotSpamNorTrashedTicketsFilter,
     statsFiltersToReportingFilters,
     TicketStatsFiltersMembers,
@@ -30,26 +35,9 @@ export const customerSatisfactionPerIntentLevelQueryFactory = (
     statsFilters: StatsFilters,
     timezone: string,
     sorting?: OrderDirection,
-    customFieldId?: number,
-    customFieldValue?: string,
     assigneeUserId?: string,
 ): ReportingQuery<HelpdeskMessageCubeWithJoins> => {
     const customFiledFilters = []
-    if (customFieldId) {
-        customFiledFilters.push({
-            member: TicketCustomFieldsMember.TicketCustomFieldsCustomFieldId,
-            operator: ReportingFilterOperator.Equals,
-            values: [String(customFieldId)],
-        })
-    }
-    if (customFieldValue) {
-        customFiledFilters.push({
-            member: TicketCustomFieldsMember.TicketCustomFieldsValueString,
-            operator: ReportingFilterOperator.StartsWith,
-            values: [customFieldValue],
-        })
-    }
-
     if (assigneeUserId) {
         customFiledFilters.push({
             member: TicketMember.AssigneeUserId,
@@ -64,7 +52,7 @@ export const customerSatisfactionPerIntentLevelQueryFactory = (
             TicketSatisfactionSurveyMeasure.AvgSurveyScore,
         ],
         dimensions: [
-            TicketCustomFieldsDimension.TicketCustomFieldsValueString,
+            TicketSatisfactionSurveyDimension.TicketId,
             TicketSatisfactionSurveyDimension.SurveyScore,
         ],
         timezone,
@@ -113,3 +101,59 @@ export const recommendedResourceQueryFactory = (
           }
         : {}),
 })
+
+export const aiAgentTicketsWithIntentQueryFactory = (
+    filters: StatsFilters,
+    timezone: string,
+    customFieldId: string | null,
+    sorting?: OrderDirection,
+    intentId?: string,
+): ReportingQuery<TicketCubeWithJoins> => {
+    return {
+        measures: [],
+        dimensions: [
+            TicketDimension.TicketId,
+            TicketCustomFieldsDimension.TicketCustomFieldsValueString,
+        ],
+        timezone,
+        filters: [
+            {
+                member: TicketCustomFieldsMember.TicketCustomFieldsCustomFieldId,
+                operator: ReportingFilterOperator.Equals,
+                values: [customFieldId],
+            },
+            ...(intentId
+                ? [
+                      {
+                          member: TicketCustomFieldsMember.TicketCustomFieldsValueString,
+                          operator: ReportingFilterOperator.StartsWith,
+                          values: [intentId],
+                      },
+                  ]
+                : []),
+            ...NotSpamNorTrashedTicketsFilter,
+            ...statsFiltersToReportingFilters(
+                TicketStatsFiltersMembers,
+                filters,
+            ),
+            {
+                member: TicketCustomFieldsMember.TicketCustomFieldsCustomFieldUpdatedDatetime,
+                operator: ReportingFilterOperator.InDateRange,
+                values: [
+                    formatReportingQueryDate(filters.period.start_datetime),
+                    formatReportingQueryDate(filters.period.end_datetime),
+                ],
+            },
+        ],
+        ...(sorting
+            ? {
+                  order: [
+                      [
+                          TicketCustomFieldsDimension.TicketCustomFieldsValueString,
+                          sorting,
+                      ],
+                  ],
+              }
+            : {}),
+    }
+}

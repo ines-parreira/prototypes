@@ -73,16 +73,19 @@ export const csatPerIntentMetric = {
         decile: null,
         allData: [
             {
+                'TicketSatisfactionSurveyEnriched.ticketId': '1',
                 'TicketCustomFieldsEnriched.valueString': 'Marketing::Other',
                 'TicketSatisfactionSurveyEnriched.avgSurveyScore': '5',
                 decile: '9',
             },
             {
+                'TicketSatisfactionSurveyEnriched.ticketId': '2',
                 'TicketCustomFieldsEnriched.valueString': 'Feedback::Negative',
                 'TicketSatisfactionSurveyEnriched.avgSurveyScore': '5',
                 decile: '6',
             },
             {
+                'TicketSatisfactionSurveyEnriched.ticketId': '3',
                 'TicketCustomFieldsEnriched.valueString': 'Other::Other',
                 'TicketSatisfactionSurveyEnriched.avgSurveyScore': '2.3',
                 decile: '2',

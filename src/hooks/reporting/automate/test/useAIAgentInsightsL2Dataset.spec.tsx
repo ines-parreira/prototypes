@@ -176,22 +176,22 @@ describe('useAiAgentInsightsL2Dataset', () => {
     it('should return customer satisfaction trend metric for intent', () => {
         useCustomerSatisfactionPerIntentMock
             .mockReturnValueOnce({
-                data: {
-                    allData:
-                        data as unknown as QueryReturnType<TicketCustomFieldsCube>,
-                    value: null,
-                    decile: null,
-                },
+                data: data as unknown as {
+                    'TicketCustomFieldsEnriched.valueString':
+                        | string
+                        | null
+                        | undefined
+                }[],
                 isFetching: false,
                 isError: false,
             })
             .mockReturnValueOnce({
-                data: {
-                    allData:
-                        data as unknown as QueryReturnType<TicketCustomFieldsCube>,
-                    value: null,
-                    decile: null,
-                },
+                data: data as unknown as {
+                    'TicketCustomFieldsEnriched.valueString':
+                        | string
+                        | null
+                        | undefined
+                }[],
                 isFetching: false,
                 isError: false,
             })
@@ -309,22 +309,22 @@ describe('useAiAgentInsightsL2Dataset', () => {
         // customerSatisfactionPerIntent
         useCustomerSatisfactionPerIntentMock
             .mockReturnValueOnce({
-                data: {
-                    allData:
-                        data as unknown as QueryReturnType<TicketCustomFieldsCube>,
-                    value: null,
-                    decile: null,
-                },
+                data: data as unknown as {
+                    'TicketCustomFieldsEnriched.valueString':
+                        | string
+                        | null
+                        | undefined
+                }[],
                 isFetching: false,
                 isError: false,
             })
             .mockReturnValueOnce({
-                data: {
-                    allData:
-                        data as unknown as QueryReturnType<TicketCustomFieldsCube>,
-                    value: null,
-                    decile: null,
-                },
+                data: data as unknown as {
+                    'TicketCustomFieldsEnriched.valueString':
+                        | string
+                        | null
+                        | undefined
+                }[],
                 isFetching: false,
                 isError: false,
             })

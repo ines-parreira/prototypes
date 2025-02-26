@@ -17,8 +17,14 @@ import {
     TicketDimension,
     TicketMeasure,
 } from 'models/reporting/cubes/TicketCube'
-import { TicketCustomFieldsMeasure } from 'models/reporting/cubes/TicketCustomFieldsCube'
-import { TicketSatisfactionSurveyMeasure } from 'models/reporting/cubes/TicketSatisfactionSurveyCube'
+import {
+    TicketCustomFieldsDimension,
+    TicketCustomFieldsMeasure,
+} from 'models/reporting/cubes/TicketCustomFieldsCube'
+import {
+    TicketSatisfactionSurveyDimension,
+    TicketSatisfactionSurveyMeasure,
+} from 'models/reporting/cubes/TicketSatisfactionSurveyCube'
 import { automationDatasetQueryFactory } from 'models/reporting/queryFactories/automate_v2/metrics'
 import { customerSatisfactionMetricPerAgentQueryFactory } from 'models/reporting/queryFactories/support-performance/customerSatisfaction'
 import { ticketsCreatedQueryFactory } from 'models/reporting/queryFactories/support-performance/ticketsCreated'
@@ -39,6 +45,7 @@ import {
     useAiAgentTicketCountPerIntent,
     useAIAgentTicketsWithIntent,
     useCustomerSatisfactionMetricPerIntentLevel,
+    useGetTicketIntentsForTicketIds,
     useTotalAiAgentTicketsByCustomField,
 } from './aiAgentMetrics'
 import {
@@ -438,13 +445,63 @@ export const useCustomerSatisfactionPerIntent = (
     const csatPerIntent = useCustomerSatisfactionMetricPerIntentLevel(
         filters,
         timezone,
-        customFieldAiIntent,
         sorting,
-        intentId,
         aiAgentUserId,
     )
 
-    return csatPerIntent
+    let ticketIds = null
+    if (csatPerIntent?.data?.allData && csatPerIntent.data.allData.length > 0) {
+        ticketIds = csatPerIntent.data.allData
+            .map((item) => item[TicketSatisfactionSurveyDimension.TicketId])
+            .filter((id): id is string => typeof id === 'string')
+    }
+
+    const aiAgentTicketsWithIntent = useGetTicketIntentsForTicketIds(
+        timezone,
+        String(customFieldAiIntent?.id),
+        sorting,
+        ticketIds,
+    )
+
+    if (aiAgentTicketsWithIntent.isFetching || csatPerIntent.isFetching) {
+        return {
+            isError: false,
+            isFetching: true,
+            data: null,
+        }
+    }
+
+    let enrichedCsatPerIntentData
+    //enrich csatPerIntent with ticket intent
+    enrichedCsatPerIntentData = csatPerIntent?.data?.allData.map((item) => {
+        const ticketId = item[TicketSatisfactionSurveyDimension.TicketId]
+        const ticketIntent = aiAgentTicketsWithIntent?.data?.allData.find(
+            (item) => item[TicketDimension.TicketId] === ticketId,
+        )?.[TicketCustomFieldsDimension.TicketCustomFieldsValueString]
+        return {
+            ...item,
+            [TicketCustomFieldsDimension.TicketCustomFieldsValueString]:
+                ticketIntent,
+        }
+    })
+
+    if (intentId && enrichedCsatPerIntentData) {
+        enrichedCsatPerIntentData = enrichedCsatPerIntentData.filter((item) =>
+            item[
+                TicketCustomFieldsDimension?.TicketCustomFieldsValueString
+            ]?.startsWith(intentId),
+        )
+    }
+
+    return {
+        isFetching:
+            aiAgentTicketsWithIntent.isFetching ||
+            aiAgentTicketsWithIntent.isFetching,
+        isError:
+            aiAgentTicketsWithIntent.isError ||
+            aiAgentTicketsWithIntent.isError,
+        data: enrichedCsatPerIntentData,
+    }
 }
 
 export const addMetricDataToResults = (
@@ -533,7 +590,7 @@ const useFetchAllIntentsMetrics = (
     )
 
     const customerSatisfactionPerIntentLevel = filterMetricDataByIntentLevel({
-        metricData: customerSatisfactionPerIntent?.data?.allData || [],
+        metricData: customerSatisfactionPerIntent.data || [],
         level: INTENT_LEVEL,
         intentKey: 'TicketCustomFieldsEnriched.valueString',
         valueKey: 'TicketSatisfactionSurveyEnriched.surveyScore',

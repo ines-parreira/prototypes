@@ -41,6 +41,8 @@ export const TableLabels: Record<IntentTableColumn, string> = {
     [IntentTableColumn.Resources]: 'Resources',
 }
 
+export const CSAT_DRILL_DOWN_LABEL = 'Customer Satisfaction'
+
 export const IntentsColumnsConfig: Partial<
     Record<
         IntentTableColumn,

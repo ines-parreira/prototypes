@@ -6,10 +6,6 @@ import {
 } from 'models/reporting/cubes/automate_v2/RecommendedResourcesCube'
 import { TicketMember } from 'models/reporting/cubes/TicketCube'
 import {
-    TicketCustomFieldsDimension,
-    TicketCustomFieldsMember,
-} from 'models/reporting/cubes/TicketCustomFieldsCube'
-import {
     TicketSatisfactionSurveyDimension,
     TicketSatisfactionSurveyMeasure,
     TicketSatisfactionSurveySegment,
@@ -38,7 +34,7 @@ describe('AI Agent metrics', () => {
             customerSatisfactionPerIntentLevelQueryFactory(filters, timezone),
         ).toEqual({
             dimensions: [
-                TicketCustomFieldsDimension.TicketCustomFieldsValueString,
+                TicketSatisfactionSurveyDimension.TicketId,
                 TicketSatisfactionSurveyDimension.SurveyScore,
             ],
             filters: [
@@ -67,19 +63,17 @@ describe('AI Agent metrics', () => {
         })
     })
 
-    it('customerSatisfactionPerIntentLevelQueryFactory with custom field', () => {
+    it('customerSatisfactionPerIntentLevelQueryFactory with user id', () => {
         expect(
             customerSatisfactionPerIntentLevelQueryFactory(
                 filters,
                 timezone,
                 OrderDirection.Asc,
-                1,
-                'customFieldValue',
                 '1',
             ),
         ).toEqual({
             dimensions: [
-                TicketCustomFieldsDimension.TicketCustomFieldsValueString,
+                TicketSatisfactionSurveyDimension.TicketId,
                 TicketSatisfactionSurveyDimension.SurveyScore,
             ],
             filters: [
@@ -97,16 +91,6 @@ describe('AI Agent metrics', () => {
                     values: [
                         formatReportingQueryDate(filters.period.end_datetime),
                     ],
-                },
-                {
-                    member: TicketCustomFieldsMember.TicketCustomFieldsCustomFieldId,
-                    operator: ReportingFilterOperator.Equals,
-                    values: ['1'],
-                },
-                {
-                    member: TicketCustomFieldsDimension.TicketCustomFieldsValueString,
-                    operator: ReportingFilterOperator.StartsWith,
-                    values: ['customFieldValue'],
                 },
                 {
                     member: TicketMember.AssigneeUserId,

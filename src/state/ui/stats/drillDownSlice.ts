@@ -11,6 +11,7 @@ import {
     JobContext,
     JobType,
 } from 'models/job/types'
+import { CSAT_DRILL_DOWN_LABEL } from 'pages/aiAgent/insights/IntentTableWidget/IntentTableConfig'
 import { LogicalOperatorEnum } from 'pages/stats/common/components/Filter/constants'
 import { MetricValueFormat } from 'pages/stats/common/utils'
 import {
@@ -146,6 +147,10 @@ export type AIInsightsMetrics = {
         start_datetime: string
     }
     perAgentId?: string
+    outcomeFieldValues?: string[]
+    outcomeFieldId?: number
+    intentFieldValues?: string[]
+    intentFieldId?: number | null
 } & CommonMetrics
 
 export type TagsFieldsMetrics = {
@@ -463,17 +468,21 @@ export const getDrillDownMetricColumn = (
         metricData.metricName ===
             AIInsightsMetric.TicketCustomFieldsTicketCount ||
         metricData.metricName ===
-            AIInsightsMetric.TicketDrillDownPerCoverageRate ||
-        metricData.metricName ===
-            AIInsightsMetric.TicketDrillDownPerCustomerSatisfaction
+            AIInsightsMetric.TicketDrillDownPerCoverageRate
     ) {
         metricTitle = metricData.title || ''
-    } else if ('perAgentId' in metricData) {
-        metricTitle = TableLabels[metricData.metricName]
-        metricValueFormat = AgentsColumnConfig[metricData.metricName].format
+    } else if (
+        metricData.metricName ===
+        AIInsightsMetric.TicketDrillDownPerCustomerSatisfaction
+    ) {
+        metricTitle = CSAT_DRILL_DOWN_LABEL
+        metricValueFormat = 'decimal'
     } else if ('customFieldValue' in metricData) {
         metricTitle = ''
         metricValueFormat = 'decimal'
+    } else if ('perAgentId' in metricData) {
+        metricTitle = TableLabels[metricData.metricName]
+        metricValueFormat = AgentsColumnConfig[metricData.metricName].format
     } else if ('perChannel' in metricData) {
         metricTitle = ChannelsTableLabels[metricData.metricName]
         metricValueFormat = ChannelColumnConfig[metricData.metricName].format

@@ -1,17 +1,10 @@
 import { OrderDirection } from 'models/api/types'
-import {
-    TicketDimension,
-    TicketMember,
-} from 'models/reporting/cubes/TicketCube'
-import { TicketCustomFieldsMember } from 'models/reporting/cubes/TicketCustomFieldsCube'
+import { TicketDimension } from 'models/reporting/cubes/TicketCube'
 import {
     TicketTagsEnrichedDimension,
     TicketTagsEnrichedMeasure,
 } from 'models/reporting/cubes/TicketTagsEnrichedCube'
-import {
-    aiInsightsCustomerSatisfactionMetricDrillDownQueryFactory,
-    coverageRateTicketDrillDownQueryFactory,
-} from 'models/reporting/queryFactories/ticket-insights/customFieldsTicketCount'
+import { coverageRateTicketDrillDownQueryFactory } from 'models/reporting/queryFactories/ticket-insights/customFieldsTicketCount'
 import {
     tagsTicketCountDrillDownQueryFactory,
     tagsTicketCountQueryFactory,
@@ -45,7 +38,6 @@ describe('tagsTicketCount query factories', () => {
     const tagId = '123'
     const timezone = 'UTC'
     const sorting = OrderDirection.Asc
-    const perAgentId = '1'
     const customFieldId = '1'
     const customFieldsValueStrings = ['1', '2']
 
@@ -219,69 +211,6 @@ describe('tagsTicketCount query factories', () => {
                 ],
                 limit: DRILLDOWN_QUERY_LIMIT,
             })
-        })
-    })
-
-    describe('aiInsightsCustomerSatisfactionMetricDrillDownQueryFactory', () => {
-        it('should return a query with the correct base query structure for aiInsightsCustomerSatisfactionMetricDrillDownQueryFactory', () => {
-            const query =
-                aiInsightsCustomerSatisfactionMetricDrillDownQueryFactory(
-                    statsFilters,
-                    timezone,
-                    customFieldId,
-                    perAgentId,
-                    sorting,
-                )
-
-            expect(query.filters).toEqual([
-                {
-                    member: 'TicketEnriched.isTrashed',
-                    operator: 'equals',
-                    values: ['0'],
-                },
-                {
-                    member: 'TicketEnriched.isSpam',
-                    operator: 'equals',
-                    values: ['0'],
-                },
-                {
-                    member: 'TicketEnriched.periodStart',
-                    operator: 'afterDate',
-                    values: ['2021-05-29T00:00:00.000'],
-                },
-                {
-                    member: 'TicketEnriched.periodEnd',
-                    operator: 'beforeDate',
-                    values: ['2021-06-04T23:59:59.000'],
-                },
-                {
-                    member: TicketCustomFieldsMember.TicketCustomFieldsCustomFieldId,
-                    operator: ReportingFilterOperator.Equals,
-                    values: [customFieldId],
-                },
-                {
-                    member: TicketCustomFieldsMember.TicketCustomFieldsCustomFieldUpdatedDatetime,
-                    operator: ReportingFilterOperator.InDateRange,
-                    values: [
-                        formatReportingQueryDate(
-                            statsFilters.period.start_datetime,
-                        ),
-                        formatReportingQueryDate(
-                            statsFilters.period.end_datetime,
-                        ),
-                    ],
-                },
-                {
-                    member: TicketMember.AssigneeUserId,
-                    operator: ReportingFilterOperator.Equals,
-                    values: [perAgentId],
-                },
-                {
-                    member: 'TicketEnriched.ticketCount',
-                    operator: 'measureFilter',
-                    values: [],
-                },
-            ])
         })
     })
 
