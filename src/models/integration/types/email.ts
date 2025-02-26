@@ -97,7 +97,10 @@ export enum EmailMigrationInboundVerificationStatus {
 
 export type MigrationIntegration = {
     id: EmailIntegration['id']
-    meta: Pick<EmailIntegrationMeta, 'address' | 'verified' | 'provider'>
+    meta: Pick<
+        EmailIntegrationMeta,
+        'address' | 'verified' | 'provider' | 'preferred'
+    >
 }
 
 export type EmailMigrationInboundVerification = {

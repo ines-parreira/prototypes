@@ -52,4 +52,58 @@ describe('<TextInput />', () => {
         })
         expect(minProps.onChange).toHaveBeenCalledWith('1.00')
     })
+
+    it('should render prefix and suffix', () => {
+        const screen = render(
+            <TextInput
+                prefix={<span>Prefix</span>}
+                suffix={<span>Suffix</span>}
+            />,
+        )
+
+        expect(screen.getByText('Prefix')).toBeInTheDocument()
+        expect(screen.getByText('Suffix')).toBeInTheDocument()
+    })
+
+    it('should be disabled when isDisabled is true', () => {
+        const screen = render(<TextInput isDisabled />)
+
+        const input = screen.getByRole('textbox')
+        expect(input).toBeDisabled()
+    })
+
+    it('should clear text when clear icon is clicked', () => {
+        const handleChange = jest.fn()
+        const screen = render(
+            <TextInput
+                withClearText
+                onChange={handleChange}
+                value="Test value"
+            />,
+        )
+
+        const clearButton = screen.getByRole('button')
+        fireEvent.click(clearButton)
+
+        expect(handleChange).toHaveBeenCalledWith('')
+    })
+
+    it('should focus input when prefix or suffix is clicked', () => {
+        const screen = render(
+            <TextInput
+                prefix={<span>Prefix</span>}
+                suffix={<span>Suffix</span>}
+            />,
+        )
+
+        const input = screen.getByRole('textbox')
+        const prefix = screen.getByText('Prefix')
+        const suffix = screen.getByText('Suffix')
+
+        fireEvent.click(prefix)
+        expect(document.activeElement).toBe(input)
+
+        fireEvent.click(suffix)
+        expect(document.activeElement).toBe(input)
+    })
 })

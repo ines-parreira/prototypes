@@ -17,6 +17,7 @@ import useAppSelector from 'hooks/useAppSelector'
 import { ShopifyIntegration } from 'models/integration/types'
 import { ChatIntegrationListSelection } from 'pages/aiAgent/components/ChatIntegrationListSelection/ChatIntegrationListSelection'
 import { EmailIntegrationListSelection } from 'pages/aiAgent/components/EmailIntegrationListSelection/EmailIntegrationListSelection'
+import { useStoreConfigurationForAccount } from 'pages/aiAgent/hooks/useStoreConfigurationForAccount'
 import AiAgentChatConversation from 'pages/aiAgent/Onboarding/components/AiAgentChatConversation/AiAgentChatConversation'
 import { Card, CardContent } from 'pages/aiAgent/Onboarding/components/Card'
 import MainTitle from 'pages/aiAgent/Onboarding/components/MainTitle/MainTitle'
@@ -48,10 +49,12 @@ import AIBanner from 'pages/common/components/AIBanner/AIBanner'
 import CheckBox from 'pages/common/forms/CheckBox'
 import ColorField from 'pages/common/forms/ColorField'
 import ChatIntegrationPreview from 'pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationPreview/ChatIntegrationPreview'
+import { getCurrentDomain } from 'state/currentAccount/selectors'
 import { createGorgiasChatIntegration } from 'state/integrations/actions'
 import {
     getIntegrationsByTypes,
     getShopifyIntegrationByShopName,
+    getShopifyIntegrationsSortedByName,
 } from 'state/integrations/selectors'
 import { notify } from 'state/notifications/actions'
 import { NotificationStatus } from 'state/notifications/types'
@@ -73,17 +76,61 @@ export const ChannelsStep: React.FC<StepProps> = ({
         isLoading: isUpdatingOnboarding,
     } = useUpdateOnboarding()
 
-    const isLoading = isLoadingOnboardingData || isUpdatingOnboarding
-
     const storeIntegration: ShopifyIntegration = useAppSelector(
         getShopifyIntegrationByShopName(shopName),
     ).toJS()
+
+    const stores = useAppSelector(getShopifyIntegrationsSortedByName)
+    const accountDomain = useAppSelector(getCurrentDomain)
+
+    const storesName = useMemo(
+        () =>
+            stores
+                .filter((element) => element.name !== shopName)
+                .map((store) => store.name),
+        [stores, shopName],
+    )
+
+    const { isLoading: isLoadingStoreConfigurations, storeConfigurations } =
+        useStoreConfigurationForAccount({
+            accountDomain,
+            storesName,
+        })
+
+    const isLoading =
+        isLoadingOnboardingData ||
+        isUpdatingOnboarding ||
+        isLoadingStoreConfigurations
+
+    const usedEmailIntegrations = useMemo(() => {
+        return storeConfigurations
+            ? storeConfigurations.reduce<number[]>(
+                  (acc, element) =>
+                      acc.concat(
+                          element.monitoredEmailIntegrations.map(
+                              (item) => item.id,
+                          ),
+                      ),
+                  [],
+              )
+            : []
+    }, [storeConfigurations])
+
+    const usedChatChannels = useMemo(() => {
+        return storeConfigurations
+            ? storeConfigurations.reduce<number[]>(
+                  (acc, element) =>
+                      acc.concat(element.monitoredChatIntegrations),
+                  [],
+              )
+            : []
+    }, [storeConfigurations])
 
     useCheckStoreIntegration()
 
     const dispatch = useAppDispatch()
 
-    const chatChannels = useSelfServiceChatChannels(
+    const chatIntegrations = useSelfServiceChatChannels(
         SHOPIFY_INTEGRATION_TYPE,
         shopName,
     )
@@ -92,7 +139,7 @@ export const ChannelsStep: React.FC<StepProps> = ({
         GORGIAS_CHAT_DEFAULT_COLOR,
     )
 
-    const createNewChat = chatChannels.length === 0
+    const createNewChat = chatIntegrations.length === 0
 
     const schema = useChannelsSchema(createNewChat)
 
@@ -130,8 +177,20 @@ export const ChannelsStep: React.FC<StepProps> = ({
         return emailIntegrations.map((integration) => ({
             email: integration.meta.address,
             id: integration.id,
+            isDefault: integration.meta.preferred,
+            isDisabled: usedEmailIntegrations.includes(integration.id),
         }))
-    }, [emailIntegrations])
+    }, [emailIntegrations, usedEmailIntegrations])
+
+    const chatChannels = useMemo(() => {
+        return chatIntegrations.map((channel) => ({
+            ...channel,
+            value: {
+                ...channel.value,
+                isDisabled: usedChatChannels.includes(channel.value.id),
+            },
+        }))
+    }, [chatIntegrations, usedChatChannels])
 
     // Handle selection change and update cache
     const handleUpdate = (field: keyof ChannelsFormValues, value: any) => {
@@ -266,6 +325,7 @@ export const ChannelsStep: React.FC<StepProps> = ({
                                                 !!errors.emailIntegrationIds
                                             }
                                             isDisabled={false}
+                                            withDefaultTag
                                         />
                                         <a className={css.link}>
                                             Don’t see the email you want? Click
@@ -342,6 +402,7 @@ export const ChannelsStep: React.FC<StepProps> = ({
                                                 !!errors.chatIntegrationIds
                                             }
                                             isDisabled={false}
+                                            withDisabledText
                                         />
                                     </>
                                 )}

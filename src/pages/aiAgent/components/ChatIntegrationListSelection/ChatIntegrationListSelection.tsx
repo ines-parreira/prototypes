@@ -9,6 +9,8 @@ import SelectInputBox, {
     SelectInputBoxContext,
 } from 'pages/common/forms/input/SelectInputBox'
 
+import css from './ChatIntegrationListSelection.less'
+
 export type ChatItem = { name: string; id: string }
 
 type ChatIntegrationListSelectionProps = {
@@ -25,9 +27,13 @@ type ChatIntegrationListSelectionProps = {
      */
     chatItems: SelfServiceChatChannel[]
     /* id of connected label tag  */
-    labelId?: string
     hasError?: boolean
     isDisabled?: boolean
+    labelId?: string
+    /**
+     * Flag to display text indication when the item is disabled
+     */
+    withDisabledText?: boolean
 }
 
 export const ChatIntegrationListSelection = ({
@@ -37,6 +43,7 @@ export const ChatIntegrationListSelection = ({
     hasError = false,
     isDisabled,
     labelId,
+    withDisabledText = false,
 }: ChatIntegrationListSelectionProps) => {
     // refs to work with the selector component
     const floatingRef = useRef<HTMLDivElement>(null)
@@ -90,7 +97,7 @@ export const ChatIntegrationListSelection = ({
                         target={targetRef}
                         value={selectedIds}
                     >
-                        <DropdownSearch autoFocus />
+                        <DropdownSearch autoFocus withClearText />
                         <DropdownBody>
                             {chatItems
                                 .filter(({ value }) => !!value.meta.app_id)
@@ -102,8 +109,32 @@ export const ChatIntegrationListSelection = ({
                                             value: value.id,
                                         }}
                                         onClick={handleIdToggled}
+                                        isDisabled={value.isDisabled}
                                     >
-                                        {value.name}
+                                        {value.isDisabled &&
+                                        withDisabledText ? (
+                                            <div
+                                                className={
+                                                    css['label-container']
+                                                }
+                                            >
+                                                <div
+                                                    className={
+                                                        css['chat-label']
+                                                    }
+                                                >
+                                                    {value.name}
+                                                </div>
+                                                <span
+                                                    className={css['used-chat']}
+                                                >
+                                                    Chat already used by AI
+                                                    Agent in another chat
+                                                </span>
+                                            </div>
+                                        ) : (
+                                            value.name
+                                        )}
                                     </DropdownItem>
                                 ))}
                         </DropdownBody>

@@ -1,8 +1,53 @@
 @import (reference) '~@gorgias/design-tokens/dist/css/layout';
 
 :local {
-    .label {
-        padding-top: @layout-spacing-s;
-        padding-bottom: @layout-spacing-xs;
+    .dropdown-container {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+
+    .badge-container {
+        display: flex;
+        padding: 2px 8px;
+        justify-content: center;
+        align-items: center;
+        gap: 4px;
+        border-radius: 100px;
+        background: var(--accessory-blue-1);
+    }
+
+    .used-email {
+        color: var(--neutral-grey-4);
+        font-variant-numeric: lining-nums tabular-nums;
+        font-feature-settings:
+            'ss01' on,
+            'cv10' on;
+
+        font-family: Inter;
+        font-size: 12px;
+        font-style: normal;
+        font-weight: 400;
+        line-height: 16px;
+    }
+
+    .email-label {
+        color: var(--neutral-grey-6);
+        font-variant-numeric: lining-nums tabular-nums;
+        font-feature-settings:
+            'ss01' on,
+            'cv10' on;
+
+        font-family: Inter;
+        font-size: 14px;
+        font-style: normal;
+        font-weight: 400;
+        line-height: 20px;
+        letter-spacing: -0.14px;
+    }
+
+    .label-container {
+        display: flex;
+        flex-direction: column;
     }
 }

@@ -1,5 +1,7 @@
 import React, { FC, useRef, useState } from 'react'
 
+import { Badge } from '@gorgias/merchant-ui-kit'
+
 import Dropdown from 'pages/common/components/dropdown/Dropdown'
 import DropdownBody from 'pages/common/components/dropdown/DropdownBody'
 import DropdownItem from 'pages/common/components/dropdown/DropdownItem'
@@ -8,7 +10,14 @@ import SelectInputBox, {
     SelectInputBoxContext,
 } from 'pages/common/forms/input/SelectInputBox'
 
-type EmailItem = { email: string; id: number }
+import css from './EmailIntegrationListSelection.less'
+
+type EmailItem = {
+    email: string
+    id: number
+    isDisabled?: boolean
+    isDefault?: boolean
+}
 
 type Props = {
     /**
@@ -27,6 +36,10 @@ type Props = {
     isDisabled?: boolean
     /* id of connected label tag  */
     labelId?: string
+    /**
+     * A flag to add a default badge if the item is the default one
+     */
+    withDefaultTag?: boolean
 }
 
 export const EmailIntegrationListSelection: FC<Props> = ({
@@ -36,6 +49,7 @@ export const EmailIntegrationListSelection: FC<Props> = ({
     hasError = false,
     isDisabled,
     labelId,
+    withDefaultTag = false,
 }) => {
     // refs to work with the selector component
     const floatingRef = useRef<HTMLDivElement>(null)
@@ -86,20 +100,77 @@ export const EmailIntegrationListSelection: FC<Props> = ({
                         target={targetRef}
                         value={selectedIds}
                     >
-                        <DropdownSearch autoFocus />
+                        <DropdownSearch autoFocus withClearText />
                         <DropdownBody>
-                            {emailItems.map(({ email, id }) => (
-                                <DropdownItem
-                                    key={id}
-                                    option={{
-                                        label: email,
-                                        value: id,
-                                    }}
-                                    onClick={handleIdToggled}
-                                >
-                                    {email}
-                                </DropdownItem>
-                            ))}
+                            {emailItems.map(
+                                ({ email, id, isDefault, isDisabled }) => (
+                                    <DropdownItem
+                                        key={id}
+                                        option={{
+                                            label: email,
+                                            value: id,
+                                        }}
+                                        onClick={handleIdToggled}
+                                        isDisabled={isDisabled}
+                                    >
+                                        {withDefaultTag ? (
+                                            <div
+                                                className={
+                                                    css['dropdown-container']
+                                                }
+                                            >
+                                                {isDisabled ? (
+                                                    <div
+                                                        className={
+                                                            css[
+                                                                'label-container'
+                                                            ]
+                                                        }
+                                                    >
+                                                        <div
+                                                            className={
+                                                                css[
+                                                                    'email-label'
+                                                                ]
+                                                            }
+                                                        >
+                                                            {email}
+                                                        </div>
+                                                        <span
+                                                            className={
+                                                                css[
+                                                                    'used-email'
+                                                                ]
+                                                            }
+                                                        >
+                                                            Email already used
+                                                            by AI Agent in
+                                                            another store
+                                                        </span>
+                                                    </div>
+                                                ) : (
+                                                    email
+                                                )}
+                                                {isDefault && (
+                                                    <div
+                                                        className={
+                                                            css[
+                                                                'badge-container'
+                                                            ]
+                                                        }
+                                                    >
+                                                        <Badge type="blue">
+                                                            Default
+                                                        </Badge>
+                                                    </div>
+                                                )}
+                                            </div>
+                                        ) : (
+                                            email
+                                        )}
+                                    </DropdownItem>
+                                ),
+                            )}
                         </DropdownBody>
                     </Dropdown>
                 )}

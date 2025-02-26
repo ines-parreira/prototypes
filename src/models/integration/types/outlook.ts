@@ -36,6 +36,7 @@ export type OutlookIntegrationMeta = {
     outbound_verification_status?: {
         [OutboundVerificationType.Domain]: OutboundVerificationStatusValue
     }
+    preferred?: boolean
 }
 
 export const isOutlookIntegration = (

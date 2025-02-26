@@ -7,9 +7,17 @@ import { mockChatChannels } from 'pages/aiAgent/fixtures/chatChannels.fixture'
 import { ChatIntegrationListSelection } from './ChatIntegrationListSelection'
 
 // Mock data
-
 const mockSelectedChat = mockChatChannels[0]
 const mockSelectedIds = [mockSelectedChat.value.id]
+
+// Create a mock chat channel that is disabled
+const mockDisabledChat = {
+    ...mockChatChannels[0],
+    value: {
+        ...mockChatChannels[0].value,
+        isDisabled: true,
+    },
+}
 
 describe('ChatIntegrationListSelection', () => {
     it('should add a new ID to selectedIds when toggled on', () => {
@@ -54,5 +62,49 @@ describe('ChatIntegrationListSelection', () => {
         fireEvent.click(chatCheckbox)
 
         expect(mockOnSelectionChange).toHaveBeenCalledWith([])
+    })
+
+    it('should display the disabled text when withDisabledText is true', () => {
+        render(
+            <ChatIntegrationListSelection
+                onSelectionChange={jest.fn()}
+                selectedIds={[]}
+                chatItems={[mockDisabledChat]}
+                hasError={false}
+                withDisabledText={true}
+            />,
+        )
+
+        const dropdown = screen.getByRole('combobox')
+        fireEvent.focus(dropdown)
+
+        expect(
+            screen.getByText(mockDisabledChat.value.name),
+        ).toBeInTheDocument()
+        expect(
+            screen.getByText('Chat already used by AI Agent in another chat'),
+        ).toBeInTheDocument()
+    })
+
+    it('should NOT display the disabled text when withDisabledText is false', () => {
+        render(
+            <ChatIntegrationListSelection
+                onSelectionChange={jest.fn()}
+                selectedIds={[]}
+                chatItems={[mockDisabledChat]}
+                hasError={false}
+                withDisabledText={false}
+            />,
+        )
+
+        const dropdown = screen.getByRole('combobox')
+        fireEvent.focus(dropdown)
+
+        expect(
+            screen.getByText(mockDisabledChat.value.name),
+        ).toBeInTheDocument()
+        expect(
+            screen.queryByText('Chat already used by AI Agent in another chat'),
+        ).not.toBeInTheDocument()
     })
 })

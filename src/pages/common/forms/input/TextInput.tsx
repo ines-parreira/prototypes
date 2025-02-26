@@ -18,6 +18,7 @@ import {
     GroupContext,
     GroupPositionContext,
 } from 'pages/common/components/layout/Group'
+import IconInput from 'pages/common/forms/input/IconInput'
 import { InputGroupContext } from 'pages/common/forms/input/InputGroup'
 
 import css from './TextInput.less'
@@ -31,6 +32,7 @@ type Props = {
     prefix?: ReactNode
     suffix?: ReactNode
     inputWrapperClassName?: string
+    withClearText?: boolean
 } & Omit<
     InputHTMLAttributes<HTMLInputElement>,
     'disabled' | 'onChange' | 'prefix' | 'required'
@@ -51,6 +53,7 @@ function TextInput(
         type,
         value,
         inputWrapperClassName,
+        withClearText = false,
         ...props
     }: Props,
     ref: ForwardedRef<HTMLInputElement>,
@@ -89,6 +92,10 @@ function TextInput(
         }
     }, [inputElement])
 
+    const handleClearText = useCallback(() => {
+        onChange?.('')
+    }, [onChange])
+
     return (
         <div
             className={classnames(
@@ -125,6 +132,16 @@ function TextInput(
             {suffix && (
                 <span className={css.suffix} onClick={handleAffixClick}>
                     {suffix}
+                </span>
+            )}
+            {withClearText && (
+                <span
+                    className={css.suffix}
+                    onClick={handleClearText}
+                    role="button"
+                    aria-label="Clear text"
+                >
+                    <IconInput className={css.clearIcon} icon="close" />
                 </span>
             )}
         </div>

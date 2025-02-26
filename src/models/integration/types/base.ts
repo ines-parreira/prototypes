@@ -15,6 +15,7 @@ export type IntegrationBase = {
     }
     managed: boolean
     application_id?: string | null
+    isDisabled?: boolean
 }
 
 export type IntegrationDecoration = {
