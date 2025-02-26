@@ -49,9 +49,14 @@ export const SimplifiedStepBuilder = ({
                         size="small"
                         className={css.button}
                         leadingIcon="add_box"
-                        data-candu-id="step-builder-request-app-button"
                     >
-                        Request an app
+                        <a
+                            target="_blank"
+                            href="https://link.gorgias.com/actions"
+                            rel="noreferrer"
+                        >
+                            Request an app
+                        </a>
                     </Button>
                     <Button
                         fillStyle="ghost"
