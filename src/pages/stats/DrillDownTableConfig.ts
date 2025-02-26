@@ -418,11 +418,29 @@ export const getDrillDownQuery = (
                     statsFilters,
                     VoiceCallSegment.inboundCalls,
                 )
-        case VoiceMetric.QueueMissedInboundCalls:
+        case VoiceMetric.DEPRECATED_QueueMissedInboundCalls:
             return (statsFilters: StatsFilters) =>
                 liveDashBoardVoiceCallListQueryFactory(
                     statsFilters,
                     VoiceCallSegment.missedCalls,
+                )
+        case VoiceMetric.QueueInboundUnansweredCalls:
+            return (statsFilters: StatsFilters) =>
+                liveDashBoardVoiceCallListQueryFactory(
+                    statsFilters,
+                    VoiceCallSegment.inboundUnansweredCalls,
+                )
+        case VoiceMetric.QueueInboundMissedCalls:
+            return (statsFilters: StatsFilters) =>
+                liveDashBoardVoiceCallListQueryFactory(
+                    statsFilters,
+                    VoiceCallSegment.inboundMissedCalls,
+                )
+        case VoiceMetric.QueueInboundAbandonedCalls:
+            return (statsFilters: StatsFilters) =>
+                liveDashBoardVoiceCallListQueryFactory(
+                    statsFilters,
+                    VoiceCallSegment.inboundAbandonedCalls,
                 )
         case VoiceMetric.QueueOutboundCalls:
             return (statsFilters: StatsFilters) =>

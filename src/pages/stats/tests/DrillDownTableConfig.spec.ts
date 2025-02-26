@@ -268,8 +268,11 @@ describe('getDrillDownQuery', () => {
             metricName: VoiceMetric.QueueInboundCalls,
         },
         {
-            metricName: VoiceMetric.QueueMissedInboundCalls,
+            metricName: VoiceMetric.DEPRECATED_QueueMissedInboundCalls,
         },
+        { metricName: VoiceMetric.QueueInboundUnansweredCalls },
+        { metricName: VoiceMetric.QueueInboundMissedCalls },
+        { metricName: VoiceMetric.QueueInboundAbandonedCalls },
         {
             metricName: VoiceMetric.QueueOutboundCalls,
         },
@@ -567,12 +570,24 @@ describe('getDrillDownQuery', () => {
             segment: VoiceCallSegment.inboundCalls,
         },
         {
-            metricName: VoiceMetric.QueueMissedInboundCalls,
+            metricName: VoiceMetric.DEPRECATED_QueueMissedInboundCalls,
             segment: VoiceCallSegment.missedCalls,
         },
         {
             metricName: VoiceMetric.QueueOutboundCalls,
             segment: VoiceCallSegment.outboundCalls,
+        },
+        {
+            metricName: VoiceMetric.QueueInboundUnansweredCalls,
+            segment: VoiceCallSegment.inboundUnansweredCalls,
+        },
+        {
+            metricName: VoiceMetric.QueueInboundMissedCalls,
+            segment: VoiceCallSegment.inboundMissedCalls,
+        },
+        {
+            metricName: VoiceMetric.QueueInboundAbandonedCalls,
+            segment: VoiceCallSegment.inboundAbandonedCalls,
         },
     ])(
         'should call liveDashboardVoiceCallListQueryFactory for (%d)',

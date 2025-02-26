@@ -36,7 +36,10 @@ const getTooltipText = (metricName: string) => {
         case VoiceMetric.QueueAverageWaitTime:
         case VoiceMetric.QueueAverageTalkTime:
         case VoiceMetric.QueueInboundCalls:
-        case VoiceMetric.QueueMissedInboundCalls:
+        case VoiceMetric.DEPRECATED_QueueMissedInboundCalls:
+        case VoiceMetric.QueueInboundUnansweredCalls:
+        case VoiceMetric.QueueInboundMissedCalls:
+        case VoiceMetric.QueueInboundAbandonedCalls:
         case VoiceMetric.QueueOutboundCalls:
         case VoiceAgentsMetric.AgentTotalCalls:
         case VoiceAgentsMetric.AgentInboundAnsweredCalls:

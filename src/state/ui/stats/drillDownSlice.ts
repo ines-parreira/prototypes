@@ -245,7 +245,10 @@ const hiddenMetrics: DrillDownMetric['metricName'][] = [
     VoiceMetric.QueueAverageWaitTime,
     VoiceMetric.QueueAverageTalkTime,
     VoiceMetric.QueueInboundCalls,
-    VoiceMetric.QueueMissedInboundCalls,
+    VoiceMetric.DEPRECATED_QueueMissedInboundCalls,
+    VoiceMetric.QueueInboundUnansweredCalls,
+    VoiceMetric.QueueInboundMissedCalls,
+    VoiceMetric.QueueInboundAbandonedCalls,
     VoiceMetric.QueueOutboundCalls,
     VoiceAgentsMetric.AgentTotalCalls,
     VoiceAgentsMetric.AgentInboundAnsweredCalls,
@@ -391,7 +394,11 @@ export const getDrillDownMetricColumn = (
         metricData.metricName === VoiceMetric.QueueAverageTalkTime ||
         metricData.metricName === VoiceMetric.QueueAverageWaitTime ||
         metricData.metricName === VoiceMetric.QueueInboundCalls ||
-        metricData.metricName === VoiceMetric.QueueMissedInboundCalls ||
+        metricData.metricName ===
+            VoiceMetric.DEPRECATED_QueueMissedInboundCalls ||
+        metricData.metricName === VoiceMetric.QueueInboundUnansweredCalls ||
+        metricData.metricName === VoiceMetric.QueueInboundMissedCalls ||
+        metricData.metricName === VoiceMetric.QueueInboundAbandonedCalls ||
         metricData.metricName === VoiceMetric.QueueOutboundCalls
     ) {
         metricTitle = ''

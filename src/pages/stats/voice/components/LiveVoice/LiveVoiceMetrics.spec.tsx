@@ -3,6 +3,8 @@ import React, { ComponentProps } from 'react'
 import { render } from '@testing-library/react'
 import { Moment } from 'moment'
 
+import { FeatureFlagKey } from 'config/featureFlags'
+import { useFlag } from 'core/flags'
 import { Metric } from 'hooks/reporting/metrics'
 import { useMetric } from 'hooks/reporting/useMetric'
 import { voiceCallAverageWaitTimeQueryFactory } from 'models/reporting/queryFactories/voice/voiceCall'
@@ -60,6 +62,9 @@ const getBusinessHoursSettingsMock = assumeMock(getBusinessHoursSettings)
 const filterLiveCallsByStatusMock = assumeMock(filterLiveCallsByStatus)
 const getLiveVoicePeriodFilterMock = assumeMock(getLiveVoicePeriodFilter)
 
+jest.mock('core/flags', () => ({ useFlag: jest.fn() }))
+const useFlagMock = assumeMock(useFlag)
+
 const defaultPeriodFilter = {
     start_datetime: '2024-01-01T00:00:00+01:00',
     end_datetime: '2024-01-01T23:59:59+01:00',
@@ -110,14 +115,71 @@ describe('LiveVoiceMetrics', () => {
             hint: constants.OUTBOUND_CALLS_METRIC_HINT,
         },
         {
-            title: constants.MISSED_INBOUND_CALLS_METRIC_TITLE,
-            hint: constants.MISSED_INBOUND_CALLS_METRIC_HINT,
+            title: constants.DEPRECATED_MISSED_INBOUND_CALLS_METRIC_TITLE,
+            hint: constants.DEPRECATED_MISSED_INBOUND_CALLS_METRIC_HINT,
         },
         {
             title: constants.AVERAGE_TALK_TIME_METRIC_TITLE,
             hint: constants.AVERAGE_TALK_TIME_METRIC_HINT,
         },
+    ])('should render old %p LiveVoiceMetricCard', ({ title, hint }) => {
+        useFlagMock.mockImplementation((flag) => {
+            if (flag === FeatureFlagKey.ShowNewUnansweredStatuses) {
+                return false
+            }
+        })
+
+        renderComponent()
+
+        expect(LiveVoiceMetricCardMock).toHaveBeenCalledWith(
+            expect.objectContaining({
+                title,
+                hint,
+            }),
+            {},
+        )
+    })
+
+    it.each([
+        {
+            title: constants.CALLS_IN_QUEUE_METRIC_TITLE,
+            hint: constants.CALLS_IN_QUEUE_METRIC_HINT,
+        },
+        {
+            title: constants.AVERAGE_WAIT_TIME_METRIC_TITLE,
+            hint: constants.AVERAGE_WAIT_TIME_METRIC_HINT,
+        },
+        {
+            title: constants.AVERAGE_TALK_TIME_METRIC_TITLE,
+            hint: constants.AVERAGE_TALK_TIME_METRIC_HINT,
+        },
+        {
+            title: constants.INBOUND_CALLS_METRIC_TITLE,
+            hint: constants.INBOUND_CALLS_METRIC_HINT,
+        },
+        {
+            title: constants.OUTBOUND_CALLS_METRIC_TITLE,
+            hint: constants.OUTBOUND_CALLS_METRIC_HINT,
+        },
+        {
+            title: constants.UNANSWERED_INBOUND_CALLS_METRIC_TITLE,
+            hint: constants.UNANSWERED_INBOUND_CALLS_METRIC_HINT,
+        },
+        {
+            title: constants.INBOUND_MISSED_CALLS_METRIC_TITLE,
+            hint: constants.INBOUND_MISSED_CALLS_METRIC_HINT,
+        },
+        {
+            title: constants.INBOUND_ABANDONED_CALLS_METRIC_TITLE,
+            hint: constants.INBOUND_ABANDONED_CALLS_METRIC_HINT,
+        },
     ])('should render %p LiveVoiceMetricCard', ({ title, hint }) => {
+        useFlagMock.mockImplementation((flag) => {
+            if (flag === FeatureFlagKey.ShowNewUnansweredStatuses) {
+                return true
+            }
+        })
+
         renderComponent()
 
         expect(LiveVoiceMetricCardMock).toHaveBeenCalledWith(

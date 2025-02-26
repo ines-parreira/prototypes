@@ -72,7 +72,19 @@ describe('<DrillDownModal />', () => {
         [VoiceMetric.QueueAverageWaitTime, VoiceCallDrillDownTableContent],
         [VoiceMetric.QueueAverageTalkTime, VoiceCallDrillDownTableContent],
         [VoiceMetric.QueueInboundCalls, VoiceCallDrillDownTableContent],
-        [VoiceMetric.QueueMissedInboundCalls, VoiceCallDrillDownTableContent],
+        [
+            VoiceMetric.DEPRECATED_QueueMissedInboundCalls,
+            VoiceCallDrillDownTableContent,
+        ],
+        [
+            VoiceMetric.QueueInboundUnansweredCalls,
+            VoiceCallDrillDownTableContent,
+        ],
+        [VoiceMetric.QueueInboundMissedCalls, VoiceCallDrillDownTableContent],
+        [
+            VoiceMetric.QueueInboundAbandonedCalls,
+            VoiceCallDrillDownTableContent,
+        ],
         [VoiceMetric.QueueOutboundCalls, VoiceCallDrillDownTableContent],
         [VoiceAgentsMetric.AgentTotalCalls, VoiceCallDrillDownTableContent],
         [
