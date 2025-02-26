@@ -21,10 +21,7 @@ import { ShopifyIntegrationStep } from 'pages/aiAgent/Onboarding/components/step
 import { SkillsetStep } from 'pages/aiAgent/Onboarding/components/steps/SkillsetStep/SkillsetStep'
 import { StepProps } from 'pages/aiAgent/Onboarding/components/steps/types'
 import { useSteps } from 'pages/aiAgent/Onboarding/hooks/useSteps'
-import {
-    ConvAiOnboardingLayout,
-    OnboardingHeader,
-} from 'pages/aiAgent/Onboarding/layout/ConvAiOnboardingLayout'
+import { ConvAiOnboardingLayout } from 'pages/aiAgent/Onboarding/layout/ConvAiOnboardingLayout'
 import { WizardStepEnum } from 'pages/aiAgent/Onboarding/types'
 
 export const AiAgentOnboarding = () => {
@@ -106,7 +103,6 @@ export const AiAgentOnboarding = () => {
 
     return (
         <ConvAiOnboardingLayout>
-            <OnboardingHeader onClose={() => {}} />
             <Switch>
                 <Route
                     path="/app/ai-agent/onboarding/:step"

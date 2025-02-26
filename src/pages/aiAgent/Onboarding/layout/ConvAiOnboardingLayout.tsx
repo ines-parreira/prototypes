@@ -3,8 +3,13 @@ import React, { ReactNode } from 'react'
 import OnboardingProgressTracker from 'pages/aiAgent/Onboarding/components/common/OnboardingProgressTracker/OnboardingProgressTracker'
 import GorgiasLogoExtendedIcon from 'pages/aiAgent/Onboarding/layout/GorgiasLogoExtended'
 import IconButton from 'pages/common/components/button/IconButton'
+import history from 'pages/history'
 
 import css from './ConvAiOnboardingLayout.less'
+
+const onClose = () => {
+    history.push('/app/ai-agent/overview')
+}
 
 const CloseButton: React.FC<{ onClose: () => void }> = ({ onClose }) => {
     return (
@@ -16,17 +21,6 @@ const CloseButton: React.FC<{ onClose: () => void }> = ({ onClose }) => {
         >
             close
         </IconButton>
-    )
-}
-
-export const OnboardingHeader: React.FC<{ onClose: () => void }> = ({
-    onClose,
-}) => {
-    return (
-        <div className={css.onboardingHeader}>
-            <GorgiasLogoExtendedIcon />
-            <CloseButton onClose={onClose} />
-        </div>
     )
 }
 
@@ -60,6 +54,9 @@ export const OnboardingPreviewContainer: React.FC<{
     return (
         <div className={css.onboardingPreviewContainerWrapper}>
             <div className={css.onboardingPreviewContainer}>
+                <div className={css.onboardingPreviewClose}>
+                    <CloseButton onClose={onClose} />
+                </div>
                 {isLoading && (
                     <div className={css.ghostContainer}>
                         <LoadingPulserIcon icon={icon} />
@@ -93,6 +90,12 @@ export const OnboardingContentContainer: React.FC<{
 }) => {
     return (
         <div className={css.onboardingContentContainer}>
+            <div className={css.onboardingHeader}>
+                <GorgiasLogoExtendedIcon />
+                <div className={css.onboardingHeaderClose}>
+                    <CloseButton onClose={onClose} />
+                </div>
+            </div>
             <div>{children}</div>
             <div className={css.progressTrackerContainer}>
                 <OnboardingProgressTracker

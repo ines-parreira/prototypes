@@ -9,7 +9,6 @@
 :local {
     .onboardingLayout {
         width: 100vw;
-        height: 100%;
         overflow-y: auto;
         background-color: var(--neutral-grey-1);
 
@@ -24,21 +23,26 @@
         flex-direction: row;
         justify-content: space-between;
         align-items: center;
-        padding: @layout-spacing-s @layout-spacing-m;
+        padding: @layout-spacing-s 0;
         width: 100%;
 
         @media @tablets-up {
-            padding: @layout-spacing-m;
+            padding: 0;
+        }
+    }
+
+    .onboardingHeaderClose {
+        @media @tablets-up {
+            display: none;
         }
     }
 
     .onboardingBody {
         @media @tablets-up {
-            display: flex;
-            flex-direction: row;
-            align-items: stretch;
-            height: 100%;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
             width: 100%;
+            height: 100%;
         }
     }
 
@@ -49,7 +53,6 @@
             display: flex;
             flex-direction: column;
             justify-content: space-between;
-            width: 50%;
             min-width: 400px;
             padding: @layout-spacing-m 8%;
             gap: @layout-spacing-m;
@@ -57,21 +60,25 @@
     }
 
     .onboardingPreviewContainerWrapper {
-        padding: @layout-spacing-m;
-
+        padding: 0 @layout-spacing-m;
         @media @tablets-up {
             display: flex;
-            height: 100%;
-            width: 50%;
+            padding: 0;
         }
     }
 
     .onboardingPreviewContainer {
-        @media @tablets-up {
-            border-radius: @layout-spacing-m;
-            display: flex;
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
 
-            border-radius: var(--Main-M, 24px);
+        @media @tablets-up {
+            border-top-right-radius: @layout-spacing-m;
+            border-bottom-right-radius: @layout-spacing-m;
+            display: flex;
+            justify-content: center;
+
             background: var(
                 --linear-grey-magenta,
                 linear-gradient(
@@ -80,31 +87,41 @@
                     var(--accessory-magenta-25) 145.54%
                 )
             );
-            height: 100%;
             width: 100%;
             place-items: center;
             flex-direction: column;
         }
     }
 
+    .onboardingPreviewClose {
+        display: none;
+        @media @tablets-up {
+            display: initial;
+            position: absolute;
+            top: 24px;
+            right: 24px;
+        }
+    }
+
     .ghostContainer {
         @media @tablets-up {
-            height: 100%;
             width: 100%;
             display: flex;
             justify-content: inherit;
             align-items: inherit;
-            // negate the caption margin
-            margin-bottom: -@layout-spacing-m;
+            margin-bottom: @layout-spacing-m;
         }
     }
 
     .caption {
         color: var(--neutral-grey-6);
+
+        width: 50%;
+        text-align: center;
+
         @media @tablets-up {
-            margin-bottom: @layout-spacing-m;
-            width: 50%;
-            text-align: center;
+            position: absolute;
+            bottom: @layout-spacing-m;
         }
     }
 
