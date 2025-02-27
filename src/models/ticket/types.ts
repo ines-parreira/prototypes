@@ -179,6 +179,7 @@ export type Action = {
         restock?: boolean
         order_id?: number
         last_order?: number
+        tags?: string
     }
 }
 

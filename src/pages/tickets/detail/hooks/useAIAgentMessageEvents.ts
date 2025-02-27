@@ -3,9 +3,21 @@ import { Tag } from '@gorgias/api-queries'
 import { TicketStatus } from 'business/types/ticket'
 import useAppSelector from 'hooks/useAppSelector'
 import { MacroActionName } from 'models/macroAction/types'
-import { TicketMessage } from 'models/ticket/types'
+import { Action, TicketMessage } from 'models/ticket/types'
 import { TicketEventEnum } from 'pages/tickets/detail/components/AIAgentFeedbackBar/types'
 import { getTags } from 'state/tags/selectors'
+
+export const findAndSplitMessageTags = (actions: Action[]): string[] => {
+    const tags = actions.find(({ name }) => name === MacroActionName.AddTags)
+        ?.arguments?.tags
+
+    return tags
+        ? tags
+              .split(',')
+              .map((tag) => tag.trim())
+              .filter(Boolean)
+        : []
+}
 
 export const getActionAndTagsFromMessage = (
     allTags: Tag[],
@@ -15,17 +27,15 @@ export const getActionAndTagsFromMessage = (
         return { tags: [], action: null }
     }
 
-    const messageTagNames = (message.actions
-        ?.filter((action) => action.name === MacroActionName.AddTags)
-        .map((action) => action.arguments?.tags) || []) as string[]
+    const messageTagNames = message.actions
+        ? findAndSplitMessageTags(message.actions)
+        : []
 
     const messageTags = messageTagNames
         ?.map((tagName) => allTags.find((tag) => tag.name === tagName))
         .filter((tag) => !!tag && tag.name.indexOf('ai_') !== 0) as Tag[]
 
-    const isHandover = message.actions?.some(
-        (action) => action.name === MacroActionName.SetAssignee,
-    )
+    const isHandover = messageTagNames.some((tag) => tag === 'ai_handover')
 
     const isSnoozed = message.actions?.some(
         (action) => action.name === MacroActionName.SnoozeTicket,
@@ -42,7 +52,7 @@ export const getActionAndTagsFromMessage = (
         : isSnoozed
           ? TicketEventEnum.SNOOZE
           : isHandover
-            ? TicketEventEnum.ASSIGN_TICKET
+            ? TicketEventEnum.HANDOVER
             : null
 
     return { tags: messageTags, action: actionType }

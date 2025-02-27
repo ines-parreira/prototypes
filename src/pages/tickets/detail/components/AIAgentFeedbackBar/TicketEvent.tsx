@@ -15,14 +15,14 @@ type Props = {
 
 export const TicketEventToIcon: { [key in TicketEventEnum]: string } = {
     [TicketEventEnum.CLOSE]: 'check',
-    [TicketEventEnum.ASSIGN_TICKET]: 'person_add',
+    [TicketEventEnum.HANDOVER]: 'person_add',
     [TicketEventEnum.SNOOZE]: 'timer',
     [TicketEventEnum.TAGGED]: 'label',
 }
 
 export const TicketEventToLabel: { [key in TicketEventEnum]: string } = {
     [TicketEventEnum.CLOSE]: 'Closed',
-    [TicketEventEnum.ASSIGN_TICKET]: 'Handed over',
+    [TicketEventEnum.HANDOVER]: 'Handed over',
     [TicketEventEnum.SNOOZE]: 'Snoozed',
     [TicketEventEnum.TAGGED]: 'Tagged',
 }

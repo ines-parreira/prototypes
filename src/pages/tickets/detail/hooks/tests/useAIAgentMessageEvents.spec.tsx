@@ -8,10 +8,13 @@ import thunk from 'redux-thunk'
 
 import { TicketStatus } from 'business/types/ticket'
 import { MacroActionName } from 'models/macroAction/types'
-import { TicketMessage } from 'models/ticket/types'
+import { Action, TicketMessage } from 'models/ticket/types'
 import { TicketEventEnum } from 'pages/tickets/detail/components/AIAgentFeedbackBar/types'
 
-import { useAIAgentMessageEvents } from '../useAIAgentMessageEvents'
+import {
+    findAndSplitMessageTags,
+    useAIAgentMessageEvents,
+} from '../useAIAgentMessageEvents'
 
 const mockStore = configureMockStore([thunk])
 const store = {
@@ -51,8 +54,10 @@ describe('useAIAgentMessageEvents', () => {
     it('should return an array of tag names when actions with AddTags name are present', () => {
         const message = {
             actions: [
-                { name: MacroActionName.AddTags, arguments: { tags: 'tag1' } },
-                { name: MacroActionName.AddTags, arguments: { tags: 'tag2' } },
+                {
+                    name: MacroActionName.AddTags,
+                    arguments: { tags: 'tag1,tag2' },
+                },
             ],
         } as unknown as TicketMessage
 
@@ -102,7 +107,12 @@ describe('useAIAgentMessageEvents', () => {
 
     it('should return the handover event', () => {
         const message = {
-            actions: [{ name: MacroActionName.SetAssignee }],
+            actions: [
+                {
+                    name: MacroActionName.AddTags,
+                    arguments: { tags: 'ai_handover' },
+                },
+            ],
         } as unknown as TicketMessage
 
         const { result } = renderHook(
@@ -117,7 +127,7 @@ describe('useAIAgentMessageEvents', () => {
         expect(result.current).toEqual([
             {
                 tags: [],
-                action: TicketEventEnum.ASSIGN_TICKET,
+                action: TicketEventEnum.HANDOVER,
             },
         ])
     })
@@ -142,5 +152,96 @@ describe('useAIAgentMessageEvents', () => {
                 action: TicketEventEnum.SNOOZE,
             },
         ])
+    })
+})
+
+describe('findAndSplitMessageTags', () => {
+    it('should return an array of tags when the AddTags action is present with comma-separated tags', () => {
+        const actions: Action[] = [
+            { name: 'SomeOtherAction' },
+            {
+                name: MacroActionName.AddTags,
+                arguments: { tags: 'tag1,tag2,tag3' },
+            },
+        ] as unknown as Action[]
+
+        expect(findAndSplitMessageTags(actions)).toEqual([
+            'tag1',
+            'tag2',
+            'tag3',
+        ])
+    })
+
+    it('should return an empty array when the AddTags action is missing', () => {
+        const actions: Action[] = [
+            { name: 'SomeOtherAction' },
+        ] as unknown as Action[]
+        expect(findAndSplitMessageTags(actions)).toEqual([])
+    })
+
+    it('should return an empty array when the AddTags action is present but has no arguments', () => {
+        const actions: Action[] = [
+            { name: MacroActionName.AddTags },
+        ] as unknown as Action[]
+        expect(findAndSplitMessageTags(actions)).toEqual([])
+    })
+
+    it('should return an empty array when the AddTags action is present but tags argument is missing', () => {
+        const actions: Action[] = [
+            { name: MacroActionName.AddTags, arguments: {} },
+        ] as unknown as Action[]
+        expect(findAndSplitMessageTags(actions)).toEqual([])
+    })
+
+    it('should return an empty array when the AddTags action is present but tags argument is an empty string', () => {
+        const actions: Action[] = [
+            { name: MacroActionName.AddTags, arguments: { tags: '' } },
+        ] as unknown as Action[]
+        expect(findAndSplitMessageTags(actions)).toEqual([])
+    })
+
+    it('should return an array with a single tag when only one tag is present', () => {
+        const actions: Action[] = [
+            { name: MacroActionName.AddTags, arguments: { tags: 'singleTag' } },
+        ] as unknown as Action[]
+        expect(findAndSplitMessageTags(actions)).toEqual(['singleTag'])
+    })
+
+    it('should trim spaces around tags', () => {
+        const actions: Action[] = [
+            {
+                name: MacroActionName.AddTags,
+                arguments: { tags: ' tag1 , tag2 , tag3 ' },
+            },
+        ] as unknown as Action[]
+        expect(findAndSplitMessageTags(actions)).toEqual([
+            'tag1',
+            'tag2',
+            'tag3',
+        ])
+    })
+
+    it('should handle cases where tags contain extra commas', () => {
+        const actions: Action[] = [
+            {
+                name: MacroActionName.AddTags,
+                arguments: { tags: ',tag1,,tag2,,' },
+            },
+        ] as unknown as Action[]
+        expect(findAndSplitMessageTags(actions)).toEqual(['tag1', 'tag2'])
+    })
+
+    it('should handle cases where the tags are just commas', () => {
+        const actions: Action[] = [
+            { name: MacroActionName.AddTags, arguments: { tags: ',,,' } },
+        ] as unknown as Action[]
+        expect(findAndSplitMessageTags(actions)).toEqual([])
+    })
+
+    it('should handle cases where tags contain only spaces', () => {
+        const actions: Action[] = [
+            { name: MacroActionName.AddTags, arguments: { tags: '   ' } },
+        ] as unknown as Action[]
+        expect(findAndSplitMessageTags(actions)).toEqual([])
     })
 })

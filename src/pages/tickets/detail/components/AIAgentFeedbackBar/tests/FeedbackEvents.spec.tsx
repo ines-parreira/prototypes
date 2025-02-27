@@ -31,7 +31,7 @@ describe('FeedbackEvents', () => {
     beforeEach(() => {
         useAIAgentMessageEventsMock.mockReturnValue([
             {
-                action: TicketEventEnum.ASSIGN_TICKET,
+                action: TicketEventEnum.HANDOVER,
                 tags: [],
             },
         ])
