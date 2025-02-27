@@ -21,7 +21,7 @@ import {
     TableViewColumn,
 } from 'state/ui/stats/types'
 
-export const TOGGLE_LABEL = 'Edit Columns'
+export const TOGGLE_LABEL = 'Edit table'
 export const SAVE_TOOLTIP =
     'Clicking "Save" will update the table for all users.'
 export const SAVE_BUTTON_TEXT = 'Save'
@@ -145,7 +145,7 @@ export const EditTableColumns = <T extends TableColumnSet>({
                     [css.active]: dropdownOpen,
                 })}
             >
-                <i className="icon material-icons md-2">view_column</i>
+                <i className="icon material-icons md-2">table_chart</i>
                 {TOGGLE_LABEL}
             </DropdownToggle>
 
