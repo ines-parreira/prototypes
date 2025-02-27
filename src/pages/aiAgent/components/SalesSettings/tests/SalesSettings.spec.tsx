@@ -94,12 +94,6 @@ describe('<SalesSettings />', () => {
             expect(
                 screen.getByRole('button', { name: 'Save Changes' }),
             ).not.toBeAriaDisabled()
-            expect(
-                screen.getByRole('button', { name: 'Cancel' }),
-            ).toBeInTheDocument()
-            expect(
-                screen.getByRole('button', { name: 'Cancel' }),
-            ).not.toBeAriaDisabled()
             expect(screen.getByText(/Fine-tune how your AI Agent/))
         })
     })
@@ -122,9 +116,6 @@ describe('<SalesSettings />', () => {
         await waitFor(() => {
             expect(
                 screen.getByRole('button', { name: 'Save Changes' }),
-            ).toBeAriaDisabled()
-            expect(
-                screen.getByRole('button', { name: 'Cancel' }),
             ).toBeAriaDisabled()
         })
     })
@@ -390,18 +381,6 @@ describe('<SalesSettings />', () => {
                     },
                 ])
             })
-        })
-    })
-
-    it('should reset sales settings when user clicks on the cancel button', async () => {
-        renderComponent()
-
-        await userEvent.clear(maxDiscountInput())
-        await userEvent.type(maxDiscountInput(), '2')
-        userEvent.click(screen.getByRole('button', { name: 'Cancel' }))
-
-        await waitFor(() => {
-            expect(storeConfiguration).toBe(storeConfiguration)
         })
     })
 

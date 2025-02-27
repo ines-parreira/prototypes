@@ -88,8 +88,8 @@ export const SalesSettings = () => {
         watch,
         handleSubmit,
         setValue,
-        reset,
         trigger,
+        reset,
         formState: { errors, isDirty },
     } = methods
 
@@ -185,10 +185,6 @@ export const SalesSettings = () => {
             )
             void trigger('salesDiscountMax')
         }
-    }
-
-    const onCancel = () => {
-        reset()
     }
 
     const hasChanges =
@@ -323,13 +319,6 @@ export const SalesSettings = () => {
                                 type="submit"
                             >
                                 Save Changes
-                            </Button>
-                            <Button
-                                intent="secondary"
-                                onClick={onCancel}
-                                isDisabled={!hasChanges}
-                            >
-                                Cancel
                             </Button>
                         </div>
                     </div>
