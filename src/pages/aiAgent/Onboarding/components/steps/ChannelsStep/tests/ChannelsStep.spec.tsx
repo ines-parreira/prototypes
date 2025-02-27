@@ -171,7 +171,7 @@ describe('ChannelsStep - Empty state', () => {
         ).toBeInTheDocument()
 
         fireEvent.focus(screen.getByText('Select one or more email addresses'))
-        fireEvent.click(screen.getByText('support@acme.gorgias.io'))
+        userEvent.click(screen.getByText('support@acme.gorgias.io'))
 
         // Setup chat
         const chatCheckbox = screen.getByLabelText('Chat')
@@ -187,7 +187,7 @@ describe('ChannelsStep - Empty state', () => {
         fireEvent.focus(
             screen.getByText('Select one or more chat integrations'),
         )
-        fireEvent.click(screen.getByText('New chat'))
+        userEvent.click(screen.getByText('New chat'))
 
         // Click on next button
         const nextButton = screen.getByText('Next')
@@ -241,7 +241,7 @@ describe('ChannelsStep - Empty state', () => {
         })
     })
 
-    it('handles error on no selecting email', () => {
+    it('handles error on no selecting email', async () => {
         renderWithProvider()
 
         jest.runAllTimers()
@@ -269,9 +269,17 @@ describe('ChannelsStep - Empty state', () => {
         const nextButton = screen.getByText('Next')
         userEvent.click(nextButton)
         expect(defaultProps.goToStep).not.toHaveBeenCalled()
+
+        await waitFor(() => {
+            expect(
+                screen.getByText(
+                    /You must select at least one email integration./,
+                ),
+            ).toBeInTheDocument()
+        })
     })
 
-    it('handles error on no selecting chat', () => {
+    it('handles error on no selecting chat', async () => {
         renderWithProvider()
 
         jest.runAllTimers()
@@ -299,6 +307,14 @@ describe('ChannelsStep - Empty state', () => {
         const nextButton = screen.getByText('Next')
         userEvent.click(nextButton)
         expect(defaultProps.goToStep).not.toHaveBeenCalled()
+
+        await waitFor(() => {
+            expect(
+                screen.getByText(
+                    /You must select at least one chat integration./,
+                ),
+            ).toBeInTheDocument()
+        })
     })
 
     it('renders the chat creation', async () => {
@@ -428,7 +444,7 @@ describe('ChannelsStep - Empty state', () => {
 
         jest.runAllTimers()
 
-        fireEvent.click(screen.getByText(/Back/i))
+        userEvent.click(screen.getByText(/Back/i))
 
         await waitFor(() => {
             expect(goToStep).toHaveBeenCalledWith(WizardStepEnum.SKILLSET)
@@ -443,7 +459,7 @@ describe('ChannelsStep - Empty state', () => {
 
         jest.runAllTimers()
 
-        fireEvent.click(screen.getByText(/Back/i))
+        userEvent.click(screen.getByText(/Back/i))
 
         await waitFor(() => {
             expect(goToStep).toHaveBeenCalledWith(

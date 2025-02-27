@@ -321,8 +321,9 @@ export const ChannelsStep: React.FC<StepProps> = ({
                                                 )
                                             }
                                             emailItems={emailChannels}
-                                            hasError={
-                                                !!errors.emailIntegrationIds
+                                            error={
+                                                errors.emailIntegrationIds
+                                                    ?.message
                                             }
                                             isDisabled={false}
                                             withDefaultTag
@@ -398,8 +399,9 @@ export const ChannelsStep: React.FC<StepProps> = ({
                                                 )
                                             }
                                             chatItems={chatChannels}
-                                            hasError={
-                                                !!errors.chatIntegrationIds
+                                            error={
+                                                errors.chatIntegrationIds
+                                                    ?.message
                                             }
                                             isDisabled={false}
                                             withDisabledText

@@ -22,6 +22,7 @@ import {
     GroupContext,
     GroupPositionContext,
 } from 'pages/common/components/layout/Group'
+import Caption from 'pages/common/forms/Caption/Caption'
 
 import { InputGroupContext } from './InputGroup'
 
@@ -31,6 +32,7 @@ type Props = {
     autoFocus?: boolean
     floating?: RefObject<HTMLElement | null>
     hasError?: boolean
+    error?: string | ReactNode
     isDisabled?: boolean
     label?: string | string[] | null
     onToggle?: (nextValue: boolean) => void
@@ -53,6 +55,7 @@ const SelectInputBox = (
         className,
         floating,
         hasError,
+        error,
         isDisabled,
         label,
         onToggle,
@@ -67,6 +70,8 @@ const SelectInputBox = (
     }: Props,
     ref: ForwardedRef<HTMLDivElement>,
 ) => {
+    const captionId = `${id}-caption`
+
     const inputElement = useRef<HTMLDivElement>(null)
     useImperativeHandle(ref, () => inputElement.current!)
     const appendPosition = useContext(GroupPositionContext) || ''
@@ -153,7 +158,7 @@ const SelectInputBox = (
                 role="combobox"
                 aria-controls={ariaControls}
                 aria-expanded={ariaExpanded}
-                aria-invalid={hasError}
+                aria-invalid={hasError ?? (!!error ? true : undefined)}
                 aria-labelledby={ariaLabelledBy}
                 tabIndex={isDisabledMemoized ? -1 : 0}
                 id={id}
@@ -163,7 +168,7 @@ const SelectInputBox = (
                         css.inputWrapper,
                         css[appendPosition],
                         {
-                            [css.hasError]: hasError,
+                            [css.hasError]: hasError || error,
                             [css.isDisabled]: isDisabledMemoized,
                             [css.isFocused]: isFocused,
                             [css.isNested]: !!inputGroupContext,
@@ -211,6 +216,7 @@ const SelectInputBox = (
                 </div>
                 {children}
             </div>
+            {!!error && <Caption id={captionId} error={error} />}
         </SelectInputBoxContext.Provider>
     )
 }

@@ -126,4 +126,12 @@ describe('<SelectInputBox />', () => {
         )
         expect(container.getElementsByClassName('leftMargin').length).toBe(0)
     })
+
+    it('should render the error message', () => {
+        const { queryByText } = render(
+            <SelectInputBox {...defaultProps} error="Oops, I did it again" />,
+        )
+
+        expect(queryByText(/Oops, I did it again/)).toBeInTheDocument()
+    })
 })

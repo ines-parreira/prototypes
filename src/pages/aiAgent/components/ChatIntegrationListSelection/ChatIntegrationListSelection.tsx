@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react'
+import React, { ReactNode, useRef, useState } from 'react'
 
 import { SelfServiceChatChannel } from 'pages/automate/common/hooks/useSelfServiceChatChannels'
 import Dropdown from 'pages/common/components/dropdown/Dropdown'
@@ -28,6 +28,7 @@ type ChatIntegrationListSelectionProps = {
     chatItems: SelfServiceChatChannel[]
     /* id of connected label tag  */
     hasError?: boolean
+    error?: string | ReactNode
     isDisabled?: boolean
     labelId?: string
     /**
@@ -41,6 +42,7 @@ export const ChatIntegrationListSelection = ({
     selectedIds,
     chatItems,
     hasError = false,
+    error,
     isDisabled,
     labelId,
     withDisabledText = false,
@@ -80,6 +82,7 @@ export const ChatIntegrationListSelection = ({
             onToggle={setIsDropdownOpened}
             placeholder="Select one or more chat integrations"
             hasError={hasError}
+            error={error}
             ref={targetRef}
             aria-expanded={isDropdownOpened}
             aria-controls="chat-integrations-list"

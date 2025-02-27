@@ -1,4 +1,4 @@
-import React, { FC, useRef, useState } from 'react'
+import React, { FC, ReactNode, useRef, useState } from 'react'
 
 import { Badge } from '@gorgias/merchant-ui-kit'
 
@@ -33,6 +33,7 @@ type Props = {
      */
     emailItems: EmailItem[]
     hasError?: boolean
+    error?: string | ReactNode
     isDisabled?: boolean
     /* id of connected label tag  */
     labelId?: string
@@ -47,6 +48,7 @@ export const EmailIntegrationListSelection: FC<Props> = ({
     selectedIds,
     emailItems,
     hasError = false,
+    error,
     isDisabled,
     labelId,
     withDefaultTag = false,
@@ -86,6 +88,7 @@ export const EmailIntegrationListSelection: FC<Props> = ({
             onToggle={setIsDropdownOpened}
             placeholder="Select one or more email addresses"
             hasError={hasError}
+            error={error}
             aria-labelledby={labelId}
             ref={targetRef}
             isDisabled={isDisabled}
