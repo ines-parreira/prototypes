@@ -215,6 +215,8 @@ export type OnboardingData = {
     chatIntegrationIds?: number[]
     helpCenterId?: string
     gorgiasDomain?: string
+    completedDatetime?: string
+    faqHelpCenterId?: number
 }
 
 export type SalesSettingsData = {

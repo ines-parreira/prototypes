@@ -25,6 +25,7 @@ import {
     PersuasionLevelSteps,
 } from 'pages/aiAgent/Onboarding/components/steps/PersonalityStep/PersuasionLevel'
 import { StepProps } from 'pages/aiAgent/Onboarding/components/steps/types'
+import useCheckOnboardingCompleted from 'pages/aiAgent/Onboarding/hooks/useCheckOnboardingCompleted'
 import useCheckStoreIntegration from 'pages/aiAgent/Onboarding/hooks/useCheckStoreIntegration'
 import { useGetOnboardingData } from 'pages/aiAgent/Onboarding/hooks/useGetOnboardingData'
 import { useSteps } from 'pages/aiAgent/Onboarding/hooks/useSteps'
@@ -92,6 +93,7 @@ export const PersonalityStep: React.FC<StepProps> = ({
     const isLoading = isLoadingOnboardingData || isUpdatingOnboarding
 
     useCheckStoreIntegration()
+    useCheckOnboardingCompleted()
 
     const methods = useForm<SalesSettingsData>({
         values: {

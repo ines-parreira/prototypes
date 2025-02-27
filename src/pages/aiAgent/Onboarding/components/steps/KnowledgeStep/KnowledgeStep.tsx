@@ -1,6 +1,6 @@
 import React from 'react'
 
-import { useParams } from 'react-router-dom'
+import { useHistory, useParams } from 'react-router-dom'
 
 import { Skeleton } from '@gorgias/merchant-ui-kit'
 
@@ -18,15 +18,19 @@ import {
     StepProps,
     TemporaryKnowledgeData,
 } from 'pages/aiAgent/Onboarding/components/steps/types'
+import useCheckOnboardingCompleted from 'pages/aiAgent/Onboarding/hooks/useCheckOnboardingCompleted'
 import useCheckStoreIntegration from 'pages/aiAgent/Onboarding/hooks/useCheckStoreIntegration'
 import { useGetHelpCentersByShopName } from 'pages/aiAgent/Onboarding/hooks/useGetHelpCentersByShopName'
 import { useGetKnowledgeStatusByShopName } from 'pages/aiAgent/Onboarding/hooks/useGetKnowledgeStatusByShopName'
+import { useGetOnboardingData } from 'pages/aiAgent/Onboarding/hooks/useGetOnboardingData'
+import { useSteps } from 'pages/aiAgent/Onboarding/hooks/useSteps'
+import { useUpdateOnboarding } from 'pages/aiAgent/Onboarding/hooks/useUpdateOnboarding'
 import {
+    LoadingPulserIcon,
     OnboardingBody,
     OnboardingContentContainer,
     OnboardingPreviewContainer,
 } from 'pages/aiAgent/Onboarding/layout/ConvAiOnboardingLayout'
-import { WizardStepEnum } from 'pages/aiAgent/Onboarding/types'
 import AIBanner from 'pages/common/components/AIBanner/AIBanner'
 import { Separator } from 'pages/common/components/Separator/Separator'
 import { getShopifyIntegrationByShopName } from 'state/integrations/selectors'
@@ -36,9 +40,22 @@ export const KnowledgeStep: React.FC<StepProps> = ({
     totalSteps,
     goToStep,
 }) => {
+    const history = useHistory()
+
     const { shopName } = useParams<{ shopName: string }>()
 
+    const { validSteps } = useSteps({ shopName })
+
+    const { data, isLoading: isLoadingOnboardingData } =
+        useGetOnboardingData(shopName)
+
     useCheckStoreIntegration()
+    useCheckOnboardingCompleted()
+
+    const {
+        mutate: doUpdateOnboardingMutation,
+        isLoading: isUpdatingOnboarding,
+    } = useUpdateOnboarding()
 
     /// This part is a temporary block to be removed once the actual data is available
     const shopifyIntegration: ShopifyIntegration = useAppSelector(
@@ -66,13 +83,64 @@ export const KnowledgeStep: React.FC<StepProps> = ({
     const hasHelpCenter = !!helpCenters.length
 
     const onNextClick = () => {
-        if (!hasHelpCenter) {
-            return
+        if (data && 'id' in data) {
+            doUpdateOnboardingMutation(
+                {
+                    id: data.id as string,
+                    data: {
+                        ...data,
+                        id: data.id as string,
+                        completedDatetime: new Date().toISOString(),
+                        faqHelpCenterId: helpCenters[0]?.id ?? null,
+                    },
+                },
+
+                {
+                    onSuccess: () => {
+                        history.push('/app/automation/ai-agent-overview')
+                    },
+                },
+            )
         }
+        return
     }
 
     const onBackClick = () => {
-        goToStep(WizardStepEnum.HANDOVER)
+        const previousStep = validSteps[currentStep - 2]?.step
+
+        goToStep(previousStep)
+    }
+
+    const renderContent = () => {
+        if (isLoadingOnboardingData || isUpdatingOnboarding) {
+            return <LoadingPulserIcon icon="" />
+        }
+
+        return (
+            <>
+                {shopName && (
+                    <KnowledgeResourceLine
+                        name={shopName}
+                        type={KnowledgeSourceType.SHOPIFY}
+                        isReady={shopKnowledgeIsReady}
+                    />
+                )}
+                {shopName && hasHelpCenter && (
+                    <Separator className={css.separator} />
+                )}
+                {isHelpCenterLoading ? (
+                    <Skeleton height={40} />
+                ) : (
+                    hasHelpCenter && (
+                        <KnowledgeResourceLine
+                            name={helpCenters[0].name}
+                            type={KnowledgeSourceType.HELP_CENTER}
+                            isReady={hasHelpCenter}
+                        />
+                    )
+                )}
+            </>
+        )
     }
 
     return (
@@ -93,29 +161,7 @@ export const KnowledgeStep: React.FC<StepProps> = ({
                     expand your knowledge resources anytime in your settings.
                 </AIBanner>
                 <Card className={css.card}>
-                    <CardContent>
-                        {shopName && (
-                            <KnowledgeResourceLine
-                                name={shopName}
-                                type={KnowledgeSourceType.SHOPIFY}
-                                isReady={shopKnowledgeIsReady}
-                            />
-                        )}
-                        {shopName && hasHelpCenter && (
-                            <Separator className={css.separator} />
-                        )}
-                        {isHelpCenterLoading ? (
-                            <Skeleton height={40} />
-                        ) : (
-                            hasHelpCenter && (
-                                <KnowledgeResourceLine
-                                    name={helpCenters[0].name}
-                                    type={KnowledgeSourceType.HELP_CENTER}
-                                    isReady={hasHelpCenter}
-                                />
-                            )
-                        )}
-                    </CardContent>
+                    <CardContent>{renderContent()}</CardContent>
                 </Card>
             </OnboardingContentContainer>
             <OnboardingPreviewContainer

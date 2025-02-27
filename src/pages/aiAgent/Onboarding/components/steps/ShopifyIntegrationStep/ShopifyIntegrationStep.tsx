@@ -16,6 +16,7 @@ import StatusBadge, {
 } from 'pages/aiAgent/Onboarding/components/StatusBadge'
 import css from 'pages/aiAgent/Onboarding/components/steps/ShopifyIntegrationStep/ShopifyIntegrationStep.less'
 import { StepProps } from 'pages/aiAgent/Onboarding/components/steps/types'
+import useCheckOnboardingCompleted from 'pages/aiAgent/Onboarding/hooks/useCheckOnboardingCompleted'
 import { useCreateOnboarding } from 'pages/aiAgent/Onboarding/hooks/useCreateOnboarding'
 import { useGetOnboardingData } from 'pages/aiAgent/Onboarding/hooks/useGetOnboardingData'
 import { useGetOnboardingDataByShopName } from 'pages/aiAgent/Onboarding/hooks/useGetOnboardingDataByShopName'
@@ -61,6 +62,8 @@ export const ShopifyIntegrationStep: React.FC<StepProps> = ({
     const shopifyIntegrations: StoreIntegration[] = useShopifyIntegrations()
     const { emailIntegrations, defaultIntegration } = useEmailIntegrations()
 
+    useCheckOnboardingCompleted()
+
     const { data, isLoading: isLoadingOnboardingData } =
         useGetOnboardingData(shopName)
     const {
@@ -98,16 +101,11 @@ export const ShopifyIntegrationStep: React.FC<StepProps> = ({
     const selectedShop = watch('shopName') || shopifyIntegrations[0]?.name
     const selectedShopType = watch('shopType') || shopifyIntegrations[0]?.type
 
-    const {
-        data: onBoardingDataBySelectedShop,
-        isLoading: isLoadingOnboardingDataBySelectedShop,
-    } = useGetOnboardingDataByShopName(selectedShop)
+    const { data: onBoardingDataBySelectedShop } =
+        useGetOnboardingDataByShopName(selectedShop)
 
     const isLoading =
-        isLoadingOnboardingData ||
-        isUpdatingOnboarding ||
-        isCreatingOnboarding ||
-        isLoadingOnboardingDataBySelectedShop
+        isLoadingOnboardingData || isUpdatingOnboarding || isCreatingOnboarding
 
     const selectedIntegration = useMemo(
         () =>
@@ -169,7 +167,7 @@ export const ShopifyIntegrationStep: React.FC<StepProps> = ({
             goToNextStep()
             return
         }
-        if (data && 'id' in data) {
+        if (data && 'id' in data && selectedShop === shopName) {
             doUpdateOnboardingMutation(
                 { ...data, id: data.id as string, data: updatedData },
                 {

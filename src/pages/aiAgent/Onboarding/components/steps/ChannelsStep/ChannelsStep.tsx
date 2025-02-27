@@ -29,6 +29,7 @@ import {
 } from 'pages/aiAgent/Onboarding/components/steps/ChannelsStep/hooks/useChannelsSchema'
 import { createChatConfiguration } from 'pages/aiAgent/Onboarding/components/steps/ChannelsStep/utils/createGorgiasConfiguration'
 import { StepProps } from 'pages/aiAgent/Onboarding/components/steps/types'
+import useCheckOnboardingCompleted from 'pages/aiAgent/Onboarding/hooks/useCheckOnboardingCompleted'
 import useCheckStoreIntegration from 'pages/aiAgent/Onboarding/hooks/useCheckStoreIntegration'
 import { useGetOnboardingData } from 'pages/aiAgent/Onboarding/hooks/useGetOnboardingData'
 import { useSteps } from 'pages/aiAgent/Onboarding/hooks/useSteps'
@@ -127,6 +128,7 @@ export const ChannelsStep: React.FC<StepProps> = ({
     }, [storeConfigurations])
 
     useCheckStoreIntegration()
+    useCheckOnboardingCompleted()
 
     const dispatch = useAppDispatch()
 

@@ -3,6 +3,7 @@ import React, { FC } from 'react'
 import { useParams } from 'react-router-dom'
 
 import { StepProps } from 'pages/aiAgent/Onboarding/components/steps/types'
+import useCheckOnboardingCompleted from 'pages/aiAgent/Onboarding/hooks/useCheckOnboardingCompleted'
 import useCheckStoreIntegration from 'pages/aiAgent/Onboarding/hooks/useCheckStoreIntegration'
 import { useSteps } from 'pages/aiAgent/Onboarding/hooks/useSteps'
 import {
@@ -20,6 +21,7 @@ export const HandoverStep: FC<StepProps> = ({
     const { validSteps } = useSteps({ shopName })
 
     useCheckStoreIntegration()
+    useCheckOnboardingCompleted()
 
     const onNextClick = () => {
         const nextStep = validSteps[currentStep]?.step

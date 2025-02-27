@@ -9,6 +9,7 @@ import AiAgentChatConversation from 'pages/aiAgent/Onboarding/components/AiAgent
 import Goals from 'pages/aiAgent/Onboarding/components/Goals/Goals'
 import MainTitle from 'pages/aiAgent/Onboarding/components/MainTitle/MainTitle'
 import { StepProps } from 'pages/aiAgent/Onboarding/components/steps/types'
+import useCheckOnboardingCompleted from 'pages/aiAgent/Onboarding/hooks/useCheckOnboardingCompleted'
 import { useCreateOnboarding } from 'pages/aiAgent/Onboarding/hooks/useCreateOnboarding'
 import { useGetOnboardingData } from 'pages/aiAgent/Onboarding/hooks/useGetOnboardingData'
 import { useSteps } from 'pages/aiAgent/Onboarding/hooks/useSteps'
@@ -40,6 +41,8 @@ export const SkillsetStep: FC<StepProps> = ({
 }) => {
     const { shopName } = useParams<{ shopName: string }>()
     const { validSteps } = useSteps({ shopName })
+
+    useCheckOnboardingCompleted()
 
     const { data, isLoading: isLoadingOnboardingData } =
         useGetOnboardingData(shopName)
