@@ -59,7 +59,9 @@ const GorgiasChatIntegrationManualInstallationCard = ({
     const chatId = integration.get('id')
     const storeId = integration.get('meta')?.get('shop_integration_id')
 
-    const { isLoading, bundle } = useGetConvertBundle(storeId, chatId)
+    const { isLoading, bundle } = useGetConvertBundle(storeId, chatId, {
+        staleTime: 0, // Always fetch when generating the snippet.
+    })
 
     const bundleSnippet = useConvertBundleInstallationSnippet(bundle?.id ?? '')
     const isBundleSnippetEnabled = useConvertBundleInChatSnippetEnabled()
