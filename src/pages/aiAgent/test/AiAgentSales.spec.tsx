@@ -18,6 +18,6 @@ describe('<AiAgentSales />', () => {
     it('should render the sales components', () => {
         renderComponent()
 
-        expect(screen.getByText('Sales settings')).toBeInTheDocument()
+        expect(screen.getByText('Sales skills')).toBeInTheDocument()
     })
 })

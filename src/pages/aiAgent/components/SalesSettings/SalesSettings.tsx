@@ -208,7 +208,7 @@ export const SalesSettings = () => {
             />
 
             <FormProvider {...methods}>
-                <h1 className={css.salesSettingsTitle}>Sales settings</h1>
+                <h1 className={css.salesSettingsTitle}>Sales skills</h1>
                 <div className={css.salesSettingsContent}>
                     <div className={css.settings}>
                         <Alert icon className={css.info}>
