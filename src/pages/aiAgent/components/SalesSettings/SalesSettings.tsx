@@ -24,6 +24,7 @@ import { formatDiscountMax } from 'pages/aiAgent/utils/sales-discount.utils'
 import AIBanner from 'pages/common/components/AIBanner/AIBanner'
 import Alert from 'pages/common/components/Alert/Alert'
 import Button from 'pages/common/components/button/Button'
+import UnsavedChangesPrompt from 'pages/common/components/UnsavedChangesPrompt'
 import IconTooltip from 'pages/common/forms/IconTooltip/IconTooltip'
 import IconInput from 'pages/common/forms/input/IconInput'
 import InputField from 'pages/common/forms/input/InputField'
@@ -89,7 +90,7 @@ export const SalesSettings = () => {
         setValue,
         reset,
         trigger,
-        formState: { errors },
+        formState: { errors, isDirty },
     } = methods
 
     const salesPersuasionLevel = watch('salesPersuasionLevel')
@@ -191,131 +192,142 @@ export const SalesSettings = () => {
         storeConfiguration?.salesPersuasionLevel !== salesPersuasionLevel
 
     return (
-        <FormProvider {...methods}>
-            <h1 className={css.salesSettingsTitle}>Sales settings</h1>
-            <div className={css.salesSettingsContent}>
-                <div className={css.settings}>
-                    <Alert icon className={css.info}>
-                        Fine-tune how your AI Agent engages in sales
-                        conversations to align with your brand strategy.
-                    </Alert>
+        <>
+            <UnsavedChangesPrompt
+                onSave={handleSubmit(onSave)}
+                when={isDirty}
+                onDiscard={reset}
+                shouldRedirectAfterSave={true}
+            />
 
-                    <section className={css.card}>
-                        <div className={css.titleContainer}>
-                            <div className={css.title}>
-                                Set Persuasion Level
-                            </div>
-                            <IconTooltip>
-                                AI Agent will take into account your custom
-                                persuasion level in the way in interacts with
-                                customers.
-                            </IconTooltip>
-                        </div>
-                        <div>
-                            <OnboardingSteppedSlider
-                                steps={PersuasionLevelSteps}
-                                stepKey={salesPersuasionLevel}
-                                onChange={(value: string) => {
-                                    handleSliderChange(
-                                        'salesPersuasionLevel',
-                                        value as PersuasionLevel,
-                                    )
-                                }}
-                            />
-                            <AIBanner
-                                fillStyle="fill"
-                                className={css.description}
-                            >
-                                {
-                                    PersuasionLevelLabels[salesPersuasionLevel]
-                                        ?.description
-                                }
-                            </AIBanner>
-                        </div>
-                    </section>
+            <FormProvider {...methods}>
+                <h1 className={css.salesSettingsTitle}>Sales settings</h1>
+                <div className={css.salesSettingsContent}>
+                    <div className={css.settings}>
+                        <Alert icon className={css.info}>
+                            Fine-tune how your AI Agent engages in sales
+                            conversations to align with your brand strategy.
+                        </Alert>
 
-                    <section className={css.card}>
-                        <div className={css.titleContainer}>
-                            <div className={css.title}>
-                                Set your discount strategy
-                            </div>
-                            <IconTooltip>
-                                Define how often AI Agent should use discounts
-                                to encourage customers to complete a purchase.
-                            </IconTooltip>
-                        </div>
-                        <div>
-                            <OnboardingSteppedSlider
-                                steps={DiscountStrategySteps}
-                                stepKey={salesDiscountStrategyLevel}
-                                onChange={(value: string) => {
-                                    handleSliderChange(
-                                        'salesDiscountStrategyLevel',
-                                        value as DiscountStrategy,
-                                    )
-                                }}
-                            />
-
-                            <AIBanner
-                                fillStyle="fill"
-                                className={css.description}
-                            >
-                                {
-                                    DiscountStrategyLabels[
-                                        salesDiscountStrategyLevel
-                                    ]?.description
-                                }
-                            </AIBanner>
-                        </div>
-
-                        <hr className={css.separator} />
-
-                        <div className={css.maxDiscountContainer}>
-                            <Label htmlFor="percentage-discount">
-                                Maximum Discount Percentage
+                        <section className={css.card}>
+                            <div className={css.titleContainer}>
+                                <div className={css.title}>
+                                    Set Persuasion Level
+                                </div>
                                 <IconTooltip>
-                                    Set the maximum discount that AI Agent will
-                                    offer customers
+                                    AI Agent will take into account your custom
+                                    persuasion level in the way in interacts
+                                    with customers.
                                 </IconTooltip>
-                            </Label>
+                            </div>
+                            <div>
+                                <OnboardingSteppedSlider
+                                    steps={PersuasionLevelSteps}
+                                    stepKey={salesPersuasionLevel}
+                                    onChange={(value: string) => {
+                                        handleSliderChange(
+                                            'salesPersuasionLevel',
+                                            value as PersuasionLevel,
+                                        )
+                                    }}
+                                />
+                                <AIBanner
+                                    fillStyle="fill"
+                                    className={css.description}
+                                >
+                                    {
+                                        PersuasionLevelLabels[
+                                            salesPersuasionLevel
+                                        ]?.description
+                                    }
+                                </AIBanner>
+                            </div>
+                        </section>
 
-                            <InputField
-                                id="percentage-discount"
-                                type="number"
-                                min={1}
-                                max={100}
-                                value={salesDiscountMax}
-                                data-testid="discount-max"
-                                onChange={onChangeDiscountMax}
-                                suffix={<IconInput icon="percent" />}
-                                error={errors.salesDiscountMax?.message}
-                                isDisabled={
-                                    salesDiscountStrategyLevel ===
-                                    DiscountStrategy.NoDiscount
-                                }
-                                className={css.maxDiscountInput}
-                            />
+                        <section className={css.card}>
+                            <div className={css.titleContainer}>
+                                <div className={css.title}>
+                                    Set your discount strategy
+                                </div>
+                                <IconTooltip>
+                                    Define how often AI Agent should use
+                                    discounts to encourage customers to complete
+                                    a purchase.
+                                </IconTooltip>
+                            </div>
+                            <div>
+                                <OnboardingSteppedSlider
+                                    steps={DiscountStrategySteps}
+                                    stepKey={salesDiscountStrategyLevel}
+                                    onChange={(value: string) => {
+                                        handleSliderChange(
+                                            'salesDiscountStrategyLevel',
+                                            value as DiscountStrategy,
+                                        )
+                                    }}
+                                />
+
+                                <AIBanner
+                                    fillStyle="fill"
+                                    className={css.description}
+                                >
+                                    {
+                                        DiscountStrategyLabels[
+                                            salesDiscountStrategyLevel
+                                        ]?.description
+                                    }
+                                </AIBanner>
+                            </div>
+
+                            <hr className={css.separator} />
+
+                            <div className={css.maxDiscountContainer}>
+                                <Label htmlFor="percentage-discount">
+                                    Maximum Discount Percentage
+                                    <IconTooltip>
+                                        Set the maximum discount that AI Agent
+                                        will offer customers
+                                    </IconTooltip>
+                                </Label>
+
+                                <InputField
+                                    id="percentage-discount"
+                                    type="number"
+                                    min={1}
+                                    max={100}
+                                    value={salesDiscountMax}
+                                    data-testid="discount-max"
+                                    onChange={onChangeDiscountMax}
+                                    suffix={<IconInput icon="percent" />}
+                                    error={errors.salesDiscountMax?.message}
+                                    isDisabled={
+                                        salesDiscountStrategyLevel ===
+                                        DiscountStrategy.NoDiscount
+                                    }
+                                    className={css.maxDiscountInput}
+                                />
+                            </div>
+                        </section>
+
+                        <div className={css.contentActions}>
+                            <Button
+                                onClick={handleSubmit(onSave)}
+                                isDisabled={!hasChanges}
+                                type="submit"
+                            >
+                                Save Changes
+                            </Button>
+                            <Button
+                                intent="secondary"
+                                onClick={onCancel}
+                                isDisabled={!hasChanges}
+                            >
+                                Cancel
+                            </Button>
                         </div>
-                    </section>
-
-                    <div className={css.contentActions}>
-                        <Button
-                            onClick={handleSubmit(onSave)}
-                            isDisabled={!hasChanges}
-                            type="submit"
-                        >
-                            Save Changes
-                        </Button>
-                        <Button
-                            intent="secondary"
-                            onClick={onCancel}
-                            isDisabled={!hasChanges}
-                        >
-                            Cancel
-                        </Button>
                     </div>
                 </div>
-            </div>
-        </FormProvider>
+            </FormProvider>
+        </>
     )
 }

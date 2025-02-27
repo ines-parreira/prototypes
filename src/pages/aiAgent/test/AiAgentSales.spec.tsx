@@ -1,14 +1,14 @@
 import React from 'react'
 
-import { render, screen } from '@testing-library/react'
+import { screen } from '@testing-library/react'
 import { Provider } from 'react-redux'
 
-import { mockStore } from 'utils/testing'
+import { mockStore, renderWithRouter } from 'utils/testing'
 
 import { AiAgentSales } from '../AiAgentSales'
 
 const renderComponent = () =>
-    render(
+    renderWithRouter(
         <Provider store={mockStore({})}>
             <AiAgentSales />
         </Provider>,

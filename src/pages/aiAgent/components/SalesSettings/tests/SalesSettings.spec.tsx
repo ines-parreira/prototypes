@@ -1,7 +1,9 @@
 import React from 'react'
 
-import { render, screen, waitFor } from '@testing-library/react'
+import { screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
+import { createMemoryHistory } from 'history'
+import { act } from 'react-dom/test-utils'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
@@ -12,16 +14,22 @@ import { DiscountStrategy } from 'pages/aiAgent/Onboarding/components/steps/Pers
 import { PersuasionLevel } from 'pages/aiAgent/Onboarding/components/steps/PersonalityStep/PersuasionLevel'
 import { useAiAgentStoreConfigurationContext } from 'pages/aiAgent/providers/AiAgentStoreConfigurationContext'
 import { NotificationStatus } from 'state/notifications/types'
+import { renderWithRouter } from 'utils/testing'
 
 import { SalesSettings } from '../SalesSettings'
 
 const mockStore = configureMockStore([thunk])()
 
 const renderComponent = () =>
-    render(
+    renderWithRouter(
         <Provider store={mockStore}>
             <SalesSettings />
         </Provider>,
+        {
+            path: `/:shopType/:shopName/sales`,
+            route: '/shopify/test-store/sales',
+            history,
+        },
     )
 
 const storeConfiguration = getStoreConfigurationFixture()
@@ -55,6 +63,10 @@ const trackRect = {
     y: 0,
     toJSON: () => {},
 }
+
+const history = createMemoryHistory({
+    initialEntries: ['/shopify/test-store/sales'],
+})
 
 const maxDiscountInput = (): HTMLInputElement =>
     screen.getByLabelText(/Maximum Discount Percentage/)
@@ -368,5 +380,22 @@ describe('<SalesSettings />', () => {
         await waitFor(() => {
             expect(storeConfiguration).toBe(storeConfiguration)
         })
+    })
+
+    it('should show a warning when navigating away without submitting the form', async () => {
+        renderComponent()
+
+        await userEvent.clear(maxDiscountInput())
+        await userEvent.type(maxDiscountInput(), '2')
+
+        act(() => {
+            history.push('/test')
+        })
+
+        expect(
+            screen.getByText(
+                'Your changes to this page will be lost if you don’t save them.',
+            ),
+        ).toBeInTheDocument()
     })
 })
