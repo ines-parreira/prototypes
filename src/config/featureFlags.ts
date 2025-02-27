@@ -135,4 +135,5 @@ export enum FeatureFlagKey {
     TrackTotalSearchHits = 'linear.task_SUPXP-2622.track-total-search-hits',
     VoiceCallSearch = 'voice-call-search',
     WhatsAppMigrationsDebug = 'whatsapp-migration-debug',
+    FakeActionPlaceholder = 'fake-action-placeholder',
 }

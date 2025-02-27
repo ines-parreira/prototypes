@@ -2,11 +2,14 @@ import React from 'react'
 
 import { fireEvent, screen } from '@testing-library/react'
 import { fromJS } from 'immutable'
+import { useFlags } from 'launchdarkly-react-client-sdk'
 import { Provider } from 'react-redux'
 import { BrowserRouter as Router } from 'react-router-dom'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
+import { FeatureFlagKey } from 'config/featureFlags'
+import { IntegrationType } from 'models/integration/constants'
 import {
     useGetStoreApps,
     useGetWorkflowConfigurationTemplates,
@@ -27,6 +30,7 @@ jest.mock('pages/aiAgent/actions/hooks/useDeleteAction')
 jest.mock('pages/aiAgent/actions/hooks/useUpsertAction')
 jest.mock('pages/automate/actionsPlatform/hooks/useApps')
 
+const mockUseFlags = useFlags as jest.MockedFunction<typeof useFlags>
 const mockUseGetStoreApps = jest.mocked(useGetStoreApps)
 const mockUseAddStoreApp = jest.mocked(useAddStoreApp)
 const mockUseApps = jest.mocked(useApps)
@@ -35,6 +39,7 @@ const mockUseDeleteAction = jest.mocked(useDeleteAction)
 const mockUseGetWorkflowConfigurationTemplates = jest.mocked(
     useGetWorkflowConfigurationTemplates,
 )
+
 const mockActions: StoresWorkflowConfiguration = [
     {
         id: '1',
@@ -157,5 +162,34 @@ describe('ActionsList', () => {
         const sortedActionsDesc = screen.getAllByText(/Action \d/)
         expect(sortedActionsDesc[0]).toHaveTextContent('Action 2')
         expect(sortedActionsDesc[1]).toHaveTextContent('Action 1')
+    })
+
+    it.only('show fake action placeholder', () => {
+        mockUseFlags.mockReturnValue({
+            [FeatureFlagKey.FakeActionPlaceholder]: true,
+        })
+
+        mockUseGetWorkflowConfigurationTemplates.mockReturnValue({
+            data: [
+                {
+                    id: 'uuid1',
+                    apps: [
+                        {
+                            app_id: 'someid',
+                            type: IntegrationType.App,
+                        },
+                    ],
+                },
+            ],
+        } as unknown as ReturnType<typeof useGetWorkflowConfigurationTemplates>)
+        renderWithQueryClientProvider(
+            <Router>
+                <Provider store={mockStore(defaultState)}>
+                    <ActionsList actions={mockActions} />
+                </Provider>
+            </Router>,
+        )
+
+        expect(screen.getByText('Get order info')).toBeInTheDocument()
     })
 })

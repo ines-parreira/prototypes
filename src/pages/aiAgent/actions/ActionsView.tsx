@@ -32,6 +32,8 @@ const ActionsView = () => {
     const isStandaloneMenuEnabled =
         useFlags()[FeatureFlagKey.ConvAiStandaloneMenu]
 
+    const showFakeActions = useFlags()[FeatureFlagKey.FakeActionPlaceholder]
+
     const { shopName, shopType } = useParams<{
         shopType: string
         shopName: string
@@ -73,7 +75,7 @@ const ActionsView = () => {
             className={css.container}
             title={isStandaloneMenuEnabled ? ACTIONS : AI_AGENT}
         >
-            {storeWfConfigurations.length > 0 ? (
+            {showFakeActions || storeWfConfigurations.length > 0 ? (
                 <div className={css.actionsListContainer}>
                     <div className={css.actionListDescription}>
                         <div data-candu-id="custom-action-view-header">

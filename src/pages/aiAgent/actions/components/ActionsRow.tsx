@@ -1,5 +1,6 @@
 import React, { MouseEvent, useCallback, useMemo, useState } from 'react'
 
+import classNames from 'classnames'
 import { Link, useHistory, useParams } from 'react-router-dom'
 
 import { Tooltip } from '@gorgias/merchant-ui-kit'
@@ -39,6 +40,8 @@ export default function ActionsRow({ action }: Props) {
     const { data: templateSteps = [] } = useGetWorkflowConfigurationTemplates({
         triggers: ['reusable-llm-prompt'],
     })
+
+    const isFakeAction = action.id.startsWith('mocked-')
 
     const { routes } = useAiAgentNavigation({ shopName })
 
@@ -130,7 +133,9 @@ export default function ActionsRow({ action }: Props) {
 
     return (
         <TableBodyRow
-            className={css.container}
+            className={classNames(css.container, {
+                [css.fakeAction]: isFakeAction,
+            })}
             onClick={() => {
                 if (!isDeleteActionLoading) {
                     history.push(routes.editAction(action.id))
@@ -143,7 +148,7 @@ export default function ActionsRow({ action }: Props) {
                         isLoading={isEditActionLoading}
                         isDisabled={isDeleteActionLoading}
                         onClick={handleToggleAction}
-                        isToggled={!action.entrypoints[0].deactivated_datetime}
+                        isToggled={!action.entrypoints[0]?.deactivated_datetime}
                     />
                     {action.apps?.map((templateApp) => {
                         const app = getAppFromTemplateApp(templateApp)
@@ -188,8 +193,10 @@ export default function ActionsRow({ action }: Props) {
             </BodyCell>
             <BodyCell innerClassName={css.apps}>{appIcons}</BodyCell>
             <BodyCell size="smallest" justifyContent="right">
-                {action.updated_datetime &&
-                    formatDatetime(action.updated_datetime, datetimeFormat)}
+                {isFakeAction
+                    ? '-'
+                    : action.updated_datetime &&
+                      formatDatetime(action.updated_datetime, datetimeFormat)}
             </BodyCell>
             <BodyCell
                 size="smallest"
