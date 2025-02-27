@@ -16,7 +16,7 @@ const mockStore = configureMockStore([thunk])
 const mockNumberOfWrappedElements = 3
 
 jest.mock(
-    'common/utils/getElementWrapInfo',
+    'common/utils/getWrappedElementCount',
     () => () => mockNumberOfWrappedElements,
 )
 

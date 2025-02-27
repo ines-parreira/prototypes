@@ -5,8 +5,15 @@
         display: flex;
         box-sizing: content-box;
         padding: @layout-spacing-xs @layout-spacing-m;
-        transition: max-height 0.2s ease-out;
+        transition: height 0.2s ease-out;
         overflow-y: hidden;
+    }
+
+    .fieldsWrapper {
+        width: 100%;
+        &.isScrollable {
+            overflow-y: auto;
+        }
     }
 
     .fields {
@@ -15,10 +22,6 @@
         gap: 16px;
         width: 100%;
         padding-top: 2px;
-
-        &.isScrollable {
-            overflow-y: auto;
-        }
     }
 
     .buttonWrapper {

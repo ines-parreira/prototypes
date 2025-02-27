@@ -6,7 +6,7 @@ import _uniqueId from 'lodash/uniqueId'
 
 import { Badge, BadgeIcon, Tooltip } from '@gorgias/merchant-ui-kit'
 
-import { getElementWrapInfo } from 'common/utils'
+import { getWrappedElementCount } from 'common/utils'
 import useCallbackRef from 'hooks/useCallbackRef'
 import useElementSize from 'hooks/useElementSize'
 import Button from 'pages/common/components/button/Button'
@@ -52,53 +52,27 @@ const TicketTags = ({
 
     const uniqueId = useMemo(() => _uniqueId(), [])
 
-    const [showAllTags, setShowAllTags] = useState(false)
+    const [isExpanded, setExpanded] = useState(false)
 
     const [element, setElement] = useCallbackRef()
-    const [totalWidth, height] = useElementSize(element)
+    const [__width, height] = useElementSize(element)
+    const wrappedElementCount = getWrappedElementCount(element)
 
-    const getWrappedElementCount = () => {
-        if (!element || !totalWidth || !tags.size) return 0
-        return getElementWrapInfo(element.children, totalWidth)
-    }
-    const wrappedElementCount = getWrappedElementCount()
+    const hiddenTags = wrappedElementCount
+        ? tags
+              .slice(tags.size - wrappedElementCount)
+              .map((tag) => tag?.get('name') as string)
+        : []
 
-    const getHiddenTags = () =>
-        wrappedElementCount
-            ? tags
-                  .slice(tags.size - wrappedElementCount)
-                  .map((tag) => tag?.get('name') as string)
-            : []
-    const hiddenTags = getHiddenTags()
-
-    const derivedShowAllTags = useMemo(
-        () =>
-            showAllTags
-                ? wrappedElementCount && wrappedElementCount > 0
-                : false,
-        [showAllTags, wrappedElementCount],
+    const displayExpandButton = Boolean(
+        !isExpanded && wrappedElementCount && wrappedElementCount > 0,
     )
-
-    let formula = right ? -1 : Number.MAX_SAFE_INTEGER
-    if (wrappedElementCount) {
-        formula = (ticketTags.size - wrappedElementCount) * 10 - 5
-
-        // keep the badge to the right if all tags are hidden
-        if (formula < 0 && !right) {
-            formula = 0
-        }
-    }
-
-    const expandBadgeDisplay =
-        !showAllTags && wrappedElementCount && wrappedElementCount > 0
-            ? 'flex'
-            : 'none'
 
     return (
         <div
             className={css.wrapper}
             style={{
-                height: showAllTags ? height : 24,
+                height: isExpanded ? height : 24,
             }}
         >
             <div className={css.row}>
@@ -121,12 +95,7 @@ const TicketTags = ({
                         />
                     )}
                     {tags.map((tag?: Map<any, any>, i?) => (
-                        <div
-                            key={i}
-                            style={{
-                                order: (i || 0) * 10 + 1,
-                            }}
-                        >
+                        <div key={i}>
                             <TicketTag
                                 decoration={tag!.get('decoration')}
                                 text={tag!.get('name')}
@@ -141,64 +110,58 @@ const TicketTags = ({
                             />
                         </div>
                     ))}
-                    <div
-                        style={{
-                            order: formula,
-                            display: expandBadgeDisplay,
+                    {isExpanded && (
+                        <Button
+                            fillStyle="ghost"
+                            size="small"
+                            onClick={() => setExpanded(false)}
+                        >
+                            <ButtonIconLabel
+                                className={css.button}
+                                position="right"
+                                icon="expand_less"
+                            >
+                                Show less
+                            </ButtonIconLabel>
+                        </Button>
+                    )}
+                </div>
+                <div
+                    style={{
+                        display: displayExpandButton ? 'block' : 'none',
+                    }}
+                >
+                    <Badge
+                        id={`expand-tags-badge-${uniqueId}`}
+                        className={css.displayMore}
+                        type={'light-dark'}
+                        corner="square"
+                        upperCase={false}
+                        onClick={() => setExpanded(true)}
+                    >
+                        + {wrappedElementCount || 0}
+                        {!isDisabled && (
+                            <BadgeIcon
+                                className={classnames(
+                                    'material-icons-round',
+                                    css.displayMoreIcon,
+                                )}
+                                icon="arrow_drop_down"
+                            />
+                        )}
+                    </Badge>
+                    <Tooltip
+                        target={`expand-tags-badge-${uniqueId}`}
+                        offset="0, 9"
+                        placement="bottom-start"
+                        innerProps={{
+                            fade: false,
                         }}
                     >
-                        <Badge
-                            id={`expand-tags-badge-${uniqueId}`}
-                            className={css.displayMore}
-                            type={'light-dark'}
-                            corner="square"
-                            upperCase={false}
-                            onClick={() => setShowAllTags(!showAllTags)}
-                        >
-                            + {wrappedElementCount || 0}
-                            {!isDisabled && (
-                                <BadgeIcon
-                                    className={classnames(
-                                        'material-icons-round',
-                                        css.displayMoreIcon,
-                                    )}
-                                    icon="arrow_drop_down"
-                                />
-                            )}
-                        </Badge>
-                        <Tooltip
-                            target={`expand-tags-badge-${uniqueId}`}
-                            offset="0, 9"
-                            placement="bottom-start"
-                            innerProps={{
-                                fade: false,
-                            }}
-                        >
-                            <ul className={css.tooltipContent}>
-                                {hiddenTags?.map((tag) => (
-                                    <li key={tag}>{tag}</li>
-                                ))}
-                            </ul>
-                        </Tooltip>
-                    </div>
-
-                    <Button
-                        fillStyle="ghost"
-                        size="small"
-                        onClick={() => setShowAllTags(!showAllTags)}
-                        className={classnames({
-                            [css.hidden]: !derivedShowAllTags,
-                        })}
-                        style={{ order: (tags.size + 1) * 10 }}
-                    >
-                        <ButtonIconLabel
-                            className={css.button}
-                            position="right"
-                            icon="expand_less"
-                        >
-                            Show less
-                        </ButtonIconLabel>
-                    </Button>
+                        <ul className={css.tooltipContent}>
+                            {hiddenTags?.map((tag) => <li key={tag}>{tag}</li>)}
+                        </ul>
+                    </Tooltip>
                 </div>
             </div>
         </div>

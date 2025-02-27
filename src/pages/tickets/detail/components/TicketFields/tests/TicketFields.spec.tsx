@@ -23,12 +23,10 @@ import {
     ticketInputFieldDefinition,
 } from 'fixtures/customField'
 import { customFieldCondition } from 'fixtures/customFieldCondition'
-import useHasWrapped from 'hooks/useHasWrapped'
 import client from 'models/api/resources'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 import { assumeMock } from 'utils/testing'
 
-import { MAX_HEIGHT } from '../hooks/useHeight'
 import TicketFields from '../TicketFields'
 
 jest.mock('custom-fields/hooks/queries/useCustomFieldConditions', () => ({
@@ -44,20 +42,10 @@ jest.mock('custom-fields/hooks/queries/useCustomFieldDefinitions', () => ({
     })),
 }))
 jest.mock('core/flags/hooks/useFlag')
-jest.mock('hooks/useHasWrapped')
-jest.mock(
-    'pages/tickets/detail/components/TicketFields/hooks/useHeight',
-    () => ({
-        __esModule: true,
-        default: () => 500,
-        MAX_HEIGHT: 500,
-    }),
-)
 
 const mockedUseCustomFieldConditions = assumeMock(useCustomFieldConditions)
 const mockedUseCustomFieldDefinitions = assumeMock(useCustomFieldDefinitions)
 const mockedUseFlag = assumeMock(useFlag)
-const mockedUseHasWrapped = assumeMock(useHasWrapped)
 
 const mockedServer = new MockAdapter(client)
 const queryClient = mockQueryClient()
@@ -119,10 +107,6 @@ describe('<TicketFields />', () => {
         mockedServer.reset()
         queryClient.clear()
         mockedUseFlag.mockReturnValue(true)
-        mockedUseHasWrapped.mockReturnValue([
-            { current: document.createElement('div') },
-            true,
-        ])
     })
 
     it('should not render if there is no custom field definition', () => {
@@ -268,69 +252,6 @@ describe('<TicketFields />', () => {
             expect(
                 screen.queryByText(RegExp(conditionalTicketField.label)),
             ).toBeDefined()
-        })
-    })
-
-    it('should not render `show more` button if ref is not wrapped', () => {
-        mockedUseCustomFieldDefinitions.mockReturnValue({
-            data: {
-                data: [ticketInputFieldDefinition],
-            },
-            isLoading: false,
-        } as any)
-        mockedUseHasWrapped.mockReturnValue([
-            { current: document.createElement('div') },
-            false,
-        ])
-        render(
-            <QueryClientProvider client={queryClient}>
-                <Provider store={store}>
-                    <TicketFields />
-                </Provider>
-            </QueryClientProvider>,
-        )
-        const showMoreButton = screen.queryByText('Show more')
-        expect(showMoreButton).not.toBeInTheDocument()
-    })
-
-    it('should render fields container as scrollable if scroll height is higher than MAX_HEIGHT', async () => {
-        mockedUseHasWrapped.mockReturnValue([
-            { current: document.createElement('div') },
-            true,
-        ])
-        mockedUseCustomFieldDefinitions.mockReturnValue({
-            data: {
-                data: Array.from({ length: 30 }, (_, index) => ({
-                    ...ticketInputFieldDefinition,
-                    id: 1001 + index,
-                    label: `Input field ${index + 1}`,
-                })),
-            },
-            isLoading: false,
-        } as any)
-
-        render(
-            <QueryClientProvider client={queryClient}>
-                <Provider store={store}>
-                    <TicketFields />
-                </Provider>
-            </QueryClientProvider>,
-        )
-        Object.defineProperty(
-            screen.getByTestId('fields-container'),
-            'scrollHeight',
-            {
-                configurable: true,
-                value: MAX_HEIGHT + 1,
-            },
-        )
-        const showMoreButton = screen.getByText('Show more')
-        showMoreButton.click()
-        await waitFor(() => {
-            expect(screen.queryByText('Show more')).not.toBeInTheDocument()
-            expect(screen.getByText('Show less')).toBeInTheDocument()
-            const container = screen.getByTestId('fields-container')
-            expect(container.className).toContain('isScrollable')
         })
     })
 })

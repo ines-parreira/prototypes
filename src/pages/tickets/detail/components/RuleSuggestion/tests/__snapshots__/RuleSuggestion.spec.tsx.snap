@@ -164,9 +164,7 @@ exports[`RuleSuggestion should display RuleSuggestion 1`] = `
                         <div
                           class="tags right"
                         >
-                          <div
-                            style="order: 1;"
-                          >
+                          <div>
                             <div
                               class="tag black"
                             >
@@ -177,39 +175,18 @@ exports[`RuleSuggestion should display RuleSuggestion 1`] = `
                               </span>
                             </div>
                           </div>
+                        </div>
+                        <div
+                          style="display: none;"
+                        >
                           <div
-                            style="order: -1; display: none;"
+                            class="ui-badge-badge-7025 displayMore"
+                            id="expand-tags-badge-1"
+                            style="border-radius: 4px;"
                           >
-                            <div
-                              class="ui-badge-badge-7025 displayMore"
-                              id="expand-tags-badge-1"
-                              style="border-radius: 4px;"
-                            >
-                              + 
-                              0
-                            </div>
+                            + 
+                            0
                           </div>
-                          <button
-                            aria-disabled="false"
-                            class="wrapper hidden ghost primary small"
-                            style="order: 20;"
-                            type="button"
-                          >
-                            <span
-                              class="content"
-                            >
-                              <span
-                                class="wrapper button"
-                              >
-                                Show less
-                                <i
-                                  class="material-icons icon isRight small"
-                                >
-                                  expand_less
-                                </i>
-                              </span>
-                            </span>
-                          </button>
                         </div>
                       </div>
                     </div>
@@ -413,9 +390,7 @@ exports[`RuleSuggestion should display in preview for large suggestion body 1`] 
                         <div
                           class="tags right"
                         >
-                          <div
-                            style="order: 1;"
-                          >
+                          <div>
                             <div
                               class="tag black"
                             >
@@ -426,39 +401,18 @@ exports[`RuleSuggestion should display in preview for large suggestion body 1`] 
                               </span>
                             </div>
                           </div>
+                        </div>
+                        <div
+                          style="display: none;"
+                        >
                           <div
-                            style="order: -1; display: none;"
+                            class="ui-badge-badge-7025 displayMore"
+                            id="expand-tags-badge-4"
+                            style="border-radius: 4px;"
                           >
-                            <div
-                              class="ui-badge-badge-7025 displayMore"
-                              id="expand-tags-badge-4"
-                              style="border-radius: 4px;"
-                            >
-                              + 
-                              0
-                            </div>
+                            + 
+                            0
                           </div>
-                          <button
-                            aria-disabled="false"
-                            class="wrapper hidden ghost primary small"
-                            style="order: 20;"
-                            type="button"
-                          >
-                            <span
-                              class="content"
-                            >
-                              <span
-                                class="wrapper button"
-                              >
-                                Show less
-                                <i
-                                  class="material-icons icon isRight small"
-                                >
-                                  expand_less
-                                </i>
-                              </span>
-                            </span>
-                          </button>
                         </div>
                       </div>
                     </div>

@@ -14,9 +14,7 @@ exports[`<TicketTags /> should display current tags 1`] = `
       <div>
         TagDropdownMock
       </div>
-      <div
-        style="order: 1;"
-      >
+      <div>
         <div
           class="tag withTrailIcon black"
         >
@@ -36,9 +34,7 @@ exports[`<TicketTags /> should display current tags 1`] = `
           </span>
         </div>
       </div>
-      <div
-        style="order: 11;"
-      >
+      <div>
         <div
           class="tag withTrailIcon black"
         >
@@ -58,9 +54,7 @@ exports[`<TicketTags /> should display current tags 1`] = `
           </span>
         </div>
       </div>
-      <div
-        style="order: 21;"
-      >
+      <div>
         <div
           class="tag withTrailIcon black"
         >
@@ -80,9 +74,7 @@ exports[`<TicketTags /> should display current tags 1`] = `
           </span>
         </div>
       </div>
-      <div
-        style="order: 31;"
-      >
+      <div>
         <div
           class="tag withTrailIcon black"
         >
@@ -102,44 +94,23 @@ exports[`<TicketTags /> should display current tags 1`] = `
           </span>
         </div>
       </div>
+    </div>
+    <div
+      style="display: block;"
+    >
       <div
-        style="order: 5; display: flex;"
+        class="ui-badge-badge-7025 displayMore"
+        id="expand-tags-badge-42"
+        style="border-radius: 4px;"
       >
-        <div
-          class="ui-badge-badge-7025 displayMore"
-          id="expand-tags-badge-42"
-          style="border-radius: 4px;"
-        >
-          + 
-          3
-          <span
-            class="ui-badgeicon-icon-23dd material-icons-round displayMoreIcon"
-          >
-            arrow_drop_down
-          </span>
-        </div>
-      </div>
-      <button
-        aria-disabled="false"
-        class="wrapper hidden ghost primary small"
-        style="order: 50;"
-        type="button"
-      >
+        + 
+        3
         <span
-          class="content"
+          class="ui-badgeicon-icon-23dd material-icons-round displayMoreIcon"
         >
-          <span
-            class="wrapper button"
-          >
-            Show less
-            <i
-              class="material-icons icon isRight small"
-            >
-              expand_less
-            </i>
-          </span>
+          arrow_drop_down
         </span>
-      </button>
+      </div>
     </div>
   </div>
 </div>
