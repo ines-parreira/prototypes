@@ -6,7 +6,7 @@ import BigNumberMetric from 'pages/stats/BigNumberMetric'
 import * as utils from 'pages/stats/common/utils'
 import { DrillDownModalTrigger } from 'pages/stats/DrillDownModalTrigger'
 import MetricCard from 'pages/stats/MetricCard'
-import LiveVoiceMetricCard from 'pages/stats/voice/components/LiveVoice/LiveVoiceMetricCard'
+import { LiveVoiceMetricCard } from 'pages/stats/voice/components/LiveVoice/LiveVoiceMetricCard'
 import { assumeMock } from 'utils/testing'
 
 jest.mock('pages/stats/BigNumberMetric')
@@ -40,7 +40,7 @@ describe('LiveVoiceMetricCard', () => {
         const props = {
             title: 'Test Title',
             hint: 'Test Hint',
-            isLoading: false,
+            fetchData: () => ({ data: { value: 100 }, isFetching: false }),
         }
 
         renderComponent(props)
@@ -49,48 +49,47 @@ describe('LiveVoiceMetricCard', () => {
             expect.objectContaining({
                 title: props.title,
                 hint: { title: props.hint },
-                isLoading: props.isLoading,
+                isLoading: false,
             }),
             {},
         )
     })
 
-    it('renders the metric value', () => {
-        const props = {
-            title: 'Test Title',
-            hint: 'Test Hint',
-            value: 100,
-            isLoading: false,
-        }
+    it.each([
+        {
+            inputMetricValueFormat: undefined,
+            outputMetricValueFormat: 'integer',
+        },
+        {
+            inputMetricValueFormat: 'decimal',
+            outputMetricValueFormat: 'decimal',
+        },
+    ])(
+        'renders the metric value',
+        ({ inputMetricValueFormat, outputMetricValueFormat }) => {
+            const props = {
+                title: 'Test Title',
+                hint: 'Test Hint',
+                fetchData: () => ({ data: { value: 100 } }),
+                metricValueFormat: inputMetricValueFormat,
+            }
 
-        renderComponent(props)
+            renderComponent(props)
 
-        expect(screen.getByText('Formatted Value')).toBeInTheDocument()
-    })
-
-    it('renders the loading state', () => {
-        const props = {
-            title: 'Test Title',
-            hint: 'Test Hint',
-            isLoading: true,
-        }
-
-        renderComponent(props)
-
-        expect(BigNumberMetricMock).toHaveBeenLastCalledWith(
-            expect.objectContaining({
-                isLoading: props.isLoading,
-            }),
-            {},
-        )
-    })
+            expect(screen.getByText('Formatted Value')).toBeInTheDocument()
+            expect(formatMetricValueSpy).toHaveBeenCalledWith(
+                100,
+                outputMetricValueFormat,
+                utils.NOT_AVAILABLE_PLACEHOLDER,
+            )
+        },
+    )
 
     it('renders the DrillDownModalTrigger when metricName is provided', () => {
         const props = {
             title: 'Test Title',
             hint: 'Test Hint',
-            value: 100,
-            isLoading: false,
+            fetchData: () => ({ data: { value: 100 } }),
             metricName: 'Test Metric',
         }
 
@@ -112,8 +111,7 @@ describe('LiveVoiceMetricCard', () => {
         const props = {
             title: 'Test Title',
             hint: 'Test Hint',
-            value: 100,
-            isLoading: false,
+            fetchData: () => ({ data: { value: 100 } }),
         }
 
         renderComponent(props)
@@ -125,7 +123,7 @@ describe('LiveVoiceMetricCard', () => {
         const props = {
             title: 'Test Title',
             hint: 'Test Hint',
-            isLoading: false,
+            fetchData: () => ({ data: null }),
             metricName: 'Test Metric',
         }
 
@@ -137,5 +135,31 @@ describe('LiveVoiceMetricCard', () => {
             }),
             {},
         )
+    })
+
+    it('renders empty metric when should hide', () => {
+        const fetchData = jest.fn()
+
+        const props = {
+            title: 'Test Title',
+            hint: 'Test Hint',
+            fetchData: fetchData,
+            shouldHide: true,
+        }
+
+        renderComponent(props)
+
+        expect(fetchData).not.toHaveBeenCalled()
+        expect(MetricCardMock).toHaveBeenLastCalledWith(
+            expect.objectContaining({
+                title: props.title,
+                hint: { title: props.hint },
+                isLoading: false,
+            }),
+            {},
+        )
+        expect(
+            screen.getByText(utils.NOT_AVAILABLE_PLACEHOLDER),
+        ).toBeInTheDocument()
     })
 })

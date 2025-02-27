@@ -3,22 +3,21 @@ import React, { ComponentProps } from 'react'
 import { render } from '@testing-library/react'
 import { Moment } from 'moment'
 
+import { VoiceCallDirection, VoiceCallStatus } from '@gorgias/api-queries'
+
 import { FeatureFlagKey } from 'config/featureFlags'
 import { useFlag } from 'core/flags'
-import { Metric } from 'hooks/reporting/metrics'
-import { useMetric } from 'hooks/reporting/useMetric'
-import { voiceCallAverageWaitTimeQueryFactory } from 'models/reporting/queryFactories/voice/voiceCall'
-import * as constants from 'pages/stats/voice/constants/liveVoice'
 import { getBusinessHoursSettings } from 'state/currentAccount/selectors'
 import { formatReportingQueryDate } from 'utils/reporting'
 import { assumeMock } from 'utils/testing'
 
-import { useAverageTalkTimeMetric } from '../../hooks/agentMetrics'
-import { useVoiceCallCountMetric } from '../../hooks/useVoiceCallCountMetric'
-import LiveVoiceMetricCard from './LiveVoiceMetricCard'
+import { LiveVoiceMetricCard } from './LiveVoiceMetricCard'
 import LiveVoiceMetrics from './LiveVoiceMetrics'
-import { LiveVoiceStatusFilterOption } from './types'
-import { filterLiveCallsByStatus, getLiveVoicePeriodFilter } from './utils'
+import {
+    getLiveVoiceMetricCards,
+    getOldLiveVoiceMetricCards,
+} from './LiveVoiceMetricsConfig'
+import { getLiveVoicePeriodFilter } from './utils'
 
 const renderComponent = (
     props: Partial<ComponentProps<typeof LiveVoiceMetrics>> = {
@@ -42,25 +41,18 @@ const renderComponent = (
 jest.mock('state/ui/stats/selectors')
 jest.mock('utils/date')
 jest.mock('state/currentAccount/selectors')
-jest.mock('hooks/reporting/useMetric')
 jest.mock('utils/reporting')
-jest.mock('pages/stats/voice/hooks/useVoiceCallCountMetric')
-jest.mock('pages/stats/voice/hooks/agentMetrics')
 jest.mock('pages/stats/voice/components/LiveVoice/LiveVoiceMetricCard')
 jest.mock('hooks/useAppSelector', () => (fn: () => void) => fn())
 jest.mock('pages/stats/voice/components/LiveVoice/utils')
+jest.mock('pages/stats/voice/components/LiveVoice/LiveVoiceMetricsConfig')
 
-const voiceCallAverageWaitTimeQueryFactoryMock = assumeMock(
-    voiceCallAverageWaitTimeQueryFactory,
-)
-const useVoiceCallCountMetricMock = assumeMock(useVoiceCallCountMetric)
-const useAverageTalkTimeMetricMock = assumeMock(useAverageTalkTimeMetric)
-const useMetricMock = assumeMock(useMetric)
 const LiveVoiceMetricCardMock = assumeMock(LiveVoiceMetricCard)
 const formatReportingQueryDateMock = assumeMock(formatReportingQueryDate)
 const getBusinessHoursSettingsMock = assumeMock(getBusinessHoursSettings)
-const filterLiveCallsByStatusMock = assumeMock(filterLiveCallsByStatus)
 const getLiveVoicePeriodFilterMock = assumeMock(getLiveVoicePeriodFilter)
+const getOldLiveVoiceMetricCardsMock = assumeMock(getOldLiveVoiceMetricCards)
+const getLiveVoiceMetricCardsMock = assumeMock(getLiveVoiceMetricCards)
 
 jest.mock('core/flags', () => ({ useFlag: jest.fn() }))
 const useFlagMock = assumeMock(useFlag)
@@ -70,28 +62,36 @@ const defaultPeriodFilter = {
     end_datetime: '2024-01-01T23:59:59+01:00',
 }
 
+const liveVoiceCalls = [
+    {
+        created_datetime: '',
+        direction: VoiceCallDirection.Inbound,
+        external_id: '',
+        id: 1,
+        integration_id: 1,
+        provider: '',
+        status: VoiceCallStatus.InProgress,
+    },
+    {
+        created_datetime: '',
+        direction: VoiceCallDirection.Inbound,
+        external_id: '',
+        id: 2,
+        integration_id: 1,
+        provider: '',
+        status: VoiceCallStatus.InProgress,
+    },
+]
+
 describe('LiveVoiceMetrics', () => {
     beforeEach(() => {
         getBusinessHoursSettingsMock.mockReturnValue({
             data: { timezone: 'Europe/Paris' },
         } as any)
-        useMetricMock.mockReturnValue({
-            data: { value: 1 },
-            isFetching: false,
-        } as Metric)
-        useVoiceCallCountMetricMock.mockReturnValue({
-            data: { value: 1 },
-            isFetching: false,
-        } as Metric)
-        useAverageTalkTimeMetricMock.mockReturnValue({
-            data: { value: 1 },
-            isFetching: false,
-        } as Metric)
 
         formatReportingQueryDateMock.mockImplementation((date) =>
             (date as Moment).format(),
         )
-        filterLiveCallsByStatusMock.mockReturnValue([] as any)
         getLiveVoicePeriodFilterMock.mockReturnValue(defaultPeriodFilter)
 
         LiveVoiceMetricCardMock.mockReturnValue(<div />)
@@ -99,100 +99,8 @@ describe('LiveVoiceMetrics', () => {
 
     it.each([
         {
-            title: constants.AVERAGE_WAIT_TIME_METRIC_TITLE,
-            hint: constants.AVERAGE_WAIT_TIME_METRIC_HINT,
-        },
-        {
-            title: constants.CALLS_IN_QUEUE_METRIC_TITLE,
-            hint: constants.CALLS_IN_QUEUE_METRIC_HINT,
-        },
-        {
-            title: constants.INBOUND_CALLS_METRIC_TITLE,
-            hint: constants.INBOUND_CALLS_METRIC_HINT,
-        },
-        {
-            title: constants.OUTBOUND_CALLS_METRIC_TITLE,
-            hint: constants.OUTBOUND_CALLS_METRIC_HINT,
-        },
-        {
-            title: constants.DEPRECATED_MISSED_INBOUND_CALLS_METRIC_TITLE,
-            hint: constants.DEPRECATED_MISSED_INBOUND_CALLS_METRIC_HINT,
-        },
-        {
-            title: constants.AVERAGE_TALK_TIME_METRIC_TITLE,
-            hint: constants.AVERAGE_TALK_TIME_METRIC_HINT,
-        },
-    ])('should render old %p LiveVoiceMetricCard', ({ title, hint }) => {
-        useFlagMock.mockImplementation((flag) => {
-            if (flag === FeatureFlagKey.ShowNewUnansweredStatuses) {
-                return false
-            }
-        })
-
-        renderComponent()
-
-        expect(LiveVoiceMetricCardMock).toHaveBeenCalledWith(
-            expect.objectContaining({
-                title,
-                hint,
-            }),
-            {},
-        )
-    })
-
-    it.each([
-        {
-            title: constants.CALLS_IN_QUEUE_METRIC_TITLE,
-            hint: constants.CALLS_IN_QUEUE_METRIC_HINT,
-        },
-        {
-            title: constants.AVERAGE_WAIT_TIME_METRIC_TITLE,
-            hint: constants.AVERAGE_WAIT_TIME_METRIC_HINT,
-        },
-        {
-            title: constants.AVERAGE_TALK_TIME_METRIC_TITLE,
-            hint: constants.AVERAGE_TALK_TIME_METRIC_HINT,
-        },
-        {
-            title: constants.INBOUND_CALLS_METRIC_TITLE,
-            hint: constants.INBOUND_CALLS_METRIC_HINT,
-        },
-        {
-            title: constants.OUTBOUND_CALLS_METRIC_TITLE,
-            hint: constants.OUTBOUND_CALLS_METRIC_HINT,
-        },
-        {
-            title: constants.UNANSWERED_INBOUND_CALLS_METRIC_TITLE,
-            hint: constants.UNANSWERED_INBOUND_CALLS_METRIC_HINT,
-        },
-        {
-            title: constants.INBOUND_MISSED_CALLS_METRIC_TITLE,
-            hint: constants.INBOUND_MISSED_CALLS_METRIC_HINT,
-        },
-        {
-            title: constants.INBOUND_ABANDONED_CALLS_METRIC_TITLE,
-            hint: constants.INBOUND_ABANDONED_CALLS_METRIC_HINT,
-        },
-    ])('should render %p LiveVoiceMetricCard', ({ title, hint }) => {
-        useFlagMock.mockImplementation((flag) => {
-            if (flag === FeatureFlagKey.ShowNewUnansweredStatuses) {
-                return true
-            }
-        })
-
-        renderComponent()
-
-        expect(LiveVoiceMetricCardMock).toHaveBeenCalledWith(
-            expect.objectContaining({
-                title,
-                hint,
-            }),
-            {},
-        )
-    })
-
-    it.each([
-        {
+            liveVoiceCalls: [],
+            isLoadingVoiceCalls: true,
             businessHours: {
                 data: {
                     timezone: 'Europe/Paris',
@@ -201,64 +109,137 @@ describe('LiveVoiceMetrics', () => {
             expectedTimezone: 'Europe/Paris',
         },
         {
+            liveVoiceCalls: liveVoiceCalls,
+            isLoadingVoiceCalls: false,
             businessHours: undefined,
             expectedTimezone: 'UTC',
         },
     ])(
-        'should call hooks with correct timezone',
-        ({ businessHours, expectedTimezone }) => {
+        'should call old config function with correct timezone',
+        ({
+            liveVoiceCalls,
+            isLoadingVoiceCalls,
+            businessHours,
+            expectedTimezone,
+        }) => {
+            useFlagMock.mockImplementation((flag) => {
+                if (flag === FeatureFlagKey.ShowNewUnansweredStatuses) {
+                    return false
+                }
+            })
+
             getBusinessHoursSettingsMock.mockReturnValue(businessHours as any)
+            getOldLiveVoiceMetricCardsMock.mockReturnValue([
+                {
+                    title: 'Metric title',
+                    hint: 'Metric hint',
+                    fetchData: () => ({
+                        data: { value: 1 },
+                        isFetching: false,
+                        isError: false,
+                    }),
+                    size: 4,
+                },
+            ])
 
             const filters = {
                 period: defaultPeriodFilter,
             }
 
-            renderComponent()
+            renderComponent({
+                liveVoiceCalls: liveVoiceCalls,
+                isLoadingVoiceCalls: isLoadingVoiceCalls,
+            })
 
-            expect(useMetricMock).toHaveBeenCalledWith(
-                voiceCallAverageWaitTimeQueryFactoryMock(
-                    filters,
-                    expectedTimezone,
-                ),
-            )
-            expect(useVoiceCallCountMetricMock).toHaveBeenCalledWith(
+            expect(getOldLiveVoiceMetricCardsMock).toHaveBeenCalledWith(
+                liveVoiceCalls,
+                isLoadingVoiceCalls,
                 filters,
                 expectedTimezone,
-                'VoiceCall.inboundCalls',
             )
-            expect(useVoiceCallCountMetricMock).toHaveBeenCalledWith(
-                filters,
-                expectedTimezone,
-                'VoiceCall.outboundCalls',
-            )
-            expect(useVoiceCallCountMetricMock).toHaveBeenCalledWith(
-                filters,
-                expectedTimezone,
-                'VoiceCall.missedCalls',
-            )
-            expect(useAverageTalkTimeMetricMock).toHaveBeenCalledWith(
-                filters,
-                expectedTimezone,
+
+            expect(LiveVoiceMetricCardMock).toHaveBeenCalledWith(
+                expect.objectContaining({
+                    title: 'Metric title',
+                    hint: 'Metric hint',
+                    fetchData: expect.any(Function),
+                    size: 4,
+                }),
+                {},
             )
         },
     )
 
-    it('should render correct calls in queue count', () => {
-        filterLiveCallsByStatusMock.mockReturnValue([{}, {}] as any)
-        renderComponent({
-            liveVoiceCalls: [{} as any],
-        })
+    it.each([
+        {
+            liveVoiceCalls: [],
+            isLoadingVoiceCalls: true,
+            businessHours: {
+                data: {
+                    timezone: 'Europe/Paris',
+                },
+            },
+            expectedTimezone: 'Europe/Paris',
+        },
+        {
+            liveVoiceCalls: liveVoiceCalls,
+            isLoadingVoiceCalls: false,
+            businessHours: undefined,
+            expectedTimezone: 'UTC',
+        },
+    ])(
+        'should call config function with correct timezone',
+        ({
+            liveVoiceCalls,
+            isLoadingVoiceCalls,
+            businessHours,
+            expectedTimezone,
+        }) => {
+            useFlagMock.mockImplementation((flag) => {
+                if (flag === FeatureFlagKey.ShowNewUnansweredStatuses) {
+                    return true
+                }
+            })
 
-        expect(LiveVoiceMetricCardMock).toHaveBeenCalledWith(
-            expect.objectContaining({
-                title: constants.CALLS_IN_QUEUE_METRIC_TITLE,
-                value: 2,
-            }),
-            {},
-        )
-        expect(filterLiveCallsByStatusMock).toHaveBeenCalledWith(
-            [{}],
-            LiveVoiceStatusFilterOption.IN_QUEUE,
-        )
-    })
+            getBusinessHoursSettingsMock.mockReturnValue(businessHours as any)
+            getLiveVoiceMetricCardsMock.mockReturnValue([
+                {
+                    title: 'Metric title',
+                    hint: 'Metric hint',
+                    fetchData: () => ({
+                        data: { value: 1 },
+                        isFetching: false,
+                        isError: false,
+                    }),
+                    size: 4,
+                },
+            ])
+
+            const filters = {
+                period: defaultPeriodFilter,
+            }
+
+            renderComponent({
+                liveVoiceCalls: liveVoiceCalls,
+                isLoadingVoiceCalls: isLoadingVoiceCalls,
+            })
+
+            expect(getLiveVoiceMetricCardsMock).toHaveBeenCalledWith(
+                liveVoiceCalls,
+                isLoadingVoiceCalls,
+                filters,
+                expectedTimezone,
+            )
+
+            expect(LiveVoiceMetricCardMock).toHaveBeenCalledWith(
+                expect.objectContaining({
+                    title: 'Metric title',
+                    hint: 'Metric hint',
+                    fetchData: expect.any(Function),
+                    size: 4,
+                }),
+                {},
+            )
+        },
+    )
 })

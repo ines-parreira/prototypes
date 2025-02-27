@@ -2,7 +2,11 @@ import { ChartArea, TooltipItem } from 'chart.js'
 import moment from 'moment'
 
 import { ReportingGranularity } from 'models/reporting/types'
-import { AggregationWindow, Period } from 'models/stat/types'
+import {
+    AggregationWindow,
+    Period,
+    WithLogicalOperator,
+} from 'models/stat/types'
 import { formatPercentage } from 'pages/common/utils/numbers'
 import { comparedPeriodString, getFormat } from 'pages/stats/common/utils'
 import { toRGBA } from 'utils'
@@ -146,4 +150,17 @@ export const highlightString = (text: string, highlight: string) => {
 
     const regex = new RegExp(`(${highlight})`, 'gi')
     return text.replace(regex, '<b>$1</b>')
+}
+
+export const isFilterEmpty = (
+    filter: number[] | WithLogicalOperator<any> | undefined,
+) => {
+    if (filter === undefined) {
+        return true
+    }
+    // TODO remove when old filters are deprecated
+    if (Array.isArray(filter)) {
+        return filter.length === 0
+    }
+    return filter.values.length === 0
 }

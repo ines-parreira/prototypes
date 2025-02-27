@@ -1,22 +1,14 @@
 import React from 'react'
 
 import { VoiceCallSegment } from 'models/reporting/cubes/VoiceCallCube'
-import { StatsFilters, WithLogicalOperator } from 'models/stat/types'
+import { StatsFilters } from 'models/stat/types'
 import { DashboardChartProps } from 'pages/stats/custom-reports/types'
+import { isFilterEmpty } from 'pages/stats/utils'
 import VoiceCallVolumeMetric from 'pages/stats/voice/components/VoiceCallVolumeMetric/VoiceCallVolumeMetric'
 import { useNewVoiceStatsFilters } from 'pages/stats/voice/hooks/useNewVoiceStatsFilters'
 import { useVoiceCallCountTrend } from 'pages/stats/voice/hooks/useVoiceCallCountTrend'
 
 import VoiceCallVolumeMetricEmpty from '../components/VoiceCallVolumeMetric/VoiceCallVolumeMetricEmpty'
-
-const isFilterEmpty = (
-    filter: number[] | WithLogicalOperator<any> | undefined,
-) => {
-    if (filter === undefined) {
-        return true
-    }
-    return filter.values.length === 0
-}
 
 type CallsCountDashboardChartProps = DashboardChartProps & {
     title: string
