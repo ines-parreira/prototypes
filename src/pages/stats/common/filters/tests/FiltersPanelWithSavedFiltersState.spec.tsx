@@ -10,6 +10,7 @@ import {
     basicYearlyHelpdeskPlan,
     HELPDESK_PRODUCT_ID,
 } from 'fixtures/productPrices'
+import { SAVEABLE_FILTERS } from 'pages/stats/common/filters/constants'
 import { FiltersPanelComponent } from 'pages/stats/common/filters/FiltersPanel'
 import { SavedFilterComponentMap } from 'pages/stats/common/filters/FiltersPanelConfig'
 import { FiltersPanelWithSavedFiltersState } from 'pages/stats/common/filters/FiltersPanelWithSavedFiltersState'
@@ -18,8 +19,6 @@ import * as statsSlice from 'state/stats/statsSlice'
 import { RootState } from 'state/types'
 import * as filtersSlice from 'state/ui/stats/filtersSlice'
 import { assumeMock, renderWithStore } from 'utils/testing'
-
-import { SAVEABLE_FILTERS } from '../constants'
 
 jest.mock('state/billing/selectors', () => ({
     __esModule: true,

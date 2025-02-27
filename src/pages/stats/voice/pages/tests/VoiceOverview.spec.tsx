@@ -22,7 +22,6 @@ import {
 import { tags } from 'fixtures/tag'
 import { user } from 'fixtures/users'
 import { LegacyStatsFilters } from 'models/stat/types'
-import { AUTO_QA_FILTER_KEYS } from 'pages/stats/common/filters/constants'
 import FiltersPanelWrapper from 'pages/stats/common/filters/FiltersPanelWrapper'
 import * as VoiceCallCallerExperienceMetric from 'pages/stats/voice/components/VoiceCallerExperienceMetric/VoiceCallCallerExperienceMetric'
 import { VoiceOverviewDownloadDataButton } from 'pages/stats/voice/components/VoiceOverviewDownloadDataButton/VoiceOverviewDownloadDataButton'
@@ -47,7 +46,6 @@ import {
 import { useVoiceCallAverageTimeTrend } from 'pages/stats/voice/hooks/useVoiceCallAverageTimeTrend'
 import { useVoiceCallCountTrend } from 'pages/stats/voice/hooks/useVoiceCallCountTrend'
 import VoiceOverview from 'pages/stats/voice/pages/VoiceOverview'
-import { VOICE_OVERVIEW_OPTIONAL_FILTERS } from 'pages/stats/voice/pages/VoiceOverviewReportConfig'
 import { AccountFeature } from 'state/currentAccount/types'
 import { fromLegacyStatsFilters } from 'state/stats/utils'
 import { RootState, StoreDispatch } from 'state/types'
@@ -261,53 +259,6 @@ describe('VoiceOverview', () => {
         expect(
             queryByText('Analytics are using EST timezone'),
         ).toBeInTheDocument()
-    })
-
-    it('should render with no default filters and with new filters panel when feature flag is enabled', () => {
-        mockFlags({ [FeatureFlagKey.AnalyticsNewFiltersVoice]: true })
-        const { queryByText, getByText } = renderVoiceOverview()
-
-        // filter buttons (default filters)
-        expect(queryByText('All integrations')).not.toBeInTheDocument()
-        expect(queryByText('1 tag')).not.toBeInTheDocument()
-        expect(queryByText('1 agent')).not.toBeInTheDocument()
-        expect(queryByText('Dec 11, 2023')).not.toBeInTheDocument()
-
-        expect(VoiceOverviewDownloadDataButtonMock).toHaveBeenCalled()
-        VOICE_OVERVIEW_OPTIONAL_FILTERS.forEach((filter) => {
-            expect(getByText(filter)).toBeInTheDocument()
-        })
-    })
-
-    it('should render new filters panel when feature flag is enabled and add Score filter', () => {
-        mockFlags({
-            [FeatureFlagKey.AnalyticsNewFiltersVoice]: true,
-        })
-        const extendedVoiceOverviewFilters = [
-            ...VOICE_OVERVIEW_OPTIONAL_FILTERS,
-        ]
-
-        const { getByText } = renderVoiceOverview()
-
-        extendedVoiceOverviewFilters.forEach((filter) => {
-            expect(getByText(filter)).toBeInTheDocument()
-        })
-    })
-
-    it('should render new filters panel when feature flag is enabled and add Resolution Completeness and Communication Skills filters', () => {
-        mockFlags({
-            [FeatureFlagKey.AnalyticsNewFiltersVoice]: true,
-        })
-        const extendedVoiceOverviewFilters = [
-            ...VOICE_OVERVIEW_OPTIONAL_FILTERS,
-            ...AUTO_QA_FILTER_KEYS,
-        ]
-
-        const { getByText } = renderVoiceOverview()
-
-        extendedVoiceOverviewFilters.forEach((filter) => {
-            expect(getByText(filter)).toBeInTheDocument()
-        })
     })
 
     it('should render Download data button', () => {
