@@ -73,6 +73,8 @@ const maxDiscountInput = (): HTMLInputElement =>
 
 describe('<SalesSettings />', () => {
     beforeEach(() => {
+        mockStore.clearActions()
+
         mockedUseAiAgentStoreConfigurationContext.mockReturnValue({
             storeConfiguration: { ...storeConfiguration },
             isLoading: false,
@@ -320,6 +322,27 @@ describe('<SalesSettings />', () => {
             })
         })
 
+        it('should dispatch a success message', async () => {
+            renderComponent()
+
+            await userEvent.clear(maxDiscountInput())
+            await userEvent.type(maxDiscountInput(), '2')
+            userEvent.click(
+                screen.getByRole('button', { name: 'Save Changes' }),
+            )
+
+            await waitFor(() => {
+                expect(mockStore.getActions()).toMatchObject([
+                    {
+                        payload: {
+                            message: 'AI Agent configuration saved!',
+                            status: NotificationStatus.Success,
+                        },
+                    },
+                ])
+            })
+        })
+
         it('should not call updateStoreConfiguration when there is not storeConfiguration', async () => {
             mockedUseAiAgentStoreConfigurationContext.mockReturnValue({
                 storeConfiguration: undefined,
@@ -346,7 +369,7 @@ describe('<SalesSettings />', () => {
     })
 
     describe('when user clicks on the save button with new settings and it fails', () => {
-        it('should call updateStoreConfiguration', async () => {
+        it('should dispatch an error message', async () => {
             mockUpdateStoreConfiguration.mockRejectedValue('ERROR')
 
             renderComponent()

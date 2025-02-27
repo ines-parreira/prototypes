@@ -137,6 +137,13 @@ export const SalesSettings = () => {
                         ? salesDiscountMax / 100
                         : null,
                 })
+
+                void dispatch(
+                    notify({
+                        message: 'AI Agent configuration saved!',
+                        status: NotificationStatus.Success,
+                    }),
+                )
             }
         } catch {
             void dispatch(
