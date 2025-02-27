@@ -227,7 +227,7 @@
         "@babel/preset-react": "^7.23.3",
         "@babel/preset-typescript": "^7.23.3",
         "@codecov/webpack-plugin": "^0.0.1-beta.6",
-        "@gorgias/config": "0.2.3",
+        "@gorgias/config": "^0.2.4",
         "@gorgias/static-analysis": "0.3.0",
         "@jest/expect": "^29.7.0",
         "@redux-devtools/extension": "3.1.0",
