@@ -26,12 +26,16 @@ exports[`<InfobarCustomerInfo/> should render basic customer info and empty widg
           </span>
         </div>
       </div>
-      <a
-        class="displayName"
-        to="/app/customer/1"
+      <div
+        class="customerLink"
       >
-        foo
-      </a>
+        <a
+          class="displayName"
+          to="/app/customer/1"
+        >
+          foo
+        </a>
+      </div>
     </div>
     <div
       class="detail"
@@ -79,12 +83,16 @@ exports[`<InfobarCustomerInfo/> sources render basic customer info and widgets b
           </span>
         </div>
       </div>
-      <a
-        class="displayName"
-        to="/app/customer/1"
+      <div
+        class="customerLink"
       >
-        foo
-      </a>
+        <a
+          class="displayName"
+          to="/app/customer/1"
+        >
+          foo
+        </a>
+      </div>
     </div>
     <div
       class="detail"

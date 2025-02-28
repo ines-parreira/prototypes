@@ -2,10 +2,12 @@ import React, { ComponentProps } from 'react'
 
 import { render, screen } from '@testing-library/react'
 import { fromJS } from 'immutable'
+import { mockFlags } from 'jest-launchdarkly-mock'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
+import { FeatureFlagKey } from 'config/featureFlags'
 import {
     BIGCOMMERCE_INTEGRATION_TYPE,
     HTTP_INTEGRATION_TYPE,
@@ -28,6 +30,9 @@ jest.mock('../AddAppSuggestion', () => () => <div>Add app</div>)
 jest.mock('../CustomerFields', () => () => <div>CustomerFields</div>)
 jest.mock('../InfobarWidgets/InfobarWidgets', () => () => (
     <div>InfobarWidgets</div>
+))
+jest.mock('../CustomerOptionsDropdown', () => () => (
+    <div>CustomerOptionsDropdown</div>
 ))
 
 const mockedCustomerTimelineButton = assumeMock(CustomerTimelineButton)
@@ -53,6 +58,9 @@ describe('<InfobarCustomerInfo/>', () => {
         mockedCustomerTimelineButton.mockImplementation(() => (
             <div>Customer timeline</div>
         ))
+        mockFlags({
+            [FeatureFlagKey.ShopifyCustomerProfileCreation]: false,
+        })
     })
 
     it('should not render because there is no passed customer', () => {
@@ -297,5 +305,18 @@ describe('<InfobarCustomerInfo/>', () => {
         )
 
         expect(screen.getByText('Add app'))
+    })
+
+    it('should display the button `Edit Customer` because the flag is on', () => {
+        mockFlags({
+            [FeatureFlagKey.ShopifyCustomerProfileCreation]: true,
+        })
+        render(
+            <Provider store={store}>
+                <InfobarCustomerInfo {...minProps} />
+            </Provider>,
+        )
+
+        expect(screen.getByText('CustomerOptionsDropdown')).toBeInTheDocument()
     })
 })

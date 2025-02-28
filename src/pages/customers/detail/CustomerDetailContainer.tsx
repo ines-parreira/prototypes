@@ -1,11 +1,13 @@
 import React, { useEffect, useMemo, useState } from 'react'
 
 import { fromJS, List } from 'immutable'
+import { useFlags } from 'launchdarkly-react-client-sdk'
 import _pick from 'lodash/pick'
 import { connect, ConnectedProps } from 'react-redux'
 import { useParams } from 'react-router-dom'
 
 import { TicketChannel } from 'business/types/ticket'
+import { FeatureFlagKey } from 'config/featureFlags'
 import useAppSelector from 'hooks/useAppSelector'
 import { RecentItems } from 'hooks/useRecentItems/constants'
 import useRecentItems from 'hooks/useRecentItems/useRecentItems'
@@ -53,6 +55,8 @@ export const CustomerDetailContainer = ({
     const { setRecentItem } = useRecentItems<PickedCustomer>(
         RecentItems.Customers,
     )
+    const shopifyCustomerProfileCreationFeatureEnabled =
+        useFlags()[FeatureFlagKey.ShopifyCustomerProfileCreation]
 
     useEffect(() => {
         if (activeCustomer.get('id')) {
@@ -105,9 +109,11 @@ export const CustomerDetailContainer = ({
                         buttonProps={{ intent: 'secondary' }}
                         to={createTicketOptions}
                     />
-                    <Button onClick={() => setIsCustomerFormOpen(true)}>
-                        Edit customer
-                    </Button>
+                    {!shopifyCustomerProfileCreationFeatureEnabled && (
+                        <Button onClick={() => setIsCustomerFormOpen(true)}>
+                            Edit customer
+                        </Button>
+                    )}
                 </div>
             </div>
 

@@ -3,8 +3,10 @@ import React, { useEffect, useMemo, useState } from 'react'
 import classnames from 'classnames'
 import Clipboard from 'clipboard'
 import { fromJS, List, Map } from 'immutable'
+import { useFlags } from 'launchdarkly-react-client-sdk'
 import { Link } from 'react-router-dom'
 
+import { FeatureFlagKey } from 'config/featureFlags'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import { IntegrationType } from 'models/integration/types'
@@ -27,6 +29,7 @@ import AddAppSuggestion from './AddAppSuggestion'
 import CustomerChannels from './CustomerChannels'
 import CustomerFields from './CustomerFields'
 import CustomerNote from './CustomerNote'
+import CustomerOptionsDropdownButton from './CustomerOptionsDropdown'
 import InfobarWidgets from './InfobarWidgets/InfobarWidgets'
 
 type GenerateButtonProps = {
@@ -93,6 +96,9 @@ const InfobarCustomerInfo = ({
     )
 
     const [isInitialized, setIsInitialized] = useState(false)
+
+    const shopifyCustomerProfileCreationFeatureEnabled =
+        useFlags()[FeatureFlagKey.ShopifyCustomerProfileCreation]
 
     let clipboard: Maybe<Clipboard> = null
 
@@ -246,12 +252,21 @@ const InfobarCustomerInfo = ({
                         url={customer.getIn(['meta', 'profile_picture_url'])}
                         size={36}
                     />
-                    <Link
-                        to={`/app/customer/${customer.get('id') as string}`}
-                        className={css.displayName}
-                    >
-                        {getDisplayName(customer)}
-                    </Link>
+                    <div className={css.customerLink}>
+                        <Link
+                            to={`/app/customer/${customer.get('id') as string}`}
+                            className={css.displayName}
+                        >
+                            {getDisplayName(customer)}
+                        </Link>
+                    </div>
+                    {shopifyCustomerProfileCreationFeatureEnabled && (
+                        <div className={css.customerOptions}>
+                            <CustomerOptionsDropdownButton
+                                activeCustomer={customer}
+                            />
+                        </div>
+                    )}
                 </div>
                 <div className={css.detail}>
                     <CustomerFields customerId={Number(customer.get('id'))} />
