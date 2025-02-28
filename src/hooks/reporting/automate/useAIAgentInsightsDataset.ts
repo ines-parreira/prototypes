@@ -485,10 +485,15 @@ export const useCustomerSatisfactionPerIntent = (
         }
     })
 
+    enrichedCsatPerIntentData = enrichedCsatPerIntentData?.filter(
+        (item) =>
+            !!item[TicketCustomFieldsDimension.TicketCustomFieldsValueString],
+    )
+
     if (intentId && enrichedCsatPerIntentData) {
         enrichedCsatPerIntentData = enrichedCsatPerIntentData.filter((item) =>
             item[
-                TicketCustomFieldsDimension?.TicketCustomFieldsValueString
+                TicketCustomFieldsDimension.TicketCustomFieldsValueString
             ]?.startsWith(intentId),
         )
     }

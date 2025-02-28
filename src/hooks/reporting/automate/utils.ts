@@ -741,7 +741,7 @@ export const filterMetricDataByIntentLevel = ({
     resultKey,
     metricFor,
 }: {
-    metricData: Record<string, any>[]
+    metricData: Record<string, unknown>[]
     level: number
     intentKey: string
     valueKey: string
@@ -751,7 +751,7 @@ export const filterMetricDataByIntentLevel = ({
 }) => {
     const adjustedData: Record<string, { sum: number; length: number }> = {}
     metricData.forEach((item) => {
-        const intent = getIntentByLevel(item[intentKey], level)
+        const intent = getIntentByLevel(String(item[intentKey]), level)
         if (!adjustedData[intent]) {
             adjustedData[intent] = {
                 sum: 0,
