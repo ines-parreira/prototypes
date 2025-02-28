@@ -17,6 +17,8 @@ import {
     updateOnboardingData,
 } from 'models/aiAgent/resources/configuration'
 import { ChannelsStep } from 'pages/aiAgent/Onboarding/components/steps/ChannelsStep/ChannelsStep'
+import { usePreselectedChat } from 'pages/aiAgent/Onboarding/components/steps/ChannelsStep/hooks/usePreselectedChat'
+import { usePreselectedEmails } from 'pages/aiAgent/Onboarding/components/steps/ChannelsStep/hooks/usePreselectedEmails'
 import { DiscountStrategy } from 'pages/aiAgent/Onboarding/components/steps/PersonalityStep/DiscountStrategy'
 import { PersuasionLevel } from 'pages/aiAgent/Onboarding/components/steps/PersonalityStep/PersuasionLevel'
 import { StepProps } from 'pages/aiAgent/Onboarding/components/steps/types'
@@ -25,7 +27,7 @@ import { useShopifyIntegrationAndScope } from 'pages/common/hooks/useShopifyInte
 import { notify } from 'state/notifications/actions'
 import { NotificationStatus } from 'state/notifications/types'
 import { RootState, StoreDispatch } from 'state/types'
-import { renderWithRouter } from 'utils/testing'
+import { assumeMock, renderWithRouter } from 'utils/testing'
 
 const mockStore = configureMockStore<RootState, StoreDispatch>()
 
@@ -64,6 +66,15 @@ jest.mock('models/aiAgent/resources/configuration', () => ({
 
 const mockGetOnboardingData = getOnboardingData as jest.Mock
 const mockUpdateOnboardingData = updateOnboardingData as jest.Mock
+
+jest.mock(
+    'pages/aiAgent/Onboarding/components/steps/ChannelsStep/hooks/usePreselectedChat',
+)
+const usePreselectedChatMock = assumeMock(usePreselectedChat)
+jest.mock(
+    'pages/aiAgent/Onboarding/components/steps/ChannelsStep/hooks/usePreselectedEmails',
+)
+const usePreselectedEmailsMock = assumeMock(usePreselectedEmails)
 
 const queryClient = new QueryClient()
 
@@ -569,6 +580,8 @@ describe('ChannelsStep - With preloaded data', () => {
     })
 
     it('should allow navigating to next step when isDirty is false', async () => {
+        usePreselectedChatMock.mockReturnValue([3])
+        usePreselectedEmailsMock.mockReturnValue([5])
         // ✅ Mock getOnboardingData function
         mockGetOnboardingData.mockResolvedValue(
             Promise.resolve([

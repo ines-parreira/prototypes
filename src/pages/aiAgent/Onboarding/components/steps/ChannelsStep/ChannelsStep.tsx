@@ -27,6 +27,8 @@ import {
     ChannelsFormValues,
     useChannelsSchema,
 } from 'pages/aiAgent/Onboarding/components/steps/ChannelsStep/hooks/useChannelsSchema'
+import { usePreselectedChat } from 'pages/aiAgent/Onboarding/components/steps/ChannelsStep/hooks/usePreselectedChat'
+import { usePreselectedEmails } from 'pages/aiAgent/Onboarding/components/steps/ChannelsStep/hooks/usePreselectedEmails'
 import { createChatConfiguration } from 'pages/aiAgent/Onboarding/components/steps/ChannelsStep/utils/createGorgiasConfiguration'
 import { StepProps } from 'pages/aiAgent/Onboarding/components/steps/types'
 import useCheckOnboardingCompleted from 'pages/aiAgent/Onboarding/hooks/useCheckOnboardingCompleted'
@@ -45,7 +47,9 @@ import {
     chatPreviewSettings,
 } from 'pages/aiAgent/Onboarding/settings'
 import { AiAgentScopes, WizardStepEnum } from 'pages/aiAgent/Onboarding/types'
-import useSelfServiceChatChannels from 'pages/automate/common/hooks/useSelfServiceChatChannels'
+import useSelfServiceChatChannels, {
+    SelfServiceChatChannel,
+} from 'pages/automate/common/hooks/useSelfServiceChatChannels'
 import AIBanner from 'pages/common/components/AIBanner/AIBanner'
 import CheckBox from 'pages/common/forms/CheckBox'
 import ColorField from 'pages/common/forms/ColorField'
@@ -144,16 +148,35 @@ export const ChannelsStep: React.FC<StepProps> = ({
         GORGIAS_CHAT_DEFAULT_COLOR,
     )
 
+    const chatChannels: SelfServiceChatChannel[] = useMemo(() => {
+        return chatIntegrations.map((channel) => ({
+            ...channel,
+            value: {
+                ...channel.value,
+                isDisabled: usedChatChannels.includes(channel.value.id),
+            },
+        }))
+    }, [chatIntegrations, usedChatChannels])
+
     const createNewChat = chatIntegrations.length === 0
 
     const schema = useChannelsSchema(createNewChat)
 
+    const preselectedEmails = usePreselectedEmails({
+        storeId: storeIntegration.id,
+        onboardingEmailIntegrationIds: data?.emailIntegrationIds,
+    })
+    const preselectedChats = usePreselectedChat({
+        chatChannels,
+        onboardingChatIntegrationIds: data?.chatIntegrationIds,
+    })
+
     const methods = useForm<ChannelsFormValues>({
         values: {
             emailChannelEnabled: !!data?.emailIntegrationIds?.length,
-            emailIntegrationIds: data?.emailIntegrationIds ?? [],
+            emailIntegrationIds: preselectedEmails,
             chatChannelEnabled: !!data?.chatIntegrationIds?.length,
-            chatIntegrationIds: data?.chatIntegrationIds ?? [],
+            chatIntegrationIds: preselectedChats,
         },
         mode: 'onChange',
         resolver: zodResolver(schema),
@@ -186,16 +209,6 @@ export const ChannelsStep: React.FC<StepProps> = ({
             isDisabled: usedEmailIntegrations.includes(integration.id),
         }))
     }, [emailIntegrations, usedEmailIntegrations])
-
-    const chatChannels = useMemo(() => {
-        return chatIntegrations.map((channel) => ({
-            ...channel,
-            value: {
-                ...channel.value,
-                isDisabled: usedChatChannels.includes(channel.value.id),
-            },
-        }))
-    }, [chatIntegrations, usedChatChannels])
 
     // Handle selection change and update cache
     const handleUpdate = (field: keyof ChannelsFormValues, value: any) => {
