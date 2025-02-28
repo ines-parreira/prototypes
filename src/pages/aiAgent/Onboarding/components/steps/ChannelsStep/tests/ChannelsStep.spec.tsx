@@ -134,9 +134,9 @@ describe('ChannelsStep - Empty state', () => {
         jest.runAllTimers()
 
         // Components are rendered
-        expect(screen.getByText(title)).toBeInTheDocument()
-
         await waitFor(() => {
+            expect(screen.getByText(title)).toBeInTheDocument()
+
             expect(
                 screen.getByText(
                     'Enable your AI Agent to respond to customers via email.',
@@ -150,40 +150,64 @@ describe('ChannelsStep - Empty state', () => {
 
         jest.runAllTimers()
 
-        expect(
-            screen.getByText(
-                'Enable your AI Agent to respond to customers via email.',
-            ),
-        ).toBeInTheDocument()
-        expect(
-            screen.getByText(
-                'Enable your AI Agent to respond to customers via chat.',
-            ),
-        ).toBeInTheDocument()
+        await waitFor(() => {
+            expect(
+                screen.getByText(
+                    'Enable your AI Agent to respond to customers via email.',
+                ),
+            ).toBeInTheDocument()
+            expect(
+                screen.getByText(
+                    'Enable your AI Agent to respond to customers via chat.',
+                ),
+            ).toBeInTheDocument()
+        })
 
         // Setup email
+        const emailContainer = screen.getByText(
+            'Enable your AI Agent to respond to customers via email.',
+        )
+        userEvent.click(emailContainer)
+
         const emailCheckbox = screen.getByLabelText('Email')
         userEvent.click(emailCheckbox)
-        expect(emailCheckbox).toBeChecked()
 
-        expect(
-            screen.queryByText(/AI agent will respond to the following emails/),
-        ).toBeInTheDocument()
+        await waitFor(() => {
+            expect(
+                screen.queryByText(
+                    /AI agent will respond to the following emails/,
+                ),
+            ).toBeInTheDocument()
+        })
 
+        const emailDropdown = screen.getByText(
+            'Select one or more email addresses',
+        )
+        userEvent.click(emailDropdown)
         fireEvent.focus(screen.getByText('Select one or more email addresses'))
         userEvent.click(screen.getByText('support@acme.gorgias.io'))
 
         // Setup chat
+        const chatContainer = screen.getByText(
+            'Enable your AI Agent to respond to customers via chat.',
+        )
+        userEvent.click(chatContainer)
+
         const chatCheckbox = screen.getByLabelText('Chat')
         userEvent.click(chatCheckbox)
-        expect(chatCheckbox).toBeChecked()
 
-        expect(
-            screen.queryByText(
-                /AI Agent responds to tickets sent to the following Chats/,
-            ),
-        ).toBeInTheDocument()
+        await waitFor(() => {
+            expect(
+                screen.queryByText(
+                    /AI Agent responds to tickets sent to the following Chats/,
+                ),
+            ).toBeInTheDocument()
+        })
 
+        const chatDropdown = screen.getByText(
+            'Select one or more chat integrations',
+        )
+        userEvent.click(chatDropdown)
         fireEvent.focus(
             screen.getByText('Select one or more chat integrations'),
         )
@@ -195,7 +219,6 @@ describe('ChannelsStep - Empty state', () => {
 
         jest.runAllTimers()
 
-        // Wait for goToStep to be called
         await waitFor(() => {
             expect(defaultProps.goToStep).toHaveBeenCalledWith(
                 WizardStepEnum.PERSONALITY_PREVIEW,
@@ -209,18 +232,20 @@ describe('ChannelsStep - Empty state', () => {
         jest.runAllTimers()
 
         // Components are rendered
-        expect(screen.getByText(title)).toBeInTheDocument()
+        await waitFor(() => {
+            expect(screen.getByText(title)).toBeInTheDocument()
 
-        expect(
-            screen.getByText(
-                'Enable your AI Agent to respond to customers via email.',
-            ),
-        ).toBeInTheDocument()
-        expect(
-            screen.getByText(
-                'Enable your AI Agent to respond to customers via chat.',
-            ),
-        ).toBeInTheDocument()
+            expect(
+                screen.getByText(
+                    'Enable your AI Agent to respond to customers via email.',
+                ),
+            ).toBeInTheDocument()
+            expect(
+                screen.getByText(
+                    'Enable your AI Agent to respond to customers via chat.',
+                ),
+            ).toBeInTheDocument()
+        })
 
         expect(screen.getByLabelText('Chat')).not.toBeChecked()
         expect(screen.getByLabelText('Email')).not.toBeChecked()
@@ -247,23 +272,33 @@ describe('ChannelsStep - Empty state', () => {
         jest.runAllTimers()
 
         // Components are rendered
-        expect(screen.getByText(title)).toBeInTheDocument()
+        await waitFor(() => {
+            expect(screen.getByText(title)).toBeInTheDocument()
 
-        expect(
-            screen.getByText(
-                'Enable your AI Agent to respond to customers via email.',
-            ),
-        ).toBeInTheDocument()
-        expect(
-            screen.getByText(
-                'Enable your AI Agent to respond to customers via chat.',
-            ),
-        ).toBeInTheDocument()
+            expect(
+                screen.getByText(
+                    'Enable your AI Agent to respond to customers via email.',
+                ),
+            ).toBeInTheDocument()
+            expect(
+                screen.getByText(
+                    'Enable your AI Agent to respond to customers via chat.',
+                ),
+            ).toBeInTheDocument()
+        })
 
         // Setup email
-        const emailCheckbox = screen.getByLabelText('Email')
+        const emailCheckbox = screen.getByText(
+            'Enable your AI Agent to respond to customers via email.',
+        )
         userEvent.click(emailCheckbox)
-        expect(emailCheckbox).toBeChecked()
+        await waitFor(() => {
+            expect(
+                screen.queryByText(
+                    /AI agent will respond to the following emails/,
+                ),
+            ).toBeInTheDocument()
+        })
 
         // Click on next button
         const nextButton = screen.getByText('Next')
@@ -285,23 +320,33 @@ describe('ChannelsStep - Empty state', () => {
         jest.runAllTimers()
 
         // Components are rendered
-        expect(screen.getByText(title)).toBeInTheDocument()
+        await waitFor(() => {
+            expect(screen.getByText(title)).toBeInTheDocument()
 
-        expect(
-            screen.getByText(
-                'Enable your AI Agent to respond to customers via email.',
-            ),
-        ).toBeInTheDocument()
-        expect(
-            screen.getByText(
-                'Enable your AI Agent to respond to customers via chat.',
-            ),
-        ).toBeInTheDocument()
+            expect(
+                screen.getByText(
+                    'Enable your AI Agent to respond to customers via email.',
+                ),
+            ).toBeInTheDocument()
+            expect(
+                screen.getByText(
+                    'Enable your AI Agent to respond to customers via chat.',
+                ),
+            ).toBeInTheDocument()
+        })
 
         // Setup chat
-        const chatCheckbox = screen.getByLabelText('Chat')
+        const chatCheckbox = screen.getByText(
+            'Enable your AI Agent to respond to customers via chat.',
+        )
         userEvent.click(chatCheckbox)
-        expect(chatCheckbox).toBeChecked()
+        await waitFor(() => {
+            expect(
+                screen.queryByText(
+                    /AI Agent responds to tickets sent to the following Chats/,
+                ),
+            ).toBeInTheDocument()
+        })
 
         // Click on next button
         const nextButton = screen.getByText('Next')
@@ -332,27 +377,32 @@ describe('ChannelsStep - Empty state', () => {
         jest.runAllTimers()
 
         // Components are rendered
-        expect(screen.getByText(title)).toBeInTheDocument()
+        await waitFor(() => {
+            expect(screen.getByText(title)).toBeInTheDocument()
 
-        expect(
-            screen.getByText(
-                'Enable your AI Agent to respond to customers via email.',
-            ),
-        ).toBeInTheDocument()
-        expect(
-            screen.getByText(
-                'Enable your AI Agent to respond to customers via chat.',
-            ),
-        ).toBeInTheDocument()
+            expect(
+                screen.getByText(
+                    'Enable your AI Agent to respond to customers via email.',
+                ),
+            ).toBeInTheDocument()
+            expect(
+                screen.getByText(
+                    'Enable your AI Agent to respond to customers via chat.',
+                ),
+            ).toBeInTheDocument()
+        })
 
         // Setup chat
-        const chatCheckbox = screen.getByLabelText('Chat')
+        const chatCheckbox = screen.getByText(
+            'Enable your AI Agent to respond to customers via chat.',
+        )
         userEvent.click(chatCheckbox)
-        expect(chatCheckbox).toBeChecked()
 
-        expect(
-            screen.queryByText(/Personalize your Chat widget/),
-        ).toBeInTheDocument()
+        await waitFor(() => {
+            expect(
+                screen.queryByText(/Personalize your Chat widget/),
+            ).toBeInTheDocument()
+        })
 
         // Click on next button
         const nextButton = screen.getByText('Next')
@@ -384,14 +434,27 @@ describe('ChannelsStep - Empty state', () => {
 
         jest.runAllTimers()
 
-        // Setup chat
-        const chatCheckbox = screen.getByLabelText('Chat')
-        userEvent.click(chatCheckbox)
-        expect(chatCheckbox).toBeChecked()
+        // Components are rendered
+        await waitFor(() => {
+            expect(screen.getByText(title)).toBeInTheDocument()
 
-        expect(
-            screen.queryByText(/Personalize your Chat widget/),
-        ).toBeInTheDocument()
+            expect(
+                screen.getByText(
+                    'Enable your AI Agent to respond to customers via email.',
+                ),
+            ).toBeInTheDocument()
+        })
+
+        // Setup chat
+        const chatCheckbox = screen.getByText(
+            'Enable your AI Agent to respond to customers via chat.',
+        )
+        userEvent.click(chatCheckbox)
+        await waitFor(() => {
+            expect(
+                screen.queryByText(/Personalize your Chat widget/),
+            ).toBeInTheDocument()
+        })
 
         // Click on next button
         const nextButton = screen.getByText('Next')
@@ -409,7 +472,7 @@ describe('ChannelsStep - Empty state', () => {
         })
     })
 
-    it('handles no store', () => {
+    it('handles no store', async () => {
         mockedDispatch.mockImplementationOnce(() => Promise.resolve())
 
         renderWithProvider()
@@ -417,9 +480,17 @@ describe('ChannelsStep - Empty state', () => {
         jest.runAllTimers()
 
         // Setup chat
-        const chatCheckbox = screen.getByLabelText('Chat')
+        const chatCheckbox = screen.getByText(
+            'Enable your AI Agent to respond to customers via chat.',
+        )
         userEvent.click(chatCheckbox)
-        expect(chatCheckbox).toBeChecked()
+        await waitFor(() => {
+            expect(
+                screen.queryByText(
+                    /AI Agent responds to tickets sent to the following Chats/,
+                ),
+            ).toBeInTheDocument()
+        })
 
         // Click on next button
         const nextButton = screen.getByText('Next')

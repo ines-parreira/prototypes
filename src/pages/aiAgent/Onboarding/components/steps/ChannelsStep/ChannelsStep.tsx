@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from 'react'
+import React, { useMemo, useRef, useState } from 'react'
 
 import { zodResolver } from '@hookform/resolvers/zod'
 import { fromJS } from 'immutable'
@@ -65,6 +65,9 @@ export const ChannelsStep: React.FC<StepProps> = ({
     totalSteps,
     goToStep,
 }) => {
+    const chatDropdownRef = useRef<HTMLDivElement | null>(null)
+    const emailDropdownRef = useRef<HTMLDivElement | null>(null)
+
     const { shopName } = useParams<{ shopName: string }>()
 
     const { validSteps } = useSteps({ shopName })
@@ -281,17 +284,28 @@ export const ChannelsStep: React.FC<StepProps> = ({
 
                 {data?.scopes.includes(AiAgentScopes.SUPPORT) && (
                     <>
-                        <Card className={css.card}>
+                        <Card
+                            className={css.card}
+                            onClick={(event) => {
+                                // Check if click happened inside the dropdown
+                                if (
+                                    emailDropdownRef.current?.contains(
+                                        event.target as Node,
+                                    )
+                                ) {
+                                    return // Do nothing if the dropdown was clicked
+                                }
+                                handleUpdate(
+                                    'emailChannelEnabled',
+                                    !emailChannelEnabled,
+                                )
+                            }}
+                        >
                             <CardContent>
                                 <CheckBox
                                     isChecked={emailChannelEnabled}
                                     className={css.checkbox}
-                                    onChange={(nextValue) =>
-                                        handleUpdate(
-                                            'emailChannelEnabled',
-                                            nextValue,
-                                        )
-                                    }
+                                    onClick={(event) => event.stopPropagation()}
                                 >
                                     Email
                                 </CheckBox>
@@ -300,7 +314,7 @@ export const ChannelsStep: React.FC<StepProps> = ({
                                     via email.
                                 </p>
                                 {emailChannelEnabled && (
-                                    <>
+                                    <div ref={emailDropdownRef}>
                                         <Label
                                             isRequired={true}
                                             className={css.label}
@@ -334,7 +348,7 @@ export const ChannelsStep: React.FC<StepProps> = ({
                                             Don’t see the email you want? Click
                                             here
                                         </a>
-                                    </>
+                                    </div>
                                 )}
                             </CardContent>
                         </Card>
@@ -342,14 +356,25 @@ export const ChannelsStep: React.FC<StepProps> = ({
                     </>
                 )}
 
-                <Card className={css.card}>
+                <Card
+                    className={css.card}
+                    onClick={(event) => {
+                        // Check if click happened inside the dropdown
+                        if (
+                            chatDropdownRef.current?.contains(
+                                event.target as Node,
+                            )
+                        ) {
+                            return // Do nothing if the dropdown was clicked
+                        }
+                        handleUpdate('chatChannelEnabled', !chatChannelEnabled)
+                    }}
+                >
                     <CardContent>
                         <CheckBox
                             isChecked={chatChannelEnabled}
                             className={css.checkbox}
-                            onChange={(nextValue) =>
-                                handleUpdate('chatChannelEnabled', nextValue)
-                            }
+                            onClick={(event) => event.stopPropagation()}
                         >
                             Chat
                         </CheckBox>
@@ -371,14 +396,14 @@ export const ChannelsStep: React.FC<StepProps> = ({
                                         </p>
                                         <ColorField
                                             value={newChatColor}
-                                            onChange={(nextValue) => {
+                                            onChange={(nextValue) =>
                                                 setNewChatColor(nextValue)
-                                            }}
+                                            }
                                             label="Pick your main color"
                                         />
                                     </>
                                 ) : (
-                                    <>
+                                    <div ref={chatDropdownRef}>
                                         <Label
                                             isRequired={true}
                                             className={css.label}
@@ -408,7 +433,7 @@ export const ChannelsStep: React.FC<StepProps> = ({
                                             isDisabled={false}
                                             withDisabledText
                                         />
-                                    </>
+                                    </div>
                                 )}
                             </>
                         )}
