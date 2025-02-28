@@ -1,6 +1,7 @@
 import { HelpdeskMessageMember } from 'models/reporting/cubes/HelpdeskMessageCube'
 import { TicketMember } from 'models/reporting/cubes/TicketCube'
 import {
+    addFieldIdToCustomFieldValues,
     addOptionalFilter,
     FilterOperatorMap,
     getCustomFieldValueSerializer,
@@ -506,5 +507,22 @@ describe('utils', () => {
         expect(isAggregationWindowFilter(ReportingGranularity.Second)).toEqual(
             false,
         )
+    })
+
+    describe('addFieldIdToCustomFieldValues', () => {
+        it('should return an empty array when customFieldsValueStrings is null', () => {
+            const result = addFieldIdToCustomFieldValues(123, null)
+            expect(result).toEqual([])
+        })
+
+        it('should return an array with custom field IDs added to each value', () => {
+            const customFieldId = 123
+            const customFieldsValueStrings = ['value1', 'value2']
+            const result = addFieldIdToCustomFieldValues(
+                customFieldId,
+                customFieldsValueStrings,
+            )
+            expect(result).toEqual(['123::value1', '123::value2'])
+        })
     })
 })

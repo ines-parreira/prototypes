@@ -134,8 +134,8 @@ describe('Level2IntentsPerformance', () => {
         const metrics = componentProps.metrics
 
         expect(
-            metrics[1]?.drillDownMetricAdditionalData?.customFieldId,
-        ).toBeNull()
+            metrics[1]?.drillDownMetricAdditionalData?.intentFieldId,
+        ).toBeUndefined()
     })
 
     it('handles fetching state', () => {

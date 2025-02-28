@@ -467,8 +467,9 @@ describe('customFieldsTicketCountQueryFactory', () => {
         }
 
         const mockTimezone = 'UTC'
-        const mockCustomFieldId = '123'
-        const mockCustomFieldsValueStrings = ['value1', 'value2']
+        const mockIntentFieldId = 123
+        const mockIntentFieldsValueStrings = ['value1', 'value2']
+        const mockOutcomeFieldId = 456
         const mockCustomFieldPeriod = mockFilters.period
         const mockSorting = OrderDirection.Desc
 
@@ -477,8 +478,9 @@ describe('customFieldsTicketCountQueryFactory', () => {
                 customFieldsTicketCountPerIntentLevelPerTicketDrillDownQueryFactory(
                     mockFilters,
                     mockTimezone,
-                    mockCustomFieldId,
-                    mockCustomFieldsValueStrings,
+                    mockIntentFieldId,
+                    mockIntentFieldsValueStrings,
+                    mockOutcomeFieldId,
                     mockCustomFieldPeriod,
                     mockSorting,
                 )
@@ -509,14 +511,18 @@ describe('customFieldsTicketCountQueryFactory', () => {
                         values: ['2023-01-31T23:59:59.000'],
                     },
                     {
-                        member: 'TicketCustomFieldsEnriched.customFieldId',
+                        member: 'TicketEnriched.totalCustomFieldIdsToMatch',
                         operator: 'equals',
-                        values: [mockCustomFieldId],
+                        values: ['2'],
                     },
                     {
-                        member: 'TicketCustomFieldsEnriched.valueString',
+                        member: 'TicketEnriched.customField',
                         operator: 'startsWith',
-                        values: mockCustomFieldsValueStrings,
+                        values: [
+                            `${mockIntentFieldId}::${mockIntentFieldsValueStrings[0]}`,
+                            `${mockIntentFieldId}::${mockIntentFieldsValueStrings[1]}`,
+                            `${mockOutcomeFieldId}::`,
+                        ],
                     },
                     {
                         member: 'TicketCustomFieldsEnriched.customFieldUpdatedDatetime',
@@ -542,8 +548,9 @@ describe('customFieldsTicketCountQueryFactory', () => {
                 customFieldsTicketCountPerIntentLevelPerTicketDrillDownQueryFactory(
                     mockFilters,
                     mockTimezone,
-                    mockCustomFieldId,
+                    mockIntentFieldId,
                     null,
+                    mockOutcomeFieldId,
                     mockCustomFieldPeriod,
                     mockSorting,
                 )
@@ -564,8 +571,9 @@ describe('customFieldsTicketCountQueryFactory', () => {
                 customFieldsTicketCountPerIntentLevelPerTicketDrillDownQueryFactory(
                     mockFilters,
                     mockTimezone,
-                    mockCustomFieldId,
-                    mockCustomFieldsValueStrings,
+                    mockIntentFieldId,
+                    mockIntentFieldsValueStrings,
+                    mockOutcomeFieldId,
                     mockCustomFieldPeriod,
                 )
 

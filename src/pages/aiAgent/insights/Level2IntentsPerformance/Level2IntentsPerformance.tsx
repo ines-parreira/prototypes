@@ -31,7 +31,8 @@ export const Level2IntentsPerformance = () => {
     })
 
     const aiAgentUserId = useAIAgentUserId()
-    const { intentCustomFieldId } = useGetCustomTicketsFieldsDefinitionData()
+    const { intentCustomFieldId, outcomeCustomFieldId } =
+        useGetCustomTicketsFieldsDefinitionData()
 
     return (
         <IntentsPerformance
@@ -58,8 +59,9 @@ export const Level2IntentsPerformance = () => {
                     drillDownMetric:
                         AIInsightsMetric.TicketCustomFieldsTicketCount,
                     drillDownMetricAdditionalData: {
-                        customFieldValue: [intentId],
-                        customFieldId: intentCustomFieldId ?? null,
+                        intentFieldValues: [intentId],
+                        intentFieldId: intentCustomFieldId,
+                        outcomeFieldId: outcomeCustomFieldId,
                     },
                 },
                 {

@@ -378,3 +378,15 @@ export const injectDrillDownCustomFieldId = (
 
     return filters
 }
+
+export const addFieldIdToCustomFieldValues = (
+    customFieldId: number,
+    customFieldsValueStrings: string[] | null,
+): string[] => {
+    if (customFieldsValueStrings === null) {
+        return []
+    }
+    return customFieldsValueStrings.map(
+        getCustomFieldValueSerializer(customFieldId),
+    )
+}

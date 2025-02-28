@@ -13,6 +13,7 @@ import {
 import { TicketSatisfactionSurveyDimension } from 'models/reporting/cubes/TicketSatisfactionSurveyCube'
 import { customerSatisfactionMetricPerAgentQueryFactory } from 'models/reporting/queryFactories/support-performance/customerSatisfaction'
 import {
+    addFieldIdToCustomFieldValues,
     deduplicateCustomFields,
     injectDrillDownCustomFieldId,
 } from 'models/reporting/queryFactories/utils'
@@ -123,9 +124,10 @@ export const customFieldsTicketCountPerIntentLevelPerTicketDrillDownQueryFactory
     (
         filters: StatsFilters,
         timezone: string,
-        customFieldId: string,
-        customFieldsValueStrings: string[] | null,
-        customFieldPeriod: StatsFilters['period'],
+        intentFieldId?: number | null,
+        intentFieldValues?: string[] | null,
+        outcomeFieldId?: number | null,
+        intentFiledPeriod?: StatsFilters['period'],
         sorting?: OrderDirection,
     ): ReportingQuery<HelpdeskMessageCubeWithJoins> => {
         return {
@@ -139,31 +141,41 @@ export const customFieldsTicketCountPerIntentLevelPerTicketDrillDownQueryFactory
                     filters,
                 ),
                 {
-                    member: TicketCustomFieldsMember.TicketCustomFieldsCustomFieldId,
+                    member: TicketMember.TotalCustomFieldIdsToMatch,
                     operator: ReportingFilterOperator.Equals,
-                    values: [customFieldId],
+                    values: ['2'],
                 },
-                ...(customFieldsValueStrings
+                ...(intentFieldId && intentFieldValues
                     ? [
                           {
-                              member: TicketCustomFieldsMember.TicketCustomFieldsValueString,
+                              member: TicketMember.CustomField,
                               operator: ReportingFilterOperator.StartsWith,
-                              values: customFieldsValueStrings,
+                              values: [
+                                  ...addFieldIdToCustomFieldValues(
+                                      intentFieldId,
+                                      intentFieldValues,
+                                  ),
+                                  `${outcomeFieldId}::`,
+                              ],
                           },
                       ]
                     : []),
-                {
-                    member: TicketCustomFieldsMember.TicketCustomFieldsCustomFieldUpdatedDatetime,
-                    operator: ReportingFilterOperator.InDateRange,
-                    values: [
-                        formatReportingQueryDate(
-                            customFieldPeriod.start_datetime,
-                        ),
-                        formatReportingQueryDate(
-                            customFieldPeriod.end_datetime,
-                        ),
-                    ],
-                },
+                ...(intentFiledPeriod
+                    ? [
+                          {
+                              member: TicketCustomFieldsMember.TicketCustomFieldsCustomFieldUpdatedDatetime,
+                              operator: ReportingFilterOperator.InDateRange,
+                              values: [
+                                  formatReportingQueryDate(
+                                      intentFiledPeriod.start_datetime,
+                                  ),
+                                  formatReportingQueryDate(
+                                      intentFiledPeriod.end_datetime,
+                                  ),
+                              ],
+                          },
+                      ]
+                    : []),
                 TicketDrillDownFilter,
             ],
             limit: DRILLDOWN_QUERY_LIMIT,

@@ -352,8 +352,9 @@ export const getDrillDownQuery = (
                 customFieldsTicketCountPerIntentLevelPerTicketDrillDownQueryFactory(
                     statsFilters,
                     timezone,
-                    String(metricName.customFieldId),
-                    metricName.customFieldValue,
+                    metricName.intentFieldId,
+                    metricName.intentFieldValues,
+                    metricName.outcomeFieldId,
                     metricName.dateRange || statsFilters.period,
                     sorting,
                 )

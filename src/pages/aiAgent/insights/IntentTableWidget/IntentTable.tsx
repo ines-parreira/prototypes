@@ -79,7 +79,8 @@ export const IntentTable = ({
     const isSortingLoading = useAppSelector(isSortingMetricLoading)
     const aiAgentUserId = useAIAgentUserId()
 
-    const { intentCustomFieldId } = useGetCustomTicketsFieldsDefinitionData()
+    const { intentCustomFieldId, outcomeCustomFieldId } =
+        useGetCustomTicketsFieldsDefinitionData()
 
     const { intentId } = useParams<{
         shopName: string
@@ -125,8 +126,11 @@ export const IntentTable = ({
                 return {
                     metricName: AIInsightsMetric.TicketCustomFieldsTicketCount,
                     title: intentName,
-                    customFieldValue: [intent.id],
-                    customFieldId: intentCustomFieldId ?? null,
+                    intentFieldValues: [intent.id],
+                    intentFieldId: intentCustomFieldId ?? null,
+                    outcomeFieldId: outcomeCustomFieldId ?? null,
+                    customFieldId: null,
+                    customFieldValue: null,
                 }
             case IntentTableColumn.AvgCustomerSatisfaction:
                 return {
