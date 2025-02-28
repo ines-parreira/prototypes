@@ -116,7 +116,7 @@ exports[`<GorgiasChatIntegrationPreferences/> render() should render the Chat pr
     class="pageContainer container-fluid"
   >
     <div
-      class="row"
+      class="row row"
     >
       <div
         class="col"

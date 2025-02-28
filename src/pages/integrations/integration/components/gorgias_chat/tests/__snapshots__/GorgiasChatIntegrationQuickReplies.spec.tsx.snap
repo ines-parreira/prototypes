@@ -38,7 +38,7 @@ exports[`<GorgiasChatIntegrationQuickReplies/> render() should render defaults b
     class="pageContainer container-fluid"
   >
     <div
-      class="row"
+      class="row row"
     >
       <div
         class="col"
@@ -483,7 +483,7 @@ exports[`<GorgiasChatIntegrationQuickReplies/> render() should render quick repl
     class="pageContainer container-fluid"
   >
     <div
-      class="row"
+      class="row row"
     >
       <div
         class="col"

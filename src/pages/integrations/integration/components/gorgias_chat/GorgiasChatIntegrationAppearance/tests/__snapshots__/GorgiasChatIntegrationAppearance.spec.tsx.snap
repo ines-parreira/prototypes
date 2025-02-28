@@ -36,7 +36,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
       class="pageContainer container-fluid"
     >
       <div
-        class="row"
+        class="row row"
       >
         <div
           class="col"
@@ -1423,7 +1423,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
       class="pageContainer container-fluid"
     >
       <div
-        class="row"
+        class="row row"
       >
         <div
           class="col"
@@ -2920,7 +2920,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
       class="pageContainer container-fluid"
     >
       <div
-        class="row"
+        class="row row"
       >
         <div
           class="col"
@@ -4387,7 +4387,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should mark the file field
       class="pageContainer container-fluid"
     >
       <div
-        class="row"
+        class="row row"
       >
         <div
           class="col"
@@ -5854,7 +5854,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should not mark the file f
       class="pageContainer container-fluid"
     >
       <div
-        class="row"
+        class="row row"
       >
         <div
           class="col"
@@ -7321,7 +7321,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should not mark the file f
       class="pageContainer container-fluid"
     >
       <div
-        class="row"
+        class="row row"
       >
         <div
           class="col"
@@ -8785,7 +8785,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should preselect shopify i
       class="pageContainer container-fluid"
     >
       <div
-        class="row"
+        class="row row"
       >
         <div
           class="col"
@@ -10152,7 +10152,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should render inputs for a
       class="pageContainer container-fluid"
     >
       <div
-        class="row"
+        class="row row"
       >
         <div
           class="col"
@@ -11521,7 +11521,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should render inputs for h
       class="pageContainer container-fluid"
     >
       <div
-        class="row"
+        class="row row"
       >
         <div
           class="col"
@@ -13003,7 +13003,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should submit and call the
       class="pageContainer container-fluid"
     >
       <div
-        class="row"
+        class="row row"
       >
         <div
           class="col"
@@ -14420,7 +14420,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should submit and call the
       class="pageContainer container-fluid"
     >
       <div
-        class="row"
+        class="row row"
       >
         <div
           class="col"

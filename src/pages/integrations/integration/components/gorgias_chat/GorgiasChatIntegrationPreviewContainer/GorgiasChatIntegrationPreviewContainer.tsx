@@ -15,7 +15,7 @@ const GorgiasChatIntegrationPreviewContainer = ({
     preview,
 }: Props) => (
     <Container fluid className={settingsCss.pageContainer}>
-        <Row>
+        <Row className={css.row}>
             <Col>{children}</Col>
             <Col>
                 <div className={css.stickyParent}>
