@@ -36,7 +36,7 @@ jobs:
 
   format:
     name: Format
-    runs-on: gh-actions-default-runner-set
+    runs-on: gh-actions-large-runner-set
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
