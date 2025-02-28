@@ -9,6 +9,7 @@ import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
+import { FeatureFlagKey } from 'config/featureFlags'
 import { useFlag } from 'core/flags'
 import { useAgentsTableConfigSetting } from 'hooks/reporting/useAgentsTableConfigSetting'
 import { useChannelsTableSetting } from 'hooks/reporting/useChannelsTableConfigSetting'
@@ -260,7 +261,10 @@ describe('<AgentsEditColumns>', () => {
     })
 
     it('should dispatch submit update setting on save with rows', () => {
-        useFlagMock.mockReturnValue(true)
+        useFlagMock.mockImplementation(
+            (flag) =>
+                flag === FeatureFlagKey.ReportingAgentsTableAverageAndTotal,
+        )
         const activeViewId = 'activeViewId'
         const activeView = {
             id: activeViewId,

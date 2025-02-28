@@ -19,12 +19,12 @@ import {
     useOnlineTimePerAgent,
     useTicketAverageHandleTimePerAgent,
     useTicketsRepliedMetricPerAgent,
+    useZeroTouchTicketsMetricPerAgent,
 } from 'hooks/reporting/metricsPerAgent'
 import { usePercentageOfClosedTicketsMetricPerAgent } from 'hooks/reporting/support-performance/agents/usePercentageOfClosedTicketsMetricPerAgent'
 import { useOneTouchTicketsPercentageMetricPerAgent } from 'hooks/reporting/support-performance/overview/useOneTouchTicketsPercentageMetricPerAgent'
 import { useOneTouchTicketsPercentageMetricTrend } from 'hooks/reporting/support-performance/overview/useOneTouchTicketsPercentageMetricTrend'
 import { useZeroTouchTicketsMetricTrend } from 'hooks/reporting/support-performance/overview/useZeroTouchTicketsMetricTrend'
-import { useZeroTouchTicketsPercentageMetricPerAgent } from 'hooks/reporting/support-performance/overview/useZeroTouchTicketsPercentageMetricPerAgent'
 import { useMessagesSentPerHour } from 'hooks/reporting/useMessagesSentPerHour'
 import { useMessagesSentPerHourPerAgent } from 'hooks/reporting/useMessagesSentPerHourPerAgent'
 import { MetricWithDecile } from 'hooks/reporting/useMetricPerDimension'
@@ -83,6 +83,11 @@ export const TableColumnsOrder: AgentsTableColumn[] = [
     AgentsTableColumn.RepliedTicketsPerHour,
     AgentsTableColumn.ClosedTicketsPerHour,
     AgentsTableColumn.TicketHandleTime,
+]
+
+export const TableColumnsOrderWithZeroTouchTickets: AgentsTableColumn[] = [
+    ...TableColumnsOrder,
+    AgentsTableColumn.ZeroTouchTickets,
 ]
 
 export const TableRowsOrder: AgentsTableRow[] = [AgentsTableRow.Average]
@@ -358,7 +363,7 @@ export const getQuery = (
         case AgentsTableColumn.OneTouchTickets:
             return useOneTouchTicketsPercentageMetricPerAgent
         case AgentsTableColumn.ZeroTouchTickets:
-            return useZeroTouchTicketsPercentageMetricPerAgent
+            return useZeroTouchTicketsMetricPerAgent
         case AgentsTableColumn.OnlineTime:
             return useOnlineTimePerAgent
         case AgentsTableColumn.MessagesSentPerHour:

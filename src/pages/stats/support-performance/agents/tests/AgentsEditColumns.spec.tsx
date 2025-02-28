@@ -8,6 +8,7 @@ import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
+import { FeatureFlagKey } from 'config/featureFlags'
 import { useFlag } from 'core/flags'
 import {
     SAVE_BUTTON_TEXT,
@@ -85,7 +86,10 @@ describe('<AgentsEditColumns>', () => {
     })
 
     it('should dispatch submit setting on save', () => {
-        useFlagMock.mockReturnValue(true)
+        useFlagMock.mockImplementation(
+            (flag) =>
+                flag === FeatureFlagKey.ReportingAgentsTableAverageAndTotal,
+        )
         render(
             <Provider store={mockStore({})}>
                 <DndProvider manager={manager}>

@@ -2,10 +2,12 @@ import React, { ComponentProps } from 'react'
 
 import { act, fireEvent, render, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
+import { mockFlags } from 'jest-launchdarkly-mock'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
+import { FeatureFlagKey } from 'config/featureFlags'
 import { agents } from 'fixtures/agents'
 import { useNewStatsFilters } from 'hooks/reporting/support-performance/useNewStatsFilters'
 import { ReportingGranularity } from 'models/reporting/types'
@@ -112,6 +114,10 @@ describe('<AgentsTable>', () => {
     AgentsTableTotalsCellMock.mockImplementation(cellMock)
     describe('AgentsTable component', () => {
         it('should render the table title, table header and rows', () => {
+            mockFlags({
+                [FeatureFlagKey.ReportingZeroTouchTicketsMetric]: true,
+            })
+
             render(
                 <Provider store={mockStore({})}>
                     <AgentsTable
@@ -134,6 +140,28 @@ describe('<AgentsTable>', () => {
             expect(AgentsCellContentMock).toHaveBeenCalledWith(
                 expect.objectContaining({
                     agent: filteredAgents[0],
+                }),
+                {},
+            )
+        })
+
+        it('should not render zero touch tickets column if feature flag is disabled', () => {
+            mockFlags({
+                [FeatureFlagKey.ReportingZeroTouchTicketsMetric]: false,
+            })
+
+            render(
+                <Provider store={mockStore({})}>
+                    <AgentsTable
+                        paginatedAgents={paginatedAgents}
+                        statsFilters={statsFiltersWithTimeZone}
+                    />
+                </Provider>,
+            )
+
+            expect(AgentsHeaderCellContentMock).not.toHaveBeenCalledWith(
+                expect.objectContaining({
+                    title: TableLabels.agent_zero_touch_tickets,
                 }),
                 {},
             )

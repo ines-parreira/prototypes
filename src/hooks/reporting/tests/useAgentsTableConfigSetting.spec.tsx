@@ -6,6 +6,7 @@ import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
+import { FeatureFlagKey } from 'config/featureFlags'
 import { useFlag } from 'core/flags'
 import { account } from 'fixtures/account'
 import { useAgentsTableConfigSetting } from 'hooks/reporting/useAgentsTableConfigSetting'
@@ -14,6 +15,7 @@ import {
     agentPerformanceTableActiveView,
     agentPerformanceTableActiveViewWithTotal,
     TableColumnsOrder,
+    TableColumnsOrderWithZeroTouchTickets,
     TableRowsOrder,
     TableRowsOrderWithTotal,
 } from 'pages/stats/support-performance/agents/AgentsTableConfig'
@@ -34,6 +36,14 @@ jest.mock('core/flags')
 const useFlagMock = assumeMock(useFlag)
 
 describe('useAgentsTableConfigSetting', () => {
+    beforeEach(() => {
+        useFlagMock.mockImplementation((flag) => {
+            if (flag === FeatureFlagKey.ReportingZeroTouchTicketsMetric) {
+                return false
+            }
+        })
+    })
+
     it('should return default order if no Setting available', () => {
         useFlagMock.mockReturnValue(true)
         const state = {
@@ -47,10 +57,17 @@ describe('useAgentsTableConfigSetting', () => {
         })
 
         expect(result.current).toEqual({
-            columnsOrder: TableColumnsOrder,
+            columnsOrder: TableColumnsOrderWithZeroTouchTickets,
             rowsOrder: TableRowsOrderWithTotal,
             currentView: {
                 ...agentPerformanceTableActiveViewWithTotal,
+                metrics: [
+                    ...agentPerformanceTableActiveViewWithTotal.metrics,
+                    {
+                        id: AgentsTableColumn.ZeroTouchTickets,
+                        visibility: null,
+                    },
+                ],
                 rows: agentPerformanceRowsWithTotal,
             },
             submitActiveView: expect.any(Function),
@@ -58,7 +75,14 @@ describe('useAgentsTableConfigSetting', () => {
     })
 
     it('should return default row order when flag is off', () => {
-        useFlagMock.mockReturnValue(false)
+        useFlagMock.mockImplementation((flag) => {
+            if (flag === FeatureFlagKey.ReportingAgentsTableAverageAndTotal) {
+                return false
+            }
+            if (flag === FeatureFlagKey.ReportingZeroTouchTicketsMetric) {
+                return false
+            }
+        })
         const state = {
             currentAccount: fromJS(account),
         } as RootState

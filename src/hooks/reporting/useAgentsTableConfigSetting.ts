@@ -5,6 +5,7 @@ import {
     agentPerformanceTableActiveView,
     agentPerformanceTableActiveViewWithTotal,
     TableColumnsOrder,
+    TableColumnsOrderWithZeroTouchTickets,
     TableRowsOrder,
     TableRowsOrderWithTotal,
 } from 'pages/stats/support-performance/agents/AgentsTableConfig'
@@ -16,13 +17,18 @@ export const useAgentsTableConfigSetting = () => {
     const isReportingAgentsTableAverageAndTotalEnabled = useFlag(
         FeatureFlagKey.ReportingAgentsTableAverageAndTotal,
     )
+    const isReportingZeroTouchTicketsMetricEnabled = useFlag(
+        FeatureFlagKey.ReportingZeroTouchTicketsMetric,
+    )
 
     return useTableConfigSetting<AgentsTableColumn, AgentsTableRow>(
         getAgentsTableConfigSettingsJS,
         isReportingAgentsTableAverageAndTotalEnabled
             ? agentPerformanceTableActiveViewWithTotal
             : agentPerformanceTableActiveView,
-        TableColumnsOrder,
+        isReportingZeroTouchTicketsMetricEnabled
+            ? TableColumnsOrderWithZeroTouchTickets
+            : TableColumnsOrder,
         isReportingAgentsTableAverageAndTotalEnabled
             ? TableRowsOrderWithTotal
             : TableRowsOrder,
