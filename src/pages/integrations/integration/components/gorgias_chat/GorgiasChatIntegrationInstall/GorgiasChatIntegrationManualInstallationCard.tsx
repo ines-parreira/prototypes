@@ -63,7 +63,7 @@ const GorgiasChatIntegrationManualInstallationCard = ({
         staleTime: 0, // Always fetch when generating the snippet.
     })
 
-    const bundleSnippet = useConvertBundleInstallationSnippet(bundle?.id ?? '')
+    const bundleSnippet = useConvertBundleInstallationSnippet(bundle?.id)
     const isBundleSnippetEnabled = useConvertBundleInChatSnippetEnabled()
 
     let code = snippet
