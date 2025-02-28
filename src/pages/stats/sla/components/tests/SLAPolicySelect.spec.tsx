@@ -43,6 +43,8 @@ describe('<SLAPolicySelect />', () => {
         target_channels: [],
         updated_datetime: 'asd',
         version: 1,
+        priority: '0.5',
+        business_hours_only: false,
     }
     const aPolicy = {
         ...policy,

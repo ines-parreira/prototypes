@@ -48,25 +48,27 @@ describe('useCustomFieldConditions', () => {
                 ),
             },
         )
-        expect(useListCustomFieldConditions).toHaveBeenCalledWith({
-            http: {
-                params: {
-                    object_type: OBJECT_TYPES.TICKET,
-                    order_by: 'sort_order:asc',
-                    limit: MAX_CONDITIONS,
-                    include_deactivated: true,
+        expect(useListCustomFieldConditions).toHaveBeenCalledWith(
+            {
+                object_type: OBJECT_TYPES.TICKET,
+                order_by: 'sort_order:asc',
+                limit: MAX_CONDITIONS,
+                include_deactivated: true,
+            },
+            {
+                query: {
+                    staleTime: STALE_TIME_MS,
+                    queryKey:
+                        queryKeys.customFieldConditions.listCustomFieldConditions(
+                            {
+                                object_type: OBJECT_TYPES.TICKET,
+                                include_deactivated: true,
+                            },
+                        ),
+                    enabled: true,
                 },
             },
-            query: {
-                staleTime: STALE_TIME_MS,
-                queryKey:
-                    queryKeys.customFieldConditions.listCustomFieldConditions({
-                        object_type: OBJECT_TYPES.TICKET,
-                        include_deactivated: true,
-                    }),
-                enabled: true,
-            },
-        })
+        )
         expect(result.current.isLoading).toBe(true)
         expect(result.current.customFieldConditions).toEqual([])
     })
@@ -87,25 +89,27 @@ describe('useCustomFieldConditions', () => {
                 ),
             },
         )
-        expect(useListCustomFieldConditions).toHaveBeenCalledWith({
-            http: {
-                params: {
-                    object_type: OBJECT_TYPES.TICKET,
-                    order_by: 'sort_order:asc',
-                    limit: MAX_CONDITIONS,
-                    include_deactivated: true,
+        expect(useListCustomFieldConditions).toHaveBeenCalledWith(
+            {
+                object_type: OBJECT_TYPES.TICKET,
+                order_by: 'sort_order:asc',
+                limit: MAX_CONDITIONS,
+                include_deactivated: true,
+            },
+            {
+                query: {
+                    staleTime: STALE_TIME_MS,
+                    queryKey:
+                        queryKeys.customFieldConditions.listCustomFieldConditions(
+                            {
+                                object_type: OBJECT_TYPES.TICKET,
+                                include_deactivated: true,
+                            },
+                        ),
+                    enabled: true,
                 },
             },
-            query: {
-                staleTime: STALE_TIME_MS,
-                queryKey:
-                    queryKeys.customFieldConditions.listCustomFieldConditions({
-                        object_type: OBJECT_TYPES.TICKET,
-                        include_deactivated: true,
-                    }),
-                enabled: true,
-            },
-        })
+        )
 
         expect(result.current.isLoading).toBe(false)
         expect(result.current.customFieldConditions).toEqual([
@@ -135,25 +139,27 @@ describe('useCustomFieldConditions', () => {
             },
         )
 
-        expect(useListCustomFieldConditions).toHaveBeenCalledWith({
-            http: {
-                params: {
-                    object_type: OBJECT_TYPES.TICKET,
-                    order_by: 'sort_order:asc',
-                    limit: MAX_CONDITIONS,
-                    include_deactivated: false,
+        expect(useListCustomFieldConditions).toHaveBeenCalledWith(
+            {
+                object_type: OBJECT_TYPES.TICKET,
+                order_by: 'sort_order:asc',
+                limit: MAX_CONDITIONS,
+                include_deactivated: false,
+            },
+            {
+                query: {
+                    staleTime: 0,
+                    queryKey:
+                        queryKeys.customFieldConditions.listCustomFieldConditions(
+                            {
+                                object_type: OBJECT_TYPES.TICKET,
+                                include_deactivated: false,
+                            },
+                        ),
+                    enabled: true,
                 },
             },
-            query: {
-                staleTime: 0,
-                queryKey:
-                    queryKeys.customFieldConditions.listCustomFieldConditions({
-                        object_type: OBJECT_TYPES.TICKET,
-                        include_deactivated: false,
-                    }),
-                enabled: true,
-            },
-        })
+        )
 
         expect(mockStore.getActions()).toMatchObject([
             {

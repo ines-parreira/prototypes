@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 
 import classNames from 'classnames'
 
-import { CreateSlaPolicyBody } from '@gorgias/api-types'
+import { CreateSLAPolicy } from '@gorgias/api-types'
 
 import {
     FormField,
@@ -33,7 +33,7 @@ const fieldTexts = {
 }
 
 export default function MetricsFieldArray() {
-    const { fields } = useFieldArray<CreateSlaPolicyBody>({
+    const { fields } = useFieldArray<CreateSLAPolicy>({
         name: 'metrics',
     })
 

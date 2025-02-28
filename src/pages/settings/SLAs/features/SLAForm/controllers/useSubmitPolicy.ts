@@ -49,9 +49,11 @@ export default function useSubmitPolicy() {
                 await queryClient.invalidateQueries({
                     queryKey: queryKeys.slaPolicies.listSlaPolicies(),
                 })
-                await queryClient.invalidateQueries({
-                    queryKey: queryKeys.slaPolicies.getSlaPolicy(policyId),
-                })
+                if (policyId && policyId !== 'new') {
+                    await queryClient.invalidateQueries({
+                        queryKey: queryKeys.slaPolicies.getSlaPolicy(policyId),
+                    })
+                }
                 history.push('/app/settings/sla')
             } catch (e) {
                 const apiErrorMessage = handleApiError(e as Error)

@@ -35,26 +35,25 @@ export const useCustomFieldConditions = ({
         data: { data: { data: customFieldConditions = [] } = {} } = {},
         isLoading,
         isError,
-    } = useListCustomFieldConditions({
-        http: {
-            params: {
-                object_type: objectType,
-                order_by: 'sort_order:asc',
-                limit: MAX_CONDITIONS,
-                include_deactivated: includeDeactivated,
+    } = useListCustomFieldConditions(
+        {
+            object_type: objectType,
+            order_by: 'sort_order:asc',
+            limit: MAX_CONDITIONS,
+            include_deactivated: includeDeactivated,
+        },
+        {
+            query: {
+                staleTime: invalidate ? 0 : STALE_TIME_MS,
+                queryKey:
+                    queryKeys.customFieldConditions.listCustomFieldConditions({
+                        object_type: objectType,
+                        include_deactivated: includeDeactivated,
+                    }),
+                enabled: enabled,
             },
         },
-        query: {
-            staleTime: invalidate ? 0 : STALE_TIME_MS,
-            queryKey: queryKeys.customFieldConditions.listCustomFieldConditions(
-                {
-                    object_type: objectType,
-                    include_deactivated: includeDeactivated,
-                },
-            ),
-            enabled: enabled,
-        },
-    })
+    )
 
     if (isError) {
         void dispatch(

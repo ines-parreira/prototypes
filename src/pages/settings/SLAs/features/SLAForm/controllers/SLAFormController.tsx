@@ -3,7 +3,7 @@ import React from 'react'
 import { useLocation, useParams } from 'react-router-dom'
 
 import { useGetSlaPolicy } from '@gorgias/api-queries'
-import { validateCreateSlaPolicyBody } from '@gorgias/api-validators'
+import { validateCreateSLAPolicy } from '@gorgias/api-validators'
 
 import { toFormErrors } from 'core/forms'
 import { SLATemplate } from 'pages/settings/SLAs/config/templates'
@@ -47,7 +47,7 @@ export default function SLAFormController() {
 
     const validator = (values: SLAFormValues) => {
         return toFormErrors(
-            validateCreateSlaPolicyBody(makeCreateSLAPolicyBody(values)),
+            validateCreateSLAPolicy(makeCreateSLAPolicyBody(values)),
         )
     }
 

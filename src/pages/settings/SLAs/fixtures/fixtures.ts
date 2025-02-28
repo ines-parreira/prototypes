@@ -14,6 +14,7 @@ export const slaPolicy1: SLAPolicy = {
     metrics: [],
     version: 1,
     priority: '1',
+    business_hours_only: false,
 }
 
 export const slaPolicy2: SLAPolicy = {
@@ -35,6 +36,7 @@ export const slaPolicy2: SLAPolicy = {
     metrics: [],
     version: 1,
     priority: '0.5',
+    business_hours_only: false,
 }
 
 export const UISLAPolicy1: UISLAPolicy = {

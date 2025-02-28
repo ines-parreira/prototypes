@@ -1,6 +1,6 @@
 import { useMemo } from 'react'
 
-import { SLAPolicyMetricName, SLAPolicyMetricUnit } from '@gorgias/api-types'
+import { SLAPolicyMetricType, SLAPolicyMetricUnit } from '@gorgias/api-types'
 
 import { MappedFormSLAPolicy } from './makeMappedFormSLAPolicy'
 
@@ -17,14 +17,14 @@ export default function useFormValues(
                       target_channels: policy.target_channels,
                       metrics: [
                           {
-                              name: SLAPolicyMetricName.Frt,
+                              name: SLAPolicyMetricType.Frt,
                               unit:
                                   policy.metrics.FRT?.unit ||
                                   SLAPolicyMetricUnit.Second,
                               threshold: policy.metrics.FRT?.threshold,
                           },
                           {
-                              name: SLAPolicyMetricName.Rt,
+                              name: SLAPolicyMetricType.Rt,
                               unit:
                                   policy.metrics.RT?.unit ||
                                   SLAPolicyMetricUnit.Second,
@@ -37,12 +37,12 @@ export default function useFormValues(
                       name: '',
                       metrics: [
                           {
-                              name: SLAPolicyMetricName.Frt,
+                              name: SLAPolicyMetricType.Frt,
                               unit: SLAPolicyMetricUnit.Second,
                               threshold: undefined,
                           },
                           {
-                              name: SLAPolicyMetricName.Rt,
+                              name: SLAPolicyMetricType.Rt,
                               unit: SLAPolicyMetricUnit.Second,
                               threshold: undefined,
                           },
