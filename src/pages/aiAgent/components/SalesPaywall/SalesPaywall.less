@@ -25,12 +25,8 @@
         flex-direction: column;
         justify-content: center;
         align-items: center;
-        flex-grow: 1;
+        flex: 1;
         z-index: 1;
-
-        & > * {
-            width: 100%;
-        }
     }
 
     .infoContainer {
@@ -67,5 +63,19 @@
         color: var(--feedback-success-3);
         margin-right: @layout-spacing-xs;
         font-size: 24px !important;
+    }
+
+    .previewTitle {
+        .caption-regular();
+        margin-bottom: @layout-spacing-xs;
+    }
+
+    .toggleButtons {
+        margin-bottom: @layout-spacing-m;
+    }
+
+    .content {
+        width: 100%;
+        max-width: 640px;
     }
 }

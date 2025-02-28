@@ -1,13 +1,36 @@
-import React from 'react'
+import React, { useState } from 'react'
 
 import cn from 'classnames'
 
 import AiAgentLogo from 'assets/img/ai-agent/ai-agent-logo.png'
+import DynamicDiscount from 'assets/img/ai-agent/ai-agent_paywall_dynamic-discount.png'
+import ProductRecommendations from 'assets/img/ai-agent/ai-agent_paywall_product-recommendations.png'
+import SalesStrategy from 'assets/img/ai-agent/ai-agent_paywall_sales-strategy.png'
 import { Separator } from 'pages/common/components/Separator/Separator'
+import * as ToggleButton from 'pages/common/components/ToggleButton'
+
+import { SalesFeature } from './SalesPaywall.types'
 
 import css from './SalesPaywall.less'
 
 export const SalesPaywall = () => {
+    const [toggleValue, setToggleValue] = useState<SalesFeature>(
+        SalesFeature.SalesStrategy,
+    )
+    let src = SalesStrategy
+
+    switch (toggleValue) {
+        case SalesFeature.DynamicDiscount:
+            src = DynamicDiscount
+            break
+        case SalesFeature.ProductRecommendations:
+            src = ProductRecommendations
+            break
+        default:
+            src = SalesStrategy
+            break
+    }
+
     return (
         <>
             <div className={css.salesPaywall}>
@@ -61,7 +84,32 @@ export const SalesPaywall = () => {
                     </div>
                 </div>
 
-                <div className={css.featuresContainer}>Sales features here</div>
+                <div className={css.featuresContainer}>
+                    <div className={css.previewTitle}>Sales features</div>
+
+                    <ToggleButton.Wrapper
+                        type={ToggleButton.Type.Label}
+                        value={toggleValue}
+                        onChange={setToggleValue}
+                        className={css.toggleButtons}
+                    >
+                        <ToggleButton.Option value={SalesFeature.SalesStrategy}>
+                            Sales Strategy
+                        </ToggleButton.Option>
+                        <ToggleButton.Option
+                            value={SalesFeature.DynamicDiscount}
+                        >
+                            Dynamic Discount
+                        </ToggleButton.Option>
+                        <ToggleButton.Option
+                            value={SalesFeature.ProductRecommendations}
+                        >
+                            Product Recommendations
+                        </ToggleButton.Option>
+                    </ToggleButton.Wrapper>
+
+                    <img src={src} className={css.content} alt="preview" />
+                </div>
             </div>
             <div className={css.background}></div>
         </>
