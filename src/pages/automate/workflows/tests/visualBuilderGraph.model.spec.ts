@@ -5693,6 +5693,32 @@ describe('getReusableLLMPromptCallNodeHasMissingCredentials()', () => {
             ),
         ).toEqual(false)
     })
+    it('should return true if no trackstar connection for trackstar app', () => {
+        expect(
+            getReusableLLMPromptCallNodeHasMissingCredentials(
+                { type: 'app', app_id: '', api_key: '' },
+                { auth_type: 'trackstar' },
+                false,
+            ),
+        ).toEqual(true)
+    })
+    it('should return false if there is a trackstar connection for trackstar app', () => {
+        expect(
+            getReusableLLMPromptCallNodeHasMissingCredentials(
+                { type: 'app', app_id: '', api_key: '' },
+                { auth_type: 'trackstar' },
+                false,
+                {
+                    connection_id: '123',
+                    store_name: '',
+                    store_type: 'shopify',
+                    account_id: 0,
+                    integration_name: 'sandbox',
+                    error: false,
+                },
+            ),
+        ).toEqual(false)
+    })
 })
 
 describe('getReusableLLMPromptCallNodeHasCredentials()', () => {

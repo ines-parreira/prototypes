@@ -16,6 +16,7 @@ import {
     ActionTemplate,
     ActionTemplateApp,
 } from '../../actionsPlatform/types'
+import { TrackstarConnection } from '../types'
 import {
     ConditionSchema,
     ConditionsSchema,
@@ -2888,6 +2889,7 @@ export const getReusableLLMPromptCallNodeHasMissingCredentials = (
     graphApp: VisualBuilderGraphApp | undefined,
     actionsApp: Pick<ActionsApp, 'auth_type'> | undefined,
     isTemplate: boolean,
+    trackstarConnection?: TrackstarConnection,
 ): boolean => {
     if (!graphApp || graphApp.type !== 'app' || !actionsApp || isTemplate) {
         return false
@@ -2898,6 +2900,8 @@ export const getReusableLLMPromptCallNodeHasMissingCredentials = (
             return !graphApp.api_key?.trim()
         case 'oauth2-token':
             return !graphApp.refresh_token?.trim()
+        case 'trackstar':
+            return !trackstarConnection
         default:
             return false
     }
@@ -2924,6 +2928,7 @@ export const getReusableLLMPromptCallNodeStatuses = ({
     values,
     templateApp,
     isTemplate,
+    trackstarConnection,
 }: {
     graphApp: VisualBuilderGraphApp | undefined
     actionsApp: Pick<ActionsApp, 'auth_type'> | undefined
@@ -2931,6 +2936,7 @@ export const getReusableLLMPromptCallNodeStatuses = ({
     values: ReusableLLMPromptCallNodeType['data']['values']
     templateApp: Pick<ActionTemplateApp, 'type'>
     isTemplate: boolean
+    trackstarConnection?: TrackstarConnection
 }) => {
     const hasInputs = getReusableLLMPromptCallNodeHasInputs(step)
     const hasMissingValues = getReusableLLMPromptCallNodeHasMissingValues(
@@ -2949,6 +2955,7 @@ export const getReusableLLMPromptCallNodeStatuses = ({
             graphApp,
             actionsApp,
             isTemplate,
+            trackstarConnection,
         )
     const hasCredentials = getReusableLLMPromptCallNodeHasCredentials(
         templateApp,

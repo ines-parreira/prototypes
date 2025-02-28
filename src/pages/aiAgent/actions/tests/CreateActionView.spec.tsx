@@ -16,6 +16,7 @@ import {
     useGetStoreWorkflowsConfigurations,
     useGetWorkflowConfigurationTemplates,
     useListActionsApps,
+    useListTrackstarConnections,
 } from 'models/workflows/queries'
 import use3plIntegrations from 'pages/aiAgent/actions/hooks/use3plIntegrations'
 import useAddStoreApp from 'pages/aiAgent/actions/hooks/useAddStoreApp'
@@ -66,6 +67,7 @@ const mockUseListActionsApps = jest.mocked(useListActionsApps)
 const mockUseAiAgentOnboardingNotification = jest.mocked(
     useAiAgentOnboardingNotification,
 )
+const mockUseListTrackstarConnections = jest.mocked(useListTrackstarConnections)
 
 const mockStore = configureMockStore<RootState, StoreDispatch>()
 
@@ -125,6 +127,9 @@ describe('<CreateActionView />', () => {
         mockUseAiAgentOnboardingNotification.mockReturnValue(
             defaultUseAiAgentOnboardingNotification,
         )
+        mockUseListTrackstarConnections.mockReturnValue({
+            data: [],
+        } as unknown as ReturnType<typeof useListTrackstarConnections>)
     })
 
     it('should render create action page', () => {

@@ -28,6 +28,8 @@ const EXECUTION_QUERY_KEY = 'execution-query-key'
 
 const EXECUTION_LOGS_QUERY_KEY = 'execution-logs-query-key'
 
+const TRACKSTAR_QUERY_KEY = 'trackstar-query-key'
+
 export const storeWorkflowsConfigurationDefinitionKeys = {
     all: () => [STORE_WORKFLOWS_CONFIGURATION_QUERY_KEY] as const,
     list: (params: { storeName: string; storeType: string }) => [
@@ -109,6 +111,14 @@ export const executionLogsDefinitionKeys = {
     all: () => [EXECUTION_LOGS_QUERY_KEY] as const,
     get: (params: { configurationInternalId: string; executionId: string }) =>
         [...executionLogsDefinitionKeys.all(), params] as const,
+}
+
+export const trackstarDefinitionKeys = {
+    all: () => [TRACKSTAR_QUERY_KEY] as const,
+    list: (params: { storeName: string; storeType: string }) => [
+        ...trackstarDefinitionKeys.all(),
+        params,
+    ],
 }
 
 export const useGetWorkflowConfigurationTemplates = (
@@ -684,6 +694,68 @@ export const useGetConfigurationExecutionLogs = (
                 }
                 throw e
             }
+        },
+        staleTime: STALE_TIME_MS,
+        cacheTime: CACHE_TIME_MS,
+        ...overrides,
+    })
+}
+
+export const useCreateTrackstarLink = (
+    overrides?: MutationOverrides<OperationMethods['TrackstarController_link']>,
+) => {
+    return useMutation({
+        mutationFn: async (params) => {
+            const client = await getGorgiasWfApiClient()
+            return client.TrackstarController_link(...params)
+        },
+        ...overrides,
+    })
+}
+
+export const useCreateTrackstarToken = (
+    overrides?: MutationOverrides<
+        OperationMethods['TrackstarController_token']
+    >,
+) => {
+    return useMutation({
+        mutationFn: async (params) => {
+            const client = await getGorgiasWfApiClient()
+            return await client.TrackstarController_token(...params)
+        },
+        ...overrides,
+    })
+}
+
+export const useListTrackstarConnections = <T>(
+    {
+        storeName,
+        storeType,
+    }: {
+        storeName: string
+        storeType: string
+    },
+    overrides?: UseQueryOptions<
+        Awaited<Paths.TrackstarControllerList.Responses.$200>,
+        unknown,
+        T
+    >,
+) => {
+    return useQuery({
+        queryKey: trackstarDefinitionKeys.list({
+            storeName,
+            storeType,
+        }),
+        queryFn: async () => {
+            if (storeType !== 'shopify') {
+                throw new Error('Unsupported store type')
+            }
+            const client = await getGorgiasWfApiClient()
+            const response = await client.TrackstarController_list({
+                store_name: storeName,
+                store_type: storeType,
+            })
+            return response.data
         },
         staleTime: STALE_TIME_MS,
         cacheTime: CACHE_TIME_MS,

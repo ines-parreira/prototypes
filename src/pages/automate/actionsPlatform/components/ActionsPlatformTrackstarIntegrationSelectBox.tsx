@@ -11,7 +11,7 @@ import SelectInputBox, {
 
 import css from './ActionsPlatformTrackstarIntegrationSelectBox.less'
 
-const TRACKSTAR_INTEGRATIONS = ['sandbox', 'shiphero'] as const
+const TRACKSTAR_INTEGRATIONS = ['sandbox', 'shiphero', 'shipstation'] as const
 type AvailableIntegraion = (typeof TRACKSTAR_INTEGRATIONS)[number]
 type Props = {
     value: AvailableIntegraion

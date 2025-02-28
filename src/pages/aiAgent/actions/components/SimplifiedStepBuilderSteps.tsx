@@ -29,6 +29,7 @@ import Button from 'pages/common/components/button/Button'
 import { Separator } from 'pages/common/components/Separator/Separator'
 import Caption from 'pages/common/forms/Caption/Caption'
 
+import { useStoreTrackstarContext } from '../providers/StoreTrackstarContext'
 import { StepListItem, StepListItemProps } from './StepListItem'
 
 import css from './SimplifiedStepBuilderSteps.less'
@@ -52,7 +53,7 @@ export const SimplifiedStepBuilderSteps = ({
 
     const { apps, actionsApps } = useApps()
     const getAppFromTemplateApp = useGetAppFromTemplateApp({ apps })
-
+    const { connections } = useStoreTrackstarContext()
     const orderedNodes = useMemo(() => {
         const nodes: ReusableLLMPromptCallNodeType[] = []
 
@@ -149,6 +150,10 @@ export const SimplifiedStepBuilderSteps = ({
                     templateApp,
                 )
 
+                const trackstarConnection =
+                    actionsApp?.auth_type === 'trackstar'
+                        ? connections[actionsApp.auth_settings.integration_name]
+                        : undefined
                 const {
                     isClickable,
                     hasMissingCredentials,
@@ -162,6 +167,7 @@ export const SimplifiedStepBuilderSteps = ({
                     values: node.data.values,
                     templateApp,
                     isTemplate: graph.isTemplate,
+                    trackstarConnection,
                 })
 
                 return {
@@ -202,6 +208,7 @@ export const SimplifiedStepBuilderSteps = ({
         handleMove,
         handleDrop,
         setDirtyNodes,
+        connections,
     ])
 
     const hasMissingValues = displayNodesProps.some(

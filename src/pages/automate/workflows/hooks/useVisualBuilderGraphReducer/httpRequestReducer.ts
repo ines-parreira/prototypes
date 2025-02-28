@@ -270,8 +270,8 @@ export function httpRequestReducer(
                         graph.apps?.[0]?.type === 'app'
                     ) {
                         node.data.oauth2TokenSettings = {
-                            account_oauth2_token_id: `{{apps.${graph.apps?.[0]?.app_id}.account_oauth2_token_id}}`,
-                            refresh_token_url: `{{apps.${graph.apps?.[0]?.app_id}.refresh_token_url}}`,
+                            account_oauth2_token_id: `{{apps.${graph.apps[0].app_id}.account_oauth2_token_id}}`,
+                            refresh_token_url: `{{apps.${graph.apps[0].app_id}.refresh_token_url}}`,
                         }
                     } else {
                         node.data.oauth2TokenSettings = null

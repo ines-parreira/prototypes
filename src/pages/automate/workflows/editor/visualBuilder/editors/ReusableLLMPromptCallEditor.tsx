@@ -14,6 +14,7 @@ import {
 import { Drawer } from 'pages/common/components/Drawer'
 import InputField from 'pages/common/forms/input/InputField'
 
+import ConnectTrackstarButton from '../components/ConnectTrackstarButton'
 import NodeEditorDrawerHeader from '../NodeEditorDrawerHeader'
 
 import css from './NodeEditor.less'
@@ -164,6 +165,12 @@ export default function ReusableLLMPromptCallEditor({
                                         }}
                                     />
                                 </>
+                            )}
+                            {actionsApp.auth_type === 'trackstar' && (
+                                <ConnectTrackstarButton
+                                    app={app}
+                                    actionApp={actionsApp}
+                                />
                             )}
                         </div>
                     )}

@@ -17,6 +17,7 @@ import {
     useGetStoreWorkflowsConfigurations,
     useGetWorkflowConfigurationTemplates,
     useListActionsApps,
+    useListTrackstarConnections,
 } from 'models/workflows/queries'
 import use3plIntegrations from 'pages/aiAgent/actions/hooks/use3plIntegrations'
 import useAddStoreApp from 'pages/aiAgent/actions/hooks/useAddStoreApp'
@@ -60,6 +61,7 @@ const mockUseGetStoreWorkflowsConfigurations = jest.mocked(
     useGetStoreWorkflowsConfigurations,
 )
 const mockUseListActionsApps = jest.mocked(useListActionsApps)
+const mockUseListTrackstarConnections = jest.mocked(useListTrackstarConnections)
 
 // eslint-disable-next-line @typescript-eslint/no-unsafe-return
 jest.mock('state/integrations/selectors', () => ({
@@ -172,6 +174,9 @@ describe('<EditActionView />', () => {
         mockUseListActionsApps.mockReturnValue({
             data: [],
         } as unknown as ReturnType<typeof useListActionsApps>)
+        mockUseListTrackstarConnections.mockReturnValue({
+            data: [],
+        } as unknown as ReturnType<typeof useListTrackstarConnections>)
     })
 
     it('should render edit action page', () => {

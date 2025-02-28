@@ -11,3 +11,6 @@ export type WorkflowConfigurationUpsertDto =
 export type WorkflowConfigurationDto =
     | WorkflowConfigurationUpsertDto
     | Components.Schemas.GetWfConfigurationResponseDto
+
+export type TrackstarConnection =
+    Components.Schemas.ListTrackstarConnectionsResponseDto[number]

@@ -8,6 +8,15 @@ import {
 
 declare namespace Components {
     namespace Schemas {
+        export interface CreateTokenBodyDto {
+            auth_code: string
+            store_name: string
+            store_type: 'shopify'
+        }
+        export interface CreateTokenResponseDto {
+            connection_id: string
+            error: boolean
+        }
         export interface DuplicateWfConfigurationRequestDto {
             integration_id: number
         }
@@ -954,7 +963,7 @@ declare namespace Components {
                   id: string
                   auth_type: 'trackstar'
                   auth_settings: {
-                      integration_name: 'sandbox' | 'shiphero'
+                      integration_name: 'sandbox' | 'shiphero' | 'shipstation'
                   }
               }
         export interface GetAutomationEventResponseDto {
@@ -1498,6 +1507,9 @@ declare namespace Components {
                 success?: boolean | null
                 status?: 'success' | 'error' | 'partial_success'
             }[]
+        }
+        export interface GetLinkResponseDto {
+            link_token: string
         }
         export interface GetWfConfigurationResponseDto {
             internal_id: string
@@ -5664,7 +5676,7 @@ declare namespace Components {
                   id: string
                   auth_type: 'trackstar'
                   auth_settings: {
-                      integration_name: 'sandbox' | 'shiphero'
+                      integration_name: 'sandbox' | 'shiphero' | 'shipstation'
                   }
               }
         )[]
@@ -6647,6 +6659,14 @@ declare namespace Components {
                     }
                 }
             }
+        }[]
+        export type ListTrackstarConnectionsResponseDto = {
+            connection_id: string
+            store_name: string
+            store_type: 'shopify'
+            account_id: number
+            integration_name: 'sandbox' | 'shiphero' | 'shipstation'
+            error: boolean
         }[]
         export type ListWfConfigurationTemplatesResponseDto = {
             internal_id: string
@@ -15870,7 +15890,7 @@ declare namespace Components {
             | {
                   auth_type: 'trackstar'
                   auth_settings: {
-                      integration_name: 'sandbox' | 'shiphero'
+                      integration_name: 'sandbox' | 'shiphero' | 'shipstation'
                   }
               }
         export type UpsertAppRequestResponseDto =
@@ -15897,7 +15917,7 @@ declare namespace Components {
                   id: string
                   auth_type: 'trackstar'
                   auth_settings: {
-                      integration_name: 'sandbox' | 'shiphero'
+                      integration_name: 'sandbox' | 'shiphero' | 'shipstation'
                   }
               }
         export interface UpsertStoreAppRequestBodyDto {
@@ -21194,6 +21214,37 @@ declare namespace Paths {
                 Components.Schemas.ListStoreWfEntrypointsResponseDto
         }
     }
+    namespace TrackstarControllerLink {
+        namespace Parameters {
+            export type ConnectionId = string
+        }
+        export interface PathParameters {
+            connection_id?: Parameters.ConnectionId
+        }
+        namespace Responses {
+            export type $200 = Components.Schemas.GetLinkResponseDto
+        }
+    }
+    namespace TrackstarControllerList {
+        namespace Parameters {
+            export type StoreName = string
+            export type StoreType = 'shopify'
+        }
+        export interface PathParameters {
+            store_type: Parameters.StoreType
+            store_name: Parameters.StoreName
+        }
+        namespace Responses {
+            export type $200 =
+                Components.Schemas.ListTrackstarConnectionsResponseDto
+        }
+    }
+    namespace TrackstarControllerToken {
+        export type RequestBody = Components.Schemas.CreateTokenBodyDto
+        namespace Responses {
+            export type $201 = Components.Schemas.CreateTokenResponseDto
+        }
+    }
     namespace WfConfigurationControllerDelete {
         namespace Parameters {
             export type InternalId = string
@@ -21793,6 +21844,30 @@ export interface OperationMethods {
         config?: AxiosRequestConfig,
     ): OperationResponse<any>
     /**
+     * TrackstarController_link
+     */
+    'TrackstarController_link'(
+        parameters?: Parameters<Paths.TrackstarControllerLink.PathParameters> | null,
+        data?: any,
+        config?: AxiosRequestConfig,
+    ): OperationResponse<Paths.TrackstarControllerLink.Responses.$200>
+    /**
+     * TrackstarController_token
+     */
+    'TrackstarController_token'(
+        parameters?: Parameters<UnknownParamsObject> | null,
+        data?: Paths.TrackstarControllerToken.RequestBody,
+        config?: AxiosRequestConfig,
+    ): OperationResponse<Paths.TrackstarControllerToken.Responses.$201>
+    /**
+     * TrackstarController_list
+     */
+    'TrackstarController_list'(
+        parameters?: Parameters<Paths.TrackstarControllerList.PathParameters> | null,
+        data?: any,
+        config?: AxiosRequestConfig,
+    ): OperationResponse<Paths.TrackstarControllerList.Responses.$200>
+    /**
      * HealthController_check
      */
     'HealthController_check'(
@@ -22127,6 +22202,36 @@ export interface PathsDictionary {
             data?: any,
             config?: AxiosRequestConfig,
         ): OperationResponse<any>
+    }
+    ['/trackstar/link/{connection_id}']: {
+        /**
+         * TrackstarController_link
+         */
+        'post'(
+            parameters?: Parameters<Paths.TrackstarControllerLink.PathParameters> | null,
+            data?: any,
+            config?: AxiosRequestConfig,
+        ): OperationResponse<Paths.TrackstarControllerLink.Responses.$200>
+    }
+    ['/trackstar/token']: {
+        /**
+         * TrackstarController_token
+         */
+        'post'(
+            parameters?: Parameters<UnknownParamsObject> | null,
+            data?: Paths.TrackstarControllerToken.RequestBody,
+            config?: AxiosRequestConfig,
+        ): OperationResponse<Paths.TrackstarControllerToken.Responses.$201>
+    }
+    ['/trackstar/stores/{store_type}/{store_name}/connections']: {
+        /**
+         * TrackstarController_list
+         */
+        'get'(
+            parameters?: Parameters<Paths.TrackstarControllerList.PathParameters> | null,
+            data?: any,
+            config?: AxiosRequestConfig,
+        ): OperationResponse<Paths.TrackstarControllerList.Responses.$200>
     }
     ['/health']: {
         /**

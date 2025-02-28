@@ -5,6 +5,7 @@ import { NodeProps } from 'reactflow'
 import { LoadingSpinner } from '@gorgias/merchant-ui-kit'
 
 import { useGetWorkflowConfigurationTemplate } from 'models/workflows/queries'
+import { useStoreTrackstarContext } from 'pages/aiAgent/actions/providers/StoreTrackstarContext'
 import useApps from 'pages/automate/actionsPlatform/hooks/useApps'
 import useGetAppFromTemplateApp from 'pages/automate/actionsPlatform/hooks/useGetAppFromTemplateApp'
 import {
@@ -47,6 +48,7 @@ const ReusableLLMPromptCallNode = memo(function ReusableLLMPromptCallNode({
 }: Props) {
     const { data: step } = useGetWorkflowConfigurationTemplate(configurationId)
     const { apps, actionsApps } = useApps()
+    const { connections } = useStoreTrackstarContext()
 
     const getAppFromTemplateApp = useGetAppFromTemplateApp({ apps })
 
@@ -85,7 +87,10 @@ const ReusableLLMPromptCallNode = memo(function ReusableLLMPromptCallNode({
 
     const graphApp = getGraphAppFromTemplateApp(graphApps, templateApp)
     const actionsApp = getActionsAppFromTemplateApp(actionsApps, templateApp)
-
+    const trackstarConnection =
+        actionsApp?.auth_type === 'trackstar'
+            ? connections[actionsApp.auth_settings.integration_name]
+            : undefined
     const {
         isClickable,
         hasMissingCredentials,
@@ -99,6 +104,7 @@ const ReusableLLMPromptCallNode = memo(function ReusableLLMPromptCallNode({
         values,
         templateApp,
         isTemplate,
+        trackstarConnection,
     })
 
     return (

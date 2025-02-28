@@ -13,6 +13,7 @@ import { IntegrationType } from 'models/integration/constants'
 import {
     useGetStoreApps,
     useGetWorkflowConfigurationTemplates,
+    useListTrackstarConnections,
 } from 'models/workflows/queries'
 import useAddStoreApp from 'pages/aiAgent/actions/hooks/useAddStoreApp'
 import useDeleteAction from 'pages/aiAgent/actions/hooks/useDeleteAction'
@@ -39,6 +40,7 @@ const mockUseDeleteAction = jest.mocked(useDeleteAction)
 const mockUseGetWorkflowConfigurationTemplates = jest.mocked(
     useGetWorkflowConfigurationTemplates,
 )
+const mockUseListTrackstarConnections = jest.mocked(useListTrackstarConnections)
 
 const mockActions: StoresWorkflowConfiguration = [
     {
@@ -120,6 +122,9 @@ describe('ActionsList', () => {
         mockUseGetWorkflowConfigurationTemplates.mockReturnValue({
             data: [],
         } as unknown as ReturnType<typeof useGetWorkflowConfigurationTemplates>)
+        mockUseListTrackstarConnections.mockReturnValue({
+            data: [],
+        } as unknown as ReturnType<typeof useListTrackstarConnections>)
     })
 
     it('sorts actions by updated date in ascending order', () => {
