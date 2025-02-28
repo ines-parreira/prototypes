@@ -1,10 +1,17 @@
 const TOLERANCE = 5
 
-export default function getWrappedElementCount(container: HTMLElement | null) {
+type DomTags = keyof HTMLElementTagNameMap
+
+export default function getWrappedElementCount(
+    container: HTMLElement | null,
+    discardedTag?: DomTags | DomTags[],
+): number {
     const children = container?.children
-        ? Array.from(container.children).filter(
-              (child) => child.tagName === 'DIV',
-          )
+        ? Array.from(container.children).filter((child) => {
+              return !discardedTag?.includes(
+                  child.tagName.toLowerCase() as DomTags,
+              )
+          })
         : []
 
     if (!children.length) {

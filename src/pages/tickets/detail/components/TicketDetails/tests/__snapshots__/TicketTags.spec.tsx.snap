@@ -14,85 +14,77 @@ exports[`<TicketTags /> should display current tags 1`] = `
       <div>
         TagDropdownMock
       </div>
-      <div>
-        <div
-          class="tag withTrailIcon black"
+      <div
+        class="tag withTrailIcon black"
+      >
+        <span
+          class="text"
         >
-          <span
-            class="text"
+          angry
+        </span>
+        <span
+          class="icon withClick"
+        >
+          <i
+            class="material-icons"
           >
-            angry
-          </span>
-          <span
-            class="icon withClick"
-          >
-            <i
-              class="material-icons"
-            >
-              close
-            </i>
-          </span>
-        </div>
+            close
+          </i>
+        </span>
       </div>
-      <div>
-        <div
-          class="tag withTrailIcon black"
+      <div
+        class="tag withTrailIcon black"
+      >
+        <span
+          class="text"
         >
-          <span
-            class="text"
+          customer
+        </span>
+        <span
+          class="icon withClick"
+        >
+          <i
+            class="material-icons"
           >
-            customer
-          </span>
-          <span
-            class="icon withClick"
-          >
-            <i
-              class="material-icons"
-            >
-              close
-            </i>
-          </span>
-        </div>
+            close
+          </i>
+        </span>
       </div>
-      <div>
-        <div
-          class="tag withTrailIcon black"
+      <div
+        class="tag withTrailIcon black"
+      >
+        <span
+          class="text"
         >
-          <span
-            class="text"
+          refund
+        </span>
+        <span
+          class="icon withClick"
+        >
+          <i
+            class="material-icons"
           >
-            refund
-          </span>
-          <span
-            class="icon withClick"
-          >
-            <i
-              class="material-icons"
-            >
-              close
-            </i>
-          </span>
-        </div>
+            close
+          </i>
+        </span>
       </div>
-      <div>
-        <div
-          class="tag withTrailIcon black"
+      <div
+        class="tag withTrailIcon black"
+      >
+        <span
+          class="text"
         >
-          <span
-            class="text"
+          return
+        </span>
+        <span
+          class="icon withClick"
+        >
+          <i
+            class="material-icons"
           >
-            return
-          </span>
-          <span
-            class="icon withClick"
-          >
-            <i
-              class="material-icons"
-            >
-              close
-            </i>
-          </span>
-        </div>
+            close
+          </i>
+        </span>
       </div>
     </div>
     <div

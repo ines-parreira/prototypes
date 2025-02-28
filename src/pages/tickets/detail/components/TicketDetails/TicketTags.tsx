@@ -56,7 +56,7 @@ const TicketTags = ({
 
     const [element, setElement] = useCallbackRef()
     const [__width, height] = useElementSize(element)
-    const wrappedElementCount = getWrappedElementCount(element)
+    const wrappedElementCount = getWrappedElementCount(element, ['button'])
 
     const hiddenTags = wrappedElementCount
         ? tags
@@ -95,20 +95,19 @@ const TicketTags = ({
                         />
                     )}
                     {tags.map((tag?: Map<any, any>, i?) => (
-                        <div key={i}>
-                            <TicketTag
-                                decoration={tag!.get('decoration')}
-                                text={tag!.get('name')}
-                                textClassName={textClassName}
-                                {...(!isDisabled && {
-                                    trailIcon: (
-                                        <i className="material-icons">close</i>
-                                    ),
-                                    onTrailIconClick: () =>
-                                        removeTag?.(tag!.get('name') as string),
-                                })}
-                            />
-                        </div>
+                        <TicketTag
+                            key={i}
+                            decoration={tag!.get('decoration')}
+                            text={tag!.get('name')}
+                            textClassName={textClassName}
+                            {...(!isDisabled && {
+                                trailIcon: (
+                                    <i className="material-icons">close</i>
+                                ),
+                                onTrailIconClick: () =>
+                                    removeTag?.(tag!.get('name') as string),
+                            })}
+                        />
                     ))}
                     {isExpanded && (
                         <Button

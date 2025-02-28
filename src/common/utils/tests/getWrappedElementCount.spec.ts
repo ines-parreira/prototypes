@@ -6,18 +6,21 @@ jest.spyOn(child1, 'getBoundingClientRect').mockReturnValue({
     width: 50,
 } as DOMRect)
 child1.textContent = 'A'
+
 const child2 = document.createElement('div')
 child2.textContent = 'B'
 jest.spyOn(child2, 'getBoundingClientRect').mockReturnValue({
     top: 0,
     width: 50,
 } as DOMRect)
+
 const child3 = document.createElement('div')
 child3.textContent = 'C'
 jest.spyOn(child3, 'getBoundingClientRect').mockReturnValue({
     top: 0,
     width: 50,
 } as DOMRect)
+
 const child4 = document.createElement('div')
 child4.textContent = 'D'
 jest.spyOn(child4, 'getBoundingClientRect').mockReturnValue({
@@ -46,7 +49,7 @@ describe('getWrappedElementCount', () => {
         expect(code).toBe(0)
     })
 
-    it('should return correct wrappedElementCount and width', () => {
+    it('should return correct wrappedElementCount', () => {
         const element = document.createElement('div')
         element.appendChild(child1)
         element.appendChild(child2)
@@ -70,5 +73,13 @@ describe('getWrappedElementCount', () => {
         const result = getWrappedElementCount(element)
 
         expect(result).toBe(0)
+    })
+
+    it('should not consider discarded tags', () => {
+        const element = document.createElement('div')
+        element.appendChild(child4) // wraps
+
+        expect(getWrappedElementCount(element, ['div'])).toBe(0)
+        expect(getWrappedElementCount(element, 'div')).toBe(0)
     })
 })

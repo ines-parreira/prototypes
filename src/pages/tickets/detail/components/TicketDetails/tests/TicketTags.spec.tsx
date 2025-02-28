@@ -6,26 +6,23 @@ import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
+import { getWrappedElementCount } from 'common/utils'
 import { agents } from 'fixtures/agents'
 import useElementSize from 'hooks/useElementSize'
+import { assumeMock } from 'utils/testing'
 
 import TicketTags from '../TicketTags'
 
 const mockStore = configureMockStore([thunk])
 
-const mockNumberOfWrappedElements = 3
-
-jest.mock(
-    'common/utils/getWrappedElementCount',
-    () => () => mockNumberOfWrappedElements,
-)
-
+jest.mock('common/utils/getWrappedElementCount', () => jest.fn())
 jest.mock('lodash/uniqueId', () => () => '42')
-
 jest.mock('hooks/useElementSize')
 
 const useElementSizeMock = useElementSize as jest.Mock
 useElementSizeMock.mockReturnValue([160, 100])
+
+const getWrappedElementCountMock = assumeMock(getWrappedElementCount)
 
 jest.mock(
     '../TagDropdown',
@@ -39,6 +36,12 @@ describe('<TicketTags />', () => {
     const user = fromJS(fromJS(agents[0])) as Map<any, any>
     const store = mockStore({
         currentUser: user,
+    })
+
+    const wrappedElementCount = 3
+
+    beforeEach(() => {
+        getWrappedElementCountMock.mockReturnValue(wrappedElementCount)
     })
 
     const minProps: Omit<ComponentProps<typeof TicketTags>, 'transparent'> = {
@@ -68,9 +71,13 @@ describe('<TicketTags />', () => {
                 <TicketTags {...minProps} />
             </Provider>,
         )
-        const expandButton = getByText(
-            new RegExp(`${mockNumberOfWrappedElements}`),
+
+        expect(getWrappedElementCountMock).toHaveBeenCalledWith(
+            expect.anything(),
+            ['button'],
         )
+
+        const expandButton = getByText(new RegExp(`${wrappedElementCount}`))
         expect(container.firstChild).toHaveStyle('height: 24px')
         fireEvent.mouseOver(expandButton)
         await waitFor(() => expect(getAllByText('refund')).toHaveLength(2))

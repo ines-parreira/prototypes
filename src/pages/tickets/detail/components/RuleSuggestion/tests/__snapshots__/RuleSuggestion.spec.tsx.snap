@@ -164,16 +164,14 @@ exports[`RuleSuggestion should display RuleSuggestion 1`] = `
                         <div
                           class="tags right"
                         >
-                          <div>
-                            <div
-                              class="tag black"
+                          <div
+                            class="tag black"
+                          >
+                            <span
+                              class="text"
                             >
-                              <span
-                                class="text"
-                              >
-                                auto-close
-                              </span>
-                            </div>
+                              auto-close
+                            </span>
                           </div>
                         </div>
                         <div
@@ -390,16 +388,14 @@ exports[`RuleSuggestion should display in preview for large suggestion body 1`] 
                         <div
                           class="tags right"
                         >
-                          <div>
-                            <div
-                              class="tag black"
+                          <div
+                            class="tag black"
+                          >
+                            <span
+                              class="text"
                             >
-                              <span
-                                class="text"
-                              >
-                                auto-close
-                              </span>
-                            </div>
+                              auto-close
+                            </span>
                           </div>
                         </div>
                         <div
