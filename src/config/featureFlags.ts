@@ -129,6 +129,7 @@ export enum FeatureFlagKey {
     StandaloneConvAiOverviewPage = 'standalone-conv-ai_overview-page',
     StandaloneAiSalesAnalyticsPage = 'standalone-ai-sales-analytics-page',
     StandaloneAIAgentSalesPage = 'standalone-ai-agent-sales-page',
+    StandaloneAIAgentSalesPaywallPage = 'standalone-ai-agent-sales-paywall-page',
     SwitchToShopifyThemeAppExtension = 'switch-to-shopify-theme-app-extension',
     TagNewDesign = 'tag-new-design',
     TicketConditionalFields = 'ticket-conditional-fields',

@@ -518,6 +518,7 @@ describe('<Routes/>', () => {
         it('should render sales page when flag standalone-ai-agent-sales-page is enabled', () => {
             mockFlags({
                 [FeatureFlagKey.StandaloneAIAgentSalesPage]: true,
+                [FeatureFlagKey.StandaloneAIAgentSalesPaywallPage]: true,
             })
 
             render(
