@@ -7,11 +7,14 @@ import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import { AccountSettingTableConfig } from 'state/currentAccount/types'
 import { RootState, StoreDispatch, StoreState } from 'state/types'
-import { TableColumnSet, TableView } from 'state/ui/stats/types'
+import { TableColumnSet, TableRowSet, TableView } from 'state/ui/stats/types'
 
-const getActiveViewFromTableSetting = <T extends TableColumnSet>(
-    setting: AccountSettingTableConfig<T> | undefined,
-): TableView<T> | undefined => {
+const getActiveViewFromTableSetting = <
+    T extends TableColumnSet,
+    R extends TableRowSet,
+>(
+    setting: AccountSettingTableConfig<T, R> | undefined,
+): TableView<T, R> | undefined => {
     if (setting !== undefined) {
         const currentSettings = setting.data
         return currentSettings.views.find(
@@ -21,15 +24,19 @@ const getActiveViewFromTableSetting = <T extends TableColumnSet>(
     return setting
 }
 
-export const useTableConfigSetting = <T extends TableColumnSet>(
+export const useTableConfigSetting = <
+    T extends TableColumnSet,
+    R extends TableRowSet,
+>(
     tableSettingSelector: Selector<
         RootState,
-        AccountSettingTableConfig<T> | undefined
+        AccountSettingTableConfig<T, R> | undefined
     >,
-    fallbackView: TableView<T>,
+    fallbackView: TableView<T, R>,
     columnsOrder: T[],
+    rowsOrder: R[],
     submitActiveViewAction: (
-        activeView: TableView<T>,
+        activeView: TableView<T, R>,
     ) => (
         dispatch: StoreDispatch,
         getState: () => CombinedState<StoreState>,
@@ -39,50 +46,120 @@ export const useTableConfigSetting = <T extends TableColumnSet>(
     const tableConfig = useAppSelector(tableSettingSelector)
 
     const submitActiveView = useCallback(
-        async (activeView: TableView<T>) => {
+        async (activeView: TableView<T, R>) => {
             await dispatch(submitActiveViewAction(activeView))
         },
         [dispatch, submitActiveViewAction],
     )
 
-    const response = useMemo(() => {
-        const currentView =
-            getActiveViewFromTableSetting(tableConfig) || fallbackView
-        const currentViewColumnsInOrder = currentView.metrics
-            .map((metric) => metric.id)
-            .filter((column) => columnsOrder.includes(column))
-        const columnsMissingInSettings = columnsOrder.filter(
-            (column) => !currentViewColumnsInOrder.includes(column),
-        )
+    const defaultCurrentView = useMemo(
+        () => getActiveViewFromTableSetting(tableConfig) || fallbackView,
+        [fallbackView, tableConfig],
+    )
 
-        const columnsInOrder = [
-            ...currentViewColumnsInOrder,
-            ...columnsMissingInSettings,
-        ]
+    const currentViewColumnsInOrder = useMemo(
+        () =>
+            defaultCurrentView.metrics
+                .map((metric) => metric.id)
+                .filter((column) => columnsOrder.includes(column)),
+        [defaultCurrentView, columnsOrder],
+    )
 
-        currentView.metrics = columnsInOrder.map((metric) => {
-            const savedSetting = currentView.metrics.find(
-                (entry) => entry.id === metric,
+    const currentViewRowsInOrder = useMemo(
+        () =>
+            (defaultCurrentView?.rows ?? [])
+                .map((row) => row.id)
+                .filter((rowId) => rowsOrder.includes(rowId)),
+        [defaultCurrentView, rowsOrder],
+    )
+
+    const columnsMissingInSettings = useMemo(
+        () =>
+            columnsOrder.filter(
+                (column) => !currentViewColumnsInOrder.includes(column),
+            ),
+        [columnsOrder, currentViewColumnsInOrder],
+    )
+
+    const rowsMissingInSettings = useMemo(
+        () => rowsOrder.filter((row) => !currentViewRowsInOrder.includes(row)),
+        [rowsOrder, currentViewRowsInOrder],
+    )
+
+    const columnsInOrder = useMemo(
+        () => [...currentViewColumnsInOrder, ...columnsMissingInSettings],
+        [currentViewColumnsInOrder, columnsMissingInSettings],
+    )
+
+    const rowsInOrder = useMemo(
+        () => [...currentViewRowsInOrder, ...rowsMissingInSettings],
+        [currentViewRowsInOrder, rowsMissingInSettings],
+    )
+    const currentViewMetrics = useMemo(
+        () =>
+            columnsInOrder.map((metric) => {
+                const savedSetting = defaultCurrentView.metrics.find(
+                    (entry) => entry.id === metric,
+                )
+                return {
+                    id: metric,
+                    visibility:
+                        savedSetting?.visibility !== undefined
+                            ? savedSetting?.visibility
+                            : null,
+                }
+            }),
+        [columnsInOrder, defaultCurrentView],
+    )
+
+    const filteredColumnsOrder = useMemo(
+        () =>
+            currentViewMetrics
+                .filter((metric) => metric.visibility !== false)
+                .map((metric) => metric.id),
+        [currentViewMetrics],
+    )
+
+    const currentViewRows = useMemo(() => {
+        if (rowsOrder.length === 0) {
+            return
+        }
+
+        return rowsInOrder?.map((row) => {
+            const savedSetting = (defaultCurrentView?.rows ?? []).find(
+                (entry) => entry.id === row,
             )
             return {
-                id: metric,
+                id: row,
                 visibility:
                     savedSetting?.visibility !== undefined
                         ? savedSetting?.visibility
                         : null,
             }
         })
+    }, [rowsInOrder, defaultCurrentView, rowsOrder])
 
-        const filteredColumnsOrder = currentView?.metrics
-            .filter((metric) => metric.visibility !== false)
-            .map((metric) => metric.id)
+    const filteredRowsOrder = useMemo(
+        () =>
+            (currentViewRows || [])
+                .filter((row) => row.visibility !== false)
+                .map((row) => row.id),
+        [currentViewRows],
+    )
 
-        return {
-            currentView,
-            columnsOrder: filteredColumnsOrder,
-            submitActiveView,
-        }
-    }, [columnsOrder, fallbackView, submitActiveView, tableConfig])
+    const currentView = useMemo(
+        () => ({
+            ...defaultCurrentView,
+            metrics: currentViewMetrics,
+            rows: currentViewRows,
+        }),
+        [currentViewRows, currentViewMetrics, defaultCurrentView],
+    )
 
-    return response
+    return {
+        currentView,
+        columnsOrder: filteredColumnsOrder,
+        rowsOrder: filteredRowsOrder,
+        submitActiveView,
+    }
 }

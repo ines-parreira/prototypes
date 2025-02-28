@@ -9,51 +9,91 @@ import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import { useAgentTableSetting } from 'hooks/reporting/useAgentsTableConfigSetting'
+import { useFlag } from 'core/flags'
+import { useAgentsTableConfigSetting } from 'hooks/reporting/useAgentsTableConfigSetting'
+import { useChannelsTableSetting } from 'hooks/reporting/useChannelsTableConfigSetting'
 import {
     EditTableColumns,
     SAVE_BUTTON_TEXT,
     TOGGLE_LABEL,
 } from 'pages/stats/common/components/Table/EditTableColumns'
 import {
-    agentPerformanceTableActiveView,
+    agentPerformanceRowsWithTotal,
+    agentPerformanceTableActiveViewWithTotal,
     AgentsColumnConfig,
+    AgentsRowConfig,
     AgentsTableViews,
     TableLabels,
+    TableRowLabels,
 } from 'pages/stats/support-performance/agents/AgentsTableConfig'
+import {
+    ChannelColumnConfig,
+    channelsReportTableActiveView,
+    ChannelsTableLabels,
+    ChannelsTableViews,
+    LeadColumn,
+} from 'pages/stats/support-performance/channels/ChannelsTableConfig'
 import * as currentAccount from 'state/currentAccount/actions'
-import { getAgentsTableConfigSettingsJS } from 'state/currentAccount/selectors'
+import {
+    getAgentsTableConfigSettingsJS,
+    getChannelsTableConfigSettingsJS,
+} from 'state/currentAccount/selectors'
 import { AccountSettingType } from 'state/currentAccount/types'
 import { RootState, StoreDispatch } from 'state/types'
-import { AgentsTableColumn } from 'state/ui/stats/types'
+import {
+    AgentsTableColumn,
+    AgentsTableRow,
+    ChannelsTableColumns,
+} from 'state/ui/stats/types'
+import { assumeMock } from 'utils/testing'
 
 const manager = createDragDropManager(HTML5Backend, undefined, undefined)
 
-const submitSettingSpy = jest.spyOn(
+const submitAgentSettingSpy = jest.spyOn(
     currentAccount,
     'submitAgentTableConfigView',
 )
+const submitChannelsSettingSpy = jest.spyOn(
+    currentAccount,
+    'submitChannelsTableConfigView',
+)
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
+
+jest.mock('core/flags')
+const useFlagMock = assumeMock(useFlag)
 
 describe('<AgentsEditColumns>', () => {
     const columnTitle = TableLabels[AgentsTableColumn.ClosedTickets]
+    const rowTitle = TableRowLabels[AgentsTableRow.Total]
     const settingsSelector = getAgentsTableConfigSettingsJS
     const fallbackViews = AgentsTableViews
     const tableLabels = TableLabels
+    const rowLabels = TableRowLabels
     const tooltips = AgentsColumnConfig
+    const rowTooltips = AgentsRowConfig
     const leadColumn = AgentsTableColumn.AgentName
-    const useTableSetting = useAgentTableSetting
+    const leadRow = AgentsTableRow.Average
+    const useTableSetting = useAgentsTableConfigSetting
     const defaultProps = {
         settingsSelector,
         fallbackViews,
         tableLabels,
+
         tooltips,
+
         leadColumn,
+
         useTableSetting,
+    }
+    const propsWithRows = {
+        ...defaultProps,
+        rowLabels,
+        rowTooltips,
+        leadRow,
     }
 
     beforeEach(() => {
-        submitSettingSpy.mockReturnValue(() => Promise.resolve({}))
+        submitAgentSettingSpy.mockReturnValue(() => Promise.resolve({}))
     })
 
     it('should render dropdown toggle button', () => {
@@ -103,7 +143,28 @@ describe('<AgentsEditColumns>', () => {
         expect(input).toBeChecked()
     })
 
+    it('should change row visibility', () => {
+        useFlagMock.mockReturnValue(true)
+        render(
+            <Provider store={mockStore({})}>
+                <DndProvider manager={manager}>
+                    <EditTableColumns {...propsWithRows} />
+                </DndProvider>
+            </Provider>,
+        )
+
+        const element = screen.getByText(rowTitle)
+        const input = element.getElementsByTagName('input')[0]
+
+        fireEvent.click(element)
+        expect(input).not.toBeChecked()
+
+        fireEvent.click(element)
+        expect(input).toBeChecked()
+    })
+
     it('should dispatch submit new setting on save', () => {
+        useFlagMock.mockReturnValue(false)
         render(
             <Provider store={mockStore({})}>
                 <DndProvider manager={manager}>
@@ -118,11 +179,76 @@ describe('<AgentsEditColumns>', () => {
         fireEvent.click(element)
         fireEvent.click(save)
 
-        expect(submitSettingSpy).toBeCalledWith({
+        expect(submitAgentSettingSpy).toBeCalledWith({
             id: expect.any(String),
             name: expect.any(String),
-            metrics: agentPerformanceTableActiveView?.metrics.map((metric) => {
-                if (metric.id === AgentsTableColumn.ClosedTickets) {
+            metrics: agentPerformanceTableActiveViewWithTotal.metrics.map(
+                (metric) => {
+                    if (metric.id === AgentsTableColumn.ClosedTickets) {
+                        return {
+                            ...metric,
+                            visibility: false,
+                        }
+                    }
+                    return metric
+                },
+            ),
+        })
+    })
+
+    it('should dispatch submit update setting on save', () => {
+        useFlagMock.mockReturnValue(false)
+        const props = {
+            settingsSelector: getChannelsTableConfigSettingsJS,
+            fallbackViews: ChannelsTableViews,
+            tableLabels: ChannelsTableLabels,
+            tooltips: ChannelColumnConfig,
+            leadColumn: LeadColumn,
+            useTableSetting: useChannelsTableSetting,
+        }
+        const activeViewId = 'activeViewId'
+        const activeView = {
+            id: activeViewId,
+            name: 'Some name',
+            metrics: channelsReportTableActiveView.metrics,
+        } as any
+        const state = {
+            currentAccount: fromJS({
+                settings: [
+                    {
+                        id: 'settingId',
+                        type: AccountSettingType.ChannelsTableConfig,
+                        data: {
+                            active_view: activeViewId,
+                            views: [activeView],
+                        },
+                    },
+                ],
+                _internal: {
+                    loading: {},
+                },
+            }),
+        }
+
+        render(
+            <Provider store={mockStore(state)}>
+                <DndProvider manager={manager}>
+                    <EditTableColumns {...props} />
+                </DndProvider>
+            </Provider>,
+        )
+
+        const element = screen.getByText(columnTitle)
+        const save = screen.getByText(SAVE_BUTTON_TEXT)
+
+        fireEvent.click(element)
+        fireEvent.click(save)
+
+        expect(submitChannelsSettingSpy).toBeCalledWith({
+            id: expect.any(String),
+            name: expect.any(String),
+            metrics: channelsReportTableActiveView?.metrics.map((metric) => {
+                if (metric.id === ChannelsTableColumns.ClosedTickets) {
                     return {
                         ...metric,
                         visibility: false,
@@ -133,12 +259,14 @@ describe('<AgentsEditColumns>', () => {
         })
     })
 
-    it('should dispatch submit update setting on save', () => {
+    it('should dispatch submit update setting on save with rows', () => {
+        useFlagMock.mockReturnValue(true)
         const activeViewId = 'activeViewId'
         const activeView = {
             id: activeViewId,
             name: 'Some name',
-            metrics: agentPerformanceTableActiveView.metrics,
+            metrics: agentPerformanceTableActiveViewWithTotal.metrics,
+            rows: agentPerformanceTableActiveViewWithTotal.rows,
         } as any
         const state = {
             currentAccount: fromJS({
@@ -161,7 +289,7 @@ describe('<AgentsEditColumns>', () => {
         render(
             <Provider store={mockStore(state)}>
                 <DndProvider manager={manager}>
-                    <EditTableColumns {...defaultProps} />
+                    <EditTableColumns {...propsWithRows} />
                 </DndProvider>
             </Provider>,
         )
@@ -172,18 +300,21 @@ describe('<AgentsEditColumns>', () => {
         fireEvent.click(element)
         fireEvent.click(save)
 
-        expect(submitSettingSpy).toBeCalledWith({
+        expect(submitAgentSettingSpy).toBeCalledWith({
             id: expect.any(String),
             name: expect.any(String),
-            metrics: agentPerformanceTableActiveView?.metrics.map((metric) => {
-                if (metric.id === AgentsTableColumn.ClosedTickets) {
-                    return {
-                        ...metric,
-                        visibility: false,
+            metrics: agentPerformanceTableActiveViewWithTotal?.metrics.map(
+                (metric) => {
+                    if (metric.id === AgentsTableColumn.ClosedTickets) {
+                        return {
+                            ...metric,
+                            visibility: false,
+                        }
                     }
-                }
-                return metric
-            }),
+                    return metric
+                },
+            ),
+            rows: agentPerformanceRowsWithTotal,
         })
     })
 
@@ -192,7 +323,7 @@ describe('<AgentsEditColumns>', () => {
         const activeView = {
             id: activeViewId,
             name: 'Some name',
-            metrics: agentPerformanceTableActiveView.metrics,
+            metrics: agentPerformanceTableActiveViewWithTotal.metrics,
         }
         const state = {
             currentAccount: fromJS({
@@ -231,8 +362,8 @@ describe('<AgentsEditColumns>', () => {
             id: activeViewId,
             name: 'Some name',
             metrics: [
-                agentPerformanceTableActiveView.metrics[0],
-                agentPerformanceTableActiveView.metrics[1],
+                agentPerformanceTableActiveViewWithTotal.metrics[0],
+                agentPerformanceTableActiveViewWithTotal.metrics[1],
             ],
         }
 
@@ -260,6 +391,7 @@ describe('<AgentsEditColumns>', () => {
     })
 
     it('should render items in expected order', () => {
+        useFlagMock.mockReturnValue(false)
         render(
             <Provider store={mockStore({})}>
                 <DndProvider manager={manager}>
@@ -270,18 +402,21 @@ describe('<AgentsEditColumns>', () => {
 
         const items = document.getElementsByClassName('dropdown-item')
 
-        agentPerformanceTableActiveView.metrics.forEach((column, index) => {
-            expect(items[index]).toHaveTextContent(
-                new RegExp(TableLabels[column.id]),
-            )
-        })
+        agentPerformanceTableActiveViewWithTotal.metrics.forEach(
+            (column, index) => {
+                expect(items[index]).toHaveTextContent(
+                    new RegExp(TableLabels[column.id]),
+                )
+            },
+        )
     })
 
-    it('should allow changing order with drag and drop', () => {
+    it('should allow changing order of columns with drag and drop', () => {
+        useFlagMock.mockReturnValue(false)
         const firstOrderableItemLabel =
-            TableLabels[agentPerformanceTableActiveView.metrics[1].id]
+            TableLabels[agentPerformanceTableActiveViewWithTotal.metrics[1].id]
         const lastItemLabel =
-            TableLabels[agentPerformanceTableActiveView.metrics[5].id]
+            TableLabels[agentPerformanceTableActiveViewWithTotal.metrics[5].id]
 
         render(
             <Provider store={mockStore({})}>
@@ -304,6 +439,39 @@ describe('<AgentsEditColumns>', () => {
         const allItems = document.getElementsByClassName('dropdown-item')
         expect(allItems[1]).toHaveTextContent(new RegExp(lastItemLabel))
         expect(allItems[2]).toHaveTextContent(
+            new RegExp(firstOrderableItemLabel),
+        )
+        expect(screen.getByText(SAVE_BUTTON_TEXT)).toBeEnabled()
+    })
+
+    it('should allow changing order or rows with drag and drop', () => {
+        useFlagMock.mockReturnValue(true)
+        const firstOrderableItemLabel =
+            TableRowLabels[agentPerformanceTableActiveViewWithTotal.rows[0].id]
+        const lastItemLabel =
+            TableRowLabels[agentPerformanceTableActiveViewWithTotal.rows[1].id]
+
+        render(
+            <Provider store={mockStore({})}>
+                <DndProvider manager={manager}>
+                    <EditTableColumns {...propsWithRows} />
+                </DndProvider>
+            </Provider>,
+        )
+
+        const optionItem = screen.getByLabelText(firstOrderableItemLabel)
+        const optionItem2 = screen.getByLabelText(lastItemLabel)
+
+        act(() => {
+            fireEvent.dragStart(optionItem2)
+            fireEvent.dragEnter(optionItem)
+            fireEvent.dragOver(optionItem)
+            fireEvent.drop(optionItem)
+        })
+
+        const allItems = document.getElementsByClassName('dropdown-item')
+        expect(allItems[0]).toHaveTextContent(new RegExp(lastItemLabel))
+        expect(allItems[1]).toHaveTextContent(
             new RegExp(firstOrderableItemLabel),
         )
         expect(screen.getByText(SAVE_BUTTON_TEXT)).toBeEnabled()

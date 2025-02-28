@@ -6,28 +6,36 @@ import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
+import { useFlag } from 'core/flags'
 import { account } from 'fixtures/account'
 import { useAgentsTableConfigSetting } from 'hooks/reporting/useAgentsTableConfigSetting'
 import {
+    agentPerformanceRowsWithTotal,
     agentPerformanceTableActiveView,
-    AgentsTableViews,
-    TableColumnsOrderWithOnlineTime,
+    agentPerformanceTableActiveViewWithTotal,
+    TableColumnsOrder,
+    TableRowsOrder,
+    TableRowsOrderWithTotal,
 } from 'pages/stats/support-performance/agents/AgentsTableConfig'
-import { submitSetting } from 'state/currentAccount/actions'
+import { submitAgentTableConfigView } from 'state/currentAccount/actions'
 import {
     AccountSettingAgentsTableConfig,
     AccountSettingType,
 } from 'state/currentAccount/types'
 import { RootState, StoreDispatch } from 'state/types'
-import { AgentsTableColumn } from 'state/ui/stats/types'
+import { AgentsTableColumn, AgentsTableRow } from 'state/ui/stats/types'
 import { assumeMock } from 'utils/testing'
 
 const mockStore = configureMockStore<RootState, StoreDispatch>([thunk])
 jest.mock('state/currentAccount/actions')
-const submitSettingMock = assumeMock(submitSetting)
+const submitAgentTableConfigViewMock = assumeMock(submitAgentTableConfigView)
+
+jest.mock('core/flags')
+const useFlagMock = assumeMock(useFlag)
 
 describe('useAgentsTableConfigSetting', () => {
     it('should return default order if no Setting available', () => {
+        useFlagMock.mockReturnValue(true)
         const state = {
             currentAccount: fromJS(account),
         } as RootState
@@ -39,20 +47,41 @@ describe('useAgentsTableConfigSetting', () => {
         })
 
         expect(result.current).toEqual({
-            settings: AgentsTableViews,
-            columnsOrder: TableColumnsOrderWithOnlineTime,
+            columnsOrder: TableColumnsOrder,
+            rowsOrder: TableRowsOrderWithTotal,
+            currentView: {
+                ...agentPerformanceTableActiveViewWithTotal,
+                rows: agentPerformanceRowsWithTotal,
+            },
+            submitActiveView: expect.any(Function),
+        })
+    })
+
+    it('should return default row order when flag is off', () => {
+        useFlagMock.mockReturnValue(false)
+        const state = {
+            currentAccount: fromJS(account),
+        } as RootState
+
+        const { result } = renderHook(() => useAgentsTableConfigSetting(), {
+            wrapper: ({ children }) => (
+                <Provider store={mockStore(state)}>{children}</Provider>
+            ),
+        })
+
+        expect(result.current).toEqual({
+            columnsOrder: TableColumnsOrder,
+            rowsOrder: TableRowsOrder,
             currentView: agentPerformanceTableActiveView,
             submitActiveView: expect.any(Function),
         })
     })
 
     describe('onlineTime', () => {
-        const metrics = Object.keys(TableColumnsOrderWithOnlineTime).map(
-            (column) => ({
-                id: column,
-                visibility: true,
-            }),
-        )
+        const metrics = Object.keys(TableColumnsOrder).map((column) => ({
+            id: column,
+            visibility: true,
+        }))
 
         const view = {
             id: 'test',
@@ -93,17 +122,21 @@ describe('useAgentsTableConfigSetting', () => {
     })
 
     it('should return data from Setting', () => {
-        const columns = Object.values(TableColumnsOrderWithOnlineTime)
-        const metrics = Object.values(TableColumnsOrderWithOnlineTime).map(
-            (column) => ({
-                id: column,
-                visibility: true,
-            }),
-        )
+        const columns = Object.values(TableColumnsOrder)
+        const metrics = Object.values(TableColumnsOrder).map((column) => ({
+            id: column,
+            visibility: true,
+        }))
         const view = {
             id: 'test',
             name: 'Test view',
             metrics: metrics,
+            rows: [
+                {
+                    id: AgentsTableRow.Average,
+                    visibility: true,
+                },
+            ],
         }
         const tableSetting: AccountSettingAgentsTableConfig = {
             id: 123,
@@ -128,8 +161,8 @@ describe('useAgentsTableConfigSetting', () => {
         })
 
         expect(result.current).toEqual({
-            settings: tableSetting.data,
             columnsOrder: columns,
+            rowsOrder: TableRowsOrder,
             currentView: view,
             submitActiveView: expect.any(Function),
         })
@@ -142,7 +175,7 @@ describe('useAgentsTableConfigSetting', () => {
             AgentsTableColumn.CustomerSatisfaction,
         ]
         const unsupportedColumn = 'agent_unsupported_column'
-        const restOfTheColumns = TableColumnsOrderWithOnlineTime.filter(
+        const restOfTheColumns = TableColumnsOrder.filter(
             (column) => !columnsSavedInCustomOrder.includes(column),
         )
         const metrics = Object.values([
@@ -188,7 +221,7 @@ describe('useAgentsTableConfigSetting', () => {
     })
 
     it('should submitActiveView', async () => {
-        submitSettingMock.mockReturnValue({
+        submitAgentTableConfigViewMock.mockReturnValue({
             type: 'someType',
         } as any)
         const state = {
@@ -202,15 +235,12 @@ describe('useAgentsTableConfigSetting', () => {
             ),
         })
 
-        await result.current.submitActiveView(agentPerformanceTableActiveView)
+        await result.current.submitActiveView(
+            agentPerformanceTableActiveViewWithTotal,
+        )
 
-        expect(submitSettingMock).toHaveBeenCalledWith({
-            id: undefined,
-            type: AccountSettingType.AgentsTableConfig,
-            data: {
-                active_view: agentPerformanceTableActiveView.id,
-                views: [agentPerformanceTableActiveView],
-            },
-        })
+        expect(submitAgentTableConfigViewMock).toHaveBeenCalledWith(
+            agentPerformanceTableActiveViewWithTotal,
+        )
     })
 })
