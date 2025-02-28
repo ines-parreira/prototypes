@@ -65,7 +65,7 @@ describe('AiAgentTable', () => {
                         agents: withDefaultLogicalOperator([]),
                     },
                 },
-                withAverageRow: false,
+                withAggregateRows: false,
             },
             {},
         )
@@ -90,7 +90,7 @@ describe('AiAgentTable', () => {
                         agents: withDefaultLogicalOperator([aiAgent.id]),
                     },
                 },
-                withAverageRow: false,
+                withAggregateRows: false,
             },
             {},
         )

@@ -415,6 +415,43 @@ export const getSummaryQuery = (column: AgentsTableColumn): MetricQueryHook => {
     }
 }
 
+export const getTotalsQuery = (column: AgentsTableColumn): MetricQueryHook => {
+    switch (column) {
+        case AgentsTableColumn.ClosedTickets:
+            return useClosedTicketsMetric
+
+        case AgentsTableColumn.ClosedTicketsPerHour:
+            return useTicketsClosedPerHour
+
+        case AgentsTableColumn.RepliedTicketsPerHour:
+            return useTicketsRepliedPerHour
+
+        case AgentsTableColumn.RepliedTickets:
+            return useTicketsRepliedMetric
+
+        case AgentsTableColumn.MessagesSent:
+            return useMessagesSentMetric
+
+        case AgentsTableColumn.MessagesSentPerHour:
+            return useMessagesSentPerHour
+
+        case AgentsTableColumn.AgentName:
+        case AgentsTableColumn.MedianFirstResponseTime:
+        case AgentsTableColumn.MedianResolutionTime:
+        case AgentsTableColumn.CustomerSatisfaction:
+        case AgentsTableColumn.OneTouchTickets:
+        case AgentsTableColumn.OnlineTime:
+        case AgentsTableColumn.TicketHandleTime:
+        case AgentsTableColumn.PercentageOfClosedTickets:
+        case AgentsTableColumn.ZeroTouchTickets:
+            return () => ({
+                isFetching: false,
+                isError: false,
+                data: undefined,
+            })
+    }
+}
+
 export const agentIdFields = [
     TicketMember.AssigneeUserId,
     TicketMember.MessageSenderId,

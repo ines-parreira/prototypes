@@ -22,6 +22,7 @@ import {
     TableLabels,
 } from 'pages/stats/support-performance/agents/AgentsTableConfig'
 import { AgentsTableSummaryCell } from 'pages/stats/support-performance/agents/AgentsTableSummaryCell'
+import { AgentsTableTotalsCell } from 'pages/stats/support-performance/agents/AgentsTableTotalsCell'
 import { RootState, StoreDispatch } from 'state/types'
 import {
     getHeatmapMode,
@@ -76,6 +77,9 @@ const AgentsHeaderCellContentMock = assumeMock(AgentsHeaderCellContent)
 jest.mock('pages/stats/support-performance/agents/AgentsTableSummaryCell.tsx')
 const AgentsTableSummaryCellMock = assumeMock(AgentsTableSummaryCell)
 
+jest.mock('pages/stats/support-performance/agents/AgentsTableTotalsCell.tsx')
+const AgentsTableTotalsCellMock = assumeMock(AgentsTableTotalsCell)
+
 const cellMock = () => <div />
 
 describe('<AgentsTable>', () => {
@@ -105,7 +109,7 @@ describe('<AgentsTable>', () => {
     AgentsCellContentMock.mockImplementation(cellMock)
     AgentsHeaderCellContentMock.mockImplementation(cellMock)
     AgentsTableSummaryCellMock.mockImplementation(cellMock)
-
+    AgentsTableTotalsCellMock.mockImplementation(cellMock)
     describe('AgentsTable component', () => {
         it('should render the table title, table header and rows', () => {
             render(
