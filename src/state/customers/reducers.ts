@@ -131,12 +131,6 @@ export default function reducer(
                 .setIn(['_internal', 'loading', 'history'], false)
                 .setIn(['customerHistory', 'triedLoading'], false)
 
-            if (!action.shouldDisplayHistoryOnNextPage) {
-                newState = newState
-                    .setIn(['customerHistory', 'tickets'], fromJS([]))
-                    .setIn(['customerHistory', 'hasHistory'], false)
-            }
-
             return newState
         }
 
@@ -194,12 +188,6 @@ export default function reducer(
                 ['_internal', 'loading', 'history'],
                 false,
             )
-
-            if (!action.shouldDisplayHistoryOnNextPage) {
-                newState = newState
-                    .setIn(['customerHistory', 'tickets'], fromJS([]))
-                    .setIn(['customerHistory', 'hasHistory'], false)
-            }
 
             return newState
         }

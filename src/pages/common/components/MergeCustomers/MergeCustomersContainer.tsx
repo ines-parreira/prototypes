@@ -3,10 +3,11 @@ import React, { Component } from 'react'
 import { fromJS, List, Map, Set } from 'immutable'
 import { connect, ConnectedProps } from 'react-redux'
 
-import { mergeCustomers } from '../../../../state/customers/actions'
-import { makeIsLoading } from '../../../../state/customers/selectors'
-import { getMessages } from '../../../../state/ticket/selectors'
-import { RootState } from '../../../../state/types'
+import { mergeCustomers } from 'state/customers/actions'
+import { getLoading } from 'state/customers/selectors'
+import { getMessages } from 'state/ticket/selectors'
+import { RootState } from 'state/types'
+
 import MergeCustomersModal from './MergeCustomersModal'
 
 type Props = ConnectedProps<typeof connector> & {
@@ -31,7 +32,7 @@ class MergeCustomersContainer extends Component<Props> {
             display,
             mergeCustomers,
             onClose,
-            customersIsLoading,
+            customerLoading,
             isTicketContext,
             ticketMessages,
             onSuccess,
@@ -77,7 +78,7 @@ class MergeCustomersContainer extends Component<Props> {
                 sourceCustomer={sourceCustomer}
                 toggleModal={onClose}
                 mergeCustomers={mergeCustomers}
-                isLoading={customersIsLoading('merge')}
+                isLoading={!!customerLoading.get('merge')}
                 requiredAddresses={
                     (fromJS(requiredAddresses) as List<string>)
                         .toSet()
@@ -93,7 +94,7 @@ class MergeCustomersContainer extends Component<Props> {
 
 const connector = connect(
     (state: RootState) => ({
-        customersIsLoading: makeIsLoading(state),
+        customerLoading: getLoading(state),
         ticketMessages: getMessages(state),
     }),
     { mergeCustomers },

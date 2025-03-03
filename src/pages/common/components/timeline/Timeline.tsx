@@ -1,72 +1,69 @@
-import React, { Component } from 'react'
+import React from 'react'
 
-import classnames from 'classnames'
-import { fromJS, List, Map } from 'immutable'
+import { fromJS } from 'immutable'
 
-import { displayHistoryOnNextPage } from '../../../../state/ticket/actions'
+import { LoadingSpinner } from '@gorgias/merchant-ui-kit'
+
+import GorgiasLogo from 'assets/img/gorgias-logo.svg'
+import useAppSelector from 'hooks/useAppSelector'
+import { getCustomerHistory, getLoading } from 'state/customers/selectors'
+import { displayHistoryOnNextPage } from 'state/ticket/actions'
+
 import TimelineTicket from './TimelineTicket'
+import { ReduxCustomerHistory } from './types'
 
 import css from './Timeline.less'
 
 type Props = {
-    displayHistoryOnNextPage?: typeof displayHistoryOnNextPage
-    customerHistory: Map<any, any>
-    currentTicketId: number
-    displayAll: boolean
-    revert: boolean
+    ticketId?: number
+    onTicketClick?: (ticketId: number) => void
 }
 
-export default class Timeline extends Component<Props> {
-    static defaultProps: Pick<
-        Props,
-        'currentTicketId' | 'displayAll' | 'revert'
-    > = {
-        currentTicketId: 0,
-        displayAll: false,
-        revert: false,
+export default function Timeline({ ticketId = 0, onTicketClick }: Props) {
+    const customersLoading = useAppSelector(getLoading).toJS() as {
+        history: boolean
     }
+    const customerHistory = useAppSelector(
+        getCustomerHistory,
+    ).toJS() as ReduxCustomerHistory
 
-    render() {
-        const {
-            currentTicketId,
-            customerHistory,
-            displayHistoryOnNextPage,
-            displayAll,
-            revert,
-        } = this.props
-
-        if (!customerHistory.get('hasHistory') && !displayAll) {
-            return null
-        }
-
-        let history = customerHistory.get('tickets', fromJS([])) as List<any>
-
-        if (revert) {
-            history = history.reverse() as List<any>
-        }
-
+    if (customersLoading.history) {
         return (
-            <div className={classnames(css.component)}>
-                {history
-                    .map((obj: Map<any, any>) => {
-                        if (obj.get('channel')) {
-                            return (
-                                <TimelineTicket
-                                    displayHistoryOnNextPage={
-                                        displayHistoryOnNextPage
-                                    }
-                                    isCurrent={
-                                        currentTicketId === obj.get('id')
-                                    }
-                                    key={obj.get('id')}
-                                    ticket={obj}
-                                />
-                            )
-                        }
-                        return null
-                    })
-                    .toList()}
+            <div className={css.centeringContainer}>
+                <LoadingSpinner size="big" />
             </div>
         )
     }
+
+    if (customerHistory.triedLoading && !customerHistory.hasHistory) {
+        return (
+            <div className={`${css.centeringContainer} ${css.noResults}`}>
+                <img src={GorgiasLogo} alt="Gorgias Logo" />
+                <p>This customer doesn’t have any tickets yet.</p>
+            </div>
+        )
+    }
+
+    const tickets = customerHistory.tickets.sort(
+        (a, b) =>
+            new Date(b.last_message_datetime || b.created_datetime).getTime() -
+            new Date(a.last_message_datetime || a.created_datetime).getTime(),
+    )
+
+    return (
+        <div className={css.container}>
+            {tickets
+                .filter((ticket) => ticket.channel)
+                .map((ticket) => (
+                    <TimelineTicket
+                        displayHistoryOnNextPage={
+                            onTicketClick as unknown as typeof displayHistoryOnNextPage
+                        }
+                        isCurrent={ticketId === ticket.id}
+                        key={ticket.id}
+                        ticket={fromJS(ticket)}
+                    />
+                ))}
+        </div>
+    )
 }

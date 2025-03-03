@@ -9,7 +9,7 @@ import { logEvent, SegmentEvent } from 'common/segment'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import Button from 'pages/common/components/button/Button'
-import { getCustomersState, makeIsLoading } from 'state/customers/selectors'
+import { getCustomersState, getLoading } from 'state/customers/selectors'
 import { toggleHistory } from 'state/ticket/actions'
 import { getDisplayHistory } from 'state/ticket/selectors'
 
@@ -27,7 +27,7 @@ export function CustomerTimelineButton({ isEditing = false }: Props) {
     const ticket = useAppSelector((state) => state.ticket)
 
     const customers = useAppSelector(getCustomersState)
-    const isCustomersLoading = useAppSelector(makeIsLoading)
+    const customersLoading = useAppSelector(getLoading)
     const customerHistory = useMemo(
         () => (customers.get('customerHistory') as Map<any, any>) || fromJS({}),
         [customers],
@@ -49,7 +49,7 @@ export function CustomerTimelineButton({ isEditing = false }: Props) {
 
     const isButtonRendered = isEditing || !ticket.get('id')
 
-    const isHistoryLoading = isCustomersLoading('history')
+    const isHistoryLoading = !!customersLoading.get('history')
 
     const isHistoryDisabled =
         !customerHistory.get('hasHistory') || isHistoryLoading

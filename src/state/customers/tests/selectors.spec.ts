@@ -43,12 +43,6 @@ describe('customers selectors', () => {
         )
     })
 
-    it('isLoading', () => {
-        expect(selectors.isLoading('loader1')(state)).toBe(true)
-        expect(selectors.isLoading('loader2')(state)).toBe(false)
-        expect(selectors.isLoading('unknown')(state)).toBe(false)
-    })
-
     it('getCustomers', () => {
         expect(selectors.getCustomers(state)).toEqualImmutable(
             selectors.getCustomersState(state).get('items'),

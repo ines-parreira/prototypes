@@ -1,13 +1,13 @@
 import React, { useEffect, useMemo, useState } from 'react'
 
 import { fromJS, List } from 'immutable'
-import { useFlags } from 'launchdarkly-react-client-sdk'
 import _pick from 'lodash/pick'
 import { connect, ConnectedProps } from 'react-redux'
 import { useParams } from 'react-router-dom'
 
 import { TicketChannel } from 'business/types/ticket'
 import { FeatureFlagKey } from 'config/featureFlags'
+import useFlag from 'core/flags/hooks/useFlag'
 import useAppSelector from 'hooks/useAppSelector'
 import { RecentItems } from 'hooks/useRecentItems/constants'
 import useRecentItems from 'hooks/useRecentItems/useRecentItems'
@@ -18,6 +18,7 @@ import CreateTicketButton from 'pages/common/components/CreateTicket/CreateTicke
 import Loader from 'pages/common/components/Loader/Loader'
 import Modal from 'pages/common/components/modal/Modal'
 import ModalHeader from 'pages/common/components/modal/ModalHeader'
+import LegacyTimeline from 'pages/common/components/timeline/LegacyTimeline'
 import Timeline from 'pages/common/components/timeline/Timeline'
 import CustomerForm from 'pages/customers/common/components/CustomerForm'
 import { fetchCustomer, fetchCustomerHistory } from 'state/customers/actions'
@@ -25,8 +26,8 @@ import * as customersHelpers from 'state/customers/helpers'
 import {
     DEPRECATED_getActiveCustomer,
     getCustomerHistory,
+    getLoading,
     makeGetActiveCustomerChannelsByType,
-    makeIsLoading,
 } from 'state/customers/selectors'
 import { RootState } from 'state/types'
 
@@ -40,10 +41,11 @@ const getActiveCustomerTicketChannels = makeGetActiveCustomerChannelsByType([
 export const CustomerDetailContainer = ({
     activeCustomer,
     customerHistory,
-    customersIsLoading,
+    customersLoading,
     fetchCustomer,
     fetchCustomerHistory,
 }: ConnectedProps<typeof connector>) => {
+    const hasNewTimeline = useFlag(FeatureFlagKey.CustomerTimeline, false)
     const filteredChannels = useAppSelector(getActiveCustomerTicketChannels)
     const [isCustomerFormOpen, setIsCustomerFormOpen] = useState(false)
     const historyLength = useMemo(
@@ -55,8 +57,9 @@ export const CustomerDetailContainer = ({
     const { setRecentItem } = useRecentItems<PickedCustomer>(
         RecentItems.Customers,
     )
-    const shopifyCustomerProfileCreationFeatureEnabled =
-        useFlags()[FeatureFlagKey.ShopifyCustomerProfileCreation]
+    const shopifyCustomerProfileCreationFeatureEnabled = useFlag(
+        FeatureFlagKey.ShopifyCustomerProfileCreation,
+    )
 
     useEffect(() => {
         if (activeCustomer.get('id')) {
@@ -83,7 +86,7 @@ export const CustomerDetailContainer = ({
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [customerId])
 
-    const shouldDisplayLoader = customersIsLoading('active')
+    const shouldDisplayLoader = !!customersLoading.get('active')
     const createTicketOptions = useMemo(
         () => ({
             pathname: `/app/ticket/new`,
@@ -102,8 +105,10 @@ export const CustomerDetailContainer = ({
         <Loader message="Loading customer..." />
     ) : (
         <div className={css.customerDetailContainer}>
-            <div className="flex-spaced-row">
-                <h1>{customersHelpers.getDisplayName(activeCustomer)}</h1>
+            <div className={css.header}>
+                <h1 className={css.title}>
+                    {customersHelpers.getDisplayName(activeCustomer)}
+                </h1>
                 <div className={css.buttons}>
                     <CreateTicketButton
                         buttonProps={{ intent: 'secondary' }}
@@ -117,13 +122,15 @@ export const CustomerDetailContainer = ({
                 </div>
             </div>
 
-            {customersIsLoading('history') ? (
+            {hasNewTimeline ? (
+                <Timeline />
+            ) : !!customersLoading.get('history') ? (
                 <Loader message="Loading history..." />
             ) : customerHistory.get('triedLoading', true) && !historyLength ? (
                 <p>This customer has no activity recorded</p>
             ) : (
                 <div className="my-4">
-                    <Timeline
+                    <LegacyTimeline
                         customerHistory={customerHistory}
                         displayAll
                         revert
@@ -153,7 +160,7 @@ const connector = connect(
     (state: RootState) => ({
         activeCustomer: DEPRECATED_getActiveCustomer(state),
         customerHistory: getCustomerHistory(state),
-        customersIsLoading: makeIsLoading(state),
+        customersLoading: getLoading(state),
     }),
     {
         fetchCustomer,

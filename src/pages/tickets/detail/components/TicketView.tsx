@@ -1,16 +1,24 @@
-import React, { useEffect, useMemo, useRef } from 'react'
+import React, { useMemo, useRef } from 'react'
 
 import classnames from 'classnames'
 import { fromJS, List, Map } from 'immutable'
 
 import { logEvent, SegmentEvent } from 'common/segment'
+import { FeatureFlagKey } from 'config/featureFlags'
+import useFlag from 'core/flags/hooks/useFlag'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
+import useEffectOnce from 'hooks/useEffectOnce'
+import LegacyTimeline from 'pages/common/components/timeline/LegacyTimeline'
 import Timeline from 'pages/common/components/timeline/Timeline'
 import TicketBody from 'pages/tickets/detail/components/TicketBody'
 import { getCustomersState } from 'state/customers/selectors'
 import { displayHistoryOnNextPage, toggleHistory } from 'state/ticket/actions'
-import { getBody, getDisplayHistory } from 'state/ticket/selectors'
+import {
+    getBody,
+    getDisplayHistory,
+    getTicketState,
+} from 'state/ticket/selectors'
 import type { OnToggleUnreadFn } from 'tickets/pages/SplitTicketPage'
 
 import { SubmitArgs } from '../TicketDetailContainer'
@@ -34,13 +42,14 @@ export const TicketView = ({
     onGoToNextTicket,
     onToggleUnread,
 }: Props) => {
+    const hasNewTimeline = useFlag(FeatureFlagKey.CustomerTimeline, false)
     const dispatch = useAppDispatch()
     const pageRef = useRef<HTMLDivElement>(null)
     const ticketContentRef = useRef<HTMLDivElement>(null)
 
     const customers = useAppSelector(getCustomersState)
     const isHistoryDisplayed = useAppSelector(getDisplayHistory)
-    const ticket = useAppSelector((state) => state.ticket)
+    const ticket = useAppSelector(getTicketState)
     const ticketBody = useAppSelector(getBody)
 
     const customerHistory = useMemo(
@@ -48,7 +57,8 @@ export const TicketView = ({
         [customers],
     )
 
-    useEffect(() => {
+    // We are using useEffect here to sync state when ticket state changes :(
+    useEffectOnce(() => {
         const shouldDisplayHistoryOnNextPage = ticket.getIn([
             '_internal',
             'shouldDisplayHistoryOnNextPage',
@@ -65,8 +75,7 @@ export const TicketView = ({
         if (shouldDisplayHistoryOnNextPage) {
             dispatch(displayHistoryOnNextPage(false))
         }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [])
+    })
 
     const handleHistoryToggle = () => {
         const shouldOpenHistory =
@@ -116,13 +125,22 @@ export const TicketView = ({
                     </div>
 
                     <div className={classnames(css.timelineContainer, 'pb-4')}>
-                        <Timeline
-                            displayHistoryOnNextPage={() =>
-                                dispatch(displayHistoryOnNextPage())
-                            }
-                            currentTicketId={ticket.get('id')}
-                            customerHistory={customerHistory}
-                        />
+                        {hasNewTimeline ? (
+                            <Timeline
+                                onTicketClick={() =>
+                                    dispatch(displayHistoryOnNextPage())
+                                }
+                                ticketId={ticket.get('id')}
+                            />
+                        ) : (
+                            <LegacyTimeline
+                                displayHistoryOnNextPage={() =>
+                                    dispatch(displayHistoryOnNextPage())
+                                }
+                                currentTicketId={ticket.get('id')}
+                                customerHistory={customerHistory}
+                            />
+                        )}
                     </div>
                 </div>
             )}

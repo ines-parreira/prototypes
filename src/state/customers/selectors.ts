@@ -22,21 +22,6 @@ export const getCustomerHistory = createSelector(
         (state.get('customerHistory') as Map<any, any>) || fromJS({}),
 )
 
-// in props usage
-// ex: isMerging: isLoading('merge')(state)
-export const isLoading = (name: string) =>
-    createSelector(
-        getLoading,
-        (loading: Map<any, any>) => loading.get(name, false) as boolean,
-    )
-
-// in component usage
-// ex: isLoading: makeIsLoading(state)   then : const isMerging = isLoading('merge')
-export const makeIsLoading =
-    (state: RootState) =>
-    (name: string): boolean =>
-        isLoading(name)(state)
-
 export const getCustomers = createSelector(
     getCustomersState,
     (state: CustomersState) => (state.get('items') as List<any>) || fromJS([]),

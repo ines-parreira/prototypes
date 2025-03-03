@@ -98,7 +98,6 @@ export type GorgiasAction = {
     status?: boolean
     viewType?: ViewType
     customerId?: number
-    shouldDisplayHistoryOnNextPage?: boolean
     ids?: number[]
     callback?: (arg: unknown) => void
     loading?: boolean

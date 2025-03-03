@@ -8,17 +8,22 @@ import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
+import useFlag from 'core/flags/hooks/useFlag'
 import { customer } from 'fixtures/customer'
 import { ticket } from 'fixtures/ticket'
+import Timeline from 'pages/common/components/timeline/Timeline'
 import { RootState, StoreDispatch } from 'state/types'
-import { renderWithRouter } from 'utils/testing'
+import { assumeMock, renderWithRouter } from 'utils/testing'
 
 import { CustomerDetailContainer } from '../CustomerDetailContainer'
 
-jest.mock('../../common/components/CustomerForm', () => () => (
+jest.mock('core/flags/hooks/useFlag')
+jest.mock('pages/common/components/timeline/Timeline', () =>
+    jest.fn(() => <div>Timeline</div>),
+)
+jest.mock('pages/customers/common/components/CustomerForm', () => () => (
     <div>CustomerForm</div>
 ))
-
 jest.mock(
     'pages/common/utils/DatetimeLabel',
     () =>
@@ -30,6 +35,8 @@ jest.mock('hooks/useRecentItems/useRecentItems', () => () => ({
     setRecentItem: mockSetRecentItem,
 }))
 
+const useFlagMock = assumeMock(useFlag)
+
 describe('<CustomerDetailContainer />', () => {
     const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([
         thunk,
@@ -38,7 +45,7 @@ describe('<CustomerDetailContainer />', () => {
     const minProps = {
         activeCustomer: fromJS({}),
         customerHistory: fromJS({}),
-        customersIsLoading: jest.fn(),
+        customersLoading: Map({}),
         fetchCustomer: jest.fn().mockResolvedValue({ resp: { id: 1 } }),
         fetchCustomerHistory: jest.fn(),
     } as unknown as ComponentProps<typeof CustomerDetailContainer>
@@ -55,6 +62,7 @@ describe('<CustomerDetailContainer />', () => {
 
     beforeEach(() => {
         store = mockStore(defaultStore)
+        useFlagMock.mockReturnValue(false)
     })
 
     it('should display the customer and its history of messages', () => {
@@ -114,13 +122,13 @@ describe('<CustomerDetailContainer />', () => {
     })
 
     it('should display a loader when active customer is being loaded', () => {
-        const customersIsLoading = (type: string) => type === 'active'
-
         const { getByText } = renderWithRouter(
             <Provider store={store}>
                 <CustomerDetailContainer
                     {...minProps}
-                    customersIsLoading={customersIsLoading}
+                    customersLoading={Map({
+                        active: true,
+                    })}
                 />
             </Provider>,
             {
@@ -181,14 +189,14 @@ describe('<CustomerDetailContainer />', () => {
     })
 
     it('should display loader when history of customer is loading', () => {
-        const customersIsLoading = (type: string) => type === 'history'
-
         const { getByText } = renderWithRouter(
             <Provider store={store}>
                 <CustomerDetailContainer
                     {...minProps}
                     activeCustomer={fromJS({ id: 1 })}
-                    customersIsLoading={customersIsLoading}
+                    customersLoading={Map({
+                        history: true,
+                    })}
                 />
             </Provider>,
             {
@@ -239,5 +247,28 @@ describe('<CustomerDetailContainer />', () => {
         )
 
         expect(mockSetRecentItem).toHaveBeenCalledWith(mockActiveCustomer)
+    })
+
+    it('should call `Timeline` component when feature flag is enabled', () => {
+        useFlagMock.mockReturnValue(true)
+        renderWithRouter(
+            <Provider store={store}>
+                <CustomerDetailContainer
+                    {...minProps}
+                    activeCustomer={fromJS(mockActiveCustomer)}
+                    customerHistory={fromJS({
+                        hasHistory: true,
+                        triedLoading: true,
+                        tickets: fromJS([ticket]),
+                    })}
+                />
+            </Provider>,
+            {
+                path: '/foo/:customerId?',
+                route: '/foo/1',
+            },
+        )
+
+        expect(Timeline).toHaveBeenCalled()
     })
 })

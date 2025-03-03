@@ -5,9 +5,11 @@ exports[`<CustomerDetailContainer /> should display the customer and its history
   class="customerDetailContainer"
 >
   <div
-    class="flex-spaced-row"
+    class="header"
   >
-    <h1>
+    <h1
+      class="title"
+    >
       Rachel Greene
     </h1>
     <div
@@ -46,7 +48,7 @@ exports[`<CustomerDetailContainer /> should display the customer and its history
     class="my-4"
   >
     <div
-      class="component"
+      class="container"
     >
       <a
         class="component card"

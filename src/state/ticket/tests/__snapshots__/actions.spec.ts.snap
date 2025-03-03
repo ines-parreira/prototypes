@@ -206,7 +206,6 @@ exports[`ticket actions clearAppliedMacro() 1`] = `
 exports[`ticket actions clearTicket() 1`] = `
 [
   {
-    "shouldDisplayHistoryOnNextPage": false,
     "type": "CLEAR_TICKET",
   },
   {

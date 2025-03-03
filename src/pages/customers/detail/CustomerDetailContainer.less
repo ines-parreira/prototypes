@@ -1,13 +1,27 @@
+@import '~@gorgias/design-tokens/dist/css/layout.less';
+@import (reference) '~css/typography.less';
+
 :local {
     .customerDetailContainer {
         width: 100%;
-        padding: 32px 24px 0;
-        background: var(--neutral-grey-2);
-        overflow: scroll;
+        padding: @layout-spacing-m @layout-spacing-m 0;
+        background: var(--neutral-grey-1);
+    }
+
+    .header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: @layout-spacing-m;
+    }
+
+    .title {
+        .heading-page-semibold();
+        margin: 0;
     }
 
     .buttons {
         display: flex;
-        gap: 8px;
+        gap: @layout-spacing-xs;
     }
 }

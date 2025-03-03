@@ -1,14 +1,31 @@
-:local .component {
-    position: relative;
+@import '~@gorgias/design-tokens/dist/css/layout.less';
 
-    &:before {
-        content: '';
-        position: absolute;
-        left: 18px;
-        top: 0;
-        display: block;
-        width: 1px;
-        height: 100%;
-        border-left: 1px solid var(--neutral-grey-3);
+:local {
+    .container {
+        position: relative;
+
+        &:before {
+            content: '';
+            position: absolute;
+            left: 18px;
+            top: 0;
+            display: block;
+            width: 1px;
+            height: 100%;
+            border-left: 1px solid var(--neutral-grey-3);
+        }
+    }
+
+    .centeringContainer {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        gap: @layout-spacing-l;
+        height: 80%;
+    }
+
+    .noResults {
+        color: var(--neutral-grey-5);
     }
 }

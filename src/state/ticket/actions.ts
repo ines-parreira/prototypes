@@ -1347,17 +1347,9 @@ export function updateTicketMessage(
 }
 
 export function clearTicket() {
-    return (dispatch: StoreDispatch, getState: () => RootState) => {
-        const state = getState()
-
-        const shouldDisplayHistoryOnNextPage = state.ticket.getIn([
-            '_internal',
-            'shouldDisplayHistoryOnNextPage',
-        ])
-
+    return (dispatch: StoreDispatch) => {
         dispatch({
             type: types.CLEAR_TICKET,
-            shouldDisplayHistoryOnNextPage,
         })
 
         return dispatch(newMessageActions.resetReceiversAndSender)
