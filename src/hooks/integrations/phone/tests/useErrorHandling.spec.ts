@@ -66,7 +66,7 @@ describe('useErrorHandling', () => {
         expect(mockAddBanner).toHaveBeenCalledWith(
             expect.objectContaining({
                 message: undefined,
-                type: AlertBannerTypes.Error,
+                type: AlertBannerTypes.Critical,
                 instanceId: 'phone-error-banner',
                 category: BannerCategories.ERROR_HANDLING,
                 CTA: expect.objectContaining({

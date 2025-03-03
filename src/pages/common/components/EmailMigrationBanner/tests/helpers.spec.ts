@@ -113,12 +113,11 @@ describe('migration banner helpers', () => {
                     },
                     () => {},
                 )
-                expect(
-                    JSON.stringify(bannerSettings?.message).includes(
-                        'Deadline missed',
-                    ),
-                ).toBeTruthy()
-                expect(bannerSettings?.type).toBe(AlertBannerTypes.Error)
+
+                expect(bannerSettings?.message).toBe(
+                    `<strong>Deadline missed:</strong> Please migrate your email integrations to our new provider to continue sending and receiving emails uninterrupted.`,
+                )
+                expect(bannerSettings?.type).toBe(AlertBannerTypes.Critical)
             },
         )
 

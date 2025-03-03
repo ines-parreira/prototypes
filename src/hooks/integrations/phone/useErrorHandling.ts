@@ -22,7 +22,7 @@ export function useErrorHandling(state: State, actions: VoiceDeviceActions) {
         if (error && !isRecoverableError(error)) {
             addBanner({
                 message: errorMessage(error),
-                type: AlertBannerTypes.Error,
+                type: AlertBannerTypes.Critical,
                 instanceId: PhoneAlertBanner.Error,
                 category: BannerCategories.ERROR_HANDLING,
                 CTA: {

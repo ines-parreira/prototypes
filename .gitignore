@@ -59,7 +59,3 @@ storybook-static
 
 # npmrc
 .npmrc
-
-# yalc
-.yalc
-yalc.lock

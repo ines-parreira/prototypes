@@ -1,4 +1,4 @@
-import React, { ComponentProps } from 'react'
+import { ComponentProps } from 'react'
 
 import { AlertBanner, AlertBannerTypes } from 'AlertBanners'
 import { EmailMigrationBannerStatus } from 'models/integration/types'
@@ -28,14 +28,8 @@ export const computeEmailMigrationStatusBanner = (
     if (now.isSameOrAfter(dueDate)) {
         return {
             CTA: getCTA(startDate ? 'Finish Migration' : 'Start Migration'),
-            message: (
-                <>
-                    <strong>Deadline missed:</strong> Please migrate your email
-                    integrations to our new provider to continue sending and
-                    receiving emails uninterrupted.
-                </>
-            ),
-            type: AlertBannerTypes.Error,
+            message: `<strong>Deadline missed:</strong> Please migrate your email integrations to our new provider to continue sending and receiving emails uninterrupted.`,
+            type: AlertBannerTypes.Critical,
         }
     }
 

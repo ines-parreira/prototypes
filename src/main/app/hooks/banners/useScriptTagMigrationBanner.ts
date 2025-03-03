@@ -86,7 +86,7 @@ export function useScriptTagMigrationBanner() {
 
     const banner: ContextBanner = {
         category: BannerCategories.SCRIPT_TAG_MIGRATION,
-        type: AlertBannerTypes.Error,
+        type: AlertBannerTypes.Critical,
         instanceId: 'alert-banner-script-tag-migration',
         message: `
         <b>Action required</b>:
