@@ -49,7 +49,11 @@ import { BusiestTimeOfDaysMetrics } from 'pages/stats/support-performance/busies
 import { createAgentsReport } from 'services/reporting/agentsPerformanceReportingService'
 import { getSortedAgents } from 'state/ui/stats/agentPerformanceSlice'
 import { TicketInsightsOrder } from 'state/ui/stats/ticketInsightsSlice'
-import { AgentsTableColumn, ChannelsTableColumns } from 'state/ui/stats/types'
+import {
+    AgentsTableColumn,
+    AgentsTableRow,
+    ChannelsTableColumns,
+} from 'state/ui/stats/types'
 
 export const AGENTS_REPORT_FILE_NAME = 'agents-metrics'
 
@@ -199,7 +203,7 @@ export const agentsSummaryDataSources: TableSummaryDataSources<AgentsReportData>
 
 export const useDownloadAgentsPerformanceData = () => {
     const agents = useAppSelector<User[]>(getSortedAgents)
-    const { columnsOrder } = useAgentsTableConfigSetting()
+    const { columnsOrder, rowsOrder } = useAgentsTableConfigSetting()
     const { cleanStatsFilters, userTimezone } = useNewStatsFilters()
 
     const { data: reportData, isFetching } = useTableReportData<
@@ -219,6 +223,7 @@ export const useDownloadAgentsPerformanceData = () => {
         reportData,
         summaryData,
         columnsOrder,
+        rowsOrder,
         getCsvFileNameWithDates(
             cleanStatsFilters.period,
             AGENTS_REPORT_FILE_NAME,
@@ -242,6 +247,7 @@ export const fetchAgentsTableReportData = async (
     context: {
         agents: User[]
         columnsOrder: AgentsTableColumn[]
+        rowsOrder: AgentsTableRow[]
         channels: Channel[]
         channelColumnsOrder: ChannelsTableColumns[]
         selectedBTODMetric: BusiestTimeOfDaysMetrics
@@ -267,6 +273,7 @@ export const fetchAgentsTableReportData = async (
                     metrics.data,
                     summary.data,
                     context.columnsOrder,
+                    context.rowsOrder,
                     fileName,
                 ),
                 fileName,

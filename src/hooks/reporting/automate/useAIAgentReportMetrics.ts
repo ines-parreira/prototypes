@@ -160,6 +160,7 @@ export const useAIAgentReportMetrics = () => {
         performance.data,
         performance.summary,
         performance.columnsOrder,
+        [],
     )
 
     const { automatedTickets, automatedTicketsDataIsLoading } =

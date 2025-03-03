@@ -36,7 +36,11 @@ import { VoiceAgentsChart } from 'pages/stats/voice/pages/VoiceAgentsReportConfi
 import { VoiceOverviewChart } from 'pages/stats/voice/pages/VoiceOverviewReportConfig'
 import { TagsTableOrder } from 'state/ui/stats/tagsReportSlice'
 import { TicketInsightsOrder } from 'state/ui/stats/ticketInsightsSlice'
-import { AgentsTableColumn, ChannelsTableColumns } from 'state/ui/stats/types'
+import {
+    AgentsTableColumn,
+    AgentsTableRow,
+    ChannelsTableColumns,
+} from 'state/ui/stats/types'
 
 type FilterSettings = {
     optional: OptionalFilter[]
@@ -115,6 +119,7 @@ export type ReportFetch = (
         agents: User[]
         agentsQA: User[]
         columnsOrder: AgentsTableColumn[]
+        rowsOrder: AgentsTableRow[]
         channels: Channel[]
         channelColumnsOrder: ChannelsTableColumns[]
         selectedBTODMetric: BusiestTimeOfDaysMetrics

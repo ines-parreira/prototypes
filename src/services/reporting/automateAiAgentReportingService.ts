@@ -13,7 +13,7 @@ import {
 import { formatPerformanceFeatureData } from 'services/reporting/automateOverviewReportingService'
 import { DATE_TIME_FORMAT } from 'services/reporting/constants'
 import { formatData as getTicketInsightsData } from 'services/reporting/ticketFieldsReportingService'
-import { AgentsTableColumn } from 'state/ui/stats/types'
+import { AgentsTableColumn, AgentsTableRow } from 'state/ui/stats/types'
 import { createCsv, saveZippedFiles } from 'utils/file'
 
 export const AI_AGENT_PERFORMANCE_FILENAME = 'ai-agent-performance'
@@ -29,6 +29,7 @@ export const saveReport = async (
         data: AgentsPerformanceReportData
         summary: Omit<AgentsPerformanceReportData<Metric>, 'agents'>
         columnsOrder: AgentsTableColumn[]
+        rowsOrder: AgentsTableRow[]
     },
     automatedTickets: {
         automateStatsMeasureLabelMap: Record<
@@ -48,6 +49,7 @@ export const saveReport = async (
         performance.data,
         performance.summary,
         performance.columnsOrder,
+        performance.rowsOrder,
     )
 
     const ticketInsightsData =

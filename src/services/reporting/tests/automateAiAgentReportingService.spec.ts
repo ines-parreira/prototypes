@@ -75,6 +75,7 @@ const performance = {
     },
     summary: metricBuilder({ value: 129 }),
     columnsOrder: [AgentsTableColumn.AgentName],
+    rowsOrder: [],
 }
 
 const timeSeriesData = {
@@ -124,6 +125,7 @@ describe('automateAiAgentReportingService', () => {
                 performance.data,
                 performance.summary,
                 performance.columnsOrder,
+                [],
             )
             expect(getTicketInsightsDataMock).toHaveBeenCalledWith(
                 ticketInsights.data,

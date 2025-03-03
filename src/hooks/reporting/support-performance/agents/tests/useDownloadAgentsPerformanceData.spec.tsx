@@ -58,6 +58,7 @@ describe('useDownloadAgentsPerformanceData', () => {
         },
     } as RootState
     const columnsOrder = Object.values(AgentsTableColumn)
+    const rowsOrder: AgentsTableColumn[] = []
     const metricReturnValue = {
         isFetching: false,
         isError: false,
@@ -128,6 +129,7 @@ describe('useDownloadAgentsPerformanceData', () => {
         })
         useAgentsTableConfigSettingMock.mockReturnValue({
             columnsOrder: columnsOrder,
+            rowsOrder,
         } as any)
     })
 
@@ -163,6 +165,7 @@ describe('useDownloadAgentsPerformanceData', () => {
             agentsMetricsReturnValue.reportData,
             agentsSummaryMetricsReturnValue.summaryData,
             columnsOrder,
+            rowsOrder,
             fileName,
         )
         expect(result.current).toEqual({
@@ -198,6 +201,7 @@ describe('useDownloadAgentsPerformanceData', () => {
             agentsMetricsReturnValue.reportData,
             agentsSummaryMetricsReturnValue.summaryData,
             columnsOrder,
+            rowsOrder,
             fileName,
         )
         expect(result.current).toEqual({
@@ -214,6 +218,7 @@ describe('useDownloadAgentsPerformanceData', () => {
             agents: [],
             agentsQA: [],
             columnsOrder: [],
+            rowsOrder: [],
             channels: [],
             channelColumnsOrder: [],
             selectedBTODMetric: BusiestTimeOfDaysMetrics.TicketsCreated,

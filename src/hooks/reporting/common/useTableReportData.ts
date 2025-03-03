@@ -59,7 +59,7 @@ export const useTables = (
         isFetching: true,
         files: {},
     })
-    const { columnsOrder } = useAgentsTableConfigSetting()
+    const { columnsOrder, rowsOrder } = useAgentsTableConfigSetting()
     const { columnsOrder: channelColumnsOrder } = useChannelsTableSetting()
 
     const agents = useAppSelector<User[]>(getSortedAgents)
@@ -107,6 +107,7 @@ export const useTables = (
             agents,
             agentsQA,
             columnsOrder,
+            rowsOrder,
             channels: sortedChannels,
             channelColumnsOrder,
             customFieldsOrder,
@@ -128,6 +129,7 @@ export const useTables = (
             agentsQA,
             campaignsReportContext,
             columnsOrder,
+            rowsOrder,
             sortedChannels,
             channelColumnsOrder,
             customFieldsOrder,

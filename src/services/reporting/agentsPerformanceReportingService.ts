@@ -33,10 +33,11 @@ import {
     AgentsColumnConfig,
     TableLabels,
 } from 'pages/stats/support-performance/agents/AgentsTableConfig'
-import { AgentsTableColumn } from 'state/ui/stats/types'
+import { AgentsTableColumn, AgentsTableRow } from 'state/ui/stats/types'
 import { createCsv } from 'utils/file'
 
 export const SUMMARY_ROW_AGENT_COLUMN_LABEL = 'Average'
+export const TOTAL_ROW_AGENT_COLUMN_LABEL = 'Total'
 
 type AgentIdentifierDimension =
     | TicketDimension.AssigneeUserId
@@ -99,6 +100,27 @@ const getAgentMetric = (
     return typeof metricValue === 'string' ? Number(metricValue) : metricValue
 }
 
+const columnsWithTotals = [
+    AgentsTableColumn.ClosedTickets,
+    AgentsTableColumn.ClosedTicketsPerHour,
+    AgentsTableColumn.MessagesSent,
+    AgentsTableColumn.MessagesSentPerHour,
+    AgentsTableColumn.RepliedTickets,
+    AgentsTableColumn.RepliedTicketsPerHour,
+]
+
+const getTotal = (column: AgentsTableColumn, summaryDataMap: ReportDataMap) => {
+    if (column === AgentsTableColumn.AgentName)
+        return TOTAL_ROW_AGENT_COLUMN_LABEL
+
+    if (columnsWithTotals.includes(column)) {
+        const summaryData = summaryDataMap[column].summaryData
+        return formatMetric(column, summaryData)
+    }
+
+    return formatMetric(column, null)
+}
+
 const getSummary = (
     column: AgentsTableColumn,
     summaryDataMap: ReportDataMap,
@@ -136,6 +158,7 @@ export const getData = (
     data: AgentsPerformanceReportData,
     summary: Omit<AgentsPerformanceReportData<Metric>, 'agents'>,
     columnsOrder: AgentsTableColumn[],
+    rowsOrder: AgentsTableRow[],
 ) => {
     const AssigneeUserId = TicketDimension.AssigneeUserId
     const AvgSurveyScore = TicketSatisfactionSurveyMeasure.AvgSurveyScore
@@ -261,16 +284,33 @@ export const getData = (
         },
     }
 
+    const rowAggregators = {
+        [AgentsTableRow.Average]: getSummary,
+        [AgentsTableRow.Total]: getTotal,
+    }
+
+    const aggregationRows = rowsOrder.map((row) => {
+        const getAggregatedData = rowAggregators[row]
+
+        return columnsOrder.map((column) => {
+            return getAggregatedData(
+                column,
+                columnsToMetricDataMap,
+                agents.length,
+            )
+        })
+    })
+
+    const agentRows = agents.map((agent) => {
+        return columnsOrder.map((column) =>
+            getMetric(column, agent, columnsToMetricDataMap),
+        )
+    })
+
     return [
         columnsOrder.map((column) => TableLabels[column]),
-        columnsOrder.map((column) =>
-            getSummary(column, columnsToMetricDataMap, agents.length),
-        ),
-        ...agents.map((agent) => {
-            return columnsOrder.map((column) =>
-                getMetric(column, agent, columnsToMetricDataMap),
-            )
-        }),
+        ...aggregationRows,
+        ...agentRows,
     ]
 }
 
@@ -279,6 +319,7 @@ export const createAgentsReport = (
     data: AgentsPerformanceReportData | null,
     summary: AgentsPerformanceReportData<Metric> | null,
     columnsOrder: AgentsTableColumn[],
+    rowsOrder: AgentsTableRow[],
     fileName: string,
 ) => {
     if (data === null || summary === null) {
@@ -287,7 +328,13 @@ export const createAgentsReport = (
         }
     }
 
-    const agentsMetricData = getData(agents, data, summary, columnsOrder)
+    const agentsMetricData = getData(
+        agents,
+        data,
+        summary,
+        columnsOrder,
+        rowsOrder,
+    )
     return {
         files: {
             [fileName]: createCsv(agentsMetricData),

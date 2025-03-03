@@ -2,15 +2,20 @@ import { User, UserRole, UserSettingType } from 'config/types/user'
 import { Metric } from 'hooks/reporting/metrics'
 import { HelpdeskMessageMeasure } from 'models/reporting/cubes/HelpdeskMessageCube'
 import { TicketDimension } from 'models/reporting/cubes/TicketCube'
+import { NOT_AVAILABLE_PLACEHOLDER } from 'pages/stats/common/utils'
+import { TableLabels } from 'pages/stats/support-performance/agents/AgentsTableConfig'
 import {
     AgentsPerformanceReportData,
     createAgentsReport,
+    getData,
     SUMMARY_ROW_AGENT_COLUMN_LABEL,
+    TOTAL_ROW_AGENT_COLUMN_LABEL,
 } from 'services/reporting/agentsPerformanceReportingService'
-import { AgentsTableColumn } from 'state/ui/stats/types'
+import { AgentsTableColumn, AgentsTableRow } from 'state/ui/stats/types'
 import * as files from 'utils/file'
 
 jest.mock('utils/file')
+jest.mock('utils/launchDarkly')
 
 const emptyReportData = {
     value: 1,
@@ -63,6 +68,7 @@ const buildQuery = <T>(isFetching: boolean, data: T) => ({
 })
 
 const columnsOrder: AgentsTableColumn[] = Object.values(AgentsTableColumn)
+const rowsOrder: AgentsTableRow[] = []
 
 const emptyAgents: User[] = []
 const agents: User[] = [
@@ -128,6 +134,19 @@ const reportDataFactory = (
     return { agents, data, summaryData, testName }
 }
 
+const testCaseReportData = reportDataFactory(
+    agents,
+    reportDataWithCubeMetrics,
+    {
+        closedTicketsMetric: { data: null },
+        ticketsRepliedMetric: { data: null },
+        messagesSentMetric: { data: null },
+        oneTouchTicketsMetric: { data: null },
+        zeroTouchTicketsMetric: { data: null },
+    },
+    'Report data with cube metrics',
+)
+
 const testCasesData = [
     reportDataFactory(emptyAgents, emptyReportData, undefined, 'Empty data'),
     reportDataFactory(
@@ -136,18 +155,7 @@ const testCasesData = [
         undefined,
         'Report data without cube metrics',
     ),
-    reportDataFactory(
-        agents,
-        reportDataWithCubeMetrics,
-        {
-            closedTicketsMetric: { data: null },
-            ticketsRepliedMetric: { data: null },
-            messagesSentMetric: { data: null },
-            oneTouchTicketsMetric: { data: null },
-            zeroTouchTicketsMetric: { data: null },
-        },
-        'Report data with cube metrics',
-    ),
+    testCaseReportData,
 ]
 
 describe('agentsPerformanceReportingService', () => {
@@ -163,6 +171,7 @@ describe('agentsPerformanceReportingService', () => {
                 data,
                 summaryData,
                 columnsOrder,
+                rowsOrder,
                 testName,
             )
 
@@ -175,69 +184,185 @@ describe('agentsPerformanceReportingService', () => {
     )
 
     it('should return agent name', () => {
-        const reportData = testCasesData.find(
-            ({ testName }) => testName === 'Report data with cube metrics',
-        )
         const fakeReport1 = 'someString'
         const fileName = 'someFileName'
         const createCsvMock = jest
             .spyOn(files, 'createCsv')
             .mockReturnValue(fakeReport1)
 
-        if (reportData) {
-            const { data, summaryData } = reportData
-            createAgentsReport(
-                agents,
-                data,
-                summaryData,
-                columnsOrder,
-                fileName,
-            )
-        }
-        const summaryRowAgentLabel = createCsvMock.mock.calls[0][0][1][0]
-        const firstAgentName = createCsvMock.mock.calls[0][0][2][0]
+        const { data, summaryData } = testCaseReportData
+        createAgentsReport(
+            agents,
+            data,
+            summaryData,
+            columnsOrder,
+            rowsOrder,
+            fileName,
+        )
 
-        expect(summaryRowAgentLabel).toEqual(SUMMARY_ROW_AGENT_COLUMN_LABEL)
+        const firstAgentName = createCsvMock.mock.calls[0][0][1][0]
+
         expect(firstAgentName).toEqual(agents[0].name)
     })
 
     it('should return empty when no data', () => {
-        const reportData = testCasesData.find(
-            ({ testName }) => testName === 'Report data with cube metrics',
-        )
         const fileName = 'someFileName'
 
-        if (reportData) {
-            const { summaryData } = reportData
-            const result = createAgentsReport(
-                agents,
-                null,
-                summaryData,
-                columnsOrder,
-                fileName,
-            )
+        const { summaryData } = testCaseReportData
+        const result = createAgentsReport(
+            agents,
+            null,
+            summaryData,
+            columnsOrder,
+            rowsOrder,
+            fileName,
+        )
 
-            expect(result).toEqual({ files: {} })
-        }
+        expect(result).toEqual({ files: {} })
     })
 
     it('should return empty when no summary data', () => {
-        const reportData = testCasesData.find(
-            ({ testName }) => testName === 'Report data with cube metrics',
-        )
         const fileName = 'someFileName'
 
-        if (reportData) {
-            const { data } = reportData
-            const result = createAgentsReport(
+        const { data } = testCaseReportData
+        const result = createAgentsReport(
+            agents,
+            data,
+            null,
+            columnsOrder,
+            rowsOrder,
+            fileName,
+        )
+
+        expect(result).toEqual({ files: {} })
+    })
+
+    describe('aggregation rows', () => {
+        it('should include average row when specified in rowsOrder', () => {
+            const { agents, data, summaryData } = testCaseReportData
+            const columnsOrder = [
+                AgentsTableColumn.AgentName,
+                AgentsTableColumn.ClosedTickets,
+            ]
+            const rowsOrder = [AgentsTableRow.Average]
+
+            const result = getData(
                 agents,
                 data,
-                null,
+                summaryData,
                 columnsOrder,
-                fileName,
+                rowsOrder,
             )
 
-            expect(result).toEqual({ files: {} })
-        }
+            expect(result[0]).toEqual(
+                columnsOrder.map((col) => TableLabels[col]),
+            )
+
+            expect(result[1][0]).toEqual(SUMMARY_ROW_AGENT_COLUMN_LABEL)
+            expect(result[1].length).toEqual(columnsOrder.length)
+        })
+
+        it('should include total row when specified in rowsOrder', () => {
+            const { agents, data, summaryData } = testCaseReportData
+            const columnsOrder = [
+                AgentsTableColumn.AgentName,
+                AgentsTableColumn.ClosedTickets,
+                AgentsTableColumn.OnlineTime,
+            ]
+            const rowsOrder = [AgentsTableRow.Total]
+
+            const result = getData(
+                agents,
+                data,
+                summaryData,
+                columnsOrder,
+                rowsOrder,
+            )
+
+            expect(result[0]).toEqual(
+                columnsOrder.map((col) => TableLabels[col]),
+            )
+
+            expect(result[1][0]).toEqual(TOTAL_ROW_AGENT_COLUMN_LABEL)
+            expect(result[1][2]).toEqual(NOT_AVAILABLE_PLACEHOLDER)
+            expect(result[1].length).toEqual(columnsOrder.length)
+        })
+
+        it('should include both average and total rows in the specified order', () => {
+            const { agents, data, summaryData } = testCaseReportData
+            const columnsOrder = [
+                AgentsTableColumn.AgentName,
+                AgentsTableColumn.ClosedTickets,
+            ]
+            const rowsOrder = [AgentsTableRow.Average, AgentsTableRow.Total]
+
+            const result = getData(
+                agents,
+                data,
+                summaryData,
+                columnsOrder,
+                rowsOrder,
+            )
+
+            expect(result[0]).toEqual(
+                columnsOrder.map((col) => TableLabels[col]),
+            )
+
+            expect(result[1][0]).toEqual(SUMMARY_ROW_AGENT_COLUMN_LABEL)
+
+            expect(result[2][0]).toEqual(TOTAL_ROW_AGENT_COLUMN_LABEL)
+
+            expect(result.length).toEqual(4)
+        })
+
+        it('should calculate per-agent metrics correctly in average row', () => {
+            const mockSummaryData = {
+                ...baseMetricBuilder(reportDataWithCubeMetrics),
+                closedTicketsMetric: {
+                    data: { value: 100 },
+                    isFetching: false,
+                    isError: false,
+                },
+                onlineTimeMetric: {
+                    data: { value: 500 },
+                    isFetching: false,
+                    isError: false,
+                },
+            }
+
+            const multipleAgents = [
+                ...agents,
+                {
+                    ...agents[0],
+                    id: 456,
+                    name: 'Jane Smith',
+                },
+            ]
+
+            const columnsOrder = [
+                AgentsTableColumn.AgentName,
+                AgentsTableColumn.ClosedTickets,
+                AgentsTableColumn.OnlineTime,
+            ]
+
+            const result = getData(
+                multipleAgents,
+                baseMetricBuilder(reportDataWithCubeMetrics),
+                mockSummaryData,
+                columnsOrder,
+                [AgentsTableRow.Average],
+            )
+
+            expect(result[0]).toEqual(
+                columnsOrder.map((col) => TableLabels[col]),
+            )
+
+            expect(result[1][0]).toEqual(SUMMARY_ROW_AGENT_COLUMN_LABEL)
+
+            expect(
+                mockSummaryData.onlineTimeMetric.data.value /
+                    multipleAgents.length,
+            ).toEqual(250)
+        })
     })
 })
