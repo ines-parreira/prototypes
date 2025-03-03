@@ -10,6 +10,7 @@ import {
 } from 'models/reporting/cubes/VoiceCallCube'
 import { ReportingFilterOperator } from 'models/reporting/types'
 import { StatsFilters } from 'models/stat/types'
+import { VoiceCallDisplayStatus } from 'models/voiceCall/types'
 import { getLiveVoicePeriodFilter } from 'pages/stats/voice/components/LiveVoice/utils'
 import { MIN_DATE_FOR_ADVANCED_VOICE_STATS } from 'pages/stats/voice/constants/voiceOverview'
 import { AccountSettingType } from 'state/currentAccount/types'
@@ -74,15 +75,47 @@ describe('voice queries factories', () => {
     })
 
     it.each([
-        [[VoiceCallMeasure.VoiceCallCount], [], undefined],
-        [[VoiceCallMeasure.VoiceCallCount], [], VoiceCallSegment.outboundCalls],
+        {
+            measures: [VoiceCallMeasure.VoiceCallCount],
+            dimensions: [],
+            segment: undefined,
+            statusFilters: undefined,
+            additionalFilters: [],
+        },
+        {
+            measures: [VoiceCallMeasure.VoiceCallCount],
+            dimensions: [],
+            segment: VoiceCallSegment.outboundCalls,
+            statusFilters: undefined,
+            additionalFilters: [],
+        },
+        {
+            measures: [VoiceCallMeasure.VoiceCallCount],
+            dimensions: [],
+            segment: VoiceCallSegment.outboundCalls,
+            statusFilters: [VoiceCallDisplayStatus.Answered],
+            additionalFilters: [
+                {
+                    member: VoiceCallMember.DisplayStatus,
+                    operator: ReportingFilterOperator.Equals,
+                    values: [VoiceCallDisplayStatus.Answered],
+                },
+            ],
+        },
     ])(
         'voiceCallQueryFactory should create a query',
-        (measures, dimensions, segment) => {
+        ({
+            measures,
+            dimensions,
+            segment,
+            statusFilters,
+            additionalFilters,
+        }) => {
             const query = voiceCallCountQueryFactory(
                 statsFilters,
                 timezone,
                 segment,
+                statusFilters,
             )
 
             expect(query).toEqual({
@@ -99,6 +132,7 @@ describe('voice queries factories', () => {
                         operator: ReportingFilterOperator.BeforeDate,
                         values: [periodEnd],
                     },
+                    ...additionalFilters,
                 ],
                 timezone,
                 segments: segment ? [segment] : [],
@@ -108,17 +142,44 @@ describe('voice queries factories', () => {
 
     describe('voiceCallListQueryFactory', () => {
         it.each([
-            [VoiceCallSegment.outboundCalls, 10, 0],
-            [undefined, 10, 10],
+            {
+                segment: VoiceCallSegment.outboundCalls,
+                statusFilters: undefined,
+                limit: 10,
+                offset: 0,
+                additionalFilters: [],
+            },
+            {
+                segment: undefined,
+                statusFilters: [
+                    VoiceCallDisplayStatus.Unanswered,
+                    VoiceCallDisplayStatus.Failed,
+                ],
+                limit: 10,
+                offset: 10,
+                additionalFilters: [
+                    {
+                        member: VoiceCallMember.DisplayStatus,
+                        operator: ReportingFilterOperator.Equals,
+                        values: [
+                            VoiceCallDisplayStatus.Unanswered,
+                            VoiceCallDisplayStatus.Failed,
+                        ],
+                    },
+                ],
+            },
         ])(
             'voiceCallListQueryFactory should create a query',
-            (segment, limit, offset) => {
+            ({ segment, statusFilters, limit, offset, additionalFilters }) => {
                 const query = voiceCallListQueryFactory(
                     statsFilters,
                     timezone,
                     segment,
                     limit,
                     offset,
+                    undefined,
+                    undefined,
+                    statusFilters,
                 )
 
                 expect(query).toEqual({
@@ -135,6 +196,7 @@ describe('voice queries factories', () => {
                             operator: ReportingFilterOperator.BeforeDate,
                             values: [periodEnd],
                         },
+                        ...additionalFilters,
                     ],
                     timezone,
                     segments: segment ? [segment] : [],

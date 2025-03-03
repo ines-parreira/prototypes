@@ -40,6 +40,7 @@ export enum VoiceCallMember {
     AssignedAgentId = 'VoiceCall.agentId',
     TalkTime = 'VoiceCall.talkTimeSeconds',
     WaitTime = 'VoiceCall.waitTimeSeconds',
+    DisplayStatus = 'VoiceCall.displayStatus',
 }
 
 export enum VoiceCallSegment {

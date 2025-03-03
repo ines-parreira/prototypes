@@ -208,3 +208,26 @@ export const getDisplayInboundVoiceCallStatus = (
             return null
     }
 }
+
+export const getPrettyVoiceCallDisplayStatusName = (
+    status: VoiceCallDisplayStatus,
+) => {
+    switch (status) {
+        case VoiceCallDisplayStatus.Ringing:
+            return 'Ringing'
+        case VoiceCallDisplayStatus.InProgress:
+            return 'In Progress'
+        case VoiceCallDisplayStatus.Answered:
+            return 'Answered'
+        case VoiceCallDisplayStatus.Missed:
+            return 'Missed'
+        case VoiceCallDisplayStatus.Abandoned:
+            return 'Abandoned'
+        case VoiceCallDisplayStatus.Cancelled:
+            return 'Cancelled'
+        case VoiceCallDisplayStatus.Failed:
+            return 'Failed'
+        case VoiceCallDisplayStatus.Unanswered:
+            return 'Unanswered'
+    }
+}

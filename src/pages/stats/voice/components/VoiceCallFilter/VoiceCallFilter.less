@@ -1,0 +1,30 @@
+@import (reference) '~@gorgias/design-tokens/dist/css/layout.less';
+
+:local {
+    .toggleButton {
+        width: 180px;
+        display: flex;
+        justify-content: space-between;
+        background-color: transparent;
+        border: 1px solid var(--neutral-grey-3);
+        padding: @layout-spacing-xs;
+        border-radius: @layout-spacing-xxs;
+        cursor: pointer;
+    }
+
+    .toggleButtonDisabled {
+        background-color: var(--neutral-grey-1);
+        color: var(--neutral-grey-3);
+        cursor: not-allowed;
+    }
+
+    .toggleButtonLabel {
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        overflow: hidden;
+    }
+
+    .menu {
+        width: 160px;
+    }
+}

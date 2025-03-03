@@ -10,6 +10,7 @@ import {
 } from 'models/reporting/queries'
 import { voiceCallListQueryFactory } from 'models/reporting/queryFactories/voice/voiceCall'
 import { StatsFilters } from 'models/stat/types'
+import { VoiceCallDisplayStatus } from 'models/voiceCall/types'
 
 import { CALL_LIST_PAGE_SIZE } from '../constants/voiceOverview'
 import { VoiceCallStatListItem, VoiceCallSummary } from '../models/types'
@@ -22,6 +23,7 @@ export const useVoiceCallList = (
     segment?: VoiceCallSegment,
     order?: VoiceCallDimension,
     sorting?: OrderDirection,
+    statusFilter?: VoiceCallDisplayStatus[],
 ) =>
     usePostReporting<
         VoiceCallStatListItem[],
@@ -37,6 +39,7 @@ export const useVoiceCallList = (
                 (page - 1) * perPage,
                 order,
                 sorting,
+                statusFilter,
             ),
         ],
         {

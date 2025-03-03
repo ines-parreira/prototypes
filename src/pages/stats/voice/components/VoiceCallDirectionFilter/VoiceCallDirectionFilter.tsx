@@ -7,6 +7,7 @@ import {
     DropdownToggle,
 } from 'reactstrap'
 
+import { VoiceCallDisplayStatus } from 'models/voiceCall/types'
 import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 import {
     ALL_CALLS_FILTER_LABEL,
@@ -14,7 +15,10 @@ import {
     MISSED_CALLS_FILTER_LABEL,
     OUTBOUND_CALLS_FILTER_LABEL,
 } from 'pages/stats/voice/constants/voiceOverview'
-import { VoiceCallFilterOptions } from 'pages/stats/voice/models/types'
+import {
+    VoiceCallFilterDirection,
+    VoiceCallFilterOptions,
+} from 'pages/stats/voice/models/types'
 
 import css from './VoiceCallDirectionFilter.less'
 
@@ -28,18 +32,28 @@ function VoiceCallDirectionFilter({
     onFilterSelect: (value: VoiceCallFilterOptions) => void
 }) {
     const options: Option[] = [
-        { label: ALL_CALLS_FILTER_LABEL, value: VoiceCallFilterOptions.All },
+        {
+            label: ALL_CALLS_FILTER_LABEL,
+            value: { direction: VoiceCallFilterDirection.All },
+        },
         {
             label: OUTBOUND_CALLS_FILTER_LABEL,
-            value: VoiceCallFilterOptions.Outbound,
+            value: { direction: VoiceCallFilterDirection.Outbound },
         },
         {
             label: INBOUND_CALLS_FILTER_LABEL,
-            value: VoiceCallFilterOptions.Inbound,
+            value: { direction: VoiceCallFilterDirection.Inbound },
         },
         {
             label: MISSED_CALLS_FILTER_LABEL,
-            value: VoiceCallFilterOptions.Missed,
+            value: {
+                direction: VoiceCallFilterDirection.Inbound,
+                statuses: [
+                    VoiceCallDisplayStatus.Abandoned,
+                    VoiceCallDisplayStatus.Missed,
+                    VoiceCallDisplayStatus.Cancelled,
+                ],
+            },
         },
     ]
 
@@ -63,7 +77,7 @@ function VoiceCallDirectionFilter({
             <DropdownMenu className={css.menu}>
                 {options.map((option) => (
                     <DropdownItem
-                        key={option.value}
+                        key={option.label}
                         onClick={() => selectOption(option)}
                     >
                         {option.label}

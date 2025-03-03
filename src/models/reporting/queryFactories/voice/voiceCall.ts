@@ -11,6 +11,7 @@ import {
 } from 'models/reporting/cubes/VoiceCallCube'
 import { ReportingFilterOperator, ReportingQuery } from 'models/reporting/types'
 import { StatsFilters } from 'models/stat/types'
+import { VoiceCallDisplayStatus } from 'models/voiceCall/types'
 import { getLiveVoicePeriodFilter } from 'pages/stats/voice/components/LiveVoice/utils'
 import { MIN_DATE_FOR_ADVANCED_VOICE_STATS } from 'pages/stats/voice/constants/voiceOverview'
 import {
@@ -88,6 +89,22 @@ export const voiceCallDefaultFilters = (
         ...statsFiltersToReportingFilters(VoiceCallFiltersMembers, filters),
         ...getTicketPeriodFilters(filters),
     ]
+}
+
+const withStatusFilter = (
+    filters: StatsFilters,
+    statusFilter?: VoiceCallDisplayStatus[],
+) => {
+    return statusFilter
+        ? [
+              ...voiceCallDefaultFilters(filters),
+              {
+                  member: VoiceCallMember.DisplayStatus,
+                  operator: ReportingFilterOperator.Equals,
+                  values: statusFilter,
+              },
+          ]
+        : voiceCallDefaultFilters(filters)
 }
 
 const voiceCallListDimensions = [
@@ -182,12 +199,13 @@ export const voiceCallCountQueryFactory = (
     filters: StatsFilters,
     timezone: string,
     segment?: VoiceCallSegment,
+    statusFilter?: VoiceCallDisplayStatus[],
 ) => ({
     measures: [VoiceCallMeasure.VoiceCallCount],
     dimensions: [],
     timezone,
     segments: segment ? [segment] : [],
-    filters: voiceCallDefaultFilters(filters),
+    filters: withStatusFilter(filters, statusFilter),
 })
 
 export const voiceCallCountPerFilteringAgentQueryFactory = (
@@ -222,12 +240,13 @@ export const voiceCallListQueryFactory = (
     offset?: number,
     order: VoiceCallDimension = VoiceCallDimension.CreatedAt,
     sorting: OrderDirection = OrderDirection.Desc,
+    statusFilter?: VoiceCallDisplayStatus[],
 ): ReportingQuery<VoiceCallCube> => ({
     measures: [VoiceCallMeasure.VoiceCallCount],
     dimensions: voiceCallListDimensions,
     timezone,
     segments: segment ? [segment] : [],
-    filters: voiceCallDefaultFilters(filters),
+    filters: withStatusFilter(filters, statusFilter),
     order: [[order, sorting]],
     limit: limit,
     offset: offset,

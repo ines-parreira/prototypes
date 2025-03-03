@@ -7,6 +7,8 @@ import thunk from 'redux-thunk'
 
 import { VoiceCallDirection } from '@gorgias/api-queries'
 
+import { FeatureFlagKey } from 'config/featureFlags'
+import { useFlag } from 'core/flags'
 import { VoiceCallDisplayStatus, VoiceCallStatus } from 'models/voiceCall/types'
 import { CALL_LIST_PAGE_SIZE } from 'pages/stats/voice/constants/voiceOverview'
 import { useVoiceCallCount } from 'pages/stats/voice/hooks/useVoiceCallCount'
@@ -48,6 +50,9 @@ jest.mock('utils', () => {
         hasRole: () => true,
     } as Record<string, unknown>
 })
+
+jest.mock('core/flags')
+const useFlagMock = assumeMock(useFlag)
 
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
 
@@ -125,13 +130,16 @@ describe('VoiceCallTableContent', () => {
         )
     }
 
-    it('should render no voice calls message', () => {
-        const { getByText } = renderComponent({
-            data: [],
-            isFetching: false,
-        })
-        expect(getByText('No voice calls')).toBeInTheDocument()
-    })
+    it.each([[], undefined])(
+        'should render no voice calls message',
+        (emptyData) => {
+            const { getByText } = renderComponent({
+                data: emptyData,
+                isFetching: false,
+            })
+            expect(getByText('No voice calls')).toBeInTheDocument()
+        },
+    )
 
     it('should render custom no voice calls message when it is provided', () => {
         const { getByText } = renderComponent({
@@ -202,7 +210,13 @@ describe('VoiceCallTableContent', () => {
         expect(getAllByRole('row')).toHaveLength(CALL_LIST_PAGE_SIZE + 1)
     })
 
-    it('should render rows', () => {
+    it('should render rows old', () => {
+        useFlagMock.mockImplementation((flag) => {
+            if (flag === FeatureFlagKey.ShowNewUnansweredStatuses) {
+                return false
+            }
+        })
+
         const { getByText, getAllByText } = renderComponent()
 
         // first call
@@ -222,6 +236,39 @@ describe('VoiceCallTableContent', () => {
         expect(getByText('1m 41s')).toBeInTheDocument()
         expect(getByText('13s')).toBeInTheDocument()
         expect(getAllByText('-').length).toBeGreaterThan(0)
+    })
+
+    it('should render rows', () => {
+        useFlagMock.mockImplementation((flag) => {
+            if (flag === FeatureFlagKey.ShowNewUnansweredStatuses) {
+                return true
+            }
+        })
+
+        const { getByText, getAllByText } = renderComponent()
+
+        // first call
+        expect(getByText('VoiceCallCustomerLabel 1')).toBeInTheDocument()
+        expect(getByText('VoiceCallAgentLabel 1')).toBeInTheDocument()
+        expect(getByText('VoiceIntegrationBasicLabel 1')).toBeInTheDocument()
+        expect(getByText('Answered')).toBeInTheDocument()
+        expect(getByText('1m 40s')).toBeInTheDocument()
+        expect(getByText('12s')).toBeInTheDocument()
+        expect(getByText('View ticket')).toBeInTheDocument()
+
+        // second call
+        expect(getByText('VoiceCallCustomerLabel 2')).toBeInTheDocument()
+        expect(getByText('VoiceCallAgentLabel 2')).toBeInTheDocument()
+        expect(getByText('VoiceIntegrationBasicLabel 2')).toBeInTheDocument()
+        expect(getAllByText('Unanswered').length).toBeGreaterThan(0)
+        expect(getByText('1m 41s')).toBeInTheDocument()
+        expect(getByText('13s')).toBeInTheDocument()
+        expect(getAllByText('-').length).toBeGreaterThan(0)
+
+        // third call
+        expect(getByText('VoiceCallCustomerLabel 3')).toBeInTheDocument()
+        expect(getByText('VoiceCallAgentLabel 3')).toBeInTheDocument()
+        expect(getAllByText('Abandoned').length).toBeGreaterThan(0)
     })
 
     it('should handle table scrolling', async () => {
@@ -256,7 +303,7 @@ describe('VoiceCallTableContent', () => {
 
     it('should call onColumnClick when clicking on a header cell', () => {
         const onColumnClick = jest.fn()
-        const { getByText } = renderComponent({ onColumnClick } as any)
+        const { getByText } = renderComponent({ data, onColumnClick } as any)
 
         fireEvent.click(getByText('Activity'))
 

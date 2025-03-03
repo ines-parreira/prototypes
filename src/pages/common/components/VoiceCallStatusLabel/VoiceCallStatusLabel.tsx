@@ -2,33 +2,15 @@ import React from 'react'
 
 import classNames from 'classnames'
 
-import { VoiceCallDisplayStatus } from 'models/voiceCall/types'
+import {
+    getPrettyVoiceCallDisplayStatusName,
+    VoiceCallDisplayStatus,
+} from 'models/voiceCall/types'
 
 import css from './VoiceCallStatusLabel.less'
 
 type Props = {
     displayStatus: VoiceCallDisplayStatus
-}
-
-const getPrettyDisplayName = (status: VoiceCallDisplayStatus) => {
-    switch (status) {
-        case VoiceCallDisplayStatus.Ringing:
-            return 'Ringing'
-        case VoiceCallDisplayStatus.InProgress:
-            return 'In Progress'
-        case VoiceCallDisplayStatus.Answered:
-            return 'Answered'
-        case VoiceCallDisplayStatus.Missed:
-            return 'Missed'
-        case VoiceCallDisplayStatus.Abandoned:
-            return 'Abandoned'
-        case VoiceCallDisplayStatus.Cancelled:
-            return 'Cancelled'
-        case VoiceCallDisplayStatus.Failed:
-            return 'Failed'
-        case VoiceCallDisplayStatus.Unanswered:
-            return 'Unanswered'
-    }
 }
 
 const getColorClass = (status: VoiceCallDisplayStatus) => {
@@ -51,7 +33,7 @@ const getColorClass = (status: VoiceCallDisplayStatus) => {
 const VoiceCallStatusLabel = ({ displayStatus }: Props) => {
     return (
         <div className={classNames(getColorClass(displayStatus))}>
-            {getPrettyDisplayName(displayStatus)}
+            {getPrettyVoiceCallDisplayStatusName(displayStatus)}
         </div>
     )
 }

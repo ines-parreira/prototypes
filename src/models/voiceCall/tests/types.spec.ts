@@ -1,6 +1,11 @@
 import { voiceCall } from 'fixtures/voiceCalls'
 
-import { isOutboundVoiceCall, isVoiceCall } from '../types'
+import {
+    getPrettyVoiceCallDisplayStatusName,
+    isOutboundVoiceCall,
+    isVoiceCall,
+    VoiceCallDisplayStatus,
+} from '../types'
 
 describe('type guards', () => {
     describe('isVoiceCall', () => {
@@ -37,4 +42,24 @@ describe('type guards', () => {
             ).toBe(false)
         })
     })
+})
+
+describe('getPrettyVoiceCallDisplayStatusName', () => {
+    it.each([
+        [VoiceCallDisplayStatus.Ringing, 'Ringing'],
+        [VoiceCallDisplayStatus.InProgress, 'In Progress'],
+        [VoiceCallDisplayStatus.Answered, 'Answered'],
+        [VoiceCallDisplayStatus.Missed, 'Missed'],
+        [VoiceCallDisplayStatus.Abandoned, 'Abandoned'],
+        [VoiceCallDisplayStatus.Cancelled, 'Cancelled'],
+        [VoiceCallDisplayStatus.Failed, 'Failed'],
+        [VoiceCallDisplayStatus.Unanswered, 'Unanswered'],
+    ])(
+        'should return the correct display name for each status',
+        (displayStatus, prettyName) => {
+            expect(getPrettyVoiceCallDisplayStatusName(displayStatus)).toBe(
+                prettyName,
+            )
+        },
+    )
 })

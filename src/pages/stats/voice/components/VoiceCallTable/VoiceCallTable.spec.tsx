@@ -9,10 +9,11 @@ import thunk from 'redux-thunk'
 
 import { VoiceCallSegment } from 'models/reporting/cubes/VoiceCallCube'
 import { StatsFilters } from 'models/stat/types'
+import { VoiceCallDisplayStatus } from 'models/voiceCall/types'
 import { useVoiceCallCount } from 'pages/stats/voice/hooks/useVoiceCallCount'
 import { useVoiceCallList } from 'pages/stats/voice/hooks/useVoiceCallList'
 import {
-    VoiceCallFilterOptions,
+    VoiceCallFilterDirection,
     VoiceCallSummary,
 } from 'pages/stats/voice/models/types'
 import { RootState, StoreDispatch } from 'state/types'
@@ -42,7 +43,9 @@ describe('VoiceCallTable', () => {
         },
     }
 
-    const renderComponent = (filterOption = VoiceCallFilterOptions.All) => {
+    const renderComponent = (
+        filterOption = { direction: VoiceCallFilterDirection.All },
+    ) => {
         return render(
             <Provider store={mockStore({})}>
                 <VoiceCallTable
@@ -79,25 +82,62 @@ describe('VoiceCallTable', () => {
     })
 
     it.each([
-        [undefined, undefined],
-        [VoiceCallFilterOptions.All, undefined],
-        [VoiceCallFilterOptions.Inbound, VoiceCallSegment.inboundCalls],
-        [VoiceCallFilterOptions.Outbound, VoiceCallSegment.outboundCalls],
-    ])('should handle filter option', (filterOption, expectedSegment) => {
-        useVoiceCallListMock.mockReturnValue({
-            data: [] as VoiceCallSummary[],
-            isFetching: false,
-        } as UseQueryResult<VoiceCallSummary[], unknown>)
-        useVoiceCallCountMock.mockReturnValue({
-            total: 0,
-            totalPages: 0,
-        })
+        {
+            filterOption: undefined,
+            expectedSegment: undefined,
+            expectedStatusFilter: undefined,
+        },
+        {
+            filterOption: { direction: VoiceCallFilterDirection.All },
+            expectedSegment: undefined,
+            expectedStatusFilter: undefined,
+        },
+        {
+            filterOption: {
+                direction: VoiceCallFilterDirection.Inbound,
+                statuses: [
+                    VoiceCallDisplayStatus.Answered,
+                    VoiceCallDisplayStatus.Abandoned,
+                ],
+            },
+            expectedSegment: VoiceCallSegment.inboundCalls,
+            expectedStatusFilter: [
+                VoiceCallDisplayStatus.Answered,
+                VoiceCallDisplayStatus.Abandoned,
+            ],
+        },
+        {
+            filterOption: {
+                direction: VoiceCallFilterDirection.Outbound,
+                statuses: [
+                    VoiceCallDisplayStatus.Answered,
+                    VoiceCallDisplayStatus.Failed,
+                ],
+            },
+            expectedSegment: VoiceCallSegment.outboundCalls,
+            expectedStatusFilter: [
+                VoiceCallDisplayStatus.Answered,
+                VoiceCallDisplayStatus.Failed,
+            ],
+        },
+    ])(
+        'should handle filter option',
+        ({ filterOption, expectedSegment, expectedStatusFilter }) => {
+            useVoiceCallListMock.mockReturnValue({
+                data: [] as VoiceCallSummary[],
+                isFetching: false,
+            } as UseQueryResult<VoiceCallSummary[], unknown>)
+            useVoiceCallCountMock.mockReturnValue({
+                total: 0,
+                totalPages: 0,
+            })
 
-        renderComponent(filterOption)
-        expect(useVoiceCallListMock.mock.calls[0]).toEqual(
-            expect.arrayContaining([expectedSegment]),
-        )
-    })
+            renderComponent(filterOption)
+            expect(useVoiceCallListMock.mock.calls[0]).toEqual(
+                expect.arrayContaining([expectedSegment, expectedStatusFilter]),
+            )
+        },
+    )
 
     it('should show the correct number of total pages', () => {
         useVoiceCallListMock.mockReturnValue({
@@ -161,7 +201,7 @@ describe('VoiceCallTable', () => {
                 <VoiceCallTable
                     statsFilters={statsFilters}
                     userTimezone={'UTC'}
-                    filterOption={VoiceCallFilterOptions.All}
+                    filterOption={{ direction: VoiceCallFilterDirection.All }}
                 />
             </Provider>,
         )

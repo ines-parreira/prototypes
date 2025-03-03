@@ -217,8 +217,7 @@ describe('VoiceOverview', () => {
             }
         })
 
-        const { queryByText, queryAllByText, getAllByText } =
-            renderVoiceOverview()
+        const { queryByText } = renderVoiceOverview()
 
         // header elements
         expect(queryByText(VOICE_OVERVIEW_PAGE_TITLE)).toBeInTheDocument()
@@ -232,11 +231,11 @@ describe('VoiceOverview', () => {
         expect(VoiceOverviewDownloadDataButtonMock).toHaveBeenCalled()
 
         expect(queryByText(TOTAL_CALLS_METRIC_TITLE)).toBeInTheDocument()
-        expect(queryAllByText(OUTBOUND_CALLS_METRIC_TITLE)).toHaveLength(2) // also as filter
-        expect(queryAllByText(INBOUND_CALLS_METRIC_TITLE)).toHaveLength(2) // also as filter
+        expect(queryByText(OUTBOUND_CALLS_METRIC_TITLE)).toBeInTheDocument()
+        expect(queryByText(INBOUND_CALLS_METRIC_TITLE)).toBeInTheDocument()
 
         expect(queryByText(UNANSWERED_CALLS_METRIC_TITLE)).toBeInTheDocument()
-        expect(queryAllByText(MISSED_CALLS_METRIC_TITLE)).toHaveLength(2) // also as filter
+        expect(queryByText(MISSED_CALLS_METRIC_TITLE)).toBeInTheDocument()
         expect(queryByText(CANCELLED_CALLS_METRIC_TITLE)).toBeInTheDocument()
         expect(queryByText(ABANDONED_CALLS_METRIC_TITLE)).toBeInTheDocument()
 
@@ -246,14 +245,10 @@ describe('VoiceOverview', () => {
         // list of calls section
         expect(queryByText(CALL_LIST_TITLE)).toBeInTheDocument()
 
-        expect(queryAllByText(ALL_CALLS_FILTER_LABEL)).toHaveLength(2)
-        fireEvent.click(queryAllByText(ALL_CALLS_FILTER_LABEL)[0])
-        expect(queryAllByText(INBOUND_CALLS_FILTER_LABEL)).toHaveLength(2)
-        expect(queryAllByText(OUTBOUND_CALLS_METRIC_TITLE)).toHaveLength(2)
-
-        fireEvent.click(getAllByText(INBOUND_CALLS_FILTER_LABEL)[1])
-        expect(queryAllByText(ALL_CALLS_FILTER_LABEL)).toHaveLength(1)
-        expect(queryAllByText(INBOUND_CALLS_FILTER_LABEL)).toHaveLength(3)
+        // filters by direction
+        expect(queryByText('All')).toBeInTheDocument()
+        expect(queryByText('Inbound')).toBeInTheDocument()
+        expect(queryByText('Outbound')).toBeInTheDocument()
 
         // footer
         expect(

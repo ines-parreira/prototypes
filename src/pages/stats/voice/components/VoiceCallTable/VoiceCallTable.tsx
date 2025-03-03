@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react'
 
+import { VoiceCallSegment } from 'models/reporting/cubes/VoiceCallCube'
 import { StatsFilters } from 'models/stat/types'
 import Pagination from 'pages/common/components/Pagination'
 import {
@@ -9,7 +10,7 @@ import {
 import { useVoiceCallCount } from 'pages/stats/voice/hooks/useVoiceCallCount'
 import { useVoiceCallList } from 'pages/stats/voice/hooks/useVoiceCallList'
 import {
-    getVoiceSegmentFromFilter,
+    VoiceCallFilterDirection,
     VoiceCallFilterOptions,
 } from 'pages/stats/voice/models/types'
 
@@ -21,7 +22,7 @@ import css from './VoiceCallTable.less'
 type VoiceCallTableProps = {
     statsFilters: StatsFilters
     userTimezone: string
-    filterOption?: VoiceCallFilterOptions
+    filterOption: VoiceCallFilterOptions
 }
 
 export const VoiceCallTable = ({
@@ -46,11 +47,14 @@ export const VoiceCallTable = ({
         getVoiceSegmentFromFilter(filterOption),
         orderByDimension,
         orderDirection,
+        filterOption?.statuses,
     )
     const { totalPages } = useVoiceCallCount(
         statsFilters,
         userTimezone,
         getVoiceSegmentFromFilter(filterOption),
+        undefined,
+        filterOption?.statuses,
     )
 
     const handlePageChange = (nextPage: number) => {
@@ -86,4 +90,17 @@ export const VoiceCallTable = ({
             )}
         </>
     )
+}
+
+const getVoiceSegmentFromFilter = (
+    filter: VoiceCallFilterOptions,
+): VoiceCallSegment | undefined => {
+    switch (filter.direction) {
+        case VoiceCallFilterDirection.All:
+            return undefined
+        case VoiceCallFilterDirection.Inbound:
+            return VoiceCallSegment.inboundCalls
+        case VoiceCallFilterDirection.Outbound:
+            return VoiceCallSegment.outboundCalls
+    }
 }

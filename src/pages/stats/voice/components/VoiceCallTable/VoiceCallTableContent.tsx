@@ -5,7 +5,7 @@ import classNames from 'classnames'
 import { Skeleton } from '@gorgias/merchant-ui-kit'
 
 import { FeatureFlagKey } from 'config/featureFlags'
-import useFlag from 'core/flags/hooks/useFlag'
+import { useFlag } from 'core/flags'
 import useMeasure from 'hooks/useMeasure'
 import { OrderDirection } from 'models/api/types'
 import BodyCell from 'pages/common/components/table/cells/BodyCell'
@@ -103,7 +103,7 @@ export default function VoiceCallTableContent({
         ))
     }, [isTableScrolled, columns])
 
-    if (!isFetching && data?.length === 0) {
+    if (!isFetching && (data === undefined || data?.length === 0)) {
         return (
             <NoDataAvailable
                 title={noDataTitle}

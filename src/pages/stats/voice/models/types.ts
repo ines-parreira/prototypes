@@ -3,7 +3,6 @@ import { VoiceCallDirection } from '@gorgias/api-queries'
 import {
     VoiceCallDimension,
     VoiceCallMeasure,
-    VoiceCallSegment,
 } from 'models/reporting/cubes/VoiceCallCube'
 import { VoiceCallDisplayStatus, VoiceCallStatus } from 'models/voiceCall/types'
 
@@ -49,11 +48,15 @@ export type VoiceCallSummary = {
     displayStatus: VoiceCallDisplayStatus
 }
 
-export enum VoiceCallFilterOptions {
+export enum VoiceCallFilterDirection {
     All = 'all',
     Inbound = 'inbound',
     Outbound = 'outbound',
-    Missed = 'missed',
+}
+
+export type VoiceCallFilterOptions = {
+    direction: VoiceCallFilterDirection
+    statuses?: VoiceCallDisplayStatus[]
 }
 
 export enum VoiceCallAverageTimeMetric {
@@ -63,18 +66,3 @@ export enum VoiceCallAverageTimeMetric {
 
 export const isInboundVoiceCallSummary = (call: VoiceCallSummary) =>
     call.direction === 'inbound'
-
-export const getVoiceSegmentFromFilter = (
-    filter?: VoiceCallFilterOptions,
-): VoiceCallSegment | undefined => {
-    switch (filter) {
-        case VoiceCallFilterOptions.All:
-            return undefined
-        case VoiceCallFilterOptions.Inbound:
-            return VoiceCallSegment.inboundCalls
-        case VoiceCallFilterOptions.Outbound:
-            return VoiceCallSegment.outboundCalls
-        case VoiceCallFilterOptions.Missed:
-            return VoiceCallSegment.missedCalls
-    }
-}
