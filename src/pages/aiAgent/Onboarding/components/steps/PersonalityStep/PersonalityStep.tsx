@@ -365,7 +365,11 @@ export const PersonalityStep: React.FC<StepProps> = ({
                         </section>
                     </Card>
                 </OnboardingContentContainer>
-                <OnboardingPreviewContainer isLoading={isLoading} icon={''}>
+                <OnboardingPreviewContainer
+                    isLoading={isLoading}
+                    icon={''}
+                    caption="This is a sample conversation with AI Agent. It will evolve as you onboard."
+                >
                     <div className={css.chatWrapper}>
                         <ChatIntegrationPreview {...chatPreviewSettings}>
                             <AiAgentChatConversation
@@ -373,10 +377,6 @@ export const PersonalityStep: React.FC<StepProps> = ({
                                 removeLinksFromMessages
                             />
                         </ChatIntegrationPreview>
-                        <div className={css.chatFooter}>
-                            This is a sample conversation with AI Agent. It will
-                            evolve as you onboard.
-                        </div>
                     </div>
                 </OnboardingPreviewContainer>
             </OnboardingBody>
