@@ -14,6 +14,11 @@ import useIsToggleEnabled from './useIsToggleEnabled'
 
 import css from './Toggle.less'
 
+const Labels = {
+    FullWidth: 'Hide ticket panel',
+    SplitTicket: 'Show ticket panel',
+}
+
 /* istanbul ignore next */
 export default function Toggle() {
     const { isEnabled, setIsEnabled } = useSplitTicketView()
@@ -48,7 +53,9 @@ export default function Toggle() {
                 disabled={!isToggleEnabled}
                 data-candu-id="dtp-toggle"
                 {...(showGlobalNav && {
-                    'aria-describedby': isEnabled ? 'Expand' : 'Collapse',
+                    'aria-describedby': isEnabled
+                        ? Labels.FullWidth
+                        : Labels.SplitTicket,
                 })}
             >
                 {showGlobalNav ? (
@@ -56,7 +63,9 @@ export default function Toggle() {
                         className={cn(css.mask, { [css.active]: isEnabled })}
                     />
                 ) : (
-                    <span>{isEnabled ? 'Expand' : 'Collapse'}</span>
+                    <span>
+                        {isEnabled ? Labels.FullWidth : Labels.SplitTicket}
+                    </span>
                 )}
             </button>
             {showGlobalNav && isToggleEnabled && (
@@ -65,7 +74,7 @@ export default function Toggle() {
                     placement="right"
                     delay={TooltipDelay.Short}
                 >
-                    {isEnabled ? 'Expand' : 'Collapse'}
+                    {isEnabled ? Labels.FullWidth : Labels.SplitTicket}
                 </Tooltip>
             )}
 
