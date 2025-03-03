@@ -10,7 +10,7 @@ import { List, Map } from 'immutable'
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
-import { getHumanAgents } from 'state/agents/selectors'
+import { getHumanAndAutomationBotAgents } from 'state/agents/selectors'
 import { getSchemas } from 'state/schemas/selectors'
 import { getTeams } from 'state/teams/selectors'
 import {
@@ -24,7 +24,7 @@ import CallExpression from './CallExpression'
 
 export default function ViewFilters() {
     const dispatch = useAppDispatch()
-    const agents = useAppSelector(getHumanAgents)
+    const agents = useAppSelector(getHumanAndAutomationBotAgents)
     const schemas = useAppSelector(getSchemas)
     const teams = useAppSelector(getTeams)
     const view = useAppSelector(getActiveView)
