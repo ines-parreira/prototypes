@@ -73,7 +73,7 @@ const bannerConfigObj = {
     } satisfies AlertBannerCTATypes,
     message:
         '<strong>Deadline missed:</strong> Please migrate your email integrations...',
-    type: AlertBannerTypes.Critical,
+    type: AlertBannerTypes.Error,
     preventDismiss: true,
 }
 

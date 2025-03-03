@@ -27,13 +27,20 @@ export const useBannerCarousel = ({
             setCurrentBannerPosition(0)
         }
     }, [mergedBannersList.length])
-
     useEffect(() => {
-        const updatedBanners = [...legacyBanners, ...banners]
-        const impersonationIndex = updatedBanners?.findIndex(
-            (banner) =>
-                'instanceId' in banner &&
-                banner?.category === BannerCategories.IMPERSONATION,
+        const updatedBanners = [...legacyBanners, ...banners] as (
+            | BannerNotification
+            | ContextBanner
+        )[]
+        const impersonationIndex = updatedBanners.findIndex(
+            (banner): banner is ContextBanner => {
+                if (typeof banner === 'string') return false
+
+                return (
+                    'instanceId' in banner &&
+                    banner.category === BannerCategories.IMPERSONATION
+                )
+            },
         )
 
         if (impersonationIndex !== -1) {

@@ -6,6 +6,7 @@ import { AlertBannerProps } from './components/AlertBanner'
 
 export enum AlertBannerTypes {
     Critical = 'critical',
+    Error = 'error',
     Warning = 'warning',
     Info = 'info',
 }

@@ -1,13 +1,16 @@
 import React from 'react'
 
+import { Banner } from '@gorgias/merchant-ui-kit'
+
+import { AlertBannerTypes } from 'AlertBanners'
 import { FeatureFlagKey } from 'config/featureFlags'
 import { useFlag } from 'core/flags'
 import useLegacyAlertBanners from 'notifications/hooks/useLegacyAlertBanners'
 
 import { useBannersContext } from '../Context'
 import { useBannerCarousel } from '../hooks/useBannerCarousel'
-import { AlertBanner } from './AlertBanner'
 import { CarouselNavigation } from './CarouselNavigation'
+import { CTA } from './CTA'
 
 import css from './AlertBanner.less'
 
@@ -17,7 +20,7 @@ const AlertBanners = () => {
 
     const carouselBannerFlag: boolean = useFlag(
         FeatureFlagKey.BannerCarousel,
-        false,
+        true,
     )
 
     const {
@@ -32,45 +35,87 @@ const AlertBanners = () => {
         banners,
     })
 
+    const typeFallbackBanner = (type: AlertBannerTypes | undefined) => {
+        if (!type) {
+            return AlertBannerTypes.Info
+        }
+
+        if (type === AlertBannerTypes.Critical) {
+            return AlertBannerTypes.Error
+        }
+        return type
+    }
+
     if (!carouselBannerFlag) {
         return (
-            <div>
+            <>
                 {banners?.map((banner) => (
-                    <AlertBanner key={banner.instanceId} {...banner} />
+                    <Banner
+                        key={banner.instanceId}
+                        variant="full"
+                        fillStyle="fill"
+                        onClose={banner?.onClose}
+                        type={typeFallbackBanner(banner?.type)}
+                        action={banner?.CTA && <CTA {...banner?.CTA} />}
+                    >
+                        {banner.message}
+                    </Banner>
                 ))}
                 {legacyBanners?.map((banner) => (
-                    <AlertBanner key={banner.id} {...banner} />
+                    <Banner
+                        key={banner?.id}
+                        onClose={banner?.onClose}
+                        variant="full"
+                        fillStyle="fill"
+                        type={typeFallbackBanner(banner?.type)}
+                        action={banner?.CTA && <CTA {...banner?.CTA} />}
+                    >
+                        {banner?.message}
+                    </Banner>
                 ))}
-            </div>
+            </>
         )
     }
 
-    if (mergedBannersList.length === 0) {
+    if (mergedBannersList.length === 0 && !impersonationBanner) {
         return null
     }
 
     return (
-        <div>
-            <AlertBanner
-                textPosition="left"
-                prefix={
-                    <CarouselNavigation
-                        onPrevious={onPrevious}
-                        onNext={onNext}
-                        currentIndex={currentBannerPosition + 1}
-                        total={mergedBannersList?.length}
-                    />
-                }
-                {...selectedBanner}
-            />
-            {impersonationBanner && (
-                <AlertBanner
-                    {...impersonationBanner}
-                    textPosition="left"
-                    prefix={<div className={css.impersonationBanner}></div>}
-                />
+        <>
+            {!!mergedBannersList.length && (
+                <Banner
+                    variant="full"
+                    fillStyle="fill"
+                    type={typeFallbackBanner(selectedBanner?.type)}
+                    onClose={selectedBanner?.onClose}
+                    action={
+                        selectedBanner?.CTA && <CTA {...selectedBanner?.CTA} />
+                    }
+                    prefix={
+                        <CarouselNavigation
+                            onPrevious={onPrevious}
+                            onNext={onNext}
+                            currentIndex={currentBannerPosition + 1}
+                            total={mergedBannersList?.length}
+                        />
+                    }
+                >
+                    {selectedBanner?.message}
+                </Banner>
             )}
-        </div>
+            {impersonationBanner && (
+                <Banner
+                    variant="full"
+                    fillStyle="fill"
+                    type={AlertBannerTypes.Warning}
+                    onClose={impersonationBanner?.onClose}
+                    prefix={<div className={css.impersonationBanner}></div>}
+                >
+                    {impersonationBanner?.message}
+                </Banner>
+            )}
+        </>
     )
 }
 

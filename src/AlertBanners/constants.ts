@@ -4,4 +4,5 @@ export const BANNER_TYPE_HIERARCHY = {
     [AlertBannerTypes.Info]: AlertBannerTypes.Warning,
     [AlertBannerTypes.Warning]: AlertBannerTypes.Critical,
     [AlertBannerTypes.Critical]: undefined,
+    [AlertBannerTypes.Error]: AlertBannerTypes.Error,
 }

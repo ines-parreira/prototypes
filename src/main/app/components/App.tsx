@@ -69,6 +69,7 @@ export default function App({ children }: Props) {
                 {!isOnboarding && (
                     <>
                         <AlertBanners />
+
                         {!bannerList?.scriptTagMigrationBanner && (
                             <ScriptTagMigrationBanner />
                         )}

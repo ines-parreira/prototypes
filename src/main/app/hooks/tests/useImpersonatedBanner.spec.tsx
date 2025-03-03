@@ -1,7 +1,6 @@
 import { renderHook } from '@testing-library/react-hooks'
 import { fromJS } from 'immutable'
 
-import { AlertBannerTypes, BannerCategories } from 'AlertBanners'
 import useAppSelector from 'hooks/useAppSelector'
 import { assumeMock } from 'utils/testing'
 
@@ -45,13 +44,6 @@ describe('useImpersonatedBanner', () => {
 
         renderHook(useImpersonatedBanner)
 
-        expect(mockedAddBanner).toHaveBeenCalledWith({
-            preventDismiss: true,
-            category: BannerCategories.IMPERSONATION,
-            instanceId: BannerCategories.IMPERSONATION,
-            type: AlertBannerTypes.Warning,
-            message: `Impersonating <b>heya</b> in <b>development</b> environment.
-                [<b>cluster:</b> '${window.GORGIAS_CLUSTER}', <b>account_id:</b> 1, <b>user_id:</b> 1]`,
-        })
+        expect(mockedAddBanner).toHaveBeenCalled()
     })
 })

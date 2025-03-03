@@ -1,3 +1,5 @@
+import React from 'react'
+
 import { AlertBannerTypes, BannerCategories, useBanners } from 'AlertBanners'
 import useAppSelector from 'hooks/useAppSelector'
 import { getCurrentAccountState } from 'state/currentAccount/selectors'
@@ -15,12 +17,18 @@ export function useImpersonatedBanner() {
             category: BannerCategories.IMPERSONATION,
             instanceId: BannerCategories.IMPERSONATION,
             type: AlertBannerTypes.Warning,
-            message: `Impersonating <b>${
-                currentUser.get('email') as string
-            }</b> in <b>${getEnvironment()}</b> environment.
-                [<b>cluster:</b> '${window.GORGIAS_CLUSTER}', <b>account_id:</b> ${
-                    currentAccount.get('id') as string
-                }, <b>user_id:</b> ${currentUser.get('id') as string}]`,
+            message: (
+                <>
+                    Impersonating <strong>{currentUser.get('email')}</strong> in{' '}
+                    <strong>{getEnvironment()}</strong> environment.{' ['}
+                    <strong>cluster:</strong> {window.GORGIAS_CLUSTER}
+                    {', '}
+                    <strong>account_id:</strong> {currentAccount.get('id')}
+                    {', '}
+                    <strong>user_id:</strong> {currentUser.get('id')}
+                    {' ]'}
+                </>
+            ),
         })
     }
 }

@@ -49,6 +49,35 @@ describe('useBannerCarousel', () => {
         expect(result.current.currentBannerPosition).toBe(0)
     })
 
+    it('handles string (legacy) banners correctly', () => {
+        const { result } = renderHook(
+            ({
+                legacyBanners,
+                banners,
+            }: {
+                legacyBanners: any[]
+                banners: any[]
+            }) =>
+                useBannerCarousel({
+                    legacyBanners: legacyBanners as BannerNotification[],
+                    banners: banners as ContextBanner[],
+                }),
+            {
+                initialProps: {
+                    legacyBanners: ['This is a legacy banner message'],
+                    banners: [contextBanner],
+                },
+            },
+        )
+
+        expect(result.current.mergedBannersList).toHaveLength(2)
+        expect(result.current.mergedBannersList[0]).toBe(
+            'This is a legacy banner message',
+        )
+
+        expect(result.current.impersonationBanner).toBeNull()
+    })
+
     it('should set impersonationBanner', () => {
         const { result } = renderHook(
             ({ legacyBanners, banners }) =>
