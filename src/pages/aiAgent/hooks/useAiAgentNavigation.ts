@@ -114,6 +114,7 @@ const useNavigationItems = (
         useFlags()[FeatureFlagKey.ConvAiStandaloneMenu]
 
     const isAiAgentSalesTabEnabled =
+        flags[FeatureFlagKey.StandaloneAIAgentSalesPage] ||
         flags[FeatureFlagKey.StandaloneAIAgentSalesPaywallPage]
 
     return useMemo<NavigationItem[]>(() => {

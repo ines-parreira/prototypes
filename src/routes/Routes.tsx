@@ -444,7 +444,8 @@ function AiAgentRoutes({ match: { path }, location }: RouteComponentProps) {
         useFlags()[FeatureFlagKey.ConvAiStandaloneMenu]
 
     const isAiAgentSalesPageEnabled =
-        useFlags()[FeatureFlagKey.StandaloneAIAgentSalesPaywallPage]
+        useFlags()[FeatureFlagKey.StandaloneAIAgentSalesPaywallPage] ||
+        useFlags()[FeatureFlagKey.StandaloneAIAgentSalesPage]
 
     if (shopType !== 'shopify') {
         return <Redirect to="/app/automation" />
