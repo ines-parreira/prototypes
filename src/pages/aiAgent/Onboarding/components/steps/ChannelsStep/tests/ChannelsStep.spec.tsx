@@ -228,8 +228,6 @@ describe('ChannelsStep - Empty state', () => {
         const nextButton = screen.getByText('Next')
         userEvent.click(nextButton)
 
-        jest.runAllTimers()
-
         await waitFor(() => {
             expect(defaultProps.goToStep).toHaveBeenCalledWith(
                 WizardStepEnum.PERSONALITY_PREVIEW,
@@ -265,8 +263,6 @@ describe('ChannelsStep - Empty state', () => {
         const nextButton = screen.getByText('Next')
         userEvent.click(nextButton)
         expect(defaultProps.goToStep).not.toHaveBeenCalled()
-
-        jest.runAllTimers()
 
         await waitFor(() => {
             expect(
@@ -419,8 +415,6 @@ describe('ChannelsStep - Empty state', () => {
         const nextButton = screen.getByText('Next')
         userEvent.click(nextButton)
 
-        jest.runAllTimers()
-
         await waitFor(() => {
             // Wait for goToStep to be called
             expect(defaultProps.goToStep).toHaveBeenCalledWith(
@@ -470,8 +464,6 @@ describe('ChannelsStep - Empty state', () => {
         // Click on next button
         const nextButton = screen.getByText('Next')
         userEvent.click(nextButton)
-
-        jest.runAllTimers()
 
         await waitFor(() => {
             expect(notify).toHaveBeenCalledWith(
@@ -611,8 +603,6 @@ describe('ChannelsStep - With preloaded data', () => {
         // Click on Next button
         const nextButton = screen.getByText('Next')
         userEvent.click(nextButton)
-
-        jest.runAllTimers()
 
         // Since isDirty is false, updateOnboardingData should NOT be called
         expect(mockUpdateOnboardingData).not.toHaveBeenCalled()
