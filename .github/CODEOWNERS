@@ -135,8 +135,8 @@ src/models/reporting/cubes/automate_v2/ @gorgias/automate-observability-adoption
 src/pages/stats/Automate* @gorgias/automate-observability-adoption
 src/pages/aiAgent/AiAgentOnboardingWizard @gorgias/automate-observability-adoption
 
-# Automate AI Agent scope @gorgias/automate-ai-agent
-src/pages/aiAgent/ @gorgias/automate-ai-agent
+# Conv AI Orchestration scope
+src/pages/aiAgent/ @gorgias/conv-ai-orchestration
 
 # Platform Streaming Infrastructure scope @gorgias/platform-streaming-infrastructure
 src/pages/settings/rules @gorgias/platform-streaming-infrastructure
