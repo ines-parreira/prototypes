@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from 'react'
 
+import { useFlags } from 'launchdarkly-react-client-sdk'
 import { useLocation } from 'react-router-dom'
 
 import modalImage from 'assets/img/ai-agent/ai_agent_onboarding_thankyou.png'
 import { logEvent, SegmentEvent } from 'common/segment'
+import { FeatureFlagKey } from 'config/featureFlags'
 import useAppSelector from 'hooks/useAppSelector'
 import useEffectOnce from 'hooks/useEffectOnce'
 import ThankYouModal from 'pages/aiAgent/Onboarding/components/ThankYouModal/ThankYouModal'
@@ -21,6 +23,9 @@ export const AiAgentOverview = () => {
     const { state }: { state: { from: string } } = useLocation()
     const currentUser = useAppSelector(getCurrentUser)
 
+    const hasResourceSection =
+        useFlags()[FeatureFlagKey.StandaloneConvAiOverviewPageResourceSection]
+
     useEffectOnce(() => {
         logEvent(SegmentEvent.AiAgentOverviewPageView)
     })
@@ -36,8 +41,12 @@ export const AiAgentOverview = () => {
             <Title firstName={currentUser.get('firstname')} />
             <KpiSection />
             <PendingTasksSectionConnected />
-            <Separator />
-            <ResourcesSection />
+            {hasResourceSection && (
+                <>
+                    <Separator />
+                    <ResourcesSection />
+                </>
+            )}
             <ThankYouModal
                 isOpen={isOpen}
                 title="Your account is ready!"

@@ -2,11 +2,13 @@ import React from 'react'
 
 import { QueryClientProvider } from '@tanstack/react-query'
 import { render } from '@testing-library/react'
+import { mockFlags } from 'jest-launchdarkly-mock'
 import { Provider } from 'react-redux'
 import { useLocation } from 'react-router-dom'
 import configureMockStore from 'redux-mock-store'
 
 import { logEvent, SegmentEvent } from 'common/segment'
+import { FeatureFlagKey } from 'config/featureFlags'
 import { initialState as initialStatsFiltersState } from 'state/stats/statsSlice'
 import { RootState, StoreDispatch, StoreState } from 'state/types'
 import { initialState } from 'state/ui/stats/filtersSlice'
@@ -56,14 +58,13 @@ const renderComponent = () => {
     )
 }
 
-describe('useAiAgentOverview', () => {
+describe('AiAgentOverview', () => {
     it('should render', () => {
         const { queryByText } = renderComponent()
 
         expect(queryByText(/Welcome,.*/)).toBeTruthy()
         expect(queryByText('AI Agent Performance')).toBeTruthy()
         expect(queryByText('Complete AI Agent Setup')).toBeTruthy()
-        expect(queryByText('Resources')).toBeTruthy()
     })
 
     it('should not renders the Thank You modal', () => {
@@ -103,5 +104,21 @@ describe('useAiAgentOverview', () => {
 
             expect(queryByText('Your account is ready')).toBeNull()
         })
+    })
+
+    it('should render the resource section when the flag standalone-conv-ai_overview-page-resource-section is Available', () => {
+        mockFlags({
+            [FeatureFlagKey.StandaloneConvAiOverviewPageResourceSection]: true,
+        })
+        const { queryByText } = renderComponent()
+        expect(queryByText('Resources')).toBeTruthy()
+    })
+
+    it('should not render the resource section when the flag standalone-conv-ai_overview-page-resource-section is Unavailable', () => {
+        mockFlags({
+            [FeatureFlagKey.StandaloneConvAiOverviewPageResourceSection]: false,
+        })
+        const { queryByText } = renderComponent()
+        expect(queryByText('Resources')).toBeFalsy()
     })
 })
