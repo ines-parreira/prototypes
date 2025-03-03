@@ -1,6 +1,8 @@
 import { useCallback, useMemo, useState } from 'react'
 
+import { PreferenceSet } from '@knocklabs/client'
 import { useKnockClient } from '@knocklabs/react'
+import _merge from 'lodash/merge'
 
 import { AI_AGENT_SET_AND_OPTIMIZED_TYPE } from 'automate/notifications/constants'
 import { logEvent, SegmentEvent } from 'common/segment'
@@ -20,6 +22,7 @@ export default function useSettings() {
     const dispatch = useAppDispatch()
     const knockClient = useKnockClient()
     const allSettings = useAppSelector(getNotificationSettings)
+    const [knockPreferences, setKnockPreferences] = useState<PreferenceSet>()
 
     const notificationsWithSettings = useMemo(
         () =>
@@ -35,7 +38,7 @@ export default function useSettings() {
     const [{ loading: isFetchingKnockPreferences }, getKnockPreferences] =
         useAsyncFn(async () => {
             await knockClient.user.identify()
-            return await knockClient.preferences.get()
+            return await knockClient.user.getPreferences()
         })
 
     const [settings, setSettings] = useState<Settings>({
@@ -45,6 +48,7 @@ export default function useSettings() {
 
     const initializeSettings = useCallback(async () => {
         const preferences = await getKnockPreferences()
+        setKnockPreferences(preferences)
 
         const notificationSound =
             allSettings?.data.notification_sound || defaultSound
@@ -181,11 +185,15 @@ export default function useSettings() {
             {},
         )
 
+        // we need to preserve existing workflow channels - e.g "push"
+        const preferenceWorkflows = knockPreferences?.workflows || {}
+        const mergedWorkflows = _merge(preferenceWorkflows, workflows)
+
         await Promise.all([
-            knockClient.preferences.set({
+            knockClient.user.setPreferences({
                 categories: {},
                 channel_types: {},
-                workflows,
+                workflows: mergedWorkflows,
             }),
 
             // for some reason, `submitSetting` accepts a `UserSetting`,
@@ -211,6 +219,7 @@ export default function useSettings() {
         knockClient,
         notificationsWithSettings,
         settings,
+        knockPreferences?.workflows,
     ])
 
     return useMemo(

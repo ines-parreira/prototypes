@@ -87,10 +87,10 @@ describe('useSettings', () => {
     beforeEach(() => {
         variationMock.mockImplementation(() => true)
         mockUseKnockClient.mockReturnValue({
-            user: { identify: jest.fn() },
-            preferences: {
-                get: mockGetKnockPreferences,
-                set: mockSetKnockPreferences,
+            user: {
+                identify: jest.fn(),
+                getPreferences: mockGetKnockPreferences,
+                setPreferences: mockSetKnockPreferences,
             },
         })
         mockGetKnockPreferences.mockReturnValue({
@@ -129,8 +129,8 @@ describe('useSettings', () => {
     it('should update settings according to knock-returned workflow preferences', async () => {
         mockGetKnockPreferences.mockResolvedValue({
             workflows: {
-                'user.mentioned': {
-                    in_app_feed: true,
+                'user-mentioned': {
+                    channel_types: { in_app_feed: true },
                 },
             },
         })
@@ -217,6 +217,47 @@ describe('useSettings', () => {
                 },
                 true,
             )
+        })
+    })
+
+    it('should preserve other workflow channels when saving', async () => {
+        mockGetKnockPreferences.mockResolvedValue({
+            workflows: {
+                'user-mentioned': {
+                    channel_types: { push: true },
+                },
+            },
+        })
+
+        const { result, waitForNextUpdate } = renderHook(() => useSettings())
+
+        await act(async () => await waitForNextUpdate())
+
+        act(() => {
+            result.current.onChangeChannel(
+                'user.mentioned',
+                'in_app_feed',
+                true,
+            )
+        })
+
+        await act(async () => {
+            await result.current.save()
+        })
+
+        await waitFor(() => {
+            expect(mockSetKnockPreferences).toHaveBeenCalledWith({
+                categories: {},
+                channel_types: {},
+                workflows: {
+                    'user-mentioned': {
+                        channel_types: {
+                            in_app_feed: true,
+                            push: true,
+                        },
+                    },
+                },
+            })
         })
     })
 })
