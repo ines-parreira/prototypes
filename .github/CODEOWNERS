@@ -1,26 +1,28 @@
-# Analytics scope @gorgias/analytics-frontend
+# Reporting scope @gorgias/crm-reporting
 
-codeowners.mjs @gorgias/analytics-frontend
-src/assets/img/paywalls/screens/chat_stats.png @gorgias/analytics-frontend
-src/assets/img/presentationals/satisfaction-survey-stats.png @gorgias/analytics-frontend
-src/config/stats.less @gorgias/analytics-frontend
-src/config/stats.tsx @gorgias/analytics-frontend
-src/fixtures/stats.ts @gorgias/analytics-frontend
-src/hooks/reporting @gorgias/analytics-frontend
-src/models/reporting @gorgias/analytics-frontend
+src/assets/css/stats @gorgias/crm-reporting
+src/assets/img/paywalls/screens/chat_stats.png @gorgias/crm-reporting
+src/assets/img/presentationals/satisfaction-survey-stats.png @gorgias/crm-reporting
+src/assets/img/stats @gorgias/crm-reporting
+src/config/stats.less @gorgias/crm-reporting
+src/config/stats.tsx @gorgias/crm-reporting
+src/fixtures/chart.ts @gorgias/crm-reporting
+src/fixtures/stats.ts @gorgias/crm-reporting
+src/hooks/reporting @gorgias/crm-reporting
+src/models/stat @gorgias/crm-reporting
+src/models/reporting @gorgias/crm-reporting
 src/models/reporting/queryFactories/help-center @gorgias/automations-help-center
-src/pages/stats @gorgias/analytics-frontend
-src/services/performanceTipService.ts @gorgias/analytics-frontend
-src/services/reporting @gorgias/analytics-frontend
-src/services/tests/performanceTipService.spec.ts @gorgias/analytics-frontend
-src/state/entities/stats @gorgias/analytics-frontend
-src/state/stats @gorgias/analytics-frontend
-src/state/ui/stats @gorgias/analytics-frontend
-src/utils/reporting.ts @gorgias/analytics-frontend
-src/utils/tests/**snapshots**/reporting.spec.ts.snap @gorgias/analytics-frontend
-src/utils/tests/date.spec.ts @gorgias/analytics-frontend
-src/utils/tests/file.spec.ts @gorgias/analytics-frontend
-src/utils/tests/reporting.spec.ts @gorgias/analytics-frontend
+src/pages/stats @gorgias/crm-reporting
+src/routes/StatsRoutes.tsx @gorgias/crm-reporting
+src/routes/tests/StatsRoutes.tsx @gorgias/crm-reporting
+src/services/supportPerformanceTipService.ts @gorgias/crm-reporting
+src/services/tests/supportPerformanceTipService.ts @gorgias/crm-reporting
+src/services/reporting @gorgias/crm-reporting
+src/state/entities/stats @gorgias/crm-reporting
+src/state/stats @gorgias/crm-reporting
+src/state/ui/stats @gorgias/crm-reporting
+src/utils/reporting.ts @gorgias/crm-reporting
+src/utils/tests/reporting.spec.ts @gorgias/crm-reporting
 
 # Conv AI scope @gorgias/conv-ai-actions
 
