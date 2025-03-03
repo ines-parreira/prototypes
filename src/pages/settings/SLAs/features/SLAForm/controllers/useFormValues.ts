@@ -14,7 +14,6 @@ export default function useFormValues(
             policy
                 ? {
                       name: policy.name,
-                      target_channels: policy.target_channels,
                       metrics: [
                           {
                               name: SLAPolicyMetricType.Frt,
@@ -32,6 +31,8 @@ export default function useFormValues(
                           },
                       ],
                       active: policy.active,
+                      target_channels: policy.target_channels,
+                      business_hours_only: policy.business_hours_only,
                   }
                 : {
                       name: '',
@@ -49,6 +50,7 @@ export default function useFormValues(
                       ],
                       active: true,
                       target_channels: [],
+                      business_hours_only: true,
                   },
         [policy],
     )

@@ -23,6 +23,7 @@ export const TEMPLATES_LIST: SLATemplate[] = [
         },
         icon: 'forum',
         active: true,
+        business_hours_only: true,
     },
     {
         name: 'Email',
@@ -41,6 +42,7 @@ export const TEMPLATES_LIST: SLATemplate[] = [
         },
         icon: 'email',
         active: true,
+        business_hours_only: true,
     },
     {
         name: 'Social media',
@@ -71,5 +73,6 @@ export const TEMPLATES_LIST: SLATemplate[] = [
         },
         icon: 'group',
         active: true,
+        business_hours_only: true,
     },
 ]

@@ -4,10 +4,13 @@ import { SLAPolicyMetric } from '@gorgias/api-types'
 export type MappedFormSLAPolicy = ReturnType<typeof makeMappedFormSLAPolicy>
 
 export default function makeMappedFormSLAPolicy(policy: SLAPolicy) {
+    const { uuid, name, target_channels, business_hours_only } = policy
+
     return {
-        uuid: policy.uuid,
-        name: policy.name,
-        target_channels: policy.target_channels,
+        uuid,
+        name,
+        target_channels,
+        business_hours_only,
         active: policy.deactivated_datetime === null,
         metrics: policy.metrics.reduce(
             (acc, metric) => ({

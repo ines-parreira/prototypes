@@ -87,6 +87,13 @@ export default function SLAFormView({
                             >
                                 Enable SLA
                             </FormField>
+                            <FormField
+                                name="business_hours_only"
+                                field={ToggleInputField}
+                                className={settingsCss.mb48}
+                            >
+                                Pause SLA timer outside of business hours
+                            </FormField>
                         </FormSection>
                         <div className={css.buttonGroup}>
                             <div>

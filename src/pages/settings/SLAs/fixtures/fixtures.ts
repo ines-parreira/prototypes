@@ -1,4 +1,5 @@
 import { SLAPolicy } from '@gorgias/api-queries'
+import { SLAPolicyMetricType, SLAPolicyMetricUnit } from '@gorgias/api-types'
 
 import { TicketChannel } from 'business/types/ticket'
 import { UISLAPolicy } from 'pages/settings/SLAs/features/SLAList/types'
@@ -37,6 +38,31 @@ export const slaPolicy2: SLAPolicy = {
     version: 1,
     priority: '0.5',
     business_hours_only: false,
+}
+
+export const slaPolicy3: SLAPolicy = {
+    uuid: '3',
+    name: 'policy',
+    target_channels: ['email', 'chat'],
+    deactivated_datetime: null,
+    updated_datetime: '2021-08-01T00:00:00Z',
+    created_datetime: '2021-08-01T00:00:00Z',
+    archived_datetime: null,
+    metrics: [
+        {
+            name: SLAPolicyMetricType.Frt,
+            threshold: 30,
+            unit: SLAPolicyMetricUnit.Minute,
+        },
+        {
+            name: SLAPolicyMetricType.Rt,
+            threshold: 120,
+            unit: SLAPolicyMetricUnit.Minute,
+        },
+    ],
+    version: 1,
+    priority: '0.5',
+    business_hours_only: true,
 }
 
 export const UISLAPolicy1: UISLAPolicy = {
