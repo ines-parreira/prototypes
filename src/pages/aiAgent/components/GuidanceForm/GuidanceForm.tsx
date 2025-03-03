@@ -3,6 +3,8 @@ import React, { useState } from 'react'
 import _isEqual from 'lodash/isEqual'
 
 import { logEvent, SegmentEvent } from 'common/segment'
+import { FeatureFlagKey } from 'config/featureFlags'
+import { useFlag } from 'core/flags'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useEffectOnce from 'hooks/useEffectOnce'
 import { useAiAgentOnboardingNotification } from 'pages/aiAgent/hooks/useAiAgentOnboardingNotification'
@@ -21,6 +23,7 @@ import { NotificationStatus } from 'state/notifications/types'
 import { useAiAgentNavigation } from '../../hooks/useAiAgentNavigation'
 import { GuidanceFormFields } from '../../types'
 import { GuidanceEditor } from '../GuidanceEditor/GuidanceEditor'
+import { NewGuidanceEditor } from '../GuidanceEditor/NewGuidanceEditor'
 
 import css from './GuidanceForm.less'
 
@@ -51,11 +54,16 @@ export const GuidanceForm = ({
     sourceType,
     helpCenterId,
 }: Props) => {
+    const isGuidanceTaggingSystemEnabled = useFlag(
+        FeatureFlagKey.AIAgentGuidanceTaggingSystem,
+        false,
+    )
     const dispatch = useAppDispatch()
     const { routes } = useAiAgentNavigation({ shopName })
     const initialFormState = initialFields ?? FORM_INITIAL_STATE
     const [formState, setFormState] =
         useState<GuidanceFormFields>(initialFormState)
+
     const onNameChange = (value: string) => {
         setFormState((prevState) => ({ ...prevState, name: value }))
     }
@@ -202,14 +210,23 @@ export const GuidanceForm = ({
                         value={formState.name}
                         maxLength={135}
                     />
-                    <GuidanceEditor
-                        onChange={onContentChange}
-                        label="Instructions"
-                        value={formState.content}
-                        placeholder="e.g. If no order data is found for a customer asking a question about their order, you will ask the customer to confirm their order number and the email address."
-                        maxChars={5000}
-                        height={320}
-                    />
+                    {isGuidanceTaggingSystemEnabled ? (
+                        <NewGuidanceEditor
+                            content={formState.content}
+                            handleUpdateContent={onContentChange}
+                            label="Instructions"
+                            placeholder="e.g. If no order data is found for a customer asking a question about their order, you will ask the customer to confirm their order number and the email address."
+                        />
+                    ) : (
+                        <GuidanceEditor
+                            onChange={onContentChange}
+                            label="Instructions"
+                            value={formState.content}
+                            placeholder="e.g. If no order data is found for a customer asking a question about their order, you will ask the customer to confirm their order number and the email address."
+                            maxChars={5000}
+                            height={320}
+                        />
+                    )}
 
                     <ToggleInput
                         isToggled={formState.isVisible}
