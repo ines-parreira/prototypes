@@ -33,6 +33,7 @@ type Props = {
     suffix?: ReactNode
     inputWrapperClassName?: string
     withClearText?: boolean
+    disableAffixClick?: boolean
 } & Omit<
     InputHTMLAttributes<HTMLInputElement>,
     'disabled' | 'onChange' | 'prefix' | 'required'
@@ -54,6 +55,7 @@ function TextInput(
         value,
         inputWrapperClassName,
         withClearText = false,
+        disableAffixClick = false,
         ...props
     }: Props,
     ref: ForwardedRef<HTMLInputElement>,
@@ -87,10 +89,10 @@ function TextInput(
     useEvent('blur', handleBlur, inputElement)
 
     const handleAffixClick = useCallback(() => {
-        if (inputElement) {
+        if (inputElement && !disableAffixClick) {
             inputElement.focus()
         }
-    }, [inputElement])
+    }, [inputElement, disableAffixClick])
 
     const handleClearText = useCallback(() => {
         onChange?.('')

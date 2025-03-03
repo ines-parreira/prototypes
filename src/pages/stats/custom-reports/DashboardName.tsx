@@ -43,6 +43,7 @@ export const DashboardName = ({
                     onBlur && onBlur()
                 }}
                 error={isTouched && error}
+                disableAffixClick
                 prefix={
                     <EmojiInput
                         name="emoji"
