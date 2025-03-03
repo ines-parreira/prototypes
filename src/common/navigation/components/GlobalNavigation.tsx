@@ -1,6 +1,8 @@
 import React from 'react'
 
+import { FeatureFlagKey } from 'config/featureFlags'
 import { UserRole } from 'config/types/user'
+import { useFlag } from 'core/flags'
 import useAppSelector from 'hooks/useAppSelector'
 import { useAiAgentItemEnabled } from 'pages/aiAgent/hooks/useAiAgentItemEnabled'
 import { getCurrentUser } from 'state/currentUser/selectors'
@@ -23,10 +25,12 @@ export default function GlobalNavigation() {
     const activeItem = useActiveItem()
     const navBarMenuIcon = useNavBarMenuIcon()
     const { onMenuToggle, onNavHover, onNavLeave } = useNavBar()
+    const isAiAgentItemEnabled = useAiAgentItemEnabled()
+    const isAutomateRevampEnabled = useFlag(
+        FeatureFlagKey.AutomateSettingsRevamp,
+    )
 
     useNavBarShortcuts()
-
-    const isAiAgentItemEnabled = useAiAgentItemEnabled()
 
     return (
         <nav
@@ -62,15 +66,16 @@ export default function GlobalNavigation() {
                         url="/app/tickets"
                         data-candu-id="global-navigation-menu-tickets-page"
                     />
-                    {hasRole(currentUser, UserRole.Agent) && (
-                        <Item
-                            icon="bolt"
-                            isActive={activeItem === 'automate'}
-                            tooltip={<span>Automate</span>}
-                            url="/app/automation"
-                            data-candu-id="global-navigation-menu-automation-page"
-                        />
-                    )}
+                    {!isAutomateRevampEnabled &&
+                        hasRole(currentUser, UserRole.Agent) && (
+                            <Item
+                                icon="bolt"
+                                isActive={activeItem === 'automate'}
+                                tooltip={<span>Automate</span>}
+                                url="/app/automation"
+                                data-candu-id="global-navigation-menu-automation-page"
+                            />
+                        )}
                     {isAiAgentItemEnabled &&
                         hasRole(currentUser, UserRole.Agent) && (
                             <Item

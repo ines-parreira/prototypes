@@ -62,6 +62,7 @@ describe('GlobalNavigation', () => {
             fromJS({ role: { name: UserRole.BasicAgent } }),
         )
         useActiveItemMock.mockReturnValue('tickets')
+        mockUseFlag.mockImplementation(() => false)
     })
 
     it('should render the menu icon when the nav is pinned', () => {
@@ -100,6 +101,17 @@ describe('GlobalNavigation', () => {
         )
         const { getByText } = renderWithContext()
         expect(getByText('bolt')).toBeInTheDocument()
+    })
+
+    it('should not render the automation icon if the AutomateSettingsRevamp feature flag is enabled', () => {
+        getCurrentUserMock.mockReturnValue(
+            fromJS({ role: { name: UserRole.Agent } }),
+        )
+        mockUseFlag.mockImplementation((flag) =>
+            flag === FeatureFlagKey.AutomateSettingsRevamp ? true : false,
+        )
+        const { queryByText } = renderWithContext()
+        expect(queryByText('bolt')).not.toBeInTheDocument()
     })
 
     it('should not render the convert icon if the user is not an admin', () => {
