@@ -107,7 +107,7 @@ export function SettingRoutes() {
             <Route path={`${path}/sla`}>
                 <SLA />
             </Route>
-            <Route path={`${path}/automate`}>
+            <Route path={`${path}/automate/:shopType?/:shopName?`}>
                 {renderAppSettings(AutomateSettings, {
                     roleParams: [AGENT_ROLE],
                 })}

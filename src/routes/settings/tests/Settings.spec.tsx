@@ -154,7 +154,7 @@ const testingMap = [
     {
         callOrder: 15,
         exact: undefined,
-        path: `${basePath}/automate`,
+        path: `${basePath}/automate/:shopType?/:shopName?`,
         component: AutomateSettings,
     },
     {
