@@ -7,7 +7,7 @@ import css from './AIBanner.less'
 export type Props = {
     className?: string
     hasError?: boolean
-    fillStyle?: 'fill' | 'ghost'
+    fillStyle?: 'fill' | 'ghost' | 'success'
 }
 
 const AIBanner: FC<Props> = ({
@@ -23,7 +23,11 @@ const AIBanner: FC<Props> = ({
             })}
         >
             <i className={classNames('material-icons', css.icon)}>
-                {hasError ? 'error' : 'auto_awesome'}
+                {hasError
+                    ? 'error'
+                    : fillStyle === 'success'
+                      ? 'check_circle'
+                      : 'auto_awesome'}
             </i>
             <div className={css.content}>{children}</div>
         </div>

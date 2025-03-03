@@ -13,6 +13,7 @@ import { billingState } from 'fixtures/billing'
 import { chatIntegrationFixtures } from 'fixtures/chat'
 import { integrationsState, shopifyIntegration } from 'fixtures/integrations'
 import { StoreIntegration } from 'models/integration/types'
+import { StatusEnum } from 'pages/aiAgent/Onboarding/components/StatusBadge'
 import { EmailIntegrationStep } from 'pages/aiAgent/Onboarding/components/steps/EmailIntegrationStep/EmailIntegrationStep'
 import { useShopifyIntegrations } from 'pages/aiAgent/Onboarding/hooks/useShopifyIntegrations'
 import { WizardStepEnum } from 'pages/aiAgent/Onboarding/types'
@@ -49,6 +50,8 @@ const defaultProps = {
     totalSteps: 6,
     goToStep: mockGoToStep,
 }
+
+const defaultTitle = 'Now, let’s connect'
 
 const renderComponent = (
     props = defaultProps,
@@ -90,7 +93,7 @@ describe('EmailIntegrationStep', () => {
 
         jest.runAllTimers()
 
-        expect(screen.getByText('Email Integration step')).toBeInTheDocument()
+        expect(screen.getByText(defaultTitle)).toBeInTheDocument()
     })
 
     it('navigates to the personality preview step when Next is clicked', () => {
@@ -98,7 +101,7 @@ describe('EmailIntegrationStep', () => {
 
         jest.runAllTimers()
 
-        expect(screen.getByText('Email Integration step')).toBeInTheDocument()
+        expect(screen.getByText(defaultTitle)).toBeInTheDocument()
 
         fireEvent.click(screen.getByText(/Next/i))
 
@@ -115,7 +118,7 @@ describe('EmailIntegrationStep', () => {
 
         jest.runAllTimers()
 
-        expect(screen.getByText('Email Integration step')).toBeInTheDocument()
+        expect(screen.getByText(defaultTitle)).toBeInTheDocument()
 
         fireEvent.click(screen.getByText(/Back/i))
         expect(mockGoToStep).toHaveBeenCalledWith(
@@ -128,9 +131,51 @@ describe('EmailIntegrationStep', () => {
 
         jest.runAllTimers()
 
-        expect(screen.getByText('Email Integration step')).toBeInTheDocument()
+        expect(screen.getByText(defaultTitle)).toBeInTheDocument()
 
         fireEvent.click(screen.getByText(/Back/i))
         expect(mockGoToStep).toHaveBeenCalledWith(WizardStepEnum.SKILLSET)
+    })
+
+    it('should show connected when the integrations are defined', () => {
+        mockUseEmailIntegrations.mockReturnValue({
+            emailIntegrations: true,
+            defaultIntegration: true,
+            gmailIntegration: {},
+            microsoftIntegration: {},
+        })
+
+        renderComponent()
+
+        jest.runAllTimers()
+
+        expect(screen.getAllByText(StatusEnum.Connected).length).toBe(2)
+    })
+
+    it('should show disconnected when the integrations are undefined', () => {
+        renderComponent()
+
+        jest.runAllTimers()
+
+        expect(screen.getAllByText(StatusEnum.Disconnected).length).toBe(2)
+    })
+
+    it('should call redirectToIntegration with the correct URI when clicked', () => {
+        const mockRedirectToIntegration = jest.fn()
+        const mockGmailRedirectUri = 'https://example.com/gmail/auth'
+        const mockEvent = {
+            preventDefault: jest.fn(),
+        } as unknown as React.MouseEvent
+
+        const handleSubmit = (e: React.MouseEvent, redirectUri: string) => {
+            e.preventDefault()
+            mockRedirectToIntegration(redirectUri)
+        }
+        handleSubmit(mockEvent, mockGmailRedirectUri)
+
+        expect(mockEvent.preventDefault).toHaveBeenCalled()
+        expect(mockRedirectToIntegration).toHaveBeenCalledWith(
+            mockGmailRedirectUri,
+        )
     })
 })

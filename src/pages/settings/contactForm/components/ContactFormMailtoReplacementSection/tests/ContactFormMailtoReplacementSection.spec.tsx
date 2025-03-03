@@ -74,6 +74,8 @@ describe('<ContactFormMailtoReplacementSection />', () => {
         mockUseEmailIntegrations.mockReturnValue({
             defaultIntegration: undefined,
             emailIntegrations: [],
+            gmailIntegration: undefined,
+            microsoftIntegration: undefined,
         })
         mockGetMailtoReplacementConfig.mockReturnValue(Promise.resolve(null))
         queryClient.clear()
@@ -118,6 +120,8 @@ describe('<ContactFormMailtoReplacementSection />', () => {
             mockUseEmailIntegrations.mockReturnValue({
                 defaultIntegration: undefined,
                 emailIntegrations: testEmails,
+                gmailIntegration: undefined,
+                microsoftIntegration: undefined,
             })
         })
 
@@ -269,6 +273,8 @@ describe('<ContactFormMailtoReplacementSection />', () => {
             mockUseEmailIntegrations.mockReturnValue({
                 defaultIntegration: undefined,
                 emailIntegrations: [testEmail],
+                gmailIntegration: undefined,
+                microsoftIntegration: undefined,
             })
 
             renderComponent()
@@ -308,6 +314,8 @@ describe('<ContactFormMailtoReplacementSection />', () => {
             mockUseEmailIntegrations.mockReturnValue({
                 defaultIntegration: undefined,
                 emailIntegrations: [testEmail1],
+                gmailIntegration: undefined,
+                microsoftIntegration: undefined,
             })
             mockGetMailtoReplacementConfig.mockReturnValue(
                 Promise.resolve({ emails: [email1, email2] }),

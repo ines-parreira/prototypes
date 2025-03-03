@@ -12,7 +12,7 @@ const storyConfig: Meta = {
         hasError: { control: 'boolean' },
         fillStyle: {
             control: 'radio',
-            options: ['fill', 'ghost'],
+            options: ['fill', 'ghost', 'success'],
         },
     },
 } as Meta

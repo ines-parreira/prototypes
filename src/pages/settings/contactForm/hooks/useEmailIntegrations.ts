@@ -22,9 +22,25 @@ export function useEmailIntegrations() {
         () => emailIntegrations.find(isBaseEmailIntegration),
         [emailIntegrations],
     )
+    const gmailIntegration = useMemo(
+        () =>
+            emailIntegrations.find(
+                (integration) => integration.type === 'gmail',
+            ),
+        [emailIntegrations],
+    )
+    const microsoftIntegration = useMemo(
+        () =>
+            emailIntegrations.find(
+                (integration) => integration.type === 'outlook',
+            ),
+        [emailIntegrations],
+    )
 
     return {
         emailIntegrations,
         defaultIntegration,
+        gmailIntegration,
+        microsoftIntegration,
     }
 }
