@@ -1,10 +1,11 @@
 import React, { useEffect, useMemo, useState } from 'react'
 
-import classnames from 'classnames'
 import Clipboard from 'clipboard'
 import { fromJS, List, Map } from 'immutable'
 import { useFlags } from 'launchdarkly-react-client-sdk'
 import { Link } from 'react-router-dom'
+
+import { Separator } from '@gorgias/merchant-ui-kit'
 
 import { FeatureFlagKey } from 'config/featureFlags'
 import useAppDispatch from 'hooks/useAppDispatch'
@@ -12,12 +13,10 @@ import useAppSelector from 'hooks/useAppSelector'
 import { IntegrationType } from 'models/integration/types'
 import Avatar from 'pages/common/components/Avatar/Avatar'
 import Button from 'pages/common/components/button/Button'
-import css from 'pages/common/components/infobar/Infobar.less'
 import {
     areSourcesReady,
     jsonToWidgets,
 } from 'pages/common/components/infobar/utils'
-import { CustomerTimelineButton } from 'pages/tickets/detail/components/CustomerTimeline/CustomerTimelineButton'
 import { CustomerContext } from 'providers/infobar/CustomerContext'
 import { EditionContext } from 'providers/infobar/EditionContext'
 import { getDisplayName } from 'state/customers/helpers'
@@ -30,7 +29,10 @@ import CustomerChannels from './CustomerChannels'
 import CustomerFields from './CustomerFields'
 import CustomerNote from './CustomerNote'
 import CustomerOptionsDropdownButton from './CustomerOptionsDropdown'
+import { CustomerTimelineButton } from './CustomerTimelineButton'
 import InfobarWidgets from './InfobarWidgets/InfobarWidgets'
+
+import css from './InfobarCustomerInfo.less'
 
 type GenerateButtonProps = {
     widgets?: Maybe<Map<any, any>>
@@ -238,7 +240,7 @@ const InfobarCustomerInfo = ({
 
     return (
         <div
-            className={classnames(css.widgetsList, 'd-flex flex-column')}
+            className={'d-flex flex-column'}
             data-candu-id={`infobar-widgets-list-${
                 isEditing ? 'edition' : 'view'
             }`}
@@ -268,21 +270,21 @@ const InfobarCustomerInfo = ({
                         </div>
                     )}
                 </div>
-                <div className={css.detail}>
-                    <CustomerFields customerId={Number(customer.get('id'))} />
-                    <CustomerChannels
-                        channels={customer.get('channels') || fromJS([])}
-                        customerLocationInfo={customer.getIn([
-                            'meta',
-                            'location_info',
-                        ])}
-                        customerLastSeenOnChat={lastSeenOnChat}
-                        customerId={customer.get('id') || ''}
-                        customerName={customer.get('name') || ''}
-                    >
-                        <CustomerNote customer={customer} />
-                    </CustomerChannels>
-                </div>
+                <CustomerFields customerId={Number(customer.get('id'))} />
+                <Separator className={css.separator} />
+                <CustomerChannels
+                    channels={customer.get('channels') || fromJS([])}
+                    customerLocationInfo={customer.getIn([
+                        'meta',
+                        'location_info',
+                    ])}
+                    customerLastSeenOnChat={lastSeenOnChat}
+                    customerId={customer.get('id', '')}
+                    customerName={customer.get('name', '')}
+                >
+                    <CustomerNote customer={customer} />
+                </CustomerChannels>
+                <Separator className={css.separator} />
                 <CustomerTimelineButton isEditing={isEditing} />
             </div>
             {areSourcesReady(sources, widgets.get('currentContext', ''))

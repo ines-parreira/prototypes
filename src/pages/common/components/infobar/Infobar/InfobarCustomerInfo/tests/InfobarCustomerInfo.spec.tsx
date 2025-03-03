@@ -16,15 +16,13 @@ import {
     SHOPIFY_INTEGRATION_TYPE,
     SMILE_INTEGRATION_TYPE,
 } from 'constants/integration'
-import { CustomerTimelineButton } from 'pages/tickets/detail/components/CustomerTimeline/CustomerTimelineButton'
+import { CustomerTimelineButton } from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/CustomerTimelineButton'
 import { RootState, StoreDispatch } from 'state/types'
 import { assumeMock } from 'utils/testing'
 
 import InfobarCustomerInfo from '../InfobarCustomerInfo'
 
-jest.mock(
-    'pages/tickets/detail/components/CustomerTimeline/CustomerTimelineButton',
-)
+jest.mock('../CustomerTimelineButton')
 jest.mock('../CustomerChannels', () => () => <div>CustomerChannels</div>)
 jest.mock('../AddAppSuggestion', () => () => <div>Add app</div>)
 jest.mock('../CustomerFields', () => () => <div>CustomerFields</div>)

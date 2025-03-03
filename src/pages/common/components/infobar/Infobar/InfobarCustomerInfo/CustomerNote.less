@@ -1,10 +1,14 @@
+@import '~@gorgias/design-tokens/dist/css/layout';
+
 :local {
     .customerNote {
+        margin-top: -2px;
+        margin-bottom: @layout-spacing-xxs;
         display: flex;
         align-items: flex-start;
 
         .noteIcon {
-            margin-top: 9px;
+            margin-top: 5px;
         }
 
         .noteInputContainer {
@@ -13,8 +17,9 @@
             position: relative;
 
             .noteInput {
+                display: block;
                 width: 100%;
-                padding: 5px 5px 5px 0;
+                padding: 2px 5px 2px 0;
                 border: 1px solid transparent;
                 border-radius: 3px;
 
@@ -59,8 +64,7 @@
             .loaderIcon {
                 position: absolute;
                 right: 8px;
-                top: 0;
-                bottom: 5px;
+                top: 5px;
                 margin: auto 0;
             }
         }

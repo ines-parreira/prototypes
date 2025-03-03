@@ -2,7 +2,7 @@
 
 exports[`<InfobarCustomerInfo/> should render basic customer info and empty widgets because customer data are loaded, the user is currently editing widgets and it is dragging a widget -- even though widgets are currently empty 1`] = `
 <div
-  class="widgetsList d-flex flex-column"
+  class="d-flex flex-column"
   data-candu-id="infobar-widgets-list-edition"
 >
   <div
@@ -37,16 +37,24 @@ exports[`<InfobarCustomerInfo/> should render basic customer info and empty widg
         </a>
       </div>
     </div>
-    <div
-      class="detail"
-    >
-      <div>
-        CustomerFields
-      </div>
-      <div>
-        CustomerChannels
-      </div>
+    <div>
+      CustomerFields
     </div>
+    <div
+      class="ui-separator-separator-f4da separator"
+      data-direction="horizontal"
+      data-variant="solid"
+      role="separator"
+    />
+    <div>
+      CustomerChannels
+    </div>
+    <div
+      class="ui-separator-separator-f4da separator"
+      data-direction="horizontal"
+      data-variant="solid"
+      role="separator"
+    />
     <div>
       Customer timeline
     </div>
@@ -59,7 +67,7 @@ exports[`<InfobarCustomerInfo/> should render basic customer info and empty widg
 
 exports[`<InfobarCustomerInfo/> sources render basic customer info and widgets because there is customer data, the user is not editing widgets and current widgets are not empty 1`] = `
 <div
-  class="widgetsList d-flex flex-column"
+  class="d-flex flex-column"
   data-candu-id="infobar-widgets-list-view"
 >
   <div
@@ -94,16 +102,24 @@ exports[`<InfobarCustomerInfo/> sources render basic customer info and widgets b
         </a>
       </div>
     </div>
-    <div
-      class="detail"
-    >
-      <div>
-        CustomerFields
-      </div>
-      <div>
-        CustomerChannels
-      </div>
+    <div>
+      CustomerFields
     </div>
+    <div
+      class="ui-separator-separator-f4da separator"
+      data-direction="horizontal"
+      data-variant="solid"
+      role="separator"
+    />
+    <div>
+      CustomerChannels
+    </div>
+    <div
+      class="ui-separator-separator-f4da separator"
+      data-direction="horizontal"
+      data-variant="solid"
+      role="separator"
+    />
     <div>
       Customer timeline
     </div>

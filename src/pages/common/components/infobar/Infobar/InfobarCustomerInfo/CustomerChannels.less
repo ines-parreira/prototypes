@@ -1,0 +1,28 @@
+@import '~@gorgias/design-tokens/dist/css/layout';
+@import (reference) '~css/typography.less';
+
+:local {
+    .customerChannels {
+        .caption-regular();
+    }
+
+    .customerChannel {
+        margin-bottom: @layout-spacing-xs;
+
+        .copyAddress {
+            cursor: pointer;
+            opacity: 0;
+            transition: all 0.2s linear;
+        }
+
+        &:hover {
+            .copyAddress {
+                opacity: 1;
+            }
+        }
+    }
+
+    .disabledChannel {
+        color: var(--neutral-grey-3);
+    }
+}

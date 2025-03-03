@@ -21,7 +21,7 @@ import { SUBMIT_CUSTOMER_SUCCESS } from 'state/customers/constants'
 import { notify } from 'state/notifications/actions'
 import { NotificationStatus } from 'state/notifications/types'
 
-import css from '../../Infobar.less'
+import css from './CustomerChannels.less'
 
 type Props = {
     customerId: number

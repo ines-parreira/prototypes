@@ -7,8 +7,6 @@ import { useCustomFieldValues } from 'custom-fields/hooks/queries/useCustomField
 import CustomerField from './CustomerField'
 import { Heading } from './Heading'
 
-import css from './CustomerFields.less'
-
 export default function CustomerFields({ customerId }: { customerId: number }) {
     const {
         data: definitionsData,
@@ -39,7 +37,7 @@ export default function CustomerFields({ customerId }: { customerId: number }) {
     const customFieldValues = valuesData?.data || []
 
     return (
-        <div className={css.customerFieldsContainer}>
+        <>
             <Heading />
             {customFieldDefinitions.map((field) => {
                 return (
@@ -56,6 +54,6 @@ export default function CustomerFields({ customerId }: { customerId: number }) {
                     />
                 )
             })}
-        </div>
+        </>
     )
 }

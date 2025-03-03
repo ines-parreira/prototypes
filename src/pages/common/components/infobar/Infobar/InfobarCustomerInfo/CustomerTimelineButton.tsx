@@ -13,8 +13,6 @@ import { getCustomersState, getLoading } from 'state/customers/selectors'
 import { toggleHistory } from 'state/ticket/actions'
 import { getDisplayHistory } from 'state/ticket/selectors'
 
-import css from './CustomerTimelineButton.less'
-
 type Props = {
     isEditing: boolean
 }
@@ -74,7 +72,6 @@ export function CustomerTimelineButton({ isEditing = false }: Props) {
                 <>
                     <Button
                         id={customerTimelineButtonId}
-                        className={css.customerTimelineButtonWrapper}
                         intent={openTicketsCounter ? 'primary' : 'secondary'}
                         onClick={handleCustomerTimelineButtonClick}
                         isDisabled={isHistoryDisabled}

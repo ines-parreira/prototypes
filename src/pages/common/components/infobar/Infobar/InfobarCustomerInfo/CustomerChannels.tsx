@@ -23,7 +23,7 @@ import { getLocalTime } from '../../utils'
 import CustomerInfoWrapper from './CustomerInfoWrapper'
 import NewPhoneNumber from './NewPhoneNumber'
 
-import css from '../../Infobar.less'
+import css from './CustomerChannels.less'
 
 type OwnProps = {
     channels: List<any>
@@ -143,7 +143,7 @@ export const CustomerChannels = ({
     }
 
     return (
-        <>
+        <div className={css.customerChannels}>
             {children}
             <CustomerInfoWrapper>
                 {list}
@@ -226,7 +226,7 @@ export const CustomerChannels = ({
                     </p>
                 )}
             </CustomerInfoWrapper>
-        </>
+        </div>
     )
 }
 
