@@ -5,6 +5,7 @@ import _isEqual from 'lodash/isEqual'
 import { logEvent, SegmentEvent } from 'common/segment'
 import { FeatureFlagKey } from 'config/featureFlags'
 import { useFlag } from 'core/flags'
+import Caption from 'gorgias-design-system/Input/Caption'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useEffectOnce from 'hooks/useEffectOnce'
 import { useAiAgentOnboardingNotification } from 'pages/aiAgent/hooks/useAiAgentOnboardingNotification'
@@ -203,20 +204,24 @@ export const GuidanceForm = ({
                     <InputField
                         label="Guidance name"
                         isRequired
-                        placeholder="e.g. Order questions without data"
-                        caption="AI Agent uses this to help find relevant guidance"
+                        caption="Provide a name for this Guidance. e.g. When a customer asks for a return or exchange"
                         onChange={onNameChange}
                         name="name"
                         value={formState.name}
                         maxLength={135}
                     />
                     {isGuidanceTaggingSystemEnabled ? (
-                        <NewGuidanceEditor
-                            content={formState.content}
-                            handleUpdateContent={onContentChange}
-                            label="Instructions"
-                            placeholder="e.g. If no order data is found for a customer asking a question about their order, you will ask the customer to confirm their order number and the email address."
-                        />
+                        <div className={css.editorContainer}>
+                            <NewGuidanceEditor
+                                content={formState.content}
+                                handleUpdateContent={onContentChange}
+                                label="Instructions"
+                            />
+                            <Caption isValid>
+                                Provide instructions on how AI Agent should
+                                handle this situation.
+                            </Caption>
+                        </div>
                     ) : (
                         <GuidanceEditor
                             onChange={onContentChange}

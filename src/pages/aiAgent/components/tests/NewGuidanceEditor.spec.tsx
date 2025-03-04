@@ -14,7 +14,6 @@ describe('NewGuidanceEditor', () => {
         content: '',
         handleUpdateContent: jest.fn(),
         onBlur: jest.fn(),
-        placeholder: 'Enter text here',
         label: 'Guidance',
     }
 
@@ -23,15 +22,11 @@ describe('NewGuidanceEditor', () => {
     }
 
     it('renders correctly with default props', () => {
-        const { getByText, container } = renderWithProvider(
+        const { getByText } = renderWithProvider(
             <NewGuidanceEditor {...defaultProps} />,
         )
 
         expect(getByText('Guidance')).toBeInTheDocument()
-        expect(
-            container.querySelector('.public-DraftEditorPlaceholder-inner')
-                ?.textContent,
-        ).toBe('Enter text here')
     })
 
     it('renders initial content correctly', () => {
@@ -65,7 +60,7 @@ describe('NewGuidanceEditor', () => {
         expect(toolbar).toBeInTheDocument()
 
         const buttons = toolbar?.querySelectorAll('button')
-        expect(buttons).toHaveLength(6)
+        expect(buttons).toHaveLength(7)
 
         const icons = container.querySelectorAll('i.material-icons')
         expect(icons[0]).toHaveTextContent('format_bold')

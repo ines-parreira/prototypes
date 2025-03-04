@@ -4,6 +4,10 @@ import classnames from 'classnames'
 import { EditorState } from 'draft-js'
 
 import { UploadType } from 'common/types'
+import {
+    GuidanceVariable,
+    GuidanceVariableList,
+} from 'pages/aiAgent/components/GuidanceEditor/variables.types'
 import { toLiquidSyntax } from 'pages/automate/workflows/models/variables.model'
 import {
     WorkflowVariable,
@@ -13,6 +17,7 @@ import Button from 'pages/common/components/button/Button'
 import { ContactFormCaptureFormIconButton } from 'pages/convert/campaigns/components/ContactCaptureForm/ContactCaptureFormIconButton'
 import { insertText } from 'utils'
 
+import GuidanceVariablePicker from './components/GuidanceVariablePicker'
 import {
     AddDiscountCode,
     AddEmoji,
@@ -53,6 +58,7 @@ type Props = {
     onLinkOpen: () => void
     onLinkClose: () => void
     getWorkflowVariables?: () => WorkflowVariableList
+    getGuidanceVariables?: () => GuidanceVariableList
 } & ActionInjectedProps
 
 const renderButton = (button: ReactNode, index: number) => (
@@ -127,6 +133,20 @@ const Toolbar = ({
         )
     }
 
+    const handleGuidanceVariableSelection = (variable: GuidanceVariable) => {
+        const editorState = getEditorState()
+
+        const newEditorState = insertText(editorState, variable.value)
+
+        // restore focus after insertText
+        setEditorState(
+            EditorState.forceSelection(
+                newEditorState,
+                newEditorState.getSelection(),
+            ),
+        )
+    }
+
     const isActionDisplayed = (name: ActionName) =>
         isDisplayedAction(name, displayedActions)
 
@@ -169,6 +189,7 @@ const Toolbar = ({
                             getWorkflowVariables={getWorkflowVariables}
                         />
                     )}
+
                     {isActionDisplayed(ActionName.Image) && (
                         <AddImage
                             {...actionsProps}
@@ -229,6 +250,13 @@ const Toolbar = ({
                             displayedActions && (
                                 <WorkflowVariablePicker
                                     onSelect={handleVariableSelection}
+                                />
+                            )}
+
+                        {isActionDisplayed(ActionName.GuidanceVariable) &&
+                            displayedActions && (
+                                <GuidanceVariablePicker
+                                    onSelect={handleGuidanceVariableSelection}
                                 />
                             )}
                     </div>

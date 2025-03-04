@@ -1,0 +1,64 @@
+@import (reference) '~css/typography.less';
+@import '~@gorgias/design-tokens/dist/css/layout';
+
+:local {
+    .wrapper {
+        display: inline-block;
+        vertical-align: middle;
+    }
+
+    .container {
+        position: relative;
+        display: inline-flex;
+        vertical-align: top;
+        padding: @layout-spacing-xxs @layout-spacing-xs;
+        border-radius: @layout-spacing-xs;
+        background: var(--neutral-grey-3);
+        .caption-semibold();
+        color: var(--neutral-grey-6);
+        margin: 1px;
+    }
+
+    .shopifyLogo {
+        vertical-align: initial;
+        margin-right: @layout-spacing-xs;
+    }
+
+    .content {
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+
+        &.normal {
+            max-width: 50ch;
+        }
+
+        &.small {
+            max-width: 10ch;
+        }
+
+        &::before {
+            content: attr(aria-label);
+        }
+    }
+
+    .copyPlaceholder {
+        position: absolute;
+        top: 0;
+        left: 0;
+        z-index: -1;
+        max-width: 100%;
+        white-space: nowrap;
+        overflow: hidden;
+    }
+
+    .invalid {
+        background: var(--accessory-red-1);
+        .caption-semibold();
+        color: var(--feedback-variations-error-4);
+    }
+
+    .children {
+        display: none;
+    }
+}

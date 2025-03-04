@@ -10,13 +10,14 @@ import { ActionName } from 'pages/common/draftjs/plugins/toolbar/types'
 import RichField from 'pages/common/forms/RichField/RichField'
 import { convertToHTML } from 'utils/editor'
 
+import { guidanceVariables } from './variables'
+
 import css from './GuidanceEditor.less'
 
 type GuidanceEditorProps = {
     content: string
     handleUpdateContent: (content: string) => void
     onBlur?: () => void
-    placeholder?: string
     label?: string
 }
 
@@ -36,7 +37,6 @@ export function NewGuidanceEditor({
     content,
     handleUpdateContent,
     onBlur,
-    placeholder,
     label,
 }: GuidanceEditorProps) {
     const richFieldValue = useMemo(
@@ -74,7 +74,7 @@ export function NewGuidanceEditor({
                 canAddProductCard={true}
                 canAddDiscountCodeLink={false}
                 canAddVideoPlayer={false}
-                workflowVariables={[]}
+                guidanceVariables={guidanceVariables}
             >
                 <RichField
                     minHeight={320}
@@ -86,7 +86,7 @@ export function NewGuidanceEditor({
                     noAutoScroll
                     uploadType={UploadType.PublicAttachment}
                     onBlur={onBlur}
-                    placeholder={placeholder}
+                    getGuidanceVariables={() => guidanceVariables}
                 />
             </ToolbarProvider>
         </div>

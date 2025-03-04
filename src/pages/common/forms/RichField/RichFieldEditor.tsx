@@ -29,8 +29,10 @@ import _uniq from 'lodash/uniq'
 import ReactPlayer from 'react-player'
 
 import { UploadType } from 'common/types'
+import { GuidanceVariableList } from 'pages/aiAgent/components/GuidanceEditor/variables.types'
 import createWorkflowVariablesPlugin from 'pages/automate/workflows/draftjs/plugins/variables'
 import { WorkflowVariableList } from 'pages/automate/workflows/models/variables.types'
+import createGuidanceVariablesPlugin from 'pages/common/draftjs/plugins/guidance-variables'
 import { addVideo } from 'pages/common/draftjs/plugins/utils'
 import shortcutManager from 'services/shortcutManager'
 import { extractUrlsFromString } from 'utils'
@@ -110,6 +112,7 @@ type Props = {
     noAutoScroll?: boolean
     uploadType?: UploadType
     getWorkflowVariables?: () => WorkflowVariableList
+    getGuidanceVariables?: () => GuidanceVariableList
 } & ToolbarPluginProps &
     MentionFilteredSuggestionsProps &
     GrammarlyUsageTrackingProps
@@ -157,6 +160,7 @@ export class RichFieldEditor extends Component<Props, State> {
     quotesPlugin?: ReturnType<typeof createQuotesPlugin>
     predictionPlugin?: ReturnType<typeof createPredictionPlugin>
     workflowVariablesPlugin?: ReturnType<typeof createWorkflowVariablesPlugin>
+    guidanceVariablesPlugin?: ReturnType<typeof createGuidanceVariablesPlugin>
 
     state: State = {
         isDragging: false,
@@ -216,6 +220,14 @@ export class RichFieldEditor extends Component<Props, State> {
                 getVariables: this.props.getWorkflowVariables,
             })
             plugins.push(this.workflowVariablesPlugin)
+        }
+
+        if (props.displayedActions?.includes(ActionName.GuidanceVariable)) {
+            this.guidanceVariablesPlugin = createGuidanceVariablesPlugin({
+                getVariables: this.props.getGuidanceVariables,
+            })
+
+            plugins.push(this.guidanceVariablesPlugin)
         }
 
         if (this.props.predictionContext) {

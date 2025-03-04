@@ -1,0 +1,68 @@
+@import (reference) '~css/typography';
+@import (reference) '~@gorgias/design-tokens/dist/css/layout';
+
+:local {
+    .dropdown {
+        min-width: 384px !important;
+        max-width: 400px;
+    }
+
+    .noVariablesMessage {
+        padding-left: @layout-spacing-xxs;
+        padding-top: @layout-spacing-xs;
+        display: block;
+        color: var(--neutral-grey-4);
+    }
+
+    .backButton {
+        max-width: 100%;
+        height: auto;
+        padding: 0 !important;
+        font-weight: 600;
+        text-transform: none;
+    }
+
+    .backButtonIconLabel {
+        overflow: hidden;
+    }
+
+    .header {
+        .caption-allcaps();
+        padding: @layout-spacing-xxs @layout-spacing-xxs @layout-spacing-xs;
+        color: var(--main-primary);
+    }
+
+    .categoryName {
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        overflow-x: hidden;
+    }
+
+    .search {
+        padding: @layout-spacing-s @layout-spacing-xs;
+        width: 100%;
+        max-width: unset;
+    }
+    .item {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
+
+    .itemContent {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        overflow: hidden;
+    }
+
+    .itemName {
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        overflow: hidden;
+    }
+
+    .itemTrailIcon {
+        color: var(--neutral-grey-4);
+    }
+}

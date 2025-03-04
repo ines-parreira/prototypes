@@ -8,6 +8,7 @@ import {
     ProductCardDetails,
     ShopifyIntegration,
 } from 'models/integration/types'
+import { GuidanceVariableList } from 'pages/aiAgent/components/GuidanceEditor/variables.types'
 import {
     WorkflowVariableList,
     WorkflowVariableType,
@@ -57,6 +58,7 @@ export type ToolbarContextType = {
     // WorkflowVariablePicker
     workflowVariables?: WorkflowVariableList
     workflowVariablesDataTypes?: WorkflowVariableType[]
+    guidanceVariables?: GuidanceVariableList
     onContactFormOpenChange?: (value: boolean) => void
     contactFormButtonEnabled?: boolean
 }
