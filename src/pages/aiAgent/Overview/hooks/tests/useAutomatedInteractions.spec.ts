@@ -32,7 +32,7 @@ describe('useAutomatedInteractions', () => {
     it('should return correct metric data when the query resolves', () => {
         useMultipleMetricsTrendsMock.mockReturnValueOnce({
             data: {
-                'TicketCustomFieldsEnriched.ticketCount': {
+                'AutomationDataset.automatedInteractions': {
                     value: 450,
                     prevValue: 300,
                 },

@@ -1,4 +1,3 @@
-import { TicketCustomFieldsMeasure } from 'models/reporting/cubes/TicketCustomFieldsCube'
 import { StatsFilters, StatType } from 'models/stat/types'
 import { useAiAgentTicketNoHandover } from 'pages/aiAgent/Overview/hooks/kpis/useAiAgentTicketNoHandover'
 import { KpiMetric } from 'pages/aiAgent/Overview/types'
@@ -18,8 +17,7 @@ export const useAutomatedInteractions = (
         metricType: StatType.Number,
         metricFormat: 'decimal',
         isLoading: aiAgentTicketNoHandover.isFetching,
-        ...aiAgentTicketNoHandover.data?.[
-            TicketCustomFieldsMeasure.TicketCustomFieldsTicketCount
-        ],
+        prevValue: aiAgentTicketNoHandover.data?.prevValue,
+        value: aiAgentTicketNoHandover.data?.value,
     }
 }
