@@ -8,20 +8,43 @@ import css from '../GlobalNavigationItem.less'
 
 describe('GlobalNavigationItem', () => {
     it('should render an inactive item', () => {
-        render(<GlobalNavigationItem icon="home" url="/app/home" />)
+        render(
+            <GlobalNavigationItem icon="home" url="/app/home" label="Home" />,
+        )
         expect(screen.getByText('home').parentNode).not.toHaveClass(css.active)
     })
 
     it('should render an active item', () => {
-        render(<GlobalNavigationItem icon="home" isActive url="/app/home" />)
+        render(
+            <GlobalNavigationItem
+                icon="home"
+                isActive
+                url="/app/home"
+                label="Home"
+            />,
+        )
         expect(screen.getByText('home').parentNode).toHaveClass(css.active)
     })
     it('should render an link item', () => {
-        render(<GlobalNavigationItem icon="home" isActive url="/app/home" />)
+        render(
+            <GlobalNavigationItem
+                icon="home"
+                isActive
+                url="/app/home"
+                label="Home"
+            />,
+        )
         expect(screen.getByText('home').closest('a')).toBeInTheDocument()
     })
     it('should render an button item', () => {
-        render(<GlobalNavigationItem icon="home" isActive onClick={() => {}} />)
+        render(
+            <GlobalNavigationItem
+                icon="home"
+                isActive
+                onClick={() => {}}
+                label="Home"
+            />,
+        )
         expect(screen.getByRole('button')).toBeInTheDocument()
     })
 })

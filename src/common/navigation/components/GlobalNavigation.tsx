@@ -44,11 +44,13 @@ export default function GlobalNavigation() {
                     <Item
                         icon={navBarMenuIcon}
                         onClick={onMenuToggle}
+                        label="Menu"
                         tooltip={<NavBarButtonTooltip />}
                         data-candu-id="global-navigation-menu-toggle"
                     />
                     <Item
                         icon="home"
+                        label="Home"
                         isActive={activeItem === 'home'}
                         tooltip={<span>Home</span>}
                         url="/app/home"
@@ -61,6 +63,7 @@ export default function GlobalNavigation() {
                 <div className={css.items}>
                     <Item
                         icon="question_answer"
+                        label="Tickets"
                         isActive={activeItem === 'tickets'}
                         tooltip={<span>Tickets</span>}
                         url="/app/tickets"
@@ -70,6 +73,7 @@ export default function GlobalNavigation() {
                         hasRole(currentUser, UserRole.Agent) && (
                             <Item
                                 icon="bolt"
+                                label="Automate"
                                 isActive={activeItem === 'automate'}
                                 tooltip={<span>Automate</span>}
                                 url="/app/automation"
@@ -80,6 +84,7 @@ export default function GlobalNavigation() {
                         hasRole(currentUser, UserRole.Agent) && (
                             <Item
                                 icon="auto_awesome"
+                                label="AI Agent"
                                 isActive={activeItem === 'ai-agent'}
                                 tooltip={<span>AI Agent</span>}
                                 url="/app/ai-agent"
@@ -89,6 +94,7 @@ export default function GlobalNavigation() {
                     {hasRole(currentUser, UserRole.Admin) && (
                         <Item
                             icon="monetization_on"
+                            label="Convert"
                             isActive={activeItem === 'convert'}
                             tooltip={<span>Convert</span>}
                             url="/app/convert"
@@ -97,6 +103,7 @@ export default function GlobalNavigation() {
                     )}
                     <Item
                         icon="people"
+                        label="Customers"
                         isActive={activeItem === 'customers'}
                         tooltip={<span>Customers</span>}
                         url="/app/customers"
@@ -104,6 +111,7 @@ export default function GlobalNavigation() {
                     />
                     <Item
                         icon="bar_chart"
+                        label="Statistics"
                         isActive={activeItem === 'statistics'}
                         tooltip={<span>Statistics</span>}
                         url="/app/stats"
@@ -115,6 +123,7 @@ export default function GlobalNavigation() {
                 <div className={css.items}>
                     <Item
                         icon="settings"
+                        label="Settings"
                         isActive={activeItem === 'settings'}
                         tooltip={<span>Settings</span>}
                         url="/app/settings"

@@ -11,6 +11,7 @@ export default function NotificationsItem() {
     return (
         <Item
             icon="notifications"
+            label="Notifications"
             onClick={onToggle}
             tooltip={<span>Notifications</span>}
             data-candu-id="global-navigation-menu-notifications"

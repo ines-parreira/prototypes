@@ -1,36 +1,14 @@
-import React, { useContext, useEffect, useState } from 'react'
+import React, { useContext } from 'react'
 
 import { logEvent, SegmentEvent } from 'common/segment'
 import ShortcutIcon from 'pages/common/components/ShortcutIcon/ShortcutIcon'
 import { SpotlightContext } from 'providers/ui/SpotlightContext'
 import { isMacOs } from 'utils/platform'
 
-import GlobalNavigationItem, {
-    type GlobalNavigationItemTooltipTrigger,
-} from './GlobalNavigationItem'
-
-const defaultTooltipTriggers: GlobalNavigationItemTooltipTrigger = [
-    'focus',
-    'hover',
-]
+import GlobalNavigationItem from './GlobalNavigationItem'
 
 export function GlobalNavigationSpotlight() {
     const { isOpen, setIsOpen } = useContext(SpotlightContext)
-    const [tooltipTriggers, setTooltipTriggers] = useState(
-        defaultTooltipTriggers,
-    )
-
-    useEffect(() => {
-        let timeout: NodeJS.Timeout
-        if (isOpen) {
-            setTooltipTriggers(['hover'])
-        } else {
-            timeout = setTimeout(() => {
-                setTooltipTriggers(defaultTooltipTriggers)
-            }, 500)
-        }
-        return () => clearTimeout(timeout)
-    }, [isOpen])
 
     const handleClick = () => {
         logEvent(SegmentEvent.GlobalSearchOpenButtonClick)
@@ -42,7 +20,7 @@ export function GlobalNavigationSpotlight() {
             icon="search"
             isActive={false}
             onClick={handleClick}
-            tooltipTrigger={tooltipTriggers}
+            label="Global search"
             data-candu-id="global-navigation-menu-spotlight"
             tooltip={
                 <>

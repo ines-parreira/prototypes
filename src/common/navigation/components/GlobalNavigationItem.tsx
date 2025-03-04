@@ -12,7 +12,7 @@ import useId from 'hooks/useId'
 
 import css from './GlobalNavigationItem.less'
 
-export type GlobalNavigationItemTooltipTrigger = ('hover' | 'focus')[]
+export type GlobalNavigationItemTooltipTrigger = 'hover'[]
 
 type GlobalNavigationItemProps = {
     'data-candu-id'?: string
@@ -20,21 +20,21 @@ type GlobalNavigationItemProps = {
     url?: string
     children?: ReactNode
     icon: string
+    label: string
     isActive?: boolean
     tooltip?: ReactNode
     tooltipDelay?: TooltipDelayValue
-    tooltipTrigger?: GlobalNavigationItemTooltipTrigger
 }
 
 export default function GlobalNavigationItem({
     onClick,
     url,
+    label,
     children,
     icon,
     isActive,
     tooltip,
     tooltipDelay = TooltipDelay.Short,
-    tooltipTrigger = ['hover', 'focus'],
     ...props
 }: GlobalNavigationItemProps) {
     const id = useId()
@@ -51,6 +51,7 @@ export default function GlobalNavigationItem({
                     data-candu-id={props['data-candu-id']}
                     to={url}
                     onClick={onClick}
+                    aria-label={label}
                 >
                     <i className="material-icons-round">{icon}</i>
                     {children}
@@ -59,7 +60,6 @@ export default function GlobalNavigationItem({
                     <GlobalNavigationItemTooltip
                         targetId={scopedId}
                         delay={tooltipDelay}
-                        trigger={tooltipTrigger}
                     >
                         {tooltip}
                     </GlobalNavigationItemTooltip>
@@ -77,6 +77,7 @@ export default function GlobalNavigationItem({
                 className={cn(css.icon, { [css.active]: !!isActive })}
                 data-candu-id={props['data-candu-id']}
                 onClick={onClick}
+                aria-label={label}
             >
                 <i className="material-icons-round">{icon}</i>
                 {children}
@@ -85,7 +86,6 @@ export default function GlobalNavigationItem({
                 <GlobalNavigationItemTooltip
                     targetId={scopedId}
                     delay={tooltipDelay}
-                    trigger={tooltipTrigger}
                 >
                     {tooltip}
                 </GlobalNavigationItemTooltip>
@@ -101,7 +101,6 @@ type GlobalNavigationItemTooltipProps = {
         show: number
         hide: number
     }
-    trigger?: GlobalNavigationItemTooltipTrigger
 }
 
 const tooltipDelay = {
@@ -113,19 +112,15 @@ function GlobalNavigationItemTooltip({
     children,
     targetId,
     delay,
-    trigger,
 }: GlobalNavigationItemTooltipProps) {
     return (
         <Tooltip
-            // Required to force the tooltip to correctly account for changes in
-            // its trigger props array. This is a reactstrap issue.
-            key={`${targetId}-${trigger?.join(',')}`}
             target={targetId}
             boundariesElement="viewport"
             delay={delay ?? tooltipDelay}
             offset="0, 8"
             placement="right"
-            trigger={trigger}
+            trigger={['hover']}
         >
             <div className={navbarCss.tooltipContent}>{children}</div>
         </Tooltip>
