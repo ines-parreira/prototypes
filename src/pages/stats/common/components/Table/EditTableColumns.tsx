@@ -78,20 +78,87 @@ export const EditTableColumns = <
         ) => Promise<ReturnType<StoreDispatch>> | Promise<boolean>
     }
 }) => {
-    const isReportingAgentsTableAverageAndTotalEnabled = useFlag(
-        FeatureFlagKey.ReportingAgentsTableAverageAndTotal,
-    )
     const [dropdownOpen, setDropdownOpen] = useState(false)
-    const [hasChanges, setHasChanges] = useState(false)
-    const [isLoading, setIsLoading] = useState(false)
+    const toggle = () => setDropdownOpen((prevState) => !prevState)
+    const closeDropdown = () => setDropdownOpen(false)
+
     const settings = useAppSelector(settingsSelector)
     const currentSettings = settings ? settings.data : fallbackViews
 
     const { currentView, submitActiveView } = useTableSetting()
 
+    const handleSave = async (activeView: TableView<T, R>) => {
+        await submitActiveView(activeView)
+        closeDropdown()
+    }
+
+    return (
+        <Dropdown isOpen={dropdownOpen} toggle={toggle}>
+            <DropdownToggle
+                tag="span"
+                className={classNames(css.dropdownToggle, {
+                    [css.active]: dropdownOpen,
+                })}
+            >
+                <i className="icon material-icons md-2">table_chart</i>
+                {TOGGLE_LABEL}
+            </DropdownToggle>
+
+            <DropdownMenu className={css.dropdownMenu}>
+                <EditTableDropdownContents
+                    onSave={handleSave}
+                    onCancel={closeDropdown}
+                    settings={currentSettings}
+                    currentView={currentView}
+                    columnLabels={tableLabels}
+                    rowLabels={rowLabels}
+                    columnTooltips={tooltips}
+                    rowTooltips={rowTooltips}
+                    leadColumn={leadColumn}
+                />
+            </DropdownMenu>
+        </Dropdown>
+    )
+}
+
+const EditTableDropdownContents = <
+    T extends TableColumnSet,
+    R extends TableRowSet,
+>({
+    onSave,
+    onCancel,
+
+    settings,
+    currentView,
+    columnLabels,
+    rowLabels,
+    columnTooltips,
+    rowTooltips,
+    leadColumn,
+}: {
+    onSave: (
+        activeView: TableView<T, R>,
+    ) => Promise<ReturnType<StoreDispatch>> | Promise<boolean>
+    onCancel: () => void
+    settings: TableSetting<T, R>
+    currentView: TableView<T, R>
+    columnLabels: Record<T, string>
+    rowLabels?: Record<R, string>
+    columnTooltips: Record<T, { hint: TooltipData | null }>
+    rowTooltips?: Record<R, { hint: TooltipData | null }>
+    leadColumn: T
+}) => {
+    const isReportingAgentsTableAverageAndTotalEnabled = useFlag(
+        FeatureFlagKey.ReportingAgentsTableAverageAndTotal,
+    )
+
+    const [hasChanges, setHasChanges] = useState(false)
+    const [isLoading, setIsLoading] = useState(false)
+
     const [columnsVisibility, setColumnsVisibility] = useState<
         TableViewItem<T>[]
     >(currentView.metrics)
+
     const [rowsVisibility, setRowsVisibility] = useState<TableViewItem<R>[]>(
         currentView.rows ?? [],
     )
@@ -103,15 +170,6 @@ export const EditTableColumns = <
     useDeepEffect(() => {
         setRowsVisibility(currentView.rows ?? [])
     }, [currentView.rows])
-
-    const toggle = () => setDropdownOpen((prevState) => !prevState)
-
-    const closeDropdown = () => {
-        setColumnsVisibility(currentView.metrics)
-        setRowsVisibility(currentView.rows ?? [])
-        setHasChanges(false)
-        setDropdownOpen(false)
-    }
 
     const handleChangeColumnVisibility =
         (columnId: T) => (visibility: boolean) => {
@@ -159,13 +217,13 @@ export const EditTableColumns = <
     }
 
     const handleSave = async () => {
-        const isNewView = !currentSettings.views.find(
+        const isNewView = !settings.views.find(
             (view) => view.id === currentView.id,
         )
 
         setIsLoading(true)
 
-        await submitActiveView({
+        await onSave({
             ...(hasChanges && isNewView
                 ? {
                       id: uuidv4(),
@@ -177,77 +235,63 @@ export const EditTableColumns = <
         })
 
         setIsLoading(false)
-
-        setHasChanges(false)
-        closeDropdown()
     }
 
     const hasRows =
         isReportingAgentsTableAverageAndTotalEnabled &&
         rowsVisibility.length > 0
-    return (
-        <Dropdown isOpen={dropdownOpen} toggle={toggle}>
-            <DropdownToggle
-                tag="span"
-                className={classNames(css.dropdownToggle, {
-                    [css.active]: dropdownOpen,
-                })}
-            >
-                <i className="icon material-icons md-2">table_chart</i>
-                {TOGGLE_LABEL}
-            </DropdownToggle>
 
-            <DropdownMenu className={css.dropdownMenu}>
-                {hasRows && (
-                    <div className={css.dropdownMenuContainer}>
-                        <div>Edit rows</div>
-                        {rowsVisibility.map(({ id, visibility }) => (
-                            <EditColumnsItem
-                                key={id}
-                                title={rowLabels?.[id] ?? ''}
-                                isIndeterminate={visibility === null}
-                                isChecked={!!visibility}
-                                onChange={handleChangeRowVisibility(id)}
-                                tooltip={rowTooltips?.[id]?.hint?.title ?? ''}
-                                onDrop={dropBeforeRow}
-                                option={{ id }}
-                            />
-                        ))}
-                    </div>
-                )}
+    return (
+        <>
+            {hasRows && (
                 <div className={css.dropdownMenuContainer}>
-                    {hasRows && <div>Edit columns</div>}
-                    {columnsVisibility.map(({ id, visibility }) => (
+                    <div>Edit rows</div>
+                    {rowsVisibility.map(({ id, visibility }) => (
                         <EditColumnsItem
                             key={id}
-                            title={tableLabels[id]}
+                            title={rowLabels?.[id] ?? ''}
                             isIndeterminate={visibility === null}
                             isChecked={!!visibility}
-                            disabled={id === leadColumn}
-                            onChange={handleChangeColumnVisibility(id)}
-                            tooltip={tooltips[id]?.hint?.title}
-                            onDrop={dropBeforeColumn}
+                            onChange={handleChangeRowVisibility(id)}
+                            tooltip={rowTooltips?.[id]?.hint?.title ?? ''}
+                            onDrop={dropBeforeRow}
                             option={{ id }}
                         />
                     ))}
                 </div>
-                <div className={css.dropdownFooter}>
-                    <Button intent="secondary" onClick={closeDropdown}>
-                        Cancel
+            )}
+            <div className={css.dropdownMenuContainer}>
+                {hasRows && <div>Edit columns</div>}
+                {columnsVisibility.map(({ id, visibility }) => (
+                    <EditColumnsItem
+                        key={id}
+                        title={columnLabels[id]}
+                        isIndeterminate={visibility === null}
+                        isChecked={!!visibility}
+                        disabled={id === leadColumn}
+                        onChange={handleChangeColumnVisibility(id)}
+                        tooltip={columnTooltips[id]?.hint?.title}
+                        onDrop={dropBeforeColumn}
+                        option={{ id }}
+                    />
+                ))}
+            </div>
+            <div className={css.dropdownFooter}>
+                <Button intent="secondary" onClick={onCancel}>
+                    Cancel
+                </Button>
+                <div className={css.dropdownFooterSave}>
+                    <IconTooltip>{SAVE_TOOLTIP}</IconTooltip>
+                    <Button
+                        intent="primary"
+                        isDisabled={!hasChanges}
+                        isLoading={isLoading}
+                        onClick={handleSave}
+                    >
+                        {SAVE_BUTTON_TEXT}
                     </Button>
-                    <div className={css.dropdownFooterSave}>
-                        <IconTooltip>{SAVE_TOOLTIP}</IconTooltip>
-                        <Button
-                            intent="primary"
-                            isDisabled={!hasChanges}
-                            isLoading={isLoading}
-                            onClick={handleSave}
-                        >
-                            {SAVE_BUTTON_TEXT}
-                        </Button>
-                    </div>
                 </div>
-            </DropdownMenu>
-        </Dropdown>
+            </div>
+        </>
     )
 }

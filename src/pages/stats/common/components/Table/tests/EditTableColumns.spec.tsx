@@ -1,6 +1,6 @@
 import React from 'react'
 
-import { act, fireEvent, render, screen } from '@testing-library/react'
+import { act, fireEvent, render, screen, waitFor } from '@testing-library/react'
 import { createDragDropManager } from 'dnd-core'
 import { fromJS } from 'immutable'
 import { DndProvider } from 'react-dnd'
@@ -164,7 +164,7 @@ describe('<AgentsEditColumns>', () => {
         expect(input).toBeChecked()
     })
 
-    it('should dispatch submit new setting on save', () => {
+    it('should dispatch submit new setting on save', async () => {
         useFlagMock.mockReturnValue(false)
         render(
             <Provider store={mockStore({})}>
@@ -178,22 +178,26 @@ describe('<AgentsEditColumns>', () => {
         const save = screen.getByText(SAVE_BUTTON_TEXT)
 
         fireEvent.click(element)
-        fireEvent.click(save)
+        act(() => {
+            fireEvent.click(save)
+        })
 
-        expect(submitAgentSettingSpy).toBeCalledWith({
-            id: expect.any(String),
-            name: expect.any(String),
-            metrics: agentPerformanceTableActiveViewWithTotal.metrics.map(
-                (metric) => {
-                    if (metric.id === AgentsTableColumn.ClosedTickets) {
-                        return {
-                            ...metric,
-                            visibility: false,
+        await waitFor(() => {
+            expect(submitAgentSettingSpy).toHaveBeenCalledWith({
+                id: expect.any(String),
+                name: expect.any(String),
+                metrics: agentPerformanceTableActiveViewWithTotal.metrics.map(
+                    (metric) => {
+                        if (metric.id === AgentsTableColumn.ClosedTickets) {
+                            return {
+                                ...metric,
+                                visibility: false,
+                            }
                         }
-                    }
-                    return metric
-                },
-            ),
+                        return metric
+                    },
+                ),
+            })
         })
     })
 
@@ -245,7 +249,7 @@ describe('<AgentsEditColumns>', () => {
         fireEvent.click(element)
         fireEvent.click(save)
 
-        expect(submitChannelsSettingSpy).toBeCalledWith({
+        expect(submitChannelsSettingSpy).toHaveBeenCalledWith({
             id: expect.any(String),
             name: expect.any(String),
             metrics: channelsReportTableActiveView?.metrics.map((metric) => {
@@ -260,7 +264,7 @@ describe('<AgentsEditColumns>', () => {
         })
     })
 
-    it('should dispatch submit update setting on save with rows', () => {
+    it('should dispatch submit update setting on save with rows', async () => {
         useFlagMock.mockImplementation(
             (flag) =>
                 flag === FeatureFlagKey.ReportingAgentsTableAverageAndTotal,
@@ -302,23 +306,27 @@ describe('<AgentsEditColumns>', () => {
         const save = screen.getByText(SAVE_BUTTON_TEXT)
 
         fireEvent.click(element)
-        fireEvent.click(save)
+        act(() => {
+            fireEvent.click(save)
+        })
 
-        expect(submitAgentSettingSpy).toBeCalledWith({
-            id: expect.any(String),
-            name: expect.any(String),
-            metrics: agentPerformanceTableActiveViewWithTotal?.metrics.map(
-                (metric) => {
-                    if (metric.id === AgentsTableColumn.ClosedTickets) {
-                        return {
-                            ...metric,
-                            visibility: false,
+        await waitFor(() => {
+            expect(submitAgentSettingSpy).toHaveBeenCalledWith({
+                id: expect.any(String),
+                name: expect.any(String),
+                metrics: agentPerformanceTableActiveViewWithTotal?.metrics.map(
+                    (metric) => {
+                        if (metric.id === AgentsTableColumn.ClosedTickets) {
+                            return {
+                                ...metric,
+                                visibility: false,
+                            }
                         }
-                    }
-                    return metric
-                },
-            ),
-            rows: agentPerformanceRowsWithTotal,
+                        return metric
+                    },
+                ),
+                rows: agentPerformanceRowsWithTotal,
+            })
         })
     })
 
@@ -372,6 +380,7 @@ describe('<AgentsEditColumns>', () => {
         }
 
         const options = screen.getAllByRole('checkbox', { hidden: true })
+
         expect(options.length).toBe(activeView.metrics.length)
 
         rerender(
@@ -391,6 +400,7 @@ describe('<AgentsEditColumns>', () => {
         const optionsAfterUpdate = screen.getAllByRole('checkbox', {
             hidden: true,
         })
+
         expect(optionsAfterUpdate.length).toBe(updatedActiveView.metrics.length)
     })
 
@@ -479,5 +489,42 @@ describe('<AgentsEditColumns>', () => {
             new RegExp(firstOrderableItemLabel),
         )
         expect(screen.getByText(SAVE_BUTTON_TEXT)).toBeEnabled()
+    })
+
+    it('should render row labels with fallback to empty string when rowLabels is undefined', () => {
+        useFlagMock.mockReturnValue(true)
+        const propsWithoutRowLabels = {
+            ...defaultProps,
+            rowTooltips,
+            leadRow,
+            rowLabels: undefined,
+        }
+
+        render(
+            <Provider store={mockStore({})}>
+                <DndProvider manager={manager}>
+                    <EditTableColumns {...propsWithoutRowLabels} />
+                </DndProvider>
+            </Provider>,
+        )
+
+        const items = document.getElementsByClassName('label')
+        expect(items[0]).toHaveTextContent('')
+    })
+
+    it('should render correct row label when rowLabels is provided', () => {
+        useFlagMock.mockReturnValue(true)
+        const expectedLabel = TableRowLabels[AgentsTableRow.Total]
+
+        render(
+            <Provider store={mockStore({})}>
+                <DndProvider manager={manager}>
+                    <EditTableColumns {...propsWithRows} />
+                </DndProvider>
+            </Provider>,
+        )
+
+        const items = document.getElementsByClassName('label')
+        expect(items[0]).toHaveTextContent(expectedLabel)
     })
 })
