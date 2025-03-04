@@ -1,2 +1,4 @@
 .github
 scripts/**/*.json
+src/assets/js/**
+scripts/copy-pubnub-worker.js

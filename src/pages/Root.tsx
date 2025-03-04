@@ -36,6 +36,8 @@ if (envVars.NODE_ENV !== NodeEnv.Production) {
 
 const manager = createDragDropManager(HTML5Backend, undefined, undefined)
 
+const pubNubWorkerUrl = window.PUBNUB_WORKER_URL
+
 const Root = ({ store }: Props) => {
     const [LDClient, setLDClient] = useState<LDClient>()
 
@@ -76,6 +78,7 @@ const Root = ({ store }: Props) => {
                         <RealtimeProvider
                             publishKey={window.PUBNUB_PUBLISH_KEY}
                             subscribeKey={window.PUBNUB_SUBSCRIBE_KEY}
+                            subscriptionWorkerUrl={pubNubWorkerUrl}
                         >
                             <Router history={history}>
                                 <CompatRouter>

@@ -8,6 +8,7 @@ declare global {
     interface Window {
         GORGIAS_CONSTANTS: { [key: string]: any }
         GORGIAS_STATE: GorgiasInitialState & InitialReactQueryState
+        PUBNUB_WORKER_URL: string
         SEGMENT_EVENTS_TO_TRACK?: { data: any; type: string }[]
         SYSTEM_MESSAGES: SystemMessage[]
         GORGIAS_RELEASE: string

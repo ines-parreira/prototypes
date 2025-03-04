@@ -3318,14 +3318,6 @@
   resolved "https://npm.pkg.github.com/download/@gorgias/analytics-ui-kit/0.1.0/9a906d573ac77701f1dced97a32f6e43aaf70c8a#9a906d573ac77701f1dced97a32f6e43aaf70c8a"
   integrity sha512-KuYrCkyo/3dZVM4GGopjGs6fQkU8WgFtb70+OgUZmadIVlszl2BQxSaGBweuTQ+nTXaKulP3cPYmhiP9gGFj/A==
 
-"@gorgias/api-client@^0.5.2":
-  version "0.5.2"
-  resolved "https://npm.pkg.github.com/download/@gorgias/api-client/0.5.2/5da78b4ef601f3f6c1f207345a7d97e9c0713e0a#5da78b4ef601f3f6c1f207345a7d97e9c0713e0a"
-  integrity sha512-hUdxDwRoLDThNwXA5H35bGHYcUS4M3skFB91mstFI2ocxboIrz3vUxqRFTyZjGt/NK3YumvA5eb6jZFPsTDxzQ==
-  dependencies:
-    "@gorgias/api-types" "^0.5.2"
-    axios "^1.7.7"
-
 "@gorgias/api-client@^0.6.1":
   version "0.6.1"
   resolved "https://npm.pkg.github.com/download/@gorgias/api-client/0.6.1/bf4ef4176c2794837b76d374873cde5b5e9acc34#bf4ef4176c2794837b76d374873cde5b5e9acc34"
@@ -3334,7 +3326,7 @@
     "@gorgias/api-types" "^0.6.1"
     axios "^1.7.7"
 
-"@gorgias/api-queries@0.6.1":
+"@gorgias/api-queries@0.6.1", "@gorgias/api-queries@^0.6.1":
   version "0.6.1"
   resolved "https://npm.pkg.github.com/download/@gorgias/api-queries/0.6.1/0f57f6f89d3a5951f917cdcdd0beba10b2697936#0f57f6f89d3a5951f917cdcdd0beba10b2697936"
   integrity sha512-ifAyLjEJCKyljIzd++RHyrHCVV6gTnlIVAQeDJK0YSphgVQb6ZQh43o7rWy0ua5pyuhOJrGPWPOMGLCLlHcaww==
@@ -3342,23 +3334,10 @@
     "@gorgias/api-client" "^0.6.1"
     "@gorgias/api-types" "^0.6.1"
 
-"@gorgias/api-queries@^0.5.2":
-  version "0.5.2"
-  resolved "https://npm.pkg.github.com/download/@gorgias/api-queries/0.5.2/b95d1d7086a287d68997f9f8ca481859fb991fb6#b95d1d7086a287d68997f9f8ca481859fb991fb6"
-  integrity sha512-pSY88MElGvd84o/IBu3BDuXGrXb5ps8oCMThkCwFg65D3QdjmuQuYdxdznrIKyKnJCO4hqnrvii3qk3YyAWlwA==
-  dependencies:
-    "@gorgias/api-client" "^0.5.2"
-    "@gorgias/api-types" "^0.5.2"
-
 "@gorgias/api-spec@^0.6.1":
   version "0.6.1"
   resolved "https://npm.pkg.github.com/download/@gorgias/api-spec/0.6.1/6fad5dfc757ff177054c82f2e35bf2a4c896f44d#6fad5dfc757ff177054c82f2e35bf2a4c896f44d"
   integrity sha512-aQW9E1z5dkj5YYDrsbn0eI4xI2QQA4zthMNJpLQ7DEga1hjEhrhbAq/oJG0eFi+Nt/rB6tEkWhyQwvUIo93n7g==
-
-"@gorgias/api-types@^0.5.2":
-  version "0.5.2"
-  resolved "https://npm.pkg.github.com/download/@gorgias/api-types/0.5.2/4fa79c58fe4ac43ebbd4e4f46692a1c61e124b84#4fa79c58fe4ac43ebbd4e4f46692a1c61e124b84"
-  integrity sha512-G+WQ/mfD18/xb7t1whi0bXfdg7RDvsGSiR7110Rte3NMuyaO6Stc42qjysTQkZsmZreUt1yN3Xr1FlPw6g7twg==
 
 "@gorgias/api-types@^0.6.1":
   version "0.6.1"
@@ -3422,17 +3401,17 @@
     downshift "^9.0.6"
     react-loading-skeleton "^3.5.0"
 
-"@gorgias/realtime@^0.4.14":
-  version "0.4.14"
-  resolved "https://npm.pkg.github.com/download/@gorgias/realtime/0.4.14/23d236884d7634518a8a294b27ab9982c285dc85#23d236884d7634518a8a294b27ab9982c285dc85"
-  integrity sha512-1gXTO1QZewNZa4htCAydrz2ubDQCaoU11OdZr0bBCdkoTf+eCGCGjApId0nI73BMgz2jIEtLD1+OheNIMuxN+Q==
+"@gorgias/realtime@^0.5.6":
+  version "0.5.6"
+  resolved "https://npm.pkg.github.com/download/@gorgias/realtime/0.5.6/a4cff85512b7d28ee38598affcc62f815ed00fb7#a4cff85512b7d28ee38598affcc62f815ed00fb7"
+  integrity sha512-qXAckKNLT8+b7Y8I9Q+E/i/K4kpQGbo/s59xMrABrUmuIL28SrlCdtF/ct6Qk1mg3Hc4Pft4NelN3zM13y08Vw==
   dependencies:
-    "@gorgias/api-queries" "^0.5.2"
+    "@gorgias/api-queries" "^0.6.1"
     "@tanstack/react-query" "4.36.1"
     immer "^10.1.1"
     lodash-es "^4.17.21"
     path-to-regexp "^8.2.0"
-    pubnub "^8.9.0"
+    pubnub "^8.9.1"
     pubnub-react "^3.0.2"
 
 "@gorgias/static-analysis@0.3.0":
@@ -15002,10 +14981,10 @@ pubnub-react@^3.0.2:
   dependencies:
     ts-invariant "^0.10.3"
 
-pubnub@^8.9.0:
-  version "8.9.0"
-  resolved "https://registry.yarnpkg.com/pubnub/-/pubnub-8.9.0.tgz#26d9f606ff7a7997c6e1cb1311a02aab992e2278"
-  integrity sha512-jG6atuwJkKV4UqfM/x0o2wlqfUqFt7+DE5UQa7DTZUp6giSJiLvtMYnku49N1hq2G5FrFZWOozW92IeoCPcUhw==
+pubnub@^8.9.1:
+  version "8.9.1"
+  resolved "https://registry.yarnpkg.com/pubnub/-/pubnub-8.9.1.tgz#7b8a1abd708e9fc53cb2eb622f116bb7626204bd"
+  integrity sha512-N2mzroRpyqBnlT8HM42V4xa0lmOPF49VXGwi7bRqqGGnlNfYaG68CBmqT5/fYxI249bsZLEmY1GKxDWGFJ2qmQ==
   dependencies:
     agentkeepalive "^3.5.2"
     buffer "^6.0.3"
