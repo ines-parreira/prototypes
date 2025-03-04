@@ -11,6 +11,7 @@ import { WorkflowDatasetCube } from 'models/reporting/cubes/automate_v2/Workflow
 import { ConvertOrderConversionCube } from 'models/reporting/cubes/ConvertOrderConversionCube'
 import { ConvertOrderEventsCube } from 'models/reporting/cubes/ConvertOrderEventsCube'
 import { HelpCenterTrackingEventCube } from 'models/reporting/cubes/HelpCenterTrackingEventCube'
+import { HelpdeskCustomerMessagesReceivedEnrichedCubeWithJoins } from 'models/reporting/cubes/HelpdeskCustomerMessagesReceivedEnrichedCube'
 import { HelpdeskMessageCubeWithJoins } from 'models/reporting/cubes/HelpdeskMessageCube'
 import { TicketSLACubeWithJoins } from 'models/reporting/cubes/sla/TicketSLACube'
 import { TicketTagsEnrichedCube } from 'models/reporting/cubes/TicketTagsEnrichedCube'
@@ -27,6 +28,7 @@ export type Cubes =
     | HandleTimeCubeWithJoins
     | HelpCenterTrackingEventCube
     | HelpdeskMessageCubeWithJoins
+    | HelpdeskCustomerMessagesReceivedEnrichedCubeWithJoins
     | TicketQAScoreCubeWithJoins
     | TicketSLACubeWithJoins
     | VoiceCallCube

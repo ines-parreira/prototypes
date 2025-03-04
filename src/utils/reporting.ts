@@ -53,14 +53,7 @@ export type StatsFiltersMembers = Record<
 > &
     Partial<Record<keyof Omit<StatsFilters, 'period'>, Cubes['filters']>>
 
-export const TicketStatsFiltersMembers: StatsFiltersMembers = {
-    periodStart: TicketMember.PeriodStart,
-    periodEnd: TicketMember.PeriodEnd,
-    channels: TicketMember.Channel,
-    integrations: TicketMessagesMember.Integration,
-    agents: TicketMember.AssigneeUserId,
-    tags: TicketMember.Tags,
-    customFields: TicketMember.CustomField,
+const AutoQAFiltersMembers = {
     score: TicketMember.SurveyScore,
     resolutionCompleteness: TicketMember.ResolutionCompletenessScore,
     communicationSkills: TicketMember.CommunicationSkillsScore,
@@ -69,6 +62,17 @@ export const TicketStatsFiltersMembers: StatsFiltersMembers = {
     efficiency: TicketMember.EfficiencyScore,
     internalCompliance: TicketMember.InternalComplianceScore,
     brandVoice: TicketMember.BrandVoiceScore,
+}
+
+export const TicketStatsFiltersMembers: StatsFiltersMembers = {
+    periodStart: TicketMember.PeriodStart,
+    periodEnd: TicketMember.PeriodEnd,
+    channels: TicketMember.Channel,
+    integrations: TicketMessagesMember.Integration,
+    agents: TicketMember.AssigneeUserId,
+    tags: TicketMember.Tags,
+    customFields: TicketMember.CustomField,
+    ...AutoQAFiltersMembers,
 }
 
 export const TicketSLAStatsFiltersMembers: StatsFiltersMembers = {
@@ -91,20 +95,21 @@ export const HelpdeskMessagesStatsFiltersMembers: StatsFiltersMembers = {
     agents: HelpdeskMessageMember.SenderId,
     tags: TicketMember.Tags,
     customFields: TicketMember.CustomField,
-    score: TicketMember.SurveyScore,
-    resolutionCompleteness: TicketMember.ResolutionCompletenessScore,
-    communicationSkills: TicketMember.CommunicationSkillsScore,
-    languageProficiency: TicketMember.LanguageProficiencyScore,
-    accuracy: TicketMember.AccuracyScore,
-    efficiency: TicketMember.EfficiencyScore,
-    internalCompliance: TicketMember.InternalComplianceScore,
-    brandVoice: TicketMember.BrandVoiceScore,
+    ...AutoQAFiltersMembers,
 }
 
 export const HelpdeskTicketsRepliedStatsFiltersMembers: StatsFiltersMembers = {
     ...HelpdeskMessagesStatsFiltersMembers,
     agents: TicketMember.MessageSenderId,
 }
+
+export const HelpdeskCustomerMessagesReceivedStatsFiltersMembers: StatsFiltersMembers =
+    {
+        ...HelpdeskMessagesStatsFiltersMembers,
+        periodStart: TicketMember.PeriodStart,
+        periodEnd: TicketMember.PeriodEnd,
+        agents: TicketMember.AssigneeUserId,
+    }
 
 export const AutomateStatsFiltersMembers: StatsFiltersMembers = {
     periodStart: AutomationBillingEventMember.PeriodStart,
