@@ -9,8 +9,8 @@ import {
 } from 'config/integrations/gorgias_chat'
 import ArticleAttachment from 'gorgias-design-system/Attachments/ArticleAttachment'
 import { GorgiasChatAvatarSettings } from 'models/integration/types'
+import { ProductCarousel } from 'pages/common/components/ProductCarousel'
 import { ProductCardAttachment } from 'pages/common/draftjs/plugins/toolbar/components/AddProductLink'
-import { ProductCarousel } from 'pages/convert/campaigns/components/CampaignPreview/components/ProductCarousel'
 import { transformAttachmentToProduct } from 'pages/convert/campaigns/utils/transformAttachmentToProduct'
 
 import { AgentDisplayName } from './AgentDisplayName'

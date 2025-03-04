@@ -37,6 +37,7 @@ const PRODUCT = {
     compareAtPrice: 120,
     currency: 'USD',
     featured_image: 'https://store.com/mock-product1.png',
+    onClick: () => null,
 }
 
 const defaultState: Partial<RootState> = {

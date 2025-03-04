@@ -10,4 +10,5 @@ export interface CampaignProduct {
     featured_image?: string
     variant_name?: string
     position?: AttachmentPosition
+    onClick?: () => void
 }

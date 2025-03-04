@@ -2,8 +2,8 @@ import React, { ChangeEvent, useEffect, useMemo, useState } from 'react'
 
 import { getContrastColor } from 'gorgias-design-system/utils'
 import { InputRange } from 'pages/common/forms/input/InputRange'
+import { AttachmentPosition } from 'pages/convert/campaigns/types/CampaignAttachment'
 
-import { AttachmentPosition } from '../../../../types/CampaignAttachment'
 import { BaseProductCard } from '../BaseProductCard'
 import {
     FeaturedImage,

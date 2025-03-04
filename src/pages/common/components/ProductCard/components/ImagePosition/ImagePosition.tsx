@@ -2,7 +2,8 @@ import React, { CSSProperties, useMemo } from 'react'
 
 import Draggable, { DraggableEventHandler } from 'react-draggable'
 
-import { AttachmentPosition } from '../../../../types/CampaignAttachment'
+import { AttachmentPosition } from 'pages/convert/campaigns/types/CampaignAttachment'
+
 import { getDraggableContainerBounds } from './utils'
 
 import css from './ImagePosition.less'

@@ -4,9 +4,9 @@ import { darken, getLuminance, lighten } from 'color2k'
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import useMeasure from 'hooks/useMeasure'
+import { AttachmentPosition } from 'pages/convert/campaigns/types/CampaignAttachment'
 import { updateCampaignProductPosition } from 'state/newMessage/actions'
 
-import { AttachmentPosition } from '../../types/CampaignAttachment'
 import { ProductCardEdit } from './components/ProductCardEdit'
 import { ProductCardView } from './components/ProductCardView'
 
@@ -36,6 +36,7 @@ type Props = {
     isHeadlessStore?: boolean
     position?: AttachmentPosition
     shouldHideRepositionImage: boolean
+    onClick?: () => void
 }
 
 export const ProductCard = ({
@@ -51,6 +52,7 @@ export const ProductCard = ({
     title,
     hasOptions,
     shouldHideRepositionImage,
+    onClick = () => null,
 }: Props) => {
     const dispatch = useAppDispatch()
     const [isEditOn, setIsEdit] = useState(false)
@@ -108,6 +110,7 @@ export const ProductCard = ({
                     hasOptions={hasOptions}
                     shouldHideRepositionImage={shouldHideRepositionImage}
                     onClickEdit={handleClickEdit}
+                    onClick={onClick}
                 />
             )}
         </>

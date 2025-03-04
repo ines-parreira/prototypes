@@ -11,18 +11,18 @@ import {
     GorgiasChatAvatarNameType,
     GorgiasChatAvatarSettings,
 } from 'models/integration/types'
+import { ProductCarousel } from 'pages/common/components/ProductCarousel'
+import { CAMPAIGN_MAX_HEIGHT } from 'pages/convert/campaigns/constants/visuals'
 import { CampaignFormExtra } from 'pages/convert/campaigns/types/CampaignAttachment'
 import { CampaignDiscountOffer } from 'pages/convert/campaigns/types/CampaignDiscountOffer'
+import { CampaignProduct } from 'pages/convert/campaigns/types/CampaignProduct'
 import { CaptureFormDisclaimerSettings } from 'pages/convert/settings/types'
 import { AgentDisplayName } from 'pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationPreview/AgentDisplayName'
 import ChatAvatar from 'pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationPreview/ChatAvatar'
 import { extractGorgiasVideoDivFromHtmlContent } from 'utils'
 
-import { CAMPAIGN_MAX_HEIGHT } from '../../../../constants/visuals'
-import { CampaignProduct } from '../../../../types/CampaignProduct'
 import { ContactCaptureFormPreview } from '../ContactCaptureFormPreview/ContactCaptureFormPreview'
 import { DiscountOfferPreview } from '../DiscountOfferPreview/DiscountOfferPreview'
-import { ProductCarousel } from '../ProductCarousel'
 
 import css from './ChatCampaign.less'
 

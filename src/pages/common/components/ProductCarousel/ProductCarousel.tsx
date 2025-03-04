@@ -1,11 +1,12 @@
 import React, { useCallback, useEffect, useState } from 'react'
 
-import { useIsHeadlessShopifyStore } from '../../../../hooks/useIsHeadlessShopifyStore'
 import classnames from 'classnames'
 
-import { DEFAULT_CAROUSEL_CONFIGURATION } from '../../../../constants/visuals'
-import { ProductCard } from '../../../../containers/ProductCard'
-import { CampaignProduct } from '../../../../types/CampaignProduct'
+import { useIsHeadlessShopifyStore } from 'pages/convert/campaigns/hooks/useIsHeadlessShopifyStore'
+import { CampaignProduct } from 'pages/convert/campaigns/types/CampaignProduct'
+
+import { ProductCard } from '../ProductCard'
+import { DEFAULT_CAROUSEL_CONFIGURATION } from './constants/visuals'
 
 import css from './ProductCarousel.less'
 
@@ -112,6 +113,7 @@ export const ProductCarousel = ({
                             shouldHideRepositionImage={
                                 shouldHideRepositionImage
                             }
+                            onClick={product.onClick}
                         />
                     </div>
                 ))}
@@ -124,6 +126,7 @@ export const ProductCarousel = ({
                             css.leftSide,
                         )}
                         onClick={handleMovePrevious}
+                        data-testid="prev-button"
                     >
                         <i className="material-icons">chevron_left</i>
                     </div>
@@ -134,10 +137,10 @@ export const ProductCarousel = ({
                             css.buttonBaseControl,
                             css.rightSide,
                         )}
+                        onClick={handleMoveNext}
+                        data-testid="next-button"
                     >
-                        <i className="material-icons" onClick={handleMoveNext}>
-                            chevron_right
-                        </i>
+                        <i className="material-icons">chevron_right</i>
                     </div>
                 )}
             </div>

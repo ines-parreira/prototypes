@@ -1,11 +1,20 @@
 import React, { ComponentProps } from 'react'
 
-import { Meta, Story } from '@storybook/react'
+import { Meta, StoryFn } from '@storybook/react'
+import { Provider } from 'react-redux'
+import configureMockStore from 'redux-mock-store'
+
+import * as billingFixtures from 'fixtures/billing'
+import { initialState } from 'state/billing/reducers'
 
 import { ProductCarousel } from './ProductCarousel'
 
+const defaultState = {
+    billing: initialState.mergeDeep(billingFixtures.billingState),
+}
+
 const storyConfig: Meta = {
-    title: 'Convert/Chat Campaigns/Product Carousel',
+    title: 'Common/Product Carousel',
     component: ProductCarousel,
     args: {
         products: [
@@ -37,9 +46,16 @@ const storyConfig: Meta = {
             },
         ],
     },
+    decorators: [
+        (Story) => (
+            <Provider store={configureMockStore()(defaultState)}>
+                <Story />
+            </Provider>
+        ),
+    ],
 }
 
-const Template: Story<ComponentProps<typeof ProductCarousel>> = (props) => (
+const Template: StoryFn<ComponentProps<typeof ProductCarousel>> = (props) => (
     <ProductCarousel {...props} />
 )
 

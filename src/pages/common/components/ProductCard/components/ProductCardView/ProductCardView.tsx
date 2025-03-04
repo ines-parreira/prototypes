@@ -6,9 +6,9 @@ import GorgiasButton from 'gorgias-design-system/Buttons/Button'
 import { getContrastColor } from 'gorgias-design-system/utils'
 import Button from 'pages/common/components/button/Button'
 import { useIsConvertSubscriber } from 'pages/common/hooks/useIsConvertSubscriber'
+import { AttachmentPosition } from 'pages/convert/campaigns/types/CampaignAttachment'
 import { useIsProductCardDiscountedPriceEnabled } from 'pages/convert/common/hooks/useIsProductCardDiscountedPriceEnabled'
 
-import { AttachmentPosition } from '../../../../types/CampaignAttachment'
 import { BaseProductCard } from '../BaseProductCard'
 import { FeaturedImage, ImagePosition } from '../ImagePosition'
 
@@ -27,6 +27,7 @@ type Props = {
     position?: AttachmentPosition
     shouldHideRepositionImage: boolean
     onClickEdit: () => void
+    onClick?: () => void
 }
 
 export const ProductCardView = ({
@@ -42,6 +43,7 @@ export const ProductCardView = ({
     position,
     shouldHideRepositionImage,
     onClickEdit,
+    onClick = () => null,
 }: Props) => {
     const isConvertSubscriber = useIsConvertSubscriber()
     const buttonStyle = useMemo(
@@ -132,6 +134,7 @@ export const ProductCardView = ({
                 variant="primary"
                 size="small"
                 style={buttonStyle}
+                onClick={onClick}
             >
                 {buttonText}
             </GorgiasButton>
