@@ -2,6 +2,9 @@ import { useMemo } from 'react'
 
 import { SLAPolicyMetricType, SLAPolicyMetricUnit } from '@gorgias/api-types'
 
+import { FeatureFlagKey } from 'config/featureFlags'
+import { useFlag } from 'core/flags'
+
 import { MappedFormSLAPolicy } from './makeMappedFormSLAPolicy'
 
 export type SLAFormValues = ReturnType<typeof useFormValues>
@@ -9,6 +12,8 @@ export type SLAFormValues = ReturnType<typeof useFormValues>
 export default function useFormValues(
     policy?: Omit<MappedFormSLAPolicy, 'uuid'>,
 ) {
+    const isTrackTotalHitsEnabled = useFlag(FeatureFlagKey.PauseSLA)
+
     return useMemo(
         () =>
             policy
@@ -32,7 +37,9 @@ export default function useFormValues(
                       ],
                       active: policy.active,
                       target_channels: policy.target_channels,
-                      business_hours_only: policy.business_hours_only,
+                      business_hours_only: isTrackTotalHitsEnabled
+                          ? policy.business_hours_only
+                          : false,
                   }
                 : {
                       name: '',
@@ -50,8 +57,10 @@ export default function useFormValues(
                       ],
                       active: true,
                       target_channels: [],
-                      business_hours_only: true,
+                      business_hours_only: isTrackTotalHitsEnabled
+                          ? true
+                          : false,
                   },
-        [policy],
+        [policy, isTrackTotalHitsEnabled],
     )
 }

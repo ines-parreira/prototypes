@@ -112,6 +112,7 @@ export enum FeatureFlagKey {
     ObservabilityROICalculator = 'roi-calculator-for-automate',
     ObservabilityTicketTimeToHandle = 'observability-ticket-time-to-handle',
     OfficeHours = 'office-hours',
+    PauseSLA = 'linear.task_SUPXP-2724.pause-sla',
     PhrasePredictionDebounce = 'phrase-prediction-debounce',
     ProductCardDiscountedPrice = 'product-card-discounted-price',
     PubNubRealtime = 'pubnub-realtime',

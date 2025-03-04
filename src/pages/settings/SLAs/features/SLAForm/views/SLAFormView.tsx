@@ -1,5 +1,7 @@
 import React from 'react'
 
+import { FeatureFlagKey } from 'config/featureFlags'
+import { useFlag } from 'core/flags'
 import { Form, FormField, FormSubmitButton, FormValidator } from 'core/forms'
 import Button from 'pages/common/components/button/Button'
 import ToggleInputField from 'pages/common/forms/ToggleInputField'
@@ -34,6 +36,8 @@ export default function SLAFormView({
     validator,
 }: SLAFormViewProps) {
     const [isArchiveModalOpen, setArchiveModalOpen] = React.useState(false)
+
+    const isTrackTotalHitsEnabled = useFlag(FeatureFlagKey.PauseSLA)
 
     return (
         <div className={css.page}>
@@ -87,13 +91,15 @@ export default function SLAFormView({
                             >
                                 Enable SLA
                             </FormField>
-                            <FormField
-                                name="business_hours_only"
-                                field={ToggleInputField}
-                                className={settingsCss.mb48}
-                            >
-                                Pause SLA timer outside of business hours
-                            </FormField>
+                            {isTrackTotalHitsEnabled && (
+                                <FormField
+                                    name="business_hours_only"
+                                    field={ToggleInputField}
+                                    className={settingsCss.mb48}
+                                >
+                                    Pause SLA timer outside of business hours
+                                </FormField>
+                            )}
                         </FormSection>
                         <div className={css.buttonGroup}>
                             <div>
