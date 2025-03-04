@@ -127,6 +127,7 @@ import CreditShopifyBillingIntegration from 'pages/tasks/detail/CreditShopifyBil
 import ImportPhoneNumber from 'pages/tasks/detail/ImportPhoneNumber'
 import RemoveShopifyBilling from 'pages/tasks/detail/RemoveShopifyBilling'
 import TwilioSubaccountStatusForm from 'pages/tasks/detail/TwilioSubaccountStatusForm'
+import UpdatePaymentTerms from 'pages/tasks/detail/UpdatePaymentTerms'
 import TicketInfobarContainer from 'pages/tickets/detail/TicketInfobarContainer'
 import TicketPrintContainer from 'pages/tickets/detail/TicketPrintContainer'
 import TicketSourceContainer from 'pages/tickets/detail/TicketSourceContainer'
@@ -1437,6 +1438,22 @@ export function AdminTasksRoutes({ match: { path } }: RouteComponentProps) {
                                 RemoveShopifyBilling,
                                 ADMIN_ROLE,
                                 PageSection.RemoveShopifyBilling,
+                            )}
+                            navbar={SettingsNavbar}
+                        />
+                    )}
+                />
+            )}
+            {window.USER_IMPERSONATED && (
+                <Route
+                    path={`${path}/update-payment-terms`}
+                    exact
+                    render={() => (
+                        <App
+                            content={withUserRoleRequired(
+                                UpdatePaymentTerms,
+                                ADMIN_ROLE,
+                                PageSection.UpdatePaymentTerms,
                             )}
                             navbar={SettingsNavbar}
                         />

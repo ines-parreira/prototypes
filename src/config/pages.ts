@@ -17,6 +17,7 @@ export enum PageSection {
     NewBilling = 'new-billing', // TODO(@Irinel) remove this when new billing is fully released
     PhoneNumbers = 'phone-numbers',
     RemoveShopifyBilling = 'remove-shopify-billing',
+    UpdatePaymentTerms = 'update-payment-terms',
     Rules = 'rules',
     SatisfactionSurveys = 'satisfaction-surveys',
     SelfService = 'self-service',
@@ -49,6 +50,7 @@ export enum SectionPageHeader {
     NewBilling = 'Billing', // TODO(@Irinel) remove this when new billing is fully released
     PhoneNumbers = 'Phone numbers',
     RemoveShopifyBilling = 'Remove Shopify Billing',
+    UpdatePaymentTerms = 'Update Payment Terms',
     Rules = 'Rules',
     SatisfactionSurveys = 'Satisfaction',
     SelfService = 'Self-service',

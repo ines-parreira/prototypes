@@ -45,6 +45,9 @@ export const roleRestrictionConfigs: Record<
         pageHeader: SectionPageHeader.RemoveShopifyBilling,
     },
     [PageSection.Rules]: { pageHeader: SectionPageHeader.Rules },
+    [PageSection.UpdatePaymentTerms]: {
+        pageHeader: SectionPageHeader.UpdatePaymentTerms,
+    },
     [PageSection.SatisfactionSurveys]: {
         pageHeader: SectionPageHeader.SatisfactionSurveys,
     },
