@@ -9,7 +9,7 @@ ignore:
   - src/pages/automate/workflows/editor/visualBuilder/editors/TestFlowEditor.tsx
   - src/pages/aiAgent/Onboarding/components/OnboardingDevPreview/OnboardingDevPreview.tsx
   - src/pages/common/components/infobar/InfobarLayout.tsx
-  - src/assets/js/pubnub.worker.8.9.0.js
+  - src/assets/js/pubnub.worker.*.js
 
 coverage:
   status:
