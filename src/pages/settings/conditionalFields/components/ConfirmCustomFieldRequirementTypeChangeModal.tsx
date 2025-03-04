@@ -36,18 +36,20 @@ const ConfirmRequirementTypeChangeModal = ({
 
     const handleConfirm = useCallback(async () => {
         const { object_type, definition, label, managed_type } = customField
-        await mutateAsync([
-            customField.id,
-            {
-                object_type,
-                definition,
-                label,
-                managed_type,
-                required: false,
-                requirement_type: RequirementType.Conditional,
-            },
-        ])
-        onConfirmationSuccess(customField)
+        try {
+            mutateAsync([
+                customField.id,
+                {
+                    object_type,
+                    definition,
+                    label,
+                    managed_type,
+                    required: false,
+                    requirement_type: RequirementType.Conditional,
+                },
+            ])
+            onConfirmationSuccess(customField)
+        } catch {}
     }, [customField, mutateAsync, onConfirmationSuccess])
 
     return (

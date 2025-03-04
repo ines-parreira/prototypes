@@ -35,7 +35,7 @@ const TOOLTIP_MESSAGE =
 
 interface FieldFormProps {
     field: CustomField | CustomFieldInput
-    onSubmit: (field: CustomFieldInput) => Promise<void>
+    onSubmit: (field: CustomFieldInput) => void
     onClose: () => void
     submitLabel?: string
 }

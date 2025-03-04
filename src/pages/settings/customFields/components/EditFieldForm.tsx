@@ -12,14 +12,14 @@ interface EditFieldFormProps {
 }
 
 export default function EditFieldForm(props: EditFieldFormProps) {
-    const { mutateAsync } = useUpdateCustomFieldDefinition()
+    const { mutate } = useUpdateCustomFieldDefinition()
 
     const close = () =>
         history.push(
             `/app/settings/${CUSTOM_FIELD_ROUTES[props.field.object_type]}`,
         )
-    const handleSubmit = async (field: CustomFieldInput) => {
-        await mutateAsync([props.field.id, field])
+    const handleSubmit = (field: CustomFieldInput) => {
+        mutate([props.field.id, field])
     }
 
     return (
