@@ -168,10 +168,10 @@ export default function StatsNavbarView() {
             </NavbarBlock>
             <NavbarBlock title={'Voice'} icon={'phone'}>
                 <ProtectedRoute
-                    path={`${STATS_ROUTE_PREFIX}${STATS_ROUTES.VOICE_AGENTS}`}
+                    path={`${STATS_ROUTE_PREFIX}${STATS_ROUTES.VOICE_OVERVIEW}`}
                 >
                     <VoiceStatsNavbarItem
-                        to={`${STATS_ROUTE_PREFIX}${STATS_ROUTES.VOICE_AGENTS}`}
+                        to={`${STATS_ROUTE_PREFIX}${STATS_ROUTES.VOICE_OVERVIEW}`}
                         title={'Overview'}
                     />
                 </ProtectedRoute>
