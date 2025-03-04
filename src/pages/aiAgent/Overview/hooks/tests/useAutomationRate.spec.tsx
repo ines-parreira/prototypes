@@ -1,11 +1,18 @@
+import React from 'react'
+
 import { renderHook } from '@testing-library/react-hooks/dom'
+import { fromJS } from 'immutable'
+import { Provider } from 'react-redux'
 
 import { useCustomFieldDefinitions } from 'custom-fields/hooks/queries/useCustomFieldDefinitions'
+import { account } from 'fixtures/account'
 import { ticketFieldDefinitions } from 'fixtures/customField'
+import { user } from 'fixtures/users'
 import { useMultipleMetricsTrends } from 'hooks/reporting/useMultipleMetricsTrend'
 import { StatsFilters, StatType } from 'models/stat/types'
 import { useAutomationRate } from 'pages/aiAgent/Overview/hooks/kpis/useAutomationRate'
-import { assumeMock } from 'utils/testing'
+import { RootState } from 'state/types'
+import { assumeMock, mockStore } from 'utils/testing'
 
 jest.mock('hooks/reporting/useMultipleMetricsTrend')
 const useMultipleMetricsTrendsMock = assumeMock(useMultipleMetricsTrends)
@@ -22,6 +29,24 @@ const filters: StatsFilters = {
 const timezone = 'UTC'
 
 describe('useAutomationRate', () => {
+    const defaultState = {
+        currentUser: fromJS(user),
+        currentAccount: fromJS(account),
+        integrations: fromJS({
+            integrations: [],
+        }),
+    } as RootState
+
+    const renderUseAutomatedInteractions = (
+        filters: StatsFilters,
+        timezone: string,
+    ) =>
+        renderHook(() => useAutomationRate(filters, timezone), {
+            wrapper: ({ children }) => (
+                <Provider store={mockStore(defaultState)}>{children}</Provider>
+            ),
+        })
+
     beforeEach(() => {
         useCustomFieldDefinitionsMock.mockReturnValue({
             data: { data: ticketFieldDefinitions },
@@ -44,9 +69,7 @@ describe('useAutomationRate', () => {
             isFetching: false,
         } as any)
 
-        const { result } = renderHook(() =>
-            useAutomationRate(filters, timezone),
-        )
+        const { result } = renderUseAutomatedInteractions(filters, timezone)
 
         expect(result.current).toEqual({
             title: 'Automation Rate',
@@ -64,9 +87,7 @@ describe('useAutomationRate', () => {
             isFetching: true,
         } as any)
 
-        const { result } = renderHook(() =>
-            useAutomationRate(filters, timezone),
-        )
+        const { result } = renderUseAutomatedInteractions(filters, timezone)
 
         expect(result.current).toEqual({
             title: 'Automation Rate',
