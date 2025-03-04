@@ -16,6 +16,7 @@ import { useIsConvertPerformanceViewEnabled } from 'pages/convert/common/hooks/u
 import { ConvertRouteParams } from 'pages/convert/common/types'
 import FiltersPanelWrapper from 'pages/stats/common/filters/FiltersPanelWrapper'
 import { CampaignsLegacyReportConfig } from 'pages/stats/convert/campaigns/CampaignsLegacyReportConfig'
+import { CAMPAIGNS_REPORT_TITLE } from 'pages/stats/convert/campaigns/CampaignsPerformanceReportConfig'
 import DownloadOverviewData from 'pages/stats/convert/components/DownloadOverviewData'
 import RequestABTest from 'pages/stats/convert/components/RequestABTest'
 import { RevenueFilters } from 'pages/stats/convert/containers/RevenueFilters'
@@ -31,7 +32,6 @@ type CampaignsStatsProps = {
     isConvertSubscriber: boolean
 }
 
-export const CAMPAIGNS_REPORT_TITLE = 'Campaigns'
 const CAMPAIGN_PERFORMANCE_REPORT_TITLE = 'Performance'
 
 const CampaignsStats = ({ isConvertSubscriber }: CampaignsStatsProps) => {

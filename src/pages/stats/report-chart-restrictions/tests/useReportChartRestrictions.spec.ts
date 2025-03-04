@@ -7,8 +7,14 @@ import useAppSelector from 'hooks/useAppSelector'
 import { STATS_ROUTE_PREFIX } from 'pages/stats/common/components/constants'
 import { getReportConfig } from 'pages/stats/custom-reports/config'
 import { ReportsIDs } from 'pages/stats/custom-reports/constants'
-import { HelpCenterChart } from 'pages/stats/help-center/components/HelpCenterReport/HelpCenterReportConfig'
-import { SatisfactionChart } from 'pages/stats/quality-management/satisfaction/SatisfactionReportConfig'
+import {
+    HelpCenterChart,
+    HelpCenterReportConfig,
+} from 'pages/stats/help-center/components/HelpCenterReport/HelpCenterReportConfig'
+import {
+    SatisfactionChart,
+    SatisfactionReportConfig,
+} from 'pages/stats/quality-management/satisfaction/SatisfactionReportConfig'
 import * as constants from 'pages/stats/report-chart-restrictions/config'
 import {
     RestrictedComponentType,
@@ -20,8 +26,12 @@ import {
     getUserReportsRestrictions,
     useReportChartRestrictions,
 } from 'pages/stats/report-chart-restrictions/useReportChartRestrictions'
+import { SupportPerformanceAgentsReportConfig } from 'pages/stats/support-performance/agents/SupportPerformanceAgentsReportConfig'
 import { AutoQAReportConfig } from 'pages/stats/support-performance/auto-qa/AutoQAReportConfig'
-import { OverviewChart } from 'pages/stats/support-performance/overview/SupportPerformanceOverviewReportConfig'
+import {
+    OverviewChart,
+    SupportPerformanceOverviewReportConfig,
+} from 'pages/stats/support-performance/overview/SupportPerformanceOverviewReportConfig'
 import { STATS_ROUTES } from 'routes/constants'
 import { assumeMock } from 'utils/testing'
 
@@ -219,7 +229,6 @@ describe('useReportChartRestrictions', () => {
             expect(
                 result.current.isRouteRestrictedToCurrentUser(
                     STATS_ROUTES.SUPPORT_PERFORMANCE_AGENTS,
-                    true,
                 ),
             ).toEqual(false)
         })
@@ -280,9 +289,10 @@ describe('useReportChartRestrictions', () => {
         ])('should return true if path is restricted', (chartId) => {
             useReportRestrictionsMock.mockReturnValue({
                 reportRestrictionsMap: {
-                    ['quality-management-satisfaction']: true,
-                    [STATS_ROUTES.SUPPORT_PERFORMANCE_OVERVIEW]: true,
-                    [STATS_ROUTES.SUPPORT_PERFORMANCE_AGENTS]: true,
+                    [SatisfactionReportConfig.id]: true,
+                    [SupportPerformanceOverviewReportConfig.id]: true,
+                    [SupportPerformanceAgentsReportConfig.id]: true,
+                    [HelpCenterReportConfig.id]: true,
                 },
                 chartRestrictionsMap: {},
             })

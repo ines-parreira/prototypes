@@ -3,14 +3,18 @@ import _flatten from 'lodash/flatten'
 import { AiSalesAgentChart } from 'pages/stats//aiSalesAgent/AiSalesAgentMetricsConfig'
 import { AiSalesAgentReportConfig } from 'pages/stats/aiSalesAgent/AiSalesAgentReportConfig'
 import {
+    AutomateAiAgentsChart,
+    AutomateAiAgentsReportConfig,
+} from 'pages/stats/automate/ai-agent/AutomateAiAgentsReportConfig'
+import {
     AutomateOverviewChart,
     AutomateOverviewReportConfig,
 } from 'pages/stats/automate/overview/AutomateOverviewReportConfig'
+import { STATS_ROUTE_PREFIX } from 'pages/stats/common/components/constants'
 import {
     CampaignsChart,
     CampaignsPerformanceReportConfig,
 } from 'pages/stats/convert/campaigns/CampaignsPerformanceReportConfig'
-import { ReportsIDs } from 'pages/stats/custom-reports/constants'
 import {
     ChartConfig,
     ReportConfig,
@@ -49,6 +53,7 @@ import {
     SupportPerformanceOverviewReportConfig,
 } from 'pages/stats/support-performance/overview/SupportPerformanceOverviewReportConfig'
 import { SupportPerformanceRevenueReportConfig } from 'pages/stats/support-performance/revenue/SupportPerformanceRevenueReportConfig'
+import { SupportPerformanceSatisfactionReportConfig } from 'pages/stats/support-performance/satisfaction/SupportPerformanceSatisfactionReportConfig'
 import {
     TicketInsightsTagsChart,
     TicketInsightsTagsReportConfig,
@@ -75,32 +80,26 @@ export const REPORTS_CONFIG: ReportsModalConfig = [
             {
                 type: OverviewChart,
                 config: SupportPerformanceOverviewReportConfig,
-                id: ReportsIDs.SupportPerformanceOverviewReportConfig,
             },
             {
                 type: AgentsChart,
                 config: SupportPerformanceAgentsReportConfig,
-                id: ReportsIDs.SupportPerformanceAgentsReportConfig,
             },
             {
                 type: BusiestTimesChart,
                 config: BusiestTimesReportConfig,
-                id: ReportsIDs.BusiestTimesReportConfig,
             },
             {
                 type: ChannelsChart,
                 config: ChannelsReportConfig,
-                id: ReportsIDs.ChannelsReportConfig,
             },
             {
                 type: ServiceLevelAgreementsChart,
                 config: ServiceLevelAgreementsReportConfig,
-                id: ReportsIDs.ServiceLevelAgreementsReportConfig,
             },
             {
                 type: HelpCenterChart,
                 config: HelpCenterReportConfig,
-                id: ReportsIDs.HelpCenterReportConfig,
             },
         ],
     },
@@ -110,12 +109,10 @@ export const REPORTS_CONFIG: ReportsModalConfig = [
             {
                 type: TicketFieldsChart,
                 config: TicketFieldsReportConfig,
-                id: ReportsIDs.TicketFieldsReportConfig,
             },
             {
                 type: TicketInsightsTagsChart,
                 config: TicketInsightsTagsReportConfig,
-                id: ReportsIDs.TicketInsightsTagsReportConfig,
             },
         ],
     },
@@ -125,12 +122,10 @@ export const REPORTS_CONFIG: ReportsModalConfig = [
             {
                 type: AutoQAChart,
                 config: AutoQAReportConfig,
-                id: ReportsIDs.AutoQAReportConfig,
             },
             {
                 type: SatisfactionChart,
                 config: SatisfactionReportConfig,
-                id: ReportsIDs.SatisfactionReportConfig,
             },
         ],
     },
@@ -140,12 +135,10 @@ export const REPORTS_CONFIG: ReportsModalConfig = [
             {
                 type: AutomateOverviewChart,
                 config: AutomateOverviewReportConfig,
-                id: ReportsIDs.AutomateOverviewReportConfig,
             },
             {
                 type: AiSalesAgentChart,
                 config: AiSalesAgentReportConfig,
-                id: ReportsIDs.AiSalesAgentReportConfig,
             },
         ],
     },
@@ -155,7 +148,6 @@ export const REPORTS_CONFIG: ReportsModalConfig = [
             {
                 type: CampaignsChart,
                 config: CampaignsPerformanceReportConfig,
-                id: ReportsIDs.CampaignsReportConfig,
             },
         ],
     },
@@ -165,12 +157,10 @@ export const REPORTS_CONFIG: ReportsModalConfig = [
             {
                 type: VoiceOverviewChart,
                 config: VoiceOverviewReportConfig,
-                id: ReportsIDs.VoiceOverviewReportConfig,
             },
             {
                 type: VoiceAgentsChart,
                 config: VoiceAgentsReportConfig,
-                id: ReportsIDs.VoiceAgentsReportConfig,
             },
         ],
     },
@@ -183,7 +173,19 @@ export const LEGACY_REPORTS_CONFIG: ReportsModalConfig = [
             {
                 type: OverviewChart,
                 config: SupportPerformanceRevenueReportConfig,
-                id: ReportsIDs.SupportPerformanceRevenueReportConfig,
+            },
+            {
+                type: OverviewChart,
+                config: SupportPerformanceSatisfactionReportConfig,
+            },
+        ],
+    },
+    {
+        category: 'Automate',
+        children: [
+            {
+                type: AutomateAiAgentsChart,
+                config: AutomateAiAgentsReportConfig,
             },
         ],
     },
@@ -225,7 +227,26 @@ export const getReportConfig = (
         ).map((report) => report.children),
     )
 
-    const report = availableReports.find((report) => report.id === reportId)
+    const report = availableReports.find(
+        (report) => report.config.id === reportId,
+    )
+
+    return report?.config || null
+}
+
+export const getReportConfigFromPath = (
+    reportPath: string,
+): ReportConfig<string> | null => {
+    const availableReports = _flatten(
+        [...REPORTS_CONFIG, ...LEGACY_REPORTS_CONFIG].map(
+            (report) => report.children,
+        ),
+    )
+
+    const report = availableReports.find(
+        (report) =>
+            `${STATS_ROUTE_PREFIX}${report.config.reportPath}` === reportPath,
+    )
 
     return report?.config || null
 }

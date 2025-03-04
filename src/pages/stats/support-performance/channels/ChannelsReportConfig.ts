@@ -1,6 +1,7 @@
 import { fetchChannelsTableReportData } from 'hooks/reporting/support-performance/channels/useChannelsReportMetrics'
 import { FilterKey } from 'models/stat/types'
 import { AUTO_QA_FILTER_KEYS } from 'pages/stats/common/filters/constants'
+import { ReportsIDs } from 'pages/stats/custom-reports/constants'
 import {
     ChartType,
     DataExportFormat,
@@ -29,6 +30,7 @@ export enum ChannelsChart {
 }
 
 export const ChannelsReportConfig: ReportConfig<ChannelsChart> = {
+    id: ReportsIDs.ChannelsReportConfig,
     reportName: CHANNELS_REPORT_PAGE_TITLE,
     reportPath: STATS_ROUTES.SUPPORT_PERFORMANCE_CHANNELS,
     charts: {

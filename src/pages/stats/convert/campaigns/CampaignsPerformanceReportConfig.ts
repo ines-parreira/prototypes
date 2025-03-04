@@ -16,8 +16,8 @@ import {
     CampaignPerformanceTable,
     CAMPAIGNS_PERFORMANCE_TABLE_TITLE,
 } from 'pages/stats/convert/containers/CampaignPerformanceTable'
-import { CAMPAIGNS_REPORT_TITLE } from 'pages/stats/convert/pages/CampaignsStats/CampaignsStats'
 import { CampaignsTotalsMetricNames } from 'pages/stats/convert/services/constants'
+import { ReportsIDs } from 'pages/stats/custom-reports/constants'
 import {
     ChartType,
     DataExportFormat,
@@ -37,7 +37,10 @@ export enum CampaignsChart {
     CampaignPerformanceTable = 'CampaignPerformanceTable',
 }
 
+export const CAMPAIGNS_REPORT_TITLE = 'Campaigns'
+
 export const CampaignsPerformanceReportConfig: ReportConfig<CampaignsChart> = {
+    id: ReportsIDs.CampaignsReportConfig,
     reportName: `${CAMPAIGNS_REPORT_TITLE} Performance Report`,
     reportPath: STATS_ROUTES.CONVERT_CAMPAIGNS,
     reportFilters: {

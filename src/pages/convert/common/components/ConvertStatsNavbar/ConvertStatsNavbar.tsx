@@ -9,6 +9,8 @@ import NavbarLink, {
 import UpgradeIcon from 'pages/common/components/UpgradeIcon'
 import { useIsConvertSubscriber } from 'pages/common/hooks/useIsConvertSubscriber'
 import ConvertSubscriptionModal from 'pages/convert/common/components/ConvertSubscriptionModal'
+import { ReportsIDs } from 'pages/stats/custom-reports/constants'
+import { ProtectedRoute } from 'pages/stats/report-chart-restrictions/ProtectedRoute'
 
 export type ConvertNavbarLink = {
     label: ReactNode
@@ -17,6 +19,7 @@ export type ConvertNavbarLink = {
     hasModal: boolean
     requiresSubscriptionToBeSeen: boolean
     extra?: ReactNode
+    reportId: ReportsIDs
 }
 
 type Props = {
@@ -36,6 +39,7 @@ const ConvertStatsNavbar = ({ commonNavLinkProps }: Props) => {
                 isPaywalled: !isConvertSubscriber,
                 hasModal: !isConvertSubscriber,
                 requiresSubscriptionToBeSeen: false,
+                reportId: ReportsIDs.CampaignsReportConfig,
             },
         ]
     }, [isConvertSubscriber])
@@ -58,6 +62,7 @@ const ConvertStatsNavbar = ({ commonNavLinkProps }: Props) => {
         [isConvertSubscriber],
     )
 
+    //TODO after Convert reports refactoring is done
     return (
         <>
             {convertLinks.map((convertLink) => (
@@ -69,14 +74,17 @@ const ConvertStatsNavbar = ({ commonNavLinkProps }: Props) => {
                                 cssNavbar.isNested,
                             )}
                         >
-                            <NavbarLink
-                                {...commonNavLinkProps}
-                                to={convertLink.to}
-                            >
-                                {convertLink.label}
-                                {convertLink.isPaywalled && <UpgradeIcon />}
-                                {!convertLink.isPaywalled && convertLink.extra}
-                            </NavbarLink>
+                            <ProtectedRoute path={convertLink.reportId}>
+                                <NavbarLink
+                                    {...commonNavLinkProps}
+                                    to={convertLink.to}
+                                >
+                                    {convertLink.label}
+                                    {convertLink.isPaywalled && <UpgradeIcon />}
+                                    {!convertLink.isPaywalled &&
+                                        convertLink.extra}
+                                </NavbarLink>
+                            </ProtectedRoute>
                         </div>
                     )}
                 </div>

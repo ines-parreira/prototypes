@@ -20,7 +20,6 @@ import { RevenueAddonApiClientProvider } from 'pages/convert/common/hooks/useCon
 import { HelpCenterApiClientProvider } from 'pages/settings/helpCenter/hooks/useHelpCenterApi'
 import { SupportedLocalesProvider } from 'pages/settings/helpCenter/providers/SupportedLocales'
 import AiSalesAgentSalesOverview from 'pages/stats/aiSalesAgent/AiSalesAgentSalesOverview'
-import { ROUTE_AI_SALES_AGENT_OVERVIEW } from 'pages/stats/aiSalesAgent/constants'
 import AutomateAiAgentStatsReport from 'pages/stats/automate/ai-agent/AutomateAiAgentStatsReport'
 import AutomateStatsPaywall from 'pages/stats/automate/AutomateStatsPaywall'
 import AutomateIntents from 'pages/stats/AutomateIntents'
@@ -38,7 +37,6 @@ import LiveOverview from 'pages/stats/LiveOverview'
 import SatisfactionReport from 'pages/stats/quality-management/satisfaction/SatisfactionReport'
 import { ProtectedRoute } from 'pages/stats/report-chart-restrictions/ProtectedRoute'
 import {
-    ROUTE_AUTOMATE_OVERVIEW,
     ROUTE_AUTOMATE_PERFORMANCE_BY_FEATURES,
     ROUTE_OLD_PERFORMANCE_BY_FEATURES,
 } from 'pages/stats/self-service/constants'
@@ -94,17 +92,8 @@ export const StatsRoutes = () => {
 
     const hasAutomate = useAppSelector(getHasAutomate)
 
-    const isAiAgentStatsPageEnabled: FeatureFlag =
-        useFlags()[FeatureFlagKey.AIAgentStatsPage]
-
-    const isNewSatisfactionReportEnabled: FeatureFlag =
-        useFlags()[FeatureFlagKey.NewSatisfactionReport]
-
     const isAnalyticsCustomReports: FeatureFlag =
         useFlags()[FeatureFlagKey.AnalyticsCustomReports]
-
-    const isStandaloneSalesOverviewEnabled: FeatureFlag =
-        useFlags()[FeatureFlagKey.StandaloneAiSalesAnalyticsPage]
 
     useEffect(logPageChange, [location.pathname])
 
@@ -270,22 +259,20 @@ export const StatsRoutes = () => {
                         )}
                     />
                 </ProtectedRoute>
-                {!!isNewSatisfactionReportEnabled && (
-                    <ProtectedRoute
+                <ProtectedRoute
+                    path={`${path}/${STATS_ROUTES.QUALITY_MANAGEMENT_SATISFACTION}`}
+                >
+                    <Route
+                        exact
                         path={`${path}/${STATS_ROUTES.QUALITY_MANAGEMENT_SATISFACTION}`}
-                    >
-                        <Route
-                            exact
-                            path={`${path}/${STATS_ROUTES.QUALITY_MANAGEMENT_SATISFACTION}`}
-                            render={() => (
-                                <App
-                                    content={SatisfactionReport}
-                                    navbar={StatsNavbarContainer}
-                                />
-                            )}
-                        />
-                    </ProtectedRoute>
-                )}
+                        render={() => (
+                            <App
+                                content={SatisfactionReport}
+                                navbar={StatsNavbarContainer}
+                            />
+                        )}
+                    />
+                </ProtectedRoute>
                 <ProtectedRoute
                     path={`${path}/${STATS_ROUTES.SUPPORT_PERFORMANCE_CHANNELS}`}
                 >
@@ -442,10 +429,12 @@ export const StatsRoutes = () => {
                         )}
                     />
                 </ProtectedRoute>
-                <ProtectedRoute path={`${path}/${ROUTE_AUTOMATE_OVERVIEW}`}>
+                <ProtectedRoute
+                    path={`${path}/${STATS_ROUTES.AUTOMATE_OVERVIEW}`}
+                >
                     <Route
                         exact
-                        path={`${path}/${ROUTE_AUTOMATE_OVERVIEW}`}
+                        path={`${path}/${STATS_ROUTES.AUTOMATE_OVERVIEW}`}
                         render={() => (
                             <App
                                 content={AutomateStatsPaywall}
@@ -454,23 +443,20 @@ export const StatsRoutes = () => {
                         )}
                     />
                 </ProtectedRoute>
-
-                {isAiAgentStatsPageEnabled && (
-                    <ProtectedRoute
+                <ProtectedRoute
+                    path={`${path}/${STATS_ROUTES.AUTOMATE_AI_AGENTS}`}
+                >
+                    <Route
+                        exact
                         path={`${path}/${STATS_ROUTES.AUTOMATE_AI_AGENTS}`}
-                    >
-                        <Route
-                            exact
-                            path={`${path}/${STATS_ROUTES.AUTOMATE_AI_AGENTS}`}
-                            render={() => (
-                                <App
-                                    navbar={StatsNavbarContainer}
-                                    content={AutomateAiAgentStatsReport}
-                                />
-                            )}
-                        />
-                    </ProtectedRoute>
-                )}
+                        render={() => (
+                            <App
+                                navbar={StatsNavbarContainer}
+                                content={AutomateAiAgentStatsReport}
+                            />
+                        )}
+                    />
+                </ProtectedRoute>
                 <ProtectedRoute
                     path={`${path}/${ROUTE_OLD_PERFORMANCE_BY_FEATURES}`}
                 >
@@ -532,22 +518,20 @@ export const StatsRoutes = () => {
                         )}
                     />
                 </ProtectedRoute>
-                {isStandaloneSalesOverviewEnabled && (
-                    <ProtectedRoute
-                        path={`${path}/${ROUTE_AI_SALES_AGENT_OVERVIEW}`}
-                    >
-                        <Route
-                            exact
-                            path={`${path}/${ROUTE_AI_SALES_AGENT_OVERVIEW}`}
-                            render={() => (
-                                <App
-                                    content={AiSalesAgentSalesOverview}
-                                    navbar={StatsNavbarContainer}
-                                />
-                            )}
-                        />
-                    </ProtectedRoute>
-                )}
+                <ProtectedRoute
+                    path={`${path}/${STATS_ROUTES.AI_SALES_AGENT_OVERVIEW}`}
+                >
+                    <Route
+                        exact
+                        path={`${path}/${STATS_ROUTES.AI_SALES_AGENT_OVERVIEW}`}
+                        render={() => (
+                            <App
+                                content={AiSalesAgentSalesOverview}
+                                navbar={StatsNavbarContainer}
+                            />
+                        )}
+                    />
+                </ProtectedRoute>
             </Switch>
         </DefaultStatsFilters>
     )

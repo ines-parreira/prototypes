@@ -1,5 +1,6 @@
 import { FilterKey, StaticFilter } from 'models/stat/types'
 import { OptionalFilter } from 'pages/stats/common/filters/FiltersPanel'
+import { ReportsIDs } from 'pages/stats/custom-reports/constants'
 import { ChartType, ReportConfig } from 'pages/stats/custom-reports/types'
 import ArticleViewsGraph from 'pages/stats/help-center/components/ArticleViewsGraph/ArticleViewsGraph'
 import { ArticleViewsTrendCard } from 'pages/stats/help-center/components/ArticleViewsTrendCard/ArticleViewsTrendCard'
@@ -38,6 +39,7 @@ const HELP_CENTER_PERSISTENT_FILTERS: StaticFilter[] = [
 const HELP_CENTER_OPTIONAL_FILTERS: OptionalFilter[] = []
 
 export const HelpCenterReportConfig: ReportConfig<HelpCenterChart> = {
+    id: ReportsIDs.HelpCenterReportConfig,
     reportName: PAGE_TITLE_HELP_CENTER,
     reportPath: STATS_ROUTES.SUPPORT_PERFORMANCE_HELP_CENTER,
     reportFilters: {

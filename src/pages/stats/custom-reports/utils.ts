@@ -430,7 +430,6 @@ export const getReportsConfigSearchResult = (
                         ...report.config,
                         charts: filteredCharts,
                     },
-                    id: report.id,
                 })
             }
         }

@@ -37,7 +37,6 @@ jest.mock('pages/convert/common/components/ConvertSubscriptionModal', () => {
 })
 
 jest.mock('hooks/reporting/custom-reports/useCustomReportActions')
-
 const useCustomReportActionsMock = assumeMock(useCustomReportActions)
 
 function getIntegration(id: number, type: IntegrationType) {

@@ -42,24 +42,36 @@ describe('NavbarLink', () => {
         useReportChartRestrictionsMock.mockReturnValue({
             isRouteRestrictedToCurrentUser: () => false,
         } as any)
+    })
 
+    it('should render the link correctly', () => {
         render(
             <NavbarLink to={path} className="className" exact>
                 NavLink
             </NavbarLink>,
         )
-    })
 
-    it('should render the link correctly', () => {
         expect(screen.getByText('NavLink')).toBeInTheDocument()
     })
 
     it('should apply link class when the route matches', () => {
+        render(
+            <NavbarLink to={path} className="className" exact>
+                NavLink
+            </NavbarLink>,
+        )
+
         expect(screen.getByText('NavLink')).toHaveClass('link')
         expect(screen.getByText('NavLink')).toHaveClass('className')
     })
 
     it('should call useScrollActiveItemIntoView with isActive true', () => {
+        render(
+            <NavbarLink to={path} className="className" exact>
+                NavLink
+            </NavbarLink>,
+        )
+
         expect(useScrollActiveItemIntoViewMock).toHaveBeenCalledWith(
             { current: null },
             true,
@@ -87,25 +99,5 @@ describe('NavbarLink with isExact false', () => {
             false,
             true,
         )
-    })
-})
-
-describe('NavbarLink with useReportChartRestrictions set to false', () => {
-    useRouteMatchMock.mockReturnValue({
-        isExact: true,
-    } as any)
-
-    useReportChartRestrictionsMock.mockReturnValue({
-        isRouteRestrictedToCurrentUser: () => true,
-    } as any)
-
-    render(
-        <NavbarLink to={path} className="className" exact>
-            NavLink
-        </NavbarLink>,
-    )
-
-    it('should render the link correctly', () => {
-        expect(screen.queryByText('NavLink')).not.toBeInTheDocument()
     })
 })

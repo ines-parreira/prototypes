@@ -1,5 +1,6 @@
 import { FilterComponentKey, FilterKey, StaticFilter } from 'models/stat/types'
 import { OptionalFilter } from 'pages/stats/common/filters/FiltersPanel'
+import { ReportsIDs } from 'pages/stats/custom-reports/constants'
 import {
     ChartType,
     DataExportFormat,
@@ -29,6 +30,7 @@ export const VOICE_AGENTS_PERSISTENT_FILTERS: StaticFilter[] = [
 ]
 
 export const VoiceAgentsReportConfig: ReportConfig<VoiceAgentsChart> = {
+    id: ReportsIDs.VoiceAgentsReportConfig,
     reportName: VOICE_AGENTS_PAGE_TITLE,
     reportPath: STATS_ROUTES.VOICE_AGENTS,
     reportFilters: {

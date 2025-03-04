@@ -1,30 +1,25 @@
 import React, { useMemo } from 'react'
 
-import classNames from 'classnames'
 import { useFlags } from 'launchdarkly-react-client-sdk'
-
-import { Badge } from '@gorgias/merchant-ui-kit'
 
 import cssNavbar from 'assets/css/navbar.less'
 import { FeatureFlagKey } from 'config/featureFlags'
 import useAppSelector from 'hooks/useAppSelector'
 import NavbarBlock from 'pages/common/components/navbar/NavbarBlock'
-import NavbarLink, {
-    NavbarLinkProps,
-} from 'pages/common/components/navbar/NavbarLink'
 import ConvertStatsNavbar from 'pages/convert/common/components/ConvertStatsNavbar'
 import { STATS_ROUTE_PREFIX } from 'pages/stats/common/components/constants'
+import {
+    COMMON_NAV_LINK_PROPS,
+    StatsNavLink,
+} from 'pages/stats/common/components/StatsNavLink'
 import { DashboardsNavbarBlock } from 'pages/stats/custom-reports/DashboardsNavbarBlock/DashboardsNavbarBlock'
+import { ProtectedRoute } from 'pages/stats/report-chart-restrictions/ProtectedRoute'
 import AutomateStatsNavbar from 'pages/stats/self-service/AutomateStatsNavbar'
 import VoiceStatsNavbarItem from 'pages/stats/voice/components/VoiceStatsNavbar/VoiceStatsNavbarItem'
 import { STATS_ROUTES } from 'routes/constants'
 import { getHasAutomate } from 'state/billing/selectors'
 import { getCurrentUser } from 'state/currentUser/selectors'
 import { isTeamLead } from 'utils'
-
-const COMMON_NAV_LINK_PROPS: Partial<NavbarLinkProps> = {
-    exact: true,
-}
 
 type FeatureFlag = boolean | undefined
 type AutoQANavBarLinkProps = {
@@ -38,8 +33,6 @@ export default function StatsNavbarView() {
     const user = useAppSelector(getCurrentUser)
     const hasAutomate = useAppSelector(getHasAutomate)
     const isTeamLeadOrAdmin = isTeamLead(user)
-    const isHelpCenterAnalyticsEnabled: FeatureFlag =
-        useFlags()[FeatureFlagKey.HelpCenterAnalytics]
     const isNewSatisfactionReportEnabled: FeatureFlag =
         useFlags()[FeatureFlagKey.NewSatisfactionReport]
     const isAnalyticsCustomReports: FeatureFlag =
@@ -54,36 +47,17 @@ export default function StatsNavbarView() {
         <>
             <NavbarBlock icon="adjust" title="Live">
                 <div className={cssNavbar.menu}>
-                    <div
-                        className={classNames(
-                            cssNavbar['link-wrapper'],
-                            cssNavbar.isNested,
-                        )}
-                    >
-                        <NavbarLink
-                            {...COMMON_NAV_LINK_PROPS}
-                            to={`${STATS_ROUTE_PREFIX}live-overview`}
-                        >
-                            Overview
-                        </NavbarLink>
-                    </div>
-                    <div
-                        className={classNames(
-                            cssNavbar['link-wrapper'],
-                            cssNavbar.isNested,
-                        )}
-                    >
-                        <NavbarLink
-                            {...COMMON_NAV_LINK_PROPS}
-                            to={`${STATS_ROUTE_PREFIX}live-agents`}
-                        >
-                            Agents
-                        </NavbarLink>
-                    </div>
+                    <StatsNavLink
+                        to={`${STATS_ROUTE_PREFIX}live-overview`}
+                        title={'Overview'}
+                    />
+                    <StatsNavLink
+                        to={`${STATS_ROUTE_PREFIX}live-agents`}
+                        title={'Agents'}
+                    />
                     <VoiceStatsNavbarItem
                         to={`${STATS_ROUTE_PREFIX}live-voice`}
                         title="Voice"
-                        commonNavLinkProps={COMMON_NAV_LINK_PROPS}
                     />
                 </div>
             </NavbarBlock>
@@ -96,118 +70,45 @@ export default function StatsNavbarView() {
 
             <NavbarBlock icon="emoji_events" title="Support Performance">
                 <div className={cssNavbar.menu}>
-                    <div
-                        className={classNames(
-                            cssNavbar['link-wrapper'],
-                            cssNavbar.isNested,
-                        )}
-                    >
-                        <NavbarLink
-                            {...COMMON_NAV_LINK_PROPS}
-                            to={`${STATS_ROUTE_PREFIX}${STATS_ROUTES.SUPPORT_PERFORMANCE_OVERVIEW}`}
-                        >
-                            Overview
-                        </NavbarLink>
-                    </div>
-                    <div
-                        className={classNames(
-                            cssNavbar['link-wrapper'],
-                            cssNavbar.isNested,
-                        )}
-                    >
-                        <NavbarLink
-                            {...COMMON_NAV_LINK_PROPS}
-                            to={`${STATS_ROUTE_PREFIX}${STATS_ROUTES.SUPPORT_PERFORMANCE_AGENTS}`}
-                        >
-                            Agents
-                        </NavbarLink>
-                    </div>
+                    <StatsNavLink
+                        to={`${STATS_ROUTE_PREFIX}${STATS_ROUTES.SUPPORT_PERFORMANCE_OVERVIEW}`}
+                        title={'Overview'}
+                    />
 
-                    <div
-                        className={classNames(
-                            cssNavbar['link-wrapper'],
-                            cssNavbar.isNested,
-                        )}
-                        data-candu-id="statistics-link-busiest-times-of-days"
-                    >
-                        <NavbarLink
-                            {...COMMON_NAV_LINK_PROPS}
-                            to={`${STATS_ROUTE_PREFIX}busiest-times-of-days`}
-                        >
-                            {BUSIEST_TIMES_OF_DAYS_NAV_LABEL}
-                        </NavbarLink>
-                    </div>
-                    <div
-                        className={classNames(
-                            cssNavbar['link-wrapper'],
-                            cssNavbar.isNested,
-                        )}
-                    >
-                        <NavbarLink
-                            {...COMMON_NAV_LINK_PROPS}
-                            to={`${STATS_ROUTE_PREFIX}channels`}
-                        >
-                            Channels
-                        </NavbarLink>
-                    </div>
+                    <StatsNavLink
+                        to={`${STATS_ROUTE_PREFIX}${STATS_ROUTES.SUPPORT_PERFORMANCE_AGENTS}`}
+                        title={'Agents'}
+                    />
 
-                    {!isNewSatisfactionReportEnabled && (
-                        <div
-                            className={classNames(
-                                cssNavbar['link-wrapper'],
-                                cssNavbar.isNested,
-                            )}
-                        >
-                            <NavbarLink
-                                {...COMMON_NAV_LINK_PROPS}
-                                to={`${STATS_ROUTE_PREFIX}satisfaction`}
-                            >
-                                Satisfaction
-                            </NavbarLink>
-                        </div>
-                    )}
-                    <div
-                        className={classNames(
-                            cssNavbar['link-wrapper'],
-                            cssNavbar.isNested,
-                        )}
-                    >
-                        <NavbarLink
-                            {...COMMON_NAV_LINK_PROPS}
-                            to={`${STATS_ROUTE_PREFIX}revenue`}
-                        >
-                            Revenue
-                        </NavbarLink>
-                    </div>
-                    {isHelpCenterAnalyticsEnabled && (
-                        <div
-                            className={classNames(
-                                cssNavbar['link-wrapper'],
-                                cssNavbar.isNested,
-                            )}
-                            data-candu-id="statistics-link-help-center"
-                        >
-                            <NavbarLink
-                                {...COMMON_NAV_LINK_PROPS}
-                                to={`${STATS_ROUTE_PREFIX}help-center`}
-                            >
-                                Help Center
-                            </NavbarLink>
-                        </div>
-                    )}
-                    <div
-                        className={classNames(
-                            cssNavbar['link-wrapper'],
-                            cssNavbar.isNested,
-                        )}
-                    >
-                        <NavbarLink
-                            {...COMMON_NAV_LINK_PROPS}
-                            to={`${STATS_ROUTE_PREFIX}slas`}
-                        >
-                            SLAs
-                        </NavbarLink>
-                    </div>
+                    <StatsNavLink
+                        to={`${STATS_ROUTE_PREFIX}${STATS_ROUTES.SUPPORT_PERFORMANCE_BUSIEST_TIMES}`}
+                        title={BUSIEST_TIMES_OF_DAYS_NAV_LABEL}
+                        canduId={'statistics-link-busiest-times-of-days'}
+                    />
+
+                    <StatsNavLink
+                        to={`${STATS_ROUTE_PREFIX}${STATS_ROUTES.SUPPORT_PERFORMANCE_CHANNELS}`}
+                        title={'Channels'}
+                    />
+                    <StatsNavLink
+                        to={`${STATS_ROUTE_PREFIX}${STATS_ROUTES.SUPPORT_PERFORMANCE_SATISFACTION}`}
+                        title={'Satisfaction'}
+                    />
+                    <StatsNavLink
+                        to={`${STATS_ROUTE_PREFIX}${STATS_ROUTES.SUPPORT_PERFORMANCE_REVENUE}`}
+                        title={'Revenue'}
+                    />
+
+                    <StatsNavLink
+                        to={`${STATS_ROUTE_PREFIX}${STATS_ROUTES.SUPPORT_PERFORMANCE_HELP_CENTER}`}
+                        title={'Help Center'}
+                        canduId={'statistics-link-help-center'}
+                    />
+
+                    <StatsNavLink
+                        to={`${STATS_ROUTE_PREFIX}${STATS_ROUTES.SUPPORT_PERFORMANCE_SERVICE_LEVEL_AGREEMENT}`}
+                        title={'SLAs'}
+                    />
                     {!isNewSatisfactionReportEnabled && (
                         <AutoQANavBarLink
                             isAvailable={isAutoQANavLinkAvailable}
@@ -217,61 +118,25 @@ export default function StatsNavbarView() {
             </NavbarBlock>
             <NavbarBlock icon="lightbulb" title="Ticket Insights">
                 <div className={cssNavbar.menu}>
-                    <div
-                        className={classNames(
-                            cssNavbar['link-wrapper'],
-                            cssNavbar.isNested,
-                        )}
-                    >
-                        <NavbarLink
-                            {...COMMON_NAV_LINK_PROPS}
-                            to={`${STATS_ROUTE_PREFIX}ticket-fields`}
-                        >
-                            Ticket Fields
-                        </NavbarLink>
-                    </div>
+                    <StatsNavLink
+                        to={`${STATS_ROUTE_PREFIX}${STATS_ROUTES.TICKET_INSIGHTS_TICKET_FIELDS}`}
+                        title={'Ticket Fields'}
+                    />
+                    <StatsNavLink
+                        to={`${STATS_ROUTE_PREFIX}${STATS_ROUTES.TICKET_INSIGHTS_TAGS}`}
+                        title={'Tags'}
+                    />
 
-                    <div
-                        className={classNames(
-                            cssNavbar['link-wrapper'],
-                            cssNavbar.isNested,
-                        )}
-                    >
-                        <NavbarLink
-                            {...COMMON_NAV_LINK_PROPS}
-                            to={`${STATS_ROUTE_PREFIX}tags`}
-                        >
-                            Tags
-                        </NavbarLink>
-                    </div>
+                    <StatsNavLink
+                        to={`${STATS_ROUTE_PREFIX}${STATS_ROUTES.TICKET_INSIGHTS_MACROS}`}
+                        title={'Macros'}
+                    />
 
-                    <div
-                        className={classNames(
-                            cssNavbar['link-wrapper'],
-                            cssNavbar.isNested,
-                        )}
-                    >
-                        <NavbarLink
-                            {...COMMON_NAV_LINK_PROPS}
-                            to={`${STATS_ROUTE_PREFIX}macros`}
-                        >
-                            Macros
-                        </NavbarLink>
-                    </div>
-                    <div
-                        className={classNames(
-                            cssNavbar['link-wrapper'],
-                            cssNavbar.isNested,
-                        )}
-                    >
-                        <NavbarLink
-                            {...COMMON_NAV_LINK_PROPS}
-                            to={`${STATS_ROUTE_PREFIX}intents`}
-                            data-candu-id="statistics-link-intents"
-                        >
-                            Intents
-                        </NavbarLink>
-                    </div>
+                    <StatsNavLink
+                        to={`${STATS_ROUTE_PREFIX}${STATS_ROUTES.TICKET_INSIGHTS_INTENTS}`}
+                        title={'Intents'}
+                        canduId={'statistics-link-intents'}
+                    />
                 </div>
             </NavbarBlock>
             {isNewSatisfactionReportEnabled && (
@@ -280,25 +145,12 @@ export default function StatsNavbarView() {
                         <AutoQANavBarLink
                             isAvailable={isAutoQANavLinkAvailable}
                         />
-                        <div
-                            className={classNames(
-                                cssNavbar['link-wrapper'],
-                                cssNavbar.isNested,
-                            )}
-                        >
-                            <NavbarLink
-                                {...COMMON_NAV_LINK_PROPS}
-                                to={`${STATS_ROUTE_PREFIX}quality-management-satisfaction`}
-                            >
-                                Satisfaction
-                                <Badge
-                                    type={'blue'}
-                                    className={cssNavbar.badge}
-                                >
-                                    {NEW_NAV_LABEL}
-                                </Badge>
-                            </NavbarLink>
-                        </div>
+
+                        <StatsNavLink
+                            to={`${STATS_ROUTE_PREFIX}${STATS_ROUTES.QUALITY_MANAGEMENT_SATISFACTION}`}
+                            title={'Satisfaction'}
+                            isNew={true}
+                        />
                     </div>
                 </NavbarBlock>
             )}
@@ -315,16 +167,22 @@ export default function StatsNavbarView() {
                 </div>
             </NavbarBlock>
             <NavbarBlock title={'Voice'} icon={'phone'}>
-                <VoiceStatsNavbarItem
-                    to={`${STATS_ROUTE_PREFIX}voice-overview`}
-                    title={'Overview'}
-                    commonNavLinkProps={COMMON_NAV_LINK_PROPS}
-                />
-                <VoiceStatsNavbarItem
-                    to={`${STATS_ROUTE_PREFIX}voice-agents`}
-                    title={'Agents'}
-                    commonNavLinkProps={COMMON_NAV_LINK_PROPS}
-                />
+                <ProtectedRoute
+                    path={`${STATS_ROUTE_PREFIX}${STATS_ROUTES.VOICE_AGENTS}`}
+                >
+                    <VoiceStatsNavbarItem
+                        to={`${STATS_ROUTE_PREFIX}${STATS_ROUTES.VOICE_AGENTS}`}
+                        title={'Overview'}
+                    />
+                </ProtectedRoute>
+                <ProtectedRoute
+                    path={`${STATS_ROUTE_PREFIX}${STATS_ROUTES.VOICE_AGENTS}`}
+                >
+                    <VoiceStatsNavbarItem
+                        to={`${STATS_ROUTE_PREFIX}${STATS_ROUTES.VOICE_AGENTS}`}
+                        title={'Agents'}
+                    />
+                </ProtectedRoute>
             </NavbarBlock>
         </>
     )
@@ -336,18 +194,6 @@ function AutoQANavBarLink({ isAvailable }: AutoQANavBarLinkProps) {
     }
 
     return (
-        <div
-            className={classNames(
-                cssNavbar['link-wrapper'],
-                cssNavbar.isNested,
-            )}
-        >
-            <NavbarLink
-                {...COMMON_NAV_LINK_PROPS}
-                to={`${STATS_ROUTE_PREFIX}auto-qa`}
-            >
-                Auto QA
-            </NavbarLink>
-        </div>
+        <StatsNavLink to={`${STATS_ROUTE_PREFIX}auto-qa`} title={'Auto QA'} />
     )
 }

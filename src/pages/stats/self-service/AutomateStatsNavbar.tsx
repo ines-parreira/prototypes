@@ -10,29 +10,24 @@ import AutomateNavbarPaywallNavbarLink from 'pages/automate/common/components/Au
 import NavbarLink, {
     NavbarLinkProps,
 } from 'pages/common/components/navbar/NavbarLink'
-import {
-    LINK_AI_SALES_AGENT_TEXT,
-    ROUTE_AI_SALES_AGENT_OVERVIEW,
-} from 'pages/stats/aiSalesAgent/constants'
-import { STATS_ROUTES } from 'routes/constants'
-import { getHasAutomate } from 'state/billing/selectors'
-
+import { LINK_AI_SALES_AGENT_TEXT } from 'pages/stats/aiSalesAgent/constants'
 import {
     PAGE_TITLE_AI_AGENT,
     PAGE_TITLE_OVERVIEW,
     PAGE_TITLE_PERFORMANCE_BY_FEATURES,
-    ROUTE_AUTOMATE_OVERVIEW,
     ROUTE_AUTOMATE_PERFORMANCE_BY_FEATURES,
-} from './constants'
+} from 'pages/stats/self-service/constants'
+import { STATS_ROUTES } from 'routes/constants'
+import { getHasAutomate } from 'state/billing/selectors'
 
 type Props = {
     commonNavLinkProps: Partial<NavbarLinkProps>
 }
 
-const OVERVIEW_PATH = `/app/stats/${ROUTE_AUTOMATE_OVERVIEW}`
+const OVERVIEW_PATH = `/app/stats/${STATS_ROUTES.AUTOMATE_OVERVIEW}`
 const AI_AGENT_PATH = `/app/stats/${STATS_ROUTES.AUTOMATE_AI_AGENTS}`
 const PERFORMANCE_BY_FEATURE_PATH = `/app/stats/${ROUTE_AUTOMATE_PERFORMANCE_BY_FEATURES}`
-const AI_SALES_AGENT_PATH = `/app/stats/${ROUTE_AI_SALES_AGENT_OVERVIEW}`
+const AI_SALES_AGENT_PATH = `/app/stats/${STATS_ROUTES.AI_SALES_AGENT_OVERVIEW}`
 
 export default function AutomateStatsNavbar({ commonNavLinkProps }: Props) {
     const hasAutomate = useAppSelector(getHasAutomate)
@@ -43,6 +38,7 @@ export default function AutomateStatsNavbar({ commonNavLinkProps }: Props) {
     const isAiSalesAgentEnabled: boolean | undefined =
         useFlags()[FeatureFlagKey.StandaloneAiSalesAnalyticsPage]
 
+    //TODO after Automate reports refactoring is done
     return (
         <div className={cssNavbar.menu}>
             {!hasAutomate ? (

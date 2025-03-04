@@ -20,6 +20,7 @@ import {
 import { RevenueAddonApiClientProvider } from 'pages/convert/common/hooks/useConvertApi'
 import { HelpCenterApiClientProvider } from 'pages/settings/helpCenter/hooks/useHelpCenterApi'
 import { SupportedLocalesProvider } from 'pages/settings/helpCenter/providers/SupportedLocales'
+import AiSalesAgentSalesOverview from 'pages/stats/aiSalesAgent/AiSalesAgentSalesOverview'
 import AutomateAiAgentStatsReport from 'pages/stats/automate/ai-agent/AutomateAiAgentStatsReport'
 import AutomateStatsPaywall from 'pages/stats/automate/AutomateStatsPaywall'
 import AutomateIntents from 'pages/stats/AutomateIntents'
@@ -210,6 +211,8 @@ const RevenueAddonApiClientProviderMock = assumeMock(
 )
 jest.mock('pages/stats/support-performance/auto-qa/AutoQA')
 const AutoQAMock = assumeMock(AutoQA)
+jest.mock('pages/stats/aiSalesAgent/AiSalesAgentSalesOverview')
+const AiSalesAgentSalesOverviewMock = assumeMock(AiSalesAgentSalesOverview)
 
 describe('StatsRoutes', () => {
     beforeEach(() => {
@@ -245,6 +248,7 @@ describe('StatsRoutes', () => {
         HelpCenterStatsMock.mockImplementation(() => <div />)
         VoiceOverviewMock.mockImplementation(() => <div />)
         VoiceAgentsMock.mockImplementation(() => <div />)
+        AiSalesAgentSalesOverviewMock.mockImplementation(() => <div />)
         RevenueAddonApiClientProviderMock.mockImplementation(({ children }) => (
             <>{children}</>
         ))
@@ -349,14 +353,16 @@ describe('StatsRoutes', () => {
             route: `${STATS_ROUTE_PREFIX}${STATS_ROUTES.AUTOMATE_AI_AGENTS}`,
             mock: AutomateAiAgentStatsReportMock,
         },
+        {
+            route: `${STATS_ROUTE_PREFIX}${STATS_ROUTES.AI_SALES_AGENT_OVERVIEW}`,
+            mock: AiSalesAgentSalesOverviewMock,
+        },
     ])('should render %p page', ({ route, mock }) => {
         mockFlags({
-            // SatisfactionMock
             [FeatureFlagKey.NewSatisfactionReport]: true,
-            // AiAgentStatsFiltersMock
             [FeatureFlagKey.AIAgentStatsPage]: true,
-            // CustomReportsMock
             [FeatureFlagKey.AnalyticsCustomReports]: true,
+            [FeatureFlagKey.StandaloneAiSalesAnalyticsPage]: true,
         })
 
         render(

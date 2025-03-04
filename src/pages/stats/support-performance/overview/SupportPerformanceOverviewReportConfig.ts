@@ -3,6 +3,7 @@ import {
     fetchWorkloadPerChannelDistributionForPreviousPeriod,
 } from 'hooks/reporting/distributions'
 import { FilterKey } from 'models/stat/types'
+import { ReportsIDs } from 'pages/stats/custom-reports/constants'
 import {
     ChartType,
     DataExportFormat,
@@ -62,6 +63,7 @@ export enum OverviewChart {
 
 export const SupportPerformanceOverviewReportConfig: ReportConfig<OverviewChart> =
     {
+        id: ReportsIDs.SupportPerformanceOverviewReportConfig,
         reportName: SUPPORT_PERFORMANCE_OVERVIEW_PAGE_TITLE,
         reportPath: STATS_ROUTES.SUPPORT_PERFORMANCE_OVERVIEW,
         charts: {

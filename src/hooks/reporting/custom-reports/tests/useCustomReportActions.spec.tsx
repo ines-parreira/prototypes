@@ -30,6 +30,7 @@ import {
     useCustomReportActions,
 } from 'hooks/reporting/custom-reports/useCustomReportActions'
 import { CustomReportChildType } from 'models/stat/types'
+import { MAX_DASHBOARDS_ALLOWED } from 'pages/stats/custom-reports/constants'
 import * as constants from 'pages/stats/custom-reports/constants'
 import { CustomReportSchema } from 'pages/stats/custom-reports/types'
 import { getErrorMessage } from 'pages/stats/custom-reports/utils'
@@ -60,10 +61,6 @@ const getListAnalyticsCustomReportsQueryOptionsMock = assumeMock(
 const getGetAnalyticsCustomReportQueryOptionsMock = assumeMock(
     getGetAnalyticsCustomReportQueryOptions,
 )
-jest.mock('pages/stats/custom-reports/constants', () => ({
-    MAX_DASHBOARDS_ALLOWED: 3,
-    LIMIT_REACHED_MESSAGE: 'Limit reached',
-}))
 
 const mockedDispatch = jest.fn()
 const onCloseMock = jest.fn()
@@ -109,12 +106,11 @@ const createMutateMock = jest.fn() as jest.MockedFunction<
     UseMutateFunction<
         HttpResponse<AnalyticsCustomReport>,
         unknown,
-        { data: CreateAnalyticsCustomReportBody },
-        unknown
+        { data: CreateAnalyticsCustomReportBody }
     >
 >
 const deleteMutateMock = jest.fn() as jest.MockedFunction<
-    UseMutateFunction<HttpResponse<void>, unknown, { id: number }, unknown>
+    UseMutateFunction<HttpResponse<void>, unknown, { id: number }>
 >
 const updateMutationMock = jest.fn() as jest.MockedFunction<
     UseMutateFunction<
@@ -819,44 +815,18 @@ describe('useCustomReportActions', () => {
                 queryKey: invalidationKeys,
                 data: {
                     data: {
-                        data: [
-                            {
-                                id: 1,
-                                name: 'B-Test Report',
-                                analytics_filter_id: undefined,
-                                children: [
-                                    {
-                                        config_id: '',
-                                        type: CustomReportChildType.Chart,
-                                    },
-                                ],
-                                emoji: '',
-                            },
-                            {
-                                id: 2,
-                                name: 'A-Test Report',
-                                analytics_filter_id: undefined,
-                                children: [
-                                    {
-                                        config_id: '',
-                                        type: CustomReportChildType.Chart,
-                                    },
-                                ],
-                                emoji: '',
-                            },
-                            {
-                                id: 3,
-                                name: 'A-Test Report',
-                                analytics_filter_id: undefined,
-                                children: [
-                                    {
-                                        config_id: '',
-                                        type: CustomReportChildType.Chart,
-                                    },
-                                ],
-                                emoji: '',
-                            },
-                        ],
+                        data: Array(MAX_DASHBOARDS_ALLOWED + 1).fill({
+                            id: 1,
+                            name: 'B-Test Report',
+                            analytics_filter_id: undefined,
+                            children: [
+                                {
+                                    config_id: '',
+                                    type: CustomReportChildType.Chart,
+                                },
+                            ],
+                            emoji: '',
+                        }),
                     },
                 },
             } as any)

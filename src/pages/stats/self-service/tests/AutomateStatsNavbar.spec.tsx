@@ -32,7 +32,7 @@ describe('<AutomateStatsNavbar />', () => {
 
     beforeEach(() => {
         useReportChartRestrictionsMock.mockReturnValue({
-            isRouteRestrictedToCurrentUser: () => false,
+            isReportRestrictedToCurrentUser: () => false,
         } as any)
     })
 

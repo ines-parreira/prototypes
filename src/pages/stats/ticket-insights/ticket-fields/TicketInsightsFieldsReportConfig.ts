@@ -1,5 +1,6 @@
 import { FilterComponentKey, FilterKey, StaticFilter } from 'models/stat/types'
 import { AUTO_QA_FILTER_KEYS } from 'pages/stats/common/filters/constants'
+import { ReportsIDs } from 'pages/stats/custom-reports/constants'
 import {
     ChartType,
     DataExportFormat,
@@ -40,6 +41,7 @@ export const TICKET_INSIGHTS_PERSISTENT_FILTERS = [
 ] satisfies StaticFilter[]
 
 export const TicketFieldsReportConfig: ReportConfig<TicketFieldsChart> = {
+    id: ReportsIDs.TicketFieldsReportConfig,
     reportName: TICKET_INSIGHTS_PAGE_TITLE,
     reportPath: STATS_ROUTES.TICKET_INSIGHTS_TICKET_FIELDS,
     reportFilters: {

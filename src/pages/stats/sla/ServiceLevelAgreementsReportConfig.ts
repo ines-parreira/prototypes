@@ -8,6 +8,7 @@ import { fetchTicketSlaAchievementRateTrend } from 'hooks/reporting/sla/useTicke
 import { TicketSLAStatus } from 'models/reporting/cubes/sla/TicketSLACube'
 import { FilterKey, StaticFilter } from 'models/stat/types'
 import { AUTO_QA_FILTER_KEYS } from 'pages/stats/common/filters/constants'
+import { ReportsIDs } from 'pages/stats/custom-reports/constants'
 import {
     ChartType,
     DataExportFormat,
@@ -57,6 +58,7 @@ export const SERVICE_LEVEL_PERSISTENT_FILTERS = [
 
 export const ServiceLevelAgreementsReportConfig: ReportConfig<ServiceLevelAgreementsChart> =
     {
+        id: ReportsIDs.ServiceLevelAgreementsReportConfig,
         reportName: SERVICE_LEVEL_AGREEMENT_PAGE_TITLE,
         reportPath: STATS_ROUTES.SUPPORT_PERFORMANCE_SERVICE_LEVEL_AGREEMENT,
         reportFilters: {

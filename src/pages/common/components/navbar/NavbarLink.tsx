@@ -6,7 +6,6 @@ import { match, NavLink, NavLinkProps, useRouteMatch } from 'react-router-dom'
 
 import css from 'assets/css/navbar.less'
 import useScrollActiveItemIntoView from 'hooks/useScrollActiveItemIntoView/useScrollActiveItemIntoView'
-import { ProtectedRoute } from 'pages/stats/report-chart-restrictions/ProtectedRoute'
 
 export type NavbarLinkProps = Pick<
     NavLinkProps,
@@ -42,15 +41,13 @@ const NavbarLink = ({
     useScrollActiveItemIntoView(linkRef, isActive, true)
 
     return (
-        <ProtectedRoute path={path}>
-            <NavLink
-                ref={linkRef}
-                className={classnames(css.link, className)}
-                activeClassName="active"
-                isActive={computeIsActive}
-                {...props}
-            />
-        </ProtectedRoute>
+        <NavLink
+            ref={linkRef}
+            className={classnames(css.link, className)}
+            activeClassName="active"
+            isActive={computeIsActive}
+            {...props}
+        />
     )
 }
 

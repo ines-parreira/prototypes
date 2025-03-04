@@ -14,6 +14,7 @@ import { Integration } from 'models/integration/types'
 import { ReportingGranularity } from 'models/reporting/types'
 import { StaticFilter, StatsFilters } from 'models/stat/types'
 import { AiSalesAgentChart } from 'pages/stats/aiSalesAgent/AiSalesAgentMetricsConfig'
+import { AutomateAiAgentsChart } from 'pages/stats/automate/ai-agent/AutomateAiAgentsReportConfig'
 import { AutomateOverviewChart } from 'pages/stats/automate/overview/AutomateOverviewReportConfig'
 import { OptionalFilter } from 'pages/stats/common/filters/FiltersPanel'
 import { MetricValueFormat } from 'pages/stats/common/utils'
@@ -175,6 +176,7 @@ export type ChartConfig = {
 }
 
 export type ReportConfig<T extends string> = {
+    id: ReportsIDs
     reportName: string
     reportPath: string
     charts: Record<T, ChartConfig>
@@ -198,11 +200,11 @@ export type AvailableChartIds =
     | typeof CampaignsChart
     | typeof CampaignsLegacyChart
     | typeof AiSalesAgentChart
+    | typeof AutomateAiAgentsChart
 
 export type ReportChildrenConfig = {
     type: AvailableChartIds
     config: ReportConfig<string>
-    id: ReportsIDs
 }[]
 
 export type ReportsModalConfig = {

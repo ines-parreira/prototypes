@@ -1,5 +1,6 @@
 import { FilterKey, StaticFilter } from 'models/stat/types'
 import { AUTO_QA_FILTER_KEYS } from 'pages/stats/common/filters/constants'
+import { ReportsIDs } from 'pages/stats/custom-reports/constants'
 import {
     ChartType,
     DataExportFormat,
@@ -49,6 +50,7 @@ export const SATISFACTION_OPTIONAL_FILTERS = [
 ]
 
 export const SatisfactionReportConfig: ReportConfig<SatisfactionChart> = {
+    id: ReportsIDs.SatisfactionReportConfig,
     reportName: SATISFACTION_TITLE,
     reportPath: STATS_ROUTES.QUALITY_MANAGEMENT_SATISFACTION,
     reportFilters: {

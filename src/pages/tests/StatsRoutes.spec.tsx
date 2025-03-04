@@ -73,10 +73,6 @@ describe('<StatsRoutes/>', () => {
         },
     } as RootState
 
-    beforeEach(() => {
-        mockHistory.replace('/app')
-    })
-
     const mockNavBarContextValues: NavBarContextType = {
         navBarDisplay: NavBarDisplayMode.Open,
         setNavBarDisplay: jest.fn(),
@@ -93,7 +89,7 @@ describe('<StatsRoutes/>', () => {
             <NavBarContext.Provider value={mockNavBarContextValues}>
                 <Provider store={configureMockStore([thunk])(defaultState)}>
                     <Switch>
-                        <Route path={`/stats`}>
+                        <Route path={`/app/stats`}>
                             <StatsRoutes />
                         </Route>
                     </Switch>
@@ -108,7 +104,7 @@ describe('<StatsRoutes/>', () => {
     it('should make Voice analytics route available', async () => {
         const { findByText } = renderStatsRoutes()
 
-        act(() => mockHistory.push('/stats/voice-overview'))
+        act(() => mockHistory.push('/app/stats/voice-overview'))
 
         expect(await findByText(VOICE_OVERVIEW_PAGE_TITLE)).toBeInTheDocument()
     })
@@ -116,7 +112,7 @@ describe('<StatsRoutes/>', () => {
     it('should make Voice agents route available', async () => {
         const { findByText } = renderStatsRoutes()
 
-        act(() => mockHistory.push('/stats/voice-agents'))
+        act(() => mockHistory.push('/app/stats/voice-agents'))
 
         expect(await findByText('Voice Agents')).toBeInTheDocument()
     })
@@ -128,7 +124,7 @@ describe('<StatsRoutes/>', () => {
 
         const { findByText } = renderStatsRoutes()
 
-        act(() => mockHistory.push('/stats/automate-ai-agent'))
+        act(() => mockHistory.push('/app/stats/automate-ai-agent'))
 
         expect(await findByText('AI Agent Stats')).toBeInTheDocument()
     })
@@ -140,7 +136,7 @@ describe('<StatsRoutes/>', () => {
 
         const { container } = renderStatsRoutes()
 
-        act(() => mockHistory.push('/stats/automate-ai-agent'))
+        act(() => mockHistory.push('/app/stats/automate-ai-agent'))
 
         expect(container).toBeEmptyDOMElement()
     })

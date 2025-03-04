@@ -18,7 +18,7 @@ describe('useRestrictedReportsConfig', () => {
         const restrictedReport = SupportPerformanceOverviewReportConfig
         useReportRestrictionsMock.mockReturnValue({
             reportRestrictionsMap: {
-                [restrictedReport.reportPath]: true,
+                [restrictedReport.id]: true,
             },
             chartRestrictionsMap: {},
         })
@@ -57,7 +57,8 @@ describe('useRestrictedReportsConfig', () => {
         )
         const overviewReport = supportPerformanceSection?.children.find(
             (report) =>
-                report.id === ReportsIDs.SupportPerformanceOverviewReportConfig,
+                report.config.id ===
+                ReportsIDs.SupportPerformanceOverviewReportConfig,
         )
         expect(overviewReport).toBeTruthy()
         expect(overviewReport?.config.charts[restrictedChart]).toBeUndefined()

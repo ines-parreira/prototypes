@@ -1,5 +1,6 @@
 import { FilterKey, StaticFilter } from 'models/stat/types'
 import { AUTO_QA_FILTER_KEYS } from 'pages/stats/common/filters/constants'
+import { ReportsIDs } from 'pages/stats/custom-reports/constants'
 import {
     ChartType,
     DataExportFormat,
@@ -47,6 +48,7 @@ export const AUTO_QA_OPTIONAL_FILTERS = [
     ...AUTO_QA_FILTER_KEYS,
 ]
 export const AutoQAReportConfig: ReportConfig<AutoQAChart> = {
+    id: ReportsIDs.AutoQAReportConfig,
     reportName: AUTO_QA_PAGE_TITLE,
     reportPath: STATS_ROUTES.QUALITY_MANAGEMENT_AUTO_QA,
     charts: {

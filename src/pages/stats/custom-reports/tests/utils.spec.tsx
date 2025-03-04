@@ -303,7 +303,6 @@ describe('getSearchConfig', () => {
                 category: 'Support Performance',
                 children: [
                     {
-                        id: ReportsIDs.SupportPerformanceOverviewReportConfig,
                         type: OverviewChart,
                         config: {
                             ...SupportPerformanceOverviewReportConfig,
@@ -318,7 +317,6 @@ describe('getSearchConfig', () => {
                         },
                     },
                     {
-                        id: ReportsIDs.SupportPerformanceAgentsReportConfig,
                         config: {
                             charts: {
                                 [AgentsChart.TopCSATPerformers]: {
@@ -334,6 +332,7 @@ describe('getSearchConfig', () => {
                                     chartType: ChartType.Card,
                                 },
                             },
+                            id: ReportsIDs.SupportPerformanceAgentsReportConfig,
                             reportFilters: {
                                 persistent: AGENT_PERSISTENT_FILTERS,
                                 optional: AGENTS_OPTIONAL_FILTERS,
@@ -349,7 +348,6 @@ describe('getSearchConfig', () => {
                 category: 'Quality management',
                 children: [
                     {
-                        id: ReportsIDs.SatisfactionReportConfig,
                         type: SatisfactionChart,
                         config: {
                             ...SatisfactionReportConfig,
@@ -389,7 +387,6 @@ describe('getSearchConfig', () => {
                 children: [
                     {
                         type: OverviewChart,
-                        id: ReportsIDs.SupportPerformanceOverviewReportConfig,
                         config: {
                             ...SupportPerformanceOverviewReportConfig,
                             charts: {

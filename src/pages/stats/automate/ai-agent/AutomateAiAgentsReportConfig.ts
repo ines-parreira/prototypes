@@ -6,11 +6,8 @@ import {
     AUTOMATED_INTERACTIONS_OVER_TIME_CHART_TITLE,
     AutomatedInteractionsOverTimeChart,
 } from 'pages/stats/automate/ai-agent/AutomatedInteractionsOverTimeChart'
-import {
-    ChartType,
-    // DataExportFormat,
-    ReportConfig,
-} from 'pages/stats/custom-reports/types'
+import { ReportsIDs } from 'pages/stats/custom-reports/constants'
+import { ChartType, ReportConfig } from 'pages/stats/custom-reports/types'
 import { PAGE_TITLE_AI_AGENT } from 'pages/stats/self-service/constants'
 import { CustomFieldsTicketCountBreakdownTableChart } from 'pages/stats/ticket-insights/ticket-fields/CustomFieldsTicketCountBreakdownTableChart'
 import { TicketDistributionChart } from 'pages/stats/ticket-insights/ticket-fields/TicketDistributionTable'
@@ -37,6 +34,7 @@ export const AUTOMATE_AI_AGENTS_OPTIONAL_FILTERS = []
 
 export const AutomateAiAgentsReportConfig: ReportConfig<AutomateAiAgentsChart> =
     {
+        id: ReportsIDs.AutomateAiAgentsReportConfig,
         reportName: 'AI Agents',
         reportPath: STATS_ROUTES.AUTOMATE_AI_AGENTS,
         reportFilters: {

@@ -1,5 +1,6 @@
 import { FilterKey, StaticFilter } from 'models/stat/types'
 import { AUTO_QA_FILTER_KEYS } from 'pages/stats/common/filters/constants'
+import { ReportsIDs } from 'pages/stats/custom-reports/constants'
 import {
     ChartType,
     DataExportFormat,
@@ -40,6 +41,7 @@ export enum TicketInsightsTagsChart {
 
 export const TicketInsightsTagsReportConfig: ReportConfig<TicketInsightsTagsChart> =
     {
+        id: ReportsIDs.TicketInsightsTagsReportConfig,
         reportName: TAGS_TITLE,
         reportPath: STATS_ROUTES.TICKET_INSIGHTS_TAGS,
         reportFilters: {

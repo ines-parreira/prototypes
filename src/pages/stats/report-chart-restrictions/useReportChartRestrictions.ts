@@ -5,7 +5,7 @@ import useAppSelector from 'hooks/useAppSelector'
 import { STATS_ROUTE_PREFIX } from 'pages/stats/common/components/constants'
 import {
     getComponentConfig,
-    getReportConfig,
+    getReportConfigFromPath,
 } from 'pages/stats/custom-reports/config'
 import {
     ChartRestriction,
@@ -66,21 +66,19 @@ export const useReportChartRestrictions = () => {
     )
 
     const isRouteRestrictedToCurrentUser = useCallback(
-        (url: string, isPartialPath?: boolean): boolean => {
-            return !!userReportRestrictions.find((restriction) =>
-                restriction.ids.find((id) => {
-                    const path = getReportConfig(id, true)?.reportPath
-                    if (!path) {
-                        return false
-                    }
+        (url: string): boolean => {
+            //TODO
+            const config = getReportConfigFromPath(url)
+            if (!config) {
+                return false
+            }
+            const isReportRestricted = !!reportRestrictionsMap[config.id]
 
-                    const isPathRestricted = !!reportRestrictionsMap[path]
-                    const isReportRestrictedToCurrentUser = isPartialPath
-                        ? url === path
-                        : url === `${STATS_ROUTE_PREFIX}${path}`
-
-                    return isPathRestricted || isReportRestrictedToCurrentUser
-                }),
+            return (
+                isReportRestricted ||
+                !!userReportRestrictions.find((restriction) =>
+                    restriction.ids.find((id) => id === config.id),
+                )
             )
         },
         [reportRestrictionsMap, userReportRestrictions],
@@ -98,11 +96,11 @@ export const useReportChartRestrictions = () => {
             if (!reportConfig) {
                 return false
             }
-            const path = reportConfig.reportPath
+            const path = `${STATS_ROUTE_PREFIX}${reportConfig.reportPath}`
             const isPathRestricted = !!reportRestrictionsMap[path]
             const isChartRestricted = !!chartRestrictionsMap[chartId]
             const isChartPartOfRestrictedReport =
-                isRouteRestrictedToCurrentUser(path, true)
+                isRouteRestrictedToCurrentUser(path)
             return (
                 isChartStrictlyRestricted ||
                 isChartPartOfRestrictedReport ||

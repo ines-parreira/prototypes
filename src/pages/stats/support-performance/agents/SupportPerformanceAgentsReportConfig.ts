@@ -1,6 +1,7 @@
 import { fetchAgentsTableReportData } from 'hooks/reporting/support-performance/agents/useDownloadAgentsPerformanceData'
 import { FilterKey, StaticFilter } from 'models/stat/types'
 import { AUTO_QA_FILTER_KEYS } from 'pages/stats/common/filters/constants'
+import { ReportsIDs } from 'pages/stats/custom-reports/constants'
 import {
     ChartType,
     DataExportFormat,
@@ -41,6 +42,7 @@ export enum AgentsChart {
 }
 
 export const SupportPerformanceAgentsReportConfig: ReportConfig<AgentsChart> = {
+    id: ReportsIDs.SupportPerformanceAgentsReportConfig,
     reportName: AGENT_PERFORMANCE_SECTION_TITLE,
     reportPath: STATS_ROUTES.SUPPORT_PERFORMANCE_AGENTS,
     charts: {

@@ -1,4 +1,5 @@
 import { FilterComponentKey, FilterKey, StaticFilter } from 'models/stat/types'
+import { CAMPAIGNS_REPORT_TITLE } from 'pages/stats/convert/campaigns/CampaignsPerformanceReportConfig'
 import { CampaignRevenueKPIChart } from 'pages/stats/convert/charts/CampaignRevenueKPIChart'
 import { CampaignsSalesCountKPIChart } from 'pages/stats/convert/charts/CampaignsSalesCountKPIChart'
 import { EngagementKPIChart } from 'pages/stats/convert/charts/EngagementKPIChart'
@@ -10,7 +11,7 @@ import {
     title,
 } from 'pages/stats/convert/components/CampaignRevenueShareStat'
 import { METRICS } from 'pages/stats/convert/constants/ConvertPerformanceOverviewConfig'
-import { CAMPAIGNS_REPORT_TITLE } from 'pages/stats/convert/pages/CampaignsStats/CampaignsStats'
+import { ReportsIDs } from 'pages/stats/custom-reports/constants'
 import { ChartType, ReportConfig } from 'pages/stats/custom-reports/types'
 import { STATS_ROUTES } from 'routes/constants'
 
@@ -35,6 +36,7 @@ export const CAMPAIGNS_REPORT_OPTIONAL_FILTERS = [
 ]
 
 export const CampaignsLegacyReportConfig: ReportConfig<CampaignsLegacyChart> = {
+    id: ReportsIDs.CampaignsLegacyReportConfig,
     reportName: CAMPAIGNS_REPORT_TITLE,
     reportPath: STATS_ROUTES.CONVERT_CAMPAIGNS,
     reportFilters: {

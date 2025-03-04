@@ -11,12 +11,13 @@ import GmvInfluencedOverTimeChart from 'pages/stats/aiSalesAgent/charts/GmvInflu
 import GmvMetricCard from 'pages/stats/aiSalesAgent/charts/GmvMetricCard'
 import TotalAIConvMetricCard from 'pages/stats/aiSalesAgent/charts/TotalAIConvMetricCard'
 import TotalNumberOfOrdersCard from 'pages/stats/aiSalesAgent/charts/TotalNumberOfOrdersCard'
-import { ROUTE_AI_SALES_AGENT_OVERVIEW } from 'pages/stats/aiSalesAgent/constants'
+import { ReportsIDs } from 'pages/stats/custom-reports/constants'
 import {
     ChartType,
     DataExportFormat,
     ReportConfig,
 } from 'pages/stats/custom-reports/types'
+import { STATS_ROUTES } from 'routes/constants'
 
 export const AI_SALES_AGENTS_PERSISTENT_FILTERS: StaticFilter[] = [
     FilterKey.Period,
@@ -24,8 +25,9 @@ export const AI_SALES_AGENTS_PERSISTENT_FILTERS: StaticFilter[] = [
 export const AI_SALES_AGENTS_OPTIONAL_FILTERS = []
 
 export const AiSalesAgentReportConfig: ReportConfig<AiSalesAgentChart> = {
+    id: ReportsIDs.AiSalesAgentReportConfig,
     reportName: 'AI Agents Sales',
-    reportPath: ROUTE_AI_SALES_AGENT_OVERVIEW,
+    reportPath: STATS_ROUTES.AI_SALES_AGENT_OVERVIEW,
     reportFilters: {
         persistent: AI_SALES_AGENTS_PERSISTENT_FILTERS,
         optional: AI_SALES_AGENTS_OPTIONAL_FILTERS,

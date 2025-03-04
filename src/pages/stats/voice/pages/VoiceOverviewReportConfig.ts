@@ -1,6 +1,7 @@
 import { VoiceCallSegment } from 'models/reporting/cubes/VoiceCallCube'
 import { FilterComponentKey, FilterKey, StaticFilter } from 'models/stat/types'
 import { OptionalFilter } from 'pages/stats/common/filters/FiltersPanel'
+import { ReportsIDs } from 'pages/stats/custom-reports/constants'
 import {
     ChartType,
     DataExportFormat,
@@ -75,6 +76,7 @@ export enum VoiceOverviewChart {
 }
 
 export const VoiceOverviewReportConfig: ReportConfig<VoiceOverviewChart> = {
+    id: ReportsIDs.VoiceOverviewReportConfig,
     reportName: 'Voice Overview Report',
     reportPath: STATS_ROUTES.VOICE_OVERVIEW,
     charts: {

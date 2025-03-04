@@ -28,6 +28,7 @@ import { AutomationRateGraphChart } from 'pages/stats/automate/overview/charts/A
 import { AutomationRateKPIChart } from 'pages/stats/automate/overview/charts/AutomationRateKPIChart'
 import { DecreaseInResolutionTimeKPIChart } from 'pages/stats/automate/overview/charts/DecreaseInResolutionTimeKPIChart'
 import { TimeSavedByAgentsKPIChart } from 'pages/stats/automate/overview/charts/TimeSavedByAgentsKPIChart'
+import { ReportsIDs } from 'pages/stats/custom-reports/constants'
 import {
     ChartType,
     DataExportFormat,
@@ -37,6 +38,7 @@ import {
     AUTOMATED_INTERACTIONS_BY_FEATURE_LABEL,
     PAGE_TITLE_AUTOMATE_PAYWALL,
 } from 'pages/stats/self-service/constants'
+import { STATS_ROUTES } from 'routes/constants'
 import {
     fetchAutomatePerformanceReport,
     fetchPerformanceByFeatureReport,
@@ -56,8 +58,9 @@ export enum AutomateOverviewChart {
 
 export const AutomateOverviewReportConfig: ReportConfig<AutomateOverviewChart> =
     {
+        id: ReportsIDs.AutomateOverviewReportConfig,
         reportName: PAGE_TITLE_AUTOMATE_PAYWALL,
-        reportPath: 'automate-overview',
+        reportPath: STATS_ROUTES.AUTOMATE_OVERVIEW,
         charts: {
             [AutomateOverviewChart.AutomationRateKPIChart]: {
                 chartComponent: AutomationRateKPIChart,

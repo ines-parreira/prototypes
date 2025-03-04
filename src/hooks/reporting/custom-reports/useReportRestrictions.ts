@@ -4,9 +4,14 @@ import { useFlags } from 'launchdarkly-react-client-sdk'
 
 import { FeatureFlagKey } from 'config/featureFlags'
 import useAppSelector from 'hooks/useAppSelector'
+import { AiSalesAgentReportConfig } from 'pages/stats/aiSalesAgent/AiSalesAgentReportConfig'
+import { AutomateAiAgentsReportConfig } from 'pages/stats/automate/ai-agent/AutomateAiAgentsReportConfig'
 import { getComponentConfig } from 'pages/stats/custom-reports/config'
+import { HelpCenterReportConfig } from 'pages/stats/help-center/components/HelpCenterReport/HelpCenterReportConfig'
+import { SatisfactionReportConfig } from 'pages/stats/quality-management/satisfaction/SatisfactionReportConfig'
+import { AutoQAReportConfig } from 'pages/stats/support-performance/auto-qa/AutoQAReportConfig'
 import { OverviewChart } from 'pages/stats/support-performance/overview/SupportPerformanceOverviewReportConfig'
-import { STATS_ROUTES } from 'routes/constants'
+import { SupportPerformanceSatisfactionReportConfig } from 'pages/stats/support-performance/satisfaction/SupportPerformanceSatisfactionReportConfig'
 import { getHasAutomate } from 'state/billing/selectors'
 import { getCurrentUser } from 'state/currentUser/selectors'
 import { isTeamLead } from 'utils'
@@ -18,8 +23,12 @@ export const useReportRestrictions = () => {
         useFlags()[FeatureFlagKey.NewSatisfactionReport]
     const isHelpCenterAnalyticsEnabled =
         useFlags()[FeatureFlagKey.HelpCenterAnalytics]
+    const isAiAgentStatsPageEnabled =
+        useFlags()[FeatureFlagKey.AIAgentStatsPage]
     const isReportingZeroTouchTicketsMetricEnabled =
         useFlags()[FeatureFlagKey.ReportingZeroTouchTicketsMetric]
+    const isStandaloneSalesOverviewEnabled =
+        useFlags()[FeatureFlagKey.StandaloneAiSalesAnalyticsPage]
     const user = useAppSelector(getCurrentUser)
     const hasAutomate = useAppSelector(getHasAutomate)
     const isTeamLeadOrAdmin = isTeamLead(user)
@@ -29,17 +38,20 @@ export const useReportRestrictions = () => {
     )
     const reportRestrictionsMap: RestrictionsMap = useMemo(
         () => ({
-            [STATS_ROUTES.SUPPORT_PERFORMANCE_HELP_CENTER]:
-                !isHelpCenterAnalyticsEnabled,
-            [STATS_ROUTES.QUALITY_MANAGEMENT_SATISFACTION]:
-                !isNewSatisfactionReportEnabled,
-            [STATS_ROUTES.QUALITY_MANAGEMENT_AUTO_QA]:
-                !isAutoQANavLinkAvailable,
+            [HelpCenterReportConfig.id]: !isHelpCenterAnalyticsEnabled,
+            [SatisfactionReportConfig.id]: !isNewSatisfactionReportEnabled,
+            [SupportPerformanceSatisfactionReportConfig.id]:
+                isNewSatisfactionReportEnabled,
+            [AutoQAReportConfig.id]: !isAutoQANavLinkAvailable,
+            [AutomateAiAgentsReportConfig.id]: !isAiAgentStatsPageEnabled,
+            [AiSalesAgentReportConfig.id]: !isStandaloneSalesOverviewEnabled,
         }),
         [
+            isAiAgentStatsPageEnabled,
             isAutoQANavLinkAvailable,
             isHelpCenterAnalyticsEnabled,
             isNewSatisfactionReportEnabled,
+            isStandaloneSalesOverviewEnabled,
         ],
     )
 
@@ -63,7 +75,7 @@ export const isChartRestricted = (
 ) => {
     const { reportConfig } = getComponentConfig(chartId)
     if (!reportConfig) return false
-    return !!restrictionsMap[reportConfig.reportPath]
+    return !!restrictionsMap[reportConfig.id]
 }
 
 export const useIsChartRestricted = (chartId: string) => {

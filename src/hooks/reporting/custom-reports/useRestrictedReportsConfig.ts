@@ -9,8 +9,7 @@ export const useRestrictedReportsConfig = () => {
         ...section,
         children: section.children
             .filter(
-                (report) =>
-                    !Boolean(reportRestrictionsMap[report.config.reportPath]),
+                (report) => !Boolean(reportRestrictionsMap[report.config.id]),
             )
             .map((config) => {
                 return {
