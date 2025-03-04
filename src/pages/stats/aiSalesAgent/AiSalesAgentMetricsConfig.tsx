@@ -4,6 +4,10 @@ import {
 } from 'hooks/reporting/useMetricTrend'
 import { TimeSeriesFetch, TimeSeriesHook } from 'hooks/reporting/useTimeSeries'
 import {
+    fetchAverageOrderValue,
+    useAverageOrderValue,
+} from 'pages/stats/aiSalesAgent/metrics/useAverageOrderValue'
+import {
     fetchGmvInfluecedTrend,
     useGmvInfluecedTrend,
 } from 'pages/stats/aiSalesAgent/metrics/useGmvInfluecedTrend'
@@ -114,8 +118,8 @@ export const AiSalesAgentMetricConfig: Record<
         hint: {
             title: 'The average revenue per order influenced by the AI Agent for Sales.',
         },
-        useTrend: useRoiRateTrend,
-        fetchTrend: fetchRoiRateTrend,
+        useTrend: useAverageOrderValue,
+        fetchTrend: fetchAverageOrderValue,
         interpretAs: 'more-is-better',
         metricFormat: 'decimal',
     },

@@ -1,5 +1,7 @@
 import { AgentTimeTrackingCube } from 'models/reporting/cubes/agentxp/AgentTimeTrackingCube'
 import { HandleTimeCubeWithJoins } from 'models/reporting/cubes/agentxp/HandleTimeCube'
+import { AiSalesAgentConversationsCube } from 'models/reporting/cubes/ai-sales-agent/AiSalesAgentConversations'
+import { AiSalesAgentOrdersCube } from 'models/reporting/cubes/ai-sales-agent/AiSalesAgentOrders'
 import { TicketQAScoreCubeWithJoins } from 'models/reporting/cubes/auto-qa/TicketQAScoreCube'
 import { AutomationBillingEventCubeWithJoins } from 'models/reporting/cubes/automate/AutomationBillingEventCube'
 import { AutomationDatasetCube } from 'models/reporting/cubes/automate_v2/AutomationDatasetCube'
@@ -32,3 +34,5 @@ export type Cubes =
     | WorkflowDatasetCube
     | TicketTagsEnrichedCube
     | RecommendedResourcesCube
+    | AiSalesAgentConversationsCube
+    | AiSalesAgentOrdersCube

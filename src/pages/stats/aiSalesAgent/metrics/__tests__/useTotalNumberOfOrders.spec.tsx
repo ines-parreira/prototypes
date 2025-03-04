@@ -1,43 +1,106 @@
 import React from 'react'
 
-import { QueryClientProvider } from '@tanstack/react-query'
+import { QueryClientProvider, UseQueryResult } from '@tanstack/react-query'
 import { waitFor } from '@testing-library/react'
 import { act, renderHook } from '@testing-library/react-hooks/dom'
+import moment from 'moment'
 
+import { AiSalesAgentOrdersMeasure } from 'models/reporting/cubes/ai-sales-agent/AiSalesAgentOrders'
+import { fetchPostReporting, usePostReporting } from 'models/reporting/queries'
 import { StatsFilters } from 'models/stat/types'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
+import { assumeMock } from 'utils/testing'
 
-import { useTotalNumberOfOrders } from '../useTotalNumberOfOrders'
+import {
+    fetchTotalNumberOfOrders,
+    useTotalNumberOfOrders,
+} from '../useTotalNumberOfOrders'
 
 const timezone = 'UTC'
 
-const filters: StatsFilters = {
+const statsFilters: StatsFilters = {
     period: {
-        start_datetime: '2025-02-06T16:55:37.914Z',
-        end_datetime: '2025-02-09T16:56:07.727Z',
+        start_datetime: moment()
+            .add(1 * 7, 'day')
+            .format('YYYY-MM-DDT00:00:00.000'),
+        end_datetime: moment()
+            .add(3 * 7, 'day')
+            .format('YYYY-MM-DDT23:50:59.999'),
     },
 }
 
 const queryClient = mockQueryClient()
 
+jest.mock('models/reporting/queries')
+const usePostReportingMock = assumeMock(usePostReporting)
+const fetchPostReportingMock = assumeMock(fetchPostReporting)
+
 jest.useFakeTimers()
 
-describe('useTotalNumberOfOrders', () => {
-    it('should return correct metric data when the query resolves', async () => {
-        act(() => jest.runAllTimers())
-        const { result } = renderHook(
-            () => useTotalNumberOfOrders(filters, timezone),
-            {
-                wrapper: ({ children }) => (
-                    <QueryClientProvider client={queryClient}>
-                        {children}
-                    </QueryClientProvider>
-                ),
-            },
-        )
+describe('totalNumberOfOrders', () => {
+    const defaultReporting = {
+        isFetching: false,
+        isError: false,
+    } as UseQueryResult
 
-        await waitFor(() => {
-            expect(result.current).toEqual({
+    describe('useTotalNumberOfOrders', () => {
+        it('should return correct metric data when the query resolves', async () => {
+            usePostReportingMock.mockReturnValueOnce({
+                ...defaultReporting,
+                data: 32.41,
+            } as UseQueryResult)
+            usePostReportingMock.mockReturnValueOnce({
+                ...defaultReporting,
+                data: 24.56,
+            } as UseQueryResult)
+
+            act(() => jest.runAllTimers())
+
+            const { result } = renderHook(
+                () => useTotalNumberOfOrders(statsFilters, timezone),
+                {
+                    wrapper: ({ children }) => (
+                        <QueryClientProvider client={queryClient}>
+                            {children}
+                        </QueryClientProvider>
+                    ),
+                },
+            )
+
+            await waitFor(() => {
+                expect(result.current).toEqual({
+                    data: {
+                        value: 32.41,
+                        prevValue: 24.56,
+                    },
+                    isError: false,
+                    isFetching: false,
+                })
+            })
+        })
+    })
+
+    describe('fetchTotalNumberOfOrders', () => {
+        it('should return the correct data when the query resolves', async () => {
+            fetchPostReportingMock.mockReturnValueOnce({
+                data: {
+                    ...defaultReporting,
+                    data: [{ [AiSalesAgentOrdersMeasure.Count]: 32.41 }],
+                },
+            } as unknown as ReturnType<typeof fetchPostReporting>)
+            fetchPostReportingMock.mockReturnValueOnce({
+                data: {
+                    ...defaultReporting,
+                    data: [{ [AiSalesAgentOrdersMeasure.Count]: 24.56 }],
+                },
+            } as unknown as ReturnType<typeof fetchPostReporting>)
+
+            const result = await fetchTotalNumberOfOrders(
+                statsFilters,
+                timezone,
+            )
+
+            expect(result).toEqual({
                 data: {
                     value: 32.41,
                     prevValue: 24.56,

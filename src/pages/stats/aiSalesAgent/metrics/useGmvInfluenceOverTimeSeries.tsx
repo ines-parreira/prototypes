@@ -1,59 +1,120 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
-import { useQuery, UseQueryResult } from '@tanstack/react-query'
+import { useMemo } from 'react'
 
-import { TimeSeriesDataItem } from 'hooks/reporting/useTimeSeries'
+import { UseQueryResult } from '@tanstack/react-query'
+
+import {
+    fetchTimeSeries,
+    TimeSeriesDataItem,
+    useTimeSeries,
+} from 'hooks/reporting/useTimeSeries'
+import { AiSalesAgentOrdersMeasure } from 'models/reporting/cubes/ai-sales-agent/AiSalesAgentOrders'
+import {
+    gmvTimeSeriesQueryFactory,
+    influencedGmvTimeSeriesQueryFactory,
+} from 'models/reporting/queryFactories/ai-sales-agent/timeseries'
 import { ReportingGranularity } from 'models/reporting/types'
 import { StatsFilters } from 'models/stat/types'
-import { getRealisticResponseTime } from 'pages/aiAgent/Overview/getRealisticResponseTime'
 
-const EXAMPLE_DATE = [
-    {
-        dateTime: '2025-02-13T00:00:00.000',
-        value: 0.9,
-        label: 'AiSalesAgent.GmvInfluencedOverTime',
-    },
-    {
-        dateTime: '2025-02-14T00:00:00.000',
-        value: 0.9,
-        label: 'AiSalesAgent.GmvInfluencedOverTime',
-    },
-    {
-        dateTime: '2025-02-15T00:00:00.000',
-        value: 0.04,
-        label: 'AiSalesAgent.GmvInfluencedOverTime',
-    },
-    {
-        dateTime: '2025-02-17T00:00:00.000',
-        value: 0.4,
-        label: 'AiSalesAgent.GmvInfluencedOverTime',
-    },
-    {
-        dateTime: '2025-02-18T00:00:00.000',
-        value: 0.06,
-        label: 'AiSalesAgent.GmvInfluencedOverTime',
-    },
-]
+import { GMV_OVERTIME_LABEL } from '../constants'
+
+export const infinityNanToZero = (value: number) => {
+    return isNaN(value) || value === Infinity ? 0 : value
+}
+
+export const calculateRate = (
+    numerator: number | null,
+    denominator: number | null,
+): number => {
+    if (numerator == null || denominator == null) return 0
+
+    return infinityNanToZero(numerator / denominator)
+}
+
+const calculateRates = (
+    influencedGmvData: TimeSeriesDataItem[],
+    gmvData: TimeSeriesDataItem[],
+): TimeSeriesDataItem[] => {
+    const rates: TimeSeriesDataItem[] = []
+
+    influencedGmvData.forEach((timeSeries, index) => {
+        const influencedGmv = influencedGmvData?.[index].value
+        const gmv = gmvData?.[index].value
+
+        rates.push({
+            dateTime: timeSeries.dateTime,
+            value: calculateRate(influencedGmv, gmv),
+            label: GMV_OVERTIME_LABEL,
+        })
+    })
+
+    return rates
+}
+
+export const getStatsByMeasure = (
+    measure: string,
+    dataItems?: TimeSeriesDataItem[][],
+): TimeSeriesDataItem[] =>
+    dataItems?.find((arr) => arr.some((item) => item.label === measure)) || []
 
 const useGmvInfluenceOverTimeSeries = (
     filters: StatsFilters,
     timezone: string,
     granularity: ReportingGranularity,
 ): UseQueryResult<TimeSeriesDataItem[][]> => {
-    const result = useQuery({
-        queryKey: ['useGmvInfluenceOverTimeSeries'],
-        queryFn: (): Promise<{ data: TimeSeriesDataItem[] }> =>
-            new Promise((resolve) => {
-                setTimeout(() => {
-                    resolve({
-                        data: EXAMPLE_DATE,
-                    })
-                }, getRealisticResponseTime())
-            }),
-    })
+    const influencedGmvTimeSeries = useTimeSeries(
+        influencedGmvTimeSeriesQueryFactory(filters, timezone, granularity),
+    )
+    const gmvTimeSeries = useTimeSeries(
+        gmvTimeSeriesQueryFactory(filters, timezone, granularity),
+    )
 
-    return {
-        data: result?.data ? [result?.data?.data] : undefined,
-    } as UseQueryResult<TimeSeriesDataItem[][]>
+    const influencedGmvTimeSeriesData = useMemo(
+        () =>
+            getStatsByMeasure(
+                AiSalesAgentOrdersMeasure.Gmv,
+                influencedGmvTimeSeries.data,
+            ),
+        [influencedGmvTimeSeries.data],
+    )
+
+    const gmvTimeSeriesData = useMemo(
+        () =>
+            getStatsByMeasure(
+                AiSalesAgentOrdersMeasure.Gmv,
+                gmvTimeSeries.data,
+            ),
+        [gmvTimeSeries.data],
+    )
+
+    const influencedGmvRates: TimeSeriesDataItem[] = useMemo(() => {
+        if (influencedGmvTimeSeries.isFetched && gmvTimeSeries.isFetched) {
+            return calculateRates(
+                influencedGmvTimeSeriesData,
+                gmvTimeSeriesData,
+            )
+        }
+        return []
+    }, [
+        influencedGmvTimeSeries,
+        gmvTimeSeries,
+        influencedGmvTimeSeriesData,
+        gmvTimeSeriesData,
+    ])
+
+    const isFetching: boolean =
+        influencedGmvTimeSeries.isFetching || gmvTimeSeries.isFetching
+    const isError: boolean =
+        influencedGmvTimeSeries.isError || gmvTimeSeries.isError
+
+    return useMemo(
+        () =>
+            ({
+                data: [influencedGmvRates],
+                isFetching,
+                isError,
+            }) as UseQueryResult<TimeSeriesDataItem[][]>,
+        [influencedGmvRates, isError, isFetching],
+    )
 }
 
 const fetchGmvInflueceOverTimeSeries = (
@@ -61,7 +122,28 @@ const fetchGmvInflueceOverTimeSeries = (
     timezone: string,
     granularity: ReportingGranularity,
 ): Promise<TimeSeriesDataItem[][]> => {
-    return Promise.resolve([EXAMPLE_DATE])
+    return Promise.all([
+        fetchTimeSeries(
+            influencedGmvTimeSeriesQueryFactory(filters, timezone, granularity),
+        ),
+        fetchTimeSeries(
+            gmvTimeSeriesQueryFactory(filters, timezone, granularity),
+        ),
+    ]).then(([influencedGmvTimeSeries, gmvTimeSeries]) => {
+        const influencedGmvTimeSeriesData = getStatsByMeasure(
+            AiSalesAgentOrdersMeasure.Gmv,
+            influencedGmvTimeSeries,
+        )
+        const gmvTimeSeriesData = getStatsByMeasure(
+            AiSalesAgentOrdersMeasure.Gmv,
+            gmvTimeSeries,
+        )
+        const rates = calculateRates(
+            influencedGmvTimeSeriesData,
+            gmvTimeSeriesData,
+        )
+        return [rates]
+    })
 }
 
 export { useGmvInfluenceOverTimeSeries, fetchGmvInflueceOverTimeSeries }

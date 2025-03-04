@@ -1,48 +1,32 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
-import { useQuery } from '@tanstack/react-query'
-
-import { type MetricTrend } from 'hooks/reporting/useMetricTrend'
+import useMetricTrend, {
+    fetchMetricTrend,
+} from 'hooks/reporting/useMetricTrend'
+import { totalNumberConverFromAIAgentQueryFactory } from 'models/reporting/queryFactories/ai-sales-agent/metrics'
 import { StatsFilters } from 'models/stat/types'
-import { getRealisticResponseTime } from 'pages/aiAgent/Overview/getRealisticResponseTime'
+import { getPreviousPeriod } from 'utils/reporting'
 
-const useTotalAIConvTrend = (
-    filters: StatsFilters,
-    timezone: string,
-): MetricTrend => {
-    // TODO: replace with Cube hook
-    const result = useQuery({
-        queryKey: ['useTotalAIConvTrend'],
-        queryFn: (): Promise<{ value: number; prevValue: number }> =>
-            new Promise((resolve) => {
-                setTimeout(() => {
-                    resolve({ value: 32.41, prevValue: 24.56 })
-                }, getRealisticResponseTime())
-            }),
-    })
+const useTotalAIConvTrend = (filters: StatsFilters, timezone: string) =>
+    useMetricTrend(
+        totalNumberConverFromAIAgentQueryFactory(filters, timezone),
+        totalNumberConverFromAIAgentQueryFactory(
+            {
+                ...filters,
+                period: getPreviousPeriod(filters.period),
+            },
+            timezone,
+        ),
+    )
 
-    return {
-        // make response compatibile with MetricTrend type
-        data: {
-            value: result.data?.value || null,
-            prevValue: result.data?.prevValue || null,
-        },
-        isFetching: result.isLoading,
-        isError: false,
-    }
-}
-
-const fetchTotalAIConvTrend = (
-    filters: StatsFilters,
-    timezone: string,
-): Promise<MetricTrend> => {
-    return Promise.resolve({
-        data: {
-            value: 32.41,
-            prevValue: 24.56,
-        },
-        isFetching: false,
-        isError: false,
-    })
-}
+const fetchTotalAIConvTrend = (filters: StatsFilters, timezone: string) =>
+    fetchMetricTrend(
+        totalNumberConverFromAIAgentQueryFactory(filters, timezone),
+        totalNumberConverFromAIAgentQueryFactory(
+            {
+                ...filters,
+                period: getPreviousPeriod(filters.period),
+            },
+            timezone,
+        ),
+    )
 
 export { useTotalAIConvTrend, fetchTotalAIConvTrend }

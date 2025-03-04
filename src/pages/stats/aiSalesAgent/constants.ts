@@ -4,3 +4,5 @@ export const PAGE_TITLE_AI_SALES_AGENT_SALES_OVERVIEW =
 export const LINK_AI_SALES_AGENT_TEXT = 'AI Sales Agent'
 
 export const ROUTE_AI_SALES_AGENT_OVERVIEW = 'ai-sales-agent/overview'
+
+export const GMV_OVERTIME_LABEL = 'Gmv Influenced Over Time'

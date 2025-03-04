@@ -3,18 +3,34 @@ import React from 'react'
 import { QueryClientProvider } from '@tanstack/react-query'
 import { waitFor } from '@testing-library/react'
 import { act, renderHook } from '@testing-library/react-hooks/dom'
+import moment from 'moment'
 
+import {
+    fetchMultipleMetricsTrends,
+    MultipleMetricsData,
+    useMultipleMetricsTrends,
+} from 'hooks/reporting/useMultipleMetricsTrend'
+import { Cubes } from 'models/reporting/cubes'
+import { AiSalesAgentOrdersMeasure } from 'models/reporting/cubes/ai-sales-agent/AiSalesAgentOrders'
 import { StatsFilters } from 'models/stat/types'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
+import { assumeMock } from 'utils/testing'
 
-import { useAverageOrderValue } from '../useAverageOrderValue'
+import {
+    fetchAverageOrderValue,
+    useAverageOrderValue,
+} from '../useAverageOrderValue'
 
 const timezone = 'UTC'
 
-const filters: StatsFilters = {
+const statsFilters: StatsFilters = {
     period: {
-        start_datetime: '2025-02-06T16:55:37.914Z',
-        end_datetime: '2025-02-09T16:56:07.727Z',
+        start_datetime: moment()
+            .add(1 * 7, 'day')
+            .format('YYYY-MM-DDT00:00:00.000'),
+        end_datetime: moment()
+            .add(3 * 7, 'day')
+            .format('YYYY-MM-DDT23:50:59.999'),
     },
 }
 
@@ -22,28 +38,79 @@ const queryClient = mockQueryClient()
 
 jest.useFakeTimers()
 
-describe('useAverageOrderValue', () => {
-    it('should return correct metric data when the query resolves', async () => {
-        act(() => jest.runAllTimers())
-        const { result } = renderHook(
-            () => useAverageOrderValue(filters, timezone),
-            {
-                wrapper: ({ children }) => (
-                    <QueryClientProvider client={queryClient}>
-                        {children}
-                    </QueryClientProvider>
-                ),
-            },
-        )
+jest.mock('hooks/reporting/useMultipleMetricsTrend')
+const useMultipleMetricsTrendsMock = assumeMock(useMultipleMetricsTrends)
+const fetchMultipleMetricsTrendsMock = assumeMock(fetchMultipleMetricsTrends)
 
-        await waitFor(() => {
-            expect(result.current).toEqual({
-                data: {
-                    value: 32.41,
-                    prevValue: 24.56,
-                },
-                isError: false,
+describe('averageOrderValue', () => {
+    describe('useAverageOrderValue', () => {
+        it('should return correct metric data when the query resolves', async () => {
+            useMultipleMetricsTrendsMock.mockReturnValue({
                 isFetching: false,
+                isError: false,
+                data: {
+                    [AiSalesAgentOrdersMeasure.Gmv]: {
+                        value: 10,
+                        prevValue: 2,
+                    },
+                    [AiSalesAgentOrdersMeasure.Count]: {
+                        value: 2,
+                        prevValue: 1,
+                    },
+                },
+            } as unknown as ReturnType<typeof useMultipleMetricsTrends>)
+
+            act(() => jest.runAllTimers())
+            const { result } = renderHook(
+                () => useAverageOrderValue(statsFilters, timezone),
+                {
+                    wrapper: ({ children }) => (
+                        <QueryClientProvider client={queryClient}>
+                            {children}
+                        </QueryClientProvider>
+                    ),
+                },
+            )
+
+            await waitFor(() => {
+                expect(result.current).toEqual({
+                    data: {
+                        prevValue: 2,
+                        value: 5,
+                    },
+                    isError: false,
+                    isFetching: false,
+                })
+            })
+        })
+    })
+
+    describe('fetchAverageOrderValue', () => {
+        it('should return correct metric data when the query resolves', async () => {
+            fetchMultipleMetricsTrendsMock.mockResolvedValue({
+                data: {
+                    [AiSalesAgentOrdersMeasure.Gmv]: {
+                        value: 10,
+                        prevValue: 2,
+                    },
+                    [AiSalesAgentOrdersMeasure.Count]: {
+                        value: 2,
+                        prevValue: 1,
+                    },
+                } as unknown as MultipleMetricsData<Cubes>,
+                isFetching: false,
+                isError: false,
+            })
+
+            const result = await fetchAverageOrderValue(statsFilters, timezone)
+
+            expect(result).toEqual({
+                data: {
+                    prevValue: 2,
+                    value: 5,
+                },
+                isFetching: false,
+                isError: false,
             })
         })
     })

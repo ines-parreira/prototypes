@@ -3,19 +3,32 @@ import React from 'react'
 import { QueryClientProvider } from '@tanstack/react-query'
 import { waitFor } from '@testing-library/react'
 import { act, renderHook } from '@testing-library/react-hooks/dom'
+import moment from 'moment'
 
+import { fetchTimeSeries, useTimeSeries } from 'hooks/reporting/useTimeSeries'
+import { AiSalesAgentOrdersMeasure } from 'models/reporting/cubes/ai-sales-agent/AiSalesAgentOrders'
 import { ReportingGranularity } from 'models/reporting/types'
 import { StatsFilters } from 'models/stat/types'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
+import { assumeMock } from 'utils/testing'
 
-import { useGmvInfluenceOverTimeSeries } from '../useGmvInfluenceOverTimeSeries'
+import {
+    calculateRate,
+    fetchGmvInflueceOverTimeSeries,
+    infinityNanToZero,
+    useGmvInfluenceOverTimeSeries,
+} from '../useGmvInfluenceOverTimeSeries'
 
 const timezone = 'UTC'
 
 const filters: StatsFilters = {
     period: {
-        start_datetime: '2025-02-06T16:55:37.914Z',
-        end_datetime: '2025-02-09T16:56:07.727Z',
+        start_datetime: moment()
+            .add(1 * 7, 'day')
+            .format('YYYY-MM-DDT00:00:00.000'),
+        end_datetime: moment()
+            .add(3 * 7, 'day')
+            .format('YYYY-MM-DDT23:50:59.999'),
     },
 }
 
@@ -23,57 +36,154 @@ const queryClient = mockQueryClient()
 
 jest.useFakeTimers()
 
-describe('useGmvInfluenceOverTimeSeries', () => {
-    it('should return correct metric data when the query resolves', async () => {
-        act(() => jest.runAllTimers())
-        const { result } = renderHook(
-            () =>
-                useGmvInfluenceOverTimeSeries(
-                    filters,
-                    timezone,
-                    ReportingGranularity.Day,
-                ),
-            {
-                wrapper: ({ children }) => (
-                    <QueryClientProvider client={queryClient}>
-                        {children}
-                    </QueryClientProvider>
-                ),
-            },
-        )
+jest.mock('hooks/reporting/useTimeSeries')
+const useTimeSeriesMock = assumeMock(useTimeSeries)
+const fetchTimeSeriesMock = assumeMock(fetchTimeSeries)
 
-        await waitFor(() => {
-            expect(result.current).toEqual({
-                data: [
-                    [
-                        {
-                            dateTime: '2025-02-13T00:00:00.000',
-                            value: 0.9,
-                            label: 'AiSalesAgent.GmvInfluencedOverTime',
-                        },
-                        {
-                            dateTime: '2025-02-14T00:00:00.000',
-                            value: 0.9,
-                            label: 'AiSalesAgent.GmvInfluencedOverTime',
-                        },
-                        {
-                            dateTime: '2025-02-15T00:00:00.000',
-                            value: 0.04,
-                            label: 'AiSalesAgent.GmvInfluencedOverTime',
-                        },
-                        {
-                            dateTime: '2025-02-17T00:00:00.000',
-                            value: 0.4,
-                            label: 'AiSalesAgent.GmvInfluencedOverTime',
-                        },
-                        {
-                            dateTime: '2025-02-18T00:00:00.000',
-                            value: 0.06,
-                            label: 'AiSalesAgent.GmvInfluencedOverTime',
-                        },
+describe('gmvInfluenceOverTimeSeries', () => {
+    const defaultData = {
+        isFetching: false,
+        isFetched: true,
+        isError: false,
+        data: [
+            [
+                {
+                    dateTime: '2025-02-26T00:00:00.000',
+                    value: 10,
+                    label: AiSalesAgentOrdersMeasure.Gmv,
+                },
+
+                {
+                    dateTime: '2025-09-28T00:00:00.000',
+                    value: 5,
+                    label: AiSalesAgentOrdersMeasure.Gmv,
+                },
+            ],
+        ],
+    } as ReturnType<typeof useTimeSeries>
+
+    const defaultGmvData = {
+        ...defaultData,
+        data: [
+            [
+                {
+                    dateTime: '2025-02-26T00:00:00.000',
+                    value: 50,
+                    label: AiSalesAgentOrdersMeasure.Gmv,
+                },
+
+                {
+                    dateTime: '2025-09-28T00:00:00.000',
+                    value: 10,
+                    label: AiSalesAgentOrdersMeasure.Gmv,
+                },
+            ],
+        ],
+    } as ReturnType<typeof useTimeSeries>
+
+    describe('useGmvInfluenceOverTimeSeries', () => {
+        it('should return correct metric data when the query resolves', async () => {
+            // influenced GMV
+            useTimeSeriesMock.mockReturnValueOnce(defaultData)
+
+            // total GMV
+            useTimeSeriesMock.mockReturnValueOnce(defaultGmvData)
+
+            act(() => jest.runAllTimers())
+            const { result } = renderHook(
+                () =>
+                    useGmvInfluenceOverTimeSeries(
+                        filters,
+                        timezone,
+                        ReportingGranularity.Day,
+                    ),
+                {
+                    wrapper: ({ children }) => (
+                        <QueryClientProvider client={queryClient}>
+                            {children}
+                        </QueryClientProvider>
+                    ),
+                },
+            )
+
+            await waitFor(() => {
+                expect(result.current).toEqual({
+                    data: [
+                        [
+                            {
+                                dateTime: '2025-02-26T00:00:00.000',
+                                label: 'Gmv Influenced Over Time',
+                                value: 0.2,
+                            },
+                            {
+                                dateTime: '2025-09-28T00:00:00.000',
+                                label: 'Gmv Influenced Over Time',
+                                value: 0.5,
+                            },
+                        ],
                     ],
-                ],
+                    isError: false,
+                    isFetching: false,
+                })
             })
         })
+    })
+
+    describe('fetchGmvInfluenceOverTimeSeries', () => {
+        it('should return correct metric data when the query resolves', async () => {
+            // influenced GMV
+            fetchTimeSeriesMock.mockReturnValueOnce(
+                defaultData.data as unknown as ReturnType<
+                    typeof fetchTimeSeries
+                >,
+            )
+
+            // total GMV
+            fetchTimeSeriesMock.mockReturnValueOnce(
+                defaultGmvData.data as unknown as ReturnType<
+                    typeof fetchTimeSeries
+                >,
+            )
+
+            const result = await fetchGmvInflueceOverTimeSeries(
+                filters,
+                timezone,
+                ReportingGranularity.Day,
+            )
+
+            expect(result).toEqual([
+                [
+                    {
+                        dateTime: '2025-02-26T00:00:00.000',
+                        label: 'Gmv Influenced Over Time',
+                        value: 0.2,
+                    },
+                    {
+                        dateTime: '2025-09-28T00:00:00.000',
+                        label: 'Gmv Influenced Over Time',
+                        value: 0.5,
+                    },
+                ],
+            ])
+        })
+    })
+})
+
+describe('infinityNanToZero', () => {
+    it('should return 0 when value is Infinity', () => {
+        expect(infinityNanToZero(Infinity)).toBe(0)
+    })
+
+    it('should return 0 when value is NaN', () => {
+        expect(infinityNanToZero(NaN)).toBe(0)
+    })
+})
+
+describe('calculateRate', () => {
+    it('should return 0 when numerator is null', () => {
+        expect(calculateRate(null, 10)).toBe(0)
+    })
+    it('should return 0 when denominator is null', () => {
+        expect(calculateRate(10, null)).toBe(0)
     })
 })

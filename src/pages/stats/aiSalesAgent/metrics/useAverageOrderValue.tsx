@@ -1,48 +1,88 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
-import { useQuery } from '@tanstack/react-query'
+import { useMemo } from 'react'
 
-import { type MetricTrend } from 'hooks/reporting/useMetricTrend'
+import {
+    fetchMultipleMetricsTrends,
+    useMultipleMetricsTrends,
+} from 'hooks/reporting/useMultipleMetricsTrend'
+import { AiSalesAgentOrdersMeasure } from 'models/reporting/cubes/ai-sales-agent/AiSalesAgentOrders'
+import { averageOrderValueQueryFactory } from 'models/reporting/queryFactories/ai-sales-agent/metrics'
 import { StatsFilters } from 'models/stat/types'
-import { getRealisticResponseTime } from 'pages/aiAgent/Overview/getRealisticResponseTime'
+import { getPreviousPeriod } from 'utils/reporting'
 
-const useAverageOrderValue = (
-    filters: StatsFilters,
-    timezone: string,
-): MetricTrend => {
-    // TODO: replace with Cube hook
-    const result = useQuery({
-        queryKey: ['useTotalAIConvTrend'],
-        queryFn: (): Promise<{ value: number; prevValue: number }> =>
-            new Promise((resolve) => {
-                setTimeout(() => {
-                    resolve({ value: 32.41, prevValue: 24.56 })
-                }, getRealisticResponseTime())
-            }),
-    })
+const useAverageOrderValue = (filters: StatsFilters, timezone: string) => {
+    const trendData = useMultipleMetricsTrends(
+        averageOrderValueQueryFactory(filters, timezone),
+        averageOrderValueQueryFactory(
+            {
+                ...filters,
+                period: getPreviousPeriod(filters.period),
+            },
+            timezone,
+        ),
+    )
+
+    const data = useMemo(() => {
+        if (!trendData.data || trendData.isFetching || trendData.isError) {
+            return undefined
+        }
+
+        const value =
+            (trendData.data?.[AiSalesAgentOrdersMeasure.Gmv]?.value || 0) /
+                (trendData.data[AiSalesAgentOrdersMeasure.Count]?.value || 0) ||
+            0
+
+        const prevValue =
+            (trendData.data?.[AiSalesAgentOrdersMeasure.Gmv]?.prevValue || 0) /
+                (trendData.data?.[AiSalesAgentOrdersMeasure.Count]?.prevValue ||
+                    0) || 0
+
+        return { value, prevValue }
+    }, [trendData])
 
     return {
-        // make response compatible with MetricTrend type
-        data: {
-            value: result.data?.value ?? null,
-            prevValue: result.data?.prevValue ?? null,
-        },
-        isFetching: result.isLoading,
-        isError: false,
+        data: data,
+        isFetching: trendData.isFetching,
+        isError: trendData.isFetching,
     }
 }
 
-const fetchAverageOrderValue = (
-    filters: StatsFilters,
-    timezone: string,
-): Promise<MetricTrend> => {
-    return Promise.resolve({
-        data: {
-            value: 32.41,
-            prevValue: 24.56,
-        },
-        isFetching: false,
-        isError: false,
-    })
+const fetchAverageOrderValue = (filters: StatsFilters, timezone: string) => {
+    return fetchMultipleMetricsTrends(
+        averageOrderValueQueryFactory(filters, timezone),
+        averageOrderValueQueryFactory(
+            {
+                ...filters,
+                period: getPreviousPeriod(filters.period),
+            },
+            timezone,
+        ),
+    )
+        .then((trendData) => {
+            const value =
+                (trendData.data?.[AiSalesAgentOrdersMeasure.Gmv]?.value || 0) /
+                    (trendData.data?.[AiSalesAgentOrdersMeasure.Count]?.value ||
+                        0) || 0
+
+            const prevValue =
+                (trendData.data?.[AiSalesAgentOrdersMeasure.Gmv]?.prevValue ||
+                    0) /
+                    (trendData.data?.[AiSalesAgentOrdersMeasure.Count]
+                        ?.prevValue || 0) || 0
+
+            return {
+                isFetching: false,
+                isError: false,
+                data: {
+                    value: value,
+                    prevValue: prevValue,
+                },
+            }
+        })
+        .catch(() => ({
+            isFetching: false,
+            isError: true,
+            data: undefined,
+        }))
 }
 
 export { useAverageOrderValue, fetchAverageOrderValue }
