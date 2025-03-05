@@ -33,7 +33,6 @@ exports[`billing selectors getAutomationPrices should return the Automate prices
     "num_quota_tickets": 30,
     "price_id": "price_1LJBjXI9qXomtXqSSX34F3we",
     "product": "automation",
-    "product_id": "prod_LsHD5xmSqoFBBs",
     "public": true,
   },
   {
@@ -67,7 +66,6 @@ exports[`billing selectors getAutomationPrices should return the Automate prices
     "num_quota_tickets": 190,
     "price_id": "price_1LJBjbI9qXomtXqS2sfi1J7P",
     "product": "automation",
-    "product_id": "prod_LsHD5xmSqoFBBs",
     "public": true,
   },
   {
@@ -101,7 +99,6 @@ exports[`billing selectors getAutomationPrices should return the Automate prices
     "num_quota_tickets": 360,
     "price_id": "price_1LJBjZI9qXomtXqSPNgkEZpl",
     "product": "automation",
-    "product_id": "prod_LsHD5xmSqoFBBs",
     "public": true,
   },
   {
@@ -135,7 +132,6 @@ exports[`billing selectors getAutomationPrices should return the Automate prices
     "num_quota_tickets": 530,
     "price_id": "price_1LJBjeI9qXomtXqSXRjmhPsL",
     "product": "automation",
-    "product_id": "prod_LsHD5xmSqoFBBs",
     "public": true,
   },
   {
@@ -169,7 +165,6 @@ exports[`billing selectors getAutomationPrices should return the Automate prices
     "num_quota_tickets": 2280,
     "price_id": "price_1LJBjdI9qXomtXqSlp9sh6iQ",
     "product": "automation",
-    "product_id": "prod_LsHD5xmSqoFBBs",
     "public": true,
   },
   {
@@ -203,7 +198,6 @@ exports[`billing selectors getAutomationPrices should return the Automate prices
     "num_quota_tickets": 6360,
     "price_id": "price_1LJBjgI9qXomtXqSBZoBcg7G",
     "product": "automation",
-    "product_id": "prod_LsHD5xmSqoFBBs",
     "public": true,
   },
 ]
@@ -242,7 +236,6 @@ exports[`billing selectors getCheapestProductPrices should return the cheapest p
     "num_quota_tickets": 30,
     "price_id": "price_1LJBjXI9qXomtXqSSX34F3we",
     "product": "automation",
-    "product_id": "prod_LsHD5xmSqoFBBs",
     "public": true,
   },
   "convert": {
@@ -256,7 +249,6 @@ exports[`billing selectors getCheapestProductPrices should return the cheapest p
     "num_quota_tickets": 50,
     "price_id": "price_1NdBiMI9qXomtXqSX8MxFkYW",
     "product": "convert",
-    "product_id": "prod_Mwy3exdalDFouZ",
     "public": true,
     "tier": 1,
   },
@@ -360,7 +352,6 @@ exports[`billing selectors getCheapestProductPrices should return the cheapest p
     "num_quota_tickets": 300,
     "price_id": "price_1LJBjWI9qXomtXqSPZn8LqlD",
     "product": "helpdesk",
-    "product_id": "prod_LsH6kV35G6zKWo",
     "public": true,
   },
   "sms": {
@@ -374,7 +365,6 @@ exports[`billing selectors getCheapestProductPrices should return the cheapest p
     "num_quota_tickets": 150,
     "price_id": "price_1LkBzKI9qXomtXqSEXrSV8o4",
     "product": "sms",
-    "product_id": "prod_MT8Fzk7vmcT73m",
     "public": true,
   },
   "voice": {
@@ -388,7 +378,6 @@ exports[`billing selectors getCheapestProductPrices should return the cheapest p
     "num_quota_tickets": 250,
     "price_id": "price_1LkAzlI9qXomtXqSxOOrhzcU",
     "product": "voice",
-    "product_id": "prod_MT6fyh00TCFRGZ",
     "public": true,
   },
 }
@@ -586,7 +575,6 @@ exports[`billing selectors getHelpdeskPrices should return the helpdesk prices 1
     "num_quota_tickets": 300,
     "price_id": "price_1LJBjWI9qXomtXqSPZn8LqlD",
     "product": "helpdesk",
-    "product_id": "prod_LsH6kV35G6zKWo",
     "public": true,
   },
   {
@@ -689,7 +677,6 @@ exports[`billing selectors getHelpdeskPrices should return the helpdesk prices 1
     "num_quota_tickets": 2000,
     "price_id": "price_1LJBjaI9qXomtXqSvYfzmmEU",
     "product": "helpdesk",
-    "product_id": "prod_LsH6kV35G6zKWo",
     "public": true,
   },
   {
@@ -792,7 +779,6 @@ exports[`billing selectors getHelpdeskPrices should return the helpdesk prices 1
     "num_quota_tickets": 3600,
     "price_id": "price_1LJBjYI9qXomtXqSLEjOrpmV",
     "product": "helpdesk",
-    "product_id": "prod_LsH6kV35G6zKWo",
     "public": true,
   },
   {
@@ -895,7 +881,6 @@ exports[`billing selectors getHelpdeskPrices should return the helpdesk prices 1
     "num_quota_tickets": 5000,
     "price_id": "price_1LJBjdI9qXomtXqS8RzPPA7K",
     "product": "helpdesk",
-    "product_id": "prod_LsH6kV35G6zKWo",
     "public": true,
   },
   {
@@ -998,7 +983,6 @@ exports[`billing selectors getHelpdeskPrices should return the helpdesk prices 1
     "num_quota_tickets": 24000,
     "price_id": "price_1LJBjbI9qXomtXqShB9YLy7V",
     "product": "helpdesk",
-    "product_id": "prod_LsH6kV35G6zKWo",
     "public": true,
   },
   {
@@ -1101,7 +1085,6 @@ exports[`billing selectors getHelpdeskPrices should return the helpdesk prices 1
     "num_quota_tickets": 60000,
     "price_id": "price_1LJBjfI9qXomtXqSeKJ5lJjD",
     "product": "helpdesk",
-    "product_id": "prod_LsH6kV35G6zKWo",
     "public": true,
   },
 ]
@@ -1120,7 +1103,6 @@ exports[`billing selectors getPrices should return the prices 1`] = `
     "num_quota_tickets": 0,
     "price_id": "price_1M6V7uI9qXomtXqSpsoVQWUw",
     "product": "sms",
-    "product_id": "prod_MT8Fzk7vmcT73m",
     "public": true,
   },
   {
@@ -1134,7 +1116,6 @@ exports[`billing selectors getPrices should return the prices 1`] = `
     "num_quota_tickets": 0,
     "price_id": "price_1LkClqI9qXomtXqSlgYCG6Wm",
     "product": "voice",
-    "product_id": "prod_MT6fyh00TCFRGZ",
     "public": true,
   },
   {
@@ -1148,7 +1129,6 @@ exports[`billing selectors getPrices should return the prices 1`] = `
     "num_quota_tickets": 0,
     "price_id": "price_1NdBfmI9qXomtXqSFfC7T2xX",
     "product": "convert",
-    "product_id": "prod_Mwy3exdalDFouZ",
     "public": true,
     "tier": 0,
   },
@@ -1163,7 +1143,6 @@ exports[`billing selectors getPrices should return the prices 1`] = `
     "num_quota_tickets": 150,
     "price_id": "price_1LkBzKI9qXomtXqSEXrSV8o4",
     "product": "sms",
-    "product_id": "prod_MT8Fzk7vmcT73m",
     "public": true,
   },
   {
@@ -1177,7 +1156,6 @@ exports[`billing selectors getPrices should return the prices 1`] = `
     "num_quota_tickets": 250,
     "price_id": "price_1LkAzlI9qXomtXqSxOOrhzcU",
     "product": "voice",
-    "product_id": "prod_MT6fyh00TCFRGZ",
     "public": true,
   },
   {
@@ -1191,7 +1169,6 @@ exports[`billing selectors getPrices should return the prices 1`] = `
     "num_quota_tickets": 300,
     "price_id": "price_1O9Vc7I9qXomtXqS4a8p3S7e",
     "product": "sms",
-    "product_id": "prod_MT8Fzk7vmcT73m",
     "public": true,
   },
   {
@@ -1205,7 +1182,6 @@ exports[`billing selectors getPrices should return the prices 1`] = `
     "num_quota_tickets": 7500,
     "price_id": "price_1LkB44I9qXomtXqS4aF9ibna",
     "product": "voice",
-    "product_id": "prod_MT6fyh00TCFRGZ",
     "public": true,
   },
   {
@@ -1239,7 +1215,6 @@ exports[`billing selectors getPrices should return the prices 1`] = `
     "num_quota_tickets": 30,
     "price_id": "price_1LJBjXI9qXomtXqSSX34F3we",
     "product": "automation",
-    "product_id": "prod_LsHD5xmSqoFBBs",
     "public": true,
   },
   {
@@ -1253,7 +1228,6 @@ exports[`billing selectors getPrices should return the prices 1`] = `
     "num_quota_tickets": 300,
     "price_id": "price_1O9TX8I9qXomtXqSR9drzVqz",
     "product": "voice",
-    "product_id": "prod_MT6fyh00TCFRGZ",
     "public": true,
   },
   {
@@ -1267,7 +1241,6 @@ exports[`billing selectors getPrices should return the prices 1`] = `
     "num_quota_tickets": 50,
     "price_id": "price_1NdBiMI9qXomtXqSX8MxFkYW",
     "product": "convert",
-    "product_id": "prod_Mwy3exdalDFouZ",
     "public": true,
     "tier": 1,
   },
@@ -1282,7 +1255,6 @@ exports[`billing selectors getPrices should return the prices 1`] = `
     "num_quota_tickets": 15000,
     "price_id": "price_1LkBzLI9qXomtXqSgzXlOnP4",
     "product": "sms",
-    "product_id": "prod_MT8Fzk7vmcT73m",
     "public": true,
   },
   {
@@ -1385,7 +1357,6 @@ exports[`billing selectors getPrices should return the prices 1`] = `
     "num_quota_tickets": 300,
     "price_id": "price_1LJBjWI9qXomtXqSPZn8LqlD",
     "product": "helpdesk",
-    "product_id": "prod_LsH6kV35G6zKWo",
     "public": true,
   },
   {
@@ -1419,7 +1390,6 @@ exports[`billing selectors getPrices should return the prices 1`] = `
     "num_quota_tickets": 190,
     "price_id": "price_1LJBjbI9qXomtXqS2sfi1J7P",
     "product": "automation",
-    "product_id": "prod_LsHD5xmSqoFBBs",
     "public": true,
   },
   {
@@ -1433,7 +1403,6 @@ exports[`billing selectors getPrices should return the prices 1`] = `
     "num_quota_tickets": 500,
     "price_id": "price_1NdXfXI9qXomtXqS0CDMe7Yy",
     "product": "convert",
-    "product_id": "prod_Mwy3exdalDFouZ",
     "public": true,
     "tier": 2,
   },
@@ -1468,7 +1437,6 @@ exports[`billing selectors getPrices should return the prices 1`] = `
     "num_quota_tickets": 360,
     "price_id": "price_1LJBjZI9qXomtXqSPNgkEZpl",
     "product": "automation",
-    "product_id": "prod_LsHD5xmSqoFBBs",
     "public": true,
   },
   {
@@ -1571,7 +1539,6 @@ exports[`billing selectors getPrices should return the prices 1`] = `
     "num_quota_tickets": 2000,
     "price_id": "price_1LJBjaI9qXomtXqSvYfzmmEU",
     "product": "helpdesk",
-    "product_id": "prod_LsH6kV35G6zKWo",
     "public": true,
   },
   {
@@ -1585,7 +1552,6 @@ exports[`billing selectors getPrices should return the prices 1`] = `
     "num_quota_tickets": 600,
     "price_id": "price_2NmZrmH2GG3UYmlxBGfOOSL1",
     "product": "convert",
-    "product_id": "prod_Mwy3exdalDFouZ",
     "public": true,
     "tier": 1,
   },
@@ -1620,7 +1586,6 @@ exports[`billing selectors getPrices should return the prices 1`] = `
     "num_quota_tickets": 530,
     "price_id": "price_1LJBjeI9qXomtXqSXRjmhPsL",
     "product": "automation",
-    "product_id": "prod_LsHD5xmSqoFBBs",
     "public": true,
   },
   {
@@ -1723,7 +1688,6 @@ exports[`billing selectors getPrices should return the prices 1`] = `
     "num_quota_tickets": 3600,
     "price_id": "price_1LJBjYI9qXomtXqSLEjOrpmV",
     "product": "helpdesk",
-    "product_id": "prod_LsH6kV35G6zKWo",
     "public": true,
   },
   {
@@ -1737,7 +1701,6 @@ exports[`billing selectors getPrices should return the prices 1`] = `
     "num_quota_tickets": 2000,
     "price_id": "price_1NmZrmH2GG3UYmlxBGfOOSLS",
     "product": "convert",
-    "product_id": "prod_Mwy3exdalDFouZ",
     "public": true,
     "tier": 3,
   },
@@ -1841,7 +1804,6 @@ exports[`billing selectors getPrices should return the prices 1`] = `
     "num_quota_tickets": 5000,
     "price_id": "price_1LJBjdI9qXomtXqS8RzPPA7K",
     "product": "helpdesk",
-    "product_id": "prod_LsH6kV35G6zKWo",
     "public": true,
   },
   {
@@ -1855,7 +1817,6 @@ exports[`billing selectors getPrices should return the prices 1`] = `
     "num_quota_tickets": 2000,
     "price_id": "price_1NmZrmH2GG3UYmlxBGfOOSL2",
     "product": "convert",
-    "product_id": "prod_Mwy3exdalDFouZ",
     "public": true,
     "tier": 4,
   },
@@ -1870,7 +1831,6 @@ exports[`billing selectors getPrices should return the prices 1`] = `
     "num_quota_tickets": 3000,
     "price_id": "price_1NmZrmH2GG3UYmlxBGfOOSL1",
     "product": "convert",
-    "product_id": "prod_Mwy3exdalDFouZ",
     "public": true,
     "tier": 5,
   },
@@ -1905,7 +1865,6 @@ exports[`billing selectors getPrices should return the prices 1`] = `
     "num_quota_tickets": 2280,
     "price_id": "price_1LJBjdI9qXomtXqSlp9sh6iQ",
     "product": "automation",
-    "product_id": "prod_LsHD5xmSqoFBBs",
     "public": true,
   },
   {
@@ -2008,7 +1967,6 @@ exports[`billing selectors getPrices should return the prices 1`] = `
     "num_quota_tickets": 24000,
     "price_id": "price_1LJBjbI9qXomtXqShB9YLy7V",
     "product": "helpdesk",
-    "product_id": "prod_LsH6kV35G6zKWo",
     "public": true,
   },
   {
@@ -2042,7 +2000,6 @@ exports[`billing selectors getPrices should return the prices 1`] = `
     "num_quota_tickets": 6360,
     "price_id": "price_1LJBjgI9qXomtXqSBZoBcg7G",
     "product": "automation",
-    "product_id": "prod_LsHD5xmSqoFBBs",
     "public": true,
   },
   {
@@ -2145,7 +2102,6 @@ exports[`billing selectors getPrices should return the prices 1`] = `
     "num_quota_tickets": 60000,
     "price_id": "price_1LJBjfI9qXomtXqSeKJ5lJjD",
     "product": "helpdesk",
-    "product_id": "prod_LsH6kV35G6zKWo",
     "public": true,
   },
 ]
@@ -2256,7 +2212,6 @@ exports[`billing selectors getProducts should return products 1`] = `
         "num_quota_tickets": 300,
         "price_id": "price_1LJBjWI9qXomtXqSPZn8LqlD",
         "product": "helpdesk",
-        "product_id": "prod_LsH6kV35G6zKWo",
         "public": true,
       },
       {
@@ -2359,7 +2314,6 @@ exports[`billing selectors getProducts should return products 1`] = `
         "num_quota_tickets": 3600,
         "price_id": "price_1LJBjYI9qXomtXqSLEjOrpmV",
         "product": "helpdesk",
-        "product_id": "prod_LsH6kV35G6zKWo",
         "public": true,
       },
       {
@@ -2462,7 +2416,6 @@ exports[`billing selectors getProducts should return products 1`] = `
         "num_quota_tickets": 2000,
         "price_id": "price_1LJBjaI9qXomtXqSvYfzmmEU",
         "product": "helpdesk",
-        "product_id": "prod_LsH6kV35G6zKWo",
         "public": true,
       },
       {
@@ -2565,7 +2518,6 @@ exports[`billing selectors getProducts should return products 1`] = `
         "num_quota_tickets": 24000,
         "price_id": "price_1LJBjbI9qXomtXqShB9YLy7V",
         "product": "helpdesk",
-        "product_id": "prod_LsH6kV35G6zKWo",
         "public": true,
       },
       {
@@ -2668,7 +2620,6 @@ exports[`billing selectors getProducts should return products 1`] = `
         "num_quota_tickets": 5000,
         "price_id": "price_1LJBjdI9qXomtXqS8RzPPA7K",
         "product": "helpdesk",
-        "product_id": "prod_LsH6kV35G6zKWo",
         "public": true,
       },
       {
@@ -2771,7 +2722,6 @@ exports[`billing selectors getProducts should return products 1`] = `
         "num_quota_tickets": 60000,
         "price_id": "price_1LJBjfI9qXomtXqSeKJ5lJjD",
         "product": "helpdesk",
-        "product_id": "prod_LsH6kV35G6zKWo",
         "public": true,
       },
     ],
@@ -2811,7 +2761,6 @@ exports[`billing selectors getProducts should return products 1`] = `
         "num_quota_tickets": 30,
         "price_id": "price_1LJBjXI9qXomtXqSSX34F3we",
         "product": "automation",
-        "product_id": "prod_LsHD5xmSqoFBBs",
         "public": true,
       },
       {
@@ -2845,7 +2794,6 @@ exports[`billing selectors getProducts should return products 1`] = `
         "num_quota_tickets": 360,
         "price_id": "price_1LJBjZI9qXomtXqSPNgkEZpl",
         "product": "automation",
-        "product_id": "prod_LsHD5xmSqoFBBs",
         "public": true,
       },
       {
@@ -2879,7 +2827,6 @@ exports[`billing selectors getProducts should return products 1`] = `
         "num_quota_tickets": 190,
         "price_id": "price_1LJBjbI9qXomtXqS2sfi1J7P",
         "product": "automation",
-        "product_id": "prod_LsHD5xmSqoFBBs",
         "public": true,
       },
       {
@@ -2913,7 +2860,6 @@ exports[`billing selectors getProducts should return products 1`] = `
         "num_quota_tickets": 2280,
         "price_id": "price_1LJBjdI9qXomtXqSlp9sh6iQ",
         "product": "automation",
-        "product_id": "prod_LsHD5xmSqoFBBs",
         "public": true,
       },
       {
@@ -2947,7 +2893,6 @@ exports[`billing selectors getProducts should return products 1`] = `
         "num_quota_tickets": 530,
         "price_id": "price_1LJBjeI9qXomtXqSXRjmhPsL",
         "product": "automation",
-        "product_id": "prod_LsHD5xmSqoFBBs",
         "public": true,
       },
       {
@@ -2981,7 +2926,6 @@ exports[`billing selectors getProducts should return products 1`] = `
         "num_quota_tickets": 6360,
         "price_id": "price_1LJBjgI9qXomtXqSBZoBcg7G",
         "product": "automation",
-        "product_id": "prod_LsHD5xmSqoFBBs",
         "public": true,
       },
     ],
@@ -3001,7 +2945,6 @@ exports[`billing selectors getProducts should return products 1`] = `
         "num_quota_tickets": 150,
         "price_id": "price_1LkBzKI9qXomtXqSEXrSV8o4",
         "product": "sms",
-        "product_id": "prod_MT8Fzk7vmcT73m",
         "public": true,
       },
       {
@@ -3015,7 +2958,6 @@ exports[`billing selectors getProducts should return products 1`] = `
         "num_quota_tickets": 15000,
         "price_id": "price_1LkBzLI9qXomtXqSgzXlOnP4",
         "product": "sms",
-        "product_id": "prod_MT8Fzk7vmcT73m",
         "public": true,
       },
       {
@@ -3029,7 +2971,6 @@ exports[`billing selectors getProducts should return products 1`] = `
         "num_quota_tickets": 300,
         "price_id": "price_1O9Vc7I9qXomtXqS4a8p3S7e",
         "product": "sms",
-        "product_id": "prod_MT8Fzk7vmcT73m",
         "public": true,
       },
       {
@@ -3043,7 +2984,6 @@ exports[`billing selectors getProducts should return products 1`] = `
         "num_quota_tickets": 0,
         "price_id": "price_1M6V7uI9qXomtXqSpsoVQWUw",
         "product": "sms",
-        "product_id": "prod_MT8Fzk7vmcT73m",
         "public": true,
       },
     ],
@@ -3063,7 +3003,6 @@ exports[`billing selectors getProducts should return products 1`] = `
         "num_quota_tickets": 250,
         "price_id": "price_1LkAzlI9qXomtXqSxOOrhzcU",
         "product": "voice",
-        "product_id": "prod_MT6fyh00TCFRGZ",
         "public": true,
       },
       {
@@ -3077,7 +3016,6 @@ exports[`billing selectors getProducts should return products 1`] = `
         "num_quota_tickets": 7500,
         "price_id": "price_1LkB44I9qXomtXqS4aF9ibna",
         "product": "voice",
-        "product_id": "prod_MT6fyh00TCFRGZ",
         "public": true,
       },
       {
@@ -3091,7 +3029,6 @@ exports[`billing selectors getProducts should return products 1`] = `
         "num_quota_tickets": 300,
         "price_id": "price_1O9TX8I9qXomtXqSR9drzVqz",
         "product": "voice",
-        "product_id": "prod_MT6fyh00TCFRGZ",
         "public": true,
       },
       {
@@ -3105,7 +3042,6 @@ exports[`billing selectors getProducts should return products 1`] = `
         "num_quota_tickets": 0,
         "price_id": "price_1LkClqI9qXomtXqSlgYCG6Wm",
         "product": "voice",
-        "product_id": "prod_MT6fyh00TCFRGZ",
         "public": true,
       },
     ],
@@ -3125,7 +3061,6 @@ exports[`billing selectors getProducts should return products 1`] = `
         "num_quota_tickets": 0,
         "price_id": "price_1NdBfmI9qXomtXqSFfC7T2xX",
         "product": "convert",
-        "product_id": "prod_Mwy3exdalDFouZ",
         "public": true,
         "tier": 0,
       },
@@ -3140,7 +3075,6 @@ exports[`billing selectors getProducts should return products 1`] = `
         "num_quota_tickets": 50,
         "price_id": "price_1NdBiMI9qXomtXqSX8MxFkYW",
         "product": "convert",
-        "product_id": "prod_Mwy3exdalDFouZ",
         "public": true,
         "tier": 1,
       },
@@ -3155,7 +3089,6 @@ exports[`billing selectors getProducts should return products 1`] = `
         "num_quota_tickets": 500,
         "price_id": "price_1NdXfXI9qXomtXqS0CDMe7Yy",
         "product": "convert",
-        "product_id": "prod_Mwy3exdalDFouZ",
         "public": true,
         "tier": 2,
       },
@@ -3170,7 +3103,6 @@ exports[`billing selectors getProducts should return products 1`] = `
         "num_quota_tickets": 2000,
         "price_id": "price_1NmZrmH2GG3UYmlxBGfOOSLS",
         "product": "convert",
-        "product_id": "prod_Mwy3exdalDFouZ",
         "public": true,
         "tier": 3,
       },
@@ -3185,7 +3117,6 @@ exports[`billing selectors getProducts should return products 1`] = `
         "num_quota_tickets": 2000,
         "price_id": "price_1NmZrmH2GG3UYmlxBGfOOSL2",
         "product": "convert",
-        "product_id": "prod_Mwy3exdalDFouZ",
         "public": true,
         "tier": 4,
       },
@@ -3200,7 +3131,6 @@ exports[`billing selectors getProducts should return products 1`] = `
         "num_quota_tickets": 3000,
         "price_id": "price_1NmZrmH2GG3UYmlxBGfOOSL1",
         "product": "convert",
-        "product_id": "prod_Mwy3exdalDFouZ",
         "public": true,
         "tier": 5,
       },
@@ -3215,7 +3145,6 @@ exports[`billing selectors getProducts should return products 1`] = `
         "num_quota_tickets": 600,
         "price_id": "price_2NmZrmH2GG3UYmlxBGfOOSL1",
         "product": "convert",
-        "product_id": "prod_Mwy3exdalDFouZ",
         "public": true,
         "tier": 1,
       },

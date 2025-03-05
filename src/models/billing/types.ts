@@ -53,7 +53,6 @@ type BasePlan = {
     internal_id: string
     cadence: Cadence
     name: string
-    product_id: string
     price_id: string
     public: boolean
 }

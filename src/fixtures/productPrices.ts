@@ -209,7 +209,6 @@ export const basicMonthlyHelpdeskPlan: HelpdeskPlan = {
     internal_id: 'basic-monthly-usd-4',
     name: 'Basic',
     product: ProductType.Helpdesk,
-    product_id: 'prod_LsH6kV35G6zKWo',
     price_id: 'price_1LJBjWI9qXomtXqSPZn8LqlD',
     public: true,
 }
@@ -227,7 +226,6 @@ export const basicYearlyHelpdeskPlan: HelpdeskPlan = {
     internal_id: 'basic-yearly-usd-4',
     name: 'Basic',
     product: ProductType.Helpdesk,
-    product_id: 'prod_LsH6kV35G6zKWo',
     price_id: 'price_1LJBjYI9qXomtXqSLEjOrpmV',
     public: true,
 }
@@ -245,7 +243,6 @@ export const proMonthlyHelpdeskPlan: HelpdeskPlan = {
     internal_id: 'pro-monthly-usd-4',
     name: 'Pro',
     product: ProductType.Helpdesk,
-    product_id: 'prod_LsH6kV35G6zKWo',
     price_id: 'price_1LJBjaI9qXomtXqSvYfzmmEU',
     public: true,
 }
@@ -263,7 +260,6 @@ export const proYearlyHelpdeskPlan: HelpdeskPlan = {
     internal_id: 'pro-yearly-usd-4',
     name: 'Pro',
     product: ProductType.Helpdesk,
-    product_id: 'prod_LsH6kV35G6zKWo',
     price_id: 'price_1LJBjbI9qXomtXqShB9YLy7V',
     public: true,
 }
@@ -281,7 +277,6 @@ export const advancedMonthlyHelpdeskPlan: HelpdeskPlan = {
     internal_id: 'advanced-monthly-usd-4',
     name: 'Advanced',
     product: ProductType.Helpdesk,
-    product_id: 'prod_LsH6kV35G6zKWo',
     price_id: 'price_1LJBjdI9qXomtXqS8RzPPA7K',
     public: true,
 }
@@ -299,7 +294,6 @@ export const advancedYearlyHelpdeskPlan: HelpdeskPlan = {
     internal_id: 'advanced-yearly-usd-4',
     name: 'Advanced',
     product: ProductType.Helpdesk,
-    product_id: 'prod_LsH6kV35G6zKWo',
     price_id: 'price_1LJBjfI9qXomtXqSeKJ5lJjD',
     public: true,
 }
@@ -316,7 +310,6 @@ export const basicMonthlyAutomationPlan: AutomatePlan = {
     internal_id: 'aut-addon-basic-full-price-monthly-usd-4',
     name: 'Basic',
     product: ProductType.Automation,
-    product_id: 'prod_LsHD5xmSqoFBBs',
     price_id: 'price_1LJBjXI9qXomtXqSSX34F3we',
 }
 
@@ -332,7 +325,6 @@ export const basicYearlyAutomationPlan: AutomatePlan = {
     internal_id: 'aut-addon-basic-full-price-yearly-usd-4',
     name: 'Basic',
     product: ProductType.Automation,
-    product_id: 'prod_LsHD5xmSqoFBBs',
     price_id: 'price_1LJBjZI9qXomtXqSPNgkEZpl',
 }
 
@@ -348,7 +340,6 @@ export const proMonthlyAutomationPlan: AutomatePlan = {
     internal_id: 'aut-addon-pro-full-price-monthly-usd-4',
     name: 'Pro',
     product: ProductType.Automation,
-    product_id: 'prod_LsHD5xmSqoFBBs',
     price_id: 'price_1LJBjbI9qXomtXqS2sfi1J7P',
 }
 
@@ -364,7 +355,6 @@ export const proYearlyAutomationPlan: AutomatePlan = {
     internal_id: 'aut-addon-pro-full-price-yearly-usd-4',
     name: 'Pro',
     product: ProductType.Automation,
-    product_id: 'prod_LsHD5xmSqoFBBs',
     price_id: 'price_1LJBjdI9qXomtXqSlp9sh6iQ',
 }
 
@@ -380,7 +370,6 @@ export const advancedMonthlyAutomatePlan: AutomatePlan = {
     internal_id: 'aut-addon-advanced-full-price-monthly-usd-4',
     name: 'Advanced',
     product: ProductType.Automation,
-    product_id: 'prod_LsHD5xmSqoFBBs',
     price_id: 'price_1LJBjeI9qXomtXqSXRjmhPsL',
 }
 
@@ -396,7 +385,6 @@ export const advancedYearlyAutomatePlan: AutomatePlan = {
     internal_id: 'aut-addon-advanced-full-price-yearly-usd-4',
     name: 'Advanced',
     product: ProductType.Automation,
-    product_id: 'prod_LsHD5xmSqoFBBs',
     price_id: 'price_1LJBjgI9qXomtXqSBZoBcg7G',
 }
 
@@ -412,7 +400,6 @@ export const automate02MonthlyMeteredPlan: AutomatePlan = {
     internal_id: 'aut-flat-02-monthly-usd-5',
     features: automatePlanFeatures,
     product: ProductType.Automation,
-    product_id: 'prod_LsHD5xmSqoFBBs',
     price_id: 'price_1NDljFI9qXomtXqSLfW8eTwt',
 }
 
@@ -428,7 +415,6 @@ export const automate05YearlyMeteredPlan: AutomatePlan = {
     internal_id: 'aut-flat-05-yearly-usd-5',
     features: automatePlanFeatures,
     product: ProductType.Automation,
-    product_id: 'prod_LsHD5xmSqoFBBs',
     price_id: 'price_1NDljoI9qXomtXqSABPGJ8si',
 }
 export const legacyBasicHelpdeskPlan: HelpdeskPlan = {
@@ -444,7 +430,6 @@ export const legacyBasicHelpdeskPlan: HelpdeskPlan = {
     internal_id: 'basic-usd-1',
     name: 'Basic Plan',
     product: ProductType.Helpdesk,
-    product_id: 'prod_LsH6kV35G6zKWo',
     price_id: 'price_1LJBlXI9qXomtXqSddDEgsDA',
     public: false,
 }
@@ -462,7 +447,6 @@ export const customHelpdeskPlan: HelpdeskPlan = {
     internal_id: 'custom-monthly-usd-4-1',
     name: 'Custom',
     product: ProductType.Helpdesk,
-    product_id: 'prod_LsH6kV35G6zKWo',
     price_id: 'price_1LJBjhI9qXomtXqSAUwsyU2z',
     public: true,
 }
@@ -480,7 +464,6 @@ export const starterHelpdeskPlan: HelpdeskPlan = {
     internal_id: 'starter-monthly-usd-4',
     name: 'Starter',
     product: ProductType.Helpdesk,
-    product_id: 'prod_LsH6kV35G6zKWo',
     price_id: 'price_1LVt4TI9qXomtXqSeHydKB9S',
     public: false,
 }
@@ -496,7 +479,6 @@ export const voicePlan0: SMSOrVoicePlan = {
     name: 'Voice Addon Trial Monthly',
     price_id: 'price_1LkClqI9qXomtXqSlgYCG6Wm',
     product: ProductType.Voice,
-    product_id: 'prod_MT6fyh00TCFRGZ',
     extra_ticket_cost: 2.4,
 }
 
@@ -511,7 +493,6 @@ export const voicePlan1: SMSOrVoicePlan = {
     name: 'Voice Addon 250 Monthly',
     price_id: 'price_1LkAzlI9qXomtXqSxOOrhzcU',
     product: ProductType.Voice,
-    product_id: 'prod_MT6fyh00TCFRGZ',
     extra_ticket_cost: 1.4,
 }
 
@@ -526,7 +507,6 @@ const voicePlan2: SMSOrVoicePlan = {
     name: 'Voice Addon 7500 Monthly',
     price_id: 'price_1LkB44I9qXomtXqS4aF9ibna',
     product: ProductType.Voice,
-    product_id: 'prod_MT6fyh00TCFRGZ',
     extra_ticket_cost: 0.47,
 }
 
@@ -541,7 +521,6 @@ export const voicePlan3: SMSOrVoicePlan = {
     name: 'Voice Addon 300 Yearly',
     price_id: 'price_1O9TX8I9qXomtXqSR9drzVqz',
     product: ProductType.Voice,
-    product_id: 'prod_MT6fyh00TCFRGZ',
     extra_ticket_cost: 2.2,
 }
 
@@ -556,7 +535,6 @@ export const smsPlan1: SMSOrVoicePlan = {
     name: 'SMS Addon 150 Monthly',
     price_id: 'price_1LkBzKI9qXomtXqSEXrSV8o4',
     product: ProductType.SMS,
-    product_id: 'prod_MT8Fzk7vmcT73m',
     extra_ticket_cost: 1.2,
 }
 
@@ -571,7 +549,6 @@ const smsPlan2: SMSOrVoicePlan = {
     name: 'SMS Addon 15000 Monthly',
     price_id: 'price_1LkBzLI9qXomtXqSgzXlOnP4',
     product: ProductType.SMS,
-    product_id: 'prod_MT8Fzk7vmcT73m',
     extra_ticket_cost: 0.77,
 }
 
@@ -586,7 +563,6 @@ export const smsPlan3: SMSOrVoicePlan = {
     name: 'SMS Addon 300 Yearly',
     price_id: 'price_1O9Vc7I9qXomtXqS4a8p3S7e',
     product: ProductType.SMS,
-    product_id: 'prod_MT8Fzk7vmcT73m',
     extra_ticket_cost: 1.5,
 }
 
@@ -601,7 +577,6 @@ export const smsPlan0: SMSOrVoicePlan = {
     name: 'SMS Addon Trial Monthly',
     price_id: 'price_1M6V7uI9qXomtXqSpsoVQWUw',
     product: ProductType.SMS,
-    product_id: 'prod_MT8Fzk7vmcT73m',
     extra_ticket_cost: 1.6,
 }
 
@@ -616,7 +591,6 @@ export const convertPlan0: ConvertPlan = {
     name: 'Convert Trial Monthly',
     price_id: 'price_1NdBfmI9qXomtXqSFfC7T2xX',
     product: ProductType.Convert,
-    product_id: 'prod_Mwy3exdalDFouZ',
     extra_ticket_cost: 1,
     tier: 0,
 }
@@ -632,7 +606,6 @@ export const convertPlan1: ConvertPlan = {
     name: 'Convert 50 Monthly',
     price_id: 'price_1NdBiMI9qXomtXqSX8MxFkYW',
     product: ProductType.Convert,
-    product_id: 'prod_Mwy3exdalDFouZ',
     extra_ticket_cost: 0,
     tier: 1,
 }
@@ -648,7 +621,6 @@ export const convertPlan2: ConvertPlan = {
     name: 'Convert 500 Monthly',
     price_id: 'price_1NdXfXI9qXomtXqS0CDMe7Yy',
     product: ProductType.Convert,
-    product_id: 'prod_Mwy3exdalDFouZ',
     extra_ticket_cost: 0,
     tier: 2,
 }
@@ -664,7 +636,6 @@ export const convertPlan3: ConvertPlan = {
     name: 'Convert 2,000 Monthly',
     price_id: 'price_1NmZrmH2GG3UYmlxBGfOOSLS',
     product: ProductType.Convert,
-    product_id: 'prod_Mwy3exdalDFouZ',
     extra_ticket_cost: 0,
     tier: 3,
 }
@@ -680,7 +651,6 @@ export const convertPlan4: ConvertPlan = {
     name: 'Convert 2,000 Monthly',
     price_id: 'price_1NmZrmH2GG3UYmlxBGfOOSL2',
     product: ProductType.Convert,
-    product_id: 'prod_Mwy3exdalDFouZ',
     extra_ticket_cost: 0,
     tier: 4,
 }
@@ -696,7 +666,6 @@ export const convertPlan5: ConvertPlan = {
     name: 'Convert 3,000 Monthly',
     price_id: 'price_1NmZrmH2GG3UYmlxBGfOOSL1',
     product: ProductType.Convert,
-    product_id: 'prod_Mwy3exdalDFouZ',
     extra_ticket_cost: 0,
     tier: 5,
 }
@@ -712,7 +681,6 @@ export const convertPlan6: ConvertPlan = {
     name: 'Convert 600 Yearly',
     price_id: 'price_2NmZrmH2GG3UYmlxBGfOOSL1',
     product: ProductType.Convert,
-    product_id: 'prod_Mwy3exdalDFouZ',
     extra_ticket_cost: 0,
     tier: 1,
 }
