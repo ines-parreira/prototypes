@@ -62,14 +62,14 @@ export const SalesPaywall = () => {
                                 <i className={cn('material-icons', css.icon)}>
                                     done
                                 </i>
-                                Offer dynamic discounts to convert hesitant
+                                Offers dynamic discounts to convert hesitant
                                 buyers without compromising margins.
                             </li>
                             <li className="heading-subsection-regular">
                                 <i className={cn('material-icons', css.icon)}>
                                     done
                                 </i>
-                                Personalize product recommendations using
+                                Personalizes product recommendations using
                                 real-time data and customer input.
                             </li>
                             <li className="heading-subsection-regular">
