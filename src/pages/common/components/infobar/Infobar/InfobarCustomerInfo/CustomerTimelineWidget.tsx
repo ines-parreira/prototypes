@@ -3,12 +3,11 @@ import React from 'react'
 import { List } from 'immutable'
 
 import { TicketSummary } from '@gorgias/api-queries'
-import { LoadingSpinner } from '@gorgias/merchant-ui-kit'
+import { Button, LoadingSpinner } from '@gorgias/merchant-ui-kit'
 
 import { logEvent, SegmentEvent } from 'common/segment'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
-import Button from 'pages/common/components/button/Button'
 import { ReduxCustomerHistory } from 'pages/common/components/timeline/types'
 import { getCustomerHistory, getLoading } from 'state/customers/selectors'
 import { toggleHistory } from 'state/ticket/actions'
@@ -26,7 +25,7 @@ const ForumIcon = () => (
     <span className={`material-icons ${css.mr} ${css.forumIcon}`}>forum</span>
 )
 
-export function CustomerTimelineWidget({ isEditing = false }: Props) {
+export function CustomerTimelineWidget({ isEditing }: Props) {
     const dispatch = useAppDispatch()
 
     const isHistoryDisplayed = useAppSelector(getDisplayHistory)

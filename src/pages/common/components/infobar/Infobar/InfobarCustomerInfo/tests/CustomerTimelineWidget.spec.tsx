@@ -64,7 +64,7 @@ describe('CustomerTimelineButton', () => {
         useAppDispatchMock.mockReturnValue(dispatchMock)
         getDisplayHistoryMock.mockReturnValue(true)
         getContextMock.mockReturnValue(WidgetEnvironment.Ticket)
-        getTicketStateMock.mockReturnValue(fromJS({ messages: [] }))
+        getTicketStateMock.mockReturnValue(fromJS({}))
         getLoadingMock.mockReturnValue(fromJS({ history: false }))
         getCustomerHistoryMock.mockReturnValue(
             fromJS({
@@ -113,12 +113,14 @@ describe('CustomerTimelineButton', () => {
             <CustomerTimelineWidget isEditing={false} />,
         )
         fireEvent.click(screen.getByRole('button'))
+
         expect(toggleHistoryMock).toHaveBeenCalledWith(false)
         expect(dispatchMock).toHaveBeenCalledTimes(1)
 
         getDisplayHistoryMock.mockReturnValue(false)
         rerender(<CustomerTimelineWidget isEditing={false} />)
         fireEvent.click(screen.getByRole('button'))
+
         expect(toggleHistoryMock).toHaveBeenCalledWith(true)
         expect(dispatchMock).toHaveBeenCalledTimes(2)
     })
@@ -140,6 +142,7 @@ describe('CustomerTimelineButton', () => {
         getTicketStateMock.mockReturnValue(fromJS({ messages: [{ id: '1' }] }))
         rerender(<CustomerTimelineWidget isEditing={false} />)
         fireEvent.click(screen.getByRole('button'))
+
         expect(logEventMock).toHaveBeenCalledWith(
             SegmentEvent.UserHistoryToggled,
             {
