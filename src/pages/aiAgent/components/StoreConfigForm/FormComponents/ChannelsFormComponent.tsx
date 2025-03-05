@@ -1,5 +1,6 @@
 import React, { Fragment } from 'react'
 
+import cn from 'classnames'
 import { useFlags } from 'launchdarkly-react-client-sdk'
 import { Link } from 'react-router-dom'
 
@@ -15,6 +16,7 @@ import { SettingsBannerType } from '../constants'
 import { ChannelToggleInput } from './ChannelToggleInput'
 import { ChatSettingsFormComponent } from './ChatSettingsFormComponent'
 import { EmailFormComponent } from './EmailFormComponent'
+import { HandoverCustomizationSettingsFormComponent } from './HandoverCustomizationSettingsFormComponent'
 import { SettingsBanner } from './SettingsBanner'
 import { SignatureFormComponent } from './SignatureFormComponent'
 
@@ -56,6 +58,9 @@ export const ChannelsFormComponent = ({
     const isAiAgentChatEnabled: boolean | undefined =
         useFlags()[FeatureFlagKey.AiAgentChat]
 
+    const handoverCustomizationSettingsConfigurationEnabled =
+        useFlags()[FeatureFlagKey.AiAgentHandoverCustomizationConfiguration]
+
     const hasAutomate = useAppSelector(getHasAutomate)
     const chatChannels = useSelfServiceChatChannels(shopType, shopName)
 
@@ -85,13 +90,31 @@ export const ChannelsFormComponent = ({
                             isDisabled={!hasAutomate}
                         />
                     </div>
+                    <div
+                        className={cn({
+                            [css.settingsSectionBlock]:
+                                handoverCustomizationSettingsConfigurationEnabled,
+                        })}
+                    >
+                        <ChatSettingsFormComponent
+                            monitoredChatIntegrations={
+                                monitoredChatIntegrations
+                            }
+                            isRequired={chatChannelDeactivatedDatetime === null}
+                            updateValue={updateValue}
+                            chatChannels={chatChannels}
+                        />
+                    </div>
 
-                    <ChatSettingsFormComponent
-                        monitoredChatIntegrations={monitoredChatIntegrations}
-                        isRequired={chatChannelDeactivatedDatetime === null}
-                        updateValue={updateValue}
-                        chatChannels={chatChannels}
-                    />
+                    {handoverCustomizationSettingsConfigurationEnabled && (
+                        <HandoverCustomizationSettingsFormComponent
+                            shopName={shopName}
+                            shopType={shopType}
+                            monitoredChatIntegrationIds={
+                                monitoredChatIntegrations
+                            }
+                        />
+                    )}
                 </ConfigurationSection>
             )}
             <ConfigurationSection

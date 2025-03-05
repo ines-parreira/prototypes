@@ -1,8 +1,8 @@
 {
   "summary": {
     "totalEntries": 31,
-    "totalUsages": 955,
-    "reportGeneratedAt": "2025-03-05T11:15:32.105Z"
+    "totalUsages": 958,
+    "reportGeneratedAt": "2025-03-05T14:35:02.587Z"
   },
   "entries": [
     {
@@ -304,7 +304,7 @@
       "type": "feature-flag cleanup initiative",
       "entries": [
         {
-          "usageCount": 205,
+          "usageCount": 208,
           "name": "launchdarkly-react-client-sdk.useFlags",
           "nodeType": "Identifier",
           "deprecationDate": "2025-02-10",
@@ -314,6 +314,8 @@
             "named": [
               "src/Widgets/modules/Shopify/components/OrderNotesField.tsx",
               "src/Widgets/modules/Shopify/components/tests/OrderNotesField.spec.tsx",
+              "src/Widgets/modules/Shopify/modules/DraftOrderModal/components/InventoryScopeMissingBanner.tsx",
+              "src/Widgets/modules/Shopify/modules/DraftOrderModal/components/tests/InventoryScopeMissingBanner.spec.tsx",
               "src/common/state/actions/triggerTicketFieldsRefreshAndInvalidation.ts",
               "src/hooks/reporting/automate/useAutomationRateTimeSeriesData.ts",
               "src/hooks/reporting/automate/useAutomationRateTrend.ts",
@@ -359,6 +361,7 @@
               "src/pages/aiAgent/components/PlaygroundPrerequisites/PlaygroundPrerequisitesAlerts.tsx",
               "src/pages/aiAgent/components/StoreConfigForm/FormComponents/ChannelsFormComponent.tsx",
               "src/pages/aiAgent/components/StoreConfigForm/FormComponents/EmailFormComponent.tsx",
+              "src/pages/aiAgent/components/StoreConfigForm/FormComponents/tests/ChannelsFormComponent.spec.tsx",
               "src/pages/aiAgent/components/StoreConfigForm/StoreConfigForm.tsx",
               "src/pages/aiAgent/components/StoreConfigForm/tests/EmailFormComponent.spec.tsx",
               "src/pages/aiAgent/hooks/test/useAiAgentNavigation.spec.ts",

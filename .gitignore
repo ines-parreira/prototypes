@@ -63,3 +63,9 @@ storybook-static
 # yalc
 .yalc
 yalc.lock
+
+# https://marketplace.visualstudio.com/items?itemName=howardzuo.vscode-favorites
+.vscfavoriterc
+
+# Cursor rules
+.cursorrules
