@@ -13,7 +13,7 @@ export const getWidgetsState = (state: RootState): WidgetsState =>
 
 export const getContext = createSelector(
     getWidgetsState,
-    (state) => (state.get('currentContext') as WidgetEnvironment) || '',
+    (state) => state.get('currentContext') as WidgetEnvironment,
 )
 
 export const getWidgets = createSelector(

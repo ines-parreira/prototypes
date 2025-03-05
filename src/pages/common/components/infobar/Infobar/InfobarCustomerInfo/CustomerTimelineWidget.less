@@ -1,0 +1,29 @@
+@import '~@gorgias/design-tokens/dist/css/layout';
+@import (reference) '~css/typography.less';
+
+:local {
+    .timelineWidget {
+        display: flex;
+        flex-wrap: nowrap;
+        align-items: center;
+        .caption-regular();
+    }
+
+    .noTimeline {
+        color: var(--neutral-grey-5);
+    }
+
+    .mr {
+        margin-right: @layout-spacing-xs;
+    }
+
+    .forumIcon {
+        font-size: 15px !important;
+    }
+
+    .ticketCount {
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+}

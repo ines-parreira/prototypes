@@ -9,7 +9,7 @@ import { assumeMock } from 'utils/testing'
 import Timeline from '../Timeline'
 import TimelineTicket from '../TimelineTicket'
 
-jest.mock('hooks/useAppSelector', () => jest.fn((fn: () => unknown) => fn()))
+jest.mock('hooks/useAppSelector', () => (fn: () => unknown) => fn())
 jest.mock('state/customers/selectors', () => {
     const original = jest.requireActual('state/customers/selectors')
 
@@ -29,7 +29,6 @@ describe('<Timeline />', () => {
         getCustomerHistoryMock.mockReturnValue(
             fromJS({
                 triedLoading: true,
-                hasHistory: true,
                 tickets: [
                     { id: 1, channel: 'email' },
                     { id: 2 },
@@ -60,7 +59,7 @@ describe('<Timeline />', () => {
         getCustomerHistoryMock.mockReturnValue(
             fromJS({
                 triedLoading: true,
-                hasHistory: false,
+                tickets: [],
             }),
         )
 

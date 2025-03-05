@@ -3,7 +3,7 @@ import React, { useMemo } from 'react'
 import { fromJS, List, Map } from 'immutable'
 import pluralize from 'pluralize'
 
-import { Tooltip } from '@gorgias/merchant-ui-kit'
+import { Separator, Tooltip } from '@gorgias/merchant-ui-kit'
 
 import { logEvent, SegmentEvent } from 'common/segment'
 import useAppDispatch from 'hooks/useAppDispatch'
@@ -13,11 +13,13 @@ import { getCustomersState, getLoading } from 'state/customers/selectors'
 import { toggleHistory } from 'state/ticket/actions'
 import { getDisplayHistory } from 'state/ticket/selectors'
 
+import css from './InfobarCustomerInfo.less'
+
 type Props = {
     isEditing: boolean
 }
 
-export function CustomerTimelineButton({ isEditing = false }: Props) {
+export function LegacyCustomerTimelineButton({ isEditing = false }: Props) {
     const dispatch = useAppDispatch()
 
     const customerTimelineButtonId = 'customer-timeline-button'
@@ -70,6 +72,7 @@ export function CustomerTimelineButton({ isEditing = false }: Props) {
         <>
             {!isButtonRendered && (
                 <>
+                    <Separator className={css.separator} />
                     <Button
                         id={customerTimelineButtonId}
                         intent={openTicketsCounter ? 'primary' : 'secondary'}

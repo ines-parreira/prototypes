@@ -2,12 +2,10 @@ import React, { ComponentProps } from 'react'
 
 import { render, screen } from '@testing-library/react'
 import { fromJS } from 'immutable'
-import { mockFlags } from 'jest-launchdarkly-mock'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import { FeatureFlagKey } from 'config/featureFlags'
 import {
     BIGCOMMERCE_INTEGRATION_TYPE,
     HTTP_INTEGRATION_TYPE,
@@ -16,13 +14,22 @@ import {
     SHOPIFY_INTEGRATION_TYPE,
     SMILE_INTEGRATION_TYPE,
 } from 'constants/integration'
-import { CustomerTimelineButton } from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/CustomerTimelineButton'
+import { useFlag } from 'core/flags'
 import { RootState, StoreDispatch } from 'state/types'
 import { assumeMock } from 'utils/testing'
 
 import InfobarCustomerInfo from '../InfobarCustomerInfo'
 
-jest.mock('../CustomerTimelineButton')
+jest.mock('core/flags', () => ({
+    ...jest.requireActual('core/flags'),
+    useFlag: jest.fn(() => false),
+}))
+jest.mock('../LegacyCustomerTimelineButton', () => ({
+    LegacyCustomerTimelineButton: () => <div>LegacyCustomerTimelineButton</div>,
+}))
+jest.mock('../CustomerTimelineWidget', () => ({
+    CustomerTimelineWidget: () => <div>CustomerTimelineWidget</div>,
+}))
 jest.mock('../CustomerChannels', () => () => <div>CustomerChannels</div>)
 jest.mock('../AddAppSuggestion', () => () => <div>Add app</div>)
 jest.mock('../CustomerFields', () => () => <div>CustomerFields</div>)
@@ -33,7 +40,7 @@ jest.mock('../CustomerOptionsDropdown', () => () => (
     <div>CustomerOptionsDropdown</div>
 ))
 
-const mockedCustomerTimelineButton = assumeMock(CustomerTimelineButton)
+const useFlagMock = assumeMock(useFlag)
 
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
 
@@ -53,12 +60,7 @@ const minProps: ComponentProps<typeof InfobarCustomerInfo> = {
 describe('<InfobarCustomerInfo/>', () => {
     beforeEach(() => {
         jest.resetAllMocks()
-        mockedCustomerTimelineButton.mockImplementation(() => (
-            <div>Customer timeline</div>
-        ))
-        mockFlags({
-            [FeatureFlagKey.ShopifyCustomerProfileCreation]: false,
-        })
+        useFlagMock.mockReturnValue(false)
     })
 
     it('should not render because there is no passed customer', () => {
@@ -249,7 +251,7 @@ describe('<InfobarCustomerInfo/>', () => {
                 </Provider>,
             )
 
-            expect(screen.getByText('Customer timeline'))
+            expect(screen.getByText('LegacyCustomerTimelineButton'))
 
             expect(container.firstChild).toMatchSnapshot()
         },
@@ -306,9 +308,7 @@ describe('<InfobarCustomerInfo/>', () => {
     })
 
     it('should display the button `Edit Customer` because the flag is on', () => {
-        mockFlags({
-            [FeatureFlagKey.ShopifyCustomerProfileCreation]: true,
-        })
+        useFlagMock.mockReturnValue(true)
         render(
             <Provider store={store}>
                 <InfobarCustomerInfo {...minProps} />

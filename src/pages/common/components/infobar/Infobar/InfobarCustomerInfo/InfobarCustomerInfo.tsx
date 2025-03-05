@@ -2,12 +2,12 @@ import React, { useEffect, useMemo, useState } from 'react'
 
 import Clipboard from 'clipboard'
 import { fromJS, List, Map } from 'immutable'
-import { useFlags } from 'launchdarkly-react-client-sdk'
 import { Link } from 'react-router-dom'
 
 import { Separator } from '@gorgias/merchant-ui-kit'
 
 import { FeatureFlagKey } from 'config/featureFlags'
+import { useFlag } from 'core/flags'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import { IntegrationType } from 'models/integration/types'
@@ -29,8 +29,9 @@ import CustomerChannels from './CustomerChannels'
 import CustomerFields from './CustomerFields'
 import CustomerNote from './CustomerNote'
 import CustomerOptionsDropdownButton from './CustomerOptionsDropdown'
-import { CustomerTimelineButton } from './CustomerTimelineButton'
+import { CustomerTimelineWidget } from './CustomerTimelineWidget'
 import InfobarWidgets from './InfobarWidgets/InfobarWidgets'
+import { LegacyCustomerTimelineButton } from './LegacyCustomerTimelineButton'
 
 import css from './InfobarCustomerInfo.less'
 
@@ -77,6 +78,11 @@ const InfobarCustomerInfo = ({
     sources,
     widgets,
 }: OwnProps) => {
+    const hasNewTimeline = useFlag(FeatureFlagKey.CustomerTimeline, false)
+    const shopifyCustomerProfileCreationFeatureEnabled = useFlag(
+        FeatureFlagKey.ShopifyCustomerProfileCreation,
+        false,
+    )
     const dispatch = useAppDispatch()
     const hasIntegrations =
         useAppSelector(
@@ -98,9 +104,6 @@ const InfobarCustomerInfo = ({
     )
 
     const [isInitialized, setIsInitialized] = useState(false)
-
-    const shopifyCustomerProfileCreationFeatureEnabled =
-        useFlags()[FeatureFlagKey.ShopifyCustomerProfileCreation]
 
     let clipboard: Maybe<Clipboard> = null
 
@@ -284,8 +287,14 @@ const InfobarCustomerInfo = ({
                 >
                     <CustomerNote customer={customer} />
                 </CustomerChannels>
-                <Separator className={css.separator} />
-                <CustomerTimelineButton isEditing={isEditing} />
+                {hasNewTimeline ? (
+                    <>
+                        <Separator className={css.separator} />
+                        <CustomerTimelineWidget isEditing={isEditing} />
+                    </>
+                ) : (
+                    <LegacyCustomerTimelineButton isEditing={isEditing} />
+                )}
             </div>
             {areSourcesReady(sources, widgets.get('currentContext', ''))
                 ? renderWidgets()

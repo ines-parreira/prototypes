@@ -273,6 +273,7 @@ export type Icon =
     | 'file_copy'
     | 'file_download'
     | 'format_list_bulleted'
+    | 'forum'
     | 'info_outline'
     | 'launch'
     | 'mail'

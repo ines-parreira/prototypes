@@ -39,21 +39,13 @@ describe('widgets selectors', () => {
     })
 
     describe('getContext', () => {
-        it('should return current context because it is set', () => {
+        it('should return current context', () => {
             const currentContext = 'foo'
             const state = {
                 widgets: fromJS({ currentContext }),
             } as RootState
 
             expect(getContext(state)).toEqual(currentContext)
-        })
-
-        it('should return an empty string because current context is null', () => {
-            const state = {
-                widgets: fromJS({ currentContext: null }),
-            } as RootState
-
-            expect(getContext(state)).toEqual('')
         })
     })
 

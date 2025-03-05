@@ -22,7 +22,7 @@ import {
 
 export const initialState: WidgetsState = fromJS({
     items: [],
-    currentContext: 'ticket',
+    currentContext: WidgetEnvironment.Ticket,
     _internal: {
         currentlyEditedWidgetPath: '',
         drag: {

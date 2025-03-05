@@ -35,7 +35,7 @@ export default function Timeline({ ticketId = 0, onTicketClick }: Props) {
         )
     }
 
-    if (customerHistory.triedLoading && !customerHistory.hasHistory) {
+    if (customerHistory.triedLoading && customerHistory.tickets.length === 0) {
         return (
             <div className={`${css.centeringContainer} ${css.noResults}`}>
                 <img src={GorgiasLogo} alt="Gorgias Logo" />

@@ -10,7 +10,7 @@ import useAppDispatch from 'hooks/useAppDispatch'
 import * as types from 'state/ticket/constants'
 import { RootState } from 'state/types'
 
-import { CustomerTimelineButton } from '../CustomerTimelineButton'
+import { LegacyCustomerTimelineButton } from '../LegacyCustomerTimelineButton'
 
 jest.mock('hooks/useAppDispatch', () => jest.fn())
 
@@ -29,7 +29,7 @@ const defaultState = {
     }),
 } as RootState
 
-describe('CustomerTimelineButton', () => {
+describe('LegacyCustomerTimelineButton', () => {
     let dispatch: jest.Mock
     const useAppDispatchMock = useAppDispatch as jest.Mock
 
@@ -54,7 +54,7 @@ describe('CustomerTimelineButton', () => {
 
             render(
                 <Provider store={store}>
-                    <CustomerTimelineButton isEditing={false} />
+                    <LegacyCustomerTimelineButton isEditing={false} />
                 </Provider>,
             )
 
@@ -117,7 +117,7 @@ describe('CustomerTimelineButton', () => {
 
             render(
                 <Provider store={store}>
-                    <CustomerTimelineButton isEditing={false} />
+                    <LegacyCustomerTimelineButton isEditing={false} />
                 </Provider>,
             )
 
@@ -169,7 +169,7 @@ describe('CustomerTimelineButton', () => {
 
         render(
             <Provider store={store}>
-                <CustomerTimelineButton isEditing={false} />
+                <LegacyCustomerTimelineButton isEditing={false} />
             </Provider>,
         )
 
@@ -207,7 +207,7 @@ describe('CustomerTimelineButton', () => {
 
         render(
             <Provider store={store}>
-                <CustomerTimelineButton isEditing={false} />
+                <LegacyCustomerTimelineButton isEditing={false} />
             </Provider>,
         )
 
@@ -238,7 +238,7 @@ describe('CustomerTimelineButton', () => {
 
         render(
             <Provider store={store}>
-                <CustomerTimelineButton isEditing={true} />
+                <LegacyCustomerTimelineButton isEditing={true} />
             </Provider>,
         )
 
@@ -255,7 +255,7 @@ describe('CustomerTimelineButton', () => {
 
         render(
             <Provider store={store}>
-                <CustomerTimelineButton isEditing={false} />
+                <LegacyCustomerTimelineButton isEditing={false} />
             </Provider>,
         )
 

@@ -130,7 +130,7 @@ export default function NewPhoneNumber({ customerId }: Props) {
             <div className={css.customerChannel}>
                 <SourceIcon
                     type={LegacyChannelSlug.Phone}
-                    className="uncolored mr-2"
+                    className={`${css.channelIcon} uncolored mr-2`}
                 />
                 <a href="#" onClick={() => setIsModalOpen(true)}>
                     Add phone number

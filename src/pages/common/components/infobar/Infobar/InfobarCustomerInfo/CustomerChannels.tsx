@@ -1,6 +1,6 @@
 import React, { ReactNode } from 'react'
 
-import classnames from 'classnames'
+import cn from 'classnames'
 import { fromJS, List, Map } from 'immutable'
 
 import { Tooltip } from '@gorgias/merchant-ui-kit'
@@ -111,13 +111,13 @@ export const CustomerChannels = ({
 
         return (
             <div key={idx} className={css.customerChannel}>
-                <SourceIcon type={channelType} className="uncolored mr-2" />
+                <SourceIcon
+                    type={channelType}
+                    className={cn(css.channelIcon, 'uncolored mr-2')}
+                />
                 {addressComponent}
                 <span
-                    className={classnames(
-                        css.copyAddress,
-                        'ml-2 js-clipboard-copy',
-                    )}
+                    className={cn(css.copyAddress, 'ml-2 js-clipboard-copy')}
                     data-clipboard-target={`#${componentId}`}
                 >
                     <i id={`copy-icon-${idx!}`} className="material-icons">
@@ -152,10 +152,11 @@ export const CustomerChannels = ({
                 {(country || city) && (
                     <p className={css.customerChannel}>
                         <i
-                            className={classnames(
+                            className={cn(
                                 'icon d-inline-block',
                                 'material-icons',
                                 'uncolored mr-2',
+                                css.channelIcon,
                             )}
                         >
                             language
@@ -170,10 +171,11 @@ export const CustomerChannels = ({
                 {timezoneOffset && (
                     <p className={css.customerChannel}>
                         <i
-                            className={classnames(
+                            className={cn(
                                 'icon d-inline-block',
                                 'material-icons',
                                 'uncolored mr-2',
+                                css.channelIcon,
                             )}
                         >
                             access_time
@@ -188,10 +190,11 @@ export const CustomerChannels = ({
                 {!customFields.data?.data.length && (
                     <p className={css.customerChannel}>
                         <i
-                            className={classnames(
+                            className={cn(
                                 'icon d-inline-block',
                                 'material-icons',
                                 'uncolored mr-2',
+                                css.channelIcon,
                             )}
                         >
                             person
