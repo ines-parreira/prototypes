@@ -83,9 +83,9 @@ export type CustomReportChild =
 export type CustomReportSchema = {
     id: number
     name: string
-    analytics_filter_id?: number | null
+    analytics_filter_id: number | null
     children: CustomReportChild[]
-    emoji: string | null | undefined
+    emoji: string | null
 }
 
 export type DashboardInput = {

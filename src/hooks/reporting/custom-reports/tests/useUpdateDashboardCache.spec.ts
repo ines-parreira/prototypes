@@ -4,7 +4,7 @@ import { renderHook } from '@testing-library/react-hooks'
 import { getGetAnalyticsCustomReportQueryOptions } from '@gorgias/api-queries'
 
 import { useUpdateDashboardCache } from 'hooks/reporting/custom-reports/useUpdateDashboardCache'
-import { DashboardInput } from 'pages/stats/custom-reports/types'
+import { CustomReportSchema } from 'pages/stats/custom-reports/types'
 import { assumeMock } from 'utils/testing'
 
 jest.mock('@gorgias/api-queries')
@@ -25,7 +25,7 @@ describe('useUpdateQueryCache(dashboardId)', () => {
     } as unknown as QueryClient
 
     const id = 123
-    const dashboard = { name: 'Text Report', emoji: '🦫' } as DashboardInput
+    const dashboard = { name: 'Text Report', emoji: '🦫' } as CustomReportSchema
 
     beforeEach(() => {
         getGetAnalyticsCustomReportQueryOptionsMock.mockImplementation(

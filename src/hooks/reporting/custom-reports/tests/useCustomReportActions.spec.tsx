@@ -77,12 +77,13 @@ const customReport: AnalyticsCustomReport = {
     name: 'Test Report',
     emoji: '🐱',
     type: 'CUSTOM' as AnalyticsCustomReportType,
-    analytics_filter_id: undefined,
+    analytics_filter_id: null,
     account_id: 1,
     created_by: 1,
     updated_by: 1,
     created_datetime: '2023-01-01T00:00:00Z',
     updated_datetime: '2023-01-01T00:00:00Z',
+    deleted_datetime: null,
     children: [],
 }
 

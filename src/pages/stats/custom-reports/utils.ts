@@ -222,9 +222,7 @@ export const createDashboardPayload = ({
     return {
         name,
         emoji: emoji ?? null,
-        // FIXME: This is a known issue in the API. It should accept null values
-        // Remove type casting when the API is fixed, related tickets: #3195 & #3196
-        analytics_filter_id: (analytics_filter_id ?? null) as unknown as number,
+        analytics_filter_id: analytics_filter_id ?? null,
         type: 'custom',
         children: createChildrenWithMetadata(children || []),
     }

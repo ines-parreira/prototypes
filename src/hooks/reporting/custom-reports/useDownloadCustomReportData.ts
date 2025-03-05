@@ -10,7 +10,7 @@ const emptyCustomReport: CustomReportSchema = {
     children: [],
     id: 0,
     analytics_filter_id: null,
-    emoji: undefined,
+    emoji: null,
 }
 
 export const useDownloadCustomReportData = (

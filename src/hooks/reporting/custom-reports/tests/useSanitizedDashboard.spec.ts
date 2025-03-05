@@ -23,6 +23,7 @@ describe('useSanitizedDashboard', () => {
             id: 1,
             name: 'Test Dashboard',
             emoji: '🚀',
+            analytics_filter_id: null,
             children: [
                 {
                     type: CustomReportChildType.Chart,
@@ -45,6 +46,7 @@ describe('useSanitizedDashboard', () => {
             id: 1,
             name: 'Test Dashboard',
             emoji: '🚀',
+            analytics_filter_id: null,
             children: [
                 {
                     type: CustomReportChildType.Chart,
@@ -75,6 +77,7 @@ describe('useSanitizedDashboard', () => {
             id: 1,
             name: 'Test Dashboard',
             emoji: '🚀',
+            analytics_filter_id: null,
             children: [
                 {
                     type: CustomReportChildType.Section,
@@ -124,6 +127,7 @@ describe('useSanitizedDashboard', () => {
             id: 1,
             name: 'Test Dashboard',
             emoji: '🚀',
+            analytics_filter_id: null,
             children: [
                 {
                     type: CustomReportChildType.Row,

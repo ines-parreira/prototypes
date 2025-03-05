@@ -68,8 +68,10 @@ describe('customReportFromApi', () => {
         children: [],
         created_by: 0,
         created_datetime: 'asd',
+        deleted_datetime: null,
         id: 0,
         name: 'some name',
+        emoji: null,
         type: AnalyticsCustomReportType.Custom,
         updated_by: 0,
         updated_datetime: '123',
@@ -121,7 +123,7 @@ describe('customReportFromApi', () => {
         const expectedReport: CustomReportSchema = {
             id: apiReportWithoutChildren.id,
             name: apiReportWithoutChildren.name,
-            emoji: undefined,
+            emoji: null,
             analytics_filter_id: apiReportWithoutChildren.analytics_filter_id,
             children: [
                 {
@@ -912,6 +914,7 @@ describe('updateChartPosition', () => {
         id: 123,
         name: 'someName',
         emoji: null,
+        analytics_filter_id: null,
         children: [
             {
                 type: CustomReportChildType.Row,
@@ -951,6 +954,7 @@ describe('updateChartPosition', () => {
         expect(updatedDashboard).toEqual({
             id: 123,
             name: 'someName',
+            analytics_filter_id: null,
             emoji: null,
             children: [
                 {
@@ -992,6 +996,7 @@ describe('updateChartPosition', () => {
         expect(updatedDashboard).toEqual({
             id: 123,
             name: 'someName',
+            analytics_filter_id: null,
             emoji: null,
             children: [
                 {
@@ -1033,6 +1038,7 @@ describe('updateChartPosition', () => {
         expect(updatedDashboard).toEqual({
             id: 123,
             name: 'someName',
+            analytics_filter_id: null,
             emoji: null,
             children: [
                 {
@@ -1074,6 +1080,7 @@ describe('updateChartPosition', () => {
         expect(updatedDashboard).toEqual({
             id: 123,
             name: 'someName',
+            analytics_filter_id: null,
             emoji: null,
             children: [
                 {

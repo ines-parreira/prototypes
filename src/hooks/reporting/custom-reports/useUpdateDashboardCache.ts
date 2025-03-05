@@ -7,14 +7,14 @@ import {
     getGetAnalyticsCustomReportQueryOptions,
 } from '@gorgias/api-queries'
 
-import { DashboardInput } from 'pages/stats/custom-reports/types'
+import { CustomReportSchema } from 'pages/stats/custom-reports/types'
 import { createDashboardPayload } from 'pages/stats/custom-reports/utils'
 
 export const useUpdateDashboardCache = (id: number) => {
     const queryClient = useQueryClient()
 
     return useCallback(
-        (dashboard: DashboardInput) => {
+        (dashboard: CustomReportSchema) => {
             const { queryKey } = getGetAnalyticsCustomReportQueryOptions(id)
 
             const fromCache =
