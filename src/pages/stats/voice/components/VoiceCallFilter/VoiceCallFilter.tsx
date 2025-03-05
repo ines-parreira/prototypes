@@ -59,11 +59,12 @@ export default function VoiceCallFilter({
     }
 
     return (
-        <>
+        <div className={css.wrapper}>
             <ToggleButton.Wrapper
                 type={ToggleButton.Type.Label}
                 value={selectedDirection}
                 onChange={updateFilterFromDirection}
+                size="small"
             >
                 <ToggleButton.Option value={VoiceCallFilterDirection.All}>
                     All
@@ -85,9 +86,7 @@ export default function VoiceCallFilter({
                 <span className={css.toggleButtonLabel}>
                     {getDropdownLabel()}
                 </span>
-                {isDropdownEnabled && (
-                    <ButtonIconLabel icon="arrow_drop_down" position="right" />
-                )}
+                <ButtonIconLabel icon="arrow_drop_down" position="right" />
             </div>
             {isDropdownEnabled && (
                 <Dropdown
@@ -121,7 +120,7 @@ export default function VoiceCallFilter({
                     </DropdownBody>
                 </Dropdown>
             )}
-        </>
+        </div>
     )
 }
 
