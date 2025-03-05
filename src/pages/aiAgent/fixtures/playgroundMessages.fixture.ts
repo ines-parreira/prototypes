@@ -1,4 +1,5 @@
 import {
+    AiAgentAttachment,
     MessageType,
     PlaygroundErrorMessage,
     PlaygroundInternalNoteMessage,
@@ -35,3 +36,24 @@ export const playgroundInternalNoteMessageFixture: PlaygroundInternalNoteMessage
         sender: AI_AGENT_SENDER,
         createdDatetime: '2021-06-01T12:00:00',
     }
+
+export const playgroundAttachmentFixture: AiAgentAttachment = {
+    name: 'Dark Roast',
+    content_type: 'application/productCard',
+    public: true,
+    size: 0,
+    url: 'https://coffe.png',
+    extra: {
+        currency: 'USD',
+        price: '16.00',
+        product_id: '5628771565720',
+        product_link:
+            'https://coffee-gorgias-store.myshopify.com/products/dark-roast?variant=35734251045016',
+        variant_name: '12 oz',
+        variant_id: '35734251045016',
+        variant_link:
+            'https://coffee-gorgias-store.myshopify.com/products/dark-roast?variant=35734251045016',
+        featured_image: 'https://coffee.png',
+        shortened_product_link: 'https://gorgias-convert.com/r/Yl9JQh',
+    },
+}

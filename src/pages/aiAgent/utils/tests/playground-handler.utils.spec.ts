@@ -88,12 +88,14 @@ describe('playground-handler.utils', () => {
                         type: MessageType.MESSAGE,
                         content: 'HTML reply for email',
                         createdDatetime: DATE.toISOString(),
+                        attachments: [],
                     },
                     {
                         sender: AI_AGENT_SENDER,
                         type: MessageType.INTERNAL_NOTE,
                         content: 'Internal note for email',
                         createdDatetime: DATE.toISOString(),
+                        attachments: [],
                     },
                     {
                         sender: AI_AGENT_SENDER,
@@ -168,6 +170,7 @@ describe('playground-handler.utils', () => {
                         type: MessageType.MESSAGE,
                         content: 'Chat generated message',
                         createdDatetime: DATE.toISOString(),
+                        attachments: [],
                     },
                     {
                         sender: AI_AGENT_SENDER,
@@ -324,6 +327,7 @@ describe('playground-handler.utils', () => {
                             type: MessageType.MESSAGE,
                             content: 'Your last order number is #1234',
                             createdDatetime: DATE.toISOString(),
+                            attachments: [],
                         },
                     ]),
                 )
@@ -372,6 +376,7 @@ describe('playground-handler.utils', () => {
                         type: MessageType.INTERNAL_NOTE,
                         content: 'Internal note',
                         createdDatetime: DATE.toISOString(),
+                        attachments: [],
                     },
                 ]),
             )
@@ -408,6 +413,7 @@ describe('playground-handler.utils', () => {
                         type: MessageType.MESSAGE,
                         content: 'Post Processing message',
                         createdDatetime: DATE.toISOString(),
+                        attachments: [],
                     },
                 ]),
             )

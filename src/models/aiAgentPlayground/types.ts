@@ -124,17 +124,20 @@ type BaseMessage = {
 export type PlaygroundTextMessage = BaseMessage & {
     type: MessageType.MESSAGE
     content: string
+    attachments?: AiAgentAttachment[]
 }
 
 export type PlaygroundPromptMessage = BaseMessage & {
     type: MessageType.PROMPT
     prompt: PlaygroundPromptType
     content: string
+    attachments?: AiAgentAttachment[]
 }
 
 export type PlaygroundInternalNoteMessage = BaseMessage & {
     type: MessageType.INTERNAL_NOTE
     content: string
+    attachments?: AiAgentAttachment[]
 }
 
 export type PlaygroundErrorMessage = BaseMessage & {
@@ -193,8 +196,28 @@ export type AiAgentResponse = {
         internalNote: string
         htmlReply: string | null
         chatTicketMessageMeta?: { ai_agent_message_type?: AiAgentMessageType }
+        attachments?: AiAgentAttachment[]
     }
     _action_serialized_state: unknown
+}
+
+export type AiAgentAttachment = {
+    name: string
+    content_type: string
+    public: Boolean
+    size: number
+    url: string
+    extra: {
+        currency: string
+        price: string
+        product_id: string
+        product_link: string
+        variant_name: string
+        variant_id: string
+        variant_link: string
+        featured_image: string
+        shortened_product_link: string
+    }
 }
 
 export type CustomerSearchResponse = {

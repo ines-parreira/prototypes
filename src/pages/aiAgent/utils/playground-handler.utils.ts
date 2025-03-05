@@ -34,6 +34,7 @@ const getEmailChannelMessagesFromResponse = (
                 aiAgentResponse.postProcessing.htmlReply ??
                 aiAgentResponse.generate.output.generated_message,
             createdDatetime: new Date().toISOString(),
+            attachments: aiAgentResponse.postProcessing.attachments ?? [],
         })
     }
 
@@ -43,6 +44,7 @@ const getEmailChannelMessagesFromResponse = (
             type: MessageType.INTERNAL_NOTE,
             content: aiAgentResponse.postProcessing.internalNote,
             createdDatetime: new Date().toISOString(),
+            attachments: aiAgentResponse.postProcessing.attachments ?? [],
         })
     }
 
@@ -79,6 +81,7 @@ const getChatChannelMessagesFromResponse = (
                 aiAgentResponse.postProcessing.htmlReply ??
                 aiAgentResponse.generate.output.generated_message,
             createdDatetime: new Date().toISOString(),
+            attachments: aiAgentResponse.postProcessing.attachments ?? [],
         })
     }
 
@@ -97,6 +100,7 @@ const getChatChannelMessagesFromResponse = (
             type: MessageType.INTERNAL_NOTE,
             content: aiAgentResponse.postProcessing.internalNote,
             createdDatetime: new Date().toISOString(),
+            attachments: aiAgentResponse.postProcessing.attachments ?? [],
         })
     }
 

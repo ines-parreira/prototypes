@@ -12,6 +12,7 @@ import {
     ProcessingStatus,
 } from 'models/aiAgentPlayground/types'
 import Avatar from 'pages/common/components/Avatar/Avatar'
+import { ProductCarousel } from 'pages/common/components/ProductCarousel'
 import { assertUnreachable } from 'utils'
 import { sanitizeHtmlDefault } from 'utils/html'
 
@@ -72,6 +73,28 @@ const PlaygroundMessage = ({
         case MessageType.MESSAGE:
         case MessageType.PROMPT:
         case MessageType.INTERNAL_NOTE:
+            const attachments =
+                message.attachments
+                    ?.filter(
+                        (attachment) =>
+                            attachment.content_type ===
+                            'application/productCard',
+                    )
+                    .map((attachment) => ({
+                        id: Number(attachment.extra.product_id),
+                        title: attachment.name,
+                        url: attachment.url,
+                        price: Number(attachment.extra.price),
+                        currency: attachment.extra.currency,
+                        featured_image: attachment.extra.featured_image,
+                        variant_name: attachment.extra.variant_name,
+                        onClick: () =>
+                            window.open(
+                                attachment.extra.product_link,
+                                '_blank',
+                            ),
+                    })) ?? []
+
             return (
                 <MessageContainer
                     channel={channel}
@@ -89,6 +112,15 @@ const PlaygroundMessage = ({
                         />
                     ) : (
                         message.content
+                    )}
+
+                    {message?.attachments && (
+                        <div className={css.productCarouselContainer}>
+                            <ProductCarousel
+                                shouldHideRepositionImage
+                                products={attachments}
+                            />
+                        </div>
                     )}
                 </MessageContainer>
             )

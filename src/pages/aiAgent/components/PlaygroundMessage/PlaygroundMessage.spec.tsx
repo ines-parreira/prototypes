@@ -1,10 +1,15 @@
 import React, { ComponentProps } from 'react'
 
 import { render, screen } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
+import { Provider } from 'react-redux'
+import configureMockStore from 'redux-mock-store'
 
 import { AI_AGENT } from 'pages/aiAgent/constants'
+import { storeWithActiveSubscriptionWithConvert } from 'pages/settings/new_billing/fixtures'
 
 import {
+    playgroundAttachmentFixture,
     playgroundErrorMessageFixture,
     playgroundMessageFixture,
     playgroundPlaceholderMessageFixture,
@@ -17,11 +22,15 @@ const renderComponent = (
     props?: Partial<ComponentProps<typeof PlaygroundMessage>>,
 ) => {
     return render(
-        <PlaygroundMessage
-            channel="email"
-            message={playgroundMessageFixture}
-            {...props}
-        />,
+        <Provider
+            store={configureMockStore()(storeWithActiveSubscriptionWithConvert)}
+        >
+            <PlaygroundMessage
+                channel="email"
+                message={playgroundMessageFixture}
+                {...props}
+            />
+        </Provider>,
     )
 }
 describe('PlaygroundMessage', () => {
@@ -59,6 +68,53 @@ describe('PlaygroundMessage', () => {
         })
         expect(screen.getByTitle('chat channel')).toBeInTheDocument()
         expect(screen.getByText('forum')).toBeInTheDocument()
+        expect(screen.queryByText('Dark Roast')).not.toBeInTheDocument()
+    })
+
+    it('should render products carousel when message contains attachments', () => {
+        renderComponent({
+            channel: 'chat',
+            message: {
+                ...playgroundMessageFixture,
+                sender: AI_AGENT,
+                attachments: [playgroundAttachmentFixture],
+            },
+        })
+        expect(screen.getByText('Dark Roast')).toBeInTheDocument()
+    })
+
+    it('should not render products carousel when not type application/productCard', () => {
+        renderComponent({
+            channel: 'chat',
+            message: {
+                ...playgroundMessageFixture,
+                sender: AI_AGENT,
+                attachments: [
+                    { ...playgroundAttachmentFixture, content_type: 'random' },
+                ],
+            },
+        })
+        expect(screen.queryByText('Dark Roast')).not.toBeInTheDocument()
+    })
+
+    it('should open a new tab when user clicks on the product in the carousel', async () => {
+        renderComponent({
+            channel: 'chat',
+            message: {
+                ...playgroundMessageFixture,
+                sender: AI_AGENT,
+                attachments: [playgroundAttachmentFixture],
+            },
+        })
+
+        await userEvent.click(
+            screen.getByRole('button', { name: 'Select Options' }),
+        )
+
+        expect(window.open).toHaveBeenCalledWith(
+            'https://coffee-gorgias-store.myshopify.com/products/dark-roast?variant=35734251045016',
+            '_blank',
+        )
     })
 })
 
