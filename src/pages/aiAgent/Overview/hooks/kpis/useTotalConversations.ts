@@ -13,19 +13,19 @@ export const useTotalConversations = (
     const customField = useCustomFieldOutcome()
 
     const result = useMultipleMetricsTrends(
-        customFieldsTicketTotalCountQueryFactory(
+        customFieldsTicketTotalCountQueryFactory({
             filters,
             timezone,
-            customField,
-        ),
-        customFieldsTicketTotalCountQueryFactory(
-            {
+            customFieldId: customField,
+        }),
+        customFieldsTicketTotalCountQueryFactory({
+            filters: {
                 ...filters,
                 period: getPreviousPeriod(filters.period),
             },
             timezone,
-            customField,
-        ),
+            customFieldId: customField,
+        }),
     )
 
     return {
