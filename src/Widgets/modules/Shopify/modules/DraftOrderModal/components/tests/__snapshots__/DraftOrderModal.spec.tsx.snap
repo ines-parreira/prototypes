@@ -9,6 +9,7 @@ exports[`<DraftOrderModal/> should render with a populated order table when data
   >
     Duplicate order
   </div>
+  &lt;div&gt;InventoryScopeMissingBanner&lt;/div&gt;
   <div
     class="formHeader"
   >

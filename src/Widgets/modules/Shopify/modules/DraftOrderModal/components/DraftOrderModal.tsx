@@ -45,6 +45,7 @@ import OrderTable from 'Widgets/modules/Shopify/modules/OrderTable'
 import { ShopifyActionType } from 'Widgets/modules/Shopify/types'
 
 import EmailInvoicePopover from './EmailInvoicePopover'
+import InventoryScopeMissingBanner from './InventoryScopeMissingBanner'
 import OrderFooter from './OrderFooter'
 
 import css from './DraftOrderModal.less'
@@ -265,6 +266,7 @@ export function DraftOrderModalContainer({
             onClose={handleCancel('header')}
         >
             <ModalHeader title={title} />
+            <InventoryScopeMissingBanner integrationId={integrationId!} />
             <div className={css.formHeader}>
                 <ProductSearchInput
                     className={css.searchInput}

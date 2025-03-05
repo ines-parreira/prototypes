@@ -64,6 +64,11 @@ jest.mock(
         },
 )
 
+jest.mock(
+    '../InventoryScopeMissingBanner',
+    () => () => '<div>InventoryScopeMissingBanner</div>',
+)
+
 const mockFromJS = fromJS
 const mockIntegrationDataItemProductFixture = integrationDataItemProductFixture
 const mockShopifyCustomLineItemFixture = shopifyCustomLineItemFixture
