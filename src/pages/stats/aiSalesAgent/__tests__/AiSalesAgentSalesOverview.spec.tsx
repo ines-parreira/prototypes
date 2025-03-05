@@ -60,6 +60,14 @@ jest.mock(
     () => () => <div>total-number-of-orders-card</div>,
 )
 
+jest.mock('pages/stats/aiSalesAgent/charts/AiSalesAgentTrendCard', () => () => (
+    <div>generic-trend-card</div>
+))
+
+jest.mock('pages/stats/custom-reports/CustomReportComponent', () => ({
+    CustomReportComponent: () => <div>top-products-table</div>,
+}))
+
 describe('AiSalesAgentSalesOverview', () => {
     const renderComponent = () => {
         render(<AiSalesAgentSalesOverview />)

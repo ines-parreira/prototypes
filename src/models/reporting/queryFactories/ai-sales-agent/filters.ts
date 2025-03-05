@@ -1,5 +1,6 @@
 import { AiSalesAgentConversationsFilterMember } from 'models/reporting/cubes/ai-sales-agent/AiSalesAgentConversations'
 import { AiSalesAgentOrdersFilterMember } from 'models/reporting/cubes/ai-sales-agent/AiSalesAgentOrders'
+import { ConvertTrackingEventsDimension } from 'models/reporting/cubes/convert/ConvertTrackingEventsCube'
 import {
     ReportingFilter,
     ReportingFilterOperator,
@@ -34,5 +35,18 @@ export const aiSalesAgentConversationsDefaultFilters = (
         member: AiSalesAgentConversationsFilterMember.PeriodEnd,
         operator: ReportingFilterOperator.BeforeDate,
         values: [formatReportingQueryDate(filters.period.end_datetime)],
+    },
+]
+
+export const clicksDefaultFilters = (
+    filters: StatsFilters,
+): ReportingFilter[] => [
+    {
+        member: ConvertTrackingEventsDimension.CreatedDatetime,
+        operator: ReportingFilterOperator.InDateRange,
+        values: [
+            formatReportingQueryDate(filters.period.start_datetime),
+            formatReportingQueryDate(filters.period.end_datetime),
+        ],
     },
 ]

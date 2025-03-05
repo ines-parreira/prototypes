@@ -31,8 +31,21 @@ import {
     fetchTotalNumberOfOrders,
     useTotalNumberOfOrders,
 } from 'pages/stats/aiSalesAgent/metrics/useTotalNumberOfOrders'
+import {
+    fetchTotalProductRecommendations,
+    useTotalProductRecommendations,
+} from 'pages/stats/aiSalesAgent/metrics/useTotalProductRecommendations'
 import { MetricTrendFormat } from 'pages/stats/common/utils'
 import { TooltipData } from 'pages/stats/types'
+
+import {
+    fetchProductBuyRate,
+    useProductBuyRate,
+} from './metrics/useProductBuyRate'
+import {
+    fetchProductClickRate,
+    useProductClickRate,
+} from './metrics/useProductClickRate'
 
 export enum AiSalesAgentChart {
     AiSalesAgentTotalSalesConv = 'aiSalesTotalSalesConv',
@@ -42,6 +55,10 @@ export enum AiSalesAgentChart {
     AiSalesAgentGmvInfluencedOverTime = 'aiSalesGmvInfluencedOverTime',
     AiSalesAgentTotalNumberOfOrders = 'aiSalesTotalNumberOfOrders',
     AiSalesAgentAverageOrderValue = 'aiSalesAverageOrderValue',
+    AiSalesAgentTotalProductRecommendations = 'aiSalesTotalProductRecommendations',
+    AiSalesAgentProductClickRate = 'aiSalesProductClickRate',
+    AiSalesAgentProductBuyRate = 'aiSalesProductBuyRate',
+    AiSalesAgentProductsTable = 'aiSalesProductsTable',
 }
 
 export type TrendMetric =
@@ -51,6 +68,9 @@ export type TrendMetric =
     | AiSalesAgentChart.AiSalesAgentRoiRate
     | AiSalesAgentChart.AiSalesAgentTotalNumberOfOrders
     | AiSalesAgentChart.AiSalesAgentAverageOrderValue
+    | AiSalesAgentChart.AiSalesAgentTotalProductRecommendations
+    | AiSalesAgentChart.AiSalesAgentProductClickRate
+    | AiSalesAgentChart.AiSalesAgentProductBuyRate
 
 export const AiSalesAgentMetricConfig: Record<
     TrendMetric,
@@ -120,6 +140,36 @@ export const AiSalesAgentMetricConfig: Record<
         },
         useTrend: useAverageOrderValue,
         fetchTrend: fetchAverageOrderValue,
+        interpretAs: 'more-is-better',
+        metricFormat: 'decimal',
+    },
+    [AiSalesAgentChart.AiSalesAgentTotalProductRecommendations]: {
+        title: 'Total Product Recommendations',
+        hint: {
+            title: 'The total number of product recommendations made by the AI Agent for Sales.',
+        },
+        useTrend: useTotalProductRecommendations,
+        fetchTrend: fetchTotalProductRecommendations,
+        interpretAs: 'more-is-better',
+        metricFormat: 'decimal',
+    },
+    [AiSalesAgentChart.AiSalesAgentProductClickRate]: {
+        title: 'Click Rate',
+        hint: {
+            title: 'The percentage of product recommendations clicked by the customer.',
+        },
+        useTrend: useProductClickRate,
+        fetchTrend: fetchProductClickRate,
+        interpretAs: 'more-is-better',
+        metricFormat: 'decimal',
+    },
+    [AiSalesAgentChart.AiSalesAgentProductBuyRate]: {
+        title: 'Buy Rate',
+        hint: {
+            title: 'The percentage of product recommendations that led to a purchase.',
+        },
+        useTrend: useProductBuyRate,
+        fetchTrend: fetchProductBuyRate,
         interpretAs: 'more-is-better',
         metricFormat: 'decimal',
     },

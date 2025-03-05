@@ -9,6 +9,7 @@ import { RenderChart } from 'pages/stats/aiSalesAgent/components/RenderChart'
 import { PAGE_TITLE_AI_SALES_AGENT_SALES_OVERVIEW } from 'pages/stats/aiSalesAgent/constants'
 import { AnalyticsFooter } from 'pages/stats/AnalyticsFooter'
 import FiltersPanelWrapper from 'pages/stats/common/filters/FiltersPanelWrapper'
+import { CustomReportComponent } from 'pages/stats/custom-reports/CustomReportComponent'
 import DashboardGridCell from 'pages/stats/DashboardGridCell'
 import DashboardSection from 'pages/stats/DashboardSection'
 import StatsPage from 'pages/stats/StatsPage'
@@ -89,6 +90,38 @@ const AiSalesAgentSalesOverview = () => {
                     <RenderChart
                         chart={AiSalesAgentChart.AiSalesAgentAverageOrderValue}
                         config={AiSalesAgentReportConfig}
+                    />
+                </DashboardGridCell>
+            </DashboardSection>
+
+            <DashboardSection title="Product Recommendations Performance">
+                <DashboardGridCell size={getGridCellSize(4)}>
+                    <RenderChart
+                        chart={
+                            AiSalesAgentChart.AiSalesAgentTotalProductRecommendations
+                        }
+                        config={AiSalesAgentReportConfig}
+                    />
+                </DashboardGridCell>
+                <DashboardGridCell size={getGridCellSize(4)}>
+                    <RenderChart
+                        chart={AiSalesAgentChart.AiSalesAgentProductClickRate}
+                        config={AiSalesAgentReportConfig}
+                    />
+                </DashboardGridCell>
+                <DashboardGridCell size={getGridCellSize(4)}>
+                    <RenderChart
+                        chart={AiSalesAgentChart.AiSalesAgentProductBuyRate}
+                        config={AiSalesAgentReportConfig}
+                    />
+                </DashboardGridCell>
+            </DashboardSection>
+
+            <DashboardSection title="">
+                <DashboardGridCell size={12}>
+                    <CustomReportComponent
+                        config={AiSalesAgentReportConfig}
+                        chart={AiSalesAgentChart.AiSalesAgentProductsTable}
                     />
                 </DashboardGridCell>
             </DashboardSection>

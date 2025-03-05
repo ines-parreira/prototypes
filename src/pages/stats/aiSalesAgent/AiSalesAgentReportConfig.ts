@@ -6,9 +6,11 @@ import {
     AiSalesAgentChartConfig,
     AiSalesAgentMetricConfig,
 } from 'pages/stats/aiSalesAgent/AiSalesAgentMetricsConfig'
+import AiSalesAgentTrendCard from 'pages/stats/aiSalesAgent/charts/AiSalesAgentTrendCard'
 import AverageOrderValueCard from 'pages/stats/aiSalesAgent/charts/AverageOrderValueCard'
 import GmvInfluencedOverTimeChart from 'pages/stats/aiSalesAgent/charts/GmvInfluencedOverTimeChart'
 import GmvMetricCard from 'pages/stats/aiSalesAgent/charts/GmvMetricCard'
+import TopProductRecommendationTable from 'pages/stats/aiSalesAgent/charts/TopProductRecommendationTable'
 import TotalAIConvMetricCard from 'pages/stats/aiSalesAgent/charts/TotalAIConvMetricCard'
 import TotalNumberOfOrdersCard from 'pages/stats/aiSalesAgent/charts/TotalNumberOfOrdersCard'
 import { ReportsIDs } from 'pages/stats/custom-reports/constants'
@@ -120,6 +122,49 @@ export const AiSalesAgentReportConfig: ReportConfig<AiSalesAgentChart> = {
                 AiSalesAgentChartConfig[
                     AiSalesAgentChart.AiSalesAgentGmvInfluencedOverTime
                 ].hint.title,
+            csvProducer: [],
+        },
+        [AiSalesAgentChart.AiSalesAgentTotalProductRecommendations]: {
+            chartType: ChartType.Card,
+            label: AiSalesAgentMetricConfig[
+                AiSalesAgentChart.AiSalesAgentTotalProductRecommendations
+            ].title,
+            description:
+                AiSalesAgentMetricConfig[
+                    AiSalesAgentChart.AiSalesAgentTotalProductRecommendations
+                ].hint.title,
+            chartComponent: AiSalesAgentTrendCard,
+            csvProducer: [],
+        },
+        [AiSalesAgentChart.AiSalesAgentProductClickRate]: {
+            chartType: ChartType.Card,
+            label: AiSalesAgentMetricConfig[
+                AiSalesAgentChart.AiSalesAgentProductClickRate
+            ].title,
+            description:
+                AiSalesAgentMetricConfig[
+                    AiSalesAgentChart.AiSalesAgentProductClickRate
+                ].hint.title,
+            chartComponent: AiSalesAgentTrendCard,
+            csvProducer: [],
+        },
+        [AiSalesAgentChart.AiSalesAgentProductBuyRate]: {
+            chartType: ChartType.Card,
+            label: AiSalesAgentMetricConfig[
+                AiSalesAgentChart.AiSalesAgentProductBuyRate
+            ].title,
+            description:
+                AiSalesAgentMetricConfig[
+                    AiSalesAgentChart.AiSalesAgentProductBuyRate
+                ].hint.title,
+            chartComponent: AiSalesAgentTrendCard,
+            csvProducer: [],
+        },
+        [AiSalesAgentChart.AiSalesAgentProductsTable]: {
+            chartType: ChartType.Table,
+            label: 'Top Products Recommended',
+            description: undefined,
+            chartComponent: TopProductRecommendationTable,
             csvProducer: [],
         },
     },

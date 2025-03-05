@@ -18,6 +18,8 @@ import { TicketTagsEnrichedCube } from 'models/reporting/cubes/TicketTagsEnriche
 import { VoiceCallCube } from 'models/reporting/cubes/VoiceCallCube'
 import { VoiceEventsByAgentCube } from 'models/reporting/cubes/VoiceEventsByAgent'
 
+import { ConvertTrackingEventsCube } from './convert/ConvertTrackingEventsCube'
+
 export type Cubes =
     | AgentTimeTrackingCube
     | AutomationBillingEventCubeWithJoins
@@ -38,3 +40,4 @@ export type Cubes =
     | RecommendedResourcesCube
     | AiSalesAgentConversationsCube
     | AiSalesAgentOrdersCube
+    | ConvertTrackingEventsCube
