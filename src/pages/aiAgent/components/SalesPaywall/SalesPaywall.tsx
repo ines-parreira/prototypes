@@ -72,13 +72,6 @@ export const SalesPaywall = () => {
                                 Personalizes product recommendations using
                                 real-time data and customer input.
                             </li>
-                            <li className="heading-subsection-regular">
-                                <i className={cn('material-icons', css.icon)}>
-                                    done
-                                </i>
-                                Turn search into a revenue-driving engine with
-                                intelligent product discovery.
-                            </li>
                         </ul>
                         <div data-candu-id="ai-agent-waitlist"></div>
                     </div>
