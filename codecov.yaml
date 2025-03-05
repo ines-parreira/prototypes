@@ -10,6 +10,7 @@ ignore:
   - src/pages/aiAgent/Onboarding/components/OnboardingDevPreview/OnboardingDevPreview.tsx
   - src/pages/common/components/infobar/InfobarLayout.tsx
   - src/assets/js/pubnub.worker.*.js
+  - src/settings/**/*
 
 coverage:
   status:

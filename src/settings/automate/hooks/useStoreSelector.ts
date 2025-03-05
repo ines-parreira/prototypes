@@ -5,9 +5,7 @@ import { useHistory, useParams } from 'react-router-dom'
 
 import useStoreIntegrations from 'pages/automate/common/hooks/useStoreIntegrations'
 
-export const BASE_PATH = '/app/settings/automate'
-
-export function useAutomateSettings() {
+export function useStoreSelector(basePath: string) {
     const history = useHistory()
     const { shopName } = useParams<{
         shopName?: string
@@ -27,7 +25,7 @@ export function useAutomateSettings() {
         [shopName, sortedIntegrations],
     )
 
-    const handleChangeIntegration = useCallback(
+    const handleChange = useCallback(
         (e: ChangeEvent<HTMLSelectElement>) => {
             const integrationId = parseInt(e.currentTarget.value, 10)
             const integration = sortedIntegrations.find(
@@ -35,27 +33,23 @@ export function useAutomateSettings() {
             )
             if (!integration) return
 
-            history.push(
-                `${BASE_PATH}/${integration.type}/${integration.name}/flows`,
-            )
+            history.push(`${basePath}/${integration.type}/${integration.name}`)
         },
-        [history, sortedIntegrations],
+        [basePath, history, sortedIntegrations],
     )
 
     useEffect(() => {
         if (shopName || !sortedIntegrations.length) return
         const integration = sortedIntegrations[0]
-        history.replace(
-            `${BASE_PATH}/${integration.type}/${integration.name}/flows`,
-        )
-    }, [history, shopName, sortedIntegrations])
+        history.replace(`${basePath}/${integration.type}/${integration.name}`)
+    }, [basePath, history, shopName, sortedIntegrations])
 
     return useMemo(
         () => ({
             integrations: sortedIntegrations,
-            onChangeIntegration: handleChangeIntegration,
+            onChange: handleChange,
             selected,
         }),
-        [handleChangeIntegration, selected, sortedIntegrations],
+        [handleChange, selected, sortedIntegrations],
     )
 }

@@ -10,7 +10,9 @@ import { IntegrationType, StoreIntegration } from 'models/integration/types'
 import useStoreIntegrations from 'pages/automate/common/hooks/useStoreIntegrations'
 import { assumeMock } from 'utils/testing'
 
-import { BASE_PATH, useAutomateSettings } from '../useAutomateSettings'
+import { useStoreSelector } from '../useStoreSelector'
+
+export const BASE_PATH = '/app/settings/flows'
 
 jest.mock('pages/automate/common/hooks/useStoreIntegrations', () => jest.fn())
 const useStoreIntegrationsMock = assumeMock(useStoreIntegrations)
@@ -25,7 +27,7 @@ const createWrapper =
         </Router>
     )
 
-describe('useAutomateSettings', () => {
+describe('useStoreSelector', () => {
     const integrations = [
         { id: 1, type: IntegrationType.Shopify, name: 'my-first-store' },
         { id: 2, type: IntegrationType.Shopify, name: 'my-second-store' },
@@ -39,29 +41,29 @@ describe('useAutomateSettings', () => {
         const history = createBrowserHistory()
         history.push(BASE_PATH)
 
-        renderHook(() => useAutomateSettings(), {
+        renderHook(() => useStoreSelector(BASE_PATH), {
             wrapper: createWrapper(history),
         })
 
         expect(history.location.pathname).toBe(
-            `${BASE_PATH}/shopify/my-first-store/flows`,
+            `${BASE_PATH}/shopify/my-first-store`,
         )
     })
 
     it('should redirect when another store is selected', () => {
         const history = createBrowserHistory()
-        history.push(`${BASE_PATH}/shopify/my-first-store/flows`)
+        history.push(`${BASE_PATH}/shopify/my-first-store`)
 
-        const { result } = renderHook(() => useAutomateSettings(), {
+        const { result } = renderHook(() => useStoreSelector(BASE_PATH), {
             wrapper: createWrapper(history),
         })
 
-        result.current.onChangeIntegration({
+        result.current.onChange({
             currentTarget: { value: '2' },
         } as ChangeEvent<HTMLSelectElement>)
 
         expect(history.location.pathname).toBe(
-            `${BASE_PATH}/shopify/my-second-store/flows`,
+            `${BASE_PATH}/shopify/my-second-store`,
         )
     })
 })

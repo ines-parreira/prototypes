@@ -27,7 +27,11 @@ import {
     CUSTOM_FIELD_CONDITIONS_ROUTE,
     CUSTOM_FIELD_ROUTES,
 } from 'routes/constants'
-import { AutomateSettings } from 'settings/pages'
+import {
+    ArticleRecommendationsSettings,
+    FlowsSettings,
+    OrderManagementSettings,
+} from 'settings/pages'
 import { AccountFeature } from 'state/currentAccount/types'
 import { assetsUrl } from 'utils'
 
@@ -107,8 +111,20 @@ export function SettingRoutes() {
             <Route path={`${path}/sla`}>
                 <SLA />
             </Route>
-            <Route path={`${path}/automate/:shopType?/:shopName?`}>
-                {renderAppSettings(AutomateSettings, {
+            <Route
+                path={`${path}/article-recommendations/:shopType?/:shopName?`}
+            >
+                {renderAppSettings(ArticleRecommendationsSettings, {
+                    roleParams: [AGENT_ROLE],
+                })}
+            </Route>
+            <Route path={`${path}/flows/:shopType?/:shopName?`}>
+                {renderAppSettings(FlowsSettings, {
+                    roleParams: [AGENT_ROLE],
+                })}
+            </Route>
+            <Route path={`${path}/order-management/:shopType?/:shopName?`}>
+                {renderAppSettings(OrderManagementSettings, {
                     roleParams: [AGENT_ROLE],
                 })}
             </Route>

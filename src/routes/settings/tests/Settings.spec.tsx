@@ -10,7 +10,11 @@ import {
     CUSTOM_FIELD_CONDITIONS_ROUTE,
     CUSTOM_FIELD_ROUTES,
 } from 'routes/constants'
-import { AutomateSettings } from 'settings/pages'
+import {
+    ArticleRecommendationsSettings,
+    FlowsSettings,
+    OrderManagementSettings,
+} from 'settings/pages'
 import { assumeMock } from 'utils/testing'
 
 import { Billing } from '../Billing'
@@ -154,17 +158,29 @@ const testingMap = [
     {
         callOrder: 15,
         exact: undefined,
-        path: `${basePath}/automate/:shopType?/:shopName?`,
-        component: AutomateSettings,
+        path: `${basePath}/article-recommendations/:shopType?/:shopName?`,
+        component: ArticleRecommendationsSettings,
     },
     {
         callOrder: 16,
+        exact: undefined,
+        path: `${basePath}/flows/:shopType?/:shopName?`,
+        component: FlowsSettings,
+    },
+    {
+        callOrder: 17,
+        exact: undefined,
+        path: `${basePath}/order-management/:shopType?/:shopName?`,
+        component: OrderManagementSettings,
+    },
+    {
+        callOrder: 18,
         exact: undefined,
         path: `${basePath}/teams`,
         component: Teams,
     },
     {
-        callOrder: 17,
+        callOrder: 19,
         exact: undefined,
         path: `${basePath}/users`,
         component: Users,
