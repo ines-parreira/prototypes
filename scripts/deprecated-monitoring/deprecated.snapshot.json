@@ -2,7 +2,7 @@
   "summary": {
     "totalEntries": 31,
     "totalUsages": 956,
-    "reportGeneratedAt": "2025-03-05T08:07:04.805Z"
+    "reportGeneratedAt": "2025-03-05T10:25:05.201Z"
   },
   "entries": [
     {
@@ -304,7 +304,7 @@
       "type": "feature-flag cleanup initiative",
       "entries": [
         {
-          "usageCount": 206,
+          "usageCount": 205,
           "name": "launchdarkly-react-client-sdk.useFlags",
           "nodeType": "Identifier",
           "deprecationDate": "2025-02-10",
@@ -406,7 +406,6 @@
               "src/pages/common/components/ScriptTagMigrationBanner/hooks/useStoresRequiringScriptTagMigration.ts",
               "src/pages/common/components/ScriptTagMigrationModal/ScriptTagMigrationModal.tsx",
               "src/pages/common/components/Spotlight/useSearch.ts",
-              "src/pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarCustomerInfo.tsx",
               "src/pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/bigcommerce/Customer.tsx",
               "src/pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/bigcommerce/OrderWidget.tsx",
               "src/pages/common/hooks/useIsConvertSubscriber.ts",
@@ -806,7 +805,7 @@
       "type": "ui-kit-migration",
       "entries": [
         {
-          "usageCount": 612,
+          "usageCount": 613,
           "name": "Button",
           "nodeType": "VariableDeclaration",
           "deprecationDate": "2024-03-04",
@@ -996,7 +995,7 @@
               "src/pages/common/components/infobar/Infobar/InfobarCustomerActions.tsx",
               "src/pages/common/components/infobar/Infobar/InfobarCustomerInfo/AddAppSuggestion.tsx",
               "src/pages/common/components/infobar/Infobar/InfobarCustomerInfo/CustomerInfoWrapper.tsx",
-              "src/pages/common/components/infobar/Infobar/InfobarCustomerInfo/CustomerTimelineButton.tsx",
+              "src/pages/common/components/infobar/Infobar/InfobarCustomerInfo/CustomerTimelineWidget.tsx",
               "src/pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarCustomerInfo.tsx",
               "src/pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/ActionButton.tsx",
               "src/pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/bigcommerce/AddOrderModal/AddCustomProductPopover.tsx",
@@ -1019,6 +1018,7 @@
               "src/pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/customActions/ActionButtons/Editor/Form/Parameters/Parameters.tsx",
               "src/pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/customActions/Links/Editor.tsx",
               "src/pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/customActions/Links/Links.tsx",
+              "src/pages/common/components/infobar/Infobar/InfobarCustomerInfo/LegacyCustomerTimelineButton.tsx",
               "src/pages/common/components/infobar/Infobar/InfobarCustomerInfo/NewPhoneNumber.tsx",
               "src/pages/common/components/infobar/Infobar/InfobarWidgetsEditionTools.tsx",
               "src/pages/common/components/layout/Group.stories.tsx",
