@@ -381,7 +381,10 @@ describe('<AgentsEditColumns>', () => {
 
         const options = screen.getAllByRole('checkbox', { hidden: true })
 
-        expect(options.length).toBe(activeView.metrics.length)
+        const activeViewMetricsWithoutLeadColumn = activeView.metrics.filter(
+            (m) => m.id !== leadColumn,
+        )
+        expect(options.length).toBe(activeViewMetricsWithoutLeadColumn.length)
 
         rerender(
             <Provider store={mockStore(state)}>
@@ -401,7 +404,12 @@ describe('<AgentsEditColumns>', () => {
             hidden: true,
         })
 
-        expect(optionsAfterUpdate.length).toBe(updatedActiveView.metrics.length)
+        const updatedActiveViewMetricsWithoutLeadColumn =
+            updatedActiveView.metrics.filter((m) => m.id !== leadColumn)
+
+        expect(optionsAfterUpdate.length).toBe(
+            updatedActiveViewMetricsWithoutLeadColumn.length,
+        )
     })
 
     it('should render items in expected order', () => {
@@ -416,13 +424,16 @@ describe('<AgentsEditColumns>', () => {
 
         const items = document.getElementsByClassName('dropdown-item')
 
-        agentPerformanceTableActiveViewWithTotal.metrics.forEach(
-            (column, index) => {
-                expect(items[index]).toHaveTextContent(
-                    new RegExp(TableLabels[column.id]),
-                )
-            },
-        )
+        const metricsWithoutLeadColumn =
+            agentPerformanceTableActiveViewWithTotal.metrics.filter(
+                (m) => m.id !== leadColumn,
+            )
+
+        metricsWithoutLeadColumn.forEach((column, index) => {
+            expect(items[index]).toHaveTextContent(
+                new RegExp(TableLabels[column.id]),
+            )
+        })
     })
 
     it('should allow changing order of columns with drag and drop', () => {
@@ -451,8 +462,8 @@ describe('<AgentsEditColumns>', () => {
         })
 
         const allItems = document.getElementsByClassName('dropdown-item')
-        expect(allItems[1]).toHaveTextContent(new RegExp(lastItemLabel))
-        expect(allItems[2]).toHaveTextContent(
+        expect(allItems[0]).toHaveTextContent(new RegExp(lastItemLabel))
+        expect(allItems[1]).toHaveTextContent(
             new RegExp(firstOrderableItemLabel),
         )
         expect(screen.getByText(SAVE_BUTTON_TEXT)).toBeEnabled()

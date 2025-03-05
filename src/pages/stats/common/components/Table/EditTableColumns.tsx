@@ -243,38 +243,48 @@ const EditTableDropdownContents = <
 
     return (
         <>
-            {hasRows && (
-                <div className={css.dropdownMenuContainer}>
-                    <div>Edit rows</div>
-                    {rowsVisibility.map(({ id, visibility }) => (
+            <div className={css.dropdownMenuContainer}>
+                {hasRows && (
+                    <>
+                        <SectionTitle title="Edit rows" />
+                        {rowsVisibility.map(({ id, visibility }) => (
+                            <EditColumnsItem
+                                key={id}
+                                title={rowLabels?.[id] ?? ''}
+                                isIndeterminate={visibility === null}
+                                isChecked={!!visibility}
+                                onChange={handleChangeRowVisibility(id)}
+                                tooltip={rowTooltips?.[id]?.hint?.title ?? ''}
+                                onDrop={dropBeforeRow}
+                                option={{ id }}
+                            />
+                        ))}
+                    </>
+                )}
+                {hasRows && (
+                    <>
+                        <div className={css.separator} />
+                        <SectionTitle title="Edit columns" />
+                    </>
+                )}
+                {columnsVisibility.map(({ id, visibility }) => {
+                    const isLeadColumn = id === leadColumn
+
+                    if (isLeadColumn) return null
+
+                    return (
                         <EditColumnsItem
                             key={id}
-                            title={rowLabels?.[id] ?? ''}
+                            title={columnLabels[id]}
                             isIndeterminate={visibility === null}
                             isChecked={!!visibility}
-                            onChange={handleChangeRowVisibility(id)}
-                            tooltip={rowTooltips?.[id]?.hint?.title ?? ''}
-                            onDrop={dropBeforeRow}
+                            onChange={handleChangeColumnVisibility(id)}
+                            tooltip={columnTooltips[id]?.hint?.title}
+                            onDrop={dropBeforeColumn}
                             option={{ id }}
                         />
-                    ))}
-                </div>
-            )}
-            <div className={css.dropdownMenuContainer}>
-                {hasRows && <div>Edit columns</div>}
-                {columnsVisibility.map(({ id, visibility }) => (
-                    <EditColumnsItem
-                        key={id}
-                        title={columnLabels[id]}
-                        isIndeterminate={visibility === null}
-                        isChecked={!!visibility}
-                        disabled={id === leadColumn}
-                        onChange={handleChangeColumnVisibility(id)}
-                        tooltip={columnTooltips[id]?.hint?.title}
-                        onDrop={dropBeforeColumn}
-                        option={{ id }}
-                    />
-                ))}
+                    )
+                })}
             </div>
             <div className={css.dropdownFooter}>
                 <Button intent="secondary" onClick={onCancel}>
@@ -295,3 +305,7 @@ const EditTableDropdownContents = <
         </>
     )
 }
+
+const SectionTitle = ({ title }: { title: string }) => (
+    <div className={css.sectionTitle}>{title}</div>
+)

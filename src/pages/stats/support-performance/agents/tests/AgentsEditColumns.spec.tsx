@@ -134,13 +134,16 @@ describe('<AgentsEditColumns>', () => {
 
         const items = document.getElementsByClassName('dropdown-item')
 
-        agentPerformanceTableActiveViewWithTotal.metrics.forEach(
-            (column, index) => {
-                expect(items[index]).toHaveTextContent(
-                    new RegExp(TableLabels[column.id]),
-                )
-            },
-        )
+        const metricsWithoutLeadColumn =
+            agentPerformanceTableActiveViewWithTotal.metrics.filter(
+                (m) => m.id !== AgentsTableColumn.AgentName,
+            )
+
+        metricsWithoutLeadColumn.forEach((column, index) => {
+            expect(items[index]).toHaveTextContent(
+                new RegExp(TableLabels[column.id]),
+            )
+        })
     })
 
     it('should allow changing order with drag and drop', () => {
@@ -169,8 +172,8 @@ describe('<AgentsEditColumns>', () => {
         })
 
         const allItems = document.getElementsByClassName('dropdown-item')
-        expect(allItems[1]).toHaveTextContent(new RegExp(lastItemLabel))
-        expect(allItems[2]).toHaveTextContent(
+        expect(allItems[0]).toHaveTextContent(new RegExp(lastItemLabel))
+        expect(allItems[1]).toHaveTextContent(
             new RegExp(firstOrderableItemLabel),
         )
         expect(screen.getByText(SAVE_BUTTON_TEXT)).toBeEnabled()
