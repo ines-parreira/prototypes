@@ -19,7 +19,7 @@ import {
     getDisplayHistory,
     getTicketState,
 } from 'state/ticket/selectors'
-import type { OnToggleUnreadFn } from 'tickets/pages/SplitTicketPage'
+import type { OnToggleUnreadFn } from 'tickets/dtp'
 
 import { SubmitArgs } from '../TicketDetailContainer'
 

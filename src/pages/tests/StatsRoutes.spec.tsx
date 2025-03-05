@@ -1,4 +1,4 @@
-import React, { ReactNode } from 'react'
+import React, { ComponentType, ReactNode } from 'react'
 
 import { act } from '@testing-library/react'
 import { createBrowserHistory } from 'history'
@@ -22,6 +22,23 @@ import { StatsRoutes } from 'routes/StatsRoutes'
 import { initialState } from 'state/billing/reducers'
 import { RootState } from 'state/types'
 import { renderWithRouter } from 'utils/testing'
+
+jest.mock(
+    'pages/App',
+    () =>
+        ({
+            content: Content,
+            navbar: Navbar,
+        }: {
+            content: ComponentType<any>
+            navbar: ComponentType<any>
+        }) => (
+            <>
+                <Navbar />
+                <Content />
+            </>
+        ),
+)
 
 jest.mock('pages/stats/common/StatsNavbarContainer', () => () => (
     <div>Navbar</div>

@@ -5,7 +5,7 @@ import useElementSize from 'hooks/useElementSize'
 import usePrevious from 'hooks/usePrevious'
 import { useSplitTicketView } from 'split-ticket-view-toggle'
 import useViewTickets from 'ticket-list-view/hooks/useViewTickets'
-import type { OnToggleUnreadFn } from 'tickets/pages/SplitTicketPage'
+import type { OnToggleUnreadFn } from 'tickets/dtp'
 
 import { TICKET_HEIGHT } from '../constants'
 import useTicketIds from '../hooks/useTicketIds'

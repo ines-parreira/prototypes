@@ -5,7 +5,7 @@ import { useParams } from 'react-router-dom'
 import history from 'pages/history'
 import TicketDetailContainer from 'pages/tickets/detail/TicketDetailContainer'
 import { useSplitTicketView } from 'split-ticket-view-toggle'
-import type { OnToggleUnreadFn } from 'tickets/pages/SplitTicketPage'
+import type { OnToggleUnreadFn } from 'tickets/dtp'
 
 type Props = {
     isOnSplitTicketView?: boolean

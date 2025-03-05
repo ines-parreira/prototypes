@@ -115,7 +115,6 @@ import CustomerInfobarContainer from 'pages/customers/detail/CustomerInfobarCont
 import CustomerSourceContainer from 'pages/customers/detail/CustomerSourceContainer'
 import CustomerListContainer from 'pages/customers/list/CustomerListContainer'
 import CanduContent from 'pages/onboarding/CanduContent'
-import PanelLayout from 'pages/PanelLayout'
 import ReferralContent from 'pages/referral/ReferralContent'
 import SettingsNavbar from 'pages/settings/common/SettingsNavbar/SettingsNavbar'
 import { HelpCenterApiClientProvider } from 'pages/settings/helpCenter/hooks/useHelpCenterApi'
@@ -134,10 +133,6 @@ import TicketSourceContainer from 'pages/tickets/detail/TicketSourceContainer'
 import TicketNavbar from 'pages/tickets/navbar/TicketNavbar'
 import SettingsRoutes from 'routes/settings'
 import { StatsRoutes } from 'routes/StatsRoutes'
-import { useSplitTicketPage } from 'tickets/pages/SplitTicketPage'
-import { useSplitViewPage } from 'tickets/pages/SplitViewPage'
-import { useTicketPage } from 'tickets/pages/TicketPage'
-import { useViewPage } from 'tickets/pages/ViewPage'
 
 export default function Routes() {
     return (
@@ -158,31 +153,8 @@ export function AppRoutes() {
         }
     }, [location.pathname, isAiAgentAssistantEnabled])
 
-    const splitTicketLayoutProps = useSplitTicketPage()
-    const splitViewLayoutProps = useSplitViewPage()
-    const fullWidthTicketLayoutProps = useTicketPage()
-    const fullWidthViewLayoutProps = useViewPage()
-
     return (
         <Switch>
-            <Route path={`${path}/`} exact>
-                <PanelLayout {...fullWidthViewLayoutProps} />
-            </Route>
-            <Route path={`${path}/tickets`} exact>
-                <PanelLayout {...fullWidthViewLayoutProps} />
-            </Route>
-            <Route path={`${path}/tickets/new/:visibility?`} exact>
-                <PanelLayout {...fullWidthViewLayoutProps} />
-            </Route>
-            <Route path={`${path}/tickets/search`} exact>
-                <PanelLayout {...fullWidthViewLayoutProps} />
-            </Route>
-            <Route path={`${path}/tickets/:viewId/:viewSlug?`} exact>
-                <PanelLayout {...fullWidthViewLayoutProps} />
-            </Route>
-            <Route path={`${path}/ticket/:ticketId`} exact>
-                <PanelLayout {...fullWidthTicketLayoutProps} />
-            </Route>
             <Route path={`${path}/customers`} render={CustomersRoutes} />
             <Route path={`${path}/customer`} render={CustomerRoutes} />
             <Route path={`${path}/users`} render={UsersRoutes} />
@@ -208,12 +180,6 @@ export function AppRoutes() {
                     <App content={ReferralContent} navbar={TicketNavbar} />
                 )}
             />
-            <Route exact path={`${path}/views/:viewId?`}>
-                <PanelLayout {...splitViewLayoutProps} />
-            </Route>
-            <Route exact path={`${path}/views/:viewId/:ticketId`}>
-                <PanelLayout {...splitTicketLayoutProps} />
-            </Route>
             <Route>
                 <NoMatch />
             </Route>

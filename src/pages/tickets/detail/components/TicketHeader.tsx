@@ -33,7 +33,7 @@ import {
     ticketPartialUpdate,
 } from 'state/ticket/actions'
 import { shouldDisplayAuditLogEvents as getShouldDisplayAuditLogEvents } from 'state/ticket/selectors'
-import type { OnToggleUnreadFn } from 'tickets/pages/SplitTicketPage'
+import type { OnToggleUnreadFn } from 'tickets/dtp'
 import { hasRole } from 'utils'
 
 import Snooze from './Snooze'

@@ -29,7 +29,7 @@ import {
 } from 'split-ticket-view-toggle'
 import { setViewActive, setViewEditMode } from 'state/views/actions'
 import { getViewCount, getViewPlainJS } from 'state/views/selectors'
-import type { OnToggleUnreadFn } from 'tickets/pages/SplitTicketPage'
+import type { OnToggleUnreadFn } from 'tickets/dtp'
 
 import { TICKET_HEIGHT } from '../constants'
 import useScrollActiveTicketIntoView from '../hooks/useScrollActiveTicketIntoView'

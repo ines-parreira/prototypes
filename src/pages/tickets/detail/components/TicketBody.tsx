@@ -11,7 +11,7 @@ import { TicketElement, TicketMessage } from 'models/ticket/types'
 import VoiceRecordingsProvider from 'pages/integrations/integration/components/voice/VoiceRecordingsProvider'
 import { SubmitArgs } from 'pages/tickets/detail/TicketDetailContainer'
 import { getDisplayHistory } from 'state/ticket/selectors'
-import type { OnToggleUnreadFn } from 'tickets/pages/SplitTicketPage'
+import type { OnToggleUnreadFn } from 'tickets/dtp'
 
 import {
     useExpandedMessages,

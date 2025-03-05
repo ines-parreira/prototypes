@@ -165,27 +165,6 @@ describe('<ConvertNavbar />', () => {
             expect(getAllByText('arrow_circle_up').length).toBe(2)
         })
 
-        it('should render settings when ff is enabled', () => {
-            mockUseContactFormFlag.mockReturnValue(true)
-            const { getAllByText } = render(
-                <Provider
-                    store={mockStore({
-                        ...defaultState,
-                    })}
-                >
-                    <DndProvider backend={HTML5Backend}>
-                        <QueryClientProvider client={queryClient}>
-                            <ThemeProvider>
-                                <ConvertNavbar />
-                            </ThemeProvider>
-                        </QueryClientProvider>
-                    </DndProvider>
-                </Provider>,
-                { wrapper },
-            )
-            expect(getAllByText('Settings').length).toBe(1)
-        })
-
         it('should render convert navbar with integrations without paywalls', () => {
             isConvertSubscriberMock.mockReturnValue(true)
 

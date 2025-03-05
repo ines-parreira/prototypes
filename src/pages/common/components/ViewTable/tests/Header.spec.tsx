@@ -24,6 +24,10 @@ jest.mock('state/views/actions.ts', () => {
 jest.mock('react-router-dom')
 jest.mock('pages/history')
 
+jest.mock('../ViewTableHeaderToggle', () => ({
+    ViewTableHeaderToggle: () => null,
+}))
+
 describe('ViewTable::Header', () => {
     const editModeActiveView = fromJS({
         ...viewsFixture,

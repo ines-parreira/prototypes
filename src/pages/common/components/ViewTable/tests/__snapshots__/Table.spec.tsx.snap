@@ -3,14 +3,14 @@
 exports[`<Table /> should display a default view 1`] = `
 <div>
   <table
-    class="table view-table"
+    class="table view-table globalNavStyles"
   >
     <thead
       class="tableHead"
     >
       <tr>
         <td
-          class="cell-wrapper clickable d-none d-md-table-cell smallest cell-short"
+          class="cell-wrapper clickable d-none d-md-table-cell smallest cell-global-nav"
         >
           <div
             class="checkBox"
@@ -82,7 +82,7 @@ exports[`<Table /> should display a default view with no items 1`] = `
 exports[`<Table /> should display a default view with option selectable set to false 1`] = `
 <div>
   <table
-    class="table view-table"
+    class="table view-table globalNavStyles"
   >
     <thead
       class="tableHead"
@@ -139,14 +139,14 @@ exports[`<Table /> should display a modified view with no items, should reset th
 exports[`<Table /> should display a view with no fields 1`] = `
 <div>
   <table
-    class="table view-table"
+    class="table view-table globalNavStyles"
   >
     <thead
       class="tableHead"
     >
       <tr>
         <td
-          class="cell-wrapper clickable d-none d-md-table-cell smallest cell-short"
+          class="cell-wrapper clickable d-none d-md-table-cell smallest cell-global-nav"
         >
           <div
             class="checkBox"

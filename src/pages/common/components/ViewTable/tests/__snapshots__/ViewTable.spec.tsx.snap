@@ -5,7 +5,7 @@ exports[`<ViewTable /> render default view 1`] = `
   class="page"
 >
   <div
-    class="container-padding"
+    class="headerPadding"
   >
     <div>
       Header mock
@@ -42,7 +42,7 @@ exports[`<ViewTable /> render should render a warning because the view is deacti
   class="page"
 >
   <div
-    class="container-padding"
+    class="headerPadding"
   >
     <div>
       Header mock

@@ -106,6 +106,10 @@ jest.mock('react-router-dom', () => ({
     useParams: jest.fn(),
 }))
 
+jest.mock('../TicketHeaderToggle', () => ({
+    TicketHeaderToggle: () => null,
+}))
+
 const useParamsMock = useParams as jest.Mock
 
 describe('<TicketHeader />', () => {

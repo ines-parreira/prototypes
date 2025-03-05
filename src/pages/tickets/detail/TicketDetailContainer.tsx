@@ -65,7 +65,7 @@ import { getSourceTypeOfResponse } from 'state/ticket/utils'
 import { updateCursor } from 'state/tickets/actions'
 import { RootState } from 'state/types'
 import { getActiveView } from 'state/views/selectors'
-import type { OnToggleUnreadFn } from 'tickets/pages/SplitTicketPage'
+import type { OnToggleUnreadFn } from 'tickets/dtp'
 import { isMacOs } from 'utils/platform'
 
 import { updateMessageText } from './components/ReplyArea/TicketReplyEditor'

@@ -8,17 +8,21 @@ import {
     NavBarContextType,
     NavBarDisplayMode,
 } from 'common/navigation/hooks/useNavBar/context'
-import { useFlag } from 'core/flags'
 import useAppSelector from 'hooks/useAppSelector'
 import { assumeMock } from 'utils/testing'
 
+import { useDesktopOnlyShowGlobalNavFeatureFlag } from '../../hooks/useShowGlobalNavFeatureFlag'
 import Navbar from '../Navbar'
 import { NavBarProvider } from '../NavBarProvider'
 
 import css from '../Navbar.less'
 
-jest.mock('core/flags', () => ({ useFlag: jest.fn() }))
-const useFlagMock = assumeMock(useFlag)
+jest.mock('../../hooks/useShowGlobalNavFeatureFlag', () => ({
+    useDesktopOnlyShowGlobalNavFeatureFlag: jest.fn(),
+}))
+const useDesktopOnlyShowGlobalNavFeatureFlagMock = assumeMock(
+    useDesktopOnlyShowGlobalNavFeatureFlag,
+)
 
 jest.mock('common/notifications', () => ({
     NotificationsButton: () => <div>NotificationsButton</div>,
@@ -69,7 +73,7 @@ describe('Navbar', () => {
 
     beforeEach(() => {
         useAppSelectorMock.mockReturnValue(false)
-        useFlagMock.mockReturnValue(false)
+        useDesktopOnlyShowGlobalNavFeatureFlagMock.mockReturnValue(false)
     })
 
     it('should set the navbar width if resizing is not disabled', () => {
@@ -88,7 +92,7 @@ describe('Navbar', () => {
     })
 
     it('should render the title if the user has the global nav flag', () => {
-        useFlagMock.mockReturnValue(true)
+        useDesktopOnlyShowGlobalNavFeatureFlagMock.mockReturnValue(true)
         const { getByText } = renderWithContext(
             <Navbar {...props} title="beep-boop-title" />,
         )
@@ -135,13 +139,13 @@ describe('Navbar', () => {
     })
 
     it('should hide the user menu if the user has the global nav flag', () => {
-        useFlagMock.mockReturnValue(true)
+        useDesktopOnlyShowGlobalNavFeatureFlagMock.mockReturnValue(true)
         const { queryByText } = renderWithContext(<Navbar {...props} />)
         expect(queryByText('UserMenuWithToggle')).not.toBeInTheDocument()
     })
 
     it('should have resize when navbarDisplay is Open', () => {
-        useFlagMock.mockReturnValue(true)
+        useDesktopOnlyShowGlobalNavFeatureFlagMock.mockReturnValue(true)
         const { container } = render(
             <NavBarContext.Provider value={mockNavBarContextValues}>
                 <Navbar {...props} />
@@ -150,7 +154,7 @@ describe('Navbar', () => {
         expect(container.firstChild).toHaveAttribute('style')
     })
     it('should not have resize when navbarDisplay is Open but the disableResize prop is true', () => {
-        useFlagMock.mockReturnValue(true)
+        useDesktopOnlyShowGlobalNavFeatureFlagMock.mockReturnValue(true)
         const { container } = render(
             <NavBarContext.Provider value={mockNavBarContextValues}>
                 <Navbar {...props} disableResize={true} />
@@ -160,7 +164,7 @@ describe('Navbar', () => {
     })
 
     it('should not have resize when navbarDisplay is not Open', () => {
-        useFlagMock.mockReturnValue(true)
+        useDesktopOnlyShowGlobalNavFeatureFlagMock.mockReturnValue(true)
         const values = {
             ...mockNavBarContextValues,
             navBarDisplay: NavBarDisplayMode.Collapsed,
