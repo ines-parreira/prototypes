@@ -524,24 +524,41 @@ describe('useAiAgentInsightsDataset', () => {
         it('should return ai agent knowledge resource per intent correctly', () => {
             useMetricPerDimensionMock
                 .mockReturnValueOnce({
+                    // mock useAiAgenTickets
+                    data: {
+                        decile: null,
+                        value: null,
+                        allData: [
+                            {
+                                'TicketEnriched.ticketId': '1',
+                            },
+                            {
+                                'TicketEnriched.ticketId': '2',
+                            },
+                            {
+                                'TicketEnriched.ticketId': '3',
+                            },
+                        ],
+                    },
+                    isFetching: false,
+                    isError: false,
+                })
+                .mockReturnValueOnce({
                     // aiAgentAutomatedTicketsDataWithIntent
                     data: {
                         decile: null,
                         value: null,
                         allData: [
                             {
-                                'TicketCustomFieldsEnriched.valueString':
-                                    'intentA',
+                                'TicketEnriched.customField': '1::intentA',
                                 'TicketEnriched.ticketId': '1',
                             },
                             {
-                                'TicketCustomFieldsEnriched.valueString':
-                                    'intentA',
+                                'TicketEnriched.customField': '1::intentA',
                                 'TicketEnriched.ticketId': '2',
                             },
                             {
-                                'TicketCustomFieldsEnriched.valueString':
-                                    'intentA',
+                                'TicketEnriched.customField': '1::intentA',
                                 'TicketEnriched.ticketId': '3',
                             },
                         ],
@@ -592,7 +609,7 @@ describe('useAiAgentInsightsDataset', () => {
             )
             expect(result.current.data).toEqual([
                 {
-                    'TicketCustomFieldsEnriched.valueString': 'intentA',
+                    'TicketEnriched.customField': 'intentA',
                     resources: 3,
                 },
             ])
@@ -600,6 +617,16 @@ describe('useAiAgentInsightsDataset', () => {
 
         it('should return empty array when data not available', () => {
             useMetricPerDimensionMock
+                .mockReturnValueOnce({
+                    // mock useAiAgenTickets
+                    data: {
+                        decile: null,
+                        value: null,
+                        allData: [],
+                    },
+                    isFetching: false,
+                    isError: false,
+                })
                 .mockReturnValueOnce({
                     // aiAgentAutomatedTicketsDataWithIntent
                     data: {

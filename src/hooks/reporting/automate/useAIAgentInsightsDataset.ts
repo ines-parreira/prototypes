@@ -31,6 +31,7 @@ import { ticketsCreatedQueryFactory } from 'models/reporting/queryFactories/supp
 import { customFieldsTicketTotalCountQueryFactory } from 'models/reporting/queryFactories/ticket-insights/customFieldsTicketCount'
 import { ReportingFilterOperator } from 'models/reporting/types'
 import { FilterKey, StatsFilters } from 'models/stat/types'
+import { useGetCustomTicketsFieldsDefinitionData } from 'pages/aiAgent/insights/IntentTableWidget/hooks/useGetCustomTicketsFieldsDefinitionData'
 import {
     IntentMetrics,
     IntentTableColumn,
@@ -379,41 +380,65 @@ export const useAiAgentKnowledgeResourcePerIntent = (
     sorting?: OrderDirection,
     intentId?: string,
 ) => {
+    const { intentCustomFieldId } = useGetCustomTicketsFieldsDefinitionData()
+
     const { data: { data: activeFields = [] } = {} } =
         useCustomFieldDefinitions(activeParams)
 
-    const customFieldAiIntent = activeFields.find(
-        (field) => field.managed_type === AI_MANAGED_TYPES.AI_INTENT,
+    const customField = activeFields.find(
+        (field) => field.managed_type === AI_MANAGED_TYPES.AI_OUTCOME,
+    )
+    const aiAgentNotAutomatedTicketsData = useAiAgenTickets(
+        filters,
+        timezone,
+        customField,
     )
 
-    const customFiledId = customFieldAiIntent?.id
-        ? String(customFieldAiIntent.id)
-        : null
+    const aiAgentTicketIds = aiAgentNotAutomatedTicketsData.data?.allData
+        .map((item) => item[TicketDimension.TicketId])
+        .filter((id): id is string => typeof id === 'string')
 
     const aiAgentTicketsWithIntent = useAIAgentTicketsWithIntent(
         filters,
         timezone,
-        customFiledId,
+        intentCustomFieldId,
+        aiAgentTicketIds,
         sorting,
         intentId,
     )
 
+    const aiAgentTicketsWithIntentData =
+        aiAgentTicketsWithIntent.data?.allData.map((item) => {
+            // value is in format 111::L1::L2::L3, remove first part 111:: and leave only L1::L2::L3
+            const intent =
+                item[TicketDimension.CustomField]
+                    ?.split('::')
+                    .slice(1)
+                    .join('::') ?? null
+            return {
+                [TicketDimension.TicketId]: item[TicketDimension.TicketId],
+                [TicketDimension.CustomField]: intent,
+            }
+        })
+
     const ticketIds =
-        aiAgentTicketsWithIntent.data?.allData
-            .map((item) => item[TicketDimension.TicketId])
-            .filter((id): id is string => typeof id === 'string') || []
+        (aiAgentTicketsWithIntentData &&
+            aiAgentTicketsWithIntentData
+                .map((item) => item[TicketDimension.TicketId])
+                .filter((id): id is string => typeof id === 'string')) ||
+        []
 
     const resourcePerTicketId = useAIAgentResourcePerTicket(
         filters,
         timezone,
         ticketIds,
         undefined,
-        !!aiAgentTicketsWithIntent.data?.allData,
+        !!aiAgentTicketsWithIntentData,
     )
 
     const aiAgentKnowledgeResourcePerIntent =
         calculateAiAgentKnowledgeResourcePerIntent(
-            aiAgentTicketsWithIntent.data?.allData || [],
+            aiAgentTicketsWithIntentData || [],
             resourcePerTicketId.data?.allData || [],
         )
 
@@ -514,13 +539,14 @@ export const addMetricDataToResults = (
     metricData: Record<string, string | number | null>[],
     metricKey: string,
     resultKey?: string,
+    itemKey: string = 'TicketCustomFieldsEnriched.valueString',
 ) => {
     if (!metricData) {
         return
     }
 
     metricData.forEach((item: Record<string, any>) => {
-        const intent = item['TicketCustomFieldsEnriched.valueString'] as string
+        const intent = item[itemKey] as string
         const resultKeyToUse = resultKey || metricKey
         if (intent) {
             results[intent] = {
@@ -546,6 +572,7 @@ const useFetchAllIntentsMetrics = (
         sorting,
         intentId,
     )
+
     const automationOpportunityPerIntentLevel = filterMetricDataByIntentLevel({
         metricData: automationOpportunityPerIntent.data,
         level: INTENT_LEVEL,
@@ -616,7 +643,7 @@ const useFetchAllIntentsMetrics = (
         filterMetricDataByIntentLevel({
             metricData: aiAgentKnowledgeResourcePerIntent.data,
             level: INTENT_LEVEL,
-            intentKey: 'TicketCustomFieldsEnriched.valueString',
+            intentKey: 'TicketEnriched.customField',
             valueKey: 'resources',
             resultKey: 'resources',
             metricFor: IntentTableColumn.Resources,
@@ -705,11 +732,12 @@ export const useAIAgentInsightsDataset = (
             data: aiAgentKnowledgeResourcePerIntent.data || [],
             metricKey: 'resources',
             resultKey: 'resources',
+            itemKey: 'TicketEnriched.customField',
         },
     ]
 
-    metrics.forEach(({ data, metricKey, resultKey }) =>
-        addMetricDataToResults(results, data, metricKey, resultKey),
+    metrics.forEach(({ data, metricKey, resultKey, itemKey }) =>
+        addMetricDataToResults(results, data, metricKey, resultKey, itemKey),
     )
 
     // Convert object to array of objects

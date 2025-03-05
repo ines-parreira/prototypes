@@ -20,6 +20,7 @@ import {
     TicketSatisfactionSurveyMeasure,
     TicketSatisfactionSurveySegment,
 } from 'models/reporting/cubes/TicketSatisfactionSurveyCube'
+import { addFieldIdToCustomFieldValues } from 'models/reporting/queryFactories/utils'
 import { ReportingFilterOperator, ReportingQuery } from 'models/reporting/types'
 import { StatsFilters } from 'models/stat/types'
 import {
@@ -105,29 +106,35 @@ export const recommendedResourceQueryFactory = (
 export const aiAgentTicketsWithIntentQueryFactory = (
     filters: StatsFilters,
     timezone: string,
-    customFieldId: string | null,
+    intentFieldId?: number | null,
+    ticketIds?: string[],
     sorting?: OrderDirection,
     intentId?: string,
 ): ReportingQuery<TicketCubeWithJoins> => {
     return {
         measures: [],
-        dimensions: [
-            TicketDimension.TicketId,
-            TicketCustomFieldsDimension.TicketCustomFieldsValueString,
-        ],
+        dimensions: [TicketDimension.TicketId, TicketDimension.CustomField],
         timezone,
         filters: [
-            {
-                member: TicketCustomFieldsMember.TicketCustomFieldsCustomFieldId,
-                operator: ReportingFilterOperator.Equals,
-                values: [customFieldId],
-            },
-            ...(intentId
+            ...(intentFieldId
                 ? [
                       {
-                          member: TicketCustomFieldsMember.TicketCustomFieldsValueString,
+                          member: TicketMember.CustomField,
                           operator: ReportingFilterOperator.StartsWith,
-                          values: [intentId],
+                          values: [
+                              ...addFieldIdToCustomFieldValues(intentFieldId, [
+                                  intentId || '',
+                              ]),
+                          ],
+                      },
+                  ]
+                : []),
+            ...(ticketIds && ticketIds?.length > 0
+                ? [
+                      {
+                          member: TicketDimension.TicketId,
+                          operator: ReportingFilterOperator.In,
+                          values: ticketIds,
                       },
                   ]
                 : []),

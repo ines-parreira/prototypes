@@ -125,7 +125,8 @@ export const useCustomerSatisfactionMetricPerIntentLevel = (
 export const useAIAgentTicketsWithIntent = (
     filters: StatsFilters,
     timezone: string,
-    customFieldId: string | null,
+    intentFieldId: number | undefined,
+    ticketIds?: string[],
     sorting?: OrderDirection,
     intentId?: string,
 ) => {
@@ -133,7 +134,8 @@ export const useAIAgentTicketsWithIntent = (
         aiAgentTicketsWithIntentQueryFactory(
             filters,
             timezone,
-            customFieldId,
+            intentFieldId,
+            ticketIds,
             sorting,
             intentId,
         ),

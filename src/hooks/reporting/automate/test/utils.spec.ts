@@ -41,10 +41,7 @@ import {
     RecommendedResourcesMeasure,
 } from 'models/reporting/cubes/automate_v2/RecommendedResourcesCube'
 import { TicketDimension } from 'models/reporting/cubes/TicketCube'
-import {
-    TicketCustomFieldsDimension,
-    TicketCustomFieldsMeasure,
-} from 'models/reporting/cubes/TicketCustomFieldsCube'
+import { TicketCustomFieldsMeasure } from 'models/reporting/cubes/TicketCustomFieldsCube'
 import { ReportingGranularity } from 'models/reporting/types'
 import { StatsFilters } from 'models/stat/types'
 import { IntentTableColumn } from 'pages/aiAgent/insights/IntentTableWidget/types'
@@ -869,13 +866,11 @@ describe('calculateAiAgentKnowledgeResourcePerIntent', () => {
     it('returns correct resource mapping for valid inputs', () => {
         const aiAgentTicketsWithIntentData = [
             {
-                [TicketCustomFieldsDimension.TicketCustomFieldsValueString]:
-                    'intentA',
+                [TicketDimension.CustomField]: '1::intentA',
                 [TicketDimension.TicketId]: 'ticket1',
             },
             {
-                [TicketCustomFieldsDimension.TicketCustomFieldsValueString]:
-                    'intentB',
+                [TicketDimension.CustomField]: '2::intentB',
                 [TicketDimension.TicketId]: 'ticket2',
             },
         ]
@@ -901,11 +896,11 @@ describe('calculateAiAgentKnowledgeResourcePerIntent', () => {
 
         expect(result).toEqual([
             {
-                'TicketCustomFieldsEnriched.valueString': 'intentA',
+                'TicketEnriched.customField': '1::intentA',
                 resources: 5,
             },
             {
-                'TicketCustomFieldsEnriched.valueString': 'intentB',
+                'TicketEnriched.customField': '2::intentB',
                 resources: 3,
             },
         ])
@@ -926,8 +921,7 @@ describe('calculateAiAgentKnowledgeResourcePerIntent', () => {
     it('ignores tickets without matching resources', () => {
         const aiAgentTicketsWithIntentData = [
             {
-                [TicketCustomFieldsDimension.TicketCustomFieldsValueString]:
-                    'intentA',
+                [TicketDimension.CustomField]: '1::intentA',
                 [TicketDimension.TicketId]: 'ticket1',
             },
         ]
@@ -940,7 +934,7 @@ describe('calculateAiAgentKnowledgeResourcePerIntent', () => {
 
         expect(result).toEqual([
             {
-                'TicketCustomFieldsEnriched.valueString': 'intentA',
+                'TicketEnriched.customField': '1::intentA',
                 resources: 0,
             },
         ])
@@ -949,13 +943,11 @@ describe('calculateAiAgentKnowledgeResourcePerIntent', () => {
     it('handles multiple resources for the same intent', () => {
         const aiAgentTicketsWithIntentData = [
             {
-                [TicketCustomFieldsDimension.TicketCustomFieldsValueString]:
-                    'intentA',
+                [TicketDimension.CustomField]: '1::intentA',
                 [TicketDimension.TicketId]: 'ticket1',
             },
             {
-                [TicketCustomFieldsDimension.TicketCustomFieldsValueString]:
-                    'intentA',
+                [TicketDimension.CustomField]: '1::intentA',
                 [TicketDimension.TicketId]: 'ticket2',
             },
         ]
@@ -981,7 +973,7 @@ describe('calculateAiAgentKnowledgeResourcePerIntent', () => {
 
         expect(result).toEqual([
             {
-                'TicketCustomFieldsEnriched.valueString': 'intentA',
+                'TicketEnriched.customField': '1::intentA',
                 resources: 8,
             },
         ])
@@ -990,8 +982,7 @@ describe('calculateAiAgentKnowledgeResourcePerIntent', () => {
     it('handles tickets with null intents', () => {
         const aiAgentTicketsWithIntentData = [
             {
-                [TicketCustomFieldsDimension.TicketCustomFieldsValueString]:
-                    null,
+                [TicketDimension.CustomField]: null,
                 [TicketDimension.TicketId]: 'ticket1',
             },
         ]

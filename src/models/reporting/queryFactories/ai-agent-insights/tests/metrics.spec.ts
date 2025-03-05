@@ -11,6 +11,7 @@ import {
     TicketSatisfactionSurveySegment,
 } from 'models/reporting/cubes/TicketSatisfactionSurveyCube'
 import {
+    aiAgentTicketsWithIntentQueryFactory,
     customerSatisfactionPerIntentLevelQueryFactory,
     recommendedResourceQueryFactory,
 } from 'models/reporting/queryFactories/ai-agent-insights/metrics'
@@ -139,6 +140,90 @@ describe('AI Agent metrics', () => {
             ],
             measures: [RecommendedResourcesMeasure.NumRecommendedResources],
             timezone: timezone,
+        })
+    })
+
+    it('aiAgentTicketsWithIntentQueryFactory without intent and outcome field ids', () => {
+        const result = aiAgentTicketsWithIntentQueryFactory(filters, timezone)
+        expect(result).toEqual({
+            measures: [],
+            dimensions: [
+                'TicketEnriched.ticketId',
+                'TicketEnriched.customField',
+            ],
+            timezone: 'UTC',
+            filters: [
+                ...NotSpamNorTrashedTicketsFilter,
+                {
+                    member: 'TicketEnriched.periodStart',
+                    operator: 'afterDate',
+                    values: ['2021-01-01T00:00:00.000'],
+                },
+                {
+                    member: 'TicketEnriched.periodEnd',
+                    operator: 'beforeDate',
+                    values: ['2021-01-02T00:00:00.000'],
+                },
+                {
+                    member: 'TicketCustomFieldsEnriched.customFieldUpdatedDatetime',
+                    operator: 'inDateRange',
+                    values: [
+                        formatReportingQueryDate(filters.period.start_datetime),
+                        formatReportingQueryDate(filters.period.end_datetime),
+                    ],
+                },
+            ],
+        })
+    })
+
+    it('aiAgentTicketsWithIntentQueryFactory with intent and outcome field ids', () => {
+        const result = aiAgentTicketsWithIntentQueryFactory(
+            filters,
+            timezone,
+            1,
+            ['1', '2'],
+            OrderDirection.Asc,
+            'intent1',
+        )
+        expect(result).toEqual({
+            measures: [],
+            dimensions: [
+                'TicketEnriched.ticketId',
+                'TicketEnriched.customField',
+            ],
+            timezone: 'UTC',
+            filters: [
+                {
+                    member: 'TicketEnriched.customField',
+                    operator: 'startsWith',
+                    values: ['1::intent1'],
+                },
+                {
+                    member: 'TicketEnriched.ticketId',
+                    operator: 'in',
+                    values: ['1', '2'],
+                },
+                ...NotSpamNorTrashedTicketsFilter,
+                {
+                    member: 'TicketEnriched.periodStart',
+                    operator: 'afterDate',
+                    values: ['2021-01-01T00:00:00.000'],
+                },
+                {
+                    member: 'TicketEnriched.periodEnd',
+                    operator: 'beforeDate',
+                    values: ['2021-01-02T00:00:00.000'],
+                },
+                {
+                    member: 'TicketCustomFieldsEnriched.customFieldUpdatedDatetime',
+                    operator: 'inDateRange',
+                    values: [
+                        formatReportingQueryDate(filters.period.start_datetime),
+                        formatReportingQueryDate(filters.period.end_datetime),
+                    ],
+                },
+            ],
+            order: [['TicketCustomFieldsEnriched.valueString', 'asc']],
         })
     })
 })

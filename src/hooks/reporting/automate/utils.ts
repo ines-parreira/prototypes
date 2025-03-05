@@ -639,7 +639,7 @@ export const calculateAiAgentKnowledgeResourcePerIntent = (
     aiAgentTicketsWithIntentData: QueryReturnType<Cubes>,
     resourcePerTicketIdData: QueryReturnType<Cubes>,
 ): {
-    'TicketCustomFieldsEnriched.valueString': string
+    'TicketEnriched.customField': string
     resources: number
 }[] => {
     const aiAgentKnowledgeResourcePerIntent: Record<string, number> = {}
@@ -648,7 +648,7 @@ export const calculateAiAgentKnowledgeResourcePerIntent = (
     // Get the intent and all ticket ids with that intent
     const ticketIdsPerIntent = groupBy(
         aiAgentTicketsWithIntentData,
-        TicketCustomFieldsDimension.TicketCustomFieldsValueString,
+        TicketDimension.CustomField,
     )
 
     if (!ticketIdsPerIntent || ticketIdsPerIntent['null']) {
@@ -709,7 +709,7 @@ export const calculateAiAgentKnowledgeResourcePerIntent = (
 
     return Object.entries(aiAgentKnowledgeResourcePerIntent).map(
         ([intent, resources]) => ({
-            'TicketCustomFieldsEnriched.valueString': intent,
+            [TicketDimension.CustomField]: intent,
             resources,
         }),
     )
