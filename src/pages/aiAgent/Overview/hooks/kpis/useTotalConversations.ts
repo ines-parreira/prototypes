@@ -1,6 +1,6 @@
 import { useMultipleMetricsTrends } from 'hooks/reporting/useMultipleMetricsTrend'
 import { TicketCustomFieldsMeasure } from 'models/reporting/cubes/TicketCustomFieldsCube'
-import { customFieldsTicketCountQueryFactory } from 'models/reporting/queryFactories/ticket-insights/customFieldsTicketCount'
+import { customFieldsTicketTotalCountQueryFactory } from 'models/reporting/queryFactories/ticket-insights/customFieldsTicketCount'
 import { StatsFilters, StatType } from 'models/stat/types'
 import { useCustomFieldOutcome } from 'pages/aiAgent/Overview/hooks/useCustomFieldOutcome'
 import { KpiMetric } from 'pages/aiAgent/Overview/types'
@@ -13,8 +13,12 @@ export const useTotalConversations = (
     const customField = useCustomFieldOutcome()
 
     const result = useMultipleMetricsTrends(
-        customFieldsTicketCountQueryFactory(filters, timezone, customField),
-        customFieldsTicketCountQueryFactory(
+        customFieldsTicketTotalCountQueryFactory(
+            filters,
+            timezone,
+            customField,
+        ),
+        customFieldsTicketTotalCountQueryFactory(
             {
                 ...filters,
                 period: getPreviousPeriod(filters.period),
