@@ -3,20 +3,22 @@
 exports[`<ScriptTagMigrationBanner /> should contain both re-install and permission update link for a single store 1`] = `
 <div>
   <div
-    aria-live="assertive"
-    class="AlertBanner critical"
-    role="banner"
+    aria-label=""
+    class="ui-banner-banner-e3eb ui-banner-error-e3eb ui-banner-full-e3eb ui-banner-fill-e3eb"
   >
     <div
-      class="centralContainer"
+      class="ui-banner-content-e3eb"
     >
-      <span
-        class="material-icons-round Icon critical"
-      >
-        error
-      </span>
       <div
-        class="messageContainer"
+        class="ui-banner-icon-e3eb"
+      >
+        <img
+          alt="icon"
+          src="data:image/svg+xml,%3csvg%20width='20'%20height='20'%20viewBox='0%200%2020%2020'%20fill='none'%20xmlns='http://www.w3.org/2000/svg'%3e%3cpath%20d='M10%201.66669C5.40002%201.66669%201.66669%205.40002%201.66669%2010C1.66669%2014.6%205.40002%2018.3334%2010%2018.3334C14.6%2018.3334%2018.3334%2014.6%2018.3334%2010C18.3334%205.40002%2014.6%201.66669%2010%201.66669ZM10%2010.8334C9.54169%2010.8334%209.16669%2010.4584%209.16669%2010V6.66669C9.16669%206.20835%209.54169%205.83335%2010%205.83335C10.4584%205.83335%2010.8334%206.20835%2010.8334%206.66669V10C10.8334%2010.4584%2010.4584%2010.8334%2010%2010.8334ZM10.8334%2014.1667H9.16669V12.5H10.8334V14.1667Z'%20fill='%23F24F66'/%3e%3c/svg%3e"
+        />
+      </div>
+      <span
+        class="ui-banner-text-e3eb"
       >
         <span>
           <b>
@@ -46,8 +48,11 @@ exports[`<ScriptTagMigrationBanner /> should contain both re-install and permiss
             Scary Deadline
           </b>
         </span>
-      </div>
+      </span>
     </div>
+    <div
+      class="ui-banner-close-e3eb"
+    />
   </div>
 </div>
 `;
@@ -55,20 +60,22 @@ exports[`<ScriptTagMigrationBanner /> should contain both re-install and permiss
 exports[`<ScriptTagMigrationBanner /> should contain only permission update link for a single store 1`] = `
 <div>
   <div
-    aria-live="assertive"
-    class="AlertBanner critical"
-    role="banner"
+    aria-label=""
+    class="ui-banner-banner-e3eb ui-banner-error-e3eb ui-banner-full-e3eb ui-banner-fill-e3eb"
   >
     <div
-      class="centralContainer"
+      class="ui-banner-content-e3eb"
     >
-      <span
-        class="material-icons-round Icon critical"
-      >
-        error
-      </span>
       <div
-        class="messageContainer"
+        class="ui-banner-icon-e3eb"
+      >
+        <img
+          alt="icon"
+          src="data:image/svg+xml,%3csvg%20width='20'%20height='20'%20viewBox='0%200%2020%2020'%20fill='none'%20xmlns='http://www.w3.org/2000/svg'%3e%3cpath%20d='M10%201.66669C5.40002%201.66669%201.66669%205.40002%201.66669%2010C1.66669%2014.6%205.40002%2018.3334%2010%2018.3334C14.6%2018.3334%2018.3334%2014.6%2018.3334%2010C18.3334%205.40002%2014.6%201.66669%2010%201.66669ZM10%2010.8334C9.54169%2010.8334%209.16669%2010.4584%209.16669%2010V6.66669C9.16669%206.20835%209.54169%205.83335%2010%205.83335C10.4584%205.83335%2010.8334%206.20835%2010.8334%206.66669V10C10.8334%2010.4584%2010.4584%2010.8334%2010%2010.8334ZM10.8334%2014.1667H9.16669V12.5H10.8334V14.1667Z'%20fill='%23F24F66'/%3e%3c/svg%3e"
+        />
+      </div>
+      <span
+        class="ui-banner-text-e3eb"
       >
         <span>
           <b>
@@ -88,8 +95,11 @@ exports[`<ScriptTagMigrationBanner /> should contain only permission update link
             Scary Deadline
           </b>
         </span>
-      </div>
+      </span>
     </div>
+    <div
+      class="ui-banner-close-e3eb"
+    />
   </div>
 </div>
 `;
@@ -97,20 +107,22 @@ exports[`<ScriptTagMigrationBanner /> should contain only permission update link
 exports[`<ScriptTagMigrationBanner /> should contain only permission update link for multiple stores 1`] = `
 <div>
   <div
-    aria-live="assertive"
-    class="AlertBanner critical"
-    role="banner"
+    aria-label=""
+    class="ui-banner-banner-e3eb ui-banner-error-e3eb ui-banner-full-e3eb ui-banner-fill-e3eb"
   >
     <div
-      class="centralContainer"
+      class="ui-banner-content-e3eb"
     >
-      <span
-        class="material-icons-round Icon critical"
-      >
-        error
-      </span>
       <div
-        class="messageContainer"
+        class="ui-banner-icon-e3eb"
+      >
+        <img
+          alt="icon"
+          src="data:image/svg+xml,%3csvg%20width='20'%20height='20'%20viewBox='0%200%2020%2020'%20fill='none'%20xmlns='http://www.w3.org/2000/svg'%3e%3cpath%20d='M10%201.66669C5.40002%201.66669%201.66669%205.40002%201.66669%2010C1.66669%2014.6%205.40002%2018.3334%2010%2018.3334C14.6%2018.3334%2018.3334%2014.6%2018.3334%2010C18.3334%205.40002%2014.6%201.66669%2010%201.66669ZM10%2010.8334C9.54169%2010.8334%209.16669%2010.4584%209.16669%2010V6.66669C9.16669%206.20835%209.54169%205.83335%2010%205.83335C10.4584%205.83335%2010.8334%206.20835%2010.8334%206.66669V10C10.8334%2010.4584%2010.4584%2010.8334%2010%2010.8334ZM10.8334%2014.1667H9.16669V12.5H10.8334V14.1667Z'%20fill='%23F24F66'/%3e%3c/svg%3e"
+        />
+      </div>
+      <span
+        class="ui-banner-text-e3eb"
       >
         <span>
           <b>
@@ -130,8 +142,11 @@ exports[`<ScriptTagMigrationBanner /> should contain only permission update link
             Scary Deadline
           </b>
         </span>
-      </div>
+      </span>
     </div>
+    <div
+      class="ui-banner-close-e3eb"
+    />
   </div>
 </div>
 `;
@@ -139,20 +154,22 @@ exports[`<ScriptTagMigrationBanner /> should contain only permission update link
 exports[`<ScriptTagMigrationBanner /> should contain only re-install link for a single store 1`] = `
 <div>
   <div
-    aria-live="assertive"
-    class="AlertBanner critical"
-    role="banner"
+    aria-label=""
+    class="ui-banner-banner-e3eb ui-banner-error-e3eb ui-banner-full-e3eb ui-banner-fill-e3eb"
   >
     <div
-      class="centralContainer"
+      class="ui-banner-content-e3eb"
     >
-      <span
-        class="material-icons-round Icon critical"
-      >
-        error
-      </span>
       <div
-        class="messageContainer"
+        class="ui-banner-icon-e3eb"
+      >
+        <img
+          alt="icon"
+          src="data:image/svg+xml,%3csvg%20width='20'%20height='20'%20viewBox='0%200%2020%2020'%20fill='none'%20xmlns='http://www.w3.org/2000/svg'%3e%3cpath%20d='M10%201.66669C5.40002%201.66669%201.66669%205.40002%201.66669%2010C1.66669%2014.6%205.40002%2018.3334%2010%2018.3334C14.6%2018.3334%2018.3334%2014.6%2018.3334%2010C18.3334%205.40002%2014.6%201.66669%2010%201.66669ZM10%2010.8334C9.54169%2010.8334%209.16669%2010.4584%209.16669%2010V6.66669C9.16669%206.20835%209.54169%205.83335%2010%205.83335C10.4584%205.83335%2010.8334%206.20835%2010.8334%206.66669V10C10.8334%2010.4584%2010.4584%2010.8334%2010%2010.8334ZM10.8334%2014.1667H9.16669V12.5H10.8334V14.1667Z'%20fill='%23F24F66'/%3e%3c/svg%3e"
+        />
+      </div>
+      <span
+        class="ui-banner-text-e3eb"
       >
         <span>
           <b>
@@ -179,8 +196,11 @@ exports[`<ScriptTagMigrationBanner /> should contain only re-install link for a 
             Scary Deadline
           </b>
         </span>
-      </div>
+      </span>
     </div>
+    <div
+      class="ui-banner-close-e3eb"
+    />
   </div>
 </div>
 `;
@@ -188,20 +208,22 @@ exports[`<ScriptTagMigrationBanner /> should contain only re-install link for a 
 exports[`<ScriptTagMigrationBanner /> should contain only re-install link for multiple stores 1`] = `
 <div>
   <div
-    aria-live="assertive"
-    class="AlertBanner critical"
-    role="banner"
+    aria-label=""
+    class="ui-banner-banner-e3eb ui-banner-error-e3eb ui-banner-full-e3eb ui-banner-fill-e3eb"
   >
     <div
-      class="centralContainer"
+      class="ui-banner-content-e3eb"
     >
-      <span
-        class="material-icons-round Icon critical"
-      >
-        error
-      </span>
       <div
-        class="messageContainer"
+        class="ui-banner-icon-e3eb"
+      >
+        <img
+          alt="icon"
+          src="data:image/svg+xml,%3csvg%20width='20'%20height='20'%20viewBox='0%200%2020%2020'%20fill='none'%20xmlns='http://www.w3.org/2000/svg'%3e%3cpath%20d='M10%201.66669C5.40002%201.66669%201.66669%205.40002%201.66669%2010C1.66669%2014.6%205.40002%2018.3334%2010%2018.3334C14.6%2018.3334%2018.3334%2014.6%2018.3334%2010C18.3334%205.40002%2014.6%201.66669%2010%201.66669ZM10%2010.8334C9.54169%2010.8334%209.16669%2010.4584%209.16669%2010V6.66669C9.16669%206.20835%209.54169%205.83335%2010%205.83335C10.4584%205.83335%2010.8334%206.20835%2010.8334%206.66669V10C10.8334%2010.4584%2010.4584%2010.8334%2010%2010.8334ZM10.8334%2014.1667H9.16669V12.5H10.8334V14.1667Z'%20fill='%23F24F66'/%3e%3c/svg%3e"
+        />
+      </div>
+      <span
+        class="ui-banner-text-e3eb"
       >
         <span>
           <b>
@@ -228,8 +250,11 @@ exports[`<ScriptTagMigrationBanner /> should contain only re-install link for mu
             Scary Deadline
           </b>
         </span>
-      </div>
+      </span>
     </div>
+    <div
+      class="ui-banner-close-e3eb"
+    />
   </div>
 </div>
 `;
@@ -237,20 +262,22 @@ exports[`<ScriptTagMigrationBanner /> should contain only re-install link for mu
 exports[`<ScriptTagMigrationBanner /> should contain re-install link for a single store and permission update link for multiple stores 1`] = `
 <div>
   <div
-    aria-live="assertive"
-    class="AlertBanner critical"
-    role="banner"
+    aria-label=""
+    class="ui-banner-banner-e3eb ui-banner-error-e3eb ui-banner-full-e3eb ui-banner-fill-e3eb"
   >
     <div
-      class="centralContainer"
+      class="ui-banner-content-e3eb"
     >
-      <span
-        class="material-icons-round Icon critical"
-      >
-        error
-      </span>
       <div
-        class="messageContainer"
+        class="ui-banner-icon-e3eb"
+      >
+        <img
+          alt="icon"
+          src="data:image/svg+xml,%3csvg%20width='20'%20height='20'%20viewBox='0%200%2020%2020'%20fill='none'%20xmlns='http://www.w3.org/2000/svg'%3e%3cpath%20d='M10%201.66669C5.40002%201.66669%201.66669%205.40002%201.66669%2010C1.66669%2014.6%205.40002%2018.3334%2010%2018.3334C14.6%2018.3334%2018.3334%2014.6%2018.3334%2010C18.3334%205.40002%2014.6%201.66669%2010%201.66669ZM10%2010.8334C9.54169%2010.8334%209.16669%2010.4584%209.16669%2010V6.66669C9.16669%206.20835%209.54169%205.83335%2010%205.83335C10.4584%205.83335%2010.8334%206.20835%2010.8334%206.66669V10C10.8334%2010.4584%2010.4584%2010.8334%2010%2010.8334ZM10.8334%2014.1667H9.16669V12.5H10.8334V14.1667Z'%20fill='%23F24F66'/%3e%3c/svg%3e"
+        />
+      </div>
+      <span
+        class="ui-banner-text-e3eb"
       >
         <span>
           <b>
@@ -280,8 +307,11 @@ exports[`<ScriptTagMigrationBanner /> should contain re-install link for a singl
             Scary Deadline
           </b>
         </span>
-      </div>
+      </span>
     </div>
+    <div
+      class="ui-banner-close-e3eb"
+    />
   </div>
 </div>
 `;
@@ -289,20 +319,22 @@ exports[`<ScriptTagMigrationBanner /> should contain re-install link for a singl
 exports[`<ScriptTagMigrationBanner /> should contain re-install link for multiple stores and permission update link for a single store 1`] = `
 <div>
   <div
-    aria-live="assertive"
-    class="AlertBanner critical"
-    role="banner"
+    aria-label=""
+    class="ui-banner-banner-e3eb ui-banner-error-e3eb ui-banner-full-e3eb ui-banner-fill-e3eb"
   >
     <div
-      class="centralContainer"
+      class="ui-banner-content-e3eb"
     >
-      <span
-        class="material-icons-round Icon critical"
-      >
-        error
-      </span>
       <div
-        class="messageContainer"
+        class="ui-banner-icon-e3eb"
+      >
+        <img
+          alt="icon"
+          src="data:image/svg+xml,%3csvg%20width='20'%20height='20'%20viewBox='0%200%2020%2020'%20fill='none'%20xmlns='http://www.w3.org/2000/svg'%3e%3cpath%20d='M10%201.66669C5.40002%201.66669%201.66669%205.40002%201.66669%2010C1.66669%2014.6%205.40002%2018.3334%2010%2018.3334C14.6%2018.3334%2018.3334%2014.6%2018.3334%2010C18.3334%205.40002%2014.6%201.66669%2010%201.66669ZM10%2010.8334C9.54169%2010.8334%209.16669%2010.4584%209.16669%2010V6.66669C9.16669%206.20835%209.54169%205.83335%2010%205.83335C10.4584%205.83335%2010.8334%206.20835%2010.8334%206.66669V10C10.8334%2010.4584%2010.4584%2010.8334%2010%2010.8334ZM10.8334%2014.1667H9.16669V12.5H10.8334V14.1667Z'%20fill='%23F24F66'/%3e%3c/svg%3e"
+        />
+      </div>
+      <span
+        class="ui-banner-text-e3eb"
       >
         <span>
           <b>
@@ -332,8 +364,11 @@ exports[`<ScriptTagMigrationBanner /> should contain re-install link for multipl
             Scary Deadline
           </b>
         </span>
-      </div>
+      </span>
     </div>
+    <div
+      class="ui-banner-close-e3eb"
+    />
   </div>
 </div>
 `;

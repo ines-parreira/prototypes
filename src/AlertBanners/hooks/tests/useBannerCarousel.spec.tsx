@@ -1,129 +1,90 @@
 import { act, renderHook } from '@testing-library/react-hooks'
 
-import { BannerCategories, ContextBanner } from 'AlertBanners'
-import { BannerNotification } from 'state/notifications/types'
+import { AlertBannerTypes, BannerCategories, ContextBanner } from 'AlertBanners'
+import { useBannersContext } from 'AlertBanners/Context'
+import useLegacyAlertBanners from 'notifications/hooks/useLegacyAlertBanners'
+import {
+    BannerNotification,
+    NotificationStyle,
+} from 'state/notifications/types'
+import { assumeMock } from 'utils/testing'
 
 import { useBannerCarousel } from '../useBannerCarousel'
 
+const legacyBanner: BannerNotification = {
+    id: '1',
+    message: 'Test Legacy Banner',
+    type: AlertBannerTypes.Critical,
+    style: NotificationStyle.Banner,
+    CTA: {
+        type: 'action',
+        text: 'test cta',
+        onClick: jest.fn(),
+    },
+}
+
+const banner: ContextBanner = {
+    category: BannerCategories.IMPERSONATION,
+    instanceId: '1',
+    message: 'Test Context Banner',
+    type: AlertBannerTypes.Critical,
+    CTA: {
+        type: 'action',
+        text: 'test cta',
+        onClick: jest.fn(),
+    },
+}
+
+jest.mock('notifications/hooks/useLegacyAlertBanners', () => jest.fn())
+jest.mock('../../Context', () => ({
+    ...jest.requireActual<Record<string, unknown>>('../../Context'),
+    useBannersContext: jest.fn(),
+}))
+
+const useLegacyAlertBannersMock = assumeMock(useLegacyAlertBanners)
+const useBannersContextMock = assumeMock(useBannersContext)
+
 describe('useBannerCarousel', () => {
-    const legacyBanner = { id: 'legacy-1', message: 'Legacy Banner' }
-    const contextBanner: ContextBanner = {
-        instanceId: '2',
-        message: 'Context Banner',
-        category: BannerCategories.EMAIL_DISCONNECTED,
-        CTA: {
-            type: 'action',
-            text: 'CTA',
-            onClick: () => {},
-        },
-    }
-    const impersonationBanner = {
-        instanceId: BannerCategories.IMPERSONATION,
-        message: 'Impersonation Banner',
-        category: BannerCategories.IMPERSONATION,
-    }
-
-    it('should merge legacy and context banners', () => {
-        const { result } = renderHook(
-            ({
-                legacyBanners,
-                banners,
-            }: {
-                legacyBanners: any[]
-                banners: any[]
-            }) =>
-                useBannerCarousel({
-                    legacyBanners: legacyBanners as BannerNotification[],
-                    banners: banners as ContextBanner[],
-                }),
-            {
-                initialProps: {
-                    legacyBanners: [legacyBanner],
-                    banners: [contextBanner],
-                },
-            },
-        )
-
-        expect(result.current.mergedBannersList).toHaveLength(2)
-        expect(result.current.selectedBanner).toBe(legacyBanner)
-        expect(result.current.currentBannerPosition).toBe(0)
+    beforeEach(() => {
+        useLegacyAlertBannersMock.mockReturnValue([legacyBanner])
+        useBannersContextMock.mockReturnValue([banner])
     })
 
-    it('should set impersonationBanner', () => {
-        const { result } = renderHook(
-            ({ legacyBanners, banners }) =>
-                useBannerCarousel({
-                    legacyBanners: legacyBanners as BannerNotification[],
-                    banners: banners as ContextBanner[],
-                }),
-            {
-                initialProps: {
-                    legacyBanners: [legacyBanner],
-                    banners: [contextBanner, impersonationBanner],
-                },
-            },
-        )
+    it('should merge legacy and context banners', () => {
+        const { result } = renderHook(() => useBannerCarousel())
 
         expect(result.current.mergedBannersList).toHaveLength(2)
-        expect(result.current.selectedBanner).toBe(legacyBanner)
         expect(result.current.currentBannerPosition).toBe(0)
-        expect(result.current.impersonationBanner).toBe(impersonationBanner)
     })
 
     it('should handle empty legacyBanners', () => {
-        const { result } = renderHook(
-            ({ legacyBanners, banners }) =>
-                useBannerCarousel({
-                    legacyBanners: legacyBanners as BannerNotification[],
-                    banners: banners as ContextBanner[],
-                }),
-            {
-                initialProps: {
-                    legacyBanners: [],
-                    banners: [contextBanner, impersonationBanner],
-                },
-            },
-        )
+        useLegacyAlertBannersMock.mockReturnValue([])
+
+        const { result } = renderHook(() => useBannerCarousel())
 
         expect(result.current.mergedBannersList).toHaveLength(1)
-        expect(result.current.selectedBanner).toBe(contextBanner)
-        expect(result.current.impersonationBanner).toBe(impersonationBanner)
+        expect(
+            result.current.mergedBannersList[
+                result.current.currentBannerPosition
+            ],
+        ).toBe(banner)
     })
 
     it('should handle empty banners', () => {
-        const { result } = renderHook(
-            ({ legacyBanners, banners }) =>
-                useBannerCarousel({
-                    legacyBanners: legacyBanners as BannerNotification[],
-                    banners: banners as ContextBanner[],
-                }),
-            {
-                initialProps: {
-                    legacyBanners: [legacyBanner],
-                    banners: [],
-                },
-            },
-        )
+        useBannersContextMock.mockReturnValue([])
+
+        const { result } = renderHook(() => useBannerCarousel())
 
         expect(result.current.mergedBannersList).toHaveLength(1)
-        expect(result.current.selectedBanner).toBe(legacyBanner)
-        expect(result.current.impersonationBanner).not.toBe(impersonationBanner)
+        expect(
+            result.current.mergedBannersList[
+                result.current.currentBannerPosition
+            ],
+        ).toBe(legacyBanner)
     })
 
     it('should cycle to last banner when onPrevious called from first position', () => {
-        const { result } = renderHook(
-            ({ legacyBanners, banners }) =>
-                useBannerCarousel({
-                    legacyBanners: legacyBanners as BannerNotification[],
-                    banners: banners,
-                }),
-            {
-                initialProps: {
-                    legacyBanners: [legacyBanner],
-                    banners: [contextBanner],
-                },
-            },
-        )
+        const { result } = renderHook(() => useBannerCarousel())
 
         expect(result.current.currentBannerPosition).toBe(0)
 
@@ -132,23 +93,15 @@ describe('useBannerCarousel', () => {
         })
 
         expect(result.current.currentBannerPosition).toBe(1)
-        expect(result.current.selectedBanner).toBe(contextBanner)
+        expect(
+            result.current.mergedBannersList[
+                result.current.currentBannerPosition
+            ],
+        ).toBe(banner)
     })
 
     it('should move to previous banner when onPrevious called from last position', () => {
-        const { result } = renderHook(
-            ({ legacyBanners, banners }) =>
-                useBannerCarousel({
-                    legacyBanners: legacyBanners as BannerNotification[],
-                    banners: banners,
-                }),
-            {
-                initialProps: {
-                    legacyBanners: [legacyBanner],
-                    banners: [contextBanner],
-                },
-            },
-        )
+        const { result } = renderHook(() => useBannerCarousel())
 
         act(() => {
             result.current.onNext()
@@ -161,48 +114,34 @@ describe('useBannerCarousel', () => {
         })
 
         expect(result.current.currentBannerPosition).toBe(0)
-        expect(result.current.selectedBanner).toBe(legacyBanner)
+        expect(
+            result.current.mergedBannersList[
+                result.current.currentBannerPosition
+            ],
+        ).toBe(legacyBanner)
     })
 
     it('should reset position to 0 when banner list length becomes 1', () => {
-        const { result, rerender } = renderHook(
-            ({ legacyBanners, banners }) =>
-                useBannerCarousel({
-                    legacyBanners: legacyBanners as BannerNotification[],
-                    banners: banners,
-                }),
-            {
-                initialProps: {
-                    legacyBanners: [legacyBanner],
-                    banners: [contextBanner],
-                },
-            },
-        )
+        const { result, rerender } = renderHook(() => useBannerCarousel())
 
         act(() => {
             result.current.onNext()
         })
         expect(result.current.currentBannerPosition).toBe(1)
 
-        rerender({ legacyBanners: [], banners: [contextBanner] })
+        useLegacyAlertBannersMock.mockReturnValue([])
+
+        rerender()
         expect(result.current.currentBannerPosition).toBe(0)
-        expect(result.current.selectedBanner).toBe(contextBanner)
+        expect(
+            result.current.mergedBannersList[
+                result.current.currentBannerPosition
+            ],
+        ).toBe(banner)
     })
 
     it('should reset position to 0 when currentBannerPosition is long as banners list +1', () => {
-        const { result } = renderHook(
-            ({ legacyBanners, banners }) =>
-                useBannerCarousel({
-                    legacyBanners: legacyBanners as BannerNotification[],
-                    banners: banners,
-                }),
-            {
-                initialProps: {
-                    legacyBanners: [legacyBanner],
-                    banners: [contextBanner],
-                },
-            },
-        )
+        const { result } = renderHook(() => useBannerCarousel())
 
         act(() => {
             result.current.onNext()
@@ -213,29 +152,25 @@ describe('useBannerCarousel', () => {
         })
 
         expect(result.current.currentBannerPosition).toBe(0)
-        expect(result.current.selectedBanner).toBe(legacyBanner)
+        expect(
+            result.current.mergedBannersList[
+                result.current.currentBannerPosition
+            ],
+        ).toBe(legacyBanner)
     })
 
     it('should reset position to list length currentBannerPosition is long as banners list -1', () => {
-        const { result } = renderHook(
-            ({ legacyBanners, banners }) =>
-                useBannerCarousel({
-                    legacyBanners: legacyBanners as BannerNotification[],
-                    banners: banners,
-                }),
-            {
-                initialProps: {
-                    legacyBanners: [legacyBanner],
-                    banners: [contextBanner],
-                },
-            },
-        )
+        const { result } = renderHook(() => useBannerCarousel())
 
         act(() => {
             result.current.onPrevious()
         })
 
         expect(result.current.currentBannerPosition).toBe(1)
-        expect(result.current.selectedBanner).toBe(contextBanner)
+        expect(
+            result.current.mergedBannersList[
+                result.current.currentBannerPosition
+            ],
+        ).toBe(banner)
     })
 })

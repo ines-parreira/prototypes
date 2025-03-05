@@ -60,6 +60,9 @@ jest.mock(
 )
 
 jest.mock('AlertBanners', () => jest.fn(() => <div>AlertBanners</div>))
+jest.mock('../../../../AlertBanners/components/ImpersonationBanner', () =>
+    jest.fn(() => <div>ImpersonatedBanner</div>),
+)
 
 jest.mock('core/theme', () => ({ useApplyTheme: jest.fn() }))
 jest.mock('../../hooks/useSetBanners', () => ({

@@ -1,3 +1,5 @@
+import { BannerNotification } from 'state/notifications/types'
+
 import { BannerCategory, ContextBanner } from '../types'
 
 export const BannerActionTypes = {
@@ -30,3 +32,5 @@ export type BannerActions = { type: ActionTypes } & (
     | RemoveCategoryAction
     | RemoveBannerAction
 )
+
+export type MergedBanner = BannerNotification | ContextBanner

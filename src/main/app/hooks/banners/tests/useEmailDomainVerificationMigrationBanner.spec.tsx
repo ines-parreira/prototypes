@@ -133,6 +133,7 @@ describe('useEmailDomainVerificationBanner', () => {
         getCurrentUserMock.mockReturnValue(
             fromJS({ role: { name: UserRole.Admin } }),
         )
+        isAdminMock.mockReset()
     })
 
     it('should not call addBanner if FF is not enabled', () => {
@@ -197,6 +198,7 @@ describe('useEmailDomainVerificationBanner', () => {
         renderHook(useEmailDomainVerificationBanner)
 
         expect(mockedAddBanner).not.toHaveBeenCalled()
+        expect(mockedRemoveBanner).toHaveBeenCalled()
     })
 
     it('should remove banner if all email integrations is resolved', () => {
@@ -221,5 +223,6 @@ describe('useEmailDomainVerificationBanner', () => {
         renderHook(useEmailDomainVerificationBanner)
 
         expect(mockedAddBanner).not.toHaveBeenCalled()
+        expect(mockedRemoveBanner).toHaveBeenCalled()
     })
 })

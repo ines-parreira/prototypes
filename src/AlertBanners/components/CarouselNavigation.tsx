@@ -22,12 +22,14 @@ export const CarouselNavigation = ({
                 intent="secondary"
                 fillStyle="ghost"
                 onClick={total > 1 ? onPrevious : undefined}
+                isDisabled={total <= 1}
             />
             <IconButton
                 icon="chevron_right"
                 intent="secondary"
                 fillStyle="ghost"
                 onClick={total > 1 ? onNext : undefined}
+                isDisabled={total <= 1}
             />
             <Box ml="16px" mr="16px" alignItems="center" flexWrap="nowrap">
                 <span

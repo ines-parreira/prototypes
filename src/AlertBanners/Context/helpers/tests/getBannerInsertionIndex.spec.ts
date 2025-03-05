@@ -32,22 +32,74 @@ describe('getBannerInsertionIndex', () => {
     })
 
     it('should return the last index + 1 of the first available upper type', () => {
-        const banners1 = [
+        const banners = [
             { type: AlertBannerTypes.Critical },
             { type: AlertBannerTypes.Critical },
+            { type: AlertBannerTypes.Warning },
             { type: AlertBannerTypes.Info },
         ] as ContextBanner[]
-        const type1 = AlertBannerTypes.Warning
+        const type = AlertBannerTypes.Warning
 
-        expect(getBannerInsertionIndex(banners1, type1)).toBe(2)
+        // Warning should be inserted after the last Critical banner (index 1)
+        expect(getBannerInsertionIndex(banners, type)).toBe(2)
 
         const banners2 = [
             { type: AlertBannerTypes.Critical },
-            { type: AlertBannerTypes.Critical },
-            { type: AlertBannerTypes.Critical },
+            { type: AlertBannerTypes.Warning },
+            { type: AlertBannerTypes.Info },
         ] as ContextBanner[]
         const type2 = AlertBannerTypes.Info
 
-        expect(getBannerInsertionIndex(banners2, type2)).toBe(3)
+        // Info should be inserted after the last Warning banner (index 1)
+        expect(getBannerInsertionIndex(banners2, type2)).toBe(2)
+    })
+
+    it('should return 0 for unknown banner types', () => {
+        const banners = [
+            { type: AlertBannerTypes.Critical },
+            { type: AlertBannerTypes.Warning },
+        ] as ContextBanner[]
+        const type = 'UnknownType' as AlertBannerTypes
+
+        // Unknown type should return 0 since getNextBannerType returns undefined
+        expect(getBannerInsertionIndex(banners, type)).toBe(0)
+    })
+
+    describe('getNextBannerType switch cases', () => {
+        it('should return Warning for Info type', () => {
+            const banners = [{ type: AlertBannerTypes.Info }] as ContextBanner[]
+            const type = AlertBannerTypes.Info
+
+            // Info -> Warning -> Critical -> undefined
+            expect(getBannerInsertionIndex(banners, type)).toBe(0)
+        })
+
+        it('should return Critical for Warning type', () => {
+            const banners = [
+                { type: AlertBannerTypes.Warning },
+            ] as ContextBanner[]
+            const type = AlertBannerTypes.Warning
+
+            // Warning -> Critical -> undefined
+            expect(getBannerInsertionIndex(banners, type)).toBe(0)
+        })
+
+        it('should return undefined for Critical type', () => {
+            const banners = [
+                { type: AlertBannerTypes.Critical },
+            ] as ContextBanner[]
+            const type = AlertBannerTypes.Critical
+
+            // Critical -> undefined
+            expect(getBannerInsertionIndex(banners, type)).toBe(0)
+        })
+
+        it('should return undefined for unknown type (default case)', () => {
+            const banners = [{ type: AlertBannerTypes.Info }] as ContextBanner[]
+            const type = 'UnknownType' as AlertBannerTypes
+
+            // Unknown -> undefined
+            expect(getBannerInsertionIndex(banners, type)).toBe(0)
+        })
     })
 })

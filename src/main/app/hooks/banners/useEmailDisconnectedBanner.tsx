@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useMemo } from 'react'
 
 import { List } from 'immutable'
 import { useHistory, useLocation } from 'react-router-dom'
@@ -37,36 +37,38 @@ export const useEmailDisconnectedBanner = () => {
         state.isEmpty() ||
         location.pathname.startsWith(reconnectPageURL)
 
-    if (shouldHideBanner) {
-        removeBanner(
-            BannerCategories.EMAIL_DISCONNECTED,
-            'email-disconnected-banner',
-        )
-        return null
-    }
-
     const email = state?.first()?.get('address')
 
-    const banner: ContextBanner = {
-        'aria-label': 'Email Disconnect Banner',
-        category: BannerCategories.EMAIL_DISCONNECTED,
-        type: AlertBannerTypes.Warning,
-        instanceId: 'email-disconnected-banner',
-        preventDismiss: true,
-        message: (
-            <>
-                <strong>{email}</strong> may be disconnected. If you’re having
-                trouble sending emails, reconnect it to fix the issue.
-            </>
-        ),
-        CTA: {
-            type: 'action',
-            text: 'Reconnect',
-            onClick: () => {
-                history.push(reconnectPageURL)
+    const banner = useMemo(
+        () => ({
+            'aria-label': 'Email Disconnect Banner',
+            category: BannerCategories.EMAIL_DISCONNECTED,
+            type: AlertBannerTypes.Warning,
+            instanceId: 'email-disconnected-banner',
+            preventDismiss: true,
+            message: (
+                <>
+                    <strong>{email}</strong> may be disconnected. If you’re
+                    having trouble sending emails, reconnect it to fix the
+                    issue.
+                </>
+            ),
+            CTA: {
+                type: 'action',
+                text: 'Reconnect',
+                onClick: () => {
+                    history.push(reconnectPageURL)
+                },
             },
-        },
-    }
+        }),
+        [email, history, reconnectPageURL],
+    )
 
-    addBanner(banner)
+    useEffect(() => {
+        if (shouldHideBanner) {
+            removeBanner(banner.category, banner.instanceId)
+        } else {
+            addBanner(banner as ContextBanner)
+        }
+    }, [shouldHideBanner, addBanner, banner, removeBanner])
 }

@@ -23,6 +23,7 @@ import SessionChangeDetection from 'pages/common/components/SessionChangeDetecti
 import Spotlight from 'pages/common/components/Spotlight/Spotlight'
 import OutOfRecoveryCodesModal from 'pages/settings/yourProfile/twoFactorAuthentication/OutOfRecoveryCodesModal'
 
+import ImpersonationBanner from '../../../AlertBanners/components/ImpersonationBanner'
 import useActivityTracker from '../hooks/useActivityTracker'
 import useAppShortcuts from '../hooks/useAppShortcuts'
 import usePollingManager from '../hooks/usePollingManager'
@@ -69,6 +70,7 @@ export default function App({ children }: Props) {
                 {!isOnboarding && (
                     <>
                         <AlertBanners />
+                        <ImpersonationBanner />
                         {!bannerList?.scriptTagMigrationBanner && (
                             <ScriptTagMigrationBanner />
                         )}

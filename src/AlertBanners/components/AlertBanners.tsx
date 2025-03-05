@@ -1,47 +1,55 @@
 import React from 'react'
 
+import { AlertBanner, AlertBannerTypes } from 'AlertBanners'
+import { MergedBanner } from 'AlertBanners/Context/types'
 import { FeatureFlagKey } from 'config/featureFlags'
 import { useFlag } from 'core/flags'
-import useLegacyAlertBanners from 'notifications/hooks/useLegacyAlertBanners'
 
-import { useBannersContext } from '../Context'
 import { useBannerCarousel } from '../hooks/useBannerCarousel'
-import { AlertBanner } from './AlertBanner'
+import { ContextBanner } from '../types'
 import { CarouselNavigation } from './CarouselNavigation'
 
-import css from './AlertBanner.less'
+const isContextBanner = (banner: MergedBanner): banner is ContextBanner =>
+    'instanceId' in banner
 
-const AlertBanners = () => {
-    const legacyBanners = useLegacyAlertBanners()
-    const banners = useBannersContext()
+export const typeFallbackBanner = (type: AlertBannerTypes | undefined) => {
+    if (!type) {
+        return AlertBannerTypes.Info
+    }
 
+    if (type === AlertBannerTypes.Critical) {
+        return AlertBannerTypes.Error
+    }
+
+    return type
+}
+
+export const AlertBanners = () => {
     const carouselBannerFlag: boolean = useFlag(
         FeatureFlagKey.BannerCarousel,
         false,
     )
 
-    const {
-        currentBannerPosition,
-        impersonationBanner,
-        onPrevious,
-        onNext,
-        mergedBannersList,
-        selectedBanner,
-    } = useBannerCarousel({
-        legacyBanners,
-        banners,
-    })
+    const { currentBannerPosition, onPrevious, onNext, mergedBannersList } =
+        useBannerCarousel()
 
     if (!carouselBannerFlag) {
         return (
-            <div>
-                {banners?.map((banner) => (
-                    <AlertBanner key={banner.instanceId} {...banner} />
+            <>
+                {mergedBannersList?.map((banner) => (
+                    <AlertBanner
+                        key={
+                            isContextBanner(banner)
+                                ? banner?.instanceId
+                                : banner?.id
+                        }
+                        onClose={banner?.onClose}
+                        type={typeFallbackBanner(banner?.type)}
+                        CTA={banner?.CTA}
+                        message={banner?.message}
+                    />
                 ))}
-                {legacyBanners?.map((banner) => (
-                    <AlertBanner key={banner.id} {...banner} />
-                ))}
-            </div>
+            </>
         )
     }
 
@@ -49,28 +57,27 @@ const AlertBanners = () => {
         return null
     }
 
+    const selectedBanner = mergedBannersList[currentBannerPosition]
+
     return (
-        <div>
-            <AlertBanner
-                textPosition="left"
-                prefix={
-                    <CarouselNavigation
-                        onPrevious={onPrevious}
-                        onNext={onNext}
-                        currentIndex={currentBannerPosition + 1}
-                        total={mergedBannersList?.length}
-                    />
-                }
-                {...selectedBanner}
-            />
-            {impersonationBanner && (
+        <>
+            {!!mergedBannersList.length && (
                 <AlertBanner
-                    {...impersonationBanner}
-                    textPosition="left"
-                    prefix={<div className={css.impersonationBanner}></div>}
+                    type={typeFallbackBanner(selectedBanner?.type)}
+                    onClose={selectedBanner?.onClose}
+                    CTA={selectedBanner?.CTA}
+                    prefix={
+                        <CarouselNavigation
+                            onPrevious={onPrevious}
+                            onNext={onNext}
+                            currentIndex={currentBannerPosition + 1}
+                            total={mergedBannersList?.length}
+                        />
+                    }
+                    message={selectedBanner?.message}
                 />
             )}
-        </div>
+        </>
     )
 }
 

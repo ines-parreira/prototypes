@@ -53,26 +53,31 @@ exports[`Detail should render 1`] = `
     </div>
   </header>
   <div
-    aria-live="polite"
-    class="AlertBanner info borderless"
-    role="banner"
+    aria-label=""
+    class="ui-banner-banner-e3eb ui-banner-info-e3eb ui-banner-full-e3eb ui-banner-fill-e3eb"
   >
     <div
-      class="centralContainer"
+      class="ui-banner-content-e3eb"
     >
-      <span
-        class="material-icons-round Icon info"
-      >
-        info
-      </span>
       <div
-        class="messageContainer"
+        class="ui-banner-icon-e3eb"
+      >
+        <img
+          alt="icon"
+          src="data:image/svg+xml,%3csvg%20width='20'%20height='20'%20viewBox='0%200%2020%2020'%20fill='none'%20xmlns='http://www.w3.org/2000/svg'%3e%3cpath%20d='M9.99996%201.66669C5.39996%201.66669%201.66663%205.40002%201.66663%2010C1.66663%2014.6%205.39996%2018.3334%209.99996%2018.3334C14.6%2018.3334%2018.3333%2014.6%2018.3333%2010C18.3333%205.40002%2014.6%201.66669%209.99996%201.66669ZM9.99996%2014.1667C9.54163%2014.1667%209.16663%2013.7917%209.16663%2013.3334V10C9.16663%209.54169%209.54163%209.16669%209.99996%209.16669C10.4583%209.16669%2010.8333%209.54169%2010.8333%2010V13.3334C10.8333%2013.7917%2010.4583%2014.1667%209.99996%2014.1667ZM10.8333%207.50002H9.16663V5.83335H10.8333V7.50002Z'%20fill='%234A8DF9'/%3e%3c/svg%3e"
+        />
+      </div>
+      <span
+        class="ui-banner-text-e3eb"
       >
         <span>
           Beware!
         </span>
-      </div>
+      </span>
     </div>
+    <div
+      class="ui-banner-close-e3eb"
+    />
   </div>
   <main
     class="main"

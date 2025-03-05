@@ -29,7 +29,6 @@ const GorgiasChatShopifyCheckoutBanner = ({ integration }: Props) => {
         <AlertBanner
             type={AlertBannerTypes.Info}
             onClose={hideBanner}
-            borderless
             message="Chat is available on Shopify Checkout and Thank you pages!"
             CTA={{
                 type: 'internal',

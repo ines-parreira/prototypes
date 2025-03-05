@@ -2,8 +2,9 @@ import React from 'react'
 
 import { Link } from 'react-router-dom'
 
+import { Button } from '@gorgias/merchant-ui-kit'
+
 import BaseButton from 'pages/common/components/button/BaseButton'
-import Button from 'pages/common/components/button/Button'
 import LinkButton from 'pages/common/components/button/LinkButton'
 
 import { AlertBannerCTATypes } from '../types'

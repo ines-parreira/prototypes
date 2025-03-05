@@ -32,7 +32,6 @@ const GorgiasChatIntegrationOutdatedSnippetBanner: React.FC<Props> = ({
                 text: 'Go To Installation Tab',
                 to: `/app/settings/channels/${IntegrationType.GorgiasChat}/${integration.get('id') as string}/${Tab.Installation}`,
             }}
-            borderless
         />
     )
 }

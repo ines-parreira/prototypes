@@ -34,13 +34,21 @@ describe('AiAgentMovedBanner', () => {
 
     it('renders the banner when not dismissed', () => {
         renderBanner()
-        expect(screen.getByRole('banner')).toBeInTheDocument()
+        expect(
+            screen.getByText(
+                'AI Agent Settings have moved! You can now access them directly from the main menu.',
+            ),
+        ).toBeInTheDocument()
     })
 
     it('does not render the banner when dismissed', () => {
         mockIsBannerDismissed.mockReturnValue(true)
         renderBanner()
-        expect(screen.queryByRole('banner')).not.toBeInTheDocument()
+        expect(
+            screen.queryByText(
+                'AI Agent Settings have moved! You can now access them directly from the main menu.',
+            ),
+        ).toBeFalsy()
     })
 
     it('calls setDismissed with correct parameters when closing the banner', () => {

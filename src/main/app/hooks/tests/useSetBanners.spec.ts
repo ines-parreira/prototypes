@@ -7,7 +7,6 @@ import {
     useScriptTagMigrationBanner,
 } from '../banners'
 import { useAccountNotVerifiedBanner } from '../useAccountNotVerifiedBanner'
-import { useImpersonatedBanner } from '../useImpersonatedBanner'
 import { useSetBanners } from '../useSetBanners'
 import { useStatusPageManager } from '../useStatusPageManager'
 import { useUsageBanner } from '../useUsageBanner'
@@ -15,7 +14,7 @@ import { useUsageBanner } from '../useUsageBanner'
 jest.mock('../useAccountNotVerifiedBanner', () => ({
     useAccountNotVerifiedBanner: jest.fn(),
 }))
-jest.mock('../useImpersonatedBanner', () => ({
+jest.mock('../../../../AlertBanners/components/ImpersonationBanner', () => ({
     useImpersonatedBanner: jest.fn(),
 }))
 jest.mock('../useStatusPageManager', () => ({
@@ -37,7 +36,6 @@ describe('useSetBanners', () => {
         renderHook(useSetBanners)
 
         expect(useAccountNotVerifiedBanner).toHaveBeenCalledTimes(1)
-        expect(useImpersonatedBanner).toHaveBeenCalledTimes(1)
         expect(useStatusPageManager).toHaveBeenCalledTimes(1)
         expect(useUsageBanner).toHaveBeenCalledTimes(1)
         expect(useScriptTagMigrationBanner).toHaveBeenCalledTimes(1)

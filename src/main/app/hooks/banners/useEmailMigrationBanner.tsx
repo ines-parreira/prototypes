@@ -1,6 +1,8 @@
+import { useEffect, useMemo } from 'react'
+
 import { useHistory, useLocation } from 'react-router-dom'
 
-import { BannerCategories, ContextBanner, useBanners } from 'AlertBanners'
+import { BannerCategories, useBanners } from 'AlertBanners'
 import { FeatureFlagKey } from 'config/featureFlags'
 import { useFlag } from 'core/flags'
 import useAppSelector from 'hooks/useAppSelector'
@@ -31,31 +33,47 @@ export const useEmailMigrationBanner = () => {
         void fetchMigrationStatus()
     })
 
-    const bannerSettings = migrationStatus
-        ? computeEmailMigrationStatusBanner(migrationStatus, () => {
-              history.push(MIGRATION_PAGE_URL)
-          })
-        : null
+    const bannerSettings = useMemo(
+        () =>
+            migrationStatus
+                ? computeEmailMigrationStatusBanner(migrationStatus, () => {
+                      history.push(MIGRATION_PAGE_URL)
+                  })
+                : null,
+        [migrationStatus, history],
+    )
 
-    const shouldHideBanner =
-        !bannerSettings ||
-        migrationStatus?.status === EmailMigrationStatus.Completed ||
-        location.pathname.startsWith(MIGRATION_PAGE_URL) ||
-        !bannerList.emailMigrationBanner
+    const shouldHideBanner = useMemo(() => {
+        return (
+            !bannerSettings ||
+            migrationStatus?.status === EmailMigrationStatus.Completed ||
+            location.pathname.startsWith(MIGRATION_PAGE_URL) ||
+            !bannerList.emailMigrationBanner
+        )
+    }, [
+        bannerSettings,
+        migrationStatus?.status,
+        location.pathname,
+        bannerList.emailMigrationBanner,
+    ])
 
-    if (shouldHideBanner) {
-        removeBanner(BannerCategories.EMAIL_MIGRATION_BANNER, INSTANCE_ID)
-        return null
-    }
+    const banner = useMemo(
+        () => ({
+            category: BannerCategories.EMAIL_MIGRATION_BANNER,
+            type: bannerSettings?.type,
+            instanceId: INSTANCE_ID,
+            message: bannerSettings?.message ?? '',
+            CTA: bannerSettings?.CTA,
+            preventDismiss: true,
+        }),
+        [bannerSettings?.type, bannerSettings?.message, bannerSettings?.CTA],
+    )
 
-    const banner: ContextBanner = {
-        category: BannerCategories.EMAIL_MIGRATION_BANNER,
-        type: bannerSettings?.type,
-        instanceId: INSTANCE_ID,
-        message: bannerSettings?.message ?? '',
-        CTA: bannerSettings?.CTA,
-        preventDismiss: true,
-    }
-
-    addBanner(banner)
+    useEffect(() => {
+        if (shouldHideBanner) {
+            removeBanner(banner.category, banner.instanceId)
+        } else {
+            addBanner(banner)
+        }
+    }, [addBanner, removeBanner, banner, shouldHideBanner, bannerSettings])
 }

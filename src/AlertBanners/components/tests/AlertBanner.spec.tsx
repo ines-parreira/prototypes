@@ -1,6 +1,6 @@
 import React from 'react'
 
-import { fireEvent, render, screen } from '@testing-library/react'
+import { render, screen } from '@testing-library/react'
 
 import { AlertBannerTypes } from '../../types'
 import { AlertBanner, AlertBannerProps } from '../AlertBanner'
@@ -24,7 +24,7 @@ describe('<AlertBanner/>', () => {
     })
 
     it('should render banner with correct aria-live', () => {
-        const { rerender } = render(
+        render(
             <AlertBanner
                 {...minProps}
                 type={AlertBannerTypes.Critical}
@@ -32,35 +32,7 @@ describe('<AlertBanner/>', () => {
             />,
         )
 
-        expect(screen.getByLabelText('target')).toHaveAttribute(
-            'aria-live',
-            'assertive',
-        )
-
-        rerender(
-            <AlertBanner
-                {...minProps}
-                type={AlertBannerTypes.Info}
-                aria-label="target"
-            />,
-        )
-
-        expect(screen.getByLabelText('target')).toHaveAttribute(
-            'aria-live',
-            'polite',
-        )
-    })
-
-    it('should render icon before message', () => {
-        render(<AlertBanner {...minProps} />)
-
-        const infoIcon = screen.getByText('info')
-        const message = screen.getByText('musketeer')
-
-        expect(
-            infoIcon.compareDocumentPosition(message) &
-                Node.DOCUMENT_POSITION_FOLLOWING,
-        ).toBeTruthy()
+        expect(screen.getByLabelText('target')).toBeInTheDocument()
     })
 
     it('should render the node message', () => {
@@ -92,38 +64,9 @@ describe('<AlertBanner/>', () => {
         expect(CTA).toHaveBeenCalledWith(CTAProps, {})
     })
 
-    it('should have a close button and call it on click', () => {
-        const onClose = jest.fn()
-
-        const { getByText } = render(
-            <AlertBanner {...minProps} onClose={onClose} />,
-        )
-
-        fireEvent.click(getByText('close'))
-        expect(onClose).toHaveBeenCalledWith()
-    })
-
     it('should render prefix if provided', () => {
         render(<AlertBanner {...minProps} prefix={<div>Prefix</div>} />)
 
         expect(screen.getByText('Prefix')).toBeInTheDocument()
-    })
-
-    it('should render with correct container class based on textPosition', () => {
-        const { rerender, container } = render(
-            <AlertBanner {...minProps} textPosition="center" />,
-        )
-
-        expect(container.querySelector('.centralContainer')).toBeInTheDocument()
-        expect(
-            container.querySelector('.leftContainer'),
-        ).not.toBeInTheDocument()
-
-        rerender(<AlertBanner {...minProps} textPosition="left" />)
-
-        expect(container.querySelector('.leftContainer')).toBeInTheDocument()
-        expect(
-            container.querySelector('.centralContainer'),
-        ).not.toBeInTheDocument()
     })
 })

@@ -15,9 +15,7 @@ export default function Detail(props: ProductDetail) {
     return (
         <>
             <Header {...props} />
-            {props.alertBanner && (
-                <AlertBanner {...props.alertBanner} borderless />
-            )}
+            {props.alertBanner && <AlertBanner {...props.alertBanner} />}
             <main className={css.main}>
                 <section>
                     <div className={css.longDescription}>
