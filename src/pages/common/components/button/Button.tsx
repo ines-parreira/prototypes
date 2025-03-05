@@ -63,7 +63,7 @@ type AnchorProps = CommonProps &
 
 export type Props = ButtonProps | AnchorProps
 
-const Button = (
+const BaseButton = (
     {
         children,
         className,
@@ -212,11 +212,19 @@ const Button = (
  * When placed inside certain contexts (like `GroupContext` or `InputGroupContext`), the button adopts
  * styles and behavior to match its surroundings, ensuring a seamless and consistent look.
  */
-export default forwardRef(Button) as (
+
+/**
+ * @deprecated This component is being phased out. Please use `Button` from `@gorgias/merchant-ui-kit` instead.
+ * @date 2024-03-04
+ * @type ui-kit-migration
+ */
+const Button = forwardRef(BaseButton) as (
     props:
         | (ButtonProps & RefAttributes<HTMLButtonElement>)
         | (AnchorProps & RefAttributes<HTMLAnchorElement>),
 ) => JSX.Element
+
+export default Button
 
 const Icon = ({
     name,
