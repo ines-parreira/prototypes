@@ -373,6 +373,18 @@ export const StatsRoutes = () => {
                         />
                     </Route>
                 </ProtectedRoute>
+                <ProtectedRoute path={`${path}/convert/campaigns/subscribe`}>
+                    <Route
+                        path={`${path}/convert/campaigns/subscribe`}
+                        exact
+                        render={() => (
+                            <App
+                                content={CampaignStatsPaywallView}
+                                navbar={StatsNavbarContainer}
+                            />
+                        )}
+                    />
+                </ProtectedRoute>
                 <ProtectedRoute
                     path={`${path}/${STATS_ROUTES.CONVERT_CAMPAIGNS}`}
                 >
@@ -386,18 +398,6 @@ export const StatsRoutes = () => {
                                     navbar={StatsNavbarContainer}
                                 />
                             </RevenueAddonApiClientProvider>
-                        )}
-                    />
-                </ProtectedRoute>
-                <ProtectedRoute path={`${path}/convert/campaigns/subscribe`}>
-                    <Route
-                        path={`${path}/convert/campaigns/subscribe`}
-                        exact
-                        render={() => (
-                            <App
-                                content={CampaignStatsPaywallView}
-                                navbar={StatsNavbarContainer}
-                            />
                         )}
                     />
                 </ProtectedRoute>
