@@ -9,6 +9,8 @@ export const useCurrentPriceIds = (): string[] => {
               currentProducts.helpdesk?.price_id,
               currentProducts.automation?.price_id || '',
               currentProducts.convert?.price_id || '',
+              currentProducts.voice?.price_id || '',
+              currentProducts.sms?.price_id || '',
           ].filter(Boolean)
         : []
 

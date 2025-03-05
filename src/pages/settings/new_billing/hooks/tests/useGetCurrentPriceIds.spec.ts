@@ -1,6 +1,7 @@
 import { renderHook } from '@testing-library/react-hooks'
 
 import useAppSelector from 'hooks/useAppSelector'
+import { ProductType } from 'models/billing/types'
 
 import { useCurrentPriceIds } from '../useGetCurrentPriceIds'
 
@@ -9,9 +10,11 @@ const mockUseAppSelector = useAppSelector as jest.Mock
 
 describe('useGetCurrentPriceIds', () => {
     const currentProducts = {
-        helpdesk: { price_id: 'helpdeskPrice' },
-        automation: { price_id: 'automationPrice' },
-        convert: { price_id: 'convertPlan' },
+        [ProductType.Helpdesk]: { price_id: 'helpdeskPriceId' },
+        [ProductType.Automation]: { price_id: 'automatePriceId' },
+        [ProductType.Convert]: { price_id: 'convertPriceId' },
+        [ProductType.Voice]: { price_id: 'voicePriceId' },
+        [ProductType.SMS]: { price_id: 'smsPriceId' },
     }
 
     it('should return the current price ids', () => {
@@ -20,9 +23,11 @@ describe('useGetCurrentPriceIds', () => {
         const { result } = renderHook(() => useCurrentPriceIds())
 
         expect(result.current).toEqual([
-            'helpdeskPrice',
-            'automationPrice',
-            'convertPlan',
+            'helpdeskPriceId',
+            'automatePriceId',
+            'convertPriceId',
+            'voicePriceId',
+            'smsPriceId',
         ])
     })
 
@@ -34,7 +39,12 @@ describe('useGetCurrentPriceIds', () => {
 
         const { result } = renderHook(() => useCurrentPriceIds())
 
-        expect(result.current).toEqual(['helpdeskPrice', 'convertPlan'])
+        expect(result.current).toEqual([
+            'helpdeskPriceId',
+            'convertPriceId',
+            'voicePriceId',
+            'smsPriceId',
+        ])
     })
 
     it('should return the empty price id list', () => {
