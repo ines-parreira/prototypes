@@ -18,16 +18,16 @@ export const useCoverageRate = (
     const allTickets = useAllTickets(filters, timezone)
 
     const aiAgentTickets = useMultipleMetricsTrends(
-        customFieldsTicketTotalCountQueryFactory(
+        customFieldsTicketTotalCountQueryFactory({
             filters,
             timezone,
-            customField,
-        ),
-        customFieldsTicketTotalCountQueryFactory(
-            { ...filters, period: getPreviousPeriod(filters.period) },
+            customFieldId: customField,
+        }),
+        customFieldsTicketTotalCountQueryFactory({
+            filters: { ...filters, period: getPreviousPeriod(filters.period) },
             timezone,
-            customField,
-        ),
+            customFieldId: customField,
+        }),
     )
 
     const result = getAiAgentCoverageRate({

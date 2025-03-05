@@ -293,12 +293,19 @@ export const customFieldsTicketCountTimeSeriesQueryFactory = (
     timezone,
 })
 
-export const customFieldsTicketTotalCountQueryFactory = (
-    filters: StatsFilters,
-    timezone: string,
-    customFieldId: string,
-    sorting?: OrderDirection,
-): ReportingQuery<TicketCustomFieldsCube> => ({
+export const customFieldsTicketTotalCountQueryFactory = ({
+    filters,
+    timezone,
+    customFieldId,
+    additionalFilters,
+    sorting,
+}: {
+    filters: StatsFilters
+    timezone: string
+    customFieldId: string
+    additionalFilters?: ReportingFilter[]
+    sorting?: OrderDirection
+}): ReportingQuery<TicketCustomFieldsCube> => ({
     measures: [TicketCustomFieldsMeasure.TicketCustomFieldsTicketCount],
     dimensions: [],
     timezone,
@@ -319,6 +326,7 @@ export const customFieldsTicketTotalCountQueryFactory = (
                 formatReportingQueryDate(filters.period.end_datetime),
             ],
         },
+        ...(additionalFilters ?? []),
     ],
     ...(sorting
         ? {

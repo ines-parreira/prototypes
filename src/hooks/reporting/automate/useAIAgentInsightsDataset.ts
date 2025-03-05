@@ -100,16 +100,16 @@ export const useAIAgentMetrics = (
     )
 
     const aiAgentTicketsData = useMultipleMetricsTrends(
-        customFieldsTicketTotalCountQueryFactory(
+        customFieldsTicketTotalCountQueryFactory({
             filters,
             timezone,
-            String(customField?.id || -1),
-        ),
-        customFieldsTicketTotalCountQueryFactory(
-            { ...filters, period: getPreviousPeriod(filters.period) },
+            customFieldId: String(customField?.id || -1),
+        }),
+        customFieldsTicketTotalCountQueryFactory({
+            filters: { ...filters, period: getPreviousPeriod(filters.period) },
             timezone,
-            String(customField?.id || -1),
-        ),
+            customFieldId: String(customField?.id || -1),
+        }),
     )
 
     const allCreatedTickets = useMultipleMetricsTrends(

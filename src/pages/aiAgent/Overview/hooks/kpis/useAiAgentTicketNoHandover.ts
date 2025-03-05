@@ -1,11 +1,10 @@
-import { useMemo } from 'react'
-
-import { useAIAgentUserId } from 'hooks/reporting/automate/useAIAgentUserId'
+import { CUSTOM_FIELD_AI_AGENT_CLOSE } from 'hooks/reporting/automate/types'
 import { useMultipleMetricsTrends } from 'hooks/reporting/useMultipleMetricsTrend'
-import { AutomationDatasetMeasure } from 'models/reporting/cubes/automate_v2/AutomationDatasetCube'
-import { automationDatasetQueryFactory } from 'models/reporting/queryFactories/automate_v2/metrics'
-import { FilterKey, StatsFilters } from 'models/stat/types'
-import { LogicalOperatorEnum } from 'pages/stats/common/components/Filter/constants'
+import { TicketCustomFieldsMember } from 'models/reporting/cubes/TicketCustomFieldsCube'
+import { customFieldsTicketTotalCountQueryFactory } from 'models/reporting/queryFactories/ticket-insights/customFieldsTicketCount'
+import { ReportingFilterOperator } from 'models/reporting/types'
+import { StatsFilters } from 'models/stat/types'
+import { useCustomFieldOutcome } from 'pages/aiAgent/Overview/hooks/useCustomFieldOutcome'
 import { getPreviousPeriod } from 'utils/reporting'
 
 /**
@@ -15,42 +14,27 @@ export const useAiAgentTicketNoHandover = (
     filters: StatsFilters,
     timezone: string,
 ) => {
-    const aiAgentUserId = useAIAgentUserId()
+    const customField = useCustomFieldOutcome()
+    const additionalFilters = [
+        {
+            member: TicketCustomFieldsMember.TicketCustomFieldsValueString,
+            operator: ReportingFilterOperator.Contains,
+            values: [CUSTOM_FIELD_AI_AGENT_CLOSE],
+        },
+    ]
 
-    const statsFiltersWithAiAgent = useMemo(
-        () => ({
-            [FilterKey.Period]: filters.period,
-            [FilterKey.Agents]: {
-                operator: LogicalOperatorEnum.ONE_OF,
-                values: [Number(aiAgentUserId)],
-            },
-            [FilterKey.Channels]: {
-                values: ['email'],
-                operator: LogicalOperatorEnum.ONE_OF,
-            },
-        }),
-        [aiAgentUserId, filters],
-    )
-
-    const aiAgentAutomatedInteractionsData = useMultipleMetricsTrends(
-        automationDatasetQueryFactory(statsFiltersWithAiAgent, timezone),
-        automationDatasetQueryFactory(
-            {
-                ...statsFiltersWithAiAgent,
-                period: getPreviousPeriod(filters.period),
-            },
+    return useMultipleMetricsTrends(
+        customFieldsTicketTotalCountQueryFactory({
+            filters,
             timezone,
-        ),
+            customFieldId: customField,
+            additionalFilters,
+        }),
+        customFieldsTicketTotalCountQueryFactory({
+            filters: { ...filters, period: getPreviousPeriod(filters.period) },
+            timezone,
+            customFieldId: customField,
+            additionalFilters,
+        }),
     )
-
-    const aiAgentAutomatedInteractions =
-        aiAgentAutomatedInteractionsData.data?.[
-            AutomationDatasetMeasure.AutomatedInteractions
-        ]
-
-    return {
-        data: aiAgentAutomatedInteractions,
-        isFetching: aiAgentAutomatedInteractionsData.isFetching,
-        isError: aiAgentAutomatedInteractionsData.isError,
-    }
 }

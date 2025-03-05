@@ -61,12 +61,12 @@ describe('aiAgentMetrics', () => {
             )
 
             expect(useMetricMock).toHaveBeenCalledWith(
-                customFieldsTicketTotalCountQueryFactory(
+                customFieldsTicketTotalCountQueryFactory({
                     filters,
                     timezone,
-                    String(customField.id),
+                    customFieldId: String(customField.id),
                     sorting,
-                ),
+                }),
             )
         })
     })

@@ -1,18 +1,11 @@
-import React from 'react'
-
 import { renderHook } from '@testing-library/react-hooks/dom'
-import { fromJS } from 'immutable'
-import { Provider } from 'react-redux'
 
 import { useCustomFieldDefinitions } from 'custom-fields/hooks/queries/useCustomFieldDefinitions'
-import { account } from 'fixtures/account'
 import { ticketFieldDefinitions } from 'fixtures/customField'
-import { user } from 'fixtures/users'
 import { useMultipleMetricsTrends } from 'hooks/reporting/useMultipleMetricsTrend'
 import { StatsFilters, StatType } from 'models/stat/types'
 import { useAutomatedInteractions } from 'pages/aiAgent/Overview/hooks/kpis/useAutomatedInteractions'
-import { RootState } from 'state/types'
-import { assumeMock, mockStore } from 'utils/testing'
+import { assumeMock } from 'utils/testing'
 
 jest.mock('hooks/reporting/useMultipleMetricsTrend')
 const useMultipleMetricsTrendsMock = assumeMock(useMultipleMetricsTrends)
@@ -29,24 +22,6 @@ const filters: StatsFilters = {
 }
 
 describe('useAutomatedInteractions', () => {
-    const defaultState = {
-        currentUser: fromJS(user),
-        currentAccount: fromJS(account),
-        integrations: fromJS({
-            integrations: [],
-        }),
-    } as RootState
-
-    const renderUseAutomatedInteractions = (
-        filters: StatsFilters,
-        timezone: string,
-    ) =>
-        renderHook(() => useAutomatedInteractions(filters, timezone), {
-            wrapper: ({ children }) => (
-                <Provider store={mockStore(defaultState)}>{children}</Provider>
-            ),
-        })
-
     beforeEach(() => {
         useCustomFieldDefinitionsMock.mockReturnValue({
             data: { data: ticketFieldDefinitions },
@@ -57,7 +32,7 @@ describe('useAutomatedInteractions', () => {
     it('should return correct metric data when the query resolves', () => {
         useMultipleMetricsTrendsMock.mockReturnValueOnce({
             data: {
-                'AutomationDataset.automatedInteractions': {
+                'TicketCustomFieldsEnriched.ticketCount': {
                     value: 450,
                     prevValue: 300,
                 },
@@ -65,7 +40,9 @@ describe('useAutomatedInteractions', () => {
             isFetching: false,
         } as any)
 
-        const { result } = renderUseAutomatedInteractions(filters, timezone)
+        const { result } = renderHook(() =>
+            useAutomatedInteractions(filters, timezone),
+        )
 
         expect(result.current).toEqual({
             title: 'Automated Interactions',
@@ -83,7 +60,9 @@ describe('useAutomatedInteractions', () => {
             isFetching: true,
         } as any)
 
-        const { result } = renderUseAutomatedInteractions(filters, timezone)
+        const { result } = renderHook(() =>
+            useAutomatedInteractions(filters, timezone),
+        )
 
         expect(result.current).toEqual({
             title: 'Automated Interactions',

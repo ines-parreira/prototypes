@@ -369,11 +369,11 @@ describe('customFieldsTicketCountQueryFactory', () => {
 
     describe('customFieldsTicketTotalCountQueryFactory', () => {
         it('should build expected query', () => {
-            const query = customFieldsTicketTotalCountQueryFactory(
-                statsFilters,
+            const query = customFieldsTicketTotalCountQueryFactory({
+                filters: statsFilters,
                 timezone,
                 customFieldId,
-            )
+            })
 
             expect(query).toEqual({
                 measures: [
@@ -410,12 +410,12 @@ describe('customFieldsTicketCountQueryFactory', () => {
         })
 
         it('should build the query with sorting', () => {
-            const query = customFieldsTicketTotalCountQueryFactory(
-                statsFilters,
+            const query = customFieldsTicketTotalCountQueryFactory({
+                filters: statsFilters,
                 timezone,
                 customFieldId,
                 sorting,
-            )
+            })
 
             expect(query).toEqual({
                 measures: [

@@ -36,12 +36,12 @@ export const useTotalAiAgentTicketsByCustomField = (
     sorting?: OrderDirection,
 ) =>
     useMetric(
-        customFieldsTicketTotalCountQueryFactory(
+        customFieldsTicketTotalCountQueryFactory({
             filters,
             timezone,
-            String(customField?.id || -1),
+            customFieldId: String(customField?.id || -1),
             sorting,
-        ),
+        }),
     )
 
 export const useAiAgenTickets = (
