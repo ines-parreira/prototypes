@@ -27,6 +27,7 @@ import {
     CUSTOM_FIELD_CONDITIONS_ROUTE,
     CUSTOM_FIELD_ROUTES,
 } from 'routes/constants'
+import { AutomatePaywall } from 'settings/automate'
 import {
     ArticleRecommendationsSettings,
     FlowsSettings,
@@ -51,6 +52,24 @@ import { Rules } from './Rules'
 import { SLA } from './SLA'
 import { Teams } from './Teams'
 import { Users } from './Users'
+
+export const PaywalledArticleRecommendations = () => (
+    <AutomatePaywall>
+        <ArticleRecommendationsSettings />
+    </AutomatePaywall>
+)
+
+export const PaywalledFlows = () => (
+    <AutomatePaywall>
+        <FlowsSettings />
+    </AutomatePaywall>
+)
+
+export const PaywalledOrderManagement = () => (
+    <AutomatePaywall>
+        <OrderManagementSettings />
+    </AutomatePaywall>
+)
 
 export function SettingRoutes() {
     const { path } = useRouteMatch()
@@ -114,17 +133,17 @@ export function SettingRoutes() {
             <Route
                 path={`${path}/article-recommendations/:shopType?/:shopName?`}
             >
-                {renderAppSettings(ArticleRecommendationsSettings, {
+                {renderAppSettings(PaywalledArticleRecommendations, {
                     roleParams: [AGENT_ROLE],
                 })}
             </Route>
             <Route path={`${path}/flows/:shopType?/:shopName?`}>
-                {renderAppSettings(FlowsSettings, {
+                {renderAppSettings(PaywalledFlows, {
                     roleParams: [AGENT_ROLE],
                 })}
             </Route>
             <Route path={`${path}/order-management/:shopType?/:shopName?`}>
-                {renderAppSettings(OrderManagementSettings, {
+                {renderAppSettings(PaywalledOrderManagement, {
                     roleParams: [AGENT_ROLE],
                 })}
             </Route>

@@ -1,6 +1,7 @@
 import React from 'react'
+import type { ReactNode } from 'react'
 
-import { render } from '@testing-library/react'
+import { render, screen } from '@testing-library/react'
 import { Route, useRouteMatch } from 'react-router-dom'
 
 import { PageSection } from 'config/pages'
@@ -10,11 +11,6 @@ import {
     CUSTOM_FIELD_CONDITIONS_ROUTE,
     CUSTOM_FIELD_ROUTES,
 } from 'routes/constants'
-import {
-    ArticleRecommendationsSettings,
-    FlowsSettings,
-    OrderManagementSettings,
-} from 'settings/pages'
 import { assumeMock } from 'utils/testing'
 
 import { Billing } from '../Billing'
@@ -30,7 +26,12 @@ import { Integrations } from '../Integrations'
 import { Macros } from '../Macros'
 import { PhoneNumbers } from '../PhoneNumbers'
 import { Rules } from '../Rules'
-import { SettingRoutes } from '../Settings'
+import {
+    PaywalledArticleRecommendations,
+    PaywalledFlows,
+    PaywalledOrderManagement,
+    SettingRoutes,
+} from '../Settings'
 import { SLA } from '../SLA'
 import { Teams } from '../Teams'
 import { Users } from '../Users'
@@ -44,6 +45,22 @@ jest.mock('react-router-dom', () => ({
     Switch: jest.fn(({ children }) => <div>{children}</div>),
     useRouteMatch: jest.fn(),
     Link: jest.fn(() => <div>Link</div>),
+}))
+
+jest.mock('settings/automate', () => ({
+    AutomatePaywall: ({ children }: { children: ReactNode }) => (
+        <>
+            <div>AutomatePaywall</div>
+            {children}
+        </>
+    ),
+}))
+jest.mock('settings/pages', () => ({
+    ArticleRecommendationsSettings: () => (
+        <div>ArticleRecommendationsSettings</div>
+    ),
+    FlowsSettings: () => <div>FlowsSettings</div>,
+    OrderManagementSettings: () => <div>OrderManagementSettings</div>,
 }))
 
 jest.mock('../helpers/settingsRenderer', () => ({
@@ -159,19 +176,19 @@ const testingMap = [
         callOrder: 15,
         exact: undefined,
         path: `${basePath}/article-recommendations/:shopType?/:shopName?`,
-        component: ArticleRecommendationsSettings,
+        component: PaywalledArticleRecommendations,
     },
     {
         callOrder: 16,
         exact: undefined,
         path: `${basePath}/flows/:shopType?/:shopName?`,
-        component: FlowsSettings,
+        component: PaywalledFlows,
     },
     {
         callOrder: 17,
         exact: undefined,
         path: `${basePath}/order-management/:shopType?/:shopName?`,
-        component: OrderManagementSettings,
+        component: PaywalledOrderManagement,
     },
     {
         callOrder: 18,
@@ -225,5 +242,25 @@ describe('Settings', () => {
                 }
             },
         )
+    })
+
+    it('should render the paywall around article recommendations', () => {
+        render(<PaywalledArticleRecommendations />)
+        expect(screen.getByText('AutomatePaywall')).toBeInTheDocument()
+        expect(
+            screen.getByText('ArticleRecommendationsSettings'),
+        ).toBeInTheDocument()
+    })
+
+    it('should render the paywall around flows', () => {
+        render(<PaywalledFlows />)
+        expect(screen.getByText('AutomatePaywall')).toBeInTheDocument()
+        expect(screen.getByText('FlowsSettings')).toBeInTheDocument()
+    })
+
+    it('should render the paywall around order management', () => {
+        render(<PaywalledOrderManagement />)
+        expect(screen.getByText('AutomatePaywall')).toBeInTheDocument()
+        expect(screen.getByText('OrderManagementSettings')).toBeInTheDocument()
     })
 })
