@@ -11,7 +11,7 @@ type Props = {
     iconClassName?: string
 } & Omit<ButtonProps, 'children'>
 
-const IconButton = (
+const BaseIconButton = (
     {
         children,
         className,
@@ -40,4 +40,11 @@ const IconButton = (
     )
 }
 
-export default forwardRef<HTMLButtonElement, Props>(IconButton)
+/**
+ * @deprecated This component is being phased out. Please use `IconButton` from `@gorgias/merchant-ui-kit` instead.
+ * @date 2024-03-05
+ * @type ui-kit-migration
+ */
+const IconButton = forwardRef<HTMLButtonElement, Props>(BaseIconButton)
+
+export default IconButton
