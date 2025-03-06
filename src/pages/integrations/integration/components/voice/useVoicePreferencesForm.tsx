@@ -82,6 +82,7 @@ export function useFormSubmit(integration: PhoneIntegration) {
             emoji: data.meta.emoji,
             phone_team_id: data.meta.phone_team_id,
             preferences: data.meta.preferences,
+            send_calls_to_voicemail: data.meta.send_calls_to_voicemail,
         }
 
         const isRecordingEnabled =
@@ -120,6 +121,7 @@ export const getDefaultValues = (integration: PhoneIntegration): FormValues => {
                 voicemail_outside_business_hours: false,
                 wait_time: DEFAULT_WAIT_TIME_PREFERENCES,
             },
+            send_calls_to_voicemail: false,
             recording_notification: DEFAULT_RECORDING_NOTIFICATION,
         },
     }

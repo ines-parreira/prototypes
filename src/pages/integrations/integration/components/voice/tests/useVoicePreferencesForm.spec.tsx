@@ -244,6 +244,7 @@ describe('getDefaultValues', () => {
                     voicemail_outside_business_hours: false,
                     wait_time: DEFAULT_WAIT_TIME_PREFERENCES,
                 },
+                send_calls_to_voicemail: false,
                 recording_notification: DEFAULT_RECORDING_NOTIFICATION,
             },
         })
@@ -284,6 +285,7 @@ describe('getDefaultValues', () => {
                     text_to_speech_content:
                         DEFAULT_RECORDING_NOTIFICATION.text_to_speech_content,
                 },
+                send_calls_to_voicemail: false,
             },
         })
     })

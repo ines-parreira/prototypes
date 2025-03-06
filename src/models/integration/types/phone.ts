@@ -31,6 +31,7 @@ export type PhoneIntegrationMeta = {
     phone_team_id?: Maybe<number>
     wait_music?: LocalWaitMusicPreferences
     recording_notification?: VoiceMessage
+    send_calls_to_voicemail?: boolean
 }
 
 export enum PhoneRingingBehaviour {

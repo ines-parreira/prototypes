@@ -69,6 +69,7 @@ export default function VoiceIntegrationPreferencesTeamSelect({
                             ref={floatingRef}
                             target={targetRef}
                             value={selectedTeam?.name}
+                            placement="bottom"
                         >
                             <DropdownSearch autoFocus />
                             <DropdownBody>
