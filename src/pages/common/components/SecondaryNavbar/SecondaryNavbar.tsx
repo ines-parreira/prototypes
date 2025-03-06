@@ -1,14 +1,16 @@
 import React, { ReactNode } from 'react'
 
+import classNames from 'classnames'
 import { Navbar } from 'reactstrap'
 
 import css from './SecondaryNavbar.less'
 
 type Props = {
+    className?: string
     children: ReactNode
 }
 
-const SecondaryNavbar = ({ children }: Props): JSX.Element => {
+const SecondaryNavbar = ({ className, children }: Props): JSX.Element => {
     const linkProps = {
         className: css.link,
         activeClassName: css.active,
@@ -20,7 +22,11 @@ const SecondaryNavbar = ({ children }: Props): JSX.Element => {
             : null,
     )
 
-    return <Navbar className={css.navbar}>{childrenWithProps}</Navbar>
+    return (
+        <Navbar className={classNames(css.navbar, className)}>
+            {childrenWithProps}
+        </Navbar>
+    )
 }
 
 export default SecondaryNavbar

@@ -42,6 +42,8 @@ import AiAgentOnboardingWizard from 'pages/aiAgent/AiAgentOnboardingWizard/AiAge
 import { AiAgentPlaygroundContainer } from 'pages/aiAgent/AiAgentPlaygroundContainer'
 import { AiAgentPreviewModeSettingsContainer } from 'pages/aiAgent/AiAgentPreviewModeSettings/AiAgentPreviewModeSettingsContainer'
 import { AiAgentSales } from 'pages/aiAgent/AiAgentSales'
+import AiAgentScrapedDomainPagesContainer from 'pages/aiAgent/AiAgentScrapedDomainContent/AiAgentScrapedDomainPagesContainer'
+import AiAgentScrapedDomainProductsContainer from 'pages/aiAgent/AiAgentScrapedDomainContent/AiAgentScrapedDomainProductsContainer'
 import { AiAgentNavbar } from 'pages/aiAgent/components/AiAgentNavbar/AiAgentNavbar'
 import { RedirectToAiAgentStore } from 'pages/aiAgent/components/RedirectToAiAgentStore/RedirectToAiAgentStore'
 import { useAiAgentItemEnabled } from 'pages/aiAgent/hooks/useAiAgentItemEnabled'
@@ -414,6 +416,9 @@ function AiAgentRoutes({ match: { path }, location }: RouteComponentProps) {
         useFlags()[FeatureFlagKey.StandaloneAIAgentSalesPaywallPage] ||
         useFlags()[FeatureFlagKey.StandaloneAIAgentSalesPage]
 
+    const isAiAgentScrapeStoreDomainEnabled =
+        useFlags()[FeatureFlagKey.AiAgentScrapeStoreDomain]
+
     if (shopType !== 'shopify') {
         return <Redirect to="/app/automation" />
     }
@@ -629,6 +634,22 @@ function AiAgentRoutes({ match: { path }, location }: RouteComponentProps) {
                                 exact
                                 component={AiAgentKnowledgeContainer}
                             />
+                            {isAiAgentScrapeStoreDomainEnabled && (
+                                <Switch>
+                                    <Route
+                                        path={`${path}/knowledge/pages-content`}
+                                        component={
+                                            AiAgentScrapedDomainPagesContainer
+                                        }
+                                    />
+                                    <Route
+                                        path={`${path}/knowledge/products-content`}
+                                        component={
+                                            AiAgentScrapedDomainProductsContainer
+                                        }
+                                    />
+                                </Switch>
+                            )}
                         </AiAgentErrorBoundary>
                     )}
                     <AiAgentErrorBoundary section="ai-agent-guidance">

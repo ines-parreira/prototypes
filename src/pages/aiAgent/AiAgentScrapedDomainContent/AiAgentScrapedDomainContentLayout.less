@@ -1,0 +1,21 @@
+@import (reference) '~@gorgias/design-tokens/dist/css/layout';
+@import (reference) '~css/typography.less';
+
+:local {
+    .container {
+        display: flex;
+        flex-direction: column;
+        gap: @layout-spacing-m;
+    }
+
+    .wrapper {
+        padding-top: @layout-spacing-m;
+        display: flex;
+        flex-direction: column;
+        gap: @layout-spacing-s;
+    }
+
+    .contentWrapper {
+        background-color: var(--neutral-grey-0) !important;
+    }
+}

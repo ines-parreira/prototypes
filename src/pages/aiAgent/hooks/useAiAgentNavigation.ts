@@ -58,6 +58,8 @@ export const getAiAgentNavigationRoutes = (
         test: `${basePath}/test`,
         knowledge: `${basePath}/knowledge`,
         sales: `${basePath}/sales`,
+        pagesContent: `${basePath}/knowledge/pages-content`,
+        productsContent: `${basePath}/knowledge/products-content`,
         guidance: `${basePath}/${guidancePath}`,
         newGuidanceArticle: `${basePath}/${guidancePath}/new`,
         guidanceArticleEdit: (articleId: number) =>
