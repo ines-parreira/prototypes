@@ -118,6 +118,7 @@ export enum FeatureFlagKey {
     PubNubRealtime = 'pubnub-realtime',
     RedirectDeprecatedTicketRoutes = 'redirect-deprecated-ticket-routes',
     ReportingAgentsTableAverageAndTotal = 'reporting-agents-table-average-and-total',
+    ReportingMessagesReceivedMetric = 'reporting-messages-received-metric',
     ReportingZeroTouchTicketsMetric = 'reporting-zero-touch-tickets-metric',
     RevenueBetaShopifyHeadless = 'revenue-beta-shopify-headless',
     RevenueBetaTesters = 'revenue-beta-testers',

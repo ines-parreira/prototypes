@@ -208,6 +208,7 @@ describe('getDrillDownQuery', () => {
         { metricName: OverviewMetric.TicketsCreated },
         { metricName: OverviewMetric.TicketsReplied },
         { metricName: OverviewMetric.MessagesSent },
+        { metricName: OverviewMetric.MessagesReceived },
         { metricName: OverviewMetric.MessagesPerTicket },
         { metricName: OverviewMetric.MedianResolutionTime },
         { metricName: OverviewMetric.MedianFirstResponseTime },
@@ -240,7 +241,7 @@ describe('getDrillDownQuery', () => {
             tagId: '123',
         },
     ]
-    const convertMetrics: DrillDownMetric[] = [
+    const convertMetrics: ConvertMetrics[] = [
         {
             metricName: ConvertMetric.CampaignSalesCount,
             shopName: 'shopify:someShop',
@@ -612,7 +613,7 @@ describe('getDrillDownQuery', () => {
             },
         }
         const timezone = 'someTimeZone'
-        const drillDownMetric = convertMetrics[0] as ConvertMetrics
+        const drillDownMetric = convertMetrics[0]
 
         getDrillDownQuery(drillDownMetric)(statsFilters, timezone)
 

@@ -407,6 +407,11 @@ describe('getSearchConfig', () => {
                                         .charts[
                                         OverviewChart.MessagesSentTrendCard
                                     ],
+                                [OverviewChart.MessagesReceivedTrendCard]:
+                                    SupportPerformanceOverviewReportConfig
+                                        .charts[
+                                        OverviewChart.MessagesReceivedTrendCard
+                                    ],
                             },
                         },
                     },

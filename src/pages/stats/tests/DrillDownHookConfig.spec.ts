@@ -91,6 +91,7 @@ describe('getDrillDownHook', () => {
         { metricName: OverviewMetric.TicketsCreated },
         { metricName: OverviewMetric.TicketsReplied },
         { metricName: OverviewMetric.MessagesSent },
+        { metricName: OverviewMetric.MessagesReceived },
         { metricName: OverviewMetric.MessagesPerTicket },
         { metricName: OverviewMetric.MedianResolutionTime },
         { metricName: OverviewMetric.MedianFirstResponseTime },

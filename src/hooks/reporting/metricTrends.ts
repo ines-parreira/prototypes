@@ -9,6 +9,7 @@ import { customerSatisfactionQueryFactory } from 'models/reporting/queryFactorie
 import { medianFirstResponseTimeQueryFactory } from 'models/reporting/queryFactories/support-performance/medianFirstResponseTime'
 import { medianResolutionTimeQueryFactory } from 'models/reporting/queryFactories/support-performance/medianResolutionTime'
 import { messagesPerTicketQueryFactory } from 'models/reporting/queryFactories/support-performance/messagesPerTicket'
+import { messagesReceivedQueryFactory } from 'models/reporting/queryFactories/support-performance/messagesReceived'
 import { messagesSentQueryFactory } from 'models/reporting/queryFactories/support-performance/messagesSent'
 import { oneTouchTicketsQueryFactory } from 'models/reporting/queryFactories/support-performance/oneTouchTickets'
 import { openTicketsQueryFactory } from 'models/reporting/queryFactories/support-performance/openTickets'
@@ -121,6 +122,14 @@ export const fetchTicketsRepliedTrend = getTrendFetch(
 export const useMessagesSentTrend = getTrendHook(messagesSentQueryFactory)
 
 export const fetchMessagesSentTrend = getTrendFetch(messagesSentQueryFactory)
+
+export const useMessagesReceivedTrend = getTrendHook(
+    messagesReceivedQueryFactory,
+)
+
+export const fetchMessagesReceivedTrend = getTrendFetch(
+    messagesReceivedQueryFactory,
+)
 
 export const useTicketHandleTimeTrend = getTrendHook(
     ticketAverageHandleTimeQueryFactory,

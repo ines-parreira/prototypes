@@ -55,6 +55,7 @@ export const timeSeriesReportSource = timeSeriesMetrics.map(
 
 export const getWorkloadReportSource = (
     isReportingZeroTouchTicketsMetricEnabled: boolean,
+    isReportingMessagesReceivedMetricEnabled: boolean,
 ) => {
     const workloadReportSource = [
         OverviewMetric.OpenTickets,
@@ -67,6 +68,9 @@ export const getWorkloadReportSource = (
 
     if (isReportingZeroTouchTicketsMetricEnabled) {
         workloadReportSource.push(OverviewMetric.ZeroTouchTickets)
+    }
+    if (isReportingMessagesReceivedMetricEnabled) {
+        workloadReportSource.push(OverviewMetric.MessagesReceived)
     }
 
     return workloadReportSource.map((metric) => OverviewMetricConfig[metric])
@@ -84,13 +88,22 @@ export const getCsvFileNameWithDates = (period: Period, reportName: string) => {
 export const useDownloadOverViewData = (fetchingEnabled = true) => {
     const isReportingZeroTouchTicketsMetricEnabled =
         useFlags()[FeatureFlagKey.ReportingZeroTouchTicketsMetric]
+    const isReportingMessagesReceivedMetricEnabled =
+        useFlags()[FeatureFlagKey.ReportingMessagesReceivedMetric]
 
     const { cleanStatsFilters, userTimezone, granularity } =
         useNewStatsFilters()
 
     const workloadReportSource = useMemo(
-        () => getWorkloadReportSource(isReportingZeroTouchTicketsMetricEnabled),
-        [isReportingZeroTouchTicketsMetricEnabled],
+        () =>
+            getWorkloadReportSource(
+                isReportingZeroTouchTicketsMetricEnabled,
+                isReportingMessagesReceivedMetricEnabled,
+            ),
+        [
+            isReportingZeroTouchTicketsMetricEnabled,
+            isReportingMessagesReceivedMetricEnabled,
+        ],
     )
 
     const workloadTrendData = useTrendReportData(

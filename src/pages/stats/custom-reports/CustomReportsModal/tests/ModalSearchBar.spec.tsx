@@ -42,6 +42,10 @@ describe('ModalSearchBar', () => {
                     SupportPerformanceOverviewReportConfig.charts[
                         OverviewChart.MessagesSentTrendCard
                     ],
+                [OverviewChart.MessagesReceivedTrendCard]:
+                    SupportPerformanceOverviewReportConfig.charts[
+                        OverviewChart.MessagesReceivedTrendCard
+                    ],
             },
         }
         expect(setConfig).toHaveBeenCalledTimes(value.length)

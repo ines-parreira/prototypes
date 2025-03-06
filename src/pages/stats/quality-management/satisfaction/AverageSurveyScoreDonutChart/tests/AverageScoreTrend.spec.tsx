@@ -14,6 +14,7 @@ import {
     useMedianFirstResponseTimeTrend,
     useMedianResolutionTimeTrend,
     useMessagesPerTicketTrend,
+    useMessagesReceivedTrend,
     useMessagesSentTrend,
     useOpenTicketsTrend,
     useTicketHandleTimeTrend,
@@ -84,6 +85,7 @@ const useClosedTicketsTrendMock = assumeMock(useClosedTicketsTrend)
 const useTicketsCreatedTrendMock = assumeMock(useTicketsCreatedTrend)
 const useTicketsRepliedTrendMock = assumeMock(useTicketsRepliedTrend)
 const useMessagesSentTrendMock = assumeMock(useMessagesSentTrend)
+const useMessagesReceivedTrendMock = assumeMock(useMessagesReceivedTrend)
 const useTicketHandleTimeTrendMock = assumeMock(useTicketHandleTimeTrend)
 const useOneTouchTicketTrendMock = assumeMock(
     useOneTouchTicketsPercentageMetricTrend,
@@ -172,6 +174,9 @@ describe('<AverageScoreTrend />', () => {
     const messagesSentMetricTrend = {
         ...defaultMetricTrend,
     }
+    const messagesReceivedMetricTrend = {
+        ...defaultMetricTrend,
+    }
     const ticketHandleTimeTrend = {
         ...defaultMetricTrend,
     }
@@ -207,6 +212,9 @@ describe('<AverageScoreTrend />', () => {
         useTicketsCreatedTrendMock.mockReturnValue(createdTicketsMetricTrend)
         useTicketsRepliedTrendMock.mockReturnValue(repliedTicketsMetricTrend)
         useMessagesSentTrendMock.mockReturnValue(messagesSentMetricTrend)
+        useMessagesReceivedTrendMock.mockReturnValue(
+            messagesReceivedMetricTrend,
+        )
         useOneTouchTicketTrendMock.mockReturnValue(oneTouchTicketsMetricTrend)
         useZeroTouchTicketTrendMock.mockReturnValue(oneTouchTicketsMetricTrend)
         useTicketHandleTimeTrendMock.mockReturnValue(ticketHandleTimeTrend)

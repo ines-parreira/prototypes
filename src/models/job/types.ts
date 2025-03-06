@@ -1,6 +1,7 @@
 import { HandleTimeCubeWithJoins } from 'models/reporting/cubes/agentxp/HandleTimeCube'
 import { TicketQAScoreCubeWithJoins } from 'models/reporting/cubes/auto-qa/TicketQAScoreCube'
 import { ConvertOrderConversionCube } from 'models/reporting/cubes/ConvertOrderConversionCube'
+import { HelpdeskCustomerMessagesReceivedEnrichedCubeWithJoins } from 'models/reporting/cubes/HelpdeskCustomerMessagesReceivedEnrichedCube'
 import { HelpdeskMessageCubeWithJoins } from 'models/reporting/cubes/HelpdeskMessageCube'
 import { TicketSLACubeWithJoins } from 'models/reporting/cubes/sla/TicketSLACube'
 import { TicketTagsEnrichedCube } from 'models/reporting/cubes/TicketTagsEnrichedCube'
@@ -60,6 +61,7 @@ export type DrillDownReportingQuery = ReportingQuery<
     | ConvertOrderConversionCube
     | HandleTimeCubeWithJoins
     | HelpdeskMessageCubeWithJoins
+    | HelpdeskCustomerMessagesReceivedEnrichedCubeWithJoins
     | TicketQAScoreCubeWithJoins
     | TicketSLACubeWithJoins
     | VoiceCallCube

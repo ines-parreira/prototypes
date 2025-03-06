@@ -11,6 +11,7 @@ export const PERCENT_OF_CLOSED_TICKETS = '% of Closed Tickets'
 export const TICKETS_CREATED_LABEL = 'Created tickets'
 export const TICKETS_REPLIED_LABEL = 'Tickets replied'
 export const MESSAGES_SENT_LABEL = 'Messages sent'
+export const MESSAGES_RECEIVED_LABEL = 'Messages received'
 export const TOTAL_WORKLOAD_BY_CHANNEL_LABEL =
     'Open & closed tickets by channel'
 export const WORKLOAD_BY_CHANNEL_LABEL = 'workload by channel'

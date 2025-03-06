@@ -22,6 +22,7 @@ import { AUTO_QA_FILTER_KEYS } from 'pages/stats/common/filters/constants'
 import FiltersPanelWrapper from 'pages/stats/common/filters/FiltersPanelWrapper/FiltersPanelWrapper'
 import { DrillDownModalTrigger } from 'pages/stats/DrillDownModalTrigger'
 import { OverviewChartCard } from 'pages/stats/support-performance/components/OverviewChartCard'
+import { MessagesReceivedTrendCard } from 'pages/stats/support-performance/overview/charts/MessagesReceivedTrendCard'
 import { TicketsCreatedVsClosedChart } from 'pages/stats/support-performance/overview/charts/TicketsCreatedVsClosedChart'
 import { WorkloadPerChannelChart } from 'pages/stats/support-performance/overview/charts/WorkloadPerChannelChart'
 import { ZeroTouchTicketsTrendCard } from 'pages/stats/support-performance/overview/charts/ZeroTouchTicketsTrendCard'
@@ -91,6 +92,10 @@ jest.mock(
     'pages/stats/support-performance/overview/charts/ZeroTouchTicketsTrendCard',
 )
 const ZeroTouchTicketsTrendCardMock = assumeMock(ZeroTouchTicketsTrendCard)
+jest.mock(
+    'pages/stats/support-performance/overview/charts/MessagesReceivedTrendCard',
+)
+const MessagesReceivedTrendCardMock = assumeMock(MessagesReceivedTrendCard)
 
 const defaultState = {
     billing: fromJS(billingState),
@@ -115,9 +120,11 @@ describe('<SupportPerformanceOverview />', () => {
             <div>workloadPerChannelChartMock</div>
         ))
         ZeroTouchTicketsTrendCardMock.mockImplementation(() => <div />)
+        MessagesReceivedTrendCardMock.mockImplementation(() => <div />)
         mockFlags({
             [FeatureFlagKey.AnalyticsNewFilters]: false,
             [FeatureFlagKey.ReportingZeroTouchTicketsMetric]: true,
+            [FeatureFlagKey.ReportingMessagesReceivedMetric]: true,
         })
     })
 
@@ -172,6 +179,20 @@ describe('<SupportPerformanceOverview />', () => {
         )
 
         expect(ZeroTouchTicketsTrendCardMock).toHaveBeenCalled()
+    })
+
+    it('should render Messages Received TrendCard', () => {
+        mockFlags({
+            [FeatureFlagKey.ReportingMessagesReceivedMetric]: true,
+        })
+
+        render(
+            <Provider store={mockStore(defaultState)}>
+                <SupportPerformanceOverviewReport />
+            </Provider>,
+        )
+
+        expect(MessagesReceivedTrendCardMock).toHaveBeenCalled()
     })
 
     describe('Performance Tips', () => {

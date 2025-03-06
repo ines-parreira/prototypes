@@ -29,6 +29,8 @@ export const useReportRestrictions = () => {
         useFlags()[FeatureFlagKey.ReportingZeroTouchTicketsMetric]
     const isStandaloneSalesOverviewEnabled =
         useFlags()[FeatureFlagKey.StandaloneAiSalesAnalyticsPage]
+    const isReportingMessagesReceivedMetricEnabled =
+        useFlags()[FeatureFlagKey.ReportingMessagesReceivedMetric]
     const user = useAppSelector(getCurrentUser)
     const hasAutomate = useAppSelector(getHasAutomate)
     const isTeamLeadOrAdmin = isTeamLead(user)
@@ -57,10 +59,15 @@ export const useReportRestrictions = () => {
 
     const chartRestrictionsMap: RestrictionsMap = useMemo(
         () => ({
+            [OverviewChart.MessagesReceivedTrendCard]:
+                !isReportingMessagesReceivedMetricEnabled,
             [OverviewChart.ZeroTouchTicketsTrendCard]:
                 !isReportingZeroTouchTicketsMetricEnabled,
         }),
-        [isReportingZeroTouchTicketsMetricEnabled],
+        [
+            isReportingZeroTouchTicketsMetricEnabled,
+            isReportingMessagesReceivedMetricEnabled,
+        ],
     )
 
     return {
@@ -70,15 +77,24 @@ export const useReportRestrictions = () => {
 }
 
 export const isChartRestricted = (
-    restrictionsMap: RestrictionsMap,
+    reportRestrictionsMap: RestrictionsMap,
+    chartRestrictionsMap: RestrictionsMap,
     chartId: string,
 ) => {
     const { reportConfig } = getComponentConfig(chartId)
     if (!reportConfig) return false
-    return !!restrictionsMap[reportConfig.id]
+    return (
+        !!reportRestrictionsMap[reportConfig.id] ||
+        chartRestrictionsMap[chartId] === true
+    )
 }
 
 export const useIsChartRestricted = (chartId: string) => {
-    const { reportRestrictionsMap } = useReportRestrictions()
-    return isChartRestricted(reportRestrictionsMap, chartId)
+    const { reportRestrictionsMap, chartRestrictionsMap } =
+        useReportRestrictions()
+    return isChartRestricted(
+        reportRestrictionsMap,
+        chartRestrictionsMap,
+        chartId,
+    )
 }

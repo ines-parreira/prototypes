@@ -14,6 +14,7 @@ import { useIsChartRestricted } from 'hooks/reporting/custom-reports/useReportRe
 import { HelpCenterReportConfig } from 'pages/stats/help-center/components/HelpCenterReport/HelpCenterReportConfig'
 import { SatisfactionReportConfig } from 'pages/stats/quality-management/satisfaction/SatisfactionReportConfig'
 import { AutoQAChart } from 'pages/stats/support-performance/auto-qa/AutoQAReportConfig'
+import { OverviewChart } from 'pages/stats/support-performance/overview/SupportPerformanceOverviewReportConfig'
 import { initialState } from 'state/billing/reducers'
 import { RootState } from 'state/types'
 
@@ -44,6 +45,48 @@ describe('useReportRestrictions', () => {
         )
 
         expect(result.current).toEqual(false)
+    })
+
+    describe('messagesReceivedChart', () => {
+        it('should allow Received Chart when flag is on', () => {
+            mockFlags({
+                [FeatureFlagKey.ReportingMessagesReceivedMetric]: true,
+            })
+            const messagesReceivedChartId =
+                OverviewChart.MessagesReceivedTrendCard
+            const { result } = renderHook(
+                () => useIsChartRestricted(messagesReceivedChartId),
+                {
+                    wrapper: ({ children }) => (
+                        <Provider store={mockStore(defaultState)}>
+                            {children}
+                        </Provider>
+                    ),
+                },
+            )
+
+            expect(result.current).toEqual(false)
+        })
+
+        it('should not allow messages Received Chart', () => {
+            mockFlags({
+                [FeatureFlagKey.ReportingMessagesReceivedMetric]: false,
+            })
+            const messagesReceivedChartId =
+                OverviewChart.MessagesReceivedTrendCard
+            const { result } = renderHook(
+                () => useIsChartRestricted(messagesReceivedChartId),
+                {
+                    wrapper: ({ children }) => (
+                        <Provider store={mockStore(defaultState)}>
+                            {children}
+                        </Provider>
+                    ),
+                },
+            )
+
+            expect(result.current).toEqual(true)
+        })
     })
 
     describe('HelpCenter', () => {

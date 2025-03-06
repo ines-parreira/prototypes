@@ -9,6 +9,7 @@ import { useAIAgentUser } from 'hooks/reporting/automate/useAIAgentUserId'
 import { useTrendReportData } from 'hooks/reporting/common/useTrendReportData'
 import {
     fetchClosedTicketsTrend,
+    fetchMessagesReceivedTrend,
     fetchMessagesSentTrend,
     fetchOpenTicketsTrend,
     fetchTicketsCreatedTrend,
@@ -22,6 +23,7 @@ import { LegacyStatsFilters } from 'models/stat/types'
 import { useMoneySavedPerInteractionWithAutomate } from 'pages/automate/common/hooks/useMoneySavedPerInteractionWithAutomate'
 import { formatMetricValue } from 'pages/stats/common/utils'
 import {
+    MESSAGES_RECEIVED_LABEL,
     MESSAGES_SENT_LABEL,
     ONE_TOUCH_TICKETS_LABEL,
     OPEN_TICKETS_LABEL,
@@ -38,6 +40,7 @@ const useClosedTicketsTrendMock = assumeMock(fetchClosedTicketsTrend)
 const useTicketsCreatedTrendMock = assumeMock(fetchTicketsCreatedTrend)
 const useTicketsRepliedTrendMock = assumeMock(fetchTicketsRepliedTrend)
 const useMessagesSentTrendMock = assumeMock(fetchMessagesSentTrend)
+const useMessagesReceivedTrendMock = assumeMock(fetchMessagesReceivedTrend)
 jest.mock(
     'hooks/reporting/support-performance/overview/useOneTouchTicketsPercentageMetricTrend',
 )
@@ -105,6 +108,13 @@ describe('useTrendReport', () => {
         },
     }
     const messagesSentMetricTrend = {
+        ...defaultMetricTrend,
+        data: {
+            value: 94,
+            prevValue: 100,
+        },
+    }
+    const messagesReceivedMetricTrend = {
         ...defaultMetricTrend,
         data: {
             value: 94,
@@ -183,6 +193,9 @@ describe('useTrendReport', () => {
         useTicketsCreatedTrendMock.mockResolvedValue(createdTicketsMetricTrend)
         useTicketsRepliedTrendMock.mockResolvedValue(repliedTicketsMetricTrend)
         useMessagesSentTrendMock.mockResolvedValue(messagesSentMetricTrend)
+        useMessagesReceivedTrendMock.mockResolvedValue(
+            messagesReceivedMetricTrend,
+        )
         useOneTouchTicketsMock.mockResolvedValue(oneTouchTicketMetricTrend)
         useZeroTouchTicketsMock.mockResolvedValue(zeroTouchTicketMetricTrend)
     })
@@ -192,7 +205,7 @@ describe('useTrendReport', () => {
             useTrendReportData(
                 defaultStatsFilters,
                 'UTC',
-                getWorkloadReportSource(true),
+                getWorkloadReportSource(true, true),
             ),
         )
 
@@ -201,6 +214,7 @@ describe('useTrendReport', () => {
                 isFetching: false,
                 data: [
                     ...resultData,
+
                     {
                         label: ZERO_TOUCH_TICKETS_LABEL,
                         value: formatMetricValue(
@@ -208,6 +222,15 @@ describe('useTrendReport', () => {
                         ),
                         prevValue: formatMetricValue(
                             zeroTouchTicketMetricTrend.data.prevValue,
+                        ),
+                    },
+                    {
+                        label: MESSAGES_RECEIVED_LABEL,
+                        value: formatMetricValue(
+                            messagesReceivedMetricTrend.data.value,
+                        ),
+                        prevValue: formatMetricValue(
+                            messagesReceivedMetricTrend.data.prevValue,
                         ),
                     },
                 ],
@@ -220,7 +243,7 @@ describe('useTrendReport', () => {
             useTrendReportData(
                 defaultStatsFilters,
                 'UTC',
-                getWorkloadReportSource(false),
+                getWorkloadReportSource(false, false),
             ),
         )
 
@@ -232,14 +255,31 @@ describe('useTrendReport', () => {
         })
     })
 
-    it('should return the labeled data', async () => {
+    it('should return the labeled data without messagesReceived', async () => {
+        const { result } = renderHook(() =>
+            useTrendReportData(
+                defaultStatsFilters,
+                'UTC',
+                getWorkloadReportSource(false, false),
+            ),
+        )
+
+        await waitFor(() => {
+            expect(result.current).toEqual({
+                isFetching: false,
+                data: resultData,
+            })
+        })
+    })
+
+    it('should return no data on error', async () => {
         useOpenTicketsTrendMock.mockRejectedValue({})
 
         const { result } = renderHook(() =>
             useTrendReportData(
                 defaultStatsFilters,
                 'UTC',
-                getWorkloadReportSource(true),
+                getWorkloadReportSource(true, true),
             ),
         )
 

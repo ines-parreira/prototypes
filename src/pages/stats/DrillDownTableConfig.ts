@@ -26,6 +26,7 @@ import { customerSatisfactionMetricDrillDownQueryFactory } from 'models/reportin
 import { firstResponseTimeMetricPerTicketDrillDownQueryFactory } from 'models/reporting/queryFactories/support-performance/medianFirstResponseTime'
 import { resolutionTimeMetricPerTicketDrillDownQueryFactory } from 'models/reporting/queryFactories/support-performance/medianResolutionTime'
 import { messagesPerTicketDrillDownQueryFactory } from 'models/reporting/queryFactories/support-performance/messagesPerTicket'
+import { messagesReceivedMetricPerTicketDrillDownQueryFactory } from 'models/reporting/queryFactories/support-performance/messagesReceived'
 import { messagesSentMetricPerTicketDrillDownQueryFactory } from 'models/reporting/queryFactories/support-performance/messagesSent'
 import { oneTouchTicketsPerTicketQueryFactory } from 'models/reporting/queryFactories/support-performance/oneTouchTickets'
 import { openTicketsPerTicketDrillDownQueryFactory } from 'models/reporting/queryFactories/support-performance/openTickets'
@@ -161,6 +162,8 @@ export const getDrillDownQuery = (
             return messagesPerTicketDrillDownQueryFactory
         case OverviewMetric.MessagesSent:
             return messagesSentMetricPerTicketDrillDownQueryFactory
+        case OverviewMetric.MessagesReceived:
+            return messagesReceivedMetricPerTicketDrillDownQueryFactory
         case OverviewMetric.TicketsClosed:
             return closedTicketsPerTicketDrillDownQueryFactory
         case OverviewMetric.TicketsReplied:

@@ -13,6 +13,7 @@ import { CustomerSatisfactionTrendCard } from 'pages/stats/support-performance/o
 import { MedianResolutionTimeTrendCard } from 'pages/stats/support-performance/overview/charts/MedianResolutionTimeTrendCard'
 import { MedianFirstResponseTimeTrendCard } from 'pages/stats/support-performance/overview/charts/MedianResponseTimeTrendCard'
 import { MessagesPerTicketTrendCard } from 'pages/stats/support-performance/overview/charts/MessagesPerTicketTrendCard'
+import { MessagesReceivedTrendCard } from 'pages/stats/support-performance/overview/charts/MessagesReceivedTrendCard'
 import { MessagesSentGraph } from 'pages/stats/support-performance/overview/charts/MessagesSentGraph'
 import { MessagesSentTrendCard } from 'pages/stats/support-performance/overview/charts/MessagesSentTrendCard'
 import { OneTouchTicketsTrendCard } from 'pages/stats/support-performance/overview/charts/OneTouchTicketsTrendCard'
@@ -59,6 +60,7 @@ export enum OverviewChart {
     ZeroTouchTicketsTrendCard = 'zero_touch_tickets_trend_card',
     TicketsRepliedGraph = 'tickets_replied_graph',
     MessagesSentGraph = 'messages_sent_graph',
+    MessagesReceivedTrendCard = 'messages_received_trend_card',
 }
 
 export const SupportPerformanceOverviewReportConfig: ReportConfig<OverviewChart> =
@@ -285,6 +287,27 @@ export const SupportPerformanceOverviewReportConfig: ReportConfig<OverviewChart>
                 ],
                 description:
                     OverviewMetricConfig[OverviewMetric.MessagesSent].hint
+                        .title,
+                chartType: ChartType.Card,
+            },
+            [OverviewChart.MessagesReceivedTrendCard]: {
+                chartComponent: MessagesReceivedTrendCard,
+                label: OverviewMetricConfig[OverviewMetric.MessagesReceived]
+                    .title,
+                csvProducer: [
+                    {
+                        type: DataExportFormat.Trend,
+                        fetch: OverviewMetricConfig[
+                            OverviewMetric.MessagesReceived
+                        ].fetchTrend,
+                        metricFormat:
+                            OverviewMetricConfig[
+                                OverviewMetric.MessagesReceived
+                            ].metricFormat,
+                    },
+                ],
+                description:
+                    OverviewMetricConfig[OverviewMetric.MessagesReceived].hint
                         .title,
                 chartType: ChartType.Card,
             },

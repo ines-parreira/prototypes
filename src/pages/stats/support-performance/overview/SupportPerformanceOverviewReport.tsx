@@ -29,13 +29,16 @@ export default function SupportPerformanceOverviewReport() {
         !!useFlags()[FeatureFlagKey.AnalyticsNewFilters]
     const isReportingZeroTouchTicketsMetricEnabled =
         !!useFlags()[FeatureFlagKey.ReportingZeroTouchTicketsMetric]
+    const isReportingMessagesReceivedMetricEnabled =
+        useFlags()[FeatureFlagKey.ReportingMessagesReceivedMetric]
 
     const [areTipsVisible, setAreTipsVisible] = useLocalStorage(
         STATS_TIPS_VISIBILITY_KEY,
         true,
     )
     const getGridCellSize = useGridSize()
-
+    const workloadSectionKPIGridCellSize =
+        isReportingMessagesReceivedMetricEnabled ? 3 : 4
     return (
         <div className="full-width">
             <StatsPage
@@ -113,21 +116,43 @@ export default function SupportPerformanceOverviewReport() {
 
                 <DashboardSection title="Workload">
                     <>
-                        <DashboardGridCell size={getGridCellSize(4)}>
+                        <DashboardGridCell
+                            size={getGridCellSize(
+                                workloadSectionKPIGridCellSize,
+                            )}
+                        >
                             <CustomReportComponent
                                 chart={OverviewChart.TicketsCreatedTrendCard}
                                 config={SupportPerformanceOverviewReportConfig}
                             />
                         </DashboardGridCell>
-                        <DashboardGridCell size={getGridCellSize(4)}>
+                        <DashboardGridCell
+                            size={getGridCellSize(
+                                workloadSectionKPIGridCellSize,
+                            )}
+                        >
                             <CustomReportComponent
                                 chart={OverviewChart.TicketsClosedTrendCard}
                                 config={SupportPerformanceOverviewReportConfig}
                             />
                         </DashboardGridCell>
-                        <DashboardGridCell size={getGridCellSize(4)}>
+                        <DashboardGridCell
+                            size={getGridCellSize(
+                                workloadSectionKPIGridCellSize,
+                            )}
+                        >
                             <CustomReportComponent
                                 chart={OverviewChart.OpenTicketsTrendCard}
+                                config={SupportPerformanceOverviewReportConfig}
+                            />
+                        </DashboardGridCell>
+                        <DashboardGridCell
+                            size={getGridCellSize(
+                                workloadSectionKPIGridCellSize,
+                            )}
+                        >
+                            <CustomReportComponent
+                                chart={OverviewChart.MessagesReceivedTrendCard}
                                 config={SupportPerformanceOverviewReportConfig}
                             />
                         </DashboardGridCell>

@@ -67,6 +67,7 @@ type PerformanceOverviewMetrics = {
         | OverviewMetric.TicketsCreated
         | OverviewMetric.TicketsReplied
         | OverviewMetric.MessagesSent
+        | OverviewMetric.MessagesReceived
         | OverviewMetric.MessagesPerTicket
         | OverviewMetric.MedianResolutionTime
         | OverviewMetric.MedianFirstResponseTime
@@ -223,6 +224,7 @@ const hiddenMetrics: DrillDownMetric['metricName'][] = [
     OverviewMetric.TicketsCreated,
     OverviewMetric.TicketsReplied,
     OverviewMetric.MessagesSent,
+    OverviewMetric.MessagesReceived,
     OverviewMetric.OneTouchTickets,
     OverviewMetric.ZeroTouchTickets,
     TicketFieldsMetric.TicketCustomFieldsTicketCount,
