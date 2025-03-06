@@ -40,7 +40,6 @@ export enum FeatureFlagKey {
     BigCommerceCreateOrder = 'bigcommerce-create-order',
     BigCommerceRefundOrder = 'bigcommerce-refund-order',
     BillingSummaryTotalWithCoupons = 'billing-summary-total-with-coupons',
-    BillingVoiceSmsSelfServe = 'billing-voice-sms-self-serve',
     ChangeAutomateSettingButtomPosition = 'change-automate-settings-button-position',
     ChatAgentAvatarCustomization = 'chat-agent-avatar-customization',
     ChatBackgroundColorStyle = 'chat-background-color-style',

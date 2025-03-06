@@ -2,12 +2,10 @@ import React from 'react'
 
 import { fireEvent, render, screen } from '@testing-library/react'
 import { fromJS } from 'immutable'
-import { mockFlags, resetLDMocks } from 'jest-launchdarkly-mock'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 
 import { logEvent, SegmentEvent } from 'common/segment'
-import { FeatureFlagKey } from 'config/featureFlags'
 import { billingState } from 'fixtures/billing'
 import {
     basicMonthlyAutomationPlan,
@@ -59,10 +57,6 @@ describe('ProductPlanSelection', () => {
         useAutomatedHelpdeskCancellationFlowAvailableMock.mockImplementation(
             () => false,
         )
-        resetLDMocks()
-        mockFlags({
-            [FeatureFlagKey.BillingVoiceSmsSelfServe]: false,
-        })
     })
     const mockSetSelectedPlans = jest.fn()
 
@@ -358,9 +352,6 @@ describe('ProductPlanSelection', () => {
     it.each([ProductType.Voice, ProductType.SMS])(
         '%p: should disable the add button for trialing users ',
         (productType) => {
-            mockFlags({
-                [FeatureFlagKey.BillingVoiceSmsSelfServe]: true,
-            })
             render(
                 <Provider store={store}>
                     <ProductPlanSelection

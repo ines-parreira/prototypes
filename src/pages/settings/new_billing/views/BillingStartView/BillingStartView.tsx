@@ -28,8 +28,6 @@ import {
     getCurrentConvertPlan,
     getCurrentHelpdeskPlan,
     getCurrentProductsUsage,
-    getCurrentSmsPlan,
-    getCurrentVoicePlan,
     getIsCurrentHelpdeskLegacy,
 } from 'state/billing/selectors'
 import { BillingBanner, TicketPurpose } from 'state/billing/types'
@@ -76,8 +74,6 @@ const BillingStartView = () => {
     const isTrialingSubscription = useAppSelector(isTrialing)
     const currentHelpdeskPlan = useAppSelector(getCurrentHelpdeskPlan)
     const currentAutomatePlan = useAppSelector(getCurrentAutomatePlan)
-    const currentVoicePlan = useAppSelector(getCurrentVoicePlan)
-    const currentSmsPlan = useAppSelector(getCurrentSmsPlan)
     const currentConvertPlan = useAppSelector(getCurrentConvertPlan)
     const isCurrentHelpdeskLegacy = useAppSelector(getIsCurrentHelpdeskLegacy)
     const payment = useAppSelector(paymentMethod)
@@ -454,8 +450,6 @@ const BillingStartView = () => {
                                 contactBilling={contactBilling}
                                 currentHelpdeskPlan={currentHelpdeskPlan}
                                 currentAutomatePlan={currentAutomatePlan}
-                                currentVoicePlan={currentVoicePlan}
-                                currentSmsPlan={currentSmsPlan}
                                 isCurrentSubscriptionCanceled={
                                     isCurrentSubscriptionCanceled
                                 }

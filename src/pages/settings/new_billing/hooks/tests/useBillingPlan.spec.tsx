@@ -4,12 +4,10 @@ import React from 'react'
 import { QueryClientProvider } from '@tanstack/react-query'
 import { renderHook } from '@testing-library/react-hooks'
 import { fromJS } from 'immutable'
-import { mockFlags, resetLDMocks } from 'jest-launchdarkly-mock'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import { FeatureFlagKey } from 'config/featureFlags'
 import { account } from 'fixtures/account'
 import {
     basicMonthlyHelpdeskPlan,
@@ -78,13 +76,6 @@ const store = mockedStore({
 })
 
 describe('useBillingPlans', () => {
-    beforeEach(() => {
-        resetLDMocks()
-        mockFlags({
-            [FeatureFlagKey.BillingVoiceSmsSelfServe]: true,
-        })
-    })
-
     it('should submit a support ticket when a non-vetted user selects a phone plan', async () => {
         const dispatchBillingError = jest.fn()
         const queryClient = mockQueryClient()

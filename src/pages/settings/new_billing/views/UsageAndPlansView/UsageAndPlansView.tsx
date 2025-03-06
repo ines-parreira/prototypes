@@ -1,14 +1,12 @@
 import React, { useEffect, useMemo } from 'react'
 
 import classNames from 'classnames'
-import { useFlags } from 'launchdarkly-react-client-sdk'
 import moment from 'moment'
 import { Link, useHistory } from 'react-router-dom'
 
 import { Tooltip } from '@gorgias/merchant-ui-kit'
 
 import { AlertBannerTypes } from 'AlertBanners'
-import { FeatureFlagKey } from 'config/featureFlags'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import { Cadence, ProductType } from 'models/billing/types'
@@ -123,17 +121,13 @@ const UsageAndPlansView = ({
     const hasCreditCard = useAppSelector(getHasCreditCard)
     const shouldPayWithShopify = useAppSelector(getShouldPayWithShopify)
 
-    const productDisabledForTrialingUser: boolean =
-        useFlags()[FeatureFlagKey.BillingVoiceSmsSelfServe] &&
-        isTrialingSubscription
-
-    const disabledTooltip = productDisabledForTrialingUser
+    const disabledTooltip = isTrialingSubscription
         ? PRODUCT_DISABLED_FOR_TRIALING_USERS_TOOLTIP
         : undefined
 
-    const isVettedForPhone =
-        useFlags()[FeatureFlagKey.BillingVoiceSmsSelfServe] &&
-        (currentSmsPlan?.price_id || currentVoicePlan?.price_id)
+    const isVettedForPhone = Boolean(
+        currentSmsPlan?.price_id || currentVoicePlan?.price_id,
+    )
 
     useEffect(() => {
         if (isTrialingSubscription) {
@@ -356,7 +350,7 @@ const UsageAndPlansView = ({
                     banner={voiceBanner}
                     isDisabled={
                         (!currentVoicePlan && !!scheduledToCancelAt) ||
-                        productDisabledForTrialingUser
+                        isTrialingSubscription
                     }
                     disabledTooltip={disabledTooltip}
                 />
@@ -367,7 +361,7 @@ const UsageAndPlansView = ({
                     banner={smsBanner}
                     isDisabled={
                         (!currentSmsPlan && !!scheduledToCancelAt) ||
-                        productDisabledForTrialingUser
+                        isTrialingSubscription
                     }
                     disabledTooltip={disabledTooltip}
                 />

@@ -2,12 +2,10 @@ import React from 'react'
 
 import { screen } from '@testing-library/react'
 import { fromJS } from 'immutable'
-import { mockFlags, resetLDMocks } from 'jest-launchdarkly-mock'
 
 import * as uiKit from '@gorgias/merchant-ui-kit'
 
 import { AiAgentNotificationType } from 'automate/notifications/types'
-import { FeatureFlagKey } from 'config/featureFlags'
 import { account } from 'fixtures/account'
 import { shopifyIntegration } from 'fixtures/integrations'
 import {
@@ -120,10 +118,6 @@ describe('UsageAndPlansView', () => {
     const MockTooltip = jest.spyOn(uiKit, 'Tooltip')
 
     beforeEach(() => {
-        resetLDMocks()
-        mockFlags({
-            [FeatureFlagKey.BillingVoiceSmsSelfServe]: false,
-        })
         mockUseGetOrCreateAccountConfiguration.mockReturnValue({
             status: 'success',
             isLoading: false,
@@ -146,7 +140,7 @@ describe('UsageAndPlansView', () => {
             description: 'Convert banner',
             type: AlertType.Info,
         }
-        const { getByText } = renderWithStoreAndQueryClientAndRouter(
+        renderWithStoreAndQueryClientAndRouter(
             <UsageAndPlansView
                 contactBilling={jest.fn()}
                 periodEnd="2021-01-01"
@@ -211,7 +205,8 @@ describe('UsageAndPlansView', () => {
             {},
         )
 
-        expect(getByText('Update')).toHaveAttribute(
+        // and the merchant can update its plan cadence from monthly to yearly
+        expect(screen.getByText('Update')).toHaveAttribute(
             'to',
             '/app/settings/billing/payment/frequency',
         )
@@ -287,6 +282,7 @@ describe('UsageAndPlansView', () => {
             {},
         )
 
+        // and the merchant can NOT update its plan cadence from monthly to yearly
         const updateBillingFrequencyButton = container.querySelector(
             '#update-billing-frequency',
         )
@@ -345,7 +341,7 @@ describe('UsageAndPlansView', () => {
             }),
         }
 
-        const { container } = renderWithStoreAndQueryClientAndRouter(
+        renderWithStoreAndQueryClientAndRouter(
             <UsageAndPlansView
                 contactBilling={jest.fn()}
                 periodEnd="2021-01-01"
@@ -412,20 +408,10 @@ describe('UsageAndPlansView', () => {
             {},
         )
 
-        const updateBillingFrequencyButton = container.querySelector(
-            '#update-billing-frequency',
-        )
-        expect(updateBillingFrequencyButton).toHaveClass('disabledText')
-        expect(updateBillingFrequencyButton).toHaveTextContent('Update')
-        expect(MockTooltip).toHaveBeenCalledWith(
-            {
-                autohide: false,
-                children: expect.any(Array),
-                className: 'tooltip',
-                placement: 'top',
-                target: 'update-billing-frequency',
-            },
-            {},
+        // and the merchant can update its plan cadence from monthly to yearly
+        expect(screen.getByText('Update').closest('a')).toHaveAttribute(
+            'to',
+            '/app/settings/billing/payment/frequency',
         )
     })
 
@@ -551,9 +537,6 @@ describe('UsageAndPlansView', () => {
     })
 
     it('should be possible to update plan frequency when the user is on a phone monthly plan and vetted for phone', () => {
-        mockFlags({
-            [FeatureFlagKey.BillingVoiceSmsSelfServe]: true,
-        })
         const alteredStore = {
             billing: fromJS(mockedBilling),
             integrations: fromJS(mockedIntegrations),
@@ -587,10 +570,6 @@ describe('UsageAndPlansView', () => {
     })
 
     it('should render with the Subscribe button disabled for trialing users', () => {
-        mockFlags({
-            [FeatureFlagKey.BillingVoiceSmsSelfServe]: true,
-        })
-
         const helpdeskBanner = {
             description: 'Helpdesk banner',
             type: AlertType.Info,

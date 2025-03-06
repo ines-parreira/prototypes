@@ -1,11 +1,9 @@
 import { useCallback, useMemo, useState } from 'react'
 
 import { useQueryClient } from '@tanstack/react-query'
-import { useFlags } from 'launchdarkly-react-client-sdk'
 import moment from 'moment'
 import { useHistory } from 'react-router-dom'
 
-import { FeatureFlagKey } from 'config/featureFlags'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import { isGorgiasApiError } from 'models/api/types'
@@ -157,8 +155,6 @@ export const useBillingPlans = ({
     const smsAvailablePlans = useAppSelector(getAvailableSmsPlans).filter(
         (plan) => (filterByCadence ? plan.cadence === cadence : true),
     )
-    const isPhoneSelfServeEnabled =
-        useFlags()[FeatureFlagKey.BillingVoiceSmsSelfServe]
     const isVettedForPhone = useAppSelector(getIsVettedForPhone)
 
     const smsInitialIndex =
@@ -374,7 +370,7 @@ export const useBillingPlans = ({
 
     const handleSMSAndVoicePlansChange = useCallback(async () => {
         // ignore manual process (i.e creating a support ticket) for accounts that have been vetted
-        if (isVettedForPhone && isPhoneSelfServeEnabled) {
+        if (isVettedForPhone) {
             return
         }
 
@@ -450,7 +446,6 @@ export const useBillingPlans = ({
         isFreeTrial,
         currentHelpdeskPlan?.name,
         isVettedForPhone,
-        isPhoneSelfServeEnabled,
     ])
 
     const handleStripePlansChange = useCallback(async () => {
@@ -508,7 +503,7 @@ export const useBillingPlans = ({
             }
         }
 
-        if (isVettedForPhone && isPhoneSelfServeEnabled) {
+        if (isVettedForPhone) {
             if (selectedPlans[ProductType.Voice]?.plan?.product) {
                 const plan = selectedPlans[ProductType.Voice]?.plan
 
@@ -629,7 +624,6 @@ export const useBillingPlans = ({
         periodEnd,
         isFreeTrial,
         isVettedForPhone,
-        isPhoneSelfServeEnabled,
         history,
         cadence,
         domain,

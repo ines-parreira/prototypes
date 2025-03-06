@@ -2,10 +2,9 @@ import React from 'react'
 
 import { screen } from '@testing-library/react'
 import { fromJS, Map } from 'immutable'
-import { mockFlags, resetLDMocks } from 'jest-launchdarkly-mock'
+import { resetLDMocks } from 'jest-launchdarkly-mock'
 import moment from 'moment/moment'
 
-import { FeatureFlagKey } from 'config/featureFlags'
 import {
     convertStatusLimitReached,
     convertStatusOkWarning,
@@ -397,9 +396,7 @@ describe('BillingStartView', () => {
     describe('PaymentInformation phone self-serve cadence change ', () => {
         beforeEach(() => {
             resetLDMocks()
-            mockFlags({
-                [FeatureFlagKey.BillingVoiceSmsSelfServe]: false,
-            })
+
             useAppSelectorMock.mockImplementation((selector) => {
                 if (selector === getCurrentProductsUsage) {
                     return currentUsage
@@ -439,10 +436,6 @@ describe('BillingStartView', () => {
         })
 
         it('should allow phone user to change billing frequency from monthly to yearly', () => {
-            mockFlags({
-                [FeatureFlagKey.BillingVoiceSmsSelfServe]: true,
-            })
-
             renderWithStoreAndQueryClientAndRouter(
                 <BillingStartView />,
                 storeWithActiveSubscriptionWithPhone,
@@ -454,49 +447,6 @@ describe('BillingStartView', () => {
             })
 
             expect(button).toBeInTheDocument()
-        })
-
-        it('should not allow phone user to change billing frequency from monthly to yearly if they dont have the flag', () => {
-            mockFlags({
-                [FeatureFlagKey.BillingVoiceSmsSelfServe]: false,
-            })
-            useAppSelectorMock.mockImplementation((selector) => {
-                if (selector === getCurrentProductsUsage) {
-                    return currentUsage
-                }
-
-                if (selector === getCurrentSubscription) {
-                    return fromJS({}) as Map<string, string>
-                }
-
-                if (selector === getIsCurrentHelpdeskLegacy) {
-                    return false
-                }
-
-                if (selector === getCurrentAccountState) {
-                    return fromJS({ domain: 'test' }) as Map<string, string>
-                }
-
-                if (selector === getCurrentUser) {
-                    return fromJS({ email: 'test@test.com' }) as Map<
-                        string,
-                        string
-                    >
-                }
-
-                return null
-            })
-            renderWithStoreAndQueryClientAndRouter(
-                <BillingStartView />,
-                storeWithActiveSubscriptionWithPhone,
-                { route: BILLING_PAYMENT_PATH },
-            )
-
-            const button = screen.queryByText('Change Frequency', {
-                selector: 'a',
-            })
-
-            expect(button).not.toBeInTheDocument()
         })
     })
 

@@ -1,8 +1,5 @@
 import React, { useMemo } from 'react'
 
-import { useFlags } from 'launchdarkly-react-client-sdk'
-
-import { FeatureFlagKey } from 'config/featureFlags'
 import useAppSelector from 'hooks/useAppSelector'
 import { ProductType } from 'models/billing/types'
 import Alert from 'pages/common/components/Alert/Alert'
@@ -24,9 +21,6 @@ const VoiceOrSmsChangeReviewAlert: React.FC<
 > = ({ selectedPlans }) => {
     const isVettedForPhone = useAppSelector(getIsVettedForPhone)
 
-    const isPhoneSelfServeEnabled =
-        useFlags()[FeatureFlagKey.BillingVoiceSmsSelfServe]
-
     const voiceOrSMSChanged = useAppSelector(
         getVoiceOrSmsPlanChanged({
             selectedVoicePlan: selectedPlans[ProductType.Voice].plan,
@@ -45,10 +39,7 @@ const VoiceOrSmsChangeReviewAlert: React.FC<
         return 'Voice'
     }, [selectedPlans])
 
-    const shouldHideVoiceOrSmsChangeReviewAlert =
-        isVettedForPhone && isPhoneSelfServeEnabled
-
-    if (voiceOrSMSChanged && !shouldHideVoiceOrSmsChangeReviewAlert) {
+    if (voiceOrSMSChanged && !isVettedForPhone) {
         return (
             <Alert className={css.alert} icon>
                 Your {voiceOrSMSText} subscription will have to be reviewed by

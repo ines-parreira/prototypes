@@ -1,12 +1,10 @@
 import React, { useCallback, useMemo, useState } from 'react'
 
 import classNames from 'classnames'
-import { useFlags } from 'launchdarkly-react-client-sdk'
 
 import { Tooltip } from '@gorgias/merchant-ui-kit'
 
 import { logEvent, SegmentEvent } from 'common/segment'
-import { FeatureFlagKey } from 'config/featureFlags'
 import useAppSelector from 'hooks/useAppSelector'
 import { Cadence, Plan, ProductType } from 'models/billing/types'
 import { getProductLabel, isStarterTier } from 'models/billing/utils'
@@ -215,9 +213,7 @@ const ProductPlanSelection = ({
     }
 
     const productDisabledForTrialingUser: boolean =
-        useFlags()[FeatureFlagKey.BillingVoiceSmsSelfServe] &&
-        !!isTrialing &&
-        (type === ProductType.Voice || type === ProductType.SMS)
+        !!isTrialing && (type === ProductType.Voice || type === ProductType.SMS)
 
     const disabledTooltip = productDisabledForTrialingUser
         ? PRODUCT_DISABLED_FOR_TRIALING_USERS_TOOLTIP

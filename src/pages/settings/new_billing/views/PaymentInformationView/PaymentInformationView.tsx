@@ -1,18 +1,11 @@
 import React, { useMemo } from 'react'
 
-import { useFlags } from 'launchdarkly-react-client-sdk'
 import { Link } from 'react-router-dom'
 
 import { Tooltip } from '@gorgias/merchant-ui-kit'
 
-import { FeatureFlagKey } from 'config/featureFlags'
 import useAppSelector from 'hooks/useAppSelector'
-import {
-    AutomatePlan,
-    Cadence,
-    HelpdeskPlan,
-    SMSOrVoicePlan,
-} from 'models/billing/types'
+import { AutomatePlan, Cadence, HelpdeskPlan } from 'models/billing/types'
 import { isLegacyAutomate } from 'models/billing/utils'
 import { NewSummaryPaymentSection } from 'pages/settings/new_billing/components/SummaryPaymentSection/NewSummaryPaymentSection'
 import { BillingInformationSection } from 'pages/settings/new_billing/views/PaymentInformationView/components/BillingInformationSection'
@@ -30,8 +23,6 @@ type PaymentInformationViewProps = {
     contactBilling: (ticketPurpose: TicketPurpose) => void
     currentHelpdeskPlan?: HelpdeskPlan
     currentAutomatePlan?: AutomatePlan
-    currentVoicePlan?: SMSOrVoicePlan
-    currentSmsPlan?: SMSOrVoicePlan
     isCurrentSubscriptionCanceled: boolean
 }
 
@@ -39,8 +30,6 @@ const PaymentInformationView = ({
     contactBilling,
     currentHelpdeskPlan,
     currentAutomatePlan,
-    currentVoicePlan,
-    currentSmsPlan,
     isCurrentSubscriptionCanceled,
 }: PaymentInformationViewProps) => {
     const cadence = useAppSelector(getCurrentHelpdeskCadence) ?? Cadence.Month
@@ -48,13 +37,10 @@ const PaymentInformationView = ({
         currentHelpdeskPlan?.name === 'Starter'
     const isAAOLegacy =
         !!currentAutomatePlan && isLegacyAutomate(currentAutomatePlan)
-    const isSubscribedToVoiceOrSms = !!currentVoicePlan || !!currentSmsPlan
-    const phoneSelfServeEnabled =
-        useFlags()[FeatureFlagKey.BillingVoiceSmsSelfServe]
 
     const shouldPayWithShopify = useAppSelector(getShouldPayWithShopify)
 
-    const changeFrequency = useMemo(() => {
+    const changeCadence = useMemo(() => {
         let toolTipContent
 
         if (cadence === Cadence.Month) {
@@ -77,21 +63,6 @@ const PaymentInformationView = ({
                             contact us
                         </span>
                         .
-                    </>
-                )
-            } else if (isSubscribedToVoiceOrSms && !phoneSelfServeEnabled) {
-                toolTipContent = (
-                    <>
-                        To switch from monthly to yearly,{' '}
-                        <span
-                            className={css.link}
-                            onClick={() =>
-                                contactBilling(TicketPurpose.MONTHLY_TO_YEARLY)
-                            }
-                        >
-                            get in touch
-                        </span>{' '}
-                        with our team.
                     </>
                 )
             } else {
@@ -135,10 +106,8 @@ const PaymentInformationView = ({
         cadence,
         isSubscribedToHelpdeskStarter,
         isAAOLegacy,
-        isSubscribedToVoiceOrSms,
         isCurrentSubscriptionCanceled,
         contactBilling,
-        phoneSelfServeEnabled,
     ])
 
     return (
@@ -152,7 +121,7 @@ const PaymentInformationView = ({
                 <Description>
                     All plans are billed <strong>{cadence}ly</strong>
                 </Description>
-                {changeFrequency}
+                {changeCadence}
             </Section>
             {!shouldPayWithShopify ? <BillingInformationSection /> : null}
         </div>

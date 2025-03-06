@@ -2,12 +2,11 @@ import React from 'react'
 
 import { render } from '@testing-library/react'
 import { fromJS } from 'immutable'
-import { mockFlags, resetLDMocks } from 'jest-launchdarkly-mock'
+import { resetLDMocks } from 'jest-launchdarkly-mock'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import { FeatureFlagKey } from 'config/featureFlags'
 import { account } from 'fixtures/account'
 import {
     basicMonthlyHelpdeskPlan,
@@ -54,9 +53,6 @@ describe('VoiceOrSmsChangeReviewAlert', () => {
     beforeEach(() => {
         jest.resetAllMocks()
         resetLDMocks()
-        mockFlags({
-            [FeatureFlagKey.BillingVoiceSmsSelfServe]: true,
-        })
     })
 
     describe('alert for users vetted for phone', () => {
@@ -110,23 +106,6 @@ describe('VoiceOrSmsChangeReviewAlert', () => {
             expect(
                 queryByText(/subscription will have to be reviewed/),
             ).toBeNull()
-        })
-
-        it('should display the alert if the user is vetted for phone but the feature flag is not enabled', () => {
-            mockFlags({
-                [FeatureFlagKey.BillingVoiceSmsSelfServe]: false,
-            })
-            const { queryByText } = render(
-                <Provider store={store}>
-                    <VoiceOrSmsChangeReviewAlert
-                        selectedPlans={selectedPlans}
-                    />
-                </Provider>,
-            )
-
-            expect(
-                queryByText(/subscription will have to be reviewed/),
-            ).toBeInTheDocument()
         })
     })
 
