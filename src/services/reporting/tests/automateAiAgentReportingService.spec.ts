@@ -47,6 +47,7 @@ const metricBuilder = (data: any) => ({
     customerSatisfactionMetric: buildMetric(data),
     medianFirstResponseTimeMetric: buildMetric(data),
     messagesSentMetric: buildMetric(data),
+    messagesReceivedMetric: buildMetric(data),
     percentageOfClosedTicketsMetric: buildMetric(data),
     medianResolutionTimeMetric: buildMetric(data),
     ticketsRepliedMetric: buildMetric(data),

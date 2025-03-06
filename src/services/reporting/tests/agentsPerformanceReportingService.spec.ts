@@ -105,6 +105,7 @@ const baseMetricBuilder = (reportData: any) => ({
     customerSatisfactionMetric: buildQuery(false, reportData),
     medianFirstResponseTimeMetric: buildQuery(false, reportData),
     messagesSentMetric: buildQuery(false, reportData),
+    messagesReceivedMetric: buildQuery(false, reportData),
     percentageOfClosedTicketsMetric: buildQuery(false, reportData),
     medianResolutionTimeMetric: buildQuery(false, reportData),
     ticketsRepliedMetric: buildQuery(false, reportData),

@@ -15,6 +15,7 @@ export enum AgentsTableColumn {
     MedianFirstResponseTime = 'agent_median_first_response_time',
     MedianResolutionTime = 'agent_median_resolution_time',
     MessagesSent = 'agent_messages_sent',
+    MessagesReceived = 'agent_messages_received',
     PercentageOfClosedTickets = 'agent_percentage_of_closed_tickets',
     ClosedTickets = 'agent_closed_tickets',
     RepliedTickets = 'agent_replied_tickets',

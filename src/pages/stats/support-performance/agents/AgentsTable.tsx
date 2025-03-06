@@ -1,13 +1,12 @@
 import React, { FunctionComponent, UIEventHandler, useState } from 'react'
 
 import classNames from 'classnames'
-// eslint-disable-next-line no-restricted-imports
-import { useDispatch } from 'react-redux'
 
 import { User } from 'config/types/user'
 import { useNewStatsFilters } from 'hooks/reporting/support-performance/useNewStatsFilters'
 import { useAgentsSortingQuery } from 'hooks/reporting/useAgentsSortingQuery'
 import { useAgentsTableConfigSetting } from 'hooks/reporting/useAgentsTableConfigSetting'
+import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import useMeasure from 'hooks/useMeasure'
 import { StatsFilters } from 'models/stat/types'
@@ -152,7 +151,7 @@ export const AgentsTable = ({
     withAggregateRows = true,
     isHeatmapMode = false,
 }: AgentsTableProps) => {
-    const dispatch = useDispatch()
+    const dispatch = useAppDispatch()
     const { columnsOrder, rowsOrder } = useAgentsTableConfigSetting()
     const { currentPage, perPage, agents, allAgents } = paginatedAgents
     const onPageChangeCallback = (page: number) => {

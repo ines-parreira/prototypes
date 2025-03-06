@@ -11,6 +11,10 @@ import {
     HandleTimeMeasure,
 } from 'models/reporting/cubes/agentxp/HandleTimeCube'
 import {
+    HelpdeskCustomerMessagesReceivedEnrichedCubeWithJoins,
+    HelpdeskCustomerMessagesReceivedEnrichedMeasure,
+} from 'models/reporting/cubes/HelpdeskCustomerMessagesReceivedEnrichedCube'
+import {
     HelpdeskMessageCubeWithJoins,
     HelpdeskMessageDimension,
     HelpdeskMessageMeasure,
@@ -50,6 +54,7 @@ type AgentIdentifierDimension =
 type AgentReportMetrics =
     | HelpdeskMessageCubeWithJoins['dimensions']
     | HelpdeskMessageCubeWithJoins['measures']
+    | HelpdeskCustomerMessagesReceivedEnrichedCubeWithJoins['measures']
     | AgentTimeTrackingCube['measures']
     | HandleTimeCube['measures']
 
@@ -72,6 +77,7 @@ export interface AgentsPerformanceReportData<T = MetricWithDecile> {
     closedTicketsMetric: T
     ticketsRepliedMetric: T
     messagesSentMetric: T
+    messagesReceivedMetric: T
     oneTouchTicketsMetric: T
     zeroTouchTicketsMetric: T
     repliedTicketsPerHourMetric: T
@@ -172,6 +178,8 @@ export const getData = (
     const MessageSenderId = TicketDimension.MessageSenderId
     const HelpdeskTicketCount = HelpdeskMessageMeasure.TicketCount
     const MessageCount = HelpdeskMessageMeasure.MessageCount
+    const MessageReceivedCount =
+        HelpdeskCustomerMessagesReceivedEnrichedMeasure.MessageCount
     const OnlineTime = AgentTimeTrackingMeasure.OnlineTime
     const AverageHandleTime = HandleTimeMeasure.AverageHandleTime
     const UserId = AgentTimeTrackingDimension.UserId
@@ -225,6 +233,13 @@ export const getData = (
             idField: SenderId,
             metricField: MessageCount,
             summaryData: summary.messagesSentMetric.data?.value,
+        },
+        [AgentsTableColumn.MessagesReceived]: {
+            column: AgentsTableColumn.MessagesReceived,
+            metricData: data.messagesReceivedMetric,
+            idField: SenderId,
+            metricField: MessageReceivedCount,
+            summaryData: summary.messagesReceivedMetric.data?.value,
         },
         [AgentsTableColumn.RepliedTickets]: {
             column: AgentsTableColumn.RepliedTickets,

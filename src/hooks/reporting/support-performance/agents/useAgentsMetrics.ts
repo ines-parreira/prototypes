@@ -5,6 +5,7 @@ import {
     useCustomerSatisfactionMetricPerAgent,
     useMedianFirstResponseTimeMetricPerAgent,
     useMedianResolutionTimeMetricPerAgent,
+    useMessagesReceivedMetricPerAgent,
     useMessagesSentMetricPerAgent,
     useOnlineTimePerAgent,
     useTicketAverageHandleTimePerAgent,
@@ -40,6 +41,10 @@ export function useAgentsMetrics() {
             userTimezone,
         )
     const messagesSentMetric = useMessagesSentMetricPerAgent(
+        cleanStatsFilters,
+        userTimezone,
+    )
+    const messagesReceivedMetric = useMessagesReceivedMetricPerAgent(
         cleanStatsFilters,
         userTimezone,
     )
@@ -87,6 +92,7 @@ export function useAgentsMetrics() {
             closedTicketsMetric,
             medianFirstResponseTimeMetric,
             messagesSentMetric,
+            messagesReceivedMetric,
             medianResolutionTimeMetric,
             ticketsRepliedMetric,
             oneTouchTicketsMetric,
@@ -103,6 +109,7 @@ export function useAgentsMetrics() {
         closedTicketsMetric,
         medianFirstResponseTimeMetric,
         messagesSentMetric,
+        messagesReceivedMetric,
         medianResolutionTimeMetric,
         ticketsRepliedMetric,
         oneTouchTicketsMetric,
@@ -121,6 +128,7 @@ export function useAgentsMetrics() {
             closedTicketsMetric,
             medianFirstResponseTimeMetric,
             messagesSentMetric,
+            messagesReceivedMetric,
             medianResolutionTimeMetric,
             ticketsRepliedMetric,
             oneTouchTicketsMetric,

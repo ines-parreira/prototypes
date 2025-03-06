@@ -15,7 +15,6 @@ import {
     agentPerformanceTableActiveView,
     agentPerformanceTableActiveViewWithTotal,
     TableColumnsOrder,
-    TableColumnsOrderWithZeroTouchTickets,
     TableRowsOrder,
     TableRowsOrderWithTotal,
 } from 'pages/stats/support-performance/agents/AgentsTableConfig'
@@ -57,7 +56,11 @@ describe('useAgentsTableConfigSetting', () => {
         })
 
         expect(result.current).toEqual({
-            columnsOrder: TableColumnsOrderWithZeroTouchTickets,
+            columnsOrder: [
+                ...TableColumnsOrder,
+                AgentsTableColumn.ZeroTouchTickets,
+                AgentsTableColumn.MessagesReceived,
+            ],
             rowsOrder: TableRowsOrderWithTotal,
             currentView: {
                 ...agentPerformanceTableActiveViewWithTotal,
@@ -65,6 +68,10 @@ describe('useAgentsTableConfigSetting', () => {
                     ...agentPerformanceTableActiveViewWithTotal.metrics,
                     {
                         id: AgentsTableColumn.ZeroTouchTickets,
+                        visibility: null,
+                    },
+                    {
+                        id: AgentsTableColumn.MessagesReceived,
                         visibility: null,
                     },
                 ],

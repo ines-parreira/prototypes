@@ -7,6 +7,7 @@ import { closedTicketsQueryFactory } from 'models/reporting/queryFactories/suppo
 import { customerSatisfactionQueryFactory } from 'models/reporting/queryFactories/support-performance/customerSatisfaction'
 import { medianFirstResponseTimeQueryFactory } from 'models/reporting/queryFactories/support-performance/medianFirstResponseTime'
 import { medianResolutionTimeQueryFactory } from 'models/reporting/queryFactories/support-performance/medianResolutionTime'
+import { messagesReceivedQueryFactory } from 'models/reporting/queryFactories/support-performance/messagesReceived'
 import { messagesSentQueryFactory } from 'models/reporting/queryFactories/support-performance/messagesSent'
 import { oneTouchTicketsQueryFactory } from 'models/reporting/queryFactories/support-performance/oneTouchTickets'
 import { ticketsCreatedQueryFactory } from 'models/reporting/queryFactories/support-performance/ticketsCreated'
@@ -153,6 +154,17 @@ export const fetchMessagesSentMetric = (
     timezone: string,
 ): Promise<Metric> =>
     fetchMetric(messagesSentQueryFactory(statsFilters, timezone))
+
+export const useMessagesReceivedMetric = (
+    statsFilters: StatsFilters,
+    timezone: string,
+): Metric => useMetric(messagesReceivedQueryFactory(statsFilters, timezone))
+
+export const fetchMessagesReceivedMetric = (
+    statsFilters: StatsFilters,
+    timezone: string,
+): Promise<Metric> =>
+    fetchMetric(messagesReceivedQueryFactory(statsFilters, timezone))
 
 export const useOneTouchTicketsMetric = (
     statsFilters: StatsFilters,

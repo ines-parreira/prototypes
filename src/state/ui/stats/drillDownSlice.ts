@@ -82,6 +82,7 @@ export type AgentMetricColumn =
     | AgentsTableColumn.MedianFirstResponseTime
     | AgentsTableColumn.MedianResolutionTime
     | AgentsTableColumn.MessagesSent
+    | AgentsTableColumn.MessagesReceived
     | AgentsTableColumn.PercentageOfClosedTickets
     | AgentsTableColumn.ClosedTickets
     | AgentsTableColumn.RepliedTickets

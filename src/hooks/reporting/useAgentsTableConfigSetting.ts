@@ -1,3 +1,5 @@
+import { useMemo } from 'react'
+
 import { FeatureFlagKey } from 'config/featureFlags'
 import { useFlag } from 'core/flags'
 import { useTableConfigSetting } from 'hooks/reporting/useTableConfigSetting'
@@ -5,7 +7,6 @@ import {
     agentPerformanceTableActiveView,
     agentPerformanceTableActiveViewWithTotal,
     TableColumnsOrder,
-    TableColumnsOrderWithZeroTouchTickets,
     TableRowsOrder,
     TableRowsOrderWithTotal,
 } from 'pages/stats/support-performance/agents/AgentsTableConfig'
@@ -20,15 +21,32 @@ export const useAgentsTableConfigSetting = () => {
     const isReportingZeroTouchTicketsMetricEnabled = useFlag(
         FeatureFlagKey.ReportingZeroTouchTicketsMetric,
     )
+    const isReportingMessagesReceivedMetricEnabled = useFlag(
+        FeatureFlagKey.ReportingMessagesReceivedMetric,
+    )
+
+    const columnsOrder = useMemo(
+        () => [
+            ...TableColumnsOrder,
+            ...(isReportingZeroTouchTicketsMetricEnabled
+                ? [AgentsTableColumn.ZeroTouchTickets]
+                : []),
+            ...(isReportingMessagesReceivedMetricEnabled
+                ? [AgentsTableColumn.MessagesReceived]
+                : []),
+        ],
+        [
+            isReportingZeroTouchTicketsMetricEnabled,
+            isReportingMessagesReceivedMetricEnabled,
+        ],
+    )
 
     return useTableConfigSetting<AgentsTableColumn, AgentsTableRow>(
         getAgentsTableConfigSettingsJS,
         isReportingAgentsTableAverageAndTotalEnabled
             ? agentPerformanceTableActiveViewWithTotal
             : agentPerformanceTableActiveView,
-        isReportingZeroTouchTicketsMetricEnabled
-            ? TableColumnsOrderWithZeroTouchTickets
-            : TableColumnsOrder,
+        columnsOrder,
         isReportingAgentsTableAverageAndTotalEnabled
             ? TableRowsOrderWithTotal
             : TableRowsOrder,

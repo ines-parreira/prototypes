@@ -198,6 +198,11 @@ export const getDrillDownQuery = (
                 metricName.perAgentId,
                 messagesSentMetricPerTicketDrillDownQueryFactory,
             )
+        case AgentsTableColumn.MessagesReceived:
+            return queryBuilderWithAgentFilter(
+                metricName.perAgentId,
+                messagesReceivedMetricPerTicketDrillDownQueryFactory,
+            )
         case AgentsTableColumn.PercentageOfClosedTickets:
         case AgentsTableColumn.ClosedTicketsPerHour:
         case AgentsTableColumn.ClosedTickets:

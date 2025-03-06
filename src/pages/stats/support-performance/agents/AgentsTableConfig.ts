@@ -5,6 +5,7 @@ import {
     useCustomerSatisfactionMetric,
     useMedianFirstResponseTimeMetric,
     useMedianResolutionTimeMetric,
+    useMessagesReceivedMetric,
     useMessagesSentMetric,
     useOnlineTimeMetric,
     useTicketAverageHandleTimeMetric,
@@ -15,6 +16,7 @@ import {
     useCustomerSatisfactionMetricPerAgent,
     useMedianFirstResponseTimeMetricPerAgent,
     useMedianResolutionTimeMetricPerAgent,
+    useMessagesReceivedMetricPerAgent,
     useMessagesSentMetricPerAgent,
     useOnlineTimePerAgent,
     useTicketAverageHandleTimePerAgent,
@@ -49,6 +51,7 @@ import {
     CUSTOMER_SATISFACTION_LABEL,
     MEDIAN_FIRST_RESPONSE_TIME_LABEL,
     MEDIAN_RESOLUTION_TIME_LABEL,
+    MESSAGES_RECEIVED_LABEL,
     MESSAGES_SENT_LABEL,
     MESSAGES_SENT_PER_HOUR,
     ONE_TOUCH_TICKETS_LABEL,
@@ -83,11 +86,6 @@ export const TableColumnsOrder: AgentsTableColumn[] = [
     AgentsTableColumn.RepliedTicketsPerHour,
     AgentsTableColumn.ClosedTicketsPerHour,
     AgentsTableColumn.TicketHandleTime,
-]
-
-export const TableColumnsOrderWithZeroTouchTickets: AgentsTableColumn[] = [
-    ...TableColumnsOrder,
-    AgentsTableColumn.ZeroTouchTickets,
 ]
 
 export const TableRowsOrder: AgentsTableRow[] = [AgentsTableRow.Average]
@@ -149,6 +147,7 @@ export const TableLabels: Record<AgentsTableColumn, string> = {
     [AgentsTableColumn.PercentageOfClosedTickets]: PERCENT_OF_CLOSED_TICKETS,
     [AgentsTableColumn.RepliedTickets]: TICKETS_REPLIED_LABEL,
     [AgentsTableColumn.MessagesSent]: MESSAGES_SENT_LABEL,
+    [AgentsTableColumn.MessagesReceived]: MESSAGES_RECEIVED_LABEL,
     [AgentsTableColumn.OneTouchTickets]: ONE_TOUCH_TICKETS_LABEL,
     [AgentsTableColumn.ZeroTouchTickets]: ZERO_TOUCH_TICKETS_LABEL,
     [AgentsTableColumn.OnlineTime]: ONLINE_TIME_LABEL,
@@ -224,6 +223,13 @@ export const AgentsColumnConfig: Record<
         hint: {
             title: 'Total number of messages sent by the agent within the selected timeframe',
             link: 'https://link.gorgias.com/114',
+        },
+        perAgent: true,
+    },
+    [AgentsTableColumn.MessagesReceived]: {
+        format: 'integer',
+        hint: {
+            title: 'Messages received on a particular ticket in a given period of time.',
         },
         perAgent: true,
     },
@@ -356,6 +362,8 @@ export const getQuery = (
             return useClosedTicketsMetricPerAgent
         case AgentsTableColumn.MessagesSent:
             return useMessagesSentMetricPerAgent
+        case AgentsTableColumn.MessagesReceived:
+            return useMessagesReceivedMetricPerAgent
         case AgentsTableColumn.MedianResolutionTime:
             return useMedianResolutionTimeMetricPerAgent
         case AgentsTableColumn.CustomerSatisfaction:
@@ -399,6 +407,8 @@ export const getSummaryQuery = (column: AgentsTableColumn): MetricQueryHook => {
             return useClosedTicketsMetric
         case AgentsTableColumn.MessagesSent:
             return useMessagesSentMetric
+        case AgentsTableColumn.MessagesReceived:
+            return useMessagesReceivedMetric
         case AgentsTableColumn.MedianResolutionTime:
             return useMedianResolutionTimeMetric
         case AgentsTableColumn.CustomerSatisfaction:
@@ -424,22 +434,18 @@ export const getTotalsQuery = (column: AgentsTableColumn): MetricQueryHook => {
     switch (column) {
         case AgentsTableColumn.ClosedTickets:
             return useClosedTicketsMetric
-
         case AgentsTableColumn.ClosedTicketsPerHour:
             return useTicketsClosedPerHour
-
         case AgentsTableColumn.RepliedTicketsPerHour:
             return useTicketsRepliedPerHour
-
         case AgentsTableColumn.RepliedTickets:
             return useTicketsRepliedMetric
-
         case AgentsTableColumn.MessagesSent:
             return useMessagesSentMetric
-
+        case AgentsTableColumn.MessagesReceived:
+            return useMessagesReceivedMetric
         case AgentsTableColumn.MessagesSentPerHour:
             return useMessagesSentPerHour
-
         case AgentsTableColumn.AgentName:
         case AgentsTableColumn.MedianFirstResponseTime:
         case AgentsTableColumn.MedianResolutionTime:

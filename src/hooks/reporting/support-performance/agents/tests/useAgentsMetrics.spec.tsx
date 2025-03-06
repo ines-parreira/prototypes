@@ -9,6 +9,7 @@ import {
     useCustomerSatisfactionMetricPerAgent,
     useMedianFirstResponseTimeMetricPerAgent,
     useMedianResolutionTimeMetricPerAgent,
+    useMessagesReceivedMetricPerAgent,
     useMessagesSentMetricPerAgent,
     useOnlineTimePerAgent,
     useTicketAverageHandleTimePerAgent,
@@ -52,6 +53,9 @@ const useMedianFirstResponseTimeMetricPerAgentMock = assumeMock(
 )
 const useMessagesSentMetricPerAgentMock = assumeMock(
     useMessagesSentMetricPerAgent,
+)
+const useMessagesReceivedMetricPerAgentMock = assumeMock(
+    useMessagesReceivedMetricPerAgent,
 )
 const useMedianResolutionTimeMetricPerAgentMock = assumeMock(
     useMedianResolutionTimeMetricPerAgent,
@@ -101,6 +105,7 @@ describe('useAgentsMetric', () => {
             customerSatisfactionMetric: metricData,
             medianFirstResponseTimeMetric: metricData,
             messagesSentMetric: metricData,
+            messagesReceivedMetric: metricData,
             percentageOfClosedTicketsMetric: metricData,
             medianResolutionTimeMetric: metricData,
             ticketsRepliedMetric: metricData,
@@ -138,6 +143,7 @@ describe('useAgentsMetric', () => {
         useClosedTicketsMetricPerAgentMock.mockReturnValue(metricData)
         useMedianFirstResponseTimeMetricPerAgentMock.mockReturnValue(metricData)
         useMessagesSentMetricPerAgentMock.mockReturnValue(metricData)
+        useMessagesReceivedMetricPerAgentMock.mockReturnValue(metricData)
         useMedianResolutionTimeMetricPerAgentMock.mockReturnValue(metricData)
         useTicketsRepliedMetricPerAgentMock.mockReturnValue(metricData)
         useOneTouchTicketsPercentageMetricPerAgentMock.mockReturnValue(

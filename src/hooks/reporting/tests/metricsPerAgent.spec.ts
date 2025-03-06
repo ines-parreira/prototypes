@@ -7,6 +7,7 @@ import {
     fetchCustomerSatisfactionMetricPerAgent,
     fetchMedianFirstResponseTimeMetricPerAgent,
     fetchMedianResolutionTimeMetricPerAgent,
+    fetchMessagesReceivedMetricPerAgent,
     fetchMessagesSentMetricPerAgent,
     fetchOneTouchTicketsMetricPerAgent,
     fetchOnlineTimePerAgent,
@@ -35,6 +36,7 @@ import { closedTicketsPerAgentQueryFactory } from 'models/reporting/queryFactori
 import { customerSatisfactionMetricPerAgentQueryFactory } from 'models/reporting/queryFactories/support-performance/customerSatisfaction'
 import { medianFirstResponseTimeMetricPerAgentQueryFactory } from 'models/reporting/queryFactories/support-performance/medianFirstResponseTime'
 import { medianResolutionTimeMetricPerAgentQueryFactory } from 'models/reporting/queryFactories/support-performance/medianResolutionTime'
+import { messagesReceivedMetricPerAgentQueryFactory } from 'models/reporting/queryFactories/support-performance/messagesReceived'
 import { messagesSentMetricPerAgentQueryFactory } from 'models/reporting/queryFactories/support-performance/messagesSent'
 import { oneTouchTicketsPerAgentQueryFactory } from 'models/reporting/queryFactories/support-performance/oneTouchTickets'
 import { ticketsRepliedMetricPerAgentQueryFactory } from 'models/reporting/queryFactories/support-performance/ticketsReplied'
@@ -149,6 +151,11 @@ describe('metricsPerAgent', () => {
                 'fetchMessagesSentMetricPerAgent',
                 fetchMessagesSentMetricPerAgent,
                 messagesSentMetricPerAgentQueryFactory,
+            ],
+            [
+                'fetchMessagesReceivedMetricPerAgent',
+                fetchMessagesReceivedMetricPerAgent,
+                messagesReceivedMetricPerAgentQueryFactory,
             ],
             [
                 'fetchMedianResolutionTimeMetricPerAgent',

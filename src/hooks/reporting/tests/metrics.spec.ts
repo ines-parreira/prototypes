@@ -6,6 +6,7 @@ import {
     fetchCustomerSatisfactionMetric,
     fetchMedianFirstResponseTimeMetric,
     fetchMedianResolutionTimeMetric,
+    fetchMessagesReceivedMetric,
     fetchMessagesSentMetric,
     fetchOneTouchTicketsMetric,
     fetchOnlineTimeMetric,
@@ -18,6 +19,7 @@ import {
     useCustomerSatisfactionMetric,
     useMedianFirstResponseTimeMetric,
     useMedianResolutionTimeMetric,
+    useMessagesReceivedMetric,
     useMessagesSentMetric,
     useOneTouchTicketsMetric,
     useOnlineTimeMetric,
@@ -33,6 +35,7 @@ import { closedTicketsQueryFactory } from 'models/reporting/queryFactories/suppo
 import { customerSatisfactionQueryFactory } from 'models/reporting/queryFactories/support-performance/customerSatisfaction'
 import { medianFirstResponseTimeQueryFactory } from 'models/reporting/queryFactories/support-performance/medianFirstResponseTime'
 import { medianResolutionTimeQueryFactory } from 'models/reporting/queryFactories/support-performance/medianResolutionTime'
+import { messagesReceivedQueryFactory } from 'models/reporting/queryFactories/support-performance/messagesReceived'
 import { messagesSentQueryFactory } from 'models/reporting/queryFactories/support-performance/messagesSent'
 import { oneTouchTicketsQueryFactory } from 'models/reporting/queryFactories/support-performance/oneTouchTickets'
 import { ticketsCreatedQueryFactory } from 'models/reporting/queryFactories/support-performance/ticketsCreated'
@@ -196,6 +199,11 @@ describe('metrics', () => {
             messagesSentQueryFactory,
         ],
         [
+            'useMessagesReceivedMetric',
+            useMessagesReceivedMetric,
+            messagesReceivedQueryFactory,
+        ],
+        [
             'useTicketsRepliedMetric',
             useTicketsRepliedMetric,
             ticketsRepliedQueryFactory,
@@ -234,6 +242,11 @@ describe('metrics', () => {
             'fetchMessagesSentMetric',
             fetchMessagesSentMetric,
             messagesSentQueryFactory,
+        ],
+        [
+            'fetchMessagesReceivedMetric',
+            fetchMessagesReceivedMetric,
+            messagesReceivedQueryFactory,
         ],
         [
             'fetchTicketsRepliedMetric',

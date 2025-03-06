@@ -10,6 +10,7 @@ import {
     fetchCustomerSatisfactionMetric,
     fetchMedianFirstResponseTimeMetric,
     fetchMedianResolutionTimeMetric,
+    fetchMessagesReceivedMetric,
     fetchMessagesSentMetric,
     fetchOnlineTimeMetric,
     fetchTicketAverageHandleTimeMetric,
@@ -21,6 +22,7 @@ import {
     fetchCustomerSatisfactionMetricPerAgent,
     fetchMedianFirstResponseTimeMetricPerAgent,
     fetchMedianResolutionTimeMetricPerAgent,
+    fetchMessagesReceivedMetricPerAgent,
     fetchMessagesSentMetricPerAgent,
     fetchOneTouchTicketsMetricPerAgent,
     fetchOnlineTimePerAgent,
@@ -65,6 +67,7 @@ export type AgentsReportMetricDataPoints =
     | 'closedTicketsMetric'
     | 'ticketsRepliedMetric'
     | 'messagesSentMetric'
+    | 'messagesReceivedMetric'
     | 'oneTouchTicketsMetric'
     | 'zeroTouchTicketsMetric'
     | 'repliedTicketsPerHourMetric'
@@ -107,6 +110,10 @@ export const agentsMetricsDataSources: TableDataSources<AgentsReportData> = [
     {
         fetchData: fetchMessagesSentMetricPerAgent,
         title: 'messagesSentMetric',
+    },
+    {
+        fetchData: fetchMessagesReceivedMetricPerAgent,
+        title: 'messagesReceivedMetric',
     },
     {
         fetchData: fetchMedianResolutionTimeMetricPerAgent,
@@ -166,6 +173,10 @@ export const agentsSummaryDataSources: TableSummaryDataSources<AgentsReportData>
         {
             fetchData: fetchMessagesSentMetric,
             title: 'messagesSentMetric',
+        },
+        {
+            fetchData: fetchMessagesReceivedMetric,
+            title: 'messagesReceivedMetric',
         },
         {
             fetchData: fetchMedianResolutionTimeMetric,
