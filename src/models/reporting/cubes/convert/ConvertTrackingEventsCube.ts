@@ -6,6 +6,7 @@ export enum ConvertTrackingEventsMeasure {
 
 export enum ConvertTrackingEventsDimension {
     Source = `CampaignEvents.source`,
+    ProductId = `CampaignEvents.productId`,
     CreatedDatetime = `CampaignEvents.createdDatetime`,
 }
 

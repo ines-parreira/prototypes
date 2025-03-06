@@ -3,7 +3,7 @@ import { useMemo } from 'react'
 import useMetricTrend, {
     fetchMetricTrend,
 } from 'hooks/reporting/useMetricTrend'
-import { productClicksQueryFactory } from 'models/reporting/queryFactories/ai-sales-agent/metrics'
+import { totalProductClicksQueryFactory } from 'models/reporting/queryFactories/ai-sales-agent/metrics'
 import { StatsFilters } from 'models/stat/types'
 import safeDivide from 'pages/stats/aiSalesAgent/util/safeDivide'
 import { getPreviousPeriod } from 'utils/reporting'
@@ -15,8 +15,8 @@ import {
 
 const useProductClickRate = (filters: StatsFilters, timezone: string) => {
     const clickTrendData = useMetricTrend(
-        productClicksQueryFactory(filters, timezone),
-        productClicksQueryFactory(
+        totalProductClicksQueryFactory(filters, timezone),
+        totalProductClicksQueryFactory(
             {
                 ...filters,
                 period: getPreviousPeriod(filters.period),
@@ -44,15 +44,17 @@ const useProductClickRate = (filters: StatsFilters, timezone: string) => {
             return undefined
         }
 
-        const value = safeDivide(
-            clickTrendData.data.value,
-            totalRecommendationsData.data.value,
-        )
+        const value =
+            safeDivide(
+                clickTrendData.data.value,
+                totalRecommendationsData.data.value,
+            ) * 100
 
-        const prevValue = safeDivide(
-            clickTrendData.data.prevValue,
-            totalRecommendationsData.data.prevValue,
-        )
+        const prevValue =
+            safeDivide(
+                clickTrendData.data.prevValue,
+                totalRecommendationsData.data.prevValue,
+            ) * 100
 
         return { value, prevValue }
     }, [clickTrendData, totalRecommendationsData, isFetching, isError])
@@ -68,8 +70,8 @@ const fetchProductClickRate = (filters: StatsFilters, timezone: string) => {
     return Promise.all([
         fetchTotalProductRecommendations(filters, timezone),
         fetchMetricTrend(
-            productClicksQueryFactory(filters, timezone),
-            productClicksQueryFactory(
+            totalProductClicksQueryFactory(filters, timezone),
+            totalProductClicksQueryFactory(
                 {
                     ...filters,
                     period: getPreviousPeriod(filters.period),
@@ -83,14 +85,16 @@ const fetchProductClickRate = (filters: StatsFilters, timezone: string) => {
                 isFetching: false,
                 isError: false,
                 data: {
-                    value: safeDivide(
-                        clickTrendData.data?.value,
-                        totalRecommendationsData.data?.value,
-                    ),
-                    prevValue: safeDivide(
-                        clickTrendData.data?.prevValue,
-                        totalRecommendationsData.data?.prevValue,
-                    ),
+                    value:
+                        safeDivide(
+                            clickTrendData.data?.value,
+                            totalRecommendationsData.data?.value,
+                        ) * 100,
+                    prevValue:
+                        safeDivide(
+                            clickTrendData.data?.prevValue,
+                            totalRecommendationsData.data?.prevValue,
+                        ) * 100,
                 },
             }
         })

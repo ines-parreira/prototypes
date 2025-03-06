@@ -90,8 +90,8 @@ describe('productClickRate', () => {
             await waitFor(() => {
                 expect(result.current).toEqual({
                     data: {
-                        value: 1.5,
-                        prevValue: 2,
+                        value: 150,
+                        prevValue: 200,
                     },
                     isError: false,
                     isFetching: false,
@@ -127,8 +127,8 @@ describe('productClickRate', () => {
 
             expect(result).toEqual({
                 data: {
-                    value: 1.5,
-                    prevValue: 2,
+                    value: 150,
+                    prevValue: 200,
                 },
                 isError: false,
                 isFetching: false,

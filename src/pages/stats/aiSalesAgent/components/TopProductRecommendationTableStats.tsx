@@ -45,7 +45,7 @@ export const TopProductRecommendationTableStats = ({
 }: Props) => {
     const [ref, { width }] = useMeasure<HTMLDivElement>()
     const [orderKey, setOrderKey] = useState<ProductTableKeys>(
-        ProductTableKeys.Name,
+        ProductTableKeys.NumberOfRecommendations,
     )
     const [orderDirection, setOrderDirection] = useState<OrderDirection>(
         OrderDirection.Desc,
@@ -58,7 +58,7 @@ export const TopProductRecommendationTableStats = ({
         key: ProductTableKeys,
     ): any => {
         if (key === ProductTableKeys.Name) {
-            return cell.product.title
+            return cell.product?.title
         }
 
         return cell.metrics[key] ?? 0
@@ -166,7 +166,21 @@ export const TopProductRecommendationTableStats = ({
                             renderHeaderCells(ProductTableConfig[column]),
                         )}
                     </TableHead>
-                    <TableBody>{renderTableBody()}</TableBody>
+                    <TableBody>
+                        {isLoading && rows.length === 0 ? (
+                            <TableBodyRow>
+                                {columnsOrder.map((column) => (
+                                    <BodyCell key={column}>
+                                        <div style={{ width: '100%' }}>
+                                            <Skeleton count={1} width="100%" />
+                                        </div>
+                                    </BodyCell>
+                                ))}
+                            </TableBodyRow>
+                        ) : (
+                            renderTableBody()
+                        )}
+                    </TableBody>
                 </TableWrapper>
             </div>
 

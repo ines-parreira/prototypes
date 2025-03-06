@@ -174,12 +174,29 @@ export const totalNumberProductRecommendationsQueryFactory = (
     timezone,
 })
 
-export const productClicksQueryFactory = (
+export const totalProductClicksQueryFactory = (
     filters: StatsFilters,
     timezone: string,
 ): ReportingQuery<ConvertTrackingEventsCube> => ({
     measures: [ConvertTrackingEventsMeasure.Clicks],
     dimensions: [],
+    filters: [
+        {
+            member: ConvertTrackingEventsDimension.Source,
+            operator: ReportingFilterOperator.Equals,
+            values: ['ai-agent'],
+        },
+        ...clicksDefaultFilters(filters),
+    ],
+    timezone,
+})
+
+export const productClicksQueryFactory = (
+    filters: StatsFilters,
+    timezone: string,
+): ReportingQuery<ConvertTrackingEventsCube> => ({
+    measures: [ConvertTrackingEventsMeasure.Clicks],
+    dimensions: [ConvertTrackingEventsDimension.ProductId],
     filters: [
         {
             member: ConvertTrackingEventsDimension.Source,
@@ -209,6 +226,50 @@ export const totalProductBoughtQueryFactory = (
             values: [],
         },
         ...aiSalesAgentOrdersDefaultFilters(filters),
+    ],
+    timezone,
+})
+
+export const productBoughtQueryFactory = (
+    filters: StatsFilters,
+    timezone: string,
+): ReportingQuery<AiSalesAgentOrdersCube> => ({
+    measures: [AiSalesAgentOrdersMeasure.Count],
+    dimensions: [AiSalesAgentOrdersDimension.InfluencedProductId],
+    filters: [
+        {
+            member: AiSalesAgentOrdersDimension.IsInfluenced,
+            operator: ReportingFilterOperator.Equals,
+            values: ['1'],
+        },
+        {
+            member: AiSalesAgentOrdersDimension.InfluencedProductId,
+            operator: ReportingFilterOperator.Set,
+            values: [],
+        },
+        ...aiSalesAgentOrdersDefaultFilters(filters),
+    ],
+    timezone,
+})
+
+export const productRecommendationsQueryFactory = (
+    filters: StatsFilters,
+    timezone: string,
+): ReportingQuery<AiSalesAgentConversationsCube> => ({
+    measures: [AiSalesAgentConversationsMeasure.Count],
+    dimensions: [AiSalesAgentConversationsDimension.ProductId],
+    filters: [
+        {
+            member: AiSalesAgentConversationsDimension.IsSalesOpportunity,
+            operator: ReportingFilterOperator.Equals,
+            values: ['1'],
+        },
+        {
+            member: AiSalesAgentConversationsDimension.ProductId,
+            operator: ReportingFilterOperator.Set,
+            values: [],
+        },
+        ...aiSalesAgentConversationsDefaultFilters(filters),
     ],
     timezone,
 })

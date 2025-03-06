@@ -19,6 +19,7 @@ import {
     getApplications,
     getInstallationSnippet,
 } from 'state/integrations/actions/gorgias-chat.actions'
+import { fetchIntegrationProducts as fetchIntegrationProductsByIds } from 'state/integrations/helpers'
 import { reportError } from 'utils/errors'
 
 import {
@@ -87,6 +88,39 @@ export const useProductsFromShopifyIntegration = (
             reportError(
                 new Error(
                     `Failed to fetch products for Shopify integration ${integrationId}`,
+                ),
+            )
+        },
+        enabled,
+    })
+}
+
+export const useGetProductsByIdsFromIntegration = (
+    integrationId: number,
+    productsIds: number[],
+    enabled = true,
+) => {
+    return useQuery({
+        queryKey: [
+            'integration',
+            'shopify',
+            integrationId,
+            'products',
+            productsIds,
+        ],
+        queryFn: async () => {
+            const results = await fetchIntegrationProductsByIds(
+                integrationId,
+                productsIds,
+            )
+
+            return results.map((r) => r.toJS()) as Product[]
+        },
+        keepPreviousData: true,
+        onError: () => {
+            reportError(
+                new Error(
+                    `Failed to fetch products for integration ${integrationId}`,
                 ),
             )
         },

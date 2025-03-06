@@ -45,15 +45,17 @@ const useProductBuyRate = (filters: StatsFilters, timezone: string) => {
             return undefined
         }
 
-        const value = safeDivide(
-            productBoughtData.data.value,
-            totalRecommendationsData.data.value,
-        )
+        const value =
+            safeDivide(
+                productBoughtData.data.value,
+                totalRecommendationsData.data.value,
+            ) * 100
 
-        const prevValue = safeDivide(
-            productBoughtData.data.prevValue,
-            totalRecommendationsData.data.prevValue,
-        )
+        const prevValue =
+            safeDivide(
+                productBoughtData.data.prevValue,
+                totalRecommendationsData.data.prevValue,
+            ) * 100
 
         return { value, prevValue }
     }, [productBoughtData, totalRecommendationsData, isFetching, isError])
@@ -84,14 +86,16 @@ const fetchProductBuyRate = (filters: StatsFilters, timezone: string) => {
                 isFetching: false,
                 isError: false,
                 data: {
-                    value: safeDivide(
-                        productBoughtData.data?.value,
-                        totalRecommendationsData.data?.value,
-                    ),
-                    prevValue: safeDivide(
-                        productBoughtData.data?.prevValue,
-                        totalRecommendationsData.data?.prevValue,
-                    ),
+                    value:
+                        safeDivide(
+                            productBoughtData.data?.value,
+                            totalRecommendationsData.data?.value,
+                        ) * 100,
+                    prevValue:
+                        safeDivide(
+                            productBoughtData.data?.prevValue,
+                            totalRecommendationsData.data?.prevValue,
+                        ) * 100,
                 },
             }
         })
