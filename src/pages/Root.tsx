@@ -1,4 +1,4 @@
-import React, { useLayoutEffect, useState } from 'react'
+import React, { useLayoutEffect, useMemo, useState } from 'react'
 
 import { QueryClientProvider } from '@tanstack/react-query'
 import { createDragDropManager } from 'dnd-core'
@@ -38,6 +38,13 @@ const manager = createDragDropManager(HTML5Backend, undefined, undefined)
 
 const pubNubWorkerUrl = window.PUBNUB_WORKER_URL
 
+const PNLogVerbosityWhitelistedAccounts = [
+    'acme',
+    'artemisathletix',
+    'yakovishen',
+    'walter-test',
+]
+
 const Root = ({ store }: Props) => {
     const [LDClient, setLDClient] = useState<LDClient>()
 
@@ -63,6 +70,14 @@ const Root = ({ store }: Props) => {
         return unlisten
     })
 
+    const pubNubWorkerLogVerbosity = useMemo(
+        () =>
+            PNLogVerbosityWhitelistedAccounts.includes(
+                window.GORGIAS_STATE.currentAccount.domain,
+            ),
+        [],
+    )
+
     return (
         <QueryClientProvider client={appQueryClient}>
             <Provider store={store}>
@@ -79,6 +94,11 @@ const Root = ({ store }: Props) => {
                             publishKey={window.PUBNUB_PUBLISH_KEY}
                             subscribeKey={window.PUBNUB_SUBSCRIBE_KEY}
                             subscriptionWorkerUrl={pubNubWorkerUrl}
+                            subscriptionWorkerUnsubscribeOfflineClients={true}
+                            subscriptionWorkerOfflineClientsCheckInterval={5000}
+                            subscriptionWorkerLogVerbosity={
+                                pubNubWorkerLogVerbosity
+                            }
                         >
                             <Router history={history}>
                                 <CompatRouter>

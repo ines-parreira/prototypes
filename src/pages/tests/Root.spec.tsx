@@ -1,10 +1,12 @@
-import React from 'react'
+import React, { ComponentProps } from 'react'
 import type { ReactNode } from 'react'
 
 import { render, screen } from '@testing-library/react'
 import type { Location } from 'history'
 import type { LDClient } from 'launchdarkly-js-client-sdk'
 import type { Store } from 'redux'
+
+import { RealtimeProvider } from '@gorgias/realtime'
 
 import activityTracker from 'services/activityTracker'
 import type { RootState } from 'state/types'
@@ -15,14 +17,23 @@ import { assumeMock } from 'utils/testing'
 import history from '../history'
 import Root from '../Root'
 
+const MockRealtimeProvider = jest
+    .fn()
+    .mockImplementation(
+        ({ children }: ComponentProps<typeof RealtimeProvider>) => (
+            <div>
+                <p>RealtimeProvider</p>
+                {children}
+            </div>
+        ),
+    )
+
 jest.mock('@gorgias/realtime', () => ({
-    RealtimeProvider: ({ children }: { children: ReactNode }) => (
-        <div>
-            <p>RealtimeProvider</p>
-            {children}
-        </div>
+    RealtimeProvider: (props: ComponentProps<typeof RealtimeProvider>) => (
+        <MockRealtimeProvider {...props} />
     ),
 }))
+
 jest.mock('@tanstack/react-query', () => ({
     QueryClientProvider: ({ children }: { children: ReactNode }) => (
         <div>
@@ -124,5 +135,24 @@ describe('Root', () => {
             userId: 20,
             path: '/app',
         })
+    })
+
+    it.each([
+        ['acme', true],
+        ['artemisathletix', true],
+        ['yakovishen', true],
+        ['walter-test', true],
+        ['other', false],
+    ])(`should set PNWorkerLogVerbosity to %s`, (domain, expected) => {
+        window.GORGIAS_STATE.currentAccount.domain = domain
+
+        render(<Root store={store} />)
+
+        expect(MockRealtimeProvider).toHaveBeenCalledWith(
+            expect.objectContaining({
+                subscriptionWorkerLogVerbosity: expected,
+            }),
+            {},
+        )
     })
 })
