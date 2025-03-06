@@ -138,9 +138,7 @@ describe('<SkillsetStep />', () => {
 
         jest.runAllTimers()
 
-        expect(
-            screen.getByText('Welcome to Conversational AI!'),
-        ).toBeInTheDocument()
+        expect(screen.getByText(/Welcome to AI Agent!/i)).toBeInTheDocument()
     })
 
     it('user can select a goal and click next when there is an integration', () => {

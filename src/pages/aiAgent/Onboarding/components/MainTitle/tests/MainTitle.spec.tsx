@@ -6,7 +6,7 @@ import MainTitle from '../MainTitle'
 
 describe('MainTitle', () => {
     it('renders both black and magenta text parts', () => {
-        render(<MainTitle titleBlack="Welcome to " titleMagenta="AI Agent" />)
+        render(<MainTitle titleBlack="Welcome to" titleMagenta="AI Agent" />)
 
         const heading = screen.getByRole('heading', { level: 1 })
         expect(heading).toBeInTheDocument()
@@ -16,9 +16,21 @@ describe('MainTitle', () => {
     })
 
     it('applies correct styling to magenta text', () => {
-        render(<MainTitle titleBlack="Hello " titleMagenta="World" />)
+        render(<MainTitle titleBlack="Hello" titleMagenta="World" />)
 
         const magentaText = screen.getByText('World')
         expect(magentaText).toHaveClass('titleMagenta')
+    })
+
+    it('renders secondary title if provided', () => {
+        render(
+            <MainTitle
+                titleBlack="Hello"
+                titleMagenta="World"
+                secondaryTitle="Agents"
+            />,
+        )
+
+        expect(screen.getByText(/Agents/i)).toBeInTheDocument()
     })
 })

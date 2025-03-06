@@ -27,3 +27,11 @@ export const LongTitle: Story = {
         titleMagenta: 'how the component handles longer text content',
     },
 }
+
+export const WithSecondaryTitle: Story = {
+    args: {
+        titleBlack: 'Welcome to ',
+        titleMagenta: 'AI Agent!',
+        secondaryTitle: 'Select your agents below to get started.',
+    },
+}

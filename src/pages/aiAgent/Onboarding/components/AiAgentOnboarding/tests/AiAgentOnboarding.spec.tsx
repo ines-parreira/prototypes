@@ -110,9 +110,7 @@ describe('AiAgentOnboarding', () => {
         renderComponent()
         jest.runAllTimers()
 
-        expect(
-            screen.getByText('Welcome to Conversational AI!'),
-        ).toBeInTheDocument()
+        expect(screen.getByText(/Welcome to AI Agent!/i)).toBeInTheDocument()
     })
 
     it('should redirect to the main page if feature flag is disabled', () => {
