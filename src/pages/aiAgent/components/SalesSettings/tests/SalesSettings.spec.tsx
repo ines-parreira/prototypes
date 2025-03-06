@@ -20,10 +20,10 @@ import { SalesSettings } from '../SalesSettings'
 
 const mockStore = configureMockStore([thunk])()
 
-const renderComponent = () =>
+const renderComponent = (contentOnly: Boolean = false) =>
     renderWithRouter(
         <Provider store={mockStore}>
-            <SalesSettings />
+            <SalesSettings contentOnly={contentOnly} />
         </Provider>,
         {
             path: `/:shopType/:shopName/sales`,
@@ -403,5 +403,10 @@ describe('<SalesSettings />', () => {
                 'Your changes to this page will be lost if you don’t save them.',
             ),
         ).toBeInTheDocument()
+    })
+
+    it('should show hide the title when contentOnly', async () => {
+        renderComponent(true)
+        expect(screen.queryByText('Sales skills')).not.toBeInTheDocument()
     })
 })

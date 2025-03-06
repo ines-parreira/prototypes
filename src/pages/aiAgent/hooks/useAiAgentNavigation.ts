@@ -207,6 +207,10 @@ const useNavigationItems = (
                 exact: false,
                 dataCanduId: 'ai-agent-navbar-actions',
             },
+            isAiAgentSalesTabEnabled && {
+                route: routes.sales,
+                title: SALES,
+            },
             {
                 route: routes.test,
                 title: TEST,

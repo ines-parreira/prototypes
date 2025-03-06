@@ -62,7 +62,11 @@ const salesSchema = z
         },
     )
 
-export const SalesSettings = () => {
+type Props = {
+    contentOnly?: Boolean
+}
+
+export const SalesSettings = ({ contentOnly = false }: Props) => {
     const dispatch = useAppDispatch()
     const { storeConfiguration, updateStoreConfiguration } =
         useAiAgentStoreConfigurationContext()
@@ -206,7 +210,9 @@ export const SalesSettings = () => {
             />
 
             <FormProvider {...methods}>
-                <h1 className={css.salesSettingsTitle}>Sales skills</h1>
+                {!contentOnly && (
+                    <h1 className={css.salesSettingsTitle}>Sales skills</h1>
+                )}
                 <div className={css.salesSettingsContent}>
                     <div className={css.settings}>
                         <Alert icon className={css.info}>

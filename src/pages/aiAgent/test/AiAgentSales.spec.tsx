@@ -1,18 +1,24 @@
 import React from 'react'
 
+import { QueryClientProvider } from '@tanstack/react-query'
 import { screen } from '@testing-library/react'
 import { mockFlags } from 'jest-launchdarkly-mock'
 import { Provider } from 'react-redux'
 
+import { FeatureFlagKey } from 'config/featureFlags'
+import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 import { mockStore, renderWithRouter } from 'utils/testing'
 
-import { FeatureFlagKey } from '../../../config/featureFlags'
 import { AiAgentSales } from '../AiAgentSales'
+
+const queryClient = mockQueryClient()
 
 const renderComponent = () =>
     renderWithRouter(
         <Provider store={mockStore({})}>
-            <AiAgentSales />
+            <QueryClientProvider client={queryClient}>
+                <AiAgentSales />
+            </QueryClientProvider>
         </Provider>,
     )
 
@@ -27,6 +33,7 @@ describe('<AiAgentSales />', () => {
         mockFlags({
             [FeatureFlagKey.StandaloneAIAgentSalesPage]: true,
             [FeatureFlagKey.StandaloneAIAgentSalesPaywallPage]: false,
+            [FeatureFlagKey.ConvAiStandaloneMenu]: true,
         })
         renderComponent()
 
