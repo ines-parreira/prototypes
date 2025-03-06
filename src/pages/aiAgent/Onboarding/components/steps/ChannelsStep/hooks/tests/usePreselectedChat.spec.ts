@@ -20,10 +20,42 @@ describe('usePreselectedChat', () => {
             }),
         )
 
+    it('should return onboarding integration that are available chat channels', () => {
+        const { result } = renderUsePreselectedChat({
+            onboardingChatIntegrationIds: [1, 2],
+            chatChannels: [
+                {
+                    ...mockChatChannels[0],
+                    value: {
+                        ...mockChatChannels[0].value,
+                        id: 1,
+                    },
+                },
+            ],
+        })
+
+        expect(result.current).toEqual([1])
+    })
+
     it('should return onboarding integration when there are existing data (some chats selected)', () => {
         const { result } = renderUsePreselectedChat({
             onboardingChatIntegrationIds: [1, 2],
-            chatChannels: [...mockChatChannels],
+            chatChannels: [
+                {
+                    ...mockChatChannels[0],
+                    value: {
+                        ...mockChatChannels[0].value,
+                        id: 1,
+                    },
+                },
+                {
+                    ...mockChatChannels[1],
+                    value: {
+                        ...mockChatChannels[1].value,
+                        id: 2,
+                    },
+                },
+            ],
         })
 
         expect(result.current).toEqual([1, 2])

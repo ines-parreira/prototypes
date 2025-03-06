@@ -8,7 +8,9 @@ export const usePreselectedChat = ({
     chatChannels: SelfServiceChatChannel[]
 }): number[] => {
     if (onboardingChatIntegrationIds) {
-        return onboardingChatIntegrationIds
+        return onboardingChatIntegrationIds.filter((it) =>
+            chatChannels.find((channel) => channel.value.id === it),
+        )
     }
 
     if (chatChannels.length === 1 && !chatChannels[0].value.isDisabled) {

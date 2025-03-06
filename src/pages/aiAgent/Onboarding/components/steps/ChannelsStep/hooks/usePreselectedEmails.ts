@@ -36,7 +36,9 @@ export const usePreselectedEmails = ({
     )
 
     if (onboardingEmailIntegrationIds) {
-        return onboardingEmailIntegrationIds
+        return onboardingEmailIntegrationIds.filter((it) =>
+            emailIntegrations.find((email) => email.id === it),
+        )
     }
 
     if (isMultiStore) {

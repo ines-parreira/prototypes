@@ -69,14 +69,24 @@ describe('usePreselectedEmails', () => {
             getIntegration(4, IntegrationType.Shopify),
         ] as any as ShopifyIntegration[]
 
-        it('should return onboarding integration when there are existing data (some email selected)', () => {
+        it('should return onboarding integration that are available email channel', () => {
             const { result } = renderUsePreselectedEmails({
                 storeId: 4,
-                onboardingEmailIntegrationIds: [1],
+                onboardingEmailIntegrationIds: [1, 4],
                 shopifyIntegrations,
             })
 
             expect(result.current).toEqual([1])
+        })
+
+        it('should return onboarding integration when there are existing data (some email selected)', () => {
+            const { result } = renderUsePreselectedEmails({
+                storeId: 4,
+                onboardingEmailIntegrationIds: [1, 2],
+                shopifyIntegrations,
+            })
+
+            expect(result.current).toEqual([1, 2])
         })
 
         it('should return onboarding integration when there are existing data (no email selected)', () => {
@@ -107,14 +117,24 @@ describe('usePreselectedEmails', () => {
             getIntegration(5, IntegrationType.Shopify),
         ] as any as ShopifyIntegration[]
 
-        it('should return onboarding integration when there are existing data (some email selected)', () => {
+        it('should return onboarding integration that are available email channel', () => {
             const { result } = renderUsePreselectedEmails({
                 storeId: 4,
-                onboardingEmailIntegrationIds: [1],
+                onboardingEmailIntegrationIds: [1, 4],
                 shopifyIntegrations,
             })
 
             expect(result.current).toEqual([1])
+        })
+
+        it('should return onboarding integration when there are existing data (some email selected)', () => {
+            const { result } = renderUsePreselectedEmails({
+                storeId: 4,
+                onboardingEmailIntegrationIds: [1, 2],
+                shopifyIntegrations,
+            })
+
+            expect(result.current).toEqual([1, 2])
         })
 
         it('should return onboarding integration when there are existing data (no email selected)', () => {
