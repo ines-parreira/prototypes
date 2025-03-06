@@ -18,6 +18,7 @@ export const getSubmitPlaygroundTicketResponseFixture = (
     postProcessing: {
         internalNote: '',
         htmlReply: null,
+        isSalesOpportunity: false,
     },
     _action_serialized_state: null,
     ...props,

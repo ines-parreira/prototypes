@@ -323,6 +323,7 @@ describe('usePlaygroundMessages hook', () => {
                                 ai_agent_message_type:
                                     AiAgentMessageType.WAIT_FOR_CLOSE_TICKET_CONFIRMATION,
                             },
+                            isSalesOpportunity: false,
                         },
                         qa: {
                             output: {

@@ -2,7 +2,7 @@ import React from 'react'
 
 import { Meta, StoryObj } from '@storybook/react'
 
-import { MessageType } from 'models/aiAgentPlayground/types'
+import { AgentSkill, MessageType } from 'models/aiAgentPlayground/types'
 
 import PlaygroundMessage, { AI_AGENT_SENDER } from './PlaygroundMessage'
 
@@ -59,7 +59,7 @@ export const AIAgentInternalNoteMessage: Story = {
     args: {
         message: {
             sender: AI_AGENT_SENDER,
-            content: 'Where is my order?',
+            content: 'I know where is your order!',
             type: MessageType.INTERNAL_NOTE,
             createdDatetime: new Date().toISOString(),
         },
@@ -71,7 +71,8 @@ export const AIAgentMessage: Story = {
     args: {
         message: {
             sender: AI_AGENT_SENDER,
-            content: 'Where is my order?',
+            agentSkill: AgentSkill.SUPPORT,
+            content: 'I know where is your order!',
             type: MessageType.MESSAGE,
             createdDatetime: new Date().toISOString(),
         },

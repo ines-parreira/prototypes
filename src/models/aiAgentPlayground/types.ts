@@ -107,6 +107,11 @@ export enum MessageType {
     PROMPT = 'PROMPT',
 }
 
+export enum AgentSkill {
+    SUPPORT = 'SUPPORT',
+    SALES = 'SALES',
+}
+
 export enum PlaygroundPromptType {
     RELEVANT_RESPONSE = 'RELEVANT_RESPONSE',
     NOT_RELEVANT_RESPONSE = 'NOT_RELEVANT_RESPONSE',
@@ -123,6 +128,7 @@ type BaseMessage = {
 }
 export type PlaygroundTextMessage = BaseMessage & {
     type: MessageType.MESSAGE
+    agentSkill?: AgentSkill
     content: string
     attachments?: AiAgentAttachment[]
 }
@@ -197,6 +203,7 @@ export type AiAgentResponse = {
         htmlReply: string | null
         chatTicketMessageMeta?: { ai_agent_message_type?: AiAgentMessageType }
         attachments?: AiAgentAttachment[]
+        isSalesOpportunity: boolean
     }
     _action_serialized_state: unknown
 }

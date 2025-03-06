@@ -1,4 +1,5 @@
 import {
+    AgentSkill,
     AiAgentMessageType,
     MessageType,
     TicketOutcome,
@@ -73,6 +74,7 @@ describe('playground-handler.utils', () => {
                         postProcessing: {
                             htmlReply: 'HTML reply for email',
                             internalNote: 'Internal note for email',
+                            isSalesOpportunity: false,
                         },
                     })
 
@@ -168,6 +170,7 @@ describe('playground-handler.utils', () => {
                     {
                         sender: AI_AGENT_SENDER,
                         type: MessageType.MESSAGE,
+                        agentSkill: AgentSkill.SUPPORT,
                         content: 'Chat generated message',
                         createdDatetime: DATE.toISOString(),
                         attachments: [],
@@ -196,6 +199,7 @@ describe('playground-handler.utils', () => {
                                 ai_agent_message_type:
                                     AiAgentMessageType.HANDOVER_TO_AGENT,
                             },
+                            isSalesOpportunity: false,
                         },
                     })
 
@@ -214,46 +218,55 @@ describe('playground-handler.utils', () => {
                     },
                 ])
             })
-            it('should return "Was that helpful?" message when actions should be displayed', () => {
-                const aiAgentResponse =
-                    getSubmitPlaygroundTicketResponseFixture({
-                        postProcessing: {
-                            internalNote: '',
-                            htmlReply: null,
-                            chatTicketMessageMeta: {
-                                ai_agent_message_type:
-                                    AiAgentMessageType.WAIT_FOR_CLOSE_TICKET_CONFIRMATION,
+
+            it.each([
+                { isSalesOpportunity: false, agentSkill: AgentSkill.SUPPORT },
+                { isSalesOpportunity: true, agentSkill: AgentSkill.SALES },
+            ])(
+                'should return "Was that helpful?" message when actions should be displayed',
+                ({ isSalesOpportunity, agentSkill }) => {
+                    const aiAgentResponse =
+                        getSubmitPlaygroundTicketResponseFixture({
+                            postProcessing: {
+                                internalNote: '',
+                                htmlReply: null,
+                                chatTicketMessageMeta: {
+                                    ai_agent_message_type:
+                                        AiAgentMessageType.WAIT_FOR_CLOSE_TICKET_CONFIRMATION,
+                                },
+                                isSalesOpportunity,
                             },
-                        },
-                        qa: {
-                            output: {
-                                validate_generated_message: false,
-                                validate_outcome: false,
+                            qa: {
+                                output: {
+                                    validate_generated_message: false,
+                                    validate_outcome: false,
+                                },
                             },
-                        },
+                        })
+
+                    const result = handleAiAgentResponse({
+                        aiAgentResponse,
+                        channel: 'chat',
+                        storeData: getStoreConfigurationFixture(),
                     })
 
-                const result = handleAiAgentResponse({
-                    aiAgentResponse,
-                    channel: 'chat',
-                    storeData: getStoreConfigurationFixture(),
-                })
-
-                expect(result).toEqual([
-                    {
-                        sender: AI_AGENT_SENDER,
-                        type: MessageType.MESSAGE,
-                        content: 'Was that helpful?',
-                        createdDatetime: DATE.toISOString(),
-                    },
-                    {
-                        sender: AI_AGENT_SENDER,
-                        type: MessageType.TICKET_EVENT,
-                        outcome: TicketOutcome.WAIT,
-                        createdDatetime: DATE.toISOString(),
-                    },
-                ])
-            })
+                    expect(result).toEqual([
+                        {
+                            sender: AI_AGENT_SENDER,
+                            type: MessageType.MESSAGE,
+                            agentSkill,
+                            content: 'Was that helpful?',
+                            createdDatetime: DATE.toISOString(),
+                        },
+                        {
+                            sender: AI_AGENT_SENDER,
+                            type: MessageType.TICKET_EVENT,
+                            outcome: TicketOutcome.WAIT,
+                            createdDatetime: DATE.toISOString(),
+                        },
+                    ])
+                },
+            )
             it('should return ticket event based on ai agent message type', () => {
                 const aiAgentResponse =
                     getSubmitPlaygroundTicketResponseFixture({
@@ -264,6 +277,7 @@ describe('playground-handler.utils', () => {
                                 ai_agent_message_type:
                                     AiAgentMessageType.HANDOVER_TO_AGENT,
                             },
+                            isSalesOpportunity: false,
                         },
                         qa: {
                             output: {
@@ -311,6 +325,7 @@ describe('playground-handler.utils', () => {
                                 ai_agent_message_type:
                                     AiAgentMessageType.WAIT_FOR_CLOSE_TICKET_CONFIRMATION,
                             },
+                            isSalesOpportunity: false,
                         },
                     })
 
@@ -325,6 +340,7 @@ describe('playground-handler.utils', () => {
                         {
                             sender: AI_AGENT_SENDER,
                             type: MessageType.MESSAGE,
+                            agentSkill: AgentSkill.SUPPORT,
                             content: 'Your last order number is #1234',
                             createdDatetime: DATE.toISOString(),
                             attachments: [],
@@ -362,6 +378,7 @@ describe('playground-handler.utils', () => {
                 postProcessing: {
                     internalNote: 'Internal note',
                     htmlReply: null,
+                    isSalesOpportunity: false,
                 },
             })
             const result = handleAiAgentResponse({
@@ -382,41 +399,50 @@ describe('playground-handler.utils', () => {
             )
         })
 
-        it('should return message when generated message is not empty and qa is failed and post processing reply is not empty', () => {
-            const aiAgentResponse = getSubmitPlaygroundTicketResponseFixture({
-                generate: {
-                    output: {
-                        generated_message: 'Generated message',
-                        outcome: TicketOutcome.CLOSE,
-                    },
-                },
-                postProcessing: {
-                    internalNote: '',
-                    htmlReply: 'Post Processing message',
-                },
-                qa: {
-                    output: {
-                        validate_outcome: false,
-                        validate_generated_message: false,
-                    },
-                },
-            })
-            const result = handleAiAgentResponse({
-                aiAgentResponse,
-                channel: 'chat',
-                storeData: getStoreConfigurationFixture(),
-            })
-            expect(result).toEqual(
-                expect.arrayContaining([
-                    {
-                        sender: AI_AGENT_SENDER,
-                        type: MessageType.MESSAGE,
-                        content: 'Post Processing message',
-                        createdDatetime: DATE.toISOString(),
-                        attachments: [],
-                    },
-                ]),
-            )
-        })
+        it.each([
+            { isSalesOpportunity: false, agentSkill: AgentSkill.SUPPORT },
+            { isSalesOpportunity: true, agentSkill: AgentSkill.SALES },
+        ])(
+            'should return message when generated message is not empty and qa is failed and post processing reply is not empty',
+            ({ isSalesOpportunity, agentSkill }) => {
+                const aiAgentResponse =
+                    getSubmitPlaygroundTicketResponseFixture({
+                        generate: {
+                            output: {
+                                generated_message: 'Generated message',
+                                outcome: TicketOutcome.CLOSE,
+                            },
+                        },
+                        postProcessing: {
+                            internalNote: '',
+                            htmlReply: 'Post Processing message',
+                            isSalesOpportunity,
+                        },
+                        qa: {
+                            output: {
+                                validate_outcome: false,
+                                validate_generated_message: false,
+                            },
+                        },
+                    })
+                const result = handleAiAgentResponse({
+                    aiAgentResponse,
+                    channel: 'chat',
+                    storeData: getStoreConfigurationFixture(),
+                })
+                expect(result).toEqual(
+                    expect.arrayContaining([
+                        {
+                            sender: AI_AGENT_SENDER,
+                            type: MessageType.MESSAGE,
+                            agentSkill,
+                            content: 'Post Processing message',
+                            createdDatetime: DATE.toISOString(),
+                            attachments: [],
+                        },
+                    ]),
+                )
+            },
+        )
     })
 })

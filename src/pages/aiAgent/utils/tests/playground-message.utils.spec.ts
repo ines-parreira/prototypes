@@ -1,4 +1,5 @@
 import {
+    AgentSkill,
     AiAgentMessageType,
     CreatePlaygroundMessage,
     isApiEligiblePlaygroundMessage,
@@ -55,12 +56,14 @@ describe('playground-message utils', () => {
             const messages: PlaygroundMessage[] = [
                 {
                     type: MessageType.MESSAGE,
+                    agentSkill: AgentSkill.SUPPORT,
                     sender: 'agent',
                     createdDatetime: '2021-07-29T09:00:00Z',
                     content: 'Init message',
                 },
                 {
                     type: MessageType.MESSAGE,
+                    agentSkill: AgentSkill.SUPPORT,
                     sender: 'agent',
                     createdDatetime: '2021-07-29T09:00:00Z',
                     content: 'Hello, how can I help you?',
@@ -118,6 +121,7 @@ describe('playground-message utils', () => {
                         ai_agent_message_type:
                             AiAgentMessageType.WAIT_FOR_CLOSE_TICKET_CONFIRMATION,
                     },
+                    isSalesOpportunity: false,
                 },
             })
             expect(shouldDisplayActions(aiAgentResponse)).toBe(true)
@@ -129,6 +133,7 @@ describe('playground-message utils', () => {
                     internalNote: '',
                     htmlReply: null,
                     chatTicketMessageMeta: undefined,
+                    isSalesOpportunity: false,
                 },
             })
             expect(shouldDisplayActions(aiAgentResponse)).toBe(false)

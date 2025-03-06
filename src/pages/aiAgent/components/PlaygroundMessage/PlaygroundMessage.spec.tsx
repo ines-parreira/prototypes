@@ -5,14 +5,18 @@ import userEvent from '@testing-library/user-event'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 
+import { AgentSkill, MessageType } from 'models/aiAgentPlayground/types'
 import { AI_AGENT } from 'pages/aiAgent/constants'
 import { storeWithActiveSubscriptionWithConvert } from 'pages/settings/new_billing/fixtures'
 
 import {
     playgroundAttachmentFixture,
     playgroundErrorMessageFixture,
+    playgroundInternalNoteMessageFixture,
     playgroundMessageFixture,
     playgroundPlaceholderMessageFixture,
+    playgroundPromptMessageFixture,
+    playgroundTicketEventMessageFixture,
 } from '../../fixtures/playgroundMessages.fixture'
 import PlaygroundMessage, {
     PlaygroundGenericErrorMessage,
@@ -115,6 +119,60 @@ describe('PlaygroundMessage', () => {
             'https://coffee-gorgias-store.myshopify.com/products/dark-roast?variant=35734251045016',
             '_blank',
         )
+    })
+
+    it.each(['SALES', 'SUPPORT'] as AgentSkill[])(
+        "should render agent's skill badge if it is $0",
+        (skill) => {
+            renderComponent({
+                message: {
+                    ...playgroundMessageFixture,
+                    sender: AI_AGENT,
+                    agentSkill: skill,
+                },
+            })
+            expect(screen.getByText(skill)).toBeInTheDocument()
+        },
+    )
+
+    it.each([
+        {
+            type: MessageType.ERROR,
+            messageFixture: playgroundErrorMessageFixture,
+        },
+        {
+            type: MessageType.PLACEHOLDER,
+            messageFixture: playgroundPlaceholderMessageFixture,
+        },
+        {
+            type: MessageType.INTERNAL_NOTE,
+            messageFixture: playgroundInternalNoteMessageFixture,
+        },
+        {
+            type: MessageType.PROMPT,
+            messageFixture: playgroundPromptMessageFixture,
+        },
+        {
+            type: MessageType.TICKET_EVENT,
+            messageFixture: playgroundTicketEventMessageFixture,
+        },
+    ])(
+        "should not render agent's skill badge if message is of type $0",
+        ({ messageFixture }) => {
+            renderComponent({ message: messageFixture })
+            expect(
+                screen.queryByText(AgentSkill.SUPPORT),
+            ).not.toBeInTheDocument()
+            expect(screen.queryByText(AgentSkill.SALES)).not.toBeInTheDocument()
+        },
+    )
+
+    it("should not render agent's skill badge if there is none", () => {
+        renderComponent({
+            message: { ...playgroundMessageFixture, sender: AI_AGENT },
+        })
+        expect(screen.queryByText('SUPPORT')).not.toBeInTheDocument()
+        expect(screen.queryByText('SALES')).not.toBeInTheDocument()
     })
 })
 

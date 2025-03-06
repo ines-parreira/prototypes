@@ -1,5 +1,6 @@
 import { StoreConfiguration } from 'models/aiAgent/types'
 import {
+    AgentSkill,
     AiAgentMessageType,
     AiAgentResponse,
     MessageType,
@@ -77,6 +78,9 @@ const getChatChannelMessagesFromResponse = (
         messages.push({
             sender: AI_AGENT_SENDER,
             type: MessageType.MESSAGE,
+            agentSkill: aiAgentResponse.postProcessing.isSalesOpportunity
+                ? AgentSkill.SALES
+                : AgentSkill.SUPPORT,
             content:
                 aiAgentResponse.postProcessing.htmlReply ??
                 aiAgentResponse.generate.output.generated_message,
@@ -89,6 +93,9 @@ const getChatChannelMessagesFromResponse = (
         messages.push({
             sender: AI_AGENT_SENDER,
             type: MessageType.MESSAGE,
+            agentSkill: aiAgentResponse.postProcessing.isSalesOpportunity
+                ? AgentSkill.SALES
+                : AgentSkill.SUPPORT,
             content: 'Was that helpful?',
             createdDatetime: new Date().toISOString(),
         })

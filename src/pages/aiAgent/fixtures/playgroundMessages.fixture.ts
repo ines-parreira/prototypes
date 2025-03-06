@@ -4,7 +4,11 @@ import {
     PlaygroundErrorMessage,
     PlaygroundInternalNoteMessage,
     PlaygroundPlaceholderMessage,
+    PlaygroundPromptMessage,
+    PlaygroundPromptType,
     PlaygroundTextMessage,
+    PlaygroundTicketEventMessage,
+    TicketOutcome,
 } from 'models/aiAgentPlayground/types'
 
 import { AI_AGENT_SENDER } from '../components/PlaygroundMessage/PlaygroundMessage'
@@ -12,27 +16,43 @@ import { AI_AGENT_SENDER } from '../components/PlaygroundMessage/PlaygroundMessa
 export const playgroundMessageFixture: PlaygroundTextMessage = {
     type: MessageType.MESSAGE,
     content: 'Hello, how can I help you?',
-    sender: 'AI Agent',
+    sender: AI_AGENT_SENDER,
     createdDatetime: '2021-06-01T12:00:00',
 }
 
 export const playgroundErrorMessageFixture: PlaygroundErrorMessage = {
     type: MessageType.ERROR,
     content: 'Error: Invalid input',
-    sender: 'AI Agent',
+    sender: AI_AGENT_SENDER,
     createdDatetime: '2021-06-01T12:00:00',
 }
 
 export const playgroundPlaceholderMessageFixture: PlaygroundPlaceholderMessage =
     {
         type: MessageType.PLACEHOLDER,
-        sender: 'AI Agent',
+        sender: AI_AGENT_SENDER,
         createdDatetime: '2021-06-01T12:00:00',
     }
 export const playgroundInternalNoteMessageFixture: PlaygroundInternalNoteMessage =
     {
         type: MessageType.INTERNAL_NOTE,
         content: 'This is an internal note',
+        sender: AI_AGENT_SENDER,
+        createdDatetime: '2021-06-01T12:00:00',
+    }
+
+export const playgroundPromptMessageFixture: PlaygroundPromptMessage = {
+    type: MessageType.PROMPT,
+    prompt: PlaygroundPromptType.RELEVANT_RESPONSE,
+    content: 'Dummy content',
+    sender: AI_AGENT_SENDER,
+    createdDatetime: '2021-06-01T12:00:00',
+}
+
+export const playgroundTicketEventMessageFixture: PlaygroundTicketEventMessage =
+    {
+        type: MessageType.TICKET_EVENT,
+        outcome: TicketOutcome.WAIT,
         sender: AI_AGENT_SENDER,
         createdDatetime: '2021-06-01T12:00:00',
     }
