@@ -64,6 +64,10 @@ const trackRect = {
     toJSON: () => {},
 }
 
+jest.mock('../helper', () => ({
+    showDiscount: jest.fn().mockReturnValue(true),
+}))
+
 const history = createMemoryHistory({
     initialEntries: ['/shopify/test-store/sales'],
 })
