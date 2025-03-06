@@ -50,7 +50,7 @@ export function isConvert(plan: Plan): plan is ConvertPlan {
 export function isStarterTier(
     plan: HelpdeskPlan | undefined,
 ): plan is HelpdeskPlan {
-    return !!plan?.internal_id.startsWith('starter-')
+    return !!plan?.plan_id.startsWith('starter-')
 }
 
 export function isTrial(plan: Plan | undefined) {

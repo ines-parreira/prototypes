@@ -22,9 +22,7 @@ export const getDefaultConvertPlanIndex = (
         const mappedIndex = convertAvailablePlans?.findIndex(
             (plan) =>
                 plan.cadence === cadence &&
-                plan.internal_id.startsWith(
-                    convertPlansMapping[helpdeskPlanName],
-                ),
+                plan.plan_id.startsWith(convertPlansMapping[helpdeskPlanName]),
         )
         convertInitialIndex = mappedIndex ?? convertInitialIndex
     }

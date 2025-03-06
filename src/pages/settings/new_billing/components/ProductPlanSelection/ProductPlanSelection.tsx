@@ -153,7 +153,7 @@ const ProductPlanSelection = ({
     const handleConvertClose = useCallback(() => {
         handleClose()
         handleConvertProductRemoved(
-            selectedPlan?.internal_id,
+            selectedPlan?.plan_id,
             currentAccount.get('domain'),
         )
     }, [handleClose, selectedPlan, currentAccount])

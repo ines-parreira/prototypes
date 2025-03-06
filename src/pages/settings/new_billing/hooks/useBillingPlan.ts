@@ -383,10 +383,10 @@ export const useBillingPlans = ({
             if (selectedPlans[key].isSelected) {
                 if (key === ProductType.SMS || key === ProductType.Voice) {
                     if (
-                        selectedPlans[key].plan?.internal_id !==
-                            currentSmsPlan?.internal_id &&
-                        selectedPlans[key].plan?.internal_id !==
-                            currentVoicePlan?.internal_id
+                        selectedPlans[key].plan?.plan_id !==
+                            currentSmsPlan?.plan_id &&
+                        selectedPlans[key].plan?.plan_id !==
+                            currentVoicePlan?.plan_id
                     ) {
                         plansToBeHandledManually.push(key)
                     }
@@ -445,8 +445,8 @@ export const useBillingPlans = ({
         domain,
         from,
         selectedPlans,
-        currentSmsPlan?.internal_id,
-        currentVoicePlan?.internal_id,
+        currentSmsPlan?.plan_id,
+        currentVoicePlan?.plan_id,
         isFreeTrial,
         currentHelpdeskPlan?.name,
         isVettedForPhone,

@@ -386,7 +386,7 @@ export const getCheapestProductPrices = createSelector(
 export const getIsVettedForPhone = createSelector(
     getCurrentVoicePlan,
     getCurrentSmsPlan,
-    (voicePlan, smsPlan) => !!(voicePlan?.price_id || smsPlan?.price_id),
+    (voicePlan, smsPlan) => !!(voicePlan?.plan_id || smsPlan?.plan_id),
 )
 
 export const getVoiceOrSmsPlanChanged = ({
@@ -401,8 +401,8 @@ export const getVoiceOrSmsPlanChanged = ({
         getCurrentSmsPlan,
         (voicePlan, smsPlan) => {
             return (
-                voicePlan?.price_id !== selectedVoicePlan?.price_id ||
-                smsPlan?.price_id !== selectedSmsPlan?.price_id
+                voicePlan?.plan_id !== selectedVoicePlan?.plan_id ||
+                smsPlan?.plan_id !== selectedSmsPlan?.plan_id
             )
         },
     )

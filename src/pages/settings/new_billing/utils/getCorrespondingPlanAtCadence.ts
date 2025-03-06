@@ -16,12 +16,12 @@ export const getCorrespondingPlanAtCadence = <T extends Plan>({
             ? { to: 'monthly', from: 'yearly' }
             : { to: 'yearly', from: 'monthly' }
 
-    const internalId = currentPlan?.internal_id.replace(
+    const targetPlanId = currentPlan?.plan_id.replace(
         switchInterval.from,
         switchInterval.to,
     )
 
-    const plan = availablePlans.find((plan) => plan.internal_id === internalId)
+    const plan = availablePlans.find((plan) => plan.plan_id === targetPlanId)
 
     if (!plan) {
         return currentPlan

@@ -22,6 +22,9 @@ export enum ProductType {
     Convert = 'convert',
 }
 
+// A PlanId is billing-provider agnostic.
+export type PlanId = string
+
 // A Stripe price ID always starts with 'price_'.
 export type PriceId = string
 // A Stripe product ID always starts with 'prod_'.
@@ -50,7 +53,7 @@ type BasePlan = {
     currency: string
     custom: boolean
     extra_ticket_cost: number
-    internal_id: string
+    plan_id: PlanId
     cadence: Cadence
     name: string
     price_id: string

@@ -15,8 +15,8 @@ describe('handleConvertProductDowngraded', () => {
             SegmentEvent.ConvertBillingProductScheduledDowngrade,
             {
                 account: 'acme-shop',
-                from: convertPlan2.internal_id,
-                to: convertPlan1.internal_id,
+                from: convertPlan2.plan_id,
+                to: convertPlan1.plan_id,
             },
         )
     })

@@ -12,8 +12,8 @@ export const handleConvertProductDowngraded = (
     if (oldTier > newTier) {
         logEvent(SegmentEvent.ConvertBillingProductScheduledDowngrade, {
             account: domain,
-            from: oldProduct?.internal_id,
-            to: newProduct?.internal_id,
+            from: oldProduct?.plan_id,
+            to: newProduct?.plan_id,
         })
     }
 }
