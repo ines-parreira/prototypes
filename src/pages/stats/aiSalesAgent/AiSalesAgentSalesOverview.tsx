@@ -94,6 +94,27 @@ const AiSalesAgentSalesOverview = () => {
                 </DashboardGridCell>
             </DashboardSection>
 
+            <DashboardSection title="AI Agent Performance">
+                <DashboardGridCell size={getGridCellSize(4)}>
+                    <RenderChart
+                        chart={AiSalesAgentChart.AiSalesAgentSuccessRate}
+                        config={AiSalesAgentReportConfig}
+                    />
+                </DashboardGridCell>
+                <DashboardGridCell size={getGridCellSize(4)}>
+                    <RenderChart
+                        chart={AiSalesAgentChart.AiSalesAgentConversionRate}
+                        config={AiSalesAgentReportConfig}
+                    />
+                </DashboardGridCell>
+                <DashboardGridCell size={getGridCellSize(4)}>
+                    <RenderChart
+                        chart={AiSalesAgentChart.AiSalesTimeSavedByAgent}
+                        config={AiSalesAgentReportConfig}
+                    />
+                </DashboardGridCell>
+            </DashboardSection>
+
             <DashboardSection title="Product Recommendations Performance">
                 <DashboardGridCell size={getGridCellSize(4)}>
                     <RenderChart

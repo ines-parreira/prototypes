@@ -2,21 +2,24 @@ import { useMemo } from 'react'
 
 import { StatsFilters } from 'models/stat/types'
 import {
-    fetchTotalAIConvTrend,
-    useTotalAIConvTrend,
-} from 'pages/stats/aiSalesAgent/metrics//useTotalAIConvTrend'
+    fetchGmvInfluencedTrend,
+    useGmvInfluencedTrend,
+} from 'pages/stats/aiSalesAgent/metrics/useGmvInfluencedTrend'
 import {
-    fetchGmvInfluecedTrend,
-    useGmvInfluecedTrend,
-} from 'pages/stats/aiSalesAgent/metrics/useGmvInfluecedTrend'
+    fetchTotalSalesOportunityAIConvTrend,
+    useTotalSalesOportunityAIConvTrend,
+} from 'pages/stats/aiSalesAgent/metrics/useTotalSalesOportunityAIConvTrend'
 
 const calculateRate = (currentValue: number, totalValue: number) => {
     return (currentValue / totalValue) * 1.35 || 0
 }
 
 const useRoiRateTrend = (filters: StatsFilters, timezone: string) => {
-    const gmvInfluencedData = useGmvInfluecedTrend(filters, timezone)
-    const totalAIConvData = useTotalAIConvTrend(filters, timezone)
+    const gmvInfluencedData = useGmvInfluencedTrend(filters, timezone)
+    const totalAIConvData = useTotalSalesOportunityAIConvTrend(
+        filters,
+        timezone,
+    )
 
     const calculateValues = (data: any, prevData: any) => {
         if (!data || !prevData) {
@@ -50,8 +53,8 @@ const useRoiRateTrend = (filters: StatsFilters, timezone: string) => {
 
 const fetchRoiRateTrend = (filters: StatsFilters, timezone: string) => {
     return Promise.all([
-        fetchTotalAIConvTrend(filters, timezone),
-        fetchGmvInfluecedTrend(filters, timezone),
+        fetchTotalSalesOportunityAIConvTrend(filters, timezone),
+        fetchGmvInfluencedTrend(filters, timezone),
     ])
         .then(([totalAIConvData, gmvInfluencedData]) => {
             return {

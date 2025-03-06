@@ -21,6 +21,7 @@ export enum AiSalesAgentConversationsFilterMember {
     PeriodEnd = 'AiSalesAgentConversations.periodEnd',
     PeriodStart = 'AiSalesAgentConversations.periodStart',
     UserId = 'AiSalesAgentConversations.userId',
+    Outcome = 'AiSalesAgentConversations.outcome',
 }
 
 export type AiSalesAgentConversationsCube = Cube<

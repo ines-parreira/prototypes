@@ -25,39 +25,13 @@ jest.mock('pages/stats/DrillDownModal', () => ({
 
 // Mock charts
 jest.mock(
-    'pages/stats/aiSalesAgent/charts/GmvInfluencedMetricCard',
-    () => () => <div>gmv-influenced-metric-card</div>,
-)
-
-jest.mock('pages/stats/aiSalesAgent/charts/GmvMetricCard', () => () => (
-    <div>gmv-metric-card</div>
-))
-
-jest.mock('pages/stats/aiSalesAgent/charts/RoiRateMetricCard', () => () => (
-    <div>roi-rate-metric-card</div>
-))
-
-jest.mock('pages/stats/aiSalesAgent/charts/TotalAIConvMetricCard', () => () => (
-    <div>total-ai-conv-metric-card</div>
-))
-
-jest.mock(
     'pages/stats/aiSalesAgent/charts/GmvInfluencedOverTimeChart',
     () => () => <div>gmv-influenced-over-time-chart</div>,
 )
 
-jest.mock('pages/stats/aiSalesAgent/charts/AverageOrderValueCard', () => () => (
-    <div>average-order-value-card</div>
-))
-
 jest.mock(
     'pages/stats/aiSalesAgent/AiSalesAgentOverviewDownloadButton',
     () => () => <div>download-button</div>,
-)
-
-jest.mock(
-    'pages/stats/aiSalesAgent/charts/TotalNumberOfOrdersCard',
-    () => () => <div>total-number-of-orders-card</div>,
 )
 
 jest.mock('pages/stats/aiSalesAgent/charts/AiSalesAgentTrendCard', () => () => (

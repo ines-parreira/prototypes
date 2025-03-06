@@ -8,9 +8,9 @@ import {
     useAverageOrderValue,
 } from 'pages/stats/aiSalesAgent/metrics/useAverageOrderValue'
 import {
-    fetchGmvInfluecedTrend,
-    useGmvInfluecedTrend,
-} from 'pages/stats/aiSalesAgent/metrics/useGmvInfluecedTrend'
+    fetchGmvInfluencedTrend,
+    useGmvInfluencedTrend,
+} from 'pages/stats/aiSalesAgent/metrics/useGmvInfluencedTrend'
 import {
     fetchGmvInflueceOverTimeSeries,
     useGmvInfluenceOverTimeSeries,
@@ -24,9 +24,13 @@ import {
     useRoiRateTrend,
 } from 'pages/stats/aiSalesAgent/metrics/useRoiRateTrend'
 import {
-    fetchTotalAIConvTrend,
-    useTotalAIConvTrend,
-} from 'pages/stats/aiSalesAgent/metrics/useTotalAIConvTrend'
+    fetchSuccessRateTrend,
+    useSuccessRateTrend,
+} from 'pages/stats/aiSalesAgent/metrics/useSuccessRateTrend'
+import {
+    fetchTimeSavedByAgentTrend,
+    useTimeSavedByAgentTrend,
+} from 'pages/stats/aiSalesAgent/metrics/useTimeSavedByAgentTrend'
 import {
     fetchTotalNumberOfOrders,
     useTotalNumberOfOrders,
@@ -35,9 +39,17 @@ import {
     fetchTotalProductRecommendations,
     useTotalProductRecommendations,
 } from 'pages/stats/aiSalesAgent/metrics/useTotalProductRecommendations'
+import {
+    fetchTotalSalesOportunityAIConvTrend,
+    useTotalSalesOportunityAIConvTrend,
+} from 'pages/stats/aiSalesAgent/metrics/useTotalSalesOportunityAIConvTrend'
 import { MetricTrendFormat } from 'pages/stats/common/utils'
 import { TooltipData } from 'pages/stats/types'
 
+import {
+    fetchConversionRate,
+    useConversionRate,
+} from './metrics/useConversionRate'
 import {
     fetchProductBuyRate,
     useProductBuyRate,
@@ -59,6 +71,9 @@ export enum AiSalesAgentChart {
     AiSalesAgentProductClickRate = 'aiSalesProductClickRate',
     AiSalesAgentProductBuyRate = 'aiSalesProductBuyRate',
     AiSalesAgentProductsTable = 'aiSalesProductsTable',
+    AiSalesAgentSuccessRate = 'aiSalesSuccessRate',
+    AiSalesAgentConversionRate = 'aiSalesConversionRate',
+    AiSalesTimeSavedByAgent = 'aiSalesTimeSavedByAgent',
 }
 
 export type TrendMetric =
@@ -71,6 +86,9 @@ export type TrendMetric =
     | AiSalesAgentChart.AiSalesAgentTotalProductRecommendations
     | AiSalesAgentChart.AiSalesAgentProductClickRate
     | AiSalesAgentChart.AiSalesAgentProductBuyRate
+    | AiSalesAgentChart.AiSalesAgentSuccessRate
+    | AiSalesAgentChart.AiSalesAgentConversionRate
+    | AiSalesAgentChart.AiSalesTimeSavedByAgent
 
 export const AiSalesAgentMetricConfig: Record<
     TrendMetric,
@@ -88,8 +106,8 @@ export const AiSalesAgentMetricConfig: Record<
         hint: {
             title: 'The total number of conversations handled or influenced by the AI Agent for Sales.',
         },
-        useTrend: useTotalAIConvTrend,
-        fetchTrend: fetchTotalAIConvTrend,
+        useTrend: useTotalSalesOportunityAIConvTrend,
+        fetchTrend: fetchTotalSalesOportunityAIConvTrend,
         interpretAs: 'more-is-better',
         metricFormat: 'decimal',
     },
@@ -108,8 +126,8 @@ export const AiSalesAgentMetricConfig: Record<
         hint: {
             title: 'The percentage of total revenue generated from AI-influenced orders, relative to all revenue.',
         },
-        useTrend: useGmvInfluecedTrend,
-        fetchTrend: fetchGmvInfluecedTrend,
+        useTrend: useGmvInfluencedTrend,
+        fetchTrend: fetchGmvInfluencedTrend,
         interpretAs: 'more-is-better',
         metricFormat: 'decimal',
     },
@@ -170,6 +188,36 @@ export const AiSalesAgentMetricConfig: Record<
         },
         useTrend: useProductBuyRate,
         fetchTrend: fetchProductBuyRate,
+        interpretAs: 'more-is-better',
+        metricFormat: 'decimal',
+    },
+    [AiSalesAgentChart.AiSalesAgentSuccessRate]: {
+        title: 'Success Rate',
+        hint: {
+            title: 'The percentage of AI Agent interactions that were successfully automated without human escalation.',
+        },
+        useTrend: useSuccessRateTrend,
+        fetchTrend: fetchSuccessRateTrend,
+        interpretAs: 'more-is-better',
+        metricFormat: 'decimal',
+    },
+    [AiSalesAgentChart.AiSalesAgentConversionRate]: {
+        title: 'Conversion Rate',
+        hint: {
+            title: 'The percentage of AI Agent interactions that resulted in a sale.',
+        },
+        useTrend: useConversionRate,
+        fetchTrend: fetchConversionRate,
+        interpretAs: 'more-is-better',
+        metricFormat: 'decimal',
+    },
+    [AiSalesAgentChart.AiSalesTimeSavedByAgent]: {
+        title: 'Time Saved by Agent',
+        hint: {
+            title: 'The estimated time saved by AI Agent for Sales in assisting customers with their purchases, reducing manual workload for human agents.',
+        },
+        useTrend: useTimeSavedByAgentTrend,
+        fetchTrend: fetchTimeSavedByAgentTrend,
         interpretAs: 'more-is-better',
         metricFormat: 'decimal',
     },

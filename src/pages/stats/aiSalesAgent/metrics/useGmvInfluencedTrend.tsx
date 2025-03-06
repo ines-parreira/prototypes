@@ -5,7 +5,7 @@ import { gmvInfluencedQueryFactory } from 'models/reporting/queryFactories/ai-sa
 import { StatsFilters } from 'models/stat/types'
 import { getPreviousPeriod } from 'utils/reporting'
 
-const useGmvInfluecedTrend = (filters: StatsFilters, timezone: string) =>
+const useGmvInfluencedTrend = (filters: StatsFilters, timezone: string) =>
     useMetricTrend(
         gmvInfluencedQueryFactory(filters, timezone),
         gmvInfluencedQueryFactory(
@@ -17,7 +17,7 @@ const useGmvInfluecedTrend = (filters: StatsFilters, timezone: string) =>
         ),
     )
 
-const fetchGmvInfluecedTrend = (filters: StatsFilters, timezone: string) =>
+const fetchGmvInfluencedTrend = (filters: StatsFilters, timezone: string) =>
     fetchMetricTrend(
         gmvInfluencedQueryFactory(filters, timezone),
         gmvInfluencedQueryFactory(
@@ -29,4 +29,4 @@ const fetchGmvInfluecedTrend = (filters: StatsFilters, timezone: string) =>
         ),
     )
 
-export { useGmvInfluecedTrend, fetchGmvInfluecedTrend }
+export { useGmvInfluencedTrend, fetchGmvInfluencedTrend }

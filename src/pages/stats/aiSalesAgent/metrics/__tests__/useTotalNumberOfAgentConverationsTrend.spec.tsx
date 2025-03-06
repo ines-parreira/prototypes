@@ -5,16 +5,16 @@ import { waitFor } from '@testing-library/react'
 import { act, renderHook } from '@testing-library/react-hooks/dom'
 import moment from 'moment'
 
-import { AiSalesAgentOrdersMeasure } from 'models/reporting/cubes/ai-sales-agent/AiSalesAgentOrders'
+import { AiSalesAgentConversationsMeasure } from 'models/reporting/cubes/ai-sales-agent/AiSalesAgentConversations'
 import { fetchPostReporting, usePostReporting } from 'models/reporting/queries'
 import { StatsFilters } from 'models/stat/types'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 import { assumeMock } from 'utils/testing'
 
 import {
-    fetchGmvInfluencedTrend,
-    useGmvInfluencedTrend,
-} from '../useGmvInfluencedTrend'
+    fetchTotalNumberOfAgentConverationsTrend,
+    useTotalNumberOfAgentConverationsTrend,
+} from '../useTotalNumberOfAgentConverationsTrend'
 
 const timezone = 'UTC'
 
@@ -31,33 +31,36 @@ const statsFilters: StatsFilters = {
 
 const queryClient = mockQueryClient()
 
+jest.useFakeTimers()
+
 jest.mock('models/reporting/queries')
 const usePostReportingMock = assumeMock(usePostReporting)
 const fetchPostReportingMock = assumeMock(fetchPostReporting)
 
-jest.useFakeTimers()
-
-describe('gmvInfluencedTrend', () => {
+describe('totalNumberOfAgentConverationsTrend', () => {
     const defaultReporting = {
         isFetching: false,
         isError: false,
     } as UseQueryResult
 
-    describe('useGmvInfluecedTrend', () => {
+    describe('useTotalNumberOfAgentConverationsTrend', () => {
         it('should return correct metric data when the query resolves', async () => {
             usePostReportingMock.mockReturnValueOnce({
                 ...defaultReporting,
-                data: 32.41,
+                data: 32,
             } as UseQueryResult)
             usePostReportingMock.mockReturnValueOnce({
                 ...defaultReporting,
-                data: 24.56,
+                data: 24,
             } as UseQueryResult)
 
             act(() => jest.runAllTimers())
-
             const { result } = renderHook(
-                () => useGmvInfluencedTrend(statsFilters, timezone),
+                () =>
+                    useTotalNumberOfAgentConverationsTrend(
+                        statsFilters,
+                        timezone,
+                    ),
                 {
                     wrapper: ({ children }) => (
                         <QueryClientProvider client={queryClient}>
@@ -70,8 +73,8 @@ describe('gmvInfluencedTrend', () => {
             await waitFor(() => {
                 expect(result.current).toEqual({
                     data: {
-                        value: 32.41,
-                        prevValue: 24.56,
+                        prevValue: 24,
+                        value: 32,
                     },
                     isError: false,
                     isFetching: false,
@@ -80,30 +83,33 @@ describe('gmvInfluencedTrend', () => {
         })
     })
 
-    describe('fetchGmvInfluncedTrend', () => {
-        it('should return the correct data when the query resolves', async () => {
+    describe('fetchTotalNumberOfAgentConverationsTrend', () => {
+        it('should return correct metric data when the query resolves', async () => {
             fetchPostReportingMock.mockReturnValueOnce({
                 data: {
                     ...defaultReporting,
-                    data: [{ [AiSalesAgentOrdersMeasure.Gmv]: 32.41 }],
+                    data: [{ [AiSalesAgentConversationsMeasure.Count]: 32 }],
                 },
             } as unknown as ReturnType<typeof fetchPostReporting>)
             fetchPostReportingMock.mockReturnValueOnce({
                 data: {
                     ...defaultReporting,
-                    data: [{ [AiSalesAgentOrdersMeasure.Gmv]: 24.56 }],
+                    data: [{ [AiSalesAgentConversationsMeasure.Count]: 24 }],
                 },
             } as unknown as ReturnType<typeof fetchPostReporting>)
 
-            const result = await fetchGmvInfluencedTrend(statsFilters, timezone)
+            const result = await fetchTotalNumberOfAgentConverationsTrend(
+                statsFilters,
+                timezone,
+            )
 
             expect(result).toEqual({
                 data: {
-                    value: 32.41,
-                    prevValue: 24.56,
+                    prevValue: 24,
+                    value: 32,
                 },
-                isError: false,
                 isFetching: false,
+                isError: false,
             })
         })
     })

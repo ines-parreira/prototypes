@@ -12,9 +12,9 @@ import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 import { assumeMock } from 'utils/testing'
 
 import {
-    fetchTotalAIConvTrend,
-    useTotalAIConvTrend,
-} from '../useTotalAIConvTrend'
+    fetchTotalSalesOportunityAIConvTrend,
+    useTotalSalesOportunityAIConvTrend,
+} from '../useTotalSalesOportunityAIConvTrend'
 
 const timezone = 'UTC'
 
@@ -57,7 +57,8 @@ describe('totalAIConvTrend', () => {
             act(() => jest.runAllTimers())
 
             const { result } = renderHook(
-                () => useTotalAIConvTrend(statsFilters, timezone),
+                () =>
+                    useTotalSalesOportunityAIConvTrend(statsFilters, timezone),
                 {
                     wrapper: ({ children }) => (
                         <QueryClientProvider client={queryClient}>
@@ -95,7 +96,10 @@ describe('totalAIConvTrend', () => {
                 },
             } as unknown as ReturnType<typeof fetchPostReporting>)
 
-            const result = await fetchTotalAIConvTrend(statsFilters, timezone)
+            const result = await fetchTotalSalesOportunityAIConvTrend(
+                statsFilters,
+                timezone,
+            )
 
             expect(result).toEqual({
                 data: {

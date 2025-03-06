@@ -1,6 +1,7 @@
 import {
     AiSalesAgentConversationsCube,
     AiSalesAgentConversationsDimension,
+    AiSalesAgentConversationsFilterMember,
     AiSalesAgentConversationsMeasure,
 } from 'models/reporting/cubes/ai-sales-agent/AiSalesAgentConversations'
 import {
@@ -85,7 +86,7 @@ export const totalNumberOfOrderQueryFactory = (
     timezone,
 })
 
-export const totalNumberConverFromAIAgentQueryFactory = (
+export const totalNumberofSalesOpportunityConvFromAIAgentQueryFactory = (
     filters: StatsFilters,
     timezone: string,
 ): ReportingQuery<AiSalesAgentConversationsCube> => ({
@@ -96,6 +97,55 @@ export const totalNumberConverFromAIAgentQueryFactory = (
             member: AiSalesAgentConversationsDimension.IsSalesOpportunity,
             operator: ReportingFilterOperator.Equals,
             values: ['1'],
+        },
+        ...aiSalesAgentConversationsDefaultFilters(filters),
+    ],
+    timezone,
+})
+
+export const totalNumberOfAutomatedConversationQueryFactory = (
+    filters: StatsFilters,
+    timezone: string,
+): ReportingQuery<AiSalesAgentConversationsCube> => ({
+    measures: [AiSalesAgentConversationsMeasure.Count],
+    dimensions: [],
+    filters: [
+        {
+            member: AiSalesAgentConversationsFilterMember.Outcome,
+            operator: ReportingFilterOperator.NotEquals,
+            values: ['handover'],
+        },
+        ...aiSalesAgentConversationsDefaultFilters(filters),
+    ],
+    timezone,
+})
+
+export const totalNumberOfAgentConversationsQueryFactory = (
+    filters: StatsFilters,
+    timezone: string,
+): ReportingQuery<AiSalesAgentConversationsCube> => ({
+    measures: [AiSalesAgentConversationsMeasure.Count],
+    dimensions: [],
+    filters: [...aiSalesAgentConversationsDefaultFilters(filters)],
+    timezone,
+})
+
+export const totalNumberOfAutomatedSalesQueryFactory = (
+    filters: StatsFilters,
+    timezone: string,
+): ReportingQuery<AiSalesAgentConversationsCube> => ({
+    measures: [AiSalesAgentConversationsMeasure.Count],
+    dimensions: [],
+    filters: [
+        {
+            member: AiSalesAgentConversationsDimension.IsSalesOpportunity,
+            operator: ReportingFilterOperator.Equals,
+            values: ['1'],
+        },
+        {
+            member: AiSalesAgentConversationsFilterMember.Outcome,
+            operator: ReportingFilterOperator.NotEquals,
+            values: ['handover'],
         },
         ...aiSalesAgentConversationsDefaultFilters(filters),
     ],

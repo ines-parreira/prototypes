@@ -6,18 +6,21 @@ import { act, renderHook } from '@testing-library/react-hooks/dom'
 import moment from 'moment'
 
 import { StatsFilters } from 'models/stat/types'
+import {
+    fetchTotalNumberOfAgentConverationsTrend,
+    useTotalNumberOfAgentConverationsTrend,
+} from 'pages/stats/aiSalesAgent/metrics//useTotalNumberOfAgentConverationsTrend'
+import {
+    fetchTotalNumberOfAutomatedSalesTrend,
+    useTotalNumberOfAutomatedSalesTrend,
+} from 'pages/stats/aiSalesAgent/metrics//useTotalNumberOfAutomatedSalesTrend'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 import { assumeMock } from 'utils/testing'
 
 import {
-    fetchGmvInfluencedTrend,
-    useGmvInfluencedTrend,
-} from '../useGmvInfluencedTrend'
-import { fetchRoiRateTrend, useRoiRateTrend } from '../useRoiRateTrend'
-import {
-    fetchTotalSalesOportunityAIConvTrend,
-    useTotalSalesOportunityAIConvTrend,
-} from '../useTotalSalesOportunityAIConvTrend'
+    fetchSuccessRateTrend,
+    useSuccessRateTrend,
+} from '../useSuccessRateTrend'
 
 const timezone = 'UTC'
 
@@ -36,22 +39,32 @@ const queryClient = mockQueryClient()
 
 jest.useFakeTimers()
 
-jest.mock('pages/stats/aiSalesAgent/metrics/useGmvInfluencedTrend')
-const useGmvInfluencedTrendMock = assumeMock(useGmvInfluencedTrend)
-const fetchGmvInfluencedTrendMock = assumeMock(fetchGmvInfluencedTrend)
-
-jest.mock('pages/stats/aiSalesAgent/metrics/useTotalSalesOportunityAIConvTrend')
-const useTotalAIConvTrendMock = assumeMock(useTotalSalesOportunityAIConvTrend)
-const fetchTotalAIConvTrendMock = assumeMock(
-    fetchTotalSalesOportunityAIConvTrend,
+jest.mock(
+    'pages/stats/aiSalesAgent/metrics/useTotalNumberOfAgentConverationsTrend',
+)
+const useTotalNumberOfAgentConverationsTrendMock = assumeMock(
+    useTotalNumberOfAgentConverationsTrend,
+)
+const fetchTotalNumberOfAgentConverationsTrendMock = assumeMock(
+    fetchTotalNumberOfAgentConverationsTrend,
 )
 
-describe('roiRateTrend', () => {
-    describe('useRoiRateTrend', () => {
+jest.mock(
+    'pages/stats/aiSalesAgent/metrics/useTotalNumberOfAutomatedSalesTrend',
+)
+const useTotalNumberOfAutomatedSalesTrendMock = assumeMock(
+    useTotalNumberOfAutomatedSalesTrend,
+)
+const fetchTotalNumberOfAutomatedSalesTrendMock = assumeMock(
+    fetchTotalNumberOfAutomatedSalesTrend,
+)
+
+describe('successRateTrend', () => {
+    describe('useSuccessRateTrend', () => {
         it('should return correct metric data when the query resolves', async () => {
             act(() => jest.runAllTimers())
 
-            useGmvInfluencedTrendMock.mockReturnValue({
+            useTotalNumberOfAgentConverationsTrendMock.mockReturnValue({
                 isFetching: false,
                 isError: false,
                 data: {
@@ -59,7 +72,7 @@ describe('roiRateTrend', () => {
                     prevValue: 2,
                 },
             })
-            useTotalAIConvTrendMock.mockReturnValue({
+            useTotalNumberOfAutomatedSalesTrendMock.mockReturnValue({
                 isFetching: false,
                 isError: false,
                 data: {
@@ -69,7 +82,7 @@ describe('roiRateTrend', () => {
             })
 
             const { result } = renderHook(
-                () => useRoiRateTrend(filters, timezone),
+                () => useSuccessRateTrend(filters, timezone),
                 {
                     wrapper: ({ children }) => (
                         <QueryClientProvider client={queryClient}>
@@ -82,8 +95,8 @@ describe('roiRateTrend', () => {
             await waitFor(() => {
                 expect(result.current).toEqual({
                     data: {
-                        prevValue: 2.7,
-                        value: 6.75,
+                        prevValue: 0.5,
+                        value: 0.2,
                     },
                     isError: false,
                     isFetching: false,
@@ -94,7 +107,7 @@ describe('roiRateTrend', () => {
         it('should retrun correct value if cube returns null', async () => {
             act(() => jest.runAllTimers())
 
-            useGmvInfluencedTrendMock.mockReturnValue({
+            useTotalNumberOfAgentConverationsTrendMock.mockReturnValue({
                 isFetching: false,
                 isError: false,
                 data: {
@@ -102,7 +115,7 @@ describe('roiRateTrend', () => {
                     prevValue: null,
                 },
             })
-            useTotalAIConvTrendMock.mockReturnValue({
+            useTotalNumberOfAutomatedSalesTrendMock.mockReturnValue({
                 isFetching: false,
                 isError: false,
                 data: {
@@ -112,7 +125,7 @@ describe('roiRateTrend', () => {
             })
 
             const { result } = renderHook(
-                () => useRoiRateTrend(filters, timezone),
+                () => useSuccessRateTrend(filters, timezone),
                 {
                     wrapper: ({ children }) => (
                         <QueryClientProvider client={queryClient}>
@@ -135,33 +148,37 @@ describe('roiRateTrend', () => {
         })
     })
 
-    describe('fetchRoiRateTrend', () => {
+    describe('fetchSuccessRateTrend', () => {
         it('should return correct metric data when the query resolves', async () => {
             act(() => jest.runAllTimers())
 
-            fetchGmvInfluencedTrendMock.mockReturnValue({
+            fetchTotalNumberOfAgentConverationsTrendMock.mockReturnValue({
                 isFetching: false,
                 isError: false,
                 data: {
                     value: 10,
                     prevValue: 2,
                 },
-            } as unknown as ReturnType<typeof fetchGmvInfluencedTrend>)
-            fetchTotalAIConvTrendMock.mockReturnValue({
+            } as unknown as ReturnType<
+                typeof fetchTotalNumberOfAgentConverationsTrend
+            >)
+            fetchTotalNumberOfAutomatedSalesTrendMock.mockReturnValue({
                 isFetching: false,
                 isError: false,
                 data: {
                     value: 2,
                     prevValue: 1,
                 },
-            } as unknown as ReturnType<typeof fetchTotalAIConvTrendMock>)
+            } as unknown as ReturnType<
+                typeof fetchTotalNumberOfAutomatedSalesTrend
+            >)
 
-            const result = await fetchRoiRateTrend(filters, timezone)
+            const result = await fetchSuccessRateTrend(filters, timezone)
 
             expect(result).toEqual({
                 data: {
-                    prevValue: 2.7,
-                    value: 6.75,
+                    prevValue: 0.5,
+                    value: 0.2,
                 },
                 isError: false,
                 isFetching: false,
@@ -171,24 +188,28 @@ describe('roiRateTrend', () => {
         it('should retrun correct value if cube returns null', async () => {
             act(() => jest.runAllTimers())
 
-            fetchGmvInfluencedTrendMock.mockReturnValue({
+            fetchTotalNumberOfAgentConverationsTrendMock.mockReturnValue({
                 isFetching: false,
                 isError: false,
                 data: {
                     value: null,
                     prevValue: null,
                 },
-            } as unknown as ReturnType<typeof fetchGmvInfluencedTrend>)
-            fetchTotalAIConvTrendMock.mockReturnValue({
+            } as unknown as ReturnType<
+                typeof fetchTotalNumberOfAgentConverationsTrend
+            >)
+            fetchTotalNumberOfAutomatedSalesTrendMock.mockReturnValue({
                 isFetching: false,
                 isError: false,
                 data: {
                     value: null,
                     prevValue: null,
                 },
-            } as unknown as ReturnType<typeof fetchTotalAIConvTrendMock>)
+            } as unknown as ReturnType<
+                typeof fetchTotalNumberOfAutomatedSalesTrend
+            >)
 
-            const result = await fetchRoiRateTrend(filters, timezone)
+            const result = await fetchSuccessRateTrend(filters, timezone)
 
             expect(result).toEqual({
                 data: {

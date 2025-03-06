@@ -1,18 +1,12 @@
 import { FilterKey, StaticFilter } from 'models/stat/types'
-import GmvInfluencedMetricCard from 'pages/stats/aiSalesAgent//charts/GmvInfluencedMetricCard'
-import RoiRateMetricCard from 'pages/stats/aiSalesAgent//charts/RoiRateMetricCard'
 import {
     AiSalesAgentChart,
     AiSalesAgentChartConfig,
     AiSalesAgentMetricConfig,
 } from 'pages/stats/aiSalesAgent/AiSalesAgentMetricsConfig'
 import AiSalesAgentTrendCard from 'pages/stats/aiSalesAgent/charts/AiSalesAgentTrendCard'
-import AverageOrderValueCard from 'pages/stats/aiSalesAgent/charts/AverageOrderValueCard'
 import GmvInfluencedOverTimeChart from 'pages/stats/aiSalesAgent/charts/GmvInfluencedOverTimeChart'
-import GmvMetricCard from 'pages/stats/aiSalesAgent/charts/GmvMetricCard'
 import TopProductRecommendationTable from 'pages/stats/aiSalesAgent/charts/TopProductRecommendationTable'
-import TotalAIConvMetricCard from 'pages/stats/aiSalesAgent/charts/TotalAIConvMetricCard'
-import TotalNumberOfOrdersCard from 'pages/stats/aiSalesAgent/charts/TotalNumberOfOrdersCard'
 import { ReportsIDs } from 'pages/stats/custom-reports/constants'
 import {
     ChartType,
@@ -44,7 +38,7 @@ export const AiSalesAgentReportConfig: ReportConfig<AiSalesAgentChart> = {
                 AiSalesAgentMetricConfig[
                     AiSalesAgentChart.AiSalesAgentTotalSalesConv
                 ].hint.title,
-            chartComponent: TotalAIConvMetricCard,
+            chartComponent: AiSalesAgentTrendCard,
             csvProducer: [],
         },
         [AiSalesAgentChart.AiSalesAgentGmv]: {
@@ -54,7 +48,7 @@ export const AiSalesAgentReportConfig: ReportConfig<AiSalesAgentChart> = {
             description:
                 AiSalesAgentMetricConfig[AiSalesAgentChart.AiSalesAgentGmv].hint
                     .title,
-            chartComponent: GmvMetricCard,
+            chartComponent: AiSalesAgentTrendCard,
             csvProducer: [],
         },
         [AiSalesAgentChart.AiSalesAgentGmvInfluenced]: {
@@ -66,7 +60,7 @@ export const AiSalesAgentReportConfig: ReportConfig<AiSalesAgentChart> = {
                 AiSalesAgentMetricConfig[
                     AiSalesAgentChart.AiSalesAgentGmvInfluenced
                 ].hint.title,
-            chartComponent: GmvInfluencedMetricCard,
+            chartComponent: AiSalesAgentTrendCard,
             csvProducer: [
                 {
                     type: DataExportFormat.Trend,
@@ -85,7 +79,7 @@ export const AiSalesAgentReportConfig: ReportConfig<AiSalesAgentChart> = {
             description:
                 AiSalesAgentMetricConfig[AiSalesAgentChart.AiSalesAgentRoiRate]
                     .hint.title,
-            chartComponent: RoiRateMetricCard,
+            chartComponent: AiSalesAgentTrendCard,
             csvProducer: [],
         },
         [AiSalesAgentChart.AiSalesAgentTotalNumberOfOrders]: {
@@ -97,7 +91,7 @@ export const AiSalesAgentReportConfig: ReportConfig<AiSalesAgentChart> = {
                 AiSalesAgentMetricConfig[
                     AiSalesAgentChart.AiSalesAgentTotalNumberOfOrders
                 ].hint.title,
-            chartComponent: TotalNumberOfOrdersCard,
+            chartComponent: AiSalesAgentTrendCard,
             csvProducer: [],
         },
         [AiSalesAgentChart.AiSalesAgentAverageOrderValue]: {
@@ -109,7 +103,43 @@ export const AiSalesAgentReportConfig: ReportConfig<AiSalesAgentChart> = {
                 AiSalesAgentMetricConfig[
                     AiSalesAgentChart.AiSalesAgentTotalNumberOfOrders
                 ].hint.title,
-            chartComponent: AverageOrderValueCard,
+            chartComponent: AiSalesAgentTrendCard,
+            csvProducer: [],
+        },
+        [AiSalesAgentChart.AiSalesAgentConversionRate]: {
+            chartType: ChartType.Card,
+            label: AiSalesAgentMetricConfig[
+                AiSalesAgentChart.AiSalesAgentConversionRate
+            ].title,
+            description:
+                AiSalesAgentMetricConfig[
+                    AiSalesAgentChart.AiSalesAgentConversionRate
+                ].hint.title,
+            chartComponent: AiSalesAgentTrendCard,
+            csvProducer: [],
+        },
+        [AiSalesAgentChart.AiSalesAgentSuccessRate]: {
+            chartType: ChartType.Card,
+            label: AiSalesAgentMetricConfig[
+                AiSalesAgentChart.AiSalesAgentSuccessRate
+            ].title,
+            description:
+                AiSalesAgentMetricConfig[
+                    AiSalesAgentChart.AiSalesAgentSuccessRate
+                ].hint.title,
+            chartComponent: AiSalesAgentTrendCard,
+            csvProducer: [],
+        },
+        [AiSalesAgentChart.AiSalesTimeSavedByAgent]: {
+            chartType: ChartType.Card,
+            label: AiSalesAgentMetricConfig[
+                AiSalesAgentChart.AiSalesTimeSavedByAgent
+            ].title,
+            description:
+                AiSalesAgentMetricConfig[
+                    AiSalesAgentChart.AiSalesTimeSavedByAgent
+                ].hint.title,
+            chartComponent: AiSalesAgentTrendCard,
             csvProducer: [],
         },
         [AiSalesAgentChart.AiSalesAgentGmvInfluencedOverTime]: {

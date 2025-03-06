@@ -3,6 +3,7 @@ import useMetricTrend, {
 } from 'hooks/reporting/useMetricTrend'
 import { OrderDirection } from 'models/api/types'
 import { Cubes } from 'models/reporting/cubes'
+import { onlineTimeQueryFactory } from 'models/reporting/queryFactories/agentxp/onlineTime'
 import { ticketAverageHandleTimeQueryFactory } from 'models/reporting/queryFactories/agentxp/ticketHandleTime'
 import { closedTicketsQueryFactory } from 'models/reporting/queryFactories/support-performance/closedTickets'
 import { customerSatisfactionQueryFactory } from 'models/reporting/queryFactories/support-performance/customerSatisfaction'
@@ -138,3 +139,7 @@ export const useTicketHandleTimeTrend = getTrendHook(
 export const fetchTicketHandleTimeTrend = getTrendFetch(
     ticketAverageHandleTimeQueryFactory,
 )
+
+export const useOnlineTimeTrend = getTrendHook(onlineTimeQueryFactory)
+
+export const fetchOnlineTimeTrend = getTrendFetch(onlineTimeQueryFactory)
