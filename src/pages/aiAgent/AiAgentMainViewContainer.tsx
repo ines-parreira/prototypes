@@ -112,7 +112,7 @@ const AiAgentMainViewContainer = () => {
     switch (onboardingState) {
         case OnboardingState.Loading:
             return (
-                <div className={css.spinner}>
+                <div className={css.spinner} aria-label="loading">
                     <LoadingSpinner size="big" />
                 </div>
             )
