@@ -11,8 +11,6 @@ import { fromJS, List, Map } from 'immutable'
 import { connect, ConnectedProps } from 'react-redux'
 
 import { useDesktopOnlyShowGlobalNavFeatureFlag } from 'common/navigation/hooks/useShowGlobalNavFeatureFlag'
-import { FeatureFlagKey } from 'config/featureFlags'
-import { useFlag } from 'core/flags'
 import usePrevious from 'hooks/usePrevious'
 import { EntityType } from 'models/view/types'
 import BlankState from 'pages/common/components/BlankState/BlankState'
@@ -97,7 +95,6 @@ const TableContainer = ({
     const prevItems = usePrevious(items)
     const [rowCursor, setRowCursor] = useState(0)
     const showGlobalNav = useDesktopOnlyShowGlobalNavFeatureFlag()
-    const isTrackTotalHitsEnabled = useFlag(FeatureFlagKey.TrackTotalSearchHits)
     const searchRank = useContext(SearchRankScenarioContext)
     const orderBy = view.get('order_by') as string
     const fetchParams = useMemo(
@@ -107,17 +104,6 @@ const TableContainer = ({
                 : undefined,
         [orderBy, view],
     ) as FetchViewItemsOptions
-    const searchOptions = useMemo(
-        () =>
-            isTrackTotalHitsEnabled && isSearch && type === EntityType.Ticket
-                ? { trackTotalHits: true }
-                : undefined,
-        [isTrackTotalHitsEnabled, isSearch, type],
-    )
-    const navigationFetchParams = useMemo(
-        () => ({ ...fetchParams, ...searchOptions }),
-        [fetchParams, searchOptions],
-    )
 
     const areAllSelected = useMemo(
         () => !!selectedItemsIds && items.size === selectedItemsIds.size,
@@ -398,7 +384,7 @@ const TableContainer = ({
                         null,
                         null,
                         searchRank,
-                        navigationFetchParams,
+                        fetchParams,
                     )
                 }
                 fetchPrevItems={() =>
@@ -407,7 +393,7 @@ const TableContainer = ({
                         null,
                         null,
                         searchRank,
-                        navigationFetchParams,
+                        fetchParams,
                     )
                 }
             />

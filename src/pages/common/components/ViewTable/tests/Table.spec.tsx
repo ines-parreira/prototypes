@@ -7,7 +7,6 @@ import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
 import * as viewsConfig from 'config/views'
-import { useFlag } from 'core/flags'
 import { mockSearchRank } from 'fixtures/searchRank'
 import * as ticketFixtures from 'fixtures/ticket'
 import { EntityType } from 'models/view/types'
@@ -81,11 +80,6 @@ jest.mock('@gorgias/realtime', () => ({
         viewTickets: jest.fn(),
     }),
 }))
-
-jest.mock('core/flags', () => ({
-    useFlag: jest.fn(),
-}))
-const mockUseFlag = useFlag as jest.Mock
 
 describe('<Table />', () => {
     const viewConfig = viewsConfig.views.first() as Map<any, any>
@@ -333,42 +327,7 @@ describe('<Table />', () => {
                 null,
                 null,
                 mockSearchRank,
-                {},
-            )
-        },
-    )
-
-    it.each([
-        ['next page', ViewNavDirection.NextView, 'keyboard_arrow_right'],
-        ['prev page', ViewNavDirection.PrevView, 'keyboard_arrow_left'],
-    ])(
-        'should fetch items with the trackTotalHits param on %s navigation button click',
-        (testName, direction, buttonText) => {
-            mockUseFlag.mockReturnValue(true)
-
-            const { getByText } = render(
-                <SearchRankScenarioContext.Provider value={mockSearchRank}>
-                    <Provider store={mockStore(defaultState)}>
-                        <Table
-                            {...minProps}
-                            navigation={fromJS({
-                                prev_items: true,
-                                next_items: true,
-                            })}
-                            isSearch
-                        />
-                    </Provider>
-                </SearchRankScenarioContext.Provider>,
-            )
-
-            fireEvent.click(getByText(buttonText))
-
-            expect(minProps.fetchViewItems).toHaveBeenLastCalledWith(
-                direction,
-                null,
-                null,
-                mockSearchRank,
-                { trackTotalHits: true },
+                undefined,
             )
         },
     )

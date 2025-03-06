@@ -139,7 +139,6 @@ export const FilterTopbar = ({
         archived: false,
         object_type: 'Ticket',
     })
-    const isTrackTotalHitsEnabled = useFlag(FeatureFlagKey.TrackTotalSearchHits)
 
     const activeCustomFields = useMemo(() => {
         return (
@@ -166,17 +165,7 @@ export const FilterTopbar = ({
                 : undefined,
         [activeView, orderBy],
     ) as FetchViewItemsOptions
-    const searchOptions = useMemo(
-        () =>
-            isTrackTotalHitsEnabled && isSearch && type === EntityType.Ticket
-                ? { trackTotalHits: true }
-                : {},
-        [isTrackTotalHitsEnabled, isSearch, type],
-    )
-    const combinedFetchParams = useMemo(
-        () => ({ ...fetchParams, ...searchOptions }),
-        [fetchParams, searchOptions],
-    )
+
     const {
         setIsEnabled: setSplitTicketView,
         shouldRedirectToSplitView,
@@ -213,7 +202,7 @@ export const FilterTopbar = ({
                 undefined,
                 undefined,
                 searchRank,
-                combinedFetchParams,
+                fetchParams,
             )
         }
     }, [activeView, areFiltersValid, previousActiveView])
@@ -419,13 +408,11 @@ export const FilterTopbar = ({
                         <ViewSharingButton view={activeView} />
                     </div>
                 )}
-                {isTrackTotalHitsEnabled &&
-                    _isNumber(totalSearchResources) &&
-                    isSearch && (
-                        <p className={css.searchResourceCount}>
-                            {`${totalSearchResources >= 5000 ? '5000+' : totalSearchResources} ${pluralize('ticket', totalSearchResources)}`}
-                        </p>
-                    )}
+                {_isNumber(totalSearchResources) && isSearch && (
+                    <p className={css.searchResourceCount}>
+                        {`${totalSearchResources >= 5000 ? '5000+' : totalSearchResources} ${pluralize('ticket', totalSearchResources)}`}
+                    </p>
+                )}
                 <p className={css.subtitle}>ADVANCED FILTERS</p>
                 <div className={css.advancedFilters}>
                     <Filters />

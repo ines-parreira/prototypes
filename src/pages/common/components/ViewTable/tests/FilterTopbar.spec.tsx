@@ -7,7 +7,6 @@ import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
 import { logEvent, SegmentEvent } from 'common/segment'
-import { FeatureFlagKey } from 'config/featureFlags'
 import { useFlag } from 'core/flags'
 import { useCustomFieldDefinitions } from 'custom-fields/hooks/queries/useCustomFieldDefinitions'
 import { mockSearchRank } from 'fixtures/searchRank'
@@ -698,9 +697,6 @@ describe('<FilterTopbar />', () => {
     })
 
     it('should render total resource count when in search mode', () => {
-        mockUseFlag.mockImplementation(
-            (flag) => flag === FeatureFlagKey.TrackTotalSearchHits,
-        )
         const { getByText } = render(
             <Provider
                 store={mockStore({
@@ -721,9 +717,6 @@ describe('<FilterTopbar />', () => {
     })
 
     it('should render custom total resource when resource count is >= 5000, and in search mode', () => {
-        mockUseFlag.mockImplementation(
-            (flag) => flag === FeatureFlagKey.TrackTotalSearchHits,
-        )
         const { getByText } = render(
             <Provider
                 store={mockStore({

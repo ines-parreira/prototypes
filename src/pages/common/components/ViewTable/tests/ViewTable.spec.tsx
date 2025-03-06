@@ -6,7 +6,6 @@ import { fromJS, Map } from 'immutable'
 import _identity from 'lodash/identity'
 import { stringify } from 'qs'
 
-import { FeatureFlagKey } from 'config/featureFlags'
 import { defaultTicketView } from 'config/views'
 import { mockSearchRank } from 'fixtures/searchRank'
 import * as ticketFixtures from 'fixtures/ticket'
@@ -82,7 +81,6 @@ const minProps = {
     ActionsComponent: null,
     viewButtons: null,
     activeViewIdSet,
-    flags: { [FeatureFlagKey.TrackTotalSearchHits]: true },
 } as unknown as ComponentProps<typeof ViewTableContainer>
 
 beforeEach(() => {
@@ -501,7 +499,7 @@ describe('<ViewTable />', () => {
                 null,
                 null,
                 null,
-                { trackTotalHits: true },
+                undefined,
             )
         })
 
@@ -727,7 +725,7 @@ describe('<ViewTable />', () => {
                 null,
                 null,
                 null,
-                { trackTotalHits: true },
+                undefined,
             )
         })
 
@@ -754,7 +752,7 @@ describe('<ViewTable />', () => {
                 null,
                 null,
                 mockSearchRank,
-                { trackTotalHits: true },
+                undefined,
             )
         })
     })

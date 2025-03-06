@@ -826,6 +826,7 @@ describe('actions', () => {
                     filters: ticketSearchView.filters,
                     cursor,
                     cancelToken,
+                    trackTotalHits: true,
                 })
             })
 
@@ -854,6 +855,7 @@ describe('actions', () => {
                     search: ticketSearchView.search,
                     filters: ticketSearchView.filters,
                     cursor,
+                    trackTotalHits: true,
                 })
             })
 
@@ -882,6 +884,7 @@ describe('actions', () => {
                     search: ticketSearchView.search,
                     filters: ticketSearchView.filters,
                     cursor,
+                    trackTotalHits: true,
                 })
             })
 
@@ -940,6 +943,7 @@ describe('actions', () => {
                     filters: ticketSearchView.filters,
                     cursor: undefined,
                     orderBy: orderByParam,
+                    trackTotalHits: true,
                 })
             })
         })

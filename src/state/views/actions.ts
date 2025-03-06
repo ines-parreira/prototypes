@@ -22,7 +22,6 @@ import {
     CUSTOMER_SEARCH_ORDERING,
     SearchEngine,
     SearchType,
-    TicketSearchOptions,
 } from 'models/search/types'
 import { searchTicketsWithHighlights } from 'models/ticket/resources'
 import { Ticket } from 'models/ticket/types'
@@ -366,7 +365,7 @@ export function fetchViewItems(
     cursor?: Maybe<string>,
     isPolling: Maybe<boolean> = false,
     searchRank?: SearchRank | null,
-    params?: FetchViewItemsOptions & TicketSearchOptions,
+    params?: FetchViewItemsOptions,
     cancelToken?: CancelToken,
 ) {
     return async (
@@ -437,6 +436,7 @@ export function fetchViewItems(
                 search: activeView.get('search'),
                 filters: activeView.get('filters'),
                 cursor: cursorParam,
+                trackTotalHits: true,
                 cancelToken,
                 ...params,
             })

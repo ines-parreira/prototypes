@@ -139,7 +139,6 @@ export enum FeatureFlagKey {
     TagNewDesign = 'tag-new-design',
     TicketConditionalFields = 'ticket-conditional-fields',
     TicketDemoSuggestion = 'ticket-demo-suggestion',
-    TrackTotalSearchHits = 'linear.task_SUPXP-2622.track-total-search-hits',
     VoiceCallSearch = 'voice-call-search',
     WhatsAppMigrationsDebug = 'whatsapp-migration-debug',
     AiAgentHandoverCustomizationConfiguration = 'helpdesk-ai-agent-handover-customization-enabled',
