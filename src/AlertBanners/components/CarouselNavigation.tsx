@@ -37,6 +37,7 @@ export const CarouselNavigation = ({
                         whiteSpace: 'nowrap',
                         fontSize: '12px',
                         color: 'var(--neutral-grey-5)',
+                        width: '29px',
                     }}
                 >
                     {currentIndex} of {total}
