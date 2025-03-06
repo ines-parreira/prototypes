@@ -16,7 +16,6 @@ jest.mock('pages/aiAgent/Overview/hooks/kpis/useCsat', () => ({
 }))
 
 const timezone = 'UTC'
-
 const filters = {
     period: {
         start_datetime: '',

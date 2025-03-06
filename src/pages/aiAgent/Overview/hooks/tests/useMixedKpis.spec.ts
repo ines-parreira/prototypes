@@ -5,6 +5,9 @@ import { useMixedKpis } from '../useMixedKpis'
 jest.mock('pages/aiAgent/Overview/hooks/kpis/useCoverageRate', () => ({
     useCoverageRate: jest.fn(() => 'mockCoverageRate'),
 }))
+jest.mock('pages/aiAgent/Overview/hooks/kpis/useGmvInfluenced', () => ({
+    useGmvInfluenced: jest.fn(() => 'mockGmvInfluenced'),
+}))
 jest.mock('pages/aiAgent/Overview/hooks/kpis/useAutomationRate', () => ({
     useAutomationRate: jest.fn(() => 'mockAutomationRate'),
 }))
@@ -13,7 +16,6 @@ jest.mock('pages/aiAgent/Overview/hooks/kpis/useCsat', () => ({
 }))
 
 const timezone = 'UTC'
-
 const filters = {
     period: {
         start_datetime: '',
@@ -27,6 +29,7 @@ describe('useMixedKpis', () => {
 
         expect(result.current.metrics).toEqual([
             'mockCoverageRate',
+            'mockGmvInfluenced',
             'mockAutomationRate',
             'mockCsat',
         ])

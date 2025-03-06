@@ -8,9 +8,11 @@ jest.mock('pages/aiAgent/Overview/hooks/kpis/useCoverageRate', () => ({
 jest.mock('pages/aiAgent/Overview/hooks/kpis/useTotalConversations', () => ({
     useTotalConversations: jest.fn(() => 'mockTotalConversations'),
 }))
+jest.mock('pages/aiAgent/Overview/hooks/kpis/useGmvInfluenced', () => ({
+    useGmvInfluenced: jest.fn(() => 'mockGmvInfluenced'),
+}))
 
 const timezone = 'UTC'
-
 const filters = {
     period: {
         start_datetime: '',
@@ -25,6 +27,7 @@ describe('useSalesKpis', () => {
         expect(result.current.metrics).toEqual([
             'mockCoverageRate',
             'mockTotalConversations',
+            'mockGmvInfluenced',
         ])
     })
 })

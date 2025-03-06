@@ -2,6 +2,7 @@ import { Cube } from 'models/reporting/types'
 
 export enum AiSalesAgentOrdersMeasure {
     Gmv = 'AiSalesAgentOrders.gmv',
+    GmvUsd = 'AiSalesAgentOrders.gmvUsd',
     AverageDiscount = 'AiSalesAgentOrders.averageDiscount',
     Count = 'AiSalesAgentOrders.count',
 }

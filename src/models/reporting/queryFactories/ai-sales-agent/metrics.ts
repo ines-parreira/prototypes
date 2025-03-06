@@ -51,8 +51,11 @@ export const gmvQueryFactory = (
 export const gmvInfluencedQueryFactory = (
     filters: StatsFilters,
     timezone: string,
+    mesure:
+        | AiSalesAgentOrdersMeasure.GmvUsd
+        | AiSalesAgentOrdersMeasure.Gmv = AiSalesAgentOrdersMeasure.Gmv,
 ): ReportingQuery<AiSalesAgentOrdersCube> => ({
-    measures: [AiSalesAgentOrdersMeasure.Gmv],
+    measures: [mesure],
     dimensions: [],
     filters: [
         {
