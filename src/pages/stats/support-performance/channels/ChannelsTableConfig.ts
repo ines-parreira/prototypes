@@ -5,6 +5,7 @@ import {
     useCustomerSatisfactionMetricPerChannel,
     useMedianFirstResponseTimeMetricPerChannel,
     useMedianResolutionTimeMetricPerChannel,
+    useMessagesReceivedMetricPerChannel,
     useMessagesSentMetricPerChannel,
     useTicketAverageHandleTimePerChannel,
     useTicketsRepliedMetricPerChannel,
@@ -15,6 +16,7 @@ import { closedTicketsPerTicketDrillDownQueryFactory } from 'models/reporting/qu
 import { customerSatisfactionMetricDrillDownQueryFactory } from 'models/reporting/queryFactories/support-performance/customerSatisfaction'
 import { firstResponseTimeMetricPerTicketDrillDownQueryFactory } from 'models/reporting/queryFactories/support-performance/medianFirstResponseTime'
 import { resolutionTimeMetricPerTicketDrillDownQueryFactory } from 'models/reporting/queryFactories/support-performance/medianResolutionTime'
+import { messagesReceivedMetricPerTicketDrillDownQueryFactory } from 'models/reporting/queryFactories/support-performance/messagesReceived'
 import { messagesSentMetricPerTicketDrillDownQueryFactory } from 'models/reporting/queryFactories/support-performance/messagesSent'
 import { ticketsCreatedPerTicketDrillDownQueryFactory } from 'models/reporting/queryFactories/support-performance/ticketsCreated'
 import { ticketsRepliedMetricPerTicketDrillDownQueryFactory } from 'models/reporting/queryFactories/support-performance/ticketsReplied'
@@ -34,6 +36,7 @@ import {
     CUSTOMER_SATISFACTION_LABEL,
     MEDIAN_FIRST_RESPONSE_TIME_LABEL,
     MEDIAN_RESOLUTION_TIME_LABEL,
+    MESSAGES_RECEIVED_LABEL,
     MESSAGES_SENT_LABEL,
     PERCENT_OF_CREATED_TICKETS,
     TICKET_HANDLE_TIME_LABEL,
@@ -61,6 +64,11 @@ export const columnsOrder: ChannelsTableColumns[] = [
     ChannelsTableColumns.CustomerSatisfaction,
 ]
 
+export const columnsOrderWithMessagesReceived: ChannelsTableColumns[] = [
+    ...columnsOrder,
+    ChannelsTableColumns.MessagesReceived,
+]
+
 export const ChannelsTableLabels: Record<ChannelsTableColumns, string> = {
     [ChannelsTableColumns.Channel]: 'Channel',
     [ChannelsTableColumns.TicketsCreated]: TICKETS_CREATED_LABEL,
@@ -71,6 +79,7 @@ export const ChannelsTableLabels: Record<ChannelsTableColumns, string> = {
     [ChannelsTableColumns.MedianResolutionTime]: MEDIAN_RESOLUTION_TIME_LABEL,
     [ChannelsTableColumns.TicketsReplied]: TICKETS_REPLIED_LABEL,
     [ChannelsTableColumns.MessagesSent]: MESSAGES_SENT_LABEL,
+    [ChannelsTableColumns.MessagesReceived]: MESSAGES_RECEIVED_LABEL,
     [ChannelsTableColumns.CustomerSatisfaction]: CUSTOMER_SATISFACTION_LABEL,
 }
 
@@ -146,6 +155,12 @@ export const ChannelColumnConfig: Record<
         hint: OverviewMetricConfig[OverviewMetric.MessagesSent].hint,
         useMetric: useMessagesSentMetricPerChannel,
         drillDownQuery: messagesSentMetricPerTicketDrillDownQueryFactory,
+    },
+    [ChannelsTableColumns.MessagesReceived]: {
+        format: 'integer',
+        hint: OverviewMetricConfig[OverviewMetric.MessagesReceived].hint,
+        useMetric: useMessagesReceivedMetricPerChannel,
+        drillDownQuery: messagesReceivedMetricPerTicketDrillDownQueryFactory,
     },
     [ChannelsTableColumns.CustomerSatisfaction]: {
         format: 'decimal',

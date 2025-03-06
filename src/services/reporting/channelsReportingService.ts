@@ -8,6 +8,10 @@ import {
     HandleTimeMeasure,
 } from 'models/reporting/cubes/agentxp/HandleTimeCube'
 import {
+    HelpdeskCustomerMessagesReceivedEnrichedCubeWithJoins,
+    HelpdeskCustomerMessagesReceivedEnrichedMeasure,
+} from 'models/reporting/cubes/HelpdeskCustomerMessagesReceivedEnrichedCube'
+import {
     HelpdeskMessageCubeWithJoins,
     HelpdeskMessageMeasure,
 } from 'models/reporting/cubes/HelpdeskMessageCube'
@@ -28,6 +32,7 @@ import { ChannelsTableColumns } from 'state/ui/stats/types'
 import { createCsv } from 'utils/file'
 
 export type ChannelsReportMetrics =
+    | HelpdeskCustomerMessagesReceivedEnrichedCubeWithJoins['measures']
     | HelpdeskMessageCubeWithJoins['dimensions']
     | HelpdeskMessageCubeWithJoins['measures']
     | AgentTimeTrackingCube['measures']
@@ -48,6 +53,8 @@ const MedianFirstResponseTime = TicketMessagesMeasure.MedianFirstResponseTime
 const MedianResolutionTime = TicketMessagesMeasure.MedianResolutionTime
 const HelpdeskTicketCount = HelpdeskMessageMeasure.TicketCount
 const MessageCount = HelpdeskMessageMeasure.MessageCount
+const MessageReceivedCount =
+    HelpdeskCustomerMessagesReceivedEnrichedMeasure.MessageCount
 const AvgSurveyScore = TicketSatisfactionSurveyMeasure.AvgSurveyScore
 const AverageHandleTime = HandleTimeMeasure.AverageHandleTime
 
@@ -148,6 +155,12 @@ export const saveReport = (
             metricData: data.messagesSentMetricPerChannel,
             idField: CHANNEL_DIMENSION,
             metricField: MessageCount,
+        },
+        [ChannelsTableColumns.MessagesReceived]: {
+            column: ChannelsTableColumns.MessagesReceived,
+            metricData: data.messagesReceivedMetricPerChannel,
+            idField: CHANNEL_DIMENSION,
+            metricField: MessageReceivedCount,
         },
         [ChannelsTableColumns.TicketsReplied]: {
             column: ChannelsTableColumns.TicketsReplied,

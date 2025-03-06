@@ -314,6 +314,7 @@ export const getDrillDownQuery = (
         case ChannelsTableColumns.MedianResolutionTime:
         case ChannelsTableColumns.TicketsReplied:
         case ChannelsTableColumns.MessagesSent:
+        case ChannelsTableColumns.MessagesReceived:
         case ChannelsTableColumns.CustomerSatisfaction:
             return queryBuilderWithChannelFilter(
                 metricName.perChannel,

@@ -124,6 +124,7 @@ export type ChannelMetricColumn =
     | ChannelsTableColumns.MedianResolutionTime
     | ChannelsTableColumns.TicketsReplied
     | ChannelsTableColumns.MessagesSent
+    | ChannelsTableColumns.MessagesReceived
     | ChannelsTableColumns.CustomerSatisfaction
 
 export type ChannelsMetrics = {

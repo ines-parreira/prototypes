@@ -63,8 +63,8 @@ export type Cube<
 > = {
     measures: ReportingMeasure
     dimensions: ReportingDimension
-    filters: ReportingFilterMember
     segments: ReportingSegment
+    filters: ReportingFilterMember
     timeDimensions: ReportingTimeDimension
 }
 

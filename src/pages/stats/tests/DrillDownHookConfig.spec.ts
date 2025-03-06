@@ -67,6 +67,10 @@ describe('getDrillDownHook', () => {
         },
         { metricName: ChannelsTableColumns.MessagesSent, perChannel: 'email' },
         {
+            metricName: ChannelsTableColumns.MessagesReceived,
+            perChannel: 'email',
+        },
+        {
             metricName: ChannelsTableColumns.CreatedTicketsPercentage,
             perChannel: 'email',
         },

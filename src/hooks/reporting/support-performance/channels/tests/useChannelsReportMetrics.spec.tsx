@@ -92,6 +92,7 @@ describe('useChannelsReportMetrics', () => {
         medianResolutionTimeMetricPerChannel: metricData,
         ticketsRepliedMetricPerChannel: metricData,
         messagesSentMetricPerChannel: metricData,
+        messagesReceivedMetricPerChannel: metricData,
         customerSatisfactionMetricPerChannel: metricData,
     }
 

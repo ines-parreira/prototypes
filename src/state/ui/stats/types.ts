@@ -132,6 +132,7 @@ export enum ChannelsTableColumns {
     MedianResolutionTime = 'channels_median_resolution_time',
     TicketsReplied = 'channels_tickets_replied',
     MessagesSent = 'channels_messages_sent',
+    MessagesReceived = 'channels_messages_received',
     CustomerSatisfaction = 'channels_customer_satisfaction',
 }
 

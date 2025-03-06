@@ -2,6 +2,7 @@ import { channels } from 'fixtures/channels'
 import { MetricWithDecile } from 'hooks/reporting/useMetricPerDimension'
 import { Channel } from 'models/channel/types'
 import { HandleTimeMeasure } from 'models/reporting/cubes/agentxp/HandleTimeCube'
+import { HelpdeskCustomerMessagesReceivedEnrichedMeasure } from 'models/reporting/cubes/HelpdeskCustomerMessagesReceivedEnrichedCube'
 import { HelpdeskMessageMeasure } from 'models/reporting/cubes/HelpdeskMessageCube'
 import { TicketMeasure } from 'models/reporting/cubes/TicketCube'
 import { TicketMessagesMeasure } from 'models/reporting/cubes/TicketMessagesCube'
@@ -88,6 +89,11 @@ describe('channelsReportingService', () => {
             messagesSentMetricPerChannel: exampleData(
                 channelA.slug,
                 HelpdeskMessageMeasure.MessageCount,
+                '5',
+            ),
+            messagesReceivedMetricPerChannel: exampleData(
+                channelA.slug,
+                HelpdeskCustomerMessagesReceivedEnrichedMeasure.MessageCount,
                 '5',
             ),
             customerSatisfactionMetricPerChannel: exampleData(
