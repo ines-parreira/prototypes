@@ -2,10 +2,8 @@ import React from 'react'
 
 import { render, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import { mockFlags } from 'jest-launchdarkly-mock'
 
 import { AiAgentNotificationType } from 'automate/notifications/types'
-import { FeatureFlagKey } from 'config/featureFlags'
 import { useSearchParam } from 'hooks/useSearchParam'
 import { useSearchCustomer } from 'models/aiAgent/queries'
 import {
@@ -119,10 +117,6 @@ describe('PlaygroundChat', () => {
         mockUseAiAgentOnboardingNotification.mockReturnValue(
             defaultUseAiAgentOnboardingNotification,
         )
-
-        mockFlags({
-            [FeatureFlagKey.AiAgentChatTestMode]: true,
-        })
         mockUseSearchParam.mockReturnValue([null, jest.fn()])
     })
 

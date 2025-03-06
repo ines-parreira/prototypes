@@ -1,9 +1,6 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react'
 
-import { useFlags } from 'launchdarkly-react-client-sdk'
-
 import { AiAgentNotificationType } from 'automate/notifications/types'
-import { FeatureFlagKey } from 'config/featureFlags'
 import {
     AccountConfigurationWithHttpIntegration,
     AiAgentOnboardingState,
@@ -41,9 +38,6 @@ export const PlaygroundChat = ({
 }: Props) => {
     const messageContainerRef = useRef<HTMLDivElement>(null)
     const [channel, setChannel] = useState<PlaygroundChannels>('email')
-
-    const isTestModeInChatEnabled: boolean | undefined =
-        useFlags()[FeatureFlagKey.AiAgentChatTestMode]
 
     const {
         messages,
@@ -180,7 +174,7 @@ export const PlaygroundChat = ({
 
     return (
         <div className={css.container}>
-            {isTestModeInChatEnabled && isInitialMessage && (
+            {isInitialMessage && (
                 <Alert
                     className={css.alertContainer}
                     type={AlertType.Success}
@@ -218,7 +212,6 @@ export const PlaygroundChat = ({
                     channel={channel}
                     isWaitingResponse={isWaitingResponse}
                     onPromptMessage={onPromptMessage}
-                    isChatTestModeEnabled={isTestModeInChatEnabled}
                 />
             </div>
         </div>

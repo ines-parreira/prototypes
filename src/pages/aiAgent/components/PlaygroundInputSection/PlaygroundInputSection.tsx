@@ -42,7 +42,6 @@ type Props = {
     channel: PlaygroundChannels
     isWaitingResponse: boolean
     onPromptMessage: (action: PlaygroundPromptType) => void
-    isChatTestModeEnabled?: boolean
 }
 export const PlaygroundInputSection = ({
     formValues,
@@ -57,7 +56,6 @@ export const PlaygroundInputSection = ({
     channel,
     isWaitingResponse,
     onPromptMessage,
-    isChatTestModeEnabled,
 }: Props) => {
     const handleMessageChange = (message: string) => {
         onFormValuesChange('message', message)
@@ -121,30 +119,20 @@ export const PlaygroundInputSection = ({
                     [css.disabled]: !isInitialMessage,
                 })}
             >
-                {isChatTestModeEnabled ? (
-                    <div className={css.topSection}>
-                        <PlaygroundSegmentControl
-                            selectedChannel={channel}
-                            onChannelChange={onChannelChange}
-                            isDisabled={!isInitialMessage}
-                        />
-                        {channel === 'email' && (
-                            <PlaygroundCustomerSelection
-                                customer={formValues.customer}
-                                onCustomerEmailChange={
-                                    handleCustomerEmailChange
-                                }
-                                isDisabled={!isInitialMessage}
-                            />
-                        )}
-                    </div>
-                ) : (
-                    <PlaygroundCustomerSelection
-                        customer={formValues.customer}
-                        onCustomerEmailChange={handleCustomerEmailChange}
+                <div className={css.topSection}>
+                    <PlaygroundSegmentControl
+                        selectedChannel={channel}
+                        onChannelChange={onChannelChange}
                         isDisabled={!isInitialMessage}
                     />
-                )}
+                    {channel === 'email' && (
+                        <PlaygroundCustomerSelection
+                            customer={formValues.customer}
+                            onCustomerEmailChange={handleCustomerEmailChange}
+                            isDisabled={!isInitialMessage}
+                        />
+                    )}
+                </div>
             </div>
             {channel === 'email' && (
                 <div
