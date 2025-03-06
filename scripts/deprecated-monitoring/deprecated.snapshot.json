@@ -1,8 +1,8 @@
 {
   "summary": {
     "totalEntries": 32,
-    "totalUsages": 1082,
-    "reportGeneratedAt": "2025-03-05T15:33:47.136Z"
+    "totalUsages": 1086,
+    "reportGeneratedAt": "2025-03-06T09:25:30.536Z"
   },
   "entries": [
     {
@@ -304,7 +304,7 @@
       "type": "feature-flag cleanup initiative",
       "entries": [
         {
-          "usageCount": 208,
+          "usageCount": 211,
           "name": "launchdarkly-react-client-sdk.useFlags",
           "nodeType": "Identifier",
           "deprecationDate": "2025-02-10",
@@ -339,9 +339,12 @@
               "src/pages/aiAgent/AiAgentPlaygroundContainer.tsx",
               "src/pages/aiAgent/AiAgentPreviewModeSettings/AiAgentPreviewModeSettingsView.tsx",
               "src/pages/aiAgent/AiAgentSales.tsx",
+              "src/pages/aiAgent/AiAgentScrapedDomainContent/AiAgentScrapedDomainPagesContainer.tsx",
+              "src/pages/aiAgent/AiAgentScrapedDomainContent/AiAgentScrapedDomainProductsContainer.tsx",
               "src/pages/aiAgent/Onboarding/components/AiAgentOnboarding/AiAgentOnboarding.tsx",
               "src/pages/aiAgent/Overview/AiAgentOverview.tsx",
               "src/pages/aiAgent/Overview/components/KpiSection/KpiSection.tsx",
+              "src/pages/aiAgent/Overview/hooks/kpis/useGmvInfluenced.ts",
               "src/pages/aiAgent/actions/ActionEventsView.tsx",
               "src/pages/aiAgent/actions/ActionTemplatesView.tsx",
               "src/pages/aiAgent/actions/ActionsView.tsx",
@@ -808,7 +811,7 @@
       "type": "ui-kit-migration",
       "entries": [
         {
-          "usageCount": 611,
+          "usageCount": 612,
           "name": "Button",
           "nodeType": "VariableDeclaration",
           "deprecationDate": "2024-03-04",
@@ -837,6 +840,7 @@
               "src/pages/aiAgent/AiAgentKnowledgeContainer.tsx",
               "src/pages/aiAgent/AiAgentOnboardingWizard/TicketPreview.tsx",
               "src/pages/aiAgent/AiAgentPreviewModeSettings/AiAgentPreviewModeSettingsView.tsx",
+              "src/pages/aiAgent/AiAgentScrapedDomainContent/AiAgentScrapedDomainContentHeader.tsx",
               "src/pages/aiAgent/Onboarding/components/IntegrationCard/IntegrationCard.tsx",
               "src/pages/aiAgent/Onboarding/components/ThankYouModal/ThankYouModal.tsx",
               "src/pages/aiAgent/Onboarding/components/common/OnboardingProgressTracker/OnboardingProgressTracker.tsx",
