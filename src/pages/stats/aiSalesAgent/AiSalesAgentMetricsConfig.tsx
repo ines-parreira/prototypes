@@ -8,6 +8,10 @@ import {
     useAverageOrderValue,
 } from 'pages/stats/aiSalesAgent/metrics/useAverageOrderValue'
 import {
+    fetchGmvInfluencedRateTrend,
+    useGmvInfluencedRateTrend,
+} from 'pages/stats/aiSalesAgent/metrics/useGmvInfluencedRateTrend'
+import {
     fetchGmvInfluencedTrend,
     useGmvInfluencedTrend,
 } from 'pages/stats/aiSalesAgent/metrics/useGmvInfluencedTrend'
@@ -15,10 +19,6 @@ import {
     fetchGmvInflueceOverTimeSeries,
     useGmvInfluenceOverTimeSeries,
 } from 'pages/stats/aiSalesAgent/metrics/useGmvInfluenceOverTimeSeries'
-import {
-    fetchGmvTrend,
-    useGmvTrend,
-} from 'pages/stats/aiSalesAgent/metrics/useGmvTrend'
 import {
     fetchRoiRateTrend,
     useRoiRateTrend,
@@ -116,8 +116,8 @@ export const AiSalesAgentMetricConfig: Record<
         hint: {
             title: 'The total revenue generated from orders placed during or after a conversation with the AI Agent, without human intervention.',
         },
-        useTrend: useGmvTrend,
-        fetchTrend: fetchGmvTrend,
+        useTrend: useGmvInfluencedTrend,
+        fetchTrend: fetchGmvInfluencedTrend,
         interpretAs: 'more-is-better',
         metricFormat: 'currency',
     },
@@ -126,8 +126,8 @@ export const AiSalesAgentMetricConfig: Record<
         hint: {
             title: 'The percentage of total revenue generated from AI-influenced orders, relative to all revenue.',
         },
-        useTrend: useGmvInfluencedTrend,
-        fetchTrend: fetchGmvInfluencedTrend,
+        useTrend: useGmvInfluencedRateTrend,
+        fetchTrend: fetchGmvInfluencedRateTrend,
         interpretAs: 'more-is-better',
         metricFormat: 'decimal-to-percent',
     },

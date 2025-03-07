@@ -37,7 +37,7 @@ const fetchPostReportingMock = assumeMock(fetchPostReporting)
 
 jest.useFakeTimers()
 
-describe('gmvInfluencedTrend', () => {
+describe('gmvInfluecedTrend', () => {
     const defaultReporting = {
         isFetching: false,
         isError: false,
@@ -80,18 +80,18 @@ describe('gmvInfluencedTrend', () => {
         })
     })
 
-    describe('fetchGmvInfluncedTrend', () => {
+    describe('fetchGmvInfluecedTrend', () => {
         it('should return the correct data when the query resolves', async () => {
             fetchPostReportingMock.mockReturnValueOnce({
                 data: {
                     ...defaultReporting,
-                    data: [{ [AiSalesAgentOrdersMeasure.Gmv]: 32.41 }],
+                    data: [{ [AiSalesAgentOrdersMeasure.GmvUsd]: 32.41 }],
                 },
             } as unknown as ReturnType<typeof fetchPostReporting>)
             fetchPostReportingMock.mockReturnValueOnce({
                 data: {
                     ...defaultReporting,
-                    data: [{ [AiSalesAgentOrdersMeasure.Gmv]: 24.56 }],
+                    data: [{ [AiSalesAgentOrdersMeasure.GmvUsd]: 24.56 }],
                 },
             } as unknown as ReturnType<typeof fetchPostReporting>)
 

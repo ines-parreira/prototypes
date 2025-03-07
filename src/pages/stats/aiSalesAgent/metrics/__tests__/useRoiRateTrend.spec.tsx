@@ -1,18 +1,16 @@
 import React from 'react'
 
-import { QueryClientProvider } from '@tanstack/react-query'
+import { QueryClientProvider, UseQueryResult } from '@tanstack/react-query'
 import { waitFor } from '@testing-library/react'
 import { act, renderHook } from '@testing-library/react-hooks/dom'
 import moment from 'moment'
 
+import { AiSalesAgentOrdersMeasure } from 'models/reporting/cubes/ai-sales-agent/AiSalesAgentOrders'
+import { fetchPostReporting, usePostReporting } from 'models/reporting/queries'
 import { StatsFilters } from 'models/stat/types'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 import { assumeMock } from 'utils/testing'
 
-import {
-    fetchGmvInfluencedTrend,
-    useGmvInfluencedTrend,
-} from '../useGmvInfluencedTrend'
 import { fetchRoiRateTrend, useRoiRateTrend } from '../useRoiRateTrend'
 import {
     fetchTotalSalesOportunityAIConvTrend,
@@ -36,35 +34,40 @@ const queryClient = mockQueryClient()
 
 jest.useFakeTimers()
 
-jest.mock('pages/stats/aiSalesAgent/metrics/useGmvInfluencedTrend')
-const useGmvInfluencedTrendMock = assumeMock(useGmvInfluencedTrend)
-const fetchGmvInfluencedTrendMock = assumeMock(fetchGmvInfluencedTrend)
-
 jest.mock('pages/stats/aiSalesAgent/metrics/useTotalSalesOportunityAIConvTrend')
 const useTotalAIConvTrendMock = assumeMock(useTotalSalesOportunityAIConvTrend)
 const fetchTotalAIConvTrendMock = assumeMock(
     fetchTotalSalesOportunityAIConvTrend,
 )
 
+jest.mock('models/reporting/queries')
+const usePostReportingMock = assumeMock(usePostReporting)
+const fetchPostReportingMock = assumeMock(fetchPostReporting)
+
 describe('roiRateTrend', () => {
+    const defaultReporting = {
+        isFetching: false,
+        isError: false,
+    } as UseQueryResult
+
     describe('useRoiRateTrend', () => {
         it('should return correct metric data when the query resolves', async () => {
             act(() => jest.runAllTimers())
 
-            useGmvInfluencedTrendMock.mockReturnValue({
-                isFetching: false,
-                isError: false,
-                data: {
-                    value: 10,
-                    prevValue: 2,
-                },
-            })
+            usePostReportingMock.mockReturnValueOnce({
+                ...defaultReporting,
+                data: 32,
+            } as UseQueryResult)
+            usePostReportingMock.mockReturnValueOnce({
+                ...defaultReporting,
+                data: 24,
+            } as UseQueryResult)
+
             useTotalAIConvTrendMock.mockReturnValue({
-                isFetching: false,
-                isError: false,
+                ...defaultReporting,
                 data: {
                     value: 2,
-                    prevValue: 1,
+                    prevValue: 6,
                 },
             })
 
@@ -82,8 +85,8 @@ describe('roiRateTrend', () => {
             await waitFor(() => {
                 expect(result.current).toEqual({
                     data: {
-                        prevValue: 2.7,
-                        value: 6.75,
+                        prevValue: 5.4,
+                        value: 21.6,
                     },
                     isError: false,
                     isFetching: false,
@@ -94,17 +97,16 @@ describe('roiRateTrend', () => {
         it('should retrun correct value if cube returns null', async () => {
             act(() => jest.runAllTimers())
 
-            useGmvInfluencedTrendMock.mockReturnValue({
-                isFetching: false,
-                isError: false,
-                data: {
-                    value: null,
-                    prevValue: null,
-                },
-            })
+            usePostReportingMock.mockReturnValueOnce({
+                ...defaultReporting,
+                data: null,
+            } as UseQueryResult)
+            usePostReportingMock.mockReturnValueOnce({
+                ...defaultReporting,
+                data: null,
+            } as UseQueryResult)
             useTotalAIConvTrendMock.mockReturnValue({
-                isFetching: false,
-                isError: false,
+                ...defaultReporting,
                 data: {
                     value: null,
                     prevValue: null,
@@ -139,20 +141,24 @@ describe('roiRateTrend', () => {
         it('should return correct metric data when the query resolves', async () => {
             act(() => jest.runAllTimers())
 
-            fetchGmvInfluencedTrendMock.mockReturnValue({
-                isFetching: false,
-                isError: false,
+            fetchPostReportingMock.mockReturnValueOnce({
                 data: {
-                    value: 10,
-                    prevValue: 2,
+                    ...defaultReporting,
+                    data: [{ [AiSalesAgentOrdersMeasure.GmvUsd]: 32 }],
                 },
-            } as unknown as ReturnType<typeof fetchGmvInfluencedTrend>)
+            } as unknown as ReturnType<typeof fetchPostReporting>)
+            fetchPostReportingMock.mockReturnValueOnce({
+                data: {
+                    ...defaultReporting,
+                    data: [{ [AiSalesAgentOrdersMeasure.GmvUsd]: 24 }],
+                },
+            } as unknown as ReturnType<typeof fetchPostReporting>)
+
             fetchTotalAIConvTrendMock.mockReturnValue({
-                isFetching: false,
-                isError: false,
+                ...defaultReporting,
                 data: {
                     value: 2,
-                    prevValue: 1,
+                    prevValue: 6,
                 },
             } as unknown as ReturnType<typeof fetchTotalAIConvTrendMock>)
 
@@ -160,8 +166,8 @@ describe('roiRateTrend', () => {
 
             expect(result).toEqual({
                 data: {
-                    prevValue: 2.7,
-                    value: 6.75,
+                    prevValue: 5.4,
+                    value: 21.6,
                 },
                 isError: false,
                 isFetching: false,
@@ -171,17 +177,21 @@ describe('roiRateTrend', () => {
         it('should retrun correct value if cube returns null', async () => {
             act(() => jest.runAllTimers())
 
-            fetchGmvInfluencedTrendMock.mockReturnValue({
-                isFetching: false,
-                isError: false,
+            fetchPostReportingMock.mockReturnValueOnce({
                 data: {
-                    value: null,
-                    prevValue: null,
+                    ...defaultReporting,
+                    data: [],
                 },
-            } as unknown as ReturnType<typeof fetchGmvInfluencedTrend>)
+            } as unknown as ReturnType<typeof fetchPostReporting>)
+            fetchPostReportingMock.mockReturnValueOnce({
+                data: {
+                    ...defaultReporting,
+                    data: [],
+                },
+            } as unknown as ReturnType<typeof fetchPostReporting>)
+
             fetchTotalAIConvTrendMock.mockReturnValue({
-                isFetching: false,
-                isError: false,
+                ...defaultReporting,
                 data: {
                     value: null,
                     prevValue: null,

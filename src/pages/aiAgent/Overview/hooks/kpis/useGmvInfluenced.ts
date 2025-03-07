@@ -2,7 +2,6 @@ import { useFlags } from 'launchdarkly-react-client-sdk'
 
 import { FeatureFlagKey } from 'config/featureFlags'
 import useMetricTrend from 'hooks/reporting/useMetricTrend'
-import { AiSalesAgentOrdersMeasure } from 'models/reporting/cubes/ai-sales-agent/AiSalesAgentOrders'
 import { gmvInfluencedQueryFactory } from 'models/reporting/queryFactories/ai-sales-agent/metrics'
 import { StatsFilters, StatType } from 'models/stat/types'
 import { useCurrency } from 'pages/aiAgent/Overview/hooks/useCurrency'
@@ -16,20 +15,16 @@ export const useGmvInfluenced = (
     const hasAnalytics =
         useFlags()[FeatureFlagKey.StandaloneAiSalesAnalyticsPage]
 
-    const { currency, isCurrencyUSD } = useCurrency()
-    const mesure = isCurrencyUSD
-        ? AiSalesAgentOrdersMeasure.GmvUsd
-        : AiSalesAgentOrdersMeasure.Gmv
+    const { currency } = useCurrency()
 
     const result = useMetricTrend(
-        gmvInfluencedQueryFactory(filters, timezone, mesure),
+        gmvInfluencedQueryFactory(filters, timezone),
         gmvInfluencedQueryFactory(
             {
                 ...filters,
                 period: getPreviousPeriod(filters.period),
             },
             timezone,
-            mesure,
         ),
     )
 

@@ -11,7 +11,14 @@ import { StatsFilters } from 'models/stat/types'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 import { assumeMock } from 'utils/testing'
 
-import { fetchGmvTrend, useGmvTrend } from '../useGmvTrend'
+import {
+    fetchGmvInfluencedRateTrend,
+    useGmvInfluencedRateTrend,
+} from '../useGmvInfluencedRateTrend'
+import {
+    fetchGmvInfluencedTrend,
+    useGmvInfluencedTrend,
+} from '../useGmvInfluencedTrend'
 
 const timezone = 'UTC'
 
@@ -28,13 +35,17 @@ const statsFilters: StatsFilters = {
 
 const queryClient = mockQueryClient()
 
+jest.mock('pages/stats/aiSalesAgent/metrics/useGmvInfluencedTrend')
+const useGmvTrendMock = assumeMock(useGmvInfluencedTrend)
+const fetchGmvTrendMock = assumeMock(fetchGmvInfluencedTrend)
+
 jest.mock('models/reporting/queries')
 const usePostReportingMock = assumeMock(usePostReporting)
 const fetchPostReportingMock = assumeMock(fetchPostReporting)
 
 jest.useFakeTimers()
 
-describe('gmvInfluecedTrend', () => {
+describe('gmvInfluencedRateTrend', () => {
     const defaultReporting = {
         isFetching: false,
         isError: false,
@@ -42,19 +53,27 @@ describe('gmvInfluecedTrend', () => {
 
     describe('useGmvInfluecedTrend', () => {
         it('should return correct metric data when the query resolves', async () => {
+            useGmvTrendMock.mockReturnValue({
+                isFetching: false,
+                isError: false,
+                data: {
+                    value: 10,
+                    prevValue: 2,
+                },
+            })
             usePostReportingMock.mockReturnValueOnce({
                 ...defaultReporting,
-                data: 32.41,
+                data: 32,
             } as UseQueryResult)
             usePostReportingMock.mockReturnValueOnce({
                 ...defaultReporting,
-                data: 24.56,
+                data: 24,
             } as UseQueryResult)
 
             act(() => jest.runAllTimers())
 
             const { result } = renderHook(
-                () => useGmvTrend(statsFilters, timezone),
+                () => useGmvInfluencedRateTrend(statsFilters, timezone),
                 {
                     wrapper: ({ children }) => (
                         <QueryClientProvider client={queryClient}>
@@ -67,8 +86,8 @@ describe('gmvInfluecedTrend', () => {
             await waitFor(() => {
                 expect(result.current).toEqual({
                     data: {
-                        value: 32.41,
-                        prevValue: 24.56,
+                        prevValue: 0.08333333333333333,
+                        value: 0.3125,
                     },
                     isError: false,
                     isFetching: false,
@@ -77,27 +96,37 @@ describe('gmvInfluecedTrend', () => {
         })
     })
 
-    describe('fetchGmvInfluecedTrend', () => {
+    describe('fetchGmvInfluncedTrend', () => {
         it('should return the correct data when the query resolves', async () => {
+            fetchGmvTrendMock.mockReturnValue({
+                ...defaultReporting,
+                data: {
+                    value: 10,
+                    prevValue: 2,
+                },
+            } as unknown as ReturnType<typeof fetchGmvInfluencedTrend>)
             fetchPostReportingMock.mockReturnValueOnce({
                 data: {
                     ...defaultReporting,
-                    data: [{ [AiSalesAgentOrdersMeasure.Gmv]: 32.41 }],
+                    data: [{ [AiSalesAgentOrdersMeasure.GmvUsd]: 32 }],
                 },
             } as unknown as ReturnType<typeof fetchPostReporting>)
             fetchPostReportingMock.mockReturnValueOnce({
                 data: {
                     ...defaultReporting,
-                    data: [{ [AiSalesAgentOrdersMeasure.Gmv]: 24.56 }],
+                    data: [{ [AiSalesAgentOrdersMeasure.GmvUsd]: 24 }],
                 },
             } as unknown as ReturnType<typeof fetchPostReporting>)
 
-            const result = await fetchGmvTrend(statsFilters, timezone)
+            const result = await fetchGmvInfluencedRateTrend(
+                statsFilters,
+                timezone,
+            )
 
             expect(result).toEqual({
                 data: {
-                    value: 32.41,
-                    prevValue: 24.56,
+                    prevValue: 0.08333333333333333,
+                    value: 0.3125,
                 },
                 isError: false,
                 isFetching: false,

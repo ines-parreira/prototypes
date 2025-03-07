@@ -1,21 +1,32 @@
 import { useMemo } from 'react'
 
+import useMetricTrend, {
+    fetchMetricTrend,
+} from 'hooks/reporting/useMetricTrend'
+import { gmvInfluencedQueryFactory } from 'models/reporting/queryFactories/ai-sales-agent/metrics'
 import { StatsFilters } from 'models/stat/types'
-import {
-    fetchGmvInfluencedTrend,
-    useGmvInfluencedTrend,
-} from 'pages/stats/aiSalesAgent/metrics/useGmvInfluencedTrend'
 import {
     fetchTotalSalesOportunityAIConvTrend,
     useTotalSalesOportunityAIConvTrend,
 } from 'pages/stats/aiSalesAgent/metrics/useTotalSalesOportunityAIConvTrend'
+import { infinityNanToZero } from 'pages/stats/aiSalesAgent/metrics/utils'
+import { getPreviousPeriod } from 'utils/reporting'
 
 const calculateRate = (currentValue: number, totalValue: number) => {
-    return (currentValue / totalValue) * 1.35 || 0
+    return infinityNanToZero(currentValue / totalValue) * 1.35 || 0
 }
 
 const useRoiRateTrend = (filters: StatsFilters, timezone: string) => {
-    const gmvInfluencedData = useGmvInfluencedTrend(filters, timezone)
+    const gmvInfluencedData = useMetricTrend(
+        gmvInfluencedQueryFactory(filters, timezone),
+        gmvInfluencedQueryFactory(
+            {
+                ...filters,
+                period: getPreviousPeriod(filters.period),
+            },
+            timezone,
+        ),
+    )
     const totalAIConvData = useTotalSalesOportunityAIConvTrend(
         filters,
         timezone,
@@ -54,7 +65,16 @@ const useRoiRateTrend = (filters: StatsFilters, timezone: string) => {
 const fetchRoiRateTrend = (filters: StatsFilters, timezone: string) => {
     return Promise.all([
         fetchTotalSalesOportunityAIConvTrend(filters, timezone),
-        fetchGmvInfluencedTrend(filters, timezone),
+        fetchMetricTrend(
+            gmvInfluencedQueryFactory(filters, timezone),
+            gmvInfluencedQueryFactory(
+                {
+                    ...filters,
+                    period: getPreviousPeriod(filters.period),
+                },
+                timezone,
+            ),
+        ),
     ])
         .then(([totalAIConvData, gmvInfluencedData]) => {
             return {

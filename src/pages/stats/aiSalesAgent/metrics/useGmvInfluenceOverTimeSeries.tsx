@@ -14,21 +14,9 @@ import {
 } from 'models/reporting/queryFactories/ai-sales-agent/timeseries'
 import { ReportingGranularity } from 'models/reporting/types'
 import { StatsFilters } from 'models/stat/types'
+import { calculateRate } from 'pages/stats/aiSalesAgent/metrics/utils'
 
 import { GMV_OVERTIME_LABEL } from '../constants'
-
-export const infinityNanToZero = (value: number) => {
-    return isNaN(value) || value === Infinity ? 0 : value
-}
-
-export const calculateRate = (
-    numerator: number | null,
-    denominator: number | null,
-): number => {
-    if (numerator == null || denominator == null) return 0
-
-    return infinityNanToZero(numerator / denominator)
-}
 
 const calculateRates = (
     influencedGmvData: TimeSeriesDataItem[],
@@ -39,10 +27,11 @@ const calculateRates = (
     influencedGmvData.forEach((timeSeries, index) => {
         const influencedGmv = influencedGmvData?.[index].value
         const gmv = gmvData?.[index].value
+        const rate = calculateRate(influencedGmv, gmv)
 
         rates.push({
             dateTime: timeSeries.dateTime,
-            value: calculateRate(influencedGmv, gmv),
+            value: rate,
             label: GMV_OVERTIME_LABEL,
         })
     })

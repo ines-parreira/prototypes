@@ -9,6 +9,7 @@
 const safeDivide = (a?: number | null, b?: number | null): number => {
     const dividend = a || 0
     const divisor = b || 0
+
     return divisor === 0 ? 0 : dividend / divisor
 }
 
