@@ -1,4 +1,4 @@
-# Reporting scope @gorgias/crm-reporting
+# CRM Reporting scope @gorgias/crm-reporting
 
 src/assets/css/stats @gorgias/crm-reporting
 src/assets/img/paywalls/screens/chat_stats.png @gorgias/crm-reporting
@@ -11,7 +11,6 @@ src/fixtures/stats.ts @gorgias/crm-reporting
 src/hooks/reporting @gorgias/crm-reporting
 src/models/stat @gorgias/crm-reporting
 src/models/reporting @gorgias/crm-reporting
-src/models/reporting/queryFactories/help-center @gorgias/automations-help-center
 src/pages/stats @gorgias/crm-reporting
 src/routes/StatsRoutes.tsx @gorgias/crm-reporting
 src/routes/tests/StatsRoutes.tsx @gorgias/crm-reporting
@@ -34,23 +33,23 @@ src/state/entities/selfServiceConfigurations @gorgias/conv-ai-actions
 src/state/ui/selfServiceConfigurations @gorgias/conv-ai-actions
 src/models/workflows @gorgias/conv-ai-actions
 
-# Help center scope @gorgias/automations-help-center
+# Help center scope @gorgias/conv-ai-orchestration
 
-src/rest_api/help_center_api @gorgias/automations-help-center
-src/config/helpCenter.ts @gorgias/automations-help-center
-src/config/help_center_texts.json @gorgias/automations-help-center
-src/pages/settings/helpCenter @gorgias/automations-help-center
-src/models/helpCenter @gorgias/automations-help-center
-src/hooks/helpCenter @gorgias/automations-help-center
-src/state/entities/helpCenter @gorgias/automations-help-center
+src/rest_api/help_center_api @gorgias/conv-ai-orchestration
+src/config/helpCenter.ts @gorgias/conv-ai-orchestration
+src/config/help_center_texts.json @gorgias/conv-ai-orchestration
+src/pages/settings/helpCenter @gorgias/conv-ai-orchestration
+src/models/helpCenter @gorgias/conv-ai-orchestration
+src/hooks/helpCenter @gorgias/conv-ai-orchestration
+src/state/entities/helpCenter @gorgias/conv-ai-orchestration
 
-# Contact Form scope @gorgias/automations-help-center
+# Contact Form scope @gorgias/conv-ai-orchestration
 
-src/state/contactForm @gorgias/automations-help-center
-src/pages/settings/contactForm @gorgias/automations-help-center
-src/state/ui/contactForm @gorgias/automations-help-center
-src/state/entities/contactForm @gorgias/automations-help-center
-src/models/contactForm @gorgias/automations-help-center
+src/state/contactForm @gorgias/conv-ai-orchestration
+src/pages/settings/contactForm @gorgias/conv-ai-orchestration
+src/state/ui/contactForm @gorgias/conv-ai-orchestration
+src/state/entities/contactForm @gorgias/conv-ai-orchestration
+src/models/contactForm @gorgias/conv-ai-orchestration
 
 # Marketing suite scope @gorgias/marketing-suite
 
@@ -61,37 +60,37 @@ src/pages/stats/aiSalesAgent @gorgias/marketing-suite
 src/pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationCampaigns @gorgias/marketing-suite
 src/pages/aiAgent/Onboarding/ @gorgias/marketing-suite
 
-# Chat widget scope @gorgias/automations-chat
+# Chat widget scope @gorgias/conv-ai-knowledge-insights
 
-src/pages/integrations/integration/components/gorgias_chat @gorgias/automations-chat
-src/config/integrations/gorgias_chat.ts @gorgias/automations-chat
-src/config/integrations/tests/gorgias_chat.spec.ts @gorgias/automations-chat
-src/models/integration/types/gorgiasChat.ts @gorgias/automations-chat
-src/state/integrations/actions/gorgias-chat.actions.ts @gorgias/automations-chat
-src/state/integrations/tests/gorgias-chat.actions.spec.ts @gorgias/automations-chat
-src/rest_api/gorgias_chat_protected_api @gorgias/automations-chat
+src/pages/integrations/integration/components/gorgias_chat @gorgias/conv-ai-knowledge-insights
+src/config/integrations/gorgias_chat.ts @gorgias/conv-ai-knowledge-insights
+src/config/integrations/tests/gorgias_chat.spec.ts @gorgias/conv-ai-knowledge-insights
+src/models/integration/types/gorgiasChat.ts @gorgias/conv-ai-knowledge-insights
+src/state/integrations/actions/gorgias-chat.actions.ts @gorgias/conv-ai-knowledge-insights
+src/state/integrations/tests/gorgias-chat.actions.spec.ts @gorgias/conv-ai-knowledge-insights
+src/rest_api/gorgias_chat_protected_api @gorgias/conv-ai-knowledge-insights
 
-# AgentXP scope @gorgias/agent-xp
+# Support AgentXP scope @gorgias/support-agent-xp
 
-src/pages/common/editor @gorgias/agent-xp
-src/pages/tickets @gorgias/agent-xp
-src/pages/settings/notifications @gorgias/agent-xp
-src/services/browserNotification.ts @gorgias/agent-xp
-src/services/NotificationSounds.ts @gorgias/agent-xp
-src/services/localForageManager @gorgias/agent-xp
-src/services/shortcutManager @gorgias/agent-xp
-src/pages/common/components/Spotlight @gorgias/agent-xp
-src/pages/settings/teams @gorgias/agent-xp
-src/pages/settings/tags @gorgias/agent-xp
-src/state/ticket @gorgias/agent-xp
-src/state/ui/editor @gorgias/agent-xp
-src/state/ui/ticketNavbar @gorgias/agent-xp
-src/state/ui/views @gorgias/agent-xp
-src/state/newMessage @gorgias/agent-xp
-src/pages/settings/macros @gorgias/agent-xp
-src/state/entities/macros @gorgias/agent-xp
-src/state/macro @gorgias/agent-xp
-src/pages/tickets/detail/components/ReplyArea/MacrosQuickReply @gorgias/agent-xp
+src/pages/common/editor @gorgias/support-agent-xp
+src/pages/tickets @gorgias/support-agent-xp
+src/pages/settings/notifications @gorgias/support-agent-xp
+src/services/browserNotification.ts @gorgias/support-agent-xp
+src/services/NotificationSounds.ts @gorgias/support-agent-xp
+src/services/localForageManager @gorgias/support-agent-xp
+src/services/shortcutManager @gorgias/support-agent-xp
+src/pages/common/components/Spotlight @gorgias/support-agent-xp
+src/pages/settings/teams @gorgias/support-agent-xp
+src/pages/settings/tags @gorgias/support-agent-xp
+src/state/ticket @gorgias/support-agent-xp
+src/state/ui/editor @gorgias/support-agent-xp
+src/state/ui/ticketNavbar @gorgias/support-agent-xp
+src/state/ui/views @gorgias/support-agent-xp
+src/state/newMessage @gorgias/support-agent-xp
+src/pages/settings/macros @gorgias/support-agent-xp
+src/state/entities/macros @gorgias/support-agent-xp
+src/state/macro @gorgias/support-agent-xp
+src/pages/tickets/detail/components/ReplyArea/MacrosQuickReply @gorgias/support-agent-xp
 
 # Phone scope @gorgias/support-phone
 
@@ -129,14 +128,14 @@ src/pages/settings/billing @gorgias/crm-growth
 src/pages/settings/new_billing @gorgias/crm-growth
 src/state/billing @gorgias/crm-growth
 
-# Automate Observability scope @gorgias/automate-observability-adoption
-src/hooks/reporting/automate/ @gorgias/automate-observability-adoption
-src/models/reporting/queryFactories/automate/ @gorgias/automate-observability-adoption
-src/models/reporting/queryFactories/automate_v2/ @gorgias/automate-observability-adoption
-src/models/reporting/cubes/automate/ @gorgias/automate-observability-adoption
-src/models/reporting/cubes/automate_v2/ @gorgias/automate-observability-adoption
-src/pages/stats/Automate* @gorgias/automate-observability-adoption
-src/pages/aiAgent/AiAgentOnboardingWizard @gorgias/automate-observability-adoption
+# Conv AI: Knowledge & Insights scope @gorgias/conv-ai-knowledge-insights
+src/hooks/reporting/automate/ @gorgias/conv-ai-knowledge-insights
+src/models/reporting/queryFactories/automate/ @gorgias/conv-ai-knowledge-insights
+src/models/reporting/queryFactories/automate_v2/ @gorgias/conv-ai-knowledge-insights
+src/models/reporting/cubes/automate/ @gorgias/conv-ai-knowledge-insights
+src/models/reporting/cubes/automate_v2/ @gorgias/conv-ai-knowledge-insights
+src/pages/stats/Automate* @gorgias/conv-ai-knowledge-insights
+src/pages/aiAgent/AiAgentOnboardingWizard @gorgias/conv-ai-knowledge-insights
 
 # Conv AI Orchestration scope
 src/pages/aiAgent/ @gorgias/conv-ai-orchestration
