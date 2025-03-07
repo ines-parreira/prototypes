@@ -5,6 +5,7 @@ import {
     useEmailDomainVerificationBanner,
     useEmailMigrationBanner,
     useScriptTagMigrationBanner,
+    useZendeskImportFailedBanner,
 } from '../banners'
 import { useAccountNotVerifiedBanner } from '../useAccountNotVerifiedBanner'
 import { useSetBanners } from '../useSetBanners'
@@ -29,6 +30,7 @@ jest.mock('../banners', () => ({
     useEmailDomainVerificationBanner: jest.fn(),
     useEmailMigrationBanner: jest.fn(),
     useEmailDisconnectedBanner: jest.fn(),
+    useZendeskImportFailedBanner: jest.fn(),
 }))
 
 describe('useSetBanners', () => {
@@ -42,5 +44,6 @@ describe('useSetBanners', () => {
         expect(useEmailDomainVerificationBanner).toHaveBeenCalledTimes(1)
         expect(useEmailMigrationBanner).toHaveBeenCalledTimes(1)
         expect(useEmailDisconnectedBanner).toHaveBeenCalledTimes(1)
+        expect(useZendeskImportFailedBanner).toHaveBeenCalledTimes(1)
     })
 })

@@ -3,6 +3,7 @@ import {
     useEmailDomainVerificationBanner,
     useEmailMigrationBanner,
     useScriptTagMigrationBanner,
+    useZendeskImportFailedBanner,
 } from './banners'
 import { useAccountNotVerifiedBanner } from './useAccountNotVerifiedBanner'
 import { useStatusPageManager } from './useStatusPageManager'
@@ -16,4 +17,5 @@ export function useSetBanners() {
     useEmailDomainVerificationBanner()
     useEmailDisconnectedBanner()
     useEmailMigrationBanner()
+    useZendeskImportFailedBanner()
 }

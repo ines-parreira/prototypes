@@ -63,6 +63,7 @@ export const BannerCategories = {
     SUBSCRIPTION: 'subscription',
     SHOPIFY_INVENTORY_SCOPE: 'shopify_inventory_scope',
     USAGE_BANNER: 'usage_banner',
+    ZENDESK_IMPORT_FAILURE_BANNER: 'zendesk_import_failure_banner',
 } as const
 
 export type BannerCategory =
