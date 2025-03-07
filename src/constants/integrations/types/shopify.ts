@@ -381,6 +381,7 @@ export type Variant = {
     inventory_quantity: number
     inventory_management: Maybe<InventoryManagement>
     inventory_policy: Maybe<InventoryPolicy>
+    tracked?: boolean
 }
 
 export type Product = {

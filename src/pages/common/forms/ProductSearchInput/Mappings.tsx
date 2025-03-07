@@ -23,7 +23,7 @@ export const shopifyDataMappers = {
         const variant = product.variants[0]
         const sku = variant.sku ? `SKU: ${variant.sku}` : null
         const isTracked = product.variants.every(
-            (variant) => !!variant.inventory_management,
+            (variant) => !!variant.inventory_management || variant.tracked,
         )
         const quantity = product.variants.reduce(
             (total, variant) => total + variant.inventory_quantity,
@@ -67,7 +67,7 @@ export const shopifyDataMappers = {
         const image =
             product.images &&
             product.images.find((image) => image.id === variant.image_id)
-        const isTracked = !!variant.inventory_management
+        const isTracked = !!variant.inventory_management || variant.tracked!
         const quantity = variant.inventory_quantity
 
         return {
