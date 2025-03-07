@@ -2,17 +2,27 @@ import React, { ComponentProps, useMemo } from 'react'
 
 import moment from 'moment'
 
+import { VoiceCallDirection } from '@gorgias/api-queries'
+
 import { TicketStatus } from 'business/types/ticket'
+import { FeatureFlagKey } from 'config/featureFlags'
 import { DateAndTimeFormatting } from 'constants/datetime'
+import { useFlag } from 'core/flags'
 import useGetDateAndTimeFormat from 'hooks/useGetDateAndTimeFormat'
 import { EntityType } from 'hooks/useSearchRankScenario'
 import { PicketVoiceCallWithHighlights } from 'models/search/types'
+import {
+    getInboundDisplayStatus,
+    getOutboundDisplayStatus,
+} from 'models/voiceCall/types'
 import { callHighlightsTransform } from 'pages/common/components/Spotlight/helpers'
 import SpotlightRow from 'pages/common/components/Spotlight/SpotlightRow'
 import TicketIcon from 'pages/common/components/TicketIcon'
 import VoiceCallCustomerLabel from 'pages/common/components/VoiceCallCustomerLabel/VoiceCallCustomerLabel'
 import DEPRECATED_VoiceCallStatusLabel from 'pages/common/components/VoiceCallStatusLabel/DEPRECATED_VoiceCallStatusLabel'
 import { formatDatetime } from 'utils'
+
+import VoiceCallStatusLabel from '../VoiceCallStatusLabel/VoiceCallStatusLabel'
 
 import css from './SpotlightCallRow.less'
 
@@ -63,6 +73,10 @@ const SpotlightCallInfo = ({
 }: {
     voiceCall: PicketVoiceCallWithHighlights
 }) => {
+    const shouldShowNewUnansweredStatuses = useFlag(
+        FeatureFlagKey.ShowNewUnansweredStatuses,
+    )
+
     const datetimeFormatShort = useGetDateAndTimeFormat(
         DateAndTimeFormatting.ShortDateWithOrdinalSuffixDay,
     )
@@ -103,11 +117,27 @@ const SpotlightCallInfo = ({
                     className={css.customerLabel}
                 />
                 <span className={css.separator} />
-                <DEPRECATED_VoiceCallStatusLabel
-                    voiceCallStatus={voiceCall.status}
-                    direction={voiceCall.direction}
-                    lastAnsweredByAgentId={voiceCall.last_answered_by_agent_id}
-                />
+                {shouldShowNewUnansweredStatuses ? (
+                    <VoiceCallStatusLabel
+                        displayStatus={
+                            voiceCall.direction === VoiceCallDirection.Inbound
+                                ? getInboundDisplayStatus(
+                                      voiceCall.status,
+                                      voiceCall.termination_status,
+                                      voiceCall.last_answered_by_agent_id,
+                                  )
+                                : getOutboundDisplayStatus(voiceCall.status)
+                        }
+                    />
+                ) : (
+                    <DEPRECATED_VoiceCallStatusLabel
+                        voiceCallStatus={voiceCall.status}
+                        direction={voiceCall.direction}
+                        lastAnsweredByAgentId={
+                            voiceCall.last_answered_by_agent_id
+                        }
+                    />
+                )}
                 <span className={css.separator} />
                 <span>{formattedDate}</span>
             </div>

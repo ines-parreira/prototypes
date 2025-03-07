@@ -28,4 +28,12 @@ describe('VoiceCallStatusLabel', () => {
             expect(status).toHaveClass(className)
         },
     )
+
+    it('should not render anything if the display status is null', () => {
+        const { container } = render(
+            <VoiceCallStatusLabel displayStatus={null} />,
+        )
+
+        expect(container.firstChild).toBeNull()
+    })
 })

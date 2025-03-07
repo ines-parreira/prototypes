@@ -1,7 +1,19 @@
 import React from 'react'
 
+import {
+    VoiceCallDirection,
+    VoiceCallTerminationStatus,
+} from '@gorgias/api-queries'
+
+import { FeatureFlagKey } from 'config/featureFlags'
+import { useFlag } from 'core/flags'
 import { voiceCall } from 'fixtures/voiceCalls'
-import { renderWithStore } from 'utils/testing'
+import {
+    getInboundDisplayStatus,
+    getOutboundDisplayStatus,
+    VoiceCallDisplayStatus,
+} from 'models/voiceCall/types'
+import { assumeMock, renderWithStore } from 'utils/testing'
 
 import SpotlightCallRow from '../SpotlightCallRow'
 
@@ -12,6 +24,20 @@ jest.mock(
             <div>VoiceCallCustomerLabel {customerId}</div>
         ),
 )
+
+jest.mock('core/flags', () => ({ useFlag: jest.fn() }))
+const useFlagMock = assumeMock(useFlag)
+
+jest.mock('models/voiceCall/types', () => {
+    const originalModule = jest.requireActual('models/voiceCall/types')
+    return {
+        ...originalModule,
+        getInboundDisplayStatus: jest.fn(),
+        getOutboundDisplayStatus: jest.fn(),
+    }
+})
+const getInboundDisplayStatusMock = assumeMock(getInboundDisplayStatus)
+const getOutboundDisplayStatusMock = assumeMock(getOutboundDisplayStatus)
 
 describe('<SpotlightCallRow/>', () => {
     const mockOnClick = jest.fn()
@@ -93,5 +119,61 @@ describe('<SpotlightCallRow/>', () => {
         )
 
         expect(getByText('Jan 1st')).toBeInTheDocument()
+    })
+
+    it('should render voice call display status for inbound calls', () => {
+        useFlagMock.mockImplementation((flag) => {
+            if (flag === FeatureFlagKey.ShowNewUnansweredStatuses) {
+                return true
+            }
+        })
+
+        getInboundDisplayStatusMock.mockReturnValue(
+            VoiceCallDisplayStatus.Abandoned,
+        )
+        defaultProps.item = {
+            ...voiceCall,
+            termination_status: VoiceCallTerminationStatus.Abandoned,
+            last_answered_by_agent_id: 1,
+            direction: VoiceCallDirection.Inbound,
+        }
+        const { getByText } = renderWithStore(
+            <SpotlightCallRow {...defaultProps} />,
+            {},
+        )
+
+        expect(getByText('Abandoned')).toBeInTheDocument
+        expect(getInboundDisplayStatus).toHaveBeenCalledWith(
+            voiceCall.status,
+            VoiceCallTerminationStatus.Abandoned,
+            1,
+        )
+        expect(getOutboundDisplayStatusMock).not.toHaveBeenCalled()
+    })
+
+    it('should render voice call display status for outbound calls', () => {
+        useFlagMock.mockImplementation((flag) => {
+            if (flag === FeatureFlagKey.ShowNewUnansweredStatuses) {
+                return true
+            }
+        })
+
+        getOutboundDisplayStatusMock.mockReturnValue(
+            VoiceCallDisplayStatus.Unanswered,
+        )
+        defaultProps.item = {
+            ...voiceCall,
+            direction: VoiceCallDirection.Outbound,
+        }
+        const { getByText } = renderWithStore(
+            <SpotlightCallRow {...defaultProps} />,
+            {},
+        )
+
+        expect(getByText('Unanswered')).toBeInTheDocument
+        expect(getInboundDisplayStatus).not.toHaveBeenCalled()
+        expect(getOutboundDisplayStatusMock).toHaveBeenCalledWith(
+            voiceCall.status,
+        )
     })
 })

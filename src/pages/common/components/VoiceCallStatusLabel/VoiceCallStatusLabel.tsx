@@ -10,7 +10,7 @@ import {
 import css from './VoiceCallStatusLabel.less'
 
 type Props = {
-    displayStatus: VoiceCallDisplayStatus
+    displayStatus: VoiceCallDisplayStatus | null
 }
 
 const getColorClass = (status: VoiceCallDisplayStatus) => {
@@ -31,6 +31,10 @@ const getColorClass = (status: VoiceCallDisplayStatus) => {
 }
 
 const VoiceCallStatusLabel = ({ displayStatus }: Props) => {
+    if (displayStatus === null) {
+        return null
+    }
+
     return (
         <div className={classNames(getColorClass(displayStatus))}>
             {getPrettyVoiceCallDisplayStatusName(displayStatus)}
