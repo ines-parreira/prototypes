@@ -3,7 +3,11 @@ import React, { ComponentProps } from 'react'
 import classnames from 'classnames'
 
 import { UpdatePaymentTerms as UpdatePaymentTermsInputType } from '@gorgias/api-queries'
-import { SelectField, SelectFieldRawOption } from '@gorgias/merchant-ui-kit'
+import {
+    SelectField,
+    SelectFieldRawOption,
+    Skeleton,
+} from '@gorgias/merchant-ui-kit'
 
 import { Form, FormField } from 'core/forms'
 import Button from 'pages/common/components/button/Button'
@@ -36,7 +40,6 @@ const SelectInputFormField = <
 
 const UpdatePaymentTerms = () => {
     const paymentTermsQueryResult = useGetPaymentTermsWithSideEffects()
-
     const useUpdatePaymentTerms = useUpdatePaymentTermsWithSideEffects()
 
     const onSubmit = (data: UpdatePaymentTermsFormInput) => {
@@ -61,52 +64,56 @@ const UpdatePaymentTerms = () => {
                     Payment terms are the amount of days after which the
                     invoices becomes past due.
                 </p>
-                <Form<UpdatePaymentTermsFormInput>
-                    defaultValues={{
-                        payment_terms:
-                            paymentTermsQueryResult?.data?.data.payment_terms ||
-                            DEFAULT_PAYMENT_TERMS,
-                    }}
-                    mode="onChange"
-                    onValidSubmit={onSubmit}
-                >
-                    <FormField<
-                        ComponentProps<
-                            typeof SelectInputFormField<{ value: number }>
-                        >
+                {paymentTermsQueryResult.isLoading ? (
+                    <Skeleton />
+                ) : (
+                    <Form<UpdatePaymentTermsFormInput>
+                        defaultValues={{
+                            payment_terms:
+                                paymentTermsQueryResult.data?.data
+                                    .payment_terms || DEFAULT_PAYMENT_TERMS,
+                        }}
+                        mode="onChange"
+                        onValidSubmit={onSubmit}
                     >
-                        label="Payment Terms"
-                        isRequired
-                        name="payment_terms"
-                        field={SelectInputFormField}
-                        inputTransform={(value: number) => ({ value })}
-                        outputTransform={(option) => option.value}
-                        isDisabled={
-                            paymentTermsQueryResult?.isLoading ||
-                            useUpdatePaymentTerms.isLoading
-                        }
-                        options={ALLOWED_PAYMENT_TERMS.map((value) => ({
-                            value,
-                        }))}
-                        optionMapper={(option) => ({
-                            value: option.value.toString(),
-                            subtext: `${option.value} days`,
-                        })}
-                    />
-
-                    <div>
-                        <Button
-                            id="update-payment-terms-submit"
-                            type="submit"
-                            role="button"
-                            intent="primary"
-                            className={cssSettings.mt16}
-                            isLoading={useUpdatePaymentTerms.isLoading}
+                        <FormField<
+                            ComponentProps<
+                                typeof SelectInputFormField<{ value: number }>
+                            >
                         >
-                            Update
-                        </Button>
-                    </div>
-                </Form>
+                            label="Payment Terms"
+                            isRequired
+                            name="payment_terms"
+                            field={SelectInputFormField}
+                            inputTransform={(value: number) => ({ value })}
+                            outputTransform={(option) => option.value}
+                            isDisabled={
+                                paymentTermsQueryResult?.isLoading ||
+                                useUpdatePaymentTerms.isLoading
+                            }
+                            options={ALLOWED_PAYMENT_TERMS.map((value) => ({
+                                value,
+                            }))}
+                            optionMapper={(option) => ({
+                                value: option.value.toString(),
+                                subtext: `${option.value} days`,
+                            })}
+                        />
+
+                        <div>
+                            <Button
+                                id="update-payment-terms-submit"
+                                type="submit"
+                                role="button"
+                                intent="primary"
+                                className={cssSettings.mt16}
+                                isLoading={useUpdatePaymentTerms.isLoading}
+                            >
+                                Update
+                            </Button>
+                        </div>
+                    </Form>
+                )}
             </div>
         </div>
     )
