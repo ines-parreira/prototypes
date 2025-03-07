@@ -69,7 +69,9 @@ export const ChannelsStep: React.FC<StepProps> = ({
     totalSteps,
     goToStep,
 }) => {
+    const chatCheckboxRef = useRef<HTMLDivElement | null>(null)
     const chatDropdownRef = useRef<HTMLDivElement | null>(null)
+    const emailCheckboxRef = useRef<HTMLDivElement | null>(null)
     const emailDropdownRef = useRef<HTMLDivElement | null>(null)
 
     const { shopName } = useParams<{ shopName: string }>()
@@ -299,15 +301,20 @@ export const ChannelsStep: React.FC<StepProps> = ({
                     <>
                         <Card
                             className={css.card}
-                            onClick={(event) => {
-                                // Check if click happened inside the dropdown
-                                if (
-                                    emailDropdownRef.current?.contains(
-                                        event.target as Node,
-                                    )
-                                ) {
-                                    return // Do nothing if the dropdown was clicked
+                            onClick={({ target }) => {
+                                const clickedOnCheckboxOrDropdown =
+                                    target instanceof HTMLElement &&
+                                    (emailDropdownRef.current?.contains(
+                                        target,
+                                    ) ||
+                                        emailCheckboxRef.current?.contains(
+                                            target,
+                                        ))
+
+                                if (clickedOnCheckboxOrDropdown) {
+                                    return
                                 }
+
                                 handleUpdate(
                                     'emailChannelEnabled',
                                     !emailChannelEnabled,
@@ -315,13 +322,20 @@ export const ChannelsStep: React.FC<StepProps> = ({
                             }}
                         >
                             <CardContent>
-                                <CheckBox
-                                    isChecked={emailChannelEnabled}
-                                    className={css.checkbox}
-                                    onClick={(event) => event.stopPropagation()}
-                                >
-                                    Email
-                                </CheckBox>
+                                <div ref={emailCheckboxRef}>
+                                    <CheckBox
+                                        isChecked={emailChannelEnabled}
+                                        className={css.checkbox}
+                                        onChange={(nextValue) =>
+                                            handleUpdate(
+                                                'emailChannelEnabled',
+                                                nextValue,
+                                            )
+                                        }
+                                    >
+                                        Email
+                                    </CheckBox>
+                                </div>
                                 <p>
                                     Enable your AI Agent to respond to customers
                                     via email.
@@ -371,26 +385,34 @@ export const ChannelsStep: React.FC<StepProps> = ({
 
                 <Card
                     className={css.card}
-                    onClick={(event) => {
-                        // Check if click happened inside the dropdown
-                        if (
-                            chatDropdownRef.current?.contains(
-                                event.target as Node,
-                            )
-                        ) {
-                            return // Do nothing if the dropdown was clicked
+                    onClick={({ target }) => {
+                        const clickedOnCheckboxOrDropdown =
+                            target instanceof HTMLElement &&
+                            (chatDropdownRef.current?.contains(target) ||
+                                chatCheckboxRef.current?.contains(target))
+
+                        if (clickedOnCheckboxOrDropdown) {
+                            return
                         }
+
                         handleUpdate('chatChannelEnabled', !chatChannelEnabled)
                     }}
                 >
                     <CardContent>
-                        <CheckBox
-                            isChecked={chatChannelEnabled}
-                            className={css.checkbox}
-                            onClick={(event) => event.stopPropagation()}
-                        >
-                            Chat
-                        </CheckBox>
+                        <div ref={chatCheckboxRef}>
+                            <CheckBox
+                                isChecked={chatChannelEnabled}
+                                className={css.checkbox}
+                                onChange={(nextValue) =>
+                                    handleUpdate(
+                                        'chatChannelEnabled',
+                                        nextValue,
+                                    )
+                                }
+                            >
+                                Chat
+                            </CheckBox>
+                        </div>
                         <p>
                             Enable your AI Agent to respond to customers via
                             chat.

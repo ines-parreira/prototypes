@@ -156,7 +156,7 @@ describe('ChannelsStep - Empty state', () => {
         })
     })
 
-    it('renders the dropdowns and allow next step', async () => {
+    it('renders the dropdowns and allow next step (click on card)', async () => {
         renderWithProvider()
 
         jest.runAllTimers()
@@ -180,9 +180,6 @@ describe('ChannelsStep - Empty state', () => {
         )
         userEvent.click(emailContainer)
 
-        const emailCheckbox = screen.getByLabelText('Email')
-        userEvent.click(emailCheckbox)
-
         await waitFor(() => {
             expect(
                 screen.queryByText(
@@ -204,6 +201,67 @@ describe('ChannelsStep - Empty state', () => {
         )
         userEvent.click(chatContainer)
 
+        await waitFor(() => {
+            expect(
+                screen.queryByText(
+                    /AI Agent responds to tickets sent to the following Chats/,
+                ),
+            ).toBeInTheDocument()
+        })
+
+        const chatDropdown = screen.getByText(
+            'Select one or more chat integrations',
+        )
+        userEvent.click(chatDropdown)
+        fireEvent.focus(
+            screen.getByText('Select one or more chat integrations'),
+        )
+        userEvent.click(screen.getByText('New chat'))
+
+        // Click on next button
+        const nextButton = screen.getByText('Next')
+        userEvent.click(nextButton)
+
+        await waitFor(() => {
+            expect(defaultProps.goToStep).toHaveBeenCalledWith(
+                WizardStepEnum.PERSONALITY_PREVIEW,
+            )
+        })
+    })
+
+    it('renders the dropdowns and allow next step (click on checkbox)', async () => {
+        renderWithProvider()
+
+        jest.runAllTimers()
+
+        await waitFor(() => {
+            expect(
+                screen.getByText(
+                    'Enable your AI Agent to respond to customers via email.',
+                ),
+            ).toBeInTheDocument()
+            expect(
+                screen.getByText(
+                    'Enable your AI Agent to respond to customers via chat.',
+                ),
+            ).toBeInTheDocument()
+        })
+
+        // Setup email
+        const emailCheckbox = screen.getByLabelText('Email')
+        userEvent.click(emailCheckbox)
+
+        await waitFor(() => {
+            expect(
+                screen.queryByText(
+                    /AI agent will respond to the following emails/,
+                ),
+            ).toBeInTheDocument()
+        })
+        fireEvent.focus(screen.getByText('Select one or more email addresses'))
+        userEvent.click(screen.getByText('support@acme.gorgias.io'))
+
+        // Setup chat
         const chatCheckbox = screen.getByLabelText('Chat')
         userEvent.click(chatCheckbox)
 
