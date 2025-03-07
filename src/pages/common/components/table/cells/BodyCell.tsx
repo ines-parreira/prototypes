@@ -2,9 +2,11 @@ import React, { forwardRef, HTMLProps, MouseEvent, ReactNode } from 'react'
 
 import classNames from 'classnames'
 
-import BodyCellContent from './BodyCellContent'
+import { Skeleton } from '@gorgias/merchant-ui-kit'
 
-import css from './BodyCell.less'
+import { METRIC_COLUMN_WIDTH } from 'pages/aiAgent/insights/IntentTableWidget/IntentTableConfig'
+import css from 'pages/common/components/table/cells/BodyCell.less'
+import BodyCellContent from 'pages/common/components/table/cells/BodyCellContent'
 
 export type Props = Omit<HTMLProps<HTMLTableCellElement>, 'size'> & {
     children?: ReactNode
@@ -16,6 +18,7 @@ export type Props = Omit<HTMLProps<HTMLTableCellElement>, 'size'> & {
     size?: 'normal' | 'small' | 'smallest'
     width?: number | string
     onClick?: (event: MouseEvent<HTMLTableCellElement>) => void
+    isLoading?: boolean
 }
 
 const BodyCell = forwardRef<HTMLTableCellElement, Props>(
@@ -30,6 +33,7 @@ const BodyCell = forwardRef<HTMLTableCellElement, Props>(
             onClick,
             size = 'normal',
             width,
+            isLoading,
             ...otherProps
         }: Props,
         ref,
@@ -44,14 +48,18 @@ const BodyCell = forwardRef<HTMLTableCellElement, Props>(
                 onClick={onClick}
                 width={width}
             >
-                <BodyCellContent
-                    className={innerClassName}
-                    width={width}
-                    justifyContent={justifyContent}
-                    style={innerStyle}
-                >
-                    {children}
-                </BodyCellContent>
+                {isLoading ? (
+                    <Skeleton inline width={METRIC_COLUMN_WIDTH} />
+                ) : (
+                    <BodyCellContent
+                        className={innerClassName}
+                        width={width}
+                        justifyContent={justifyContent}
+                        style={innerStyle}
+                    >
+                        {children}
+                    </BodyCellContent>
+                )}
             </td>
         )
     },

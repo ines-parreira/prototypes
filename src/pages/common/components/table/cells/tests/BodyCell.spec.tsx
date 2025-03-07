@@ -74,4 +74,21 @@ describe('<BodyCell/>', () => {
 
         expect(container).toMatchSnapshot()
     })
+
+    it('should render skeleton if isLoading is true', () => {
+        const tableRow = document.createElement('tr')
+
+        const { container } = render(
+            <BodyCell className="foo" isLoading>
+                Foo
+            </BodyCell>,
+            {
+                container: document.body.appendChild(tableRow),
+            },
+        )
+
+        expect(
+            container.querySelector('.react-loading-skeleton'),
+        ).toBeInTheDocument()
+    })
 })

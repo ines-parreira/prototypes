@@ -1,8 +1,5 @@
 import React from 'react'
 
-import { Skeleton } from '@gorgias/merchant-ui-kit'
-
-import { StatsFilters } from 'models/stat/types'
 import { HintTooltip } from 'pages/stats/common/HintTooltip'
 import {
     formatMetricValue,
@@ -11,32 +8,27 @@ import {
 import {
     AgentsColumnConfig,
     averageTooltip,
-    MetricQueryHook,
 } from 'pages/stats/support-performance/agents/AgentsTableConfig'
 import { AgentsTableColumn } from 'state/ui/stats/types'
 
 export const AGENT_SUMMARY_CELL_LABEL = 'Average'
 
-export const AgentsTableSummaryCell = ({
-    useMetric,
-    column,
-    statsFilters,
-    agentsLength,
-}: {
-    useMetric: MetricQueryHook
+type AgentsTableSummaryCellProps = {
+    data:
+        | {
+              value: number | null
+          }
+        | undefined
     column: AgentsTableColumn
-    statsFilters: {
-        cleanStatsFilters: StatsFilters
-        userTimezone: string
-    }
     agentsLength: number
-}) => {
-    const { format, perAgent } = AgentsColumnConfig[column]
+}
 
-    const { data, isFetching } = useMetric(
-        statsFilters.cleanStatsFilters,
-        statsFilters.userTimezone,
-    )
+export const AgentsTableSummaryCell = ({
+    column,
+    agentsLength,
+    data,
+}: AgentsTableSummaryCellProps) => {
+    const { format, perAgent } = AgentsColumnConfig[column]
 
     const metricValue =
         perAgent && data?.value ? data.value / agentsLength : data?.value
@@ -50,16 +42,6 @@ export const AgentsTableSummaryCell = ({
     }
 
     return (
-        <>
-            {isFetching ? (
-                <Skeleton inline />
-            ) : (
-                formatMetricValue(
-                    metricValue,
-                    format,
-                    NOT_AVAILABLE_PLACEHOLDER,
-                )
-            )}
-        </>
+        <>{formatMetricValue(metricValue, format, NOT_AVAILABLE_PLACEHOLDER)}</>
     )
 }

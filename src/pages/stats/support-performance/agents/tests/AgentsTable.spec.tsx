@@ -15,6 +15,7 @@ import { ReportingGranularity } from 'models/reporting/types'
 import { DrillDownModalTrigger } from 'pages/stats/DrillDownModalTrigger'
 import { AgentsCellContent } from 'pages/stats/support-performance/agents/AgentsCellContent'
 import { AgentsHeaderCellContent } from 'pages/stats/support-performance/agents/AgentsHeaderCellContent'
+import { AgentsSummaryRow } from 'pages/stats/support-performance/agents/AgentsSummaryRow'
 import {
     AgentsTable,
     AgentsTableWithDefaultState,
@@ -25,7 +26,6 @@ import {
     TableLabels,
 } from 'pages/stats/support-performance/agents/AgentsTableConfig'
 import { AgentsTableSummaryCell } from 'pages/stats/support-performance/agents/AgentsTableSummaryCell'
-import { AgentsTableTotalsCell } from 'pages/stats/support-performance/agents/AgentsTableTotalsCell'
 import { RootState, StoreDispatch } from 'state/types'
 import {
     getHeatmapMode,
@@ -80,10 +80,11 @@ const AgentsHeaderCellContentMock = assumeMock(AgentsHeaderCellContent)
 jest.mock('pages/stats/support-performance/agents/AgentsTableSummaryCell.tsx')
 const AgentsTableSummaryCellMock = assumeMock(AgentsTableSummaryCell)
 
-jest.mock('pages/stats/support-performance/agents/AgentsTableTotalsCell.tsx')
-const AgentsTableTotalsCellMock = assumeMock(AgentsTableTotalsCell)
 jest.mock('core/flags')
 const useFlagMock = assumeMock(useFlag)
+
+jest.mock('pages/stats/support-performance/agents/AgentsSummaryRow')
+const AgentsAverageSummaryRowMock = assumeMock(AgentsSummaryRow)
 
 const cellMock = () => <div />
 
@@ -114,7 +115,8 @@ describe('<AgentsTable>', () => {
     AgentsCellContentMock.mockImplementation(cellMock)
     AgentsHeaderCellContentMock.mockImplementation(cellMock)
     AgentsTableSummaryCellMock.mockImplementation(cellMock)
-    AgentsTableTotalsCellMock.mockImplementation(cellMock)
+    AgentsAverageSummaryRowMock.mockImplementation(cellMock)
+
     describe('AgentsTable component', () => {
         it('should render the table title, table header and rows', () => {
             useFlagMock.mockReturnValue(true)

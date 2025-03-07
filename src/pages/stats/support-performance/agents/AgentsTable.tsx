@@ -11,7 +11,6 @@ import useAppSelector from 'hooks/useAppSelector'
 import useMeasure from 'hooks/useMeasure'
 import { StatsFilters } from 'models/stat/types'
 import { NumberedPagination } from 'pages/common/components/Paginations'
-import BodyCell from 'pages/common/components/table/cells/BodyCell'
 import TableBody from 'pages/common/components/table/TableBody'
 import TableBodyRow from 'pages/common/components/table/TableBodyRow'
 import TableHead from 'pages/common/components/table/TableHead'
@@ -23,25 +22,22 @@ import {
     AgentsCellContentProps,
 } from 'pages/stats/support-performance/agents/AgentsCellContent'
 import { AgentsHeaderCellContent } from 'pages/stats/support-performance/agents/AgentsHeaderCellContent'
+import { AgentsSummaryRow } from 'pages/stats/support-performance/agents/AgentsSummaryRow'
 import {
     AgentsColumnConfig,
     getColumnAlignment,
     getColumnWidth,
     getDrillDownMetricData,
     getQuery,
-    getSummaryQuery,
-    getTotalsQuery,
     TableLabels,
 } from 'pages/stats/support-performance/agents/AgentsTableConfig'
-import { AgentsTableSummaryCell } from 'pages/stats/support-performance/agents/AgentsTableSummaryCell'
-import { AgentsTableTotalsCell } from 'pages/stats/support-performance/agents/AgentsTableTotalsCell'
 import {
     getHeatmapMode,
     getPaginatedAgents,
     isSortingMetricLoading,
     pageSet,
 } from 'state/ui/stats/agentPerformanceSlice'
-import { AgentsTableColumn, AgentsTableRow } from 'state/ui/stats/types'
+import { AgentsTableColumn } from 'state/ui/stats/types'
 
 export const getTableCell = (
     column: AgentsTableColumn,
@@ -62,71 +58,6 @@ const getSortingQuery = (
     const query = getQuery(column)
 
     return () => useAgentsSortingQuery(column, query, statsFilters)
-}
-
-const aggregateRowConfig = {
-    [AgentsTableRow.Average]: {
-        CellComponent: AgentsTableSummaryCell,
-        getQuery: getSummaryQuery,
-    },
-    [AgentsTableRow.Total]: {
-        CellComponent: AgentsTableTotalsCell,
-        getQuery: getTotalsQuery,
-    },
-}
-
-type AggregateRowType = keyof typeof aggregateRowConfig
-
-const TableAggregateRow = ({
-    type,
-    columns,
-    isTableScrolled,
-    statsFilters,
-    agentsLength,
-}: {
-    type: AggregateRowType
-    columns: AgentsTableColumn[]
-    isTableScrolled?: boolean
-    statsFilters: {
-        cleanStatsFilters: StatsFilters
-        userTimezone: string
-    }
-    agentsLength: number
-}) => {
-    const isTotalRow = type === AgentsTableRow.Total
-
-    const { CellComponent, getQuery } = aggregateRowConfig[type]
-
-    return (
-        <TableBodyRow>
-            {columns.map((column) => {
-                const isHeaderColumn = column === AgentsTableColumn.AgentName
-
-                return (
-                    <BodyCell
-                        key={column}
-                        width={getColumnWidth(column)}
-                        isHighlighted
-                        justifyContent={getColumnAlignment(column)}
-                        className={classNames(css.BodyCell, css.highlight, {
-                            [css.withShadow]: isHeaderColumn && isTableScrolled,
-                        })}
-                        innerClassName={classNames(
-                            css.BodyCellContent,
-                            isTotalRow && css.bold,
-                        )}
-                    >
-                        <CellComponent
-                            useMetric={getQuery(column)}
-                            statsFilters={statsFilters}
-                            column={column}
-                            agentsLength={agentsLength}
-                        />
-                    </BodyCell>
-                )
-            })}
-        </TableBodyRow>
-    )
 }
 
 type AgentsTableProps = {
@@ -168,7 +99,6 @@ export const AgentsTable = ({
         }
     }
     const isSortingLoading = useAppSelector(isSortingMetricLoading)
-
     return (
         <>
             <div ref={ref} className={css.container} onScroll={handleScroll}>
@@ -195,16 +125,15 @@ export const AgentsTable = ({
                     <TableBody>
                         {withAggregateRows &&
                             rowsOrder.map((row) => (
-                                <TableAggregateRow
-                                    key={row}
-                                    type={row}
-                                    columns={columnsOrder}
+                                <AgentsSummaryRow
                                     isTableScrolled={isTableScrolled}
                                     statsFilters={statsFilters}
-                                    agentsLength={allAgents.length}
+                                    agents={allAgents}
+                                    columns={columnsOrder}
+                                    type={row}
+                                    key={row}
                                 />
                             ))}
-
                         {agents.map((agent) => (
                             <TableBodyRow key={agent.id}>
                                 {columnsOrder.map((column) => (

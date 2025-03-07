@@ -6,17 +6,13 @@ import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import { TicketChannel } from 'business/types/ticket'
 import { agents } from 'fixtures/agents'
-import { integrationsState } from 'fixtures/integrations'
-import { StatsFiltersWithLogicalOperator } from 'models/stat/types'
 import { formatMetricValue } from 'pages/stats/common/utils'
 import { AgentsColumnConfig } from 'pages/stats/support-performance/agents/AgentsTableConfig'
 import {
     AGENT_TOTAL_ROW_LABEL,
     AgentsTableTotalsCell,
 } from 'pages/stats/support-performance/agents/AgentsTableTotalsCell'
-import { fromLegacyStatsFilters } from 'state/stats/utils'
 import { RootState, StoreDispatch } from 'state/types'
 import { initialState as agentPerformanceInitialState } from 'state/ui/stats/agentPerformanceSlice'
 import { AGENT_PERFORMANCE_SLICE_NAME } from 'state/ui/stats/constants'
@@ -26,22 +22,7 @@ import { AgentsTableColumn } from 'state/ui/stats/types'
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
 
 describe('<AgentsTableTotalsCell>', () => {
-    const userTimezone = 'UTC'
-    const statsFilters: StatsFiltersWithLogicalOperator =
-        fromLegacyStatsFilters({
-            period: {
-                start_datetime: '2021-02-03T00:00:00.000Z',
-                end_datetime: '2021-02-03T23:59:59.999Z',
-            },
-            channels: [TicketChannel.Chat],
-            tags: [1],
-            integrations: [integrationsState.integrations[0].id],
-        })
-
     const defaultState = {
-        stats: {
-            filters: statsFilters,
-        },
         ui: {
             stats: {
                 filters: uiStatsInitialState,
@@ -57,22 +38,15 @@ describe('<AgentsTableTotalsCell>', () => {
     } as RootState
 
     const metricValue = 123
-    const metricQuery = () => ({
-        isFetching: false,
-        isError: false,
-        data: { value: metricValue },
-    })
+
+    const data = { value: metricValue }
 
     it('should render the table summary cel', () => {
         render(
             <Provider store={mockStore(defaultState)}>
                 <AgentsTableTotalsCell
-                    useMetric={metricQuery}
+                    data={data}
                     column={AgentsTableColumn.AgentName}
-                    statsFilters={{
-                        cleanStatsFilters: statsFilters,
-                        userTimezone,
-                    }}
                 />
             </Provider>,
         )
@@ -80,44 +54,12 @@ describe('<AgentsTableTotalsCell>', () => {
         expect(screen.getByText(AGENT_TOTAL_ROW_LABEL)).toBeInTheDocument()
     })
 
-    it('should render the loading skeleton', () => {
-        const metricQuery = () => ({
-            isFetching: true,
-            isError: false,
-            data: undefined,
-        })
-
-        render(
-            <Provider store={mockStore(defaultState)}>
-                <AgentsTableTotalsCell
-                    useMetric={metricQuery}
-                    column={AgentsTableColumn.CustomerSatisfaction}
-                    statsFilters={{
-                        cleanStatsFilters: statsFilters,
-                        userTimezone,
-                    }}
-                />
-            </Provider>,
-        )
-
-        expect(
-            document.querySelector('.react-loading-skeleton'),
-        ).toBeInTheDocument()
-    })
-
     it('should call the useMetric hook and render formatted value', () => {
         const simpleMetric = AgentsTableColumn.CustomerSatisfaction
 
         render(
             <Provider store={mockStore(defaultState)}>
-                <AgentsTableTotalsCell
-                    useMetric={metricQuery}
-                    column={simpleMetric}
-                    statsFilters={{
-                        cleanStatsFilters: statsFilters,
-                        userTimezone,
-                    }}
-                />
+                <AgentsTableTotalsCell data={data} column={simpleMetric} />
             </Provider>,
         )
 
