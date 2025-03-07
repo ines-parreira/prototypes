@@ -1,9 +1,10 @@
 import React, { useMemo } from 'react'
 
 import _noop from 'lodash/noop'
-// eslint-disable-next-line no-restricted-imports
-import { useDispatch } from 'react-redux'
 
+import { FeatureFlagKey } from 'config/featureFlags'
+import { useFlag } from 'core/flags'
+import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import { FilterComponentKey } from 'models/stat/types'
 import Filter from 'pages/stats/common/components/Filter'
@@ -12,6 +13,7 @@ import { logSegmentEvent } from 'pages/stats/common/filters/helpers'
 import {
     metricLabels,
     metrics,
+    metricsWithMessagesReceived,
 } from 'pages/stats/support-performance/busiest-times-of-days/utils'
 import { DropdownOption } from 'pages/stats/types'
 import {
@@ -20,16 +22,23 @@ import {
 } from 'state/ui/stats/busiestTimesSlice'
 
 export const BusiestTimesMetricSelectFilter = () => {
-    const dispatch = useDispatch()
+    const isReportingMessagesReceivedMetricEnabled = useFlag(
+        FeatureFlagKey.ReportingMessagesReceivedMetric,
+    )
+    const dispatch = useAppDispatch()
     const selectedMetric = useAppSelector(getSelectedMetric)
+
+    const availableMetrics = isReportingMessagesReceivedMetricEnabled
+        ? metricsWithMessagesReceived
+        : metrics
 
     const options = useMemo(
         () =>
-            metrics.map((metric) => ({
+            availableMetrics.map((metric) => ({
                 value: metric,
                 label: metricLabels[metric],
             })),
-        [],
+        [availableMetrics],
     )
     const selectedOptions = useMemo(() => {
         const option = options.find((option) => option.value === selectedMetric)

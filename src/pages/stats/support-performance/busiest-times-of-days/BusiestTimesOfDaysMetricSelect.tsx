@@ -1,8 +1,8 @@
 import React, { useCallback, useRef, useState } from 'react'
 
-// eslint-disable-next-line no-restricted-imports
-import { useDispatch } from 'react-redux'
-
+import { FeatureFlagKey } from 'config/featureFlags'
+import { useFlag } from 'core/flags'
+import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import Button from 'pages/common/components/button/Button'
 import Dropdown from 'pages/common/components/dropdown/Dropdown'
@@ -11,6 +11,7 @@ import { BusiestTimeOfDaysMetrics } from 'pages/stats/support-performance/busies
 import {
     metricLabels,
     metrics,
+    metricsWithMessagesReceived,
 } from 'pages/stats/support-performance/busiest-times-of-days/utils'
 import css from 'pages/stats/ticket-insights/ticket-fields/CustomFieldSelect.less'
 import {
@@ -19,7 +20,10 @@ import {
 } from 'state/ui/stats/busiestTimesSlice'
 
 export const BusiestTimesOfDaysMetricSelect = () => {
-    const dispatch = useDispatch()
+    const isReportingMessagesReceivedMetricEnabled = useFlag(
+        FeatureFlagKey.ReportingMessagesReceivedMetric,
+    )
+    const dispatch = useAppDispatch()
     const selectedMetric = useAppSelector(getSelectedMetric)
     const handleSelectMetric = useCallback(
         (opt: BusiestTimeOfDaysMetrics) => {
@@ -29,6 +33,9 @@ export const BusiestTimesOfDaysMetricSelect = () => {
     )
     const [isOpen, setIsOpen] = useState(false)
     const buttonRef = useRef(null)
+    const availableMetrics = isReportingMessagesReceivedMetricEnabled
+        ? metricsWithMessagesReceived
+        : metrics
 
     return (
         <div className={css.wrapper}>
@@ -49,7 +56,7 @@ export const BusiestTimesOfDaysMetricSelect = () => {
                 target={buttonRef}
                 value={selectedMetric}
             >
-                {metrics.map((field) => (
+                {availableMetrics.map((field) => (
                     <DropdownItem
                         key={field}
                         className={css.dropdownItem}

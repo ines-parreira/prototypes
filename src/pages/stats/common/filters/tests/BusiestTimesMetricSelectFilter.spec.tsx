@@ -4,6 +4,7 @@ import { screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 
 import { logEvent, SegmentEvent } from 'common/segment'
+import { useFlag } from 'core/flags'
 import { FilterComponentKey } from 'models/stat/types'
 import { FILTER_DROPDOWN_ICON } from 'pages/stats/common/components/Filter/constants'
 import { BusiestTimesMetricSelectFilter } from 'pages/stats/common/filters/BusiestTimesMetricSelectFilter'
@@ -15,12 +16,14 @@ import {
     initialState,
     setSelectedMetric,
 } from 'state/ui/stats/busiestTimesSlice'
-import { renderWithStore } from 'utils/testing'
+import { assumeMock, renderWithStore } from 'utils/testing'
 
 jest.mock('common/segment', () => ({
     logEvent: jest.fn(),
     SegmentEvent: { StatFilterSelected: 'stat-filter-selected' },
 }))
+jest.mock('core/flags')
+const useFlagMock = assumeMock(useFlag)
 
 describe('BusiestTimesMetricSelectFilter', () => {
     const defaultState = {
@@ -29,11 +32,28 @@ describe('BusiestTimesMetricSelectFilter', () => {
         },
     } as RootState
 
+    beforeEach(() => {
+        useFlagMock.mockReturnValue(false)
+    })
+
     it('should render available metrics', () => {
         renderWithStore(<BusiestTimesMetricSelectFilter />, defaultState)
 
         expect(
             screen.getByText(metricLabels[initialState.selectedMetric]),
+        ).toBeInTheDocument()
+    })
+
+    it('should render Messages Received metric when the flag is on', () => {
+        useFlagMock.mockReturnValue(true)
+
+        renderWithStore(<BusiestTimesMetricSelectFilter />, defaultState)
+        userEvent.click(screen.getByText(FILTER_DROPDOWN_ICON))
+
+        expect(
+            screen.getByText(
+                metricLabels[BusiestTimeOfDaysMetrics.MessagesReceived],
+            ),
         ).toBeInTheDocument()
     })
 

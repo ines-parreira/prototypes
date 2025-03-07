@@ -7,6 +7,7 @@ import {
 import { OrderDirection } from 'models/api/types'
 import { Cubes } from 'models/reporting/cubes'
 import { closedTicketsTimeSeriesQueryFactory } from 'models/reporting/queryFactories/support-performance/closedTickets'
+import { messagesReceivedTimeSeriesQueryFactory } from 'models/reporting/queryFactories/support-performance/messagesReceived'
 import { messagesSentTimeSeriesQueryFactory } from 'models/reporting/queryFactories/support-performance/messagesSent'
 import { oneTouchTicketsTimeSeriesQueryFactory } from 'models/reporting/queryFactories/support-performance/oneTouchTickets'
 import { ticketsCreatedTimeSeriesQueryFactory } from 'models/reporting/queryFactories/support-performance/ticketsCreated'
@@ -103,6 +104,14 @@ export const useMessagesSentTimeSeries = getTimeSeriesHook(
 
 export const fetchMessagesSentTimeSeries = getTimeSeriesFetch(
     messagesSentTimeSeriesQueryFactory,
+)
+
+export const useMessagesReceivedTimeSeries = getTimeSeriesHook(
+    messagesReceivedTimeSeriesQueryFactory,
+)
+
+export const fetchMessagesReceivedTimeSeries = getTimeSeriesFetch(
+    messagesReceivedTimeSeriesQueryFactory,
 )
 
 export const useOneTouchTicketsTimeSeries = getTimeSeriesHook(

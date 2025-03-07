@@ -3,6 +3,7 @@ export enum BusiestTimeOfDaysMetrics {
     TicketsReplied = 'btod-tickets-replied',
     TicketsClosed = 'btod-tickets-closed',
     MessagesSent = 'btod-messages-sent',
+    MessagesReceived = 'btod-messages-received',
 }
 
 export const HOUR_COLUMN = 'HOUR'

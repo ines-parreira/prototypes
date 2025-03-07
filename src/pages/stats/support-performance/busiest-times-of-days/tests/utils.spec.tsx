@@ -130,6 +130,10 @@ describe('getAggregatedBusiestTimesOfDayData', () => {
             timeSeriesHooks,
             'useMessagesSentTimeSeries',
         )
+        const useMessagesReceivedTimeSeriesSpy = jest.spyOn(
+            timeSeriesHooks,
+            'useMessagesReceivedTimeSeries',
+        )
         const useTicketsRepliedTimeSeriesSpy = jest.spyOn(
             timeSeriesHooks,
             'useTicketsRepliedTimeSeries',
@@ -155,6 +159,7 @@ describe('getAggregatedBusiestTimesOfDayData', () => {
         })
 
         expect(useMessagesSentTimeSeriesSpy).toHaveBeenCalled()
+        expect(useMessagesReceivedTimeSeriesSpy).toHaveBeenCalled()
         expect(useTicketsRepliedTimeSeriesSpy).toHaveBeenCalled()
         expect(useTicketsClosedTimeSeriesSpy).toHaveBeenCalled()
         expect(useTicketsCreatedTimeSeriesSpy).toHaveBeenCalled()

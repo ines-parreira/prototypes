@@ -1,10 +1,12 @@
 import moment, { Moment } from 'moment-timezone'
 
 import {
+    fetchMessagesReceivedTimeSeries,
     fetchMessagesSentTimeSeries,
     fetchTicketsClosedTimeSeries,
     fetchTicketsCreatedTimeSeries,
     fetchTicketsRepliedTimeSeries,
+    useMessagesReceivedTimeSeries,
     useMessagesSentTimeSeries,
     useTicketsClosedTimeSeries,
     useTicketsCreatedTimeSeries,
@@ -319,6 +321,8 @@ export const getMetricQuery = (
     switch (metric) {
         case BusiestTimeOfDaysMetrics.MessagesSent:
             return useMessagesSentTimeSeries
+        case BusiestTimeOfDaysMetrics.MessagesReceived:
+            return useMessagesReceivedTimeSeries
         case BusiestTimeOfDaysMetrics.TicketsReplied:
             return useTicketsRepliedTimeSeries
         case BusiestTimeOfDaysMetrics.TicketsClosed:
@@ -334,6 +338,8 @@ export const getMetricFetch = (
     switch (metric) {
         case BusiestTimeOfDaysMetrics.MessagesSent:
             return fetchMessagesSentTimeSeries
+        case BusiestTimeOfDaysMetrics.MessagesReceived:
+            return fetchMessagesReceivedTimeSeries
         case BusiestTimeOfDaysMetrics.TicketsReplied:
             return fetchTicketsRepliedTimeSeries
         case BusiestTimeOfDaysMetrics.TicketsClosed:
@@ -350,9 +356,15 @@ export const metrics = [
     BusiestTimeOfDaysMetrics.MessagesSent,
 ]
 
+export const metricsWithMessagesReceived = [
+    ...metrics,
+    BusiestTimeOfDaysMetrics.MessagesReceived,
+]
+
 export const metricLabels: Record<BusiestTimeOfDaysMetrics, string> = {
     [BusiestTimeOfDaysMetrics.TicketsCreated]: 'Tickets Created',
     [BusiestTimeOfDaysMetrics.TicketsReplied]: 'Tickets Replied',
     [BusiestTimeOfDaysMetrics.TicketsClosed]: 'Tickets Closed',
     [BusiestTimeOfDaysMetrics.MessagesSent]: 'Messages Sent',
+    [BusiestTimeOfDaysMetrics.MessagesReceived]: 'Messages Received',
 }

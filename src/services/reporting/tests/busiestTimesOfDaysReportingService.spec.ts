@@ -3,6 +3,7 @@ import { renderHook } from '@testing-library/react-hooks'
 import { getCsvFileNameWithDates } from 'hooks/reporting/support-performance/overview/useDownloadOverviewData'
 import { useNewStatsFilters } from 'hooks/reporting/support-performance/useNewStatsFilters'
 import {
+    fetchMessagesReceivedTimeSeries,
     fetchMessagesSentTimeSeries,
     fetchTicketsClosedTimeSeries,
     fetchTicketsCreatedTimeSeries,
@@ -30,6 +31,9 @@ const fetchTicketsClosedTimeSeriesMock = assumeMock(
     fetchTicketsClosedTimeSeries,
 )
 const fetchMessagesSentTimeSeriesMock = assumeMock(fetchMessagesSentTimeSeries)
+const fetchMessagesReceivedTimeSeriesMock = assumeMock(
+    fetchMessagesReceivedTimeSeries,
+)
 const fetchTicketsRepliedTimeSeriesMock = assumeMock(
     fetchTicketsRepliedTimeSeries,
 )
@@ -133,6 +137,7 @@ describe('busiestTimesOfDaysReportingService', () => {
         beforeEach(() => {
             fetchTicketsClosedTimeSeriesMock.mockResolvedValue([[]])
             fetchMessagesSentTimeSeriesMock.mockResolvedValue([[]])
+            fetchMessagesReceivedTimeSeriesMock.mockResolvedValue([[]])
             fetchTicketsRepliedTimeSeriesMock.mockResolvedValue([[]])
             fetchTicketsCreatedTimeSeriesMock.mockResolvedValue([[]])
         })
@@ -141,6 +146,7 @@ describe('busiestTimesOfDaysReportingService', () => {
             BusiestTimeOfDaysMetrics.TicketsClosed,
             BusiestTimeOfDaysMetrics.TicketsCreated,
             BusiestTimeOfDaysMetrics.MessagesSent,
+            BusiestTimeOfDaysMetrics.MessagesReceived,
             BusiestTimeOfDaysMetrics.TicketsReplied,
         ])('should fetch and format report data', async (btodMetric) => {
             const context = {

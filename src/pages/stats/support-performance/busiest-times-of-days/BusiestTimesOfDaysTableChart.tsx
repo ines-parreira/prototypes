@@ -19,9 +19,12 @@ const TICKETS_CREATED_TOOLTIP = 'Tickets created per hour per day of the week'
 const TICKETS_CLOSED_TOOLTIP = 'Tickets closed per hour per day of the week'
 const TICKETS_REPLIED_TOOLTIP = 'Tickets replied per hour per day of the week'
 const MESSAGES_SENT_TOOLTIP = 'Messages sent per hour per day of the week'
+const MESSAGES_RECEIVED_TOOLTIP =
+    'Messages received per hour per day of the week'
 
 const SectionTooltips: Record<BusiestTimeOfDaysMetrics, string> = {
     [BusiestTimeOfDaysMetrics.MessagesSent]: MESSAGES_SENT_TOOLTIP,
+    [BusiestTimeOfDaysMetrics.MessagesReceived]: MESSAGES_RECEIVED_TOOLTIP,
     [BusiestTimeOfDaysMetrics.TicketsCreated]: TICKETS_CREATED_TOOLTIP,
     [BusiestTimeOfDaysMetrics.TicketsClosed]: TICKETS_CLOSED_TOOLTIP,
     [BusiestTimeOfDaysMetrics.TicketsReplied]: TICKETS_REPLIED_TOOLTIP,
