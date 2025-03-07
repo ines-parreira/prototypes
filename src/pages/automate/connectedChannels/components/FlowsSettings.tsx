@@ -21,6 +21,7 @@ import DropdownBody from 'pages/common/components/dropdown/DropdownBody'
 import DropdownHeader from 'pages/common/components/dropdown/DropdownHeader'
 import Search from 'pages/common/components/Search'
 import { Components } from 'rest_api/workflows_api/client.generated'
+import { useIsAutomateSettings } from 'settings/automate/hooks/useIsAutomateSettings'
 
 import { FlowSettingsDropdownItem } from './FlowSettingsDropdownItem'
 import { FlowSettingsItem } from './FlowSettingsItem'
@@ -76,6 +77,7 @@ export const FlowsSettings = ({
     const [dirtyEntrypoints, setDirtyEntrypoints] = useState<Workflow[]>([])
     const dropdownTargetRef = useRef<HTMLButtonElement>(null)
     const [searchQuery, setSearchQuery] = useState<string>('')
+    const isAutomateSettings = useIsAutomateSettings()
     const [isFlowSelectorDropdownOpen, setIsFlowSelectorDropdownOpen] =
         useState(false)
     const configurationsMap = useMemo(
@@ -192,16 +194,26 @@ export const FlowsSettings = ({
     const items =
         dirtyEntrypoints.length > 0 ? dirtyEntrypoints : enabledWorkflows
 
+    const flowLink = useMemo(() => {
+        if (isAutomateSettings) {
+            return `/app/settings/flows/${shopType}/${shopName}`
+        }
+        return `/app/automation/${shopType}/${shopName}/flows`
+    }, [isAutomateSettings, shopName, shopType])
+
+    function editFlowLink(workflowId: string) {
+        if (isAutomateSettings) {
+            return `/app/settings/flows/${shopType}/${shopName}/edit/${workflowId}`
+        }
+        return `/app/automation/${shopType}/${shopName}/flows/edit/${workflowId}`
+    }
+
     return (
         <div className="full-width">
             <div className={css.labelWrapper}>
                 <Label className={css.label}>Flows</Label>
 
-                <Link
-                    to={`/app/automation/${shopType}/${shopName}/flows`}
-                    target="_blank"
-                    rel="noreferrer"
-                >
+                <Link to={flowLink} target="_blank" rel="noreferrer">
                     <i className={classnames('material-icons', css.icon)}>
                         open_in_new
                     </i>
@@ -239,7 +251,7 @@ export const FlowsSettings = ({
                             onCancel={() => setDirtyEntrypoints([])}
                             key={workflow.workflow_id}
                             id={workflow.workflow_id}
-                            url={`/app/automation/${shopType}/${shopName}/flows/edit/${workflow.workflow_id}`}
+                            url={editFlowLink(workflow.workflow_id)}
                             onDelete={() =>
                                 onChange?.(
                                     enabledWorkflows.filter(

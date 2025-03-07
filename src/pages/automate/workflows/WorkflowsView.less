@@ -3,6 +3,12 @@
 @import '~css/new/mixins.less';
 
 :local {
+    .container {
+        width: 100%;
+        height: 100%;
+        overflow: auto;
+    }
+
     .pageHeaderContainer {
         position: sticky;
         top: 0;
@@ -13,7 +19,6 @@
     .headerContainer {
         display: flex;
         flex-direction: row;
-        display: flex;
         gap: @layout-spacing-xs;
         justify-content: flex-end;
     }
@@ -44,6 +49,46 @@
         }
         @media @desktops {
             gap: @layout-spacing-m;
+        }
+    }
+
+    .settingsDescription {
+        display: flex;
+        width: 100%;
+        align-items: stretch;
+        justify-content: space-between;
+
+        @media @tablets {
+            flex-direction: column;
+            align-items: flex-start;
+            gap: @layout-spacing-m;
+        }
+
+        @media @mobiles {
+            flex-direction: column;
+            align-items: flex-start;
+            gap: @layout-spacing-m;
+        }
+    }
+
+    .settingsDescriptionText {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .settingsDescriptionLinks {
+        display: flex;
+        flex-direction: row;
+        align-items: flex-start;
+        gap: @layout-spacing-xs;
+
+        @media @tablets {
+            flex-direction: column;
+        }
+
+        @media @mobiles {
+            flex-direction: column;
         }
     }
 

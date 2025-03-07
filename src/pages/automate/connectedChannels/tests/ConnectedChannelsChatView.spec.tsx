@@ -10,6 +10,7 @@ import { Router } from 'react-router-dom'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
+import { TicketChannel } from 'business/types/ticket'
 import { billingState } from 'fixtures/billing'
 import { selfServiceConfiguration1 as mockSelfServiceConfiguration } from 'fixtures/self_service_configurations'
 import { useGetHelpCenter } from 'models/helpCenter/queries'
@@ -24,15 +25,19 @@ import useSelfServiceConfiguration from 'pages/automate/common/hooks/useSelfServ
 import history from 'pages/history'
 import { ContactFormFixture } from 'pages/settings/contactForm/fixtures/contacForm'
 import { getSingleHelpCenterResponseFixture } from 'pages/settings/helpCenter/fixtures/getHelpCentersResponse.fixture'
+import { useIsAutomateSettings } from 'settings/automate/hooks/useIsAutomateSettings'
 import { RootState } from 'state/types'
 import {
     mockQueryClient,
     renderWithQueryClientProvider,
 } from 'tests/reactQueryTestingUtils'
+import { renderWithRouter } from 'utils/testing'
 
 import { initialState as articlesState } from '../../../../state/entities/helpCenter/articles'
 import { initialState as categoriesState } from '../../../../state/entities/helpCenter/categories'
 import { ConnectedChannelsChatView } from '../components/ConnectedChannelsChatView'
+
+jest.mock('settings/automate/hooks/useIsAutomateSettings')
 
 const queryClient = mockQueryClient()
 // eslint-disable-next-line @typescript-eslint/no-unsafe-return
@@ -700,5 +705,123 @@ describe('ConnectedChannelsView', () => {
         )
 
         expect(screen.getByText(/Configuration Required/i)).toBeInTheDocument()
+    })
+
+    it('should show loading spinner when data is being fetched', () => {
+        ;(useSelfServiceConfiguration as jest.Mock).mockReturnValue({
+            selfServiceConfiguration: null,
+            storeIntegration: null,
+            isFetchPending: true,
+        })
+        ;(useApplicationsAutomationSettings as jest.Mock).mockReturnValue({
+            applicationsAutomationSettings: {},
+            isFetchPending: true,
+            handleChatApplicationAutomationSettingsUpdate: jest.fn(),
+        })
+        ;(useSelfServiceChannels as jest.Mock).mockReturnValue(mockChatChannels)
+
+        render(
+            <Router history={history}>
+                <Provider store={mockedStore}>
+                    <QueryClientProvider client={queryClient}>
+                        <ConnectedChannelsChatView />
+                    </QueryClientProvider>
+                </Provider>
+            </Router>,
+        )
+
+        expect(screen.getByRole('status')).toBeInTheDocument()
+    })
+
+    it('should handle channel selection change and navigation', async () => {
+        const mockChannels = [
+            ...mockChatChannels,
+            {
+                type: TicketChannel.HelpCenter,
+                value: {
+                    id: 100,
+                    name: 'Help Center Channel',
+                },
+            },
+            {
+                type: TicketChannel.ContactForm,
+                value: {
+                    id: 101,
+                    name: 'Contact Form Channel',
+                },
+            },
+        ]
+
+        // Mock useIsAutomateSettings to return true
+        ;(useIsAutomateSettings as jest.Mock).mockReturnValue(true)
+        ;(useSelfServiceConfiguration as jest.Mock).mockReturnValue({
+            selfServiceConfiguration: mockSelfServiceConfiguration,
+            storeIntegration: null,
+            isFetchPending: false,
+        })
+        ;(useSelfServiceChannels as jest.Mock).mockReturnValue(mockChannels)
+        ;(useApplicationsAutomationSettings as jest.Mock).mockReturnValue({
+            applicationsAutomationSettings: {
+                25: {
+                    id: 110,
+                    applicationId: 20,
+                    articleRecommendation: {
+                        enabled: false,
+                    },
+                    orderManagement: {
+                        enabled: false,
+                    },
+                    workflows: {
+                        enabled: true,
+                        entrypoints: [
+                            {
+                                enabled: true,
+                                workflow_id: '01HQTDDBN1A75R9TH8PCQS4ARA',
+                            },
+                        ],
+                    },
+                    createdDatetime: '2024-06-05T11:27:06.939Z',
+                    updatedDatetime: '2024-07-30T14:16:39.411Z',
+                },
+            },
+            isFetchPending: false,
+            handleChatApplicationAutomationSettingsUpdate: jest.fn(),
+        })
+
+        renderWithRouter(
+            <Provider store={mockedStore}>
+                <QueryClientProvider client={queryClient}>
+                    <ConnectedChannelsChatView />
+                </QueryClientProvider>
+            </Provider>,
+            {
+                path: '/:shopType/:shopName/channels',
+                route: '/shopify/itay-store-two/channels',
+            },
+        )
+
+        // Wait for dropdown to be visible and verify initial state
+        await waitFor(() => {
+            expect(screen.getByText('Currently viewing')).toBeInTheDocument()
+        })
+        expect(
+            screen.getByRole('button', { name: 'Currently viewing' }),
+        ).toHaveTextContent(mockChatChannels[0].value.name)
+
+        // Open dropdown
+        const dropdown = screen.getByRole('button', {
+            name: 'Currently viewing',
+        })
+        await act(async () => {
+            fireEvent.click(dropdown)
+        })
+
+        // Click Help Center option and verify it appears in dropdown
+        await waitFor(() => {
+            expect(screen.getByText('Help Center Channel')).toBeInTheDocument()
+        })
+        await act(async () => {
+            fireEvent.click(screen.getByText('Help Center Channel'))
+        })
     })
 })

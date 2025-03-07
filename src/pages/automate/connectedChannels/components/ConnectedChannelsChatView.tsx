@@ -2,20 +2,24 @@ import React, { useCallback, useMemo } from 'react'
 
 import classNames from 'classnames'
 import { noop, startCase } from 'lodash'
-import { useParams } from 'react-router-dom'
+import { useHistory, useLocation, useParams } from 'react-router-dom'
 
 import { LoadingSpinner } from '@gorgias/merchant-ui-kit'
 
 import { TicketChannel } from 'business/types/ticket'
 import { logEvent, SegmentEvent } from 'common/segment'
 import { getPrimaryLanguageFromChatConfig } from 'config/integrations/gorgias_chat'
+import { useSearchParam } from 'hooks/useSearchParam'
 import { useGetHelpCenter } from 'models/helpCenter/queries'
 import { useGetWorkflowConfigurations } from 'models/workflows/queries'
 import useApplicationsAutomationSettings from 'pages/automate/common/hooks/useApplicationsAutomationSettings'
-import useSelfServiceChannels from 'pages/automate/common/hooks/useSelfServiceChannels'
+import useSelfServiceChannels, {
+    SelfServiceChannel,
+} from 'pages/automate/common/hooks/useSelfServiceChannels'
 import { SelfServiceChatChannel } from 'pages/automate/common/hooks/useSelfServiceChatChannels'
 import useSelfServiceConfiguration from 'pages/automate/common/hooks/useSelfServiceConfiguration'
 import { AutomateFeatures } from 'pages/automate/common/types'
+import { useIsAutomateSettings } from 'settings/automate/hooks/useIsAutomateSettings'
 
 import ConnectedChannelsPreview from '../ConnectedChannelsPreview'
 import { ConnectedChannelsEmptyView } from './ConnectedChannelsEmptyView'
@@ -42,7 +46,10 @@ export const ConnectedChannelsChatView = ({
         shopType: string
         shopName: string
     }>()
-
+    const isAutomateSettings = useIsAutomateSettings()
+    const history = useHistory()
+    const location = useLocation()
+    const [channelIdParam] = useSearchParam('channel-id')
     const shopName = extShopName ?? shopNameParam
     const shopType = extShopType ?? shopTypeParam
     const {
@@ -78,7 +85,11 @@ export const ConnectedChannelsChatView = ({
     }, [channels])
 
     const [selectedChannel, setSelectedChannel] = React.useState<string | null>(
-        () => channelId ?? chatChannels[0]?.value.meta.app_id ?? null,
+        () =>
+            channelId ??
+            channelIdParam ??
+            chatChannels[0]?.value.meta.app_id ??
+            null,
     )
 
     const currentChannel =
@@ -107,6 +118,93 @@ export const ConnectedChannelsChatView = ({
         }
         return false
     })
+
+    const currentlyViewingDropdownOptions = useMemo(
+        () => (isAutomateSettings ? channels : chatChannels),
+        [channels, chatChannels, isAutomateSettings],
+    )
+
+    const currentlyViewingDropdownRenderOption = useCallback(
+        (channel: SelfServiceChannel) => {
+            switch (channel.type) {
+                case TicketChannel.Chat:
+                    return {
+                        label: channel.value.name,
+                        value: channel.value.meta.app_id ?? channel.value.name,
+                    }
+                case TicketChannel.HelpCenter:
+                    return {
+                        label: channel.value.name,
+                        value: channel.value.id ?? channel.value.name,
+                    }
+                default:
+                    return {
+                        label: channel.value.name,
+                        value: channel.value.id ?? channel.value.name,
+                    }
+            }
+        },
+        [],
+    )
+
+    const onSelectedChannelChange = useCallback(
+        (value: string | number) => {
+            if (!isAutomateSettings) {
+                setSelectedChannel(String(value))
+                return
+            }
+
+            const selectedChannel = channels.find((channel) => {
+                if (channel.type === TicketChannel.Chat) {
+                    return channel.value.meta?.app_id === value
+                }
+                return channel.value.id === value
+            })
+
+            if (!selectedChannel) return
+
+            const [baseURL] = location.pathname.split(shopType)
+
+            switch (selectedChannel.type) {
+                // Current channel type, no redirect
+                case TicketChannel.Chat:
+                    setSelectedChannel(String(value))
+                    break
+                case TicketChannel.HelpCenter:
+                    history.push(
+                        `${baseURL}${shopType}/${shopName}/channels/help-center?channel-id=${value}`,
+                    )
+                    break
+                case TicketChannel.ContactForm:
+                    history.push(
+                        `${baseURL}${shopType}/${shopName}/channels/contact-form?channel-id=${value}`,
+                    )
+                    break
+                default:
+                    break
+            }
+        },
+        [
+            channels,
+            history,
+            shopName,
+            shopType,
+            location.pathname,
+            isAutomateSettings,
+        ],
+    )
+
+    const orderManagementExternalLink = useMemo(() => {
+        if (!isAutomateSettings)
+            return `/app/automation/${shopType}/${shopName}/order-management`
+        return `/app/settings/order-management/${shopType}/${shopName}`
+    }, [isAutomateSettings, shopType, shopName])
+
+    const articleRecommendationExternalLink = useMemo(() => {
+        if (!isAutomateSettings)
+            return `/app/automation/${shopType}/${shopName}/article-recommendation`
+        return `/app/settings/article-recommendations/${shopType}/${shopName}`
+    }, [isAutomateSettings, shopType, shopName])
 
     const isLoading =
         !selfServiceConfiguration ||
@@ -187,18 +285,12 @@ export const ConnectedChannelsChatView = ({
                     <CurrentlyViewingDropdown
                         onConnect={noop}
                         channelType="chat"
-                        channels={chatChannels}
+                        channels={currentlyViewingDropdownOptions}
                         value={selectedChannel ?? ''}
                         appId={currentChannel.value.id}
                         label={currentChannel.value.name}
-                        onSelectedChannelChange={(value) =>
-                            setSelectedChannel(String(value))
-                        }
-                        renderOption={(channel) => ({
-                            label: channel.value.name,
-                            value:
-                                channel.value.meta.app_id ?? channel.value.name,
-                        })}
+                        onSelectedChannelChange={onSelectedChannelChange}
+                        renderOption={currentlyViewingDropdownRenderOption}
                     />
                 )}
                 <FlowsSettings
@@ -250,7 +342,7 @@ export const ConnectedChannelsChatView = ({
                     label="Enable Order Management"
                     labelSubtitle="Allow customers to track and manage their orders directly within your Chat."
                     enabled={isOrderManagementEnabled}
-                    externalLinkUrl={`/app/automation/${shopType}/${shopName}/order-management`}
+                    externalLinkUrl={orderManagementExternalLink}
                     onToggle={updateSettings('orderManagement')}
                 />
 
@@ -261,7 +353,7 @@ export const ConnectedChannelsChatView = ({
                     labelSubtitle="Automatically send Help Center articles in response to customer questions in Chat, if a relevant article exists. If a customer requests more help, a ticket will be created for an agent to handle."
                     enabled={isArticleRecommendationEnabled}
                     disabled={isHelpCenterSelfServiceDeleted}
-                    externalLinkUrl={`/app/automation/${shopType}/${shopName}/article-recommendation`}
+                    externalLinkUrl={articleRecommendationExternalLink}
                     showConfigurationRequiredAlert={
                         isHelpCenterSelfServiceDeleted
                     }

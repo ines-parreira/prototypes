@@ -1,7 +1,7 @@
 import React from 'react'
 
 import { QueryClientProvider } from '@tanstack/react-query'
-import { fireEvent, render, screen } from '@testing-library/react'
+import { act, fireEvent, render, screen, waitFor } from '@testing-library/react'
 import { fromJS } from 'immutable'
 import { keyBy } from 'lodash'
 import { Provider } from 'react-redux'
@@ -9,6 +9,7 @@ import { Router } from 'react-router-dom'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
+import { TicketChannel } from 'business/types/ticket'
 import { billingState } from 'fixtures/billing'
 import { selfServiceConfiguration1 as mockSelfServiceConfiguration } from 'fixtures/self_service_configurations'
 import useContactFormAutomationSettings from 'pages/automate/common/hooks/useContactFormAutomationSettings'
@@ -17,11 +18,13 @@ import useSelfServiceStandaloneContactFormChannels from 'pages/automate/common/h
 import history from 'pages/history'
 import { ContactFormFixture } from 'pages/settings/contactForm/fixtures/contacForm'
 import { getSingleHelpCenterResponseFixture } from 'pages/settings/helpCenter/fixtures/getHelpCentersResponse.fixture'
+import { useIsAutomateSettings } from 'settings/automate/hooks/useIsAutomateSettings'
 import { RootState } from 'state/types'
 import {
     mockQueryClient,
     renderWithQueryClientProvider,
 } from 'tests/reactQueryTestingUtils'
+import { renderWithRouter } from 'utils/testing'
 
 import { initialState as articlesState } from '../../../../state/entities/helpCenter/articles'
 import { initialState as categoriesState } from '../../../../state/entities/helpCenter/categories'
@@ -32,6 +35,7 @@ jest.mock('pages/automate/common/hooks/useContactFormAutomationSettings')
 jest.mock(
     'pages/automate/common/hooks/useSelfServiceStandaloneContactFormChannels',
 )
+jest.mock('settings/automate/hooks/useIsAutomateSettings')
 
 const mockContactFormChannels = [
     {
@@ -496,5 +500,115 @@ describe('ConnectedChannelsContactFormView', () => {
         )
 
         expect(screen.getByText(/Go to Contact Form/i)).toBeInTheDocument()
+    })
+
+    it('should show loading spinner when data is being fetched', () => {
+        ;(useSelfServiceConfiguration as jest.Mock).mockReturnValue({
+            selfServiceConfiguration: null,
+            storeIntegration: null,
+            isFetchPending: true,
+        })
+        ;(useContactFormAutomationSettings as jest.Mock).mockReturnValue({
+            automationSettings: {
+                order_management: {
+                    enabled: true,
+                },
+            },
+            isFetchPending: true,
+            handleContactFormAutomationSettingsUpdate: jest.fn(),
+        })
+
+        render(
+            <Router history={history}>
+                <Provider store={mockedStore}>
+                    <QueryClientProvider client={queryClient}>
+                        <ConnectedChannelsContactFormView />
+                    </QueryClientProvider>
+                </Provider>
+            </Router>,
+        )
+
+        expect(screen.getByRole('status')).toBeInTheDocument()
+    })
+
+    it('should handle channel selection change and navigation', async () => {
+        const mockChannels = [
+            ...mockContactFormChannels,
+            {
+                type: TicketChannel.HelpCenter,
+                value: {
+                    id: 100,
+                    name: 'Help Center Channel',
+                },
+            },
+            {
+                type: TicketChannel.Chat,
+                value: {
+                    id: 101,
+                    name: 'Chat Channel',
+                    meta: {
+                        app_id: 'chat-app-1',
+                    },
+                },
+            },
+        ]
+
+        // Mock useIsAutomateSettings to return true
+        ;(useIsAutomateSettings as jest.Mock).mockReturnValue(true)
+        ;(useSelfServiceConfiguration as jest.Mock).mockReturnValue({
+            selfServiceConfiguration: mockSelfServiceConfiguration,
+            storeIntegration: null,
+            isFetchPending: false,
+        })
+        ;(
+            useSelfServiceStandaloneContactFormChannels as jest.Mock
+        ).mockReturnValue(mockChannels)
+        ;(useContactFormAutomationSettings as jest.Mock).mockReturnValue({
+            automationSettings: {
+                workflows: [
+                    {
+                        id: '01HQTDDBN1A75R9TH8PCQS4ARA',
+                        enabled: true,
+                    },
+                ],
+                order_management: {
+                    enabled: false,
+                },
+            },
+            isFetchPending: false,
+            handleContactFormAutomationSettingsUpdate: jest.fn(),
+        })
+
+        renderWithRouter(
+            <Provider store={mockedStore}>
+                <QueryClientProvider client={queryClient}>
+                    <ConnectedChannelsContactFormView />
+                </QueryClientProvider>
+            </Provider>,
+            {
+                path: '/:shopType/:shopName/channels/contact-form',
+                route: '/shopify/itay-store-two/channels/contact-form',
+            },
+        )
+
+        // Wait for dropdown to be visible
+        await waitFor(() => {
+            expect(screen.getByText('Currently viewing')).toBeInTheDocument()
+        })
+
+        // Open dropdown
+        const dropdown = screen.getByRole('button', {
+            name: 'Currently viewing',
+        })
+        await act(async () => {
+            fireEvent.click(dropdown)
+        })
+
+        await waitFor(() => {
+            expect(screen.getByText('Help Center Channel')).toBeInTheDocument()
+        })
+        await act(async () => {
+            fireEvent.click(screen.getByText('Help Center Channel'))
+        })
     })
 })

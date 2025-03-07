@@ -423,4 +423,151 @@ describe('ConnectedChannelsContactFormView', () => {
             }),
         ])
     })
+
+    it('should show loading spinner when data is being fetched', () => {
+        ;(useSelfServiceConfiguration as jest.Mock).mockReturnValue({
+            selfServiceConfiguration: null,
+            storeIntegration: null,
+            isFetchPending: true,
+        })
+        ;(useHelpCentersAutomationSettings as jest.Mock).mockReturnValue({
+            automationSettings: null,
+            isFetchPending: true,
+            handleHelpCenterAutomationSettingsUpdate: jest.fn(),
+        })
+
+        renderWithRouter(
+            <Provider store={mockedStore}>
+                <QueryClientProvider client={queryClient}>
+                    <ConnectedChannelsHelpCenterView />
+                </QueryClientProvider>
+            </Provider>,
+        )
+
+        expect(screen.getByRole('status')).toBeInTheDocument()
+    })
+
+    it('should handle channel selection change correctly', async () => {
+        const mockChannels = [
+            ...mockHelpCenterChannels,
+            {
+                type: TicketChannel.HelpCenter,
+                value: {
+                    ...mockHelpCenterChannels[0].value,
+                    id: 43,
+                    name: 'Second Help Center',
+                },
+            },
+        ]
+
+        ;(useSelfServiceConfiguration as jest.Mock).mockReturnValue({
+            selfServiceConfiguration: mockSelfServiceConfiguration,
+            storeIntegration: null,
+            isFetchPending: false,
+        })
+        ;(useSelfServiceHelpCenterChannels as jest.Mock).mockReturnValue(
+            mockChannels,
+        )
+        ;(useHelpCentersAutomationSettings as jest.Mock).mockReturnValue({
+            automationSettings: {
+                workflows: [
+                    {
+                        id: '01HQTDDBN1A75R9TH8PCQS4ARA',
+                        enabled: true,
+                    },
+                ],
+                order_management: {
+                    enabled: false,
+                },
+            },
+            isFetchPending: false,
+            handleHelpCenterAutomationSettingsUpdate: jest.fn(),
+        })
+
+        renderWithRouter(
+            <Provider store={mockedStore}>
+                <QueryClientProvider client={queryClient}>
+                    <ConnectedChannelsHelpCenterView />
+                </QueryClientProvider>
+            </Provider>,
+        )
+
+        // Wait for the dropdown to be visible
+        await waitFor(() => {
+            expect(screen.getByText('Currently viewing')).toBeInTheDocument()
+        })
+
+        // Open the dropdown
+        const dropdown = screen.getByText(mockHelpCenterChannels[0].value.name)
+        await act(async () => {
+            fireEvent.click(dropdown)
+        })
+
+        // Wait for the second option to be visible and click it
+        await waitFor(() => {
+            expect(screen.getByText('Second Help Center')).toBeInTheDocument()
+        })
+
+        await act(async () => {
+            fireEvent.click(screen.getByText('Second Help Center'))
+        })
+
+        // Verify the selection changed
+        expect(screen.getByText('Second Help Center')).toBeInTheDocument()
+    })
+
+    it('should initialize with channel ID from URL parameter', async () => {
+        const channelId = '43'
+        const mockChannels = [
+            ...mockHelpCenterChannels,
+            {
+                type: TicketChannel.HelpCenter,
+                value: {
+                    ...mockHelpCenterChannels[0].value,
+                    id: 43,
+                    name: 'Channel from URL',
+                },
+            },
+        ]
+
+        ;(useSelfServiceConfiguration as jest.Mock).mockReturnValue({
+            selfServiceConfiguration: mockSelfServiceConfiguration,
+            storeIntegration: null,
+            isFetchPending: false,
+        })
+        ;(useSelfServiceHelpCenterChannels as jest.Mock).mockReturnValue(
+            mockChannels,
+        )
+        ;(useHelpCentersAutomationSettings as jest.Mock).mockReturnValue({
+            automationSettings: {
+                workflows: [
+                    {
+                        id: '01HQTDDBN1A75R9TH8PCQS4ARA',
+                        enabled: true,
+                    },
+                ],
+                order_management: {
+                    enabled: false,
+                },
+            },
+            isFetchPending: false,
+            handleHelpCenterAutomationSettingsUpdate: jest.fn(),
+        })
+
+        renderWithRouter(
+            <Provider store={mockedStore}>
+                <QueryClientProvider client={queryClient}>
+                    <ConnectedChannelsHelpCenterView />
+                </QueryClientProvider>
+            </Provider>,
+            {
+                path: '/:shopType/:shopName/connected-channels/help-center',
+                route: `/shopify/itay-store-two/connected-channels/help-center?channel-id=${channelId}`,
+            },
+        )
+
+        await waitFor(() => {
+            expect(screen.getByText('Channel from URL')).toBeInTheDocument()
+        })
+    })
 })

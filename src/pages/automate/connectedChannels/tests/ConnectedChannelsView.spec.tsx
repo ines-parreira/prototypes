@@ -1,11 +1,10 @@
 /* eslint-disable @typescript-eslint/no-unsafe-return */
 import React from 'react'
 
-import { fireEvent, screen, waitFor } from '@testing-library/react'
+import { screen } from '@testing-library/react'
 import { createMemoryHistory } from 'history'
 import { fromJS } from 'immutable'
 import { keyBy } from 'lodash'
-import { act } from 'react-dom/test-utils'
 import { Provider } from 'react-redux'
 import { Router } from 'react-router-dom'
 import configureMockStore from 'redux-mock-store'
@@ -19,6 +18,7 @@ import useSelfServiceChannels from 'pages/automate/common/hooks/useSelfServiceCh
 import useSelfServiceConfiguration from 'pages/automate/common/hooks/useSelfServiceConfiguration'
 import { ContactFormFixture } from 'pages/settings/contactForm/fixtures/contacForm'
 import { getSingleHelpCenterResponseFixture } from 'pages/settings/helpCenter/fixtures/getHelpCentersResponse.fixture'
+import { useIsAutomateSettings } from 'settings/automate/hooks/useIsAutomateSettings'
 import { RootState } from 'state/types'
 import { renderWithQueryClientProvider } from 'tests/reactQueryTestingUtils'
 
@@ -270,12 +270,38 @@ jest.mock(
     }),
 )
 
+jest.mock('settings/automate/hooks/useIsAutomateSettings')
+
 jest.mock('../../common/hooks/useDisplayAiAgentMovedBanner', () => ({
     useDisplayAiAgentMovedBanner: jest.fn(),
 }))
 
 jest.mock('../../common/components/AiAgentMovedBanner', () => ({
     AiAgentMovedBanner: () => <div>AI Agent Moved Banner</div>,
+}))
+
+jest.mock('../components/ConnectedChannelsChatView', () => ({
+    ConnectedChannelsChatView: () => (
+        <div data-testid="connected-channels-chat-view" />
+    ),
+}))
+
+jest.mock('../components/ConnectedChannelsHelpCenterView', () => ({
+    ConnectedChannelsHelpCenterView: () => (
+        <div data-testid="connected-channels-help-center-view" />
+    ),
+}))
+
+jest.mock('../components/ConnectedChannelsContactFormView', () => ({
+    ConnectedChannelsContactFormView: () => (
+        <div data-testid="connected-channels-contact-form-view" />
+    ),
+}))
+
+jest.mock('../components/ConnectedChannelsEmailView', () => ({
+    ConnectedChannelsEmailView: () => (
+        <div data-testid="connected-channels-email-view" />
+    ),
 }))
 
 const renderWithRouter = (ui: React.ReactElement, { route = '/' } = {}) => {
@@ -380,108 +406,6 @@ describe('ConnectedChannelsView', () => {
         expect(screen.getByText('Email')).toBeInTheDocument()
     })
 
-    it('should change the route to chat when clicking on a channel', async () => {
-        const { history } = renderWithRouter(<ConnectedChannelsView />)
-
-        const chatChannel = screen.getByRole('link', { name: /chat/i })
-        expect(chatChannel).toBeInTheDocument()
-        // Check if the component corresponding to the route is rendered
-
-        await act(async () => {
-            fireEvent.click(chatChannel)
-            await waitFor(() => {
-                expect(history.location.pathname).toBe(
-                    '/app/automation/shopType/shopName/connected-channels',
-                )
-
-                expect(
-                    screen.getAllByText(
-                        'Display up to 6 Flows on your Chat to proactively resolve top customer requests.',
-                    ),
-                ).toHaveLength(1)
-                expect(screen.getByText(/chat_bubble/i)).toBeInTheDocument()
-            })
-        })
-        expect(screen.getByText(/chat_bubble/i)).toBeInTheDocument()
-    })
-
-    it('should change the route to help center when clicking on a channel', async () => {
-        const { history } = renderWithRouter(<ConnectedChannelsView />)
-
-        const helpCenterChannel = screen.getByRole('link', {
-            name: /help center/i,
-        })
-
-        expect(helpCenterChannel).toBeInTheDocument()
-        await act(async () => {
-            fireEvent.click(helpCenterChannel)
-
-            await waitFor(() => {
-                expect(history.location.pathname).toBe(
-                    '/app/automation/shopType/shopName/connected-channels/help-center',
-                )
-
-                expect(
-                    screen.getByText(
-                        'Display up to 6 Flows on your Help Center to proactively resolve top customer requests.',
-                    ),
-                ).toBeInTheDocument()
-                expect(screen.getByText(/live_help/i)).toBeInTheDocument()
-            })
-        })
-    })
-
-    it('should change the route to contact form when clicking on a channel', async () => {
-        const { history } = renderWithRouter(<ConnectedChannelsView />)
-
-        const contactFormChannel = screen.getByRole('link', {
-            name: /contact form/i,
-        })
-
-        expect(contactFormChannel).toBeInTheDocument()
-        await act(async () => {
-            fireEvent.click(contactFormChannel)
-
-            await waitFor(() => {
-                expect(history.location.pathname).toBe(
-                    '/app/automation/shopType/shopName/connected-channels/contact-form',
-                )
-
-                expect(
-                    screen.getByText(/Enable Order Management/i),
-                ).toBeInTheDocument()
-                expect(
-                    screen.getByText(
-                        'Display up to 6 Flows on your Contact Form to proactively resolve top customer requests.',
-                    ),
-                ).toBeInTheDocument()
-                expect(
-                    screen.getByText(/Currently viewing/i),
-                ).toBeInTheDocument()
-            })
-        })
-    })
-    it('should change the route to email when clicking on a channel', async () => {
-        const { history } = renderWithRouter(<ConnectedChannelsView />)
-
-        const contactFormChannel = screen.getByRole('link', {
-            name: /email/i,
-        })
-
-        expect(contactFormChannel).toBeInTheDocument()
-        await act(async () => {
-            fireEvent.click(contactFormChannel)
-
-            await waitFor(() => {
-                expect(history.location.pathname).toBe(
-                    '/app/automation/shopType/shopName/connected-channels/email',
-                )
-
-                expect(screen.getByText(/email/i)).toBeInTheDocument()
-            })
-        })
-    })
-
     it('should render AI Agent Moved banner when useDisplayAiAgentMovedBanner returns true', () => {
         ;(useDisplayAiAgentMovedBanner as jest.Mock).mockReturnValue(true)
 
@@ -498,5 +422,83 @@ describe('ConnectedChannelsView', () => {
         expect(
             screen.queryByText('AI Agent Moved Banner'),
         ).not.toBeInTheDocument()
+    })
+
+    describe('routing', () => {
+        it('should render chat view on base route', () => {
+            renderWithRouter(<ConnectedChannelsView />, {
+                route: '/app/automation/shopType/shopName/connected-channels',
+            })
+
+            // Mock the chat view component separately
+            expect(
+                screen.getByTestId('connected-channels-chat-view'),
+            ).toBeInTheDocument()
+        })
+
+        it('should render help center view on /help-center route', () => {
+            renderWithRouter(<ConnectedChannelsView />, {
+                route: '/app/automation/shopType/shopName/connected-channels/help-center',
+            })
+
+            expect(
+                screen.getByTestId('connected-channels-help-center-view'),
+            ).toBeInTheDocument()
+        })
+
+        it('should render contact form view on /contact-form route', () => {
+            renderWithRouter(<ConnectedChannelsView />, {
+                route: '/app/automation/shopType/shopName/connected-channels/contact-form',
+            })
+
+            expect(
+                screen.getByTestId('connected-channels-contact-form-view'),
+            ).toBeInTheDocument()
+        })
+
+        it('should render email view on /email route', () => {
+            renderWithRouter(<ConnectedChannelsView />, {
+                route: '/app/automation/shopType/shopName/connected-channels/email',
+            })
+
+            expect(
+                screen.getByTestId('connected-channels-email-view'),
+            ).toBeInTheDocument()
+        })
+    })
+
+    it('should not render page header and navbar when in automate settings mode', () => {
+        ;(useIsAutomateSettings as jest.Mock).mockReturnValue(true)
+
+        renderWithRouter(<ConnectedChannelsView />)
+
+        expect(screen.queryByText('Channels')).not.toBeInTheDocument()
+        expect(screen.queryByRole('navigation')).not.toBeInTheDocument()
+    })
+
+    describe('navigation links', () => {
+        it('should render all navigation links with correct URLs', () => {
+            ;(useIsAutomateSettings as jest.Mock).mockReturnValue(false)
+            renderWithRouter(<ConnectedChannelsView />)
+
+            const links = screen.getAllByRole('link')
+            expect(links).toHaveLength(4)
+            expect(links[0]).toHaveAttribute(
+                'href',
+                '/app/automation/shopType/shopName/connected-channels',
+            )
+            expect(links[1]).toHaveAttribute(
+                'href',
+                '/app/automation/shopType/shopName/connected-channels/help-center',
+            )
+            expect(links[2]).toHaveAttribute(
+                'href',
+                '/app/automation/shopType/shopName/connected-channels/contact-form',
+            )
+            expect(links[3]).toHaveAttribute(
+                'href',
+                '/app/automation/shopType/shopName/connected-channels/email',
+            )
+        })
     })
 })

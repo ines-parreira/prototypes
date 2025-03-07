@@ -1,9 +1,11 @@
 import React from 'react'
 
-import { fireEvent, render, screen } from '@testing-library/react'
+import { fireEvent, screen } from '@testing-library/react'
 
 import { TicketChannel } from 'business/types/ticket'
 import { SelfServiceChatChannel } from 'pages/automate/common/hooks/useSelfServiceChatChannels'
+import { useIsAutomateSettings } from 'settings/automate/hooks/useIsAutomateSettings'
+import { renderWithRouter } from 'utils/testing'
 
 import { CurrentlyViewingDropdown } from '../components/CurrentlyViewingDropdown'
 
@@ -28,9 +30,23 @@ const mockChannels = channels.map((channel) => ({
     },
 })) as unknown as SelfServiceChatChannel[]
 
+// Mock the useIsAutomateSettings hook
+jest.mock('settings/automate/hooks/useIsAutomateSettings', () => ({
+    useIsAutomateSettings: jest.fn(),
+}))
+
+// Cast the mock to a jest mock function for type safety
+const mockUseIsAutomateSettings = useIsAutomateSettings as jest.Mock
+
 describe('CurrentlyViewingDropdown', () => {
+    beforeEach(() => {
+        // Reset the mock before each test
+        mockUseIsAutomateSettings.mockReset()
+        mockUseIsAutomateSettings.mockReturnValue(false)
+    })
+
     test('renders the component', () => {
-        render(
+        renderWithRouter(
             <CurrentlyViewingDropdown
                 channelType="chat"
                 value=""
@@ -48,7 +64,7 @@ describe('CurrentlyViewingDropdown', () => {
     })
 
     test('opens the dropdown when button is clicked', () => {
-        render(
+        renderWithRouter(
             <CurrentlyViewingDropdown
                 channelType="chat"
                 value=""
@@ -72,7 +88,7 @@ describe('CurrentlyViewingDropdown', () => {
     test('calls onSelectedChannelChange when an item is clicked', () => {
         const onSelectedChannelChange = jest.fn()
 
-        render(
+        renderWithRouter(
             <CurrentlyViewingDropdown
                 channelType="chat"
                 value=""
@@ -94,7 +110,7 @@ describe('CurrentlyViewingDropdown', () => {
     })
 
     it('opens the correct link when clicked on "Chat Settings" link', () => {
-        render(
+        renderWithRouter(
             <CurrentlyViewingDropdown
                 channelType="chat"
                 value=""
@@ -115,7 +131,7 @@ describe('CurrentlyViewingDropdown', () => {
     })
 
     it('opens the correct link when clicked on "Help Center" link', () => {
-        render(
+        renderWithRouter(
             <CurrentlyViewingDropdown
                 channelType="help-center"
                 value=""
@@ -135,7 +151,7 @@ describe('CurrentlyViewingDropdown', () => {
     })
 
     it('opens the correct link when clicked on "Contact Form" link', () => {
-        render(
+        renderWithRouter(
             <CurrentlyViewingDropdown
                 channelType="contact-form"
                 value=""
@@ -152,5 +168,107 @@ describe('CurrentlyViewingDropdown', () => {
             'to',
             '/app/settings/contact-form/123',
         )
+    })
+
+    describe('Automate Settings View', () => {
+        beforeEach(() => {
+            mockUseIsAutomateSettings.mockReturnValue(true)
+        })
+
+        it('shows grouped channels when in automate settings', () => {
+            renderWithRouter(
+                <CurrentlyViewingDropdown
+                    channelType="chat"
+                    value=""
+                    appId="123"
+                    label="Select a Channel"
+                    channels={mockChannels}
+                    onConnect={jest.fn()}
+                    onSelectedChannelChange={jest.fn()}
+                    renderOption={renderOption}
+                />,
+            )
+
+            fireEvent.click(
+                screen.getByRole('button', { name: /Currently viewing/i }),
+            )
+
+            expect(screen.getByText('Chat')).toBeInTheDocument()
+            expect(screen.getByText('Help Center')).toBeInTheDocument()
+            expect(screen.getByText('Contact Form')).toBeInTheDocument()
+        })
+
+        it('shows "Go to" link when channel group is empty', () => {
+            renderWithRouter(
+                <CurrentlyViewingDropdown
+                    channelType="help-center"
+                    value=""
+                    appId="123"
+                    label="Select a Channel"
+                    channels={[]} // Empty channels array
+                    onConnect={jest.fn()}
+                    onSelectedChannelChange={jest.fn()}
+                    renderOption={renderOption}
+                />,
+            )
+
+            fireEvent.click(
+                screen.getByRole('button', { name: /Currently viewing/i }),
+            )
+
+            expect(screen.getByText('Go to Chat')).toBeInTheDocument()
+            expect(screen.getByText('Go to Help Center')).toBeInTheDocument()
+            expect(screen.getByText('Go to Contact Form')).toBeInTheDocument()
+        })
+    })
+
+    describe('Connect Call To Action', () => {
+        it('shows connect CTA when showConnectCallToAction is true', () => {
+            renderWithRouter(
+                <CurrentlyViewingDropdown
+                    channelType="chat"
+                    value=""
+                    appId="123"
+                    label="Select a Channel"
+                    channels={mockChannels}
+                    showConnectCallToAction={true}
+                    onConnect={jest.fn()}
+                    onSelectedChannelChange={jest.fn()}
+                    renderOption={renderOption}
+                />,
+            )
+
+            fireEvent.click(
+                screen.getByRole('button', { name: /Currently viewing/i }),
+            )
+
+            expect(
+                screen.getByText(/Connect another Chat to this store/),
+            ).toBeInTheDocument()
+        })
+
+        it('does not show connect CTA when showConnectCallToAction is false', () => {
+            renderWithRouter(
+                <CurrentlyViewingDropdown
+                    channelType="chat"
+                    value=""
+                    appId="123"
+                    label="Select a Channel"
+                    channels={mockChannels}
+                    showConnectCallToAction={false}
+                    onConnect={jest.fn()}
+                    onSelectedChannelChange={jest.fn()}
+                    renderOption={renderOption}
+                />,
+            )
+
+            fireEvent.click(
+                screen.getByRole('button', { name: /Currently viewing/i }),
+            )
+
+            expect(
+                screen.queryByText(/Connect another Chat to this store/),
+            ).not.toBeInTheDocument()
+        })
     })
 })
