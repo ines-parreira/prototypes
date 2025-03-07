@@ -1,0 +1,50 @@
+@import '~@gorgias/design-tokens/dist/css/layout';
+@import '~css/typography';
+
+:local {
+    .button {
+        display: flex;
+        align-items: center;
+        gap: 24px;
+        height: 64px;
+        padding-inline: 16px;
+        background-color: transparent;
+        border: 1px solid var(--neutral-grey-2);
+        border-radius: 12px;
+        box-shadow: 0px 3px 20px 0px #0000000a;
+    }
+
+    .progressStatus {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+
+    .progress {
+        width: 40px;
+        height: 40px;
+        font-family: Inter;
+        font-weight: 500;
+    }
+
+    .caption {
+        font-weight: 500;
+    }
+
+    .separator {
+        height: 24px;
+        width: 1px;
+        background-color: var(--neutral-grey-3);
+    }
+
+    .label {
+        font-weight: 500;
+        color: var(--main-primary);
+
+        i {
+            margin-left: 6px;
+            font-size: 20px;
+            vertical-align: bottom;
+        }
+    }
+}

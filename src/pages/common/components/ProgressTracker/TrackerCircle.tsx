@@ -1,5 +1,7 @@
 import React from 'react'
 
+import cn from 'classnames'
+
 import { relativeLighten } from 'gorgias-design-system/utils'
 
 import css from './ProgressTracker.less'
@@ -46,6 +48,7 @@ const Circle = ({
 }
 
 type Props = {
+    className?: string
     percentage: number
     color: string
     backgroundColor?: string
@@ -55,6 +58,7 @@ type Props = {
 }
 
 const TrackerCircle = ({
+    className,
     percentage,
     color,
     backgroundColor,
@@ -74,7 +78,7 @@ const TrackerCircle = ({
             height={size}
             viewBox={`0 0 ${size} ${size}`}
             fill="none"
-            className={css.circle}
+            className={cn(css.circle, className)}
         >
             <g transform={`rotate(-90)`}>
                 <Circle
@@ -93,11 +97,13 @@ const TrackerCircle = ({
             <foreignObject
                 x={0}
                 y={labelY}
-                height={radius}
+                height="50%"
                 width="100%"
                 fontSize={radius / 1.5}
             >
-                <div className={css.label}>{label}</div>
+                <div className={css.label} title={label}>
+                    {label}
+                </div>
             </foreignObject>
         </svg>
     )
