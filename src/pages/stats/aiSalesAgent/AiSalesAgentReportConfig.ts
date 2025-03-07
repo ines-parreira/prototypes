@@ -17,6 +17,7 @@ import { STATS_ROUTES } from 'routes/constants'
 
 export const AI_SALES_AGENTS_PERSISTENT_FILTERS: StaticFilter[] = [
     FilterKey.Period,
+    FilterKey.AggregationWindow,
 ]
 export const AI_SALES_AGENTS_OPTIONAL_FILTERS = []
 
