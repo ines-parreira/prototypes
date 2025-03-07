@@ -1,0 +1,100 @@
+@import '~@gorgias/design-tokens/dist/css/layout';
+@import '~css/typography';
+
+:local {
+    .storeCard {
+        border-radius: 12px;
+        border: 1px solid #ececec;
+        box-shadow: 0px 3px 20px 0px #0000000a;
+    }
+
+    .section {
+        padding: 24px;
+
+        &:first-child {
+            padding-block: 16px;
+        }
+
+        &:not(:last-child) {
+            border-bottom: 1px solid #dddddd;
+        }
+    }
+
+    .headerSection {
+        .heading {
+            align-items: center;
+        }
+    }
+
+    .heading {
+        display: flex;
+        justify-content: space-between;
+    }
+
+    .alert {
+        margin-top: 16px;
+    }
+
+    .alertCta {
+        font-size: 12px;
+        font-weight: 500;
+        color: var(--main-primary);
+    }
+
+    .enablement {
+        font-size: 12px;
+        color: var(--neutral-grey-5);
+    }
+
+    .title {
+        font-size: 16px;
+        font-weight: 600;
+        color: var(--neutral-grey-6);
+    }
+
+    .description {
+        margin-top: 4px;
+        color: var(--neutral-grey-5);
+    }
+
+    .toggleChannels {
+        margin-top: 16px;
+        color: var(--main-primary);
+        cursor: pointer;
+    }
+
+    .toggleChannelsIcon {
+        font-size: 20px;
+        vertical-align: bottom;
+    }
+
+    .channelsList {
+        margin-top: 16px;
+        display: flex;
+        justify-content: stretch;
+        flex: 1;
+    }
+
+    .channelField {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+
+    .channelInput {
+        width: 16px;
+        height: 16px;
+        margin-top: 0;
+    }
+
+    .channelLabel {
+        font-size: 16px;
+        font-weight: 600;
+        margin-bottom: 0;
+    }
+
+    .channelCaption {
+        margin-top: 4px;
+        color: var(--neutral-grey-5);
+    }
+}
