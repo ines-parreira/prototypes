@@ -1,6 +1,6 @@
 import { useMemo } from 'react'
 
-import { z } from 'zod'
+import { z, ZodIssueCode } from 'zod'
 
 // ✅ Define the form values type
 export type ChannelsFormValues = {
@@ -25,13 +25,13 @@ export const useChannelsSchema = (createNewChat: boolean) => {
                     // ✅ Ensure at least one channel is enabled
                     if (!data.emailChannelEnabled && !data.chatChannelEnabled) {
                         ctx.addIssue({
-                            code: z.ZodIssueCode.custom,
+                            code: ZodIssueCode.custom,
                             message:
                                 'You must enable at least one channel (Email or Chat).',
                             path: ['emailChannelEnabled'],
                         })
                         ctx.addIssue({
-                            code: z.ZodIssueCode.custom,
+                            code: ZodIssueCode.custom,
                             message:
                                 'You must enable at least one channel (Email or Chat).',
                             path: ['chatChannelEnabled'],
@@ -45,7 +45,7 @@ export const useChannelsSchema = (createNewChat: boolean) => {
                             data.emailIntegrationIds.length === 0)
                     ) {
                         ctx.addIssue({
-                            code: z.ZodIssueCode.custom,
+                            code: ZodIssueCode.custom,
                             message:
                                 'You must select at least one email integration.',
                             path: ['emailIntegrationIds'],
@@ -60,7 +60,7 @@ export const useChannelsSchema = (createNewChat: boolean) => {
                             data.chatIntegrationIds.length === 0)
                     ) {
                         ctx.addIssue({
-                            code: z.ZodIssueCode.custom,
+                            code: ZodIssueCode.custom,
                             message:
                                 'You must select at least one chat integration.',
                             path: ['chatIntegrationIds'],
