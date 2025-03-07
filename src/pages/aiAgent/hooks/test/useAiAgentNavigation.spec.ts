@@ -19,7 +19,6 @@ describe('useAiAgentNavigation', () => {
             [FeatureFlagKey.AiAgentKnowledgeTab]: false,
             [FeatureFlagKey.FollowUpAiAgentPreviewMode]: true,
             [FeatureFlagKey.ConvAiStandaloneMenu]: false,
-            [FeatureFlagKey.StandaloneAIAgentSalesPage]: false,
         })
     })
 
@@ -43,6 +42,10 @@ describe('useAiAgentNavigation', () => {
                 title: 'Actions',
                 exact: false,
                 dataCanduId: 'ai-agent-navbar-actions',
+            },
+            {
+                route: '/app/automation/shopify/test/ai-agent/sales',
+                title: 'Sales',
             },
             {
                 route: '/app/automation/shopify/test/ai-agent/test',
@@ -116,6 +119,10 @@ describe('useAiAgentNavigation', () => {
                 dataCanduId: 'ai-agent-navbar-actions',
             },
             {
+                route: '/app/automation/shopify/test/ai-agent/sales',
+                title: 'Sales',
+            },
+            {
                 route: '/app/automation/shopify/test/ai-agent/test',
                 title: 'Test',
             },
@@ -149,6 +156,10 @@ describe('useAiAgentNavigation', () => {
                 title: 'Actions',
                 exact: false,
                 dataCanduId: 'ai-agent-navbar-actions',
+            },
+            {
+                route: '/app/automation/shopify/test/ai-agent/sales',
+                title: 'Sales',
             },
             {
                 route: '/app/automation/shopify/test/ai-agent/test',

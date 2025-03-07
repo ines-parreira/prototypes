@@ -115,10 +115,6 @@ const useNavigationItems = (
     const isStandaloneMenuEnabled =
         useFlags()[FeatureFlagKey.ConvAiStandaloneMenu]
 
-    const isAiAgentSalesTabEnabled =
-        flags[FeatureFlagKey.StandaloneAIAgentSalesPage] ||
-        flags[FeatureFlagKey.StandaloneAIAgentSalesPaywallPage]
-
     return useMemo<NavigationItem[]>(() => {
         if (isStandaloneMenuEnabled) {
             return [
@@ -169,7 +165,7 @@ const useNavigationItems = (
                         },
                     ].filter((x) => !!x) as NavigationItem[],
                 },
-                isAiAgentSalesTabEnabled && {
+                {
                     route: routes.sales,
                     title: SALES,
                 },
@@ -207,7 +203,7 @@ const useNavigationItems = (
                 exact: false,
                 dataCanduId: 'ai-agent-navbar-actions',
             },
-            isAiAgentSalesTabEnabled && {
+            {
                 route: routes.sales,
                 title: SALES,
             },
@@ -224,7 +220,6 @@ const useNavigationItems = (
         isStandaloneMenuEnabled,
         isAiAgentKnowledgeTabEnabled,
         isAiAgentOptimizeTabEnabled,
-        isAiAgentSalesTabEnabled,
         isGorgiasUser,
         routes,
     ])

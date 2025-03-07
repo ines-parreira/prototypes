@@ -412,10 +412,6 @@ function AiAgentRoutes({ match: { path }, location }: RouteComponentProps) {
     const isAiAgentStandaloneMenuEnabled =
         useFlags()[FeatureFlagKey.ConvAiStandaloneMenu]
 
-    const isAiAgentSalesPageEnabled =
-        useFlags()[FeatureFlagKey.StandaloneAIAgentSalesPaywallPage] ||
-        useFlags()[FeatureFlagKey.StandaloneAIAgentSalesPage]
-
     const isAiAgentScrapeStoreDomainEnabled =
         useFlags()[FeatureFlagKey.AiAgentScrapeStoreDomain]
 
@@ -725,18 +721,16 @@ function AiAgentRoutes({ match: { path }, location }: RouteComponentProps) {
                             component={ActionEventsViewContainer}
                         />
                     </Switch>
-                    {isAiAgentSalesPageEnabled && (
-                        <AiAgentErrorBoundary
-                            section="ai-agent-sales"
-                            team={OBS_ADOPT_SENTRY_TEAM}
-                        >
-                            <Route
-                                path={`${path}/sales`}
-                                exact
-                                component={AiAgentSales}
-                            />
-                        </AiAgentErrorBoundary>
-                    )}
+                    <AiAgentErrorBoundary
+                        section="ai-agent-sales"
+                        team={OBS_ADOPT_SENTRY_TEAM}
+                    >
+                        <Route
+                            path={`${path}/sales`}
+                            exact
+                            component={AiAgentSales}
+                        />
+                    </AiAgentErrorBoundary>
                 </AiAgentStoreConfigurationProvider>
             </AiAgentAccountConfigurationProvider>
         </Switch>

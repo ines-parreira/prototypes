@@ -32,8 +32,6 @@ describe('<AiAgentSales />', () => {
     it('should render the sales settings when feature flag is enabled', () => {
         mockFlags({
             [FeatureFlagKey.StandaloneAIAgentSalesPage]: true,
-            [FeatureFlagKey.StandaloneAIAgentSalesPaywallPage]: false,
-            [FeatureFlagKey.ConvAiStandaloneMenu]: true,
         })
         renderComponent()
 

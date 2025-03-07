@@ -4,7 +4,7 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { FormProvider, useForm } from 'react-hook-form'
 import { z } from 'zod'
 
-import { Label } from '@gorgias/merchant-ui-kit'
+import { Button, Label } from '@gorgias/merchant-ui-kit'
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import { SalesSettingsData } from 'models/aiAgent/types'
@@ -23,15 +23,12 @@ import { useAiAgentStoreConfigurationContext } from 'pages/aiAgent/providers/AiA
 import { formatDiscountMax } from 'pages/aiAgent/utils/sales-discount.utils'
 import AIBanner from 'pages/common/components/AIBanner/AIBanner'
 import Alert from 'pages/common/components/Alert/Alert'
-import Button from 'pages/common/components/button/Button'
 import UnsavedChangesPrompt from 'pages/common/components/UnsavedChangesPrompt'
 import IconTooltip from 'pages/common/forms/IconTooltip/IconTooltip'
 import IconInput from 'pages/common/forms/input/IconInput'
 import InputField from 'pages/common/forms/input/InputField'
 import { notify } from 'state/notifications/actions'
 import { NotificationStatus } from 'state/notifications/types'
-
-import { showDiscount } from './helper'
 
 import css from './SalesSettings.less'
 
@@ -255,73 +252,70 @@ export const SalesSettings = ({ contentOnly = false }: Props) => {
                             </div>
                         </section>
 
-                        {/* TODO: Remove condition to match Sales Orchestration & ML's timelines release */}
-                        {showDiscount() && (
-                            <section className={css.card}>
-                                <div className={css.titleContainer}>
-                                    <div className={css.title}>
-                                        Set your discount strategy
-                                    </div>
+                        <section className={css.card}>
+                            <div className={css.titleContainer}>
+                                <div className={css.title}>
+                                    Set your discount strategy
+                                </div>
+                                <IconTooltip>
+                                    Define how often AI Agent should use
+                                    discounts to encourage customers to complete
+                                    a purchase.
+                                </IconTooltip>
+                            </div>
+                            <div>
+                                <OnboardingSteppedSlider
+                                    steps={DiscountStrategySteps}
+                                    stepKey={salesDiscountStrategyLevel}
+                                    onChange={(value: string) => {
+                                        handleSliderChange(
+                                            'salesDiscountStrategyLevel',
+                                            value as DiscountStrategy,
+                                        )
+                                    }}
+                                />
+
+                                <AIBanner
+                                    fillStyle="fill"
+                                    className={css.description}
+                                >
+                                    {
+                                        DiscountStrategyLabels[
+                                            salesDiscountStrategyLevel
+                                        ]?.description
+                                    }
+                                </AIBanner>
+                            </div>
+
+                            <hr className={css.separator} />
+
+                            <div className={css.maxDiscountContainer}>
+                                <Label htmlFor="percentage-discount">
+                                    Maximum Discount Percentage
                                     <IconTooltip>
-                                        Define how often AI Agent should use
-                                        discounts to encourage customers to
-                                        complete a purchase.
+                                        Set the maximum discount that AI Agent
+                                        will offer customers
                                     </IconTooltip>
-                                </div>
-                                <div>
-                                    <OnboardingSteppedSlider
-                                        steps={DiscountStrategySteps}
-                                        stepKey={salesDiscountStrategyLevel}
-                                        onChange={(value: string) => {
-                                            handleSliderChange(
-                                                'salesDiscountStrategyLevel',
-                                                value as DiscountStrategy,
-                                            )
-                                        }}
-                                    />
+                                </Label>
 
-                                    <AIBanner
-                                        fillStyle="fill"
-                                        className={css.description}
-                                    >
-                                        {
-                                            DiscountStrategyLabels[
-                                                salesDiscountStrategyLevel
-                                            ]?.description
-                                        }
-                                    </AIBanner>
-                                </div>
-
-                                <hr className={css.separator} />
-
-                                <div className={css.maxDiscountContainer}>
-                                    <Label htmlFor="percentage-discount">
-                                        Maximum Discount Percentage
-                                        <IconTooltip>
-                                            Set the maximum discount that AI
-                                            Agent will offer customers
-                                        </IconTooltip>
-                                    </Label>
-
-                                    <InputField
-                                        id="percentage-discount"
-                                        type="number"
-                                        min={1}
-                                        max={100}
-                                        value={salesDiscountMax}
-                                        data-testid="discount-max"
-                                        onChange={onChangeDiscountMax}
-                                        suffix={<IconInput icon="percent" />}
-                                        error={errors.salesDiscountMax?.message}
-                                        isDisabled={
-                                            salesDiscountStrategyLevel ===
-                                            DiscountStrategy.NoDiscount
-                                        }
-                                        className={css.maxDiscountInput}
-                                    />
-                                </div>
-                            </section>
-                        )}
+                                <InputField
+                                    id="percentage-discount"
+                                    type="number"
+                                    min={1}
+                                    max={100}
+                                    value={salesDiscountMax}
+                                    data-testid="discount-max"
+                                    onChange={onChangeDiscountMax}
+                                    suffix={<IconInput icon="percent" />}
+                                    error={errors.salesDiscountMax?.message}
+                                    isDisabled={
+                                        salesDiscountStrategyLevel ===
+                                        DiscountStrategy.NoDiscount
+                                    }
+                                    className={css.maxDiscountInput}
+                                />
+                            </div>
+                        </section>
 
                         <div className={css.contentActions}>
                             <Button

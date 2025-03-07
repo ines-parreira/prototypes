@@ -22,12 +22,9 @@ export const AiAgentSales = () => {
     const content = (
         <div className={css.sales}>
             {/* TODO: fix condition when it is defined */}
-            {flags[FeatureFlagKey.StandaloneAIAgentSalesPage] &&
-                !flags[FeatureFlagKey.StandaloneAIAgentSalesPaywallPage] && (
-                    <SalesSettings contentOnly={!isStandaloneMenuEnabled} />
-                )}
-
-            {flags[FeatureFlagKey.StandaloneAIAgentSalesPaywallPage] && (
+            {flags[FeatureFlagKey.StandaloneAIAgentSalesPage] ? (
+                <SalesSettings />
+            ) : (
                 <SalesPaywall />
             )}
         </div>
