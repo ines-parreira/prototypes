@@ -275,6 +275,16 @@ describe('stats components utils', () => {
                 formatMetricValue(0.352, 'decimal-percent-to-integer-percent'),
             ).toBe('35%')
         })
+
+        it('should show $ sign when format is "currency"', () => {
+            expect(formatMetricValue(123456.789, 'currency')).toBe(
+                '$123,456.79',
+            )
+        })
+
+        it('should render `x` sign if format is ratio', () => {
+            expect(formatMetricValue(1.23, 'ratio')).toBe('1.23x')
+        })
     })
 
     describe('formatMetricTrend', () => {

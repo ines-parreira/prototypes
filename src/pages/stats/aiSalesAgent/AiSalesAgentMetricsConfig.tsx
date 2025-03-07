@@ -119,7 +119,7 @@ export const AiSalesAgentMetricConfig: Record<
         useTrend: useGmvTrend,
         fetchTrend: fetchGmvTrend,
         interpretAs: 'more-is-better',
-        metricFormat: 'decimal',
+        metricFormat: 'currency',
     },
     [AiSalesAgentChart.AiSalesAgentGmvInfluenced]: {
         title: 'GMV Influenced %',
@@ -129,7 +129,7 @@ export const AiSalesAgentMetricConfig: Record<
         useTrend: useGmvInfluencedTrend,
         fetchTrend: fetchGmvInfluencedTrend,
         interpretAs: 'more-is-better',
-        metricFormat: 'decimal',
+        metricFormat: 'decimal-to-percent',
     },
     [AiSalesAgentChart.AiSalesAgentRoiRate]: {
         title: 'ROI Rate',
@@ -139,7 +139,7 @@ export const AiSalesAgentMetricConfig: Record<
         useTrend: useRoiRateTrend,
         fetchTrend: fetchRoiRateTrend,
         interpretAs: 'more-is-better',
-        metricFormat: 'decimal',
+        metricFormat: 'ratio',
     },
     [AiSalesAgentChart.AiSalesAgentTotalNumberOfOrders]: {
         title: 'Total Number of Orders',
@@ -159,7 +159,7 @@ export const AiSalesAgentMetricConfig: Record<
         useTrend: useAverageOrderValue,
         fetchTrend: fetchAverageOrderValue,
         interpretAs: 'more-is-better',
-        metricFormat: 'decimal',
+        metricFormat: 'currency',
     },
     [AiSalesAgentChart.AiSalesAgentTotalProductRecommendations]: {
         title: 'Total Product Recommendations',
@@ -179,7 +179,7 @@ export const AiSalesAgentMetricConfig: Record<
         useTrend: useProductClickRate,
         fetchTrend: fetchProductClickRate,
         interpretAs: 'more-is-better',
-        metricFormat: 'decimal',
+        metricFormat: 'percent',
     },
     [AiSalesAgentChart.AiSalesAgentProductBuyRate]: {
         title: 'Buy Rate',
@@ -189,7 +189,7 @@ export const AiSalesAgentMetricConfig: Record<
         useTrend: useProductBuyRate,
         fetchTrend: fetchProductBuyRate,
         interpretAs: 'more-is-better',
-        metricFormat: 'decimal',
+        metricFormat: 'percent',
     },
     [AiSalesAgentChart.AiSalesAgentSuccessRate]: {
         title: 'Success Rate',
@@ -199,7 +199,7 @@ export const AiSalesAgentMetricConfig: Record<
         useTrend: useSuccessRateTrend,
         fetchTrend: fetchSuccessRateTrend,
         interpretAs: 'more-is-better',
-        metricFormat: 'decimal',
+        metricFormat: 'percent',
     },
     [AiSalesAgentChart.AiSalesAgentConversionRate]: {
         title: 'Conversion Rate',
@@ -209,7 +209,7 @@ export const AiSalesAgentMetricConfig: Record<
         useTrend: useConversionRate,
         fetchTrend: fetchConversionRate,
         interpretAs: 'more-is-better',
-        metricFormat: 'decimal',
+        metricFormat: 'percent',
     },
     [AiSalesAgentChart.AiSalesTimeSavedByAgent]: {
         title: 'Time Saved by Agent',
@@ -219,7 +219,7 @@ export const AiSalesAgentMetricConfig: Record<
         useTrend: useTimeSavedByAgentTrend,
         fetchTrend: fetchTimeSavedByAgentTrend,
         interpretAs: 'more-is-better',
-        metricFormat: 'decimal',
+        metricFormat: 'duration',
     },
 }
 

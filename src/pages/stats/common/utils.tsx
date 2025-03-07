@@ -206,6 +206,8 @@ export type MetricValueFormat =
     | 'percent-refined'
     | 'decimal-to-percent'
     | 'decimal-percent-to-integer-percent'
+    | 'currency'
+    | 'ratio'
 
 const metricToDecimal = (
     value: number,
@@ -258,6 +260,14 @@ export const formatMetricValue = (
         return `${metricToInteger(Math.round(value * 100))}%`
     }
 
+    if (format === 'currency') {
+        return `${formatCurrency(value, 'USD')}`
+    }
+
+    if (format === 'ratio') {
+        return `${metricToDecimal(value, additionalFormatOptions)}x`
+    }
+
     return metricToDecimal(value, additionalFormatOptions)
 }
 
@@ -266,6 +276,8 @@ export type MetricTrendFormat =
     | 'duration'
     | 'percent'
     | 'decimal-to-percent'
+    | 'currency'
+    | 'ratio'
 
 const formatTrendAsPercent = (prevValue: number, absDiff: number) => {
     const value = absDiff / prevValue || 0
