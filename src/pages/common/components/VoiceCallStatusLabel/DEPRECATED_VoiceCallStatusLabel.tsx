@@ -5,9 +5,9 @@ import classNames from 'classnames'
 import { VoiceCallDirection } from '@gorgias/api-queries'
 
 import {
+    DEPRECATED_getDisplayInboundVoiceCallStatus,
+    DEPRECATED_getDisplayOutboundVoiceCallStatus,
     DEPRECATED_VoiceCallDisplayStatus,
-    getDisplayInboundVoiceCallStatus,
-    getDisplayOutboundVoiceCallStatus,
     VoiceCallStatus,
 } from 'models/voiceCall/types'
 
@@ -34,11 +34,11 @@ const DEPRECATED_VoiceCallStatusLabel = ({
 }: Props) => {
     const status =
         direction === VoiceCallDirection.Inbound
-            ? getDisplayInboundVoiceCallStatus(
+            ? DEPRECATED_getDisplayInboundVoiceCallStatus(
                   voiceCallStatus,
                   lastAnsweredByAgentId,
               )
-            : getDisplayOutboundVoiceCallStatus(voiceCallStatus)
+            : DEPRECATED_getDisplayOutboundVoiceCallStatus(voiceCallStatus)
 
     return (
         <div

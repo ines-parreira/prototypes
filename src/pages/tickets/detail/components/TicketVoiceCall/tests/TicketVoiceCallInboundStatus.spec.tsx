@@ -2,7 +2,15 @@ import React from 'react'
 
 import { render } from '@testing-library/react'
 
-import { VoiceCall, VoiceCallStatus } from 'models/voiceCall/types'
+import { FeatureFlagKey } from 'config/featureFlags'
+import { useFlag } from 'core/flags'
+import {
+    getInboundDisplayStatus,
+    VoiceCall,
+    VoiceCallDisplayStatus,
+    VoiceCallStatus,
+} from 'models/voiceCall/types'
+import { assumeMock } from 'utils/testing'
 
 import { TicketVoiceCallInboundStatus } from '../TicketVoiceCallInboundStatus'
 
@@ -25,10 +33,30 @@ jest.mock('../CollapsibleDetails', () => ({ title, children }: any) => (
     </div>
 ))
 
-describe('TicketVoiceCallInboundStatus', () => {
-    const renderComponent = (voiceCall: VoiceCall) => {
-        return render(<TicketVoiceCallInboundStatus voiceCall={voiceCall} />)
+jest.mock('core/flags', () => ({ useFlag: jest.fn() }))
+const useFlagMock = assumeMock(useFlag)
+
+jest.mock('models/voiceCall/types', () => {
+    const originalModule = jest.requireActual('models/voiceCall/types')
+    return {
+        ...originalModule,
+        getInboundDisplayStatus: jest.fn(),
     }
+})
+const getInboundDisplayStatusMock = assumeMock(getInboundDisplayStatus)
+
+const renderComponent = (voiceCall: VoiceCall) => {
+    return render(<TicketVoiceCallInboundStatus voiceCall={voiceCall} />)
+}
+
+describe('TicketVoiceCallInboundStatus old', () => {
+    beforeEach(() => {
+        useFlagMock.mockImplementation((flag) => {
+            if (flag === FeatureFlagKey.ShowNewUnansweredStatuses) {
+                return false
+            }
+        })
+    })
 
     it.each([
         VoiceCallStatus.Ringing,
@@ -85,6 +113,87 @@ describe('TicketVoiceCallInboundStatus', () => {
         const voiceCall: VoiceCall = {
             status: 'some-status' as VoiceCallStatus,
             last_answered_by_agent_id: 1,
+            phone_number_destination: '1234567890',
+        } as VoiceCall
+        const { container } = renderComponent(voiceCall)
+        expect(container.firstChild).toBeNull()
+    })
+})
+
+describe('TicketVoiceCallInboundStatus', () => {
+    beforeEach(() => {
+        useFlagMock.mockImplementation((flag) => {
+            if (flag === FeatureFlagKey.ShowNewUnansweredStatuses) {
+                return true
+            }
+        })
+    })
+
+    it('should render "Ringing"', () => {
+        getInboundDisplayStatusMock.mockReturnValue(
+            VoiceCallDisplayStatus.Ringing,
+        )
+        const { getByText } = renderComponent({} as VoiceCall)
+        expect(getByText('Ringing')).toBeInTheDocument()
+    })
+
+    it.each([
+        VoiceCallDisplayStatus.InProgress,
+        VoiceCallDisplayStatus.Answered,
+    ])(
+        'should render "Answered by" and VoiceCallAgentLabel when display status is %s',
+        () => {
+            getInboundDisplayStatusMock.mockReturnValue(
+                VoiceCallDisplayStatus.InProgress,
+            )
+            const { getByText, getByTestId } = renderComponent({
+                last_answered_by_agent_id: 1,
+                phone_number_destination: '1234567890',
+            } as VoiceCall)
+            expect(getByText('Answered by')).toBeInTheDocument()
+            expect(getByText('VoiceCallAgentLabel 1')).toBeInTheDocument()
+            expect(getByTestId('collapsible-details')).toBeInTheDocument()
+        },
+    )
+
+    it.each([
+        {
+            displayStatus: VoiceCallDisplayStatus.Missed,
+            colorClass: 'errorStatus',
+            textToDisplay: 'Missed call',
+        },
+        {
+            displayStatus: VoiceCallDisplayStatus.Abandoned,
+            colorClass: 'errorStatus',
+            textToDisplay: 'Abandoned call',
+        },
+        {
+            displayStatus: VoiceCallDisplayStatus.Cancelled,
+            colorClass: 'greyStatus',
+            textToDisplay: 'Cancelled call',
+        },
+    ])(
+        'should render "$textToDisplay" when display status is $displayStatus',
+        ({ displayStatus, colorClass, textToDisplay }) => {
+            getInboundDisplayStatusMock.mockReturnValue(displayStatus)
+            const { getByText, getByTestId } = renderComponent({
+                last_answered_by_agent_id: null,
+                phone_number_destination: '1234567890',
+            } as VoiceCall)
+            expect(getByText(textToDisplay)).toBeInTheDocument()
+            expect(getByText('call_missed')).toBeInTheDocument()
+            expect(getByTestId('collapsible-details')).toBeInTheDocument()
+            expect(
+                getByTestId('collapsible-details').querySelector(
+                    `.${colorClass}`,
+                ),
+            ).toBeInTheDocument()
+        },
+    )
+
+    it('should render null when voice call state is invalid', () => {
+        getInboundDisplayStatusMock.mockReturnValue(null)
+        const voiceCall: VoiceCall = {
             phone_number_destination: '1234567890',
         } as VoiceCall
         const { container } = renderComponent(voiceCall)

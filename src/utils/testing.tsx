@@ -230,3 +230,18 @@ export function triggerWidthResize(value: number) {
 
     window.dispatchEvent(new Event('resize'))
 }
+
+export function getCombinations<S extends object, T extends object>(
+    props1: S[],
+    props2: T[],
+): Array<S & T> {
+    const finalProps: Array<S & T> = []
+
+    for (const prop1 of props1) {
+        for (const prop2 of props2) {
+            finalProps.push({ ...prop1, ...prop2 })
+        }
+    }
+
+    return finalProps
+}

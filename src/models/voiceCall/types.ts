@@ -1,3 +1,5 @@
+import { VoiceCallTerminationStatus } from '@gorgias/api-queries'
+
 import { PhoneIntegrationEvent } from 'constants/integrations/types/event'
 
 export type VoiceCallDirection = 'inbound' | 'outbound'
@@ -69,6 +71,7 @@ export type VoiceCall = {
     has_call_recording: boolean
     has_voicemail: boolean
     summaries?: VoiceCallSummary[]
+    termination_status?: VoiceCallTerminationStatus
 }
 
 export enum VoiceCallRecordingType {
@@ -154,7 +157,9 @@ export const isOutboundVoiceCall = (
 ): input is OutboundVoiceCall =>
     isVoiceCall(input) && typeof input.initiated_by_agent_id === 'number'
 
-export const getDisplayOutboundVoiceCallStatus = (status: VoiceCallStatus) => {
+export const DEPRECATED_getDisplayOutboundVoiceCallStatus = (
+    status: VoiceCallStatus,
+) => {
     switch (status) {
         case VoiceCallStatus.Ringing:
         case VoiceCallStatus.InProgress:
@@ -178,7 +183,7 @@ export const getDisplayOutboundVoiceCallStatus = (status: VoiceCallStatus) => {
     }
 }
 
-export const getDisplayInboundVoiceCallStatus = (
+export const DEPRECATED_getDisplayInboundVoiceCallStatus = (
     status: VoiceCallStatus,
     lastAnsweredByAgentId?: number | null,
 ) => {
@@ -204,6 +209,83 @@ export const getDisplayInboundVoiceCallStatus = (
                 return DEPRECATED_VoiceCallDisplayStatus.Missed
             }
             return DEPRECATED_VoiceCallDisplayStatus.Answered
+        default:
+            return null
+    }
+}
+
+const getFinalDisplayStatus = (
+    terminationStatus: VoiceCallTerminationStatus,
+) => {
+    switch (terminationStatus) {
+        case VoiceCallTerminationStatus.Answered:
+            return VoiceCallDisplayStatus.Answered
+        case VoiceCallTerminationStatus.Missed:
+            return VoiceCallDisplayStatus.Missed
+        case VoiceCallTerminationStatus.Abandoned:
+            return VoiceCallDisplayStatus.Abandoned
+        case VoiceCallTerminationStatus.Cancelled:
+            return VoiceCallDisplayStatus.Cancelled
+    }
+}
+
+const getLegacyFinalDisplayStatus = (lastAnsweredByAgentId?: number | null) => {
+    if (lastAnsweredByAgentId === null) {
+        return VoiceCallDisplayStatus.Missed
+    }
+    return VoiceCallDisplayStatus.Answered
+}
+
+export const getInboundDisplayStatus = (
+    status: VoiceCallStatus,
+    termination_status?: VoiceCallTerminationStatus,
+    lastAnsweredByAgentId?: number | null,
+): VoiceCallDisplayStatus | null => {
+    switch (status) {
+        case VoiceCallStatus.Ringing:
+        case VoiceCallStatus.Initiated:
+        case VoiceCallStatus.Queued:
+        case VoiceCallStatus.InProgress:
+            return VoiceCallDisplayStatus.Ringing
+        case VoiceCallStatus.Answered:
+        case VoiceCallStatus.Connected: // should not be possible
+            return VoiceCallDisplayStatus.InProgress
+        case VoiceCallStatus.Completed:
+        case VoiceCallStatus.Ending:
+        case VoiceCallStatus.NoAnswer:
+        case VoiceCallStatus.Busy:
+        case VoiceCallStatus.Failed:
+        case VoiceCallStatus.Canceled:
+        case VoiceCallStatus.Missed: // should not be possible
+            return termination_status
+                ? getFinalDisplayStatus(termination_status)
+                : getLegacyFinalDisplayStatus(lastAnsweredByAgentId)
+        default:
+            return null
+    }
+}
+
+export const getOutboundDisplayStatus = (
+    status: VoiceCallStatus,
+): VoiceCallDisplayStatus | null => {
+    switch (status) {
+        case VoiceCallStatus.Ringing:
+        case VoiceCallStatus.InProgress:
+        case VoiceCallStatus.Queued:
+        case VoiceCallStatus.Initiated:
+            return VoiceCallDisplayStatus.Ringing
+        case VoiceCallStatus.Answered: // should not be possible
+        case VoiceCallStatus.Connected:
+            return VoiceCallDisplayStatus.InProgress
+        case VoiceCallStatus.Failed:
+            return VoiceCallDisplayStatus.Failed
+        case VoiceCallStatus.Canceled:
+        case VoiceCallStatus.Busy:
+        case VoiceCallStatus.NoAnswer:
+        case VoiceCallStatus.Missed:
+            return VoiceCallDisplayStatus.Unanswered
+        case VoiceCallStatus.Completed:
+            return VoiceCallDisplayStatus.Answered
         default:
             return null
     }

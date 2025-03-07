@@ -1,9 +1,13 @@
 import React from 'react'
 
+import { FeatureFlagKey } from 'config/featureFlags'
+import { useFlag } from 'core/flags'
 import {
+    DEPRECATED_getDisplayOutboundVoiceCallStatus,
     DEPRECATED_VoiceCallDisplayStatus,
-    getDisplayOutboundVoiceCallStatus,
+    getOutboundDisplayStatus,
     VoiceCall,
+    VoiceCallDisplayStatus,
 } from 'models/voiceCall/types'
 import VoiceCallCustomerLabel from 'pages/common/components/VoiceCallCustomerLabel/VoiceCallCustomerLabel'
 
@@ -17,17 +21,70 @@ type Props = {
 }
 
 export default function TicketVoiceCallOutboundStatus({ voiceCall }: Props) {
-    const answeredStatus = (
-        <div className={css.statusWrapper}>
-            <div>Answered by</div>
-            <VoiceCallCustomerLabel
-                customerId={voiceCall.customer_id}
-                phoneNumber={voiceCall.phone_number_source}
-            />
-        </div>
+    const shouldShowNewUnansweredStatuses = useFlag(
+        FeatureFlagKey.ShowNewUnansweredStatuses,
     )
-    switch (getDisplayOutboundVoiceCallStatus(voiceCall.status)) {
-        case DEPRECATED_VoiceCallDisplayStatus.Ringing:
+
+    if (!shouldShowNewUnansweredStatuses) {
+        const answeredStatus = (
+            <div className={css.statusWrapper}>
+                <div>Answered by</div>
+                <VoiceCallCustomerLabel
+                    customerId={voiceCall.customer_id}
+                    phoneNumber={voiceCall.phone_number_source}
+                />
+            </div>
+        )
+        switch (
+            DEPRECATED_getDisplayOutboundVoiceCallStatus(voiceCall.status)
+        ) {
+            case DEPRECATED_VoiceCallDisplayStatus.Ringing:
+                return (
+                    <div className={css.statusWrapper}>
+                        <div>Waiting for</div>
+                        <VoiceCallCustomerLabel
+                            customerId={voiceCall.customer_id}
+                            phoneNumber={voiceCall.phone_number_source}
+                        />
+                        ...
+                    </div>
+                )
+            case DEPRECATED_VoiceCallDisplayStatus.Failed:
+                return (
+                    <div className={css.errorStatus}>
+                        <strong>Failed: </strong>
+                        {`Our provider's carriers could not
+                    connect the call. Possible causes include dialing a number
+                    that is no longer in service, inputting a number incorrectly
+                    or dialing a number with poor reputation.`}
+                    </div>
+                )
+            case DEPRECATED_VoiceCallDisplayStatus.Missed:
+                return (
+                    <div className={css.statusWrapper}>
+                        <div className={css.errorStatus}>Call missed by</div>
+                        <VoiceCallCustomerLabel
+                            customerId={voiceCall.customer_id}
+                            phoneNumber={voiceCall.phone_number_source}
+                        />
+                    </div>
+                )
+            case DEPRECATED_VoiceCallDisplayStatus.InProgress:
+            case DEPRECATED_VoiceCallDisplayStatus.Answered:
+                return (
+                    <CollapsibleDetails title={answeredStatus}>
+                        <TicketVoiceCallEvents callId={voiceCall.id} />
+                    </CollapsibleDetails>
+                )
+
+            default:
+                return null
+        }
+    }
+
+    const displayStatus = getOutboundDisplayStatus(voiceCall.status)
+    switch (displayStatus) {
+        case VoiceCallDisplayStatus.Ringing:
             return (
                 <div className={css.statusWrapper}>
                     <div>Waiting for</div>
@@ -38,34 +95,43 @@ export default function TicketVoiceCallOutboundStatus({ voiceCall }: Props) {
                     ...
                 </div>
             )
-        case DEPRECATED_VoiceCallDisplayStatus.Failed:
+        case VoiceCallDisplayStatus.Failed:
             return (
                 <div className={css.errorStatus}>
                     <strong>Failed: </strong>
                     {`Our provider's carriers could not
-                    connect the call. Possible causes include dialing a number
-                    that is no longer in service, inputting a number incorrectly
-                    or dialing a number with poor reputation.`}
+                connect the call. Possible causes include dialing a number
+                that is no longer in service, inputting a number incorrectly
+                or dialing a number with poor reputation.`}
                 </div>
             )
-        case DEPRECATED_VoiceCallDisplayStatus.Missed:
+        case VoiceCallDisplayStatus.InProgress:
+        case VoiceCallDisplayStatus.Answered:
+            return (
+                <CollapsibleDetails
+                    title={
+                        <div className={css.statusWrapper}>
+                            <div>Answered by</div>
+                            <VoiceCallCustomerLabel
+                                customerId={voiceCall.customer_id}
+                                phoneNumber={voiceCall.phone_number_source}
+                            />
+                        </div>
+                    }
+                >
+                    <TicketVoiceCallEvents callId={voiceCall.id} />
+                </CollapsibleDetails>
+            )
+        case VoiceCallDisplayStatus.Unanswered:
             return (
                 <div className={css.statusWrapper}>
-                    <div className={css.errorStatus}>Call missed by</div>
+                    <div className={css.errorStatus}>Call unanswered by</div>
                     <VoiceCallCustomerLabel
                         customerId={voiceCall.customer_id}
                         phoneNumber={voiceCall.phone_number_source}
                     />
                 </div>
             )
-        case DEPRECATED_VoiceCallDisplayStatus.InProgress:
-        case DEPRECATED_VoiceCallDisplayStatus.Answered:
-            return (
-                <CollapsibleDetails title={answeredStatus}>
-                    <TicketVoiceCallEvents callId={voiceCall.id} />
-                </CollapsibleDetails>
-            )
-
         default:
             return null
     }

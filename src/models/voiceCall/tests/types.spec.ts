@@ -1,10 +1,16 @@
+import { VoiceCallTerminationStatus } from '@gorgias/api-queries'
+
 import { voiceCall } from 'fixtures/voiceCalls'
+import { getCombinations } from 'utils/testing'
 
 import {
+    getInboundDisplayStatus,
+    getOutboundDisplayStatus,
     getPrettyVoiceCallDisplayStatusName,
     isOutboundVoiceCall,
     isVoiceCall,
     VoiceCallDisplayStatus,
+    VoiceCallStatus,
 } from '../types'
 
 describe('type guards', () => {
@@ -42,6 +48,177 @@ describe('type guards', () => {
             ).toBe(false)
         })
     })
+})
+
+describe('getInboundDisplayStatus', () => {
+    it.each([
+        {
+            status: VoiceCallStatus.Ringing,
+            displayStatus: VoiceCallDisplayStatus.Ringing,
+        },
+        {
+            status: VoiceCallStatus.Initiated,
+            displayStatus: VoiceCallDisplayStatus.Ringing,
+        },
+        {
+            status: VoiceCallStatus.Queued,
+            displayStatus: VoiceCallDisplayStatus.Ringing,
+        },
+        {
+            status: VoiceCallStatus.InProgress,
+            displayStatus: VoiceCallDisplayStatus.Ringing,
+        },
+        {
+            status: VoiceCallStatus.Answered,
+            displayStatus: VoiceCallDisplayStatus.InProgress,
+        },
+        {
+            status: VoiceCallStatus.Connected,
+            displayStatus: VoiceCallDisplayStatus.InProgress,
+        },
+        {
+            status: 'unknown' as VoiceCallStatus,
+            displayStatus: null,
+        },
+    ])(
+        'should return the correct non-final display status for inbound calls',
+        ({ status, displayStatus }) => {
+            expect(getInboundDisplayStatus(status)).toBe(displayStatus)
+        },
+    )
+
+    it.each(
+        getCombinations(
+            [
+                { status: VoiceCallStatus.Completed },
+                { status: VoiceCallStatus.Ending },
+                { status: VoiceCallStatus.NoAnswer },
+                { status: VoiceCallStatus.Busy },
+                { status: VoiceCallStatus.Failed },
+                { status: VoiceCallStatus.Canceled },
+                { status: VoiceCallStatus.Missed },
+            ],
+            [
+                {
+                    lastAnsweredByAgentId: null,
+                    displayStatus: VoiceCallDisplayStatus.Missed,
+                },
+                {
+                    lastAnsweredByAgentId: 42,
+                    displayStatus: VoiceCallDisplayStatus.Answered,
+                },
+            ],
+        ),
+    )(
+        'should return the correct legacy final display status for inbound calls ($status, $lastAnsweredByAgentId)',
+        ({ status, lastAnsweredByAgentId, displayStatus }) => {
+            expect(
+                getInboundDisplayStatus(
+                    status,
+                    undefined,
+                    lastAnsweredByAgentId,
+                ),
+            ).toBe(displayStatus)
+        },
+    )
+
+    it.each(
+        getCombinations(
+            [
+                { status: VoiceCallStatus.Completed },
+                { status: VoiceCallStatus.Ending },
+                { status: VoiceCallStatus.NoAnswer },
+                { status: VoiceCallStatus.Busy },
+                { status: VoiceCallStatus.Failed },
+                { status: VoiceCallStatus.Canceled },
+                { status: VoiceCallStatus.Missed },
+            ],
+            [
+                {
+                    terminationStatus: VoiceCallTerminationStatus.Answered,
+                    displayStatus: VoiceCallDisplayStatus.Answered,
+                },
+                {
+                    terminationStatus: VoiceCallTerminationStatus.Missed,
+                    displayStatus: VoiceCallDisplayStatus.Missed,
+                },
+                {
+                    terminationStatus: VoiceCallTerminationStatus.Abandoned,
+                    displayStatus: VoiceCallDisplayStatus.Abandoned,
+                },
+                {
+                    terminationStatus: VoiceCallTerminationStatus.Cancelled,
+                    displayStatus: VoiceCallDisplayStatus.Cancelled,
+                },
+            ],
+        ),
+    )(
+        `should return the correct final display status for inbound calls ($status, $terminationStatus)`,
+        ({ status, terminationStatus, displayStatus }) => {
+            expect(getInboundDisplayStatus(status, terminationStatus)).toBe(
+                displayStatus,
+            )
+        },
+    )
+})
+
+describe('getOutboundDisplayStatus', () => {
+    it.each([
+        {
+            status: VoiceCallStatus.Ringing,
+            displayStatus: VoiceCallDisplayStatus.Ringing,
+        },
+        {
+            status: VoiceCallStatus.InProgress,
+            displayStatus: VoiceCallDisplayStatus.Ringing,
+        },
+        {
+            status: VoiceCallStatus.Queued,
+            displayStatus: VoiceCallDisplayStatus.Ringing,
+        },
+        {
+            status: VoiceCallStatus.Initiated,
+            displayStatus: VoiceCallDisplayStatus.Ringing,
+        },
+        {
+            status: VoiceCallStatus.Answered,
+            displayStatus: VoiceCallDisplayStatus.InProgress,
+        },
+        {
+            status: VoiceCallStatus.Connected,
+            displayStatus: VoiceCallDisplayStatus.InProgress,
+        },
+        {
+            status: VoiceCallStatus.Failed,
+            displayStatus: VoiceCallDisplayStatus.Failed,
+        },
+        {
+            status: VoiceCallStatus.Canceled,
+            displayStatus: VoiceCallDisplayStatus.Unanswered,
+        },
+        {
+            status: VoiceCallStatus.Busy,
+            displayStatus: VoiceCallDisplayStatus.Unanswered,
+        },
+        {
+            status: VoiceCallStatus.NoAnswer,
+            displayStatus: VoiceCallDisplayStatus.Unanswered,
+        },
+        {
+            status: VoiceCallStatus.Missed,
+            displayStatus: VoiceCallDisplayStatus.Unanswered,
+        },
+        {
+            status: VoiceCallStatus.Completed,
+            displayStatus: VoiceCallDisplayStatus.Answered,
+        },
+        { status: 'unknown' as VoiceCallStatus, displayStatus: null },
+    ])(
+        'should return the correct display status for outbound calls',
+        ({ status, displayStatus }) => {
+            expect(getOutboundDisplayStatus(status)).toBe(displayStatus)
+        },
+    )
 })
 
 describe('getPrettyVoiceCallDisplayStatusName', () => {
