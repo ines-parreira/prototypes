@@ -24,13 +24,13 @@ export enum CampaignsLegacyChart {
     CampaignRevenueShareStat = 'CampaignRevenueShareStat',
 }
 
-export const CAMPAIGNS_REPORT_PERSISTENT_FILTERS: StaticFilter[] = [
+const CAMPAIGNS_REPORT_PERSISTENT_FILTERS: StaticFilter[] = [
     FilterKey.Period,
     FilterKey.AggregationWindow,
     FilterComponentKey.Store,
 ]
 
-export const CAMPAIGNS_REPORT_OPTIONAL_FILTERS = [
+const CAMPAIGNS_REPORT_OPTIONAL_FILTERS = [
     FilterKey.Campaigns,
     FilterKey.CampaignStatuses,
 ]

@@ -1,7 +1,4 @@
-import {
-    CAMPAIGNS_REPORT_OPTIONAL_FILTERS,
-    CAMPAIGNS_REPORT_PERSISTENT_FILTERS,
-} from 'pages/stats/convert/campaigns/CampaignsLegacyReportConfig'
+import { FilterComponentKey, FilterKey, StaticFilter } from 'models/stat/types'
 import { PerformanceCampaignSalesGraphChart } from 'pages/stats/convert/charts/PerformanceCampaignSalesGraphChart'
 import { PerformanceCampaignSalesKpiChart } from 'pages/stats/convert/charts/PerformanceCampaignSalesKpiChart'
 import { PerformanceEngagementKpiChart } from 'pages/stats/convert/charts/PerformanceEngagementKpiChart'
@@ -38,6 +35,17 @@ export enum CampaignsChart {
 }
 
 export const CAMPAIGNS_REPORT_TITLE = 'Campaigns'
+
+const CAMPAIGNS_REPORT_PERSISTENT_FILTERS: StaticFilter[] = [
+    FilterKey.Period,
+    FilterKey.AggregationWindow,
+    FilterComponentKey.Store,
+]
+
+const CAMPAIGNS_REPORT_OPTIONAL_FILTERS = [
+    FilterKey.Campaigns,
+    FilterKey.CampaignStatuses,
+]
 
 export const CampaignsPerformanceReportConfig: ReportConfig<CampaignsChart> = {
     id: ReportsIDs.CampaignsReportConfig,
