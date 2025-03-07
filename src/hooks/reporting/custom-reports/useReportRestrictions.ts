@@ -12,6 +12,7 @@ import { SatisfactionReportConfig } from 'pages/stats/quality-management/satisfa
 import { AutoQAReportConfig } from 'pages/stats/support-performance/auto-qa/AutoQAReportConfig'
 import { OverviewChart } from 'pages/stats/support-performance/overview/SupportPerformanceOverviewReportConfig'
 import { SupportPerformanceSatisfactionReportConfig } from 'pages/stats/support-performance/satisfaction/SupportPerformanceSatisfactionReportConfig'
+import { VoiceOverviewChart } from 'pages/stats/voice/pages/VoiceOverviewReportConfig'
 import { getHasAutomate } from 'state/billing/selectors'
 import { getCurrentUser } from 'state/currentUser/selectors'
 import { isTeamLead } from 'utils'
@@ -31,6 +32,9 @@ export const useReportRestrictions = () => {
         useFlags()[FeatureFlagKey.StandaloneAiSalesAnalyticsPage]
     const isReportingMessagesReceivedMetricEnabled =
         useFlags()[FeatureFlagKey.ReportingMessagesReceivedMetric]
+    const shouldShowNewUnansweredStatuses =
+        useFlags()[FeatureFlagKey.ShowNewUnansweredStatuses]
+
     const user = useAppSelector(getCurrentUser)
     const hasAutomate = useAppSelector(getHasAutomate)
     const isTeamLeadOrAdmin = isTeamLead(user)
@@ -63,10 +67,21 @@ export const useReportRestrictions = () => {
                 !isReportingMessagesReceivedMetricEnabled,
             [OverviewChart.ZeroTouchTicketsTrendCard]:
                 !isReportingZeroTouchTicketsMetricEnabled,
+            [VoiceOverviewChart.DEPRECATED_VoiceCallVolumeMetricMissedCallsCountTrendChart]:
+                shouldShowNewUnansweredStatuses,
+            [VoiceOverviewChart.VoiceCallVolumeMetricUnansweredCallsCountTrendChart]:
+                !shouldShowNewUnansweredStatuses,
+            [VoiceOverviewChart.VoiceCallVolumeMetricMissedCallsCountTrendChart]:
+                !shouldShowNewUnansweredStatuses,
+            [VoiceOverviewChart.VoiceCallVolumeMetricAbandonedCallsCountTrendChart]:
+                !shouldShowNewUnansweredStatuses,
+            [VoiceOverviewChart.VoiceCallVolumeMetricCancelledCallsCountTrendChart]:
+                !shouldShowNewUnansweredStatuses,
         }),
         [
             isReportingZeroTouchTicketsMetricEnabled,
             isReportingMessagesReceivedMetricEnabled,
+            shouldShowNewUnansweredStatuses,
         ],
     )
 
