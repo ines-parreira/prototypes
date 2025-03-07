@@ -5,7 +5,6 @@ import { fireEvent, screen, waitFor, within } from '@testing-library/react'
 import { fromJS } from 'immutable'
 import { useFlags } from 'launchdarkly-react-client-sdk'
 import { Provider } from 'react-redux'
-import { MemoryRouter, Route } from 'react-router-dom'
 import configureMockStore from 'redux-mock-store'
 
 import { FeatureFlagKey } from 'config/featureFlags'
@@ -16,15 +15,17 @@ import {
     useDuplicateWorkflowConfiguration,
     useGetWorkflowConfigurations,
 } from 'models/workflows/queries'
+import { FLOWS } from 'pages/automate/common/components/constants'
 import { RootState, StoreDispatch } from 'state/types'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
-import { renderWithDnD, renderWithRouterAndDnD } from 'utils/testing'
+import { renderWithRouter, renderWithRouterAndDnD } from 'utils/testing'
 
 import { useDisplayAiAgentMovedBanner } from '../../common/hooks/useDisplayAiAgentMovedBanner'
 import useStoreWorkflows from '../hooks/useStoreWorkflows'
 import { useStoreWorkflowsApi } from '../hooks/useStoreWorkflowsApi'
 import WorkflowsView from '../WorkflowsView'
 
+// Add mocks for the hook and banner component
 jest.mock('../../common/hooks/useDisplayAiAgentMovedBanner', () => ({
     useDisplayAiAgentMovedBanner: jest.fn(),
 }))
@@ -83,8 +84,7 @@ const mockUseFlags = useFlags as jest.MockedFunction<typeof useFlags>
 const moackAppendWorkflowInStore = jest.fn()
 const mockRemoveWorkflowFromStore = jest.fn()
 const mockDuplicateWorkflow = jest.fn()
-const legacyBaseUrl = '/app/automation/shopType/shopName/flows'
-const revampBaseUrl = '/app/settings/flows/shopType/shopName'
+const baseUrl = '/app/automation/shopType/shopName/flows'
 
 describe('<WorkflowsView />', () => {
     beforeEach(() => {
@@ -182,24 +182,20 @@ describe('<WorkflowsView />', () => {
             storeIntegrationId: 1,
         })
 
-        renderWithDnD(
-            <MemoryRouter initialEntries={[legacyBaseUrl]}>
-                <Route path={legacyBaseUrl}>
-                    <Provider store={mockStore(defaultState)}>
-                        <QueryClientProvider client={queryClient}>
-                            <WorkflowsView
-                                shopName="ShopName"
-                                shopType="shopify"
-                                goToEditWorkflowPage={jest.fn()}
-                                goToWorkflowTemplatesPage={jest.fn()}
-                                goToNewWorkflowPage={jest.fn()}
-                                goToNewWorkflowFromTemplatePage={jest.fn()}
-                                notifyMerchant={jest.fn()}
-                            />
-                        </QueryClientProvider>
-                    </Provider>
-                </Route>
-            </MemoryRouter>,
+        renderWithRouterAndDnD(
+            <Provider store={mockStore(defaultState)}>
+                <QueryClientProvider client={queryClient}>
+                    <WorkflowsView
+                        shopName="ShopName"
+                        shopType="shopify"
+                        goToEditWorkflowPage={jest.fn()}
+                        goToWorkflowTemplatesPage={jest.fn()}
+                        goToNewWorkflowPage={jest.fn()}
+                        goToNewWorkflowFromTemplatePage={jest.fn()}
+                        notifyMerchant={jest.fn()}
+                    />
+                </QueryClientProvider>
+            </Provider>,
         )
 
         await waitFor(async () => {
@@ -213,7 +209,7 @@ describe('<WorkflowsView />', () => {
         })
     })
 
-    it('should render correctly with legacy path', async () => {
+    it('should render correctly', async () => {
         mockUseFlags.mockReturnValue({
             [FeatureFlagKey.ChangeAutomateSettingButtomPosition]: true,
         })
@@ -238,24 +234,20 @@ describe('<WorkflowsView />', () => {
             storeIntegrationId: 1,
         })
 
-        renderWithDnD(
-            <MemoryRouter initialEntries={[legacyBaseUrl]}>
-                <Route path={legacyBaseUrl}>
-                    <Provider store={mockStore(defaultState)}>
-                        <QueryClientProvider client={queryClient}>
-                            <WorkflowsView
-                                shopName="ShopName"
-                                shopType="shopify"
-                                goToEditWorkflowPage={jest.fn()}
-                                goToWorkflowTemplatesPage={jest.fn()}
-                                goToNewWorkflowPage={jest.fn()}
-                                goToNewWorkflowFromTemplatePage={jest.fn()}
-                                notifyMerchant={jest.fn()}
-                            />
-                        </QueryClientProvider>
-                    </Provider>
-                </Route>
-            </MemoryRouter>,
+        renderWithRouterAndDnD(
+            <Provider store={mockStore(defaultState)}>
+                <QueryClientProvider client={queryClient}>
+                    <WorkflowsView
+                        shopName="ShopName"
+                        shopType="shopify"
+                        goToEditWorkflowPage={jest.fn()}
+                        goToWorkflowTemplatesPage={jest.fn()}
+                        goToNewWorkflowPage={jest.fn()}
+                        goToNewWorkflowFromTemplatePage={jest.fn()}
+                        notifyMerchant={jest.fn()}
+                    />
+                </QueryClientProvider>
+            </Provider>,
         )
 
         await waitFor(() => {
@@ -274,7 +266,101 @@ describe('<WorkflowsView />', () => {
         expect(mockRemoveWorkflowFromStore).toHaveBeenCalledWith('a', 1)
     })
 
-    it('should render correctly with revamp path', async () => {
+    it('should render correctly when workflowslength is 0', async () => {
+        mockUseFlags.mockReturnValue({
+            [FeatureFlagKey.ChangeAutomateSettingButtomPosition]: true,
+        })
+
+        useStoreWorkflowsMock.mockReturnValue({
+            isFetchPending: false,
+            workflows: [],
+            storeIntegrationId: 1,
+        })
+
+        renderWithRouterAndDnD(
+            <Provider store={mockStore(defaultState)}>
+                <QueryClientProvider client={queryClient}>
+                    <WorkflowsView
+                        shopName="ShopName"
+                        shopType="shopify"
+                        goToEditWorkflowPage={jest.fn()}
+                        goToWorkflowTemplatesPage={jest.fn()}
+                        goToNewWorkflowPage={jest.fn()}
+                        goToNewWorkflowFromTemplatePage={jest.fn()}
+                        notifyMerchant={jest.fn()}
+                    />
+                </QueryClientProvider>
+            </Provider>,
+        )
+
+        await waitFor(() => {
+            expect(screen.getByText('Flows')).toBeInTheDocument()
+            expect(screen.queryByText('Create Custom Flow')).toBeInTheDocument()
+            expect(
+                screen.queryByText('Create From Template'),
+            ).toBeInTheDocument()
+            expect(
+                document.querySelector(
+                    '[data-candu-id="flows-empty-state-banner-description"]',
+                ),
+            ).toBeInTheDocument()
+        })
+    })
+    it('should be active for baseUrl', () => {
+        renderWithRouter(
+            <WorkflowsView
+                shopName="shopName"
+                shopType="shopType"
+                goToNewWorkflowPage={jest.fn()}
+                goToWorkflowTemplatesPage={jest.fn()}
+                goToEditWorkflowPage={jest.fn()}
+                goToNewWorkflowFromTemplatePage={jest.fn()}
+                notifyMerchant={jest.fn()}
+            />,
+            { route: baseUrl },
+        )
+
+        const navLink = screen.getByText(FLOWS)
+        expect(navLink).toHaveClass('d-flex align-items-center')
+    })
+
+    it('should be active for baseUrl/templates', () => {
+        renderWithRouter(
+            <WorkflowsView
+                shopName="shopName"
+                shopType="shopType"
+                goToNewWorkflowPage={jest.fn()}
+                goToWorkflowTemplatesPage={jest.fn()}
+                goToEditWorkflowPage={jest.fn()}
+                goToNewWorkflowFromTemplatePage={jest.fn()}
+                notifyMerchant={jest.fn()}
+            />,
+            { route: `${baseUrl}/templates` },
+        )
+
+        const navLink = screen.getByText(FLOWS)
+        expect(navLink).toHaveClass('d-flex align-items-center')
+    })
+
+    it('should not be active for other paths', () => {
+        renderWithRouter(
+            <WorkflowsView
+                shopName="shopName"
+                shopType="shopType"
+                goToNewWorkflowPage={jest.fn()}
+                goToWorkflowTemplatesPage={jest.fn()}
+                goToEditWorkflowPage={jest.fn()}
+                goToNewWorkflowFromTemplatePage={jest.fn()}
+                notifyMerchant={jest.fn()}
+            />,
+            { route: `${baseUrl}/other` },
+        )
+
+        const navLink = screen.getByText(FLOWS)
+        expect(navLink).not.toHaveClass('active')
+    })
+
+    it('should render correctly ', async () => {
         mockUseFlags.mockReturnValue({
             [FeatureFlagKey.ChangeAutomateSettingButtomPosition]: true,
         })
@@ -299,63 +385,20 @@ describe('<WorkflowsView />', () => {
             storeIntegrationId: 1,
         })
 
-        renderWithDnD(
-            <MemoryRouter initialEntries={[revampBaseUrl]}>
-                <Route path={revampBaseUrl}>
-                    <Provider store={mockStore(defaultState)}>
-                        <QueryClientProvider client={queryClient}>
-                            <WorkflowsView
-                                shopName="ShopName"
-                                shopType="shopify"
-                                goToEditWorkflowPage={jest.fn()}
-                                goToWorkflowTemplatesPage={jest.fn()}
-                                goToNewWorkflowPage={jest.fn()}
-                                goToNewWorkflowFromTemplatePage={jest.fn()}
-                                notifyMerchant={jest.fn()}
-                            />
-                        </QueryClientProvider>
-                    </Provider>
-                </Route>
-            </MemoryRouter>,
-        )
-
-        await waitFor(() => {
-            expect(screen.queryByText('Create Custom Flow')).toBeInTheDocument()
-            expect(
-                screen.queryByText('Create From Template'),
-            ).toBeInTheDocument()
-        })
-    })
-
-    it('should render correctly when workflowslength is 0', async () => {
-        mockUseFlags.mockReturnValue({
-            [FeatureFlagKey.ChangeAutomateSettingButtomPosition]: true,
-        })
-
-        useStoreWorkflowsMock.mockReturnValue({
-            isFetchPending: false,
-            workflows: [],
-            storeIntegrationId: 1,
-        })
-
-        renderWithDnD(
-            <MemoryRouter initialEntries={[legacyBaseUrl]}>
-                <Route path={legacyBaseUrl}>
-                    <Provider store={mockStore(defaultState)}>
-                        <QueryClientProvider client={queryClient}>
-                            <WorkflowsView
-                                shopName="ShopName"
-                                shopType="shopify"
-                                goToEditWorkflowPage={jest.fn()}
-                                goToWorkflowTemplatesPage={jest.fn()}
-                                goToNewWorkflowPage={jest.fn()}
-                                goToNewWorkflowFromTemplatePage={jest.fn()}
-                                notifyMerchant={jest.fn()}
-                            />
-                        </QueryClientProvider>
-                    </Provider>
-                </Route>
-            </MemoryRouter>,
+        renderWithRouterAndDnD(
+            <Provider store={mockStore(defaultState)}>
+                <QueryClientProvider client={queryClient}>
+                    <WorkflowsView
+                        shopName="ShopName"
+                        shopType="shopify"
+                        goToEditWorkflowPage={jest.fn()}
+                        goToWorkflowTemplatesPage={jest.fn()}
+                        goToNewWorkflowPage={jest.fn()}
+                        goToNewWorkflowFromTemplatePage={jest.fn()}
+                        notifyMerchant={jest.fn()}
+                    />
+                </QueryClientProvider>
+            </Provider>,
         )
 
         await waitFor(() => {
@@ -364,12 +407,67 @@ describe('<WorkflowsView />', () => {
             expect(
                 screen.queryByText('Create From Template'),
             ).toBeInTheDocument()
-            expect(
-                document.querySelector(
-                    '[data-candu-id="flows-empty-state-banner-description"]',
-                ),
-            ).toBeInTheDocument()
         })
+        const deleteIcon = screen.getByTitle('Delete')
+        fireEvent.click(deleteIcon)
+        const tooltip = await screen.findByRole('tooltip')
+        const deleteButton = within(tooltip).getByText('Delete')
+        fireEvent.click(deleteButton)
+
+        expect(mockRemoveWorkflowFromStore).toHaveBeenCalledWith('a', 1)
+    })
+    it('should be active for baseUrl', () => {
+        renderWithRouter(
+            <WorkflowsView
+                shopName="shopName"
+                shopType="shopType"
+                goToNewWorkflowPage={jest.fn()}
+                goToWorkflowTemplatesPage={jest.fn()}
+                goToEditWorkflowPage={jest.fn()}
+                goToNewWorkflowFromTemplatePage={jest.fn()}
+                notifyMerchant={jest.fn()}
+            />,
+            { route: baseUrl },
+        )
+
+        const navLink = screen.getByText(FLOWS)
+        expect(navLink).toHaveClass('d-flex align-items-center')
+    })
+
+    it('should be active for baseUrl/templates', () => {
+        renderWithRouter(
+            <WorkflowsView
+                shopName="shopName"
+                shopType="shopType"
+                goToNewWorkflowPage={jest.fn()}
+                goToWorkflowTemplatesPage={jest.fn()}
+                goToEditWorkflowPage={jest.fn()}
+                goToNewWorkflowFromTemplatePage={jest.fn()}
+                notifyMerchant={jest.fn()}
+            />,
+            { route: `${baseUrl}/templates` },
+        )
+
+        const navLink = screen.getByText(FLOWS)
+        expect(navLink).toHaveClass('d-flex align-items-center')
+    })
+
+    it('should not be active for other paths', () => {
+        renderWithRouter(
+            <WorkflowsView
+                shopName="shopName"
+                shopType="shopType"
+                goToNewWorkflowPage={jest.fn()}
+                goToWorkflowTemplatesPage={jest.fn()}
+                goToEditWorkflowPage={jest.fn()}
+                goToNewWorkflowFromTemplatePage={jest.fn()}
+                notifyMerchant={jest.fn()}
+            />,
+            { route: `${baseUrl}/other` },
+        )
+
+        const navLink = screen.getByText(FLOWS)
+        expect(navLink).not.toHaveClass('active')
     })
 
     it('should render AI Agent Moved banner when useDisplayAiAgentMovedBanner returns true and not on templates route', () => {
@@ -380,24 +478,20 @@ describe('<WorkflowsView />', () => {
             storeIntegrationId: 1,
         })
 
-        renderWithDnD(
-            <MemoryRouter initialEntries={[legacyBaseUrl]}>
-                <Route path={legacyBaseUrl}>
-                    <Provider store={mockStore(defaultState)}>
-                        <QueryClientProvider client={queryClient}>
-                            <WorkflowsView
-                                shopName="ShopName"
-                                shopType="shopify"
-                                goToEditWorkflowPage={jest.fn()}
-                                goToWorkflowTemplatesPage={jest.fn()}
-                                goToNewWorkflowPage={jest.fn()}
-                                goToNewWorkflowFromTemplatePage={jest.fn()}
-                                notifyMerchant={jest.fn()}
-                            />
-                        </QueryClientProvider>
-                    </Provider>
-                </Route>
-            </MemoryRouter>,
+        renderWithRouterAndDnD(
+            <Provider store={mockStore(defaultState)}>
+                <QueryClientProvider client={queryClient}>
+                    <WorkflowsView
+                        shopName="ShopName"
+                        shopType="shopify"
+                        goToEditWorkflowPage={jest.fn()}
+                        goToWorkflowTemplatesPage={jest.fn()}
+                        goToNewWorkflowPage={jest.fn()}
+                        goToNewWorkflowFromTemplatePage={jest.fn()}
+                        notifyMerchant={jest.fn()}
+                    />
+                </QueryClientProvider>
+            </Provider>,
         )
 
         expect(screen.getByText('AI Agent Moved Banner')).toBeInTheDocument()
@@ -411,62 +505,24 @@ describe('<WorkflowsView />', () => {
             storeIntegrationId: 1,
         })
 
-        renderWithDnD(
-            <MemoryRouter initialEntries={[legacyBaseUrl]}>
-                <Route path={legacyBaseUrl}>
-                    <Provider store={mockStore(defaultState)}>
-                        <QueryClientProvider client={queryClient}>
-                            <WorkflowsView
-                                shopName="ShopName"
-                                shopType="shopify"
-                                goToEditWorkflowPage={jest.fn()}
-                                goToWorkflowTemplatesPage={jest.fn()}
-                                goToNewWorkflowPage={jest.fn()}
-                                goToNewWorkflowFromTemplatePage={jest.fn()}
-                                notifyMerchant={jest.fn()}
-                            />
-                        </QueryClientProvider>
-                    </Provider>
-                </Route>
-            </MemoryRouter>,
+        renderWithRouterAndDnD(
+            <Provider store={mockStore(defaultState)}>
+                <QueryClientProvider client={queryClient}>
+                    <WorkflowsView
+                        shopName="ShopName"
+                        shopType="shopify"
+                        goToEditWorkflowPage={jest.fn()}
+                        goToWorkflowTemplatesPage={jest.fn()}
+                        goToNewWorkflowPage={jest.fn()}
+                        goToNewWorkflowFromTemplatePage={jest.fn()}
+                        notifyMerchant={jest.fn()}
+                    />
+                </QueryClientProvider>
+            </Provider>,
         )
 
         expect(
             screen.queryByText('AI Agent Moved Banner'),
-        ).not.toBeInTheDocument()
-    })
-
-    it('should not render header elements when on a non-root route', () => {
-        useStoreWorkflowsMock.mockReturnValue({
-            isFetchPending: false,
-            workflows: [],
-            storeIntegrationId: 1,
-        })
-
-        renderWithDnD(
-            <MemoryRouter initialEntries={[`${legacyBaseUrl}/templates`]}>
-                <Route path={`${legacyBaseUrl}/templates`}>
-                    <Provider store={mockStore(defaultState)}>
-                        <QueryClientProvider client={queryClient}>
-                            <WorkflowsView
-                                shopName="ShopName"
-                                shopType="shopify"
-                                goToEditWorkflowPage={jest.fn()}
-                                goToWorkflowTemplatesPage={jest.fn()}
-                                goToNewWorkflowPage={jest.fn()}
-                                goToNewWorkflowFromTemplatePage={jest.fn()}
-                                notifyMerchant={jest.fn()}
-                            />
-                        </QueryClientProvider>
-                    </Provider>
-                </Route>
-            </MemoryRouter>,
-        )
-
-        expect(screen.queryByText('Flows')).not.toBeInTheDocument()
-        expect(screen.queryByText('Create Custom Flow')).not.toBeInTheDocument()
-        expect(
-            screen.queryByText('Create From Template'),
         ).not.toBeInTheDocument()
     })
 })

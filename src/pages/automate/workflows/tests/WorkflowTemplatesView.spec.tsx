@@ -15,7 +15,7 @@ jest.mock(
 const defaultProps = {
     goToNewWorkflowPage: jest.fn(),
     goToNewWorkflowFromTemplatePage: jest.fn(),
-    workflowsURL: '/workflows',
+    workflowsUrl: '/workflows',
 }
 
 describe('WorkflowTemplatesView', () => {

@@ -30,7 +30,6 @@ module.exports = {
         '!**/fixtures/**',
         '!**/fixtures.ts',
         '!<rootDir>/tests/reactQueryTestingUtils.tsx',
-        '!<rootDir>/tests/renderHookWithRouter.tsx',
     ],
 
     // The directory where Jest should output its coverage files

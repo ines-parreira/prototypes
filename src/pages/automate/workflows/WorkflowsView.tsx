@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react'
+import React from 'react'
 
 import classNames from 'classnames'
 import { useFlags } from 'launchdarkly-react-client-sdk'
@@ -7,20 +7,19 @@ import {
     Redirect,
     Route,
     Switch,
-    useLocation,
     useRouteMatch,
 } from 'react-router-dom'
 import { Container } from 'reactstrap'
 
-import { Button, LoadingSpinner } from '@gorgias/merchant-ui-kit'
+import { LoadingSpinner } from '@gorgias/merchant-ui-kit'
 
 import { logEvent, SegmentEvent } from 'common/segment'
 import { FeatureFlagKey } from 'config/featureFlags'
 import { AGENT_ROLE } from 'config/user'
 import useEffectOnce from 'hooks/useEffectOnce'
+import Button from 'pages/common/components/button/Button'
 import PageHeader from 'pages/common/components/PageHeader'
 import withUserRoleRequired from 'pages/common/utils/withUserRoleRequired'
-import { useIsAutomateSettings } from 'settings/automate/hooks/useIsAutomateSettings'
 
 import { AiAgentMovedBanner } from '../common/components/AiAgentMovedBanner'
 import { FLOWS } from '../common/components/constants'
@@ -59,8 +58,6 @@ export default function WorkflowsView({
     const displayAiAgentMovedBanner = useDisplayAiAgentMovedBanner()
 
     const { path } = useRouteMatch()
-    const location = useLocation()
-    const isAutomateSettings = useIsAutomateSettings()
 
     const {
         isUpdatePending,
@@ -109,38 +106,42 @@ export default function WorkflowsView({
                             css.descriptionContainerColumn,
                         )}
                     >
-                        {isAutomateSettings ? (
-                            <div className={css.settingsDescription}>
-                                <div className={css.settingsDescriptionText}>
-                                    <div className={css.descriptionText}>
-                                        {WORKFLOWS_DESCRIPTION}
-                                    </div>
-                                    <div
-                                        className={css.settingsDescriptionLinks}
-                                    >
-                                        <FlowsConfigurationLinks />
-                                    </div>
-                                </div>
-                                <div className={css.headerContainer}>
-                                    <Button
-                                        onClick={goToNewWorkflowPage}
-                                        intent="secondary"
-                                    >
-                                        Create Custom Flow
-                                    </Button>
-                                    <Button onClick={goToWorkflowTemplatesPage}>
-                                        Create From Template
-                                    </Button>
-                                </div>
+                        <div className={css.description}>
+                            <div className={css.descriptionText}>
+                                {WORKFLOWS_DESCRIPTION}
                             </div>
-                        ) : (
-                            <div className={css.description}>
-                                <div className={css.descriptionText}>
-                                    {WORKFLOWS_DESCRIPTION}
-                                </div>
-                                <FlowsConfigurationLinks />
-                            </div>
-                        )}
+
+                            <a
+                                href="https://link.gorgias.com/pnl"
+                                rel="noopener noreferrer"
+                                target="_blank"
+                                className={css.descriptionLink}
+                            >
+                                <i className="material-icons mr-2">
+                                    ondemand_video
+                                </i>
+                                Join our Flows Masterclass live webinar
+                            </a>
+                            <a
+                                href="https://link.gorgias.com/z1e"
+                                rel="noopener noreferrer"
+                                target="_blank"
+                                className={css.descriptionLink}
+                            >
+                                <i className="material-icons mr-2">menu_book</i>
+                                10 Flows use cases and best practices
+                            </a>
+
+                            <a
+                                href="https://docs.gorgias.com/en-US/create-a-new-flow-256472"
+                                rel="noopener noreferrer"
+                                target="_blank"
+                                className={css.descriptionLink}
+                            >
+                                <i className="material-icons mr-2">menu_book</i>
+                                How to create a Flow
+                            </a>
+                        </div>
                     </div>
                 </div>
                 <WorkflowsList
@@ -164,28 +165,16 @@ export default function WorkflowsView({
             />
         )
 
-    const baseURL = useMemo(() => {
-        const base = isAutomateSettings
-            ? '/app/settings/flows'
-            : '/app/automation'
-        return `${base}/${shopType}/${shopName}/flows`
-    }, [isAutomateSettings, shopName, shopType])
-
-    const isRootAutomateFlowsRoute = useMemo(
-        () =>
-            Boolean(
-                matchPath(location.pathname, {
-                    path: '/app/automation/:shopType/:shopName/flows',
-                    exact: true,
-                }),
-            ),
-        [location.pathname],
+    const baseUrl = `/app/automation/${shopType}/${shopName}/flows`
+    const isFlowsTemplatesRoutes = !!matchPath(
+        location.pathname,
+        '/app/automation/:shopType/:shopName/flows/templates',
     )
 
     return (
         <div className="full-width overflow-auto">
             <div className={css.pageHeaderContainer}>
-                {isRootAutomateFlowsRoute && (
+                {!isFlowsTemplatesRoutes && (
                     <>
                         {displayAiAgentMovedBanner && <AiAgentMovedBanner />}
                         <PageHeader title={FLOWS}>
@@ -210,7 +199,7 @@ export default function WorkflowsView({
                     {workflowsElement}
                 </Route>
                 <Route path={`${path}/quick-responses`} exact>
-                    <Redirect to={baseURL} />
+                    <Redirect to={baseUrl} />
                 </Route>
 
                 <Route
@@ -223,40 +212,5 @@ export default function WorkflowsView({
                 />
             </Switch>
         </div>
-    )
-}
-
-function FlowsConfigurationLinks() {
-    return (
-        <>
-            <a
-                href="https://link.gorgias.com/pnl"
-                rel="noopener noreferrer"
-                target="_blank"
-                className={css.descriptionLink}
-            >
-                <i className="material-icons mr-2">ondemand_video</i>
-                Join our Flows Masterclass live webinar
-            </a>
-            <a
-                href="https://link.gorgias.com/z1e"
-                rel="noopener noreferrer"
-                target="_blank"
-                className={css.descriptionLink}
-            >
-                <i className="material-icons mr-2">menu_book</i>
-                10 Flows use cases and best practices
-            </a>
-
-            <a
-                href="https://docs.gorgias.com/en-US/create-a-new-flow-256472"
-                rel="noopener noreferrer"
-                target="_blank"
-                className={css.descriptionLink}
-            >
-                <i className="material-icons mr-2">menu_book</i>
-                How to create a Flow
-            </a>
-        </>
     )
 }

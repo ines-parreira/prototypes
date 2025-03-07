@@ -130,27 +130,23 @@ export function SettingRoutes() {
             <Route path={`${path}/sla`}>
                 <SLA />
             </Route>
-
-            <HelpCenterApiClientProvider>
-                <Route
-                    path={`${path}/article-recommendations/:shopType?/:shopName?`}
-                >
-                    {renderAppSettings(PaywalledArticleRecommendations, {
-                        roleParams: [AGENT_ROLE],
-                    })}
-                </Route>
-                <Route path={`${path}/flows/:shopType?/:shopName?`}>
-                    {renderAppSettings(PaywalledFlows, {
-                        roleParams: [AGENT_ROLE],
-                    })}
-                </Route>
-                <Route path={`${path}/order-management/:shopType?/:shopName?`}>
-                    {renderAppSettings(PaywalledOrderManagement, {
-                        roleParams: [AGENT_ROLE],
-                    })}
-                </Route>
-            </HelpCenterApiClientProvider>
-
+            <Route
+                path={`${path}/article-recommendations/:shopType?/:shopName?`}
+            >
+                {renderAppSettings(PaywalledArticleRecommendations, {
+                    roleParams: [AGENT_ROLE],
+                })}
+            </Route>
+            <Route path={`${path}/flows/:shopType?/:shopName?`}>
+                {renderAppSettings(PaywalledFlows, {
+                    roleParams: [AGENT_ROLE],
+                })}
+            </Route>
+            <Route path={`${path}/order-management/:shopType?/:shopName?`}>
+                {renderAppSettings(PaywalledOrderManagement, {
+                    roleParams: [AGENT_ROLE],
+                })}
+            </Route>
             <Route path={`${path}/teams`}>
                 <Teams />
             </Route>

@@ -1,11 +1,9 @@
-import React, { useCallback, useMemo } from 'react'
+import React, { useCallback } from 'react'
 
 import { Redirect, useHistory, useParams } from 'react-router-dom'
 
 import useAppSelector from 'hooks/useAppSelector'
 import { ErrorBoundary } from 'pages/ErrorBoundary'
-import { useAutomateBaseURL } from 'settings/automate/hooks/useAutomateBaseURL'
-import { useIsAutomateSettings } from 'settings/automate/hooks/useIsAutomateSettings'
 import { getHasAutomate } from 'state/billing/selectors'
 
 import WorkflowTemplatesView from './WorkflowTemplatesView'
@@ -15,37 +13,26 @@ const WorkflowTemplatesViewContainer = () => {
         shopType: string
         shopName: string
     }>()
-
-    const isAutomateSettings = useIsAutomateSettings()
-
     const history = useHistory()
-    const workflowsURL = useMemo(
-        () =>
-            isAutomateSettings
-                ? `/app/settings/flows/${shopType}/${shopName}`
-                : `/app/automation/${shopType}/${shopName}/flows`,
-        [isAutomateSettings, shopName, shopType],
-    )
-    const newWorkflowURL = `${workflowsURL}/new`
+    const workflowsUrl = `/app/automation/${shopType}/${shopName}/flows`
+    const newWorkflowUrl = `${workflowsUrl}/new`
 
     const goToNewWorkflowPage = useCallback(() => {
-        history.push(`${newWorkflowURL}?from=templates`)
-    }, [history, newWorkflowURL])
+        history.push(`${newWorkflowUrl}?from=templates`)
+    }, [history, newWorkflowUrl])
     const goToNewWorkflowFromTemplatePage = useCallback(
         (templateSlug: string) => {
             history.push(
-                `${newWorkflowURL}?template=${templateSlug}&from=templates`,
+                `${newWorkflowUrl}?template=${templateSlug}&from=templates`,
             )
         },
-        [history, newWorkflowURL],
+        [history, newWorkflowUrl],
     )
 
     const hasAutomate = useAppSelector(getHasAutomate)
 
-    const redirectURL = useAutomateBaseURL()
-
     if (!hasAutomate) {
-        return <Redirect to={redirectURL} />
+        return <Redirect to="/app/automation" />
     }
 
     return (
@@ -55,7 +42,7 @@ const WorkflowTemplatesViewContainer = () => {
                 goToNewWorkflowFromTemplatePage={
                     goToNewWorkflowFromTemplatePage
                 }
-                workflowsURL={workflowsURL}
+                workflowsUrl={workflowsUrl}
             />
         </ErrorBoundary>
     )

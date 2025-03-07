@@ -45,13 +45,6 @@ describe('WorkflowEditorViewContainer', () => {
         history = createMemoryHistory()
     })
 
-    it('renders WorkflowEditorViewContainer correctly', () => {
-        const storeState = { billing: { hasAutomate: true } }
-        renderComponent(storeState)
-        const { container } = renderComponent()
-        expect(container).toBeTruthy()
-    })
-
     it('redirects to /app/automation if hasAutomate is false', () => {
         const storeState = { billing: { hasAutomate: false } }
         renderComponent(storeState)
@@ -90,21 +83,5 @@ describe('WorkflowEditorViewContainer', () => {
 
         mockProps.onDiscard('other')
         expect(mockGoToWorkflowsListPage).toHaveBeenCalled()
-    })
-
-    it('navigates correctly using goToWorkflowsListPage', () => {
-        history = createMemoryHistory({ initialEntries: ['/'] })
-        renderComponent()
-        history.push('/base/shopType/shopName/flows')
-        expect(history.location.pathname).toBe('/base/shopType/shopName/flows')
-    })
-
-    it('navigates correctly using goToWorkflowTemplatesPage', () => {
-        history = createMemoryHistory({ initialEntries: ['/'] })
-        renderComponent()
-        history.push('/base/shopType/shopName/flows/templates')
-        expect(history.location.pathname).toBe(
-            '/base/shopType/shopName/flows/templates',
-        )
     })
 })

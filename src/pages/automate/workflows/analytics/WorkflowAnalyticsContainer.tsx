@@ -1,4 +1,3 @@
-/* istanbul ignore file */
 import React, { useCallback } from 'react'
 
 import { useHistory, useLocation, useParams } from 'react-router-dom'
@@ -10,8 +9,6 @@ import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import useEffectOnce from 'hooks/useEffectOnce'
 import { ErrorBoundary } from 'pages/ErrorBoundary'
-import { useAutomateBaseURL } from 'settings/automate/hooks/useAutomateBaseURL'
-import { useIsAutomateSettings } from 'settings/automate/hooks/useIsAutomateSettings'
 import { getCurrentAccountState } from 'state/currentAccount/selectors'
 import { notify } from 'state/notifications/actions'
 import { Notification } from 'state/notifications/types'
@@ -33,7 +30,6 @@ export default function WorkflowAnalyticsContainer() {
     const dispatch = useAppDispatch()
     const history = useHistory()
     const location = useLocation<{ from?: string }>()
-    const isAutomateSettings = useIsAutomateSettings()
     const { from } = location.state || {}
 
     const notifyMerchant = useCallback(
@@ -43,26 +39,11 @@ export default function WorkflowAnalyticsContainer() {
         [dispatch],
     )
 
-    const baseURL = useAutomateBaseURL()
-
     const goToWorkflowEditorPage = useCallback(() => {
-        if (isAutomateSettings) {
-            history.push(
-                `${baseURL}/flows/${shopType}/${shopName}/edit/${editWorkflowId}`,
-            )
-        } else {
-            history.push(
-                `${baseURL}/${shopType}/${shopName}/flows/edit/${editWorkflowId}`,
-            )
-        }
-    }, [
-        history,
-        shopName,
-        shopType,
-        editWorkflowId,
-        baseURL,
-        isAutomateSettings,
-    ])
+        history.push(
+            `/app/automation/${shopType}/${shopName}/flows/edit/${editWorkflowId}`,
+        )
+    }, [history, shopName, shopType, editWorkflowId])
 
     useEffectOnce(() => {
         logEvent(SegmentEvent.FlowBuilderViewed, {
