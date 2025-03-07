@@ -27,3 +27,10 @@ export const Underline = decorateComponentWithProps(InlineStyle, {
     style: 'UNDERLINE',
     name: 'Underline',
 })
+
+export const BulletedList = decorateComponentWithProps(InlineStyle, {
+    icon: 'format_list_bulleted',
+    style: 'unordered-list-item',
+    isBlockType: true,
+    name: 'Bulleted List',
+})

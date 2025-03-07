@@ -26,6 +26,7 @@ import {
     AddProductLink,
     AddVideo,
     Bold,
+    BulletedList,
     Italic,
     Underline,
 } from './components/index'
@@ -220,6 +221,10 @@ const Toolbar = ({
                                 isDisabled={!contactFormButtonEnabled}
                             />
                         )}
+                    {isActionDisplayed(ActionName.BulletedList) && (
+                        <BulletedList {...actionsProps} />
+                    )}
+
                     {buttons?.map(renderButton)}
 
                     <div className={css.hoverOverlay}>

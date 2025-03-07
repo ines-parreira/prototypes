@@ -67,8 +67,8 @@ describe('NewGuidanceEditor', () => {
         expect(icons[1]).toHaveTextContent('format_italic')
         expect(icons[2]).toHaveTextContent('format_underline')
         expect(icons[3]).toHaveTextContent('link')
-        expect(icons[4]).toHaveTextContent('insert_photo')
-        expect(icons[5]).toHaveTextContent('insert_emoticon')
+        expect(icons[4]).toHaveTextContent('insert_emoticon')
+        expect(icons[5]).toHaveTextContent('format_list_bulleted')
     })
 
     it('calls onBlur when editor loses focus', () => {

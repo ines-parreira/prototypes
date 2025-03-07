@@ -15,6 +15,7 @@ export enum ActionName {
     WorkflowVariable = 'WORKFLOWVARIABLE',
     ContactCaptureForm = 'CONTACT_CAPTURE_FORM',
     GuidanceVariable = 'GUIDANCEVARIABLE',
+    BulletedList = 'BULLETEDLIST',
 }
 
 export type EditorStateSetter = (editorState: EditorState) => any

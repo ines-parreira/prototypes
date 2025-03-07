@@ -130,7 +130,7 @@ exports[`<TicketReplyActions/> should collapse the macro actions 1`] = `
                       <button
                         aria-disabled="false"
                         class="wrapper button wrapper small fill secondary small"
-                        id="toolbar-button-21"
+                        id="toolbar-button-24"
                         type="button"
                       >
                         <span
@@ -146,7 +146,7 @@ exports[`<TicketReplyActions/> should collapse the macro actions 1`] = `
                       <button
                         aria-disabled="false"
                         class="wrapper button wrapper small fill secondary small"
-                        id="toolbar-button-22"
+                        id="toolbar-button-25"
                         type="button"
                       >
                         <span
@@ -162,7 +162,7 @@ exports[`<TicketReplyActions/> should collapse the macro actions 1`] = `
                       <button
                         aria-disabled="false"
                         class="wrapper button wrapper small fill secondary small"
-                        id="toolbar-button-23"
+                        id="toolbar-button-26"
                         type="button"
                       >
                         <span
@@ -178,7 +178,7 @@ exports[`<TicketReplyActions/> should collapse the macro actions 1`] = `
                       <button
                         aria-disabled="false"
                         class="wrapper button wrapper small fill secondary small"
-                        id="toolbar-button-24"
+                        id="toolbar-button-27"
                         type="button"
                       >
                         <span
@@ -194,7 +194,7 @@ exports[`<TicketReplyActions/> should collapse the macro actions 1`] = `
                       <button
                         aria-disabled="false"
                         class="wrapper button wrapper small fill secondary small"
-                        id="toolbar-button-25"
+                        id="toolbar-button-28"
                         type="button"
                       >
                         <span
@@ -210,7 +210,7 @@ exports[`<TicketReplyActions/> should collapse the macro actions 1`] = `
                       <button
                         aria-disabled="false"
                         class="wrapper button wrapper small fill secondary small"
-                        id="toolbar-button-26"
+                        id="toolbar-button-29"
                         type="button"
                       >
                         <span
@@ -220,6 +220,22 @@ exports[`<TicketReplyActions/> should collapse the macro actions 1`] = `
                             class="material-icons icon"
                           >
                             insert_emoticon
+                          </i>
+                        </span>
+                      </button>
+                      <button
+                        aria-disabled="false"
+                        class="wrapper button wrapper small fill secondary small"
+                        id="toolbar-button-30"
+                        type="button"
+                      >
+                        <span
+                          class="content"
+                        >
+                          <i
+                            class="material-icons icon"
+                          >
+                            format_list_bulleted
                           </i>
                         </span>
                       </button>
@@ -378,7 +394,7 @@ exports[`<TicketReplyActions/> should render the ticket reply macro actions coll
                       <button
                         aria-disabled="false"
                         class="wrapper button wrapper small fill secondary small"
-                        id="toolbar-button-9"
+                        id="toolbar-button-10"
                         type="button"
                       >
                         <span
@@ -394,7 +410,7 @@ exports[`<TicketReplyActions/> should render the ticket reply macro actions coll
                       <button
                         aria-disabled="false"
                         class="wrapper button wrapper small fill secondary small"
-                        id="toolbar-button-10"
+                        id="toolbar-button-11"
                         type="button"
                       >
                         <span
@@ -410,7 +426,7 @@ exports[`<TicketReplyActions/> should render the ticket reply macro actions coll
                       <button
                         aria-disabled="false"
                         class="wrapper button wrapper small fill secondary small"
-                        id="toolbar-button-11"
+                        id="toolbar-button-12"
                         type="button"
                       >
                         <span
@@ -426,7 +442,7 @@ exports[`<TicketReplyActions/> should render the ticket reply macro actions coll
                       <button
                         aria-disabled="false"
                         class="wrapper button wrapper small fill secondary small"
-                        id="toolbar-button-12"
+                        id="toolbar-button-13"
                         type="button"
                       >
                         <span
@@ -442,7 +458,7 @@ exports[`<TicketReplyActions/> should render the ticket reply macro actions coll
                       <button
                         aria-disabled="false"
                         class="wrapper button wrapper small fill secondary small"
-                        id="toolbar-button-13"
+                        id="toolbar-button-14"
                         type="button"
                       >
                         <span
@@ -458,7 +474,7 @@ exports[`<TicketReplyActions/> should render the ticket reply macro actions coll
                       <button
                         aria-disabled="false"
                         class="wrapper button wrapper small fill secondary small"
-                        id="toolbar-button-14"
+                        id="toolbar-button-15"
                         type="button"
                       >
                         <span
@@ -468,6 +484,22 @@ exports[`<TicketReplyActions/> should render the ticket reply macro actions coll
                             class="material-icons icon"
                           >
                             insert_emoticon
+                          </i>
+                        </span>
+                      </button>
+                      <button
+                        aria-disabled="false"
+                        class="wrapper button wrapper small fill secondary small"
+                        id="toolbar-button-16"
+                        type="button"
+                      >
+                        <span
+                          class="content"
+                        >
+                          <i
+                            class="material-icons icon"
+                          >
+                            format_list_bulleted
                           </i>
                         </span>
                       </button>
@@ -591,7 +623,7 @@ exports[`<TicketReplyActions/> should render the ticket reply macro actions coll
                       <button
                         aria-disabled="false"
                         class="wrapper button wrapper small fill secondary small"
-                        id="toolbar-button-15"
+                        id="toolbar-button-17"
                         type="button"
                       >
                         <span
@@ -607,7 +639,7 @@ exports[`<TicketReplyActions/> should render the ticket reply macro actions coll
                       <button
                         aria-disabled="false"
                         class="wrapper button wrapper small fill secondary small"
-                        id="toolbar-button-16"
+                        id="toolbar-button-18"
                         type="button"
                       >
                         <span
@@ -623,7 +655,7 @@ exports[`<TicketReplyActions/> should render the ticket reply macro actions coll
                       <button
                         aria-disabled="false"
                         class="wrapper button wrapper small fill secondary small"
-                        id="toolbar-button-17"
+                        id="toolbar-button-19"
                         type="button"
                       >
                         <span
@@ -639,7 +671,7 @@ exports[`<TicketReplyActions/> should render the ticket reply macro actions coll
                       <button
                         aria-disabled="false"
                         class="wrapper button wrapper small fill secondary small"
-                        id="toolbar-button-18"
+                        id="toolbar-button-20"
                         type="button"
                       >
                         <span
@@ -655,7 +687,7 @@ exports[`<TicketReplyActions/> should render the ticket reply macro actions coll
                       <button
                         aria-disabled="false"
                         class="wrapper button wrapper small fill secondary small"
-                        id="toolbar-button-19"
+                        id="toolbar-button-21"
                         type="button"
                       >
                         <span
@@ -671,7 +703,7 @@ exports[`<TicketReplyActions/> should render the ticket reply macro actions coll
                       <button
                         aria-disabled="false"
                         class="wrapper button wrapper small fill secondary small"
-                        id="toolbar-button-20"
+                        id="toolbar-button-22"
                         type="button"
                       >
                         <span
@@ -681,6 +713,22 @@ exports[`<TicketReplyActions/> should render the ticket reply macro actions coll
                             class="material-icons icon"
                           >
                             insert_emoticon
+                          </i>
+                        </span>
+                      </button>
+                      <button
+                        aria-disabled="false"
+                        class="wrapper button wrapper small fill secondary small"
+                        id="toolbar-button-23"
+                        type="button"
+                      >
+                        <span
+                          class="content"
+                        >
+                          <i
+                            class="material-icons icon"
+                          >
+                            format_list_bulleted
                           </i>
                         </span>
                       </button>
@@ -898,13 +946,13 @@ exports[`<TicketReplyActions/> should render the ticket reply macro actions coll
             >
               <label
                 class="ui-label-label-3864 label"
-                for="checkbox-7"
+                for="checkbox-8"
               >
                 <input
                   checked=""
                   class="input"
-                  id="checkbox-7"
-                  name="checkbox-7"
+                  id="checkbox-8"
+                  name="checkbox-8"
                   type="checkbox"
                 />
                 Restock
@@ -915,13 +963,13 @@ exports[`<TicketReplyActions/> should render the ticket reply macro actions coll
             >
               <label
                 class="ui-label-label-3864 label"
-                for="checkbox-8"
+                for="checkbox-9"
               >
                 <input
                   checked=""
                   class="input"
-                  id="checkbox-8"
-                  name="checkbox-8"
+                  id="checkbox-9"
+                  name="checkbox-9"
                   type="checkbox"
                 />
                 Refund
@@ -1328,6 +1376,22 @@ exports[`<TicketReplyActions/> should render the ticket reply macro actions unco
                             class="material-icons icon"
                           >
                             insert_emoticon
+                          </i>
+                        </span>
+                      </button>
+                      <button
+                        aria-disabled="false"
+                        class="wrapper button wrapper small fill secondary small"
+                        id="toolbar-button-7"
+                        type="button"
+                      >
+                        <span
+                          class="content"
+                        >
+                          <i
+                            class="material-icons icon"
+                          >
+                            format_list_bulleted
                           </i>
                         </span>
                       </button>

@@ -15,6 +15,8 @@ import BackLink from 'pages/common/components/BackLink'
 import Button from 'pages/common/components/button/Button'
 import ConfirmButton from 'pages/common/components/button/ConfirmButton'
 import UnsavedChangesPrompt from 'pages/common/components/UnsavedChangesPrompt'
+import GuidanceVariableTag from 'pages/common/draftjs/plugins/guidance-variables/GuidanceVariableTag'
+import ToolbarProvider from 'pages/common/draftjs/plugins/toolbar/ToolbarProvider'
 import InputField from 'pages/common/forms/input/InputField'
 import ToggleInput from 'pages/common/forms/ToggleInput'
 import history from 'pages/history'
@@ -312,11 +314,51 @@ export const GuidanceForm = ({
                     </p>
                     <p>
                         Instructions can be context specific, for example:{' '}
+                        {isGuidanceTaggingSystemEnabled ? (
+                            <i>
+                                <ToolbarProvider
+                                    guidanceVariables={[
+                                        {
+                                            name: 'shopify',
+                                            variables: [
+                                                {
+                                                    name: 'Country name',
+                                                    value: 'customer.country',
+                                                    category: 'customer',
+                                                },
+                                            ],
+                                        },
+                                    ]}
+                                >
+                                    <b>
+                                        “If{' '}
+                                        <GuidanceVariableTag value="customer.country">
+                                            <span className={css.variable}>
+                                                Country name
+                                            </span>
+                                        </GuidanceVariableTag>{' '}
+                                        is from Canada or Australia, let them
+                                        know that prices may differ slightly due
+                                        to currency conversion.”
+                                    </b>
+                                </ToolbarProvider>
+                            </i>
+                        ) : (
+                            <i>
+                                <b>
+                                    “For pricing questions, you will point
+                                    customers to our pricing page:
+                                    https://example.com/pricing”
+                                </b>
+                            </i>
+                        )}
+                    </p>
+                    <p>
+                        Instructions can also be general:{' '}
                         <i>
                             <b>
-                                “For pricing questions, you will point customers
-                                to our pricing page:
-                                https://example.com/pricing”
+                                “Always end by asking if they need more help, no
+                                matter what they asked.”
                             </b>
                         </i>
                     </p>

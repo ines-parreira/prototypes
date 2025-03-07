@@ -9,6 +9,7 @@ type Props = {
     icon: string
     name: string
     style: string
+    isBlockType?: boolean
 } & ActionInjectedProps
 
 const InlineStyle = ({
@@ -17,6 +18,7 @@ const InlineStyle = ({
     name,
     setEditorState,
     style,
+    isBlockType,
 }: Props) => {
     const isActive = useMemo(() => {
         const editorState = getEditorState()
@@ -35,13 +37,18 @@ const InlineStyle = ({
         setEditorState(RichUtils.toggleInlineStyle(editorState, style))
     }
 
+    const toggleBlockType = () => {
+        const editorState = getEditorState()
+        setEditorState(RichUtils.toggleBlockType(editorState, style))
+    }
+
     return (
         <Button
             name={name}
             icon={icon}
             isActive={isActive}
             isDisabled={false}
-            onToggle={onToggle}
+            onToggle={isBlockType ? toggleBlockType : onToggle}
         />
     )
 }

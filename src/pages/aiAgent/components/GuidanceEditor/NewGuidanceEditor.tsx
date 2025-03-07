@@ -27,10 +27,9 @@ const toolbarActions = [
     ActionName.Italic,
     ActionName.Underline,
     ActionName.Link,
-    ActionName.Image,
     ActionName.Emoji,
-    ActionName.ProductPicker,
     ActionName.GuidanceVariable,
+    ActionName.BulletedList,
 ]
 
 export function NewGuidanceEditor({
