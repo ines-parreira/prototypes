@@ -368,6 +368,31 @@ describe('billing selectors', () => {
             })
         })
 
+        it('should return the current products even if products is billing-provider agnostic', () => {
+            const products = {
+                [ProductType.Helpdesk]: basicMonthlyHelpdeskPlan.plan_id,
+                [ProductType.Automation]: basicMonthlyAutomationPlan.plan_id,
+                [ProductType.Voice]: voicePlan1.plan_id,
+                [ProductType.SMS]: smsPlan1.plan_id,
+                [ProductType.Convert]: convertPlan1.plan_id,
+            }
+            const currentPlansByProduct = selectors.getCurrentPlansByProduct({
+                ...state,
+                currentAccount: state.currentAccount.setIn(
+                    ['current_subscription', 'products'],
+                    fromJS(products),
+                ),
+            })
+
+            expect(currentPlansByProduct).toEqual({
+                [ProductType.Helpdesk]: basicMonthlyHelpdeskPlan,
+                [ProductType.Automation]: basicMonthlyAutomationPlan,
+                [ProductType.Voice]: voicePlan1,
+                [ProductType.SMS]: smsPlan1,
+                [ProductType.Convert]: convertPlan1,
+            })
+        })
+
         it('should return the current plans by product without unknown plans for convert', () => {
             // This is a case that should happen only on when account is subscribed to an internal price
             // e.g. revenue beta testers prices

@@ -7,6 +7,7 @@ import {
     ConvertPlan,
     HelpdeskPlan,
     Plan,
+    PlanId,
     PriceId,
     Product,
     ProductId,
@@ -136,10 +137,6 @@ export const getCurrentPlansByProduct = createSelector(
         smsAvailablePlans,
         convertAvailablePlans,
     ) => {
-        const currentPlansPriceIdByProduct: Record<ProductId, PriceId> = (
-            (currentSubscription.get('products') || fromJS({})) as Map<any, any>
-        ).toJS()
-
         // For now, a helpdesk plan is required for the app to work.
         const currentPlansByProduct: {
             [ProductType.Helpdesk]: HelpdeskPlan
@@ -148,6 +145,69 @@ export const getCurrentPlansByProduct = createSelector(
             [ProductType.SMS]?: SMSOrVoicePlan
             [ProductType.Convert]?: ConvertPlan
         } = {} as any
+
+        // First, assume that subscription.products is billing-provider agnostic
+        // i.e. <ProductType, PlanId>
+        const currentPlansIdByProductType: Record<ProductType, PlanId> = (
+            (currentSubscription.get('products') || fromJS({})) as Map<any, any>
+        ).toJS()
+
+        Object.values(currentPlansIdByProductType).forEach((planId) => {
+            const helpdeskPlan = helpdeskAvailablePlans.find(
+                (plan) => plan.plan_id === planId,
+            )
+
+            if (!!helpdeskPlan) {
+                currentPlansByProduct[ProductType.Helpdesk] = helpdeskPlan
+                return
+            }
+
+            const autPlan = automateAvailablePlans.find(
+                (plan) => plan.plan_id === planId,
+            )
+
+            if (!!autPlan) {
+                currentPlansByProduct[ProductType.Automation] = autPlan
+                return
+            }
+
+            const voicePlan = voiceAvailablePlans.find(
+                (plan) => plan.plan_id === planId,
+            )
+
+            if (!!voicePlan) {
+                currentPlansByProduct[ProductType.Voice] = voicePlan
+                return
+            }
+
+            const smsPlan = smsAvailablePlans.find(
+                (plan) => plan.plan_id === planId,
+            )
+
+            if (!!smsPlan) {
+                currentPlansByProduct[ProductType.SMS] = smsPlan
+                return
+            }
+
+            const convertPlan = convertAvailablePlans.find(
+                (plan) => plan.plan_id === planId,
+            )
+
+            if (!!convertPlan) {
+                currentPlansByProduct[ProductType.Convert] = convertPlan
+                return
+            }
+        })
+
+        // if object is empty, go with the non-agnostic legacy way
+        // i.e. with Stripe implementation details : <ProductId, PriceId>
+        if (!_isEmpty(currentPlansByProduct)) {
+            return currentPlansByProduct
+        }
+
+        const currentPlansPriceIdByProduct: Record<ProductId, PriceId> = (
+            (currentSubscription.get('products') || fromJS({})) as Map<any, any>
+        ).toJS()
 
         Object.values(currentPlansPriceIdByProduct).forEach((priceId) => {
             const helpdeskPlan = helpdeskAvailablePlans.find(
@@ -195,6 +255,7 @@ export const getCurrentPlansByProduct = createSelector(
                 return
             }
         })
+
         return !_isEmpty(currentPlansByProduct)
             ? currentPlansByProduct
             : undefined
