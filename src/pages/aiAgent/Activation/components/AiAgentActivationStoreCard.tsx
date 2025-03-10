@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React from 'react'
 
 import cn from 'classnames'
 import { Link } from 'react-router-dom'
@@ -13,29 +13,28 @@ import ToggleInput from 'pages/common/forms/ToggleInput'
 
 import css from './AiAgentActivationStoreCard.less'
 
-type Props = {
-    store: {
-        name: string
-        title: string
-        sales: {
+export type StoreActivation = {
+    name: string
+    title: string
+    sales: {
+        isDisabled: boolean
+        enabled: boolean
+    }
+    support: {
+        enabled: boolean
+        chat: {
             enabled: boolean
-            onToggle: (newValue: boolean) => void
+            isIntegrationMissing?: boolean
         }
-        support: {
-            onToggle: (newValue: boolean) => void
-            chat: {
-                enabled: boolean
-                onToggle: (newValue: boolean) => void
-                isIntegrationMissing?: boolean
-            }
-            email: {
-                enabled: boolean
-                onToggle: (newValue: boolean) => void
-                isIntegrationMissing?: boolean
-            }
+        email: {
+            enabled: boolean
+            isIntegrationMissing?: boolean
         }
     }
-    alerts: Array<{
+}
+type Props = {
+    store: StoreActivation
+    alerts: {
         type: AlertType
         message: string
         cta: {
@@ -43,34 +42,37 @@ type Props = {
             onClick?: () => void
             to?: string
         }
-    }>
+    }[]
+    onToggleSales: (newValue: boolean) => void
+    onToggleSupport: (newValue: boolean) => void
+    onToggleSupportChat: (newValue: boolean) => void
+    onToggleSupportEmail: (newValue: boolean) => void
 }
-export const AiAgentActivationStoreCard = ({ store, alerts }: Props) => {
+export const AiAgentActivationStoreCard = ({
+    store: { name, title, support, sales },
+    alerts,
+    onToggleSales,
+    onToggleSupport,
+    onToggleSupportChat,
+    onToggleSupportEmail,
+}: Props) => {
     const enablementList = [
-        store.sales.enabled,
-        store.support.chat.enabled,
-        store.support.email.enabled,
+        sales.enabled,
+        support.chat.enabled,
+        support.email.enabled,
     ]
     const enablement = {
         current: enablementList.filter(Boolean).length,
         total: enablementList.length,
     }
 
-    const [displayChannels, setDisplayChannels] = useState({ sales: false })
-    const handleToggleChannels =
-        (channel: keyof typeof displayChannels) => () =>
-            setDisplayChannels({
-                ...displayChannels,
-                [channel]: !displayChannels[channel],
-            })
-
-    const { routes } = useAiAgentNavigation({ shopName: store.name })
+    const { routes } = useAiAgentNavigation({ shopName: name })
 
     return (
         <div className={css.storeCard}>
             <div className={cn(css.section, css.headerSection)}>
                 <div className={css.heading}>
-                    <div className={css.title}>{store.title}</div>
+                    <div className={css.title}>{title}</div>
                     <div className={css.enablement}>
                         {enablement.current} of {enablement.total}
                     </div>
@@ -111,44 +113,20 @@ export const AiAgentActivationStoreCard = ({ store, alerts }: Props) => {
                 ))}
             </div>
 
-            <div className={css.section}>
-                <div className={css.heading}>
-                    <div className={css.title}>Sales</div>
-                    <ToggleInput
-                        isToggled={store.sales.enabled}
-                        onClick={store.sales.onToggle}
-                    />
-                </div>
-                <div className={css.description}>
-                    Boost sales on chat when activated.
-                </div>
-            </div>
+            <div className={cn(css.section, css.skillSection)}>
+                <div>
+                    <div className={css.heading}>
+                        <div className={css.title}>Support</div>
+                        <ToggleInput
+                            isDisabled={
+                                support.chat.isIntegrationMissing &&
+                                support.email.isIntegrationMissing
+                            }
+                            isToggled={support.enabled}
+                            onClick={onToggleSupport}
+                        />
+                    </div>
 
-            <div className={css.section}>
-                <div className={css.heading}>
-                    <div className={css.title}>Support</div>
-                    <ToggleInput
-                        isToggled={
-                            store.support.chat.enabled ||
-                            store.support.email.enabled
-                        }
-                        onClick={store.support.onToggle}
-                    />
-                </div>
-
-                <div
-                    className={css.toggleChannels}
-                    onClick={handleToggleChannels('sales')}
-                >
-                    Manage channels{' '}
-                    <i className={cn('material-icons', css.toggleChannelsIcon)}>
-                        {displayChannels.sales
-                            ? 'arrow_drop_up'
-                            : 'arrow_drop_down'}
-                    </i>
-                </div>
-
-                {displayChannels.sales && (
                     <div className={css.channelsList}>
                         <div className={css.channel}>
                             <div className={css.channelField}>
@@ -157,13 +135,13 @@ export const AiAgentActivationStoreCard = ({ store, alerts }: Props) => {
                                     labelClassName={css.channelLabel}
                                     name="support__chat"
                                     isDisabled={
-                                        store.support.chat.isIntegrationMissing
+                                        support.chat.isIntegrationMissing
                                     }
-                                    isChecked={store.support.chat.enabled}
-                                    onChange={store.support.chat.onToggle}
+                                    isChecked={support.chat.enabled}
+                                    onChange={onToggleSupportChat}
                                 >
                                     Chat
-                                    {store.support.chat.isIntegrationMissing ? (
+                                    {support.chat.isIntegrationMissing ? (
                                         <>
                                             <img
                                                 id="support__chat__icon"
@@ -180,7 +158,7 @@ export const AiAgentActivationStoreCard = ({ store, alerts }: Props) => {
                                 </CheckBox>
                             </div>
                             <div className={css.channelCaption}>
-                                {store.support.chat.isIntegrationMissing ? (
+                                {support.chat.isIntegrationMissing ? (
                                     <Link to={routes.settingsChannels}>
                                         Select Integration for Chat{' '}
                                         <i className="material-icons">
@@ -200,14 +178,13 @@ export const AiAgentActivationStoreCard = ({ store, alerts }: Props) => {
                                     labelClassName={css.channelLabel}
                                     name="support__email"
                                     isDisabled={
-                                        store.support.email.isIntegrationMissing
+                                        support.email.isIntegrationMissing
                                     }
-                                    isChecked={store.support.email.enabled}
-                                    onChange={store.support.email.onToggle}
+                                    isChecked={support.email.enabled}
+                                    onChange={onToggleSupportEmail}
                                 >
                                     Email
-                                    {store.support.email
-                                        .isIntegrationMissing ? (
+                                    {support.email.isIntegrationMissing ? (
                                         <>
                                             <img
                                                 id="support__email__icon"
@@ -224,7 +201,7 @@ export const AiAgentActivationStoreCard = ({ store, alerts }: Props) => {
                                 </CheckBox>
                             </div>
                             <div className={css.channelCaption}>
-                                {store.support.email.isIntegrationMissing ? (
+                                {support.email.isIntegrationMissing ? (
                                     <Link to={routes.settingsChannels}>
                                         Select Integration for Email{' '}
                                         <i className="material-icons">
@@ -237,7 +214,26 @@ export const AiAgentActivationStoreCard = ({ store, alerts }: Props) => {
                             </div>
                         </div>
                     </div>
-                )}
+                </div>
+
+                <div
+                    className={cn(css.skillSales, {
+                        [css.disabled]: sales.isDisabled,
+                    })}
+                >
+                    <div className={css.heading}>
+                        <div className={css.title}>Sales</div>
+                        <ToggleInput
+                            isDisabled={sales.isDisabled}
+                            isToggled={sales.enabled}
+                            onClick={onToggleSales}
+                        />
+                    </div>
+                    <div className={css.description}>
+                        Sales can only be activated when Support for Chat is
+                        activated.
+                    </div>
+                </div>
             </div>
         </div>
     )

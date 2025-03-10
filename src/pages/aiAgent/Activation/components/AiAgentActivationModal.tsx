@@ -2,7 +2,10 @@ import React from 'react'
 
 import { Button } from '@gorgias/merchant-ui-kit'
 
-import { AiAgentScope, StoreConfiguration } from 'models/aiAgent/types'
+import {
+    StoreConfigurationForActivation,
+    useStoreActivations,
+} from 'pages/aiAgent/Activation/hooks/useStoreActivations'
 import Modal from 'pages/common/components/modal/Modal'
 import ModalBody from 'pages/common/components/modal/ModalBody'
 
@@ -13,29 +16,10 @@ import css from './AiAgentActivationModal.less'
 
 const StoreCard = AiAgentActivationStoreCard
 
-const computeActivationScore = (
-    storeConfigs: StoreConfiguration[],
-): [number, number] => {
-    const totalStores = storeConfigs.length
-    const totalScore = totalStores * 3
-
-    const currentScore = storeConfigs.reduce((score, config) => {
-        let storeScore = 0
-        if (config.scopes.includes(AiAgentScope.Sales)) storeScore += 1
-        if (config.scopes.includes(AiAgentScope.Support)) {
-            if (!config.chatChannelDeactivatedDatetime) storeScore += 1
-            if (!config.emailChannelDeactivatedDatetime) storeScore += 1
-        }
-        return score + storeScore
-    }, 0)
-
-    return [currentScore, totalScore]
-}
-
 type Props = {
     isOpen: boolean
     onClose: () => void
-    storeConfigs: StoreConfiguration[]
+    storeConfigs: StoreConfigurationForActivation[]
     onToggleSales: (storeName: string, newValue: boolean) => void
     onToggleSupport: (storeName: string, newValue: boolean) => void
     onToggleSupportChat: (storeName: string, newValue: boolean) => void
@@ -50,8 +34,14 @@ export const AiAgentActivationModal = ({
     onToggleSupportChat,
     onToggleSupportEmail,
 }: Props) => {
-    const [currentScore, totalScore] = computeActivationScore(storeConfigs)
+    const {
+        storeActivations,
+        score: { totalScore, currentScore },
+    } = useStoreActivations({
+        storeConfigurations: storeConfigs,
+    })
     const progressPercentage = Math.round((currentScore / totalScore) * 100)
+
     return (
         <Modal
             className={css.modal}
@@ -68,58 +58,23 @@ export const AiAgentActivationModal = ({
 
             <ModalBody className={css.modalBody}>
                 <div className={css.storeCardsList}>
-                    {storeConfigs.map((config) => (
+                    {storeActivations.map((store) => (
                         <StoreCard
-                            key={config.storeName}
-                            store={{
-                                name: config.storeName,
-                                title: config.storeName,
-                                sales: {
-                                    enabled: config.scopes.includes(
-                                        AiAgentScope.Sales,
-                                    ),
-                                    onToggle: (value) =>
-                                        onToggleSales(config.storeName, value),
-                                },
-                                support: {
-                                    onToggle: (value) =>
-                                        onToggleSupport(
-                                            config.storeName,
-                                            value,
-                                        ),
-                                    chat: {
-                                        enabled:
-                                            config.scopes.includes(
-                                                AiAgentScope.Support,
-                                            ) &&
-                                            !config.chatChannelDeactivatedDatetime,
-                                        onToggle: (value) =>
-                                            onToggleSupportChat(
-                                                config.storeName,
-                                                value,
-                                            ),
-                                        isIntegrationMissing:
-                                            config.monitoredChatIntegrations
-                                                .length === 0,
-                                    },
-                                    email: {
-                                        enabled:
-                                            config.scopes.includes(
-                                                AiAgentScope.Support,
-                                            ) &&
-                                            !config.emailChannelDeactivatedDatetime,
-                                        onToggle: (value) =>
-                                            onToggleSupportEmail(
-                                                config.storeName,
-                                                value,
-                                            ),
-                                        isIntegrationMissing:
-                                            config.monitoredEmailIntegrations
-                                                .length === 0,
-                                    },
-                                },
-                            }}
+                            key={store.name}
+                            store={store}
                             alerts={[]}
+                            onToggleSales={(value) =>
+                                onToggleSales(store.name, value)
+                            }
+                            onToggleSupport={(value) =>
+                                onToggleSupport(store.name, value)
+                            }
+                            onToggleSupportChat={(value) =>
+                                onToggleSupportChat(store.name, value)
+                            }
+                            onToggleSupportEmail={(value) =>
+                                onToggleSupportEmail(store.name, value)
+                            }
                         />
                     ))}
                 </div>

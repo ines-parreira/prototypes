@@ -1,5 +1,6 @@
 import React from 'react'
 
+import { action } from '@storybook/addon-actions'
 import { Meta, StoryObj } from '@storybook/react'
 import { MemoryRouter } from 'react-router-dom'
 
@@ -61,10 +62,10 @@ const meta: Meta<typeof AiAgentActivationModal> = {
         isOpen: true,
         onClose: () => {},
         storeConfigs: [dummyStoreConfig, dummyStoreConfig2],
-        onToggleSales: () => {},
-        onToggleSupport: () => {},
-        onToggleSupportChat: () => {},
-        onToggleSupportEmail: () => {},
+        onToggleSales: action('onToggle > Sales'),
+        onToggleSupport: action('onToggle > Support'),
+        onToggleSupportChat: action('onToggle > Support > Chat'),
+        onToggleSupportEmail: action('onToggle > Support > Email'),
     },
     decorators: [
         (Story) => (

@@ -1,6 +1,6 @@
 import React, { ComponentProps } from 'react'
 
-import { fireEvent } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
 
 import { AlertType } from 'pages/common/components/Alert/Alert'
 import { renderWithRouter } from 'utils/testing'
@@ -16,20 +16,18 @@ const testProps: ComponentProps<typeof AiAgentActivationStoreCard> = {
         name: 'steve-madden',
         title: 'Steve Madden',
         sales: {
+            isDisabled: true,
             enabled: false,
-            onToggle: jest.fn(),
         },
         support: {
-            onToggle: jest.fn(),
+            enabled: false,
             chat: {
                 enabled: false,
-                onToggle: jest.fn(),
                 isIntegrationMissing: false,
             },
             email: {
                 enabled: false,
                 isIntegrationMissing: false,
-                onToggle: jest.fn(),
             },
         },
     },
@@ -41,6 +39,10 @@ const testProps: ComponentProps<typeof AiAgentActivationStoreCard> = {
             cta: { label: 'Visit Knowledge', to: '/' },
         },
     ],
+    onToggleSales: jest.fn(),
+    onToggleSupport: jest.fn(),
+    onToggleSupportChat: jest.fn(),
+    onToggleSupportEmail: jest.fn(),
 }
 
 describe('<AiAgentActivationStoreCard />', () => {
@@ -54,20 +56,18 @@ describe('<AiAgentActivationStoreCard />', () => {
 
         expect(getByText('Steve Madden')).toBeInTheDocument()
 
-        getByText('Manage channels').click()
-
         expect(getByText('Activate Support for Chat')).toBeInTheDocument()
         expect(getByText('Activate Support for Email')).toBeInTheDocument()
 
         const supportChatCheckbox = container.querySelector('#support__chat')
         expect(supportChatCheckbox).toBeInTheDocument()
-        fireEvent.click(supportChatCheckbox!)
-        expect(testProps.store.support.chat.onToggle).toHaveBeenCalled()
+        userEvent.click(supportChatCheckbox!)
+        expect(testProps.onToggleSupportChat).toHaveBeenCalled()
 
         const supportEmailCheckbox = container.querySelector('#support__email')
         expect(supportEmailCheckbox).toBeInTheDocument()
-        fireEvent.click(supportEmailCheckbox!)
-        expect(testProps.store.support.email.onToggle).toHaveBeenCalled()
+        userEvent.click(supportEmailCheckbox!)
+        expect(testProps.onToggleSupportEmail).toHaveBeenCalled()
 
         const updatedProps: ComponentProps<typeof AiAgentActivationStoreCard> =
             {
@@ -88,8 +88,6 @@ describe('<AiAgentActivationStoreCard />', () => {
                 },
             }
         rerenderComponent(<AiAgentActivationStoreCard {...updatedProps} />)
-
-        getByText('Manage channels').click()
 
         expect(queryByText('Activate Support for Chat')).not.toBeInTheDocument()
         expect(

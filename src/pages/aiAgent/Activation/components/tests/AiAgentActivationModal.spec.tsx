@@ -5,27 +5,27 @@ import { fireEvent, render } from '@testing-library/react'
 import '@testing-library/jest-dom/extend-expect'
 
 import { AiAgentScope } from 'models/aiAgent/types'
+import { StoreConfigurationForActivation } from 'pages/aiAgent/Activation/hooks/useStoreActivations'
 
 import { AiAgentActivationModal } from '../AiAgentActivationModal'
 
-const mockStoreConfigs: any[] = [
-    {
-        storeName: 'Store1',
-        scopes: [AiAgentScope.Sales, AiAgentScope.Support],
-        chatChannelDeactivatedDatetime: null,
-        emailChannelDeactivatedDatetime: null,
-        monitoredChatIntegrations: [],
-        monitoredEmailIntegrations: [],
-    },
-    {
-        storeName: 'Store2',
-        scopes: [AiAgentScope.Sales],
-        chatChannelDeactivatedDatetime: new Date().toISOString(),
-        emailChannelDeactivatedDatetime: new Date().toISOString(),
-        monitoredChatIntegrations: [],
-        monitoredEmailIntegrations: [],
-    },
-]
+const storeSupportWithEmailAndChatAndSales: StoreConfigurationForActivation = {
+    storeName: 'storeSupportWithEmailAndChatAndSales',
+    scopes: [AiAgentScope.Support, AiAgentScope.Sales],
+    chatChannelDeactivatedDatetime: null,
+    emailChannelDeactivatedDatetime: null,
+    monitoredChatIntegrations: [1],
+    monitoredEmailIntegrations: [{ id: 2, email: 'foo@example.com' }],
+}
+
+const storeSupportWithEmailAndChat: StoreConfigurationForActivation = {
+    storeName: 'storeSupportWithEmailAndChat',
+    scopes: [AiAgentScope.Support],
+    chatChannelDeactivatedDatetime: null,
+    emailChannelDeactivatedDatetime: null,
+    monitoredChatIntegrations: [1],
+    monitoredEmailIntegrations: [{ id: 2, email: 'foo@example.com' }],
+}
 
 describe('<AiAgentActivationModal />', () => {
     it('should render the modal with correct title and progress', () => {
@@ -38,7 +38,10 @@ describe('<AiAgentActivationModal />', () => {
             <AiAgentActivationModal
                 isOpen
                 onClose={onCloseMock}
-                storeConfigs={mockStoreConfigs}
+                storeConfigs={[
+                    storeSupportWithEmailAndChatAndSales,
+                    storeSupportWithEmailAndChat,
+                ]}
                 onToggleSales={onToggleSalesMock}
                 onToggleSupport={onToggleSupportMock}
                 onToggleSupportChat={onToggleSupportChatMock}
@@ -47,8 +50,10 @@ describe('<AiAgentActivationModal />', () => {
         )
 
         expect(getByText('Manage AI Agent Activation')).toBeInTheDocument()
-        expect(getByText('Store1')).toBeInTheDocument()
-        expect(getByText('Store2')).toBeInTheDocument()
+        expect(
+            getByText('storeSupportWithEmailAndChatAndSales'),
+        ).toBeInTheDocument()
+        expect(getByText('storeSupportWithEmailAndChat')).toBeInTheDocument()
     })
 
     it('should trigger all toggle functions when toggled', () => {
@@ -57,11 +62,12 @@ describe('<AiAgentActivationModal />', () => {
         const onToggleSupportMock = jest.fn()
         const onToggleSupportChatMock = jest.fn()
         const onToggleSupportEmailMock = jest.fn()
+
         const { getByText } = render(
             <AiAgentActivationModal
                 isOpen
                 onClose={onCloseMock}
-                storeConfigs={[mockStoreConfigs[0]]}
+                storeConfigs={[storeSupportWithEmailAndChatAndSales]}
                 onToggleSales={onToggleSalesMock}
                 onToggleSupport={onToggleSupportMock}
                 onToggleSupportChat={onToggleSupportChatMock}
@@ -73,13 +79,18 @@ describe('<AiAgentActivationModal />', () => {
             ?.firstChild?.firstChild!
         expect(toggleSupport).toBeInTheDocument()
         fireEvent.click(toggleSupport)
+        expect(onToggleSupportMock).toHaveBeenCalledWith(
+            'storeSupportWithEmailAndChatAndSales',
+            false,
+        )
 
         const toggleSales = getByText('Sales', { exact: true }).nextSibling
             ?.firstChild?.firstChild!
         expect(toggleSales).toBeInTheDocument()
         fireEvent.click(toggleSales)
-
-        expect(onToggleSalesMock).toHaveBeenCalledWith('Store1', false)
-        expect(onToggleSupportMock).toHaveBeenCalledWith('Store1', false)
+        expect(onToggleSalesMock).toHaveBeenCalledWith(
+            'storeSupportWithEmailAndChatAndSales',
+            false,
+        )
     })
 })

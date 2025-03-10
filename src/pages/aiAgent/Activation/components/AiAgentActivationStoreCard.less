@@ -5,14 +5,14 @@
     .storeCard {
         border-radius: 12px;
         border: 1px solid #ececec;
-        box-shadow: 0px 3px 20px 0px #0000000a;
+        box-shadow: 0 3px 20px 0 #0000000a;
     }
 
     .section {
-        padding: 24px;
+        padding: @layout-spacing-m;
 
         &:first-child {
-            padding-block: 16px;
+            padding-block: @layout-spacing-s;
         }
 
         &:not(:last-child) {
@@ -32,7 +32,7 @@
     }
 
     .alert {
-        margin-top: 16px;
+        margin-top: @layout-spacing-s;
     }
 
     .alertCta {
@@ -57,22 +57,10 @@
         color: var(--neutral-grey-5);
     }
 
-    .toggleChannels {
-        margin-top: 16px;
-        color: var(--main-primary);
-        cursor: pointer;
-    }
-
-    .toggleChannelsIcon {
-        font-size: 20px;
-        vertical-align: bottom;
-    }
-
     .channelsList {
-        margin-top: 16px;
-        display: flex;
-        justify-content: stretch;
-        flex: 1;
+        margin-top: @layout-spacing-s;
+        display: grid;
+        grid-template-columns: 1fr 1fr;
     }
 
     .channelField {
@@ -109,8 +97,24 @@
     }
 
     .warningIcon {
-        margin-left: 8px;
+        margin-left: @layout-spacing-xs;
         width: 20px;
         height: 20px;
+    }
+
+    .skillSection {
+        display: flex;
+        flex-direction: column;
+        gap: @layout-spacing-m;
+    }
+
+    .skillSales {
+        padding: @layout-spacing-s;
+        border-radius: @layout-spacing-xs;
+        background: var(--main-latte);
+
+        &.disabled {
+            background: var(--neutral-grey-1);
+        }
     }
 }
