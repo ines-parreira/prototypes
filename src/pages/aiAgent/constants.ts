@@ -195,6 +195,7 @@ export const AI_AGENT_TAGS = {
     AI_HANDOVER: 'ai_handover',
     AI_SNOOZE: 'ai_snooze',
     AI_EXECUTED_ACTION: 'ai_executed_action',
+    AI_FAILED_ACTION: 'ai_failed_action',
     AI_ANSWERED: 'ai_answered',
     AI_IGNORE: 'ai_ignore',
     AI_PREVIEW: 'ai_preview',
