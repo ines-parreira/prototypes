@@ -9,11 +9,12 @@ import {
     getOverageUnitPriceFormatted,
     getPlanPrice,
     getProductLabel,
+    isEnterprise,
     isTrial,
 } from 'models/billing/utils'
 
 import warningIcon from '../../../../../assets/img/icons/warning.svg'
-import { ENTERPRISE_PRICE_ID, PRODUCT_INFO } from '../../constants'
+import { PRODUCT_INFO } from '../../constants'
 import { formatAmount } from '../../utils/formatAmount'
 import { getNextTier } from '../../utils/getNextTier'
 import { SelectedPlans } from '../../views/BillingProcessView/BillingProcessView'
@@ -135,7 +136,7 @@ const SummaryItem = ({
                 )}
                 {selectedPlan.isSelected &&
                     productType === ProductType.Convert &&
-                    selectedPlan.plan?.price_id !== ENTERPRISE_PRICE_ID &&
+                    !isEnterprise(selectedPlan.plan) &&
                     getNextTier(availablePlans, selectedPlan.plan) && (
                         <div>
                             {selectedPlan.autoUpgrade ? (

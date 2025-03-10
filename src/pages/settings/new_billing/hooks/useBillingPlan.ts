@@ -8,6 +8,7 @@ import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import { isGorgiasApiError } from 'models/api/types'
 import { Cadence, ProductType } from 'models/billing/types'
+import { isEnterprise } from 'models/billing/utils'
 import { useConvertApi } from 'pages/convert/common/hooks/useConvertApi'
 import useGetConvertStatus, {
     convertStatusKeys,
@@ -52,7 +53,6 @@ import { objKeys } from 'utils'
 import {
     BILLING_SUPPORT_EMAIL,
     DATE_FORMAT,
-    ENTERPRISE_PRICE_ID,
     PRODUCT_INFO,
     ZAPIER_BILLING_HOOK,
 } from '../constants'
@@ -327,11 +327,8 @@ export const useBillingPlans = ({
 
     const isEnterpriseHelpdeskPlanSelected = useMemo(
         () =>
-            Object.values(selectedPlans).some(
-                (plan) =>
-                    plan.plan?.price_id === ENTERPRISE_PRICE_ID &&
-                    plan.isSelected,
-            ),
+            selectedPlans[ProductType.Helpdesk].isSelected &&
+            isEnterprise(selectedPlans[ProductType.Helpdesk].plan),
         [selectedPlans],
     )
 

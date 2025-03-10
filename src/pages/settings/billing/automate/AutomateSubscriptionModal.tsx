@@ -13,12 +13,12 @@ import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import useAsyncFn from 'hooks/useAsyncFn'
 import { Plan } from 'models/billing/types'
+import { isEnterprise } from 'models/billing/utils'
 import Button from 'pages/common/components/button/Button'
 import ContactSupportModal from 'pages/settings/new_billing/components/ContactSupportModal/ContactSupportModal'
 import {
     BILLING_BASE_PATH,
     BILLING_SUPPORT_EMAIL,
-    ENTERPRISE_PRICE_ID,
     ZAPIER_BILLING_HOOK,
 } from 'pages/settings/new_billing/constants'
 import { useCurrentPriceIds } from 'pages/settings/new_billing/hooks/useGetCurrentPriceIds'
@@ -184,7 +184,7 @@ const AutomateSubscriptionModal = ({
         useState(false)
 
     const isEnterprisePlan = useMemo(
-        () => selectedPlan?.price_id === ENTERPRISE_PRICE_ID,
+        () => isEnterprise(selectedPlan),
         [selectedPlan],
     )
 

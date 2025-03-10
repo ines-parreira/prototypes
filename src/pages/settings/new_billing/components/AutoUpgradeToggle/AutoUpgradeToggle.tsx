@@ -10,6 +10,7 @@ import { Plan, ProductType } from 'models/billing/types'
 import {
     getPlanPriceFormatted,
     getPlanUnitsPerCadence,
+    isEnterprise,
 } from 'models/billing/utils'
 import Button from 'pages/common/components/button/Button'
 import Modal from 'pages/common/components/modal/Modal'
@@ -18,7 +19,6 @@ import ModalHeader from 'pages/common/components/modal/ModalHeader'
 import ToggleInput from 'pages/common/forms/ToggleInput'
 import { useIsConvertSubscriber } from 'pages/common/hooks/useIsConvertSubscriber'
 
-import { ENTERPRISE_PRICE_ID } from '../../constants'
 import { getNextTier } from '../../utils/getNextTier'
 import { SelectedPlans } from '../../views/BillingProcessView/BillingProcessView'
 
@@ -57,8 +57,7 @@ const AutoUpgradeToggle = ({
         return { nextTierAmount: null, nextTierName: null }
     }, [nextTier])
 
-    const isEnterprisePlan =
-        selectedPlan.plan?.price_id === ENTERPRISE_PRICE_ID || !nextTier
+    const isEnterprisePlan = isEnterprise(selectedPlan.plan) || !nextTier
 
     const handleAutoUpgradePlan = (nextValue: boolean) => {
         setSelectedPlans((prev) => ({
@@ -166,7 +165,7 @@ const AutoUpgradeToggle = ({
                     </p>
                     <ul>
                         <li>
-                            {`You'll be charged a proportion of ${nextTierAmount} 
+                            {`You'll be charged a proportion of ${nextTierAmount}
                             (plus tax) based on the number of days remaining in
                             the billing period.`}
                         </li>

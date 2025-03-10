@@ -6,12 +6,12 @@ import { Modal, ModalBody, ModalHeader } from 'reactstrap'
 import { useAppNode } from 'appNode'
 import useAppSelector from 'hooks/useAppSelector'
 import { Plan, ProductType } from 'models/billing/types'
+import { isEnterprise } from 'models/billing/utils'
 import ContactSupportModal from 'pages/settings/new_billing/components/ContactSupportModal'
 import PlanSubscriptionDescription from 'pages/settings/new_billing/components/SubscriptionModal/PlanSubscriptionDescription'
 import SubscriptionModalFooter from 'pages/settings/new_billing/components/SubscriptionModal/SubscriptionModalFooter'
 import {
     BILLING_SUPPORT_EMAIL,
-    ENTERPRISE_PRICE_ID,
     ZAPIER_BILLING_HOOK,
 } from 'pages/settings/new_billing/constants'
 import { useCurrentPriceIds } from 'pages/settings/new_billing/hooks/useGetCurrentPriceIds'
@@ -76,7 +76,7 @@ const SubscriptionModal = ({
         useUpdateSubscription()
 
     const isEnterprisePlan = useMemo(
-        () => selectedPlan?.price_id === ENTERPRISE_PRICE_ID,
+        () => isEnterprise(selectedPlan),
         [selectedPlan],
     )
 

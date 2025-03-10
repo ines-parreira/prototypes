@@ -13,6 +13,7 @@ import {
     ProductType,
     SMSOrVoicePlan,
 } from 'models/billing/types'
+import { isEnterprise } from 'models/billing/utils'
 import Button from 'pages/common/components/button/Button'
 import Loader from 'pages/common/components/Loader/Loader'
 import PendingChangesModal from 'pages/settings/helpCenter/components/PendingChangesModal/PendingChangesModal'
@@ -34,11 +35,7 @@ import SummaryFooter from '../../components/SummaryFooter'
 import SummaryItem from '../../components/SummaryItem'
 import SummaryTotal from '../../components/SummaryTotal'
 import VoiceOrSmsChangeReviewAlert from '../../components/VoiceOrSmsChangeReviewAlert'
-import {
-    ENTERPRISE_PRICE_ID,
-    PRICING_DETAILS_URL,
-    PRODUCT_INFO,
-} from '../../constants'
+import { PRICING_DETAILS_URL, PRODUCT_INFO } from '../../constants'
 import { useBillingPlans } from '../../hooks/useBillingPlan'
 import { formatNumTickets } from '../../utils/formatAmount'
 
@@ -168,8 +165,7 @@ const BillingProcessView = ({
             const selectedPlan = selectedPlans[productType].plan
 
             if (selectedPlans[productType]?.isSelected) {
-                const isEnterprisePlan =
-                    selectedPlan?.price_id === ENTERPRISE_PRICE_ID
+                const isEnterprisePlan = isEnterprise(selectedPlan)
                 const tickets = `${formatNumTickets(
                     selectedPlan?.num_quota_tickets ?? 0,
                 )}${isEnterprisePlan ? '+' : ''}`
