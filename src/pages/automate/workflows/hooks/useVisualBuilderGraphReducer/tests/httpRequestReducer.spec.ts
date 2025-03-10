@@ -125,4 +125,36 @@ describe('httpRequestReducer', () => {
             }),
         )
     })
+    test('TOGGLE_TRACKSTAR_AUTH_SETTINGS', () => {
+        const g = visualBuilderGraphLlmPromptTriggerFixture
+        // Enable trackstar integration
+        const nextG = httpRequestReducer(g, {
+            type: 'TOGGLE_TRACKSTAR_AUTH_SETTINGS',
+            httpRequestNodeId: 'http_request1',
+        })
+
+        expect(nextG.nodes.find((n) => n.type === 'http_request')).toEqual(
+            expect.objectContaining({
+                data: expect.objectContaining({
+                    trackstar_integration_name:
+                        g.apps?.[0].type === 'app' &&
+                        `{{apps.${g.apps?.[0]?.app_id}.trackstar_integration_name}}`,
+                }),
+            }),
+        )
+
+        // Disable trackstar integration
+        const nextG2 = httpRequestReducer(nextG, {
+            type: 'TOGGLE_TRACKSTAR_AUTH_SETTINGS',
+            httpRequestNodeId: 'http_request1',
+        })
+
+        expect(nextG2.nodes.find((n) => n.type === 'http_request')).toEqual(
+            expect.objectContaining({
+                data: expect.objectContaining({
+                    trackstar_integration_name: null,
+                }),
+            }),
+        )
+    })
 })

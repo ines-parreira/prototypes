@@ -206,6 +206,7 @@ declare namespace Components {
                               account_oauth2_token_id: string
                               refresh_token_url: string
                           } | null
+                          trackstar_integration_name?: string | null
                           variables: {
                               id: string
                               name: string
@@ -1697,6 +1698,7 @@ declare namespace Components {
                               account_oauth2_token_id: string
                               refresh_token_url: string
                           } | null
+                          trackstar_integration_name?: string | null
                           variables: {
                               id: string
                               name: string
@@ -2454,6 +2456,7 @@ declare namespace Components {
                               account_oauth2_token_id: string
                               refresh_token_url: string
                           } | null
+                          trackstar_integration_name?: string | null
                           variables: {
                               id: string
                               name: string
@@ -5873,6 +5876,7 @@ declare namespace Components {
                               account_oauth2_token_id: string
                               refresh_token_url: string
                           } | null
+                          trackstar_integration_name?: string | null
                           variables: {
                               id: string
                               name: string
@@ -6696,6 +6700,7 @@ declare namespace Components {
                               account_oauth2_token_id: string
                               refresh_token_url: string
                           } | null
+                          trackstar_integration_name?: string | null
                           variables: {
                               id: string
                               name: string
@@ -16114,6 +16119,7 @@ declare namespace Components {
                               account_oauth2_token_id: string
                               refresh_token_url: string
                           } | null
+                          trackstar_integration_name?: string | null
                           variables: {
                               id: string
                               name: string
@@ -17026,6 +17032,7 @@ declare namespace Components {
                               account_oauth2_token_id: string
                               refresh_token_url: string
                           } | null
+                          trackstar_integration_name?: string | null
                           variables: {
                               id: string
                               name: string
@@ -17939,6 +17946,7 @@ declare namespace Components {
                               account_oauth2_token_id: string
                               refresh_token_url: string
                           } | null
+                          trackstar_integration_name?: string | null
                           variables: {
                               id: string
                               name: string
@@ -18855,6 +18863,7 @@ declare namespace Components {
                               account_oauth2_token_id: string
                               refresh_token_url: string
                           } | null
+                          trackstar_integration_name?: string | null
                           variables: {
                               id: string
                               name: string
@@ -19615,6 +19624,7 @@ declare namespace Components {
                               account_oauth2_token_id: string
                               refresh_token_url: string
                           } | null
+                          trackstar_integration_name?: string | null
                           variables: {
                               id: string
                               name: string
@@ -20294,6 +20304,7 @@ declare namespace Components {
                               account_oauth2_token_id: string
                               refresh_token_url: string
                           } | null
+                          trackstar_integration_name?: string | null
                           variables: {
                               id: string
                               name: string

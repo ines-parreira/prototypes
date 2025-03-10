@@ -133,4 +133,104 @@ describe('<HttpRequestEditor />', () => {
             httpRequestNodeId: nodeInEdition.id,
         })
     })
+    it('should dispatch TOGGLE_TRACKSTAR_AUTH_SETTINGS', () => {
+        mockUseApps.mockReturnValue({
+            apps: [],
+            actionsApps: [
+                {
+                    id: 'someid1',
+                    auth_type: 'trackstar',
+                    auth_settings: {
+                        integration_name: 'sandbox',
+                    },
+                },
+            ],
+            isLoading: false,
+        })
+        const nodeInEdition: HttpRequestNodeType = {
+            ...buildNodeCommonProperties(),
+            id: 'http_request1',
+            type: 'http_request',
+            data: {
+                name: '',
+                url: '',
+                method: 'GET',
+                headers: [],
+                json: null,
+                formUrlencoded: null,
+                bodyContentType: null,
+                variables: [],
+            },
+        }
+
+        const mockGetVariableListForNode = jest.fn().mockReturnValue([])
+        const mockDispatch = jest.fn()
+        const graph: VisualBuilderGraph = {
+            id: '',
+            internal_id: '',
+            is_draft: false,
+            name: '',
+            nodes: [
+                {
+                    ...buildNodeCommonProperties(),
+                    id: 'channel_trigger1',
+                    type: 'channel_trigger',
+                    data: {
+                        label: '',
+                        label_tkey: '',
+                    },
+                },
+                nodeInEdition,
+            ],
+            edges: [
+                {
+                    ...buildEdgeCommonProperties(),
+                    source: 'channel_trigger1',
+                    target: 'http_request1',
+                },
+            ],
+            available_languages: [],
+            nodeEditingId: null,
+            choiceEventIdEditing: null,
+            branchIdsEditing: [],
+            isTemplate: true,
+            apps: [
+                {
+                    app_id: 'someid1',
+                    type: 'app',
+                },
+            ],
+        }
+
+        renderWithStore(
+            <VisualBuilderContext.Provider
+                value={{
+                    visualBuilderGraph: graph,
+                    checkNodeHasVariablesUsedInChildren: () => false,
+                    dispatch: mockDispatch,
+                    getVariableListInChildren: () => [],
+                    checkNewVisualBuilderNode: () => false,
+                    getVariableListForNode: mockGetVariableListForNode,
+                    initialVisualBuilderGraph: graph,
+                    isNew: false,
+                }}
+            >
+                <NodeEditorDrawerContext.Provider
+                    value={{ onClose: jest.fn() }}
+                >
+                    <HttpRequestEditor nodeInEdition={nodeInEdition} />
+                </NodeEditorDrawerContext.Provider>
+            </VisualBuilderContext.Provider>,
+            {},
+        )
+
+        act(() => {
+            fireEvent.click(screen.getByText('Enable Trackstar Auth'))
+        })
+
+        expect(mockDispatch).toHaveBeenNthCalledWith(1, {
+            type: 'TOGGLE_TRACKSTAR_AUTH_SETTINGS',
+            httpRequestNodeId: nodeInEdition.id,
+        })
+    })
 })

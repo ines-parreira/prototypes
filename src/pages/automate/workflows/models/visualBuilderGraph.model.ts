@@ -883,6 +883,8 @@ export function transformVisualBuilderGraphIntoWfConfiguration(
                         headers,
                         body,
                         oauth2_token_settings: node.data.oauth2TokenSettings,
+                        trackstar_integration_name:
+                            node.data.trackstar_integration_name,
                         variables: node.data.variables.map((variable) => ({
                             ...variable,
                             data_type:

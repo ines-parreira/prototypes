@@ -266,6 +266,7 @@ export const visualBuilderGraphLlmPromptTriggerFixture: VisualBuilderGraph = {
                 method: 'GET',
                 headers: [],
                 oauth2TokenSettings: null,
+                trackstar_integration_name: null,
                 variables: [
                     {
                         id: 'variable1',

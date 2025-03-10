@@ -277,6 +277,7 @@ export type HttpRequestNodeType = Node<
             account_oauth2_token_id: string
             refresh_token_url: string
         } | null
+        trackstar_integration_name?: string | null
         errors?: {
             name?: string
             url?: string

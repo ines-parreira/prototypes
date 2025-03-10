@@ -65,6 +65,10 @@ export type VisualBuilderHttpRequestAction =
           httpRequestNodeId: string
       }
     | {
+          type: 'TOGGLE_TRACKSTAR_AUTH_SETTINGS'
+          httpRequestNodeId: string
+      }
+    | {
           type: 'SET_HTTP_REQUEST_BODY_CONTENT_TYPE'
           httpRequestNodeId: string
           bodyContentType: NonNullable<
@@ -161,6 +165,7 @@ const visualBuilderHttpRequestActionTypes: ActionTypes = {
     SET_HTTP_REQUEST_OUTPUT: true,
     DELETE_HTTP_REQUEST_OUTPUT: true,
     TOGGLE_OAUTH2_SETTINGS: true,
+    TOGGLE_TRACKSTAR_AUTH_SETTINGS: true,
 }
 
 export function isVisualBuilderHttpRequestAction(action: {
@@ -275,6 +280,24 @@ export function httpRequestReducer(
                         }
                     } else {
                         node.data.oauth2TokenSettings = null
+                    }
+                }
+            })
+        case 'TOGGLE_TRACKSTAR_AUTH_SETTINGS':
+            return produce(graph, (draft) => {
+                const node = draft.nodes.find(
+                    (n): n is HttpRequestNodeType =>
+                        n.id === action.httpRequestNodeId &&
+                        n.type === 'http_request',
+                )
+                if (node) {
+                    if (
+                        node.data.trackstar_integration_name === null &&
+                        graph.apps?.[0]?.type === 'app'
+                    ) {
+                        node.data.trackstar_integration_name = `{{apps.${graph.apps[0].app_id}.trackstar_integration_name}}`
+                    } else {
+                        node.data.trackstar_integration_name = null
                     }
                 }
             })

@@ -82,10 +82,6 @@ export default function HttpRequestEditor({
         }
     }, [actionsApps, visualBuilderGraph.apps])
 
-    const isAppTypeOAuth2Token = useMemo(() => {
-        return selectedApp?.auth_type === 'oauth2-token'
-    }, [selectedApp?.auth_type])
-
     const { mutateAsync: downloadEventLogs, isLoading: isDownloadPending } =
         useDownloadWorkflowConfigurationStepLogs()
     const handleDownloadHttpRequestEventLogs = useCallback(async () => {
@@ -289,7 +285,7 @@ export default function HttpRequestEditor({
                     <div className={css.formField}>
                         <div className={css.headersHeading}>
                             <Label>Headers</Label>
-                            {isAppTypeOAuth2Token &&
+                            {selectedApp?.auth_type === 'oauth2-token' &&
                                 visualBuilderGraph.isTemplate && (
                                     <div id={oauth2ToggleId}>
                                         <ToggleInput
@@ -315,6 +311,24 @@ export default function HttpRequestEditor({
                                             {`Enabling this will override any existing 'Authorization' key and apply a 'Bearer' prefix to the authorization token.`}
                                         </Tooltip>
                                     </div>
+                                )}
+                            {selectedApp?.auth_type === 'trackstar' &&
+                                visualBuilderGraph.isTemplate && (
+                                    <ToggleInput
+                                        onClick={() => {
+                                            dispatch({
+                                                type: 'TOGGLE_TRACKSTAR_AUTH_SETTINGS',
+                                                httpRequestNodeId:
+                                                    nodeInEdition.id,
+                                            })
+                                        }}
+                                        isToggled={
+                                            !!nodeInEdition.data
+                                                .trackstar_integration_name
+                                        }
+                                    >
+                                        Enable Trackstar Auth
+                                    </ToggleInput>
                                 )}
                         </div>
                         <Headers
