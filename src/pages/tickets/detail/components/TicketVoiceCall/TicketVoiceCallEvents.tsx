@@ -2,6 +2,7 @@ import React from 'react'
 
 import classNames from 'classnames'
 
+import { VoiceCallTerminationStatus } from '@gorgias/api-queries'
 import { Skeleton } from '@gorgias/merchant-ui-kit'
 
 import { DateAndTimeFormatting } from 'constants/datetime'
@@ -18,10 +19,12 @@ import css from './TicketVoiceCallContainer.less'
 
 type TicketVoiceCallEventsProps = {
     callId: number
+    terminationStatus?: VoiceCallTerminationStatus
 }
 
 export default function TicketVoiceCallEvents({
     callId,
+    terminationStatus,
 }: TicketVoiceCallEventsProps) {
     const { data, isLoading, error } = useListVoiceCallEvents({
         call_id: callId,
@@ -41,54 +44,66 @@ export default function TicketVoiceCallEvents({
 
     const processedEvents = processEvents(data.data.data)
 
+    if (!processedEvents.length) {
+        if (
+            terminationStatus === VoiceCallTerminationStatus.Abandoned ||
+            terminationStatus === VoiceCallTerminationStatus.Cancelled
+        ) {
+            return (
+                <Timeline>
+                    <div className={css.noEventsInfo}>
+                        No events. The caller ended the call while waiting,
+                        before reaching an available agent.
+                    </div>
+                </Timeline>
+            )
+        }
+
+        return (
+            <Timeline>
+                <div className={css.noEventsInfo}>
+                    No events. This call was either made outside business hours
+                    or ended due to no available agents.
+                </div>
+            </Timeline>
+        )
+    }
+
     return (
         <Timeline>
-            {!!processedEvents.length ? (
-                processedEvents.map((event, index) => (
-                    <TimelineItem key={`call-event-${index}`}>
+            {processedEvents.map((event, index) => (
+                <TimelineItem key={`call-event-${index}`}>
+                    <div
+                        className={classNames(css.row, css.timelineItemContent)}
+                    >
                         <div
                             className={classNames(
-                                css.row,
-                                css.timelineItemContent,
+                                css.statusWrapper,
+                                css.inbound,
                             )}
                         >
-                            <div
-                                className={classNames(
-                                    css.statusWrapper,
-                                    css.inbound,
-                                )}
-                            >
-                                <div>{event.text}</div>
-                                {event.userId && (
-                                    <VoiceCallAgentLabel
-                                        agentId={event.userId}
-                                    />
-                                )}
-                                {event.customerId && (
-                                    <VoiceCallCustomerLabel
-                                        customerId={event.customerId}
-                                        phoneNumber={'customer'}
-                                    />
-                                )}
-                            </div>
-                            <DatetimeLabel
-                                dateTime={event.datetime}
-                                className={classNames('text-faded', css.date)}
-                                breakDate
-                                labelFormat={
-                                    DateAndTimeFormatting.TimeDoubleDigitHour
-                                }
-                            />
+                            <div>{event.text}</div>
+                            {event.userId && (
+                                <VoiceCallAgentLabel agentId={event.userId} />
+                            )}
+                            {event.customerId && (
+                                <VoiceCallCustomerLabel
+                                    customerId={event.customerId}
+                                    phoneNumber={'customer'}
+                                />
+                            )}
                         </div>
-                    </TimelineItem>
-                ))
-            ) : (
-                <div className={css.noEventsInfo}>
-                    <strong>No events:</strong> This call was either made
-                    outside of business hours or there were no available agents
-                    to respond
-                </div>
-            )}
+                        <DatetimeLabel
+                            dateTime={event.datetime}
+                            className={classNames('text-faded', css.date)}
+                            breakDate
+                            labelFormat={
+                                DateAndTimeFormatting.TimeDoubleDigitHour
+                            }
+                        />
+                    </div>
+                </TimelineItem>
+            ))}
         </Timeline>
     )
 }

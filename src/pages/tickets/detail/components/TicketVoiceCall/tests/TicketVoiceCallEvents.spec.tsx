@@ -2,6 +2,8 @@ import React from 'react'
 
 import { cleanup, render, screen } from '@testing-library/react'
 
+import { VoiceCallTerminationStatus } from '@gorgias/api-queries'
+
 import * as queries from 'models/voiceCall/queries'
 
 import TicketVoiceCallEvents from '../TicketVoiceCallEvents'
@@ -87,7 +89,34 @@ describe('TicketVoiceCallEvents', () => {
         )
     })
 
-    it('should render no events message when data is available but there are no displayable events', () => {
+    it.each([
+        VoiceCallTerminationStatus.Abandoned,
+        VoiceCallTerminationStatus.Cancelled,
+    ])(
+        'should render no events message when data is available but there are no displayable events and we have %s termination status',
+        (terminationStatus) => {
+            useListVoiceCallEventsSpy.mockReturnValue({
+                data: { data: { data: [] } },
+                isLoading: false,
+                error: null,
+            } as any)
+
+            render(
+                <TicketVoiceCallEvents
+                    callId={1}
+                    terminationStatus={terminationStatus}
+                />,
+            )
+
+            expect(
+                screen.getByText(
+                    'No events. The caller ended the call while waiting, before reaching an available agent.',
+                ),
+            ).toBeInTheDocument()
+        },
+    )
+
+    it('should render generic no events message when data is available but there are no displayable events', () => {
         useListVoiceCallEventsSpy.mockReturnValue({
             data: { data: { data: [] } },
             isLoading: false,
@@ -96,7 +125,11 @@ describe('TicketVoiceCallEvents', () => {
 
         render(<TicketVoiceCallEvents callId={1} />)
 
-        expect(screen.getByText('No events:')).toBeInTheDocument()
+        expect(
+            screen.getByText(
+                'No events. This call was either made outside business hours or ended due to no available agents.',
+            ),
+        ).toBeInTheDocument()
     })
 
     it('should render customer event', () => {

@@ -123,13 +123,13 @@ export const processEvents = (events: VoiceCallEvent[]): ProcessedEvent[] => {
         switch (event.type) {
             case PhoneIntegrationEvent.PhoneCallAnswered:
                 newEvent.text = isTransfer
-                    ? 'Transfer answered by'
-                    : `Answered by`
+                    ? 'Transfer answered by '
+                    : `Answered by `
                 break
             case PhoneIntegrationEvent.DeclinedPhoneCall:
                 newEvent.text = isTransfer
-                    ? 'Transfer declined by'
-                    : `Declined by`
+                    ? 'Transfer declined by '
+                    : `Declined by `
                 break
             case PhoneIntegrationEvent.PhoneCallRinging: {
                 const nextEvents = handled.slice(index + 1)
@@ -142,25 +142,25 @@ export const processEvents = (events: VoiceCallEvent[]): ProcessedEvent[] => {
                     isMissedEvent(event, nextEvents)
                 ) {
                     newEvent.text = isTransfer
-                        ? 'Transfer missed by'
-                        : `Missed by`
+                        ? 'Transfer missed by '
+                        : `Missed by `
                 }
                 break
             }
             case PhoneIntegrationEvent.OutgoingPhoneCallConnected:
                 // we don't have a transfer context for this event,
                 // we will emit PhoneCallAnswered events for outbound transfers
-                newEvent.text = 'Answered by'
+                newEvent.text = 'Answered by '
                 newEvent.customerId = event.customer_id
                 newEvent.userId = null
                 break
             case PhoneIntegrationEvent.PhoneCallTransferInitiated:
-                newEvent.text = 'Transfer initiated by'
+                newEvent.text = 'Transfer initiated by '
                 break
             case PhoneIntegrationEvent.PhoneCallTransferFailed:
                 if (isTransfer) {
                     // we only want to show the transfer failed event if there's no other events after transfer initiated
-                    newEvent.text = 'Transfer failed to'
+                    newEvent.text = 'Transfer failed to '
                 }
                 break
             default:

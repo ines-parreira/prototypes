@@ -135,22 +135,26 @@ describe('voice call utils', () => {
             ] as VoiceCallEvent[]
             const result = processEvents(events)
             expect(result).toEqual([
-                { text: 'Declined by', userId: 2, datetime: '10:03 AM' },
-                { text: 'Missed by', userId: 3, datetime: '10:04 AM' },
-                { text: 'Missed by', userId: 4, datetime: '10:05 AM' },
-                { text: 'Answered by', userId: 5, datetime: '03:04 PM' },
+                { text: 'Declined by ', userId: 2, datetime: '10:03 AM' },
+                { text: 'Missed by ', userId: 3, datetime: '10:04 AM' },
+                { text: 'Missed by ', userId: 4, datetime: '10:05 AM' },
+                { text: 'Answered by ', userId: 5, datetime: '03:04 PM' },
                 {
-                    text: 'Answered by',
+                    text: 'Answered by ',
                     userId: null,
                     customerId: 7,
                     datetime: '03:05 PM',
                 },
                 {
-                    text: 'Transfer initiated by',
+                    text: 'Transfer initiated by ',
                     userId: 8,
                     datetime: '03:06 PM',
                 },
-                { text: 'Transfer failed to', userId: 9, datetime: '03:07 PM' },
+                {
+                    text: 'Transfer failed to ',
+                    userId: 9,
+                    datetime: '03:07 PM',
+                },
             ])
         })
 
@@ -163,9 +167,9 @@ describe('voice call utils', () => {
             ] as VoiceCallEvent[]
             const result = processEvents(events)
             expect(result).toEqual([
-                { text: 'Answered by', userId: 1 },
-                { text: 'Declined by', userId: 2 },
-                { text: 'Missed by', userId: 3 },
+                { text: 'Answered by ', userId: 1 },
+                { text: 'Declined by ', userId: 2 },
+                { text: 'Missed by ', userId: 3 },
             ])
         })
 
@@ -178,7 +182,7 @@ describe('voice call utils', () => {
                 },
             ] as VoiceCallEvent[]
             const result = processEvents(events)
-            expect(result).toEqual([{ text: 'Missed by', userId: 1 }])
+            expect(result).toEqual([{ text: 'Missed by ', userId: 1 }])
         })
 
         it('should handle transfers', () => {
@@ -251,37 +255,45 @@ describe('voice call utils', () => {
             ] as VoiceCallEvent[]
             const result = processEvents(events)
             expect(result).toEqual([
-                { text: 'Missed by', userId: 2, datetime: '10:00 AM' },
-                { text: 'Answered by', userId: 1, datetime: '10:01 AM' },
+                { text: 'Missed by ', userId: 2, datetime: '10:00 AM' },
+                { text: 'Answered by ', userId: 1, datetime: '10:01 AM' },
                 {
-                    text: 'Transfer initiated by',
+                    text: 'Transfer initiated by ',
                     userId: 1,
                     datetime: '10:02 AM',
                 },
-                { text: 'Transfer failed to', userId: 1, datetime: '10:03 AM' },
+                {
+                    text: 'Transfer failed to ',
+                    userId: 1,
+                    datetime: '10:03 AM',
+                },
                 {
                     datetime: '10:04 AM',
-                    text: 'Transfer initiated by',
+                    text: 'Transfer initiated by ',
                     userId: 1,
                 },
                 {
-                    text: 'Transfer answered by',
+                    text: 'Transfer answered by ',
                     userId: 2,
                     datetime: '10:05 AM',
                 },
                 {
                     datetime: '10:04 AM',
-                    text: 'Transfer initiated by',
+                    text: 'Transfer initiated by ',
                     userId: 2,
                 },
-                { text: 'Transfer missed by', userId: 3, datetime: '10:06 AM' },
+                {
+                    text: 'Transfer missed by ',
+                    userId: 3,
+                    datetime: '10:06 AM',
+                },
                 {
                     datetime: '10:07 AM',
-                    text: 'Transfer initiated by',
+                    text: 'Transfer initiated by ',
                     userId: 2,
                 },
                 {
-                    text: 'Transfer declined by',
+                    text: 'Transfer declined by ',
                     userId: 3,
                     datetime: '10:09 AM',
                 },
@@ -313,10 +325,10 @@ describe('voice call utils', () => {
             ] as VoiceCallEvent[]
             const result = processEvents(events)
             expect(result).toEqual([
-                { text: 'Missed by', userId: 2, datetime: '10:00 AM' },
-                { text: 'Answered by', userId: 1, datetime: '10:01 AM' },
+                { text: 'Missed by ', userId: 2, datetime: '10:00 AM' },
+                { text: 'Answered by ', userId: 1, datetime: '10:01 AM' },
                 {
-                    text: 'Transfer initiated by',
+                    text: 'Transfer initiated by ',
                     userId: 1,
                     datetime: '10:02 AM',
                 },
@@ -353,15 +365,15 @@ describe('voice call utils', () => {
             ] as VoiceCallEvent[]
             const result = processEvents(events)
             expect(result).toEqual([
-                { text: 'Missed by', userId: 2, datetime: '10:00 AM' },
-                { text: 'Answered by', userId: 1, datetime: '10:01 AM' },
+                { text: 'Missed by ', userId: 2, datetime: '10:00 AM' },
+                { text: 'Answered by ', userId: 1, datetime: '10:01 AM' },
                 {
-                    text: 'Transfer initiated by',
+                    text: 'Transfer initiated by ',
                     userId: 1,
                     datetime: '10:02 AM',
                 },
                 {
-                    text: 'Transfer missed by',
+                    text: 'Transfer missed by ',
                     userId: 3,
                     datetime: '10:03 AM',
                 },

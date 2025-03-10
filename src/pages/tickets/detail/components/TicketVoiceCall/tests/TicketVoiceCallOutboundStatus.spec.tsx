@@ -118,7 +118,7 @@ describe('TicketVoiceCallOutboundStatus', () => {
         [VoiceCallDisplayStatus.Failed, 'Failed:'],
         [VoiceCallDisplayStatus.InProgress, 'Answered by'],
         [VoiceCallDisplayStatus.Answered, 'Answered by'],
-        [VoiceCallDisplayStatus.Unanswered, 'Call unanswered by'],
+        [VoiceCallDisplayStatus.Unanswered, 'Unanswered by'],
     ])(
         'should render the correct status message based on the voice call status',
         (displayStatus, expectedText) => {

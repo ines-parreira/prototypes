@@ -28,7 +28,7 @@ export default function TicketVoiceCallOutboundStatus({ voiceCall }: Props) {
     if (!shouldShowNewUnansweredStatuses) {
         const answeredStatus = (
             <div className={css.statusWrapper}>
-                <div>Answered by</div>
+                <div>Answered by </div>
                 <VoiceCallCustomerLabel
                     customerId={voiceCall.customer_id}
                     phoneNumber={voiceCall.phone_number_source}
@@ -87,7 +87,7 @@ export default function TicketVoiceCallOutboundStatus({ voiceCall }: Props) {
         case VoiceCallDisplayStatus.Ringing:
             return (
                 <div className={css.statusWrapper}>
-                    <div>Waiting for</div>
+                    <div>Waiting for </div>
                     <VoiceCallCustomerLabel
                         customerId={voiceCall.customer_id}
                         phoneNumber={voiceCall.phone_number_source}
@@ -111,7 +111,7 @@ export default function TicketVoiceCallOutboundStatus({ voiceCall }: Props) {
                 <CollapsibleDetails
                     title={
                         <div className={css.statusWrapper}>
-                            <div>Answered by</div>
+                            <div>Answered by </div>
                             <VoiceCallCustomerLabel
                                 customerId={voiceCall.customer_id}
                                 phoneNumber={voiceCall.phone_number_source}
@@ -125,7 +125,7 @@ export default function TicketVoiceCallOutboundStatus({ voiceCall }: Props) {
         case VoiceCallDisplayStatus.Unanswered:
             return (
                 <div className={css.statusWrapper}>
-                    <div className={css.errorStatus}>Call unanswered by</div>
+                    <div className={css.errorStatus}>Unanswered by </div>
                     <VoiceCallCustomerLabel
                         customerId={voiceCall.customer_id}
                         phoneNumber={voiceCall.phone_number_source}

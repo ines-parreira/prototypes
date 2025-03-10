@@ -75,7 +75,7 @@ export const TicketVoiceCallInboundStatus = ({ voiceCall }: Props) => {
                                     css.inbound,
                                 )}
                             >
-                                <div>Answered by</div>
+                                <div>Answered by </div>
                                 {voiceCall.last_answered_by_agent_id && (
                                     <VoiceCallAgentLabel
                                         agentId={
@@ -122,7 +122,7 @@ export const TicketVoiceCallInboundStatus = ({ voiceCall }: Props) => {
                                 css.inbound,
                             )}
                         >
-                            <div>Answered by</div>
+                            <div>Answered by </div>
                             {voiceCall.last_answered_by_agent_id && (
                                 <VoiceCallAgentLabel
                                     agentId={
@@ -136,7 +136,10 @@ export const TicketVoiceCallInboundStatus = ({ voiceCall }: Props) => {
                         </div>
                     }
                 >
-                    <TicketVoiceCallEvents callId={voiceCall.id} />
+                    <TicketVoiceCallEvents
+                        callId={voiceCall.id}
+                        terminationStatus={voiceCall.termination_status}
+                    />
                 </CollapsibleDetails>
             )
         case VoiceCallDisplayStatus.Missed:
@@ -171,7 +174,10 @@ export const TicketVoiceCallInboundStatus = ({ voiceCall }: Props) => {
                         </div>
                     }
                 >
-                    <TicketVoiceCallEvents callId={voiceCall.id} />
+                    <TicketVoiceCallEvents
+                        callId={voiceCall.id}
+                        terminationStatus={voiceCall.termination_status}
+                    />
                 </CollapsibleDetails>
             )
         default:
