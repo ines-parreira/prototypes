@@ -68,4 +68,40 @@ describe('<ColorPicker />', () => {
         )
         expect(minProps.onChange).toHaveBeenCalledWith(buttonColor)
     })
+
+    it('should propagate event to parent by default', async () => {
+        const parentClicked = jest.fn()
+        const buttonColor = '#123456'
+        render(
+            <div onClick={parentClicked}>
+                <ColorPicker {...minProps} colors={[buttonColor]} />
+            </div>,
+        )
+        fireEvent.click(screen.getByRole('button'))
+        await screen.findByRole('textbox')
+        fireEvent.click(
+            screen.getByRole('button', { name: `color ${buttonColor}` }),
+        )
+        expect(parentClicked).toHaveBeenCalled()
+    })
+
+    it('should not propagate event to parent when shouldStopPropagation is true', async () => {
+        const parentClicked = jest.fn()
+        const buttonColor = '#123456'
+        render(
+            <div onClick={parentClicked}>
+                <ColorPicker
+                    shouldStopPropagation
+                    {...minProps}
+                    colors={[buttonColor]}
+                />
+            </div>,
+        )
+        fireEvent.click(screen.getByRole('button'))
+        await screen.findByRole('textbox')
+        fireEvent.click(
+            screen.getByRole('button', { name: `color ${buttonColor}` }),
+        )
+        expect(parentClicked).not.toHaveBeenCalled()
+    })
 })

@@ -34,6 +34,7 @@ export type Props = {
     colors?: string[]
     popupContainer?: HTMLElement | RefObject<HTMLElement> | string
     label?: string
+    shouldStopPropagation?: boolean
 }
 
 export default function ColorPicker({
@@ -44,6 +45,7 @@ export default function ColorPicker({
     onChange,
     popupContainer,
     label,
+    shouldStopPropagation,
 }: Props) {
     const [isPopupVisible, setPopupVisible] = useState(false)
     const popupContentEl = useRef<HTMLDivElement>(null)
@@ -77,7 +79,12 @@ export default function ColorPicker({
             <Button
                 id={popoverId}
                 intent="secondary"
-                onClick={() => setPopupVisible(!isPopupVisible)}
+                onClick={(e) => {
+                    if (shouldStopPropagation) {
+                        e.stopPropagation()
+                    }
+                    setPopupVisible(!isPopupVisible)
+                }}
                 ref={buttonEl}
                 className={css.button}
                 data-testid={ariaLabel} // used in e2e tests
@@ -121,7 +128,12 @@ export default function ColorPicker({
                                         backgroundColor: color,
                                     }}
                                     aria-label={`color ${color}`}
-                                    onClick={() => handleClickChoice(color)}
+                                    onClick={(e) => {
+                                        if (shouldStopPropagation) {
+                                            e.stopPropagation()
+                                        }
+                                        handleClickChoice(color)
+                                    }}
                                 />
                             )
                         })}

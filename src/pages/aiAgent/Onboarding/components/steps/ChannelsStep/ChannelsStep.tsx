@@ -72,6 +72,7 @@ export const ChannelsStep: React.FC<StepProps> = ({
 }) => {
     const chatCheckboxRef = useRef<HTMLDivElement | null>(null)
     const chatDropdownRef = useRef<HTMLDivElement | null>(null)
+    const chatColorPickerRef = useRef<HTMLDivElement | null>(null)
     const emailCheckboxRef = useRef<HTMLDivElement | null>(null)
     const emailDropdownRef = useRef<HTMLDivElement | null>(null)
 
@@ -420,7 +421,8 @@ export const ChannelsStep: React.FC<StepProps> = ({
                         const clickedOnCheckboxOrDropdown =
                             target instanceof HTMLElement &&
                             (chatDropdownRef.current?.contains(target) ||
-                                chatCheckboxRef.current?.contains(target))
+                                chatCheckboxRef.current?.contains(target) ||
+                                chatColorPickerRef.current?.contains(target))
 
                         if (clickedOnCheckboxOrDropdown) {
                             return
@@ -460,13 +462,16 @@ export const ChannelsStep: React.FC<StepProps> = ({
                                             customize it further in your
                                             settings.
                                         </p>
-                                        <ColorField
-                                            value={newChatColor}
-                                            onChange={(nextValue) =>
-                                                setNewChatColor(nextValue)
-                                            }
-                                            label="Pick your main color"
-                                        />
+                                        <div ref={chatColorPickerRef}>
+                                            <ColorField
+                                                shouldStopPropagation
+                                                value={newChatColor}
+                                                onChange={(nextValue) =>
+                                                    setNewChatColor(nextValue)
+                                                }
+                                                label="Pick your main color"
+                                            />
+                                        </div>
                                     </>
                                 ) : (
                                     <div ref={chatDropdownRef}>
