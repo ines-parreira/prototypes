@@ -1,5 +1,7 @@
 import React, { useEffect, useMemo } from 'react'
 
+import { useHistory } from 'react-router-dom'
+
 import {
     AlertBannerTypes,
     BannerCategories,
@@ -13,7 +15,7 @@ import { getIntegrationsByType } from 'state/integrations/selectors'
 
 export const useZendeskImportFailedBanner = () => {
     const { addBanner, removeBanner } = useBanners()
-
+    const history = useHistory()
     const zendeskIntegrations: ZendeskIntegration[] = useAppSelector(
         getIntegrationsByType(IntegrationType.Zendesk),
     )
@@ -28,6 +30,8 @@ export const useZendeskImportFailedBanner = () => {
         [zendeskIntegrations],
     )
 
+    const url = `/app/settings/import-data/zendesk/${failedIntegration?.id}`
+
     const banner = useMemo(
         () => ({
             'aria-label': 'Zendesk Import Failed Banner',
@@ -37,13 +41,20 @@ export const useZendeskImportFailedBanner = () => {
             preventDismiss: false,
             message: (
                 <>
-                    The Zendesk import of customer tickets is on hold.
-                    We&apos;re here to help — please contact Gorgias Support for
-                    next steps.
+                    The Zendesk import of customer tickets is on hold. Please
+                    restart the import to ensure all of your tickets are in
+                    Gorgias.
                 </>
             ),
+            CTA: {
+                type: 'action',
+                text: 'View import data settings',
+                onClick: () => {
+                    history.push(url)
+                },
+            },
         }),
-        [],
+        [url, history],
     )
 
     useEffect(() => {

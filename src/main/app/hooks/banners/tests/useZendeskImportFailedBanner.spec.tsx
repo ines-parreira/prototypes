@@ -12,11 +12,15 @@ jest.mock(
     () =>
         ({
             ...jest.requireActual('react-router-dom'),
+            useHistory: () => ({
+                push: mockHistoryPush,
+            }),
         }) as Record<string, unknown>,
 )
 
 const mockedAddBanner = jest.fn()
 const mockedRemoveBanner = jest.fn()
+const mockHistoryPush = jest.fn()
 
 jest.mock(
     'AlertBanners',
@@ -82,7 +86,17 @@ describe('useZendeskImportFailedBanner', () => {
             instanceId: INSTANCE_ID,
             preventDismiss: false,
             message: expect.any(Object),
+            CTA: expect.objectContaining({
+                type: 'action',
+                text: 'View import data settings',
+                onClick: expect.any(Function),
+            }),
         })
+
+        onclick = mockedAddBanner.mock.calls[0][0].CTA.onClick()
+        expect(mockHistoryPush).toHaveBeenCalledWith(
+            '/app/settings/import-data/zendesk/1',
+        )
     })
 
     it('should call removeBanner when no failed integration exists', () => {
