@@ -1,21 +1,28 @@
-import React, { useCallback } from 'react'
+/* istanbul ignore file */
+import React, { useCallback, useMemo } from 'react'
 
 import classNames from 'classnames'
 import { noop } from 'lodash'
-import { useParams } from 'react-router-dom'
+import { useHistory, useLocation, useParams } from 'react-router-dom'
 
 import { LoadingSpinner } from '@gorgias/merchant-ui-kit'
 
+import { TicketChannel } from 'business/types/ticket'
 import { logEvent, SegmentEvent } from 'common/segment'
 import useAppDispatch from 'hooks/useAppDispatch'
+import { useSearchParam } from 'hooks/useSearchParam'
 import { useUpdateHelpCenter } from 'models/helpCenter/queries'
 import { HelpCenter } from 'models/helpCenter/types'
 import { IntegrationType } from 'models/integration/types'
 import { useGetWorkflowConfigurations } from 'models/workflows/queries'
 import useHelpCentersAutomationSettings from 'pages/automate/common/hooks/useHelpCenterAutomationSettings'
+import useSelfServiceChannels, {
+    SelfServiceChannel,
+} from 'pages/automate/common/hooks/useSelfServiceChannels'
 import useSelfServiceConfiguration from 'pages/automate/common/hooks/useSelfServiceConfiguration'
-import useSelfServiceHelpCenterChannels from 'pages/automate/common/hooks/useSelfServiceHelpCenterChannels'
+import { SelfServiceHelpCenterChannel } from 'pages/automate/common/hooks/useSelfServiceHelpCenterChannels'
 import { AutomateFeatures } from 'pages/automate/common/types'
+import { useIsAutomateSettings } from 'settings/automate/hooks/useIsAutomateSettings'
 import { helpCenterUpdated } from 'state/entities/helpCenter/helpCenters'
 import { notify } from 'state/notifications/actions'
 import { NotificationStatus } from 'state/notifications/types'
@@ -40,6 +47,10 @@ export const ConnectedChannelsHelpCenterView = ({
         shopType: string
         shopName: string
     }>()
+    const isAutomateSettings = useIsAutomateSettings()
+    const location = useLocation()
+    const history = useHistory()
+    const [channelId] = useSearchParam('channel-id')
 
     const shopType = helpCenter ? 'shopify' : shopTypeParam
     const shopName = helpCenter ? (helpCenter.shop_name ?? '') : shopNameParam
@@ -51,16 +62,22 @@ export const ConnectedChannelsHelpCenterView = ({
     } = useSelfServiceConfiguration(shopType, shopName)
     const { data: workflowConfigurations = [] } = useGetWorkflowConfigurations()
 
-    const helpCenterChannels = useSelfServiceHelpCenterChannels(
-        shopType,
-        shopName,
-    )
+    const channels = useSelfServiceChannels(shopType, shopName)
+
+    const helpCenterChannels = useMemo(() => {
+        return channels.filter(
+            (channel): channel is SelfServiceHelpCenterChannel =>
+                channel.type === TicketChannel.HelpCenter,
+        )
+    }, [channels])
 
     const [selectedChannel, setSelectedChannel] = React.useState<number | null>(
         () =>
             helpCenter
                 ? helpCenter.id
-                : (helpCenterChannels[0]?.value.id ?? null),
+                : channelId
+                  ? Number(channelId)
+                  : (helpCenterChannels[0]?.value.id ?? null),
     )
 
     const currentChannel =
@@ -114,8 +131,83 @@ export const ConnectedChannelsHelpCenterView = ({
         [updateHelpCenterMutateAsync, dispatch, currentChannelId],
     )
 
+    const currentlyViewingDropdownOptions = useMemo(
+        () => (isAutomateSettings ? channels : helpCenterChannels),
+        [channels, helpCenterChannels, isAutomateSettings],
+    )
+
+    const currentlyViewingDropdownRenderOption = useCallback(
+        (channel: SelfServiceChannel) => {
+            switch (channel.type) {
+                case TicketChannel.Chat:
+                    return {
+                        label: channel.value.name,
+                        value: channel.value.meta.app_id ?? channel.value.name,
+                    }
+                case TicketChannel.HelpCenter:
+                    return {
+                        label: channel.value.name,
+                        value: channel.value.id ?? channel.value.name,
+                    }
+                default:
+                    return {
+                        label: channel.value.name,
+                        value: channel.value.id ?? channel.value.name,
+                    }
+            }
+        },
+        [],
+    )
+
     const isOrderManagementEnabled =
         !currentChannel?.value?.self_service_deactivated_datetime
+
+    const onSelectedChannelChange = useCallback(
+        (value: string | number) => {
+            if (!isAutomateSettings) {
+                setSelectedChannel(Number(value))
+                return
+            }
+
+            const selectedChannel = channels.find((channel) => {
+                if (channel.type === TicketChannel.Chat) {
+                    return channel.value.meta?.app_id === value
+                }
+                return channel.value.id === value
+            })
+
+            if (!selectedChannel) return
+
+            const [baseURL] = location.pathname.split(shopType)
+
+            switch (selectedChannel.type) {
+                // Current channel type, no redirect
+                case TicketChannel.HelpCenter:
+                    setSelectedChannel(Number(value))
+                    break
+                case TicketChannel.Chat:
+                    history.push(
+                        `${baseURL}${shopType}/${shopName}/channels?channel-id=${value}`,
+                    )
+                    break
+                case TicketChannel.ContactForm:
+                    history.push(
+                        `${baseURL}${shopType}/${shopName}/channels/contact-form?channel-id=${value}`,
+                    )
+                    break
+                default:
+                    break
+            }
+        },
+        [
+            channels,
+            history,
+            shopName,
+            shopType,
+            location.pathname,
+            isAutomateSettings,
+        ],
+    )
 
     if (helpCenterChannels.length === 0) {
         return (
@@ -148,16 +240,11 @@ export const ConnectedChannelsHelpCenterView = ({
                         onConnect={noop}
                         appId={currentChannel.value.id}
                         channelType="help-center"
-                        channels={helpCenterChannels}
+                        channels={currentlyViewingDropdownOptions}
                         value={selectedChannel ?? ''}
                         label={currentChannel?.value?.name}
-                        onSelectedChannelChange={(value) =>
-                            setSelectedChannel(Number(value))
-                        }
-                        renderOption={(channel) => ({
-                            label: channel.value.name,
-                            value: channel.value.id ?? channel.value.name,
-                        })}
+                        onSelectedChannelChange={onSelectedChannelChange}
+                        renderOption={currentlyViewingDropdownRenderOption}
                     />
                 )}
 

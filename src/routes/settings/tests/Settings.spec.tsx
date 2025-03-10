@@ -4,9 +4,20 @@ import type { ReactNode } from 'react'
 import { render, screen } from '@testing-library/react'
 import { Route, useRouteMatch } from 'react-router-dom'
 
+import { NotificationsSettings } from 'common/notifications'
 import { PageSection } from 'config/pages'
 import { ADMIN_ROLE } from 'config/user'
 import IntegrationDetail from 'pages/integrations/integration/Integration'
+import Access from 'pages/settings/access/Access'
+import APIView from 'pages/settings/api/APIView'
+import UserAuditList from 'pages/settings/audit/UserAuditList'
+import AutoMergeSettings from 'pages/settings/autoMerge/AutoMergeSettings'
+import BusinessHours from 'pages/settings/businessHours/BusinessHours'
+import SidebarSettings from 'pages/settings/sidebar/SidebarSettings'
+import ManageTags from 'pages/settings/tags/ManageTags'
+import TicketAssignment from 'pages/settings/ticketAssignment/TicketAssignment'
+import PasswordAnd2FA from 'pages/settings/yourProfile/PasswordAnd2FA'
+import YourProfileContainer from 'pages/settings/yourProfile/YourProfileContainer'
 import {
     CUSTOM_FIELD_CONDITIONS_ROUTE,
     CUSTOM_FIELD_ROUTES,
@@ -175,32 +186,98 @@ const testingMap = [
     {
         callOrder: 15,
         exact: undefined,
+        path: `${basePath}/teams`,
+        component: Teams,
+    },
+    {
+        callOrder: 16,
+        exact: undefined,
+        path: `${basePath}/users`,
+        component: Users,
+    },
+    {
+        callOrder: 17,
+        exact: true,
+        path: `${basePath}/profile`,
+        component: YourProfileContainer,
+    },
+    {
+        callOrder: 18,
+        exact: true,
+        path: `${basePath}/notifications`,
+        component: NotificationsSettings,
+    },
+    {
+        callOrder: 19,
+        exact: true,
+        path: `${basePath}/password-2fa`,
+        component: PasswordAnd2FA,
+    },
+    {
+        callOrder: 20,
+        exact: true,
+        path: `${basePath}/api`,
+        component: APIView,
+    },
+    {
+        callOrder: 21,
+        exact: true,
+        path: `${basePath}/audit`,
+        component: UserAuditList,
+    },
+    {
+        callOrder: 22,
+        exact: true,
+        path: `${basePath}/manage-tags`,
+        component: ManageTags,
+    },
+    {
+        callOrder: 23,
+        exact: true,
+        path: `${basePath}/access`,
+        component: Access,
+    },
+    {
+        callOrder: 24,
+        exact: true,
+        path: `${basePath}/business-hours`,
+        component: BusinessHours,
+    },
+    {
+        callOrder: 25,
+        exact: undefined,
+        path: `${basePath}/sidebar`,
+        component: SidebarSettings,
+    },
+    {
+        callOrder: 26,
+        exact: true,
+        path: `${basePath}/ticket-assignment`,
+        component: TicketAssignment,
+    },
+    {
+        callOrder: 27,
+        exact: true,
+        path: `${basePath}/auto-merge`,
+        component: AutoMergeSettings,
+    },
+    {
+        callOrder: 28,
+        exact: undefined,
         path: `${basePath}/article-recommendations/:shopType?/:shopName?`,
         component: PaywalledArticleRecommendations,
     },
     {
-        callOrder: 16,
+        callOrder: 29,
         exact: undefined,
         path: `${basePath}/flows/:shopType?/:shopName?`,
         component: PaywalledFlows,
     },
     {
-        callOrder: 17,
+        callOrder: 30,
         exact: undefined,
         path: `${basePath}/order-management/:shopType?/:shopName?`,
         component: PaywalledOrderManagement,
-    },
-    {
-        callOrder: 18,
-        exact: undefined,
-        path: `${basePath}/teams`,
-        component: Teams,
-    },
-    {
-        callOrder: 19,
-        exact: undefined,
-        path: `${basePath}/users`,
-        component: Users,
     },
 ]
 

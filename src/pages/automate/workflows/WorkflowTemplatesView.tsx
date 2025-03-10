@@ -3,8 +3,9 @@ import React from 'react'
 import { Link } from 'react-router-dom'
 import { Breadcrumb, BreadcrumbItem, Container } from 'reactstrap'
 
+import { Button } from '@gorgias/merchant-ui-kit'
+
 import ArrowBackwardIcon from 'assets/img/icons/arrow-backward.svg'
-import Button from 'pages/common/components/button/Button'
 import PageHeader from 'pages/common/components/PageHeader'
 
 import { FLOWS } from '../common/components/constants'
@@ -17,13 +18,13 @@ import css from './WorkflowTemplatesView.less'
 type Props = {
     goToNewWorkflowPage: () => void
     goToNewWorkflowFromTemplatePage: (templateSlug: string) => void
-    workflowsUrl: string
+    workflowsURL: string
 }
 
 const WorkflowTemplatesView = ({
     goToNewWorkflowPage,
     goToNewWorkflowFromTemplatePage,
-    workflowsUrl,
+    workflowsURL,
 }: Props) => {
     return (
         <div className="full-width overflow-auto">
@@ -32,7 +33,7 @@ const WorkflowTemplatesView = ({
                     title={
                         <Breadcrumb>
                             <BreadcrumbItem>
-                                <Link to={workflowsUrl}>{FLOWS}</Link>
+                                <Link to={workflowsURL}>{FLOWS}</Link>
                             </BreadcrumbItem>
                             <BreadcrumbItem active>
                                 Flow Templates
@@ -47,7 +48,7 @@ const WorkflowTemplatesView = ({
             </div>
             <Container fluid className={css.container}>
                 <div className={css.backWrapper}>
-                    <Link to={workflowsUrl} className="d-flex">
+                    <Link to={workflowsURL} className="d-flex">
                         <img src={ArrowBackwardIcon} alt="Back" />
                         Back To Flows
                     </Link>

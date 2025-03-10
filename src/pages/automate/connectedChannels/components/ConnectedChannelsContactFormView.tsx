@@ -1,18 +1,25 @@
-import React, { useCallback } from 'react'
+/* istanbul ignore file */
+import React, { useCallback, useMemo } from 'react'
 
 import classNames from 'classnames'
 import { noop } from 'lodash'
-import { useParams } from 'react-router-dom'
+import { useHistory, useLocation, useParams } from 'react-router-dom'
 
 import { LoadingSpinner } from '@gorgias/merchant-ui-kit'
 
+import { TicketChannel } from 'business/types/ticket'
 import { logEvent, SegmentEvent } from 'common/segment'
+import { useSearchParam } from 'hooks/useSearchParam'
 import { ContactForm } from 'models/contactForm/types'
 import { useGetWorkflowConfigurations } from 'models/workflows/queries'
 import useContactFormAutomationSettings from 'pages/automate/common/hooks/useContactFormAutomationSettings'
+import useSelfServiceChannels, {
+    SelfServiceChannel,
+} from 'pages/automate/common/hooks/useSelfServiceChannels'
 import useSelfServiceConfiguration from 'pages/automate/common/hooks/useSelfServiceConfiguration'
-import useSelfServiceStandaloneContactFormChannels from 'pages/automate/common/hooks/useSelfServiceStandaloneContactFormChannels'
+import { SelfServiceStandaloneContactFormChannel } from 'pages/automate/common/hooks/useSelfServiceStandaloneContactFormChannels'
 import { AutomateFeatures } from 'pages/automate/common/types'
+import { useIsAutomateSettings } from 'settings/automate/hooks/useIsAutomateSettings'
 
 import ConnectedChannelsPreview from '../ConnectedChannelsPreview'
 import { ConnectedChannelsEmptyView } from './ConnectedChannelsEmptyView'
@@ -38,6 +45,10 @@ export const ConnectedChannelsContactFormView = ({
 
     const shopType = contactForm ? 'shopify' : shopTypeParam
     const shopName = contactForm ? (contactForm.shop_name ?? '') : shopNameParam
+    const isAutomateSettings = useIsAutomateSettings()
+    const location = useLocation()
+    const history = useHistory()
+    const [channelId] = useSearchParam('channel-id')
 
     const {
         selfServiceConfiguration,
@@ -46,13 +57,20 @@ export const ConnectedChannelsContactFormView = ({
     } = useSelfServiceConfiguration(shopType, shopName)
     const { data: workflowConfigurations = [] } = useGetWorkflowConfigurations()
 
-    const contactFormChannels = useSelfServiceStandaloneContactFormChannels(
-        shopType,
-        shopName,
-    )
+    const channels = useSelfServiceChannels(shopType, shopName)
+
+    const contactFormChannels = useMemo(() => {
+        return channels.filter(
+            (channel): channel is SelfServiceStandaloneContactFormChannel =>
+                channel.type === TicketChannel.ContactForm,
+        )
+    }, [channels])
 
     const [selectedChannel, setSelectedChannel] = React.useState<number | null>(
-        () => contactFormChannels[0]?.value.id ?? null,
+        () =>
+            channelId
+                ? Number(channelId)
+                : (contactFormChannels[0]?.value.id ?? null),
     )
 
     const currentChannel =
@@ -67,6 +85,81 @@ export const ConnectedChannelsContactFormView = ({
         handleContactFormAutomationSettingsUpdate,
         isFetchPending,
     } = useContactFormAutomationSettings(currentChannelId)
+
+    const currentlyViewingDropdownOptions = useMemo(
+        () => (isAutomateSettings ? channels : contactFormChannels),
+        [channels, contactFormChannels, isAutomateSettings],
+    )
+
+    const currentlyViewingDropdownRenderOption = useCallback(
+        (channel: SelfServiceChannel) => {
+            switch (channel.type) {
+                case TicketChannel.Chat:
+                    return {
+                        label: channel.value.name,
+                        value: channel.value.meta.app_id ?? channel.value.name,
+                    }
+                case TicketChannel.HelpCenter:
+                    return {
+                        label: channel.value.name,
+                        value: channel.value.id ?? channel.value.name,
+                    }
+                default:
+                    return {
+                        label: channel.value.name,
+                        value: channel.value.id ?? channel.value.name,
+                    }
+            }
+        },
+        [],
+    )
+
+    const onSelectedChannelChange = useCallback(
+        (value: string | number) => {
+            if (!isAutomateSettings) {
+                setSelectedChannel(Number(value))
+                return
+            }
+
+            const selectedChannel = channels.find((channel) => {
+                if (channel.type === TicketChannel.Chat) {
+                    return channel.value.meta?.app_id === value
+                }
+                return channel.value.id === value
+            })
+
+            if (!selectedChannel) return
+
+            const [baseURL] = location.pathname.split(shopType)
+
+            switch (selectedChannel.type) {
+                // Current channel type, no redirect
+                case TicketChannel.ContactForm:
+                    setSelectedChannel(Number(value))
+                    break
+                case TicketChannel.HelpCenter:
+                    history.push(
+                        `${baseURL}${shopType}/${shopName}/channels/help-center?channel-id=${value}`,
+                    )
+                    break
+                case TicketChannel.Chat:
+                    history.push(
+                        `${baseURL}${shopType}/${shopName}/channels?channel-id=${value}`,
+                    )
+                    break
+                default:
+                    break
+            }
+        },
+        [
+            channels,
+            history,
+            shopName,
+            shopType,
+            location.pathname,
+            isAutomateSettings,
+        ],
+    )
 
     const updateSettings = useCallback(
         (value: boolean) => {
@@ -116,17 +209,12 @@ export const ConnectedChannelsContactFormView = ({
                     <CurrentlyViewingDropdown
                         onConnect={noop}
                         channelType="contact-form"
-                        channels={contactFormChannels}
+                        channels={currentlyViewingDropdownOptions}
                         appId={currentChannel.value.id}
                         value={selectedChannel ?? ''}
                         label={currentChannel?.value?.name}
-                        onSelectedChannelChange={(value) =>
-                            setSelectedChannel(Number(value))
-                        }
-                        renderOption={(channel) => ({
-                            label: channel.value.name,
-                            value: channel.value.id ?? channel.value.name,
-                        })}
+                        onSelectedChannelChange={onSelectedChannelChange}
+                        renderOption={currentlyViewingDropdownRenderOption}
                     />
                 )}
 

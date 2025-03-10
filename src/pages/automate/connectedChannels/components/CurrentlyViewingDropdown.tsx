@@ -1,16 +1,19 @@
-import React from 'react'
+import React, { useMemo } from 'react'
 
 import classNames from 'classnames'
 import { startCase } from 'lodash'
 import { Link } from 'react-router-dom'
 
-import { Label } from '@gorgias/merchant-ui-kit'
+import { Label, Separator } from '@gorgias/merchant-ui-kit'
 
+import { TicketChannel } from 'business/types/ticket'
+import { SelfServiceChannel } from 'pages/automate/common/hooks/useSelfServiceChannels'
 import Button from 'pages/common/components/button/Button'
 import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 import Dropdown from 'pages/common/components/dropdown/Dropdown'
 import DropdownBody from 'pages/common/components/dropdown/DropdownBody'
 import DropdownItem from 'pages/common/components/dropdown/DropdownItem'
+import { useIsAutomateSettings } from 'settings/automate/hooks/useIsAutomateSettings'
 
 import css from './CurrentlyViewingDropdown.less'
 
@@ -49,7 +52,8 @@ const getLinkAndLabel = (channelType: ChannelType, id: string | number) => {
             }
     }
 }
-interface Props<T> {
+
+interface Props<T extends SelfServiceChannel> {
     channelType: ChannelType
     value: string | number
     label: string
@@ -63,7 +67,7 @@ interface Props<T> {
         value: string | number
     }
 }
-export const CurrentlyViewingDropdown = <T,>({
+export const CurrentlyViewingDropdown = <T extends SelfServiceChannel>({
     channelType,
     channels,
     value,
@@ -75,10 +79,35 @@ export const CurrentlyViewingDropdown = <T,>({
 }: Props<T>) => {
     const [isSelectOpen, setIsSelectOpen] = React.useState(false)
     const targetRef = React.useRef<HTMLButtonElement>(null)
+    const isAutomateSettings = useIsAutomateSettings()
 
     const { link, label: channelTypeLabel } = getLinkAndLabel(
         channelType,
         appId,
+    )
+
+    const groupedChannels = useMemo(
+        () => [
+            {
+                label: 'Chat',
+                channels: channels.filter(
+                    (channel) => channel.type === TicketChannel.Chat,
+                ),
+            },
+            {
+                label: 'Help Center',
+                channels: channels.filter(
+                    (channel) => channel.type === TicketChannel.HelpCenter,
+                ),
+            },
+            {
+                label: 'Contact Form',
+                channels: channels.filter(
+                    (channel) => channel.type === TicketChannel.ContactForm,
+                ),
+            },
+        ],
+        [channels],
     )
 
     return (
@@ -128,25 +157,79 @@ export const CurrentlyViewingDropdown = <T,>({
                 value={value}
             >
                 <DropdownBody>
-                    {channels.map((channel) => (
-                        <DropdownItem
-                            key={renderOption(channel).value}
-                            option={renderOption(channel)}
-                            onClick={onSelectedChannelChange}
-                            shouldCloseOnSelect
-                            className={css.dropdownItem}
-                        >
-                            <i
-                                className={classNames(
-                                    'material-icons',
-                                    css.channelIcon,
-                                )}
-                            >
-                                {renderIconByChannelType(channelType)}
-                            </i>
-                            {renderOption(channel).label}
-                        </DropdownItem>
-                    ))}
+                    {isAutomateSettings ? (
+                        <>
+                            {groupedChannels.map((channelGroup, index) => (
+                                <div
+                                    key={channelGroup.label}
+                                    className={css.dropdownGroup}
+                                >
+                                    <Label className={css.dropdownGroupLabel}>
+                                        {channelGroup.label}
+                                    </Label>
+                                    {channelGroup.channels.map((channel) => (
+                                        <DropdownItem
+                                            key={renderOption(channel).value}
+                                            option={renderOption(channel)}
+                                            onClick={onSelectedChannelChange}
+                                            shouldCloseOnSelect
+                                            className={css.dropdownItem}
+                                        >
+                                            <i
+                                                className={classNames(
+                                                    'material-icons',
+                                                    css.channelIcon,
+                                                )}
+                                            >
+                                                {renderIconByChannelType(
+                                                    channelType,
+                                                )}
+                                            </i>
+                                            {renderOption(channel).label}
+                                        </DropdownItem>
+                                    ))}
+                                    {channelGroup.channels.length === 0 && (
+                                        <Link
+                                            to={link}
+                                            className={css.dropdownGroupLink}
+                                        >
+                                            Go to {channelGroup.label}
+                                        </Link>
+                                    )}
+                                    {index !== groupedChannels.length - 1 && (
+                                        <Separator
+                                            className={
+                                                css.dropdownGroupSeparator
+                                            }
+                                        />
+                                    )}
+                                </div>
+                            ))}
+                        </>
+                    ) : (
+                        <>
+                            {channels.map((channel) => (
+                                <DropdownItem
+                                    key={renderOption(channel).value}
+                                    option={renderOption(channel)}
+                                    onClick={onSelectedChannelChange}
+                                    shouldCloseOnSelect
+                                    className={css.dropdownItem}
+                                >
+                                    <i
+                                        className={classNames(
+                                            'material-icons',
+                                            css.channelIcon,
+                                        )}
+                                    >
+                                        {renderIconByChannelType(channelType)}
+                                    </i>
+                                    {renderOption(channel).label}
+                                </DropdownItem>
+                            ))}
+                        </>
+                    )}
+
                     {showConnectCallToAction && (
                         <DropdownItem
                             option={{

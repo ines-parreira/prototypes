@@ -1,8 +1,8 @@
 {
   "summary": {
     "totalEntries": 32,
-    "totalUsages": 1086,
-    "reportGeneratedAt": "2025-03-06T09:25:30.536Z"
+    "totalUsages": 1077,
+    "reportGeneratedAt": "2025-03-07T08:44:46.246Z"
   },
   "entries": [
     {
@@ -304,7 +304,7 @@
       "type": "feature-flag cleanup initiative",
       "entries": [
         {
-          "usageCount": 211,
+          "usageCount": 205,
           "name": "launchdarkly-react-client-sdk.useFlags",
           "nodeType": "Identifier",
           "deprecationDate": "2025-02-10",
@@ -360,7 +360,6 @@
               "src/pages/aiAgent/components/AiAgentNavbar/AiAgentNavbar.tsx",
               "src/pages/aiAgent/components/AiAgentNavbar/tests/AiAgentNavbar.spec.tsx",
               "src/pages/aiAgent/components/GuidanceBreadcrumbs/GuidanceBreadcrumbs.tsx",
-              "src/pages/aiAgent/components/PlaygroundChat/PlaygroundChat.tsx",
               "src/pages/aiAgent/components/PlaygroundPrerequisites/PlaygroundPrerequisitesAlerts.tsx",
               "src/pages/aiAgent/components/StoreConfigForm/FormComponents/ChannelsFormComponent.tsx",
               "src/pages/aiAgent/components/StoreConfigForm/FormComponents/EmailFormComponent.tsx",
@@ -480,13 +479,8 @@
               "src/pages/settings/helpCenter/components/tests/HelpCenterNavigation.spec.tsx",
               "src/pages/settings/helpCenter/providers/CurrentHelpCenter/CurrentHelpCenter.tsx",
               "src/pages/settings/helpCenter/queries.ts",
-              "src/pages/settings/new_billing/components/ProductPlanSelection/ProductPlanSelection.tsx",
               "src/pages/settings/new_billing/components/SummaryTotal/SummaryTotal.tsx",
-              "src/pages/settings/new_billing/components/VoiceOrSmsChangeReviewAlert/VoiceOrSmsChangeReviewAlert.tsx",
               "src/pages/settings/new_billing/hooks/tests/useAutomatedHelpdeskCancellationFlowAvailable.spec.ts",
-              "src/pages/settings/new_billing/hooks/useBillingPlan.ts",
-              "src/pages/settings/new_billing/views/PaymentInformationView/PaymentInformationView.tsx",
-              "src/pages/settings/new_billing/views/UsageAndPlansView/UsageAndPlansView.tsx",
               "src/pages/stats/aiSalesAgent/components/RenderChart.tsx",
               "src/pages/stats/automate/overview/AutomateOverviewContent.tsx",
               "src/pages/stats/common/components/StatsNavbarView.tsx",
@@ -811,7 +805,7 @@
       "type": "ui-kit-migration",
       "entries": [
         {
-          "usageCount": 612,
+          "usageCount": 609,
           "name": "Button",
           "nodeType": "VariableDeclaration",
           "deprecationDate": "2024-03-04",
@@ -917,8 +911,6 @@
               "src/pages/automate/trainMyAi/components/NoRelevantArticlePreview.tsx",
               "src/pages/automate/trainMyAi/components/PreviewHeader.tsx",
               "src/pages/automate/trainMyAi/components/RecommendationFilterNoResults.tsx",
-              "src/pages/automate/workflows/WorkflowTemplatesView.tsx",
-              "src/pages/automate/workflows/WorkflowsView.tsx",
               "src/pages/automate/workflows/analytics/ConfirmationButton.tsx",
               "src/pages/automate/workflows/analytics/WorkflowAnalyticsActionButtons.tsx",
               "src/pages/automate/workflows/components/WorkflowLanguageSelect.tsx",
@@ -1386,7 +1378,6 @@
               "src/pages/stats/sla/ServiceLevelAgreementsEmptyState.tsx",
               "src/pages/stats/sla/components/DownloadSLAsDataButton.tsx",
               "src/pages/stats/sla/components/SLAPolicySelect.tsx",
-              "src/pages/stats/support-performance/agents/DownloadAgentsPerformanceDataButton.tsx",
               "src/pages/stats/support-performance/busiest-times-of-days/BusiestTimesOfDaysMetricSelect.tsx",
               "src/pages/stats/support-performance/channels/ChannelsDownloadDataButton.tsx",
               "src/pages/stats/support-performance/components/DownloadDataButton.tsx",

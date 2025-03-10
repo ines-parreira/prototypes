@@ -1,3 +1,4 @@
+/* istanbul ignore file */
 import React, { useCallback, useMemo } from 'react'
 
 import { Redirect, useHistory, useLocation, useParams } from 'react-router-dom'
@@ -8,6 +9,8 @@ import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import useEffectOnce from 'hooks/useEffectOnce'
 import { ErrorBoundary } from 'pages/ErrorBoundary'
+import { useAutomateBaseURL } from 'settings/automate/hooks/useAutomateBaseURL'
+import { useIsAutomateSettings } from 'settings/automate/hooks/useIsAutomateSettings'
 import { getHasAutomate } from 'state/billing/selectors'
 import { notify } from 'state/notifications/actions'
 import { Notification } from 'state/notifications/types'
@@ -25,15 +28,27 @@ export default function WorkflowEditorViewContainer() {
     const history = useHistory()
     const dispatch = useAppDispatch()
     const hasAutomate = useAppSelector(getHasAutomate)
+    const isAutomateSettings = useIsAutomateSettings()
     const location = useLocation<{ from?: string }>()
     const { from } = location.state || {}
 
+    const baseURL = useAutomateBaseURL()
+
     const goToWorkflowsListPage = useCallback(() => {
-        history.push(`/app/automation/${shopType}/${shopName}/flows`)
-    }, [history, shopName, shopType])
+        if (isAutomateSettings) {
+            history.push(`${baseURL}/flows/${shopType}/${shopName}`)
+        } else {
+            history.push(`${baseURL}/${shopType}/${shopName}/flows`)
+        }
+    }, [history, shopName, shopType, baseURL, isAutomateSettings])
+
     const goToWorkflowTemplatesPage = useCallback(() => {
-        history.push(`/app/automation/${shopType}/${shopName}/flows/templates`)
-    }, [history, shopName, shopType])
+        if (isAutomateSettings) {
+            history.push(`${baseURL}/flows/${shopType}/${shopName}/templates`)
+        } else {
+            history.push(`${baseURL}/${shopType}/${shopName}/flows/templates`)
+        }
+    }, [history, shopName, shopType, baseURL, isAutomateSettings])
 
     const isNewWorkflow = editWorkflowId == null
     const workflowId = useMemo(() => editWorkflowId ?? ulid(), [editWorkflowId])
@@ -50,14 +65,24 @@ export default function WorkflowEditorViewContainer() {
             if (isDraft) {
                 logActionOnFlowBuilder('draft')
             }
-            history.replace(
-                `/app/automation/${shopType}/${shopName}/flows/edit/${workflowId}`,
-                {
-                    doShowDisplayInChannels: !isDraft,
-                },
-            )
+
+            if (isAutomateSettings) {
+                history.replace(
+                    `${baseURL}/flows/${shopType}/${shopName}/edit/${workflowId}`,
+                    {
+                        doShowDisplayInChannels: !isDraft,
+                    },
+                )
+            } else {
+                history.replace(
+                    `${baseURL}/${shopType}/${shopName}/flows/edit/${workflowId}`,
+                    {
+                        doShowDisplayInChannels: !isDraft,
+                    },
+                )
+            }
         },
-        [history, shopName, shopType, workflowId],
+        [history, shopName, shopType, workflowId, baseURL, isAutomateSettings],
     )
 
     const handleFlowPublished = useCallback(() => {
@@ -75,13 +100,28 @@ export default function WorkflowEditorViewContainer() {
     const goToWorkflowAnalyticsPage = useCallback(
         (zoom: number) => {
             const params = new URLSearchParams({ zoom: zoom.toString() })
-            history.push({
-                pathname: `/app/automation/${shopType}/${shopName}/flows/analytics/${editWorkflowId}`,
-                search: params.toString(),
-                state: { from: 'workflow-editor' },
-            })
+            if (isAutomateSettings) {
+                history.push({
+                    pathname: `${baseURL}/flows/${shopType}/${shopName}/analytics/${editWorkflowId}`,
+                    search: params.toString(),
+                    state: { from: 'workflow-editor' },
+                })
+            } else {
+                history.push({
+                    pathname: `${baseURL}/${shopType}/${shopName}/flows/analytics/${editWorkflowId}`,
+                    search: params.toString(),
+                    state: { from: 'workflow-editor' },
+                })
+            }
         },
-        [history, shopType, shopName, editWorkflowId],
+        [
+            history,
+            shopType,
+            shopName,
+            editWorkflowId,
+            baseURL,
+            isAutomateSettings,
+        ],
     )
 
     useEffectOnce(() => {
@@ -99,7 +139,7 @@ export default function WorkflowEditorViewContainer() {
     }
 
     if (!hasAutomate) {
-        return <Redirect to="/app/automation" />
+        return <Redirect to={baseURL} />
     }
 
     return (

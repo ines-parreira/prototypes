@@ -1,10 +1,16 @@
 import React from 'react'
 
-import { NavLink, Route, Switch, useRouteMatch } from 'react-router-dom'
+import { NavLink, Route, useRouteMatch } from 'react-router-dom'
 
 import Header from 'pages/common/components/PageHeader'
 import SecondaryNavbar from 'pages/common/components/SecondaryNavbar/SecondaryNavbar'
 import { StoreSelector, useStoreSelector } from 'settings/automate'
+
+import { AutomateSettingsFlowsAnalyticsRoute } from './flows-routes/AutomateSettingsFlowsAnalysisRoute'
+import { AutomateSettingsFlowsBaseRoute } from './flows-routes/AutomateSettingsFlowsBaseRoute'
+import { AutomateSettingsChannelsRoute } from './flows-routes/AutomateSettingsFlowsChannelsRoute'
+import { AutomateSettingsFlowsEditRoute } from './flows-routes/AutomateSettingsFlowsEditRoute'
+import { AutomateSettingsFlowsNewRoute } from './flows-routes/AutomateSettingsFlowsNewRoute'
 
 import css from './FlowsSettings.less'
 
@@ -37,14 +43,31 @@ export function FlowsSettings() {
                             Channels
                         </NavLink>
                     </SecondaryNavbar>
-                    <Switch>
-                        <Route exact path={`${path}`}>
-                            <p>Configuration content.</p>
-                        </Route>
-                        <Route path={`${path}/channels`}>
-                            <p>Channels content.</p>
-                        </Route>
-                    </Switch>
+
+                    <Route
+                        path={path}
+                        component={AutomateSettingsFlowsBaseRoute}
+                    />
+                    <Route
+                        path={`${path}/new`}
+                        exact
+                        component={AutomateSettingsFlowsNewRoute}
+                    />
+                    <Route
+                        path={`${path}/edit/:editWorkflowId`}
+                        exact
+                        component={AutomateSettingsFlowsEditRoute}
+                    />
+                    <Route
+                        path={`${path}/analytics/:editWorkflowId`}
+                        exact
+                        component={AutomateSettingsFlowsAnalyticsRoute}
+                    />
+
+                    <Route
+                        path={`${path}/channels`}
+                        component={AutomateSettingsChannelsRoute}
+                    />
                 </>
             )}
         </div>

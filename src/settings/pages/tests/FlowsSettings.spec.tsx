@@ -1,10 +1,19 @@
 import React from 'react'
 
-import { render, screen } from '@testing-library/react'
+import { screen } from '@testing-library/react'
+import { fromJS, Map } from 'immutable'
+import { Provider } from 'react-redux'
 import { Route, StaticRouter } from 'react-router-dom'
+import configureMockStore from 'redux-mock-store'
+import thunk from 'redux-thunk'
 
+import { AGENT_ROLE } from 'config/user'
+import { user } from 'fixtures/users'
 import { IntegrationType, StoreIntegration } from 'models/integration/types'
 import { useStoreSelector } from 'settings/automate'
+import { getHasAutomate } from 'state/billing/selectors'
+import { RootState, StoreDispatch } from 'state/types'
+import { renderWithQueryClientProvider } from 'tests/reactQueryTestingUtils'
 import { assumeMock } from 'utils/testing'
 
 import { BASE_PATH, FlowsSettings } from '../FlowsSettings'
@@ -13,7 +22,31 @@ jest.mock('settings/automate', () => ({
     ...jest.requireActual('settings/automate'),
     useStoreSelector: jest.fn(),
 }))
+
+jest.mock('state/billing/selectors', () => ({ getHasAutomate: jest.fn() }))
+const getHasAutomateMock = assumeMock(getHasAutomate)
+
 const useStoreSelectorMock = assumeMock(useStoreSelector)
+
+const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
+
+const initialState = {
+    currentAccount: Map({
+        id: 12345,
+    }),
+    integrations: fromJS({
+        integrations: [],
+    }),
+    billing: fromJS({
+        products: [],
+    }),
+    currentUser: fromJS({
+        ...user,
+        role: {
+            name: AGENT_ROLE,
+        },
+    }),
+}
 
 describe('FlowsSettings', () => {
     const integrations = [
@@ -24,6 +57,7 @@ describe('FlowsSettings', () => {
 
     beforeEach(() => {
         onChange = jest.fn()
+        getHasAutomateMock.mockReturnValue(true)
         useStoreSelectorMock.mockReturnValue({
             integrations,
             onChange,
@@ -32,23 +66,27 @@ describe('FlowsSettings', () => {
     })
 
     it('should render the header', () => {
-        render(
-            <StaticRouter location={BASE_PATH}>
-                <Route path={`${BASE_PATH}/:shopType?/:shopName?`}>
-                    <FlowsSettings />
-                </Route>
-            </StaticRouter>,
+        renderWithQueryClientProvider(
+            <Provider store={mockStore(initialState)}>
+                <StaticRouter location={BASE_PATH}>
+                    <Route path={`${BASE_PATH}/:shopType?/:shopName?`}>
+                        <FlowsSettings />
+                    </Route>
+                </StaticRouter>
+            </Provider>,
         )
         expect(screen.getByText('Flows')).toBeInTheDocument()
     })
 
     it('should not render the navigation if no store is selected', () => {
-        render(
-            <StaticRouter location={BASE_PATH}>
-                <Route path={`${BASE_PATH}/:shopType?/:shopName?`}>
-                    <FlowsSettings />
-                </Route>
-            </StaticRouter>,
+        renderWithQueryClientProvider(
+            <Provider store={mockStore(initialState)}>
+                <StaticRouter location={BASE_PATH}>
+                    <Route path={`${BASE_PATH}/:shopType?/:shopName?`}>
+                        <FlowsSettings />
+                    </Route>
+                </StaticRouter>
+            </Provider>,
         )
         expect(screen.queryByText('Configuration')).not.toBeInTheDocument()
     })
@@ -60,35 +98,16 @@ describe('FlowsSettings', () => {
             selected: integrations[0],
         })
 
-        render(
-            <StaticRouter location={`${BASE_PATH}/shopify/my-first-store`}>
-                <Route path={`${BASE_PATH}/:shopType?/:shopName?`}>
-                    <FlowsSettings />
-                </Route>
-            </StaticRouter>,
+        renderWithQueryClientProvider(
+            <Provider store={mockStore(initialState)}>
+                <StaticRouter location={`${BASE_PATH}/shopify/my-first-store`}>
+                    <Route path={`${BASE_PATH}/:shopType?/:shopName?`}>
+                        <FlowsSettings />
+                    </Route>
+                </StaticRouter>
+                ,
+            </Provider>,
         )
         expect(screen.getByText('Configuration')).toBeInTheDocument()
-    })
-
-    it.each([
-        ['Configuration', '', 'Configuration content.'],
-        ['Channels', 'channels', 'Channels content.'],
-    ])('should show content for %s', (__tabName, path, content) => {
-        useStoreSelectorMock.mockReturnValue({
-            integrations,
-            onChange,
-            selected: integrations[0],
-        })
-
-        render(
-            <StaticRouter
-                location={`${BASE_PATH}/shopify/my-first-store/${path}`}
-            >
-                <Route path={`${BASE_PATH}/:shopType?/:shopName?`}>
-                    <FlowsSettings />
-                </Route>
-            </StaticRouter>,
-        )
-        expect(screen.getByText(content)).toBeInTheDocument()
     })
 })

@@ -7,6 +7,7 @@ import { useFlags } from 'launchdarkly-react-client-sdk'
 import { DndProvider } from 'react-dnd'
 import { HTML5Backend } from 'react-dnd-html5-backend'
 import { act } from 'react-dom/test-utils'
+import { MemoryRouter } from 'react-router-dom'
 
 import { FeatureFlagKey } from 'config/featureFlags'
 import useLanguagesMismatchWarnings from 'pages/automate/workflows/hooks/useLanguagesMismatchWarnings'
@@ -107,44 +108,46 @@ describe('FlowsSettings', () => {
 
     test('renders the component with all props', () => {
         renderWithQueryClientProvider(
-            <DndProvider manager={manager}>
-                <FlowsSettings
-                    channelType="chat"
-                    channel={channelMock as any}
-                    shopType="shopify"
-                    shopName="Shop Name"
-                    workflowEntrypoints={[
-                        {
-                            workflow_id: '1',
-                        },
-                        {
-                            workflow_id: '2',
-                        },
-                    ]}
-                    primaryLanguage="en"
-                    configurations={[
-                        {
-                            id: '1',
-                            name: 'Flow 1',
-                        } as any,
-                        {
-                            id: '2',
-                            name: 'Flow 2',
-                        },
-                    ]}
-                    automationSettingsWorkflows={[
-                        {
-                            workflow_id: '1',
-                            enabled: true,
-                        },
-                        {
-                            workflow_id: '2',
-                            enabled: true,
-                        },
-                    ]}
-                    onChange={jest.fn()}
-                />
-            </DndProvider>,
+            <MemoryRouter>
+                <DndProvider manager={manager}>
+                    <FlowsSettings
+                        channelType="chat"
+                        channel={channelMock as any}
+                        shopType="shopify"
+                        shopName="Shop Name"
+                        workflowEntrypoints={[
+                            {
+                                workflow_id: '1',
+                            },
+                            {
+                                workflow_id: '2',
+                            },
+                        ]}
+                        primaryLanguage="en"
+                        configurations={[
+                            {
+                                id: '1',
+                                name: 'Flow 1',
+                            } as any,
+                            {
+                                id: '2',
+                                name: 'Flow 2',
+                            },
+                        ]}
+                        automationSettingsWorkflows={[
+                            {
+                                workflow_id: '1',
+                                enabled: true,
+                            },
+                            {
+                                workflow_id: '2',
+                                enabled: true,
+                            },
+                        ]}
+                        onChange={jest.fn()}
+                    />
+                </DndProvider>
+            </MemoryRouter>,
         )
 
         expect(screen.getByText('Flow 1')).toBeInTheDocument()
@@ -152,44 +155,46 @@ describe('FlowsSettings', () => {
 
     it('updates the state when a flow is dragged', () => {
         renderWithQueryClientProvider(
-            <DndProvider manager={manager}>
-                <FlowsSettings
-                    channelType="chat"
-                    shopType="shopify"
-                    shopName="Shop Name"
-                    channel={channelMock as any}
-                    workflowEntrypoints={[
-                        {
-                            workflow_id: '1',
-                        },
-                        {
-                            workflow_id: '2',
-                        },
-                    ]}
-                    primaryLanguage="en"
-                    configurations={[
-                        {
-                            id: '1',
-                            name: 'Flow 1',
-                        } as any,
-                        {
-                            id: '2',
-                            name: 'Flow 2',
-                        },
-                    ]}
-                    automationSettingsWorkflows={[
-                        {
-                            workflow_id: '1',
-                            enabled: true,
-                        },
-                        {
-                            workflow_id: '2',
-                            enabled: true,
-                        },
-                    ]}
-                    onChange={jest.fn()}
-                />
-            </DndProvider>,
+            <MemoryRouter>
+                <DndProvider manager={manager}>
+                    <FlowsSettings
+                        channelType="chat"
+                        shopType="shopify"
+                        shopName="Shop Name"
+                        channel={channelMock as any}
+                        workflowEntrypoints={[
+                            {
+                                workflow_id: '1',
+                            },
+                            {
+                                workflow_id: '2',
+                            },
+                        ]}
+                        primaryLanguage="en"
+                        configurations={[
+                            {
+                                id: '1',
+                                name: 'Flow 1',
+                            } as any,
+                            {
+                                id: '2',
+                                name: 'Flow 2',
+                            },
+                        ]}
+                        automationSettingsWorkflows={[
+                            {
+                                workflow_id: '1',
+                                enabled: true,
+                            },
+                            {
+                                workflow_id: '2',
+                                enabled: true,
+                            },
+                        ]}
+                        onChange={jest.fn()}
+                    />
+                </DndProvider>
+            </MemoryRouter>,
         )
 
         // role of "i"
@@ -202,44 +207,46 @@ describe('FlowsSettings', () => {
 
     it('filters when search query is entered', async () => {
         renderWithQueryClientProvider(
-            <DndProvider manager={manager}>
-                <FlowsSettings
-                    channelType="chat"
-                    shopType="shopify"
-                    shopName="Shop Name"
-                    channel={channelMock as any}
-                    workflowEntrypoints={[
-                        {
-                            workflow_id: '1',
-                        },
-                        {
-                            workflow_id: '2',
-                        },
-                    ]}
-                    primaryLanguage="en"
-                    configurations={[
-                        {
-                            id: '1',
-                            name: 'Flow 1',
-                        } as any,
-                        {
-                            id: '2',
-                            name: 'Flow 2',
-                        },
-                    ]}
-                    automationSettingsWorkflows={[
-                        {
-                            workflow_id: '1',
-                            enabled: false,
-                        },
-                        {
-                            workflow_id: '2',
-                            enabled: false,
-                        },
-                    ]}
-                    onChange={jest.fn()}
-                />
-            </DndProvider>,
+            <MemoryRouter>
+                <DndProvider manager={manager}>
+                    <FlowsSettings
+                        channelType="chat"
+                        shopType="shopify"
+                        shopName="Shop Name"
+                        channel={channelMock as any}
+                        workflowEntrypoints={[
+                            {
+                                workflow_id: '1',
+                            },
+                            {
+                                workflow_id: '2',
+                            },
+                        ]}
+                        primaryLanguage="en"
+                        configurations={[
+                            {
+                                id: '1',
+                                name: 'Flow 1',
+                            } as any,
+                            {
+                                id: '2',
+                                name: 'Flow 2',
+                            },
+                        ]}
+                        automationSettingsWorkflows={[
+                            {
+                                workflow_id: '1',
+                                enabled: false,
+                            },
+                            {
+                                workflow_id: '2',
+                                enabled: false,
+                            },
+                        ]}
+                        onChange={jest.fn()}
+                    />
+                </DndProvider>
+            </MemoryRouter>,
         )
 
         // open dropdown
@@ -260,31 +267,33 @@ describe('FlowsSettings', () => {
 
     it('should render the correct number of enabled workflows', () => {
         renderWithQueryClientProvider(
-            <DndProvider manager={manager}>
-                <FlowsSettings
-                    channelType="chat"
-                    channel={channelMock as any}
-                    shopType="shopify"
-                    shopName="Shop Name"
-                    workflowEntrypoints={[
-                        { workflow_id: '1' },
-                        { workflow_id: '2' },
-                        { workflow_id: '3' },
-                    ]}
-                    primaryLanguage="en"
-                    configurations={[
-                        { id: '1', name: 'Flow 1' } as any,
-                        { id: '2', name: 'Flow 2' } as any,
-                        { id: '3', name: 'Flow 3' } as any,
-                    ]}
-                    automationSettingsWorkflows={[
-                        { workflow_id: '1', enabled: true },
-                        { workflow_id: '2', enabled: true },
-                        { workflow_id: '3', enabled: false },
-                    ]}
-                    onChange={jest.fn()}
-                />
-            </DndProvider>,
+            <MemoryRouter>
+                <DndProvider manager={manager}>
+                    <FlowsSettings
+                        channelType="chat"
+                        channel={channelMock as any}
+                        shopType="shopify"
+                        shopName="Shop Name"
+                        workflowEntrypoints={[
+                            { workflow_id: '1' },
+                            { workflow_id: '2' },
+                            { workflow_id: '3' },
+                        ]}
+                        primaryLanguage="en"
+                        configurations={[
+                            { id: '1', name: 'Flow 1' } as any,
+                            { id: '2', name: 'Flow 2' } as any,
+                            { id: '3', name: 'Flow 3' } as any,
+                        ]}
+                        automationSettingsWorkflows={[
+                            { workflow_id: '1', enabled: true },
+                            { workflow_id: '2', enabled: true },
+                            { workflow_id: '3', enabled: false },
+                        ]}
+                        onChange={jest.fn()}
+                    />
+                </DndProvider>
+            </MemoryRouter>,
         )
 
         expect(screen.getByText('Flow 1')).toBeInTheDocument()
@@ -294,28 +303,30 @@ describe('FlowsSettings', () => {
 
     it('should open and close the dropdown when the add flow button is clicked', () => {
         renderWithQueryClientProvider(
-            <DndProvider manager={manager}>
-                <FlowsSettings
-                    channelType="chat"
-                    channel={channelMock as any}
-                    shopType="shopify"
-                    shopName="Shop Name"
-                    workflowEntrypoints={[
-                        { workflow_id: '1' },
-                        { workflow_id: '2' },
-                    ]}
-                    primaryLanguage="en"
-                    configurations={[
-                        { id: '1', name: 'Flow 1' } as any,
-                        { id: '2', name: 'Flow 2' } as any,
-                    ]}
-                    automationSettingsWorkflows={[
-                        { workflow_id: '1', enabled: true },
-                        { workflow_id: '2', enabled: true },
-                    ]}
-                    onChange={jest.fn()}
-                />
-            </DndProvider>,
+            <MemoryRouter>
+                <DndProvider manager={manager}>
+                    <FlowsSettings
+                        channelType="chat"
+                        channel={channelMock as any}
+                        shopType="shopify"
+                        shopName="Shop Name"
+                        workflowEntrypoints={[
+                            { workflow_id: '1' },
+                            { workflow_id: '2' },
+                        ]}
+                        primaryLanguage="en"
+                        configurations={[
+                            { id: '1', name: 'Flow 1' } as any,
+                            { id: '2', name: 'Flow 2' } as any,
+                        ]}
+                        automationSettingsWorkflows={[
+                            { workflow_id: '1', enabled: true },
+                            { workflow_id: '2', enabled: true },
+                        ]}
+                        onChange={jest.fn()}
+                    />
+                </DndProvider>
+            </MemoryRouter>,
         )
 
         const addFlowButton = screen.getByRole('button', { name: /add flow/i })
@@ -328,40 +339,42 @@ describe('FlowsSettings', () => {
 
     it('should show the correct tooltip message when the add flow button is disabled', async () => {
         renderWithQueryClientProvider(
-            <DndProvider manager={manager}>
-                <FlowsSettings
-                    channelType="chat"
-                    channel={channelMock as any}
-                    shopType="shopify"
-                    shopName="Shop Name"
-                    workflowEntrypoints={[
-                        { workflow_id: '1' },
-                        { workflow_id: '2' },
-                        { workflow_id: '3' },
-                        { workflow_id: '4' },
-                        { workflow_id: '5' },
-                        { workflow_id: '6' },
-                    ]}
-                    primaryLanguage="en"
-                    configurations={[
-                        { id: '1', name: 'Flow 1' } as any,
-                        { id: '2', name: 'Flow 2' } as any,
-                        { id: '3', name: 'Flow 3' } as any,
-                        { id: '4', name: 'Flow 4' } as any,
-                        { id: '5', name: 'Flow 5' } as any,
-                        { id: '6', name: 'Flow 6' } as any,
-                    ]}
-                    automationSettingsWorkflows={[
-                        { workflow_id: '1', enabled: true },
-                        { workflow_id: '2', enabled: true },
-                        { workflow_id: '3', enabled: true },
-                        { workflow_id: '4', enabled: true },
-                        { workflow_id: '5', enabled: true },
-                        { workflow_id: '6', enabled: true },
-                    ]}
-                    onChange={jest.fn()}
-                />
-            </DndProvider>,
+            <MemoryRouter>
+                <DndProvider manager={manager}>
+                    <FlowsSettings
+                        channelType="chat"
+                        channel={channelMock as any}
+                        shopType="shopify"
+                        shopName="Shop Name"
+                        workflowEntrypoints={[
+                            { workflow_id: '1' },
+                            { workflow_id: '2' },
+                            { workflow_id: '3' },
+                            { workflow_id: '4' },
+                            { workflow_id: '5' },
+                            { workflow_id: '6' },
+                        ]}
+                        primaryLanguage="en"
+                        configurations={[
+                            { id: '1', name: 'Flow 1' } as any,
+                            { id: '2', name: 'Flow 2' } as any,
+                            { id: '3', name: 'Flow 3' } as any,
+                            { id: '4', name: 'Flow 4' } as any,
+                            { id: '5', name: 'Flow 5' } as any,
+                            { id: '6', name: 'Flow 6' } as any,
+                        ]}
+                        automationSettingsWorkflows={[
+                            { workflow_id: '1', enabled: true },
+                            { workflow_id: '2', enabled: true },
+                            { workflow_id: '3', enabled: true },
+                            { workflow_id: '4', enabled: true },
+                            { workflow_id: '5', enabled: true },
+                            { workflow_id: '6', enabled: true },
+                        ]}
+                        onChange={jest.fn()}
+                    />
+                </DndProvider>
+            </MemoryRouter>,
         )
 
         const addFlowButton = screen.getByRole('button', { name: /add flow/i })
@@ -385,40 +398,42 @@ describe('FlowsSettings', () => {
         })
 
         renderWithQueryClientProvider(
-            <DndProvider manager={manager}>
-                <FlowsSettings
-                    channelType="chat"
-                    channel={channelMock as any}
-                    shopType="shopify"
-                    shopName="Shop Name"
-                    workflowEntrypoints={[
-                        { workflow_id: '1' },
-                        { workflow_id: '2' },
-                        { workflow_id: '3' },
-                        { workflow_id: '4' },
-                        { workflow_id: '5' },
-                        { workflow_id: '6' },
-                    ]}
-                    primaryLanguage="en"
-                    configurations={[
-                        { id: '1', name: 'Flow 1' } as any,
-                        { id: '2', name: 'Flow 2' } as any,
-                        { id: '3', name: 'Flow 3' } as any,
-                        { id: '4', name: 'Flow 4' } as any,
-                        { id: '5', name: 'Flow 5' } as any,
-                        { id: '6', name: 'Flow 6' } as any,
-                    ]}
-                    automationSettingsWorkflows={[
-                        { workflow_id: '1', enabled: true },
-                        { workflow_id: '2', enabled: true },
-                        { workflow_id: '3', enabled: true },
-                        { workflow_id: '4', enabled: true },
-                        { workflow_id: '5', enabled: true },
-                        { workflow_id: '6', enabled: true },
-                    ]}
-                    onChange={jest.fn()}
-                />
-            </DndProvider>,
+            <MemoryRouter>
+                <DndProvider manager={manager}>
+                    <FlowsSettings
+                        channelType="chat"
+                        channel={channelMock as any}
+                        shopType="shopify"
+                        shopName="Shop Name"
+                        workflowEntrypoints={[
+                            { workflow_id: '1' },
+                            { workflow_id: '2' },
+                            { workflow_id: '3' },
+                            { workflow_id: '4' },
+                            { workflow_id: '5' },
+                            { workflow_id: '6' },
+                        ]}
+                        primaryLanguage="en"
+                        configurations={[
+                            { id: '1', name: 'Flow 1' } as any,
+                            { id: '2', name: 'Flow 2' } as any,
+                            { id: '3', name: 'Flow 3' } as any,
+                            { id: '4', name: 'Flow 4' } as any,
+                            { id: '5', name: 'Flow 5' } as any,
+                            { id: '6', name: 'Flow 6' } as any,
+                        ]}
+                        automationSettingsWorkflows={[
+                            { workflow_id: '1', enabled: true },
+                            { workflow_id: '2', enabled: true },
+                            { workflow_id: '3', enabled: true },
+                            { workflow_id: '4', enabled: true },
+                            { workflow_id: '5', enabled: true },
+                            { workflow_id: '6', enabled: true },
+                        ]}
+                        onChange={jest.fn()}
+                    />
+                </DndProvider>
+            </MemoryRouter>,
         )
 
         const addFlowButton = screen.getByRole('button', { name: /add flow/i })
@@ -428,44 +443,46 @@ describe('FlowsSettings', () => {
     it('should call onChange when a flow is selected', () => {
         const onChange = jest.fn()
         renderWithQueryClientProvider(
-            <DndProvider manager={manager}>
-                <FlowsSettings
-                    channelType="chat"
-                    channel={channelMock as any}
-                    shopType="shopify"
-                    shopName="Shop Name"
-                    workflowEntrypoints={[
-                        {
-                            workflow_id: '1',
-                        },
-                        {
-                            workflow_id: '2',
-                        },
-                    ]}
-                    primaryLanguage="en"
-                    configurations={[
-                        {
-                            id: '1',
-                            name: 'Flow 1',
-                        } as any,
-                        {
-                            id: '2',
-                            name: 'Flow 2',
-                        },
-                    ]}
-                    automationSettingsWorkflows={[
-                        {
-                            workflow_id: '1',
-                            enabled: false,
-                        },
-                        {
-                            workflow_id: '2',
-                            enabled: false,
-                        },
-                    ]}
-                    onChange={onChange}
-                />
-            </DndProvider>,
+            <MemoryRouter>
+                <DndProvider manager={manager}>
+                    <FlowsSettings
+                        channelType="chat"
+                        channel={channelMock as any}
+                        shopType="shopify"
+                        shopName="Shop Name"
+                        workflowEntrypoints={[
+                            {
+                                workflow_id: '1',
+                            },
+                            {
+                                workflow_id: '2',
+                            },
+                        ]}
+                        primaryLanguage="en"
+                        configurations={[
+                            {
+                                id: '1',
+                                name: 'Flow 1',
+                            } as any,
+                            {
+                                id: '2',
+                                name: 'Flow 2',
+                            },
+                        ]}
+                        automationSettingsWorkflows={[
+                            {
+                                workflow_id: '1',
+                                enabled: false,
+                            },
+                            {
+                                workflow_id: '2',
+                                enabled: false,
+                            },
+                        ]}
+                        onChange={onChange}
+                    />
+                </DndProvider>
+            </MemoryRouter>,
         )
 
         // open dropdown
@@ -487,44 +504,46 @@ describe('FlowsSettings', () => {
     it('calls onChange whenever flow is deleted', () => {
         const onChange = jest.fn()
         renderWithQueryClientProvider(
-            <DndProvider manager={manager}>
-                <FlowsSettings
-                    channelType="chat"
-                    channel={channelMock as any}
-                    shopType="shopify"
-                    shopName="Shop Name"
-                    workflowEntrypoints={[
-                        {
-                            workflow_id: '1',
-                        },
-                        {
-                            workflow_id: '2',
-                        },
-                    ]}
-                    primaryLanguage="en"
-                    configurations={[
-                        {
-                            id: '1',
-                            name: 'Flow 1',
-                        } as any,
-                        {
-                            id: '2',
-                            name: 'Flow 2',
-                        },
-                    ]}
-                    automationSettingsWorkflows={[
-                        {
-                            workflow_id: '1',
-                            enabled: true,
-                        },
-                        {
-                            workflow_id: '2',
-                            enabled: false,
-                        },
-                    ]}
-                    onChange={onChange}
-                />
-            </DndProvider>,
+            <MemoryRouter>
+                <DndProvider manager={manager}>
+                    <FlowsSettings
+                        channelType="chat"
+                        channel={channelMock as any}
+                        shopType="shopify"
+                        shopName="Shop Name"
+                        workflowEntrypoints={[
+                            {
+                                workflow_id: '1',
+                            },
+                            {
+                                workflow_id: '2',
+                            },
+                        ]}
+                        primaryLanguage="en"
+                        configurations={[
+                            {
+                                id: '1',
+                                name: 'Flow 1',
+                            } as any,
+                            {
+                                id: '2',
+                                name: 'Flow 2',
+                            },
+                        ]}
+                        automationSettingsWorkflows={[
+                            {
+                                workflow_id: '1',
+                                enabled: true,
+                            },
+                            {
+                                workflow_id: '2',
+                                enabled: false,
+                            },
+                        ]}
+                        onChange={onChange}
+                    />
+                </DndProvider>
+            </MemoryRouter>,
         )
         const closeButton = screen.getAllByRole('button', { name: /close/i })[0]
         closeButton.click()
@@ -536,88 +555,90 @@ describe('FlowsSettings', () => {
             [FeatureFlagKey.MLFlowsRecommendation]: false,
         })
         renderWithQueryClientProvider(
-            <DndProvider manager={manager}>
-                <FlowsSettings
-                    channelType="chat"
-                    channel={channelMock as any}
-                    shopType="shopify"
-                    shopName="Shop Name"
-                    workflowEntrypoints={[
-                        {
-                            workflow_id: '1',
-                        },
-                        {
-                            workflow_id: '2',
-                        },
-                        {
-                            workflow_id: '3',
-                        },
-                        {
-                            workflow_id: '4',
-                        },
-                        {
-                            workflow_id: '5',
-                        },
-                        {
-                            workflow_id: '6',
-                        },
-                    ]}
-                    primaryLanguage="en"
-                    configurations={[
-                        {
-                            id: '1',
-                            name: 'Flow 1',
-                        } as any,
-                        {
-                            id: '2',
-                            name: 'Flow 2',
-                        },
-                        {
-                            id: '3',
-                            name: 'Flow 3',
-                        },
-                        {
-                            id: '4',
-                            name: 'Flow 4',
-                        },
-                        {
-                            id: '5',
-                            name: 'Flow 5',
-                        },
-                        {
-                            id: '6',
-                            name: 'Flow 6',
-                        },
-                    ]}
-                    automationSettingsWorkflows={[
-                        {
-                            workflow_id: '1',
-                            enabled: true,
-                        },
-                        {
-                            workflow_id: '2',
-                            enabled: true,
-                        },
-                        {
-                            workflow_id: '3',
-                            enabled: true,
-                        },
-                        {
-                            workflow_id: '4',
-                            enabled: true,
-                        },
-                        {
-                            workflow_id: '5',
-                            enabled: true,
-                        },
-                        {
-                            workflow_id: '6',
-                            enabled: true,
-                        },
-                    ]}
-                    onChange={jest.fn()}
-                />
-            </DndProvider>,
+            <MemoryRouter>
+                <DndProvider manager={manager}>
+                    <FlowsSettings
+                        channelType="chat"
+                        channel={channelMock as any}
+                        shopType="shopify"
+                        shopName="Shop Name"
+                        workflowEntrypoints={[
+                            {
+                                workflow_id: '1',
+                            },
+                            {
+                                workflow_id: '2',
+                            },
+                            {
+                                workflow_id: '3',
+                            },
+                            {
+                                workflow_id: '4',
+                            },
+                            {
+                                workflow_id: '5',
+                            },
+                            {
+                                workflow_id: '6',
+                            },
+                        ]}
+                        primaryLanguage="en"
+                        configurations={[
+                            {
+                                id: '1',
+                                name: 'Flow 1',
+                            } as any,
+                            {
+                                id: '2',
+                                name: 'Flow 2',
+                            },
+                            {
+                                id: '3',
+                                name: 'Flow 3',
+                            },
+                            {
+                                id: '4',
+                                name: 'Flow 4',
+                            },
+                            {
+                                id: '5',
+                                name: 'Flow 5',
+                            },
+                            {
+                                id: '6',
+                                name: 'Flow 6',
+                            },
+                        ]}
+                        automationSettingsWorkflows={[
+                            {
+                                workflow_id: '1',
+                                enabled: true,
+                            },
+                            {
+                                workflow_id: '2',
+                                enabled: true,
+                            },
+                            {
+                                workflow_id: '3',
+                                enabled: true,
+                            },
+                            {
+                                workflow_id: '4',
+                                enabled: true,
+                            },
+                            {
+                                workflow_id: '5',
+                                enabled: true,
+                            },
+                            {
+                                workflow_id: '6',
+                                enabled: true,
+                            },
+                        ]}
+                        onChange={jest.fn()}
+                    />
+                </DndProvider>
+            </MemoryRouter>,
         )
 
         const addFlowButton = screen.getByRole('button', { name: /add flow/i })
@@ -637,44 +658,46 @@ describe('FlowsSettings', () => {
 
     it('Should render text based on the quick response sunset flag if true', () => {
         const { getByText } = renderWithQueryClientProvider(
-            <DndProvider manager={manager}>
-                <FlowsSettings
-                    channelType="chat"
-                    shopType="shopify"
-                    channel={channelMock as any}
-                    shopName="Shop Name"
-                    workflowEntrypoints={[
-                        {
-                            workflow_id: '1',
-                        },
-                        {
-                            workflow_id: '2',
-                        },
-                    ]}
-                    primaryLanguage="en"
-                    configurations={[
-                        {
-                            id: '1',
-                            name: 'Flow 1',
-                        } as any,
-                        {
-                            id: '2',
-                            name: 'Flow 2',
-                        },
-                    ]}
-                    automationSettingsWorkflows={[
-                        {
-                            workflow_id: '1',
-                            enabled: false,
-                        },
-                        {
-                            workflow_id: '2',
-                            enabled: false,
-                        },
-                    ]}
-                    onChange={jest.fn()}
-                />
-            </DndProvider>,
+            <MemoryRouter>
+                <DndProvider manager={manager}>
+                    <FlowsSettings
+                        channelType="chat"
+                        shopType="shopify"
+                        channel={channelMock as any}
+                        shopName="Shop Name"
+                        workflowEntrypoints={[
+                            {
+                                workflow_id: '1',
+                            },
+                            {
+                                workflow_id: '2',
+                            },
+                        ]}
+                        primaryLanguage="en"
+                        configurations={[
+                            {
+                                id: '1',
+                                name: 'Flow 1',
+                            } as any,
+                            {
+                                id: '2',
+                                name: 'Flow 2',
+                            },
+                        ]}
+                        automationSettingsWorkflows={[
+                            {
+                                workflow_id: '1',
+                                enabled: false,
+                            },
+                            {
+                                workflow_id: '2',
+                                enabled: false,
+                            },
+                        ]}
+                        onChange={jest.fn()}
+                    />
+                </DndProvider>
+            </MemoryRouter>,
         )
         expect(
             getByText(
@@ -692,44 +715,46 @@ describe('FlowsSettings', () => {
         })
 
         renderWithQueryClientProvider(
-            <DndProvider manager={manager}>
-                <FlowsSettings
-                    channelType="chat"
-                    channel={channelMock as any}
-                    shopType="shopify"
-                    shopName="Shop Name"
-                    workflowEntrypoints={[
-                        {
-                            workflow_id: '1',
-                        },
-                        {
-                            workflow_id: '2',
-                        },
-                    ]}
-                    primaryLanguage="en"
-                    configurations={[
-                        {
-                            id: '1',
-                            name: 'Flow 1',
-                        } as any,
-                        {
-                            id: '2',
-                            name: 'Flow 2',
-                        },
-                    ]}
-                    automationSettingsWorkflows={[
-                        {
-                            workflow_id: '1',
-                            enabled: true,
-                        },
-                        {
-                            workflow_id: '2',
-                            enabled: true,
-                        },
-                    ]}
-                    onChange={jest.fn()}
-                />
-            </DndProvider>,
+            <MemoryRouter>
+                <DndProvider manager={manager}>
+                    <FlowsSettings
+                        channelType="chat"
+                        channel={channelMock as any}
+                        shopType="shopify"
+                        shopName="Shop Name"
+                        workflowEntrypoints={[
+                            {
+                                workflow_id: '1',
+                            },
+                            {
+                                workflow_id: '2',
+                            },
+                        ]}
+                        primaryLanguage="en"
+                        configurations={[
+                            {
+                                id: '1',
+                                name: 'Flow 1',
+                            } as any,
+                            {
+                                id: '2',
+                                name: 'Flow 2',
+                            },
+                        ]}
+                        automationSettingsWorkflows={[
+                            {
+                                workflow_id: '1',
+                                enabled: true,
+                            },
+                            {
+                                workflow_id: '2',
+                                enabled: true,
+                            },
+                        ]}
+                        onChange={jest.fn()}
+                    />
+                </DndProvider>
+            </MemoryRouter>,
         )
 
         expect(screen.getAllByText('warning')).toHaveLength(2)
@@ -743,44 +768,46 @@ describe('FlowsSettings', () => {
             }),
         })
         renderWithQueryClientProvider(
-            <DndProvider manager={manager}>
-                <FlowsSettings
-                    channelType="chat"
-                    channel={channelMock as any}
-                    shopType="shopify"
-                    shopName="Shop Name"
-                    workflowEntrypoints={[
-                        {
-                            workflow_id: '1',
-                        },
-                        {
-                            workflow_id: '2',
-                        },
-                    ]}
-                    primaryLanguage="en"
-                    configurations={[
-                        {
-                            id: '1',
-                            name: 'Flow 1',
-                        } as any,
-                        {
-                            id: '2',
-                            name: 'Flow 2',
-                        },
-                    ]}
-                    automationSettingsWorkflows={[
-                        {
-                            workflow_id: '1',
-                            enabled: true,
-                        },
-                        {
-                            workflow_id: '2',
-                            enabled: false,
-                        },
-                    ]}
-                    onChange={jest.fn()}
-                />
-            </DndProvider>,
+            <MemoryRouter>
+                <DndProvider manager={manager}>
+                    <FlowsSettings
+                        channelType="chat"
+                        channel={channelMock as any}
+                        shopType="shopify"
+                        shopName="Shop Name"
+                        workflowEntrypoints={[
+                            {
+                                workflow_id: '1',
+                            },
+                            {
+                                workflow_id: '2',
+                            },
+                        ]}
+                        primaryLanguage="en"
+                        configurations={[
+                            {
+                                id: '1',
+                                name: 'Flow 1',
+                            } as any,
+                            {
+                                id: '2',
+                                name: 'Flow 2',
+                            },
+                        ]}
+                        automationSettingsWorkflows={[
+                            {
+                                workflow_id: '1',
+                                enabled: true,
+                            },
+                            {
+                                workflow_id: '2',
+                                enabled: false,
+                            },
+                        ]}
+                        onChange={jest.fn()}
+                    />
+                </DndProvider>
+            </MemoryRouter>,
         )
         expect(screen.getAllByText('warning')).toHaveLength(1)
     })
@@ -794,44 +821,46 @@ describe('FlowsSettings', () => {
         })
 
         renderWithQueryClientProvider(
-            <DndProvider manager={manager}>
-                <FlowsSettings
-                    channelType="chat"
-                    channel={channelMock as any}
-                    shopType="shopify"
-                    shopName="Shop Name"
-                    workflowEntrypoints={[
-                        {
-                            workflow_id: '1',
-                        },
-                        {
-                            workflow_id: '2',
-                        },
-                    ]}
-                    primaryLanguage="en"
-                    configurations={[
-                        {
-                            id: '1',
-                            name: 'Flow 1',
-                        } as any,
-                        {
-                            id: '2',
-                            name: 'Flow 2',
-                        },
-                    ]}
-                    automationSettingsWorkflows={[
-                        {
-                            workflow_id: '1',
-                            enabled: false,
-                        },
-                        {
-                            workflow_id: '2',
-                            enabled: false,
-                        },
-                    ]}
-                    onChange={jest.fn()}
-                />
-            </DndProvider>,
+            <MemoryRouter>
+                <DndProvider manager={manager}>
+                    <FlowsSettings
+                        channelType="chat"
+                        channel={channelMock as any}
+                        shopType="shopify"
+                        shopName="Shop Name"
+                        workflowEntrypoints={[
+                            {
+                                workflow_id: '1',
+                            },
+                            {
+                                workflow_id: '2',
+                            },
+                        ]}
+                        primaryLanguage="en"
+                        configurations={[
+                            {
+                                id: '1',
+                                name: 'Flow 1',
+                            } as any,
+                            {
+                                id: '2',
+                                name: 'Flow 2',
+                            },
+                        ]}
+                        automationSettingsWorkflows={[
+                            {
+                                workflow_id: '1',
+                                enabled: false,
+                            },
+                            {
+                                workflow_id: '2',
+                                enabled: false,
+                            },
+                        ]}
+                        onChange={jest.fn()}
+                    />
+                </DndProvider>
+            </MemoryRouter>,
         )
 
         const addFlowButton = screen.getByRole('button', { name: /add flow/i })

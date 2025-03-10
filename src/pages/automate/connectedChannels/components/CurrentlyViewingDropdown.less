@@ -1,16 +1,15 @@
-@import (reference) '~@gorgias/design-tokens/dist/css/layout.less';
 @import (reference) '~css/typography.less';
 
 :local {
     .currentlyViewingDropdown {
         display: flex;
         flex-direction: column;
-        gap: @layout-spacing-xs;
+        gap: var(--layout-spacing-xs);
     }
 
     .currentlyViewingDropdownHeader {
         display: flex;
-        gap: @layout-spacing-xs;
+        gap: var(--layout-spacing-xs);
         align-items: center;
     }
 
@@ -18,11 +17,11 @@
         border: 1px solid #e0e0e0 !important;
         width: 100%;
         justify-content: flex-start;
-        gap: @layout-spacing-xs;
+        gap: var(--layout-spacing-xs);
         text-transform: none;
         > span {
             width: 100%;
-            gap: @layout-spacing-xs;
+            gap: var(--layout-spacing-xs);
         }
     }
 
@@ -40,9 +39,34 @@
     .dropDownLabel {
         color: var(--neutral-grey-6);
     }
+
+    .dropdownGroup {
+        display: flex;
+        flex-direction: column;
+        gap: var(--layout-spacing-xs);
+    }
+
+    .dropdownGroupLabel {
+        .caption-allcaps();
+        color: var(--main-primary);
+    }
+
+    .dropdownGroupSeparator {
+        margin-top: var(--layout-spacing-xs);
+        margin-bottom: var(--layout-spacing-xs);
+    }
+
+    .dropdownGroupLink {
+        color: var(--neutral-grey-6);
+        text-decoration: none;
+        &:hover {
+            color: var(--neutral-grey-5);
+        }
+    }
+
     .dropdownItem {
         display: flex;
-        gap: @layout-spacing-xs;
+        gap: var(--layout-spacing-xs);
         align-items: center;
     }
 
@@ -52,7 +76,7 @@
 
     .dropdownCtaItem {
         display: flex;
-        gap: @layout-spacing-xs;
+        gap: var(--layout-spacing-xs);
         align-items: center;
         color: var(--main-primary);
         .body-regular();
