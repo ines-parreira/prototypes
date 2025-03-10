@@ -7,6 +7,7 @@ import { z } from 'zod'
 import shopify from 'assets/img/integrations/shopify.png'
 import useAppSelector from 'hooks/useAppSelector'
 import { StoreIntegration } from 'models/integration/types'
+import { useStoreConfigurationForAccount } from 'pages/aiAgent/hooks/useStoreConfigurationForAccount'
 import { DropdownSelector } from 'pages/aiAgent/Onboarding/components/DropdownSelector/DropdownSelector'
 import IntegrationCard from 'pages/aiAgent/Onboarding/components/IntegrationCard'
 import MainTitle from 'pages/aiAgent/Onboarding/components/MainTitle/MainTitle'
@@ -90,6 +91,22 @@ export const ShopifyIntegrationStep: React.FC<StepProps> = ({
         },
     })
 
+    const { isLoading: isLoadingStoreConfigurations, storeConfigurations } =
+        useStoreConfigurationForAccount({
+            accountDomain,
+            storesName: shopifyIntegrations.map(
+                (integration) => integration.name,
+            ),
+        })
+
+    const filteredShopifyIntegrations = shopifyIntegrations.filter(
+        (integration) =>
+            !storeConfigurations?.some(
+                (configuration) =>
+                    configuration?.storeName === integration.name,
+            ),
+    )
+
     const {
         watch,
         setValue,
@@ -98,8 +115,10 @@ export const ShopifyIntegrationStep: React.FC<StepProps> = ({
     } = methods
 
     // Watch form state
-    const selectedShop = watch('shopName') || shopifyIntegrations[0]?.name
-    const selectedShopType = watch('shopType') || shopifyIntegrations[0]?.type
+    const selectedShop =
+        watch('shopName') || filteredShopifyIntegrations[0]?.name
+    const selectedShopType =
+        watch('shopType') || filteredShopifyIntegrations[0]?.type
 
     const { data: onBoardingDataBySelectedShop } =
         useGetOnboardingDataByShopName(selectedShop)
@@ -109,13 +128,16 @@ export const ShopifyIntegrationStep: React.FC<StepProps> = ({
 
     const selectedIntegration = useMemo(
         () =>
-            shopifyIntegrations.find((store) => store.name === selectedShop) ||
-            shopifyIntegrations[0],
-        [shopifyIntegrations, selectedShop],
+            filteredShopifyIntegrations.find(
+                (store) => store.name === selectedShop,
+            ) || filteredShopifyIntegrations[0],
+        [filteredShopifyIntegrations, selectedShop],
     )
 
     const onSelectShop = (shopId: number | null) => {
-        const foundShop = shopifyIntegrations.find((shop) => shop.id === shopId)
+        const foundShop = filteredShopifyIntegrations.find(
+            (shop) => shop.id === shopId,
+        )
         if (foundShop) {
             setValue('shopName', foundShop.name, {
                 shouldDirty: true,
@@ -146,7 +168,7 @@ export const ShopifyIntegrationStep: React.FC<StepProps> = ({
     }
 
     const onNextClick = () => {
-        if (!shopifyIntegrations.length) {
+        if (!filteredShopifyIntegrations.length) {
             setShopError(
                 'No Shopify store connected. Please connect a store before proceeding.',
             )
@@ -203,7 +225,7 @@ export const ShopifyIntegrationStep: React.FC<StepProps> = ({
                 {selectedShop && (
                     <>
                         <AIBanner fillStyle="fill">
-                            {shopifyIntegrations.length > 1
+                            {filteredShopifyIntegrations.length > 1
                                 ? "You're already connected to Shopify. Select your store to proceed."
                                 : "You're already connected to Shopify. Click next to proceed."}
                         </AIBanner>
@@ -226,18 +248,27 @@ export const ShopifyIntegrationStep: React.FC<StepProps> = ({
                     }
                     onClick={redirectToShopify}
                 >
-                    {shopifyIntegrations.length > 0 && (
+                    {!isLoadingStoreConfigurations && (
                         <div className={css.content}>
-                            <DropdownSelector
-                                items={shopifyIntegrations}
-                                selectedKey={selectedIntegration.id}
-                                setSelectedKey={onSelectShop}
-                                selectedItem={selectedIntegration}
-                                getItemKey={(item: StoreIntegration) => item.id}
-                                getItemLabel={(item: StoreIntegration) =>
-                                    item.name
-                                }
-                            />
+                            {filteredShopifyIntegrations.length > 0 ? (
+                                <DropdownSelector
+                                    items={filteredShopifyIntegrations}
+                                    selectedKey={selectedIntegration.id}
+                                    setSelectedKey={onSelectShop}
+                                    selectedItem={selectedIntegration}
+                                    getItemKey={(item: StoreIntegration) =>
+                                        item.id
+                                    }
+                                    getItemLabel={(item: StoreIntegration) =>
+                                        item.name
+                                    }
+                                />
+                            ) : (
+                                <div className={css.noStoreContent}>
+                                    All your stores have an Ai Agent configured
+                                    already.
+                                </div>
+                            )}
                             <a className={css.link} onClick={redirectToShopify}>
                                 Need to create a new store? Click here
                             </a>

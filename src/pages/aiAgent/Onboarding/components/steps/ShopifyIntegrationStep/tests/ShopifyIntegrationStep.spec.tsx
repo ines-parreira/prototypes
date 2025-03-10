@@ -20,7 +20,9 @@ import {
 
 import '@testing-library/jest-dom/extend-expect'
 
+import { StoreConfiguration } from 'models/aiAgent/types'
 import { StoreIntegration } from 'models/integration/types'
+import { useStoreConfigurationForAccount } from 'pages/aiAgent/hooks/useStoreConfigurationForAccount'
 import { ShopifyIntegrationStep } from 'pages/aiAgent/Onboarding/components/steps/ShopifyIntegrationStep/ShopifyIntegrationStep'
 import { useShopifyIntegrations } from 'pages/aiAgent/Onboarding/hooks/useShopifyIntegrations'
 import { WizardStepEnum } from 'pages/aiAgent/Onboarding/types'
@@ -33,6 +35,7 @@ import { renderWithRouter } from 'utils/testing'
 jest.mock('pages/aiAgent/Onboarding/hooks/useShopifyIntegrations')
 jest.mock('pages/common/hooks/useShopifyIntegrationAndScope')
 jest.mock('pages/settings/contactForm/hooks/useEmailIntegrations')
+jest.mock('pages/aiAgent/hooks/useStoreConfigurationForAccount')
 
 jest.mock('models/aiAgent/resources/configuration', () => ({
     getOnboardingData: jest.fn(),
@@ -50,6 +53,8 @@ const mockUseShopifyIntegrations = useShopifyIntegrations as jest.Mock
 const mockUseShopifyIntegrationAndScope =
     useShopifyIntegrationAndScope as jest.Mock
 const mockUseEmailIntegrations = useEmailIntegrations as jest.Mock
+const mockUseStoreConfigurationForAccount =
+    useStoreConfigurationForAccount as jest.Mock
 
 const queryClient = new QueryClient()
 
@@ -67,8 +72,16 @@ const defaultState = {
     }),
 } as RootState
 
-const renderComponent = (shopifyIntegrations: StoreIntegration[] = []) => {
+const renderComponent = (
+    shopifyIntegrations: StoreIntegration[] = [],
+    storeConfigurations: StoreConfiguration[] = [],
+) => {
     mockUseShopifyIntegrations.mockReturnValue(shopifyIntegrations)
+    mockUseStoreConfigurationForAccount.mockReturnValue({
+        storeConfigurations,
+        isLoading: false,
+    })
+
     return renderWithRouter(
         <>
             <QueryClientProvider client={queryClient}>
@@ -216,6 +229,38 @@ describe('ShopifyIntegrationStep', () => {
     it('renders the dropdown when there are integrations', () => {
         const integrations = [{ id: 1, name: 'Test Store', type: 'shopify' }]
         renderComponent(integrations as StoreIntegration[])
+        expect(screen.getByText('arrow_drop_down')).toBeInTheDocument()
+    })
+
+    it('does not render the dropdown when there is no available integrations', () => {
+        const integrations = [
+            { id: 1, name: 'Test Store', type: 'shopify' },
+            { id: 2, name: 'Test Store 1', type: 'shopify' },
+        ] as StoreIntegration[]
+        const storeConfigurations = [
+            { storeName: 'Test Store' },
+            { storeName: 'Test Store 1' },
+        ] as StoreConfiguration[]
+
+        renderComponent(integrations, storeConfigurations)
+        expect(screen.queryByText('arrow_drop_down')).not.toBeInTheDocument()
+        expect(
+            screen.getByText(
+                /All your stores have an Ai Agent configured already./,
+            ),
+        ).toBeInTheDocument()
+    })
+
+    it('renders the dropdown with available integrations', () => {
+        const integrations = [
+            { id: 1, name: 'Test Store', type: 'shopify' },
+            { id: 2, name: 'Test Store 1', type: 'shopify' },
+        ] as StoreIntegration[]
+        const storeConfigurations = [
+            { storeName: 'Test Store' },
+        ] as StoreConfiguration[]
+
+        renderComponent(integrations, storeConfigurations)
         expect(screen.getByText('arrow_drop_down')).toBeInTheDocument()
     })
 
