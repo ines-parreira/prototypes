@@ -4,21 +4,30 @@ import { fireEvent, render, screen } from '@testing-library/react'
 
 import '@testing-library/jest-dom'
 
-import { Map } from 'immutable'
+import { fromJS, Map } from 'immutable'
 import { Provider } from 'react-redux'
 
 import { mockStore } from 'utils/testing'
 
 import CustomerOptionsDropdownButton from '../CustomerOptionsDropdown'
 
-const state = {}
+const state = {
+    integrations: fromJS({
+        integrations: [{ type: 'shopify' }],
+    }),
+}
 
 describe('CustomerOptionsDropdownButton', () => {
     const activeCustomer = Map({ name: 'John Doe' })
 
     test('renders dropdown button', () => {
         render(
-            <CustomerOptionsDropdownButton activeCustomer={activeCustomer} />,
+            <Provider store={mockStore(state)}>
+                <CustomerOptionsDropdownButton
+                    activeCustomer={activeCustomer}
+                />
+                ,
+            </Provider>,
         )
         expect(
             screen.getByTestId('test-customer-options-dropdown-button'),
@@ -27,7 +36,11 @@ describe('CustomerOptionsDropdownButton', () => {
 
     test('opens dropdown on button click and then it closes it', () => {
         render(
-            <CustomerOptionsDropdownButton activeCustomer={activeCustomer} />,
+            <Provider store={mockStore(state)}>
+                <CustomerOptionsDropdownButton
+                    activeCustomer={activeCustomer}
+                />
+            </Provider>,
         )
 
         fireEvent.click(screen.getByRole('button'))
@@ -76,5 +89,30 @@ describe('CustomerOptionsDropdownButton', () => {
         ).toBeInTheDocument()
 
         fireEvent.keyDown(container, { key: 'Escape' })
+    })
+
+    test('doesnt show sync options if there is no shopify integration at all', () => {
+        render(
+            <Provider
+                store={mockStore({
+                    integrations: fromJS({
+                        integrations: [],
+                    }),
+                })}
+            >
+                <CustomerOptionsDropdownButton
+                    activeCustomer={activeCustomer}
+                />
+            </Provider>,
+        )
+
+        fireEvent.click(screen.getByRole('button'))
+        expect(
+            screen.queryByText('Sync profile in Shopify'),
+        ).not.toBeInTheDocument()
+
+        expect(
+            screen.queryByText('Sync customer John Doe with Shopify'),
+        ).not.toBeInTheDocument()
     })
 })

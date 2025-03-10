@@ -17,6 +17,7 @@ import {
     areSourcesReady,
     jsonToWidgets,
 } from 'pages/common/components/infobar/utils'
+import ShopifyCustomerProfileSync from 'pages/common/components/ShopifyCustomerProfileSync/ShopifyCustomerProfileSync'
 import { CustomerContext } from 'providers/infobar/CustomerContext'
 import { EditionContext } from 'providers/infobar/EditionContext'
 import { getDisplayName } from 'state/customers/helpers'
@@ -30,6 +31,7 @@ import CustomerFields from './CustomerFields'
 import CustomerNote from './CustomerNote'
 import CustomerOptionsDropdownButton from './CustomerOptionsDropdown'
 import { CustomerTimelineWidget } from './CustomerTimelineWidget'
+import { useShouldShowProfileSync } from './helpers'
 import InfobarWidgets from './InfobarWidgets/InfobarWidgets'
 import { LegacyCustomerTimelineButton } from './LegacyCustomerTimelineButton'
 
@@ -43,7 +45,7 @@ type GenerateButtonProps = {
 /**
  * Render a button that generates a widget template as edited template
  */
-const GenerateButton = ({ sources, widgets }: GenerateButtonProps) => {
+const GenerateWidgetsButton = ({ sources, widgets }: GenerateButtonProps) => {
     const dispatch = useAppDispatch()
     const generateWidgets = () => {
         const context = widgets ? widgets.get('currentContext', '') : ''
@@ -95,6 +97,14 @@ const InfobarCustomerInfo = ({
                 IntegrationType.BigCommerce,
             ]),
         ).length > 0
+
+    const customerIntegrationsData: Map<any, any> = customer.get('integrations')
+
+    const shouldSuggestCustomerProfileShopifySync = useShouldShowProfileSync(
+        shopifyCustomerProfileCreationFeatureEnabled,
+        isEditing,
+        customerIntegrationsData,
+    )
 
     const editionContextObject = useMemo(
         () => ({
@@ -179,7 +189,11 @@ const InfobarCustomerInfo = ({
                     ).isEmpty()))
 
         if (shouldSuggestTemplateGeneration) {
-            return <GenerateButton widgets={widgets} sources={sources} />
+            return <GenerateWidgetsButton widgets={widgets} sources={sources} />
+        }
+
+        if (shouldSuggestCustomerProfileShopifySync) {
+            return <ShopifyCustomerProfileSync activeCustomer={customer} />
         }
 
         const allWidgetsTemplatesAreEmpty =
@@ -221,7 +235,6 @@ const InfobarCustomerInfo = ({
     if (!customer || customer.isEmpty()) {
         return null
     }
-    const customerIntegrationsData: Map<any, any> = customer.get('integrations')
     let chatIntegrationData: Map<any, any> | null = null
     if (customerIntegrationsData) {
         chatIntegrationData = customerIntegrationsData.find(

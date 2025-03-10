@@ -317,4 +317,135 @@ describe('<InfobarCustomerInfo/>', () => {
 
         expect(screen.getByText('CustomerOptionsDropdown')).toBeInTheDocument()
     })
+
+    it('should display the button `Sync the customer to Shopify', () => {
+        useFlagMock.mockReturnValue(true)
+        const store = mockStore({
+            integrations: fromJS({
+                integrations: [
+                    { type: HTTP_INTEGRATION_TYPE },
+                    { type: SHOPIFY_INTEGRATION_TYPE },
+                ],
+            }),
+        })
+        const sources = fromJS({
+            ticket: {
+                customer: {
+                    integrations: {},
+                },
+            },
+        })
+
+        const customer = fromJS({
+            integrations: [],
+        })
+
+        const widgets = fromJS({
+            currentContext: 'ticket',
+            _internal: {
+                drag: { isDragging: false },
+                editedItems: [{ template: {} }],
+                hasFetchedWidgets: true,
+            },
+            items: [],
+        })
+
+        render(
+            <Provider store={store}>
+                <InfobarCustomerInfo
+                    {...minProps}
+                    sources={sources}
+                    widgets={widgets}
+                    customer={customer}
+                    isEditing={false}
+                />{' '}
+            </Provider>,
+        )
+
+        expect(screen.getByText('Sync Profile')).toBeInTheDocument()
+    })
+
+    it('should not display the button `Sync the customer to Shopify when there is no shopify integration', () => {
+        useFlagMock.mockReturnValue(true)
+        const sources = fromJS({
+            ticket: {
+                customer: {
+                    integrations: {},
+                },
+            },
+        })
+
+        const customer = fromJS({
+            integrations: [],
+        })
+
+        const widgets = fromJS({
+            currentContext: 'ticket',
+            _internal: {
+                drag: { isDragging: false },
+                editedItems: [{ template: {} }],
+                hasFetchedWidgets: true,
+            },
+            items: [],
+        })
+
+        render(
+            <Provider store={store}>
+                <InfobarCustomerInfo
+                    {...minProps}
+                    sources={sources}
+                    widgets={widgets}
+                    customer={customer}
+                    isEditing={false}
+                />{' '}
+            </Provider>,
+        )
+
+        expect(screen.queryByText('Sync Profile')).not.toBeInTheDocument()
+    })
+
+    it('should not display the button `Sync the customer to Shopify when flag is off', () => {
+        const store = mockStore({
+            integrations: fromJS({
+                integrations: [
+                    { type: HTTP_INTEGRATION_TYPE },
+                    { type: SHOPIFY_INTEGRATION_TYPE },
+                ],
+            }),
+        })
+        const sources = fromJS({
+            ticket: {
+                customer: {
+                    integrations: {},
+                },
+            },
+        })
+
+        const customer = fromJS({
+            integrations: [],
+        })
+
+        const widgets = fromJS({
+            currentContext: 'ticket',
+            _internal: {
+                drag: { isDragging: false },
+                editedItems: [{ template: {} }],
+                hasFetchedWidgets: true,
+            },
+            items: [],
+        })
+
+        render(
+            <Provider store={store}>
+                <InfobarCustomerInfo
+                    {...minProps}
+                    sources={sources}
+                    widgets={widgets}
+                    customer={customer}
+                    isEditing={false}
+                />{' '}
+            </Provider>,
+        )
+        expect(screen.queryByText('Sync Profile')).not.toBeInTheDocument()
+    })
 })
