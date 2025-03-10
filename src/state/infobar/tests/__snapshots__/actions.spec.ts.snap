@@ -76,45 +76,10 @@ exports[`infobar actions execute action success 1`] = `
 ]
 `;
 
-exports[`infobar actions handle executed action display error 1`] = `
-[
-  {
-    "buttons": [
-      {
-        "name": "Review",
-        "onClick": [Function],
-        "primary": true,
-      },
-    ],
-    "dismissAfter": 0,
-    "message": "No way",
-    "status": "error",
-    "title": "Something went wrong on your last action 😞",
-    "type": "NOTIFY-MOCK",
-  },
-  {
-    "data": {
-      "action_id": "someId",
-      "msg": "[SHOPIFY] [full-refund] No way",
-      "payload": {},
-      "status": "error",
-    },
-    "id": "someId",
-    "type": "EXECUTE_ACTION_ERROR",
-  },
-]
-`;
-
 exports[`infobar actions handle executed action display error from ticket currently on 1`] = `
 [
   {
-    "buttons": [
-      {
-        "name": "Review",
-        "onClick": [Function],
-        "primary": true,
-      },
-    ],
+    "buttons": [],
     "dismissAfter": 0,
     "message": "No way",
     "status": "error",
@@ -165,6 +130,59 @@ exports[`infobar actions handle executed action display error from ticket not cu
 ]
 `;
 
+exports[`infobar actions handle executed action display error with button 1`] = `
+[
+  {
+    "buttons": [
+      {
+        "name": "Review",
+        "onClick": [Function],
+        "primary": true,
+      },
+    ],
+    "dismissAfter": 0,
+    "message": "No way",
+    "status": "error",
+    "title": "Something went wrong on your last action 😞",
+    "type": "NOTIFY-MOCK",
+  },
+  {
+    "data": {
+      "action_id": "someId",
+      "msg": "[SHOPIFY] [full-refund] No way",
+      "payload": {},
+      "status": "error",
+      "user_id": "123",
+    },
+    "id": "someId",
+    "type": "EXECUTE_ACTION_ERROR",
+  },
+]
+`;
+
+exports[`infobar actions handle executed action display error without button 1`] = `
+[
+  {
+    "buttons": [],
+    "dismissAfter": 0,
+    "message": "No way",
+    "status": "error",
+    "title": "Something went wrong on your last action 😞",
+    "type": "NOTIFY-MOCK",
+  },
+  {
+    "data": {
+      "action_id": "someId",
+      "msg": "[SHOPIFY] [full-refund] No way",
+      "payload": {},
+      "status": "error",
+    },
+    "id": "someId",
+    "type": "EXECUTE_ACTION_ERROR",
+  },
+]
+`;
+
 exports[`infobar actions handle executed action success 1`] = `
 [
   {
@@ -175,6 +193,26 @@ exports[`infobar actions handle executed action success 1`] = `
   {
     "data": {
       "action_id": "someId",
+      "payload": {},
+      "status": "success",
+    },
+    "id": "someId",
+    "type": "EXECUTE_ACTION_SUCCESS",
+  },
+]
+`;
+
+exports[`infobar actions handle executed action success with message 1`] = `
+[
+  {
+    "status": "success",
+    "title": "Action test message",
+    "type": "NOTIFY-MOCK",
+  },
+  {
+    "data": {
+      "action_id": "someId",
+      "msg": "Action test message",
       "payload": {},
       "status": "success",
     },

@@ -208,24 +208,30 @@ export const handleExecutedAction =
         const actionId = response.action_id
 
         if (response.status === 'error') {
-            let buttons = [
-                {
+            let buttons = []
+            if (response.user_id !== undefined) {
+                buttons.push({
                     primary: true,
                     name: 'Review',
                     onClick: () => {
                         history.push(`/app/customer/${response.user_id || ''}`)
                     },
-                },
-            ]
+                })
+            }
 
             const ticketId = response.ticket_id
             if (ticketId) {
                 if (isCurrentlyOnTicket(ticketId)) {
                     buttons = []
                 } else {
-                    buttons[0].onClick = () => {
-                        history.push(`/app/ticket/${ticketId}`)
-                    }
+                    buttons = []
+                    buttons.push({
+                        primary: true,
+                        name: 'Review',
+                        onClick: () => {
+                            history.push(`/app/ticket/${ticketId}`)
+                        },
+                    })
                 }
             }
 
@@ -249,7 +255,9 @@ export const handleExecutedAction =
         void dispatch(
             notify({
                 status: NotificationStatus.Success,
-                title: 'Action successfully executed',
+                title: response.msg
+                    ? response.msg
+                    : 'Action successfully executed',
             }),
         )
 

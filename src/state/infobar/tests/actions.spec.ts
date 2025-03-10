@@ -17,6 +17,8 @@ import { initialState } from 'state/infobar/reducers'
 import { StoreDispatch } from 'state/types'
 import { assumeMock } from 'utils/testing'
 
+import { isCurrentlyOnTicket } from '../../../utils'
+
 type MockedRootState = {
     infobar: Map<any, any>
     ticket: Map<any, any>
@@ -217,7 +219,19 @@ describe('infobar actions', () => {
             expect(store.getActions()).toMatchSnapshot()
         })
 
-        it('display error', () => {
+        it('success with message', () => {
+            const response = {
+                status: 'success',
+                action_id: 'someId',
+                payload: {},
+                msg: 'Action test message',
+            } as HandleExecutedActionArgumentType
+
+            store.dispatch(actions.handleExecutedAction(response))
+            expect(store.getActions()).toMatchSnapshot()
+        })
+
+        it('display error without button', () => {
             const response = {
                 status: 'error',
                 action_id: 'someId',
@@ -229,7 +243,21 @@ describe('infobar actions', () => {
             expect(store.getActions()).toMatchSnapshot()
         })
 
+        it('display error with button', () => {
+            const response = {
+                status: 'error',
+                user_id: '123',
+                action_id: 'someId',
+                msg: '[SHOPIFY] [full-refund] No way',
+                payload: {},
+            } as HandleExecutedActionArgumentType
+
+            store.dispatch(actions.handleExecutedAction(response))
+            expect(store.getActions()).toMatchSnapshot()
+        })
+
         it('display error from ticket currently on', () => {
+            ;(isCurrentlyOnTicket as jest.Mock).mockReturnValue(true)
             const response = {
                 status: 'error',
                 action_id: 'someId',
@@ -243,6 +271,7 @@ describe('infobar actions', () => {
         })
 
         it('display error from ticket not currently on', () => {
+            ;(isCurrentlyOnTicket as jest.Mock).mockReturnValue(false)
             const response = {
                 status: 'error',
                 action_id: 'someId',
