@@ -95,7 +95,7 @@ const Root = ({ store }: Props) => {
                             subscribeKey={window.PUBNUB_SUBSCRIBE_KEY}
                             subscriptionWorkerUrl={pubNubWorkerUrl}
                             subscriptionWorkerUnsubscribeOfflineClients={true}
-                            subscriptionWorkerOfflineClientsCheckInterval={5000}
+                            subscriptionWorkerOfflineClientsCheckInterval={5}
                             subscriptionWorkerLogVerbosity={
                                 pubNubWorkerLogVerbosity
                             }
