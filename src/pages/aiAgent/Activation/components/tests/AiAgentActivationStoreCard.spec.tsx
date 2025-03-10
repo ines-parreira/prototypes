@@ -11,9 +11,10 @@ const renderComponent = (
     props: ComponentProps<typeof AiAgentActivationStoreCard>,
 ) => renderWithRouter(<AiAgentActivationStoreCard {...props} />)
 
-const testProps = {
+const testProps: ComponentProps<typeof AiAgentActivationStoreCard> = {
     store: {
-        name: 'Steve Madden',
+        name: 'steve-madden',
+        title: 'Steve Madden',
         sales: {
             enabled: false,
             onToggle: jest.fn(),
@@ -22,12 +23,12 @@ const testProps = {
             onToggle: jest.fn(),
             chat: {
                 enabled: false,
-                integration: undefined,
                 onToggle: jest.fn(),
+                isIntegrationMissing: false,
             },
             email: {
                 enabled: false,
-                integration: undefined,
+                isIntegrationMissing: false,
                 onToggle: jest.fn(),
             },
         },
@@ -48,29 +49,53 @@ describe('<AiAgentActivationStoreCard />', () => {
     })
 
     it('should render', () => {
-        const result = renderComponent(testProps)
+        const { getByText, queryByText, container, rerenderComponent } =
+            renderComponent(testProps)
 
-        expect(result.getByText('Steve Madden')).toBeInTheDocument()
+        expect(getByText('Steve Madden')).toBeInTheDocument()
 
-        result.getByText('Manage channels').click()
+        getByText('Manage channels').click()
 
-        expect(
-            result.getByText('Activate Support for Chat'),
-        ).toBeInTheDocument()
-        expect(
-            result.getByText('Activate Support for Email'),
-        ).toBeInTheDocument()
+        expect(getByText('Activate Support for Chat')).toBeInTheDocument()
+        expect(getByText('Activate Support for Email')).toBeInTheDocument()
 
-        const supportChatCheckbox =
-            result.container.querySelector('#support__chat')
+        const supportChatCheckbox = container.querySelector('#support__chat')
         expect(supportChatCheckbox).toBeInTheDocument()
         fireEvent.click(supportChatCheckbox!)
         expect(testProps.store.support.chat.onToggle).toHaveBeenCalled()
 
-        const supportEmailCheckbox =
-            result.container.querySelector('#support__email')
+        const supportEmailCheckbox = container.querySelector('#support__email')
         expect(supportEmailCheckbox).toBeInTheDocument()
         fireEvent.click(supportEmailCheckbox!)
         expect(testProps.store.support.email.onToggle).toHaveBeenCalled()
+
+        const updatedProps: ComponentProps<typeof AiAgentActivationStoreCard> =
+            {
+                ...testProps,
+                store: {
+                    ...testProps.store,
+                    support: {
+                        ...testProps.store.support,
+                        chat: {
+                            ...testProps.store.support.chat,
+                            isIntegrationMissing: true,
+                        },
+                        email: {
+                            ...testProps.store.support.email,
+                            isIntegrationMissing: true,
+                        },
+                    },
+                },
+            }
+        rerenderComponent(<AiAgentActivationStoreCard {...updatedProps} />)
+
+        getByText('Manage channels').click()
+
+        expect(queryByText('Activate Support for Chat')).not.toBeInTheDocument()
+        expect(
+            queryByText('Activate Support for Email'),
+        ).not.toBeInTheDocument()
+        expect(getByText('Select Integration for Chat')).toBeInTheDocument()
+        expect(getByText('Select Integration for Email')).toBeInTheDocument()
     })
 })

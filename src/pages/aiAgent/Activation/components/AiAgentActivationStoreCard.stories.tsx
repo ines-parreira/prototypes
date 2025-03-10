@@ -28,7 +28,8 @@ export const AiAgentActivationStoreCardDefault: Story = {
     render: (args) => <AiAgentActivationStoreCard {...args} />,
     args: {
         store: {
-            name: 'Steve Madden',
+            name: 'steve-madden',
+            title: 'Steve Madden',
             sales: {
                 enabled: false,
                 onToggle: () => {},
@@ -37,13 +38,13 @@ export const AiAgentActivationStoreCardDefault: Story = {
                 onToggle: () => {},
                 chat: {
                     enabled: false,
-                    integrationError: undefined,
                     onToggle: () => {},
+                    isIntegrationMissing: false,
                 },
                 email: {
                     enabled: false,
-                    integrationError: undefined,
                     onToggle: () => {},
+                    isIntegrationMissing: true,
                 },
             },
         },

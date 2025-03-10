@@ -3,6 +3,10 @@ import React, { useState } from 'react'
 import cn from 'classnames'
 import { Link } from 'react-router-dom'
 
+import { Tooltip } from '@gorgias/merchant-ui-kit'
+
+import warningIcon from 'assets/img/icons/warning.svg'
+import { useAiAgentNavigation } from 'pages/aiAgent/hooks/useAiAgentNavigation'
 import Alert, { AlertType } from 'pages/common/components/Alert/Alert'
 import CheckBox from 'pages/common/forms/CheckBox'
 import ToggleInput from 'pages/common/forms/ToggleInput'
@@ -12,6 +16,7 @@ import css from './AiAgentActivationStoreCard.less'
 type Props = {
     store: {
         name: string
+        title: string
         sales: {
             enabled: boolean
             onToggle: (newValue: boolean) => void
@@ -20,13 +25,13 @@ type Props = {
             onToggle: (newValue: boolean) => void
             chat: {
                 enabled: boolean
-                integrationError?: string
                 onToggle: (newValue: boolean) => void
+                isIntegrationMissing?: boolean
             }
             email: {
                 enabled: boolean
-                integrationError?: string
                 onToggle: (newValue: boolean) => void
+                isIntegrationMissing?: boolean
             }
         }
     }
@@ -59,11 +64,13 @@ export const AiAgentActivationStoreCard = ({ store, alerts }: Props) => {
                 [channel]: !displayChannels[channel],
             })
 
+    const { routes } = useAiAgentNavigation({ shopName: store.name })
+
     return (
         <div className={css.storeCard}>
             <div className={cn(css.section, css.headerSection)}>
                 <div className={css.heading}>
-                    <div className={css.title}>{store.name}</div>
+                    <div className={css.title}>{store.title}</div>
                     <div className={css.enablement}>
                         {enablement.current} of {enablement.total}
                     </div>
@@ -150,18 +157,42 @@ export const AiAgentActivationStoreCard = ({ store, alerts }: Props) => {
                                     labelClassName={css.channelLabel}
                                     name="support__chat"
                                     isDisabled={
-                                        !!store.support.chat.integrationError
+                                        store.support.chat.isIntegrationMissing
                                     }
                                     isChecked={store.support.chat.enabled}
                                     onChange={store.support.chat.onToggle}
                                 >
                                     Chat
+                                    {store.support.chat.isIntegrationMissing ? (
+                                        <>
+                                            <img
+                                                id="support__chat__icon"
+                                                className={css.warningIcon}
+                                                alt="warning"
+                                                src={warningIcon}
+                                            />
+                                            <Tooltip target="support__chat__icon">
+                                                A chat integration must be
+                                                selected for this store.
+                                            </Tooltip>
+                                        </>
+                                    ) : undefined}
                                 </CheckBox>
                             </div>
                             <div className={css.channelCaption}>
-                                Activate Support for Chat
+                                {store.support.chat.isIntegrationMissing ? (
+                                    <Link to={routes.settingsChannels}>
+                                        Select Integration for Chat{' '}
+                                        <i className="material-icons">
+                                            open_in_new
+                                        </i>
+                                    </Link>
+                                ) : (
+                                    'Activate Support for Chat'
+                                )}
                             </div>
                         </div>
+
                         <div>
                             <div className={css.channelField}>
                                 <CheckBox
@@ -169,16 +200,40 @@ export const AiAgentActivationStoreCard = ({ store, alerts }: Props) => {
                                     labelClassName={css.channelLabel}
                                     name="support__email"
                                     isDisabled={
-                                        !!store.support.email.integrationError
+                                        store.support.email.isIntegrationMissing
                                     }
                                     isChecked={store.support.email.enabled}
                                     onChange={store.support.email.onToggle}
                                 >
                                     Email
+                                    {store.support.email
+                                        .isIntegrationMissing ? (
+                                        <>
+                                            <img
+                                                id="support__email__icon"
+                                                className={css.warningIcon}
+                                                alt="warning"
+                                                src={warningIcon}
+                                            />
+                                            <Tooltip target="support__email__icon">
+                                                An email integration must be
+                                                selected for this store.
+                                            </Tooltip>
+                                        </>
+                                    ) : undefined}
                                 </CheckBox>
                             </div>
                             <div className={css.channelCaption}>
-                                Activate Support for Email
+                                {store.support.email.isIntegrationMissing ? (
+                                    <Link to={routes.settingsChannels}>
+                                        Select Integration for Email{' '}
+                                        <i className="material-icons">
+                                            open_in_new
+                                        </i>
+                                    </Link>
+                                ) : (
+                                    'Activate Support for Email'
+                                )}
                             </div>
                         </div>
                     </div>
