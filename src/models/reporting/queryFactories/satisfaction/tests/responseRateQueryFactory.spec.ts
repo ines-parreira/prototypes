@@ -11,6 +11,7 @@ import { ReportingFilterOperator } from 'models/reporting/types'
 import { StatsFilters } from 'models/stat/types'
 import {
     DRILLDOWN_QUERY_LIMIT,
+    NotSpamNorTrashedTicketsFilter,
     statsFiltersToReportingFilters,
     TicketStatsFiltersMembers,
 } from 'utils/reporting'
@@ -39,6 +40,12 @@ describe('responseRateQueryFactory', () => {
                     TicketStatsFiltersMembers,
                     statsFilters,
                 ),
+                {
+                    member: TicketSatisfactionSurveyMeasure.SentSurveysCount,
+                    operator: ReportingFilterOperator.Gt,
+                    values: ['0'],
+                },
+                ...NotSpamNorTrashedTicketsFilter,
             ],
             timezone,
         })
@@ -56,6 +63,12 @@ describe('responseRateQueryFactory', () => {
                     TicketStatsFiltersMembers,
                     statsFilters,
                 ),
+                {
+                    member: TicketSatisfactionSurveyMeasure.SentSurveysCount,
+                    operator: ReportingFilterOperator.Gt,
+                    values: ['0'],
+                },
+                ...NotSpamNorTrashedTicketsFilter,
             ],
             timezone,
             order: [[TicketSatisfactionSurveyMeasure.ResponseRate, sorting]],
@@ -93,6 +106,7 @@ describe('responseRateDrillDownQueryFactory', () => {
                     operator: ReportingFilterOperator.Gt,
                     values: ['0'],
                 },
+                ...NotSpamNorTrashedTicketsFilter,
             ],
             timezone,
         })
@@ -120,6 +134,7 @@ describe('responseRateDrillDownQueryFactory', () => {
                     operator: ReportingFilterOperator.Gt,
                     values: ['0'],
                 },
+                ...NotSpamNorTrashedTicketsFilter,
             ],
             timezone,
             order: [[TicketSatisfactionSurveyMeasure.ResponseRate, sorting]],

@@ -15,6 +15,7 @@ import { ReportingFilterOperator } from 'models/reporting/types'
 import { StatsFilters } from 'models/stat/types'
 import {
     DRILLDOWN_QUERY_LIMIT,
+    NotSpamNorTrashedTicketsFilter,
     statsFiltersToReportingFilters,
     TicketStatsFiltersMembers,
 } from 'utils/reporting'
@@ -38,10 +39,18 @@ describe('averageScoreQueryFactory', () => {
             measures: [TicketSatisfactionSurveyMeasure.AvgSurveyScore],
             dimensions: [],
             segments: [],
-            filters: statsFiltersToReportingFilters(
-                TicketStatsFiltersMembers,
-                statsFilters,
-            ),
+            filters: [
+                ...statsFiltersToReportingFilters(
+                    TicketStatsFiltersMembers,
+                    statsFilters,
+                ),
+                {
+                    member: TicketSatisfactionSurveyDimension.SurveyScore,
+                    operator: ReportingFilterOperator.Gt,
+                    values: ['0'],
+                },
+                ...NotSpamNorTrashedTicketsFilter,
+            ],
             timezone,
         })
     })
@@ -53,11 +62,18 @@ describe('averageScoreQueryFactory', () => {
             measures: [TicketSatisfactionSurveyMeasure.AvgSurveyScore],
             dimensions: [],
             segments: [],
-            filters: statsFiltersToReportingFilters(
-                TicketStatsFiltersMembers,
-                statsFilters,
-            ),
-
+            filters: [
+                ...statsFiltersToReportingFilters(
+                    TicketStatsFiltersMembers,
+                    statsFilters,
+                ),
+                {
+                    member: TicketSatisfactionSurveyDimension.SurveyScore,
+                    operator: ReportingFilterOperator.Gt,
+                    values: ['0'],
+                },
+                ...NotSpamNorTrashedTicketsFilter,
+            ],
             timezone,
             order: [[TicketSatisfactionSurveyMeasure.AvgSurveyScore, sorting]],
         })
@@ -94,6 +110,7 @@ describe('averageScoreDrillDownQueryFactory', () => {
                     operator: ReportingFilterOperator.Gt,
                     values: ['0'],
                 },
+                ...NotSpamNorTrashedTicketsFilter,
             ],
             timezone,
         })
@@ -121,6 +138,7 @@ describe('averageScoreDrillDownQueryFactory', () => {
                     operator: ReportingFilterOperator.Gt,
                     values: ['0'],
                 },
+                ...NotSpamNorTrashedTicketsFilter,
             ],
             timezone,
             order: [[TicketSatisfactionSurveyMeasure.AvgSurveyScore, sorting]],

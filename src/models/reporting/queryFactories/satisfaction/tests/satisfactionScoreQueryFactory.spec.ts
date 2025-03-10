@@ -14,6 +14,7 @@ import { ReportingFilterOperator } from 'models/reporting/types'
 import { StatsFilters } from 'models/stat/types'
 import {
     DRILLDOWN_QUERY_LIMIT,
+    NotSpamNorTrashedTicketsFilter,
     statsFiltersToReportingFilters,
     TicketStatsFiltersMembers,
 } from 'utils/reporting'
@@ -42,6 +43,12 @@ describe('satisfactionScoreQueryFactory', () => {
                     TicketStatsFiltersMembers,
                     statsFilters,
                 ),
+                {
+                    member: TicketSatisfactionSurveyDimension.SurveyScore,
+                    operator: ReportingFilterOperator.Gt,
+                    values: ['0'],
+                },
+                ...NotSpamNorTrashedTicketsFilter,
             ],
             timezone,
         })
@@ -63,6 +70,12 @@ describe('satisfactionScoreQueryFactory', () => {
                     TicketStatsFiltersMembers,
                     statsFilters,
                 ),
+                {
+                    member: TicketSatisfactionSurveyDimension.SurveyScore,
+                    operator: ReportingFilterOperator.Gt,
+                    values: ['0'],
+                },
+                ...NotSpamNorTrashedTicketsFilter,
             ],
             timezone,
             order: [
@@ -108,6 +121,7 @@ describe('satisfactionScoreDrillDownQueryFactory', () => {
                     operator: ReportingFilterOperator.Gt,
                     values: ['0'],
                 },
+                ...NotSpamNorTrashedTicketsFilter,
             ],
             timezone,
         })
@@ -138,6 +152,7 @@ describe('satisfactionScoreDrillDownQueryFactory', () => {
                     operator: ReportingFilterOperator.Gt,
                     values: ['0'],
                 },
+                ...NotSpamNorTrashedTicketsFilter,
             ],
             timezone,
             order: [[TicketSatisfactionSurveyDimension.SurveyScore, sorting]],

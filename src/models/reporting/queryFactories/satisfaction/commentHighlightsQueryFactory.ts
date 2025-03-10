@@ -5,6 +5,7 @@ import { TicketSatisfactionSurveyDimension } from 'models/reporting/cubes/Ticket
 import { ReportingFilterOperator, ReportingQuery } from 'models/reporting/types'
 import { StatsFilters } from 'models/stat/types'
 import {
+    NotSpamNorTrashedTicketsFilter,
     statsFiltersToReportingFilters,
     TicketStatsFiltersMembers,
 } from 'utils/reporting'
@@ -31,6 +32,7 @@ export const commentHighlightsQueryFactory = (
             operator: ReportingFilterOperator.Equals,
             values: surveyScores,
         },
+        ...NotSpamNorTrashedTicketsFilter,
     ],
     order: [
         [

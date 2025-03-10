@@ -6,6 +6,7 @@ import { ReportingFilterOperator, ReportingQuery } from 'models/reporting/types'
 import { StatsFilters } from 'models/stat/types'
 import {
     DRILLDOWN_QUERY_LIMIT,
+    NotSpamNorTrashedTicketsFilter,
     statsFiltersToReportingFilters,
     TicketStatsFiltersMembers,
 } from 'utils/reporting'
@@ -20,6 +21,12 @@ export const surveysSentQueryFactory = (
     segments: [],
     filters: [
         ...statsFiltersToReportingFilters(TicketStatsFiltersMembers, filters),
+        {
+            member: TicketSatisfactionSurveyMeasure.SentSurveysCount,
+            operator: ReportingFilterOperator.Gt,
+            values: ['0'],
+        },
+        ...NotSpamNorTrashedTicketsFilter,
     ],
     timezone,
     ...(sorting
@@ -37,15 +44,6 @@ export const surveysSentDrillDownQueryFactory = (
     sorting?: OrderDirection,
 ): ReportingQuery<HelpdeskMessageCubeWithJoins> => ({
     ...surveysSentQueryFactory(filters, timezone, sorting),
-    measures: [TicketSatisfactionSurveyMeasure.SentSurveysCount],
-    filters: [
-        ...statsFiltersToReportingFilters(TicketStatsFiltersMembers, filters),
-        {
-            member: TicketSatisfactionSurveyMeasure.SentSurveysCount,
-            operator: ReportingFilterOperator.Gt,
-            values: ['0'],
-        },
-    ],
     dimensions: [TicketDimension.TicketId],
     limit: DRILLDOWN_QUERY_LIMIT,
 })

@@ -8,6 +8,7 @@ import { surveyScoresQueryFactory } from 'models/reporting/queryFactories/satisf
 import { ReportingFilterOperator } from 'models/reporting/types'
 import { StatsFilters } from 'models/stat/types'
 import {
+    NotSpamNorTrashedTicketsFilter,
     statsFiltersToReportingFilters,
     TicketStatsFiltersMembers,
 } from 'utils/reporting'
@@ -40,6 +41,7 @@ describe('surveyScoresQueryFactory', () => {
                     operator: ReportingFilterOperator.Gt,
                     values: ['0'],
                 },
+                ...NotSpamNorTrashedTicketsFilter,
             ],
             timezone,
         })

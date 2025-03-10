@@ -7,6 +7,7 @@ import { scoredSurveysQueryFactory } from 'models/reporting/queryFactories/satis
 import { ReportingFilterOperator } from 'models/reporting/types'
 import { StatsFilters } from 'models/stat/types'
 import {
+    NotSpamNorTrashedTicketsFilter,
     statsFiltersToReportingFilters,
     TicketStatsFiltersMembers,
 } from 'utils/reporting'
@@ -46,6 +47,7 @@ describe('scoredSurveysQueryFactory', () => {
                     operator: ReportingFilterOperator.Gt,
                     values: ['0'],
                 },
+                ...NotSpamNorTrashedTicketsFilter,
             ],
             order: [
                 [
@@ -81,6 +83,7 @@ describe('scoredSurveysQueryFactory', () => {
                     operator: ReportingFilterOperator.Gt,
                     values: ['0'],
                 },
+                ...NotSpamNorTrashedTicketsFilter,
             ],
             order: [
                 [
