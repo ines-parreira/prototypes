@@ -12,6 +12,7 @@ import { FeatureFlagKey } from 'config/featureFlags'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import useAsyncFn from 'hooks/useAsyncFn'
+import useEffectOnce from 'hooks/useEffectOnce'
 import useUpdateEffect from 'hooks/useUpdateEffect'
 import { EmailProvider } from 'models/integration/constants'
 import { IntegrationType } from 'models/integration/types'
@@ -125,7 +126,7 @@ export const IntegrationDetail = ({
     ].includes(integrationId)
 
     const { redirectToOnboardingIfOnboarding } =
-        useOnboardingIntegrationRedirection()
+        useOnboardingIntegrationRedirection(false)
 
     const isUpdate = useMemo(
         () => !!integrationId && isIntegrationId,
@@ -137,7 +138,14 @@ export const IntegrationDetail = ({
         [getRedirectUri, integrationType],
     )
 
-    redirectToOnboardingIfOnboarding(integrationType, integrationId)
+    useEffectOnce(() => {
+        // Redirect to onboarding if the user is onboarding.
+        // It's necessary to be in the use effect otherwise it shows an error
+        // because the component is not mounted.
+        if (isIntegrationId) {
+            redirectToOnboardingIfOnboarding(integrationType, integrationId)
+        }
+    })
 
     const integration = useMemo(() => {
         // clear cached integration

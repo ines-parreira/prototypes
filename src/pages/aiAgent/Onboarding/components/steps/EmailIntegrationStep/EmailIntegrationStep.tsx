@@ -78,7 +78,7 @@ export const EmailIntegrationStep: FC<StepProps> = ({
 
     const handleSubmit = useCallback(
         (redirectUri: string) => {
-            redirectToIntegration(redirectUri)
+            redirectToIntegration(redirectUri, IntegrationType.Email)
         },
         [redirectToIntegration],
     )

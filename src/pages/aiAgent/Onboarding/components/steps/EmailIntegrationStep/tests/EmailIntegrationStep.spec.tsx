@@ -12,7 +12,7 @@ import { account } from 'fixtures/account'
 import { billingState } from 'fixtures/billing'
 import { chatIntegrationFixtures } from 'fixtures/chat'
 import { integrationsState, shopifyIntegration } from 'fixtures/integrations'
-import { StoreIntegration } from 'models/integration/types'
+import { IntegrationType, StoreIntegration } from 'models/integration/types'
 import { StatusEnum } from 'pages/aiAgent/Onboarding/components/StatusBadge'
 import { EmailIntegrationStep } from 'pages/aiAgent/Onboarding/components/steps/EmailIntegrationStep/EmailIntegrationStep'
 import { useShopifyIntegrations } from 'pages/aiAgent/Onboarding/hooks/useShopifyIntegrations'
@@ -169,13 +169,14 @@ describe('EmailIntegrationStep', () => {
 
         const handleSubmit = (e: React.MouseEvent, redirectUri: string) => {
             e.preventDefault()
-            mockRedirectToIntegration(redirectUri)
+            mockRedirectToIntegration(redirectUri, IntegrationType.Email)
         }
         handleSubmit(mockEvent, mockGmailRedirectUri)
 
         expect(mockEvent.preventDefault).toHaveBeenCalled()
         expect(mockRedirectToIntegration).toHaveBeenCalledWith(
             mockGmailRedirectUri,
+            IntegrationType.Email,
         )
     })
 })

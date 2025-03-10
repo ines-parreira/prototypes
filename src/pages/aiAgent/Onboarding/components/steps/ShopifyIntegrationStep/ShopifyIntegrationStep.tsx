@@ -6,7 +6,7 @@ import { z } from 'zod'
 
 import shopify from 'assets/img/integrations/shopify.png'
 import useAppSelector from 'hooks/useAppSelector'
-import { StoreIntegration } from 'models/integration/types'
+import { IntegrationType, StoreIntegration } from 'models/integration/types'
 import { useStoreConfigurationForAccount } from 'pages/aiAgent/hooks/useStoreConfigurationForAccount'
 import { DropdownSelector } from 'pages/aiAgent/Onboarding/components/DropdownSelector/DropdownSelector'
 import IntegrationCard from 'pages/aiAgent/Onboarding/components/IntegrationCard'
@@ -150,7 +150,10 @@ export const ShopifyIntegrationStep: React.FC<StepProps> = ({
     }
 
     const redirectToShopify = useCallback(() => {
-        redirectToIntegration('https://apps.shopify.com/helpdesk')
+        redirectToIntegration(
+            'https://apps.shopify.com/helpdesk',
+            IntegrationType.Shopify,
+        )
     }, [redirectToIntegration])
 
     const onBackClick = useCallback(() => {

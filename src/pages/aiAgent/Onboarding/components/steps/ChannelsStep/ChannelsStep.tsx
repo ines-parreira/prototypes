@@ -14,7 +14,7 @@ import {
 } from 'constants/integration'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
-import { ShopifyIntegration } from 'models/integration/types'
+import { IntegrationType, ShopifyIntegration } from 'models/integration/types'
 import { ChatIntegrationListSelection } from 'pages/aiAgent/components/ChatIntegrationListSelection/ChatIntegrationListSelection'
 import { EmailIntegrationListSelection } from 'pages/aiAgent/components/EmailIntegrationListSelection/EmailIntegrationListSelection'
 import { useStoreConfigurationForAccount } from 'pages/aiAgent/hooks/useStoreConfigurationForAccount'
@@ -34,6 +34,7 @@ import { StepProps } from 'pages/aiAgent/Onboarding/components/steps/types'
 import useCheckOnboardingCompleted from 'pages/aiAgent/Onboarding/hooks/useCheckOnboardingCompleted'
 import useCheckStoreIntegration from 'pages/aiAgent/Onboarding/hooks/useCheckStoreIntegration'
 import { useGetOnboardingData } from 'pages/aiAgent/Onboarding/hooks/useGetOnboardingData'
+import { useOnboardingIntegrationRedirection } from 'pages/aiAgent/Onboarding/hooks/useOnboardingIntegrationRedirection'
 import { useSteps } from 'pages/aiAgent/Onboarding/hooks/useSteps'
 import { useUpdateOnboarding } from 'pages/aiAgent/Onboarding/hooks/useUpdateOnboarding'
 import {
@@ -81,6 +82,9 @@ export const ChannelsStep: React.FC<StepProps> = ({
     const { data, isLoading: isLoadingOnboardingData } =
         useGetOnboardingData(shopName)
 
+    const { redirectToIntegration, integrationId, integrationType } =
+        useOnboardingIntegrationRedirection()
+
     const {
         mutate: doUpdateOnboardingMutation,
         isLoading: isUpdatingOnboarding,
@@ -92,6 +96,8 @@ export const ChannelsStep: React.FC<StepProps> = ({
 
     const stores = useAppSelector(getShopifyIntegrationsSortedByName)
     const accountDomain = useAppSelector(getCurrentDomain)
+    const [redirectionIntegrationId] = useState(integrationId)
+    const [redirectionIntegrationType] = useState(integrationType)
 
     const storesName = useMemo(
         () =>
@@ -139,6 +145,8 @@ export const ChannelsStep: React.FC<StepProps> = ({
     useCheckStoreIntegration()
     useCheckOnboardingCompleted()
 
+    const emailIntegrationPath = '/app/settings/channels/email/new'
+
     const dispatch = useAppDispatch()
 
     const chatIntegrations = useSelfServiceChatChannels(
@@ -164,9 +172,24 @@ export const ChannelsStep: React.FC<StepProps> = ({
 
     const schema = useChannelsSchema(createNewChat)
 
+    const getRedirectionEmail = (): undefined | number => {
+        switch (redirectionIntegrationType) {
+            case IntegrationType.Email:
+            case IntegrationType.GorgiasChat:
+                return parseInt(redirectionIntegrationId)
+            default:
+                return undefined
+        }
+    }
+
+    const preRenderEmails = [
+        ...(data?.emailIntegrationIds ?? []),
+        getRedirectionEmail(),
+    ].filter((entry) => entry !== undefined)
+
     const preselectedEmails = usePreselectedEmails({
         storeId: storeIntegration.id,
-        onboardingEmailIntegrationIds: data?.emailIntegrationIds,
+        onboardingEmailIntegrationIds: preRenderEmails as number[],
     })
     const preselectedChats = usePreselectedChat({
         chatChannels,
@@ -187,7 +210,7 @@ export const ChannelsStep: React.FC<StepProps> = ({
     const {
         watch,
         setValue,
-        formState: { errors, isDirty },
+        formState: { errors },
         handleSubmit,
     } = methods
 
@@ -251,10 +274,6 @@ export const ChannelsStep: React.FC<StepProps> = ({
     }
 
     const onNextClick = () => {
-        if (!isDirty) {
-            goToNextStep()
-            return
-        }
         if (data && 'id' in data) {
             const updatedData = {
                 shopName,
@@ -278,6 +297,10 @@ export const ChannelsStep: React.FC<StepProps> = ({
         const previousStep = validSteps[currentStep - 2]?.step
 
         goToStep(previousStep)
+    }
+
+    const redirectToEmailIntegration = () => {
+        redirectToIntegration(emailIntegrationPath, IntegrationType.Email)
     }
 
     const renderContent = () => {
@@ -371,7 +394,15 @@ export const ChannelsStep: React.FC<StepProps> = ({
                                             isDisabled={false}
                                             withDefaultTag
                                         />
-                                        <a className={css.link}>
+                                        <a
+                                            // The href is for a11y purposes only
+                                            href={emailIntegrationPath}
+                                            className={css.link}
+                                            onClick={(event) => {
+                                                event.preventDefault()
+                                                redirectToEmailIntegration()
+                                            }}
+                                        >
                                             Don’t see the email you want? Click
                                             here
                                         </a>
