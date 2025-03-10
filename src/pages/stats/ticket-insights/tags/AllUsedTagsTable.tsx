@@ -231,6 +231,7 @@ const TableRow = ({
             >
                 <DrillDownModalTrigger
                     enabled={total !== 0}
+                    highlighted
                     metricData={{
                         title: `${tag?.name ?? tagId}`,
                         tagId: tagId,

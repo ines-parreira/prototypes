@@ -87,6 +87,7 @@ export const ChannelsCellContent = ({
                         !!data?.value &&
                         column !== ChannelsTableColumns.CreatedTicketsPercentage
                     }
+                    highlighted
                     metricData={{
                         metricName: column,
                         perChannel: channel.slug,

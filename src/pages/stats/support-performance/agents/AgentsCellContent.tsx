@@ -81,6 +81,7 @@ export const AgentsCellContent = ({
             ) : drillDownMetricData !== null ? (
                 <DrillDownModalTrigger
                     enabled={!!metricValue}
+                    highlighted
                     metricData={drillDownMetricData}
                     useNewFilterData={isAnalyticsNewFilters}
                 >

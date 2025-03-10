@@ -62,6 +62,7 @@ const CallsCountCell = ({
                         title: `${metricData.title} | ${agent.name}`,
                     }}
                     enabled={isDrillDownEnabled && !!metricValue}
+                    highlighted
                     useNewFilterData={isAnalyticsNewFilters}
                 >
                     {formattedValue}

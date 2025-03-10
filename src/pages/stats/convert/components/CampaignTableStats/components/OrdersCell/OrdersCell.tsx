@@ -24,7 +24,11 @@ export const OrdersCell = ({ cell, data, variantId, ...props }: Props) => {
 
     return (
         <BodyCell {...props}>
-            <DrillDownModalTrigger enabled={!!data} metricData={metricData}>
+            <DrillDownModalTrigger
+                enabled={!!data}
+                highlighted
+                metricData={metricData}
+            >
                 {formatNumber(data)}
             </DrillDownModalTrigger>
         </BodyCell>

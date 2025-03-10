@@ -1,5 +1,7 @@
 import React, { PropsWithChildren } from 'react'
 
+import classNames from 'classnames'
+
 import { Tooltip } from '@gorgias/merchant-ui-kit'
 
 import { logEvent, SegmentEvent } from 'common/segment'
@@ -23,6 +25,7 @@ export const TRIGGER_ID = 'drill-down'
 type Props = {
     metricData: DrillDownMetric
     enabled?: boolean
+    highlighted?: boolean
     useNewFilterData?: boolean
     segmentEventName?: SegmentEvent
 }
@@ -56,6 +59,7 @@ export const DrillDownModalTrigger = ({
     children,
     metricData,
     enabled = true,
+    highlighted = false,
     useNewFilterData = false,
     segmentEventName = SegmentEvent.StatClicked,
 }: PropsWithChildren<Props>) => {
@@ -75,7 +79,13 @@ export const DrillDownModalTrigger = ({
     return (
         <>
             {enabled ? (
-                <span id={targetId} className={css.text} onClick={handleClick}>
+                <span
+                    id={targetId}
+                    className={classNames(css.text, {
+                        [css.highlighted]: highlighted,
+                    })}
+                    onClick={handleClick}
+                >
                     <Tooltip delay={hintTooltipDelay} target={targetId}>
                         {tooltipText}
                     </Tooltip>

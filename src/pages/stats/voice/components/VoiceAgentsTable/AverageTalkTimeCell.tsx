@@ -47,6 +47,7 @@ const AverageTalkTimeCell = ({ agent, metricData }: Props) => {
                         title: `${metricData.title} | ${agent.name}`,
                     }}
                     enabled={!!metricValue}
+                    highlighted
                 >
                     {formatMetricValue(
                         metricValue,

@@ -258,6 +258,7 @@ const DrillDownModalWrapper = ({
             {drillDownMetricData ? (
                 <DrillDownModalTrigger
                     enabled={!!metricValue}
+                    highlighted
                     metricData={drillDownMetricData}
                     useNewFilterData={true}
                     segmentEventName={

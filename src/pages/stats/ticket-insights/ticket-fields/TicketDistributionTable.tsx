@@ -118,6 +118,7 @@ const TicketDistributionTable = ({
                             />
                             <BodyCell justifyContent="right" width={80}>
                                 <DrillDownModalTrigger
+                                    highlighted
                                     metricData={{
                                         title: `${
                                             selectedCustomField.label
@@ -182,6 +183,7 @@ const TicketDistributionTable = ({
                         </BodyCell>
                         <BodyCell justifyContent="right" width={80}>
                             <DrillDownModalTrigger
+                                highlighted
                                 metricData={{
                                     title: `${selectedCustomField.label} | Total`,
                                     metricName:
