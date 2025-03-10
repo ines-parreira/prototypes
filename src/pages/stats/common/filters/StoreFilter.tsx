@@ -8,7 +8,6 @@ import { Integration } from 'models/integration/types'
 import { withLogicalOperator } from 'models/reporting/queryFactories/utils'
 import {
     FilterComponentKey,
-    FilterKey,
     StatsFiltersWithLogicalOperator,
 } from 'models/stat/types'
 import { LogicalOperatorLabel } from 'pages/stats/common/components/Filter/constants'
@@ -29,10 +28,10 @@ import { mergeStatsFiltersWithLogicalOperator } from 'state/stats/statsSlice'
 import { RootState } from 'state/types'
 
 type Props = {
-    value: StatsFiltersWithLogicalOperator[FilterKey.Integrations]
+    value: StatsFiltersWithLogicalOperator[FilterComponentKey.StoreIntegrations]
     storeIntegrations: Integration[]
     dispatchUpdate: (
-        value: StatsFiltersWithLogicalOperator[FilterKey.Integrations],
+        value: StatsFiltersWithLogicalOperator[FilterComponentKey.StoreIntegrations],
     ) => void
 } & RemovableFilter
 
@@ -82,14 +81,14 @@ export default function StoreFilter({
 
     const handleDropdownClosed = () => {
         logSegmentEvent(
-            FilterComponentKey.Store,
+            FilterComponentKey.StoreIntegrations,
             LogicalOperatorLabel[value.operator],
         )
     }
 
     return (
         <Filter
-            filterName={FilterLabels[FilterComponentKey.Store]}
+            filterName={FilterLabels[FilterComponentKey.StoreIntegrations]}
             filterOptionGroups={options}
             logicalOperators={[]}
             onChangeOption={onOptionChange}
@@ -108,17 +107,18 @@ export default function StoreFilter({
 
 export const StoreFilterFromContext = () => {
     const dispatch = useAppDispatch()
-    const { selectedIntegrations, integrations } = useCampaignStatsFilters()
+    const { selectedIntegrations, storeIntegrations } =
+        useCampaignStatsFilters()
     return (
         <StoreFilter
-            storeIntegrations={integrations}
+            storeIntegrations={storeIntegrations}
             value={withLogicalOperator(selectedIntegrations)}
             dispatchUpdate={(
-                value: StatsFiltersWithLogicalOperator[FilterKey.Integrations],
+                value: StatsFiltersWithLogicalOperator[FilterComponentKey.StoreIntegrations],
             ) =>
                 dispatch(
                     mergeStatsFiltersWithLogicalOperator({
-                        integrations: value,
+                        storeIntegrations: value,
                     }),
                 )
             }
@@ -129,14 +129,14 @@ export const StoreFilterFromContext = () => {
 export const StoreFilterWithState = connect(
     (state: RootState) => ({
         value: getStatsFiltersWithLogicalOperators(state)[
-            FilterKey.Integrations
+            FilterComponentKey.StoreIntegrations
         ],
         storeIntegrations: getStoreIntegrations(state),
     }),
     {
         dispatchUpdate: (filter: Props['value']) =>
             mergeStatsFiltersWithLogicalOperator({
-                integrations: filter,
+                storeIntegrations: filter,
             }),
     },
 )(StoreFilter)

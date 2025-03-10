@@ -11,7 +11,7 @@ import css from './RevenueFilters.less'
 export const RevenueFilters = () => {
     const {
         campaigns,
-        integrations,
+        storeIntegrations,
         isStorePreSelected,
         selectedCampaigns,
         selectedCampaignStatuses,
@@ -27,7 +27,7 @@ export const RevenueFilters = () => {
             {!isStorePreSelected && (
                 <div className={css.filterItem}>
                     <IntegrationMultiSelect
-                        integrations={integrations}
+                        integrations={storeIntegrations}
                         selected={selectedIntegrations}
                         isRequired
                         onChangeItem={onChangeIntegration}

@@ -6,6 +6,7 @@ import { useFlags } from 'launchdarkly-react-client-sdk'
 import { FeatureFlagKey } from 'config/featureFlags'
 import { campaign } from 'fixtures/campaign'
 import { integrationsState } from 'fixtures/integrations'
+import { LogicalOperatorEnum } from 'pages/stats/common/components/Filter/constants'
 import { useGetCampaignsForStore } from 'pages/stats/convert/hooks/useGetCampaignsForStore'
 import { useShopifyIntegrations } from 'pages/stats/convert/hooks/useShopifyIntegrations'
 import { CampaignStatsFilters } from 'pages/stats/convert/providers/CampaignStatsFilters/CampaignStatsFilters'
@@ -177,5 +178,41 @@ describe('CampaignStatsFilters with AnalyticsNewFiltersConvert', () => {
         )
 
         expect(getByText(channelConnectionExternalId)).toBeInTheDocument()
+    })
+
+    it('should provide the correct value for selectedIntegrations', () => {
+        const selectedIntegrationId = 1234
+        const state = {
+            integrations: fromJS([]),
+            stats: {
+                filters: {
+                    ...defaultStatsFilters,
+                    storeIntegrations: {
+                        values: [selectedIntegrationId],
+                        operator: LogicalOperatorEnum.ONE_OF,
+                    },
+                },
+            },
+        } as RootState
+        useGetCampaignsForStoreMock.mockReturnValue(campaignsForStore as any)
+
+        const TestComponent = () => {
+            return (
+                <FiltersContext.Consumer>
+                    {({ selectedIntegrations }) => (
+                        <div>{selectedIntegrations}</div>
+                    )}
+                </FiltersContext.Consumer>
+            )
+        }
+
+        const { getByText } = renderWithStore(
+            <CampaignStatsFilters>
+                <TestComponent />
+            </CampaignStatsFilters>,
+            state,
+        )
+
+        expect(getByText(selectedIntegrationId)).toBeInTheDocument()
     })
 })

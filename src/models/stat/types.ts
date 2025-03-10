@@ -39,7 +39,7 @@ export type CleanFilterComponentKeys = Exclude<
 
 export enum FilterComponentKey {
     BusiestTimesMetricSelectFilter = 'busiestTimesMetricSelectFilter',
-    Store = 'store',
+    StoreIntegrations = 'storeIntegrations',
     PhoneIntegrations = 'phoneIntegrations',
     CustomField = 'customField',
 }
@@ -65,7 +65,7 @@ export type StaticFilter =
     | FilterKey.ResolutionCompleteness
     | FilterComponentKey.BusiestTimesMetricSelectFilter
     | FilterComponentKey.CustomField
-    | FilterComponentKey.Store
+    | FilterComponentKey.StoreIntegrations
     | FilterComponentKey.PhoneIntegrations
 
 export interface Period {
@@ -222,6 +222,7 @@ export type StatsFiltersWithLogicalOperator = {
     [FilterKey.Score]?: WithLogicalOperator<string>
     [FilterKey.SlaPolicies]?: WithLogicalOperator<string>
     [FilterKey.Tags]?: TagFilter[]
+    [FilterComponentKey.StoreIntegrations]?: WithLogicalOperator<number>
 }
 
 export type StatsFilters = LegacyStatsFilters | StatsFiltersWithLogicalOperator

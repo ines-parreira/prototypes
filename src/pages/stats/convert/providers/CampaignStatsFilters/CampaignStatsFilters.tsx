@@ -24,7 +24,6 @@ import { getIntegrationById } from 'state/integrations/selectors'
 import {
     getPageStatsFiltersWithLogicalOperators,
     getStatsFilters,
-    getStoreIntegrationsStatsFilter,
 } from 'state/stats/selectors'
 import { mergeStatsFiltersWithLogicalOperator } from 'state/stats/statsSlice'
 import { isCleanStatsDirty } from 'state/ui/stats/selectors'
@@ -48,8 +47,6 @@ export const CampaignStatsFilters = ({ children }: Props) => {
     )
     const isFilterDirty = useAppSelector(isCleanStatsDirty)
 
-    const storeStatsFilter = useAppSelector(getStoreIntegrationsStatsFilter)
-
     const legacyStatsFilters = useAppSelector(getStatsFilters)
 
     const statsFilters = useAppSelector(getPageStatsFiltersWithLogicalOperators)
@@ -65,15 +62,19 @@ export const CampaignStatsFilters = ({ children }: Props) => {
 
     const dispatch = useAppDispatch()
 
-    const integrations = useShopifyIntegrations()
+    const storeIntegrations = useShopifyIntegrations()
 
     const selectedIntegrations = useMemo(() => {
         if (storeIntegrationId) return [storeIntegrationId]
 
-        const fallback = integrations?.[0]?.id ? [integrations[0].id] : []
+        const fallback = storeIntegrations?.[0]?.id
+            ? [storeIntegrations[0].id]
+            : []
 
-        return storeStatsFilter.length ? storeStatsFilter : fallback
-    }, [storeIntegrationId, integrations, storeStatsFilter])
+        return statsFilters.storeIntegrations?.values
+            ? statsFilters.storeIntegrations.values
+            : fallback
+    }, [storeIntegrationId, storeIntegrations, statsFilters])
 
     const { campaigns, channelConnectionExternalIds } = useGetCampaignsForStore(
         selectedIntegrations,
@@ -201,7 +202,7 @@ export const CampaignStatsFilters = ({ children }: Props) => {
                     statsFilters.period,
                     statsFilters.aggregationWindow,
                 ),
-                integrations,
+                storeIntegrations: storeIntegrations,
                 isStorePreSelected: !!storeIntegrationId,
                 selectedCampaignIds,
                 selectedCampaigns,

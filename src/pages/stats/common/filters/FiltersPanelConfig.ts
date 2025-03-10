@@ -79,7 +79,7 @@ export const FilterComponentMap: Record<
         BusiestTimesMetricSelectFilter,
     [FilterComponentKey.CustomField]: CustomFieldFilter,
     [FilterComponentKey.PhoneIntegrations]: PhoneIntegrationsFilterWithState,
-    [FilterComponentKey.Store]: StoreFilterFromContext,
+    [FilterComponentKey.StoreIntegrations]: StoreFilterFromContext,
     [FilterKey.Accuracy]: AccuracyFilterWithState,
     [FilterKey.Agents]: AgentsFiltersWithState,
     [FilterKey.AggregationWindow]: AggregationWindowFilterWithState,
@@ -130,5 +130,5 @@ export const SavedFilterComponentMap: Record<
     [FilterComponentKey.BusiestTimesMetricSelectFilter]: () => null,
     [FilterComponentKey.CustomField]: () => null,
     [FilterComponentKey.PhoneIntegrations]: () => null,
-    [FilterComponentKey.Store]: () => null,
+    [FilterComponentKey.StoreIntegrations]: () => null,
 }

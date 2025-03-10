@@ -13,7 +13,7 @@ import { LogicalOperatorEnum } from 'pages/stats/common/components/Filter/consta
 
 interface FilterContextSchema {
     campaigns: CampaignPreview[]
-    integrations: Integration[]
+    storeIntegrations: Integration[]
     isStorePreSelected: boolean
     selectedCampaignIds: string[] | null
     selectedCampaigns: string[]
@@ -34,7 +34,7 @@ interface FilterContextSchema {
 
 export const FiltersContext = createContext<FilterContextSchema>({
     campaigns: [],
-    integrations: [],
+    storeIntegrations: [],
     isStorePreSelected: false,
     selectedCampaignIds: [],
     selectedCampaigns: [],

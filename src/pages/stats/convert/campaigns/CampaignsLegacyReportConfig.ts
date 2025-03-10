@@ -27,7 +27,7 @@ export enum CampaignsLegacyChart {
 const CAMPAIGNS_REPORT_PERSISTENT_FILTERS: StaticFilter[] = [
     FilterKey.Period,
     FilterKey.AggregationWindow,
-    FilterComponentKey.Store,
+    FilterComponentKey.StoreIntegrations,
 ]
 
 const CAMPAIGNS_REPORT_OPTIONAL_FILTERS = [

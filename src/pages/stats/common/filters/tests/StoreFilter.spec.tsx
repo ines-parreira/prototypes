@@ -61,7 +61,7 @@ const dispatchChangeValuePayload = (
     operator = LogicalOperatorEnum.ONE_OF,
 ) =>
     mergeStatsFiltersWithLogicalOperator({
-        integrations: {
+        storeIntegrations: {
             values,
             operator,
         },
@@ -74,7 +74,7 @@ describe('StoreFilter', () => {
     beforeEach(() => {
         useCampaignStatsFiltersMock.mockReturnValue({
             selectedIntegrations: [],
-            integrations: integrations,
+            storeIntegrations: integrations,
         } as any)
     })
     const renderComponent = () =>
@@ -87,7 +87,9 @@ describe('StoreFilter', () => {
         renderComponent()
 
         expect(
-            screen.getByText(FilterLabels[FilterComponentKey.Store]),
+            screen.getByText(
+                FilterLabels[FilterComponentKey.StoreIntegrations],
+            ),
         ).toBeTruthy()
     })
 
@@ -136,7 +138,7 @@ describe('StoreFilter', () => {
                     ...initialState,
                     filters: {
                         ...initialState.filters,
-                        integrations: withLogicalOperator([firstId]),
+                        storeIntegrations: withLogicalOperator([firstId]),
                     },
                 },
             },
@@ -157,7 +159,7 @@ describe('StoreFilter', () => {
         userEvent.click(screen.getByText(FILTER_DROPDOWN_ICON))
 
         expect(logEvent).toHaveBeenCalledWith(SegmentEvent.StatFilterSelected, {
-            name: FilterComponentKey.Store,
+            name: FilterComponentKey.StoreIntegrations,
             logical_operator:
                 LogicalOperatorLabel[
                     LogicalOperatorEnum.ONE_OF
