@@ -8,7 +8,7 @@ import { AlertType } from 'pages/common/components/Alert/Alert'
 import { AiAgentActivationStoreCard } from './AiAgentActivationStoreCard'
 
 const meta: Meta<typeof AiAgentActivationStoreCard> = {
-    title: 'AI Agent/Activation/StoreCard',
+    title: 'AI Agent/Activation/ActivationStoreCard',
     component: AiAgentActivationStoreCard,
     args: {},
     decorators: [

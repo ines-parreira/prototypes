@@ -1,0 +1,48 @@
+@import '~@gorgias/design-tokens/dist/css/layout';
+@import '~css/typography';
+
+:local {
+    .modal {
+        .modalContent {
+            border: 0;
+            border-radius: 12px;
+        }
+    }
+
+    .modalHeader {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        height: 96px;
+        padding-inline: 40px;
+        border-top-left-radius: inherit;
+        border-top-right-radius: inherit;
+        background: linear-gradient(to bottom, #ffffff 59%, #f5d4ff 115%);
+        border-bottom: 1px solid var(--neutral-grey-3);
+
+        .modalTitle {
+            font-weight: 600;
+            font-size: 20px;
+        }
+    }
+
+    .modalBody {
+        padding: 24px;
+    }
+
+    .storeCardsList {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .footer {
+        display: flex;
+        justify-content: end;
+        padding: 16px 24px;
+        background-color: var(--neutral-grey-0);
+        border-bottom-left-radius: inherit;
+        border-bottom-right-radius: inherit;
+        border-top: 1px solid var(--neutral-grey-3);
+    }
+}
