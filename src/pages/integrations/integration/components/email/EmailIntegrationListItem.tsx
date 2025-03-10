@@ -81,7 +81,8 @@ export default function EmailIntegrationListItem({
 
     const isVerified =
         ((integration as EmailIntegration).meta.verified ?? true) ||
-        !isForwardEmail
+        !isForwardEmail ||
+        isBaseIntegration
     const isDomainVerified = isSendgrid
         ? isOutboundVerifiedSendgrid(integration as DEPRECATED_EmailIntegration)
         : verifiedDomains.includes(domain)
