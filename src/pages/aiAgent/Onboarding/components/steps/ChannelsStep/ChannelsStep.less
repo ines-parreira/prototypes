@@ -26,4 +26,12 @@
     .card {
         cursor: pointer;
     }
+
+    [class*='DropdownItem--disabled'] {
+        cursor: not-allowed !important;
+
+        [class*='CheckBox--input'] {
+            background-color: var(--neutral-grey-3);
+        }
+    }
 }

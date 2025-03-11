@@ -12,7 +12,7 @@ import SelectInputBox, {
 
 import css from './EmailIntegrationListSelection.less'
 
-type EmailItem = {
+export type EmailItem = {
     email: string
     id: number
     isDisabled?: boolean
@@ -41,6 +41,7 @@ type Props = {
      * A flag to add a default badge if the item is the default one
      */
     withDefaultTag?: boolean
+    sortingCallback?: (a: EmailItem, b: EmailItem) => number
 }
 
 export const EmailIntegrationListSelection: FC<Props> = ({
@@ -52,12 +53,15 @@ export const EmailIntegrationListSelection: FC<Props> = ({
     isDisabled,
     labelId,
     withDefaultTag = false,
+    sortingCallback = undefined,
 }) => {
     // refs to work with the selector component
     const floatingRef = useRef<HTMLDivElement>(null)
     const targetRef = useRef<HTMLDivElement>(null)
 
     const [isDropdownOpened, setIsDropdownOpened] = useState(false)
+
+    if (sortingCallback !== undefined) emailItems.sort(sortingCallback)
 
     // used to display the list of selected emails when the dropdown is closed
     const selectedEmailLabels = selectedIds

@@ -35,6 +35,10 @@ type ChatIntegrationListSelectionProps = {
      * Flag to display text indication when the item is disabled
      */
     withDisabledText?: boolean
+    sortingCallback?: (
+        a: SelfServiceChatChannel,
+        b: SelfServiceChatChannel,
+    ) => number
 }
 
 export const ChatIntegrationListSelection = ({
@@ -46,12 +50,17 @@ export const ChatIntegrationListSelection = ({
     isDisabled,
     labelId,
     withDisabledText = false,
+    sortingCallback = undefined,
 }: ChatIntegrationListSelectionProps) => {
     // refs to work with the selector component
     const floatingRef = useRef<HTMLDivElement>(null)
     const targetRef = useRef<HTMLDivElement>(null)
 
     const [isDropdownOpened, setIsDropdownOpened] = useState(false)
+
+    if (sortingCallback !== undefined) {
+        chatItems.sort(sortingCallback)
+    }
 
     // used to display the list of selected chats when the dropdown is closed
     const selectedChatLabels = selectedIds

@@ -16,7 +16,10 @@ import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import { IntegrationType, ShopifyIntegration } from 'models/integration/types'
 import { ChatIntegrationListSelection } from 'pages/aiAgent/components/ChatIntegrationListSelection/ChatIntegrationListSelection'
-import { EmailIntegrationListSelection } from 'pages/aiAgent/components/EmailIntegrationListSelection/EmailIntegrationListSelection'
+import {
+    EmailIntegrationListSelection,
+    EmailItem,
+} from 'pages/aiAgent/components/EmailIntegrationListSelection/EmailIntegrationListSelection'
 import { useStoreConfigurationForAccount } from 'pages/aiAgent/hooks/useStoreConfigurationForAccount'
 import AiAgentChatConversation from 'pages/aiAgent/Onboarding/components/AiAgentChatConversation/AiAgentChatConversation'
 import { Card, CardContent } from 'pages/aiAgent/Onboarding/components/Card'
@@ -66,6 +69,35 @@ import { notify } from 'state/notifications/actions'
 import { NotificationStatus } from 'state/notifications/types'
 
 import EmailIntegrationModal from '../../EmailIntegrationModal/EmailIntegrationModal'
+
+export const emailSortingCallback = (a: EmailItem, b: EmailItem) => {
+    if (a.isDisabled && !b.isDisabled) {
+        return 1
+    }
+    if (b.isDisabled && !a.isDisabled) {
+        return -1
+    }
+    if (a.isDefault) {
+        return -1
+    }
+    if (b.isDefault) {
+        return 1
+    }
+    return a.email.localeCompare(b.email)
+}
+
+export const chatSortingCallback = (
+    a: SelfServiceChatChannel,
+    b: SelfServiceChatChannel,
+) => {
+    if (a.value.isDisabled && !b.value.isDisabled) {
+        return 1
+    }
+    if (b.value.isDisabled && !a.value.isDisabled) {
+        return -1
+    }
+    return a.value.name.localeCompare(b.value.name)
+}
 
 export const ChannelsStep: React.FC<StepProps> = ({
     currentStep,
@@ -406,6 +438,9 @@ export const ChannelsStep: React.FC<StepProps> = ({
                                                     ?.message
                                             }
                                             isDisabled={false}
+                                            sortingCallback={
+                                                emailSortingCallback
+                                            }
                                             withDefaultTag
                                         />
                                         <a
@@ -515,6 +550,9 @@ export const ChannelsStep: React.FC<StepProps> = ({
                                                     ?.message
                                             }
                                             isDisabled={false}
+                                            sortingCallback={
+                                                chatSortingCallback
+                                            }
                                             withDisabledText
                                         />
                                     </div>
