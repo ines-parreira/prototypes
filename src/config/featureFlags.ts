@@ -7,6 +7,7 @@ export enum FeatureFlagKey {
     ActionsInternalPlatform = 'actions-internal-platform',
     ActionSteps = 'action-steps',
     AgentActivityTracking = 'agent-activity-tracking',
+    AiAgentActivation = 'linear.project_activate-ai-agent-per-skills-and-channels-easily.enable_activation_feature',
     AiAgentAIGeneratedGuidances = 'ai-agent-ai-generated-guidances',
     AiAgentAssistant = 'ai-agent-assistant',
     AiAgentChat = 'ai-agent-for-chat',

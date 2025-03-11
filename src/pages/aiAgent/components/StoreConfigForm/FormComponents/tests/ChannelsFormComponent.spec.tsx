@@ -140,7 +140,6 @@ describe('ChannelsFormComponent', () => {
             { id: 1, name: 'Test Channel' },
         ])
     })
-
     it('should render ai agent chat section when chat feature flag is enabled', () => {
         // Disable the chat feature flag
         ;(useFlags as jest.Mock).mockReturnValue({
@@ -162,11 +161,42 @@ describe('ChannelsFormComponent', () => {
         screen.getByText('email form')
         screen.getByText('signature form')
     })
+    it('should hide email and chat toggles when AiAgentActivation feature flag is enabled and ai agent chat is enabled', () => {
+        // Disable the chat feature flag
+        ;(useFlags as jest.Mock).mockReturnValue({
+            [FeatureFlagKey.AiAgentChat]: true,
+            [FeatureFlagKey.AiAgentActivation]: true,
+        })
+
+        render(
+            <BrowserRouter>
+                <ChannelsFormComponent {...mockProps} />
+            </BrowserRouter>,
+        )
+
+        // chat toggle should be hidden
+        expect(
+            screen.queryByText('channel toggle chat'),
+        ).not.toBeInTheDocument()
+
+        // Chat components should be present
+        screen.getByText('chat settings form')
+
+        // email toggle should be hidden
+        expect(
+            screen.queryByText('channel toggle email'),
+        ).not.toBeInTheDocument()
+
+        // Email components should still be present
+        screen.getByText('email form')
+        screen.getByText('signature form')
+    })
     it('does not render ai agent chat section when chat feature flag is disabled', () => {
         // Disable the chat feature flag
         ;(useFlags as jest.Mock).mockReturnValue({
             [FeatureFlagKey.AiAgentChat]: false,
             [FeatureFlagKey.AiAgentHandoverCustomizationConfiguration]: true,
+            [FeatureFlagKey.AiAgentActivation]: false,
         })
 
         render(
@@ -191,6 +221,7 @@ describe('ChannelsFormComponent', () => {
         ;(useFlags as jest.Mock).mockReturnValue({
             [FeatureFlagKey.AiAgentChat]: true,
             [FeatureFlagKey.AiAgentHandoverCustomizationConfiguration]: true,
+            [FeatureFlagKey.AiAgentActivation]: false,
         })
 
         render(
@@ -212,6 +243,7 @@ describe('ChannelsFormComponent', () => {
         ;(useFlags as jest.Mock).mockReturnValue({
             [FeatureFlagKey.AiAgentChat]: true,
             [FeatureFlagKey.AiAgentHandoverCustomizationConfiguration]: false,
+            [FeatureFlagKey.AiAgentActivation]: false,
         })
 
         render(
@@ -230,7 +262,11 @@ describe('ChannelsFormComponent', () => {
 
     it('disables channel toggles when hasAutomate is false', () => {
         ;(useAppSelector as jest.Mock).mockReturnValue(false)
-
+        ;(useFlags as jest.Mock).mockReturnValue({
+            [FeatureFlagKey.AiAgentChat]: true,
+            [FeatureFlagKey.AiAgentHandoverCustomizationConfiguration]: false,
+            [FeatureFlagKey.AiAgentActivation]: false,
+        })
         render(
             <BrowserRouter>
                 <ChannelsFormComponent {...mockProps} />

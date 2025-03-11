@@ -236,7 +236,6 @@ describe('AiAgentConfigurationContainer', () => {
         setupMocks({
             hasStoreConfiguration: true,
         })
-
         renderComponent()
         expect(screen.getByText('Save Changes')).toBeInTheDocument()
         expect(

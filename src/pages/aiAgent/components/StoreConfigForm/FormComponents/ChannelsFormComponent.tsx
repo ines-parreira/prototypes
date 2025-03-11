@@ -61,6 +61,9 @@ export const ChannelsFormComponent = ({
     const handoverCustomizationSettingsConfigurationEnabled =
         useFlags()[FeatureFlagKey.AiAgentHandoverCustomizationConfiguration]
 
+    const isAiAgentActivationEnabled =
+        useFlags()[FeatureFlagKey.AiAgentActivation]
+
     const hasAutomate = useAppSelector(getHasAutomate)
     const chatChannels = useSelfServiceChatChannels(shopType, shopName)
 
@@ -78,18 +81,22 @@ export const ChannelsFormComponent = ({
                         type={SettingsBannerType.Chat}
                         deactivatedDatetime={chatChannelDeactivatedDatetime}
                     />
-                    <div className={css.sectionBlock}>
-                        <ChannelToggleInput
-                            isToggled={isChatChannelEnabled}
-                            onUpdate={(isToggled) =>
-                                updateChatChannelDeactivatedDatetime(
-                                    isToggled ? null : new Date().toISOString(),
-                                )
-                            }
-                            channel="chat"
-                            isDisabled={!hasAutomate}
-                        />
-                    </div>
+                    {!isAiAgentActivationEnabled && (
+                        <div className={css.sectionBlock}>
+                            <ChannelToggleInput
+                                isToggled={isChatChannelEnabled}
+                                onUpdate={(isToggled) =>
+                                    updateChatChannelDeactivatedDatetime(
+                                        isToggled
+                                            ? null
+                                            : new Date().toISOString(),
+                                    )
+                                }
+                                channel="chat"
+                                isDisabled={!hasAutomate}
+                            />
+                        </div>
+                    )}
                     <div
                         className={cn({
                             [css.settingsSectionBlock]:
@@ -135,18 +142,20 @@ export const ChannelsFormComponent = ({
                     type={SettingsBannerType.Email}
                     deactivatedDatetime={emailChannelDeactivatedDatetime}
                 />
-                <div className={css.sectionBlock}>
-                    <ChannelToggleInput
-                        isToggled={isEmailChannelEnabled}
-                        onUpdate={(isToggled) => {
-                            updateEmailChannelDeactivatedDatetime(
-                                isToggled ? null : new Date().toISOString(),
-                            )
-                        }}
-                        channel="email"
-                        isDisabled={!hasAutomate}
-                    />
-                </div>
+                {!isAiAgentActivationEnabled && (
+                    <div className={css.sectionBlock}>
+                        <ChannelToggleInput
+                            isToggled={isEmailChannelEnabled}
+                            onUpdate={(isToggled) => {
+                                updateEmailChannelDeactivatedDatetime(
+                                    isToggled ? null : new Date().toISOString(),
+                                )
+                            }}
+                            channel="email"
+                            isDisabled={!hasAutomate}
+                        />
+                    </div>
+                )}
 
                 <EmailFormComponent
                     updateValue={updateValue}
