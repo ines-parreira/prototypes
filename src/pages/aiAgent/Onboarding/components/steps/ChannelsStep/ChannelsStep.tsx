@@ -281,8 +281,12 @@ export const ChannelsStep: React.FC<StepProps> = ({
             const updatedData = {
                 shopName,
                 currentStepName: WizardStepEnum.PERSONALITY_PREVIEW,
-                emailIntegrationIds,
-                chatIntegrationIds,
+                emailIntegrationIds: emailChannelEnabled
+                    ? emailIntegrationIds
+                    : [],
+                chatIntegrationIds: chatChannelEnabled
+                    ? chatIntegrationIds
+                    : [],
             }
 
             doUpdateOnboardingMutation(

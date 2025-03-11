@@ -673,4 +673,70 @@ describe('ChannelsStep - With preloaded data', () => {
             )
         })
     })
+
+    const testIntegrationDisabling = async (
+        integrationType: 'Email' | 'Chat',
+        expectedUpdate: object,
+    ) => {
+        usePreselectedChatMock.mockReturnValue([3])
+        usePreselectedEmailsMock.mockReturnValue([5])
+        // ✅ Mock getOnboardingData function
+        mockGetOnboardingData.mockResolvedValue(
+            Promise.resolve([
+                {
+                    id: 1,
+                    salesPersuasionLevel: PersuasionLevel.Moderate,
+                    salesDiscountStrategyLevel: DiscountStrategy.Balanced,
+                    salesDiscountMax: 0.8,
+                    scopes: [AiAgentScopes.SUPPORT, AiAgentScopes.SALES],
+                    shopName: shopifyIntegration.meta.shop_name,
+                    emailIntegrationIds: [5],
+                    chatIntegrationIds: [3],
+                },
+            ]),
+        )
+
+        const screen = renderWithProvider()
+
+        jest.runAllTimers()
+
+        await waitFor(() => {
+            expect(screen.getByLabelText('Email')).toBeChecked()
+            expect(screen.getByLabelText('Chat')).toBeChecked()
+        })
+
+        const integration = screen.getByText(integrationType)
+        userEvent.click(integration)
+        await waitFor(() => {
+            expect(integration).not.toBeChecked()
+        })
+
+        const nextButton = screen.getByText('Next')
+        userEvent.click(nextButton)
+
+        await waitFor(() => {
+            expect(mockUpdateOnboardingData).toHaveBeenCalledWith(
+                1,
+                expectedUpdate,
+            )
+        })
+    }
+
+    it('should not send the ids when the email integration is disabled', async () => {
+        await testIntegrationDisabling('Email', {
+            emailIntegrationIds: [],
+            chatIntegrationIds: [3],
+            shopName: expect.any(String),
+            currentStepName: expect.any(String),
+        })
+    })
+
+    it('should not send the ids when the chat integration is disabled', async () => {
+        await testIntegrationDisabling('Chat', {
+            emailIntegrationIds: [5],
+            chatIntegrationIds: [],
+            shopName: expect.any(String),
+            currentStepName: expect.any(String),
+        })
+    })
 })
