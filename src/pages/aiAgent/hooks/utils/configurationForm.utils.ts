@@ -35,8 +35,6 @@ export const getFormValuesFromStoreConfiguration = (
         stepName: isAiAgentOnboardingWizardStep(storeConfig.wizard.stepName)
             ? storeConfig.wizard.stepName
             : null,
-        hasEducationStepEnabled:
-            storeConfig.wizard.stepData.hasEducationStepEnabled,
         enabledChannels: storeConfig.wizard.stepData.enabledChannels,
         isAutoresponderTurnedOff:
             storeConfig.wizard.stepData.isAutoresponderTurnedOff,

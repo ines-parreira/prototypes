@@ -3,12 +3,10 @@ import 'tests/__mocks__/intersectionObserverMock'
 import React from 'react'
 
 import { screen } from '@testing-library/react'
-import { mockFlags } from 'jest-launchdarkly-mock'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import { FeatureFlagKey } from 'config/featureFlags'
 import { useAiAgentStoreConfigurationContext } from 'pages/aiAgent/providers/AiAgentStoreConfigurationContext'
 import { getHelpCentersResponseFixture } from 'pages/settings/helpCenter/fixtures/getHelpCentersResponse.fixture'
 import { mockQueryClientProvider } from 'tests/reactQueryTestingUtils'
@@ -82,25 +80,9 @@ describe('<AiAgentOnboardingWizard />', () => {
         mockUseAiAgentOnboardingWizard.mockReturnValue(
             mockedUseAiAgentOnboardingWizard,
         )
-        mockFlags({
-            [FeatureFlagKey.AiAgentOnboardingWizardEducationalStep]: true,
-        })
     })
 
     it('should render the component with the correct wizard steps', () => {
-        renderComponent()
-
-        expect(screen.getByText('Set up AI Agent')).toBeInTheDocument()
-        expect(screen.getByText('How AI Agent works')).toBeInTheDocument()
-        expect(screen.getByText('Personalize AI Agent')).toBeInTheDocument()
-        expect(screen.getByText('Add knowledge')).toBeInTheDocument()
-    })
-
-    it('should render the component without educational step when educational step feature flag is false', () => {
-        mockFlags({
-            [FeatureFlagKey.AiAgentOnboardingWizardEducationalStep]: false,
-        })
-
         renderComponent()
 
         expect(screen.getByText('Set up AI Agent')).toBeInTheDocument()

@@ -24,8 +24,7 @@ export const getStoreConfigurationFormValuesFixture = (
     helpCenterId: 1,
     wizard: {
         completedDatetime: null,
-        stepName: AiAgentOnboardingWizardStep.Education,
-        hasEducationStepEnabled: true,
+        stepName: AiAgentOnboardingWizardStep.Personalize,
         enabledChannels: [],
         isAutoresponderTurnedOff: false,
         onCompletePathway: null,

@@ -25,8 +25,6 @@ export const getStoreConfigurationFromFormValues = (
     const signature = formValues.signature
 
     const wizardStepData = {
-        hasEducationStepEnabled:
-            formValues.wizard?.hasEducationStepEnabled ?? null,
         enabledChannels: formValues.wizard?.enabledChannels ?? null,
         isAutoresponderTurnedOff:
             formValues.wizard?.isAutoresponderTurnedOff ?? null,

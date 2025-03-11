@@ -116,10 +116,6 @@ describe('<AiAgentOnboardingWizardPersonalize />', () => {
     const mockHandleAction = jest.fn()
 
     beforeEach(() => {
-        mockFlags({
-            [FeatureFlagKey.AiAgentOnboardingWizardEducationalStep]: true,
-        })
-
         mockUseAiAgentOnboardingWizard.mockReturnValue({
             handleFormUpdate: mockHandleFormUpdate,
             handleSave: mockHandleSave,
@@ -146,21 +142,6 @@ describe('<AiAgentOnboardingWizardPersonalize />', () => {
     it('should render the header and footer correctly', () => {
         renderComponent({})
 
-        expect(
-            screen.getAllByText('Personalize AI Agent')[1],
-        ).toBeInTheDocument()
-        expect(screen.getByText('Back')).toBeInTheDocument()
-        expect(screen.getByText('Next')).toBeInTheDocument()
-        expect(screen.getByText('Save & Customize Later')).toBeInTheDocument
-    })
-
-    it('should render the footer without back button when educational step feature flag is false', () => {
-        mockFlags({
-            [FeatureFlagKey.AiAgentOnboardingWizardEducationalStep]: false,
-        })
-
-        renderComponent({})
-
         expect(screen.queryByText('Back')).not.toBeInTheDocument()
         expect(screen.queryByText('Save & Customize Later')).not
             .toBeInTheDocument
@@ -182,30 +163,7 @@ describe('<AiAgentOnboardingWizardPersonalize />', () => {
         })
     })
 
-    it('call save form when save&customize later button is clicked', () => {
-        renderComponent({})
-        expect(screen.getByText('Save & Customize Later')).toBeInTheDocument()
-        userEvent.click(screen.getByText('Save & Customize Later'))
-        expect(mockHandleSave).toHaveBeenCalledWith({
-            stepName: AiAgentOnboardingWizardStep.Personalize,
-            redirectTo: WIZARD_BUTTON_ACTIONS.SAVE_AND_CUSTOMIZE_LATER,
-        })
-    })
-
-    it('do not call save form when Back button is clicked', () => {
-        renderComponent({
-            shopName: 'test-shop',
-            shopType: 'shopify',
-        })
-        expect(screen.getByText('Back')).toBeInTheDocument()
-        userEvent.click(screen.getByText('Back'))
-        expect(mockHandleSave).not.toHaveBeenCalled()
-    })
-
     it('call handleAction when cancel button is clicked', () => {
-        mockFlags({
-            [FeatureFlagKey.AiAgentOnboardingWizardEducationalStep]: false,
-        })
         renderComponent({})
         expect(screen.getByText('Cancel')).toBeInTheDocument()
         userEvent.click(screen.getByText('Cancel'))

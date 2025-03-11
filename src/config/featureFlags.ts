@@ -13,7 +13,6 @@ export enum FeatureFlagKey {
     AiAgentKnowledgeTab = 'ai-agent-knowledge-tab',
     AiAgentOnboardingNotification = 'ai-agent-onboarding-notification',
     AiAgentOnboardingWizard = 'ai-agent-onboarding-wizard',
-    AiAgentOnboardingWizardEducationalStep = 'ai-agent-onboarding-wizard-educational-step',
     AiAgentOnboardingWizardKnowledgeRedirect = 'ai-agent-onboarding-wizard-knowledge-redirect',
     AiAgentOptimizeTab = 'ai-agent-optimize-tab',
     AiAgentOptimizeTabL2Drilldown = 'ai-agent-optimize-tab-l2-drilldown',

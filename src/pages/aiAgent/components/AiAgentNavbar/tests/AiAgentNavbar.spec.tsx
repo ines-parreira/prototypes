@@ -194,7 +194,6 @@ describe('<AiAgentNavbar />', () => {
                     wizard: {
                         stepName: AiAgentOnboardingWizardStep.Knowledge,
                         stepData: {
-                            hasEducationStepEnabled: null,
                             enabledChannels: null,
                             isAutoresponderTurnedOff: null,
                             onCompletePathway: null,

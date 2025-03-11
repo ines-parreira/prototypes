@@ -60,7 +60,6 @@ export const DEFAULT_FORM_VALUES: FormValues = {
 export const DEFAULT_WIZARD_FORM_VALUES: WizardFormValues = {
     completedDatetime: null,
     stepName: null,
-    hasEducationStepEnabled: null,
     enabledChannels: null,
     isAutoresponderTurnedOff: null,
     onCompletePathway: null,
@@ -103,7 +102,6 @@ export const AI_AGENT_STEPS_LABELS: Record<
     AiAgentOnboardingWizardStep,
     string
 > = {
-    [AiAgentOnboardingWizardStep.Education]: 'How AI Agent works',
     [AiAgentOnboardingWizardStep.Personalize]: 'Personalize AI Agent',
     [AiAgentOnboardingWizardStep.Knowledge]: 'Add knowledge',
 }

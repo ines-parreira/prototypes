@@ -63,7 +63,6 @@ type Props = {
 const INITIAL_WIZARD_FORM_VALUES: WizardFormValues = {
     completedDatetime: null,
     stepName: null,
-    hasEducationStepEnabled: false,
     enabledChannels: [],
     isAutoresponderTurnedOff: null,
     onCompletePathway: null,
@@ -90,7 +89,6 @@ export const useAiAgentOnboardingWizard = ({
         currentStep: AiAgentOnboardingWizardStep,
     ) => {
         const stepOrder = [
-            AiAgentOnboardingWizardStep.Education,
             AiAgentOnboardingWizardStep.Personalize,
             AiAgentOnboardingWizardStep.Knowledge,
         ]
@@ -133,9 +131,6 @@ export const useAiAgentOnboardingWizard = ({
         shopName,
     })
 
-    const isAiAgentOnboardingWizardEducationalStepEnabled =
-        useFlags()[FeatureFlagKey.AiAgentOnboardingWizardEducationalStep]
-
     const isAiAgentKnowledgeTabEnabled =
         useFlags()[FeatureFlagKey.AiAgentKnowledgeTab]
 
@@ -157,8 +152,6 @@ export const useAiAgentOnboardingWizard = ({
             ticketSampleRate: null,
             wizard: {
                 ...INITIAL_WIZARD_FORM_VALUES,
-                hasEducationStepEnabled:
-                    isAiAgentOnboardingWizardEducationalStepEnabled,
             },
         }
 
@@ -182,9 +175,7 @@ export const useAiAgentOnboardingWizard = ({
     const handleAction = (redirectTo: WIZARD_BUTTON_ACTIONS) => {
         if (!shopType || !shopName) return
 
-        const version = formValues.wizard?.hasEducationStepEnabled
-            ? AiAgentOnboardingWizardType.ThreeSteps
-            : AiAgentOnboardingWizardType.TwoSteps
+        const version = AiAgentOnboardingWizardType.TwoSteps
 
         switch (redirectTo) {
             case WIZARD_BUTTON_ACTIONS.CANCEL:
@@ -268,9 +259,7 @@ export const useAiAgentOnboardingWizard = ({
 
         logEvent(SegmentEvent.AiAgentOnboardingWizardHelpCenterConnected, {
             step: AiAgentOnboardingWizardStep.Knowledge,
-            version: formValues.wizard?.hasEducationStepEnabled
-                ? AiAgentOnboardingWizardType.ThreeSteps
-                : AiAgentOnboardingWizardType.TwoSteps,
+            version: AiAgentOnboardingWizardType.TwoSteps,
             helpCenterId,
         })
     }
