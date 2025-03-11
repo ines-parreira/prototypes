@@ -284,7 +284,7 @@ export const ChannelsStep: React.FC<StepProps> = ({
         if (!!chatChannelEnabled && createNewChat) {
             setIsCreatingChat(true)
             const form = createChatConfiguration(storeIntegration, newChatColor)
-            dispatch(createGorgiasChatIntegration(fromJS(form), false))
+            dispatch(createGorgiasChatIntegration(fromJS(form), false, true))
                 .then(() => {
                     onNextClick()
                 })

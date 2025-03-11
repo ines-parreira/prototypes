@@ -523,6 +523,7 @@ export function createImportIntegration(integration: Map<any, any>) {
 export function createGorgiasChatIntegration(
     integration: Map<any, any>,
     redirect: boolean = true,
+    skipInstallation: boolean = false,
 ) {
     return async (
         dispatch: StoreDispatch,
@@ -552,7 +553,7 @@ export function createGorgiasChatIntegration(
         let successBannerText
         // Try to install the chat to shopify store
         const savedIntegrationId = savedIntegration.id || ''
-        if (savedIntegration.meta.shop_integration_id) {
+        if (savedIntegration.meta.shop_integration_id && !skipInstallation) {
             try {
                 await client.put<Integration>(
                     `/api/integrations/${savedIntegration.id}`,

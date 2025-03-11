@@ -253,6 +253,53 @@ describe('integrations actions', () => {
             )
         })
 
+        it('should not skip installation if flag is omitted', async () => {
+            const data = fromJS({
+                type: 'gorgias_chat',
+                meta: {
+                    shop_integration_id: 1,
+                },
+            })
+            mockServer.onPost('/api/integrations/').reply(201, {
+                id: 123,
+                meta: {
+                    shop_integration_id: 1,
+                },
+            })
+            mockServer.onPut('/api/integrations/123').reply(400, {
+                error: { msg: 'Something went wrong' },
+            })
+
+            await store.dispatch(
+                actions.createGorgiasChatIntegration(data, false),
+            )
+
+            expect(mockServer.history.post.length).toBe(1)
+            expect(mockServer.history.put.length).toBe(1)
+        })
+
+        it('should skip installation if flag is provided', async () => {
+            const data = fromJS({
+                type: 'gorgias_chat',
+                meta: {
+                    shop_integration_id: 1,
+                },
+            })
+            mockServer.onPost('/api/integrations/').reply(201, {
+                id: 123,
+                meta: {
+                    shop_integration_id: 1,
+                },
+            })
+
+            await store.dispatch(
+                actions.createGorgiasChatIntegration(data, false, true),
+            )
+
+            expect(mockServer.history.post.length).toBe(1)
+            expect(mockServer.history.put.length).toBe(0)
+        })
+
         it('should redirect to installation page for non-shopify', async () => {
             const data = fromJS({
                 type: 'gorgias_chat',
