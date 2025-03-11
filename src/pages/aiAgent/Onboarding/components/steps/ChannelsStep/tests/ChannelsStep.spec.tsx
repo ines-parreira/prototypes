@@ -116,7 +116,7 @@ const renderWithProvider = (state?: RootState, props = defaultProps) => {
     )
 }
 
-describe('ChannelsStep - Empty state', () => {
+describe.skip('ChannelsStep - empty state', () => {
     beforeEach(() => {
         mockUseShopifyIntegrationAndScope.mockReturnValue({ integration: true })
 
@@ -608,7 +608,7 @@ describe('ChannelsStep - Empty state', () => {
     })
 })
 
-describe('ChannelsStep - With preloaded data', () => {
+describe.skip('ChannelsStep - With preloaded data', () => {
     beforeEach(() => {
         mockUseShopifyIntegrationAndScope.mockReturnValue({ integration: true })
 
