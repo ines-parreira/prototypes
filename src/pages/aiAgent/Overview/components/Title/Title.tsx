@@ -6,19 +6,23 @@ import css from 'pages/aiAgent/Overview/components/Title/Title.less'
 
 type Props = {
     firstName: string
+    activationButton: React.ReactNode
 }
-export const Title = ({ firstName }: Props) => {
+export const Title = ({ firstName, activationButton }: Props) => {
     return (
         <div className={css.container}>
-            <MainTitle
-                titleBlack="Welcome, "
-                titleMagenta={`${firstName}!`}
-                className={css.title}
-            />
-            <Subtitle>
-                Track your AI Agent’s performance and act on areas for
-                improvement.
-            </Subtitle>
+            <div className={css.titleContainer}>
+                <MainTitle
+                    titleBlack="Welcome, "
+                    titleMagenta={`${firstName}!`}
+                    className={css.title}
+                />
+                <Subtitle>
+                    Track your AI Agent’s performance and act on areas for
+                    improvement.
+                </Subtitle>
+            </div>
+            {activationButton}
         </div>
     )
 }

@@ -8,6 +8,7 @@ import { logEvent, SegmentEvent } from 'common/segment'
 import { FeatureFlagKey } from 'config/featureFlags'
 import useAppSelector from 'hooks/useAppSelector'
 import useEffectOnce from 'hooks/useEffectOnce'
+import { useActivation } from 'pages/aiAgent//Activation/hooks/useActivation'
 import ThankYouModal from 'pages/aiAgent/Onboarding/components/ThankYouModal/ThankYouModal'
 import { KpiSection } from 'pages/aiAgent/Overview/components/KpiSection/KpiSection'
 import { ResourcesSection } from 'pages/aiAgent/Overview/components/ResourcesSection/ResourcesSection'
@@ -26,6 +27,8 @@ export const AiAgentOverview = () => {
     const hasResourceSection =
         useFlags()[FeatureFlagKey.StandaloneConvAiOverviewPageResourceSection]
 
+    const { ActivationButton, ActivationModal } = useActivation()
+
     useEffectOnce(() => {
         logEvent(SegmentEvent.AiAgentOverviewPageView)
     })
@@ -38,7 +41,10 @@ export const AiAgentOverview = () => {
 
     return (
         <AiAgentOverviewLayout>
-            <Title firstName={currentUser.get('firstname')} />
+            <Title
+                firstName={currentUser.get('firstname')}
+                activationButton={<ActivationButton />}
+            />
             <KpiSection />
             <PendingTasksSectionConnected />
             {hasResourceSection && (
@@ -57,6 +63,7 @@ export const AiAgentOverview = () => {
                 onClick={() => setIsOpen(false)}
                 onClose={() => setIsOpen(false)}
             />
+            <ActivationModal />
         </AiAgentOverviewLayout>
     )
 }
