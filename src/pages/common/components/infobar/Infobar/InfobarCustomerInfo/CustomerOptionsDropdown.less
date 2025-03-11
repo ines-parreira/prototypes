@@ -1,5 +1,21 @@
+@import '~@gorgias/design-tokens/dist/css/layout.less';
+
 :local {
     .item {
         white-space: nowrap;
+    }
+
+    .rightButtons {
+        display: flex;
+        justify-content: flex-end;
+        align-items: center;
+        gap: @layout-spacing-xs;
+    }
+
+    .footer {
+        display: flex;
+        justify-content: space-between;
+        flex-wrap: wrap;
+        padding: 12px @layout-spacing-s;
     }
 }

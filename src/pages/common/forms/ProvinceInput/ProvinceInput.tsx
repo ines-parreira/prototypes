@@ -85,6 +85,7 @@ const ProvinceInput = ({
                         label={province}
                         onToggle={setIsDropdownOpen}
                         hasError={hasError}
+                        error={error}
                         placeholder={'Select state or province...'}
                     >
                         <SelectInputBoxContext.Consumer>

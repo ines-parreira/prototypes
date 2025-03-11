@@ -10,17 +10,20 @@ import DropdownItem from 'pages/common/components/dropdown/DropdownItem'
 import UncontrolledDropdown from 'pages/common/components/dropdown/UncontrolledDropdown'
 import Modal from 'pages/common/components/modal/Modal'
 import ModalHeader from 'pages/common/components/modal/ModalHeader'
-import ShopifyCustomerProfileSyncModal from 'pages/common/components/ShopifyCustomerProfileSyncModal/ShopifyCustomerProfileSyncModal'
 import CustomerForm from 'pages/customers/common/components/CustomerForm'
 import { makeHasIntegrationOfTypes } from 'state/integrations/selectors'
 
+import CustomerSyncForm from './CustomerSyncForm/CustomerSyncForm'
+
 import css from './CustomerOptionsDropdown.less'
+
+interface Props {
+    activeCustomer: Map<string, any>
+}
 
 export default function CustomerOptionsDropdownButton({
     activeCustomer,
-}: {
-    activeCustomer: Map<string, any>
-}) {
+}: Props) {
     const dropdownTargetRef = useRef<HTMLDivElement>(null)
     const [isCustomerEditFormOpen, setIsCustomerEditFormOpen] = useState(false)
     const [isCustomerSyncFormOpen, setIsCustomerSyncFormOpen] = useState(false)
@@ -81,11 +84,10 @@ export default function CustomerOptionsDropdownButton({
                         closeModal={() => setIsCustomerEditFormOpen(false)}
                     />
                 </Modal>
-
-                <ShopifyCustomerProfileSyncModal
+                <CustomerSyncForm
+                    isCustomerSyncFormOpen={isCustomerSyncFormOpen}
                     activeCustomer={activeCustomer}
-                    isOpen={isCustomerSyncFormOpen}
-                    onClose={() => setIsCustomerSyncFormOpen(false)}
+                    setIsCustomerSyncFormOpen={setIsCustomerSyncFormOpen}
                 />
             </>
         </>

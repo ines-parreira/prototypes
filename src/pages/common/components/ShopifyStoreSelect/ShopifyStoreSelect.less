@@ -1,0 +1,18 @@
+@import '~@gorgias/design-tokens/dist/css/layout';
+
+@import (reference) '~css/typography';
+
+:local {
+    .storeSelect {
+        display: flex;
+        flex-direction: column;
+        gap: @layout-spacing-s;
+        margin: @layout-spacing-s 0;
+    }
+
+    .error {
+        .caption-regular();
+        color: var(--feedback-error);
+        margin-top: @layout-spacing-xxs;
+    }
+}

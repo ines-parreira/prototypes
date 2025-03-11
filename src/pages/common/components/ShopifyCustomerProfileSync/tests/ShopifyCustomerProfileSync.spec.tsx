@@ -4,15 +4,23 @@ import { fireEvent, render, screen, waitFor } from '@testing-library/react'
 
 import '@testing-library/jest-dom/extend-expect'
 
+import { QueryClientProvider } from '@tanstack/react-query'
 import { Map } from 'immutable'
 
+import { mockQueryClient } from '../../../../../tests/reactQueryTestingUtils'
 import ShopifyCustomerProfileSync from '../ShopifyCustomerProfileSync'
+
+const queryClient = mockQueryClient()
 
 describe('ShopifyCustomerProfileSync', () => {
     const activeCustomer = Map({ name: 'John Smith' })
 
     test('renders the button and modal', () => {
-        render(<ShopifyCustomerProfileSync activeCustomer={activeCustomer} />)
+        render(
+            <QueryClientProvider client={queryClient}>
+                <ShopifyCustomerProfileSync activeCustomer={activeCustomer} />
+            </QueryClientProvider>,
+        )
 
         const syncButton = screen.getByText('Sync Profile')
         expect(syncButton).toBeInTheDocument()
@@ -30,8 +38,11 @@ describe('ShopifyCustomerProfileSync', () => {
     })
 
     test('closes the modal when onClose is called', async () => {
-        render(<ShopifyCustomerProfileSync activeCustomer={activeCustomer} />)
-
+        render(
+            <QueryClientProvider client={queryClient}>
+                <ShopifyCustomerProfileSync activeCustomer={activeCustomer} />
+            </QueryClientProvider>,
+        )
         const syncButton = screen.getByText('Sync Profile')
         fireEvent.click(syncButton)
 

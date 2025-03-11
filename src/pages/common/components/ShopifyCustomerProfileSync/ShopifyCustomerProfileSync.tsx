@@ -5,7 +5,7 @@ import { Map } from 'immutable'
 import { Button } from '@gorgias/merchant-ui-kit'
 
 import { IntegrationType } from 'models/integration/constants'
-import ShopifyCustomerProfileSyncModal from 'pages/common/components/ShopifyCustomerProfileSyncModal/ShopifyCustomerProfileSyncModal'
+import CustomerSyncForm from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/CustomerSyncForm/CustomerSyncForm'
 import { getIconFromType } from 'state/integrations/helpers'
 
 import css from './ShopifyCustomerProfileSync.less'
@@ -37,11 +37,10 @@ export default function ShopifyCustomerProfileSync({ activeCustomer }: Props) {
                         Sync Profile
                     </Button>
                 </div>
-
-                <ShopifyCustomerProfileSyncModal
+                <CustomerSyncForm
+                    isCustomerSyncFormOpen={isCustomerSyncFormOpen}
                     activeCustomer={activeCustomer}
-                    isOpen={isCustomerSyncFormOpen}
-                    onClose={() => setIsCustomerSyncFormOpen(false)}
+                    setIsCustomerSyncFormOpen={setIsCustomerSyncFormOpen}
                 />
             </div>
         </div>

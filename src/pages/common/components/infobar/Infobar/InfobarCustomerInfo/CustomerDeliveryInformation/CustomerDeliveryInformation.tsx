@@ -1,0 +1,110 @@
+import React from 'react'
+
+import { CountryCode } from 'libphonenumber-js'
+
+import CountryInput from 'pages/common/forms/CountryInput/CountryInput'
+import { getCountryLabel } from 'pages/common/forms/CountryInput/utils'
+import InputField from 'pages/common/forms/input/InputField'
+import ProvinceInput from 'pages/common/forms/ProvinceInput/ProvinceInput'
+
+import { FormState } from '../CustomerSyncForm/useCustomerSyncForm'
+
+import css from './CustomerDeliveryInformation.less'
+
+interface Props {
+    formState: FormState
+    onChange: (formState: Partial<FormState>) => void
+    performedValidation: boolean
+}
+
+export default function CustomerDeliveryInformation({
+    formState,
+    onChange,
+    performedValidation,
+}: Props) {
+    const hasAddressError = performedValidation && !formState.address
+    const hasCityError = performedValidation && !formState.city
+    const hasPostalCodeError =
+        performedValidation &&
+        (!formState.postalCode || formState.postalCode.length < 2)
+    const hasStateOrProvinceError =
+        performedValidation && !formState.stateOrProvince
+    return (
+        <>
+            <CountryInput
+                label="Country"
+                placeholder="Search country"
+                value={formState.countryCode}
+                onChange={(countryCode) =>
+                    onChange({
+                        countryCode: countryCode as CountryCode,
+                        country: getCountryLabel(countryCode),
+                        stateOrProvince: '',
+                    })
+                }
+            />
+            <InputField
+                name="company"
+                label="Company"
+                placeholder="Gorgias"
+                value={formState.company}
+                onChange={(company) => onChange({ company })}
+            />
+            <InputField
+                name="address"
+                label="Address"
+                value={formState.address}
+                placeholder="Gorgias street"
+                onChange={(address) => onChange({ address })}
+                error={
+                    hasAddressError
+                        ? 'Please enter a street name and house number.'
+                        : ''
+                }
+            />
+
+            <InputField
+                name="apartment"
+                label="Apartment, suite, etc"
+                placeholder="Unit #2, Floor 5"
+                value={formState.apartment}
+                onChange={(apartment) => onChange({ apartment })}
+            />
+
+            <div className={css.areaContainer}>
+                <InputField
+                    name="city"
+                    label="City"
+                    className={css.areaItem}
+                    placeholder="New York City"
+                    value={formState.city}
+                    onChange={(city) => onChange({ city })}
+                    error={hasCityError ? 'Please enter a city.' : ''}
+                />
+
+                <ProvinceInput
+                    label="State"
+                    name="stateOrProvince"
+                    className={css.areaItem}
+                    country={formState.country}
+                    onChange={(stateOrProvince) =>
+                        onChange({ stateOrProvince })
+                    }
+                    hasError={hasStateOrProvinceError}
+                    error={
+                        hasStateOrProvinceError ? 'Please select a state.' : ''
+                    }
+                />
+                <InputField
+                    name="zip"
+                    label="ZIP/Postal code"
+                    className={css.areaItem}
+                    placeholder="90210"
+                    value={formState.postalCode}
+                    onChange={(postalCode) => onChange({ postalCode })}
+                    error={hasPostalCodeError ? 'Please enter a zip code.' : ''}
+                />
+            </div>
+        </>
+    )
+}

@@ -4,13 +4,16 @@ import { fireEvent, render, screen } from '@testing-library/react'
 
 import '@testing-library/jest-dom'
 
+import { QueryClientProvider } from '@tanstack/react-query'
 import { fromJS, Map } from 'immutable'
 import { Provider } from 'react-redux'
 
+import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 import { mockStore } from 'utils/testing'
 
 import CustomerOptionsDropdownButton from '../CustomerOptionsDropdown'
 
+const queryClient = mockQueryClient()
 const state = {
     integrations: fromJS({
         integrations: [{ type: 'shopify' }],
@@ -26,7 +29,6 @@ describe('CustomerOptionsDropdownButton', () => {
                 <CustomerOptionsDropdownButton
                     activeCustomer={activeCustomer}
                 />
-                ,
             </Provider>,
         )
         expect(
@@ -74,11 +76,13 @@ describe('CustomerOptionsDropdownButton', () => {
 
     test('opens sync customer modal on dropdown item click', () => {
         const { container } = render(
-            <Provider store={mockStore(state)}>
-                <CustomerOptionsDropdownButton
-                    activeCustomer={activeCustomer}
-                />
-            </Provider>,
+            <QueryClientProvider client={queryClient}>
+                <Provider store={mockStore(state)}>
+                    <CustomerOptionsDropdownButton
+                        activeCustomer={activeCustomer}
+                    />
+                </Provider>
+            </QueryClientProvider>,
         )
 
         fireEvent.click(screen.getByRole('button'))
