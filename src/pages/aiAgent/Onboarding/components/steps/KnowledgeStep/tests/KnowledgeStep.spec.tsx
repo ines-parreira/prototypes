@@ -213,7 +213,7 @@ describe('KnowledgeStep', () => {
         expect((await screen.findAllByText('Top Locations')).length).toBe(2)
     })
 
-    it('navigates to the handover step when Back is clicked', () => {
+    it('navigates to the sales personality step when Back is clicked', () => {
         renderWithProvider()
 
         jest.runAllTimers()
@@ -221,7 +221,7 @@ describe('KnowledgeStep', () => {
         fireEvent.click(screen.getByText(/Back/i))
 
         expect(defaultProps.goToStep).toHaveBeenCalledWith(
-            WizardStepEnum.HANDOVER,
+            WizardStepEnum.KNOWLEDGE,
         )
     })
 

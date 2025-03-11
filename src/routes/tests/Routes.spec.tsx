@@ -582,7 +582,7 @@ describe('<Routes/>', () => {
                     <Provider store={mockStore(defaultState)}>
                         <MemoryRouter
                             initialEntries={[
-                                '/app/ai-agent/onboarding/handover',
+                                '/app/ai-agent/onboarding/shopify integration',
                             ]}
                         >
                             <Routes />
@@ -591,7 +591,7 @@ describe('<Routes/>', () => {
                 </QueryClientProvider>,
             )
 
-            expect(screen.getByText('Handover step')).toBeInTheDocument()
+            expect(screen.getByText(/Shopify account/)).toBeInTheDocument()
         })
     })
 })

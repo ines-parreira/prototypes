@@ -43,7 +43,7 @@ export const useSteps = ({ shopName }: { shopName: string }) => {
             },
             {
                 step: WizardStepEnum.HANDOVER,
-                condition: true,
+                condition: false, // TODO: Put it to true when ready to show
             },
             {
                 step: WizardStepEnum.KNOWLEDGE,

@@ -134,7 +134,7 @@ describe('PersonalityStep - With prepopulated data', () => {
         fireEvent.click(screen.getByText(/Next/i))
 
         await waitFor(() => {
-            expect(goToStep).toHaveBeenCalledWith(WizardStepEnum.HANDOVER)
+            expect(goToStep).toHaveBeenCalledWith(WizardStepEnum.KNOWLEDGE)
         })
     })
 })
@@ -375,7 +375,7 @@ describe('PersonalityStep - Empty state', () => {
         })
     })
 
-    it('navigates to the handover step when Next is clicked', async () => {
+    it('navigates to the knowledge step when Next is clicked', async () => {
         renderComponent()
 
         await waitFor(() => {
@@ -395,7 +395,7 @@ describe('PersonalityStep - Empty state', () => {
         fireEvent.click(screen.getByText(/Next/i))
 
         await waitFor(() => {
-            expect(goToStep).toHaveBeenCalledWith(WizardStepEnum.HANDOVER)
+            expect(goToStep).toHaveBeenCalledWith(WizardStepEnum.KNOWLEDGE)
         })
     })
 })

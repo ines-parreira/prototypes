@@ -47,10 +47,9 @@ describe('useSteps', () => {
             { step: WizardStepEnum.CHANNELS, condition: true },
             { step: WizardStepEnum.PERSONALITY_PREVIEW, condition: true },
             { step: WizardStepEnum.SALES_PERSONALITY, condition: true },
-            { step: WizardStepEnum.HANDOVER, condition: true },
             { step: WizardStepEnum.KNOWLEDGE, condition: true },
         ])
-        expect(result.current.totalSteps).toBe(8)
+        expect(result.current.totalSteps).toBe(7)
     })
 
     it('should exclude steps based on integration and email data', () => {
@@ -75,10 +74,9 @@ describe('useSteps', () => {
             { step: WizardStepEnum.SKILLSET, condition: true },
             { step: WizardStepEnum.CHANNELS, condition: true },
             { step: WizardStepEnum.PERSONALITY_PREVIEW, condition: true },
-            { step: WizardStepEnum.HANDOVER, condition: true },
             { step: WizardStepEnum.KNOWLEDGE, condition: true },
         ])
-        expect(result.current.totalSteps).toBe(5)
+        expect(result.current.totalSteps).toBe(4)
     })
 
     it('should include SALES_PERSONALITY step when AiAgentScopes.SALES is in data.scopes', () => {

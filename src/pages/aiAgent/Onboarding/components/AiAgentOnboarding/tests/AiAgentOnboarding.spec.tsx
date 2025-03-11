@@ -1,13 +1,14 @@
 import React from 'react'
 
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
-import { fireEvent, screen, waitFor } from '@testing-library/react'
+import { screen, waitFor } from '@testing-library/react'
 import { createMemoryHistory } from 'history'
 import { fromJS, Map } from 'immutable'
 import LD from 'launchdarkly-react-client-sdk'
 
 import '@testing-library/jest-dom/extend-expect'
 
+import userEvent from '@testing-library/user-event'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 
@@ -17,7 +18,10 @@ import { billingState } from 'fixtures/billing'
 import { chatIntegrationFixtures } from 'fixtures/chat'
 import { integrationsState, shopifyIntegration } from 'fixtures/integrations'
 import { AiAgentOnboarding } from 'pages/aiAgent/Onboarding/components/AiAgentOnboarding/AiAgentOnboarding'
-import { WizardStepEnum } from 'pages/aiAgent/Onboarding/types'
+import { DiscountStrategy } from 'pages/aiAgent/Onboarding/components/steps/PersonalityStep/DiscountStrategy'
+import { PersuasionLevel } from 'pages/aiAgent/Onboarding/components/steps/PersonalityStep/PersuasionLevel'
+import { useGetOnboardingData } from 'pages/aiAgent/Onboarding/hooks/useGetOnboardingData'
+import { AiAgentScopes, WizardStepEnum } from 'pages/aiAgent/Onboarding/types'
 import { useShopifyIntegrationAndScope } from 'pages/common/hooks/useShopifyIntegrationAndScope'
 import { useEmailIntegrations } from 'pages/settings/contactForm/hooks/useEmailIntegrations'
 import { RootState, StoreDispatch } from 'state/types'
@@ -60,9 +64,14 @@ jest.mock(
     }),
 )
 
+jest.mock('pages/aiAgent/Onboarding/hooks/useGetOnboardingData', () => ({
+    useGetOnboardingData: jest.fn(),
+}))
+
 const mockUseShopifyIntegrationAndScope =
     useShopifyIntegrationAndScope as jest.Mock
 const mockUseEmailIntegrations = useEmailIntegrations as jest.Mock
+const mockUseGetOnboardingData = useGetOnboardingData as jest.Mock
 
 const queryClient = new QueryClient()
 const history = createMemoryHistory()
@@ -91,6 +100,16 @@ describe('AiAgentOnboarding', () => {
         mockUseEmailIntegrations.mockReturnValue({
             emailIntegrations: true,
             defaultIntegration: true,
+        })
+        mockUseGetOnboardingData.mockReturnValue({
+            data: {
+                id: 1,
+                salesPersuasionLevel: PersuasionLevel.Moderate,
+                salesDiscountStrategyLevel: DiscountStrategy.Balanced,
+                salesDiscountMax: 0.8,
+                scopes: [AiAgentScopes.SUPPORT, AiAgentScopes.SALES],
+                shopName: shopifyIntegration.meta.shop_name,
+            },
         })
 
         jest.spyOn(LD, 'useFlags').mockImplementation(() => ({
@@ -128,33 +147,33 @@ describe('AiAgentOnboarding', () => {
     })
 
     it('should navigate to the next step when Next button is clicked', async () => {
-        renderComponent(`/app/ai-agent/onboarding/${WizardStepEnum.HANDOVER}`)
+        renderComponent()
+
         jest.runAllTimers()
 
         await waitFor(() => {
-            expect(screen.getByText('Handover step')).toBeInTheDocument()
+            expect(screen.getByText(/Select your skills/)).toBeInTheDocument()
         })
 
         // Click Next
-        fireEvent.click(screen.getByText(/Next/i))
+        await userEvent.click(screen.getByText(/Next/i))
 
         await waitFor(() => {
-            expect(history.location.pathname).toContain(
-                WizardStepEnum.KNOWLEDGE,
-            )
+            expect(history.location.pathname).toContain(WizardStepEnum.CHANNELS)
         })
     })
 
     it('should navigate to the previous step when Back button is clicked', async () => {
-        renderComponent(`/app/ai-agent/onboarding/${WizardStepEnum.HANDOVER}`)
+        renderComponent(`/app/ai-agent/onboarding/${WizardStepEnum.KNOWLEDGE}`)
+
         jest.runAllTimers()
 
         await waitFor(() => {
-            expect(screen.getByText('Handover step')).toBeInTheDocument()
+            expect(screen.getByText(/AI Agent's knowledge/)).toBeInTheDocument()
         })
 
         // Click Back
-        fireEvent.click(screen.getByText(/Back/i))
+        await userEvent.click(screen.getByText(/Back/i))
 
         await waitFor(() => {
             expect(history.location.pathname).toContain(
