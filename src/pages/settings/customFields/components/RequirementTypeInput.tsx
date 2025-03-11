@@ -17,10 +17,9 @@ interface RequirementTypeInputProps {
 export default function RequirementTypeInput(props: RequirementTypeInputProps) {
     return (
         <div className={props.className}>
-            <div className={css.visibilityHeader}>
-                <Label>Field visibility</Label>
-                <Badge type={'blue'}>BETA</Badge>
-            </div>
+            <Label className={css.label}>
+                Field visibility <Badge type={'blue'}>BETA</Badge>
+            </Label>
             <p className="mb-2">
                 Configure fields to always appear, or only when specific
                 conditions are met. See conditional visibility of Optional or

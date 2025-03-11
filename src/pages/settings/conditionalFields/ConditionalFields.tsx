@@ -22,7 +22,6 @@ import HeaderCell from 'pages/common/components/table/cells/HeaderCell'
 import TableBody from 'pages/common/components/table/TableBody'
 import TableHead from 'pages/common/components/table/TableHead'
 import TableWrapper from 'pages/common/components/table/TableWrapper'
-import Video from 'pages/common/components/Video/Video'
 import settingsCss from 'pages/settings/settings.less'
 import { CUSTOM_FIELD_CONDITIONS_ROUTE } from 'routes/constants'
 
@@ -122,12 +121,6 @@ export default function ConditionalFields() {
                                 <i className="material-icons">menu_book</i>{' '}
                                 <span>Learn more about field visibility</span>
                             </a>
-                        </div>
-                        <div className="d-flex">
-                            <Video
-                                youtubeId="HFylY2x3T_Y"
-                                legend="How to set up conditions?"
-                            />
                         </div>
                     </Container>
                 )}

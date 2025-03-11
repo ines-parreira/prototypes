@@ -258,23 +258,23 @@ exports[`<EditTicketField/> should render an info alert and the edit form becaus
           >
             <button
               aria-disabled="false"
-              class="wrapper fill primary medium"
+              class="ui-button-wrapper-a432 ui-button-fill-a432 ui-button-primary-a432"
               id="custom-fields-form-save-button"
               type="button"
             >
               <span
-                class="content"
+                class="ui-button-content-a432"
               >
                 Save changes
               </span>
             </button>
             <button
               aria-disabled="false"
-              class="wrapper fill secondary medium"
+              class="ui-button-wrapper-a432 ui-button-fill-a432 ui-button-secondary-a432"
               type="button"
             >
               <span
-                class="content"
+                class="ui-button-content-a432"
               >
                 Cancel
               </span>
@@ -285,11 +285,11 @@ exports[`<EditTicketField/> should render an info alert and the edit form becaus
           >
             <button
               aria-disabled="false"
-              class="wrapper fill secondary medium"
+              class="ui-button-wrapper-a432 ui-button-fill-a432 ui-button-secondary-a432"
               type="button"
             >
               <span
-                class="content"
+                class="ui-button-content-a432"
               >
                 Archive field
               </span>
@@ -513,23 +513,23 @@ exports[`<EditTicketField/> should render no info alert and the edit form becaus
           >
             <button
               aria-disabled="false"
-              class="wrapper fill primary medium"
+              class="ui-button-wrapper-a432 ui-button-fill-a432 ui-button-primary-a432"
               id="custom-fields-form-save-button"
               type="button"
             >
               <span
-                class="content"
+                class="ui-button-content-a432"
               >
                 Save changes
               </span>
             </button>
             <button
               aria-disabled="false"
-              class="wrapper fill secondary medium"
+              class="ui-button-wrapper-a432 ui-button-fill-a432 ui-button-secondary-a432"
               type="button"
             >
               <span
-                class="content"
+                class="ui-button-content-a432"
               >
                 Cancel
               </span>
@@ -540,11 +540,11 @@ exports[`<EditTicketField/> should render no info alert and the edit form becaus
           >
             <button
               aria-disabled="false"
-              class="wrapper fill secondary medium"
+              class="ui-button-wrapper-a432 ui-button-fill-a432 ui-button-secondary-a432"
               type="button"
             >
               <span
-                class="content"
+                class="ui-button-content-a432"
               >
                 Archive field
               </span>

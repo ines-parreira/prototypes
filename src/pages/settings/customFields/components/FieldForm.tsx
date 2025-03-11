@@ -4,7 +4,7 @@ import { Location } from 'history'
 import { useFlags } from 'launchdarkly-react-client-sdk'
 import { cloneDeep, pick, set } from 'lodash'
 
-import { Badge, Label, Tooltip } from '@gorgias/merchant-ui-kit'
+import { Badge, Button, Label, Tooltip } from '@gorgias/merchant-ui-kit'
 
 import { FeatureFlagKey } from 'config/featureFlags'
 import { OBJECT_TYPE_SETTINGS, OBJECT_TYPES } from 'custom-fields/constants'
@@ -16,7 +16,6 @@ import {
     isCustomField,
     isCustomFieldAIManagedType,
 } from 'custom-fields/types'
-import Button from 'pages/common/components/button/Button'
 import UnsavedChangesPrompt from 'pages/common/components/UnsavedChangesPrompt'
 import Caption from 'pages/common/forms/Caption/Caption'
 import CheckBox from 'pages/common/forms/CheckBox'

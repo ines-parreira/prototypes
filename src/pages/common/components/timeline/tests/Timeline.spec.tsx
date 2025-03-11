@@ -3,12 +3,23 @@ import React from 'react'
 import { render, screen } from '@testing-library/react'
 import { fromJS } from 'immutable'
 
+import { logEvent, SegmentEvent } from 'common/segment'
+import history from 'pages/history'
 import { getCustomerHistory, getLoading } from 'state/customers/selectors'
 import { assumeMock } from 'utils/testing'
 
 import TicketCard from '../TicketCard'
 import Timeline from '../Timeline'
 
+jest.mock('common/segment', () => ({
+    logEvent: jest.fn(),
+    SegmentEvent: {
+        CustomerTimelineTicketClicked: 'CustomerTimelineTicketClicked',
+    },
+}))
+jest.mock('pages/history', () => ({
+    push: jest.fn(),
+}))
 jest.mock('hooks/useAppSelector', () => (fn: () => unknown) => fn())
 jest.mock('state/customers/selectors', () => {
     const original = jest.requireActual('state/customers/selectors')
@@ -23,6 +34,7 @@ jest.mock('../TicketCard', () => jest.fn(() => <div>TicketCard</div>))
 
 const getCustomerHistoryMock = assumeMock(getCustomerHistory)
 const getLoadingMock = assumeMock(getLoading)
+const TicketCardMock = assumeMock(TicketCard)
 
 describe('<Timeline />', () => {
     const ticket1 = { id: 1, channel: 'email' }
@@ -81,15 +93,14 @@ describe('<Timeline />', () => {
     })
 
     it('should call TicketCard for each ticket with a channel, in correct order, with correct props', () => {
-        const onTicketClick = jest.fn()
         const ticketId = 3
-        render(<Timeline onTicketClick={onTicketClick} ticketId={ticketId} />)
+        render(<Timeline onTicketClick={() => {}} ticketId={ticketId} />)
 
         expect(TicketCard).toHaveBeenCalledTimes(2)
         expect(TicketCard).toHaveBeenNthCalledWith(
             1,
             {
-                onClick: onTicketClick,
+                onClick: expect.any(Function),
                 isHighlighted: false,
                 ticket: ticket1,
             },
@@ -98,11 +109,23 @@ describe('<Timeline />', () => {
         expect(TicketCard).toHaveBeenNthCalledWith(
             2,
             {
-                onClick: onTicketClick,
+                onClick: undefined,
                 isHighlighted: true,
                 ticket: ticket3,
             },
             {},
+        )
+    })
+
+    it('should call onTicketClick, log event and redirect when ticket is clicked', () => {
+        const onTicketClick = jest.fn()
+        render(<Timeline onTicketClick={onTicketClick} />)
+
+        TicketCardMock.mock.calls[0][0].onClick?.(ticket1.id)
+        expect(onTicketClick).toHaveBeenCalledWith(1)
+        expect(history.push).toHaveBeenCalledWith(`/app/ticket/${ticket1.id}`)
+        expect(logEvent).toHaveBeenCalledWith(
+            SegmentEvent.CustomerTimelineTicketClicked,
         )
     })
 })

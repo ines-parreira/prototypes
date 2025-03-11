@@ -3,7 +3,9 @@ import React from 'react'
 import { LoadingSpinner } from '@gorgias/merchant-ui-kit'
 
 import GorgiasLogo from 'assets/img/gorgias-logo.svg'
+import { logEvent, SegmentEvent } from 'common/segment'
 import useAppSelector from 'hooks/useAppSelector'
+import history from 'pages/history'
 import { getCustomerHistory, getLoading } from 'state/customers/selectors'
 
 import TicketCard from './TicketCard'
@@ -63,15 +65,30 @@ export default function Timeline({
             <ol className={css.list}>
                 {tickets
                     .filter((ticket) => ticket.channel)
-                    .map((ticket) => (
-                        <li key={ticket.id}>
-                            <TicketCard
-                                ticket={ticket}
-                                onClick={onTicketClick}
-                                isHighlighted={ticketId === ticket.id}
-                            />
-                        </li>
-                    ))}
+                    .map((ticket) => {
+                        const isCurrentTicket = ticketId === ticket.id
+                        return (
+                            <li key={ticket.id}>
+                                <TicketCard
+                                    ticket={ticket}
+                                    onClick={
+                                        isCurrentTicket
+                                            ? undefined
+                                            : () => {
+                                                  logEvent(
+                                                      SegmentEvent.CustomerTimelineTicketClicked,
+                                                  )
+                                                  onTicketClick?.(ticket.id)
+                                                  history.push(
+                                                      `/app/ticket/${ticket.id}`,
+                                                  )
+                                              }
+                                    }
+                                    isHighlighted={isCurrentTicket}
+                                />
+                            </li>
+                        )
+                    })}
             </ol>
         </div>
     )

@@ -5,10 +5,8 @@ import cn from 'classnames'
 import { TicketSummary } from '@gorgias/api-queries'
 import { TicketStatus } from '@gorgias/api-types'
 
-import { logEvent, SegmentEvent } from 'common/segment'
 import DatetimeLabel from 'pages/common/utils/DatetimeLabel'
 import { StatusLabel } from 'pages/common/utils/labels'
-import history from 'pages/history'
 import { handleButtonLikeClick } from 'utils/accessibility'
 
 import { OwnerLabel } from './OwnerLabel'
@@ -35,8 +33,6 @@ export default function TicketCard({
             {...handleButtonLikeClick((evt) => {
                 evt.preventDefault()
                 onClick?.(ticket.id)
-                logEvent(SegmentEvent.CustomerTimelineTicketClicked)
-                history.push(`/app/ticket/${ticket.id}`)
             })}
         >
             <SourceBadge channel={ticket.channel} />

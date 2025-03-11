@@ -7,22 +7,11 @@ import '@testing-library/jest-dom'
 import { TicketSummary } from '@gorgias/api-queries'
 import { TicketStatus } from '@gorgias/api-types'
 
-import { logEvent, SegmentEvent } from 'common/segment'
 import DatetimeLabel from 'pages/common/utils/DatetimeLabel'
-import history from 'pages/history'
 
 import { SourceBadge } from '../SourceBadge'
 import TicketCard from '../TicketCard'
 
-jest.mock('common/segment', () => ({
-    logEvent: jest.fn(),
-    SegmentEvent: {
-        CustomerTimelineTicketClicked: 'CustomerTimelineTicketClicked',
-    },
-}))
-jest.mock('pages/history', () => ({
-    push: jest.fn(),
-}))
 jest.mock('pages/common/utils/DatetimeLabel', () => jest.fn(() => <div />))
 jest.mock('../SourceBadge', () => ({
     SourceBadge: jest.fn(() => <div />),
@@ -102,10 +91,6 @@ describe('TicketCard', () => {
         render(<TicketCard ticket={ticket} onClick={handleClick} />)
         fireEvent.click(screen.getByRole('button'))
         expect(handleClick).toHaveBeenCalledWith(ticket.id)
-        expect(logEvent).toHaveBeenCalledWith(
-            SegmentEvent.CustomerTimelineTicketClicked,
-        )
-        expect(history.push).toHaveBeenCalledWith(`/app/ticket/${1}`)
     })
 
     it("should render snoozed status when ticket's snooze_datetime is set", () => {
