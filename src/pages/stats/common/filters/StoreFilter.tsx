@@ -4,8 +4,12 @@ import _noop from 'lodash/noop'
 import { connect } from 'react-redux'
 
 import useAppDispatch from 'hooks/useAppDispatch'
+import useEffectOnce from 'hooks/useEffectOnce'
 import { Integration } from 'models/integration/types'
-import { withLogicalOperator } from 'models/reporting/queryFactories/utils'
+import {
+    withDefaultLogicalOperator,
+    withLogicalOperator,
+} from 'models/reporting/queryFactories/utils'
 import {
     FilterComponentKey,
     StatsFiltersWithLogicalOperator,
@@ -67,12 +71,9 @@ export default function StoreFilter({
 
     const handleFilterValuesChange = useCallback(
         (values: number[]) => {
-            dispatchUpdate({
-                values,
-                operator: value.operator,
-            })
+            dispatchUpdate(withDefaultLogicalOperator(values))
         },
-        [dispatchUpdate, value.operator],
+        [dispatchUpdate],
     )
 
     const onOptionChange = (opt: DropdownOption) => {
@@ -109,6 +110,17 @@ export const StoreFilterFromContext = () => {
     const dispatch = useAppDispatch()
     const { selectedIntegrations, storeIntegrations } =
         useCampaignStatsFilters()
+
+    // Set initial filter value
+    useEffectOnce(() => {
+        dispatch(
+            mergeStatsFiltersWithLogicalOperator({
+                storeIntegrations:
+                    withDefaultLogicalOperator(selectedIntegrations),
+            }),
+        )
+    })
+
     return (
         <StoreFilter
             storeIntegrations={storeIntegrations}

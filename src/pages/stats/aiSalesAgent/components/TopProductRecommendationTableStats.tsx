@@ -167,15 +167,24 @@ export const TopProductRecommendationTableStats = ({
                         )}
                     </TableHead>
                     <TableBody>
-                        {isLoading && rows.length === 0 ? (
+                        {rows.length === 0 ? (
                             <TableBodyRow>
-                                {columnsOrder.map((column) => (
-                                    <BodyCell key={column}>
-                                        <div style={{ width: '100%' }}>
-                                            <Skeleton count={1} width="100%" />
-                                        </div>
+                                {isLoading ? (
+                                    columnsOrder.map((column) => (
+                                        <BodyCell key={column}>
+                                            <div style={{ width: '100%' }}>
+                                                <Skeleton
+                                                    count={1}
+                                                    width="100%"
+                                                />
+                                            </div>
+                                        </BodyCell>
+                                    ))
+                                ) : (
+                                    <BodyCell colSpan={columnsOrder.length}>
+                                        No data available
                                     </BodyCell>
-                                ))}
+                                )}
                             </TableBodyRow>
                         ) : (
                             renderTableBody()

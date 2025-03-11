@@ -17,7 +17,7 @@ export enum AiSalesAgentConversationsDimension {
 
 export enum AiSalesAgentConversationsFilterMember {
     AccountId = 'AiSalesAgentConversations.accountId',
-    EntityId = 'AiSalesAgentConversations.entityId',
+    StoreIntegrationId = 'AiSalesAgentConversations.storeIntegrationId',
     PeriodEnd = 'AiSalesAgentConversations.periodEnd',
     PeriodStart = 'AiSalesAgentConversations.periodStart',
     UserId = 'AiSalesAgentConversations.userId',

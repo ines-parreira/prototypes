@@ -23,6 +23,7 @@ import {
     productClicksQueryFactory,
     productRecommendationsQueryFactory,
 } from 'models/reporting/queryFactories/ai-sales-agent/metrics'
+import { isFilterWithLogicalOperator } from 'models/reporting/queryFactories/utils'
 import { StatsFilters } from 'models/stat/types'
 
 import { ProductTableKeys } from '../constants'
@@ -69,20 +70,24 @@ const useProductRecommendations = (filters: StatsFilters, timezone: string) => {
     )
 
     // Get product details
+    const storeIntegrationId = isFilterWithLogicalOperator(
+        filters.storeIntegrations,
+    )
+        ? filters.storeIntegrations.values[0]
+        : 0
     const productIds = Object.keys(productTotals).map(Number)
     const productsData = useGetProductsByIdsFromIntegration(
-        // TODO - get integrationId from filters
-        // athlete-shift id is hardcoded here
-        6438,
+        storeIntegrationId,
         productIds,
-        !!productIds,
+        productIds.length > 0 && !!storeIntegrationId,
     )
 
     const data: ProductTableContentCell[] = useMemo(() => {
         if (
             productsData.isFetching ||
             productsData.isError ||
-            !productsData.data
+            !productsData.data ||
+            productIds.length === 0
         ) {
             return []
         }
@@ -115,7 +120,13 @@ const useProductRecommendations = (filters: StatsFilters, timezone: string) => {
             },
             product: product,
         }))
-    }, [productsData, boughtTotalData, clickTotalData, productTotals])
+    }, [
+        productIds,
+        productsData,
+        boughtTotalData,
+        clickTotalData,
+        productTotals,
+    ])
 
     return {
         isFetching:

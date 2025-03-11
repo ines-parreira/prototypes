@@ -15,29 +15,38 @@ import {
     ConvertTrackingEventsMeasure,
 } from 'models/reporting/cubes/convert/ConvertTrackingEventsCube'
 import {
-    aiSalesAgentConversationsDefaultFilters,
-    aiSalesAgentOrdersDefaultFilters,
+    aiSalesAgentConversationsDefaultFiltersMembers,
+    aiSalesAgentOrdersDefaultFiltersMembers,
     clicksDefaultFilters,
 } from 'models/reporting/queryFactories/ai-sales-agent/filters'
 import { ReportingFilterOperator, ReportingQuery } from 'models/reporting/types'
 import { StatsFilters } from 'models/stat/types'
+import { statsFiltersToReportingFilters } from 'utils/reporting'
 
 export const averageOrderValueQueryFactory = (
     filters: StatsFilters,
     timezone: string,
-): ReportingQuery<AiSalesAgentOrdersCube> => ({
-    measures: [AiSalesAgentOrdersMeasure.Gmv, AiSalesAgentOrdersMeasure.Count],
-    dimensions: [],
-    filters: [
-        {
-            member: AiSalesAgentOrdersDimension.IsInfluenced,
-            operator: ReportingFilterOperator.Equals,
-            values: ['1'],
-        },
-        ...aiSalesAgentOrdersDefaultFilters(filters),
-    ],
-    timezone,
-})
+): ReportingQuery<AiSalesAgentOrdersCube> => {
+    return {
+        measures: [
+            AiSalesAgentOrdersMeasure.Gmv,
+            AiSalesAgentOrdersMeasure.Count,
+        ],
+        dimensions: [],
+        filters: [
+            {
+                member: AiSalesAgentOrdersDimension.IsInfluenced,
+                operator: ReportingFilterOperator.Equals,
+                values: ['1'],
+            },
+            ...statsFiltersToReportingFilters(
+                aiSalesAgentOrdersDefaultFiltersMembers,
+                filters,
+            ),
+        ],
+        timezone,
+    }
+}
 
 export const gmvQueryFactory = (
     filters: StatsFilters,
@@ -45,7 +54,12 @@ export const gmvQueryFactory = (
 ): ReportingQuery<AiSalesAgentOrdersCube> => ({
     measures: [AiSalesAgentOrdersMeasure.GmvUsd],
     dimensions: [],
-    filters: [...aiSalesAgentOrdersDefaultFilters(filters)],
+    filters: [
+        ...statsFiltersToReportingFilters(
+            aiSalesAgentOrdersDefaultFiltersMembers,
+            filters,
+        ),
+    ],
     timezone,
 })
 
@@ -61,7 +75,10 @@ export const gmvInfluencedQueryFactory = (
             operator: ReportingFilterOperator.Equals,
             values: ['1'],
         },
-        ...aiSalesAgentOrdersDefaultFilters(filters),
+        ...statsFiltersToReportingFilters(
+            aiSalesAgentOrdersDefaultFiltersMembers,
+            filters,
+        ),
     ],
     timezone,
 })
@@ -78,7 +95,10 @@ export const totalNumberOfOrderQueryFactory = (
             operator: ReportingFilterOperator.Equals,
             values: ['1'],
         },
-        ...aiSalesAgentOrdersDefaultFilters(filters),
+        ...statsFiltersToReportingFilters(
+            aiSalesAgentOrdersDefaultFiltersMembers,
+            filters,
+        ),
     ],
     timezone,
 })
@@ -95,7 +115,10 @@ export const totalNumberofSalesOpportunityConvFromAIAgentQueryFactory = (
             operator: ReportingFilterOperator.Equals,
             values: ['1'],
         },
-        ...aiSalesAgentConversationsDefaultFilters(filters),
+        ...statsFiltersToReportingFilters(
+            aiSalesAgentConversationsDefaultFiltersMembers,
+            filters,
+        ),
     ],
     timezone,
 })
@@ -112,7 +135,10 @@ export const totalNumberOfAutomatedConversationQueryFactory = (
             operator: ReportingFilterOperator.NotEquals,
             values: ['handover'],
         },
-        ...aiSalesAgentConversationsDefaultFilters(filters),
+        ...statsFiltersToReportingFilters(
+            aiSalesAgentConversationsDefaultFiltersMembers,
+            filters,
+        ),
     ],
     timezone,
 })
@@ -123,7 +149,12 @@ export const totalNumberOfAgentConversationsQueryFactory = (
 ): ReportingQuery<AiSalesAgentConversationsCube> => ({
     measures: [AiSalesAgentConversationsMeasure.Count],
     dimensions: [],
-    filters: [...aiSalesAgentConversationsDefaultFilters(filters)],
+    filters: [
+        ...statsFiltersToReportingFilters(
+            aiSalesAgentConversationsDefaultFiltersMembers,
+            filters,
+        ),
+    ],
     timezone,
 })
 
@@ -144,7 +175,10 @@ export const totalNumberOfAutomatedSalesQueryFactory = (
             operator: ReportingFilterOperator.NotEquals,
             values: ['handover'],
         },
-        ...aiSalesAgentConversationsDefaultFilters(filters),
+        ...statsFiltersToReportingFilters(
+            aiSalesAgentConversationsDefaultFiltersMembers,
+            filters,
+        ),
     ],
     timezone,
 })
@@ -166,7 +200,10 @@ export const totalNumberProductRecommendationsQueryFactory = (
             operator: ReportingFilterOperator.Set,
             values: [],
         },
-        ...aiSalesAgentConversationsDefaultFilters(filters),
+        ...statsFiltersToReportingFilters(
+            aiSalesAgentConversationsDefaultFiltersMembers,
+            filters,
+        ),
     ],
     timezone,
 })
@@ -222,7 +259,10 @@ export const totalProductBoughtQueryFactory = (
             operator: ReportingFilterOperator.Set,
             values: [],
         },
-        ...aiSalesAgentOrdersDefaultFilters(filters),
+        ...statsFiltersToReportingFilters(
+            aiSalesAgentOrdersDefaultFiltersMembers,
+            filters,
+        ),
     ],
     timezone,
 })
@@ -244,7 +284,10 @@ export const productBoughtQueryFactory = (
             operator: ReportingFilterOperator.Set,
             values: [],
         },
-        ...aiSalesAgentOrdersDefaultFilters(filters),
+        ...statsFiltersToReportingFilters(
+            aiSalesAgentOrdersDefaultFiltersMembers,
+            filters,
+        ),
     ],
     timezone,
 })
@@ -266,7 +309,10 @@ export const productRecommendationsQueryFactory = (
             operator: ReportingFilterOperator.Set,
             values: [],
         },
-        ...aiSalesAgentConversationsDefaultFilters(filters),
+        ...statsFiltersToReportingFilters(
+            aiSalesAgentConversationsDefaultFiltersMembers,
+            filters,
+        ),
     ],
     timezone,
 })

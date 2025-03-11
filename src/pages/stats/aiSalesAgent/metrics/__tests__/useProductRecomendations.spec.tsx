@@ -13,6 +13,7 @@ import {
     AiSalesAgentConversationsMeasure,
 } from 'models/reporting/cubes/ai-sales-agent/AiSalesAgentConversations'
 import { StatsFilters } from 'models/stat/types'
+import { LogicalOperatorEnum } from 'pages/stats/common/components/Filter/constants'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 import { assumeMock } from 'utils/testing'
 
@@ -28,6 +29,10 @@ const statsFilters: StatsFilters = {
         end_datetime: moment()
             .add(3 * 7, 'day')
             .format('YYYY-MM-DDT23:50:59.999'),
+    },
+    storeIntegrations: {
+        values: [1],
+        operator: LogicalOperatorEnum.ONE_OF,
     },
 }
 

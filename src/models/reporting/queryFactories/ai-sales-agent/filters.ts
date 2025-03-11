@@ -6,37 +6,21 @@ import {
     ReportingFilterOperator,
 } from 'models/reporting/types'
 import { StatsFilters } from 'models/stat/types'
-import { formatReportingQueryDate } from 'utils/reporting'
+import { formatReportingQueryDate, StatsFiltersMembers } from 'utils/reporting'
 
-export const aiSalesAgentOrdersDefaultFilters = (
-    filters: StatsFilters,
-): ReportingFilter[] => [
-    {
-        member: AiSalesAgentOrdersFilterMember.PeriodStart,
-        operator: ReportingFilterOperator.AfterDate,
-        values: [formatReportingQueryDate(filters.period.start_datetime)],
-    },
-    {
-        member: AiSalesAgentOrdersFilterMember.PeriodEnd,
-        operator: ReportingFilterOperator.BeforeDate,
-        values: [formatReportingQueryDate(filters.period.end_datetime)],
-    },
-]
+export const aiSalesAgentOrdersDefaultFiltersMembers: StatsFiltersMembers = {
+    periodStart: AiSalesAgentOrdersFilterMember.PeriodStart,
+    periodEnd: AiSalesAgentOrdersFilterMember.PeriodEnd,
+    storeIntegrations: AiSalesAgentOrdersFilterMember.IntegrationId,
+}
 
-export const aiSalesAgentConversationsDefaultFilters = (
-    filters: StatsFilters,
-): ReportingFilter[] => [
+export const aiSalesAgentConversationsDefaultFiltersMembers: StatsFiltersMembers =
     {
-        member: AiSalesAgentConversationsFilterMember.PeriodStart,
-        operator: ReportingFilterOperator.AfterDate,
-        values: [formatReportingQueryDate(filters.period.start_datetime)],
-    },
-    {
-        member: AiSalesAgentConversationsFilterMember.PeriodEnd,
-        operator: ReportingFilterOperator.BeforeDate,
-        values: [formatReportingQueryDate(filters.period.end_datetime)],
-    },
-]
+        periodStart: AiSalesAgentConversationsFilterMember.PeriodStart,
+        periodEnd: AiSalesAgentConversationsFilterMember.PeriodEnd,
+        storeIntegrations:
+            AiSalesAgentConversationsFilterMember.StoreIntegrationId,
+    }
 
 export const clicksDefaultFilters = (
     filters: StatsFilters,

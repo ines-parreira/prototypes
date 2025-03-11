@@ -117,6 +117,7 @@ export type LegacyStatsFilters = {
     [FilterKey.Score]?: string[]
     [FilterKey.SlaPolicies]?: string[]
     [FilterKey.Tags]?: number[]
+    [FilterComponentKey.StoreIntegrations]?: number[]
 }
 
 export type AgentOnlyFilters<T> = T extends any

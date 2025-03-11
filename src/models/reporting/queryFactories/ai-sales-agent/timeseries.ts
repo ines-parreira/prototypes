@@ -3,7 +3,7 @@ import {
     AiSalesAgentOrdersDimension,
     AiSalesAgentOrdersMeasure,
 } from 'models/reporting/cubes/ai-sales-agent/AiSalesAgentOrders'
-import { aiSalesAgentOrdersDefaultFilters } from 'models/reporting/queryFactories/ai-sales-agent/filters'
+import { aiSalesAgentOrdersDefaultFiltersMembers } from 'models/reporting/queryFactories/ai-sales-agent/filters'
 import {
     ReportingFilter,
     ReportingFilterOperator,
@@ -11,7 +11,10 @@ import {
     TimeSeriesQuery,
 } from 'models/reporting/types'
 import { StatsFilters } from 'models/stat/types'
-import { getFilterDateRange } from 'utils/reporting'
+import {
+    getFilterDateRange,
+    statsFiltersToReportingFilters,
+} from 'utils/reporting'
 
 const createGmvTimeSeriesQuery = (
     filters: StatsFilters,
@@ -19,7 +22,10 @@ const createGmvTimeSeriesQuery = (
     granularity: ReportingGranularity,
     additionalFilters: ReportingFilter[] = [],
 ): TimeSeriesQuery<AiSalesAgentOrdersCube> => {
-    const baseFilters = aiSalesAgentOrdersDefaultFilters(filters)
+    const baseFilters = statsFiltersToReportingFilters(
+        aiSalesAgentOrdersDefaultFiltersMembers,
+        filters,
+    )
 
     return {
         measures: [AiSalesAgentOrdersMeasure.Gmv],

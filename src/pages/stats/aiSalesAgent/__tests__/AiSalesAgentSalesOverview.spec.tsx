@@ -11,6 +11,12 @@ jest.mock(
             fn(),
 )
 
+jest.mock('pages/stats/convert/providers/CampaignStatsFilters', () => ({
+    CampaignStatsFilters: ({ children }: { children: React.ReactNode }) => (
+        <div>{children}</div>
+    ),
+}))
+
 jest.mock('pages/stats/common/filters/FiltersPanelWrapper', () => () => (
     <div>filters-panel</div>
 ))

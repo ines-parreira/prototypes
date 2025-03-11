@@ -9,6 +9,7 @@ import { RenderChart } from 'pages/stats/aiSalesAgent/components/RenderChart'
 import { PAGE_TITLE_AI_SALES_AGENT_SALES_OVERVIEW } from 'pages/stats/aiSalesAgent/constants'
 import { AnalyticsFooter } from 'pages/stats/AnalyticsFooter'
 import FiltersPanelWrapper from 'pages/stats/common/filters/FiltersPanelWrapper'
+import { CampaignStatsFilters } from 'pages/stats/convert/providers/CampaignStatsFilters'
 import { CustomReportComponent } from 'pages/stats/custom-reports/CustomReportComponent'
 import DashboardGridCell from 'pages/stats/DashboardGridCell'
 import DashboardSection from 'pages/stats/DashboardSection'
@@ -24,18 +25,21 @@ const AiSalesAgentSalesOverview = () => {
         >
             <DashboardSection>
                 <DashboardGridCell size={getGridCellSize(12)} className="pb-0">
-                    <FiltersPanelWrapper
-                        persistentFilters={
-                            AiSalesAgentReportConfig.reportFilters.persistent
-                        }
-                        filterSettingsOverrides={{
-                            [FilterKey.Period]: {
-                                initialSettings: {
-                                    maxSpan: 365,
+                    <CampaignStatsFilters>
+                        <FiltersPanelWrapper
+                            persistentFilters={
+                                AiSalesAgentReportConfig.reportFilters
+                                    .persistent
+                            }
+                            filterSettingsOverrides={{
+                                [FilterKey.Period]: {
+                                    initialSettings: {
+                                        maxSpan: 365,
+                                    },
                                 },
-                            },
-                        }}
-                    />
+                            }}
+                        />
+                    </CampaignStatsFilters>
                 </DashboardGridCell>
             </DashboardSection>
 
