@@ -189,12 +189,24 @@ export class MembersListContainer extends Component<Props, State> {
                     status: NotificationStatus.Success,
                     message: 'Team member removed',
                 })
-            } catch {
-                void this.props.notify({
-                    status: NotificationStatus.Error,
-                    message:
-                        'Failed to remove team member. Please refresh the page and try again.',
-                })
+            } catch (error: any) {
+                const status = error?.response?.status
+                const fallbackErrorMessage =
+                    'Failed to remove team member. Please refresh the page and try again.'
+
+                if (status === 422) {
+                    void this.props.notify({
+                        status: NotificationStatus.Error,
+                        message:
+                            error?.response?.data?.error?.msg ||
+                            fallbackErrorMessage,
+                    })
+                } else {
+                    void this.props.notify({
+                        status: NotificationStatus.Error,
+                        message: fallbackErrorMessage,
+                    })
+                }
             }
         }
     }
@@ -202,10 +214,14 @@ export class MembersListContainer extends Component<Props, State> {
     deleteTeamMemberSelection = async () => {
         const { cursor, members, meta, team } = this.state
 
-        if (team?.id) {
-            this.setState({ isDeleting: true })
-            const selection = this.state.selection
+        if (!team?.id) return
 
+        this.setState({ isDeleting: true })
+        const selection = this.state.selection
+        const fallbackErrorMessage =
+            'Failed to remove team members. Please refresh the page and try again.'
+
+        try {
             await deleteTeamMembers(team.id, selection)
 
             const allMemberIds = Set(members.map((member) => member.id))
@@ -220,7 +236,23 @@ export class MembersListContainer extends Component<Props, State> {
 
             await this.fetchTeamMembers({ cursor: newCursor })
             await this.fetchTeam()
+        } catch (error: any) {
+            const status = error?.response?.status
 
+            if (status === 422) {
+                void this.props.notify({
+                    status: NotificationStatus.Error,
+                    message:
+                        error?.response?.data?.error?.msg ??
+                        fallbackErrorMessage,
+                })
+            } else {
+                void this.props.notify({
+                    status: NotificationStatus.Error,
+                    message: fallbackErrorMessage,
+                })
+            }
+        } finally {
             this.setState({ isDeleting: false })
         }
     }
