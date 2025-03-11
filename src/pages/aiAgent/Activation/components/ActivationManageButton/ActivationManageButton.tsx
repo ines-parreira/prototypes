@@ -1,6 +1,6 @@
 import React from 'react'
 
-import { ActivationProgress } from './ActivationProgress'
+import { ActivationProgress } from 'pages/aiAgent/Activation/components/ActivationProgress/ActivationProgress'
 
 import css from './ActivationManageButton.less'
 

@@ -2,15 +2,14 @@ import React from 'react'
 
 import { Button } from '@gorgias/merchant-ui-kit'
 
+import { ActivationProgress } from 'pages/aiAgent/Activation/components/ActivationProgress/ActivationProgress'
+import { AiAgentActivationStoreCard } from 'pages/aiAgent/Activation/components/AiAgentActivationStoreCard/AiAgentActivationStoreCard'
 import {
     StoreConfigurationForActivation,
     useStoreActivations,
 } from 'pages/aiAgent/Activation/hooks/useStoreActivations'
 import Modal from 'pages/common/components/modal/Modal'
 import ModalBody from 'pages/common/components/modal/ModalBody'
-
-import { ActivationProgress } from './ActivationProgress'
-import { AiAgentActivationStoreCard } from './AiAgentActivationStoreCard'
 
 import css from './AiAgentActivationModal.less'
 

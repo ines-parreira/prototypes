@@ -1,7 +1,7 @@
 import { useMemo } from 'react'
 
 import { AiAgentScope, StoreConfiguration } from 'models/aiAgent/types'
-import { StoreActivation } from 'pages/aiAgent/Activation/components/AiAgentActivationStoreCard'
+import { StoreActivation } from 'pages/aiAgent/Activation/components/AiAgentActivationStoreCard/AiAgentActivationStoreCard'
 
 const computeActivationScore = (
     storeConfigs: StoreConfigurationForActivation[],
