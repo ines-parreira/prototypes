@@ -256,6 +256,11 @@ export type Meta = {
     sms_deflection?: string
     hidden?: boolean
     type?: MessageMetadataType
+    workflow_execution?: {
+        configuration_id: string
+        execution_id: string
+        success: boolean
+    }
 }
 
 export type FacebookPrivateReply = {

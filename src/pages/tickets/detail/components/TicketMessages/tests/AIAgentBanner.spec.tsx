@@ -18,6 +18,9 @@ import { assumeMock } from 'utils/testing'
 import AIAgentBanner from '../AIAgentBanner'
 
 jest.mock('../AIAgentFeedback', () => () => <div data-testid="feedback" />)
+jest.mock('../AiAgentFailedWorkflowMessage', () => () => (
+    <div data-testid="failed-workflow-message" />
+))
 
 jest.mock('models/aiAgentFeedback/queries')
 jest.mock('../../../hooks/useAIAgentResourcesWithFeedback')
@@ -348,5 +351,79 @@ describe('AIAgentBanner', () => {
         )
 
         expect(screen.queryByTestId('feedback')).toBeInTheDocument()
+    })
+
+    it('should render with the failed workflow message component when the message has failed workflow execution metadata', () => {
+        useGetAiAgentFeedbackMock.mockReturnValue({
+            data: {
+                data: {
+                    messages: [
+                        {
+                            messageId: mockMessage.id,
+                            summary: 'summary',
+                        },
+                    ],
+                },
+            },
+            isLoading: false,
+            isError: false,
+        } as any)
+
+        const messageWithFailedWorkflow = {
+            ...mockMessage,
+            meta: {
+                workflow_execution: {
+                    success: false,
+                    configuration_id: '123',
+                    execution_id: '456',
+                },
+            },
+        }
+
+        render(
+            <AIAgentBanner
+                message={messageWithFailedWorkflow}
+                messages={[messageWithFailedWorkflow]}
+            />,
+        )
+
+        expect(
+            screen.getByTestId('failed-workflow-message'),
+        ).toBeInTheDocument()
+    })
+
+    it('should render the failed workflow message component when the message has existing valid workflow failure message and no meta data', () => {
+        useGetAiAgentFeedbackMock.mockReturnValue({
+            data: {
+                data: {
+                    messages: [
+                        {
+                            messageId: mockMessage.id,
+                            summary: 'summary',
+                        },
+                    ],
+                },
+            },
+            isLoading: false,
+            isError: false,
+        } as any)
+
+        const legacyWorkflowMessage = {
+            ...mockMessage,
+            body_html:
+                '<div data-error-summary="true">AI Agent did not send a response and handed over the ticket to your team because it failed to execute one or more steps in this Action. <a href="/app/automation/shopify/test-store/ai-agent/actions/events/actcion-id?execution_id=execution-id">View the Action events</a> for more details.</div>',
+            meta: null, // Ensure no workflow_execution metadata
+        }
+
+        render(
+            <AIAgentBanner
+                message={legacyWorkflowMessage}
+                messages={[legacyWorkflowMessage]}
+            />,
+        )
+
+        expect(
+            screen.getByTestId('failed-workflow-message'),
+        ).toBeInTheDocument()
     })
 })

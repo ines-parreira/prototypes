@@ -9,6 +9,8 @@ import Body from 'pages/tickets/detail/components/TicketMessages/Body'
 
 import { useAIAgentResourcesWithFeedback } from '../../hooks/useAIAgentResourcesWithFeedback'
 import { isTrialMessageFromAIAgent } from '../AIAgentFeedbackBar/utils'
+import FailedWorkflowMessage from './AiAgentFailedWorkflowMessage'
+import { getFailedWorkflowData } from './AiAgentFailedWorkflowMessage.util'
 import AIAgentFeedback from './AIAgentFeedback'
 
 import css from './AIAgentBanner.less'
@@ -86,6 +88,8 @@ const AIAgentBanner = ({
         return null
     }
 
+    const failedWorkflowData = getFailedWorkflowData(message)
+
     const twoStepMessageIndex = resourceWithFeedback?.actions.findIndex(
         (action) => action.type === 'hard_action' && action.status,
     )
@@ -106,7 +110,14 @@ const AIAgentBanner = ({
                         [css.boldMessage]: isMessagePublic,
                     })}
                 >
-                    {messageToDisplay}
+                    {failedWorkflowData ? (
+                        <FailedWorkflowMessage
+                            workflowData={failedWorkflowData}
+                            originalMessage={messageToDisplay}
+                        />
+                    ) : (
+                        messageToDisplay
+                    )}
                 </div>
             )}
             {shouldDisplayAiAgentFeedback && (
