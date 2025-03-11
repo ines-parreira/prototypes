@@ -6,7 +6,7 @@ import { fetchIntegrationProducts } from 'state/integrations/helpers'
 
 export function isProductAvailable(product: ShopifyProduct): boolean {
     const isTracked = product.variants.every(
-        (variant) => !!variant.inventory_management,
+        (variant) => !!variant.inventory_management || variant.tracked,
     )
     const quantity = product.variants.reduce(
         (total, variant) => total + variant.inventory_quantity,

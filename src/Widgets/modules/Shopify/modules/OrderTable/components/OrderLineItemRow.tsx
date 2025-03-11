@@ -236,9 +236,13 @@ function OrderLineItemRow({
               ) as Map<any, any>)
             : null
 
+        const isTracked =
+            variant &&
+            (!!variant.get('inventory_management') || variant.get('tracked'))
+
         return (
             <td className={css.numberCol}>
-                {!!variant && !!variant.get('inventory_management') ? (
+                {!!variant && isTracked ? (
                     <ProductStockQuantity
                         value={variant.get('inventory_quantity')}
                     />
