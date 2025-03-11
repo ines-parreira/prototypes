@@ -8,11 +8,11 @@ import { Skeleton } from '@gorgias/merchant-ui-kit'
 import { logEvent, SegmentEvent } from 'common/segment'
 import {
     Card,
+    CardCaption,
     CardFooter,
     CardHeader,
     CardTitle,
 } from 'pages/aiAgent/Onboarding/components/Card'
-import CardCaption from 'pages/aiAgent/Onboarding/components/Card/CardCaption'
 
 import css from './PendingTask.less'
 

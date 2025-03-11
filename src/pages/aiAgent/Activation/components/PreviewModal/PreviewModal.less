@@ -1,0 +1,176 @@
+@import (reference) '~@gorgias/design-tokens/dist/css/layout.less';
+@import (reference) '~css/typography';
+@import (reference) '~css/new/mixins';
+@import '~@gorgias/design-tokens/dist/css/layout.less';
+@import '~@gorgias/design-tokens/dist/css/typographyMixins.less';
+
+:local {
+    // define color variables
+    --purple: #c34ded;
+    --green: #1a9970;
+
+    .modalDialog {
+        max-width: 880px;
+    }
+
+    .modalContent {
+        gap: @layout-spacing-m;
+        padding: @layout-spacing-m;
+        border-radius: 12px;
+    }
+
+    .header,
+    .body,
+    .footer {
+        padding: 0;
+        border: none;
+    }
+
+    .header {
+        border: none;
+        color: var(--neutral-grey-6);
+
+        h1 {
+            .heading-section-semibold();
+            margin: 0 0 4px 0;
+        }
+        h3 {
+            .body-regular();
+            margin: 0;
+        }
+
+        i {
+            align-self: flex-start;
+        }
+    }
+
+    .footer {
+        background: none;
+        display: flex;
+        flex-direction: column;
+
+        button {
+            width: 100%;
+        }
+    }
+
+    .card {
+        padding: @layout-spacing-m;
+        cursor: initial;
+    }
+
+    .currentPlanCard {
+        background: var(--neutral-grey-1);
+        border: solid 1px var(--neutral-grey-3);
+        box-shadow: none;
+    }
+
+    .earlyAccessPlanCard {
+        margin-top: @layout-spacing-m;
+        border: solid 1px var(--purple);
+        box-shadow: 4px 4px 12px 0px rgba(195, 77, 237, 0.16);
+    }
+
+    .cardTitle {
+        .heading-section-semibold();
+        display: flex;
+        justify-content: space-between;
+    }
+
+    .content {
+        margin: 0;
+
+        h3 {
+            .heading-subsection-semibold();
+            font-size: 16px;
+            margin: 0;
+            padding: 0;
+        }
+
+        .contentGrid {
+            .heading-subsection-regular();
+            margin: 0;
+            display: grid;
+            grid-template-columns: 170px auto 225px;
+        }
+
+        .innerContent {
+            display: flex;
+            flex-direction: column;
+            gap: @layout-spacing-xs;
+        }
+
+        .skillStatus {
+            color: var(--green);
+
+            &.skillStatusDisabled {
+                color: var(--neutral-grey-4);
+            }
+        }
+
+        .skillStatus {
+            margin-right: @layout-spacing-xs;
+        }
+
+        .price {
+            .heading-subsection-semibold();
+            font-size: 24px;
+        }
+
+        .subPrice {
+            .body-medium();
+        }
+
+        .newPrice {
+            .price,
+            .subPrice {
+                color: var(--green);
+            }
+        }
+
+        .tips {
+            margin-top: @layout-spacing-m;
+            background: var(--accessory-magenta-1, #faeaff);
+            border: solid 1px var(--accessory-magenta-2, #f5d4ff);
+            padding: @layout-spacing-s;
+            border-radius: 12px;
+
+            h3 i {
+                margin-right: @layout-spacing-s;
+                color: var(--purple);
+            }
+
+            .tipTitle {
+                .heading-subsection-semibold();
+                margin-bottom: 0 0 0 8px;
+            }
+
+            ul {
+                font-size: 14px;
+                margin-left: @layout-spacing-m;
+                padding: 0;
+
+                li {
+                    list-style: none;
+                    margin-top: @layout-spacing-xs;
+
+                    i {
+                        margin-right: 12px;
+                        color: var(--purple);
+                    }
+                }
+            }
+        }
+    }
+
+    .principalButton {
+        margin-bottom: @layout-spacing-xs;
+        border: none;
+        border-radius: var(--Border-radius-L, 4px);
+        background: linear-gradient(
+            90deg,
+            rgba(203, 85, 239, 0.79) -12.67%,
+            rgba(111, 12, 134, 0.79) 119.65%
+        );
+    }
+}
