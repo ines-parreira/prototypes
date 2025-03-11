@@ -75,6 +75,7 @@ const mockHelpCenterChannels: SelfServiceHelpCenterChannel[] = [
             integration_id: 18,
             type: 'faq',
             layout: 'default',
+            main_embedment_base_url: null,
         },
     },
 ]

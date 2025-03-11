@@ -1390,6 +1390,39 @@
                 "tags": ["help-centers"]
             }
         },
+        "/api/help-center/help-centers/integrations/{integration_id}/email-integration": {
+            "get": {
+                "operationId": "getHelpCenterEmailIntegrationByIntegrationId",
+                "summary": "Retrieve a Help Center email integration by integration_id",
+                "parameters": [
+                    {
+                        "name": "integration_id",
+                        "required": true,
+                        "in": "path",
+                        "schema": { "type": "number" }
+                    },
+                    {
+                        "name": "account_id",
+                        "required": true,
+                        "in": "query",
+                        "schema": { "type": "string" }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/EmailIntegrationDto"
+                                }
+                            }
+                        }
+                    }
+                },
+                "tags": ["help-centers"]
+            }
+        },
         "/api/help-center/help-centers/{help_center_id}/sitemap-urls": {
             "get": {
                 "operationId": "getHelpCenterSiteMapUrls",
@@ -2554,30 +2587,6 @@
             }
         },
         "/api/help-center/help-centers/{help_center_id}/article-templates/review": {
-            "post": {
-                "operationId": "reviewArticleTemplate",
-                "summary": "Review an AI article template",
-                "parameters": [
-                    {
-                        "name": "help_center_id",
-                        "required": true,
-                        "in": "path",
-                        "schema": { "type": "number" }
-                    }
-                ],
-                "requestBody": {
-                    "required": true,
-                    "content": {
-                        "application/json": {
-                            "schema": {
-                                "$ref": "#/components/schemas/UpsertArticleTemplateReviewDto"
-                            }
-                        }
-                    }
-                },
-                "responses": { "204": { "description": "" } },
-                "tags": ["article-templates"]
-            },
             "put": {
                 "operationId": "upsertArticleTemplateReview",
                 "summary": "Review an AI article template",
@@ -2751,7 +2760,6 @@
                         "required": true,
                         "in": "path",
                         "schema": {
-                            "type": "string",
                             "enum": [
                                 "applyDiscount",
                                 "cancelMembership",
@@ -2779,7 +2787,8 @@
                                 "updateSubscription",
                                 "worldwideShipping",
                                 "wrongItem"
-                            ]
+                            ],
+                            "type": "string"
                         }
                     },
                     {
@@ -3170,6 +3179,39 @@
                 "tags": ["contact-forms"]
             }
         },
+        "/api/help-center/contact-forms/integrations/{integration_id}/email-integration": {
+            "get": {
+                "operationId": "getContactFormEmailIntegrationByIntegrationId",
+                "summary": "Retrieve a Contact Form email integration by integration id",
+                "parameters": [
+                    {
+                        "name": "integration_id",
+                        "required": true,
+                        "in": "path",
+                        "schema": { "type": "number" }
+                    },
+                    {
+                        "name": "account_id",
+                        "required": true,
+                        "in": "query",
+                        "schema": { "type": "string" }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/EmailIntegrationDto"
+                                }
+                            }
+                        }
+                    }
+                },
+                "tags": ["contact-forms"]
+            }
+        },
         "/api/help-center/contact-forms/{contact_form_id}/shopify-page-embedments": {
             "post": {
                 "operationId": "createContactFormShopifyPageEmbedment",
@@ -3555,6 +3597,12 @@
                         "schema": { "type": "number" }
                     },
                     {
+                        "name": "account_id",
+                        "required": false,
+                        "in": "query",
+                        "schema": { "type": "string" }
+                    },
+                    {
                         "name": "ids",
                         "required": false,
                         "in": "query",
@@ -3838,6 +3886,68 @@
                     }
                 },
                 "tags": ["import-hotswap"]
+            }
+        },
+        "/api/help-center/help-centers/{help_center_id}/ingestions": {
+            "get": {
+                "operationId": "getIngestionLogs",
+                "summary": "Get ingestion logs",
+                "parameters": [
+                    {
+                        "name": "help_center_id",
+                        "required": true,
+                        "in": "path",
+                        "schema": { "type": "number" }
+                    },
+                    {
+                        "name": "account_id",
+                        "required": false,
+                        "in": "query",
+                        "schema": { "type": "string" }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/IngestionLogDto"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "tags": ["ingestion"]
+            }
+        },
+        "/api/help-center/help-centers/{help_center_id}/ingestions/start": {
+            "post": {
+                "operationId": "startIngestion",
+                "summary": "Trigger external content ingestion",
+                "parameters": [
+                    {
+                        "name": "help_center_id",
+                        "required": true,
+                        "in": "path",
+                        "schema": { "type": "number" }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/IngestionRequestDto"
+                            }
+                        }
+                    }
+                },
+                "responses": { "201": { "description": "" } },
+                "tags": ["ingestion"]
             }
         },
         "/api/help-center/contact-forms/{contact_form_id}/mailto-replacement-config": {
@@ -4134,7 +4244,6 @@
                         "required": true,
                         "in": "path",
                         "schema": {
-                            "type": "string",
                             "enum": [
                                 "cs-CZ",
                                 "da-DK",
@@ -4151,7 +4260,8 @@
                                 "pt-BR",
                                 "es-ES",
                                 "sv-SE"
-                            ]
+                            ],
+                            "type": "string"
                         }
                     },
                     {
@@ -4159,8 +4269,8 @@
                         "required": true,
                         "in": "path",
                         "schema": {
-                            "type": "string",
-                            "enum": ["footer", "header"]
+                            "enum": ["footer", "header"],
+                            "type": "string"
                         }
                     }
                 ],
@@ -4195,7 +4305,6 @@
                         "required": true,
                         "in": "path",
                         "schema": {
-                            "type": "string",
                             "enum": [
                                 "cs-CZ",
                                 "da-DK",
@@ -4212,7 +4321,8 @@
                                 "pt-BR",
                                 "es-ES",
                                 "sv-SE"
-                            ]
+                            ],
+                            "type": "string"
                         }
                     },
                     {
@@ -4220,8 +4330,8 @@
                         "required": true,
                         "in": "path",
                         "schema": {
-                            "type": "string",
-                            "enum": ["footer", "header"]
+                            "enum": ["footer", "header"],
+                            "type": "string"
                         }
                     }
                 ],
@@ -4317,7 +4427,7 @@
                     "id": { "type": "number" },
                     "url": { "type": "string", "nullable": true },
                     "domain": { "type": "string", "nullable": true },
-                    "source": { "type": "string", "enum": ["url"] },
+                    "source": { "type": "string", "enum": ["domain", "url"] },
                     "status": {
                         "type": "string",
                         "nullable": true,
@@ -4623,15 +4733,9 @@
                             ]
                         }
                     },
-                    "rating": {
-                        "allOf": [{ "$ref": "#/components/schemas/Rating" }]
-                    },
+                    "rating": { "$ref": "#/components/schemas/Rating" },
                     "translation": {
-                        "allOf": [
-                            {
-                                "$ref": "#/components/schemas/ArticleListDataTranslationDto"
-                            }
-                        ]
+                        "$ref": "#/components/schemas/ArticleListDataTranslationDto"
                     }
                 },
                 "required": [
@@ -4964,6 +5068,7 @@
                     "is_current": {
                         "type": "boolean",
                         "description": "This field describes whether the translation is going to be published or not, and it defaults to true. If true, it means it will be the published version; if previously it was only in draft, it will become published. If false, it will be the draft version and therefore, unpublished.",
+                        "example": "\"false\" it means it is a draft version",
                         "default": true
                     },
                     "visibility_status": {
@@ -5224,6 +5329,7 @@
                     "is_current": {
                         "type": "boolean",
                         "description": "This field describes whether the translation is going to be published or not, and it defaults to true. If true, it means it will be the published version; if previously it was only in draft, it will become published. If false, it will be the draft version and therefore, unpublished.",
+                        "example": "\"false\" it means it is a draft version",
                         "default": true
                     },
                     "visibility_status": {
@@ -5244,11 +5350,15 @@
                 "properties": {
                     "rating": {
                         "description": "The rating of the article translation.",
-                        "example": -1,
+                        "example": "-1",
                         "enum": ["-1", "1"],
                         "type": "string"
                     },
-                    "context": { "type": "object" }
+                    "context": {
+                        "type": "object",
+                        "description": "The context of the client.",
+                        "example": "\"{\"ip_address\": \"89.912.12.11\", \"user_agent\": \"Chrome\"}\""
+                    }
                 },
                 "required": ["rating", "context"]
             },
@@ -5298,11 +5408,15 @@
                 "properties": {
                     "rating": {
                         "description": "The rating of the article translation.",
-                        "example": -1,
+                        "example": "-1",
                         "enum": ["-1", "1"],
                         "type": "string"
                     },
-                    "context": { "type": "object" }
+                    "context": {
+                        "type": "object",
+                        "description": "The context of the client.",
+                        "example": "\"{\"ip_address\": \"89.912.12.11\", \"user_agent\": \"Chrome\"}\""
+                    }
                 },
                 "required": ["rating", "context"]
             },
@@ -5607,6 +5721,10 @@
                         "enum": ["default", "1-pager"],
                         "type": "string",
                         "nullable": false
+                    },
+                    "main_embedment_base_url": {
+                        "type": "string",
+                        "nullable": true
                     }
                 },
                 "required": [
@@ -5637,7 +5755,8 @@
                     "code_snippet_template",
                     "integration_id",
                     "type",
-                    "layout"
+                    "layout",
+                    "main_embedment_base_url"
                 ]
             },
             "AccountInfoDto": {
@@ -5712,20 +5831,12 @@
                 "type": "object",
                 "properties": {
                     "email": {
-                        "allOf": [
-                            { "$ref": "#/components/schemas/EmailContactInfo" }
-                        ]
+                        "$ref": "#/components/schemas/EmailContactInfo"
                     },
                     "phone": {
-                        "allOf": [
-                            { "$ref": "#/components/schemas/PhoneContactInfo" }
-                        ]
+                        "$ref": "#/components/schemas/PhoneContactInfo"
                     },
-                    "chat": {
-                        "allOf": [
-                            { "$ref": "#/components/schemas/ChatContactInfo" }
-                        ]
-                    }
+                    "chat": { "$ref": "#/components/schemas/ChatContactInfo" }
                 },
                 "required": ["email", "phone", "chat"]
             },
@@ -6029,6 +6140,10 @@
                         "type": "string",
                         "nullable": false
                     },
+                    "main_embedment_base_url": {
+                        "type": "string",
+                        "nullable": true
+                    },
                     "account_id": { "type": "number" },
                     "translations": {
                         "minItems": 1,
@@ -6071,6 +6186,7 @@
                     "integration_id",
                     "type",
                     "layout",
+                    "main_embedment_base_url",
                     "account_id"
                 ]
             },
@@ -6502,14 +6618,10 @@
                     "banner_image_url": { "type": "string", "nullable": true },
                     "banner_image_vertical_offset": { "type": "number" },
                     "contact_info": {
-                        "allOf": [
-                            { "$ref": "#/components/schemas/ContactInfoDto" }
-                        ]
+                        "$ref": "#/components/schemas/ContactInfoDto"
                     },
                     "extra_html": {
-                        "allOf": [
-                            { "$ref": "#/components/schemas/ExtraHTMLDto" }
-                        ]
+                        "$ref": "#/components/schemas/ExtraHTMLDto"
                     },
                     "logo_hyperlink": { "type": "string", "nullable": true }
                 }
@@ -6541,7 +6653,7 @@
                     "hostname": { "type": "string" },
                     "help_center_id": { "type": "number" },
                     "status": {
-                        "description": "The status of this custom domain:\n- `active`: the custom domain is validated and working\n- `pending`: the custom domain is pending validation\n- `unknown`: the custom domain is in an unknown status, check `verification_errors`\nto know more.",
+                        "description": "The status of this custom domain:\n- `active`: the custom domain is validated and working\n- `pending`: the custom domain is pending validation\n- `unknown`: the custom domain is in an unknown status, check `verification_errors`\n  to know more.",
                         "enum": ["active", "pending", "unknown"],
                         "type": "string"
                     }
@@ -7079,11 +7191,7 @@
                         ]
                     },
                     "draft": {
-                        "allOf": [
-                            {
-                                "$ref": "#/components/schemas/ArticleTranslationResponseDto"
-                            }
-                        ]
+                        "$ref": "#/components/schemas/ArticleTranslationResponseDto"
                     }
                 },
                 "required": ["current", "draft"]
@@ -7145,11 +7253,7 @@
                         }
                     },
                     "translation_versions": {
-                        "allOf": [
-                            {
-                                "$ref": "#/components/schemas/CategoryTreeArticleTranslationVersion"
-                            }
-                        ]
+                        "$ref": "#/components/schemas/CategoryTreeArticleTranslationVersion"
                     },
                     "id": { "type": "number" }
                 },
@@ -7479,7 +7583,6 @@
                     },
                     "subject_lines": {
                         "nullable": true,
-                        "description": "Custom subject lines",
                         "example": {
                             "options": [
                                 "Order status",
@@ -7729,7 +7832,6 @@
                     },
                     "subject_lines": {
                         "nullable": true,
-                        "description": "Custom subject lines",
                         "example": {
                             "options": [
                                 "Order status",
@@ -7865,11 +7967,7 @@
                         "example": 2
                     },
                     "fallback_integration": {
-                        "allOf": [
-                            {
-                                "$ref": "#/components/schemas/FallbackEmailIntegrationDto"
-                            }
-                        ]
+                        "$ref": "#/components/schemas/FallbackEmailIntegrationDto"
                     }
                 },
                 "required": [
@@ -7883,7 +7981,7 @@
                 "properties": {
                     "page_external_id": {
                         "type": "string",
-                        "example": 229672878386
+                        "example": "229672878386"
                     },
                     "page_url_path": {
                         "type": "string",
@@ -8029,6 +8127,10 @@
                 "properties": {
                     "id": { "type": "number" },
                     "help_center_id": { "type": "number" },
+                    "snippets_article_ids": {
+                        "type": "array",
+                        "items": { "type": "number" }
+                    },
                     "filename": { "type": "string" },
                     "google_storage_url": { "type": "string" },
                     "status": {
@@ -8043,6 +8145,7 @@
                 "required": [
                     "id",
                     "help_center_id",
+                    "snippets_article_ids",
                     "filename",
                     "google_storage_url",
                     "status",
@@ -8185,14 +8288,10 @@
                         "description": "Configuration for importing the CSV file."
                     },
                     "article_columns": {
-                        "allOf": [
-                            { "$ref": "#/components/schemas/ArticleColumns" }
-                        ]
+                        "$ref": "#/components/schemas/ArticleColumns"
                     },
                     "category_columns": {
-                        "allOf": [
-                            { "$ref": "#/components/schemas/CategoryColumns" }
-                        ]
+                        "$ref": "#/components/schemas/CategoryColumns"
                     }
                 },
                 "required": ["file_url", "article_columns", "category_columns"]
@@ -8382,6 +8481,51 @@
                     }
                 },
                 "required": ["progress"]
+            },
+            "IngestionLogDto": {
+                "type": "object",
+                "properties": {
+                    "help_center_id": { "type": "number" },
+                    "article_ids": {
+                        "type": "array",
+                        "items": { "type": "number" }
+                    },
+                    "raw_text": { "type": "string", "nullable": true },
+                    "dataset_id": { "type": "string" },
+                    "latest_sync": { "format": "date-time", "type": "string" },
+                    "id": { "type": "number" },
+                    "url": { "type": "string", "nullable": true },
+                    "domain": { "type": "string", "nullable": true },
+                    "source": { "type": "string", "enum": ["domain", "url"] },
+                    "status": {
+                        "type": "string",
+                        "nullable": true,
+                        "enum": ["DISABLED", "FAILED", "PENDING", "SUCCESSFUL"]
+                    },
+                    "meta": {
+                        "$ref": "#/components/schemas/MLSnippetsIngestionMeta"
+                    }
+                },
+                "required": [
+                    "help_center_id",
+                    "article_ids",
+                    "dataset_id",
+                    "latest_sync",
+                    "id",
+                    "url",
+                    "domain",
+                    "source",
+                    "status",
+                    "meta"
+                ]
+            },
+            "IngestionRequestDto": {
+                "type": "object",
+                "properties": {
+                    "url": { "type": "string" },
+                    "type": { "type": "string", "enum": ["url", "domain"] }
+                },
+                "required": ["url", "type"]
             },
             "MailtoReplacementConfigGetDto": {
                 "type": "object",
@@ -8598,6 +8742,7 @@
                 "properties": {
                     "subject": { "type": "string" },
                     "body_html": { "type": "string" },
+                    "body_text": { "type": "string" },
                     "attachments": {
                         "type": "array",
                         "items": {

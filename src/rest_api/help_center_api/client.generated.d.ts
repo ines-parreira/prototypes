@@ -168,19 +168,9 @@ declare namespace Components {
             id: number
             url: string | null
             domain: string | null
-            source: 'url'
+            source: 'domain' | 'url'
             status: 'DISABLED' | 'FAILED' | 'PENDING' | 'SUCCESSFUL'
             meta: MLSnippetsIngestionMeta
-        }
-        export interface MLSnippetsIngestionMeta {
-            /**
-             * Gorgias account domain name
-             */
-            'x-gorgias-domain': string | null
-            /**
-             * UID for this call. e.g. snippet_transformation_{account_name}{help_center_id}_{timestamp}
-             */
-            'x-execution-id': string | null
         }
         export interface ArticleListDataDto {
             id: number
@@ -213,52 +203,8 @@ declare namespace Components {
                 | 'es-ES'
                 | 'sv-SE'
             )[]
-            rating: {
-                up: number
-                down: number
-            }
-            translation: {
-                created_datetime: string // date-time
-                updated_datetime: string // date-time
-                deleted_datetime?: string | null // date-time
-                title: string
-                excerpt: string
-                content: string
-                slug: string
-                locale:
-                    | 'cs-CZ'
-                    | 'da-DK'
-                    | 'nl-NL'
-                    | 'en-GB'
-                    | 'en-US'
-                    | 'fi-FI'
-                    | 'fr-CA'
-                    | 'fr-FR'
-                    | 'de-DE'
-                    | 'it-IT'
-                    | 'ja-JP'
-                    | 'no-NO'
-                    | 'pt-BR'
-                    | 'es-ES'
-                    | 'sv-SE'
-                article_id: number
-                category_id: number | null
-                article_unlisted_id: string
-                seo_meta: {
-                    title: string | null
-                    description: string | null
-                }
-                visibility_status: 'PUBLIC' | 'UNLISTED'
-                is_current: boolean
-                rating: Rating
-                /**
-                 * Gives details on how the translation fallback was chosen:
-                 * - `undefined`: the translation is the requested one
-                 * - `default`: the translation is in help center's default locale
-                 * - `available`: the translation corresponds to the first available one
-                 */
-                locale_fallback?: 'available' | 'default'
-            }
+            rating: Rating
+            translation: ArticleListDataTranslationDto
         }
         export interface ArticleListDataTranslationDto {
             created_datetime: string // date-time
@@ -640,76 +586,7 @@ declare namespace Components {
                 | 'es-ES'
                 | 'sv-SE'
             )[]
-            translation_versions: {
-                current: {
-                    created_datetime: string // date-time
-                    updated_datetime: string // date-time
-                    deleted_datetime?: string | null // date-time
-                    title: string
-                    excerpt: string
-                    content: string
-                    slug: string
-                    locale:
-                        | 'cs-CZ'
-                        | 'da-DK'
-                        | 'nl-NL'
-                        | 'en-GB'
-                        | 'en-US'
-                        | 'fi-FI'
-                        | 'fr-CA'
-                        | 'fr-FR'
-                        | 'de-DE'
-                        | 'it-IT'
-                        | 'ja-JP'
-                        | 'no-NO'
-                        | 'pt-BR'
-                        | 'es-ES'
-                        | 'sv-SE'
-                    article_id: number
-                    category_id: number | null
-                    article_unlisted_id: string
-                    seo_meta: {
-                        title: string | null
-                        description: string | null
-                    }
-                    visibility_status: 'PUBLIC' | 'UNLISTED'
-                    is_current: boolean
-                } | null
-                draft: {
-                    created_datetime: string // date-time
-                    updated_datetime: string // date-time
-                    deleted_datetime?: string | null // date-time
-                    title: string
-                    excerpt: string
-                    content: string
-                    slug: string
-                    locale:
-                        | 'cs-CZ'
-                        | 'da-DK'
-                        | 'nl-NL'
-                        | 'en-GB'
-                        | 'en-US'
-                        | 'fi-FI'
-                        | 'fr-CA'
-                        | 'fr-FR'
-                        | 'de-DE'
-                        | 'it-IT'
-                        | 'ja-JP'
-                        | 'no-NO'
-                        | 'pt-BR'
-                        | 'es-ES'
-                        | 'sv-SE'
-                    article_id: number
-                    category_id: number | null
-                    article_unlisted_id: string
-                    seo_meta: {
-                        title: string | null
-                        description: string | null
-                    }
-                    visibility_status: 'PUBLIC' | 'UNLISTED'
-                    is_current: boolean
-                }
-            }
+            translation_versions: CategoryTreeArticleTranslationVersion
             id: number
         }
         export interface CategoryTreeArticleTranslationVersion {
@@ -747,40 +624,7 @@ declare namespace Components {
                 visibility_status: 'PUBLIC' | 'UNLISTED'
                 is_current: boolean
             } | null
-            draft: {
-                created_datetime: string // date-time
-                updated_datetime: string // date-time
-                deleted_datetime?: string | null // date-time
-                title: string
-                excerpt: string
-                content: string
-                slug: string
-                locale:
-                    | 'cs-CZ'
-                    | 'da-DK'
-                    | 'nl-NL'
-                    | 'en-GB'
-                    | 'en-US'
-                    | 'fi-FI'
-                    | 'fr-CA'
-                    | 'fr-FR'
-                    | 'de-DE'
-                    | 'it-IT'
-                    | 'ja-JP'
-                    | 'no-NO'
-                    | 'pt-BR'
-                    | 'es-ES'
-                    | 'sv-SE'
-                article_id: number
-                category_id: number | null
-                article_unlisted_id: string
-                seo_meta: {
-                    title: string | null
-                    description: string | null
-                }
-                visibility_status: 'PUBLIC' | 'UNLISTED'
-                is_current: boolean
-            }
+            draft: ArticleTranslationResponseDto
         }
         export interface CategoryTreeDto {
             /**
@@ -1134,20 +978,9 @@ declare namespace Components {
             data: ContactFormDto[]
         }
         export interface ContactInfo {
-            email: {
-                deactivated_datetime: string | null
-                description: string
-                email: string
-            }
-            phone: {
-                deactivated_datetime: string | null
-                description: string
-                phone_numbers: ContactPhoneNumber[]
-            }
-            chat: {
-                deactivated_datetime: string | null
-                description: string
-            }
+            email: EmailContactInfo
+            phone: PhoneContactInfo
+            chat: ChatContactInfo
         }
         export interface ContactInfoDto {
             email: EmailContactInfoDto
@@ -1235,6 +1068,8 @@ declare namespace Components {
                 }
                 /**
                  * This field describes whether the translation is going to be published or not, and it defaults to true. If true, it means it will be the published version; if previously it was only in draft, it will become published. If false, it will be the draft version and therefore, unpublished.
+                 * example:
+                 * "false" it means it is a draft version
                  */
                 is_current?: boolean
                 /**
@@ -1321,6 +1156,8 @@ declare namespace Components {
             }
             /**
              * This field describes whether the translation is going to be published or not, and it defaults to true. If true, it means it will be the published version; if previously it was only in draft, it will become published. If false, it will be the draft version and therefore, unpublished.
+             * example:
+             * "false" it means it is a draft version
              */
             is_current?: boolean
             /**
@@ -1339,6 +1176,11 @@ declare namespace Components {
              * -1
              */
             rating: '-1' | '1'
+            /**
+             * The context of the client.
+             * example:
+             * "{"ip_address": "89.912.12.11", "user_agent": "Chrome"}"
+             */
             context: {}
         }
         export interface CreateArticleTranslationSeoMetaDto {
@@ -1563,7 +1405,6 @@ declare namespace Components {
                 email: string
             }
             /**
-             * Custom subject lines
              * example:
              * {
              *   "options": [
@@ -1855,7 +1696,7 @@ declare namespace Components {
              * - `active`: the custom domain is validated and working
              * - `pending`: the custom domain is pending validation
              * - `unknown`: the custom domain is in an unknown status, check `verification_errors`
-             * to know more.
+             *   to know more.
              */
             status: 'active' | 'pending' | 'unknown'
         }
@@ -2090,6 +1931,7 @@ declare namespace Components {
             } | null
             type: 'faq' | 'guidance' | 'snippet'
             layout: 'default' | '1-pager'
+            main_embedment_base_url: string | null
             account_id: number
             translations?: HelpCenterTranslationDto[]
             redirects?: RedirectDto[]
@@ -2204,6 +2046,7 @@ declare namespace Components {
             } | null
             type: 'faq' | 'guidance' | 'snippet'
             layout: 'default' | '1-pager'
+            main_embedment_base_url: string | null
         }
         export interface HelpCenterSiteMapUrlDto {
             url: string
@@ -2274,20 +2117,9 @@ declare namespace Components {
                 description: string | null
             }
             contact_info: {
-                email: {
-                    deactivated_datetime: string | null
-                    description: string
-                    email: string
-                }
-                phone: {
-                    deactivated_datetime: string | null
-                    description: string
-                    phone_numbers: ContactPhoneNumber[]
-                }
-                chat: {
-                    deactivated_datetime: string | null
-                    description: string
-                }
+                email: EmailContactInfo
+                phone: PhoneContactInfo
+                chat: ChatContactInfo
             }
             extra_html: {
                 extra_head: string
@@ -2350,6 +2182,23 @@ declare namespace Components {
              * Status of import
              */
             progress: 'FAILURE' | 'IN_PROGRESS' | 'NOT_STARTED' | 'SUCCESS'
+        }
+        export interface IngestionLogDto {
+            help_center_id: number
+            article_ids: number[]
+            raw_text?: string | null
+            dataset_id: string
+            latest_sync: string // date-time
+            id: number
+            url: string | null
+            domain: string | null
+            source: 'domain' | 'url'
+            status: 'DISABLED' | 'FAILED' | 'PENDING' | 'SUCCESSFUL'
+            meta: MLSnippetsIngestionMeta
+        }
+        export interface IngestionRequestDto {
+            url: string
+            type: 'url' | 'domain'
         }
         export interface LinkDto {
             url: string
@@ -2466,6 +2315,16 @@ declare namespace Components {
                 | 'pt-BR'
                 | 'es-ES'
                 | 'sv-SE'
+        }
+        export interface MLSnippetsIngestionMeta {
+            /**
+             * Gorgias account domain name
+             */
+            'x-gorgias-domain': string | null
+            /**
+             * UID for this call. e.g. snippet_transformation_{account_name}{help_center_id}_{timestamp}
+             */
+            'x-execution-id': string | null
         }
         export interface MailtoReplacementConfigDto {
             emails: string[]
@@ -2605,16 +2464,8 @@ declare namespace Components {
              * Configuration for importing the CSV file.
              */
             file_url: string
-            article_columns: {
-                locales: {
-                    [name: string]: ArticleLocaleColumns
-                }
-            }
-            category_columns: {
-                locales: {
-                    [name: string]: CategoryLocaleColumns
-                }
-            }
+            article_columns: ArticleColumns
+            category_columns: CategoryColumns
         }
         export interface ProcessCsvResponseDto {
             /**
@@ -2710,6 +2561,7 @@ declare namespace Components {
         export interface RetrieveFileIngestionLogDto {
             id: number
             help_center_id: number
+            snippets_article_ids: number[]
             filename: string
             google_storage_url: string
             status: 'FAILED' | 'PENDING' | 'SUCCESSFUL'
@@ -2778,6 +2630,8 @@ declare namespace Components {
             }
             /**
              * This field describes whether the translation is going to be published or not, and it defaults to true. If true, it means it will be the published version; if previously it was only in draft, it will become published. If false, it will be the draft version and therefore, unpublished.
+             * example:
+             * "false" it means it is a draft version
              */
             is_current?: boolean
             /**
@@ -2796,6 +2650,11 @@ declare namespace Components {
              * -1
              */
             rating: '-1' | '1'
+            /**
+             * The context of the client.
+             * example:
+             * "{"ip_address": "89.912.12.11", "user_agent": "Chrome"}"
+             */
             context: {}
         }
         export interface UpdateCategoryTranslationDto {
@@ -2896,7 +2755,6 @@ declare namespace Components {
                 email: string
             }
             /**
-             * Custom subject lines
              * example:
              * {
              *   "options": [
@@ -2938,18 +2796,7 @@ declare namespace Components {
              * 2
              */
             deactivated_integration_id: number
-            fallback_integration: {
-                /**
-                 * example:
-                 * 12345
-                 */
-                id: number
-                /**
-                 * example:
-                 * acme-support@gorgias.xyz
-                 */
-                email: string
-            }
+            fallback_integration: FallbackEmailIntegrationDto
         }
         export interface UpdateExtraHTMLDto {
             /**
@@ -3128,55 +2975,8 @@ declare namespace Components {
             banner_text?: string | null
             banner_image_url?: string | null
             banner_image_vertical_offset?: number
-            contact_info?: {
-                email: EmailContactInfoDto
-                phone: PhoneContactInfoDto
-                chat: ChatContactInfoDto
-            }
-            extra_html?: {
-                /**
-                 * The HTML injected in the head
-                 *
-                 * It should be in help center's supported locales.
-                 * example:
-                 * <div>....</div>
-                 */
-                extra_head?: string
-                /**
-                 * Boolean indicating if the extra head should be injected.
-                 * example:
-                 * false
-                 */
-                extra_head_deactivated?: boolean
-                /**
-                 * The HTML of the custom header
-                 *
-                 * It should be in help center's supported locales.
-                 * example:
-                 * <div>....</div>
-                 */
-                custom_header?: string
-                /**
-                 * Boolean indicating if the custom header should be injected.
-                 * example:
-                 * false
-                 */
-                custom_header_deactivated?: boolean
-                /**
-                 * The HTML of the custom footer
-                 *
-                 * It should be in help center's supported locales.
-                 * example:
-                 * <div>....</div>
-                 */
-                custom_footer?: string
-                /**
-                 * Boolean indicating if the custom footer should be injected.
-                 * example:
-                 * false
-                 */
-                custom_footer_deactivated?: boolean
-            }
+            contact_info?: ContactInfoDto
+            extra_html?: ExtraHTMLDto
             logo_hyperlink?: string | null
         }
         export interface UpdateNavigationLinkDto {
@@ -3296,6 +3096,7 @@ declare namespace Components {
         export interface WorkflowHandoverMessageDto {
             subject?: string
             body_html?: string
+            body_text?: string
             attachments: WorkflowHandoverMessageAttachmentDto[]
             from_agent: boolean
             sent_datetime?: string
@@ -4009,6 +3810,21 @@ declare namespace Paths {
             export type $200 = Components.Schemas.ContactFormDto
         }
     }
+    namespace GetContactFormEmailIntegrationByIntegrationId {
+        namespace Parameters {
+            export type AccountId = string
+            export type IntegrationId = number
+        }
+        export interface PathParameters {
+            integration_id: Parameters.IntegrationId
+        }
+        export interface QueryParameters {
+            account_id: Parameters.AccountId
+        }
+        namespace Responses {
+            export type $200 = Components.Schemas.EmailIntegrationDto
+        }
+    }
     namespace GetContactFormMailtoReplacementConfig {
         namespace Parameters {
             export type ContactFormId = number
@@ -4061,6 +3877,7 @@ declare namespace Paths {
     }
     namespace GetFileIngestion {
         namespace Parameters {
+            export type AccountId = string
             export type HelpCenterId = number
             export type Ids = number[]
         }
@@ -4068,6 +3885,7 @@ declare namespace Paths {
             help_center_id: Parameters.HelpCenterId
         }
         export interface QueryParameters {
+            account_id?: Parameters.AccountId
             ids?: Parameters.Ids
         }
         namespace Responses {
@@ -4117,6 +3935,21 @@ declare namespace Paths {
             export type $200 = Components.Schemas.GetHelpCenterDto
         }
     }
+    namespace GetHelpCenterEmailIntegrationByIntegrationId {
+        namespace Parameters {
+            export type AccountId = string
+            export type IntegrationId = number
+        }
+        export interface PathParameters {
+            integration_id: Parameters.IntegrationId
+        }
+        export interface QueryParameters {
+            account_id: Parameters.AccountId
+        }
+        namespace Responses {
+            export type $200 = Components.Schemas.EmailIntegrationDto
+        }
+    }
     namespace GetHelpCenterSiteMapUrls {
         namespace Parameters {
             export type HelpCenterId = number
@@ -4137,6 +3970,21 @@ declare namespace Paths {
         }
         namespace Responses {
             export type $200 = Components.Schemas.HotswapProgressDto
+        }
+    }
+    namespace GetIngestionLogs {
+        namespace Parameters {
+            export type AccountId = string
+            export type HelpCenterId = number
+        }
+        export interface PathParameters {
+            help_center_id: Parameters.HelpCenterId
+        }
+        export interface QueryParameters {
+            account_id?: Parameters.AccountId
+        }
+        namespace Responses {
+            export type $200 = Components.Schemas.IngestionLogDto[]
         }
     }
     namespace GetLocale {
@@ -4648,16 +4496,6 @@ declare namespace Paths {
             shop_name: Parameters.ShopName
         }
     }
-    namespace ReviewArticleTemplate {
-        namespace Parameters {
-            export type HelpCenterId = number
-        }
-        export interface PathParameters {
-            help_center_id: Parameters.HelpCenterId
-        }
-        export type RequestBody =
-            Components.Schemas.UpsertArticleTemplateReviewDto
-    }
     namespace SetArticlesPositionsInCategory {
         namespace Parameters {
             export type CategoryId = number
@@ -4749,6 +4587,15 @@ declare namespace Paths {
             help_center_id: Parameters.HelpCenterId
         }
         export type RequestBody = Components.Schemas.ApifyInputDto
+    }
+    namespace StartIngestion {
+        namespace Parameters {
+            export type HelpCenterId = number
+        }
+        export interface PathParameters {
+            help_center_id: Parameters.HelpCenterId
+        }
+        export type RequestBody = Components.Schemas.IngestionRequestDto
     }
     namespace SubmitContactFormByUid {
         namespace Parameters {
@@ -5298,6 +5145,17 @@ export interface OperationMethods {
         config?: AxiosRequestConfig,
     ): OperationResponse<Paths.UpsertHelpCenterAutomationSettings.Responses.$200>
     /**
+     * getHelpCenterEmailIntegrationByIntegrationId - Retrieve a Help Center email integration by integration_id
+     */
+    'getHelpCenterEmailIntegrationByIntegrationId'(
+        parameters?: Parameters<
+            Paths.GetHelpCenterEmailIntegrationByIntegrationId.PathParameters &
+                Paths.GetHelpCenterEmailIntegrationByIntegrationId.QueryParameters
+        > | null,
+        data?: any,
+        config?: AxiosRequestConfig,
+    ): OperationResponse<Paths.GetHelpCenterEmailIntegrationByIntegrationId.Responses.$200>
+    /**
      * getHelpCenterSiteMapUrls - Get all the site map urls for the help center with the given id
      */
     'getHelpCenterSiteMapUrls'(
@@ -5592,14 +5450,6 @@ export interface OperationMethods {
         config?: AxiosRequestConfig,
     ): OperationResponse<any>
     /**
-     * reviewArticleTemplate - Review an AI article template
-     */
-    'reviewArticleTemplate'(
-        parameters?: Parameters<Paths.ReviewArticleTemplate.PathParameters> | null,
-        data?: Paths.ReviewArticleTemplate.RequestBody,
-        config?: AxiosRequestConfig,
-    ): OperationResponse<any>
-    /**
      * listAIArticleTemplatesByHelpCenter - Retrieve AI article templates by help center
      */
     'listAIArticleTemplatesByHelpCenter'(
@@ -5748,6 +5598,17 @@ export interface OperationMethods {
         data?: Paths.UpdateEmailIntegration.RequestBody,
         config?: AxiosRequestConfig,
     ): OperationResponse<any>
+    /**
+     * getContactFormEmailIntegrationByIntegrationId - Retrieve a Contact Form email integration by integration id
+     */
+    'getContactFormEmailIntegrationByIntegrationId'(
+        parameters?: Parameters<
+            Paths.GetContactFormEmailIntegrationByIntegrationId.PathParameters &
+                Paths.GetContactFormEmailIntegrationByIntegrationId.QueryParameters
+        > | null,
+        data?: any,
+        config?: AxiosRequestConfig,
+    ): OperationResponse<Paths.GetContactFormEmailIntegrationByIntegrationId.Responses.$200>
     /**
      * listContactFormShopifyPageEmbedments - List the Contact Form Shopify Page Embedments
      */
@@ -5935,6 +5796,25 @@ export interface OperationMethods {
         data?: any,
         config?: AxiosRequestConfig,
     ): OperationResponse<Paths.GetHotswapStatus.Responses.$200>
+    /**
+     * getIngestionLogs - Get ingestion logs
+     */
+    'getIngestionLogs'(
+        parameters?: Parameters<
+            Paths.GetIngestionLogs.PathParameters &
+                Paths.GetIngestionLogs.QueryParameters
+        > | null,
+        data?: any,
+        config?: AxiosRequestConfig,
+    ): OperationResponse<Paths.GetIngestionLogs.Responses.$200>
+    /**
+     * startIngestion - Trigger external content ingestion
+     */
+    'startIngestion'(
+        parameters?: Parameters<Paths.StartIngestion.PathParameters> | null,
+        data?: Paths.StartIngestion.RequestBody,
+        config?: AxiosRequestConfig,
+    ): OperationResponse<any>
     /**
      * getContactFormMailtoReplacementConfig - Get a Contact Form Mailto Replacement Config
      */
@@ -6394,6 +6274,19 @@ export interface PathsDictionary {
             config?: AxiosRequestConfig,
         ): OperationResponse<Paths.UpsertHelpCenterAutomationSettings.Responses.$200>
     }
+    ['/api/help-center/help-centers/integrations/{integration_id}/email-integration']: {
+        /**
+         * getHelpCenterEmailIntegrationByIntegrationId - Retrieve a Help Center email integration by integration_id
+         */
+        'get'(
+            parameters?: Parameters<
+                Paths.GetHelpCenterEmailIntegrationByIntegrationId.PathParameters &
+                    Paths.GetHelpCenterEmailIntegrationByIntegrationId.QueryParameters
+            > | null,
+            data?: any,
+            config?: AxiosRequestConfig,
+        ): OperationResponse<Paths.GetHelpCenterEmailIntegrationByIntegrationId.Responses.$200>
+    }
     ['/api/help-center/help-centers/{help_center_id}/sitemap-urls']: {
         /**
          * getHelpCenterSiteMapUrls - Get all the site map urls for the help center with the given id
@@ -6719,14 +6612,6 @@ export interface PathsDictionary {
     }
     ['/api/help-center/help-centers/{help_center_id}/article-templates/review']: {
         /**
-         * reviewArticleTemplate - Review an AI article template
-         */
-        'post'(
-            parameters?: Parameters<Paths.ReviewArticleTemplate.PathParameters> | null,
-            data?: Paths.ReviewArticleTemplate.RequestBody,
-            config?: AxiosRequestConfig,
-        ): OperationResponse<any>
-        /**
          * upsertArticleTemplateReview - Review an AI article template
          */
         'put'(
@@ -6911,6 +6796,19 @@ export interface PathsDictionary {
             data?: Paths.UpdateEmailIntegration.RequestBody,
             config?: AxiosRequestConfig,
         ): OperationResponse<any>
+    }
+    ['/api/help-center/contact-forms/integrations/{integration_id}/email-integration']: {
+        /**
+         * getContactFormEmailIntegrationByIntegrationId - Retrieve a Contact Form email integration by integration id
+         */
+        'get'(
+            parameters?: Parameters<
+                Paths.GetContactFormEmailIntegrationByIntegrationId.PathParameters &
+                    Paths.GetContactFormEmailIntegrationByIntegrationId.QueryParameters
+            > | null,
+            data?: any,
+            config?: AxiosRequestConfig,
+        ): OperationResponse<Paths.GetContactFormEmailIntegrationByIntegrationId.Responses.$200>
     }
     ['/api/help-center/contact-forms/{contact_form_id}/shopify-page-embedments']: {
         /**
@@ -7132,6 +7030,29 @@ export interface PathsDictionary {
             data?: any,
             config?: AxiosRequestConfig,
         ): OperationResponse<Paths.GetHotswapStatus.Responses.$200>
+    }
+    ['/api/help-center/help-centers/{help_center_id}/ingestions']: {
+        /**
+         * getIngestionLogs - Get ingestion logs
+         */
+        'get'(
+            parameters?: Parameters<
+                Paths.GetIngestionLogs.PathParameters &
+                    Paths.GetIngestionLogs.QueryParameters
+            > | null,
+            data?: any,
+            config?: AxiosRequestConfig,
+        ): OperationResponse<Paths.GetIngestionLogs.Responses.$200>
+    }
+    ['/api/help-center/help-centers/{help_center_id}/ingestions/start']: {
+        /**
+         * startIngestion - Trigger external content ingestion
+         */
+        'post'(
+            parameters?: Parameters<Paths.StartIngestion.PathParameters> | null,
+            data?: Paths.StartIngestion.RequestBody,
+            config?: AxiosRequestConfig,
+        ): OperationResponse<any>
     }
     ['/api/help-center/contact-forms/{contact_form_id}/mailto-replacement-config']: {
         /**

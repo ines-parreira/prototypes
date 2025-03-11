@@ -37,6 +37,7 @@ const HelpCenterApiBaseFixture = {
     account_id: 1,
     type: 'faq' as const,
     layout: 'default' as const,
+    main_embedment_base_url: null,
 }
 
 export const InvalidHelpCenterApiFixture = {

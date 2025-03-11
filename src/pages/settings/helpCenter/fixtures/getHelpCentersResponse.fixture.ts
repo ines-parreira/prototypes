@@ -36,6 +36,7 @@ export const getHelpCentersResponseFixture: HelpCentersListPage = {
             },
             type: 'faq',
             layout: 'default',
+            main_embedment_base_url: null,
         },
         {
             id: 2,
@@ -68,6 +69,7 @@ export const getHelpCentersResponseFixture: HelpCentersListPage = {
             account_id: 1,
             type: 'faq',
             layout: 'default',
+            main_embedment_base_url: null,
         },
         {
             id: 3,
@@ -100,6 +102,7 @@ export const getHelpCentersResponseFixture: HelpCentersListPage = {
             account_id: 1,
             type: 'faq',
             layout: 'default',
+            main_embedment_base_url: null,
         },
         {
             id: 4,
@@ -132,6 +135,7 @@ export const getHelpCentersResponseFixture: HelpCentersListPage = {
             account_id: 1,
             type: 'faq',
             layout: 'default',
+            main_embedment_base_url: null,
         },
     ],
     object: 'list',
@@ -177,6 +181,7 @@ export const getSingleHelpCenterResponseFixture: HelpCenter = {
     automation_settings_id: null,
     type: 'faq',
     layout: 'default',
+    main_embedment_base_url: null,
 }
 
 export const getSingleHelpCenterResponseFixtureWithTranslation: HelpCenter = {

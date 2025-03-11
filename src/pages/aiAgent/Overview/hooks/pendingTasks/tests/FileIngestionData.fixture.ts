@@ -54,6 +54,7 @@ export class FileIngestionDataFixture {
             google_storage_url: 'https://google.com',
             help_center_id: this.internalData.helpCenterId,
             uploaded_datetime: '2021-01-01T00:00:00Z',
+            snippets_article_ids: [],
         })
     }
 

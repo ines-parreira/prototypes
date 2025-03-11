@@ -123,6 +123,7 @@ describe('ExternalFilesSection', () => {
                     google_storage_url:
                         'https://storage.googleapis.com/test.pdf',
                     uploaded_datetime: '2024-11-04T19:24:08Z',
+                    snippets_article_ids: [],
                 },
                 {
                     id: 2,
@@ -132,6 +133,7 @@ describe('ExternalFilesSection', () => {
                     google_storage_url:
                         'https://storage.googleapis.com/test2.pdf',
                     uploaded_datetime: '2024-11-04T19:24:08Z',
+                    snippets_article_ids: [],
                 },
                 {
                     id: 3,
@@ -141,6 +143,7 @@ describe('ExternalFilesSection', () => {
                     google_storage_url:
                         'https://storage.googleapis.com/tes3.pdf',
                     uploaded_datetime: '2024-11-04T19:24:08Z',
+                    snippets_article_ids: [],
                 },
             ],
         })
@@ -188,6 +191,7 @@ describe('ExternalFilesSection', () => {
                     google_storage_url:
                         'https://storage.googleapis.com/test.pdf',
                     uploaded_datetime: '2024-11-04T19:24:08Z',
+                    snippets_article_ids: [],
                 },
             ],
         })
@@ -219,6 +223,7 @@ describe('ExternalFilesSection', () => {
             status: 'FAILED' as const,
             google_storage_url: 'https://storage.googleapis.com/test.pdf',
             uploaded_datetime: '2024-11-04T19:24:08Z',
+            snippets_article_ids: [],
         }
 
         renderComponent({
@@ -242,6 +247,7 @@ describe('ExternalFilesSection', () => {
             status: 'FAILED' as const,
             google_storage_url: 'https://storage.googleapis.com/test.docx',
             uploaded_datetime: '2024-11-04T19:24:08Z',
+            snippets_article_ids: [],
         }
 
         renderComponent({
@@ -268,6 +274,7 @@ describe('ExternalFilesSection', () => {
                     google_storage_url:
                         'https://storage.googleapis.com/test.pdf',
                     uploaded_datetime: '2024-11-04T19:24:08Z',
+                    snippets_article_ids: [],
                 },
             ],
         })
@@ -289,6 +296,7 @@ describe('ExternalFilesSection', () => {
                 status: 'SUCCESSFUL',
                 google_storage_url: `https://storage.googleapis.com/test-${i + 1}.pdf`,
                 uploaded_datetime: '2024-11-04T19:24:08Z',
+                snippets_article_ids: [],
             })),
         })
 
