@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo } from 'react'
+import React, { useCallback, useMemo, useState } from 'react'
 
 import { useFlags } from 'launchdarkly-react-client-sdk'
 import {
@@ -21,15 +21,16 @@ import { SkillsetStep } from 'pages/aiAgent/Onboarding/components/steps/Skillset
 import { StepProps } from 'pages/aiAgent/Onboarding/components/steps/types'
 import { useSteps } from 'pages/aiAgent/Onboarding/hooks/useSteps'
 import { ConvAiOnboardingLayout } from 'pages/aiAgent/Onboarding/layout/ConvAiOnboardingLayout'
-import { WizardStepEnum } from 'pages/aiAgent/Onboarding/types'
+import { AiAgentScopes, WizardStepEnum } from 'pages/aiAgent/Onboarding/types'
 
 export const AiAgentOnboarding = () => {
+    const [selectedScope, setSelectedScope] = useState<AiAgentScopes[]>([])
     const { shopName, step, shopType } = useParams<{
         shopName: string
         step: string
         shopType: string
     }>()
-    const { validSteps } = useSteps({ shopName })
+    const { validSteps } = useSteps({ shopName, selectedScope })
     const { routes } = useAiAgentNavigation({ shopName })
     const history = useHistory()
 
@@ -94,7 +95,12 @@ export const AiAgentOnboarding = () => {
             case WizardStepEnum.SALES_PERSONALITY:
                 return <PersonalityStep {...stepProps} />
             default:
-                return <SkillsetStep {...stepProps} />
+                return (
+                    <SkillsetStep
+                        {...stepProps}
+                        setSelectedScope={setSelectedScope}
+                    />
+                )
         }
     }
 

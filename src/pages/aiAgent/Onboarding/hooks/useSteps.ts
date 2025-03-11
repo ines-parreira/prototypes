@@ -7,7 +7,13 @@ import { AiAgentScopes, WizardStepEnum } from 'pages/aiAgent/Onboarding/types'
 import { useShopifyIntegrationAndScope } from 'pages/common/hooks/useShopifyIntegrationAndScope'
 import { useEmailIntegrations } from 'pages/settings/contactForm/hooks/useEmailIntegrations'
 
-export const useSteps = ({ shopName }: { shopName: string }) => {
+export const useSteps = ({
+    shopName,
+    selectedScope = [],
+}: {
+    shopName: string
+    selectedScope?: AiAgentScopes[]
+}) => {
     const { integration } = useShopifyIntegrationAndScope(shopName)
     const shopifyIntegrations: StoreIntegration[] = useShopifyIntegrations()
     const { emailIntegrations, defaultIntegration } = useEmailIntegrations()
@@ -39,7 +45,11 @@ export const useSteps = ({ shopName }: { shopName: string }) => {
             {
                 step: WizardStepEnum.SALES_PERSONALITY,
                 condition:
-                    isLoading || data?.scopes.includes(AiAgentScopes.SALES),
+                    isLoading ||
+                    (data?.scopes.includes(AiAgentScopes.SALES) &&
+                        (selectedScope?.includes(AiAgentScopes.SALES) ||
+                            selectedScope.length === 0)) ||
+                    selectedScope?.includes(AiAgentScopes.SALES),
             },
             {
                 step: WizardStepEnum.HANDOVER,
@@ -57,6 +67,7 @@ export const useSteps = ({ shopName }: { shopName: string }) => {
             defaultIntegration,
             data?.scopes,
             isLoading,
+            selectedScope,
         ],
     )
 

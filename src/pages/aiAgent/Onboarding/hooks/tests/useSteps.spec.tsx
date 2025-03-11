@@ -95,7 +95,12 @@ describe('useSteps', () => {
             isLoading: false,
         })
 
-        const { result } = renderHook(() => useSteps({ shopName: 'test-shop' }))
+        const { result } = renderHook(() =>
+            useSteps({
+                shopName: 'test-shop',
+                selectedScope: [AiAgentScopes.SALES],
+            }),
+        )
 
         expect(result.current.validSteps).toContainEqual({
             step: WizardStepEnum.SALES_PERSONALITY,

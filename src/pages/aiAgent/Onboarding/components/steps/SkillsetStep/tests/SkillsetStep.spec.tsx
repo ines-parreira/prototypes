@@ -93,6 +93,7 @@ const renderComponent = () => {
                     currentStep={1}
                     totalSteps={3}
                     goToStep={goToStep}
+                    setSelectedScope={jest.fn()}
                 />
             </Provider>
         </QueryClientProvider>,

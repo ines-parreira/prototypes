@@ -34,10 +34,15 @@ type SkillsetFormValues = {
     scopes: AiAgentScopes[]
 }
 
-export const SkillsetStep: FC<StepProps> = ({
+type SkillsetStepProps = StepProps & {
+    setSelectedScope: (selectedScope: AiAgentScopes[]) => void
+}
+
+export const SkillsetStep: FC<SkillsetStepProps> = ({
     currentStep,
     totalSteps,
     goToStep,
+    setSelectedScope,
 }) => {
     const { shopName } = useParams<{ shopName: string }>()
     const { validSteps } = useSteps({ shopName })
@@ -71,6 +76,7 @@ export const SkillsetStep: FC<StepProps> = ({
 
     const { watch, setValue } = methods
     const selectedScope = watch('scopes')
+    setSelectedScope(selectedScope)
 
     const onSkillsetChange = useCallback(
         (newSkillset: AiAgentScopes[]) => {
