@@ -112,6 +112,7 @@ export type AccountSettingTicketAssignment = {
         assignment_channels: TicketChannel[]
         auto_assign_to_teams: boolean
         unassign_on_reply: boolean
+        unassign_on_user_unavailability?: TicketChannel[]
         max_user_chat_ticket: number
         max_user_non_chat_ticket: number
     }

@@ -12,6 +12,7 @@ exports[`<TicketAssignment/> should call \`fetchChats\` on submit when the \`ass
         "max_user_chat_ticket": 3,
         "max_user_non_chat_ticket": 4,
         "unassign_on_reply": true,
+        "unassign_on_user_unavailability": [],
       },
       "id": 1,
       "type": "ticket-assignment",
@@ -33,6 +34,7 @@ exports[`<TicketAssignment/> should call \`fetchChats\` on submit when the \`aut
         "max_user_chat_ticket": 3,
         "max_user_non_chat_ticket": 4,
         "unassign_on_reply": true,
+        "unassign_on_user_unavailability": [],
       },
       "id": 1,
       "type": "ticket-assignment",
@@ -54,6 +56,7 @@ exports[`<TicketAssignment/> should call \`submitSetting\` and call \`fetchChats
         "max_user_chat_ticket": 3,
         "max_user_non_chat_ticket": 4,
         "unassign_on_reply": true,
+        "unassign_on_user_unavailability": [],
       },
       "id": undefined,
       "type": "ticket-assignment",
@@ -75,6 +78,7 @@ exports[`<TicketAssignment/> should call \`submitSetting\` and not call \`fetchC
         "max_user_chat_ticket": 3,
         "max_user_non_chat_ticket": 4,
         "unassign_on_reply": true,
+        "unassign_on_user_unavailability": [],
       },
       "id": 1,
       "type": "ticket-assignment",
@@ -95,6 +99,7 @@ exports[`<TicketAssignment/> should not call \`fetchChats\` on submit when the \
         "max_user_chat_ticket": 3,
         "max_user_non_chat_ticket": 4,
         "unassign_on_reply": true,
+        "unassign_on_user_unavailability": [],
       },
       "id": 1,
       "type": "ticket-assignment",
@@ -193,12 +198,16 @@ exports[`<TicketAssignment/> should render the "Save changes" button loading and
               class="ui-label-label-3864 body-semibold limitsHeader"
             >
               Auto-assignment limits
-              <i
-                class="material-icons infoIcon"
-                id="limits-info"
+              <div
+                class="wrapper"
               >
-                info_outline
-              </i>
+                <i
+                  class="material-icons-outlined icon"
+                  id="tooltip-65"
+                >
+                  info
+                </i>
+              </div>
             </label>
             <div
               class="limits"
@@ -339,7 +348,9 @@ exports[`<TicketAssignment/> should render the "Save changes" button loading and
             >
               Unassignment settings
             </h3>
-            <div>
+            <div
+              class="mb16"
+            >
               <label
                 class="ui-label-label-3864 label"
                 for="unassign_on_reply"
@@ -352,13 +363,40 @@ exports[`<TicketAssignment/> should render the "Save changes" button loading and
                   type="checkbox"
                 />
                 Unassign on reply
-                 
-                <i
-                  class="material-icons infoIcon"
-                  id="unassign-info"
+                <div
+                  class="wrapper"
                 >
-                  info_outline
-                </i>
+                  <i
+                    class="material-icons-outlined icon"
+                    id="tooltip-67"
+                  >
+                    info
+                  </i>
+                </div>
+              </label>
+            </div>
+            <div>
+              <label
+                class="ui-label-label-3864 label"
+                for="unassign_on_user_unavailability"
+              >
+                <input
+                  class="input"
+                  id="unassign_on_user_unavailability"
+                  name="unassign_on_user_unavailability"
+                  type="checkbox"
+                />
+                Unassign chat tickets when assigned agent is unavailable
+                <div
+                  class="wrapper"
+                >
+                  <i
+                    class="material-icons-outlined icon"
+                    id="tooltip-69"
+                  >
+                    info
+                  </i>
+                </div>
               </label>
             </div>
           </div>
@@ -539,7 +577,9 @@ exports[`<TicketAssignment/> should render the create team cta when no team exis
             >
               Unassignment settings
             </h3>
-            <div>
+            <div
+              class="mb16"
+            >
               <label
                 class="ui-label-label-3864 label"
                 for="unassign_on_reply"
@@ -552,13 +592,40 @@ exports[`<TicketAssignment/> should render the create team cta when no team exis
                   type="checkbox"
                 />
                 Unassign on reply
-                 
-                <i
-                  class="material-icons infoIcon"
-                  id="unassign-info"
+                <div
+                  class="wrapper"
                 >
-                  info_outline
-                </i>
+                  <i
+                    class="material-icons-outlined icon"
+                    id="tooltip-72"
+                  >
+                    info
+                  </i>
+                </div>
+              </label>
+            </div>
+            <div>
+              <label
+                class="ui-label-label-3864 label"
+                for="unassign_on_user_unavailability"
+              >
+                <input
+                  class="input"
+                  id="unassign_on_user_unavailability"
+                  name="unassign_on_user_unavailability"
+                  type="checkbox"
+                />
+                Unassign chat tickets when assigned agent is unavailable
+                <div
+                  class="wrapper"
+                >
+                  <i
+                    class="material-icons-outlined icon"
+                    id="tooltip-74"
+                  >
+                    info
+                  </i>
+                </div>
               </label>
             </div>
           </div>
@@ -706,12 +773,16 @@ exports[`<TicketAssignment/> should render the store data 1`] = `
               class="ui-label-label-3864 body-semibold limitsHeader"
             >
               Auto-assignment limits
-              <i
-                class="material-icons infoIcon"
-                id="limits-info"
+              <div
+                class="wrapper"
               >
-                info_outline
-              </i>
+                <i
+                  class="material-icons-outlined icon"
+                  id="tooltip-58"
+                >
+                  info
+                </i>
+              </div>
             </label>
             <div
               class="limits"
@@ -852,7 +923,9 @@ exports[`<TicketAssignment/> should render the store data 1`] = `
             >
               Unassignment settings
             </h3>
-            <div>
+            <div
+              class="mb16"
+            >
               <label
                 class="ui-label-label-3864 label"
                 for="unassign_on_reply"
@@ -864,13 +937,41 @@ exports[`<TicketAssignment/> should render the store data 1`] = `
                   type="checkbox"
                 />
                 Unassign on reply
-                 
-                <i
-                  class="material-icons infoIcon"
-                  id="unassign-info"
+                <div
+                  class="wrapper"
                 >
-                  info_outline
-                </i>
+                  <i
+                    class="material-icons-outlined icon"
+                    id="tooltip-60"
+                  >
+                    info
+                  </i>
+                </div>
+              </label>
+            </div>
+            <div>
+              <label
+                class="ui-label-label-3864 label"
+                for="unassign_on_user_unavailability"
+              >
+                <input
+                  checked=""
+                  class="input"
+                  id="unassign_on_user_unavailability"
+                  name="unassign_on_user_unavailability"
+                  type="checkbox"
+                />
+                Unassign chat tickets when assigned agent is unavailable
+                <div
+                  class="wrapper"
+                >
+                  <i
+                    class="material-icons-outlined icon"
+                    id="tooltip-62"
+                  >
+                    info
+                  </i>
+                </div>
               </label>
             </div>
           </div>
@@ -941,6 +1042,7 @@ exports[`<TicketAssignment/> should send updated auto assignment limits on submi
         "max_user_chat_ticket": 0,
         "max_user_non_chat_ticket": 20,
         "unassign_on_reply": true,
+        "unassign_on_user_unavailability": [],
       },
       "id": 1,
       "type": "ticket-assignment",

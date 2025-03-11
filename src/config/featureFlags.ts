@@ -138,6 +138,7 @@ export enum FeatureFlagKey {
     TagNewDesign = 'tag-new-design',
     TicketConditionalFields = 'ticket-conditional-fields',
     TicketDemoSuggestion = 'ticket-demo-suggestion',
+    UnassignOnUserUnavailability = 'unassign-unavailable-agents-from-chat-tickets',
     VoiceCallSearch = 'voice-call-search',
     WhatsAppMigrationsDebug = 'whatsapp-migration-debug',
     AiAgentHandoverCustomizationConfiguration = 'helpdesk-ai-agent-handover-customization-enabled',

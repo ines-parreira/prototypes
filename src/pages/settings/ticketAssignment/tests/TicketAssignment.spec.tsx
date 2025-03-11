@@ -9,6 +9,7 @@ import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
 import { TicketChannel } from 'business/types/ticket'
+import { FeatureFlagKey } from 'config/featureFlags'
 import { account } from 'fixtures/account'
 import { teams } from 'fixtures/teams'
 import { user } from 'fixtures/users'
@@ -72,6 +73,7 @@ const ticketAssignmentSetting: AccountSettingTicketAssignment = {
     data: {
         auto_assign_to_teams: true,
         unassign_on_reply: true,
+        unassign_on_user_unavailability: [],
         assignment_channels: [
             TicketChannel.Chat,
             TicketChannel.FacebookMessenger,
@@ -91,6 +93,9 @@ const defaultState = {
 } as RootState
 
 const mockStore = configureMockStore<RootState>([thunk])
+const flags = {
+    [FeatureFlagKey.UnassignOnUserUnavailability]: true,
+}
 
 describe('<TicketAssignment/>', () => {
     it('should call `submitSetting` and call `fetchChats` on submit when the account has no `ticket-assignment` setting', async () => {
@@ -101,7 +106,7 @@ describe('<TicketAssignment/>', () => {
                     currentAccount: fromJS({}),
                 })}
             >
-                <TicketAssignment />
+                <TicketAssignment flags={flags} />
             </Provider>,
         )
 
@@ -109,13 +114,13 @@ describe('<TicketAssignment/>', () => {
         await waitFor(() => expect(submitSettingMock).toHaveBeenCalled())
 
         expect(submitSettingMock.mock.calls).toMatchSnapshot()
-        expect(fetchChatsMock).toBeCalledWith()
+        expect(fetchChatsMock).toHaveBeenCalled()
     })
 
     it('should call `submitSetting` and not call `fetchChats` on submit when nor the `auto_assign_to_teams` setting nor the `assignment_channels` setting has changed', async () => {
         const { getByText } = render(
             <Provider store={mockStore(defaultState)}>
-                <TicketAssignment />
+                <TicketAssignment flags={flags} />
             </Provider>,
         )
 
@@ -123,13 +128,13 @@ describe('<TicketAssignment/>', () => {
         await waitFor(() => expect(submitSettingMock).toHaveBeenCalled())
 
         expect(submitSettingMock.mock.calls).toMatchSnapshot()
-        expect(fetchChatsMock).not.toBeCalledWith()
+        expect(fetchChatsMock).not.toHaveBeenCalled()
     })
 
     it('should call `fetchChats` on submit when the `auto_assign_to_teams` setting has changed', async () => {
         const { getByText } = render(
             <Provider store={mockStore(defaultState)}>
-                <TicketAssignment />
+                <TicketAssignment flags={flags} />
             </Provider>,
         )
 
@@ -138,13 +143,13 @@ describe('<TicketAssignment/>', () => {
         await waitFor(() => expect(submitSettingMock).toHaveBeenCalled())
 
         expect(submitSettingMock.mock.calls).toMatchSnapshot()
-        expect(fetchChatsMock).toBeCalledWith()
+        expect(fetchChatsMock).toHaveBeenCalled()
     })
 
     it('should call `fetchChats` on submit when the `assignment_channels` setting has changed and `auto_assign_to_teams` is enabled', async () => {
         const { getByText } = render(
             <Provider store={mockStore(defaultState)}>
-                <TicketAssignment />
+                <TicketAssignment flags={flags} />
             </Provider>,
         )
 
@@ -153,7 +158,7 @@ describe('<TicketAssignment/>', () => {
         await waitFor(() => expect(submitSettingMock).toHaveBeenCalled())
 
         expect(submitSettingMock.mock.calls).toMatchSnapshot()
-        expect(fetchChatsMock).toBeCalledWith()
+        expect(fetchChatsMock).toHaveBeenCalled()
     })
 
     it('should not call `fetchChats` on submit when the `assignment_channels` setting has changed but `auto_assign_to_teams` is disabled', async () => {
@@ -175,7 +180,7 @@ describe('<TicketAssignment/>', () => {
                     }),
                 })}
             >
-                <TicketAssignment />
+                <TicketAssignment flags={flags} />
             </Provider>,
         )
 
@@ -184,7 +189,7 @@ describe('<TicketAssignment/>', () => {
         await waitFor(() => expect(submitSettingMock).toHaveBeenCalled())
 
         expect(submitSettingMock.mock.calls).toMatchSnapshot()
-        expect(fetchChatsMock).not.toBeCalledWith()
+        expect(fetchChatsMock).not.toHaveBeenCalled()
     })
 
     it('should send updated auto assignment limits on submit', async () => {
@@ -207,7 +212,7 @@ describe('<TicketAssignment/>', () => {
                     }),
                 })}
             >
-                <TicketAssignment />
+                <TicketAssignment flags={flags} />
             </Provider>,
         )
 
@@ -223,7 +228,32 @@ describe('<TicketAssignment/>', () => {
         expect(submitSettingMock.mock.calls).toMatchSnapshot()
     })
 
-    it('should render the "unassign" checkbox checked by default and the "auto-assign" checkbox unchecked by default when no account setting for assignment', () => {
+    it('should send updated unassign on user unavailability settings on submit', async () => {
+        const { getByText } = render(
+            <Provider store={mockStore(defaultState)}>
+                <TicketAssignment flags={flags} />
+            </Provider>,
+        )
+
+        fireEvent.click(
+            getByText(
+                'Unassign chat tickets when assigned agent is unavailable',
+            ),
+        )
+        fireEvent.click(getByText('Save changes'))
+
+        await waitFor(() =>
+            expect(submitSettingMock).toHaveBeenCalledWith({
+                id: 1,
+                type: AccountSettingType.TicketAssignment,
+                data: expect.objectContaining({
+                    unassign_on_user_unavailability: ['chat'],
+                }),
+            }),
+        )
+    })
+
+    it('should render the "unassign" checked, the "auto-assign" unchecked, and the "unassign on user unavailability" checkbox unchecked by default when no account setting for assignment', () => {
         const { getByText } = render(
             <Provider
                 store={mockStore({
@@ -231,7 +261,7 @@ describe('<TicketAssignment/>', () => {
                     currentAccount: fromJS({}),
                 })}
             >
-                <TicketAssignment />
+                <TicketAssignment flags={flags} />
             </Provider>,
         )
 
@@ -241,6 +271,11 @@ describe('<TicketAssignment/>', () => {
         expect(
             getByText('Unassign on reply').querySelector('input')?.checked,
         ).toBe(true)
+        expect(
+            getByText(
+                'Unassign chat tickets when assigned agent is unavailable',
+            ).querySelector('input')?.checked,
+        ).toBe(false)
     })
 
     it('should render the store data', () => {
@@ -259,13 +294,14 @@ describe('<TicketAssignment/>', () => {
                                     max_user_non_chat_ticket: 50,
                                     auto_assign_to_teams: true,
                                     unassign_on_reply: false,
+                                    unassign_on_user_unavailability: ['chat'],
                                 },
                             },
                         ],
                     }),
                 })}
             >
-                <TicketAssignment />
+                <TicketAssignment flags={flags} />
             </Provider>,
         )
 
@@ -282,7 +318,7 @@ describe('<TicketAssignment/>', () => {
         submitSettingMock.mockReturnValueOnce(() => new Promise(_noop))
         const { container, getByText } = render(
             <Provider store={mockStore(defaultState)}>
-                <TicketAssignment />
+                <TicketAssignment flags={flags} />
             </Provider>,
         )
 
@@ -299,7 +335,7 @@ describe('<TicketAssignment/>', () => {
                     teams: fromJS({ all: {} }),
                 })}
             >
-                <TicketAssignment />
+                <TicketAssignment flags={flags} />
             </Provider>,
         )
 

@@ -2,6 +2,7 @@ import React, { Component, SyntheticEvent } from 'react'
 
 import classNames from 'classnames'
 import { List } from 'immutable'
+import { LDFlagSet, withLDConsumer } from 'launchdarkly-react-client-sdk'
 import _isEqual from 'lodash/isEqual'
 import { connect, ConnectedProps } from 'react-redux'
 import { Col, Form, FormGroup, Row } from 'reactstrap'
@@ -9,11 +10,13 @@ import { Col, Form, FormGroup, Row } from 'reactstrap'
 import { Label, Tooltip } from '@gorgias/merchant-ui-kit'
 
 import { TicketChannel } from 'business/types/ticket'
+import { FeatureFlagKey } from 'config/featureFlags'
 import Alert from 'pages/common/components/Alert/Alert'
 import Button from 'pages/common/components/button/Button'
 import HeaderTitle from 'pages/common/components/HeaderTitle'
 import PageHeader from 'pages/common/components/PageHeader'
 import CheckBox from 'pages/common/forms/CheckBox'
+import IconTooltip from 'pages/common/forms/IconTooltip/IconTooltip'
 import NumberInput from 'pages/common/forms/input/NumberInput'
 import MultiSelectOptionsField from 'pages/common/forms/MultiSelectOptionsField/MultiSelectOptionsField'
 import { Option } from 'pages/common/forms/MultiSelectOptionsField/types'
@@ -30,12 +33,13 @@ import { isAdmin } from 'utils'
 
 import css from './TicketAssignment.less'
 
-type Props = ConnectedProps<typeof connector>
+type Props = ConnectedProps<typeof connector> & { flags?: LDFlagSet }
 
 type State = {
     isLoading: boolean
     isTeamCreationModalOpen: boolean
     unassignOnReply: boolean
+    unassignOnUserUnavailability: boolean
     autoAssignToTeams: boolean
     assignmentChannels: TicketChannel[]
     chatTicketsLimit?: number
@@ -64,6 +68,9 @@ export class TicketAssignmentContainer extends Component<Props, State> {
                 ['data', 'unassign_on_reply'],
                 true,
             ),
+            unassignOnUserUnavailability: !!ticketAssignmentSettings
+                .getIn(['data', 'unassign_on_user_unavailability'], [])
+                .includes(TicketChannel.Chat),
             autoAssignToTeams: ticketAssignmentSettings.getIn(
                 ['data', 'auto_assign_to_teams'],
                 false,
@@ -97,10 +104,11 @@ export class TicketAssignmentContainer extends Component<Props, State> {
 
         this.setState({ isLoading: true })
 
-        const { ticketAssignmentSettings, submitSetting, fetchChats } =
+        const { ticketAssignmentSettings, submitSetting, fetchChats, flags } =
             this.props
         const {
             unassignOnReply,
+            unassignOnUserUnavailability,
             autoAssignToTeams,
             assignmentChannels,
             chatTicketsLimit,
@@ -129,11 +137,21 @@ export class TicketAssignmentContainer extends Component<Props, State> {
                 (autoAssignToTeams && assignmentChannelsHaveChanged)
         }
 
+        const isUnassignOnUserUnavailabilityEnabled = Boolean(
+            flags?.[FeatureFlagKey.UnassignOnUserUnavailability],
+        )
+
         await submitSetting({
             id: ticketAssignmentSettings.get('id'),
             type: AccountSettingType.TicketAssignment,
             data: {
                 unassign_on_reply: unassignOnReply,
+                ...(isUnassignOnUserUnavailabilityEnabled && {
+                    unassign_on_user_unavailability:
+                        unassignOnUserUnavailability
+                            ? [TicketChannel.Chat]
+                            : [],
+                }),
                 auto_assign_to_teams: autoAssignToTeams,
                 assignment_channels: assignmentChannels,
                 max_user_chat_ticket: chatTicketsLimit,
@@ -157,9 +175,10 @@ export class TicketAssignmentContainer extends Component<Props, State> {
     }
 
     render() {
-        const { teams, currentUser } = this.props
+        const { teams, currentUser, flags } = this.props
         const {
             unassignOnReply,
+            unassignOnUserUnavailability,
             assignmentChannels,
             autoAssignToTeams,
             isLoading,
@@ -167,6 +186,10 @@ export class TicketAssignmentContainer extends Component<Props, State> {
             chatTicketsLimit,
             nonChatTicketsLimit,
         } = this.state
+
+        const isUnassignOnUserUnavailabilityEnabled = Boolean(
+            flags?.[FeatureFlagKey.UnassignOnUserUnavailability],
+        )
 
         return (
             <div className="full-width">
@@ -254,23 +277,14 @@ export class TicketAssignmentContainer extends Component<Props, State> {
                                                 )}
                                             >
                                                 Auto-assignment limits
-                                                <i
-                                                    id="limits-info"
-                                                    className={classNames(
-                                                        'material-icons',
-                                                        css.infoIcon,
-                                                    )}
-                                                >
-                                                    info_outline
-                                                </i>
-                                                <Tooltip target="limits-info">
+                                                <IconTooltip>
                                                     {`An agent is eligible for
                                                     auto-assignment if they are
                                                     “online”, set to "available"
                                                     and have fewer open tickets
                                                     assigned to them than the
                                                     limits defined below`}
-                                                </Tooltip>
+                                                </IconTooltip>
                                             </Label>
                                             <div className={css.limits}>
                                                 <div
@@ -375,6 +389,7 @@ export class TicketAssignmentContainer extends Component<Props, State> {
                                     </h3>
                                     <CheckBox
                                         name="unassign_on_reply"
+                                        className={settingsCss.mb16}
                                         isChecked={unassignOnReply}
                                         onChange={(value: boolean) =>
                                             this.setState({
@@ -382,23 +397,38 @@ export class TicketAssignmentContainer extends Component<Props, State> {
                                             })
                                         }
                                     >
-                                        Unassign on reply{' '}
-                                        <i
-                                            id="unassign-info"
-                                            className={classNames(
-                                                'material-icons',
-                                                css.infoIcon,
-                                            )}
-                                        >
-                                            info_outline
-                                        </i>
-                                        <Tooltip target="unassign-info">
+                                        Unassign on reply
+                                        <IconTooltip>
                                             Unassigns a ticket if the customer
                                             replies but the ticket is assigned
                                             to agent that is “offline” or
                                             “unavailable”
-                                        </Tooltip>
+                                        </IconTooltip>
                                     </CheckBox>
+                                    {isUnassignOnUserUnavailabilityEnabled && (
+                                        <CheckBox
+                                            name="unassign_on_user_unavailability"
+                                            isChecked={
+                                                unassignOnUserUnavailability
+                                            }
+                                            onChange={(value: boolean) =>
+                                                this.setState({
+                                                    unassignOnUserUnavailability:
+                                                        value,
+                                                })
+                                            }
+                                        >
+                                            Unassign chat tickets when assigned
+                                            agent is unavailable
+                                            <IconTooltip>
+                                                When the assigned agent for chat
+                                                tickets becomes unavailable, the
+                                                ticket will get unassigned and
+                                                reassigned to an available
+                                                agent.
+                                            </IconTooltip>
+                                        </CheckBox>
+                                    )}
                                 </FormGroup>
 
                                 <FormGroup className={settingsCss.mb40}>
@@ -474,4 +504,4 @@ const connector = connect(
     },
 )
 
-export default connector(TicketAssignmentContainer)
+export default connector(withLDConsumer()(TicketAssignmentContainer))
