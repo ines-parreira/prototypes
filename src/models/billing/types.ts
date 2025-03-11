@@ -100,8 +100,8 @@ export type SubscriptionCycle = {
     current_billing_cycle_start_datetime: string
     downgrade_scheduled: boolean
     downgrades?: {
-        current_price_id: string
-        scheduled_price_id: string | null
+        current_plan_id: PlanId
+        scheduled_plan_id: PlanId | null
     }[]
 }
 

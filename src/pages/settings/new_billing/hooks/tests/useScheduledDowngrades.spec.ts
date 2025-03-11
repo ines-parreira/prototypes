@@ -29,9 +29,9 @@ describe('useScheduledDowngrades', () => {
         downgrades: [],
     }
 
-    const pricesMap = {
-        [basicMonthlyHelpdeskPlan.price_id]: basicMonthlyHelpdeskPlan,
-        [advancedMonthlyHelpdeskPlan.price_id]: advancedMonthlyHelpdeskPlan,
+    const plansMap = {
+        [basicMonthlyHelpdeskPlan.plan_id]: basicMonthlyHelpdeskPlan,
+        [advancedMonthlyHelpdeskPlan.plan_id]: advancedMonthlyHelpdeskPlan,
     }
 
     beforeEach(() => {
@@ -40,7 +40,7 @@ describe('useScheduledDowngrades', () => {
             reject = internalReject
         })
         mockFetchSubscription.mockReturnValue(promise)
-        mockUseAppSelector.mockReturnValueOnce(pricesMap)
+        mockUseAppSelector.mockReturnValueOnce(plansMap)
     })
 
     it('should return a default state', () => {
@@ -77,8 +77,8 @@ describe('useScheduledDowngrades', () => {
                 ...defaultSub,
                 downgrades: [
                     {
-                        current_price_id: advancedMonthlyHelpdeskPlan.price_id,
-                        scheduled_price_id: basicMonthlyHelpdeskPlan.price_id,
+                        current_plan_id: advancedMonthlyHelpdeskPlan.plan_id,
+                        scheduled_plan_id: basicMonthlyHelpdeskPlan.plan_id,
                     },
                 ],
             })
@@ -104,8 +104,8 @@ describe('useScheduledDowngrades', () => {
                 ...defaultSub,
                 downgrades: [
                     {
-                        current_price_id: advancedMonthlyHelpdeskPlan.price_id,
-                        scheduled_price_id: null,
+                        current_plan_id: advancedMonthlyHelpdeskPlan.plan_id,
+                        scheduled_plan_id: null,
                     },
                 ],
             })
