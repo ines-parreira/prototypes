@@ -20,7 +20,7 @@ export function OrderManagementSettings() {
 
     return (
         <div className={css.container}>
-            <Header title="Order management">
+            <Header className={css.header} title="Order management">
                 <StoreSelector
                     integrations={integrations}
                     selected={selected?.id}

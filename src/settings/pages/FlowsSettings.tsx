@@ -26,7 +26,7 @@ export function FlowsSettings() {
 
     return (
         <div className={css.container}>
-            <Header title="Flows">
+            <Header className={css.header} title="Flows">
                 <StoreSelector
                     integrations={integrations}
                     selected={selected?.id}
