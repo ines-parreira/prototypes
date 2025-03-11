@@ -115,7 +115,7 @@ export default function AutomateOverviewContent() {
                     )
                 )}
                 {isAnalyticsNewFiltersAutomate && (
-                    <DashboardSection className={'pb-0'}>
+                    <DashboardSection>
                         <DashboardGridCell size={12}>
                             <FiltersPanelWrapper
                                 persistentFilters={
