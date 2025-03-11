@@ -24,6 +24,7 @@ type Props = {
     appName?: string
     label?: string
     description?: string | null
+    showOptionalFlag?: boolean
     errors?: Record<
         string,
         {
@@ -47,6 +48,7 @@ const ActionFormInputs = ({
     errors,
     onNameBlur,
     onInstructionsBlur,
+    showOptionalFlag = false,
 }: Props) => {
     const semiImmutableInputIdsSet = useMemo(
         () => new Set(semiImmutableInputs.map((input) => input.id)),
@@ -90,6 +92,7 @@ const ActionFormInputs = ({
                     onInstructionsBlur={() => {
                         onInstructionsBlur?.(input.id)
                     }}
+                    showOptionalFlag={showOptionalFlag}
                 />
             ))}
             {(inputs.length > 0 || templateInputs.length > 0) && (
@@ -97,6 +100,7 @@ const ActionFormInputs = ({
                     <span>Data type/format</span>
                     <span>Variable name</span>
                     <span>Variable description</span>
+                    {showOptionalFlag && <span>Optional</span>}
                 </div>
             )}
             <div>

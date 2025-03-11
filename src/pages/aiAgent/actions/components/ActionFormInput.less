@@ -6,5 +6,10 @@
         display: grid;
         grid-template-columns: 110px 160px 1fr 20px;
         gap: @layout-spacing-xs;
+        align-items: center;
+
+        &.optional {
+            grid-template-columns: 110px 160px 1fr 20px 20px;
+        }
     }
 }

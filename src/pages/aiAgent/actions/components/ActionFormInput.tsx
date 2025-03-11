@@ -1,12 +1,13 @@
 import React, { useMemo, useRef } from 'react'
 
+import classNames from 'classnames'
 import _omit from 'lodash/omit'
 
-import { Tooltip } from '@gorgias/merchant-ui-kit'
+import { IconButton, Tooltip } from '@gorgias/merchant-ui-kit'
 
 import { FeatureFlagKey } from 'config/featureFlags'
 import { useFlag } from 'core/flags'
-import IconButton from 'pages/common/components/button/IconButton'
+import CheckBox from 'pages/common/forms/CheckBox'
 import TextInput from 'pages/common/forms/input/TextInput'
 import SelectField from 'pages/common/forms/SelectField/SelectField'
 import { Option } from 'pages/common/forms/SelectField/types'
@@ -28,6 +29,7 @@ type Props = {
     }
     onNameBlur?: () => void
     onInstructionsBlur?: () => void
+    showOptionalFlag?: boolean
 }
 
 const ActionFormInput = ({
@@ -40,6 +42,7 @@ const ActionFormInput = ({
     error,
     onNameBlur,
     onInstructionsBlur,
+    showOptionalFlag = false,
 }: Props) => {
     const ref = useRef<HTMLDivElement>(null)
 
@@ -78,9 +81,15 @@ const ActionFormInput = ({
         ]
     }, [isActionsInputsProductEnabled])
 
+    const showOptional = showOptionalFlag && 'data_type' in input
     return (
         <>
-            <div ref={ref} className={css.container}>
+            <div
+                ref={ref}
+                className={classNames(css.container, {
+                    [css.optional]: showOptional,
+                })}
+            >
                 <SelectField
                     disabled={isDisabled || isSemiImmutable}
                     showSelectedOption
@@ -132,14 +141,25 @@ const ActionFormInput = ({
                     hasError={!!error?.instructions}
                     onBlur={onInstructionsBlur}
                 />
+                {showOptional && (
+                    <CheckBox
+                        isChecked={!!input.optional}
+                        onChange={(nextValue) => {
+                            onChange({
+                                ...input,
+                                optional: nextValue,
+                            })
+                        }}
+                        isDisabled={isDisabled || isSemiImmutable}
+                    />
+                )}
                 <IconButton
+                    icon="close"
                     intent="destructive"
                     isDisabled={isDisabled || isSemiImmutable}
                     fillStyle="ghost"
                     onClick={onDelete}
-                >
-                    close
-                </IconButton>
+                />
             </div>
             {disabledTooltip && isDisabled && (
                 <Tooltip target={ref} placement="top-end">

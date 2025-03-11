@@ -109,6 +109,7 @@ export default function ReusableLLMPromptTriggerEditor({
                                 },
                             })
                         }}
+                        showOptionalFlag
                     />
                     <ToolbarProvider workflowVariables={workflowVariables}>
                         <div className={css.formItem}>
