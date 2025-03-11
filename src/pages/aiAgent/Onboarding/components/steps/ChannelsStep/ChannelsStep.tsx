@@ -65,6 +65,8 @@ import {
 import { notify } from 'state/notifications/actions'
 import { NotificationStatus } from 'state/notifications/types'
 
+import EmailIntegrationModal from '../../EmailIntegrationModal/EmailIntegrationModal'
+
 export const ChannelsStep: React.FC<StepProps> = ({
     currentStep,
     totalSteps,
@@ -300,9 +302,11 @@ export const ChannelsStep: React.FC<StepProps> = ({
         goToStep(previousStep)
     }
 
-    const redirectToEmailIntegration = () => {
-        redirectToIntegration(emailIntegrationPath, IntegrationType.Email)
+    const redirectToEmailIntegration = (url: string) => {
+        redirectToIntegration(url, IntegrationType.Email)
     }
+
+    const [modalOpen, setModalOpen] = useState(false)
 
     const renderContent = () => {
         if (isLoading) {
@@ -311,6 +315,11 @@ export const ChannelsStep: React.FC<StepProps> = ({
 
         return (
             <>
+                <EmailIntegrationModal
+                    isOpen={modalOpen}
+                    onClose={() => setModalOpen((prev) => !prev)}
+                    redirectToIntegration={redirectToEmailIntegration}
+                ></EmailIntegrationModal>
                 {(errors.emailChannelEnabled || errors.chatChannelEnabled) && (
                     <AIBanner
                         hasError={true}
@@ -401,7 +410,7 @@ export const ChannelsStep: React.FC<StepProps> = ({
                                             className={css.link}
                                             onClick={(event) => {
                                                 event.preventDefault()
-                                                redirectToEmailIntegration()
+                                                setModalOpen(true)
                                             }}
                                         >
                                             Don’t see the email you want? Click

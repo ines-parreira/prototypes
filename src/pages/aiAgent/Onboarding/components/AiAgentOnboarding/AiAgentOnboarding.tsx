@@ -12,7 +12,6 @@ import {
 import { FeatureFlagKey } from 'config/featureFlags'
 import { useAiAgentNavigation } from 'pages/aiAgent/hooks/useAiAgentNavigation'
 import { ChannelsStep } from 'pages/aiAgent/Onboarding/components/steps/ChannelsStep/ChannelsStep'
-import { EmailIntegrationStep } from 'pages/aiAgent/Onboarding/components/steps/EmailIntegrationStep/EmailIntegrationStep'
 import { HandoverStep } from 'pages/aiAgent/Onboarding/components/steps/HandoverStep/HandoverStep'
 import { KnowledgeStep } from 'pages/aiAgent/Onboarding/components/steps/KnowledgeStep/KnowledgeStep'
 import { PersonalityPreviewStep } from 'pages/aiAgent/Onboarding/components/steps/PersonalityPreviewStep/PersonalityPreviewStep'
@@ -84,8 +83,6 @@ export const AiAgentOnboarding = () => {
         switch (step) {
             case WizardStepEnum.SHOPIFY_INTEGRATION:
                 return <ShopifyIntegrationStep {...stepProps} />
-            case WizardStepEnum.EMAIL_INTEGRATION:
-                return <EmailIntegrationStep {...stepProps} />
             case WizardStepEnum.CHANNELS:
                 return <ChannelsStep {...stepProps} />
             case WizardStepEnum.KNOWLEDGE:

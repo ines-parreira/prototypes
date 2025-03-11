@@ -7,6 +7,7 @@ import { createMemoryHistory } from 'history'
 import { fromJS, Map } from 'immutable'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
+import thunk from 'redux-thunk'
 
 import { account } from 'fixtures/account'
 import { billingState } from 'fixtures/billing'
@@ -29,7 +30,7 @@ import { NotificationStatus } from 'state/notifications/types'
 import { RootState, StoreDispatch } from 'state/types'
 import { assumeMock, renderWithRouter } from 'utils/testing'
 
-const mockStore = configureMockStore<RootState, StoreDispatch>()
+const mockStore = configureMockStore<RootState, StoreDispatch>([thunk])
 
 jest.mock('pages/common/hooks/useShopifyIntegrationAndScope', () => ({
     useShopifyIntegrationAndScope: jest.fn(),
