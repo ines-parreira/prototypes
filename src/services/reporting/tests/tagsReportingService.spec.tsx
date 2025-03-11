@@ -6,6 +6,7 @@ import * as ticketCountPerTag from 'hooks/reporting/ticket-insights/useTicketCou
 import { fetchTagsTicketCountTimeSeries } from 'hooks/reporting/timeSeries'
 import { OrderDirection } from 'models/api/types'
 import { ReportingGranularity } from 'models/reporting/types'
+import { getTagName } from 'pages/stats/ticket-insights/tags/helpers'
 import { formatDates } from 'pages/stats/utils'
 import {
     createReport,
@@ -74,7 +75,7 @@ describe('TagsReportingService', () => {
             formatDates(granularity, '2023-06-09'),
         ],
         ['billing', 123, 100, 23, 0],
-        [deletedTagId, 213, 200, 13, 0],
+        [getTagName({ id: deletedTagId }), 213, 200, 13, 0],
     ]
 
     describe('createReport', () => {
@@ -166,6 +167,18 @@ describe('TagsReportingService', () => {
                 exampleResponse,
             )
         })
+
+        const expectedData = [
+            [
+                'tag',
+                'total',
+                formatDates(granularity, '2023-06-07'),
+                formatDates(granularity, '2023-06-08'),
+                formatDates(granularity, '2023-06-09'),
+            ],
+            [getTagName({ id: tagId }), 123, 100, 23, 0],
+            [getTagName({ id: deletedTagId }), 213, 200, 13, 0],
+        ]
 
         it('should fetch and format the report', async () => {
             const context = {

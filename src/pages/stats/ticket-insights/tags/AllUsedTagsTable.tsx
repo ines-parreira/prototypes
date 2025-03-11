@@ -27,6 +27,7 @@ import {
 } from 'pages/stats/common/utils'
 import { DrillDownModalTrigger } from 'pages/stats/DrillDownModalTrigger'
 import heatmapCss from 'pages/stats/heatmap.less'
+import { getTagName } from 'pages/stats/ticket-insights/tags/helpers'
 import { LoadingRow } from 'pages/stats/ticket-insights/ticket-fields/CustomFieldsTicketCountBreakdownTable'
 import {
     formatDates,
@@ -220,7 +221,7 @@ const TableRow = ({
                         decoration={fromJS(tag?.decoration)}
                     />
                 ) : (
-                    tagId
+                    getTagName({ id: tagId })
                 )}
             </BodyCell>
             <BodyCell
@@ -233,7 +234,7 @@ const TableRow = ({
                     enabled={total !== 0}
                     highlighted
                     metricData={{
-                        title: `${tag?.name ?? tagId}`,
+                        title: getTagName({ name: tag?.name, id: tagId }),
                         tagId: tagId,
                         metricName: TagsMetric.TicketCount,
                     }}
@@ -266,7 +267,7 @@ const TableRow = ({
                     <DrillDownModalTrigger
                         enabled={data.value !== 0}
                         metricData={{
-                            title: `${tag?.name ?? tagId} | ${formatDates(
+                            title: `${getTagName({ name: tag?.name, id: tagId })} | ${formatDates(
                                 granularity,
                                 data.dateTime,
                             )}`,

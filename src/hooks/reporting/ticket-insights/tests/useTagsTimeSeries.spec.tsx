@@ -13,6 +13,7 @@ import {
     TicketTagsEnrichedMeasure,
 } from 'models/reporting/cubes/TicketTagsEnrichedCube'
 import { ReportingGranularity } from 'models/reporting/types'
+import { getTagName } from 'pages/stats/ticket-insights/tags/helpers'
 import { TagsState } from 'state/entities/tags/types'
 import { initialState } from 'state/stats/statsSlice'
 import { RootState } from 'state/types'
@@ -195,8 +196,14 @@ describe('useTagsTimeSeries', () => {
             ],
             granularity: ReportingGranularity.Hour,
             legendInfo: {
-                labels: [String(anotherTagId), tagId],
-                tooltips: [String(anotherTagId), tagId],
+                labels: [
+                    getTagName({ id: anotherTagId.toString() }),
+                    getTagName({ id: tagId }),
+                ],
+                tooltips: [
+                    getTagName({ id: anotherTagId.toString() }),
+                    getTagName({ id: tagId }),
+                ],
             },
             legendDatasetVisibility: { 0: true, 1: true },
         })

@@ -10,6 +10,7 @@ import { fetchTagsTicketCountTimeSeries } from 'hooks/reporting/timeSeries'
 import { getPeriodDateTimes } from 'hooks/reporting/useTimeSeries'
 import { ReportingGranularity } from 'models/reporting/types'
 import { Period, StatsFilters } from 'models/stat/types'
+import { getTagName } from 'pages/stats/ticket-insights/tags/helpers'
 import { formatDates } from 'pages/stats/utils'
 import { TagsTableOrder } from 'state/ui/stats/tagsReportSlice'
 import { createCsv } from 'utils/file'
@@ -20,7 +21,7 @@ export const TAGS_REPORT_FILE_NAME = 'all-used-tags'
 const getTagsTabularData = (data: FormattedDataItem[], dateTimes: string[]) => {
     const labelsRow = ['tag', 'total', ...dateTimes]
     const dataRows = data.map((row) => [
-        row.tag?.name ?? row.tagId,
+        getTagName({ name: row.tag?.name, id: row.tagId }),
         row.total,
         ...row.timeSeries.map((item) => item.value),
     ])

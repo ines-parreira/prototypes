@@ -13,6 +13,7 @@ import { MetricPerDimensionTrend } from 'hooks/reporting/useMetricPerDimension'
 import { TimeSeriesDataItem } from 'hooks/reporting/useTimeSeries'
 import { OrderDirection } from 'models/api/types'
 import { TicketTagsEnrichedMember } from 'models/reporting/cubes/TicketTagsEnrichedCube'
+import { getTagName } from 'pages/stats/ticket-insights/tags/helpers'
 
 const DATASET_VISIBILITY_ITEMS = 3
 
@@ -23,7 +24,7 @@ const getSortedData = (
     topAmount: number,
 ) => {
     const getTagById = (id: string) =>
-        tags.find((t) => String(t.id) === id)?.name || id
+        getTagName({ name: tags.find((t) => String(t.id) === id)?.name, id })
 
     const sortingOrder = tagsTicketCount.data?.value.map(
         (v) => v[TicketTagsEnrichedMember.TagId],

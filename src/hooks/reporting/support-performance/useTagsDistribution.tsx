@@ -8,6 +8,7 @@ import {
     TicketTagsEnrichedDimension,
     TicketTagsEnrichedMeasure,
 } from 'models/reporting/cubes/TicketTagsEnrichedCube'
+import { getTagName } from 'pages/stats/ticket-insights/tags/helpers'
 import { getEntitiesTags } from 'state/entities/tags/selectors'
 import { calculatePercentage } from 'utils/reporting'
 
@@ -93,7 +94,7 @@ export const useTagsDistribution = (topAmount = 10) => {
                     getTicketCount(item),
                     Math.max(topDataMaxValue, outsideTopTotal),
                 ),
-                name: tags[tagKey]?.name ?? tagKey,
+                name: getTagName({ name: tags[tagKey]?.name, id: tagKey }),
             }
         }),
     }

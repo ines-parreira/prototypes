@@ -9,7 +9,7 @@ import configureMockStore from 'redux-mock-store'
 import {
     stats as statsConfig,
     StatValueType,
-    TICKETS_PER_TAG,
+    TICKETS_CLOSED_PER_AGENT,
 } from 'config/stats'
 import { channels } from 'fixtures/channels'
 import { Integration } from 'models/integration/types'
@@ -292,7 +292,7 @@ describe('TableStat', () => {
     const defaultState = { entities: { tags: initialState } }
     it('should render a table chart', () => {
         const config = statsConfig.find(
-            (config, key) => key === TICKETS_PER_TAG,
+            (config, key) => key === TICKETS_CLOSED_PER_AGENT,
         )
         const { container } = render(
             <Provider store={mockStore(defaultState)}>
@@ -312,7 +312,7 @@ describe('TableStat', () => {
 
     it('should render a table chart with "no data" message', () => {
         const config = statsConfig.find(
-            (config, key) => key === TICKETS_PER_TAG,
+            (config, key) => key === TICKETS_CLOSED_PER_AGENT,
         )
         const { container } = render(
             <Provider store={mockStore(defaultState)}>
@@ -331,7 +331,7 @@ describe('TableStat', () => {
     it('should render a table with the expand button and one line visible', () => {
         const config = {
             ...statsConfig
-                .find((config, key) => key === TICKETS_PER_TAG)
+                .find((config, key) => key === TICKETS_CLOSED_PER_AGENT)
                 .toJS(),
             tableOptions: { showLines: 1 },
         }
@@ -361,7 +361,7 @@ describe('TableStat', () => {
     it('should extend the table to show all the elements', () => {
         const config = {
             ...statsConfig
-                .find((config, key) => key === TICKETS_PER_TAG)
+                .find((config, key) => key === TICKETS_CLOSED_PER_AGENT)
                 .toJS(),
             tableOptions: { showLines: 1 },
         }
@@ -394,7 +394,7 @@ describe('TableStat', () => {
 
     it('should render a table with online status disabled badge', () => {
         const config = statsConfig.find(
-            (config, key) => key === TICKETS_PER_TAG,
+            (config, key) => key === TICKETS_CLOSED_PER_AGENT,
         )
         const { container } = render(
             <Provider store={mockStore(defaultState)}>

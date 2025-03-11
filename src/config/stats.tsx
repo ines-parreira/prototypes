@@ -13,11 +13,9 @@ import css from 'config/stats.less'
 import { IntentName } from 'models/intent/types'
 import { REASONS_DROPDOWN_OPTIONS } from 'models/selfServiceConfiguration/constants'
 import { ReportIssueReasons } from 'models/selfServiceConfiguration/types'
-import TicketTag from 'pages/common/components/TicketTag'
 import { SelectableOption } from 'pages/common/forms/SelectField/types'
 import StatCurrentDate from 'pages/stats/common/components/StatCurrentDate'
 import TicketsClosedPerAgentViewLink from 'pages/stats/common/TicketsClosedPerAgentViewLink'
-import TicketsCreatedPerTagViewLink from 'pages/stats/common/TicketsCreatedPerTagViewLink'
 import { formatDuration, formatNumber } from 'pages/stats/common/utils'
 import { humanizeString, lightenDarkenColor } from 'utils'
 
@@ -34,7 +32,6 @@ export const TOTAL_ONE_TOUCH_TICKETS = 'total-one-touch-tickets'
 export const SUPPORT_VOLUME = 'support-volume'
 export const RESOLUTION_TIME = 'resolution-time'
 export const FIRST_RESPONSE_TIME = 'first-response-time'
-export const TICKETS_PER_TAG = 'tickets-per-tag'
 export const TICKETS_CLOSED_PER_AGENT = 'tickets-closed-per-agent'
 export const TICKETS_CLOSED_PER_AGENT_PER_DAY =
     'tickets-closed-per-agent-per-day'
@@ -636,59 +633,6 @@ export const stats = toImmutable<
                 }
 
                 return value
-            },
-        } as StatConfigCallbacks,
-    },
-    [TICKETS_PER_TAG]: {
-        helpText: 'Number of tickets created per tag',
-        style: 'table',
-        downloadable: true,
-        callbacks: {
-            cell: (
-                { line, value, axis }: StatConfigCellCallbackData,
-                { tagColors },
-            ) => {
-                const tagName = line.first() as Map<any, any>
-
-                if (axis.name.toLowerCase() === 'total') {
-                    return (
-                        <TicketsCreatedPerTagViewLink
-                            tagName={(line.get(0) as Map<any, any>).get(
-                                'value',
-                            )}
-                        >
-                            {value}
-                        </TicketsCreatedPerTagViewLink>
-                    )
-                }
-
-                // current cell does not contain a tag name
-                if (tagName.get('value') !== value) {
-                    return value
-                }
-
-                if (
-                    (tagName.get('value') as string).toLowerCase() ===
-                    'untagged'
-                ) {
-                    return (
-                        <i>
-                            <b>{value}</b>
-                        </i>
-                    )
-                }
-
-                if (!tagColors) {
-                    return value
-                }
-                return (
-                    <div className="fit-cell">
-                        <TicketTag
-                            text={tagName.get('value')}
-                            decoration={tagColors.get(tagName.get('value'))}
-                        />
-                    </div>
-                )
             },
         } as StatConfigCallbacks,
     },

@@ -11,6 +11,7 @@ import {
 } from 'hooks/reporting/useTimeSeries'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
+import { getTagName } from 'pages/stats/ticket-insights/tags/helpers'
 import { getEntitiesTags } from 'state/entities/tags/selectors'
 import {
     getTagsOrder,
@@ -44,7 +45,8 @@ const getOrderBy = (order: TagsTableOrder) => {
             return (data: FormattedDataItem[]) =>
                 orderBy(
                     data,
-                    (item: FormattedDataItem) => item.tag?.name ?? item.tagId,
+                    (item: FormattedDataItem) =>
+                        getTagName({ name: item.tag?.name, id: item.tagId }),
                     order.direction,
                 )
         case 'total':

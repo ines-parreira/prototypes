@@ -7,6 +7,7 @@ import {
     TicketTagsEnrichedDimension,
     TicketTagsEnrichedMeasure,
 } from 'models/reporting/cubes/TicketTagsEnrichedCube'
+import { getTagName } from 'pages/stats/ticket-insights/tags/helpers'
 import { initialState } from 'state/stats/statsSlice'
 import { assumeMock } from 'utils/testing'
 
@@ -150,7 +151,7 @@ describe('useTagsDistribution useAppSelectorMock', () => {
                 {
                     category: unknownTagId,
                     gaugePercentage: 100,
-                    name: unknownTagId,
+                    name: getTagName({ id: unknownTagId }),
                     previousValueInPercentage: 200,
                     valueInPercentage: 100,
                     value: 20,
@@ -176,7 +177,7 @@ describe('useTagsDistribution useAppSelectorMock', () => {
                 {
                     category: undefined,
                     gaugePercentage: 0,
-                    name: '',
+                    name: getTagName({ id: '' }),
                     previousValueInPercentage: 0,
                     valueInPercentage: 0,
                     value: 0,
