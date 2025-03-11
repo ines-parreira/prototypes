@@ -33,6 +33,7 @@ import {
 import { notify } from 'state/notifications/actions'
 import { NotificationStatus } from 'state/notifications/types'
 import { getContext } from 'state/prediction/selectors'
+import { getDisplayHistory } from 'state/ticket/selectors'
 import { RootState } from 'state/types'
 import { canLeaveInternalNote, isRichType } from 'tickets/common/utils'
 import { getFileTooLargeError, getMaxAttachmentSize } from 'utils/file'
@@ -496,6 +497,7 @@ export class TicketReplyEditorContainer extends Component<Props, State> {
                     canDropFiles
                     emailExtraEnabled
                     spellCheck
+                    noAutoScroll={this.props.isHistoryDisplayed}
                     {...predictionProps}
                 />
             </div>
@@ -511,6 +513,7 @@ const connector = connect(
         newMessage: state.newMessage,
         newMessageType: getNewMessageType(state),
         predictionContext: getContext(state),
+        isHistoryDisplayed: getDisplayHistory(state),
     }),
     {
         addAttachments,

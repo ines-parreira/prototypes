@@ -1,0 +1,23 @@
+@import '~@gorgias/design-tokens/dist/css/layout.less';
+
+:local {
+    .badge {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 24px;
+        width: 24px;
+        flex: 0 0 auto;
+        background-color: var(--neutral-grey-3);
+        border-radius: 4px;
+        .icon {
+            display: block;
+            width: auto;
+            height: auto;
+            font-size: 18px;
+            &:before {
+                font-size: 18px;
+            }
+        }
+    }
+}

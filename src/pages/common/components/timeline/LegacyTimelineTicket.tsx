@@ -13,7 +13,7 @@ import { stripHTML } from 'utils'
 
 import SourceIcon from '../SourceIcon'
 
-import css from './TimelineTicket.less'
+import css from './LegacyTimelineTicket.less'
 
 type Props = {
     displayHistoryOnNextPage?: typeof displayHistoryOnNextPage
@@ -21,7 +21,7 @@ type Props = {
     ticket: Map<any, any>
 }
 
-export default class TimelineTicket extends Component<Props> {
+export default class LegacyTimelineTicket extends Component<Props> {
     static defaultProps: Pick<Props, 'isCurrent'> = { isCurrent: false }
 
     _goToTicket = (e: MouseEvent) => {

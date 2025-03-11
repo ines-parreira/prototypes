@@ -177,9 +177,6 @@ jest.mock(
 )
 
 jest.mock('chart.js')
-jest.mock(
-    'pages/common/components/SynchronizedScrollTop/SynchronizedScrollTopProvider',
-)
 
 Object.defineProperty(window, 'requestAnimationFrame', {
     value: jest.fn(),

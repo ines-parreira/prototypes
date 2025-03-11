@@ -4,13 +4,11 @@ import classnames from 'classnames'
 import { List } from 'immutable'
 import { Components, Virtuoso, VirtuosoHandle } from 'react-virtuoso'
 
-import useAppSelector from 'hooks/useAppSelector'
 import useSearch from 'hooks/useSearch'
 import useSelectedIndex from 'hooks/useSelectedIndex'
 import { TicketElement, TicketMessage } from 'models/ticket/types'
 import VoiceRecordingsProvider from 'pages/integrations/integration/components/voice/VoiceRecordingsProvider'
 import { SubmitArgs } from 'pages/tickets/detail/TicketDetailContainer'
-import { getDisplayHistory } from 'state/ticket/selectors'
 import type { OnToggleUnreadFn } from 'tickets/dtp'
 
 import {
@@ -68,17 +66,13 @@ export default function TicketBody({
     } = useSelectedIndex(maxIndex, { initial: maxIndex })
     useKeyboardNavigation({ next: nextIndex, previous: previousIndex })
 
-    const isHistoryDisplayed = useAppSelector(getDisplayHistory)
     useEffect(() => {
         if (voiceCallId) {
             virtuosoRef.current?.scrollToIndex({
                 index: getVoiceCallIndex(voiceCallId, groupedElements),
             })
-        } else {
-            if (!isHistoryDisplayed) return
-            virtuosoRef.current?.scrollTo({ top: 0 })
         }
-    }, [groupedElements, isHistoryDisplayed, voiceCallId])
+    }, [groupedElements, voiceCallId])
 
     const getFollowOutput = useCallback(
         (isAtBottom: boolean) => (isAtBottom ? 'smooth' : false),

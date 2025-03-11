@@ -1,0 +1,90 @@
+@import '~@gorgias/design-tokens/dist/css/layout.less';
+@import (reference) '~css/typography';
+
+:local {
+    @base-shadow: 1px 1px 8px 0px rgba(22, 22, 22, 0.05);
+    @hover-shadow: 0px 2px 4px 0px rgba(22, 22, 22, 0.16);
+    @highlight-shadow: 0px 0px 0px 2px rgba(74, 141, 249, 0.2);
+
+    .card {
+        display: flex;
+        justify-content: stretch;
+        align-items: flex-start;
+        gap: @layout-spacing-s;
+        flex-wrap: nowrap;
+        padding: calc(@layout-spacing-xs * 1.5);
+        border-radius: 4px;
+        border: 1px solid var(--neutral-grey-3);
+        background-color: var(--neutral-grey-0);
+        box-shadow: @base-shadow;
+        cursor: pointer;
+
+        &:hover:not(.highlight) {
+            box-shadow: @hover-shadow;
+            & .subject {
+                color: var(--main-primary-3);
+            }
+        }
+
+        &.highlight {
+            box-shadow: @highlight-shadow;
+            cursor: default;
+        }
+    }
+
+    .content {
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+        align-items: stretch;
+        flex: 1 1 auto;
+        color: var(--neutral-grey-5);
+        overflow: hidden;
+    }
+
+    .heading {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: @layout-spacing-xs;
+        margin-bottom: @layout-spacing-xs;
+        font-size: 12px;
+    }
+
+    .title {
+        display: flex;
+        align-items: center;
+        flex-wrap: nowrap;
+        gap: @layout-spacing-xs;
+        overflow: hidden;
+    }
+
+    .subject {
+        .body-semibold();
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+
+    .excerpt {
+        margin-bottom: @layout-spacing-xs;
+        font-size: 14px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+
+    .meta {
+        padding-top: 2px;
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
+        .caption-regular();
+        color: var(--neutral-grey-5);
+    }
+
+    .separator {
+        margin: 0 @layout-spacing-xxs;
+        color: var(--neutral-grey-3);
+    }
+}

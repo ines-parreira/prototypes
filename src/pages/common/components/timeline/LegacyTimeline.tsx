@@ -4,7 +4,7 @@ import classnames from 'classnames'
 import { fromJS, List, Map } from 'immutable'
 
 import { displayHistoryOnNextPage } from '../../../../state/ticket/actions'
-import TimelineTicket from './TimelineTicket'
+import LegacyTimelineTicket from './LegacyTimelineTicket'
 
 import css from './Timeline.less'
 
@@ -51,7 +51,7 @@ export default class LegacyTimeline extends Component<Props> {
                     .map((obj: Map<any, any>) => {
                         if (obj.get('channel')) {
                             return (
-                                <TimelineTicket
+                                <LegacyTimelineTicket
                                     displayHistoryOnNextPage={
                                         displayHistoryOnNextPage
                                     }

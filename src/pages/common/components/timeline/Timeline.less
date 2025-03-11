@@ -16,6 +16,15 @@
         }
     }
 
+    .list {
+        position: relative;
+        padding: 0;
+        list-style-type: none;
+        & > li + li {
+            margin-top: @layout-spacing-s;
+        }
+    }
+
     .centeringContainer {
         display: flex;
         flex-direction: column;

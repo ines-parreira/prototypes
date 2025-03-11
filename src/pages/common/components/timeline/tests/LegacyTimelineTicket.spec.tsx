@@ -11,7 +11,7 @@ import { logEvent, SegmentEvent } from 'common/segment'
 import history from 'pages/history'
 import { RootState, StoreDispatch } from 'state/types'
 
-import TimelineTicket from '../TimelineTicket'
+import LegacyTimelineTicket from '../LegacyTimelineTicket'
 
 jest.mock('common/segment', () => ({
     logEvent: jest.fn(),
@@ -23,7 +23,7 @@ jest.mock('common/segment', () => ({
 jest.mock('pages/history')
 const mockStore = configureMockStore<RootState, StoreDispatch>([thunk])
 
-describe('TimelineTicket', () => {
+describe('LegacyTimelineTicket', () => {
     const ticket = Map({
         id: 1,
         subject: 'Test Subject',
@@ -39,7 +39,7 @@ describe('TimelineTicket', () => {
         const { getByRole } = render(
             <Router history={history}>
                 <Provider store={mockStore()}>
-                    <TimelineTicket isCurrent={false} ticket={ticket} />
+                    <LegacyTimelineTicket isCurrent={false} ticket={ticket} />
                 </Provider>
             </Router>,
         )

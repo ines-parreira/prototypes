@@ -6,8 +6,8 @@ import { fromJS } from 'immutable'
 import { getCustomerHistory, getLoading } from 'state/customers/selectors'
 import { assumeMock } from 'utils/testing'
 
+import TicketCard from '../TicketCard'
 import Timeline from '../Timeline'
-import TimelineTicket from '../TimelineTicket'
 
 jest.mock('hooks/useAppSelector', () => (fn: () => unknown) => fn())
 jest.mock('state/customers/selectors', () => {
@@ -19,21 +19,20 @@ jest.mock('state/customers/selectors', () => {
         getLoading: jest.fn(),
     }
 })
-jest.mock('../TimelineTicket', () => jest.fn(() => <div>TimelineTicket</div>))
+jest.mock('../TicketCard', () => jest.fn(() => <div>TicketCard</div>))
 
 const getCustomerHistoryMock = assumeMock(getCustomerHistory)
 const getLoadingMock = assumeMock(getLoading)
 
 describe('<Timeline />', () => {
+    const ticket1 = { id: 1, channel: 'email' }
+    const ticket2 = { id: 2 }
+    const ticket3 = { id: 3, channel: 'email' }
     beforeEach(() => {
         getCustomerHistoryMock.mockReturnValue(
             fromJS({
                 triedLoading: true,
-                tickets: [
-                    { id: 1, channel: 'email' },
-                    { id: 2 },
-                    { id: 3, channel: 'email' },
-                ],
+                tickets: [ticket1, ticket2, ticket3],
             }),
         )
         getLoadingMock.mockReturnValue(
@@ -70,27 +69,38 @@ describe('<Timeline />', () => {
         ).toBeInTheDocument()
     })
 
-    it('should call TimelineTicket for each ticket with a channel, in correct order, with correct props', () => {
+    it('should call onLoaded when triedLoading is true and hasCalledOnLoaded is false', () => {
+        const onLoaded = jest.fn()
+        const { rerender } = render(<Timeline onLoaded={onLoaded} />)
+
+        expect(onLoaded).toHaveBeenCalledTimes(1)
+
+        // Should not call onLoaded again
+        rerender(<Timeline onLoaded={onLoaded} />)
+        expect(onLoaded).toHaveBeenCalledTimes(1)
+    })
+
+    it('should call TicketCard for each ticket with a channel, in correct order, with correct props', () => {
         const onTicketClick = jest.fn()
         const ticketId = 3
         render(<Timeline onTicketClick={onTicketClick} ticketId={ticketId} />)
 
-        expect(TimelineTicket).toHaveBeenCalledTimes(2)
-        expect(TimelineTicket).toHaveBeenNthCalledWith(
+        expect(TicketCard).toHaveBeenCalledTimes(2)
+        expect(TicketCard).toHaveBeenNthCalledWith(
             1,
             {
-                displayHistoryOnNextPage: onTicketClick,
-                isCurrent: false,
-                ticket: fromJS({ id: 1, channel: 'email' }),
+                onClick: onTicketClick,
+                isHighlighted: false,
+                ticket: ticket1,
             },
             {},
         )
-        expect(TimelineTicket).toHaveBeenNthCalledWith(
+        expect(TicketCard).toHaveBeenNthCalledWith(
             2,
             {
-                displayHistoryOnNextPage: onTicketClick,
-                isCurrent: true,
-                ticket: fromJS({ id: 3, channel: 'email' }),
+                onClick: onTicketClick,
+                isHighlighted: true,
+                ticket: ticket3,
             },
             {},
         )

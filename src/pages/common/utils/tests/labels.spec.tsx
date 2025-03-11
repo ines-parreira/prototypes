@@ -5,6 +5,8 @@ import { fromJS } from 'immutable'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 
+import { Badge } from '@gorgias/merchant-ui-kit'
+
 import {
     TicketChannel,
     TicketMessageSourceType,
@@ -31,6 +33,7 @@ jest.mock('@gorgias/merchant-ui-kit', () => {
     return {
         ...jest.requireActual('@gorgias/merchant-ui-kit'),
         Tooltip: () => 'TooltipMock',
+        Badge: jest.fn(({ children }) => <div>{children}</div>),
     } as Record<string, unknown>
 })
 jest.mock('state/integrations/selectors', () => ({
@@ -440,6 +443,25 @@ describe('components utils: labels', () => {
                 )
                 expect(container.firstChild).toMatchSnapshot()
             })
+        })
+    })
+
+    describe('<StatusLabel/>', () => {
+        it("should call Badge with correct type based on status prop's value", () => {
+            render(<labels.StatusLabel status={TicketStatus.Open} />)
+            expect(Badge).toHaveBeenCalledWith(
+                expect.objectContaining({ type: 'classic' }),
+                {},
+            )
+        })
+
+        it('should fallback to `modern` as default badge type', () => {
+            const madeUpStatus = 'non-existing'
+            render(<labels.StatusLabel status={madeUpStatus} />)
+            expect(Badge).toHaveBeenCalledWith(
+                expect.objectContaining({ type: 'modern' }),
+                {},
+            )
         })
     })
 })

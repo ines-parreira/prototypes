@@ -1,0 +1,29 @@
+@import '~@gorgias/design-tokens/dist/css/layout.less';
+
+:local {
+    .owner {
+        display: flex;
+        align-items: center;
+        gap: @layout-spacing-xxs;
+
+        .icon {
+            font-size: 16px;
+            color: var(--neutral-grey-4);
+        }
+
+        .teamIcon {
+            width: 16px;
+            height: 16px;
+            background-color: var(--neutral-grey-4);
+            -webkit-mask-image: url('assets/img/icons/team-circle.svg');
+            mask-image: url('assets/img/icons/team-circle.svg');
+        }
+    }
+
+    .warning {
+        color: var(--feedback-warning-4);
+        .icon {
+            color: var(--feedback-warning-3);
+        }
+    }
+}

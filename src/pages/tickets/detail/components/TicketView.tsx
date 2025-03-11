@@ -1,4 +1,4 @@
-import React, { useMemo, useRef } from 'react'
+import React, { useEffect, useMemo, useRef } from 'react'
 
 import classnames from 'classnames'
 import { fromJS, List, Map } from 'immutable'
@@ -20,10 +20,13 @@ import {
     getTicketState,
 } from 'state/ticket/selectors'
 import type { OnToggleUnreadFn } from 'tickets/dtp'
+import { handleButtonLikeClick } from 'utils/accessibility'
 
 import { SubmitArgs } from '../TicketDetailContainer'
 
 import css from './TicketView.less'
+
+const TIMELINE_CLOSE_BUTTON_ID = 'timelineCloseButton'
 
 type Props = {
     hideTicket: () => Promise<void>
@@ -77,6 +80,16 @@ export const TicketView = ({
         }
     })
 
+    useEffect(() => {
+        const ticketContent = ticketContentRef.current
+        if (isHistoryDisplayed) {
+            document.getElementById(TIMELINE_CLOSE_BUTTON_ID)?.focus()
+        }
+        return () => {
+            if (!isHistoryDisplayed) ticketContent?.focus()
+        }
+    }, [isHistoryDisplayed])
+
     const handleHistoryToggle = () => {
         const shouldOpenHistory =
             ticket.get('id') &&
@@ -117,7 +130,8 @@ export const TicketView = ({
                                 'd-flex',
                                 'align-items-center',
                             )}
-                            onClick={handleHistoryToggle}
+                            {...handleButtonLikeClick(handleHistoryToggle)}
+                            id={TIMELINE_CLOSE_BUTTON_ID}
                         >
                             <i className="material-icons md-3 mr-3">close</i>
                             <span>Customer Timeline</span>
@@ -131,6 +145,12 @@ export const TicketView = ({
                                     dispatch(displayHistoryOnNextPage())
                                 }
                                 ticketId={ticket.get('id')}
+                                onLoaded={() => {
+                                    // Make sure react has the time to render the list before scrolling
+                                    window.setTimeout(() => {
+                                        pageRef.current?.scrollTo({ top: 0 })
+                                    })
+                                }}
                             />
                         ) : (
                             <LegacyTimeline

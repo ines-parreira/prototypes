@@ -196,6 +196,12 @@ export const TimedeltaLabel = ({
     )
 }
 
+const STATUS_TO_BADGE: Record<string, ColorType | undefined> = {
+    open: 'classic',
+    snoozed: 'blue',
+    closed: 'light-dark',
+}
+
 export const StatusLabel = ({
     className,
     status,
@@ -203,20 +209,10 @@ export const StatusLabel = ({
     className?: string
     status: string
 }) => {
-    let color: ColorType = 'modern'
-
-    switch (status) {
-        case 'open':
-            color = 'classic'
-            break
-        case 'closed':
-            color = 'grey'
-            break
-        default:
-    }
+    const type = STATUS_TO_BADGE[status] || 'modern'
 
     return (
-        <Badge className={className ?? 'text-center'} type={color}>
+        <Badge className={className ?? 'text-center'} type={type}>
             {status}
         </Badge>
     )

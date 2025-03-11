@@ -1,25 +1,28 @@
 import React from 'react'
 
-import { fromJS } from 'immutable'
-
 import { LoadingSpinner } from '@gorgias/merchant-ui-kit'
 
 import GorgiasLogo from 'assets/img/gorgias-logo.svg'
 import useAppSelector from 'hooks/useAppSelector'
 import { getCustomerHistory, getLoading } from 'state/customers/selectors'
-import { displayHistoryOnNextPage } from 'state/ticket/actions'
 
-import TimelineTicket from './TimelineTicket'
+import TicketCard from './TicketCard'
 import { ReduxCustomerHistory } from './types'
 
 import css from './Timeline.less'
 
 type Props = {
     ticketId?: number
-    onTicketClick?: (ticketId: number) => void
+    onTicketClick?: (ticketId: number) => unknown
+    onLoaded?: () => unknown
 }
 
-export default function Timeline({ ticketId = 0, onTicketClick }: Props) {
+export default function Timeline({
+    ticketId = 0,
+    onTicketClick,
+    onLoaded,
+}: Props) {
+    const [hasCalledOnLoaded, setHasCalledOnLoaded] = React.useState(false)
     const customersLoading = useAppSelector(getLoading).toJS() as {
         history: boolean
     }
@@ -33,6 +36,11 @@ export default function Timeline({ ticketId = 0, onTicketClick }: Props) {
                 <LoadingSpinner size="big" />
             </div>
         )
+    }
+
+    if (customerHistory.triedLoading && !hasCalledOnLoaded) {
+        setHasCalledOnLoaded(true)
+        onLoaded?.()
     }
 
     if (customerHistory.triedLoading && customerHistory.tickets.length === 0) {
@@ -52,18 +60,19 @@ export default function Timeline({ ticketId = 0, onTicketClick }: Props) {
 
     return (
         <div className={css.container}>
-            {tickets
-                .filter((ticket) => ticket.channel)
-                .map((ticket) => (
-                    <TimelineTicket
-                        displayHistoryOnNextPage={
-                            onTicketClick as unknown as typeof displayHistoryOnNextPage
-                        }
-                        isCurrent={ticketId === ticket.id}
-                        key={ticket.id}
-                        ticket={fromJS(ticket)}
-                    />
-                ))}
+            <ol className={css.list}>
+                {tickets
+                    .filter((ticket) => ticket.channel)
+                    .map((ticket) => (
+                        <li key={ticket.id}>
+                            <TicketCard
+                                ticket={ticket}
+                                onClick={onTicketClick}
+                                isHighlighted={ticketId === ticket.id}
+                            />
+                        </li>
+                    ))}
+            </ol>
         </div>
     )
 }
