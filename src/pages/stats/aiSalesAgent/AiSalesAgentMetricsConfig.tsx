@@ -223,7 +223,7 @@ export const AiSalesAgentMetricConfig: Record<
         useTrend: useSuccessRateTrend,
         fetchTrend: fetchSuccessRateTrend,
         interpretAs: 'more-is-better',
-        metricFormat: 'percent',
+        metricFormat: 'decimal-to-percent',
     },
     [AiSalesAgentChart.AiSalesAgentConversionRate]: {
         title: 'Conversion Rate',
@@ -233,7 +233,7 @@ export const AiSalesAgentMetricConfig: Record<
         useTrend: useConversionRate,
         fetchTrend: fetchConversionRate,
         interpretAs: 'more-is-better',
-        metricFormat: 'percent',
+        metricFormat: 'decimal-to-percent',
     },
     [AiSalesAgentChart.AiSalesTimeSavedByAgent]: {
         title: 'Time Saved by Agents',
