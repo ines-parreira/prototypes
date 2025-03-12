@@ -1,6 +1,5 @@
 import React, { MouseEvent, useCallback, useMemo, useState } from 'react'
 
-import classNames from 'classnames'
 import { Link, useHistory, useParams } from 'react-router-dom'
 
 import { Tooltip } from '@gorgias/merchant-ui-kit'
@@ -91,6 +90,9 @@ export default function ActionsRow({ action }: Props) {
     const { recharge: rechargeIntegration } = useStoreAppsContext()
 
     const [nameRef, setNameRef] = useState<HTMLSpanElement | null>(null)
+    const [bodyRowRef, setBodyRowRef] = useState<HTMLTableRowElement | null>(
+        null,
+    )
 
     const appIcons = useMemo(() => {
         const iconsMap: Record<string, React.ReactElement> = {}
@@ -131,22 +133,30 @@ export default function ActionsRow({ action }: Props) {
         return Object.values(iconsMap)
     }, [action.steps, getAppFromTemplateApp, templateSteps])
 
+    const handleRowClick = useCallback(() => {
+        if (!isDeleteActionLoading && !isFakeAction) {
+            history.push(routes.editAction(action.id))
+        }
+    }, [action.id, history, isDeleteActionLoading, isFakeAction, routes])
+
     return (
         <TableBodyRow
-            className={classNames(css.container, {
-                [css.fakeAction]: isFakeAction,
-            })}
-            onClick={() => {
-                if (!isDeleteActionLoading) {
-                    history.push(routes.editAction(action.id))
-                }
-            }}
+            className={css.container}
+            onClick={handleRowClick}
+            ref={setBodyRowRef}
         >
+            {isFakeAction && bodyRowRef && (
+                <Tooltip placement="top" target={bodyRowRef}>
+                    By default, AI Agent gets order information from Shopify for
+                    order-related questions. You can&apos;t disable this
+                    setting.
+                </Tooltip>
+            )}
             <BodyCell width={360} className={css.nameCell}>
                 <div className={css.nameWrapper}>
                     <ToggleInput
                         isLoading={isEditActionLoading}
-                        isDisabled={isDeleteActionLoading}
+                        isDisabled={isDeleteActionLoading || isFakeAction}
                         onClick={handleToggleAction}
                         isToggled={!action.entrypoints[0]?.deactivated_datetime}
                     />
@@ -208,7 +218,11 @@ export default function ActionsRow({ action }: Props) {
                     onDelete={() => {
                         void deleteAction([{ internal_id: action.internal_id }])
                     }}
-                    isDisabled={isDeleteActionLoading || isEditActionLoading}
+                    isDisabled={
+                        isDeleteActionLoading ||
+                        isEditActionLoading ||
+                        isFakeAction
+                    }
                 />
             </BodyCell>
         </TableBodyRow>
