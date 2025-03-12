@@ -1,8 +1,8 @@
 import axios from 'axios'
 
 import { HelpCenter } from 'models/helpCenter/types'
+import { isProduction, isStaging } from 'utils/environment'
 
-import { isProduction, isStaging } from '../../../utils/environment'
 import gorgiasAppsAuthInterceptor from '../../../utils/gorgiasAppsAuth'
 import {
     AccountConfiguration,
@@ -114,6 +114,26 @@ export const upsertStoreConfiguration = async (
         `/config/accounts/${accountDomain}/stores/${storeName}/configuration`,
         storeConfiguration,
     )
+}
+
+/**
+ * Batch the upsert of store configurations.
+ * We must create a new function instead of reusing upsertStoreConfiguration to:
+ * - ensure typing using MutationOverrides is working,
+ * - allow to run all promise sequentially (no awaiting the PUT request).
+ */
+export const upsertStoresConfiguration = async (
+    accountDomain: string,
+    storeConfigurations: UpsertStoreConfigurationPayload[],
+) => {
+    const pendingPromises = storeConfigurations.map((storeConfiguration) => {
+        const storeName = storeConfiguration.storeName
+        return apiClient.put<StoreConfigurationResponse>(
+            `/config/accounts/${accountDomain}/stores/${storeName}/configuration`,
+            storeConfiguration,
+        )
+    })
+    return await Promise.all(pendingPromises)
 }
 
 export const createStoreSnippetHelpCenter = async (

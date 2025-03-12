@@ -6,6 +6,7 @@ import { Link } from 'react-router-dom'
 import { Tooltip } from '@gorgias/merchant-ui-kit'
 
 import warningIcon from 'assets/img/icons/warning.svg'
+import { StoreConfiguration } from 'models/aiAgent/types'
 import { useAiAgentNavigation } from 'pages/aiAgent/hooks/useAiAgentNavigation'
 import Alert, { AlertType } from 'pages/common/components/Alert/Alert'
 import CheckBox from 'pages/common/forms/CheckBox'
@@ -16,6 +17,7 @@ import css from './AiAgentActivationStoreCard.less'
 export type StoreActivation = {
     name: string
     title: string
+    configuration: StoreConfiguration
     sales: {
         isDisabled: boolean
         enabled: boolean
@@ -43,18 +45,20 @@ type Props = {
             to?: string
         }
     }[]
-    onToggleSales: (newValue: boolean) => void
-    onToggleSupport: (newValue: boolean) => void
-    onToggleSupportChat: (newValue: boolean) => void
-    onToggleSupportEmail: (newValue: boolean) => void
+    onSalesChange: (newValue: boolean) => void
+    onSupportChange: (newValue: boolean) => void
+    onSupportChatChange: (newValue: boolean) => void
+    onSupportEmailChange: (newValue: boolean) => void
+    isDisabled?: boolean
 }
 export const AiAgentActivationStoreCard = ({
     store: { name, title, support, sales },
     alerts,
-    onToggleSales,
-    onToggleSupport,
-    onToggleSupportChat,
-    onToggleSupportEmail,
+    onSalesChange,
+    onSupportChange,
+    onSupportChatChange,
+    onSupportEmailChange,
+    isDisabled,
 }: Props) => {
     const enablementList = [
         sales.enabled,
@@ -119,11 +123,12 @@ export const AiAgentActivationStoreCard = ({
                         <div className={css.title}>Support</div>
                         <ToggleInput
                             isDisabled={
-                                support.chat.isIntegrationMissing &&
-                                support.email.isIntegrationMissing
+                                isDisabled ||
+                                (support.chat.isIntegrationMissing &&
+                                    support.email.isIntegrationMissing)
                             }
                             isToggled={support.enabled}
-                            onClick={onToggleSupport}
+                            onClick={onSupportChange}
                         />
                     </div>
 
@@ -133,12 +138,12 @@ export const AiAgentActivationStoreCard = ({
                                 <CheckBox
                                     className={css.channelInput}
                                     labelClassName={css.channelLabel}
-                                    name="support__chat"
                                     isDisabled={
+                                        isDisabled ||
                                         support.chat.isIntegrationMissing
                                     }
                                     isChecked={support.chat.enabled}
-                                    onChange={onToggleSupportChat}
+                                    onChange={onSupportChatChange}
                                 >
                                     Chat
                                     {support.chat.isIntegrationMissing ? (
@@ -176,12 +181,12 @@ export const AiAgentActivationStoreCard = ({
                                 <CheckBox
                                     className={css.channelInput}
                                     labelClassName={css.channelLabel}
-                                    name="support__email"
                                     isDisabled={
+                                        isDisabled ||
                                         support.email.isIntegrationMissing
                                     }
                                     isChecked={support.email.enabled}
-                                    onChange={onToggleSupportEmail}
+                                    onChange={onSupportEmailChange}
                                 >
                                     Email
                                     {support.email.isIntegrationMissing ? (
@@ -224,9 +229,9 @@ export const AiAgentActivationStoreCard = ({
                     <div className={css.heading}>
                         <div className={css.title}>Sales</div>
                         <ToggleInput
-                            isDisabled={sales.isDisabled}
+                            isDisabled={isDisabled || sales.isDisabled}
                             isToggled={sales.enabled}
-                            onClick={onToggleSales}
+                            onClick={onSalesChange}
                         />
                     </div>
                     <div className={css.description}>

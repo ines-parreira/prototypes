@@ -5,7 +5,10 @@ import userEvent from '@testing-library/user-event'
 import { AlertType } from 'pages/common/components/Alert/Alert'
 import { renderWithRouter } from 'utils/testing'
 
-import { AiAgentActivationStoreCard } from '../AiAgentActivationStoreCard'
+import {
+    AiAgentActivationStoreCard,
+    StoreActivation,
+} from '../AiAgentActivationStoreCard'
 
 const renderComponent = (
     props: ComponentProps<typeof AiAgentActivationStoreCard>,
@@ -30,7 +33,7 @@ const testProps: ComponentProps<typeof AiAgentActivationStoreCard> = {
                 isIntegrationMissing: false,
             },
         },
-    },
+    } as any as StoreActivation,
     alerts: [
         {
             type: AlertType.Warning,
@@ -39,10 +42,10 @@ const testProps: ComponentProps<typeof AiAgentActivationStoreCard> = {
             cta: { label: 'Visit Knowledge', to: '/' },
         },
     ],
-    onToggleSales: jest.fn(),
-    onToggleSupport: jest.fn(),
-    onToggleSupportChat: jest.fn(),
-    onToggleSupportEmail: jest.fn(),
+    onSalesChange: jest.fn(),
+    onSupportChange: jest.fn(),
+    onSupportChatChange: jest.fn(),
+    onSupportEmailChange: jest.fn(),
 }
 
 describe('<AiAgentActivationStoreCard />', () => {
@@ -51,7 +54,7 @@ describe('<AiAgentActivationStoreCard />', () => {
     })
 
     it('should render', () => {
-        const { getByText, queryByText, container, rerenderComponent } =
+        const { getByText, queryByText, rerenderComponent, getByLabelText } =
             renderComponent(testProps)
 
         expect(getByText('Steve Madden')).toBeInTheDocument()
@@ -59,15 +62,15 @@ describe('<AiAgentActivationStoreCard />', () => {
         expect(getByText('Activate Support for Chat')).toBeInTheDocument()
         expect(getByText('Activate Support for Email')).toBeInTheDocument()
 
-        const supportChatCheckbox = container.querySelector('#support__chat')
+        const supportChatCheckbox = getByLabelText('Chat')
         expect(supportChatCheckbox).toBeInTheDocument()
         userEvent.click(supportChatCheckbox!)
-        expect(testProps.onToggleSupportChat).toHaveBeenCalled()
+        expect(testProps.onSupportChatChange).toHaveBeenCalled()
 
-        const supportEmailCheckbox = container.querySelector('#support__email')
+        const supportEmailCheckbox = getByLabelText('Email')
         expect(supportEmailCheckbox).toBeInTheDocument()
         userEvent.click(supportEmailCheckbox!)
-        expect(testProps.onToggleSupportEmail).toHaveBeenCalled()
+        expect(testProps.onSupportEmailChange).toHaveBeenCalled()
 
         const updatedProps: ComponentProps<typeof AiAgentActivationStoreCard> =
             {

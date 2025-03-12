@@ -2,44 +2,47 @@ import React from 'react'
 
 import { Button } from '@gorgias/merchant-ui-kit'
 
+import { StoreConfiguration } from 'models/aiAgent/types'
 import { ActivationProgress } from 'pages/aiAgent/Activation/components/ActivationProgress/ActivationProgress'
-import { AiAgentActivationStoreCard } from 'pages/aiAgent/Activation/components/AiAgentActivationStoreCard/AiAgentActivationStoreCard'
-import {
-    StoreConfigurationForActivation,
-    useStoreActivations,
-} from 'pages/aiAgent/Activation/hooks/useStoreActivations'
+import { AiAgentActivationStoreCard as StoreCard } from 'pages/aiAgent/Activation/components/AiAgentActivationStoreCard/AiAgentActivationStoreCard'
+import { useStoreActivations } from 'pages/aiAgent/Activation/hooks/useStoreActivations'
 import Modal from 'pages/common/components/modal/Modal'
 import ModalBody from 'pages/common/components/modal/ModalBody'
 
 import css from './AiAgentActivationModal.less'
 
-const StoreCard = AiAgentActivationStoreCard
-
 type Props = {
     isOpen: boolean
     onClose: () => void
-    storeConfigs: StoreConfigurationForActivation[]
-    onToggleSales: (storeName: string, newValue: boolean) => void
-    onToggleSupport: (storeName: string, newValue: boolean) => void
-    onToggleSupportChat: (storeName: string, newValue: boolean) => void
-    onToggleSupportEmail: (storeName: string, newValue: boolean) => void
+    accountDomain: string
+    storeConfigs: StoreConfiguration[]
 }
 export const AiAgentActivationModal = ({
     isOpen,
     onClose,
+    accountDomain,
     storeConfigs,
-    onToggleSales,
-    onToggleSupport,
-    onToggleSupportChat,
-    onToggleSupportEmail,
 }: Props) => {
     const {
         storeActivations,
         score: { totalScore, currentScore },
+        onSalesChange,
+        onSupportChange,
+        onSupportChatChange,
+        onSupportEmailChange,
+        onSave,
+        isLoading,
     } = useStoreActivations({
+        accountDomain,
         storeConfigurations: storeConfigs,
     })
+
     const progressPercentage = Math.round((currentScore / totalScore) * 100)
+
+    const onSaveClick = async () => {
+        await onSave()
+        onClose()
+    }
 
     return (
         <Modal
@@ -57,30 +60,38 @@ export const AiAgentActivationModal = ({
 
             <ModalBody className={css.modalBody}>
                 <div className={css.storeCardsList}>
-                    {storeActivations.map((store) => (
-                        <StoreCard
-                            key={store.name}
-                            store={store}
-                            alerts={[]}
-                            onToggleSales={(value) =>
-                                onToggleSales(store.name, value)
-                            }
-                            onToggleSupport={(value) =>
-                                onToggleSupport(store.name, value)
-                            }
-                            onToggleSupportChat={(value) =>
-                                onToggleSupportChat(store.name, value)
-                            }
-                            onToggleSupportEmail={(value) =>
-                                onToggleSupportEmail(store.name, value)
-                            }
-                        />
-                    ))}
+                    {Object.entries(storeActivations).map(
+                        ([storeName, store]) => (
+                            <StoreCard
+                                key={storeName}
+                                isDisabled={isLoading}
+                                store={store}
+                                alerts={[]}
+                                onSalesChange={(value) =>
+                                    onSalesChange(storeName, value)
+                                }
+                                onSupportChange={(value) =>
+                                    onSupportChange(storeName, value)
+                                }
+                                onSupportChatChange={(value) =>
+                                    onSupportChatChange(storeName, value)
+                                }
+                                onSupportEmailChange={(value) =>
+                                    onSupportEmailChange(storeName, value)
+                                }
+                            />
+                        ),
+                    )}
                 </div>
             </ModalBody>
 
             <div className={css.footer}>
-                <Button onClick={onClose}>Close</Button>
+                <Button intent="secondary" onClick={onClose}>
+                    Cancel
+                </Button>
+                <Button onClick={onSaveClick} isLoading={isLoading}>
+                    Save
+                </Button>
             </div>
         </Modal>
     )

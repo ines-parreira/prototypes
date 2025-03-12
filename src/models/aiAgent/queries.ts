@@ -15,6 +15,7 @@ import {
     upsertAccountConfiguration,
     upsertOnboardingNotificationState,
     upsertStoreConfiguration,
+    upsertStoresConfiguration,
 } from 'models/aiAgent/resources/configuration'
 import { searchCustomer } from 'models/aiAgentPlayground/resources'
 import { SearchCustomerRequest } from 'models/aiAgentPlayground/types'
@@ -78,8 +79,9 @@ export const storeConfigurationKeys = {
     details: () => [...storeConfigurationKeys.all(), 'detail'] as const,
     detail: (params: GetStoreConfigurationParams) =>
         [...storeConfigurationKeys.details(), params] as const,
+    accounts: () => [...storeConfigurationKeys.all(), 'account'] as const,
     account: (params: GetStoreConfigurationForAccountParams) =>
-        [...storeConfigurationKeys.all(), 'account', params] as const,
+        [...storeConfigurationKeys.accounts(), params] as const,
 }
 
 export const useGetStoreConfigurationPure = (
@@ -147,6 +149,15 @@ export const useCreateStoreConfigurationPure = (
 ) => {
     return useMutation({
         mutationFn: (params) => createStoreConfiguration(...params),
+        ...overrides,
+    })
+}
+
+export const useUpsertStoresConfigurationPure = (
+    overrides?: MutationOverrides<typeof upsertStoresConfiguration>,
+) => {
+    return useMutation({
+        mutationFn: (params) => upsertStoresConfiguration(...params),
         ...overrides,
     })
 }

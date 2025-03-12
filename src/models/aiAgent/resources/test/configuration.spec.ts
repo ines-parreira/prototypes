@@ -2,12 +2,12 @@ import MockAdapter from 'axios-mock-adapter'
 
 import { AiAgentOnboardingState } from 'models/aiAgent/types'
 import authClient from 'models/api/resources'
+import { HelpCenter } from 'models/helpCenter/types'
 import { getAccountConfigurationWithHttpIntegrationFixture } from 'pages/aiAgent/fixtures/accountConfiguration.fixture'
 import { getOnboardingNotificationStateFixture } from 'pages/aiAgent/fixtures/onboardingNotificationState.fixture'
 import { getStoreConfigurationFixture } from 'pages/aiAgent/fixtures/storeConfiguration.fixtures'
 import { getSingleHelpCenterResponseFixture } from 'pages/settings/helpCenter/fixtures/getHelpCentersResponse.fixture'
 
-import { HelpCenter } from '../../../helpCenter/types'
 import {
     apiClient,
     createAccountConfiguration,
@@ -26,6 +26,7 @@ import {
     upsertAccountConfiguration,
     upsertOnboardingNotificationState,
     upsertStoreConfiguration,
+    upsertStoresConfiguration,
 } from '../configuration'
 
 describe('Configuration', () => {
@@ -225,6 +226,60 @@ describe('Configuration', () => {
 
             await expect(
                 upsertStoreConfiguration(accountDomain, storeConfiguration),
+            ).rejects.toThrow('Request failed with status code 400')
+        })
+    })
+
+    describe('upsertStoresConfiguration', () => {
+        const accountDomain = 'myAccountDomain'
+        const storeConfiguration1 = getStoreConfigurationFixture({
+            storeName: 'store1',
+        })
+        const storeConfiguration2 = getStoreConfigurationFixture({
+            storeName: 'store2',
+        })
+        const { storeName: storeName1 } = storeConfiguration1
+        const { storeName: storeName2 } = storeConfiguration2
+
+        it('should resolve with the correct data on success', async () => {
+            apiServer
+                .onPut(
+                    `/config/accounts/${accountDomain}/stores/${storeName1}/configuration`,
+                )
+                .reply(200, storeConfiguration1)
+            apiServer
+                .onPut(
+                    `/config/accounts/${accountDomain}/stores/${storeName2}/configuration`,
+                )
+                .reply(200, storeConfiguration2)
+
+            const res = await upsertStoresConfiguration(accountDomain, [
+                storeConfiguration1,
+                storeConfiguration2,
+            ])
+            expect(res.map((it) => it.data)).toEqual([
+                storeConfiguration1,
+                storeConfiguration2,
+            ])
+        })
+
+        it('should handle an error correctly', async () => {
+            apiServer
+                .onPut(
+                    `/config/accounts/${accountDomain}/stores/${storeName1}/configuration`,
+                )
+                .reply(400, storeConfiguration1)
+            apiServer
+                .onPut(
+                    `/config/accounts/${accountDomain}/stores/${storeName2}/configuration`,
+                )
+                .reply(200, storeConfiguration2)
+
+            await expect(
+                upsertStoresConfiguration(accountDomain, [
+                    storeConfiguration1,
+                    storeConfiguration2,
+                ]),
             ).rejects.toThrow('Request failed with status code 400')
         })
     })

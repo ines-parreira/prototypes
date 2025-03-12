@@ -39,14 +39,16 @@ export const useActivation = () => {
                 <AiAgentActivationModal
                     isOpen={isModalVisible}
                     onClose={() => setIsModalVisible(false)}
-                    onToggleSales={() => {}}
-                    onToggleSupport={() => {}}
-                    onToggleSupportChat={() => {}}
-                    onToggleSupportEmail={() => {}}
+                    accountDomain={accountDomain}
                     storeConfigs={storeConfigurations ?? []}
                 />
             ),
         }),
-        [hasActivationEnabled, isModalVisible, storeConfigurations],
+        [
+            hasActivationEnabled,
+            isModalVisible,
+            storeConfigurations,
+            accountDomain,
+        ],
     )
 }

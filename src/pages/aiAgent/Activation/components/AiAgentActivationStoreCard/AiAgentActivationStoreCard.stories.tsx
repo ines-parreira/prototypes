@@ -6,7 +6,10 @@ import { MemoryRouter } from 'react-router-dom'
 
 import { AlertType } from 'pages/common/components/Alert/Alert'
 
-import { AiAgentActivationStoreCard } from './AiAgentActivationStoreCard'
+import {
+    AiAgentActivationStoreCard,
+    StoreActivation,
+} from './AiAgentActivationStoreCard'
 
 const meta: Meta<typeof AiAgentActivationStoreCard> = {
     title: 'AI Agent/Activation/ActivationStoreCard',
@@ -46,11 +49,11 @@ export const AllDisabled: Story = {
                     isIntegrationMissing: false,
                 },
             },
-        },
-        onToggleSales: action('onToggle > Sales'),
-        onToggleSupport: action('onToggle > Support'),
-        onToggleSupportChat: action('onToggle > Support > Chat'),
-        onToggleSupportEmail: action('onToggle > Support > Email'),
+        } as any as StoreActivation,
+        onSalesChange: action('onToggle > Sales'),
+        onSupportChange: action('onToggle > Support'),
+        onSupportChatChange: action('onToggle > Support > Chat'),
+        onSupportEmailChange: action('onToggle > Support > Email'),
         alerts: [],
     },
 }
@@ -76,12 +79,12 @@ export const AllDisabledMissingIntegration: Story = {
                     isIntegrationMissing: true,
                 },
             },
-        },
+        } as any as StoreActivation,
         alerts: [],
-        onToggleSales: action('onToggle > Sales'),
-        onToggleSupport: action('onToggle > Support'),
-        onToggleSupportChat: action('onToggle > Support > Chat'),
-        onToggleSupportEmail: action('onToggle > Support > Email'),
+        onSalesChange: action('onToggle > Sales'),
+        onSupportChange: action('onToggle > Support'),
+        onSupportChatChange: action('onToggle > Support > Chat'),
+        onSupportEmailChange: action('onToggle > Support > Email'),
     },
 }
 
@@ -106,7 +109,7 @@ export const AllDisabledWithAlert: Story = {
                     isIntegrationMissing: false,
                 },
             },
-        },
+        } as any as StoreActivation,
         alerts: [
             {
                 type: AlertType.Warning,
@@ -115,10 +118,10 @@ export const AllDisabledWithAlert: Story = {
                 cta: { label: 'Visit Knowledge', to: '/' },
             },
         ],
-        onToggleSales: action('onToggle > Sales'),
-        onToggleSupport: action('onToggle > Support'),
-        onToggleSupportChat: action('onToggle > Support > Chat'),
-        onToggleSupportEmail: action('onToggle > Support > Email'),
+        onSalesChange: action('onToggle > Sales'),
+        onSupportChange: action('onToggle > Support'),
+        onSupportChatChange: action('onToggle > Support > Chat'),
+        onSupportEmailChange: action('onToggle > Support > Email'),
     },
 }
 
@@ -143,12 +146,12 @@ export const SupportEmail: Story = {
                     isIntegrationMissing: false,
                 },
             },
-        },
+        } as any as StoreActivation,
         alerts: [],
-        onToggleSales: action('onToggle > Sales'),
-        onToggleSupport: action('onToggle > Support'),
-        onToggleSupportChat: action('onToggle > Support > Chat'),
-        onToggleSupportEmail: action('onToggle > Support > Email'),
+        onSalesChange: action('onToggle > Sales'),
+        onSupportChange: action('onToggle > Support'),
+        onSupportChatChange: action('onToggle > Support > Chat'),
+        onSupportEmailChange: action('onToggle > Support > Email'),
     },
 }
 
@@ -173,12 +176,12 @@ export const SupportEmailChat: Story = {
                     isIntegrationMissing: false,
                 },
             },
-        },
+        } as any as StoreActivation,
         alerts: [],
-        onToggleSales: action('onToggle > Sales'),
-        onToggleSupport: action('onToggle > Support'),
-        onToggleSupportChat: action('onToggle > Support > Chat'),
-        onToggleSupportEmail: action('onToggle > Support > Email'),
+        onSalesChange: action('onToggle > Sales'),
+        onSupportChange: action('onToggle > Support'),
+        onSupportChatChange: action('onToggle > Support > Chat'),
+        onSupportEmailChange: action('onToggle > Support > Email'),
     },
 }
 
@@ -203,11 +206,11 @@ export const AllActivated: Story = {
                     isIntegrationMissing: false,
                 },
             },
-        },
+        } as any as StoreActivation,
         alerts: [],
-        onToggleSales: action('onToggle > Sales'),
-        onToggleSupport: action('onToggle > Support'),
-        onToggleSupportChat: action('onToggle > Support > Chat'),
-        onToggleSupportEmail: action('onToggle > Support > Email'),
+        onSalesChange: action('onToggle > Sales'),
+        onSupportChange: action('onToggle > Support'),
+        onSupportChatChange: action('onToggle > Support > Chat'),
+        onSupportEmailChange: action('onToggle > Support > Email'),
     },
 }

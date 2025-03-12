@@ -2,8 +2,10 @@ import React from 'react'
 
 import { action } from '@storybook/addon-actions'
 import { Meta, StoryObj } from '@storybook/react'
+import { QueryClientProvider } from '@tanstack/react-query'
 import { MemoryRouter } from 'react-router-dom'
 
+import { appQueryClient } from 'api/queryClient'
 import { AiAgentScope, StoreConfiguration } from 'models/aiAgent/types'
 import { ToneOfVoice } from 'pages/aiAgent/constants'
 
@@ -59,19 +61,18 @@ const meta: Meta<typeof AiAgentActivationModal> = {
     title: 'AI Agent/Activation/ActivationModal',
     component: AiAgentActivationModal,
     args: {
+        accountDomain: 'domain',
         isOpen: true,
-        onClose: () => {},
+        onClose: action('onClose'),
         storeConfigs: [dummyStoreConfig, dummyStoreConfig2],
-        onToggleSales: action('onToggle > Sales'),
-        onToggleSupport: action('onToggle > Support'),
-        onToggleSupportChat: action('onToggle > Support > Chat'),
-        onToggleSupportEmail: action('onToggle > Support > Email'),
     },
     decorators: [
         (Story) => (
-            <MemoryRouter initialEntries={['/']}>
-                <Story />
-            </MemoryRouter>
+            <QueryClientProvider client={appQueryClient}>
+                <MemoryRouter initialEntries={['/']}>
+                    <Story />
+                </MemoryRouter>
+            </QueryClientProvider>
         ),
     ],
 }
