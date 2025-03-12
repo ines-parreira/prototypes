@@ -60,7 +60,7 @@
         @media @tablets-up {
             display: flex;
             flex-direction: column;
-            justify-content: space-between;
+            justify-content: flex-start;
             min-width: 400px;
             padding: 0 8% @layout-spacing-m;
             gap: @layout-spacing-m;
@@ -148,6 +148,10 @@
             z-index: 4;
             right: 120px;
             left: 24px;
+        }
+
+        @media @tablets-up {
+            margin-top: auto;
         }
     }
 
