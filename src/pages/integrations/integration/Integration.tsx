@@ -123,6 +123,7 @@ export const IntegrationDetail = ({
         'setup',
         'about',
         'migration',
+        'queues',
     ].includes(integrationId)
 
     const { redirectToOnboardingIfOnboarding } =

@@ -1,3 +1,5 @@
+export const PHONE_INTEGRATION_BASE_URL = '/app/settings/channels/phone'
+
 export const RING_TIME_DEFAULT_VALUE = 60
 export const RING_TIME_MIN_VALUE = 10
 export const RING_TIME_MAX_VALUE = 600

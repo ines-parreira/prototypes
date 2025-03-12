@@ -1,6 +1,7 @@
 import React from 'react'
 
-import { Link, useParams } from 'react-router-dom'
+import { LocationState } from 'history'
+import { Link, matchPath, useLocation, useParams } from 'react-router-dom'
 import { Breadcrumb, BreadcrumbItem } from 'reactstrap'
 
 import useAppSelector from 'hooks/useAppSelector'
@@ -39,6 +40,15 @@ export default function PhoneIntegrationBreadcrumbs({
             `/app/settings/integrations/${type}`,
         ],
     }[type]
+
+    const { pathname: path } = useLocation<LocationState>()
+    const queuePathMatch = matchPath<{ queueId?: string }>(path, {
+        path: `${baseUrl}/queues/:queueId`,
+        exact: false,
+        strict: false,
+    })
+
+    const queueId = queuePathMatch?.params.queueId
 
     return (
         <Breadcrumb>
@@ -85,10 +95,19 @@ export default function PhoneIntegrationBreadcrumbs({
                     </>
                 )}
             {!integration &&
+                !queueId &&
                 integrationId !== 'new' &&
                 integrationId !== 'migration' && (
                     <BreadcrumbItem>{name}</BreadcrumbItem>
                 )}
+            {queuePathMatch?.params.queueId === 'new' && (
+                <>
+                    <BreadcrumbItem>
+                        <Link to={`${baseUrl}/queues`}>{name}</Link>
+                    </BreadcrumbItem>
+                    <BreadcrumbItem>Add call queue</BreadcrumbItem>
+                </>
+            )}
         </Breadcrumb>
     )
 }

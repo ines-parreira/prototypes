@@ -1,5 +1,6 @@
 import React from 'react'
 
+import { screen } from '@testing-library/react'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 
@@ -69,7 +70,7 @@ describe('<PhoneIntegrationBreadcrumbs/>', () => {
 
     describe('render()', () => {
         it('should render for voice integrations', () => {
-            const { container } = renderWithRouter(
+            renderWithRouter(
                 <Provider store={store}>
                     <PhoneIntegrationBreadcrumbs
                         type={IntegrationType.Phone}
@@ -78,11 +79,11 @@ describe('<PhoneIntegrationBreadcrumbs/>', () => {
                 </Provider>,
             )
 
-            expect(container.firstChild).toMatchSnapshot()
+            expect(screen.getByText('Voice')).toBeInTheDocument()
         })
 
         it('should render for SMS integrations', () => {
-            const { container } = renderWithRouter(
+            renderWithRouter(
                 <Provider store={store}>
                     <PhoneIntegrationBreadcrumbs
                         type={IntegrationType.Sms}
@@ -91,7 +92,21 @@ describe('<PhoneIntegrationBreadcrumbs/>', () => {
                 </Provider>,
             )
 
-            expect(container.firstChild).toMatchSnapshot()
+            expect(screen.getByText('SMS')).toBeInTheDocument()
+        })
+
+        it('should render for Voice Queues', () => {
+            renderWithRouter(
+                <Provider store={store}>
+                    <PhoneIntegrationBreadcrumbs type={IntegrationType.Phone} />
+                </Provider>,
+                {
+                    route: '/app/settings/channels/phone/queues/new',
+                },
+            )
+
+            expect(screen.getByText('Voice')).toBeInTheDocument()
+            expect(screen.getByText('Add call queue')).toBeInTheDocument()
         })
     })
 })

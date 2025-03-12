@@ -3,12 +3,15 @@ import React from 'react'
 import { NavLink } from 'react-router-dom'
 
 import { PhoneFunction } from 'business/twilio'
+import { FeatureFlagKey } from 'config/featureFlags'
+import { useFlag } from 'core/flags'
 import useAppSelector from 'hooks/useAppSelector'
 import { IntegrationType, PhoneIntegration } from 'models/integration/types'
 import SecondaryNavbar from 'pages/common/components/SecondaryNavbar/SecondaryNavbar'
 import { getPhoneIntegrations } from 'state/integrations/selectors'
 
 import { getDefaultRoutes } from '../../utils/defaultRoutes'
+import { PHONE_INTEGRATION_BASE_URL } from './constants'
 
 type Props = {
     integration?: PhoneIntegration
@@ -18,10 +21,11 @@ export default function VoiceIntegrationSecondaryNavigation({
     integration,
 }: Props): JSX.Element {
     const phoneIntegrations = useAppSelector(getPhoneIntegrations)
+    const exposeQueues = useFlag(FeatureFlagKey.ExposeVoiceQueues)
 
     if (!integration) {
         const routes = getDefaultRoutes(
-            '/app/settings/channels/phone',
+            PHONE_INTEGRATION_BASE_URL,
             phoneIntegrations,
         )
 
@@ -33,6 +37,11 @@ export default function VoiceIntegrationSecondaryNavigation({
                 <NavLink to={routes.integrations[0]} exact>
                     Integrations
                 </NavLink>
+                {exposeQueues && (
+                    <NavLink to={`${PHONE_INTEGRATION_BASE_URL}/queues`} exact>
+                        Queues
+                    </NavLink>
+                )}
             </SecondaryNavbar>
         )
     }

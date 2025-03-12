@@ -2,10 +2,13 @@ import React from 'react'
 
 import { Route, Switch, useParams } from 'react-router-dom'
 
+import { Button } from '@gorgias/merchant-ui-kit'
+
+import { FeatureFlagKey } from 'config/featureFlags'
+import { useFlag } from 'core/flags'
 import useAppSelector from 'hooks/useAppSelector'
 import useSearch from 'hooks/useSearch'
 import { IntegrationType, isPhoneIntegration } from 'models/integration/types'
-import Button from 'pages/common/components/button/Button'
 import PageHeader from 'pages/common/components/PageHeader'
 import ConnectLink from 'pages/integrations/components/ConnectLink'
 import PhoneIntegrationBreadcrumbs from 'pages/integrations/integration/components/phone/PhoneIntegrationBreadcrumbs'
@@ -23,7 +26,9 @@ import {
 } from 'state/integrations/selectors'
 
 import { getDefaultRoutes } from '../../utils/defaultRoutes'
+import { PHONE_INTEGRATION_BASE_URL as baseURL } from './constants'
 import VoiceIntegrationDetails from './VoiceIntegrationDetails'
+import VoiceIntegrationQueueRoutes from './VoiceIntegrationQueueRoutes'
 
 export default function VoiceIntegration() {
     const config = getIntegrationConfig(IntegrationType.Phone)
@@ -31,6 +36,8 @@ export default function VoiceIntegration() {
     const { phoneNumberId } = useSearch<{
         phoneNumberId: string
     }>()
+
+    const exposeQueues = useFlag(FeatureFlagKey.ExposeVoiceQueues)
 
     const currentIntegration = useAppSelector((state) => {
         if (integrationId) {
@@ -44,7 +51,6 @@ export default function VoiceIntegration() {
     })
     const phoneIntegrations = useAppSelector(getPhoneIntegrations)
 
-    const baseURL = `/app/settings/channels/phone`
     const routes = getDefaultRoutes(baseURL, phoneIntegrations)
 
     return (
@@ -65,6 +71,16 @@ export default function VoiceIntegration() {
                         <Button>Add Voice</Button>
                     </ConnectLink>
                 </Route>
+                {exposeQueues && (
+                    <Route path={`${baseURL}/queues`} exact>
+                        <ConnectLink
+                            connectUrl={`${baseURL}/queues/new`}
+                            integrationTitle={IntegrationType.Phone}
+                        >
+                            <Button>Create queue</Button>
+                        </ConnectLink>
+                    </Route>
+                )}
             </PageHeader>
 
             <VoiceIntegrationSecondaryNavigation
@@ -121,6 +137,7 @@ export default function VoiceIntegration() {
                 <Route path={routes.about} exact>
                     <VoiceIntegrationDetails />
                 </Route>
+                {exposeQueues && <VoiceIntegrationQueueRoutes />}
             </Switch>
         </div>
     )
