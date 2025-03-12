@@ -7,7 +7,7 @@ import { useShoutoutTopResults } from 'hooks/reporting/useShoutoutTopResults'
 import Shoutout, {
     SHOUTOUT_HEIGHT_PX,
 } from 'pages/stats/common/components/Shoutout/Shoutout'
-import { DashboardChartProps } from 'pages/stats/custom-reports/types'
+import { DashboardChartProps } from 'pages/stats/dashboards/types'
 import { ShoutoutConfig } from 'pages/stats/support-performance/agents/AgentsShoutOutsConfig'
 
 export default function AgentsShoutOut({

@@ -4,7 +4,7 @@ import useAppSelector from 'hooks/useAppSelector'
 import useLocalStorage from 'hooks/useLocalStorage'
 import { ActivateCustomerSatisfactionSurveyTip } from 'pages/stats/ActivateCustomerSatisfactionSurveyTip'
 import { TrendCard } from 'pages/stats/common/components/TrendCard'
-import { DashboardChartProps } from 'pages/stats/custom-reports/types'
+import { DashboardChartProps } from 'pages/stats/dashboards/types'
 import {
     OverviewMetric,
     OverviewMetricConfig,

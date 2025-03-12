@@ -1,11 +1,11 @@
 import { FilterComponentKey, FilterKey, StaticFilter } from 'models/stat/types'
 import { OptionalFilter } from 'pages/stats/common/filters/FiltersPanel'
-import { ReportsIDs } from 'pages/stats/custom-reports/constants'
+import { ReportsIDs } from 'pages/stats/dashboards/constants'
 import {
     ChartType,
     DataExportFormat,
     ReportConfig,
-} from 'pages/stats/custom-reports/types'
+} from 'pages/stats/dashboards/types'
 import { VoiceAgentsTableCard } from 'pages/stats/voice/components/VoiceAgentsTableCard'
 import {
     VOICE_AGENTS_PAGE_TITLE,

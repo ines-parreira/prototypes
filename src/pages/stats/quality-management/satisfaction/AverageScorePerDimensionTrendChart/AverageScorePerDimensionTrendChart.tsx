@@ -9,7 +9,7 @@ import SelectInputBox, {
     SelectInputBoxContext,
 } from 'pages/common/forms/input/SelectInputBox'
 import ChartCard from 'pages/stats/ChartCard'
-import { DashboardChartProps } from 'pages/stats/custom-reports/types'
+import { DashboardChartProps } from 'pages/stats/dashboards/types'
 import { AverageScorePerAssigneeMetric } from 'pages/stats/quality-management/satisfaction/AverageScorePerDimensionTrendChart/AverageScorePerAssigneeMetric'
 import { AverageScorePerChannelMetric } from 'pages/stats/quality-management/satisfaction/AverageScorePerDimensionTrendChart/AverageScorePerChannelMetric'
 import css from 'pages/stats/quality-management/satisfaction/AverageScorePerDimensionTrendChart/AverageScorePerDimensionTrendChart.less'

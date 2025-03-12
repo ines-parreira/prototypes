@@ -19,7 +19,7 @@ import {
     formatMetricValue,
     NOT_AVAILABLE_PLACEHOLDER,
 } from 'pages/stats/common/utils'
-import { DashboardChartProps } from 'pages/stats/custom-reports/types'
+import { DashboardChartProps } from 'pages/stats/dashboards/types'
 import { DistributionCategoryCell } from 'pages/stats/DistributionCategoryCell'
 import { DrillDownModalTrigger } from 'pages/stats/DrillDownModalTrigger'
 import { NoDataAvailable } from 'pages/stats/NoDataAvailable'

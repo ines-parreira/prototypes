@@ -1,12 +1,12 @@
 import { VoiceCallSegment } from 'models/reporting/cubes/VoiceCallCube'
 import { FilterComponentKey, FilterKey, StaticFilter } from 'models/stat/types'
 import { OptionalFilter } from 'pages/stats/common/filters/FiltersPanel'
-import { ReportsIDs } from 'pages/stats/custom-reports/constants'
+import { ReportsIDs } from 'pages/stats/dashboards/constants'
 import {
     ChartType,
     DataExportFormat,
     ReportConfig,
-} from 'pages/stats/custom-reports/types'
+} from 'pages/stats/dashboards/types'
 import { VoiceCallCallCallerExperiencAverageTalkTime } from 'pages/stats/voice/charts/VoiceCallCallerExperiencAverageTalkTime'
 import { VoiceCallCallerExperienceAverageWaitTimeChart } from 'pages/stats/voice/charts/VoiceCallCallerExperienceAverageWaitTimeChart'
 import { VoiceCallTableChart } from 'pages/stats/voice/charts/VoiceCallTableChart'

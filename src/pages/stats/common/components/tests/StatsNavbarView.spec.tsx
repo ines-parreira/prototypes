@@ -15,13 +15,13 @@ import {
     AUTOMATION_PRODUCT_ID,
     basicMonthlyAutomationPlan,
 } from 'fixtures/productPrices'
-import { useCustomReportActions } from 'hooks/reporting/custom-reports/useCustomReportActions'
+import { useDashboardActions } from 'hooks/reporting/dashboards/useDashboardActions'
 import { IntegrationType } from 'models/integration/constants'
 import { STATS_ROUTE_PREFIX } from 'pages/stats/common/components/constants'
 import StatsNavbarView, {
     BUSIEST_TIMES_OF_DAYS_NAV_LABEL,
 } from 'pages/stats/common/components/StatsNavbarView'
-import { getDashboardPath } from 'pages/stats/custom-reports/utils'
+import { getDashboardPath } from 'pages/stats/dashboards/utils'
 import { SERVICE_LEVEL_AGREEMENT_PAGE_TITLE } from 'pages/stats/sla/ServiceLevelAgreementsReportConfig'
 import { AUTO_QA_PAGE_TITLE } from 'pages/stats/support-performance/auto-qa/AutoQAReportConfig'
 import { STATS_ROUTES } from 'routes/constants'
@@ -36,8 +36,8 @@ jest.mock('pages/convert/common/components/ConvertSubscriptionModal', () => {
     })
 })
 
-jest.mock('hooks/reporting/custom-reports/useCustomReportActions')
-const useCustomReportActionsMock = assumeMock(useCustomReportActions)
+jest.mock('hooks/reporting/dashboards/useDashboardActions')
+const useDashboardActionsMock = assumeMock(useDashboardActions)
 
 function getIntegration(id: number, type: IntegrationType) {
     return {
@@ -252,7 +252,7 @@ describe('StatsNavbarView', () => {
         expect(liveVoiceLink).toBeInTheDocument()
     })
 
-    it('should render the link to the Custom Reports', () => {
+    it('should render the link to the Dashboards', () => {
         mockFlags({
             [FeatureFlagKey.AnalyticsCustomReports]: true,
         })
@@ -262,7 +262,7 @@ describe('StatsNavbarView', () => {
             { id: '2', name: 'Report 2', emoji: 'plus' },
         ]
 
-        useCustomReportActionsMock.mockReturnValue({
+        useDashboardActionsMock.mockReturnValue({
             getDashboardsHandler: () => mockData,
         } as any)
 
@@ -272,15 +272,15 @@ describe('StatsNavbarView', () => {
             </Provider>,
         )
 
-        const FirstCustomReportLink = container.querySelector(
+        const FirstDashboardLink = container.querySelector(
             `a[href="${getDashboardPath(1)}"]`,
         )
-        const SecondCustomReportLink = container.querySelector(
+        const SecondDashboardLink = container.querySelector(
             `a[href="${getDashboardPath(2)}"]`,
         )
 
-        expect(FirstCustomReportLink).toBeInTheDocument()
-        expect(SecondCustomReportLink).toBeInTheDocument()
+        expect(FirstDashboardLink).toBeInTheDocument()
+        expect(SecondDashboardLink).toBeInTheDocument()
     })
 
     it('should render the Auto QA link exclusively within Quality Management section when NewSatisfactionReport feature flag is enabled', () => {

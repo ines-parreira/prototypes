@@ -3,11 +3,11 @@ import React from 'react'
 import { act, render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 
-import { ChartsActionMenu } from 'pages/stats/custom-reports/ChartsActionMenu/ChartsActionMenu'
+import { ChartsActionMenu } from 'pages/stats/dashboards/ChartsActionMenu/ChartsActionMenu'
 import MetricCard from 'pages/stats/MetricCard'
 import { assumeMock } from 'utils/testing'
 
-jest.mock('pages/stats/custom-reports/ChartsActionMenu/ChartsActionMenu')
+jest.mock('pages/stats/dashboards/ChartsActionMenu/ChartsActionMenu')
 const ChartsActionMenuMock = assumeMock(ChartsActionMenu)
 
 ChartsActionMenuMock.mockReturnValue(<div>ChartsActionMenu</div>)

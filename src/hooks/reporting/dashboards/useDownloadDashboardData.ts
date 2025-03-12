@@ -1,0 +1,31 @@
+import { useCallback } from 'react'
+
+import { logEvent, SegmentEvent } from 'common/segment'
+import { useDashboardData } from 'hooks/reporting/dashboards/useDashboardData'
+import { DashboardSchema } from 'pages/stats/dashboards/types'
+import { saveZippedFiles } from 'utils/file'
+
+const emptyDashboard: DashboardSchema = {
+    name: 'empty',
+    children: [],
+    id: 0,
+    analytics_filter_id: null,
+    emoji: null,
+}
+
+export const useDownloadDashboardData = (
+    dashboard: DashboardSchema | undefined,
+) => {
+    const { isLoading, files, fileName } = useDashboardData(
+        dashboard ?? emptyDashboard,
+    )
+
+    const triggerDownload = useCallback(async () => {
+        logEvent(SegmentEvent.StatDownloadClicked, {
+            name: 'all-metrics',
+        })
+        await saveZippedFiles(files, fileName)
+    }, [fileName, files])
+
+    return { isLoading, triggerDownload }
+}

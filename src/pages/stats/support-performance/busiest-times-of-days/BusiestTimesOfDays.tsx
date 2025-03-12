@@ -8,8 +8,8 @@ import { useGridSize } from 'hooks/useGridSize'
 import { FilterComponentKey, FilterKey } from 'models/stat/types'
 import { AnalyticsFooter } from 'pages/stats/AnalyticsFooter'
 import FiltersPanelWrapper from 'pages/stats/common/filters/FiltersPanelWrapper'
-import { CustomReportComponent } from 'pages/stats/custom-reports/CustomReportComponent'
 import DashboardGridCell from 'pages/stats/DashboardGridCell'
+import { DashboardComponent } from 'pages/stats/dashboards/DashboardComponent'
 import DashboardSection from 'pages/stats/DashboardSection'
 import StatsPage from 'pages/stats/StatsPage'
 import { BusiestTimesOfDaysDownloadDataButton } from 'pages/stats/support-performance/busiest-times-of-days/BusiestTimesOfDaysDownloadDataButton'
@@ -75,7 +75,7 @@ export const BusiestTimesOfDays = () => {
                         <BusiestTimesOfDaysMetricSelect />
                     )}
                     <DashboardGridCell size={getGridCellSize(12)}>
-                        <CustomReportComponent
+                        <DashboardComponent
                             chart={BusiestTimesChart.BusiestTimesTable}
                             config={BusiestTimesReportConfig}
                         />

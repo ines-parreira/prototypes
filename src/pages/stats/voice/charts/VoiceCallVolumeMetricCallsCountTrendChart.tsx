@@ -2,7 +2,7 @@ import React from 'react'
 
 import { VoiceCallSegment } from 'models/reporting/cubes/VoiceCallCube'
 import { StatsFilters } from 'models/stat/types'
-import { DashboardChartProps } from 'pages/stats/custom-reports/types'
+import { DashboardChartProps } from 'pages/stats/dashboards/types'
 import { isFilterEmpty } from 'pages/stats/utils'
 import VoiceCallVolumeMetric from 'pages/stats/voice/components/VoiceCallVolumeMetric/VoiceCallVolumeMetric'
 import { useNewVoiceStatsFilters } from 'pages/stats/voice/hooks/useNewVoiceStatsFilters'

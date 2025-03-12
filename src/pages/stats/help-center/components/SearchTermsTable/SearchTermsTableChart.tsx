@@ -1,7 +1,7 @@
 import React from 'react'
 
 import ChartCard from 'pages/stats/ChartCard'
-import { DashboardChartProps } from 'pages/stats/custom-reports/types'
+import { DashboardChartProps } from 'pages/stats/dashboards/types'
 import { SearchTermsTable } from 'pages/stats/help-center/components/SearchTermsTable/SearchTermsTable'
 import { useSelectedHelpCenter } from 'pages/stats/help-center/hooks/useSelectedHelpCenter'
 import { NoDataAvailable } from 'pages/stats/NoDataAvailable'

@@ -41,8 +41,8 @@ jest.mock('pages/stats/aiSalesAgent/charts/AiSalesAgentTrendCard', () => () => (
     <div>generic-trend-card</div>
 ))
 
-jest.mock('pages/stats/custom-reports/CustomReportComponent', () => ({
-    CustomReportComponent: () => <div>top-products-table</div>,
+jest.mock('pages/stats/dashboards/DashboardComponent', () => ({
+    DashboardComponent: () => <div>top-products-table</div>,
 }))
 
 describe('AiSalesAgentSalesOverview', () => {

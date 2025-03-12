@@ -1,5 +1,5 @@
-import { ReportsIDs } from 'pages/stats/custom-reports/constants'
-import { ReportConfig } from 'pages/stats/custom-reports/types'
+import { ReportsIDs } from 'pages/stats/dashboards/constants'
+import { ReportConfig } from 'pages/stats/dashboards/types'
 import { STATS_ROUTES } from 'routes/constants'
 
 export const SUPPORT_PERFORMANCE_SATISFACTION_PAGE_TITLE = 'Satisfaction'

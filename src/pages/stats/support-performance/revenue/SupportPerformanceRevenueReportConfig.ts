@@ -1,5 +1,5 @@
-import { ReportsIDs } from 'pages/stats/custom-reports/constants'
-import { ReportConfig } from 'pages/stats/custom-reports/types'
+import { ReportsIDs } from 'pages/stats/dashboards/constants'
+import { ReportConfig } from 'pages/stats/dashboards/types'
 
 export const SUPPORT_PERFORMANCE_REVENUE_PAGE_TITLE = 'Revenue'
 

@@ -3,7 +3,7 @@ import React from 'react'
 import { useNewAutomateFilters } from 'hooks/reporting/automate/useNewAutomateFilters'
 import { useTimeSavedByAgentsTrend } from 'hooks/reporting/automate/useTimeSavedByAgentsTrend'
 import { TimeSavedByAgentsMetric } from 'pages/automate/automate-metrics/TimeSavedByAgentsMetric'
-import { DashboardChartProps } from 'pages/stats/custom-reports/types'
+import { DashboardChartProps } from 'pages/stats/dashboards/types'
 
 export const TimeSavedByAgentsKPIChart = ({
     chartId,

@@ -3,12 +3,12 @@ import {
     fetchWorkloadPerChannelDistributionForPreviousPeriod,
 } from 'hooks/reporting/distributions'
 import { FilterKey } from 'models/stat/types'
-import { ReportsIDs } from 'pages/stats/custom-reports/constants'
+import { ReportsIDs } from 'pages/stats/dashboards/constants'
 import {
     ChartType,
     DataExportFormat,
     ReportConfig,
-} from 'pages/stats/custom-reports/types'
+} from 'pages/stats/dashboards/types'
 import { CustomerSatisfactionTrendCard } from 'pages/stats/support-performance/overview/charts/CustomerSatisfactionTrendCard'
 import { MedianResolutionTimeTrendCard } from 'pages/stats/support-performance/overview/charts/MedianResolutionTimeTrendCard'
 import { MedianFirstResponseTimeTrendCard } from 'pages/stats/support-performance/overview/charts/MedianResponseTimeTrendCard'

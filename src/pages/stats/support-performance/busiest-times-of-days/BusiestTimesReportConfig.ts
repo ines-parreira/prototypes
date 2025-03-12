@@ -1,11 +1,11 @@
 import { FilterComponentKey, FilterKey } from 'models/stat/types'
 import { AUTO_QA_FILTER_KEYS } from 'pages/stats/common/filters/constants'
-import { ReportsIDs } from 'pages/stats/custom-reports/constants'
+import { ReportsIDs } from 'pages/stats/dashboards/constants'
 import {
     ChartType,
     DataExportFormat,
     ReportConfig,
-} from 'pages/stats/custom-reports/types'
+} from 'pages/stats/dashboards/types'
 import { BusiestTimesOfDaysTableChart } from 'pages/stats/support-performance/busiest-times-of-days/BusiestTimesOfDaysTableChart'
 import { STATS_ROUTES } from 'routes/constants'
 import { fetchAggregatedBusiestTimesOfDayReportData } from 'services/reporting/busiestTimesOfDaysReportingService'

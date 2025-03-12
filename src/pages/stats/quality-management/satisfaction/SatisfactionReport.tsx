@@ -7,8 +7,8 @@ import { useGridSize } from 'hooks/useGridSize'
 import { FilterKey } from 'models/stat/types'
 import { AnalyticsFooter } from 'pages/stats/AnalyticsFooter'
 import FiltersPanelWrapper from 'pages/stats/common/filters/FiltersPanelWrapper'
-import { CustomReportComponent } from 'pages/stats/custom-reports/CustomReportComponent'
 import DashboardGridCell from 'pages/stats/DashboardGridCell'
+import { DashboardComponent } from 'pages/stats/dashboards/DashboardComponent'
 import DashboardSection from 'pages/stats/DashboardSection'
 import { SatisfactionDownloadDataButton } from 'pages/stats/quality-management/satisfaction/SatisfactionDownloadDataButton'
 import {
@@ -61,25 +61,25 @@ export default function SatisfactionReport() {
                 )}
                 <DashboardSection>
                     <DashboardGridCell size={getGridCellSize(4)}>
-                        <CustomReportComponent
+                        <DashboardComponent
                             chart={SatisfactionChart.SatisfactionScoreTrendCard}
                             config={SatisfactionReportConfig}
                         />
                     </DashboardGridCell>
                     <DashboardGridCell size={getGridCellSize(4)}>
-                        <CustomReportComponent
+                        <DashboardComponent
                             chart={SatisfactionChart.ResponseRateTrendCard}
                             config={SatisfactionReportConfig}
                         />
                     </DashboardGridCell>
                     <DashboardGridCell size={getGridCellSize(4)}>
-                        <CustomReportComponent
+                        <DashboardComponent
                             chart={SatisfactionChart.SurveysSentTrendCard}
                             config={SatisfactionReportConfig}
                         />
                     </DashboardGridCell>
                     <DashboardGridCell size={getGridCellSize(6)}>
-                        <CustomReportComponent
+                        <DashboardComponent
                             chart={
                                 SatisfactionChart.AverageSurveyScoreDonutChart
                             }
@@ -87,13 +87,13 @@ export default function SatisfactionReport() {
                         />
                     </DashboardGridCell>
                     <DashboardGridCell size={getGridCellSize(6)}>
-                        <CustomReportComponent
+                        <DashboardComponent
                             chart={SatisfactionChart.CommentHighlightsChart}
                             config={SatisfactionReportConfig}
                         />
                     </DashboardGridCell>
                     <DashboardGridCell size={getGridCellSize(12)}>
-                        <CustomReportComponent
+                        <DashboardComponent
                             chart={
                                 SatisfactionChart.AverageCSATPerDimensionTrendChart
                             }
@@ -101,7 +101,7 @@ export default function SatisfactionReport() {
                         />
                     </DashboardGridCell>
                     <DashboardGridCell size={getGridCellSize(12)}>
-                        <CustomReportComponent
+                        <DashboardComponent
                             chart={SatisfactionChart.ScoredSurveysChart}
                             config={SatisfactionReportConfig}
                         />

@@ -1,6 +1,6 @@
 import React from 'react'
 
-import { DashboardChartProps } from 'pages/stats/custom-reports/types'
+import { DashboardChartProps } from 'pages/stats/dashboards/types'
 import { OverviewChartCard } from 'pages/stats/support-performance/components/OverviewChartCard'
 import {
     OverviewChartConfig,

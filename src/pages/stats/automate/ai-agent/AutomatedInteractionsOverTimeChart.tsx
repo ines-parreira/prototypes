@@ -17,7 +17,7 @@ import ChartCard from 'pages/stats/ChartCard'
 import { default as LineChart } from 'pages/stats/common/components/charts/LineChart/LineChart'
 import { LogicalOperatorEnum } from 'pages/stats/common/components/Filter/constants'
 import { SHORT_FORMAT } from 'pages/stats/common/utils'
-import { DashboardChartProps } from 'pages/stats/custom-reports/types'
+import { DashboardChartProps } from 'pages/stats/dashboards/types'
 import { getStatsFiltersWithLogicalOperators } from 'state/stats/selectors'
 
 const AUTOMATED_INTERACTIONS_LABEL = 'AI Agent'

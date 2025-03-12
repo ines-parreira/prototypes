@@ -3,7 +3,7 @@ import React from 'react'
 import { useDecreaseInResolutionTimeTrend } from 'hooks/reporting/automate/useDecreaseInResolutionTimeTrend'
 import { useNewAutomateFilters } from 'hooks/reporting/automate/useNewAutomateFilters'
 import { DecreaseInResolutionTimeMetric } from 'pages/automate/automate-metrics'
-import { DashboardChartProps } from 'pages/stats/custom-reports/types'
+import { DashboardChartProps } from 'pages/stats/dashboards/types'
 
 export const DecreaseInResolutionTimeKPIChart = ({
     chartId,

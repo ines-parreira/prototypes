@@ -1,7 +1,7 @@
 import React from 'react'
 
-import { CustomReportComponent } from 'pages/stats/custom-reports/CustomReportComponent'
 import DashboardGridCell from 'pages/stats/DashboardGridCell'
+import { DashboardComponent } from 'pages/stats/dashboards/DashboardComponent'
 import DashboardSection from 'pages/stats/DashboardSection'
 import {
     HelpCenterChart,
@@ -29,13 +29,13 @@ const HelpCenterOverviewSection = () => {
             }
         >
             <DashboardGridCell size={6}>
-                <CustomReportComponent
+                <DashboardComponent
                     chart={HelpCenterChart.ArticleViewsTrendCard}
                     config={HelpCenterReportConfig}
                 />
             </DashboardGridCell>
             <DashboardGridCell size={6}>
-                <CustomReportComponent
+                <DashboardComponent
                     chart={HelpCenterChart.SearchesTrendCard}
                     config={HelpCenterReportConfig}
                 />

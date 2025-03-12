@@ -4,7 +4,7 @@ import { useNewStatsFilters } from 'hooks/reporting/support-performance/useNewSt
 import { TopProductRecommendationTableStats } from 'pages/stats/aiSalesAgent/components/TopProductRecommendationTableStats'
 import { useProductRecommendations } from 'pages/stats/aiSalesAgent/metrics/useProductRecommendations'
 import ChartCard from 'pages/stats/ChartCard'
-import { DashboardChartProps } from 'pages/stats/custom-reports/types'
+import { DashboardChartProps } from 'pages/stats/dashboards/types'
 
 const ITEMS_PER_PAGE = 10
 

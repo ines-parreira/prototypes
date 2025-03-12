@@ -7,8 +7,8 @@ import { useGridSize } from 'hooks/useGridSize'
 import { FilterKey } from 'models/stat/types'
 import { AnalyticsFooter } from 'pages/stats/AnalyticsFooter'
 import FiltersPanelWrapper from 'pages/stats/common/filters/FiltersPanelWrapper'
-import { CustomReportComponent } from 'pages/stats/custom-reports/CustomReportComponent'
 import DashboardGridCell from 'pages/stats/DashboardGridCell'
+import { DashboardComponent } from 'pages/stats/dashboards/DashboardComponent'
 import DashboardSection from 'pages/stats/DashboardSection'
 import StatsPage from 'pages/stats/StatsPage'
 import { AutoQADownloadDataButton } from 'pages/stats/support-performance/auto-qa/AutoQADownloadDataButton'
@@ -69,7 +69,7 @@ export default function AutoQA() {
                     <DashboardGridCell
                         size={getGridCellSize(trendCardColumnWidth)}
                     >
-                        <CustomReportComponent
+                        <DashboardComponent
                             chart={AutoQAChart.ReviewedClosedTickets}
                             config={AutoQAReportConfig}
                         />
@@ -77,7 +77,7 @@ export default function AutoQA() {
                     <DashboardGridCell
                         size={getGridCellSize(trendCardColumnWidth)}
                     >
-                        <CustomReportComponent
+                        <DashboardComponent
                             chart={AutoQAChart.ResolutionCompleteness}
                             config={AutoQAReportConfig}
                         />
@@ -88,7 +88,7 @@ export default function AutoQA() {
                             manualDimensionTrendCardColumnWidth,
                         )}
                     >
-                        <CustomReportComponent
+                        <DashboardComponent
                             chart={AutoQAChart.Accuracy}
                             config={AutoQAReportConfig}
                         />
@@ -98,7 +98,7 @@ export default function AutoQA() {
                             manualDimensionTrendCardColumnWidth,
                         )}
                     >
-                        <CustomReportComponent
+                        <DashboardComponent
                             chart={AutoQAChart.InternalCompliance}
                             config={AutoQAReportConfig}
                         />
@@ -108,7 +108,7 @@ export default function AutoQA() {
                             manualDimensionTrendCardColumnWidth,
                         )}
                     >
-                        <CustomReportComponent
+                        <DashboardComponent
                             chart={AutoQAChart.Efficiency}
                             config={AutoQAReportConfig}
                         />
@@ -116,7 +116,7 @@ export default function AutoQA() {
                     <DashboardGridCell
                         size={getGridCellSize(trendCardColumnWidth)}
                     >
-                        <CustomReportComponent
+                        <DashboardComponent
                             chart={AutoQAChart.CommunicationSkills}
                             config={AutoQAReportConfig}
                         />
@@ -124,7 +124,7 @@ export default function AutoQA() {
                     <DashboardGridCell
                         size={getGridCellSize(trendCardColumnWidth)}
                     >
-                        <CustomReportComponent
+                        <DashboardComponent
                             chart={AutoQAChart.LanguageProficiency}
                             config={AutoQAReportConfig}
                         />
@@ -134,13 +134,13 @@ export default function AutoQA() {
                             manualDimensionTrendCardColumnWidth,
                         )}
                     >
-                        <CustomReportComponent
+                        <DashboardComponent
                             chart={AutoQAChart.BrandVoice}
                             config={AutoQAReportConfig}
                         />
                     </DashboardGridCell>
                     <DashboardGridCell size={getGridCellSize(12)}>
-                        <CustomReportComponent
+                        <DashboardComponent
                             chart={AutoQAChart.AgentsTable}
                             config={AutoQAReportConfig}
                         />

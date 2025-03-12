@@ -14,8 +14,8 @@ import PeriodStatsFilter from 'pages/stats/common/filters/DEPRECATED_PeriodStats
 import FiltersPanelWrapper from 'pages/stats/common/filters/FiltersPanelWrapper'
 import DEPRECATED_HelpCenterStatsLanguageFilter from 'pages/stats/common/filters/HelpCenterStatsLanguageFilter/DEPRECATED_HelpCenterStatsLanguageFilter'
 import { DEFAULT_LOCALE } from 'pages/stats/common/utils'
-import { CustomReportComponent } from 'pages/stats/custom-reports/CustomReportComponent'
 import DashboardGridCell from 'pages/stats/DashboardGridCell'
+import { DashboardComponent } from 'pages/stats/dashboards/DashboardComponent'
 import DashboardSection from 'pages/stats/DashboardSection'
 import AIBanner from 'pages/stats/help-center/components/AIBanner'
 import HelpCenterOverviewSection from 'pages/stats/help-center/components/HelpCenterOverviewSection/HelpCenterOverviewSection'
@@ -140,13 +140,13 @@ export const HelpCenterReport = () => {
 
                 <DashboardSection title="Performance">
                     <DashboardGridCell size={12}>
-                        <CustomReportComponent
+                        <DashboardComponent
                             chart={HelpCenterChart.ArticleViewsGraph}
                             config={HelpCenterReportConfig}
                         />
                     </DashboardGridCell>
                     <DashboardGridCell size={12}>
-                        <CustomReportComponent
+                        <DashboardComponent
                             chart={HelpCenterChart.PerformanceByArticleTable}
                             config={HelpCenterReportConfig}
                         />
@@ -162,19 +162,19 @@ export const HelpCenterReport = () => {
                 </DashboardSection>
                 <DashboardSection title="Help Center searches">
                     <DashboardGridCell size={6}>
-                        <CustomReportComponent
+                        <DashboardComponent
                             chart={HelpCenterChart.SearchResultsDonut}
                             config={HelpCenterReportConfig}
                         />
                     </DashboardGridCell>
                     <DashboardGridCell size={8}>
-                        <CustomReportComponent
+                        <DashboardComponent
                             chart={HelpCenterChart.SearchTermsTable}
                             config={HelpCenterReportConfig}
                         />
                     </DashboardGridCell>
                     <DashboardGridCell size={4}>
-                        <CustomReportComponent
+                        <DashboardComponent
                             chart={HelpCenterChart.NoSearchTable}
                             config={HelpCenterReportConfig}
                         />

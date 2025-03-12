@@ -7,7 +7,7 @@ import useAppSelector from 'hooks/useAppSelector'
 import { FilterKey } from 'models/stat/types'
 import { AutomatedInteractionsMetric } from 'pages/automate/automate-metrics/AutomatedInteractionsMetric'
 import { LogicalOperatorEnum } from 'pages/stats/common/components/Filter/constants'
-import { DashboardChartProps } from 'pages/stats/custom-reports/types'
+import { DashboardChartProps } from 'pages/stats/dashboards/types'
 import { getStatsFiltersWithLogicalOperators } from 'state/stats/selectors'
 
 export function AutomatedInteractionsMetricCard({

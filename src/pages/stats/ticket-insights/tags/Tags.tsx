@@ -6,8 +6,8 @@ import { useGridSize } from 'hooks/useGridSize'
 import { FilterKey } from 'models/stat/types'
 import { AnalyticsFooter } from 'pages/stats/AnalyticsFooter'
 import FiltersPanelWrapper from 'pages/stats/common/filters/FiltersPanelWrapper'
-import { CustomReportComponent } from 'pages/stats/custom-reports/CustomReportComponent'
 import DashboardGridCell from 'pages/stats/DashboardGridCell'
+import { DashboardComponent } from 'pages/stats/dashboards/DashboardComponent'
 import DashboardSection from 'pages/stats/DashboardSection'
 import StatsPage from 'pages/stats/StatsPage'
 import {
@@ -58,7 +58,7 @@ export function Tags() {
                         size={getGridCellSize(4)}
                         className="pb-0"
                     >
-                        <CustomReportComponent
+                        <DashboardComponent
                             chart={TicketInsightsTagsChart.TopUsedTagsChart}
                             config={TicketInsightsTagsReportConfig}
                         />
@@ -67,13 +67,13 @@ export function Tags() {
                         size={getGridCellSize(8)}
                         className="pb-0"
                     >
-                        <CustomReportComponent
+                        <DashboardComponent
                             chart={TicketInsightsTagsChart.TagsTrendChart}
                             config={TicketInsightsTagsReportConfig}
                         />
                     </DashboardGridCell>
                     <DashboardGridCell>
-                        <CustomReportComponent
+                        <DashboardComponent
                             chart={
                                 TicketInsightsTagsChart.AllUsedTagsTableChart
                             }

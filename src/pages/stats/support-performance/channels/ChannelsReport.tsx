@@ -7,8 +7,8 @@ import { useGridSize } from 'hooks/useGridSize'
 import { FilterKey } from 'models/stat/types'
 import { AnalyticsFooter } from 'pages/stats/AnalyticsFooter'
 import FiltersPanelWrapper from 'pages/stats/common/filters/FiltersPanelWrapper'
-import { CustomReportComponent } from 'pages/stats/custom-reports/CustomReportComponent'
 import DashboardGridCell from 'pages/stats/DashboardGridCell'
+import { DashboardComponent } from 'pages/stats/dashboards/DashboardComponent'
 import DashboardSection from 'pages/stats/DashboardSection'
 import StatsPage from 'pages/stats/StatsPage'
 import { ChannelsDownloadDataButton } from 'pages/stats/support-performance/channels/ChannelsDownloadDataButton'
@@ -62,7 +62,7 @@ export function ChannelsReport() {
                 )}
                 <DashboardSection>
                     <DashboardGridCell size={getGridCellSize(12)}>
-                        <CustomReportComponent
+                        <DashboardComponent
                             chart={ChannelsChart.ChannelsPerformanceTable}
                             config={ChannelsReportConfig}
                         />

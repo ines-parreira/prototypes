@@ -6,7 +6,7 @@ import BigNumberMetric from 'pages/stats/BigNumberMetric'
 import css from 'pages/stats/convert/components/CampaignTotalsStat/CampaignTotalsStat.less'
 import { METRICS } from 'pages/stats/convert/constants/ConvertPerformanceOverviewConfig'
 import { useCampaignTotalStats } from 'pages/stats/convert/hooks/useCampaignTotalStats'
-import { DashboardChartProps } from 'pages/stats/custom-reports/types'
+import { DashboardChartProps } from 'pages/stats/dashboards/types'
 import MetricCard from 'pages/stats/MetricCard'
 
 export const CampaignRevenueKPIChart = ({

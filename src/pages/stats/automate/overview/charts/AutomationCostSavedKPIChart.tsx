@@ -3,7 +3,7 @@ import React from 'react'
 import { useAutomationCostSavedTrend } from 'hooks/reporting/automate/useAutomationCostSavedTrend'
 import { useNewAutomateFilters } from 'hooks/reporting/automate/useNewAutomateFilters'
 import { AutomationCostSavedMetric } from 'pages/automate/automate-metrics'
-import { DashboardChartProps } from 'pages/stats/custom-reports/types'
+import { DashboardChartProps } from 'pages/stats/dashboards/types'
 
 export const AutomationCostSavedKPIChart = ({
     chartId,

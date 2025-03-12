@@ -8,7 +8,7 @@ import { useNewStatsFilters } from 'hooks/reporting/support-performance/useNewSt
 import { opposite, OrderDirection } from 'models/api/types'
 import { NumberedPagination } from 'pages/common/components/Paginations'
 import ChartCard from 'pages/stats/ChartCard'
-import { DashboardChartProps } from 'pages/stats/custom-reports/types'
+import { DashboardChartProps } from 'pages/stats/dashboards/types'
 import { NoDataAvailable } from 'pages/stats/NoDataAvailable'
 import ScoredSurveysTable, {
     TableState,

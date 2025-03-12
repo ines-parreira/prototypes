@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 
 import { useNewStatsFilters } from 'hooks/reporting/support-performance/useNewStatsFilters'
-import { DashboardChartProps } from 'pages/stats/custom-reports/types'
+import { DashboardChartProps } from 'pages/stats/dashboards/types'
 import OverviewCard from 'pages/stats/help-center/components/OverviewCard/OverviewCard'
 import {
     HelpCenterMetric,

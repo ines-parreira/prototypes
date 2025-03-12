@@ -12,7 +12,7 @@ import {
     COMMON_NAV_LINK_PROPS,
     StatsNavLink,
 } from 'pages/stats/common/components/StatsNavLink'
-import { DashboardsNavbarBlock } from 'pages/stats/custom-reports/DashboardsNavbarBlock/DashboardsNavbarBlock'
+import { DashboardsNavbarBlock } from 'pages/stats/dashboards/DashboardsNavbarBlock/DashboardsNavbarBlock'
 import { ProtectedRoute } from 'pages/stats/report-chart-restrictions/ProtectedRoute'
 import AutomateStatsNavbar from 'pages/stats/self-service/AutomateStatsNavbar'
 import VoiceStatsNavbarItem from 'pages/stats/voice/components/VoiceStatsNavbar/VoiceStatsNavbarItem'

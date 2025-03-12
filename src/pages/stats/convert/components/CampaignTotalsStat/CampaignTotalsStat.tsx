@@ -4,8 +4,8 @@ import {
     CampaignsLegacyChart,
     CampaignsLegacyReportConfig,
 } from 'pages/stats/convert/campaigns/CampaignsLegacyReportConfig'
-import { CustomReportComponent } from 'pages/stats/custom-reports/CustomReportComponent'
 import DashboardGridCell from 'pages/stats/DashboardGridCell'
+import { DashboardComponent } from 'pages/stats/dashboards/DashboardComponent'
 
 const FIRST_ROW_SIZE = 6
 const GRID_SIZE = 4
@@ -15,31 +15,31 @@ export const CampaignTotalsStat = () => {
     return (
         <React.Fragment>
             <DashboardGridCell size={FIRST_ROW_SIZE}>
-                <CustomReportComponent
+                <DashboardComponent
                     config={CampaignsLegacyReportConfig}
                     chart={CampaignsLegacyChart.CampaignRevenueKPIChart}
                 />
             </DashboardGridCell>
             <DashboardGridCell size={FIRST_ROW_SIZE}>
-                <CustomReportComponent
+                <DashboardComponent
                     config={CampaignsLegacyReportConfig}
                     chart={CampaignsLegacyChart.InfluencedRevenueShareKPIChart}
                 />
             </DashboardGridCell>
             <DashboardGridCell size={GRID_SIZE}>
-                <CustomReportComponent
+                <DashboardComponent
                     config={CampaignsLegacyReportConfig}
                     chart={CampaignsLegacyChart.ImpressionsKPIChart}
                 />
             </DashboardGridCell>
             <DashboardGridCell size={GRID_SIZE}>
-                <CustomReportComponent
+                <DashboardComponent
                     config={CampaignsLegacyReportConfig}
                     chart={CampaignsLegacyChart.EngagementKPIChart}
                 />
             </DashboardGridCell>
             <DashboardGridCell size={GRID_SIZE}>
-                <CustomReportComponent
+                <DashboardComponent
                     config={CampaignsLegacyReportConfig}
                     chart={CampaignsLegacyChart.CampaignsSalesCountKPIChart}
                 />

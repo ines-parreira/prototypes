@@ -2,11 +2,11 @@ import { renderHook } from '@testing-library/react-hooks'
 import { fromJS } from 'immutable'
 
 import { UserRole } from 'config/types/user'
-import { useReportRestrictions } from 'hooks/reporting/custom-reports/useReportRestrictions'
+import { useReportRestrictions } from 'hooks/reporting/dashboards/useReportRestrictions'
 import useAppSelector from 'hooks/useAppSelector'
 import { STATS_ROUTE_PREFIX } from 'pages/stats/common/components/constants'
-import { getReportConfig } from 'pages/stats/custom-reports/config'
-import { ReportsIDs } from 'pages/stats/custom-reports/constants'
+import { getReportConfig } from 'pages/stats/dashboards/config'
+import { ReportsIDs } from 'pages/stats/dashboards/constants'
 import {
     HelpCenterChart,
     HelpCenterReportConfig,
@@ -39,7 +39,7 @@ jest.mock('state/currentAccount/selectors')
 jest.mock('state/currentUser/selectors')
 jest.mock('hooks/useAppSelector')
 const mockUseAppSelector = assumeMock(useAppSelector)
-jest.mock('hooks/reporting/custom-reports/useReportRestrictions')
+jest.mock('hooks/reporting/dashboards/useReportRestrictions')
 const useReportRestrictionsMock = assumeMock(useReportRestrictions)
 jest.mock('pages/stats/report-chart-restrictions/config')
 

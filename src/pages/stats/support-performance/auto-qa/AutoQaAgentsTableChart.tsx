@@ -1,7 +1,7 @@
 import React from 'react'
 
 import ChartCard from 'pages/stats/ChartCard'
-import { DashboardChartProps } from 'pages/stats/custom-reports/types'
+import { DashboardChartProps } from 'pages/stats/dashboards/types'
 import { AGENT_PERFORMANCE_SECTION_TITLE } from 'pages/stats/support-performance/agents/AgentsTableChart'
 import { AutoQAAgentsCardExtra } from 'pages/stats/support-performance/auto-qa/AutoQAAgentsCardExtra'
 import { AutoQAAgentsTable } from 'pages/stats/support-performance/auto-qa/AutoQAAgentsTable'

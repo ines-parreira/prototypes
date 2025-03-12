@@ -10,7 +10,7 @@ import useGetCampaignRevenueTimeSeries from 'pages/stats/convert/hooks/stats/use
 import { useCampaignStatsFilters } from 'pages/stats/convert/hooks/useCampaignStatsFilters'
 import { useGetCurrencyForStore } from 'pages/stats/convert/hooks/useGetCurrencyForStore'
 import { useGetNamespacedShopNameForStore } from 'pages/stats/convert/hooks/useGetNamespacedShopNameForStore'
-import { DashboardChartProps } from 'pages/stats/custom-reports/types'
+import { DashboardChartProps } from 'pages/stats/dashboards/types'
 import { getTimezone } from 'state/currentUser/selectors'
 
 const CampaignRevenueChart = ({ chartId, dashboard }: DashboardChartProps) => {

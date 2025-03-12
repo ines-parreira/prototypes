@@ -6,8 +6,8 @@ import { Card } from '@gorgias/analytics-ui-kit'
 
 import css from 'pages/stats/ChartCard.less'
 import { HintTooltip } from 'pages/stats/common/HintTooltip'
-import { ChartsActionMenu } from 'pages/stats/custom-reports/ChartsActionMenu/ChartsActionMenu'
-import { DashboardChartProps } from 'pages/stats/custom-reports/types'
+import { ChartsActionMenu } from 'pages/stats/dashboards/ChartsActionMenu/ChartsActionMenu'
+import { DashboardChartProps } from 'pages/stats/dashboards/types'
 import { TooltipData } from 'pages/stats/types'
 
 type Props = {

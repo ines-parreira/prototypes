@@ -11,7 +11,7 @@ import { TicketMessagesDimension } from 'models/reporting/cubes/TicketMessagesCu
 import { averageCSATScorePerDimensionTimeSeriesFactory } from 'models/reporting/queryFactories/satisfaction/averageCSATScorePerDimensionQueryFactory'
 import { ReportingGranularity } from 'models/reporting/types'
 import { StatsFilters } from 'models/stat/types'
-import { ReportFetch } from 'pages/stats/custom-reports/types'
+import { ReportFetch } from 'pages/stats/dashboards/types'
 import {
     getFormattedInfo,
     transformToTimeSeriesData,

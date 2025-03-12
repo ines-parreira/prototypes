@@ -8,8 +8,8 @@ import { useGridSize } from 'hooks/useGridSize'
 import { FilterKey } from 'models/stat/types'
 import { AnalyticsFooter } from 'pages/stats/AnalyticsFooter'
 import FiltersPanelWrapper from 'pages/stats/common/filters/FiltersPanelWrapper'
-import { CustomReportComponent } from 'pages/stats/custom-reports/CustomReportComponent'
 import DashboardGridCell from 'pages/stats/DashboardGridCell'
+import { DashboardComponent } from 'pages/stats/dashboards/DashboardComponent'
 import DashboardSection from 'pages/stats/DashboardSection'
 import StatsPage from 'pages/stats/StatsPage'
 import { SupportPerformanceFilters } from 'pages/stats/support-performance/SupportPerformanceFilters'
@@ -89,19 +89,19 @@ export function SupportPerformanceTicketInsights() {
             {selectedCustomField.id && (
                 <DashboardSection>
                     <DashboardGridCell size={getGridCellSize(4)}>
-                        <CustomReportComponent
+                        <DashboardComponent
                             chart={TicketFieldsChart.TicketDistributionTable}
                             config={TicketFieldsReportConfig}
                         />
                     </DashboardGridCell>
                     <DashboardGridCell size={getGridCellSize(8)}>
-                        <CustomReportComponent
+                        <DashboardComponent
                             chart={TicketFieldsChart.TicketInsightsFieldTrend}
                             config={TicketFieldsReportConfig}
                         />
                     </DashboardGridCell>
                     <DashboardGridCell>
-                        <CustomReportComponent
+                        <DashboardComponent
                             chart={
                                 TicketFieldsChart.CustomFieldsTicketCountBreakdownTableChart
                             }

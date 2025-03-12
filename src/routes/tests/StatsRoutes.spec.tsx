@@ -30,8 +30,8 @@ import StatsNavbarContainer from 'pages/stats/common/StatsNavbarContainer'
 import RevenueCampaignsStats from 'pages/stats/convert/pages/CampaignsStats'
 import CampaignStatsPaywallView from 'pages/stats/convert/pages/CampaignsStats/CampaignStatsPaywallView'
 import { CampaignStatsFilters } from 'pages/stats/convert/providers/CampaignStatsFilters'
-import { CustomReportPage } from 'pages/stats/custom-reports/CustomReportPage'
-import { CustomReports } from 'pages/stats/custom-reports/CustomReports'
+import { DashboardPage } from 'pages/stats/dashboards/DashboardPage'
+import { Dashboards } from 'pages/stats/dashboards/Dashboards'
 import HelpCenterStats from 'pages/stats/help-center/pages/HelpCenterStats'
 import LiveAgents from 'pages/stats/LiveAgents'
 import LiveOverview from 'pages/stats/LiveOverview'
@@ -143,10 +143,10 @@ jest.mock(
 const SupportPerformanceOverviewReportMock = assumeMock(
     SupportPerformanceOverviewReport,
 )
-jest.mock('pages/stats/custom-reports/CustomReports')
-const CustomReportsMock = assumeMock(CustomReports)
-jest.mock('pages/stats/custom-reports/CustomReportPage')
-const CustomReportPageMock = assumeMock(CustomReportPage)
+jest.mock('pages/stats/dashboards/Dashboards')
+const DashboardsMock = assumeMock(Dashboards)
+jest.mock('pages/stats/dashboards/DashboardPage')
+const DashboardPageMock = assumeMock(DashboardPage)
 jest.mock(
     'pages/stats/support-performance/busiest-times-of-days/BusiestTimesOfDays',
 )
@@ -223,8 +223,8 @@ describe('StatsRoutes', () => {
         AutoQAMock.mockImplementation(() => <div />)
         SatisfactionMock.mockImplementation(() => <div />)
         TagsMock.mockImplementation(() => <div />)
-        CustomReportPageMock.mockImplementation(() => <div />)
-        CustomReportsMock.mockImplementation(() => <div />)
+        DashboardPageMock.mockImplementation(() => <div />)
+        DashboardsMock.mockImplementation(() => <div />)
         StatsNavbarContainerMock.mockImplementation(() => <div />)
         ProtectedRouteMock.mockImplementation(({ children }) => children)
         SupportPerformanceOverviewReportMock.mockImplementation(() => <div />)
@@ -279,11 +279,11 @@ describe('StatsRoutes', () => {
         },
         {
             route: `${STATS_ROUTE_PREFIX}${STATS_ROUTES.DASHBOARDS_NEW}`,
-            mock: CustomReportsMock,
+            mock: DashboardsMock,
         },
         {
             route: `${STATS_ROUTE_PREFIX}${STATS_ROUTES.DASHBOARDS_PAGE}`,
-            mock: CustomReportPageMock,
+            mock: DashboardPageMock,
         },
         {
             route: `${STATS_ROUTE_PREFIX}${STATS_ROUTES.SUPPORT_PERFORMANCE_OVERVIEW}`,

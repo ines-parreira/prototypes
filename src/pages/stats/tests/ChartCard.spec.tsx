@@ -3,10 +3,10 @@ import React from 'react'
 import { render, screen } from '@testing-library/react'
 
 import ChartCard from 'pages/stats/ChartCard'
-import { ChartsActionMenu } from 'pages/stats/custom-reports/ChartsActionMenu/ChartsActionMenu'
+import { ChartsActionMenu } from 'pages/stats/dashboards/ChartsActionMenu/ChartsActionMenu'
 import { assumeMock } from 'utils/testing'
 
-jest.mock('pages/stats/custom-reports/ChartsActionMenu/ChartsActionMenu')
+jest.mock('pages/stats/dashboards/ChartsActionMenu/ChartsActionMenu')
 const ChartsActionMenuMock = assumeMock(ChartsActionMenu)
 
 describe('<ChartCard />', () => {

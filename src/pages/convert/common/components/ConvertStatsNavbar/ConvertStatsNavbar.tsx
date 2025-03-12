@@ -9,7 +9,7 @@ import NavbarLink, {
 import UpgradeIcon from 'pages/common/components/UpgradeIcon'
 import { useIsConvertSubscriber } from 'pages/common/hooks/useIsConvertSubscriber'
 import ConvertSubscriptionModal from 'pages/convert/common/components/ConvertSubscriptionModal'
-import { ReportsIDs } from 'pages/stats/custom-reports/constants'
+import { ReportsIDs } from 'pages/stats/dashboards/constants'
 import { ProtectedRoute } from 'pages/stats/report-chart-restrictions/ProtectedRoute'
 
 export type ConvertNavbarLink = {

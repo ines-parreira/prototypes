@@ -8,7 +8,7 @@ import { OverviewMetricConfig } from 'pages/stats/convert/constants/ConvertPerfo
 import { ORDER_COUNT_LABEL } from 'pages/stats/convert/constants/labels'
 import { usePerformanceCampaignPerformanceStats } from 'pages/stats/convert/hooks/usePerformanceCampaignPerformanceStats'
 import { CampaignsTotalsMetricNames } from 'pages/stats/convert/services/constants'
-import { DashboardChartProps } from 'pages/stats/custom-reports/types'
+import { DashboardChartProps } from 'pages/stats/dashboards/types'
 
 export const PerformanceCampaignSalesGraphChart = ({
     chartId,

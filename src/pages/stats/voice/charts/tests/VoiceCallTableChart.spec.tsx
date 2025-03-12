@@ -10,7 +10,7 @@ import { Provider } from 'react-redux'
 import { FeatureFlagKey } from 'config/featureFlags'
 import { useFlag } from 'core/flags'
 import { ReportingGranularity } from 'models/reporting/types'
-import { DashboardChartProps } from 'pages/stats/custom-reports/types'
+import { DashboardChartProps } from 'pages/stats/dashboards/types'
 import { renderWithQueryClientProvider } from 'tests/reactQueryTestingUtils'
 import { assumeMock, mockStore } from 'utils/testing'
 

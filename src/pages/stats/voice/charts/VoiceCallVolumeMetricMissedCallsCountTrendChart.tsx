@@ -1,7 +1,7 @@
 import React from 'react'
 
 import { VoiceCallSegment } from 'models/reporting/cubes/VoiceCallCube'
-import { DashboardChartProps } from 'pages/stats/custom-reports/types'
+import { DashboardChartProps } from 'pages/stats/dashboards/types'
 import VoiceCallVolumeMetric from 'pages/stats/voice/components/VoiceCallVolumeMetric/VoiceCallVolumeMetric'
 import {
     DEPRECATED_MISSED_CALLS_METRIC_HINT,

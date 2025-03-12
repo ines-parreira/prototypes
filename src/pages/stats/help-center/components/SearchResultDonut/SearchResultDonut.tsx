@@ -3,7 +3,7 @@ import React from 'react'
 import { useNewStatsFilters } from 'hooks/reporting/support-performance/useNewStatsFilters'
 import ChartCard from 'pages/stats/ChartCard'
 import DonutChart from 'pages/stats/common/components/charts/DonutChart/DonutChart'
-import { DashboardChartProps } from 'pages/stats/custom-reports/types'
+import { DashboardChartProps } from 'pages/stats/dashboards/types'
 import css from 'pages/stats/help-center/components/SearchResultDonut/SearchResultDonut.less'
 import {
     SEARCH_RESULTS_DONUT_TITLE,

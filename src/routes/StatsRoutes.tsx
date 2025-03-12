@@ -28,8 +28,8 @@ import StatsNavbarContainer from 'pages/stats/common/StatsNavbarContainer'
 import RevenueCampaignsStats from 'pages/stats/convert/pages/CampaignsStats'
 import CampaignStatsPaywallView from 'pages/stats/convert/pages/CampaignsStats/CampaignStatsPaywallView'
 import { CampaignStatsFilters } from 'pages/stats/convert/providers/CampaignStatsFilters'
-import { CustomReportPage } from 'pages/stats/custom-reports/CustomReportPage'
-import { CustomReports } from 'pages/stats/custom-reports/CustomReports'
+import { DashboardPage } from 'pages/stats/dashboards/DashboardPage'
+import { Dashboards } from 'pages/stats/dashboards/Dashboards'
 import DefaultStatsFilters from 'pages/stats/DefaultStatsFilters'
 import HelpCenterStats from 'pages/stats/help-center/pages/HelpCenterStats'
 import LiveAgents from 'pages/stats/LiveAgents'
@@ -181,7 +181,7 @@ export const StatsRoutes = () => {
                                         <RevenueAddonApiClientProvider>
                                             <CampaignStatsFilters>
                                                 <App
-                                                    content={CustomReports}
+                                                    content={Dashboards}
                                                     navbar={
                                                         StatsNavbarContainer
                                                     }
@@ -207,7 +207,7 @@ export const StatsRoutes = () => {
                                         <RevenueAddonApiClientProvider>
                                             <CampaignStatsFilters>
                                                 <App
-                                                    content={CustomReportPage}
+                                                    content={DashboardPage}
                                                     navbar={
                                                         StatsNavbarContainer
                                                     }

@@ -7,7 +7,7 @@ import '@testing-library/jest-dom/extend-expect'
 import { agents } from 'fixtures/agents'
 import { VoiceCallSegment } from 'models/reporting/cubes/VoiceCallCube'
 import { ReportingGranularity } from 'models/reporting/types'
-import { CustomReportSchema } from 'pages/stats/custom-reports/types'
+import { DashboardSchema } from 'pages/stats/dashboards/types'
 import VoiceCallVolumeMetric from 'pages/stats/voice/components/VoiceCallVolumeMetric/VoiceCallVolumeMetric'
 import { useNewVoiceStatsFilters } from 'pages/stats/voice/hooks/useNewVoiceStatsFilters'
 import { useVoiceCallCountTrend } from 'pages/stats/voice/hooks/useVoiceCallCountTrend'
@@ -43,7 +43,7 @@ VoiceCallVolumeMetricEmptyMock.mockImplementation(({ title, hint }) => (
     </div>
 ))
 
-const dashboard: CustomReportSchema = {
+const dashboard: DashboardSchema = {
     id: 1,
     name: 'Test Report',
     emoji: '📊',

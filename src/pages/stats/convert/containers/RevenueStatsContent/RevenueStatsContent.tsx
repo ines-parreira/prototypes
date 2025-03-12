@@ -11,8 +11,8 @@ import {
 } from 'pages/stats/convert/campaigns/CampaignsPerformanceReportConfig'
 import CampaignPerformanceCharts from 'pages/stats/convert/components/CampaignPerformanceCharts'
 import { CampaignTotalsStat } from 'pages/stats/convert/components/CampaignTotalsStat'
-import { CustomReportComponent } from 'pages/stats/custom-reports/CustomReportComponent'
 import DashboardGridCell from 'pages/stats/DashboardGridCell'
+import { DashboardComponent } from 'pages/stats/dashboards/DashboardComponent'
 import DashboardSection from 'pages/stats/DashboardSection'
 
 export const RevenueStatsContent = () => {
@@ -25,7 +25,7 @@ export const RevenueStatsContent = () => {
                 <CampaignPerformanceCharts />
                 <DashboardSection title="">
                     <DashboardGridCell size={12}>
-                        <CustomReportComponent
+                        <DashboardComponent
                             config={CampaignsPerformanceReportConfig}
                             chart={CampaignsChart.CampaignPerformanceTable}
                         />
@@ -39,13 +39,13 @@ export const RevenueStatsContent = () => {
         <DashboardSection title="">
             <CampaignTotalsStat />
             <DashboardGridCell size={12}>
-                <CustomReportComponent
+                <DashboardComponent
                     config={CampaignsLegacyReportConfig}
                     chart={CampaignsLegacyChart.CampaignRevenueShareStat}
                 />
             </DashboardGridCell>
             <DashboardGridCell size={12}>
-                <CustomReportComponent
+                <DashboardComponent
                     config={CampaignsPerformanceReportConfig}
                     chart={CampaignsChart.CampaignPerformanceTable}
                 />

@@ -1,12 +1,12 @@
 import { fetchAgentsTableReportData } from 'hooks/reporting/support-performance/agents/useDownloadAgentsPerformanceData'
 import { FilterKey, StaticFilter } from 'models/stat/types'
 import { AUTO_QA_FILTER_KEYS } from 'pages/stats/common/filters/constants'
-import { ReportsIDs } from 'pages/stats/custom-reports/constants'
+import { ReportsIDs } from 'pages/stats/dashboards/constants'
 import {
     ChartType,
     DataExportFormat,
     ReportConfig,
-} from 'pages/stats/custom-reports/types'
+} from 'pages/stats/dashboards/types'
 import {
     AgentsShoutOutsConfig,
     TopPerformersChart,

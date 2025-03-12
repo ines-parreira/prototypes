@@ -8,8 +8,8 @@ import useLocalStorage from 'hooks/useLocalStorage'
 import { FilterKey } from 'models/stat/types'
 import { AnalyticsFooter } from 'pages/stats/AnalyticsFooter'
 import FiltersPanelWrapper from 'pages/stats/common/filters/FiltersPanelWrapper'
-import { CustomReportComponent } from 'pages/stats/custom-reports/CustomReportComponent'
 import DashboardGridCell from 'pages/stats/DashboardGridCell'
+import { DashboardComponent } from 'pages/stats/dashboards/DashboardComponent'
 import DashboardSection from 'pages/stats/DashboardSection'
 import StatsPage from 'pages/stats/StatsPage'
 import { DownloadOverviewData } from 'pages/stats/support-performance/overview/DownloadOverviewData'
@@ -87,13 +87,13 @@ export default function SupportPerformanceOverviewReport() {
                     }
                 >
                     <DashboardGridCell size={getGridCellSize(3)}>
-                        <CustomReportComponent
+                        <DashboardComponent
                             chart={OverviewChart.CustomerSatisfactionTrendCard}
                             config={SupportPerformanceOverviewReportConfig}
                         />
                     </DashboardGridCell>
                     <DashboardGridCell size={getGridCellSize(3)}>
-                        <CustomReportComponent
+                        <DashboardComponent
                             chart={
                                 OverviewChart.MedianFirstResponseTimeTrendCard
                             }
@@ -101,13 +101,13 @@ export default function SupportPerformanceOverviewReport() {
                         />
                     </DashboardGridCell>
                     <DashboardGridCell size={getGridCellSize(3)}>
-                        <CustomReportComponent
+                        <DashboardComponent
                             chart={OverviewChart.MedianResolutionTimeTrendCard}
                             config={SupportPerformanceOverviewReportConfig}
                         />
                     </DashboardGridCell>
                     <DashboardGridCell size={getGridCellSize(3)}>
-                        <CustomReportComponent
+                        <DashboardComponent
                             chart={OverviewChart.MessagesPerTicketTrendCard}
                             config={SupportPerformanceOverviewReportConfig}
                         />
@@ -121,7 +121,7 @@ export default function SupportPerformanceOverviewReport() {
                                 workloadSectionKPIGridCellSize,
                             )}
                         >
-                            <CustomReportComponent
+                            <DashboardComponent
                                 chart={OverviewChart.TicketsCreatedTrendCard}
                                 config={SupportPerformanceOverviewReportConfig}
                             />
@@ -131,7 +131,7 @@ export default function SupportPerformanceOverviewReport() {
                                 workloadSectionKPIGridCellSize,
                             )}
                         >
-                            <CustomReportComponent
+                            <DashboardComponent
                                 chart={OverviewChart.TicketsClosedTrendCard}
                                 config={SupportPerformanceOverviewReportConfig}
                             />
@@ -141,7 +141,7 @@ export default function SupportPerformanceOverviewReport() {
                                 workloadSectionKPIGridCellSize,
                             )}
                         >
-                            <CustomReportComponent
+                            <DashboardComponent
                                 chart={OverviewChart.OpenTicketsTrendCard}
                                 config={SupportPerformanceOverviewReportConfig}
                             />
@@ -151,13 +151,13 @@ export default function SupportPerformanceOverviewReport() {
                                 workloadSectionKPIGridCellSize,
                             )}
                         >
-                            <CustomReportComponent
+                            <DashboardComponent
                                 chart={OverviewChart.MessagesReceivedTrendCard}
                                 config={SupportPerformanceOverviewReportConfig}
                             />
                         </DashboardGridCell>
                         <DashboardGridCell size={12}>
-                            <CustomReportComponent
+                            <DashboardComponent
                                 chart={
                                     OverviewChart.TicketsCreatedVsClosedChart
                                 }
@@ -166,7 +166,7 @@ export default function SupportPerformanceOverviewReport() {
                         </DashboardGridCell>
                     </>
                     <DashboardGridCell size={12}>
-                        <CustomReportComponent
+                        <DashboardComponent
                             chart={OverviewChart.WorkloadPerChannelChart}
                             config={SupportPerformanceOverviewReportConfig}
                         />
@@ -179,7 +179,7 @@ export default function SupportPerformanceOverviewReport() {
                             isReportingZeroTouchTicketsMetricEnabled ? 4 : 3,
                         )}
                     >
-                        <CustomReportComponent
+                        <DashboardComponent
                             chart={OverviewChart.TicketsRepliedTrendCard}
                             config={SupportPerformanceOverviewReportConfig}
                         />
@@ -189,7 +189,7 @@ export default function SupportPerformanceOverviewReport() {
                             isReportingZeroTouchTicketsMetricEnabled ? 4 : 3,
                         )}
                     >
-                        <CustomReportComponent
+                        <DashboardComponent
                             chart={OverviewChart.MessagesSentTrendCard}
                             config={SupportPerformanceOverviewReportConfig}
                         />
@@ -199,7 +199,7 @@ export default function SupportPerformanceOverviewReport() {
                             isReportingZeroTouchTicketsMetricEnabled ? 4 : 3,
                         )}
                     >
-                        <CustomReportComponent
+                        <DashboardComponent
                             chart={OverviewChart.TicketHandleTimeTrendCard}
                             config={SupportPerformanceOverviewReportConfig}
                         />
@@ -209,27 +209,27 @@ export default function SupportPerformanceOverviewReport() {
                             isReportingZeroTouchTicketsMetricEnabled ? 6 : 3,
                         )}
                     >
-                        <CustomReportComponent
+                        <DashboardComponent
                             chart={OverviewChart.OneTouchTicketsTrendCard}
                             config={SupportPerformanceOverviewReportConfig}
                         />
                     </DashboardGridCell>
                     {isReportingZeroTouchTicketsMetricEnabled && (
                         <DashboardGridCell size={getGridCellSize(6)}>
-                            <CustomReportComponent
+                            <DashboardComponent
                                 chart={OverviewChart.ZeroTouchTicketsTrendCard}
                                 config={SupportPerformanceOverviewReportConfig}
                             />
                         </DashboardGridCell>
                     )}
                     <DashboardGridCell size={getGridCellSize(6)}>
-                        <CustomReportComponent
+                        <DashboardComponent
                             chart={OverviewChart.TicketsRepliedGraph}
                             config={SupportPerformanceOverviewReportConfig}
                         />
                     </DashboardGridCell>
                     <DashboardGridCell size={getGridCellSize(6)}>
-                        <CustomReportComponent
+                        <DashboardComponent
                             chart={OverviewChart.MessagesSentGraph}
                             config={SupportPerformanceOverviewReportConfig}
                         />

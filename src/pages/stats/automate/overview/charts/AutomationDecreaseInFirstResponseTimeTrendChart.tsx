@@ -3,7 +3,7 @@ import React from 'react'
 import { useDecreaseInFirstResponseTimeTrend } from 'hooks/reporting/automate/useDecreaseInFirstResponseTimeTrend'
 import { useNewAutomateFilters } from 'hooks/reporting/automate/useNewAutomateFilters'
 import { AutomationDecreaseInFirstResponseTimeMetric } from 'pages/automate/automate-metrics'
-import { DashboardChartProps } from 'pages/stats/custom-reports/types'
+import { DashboardChartProps } from 'pages/stats/dashboards/types'
 
 export const AutomationDecreaseInFirstResponseTimeTrendChart = ({
     chartId,

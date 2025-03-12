@@ -3,7 +3,7 @@ import React from 'react'
 import { MetricTrend } from 'hooks/reporting/useMetricTrend'
 import BigNumberMetric from 'pages/stats/BigNumberMetric'
 import TrendBadge from 'pages/stats/common/components/TrendBadge'
-import { DashboardChartProps } from 'pages/stats/custom-reports/types'
+import { DashboardChartProps } from 'pages/stats/dashboards/types'
 import MetricCard from 'pages/stats/MetricCard'
 
 import { TIME_SAVED_BY_AGENTS } from './constants'

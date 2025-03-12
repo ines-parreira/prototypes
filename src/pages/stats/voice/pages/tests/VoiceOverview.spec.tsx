@@ -21,7 +21,7 @@ import {
 } from 'fixtures/productPrices'
 import { tags } from 'fixtures/tag'
 import { user } from 'fixtures/users'
-import { useReportRestrictions } from 'hooks/reporting/custom-reports/useReportRestrictions'
+import { useReportRestrictions } from 'hooks/reporting/dashboards/useReportRestrictions'
 import { LegacyStatsFilters } from 'models/stat/types'
 import FiltersPanelWrapper from 'pages/stats/common/filters/FiltersPanelWrapper'
 import * as VoiceCallCallerExperienceMetric from 'pages/stats/voice/components/VoiceCallerExperienceMetric/VoiceCallCallerExperienceMetric'
@@ -97,7 +97,7 @@ const VoiceCallCallerExperienceMetricSpy = jest.spyOn(
 jest.mock('core/flags', () => ({ useFlag: jest.fn() }))
 const useFlagMock = assumeMock(useFlag)
 
-jest.mock('hooks/reporting/custom-reports/useReportRestrictions')
+jest.mock('hooks/reporting/dashboards/useReportRestrictions')
 const useReportRestrictionsMock = assumeMock(useReportRestrictions)
 useReportRestrictionsMock.mockReturnValue({
     reportRestrictionsMap: {},

@@ -5,7 +5,7 @@ import {
     TrendMetric,
 } from 'pages/stats/aiSalesAgent/AiSalesAgentMetricsConfig'
 import { TrendCard } from 'pages/stats/common/components/TrendCard'
-import { DashboardChartProps } from 'pages/stats/custom-reports/types'
+import { DashboardChartProps } from 'pages/stats/dashboards/types'
 
 const AiSalesAgentTrendCard = ({ chartId, dashboard }: DashboardChartProps) => {
     const config = AiSalesAgentMetricConfig[chartId as TrendMetric]

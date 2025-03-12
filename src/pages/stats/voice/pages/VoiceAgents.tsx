@@ -17,8 +17,8 @@ import DEPRECATED_IntegrationsStatsFilter from 'pages/stats/common/filters/DEPRE
 import DEPRECATED_PeriodStatsFilter from 'pages/stats/common/filters/DEPRECATED_PeriodStatsFilter'
 import DEPRECATED_TagsStatsFilter from 'pages/stats/common/filters/DEPRECATED_TagsStatsFilter'
 import FiltersPanelWrapper from 'pages/stats/common/filters/FiltersPanelWrapper'
-import { CustomReportComponent } from 'pages/stats/custom-reports/CustomReportComponent'
 import DashboardGridCell from 'pages/stats/DashboardGridCell'
+import { DashboardComponent } from 'pages/stats/dashboards/DashboardComponent'
 import DashboardSection from 'pages/stats/DashboardSection'
 import StatsPage from 'pages/stats/StatsPage'
 import { VoiceAgentsDownloadDataButton } from 'pages/stats/voice/components/VoiceAgentsDownloadDataButton/VoiceAgentsDownloadDataButton'
@@ -120,7 +120,7 @@ function VoiceAgents() {
             )}
             <DashboardSection>
                 <DashboardGridCell>
-                    <CustomReportComponent
+                    <DashboardComponent
                         config={VoiceAgentsReportConfig}
                         chart={VoiceAgentsChart.VoiceAgentsTable}
                     />

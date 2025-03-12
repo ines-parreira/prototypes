@@ -7,7 +7,7 @@ import { DEFAULT_TIMEZONE } from 'pages/stats/convert/constants/components'
 import { useGetRevenueShareChart } from 'pages/stats/convert/hooks/stats/useGetRevenueShareChart'
 import { useCampaignStatsFilters } from 'pages/stats/convert/hooks/useCampaignStatsFilters'
 import { useGetNamespacedShopNameForStore } from 'pages/stats/convert/hooks/useGetNamespacedShopNameForStore'
-import { DashboardChartProps } from 'pages/stats/custom-reports/types'
+import { DashboardChartProps } from 'pages/stats/dashboards/types'
 import {
     renderTickLabelAsPercentage,
     renderTooltipLabelAsPercentage,

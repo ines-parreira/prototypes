@@ -2,7 +2,7 @@ import React from 'react'
 
 import { useNewStatsFilters } from 'hooks/reporting/support-performance/useNewStatsFilters'
 import ChartCard from 'pages/stats/ChartCard'
-import { DashboardChartProps } from 'pages/stats/custom-reports/types'
+import { DashboardChartProps } from 'pages/stats/dashboards/types'
 import HelpCenterStatsTable, {
     TableCellType,
 } from 'pages/stats/help-center/components/HelpCenterStatsTable/HelpCenterStatsTable'

@@ -11,8 +11,8 @@ import {
     title,
 } from 'pages/stats/convert/components/CampaignRevenueShareStat'
 import { METRICS } from 'pages/stats/convert/constants/ConvertPerformanceOverviewConfig'
-import { ReportsIDs } from 'pages/stats/custom-reports/constants'
-import { ChartType, ReportConfig } from 'pages/stats/custom-reports/types'
+import { ReportsIDs } from 'pages/stats/dashboards/constants'
+import { ChartType, ReportConfig } from 'pages/stats/dashboards/types'
 import { STATS_ROUTES } from 'routes/constants'
 
 export enum CampaignsLegacyChart {

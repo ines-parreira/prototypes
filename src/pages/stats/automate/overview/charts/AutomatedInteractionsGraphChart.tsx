@@ -17,7 +17,7 @@ import {
 } from 'pages/stats/automate/overview/utils'
 import ChartCard from 'pages/stats/ChartCard'
 import { LineChart } from 'pages/stats/common/components/charts/LineChart/LineChart'
-import { DashboardChartProps } from 'pages/stats/custom-reports/types'
+import { DashboardChartProps } from 'pages/stats/dashboards/types'
 import { AUTOMATED_INTERACTIONS_LABEL } from 'pages/stats/self-service/constants'
 
 export const AutomatedInteractionsGraphChart = ({

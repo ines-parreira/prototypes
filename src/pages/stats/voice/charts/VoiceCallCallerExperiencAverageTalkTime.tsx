@@ -1,6 +1,6 @@
 import React from 'react'
 
-import { DashboardChartProps } from 'pages/stats/custom-reports/types'
+import { DashboardChartProps } from 'pages/stats/dashboards/types'
 import VoiceCallCallerExperienceMetric from 'pages/stats/voice/components/VoiceCallerExperienceMetric/VoiceCallCallerExperienceMetric'
 import {
     AVERAGE_TALK_TIME_METRIC_HINT,

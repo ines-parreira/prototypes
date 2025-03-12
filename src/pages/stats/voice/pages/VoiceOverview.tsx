@@ -15,8 +15,8 @@ import DEPRECATED_IntegrationsStatsFilter from 'pages/stats/common/filters/DEPRE
 import DEPRECATED_PeriodStatsFilter from 'pages/stats/common/filters/DEPRECATED_PeriodStatsFilter'
 import DEPRECATED_TagsStatsFilter from 'pages/stats/common/filters/DEPRECATED_TagsStatsFilter'
 import FiltersPanelWrapper from 'pages/stats/common/filters/FiltersPanelWrapper'
-import { CustomReportComponent } from 'pages/stats/custom-reports/CustomReportComponent'
 import DashboardGridCell from 'pages/stats/DashboardGridCell'
+import { DashboardComponent } from 'pages/stats/dashboards/DashboardComponent'
 import DashboardSection from 'pages/stats/DashboardSection'
 import StatsPage from 'pages/stats/StatsPage'
 import { VoiceOverviewDownloadDataButton } from 'pages/stats/voice/components/VoiceOverviewDownloadDataButton/VoiceOverviewDownloadDataButton'
@@ -176,7 +176,7 @@ function VoiceOverview() {
                             size={reportComponent.size}
                             key={reportComponent.chart}
                         >
-                            <CustomReportComponent
+                            <DashboardComponent
                                 chart={reportComponent.chart}
                                 config={VoiceOverviewReportConfig}
                             />
@@ -187,7 +187,7 @@ function VoiceOverview() {
                 <>
                     <DashboardSection title={CALLER_EXPERIENCE_METRICS_TITLE}>
                         <DashboardGridCell size={6}>
-                            <CustomReportComponent
+                            <DashboardComponent
                                 chart={
                                     VoiceOverviewChart.VoiceCallCallerExperienceAverageWaitTimeChart
                                 }
@@ -195,7 +195,7 @@ function VoiceOverview() {
                             />
                         </DashboardGridCell>
                         <DashboardGridCell size={6}>
-                            <CustomReportComponent
+                            <DashboardComponent
                                 chart={
                                     VoiceOverviewChart.VoiceCallCallCallerExperienceAverageTalkTime
                                 }
@@ -205,7 +205,7 @@ function VoiceOverview() {
                     </DashboardSection>
                     <DashboardSection title={CALL_VOLUME_METRICS_TITLE}>
                         <DashboardGridCell size={3}>
-                            <CustomReportComponent
+                            <DashboardComponent
                                 chart={
                                     VoiceOverviewChart.VoiceCallVolumeTotalCallCountTrendChart
                                 }
@@ -213,7 +213,7 @@ function VoiceOverview() {
                             />
                         </DashboardGridCell>
                         <DashboardGridCell size={3}>
-                            <CustomReportComponent
+                            <DashboardComponent
                                 chart={
                                     VoiceOverviewChart.VoiceCallVolumeMetricOutboundCallsCountTrend
                                 }
@@ -221,7 +221,7 @@ function VoiceOverview() {
                             />
                         </DashboardGridCell>
                         <DashboardGridCell size={3}>
-                            <CustomReportComponent
+                            <DashboardComponent
                                 chart={
                                     VoiceOverviewChart.VoiceCallVolumeMetricInboundCallsCountTrend
                                 }
@@ -229,7 +229,7 @@ function VoiceOverview() {
                             />
                         </DashboardGridCell>
                         <DashboardGridCell size={3}>
-                            <CustomReportComponent
+                            <DashboardComponent
                                 chart={
                                     VoiceOverviewChart.DEPRECATED_VoiceCallVolumeMetricMissedCallsCountTrendChart
                                 }
@@ -241,7 +241,7 @@ function VoiceOverview() {
             )}
             <DashboardSection title={CALL_ACTIVITY_TITLE}>
                 <DashboardGridCell>
-                    <CustomReportComponent
+                    <DashboardComponent
                         chart={VoiceOverviewChart.VoiceCallTableChart}
                         config={VoiceOverviewReportConfig}
                     />

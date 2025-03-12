@@ -1,7 +1,7 @@
 import { FilterKey, StaticFilter } from 'models/stat/types'
 import { OptionalFilter } from 'pages/stats/common/filters/FiltersPanel'
-import { ReportsIDs } from 'pages/stats/custom-reports/constants'
-import { ChartType, ReportConfig } from 'pages/stats/custom-reports/types'
+import { ReportsIDs } from 'pages/stats/dashboards/constants'
+import { ChartType, ReportConfig } from 'pages/stats/dashboards/types'
 import ArticleViewsGraph from 'pages/stats/help-center/components/ArticleViewsGraph/ArticleViewsGraph'
 import { ArticleViewsTrendCard } from 'pages/stats/help-center/components/ArticleViewsTrendCard/ArticleViewsTrendCard'
 import NoSearchTable, {

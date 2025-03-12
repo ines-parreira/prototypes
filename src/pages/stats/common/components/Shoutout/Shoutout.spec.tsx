@@ -8,10 +8,10 @@ import Shoutout, {
     SHOUTOUT_MAX_PERSONS,
     SHOUTOUT_NO_VALUE_PLACEHOLDER,
 } from 'pages/stats/common/components/Shoutout/Shoutout'
-import { ChartsActionMenu } from 'pages/stats/custom-reports/ChartsActionMenu/ChartsActionMenu'
+import { ChartsActionMenu } from 'pages/stats/dashboards/ChartsActionMenu/ChartsActionMenu'
 import { assumeMock } from 'utils/testing'
 
-jest.mock('pages/stats/custom-reports/ChartsActionMenu/ChartsActionMenu')
+jest.mock('pages/stats/dashboards/ChartsActionMenu/ChartsActionMenu')
 const ChartsActionMenuMock = assumeMock(ChartsActionMenu)
 
 describe('<Shoutout />', () => {

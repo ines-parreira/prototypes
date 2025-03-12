@@ -10,7 +10,7 @@ import { ReportingGranularity } from 'models/reporting/types'
 import ChartCard from 'pages/stats/ChartCard'
 import LineChart from 'pages/stats/common/components/charts/LineChart/LineChart'
 import { formatTimeSeriesData, SHORT_FORMAT } from 'pages/stats/common/utils'
-import { DashboardChartProps } from 'pages/stats/custom-reports/types'
+import { DashboardChartProps } from 'pages/stats/dashboards/types'
 import {
     HelpCenterMetric,
     HelpCenterMetricConfig,

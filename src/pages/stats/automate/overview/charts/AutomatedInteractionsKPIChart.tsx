@@ -5,7 +5,7 @@ import { useNewAutomateFilters } from 'hooks/reporting/automate/useNewAutomateFi
 import useLocalStorage from 'hooks/useLocalStorage'
 import { AutomatedInteractionsMetric } from 'pages/automate/automate-metrics'
 import { AAO_TIPS_VISIBILITY_KEY } from 'pages/stats/automate/overview/constants'
-import { DashboardChartProps } from 'pages/stats/custom-reports/types'
+import { DashboardChartProps } from 'pages/stats/dashboards/types'
 
 export const AutomatedInteractionsKPIChart = ({
     chartId,

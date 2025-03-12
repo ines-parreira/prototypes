@@ -8,8 +8,8 @@ import { Tooltip } from '@gorgias/merchant-ui-kit'
 
 import Avatar from 'pages/common/components/Avatar/Avatar'
 import css from 'pages/stats/common/components/Shoutout/Shoutout.less'
-import { ChartsActionMenu } from 'pages/stats/custom-reports/ChartsActionMenu/ChartsActionMenu'
-import { DashboardChartProps } from 'pages/stats/custom-reports/types'
+import { ChartsActionMenu } from 'pages/stats/dashboards/ChartsActionMenu/ChartsActionMenu'
+import { DashboardChartProps } from 'pages/stats/dashboards/types'
 
 type Props = {
     persons: ShoutoutPerson[]

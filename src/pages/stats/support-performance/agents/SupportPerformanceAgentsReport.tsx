@@ -7,8 +7,8 @@ import { useGridSize } from 'hooks/useGridSize'
 import { FilterKey } from 'models/stat/types'
 import { AnalyticsFooter } from 'pages/stats/AnalyticsFooter'
 import FiltersPanelWrapper from 'pages/stats/common/filters/FiltersPanelWrapper'
-import { CustomReportComponent } from 'pages/stats/custom-reports/CustomReportComponent'
 import DashboardGridCell from 'pages/stats/DashboardGridCell'
+import { DashboardComponent } from 'pages/stats/dashboards/DashboardComponent'
 import DashboardSection from 'pages/stats/DashboardSection'
 import StatsPage from 'pages/stats/StatsPage'
 import { AGENTS_SHOUT_OUTS_TITLE } from 'pages/stats/support-performance/agents/AgentsShoutOutsConfig'
@@ -71,25 +71,25 @@ export default function SupportPerformanceAgentsReport() {
                     className="pb-0"
                 >
                     <DashboardGridCell size={getGridCellSize(3)}>
-                        <CustomReportComponent
+                        <DashboardComponent
                             chart={AgentsChart.TopCSATPerformers}
                             config={SupportPerformanceAgentsReportConfig}
                         />
                     </DashboardGridCell>
                     <DashboardGridCell size={getGridCellSize(3)}>
-                        <CustomReportComponent
+                        <DashboardComponent
                             chart={AgentsChart.TopFirstResponseTimePerformers}
                             config={SupportPerformanceAgentsReportConfig}
                         />
                     </DashboardGridCell>
                     <DashboardGridCell size={getGridCellSize(3)}>
-                        <CustomReportComponent
+                        <DashboardComponent
                             chart={AgentsChart.TopResponseTimePerformers}
                             config={SupportPerformanceAgentsReportConfig}
                         />
                     </DashboardGridCell>
                     <DashboardGridCell size={getGridCellSize(3)}>
-                        <CustomReportComponent
+                        <DashboardComponent
                             chart={AgentsChart.TopClosedTicketsPerformers}
                             config={SupportPerformanceAgentsReportConfig}
                         />
@@ -97,7 +97,7 @@ export default function SupportPerformanceAgentsReport() {
                 </DashboardSection>
                 <DashboardSection>
                     <DashboardGridCell size={12}>
-                        <CustomReportComponent
+                        <DashboardComponent
                             chart={AgentsChart.Table}
                             config={SupportPerformanceAgentsReportConfig}
                         />

@@ -1,12 +1,12 @@
 import { useCallback, useMemo } from 'react'
 
-import { useReportRestrictions } from 'hooks/reporting/custom-reports/useReportRestrictions'
+import { useReportRestrictions } from 'hooks/reporting/dashboards/useReportRestrictions'
 import useAppSelector from 'hooks/useAppSelector'
 import { STATS_ROUTE_PREFIX } from 'pages/stats/common/components/constants'
 import {
     getComponentConfig,
     getReportConfigFromPath,
-} from 'pages/stats/custom-reports/config'
+} from 'pages/stats/dashboards/config'
 import {
     ChartRestriction,
     RBAC_RESTRICTIONS,

@@ -28,12 +28,12 @@ import { AutomationRateGraphChart } from 'pages/stats/automate/overview/charts/A
 import { AutomationRateKPIChart } from 'pages/stats/automate/overview/charts/AutomationRateKPIChart'
 import { DecreaseInResolutionTimeKPIChart } from 'pages/stats/automate/overview/charts/DecreaseInResolutionTimeKPIChart'
 import { TimeSavedByAgentsKPIChart } from 'pages/stats/automate/overview/charts/TimeSavedByAgentsKPIChart'
-import { ReportsIDs } from 'pages/stats/custom-reports/constants'
+import { ReportsIDs } from 'pages/stats/dashboards/constants'
 import {
     ChartType,
     DataExportFormat,
     ReportConfig,
-} from 'pages/stats/custom-reports/types'
+} from 'pages/stats/dashboards/types'
 import {
     AUTOMATED_INTERACTIONS_BY_FEATURE_LABEL,
     PAGE_TITLE_AUTOMATE_PAYWALL,

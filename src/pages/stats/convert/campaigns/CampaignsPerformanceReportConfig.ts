@@ -14,12 +14,12 @@ import {
     CAMPAIGNS_PERFORMANCE_TABLE_TITLE,
 } from 'pages/stats/convert/containers/CampaignPerformanceTable'
 import { CampaignsTotalsMetricNames } from 'pages/stats/convert/services/constants'
-import { ReportsIDs } from 'pages/stats/custom-reports/constants'
+import { ReportsIDs } from 'pages/stats/dashboards/constants'
 import {
     ChartType,
     DataExportFormat,
     ReportConfig,
-} from 'pages/stats/custom-reports/types'
+} from 'pages/stats/dashboards/types'
 import { STATS_ROUTES } from 'routes/constants'
 
 export enum CampaignsChart {

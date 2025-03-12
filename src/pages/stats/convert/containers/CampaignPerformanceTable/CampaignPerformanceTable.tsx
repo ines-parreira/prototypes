@@ -26,7 +26,7 @@ import { useGetCurrencyForStore } from 'pages/stats/convert/hooks/useGetCurrency
 import { useGetNamespacedShopNameForStore } from 'pages/stats/convert/hooks/useGetNamespacedShopNameForStore'
 import { CampaignTableContentCell } from 'pages/stats/convert/types/CampaignTableContentCell'
 import { CampaignTableKeys } from 'pages/stats/convert/types/enums/CampaignTableKeys.enum'
-import { DashboardChartProps } from 'pages/stats/custom-reports/types'
+import { DashboardChartProps } from 'pages/stats/dashboards/types'
 import { getTimezone } from 'state/currentUser/selectors'
 import { getIntegrationByIdAndType } from 'state/integrations/selectors'
 import { ConvertMetric } from 'state/ui/stats/types'

@@ -7,12 +7,12 @@ import {
 import AiSalesAgentTrendCard from 'pages/stats/aiSalesAgent/charts/AiSalesAgentTrendCard'
 import GmvInfluencedOverTimeChart from 'pages/stats/aiSalesAgent/charts/GmvInfluencedOverTimeChart'
 import TopProductRecommendationTable from 'pages/stats/aiSalesAgent/charts/TopProductRecommendationTable'
-import { ReportsIDs } from 'pages/stats/custom-reports/constants'
+import { ReportsIDs } from 'pages/stats/dashboards/constants'
 import {
     ChartType,
     DataExportFormat,
     ReportConfig,
-} from 'pages/stats/custom-reports/types'
+} from 'pages/stats/dashboards/types'
 import { STATS_ROUTES } from 'routes/constants'
 
 export const AI_SALES_AGENTS_PERSISTENT_FILTERS: StaticFilter[] = [

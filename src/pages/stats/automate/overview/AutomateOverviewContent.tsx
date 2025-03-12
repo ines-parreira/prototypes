@@ -20,8 +20,8 @@ import {
 } from 'pages/stats/automate/overview/AutomateOverviewReportConfig'
 import { AAO_TIPS_VISIBILITY_KEY } from 'pages/stats/automate/overview/constants'
 import { FiltersPanelWrapper } from 'pages/stats/common/filters/FiltersPanelWrapper/FiltersPanelWrapper'
-import { CustomReportComponent } from 'pages/stats/custom-reports/CustomReportComponent'
 import DashboardGridCell from 'pages/stats/DashboardGridCell'
+import { DashboardComponent } from 'pages/stats/dashboards/DashboardComponent'
 import DashboardSection from 'pages/stats/DashboardSection'
 import { PAGE_TITLE_AUTOMATE_PAYWALL } from 'pages/stats/self-service/constants'
 import StatsPage from 'pages/stats/StatsPage'
@@ -153,13 +153,13 @@ export default function AutomateOverviewContent() {
                     }
                 >
                     <DashboardGridCell size={6}>
-                        <CustomReportComponent
+                        <DashboardComponent
                             chart={AutomateOverviewChart.AutomationRateKPIChart}
                             config={AutomateOverviewReportConfig}
                         />
                     </DashboardGridCell>
                     <DashboardGridCell size={6}>
-                        <CustomReportComponent
+                        <DashboardComponent
                             chart={
                                 AutomateOverviewChart.AutomatedInteractionsKPIChart
                             }
@@ -169,7 +169,7 @@ export default function AutomateOverviewContent() {
                 </DashboardSection>
                 <DashboardSection title="Impact">
                     <DashboardGridCell size={6}>
-                        <CustomReportComponent
+                        <DashboardComponent
                             chart={
                                 AutomateOverviewChart.AutomationCostSavedKPIChart
                             }
@@ -178,7 +178,7 @@ export default function AutomateOverviewContent() {
                     </DashboardGridCell>
                     {isTicketTimeToHandleEnabled && (
                         <DashboardGridCell size={6}>
-                            <CustomReportComponent
+                            <DashboardComponent
                                 chart={
                                     AutomateOverviewChart.TimeSavedByAgentsKPIChart
                                 }
@@ -187,7 +187,7 @@ export default function AutomateOverviewContent() {
                         </DashboardGridCell>
                     )}
                     <DashboardGridCell size={6}>
-                        <CustomReportComponent
+                        <DashboardComponent
                             chart={
                                 AutomateOverviewChart.DecreaseInResolutionTimeGraphChart
                             }
@@ -195,7 +195,7 @@ export default function AutomateOverviewContent() {
                         />
                     </DashboardGridCell>
                     <DashboardGridCell size={6}>
-                        <CustomReportComponent
+                        <DashboardComponent
                             chart={
                                 AutomateOverviewChart.AutomationDecreaseInFirstResponseTimeGraphChart
                             }
@@ -205,7 +205,7 @@ export default function AutomateOverviewContent() {
                 </DashboardSection>
                 <DashboardSection title="Performance over time">
                     <DashboardGridCell size={12}>
-                        <CustomReportComponent
+                        <DashboardComponent
                             chart={
                                 AutomateOverviewChart.AutomationRateGraphChart
                             }
@@ -213,7 +213,7 @@ export default function AutomateOverviewContent() {
                         />
                     </DashboardGridCell>
                     <DashboardGridCell size={12}>
-                        <CustomReportComponent
+                        <DashboardComponent
                             chart={
                                 AutomateOverviewChart.AutomatedInteractionsGraphChart
                             }
@@ -221,7 +221,7 @@ export default function AutomateOverviewContent() {
                         />
                     </DashboardGridCell>
                     <DashboardGridCell size={12}>
-                        <CustomReportComponent
+                        <DashboardComponent
                             chart={
                                 AutomateOverviewChart.AutomatedInteractionsPerFeatureGraphChart
                             }

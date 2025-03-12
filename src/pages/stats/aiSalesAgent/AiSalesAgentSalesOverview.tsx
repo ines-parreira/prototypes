@@ -12,8 +12,8 @@ import { PAGE_TITLE_AI_SALES_AGENT_SALES_OVERVIEW } from 'pages/stats/aiSalesAge
 import { AnalyticsFooter } from 'pages/stats/AnalyticsFooter'
 import FiltersPanelWrapper from 'pages/stats/common/filters/FiltersPanelWrapper'
 import { CampaignStatsFilters } from 'pages/stats/convert/providers/CampaignStatsFilters'
-import { CustomReportComponent } from 'pages/stats/custom-reports/CustomReportComponent'
 import DashboardGridCell from 'pages/stats/DashboardGridCell'
+import { DashboardComponent } from 'pages/stats/dashboards/DashboardComponent'
 import DashboardSection from 'pages/stats/DashboardSection'
 import StatsPage from 'pages/stats/StatsPage'
 import { getPageStatsFiltersWithLogicalOperators } from 'state/stats/selectors'
@@ -149,7 +149,7 @@ const AiSalesAgentSalesOverview = () => {
 
             <DashboardSection title="">
                 <DashboardGridCell size={12}>
-                    <CustomReportComponent
+                    <DashboardComponent
                         config={AiSalesAgentReportConfig}
                         chart={AiSalesAgentChart.AiSalesAgentProductsTable}
                     />

@@ -18,8 +18,8 @@ import {
 } from 'pages/stats/automate/ai-agent/AutomateAiAgentsReportConfig'
 import { LogicalOperatorEnum } from 'pages/stats/common/components/Filter/constants'
 import FiltersPanelWrapper from 'pages/stats/common/filters/FiltersPanelWrapper'
-import { CustomReportComponent } from 'pages/stats/custom-reports/CustomReportComponent'
 import DashboardGridCell from 'pages/stats/DashboardGridCell'
+import { DashboardComponent } from 'pages/stats/dashboards/DashboardComponent'
 import DashboardSection from 'pages/stats/DashboardSection'
 import { PAGE_TITLE_AI_AGENT } from 'pages/stats/self-service/constants'
 import StatsPage from 'pages/stats/StatsPage'
@@ -122,7 +122,7 @@ export default function AutomateAiAgentStatsReport() {
 
                 <DashboardSection title="Performance">
                     <DashboardGridCell size={12}>
-                        <CustomReportComponent
+                        <DashboardComponent
                             config={AutomateAiAgentsReportConfig}
                             chart={AutomateAiAgentsChart.AiAgentTable}
                             withChartMenu={false}
@@ -139,7 +139,7 @@ export default function AutomateAiAgentStatsReport() {
                 {hasAiAgentCustomField && selectedCustomField.id && (
                     <DashboardSection>
                         <DashboardGridCell size={getGridCellSize(4)}>
-                            <CustomReportComponent
+                            <DashboardComponent
                                 config={AutomateAiAgentsReportConfig}
                                 chart={
                                     AutomateAiAgentsChart.AiAgentTicketDistribution
@@ -148,7 +148,7 @@ export default function AutomateAiAgentStatsReport() {
                             />
                         </DashboardGridCell>
                         <DashboardGridCell size={getGridCellSize(8)}>
-                            <CustomReportComponent
+                            <DashboardComponent
                                 config={AutomateAiAgentsReportConfig}
                                 chart={
                                     AutomateAiAgentsChart.AiAgentTicketInsightsFieldTrend
@@ -157,7 +157,7 @@ export default function AutomateAiAgentStatsReport() {
                             />
                         </DashboardGridCell>
                         <DashboardGridCell>
-                            <CustomReportComponent
+                            <DashboardComponent
                                 config={AutomateAiAgentsReportConfig}
                                 chart={
                                     AutomateAiAgentsChart.AiAgentCustomFieldsTicketCountBreakdown
@@ -170,7 +170,7 @@ export default function AutomateAiAgentStatsReport() {
 
                 <DashboardSection title="Automated tickets">
                     <DashboardGridCell size={6}>
-                        <CustomReportComponent
+                        <DashboardComponent
                             config={AutomateAiAgentsReportConfig}
                             chart={
                                 AutomateAiAgentsChart.AiAgentAutomatedInteractionsMetric
@@ -180,7 +180,7 @@ export default function AutomateAiAgentStatsReport() {
                     </DashboardGridCell>
 
                     <DashboardGridCell size={12}>
-                        <CustomReportComponent
+                        <DashboardComponent
                             config={AutomateAiAgentsReportConfig}
                             chart={
                                 AutomateAiAgentsChart.AiAgentAutomatedInteractionsOverTime

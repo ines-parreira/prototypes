@@ -3,15 +3,12 @@ import { createElement, memo } from 'react'
 import { useFlags } from 'launchdarkly-react-client-sdk'
 
 import { FeatureFlagKey } from 'config/featureFlags'
-import {
-    CustomReportSchema,
-    ReportConfig,
-} from 'pages/stats/custom-reports/types'
+import { DashboardSchema, ReportConfig } from 'pages/stats/dashboards/types'
 
 type Props<T extends string> = {
     chart: T
     config: ReportConfig<T>
-    dashboard?: CustomReportSchema
+    dashboard?: DashboardSchema
 }
 
 export const RenderChart = memo(
