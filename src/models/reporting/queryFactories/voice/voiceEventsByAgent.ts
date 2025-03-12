@@ -19,6 +19,15 @@ export const voiceEventsByAgentDefaultFilters = (filters: StatsFilters) => {
     ]
 }
 
+const withVoiceEventsByAgentDefaultSegment = (
+    segment?: VoiceEventsByAgentSegment,
+) => {
+    if (segment) {
+        return [segment, VoiceEventsByAgentSegment.callsInFinalStatus]
+    }
+    return [VoiceEventsByAgentSegment.callsInFinalStatus]
+}
+
 export const declinedVoiceCallsCountPerAgentQueryFactory = (
     filters: StatsFilters,
     timezone: string,
@@ -26,7 +35,9 @@ export const declinedVoiceCallsCountPerAgentQueryFactory = (
     measures: [VoiceEventsByAgentMeasure.VoiceEventsCount],
     dimensions: [VoiceEventsByAgentDimension.AgentId],
     timezone,
-    segments: [VoiceEventsByAgentSegment.declinedCalls],
+    segments: withVoiceEventsByAgentDefaultSegment(
+        VoiceEventsByAgentSegment.declinedCalls,
+    ),
     filters: voiceEventsByAgentDefaultFilters(filters),
 })
 
@@ -37,6 +48,8 @@ export const declinedVoiceCallsCountQueryFactory = (
     measures: [VoiceEventsByAgentMeasure.VoiceEventsCount],
     dimensions: [],
     timezone,
-    segments: [VoiceEventsByAgentSegment.declinedCalls],
+    segments: withVoiceEventsByAgentDefaultSegment(
+        VoiceEventsByAgentSegment.declinedCalls,
+    ),
     filters: voiceEventsByAgentDefaultFilters(filters),
 })

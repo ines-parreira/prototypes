@@ -48,7 +48,10 @@ describe('voice events by agent factories', () => {
                 },
             ],
             timezone: 'UTC',
-            segments: [VoiceEventsByAgentSegment.declinedCalls],
+            segments: [
+                VoiceEventsByAgentSegment.declinedCalls,
+                VoiceEventsByAgentSegment.callsInFinalStatus,
+            ],
         })
     })
 
@@ -71,7 +74,10 @@ describe('voice events by agent factories', () => {
                 },
             ],
             timezone: 'UTC',
-            segments: [VoiceEventsByAgentSegment.declinedCalls],
+            segments: [
+                VoiceEventsByAgentSegment.declinedCalls,
+                VoiceEventsByAgentSegment.callsInFinalStatus,
+            ],
         })
     })
 

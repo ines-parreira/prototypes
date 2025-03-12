@@ -172,10 +172,15 @@ export const fetchDeclinedCallsMetric = (
 export const useAverageTalkTimeMetric = (
     statsFilters: StatsFilters,
     timezone: string,
+    includeLiveData: boolean = false,
 ): Metric =>
     useMetric(
         withFilter(
-            voiceCallAverageTalkTimeQueryFactory(statsFilters, timezone),
+            voiceCallAverageTalkTimeQueryFactory(
+                statsFilters,
+                timezone,
+                includeLiveData,
+            ),
             ignoreCallsWithNoAssignedAgentFilter,
         ),
     )

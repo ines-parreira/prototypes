@@ -121,7 +121,7 @@ describe('LiveVoiceMetricsConfig', () => {
         expect(useMetricMock).toHaveBeenCalledWith(
             expect(
                 voiceCallAverageWaitTimeQueryFactoryMock,
-            ).toHaveBeenCalledWith(filters, timezone),
+            ).toHaveBeenCalledWith(filters, timezone, true),
         )
     })
 
@@ -165,6 +165,7 @@ describe('LiveVoiceMetricsConfig', () => {
                 filters,
                 timezone,
                 filteringSegment,
+                true,
             )
         },
     )
@@ -185,6 +186,7 @@ describe('LiveVoiceMetricsConfig', () => {
         expect(useAverageTalkTimeMetricMock).toHaveBeenCalledWith(
             filters,
             timezone,
+            true,
         )
     })
 
@@ -242,7 +244,7 @@ describe('LiveVoiceMetricsConfig', () => {
         expect(useMetricMock).toHaveBeenCalledWith(
             expect(
                 voiceCallAverageWaitTimeQueryFactoryMock,
-            ).toHaveBeenCalledWith(filters, timezone),
+            ).toHaveBeenCalledWith(filters, timezone, true),
         )
     })
 
@@ -262,6 +264,7 @@ describe('LiveVoiceMetricsConfig', () => {
         expect(useAverageTalkTimeMetricMock).toHaveBeenCalledWith(
             filters,
             timezone,
+            true,
         )
     })
 
@@ -324,6 +327,7 @@ describe('LiveVoiceMetricsConfig', () => {
                 filters,
                 timezone,
                 filteringSegment,
+                true,
             )
         },
     )

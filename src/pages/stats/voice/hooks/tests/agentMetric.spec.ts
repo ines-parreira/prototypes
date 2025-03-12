@@ -77,7 +77,7 @@ describe('metricsPerDimension', () => {
                         },
                     ],
                     measures: [VoiceCallMeasure.VoiceCallCount],
-                    segments: [],
+                    segments: [VoiceCallSegment.callsInFinalStatus],
                     timezone: userTimezone,
                 },
             ])
@@ -107,7 +107,10 @@ describe('metricsPerDimension', () => {
                         },
                     ],
                     measures: [VoiceCallMeasure.VoiceCallCount],
-                    segments: [VoiceCallSegment.answeredCallsByAgent],
+                    segments: [
+                        VoiceCallSegment.answeredCallsByAgent,
+                        VoiceCallSegment.callsInFinalStatus,
+                    ],
                     timezone: userTimezone,
                 },
             ])
@@ -137,7 +140,10 @@ describe('metricsPerDimension', () => {
                         },
                     ],
                     measures: [VoiceCallMeasure.VoiceCallCount],
-                    segments: [VoiceCallSegment.missedCallsByAgent],
+                    segments: [
+                        VoiceCallSegment.missedCallsByAgent,
+                        VoiceCallSegment.callsInFinalStatus,
+                    ],
                     timezone: userTimezone,
                 },
             ])
@@ -167,7 +173,10 @@ describe('metricsPerDimension', () => {
                         },
                     ],
                     measures: [VoiceCallMeasure.VoiceCallCount],
-                    segments: [VoiceCallSegment.outboundCalls],
+                    segments: [
+                        VoiceCallSegment.outboundCalls,
+                        VoiceCallSegment.callsInFinalStatus,
+                    ],
                     timezone: userTimezone,
                 },
             ])
@@ -197,43 +206,59 @@ describe('metricsPerDimension', () => {
                         },
                     ],
                     measures: [VoiceEventsByAgentMeasure.VoiceEventsCount],
-                    segments: [VoiceEventsByAgentSegment.declinedCalls],
-                    timezone: userTimezone,
-                },
-            ])
-        })
-
-        it('useAverageTalkTimeMetric', () => {
-            renderHook(() =>
-                useAverageTalkTimeMetric(statsFilters, userTimezone),
-            )
-
-            expect(useMetricMock.mock.calls[0]).toEqual([
-                {
-                    dimensions: [],
-                    filters: [
-                        {
-                            member: VoiceCallMember.PeriodStart,
-                            operator: 'afterDate',
-                            values: [statsFilters.period.start_datetime],
-                        },
-                        {
-                            member: VoiceCallMember.PeriodEnd,
-                            operator: 'beforeDate',
-                            values: [statsFilters.period.end_datetime],
-                        },
-                        {
-                            member: VoiceCallMember.AssignedAgentId,
-                            operator: 'set',
-                            values: [],
-                        },
+                    segments: [
+                        VoiceEventsByAgentSegment.declinedCalls,
+                        VoiceEventsByAgentSegment.callsInFinalStatus,
                     ],
-                    measures: [VoiceCallMeasure.VoiceCallAverageTalkTime],
-                    segments: [],
                     timezone: userTimezone,
                 },
             ])
         })
+
+        it.each([
+            {
+                includeLiveData: false,
+                expectedSegments: [VoiceCallSegment.callsInFinalStatus],
+            },
+            { includeLiveData: true, expectedSegments: [] },
+        ])(
+            'useAverageTalkTimeMetric',
+            ({ includeLiveData, expectedSegments }) => {
+                renderHook(() =>
+                    useAverageTalkTimeMetric(
+                        statsFilters,
+                        userTimezone,
+                        includeLiveData,
+                    ),
+                )
+
+                expect(useMetricMock.mock.calls[0]).toEqual([
+                    {
+                        dimensions: [],
+                        filters: [
+                            {
+                                member: VoiceCallMember.PeriodStart,
+                                operator: 'afterDate',
+                                values: [statsFilters.period.start_datetime],
+                            },
+                            {
+                                member: VoiceCallMember.PeriodEnd,
+                                operator: 'beforeDate',
+                                values: [statsFilters.period.end_datetime],
+                            },
+                            {
+                                member: VoiceCallMember.AssignedAgentId,
+                                operator: 'set',
+                                values: [],
+                            },
+                        ],
+                        measures: [VoiceCallMeasure.VoiceCallAverageTalkTime],
+                        segments: expectedSegments,
+                        timezone: userTimezone,
+                    },
+                ])
+            },
+        )
     })
 
     describe('fetch', () => {
@@ -268,12 +293,6 @@ describe('metricsPerDimension', () => {
                 segment: undefined,
                 filter: ignoreDeclinedWithNoAgentsFilter,
             },
-            {
-                fetch: fetchAverageTalkTimeMetric,
-                queryFactory: voiceCallAverageTalkTimeQueryFactory,
-                segment: undefined,
-                filter: ignoreCallsWithNoAssignedAgentFilter,
-            },
         ])(
             'should use $fetch and $segment',
             async ({ fetch, queryFactory, segment, filter }) => {
@@ -287,5 +306,19 @@ describe('metricsPerDimension', () => {
                 )
             },
         )
+
+        it('should use fetchAverageTalkTimeMetric', async () => {
+            await fetchAverageTalkTimeMetric(statsFilters, userTimezone)
+
+            expect(fetchMetricMock).toHaveBeenCalledWith(
+                withFilter(
+                    voiceCallAverageTalkTimeQueryFactory(
+                        statsFilters,
+                        userTimezone,
+                    ),
+                    ignoreCallsWithNoAssignedAgentFilter,
+                ),
+            )
+        })
     })
 })

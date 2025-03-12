@@ -107,6 +107,20 @@ const withStatusFilter = (
         : voiceCallDefaultFilters(filters)
 }
 
+const withStatisticsDefaultSegment = (
+    segment?: VoiceCallSegment,
+    includeLiveData: boolean = false,
+) => {
+    if (includeLiveData) {
+        return segment ? [segment] : []
+    }
+
+    if (segment) {
+        return [segment, VoiceCallSegment.callsInFinalStatus]
+    }
+    return [VoiceCallSegment.callsInFinalStatus]
+}
+
 const voiceCallListDimensions = [
     VoiceCallDimension.AgentId,
     VoiceCallDimension.CustomerId,
@@ -169,12 +183,13 @@ export const waitingTimeCallsListQueryFactory = (
     filters: StatsFilters,
     timezone: string,
     segment?: VoiceCallSegment,
+    includeLiveData: boolean = false,
 ): ReportingQuery<VoiceCallCube> => ({
     measures: [VoiceCallMeasure.VoiceCallCount],
     dimensions: voiceCallListDimensions,
     timezone,
     filters: [...voiceCallDefaultFilters(filters), waitTimeSetFilter],
-    segments: segment ? [segment] : [],
+    segments: withStatisticsDefaultSegment(segment, includeLiveData),
 })
 
 export const liveDashboardWaitingTimeCallsListQueryFactory = (
@@ -192,6 +207,7 @@ export const liveDashboardWaitingTimeCallsListQueryFactory = (
         },
         timezone,
         segment,
+        true,
     )
 }
 
@@ -200,11 +216,12 @@ export const voiceCallCountQueryFactory = (
     timezone: string,
     segment?: VoiceCallSegment,
     statusFilter?: VoiceCallDisplayStatus[],
+    includeLiveData: boolean = false,
 ) => ({
     measures: [VoiceCallMeasure.VoiceCallCount],
     dimensions: [],
     timezone,
-    segments: segment ? [segment] : [],
+    segments: withStatisticsDefaultSegment(segment, includeLiveData),
     filters: withStatusFilter(filters, statusFilter),
 })
 
@@ -216,7 +233,7 @@ export const voiceCallCountPerFilteringAgentQueryFactory = (
     measures: [VoiceCallMeasure.VoiceCallCount],
     dimensions: [VoiceCallDimension.FilteringAgentId],
     timezone,
-    segments: segment ? [segment] : [],
+    segments: withStatisticsDefaultSegment(segment),
     filters: voiceCallDefaultFilters(filters, true),
 })
 
@@ -228,7 +245,7 @@ export const voiceCallCountPerAgentQueryFactory = (
     measures: [VoiceCallMeasure.VoiceCallCount],
     dimensions: [VoiceCallDimension.AgentId],
     timezone,
-    segments: segment ? [segment] : [],
+    segments: withStatisticsDefaultSegment(segment),
     filters: voiceCallDefaultFilters(filters),
 })
 
@@ -241,11 +258,12 @@ export const voiceCallListQueryFactory = (
     order: VoiceCallDimension = VoiceCallDimension.CreatedAt,
     sorting: OrderDirection = OrderDirection.Desc,
     statusFilter?: VoiceCallDisplayStatus[],
+    includeLiveData: boolean = false,
 ): ReportingQuery<VoiceCallCube> => ({
     measures: [VoiceCallMeasure.VoiceCallCount],
     dimensions: voiceCallListDimensions,
     timezone,
-    segments: segment ? [segment] : [],
+    segments: withStatisticsDefaultSegment(segment, includeLiveData),
     filters: withStatusFilter(filters, statusFilter),
     order: [[order, sorting]],
     limit: limit,
@@ -267,17 +285,24 @@ export const liveDashBoardVoiceCallListQueryFactory = (
         },
         timezone,
         segment,
+        undefined,
+        undefined,
+        undefined,
+        undefined,
+        undefined,
+        true,
     )
 }
 
 export const voiceCallAverageTalkTimeQueryFactory = (
     filters: StatsFilters,
     timezone: string,
+    includeLiveData: boolean = false,
 ) => ({
     measures: [VoiceCallMeasure.VoiceCallAverageTalkTime],
     dimensions: [],
     timezone,
-    segments: [],
+    segments: withStatisticsDefaultSegment(undefined, includeLiveData),
     filters: voiceCallDefaultFilters(filters, true),
 })
 
@@ -289,17 +314,21 @@ export const voiceCallAverageTalkTimePerAgentQueryFactory = (
     measures: [VoiceCallMeasure.VoiceCallAverageTalkTime],
     dimensions: [VoiceCallDimension.AgentId],
     timezone,
-    segments: segment ? [segment] : [],
+    segments: withStatisticsDefaultSegment(segment),
     filters: voiceCallDefaultFilters(filters, true),
 })
 
 export const voiceCallAverageWaitTimeQueryFactory = (
     filters: StatsFilters,
     timezone: string,
+    includeLiveData: boolean = false,
 ) => ({
     measures: [VoiceCallMeasure.VoiceCallAverageWaitTime],
     dimensions: [],
     timezone,
-    segments: [VoiceCallSegment.inboundCalls],
+    segments: withStatisticsDefaultSegment(
+        VoiceCallSegment.inboundCalls,
+        includeLiveData,
+    ),
     filters: voiceCallDefaultFilters(filters, true),
 })

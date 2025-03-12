@@ -23,6 +23,7 @@ export enum VoiceEventsByAgentMember {
 
 export enum VoiceEventsByAgentSegment {
     declinedCalls = 'VoiceEventsByAgent.declinedInboundCalls',
+    callsInFinalStatus = 'VoiceEventsByAgent.callsInFinalStatus',
 }
 
 export const VoiceEventsByAgentFiltersMembers: StatsFiltersMembers = {

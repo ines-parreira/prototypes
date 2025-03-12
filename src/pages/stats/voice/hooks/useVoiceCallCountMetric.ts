@@ -7,6 +7,15 @@ export const useVoiceCallCountMetric = (
     filters: StatsFilters,
     timezone: string,
     segment?: VoiceCallSegment,
+    includeLiveData: boolean = false,
 ) => {
-    return useMetric(voiceCallCountQueryFactory(filters, timezone, segment))
+    return useMetric(
+        voiceCallCountQueryFactory(
+            filters,
+            timezone,
+            segment,
+            undefined,
+            includeLiveData,
+        ),
+    )
 }
