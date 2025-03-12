@@ -276,7 +276,10 @@ export const PersonalityStep: React.FC<StepProps> = ({
                                 {!salesPersuasionLevel ? (
                                     <Skeleton />
                                 ) : (
-                                    <AIBanner fillStyle="fill">
+                                    <AIBanner
+                                        fillStyle="fill"
+                                        className={css.banner}
+                                    >
                                         {
                                             PersuasionLevelLabels[
                                                 salesPersuasionLevel
@@ -320,7 +323,10 @@ export const PersonalityStep: React.FC<StepProps> = ({
                                 {!salesDiscountStrategyLevel ? (
                                     <Skeleton />
                                 ) : (
-                                    <AIBanner fillStyle="fill">
+                                    <AIBanner
+                                        fillStyle="fill"
+                                        className={css.banner}
+                                    >
                                         {
                                             DiscountStrategyLabels[
                                                 salesDiscountStrategyLevel
