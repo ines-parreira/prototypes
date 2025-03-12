@@ -12,7 +12,7 @@ export const listStoreMappings = async (
         {
             params: { integration_ids: integrationIds },
             paramsSerializer: (params) => {
-                return stringify(params, { arrayFormat: 'repeat' })
+                return stringify(params, { arrayFormat: 'comma' })
             },
         },
     )
