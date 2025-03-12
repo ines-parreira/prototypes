@@ -103,6 +103,7 @@ export const ChannelsStep: React.FC<StepProps> = ({
     currentStep,
     totalSteps,
     goToStep,
+    isStoreSelected,
 }) => {
     const chatCheckboxRef = useRef<HTMLDivElement | null>(null)
     const chatDropdownRef = useRef<HTMLDivElement | null>(null)
@@ -112,7 +113,7 @@ export const ChannelsStep: React.FC<StepProps> = ({
 
     const { shopName } = useParams<{ shopName: string }>()
 
-    const { validSteps } = useSteps({ shopName })
+    const { validSteps } = useSteps({ shopName, isStoreSelected })
 
     const { data, isLoading: isLoadingOnboardingData } =
         useGetOnboardingData(shopName)

@@ -15,10 +15,11 @@ export const HandoverStep: FC<StepProps> = ({
     currentStep,
     totalSteps,
     goToStep,
+    isStoreSelected,
 }) => {
     const { shopName } = useParams<{ shopName: string }>()
 
-    const { validSteps } = useSteps({ shopName })
+    const { validSteps } = useSteps({ shopName, isStoreSelected })
 
     useCheckStoreIntegration()
     useCheckOnboardingCompleted()

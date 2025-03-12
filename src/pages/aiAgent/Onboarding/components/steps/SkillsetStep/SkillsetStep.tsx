@@ -43,9 +43,10 @@ export const SkillsetStep: FC<SkillsetStepProps> = ({
     totalSteps,
     goToStep,
     setSelectedScope,
+    isStoreSelected,
 }) => {
     const { shopName } = useParams<{ shopName: string }>()
-    const { validSteps } = useSteps({ shopName })
+    const { validSteps } = useSteps({ shopName, isStoreSelected })
 
     useCheckOnboardingCompleted()
 

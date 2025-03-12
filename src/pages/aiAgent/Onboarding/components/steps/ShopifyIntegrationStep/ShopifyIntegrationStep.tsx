@@ -52,13 +52,19 @@ const ShopifyFormSchema = z.object({
 
 type ShopifyFormValues = z.infer<typeof ShopifyFormSchema>
 
-export const ShopifyIntegrationStep: React.FC<StepProps> = ({
+type ShopifyIntegrationStepProps = StepProps & {
+    setIsStoreSelected: (isStoreSelected: boolean) => void
+}
+
+export const ShopifyIntegrationStep: React.FC<ShopifyIntegrationStepProps> = ({
     currentStep,
     totalSteps,
     goToStep,
+    setIsStoreSelected,
+    isStoreSelected,
 }) => {
     const { shopName } = useParams<{ shopName: string }>()
-    const { validSteps } = useSteps({ shopName })
+    const { validSteps } = useSteps({ shopName, isStoreSelected })
     const { redirectToIntegration } = useOnboardingIntegrationRedirection()
     const shopifyIntegrations: StoreIntegration[] = useShopifyIntegrations()
     const { emailIntegrations, defaultIntegration } = useEmailIntegrations()
@@ -167,6 +173,7 @@ export const ShopifyIntegrationStep: React.FC<StepProps> = ({
         if (!emailIntegrations && !defaultIntegration) {
             newPath = `/app/ai-agent/${selectedShopType}/${selectedShop}/onboarding/${WizardStepEnum.EMAIL_INTEGRATION}`
         }
+        setIsStoreSelected(true)
         history.push(newPath)
     }
 

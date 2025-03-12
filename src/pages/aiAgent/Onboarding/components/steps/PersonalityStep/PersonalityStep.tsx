@@ -78,10 +78,11 @@ export const PersonalityStep: React.FC<StepProps> = ({
     currentStep,
     totalSteps,
     goToStep,
+    isStoreSelected,
 }) => {
     const { shopName } = useParams<{ shopName: string }>()
 
-    const { validSteps } = useSteps({ shopName })
+    const { validSteps } = useSteps({ shopName, isStoreSelected })
 
     const { data, isLoading: isLoadingOnboardingData } =
         useGetOnboardingData(shopName)

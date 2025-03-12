@@ -4,6 +4,7 @@ export type StepProps = {
     totalSteps: number
     currentStep: number
     goToStep: (step: WizardStepEnum) => void
+    isStoreSelected?: boolean
 }
 
 export enum KnowledgeSourceType {

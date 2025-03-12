@@ -39,12 +39,13 @@ export const KnowledgeStep: React.FC<StepProps> = ({
     currentStep,
     totalSteps,
     goToStep,
+    isStoreSelected,
 }) => {
     const history = useHistory()
 
     const { shopName } = useParams<{ shopName: string }>()
 
-    const { validSteps } = useSteps({ shopName })
+    const { validSteps } = useSteps({ shopName, isStoreSelected })
 
     const { data, isLoading: isLoadingOnboardingData } =
         useGetOnboardingData(shopName)

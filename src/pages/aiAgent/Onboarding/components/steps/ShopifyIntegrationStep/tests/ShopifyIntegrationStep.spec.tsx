@@ -59,6 +59,7 @@ const mockUseStoreConfigurationForAccount =
 const queryClient = new QueryClient()
 
 const goToStep = jest.fn()
+const setIsStoreSelected = jest.fn()
 
 let history = createMemoryHistory()
 
@@ -90,6 +91,7 @@ const renderComponent = (
                         currentStep={2}
                         totalSteps={3}
                         goToStep={goToStep}
+                        setIsStoreSelected={setIsStoreSelected}
                     />
                 </Provider>
             </QueryClientProvider>
@@ -316,6 +318,7 @@ describe('ShopifyIntegrationStep', () => {
         fireEvent.click(screen.getByText(/Next/i))
 
         await waitFor(() => {
+            expect(setIsStoreSelected).toHaveBeenCalledWith(true)
             expect(history.location.pathname).toEqual(
                 `/app/ai-agent/shopify/${integrations[0].name}/onboarding/${WizardStepEnum.CHANNELS}`,
             )

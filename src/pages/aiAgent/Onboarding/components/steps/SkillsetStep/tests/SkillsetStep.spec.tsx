@@ -97,6 +97,10 @@ const renderComponent = () => {
                 />
             </Provider>
         </QueryClientProvider>,
+        {
+            path: '/app/ai-agent/:shopType/:shopName/onboarding',
+            route: '/app/ai-agent/shopify/my-shop/onboarding',
+        },
     )
 }
 

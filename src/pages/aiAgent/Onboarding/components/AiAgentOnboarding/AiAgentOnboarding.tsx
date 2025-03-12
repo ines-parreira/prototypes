@@ -25,12 +25,17 @@ import { AiAgentScopes, WizardStepEnum } from 'pages/aiAgent/Onboarding/types'
 
 export const AiAgentOnboarding = () => {
     const [selectedScope, setSelectedScope] = useState<AiAgentScopes[]>([])
+    const [isStoreSelected, setIsStoreSelected] = useState(false)
     const { shopName, step, shopType } = useParams<{
         shopName: string
         step: string
         shopType: string
     }>()
-    const { validSteps } = useSteps({ shopName, selectedScope })
+    const { validSteps } = useSteps({
+        shopName,
+        selectedScope,
+        isStoreSelected,
+    })
     const { routes } = useAiAgentNavigation({ shopName })
     const history = useHistory()
 
@@ -59,8 +64,9 @@ export const AiAgentOnboarding = () => {
             currentStep: currentIndex + 1,
             totalSteps: validSteps.length,
             goToStep,
+            isStoreSelected,
         }),
-        [currentIndex, validSteps.length, goToStep],
+        [currentIndex, validSteps.length, goToStep, isStoreSelected],
     )
 
     const isValidStep = useMemo(
@@ -83,7 +89,12 @@ export const AiAgentOnboarding = () => {
 
         switch (step) {
             case WizardStepEnum.SHOPIFY_INTEGRATION:
-                return <ShopifyIntegrationStep {...stepProps} />
+                return (
+                    <ShopifyIntegrationStep
+                        {...stepProps}
+                        setIsStoreSelected={setIsStoreSelected}
+                    />
+                )
             case WizardStepEnum.CHANNELS:
                 return <ChannelsStep {...stepProps} />
             case WizardStepEnum.KNOWLEDGE:

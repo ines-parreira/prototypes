@@ -95,7 +95,7 @@ describe('AiAgentOnboarding', () => {
     beforeEach(() => {
         // Populate the return values of the mocked hooks
         mockUseShopifyIntegrationAndScope.mockReturnValue({
-            integration: true,
+            integration: null,
         })
         mockUseEmailIntegrations.mockReturnValue({
             emailIntegrations: true,
@@ -159,7 +159,9 @@ describe('AiAgentOnboarding', () => {
         await userEvent.click(screen.getByText(/Next/i))
 
         await waitFor(() => {
-            expect(history.location.pathname).toContain(WizardStepEnum.CHANNELS)
+            expect(history.location.pathname).toContain(
+                WizardStepEnum.SHOPIFY_INTEGRATION,
+            )
         })
     })
 

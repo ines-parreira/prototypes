@@ -1100,20 +1100,17 @@ export function AiAgentBaseRoutes({ match: { path } }: RouteComponentProps) {
                 />
 
                 {/* Generic function to wrap AiAgentOnboarding with user role validation */}
-                {[
-                    `${path}/onboarding/:step`,
-                    `${path}/:shopType/:shopName/onboarding/:step`,
-                ].map((routePath, index) => (
-                    <Route
-                        key={index}
-                        path={routePath}
-                        exact
-                        component={withUserRoleRequired(
-                            AiAgentOnboarding,
-                            AGENT_ROLE,
-                        )}
-                    />
-                ))}
+                <Route
+                    path={[
+                        `${path}/onboarding/:step`,
+                        `${path}/:shopType/:shopName/onboarding/:step`,
+                    ]}
+                    exact
+                    component={withUserRoleRequired(
+                        AiAgentOnboarding,
+                        AGENT_ROLE,
+                    )}
+                />
 
                 <Route
                     render={() => {
