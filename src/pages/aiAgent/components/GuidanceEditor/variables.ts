@@ -5,78 +5,48 @@ export const guidanceVariables: GuidanceVariableGroup[] = [
         name: 'Shopify',
         variables: [
             {
+                name: 'Tags',
+                value: '&&&customer.customer_tags&&&',
+                category: 'customer',
+            },
+            {
+                name: 'Full name',
+                value: '&&&customer.name&&&',
+                category: 'customer',
+            },
+            {
                 name: 'Email',
                 value: '&&&customer.email&&&',
                 category: 'customer',
             },
             {
-                name: 'ID',
-                value: '&&&customer.id&&&',
-                category: 'customer',
-            },
-            {
-                name: 'Name',
-                value: '&&&customer.name&&&',
-                category: 'customer',
-            },
-            {
-                name: 'First name',
-                value: '&&&customer.first_name&&&',
-                category: 'customer',
-            },
-            {
-                name: 'Last name',
-                value: '&&&customer.last_name&&&',
-                category: 'customer',
-            },
-            {
-                name: 'Order count',
-                value: '&&&customer.order_count&&&',
-                category: 'customer',
-            },
-            {
-                name: 'Total spent',
-                value: '&&&customer.total_spent&&&',
-                category: 'customer',
-            },
-            {
-                name: 'Order ID',
-                value: '&&&order.id&&&',
+                name: 'Created datetime',
+                value: '&&&order.created_datetime&&&',
                 category: 'order',
             },
             {
-                name: 'Shop name',
-                value: '&&&order.shop_name&&&',
+                name: 'Tags',
+                value: '&&&order.order_tags&&&',
                 category: 'order',
             },
             {
-                name: 'Order number',
-                value: '&&&order.order_number&&&',
+                name: 'Notes',
+                value: '&&&order.order_note&&&',
                 category: 'order',
             },
             {
-                name: 'Order status URL',
-                value: '&&&order.order_status_url&&&',
+                name: 'Is cancelled',
+                value: '&&&order.is_cancelled&&&',
                 category: 'order',
             },
             {
-                name: 'Shipping address - Address 1',
+                name: 'Shipping address - Line 1',
                 value: '&&&order.shipping_address.address1&&&',
                 category: 'order',
             },
             {
-                name: 'Shipping address - Address 2',
+                name: 'Shipping address - Line 2',
                 value: '&&&order.shipping_address.address2&&&',
-                category: 'order',
-            },
-            {
-                name: 'Shipping address - City',
-                value: '&&&order.shipping_address.city&&&',
-                category: 'order',
-            },
-            {
-                name: 'Shipping address - Country',
-                value: '&&&order.shipping_address.country&&&',
                 category: 'order',
             },
             {
@@ -95,8 +65,48 @@ export const guidanceVariables: GuidanceVariableGroup[] = [
                 category: 'order',
             },
             {
-                name: 'Fulfillment status',
-                value: '&&&order.fulfillment_status&&&',
+                name: 'Shipping address - City',
+                value: '&&&order.shipping_address.city&&&',
+                category: 'order',
+            },
+            {
+                name: 'Shipping address - Country',
+                value: '&&&order.shipping_address.country&&&',
+                category: 'order',
+            },
+            {
+                name: 'Fulfillment - Name',
+                value: '&&&order.fulfillment.name&&&',
+                category: 'order',
+            },
+            {
+                name: 'Fulfillment - Status',
+                value: '&&&order.fulfillment.gorgias_status&&&',
+                category: 'order',
+            },
+            {
+                name: 'Fulfillment - Time since order',
+                value: '&&&order.fulfillment.time_since_order&&&',
+                category: 'order',
+            },
+            {
+                name: 'Fulfillment - Tracking URL',
+                value: '&&&order.fulfillment.tracking_url&&&',
+                category: 'order',
+            },
+            {
+                name: 'Fulfillment - Tracking number',
+                value: '&&&order.fulfillment.tracking_number&&&',
+                category: 'order',
+            },
+            {
+                name: 'Fulfillment - Created datetime',
+                value: '&&&order.fulfillment.created_datetime&&&',
+                category: 'order',
+            },
+            {
+                name: 'Fulfillment - Line items',
+                value: '&&&order.fulfillment.line_items&&&',
                 category: 'order',
             },
         ],
