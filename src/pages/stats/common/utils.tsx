@@ -228,7 +228,6 @@ export const formatMetricValue = (
     value: number | null | undefined,
     format: MetricValueFormat = 'decimal',
     notAvailableText: string = NOT_AVAILABLE_TEXT,
-    additionalFormatOptions?: Intl.NumberFormatOptions,
 ) => {
     if (value === null || value === undefined) {
         return notAvailableText
@@ -239,11 +238,11 @@ export const formatMetricValue = (
     }
 
     if (format === 'decimal-to-percent') {
-        return `${metricToDecimal(value * 100, additionalFormatOptions)}%`
+        return `${metricToDecimal(value * 100)}%`
     }
 
     if (format === 'percent') {
-        return `${metricToDecimal(value, additionalFormatOptions)}%`
+        return `${metricToDecimal(value)}%`
     }
 
     if (format === 'percent-refined') {
@@ -265,10 +264,10 @@ export const formatMetricValue = (
     }
 
     if (format === 'ratio') {
-        return `${metricToDecimal(value, additionalFormatOptions)}x`
+        return `${metricToDecimal(value)}x`
     }
 
-    return metricToDecimal(value, additionalFormatOptions)
+    return metricToDecimal(value)
 }
 
 export type MetricTrendFormat =

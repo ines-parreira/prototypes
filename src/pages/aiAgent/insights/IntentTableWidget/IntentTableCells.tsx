@@ -119,7 +119,6 @@ export const IntentDefaultCellContent = ({
                         intent[column] as number,
                         IntentsColumnsConfig[column]?.format,
                         IntentsColumnsConfig[column]?.notAvailableText,
-                        { minimumFractionDigits: 2 },
                     )}
                 </span>{' '}
                 {IntentRowConfig[column]?.hint && (
@@ -170,7 +169,6 @@ export const IntentAutomationOpportunitiesCellContent = ({
         value,
         IntentsColumnsConfig[column]?.format,
         IntentsColumnsConfig[column]?.notAvailableText,
-        { minimumFractionDigits: 2 },
     )
 
     const values = useMemo(
