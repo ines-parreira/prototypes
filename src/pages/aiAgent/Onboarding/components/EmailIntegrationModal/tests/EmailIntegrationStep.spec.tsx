@@ -80,7 +80,7 @@ describe('EmailIntegrationModal', () => {
         )
     })
 
-    it('should call redirectToIntegration with correct URL when "Need to connect another provider?" link is clicked', () => {
+    it.skip('should call redirectToIntegration with correct URL when "Need to connect another provider?" link is clicked', () => {
         render(
             <EmailIntegrationModal
                 isOpen={true}

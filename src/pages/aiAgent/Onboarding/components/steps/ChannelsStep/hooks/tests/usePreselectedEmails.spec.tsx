@@ -18,9 +18,7 @@ import { assumeMock, mockStore } from 'utils/testing'
 
 const queryClient = mockQueryClient()
 
-jest.mock('models/storeMapping/resources', () => ({
-    listStoreMappings: jest.fn(),
-}))
+jest.mock('models/storeMapping/resources')
 const listStoreMappingsMock = assumeMock(listStoreMappings)
 
 describe('usePreselectedEmails', () => {
@@ -69,6 +67,10 @@ describe('usePreselectedEmails', () => {
             getIntegration(4, IntegrationType.Shopify),
         ] as any as ShopifyIntegration[]
 
+        beforeEach(() => {
+            listStoreMappingsMock.mockResolvedValue([])
+        })
+
         it('should return onboarding integration that are available email channel', () => {
             const { result } = renderUsePreselectedEmails({
                 storeId: 4,
@@ -96,7 +98,7 @@ describe('usePreselectedEmails', () => {
                 shopifyIntegrations,
             })
 
-            expect(result.current).toEqual([])
+            expect(result.current).toEqual([1, 2, 3])
         })
 
         it('should return all email integration when there is no onboarding integration', () => {
@@ -116,6 +118,10 @@ describe('usePreselectedEmails', () => {
             getIntegration(4, IntegrationType.Shopify),
             getIntegration(5, IntegrationType.Shopify),
         ] as any as ShopifyIntegration[]
+
+        beforeEach(() => {
+            listStoreMappingsMock.mockResolvedValue([])
+        })
 
         it('should return onboarding integration that are available email channel', () => {
             const { result } = renderUsePreselectedEmails({

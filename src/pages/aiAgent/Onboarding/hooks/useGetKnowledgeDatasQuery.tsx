@@ -22,17 +22,15 @@ type QueryData = {
 
 const fetchFakedData = async (): Promise<QueryData> => {
     return new Promise((resolve) => {
-        setTimeout(() => {
-            resolve({
-                locations: mockedLocations,
-                products: mockedProducts,
-                experienceScore: 50,
-                categories: mockedCategories,
-                averageDiscount: 10,
-                averageOrders: mockedAverageOrders,
-                repeatRate: 2,
-            })
-        }, 2000)
+        resolve({
+            locations: mockedLocations,
+            products: mockedProducts,
+            experienceScore: 50,
+            categories: mockedCategories,
+            averageDiscount: 10,
+            averageOrders: mockedAverageOrders,
+            repeatRate: 2,
+        })
     })
 }
 

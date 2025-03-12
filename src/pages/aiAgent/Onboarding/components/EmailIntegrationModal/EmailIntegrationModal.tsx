@@ -20,7 +20,6 @@ export const EmailIntegrationModal: FC<{
     redirectToIntegration: (redirectUri: string) => void
 }> = ({ isOpen, onClose, redirectToIntegration }) => {
     const { gmailIntegration, microsoftIntegration } = useEmailIntegrations()
-    const newEmailIntegrationUrl = '/app/settings/channels/email/new/onboarding'
     const integrationRedirectBaseUrl = '/integrations/{}/auth/pre-callback/'
 
     const gmailStatus =
@@ -75,7 +74,7 @@ export const EmailIntegrationModal: FC<{
                         onClick={(e) => handleSubmit(e, outlookRedirectUri)}
                     />
 
-                    <a
+                    {/*<a
                         className={css.link}
                         href={newEmailIntegrationUrl}
                         onClick={(e) => {
@@ -83,7 +82,7 @@ export const EmailIntegrationModal: FC<{
                         }}
                     >
                         Need to connect another provider?
-                    </a>
+                    </a>*/}
                 </div>
             </ModalBody>
         </Modal>

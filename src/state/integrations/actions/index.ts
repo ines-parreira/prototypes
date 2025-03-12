@@ -633,7 +633,7 @@ export function createGorgiasChatIntegration(
             }),
         )
 
-        return
+        return savedIntegrationId
     }
 }
 

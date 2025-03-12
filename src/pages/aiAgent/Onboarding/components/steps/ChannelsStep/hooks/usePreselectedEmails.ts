@@ -15,6 +15,9 @@ export const usePreselectedEmails = ({
 }): number[] => {
     const storeIntegrations = useAppSelector(getShopifyIntegrationsSortedByName)
     const isMultiStore = storeIntegrations.length > 1
+    const hasOnboardingEmailIntegrations =
+        onboardingEmailIntegrationIds &&
+        onboardingEmailIntegrationIds.length > 0
 
     const emailIntegrations = useAppSelector(
         getIntegrationsByTypes(EMAIL_INTEGRATION_TYPES),
@@ -24,7 +27,7 @@ export const usePreselectedEmails = ({
         emailIntegrations.map((integration) => integration.id),
         {
             enabled:
-                !onboardingEmailIntegrationIds &&
+                !hasOnboardingEmailIntegrations &&
                 isMultiStore &&
                 emailIntegrations.length > 0,
             refetchOnWindowFocus: false,
@@ -35,7 +38,7 @@ export const usePreselectedEmails = ({
         },
     )
 
-    if (onboardingEmailIntegrationIds) {
+    if (hasOnboardingEmailIntegrations) {
         return onboardingEmailIntegrationIds.filter((it) =>
             emailIntegrations.find((email) => email.id === it),
         )

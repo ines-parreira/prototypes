@@ -23,7 +23,9 @@ export const defaultOnboardingData: OnboardingDataWithoutId = {
 export const useGetOnboardingData = (shopName?: string) => {
     return useQuery({
         queryKey: ['onboardingData', shopName],
-        queryFn: async () => {
+        queryFn: async (): Promise<
+            OnboardingData | OnboardingDataWithoutId
+        > => {
             const data = await getOnboardingData()
             const selectedShopData = data.find(
                 (item: OnboardingData) => item.shopName === shopName,

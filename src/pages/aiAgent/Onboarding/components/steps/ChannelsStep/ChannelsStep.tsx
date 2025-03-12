@@ -113,7 +113,6 @@ export const ChannelsStep: React.FC<StepProps> = ({
     const emailDropdownRef = useRef<HTMLDivElement | null>(null)
 
     const { shopName } = useParams<{ shopName: string }>()
-
     const { validSteps } = useSteps({ shopName, isStoreSelected })
 
     const { data, isLoading: isLoadingOnboardingData } =
@@ -229,15 +228,23 @@ export const ChannelsStep: React.FC<StepProps> = ({
         onboardingEmailIntegrationIds: preRenderEmails as number[],
     })
     const preselectedChats = usePreselectedChat({
-        chatChannels,
         onboardingChatIntegrationIds: data?.chatIntegrationIds,
+        chatChannels,
     })
 
     const methods = useForm<ChannelsFormValues>({
+        // Before the next step is visited we always
+        // pre-select both the integrations
         values: {
-            emailChannelEnabled: !!data?.emailIntegrationIds?.length,
+            emailChannelEnabled:
+                data?.currentStepName === WizardStepEnum.CHANNELS
+                    ? true
+                    : !!data?.emailIntegrationIds?.length,
             emailIntegrationIds: preselectedEmails,
-            chatChannelEnabled: !!data?.chatIntegrationIds?.length,
+            chatChannelEnabled:
+                data?.currentStepName === WizardStepEnum.CHANNELS
+                    ? true
+                    : !!data?.chatIntegrationIds?.length,
             chatIntegrationIds: preselectedChats,
         },
         mode: 'onChange',
@@ -292,8 +299,8 @@ export const ChannelsStep: React.FC<StepProps> = ({
             setIsCreatingChat(true)
             const form = createChatConfiguration(storeIntegration, newChatColor)
             dispatch(createGorgiasChatIntegration(fromJS(form), false, true))
-                .then(() => {
-                    onNextClick()
+                .then((savedIntegrationId) => {
+                    onNextClick(Number(savedIntegrationId))
                 })
                 .catch(() =>
                     dispatch(
@@ -315,7 +322,7 @@ export const ChannelsStep: React.FC<StepProps> = ({
         goToStep(nextStep)
     }
 
-    const onNextClick = () => {
+    const onNextClick = (savedIntegrationId?: number) => {
         if (data && 'id' in data) {
             const updatedData = {
                 shopName,
@@ -324,7 +331,9 @@ export const ChannelsStep: React.FC<StepProps> = ({
                     ? emailIntegrationIds
                     : [],
                 chatIntegrationIds: chatChannelEnabled
-                    ? chatIntegrationIds
+                    ? savedIntegrationId
+                        ? [...chatIntegrationIds, savedIntegrationId]
+                        : chatIntegrationIds
                     : [],
             }
 
