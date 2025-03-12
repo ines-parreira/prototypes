@@ -1,6 +1,9 @@
-import { useState } from 'react'
+import { useCallback, useState } from 'react'
 
+import { Map } from 'immutable'
 import { CountryCode } from 'libphonenumber-js'
+
+import { getPhoneNumberFromActiveCustomer } from '../helpers'
 
 const initialState: FormState = {
     store: NaN,
@@ -33,14 +36,24 @@ export type FormState = {
     deliveryAddressChecked: boolean
 }
 
-export const useCustomerSyncForm = () => {
-    const [formState, setFormState] = useState<FormState>(initialState)
+export const useCustomerSyncForm = (activeCustomer: Map<string, any>) => {
+    const [formState, setFormState] = useState<FormState>({
+        ...initialState,
+        name: activeCustomer.get('name'),
+        email: activeCustomer.get('email'),
+        phone: getPhoneNumberFromActiveCustomer(activeCustomer),
+    })
     const onChange = (changes: Partial<FormState>) =>
         setFormState({ ...formState, ...changes })
 
-    const resetFormState = () => {
-        setFormState(initialState)
-    }
+    const resetFormState = useCallback(() => {
+        setFormState({
+            ...initialState,
+            name: activeCustomer.get('name'),
+            email: activeCustomer.get('email'),
+            phone: getPhoneNumberFromActiveCustomer(activeCustomer),
+        })
+    }, [activeCustomer])
 
     const isFormValid = () => {
         if (formState.deliveryAddressChecked) {

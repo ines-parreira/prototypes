@@ -1,14 +1,22 @@
 import { act, renderHook } from '@testing-library/react-hooks'
+import { fromJS } from 'immutable'
 
 import { useCustomerSyncForm } from '../CustomerSyncForm/useCustomerSyncForm'
 
 describe('useCustomerSyncForm', () => {
+    const mockActiveCustomer = fromJS({
+        name: 'John Smith',
+        email: 'john@email.com',
+    })
+
     it('should initialize form state correctly', () => {
-        const { result } = renderHook(() => useCustomerSyncForm())
+        const { result } = renderHook(() =>
+            useCustomerSyncForm(mockActiveCustomer),
+        )
         expect(result.current.formState).toEqual({
             store: NaN,
-            email: '',
-            name: '',
+            email: mockActiveCustomer.get('email'),
+            name: mockActiveCustomer.get('name'),
             phone: '',
             country: 'United States',
             countryCode: 'US',
@@ -23,7 +31,9 @@ describe('useCustomerSyncForm', () => {
     })
 
     it('should update form state on change', () => {
-        const { result } = renderHook(() => useCustomerSyncForm())
+        const { result } = renderHook(() =>
+            useCustomerSyncForm(mockActiveCustomer),
+        )
         act(() => {
             result.current.onChange({ email: 'test@example.com' })
         })
@@ -31,15 +41,17 @@ describe('useCustomerSyncForm', () => {
     })
 
     it('should reset form state', () => {
-        const { result } = renderHook(() => useCustomerSyncForm())
+        const { result } = renderHook(() =>
+            useCustomerSyncForm(mockActiveCustomer),
+        )
         act(() => {
             result.current.onChange({ email: 'test@example.com' })
             result.current.resetFormState()
         })
         expect(result.current.formState).toEqual({
             store: NaN,
-            email: '',
-            name: '',
+            email: mockActiveCustomer.get('email'),
+            name: mockActiveCustomer.get('name'),
             phone: '',
             country: 'United States',
             countryCode: 'US',
@@ -54,7 +66,9 @@ describe('useCustomerSyncForm', () => {
     })
 
     it('should validate form correctly', () => {
-        const { result } = renderHook(() => useCustomerSyncForm())
+        const { result } = renderHook(() =>
+            useCustomerSyncForm(mockActiveCustomer),
+        )
         act(() => {
             result.current.onChange({ email: 'test@example.com', store: 1 })
         })

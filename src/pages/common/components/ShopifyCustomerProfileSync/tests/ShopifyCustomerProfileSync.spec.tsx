@@ -6,11 +6,15 @@ import '@testing-library/jest-dom/extend-expect'
 
 import { QueryClientProvider } from '@tanstack/react-query'
 import { Map } from 'immutable'
+import { Provider } from 'react-redux'
 
 import { mockQueryClient } from '../../../../../tests/reactQueryTestingUtils'
+import { mockStore } from '../../../../../utils/testing'
 import ShopifyCustomerProfileSync from '../ShopifyCustomerProfileSync'
 
 const queryClient = mockQueryClient()
+
+const state = {}
 
 describe('ShopifyCustomerProfileSync', () => {
     const activeCustomer = Map({ name: 'John Smith' })
@@ -18,7 +22,11 @@ describe('ShopifyCustomerProfileSync', () => {
     test('renders the button and modal', () => {
         render(
             <QueryClientProvider client={queryClient}>
-                <ShopifyCustomerProfileSync activeCustomer={activeCustomer} />
+                <Provider store={mockStore(state)}>
+                    <ShopifyCustomerProfileSync
+                        activeCustomer={activeCustomer}
+                    />
+                </Provider>
             </QueryClientProvider>,
         )
 
@@ -40,7 +48,11 @@ describe('ShopifyCustomerProfileSync', () => {
     test('closes the modal when onClose is called', async () => {
         render(
             <QueryClientProvider client={queryClient}>
-                <ShopifyCustomerProfileSync activeCustomer={activeCustomer} />
+                <Provider store={mockStore(state)}>
+                    <ShopifyCustomerProfileSync
+                        activeCustomer={activeCustomer}
+                    />
+                </Provider>
             </QueryClientProvider>,
         )
         const syncButton = screen.getByText('Sync Profile')

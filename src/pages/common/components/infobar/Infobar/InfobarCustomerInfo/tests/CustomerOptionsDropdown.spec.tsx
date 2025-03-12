@@ -25,11 +25,13 @@ describe('CustomerOptionsDropdownButton', () => {
 
     test('renders dropdown button', () => {
         render(
-            <Provider store={mockStore(state)}>
-                <CustomerOptionsDropdownButton
-                    activeCustomer={activeCustomer}
-                />
-            </Provider>,
+            <QueryClientProvider client={queryClient}>
+                <Provider store={mockStore(state)}>
+                    <CustomerOptionsDropdownButton
+                        activeCustomer={activeCustomer}
+                    />
+                </Provider>
+            </QueryClientProvider>,
         )
         expect(
             screen.getByTestId('test-customer-options-dropdown-button'),
@@ -38,11 +40,13 @@ describe('CustomerOptionsDropdownButton', () => {
 
     test('opens dropdown on button click and then it closes it', () => {
         render(
-            <Provider store={mockStore(state)}>
-                <CustomerOptionsDropdownButton
-                    activeCustomer={activeCustomer}
-                />
-            </Provider>,
+            <QueryClientProvider client={queryClient}>
+                <Provider store={mockStore(state)}>
+                    <CustomerOptionsDropdownButton
+                        activeCustomer={activeCustomer}
+                    />
+                </Provider>
+            </QueryClientProvider>,
         )
 
         fireEvent.click(screen.getByRole('button'))
@@ -57,11 +61,13 @@ describe('CustomerOptionsDropdownButton', () => {
 
     test('opens edit customer modal on dropdown item click and then it closes it', () => {
         const { container } = render(
-            <Provider store={mockStore(state)}>
-                <CustomerOptionsDropdownButton
-                    activeCustomer={activeCustomer}
-                />
-            </Provider>,
+            <QueryClientProvider client={queryClient}>
+                <Provider store={mockStore(state)}>
+                    <CustomerOptionsDropdownButton
+                        activeCustomer={activeCustomer}
+                    />
+                </Provider>
+            </QueryClientProvider>,
         )
 
         fireEvent.click(screen.getByRole('button'))
@@ -97,17 +103,20 @@ describe('CustomerOptionsDropdownButton', () => {
 
     test('doesnt show sync options if there is no shopify integration at all', () => {
         render(
-            <Provider
-                store={mockStore({
-                    integrations: fromJS({
-                        integrations: [],
-                    }),
-                })}
-            >
-                <CustomerOptionsDropdownButton
-                    activeCustomer={activeCustomer}
-                />
-            </Provider>,
+            <QueryClientProvider client={queryClient}>
+                <Provider
+                    store={mockStore({
+                        integrations: fromJS({
+                            integrations: [],
+                        }),
+                    })}
+                >
+                    <CustomerOptionsDropdownButton
+                        activeCustomer={activeCustomer}
+                    />
+                </Provider>
+                ,
+            </QueryClientProvider>,
         )
 
         fireEvent.click(screen.getByRole('button'))

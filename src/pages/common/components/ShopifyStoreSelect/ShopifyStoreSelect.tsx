@@ -1,15 +1,12 @@
 import React, { useEffect } from 'react'
 
-import { fromJS, Map } from 'immutable'
+import { fromJS, List, Map } from 'immutable'
 
-import { useListCustomerIntegrationsWithChannelDefault } from '@gorgias/api-queries'
 import { Label } from '@gorgias/merchant-ui-kit'
-
-import { IntegrationType } from 'models/integration/constants'
 
 import { StoreNameDropdown } from '../../../integrations/integration/components/gorgias_chat/GorgiasChatIntegrationAppearance/StoreNameDropdown'
 import { FormState } from '../infobar/Infobar/InfobarCustomerInfo/CustomerSyncForm/useCustomerSyncForm'
-import { getDefaultStore, selectNormalizedIntegrations } from './helpers'
+import { getDefaultStore } from './helpers'
 
 import css from './ShopifyStoreSelect.less'
 
@@ -17,28 +14,14 @@ interface Props {
     hasError: boolean
     formState: FormState
     onChange: (formState: Partial<FormState>) => void
-    activeCustomer: Map<string, any>
+    shopifyStores: List<Map<string, any>>
 }
 const ShopifyStoreSelect = ({
     hasError,
     onChange,
     formState,
-    activeCustomer,
+    shopifyStores,
 }: Props) => {
-    const { data: shopifyStores } =
-        useListCustomerIntegrationsWithChannelDefault(
-            activeCustomer.get('id'),
-            IntegrationType.Shopify,
-            undefined,
-            {
-                query: {
-                    retry: 1,
-                    refetchOnWindowFocus: false,
-                    select: selectNormalizedIntegrations,
-                },
-            },
-        )
-
     useEffect(() => {
         if (shopifyStores?.size && !formState.store) {
             onChange({

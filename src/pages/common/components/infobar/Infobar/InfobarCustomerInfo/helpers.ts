@@ -33,3 +33,15 @@ export function useShouldShowProfileSync(
         hasShopifyIntegration,
     ])
 }
+
+export function getPhoneNumberFromActiveCustomer(
+    activeCustomer?: Map<any, any>,
+) {
+    const phoneIntegration = activeCustomer
+        ?.get('channels')
+        ?.find(
+            (channel: Map<any, any>) =>
+                channel?.get('type') === IntegrationType.Phone,
+        )
+    return phoneIntegration?.get('address') || ''
+}

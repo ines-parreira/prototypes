@@ -1,9 +1,17 @@
-import React, { FormEvent, useState } from 'react'
+import React, { FormEvent, useCallback, useEffect, useState } from 'react'
 
+import { uuid4 } from '@sentry/utils'
 import { Map } from 'immutable'
 
+import {
+    useListCustomerIntegrationsWithChannelDefault,
+    useScheduleShopifyCreateNewCustomerAction,
+    useScheduleShopifyUpdateCustomerAction,
+} from '@gorgias/api-queries'
 import { Button } from '@gorgias/merchant-ui-kit'
 
+import useAppDispatch from 'hooks/useAppDispatch'
+import { IntegrationType } from 'models/integration/constants'
 import CustomerDeliveryInformation from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/CustomerDeliveryInformation/CustomerDeliveryInformation'
 import Modal from 'pages/common/components/modal/Modal'
 import ModalActionsFooter from 'pages/common/components/modal/ModalActionsFooter'
@@ -13,7 +21,10 @@ import ShopifyStoreSelect from 'pages/common/components/ShopifyStoreSelect/Shopi
 import CheckBox from 'pages/common/forms/CheckBox'
 import InputField from 'pages/common/forms/input/InputField'
 import PhoneNumberInput from 'pages/common/forms/PhoneNumberInput/PhoneNumberInput'
+import { notify } from 'state/notifications/actions'
+import { NotificationStatus } from 'state/notifications/types'
 
+import { selectNormalizedIntegrations } from '../../../../ShopifyStoreSelect/helpers'
 import { useCustomerSyncForm } from './useCustomerSyncForm'
 
 import css from './CustomerSyncForm.less'
@@ -29,24 +40,158 @@ export default function CustomerSyncForm({
     isCustomerSyncFormOpen,
     setIsCustomerSyncFormOpen,
 }: Props) {
+    const dispatch = useAppDispatch()
+    const {
+        mutate: createCustomer,
+        isLoading: isCreateCustomerLoading,
+        isSuccess: isCreateCustomerSuccess,
+        isError: isCreateCustomerError,
+        error: createCustomerError,
+    } = useScheduleShopifyCreateNewCustomerAction()
+    const {
+        mutate: updateCustomer,
+        isLoading: isUpdateCustomerLoading,
+        isSuccess: isUpdateCustomerSuccess,
+        isError: isUpdateCustomerError,
+        error: updateCustomerError,
+    } = useScheduleShopifyUpdateCustomerAction()
+
     const { formState, resetFormState, onChange, isFormValid } =
-        useCustomerSyncForm()
+        useCustomerSyncForm(activeCustomer)
     const [performedValidation, setPerformedValidation] = useState(false)
 
-    const handleSyncModalClose = () => {
+    const { data: shopifyStores } =
+        useListCustomerIntegrationsWithChannelDefault(
+            activeCustomer.get('id'),
+            IntegrationType.Shopify,
+            undefined,
+            {
+                query: {
+                    retry: 1,
+                    refetchOnWindowFocus: false,
+                    select: selectNormalizedIntegrations,
+                },
+            },
+        )
+
+    const handleSyncModalClose = useCallback(() => {
         setPerformedValidation(false)
         resetFormState()
         setIsCustomerSyncFormOpen(false)
-    }
+    }, [resetFormState, setIsCustomerSyncFormOpen])
 
     const handleSyncCustomer = (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault()
         setPerformedValidation(true)
 
         if (isFormValid()) {
-            //TODO: Implement sync customer API calls
+            let firstName = formState.name.split(' ')[0]
+            let lastName = formState.name.split(' ')[1]
+
+            let store = shopifyStores?.find(
+                (store: Map<any, any>) => store.get('id') === formState.store,
+            )
+            if (store.get('hasCustomerData')) {
+                updateCustomer({
+                    integrationId: formState.store,
+                    data: {
+                        account_id: activeCustomer.get('accountId'),
+                        customer_id: activeCustomer.get('id'),
+                        email: formState.email,
+                        execution_id: uuid4().toString(),
+                        first_name: firstName,
+                        last_name: lastName,
+                        integration_id: formState.store,
+                        phone: formState.phone ? formState.phone : null,
+                        triggered_by: 'UserAction',
+                        address: {
+                            address1: formState.address,
+                            address2: formState.apartment,
+                            company: formState.company,
+                            city: formState.city,
+                            country_code: formState.countryCode,
+                            zip: formState.postalCode,
+                        },
+                    },
+                    params: {
+                        customer_id: activeCustomer.get('id'),
+                    },
+                })
+            } else {
+                createCustomer({
+                    integrationId: formState.store,
+                    data: {
+                        first_name: firstName,
+                        last_name: lastName,
+                        phone: formState.phone ? formState.phone : undefined,
+                        email: formState.email,
+                        address: {
+                            address1: formState.address,
+                            address2: formState.apartment,
+                            city: formState.city,
+                            country_code: formState.countryCode,
+                            zip: formState.postalCode,
+                        },
+                    },
+                })
+            }
         }
     }
+
+    useEffect(() => {
+        if (isUpdateCustomerSuccess || isCreateCustomerSuccess) {
+            handleSyncModalClose()
+        }
+    }, [isUpdateCustomerSuccess, isCreateCustomerSuccess, handleSyncModalClose])
+
+    useEffect(() => {
+        if (isUpdateCustomerLoading || isCreateCustomerLoading) {
+            void dispatch(
+                notify({
+                    status: NotificationStatus.Loading,
+                    dismissAfter: 0,
+                    closeOnNext: true,
+                    message: 'Syncing profile to Shopify...',
+                }),
+            )
+        }
+    }, [isUpdateCustomerLoading, isCreateCustomerLoading, dispatch])
+
+    useEffect(() => {
+        if (isUpdateCustomerError) {
+            const message =
+                updateCustomerError.status === 400 &&
+                updateCustomerError?.message !== undefined
+                    ? updateCustomerError.message
+                    : 'There was an error syncing the customer'
+            void dispatch(
+                notify({
+                    status: NotificationStatus.Error,
+                    dismissAfter: 0,
+                    closeOnNext: true,
+                    message: message,
+                }),
+            )
+        }
+    }, [isUpdateCustomerError, updateCustomerError, dispatch])
+
+    useEffect(() => {
+        if (isCreateCustomerError) {
+            const message =
+                createCustomerError.status === 400 &&
+                createCustomerError?.message !== undefined
+                    ? createCustomerError.message
+                    : 'There was an error syncing the customer'
+            void dispatch(
+                notify({
+                    status: NotificationStatus.Error,
+                    dismissAfter: 0,
+                    closeOnNext: true,
+                    message: message,
+                }),
+            )
+        }
+    }, [isCreateCustomerError, createCustomerError, dispatch])
 
     return (
         <Modal
@@ -61,7 +206,7 @@ export default function CustomerSyncForm({
                 <ModalBody>
                     <div className={css.formContainer}>
                         <ShopifyStoreSelect
-                            activeCustomer={activeCustomer}
+                            shopifyStores={shopifyStores}
                             formState={formState}
                             onChange={onChange}
                             hasError={performedValidation && !formState.store}

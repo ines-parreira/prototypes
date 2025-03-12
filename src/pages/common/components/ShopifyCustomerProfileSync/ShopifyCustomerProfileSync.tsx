@@ -37,11 +37,13 @@ export default function ShopifyCustomerProfileSync({ activeCustomer }: Props) {
                         Sync Profile
                     </Button>
                 </div>
-                <CustomerSyncForm
-                    isCustomerSyncFormOpen={isCustomerSyncFormOpen}
-                    activeCustomer={activeCustomer}
-                    setIsCustomerSyncFormOpen={setIsCustomerSyncFormOpen}
-                />
+                {isCustomerSyncFormOpen && (
+                    <CustomerSyncForm
+                        isCustomerSyncFormOpen={isCustomerSyncFormOpen}
+                        activeCustomer={activeCustomer}
+                        setIsCustomerSyncFormOpen={setIsCustomerSyncFormOpen}
+                    />
+                )}
             </div>
         </div>
     )

@@ -5,7 +5,12 @@ import { fromJS, Map } from 'immutable'
 import { Provider } from 'react-redux'
 import configureStore from 'redux-mock-store'
 
-import { useShouldShowProfileSync } from '../helpers'
+import { IntegrationType } from 'models/integration/types'
+
+import {
+    getPhoneNumberFromActiveCustomer,
+    useShouldShowProfileSync,
+} from '../helpers'
 
 const mockStore = configureStore([])
 
@@ -84,5 +89,45 @@ describe('useShouldShowProfileSync', () => {
             },
         )
         expect(result.current).toBe(true)
+    })
+})
+
+describe('getPhoneNumberFromActiveCustomer', () => {})
+
+describe('getPhoneNumberFromActiveCustomer', () => {
+    it('should return the phone number when phone integration exists', () => {
+        const activeCustomer = Map({
+            channels: [
+                Map({ type: IntegrationType.Phone, address: '123-456-7890' }),
+            ],
+        })
+
+        const phoneNumber = getPhoneNumberFromActiveCustomer(activeCustomer)
+        expect(phoneNumber).toBe('123-456-7890')
+    })
+
+    it('should return an empty string when phone integration does not exist', () => {
+        const activeCustomer = Map({
+            channels: [
+                Map({
+                    type: IntegrationType.Email,
+                    address: 'test@example.com',
+                }),
+            ],
+        })
+
+        const phoneNumber = getPhoneNumberFromActiveCustomer(activeCustomer)
+        expect(phoneNumber).toBe('')
+    })
+
+    it('should return an empty string when channels are not present', () => {
+        const activeCustomer = Map({})
+
+        const phoneNumber = getPhoneNumberFromActiveCustomer(activeCustomer)
+        expect(phoneNumber).toBe('')
+    })
+
+    it('should return an empty string when activeCustomer is undefined', () => {
+        expect(getPhoneNumberFromActiveCustomer(undefined)).toBe('')
     })
 })

@@ -84,11 +84,13 @@ export default function CustomerOptionsDropdownButton({
                         closeModal={() => setIsCustomerEditFormOpen(false)}
                     />
                 </Modal>
-                <CustomerSyncForm
-                    isCustomerSyncFormOpen={isCustomerSyncFormOpen}
-                    activeCustomer={activeCustomer}
-                    setIsCustomerSyncFormOpen={setIsCustomerSyncFormOpen}
-                />
+                {isCustomerSyncFormOpen && (
+                    <CustomerSyncForm
+                        isCustomerSyncFormOpen={isCustomerSyncFormOpen}
+                        activeCustomer={activeCustomer}
+                        setIsCustomerSyncFormOpen={setIsCustomerSyncFormOpen}
+                    />
+                )}
             </>
         </>
     )
