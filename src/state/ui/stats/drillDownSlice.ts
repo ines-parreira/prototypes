@@ -46,6 +46,7 @@ import {
     AutoQAMetric,
     ChannelsTableColumns,
     ConvertMetric,
+    SatisfactionAverageSurveyScoreMetric,
     SatisfactionMetric,
     SlaMetric,
     TagsMetric,
@@ -171,6 +172,10 @@ export type SatisfactionMetrics = {
     metricName: SatisfactionMetric
 } & CommonMetrics
 
+export type SatisfactionAverageSurveyScoreMetrics = {
+    metricName: SatisfactionAverageSurveyScoreMetric
+} & CommonMetrics
+
 export type SlaMetrics = {
     metricName: SlaMetric
 } & CommonMetrics
@@ -202,6 +207,7 @@ export type DrillDownMetric =
     | PerformanceOverviewMetrics
     | TicketFieldsMetrics
     | SatisfactionMetrics
+    | SatisfactionAverageSurveyScoreMetrics
     | SlaMetrics
     | ConvertMetrics
     | VoiceMetrics
@@ -433,11 +439,22 @@ export const getDrillDownMetricColumn = (
         metricValueFormat =
             SatisfactionTrendCardConfig[metricData.metricName].metricFormat
     } else if (
-        metricData.metricName === SatisfactionMetric.AverageSurveyScore
+        metricData.metricName === SatisfactionMetric.AverageSurveyScore ||
+        metricData.metricName ===
+            SatisfactionAverageSurveyScoreMetric.AverageSurveyScoreOne ||
+        metricData.metricName ===
+            SatisfactionAverageSurveyScoreMetric.AverageSurveyScoreTwo ||
+        metricData.metricName ===
+            SatisfactionAverageSurveyScoreMetric.AverageSurveyScoreThree ||
+        metricData.metricName ===
+            SatisfactionAverageSurveyScoreMetric.AverageSurveyScoreFour ||
+        metricData.metricName ===
+            SatisfactionAverageSurveyScoreMetric.AverageSurveyScoreFive
     ) {
         metricTitle = CSAT_SCORE
         metricValueFormat =
-            SatisfactionTrendCardConfig[metricData.metricName].metricFormat
+            SatisfactionTrendCardConfig[SatisfactionMetric.AverageSurveyScore]
+                .metricFormat
     } else if (
         metricData.metricName === AutoQAMetric.ReviewedClosedTickets ||
         metricData.metricName === AutoQAMetric.CommunicationSkills ||

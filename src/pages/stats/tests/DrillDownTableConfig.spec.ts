@@ -25,6 +25,7 @@ import {
     ChannelsMetrics,
     ConvertMetrics,
     DrillDownMetric,
+    SatisfactionAverageSurveyScoreMetrics,
     SatisfactionMetrics,
     SlaMetrics,
     TagsFieldsMetrics,
@@ -35,6 +36,7 @@ import {
     AutoQAMetric,
     ChannelsTableColumns,
     ConvertMetric,
+    SatisfactionAverageSurveyScoreMetric,
     SatisfactionMetric,
     SlaMetric,
     TagsMetric,
@@ -226,16 +228,19 @@ describe('getDrillDownQuery', () => {
         },
         { metricName: SlaMetric.BreachedTicketsRate },
     ]
-    const satisfactionMetrics: SatisfactionMetrics[] = [
-        {
-            metricName: SatisfactionMetric.SatisfactionScore,
-        },
-        { metricName: SatisfactionMetric.ResponseRate },
-        { metricName: SatisfactionMetric.SurveysSent },
-        { metricName: SatisfactionMetric.AverageCSATPerAssignee },
-        { metricName: SatisfactionMetric.AverageCSATPerChannel },
-        { metricName: SatisfactionMetric.AverageCSATPerIntegration },
-    ]
+    const satisfactionMetrics: SatisfactionMetrics[] = Object.values(
+        SatisfactionMetric,
+    ).map((metricName) => ({
+        metricName,
+    }))
+
+    const satisfactionAverageSurveyScore: SatisfactionAverageSurveyScoreMetrics[] =
+        Object.values(SatisfactionAverageSurveyScoreMetric).map(
+            (metricName) => ({
+                metricName,
+            }),
+        )
+
     const tagsMetrics: TagsFieldsMetrics[] = [
         {
             metricName: TagsMetric.TicketCount,
@@ -335,6 +340,7 @@ describe('getDrillDownQuery', () => {
         ...channelMetrics,
         ...slaMetrics,
         ...satisfactionMetrics,
+        ...satisfactionAverageSurveyScore,
         ...convertMetrics,
         ...voiceMetrics,
         ...tagsMetrics,

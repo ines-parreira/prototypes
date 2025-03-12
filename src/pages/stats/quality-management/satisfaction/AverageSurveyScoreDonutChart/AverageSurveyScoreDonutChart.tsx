@@ -1,13 +1,16 @@
 import React, { useMemo } from 'react'
 
 import analyticsColorsModern from 'assets/css/new/stats/modern.json'
+import { logEvent, SegmentEvent } from 'common/segment'
 import { useSurveyScores } from 'hooks/reporting/quality-management/satisfaction/useSurveyScores'
 import { useNewStatsFilters } from 'hooks/reporting/support-performance/useNewStatsFilters'
 import { MetricWithDecile } from 'hooks/reporting/useMetricPerDimension'
+import useAppDispatch from 'hooks/useAppDispatch'
 import {
     TicketSatisfactionSurveyDimension,
     TicketSatisfactionSurveyMeasure,
 } from 'models/reporting/cubes/TicketSatisfactionSurveyCube'
+import { SatisfactionSurveyScore } from 'models/reporting/queryFactories/satisfaction/averageScoreQueryFactory'
 import ChartCard from 'pages/stats/ChartCard'
 import DonutChart from 'pages/stats/common/components/charts/DonutChart/DonutChart'
 import { DashboardChartProps } from 'pages/stats/custom-reports/types'
@@ -16,36 +19,56 @@ import { AverageScoreTrend } from 'pages/stats/quality-management/satisfaction/A
 import css from 'pages/stats/quality-management/satisfaction/AverageSurveyScoreDonutChart/AverageSurveyScoreDonutChart.less'
 import { SatisfactionMetricConfig } from 'pages/stats/quality-management/satisfaction/SatisfactionMetricsConfig'
 import { OneDimensionalDataItem } from 'pages/stats/types'
-import { SatisfactionMetric } from 'state/ui/stats/types'
+import {
+    setMetricData,
+    setShouldUseNewFilterData,
+} from 'state/ui/stats/drillDownSlice'
+import {
+    SatisfactionAverageSurveyScoreMetric,
+    SatisfactionMetric,
+} from 'state/ui/stats/types'
 
 type ChartData = {
     data: OneDimensionalDataItem[]
     customColors: string[]
 }
 
-const EMPTY_CHART_DATA = [
+const DRILL_DOWN_METRIC_MAP = {
+    [SatisfactionSurveyScore.One]:
+        SatisfactionAverageSurveyScoreMetric.AverageSurveyScoreOne,
+    [SatisfactionSurveyScore.Two]:
+        SatisfactionAverageSurveyScoreMetric.AverageSurveyScoreTwo,
+    [SatisfactionSurveyScore.Three]:
+        SatisfactionAverageSurveyScoreMetric.AverageSurveyScoreThree,
+    [SatisfactionSurveyScore.Four]:
+        SatisfactionAverageSurveyScoreMetric.AverageSurveyScoreFour,
+    [SatisfactionSurveyScore.Five]:
+        SatisfactionAverageSurveyScoreMetric.AverageSurveyScoreFive,
+} as const
+
+const CHART_DATA_MAP_ARRAY = [
     {
-        label: '1',
+        score: SatisfactionSurveyScore.One,
         value: 0,
         backgroundColor: analyticsColorsModern.analytics.data.pink.value,
     },
     {
-        label: '2',
+        score: SatisfactionSurveyScore.Two,
         value: 0,
         backgroundColor: analyticsColorsModern.analytics.data.yellow.value,
     },
     {
-        label: '3',
+        score: SatisfactionSurveyScore.Three,
         value: 0,
         backgroundColor: analyticsColorsModern.analytics.data.brown.value,
     },
     {
-        label: '4',
+        score: SatisfactionSurveyScore.Four,
         value: 0,
         backgroundColor: analyticsColorsModern.analytics.data.blue.value,
     },
     {
-        label: '5',
+        score: SatisfactionSurveyScore.Five,
         value: 0,
         backgroundColor: analyticsColorsModern.analytics.data.indigo.value,
     },
@@ -68,11 +91,11 @@ export const formatSurveyScores = (
         {},
     )
 
-    return EMPTY_CHART_DATA.map((item) => {
+    return CHART_DATA_MAP_ARRAY.map((item) => {
         return {
             ...item,
-            value: parseInt(dataMap[item.label] ?? '0'),
-            label: `${item.label} ${labelSuffix}`,
+            value: parseInt(dataMap[item.score] ?? '0'),
+            label: `${item.score} ${labelSuffix}`,
         }
     })
 }
@@ -80,7 +103,10 @@ export const formatSurveyScores = (
 export default function AverageSurveyScoreDonutChart(
     props: DashboardChartProps,
 ) {
-    const { cleanStatsFilters, userTimezone } = useNewStatsFilters()
+    const dispatch = useAppDispatch()
+
+    const { cleanStatsFilters, userTimezone, isAnalyticsNewFilters } =
+        useNewStatsFilters()
 
     const scores = useSurveyScores(cleanStatsFilters, userTimezone)
 
@@ -99,6 +125,25 @@ export default function AverageSurveyScoreDonutChart(
         }, initialChartData)
     }, [scores])
 
+    const handleSegmentClick = (dataIndex: number) => {
+        const { title } =
+            SatisfactionMetricConfig[SatisfactionMetric.AverageSurveyScore]
+        const score = CHART_DATA_MAP_ARRAY[dataIndex].score
+        const drillDownMetric = DRILL_DOWN_METRIC_MAP[score]
+
+        const metricData = { title, metricName: drillDownMetric }
+
+        dispatch(setMetricData(metricData))
+
+        if (isAnalyticsNewFilters) {
+            dispatch(setShouldUseNewFilterData(true))
+        }
+
+        logEvent(SegmentEvent.StatClicked, {
+            metric: metricData.metricName,
+        })
+    }
+
     return (
         <ChartCard
             {...SatisfactionMetricConfig[SatisfactionMetric.AverageSurveyScore]}
@@ -113,6 +158,7 @@ export default function AverageSurveyScoreDonutChart(
                     displayLegend
                     isLoading={scores.isFetching}
                     legendClassName={css.legend}
+                    onSegmentClick={handleSegmentClick}
                 >
                     <div className={css.trendWrapper}>
                         <AverageScoreTrend

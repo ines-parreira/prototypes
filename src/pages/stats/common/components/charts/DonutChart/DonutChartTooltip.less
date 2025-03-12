@@ -1,4 +1,5 @@
 @import (reference) '~css/typography.less';
+@import (reference) '~@gorgias/design-tokens/dist/css/layout.less';
 
 :local {
     .container {
@@ -8,8 +9,12 @@
         align-items: flex-start;
         gap: 16px;
     }
-    .tooltipItem {
+    .tooltipColorBox {
         width: 16px;
         height: 16px;
+    }
+    .tooltipText {
+        display: flex;
+        gap: @layout-spacing-xxs;
     }
 }

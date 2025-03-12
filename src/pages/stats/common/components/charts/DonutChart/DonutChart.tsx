@@ -1,6 +1,7 @@
 import React, { ReactNode, useCallback, useMemo } from 'react'
 
 import {
+    ActiveElement,
     ChartData,
     ChartMeta,
     ChartOptions,
@@ -50,7 +51,7 @@ const innerLabelPlugin: Plugin<'doughnut'> = {
     },
 }
 
-const DONUT_TOOLTIP_TARGET = 'donutChartTooltip'
+export const DONUT_TOOLTIP_TARGET = 'donutChartTooltip'
 
 type DoughnutStatProps = {
     width?: number
@@ -65,6 +66,7 @@ type DoughnutStatProps = {
     className?: string
     legendClassName?: string
     children?: ReactNode
+    onSegmentClick?: (dataIndex: number) => void
 }
 
 const DonutChart = ({
@@ -79,6 +81,7 @@ const DonutChart = ({
     className,
     legendClassName,
     children,
+    onSegmentClick,
 }: DoughnutStatProps) => {
     const total = useMemo(
         () => data.reduce((acc, i) => acc + i.value, 0),
@@ -91,42 +94,61 @@ const DonutChart = ({
         [customColors],
     )
 
-    const formattedData: ChartData<'doughnut'> = useMemo(() => {
-        const labels = data.map((d) => d.label)
+    const formattedData: ChartData<'doughnut', number[], string> =
+        useMemo(() => {
+            const labels = data.map((d) => d.label)
 
-        return {
-            labels,
-            datasets: [
-                {
-                    backgroundColor: data.map((_, index) => chartColors(index)),
-                    label: '',
-                    data: data.map((d) => d.value),
-                },
-            ],
-        }
-    }, [data, chartColors])
+            return {
+                labels,
+                datasets: [
+                    {
+                        backgroundColor: data.map((_, index) =>
+                            chartColors(index),
+                        ),
+                        label: '',
+                        data: data.map((d) => d.value),
+                    },
+                ],
+            }
+        }, [data, chartColors])
+
+    const handleChartSegmentClick = useCallback(
+        (_, elements: ActiveElement[]) => {
+            if (elements.length > 0) {
+                const chartElement = elements[0]
+                const dataIndex = chartElement.index
+
+                if (onSegmentClick) {
+                    onSegmentClick(dataIndex)
+                }
+            }
+        },
+        [onSegmentClick],
+    )
 
     const options: ChartOptions<'doughnut'> = useMemo(
         () => ({
             elements: {
                 arc: { borderWidth: 1 },
             },
+            hover: { intersect: false, mode: 'point' },
             cutout: '65%',
             interaction: {
                 intersect: false,
                 mode: 'point',
             },
             plugins: {
-                legend: {
-                    display: false,
-                },
+                legend: { display: false },
                 tooltip: {
                     enabled: false,
                     external: customTooltip,
                 },
             },
+            ...(handleChartSegmentClick && {
+                onClick: handleChartSegmentClick,
+            }),
         }),
-        [customTooltip],
+        [customTooltip, handleChartSegmentClick],
     )
 
     const plugins = useMemo(

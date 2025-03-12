@@ -13,7 +13,11 @@ import { languageProficiencyDrillDownQueryFactory } from 'models/reporting/query
 import { resolutionCompletenessDrillDownQueryFactory } from 'models/reporting/queryFactories/auto-qa/resolutionCompletenessQueryFactory'
 import { reviewedClosedTicketsDrillDownQueryFactory } from 'models/reporting/queryFactories/auto-qa/reviewedClosedTicketsQueryFactory'
 import { averageCSATScorePerDimensionDrillDownQueryFactory } from 'models/reporting/queryFactories/satisfaction/averageCSATScorePerDimensionQueryFactory'
-import { averageScoreDrillDownQueryFactory } from 'models/reporting/queryFactories/satisfaction/averageScoreQueryFactory'
+import {
+    averageScoreDrillDownQueryFactory,
+    averageScoreDrillDownWithScoreQueryBuilder,
+    SatisfactionSurveyScore,
+} from 'models/reporting/queryFactories/satisfaction/averageScoreQueryFactory'
 import { responseRateDrillDownQueryFactory } from 'models/reporting/queryFactories/satisfaction/responseRateQueryFactory'
 import { satisfactionScoreDrillDownQueryFactory } from 'models/reporting/queryFactories/satisfaction/satisfactionScoreQueryFactory'
 import { surveysSentDrillDownQueryFactory } from 'models/reporting/queryFactories/satisfaction/surveysSentQueryFactory'
@@ -70,6 +74,7 @@ import {
     AutoQAMetric,
     ChannelsTableColumns,
     ConvertMetric,
+    SatisfactionAverageSurveyScoreMetric,
     SatisfactionMetric,
     SlaMetric,
     TagsMetric,
@@ -281,6 +286,26 @@ export const getDrillDownQuery = (
             return languageProficiencyDrillDownQueryFactory
         case SatisfactionMetric.AverageSurveyScore:
             return averageScoreDrillDownQueryFactory
+        case SatisfactionAverageSurveyScoreMetric.AverageSurveyScoreOne:
+            return averageScoreDrillDownWithScoreQueryBuilder(
+                SatisfactionSurveyScore.One,
+            )
+        case SatisfactionAverageSurveyScoreMetric.AverageSurveyScoreTwo:
+            return averageScoreDrillDownWithScoreQueryBuilder(
+                SatisfactionSurveyScore.Two,
+            )
+        case SatisfactionAverageSurveyScoreMetric.AverageSurveyScoreThree:
+            return averageScoreDrillDownWithScoreQueryBuilder(
+                SatisfactionSurveyScore.Three,
+            )
+        case SatisfactionAverageSurveyScoreMetric.AverageSurveyScoreFour:
+            return averageScoreDrillDownWithScoreQueryBuilder(
+                SatisfactionSurveyScore.Four,
+            )
+        case SatisfactionAverageSurveyScoreMetric.AverageSurveyScoreFive:
+            return averageScoreDrillDownWithScoreQueryBuilder(
+                SatisfactionSurveyScore.Five,
+            )
         case SatisfactionMetric.SatisfactionScore:
             return satisfactionScoreDrillDownQueryFactory
         case SatisfactionMetric.ResponseRate:

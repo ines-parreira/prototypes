@@ -3,8 +3,11 @@ import React from 'react'
 import { render, screen } from '@testing-library/react'
 import moment from 'moment'
 
+import analyticsColorsModern from 'assets/css/new/stats/modern.json'
+import { logEvent, SegmentEvent } from 'common/segment'
 import { useSurveyScores } from 'hooks/reporting/quality-management/satisfaction/useSurveyScores'
 import { useNewStatsFilters } from 'hooks/reporting/support-performance/useNewStatsFilters'
+import useAppDispatch from 'hooks/useAppDispatch'
 import {
     TicketSatisfactionSurveyDimension,
     TicketSatisfactionSurveyMeasure,
@@ -13,8 +16,12 @@ import { ReportingGranularity } from 'models/reporting/types'
 import { LegacyStatsFilters } from 'models/stat/types'
 import DonutChart from 'pages/stats/common/components/charts/DonutChart/DonutChart'
 import AverageSurveyScoreDonutChart from 'pages/stats/quality-management/satisfaction/AverageSurveyScoreDonutChart/AverageSurveyScoreDonutChart'
+import { SatisfactionAverageSurveyScoreMetric } from 'state/ui/stats/types'
 import { formatReportingQueryDate } from 'utils/reporting'
 import { assumeMock } from 'utils/testing'
+
+jest.mock('common/segment')
+const logEventMock = assumeMock(logEvent)
 
 jest.mock('hooks/reporting/quality-management/satisfaction/useSurveyScores')
 const mockUseSurveyScores = assumeMock(useSurveyScores)
@@ -24,6 +31,9 @@ const useNewStatsFiltersMock = assumeMock(useNewStatsFilters)
 
 jest.mock('pages/stats/common/components/charts/DonutChart/DonutChart')
 const DonutChartMock = assumeMock(DonutChart)
+
+jest.mock('hooks/useAppDispatch')
+const useAppDispatchMock = assumeMock(useAppDispatch)
 
 const periodStart = formatReportingQueryDate(moment())
 const periodEnd = formatReportingQueryDate(moment().subtract(7, 'd'))
@@ -41,6 +51,8 @@ const renderComponent = () => {
 
 describe('<AverageSurveyScoreDonutChart/>', () => {
     beforeEach(() => {
+        logEventMock.mockClear()
+        useAppDispatchMock.mockReturnValue(jest.fn())
         DonutChartMock.mockImplementation(() => <div>Donut Chart</div>)
         useNewStatsFiltersMock.mockReturnValue({
             cleanStatsFilters: statsFilters,
@@ -135,6 +147,40 @@ describe('<AverageSurveyScoreDonutChart/>', () => {
         ).toBeInTheDocument()
     })
 
+    it('should show loading state when fetching data', () => {
+        mockUseSurveyScores.mockReturnValue({
+            isFetching: true,
+            isError: false,
+            data: null,
+        })
+
+        renderComponent()
+
+        expect(DonutChartMock).toHaveBeenCalledWith(
+            expect.objectContaining({
+                isLoading: true,
+            }),
+            {},
+        )
+    })
+
+    it('should pass correct custom colors to DonutChart', () => {
+        renderComponent()
+
+        expect(DonutChartMock).toHaveBeenCalledWith(
+            expect.objectContaining({
+                customColors: [
+                    analyticsColorsModern.analytics.data.pink.value,
+                    analyticsColorsModern.analytics.data.yellow.value,
+                    analyticsColorsModern.analytics.data.brown.value,
+                    analyticsColorsModern.analytics.data.blue.value,
+                    analyticsColorsModern.analytics.data.indigo.value,
+                ],
+            }),
+            {},
+        )
+    })
+
     it('should pass default data and customColors when data does not exists', () => {
         mockUseSurveyScores.mockReturnValue({
             isFetching: false,
@@ -152,5 +198,36 @@ describe('<AverageSurveyScoreDonutChart/>', () => {
             }),
             {},
         )
+    })
+
+    it('should dispatch correct metric and log event when segment is clicked', () => {
+        const mockDispatch = jest.fn()
+        useAppDispatchMock.mockReturnValue(mockDispatch)
+
+        renderComponent()
+
+        const { onSegmentClick } = DonutChartMock.mock.calls[0][0] as any
+
+        expect(onSegmentClick).toBeDefined()
+
+        onSegmentClick(1)
+
+        expect(mockDispatch).toHaveBeenCalledWith({
+            payload: {
+                metricName:
+                    SatisfactionAverageSurveyScoreMetric.AverageSurveyScoreTwo,
+                title: 'Average CSAT',
+            },
+            type: 'drillDown/setMetricData',
+        })
+
+        expect(mockDispatch).toHaveBeenCalledWith({
+            payload: true,
+            type: 'drillDown/setShouldUseNewFilterData',
+        })
+
+        expect(logEvent).toHaveBeenCalledWith(SegmentEvent.StatClicked, {
+            metric: SatisfactionAverageSurveyScoreMetric.AverageSurveyScoreTwo,
+        })
     })
 })

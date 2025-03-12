@@ -54,6 +54,14 @@ export enum SatisfactionMetric {
     AverageCSATPerIntegration = 'satisfaction_average_csat_per_integration',
 }
 
+export enum SatisfactionAverageSurveyScoreMetric {
+    AverageSurveyScoreOne = 'satisfaction_average_survey_score_1',
+    AverageSurveyScoreTwo = 'satisfaction_average_survey_score_2',
+    AverageSurveyScoreThree = 'satisfaction_average_survey_score_3',
+    AverageSurveyScoreFour = 'satisfaction_average_survey_score_4',
+    AverageSurveyScoreFive = 'satisfaction_average_survey_score_5',
+}
+
 export enum TicketFieldsMetric {
     TicketCustomFieldsTicketCount = 'ticket_custom_fields_ticket_count',
 }

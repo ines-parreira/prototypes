@@ -9,10 +9,17 @@ import {
 } from 'models/reporting/cubes/TicketSatisfactionSurveyCube'
 import {
     averageScoreDrillDownQueryFactory,
+    averageScoreDrillDownWithScoreQueryBuilder,
     averageScoreQueryFactory,
+    SatisfactionSurveyScore,
 } from 'models/reporting/queryFactories/satisfaction/averageScoreQueryFactory'
-import { ReportingFilterOperator } from 'models/reporting/types'
-import { StatsFilters } from 'models/stat/types'
+import { withLogicalOperator } from 'models/reporting/queryFactories/utils'
+import {
+    ReportingFilterOperator,
+    ReportingGranularity,
+} from 'models/reporting/types'
+import { LegacyStatsFilters, StatsFilters } from 'models/stat/types'
+import { fromLegacyStatsFilters } from 'state/stats/utils'
 import {
     DRILLDOWN_QUERY_LIMIT,
     NotSpamNorTrashedTicketsFilter,
@@ -143,5 +150,53 @@ describe('averageScoreDrillDownQueryFactory', () => {
             timezone,
             order: [[TicketSatisfactionSurveyMeasure.AvgSurveyScore, sorting]],
         })
+    })
+})
+
+describe('averageScoreDrillDownWithScoreQueryBuilder', () => {
+    const periodStart = moment()
+    const periodEnd = moment(periodStart).add(7, 'days')
+    const statsFilters: LegacyStatsFilters = {
+        period: {
+            start_datetime: periodStart.toISOString(),
+            end_datetime: periodEnd.toISOString(),
+        },
+        aggregationWindow: ReportingGranularity.Week,
+    }
+    const timezone = 'someTimeZone'
+    const sorting = OrderDirection.Desc
+    const score = SatisfactionSurveyScore.Five
+
+    it('should produce the query without sorting', () => {
+        const builder = averageScoreDrillDownWithScoreQueryBuilder(score)
+        const query = builder(statsFilters, timezone)
+
+        const expectedFilters = {
+            ...fromLegacyStatsFilters(statsFilters),
+            score: withLogicalOperator([score]),
+        }
+        const expectedQuery = averageScoreDrillDownQueryFactory(
+            expectedFilters,
+            timezone,
+        )
+
+        expect(query).toEqual(expectedQuery)
+    })
+
+    it('should produce the query with sorting', () => {
+        const builder = averageScoreDrillDownWithScoreQueryBuilder(score)
+        const query = builder(statsFilters, timezone, sorting)
+
+        const expectedFilters = {
+            ...fromLegacyStatsFilters(statsFilters as any),
+            score: withLogicalOperator([score]),
+        }
+        const expectedQuery = averageScoreDrillDownQueryFactory(
+            expectedFilters,
+            timezone,
+            sorting,
+        )
+
+        expect(query).toEqual(expectedQuery)
     })
 })

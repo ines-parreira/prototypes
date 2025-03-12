@@ -1,10 +1,13 @@
 import React, { ComponentProps } from 'react'
 
-import { render, screen } from '@testing-library/react'
+import { fireEvent, render, screen, waitFor } from '@testing-library/react'
 
 import colorTokens from '@gorgias/design-tokens/dist/tokens/colors.json'
 
-import DonutChart from '../DonutChart'
+import { useCustomTooltip } from 'pages/stats/common/useCustomTooltip'
+import { assumeMock } from 'utils/testing'
+
+import DonutChart, { DONUT_TOOLTIP_TARGET } from '../DonutChart'
 
 const mockDoughnutProps = jest.fn()
 
@@ -16,6 +19,9 @@ jest.mock('react-chartjs-2', () => ({
     },
 }))
 
+jest.mock('pages/stats/common/useCustomTooltip')
+const useCustomTooltipMock = assumeMock(useCustomTooltip)
+
 const renderComponent = (props: Partial<ComponentProps<typeof DonutChart>>) => {
     render(<DonutChart data={[]} showTooltip={false} {...props} />)
 }
@@ -23,6 +29,27 @@ const renderComponent = (props: Partial<ComponentProps<typeof DonutChart>>) => {
 describe('<DonutChart />', () => {
     beforeEach(() => {
         mockDoughnutProps.mockClear()
+        useCustomTooltipMock.mockReturnValue({
+            customTooltip: jest.fn(),
+            tooltipData: {
+                dataPoints: [
+                    {
+                        label: 'label',
+                        formattedValue: 'formattedValue',
+                        raw: '10',
+                    },
+                ],
+                labelColors: [
+                    {
+                        backgroundColor: 'red',
+                        borderWidth: 1,
+                        borderColor: 'red',
+                        borderRadius: 1,
+                    },
+                ],
+            },
+            tooltipStyle: { opacity: 100, left: 0, top: 0 },
+        } as any)
     })
 
     it('should render loader', () => {
@@ -121,5 +148,79 @@ describe('<DonutChart />', () => {
             children: <div>children</div>,
         })
         expect(screen.getByText('children')).toBeInTheDocument()
+    })
+
+    it('should pass onSegmentClick', () => {
+        const onSegmentClick = jest.fn()
+        renderComponent({
+            data: [
+                { label: 'Label 1', value: 11 },
+                { label: 'Label 2', value: 12 },
+            ],
+            onSegmentClick,
+        })
+
+        expect(mockDoughnutProps).toHaveBeenCalledWith(
+            expect.objectContaining({
+                options: expect.objectContaining({
+                    onClick: expect.any(Function),
+                }),
+            }),
+        )
+    })
+
+    it('should apply custom className if provided', () => {
+        renderComponent({
+            className: 'custom-class',
+            data: [
+                { label: 'Label 1', value: 11 },
+                { label: 'Label 2', value: 12 },
+            ],
+        })
+
+        expect(document.querySelector('.custom-class')).toBeInTheDocument()
+    })
+    it('should render custom tooltip if showTooltip is enabled', async () => {
+        renderComponent({
+            data: [
+                { label: 'Label 1', value: 11 },
+                { label: 'Label 2', value: 12 },
+            ],
+            showTooltip: true,
+            children: (
+                <span
+                    id={DONUT_TOOLTIP_TARGET}
+                    data-testid={DONUT_TOOLTIP_TARGET}
+                />
+            ),
+        })
+
+        fireEvent.mouseOver(screen.getByTestId(DONUT_TOOLTIP_TARGET))
+
+        await waitFor(() => {
+            expect(screen.queryByRole('tooltip')).toBeInTheDocument()
+        })
+    })
+
+    it('should call onSegmentClick with correct index when a segment is clicked', () => {
+        const onSegmentClick = jest.fn()
+        renderComponent({
+            data: [
+                { label: 'Label 1', value: 11 },
+                { label: 'Label 2', value: 12 },
+            ],
+            onSegmentClick,
+        })
+
+        const { options } = mockDoughnutProps.mock.calls[0][0] as any
+
+        expect(options.onClick).toBeDefined()
+
+        const mockEvent = {} // The event object is not used
+        const mockElements = [{ index: 1 }] // Simulate clicking on the second segment
+
+        options.onClick(mockEvent, mockElements)
+
+        expect(onSegmentClick).toHaveBeenCalledWith(1)
     })
 })
