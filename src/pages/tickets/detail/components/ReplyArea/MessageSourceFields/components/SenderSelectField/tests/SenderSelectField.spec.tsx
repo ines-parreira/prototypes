@@ -1,6 +1,6 @@
 import React from 'react'
 
-import { fireEvent, render, waitFor } from '@testing-library/react'
+import { createEvent, fireEvent, render, waitFor } from '@testing-library/react'
 
 import { TicketMessageSourceType } from 'business/types/ticket'
 import { useFlag } from 'core/flags'
@@ -165,5 +165,37 @@ describe('<SenderSelectField />', () => {
                 `/app/settings/channels/email`,
             )
         })
+    })
+
+    it('should block onBlur event when clicking on the DropdownBody scrollbar / body', () => {
+        const { getByText, getAllByRole, rerender } = render(
+            <SenderSelectField />,
+        )
+
+        fireEvent.click(getByText('arrow_drop_down'))
+
+        rerender(<SenderSelectField />)
+
+        const dropdownBody = getAllByRole('option')[0].parentElement
+        const event = createEvent.mouseDown(dropdownBody!)
+        fireEvent(dropdownBody!, event)
+
+        expect(event.defaultPrevented).toBe(true)
+    })
+
+    it('should not block onBlur event when not clicking on scrollbar / body', () => {
+        const { getByText, getAllByRole, rerender } = render(
+            <SenderSelectField />,
+        )
+
+        fireEvent.click(getByText('arrow_drop_down'))
+
+        rerender(<SenderSelectField />)
+
+        const dropdownItem = getAllByRole('option')[0]
+        const event = createEvent.mouseDown(dropdownItem!)
+        fireEvent(dropdownItem!, event)
+
+        expect(event.defaultPrevented).toBe(false)
     })
 })

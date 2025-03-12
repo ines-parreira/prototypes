@@ -43,7 +43,19 @@ const SenderSelectField = () => {
                                 targetRef?.current?.parentElement ?? undefined
                             }
                         >
-                            <DropdownBody>
+                            <DropdownBody
+                                onMouseDown={(event) => {
+                                    // TODO: this is needed to block SelectInputBox onBlur event
+                                    //  if clicking on the DropdownBody scrollbar
+                                    //  https://linear.app/gorgias/issue/FE-854/check-why-selectinputbox-dropdown-doesnt-allow-click-on-scrollbar
+                                    if (
+                                        event.target ===
+                                        floatingRef.current?.firstElementChild
+                                    ) {
+                                        event.preventDefault()
+                                    }
+                                }}
+                            >
                                 {senders
                                     .sort(
                                         (a, b) =>
