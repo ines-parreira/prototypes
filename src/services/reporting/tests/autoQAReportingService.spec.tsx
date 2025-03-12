@@ -129,37 +129,37 @@ describe('autoQAReportingService', () => {
     const data = {
         communicationSkillsPerAgent: exampleData(
             agentA.id,
-            TicketQAScoreMeasure.AverageScore,
+            TicketQAScoreMeasure.AverageCommunicationSkillsScore,
             agentACommunicationSkills,
         ),
         languageProficiencyPerAgent: exampleData(
             agentA.id,
-            TicketQAScoreMeasure.AverageScore,
+            TicketQAScoreMeasure.AverageLanguageProficiencyScore,
             agentALanguageProficiency,
         ),
         accuracyPerAgent: exampleData(
             agentA.id,
-            TicketQAScoreMeasure.AverageScore,
+            TicketQAScoreMeasure.AverageAccuracyScore,
             agentAAccuracy,
         ),
         efficiencyPerAgent: exampleData(
             agentA.id,
-            TicketQAScoreMeasure.AverageScore,
+            TicketQAScoreMeasure.AverageEfficiencyScore,
             agentAEfficiency,
         ),
         internalCompliancePerAgent: exampleData(
             agentA.id,
-            TicketQAScoreMeasure.AverageScore,
+            TicketQAScoreMeasure.AverageInternalComplianceScore,
             agentAInternalCompliance,
         ),
         brandVoicePerAgent: exampleData(
             agentA.id,
-            TicketQAScoreMeasure.AverageScore,
+            TicketQAScoreMeasure.AverageBrandVoiceScore,
             agentABrandVoice,
         ),
         resolutionCompletenessPerAgent: exampleData(
             agentA.id,
-            TicketQAScoreMeasure.AverageScore,
+            TicketQAScoreMeasure.AverageResolutionCompletenessScore,
             agentAResolutionCompleteness,
         ),
         reviewedClosedTicketsPerAgent: exampleData(

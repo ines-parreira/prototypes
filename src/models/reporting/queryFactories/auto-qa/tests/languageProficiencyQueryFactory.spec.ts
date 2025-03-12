@@ -2,11 +2,7 @@ import moment from 'moment'
 
 import { TicketStatus } from 'business/types/ticket'
 import { OrderDirection } from 'models/api/types'
-import {
-    TicketQAScoreDimension,
-    TicketQAScoreDimensionName,
-    TicketQAScoreMeasure,
-} from 'models/reporting/cubes/auto-qa/TicketQAScoreCube'
+import { TicketQAScoreMeasure } from 'models/reporting/cubes/auto-qa/TicketQAScoreCube'
 import { TicketDimension } from 'models/reporting/cubes/TicketCube'
 import {
     languageProficiencyDrillDownQueryFactory,
@@ -36,7 +32,7 @@ describe('languageProficiencyQueryFactory', () => {
         const query = languageProficiencyQueryFactory(statsFilters, timezone)
 
         expect(query).toEqual({
-            measures: [TicketQAScoreMeasure.AverageScore],
+            measures: [TicketQAScoreMeasure.AverageLanguageProficiencyScore],
             dimensions: [],
             segments: [],
             filters: [
@@ -48,11 +44,6 @@ describe('languageProficiencyQueryFactory', () => {
                     member: TicketDimension.Status,
                     operator: ReportingFilterOperator.Equals,
                     values: [TicketStatus.Closed],
-                },
-                {
-                    member: TicketQAScoreDimension.DimensionName,
-                    operator: ReportingFilterOperator.Equals,
-                    values: [TicketQAScoreDimensionName.LanguageProficiency],
                 },
             ],
             timezone,
@@ -67,7 +58,7 @@ describe('languageProficiencyQueryFactory', () => {
         )
 
         expect(query).toEqual({
-            measures: [TicketQAScoreMeasure.AverageScore],
+            measures: [TicketQAScoreMeasure.AverageLanguageProficiencyScore],
             dimensions: [],
             segments: [],
             filters: [
@@ -80,14 +71,11 @@ describe('languageProficiencyQueryFactory', () => {
                     operator: ReportingFilterOperator.Equals,
                     values: [TicketStatus.Closed],
                 },
-                {
-                    member: TicketQAScoreDimension.DimensionName,
-                    operator: ReportingFilterOperator.Equals,
-                    values: [TicketQAScoreDimensionName.LanguageProficiency],
-                },
             ],
             timezone,
-            order: [[TicketQAScoreMeasure.AverageScore, sorting]],
+            order: [
+                [TicketQAScoreMeasure.AverageLanguageProficiencyScore, sorting],
+            ],
         })
     })
 })
@@ -112,10 +100,7 @@ describe('languageProficiencyDrillDownQueryFactory', () => {
 
         expect(query).toEqual({
             limit: DRILLDOWN_QUERY_LIMIT,
-            measures: [
-                TicketQAScoreMeasure.AverageScore,
-                TicketQAScoreMeasure.QAScoreData,
-            ],
+            measures: [TicketQAScoreMeasure.AverageLanguageProficiencyScore],
             dimensions: [TicketDimension.TicketId],
             segments: [],
             filters: [
@@ -127,11 +112,6 @@ describe('languageProficiencyDrillDownQueryFactory', () => {
                     member: TicketDimension.Status,
                     operator: ReportingFilterOperator.Equals,
                     values: [TicketStatus.Closed],
-                },
-                {
-                    member: TicketQAScoreDimension.DimensionName,
-                    operator: ReportingFilterOperator.Equals,
-                    values: [TicketQAScoreDimensionName.LanguageProficiency],
                 },
             ],
             timezone,
@@ -147,10 +127,7 @@ describe('languageProficiencyDrillDownQueryFactory', () => {
 
         expect(query).toEqual({
             limit: DRILLDOWN_QUERY_LIMIT,
-            measures: [
-                TicketQAScoreMeasure.AverageScore,
-                TicketQAScoreMeasure.QAScoreData,
-            ],
+            measures: [TicketQAScoreMeasure.AverageLanguageProficiencyScore],
             dimensions: [TicketDimension.TicketId],
             segments: [],
             filters: [
@@ -163,14 +140,11 @@ describe('languageProficiencyDrillDownQueryFactory', () => {
                     operator: ReportingFilterOperator.Equals,
                     values: [TicketStatus.Closed],
                 },
-                {
-                    member: TicketQAScoreDimension.DimensionName,
-                    operator: ReportingFilterOperator.Equals,
-                    values: [TicketQAScoreDimensionName.LanguageProficiency],
-                },
             ],
             timezone,
-            order: [[TicketQAScoreMeasure.AverageScore, sorting]],
+            order: [
+                [TicketQAScoreMeasure.AverageLanguageProficiencyScore, sorting],
+            ],
         })
     })
 })

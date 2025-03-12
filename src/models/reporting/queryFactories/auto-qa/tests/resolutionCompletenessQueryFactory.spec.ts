@@ -2,11 +2,7 @@ import moment from 'moment'
 
 import { TicketStatus } from 'business/types/ticket'
 import { OrderDirection } from 'models/api/types'
-import {
-    TicketQAScoreDimension,
-    TicketQAScoreDimensionName,
-    TicketQAScoreMeasure,
-} from 'models/reporting/cubes/auto-qa/TicketQAScoreCube'
+import { TicketQAScoreMeasure } from 'models/reporting/cubes/auto-qa/TicketQAScoreCube'
 import { TicketDimension } from 'models/reporting/cubes/TicketCube'
 import {
     resolutionCompletenessDrillDownQueryFactory,
@@ -36,7 +32,7 @@ describe('resolutionCompletenessQueryFactory', () => {
         const query = resolutionCompletenessQueryFactory(statsFilters, timezone)
 
         expect(query).toEqual({
-            measures: [TicketQAScoreMeasure.AverageScore],
+            measures: [TicketQAScoreMeasure.AverageResolutionCompletenessScore],
             dimensions: [],
             segments: [],
             filters: [
@@ -48,11 +44,6 @@ describe('resolutionCompletenessQueryFactory', () => {
                     member: TicketDimension.Status,
                     operator: ReportingFilterOperator.Equals,
                     values: [TicketStatus.Closed],
-                },
-                {
-                    member: TicketQAScoreDimension.DimensionName,
-                    operator: ReportingFilterOperator.Equals,
-                    values: [TicketQAScoreDimensionName.ResolutionCompleteness],
                 },
             ],
             timezone,
@@ -67,7 +58,7 @@ describe('resolutionCompletenessQueryFactory', () => {
         )
 
         expect(query).toEqual({
-            measures: [TicketQAScoreMeasure.AverageScore],
+            measures: [TicketQAScoreMeasure.AverageResolutionCompletenessScore],
             dimensions: [],
             segments: [],
             filters: [
@@ -80,14 +71,14 @@ describe('resolutionCompletenessQueryFactory', () => {
                     operator: ReportingFilterOperator.Equals,
                     values: [TicketStatus.Closed],
                 },
-                {
-                    member: TicketQAScoreDimension.DimensionName,
-                    operator: ReportingFilterOperator.Equals,
-                    values: [TicketQAScoreDimensionName.ResolutionCompleteness],
-                },
             ],
             timezone,
-            order: [[TicketQAScoreMeasure.AverageScore, sorting]],
+            order: [
+                [
+                    TicketQAScoreMeasure.AverageResolutionCompletenessScore,
+                    sorting,
+                ],
+            ],
         })
     })
 })
@@ -112,10 +103,7 @@ describe('resolutionCompletenessDrillDownQueryFactory', () => {
 
         expect(query).toEqual({
             limit: DRILLDOWN_QUERY_LIMIT,
-            measures: [
-                TicketQAScoreMeasure.AverageScore,
-                TicketQAScoreMeasure.QAScoreData,
-            ],
+            measures: [TicketQAScoreMeasure.AverageResolutionCompletenessScore],
             dimensions: [TicketDimension.TicketId],
             segments: [],
             filters: [
@@ -127,11 +115,6 @@ describe('resolutionCompletenessDrillDownQueryFactory', () => {
                     member: TicketDimension.Status,
                     operator: ReportingFilterOperator.Equals,
                     values: [TicketStatus.Closed],
-                },
-                {
-                    member: TicketQAScoreDimension.DimensionName,
-                    operator: ReportingFilterOperator.Equals,
-                    values: [TicketQAScoreDimensionName.ResolutionCompleteness],
                 },
             ],
             timezone,
@@ -147,10 +130,7 @@ describe('resolutionCompletenessDrillDownQueryFactory', () => {
 
         expect(query).toEqual({
             limit: DRILLDOWN_QUERY_LIMIT,
-            measures: [
-                TicketQAScoreMeasure.AverageScore,
-                TicketQAScoreMeasure.QAScoreData,
-            ],
+            measures: [TicketQAScoreMeasure.AverageResolutionCompletenessScore],
             dimensions: [TicketDimension.TicketId],
             segments: [],
             filters: [
@@ -163,14 +143,14 @@ describe('resolutionCompletenessDrillDownQueryFactory', () => {
                     operator: ReportingFilterOperator.Equals,
                     values: [TicketStatus.Closed],
                 },
-                {
-                    member: TicketQAScoreDimension.DimensionName,
-                    operator: ReportingFilterOperator.Equals,
-                    values: [TicketQAScoreDimensionName.ResolutionCompleteness],
-                },
             ],
             timezone,
-            order: [[TicketQAScoreMeasure.AverageScore, sorting]],
+            order: [
+                [
+                    TicketQAScoreMeasure.AverageResolutionCompletenessScore,
+                    sorting,
+                ],
+            ],
         })
     })
 })

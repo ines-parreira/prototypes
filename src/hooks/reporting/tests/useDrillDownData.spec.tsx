@@ -598,7 +598,7 @@ describe('DrillDownData hooks', () => {
 
             expect(result.current.data).toContainEqual(
                 expect.objectContaining({
-                    rowData: expect.objectContaining({
+                    slas: expect.objectContaining({
                         [FRTMetricName]: expect.objectContaining(FRTData),
                         [RTMetricName]: expect.objectContaining(RTData),
                     }),

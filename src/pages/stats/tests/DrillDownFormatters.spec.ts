@@ -66,8 +66,6 @@ describe('DrillDownFormatters', () => {
     describe('formatTicketDrillDownRowData', () => {
         const ticketId = 468575039
         const agentId = 789726418
-        const rawQaScore =
-            '[{"dimension":"communication_skills","prediction":"5"},{"dimension":"resolution_completeness","prediction":"1"}]'
         const enrichment = {
             'Ticket.id': ticketId,
             'Ticket.subject': '',
@@ -84,10 +82,18 @@ describe('DrillDownFormatters', () => {
         it('should format data with QA score', () => {
             const ticketId = 468575039
             const agentId = 789726418
+            const score = 123
 
             const cubeResult = {
                 [TicketDimension.TicketId]: String(ticketId),
-                [TicketQAScoreMeasure.QAScoreData]: rawQaScore,
+                [TicketQAScoreMeasure.AverageAccuracyScore]: score,
+                [TicketQAScoreMeasure.AverageBrandVoiceScore]: score,
+                [TicketQAScoreMeasure.AverageCommunicationSkillsScore]: score,
+                [TicketQAScoreMeasure.AverageEfficiencyScore]: score,
+                [TicketQAScoreMeasure.AverageInternalComplianceScore]: score,
+                [TicketQAScoreMeasure.AverageLanguageProficiencyScore]: score,
+                [TicketQAScoreMeasure.AverageResolutionCompletenessScore]:
+                    score,
             }
 
             const ticketRow = {
@@ -105,11 +111,19 @@ describe('DrillDownFormatters', () => {
 
             expect(formattedData).toEqual(
                 expect.objectContaining({
-                    qaScore: {
-                        [TicketQAScoreDimensionName.ResolutionCompleteness]:
-                            '1',
-                        [TicketQAScoreDimensionName.CommunicationSkills]: '5',
-                    },
+                    rowData: expect.objectContaining({
+                        [TicketQAScoreMeasure.AverageAccuracyScore]: score,
+                        [TicketQAScoreMeasure.AverageBrandVoiceScore]: score,
+                        [TicketQAScoreMeasure.AverageCommunicationSkillsScore]:
+                            score,
+                        [TicketQAScoreMeasure.AverageEfficiencyScore]: score,
+                        [TicketQAScoreMeasure.AverageInternalComplianceScore]:
+                            score,
+                        [TicketQAScoreMeasure.AverageLanguageProficiencyScore]:
+                            score,
+                        [TicketQAScoreMeasure.AverageResolutionCompletenessScore]:
+                            score,
+                    }),
                 }),
             )
         })
@@ -162,22 +176,24 @@ describe('DrillDownFormatters', () => {
                 },
             })
 
-            expect(result).toEqual({
-                assignee: null,
-                ticket: {
-                    channel: 'chat',
-                    contactReason: null,
-                    created: '2024-12-19T17:13:00.291264',
-                    description: null,
-                    id: null,
-                    isRead: false,
-                    status: null,
-                    subject: null,
-                },
-                intent: undefined,
-                outcome: 'Automated',
-                metricValue: undefined,
-            })
+            expect(result).toEqual(
+                expect.objectContaining({
+                    assignee: null,
+                    ticket: {
+                        channel: 'chat',
+                        contactReason: null,
+                        created: '2024-12-19T17:13:00.291264',
+                        description: null,
+                        id: null,
+                        isRead: false,
+                        status: null,
+                        subject: null,
+                    },
+                    intent: undefined,
+                    outcome: 'Automated',
+                    metricValue: undefined,
+                }),
+            )
         })
 
         it('should return the formatted row data with intent', () => {
@@ -197,22 +213,24 @@ describe('DrillDownFormatters', () => {
                 },
             })
 
-            expect(result).toEqual({
-                assignee: null,
-                ticket: {
-                    channel: 'chat',
-                    contactReason: null,
-                    created: '2024-12-19T17:13:00.291264',
-                    description: null,
-                    id: null,
-                    isRead: false,
-                    status: null,
-                    subject: null,
-                },
-                intent: '2/2',
-                outcome: undefined,
-                metricValue: undefined,
-            })
+            expect(result).toEqual(
+                expect.objectContaining({
+                    assignee: null,
+                    ticket: {
+                        channel: 'chat',
+                        contactReason: null,
+                        created: '2024-12-19T17:13:00.291264',
+                        description: null,
+                        id: null,
+                        isRead: false,
+                        status: null,
+                        subject: null,
+                    },
+                    intent: '2/2',
+                    outcome: undefined,
+                    metricValue: undefined,
+                }),
+            )
         })
 
         it('should return the formatted row data with surveyScore', () => {
@@ -232,22 +250,24 @@ describe('DrillDownFormatters', () => {
                 },
             })
 
-            expect(result).toEqual({
-                assignee: null,
-                ticket: {
-                    channel: 'chat',
-                    contactReason: 'Some reason',
-                    created: '2024-12-19T17:13:00.291264',
-                    description: null,
-                    id: null,
-                    isRead: false,
-                    status: null,
-                    subject: null,
-                },
-                outcome: undefined,
-                metricValue: undefined,
-                surveyScore: '5',
-            })
+            expect(result).toEqual(
+                expect.objectContaining({
+                    assignee: null,
+                    ticket: {
+                        channel: 'chat',
+                        contactReason: 'Some reason',
+                        created: '2024-12-19T17:13:00.291264',
+                        description: null,
+                        id: null,
+                        isRead: false,
+                        status: null,
+                        subject: null,
+                    },
+                    outcome: undefined,
+                    metricValue: undefined,
+                    surveyScore: '5',
+                }),
+            )
         })
     })
 })

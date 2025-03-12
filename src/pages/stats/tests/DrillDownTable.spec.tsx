@@ -10,7 +10,7 @@ import { TicketChannel, TicketStatus } from 'business/types/ticket'
 import { logEvent, SegmentEvent } from 'common/segment'
 import { campaign, campaignId } from 'fixtures/campaign'
 import { useEnrichedDrillDownData } from 'hooks/reporting/useDrillDownData'
-import { TicketQAScoreDimensionName } from 'models/reporting/cubes/auto-qa/TicketQAScoreCube'
+import { TicketQAScoreMeasure } from 'models/reporting/cubes/auto-qa/TicketQAScoreCube'
 import {
     TicketSLADimension,
     TicketSLAStatus,
@@ -265,7 +265,7 @@ describe('<DrillDownTable />', () => {
             const ticketStatus = TicketSLAStatus.Breached
             const dataWithSlas = {
                 ...exampleRow,
-                rowData: {
+                slas: {
                     [metricName]: {
                         [TicketSLADimension.SlaPolicyMetricName]: metricName,
                         [TicketSLADimension.SlaPolicyMetricStatus]:
@@ -332,9 +332,11 @@ describe('<DrillDownTable />', () => {
             })
             const dataWithAutoQA = {
                 ...exampleRow,
-                qaScore: {
-                    [TicketQAScoreDimensionName.ResolutionCompleteness]: '1',
-                    [TicketQAScoreDimensionName.CommunicationSkills]: '3.2',
+                rowData: {
+                    [TicketQAScoreMeasure.AverageResolutionCompletenessScore]:
+                        '1',
+                    [TicketQAScoreMeasure.AverageCommunicationSkillsScore]:
+                        '3.2',
                 },
             }
             useEnrichedDrillDownDataMock.mockReturnValue({
@@ -371,9 +373,11 @@ describe('<DrillDownTable />', () => {
             })
             const dataWithAutoQA = {
                 ...exampleRow,
-                qaScore: {
-                    [TicketQAScoreDimensionName.ResolutionCompleteness]: '1',
-                    [TicketQAScoreDimensionName.CommunicationSkills]: '3.2',
+                rowData: {
+                    [TicketQAScoreMeasure.AverageResolutionCompletenessScore]:
+                        '1',
+                    [TicketQAScoreMeasure.AverageCommunicationSkillsScore]:
+                        '3.2',
                 },
             }
             useEnrichedDrillDownDataMock.mockReturnValue({

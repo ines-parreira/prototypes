@@ -2,11 +2,7 @@ import moment from 'moment'
 
 import { TicketStatus } from 'business/types/ticket'
 import { OrderDirection } from 'models/api/types'
-import {
-    TicketQAScoreDimension,
-    TicketQAScoreDimensionName,
-    TicketQAScoreMeasure,
-} from 'models/reporting/cubes/auto-qa/TicketQAScoreCube'
+import { TicketQAScoreMeasure } from 'models/reporting/cubes/auto-qa/TicketQAScoreCube'
 import { TicketDimension } from 'models/reporting/cubes/TicketCube'
 import {
     brandVoiceDrillDownQueryFactory,
@@ -36,7 +32,7 @@ describe('brandVoiceQueryFactory', () => {
         const query = brandVoiceQueryFactory(statsFilters, timezone)
 
         expect(query).toEqual({
-            measures: [TicketQAScoreMeasure.AverageScore],
+            measures: [TicketQAScoreMeasure.AverageBrandVoiceScore],
             dimensions: [],
             segments: [],
             filters: [
@@ -48,11 +44,6 @@ describe('brandVoiceQueryFactory', () => {
                     member: TicketDimension.Status,
                     operator: ReportingFilterOperator.Equals,
                     values: [TicketStatus.Closed],
-                },
-                {
-                    member: TicketQAScoreDimension.DimensionName,
-                    operator: ReportingFilterOperator.Equals,
-                    values: [TicketQAScoreDimensionName.BrandVoice],
                 },
             ],
             timezone,
@@ -63,7 +54,7 @@ describe('brandVoiceQueryFactory', () => {
         const query = brandVoiceQueryFactory(statsFilters, timezone, sorting)
 
         expect(query).toEqual({
-            measures: [TicketQAScoreMeasure.AverageScore],
+            measures: [TicketQAScoreMeasure.AverageBrandVoiceScore],
             dimensions: [],
             segments: [],
             filters: [
@@ -76,14 +67,9 @@ describe('brandVoiceQueryFactory', () => {
                     operator: ReportingFilterOperator.Equals,
                     values: [TicketStatus.Closed],
                 },
-                {
-                    member: TicketQAScoreDimension.DimensionName,
-                    operator: ReportingFilterOperator.Equals,
-                    values: [TicketQAScoreDimensionName.BrandVoice],
-                },
             ],
             timezone,
-            order: [[TicketQAScoreMeasure.AverageScore, sorting]],
+            order: [[TicketQAScoreMeasure.AverageBrandVoiceScore, sorting]],
         })
     })
 })
@@ -105,10 +91,7 @@ describe('brandVoiceDrillDownQueryFactory', () => {
 
         expect(query).toEqual({
             limit: DRILLDOWN_QUERY_LIMIT,
-            measures: [
-                TicketQAScoreMeasure.AverageScore,
-                TicketQAScoreMeasure.QAScoreData,
-            ],
+            measures: [TicketQAScoreMeasure.AverageBrandVoiceScore],
             dimensions: [TicketDimension.TicketId],
             segments: [],
             filters: [
@@ -120,11 +103,6 @@ describe('brandVoiceDrillDownQueryFactory', () => {
                     member: TicketDimension.Status,
                     operator: ReportingFilterOperator.Equals,
                     values: [TicketStatus.Closed],
-                },
-                {
-                    member: TicketQAScoreDimension.DimensionName,
-                    operator: ReportingFilterOperator.Equals,
-                    values: [TicketQAScoreDimensionName.BrandVoice],
                 },
             ],
             timezone,
@@ -140,10 +118,7 @@ describe('brandVoiceDrillDownQueryFactory', () => {
 
         expect(query).toEqual({
             limit: DRILLDOWN_QUERY_LIMIT,
-            measures: [
-                TicketQAScoreMeasure.AverageScore,
-                TicketQAScoreMeasure.QAScoreData,
-            ],
+            measures: [TicketQAScoreMeasure.AverageBrandVoiceScore],
             dimensions: [TicketDimension.TicketId],
             segments: [],
             filters: [
@@ -156,14 +131,9 @@ describe('brandVoiceDrillDownQueryFactory', () => {
                     operator: ReportingFilterOperator.Equals,
                     values: [TicketStatus.Closed],
                 },
-                {
-                    member: TicketQAScoreDimension.DimensionName,
-                    operator: ReportingFilterOperator.Equals,
-                    values: [TicketQAScoreDimensionName.BrandVoice],
-                },
             ],
             timezone,
-            order: [[TicketQAScoreMeasure.AverageScore, sorting]],
+            order: [[TicketQAScoreMeasure.AverageBrandVoiceScore, sorting]],
         })
     })
 })

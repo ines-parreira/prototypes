@@ -8,7 +8,7 @@ import {
     useEnrichedDrillDownData,
 } from 'hooks/reporting/useDrillDownData'
 import useAppSelector from 'hooks/useAppSelector'
-import { TicketQAScoreDimensionName } from 'models/reporting/cubes/auto-qa/TicketQAScoreCube'
+import { TicketQAScoreMeasure } from 'models/reporting/cubes/auto-qa/TicketQAScoreCube'
 import { EnrichmentFields } from 'models/reporting/types'
 import BodyCell from 'pages/common/components/table/cells/BodyCell'
 import HeaderCellProperty from 'pages/common/components/table/cells/HeaderCellProperty'
@@ -397,10 +397,8 @@ export const TicketDrillDownTableContent = ({
                                               metricValueFormat,
                                               NOT_AVAILABLE_PLACEHOLDER,
                                           )
-                                        : item.rowData && (
-                                              <SLAStatusCell
-                                                  item={item.rowData}
-                                              />
+                                        : item.slas && (
+                                              <SLAStatusCell item={item.slas} />
                                           )}
                                 </BodyCell>
                             )}
@@ -415,9 +413,9 @@ export const TicketDrillDownTableContent = ({
                                     {
                                         <AutoQACompletenessCell
                                             data={
-                                                item?.qaScore?.[
-                                                    TicketQAScoreDimensionName
-                                                        .ResolutionCompleteness
+                                                item?.rowData?.[
+                                                    TicketQAScoreMeasure
+                                                        .AverageResolutionCompletenessScore
                                                 ]
                                             }
                                         />
@@ -449,55 +447,61 @@ export const TicketDrillDownTableContent = ({
                                         {
                                             <AutoQACompletenessCell
                                                 data={
-                                                    item?.qaScore?.[
-                                                        TicketQAScoreDimensionName
-                                                            .ResolutionCompleteness
+                                                    item?.rowData?.[
+                                                        TicketQAScoreMeasure
+                                                            .AverageResolutionCompletenessScore
                                                     ]
                                                 }
                                             />
                                         }
                                     </BodyCell>
                                     <BodyCell width={columnWidths.metric}>
-                                        {item?.qaScore &&
-                                            item.qaScore[
-                                                TicketQAScoreDimensionName
-                                                    .Accuracy
-                                            ]}
+                                        {
+                                            item?.rowData?.[
+                                                TicketQAScoreMeasure
+                                                    .AverageAccuracyScore
+                                            ]
+                                        }
                                     </BodyCell>
                                     <BodyCell width={columnWidths.metric}>
-                                        {item?.qaScore &&
-                                            item.qaScore[
-                                                TicketQAScoreDimensionName
-                                                    .InternalCompliance
-                                            ]}
+                                        {
+                                            item?.rowData?.[
+                                                TicketQAScoreMeasure
+                                                    .AverageInternalComplianceScore
+                                            ]
+                                        }
                                     </BodyCell>
                                     <BodyCell width={columnWidths.metric}>
-                                        {item?.qaScore &&
-                                            item.qaScore[
-                                                TicketQAScoreDimensionName
-                                                    .Efficiency
-                                            ]}
+                                        {
+                                            item?.rowData?.[
+                                                TicketQAScoreMeasure
+                                                    .AverageEfficiencyScore
+                                            ]
+                                        }
                                     </BodyCell>
                                     <BodyCell width={columnWidths.metric}>
-                                        {item?.qaScore &&
-                                            item.qaScore[
-                                                TicketQAScoreDimensionName
-                                                    .CommunicationSkills
-                                            ]}
+                                        {
+                                            item?.rowData?.[
+                                                TicketQAScoreMeasure
+                                                    .AverageCommunicationSkillsScore
+                                            ]
+                                        }
                                     </BodyCell>
                                     <BodyCell width={columnWidths.metric}>
-                                        {item?.qaScore &&
-                                            item.qaScore[
-                                                TicketQAScoreDimensionName
-                                                    .LanguageProficiency
-                                            ]}
+                                        {
+                                            item?.rowData?.[
+                                                TicketQAScoreMeasure
+                                                    .AverageLanguageProficiencyScore
+                                            ]
+                                        }
                                     </BodyCell>
                                     <BodyCell width={columnWidths.metric}>
-                                        {item?.qaScore &&
-                                            item.qaScore[
-                                                TicketQAScoreDimensionName
-                                                    .BrandVoice
-                                            ]}
+                                        {
+                                            item?.rowData?.[
+                                                TicketQAScoreMeasure
+                                                    .AverageBrandVoiceScore
+                                            ]
+                                        }
                                     </BodyCell>
                                 </>
                             )}

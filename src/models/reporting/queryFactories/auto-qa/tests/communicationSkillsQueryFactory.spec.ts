@@ -2,11 +2,7 @@ import moment from 'moment'
 
 import { TicketStatus } from 'business/types/ticket'
 import { OrderDirection } from 'models/api/types'
-import {
-    TicketQAScoreDimension,
-    TicketQAScoreDimensionName,
-    TicketQAScoreMeasure,
-} from 'models/reporting/cubes/auto-qa/TicketQAScoreCube'
+import { TicketQAScoreMeasure } from 'models/reporting/cubes/auto-qa/TicketQAScoreCube'
 import { TicketDimension } from 'models/reporting/cubes/TicketCube'
 import {
     communicationSkillsDrillDownQueryFactory,
@@ -36,7 +32,7 @@ describe('resolutionCompletenessQueryFactory', () => {
         const query = communicationSkillsQueryFactory(statsFilters, timezone)
 
         expect(query).toEqual({
-            measures: [TicketQAScoreMeasure.AverageScore],
+            measures: [TicketQAScoreMeasure.AverageCommunicationSkillsScore],
             dimensions: [],
             segments: [],
             filters: [
@@ -48,11 +44,6 @@ describe('resolutionCompletenessQueryFactory', () => {
                     member: TicketDimension.Status,
                     operator: ReportingFilterOperator.Equals,
                     values: [TicketStatus.Closed],
-                },
-                {
-                    member: TicketQAScoreDimension.DimensionName,
-                    operator: ReportingFilterOperator.Equals,
-                    values: [TicketQAScoreDimensionName.CommunicationSkills],
                 },
             ],
             timezone,
@@ -67,7 +58,7 @@ describe('resolutionCompletenessQueryFactory', () => {
         )
 
         expect(query).toEqual({
-            measures: [TicketQAScoreMeasure.AverageScore],
+            measures: [TicketQAScoreMeasure.AverageCommunicationSkillsScore],
             dimensions: [],
             segments: [],
             filters: [
@@ -80,14 +71,11 @@ describe('resolutionCompletenessQueryFactory', () => {
                     operator: ReportingFilterOperator.Equals,
                     values: [TicketStatus.Closed],
                 },
-                {
-                    member: TicketQAScoreDimension.DimensionName,
-                    operator: ReportingFilterOperator.Equals,
-                    values: [TicketQAScoreDimensionName.CommunicationSkills],
-                },
             ],
             timezone,
-            order: [[TicketQAScoreMeasure.AverageScore, sorting]],
+            order: [
+                [TicketQAScoreMeasure.AverageCommunicationSkillsScore, sorting],
+            ],
         })
     })
 })
@@ -112,10 +100,7 @@ describe('communicationSkillsDrillDownQueryFactory', () => {
 
         expect(query).toEqual({
             limit: DRILLDOWN_QUERY_LIMIT,
-            measures: [
-                TicketQAScoreMeasure.AverageScore,
-                TicketQAScoreMeasure.QAScoreData,
-            ],
+            measures: [TicketQAScoreMeasure.AverageCommunicationSkillsScore],
             dimensions: [TicketDimension.TicketId],
             segments: [],
             filters: [
@@ -127,11 +112,6 @@ describe('communicationSkillsDrillDownQueryFactory', () => {
                     member: TicketDimension.Status,
                     operator: ReportingFilterOperator.Equals,
                     values: [TicketStatus.Closed],
-                },
-                {
-                    member: TicketQAScoreDimension.DimensionName,
-                    operator: ReportingFilterOperator.Equals,
-                    values: [TicketQAScoreDimensionName.CommunicationSkills],
                 },
             ],
             timezone,
@@ -147,10 +127,7 @@ describe('communicationSkillsDrillDownQueryFactory', () => {
 
         expect(query).toEqual({
             limit: DRILLDOWN_QUERY_LIMIT,
-            measures: [
-                TicketQAScoreMeasure.AverageScore,
-                TicketQAScoreMeasure.QAScoreData,
-            ],
+            measures: [TicketQAScoreMeasure.AverageCommunicationSkillsScore],
             dimensions: [TicketDimension.TicketId],
             segments: [],
             filters: [
@@ -163,14 +140,11 @@ describe('communicationSkillsDrillDownQueryFactory', () => {
                     operator: ReportingFilterOperator.Equals,
                     values: [TicketStatus.Closed],
                 },
-                {
-                    member: TicketQAScoreDimension.DimensionName,
-                    operator: ReportingFilterOperator.Equals,
-                    values: [TicketQAScoreDimensionName.CommunicationSkills],
-                },
             ],
             timezone,
-            order: [[TicketQAScoreMeasure.AverageScore, sorting]],
+            order: [
+                [TicketQAScoreMeasure.AverageCommunicationSkillsScore, sorting],
+            ],
         })
     })
 })

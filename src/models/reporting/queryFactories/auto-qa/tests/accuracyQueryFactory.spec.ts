@@ -2,11 +2,7 @@ import moment from 'moment'
 
 import { TicketStatus } from 'business/types/ticket'
 import { OrderDirection } from 'models/api/types'
-import {
-    TicketQAScoreDimension,
-    TicketQAScoreDimensionName,
-    TicketQAScoreMeasure,
-} from 'models/reporting/cubes/auto-qa/TicketQAScoreCube'
+import { TicketQAScoreMeasure } from 'models/reporting/cubes/auto-qa/TicketQAScoreCube'
 import { TicketDimension } from 'models/reporting/cubes/TicketCube'
 import {
     accuracyDrillDownQueryFactory,
@@ -36,7 +32,7 @@ describe('accuracyQueryFactory', () => {
         const query = accuracyQueryFactory(statsFilters, timezone)
 
         expect(query).toEqual({
-            measures: [TicketQAScoreMeasure.AverageScore],
+            measures: [TicketQAScoreMeasure.AverageAccuracyScore],
             dimensions: [],
             segments: [],
             filters: [
@@ -48,11 +44,6 @@ describe('accuracyQueryFactory', () => {
                     member: TicketDimension.Status,
                     operator: ReportingFilterOperator.Equals,
                     values: [TicketStatus.Closed],
-                },
-                {
-                    member: TicketQAScoreDimension.DimensionName,
-                    operator: ReportingFilterOperator.Equals,
-                    values: [TicketQAScoreDimensionName.Accuracy],
                 },
             ],
             timezone,
@@ -63,7 +54,7 @@ describe('accuracyQueryFactory', () => {
         const query = accuracyQueryFactory(statsFilters, timezone, sorting)
 
         expect(query).toEqual({
-            measures: [TicketQAScoreMeasure.AverageScore],
+            measures: [TicketQAScoreMeasure.AverageAccuracyScore],
             dimensions: [],
             segments: [],
             filters: [
@@ -76,14 +67,9 @@ describe('accuracyQueryFactory', () => {
                     operator: ReportingFilterOperator.Equals,
                     values: [TicketStatus.Closed],
                 },
-                {
-                    member: TicketQAScoreDimension.DimensionName,
-                    operator: ReportingFilterOperator.Equals,
-                    values: [TicketQAScoreDimensionName.Accuracy],
-                },
             ],
             timezone,
-            order: [[TicketQAScoreMeasure.AverageScore, sorting]],
+            order: [[TicketQAScoreMeasure.AverageAccuracyScore, sorting]],
         })
     })
 })
@@ -105,10 +91,7 @@ describe('accuracyDrillDownQueryFactory', () => {
 
         expect(query).toEqual({
             limit: DRILLDOWN_QUERY_LIMIT,
-            measures: [
-                TicketQAScoreMeasure.AverageScore,
-                TicketQAScoreMeasure.QAScoreData,
-            ],
+            measures: [TicketQAScoreMeasure.AverageAccuracyScore],
             dimensions: [TicketDimension.TicketId],
             segments: [],
             filters: [
@@ -120,11 +103,6 @@ describe('accuracyDrillDownQueryFactory', () => {
                     member: TicketDimension.Status,
                     operator: ReportingFilterOperator.Equals,
                     values: [TicketStatus.Closed],
-                },
-                {
-                    member: TicketQAScoreDimension.DimensionName,
-                    operator: ReportingFilterOperator.Equals,
-                    values: [TicketQAScoreDimensionName.Accuracy],
                 },
             ],
             timezone,
@@ -140,10 +118,7 @@ describe('accuracyDrillDownQueryFactory', () => {
 
         expect(query).toEqual({
             limit: DRILLDOWN_QUERY_LIMIT,
-            measures: [
-                TicketQAScoreMeasure.AverageScore,
-                TicketQAScoreMeasure.QAScoreData,
-            ],
+            measures: [TicketQAScoreMeasure.AverageAccuracyScore],
             dimensions: [TicketDimension.TicketId],
             segments: [],
             filters: [
@@ -156,14 +131,9 @@ describe('accuracyDrillDownQueryFactory', () => {
                     operator: ReportingFilterOperator.Equals,
                     values: [TicketStatus.Closed],
                 },
-                {
-                    member: TicketQAScoreDimension.DimensionName,
-                    operator: ReportingFilterOperator.Equals,
-                    values: [TicketQAScoreDimensionName.Accuracy],
-                },
             ],
             timezone,
-            order: [[TicketQAScoreMeasure.AverageScore, sorting]],
+            order: [[TicketQAScoreMeasure.AverageAccuracyScore, sorting]],
         })
     })
 })

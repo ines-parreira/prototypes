@@ -5,6 +5,13 @@ export enum TicketQAScoreMeasure {
     TicketCount = 'TicketQAScore.ticketCount',
     AverageScore = 'TicketQAScore.averageScore',
     QAScoreData = 'TicketQAScore.qaScoreData',
+    AverageAccuracyScore = 'TicketQAScore.averageAccuracyScore',
+    AverageBrandVoiceScore = 'TicketQAScore.averageBrandVoiceScore',
+    AverageCommunicationSkillsScore = 'TicketQAScore.averageCommunicationSkillsScore',
+    AverageEfficiencyScore = 'TicketQAScore.averageEfficiencyScore',
+    AverageInternalComplianceScore = 'TicketQAScore.averageInternalComplianceScore',
+    AverageLanguageProficiencyScore = 'TicketQAScore.averageLanguageProficiencyScore',
+    AverageResolutionCompletenessScore = 'TicketQAScore.averageResolutionCompletenessScore',
 }
 
 export enum TicketQAScoreDimension {

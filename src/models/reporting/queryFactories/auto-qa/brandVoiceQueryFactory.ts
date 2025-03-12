@@ -2,8 +2,6 @@ import { TicketStatus } from 'business/types/ticket'
 import { OrderDirection } from 'models/api/types'
 import {
     TicketQAScoreCubeWithJoins,
-    TicketQAScoreDimension,
-    TicketQAScoreDimensionName,
     TicketQAScoreMeasure,
 } from 'models/reporting/cubes/auto-qa/TicketQAScoreCube'
 import { TicketDimension } from 'models/reporting/cubes/TicketCube'
@@ -21,7 +19,7 @@ export const brandVoiceQueryFactory = (
     timezone: string,
     sorting?: OrderDirection,
 ): ReportingQuery<TicketQAScoreCubeWithJoins> => ({
-    measures: [TicketQAScoreMeasure.AverageScore],
+    measures: [TicketQAScoreMeasure.AverageBrandVoiceScore],
     dimensions: [],
     segments: [],
     filters: [
@@ -31,16 +29,11 @@ export const brandVoiceQueryFactory = (
             operator: ReportingFilterOperator.Equals,
             values: [TicketStatus.Closed],
         },
-        {
-            member: TicketQAScoreDimension.DimensionName,
-            operator: ReportingFilterOperator.Equals,
-            values: [TicketQAScoreDimensionName.BrandVoice],
-        },
     ],
     timezone,
     ...(sorting
         ? {
-              order: [[TicketQAScoreMeasure.AverageScore, sorting]],
+              order: [[TicketQAScoreMeasure.AverageBrandVoiceScore, sorting]],
           }
         : {}),
 })
@@ -56,10 +49,7 @@ export const brandVoiceDrillDownQueryFactory = (
     sorting?: OrderDirection,
 ): ReportingQuery<TicketQAScoreCubeWithJoins> => ({
     ...brandVoiceQueryFactory(filters, timezone, sorting),
-    measures: [
-        TicketQAScoreMeasure.AverageScore,
-        TicketQAScoreMeasure.QAScoreData,
-    ],
+    measures: [TicketQAScoreMeasure.AverageBrandVoiceScore],
     dimensions: [TicketDimension.TicketId],
     limit: DRILLDOWN_QUERY_LIMIT,
 })

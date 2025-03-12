@@ -6,14 +6,11 @@ import {
 } from 'hooks/reporting/automate/types'
 import { transformIntentName } from 'hooks/reporting/automate/utils'
 import { MergedRecord } from 'hooks/reporting/withEnrichment'
-import {
-    TicketQAScoreDimensionName,
-    TicketQAScoreMeasure,
-} from 'models/reporting/cubes/auto-qa/TicketQAScoreCube'
 import { TicketSatisfactionSurveyDimension } from 'models/reporting/cubes/TicketSatisfactionSurveyCube'
 import { VoiceCallDimension } from 'models/reporting/cubes/VoiceCallCube'
 import { EnrichmentFields } from 'models/reporting/types'
 import { OrderConversionDimension } from 'pages/stats/convert/clients/constants'
+import { SLAPolicyStatus } from 'pages/stats/sla/components/SlaStatusCell'
 import { VoiceCallSummary } from 'pages/stats/voice/models/types'
 
 export interface TicketDetails {
@@ -39,16 +36,7 @@ export interface TicketDrillDownRowData extends BaseDrillDownRowData {
               id: number
           } & Partial<User>)
         | null
-    qaScore?: Record<
-        | TicketQAScoreDimensionName.ResolutionCompleteness
-        | TicketQAScoreDimensionName.Accuracy
-        | TicketQAScoreDimensionName.InternalCompliance
-        | TicketQAScoreDimensionName.Efficiency
-        | TicketQAScoreDimensionName.CommunicationSkills
-        | TicketQAScoreDimensionName.LanguageProficiency
-        | TicketQAScoreDimensionName.BrandVoice,
-        string | undefined
-    >
+    slas?: Record<string, SLAPolicyStatus>
     surveyScore?: string | null
     outcome?: string | null
     intent?: string | null
@@ -79,16 +67,6 @@ export type DrillDownFormatterProps = {
         outcomeCustomFieldId?: number
         intentCustomFieldId?: number
     }
-}
-
-const getQAMetric = (
-    key: TicketQAScoreDimensionName,
-    data: string,
-): string | undefined => {
-    const parsedField = JSON.parse(data)
-    const dataArray: { dimension: string; prediction: string }[] =
-        Array.isArray(parsedField) ? parsedField : []
-    return dataArray.find((item) => item?.dimension === key)?.prediction
 }
 
 const getAIOutcome = ({
@@ -172,48 +150,11 @@ export const formatTicketDrillDownRowData = ({
               }
             : null,
         ...(surveyScore ? { surveyScore } : {}),
-        ...(row?.['slas'] ? { rowData: row['slas'] } : {}),
-        ...(row?.[TicketQAScoreMeasure.QAScoreData]
-            ? { rowData: row[TicketQAScoreMeasure.QAScoreData] }
-            : {}),
-        ...(row?.[TicketQAScoreMeasure.QAScoreData]
-            ? {
-                  qaScore: {
-                      [TicketQAScoreDimensionName.ResolutionCompleteness]:
-                          getQAMetric(
-                              TicketQAScoreDimensionName.ResolutionCompleteness,
-                              row[TicketQAScoreMeasure.QAScoreData],
-                          ),
-                      [TicketQAScoreDimensionName.Accuracy]: getQAMetric(
-                          TicketQAScoreDimensionName.Accuracy,
-                          row[TicketQAScoreMeasure.QAScoreData],
-                      ),
-                      [TicketQAScoreDimensionName.InternalCompliance]:
-                          getQAMetric(
-                              TicketQAScoreDimensionName.InternalCompliance,
-                              row[TicketQAScoreMeasure.QAScoreData],
-                          ),
-                      [TicketQAScoreDimensionName.Efficiency]: getQAMetric(
-                          TicketQAScoreDimensionName.Efficiency,
-                          row[TicketQAScoreMeasure.QAScoreData],
-                      ),
-                      [TicketQAScoreDimensionName.CommunicationSkills]:
-                          getQAMetric(
-                              TicketQAScoreDimensionName.CommunicationSkills,
-                              row[TicketQAScoreMeasure.QAScoreData],
-                          ),
-                      [TicketQAScoreDimensionName.LanguageProficiency]:
-                          getQAMetric(
-                              TicketQAScoreDimensionName.LanguageProficiency,
-                              row[TicketQAScoreMeasure.QAScoreData],
-                          ),
-                      [TicketQAScoreDimensionName.BrandVoice]: getQAMetric(
-                          TicketQAScoreDimensionName.BrandVoice,
-                          row[TicketQAScoreMeasure.QAScoreData],
-                      ),
-                  },
-              }
-            : {}),
+
+        rowData: {
+            ...row,
+        },
+        slas: row?.['slas'] ? row['slas'] : {},
         outcome: outcome,
         intent: intent,
     }

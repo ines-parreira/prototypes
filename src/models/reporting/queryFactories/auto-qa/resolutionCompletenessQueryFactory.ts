@@ -2,8 +2,6 @@ import { TicketStatus } from 'business/types/ticket'
 import { OrderDirection } from 'models/api/types'
 import {
     TicketQAScoreCubeWithJoins,
-    TicketQAScoreDimension,
-    TicketQAScoreDimensionName,
     TicketQAScoreMeasure,
 } from 'models/reporting/cubes/auto-qa/TicketQAScoreCube'
 import { TicketDimension } from 'models/reporting/cubes/TicketCube'
@@ -21,7 +19,7 @@ export const resolutionCompletenessQueryFactory = (
     timezone: string,
     sorting?: OrderDirection,
 ): ReportingQuery<TicketQAScoreCubeWithJoins> => ({
-    measures: [TicketQAScoreMeasure.AverageScore],
+    measures: [TicketQAScoreMeasure.AverageResolutionCompletenessScore],
     dimensions: [],
     segments: [],
     filters: [
@@ -31,16 +29,16 @@ export const resolutionCompletenessQueryFactory = (
             operator: ReportingFilterOperator.Equals,
             values: [TicketStatus.Closed],
         },
-        {
-            member: TicketQAScoreDimension.DimensionName,
-            operator: ReportingFilterOperator.Equals,
-            values: [TicketQAScoreDimensionName.ResolutionCompleteness],
-        },
     ],
     timezone,
     ...(sorting
         ? {
-              order: [[TicketQAScoreMeasure.AverageScore, sorting]],
+              order: [
+                  [
+                      TicketQAScoreMeasure.AverageResolutionCompletenessScore,
+                      sorting,
+                  ],
+              ],
           }
         : {}),
 })
@@ -57,10 +55,7 @@ export const resolutionCompletenessDrillDownQueryFactory = (
     sorting?: OrderDirection,
 ): ReportingQuery<TicketQAScoreCubeWithJoins> => ({
     ...resolutionCompletenessQueryFactory(filters, timezone, sorting),
-    measures: [
-        TicketQAScoreMeasure.AverageScore,
-        TicketQAScoreMeasure.QAScoreData,
-    ],
+    measures: [TicketQAScoreMeasure.AverageResolutionCompletenessScore],
     dimensions: [TicketDimension.TicketId],
     limit: DRILLDOWN_QUERY_LIMIT,
 })

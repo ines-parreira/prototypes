@@ -50,7 +50,16 @@ export const reviewedClosedTicketsDrillDownQueryFactory = (
     sorting?: OrderDirection,
 ): ReportingQuery<TicketQAScoreCubeWithJoins> => ({
     ...reviewedClosedTicketsQueryFactory(filters, timezone, sorting),
-    measures: [TicketQAScoreMeasure.QAScoreData],
+    measures: [
+        TicketQAScoreMeasure.QAScoreData,
+        TicketQAScoreMeasure.AverageAccuracyScore,
+        TicketQAScoreMeasure.AverageBrandVoiceScore,
+        TicketQAScoreMeasure.AverageCommunicationSkillsScore,
+        TicketQAScoreMeasure.AverageEfficiencyScore,
+        TicketQAScoreMeasure.AverageInternalComplianceScore,
+        TicketQAScoreMeasure.AverageLanguageProficiencyScore,
+        TicketQAScoreMeasure.AverageResolutionCompletenessScore,
+    ],
     dimensions: [TicketDimension.TicketId, TicketDimension.CreatedDatetime],
     limit: DRILLDOWN_QUERY_LIMIT,
     ...(sorting
