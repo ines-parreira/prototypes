@@ -131,7 +131,6 @@ export enum FeatureFlagKey {
     ShowNewUnansweredStatuses = 'show-new-unanswered-statuses',
     SimplifiedStepBuilder = 'simplified-step-builder',
     StandaloneAIAgentSalesPage = 'standalone-ai-agent-sales-page',
-    StandaloneAIAgentSalesPaywallPage = 'standalone-ai-agent-sales-paywall-page',
     StandaloneAiSalesAnalyticsPage = 'standalone-ai-sales-analytics-page',
     StandaloneAiSalesDiscountSection = 'standalone-ai-sales-discount-section',
     StandaloneConvAiOverviewPage = 'standalone-conv-ai_overview-page',
