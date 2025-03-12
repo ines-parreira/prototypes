@@ -75,12 +75,12 @@ export const SalesSettings = ({ contentOnly = false }: Props) => {
                 PersuasionLevel.Moderate,
             salesDiscountStrategyLevel:
                 storeConfiguration?.salesDiscountStrategyLevel ??
-                DiscountStrategy.Balanced,
+                DiscountStrategy.NoDiscount,
             salesDiscountMax: formatDiscountMax(
                 (storeConfiguration?.salesDiscountStrategyLevel ===
                 DiscountStrategy.NoDiscount
                     ? 0
-                    : (storeConfiguration?.salesDiscountMax ?? 0.08)) * 100,
+                    : (storeConfiguration?.salesDiscountMax ?? 0)) * 100,
             ),
         },
         mode: 'onChange',

@@ -36,8 +36,8 @@ const storeConfiguration = getStoreConfigurationFixture()
 const newStoreConfig = {
     ...storeConfiguration,
     salesDiscountMax: 0.02,
-    salesDiscountStrategyLevel: 'balanced',
-    salesPersuasionLevel: 'balanced',
+    salesDiscountStrategyLevel: DiscountStrategy.Balanced,
+    salesPersuasionLevel: PersuasionLevel.Moderate,
 }
 
 jest.mock('pages/aiAgent/providers/AiAgentStoreConfigurationContext', () => ({
@@ -103,7 +103,7 @@ describe('<SalesSettings />', () => {
             storeConfiguration: {
                 ...storeConfiguration,
                 salesDiscountMax: 0,
-                salesDiscountStrategyLevel: DiscountStrategy.Balanced,
+                salesDiscountStrategyLevel: DiscountStrategy.NoDiscount,
                 salesPersuasionLevel: PersuasionLevel.Moderate,
             },
             isLoading: false,
@@ -198,6 +198,18 @@ describe('<SalesSettings />', () => {
     })
 
     it('should update the max percentage discount when valid discount', async () => {
+        mockedUseAiAgentStoreConfigurationContext.mockReturnValue({
+            storeConfiguration: {
+                ...storeConfiguration,
+                salesDiscountMax: 0.02,
+                salesDiscountStrategyLevel: DiscountStrategy.Balanced,
+                salesPersuasionLevel: PersuasionLevel.Moderate,
+            },
+            isLoading: false,
+            updateStoreConfiguration: mockUpdateStoreConfiguration,
+            createStoreConfiguration: jest.fn(),
+            isPendingCreateOrUpdate: false,
+        })
         renderComponent()
 
         await userEvent.clear(maxDiscountInput())
@@ -274,6 +286,19 @@ describe('<SalesSettings />', () => {
     })
 
     it('should update the max percentage discount and show an error message when discount to high (101)', async () => {
+        mockedUseAiAgentStoreConfigurationContext.mockReturnValue({
+            storeConfiguration: {
+                ...storeConfiguration,
+                salesDiscountMax: 0.02,
+                salesDiscountStrategyLevel: DiscountStrategy.Balanced,
+                salesPersuasionLevel: PersuasionLevel.Moderate,
+            },
+            isLoading: false,
+            updateStoreConfiguration: mockUpdateStoreConfiguration,
+            createStoreConfiguration: jest.fn(),
+            isPendingCreateOrUpdate: false,
+        })
+
         renderComponent()
 
         await userEvent.clear(maxDiscountInput())
@@ -297,6 +322,19 @@ describe('<SalesSettings />', () => {
 
     describe('when user clicks on the save button with new settings', () => {
         it('should call updateStoreConfiguration', async () => {
+            mockedUseAiAgentStoreConfigurationContext.mockReturnValue({
+                storeConfiguration: {
+                    ...storeConfiguration,
+                    salesDiscountMax: 0.04,
+                    salesDiscountStrategyLevel: DiscountStrategy.Balanced,
+                    salesPersuasionLevel: PersuasionLevel.Moderate,
+                },
+                isLoading: false,
+                updateStoreConfiguration: mockUpdateStoreConfiguration,
+                createStoreConfiguration: jest.fn(),
+                isPendingCreateOrUpdate: false,
+            })
+
             renderComponent()
 
             await userEvent.clear(maxDiscountInput())
@@ -385,6 +423,19 @@ describe('<SalesSettings />', () => {
     })
 
     it('should show a warning when navigating away without submitting the form', async () => {
+        mockedUseAiAgentStoreConfigurationContext.mockReturnValue({
+            storeConfiguration: {
+                ...storeConfiguration,
+                salesDiscountMax: 0.04,
+                salesDiscountStrategyLevel: DiscountStrategy.Balanced,
+                salesPersuasionLevel: PersuasionLevel.Moderate,
+            },
+            isLoading: false,
+            updateStoreConfiguration: mockUpdateStoreConfiguration,
+            createStoreConfiguration: jest.fn(),
+            isPendingCreateOrUpdate: false,
+        })
+
         renderComponent()
 
         await userEvent.clear(maxDiscountInput())
