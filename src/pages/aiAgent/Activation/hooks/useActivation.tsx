@@ -2,6 +2,7 @@ import React, { useMemo, useState } from 'react'
 
 import { useFlags } from 'launchdarkly-react-client-sdk'
 
+import { logEvent, SegmentEvent } from 'common/segment'
 import { FeatureFlagKey } from 'config/featureFlags'
 import useAppSelector from 'hooks/useAppSelector'
 import { ActivationManageButton } from 'pages/aiAgent/Activation/components/ActivationManageButton/ActivationManageButton'
@@ -10,7 +11,9 @@ import { useStoreConfigurationForAccount } from 'pages/aiAgent/hooks/useStoreCon
 import { getCurrentAccountState } from 'state/currentAccount/selectors'
 import { getShopifyIntegrationsSortedByName } from 'state/integrations/selectors'
 
-export const useActivation = () => {
+import { PageName } from '../types'
+
+export const useActivation = (pageName?: PageName) => {
     const [isModalVisible, setIsModalVisible] = useState(false)
     const hasActivationEnabled = useFlags()[FeatureFlagKey.AiAgentActivation]
     const currentAccount = useAppSelector(getCurrentAccountState)
@@ -31,7 +34,15 @@ export const useActivation = () => {
             ActivationButton: () =>
                 hasActivationEnabled ? (
                     <ActivationManageButton
-                        onClick={() => setIsModalVisible((prev) => !prev)}
+                        onClick={() => {
+                            setIsModalVisible((prev) => !prev)
+                            logEvent(
+                                SegmentEvent.AiAgentActivateMainButtonClicked,
+                                {
+                                    page: pageName,
+                                },
+                            )
+                        }}
                         progress={0.5}
                     />
                 ) : null,
@@ -49,6 +60,7 @@ export const useActivation = () => {
             isModalVisible,
             storeConfigurations,
             accountDomain,
+            pageName,
         ],
     )
 }

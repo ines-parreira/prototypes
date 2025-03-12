@@ -1,5 +1,6 @@
 export enum SegmentEvent {
     AiAgentActionPerformedPostReceivedOnboardingNotification = 'ai-agent-action-performed-post-received-onboarding-notification',
+    AiAgentActivateMainButtonClicked = 'ai-agent-activate-main-button-clicked',
     AiAgentChatConfigurationDisabled = 'ai-agent-chat-configuration-disabled',
     AiAgentConfigurationDisabled = 'ai-agent-configuration-disabled',
     AiAgentCopiedToEditor = 'ai-agent-copied-to-editor',

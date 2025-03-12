@@ -27,7 +27,8 @@ export const AiAgentOverview = () => {
     const hasResourceSection =
         useFlags()[FeatureFlagKey.StandaloneConvAiOverviewPageResourceSection]
 
-    const { ActivationButton, ActivationModal } = useActivation()
+    const { ActivationButton, ActivationModal } =
+        useActivation('ai-agent-overview')
 
     useEffectOnce(() => {
         logEvent(SegmentEvent.AiAgentOverviewPageView)

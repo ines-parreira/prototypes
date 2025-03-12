@@ -7,7 +7,7 @@ import { Provider } from 'react-redux'
 import { useLocation } from 'react-router-dom'
 import configureMockStore from 'redux-mock-store'
 
-import { logEvent, SegmentEvent } from 'common/segment'
+import * as segment from 'common/segment'
 import { FeatureFlagKey } from 'config/featureFlags'
 import { initialState as initialStatsFiltersState } from 'state/stats/statsSlice'
 import { RootState, StoreDispatch, StoreState } from 'state/types'
@@ -19,10 +19,8 @@ import { AiAgentOverview } from '../AiAgentOverview'
 import { AiAgentOverviewRootStateFixture } from './AiAgentOverviewRootState.fixture'
 
 jest.mock('react-router')
-jest.mock('common/segment', () => ({
-    logEvent: jest.fn(),
-    SegmentEvent: { AiAgentOverviewPageView: 'ai-agent-overview-page-viewed' },
-}))
+
+const logEventMock = jest.spyOn(segment, 'logEvent').mockImplementation(jest.fn)
 
 const defaultLocation = {
     pathname: '',
@@ -59,6 +57,9 @@ const renderComponent = () => {
 }
 
 describe('AiAgentOverview', () => {
+    beforeEach(() => {
+        logEventMock.mockClear()
+    })
     it('should render', () => {
         const { queryByText } = renderComponent()
 
@@ -74,9 +75,9 @@ describe('AiAgentOverview', () => {
 
     it('should call the segment log', () => {
         renderComponent()
-        expect(logEvent).toHaveBeenCalledTimes(1)
-        expect(logEvent).toHaveBeenCalledWith(
-            SegmentEvent.AiAgentOverviewPageView,
+        expect(logEventMock).toHaveBeenCalledTimes(1)
+        expect(logEventMock).toHaveBeenCalledWith(
+            segment.SegmentEvent.AiAgentOverviewPageView,
         )
     })
 
@@ -120,5 +121,21 @@ describe('AiAgentOverview', () => {
         })
         const { queryByText } = renderComponent()
         expect(queryByText('Resources')).toBeFalsy()
+    })
+
+    it('should log event ai-agent-activate-main-button-clicked when clicking activation button', () => {
+        mockFlags({
+            [FeatureFlagKey.AiAgentActivation]: true,
+        })
+        const { getByText } = renderComponent()
+        const activationButton = getByText('Manage')
+        expect(activationButton).toBeTruthy()
+
+        activationButton.click()
+
+        expect(logEventMock).toHaveBeenCalledWith(
+            segment.SegmentEvent.AiAgentActivateMainButtonClicked,
+            { page: 'ai-agent-overview' },
+        )
     })
 })
