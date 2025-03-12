@@ -1,4 +1,4 @@
-import React, { ReactNode, useCallback, useMemo } from 'react'
+import React, { ReactNode, useCallback, useMemo, useState } from 'react'
 
 import {
     ActiveElement,
@@ -6,14 +6,16 @@ import {
     ChartMeta,
     ChartOptions,
     Plugin,
-    TooltipModel,
 } from 'chart.js'
+import classnames from 'classnames'
+import _debounce from 'lodash/debounce'
 import { Doughnut } from 'react-chartjs-2'
 
 import colors from '@gorgias/design-tokens/dist/tokens/colors.json'
 import typography from '@gorgias/design-tokens/dist/tokens/typography.json'
 import { Skeleton } from '@gorgias/merchant-ui-kit'
 
+import { useTheme } from 'core/theme'
 import { ChartTooltip } from 'pages/stats/ChartTooltip'
 import css from 'pages/stats/common/components/charts/Chart.less'
 import { useCustomTooltip } from 'pages/stats/common/useCustomTooltip'
@@ -61,7 +63,6 @@ type DoughnutStatProps = {
     isLoading?: boolean
     data: OneDimensionalDataItem[]
     skeletonHeight?: number
-    customTooltip?: TooltipModel
     showTooltip?: boolean
     className?: string
     legendClassName?: string
@@ -83,34 +84,69 @@ const DonutChart = ({
     children,
     onSegmentClick,
 }: DoughnutStatProps) => {
+    const [hoveredIndex, setHoveredIndex] = useState<number | null>(null)
+    const theme = useTheme()
     const total = useMemo(
         () => data.reduce((acc, i) => acc + i.value, 0),
         [data],
     )
+    const greyColor = useMemo(
+        () => theme.tokens.Neutral.Grey_2.value,
+        [theme.tokens.Neutral.Grey_2.value],
+    )
     const { customTooltip, tooltipData, tooltipStyle } = useCustomTooltip()
 
+    const handleDonutHover = useCallback((_, elements: ActiveElement[]) => {
+        setHoveredIndex(elements.length ? elements[0].index : null)
+    }, [])
+
+    const debouncedOnMouseLeave = useMemo(
+        () => _debounce(() => setHoveredIndex(null), 100),
+        [],
+    )
+
     const chartColors = useCallback(
+        (index: number) => {
+            const color = customColors?.[index] || STAT_COLORS[index]
+            return hoveredIndex === null || index === hoveredIndex
+                ? color
+                : greyColor
+        },
+        [customColors, hoveredIndex, greyColor],
+    )
+
+    const legendColors = useCallback(
         (index: number) => customColors?.[index] || STAT_COLORS[index],
         [customColors],
     )
 
     const formattedData: ChartData<'doughnut', number[], string> =
         useMemo(() => {
-            const labels = data.map((d) => d.label)
+            const labels: string[] = []
+            const values: number[] = []
+            const backgroundColors: string[] = []
+            const borderColors: string[] = []
+
+            data.forEach((item, index) => {
+                const color = chartColors(index)
+                labels.push(item.label)
+                values.push(item.value)
+                backgroundColors.push(color)
+                borderColors.push(color === greyColor ? greyColor : '#fff')
+            })
 
             return {
                 labels,
                 datasets: [
                     {
-                        backgroundColor: data.map((_, index) =>
-                            chartColors(index),
-                        ),
-                        label: '',
-                        data: data.map((d) => d.value),
+                        backgroundColor: backgroundColors,
+                        hoverBackgroundColor: backgroundColors,
+                        borderColor: borderColors,
+                        data: values,
                     },
                 ],
             }
-        }, [data, chartColors])
+        }, [data, chartColors, greyColor])
 
     const handleChartSegmentClick = useCallback(
         (_, elements: ActiveElement[]) => {
@@ -126,12 +162,21 @@ const DonutChart = ({
         [onSegmentClick],
     )
 
+    const isSegmentHoveredAndClickable = useMemo(
+        () => hoveredIndex !== null && onSegmentClick,
+        [hoveredIndex, onSegmentClick],
+    )
+
     const options: ChartOptions<'doughnut'> = useMemo(
         () => ({
+            onHover: handleDonutHover,
             elements: {
                 arc: { borderWidth: 1 },
             },
-            hover: { intersect: false, mode: 'point' },
+            hover: {
+                intersect: false,
+                mode: 'point',
+            },
             cutout: '65%',
             interaction: {
                 intersect: false,
@@ -144,11 +189,16 @@ const DonutChart = ({
                     external: customTooltip,
                 },
             },
-            ...(handleChartSegmentClick && {
+            ...(onSegmentClick && {
                 onClick: handleChartSegmentClick,
             }),
         }),
-        [customTooltip, handleChartSegmentClick],
+        [
+            handleDonutHover,
+            onSegmentClick,
+            handleChartSegmentClick,
+            customTooltip,
+        ],
     )
 
     const plugins = useMemo(
@@ -169,7 +219,12 @@ const DonutChart = ({
 
     return (
         <div className={className}>
-            <div className={css.container}>
+            <div
+                className={classnames(css.container, {
+                    ['clickable']: isSegmentHoveredAndClickable,
+                })}
+                onMouseLeave={debouncedOnMouseLeave}
+            >
                 <Doughnut
                     id={DONUT_TOOLTIP_TARGET}
                     data={formattedData}
@@ -179,7 +234,6 @@ const DonutChart = ({
                     plugins={plugins}
                 />
                 {children}
-
                 {showTooltip && (
                     <ChartTooltip
                         target={DONUT_TOOLTIP_TARGET}
@@ -199,7 +253,7 @@ const DonutChart = ({
                     className={legendClassName}
                     items={data.map(({ label }, index) => ({
                         label,
-                        color: chartColors(index),
+                        color: legendColors(index),
                     }))}
                 />
             )}

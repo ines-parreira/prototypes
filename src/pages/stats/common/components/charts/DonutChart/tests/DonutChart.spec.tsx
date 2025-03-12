@@ -1,9 +1,11 @@
 import React, { ComponentProps } from 'react'
 
-import { fireEvent, render, screen, waitFor } from '@testing-library/react'
+import { act, fireEvent, render, screen, waitFor } from '@testing-library/react'
 
 import colorTokens from '@gorgias/design-tokens/dist/tokens/colors.json'
 
+import { useTheme } from 'core/theme'
+import css from 'pages/stats/common/components/charts/Chart.less'
 import { useCustomTooltip } from 'pages/stats/common/useCustomTooltip'
 import { assumeMock } from 'utils/testing'
 
@@ -19,8 +21,19 @@ jest.mock('react-chartjs-2', () => ({
     },
 }))
 
+jest.mock('core/theme')
+const useThemeMock = assumeMock(useTheme)
+
 jest.mock('pages/stats/common/useCustomTooltip')
 const useCustomTooltipMock = assumeMock(useCustomTooltip)
+
+const mockTheme = {
+    tokens: {
+        Neutral: {
+            Grey_2: { value: 'grey' },
+        },
+    },
+}
 
 const renderComponent = (props: Partial<ComponentProps<typeof DonutChart>>) => {
     render(<DonutChart data={[]} showTooltip={false} {...props} />)
@@ -29,6 +42,7 @@ const renderComponent = (props: Partial<ComponentProps<typeof DonutChart>>) => {
 describe('<DonutChart />', () => {
     beforeEach(() => {
         mockDoughnutProps.mockClear()
+        useThemeMock.mockReturnValue(mockTheme as any)
         useCustomTooltipMock.mockReturnValue({
             customTooltip: jest.fn(),
             tooltipData: {
@@ -222,5 +236,61 @@ describe('<DonutChart />', () => {
         options.onClick(mockEvent, mockElements)
 
         expect(onSegmentClick).toHaveBeenCalledWith(1)
+    })
+
+    it('should update hovered state on hover and reset after mouse leave', async () => {
+        jest.useFakeTimers()
+
+        renderComponent({
+            data: [
+                { label: 'Label 1', value: 11 },
+                { label: 'Label 2', value: 12 },
+            ],
+        })
+
+        const initialCall = mockDoughnutProps.mock.calls[0][0]
+        const defaultColor0 = colorTokens['📺 Classic'].Main.Primary.value
+        const defaultColor1 = colorTokens['📺 Classic'].Feedback.Warning.value
+
+        expect(initialCall.data.datasets[0].backgroundColor).toEqual([
+            defaultColor0,
+            defaultColor1,
+        ])
+
+        act(() => {
+            initialCall.options.onHover(null, [{ index: 1 }])
+        })
+
+        const updatedCall =
+            mockDoughnutProps.mock.calls[
+                mockDoughnutProps.mock.calls.length - 1
+            ][0]
+
+        expect(updatedCall.data.datasets[0].backgroundColor).toEqual([
+            'grey',
+            defaultColor1,
+        ])
+
+        const container = document.querySelector(`.${css.container}`)
+
+        expect(container).toBeInTheDocument()
+
+        fireEvent.mouseLeave(container!)
+
+        act(() => {
+            jest.advanceTimersByTime(100)
+        })
+
+        const finalCall =
+            mockDoughnutProps.mock.calls[
+                mockDoughnutProps.mock.calls.length - 1
+            ][0]
+
+        expect(finalCall.data.datasets[0].backgroundColor).toEqual([
+            defaultColor0,
+            defaultColor1,
+        ])
+
+        jest.useRealTimers()
     })
 })
