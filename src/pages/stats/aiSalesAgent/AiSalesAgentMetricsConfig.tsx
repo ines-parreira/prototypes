@@ -8,6 +8,22 @@ import {
     useAverageOrderValue,
 } from 'pages/stats/aiSalesAgent/metrics/useAverageOrderValue'
 import {
+    fetchDiscountCodesApplied,
+    useDiscountCodesApplied,
+} from 'pages/stats/aiSalesAgent/metrics/useDiscountCodesApplied'
+import {
+    fetchDiscountCodesAverageValue,
+    useDiscountCodesAverageValue,
+} from 'pages/stats/aiSalesAgent/metrics/useDiscountCodesAverageValue'
+import {
+    fetchDiscountCodesOffered,
+    useDiscountCodesOffered,
+} from 'pages/stats/aiSalesAgent/metrics/useDiscountCodesOffered'
+import {
+    fetchDiscountCodesRateApplied,
+    useDiscountCodesRateApplied,
+} from 'pages/stats/aiSalesAgent/metrics/useDiscountCodesRateApplied'
+import {
     fetchGmvInfluencedRateTrend,
     useGmvInfluencedRateTrend,
 } from 'pages/stats/aiSalesAgent/metrics/useGmvInfluencedRateTrend'
@@ -74,6 +90,10 @@ export enum AiSalesAgentChart {
     AiSalesAgentSuccessRate = 'aiSalesSuccessRate',
     AiSalesAgentConversionRate = 'aiSalesConversionRate',
     AiSalesTimeSavedByAgent = 'aiSalesTimeSavedByAgent',
+    AiSalesDiscountOffered = 'aiSalesDiscountOffered',
+    AiSalesDiscountApplied = 'aiSalesDiscountApplied',
+    AiSalesDiscountRateApplied = 'aiSalesDiscountRateApplied',
+    AiSalesAverageDiscount = 'aiSalesAverageDiscount',
 }
 
 export type TrendMetric =
@@ -89,6 +109,10 @@ export type TrendMetric =
     | AiSalesAgentChart.AiSalesAgentSuccessRate
     | AiSalesAgentChart.AiSalesAgentConversionRate
     | AiSalesAgentChart.AiSalesTimeSavedByAgent
+    | AiSalesAgentChart.AiSalesDiscountOffered
+    | AiSalesAgentChart.AiSalesDiscountApplied
+    | AiSalesAgentChart.AiSalesDiscountRateApplied
+    | AiSalesAgentChart.AiSalesAverageDiscount
 
 export const AiSalesAgentMetricConfig: Record<
     TrendMetric,
@@ -220,6 +244,46 @@ export const AiSalesAgentMetricConfig: Record<
         fetchTrend: fetchTimeSavedByAgentTrend,
         interpretAs: 'more-is-better',
         metricFormat: 'duration',
+    },
+    [AiSalesAgentChart.AiSalesDiscountOffered]: {
+        title: '# Discount Codes Offered',
+        hint: {
+            title: 'Number of discount codes that were sent by AI Agent for Sales. ',
+        },
+        useTrend: useDiscountCodesOffered,
+        fetchTrend: fetchDiscountCodesOffered,
+        interpretAs: 'more-is-better',
+        metricFormat: 'decimal',
+    },
+    [AiSalesAgentChart.AiSalesDiscountApplied]: {
+        title: '# Discount Codes Applied',
+        hint: {
+            title: 'Number of discount codes sent by AI Agent for Sales used by customer to make a purchase.',
+        },
+        useTrend: useDiscountCodesApplied,
+        fetchTrend: fetchDiscountCodesApplied,
+        interpretAs: 'more-is-better',
+        metricFormat: 'decimal',
+    },
+    [AiSalesAgentChart.AiSalesDiscountRateApplied]: {
+        title: '% Discount Applied',
+        hint: {
+            title: 'Percentage of discount codes sent by AI Agent used by customers for a purchase over the total of discount codes sent.',
+        },
+        useTrend: useDiscountCodesRateApplied,
+        fetchTrend: fetchDiscountCodesRateApplied,
+        interpretAs: 'more-is-better',
+        metricFormat: 'decimal-to-percent',
+    },
+    [AiSalesAgentChart.AiSalesAverageDiscount]: {
+        title: 'Average Discount',
+        hint: {
+            title: 'Average discount of all the codes used by customers for a purchase. ',
+        },
+        useTrend: useDiscountCodesAverageValue,
+        fetchTrend: fetchDiscountCodesAverageValue,
+        interpretAs: 'more-is-better',
+        metricFormat: 'decimal',
     },
 }
 

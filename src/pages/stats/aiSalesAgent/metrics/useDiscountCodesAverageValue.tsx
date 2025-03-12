@@ -1,0 +1,38 @@
+import useMetricTrend, {
+    fetchMetricTrend,
+} from 'hooks/reporting/useMetricTrend'
+import { discountCodesAverageQueryFactory } from 'models/reporting/queryFactories/ai-sales-agent/metrics'
+import { StatsFilters } from 'models/stat/types'
+import { getPreviousPeriod } from 'utils/reporting'
+
+const useDiscountCodesAverageValue = (
+    filters: StatsFilters,
+    timezone: string,
+) =>
+    useMetricTrend(
+        discountCodesAverageQueryFactory(filters, timezone),
+        discountCodesAverageQueryFactory(
+            {
+                ...filters,
+                period: getPreviousPeriod(filters.period),
+            },
+            timezone,
+        ),
+    )
+
+const fetchDiscountCodesAverageValue = (
+    filters: StatsFilters,
+    timezone: string,
+) =>
+    fetchMetricTrend(
+        discountCodesAverageQueryFactory(filters, timezone),
+        discountCodesAverageQueryFactory(
+            {
+                ...filters,
+                period: getPreviousPeriod(filters.period),
+            },
+            timezone,
+        ),
+    )
+
+export { useDiscountCodesAverageValue, fetchDiscountCodesAverageValue }

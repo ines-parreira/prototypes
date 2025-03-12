@@ -192,6 +192,54 @@ export const AiSalesAgentReportConfig: ReportConfig<AiSalesAgentChart> = {
             chartComponent: AiSalesAgentTrendCard,
             csvProducer: [],
         },
+        [AiSalesAgentChart.AiSalesDiscountOffered]: {
+            chartType: ChartType.Card,
+            label: AiSalesAgentMetricConfig[
+                AiSalesAgentChart.AiSalesDiscountOffered
+            ].title,
+            description:
+                AiSalesAgentMetricConfig[
+                    AiSalesAgentChart.AiSalesDiscountOffered
+                ].hint.title,
+            chartComponent: AiSalesAgentTrendCard,
+            csvProducer: [],
+        },
+        [AiSalesAgentChart.AiSalesDiscountApplied]: {
+            chartType: ChartType.Card,
+            label: AiSalesAgentMetricConfig[
+                AiSalesAgentChart.AiSalesDiscountApplied
+            ].title,
+            description:
+                AiSalesAgentMetricConfig[
+                    AiSalesAgentChart.AiSalesDiscountApplied
+                ].hint.title,
+            chartComponent: AiSalesAgentTrendCard,
+            csvProducer: [],
+        },
+        [AiSalesAgentChart.AiSalesDiscountRateApplied]: {
+            chartType: ChartType.Card,
+            label: AiSalesAgentMetricConfig[
+                AiSalesAgentChart.AiSalesDiscountRateApplied
+            ].title,
+            description:
+                AiSalesAgentMetricConfig[
+                    AiSalesAgentChart.AiSalesDiscountRateApplied
+                ].hint.title,
+            chartComponent: AiSalesAgentTrendCard,
+            csvProducer: [],
+        },
+        [AiSalesAgentChart.AiSalesAverageDiscount]: {
+            chartType: ChartType.Card,
+            label: AiSalesAgentMetricConfig[
+                AiSalesAgentChart.AiSalesAverageDiscount
+            ].title,
+            description:
+                AiSalesAgentMetricConfig[
+                    AiSalesAgentChart.AiSalesAverageDiscount
+                ].hint.title,
+            chartComponent: AiSalesAgentTrendCard,
+            csvProducer: [],
+        },
         [AiSalesAgentChart.AiSalesAgentProductsTable]: {
             chartType: ChartType.Table,
             label: 'Top Products Recommended',

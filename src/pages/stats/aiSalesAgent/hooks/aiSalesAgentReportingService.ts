@@ -48,6 +48,10 @@ const metricSource: TrendMetric[] = [
     AiSalesAgentChart.AiSalesAgentTotalProductRecommendations,
     AiSalesAgentChart.AiSalesAgentProductClickRate,
     AiSalesAgentChart.AiSalesAgentProductBuyRate,
+    AiSalesAgentChart.AiSalesDiscountOffered,
+    AiSalesAgentChart.AiSalesDiscountApplied,
+    AiSalesAgentChart.AiSalesDiscountRateApplied,
+    AiSalesAgentChart.AiSalesAverageDiscount,
 ]
 
 const metricReportSource: {

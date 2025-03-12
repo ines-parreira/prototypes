@@ -1,5 +1,8 @@
 import React from 'react'
 
+import { useFlags } from 'launchdarkly-react-client-sdk'
+
+import { FeatureFlagKey } from 'config/featureFlags'
 import { useCleanStatsFiltersWithLogicalOperators } from 'hooks/reporting/useCleanStatsFilters'
 import useAppSelector from 'hooks/useAppSelector'
 import { useGridSize } from 'hooks/useGridSize'
@@ -21,7 +24,10 @@ import { getPageStatsFiltersWithLogicalOperators } from 'state/stats/selectors'
 const AiSalesAgentSalesOverview = () => {
     const statsFilters = useAppSelector(getPageStatsFiltersWithLogicalOperators)
     useCleanStatsFiltersWithLogicalOperators(statsFilters)
+
     const getGridCellSize = useGridSize()
+    const isDiscountSectionVisible: boolean | undefined =
+        useFlags()[FeatureFlagKey.StandaloneAiSalesDiscountSection]
 
     return (
         <StatsPage
@@ -47,7 +53,6 @@ const AiSalesAgentSalesOverview = () => {
                     </CampaignStatsFilters>
                 </DashboardGridCell>
             </DashboardSection>
-
             <DashboardSection title="Main Metrics">
                 <DashboardGridCell size={getGridCellSize(3)}>
                     <RenderChart
@@ -74,7 +79,6 @@ const AiSalesAgentSalesOverview = () => {
                     />
                 </DashboardGridCell>
             </DashboardSection>
-
             <DashboardSection>
                 <DashboardGridCell size={getGridCellSize(12)}>
                     <RenderChart
@@ -85,7 +89,6 @@ const AiSalesAgentSalesOverview = () => {
                     />
                 </DashboardGridCell>
             </DashboardSection>
-
             <DashboardSection title="Order Data">
                 <DashboardGridCell size={getGridCellSize(6)}>
                     <RenderChart
@@ -102,7 +105,6 @@ const AiSalesAgentSalesOverview = () => {
                     />
                 </DashboardGridCell>
             </DashboardSection>
-
             <DashboardSection title="AI Agent Performance">
                 <DashboardGridCell size={getGridCellSize(4)}>
                     <RenderChart
@@ -123,7 +125,34 @@ const AiSalesAgentSalesOverview = () => {
                     />
                 </DashboardGridCell>
             </DashboardSection>
-
+            {isDiscountSectionVisible && (
+                <DashboardSection title="Discount code">
+                    <DashboardGridCell size={getGridCellSize(3)}>
+                        <RenderChart
+                            chart={AiSalesAgentChart.AiSalesDiscountOffered}
+                            config={AiSalesAgentReportConfig}
+                        />
+                    </DashboardGridCell>
+                    <DashboardGridCell size={getGridCellSize(3)}>
+                        <RenderChart
+                            chart={AiSalesAgentChart.AiSalesDiscountApplied}
+                            config={AiSalesAgentReportConfig}
+                        />
+                    </DashboardGridCell>
+                    <DashboardGridCell size={getGridCellSize(3)}>
+                        <RenderChart
+                            chart={AiSalesAgentChart.AiSalesDiscountRateApplied}
+                            config={AiSalesAgentReportConfig}
+                        />
+                    </DashboardGridCell>
+                    <DashboardGridCell size={getGridCellSize(3)}>
+                        <RenderChart
+                            chart={AiSalesAgentChart.AiSalesAverageDiscount}
+                            config={AiSalesAgentReportConfig}
+                        />
+                    </DashboardGridCell>
+                </DashboardSection>
+            )}
             <DashboardSection title="Product Recommendations Performance">
                 <DashboardGridCell size={getGridCellSize(4)}>
                     <RenderChart
@@ -146,7 +175,6 @@ const AiSalesAgentSalesOverview = () => {
                     />
                 </DashboardGridCell>
             </DashboardSection>
-
             <DashboardSection title="">
                 <DashboardGridCell size={12}>
                     <DashboardComponent
@@ -155,7 +183,6 @@ const AiSalesAgentSalesOverview = () => {
                     />
                 </DashboardGridCell>
             </DashboardSection>
-
             <AnalyticsFooter />
         </StatsPage>
     )

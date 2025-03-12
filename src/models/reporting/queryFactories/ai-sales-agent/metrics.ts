@@ -316,3 +316,78 @@ export const productRecommendationsQueryFactory = (
     ],
     timezone,
 })
+
+export const discountCodesOfferedQueryFactory = (
+    filters: StatsFilters,
+    timezone: string,
+): ReportingQuery<AiSalesAgentConversationsCube> => ({
+    measures: [AiSalesAgentConversationsMeasure.Count],
+    dimensions: [],
+    filters: [
+        {
+            member: AiSalesAgentConversationsDimension.IsSalesOpportunity,
+            operator: ReportingFilterOperator.Equals,
+            values: ['1'],
+        },
+        {
+            member: AiSalesAgentConversationsDimension.DiscountCode,
+            operator: ReportingFilterOperator.Set,
+            values: [],
+        },
+        ...statsFiltersToReportingFilters(
+            aiSalesAgentConversationsDefaultFiltersMembers,
+            filters,
+        ),
+    ],
+    timezone,
+})
+
+export const discountCodesAppliedQueryFactory = (
+    filters: StatsFilters,
+    timezone: string,
+): ReportingQuery<AiSalesAgentOrdersCube> => ({
+    measures: [AiSalesAgentOrdersMeasure.Count],
+    dimensions: [],
+    filters: [
+        {
+            member: AiSalesAgentOrdersDimension.IsInfluenced,
+            operator: ReportingFilterOperator.Equals,
+            values: ['1'],
+        },
+        {
+            member: AiSalesAgentOrdersDimension.InfluencedBy,
+            operator: ReportingFilterOperator.Equals,
+            values: ['discount-code'],
+        },
+        ...statsFiltersToReportingFilters(
+            aiSalesAgentOrdersDefaultFiltersMembers,
+            filters,
+        ),
+    ],
+    timezone,
+})
+
+export const discountCodesAverageQueryFactory = (
+    filters: StatsFilters,
+    timezone: string,
+): ReportingQuery<AiSalesAgentOrdersCube> => ({
+    measures: [AiSalesAgentOrdersMeasure.AverageDiscount],
+    dimensions: [],
+    filters: [
+        {
+            member: AiSalesAgentOrdersDimension.IsInfluenced,
+            operator: ReportingFilterOperator.Equals,
+            values: ['1'],
+        },
+        {
+            member: AiSalesAgentOrdersDimension.InfluencedBy,
+            operator: ReportingFilterOperator.Equals,
+            values: ['discount-code'],
+        },
+        ...statsFiltersToReportingFilters(
+            aiSalesAgentOrdersDefaultFiltersMembers,
+            filters,
+        ),
+    ],
+    timezone,
+})
