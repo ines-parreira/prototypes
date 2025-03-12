@@ -4,14 +4,17 @@ import {
     RecommendedResourcesFilterMember,
     RecommendedResourcesMeasure,
 } from 'models/reporting/cubes/automate_v2/RecommendedResourcesCube'
-import { TicketMember } from 'models/reporting/cubes/TicketCube'
+import { TicketMeasure, TicketMember } from 'models/reporting/cubes/TicketCube'
 import {
     TicketSatisfactionSurveyDimension,
     TicketSatisfactionSurveyMeasure,
     TicketSatisfactionSurveySegment,
 } from 'models/reporting/cubes/TicketSatisfactionSurveyCube'
 import {
+    AI_AGENT_TICKETS_CHANNELS,
     aiAgentTicketsWithIntentQueryFactory,
+    aiAgentTouchedTicketTotalCountQueryFactory,
+    allTicketsForAiAgentTotalCountQueryFactory,
     customerSatisfactionPerIntentLevelQueryFactory,
     recommendedResourceQueryFactory,
 } from 'models/reporting/queryFactories/ai-agent-insights/metrics'
@@ -224,6 +227,110 @@ describe('AI Agent metrics', () => {
                 },
             ],
             order: [['TicketCustomFieldsEnriched.valueString', 'asc']],
+        })
+    })
+
+    it('aiAgentTouchedTicketTotalCountQueryFactory with intent and outcome field ids', () => {
+        const result = aiAgentTouchedTicketTotalCountQueryFactory({
+            filters,
+            timezone,
+            outcomeFieldId: 1,
+            intentFieldId: 2,
+            customFieldFilter: 'handover',
+            sorting: OrderDirection.Asc,
+        })
+        expect(result).toEqual({
+            measures: ['TicketEnriched.ticketCount'],
+            dimensions: [],
+            timezone: 'UTC',
+            segments: [],
+            filters: [
+                {
+                    member: TicketMember.IsTrashed,
+                    operator: ReportingFilterOperator.Equals,
+                    values: ['0'],
+                },
+                {
+                    member: TicketMember.IsSpam,
+                    operator: ReportingFilterOperator.Equals,
+                    values: ['0'],
+                },
+                {
+                    member: TicketMember.PeriodStart,
+                    operator: ReportingFilterOperator.AfterDate,
+                    values: ['2021-01-01T00:00:00.000'],
+                },
+                {
+                    member: TicketMember.PeriodEnd,
+                    operator: ReportingFilterOperator.BeforeDate,
+                    values: ['2021-01-02T00:00:00.000'],
+                },
+                {
+                    member: TicketMember.TotalCustomFieldIdsToMatch,
+                    operator: ReportingFilterOperator.Equals,
+                    values: ['2'],
+                },
+                {
+                    member: TicketMember.CustomField,
+                    operator: ReportingFilterOperator.StartsWith,
+                    values: ['2::', '1::handover'],
+                },
+                {
+                    member: TicketMember.CustomFieldToExclude,
+                    operator: ReportingFilterOperator.NotStartsWith,
+                    values: ['2::Other::No Reply'],
+                },
+            ],
+            order: [[TicketMeasure.TicketCount, 'asc']],
+        })
+    })
+
+    it('allTicketsForAiAgentTotalCountQueryFactory with intent and outcome field ids', () => {
+        const result = allTicketsForAiAgentTotalCountQueryFactory({
+            filters,
+            timezone,
+            intentFieldId: 1,
+            sorting: OrderDirection.Asc,
+        })
+
+        expect(result).toEqual({
+            measures: ['TicketEnriched.ticketCount'],
+            dimensions: [],
+            timezone: 'UTC',
+            segments: [],
+            filters: [
+                {
+                    member: TicketMember.IsTrashed,
+                    operator: ReportingFilterOperator.Equals,
+                    values: ['0'],
+                },
+                {
+                    member: TicketMember.IsSpam,
+                    operator: ReportingFilterOperator.Equals,
+                    values: ['0'],
+                },
+                {
+                    member: TicketMember.PeriodStart,
+                    operator: ReportingFilterOperator.AfterDate,
+                    values: ['2021-01-01T00:00:00.000'],
+                },
+                {
+                    member: TicketMember.PeriodEnd,
+                    operator: ReportingFilterOperator.BeforeDate,
+                    values: ['2021-01-02T00:00:00.000'],
+                },
+                {
+                    member: TicketMember.Channel,
+                    operator: ReportingFilterOperator.Equals,
+                    values: AI_AGENT_TICKETS_CHANNELS,
+                },
+                {
+                    member: TicketMember.CustomFieldToExclude,
+                    operator: ReportingFilterOperator.NotStartsWith,
+                    values: ['1::Other::No Reply'],
+                },
+            ],
+            order: [[TicketMeasure.TicketCount, 'asc']],
         })
     })
 })

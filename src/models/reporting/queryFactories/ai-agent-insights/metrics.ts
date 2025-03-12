@@ -9,6 +9,7 @@ import { HelpdeskMessageCubeWithJoins } from 'models/reporting/cubes/HelpdeskMes
 import {
     TicketCubeWithJoins,
     TicketDimension,
+    TicketMeasure,
     TicketMember,
 } from 'models/reporting/cubes/TicketCube'
 import {
@@ -20,7 +21,11 @@ import {
     TicketSatisfactionSurveyMeasure,
     TicketSatisfactionSurveySegment,
 } from 'models/reporting/cubes/TicketSatisfactionSurveyCube'
-import { addFieldIdToCustomFieldValues } from 'models/reporting/queryFactories/utils'
+import { recommendedResourceDatasetDefaultFilters } from 'models/reporting/queryFactories/automate_v2/filters'
+import {
+    addFieldIdToCustomFieldValues,
+    countUniquePrefixes,
+} from 'models/reporting/queryFactories/utils'
 import { ReportingFilterOperator, ReportingQuery } from 'models/reporting/types'
 import { StatsFilters } from 'models/stat/types'
 import {
@@ -30,7 +35,13 @@ import {
     TicketStatsFiltersMembers,
 } from 'utils/reporting'
 
-import { recommendedResourceDatasetDefaultFilters } from '../automate_v2/filters'
+export const AI_INTENT_TO_EXCLUDE = 'Other::No Reply'
+export const AI_AGENT_TICKETS_CHANNELS = [
+    'email',
+    'chat',
+    'contact_form',
+    'help-center',
+]
 
 export const customerSatisfactionPerIntentLevelQueryFactory = (
     statsFilters: StatsFilters,
@@ -160,6 +171,174 @@ export const aiAgentTicketsWithIntentQueryFactory = (
                           sorting,
                       ],
                   ],
+              }
+            : {}),
+    }
+}
+
+export const aiAgentTouchedTicketTotalCountQueryFactory = ({
+    filters,
+    timezone,
+    outcomeFieldId,
+    intentFieldId,
+    customFieldFilter = '',
+    sorting,
+}: {
+    filters: StatsFilters
+    timezone: string
+    outcomeFieldId: number
+    intentFieldId: number
+    customFieldFilter?: string
+    sorting?: OrderDirection
+}): ReportingQuery<TicketCubeWithJoins> => {
+    const customFieldsValuesToMatch = [
+        `${intentFieldId}::`,
+        ...addFieldIdToCustomFieldValues(outcomeFieldId, [customFieldFilter]),
+    ]
+    return {
+        measures: [TicketMeasure.TicketCount],
+        dimensions: [],
+        timezone,
+        segments: [],
+        filters: [
+            ...NotSpamNorTrashedTicketsFilter,
+            ...statsFiltersToReportingFilters(
+                TicketStatsFiltersMembers,
+                filters,
+            ),
+            {
+                member: TicketMember.TotalCustomFieldIdsToMatch,
+                operator: ReportingFilterOperator.Equals,
+                values: [
+                    String(countUniquePrefixes(customFieldsValuesToMatch)),
+                ],
+            },
+            {
+                member: TicketMember.CustomField,
+                operator: ReportingFilterOperator.StartsWith,
+                values: customFieldsValuesToMatch,
+            },
+            {
+                member: TicketMember.CustomFieldToExclude,
+                operator: ReportingFilterOperator.NotStartsWith,
+                values: [`${intentFieldId}::${AI_INTENT_TO_EXCLUDE}`],
+            },
+        ],
+        ...(sorting
+            ? {
+                  order: [[TicketMeasure.TicketCount, sorting]],
+              }
+            : {}),
+    }
+}
+
+export const allTicketsForAiAgentTotalCountQueryFactory = ({
+    filters,
+    timezone,
+    intentFieldId,
+    sorting,
+}: {
+    filters: StatsFilters
+    timezone: string
+    intentFieldId: number
+    sorting?: OrderDirection
+}): ReportingQuery<HelpdeskMessageCubeWithJoins> => {
+    return {
+        measures: [TicketMeasure.TicketCount],
+        dimensions: [],
+        segments: [],
+        timezone,
+        filters: [
+            ...NotSpamNorTrashedTicketsFilter,
+            ...statsFiltersToReportingFilters(
+                TicketStatsFiltersMembers,
+                filters,
+            ),
+            {
+                member: TicketMember.Channel,
+                operator: ReportingFilterOperator.Equals,
+                values: AI_AGENT_TICKETS_CHANNELS,
+            },
+            {
+                member: TicketMember.CustomFieldToExclude,
+                operator: ReportingFilterOperator.NotStartsWith,
+                values: [`${intentFieldId}::${AI_INTENT_TO_EXCLUDE}`],
+            },
+        ],
+        ...(sorting
+            ? {
+                  order: [[TicketMeasure.TicketCount, sorting]],
+              }
+            : {}),
+    }
+}
+
+export const aiAgentTouchedTicketQueryFactory = ({
+    filters,
+    timezone,
+    outcomeFieldId,
+    intentFieldId,
+    operator = ReportingFilterOperator.Contains,
+    customFieldFilter = '',
+    sorting,
+}: {
+    filters: StatsFilters
+    timezone: string
+    outcomeFieldId: number
+    intentFieldId?: number
+    operator?: ReportingFilterOperator
+    customFieldFilter?: string
+    sorting?: OrderDirection
+}): ReportingQuery<TicketCubeWithJoins> => {
+    const outcomeValuesToInclude =
+        operator === ReportingFilterOperator.Contains
+            ? addFieldIdToCustomFieldValues(outcomeFieldId, [customFieldFilter])
+            : [`${outcomeFieldId}::`]
+    const outcomeValuesToExclude =
+        operator !== ReportingFilterOperator.Contains
+            ? [`${outcomeFieldId}::${customFieldFilter}`]
+            : []
+
+    const customFieldsValuesToMatch = [
+        `${intentFieldId}::`,
+        ...outcomeValuesToInclude,
+    ]
+
+    return {
+        measures: [],
+        dimensions: [TicketDimension.TicketId],
+        timezone,
+        segments: [],
+        filters: [
+            ...NotSpamNorTrashedTicketsFilter,
+            ...statsFiltersToReportingFilters(
+                TicketStatsFiltersMembers,
+                filters,
+            ),
+            {
+                member: TicketMember.TotalCustomFieldIdsToMatch,
+                operator: ReportingFilterOperator.Equals,
+                values: [
+                    String(countUniquePrefixes(customFieldsValuesToMatch)),
+                ],
+            },
+            {
+                member: TicketMember.CustomField,
+                operator: ReportingFilterOperator.StartsWith,
+                values: customFieldsValuesToMatch,
+            },
+            {
+                member: TicketMember.CustomFieldToExclude,
+                operator: ReportingFilterOperator.NotStartsWith,
+                values: [
+                    ...outcomeValuesToExclude,
+                    `${intentFieldId}::${AI_INTENT_TO_EXCLUDE}`,
+                ],
+            },
+        ],
+        ...(sorting
+            ? {
+                  order: [[TicketMeasure.TicketCount, sorting]],
               }
             : {}),
     }

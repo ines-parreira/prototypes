@@ -1,7 +1,14 @@
+import { AutomateEventType } from 'hooks/reporting/automate/utils'
 import {
+    AutomationDatasetFilterMember,
+    AutomationDatasetMeasure,
+} from 'models/reporting/cubes/automate_v2/AutomationDatasetCube'
+import {
+    aiAgentAutomatedInteractionsQueryFactory,
     billableTicketDatasetExcludingAIAgentQueryFactory,
     billableTicketDatasetResolvedByAIAgentQueryFactory,
-} from '../metrics'
+} from 'models/reporting/queryFactories/automate_v2/metrics'
+import { ReportingFilterOperator } from 'models/reporting/types'
 
 describe('Automate metrics', () => {
     const timezone = 'UTC'
@@ -150,6 +157,40 @@ describe('Automate metrics', () => {
                     'BillableTicketDataset.totalResolutionTime',
                 ],
                 timezone: 'UTC',
+            })
+        })
+    })
+
+    describe('aiAgentAutomatedInteractionsQueryFactory', () => {
+        it('creates a query for AI agent automated interactions', () => {
+            const result = aiAgentAutomatedInteractionsQueryFactory(
+                filters,
+                timezone,
+            )
+            expect(result).toEqual({
+                dimensions: [],
+                filters: [
+                    {
+                        member: AutomationDatasetFilterMember.PeriodStart,
+                        operator: ReportingFilterOperator.AfterDate,
+                        values: ['2021-01-01T00:00:00.000'],
+                    },
+                    {
+                        member: AutomationDatasetFilterMember.PeriodEnd,
+                        operator: ReportingFilterOperator.BeforeDate,
+                        values: ['2021-01-02T00:00:00.000'],
+                    },
+                    {
+                        member: AutomationDatasetFilterMember.EventType,
+                        operator: ReportingFilterOperator.Equals,
+                        values: [AutomateEventType.AI_AGENT_TICKET_RESOLVED],
+                    },
+                ],
+                measures: [
+                    AutomationDatasetMeasure.AutomatedInteractions,
+                    AutomationDatasetMeasure.AutomatedInteractionsByAutoResponders,
+                ],
+                timezone: timezone,
             })
         })
     })

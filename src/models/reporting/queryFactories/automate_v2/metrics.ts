@@ -1,4 +1,8 @@
-import { AutomationDatasetMeasure } from 'models/reporting/cubes/automate_v2/AutomationDatasetCube'
+import { AutomateEventType } from 'hooks/reporting/automate/utils'
+import {
+    AutomationDatasetFilterMember,
+    AutomationDatasetMeasure,
+} from 'models/reporting/cubes/automate_v2/AutomationDatasetCube'
 import {
     BillableTicketDatasetCube,
     BillableTicketDatasetDimension,
@@ -25,6 +29,27 @@ export const automationDatasetQueryFactory = (
     filters: [
         ...automationDatasetDefaultFilters(filters),
         ...automationDatasetAdditionalFilters(filters),
+    ],
+})
+
+// AUTOMATED INTERACTIONS: fully automated interactions by AI Agent
+export const aiAgentAutomatedInteractionsQueryFactory = (
+    filters: StatsFilters,
+    timezone: string,
+) => ({
+    measures: [
+        AutomationDatasetMeasure.AutomatedInteractions,
+        AutomationDatasetMeasure.AutomatedInteractionsByAutoResponders,
+    ],
+    dimensions: [],
+    timezone,
+    filters: [
+        ...automationDatasetDefaultFilters(filters),
+        {
+            member: AutomationDatasetFilterMember.EventType,
+            operator: ReportingFilterOperator.Equals,
+            values: [AutomateEventType.AI_AGENT_TICKET_RESOLVED],
+        },
     ],
 })
 

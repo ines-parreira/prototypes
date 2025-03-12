@@ -127,6 +127,7 @@ export const getDecreaseInResolutionTimeTrend = (
     }
 }
 
+// SUCCESS RATE: #AI_AGENT_AUTOMATED_INTERACTIONS / #tickets with outcome field excluding tickets with Other::No reply intents
 export const getAiAgentSuccessRate = ({
     isFetching,
     isError,
@@ -154,6 +155,7 @@ export const getAiAgentSuccessRate = ({
     }
 }
 
+// COVERAGE_RATE: #tickets with outcome field excluding tickets with Other::No reply intents  / # tickets from channels where AI agent can be enabled excluding Other::No reply intent
 export const getAiAgentCoverageRate = ({
     isFetching,
     isError,

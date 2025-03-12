@@ -1,4 +1,3 @@
-import { CustomField } from 'custom-fields/types'
 import { OrderDirection } from 'models/api/types'
 import { TicketDimension } from 'models/reporting/cubes/TicketCube'
 import {
@@ -7,14 +6,12 @@ import {
 } from 'models/reporting/cubes/TicketCustomFieldsCube'
 import {
     aiAgentTicketsWithIntentQueryFactory,
+    aiAgentTouchedTicketQueryFactory,
+    allTicketsForAiAgentTotalCountQueryFactory,
     customerSatisfactionPerIntentLevelQueryFactory,
     recommendedResourceQueryFactory,
 } from 'models/reporting/queryFactories/ai-agent-insights/metrics'
-import {
-    customFieldsTicketCountQueryFactory,
-    customFieldsTicketFactory,
-    customFieldsTicketTotalCountQueryFactory,
-} from 'models/reporting/queryFactories/ticket-insights/customFieldsTicketCount'
+import { customFieldsTicketCountQueryFactory } from 'models/reporting/queryFactories/ticket-insights/customFieldsTicketCount'
 import {
     ReportingFilter,
     ReportingFilterOperator,
@@ -32,22 +29,23 @@ import {
 export const useTotalAiAgentTicketsByCustomField = (
     filters: StatsFilters,
     timezone: string,
-    customField: CustomField | undefined,
+    intentFieldId: number,
     sorting?: OrderDirection,
 ) =>
     useMetric(
-        customFieldsTicketTotalCountQueryFactory({
+        allTicketsForAiAgentTotalCountQueryFactory({
             filters,
             timezone,
-            customFieldId: String(customField?.id || -1),
+            intentFieldId,
             sorting,
         }),
     )
 
-export const useAiAgenTickets = (
+export const useAiAgentTickets = (
     filters: StatsFilters,
     timezone: string,
-    customField: CustomField | undefined,
+    outcomeFieldId: number,
+    intentFieldId?: number,
     operator: ReportingFilterOperator = ReportingFilterOperator.Contains,
     customFieldFilter?:
         | typeof CUSTOM_FIELD_AI_AGENT_HANDOVER
@@ -55,25 +53,21 @@ export const useAiAgenTickets = (
     sorting?: OrderDirection,
 ) =>
     useMetricPerDimension(
-        customFieldsTicketFactory(
+        aiAgentTouchedTicketQueryFactory({
             filters,
             timezone,
-            String(customField?.id || -1),
-            customFieldFilter
-                ? {
-                      member: TicketCustomFieldsMember.TicketCustomFieldsValueString,
-                      operator,
-                      values: [customFieldFilter],
-                  }
-                : undefined,
+            outcomeFieldId,
+            intentFieldId,
+            operator,
+            customFieldFilter,
             sorting,
-        ),
+        }),
     )
 
 export const useAiAgentTicketCountPerIntent = (
     filters: StatsFilters,
     timezone: string,
-    customField: CustomField | undefined,
+    intentFieldId: number | undefined,
     ticketIds?: string[] | undefined,
     sorting?: OrderDirection,
     customFieldValue?: string,
@@ -99,7 +93,7 @@ export const useAiAgentTicketCountPerIntent = (
         customFieldsTicketCountQueryFactory(
             filters,
             timezone,
-            String(customField?.id || -1),
+            String(intentFieldId || -1),
             sorting,
             additionalFilters,
         ),

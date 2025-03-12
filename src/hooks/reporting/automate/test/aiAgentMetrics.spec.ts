@@ -1,6 +1,5 @@
 import { renderHook } from '@testing-library/react-hooks'
 
-import { aiManagedTicketInputFieldDefinition } from 'fixtures/customField'
 import { CUSTOM_FIELD_AI_AGENT_HANDOVER } from 'hooks/reporting/automate/types'
 import { useMetric } from 'hooks/reporting/useMetric'
 import { useMetricPerDimension } from 'hooks/reporting/useMetricPerDimension'
@@ -11,21 +10,20 @@ import {
     RecommendedResourcesMeasure,
 } from 'models/reporting/cubes/automate_v2/RecommendedResourcesCube'
 import { TicketDimension } from 'models/reporting/cubes/TicketCube'
-import { TicketCustomFieldsMember } from 'models/reporting/cubes/TicketCustomFieldsCube'
-import { customerSatisfactionPerIntentLevelQueryFactory } from 'models/reporting/queryFactories/ai-agent-insights/metrics'
 import {
-    customFieldsTicketCountQueryFactory,
-    customFieldsTicketFactory,
-    customFieldsTicketTotalCountQueryFactory,
-} from 'models/reporting/queryFactories/ticket-insights/customFieldsTicketCount'
+    aiAgentTouchedTicketQueryFactory,
+    allTicketsForAiAgentTotalCountQueryFactory,
+    customerSatisfactionPerIntentLevelQueryFactory,
+} from 'models/reporting/queryFactories/ai-agent-insights/metrics'
+import { customFieldsTicketCountQueryFactory } from 'models/reporting/queryFactories/ticket-insights/customFieldsTicketCount'
 import { ReportingFilterOperator } from 'models/reporting/types'
 import { formatReportingQueryDate } from 'utils/reporting'
 import { assumeMock } from 'utils/testing'
 
 import {
-    useAiAgenTickets,
     useAIAgentResourcePerTicket,
     useAiAgentTicketCountPerIntent,
+    useAiAgentTickets,
     useCustomerSatisfactionMetricPerIntentLevel,
     useTotalAiAgentTicketsByCustomField,
 } from '../aiAgentMetrics'
@@ -45,7 +43,8 @@ describe('aiAgentMetrics', () => {
         },
     }
     const sorting = OrderDirection.Asc
-    const customField = aiManagedTicketInputFieldDefinition
+    const intentFieldId = 1
+    const outcomeFieldId = 2
 
     describe('useTotalAiAgentTicketsByCustomField', () => {
         it('should pass the query to useMetric hook', () => {
@@ -54,17 +53,17 @@ describe('aiAgentMetrics', () => {
                     useTotalAiAgentTicketsByCustomField(
                         filters,
                         timezone,
-                        customField,
+                        intentFieldId,
                         sorting,
                     ),
                 {},
             )
 
             expect(useMetricMock).toHaveBeenCalledWith(
-                customFieldsTicketTotalCountQueryFactory({
+                allTicketsForAiAgentTotalCountQueryFactory({
                     filters,
                     timezone,
-                    customFieldId: String(customField.id),
+                    intentFieldId,
                     sorting,
                 }),
             )
@@ -74,26 +73,34 @@ describe('aiAgentMetrics', () => {
     describe('useAiAgenTickets', () => {
         it('should pass the query to useMetricPerDimension hook', () => {
             renderHook(
-                () => useAiAgenTickets(filters, timezone, customField),
+                () =>
+                    useAiAgentTickets(
+                        filters,
+                        timezone,
+                        outcomeFieldId,
+                        intentFieldId,
+                    ),
                 {},
             )
 
             expect(useMetricPerDimensionMock).toHaveBeenCalledWith(
-                customFieldsTicketFactory(
+                aiAgentTouchedTicketQueryFactory({
                     filters,
                     timezone,
-                    String(customField.id),
-                ),
+                    outcomeFieldId,
+                    intentFieldId,
+                }),
             )
         })
 
         it('should pass additional filters to useMetricPerDimension hook', () => {
             renderHook(
                 () =>
-                    useAiAgenTickets(
+                    useAiAgentTickets(
                         filters,
                         timezone,
-                        customField,
+                        outcomeFieldId,
+                        intentFieldId,
                         ReportingFilterOperator.Contains,
                         CUSTOM_FIELD_AI_AGENT_HANDOVER,
                         sorting,
@@ -102,17 +109,15 @@ describe('aiAgentMetrics', () => {
             )
 
             expect(useMetricPerDimensionMock).toHaveBeenCalledWith(
-                customFieldsTicketFactory(
+                aiAgentTouchedTicketQueryFactory({
                     filters,
                     timezone,
-                    String(customField.id),
-                    {
-                        member: TicketCustomFieldsMember.TicketCustomFieldsValueString,
-                        operator: ReportingFilterOperator.Contains,
-                        values: [CUSTOM_FIELD_AI_AGENT_HANDOVER],
-                    },
+                    outcomeFieldId,
+                    intentFieldId,
+                    operator: ReportingFilterOperator.Contains,
+                    customFieldFilter: CUSTOM_FIELD_AI_AGENT_HANDOVER,
                     sorting,
-                ),
+                }),
             )
         })
     })
@@ -124,7 +129,7 @@ describe('aiAgentMetrics', () => {
                     useAiAgentTicketCountPerIntent(
                         filters,
                         timezone,
-                        customField,
+                        intentFieldId,
                     ),
                 {},
             )
@@ -133,7 +138,7 @@ describe('aiAgentMetrics', () => {
                 customFieldsTicketCountQueryFactory(
                     filters,
                     timezone,
-                    String(customField.id),
+                    String(intentFieldId),
                 ),
             )
         })
@@ -144,7 +149,7 @@ describe('aiAgentMetrics', () => {
                     useAiAgentTicketCountPerIntent(
                         filters,
                         timezone,
-                        customField,
+                        intentFieldId,
                         ['1', '2'],
                         sorting,
                     ),
@@ -155,7 +160,7 @@ describe('aiAgentMetrics', () => {
                 customFieldsTicketCountQueryFactory(
                     filters,
                     timezone,
-                    String(customField.id),
+                    String(intentFieldId),
                     sorting,
                     [
                         {

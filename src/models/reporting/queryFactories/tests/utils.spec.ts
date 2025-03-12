@@ -3,6 +3,7 @@ import { TicketMember } from 'models/reporting/cubes/TicketCube'
 import {
     addFieldIdToCustomFieldValues,
     addOptionalFilter,
+    countUniquePrefixes,
     FilterOperatorMap,
     getCustomFieldValueSerializer,
     hasFilter,
@@ -523,6 +524,33 @@ describe('utils', () => {
                 customFieldsValueStrings,
             )
             expect(result).toEqual(['123::value1', '123::value2'])
+        })
+    })
+
+    describe('countUniquePrefixes', () => {
+        it('should return 0 for an empty array', () => {
+            expect(countUniquePrefixes([])).toBe(0)
+        })
+
+        it('should return the correct count of unique prefixes', () => {
+            const array = ['123::value1', '123::value2', '456::value3']
+            expect(countUniquePrefixes(array)).toBe(2)
+        })
+
+        it('should handle arrays with mixed prefixes and no prefixes', () => {
+            const array = ['123::value1', 'value2', '456::value3']
+            expect(countUniquePrefixes(array)).toBe(3)
+        })
+
+        it('should handle arrays with duplicate prefixes', () => {
+            const array = ['123::value1', '123::value2', '123::value3']
+            expect(countUniquePrefixes(array)).toBe(1)
+        })
+
+        it('should count only first prefix', () => {
+            const array = ['123::value1::value2', '123::value3::value2']
+
+            expect(countUniquePrefixes(array)).toBe(1)
         })
     })
 })

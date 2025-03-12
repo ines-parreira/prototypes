@@ -71,7 +71,8 @@ export const Level1IntentsPerformance = () => {
                     drillDownMetric:
                         AIInsightsMetric.TicketDrillDownPerCoverageRate,
                     drillDownMetricAdditionalData: {
-                        customFieldId: intentCustomFieldId,
+                        intentFieldId: intentCustomFieldId,
+                        outcomeFieldId: outcomeCustomFieldId,
                     },
                 },
                 {

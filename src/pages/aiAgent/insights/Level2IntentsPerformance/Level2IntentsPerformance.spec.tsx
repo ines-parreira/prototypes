@@ -123,21 +123,6 @@ describe('Level2IntentsPerformance', () => {
         expect(sectionSubtitle).toBeUndefined()
     })
 
-    it('handles missing custom field id', () => {
-        mockUseGetCustomTicketsFieldsDefinitionData.mockReturnValue({
-            intentCustomFieldId: undefined,
-            outcomeCustomFieldId: undefined,
-        })
-        const { result } = renderHook(() => Level2IntentsPerformance())
-        const componentProps = result.current
-            .props as unknown as IntentsPerformanceProps
-        const metrics = componentProps.metrics
-
-        expect(
-            metrics[1]?.drillDownMetricAdditionalData?.intentFieldId,
-        ).toBeUndefined()
-    })
-
     it('handles fetching state', () => {
         mockUseInsightPerformanceMetrics.mockReturnValue({
             automationOpportunityPerIntent: {

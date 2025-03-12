@@ -38,8 +38,8 @@ describe('tagsTicketCount query factories', () => {
     const tagId = '123'
     const timezone = 'UTC'
     const sorting = OrderDirection.Asc
-    const customFieldId = '1'
-    const customFieldsValueStrings = ['1', '2']
+    const customFieldId = 1
+    const intentFieldId = 2
 
     describe('tagsTicketCountQueryFactory', () => {
         it('should build a query', () => {
@@ -225,7 +225,7 @@ describe('tagsTicketCount query factories', () => {
                 statsFilters,
                 timezone,
                 customFieldId,
-                customFieldsValueStrings,
+                intentFieldId,
                 customFieldPeriod,
                 sorting,
             )
@@ -252,9 +252,19 @@ describe('tagsTicketCount query factories', () => {
                     values: ['2021-06-04T23:59:59.000'],
                 },
                 {
-                    member: 'TicketCustomFieldsEnriched.customFieldId',
+                    member: 'TicketEnriched.totalCustomFieldIdsToMatch',
                     operator: 'equals',
-                    values: ['1'],
+                    values: ['2'],
+                },
+                {
+                    member: 'TicketEnriched.customField',
+                    operator: 'startsWith',
+                    values: ['2::', '1::'],
+                },
+                {
+                    member: 'TicketEnriched.customFieldToExclude',
+                    operator: 'notStartsWith',
+                    values: ['2::Other::No Reply'],
                 },
                 {
                     member: 'TicketCustomFieldsEnriched.customFieldUpdatedDatetime',

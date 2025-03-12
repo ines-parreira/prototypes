@@ -25,10 +25,13 @@ import {
     TicketSatisfactionSurveyDimension,
     TicketSatisfactionSurveyMeasure,
 } from 'models/reporting/cubes/TicketSatisfactionSurveyCube'
-import { automationDatasetQueryFactory } from 'models/reporting/queryFactories/automate_v2/metrics'
+import {
+    AI_AGENT_TICKETS_CHANNELS,
+    aiAgentTouchedTicketTotalCountQueryFactory,
+    allTicketsForAiAgentTotalCountQueryFactory,
+} from 'models/reporting/queryFactories/ai-agent-insights/metrics'
+import { aiAgentAutomatedInteractionsQueryFactory } from 'models/reporting/queryFactories/automate_v2/metrics'
 import { customerSatisfactionMetricPerAgentQueryFactory } from 'models/reporting/queryFactories/support-performance/customerSatisfaction'
-import { ticketsCreatedQueryFactory } from 'models/reporting/queryFactories/support-performance/ticketsCreated'
-import { customFieldsTicketTotalCountQueryFactory } from 'models/reporting/queryFactories/ticket-insights/customFieldsTicketCount'
 import { ReportingFilterOperator } from 'models/reporting/types'
 import { FilterKey, StatsFilters } from 'models/stat/types'
 import { useGetCustomTicketsFieldsDefinitionData } from 'pages/aiAgent/insights/IntentTableWidget/hooks/useGetCustomTicketsFieldsDefinitionData'
@@ -41,9 +44,9 @@ import { activeParams } from 'pages/stats/ticket-insights/ticket-fields/CustomFi
 import { getPreviousPeriod } from 'utils/reporting'
 
 import {
-    useAiAgenTickets,
     useAIAgentResourcePerTicket,
     useAiAgentTicketCountPerIntent,
+    useAiAgentTickets,
     useAIAgentTicketsWithIntent,
     useCustomerSatisfactionMetricPerIntentLevel,
     useGetTicketIntentsForTicketIds,
@@ -56,20 +59,12 @@ import {
 import { CUSTOM_FIELD_AI_AGENT_HANDOVER } from './types'
 import { useAIAgentUserId } from './useAIAgentUserId'
 
-// COVERAGE_RATE: #AI_AGENT_TICKETS / #TICKETS
-// AUTOMATED INTERACTIONS: fully automated interactions by AI Agent
-// SUCCESS RATE: #AI_AGENT_AUTOMATED_INTERACTIONS / #AI_AGENT_TICKETS
-// CSAT: Customer satisfaction score for AI Agent
 export const useAIAgentMetrics = (
     filters: StatsFilters,
     timezone: string,
 ): Record<any, MetricTrend> => {
-    const { data: { data: activeFields = [] } = {} } =
-        useCustomFieldDefinitions(activeParams)
-
-    const customField = activeFields.find(
-        (field) => field.managed_type === AI_MANAGED_TYPES.AI_OUTCOME,
-    )
+    const { intentCustomFieldId, outcomeCustomFieldId } =
+        useGetCustomTicketsFieldsDefinitionData()
 
     const aiAgentUserId = useAIAgentUserId()
 
@@ -81,7 +76,7 @@ export const useAIAgentMetrics = (
                 values: [Number(aiAgentUserId)],
             },
             [FilterKey.Channels]: {
-                values: ['email'],
+                values: AI_AGENT_TICKETS_CHANNELS,
                 operator: LogicalOperatorEnum.ONE_OF,
             },
         }),
@@ -89,8 +84,11 @@ export const useAIAgentMetrics = (
     )
 
     const aiAgentAutomatedInteractionsData = useMultipleMetricsTrends(
-        automationDatasetQueryFactory(statsFiltersWithAiAgent, timezone),
-        automationDatasetQueryFactory(
+        aiAgentAutomatedInteractionsQueryFactory(
+            statsFiltersWithAiAgent,
+            timezone,
+        ),
+        aiAgentAutomatedInteractionsQueryFactory(
             {
                 ...statsFiltersWithAiAgent,
                 period: getPreviousPeriod(filters.period),
@@ -100,24 +98,31 @@ export const useAIAgentMetrics = (
     )
 
     const aiAgentTicketsData = useMultipleMetricsTrends(
-        customFieldsTicketTotalCountQueryFactory({
+        aiAgentTouchedTicketTotalCountQueryFactory({
             filters,
             timezone,
-            customFieldId: String(customField?.id || -1),
+            outcomeFieldId: outcomeCustomFieldId,
+            intentFieldId: intentCustomFieldId,
         }),
-        customFieldsTicketTotalCountQueryFactory({
+        aiAgentTouchedTicketTotalCountQueryFactory({
             filters: { ...filters, period: getPreviousPeriod(filters.period) },
             timezone,
-            customFieldId: String(customField?.id || -1),
+            outcomeFieldId: outcomeCustomFieldId,
+            intentFieldId: intentCustomFieldId,
         }),
     )
 
     const allCreatedTickets = useMultipleMetricsTrends(
-        ticketsCreatedQueryFactory(filters, timezone),
-        ticketsCreatedQueryFactory(
-            { ...filters, period: getPreviousPeriod(filters.period) },
+        allTicketsForAiAgentTotalCountQueryFactory({
+            filters,
             timezone,
-        ),
+            intentFieldId: intentCustomFieldId,
+        }),
+        allTicketsForAiAgentTotalCountQueryFactory({
+            filters: { ...filters, period: getPreviousPeriod(filters.period) },
+            timezone,
+            intentFieldId: intentCustomFieldId,
+        }),
     )
 
     const customerSatisfactionAiAgentData = useMultipleMetricsTrends(
@@ -134,10 +139,7 @@ export const useAIAgentMetrics = (
         ),
     )
 
-    const aiAgentTickets =
-        aiAgentTicketsData.data?.[
-            TicketCustomFieldsMeasure.TicketCustomFieldsTicketCount
-        ]
+    const aiAgentTickets = aiAgentTicketsData.data?.[TicketMeasure.TicketCount]
 
     const aiAgentAutomatedInteractions =
         aiAgentAutomatedInteractionsData.data?.[
@@ -196,29 +198,23 @@ export const useAutomationOpportunityPerIntent = (
     sorting?: OrderDirection,
     intentId?: string,
 ) => {
-    const { data: { data: activeFields = [] } = {} } =
-        useCustomFieldDefinitions(activeParams)
-
-    const customFieldOutcome = activeFields.find(
-        (field) => field.managed_type === AI_MANAGED_TYPES.AI_OUTCOME,
-    )
-
-    const customFieldAiIntent = activeFields.find(
-        (field) => field.managed_type === AI_MANAGED_TYPES.AI_INTENT,
-    )
+    const { intentCustomFieldId, outcomeCustomFieldId } =
+        useGetCustomTicketsFieldsDefinitionData()
 
     const aiAgentTickets = useTotalAiAgentTicketsByCustomField(
         filters,
         timezone,
-        customFieldOutcome,
+        intentCustomFieldId,
     )
 
-    const aiAgentNotAutomatedTicketsData = useAiAgenTickets(
+    const aiAgentNotAutomatedTicketsData = useAiAgentTickets(
         filters,
         timezone,
-        customFieldOutcome,
+        outcomeCustomFieldId,
+        intentCustomFieldId,
         ReportingFilterOperator.Contains,
         CUSTOM_FIELD_AI_AGENT_HANDOVER,
+        sorting,
     )
 
     const ticketIds = aiAgentNotAutomatedTicketsData.data?.allData
@@ -229,7 +225,7 @@ export const useAutomationOpportunityPerIntent = (
         useAiAgentTicketCountPerIntent(
             filters,
             timezone,
-            customFieldAiIntent,
+            intentCustomFieldId,
             ticketIds,
             sorting,
             intentId,
@@ -268,21 +264,14 @@ export const useAIAgentTicketsPerIntent = (
     sorting?: OrderDirection,
     intentId?: string,
 ) => {
-    const { data: { data: activeFields = [] } = {} } =
-        useCustomFieldDefinitions(activeParams)
+    const { intentCustomFieldId, outcomeCustomFieldId } =
+        useGetCustomTicketsFieldsDefinitionData()
 
-    const customFieldOutcome = activeFields.find(
-        (field) => field.managed_type === AI_MANAGED_TYPES.AI_OUTCOME,
-    )
-
-    const customFieldAiIntent = activeFields.find(
-        (field) => field.managed_type === AI_MANAGED_TYPES.AI_INTENT,
-    )
-
-    const aiAgentTicketsData = useAiAgenTickets(
+    const aiAgentTicketsData = useAiAgentTickets(
         filters,
         timezone,
-        customFieldOutcome,
+        outcomeCustomFieldId,
+        intentCustomFieldId,
     )
 
     const ticketIds = aiAgentTicketsData.data?.allData
@@ -292,7 +281,7 @@ export const useAIAgentTicketsPerIntent = (
     const aiAgentTicketsGroupedByIntent = useAiAgentTicketCountPerIntent(
         filters,
         timezone,
-        customFieldAiIntent,
+        intentCustomFieldId,
         ticketIds,
         sorting,
         intentId,
@@ -308,23 +297,17 @@ export const useSuccessRatePerIntent = (
     sorting?: OrderDirection,
     intentId?: string,
 ) => {
-    const { data: { data: activeFields = [] } = {} } =
-        useCustomFieldDefinitions(activeParams)
+    const { intentCustomFieldId, outcomeCustomFieldId } =
+        useGetCustomTicketsFieldsDefinitionData()
 
-    const customFieldOutcome = activeFields.find(
-        (field) => field.managed_type === AI_MANAGED_TYPES.AI_OUTCOME,
-    )
-
-    const customFieldAiIntent = activeFields.find(
-        (field) => field.managed_type === AI_MANAGED_TYPES.AI_INTENT,
-    )
-
-    const aiAgentAutomatedTicketsData = useAiAgenTickets(
+    const aiAgentAutomatedTicketsData = useAiAgentTickets(
         filters,
         timezone,
-        customFieldOutcome,
+        outcomeCustomFieldId,
+        intentCustomFieldId,
         ReportingFilterOperator.NotContains,
         CUSTOM_FIELD_AI_AGENT_HANDOVER,
+        sorting,
     )
 
     const ticketsPerIntent = useAIAgentTicketsPerIntent(
@@ -343,7 +326,7 @@ export const useSuccessRatePerIntent = (
         useAiAgentTicketCountPerIntent(
             filters,
             timezone,
-            customFieldAiIntent,
+            intentCustomFieldId,
             automatedTicketIds,
             sorting,
             intentId,
@@ -380,18 +363,14 @@ export const useAiAgentKnowledgeResourcePerIntent = (
     sorting?: OrderDirection,
     intentId?: string,
 ) => {
-    const { intentCustomFieldId } = useGetCustomTicketsFieldsDefinitionData()
+    const { intentCustomFieldId, outcomeCustomFieldId } =
+        useGetCustomTicketsFieldsDefinitionData()
 
-    const { data: { data: activeFields = [] } = {} } =
-        useCustomFieldDefinitions(activeParams)
-
-    const customField = activeFields.find(
-        (field) => field.managed_type === AI_MANAGED_TYPES.AI_OUTCOME,
-    )
-    const aiAgentNotAutomatedTicketsData = useAiAgenTickets(
+    const aiAgentNotAutomatedTicketsData = useAiAgentTickets(
         filters,
         timezone,
-        customField,
+        outcomeCustomFieldId,
+        intentCustomFieldId,
     )
 
     const aiAgentTicketIds = aiAgentNotAutomatedTicketsData.data?.allData
@@ -432,7 +411,7 @@ export const useAiAgentKnowledgeResourcePerIntent = (
         filters,
         timezone,
         ticketIds,
-        undefined,
+        sorting,
         !!aiAgentTicketsWithIntentData,
     )
 

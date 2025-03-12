@@ -103,7 +103,7 @@ describe('useAiAgentInsightsDataset', () => {
                 .mockReturnValueOnce({
                     // aiAgentTicketsData
                     data: {
-                        'TicketCustomFieldsEnriched.ticketCount': {
+                        'TicketEnriched.ticketCount': {
                             value: 1100,
                             prevValue: 2,
                         },

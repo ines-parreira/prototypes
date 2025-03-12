@@ -390,3 +390,11 @@ export const addFieldIdToCustomFieldValues = (
         getCustomFieldValueSerializer(customFieldId),
     )
 }
+
+export const countUniquePrefixes = (array: string[]): number => {
+    const prefixes = array.map((item) => item.split('::')[0])
+
+    const uniquePrefixes = new Set(prefixes)
+
+    return uniquePrefixes.size
+}

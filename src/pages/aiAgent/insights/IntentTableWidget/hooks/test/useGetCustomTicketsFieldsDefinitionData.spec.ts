@@ -55,8 +55,8 @@ describe('useGetCustomTicketsFieldsDefinitionData', () => {
         )
 
         expect(result.current).toEqual({
-            outcomeCustomFieldId: undefined,
-            intentCustomFieldId: undefined,
+            outcomeCustomFieldId: -1,
+            intentCustomFieldId: -1,
         })
     })
 
@@ -73,8 +73,8 @@ describe('useGetCustomTicketsFieldsDefinitionData', () => {
         )
 
         expect(result.current).toEqual({
-            outcomeCustomFieldId: undefined,
-            intentCustomFieldId: undefined,
+            outcomeCustomFieldId: -1,
+            intentCustomFieldId: -1,
         })
     })
 })

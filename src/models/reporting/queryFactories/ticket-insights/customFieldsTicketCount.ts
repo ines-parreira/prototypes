@@ -11,9 +11,11 @@ import {
     TicketCustomFieldsMember,
 } from 'models/reporting/cubes/TicketCustomFieldsCube'
 import { TicketSatisfactionSurveyDimension } from 'models/reporting/cubes/TicketSatisfactionSurveyCube'
+import { aiAgentTouchedTicketTotalCountQueryFactory } from 'models/reporting/queryFactories/ai-agent-insights/metrics'
 import { customerSatisfactionMetricPerAgentQueryFactory } from 'models/reporting/queryFactories/support-performance/customerSatisfaction'
 import {
     addFieldIdToCustomFieldValues,
+    countUniquePrefixes,
     deduplicateCustomFields,
     injectDrillDownCustomFieldId,
 } from 'models/reporting/queryFactories/utils'
@@ -130,6 +132,17 @@ export const customFieldsTicketCountPerIntentLevelPerTicketDrillDownQueryFactory
         intentFiledPeriod?: StatsFilters['period'],
         sorting?: OrderDirection,
     ): ReportingQuery<HelpdeskMessageCubeWithJoins> => {
+        const customFieldsValuesToMatch =
+            intentFieldId && intentFieldValues
+                ? [
+                      ...addFieldIdToCustomFieldValues(
+                          intentFieldId,
+                          intentFieldValues,
+                      ),
+                      `${outcomeFieldId}::`,
+                  ]
+                : []
+
         return {
             measures: [],
             dimensions: [TicketDimension.TicketId],
@@ -140,23 +153,23 @@ export const customFieldsTicketCountPerIntentLevelPerTicketDrillDownQueryFactory
                     TicketStatsFiltersMembers,
                     filters,
                 ),
-                {
-                    member: TicketMember.TotalCustomFieldIdsToMatch,
-                    operator: ReportingFilterOperator.Equals,
-                    values: ['2'],
-                },
-                ...(intentFieldId && intentFieldValues
+                ...(customFieldsValuesToMatch.length > 0
                     ? [
+                          {
+                              member: TicketMember.TotalCustomFieldIdsToMatch,
+                              operator: ReportingFilterOperator.Equals,
+                              values: [
+                                  String(
+                                      countUniquePrefixes(
+                                          customFieldsValuesToMatch,
+                                      ),
+                                  ),
+                              ],
+                          },
                           {
                               member: TicketMember.CustomField,
                               operator: ReportingFilterOperator.StartsWith,
-                              values: [
-                                  ...addFieldIdToCustomFieldValues(
-                                      intentFieldId,
-                                      intentFieldValues,
-                                  ),
-                                  `${outcomeFieldId}::`,
-                              ],
+                              values: customFieldsValuesToMatch,
                           },
                       ]
                     : []),
@@ -187,17 +200,18 @@ export const customFieldsTicketCountPerIntentLevelPerTicketDrillDownQueryFactory
 export const coverageRateTicketDrillDownQueryFactory = (
     filters: StatsFilters,
     timezone: string,
-    customFieldId: string,
-    customFieldsValueStrings: string[] | null,
+    customFieldId: number,
+    intentFieldId: number,
     customFieldPeriod: StatsFilters['period'],
     sorting?: OrderDirection,
 ): ReportingQuery<HelpdeskMessageCubeWithJoins> => {
-    const baseQuery = customFieldsTicketCountQueryFactory(
+    const baseQuery = aiAgentTouchedTicketTotalCountQueryFactory({
         filters,
         timezone,
-        customFieldId,
+        outcomeFieldId: customFieldId,
+        intentFieldId: intentFieldId,
         sorting,
-    )
+    })
 
     const queryFilters = [
         ...baseQuery.filters.filter(
