@@ -50,6 +50,10 @@ describe('getCurrentMacro', () => {
         expect(getCurrentMacro(macros, 11)).toEqual(undefined)
     })
 
+    it('should return undefined when macros are undefined', () => {
+        expect(getCurrentMacro([undefined], 1)).toEqual(undefined)
+    })
+
     it('should return matching macro', () => {
         expect(getCurrentMacro(macros, 3)).toEqual(macros[2])
     })

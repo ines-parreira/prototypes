@@ -38,12 +38,12 @@ export const getDefaultSelectedMacroId = (
 }
 
 export const getCurrentMacro = (
-    macros: Macro[],
+    macros: (Macro | undefined)[],
     selectedMacroId: Maybe<number>,
     isCreatingMacro?: boolean,
 ) => {
     if (isCreatingMacro) {
         return getDefaultMacro()
     }
-    return macros.find((macro) => macro.id === selectedMacroId)
+    return macros.find((macro) => macro?.id === selectedMacroId)
 }
