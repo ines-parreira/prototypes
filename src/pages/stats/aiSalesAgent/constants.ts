@@ -6,7 +6,7 @@ import {
 export const PAGE_TITLE_AI_SALES_AGENT_SALES_OVERVIEW =
     'AI Agent Sales Overview'
 
-export const LINK_AI_SALES_AGENT_TEXT = 'AI Sales Agent'
+export const LINK_AI_SALES_AGENT_TEXT = 'AI Agent Sales'
 
 export const GMV_OVERTIME_LABEL = 'Gmv Influenced Over Time'
 
@@ -30,12 +30,12 @@ export const PRODUCT_TABLE_CELLS: ProductTableColumn[] = [
     },
     {
         key: ProductTableKeys.CTR,
-        title: 'CTR',
+        title: 'Click Rate',
         format: ProductTableValueFormat.Percentage,
     },
     {
         key: ProductTableKeys.BTR,
-        title: 'BTR',
+        title: 'Buy Rate',
         format: ProductTableValueFormat.Percentage,
     },
 ]

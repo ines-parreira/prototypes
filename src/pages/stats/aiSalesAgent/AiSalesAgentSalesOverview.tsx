@@ -1,5 +1,7 @@
 import React from 'react'
 
+import { useCleanStatsFiltersWithLogicalOperators } from 'hooks/reporting/useCleanStatsFilters'
+import useAppSelector from 'hooks/useAppSelector'
 import { useGridSize } from 'hooks/useGridSize'
 import { FilterKey } from 'models/stat/types'
 import { AiSalesAgentChart } from 'pages/stats/aiSalesAgent/AiSalesAgentMetricsConfig'
@@ -14,8 +16,11 @@ import { CustomReportComponent } from 'pages/stats/custom-reports/CustomReportCo
 import DashboardGridCell from 'pages/stats/DashboardGridCell'
 import DashboardSection from 'pages/stats/DashboardSection'
 import StatsPage from 'pages/stats/StatsPage'
+import { getPageStatsFiltersWithLogicalOperators } from 'state/stats/selectors'
 
 const AiSalesAgentSalesOverview = () => {
+    const statsFilters = useAppSelector(getPageStatsFiltersWithLogicalOperators)
+    useCleanStatsFiltersWithLogicalOperators(statsFilters)
     const getGridCellSize = useGridSize()
 
     return (

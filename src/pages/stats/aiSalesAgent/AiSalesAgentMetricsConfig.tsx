@@ -102,7 +102,7 @@ export const AiSalesAgentMetricConfig: Record<
     }
 > = {
     [AiSalesAgentChart.AiSalesAgentTotalSalesConv]: {
-        title: 'Total AI Sales Conv',
+        title: 'Total Conversations',
         hint: {
             title: 'The total number of conversations handled or influenced by the AI Agent for Sales.',
         },
@@ -112,7 +112,7 @@ export const AiSalesAgentMetricConfig: Record<
         metricFormat: 'decimal',
     },
     [AiSalesAgentChart.AiSalesAgentGmv]: {
-        title: 'GMV $',
+        title: 'GMV Influenced $',
         hint: {
             title: 'The total revenue generated from orders placed during or after a conversation with the AI Agent, without human intervention.',
         },
@@ -142,7 +142,7 @@ export const AiSalesAgentMetricConfig: Record<
         metricFormat: 'ratio',
     },
     [AiSalesAgentChart.AiSalesAgentTotalNumberOfOrders]: {
-        title: 'Total Number of Orders',
+        title: 'Total Number of Orders influenced',
         hint: {
             title: 'The total number of orders influenced by a conversation with the AI Agent, without human intervention.',
         },
@@ -174,7 +174,7 @@ export const AiSalesAgentMetricConfig: Record<
     [AiSalesAgentChart.AiSalesAgentProductClickRate]: {
         title: 'Click Rate',
         hint: {
-            title: 'The percentage of product recommendations clicked by the customer.',
+            title: 'The percentage of product recommendations clicked by customers.',
         },
         useTrend: useProductClickRate,
         fetchTrend: fetchProductClickRate,
@@ -212,7 +212,7 @@ export const AiSalesAgentMetricConfig: Record<
         metricFormat: 'percent',
     },
     [AiSalesAgentChart.AiSalesTimeSavedByAgent]: {
-        title: 'Time Saved by Agent',
+        title: 'Time Saved by Agents',
         hint: {
             title: 'The estimated time saved by AI Agent for Sales in assisting customers with their purchases, reducing manual workload for human agents.',
         },
@@ -236,9 +236,9 @@ export const AiSalesAgentChartConfig: Record<
     }
 > = {
     [AiSalesAgentChart.AiSalesAgentGmvInfluencedOverTime]: {
-        title: 'GMV Influenced Over Time',
+        title: 'GMV Influenced % Over Time ',
         hint: {
-            title: 'The percentage of revenue influenced by the AI Agent over a specific period.',
+            title: 'The percentage of revenue influenced by the AI Agent over a specific period of time.',
         },
         useTimeSeries: useGmvInfluenceOverTimeSeries,
         fetchTimeSeries: fetchGmvInflueceOverTimeSeries,

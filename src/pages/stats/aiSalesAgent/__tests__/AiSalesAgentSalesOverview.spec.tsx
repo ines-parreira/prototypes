@@ -1,15 +1,12 @@
 import React from 'react'
 
-import { render, screen } from '@testing-library/react'
+import { screen } from '@testing-library/react'
+
+import { RootState } from 'state/types'
+import { initialState } from 'state/ui/stats/filtersSlice'
+import { renderWithStore } from 'utils/testing'
 
 import AiSalesAgentSalesOverview from '../AiSalesAgentSalesOverview'
-
-jest.mock(
-    'hooks/useAppSelector',
-    () =>
-        (fn: () => any): any =>
-            fn(),
-)
 
 jest.mock('pages/stats/convert/providers/CampaignStatsFilters', () => ({
     CampaignStatsFilters: ({ children }: { children: React.ReactNode }) => (
@@ -49,9 +46,26 @@ jest.mock('pages/stats/custom-reports/CustomReportComponent', () => ({
 }))
 
 describe('AiSalesAgentSalesOverview', () => {
+    const state = {
+        stats: {
+            filters: {
+                period: {
+                    start_datetime: '2021-02-03T00:00:00.000Z',
+                    end_datetime: '2021-02-03T23:59:59.999Z',
+                },
+            },
+        },
+        ui: {
+            stats: {
+                filters: initialState,
+            },
+        },
+    } as RootState
+
     const renderComponent = () => {
-        render(<AiSalesAgentSalesOverview />)
+        renderWithStore(<AiSalesAgentSalesOverview />, state)
     }
+
     it('should render', () => {
         renderComponent()
 

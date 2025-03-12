@@ -60,7 +60,7 @@ describe('<AutomateStatsNavbar />', () => {
         expect(links[0]).toHaveAttribute('href', '/app/stats/automate-overview')
         expect(links[0].textContent).toEqual('Overview')
         expect(links[1]).toHaveAttribute('href', '/app/stats/automate-ai-agent')
-        expect(links[1].textContent).toEqual('AI Agent')
+        expect(links[1].textContent).toEqual('AI Agent Support')
         expect(links[2]).toHaveAttribute(
             'href',
             '/app/stats/performance-by-features',
