@@ -5,9 +5,7 @@ import { Map } from 'immutable'
 import { connect, ConnectedProps } from 'react-redux'
 import { bindActionCreators } from 'redux'
 
-import { Tooltip } from '@gorgias/merchant-ui-kit'
-
-import Button from 'pages/common/components/button/Button'
+import { Banner, Box, Button, Tooltip } from '@gorgias/merchant-ui-kit'
 
 import { Action } from '../../../../../models/ticket/types'
 import * as NewMessageActions from '../../../../../state/newMessage/actions'
@@ -15,7 +13,6 @@ import * as TicketActions from '../../../../../state/ticket/actions'
 import { RootState } from '../../../../../state/types'
 import { getActionTemplate, stripErrorMessage } from '../../../../../utils'
 import { sanitizeHtmlDefault } from '../../../../../utils/html'
-import Alert, { AlertType } from '../../../../common/components/Alert/Alert'
 
 import css from './Error.less'
 
@@ -220,13 +217,19 @@ class Error extends Component<Props, State> {
                     [css.showActions]: this.state.showActions,
                 })}
             >
-                <Alert type={AlertType.Error} icon>
-                    <div
-                        className={
-                            'd-flex justify-content-between flex-wrap align-items-center'
-                        }
-                    >
-                        <div>
+                <Banner
+                    type="error"
+                    variant="inline"
+                    action={
+                        <>
+                            {retryButton}
+                            {forceButton}
+                            {cancelButton}
+                        </>
+                    }
+                >
+                    <>
+                        <Box flexDirection="row">
                             <span
                                 dangerouslySetInnerHTML={{
                                     __html: sanitizeHtmlDefault(error),
@@ -240,34 +243,37 @@ class Error extends Component<Props, State> {
                                     Find out why?
                                 </a>
                             )}
-                        </div>
-                        <div className={css.buttons}>
-                            {retryButton}
-                            {forceButton}
-                            {cancelButton}
-                        </div>
-                    </div>
-                    <ul className={css.actions}>
-                        {messageActions.map((action, idx) => {
-                            if (hasErrorResponse(action)) {
-                                const template = getActionTemplate(action.name)
-                                const transformedMsg = stripErrorMessage(
-                                    action.response!.msg,
-                                )
+                        </Box>
+                        <ul className={css.actions}>
+                            {messageActions.map((action, idx) => {
+                                if (hasErrorResponse(action)) {
+                                    const template = getActionTemplate(
+                                        action.name,
+                                    )
+                                    const transformedMsg = stripErrorMessage(
+                                        action.response!.msg,
+                                    )
 
-                                return (
-                                    <li key={idx} className={css.actionError}>
-                                        The action{' '}
-                                        <b>{template ? template.title : ''}</b>{' '}
-                                        failed because <b>{transformedMsg}</b>.
-                                    </li>
-                                )
-                            }
+                                    return (
+                                        <li
+                                            key={idx}
+                                            className={css.actionError}
+                                        >
+                                            The action{' '}
+                                            <b>
+                                                {template ? template.title : ''}
+                                            </b>{' '}
+                                            failed because{' '}
+                                            <b>{transformedMsg}</b>.
+                                        </li>
+                                    )
+                                }
 
-                            return null
-                        })}
-                    </ul>
-                </Alert>
+                                return null
+                            })}
+                        </ul>
+                    </>
+                </Banner>
             </div>
         )
     }
