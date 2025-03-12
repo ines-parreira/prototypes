@@ -11,7 +11,7 @@ import { useVoiceCallAverageTimeTrend } from 'pages/stats/voice/hooks/useVoiceCa
 import { VoiceCallAverageTimeMetric } from 'pages/stats/voice/models/types'
 import { VoiceMetric } from 'state/ui/stats/types'
 
-export const VoiceCallCallCallerExperiencAverageTalkTime = ({
+export const VoiceCallCallerExperienceAverageTalkTime = ({
     chartId,
     dashboard,
 }: DashboardChartProps) => {

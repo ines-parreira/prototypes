@@ -131,7 +131,7 @@ function VoiceOverview() {
             size: 6,
         },
         {
-            chart: VoiceOverviewChart.VoiceCallCallCallerExperienceAverageTalkTime,
+            chart: VoiceOverviewChart.VoiceCallCallerExperienceAverageTalkTime,
             size: 6,
         },
     ]
@@ -197,7 +197,7 @@ function VoiceOverview() {
                         <DashboardGridCell size={6}>
                             <DashboardComponent
                                 chart={
-                                    VoiceOverviewChart.VoiceCallCallCallerExperienceAverageTalkTime
+                                    VoiceOverviewChart.VoiceCallCallerExperienceAverageTalkTime
                                 }
                                 config={VoiceOverviewReportConfig}
                             />

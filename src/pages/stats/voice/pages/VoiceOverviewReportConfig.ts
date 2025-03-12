@@ -7,7 +7,7 @@ import {
     DataExportFormat,
     ReportConfig,
 } from 'pages/stats/dashboards/types'
-import { VoiceCallCallCallerExperiencAverageTalkTime } from 'pages/stats/voice/charts/VoiceCallCallerExperiencAverageTalkTime'
+import { VoiceCallCallerExperienceAverageTalkTime } from 'pages/stats/voice/charts/VoiceCallCallerExperienceAverageTalkTime'
 import { VoiceCallCallerExperienceAverageWaitTimeChart } from 'pages/stats/voice/charts/VoiceCallCallerExperienceAverageWaitTimeChart'
 import { VoiceCallTableChart } from 'pages/stats/voice/charts/VoiceCallTableChart'
 import { VoiceCallVolumeMetricInboundCallsCountTrend } from 'pages/stats/voice/charts/VoiceCallVolumeMetricInboundCallsCountTrendChart'
@@ -63,7 +63,7 @@ export const VOICE_OVERVIEW_OPTIONAL_FILTERS: OptionalFilter[] = [
 
 export enum VoiceOverviewChart {
     VoiceCallCallerExperienceAverageWaitTimeChart = 'VoiceCallCallerExperienceAverageWaitTimeChart',
-    VoiceCallCallCallerExperienceAverageTalkTime = 'VoiceCallCallCallerExperienceAverageTalkTime',
+    VoiceCallCallerExperienceAverageTalkTime = 'VoiceCallCallerExperienceAverageTalkTime',
     VoiceCallVolumeTotalCallCountTrendChart = 'VoiceCallVolumeTotalCallCountTrendChart',
     VoiceCallVolumeMetricOutboundCallsCountTrend = 'VoiceCallVolumeMetricOutboundCallsCountTrend',
     VoiceCallVolumeMetricInboundCallsCountTrend = 'VoiceCallVolumeMetricInboundCallsCountTrend',
@@ -93,8 +93,8 @@ export const VoiceOverviewReportConfig: ReportConfig<VoiceOverviewChart> = {
                 },
             ],
         },
-        [VoiceOverviewChart.VoiceCallCallCallerExperienceAverageTalkTime]: {
-            chartComponent: VoiceCallCallCallerExperiencAverageTalkTime,
+        [VoiceOverviewChart.VoiceCallCallerExperienceAverageTalkTime]: {
+            chartComponent: VoiceCallCallerExperienceAverageTalkTime,
             label: AVERAGE_TALK_TIME_METRIC_TITLE,
             description: AVERAGE_TALK_TIME_METRIC_HINT,
             chartType: ChartType.Card,
