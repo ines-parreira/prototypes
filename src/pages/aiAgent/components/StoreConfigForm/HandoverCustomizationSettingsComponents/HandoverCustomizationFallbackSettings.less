@@ -2,7 +2,7 @@
 @import (reference) '~css/typography';
 
 :local {
-    .errorMessageTitle {
+    .fallbackMessageTitle {
         font-size: @body-semibold-font-size;
         font-weight: @body-semibold-font-weight;
         line-height: @body-semibold-line-height;
@@ -10,5 +10,12 @@
 
     .fallbackSettingsContainer {
         margin-bottom: @layout-spacing-l;
+    }
+
+    .loadingContainer {
+        height: 278px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
     }
 }

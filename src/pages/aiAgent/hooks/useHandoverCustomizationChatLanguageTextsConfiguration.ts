@@ -1,0 +1,108 @@
+import { useCallback, useEffect, useMemo, useState } from 'react'
+
+import axios, { AxiosError } from 'axios'
+
+import {
+    getPrimaryLanguageFromChatConfig,
+    isTextsMultiLanguage,
+} from 'config/integrations/gorgias_chat'
+import { GorgiasChatIntegration } from 'models/integration/types'
+import { multiLanguageInitialTextsEmptyData } from 'pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationAppearance/GorgiasTranslateText/GorgiasTranslateText'
+import {
+    Texts,
+    TextsMultiLanguage,
+    TextsPerLanguage,
+} from 'rest_api/gorgias_chat_protected_api/types'
+import * as integrationsActions from 'state/integrations/actions'
+
+import { parseToFriendlyErrorMessage } from '../utils/handoverCustomizationFallbackSettingsForm.utils'
+
+const parseToTextsMultiLanguage = (data: Texts, defaultLanguage: string) => {
+    if (isTextsMultiLanguage(data)) {
+        return data as TextsMultiLanguage
+    }
+
+    return {
+        ...multiLanguageInitialTextsEmptyData,
+        [defaultLanguage]: data as TextsPerLanguage,
+    }
+}
+
+export const useHandoverCustomizationChatLanguageTextsConfiguration = (
+    integration: GorgiasChatIntegration,
+) => {
+    const [isLoading, setIsLoading] = useState(false)
+    const [hasLoadingError, setHasLoadingError] = useState(false)
+    const [multiLanguageTexts, setMultiLanguageTexts] =
+        useState<TextsMultiLanguage>(multiLanguageInitialTextsEmptyData)
+
+    const defaultLanguage = useMemo(
+        () => getPrimaryLanguageFromChatConfig(integration.meta),
+        [integration],
+    )
+
+    const fetchApplicationTexts = useCallback(
+        async (integrationId: string) => {
+            setIsLoading(true)
+            setHasLoadingError(false)
+
+            try {
+                const data =
+                    await integrationsActions.getApplicationTexts(integrationId)
+
+                setMultiLanguageTexts(
+                    parseToTextsMultiLanguage(data, defaultLanguage),
+                )
+                setIsLoading(false)
+            } catch {
+                setHasLoadingError(true)
+                setIsLoading(false)
+                setMultiLanguageTexts(multiLanguageInitialTextsEmptyData)
+            }
+        },
+        [defaultLanguage],
+    )
+
+    const updateMultiLanguageTexts = async (texts: TextsMultiLanguage) => {
+        if (!integration.meta.app_id || !texts) {
+            const message = 'Invalid parameters for updateMultiLanguageTexts'
+
+            throw new Error(message)
+        }
+        try {
+            await integrationsActions.updateApplicationTexts(
+                integration.meta.app_id,
+                texts,
+            )
+
+            setMultiLanguageTexts(texts)
+        } catch (err) {
+            if (axios.isAxiosError(err)) {
+                const axiosError = err as AxiosError
+
+                throw new Error(parseToFriendlyErrorMessage(axiosError))
+            }
+
+            throw new Error('An unknown error occurred. Please try again')
+        }
+    }
+
+    useEffect(() => {
+        const loadTexts = async () => {
+            if (!integration.meta.app_id) {
+                return
+            }
+
+            await fetchApplicationTexts(integration.meta.app_id)
+        }
+
+        loadTexts()
+    }, [integration])
+
+    return {
+        multiLanguageTexts,
+        isLoading,
+        hasLoadingError,
+        updateMultiLanguageTexts,
+    }
+}

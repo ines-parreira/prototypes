@@ -43,6 +43,7 @@ import { initialState as categoriesState } from 'state/entities/helpCenter/categ
 import { notify } from 'state/notifications/actions'
 import { NotificationStatus } from 'state/notifications/types'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
+import { reportError } from 'utils/errors'
 import { renderWithRouter } from 'utils/testing'
 
 import { INITIAL_FORM_VALUES, ToneOfVoice } from '../../../constants'
@@ -50,7 +51,7 @@ import * as util from '../../../util'
 import { StoreConfigForm } from '../StoreConfigForm'
 
 const queryClient = mockQueryClient()
-
+jest.mock('utils/errors')
 // eslint-disable-next-line @typescript-eslint/no-unsafe-return
 jest.mock('common/segment', () => ({
     ...jest.requireActual('common/segment'),
@@ -73,6 +74,19 @@ jest.mock('pages/aiAgent/hooks/usePublicResources', () => ({
 jest.mock('../../PublicSourcesSection/PublicSourcesSection', () => ({
     PublicSourcesSection: jest.fn(() => <p>Public Source Section</p>),
 }))
+
+// This mocked component is a child of one of the components rendered in the StoreConfigForm (ChatConfigurationFormComponent).
+// By implementing this mock, we’re isolating the StoreConfigForm for more focused testing, avoiding not relevant rendering and mocking of components and dependencies that are tested elsewhere.
+jest.mock(
+    '../FormComponents/HandoverCustomizationSettingsFormComponent',
+    () => ({
+        HandoverCustomizationSettingsFormComponent: () => (
+            <div data-testid="mocked-handover-settings">
+                Mocked Handover Settings
+            </div>
+        ),
+    }),
+)
 jest.mock('pages/aiAgent/hooks/useAiAgentOnboardingNotification', () => ({
     useAiAgentOnboardingNotification: jest.fn(),
 }))
@@ -319,6 +333,7 @@ describe('<StoreConfigForm />', () => {
         mockFlags({
             [FeatureFlagKey.AiAgentTrialMode]: false,
             [FeatureFlagKey.AiAgentChat]: false,
+            [FeatureFlagKey.AiAgentHandoverCustomizationConfiguration]: false,
         })
         mockUseSearchParam.mockReturnValue([null, mockSetSearchParam])
         mockUseEnableAiAgent.mockReturnValue({

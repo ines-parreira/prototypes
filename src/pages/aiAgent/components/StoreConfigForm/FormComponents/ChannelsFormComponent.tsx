@@ -58,7 +58,9 @@ export const ChannelsFormComponent = ({
     const isAiAgentChatEnabled: boolean | undefined =
         useFlags()[FeatureFlagKey.AiAgentChat]
 
-    const handoverCustomizationSettingsConfigurationEnabled =
+    const handoverCustomizationSettingsConfigurationEnabled:
+        | boolean
+        | undefined =
         useFlags()[FeatureFlagKey.AiAgentHandoverCustomizationConfiguration]
 
     const isAiAgentActivationEnabled =

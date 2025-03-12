@@ -131,4 +131,95 @@ describe('HandoverCustomizationSettingsFormComponent', () => {
             screen.getByRole('textbox')
         })
     })
+
+    describe('Handover customization settings', () => {
+        it('should render the handover customization settings when there is one chat channel', () => {
+            mockedUseSelfServiceChatChannels.mockReturnValue(
+                mockChatChannels.slice(0, 1),
+            )
+            render(
+                <HandoverCustomizationSettingsFormComponent {...mockProps} />,
+            )
+
+            screen.getByText('Handover instructions')
+            screen.getByText('mocked offline settings')
+            screen.getByText('mocked online settings')
+            screen.getByText('mocked fallback settings')
+        })
+
+        it('should render the handover customization settings when there is more than one chat channel', () => {
+            mockedUseSelfServiceChatChannels.mockReturnValue(
+                mockChatChannels.slice(0, 2),
+            )
+            render(
+                <HandoverCustomizationSettingsFormComponent {...mockProps} />,
+            )
+
+            screen.getByText('Handover instructions')
+            screen.getByText('mocked offline settings')
+            screen.getByText('mocked online settings')
+            screen.getByText('mocked fallback settings')
+        })
+
+        it('should render the handover customization settings when there is one monitored chat channel', () => {
+            mockedUseSelfServiceChatChannels.mockReturnValue(mockChatChannels)
+            render(
+                <HandoverCustomizationSettingsFormComponent
+                    {...mockProps}
+                    monitoredChatIntegrationIds={[14]}
+                />,
+            )
+
+            screen.getByText('Handover instructions')
+            screen.getByText('mocked offline settings')
+            screen.getByText('mocked online settings')
+            screen.getByText('mocked fallback settings')
+        })
+
+        it('should render the handover customization settings when there are more than one monitored chat channel in different order', () => {
+            mockedUseSelfServiceChatChannels.mockReturnValue(mockChatChannels)
+            render(
+                <HandoverCustomizationSettingsFormComponent
+                    {...mockProps}
+                    monitoredChatIntegrationIds={[15, 14]}
+                />,
+            )
+
+            screen.getByText('Handover instructions')
+            screen.getByText('mocked offline settings')
+            screen.getByText('mocked online settings')
+            screen.getByText('mocked fallback settings')
+        })
+
+        it('should not render the handover customization settings when there is no self service chat channels', () => {
+            mockedUseSelfServiceChatChannels.mockReturnValue([])
+            render(
+                <HandoverCustomizationSettingsFormComponent {...mockProps} />,
+            )
+
+            expect(screen.queryByText('Handover instructions')).toBeNull()
+        })
+
+        it('should not render the handover customization settings when there is no monitored chat ids', () => {
+            render(
+                <HandoverCustomizationSettingsFormComponent
+                    {...mockProps}
+                    monitoredChatIntegrationIds={[]}
+                />,
+            )
+
+            expect(screen.queryByText('Handover instructions')).toBeNull()
+        })
+
+        it('should not render the handover customization settings when monitored chat ids is null', () => {
+            render(
+                <HandoverCustomizationSettingsFormComponent
+                    {...mockProps}
+                    monitoredChatIntegrationIds={null}
+                />,
+            )
+
+            expect(screen.queryByText('Handover instructions')).toBeNull()
+        })
+    })
 })

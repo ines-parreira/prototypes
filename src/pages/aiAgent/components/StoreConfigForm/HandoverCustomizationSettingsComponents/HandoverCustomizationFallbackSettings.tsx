@@ -1,70 +1,157 @@
-import React from 'react'
+import React, { useCallback, useMemo, useState } from 'react'
 
 import cn from 'classnames'
 
-import { Button } from '@gorgias/merchant-ui-kit'
+import { Button, LoadingSpinner } from '@gorgias/merchant-ui-kit'
 
+import {
+    getGorgiasChatLanguageByCode,
+    getLanguagesFromChatConfig,
+    getPrimaryLanguageFromChatConfig,
+} from 'config/integrations/gorgias_chat'
+import { Language } from 'constants/languages'
 import { Label } from 'gorgias-design-system/Input/Label'
-import { Locale } from 'models/helpCenter/types'
+import useUpdateEffect from 'hooks/useUpdateEffect'
+import { GorgiasChatIntegration } from 'models/integration/types'
+import { useHandoverCustomizationFallbackSettingsForm } from 'pages/aiAgent/hooks/useHandoverCustomizationFallbackSettingsForm'
+import { formFieldsConfiguration } from 'pages/aiAgent/utils/handoverCustomizationFallbackSettingsForm.utils'
 import { FlagLanguageItem } from 'pages/common/components/LanguageBulletList'
 import Caption from 'pages/common/forms/Caption/Caption'
 import SelectField from 'pages/common/forms/SelectField/SelectField'
+import { Value } from 'pages/common/forms/SelectField/types'
 import TextArea from 'pages/common/forms/TextArea'
 
 import css from './HandoverCustomizationFallbackSettings.less'
 
-// this language options will be replaced in the next PR with the logic that uses the integration id to get the language options
-const languagePickerOptions: Locale[] = [
-    { code: 'en-US', name: 'English' },
-    { code: 'es-ES', name: 'Spanish' },
-    { code: 'fr-FR', name: 'French' },
-]
+type Props = {
+    integration: GorgiasChatIntegration
+}
 
-const localeToSelectOption = (
-    locale: Locale,
-): React.ComponentProps<typeof SelectField>['options'][number] => ({
-    label: (
-        <FlagLanguageItem
-            code={locale.code}
-            name={`${locale.name} - ${locale.code}`}
-        />
-    ),
-    text: `${locale.name} - ${locale.code}`,
-    value: locale.code,
-})
+const mapLocaleToSelectOption = (
+    languageCode: string,
+): React.ComponentProps<typeof SelectField>['options'][number] => {
+    const language = getGorgiasChatLanguageByCode(languageCode as Language)
 
-/// This component will be finished in the next PR. - until it the actions will be implemented with empty functions.
+    if (!language) {
+        return {
+            label: languageCode,
+            text: languageCode,
+            value: languageCode,
+        }
+    }
 
-const HandoverCustomizationFallbackSettings = () => {
+    return {
+        label: <FlagLanguageItem code={language.value} name={language.label} />,
+        text: language.label,
+        value: language.value,
+    }
+}
+
+const HandoverCustomizationFallbackSettings = ({ integration }: Props) => {
+    const [selectedLanguageCode, setSelectedLanguageCode] = useState(
+        getPrimaryLanguageFromChatConfig(integration.meta),
+    )
+
+    const {
+        formValues,
+        updateValue,
+        handleOnSave,
+        handleOnCancel,
+        isLoading,
+        isSaving,
+    } = useHandoverCustomizationFallbackSettingsForm({
+        integration,
+    })
+
+    const availableLanguageItems = useMemo(
+        () =>
+            getLanguagesFromChatConfig(integration.meta).map(
+                mapLocaleToSelectOption,
+            ),
+        [integration],
+    )
+
+    const onFallbackMessageChange = useCallback(
+        (value: string) => {
+            updateValue('fallbackMessage', selectedLanguageCode, value)
+        },
+        [updateValue, selectedLanguageCode],
+    )
+
+    const onSelectedLanguageChange = useCallback(
+        (value: Value) => {
+            setSelectedLanguageCode(value as string)
+        },
+        [setSelectedLanguageCode],
+    )
+
+    const onSave = useCallback(
+        (e: React.MouseEvent<HTMLButtonElement>) => {
+            e.preventDefault()
+            handleOnSave()
+        },
+        [handleOnSave],
+    )
+
+    const onCancel = useCallback(
+        (e: React.MouseEvent<HTMLButtonElement>) => {
+            e.preventDefault()
+            handleOnCancel()
+        },
+        [handleOnCancel],
+    )
+
+    useUpdateEffect(() => {
+        setSelectedLanguageCode(
+            getPrimaryLanguageFromChatConfig(integration.meta),
+        )
+    }, [integration])
+
+    if (isLoading) {
+        return (
+            <div
+                className={cn(css.spinner, css.loadingContainer)}
+                aria-busy="true"
+                aria-label="Loading"
+            >
+                <LoadingSpinner />
+            </div>
+        )
+    }
+
     return (
-        <div>
+        <>
             <div className={cn(css.fallbackSettingsContainer, 'mb-5')}>
                 <div className="d-flex flex-row justify-content-between align-items-center mb-2">
                     <Label
-                        htmlFor="handover-customization-error-message"
+                        htmlFor="handover-customization-fallback-message"
                         label={'Error message'}
-                        className={css.errorMessageTitle}
+                        className={css.fallbackMessageTitle}
                     >
                         Error Message
                     </Label>
 
                     <SelectField
-                        options={languagePickerOptions.map(
-                            localeToSelectOption,
-                        )}
-                        value={'en-US'}
-                        onChange={() => {}}
+                        fixedWidth
+                        aria-label="Select language"
+                        options={availableLanguageItems}
+                        value={selectedLanguageCode}
+                        onChange={onSelectedLanguageChange}
                     />
                 </div>
 
                 <TextArea
-                    id="handover-customization-error-message"
+                    id="handover-customization-fallback-message"
                     rows={5}
-                    name="handover-customization-error-message"
+                    maxLength={
+                        formFieldsConfiguration.fallbackMessage.maxLength
+                    }
+                    name="handover-customization-fallback-message"
                     aria-label="Error message"
-                    placeholder={`Thanks for reaching out, we'll get back to you as soon as possible.`}
-                    onChange={() => {}}
-                    error={undefined}
+                    role="textbox"
+                    placeholder="Thanks for reaching out, we'll get back to you as soon as possible."
+                    onChange={onFallbackMessageChange}
+                    value={formValues[selectedLanguageCode]?.fallbackMessage}
                 />
                 <Caption className="caption-regular mt-1">
                     AI Agent will send the exact text if it encounters an
@@ -83,7 +170,8 @@ const HandoverCustomizationFallbackSettings = () => {
                     color="primary"
                     className="mr-2"
                     size="small"
-                    onClick={() => {}}
+                    onClick={onSave}
+                    isDisabled={isSaving}
                 >
                     Save Changes
                 </Button>
@@ -92,12 +180,12 @@ const HandoverCustomizationFallbackSettings = () => {
                     intent="secondary"
                     color="secondary"
                     size="small"
-                    onClick={() => {}}
+                    onClick={onCancel}
                 >
                     Cancel
                 </Button>
             </section>
-        </div>
+        </>
     )
 }
 

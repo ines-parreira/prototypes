@@ -25,6 +25,18 @@ type Props = {
     monitoredChatIntegrationIds: number[] | null
 }
 
+const getSelectedChat = (
+    chatChannels: SelfServiceChatChannel[],
+    monitoredChatIntegrationIds: number[] | null,
+) => {
+    if (!monitoredChatIntegrationIds?.length) {
+        return undefined
+    }
+
+    return chatChannels.find((chat) =>
+        monitoredChatIntegrationIds.includes(chat.value.id),
+    )
+}
 export const HandoverCustomizationSettingsFormComponent = ({
     shopName,
     shopType,
@@ -32,12 +44,9 @@ export const HandoverCustomizationSettingsFormComponent = ({
 }: Props) => {
     const chatChannels = useSelfServiceChatChannels(shopType, shopName)
 
-    const [selectedChat, setSelectedChat] =
-        useState<SelfServiceChatChannel | null>(
-            chatChannels.find(
-                (chat) => chat.value.id === monitoredChatIntegrationIds?.[0],
-            ) || null,
-        )
+    const [selectedChat, setSelectedChat] = useState(
+        getSelectedChat(chatChannels, monitoredChatIntegrationIds),
+    )
 
     const availableChats = useMemo(() => {
         return chatChannels.filter((chat) =>
@@ -55,7 +64,7 @@ export const HandoverCustomizationSettingsFormComponent = ({
         [availableChats],
     )
 
-    if (availableChats?.length === 0) {
+    if (availableChats?.length === 0 || !selectedChat) {
         return null
     }
 
@@ -72,7 +81,8 @@ export const HandoverCustomizationSettingsFormComponent = ({
                             value: chat.value.id,
                         }))}
                         icon="forum"
-                        fixedWidth={true}
+                        aria-label="Select chat"
+                        fixedWidth
                         value={selectedChat?.value.id}
                         onChange={onSelectedChatChange}
                     />
@@ -116,7 +126,9 @@ export const HandoverCustomizationSettingsFormComponent = ({
                         </span>
                     </AccordionHeader>
                     <AccordionBody>
-                        <HandoverCustomizationFallbackSettings />
+                        <HandoverCustomizationFallbackSettings
+                            integration={selectedChat.value}
+                        />
                     </AccordionBody>
                 </AccordionItem>
             </Accordion>

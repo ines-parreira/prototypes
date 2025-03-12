@@ -97,3 +97,11 @@ export type PlaygroundCustomer = {
     name?: string
     id: number
 }
+
+export type HandoverCustomizationFallbackSettingsFormMultiLanguageValues = {
+    [key: string]: HandoverCustomizationFallbackSettingsFormValues
+}
+
+export type HandoverCustomizationFallbackSettingsFormValues = {
+    fallbackMessage?: string
+}
