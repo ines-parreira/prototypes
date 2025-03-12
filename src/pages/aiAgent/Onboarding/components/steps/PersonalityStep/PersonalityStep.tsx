@@ -27,6 +27,7 @@ import {
 import { StepProps } from 'pages/aiAgent/Onboarding/components/steps/types'
 import useCheckOnboardingCompleted from 'pages/aiAgent/Onboarding/hooks/useCheckOnboardingCompleted'
 import useCheckStoreIntegration from 'pages/aiAgent/Onboarding/hooks/useCheckStoreIntegration'
+import { useGetChatIntegrationColor } from 'pages/aiAgent/Onboarding/hooks/useGetChatIntegrationColor'
 import { useGetOnboardingData } from 'pages/aiAgent/Onboarding/hooks/useGetOnboardingData'
 import { useSteps } from 'pages/aiAgent/Onboarding/hooks/useSteps'
 import { useUpdateOnboarding } from 'pages/aiAgent/Onboarding/hooks/useUpdateOnboarding'
@@ -90,6 +91,11 @@ export const PersonalityStep: React.FC<StepProps> = ({
         mutate: doUpdateOnboardingMutation,
         isLoading: isUpdatingOnboarding,
     } = useUpdateOnboarding()
+
+    const { mainColor, conversationColor } = useGetChatIntegrationColor({
+        shopName,
+        chatIntegrationIds: data?.chatIntegrationIds,
+    })
 
     const isLoading = isLoadingOnboardingData || isUpdatingOnboarding
 
@@ -378,9 +384,20 @@ export const PersonalityStep: React.FC<StepProps> = ({
                     caption="This is a sample conversation with AI Agent. It will evolve as you onboard."
                 >
                     <div className={css.chatWrapper}>
-                        <ChatIntegrationPreview {...chatPreviewSettings}>
+                        <ChatIntegrationPreview
+                            {...{
+                                ...chatPreviewSettings,
+                                mainColor:
+                                    mainColor ?? chatPreviewSettings.mainColor,
+                            }}
+                        >
                             <AiAgentChatConversation
-                                {...agentChatConversationSettings}
+                                {...{
+                                    ...agentChatConversationSettings,
+                                    conversationColor:
+                                        conversationColor ??
+                                        agentChatConversationSettings.conversationColor,
+                                }}
                                 removeLinksFromMessages
                             />
                         </ChatIntegrationPreview>

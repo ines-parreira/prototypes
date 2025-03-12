@@ -16,6 +16,7 @@ import { mapScopeToPreviewType } from 'pages/aiAgent/Onboarding/components/steps
 import { StepProps } from 'pages/aiAgent/Onboarding/components/steps/types'
 import useCheckOnboardingCompleted from 'pages/aiAgent/Onboarding/hooks/useCheckOnboardingCompleted'
 import useCheckStoreIntegration from 'pages/aiAgent/Onboarding/hooks/useCheckStoreIntegration'
+import { useGetChatIntegrationColor } from 'pages/aiAgent/Onboarding/hooks/useGetChatIntegrationColor'
 import { useGetOnboardingData } from 'pages/aiAgent/Onboarding/hooks/useGetOnboardingData'
 import { useSteps } from 'pages/aiAgent/Onboarding/hooks/useSteps'
 import {
@@ -65,6 +66,11 @@ export const PersonalityPreviewStep: React.FC<StepProps> = ({
     const { data: chatPreviewData, isLoading: isChatPreviewLoading } =
         useFetchPersonalityPreviewChatScenario(previewType, selectedPreview?.id)
 
+    const { mainColor, conversationColor } = useGetChatIntegrationColor({
+        shopName,
+        chatIntegrationIds: data?.chatIntegrationIds,
+    })
+
     const onNextClick = () => {
         const nextStep = validSteps[currentStep]?.step
 
@@ -109,9 +115,20 @@ export const PersonalityPreviewStep: React.FC<StepProps> = ({
             >
                 <div className={css.previewContainer}>
                     <div>
-                        <ChatIntegrationPreview {...chatPreviewSettings}>
+                        <ChatIntegrationPreview
+                            {...{
+                                ...chatPreviewSettings,
+                                mainColor:
+                                    mainColor ?? chatPreviewSettings.mainColor,
+                            }}
+                        >
                             <AiAgentChatConversation
-                                {...agentChatConversationSettings}
+                                {...{
+                                    ...agentChatConversationSettings,
+                                    conversationColor:
+                                        conversationColor ??
+                                        agentChatConversationSettings.conversationColor,
+                                }}
                                 messages={chatPreviewData.messages}
                                 removeLinksFromMessages
                             />

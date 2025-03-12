@@ -36,6 +36,7 @@ import { createChatConfiguration } from 'pages/aiAgent/Onboarding/components/ste
 import { StepProps } from 'pages/aiAgent/Onboarding/components/steps/types'
 import useCheckOnboardingCompleted from 'pages/aiAgent/Onboarding/hooks/useCheckOnboardingCompleted'
 import useCheckStoreIntegration from 'pages/aiAgent/Onboarding/hooks/useCheckStoreIntegration'
+import { useGetChatIntegrationColor } from 'pages/aiAgent/Onboarding/hooks/useGetChatIntegrationColor'
 import { useGetOnboardingData } from 'pages/aiAgent/Onboarding/hooks/useGetOnboardingData'
 import { useOnboardingIntegrationRedirection } from 'pages/aiAgent/Onboarding/hooks/useOnboardingIntegrationRedirection'
 import { useSteps } from 'pages/aiAgent/Onboarding/hooks/useSteps'
@@ -255,6 +256,11 @@ export const ChannelsStep: React.FC<StepProps> = ({
     const emailIntegrationIds = watch('emailIntegrationIds')
     const chatChannelEnabled = watch('chatChannelEnabled')
     const chatIntegrationIds = watch('chatIntegrationIds')
+
+    const { mainColor, conversationColor } = useGetChatIntegrationColor({
+        shopName,
+        chatIntegrationIds,
+    })
 
     const [isCreatingChat, setIsCreatingChat] = useState<boolean>(false)
 
@@ -589,13 +595,14 @@ export const ChannelsStep: React.FC<StepProps> = ({
                             <ChatIntegrationPreview
                                 {...{
                                     ...chatPreviewSettings,
-                                    mainColor: newChatColor,
+                                    mainColor: mainColor ?? newChatColor,
                                 }}
                             >
                                 <AiAgentChatConversation
                                     {...{
                                         ...agentChatConversationSettings,
-                                        conversationColor: newChatColor,
+                                        conversationColor:
+                                            conversationColor ?? newChatColor,
                                         removeLinksFromMessages: true,
                                     }}
                                 />
