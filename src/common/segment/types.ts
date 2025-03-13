@@ -3,6 +3,7 @@ export enum SegmentEvent {
     AiAgentActivateMainButtonClicked = 'ai-agent-activate-main-button-clicked',
     AiAgentActivateModalSkillEnabled = 'ai-agent-activate-modal-skill-enabled',
     AiAgentActivateModalSkillDisabled = 'ai-agent-activate-modal-skill-disabled',
+    AiAgentActivatePreviewPricingModalClosed = 'ai-agent-activate-preview-pricing-modal-closed',
     AiAgentChatConfigurationDisabled = 'ai-agent-chat-configuration-disabled',
     AiAgentConfigurationDisabled = 'ai-agent-configuration-disabled',
     AiAgentCopiedToEditor = 'ai-agent-copied-to-editor',

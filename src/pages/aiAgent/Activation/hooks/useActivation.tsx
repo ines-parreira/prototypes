@@ -100,8 +100,26 @@ export const useActivation = (pageName: string) => {
                 <EarlyAccessModal
                     isLoading={isLoading}
                     isOpen={isPreviewModalVisible}
-                    onClose={() => setIsPreviewModalVisible(false)}
-                    onStayClick={() => setIsPreviewModalVisible(false)}
+                    onClose={() => {
+                        setIsPreviewModalVisible(false)
+                        logEvent(
+                            SegmentEvent.AiAgentActivatePreviewPricingModalClosed,
+                            {
+                                page: pageName,
+                                reason: 'clicked-on-cross-or-outside',
+                            },
+                        )
+                    }}
+                    onStayClick={() => {
+                        setIsPreviewModalVisible(false)
+                        logEvent(
+                            SegmentEvent.AiAgentActivatePreviewPricingModalClosed,
+                            {
+                                page: pageName,
+                                reason: 'clicked-on-stay-button',
+                            },
+                        )
+                    }}
                     onUpgradeClick={() => {}}
                     currentPlan={currentPlan}
                     earlyAccessPlan={earlyAccessPlan}

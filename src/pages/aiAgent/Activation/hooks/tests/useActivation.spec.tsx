@@ -167,6 +167,135 @@ describe('useActivation', () => {
         })
     })
 
+    it('should close the EarlyAccessModal when clicking on the cross button or outside of the modal', () => {
+        mockUseFlags.mockReturnValue({
+            [FeatureFlagKey.AiAgentActivation]: true,
+        })
+        mockedUseBillingData.mockReturnValue({
+            isOnNewPlan: false,
+            setIsPreviewModalVisible: jest.fn(),
+            isPreviewModalVisible: false,
+            isCurrentUserAdmin: true,
+            currentPlan: {
+                amount: 900,
+                currency: 'USD',
+                cadence: Cadence.Month,
+                discount: 132,
+                generation: 5,
+            } as any,
+            earlyAccessPlan: {
+                amount: 900,
+                currency: 'USD',
+                amount_after_discount: 800,
+                cadence: Cadence.Month,
+                discount: 100,
+            } as any,
+            isLoading: false,
+        })
+
+        const { result } = renderHook(
+            () => useActivation('ai-agent-overview'),
+            {
+                wrapper: ({ children }) => (
+                    <QueryClientProvider client={queryClient}>
+                        <Provider store={mockStore(defaultState)}>
+                            {children}
+                        </Provider>
+                    </QueryClientProvider>
+                ),
+            },
+        )
+
+        expect(result.current.ActivationButton).toBeDefined()
+        expect(result.current.ActivationModal).toBeDefined()
+        expect(result.current.EarlyAccessModal).toBeDefined()
+
+        act(() => {
+            result.current.ActivationButton()?.props.onClick()
+        })
+
+        expect(result.current.ActivationModal().props.isOpen).toBe(true)
+
+        // a click on the cross button or outside of the modal triggers the onClose event.
+        act(() => {
+            result.current.EarlyAccessModal()?.props.onClose()
+        })
+
+        expect(result.current.EarlyAccessModal()?.props.isOpen).toBe(false)
+
+        expect(mockedLogEvent).toHaveBeenCalledWith(
+            segment.SegmentEvent.AiAgentActivatePreviewPricingModalClosed,
+            {
+                page: 'ai-agent-overview',
+                reason: 'clicked-on-cross-or-outside',
+            },
+        )
+    })
+
+    it('should close the EarlyAccessModal when clicking on the stay on current plan button', () => {
+        mockUseFlags.mockReturnValue({
+            [FeatureFlagKey.AiAgentActivation]: true,
+        })
+        mockedUseBillingData.mockReturnValue({
+            isOnNewPlan: false,
+            setIsPreviewModalVisible: jest.fn(),
+            isPreviewModalVisible: false,
+            isCurrentUserAdmin: true,
+            currentPlan: {
+                amount: 900,
+                currency: 'USD',
+                cadence: Cadence.Month,
+                discount: 132,
+                generation: 5,
+            } as any,
+            earlyAccessPlan: {
+                amount: 900,
+                currency: 'USD',
+                amount_after_discount: 800,
+                cadence: Cadence.Month,
+                discount: 100,
+            } as any,
+            isLoading: false,
+        })
+
+        const { result } = renderHook(
+            () => useActivation('ai-agent-overview'),
+            {
+                wrapper: ({ children }) => (
+                    <QueryClientProvider client={queryClient}>
+                        <Provider store={mockStore(defaultState)}>
+                            {children}
+                        </Provider>
+                    </QueryClientProvider>
+                ),
+            },
+        )
+
+        expect(result.current.ActivationButton).toBeDefined()
+        expect(result.current.ActivationModal).toBeDefined()
+        expect(result.current.EarlyAccessModal).toBeDefined()
+
+        act(() => {
+            result.current.ActivationButton()?.props.onClick()
+        })
+
+        expect(result.current.ActivationModal().props.isOpen).toBe(true)
+
+        act(() => {
+            result.current.EarlyAccessModal()?.props.onStayClick()
+        })
+
+        expect(result.current.EarlyAccessModal()?.props.isOpen).toBe(false)
+
+        expect(mockedLogEvent).toHaveBeenCalledWith(
+            segment.SegmentEvent.AiAgentActivatePreviewPricingModalClosed,
+            {
+                page: 'ai-agent-overview',
+                reason: 'clicked-on-stay-button',
+            },
+        )
+    })
+
     it('should log event ai-agent-activate-main-button-clicked when clicking activation button', () => {
         mockFlags({
             [FeatureFlagKey.AiAgentActivation]: true,
