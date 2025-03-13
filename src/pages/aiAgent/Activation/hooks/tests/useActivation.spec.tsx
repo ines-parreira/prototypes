@@ -80,7 +80,7 @@ describe('useActivation', () => {
             isLoading: false,
         })
 
-        const { result } = renderHook(() => useActivation(), {
+        const { result } = renderHook(() => useActivation('any-page'), {
             wrapper: ({ children }) => (
                 <QueryClientProvider client={queryClient}>
                     <Provider store={mockStore(defaultState)}>
@@ -133,7 +133,7 @@ describe('useActivation', () => {
             isLoading: false,
         })
 
-        const { result } = renderHook(() => useActivation(), {
+        const { result } = renderHook(() => useActivation('any-page'), {
             wrapper: ({ children }) => (
                 <QueryClientProvider client={queryClient}>
                     <Provider store={mockStore(defaultState)}>
@@ -197,18 +197,15 @@ describe('useActivation', () => {
             isLoading: false,
         })
 
-        const { result } = renderHook(
-            () => useActivation('ai-agent-overview'),
-            {
-                wrapper: ({ children }) => (
-                    <QueryClientProvider client={queryClient}>
-                        <Provider store={mockStore(defaultState)}>
-                            {children}
-                        </Provider>
-                    </QueryClientProvider>
-                ),
-            },
-        )
+        const { result } = renderHook(() => useActivation('any-page'), {
+            wrapper: ({ children }) => (
+                <QueryClientProvider client={queryClient}>
+                    <Provider store={mockStore(defaultState)}>
+                        {children}
+                    </Provider>
+                </QueryClientProvider>
+            ),
+        })
 
         const ActivationButton = result.current.ActivationButton
         const { getByText } = render(<ActivationButton />)
@@ -220,7 +217,7 @@ describe('useActivation', () => {
 
         expect(mockedLogEvent).toHaveBeenCalledWith(
             segment.SegmentEvent.AiAgentActivateMainButtonClicked,
-            { page: 'ai-agent-overview' },
+            { page: 'any-page' },
         )
     })
 })

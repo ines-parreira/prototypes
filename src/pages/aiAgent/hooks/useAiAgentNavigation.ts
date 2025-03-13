@@ -17,7 +17,7 @@ import {
     TEST,
 } from 'pages/aiAgent/constants'
 
-const getAiAgentBasePath = (shopName: string, flags: LDFlagSet) => {
+export const getAiAgentBasePath = (shopName: string, flags: LDFlagSet) => {
     const isStandaloneMenuEnabled = flags[FeatureFlagKey.ConvAiStandaloneMenu]
     return isStandaloneMenuEnabled
         ? `/app/ai-agent/shopify/${shopName}`

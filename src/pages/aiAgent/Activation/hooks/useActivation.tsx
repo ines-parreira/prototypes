@@ -13,11 +13,10 @@ import { useStoreConfigurationForAccount } from 'pages/aiAgent/hooks/useStoreCon
 import { getCurrentAccountState } from 'state/currentAccount/selectors'
 import { getShopifyIntegrationsSortedByName } from 'state/integrations/selectors'
 
-import { PageName } from '../types'
 import { useBillingData } from './useBillingData'
 import { computeActivationScore } from './useStoreActivations'
 
-export const useActivation = (pageName?: PageName) => {
+export const useActivation = (pageName: string) => {
     const [isModalVisible, setIsModalVisible] = useState(false)
     const hasActivationEnabled = useFlags()[FeatureFlagKey.AiAgentActivation]
     const currentAccount = useAppSelector(getCurrentAccountState)

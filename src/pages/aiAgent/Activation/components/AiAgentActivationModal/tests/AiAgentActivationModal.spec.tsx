@@ -66,6 +66,7 @@ describe('<AiAgentActivationModal />', () => {
                     onClose={onCloseMock}
                     storeConfigs={[storeSupportWithEmailAndChat]}
                     onSalesEnabled={onSalesEnabledMock}
+                    pageName="any-page"
                 />
             </QueryClientProvider>,
         )
@@ -90,6 +91,7 @@ describe('<AiAgentActivationModal />', () => {
                     onClose={onCloseMock}
                     storeConfigs={[storeSupportWithEmailAndChat]}
                     onSalesEnabled={onSalesEnabledMock}
+                    pageName="any-page"
                 />
             </QueryClientProvider>,
         )

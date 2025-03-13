@@ -10,8 +10,6 @@ import { reducer } from 'pages/aiAgent/Activation/hooks/storeActivationReducer'
 import { useStoresConfigurationMutation } from 'pages/aiAgent/hooks/useStoresConfigurationMutation'
 import { HELP_CENTER_MAX_CREATION } from 'pages/settings/helpCenter/constants'
 
-import { PageName } from '../types'
-
 export const computeActivationScore = (
     storeConfigs: Pick<
         StoreConfiguration,
@@ -54,7 +52,7 @@ export const useStoreActivations = ({
 }: {
     accountDomain: string
     storeConfigurations: StoreConfiguration[]
-    pageName?: PageName
+    pageName: string
 }): {
     storeActivations: Record<string, StoreActivation>
     score: { currentScore: number; totalScore: number }
