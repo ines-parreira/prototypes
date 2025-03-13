@@ -9,6 +9,7 @@ import Dropdown from 'pages/common/components/dropdown/Dropdown'
 import DropdownBody from 'pages/common/components/dropdown/DropdownBody'
 import DropdownItem from 'pages/common/components/dropdown/DropdownItem'
 import DropdownSearch from 'pages/common/components/dropdown/DropdownSearch'
+import Caption from 'pages/common/forms/Caption/Caption'
 import SelectInputBox, {
     SelectInputBoxContext,
 } from 'pages/common/forms/input/SelectInputBox'
@@ -39,7 +40,7 @@ export default function VoiceIntegrationPreferencesTeamSelect({
     )
 
     return (
-        <>
+        <div>
             {!!error && (
                 <div className={css.error}>Error: Unable to retrieve teams</div>
             )}
@@ -119,6 +120,17 @@ export default function VoiceIntegrationPreferencesTeamSelect({
                     )}
                 </SelectInputBoxContext.Consumer>
             </SelectInputBox>
-        </>
+            <Caption>
+                Create a new team or manage team members in{' '}
+                <a
+                    href={'/app/settings/teams'}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                >
+                    Teams
+                </a>
+                .
+            </Caption>
+        </div>
     )
 }

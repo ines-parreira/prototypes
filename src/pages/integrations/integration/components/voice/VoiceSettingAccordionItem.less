@@ -1,0 +1,19 @@
+@import (reference) '~@gorgias/design-tokens/dist/css/layout';
+@import (reference) '~@gorgias/design-tokens/dist/css/typographyTokens';
+@import (reference) '~css/typography';
+
+:local {
+    .accordionHeader {
+        display: flex;
+        flex-direction: column;
+        gap: @layout-spacing-xs;
+
+        > * {
+            margin-bottom: 0;
+        }
+
+        .subtitle {
+            .body-semibold();
+        }
+    }
+}
