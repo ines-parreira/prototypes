@@ -219,9 +219,12 @@ export const SalesSettings = ({ contentOnly = false }: Props) => {
 
                         <section className={css.card}>
                             <div className={css.titleContainer}>
-                                <div className={css.title}>
+                                <label
+                                    htmlFor="salesPersuasionLevel"
+                                    className={css.title}
+                                >
                                     Set Persuasion Level
-                                </div>
+                                </label>
                                 <IconTooltip>
                                     AI Agent will take into account your custom
                                     persuasion level in the way in interacts
@@ -254,9 +257,12 @@ export const SalesSettings = ({ contentOnly = false }: Props) => {
 
                         <section className={css.card}>
                             <div className={css.titleContainer}>
-                                <div className={css.title}>
+                                <label
+                                    htmlFor="salesDiscountStrategyLevel"
+                                    className={css.title}
+                                >
                                     Set your discount strategy
-                                </div>
+                                </label>
                                 <IconTooltip>
                                     Define how often AI Agent should use
                                     discounts to encourage customers to complete
@@ -287,7 +293,7 @@ export const SalesSettings = ({ contentOnly = false }: Props) => {
                                 </AIBanner>
                             </div>
 
-                            <hr className={css.separator} />
+                            <hr />
 
                             <div className={css.maxDiscountContainer}>
                                 <Label htmlFor="percentage-discount">
