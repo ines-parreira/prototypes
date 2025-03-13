@@ -194,7 +194,7 @@ export default function CustomerSyncForm({
             onClose={handleSyncModalClose}
         >
             <ModalHeader
-                title={`Sync customer  ${activeCustomer.get('name') as string} with Shopify`}
+                title={`Sync ${activeCustomer.get('name') as string} profile to Shopify`}
             />
             <form onSubmit={handleSyncCustomer}>
                 <ModalBody>

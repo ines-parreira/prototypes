@@ -51,11 +51,11 @@ describe('CustomerOptionsDropdownButton', () => {
 
         fireEvent.click(screen.getByRole('button'))
         expect(screen.getByText('Edit Customer')).toBeInTheDocument()
-        expect(screen.getByText('Sync profile in Shopify')).toBeInTheDocument()
+        expect(screen.getByText('Sync profile to Shopify')).toBeInTheDocument()
         fireEvent.click(screen.getByRole('button'))
         expect(screen.queryByText('Edit Customer')).not.toBeInTheDocument()
         expect(
-            screen.queryByText('Sync profile in Shopify'),
+            screen.queryByText('Sync profile to Shopify'),
         ).not.toBeInTheDocument()
     })
 
@@ -92,10 +92,10 @@ describe('CustomerOptionsDropdownButton', () => {
         )
 
         fireEvent.click(screen.getByRole('button'))
-        fireEvent.click(screen.getByText('Sync profile in Shopify'))
+        fireEvent.click(screen.getByText('Sync profile to Shopify'))
 
         expect(
-            screen.getByText('Sync customer John Doe with Shopify'),
+            screen.getByText('Sync John Doe profile to Shopify'),
         ).toBeInTheDocument()
 
         fireEvent.keyDown(container, { key: 'Escape' })
@@ -121,11 +121,11 @@ describe('CustomerOptionsDropdownButton', () => {
 
         fireEvent.click(screen.getByRole('button'))
         expect(
-            screen.queryByText('Sync profile in Shopify'),
+            screen.queryByText('Sync profile to Shopify'),
         ).not.toBeInTheDocument()
 
         expect(
-            screen.queryByText('Sync customer John Doe with Shopify'),
+            screen.queryByText('Sync John Doe profile to Shopify'),
         ).not.toBeInTheDocument()
     })
 })

@@ -59,7 +59,7 @@ export default function CustomerOptionsDropdownButton({
                         {hasShopifyIntegration && (
                             <DropdownItem
                                 option={{
-                                    label: 'Sync profile in Shopify',
+                                    label: 'Sync profile to Shopify',
                                     value: 'sync',
                                 }}
                                 onClick={() => setIsCustomerSyncFormOpen(true)}

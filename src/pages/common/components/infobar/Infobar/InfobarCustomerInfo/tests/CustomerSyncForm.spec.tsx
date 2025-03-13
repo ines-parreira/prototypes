@@ -97,7 +97,7 @@ describe('CustomerSyncForm', () => {
         )
 
         expect(
-            screen.getByText('Sync customer John Smith with Shopify'),
+            screen.getByText('Sync John Smith profile to Shopify'),
         ).toBeInTheDocument()
         expect(screen.getByLabelText('Email')).toBeInTheDocument()
         expect(screen.getByLabelText('Name')).toBeInTheDocument()

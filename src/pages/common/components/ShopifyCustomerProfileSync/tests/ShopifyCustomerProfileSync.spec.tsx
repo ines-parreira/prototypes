@@ -34,14 +34,14 @@ describe('ShopifyCustomerProfileSync', () => {
         expect(syncButton).toBeInTheDocument()
 
         const modalTitle = screen.queryByText(
-            'Sync customer John Smith with Shopify',
+            'Sync John Smith profile to Shopify',
         )
         expect(modalTitle).not.toBeInTheDocument()
 
         fireEvent.click(syncButton)
 
         expect(
-            screen.getByText('Sync customer John Smith with Shopify'),
+            screen.getByText('Sync John Smith profile to Shopify'),
         ).toBeInTheDocument()
     })
 
@@ -59,7 +59,7 @@ describe('ShopifyCustomerProfileSync', () => {
         fireEvent.click(syncButton)
 
         expect(
-            screen.getByText('Sync customer John Smith with Shopify'),
+            screen.getByText('Sync John Smith profile to Shopify'),
         ).toBeInTheDocument()
 
         const closeButton = screen.getByText(/close/i, { selector: 'i' })
@@ -67,7 +67,7 @@ describe('ShopifyCustomerProfileSync', () => {
 
         await waitFor(() => {
             expect(
-                screen.queryByText('Sync customer John Smith with Shopify'),
+                screen.queryByText('Sync John Smith profile to Shopify'),
             ).not.toBeInTheDocument()
         })
     })
