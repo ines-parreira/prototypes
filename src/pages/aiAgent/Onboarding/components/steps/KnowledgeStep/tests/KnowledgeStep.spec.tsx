@@ -208,7 +208,7 @@ describe('KnowledgeStep', () => {
 
         jest.runAllTimers()
 
-        expect((await screen.findAllByText('Top Locations')).length).toBe(2)
+        expect((await screen.findAllByText('Top Locations')).length).toBe(4)
     })
 
     it('navigates to the sales personality step when Back is clicked', () => {

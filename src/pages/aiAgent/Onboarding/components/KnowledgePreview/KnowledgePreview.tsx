@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useRef } from 'react'
 
 import {
     Card,
@@ -13,6 +13,8 @@ import TrackerCircle from 'pages/common/components/ProgressTracker/TrackerCircle
 import { LineChart } from 'pages/stats/common/components/charts/LineChart/LineChart'
 
 import css from './KnowledgePreview.less'
+
+const ANIMATION_DURATION = 30000
 
 const KnowledgePreview = () => {
     const { data } = useGetKnowledgeDatasQuery()
@@ -120,25 +122,74 @@ const KnowledgePreview = () => {
         </Card>
     )
 
+    const topRow = [
+        topLocationsCard,
+        scoreCard,
+        topProductsCard,
+        repeatRateCard,
+        averageOrdersCard,
+        topCategoriesCard,
+        averageDiscountCard,
+    ]
+
+    const bottomRow = [
+        topProductsCard,
+        repeatRateCard,
+        averageOrdersCard,
+        topCategoriesCard,
+        averageDiscountCard,
+        topLocationsCard,
+        scoreCard,
+    ]
+
+    const topRowElement = useRef<HTMLDivElement>(null)
+    const bottomRowElement = useRef<HTMLDivElement>(null)
+
+    useEffect(() => {
+        const topRow = topRowElement.current
+        const bottomRow = bottomRowElement.current
+
+        const scroll = (
+            element: HTMLDivElement,
+            direction: 'left' | 'right',
+        ) => {
+            const scrollWidth = element.scrollWidth / 2
+
+            const keyframes =
+                direction === 'left'
+                    ? [
+                          { transform: 'translateX(0)' },
+                          { transform: `translateX(-${scrollWidth}px)` },
+                      ]
+                    : [
+                          { transform: `translateX(-${scrollWidth}px)` },
+                          { transform: 'translateX(0)' },
+                      ]
+
+            const options = {
+                duration: ANIMATION_DURATION,
+                iterations: Infinity,
+            }
+
+            // checks if elemment.animate exists because it doesn't exist in tests
+            if (element.animate) element.animate(keyframes, options)
+        }
+
+        if (topRow && bottomRow) {
+            scroll(topRow, 'left')
+            scroll(bottomRow, 'right')
+        }
+    }, [])
+
     return (
         <div className={css.preview}>
-            <div className={css.row}>
-                {topLocationsCard}
-                {scoreCard}
-                {topProductsCard}
-                {repeatRateCard}
-                {averageOrdersCard}
-                {topCategoriesCard}
-                {averageDiscountCard}
+            <div className={css.row} ref={topRowElement}>
+                {topRow}
+                {topRow}
             </div>
-            <div className={css.row}>
-                {topProductsCard}
-                {repeatRateCard}
-                {averageOrdersCard}
-                {topCategoriesCard}
-                {averageDiscountCard}
-                {topLocationsCard}
-                {scoreCard}
+            <div className={css.row} ref={bottomRowElement}>
+                {bottomRow}
+                {bottomRow}
             </div>
         </div>
     )
