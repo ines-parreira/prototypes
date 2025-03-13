@@ -7,7 +7,6 @@ import { TicketStatus } from '@gorgias/api-types'
 
 import DatetimeLabel from 'pages/common/utils/DatetimeLabel'
 import { StatusLabel } from 'pages/common/utils/labels'
-import { handleButtonLikeClick } from 'utils/accessibility'
 
 import { OwnerLabel } from './OwnerLabel'
 import { SourceBadge } from './SourceBadge'
@@ -16,23 +15,14 @@ import css from './TicketCard.less'
 
 type Props = {
     ticket: TicketSummary
-    onClick?: (ticketId: number) => void
     isHighlighted?: boolean
 }
 
-export default function TicketCard({
-    ticket,
-    onClick,
-    isHighlighted = false,
-}: Props) {
+export default function TicketCard({ ticket, isHighlighted = false }: Props) {
     return (
         <div
             className={cn(css.card, {
                 [css.highlight]: isHighlighted,
-            })}
-            {...handleButtonLikeClick((evt) => {
-                evt.preventDefault()
-                onClick?.(ticket.id)
             })}
         >
             <SourceBadge channel={ticket.channel} />

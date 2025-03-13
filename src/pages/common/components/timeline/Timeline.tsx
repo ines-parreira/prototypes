@@ -1,11 +1,12 @@
 import React from 'react'
 
+import { Link } from 'react-router-dom'
+
 import { LoadingSpinner } from '@gorgias/merchant-ui-kit'
 
 import GorgiasLogo from 'assets/img/gorgias-logo.svg'
 import { logEvent, SegmentEvent } from 'common/segment'
 import useAppSelector from 'hooks/useAppSelector'
-import history from 'pages/history'
 import { getCustomerHistory, getLoading } from 'state/customers/selectors'
 
 import TicketCard from './TicketCard'
@@ -64,22 +65,19 @@ export default function Timeline({ ticketId = 0, onLoaded }: Props) {
                         const isCurrentTicket = ticketId === ticket.id
                         return (
                             <li key={ticket.id}>
-                                <TicketCard
-                                    ticket={ticket}
-                                    onClick={
-                                        isCurrentTicket
-                                            ? undefined
-                                            : () => {
-                                                  logEvent(
-                                                      SegmentEvent.CustomerTimelineTicketClicked,
-                                                  )
-                                                  history.push(
-                                                      `/app/ticket/${ticket.id}`,
-                                                  )
-                                              }
-                                    }
-                                    isHighlighted={isCurrentTicket}
-                                />
+                                <Link
+                                    to={`/app/ticket/${ticket.id}`}
+                                    onClick={() => {
+                                        logEvent(
+                                            SegmentEvent.CustomerTimelineTicketClicked,
+                                        )
+                                    }}
+                                >
+                                    <TicketCard
+                                        ticket={ticket}
+                                        isHighlighted={isCurrentTicket}
+                                    />
+                                </Link>
                             </li>
                         )
                     })}

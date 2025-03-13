@@ -1,6 +1,6 @@
 import React from 'react'
 
-import { fireEvent, render, screen } from '@testing-library/react'
+import { render, screen } from '@testing-library/react'
 
 import '@testing-library/jest-dom'
 
@@ -76,21 +76,14 @@ describe('TicketCard', () => {
     })
 
     it('highlights the ticket card when isHighlighted is true', () => {
-        const { rerender } = render(
+        const { container, rerender } = render(
             <TicketCard ticket={ticket} isHighlighted={true} />,
         )
-        expect(screen.getByRole('button')).toHaveClass('highlight')
+        expect(container.firstChild).toHaveClass('highlight')
 
         rerender(<TicketCard ticket={ticket} />)
 
-        expect(screen.getByRole('button')).not.toHaveClass('highlight')
-    })
-
-    it('calls onClick and logs event when clicked', () => {
-        const handleClick = jest.fn()
-        render(<TicketCard ticket={ticket} onClick={handleClick} />)
-        fireEvent.click(screen.getByRole('button'))
-        expect(handleClick).toHaveBeenCalledWith(ticket.id)
+        expect(container.firstChild).not.toHaveClass('highlight')
     })
 
     it("should render snoozed status when ticket's snooze_datetime is set", () => {

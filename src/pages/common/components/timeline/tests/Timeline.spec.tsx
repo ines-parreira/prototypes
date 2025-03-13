@@ -4,7 +4,6 @@ import { render, screen } from '@testing-library/react'
 import { fromJS } from 'immutable'
 
 import { logEvent, SegmentEvent } from 'common/segment'
-import history from 'pages/history'
 import { getCustomerHistory, getLoading } from 'state/customers/selectors'
 import { assumeMock } from 'utils/testing'
 
@@ -16,9 +15,6 @@ jest.mock('common/segment', () => ({
     SegmentEvent: {
         CustomerTimelineTicketClicked: 'CustomerTimelineTicketClicked',
     },
-}))
-jest.mock('pages/history', () => ({
-    push: jest.fn(),
 }))
 jest.mock('hooks/useAppSelector', () => (fn: () => unknown) => fn())
 jest.mock('state/customers/selectors', () => {
@@ -34,7 +30,6 @@ jest.mock('../TicketCard', () => jest.fn(() => <div>TicketCard</div>))
 
 const getCustomerHistoryMock = assumeMock(getCustomerHistory)
 const getLoadingMock = assumeMock(getLoading)
-const TicketCardMock = assumeMock(TicketCard)
 
 describe('<Timeline />', () => {
     const ticket1 = { id: 1, channel: 'email' }
@@ -100,7 +95,6 @@ describe('<Timeline />', () => {
         expect(TicketCard).toHaveBeenNthCalledWith(
             1,
             {
-                onClick: expect.any(Function),
                 isHighlighted: false,
                 ticket: ticket1,
             },
@@ -109,7 +103,6 @@ describe('<Timeline />', () => {
         expect(TicketCard).toHaveBeenNthCalledWith(
             2,
             {
-                onClick: undefined,
                 isHighlighted: true,
                 ticket: ticket3,
             },
@@ -117,13 +110,14 @@ describe('<Timeline />', () => {
         )
     })
 
-    it('should log event and redirect when ticket is clicked', () => {
+    it('should log event and redirect when Link is clicked', () => {
         render(<Timeline />)
 
-        TicketCardMock.mock.calls[0][0].onClick?.(ticket1.id)
-        expect(history.push).toHaveBeenCalledWith(`/app/ticket/${ticket1.id}`)
+        const link = screen.getAllByText('TicketCard')[0].parentElement
+        link?.click()
         expect(logEvent).toHaveBeenCalledWith(
             SegmentEvent.CustomerTimelineTicketClicked,
         )
+        expect(link).toHaveAttribute('to', '/app/ticket/1')
     })
 })
