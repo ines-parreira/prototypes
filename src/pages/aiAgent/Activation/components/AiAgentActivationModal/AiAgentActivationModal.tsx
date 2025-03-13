@@ -75,7 +75,6 @@ export const AiAgentActivationModal = ({
                                 key={storeName}
                                 isDisabled={isLoading}
                                 store={store}
-                                alerts={[]}
                                 onSalesChange={(value) => {
                                     // If we try to activate sales, we need to check if the user is on a new plan
                                     if (value) {

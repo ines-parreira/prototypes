@@ -21,6 +21,10 @@ export const useStoresConfigurationMutation = ({
         error: isUpsertError,
     } = useUpsertStoresConfigurationPure({
         onSuccess: async () => {
+            /**
+             * We must invalidate both cache storeConfigurationKeys.details and storeConfigurationKeys.accounts
+             * because {@link useGetStoresConfigurationForAccount} uses a different key to bulk fetch.
+             */
             await queryClient.invalidateQueries({
                 queryKey: storeConfigurationKeys.details(),
             })

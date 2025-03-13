@@ -17,6 +17,15 @@ import css from './AiAgentActivationStoreCard.less'
 export type StoreActivation = {
     name: string
     title: string
+    alerts: {
+        type: AlertType
+        message: string
+        cta: {
+            label: string
+            onClick?: () => void
+            to?: string
+        }
+    }[]
     configuration: StoreConfiguration
     sales: {
         isDisabled: boolean
@@ -36,15 +45,6 @@ export type StoreActivation = {
 }
 type Props = {
     store: StoreActivation
-    alerts: {
-        type: AlertType
-        message: string
-        cta: {
-            label: string
-            onClick?: () => void
-            to?: string
-        }
-    }[]
     onSalesChange: (newValue: boolean) => void
     onSupportChange: (newValue: boolean) => void
     onSupportChatChange: (newValue: boolean) => void
@@ -52,8 +52,7 @@ type Props = {
     isDisabled?: boolean
 }
 export const AiAgentActivationStoreCard = ({
-    store: { name, title, support, sales },
-    alerts,
+    store: { name, title, support, sales, alerts },
     onSalesChange,
     onSupportChange,
     onSupportChatChange,
@@ -72,6 +71,8 @@ export const AiAgentActivationStoreCard = ({
 
     const { routes } = useAiAgentNavigation({ shopName: name })
 
+    const isDisabledCore = isDisabled || (alerts ?? []).length > 0
+
     return (
         <div className={css.storeCard}>
             <div className={cn(css.section, css.headerSection)}>
@@ -82,7 +83,7 @@ export const AiAgentActivationStoreCard = ({
                     </div>
                 </div>
 
-                {alerts.map((alert, index) => (
+                {alerts?.map((alert, index) => (
                     <Alert
                         key={index}
                         className={css.alert}
@@ -123,7 +124,7 @@ export const AiAgentActivationStoreCard = ({
                         <div className={css.title}>Support</div>
                         <ToggleInput
                             isDisabled={
-                                isDisabled ||
+                                isDisabledCore ||
                                 (support.chat.isIntegrationMissing &&
                                     support.email.isIntegrationMissing)
                             }
@@ -139,7 +140,7 @@ export const AiAgentActivationStoreCard = ({
                                     className={css.channelInput}
                                     labelClassName={css.channelLabel}
                                     isDisabled={
-                                        isDisabled ||
+                                        isDisabledCore ||
                                         support.chat.isIntegrationMissing
                                     }
                                     isChecked={support.chat.enabled}
@@ -182,7 +183,7 @@ export const AiAgentActivationStoreCard = ({
                                     className={css.channelInput}
                                     labelClassName={css.channelLabel}
                                     isDisabled={
-                                        isDisabled ||
+                                        isDisabledCore ||
                                         support.email.isIntegrationMissing
                                     }
                                     isChecked={support.email.enabled}
@@ -229,7 +230,7 @@ export const AiAgentActivationStoreCard = ({
                     <div className={css.heading}>
                         <div className={css.title}>Sales</div>
                         <ToggleInput
-                            isDisabled={isDisabled || sales.isDisabled}
+                            isDisabled={isDisabledCore || sales.isDisabled}
                             isToggled={sales.enabled}
                             onClick={onSalesChange}
                         />

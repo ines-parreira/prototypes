@@ -2,11 +2,18 @@ import React from 'react'
 
 import { QueryClientProvider } from '@tanstack/react-query'
 import { act, renderHook } from '@testing-library/react-hooks/dom'
+import { mockFlags } from 'jest-launchdarkly-mock'
 
 import * as segment from 'common/segment'
+import { axiosSuccessResponse } from 'fixtures/axiosResponse'
 import { AiAgentScope, StoreConfiguration } from 'models/aiAgent/types'
+import { useGetHelpCenterList } from 'models/helpCenter/queries'
 import { useStoreActivations } from 'pages/aiAgent/Activation/hooks/useStoreActivations'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
+import { assumeMock } from 'utils/testing'
+
+jest.mock('models/helpCenter/queries')
+const useGetHelpCenterListMock = assumeMock(useGetHelpCenterList)
 
 const queryClient = mockQueryClient()
 const pageName = 'ai-agent-overview'
@@ -34,6 +41,18 @@ const renderUseStoreActivations = ({
 const mockLogEvent = jest.spyOn(segment, 'logEvent').mockImplementation(jest.fn)
 
 describe('useStoreActivations', () => {
+    beforeEach(() => {
+        mockFlags({})
+        jest.clearAllMocks()
+
+        useGetHelpCenterListMock.mockReturnValue({
+            status: 'success',
+            data: axiosSuccessResponse({
+                data: [],
+            }),
+        } as any)
+    })
+
     describe('when store has no scope + has no deactivated datetime for chat and email', () => {
         it('should have a score of 0 / 3', () => {
             const store = {
@@ -73,6 +92,7 @@ describe('useStoreActivations', () => {
                 name: 'My Store',
                 title: 'My Store',
                 configuration: store,
+                alerts: [],
                 support: {
                     chat: {
                         enabled: false,
@@ -292,6 +312,7 @@ describe('useStoreActivations', () => {
             const expectedInitialState = {
                 name: 'My Store',
                 title: 'My Store',
+                alerts: [],
                 configuration: store,
                 support: {
                     chat: {
@@ -383,6 +404,7 @@ describe('useStoreActivations', () => {
             const expectedInitialState = {
                 name: 'My Store',
                 title: 'My Store',
+                alerts: [],
                 configuration: store,
                 support: {
                     chat: {
@@ -472,6 +494,7 @@ describe('useStoreActivations', () => {
             const expectedInitialState = {
                 name: 'My Store',
                 title: 'My Store',
+                alerts: [],
                 configuration: store,
                 support: {
                     chat: {
@@ -991,6 +1014,82 @@ describe('useStoreActivations', () => {
                     },
                 )
             })
+        })
+    })
+
+    describe('when store has a no helpcenter and there are knowledge FAQ', () => {
+        beforeEach(() => {
+            useGetHelpCenterListMock.mockClear()
+        })
+
+        it('should not set an alert for this store when useGetHelpCenterList is loading', () => {
+            useGetHelpCenterListMock.mockReturnValue({
+                status: 'loading',
+                data: undefined,
+            } as any)
+
+            const store = {
+                storeName: 'My Store',
+                helpCenterId: null,
+                scopes: [AiAgentScope.Support, AiAgentScope.Sales],
+                chatChannelDeactivatedDatetime: null,
+                emailChannelDeactivatedDatetime: null,
+                monitoredChatIntegrations: [1],
+                monitoredEmailIntegrations: [
+                    { id: 2, email: 'foo@example.com' },
+                ],
+            } as any as StoreConfiguration
+
+            const { result } = renderUseStoreActivations({
+                storeConfigurations: [store],
+            })
+
+            expect(result.current.storeActivations['My Store'].alerts).toEqual(
+                [],
+            )
+        })
+
+        it('should set an alert for this store when useGetHelpCenterList is success', () => {
+            useGetHelpCenterListMock.mockReturnValue({
+                status: 'success',
+                data: axiosSuccessResponse({
+                    data: [
+                        {
+                            id: 1,
+                            name: 'help center 1',
+                            type: 'faq',
+                        },
+                    ],
+                }),
+            } as any)
+
+            const store = {
+                storeName: 'My Store',
+                helpCenterId: null,
+                scopes: [AiAgentScope.Support, AiAgentScope.Sales],
+                chatChannelDeactivatedDatetime: null,
+                emailChannelDeactivatedDatetime: null,
+                monitoredChatIntegrations: [1],
+                monitoredEmailIntegrations: [
+                    { id: 2, email: 'foo@example.com' },
+                ],
+            } as any as StoreConfiguration
+
+            const { result } = renderUseStoreActivations({
+                storeConfigurations: [store],
+            })
+
+            expect(result.current.storeActivations['My Store'].alerts).toEqual([
+                {
+                    cta: {
+                        label: 'Visit Knowledge',
+                        to: '/app/automation/shopify/My Store/ai-agent/knowledge',
+                    },
+                    message:
+                        'At least one knowledge source required. Update in “Knowledge” to be able to activate AI Agent.',
+                    type: 'warning',
+                },
+            ])
         })
     })
 })

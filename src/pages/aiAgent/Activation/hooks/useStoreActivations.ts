@@ -1,10 +1,14 @@
-import { useEffect, useReducer } from 'react'
+import { useEffect, useReducer, useRef } from 'react'
+
+import { useFlags } from 'launchdarkly-react-client-sdk'
 
 import { logEvent, SegmentEvent } from 'common/segment'
 import { AiAgentScope, StoreConfiguration } from 'models/aiAgent/types'
+import { useGetHelpCenterList } from 'models/helpCenter/queries'
 import { StoreActivation } from 'pages/aiAgent/Activation/components/AiAgentActivationStoreCard/AiAgentActivationStoreCard'
 import { reducer } from 'pages/aiAgent/Activation/hooks/storeActivationReducer'
 import { useStoresConfigurationMutation } from 'pages/aiAgent/hooks/useStoresConfigurationMutation'
+import { HELP_CENTER_MAX_CREATION } from 'pages/settings/helpCenter/constants'
 
 import { PageName } from '../types'
 
@@ -61,11 +65,35 @@ export const useStoreActivations = ({
     onSave: () => Promise<void>
     isLoading: boolean
 } => {
+    const flags = useFlags()
+    const flagsRef = useRef(flags)
+    flagsRef.current = flags
+
     const [state, dispatch] = useReducer(reducer, {})
 
     useEffect(() => {
         dispatch({ type: 'UPDATE_STORE_CONFIGURATION', storeConfigurations })
     }, [storeConfigurations])
+
+    const { data: helpCenterListData, status: getHelpCenterListStatus } =
+        useGetHelpCenterList(
+            { type: 'faq', per_page: HELP_CENTER_MAX_CREATION },
+            {
+                staleTime: 1000 * 60 * 5,
+                refetchOnWindowFocus: false,
+            },
+        )
+
+    useEffect(() => {
+        if (getHelpCenterListStatus !== 'success') {
+            return
+        }
+        dispatch({
+            type: 'UPDATE_HELP_CENTER_FAQ',
+            helpCenters: helpCenterListData?.data.data,
+            flags: flagsRef.current,
+        })
+    }, [getHelpCenterListStatus, helpCenterListData])
 
     const { isLoading, upsertStoresConfiguration } =
         useStoresConfigurationMutation({ accountDomain })

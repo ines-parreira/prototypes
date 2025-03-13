@@ -54,7 +54,6 @@ export const AllDisabled: Story = {
         onSupportChange: action('onToggle > Support'),
         onSupportChatChange: action('onToggle > Support > Chat'),
         onSupportEmailChange: action('onToggle > Support > Email'),
-        alerts: [],
     },
 }
 
@@ -80,7 +79,6 @@ export const AllDisabledMissingIntegration: Story = {
                 },
             },
         } as any as StoreActivation,
-        alerts: [],
         onSalesChange: action('onToggle > Sales'),
         onSupportChange: action('onToggle > Support'),
         onSupportChatChange: action('onToggle > Support > Chat'),
@@ -94,6 +92,14 @@ export const AllDisabledWithAlert: Story = {
         store: {
             name: 'steve-madden',
             title: 'Steve Madden',
+            alerts: [
+                {
+                    type: AlertType.Warning,
+                    message:
+                        'At least one knowledge source required. Update in “Knowledge” to be able to activate AI Agent.',
+                    cta: { label: 'Visit Knowledge', to: '/' },
+                },
+            ],
             sales: {
                 isDisabled: true,
                 enabled: false,
@@ -110,14 +116,6 @@ export const AllDisabledWithAlert: Story = {
                 },
             },
         } as any as StoreActivation,
-        alerts: [
-            {
-                type: AlertType.Warning,
-                message:
-                    'At least one knowledge source required. Update in “Knowledge” to be able to activate AI Agent.',
-                cta: { label: 'Visit Knowledge', to: '/' },
-            },
-        ],
         onSalesChange: action('onToggle > Sales'),
         onSupportChange: action('onToggle > Support'),
         onSupportChatChange: action('onToggle > Support > Chat'),
@@ -147,7 +145,6 @@ export const SupportEmail: Story = {
                 },
             },
         } as any as StoreActivation,
-        alerts: [],
         onSalesChange: action('onToggle > Sales'),
         onSupportChange: action('onToggle > Support'),
         onSupportChatChange: action('onToggle > Support > Chat'),
@@ -177,7 +174,6 @@ export const SupportEmailChat: Story = {
                 },
             },
         } as any as StoreActivation,
-        alerts: [],
         onSalesChange: action('onToggle > Sales'),
         onSupportChange: action('onToggle > Support'),
         onSupportChatChange: action('onToggle > Support > Chat'),
@@ -207,7 +203,6 @@ export const AllActivated: Story = {
                 },
             },
         } as any as StoreActivation,
-        alerts: [],
         onSalesChange: action('onToggle > Sales'),
         onSupportChange: action('onToggle > Support'),
         onSupportChatChange: action('onToggle > Support > Chat'),

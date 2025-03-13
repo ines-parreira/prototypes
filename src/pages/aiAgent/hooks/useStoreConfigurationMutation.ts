@@ -25,12 +25,20 @@ export const useStoreConfigurationMutation = ({
         mutateAsync: createStoreConfigurationAsync,
         isLoading: isCreateLoading,
     } = useCreateStoreConfigurationPure({
-        onSuccess: () => {
+        onSuccess: async () => {
+            /**
+             * We must invalidate both cache storeConfigurationKeys.details and storeConfigurationKeys.accounts
+             * because {@link useGetStoresConfigurationForAccount} uses a different key to bulk fetch.
+             */
             void queryClient.invalidateQueries({
                 queryKey: storeConfigurationKeys.detail({
                     accountDomain,
                     storeName: shopName,
                 }),
+            })
+
+            await queryClient.invalidateQueries({
+                queryKey: storeConfigurationKeys.accounts(),
             })
         },
     })
@@ -40,12 +48,20 @@ export const useStoreConfigurationMutation = ({
         isLoading: isUpsertLoading,
         error: isUpsertError,
     } = useUpsertStoreConfigurationPure({
-        onSuccess: () => {
-            void queryClient.invalidateQueries({
+        onSuccess: async () => {
+            /**
+             * We must invalidate both cache storeConfigurationKeys.details and storeConfigurationKeys.accounts
+             * because {@link useGetStoresConfigurationForAccount} uses a different key to bulk fetch.
+             */
+            await queryClient.invalidateQueries({
                 queryKey: storeConfigurationKeys.detail({
                     accountDomain,
                     storeName: shopName,
                 }),
+            })
+
+            await queryClient.invalidateQueries({
+                queryKey: storeConfigurationKeys.accounts(),
             })
         },
     })

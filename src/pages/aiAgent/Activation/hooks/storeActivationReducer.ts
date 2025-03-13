@@ -1,5 +1,10 @@
+import { LDFlagSet } from 'launchdarkly-react-client-sdk'
+
 import { AiAgentScope, StoreConfiguration } from 'models/aiAgent/types'
 import { StoreActivation } from 'pages/aiAgent/Activation/components/AiAgentActivationStoreCard/AiAgentActivationStoreCard'
+import { getAiAgentNavigationRoutes } from 'pages/aiAgent/hooks/useAiAgentNavigation'
+import { AlertType } from 'pages/common/components/Alert/Alert'
+import { type Components } from 'rest_api/help_center_api/client.generated'
 
 export type State = Record<string, StoreActivation>
 type ToggleSalesAction = {
@@ -26,12 +31,18 @@ type UpdateStoreConfiguration = {
     type: 'UPDATE_STORE_CONFIGURATION'
     storeConfigurations: StoreConfiguration[]
 }
+type UpdateHelpCenterFaq = {
+    type: 'UPDATE_HELP_CENTER_FAQ'
+    helpCenters?: Components.Schemas.GetHelpCenterDto[]
+    flags: LDFlagSet
+}
 export type ACTION_TYPE =
     | ToggleSalesAction
     | ToggleSupportAction
     | ToggleSupportChatAction
     | ToggleSupportEmailAction
     | UpdateStoreConfiguration
+    | UpdateHelpCenterFaq
 
 const toggleSupport = (
     state: State,
@@ -171,6 +182,58 @@ const toggleSales = (
     }
 }
 
+const updateHelpCenterFaq = (
+    state: State,
+    { helpCenters, flags }: UpdateHelpCenterFaq,
+): State => {
+    const hasHelpCenterFaq = (helpCenters ?? []).length > 0
+    return Object.entries(state).reduce<Record<string, StoreActivation>>(
+        (acc, [storeName, store]) => {
+            const isMissingKnowledge =
+                store.configuration.helpCenterId === null && hasHelpCenterFaq
+            const knowledgeAlert = {
+                type: AlertType.Warning,
+                message:
+                    'At least one knowledge source required. Update in “Knowledge” to be able to activate AI Agent.',
+                cta: {
+                    label: 'Visit Knowledge',
+                    to: getAiAgentNavigationRoutes(storeName, flags).knowledge,
+                },
+            }
+
+            const alerts = store.alerts
+            if (isMissingKnowledge) {
+                alerts.push(knowledgeAlert)
+            }
+            acc[storeName] = {
+                ...store,
+                support: {
+                    ...store.support,
+                    chat: {
+                        ...store.support.chat,
+                        enabled: isMissingKnowledge
+                            ? false
+                            : store.support.chat.enabled,
+                    },
+                    email: {
+                        ...store.support.email,
+                        enabled: isMissingKnowledge
+                            ? false
+                            : store.support.email.enabled,
+                    },
+                },
+                sales: {
+                    ...store.sales,
+                    enabled: isMissingKnowledge ? false : store.sales.enabled,
+                },
+                alerts,
+            }
+            return acc
+        },
+        {},
+    )
+}
+
 export const storeConfigurationToState = (
     _state: State,
     { storeConfigurations }: UpdateStoreConfiguration,
@@ -187,6 +250,7 @@ export const storeConfigurationToState = (
             state[storeConfiguration.storeName] = {
                 name: storeConfiguration.storeName,
                 title: storeConfiguration.storeName,
+                alerts: [],
                 configuration: storeConfiguration,
                 support: {
                     enabled: isChatEnabled || isEmailEnabled,
@@ -227,6 +291,8 @@ export const reducer = (state: State, action: ACTION_TYPE): State => {
             return toggleSupportEmail(state, action)
         case 'CHANGE_SALES':
             return toggleSales(state, action)
+        case 'UPDATE_HELP_CENTER_FAQ':
+            return updateHelpCenterFaq(state, action)
         case 'UPDATE_STORE_CONFIGURATION':
             return storeConfigurationToState(state, action)
     }
