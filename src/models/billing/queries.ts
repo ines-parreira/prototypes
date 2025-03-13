@@ -6,6 +6,7 @@ import {
     getBillingContact,
     getBillingState,
     getCouponsForSales,
+    getEarlyAccessAutomatePlan,
     reactivateTrial,
     updateBillingContact,
 } from './resources'
@@ -27,6 +28,24 @@ export const useBillingState = (
 ) => {
     return useQuery({
         ...getBillingStateQuery,
+        ...overrides,
+    })
+}
+
+export const getEarlyAccessAutomatePlanQuery = {
+    queryKey: ['earlyAccessAutomatePlan'],
+    queryFn: getEarlyAccessAutomatePlan,
+}
+
+export type UseEarlyAccessAutomatePlan = Awaited<
+    ReturnType<typeof getEarlyAccessAutomatePlan>
+>
+
+export const useEarlyAccessAutomatePlan = (
+    overrides?: UseQueryOptions<UseEarlyAccessAutomatePlan>,
+) => {
+    return useQuery({
+        ...getEarlyAccessAutomatePlanQuery,
         ...overrides,
     })
 }

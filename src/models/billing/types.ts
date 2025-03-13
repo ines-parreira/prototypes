@@ -58,6 +58,8 @@ type BasePlan = {
     name: string
     price_id: string
     public: boolean
+    // Set as optional to prevent breaking changes
+    generation?: number
 }
 
 export type HelpdeskPlanFeatures = Record<
@@ -84,6 +86,11 @@ export type AutomatePlanFeatures = Record<
 
 export type AutomatePlan = BasePlan & {
     features: AutomatePlanFeatures
+}
+
+export type AutomateEarlyAccessPlan = AutomatePlan & {
+    amount_after_discount: number
+    discount: number
 }
 
 export type SMSOrVoicePlan = BasePlan & {

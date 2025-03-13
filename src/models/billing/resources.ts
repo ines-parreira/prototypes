@@ -1,5 +1,6 @@
 import client from 'models/api/resources'
 import {
+    AutomateEarlyAccessPlan,
     BillingState,
     ChurnMitigationOfferDecisionEvent,
     CouponForSales,
@@ -81,3 +82,11 @@ export const updateBillingContact = (
 
 export const getCreditCard = () =>
     client.get<ICard | Record<string, never>>('/api/billing/credit-card/')
+
+export async function getEarlyAccessAutomatePlan() {
+    const res = await client.get<{ plan?: AutomateEarlyAccessPlan | null }>(
+        '/api/billing/early-access-automate-plan',
+    )
+
+    return res.data?.plan
+}

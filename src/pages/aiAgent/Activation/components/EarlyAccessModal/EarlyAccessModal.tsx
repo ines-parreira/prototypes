@@ -4,6 +4,11 @@ import cn from 'classnames'
 
 import { Badge, Button, Skeleton } from '@gorgias/merchant-ui-kit'
 
+import { AutomateEarlyAccessPlan } from 'models/billing/types'
+import {
+    getAutomateEarlyAccessPricesFormatted,
+    getPlanPriceFormatted,
+} from 'models/billing/utils'
 import {
     Card,
     CardCaption,
@@ -16,28 +21,28 @@ import ModalBody from 'pages/common/components/modal/ModalBody'
 import ModalFooter from 'pages/common/components/modal/ModalFooter'
 import ModalHeader from 'pages/common/components/modal/ModalHeader'
 
-import css from './PreviewModal.less'
+import css from './EarlyAccessModal.less'
 
 type Props = {
-    currentPriceLabel: string
-    earlyAccessPriceLabel: string
-    earlyAccessPriceReductionLabel: string
     isLoading: boolean
     onUpgradeClick: () => void
     onStayClick: () => void
     onClose: () => void
     isOpen: boolean
+    plan?: AutomateEarlyAccessPlan | null
+    disableUpgradeButton: boolean
 }
-export const PreviewModal = ({
-    currentPriceLabel,
-    earlyAccessPriceLabel,
-    earlyAccessPriceReductionLabel,
+export const EarlyAccessModal = ({
     isLoading,
     onUpgradeClick,
     onStayClick,
     onClose,
     isOpen,
+    plan,
+    disableUpgradeButton,
 }: Props) => {
+    const { amountAfterDiscount, discount } =
+        getAutomateEarlyAccessPricesFormatted(plan)
     return (
         <Modal
             isOpen={isOpen}
@@ -132,7 +137,7 @@ export const PreviewModal = ({
                                     {isLoading ? (
                                         <Skeleton width={140} />
                                     ) : (
-                                        currentPriceLabel
+                                        `${getPlanPriceFormatted(plan)}/${plan?.cadence}`
                                     )}
                                 </span>
                             </div>
@@ -211,14 +216,14 @@ export const PreviewModal = ({
                                     {isLoading ? (
                                         <Skeleton width={140} height={22} />
                                     ) : (
-                                        earlyAccessPriceLabel
+                                        `${amountAfterDiscount}/${plan?.cadence}`
                                     )}
                                 </span>
                                 <span className={css.subPrice}>
                                     {isLoading ? (
                                         <Skeleton width={210} height={12} />
                                     ) : (
-                                        earlyAccessPriceReductionLabel
+                                        `${discount}/${plan?.cadence} for 12 months`
                                     )}
                                 </span>
                             </div>
@@ -267,6 +272,7 @@ export const PreviewModal = ({
                     size="medium"
                     className={css.principalButton}
                     onClick={onUpgradeClick}
+                    isDisabled={disableUpgradeButton}
                 >
                     Upgrade AI Agent With Early Access Plan
                 </Button>

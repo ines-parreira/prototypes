@@ -7,11 +7,13 @@ import { FeatureFlagKey } from 'config/featureFlags'
 import useAppSelector from 'hooks/useAppSelector'
 import { ActivationManageButton } from 'pages/aiAgent/Activation/components/ActivationManageButton/ActivationManageButton'
 import { AiAgentActivationModal } from 'pages/aiAgent/Activation/components/AiAgentActivationModal/AiAgentActivationModal'
+import { EarlyAccessModal } from 'pages/aiAgent/Activation/components/EarlyAccessModal/EarlyAccessModal'
 import { useStoreConfigurationForAccount } from 'pages/aiAgent/hooks/useStoreConfigurationForAccount'
 import { getCurrentAccountState } from 'state/currentAccount/selectors'
 import { getShopifyIntegrationsSortedByName } from 'state/integrations/selectors'
 
 import { PageName } from '../types'
+import { useBillingData } from './useBillingData'
 
 export const useActivation = (pageName?: PageName) => {
     const [isModalVisible, setIsModalVisible] = useState(false)
@@ -28,6 +30,15 @@ export const useActivation = (pageName?: PageName) => {
         accountDomain,
         storesName,
     })
+
+    const {
+        isOnNewPlan,
+        setIsPreviewModalVisible,
+        isPreviewModalVisible,
+        isCurrentUserAdmin,
+        plan,
+        isLoading,
+    } = useBillingData()
 
     return useMemo(
         () => ({
@@ -52,6 +63,25 @@ export const useActivation = (pageName?: PageName) => {
                     onClose={() => setIsModalVisible(false)}
                     accountDomain={accountDomain}
                     storeConfigs={storeConfigurations ?? []}
+                    onSalesEnabled={() => {
+                        if (isOnNewPlan) {
+                            return true
+                        }
+
+                        setIsPreviewModalVisible(true)
+                        return false
+                    }}
+                />
+            ),
+            EarlyAccessModal: () => (
+                <EarlyAccessModal
+                    isLoading={isLoading}
+                    isOpen={isPreviewModalVisible}
+                    onClose={() => setIsPreviewModalVisible(false)}
+                    onStayClick={() => setIsPreviewModalVisible(false)}
+                    onUpgradeClick={() => {}}
+                    plan={plan}
+                    disableUpgradeButton={!isCurrentUserAdmin}
                 />
             ),
         }),
@@ -61,6 +91,12 @@ export const useActivation = (pageName?: PageName) => {
             storeConfigurations,
             accountDomain,
             pageName,
+            plan,
+            isPreviewModalVisible,
+            isOnNewPlan,
+            isCurrentUserAdmin,
+            isLoading,
+            setIsPreviewModalVisible,
         ],
     )
 }

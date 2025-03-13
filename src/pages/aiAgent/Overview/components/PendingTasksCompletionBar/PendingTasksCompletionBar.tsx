@@ -20,7 +20,7 @@ export const PendingTasksCompletionBar: React.FC<Props> = ({
         ariaProps = { 'aria-busy': 'true', 'aria-live': 'polite' }
     } else {
         ariaProps = {
-            'aria-value': totalTasksCompleted,
+            'aria-valuenow': totalTasksCompleted,
             'aria-valuemin': 0,
             'aria-valuemax': totalTasks,
             'aria-valuetext': `You completed ${totalTasksCompleted} tasks on a total of ${totalTasks}`,

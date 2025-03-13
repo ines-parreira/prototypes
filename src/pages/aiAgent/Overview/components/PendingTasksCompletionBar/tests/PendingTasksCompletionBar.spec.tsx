@@ -14,7 +14,7 @@ describe('PendingTasksCompletionBar', () => {
         )
 
         expect(screen.getByRole('progressbar')).toHaveAttribute(
-            'aria-value',
+            'aria-valuenow',
             '5',
         )
         expect(screen.getByRole('progressbar')).toHaveAttribute(

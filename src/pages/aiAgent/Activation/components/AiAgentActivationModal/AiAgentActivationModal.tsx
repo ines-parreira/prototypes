@@ -16,12 +16,16 @@ type Props = {
     onClose: () => void
     accountDomain: string
     storeConfigs: StoreConfiguration[]
+    // This function is used to notify the parent component if we try to enable sales
+    // if the callback returns false, we will cancel the action
+    onSalesEnabled: () => boolean
 }
 export const AiAgentActivationModal = ({
     isOpen,
     onClose,
     accountDomain,
     storeConfigs,
+    onSalesEnabled,
 }: Props) => {
     const {
         storeActivations,
@@ -67,9 +71,19 @@ export const AiAgentActivationModal = ({
                                 isDisabled={isLoading}
                                 store={store}
                                 alerts={[]}
-                                onSalesChange={(value) =>
+                                onSalesChange={(value) => {
+                                    // If we try to activate sales, we need to check if the user is on a new plan
+                                    if (value) {
+                                        const shouldContinueTheAction =
+                                            onSalesEnabled()
+
+                                        if (!shouldContinueTheAction) {
+                                            return
+                                        }
+                                    }
+
                                     onSalesChange(storeName, value)
-                                }
+                                }}
                                 onSupportChange={(value) =>
                                     onSupportChange(storeName, value)
                                 }

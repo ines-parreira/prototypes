@@ -4,6 +4,7 @@ import _minBy from 'lodash/minBy'
 import { ColorType } from '@gorgias/merchant-ui-kit'
 
 import {
+    AutomateEarlyAccessPlan,
     AutomatePlan,
     Cadence,
     ConvertPlan,
@@ -196,6 +197,30 @@ export function getPlanPrice(plan: Plan | undefined | null): number {
  */
 export function getPlanPriceFormatted(plan: Plan | undefined | null): string {
     return formatAmount(getPlanPrice(plan), plan?.currency ?? 'usd')
+}
+
+/**
+ * @description
+ * Returns the amount after discount and the discount amount formatted for the automate early access plan
+ * see getPlanPriceFormatted for more details about the format
+ *
+ * @param plan AutomateEarlyAccessPlan
+ * @returns string
+ */
+export function getAutomateEarlyAccessPricesFormatted(
+    plan: AutomateEarlyAccessPlan | undefined | null,
+) {
+    const amountAfterDiscountPrice = (plan?.amount_after_discount ?? 0) / 100
+    const discountPrice = (plan?.discount ?? 0) / 100
+    const currency = plan?.currency ?? 'usd'
+
+    return {
+        amountAfterDiscount: formatAmount(
+            amountAfterDiscountPrice,
+            plan?.currency ?? 'usd',
+        ),
+        discount: formatAmount(discountPrice, currency),
+    }
 }
 
 export function getOverageUnitPriceFormatted(plan: Plan | undefined | null) {

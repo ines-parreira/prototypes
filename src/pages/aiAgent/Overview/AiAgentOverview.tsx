@@ -27,7 +27,7 @@ export const AiAgentOverview = () => {
     const hasResourceSection =
         useFlags()[FeatureFlagKey.StandaloneConvAiOverviewPageResourceSection]
 
-    const { ActivationButton, ActivationModal } =
+    const { ActivationButton, ActivationModal, EarlyAccessModal } =
         useActivation('ai-agent-overview')
 
     useEffectOnce(() => {
@@ -65,6 +65,7 @@ export const AiAgentOverview = () => {
                 onClose={() => setIsOpen(false)}
             />
             <ActivationModal />
+            <EarlyAccessModal />
         </AiAgentOverviewLayout>
     )
 }

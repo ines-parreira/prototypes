@@ -5,24 +5,33 @@ import userEvent from '@testing-library/user-event'
 
 import '@testing-library/jest-dom/extend-expect'
 
-import { PreviewModal } from '../PreviewModal'
+import { Cadence } from 'models/billing/types'
 
-describe('<PreviewModal />', () => {
+import { EarlyAccessModal } from '../EarlyAccessModal'
+
+describe('<EarlyAccessModal />', () => {
     it('should render the modal and handler should be called when clicked', () => {
         const onCloseMock = jest.fn()
         const onUpgradeClickMock = jest.fn()
         const onStayClickMock = jest.fn()
 
         const { getByText } = render(
-            <PreviewModal
+            <EarlyAccessModal
                 isOpen
-                currentPriceLabel="$932/month"
-                earlyAccessPriceLabel="$800/month"
-                earlyAccessPriceReductionLabel="Save $132/month for 12 months"
+                plan={
+                    {
+                        amount: 932,
+                        currency: 'USD',
+                        amount_after_discount: 800,
+                        cadence: Cadence.Month,
+                        discount: 132,
+                    } as any
+                }
                 isLoading={false}
                 onClose={onCloseMock}
                 onStayClick={onStayClickMock}
                 onUpgradeClick={onUpgradeClickMock}
+                disableUpgradeButton={false}
             />,
         )
 
@@ -39,15 +48,14 @@ describe('<PreviewModal />', () => {
     })
     it('should render the modal in loading state without crashing', () => {
         render(
-            <PreviewModal
+            <EarlyAccessModal
                 isOpen
-                currentPriceLabel="$932/month"
-                earlyAccessPriceLabel="$800/month"
-                earlyAccessPriceReductionLabel="Save $132/month for 12 months"
+                plan={undefined}
                 isLoading={true}
                 onClose={() => {}}
                 onStayClick={() => {}}
                 onUpgradeClick={() => {}}
+                disableUpgradeButton={false}
             />,
         )
     })

@@ -1,6 +1,6 @@
 import React from 'react'
 
-import { render } from '@testing-library/react'
+import { fireEvent, render } from '@testing-library/react'
 
 import '@testing-library/jest-dom/extend-expect'
 
@@ -42,6 +42,7 @@ describe('<AiAgentActivationModal />', () => {
                         storeSupportWithEmailAndChatAndSales,
                         storeSupportWithEmailAndChat,
                     ]}
+                    onSalesEnabled={() => true}
                 />
             </QueryClientProvider>,
         )
@@ -51,5 +52,53 @@ describe('<AiAgentActivationModal />', () => {
             getByText('storeSupportWithEmailAndChatAndSales'),
         ).toBeInTheDocument()
         expect(getByText('storeSupportWithEmailAndChat')).toBeInTheDocument()
+    })
+
+    it('should prevent enabling sales if parent caller ask for it', async () => {
+        const onCloseMock = jest.fn()
+        const onSalesEnabledMock = jest.fn().mockReturnValue(false)
+        const { getAllByRole } = render(
+            <QueryClientProvider client={appQueryClient}>
+                <AiAgentActivationModal
+                    isOpen
+                    accountDomain="my-account-domain"
+                    onClose={onCloseMock}
+                    storeConfigs={[storeSupportWithEmailAndChat]}
+                    onSalesEnabled={onSalesEnabledMock}
+                />
+            </QueryClientProvider>,
+        )
+
+        // Sales toggle is the second one
+        const salesToggleLabel = getAllByRole('switch')[1]
+        expect(salesToggleLabel).toBeInTheDocument()
+        expect(salesToggleLabel).toHaveAttribute('aria-checked', 'false')
+        await fireEvent.click(salesToggleLabel!)
+        expect(onSalesEnabledMock).toHaveBeenCalled()
+        expect(salesToggleLabel).toHaveAttribute('aria-checked', 'false')
+    })
+
+    it('should allow enabling sales if parent caller ask for it', async () => {
+        const onCloseMock = jest.fn()
+        const onSalesEnabledMock = jest.fn().mockReturnValue(true)
+        const { getAllByRole } = render(
+            <QueryClientProvider client={appQueryClient}>
+                <AiAgentActivationModal
+                    isOpen
+                    accountDomain="my-account-domain"
+                    onClose={onCloseMock}
+                    storeConfigs={[storeSupportWithEmailAndChat]}
+                    onSalesEnabled={onSalesEnabledMock}
+                />
+            </QueryClientProvider>,
+        )
+
+        // Sales toggle is the second one
+        const salesToggleLabel = getAllByRole('switch')[1]
+        expect(salesToggleLabel).toBeInTheDocument()
+        expect(salesToggleLabel).toHaveAttribute('aria-checked', 'false')
+        await fireEvent.click(salesToggleLabel!)
+        expect(onSalesEnabledMock).toHaveBeenCalled()
+        expect(salesToggleLabel).toHaveAttribute('aria-checked', 'true')
     })
 })

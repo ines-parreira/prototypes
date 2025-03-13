@@ -204,9 +204,10 @@ export const storeConfigurationToState = (
                     },
                 },
                 sales: {
-                    enabled: storeConfiguration.scopes.includes(
-                        AiAgentScope.Sales,
-                    ),
+                    enabled:
+                        storeConfiguration.scopes.includes(
+                            AiAgentScope.Sales,
+                        ) && isChatEnabled,
                     isDisabled: !isChatEnabled,
                 },
             }
