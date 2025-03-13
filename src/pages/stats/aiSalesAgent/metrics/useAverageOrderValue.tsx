@@ -7,6 +7,7 @@ import {
 import { AiSalesAgentOrdersMeasure } from 'models/reporting/cubes/ai-sales-agent/AiSalesAgentOrders'
 import { averageOrderValueQueryFactory } from 'models/reporting/queryFactories/ai-sales-agent/metrics'
 import { StatsFilters } from 'models/stat/types'
+import safeDivide from 'pages/stats/aiSalesAgent/util/safeDivide'
 import { getPreviousPeriod } from 'utils/reporting'
 
 const useAverageOrderValue = (filters: StatsFilters, timezone: string) => {
@@ -26,15 +27,14 @@ const useAverageOrderValue = (filters: StatsFilters, timezone: string) => {
             return undefined
         }
 
-        const value =
-            (trendData.data?.[AiSalesAgentOrdersMeasure.Gmv]?.value || 0) /
-                (trendData.data[AiSalesAgentOrdersMeasure.Count]?.value || 0) ||
-            0
-
-        const prevValue =
-            (trendData.data?.[AiSalesAgentOrdersMeasure.Gmv]?.prevValue || 0) /
-                (trendData.data?.[AiSalesAgentOrdersMeasure.Count]?.prevValue ||
-                    0) || 0
+        const value = safeDivide(
+            trendData.data?.[AiSalesAgentOrdersMeasure.GmvUsd]?.value,
+            trendData.data?.[AiSalesAgentOrdersMeasure.Count]?.value,
+        )
+        const prevValue = safeDivide(
+            trendData.data?.[AiSalesAgentOrdersMeasure.GmvUsd]?.prevValue,
+            trendData.data?.[AiSalesAgentOrdersMeasure.Count]?.prevValue,
+        )
 
         return { value, prevValue }
     }, [trendData])
@@ -58,16 +58,15 @@ const fetchAverageOrderValue = (filters: StatsFilters, timezone: string) => {
         ),
     )
         .then((trendData) => {
-            const value =
-                (trendData.data?.[AiSalesAgentOrdersMeasure.Gmv]?.value || 0) /
-                    (trendData.data?.[AiSalesAgentOrdersMeasure.Count]?.value ||
-                        0) || 0
+            const value = safeDivide(
+                trendData.data?.[AiSalesAgentOrdersMeasure.GmvUsd]?.value,
+                trendData.data?.[AiSalesAgentOrdersMeasure.Count]?.value,
+            )
 
-            const prevValue =
-                (trendData.data?.[AiSalesAgentOrdersMeasure.Gmv]?.prevValue ||
-                    0) /
-                    (trendData.data?.[AiSalesAgentOrdersMeasure.Count]
-                        ?.prevValue || 0) || 0
+            const prevValue = safeDivide(
+                trendData.data?.[AiSalesAgentOrdersMeasure.GmvUsd]?.prevValue,
+                trendData.data?.[AiSalesAgentOrdersMeasure.Count]?.prevValue,
+            )
 
             return {
                 isFetching: false,

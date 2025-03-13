@@ -29,7 +29,7 @@ export const averageOrderValueQueryFactory = (
 ): ReportingQuery<AiSalesAgentOrdersCube> => {
     return {
         measures: [
-            AiSalesAgentOrdersMeasure.Gmv,
+            AiSalesAgentOrdersMeasure.GmvUsd,
             AiSalesAgentOrdersMeasure.Count,
         ],
         dimensions: [],

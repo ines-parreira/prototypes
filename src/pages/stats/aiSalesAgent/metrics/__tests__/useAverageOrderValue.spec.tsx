@@ -44,12 +44,12 @@ const fetchMultipleMetricsTrendsMock = assumeMock(fetchMultipleMetricsTrends)
 
 describe('averageOrderValue', () => {
     describe('useAverageOrderValue', () => {
-        it('should return correct metric data when the query resolves', async () => {
+        beforeEach(() => {
             useMultipleMetricsTrendsMock.mockReturnValue({
                 isFetching: false,
                 isError: false,
                 data: {
-                    [AiSalesAgentOrdersMeasure.Gmv]: {
+                    [AiSalesAgentOrdersMeasure.GmvUsd]: {
                         value: 10,
                         prevValue: 2,
                     },
@@ -59,8 +59,11 @@ describe('averageOrderValue', () => {
                     },
                 },
             } as unknown as ReturnType<typeof useMultipleMetricsTrends>)
+        })
 
+        it('should return correct metric data when the query resolves', async () => {
             act(() => jest.runAllTimers())
+
             const { result } = renderHook(
                 () => useAverageOrderValue(statsFilters, timezone),
                 {
@@ -86,10 +89,10 @@ describe('averageOrderValue', () => {
     })
 
     describe('fetchAverageOrderValue', () => {
-        it('should return correct metric data when the query resolves', async () => {
+        beforeEach(() => {
             fetchMultipleMetricsTrendsMock.mockResolvedValue({
                 data: {
-                    [AiSalesAgentOrdersMeasure.Gmv]: {
+                    [AiSalesAgentOrdersMeasure.GmvUsd]: {
                         value: 10,
                         prevValue: 2,
                     },
@@ -101,7 +104,9 @@ describe('averageOrderValue', () => {
                 isFetching: false,
                 isError: false,
             })
+        })
 
+        it('should return correct metric data when the query resolves', async () => {
             const result = await fetchAverageOrderValue(statsFilters, timezone)
 
             expect(result).toEqual({
