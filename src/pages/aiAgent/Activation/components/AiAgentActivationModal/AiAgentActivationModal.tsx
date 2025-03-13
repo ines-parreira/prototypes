@@ -9,6 +9,8 @@ import { useStoreActivations } from 'pages/aiAgent/Activation/hooks/useStoreActi
 import Modal from 'pages/common/components/modal/Modal'
 import ModalBody from 'pages/common/components/modal/ModalBody'
 
+import { PageName } from '../../types'
+
 import css from './AiAgentActivationModal.less'
 
 type Props = {
@@ -19,6 +21,7 @@ type Props = {
     // This function is used to notify the parent component if we try to enable sales
     // if the callback returns false, we will cancel the action
     onSalesEnabled: () => boolean
+    pageName?: PageName
 }
 export const AiAgentActivationModal = ({
     isOpen,
@@ -26,6 +29,7 @@ export const AiAgentActivationModal = ({
     accountDomain,
     storeConfigs,
     onSalesEnabled,
+    pageName,
 }: Props) => {
     const {
         storeActivations,
@@ -39,6 +43,7 @@ export const AiAgentActivationModal = ({
     } = useStoreActivations({
         accountDomain,
         storeConfigurations: storeConfigs,
+        pageName,
     })
 
     const progressPercentage = Math.round((currentScore / totalScore) * 100)

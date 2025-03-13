@@ -3,12 +3,13 @@ import React from 'react'
 import { QueryClientProvider } from '@tanstack/react-query'
 import { act, renderHook } from '@testing-library/react-hooks/dom'
 
+import * as segment from 'common/segment'
 import { AiAgentScope, StoreConfiguration } from 'models/aiAgent/types'
 import { useStoreActivations } from 'pages/aiAgent/Activation/hooks/useStoreActivations'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 
 const queryClient = mockQueryClient()
-
+const pageName = 'ai-agent-overview'
 const renderUseStoreActivations = ({
     storeConfigurations,
 }: {
@@ -19,6 +20,7 @@ const renderUseStoreActivations = ({
             useStoreActivations({
                 storeConfigurations,
                 accountDomain: 'my-account-domain',
+                pageName,
             }),
         {
             wrapper: ({ children }) => (
@@ -28,6 +30,8 @@ const renderUseStoreActivations = ({
             ),
         },
     )
+
+const mockLogEvent = jest.spyOn(segment, 'logEvent').mockImplementation(jest.fn)
 
 describe('useStoreActivations', () => {
     describe('when store has no scope + has no deactivated datetime for chat and email', () => {
@@ -619,6 +623,373 @@ describe('useStoreActivations', () => {
             expect(result.current.score).toEqual({
                 currentScore: 3,
                 totalScore: 3,
+            })
+        })
+    })
+
+    describe('when clicking on the support toogle button', () => {
+        describe('when the support is disabled', () => {
+            it('should log the event ai-agent-activate-modal-skill-disabled', () => {
+                const store = {
+                    storeName: 'My Store',
+                    scopes: [AiAgentScope.Support, AiAgentScope.Sales],
+                    chatChannelDeactivatedDatetime: null,
+                    emailChannelDeactivatedDatetime: null,
+                    monitoredChatIntegrations: [1],
+                    monitoredEmailIntegrations: [
+                        { id: 2, email: 'foo@example.com' },
+                    ],
+                } as any as StoreConfiguration
+
+                const { result } = renderUseStoreActivations({
+                    storeConfigurations: [store],
+                })
+
+                act(() => {
+                    result.current.onSupportChange('My Store', false)
+                })
+
+                expect(
+                    result.current.storeActivations['My Store'].support.enabled,
+                ).toBe(false)
+                expect(
+                    result.current.storeActivations['My Store'].support.email
+                        .enabled,
+                ).toBe(false)
+                expect(
+                    result.current.storeActivations['My Store'].support.chat
+                        .enabled,
+                ).toBe(false)
+                expect(
+                    result.current.storeActivations['My Store'].sales.enabled,
+                ).toBe(false)
+                expect(mockLogEvent).toHaveBeenCalledWith(
+                    'ai-agent-activate-modal-skill-disabled',
+                    {
+                        storeName: 'My Store',
+                        page: pageName,
+                        skill: 'support',
+                    },
+                )
+            })
+        })
+
+        describe('when the support is enabled', () => {
+            it('should log the event ai-agent-activate-modal-skill-enabled', () => {
+                const store = {
+                    storeName: 'My Store',
+                    scopes: [AiAgentScope.Support],
+                    chatChannelDeactivatedDatetime: new Date().toISOString(),
+                    emailChannelDeactivatedDatetime: new Date().toISOString(),
+                    monitoredChatIntegrations: [1],
+                    monitoredEmailIntegrations: [
+                        { id: 2, email: 'foo@example.com' },
+                    ],
+                } as any as StoreConfiguration
+
+                const { result } = renderUseStoreActivations({
+                    storeConfigurations: [store],
+                })
+
+                act(() => {
+                    result.current.onSupportChange('My Store', true)
+                })
+
+                expect(
+                    result.current.storeActivations['My Store'].support.enabled,
+                ).toBe(true)
+
+                expect(
+                    result.current.storeActivations['My Store'].support.email
+                        .enabled,
+                ).toBe(true)
+                expect(
+                    result.current.storeActivations['My Store'].support.chat
+                        .enabled,
+                ).toBe(true)
+                expect(
+                    result.current.storeActivations['My Store'].sales.enabled,
+                ).toBe(false)
+                expect(mockLogEvent).toHaveBeenCalledWith(
+                    'ai-agent-activate-modal-skill-enabled',
+                    {
+                        storeName: 'My Store',
+                        page: pageName,
+                        skill: 'support',
+                    },
+                )
+            })
+        })
+    })
+    describe('when clicking on the sales toogle button', () => {
+        describe('when the sales is disabled', () => {
+            it('should log the event ai-agent-activate-modal-skill-disabled', () => {
+                const store = {
+                    storeName: 'My Store',
+                    scopes: [AiAgentScope.Support, AiAgentScope.Sales],
+                    chatChannelDeactivatedDatetime: null,
+                    emailChannelDeactivatedDatetime: null,
+                    monitoredChatIntegrations: [1],
+                    monitoredEmailIntegrations: [
+                        { id: 2, email: 'foo@example.com' },
+                    ],
+                } as any as StoreConfiguration
+
+                const { result } = renderUseStoreActivations({
+                    storeConfigurations: [store],
+                })
+
+                act(() => {
+                    result.current.onSalesChange('My Store', false)
+                })
+
+                expect(
+                    result.current.storeActivations['My Store'].support.email
+                        .enabled,
+                ).toBe(true)
+                expect(
+                    result.current.storeActivations['My Store'].support.chat
+                        .enabled,
+                ).toBe(true)
+                expect(
+                    result.current.storeActivations['My Store'].sales.enabled,
+                ).toBe(false)
+                expect(mockLogEvent).toHaveBeenCalledWith(
+                    'ai-agent-activate-modal-skill-disabled',
+                    {
+                        storeName: 'My Store',
+                        page: pageName,
+                        skill: 'sales',
+                    },
+                )
+            })
+        })
+
+        describe('when the sales is enabled', () => {
+            it('should log the event ai-agent-activate-modal-skill-enabled', () => {
+                const store = {
+                    storeName: 'My Store',
+                    scopes: [AiAgentScope.Support],
+                    chatChannelDeactivatedDatetime: null,
+                    emailChannelDeactivatedDatetime: null,
+                    monitoredChatIntegrations: [1],
+                    monitoredEmailIntegrations: [
+                        { id: 2, email: 'foo@example.com' },
+                    ],
+                } as any as StoreConfiguration
+
+                const { result } = renderUseStoreActivations({
+                    storeConfigurations: [store],
+                })
+
+                act(() => {
+                    result.current.onSalesChange('My Store', true)
+                })
+
+                expect(
+                    result.current.storeActivations['My Store'].support.email
+                        .enabled,
+                ).toBe(true)
+                expect(
+                    result.current.storeActivations['My Store'].support.chat
+                        .enabled,
+                ).toBe(true)
+                expect(
+                    result.current.storeActivations['My Store'].sales.enabled,
+                ).toBe(true)
+
+                expect(mockLogEvent).toHaveBeenCalledWith(
+                    'ai-agent-activate-modal-skill-enabled',
+                    {
+                        storeName: 'My Store',
+                        page: pageName,
+                        skill: 'sales',
+                    },
+                )
+            })
+        })
+    })
+
+    describe('when clicking on the support chat checkbox', () => {
+        describe('when the support chat is disabled', () => {
+            it('should log the event ai-agent-activate-modal-skill-disabled', () => {
+                const store = {
+                    storeName: 'My Store',
+                    scopes: [AiAgentScope.Support],
+                    chatChannelDeactivatedDatetime: null,
+                    emailChannelDeactivatedDatetime: null,
+                    monitoredChatIntegrations: [1],
+                    monitoredEmailIntegrations: [
+                        { id: 2, email: 'foo@example.com' },
+                    ],
+                } as any as StoreConfiguration
+
+                const { result } = renderUseStoreActivations({
+                    storeConfigurations: [store],
+                })
+
+                act(() => {
+                    result.current.onSupportChatChange('My Store', false)
+                })
+
+                expect(
+                    result.current.storeActivations['My Store'].support.email
+                        .enabled,
+                ).toBe(true)
+                expect(
+                    result.current.storeActivations['My Store'].support.chat
+                        .enabled,
+                ).toBe(false)
+                expect(
+                    result.current.storeActivations['My Store'].sales.enabled,
+                ).toBe(false)
+
+                expect(mockLogEvent).toHaveBeenCalledWith(
+                    'ai-agent-activate-modal-skill-disabled',
+                    {
+                        storeName: 'My Store',
+                        page: pageName,
+                        skill: 'support',
+                        channel: 'chat',
+                    },
+                )
+            })
+        })
+
+        describe('when the support chat is enabled', () => {
+            it('should log the event ai-agent-activate-modal-skill-enabled', () => {
+                const store = {
+                    storeName: 'My Store',
+                    scopes: [AiAgentScope.Support],
+                    chatChannelDeactivatedDatetime: new Date().toISOString(),
+                    emailChannelDeactivatedDatetime: null,
+                    monitoredChatIntegrations: [1],
+                    monitoredEmailIntegrations: [
+                        { id: 2, email: 'foo@example.com' },
+                    ],
+                } as any as StoreConfiguration
+
+                const { result } = renderUseStoreActivations({
+                    storeConfigurations: [store],
+                })
+
+                act(() => {
+                    result.current.onSupportChatChange('My Store', true)
+                })
+
+                expect(
+                    result.current.storeActivations['My Store'].support.email
+                        .enabled,
+                ).toBe(true)
+                expect(
+                    result.current.storeActivations['My Store'].support.chat
+                        .enabled,
+                ).toBe(true)
+                expect(
+                    result.current.storeActivations['My Store'].sales.enabled,
+                ).toBe(false)
+
+                expect(mockLogEvent).toHaveBeenCalledWith(
+                    'ai-agent-activate-modal-skill-enabled',
+                    {
+                        storeName: 'My Store',
+                        page: pageName,
+                        skill: 'support',
+                        channel: 'chat',
+                    },
+                )
+            })
+        })
+    })
+
+    describe('when clicking on the support email checkbox', () => {
+        describe('when the support email is disabled', () => {
+            it('should log the event ai-agent-activate-modal-skill-disabled', () => {
+                const store = {
+                    storeName: 'My Store',
+                    scopes: [AiAgentScope.Support],
+                    chatChannelDeactivatedDatetime: null,
+                    emailChannelDeactivatedDatetime: null,
+                    monitoredChatIntegrations: [1],
+                    monitoredEmailIntegrations: [
+                        { id: 2, email: 'foo@example.com' },
+                    ],
+                } as any as StoreConfiguration
+
+                const { result } = renderUseStoreActivations({
+                    storeConfigurations: [store],
+                })
+
+                act(() => {
+                    result.current.onSupportEmailChange('My Store', false)
+                })
+
+                expect(
+                    result.current.storeActivations['My Store'].support.email
+                        .enabled,
+                ).toBe(false)
+                expect(
+                    result.current.storeActivations['My Store'].support.chat
+                        .enabled,
+                ).toBe(true)
+                expect(
+                    result.current.storeActivations['My Store'].sales.enabled,
+                ).toBe(false)
+
+                expect(mockLogEvent).toHaveBeenCalledWith(
+                    'ai-agent-activate-modal-skill-disabled',
+                    {
+                        storeName: 'My Store',
+                        page: pageName,
+                        skill: 'support',
+                        channel: 'email',
+                    },
+                )
+            })
+        })
+
+        describe('when the support email is enabled', () => {
+            it('should log the event ai-agent-activate-modal-skill-enabled', () => {
+                const store = {
+                    storeName: 'My Store',
+                    scopes: [AiAgentScope.Support],
+                    chatChannelDeactivatedDatetime: null,
+                    emailChannelDeactivatedDatetime: new Date().toISOString(),
+                    monitoredChatIntegrations: [1],
+                    monitoredEmailIntegrations: [
+                        { id: 2, email: 'foo@example.com' },
+                    ],
+                } as any as StoreConfiguration
+
+                const { result } = renderUseStoreActivations({
+                    storeConfigurations: [store],
+                })
+
+                act(() => {
+                    result.current.onSupportEmailChange('My Store', true)
+                })
+
+                expect(
+                    result.current.storeActivations['My Store'].support.email
+                        .enabled,
+                ).toBe(true)
+                expect(
+                    result.current.storeActivations['My Store'].support.chat
+                        .enabled,
+                ).toBe(true)
+                expect(
+                    result.current.storeActivations['My Store'].sales.enabled,
+                ).toBe(false)
+
+                expect(mockLogEvent).toHaveBeenCalledWith(
+                    'ai-agent-activate-modal-skill-enabled',
+                    {
+                        storeName: 'My Store',
+                        page: pageName,
+                        skill: 'support',
+                        channel: 'email',
+                    },
+                )
             })
         })
     })

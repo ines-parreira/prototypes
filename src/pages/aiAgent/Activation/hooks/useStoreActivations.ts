@@ -1,9 +1,12 @@
 import { useEffect, useReducer } from 'react'
 
+import { logEvent, SegmentEvent } from 'common/segment'
 import { AiAgentScope, StoreConfiguration } from 'models/aiAgent/types'
 import { StoreActivation } from 'pages/aiAgent/Activation/components/AiAgentActivationStoreCard/AiAgentActivationStoreCard'
 import { reducer } from 'pages/aiAgent/Activation/hooks/storeActivationReducer'
 import { useStoresConfigurationMutation } from 'pages/aiAgent/hooks/useStoresConfigurationMutation'
+
+import { PageName } from '../types'
 
 export const computeActivationScore = (
     storeConfigs: Pick<
@@ -43,9 +46,11 @@ export const computeActivationScore = (
 export const useStoreActivations = ({
     accountDomain,
     storeConfigurations,
+    pageName,
 }: {
     accountDomain: string
     storeConfigurations: StoreConfiguration[]
+    pageName?: PageName
 }): {
     storeActivations: Record<string, StoreActivation>
     score: { currentScore: number; totalScore: number }
@@ -90,26 +95,72 @@ export const useStoreActivations = ({
     return {
         storeActivations: state,
         score: computeActivationScore(storeConfigurations),
-        onSalesChange: (storeName: string, newValue: boolean) =>
-            dispatch({ type: 'CHANGE_SALES', storeName, newValue }),
-        onSupportChange: (storeName: string, newValue: boolean) =>
+        onSalesChange: (storeName: string, newValue: boolean) => {
+            dispatch({ type: 'CHANGE_SALES', storeName, newValue })
+            logEvent(
+                newValue
+                    ? SegmentEvent.AiAgentActivateModalSkillEnabled
+                    : SegmentEvent.AiAgentActivateModalSkillDisabled,
+                {
+                    storeName,
+                    skill: AiAgentScope.Sales,
+                    page: pageName,
+                },
+            )
+        },
+        onSupportChange: (storeName: string, newValue: boolean) => {
             dispatch({
                 type: 'CHANGE_SUPPORT',
                 storeName,
                 newValue,
-            }),
-        onSupportChatChange: (storeName: string, newValue: boolean) =>
+            })
+            logEvent(
+                newValue
+                    ? SegmentEvent.AiAgentActivateModalSkillEnabled
+                    : SegmentEvent.AiAgentActivateModalSkillDisabled,
+                {
+                    storeName,
+                    skill: AiAgentScope.Support,
+                    page: pageName,
+                },
+            )
+        },
+        onSupportChatChange: (storeName: string, newValue: boolean) => {
             dispatch({
                 type: 'CHANGE_SUPPORT_CHAT',
                 storeName,
                 newValue,
-            }),
-        onSupportEmailChange: (storeName: string, newValue: boolean) =>
+            })
+            logEvent(
+                newValue
+                    ? SegmentEvent.AiAgentActivateModalSkillEnabled
+                    : SegmentEvent.AiAgentActivateModalSkillDisabled,
+                {
+                    storeName,
+                    skill: AiAgentScope.Support,
+                    page: pageName,
+                    channel: 'chat',
+                },
+            )
+        },
+        onSupportEmailChange: (storeName: string, newValue: boolean) => {
             dispatch({
                 type: 'CHANGE_SUPPORT_EMAIL',
                 storeName,
                 newValue,
-            }),
+            })
+            logEvent(
+                newValue
+                    ? SegmentEvent.AiAgentActivateModalSkillEnabled
+                    : SegmentEvent.AiAgentActivateModalSkillDisabled,
+                {
+                    storeName,
+                    skill: AiAgentScope.Support,
+                    page: pageName,
+                    channel: 'email',
+                },
+            )
+        },
         onSave,
         isLoading,
     }

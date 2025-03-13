@@ -36,6 +36,7 @@ describe('<AiAgentActivationModal />', () => {
             <QueryClientProvider client={appQueryClient}>
                 <AiAgentActivationModal
                     isOpen
+                    pageName="ai-agent-overview"
                     accountDomain="my-account-domain"
                     onClose={onCloseMock}
                     storeConfigs={[

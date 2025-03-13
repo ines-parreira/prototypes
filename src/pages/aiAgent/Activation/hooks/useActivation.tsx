@@ -94,6 +94,7 @@ export const useActivation = (pageName?: PageName) => {
                         setIsPreviewModalVisible(true)
                         return false
                     }}
+                    pageName={pageName}
                 />
             ),
             EarlyAccessModal: () => (
