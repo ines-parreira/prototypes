@@ -136,7 +136,7 @@ describe('CustomerSyncForm', () => {
         expect(screen.getByText('Please enter a zip code.')).toBeInTheDocument()
     })
 
-    it('handles form submission when creating a customer', async () => {
+    it('handles form submission when creating a customer with address', async () => {
         ;(
             useListCustomerIntegrationsWithChannelDefault as jest.Mock
         ).mockReturnValue({
@@ -241,7 +241,71 @@ describe('CustomerSyncForm', () => {
         )
     })
 
-    it('handles form submission when updating a customer', async () => {
+    it('handles form submission when creating a customer without address', async () => {
+        ;(
+            useListCustomerIntegrationsWithChannelDefault as jest.Mock
+        ).mockReturnValue({
+            data: fromJS([
+                {
+                    id: 1,
+                    name: 'store1',
+                    type: SHOPIFY_INTEGRATION_TYPE,
+                },
+                {
+                    id: 2,
+                    name: 'store2',
+                    type: SHOPIFY_INTEGRATION_TYPE,
+                    default: true,
+                },
+            ]),
+        })
+
+        const setIsCustomerSyncFormOpen = jest.fn()
+        const spyUseCustomerSyncForm = jest.spyOn(
+            require('../CustomerSyncForm/useCustomerSyncForm'),
+            'useCustomerSyncForm',
+        )
+
+        render(
+            <QueryClientProvider client={queryClient}>
+                <Provider store={mockStore(state)}>
+                    <CustomerSyncForm
+                        activeCustomer={activeCustomer}
+                        isCustomerSyncFormOpen={true}
+                        setIsCustomerSyncFormOpen={setIsCustomerSyncFormOpen}
+                    />
+                </Provider>
+            </QueryClientProvider>,
+        )
+
+        fireEvent.change(screen.getByLabelText('Email'), {
+            target: { value: 'john.smith@example.com' },
+        })
+        fireEvent.change(screen.getByLabelText('Name'), {
+            target: { value: 'John Smith' },
+        })
+
+        const phoneInput = screen.getByPlaceholderText('000-000-0000')
+        fireEvent.change(phoneInput, {
+            target: { value: '123-456-7890' },
+        })
+
+        fireEvent.click(screen.getByText('Sync Profile'))
+
+        expect(spyUseCustomerSyncForm).toHaveReturnedWith(
+            expect.objectContaining({
+                formState: expect.objectContaining({
+                    store: 2,
+                    email: 'john.smith@example.com',
+                    name: 'John Smith',
+                    phone: '+11234567890',
+                    deliveryAddressChecked: false,
+                }),
+            }),
+        )
+    })
+
+    it('handles form submission when updating a customer with address', async () => {
         ;(
             useListCustomerIntegrationsWithChannelDefault as jest.Mock
         ).mockReturnValue({
@@ -342,6 +406,71 @@ describe('CustomerSyncForm', () => {
                     stateOrProvince: 'Alberta',
                     postalCode: '12345',
                     deliveryAddressChecked: true,
+                }),
+            }),
+        )
+    })
+
+    it('handles form submission when updating a customer without address', async () => {
+        ;(
+            useListCustomerIntegrationsWithChannelDefault as jest.Mock
+        ).mockReturnValue({
+            data: fromJS([
+                {
+                    id: 1,
+                    name: 'store1',
+                    type: SHOPIFY_INTEGRATION_TYPE,
+                },
+                {
+                    id: 2,
+                    name: 'store2',
+                    type: SHOPIFY_INTEGRATION_TYPE,
+                    default: true,
+                    hasCustomerData: true,
+                },
+            ]),
+        })
+
+        const setIsCustomerSyncFormOpen = jest.fn()
+        const spyUseCustomerSyncForm = jest.spyOn(
+            require('../CustomerSyncForm/useCustomerSyncForm'),
+            'useCustomerSyncForm',
+        )
+
+        render(
+            <QueryClientProvider client={queryClient}>
+                <Provider store={mockStore(state)}>
+                    <CustomerSyncForm
+                        activeCustomer={activeCustomer}
+                        isCustomerSyncFormOpen={true}
+                        setIsCustomerSyncFormOpen={setIsCustomerSyncFormOpen}
+                    />
+                </Provider>
+            </QueryClientProvider>,
+        )
+
+        fireEvent.change(screen.getByLabelText('Email'), {
+            target: { value: 'john.smith@example.com' },
+        })
+        fireEvent.change(screen.getByLabelText('Name'), {
+            target: { value: 'John Smith' },
+        })
+
+        const phoneInput = screen.getByPlaceholderText('000-000-0000')
+        fireEvent.change(phoneInput, {
+            target: { value: '123-456-7890' },
+        })
+
+        fireEvent.click(screen.getByText('Sync Profile'))
+
+        expect(spyUseCustomerSyncForm).toHaveReturnedWith(
+            expect.objectContaining({
+                formState: expect.objectContaining({
+                    store: 2,
+                    email: 'john.smith@example.com',
+                    name: 'John Smith',
+                    phone: '+11234567890',
+                    deliveryAddressChecked: false,
                 }),
             }),
         )

@@ -98,14 +98,16 @@ export default function CustomerSyncForm({
                         first_name: firstName,
                         last_name: lastName,
                         phone: formState.phone ? formState.phone : null,
-                        address: {
-                            address1: formState.address,
-                            address2: formState.apartment,
-                            company: formState.company,
-                            city: formState.city,
-                            country_code: formState.countryCode,
-                            zip: formState.postalCode,
-                        },
+                        address: formState.deliveryAddressChecked
+                            ? {
+                                  address1: formState.address,
+                                  address2: formState.apartment,
+                                  company: formState.company,
+                                  city: formState.city,
+                                  country_code: formState.countryCode,
+                                  zip: formState.postalCode,
+                              }
+                            : undefined,
                     },
                     params: {
                         customer_id: activeCustomer.get('id'),
@@ -119,13 +121,16 @@ export default function CustomerSyncForm({
                         last_name: lastName,
                         phone: formState.phone ? formState.phone : undefined,
                         email: formState.email,
-                        address: {
-                            address1: formState.address,
-                            address2: formState.apartment,
-                            city: formState.city,
-                            country_code: formState.countryCode,
-                            zip: formState.postalCode,
-                        },
+                        address: formState.deliveryAddressChecked
+                            ? {
+                                  address1: formState.address,
+                                  address2: formState.apartment,
+                                  company: formState.company,
+                                  city: formState.city,
+                                  country_code: formState.countryCode,
+                                  zip: formState.postalCode,
+                              }
+                            : undefined,
                     },
                 })
             }
