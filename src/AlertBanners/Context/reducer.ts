@@ -61,7 +61,7 @@ export function bannersReducer(
             return [
                 ...banners.filter(
                     (banner) =>
-                        banner.category !== action.category &&
+                        banner.category !== action.category ||
                         banner.instanceId !== action.instanceId,
                 ),
             ]

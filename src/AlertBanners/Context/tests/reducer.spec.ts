@@ -16,6 +16,13 @@ const banner2 = {
     message: 'wayaaa',
 }
 
+const banner3 = {
+    type: AlertBannerTypes.Critical,
+    category: BannerCategories.STATUS_PAGE_INCIDENT,
+    instanceId: '3',
+    message: 'oh no, another incident',
+}
+
 describe('bannersReducer', () => {
     describe('ADD', () => {
         it("should default to inserting a banner as if it was of type 'Info'", () => {
@@ -109,7 +116,7 @@ describe('bannersReducer', () => {
         })
 
         it('should remove a banner from the state', () => {
-            const state = [banner1, banner2]
+            const state = [banner1, banner2, banner3]
             const action = {
                 type: BannerActionTypes.REMOVE_BANNER,
                 category: banner1.category,
@@ -117,7 +124,8 @@ describe('bannersReducer', () => {
             }
 
             const result = bannersReducer(state, action)
-            expect(result).toEqual([banner2])
+
+            expect(result).toEqual([banner2, banner3])
         })
     })
 })

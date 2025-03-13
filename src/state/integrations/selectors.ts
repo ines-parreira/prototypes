@@ -783,3 +783,24 @@ export const getShowShopifyCheckoutChatBanner = createSelector(
         !!state.extra?.[IntegrationType.GorgiasChat]
             .shopifyCheckoutChatBannerVisible,
 )
+
+export const getDeactivatedOAuthEmailIntegrations = createSelector(
+    [getIntegrationsState],
+    (state) =>
+        state.integrations
+            .filter(
+                (
+                    integration,
+                ): integration is IntegrationFromType<
+                    IntegrationType.Gmail | IntegrationType.Outlook
+                > =>
+                    (integration.type === IntegrationType.Gmail ||
+                        integration.type === IntegrationType.Outlook) &&
+                    !!integration.deactivated_datetime,
+            )
+            .sort((integration) => integration.id)
+            .map((integration) => ({
+                address: integration.meta.address,
+                reconnectUrl: `${state.authentication[integration.type]?.redirect_uri}?integration_id=${integration.id}`,
+            })),
+)
