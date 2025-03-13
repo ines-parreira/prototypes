@@ -3,7 +3,6 @@ import React, { ComponentProps } from 'react'
 import { QueryClientProvider } from '@tanstack/react-query'
 import { fireEvent, render } from '@testing-library/react'
 import { fromJS, Map } from 'immutable'
-import { mockFlags } from 'jest-launchdarkly-mock'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
@@ -22,7 +21,8 @@ import {
 import { tags } from 'fixtures/tag'
 import { user } from 'fixtures/users'
 import { useReportRestrictions } from 'hooks/reporting/dashboards/useReportRestrictions'
-import { LegacyStatsFilters } from 'models/stat/types'
+import { withDefaultLogicalOperator } from 'models/reporting/queryFactories/utils'
+import { StatsFilters, TagFilterInstanceId } from 'models/stat/types'
 import FiltersPanelWrapper from 'pages/stats/common/filters/FiltersPanelWrapper'
 import * as VoiceCallCallerExperienceMetric from 'pages/stats/voice/components/VoiceCallerExperienceMetric/VoiceCallCallerExperienceMetric'
 import { VoiceOverviewDownloadDataButton } from 'pages/stats/voice/components/VoiceOverviewDownloadDataButton/VoiceOverviewDownloadDataButton'
@@ -48,7 +48,6 @@ import { useVoiceCallAverageTimeTrend } from 'pages/stats/voice/hooks/useVoiceCa
 import { useVoiceCallCountTrend } from 'pages/stats/voice/hooks/useVoiceCallCountTrend'
 import VoiceOverview from 'pages/stats/voice/pages/VoiceOverview'
 import { AccountFeature } from 'state/currentAccount/types'
-import { fromLegacyStatsFilters } from 'state/stats/utils'
 import { RootState, StoreDispatch } from 'state/types'
 import { VoiceMetric } from 'state/ui/stats/types'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
@@ -107,19 +106,21 @@ useReportRestrictionsMock.mockReturnValue({
 describe('VoiceOverview', () => {
     beforeEach(() => {
         VoiceOverviewDownloadDataButtonMock.mockImplementation(() => <div />)
-        mockFlags({
-            [FeatureFlagKey.AnalyticsNewFiltersVoice]: false,
-        })
     })
 
     const renderVoiceOverview = (featureEnabled = true) => {
-        const statsFilters: LegacyStatsFilters = {
+        const statsFilters: StatsFilters = {
             period: {
                 start_datetime: '2023-12-11T00:00:00.000Z',
                 end_datetime: '2023-12-11T23:59:59.999Z',
             },
-            agents: [agents[0].id],
-            tags: [tags[0].id],
+            agents: withDefaultLogicalOperator([agents[0].id]),
+            tags: [
+                {
+                    ...withDefaultLogicalOperator([tags[0].id]),
+                    filterInstanceId: TagFilterInstanceId.First,
+                },
+            ],
         }
         const state = {
             currentUser: fromJS(user) as Map<any, any>,
@@ -143,13 +144,13 @@ describe('VoiceOverview', () => {
             }),
             billing: fromJS(billingState),
             stats: {
-                filters: fromLegacyStatsFilters(statsFilters),
+                filters: statsFilters,
             },
             integrations: fromJS({ integrations: [] }),
             ui: {
                 stats: {
                     filters: {
-                        cleanStatsFilters: fromLegacyStatsFilters(statsFilters),
+                        cleanStatsFilters: statsFilters,
                         isFilterDirty: false,
                     },
                 },
@@ -178,12 +179,6 @@ describe('VoiceOverview', () => {
         // header elements
         expect(queryByText(VOICE_OVERVIEW_PAGE_TITLE)).toBeInTheDocument()
         expect(queryByText('Voice add-on features')).toBeNull()
-
-        // filters
-        expect(queryByText('All integrations')).toBeInTheDocument()
-        expect(queryByText('1 tag')).toBeInTheDocument()
-        expect(queryByText('1 agent')).toBeInTheDocument()
-        expect(queryByText('Dec 11, 2023')).toBeInTheDocument()
         expect(VoiceOverviewDownloadDataButtonMock).toHaveBeenCalled()
 
         // caller experience cards
@@ -231,11 +226,6 @@ describe('VoiceOverview', () => {
         expect(queryByText(VOICE_OVERVIEW_PAGE_TITLE)).toBeInTheDocument()
         expect(queryByText('Voice add-on features')).toBeNull()
 
-        // filters
-        expect(queryByText('All integrations')).toBeInTheDocument()
-        expect(queryByText('1 tag')).toBeInTheDocument()
-        expect(queryByText('1 agent')).toBeInTheDocument()
-        expect(queryByText('Dec 11, 2023')).toBeInTheDocument()
         expect(VoiceOverviewDownloadDataButtonMock).toHaveBeenCalled()
 
         expect(queryByText(TOTAL_CALLS_METRIC_TITLE)).toBeInTheDocument()

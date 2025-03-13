@@ -2,7 +2,7 @@ import { renderHook } from '@testing-library/react-hooks'
 import { useParams } from 'react-router-dom'
 
 import { useInsightPerformanceMetrics } from 'hooks/reporting/automate/useAIAgentInsightsL2Dataset'
-import { useNewAutomateFilters } from 'hooks/reporting/automate/useNewAutomateFilters'
+import { useAutomateFilters } from 'hooks/reporting/automate/useAutomateFilters'
 import useAppSelector from 'hooks/useAppSelector'
 import { ReportingGranularity } from 'models/reporting/types'
 import { useGetCustomTicketsFieldsDefinitionData } from 'pages/aiAgent/insights/IntentTableWidget/hooks/useGetCustomTicketsFieldsDefinitionData'
@@ -17,7 +17,7 @@ jest.mock('react-router-dom', () => ({
 }))
 
 jest.mock('hooks/reporting/automate/useAIAgentInsightsL2Dataset')
-jest.mock('hooks/reporting/automate/useNewAutomateFilters')
+jest.mock('hooks/reporting/automate/useAutomateFilters')
 jest.mock('hooks/useAppSelector')
 jest.mock(
     'pages/aiAgent/insights/IntentTableWidget/hooks/useGetCustomTicketsFieldsDefinitionData',
@@ -30,7 +30,7 @@ describe('Level2IntentsPerformance', () => {
     const mockUseInsightPerformanceMetrics = assumeMock(
         useInsightPerformanceMetrics,
     )
-    const mockUseNewAutomateFilters = assumeMock(useNewAutomateFilters)
+    const mockUseNewAutomateFilters = assumeMock(useAutomateFilters)
     const mockUseAppSelector = assumeMock(useAppSelector)
     const mockUseGetCustomTicketsFieldsDefinitionData = assumeMock(
         useGetCustomTicketsFieldsDefinitionData,
@@ -70,7 +70,6 @@ describe('Level2IntentsPerformance', () => {
                 },
             },
             granularity: ReportingGranularity.Day,
-            isAnalyticsNewFiltersAutomate: true,
         })
         mockUseAppSelector.mockReturnValue({
             period: {

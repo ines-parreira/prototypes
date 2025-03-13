@@ -1,7 +1,7 @@
 import { renderHook } from '@testing-library/react-hooks'
 
 import { tags } from 'fixtures/tag'
-import { getCsvFileNameWithDates } from 'hooks/reporting/support-performance/overview/useDownloadOverviewData'
+import { getCsvFileNameWithDates } from 'hooks/reporting/common/utils'
 import * as ticketCountPerTag from 'hooks/reporting/ticket-insights/useTicketCountPerTag'
 import { fetchTagsTicketCountTimeSeries } from 'hooks/reporting/timeSeries'
 import { OrderDirection } from 'models/api/types'

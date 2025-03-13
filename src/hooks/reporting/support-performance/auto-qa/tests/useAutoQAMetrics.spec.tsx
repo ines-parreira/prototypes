@@ -21,7 +21,7 @@ import { useResolutionCompletenessPerAgent } from 'hooks/reporting/support-perfo
 import { useResolutionCompletenessTrend } from 'hooks/reporting/support-performance/auto-qa/useResolutionCompletenessTrend'
 import { useReviewedClosedTicketsPerAgent } from 'hooks/reporting/support-performance/auto-qa/useReviewedClosedTicketsPerAgent'
 import { useReviewedClosedTicketsTrend } from 'hooks/reporting/support-performance/auto-qa/useReviewedClosedTicketsTrend'
-import { useNewStatsFilters } from 'hooks/reporting/support-performance/useNewStatsFilters'
+import { useStatsFilters } from 'hooks/reporting/support-performance/useStatsFilters'
 import { MetricWithDecile } from 'hooks/reporting/useMetricPerDimension'
 import { MetricTrend } from 'hooks/reporting/useMetricTrend'
 import { ReportingGranularity } from 'models/reporting/types'
@@ -98,8 +98,8 @@ const useReviewedClosedTicketsTrendMock = assumeMock(
 )
 jest.mock('state/ui/stats/autoQAAgentPerformanceSlice')
 const getSortedAutoQAAgentsMock = assumeMock(getSortedAutoQAAgents)
-jest.mock('hooks/reporting/support-performance/useNewStatsFilters')
-const useNewStatsFiltersMock = assumeMock(useNewStatsFilters)
+jest.mock('hooks/reporting/support-performance/useStatsFilters')
+const useNewStatsFiltersMock = assumeMock(useStatsFilters)
 
 describe('useAutoQAMetrics', () => {
     const someTrendData: MetricTrend = {
@@ -142,7 +142,6 @@ describe('useAutoQAMetrics', () => {
         cleanStatsFilters: initialState.filters,
         userTimezone: 'UTC',
         granularity: ReportingGranularity.Day,
-        isAnalyticsNewFilters: false,
     })
     getSortedAutoQAAgentsMock.mockReturnValue(agents)
 

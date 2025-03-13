@@ -1,6 +1,7 @@
 import { useMemo } from 'react'
 
-import { getCsvFileNameWithDates } from 'hooks/reporting/support-performance/overview/useDownloadOverviewData'
+import { getCsvFileNameWithDates } from 'hooks/reporting/common/utils'
+import { useStatsFilters } from 'hooks/reporting/support-performance/useStatsFilters'
 import { MetricTrend } from 'hooks/reporting/useMetricTrend'
 import { VoiceCallSegment } from 'models/reporting/cubes/VoiceCallCube'
 import { Period } from 'models/stat/types'
@@ -20,7 +21,6 @@ import {
     VOICE_OVERVIEW_CALL_VOLUME_REPORT_FILE_NAME,
     VOICE_OVERVIEW_REPORT_FILE_NAME,
 } from 'pages/stats/voice/constants/voiceOverview'
-import { useNewVoiceStatsFilters } from 'pages/stats/voice/hooks/useNewVoiceStatsFilters'
 import { useVoiceCallAverageTimeTrend } from 'pages/stats/voice/hooks/useVoiceCallAverageTimeTrend'
 import { useVoiceCallCountTrend } from 'pages/stats/voice/hooks/useVoiceCallCountTrend'
 import { VoiceCallAverageTimeMetric } from 'pages/stats/voice/models/types'
@@ -115,7 +115,7 @@ export const DEPRECATED_saveReport = (
 }
 
 export const DEPRECATED_useVoiceOverviewReportData = () => {
-    const { cleanStatsFilters, userTimezone } = useNewVoiceStatsFilters()
+    const { cleanStatsFilters, userTimezone } = useStatsFilters()
 
     const averageWaitTimeTrend = useVoiceCallAverageTimeTrend(
         VoiceCallAverageTimeMetric.WaitTime,
@@ -271,7 +271,7 @@ const saveReport = (data: VoiceReportData, period: Period) => {
 }
 
 export const useVoiceOverviewReportData = () => {
-    const { cleanStatsFilters, userTimezone } = useNewVoiceStatsFilters()
+    const { cleanStatsFilters, userTimezone } = useStatsFilters()
 
     const totalCallsCountTrend = useVoiceCallCountTrend(
         cleanStatsFilters,

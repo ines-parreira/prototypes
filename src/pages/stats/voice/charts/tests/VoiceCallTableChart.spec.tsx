@@ -2,6 +2,8 @@ import React from 'react'
 
 import { screen } from '@testing-library/react'
 
+import { useStatsFilters } from 'hooks/reporting/support-performance/useStatsFilters'
+
 import '@testing-library/jest-dom/extend-expect'
 
 import { act } from 'react-dom/test-utils'
@@ -17,7 +19,6 @@ import { assumeMock, mockStore } from 'utils/testing'
 import VoiceCallDirectionFilter from '../../components/VoiceCallDirectionFilter/VoiceCallDirectionFilter'
 import VoiceCallFilter from '../../components/VoiceCallFilter/VoiceCallFilter'
 import { VoiceCallTable } from '../../components/VoiceCallTable/VoiceCallTable'
-import { useNewVoiceStatsFilters } from '../../hooks/useNewVoiceStatsFilters'
 import { VoiceCallFilterDirection } from '../../models/types'
 import { VoiceCallTableChart } from '../VoiceCallTableChart'
 
@@ -27,13 +28,13 @@ jest.mock(
 )
 jest.mock('pages/stats/voice/components/VoiceCallFilter/VoiceCallFilter')
 jest.mock('pages/stats/voice/components/VoiceCallTable/VoiceCallTable')
-jest.mock('pages/stats/voice/hooks/useNewVoiceStatsFilters')
 
 const useFlagMock = assumeMock(useFlag)
 const VoiceCallDirectionFilterMock = assumeMock(VoiceCallDirectionFilter)
 const VoiceCallFilterMock = assumeMock(VoiceCallFilter)
 const VoiceCallTableMock = assumeMock(VoiceCallTable)
-const useNewVoiceStatsFiltersMock = assumeMock(useNewVoiceStatsFilters)
+jest.mock('hooks/reporting/support-performance/useStatsFilters')
+const useStatsFiltersMock = assumeMock(useStatsFilters)
 
 const defaultProps: DashboardChartProps = {
     chartId: 'test-chart-id',
@@ -66,11 +67,10 @@ describe('VoiceCallTableChart', () => {
         VoiceCallTableMock.mockReturnValue(
             <div data-testid="voice-call-table" />,
         )
-        useNewVoiceStatsFiltersMock.mockReturnValue({
+        useStatsFiltersMock.mockReturnValue({
             cleanStatsFilters: filters,
             granularity: ReportingGranularity.Day,
             userTimezone: userTimezone,
-            isAnalyticsNewFilters: true,
         })
     })
 

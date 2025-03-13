@@ -20,8 +20,9 @@ import {
     medianResolutionTimeQueryFactory,
     resolutionTimeMetricPerTicketDrillDownQueryFactory,
 } from 'models/reporting/queryFactories/support-performance/medianResolutionTime'
+import { withDefaultLogicalOperator } from 'models/reporting/queryFactories/utils'
 import { ReportingFilterOperator } from 'models/reporting/types'
-import { LegacyStatsFilters } from 'models/stat/types'
+import { StatsFilters, TagFilterInstanceId } from 'models/stat/types'
 import {
     DRILLDOWN_QUERY_LIMIT,
     formatReportingQueryDate,
@@ -32,14 +33,22 @@ import {
 describe('medianResolutionTimeMetricPerAgent', () => {
     const periodStart = moment()
     const periodEnd = periodStart.add(7, 'days')
-    const statsFilters: LegacyStatsFilters = {
+    const statsFilters: StatsFilters = {
         period: {
             end_datetime: periodEnd.toISOString(),
             start_datetime: periodStart.toISOString(),
         },
-        channels: [TicketChannel.Email, TicketChannel.Chat],
-        integrations: [1],
-        tags: [1, 2],
+        channels: withDefaultLogicalOperator([
+            TicketChannel.Email,
+            TicketChannel.Chat,
+        ]),
+        integrations: withDefaultLogicalOperator([1]),
+        tags: [
+            {
+                ...withDefaultLogicalOperator([1, 2]),
+                filterInstanceId: TagFilterInstanceId.First,
+            },
+        ],
     }
     const timezone = 'someTimeZone'
     const sorting = OrderDirection.Asc
@@ -67,17 +76,17 @@ describe('medianResolutionTimeMetricPerAgent', () => {
                 {
                     member: TicketMessagesMember.Integration,
                     operator: ReportingFilterOperator.Equals,
-                    values: statsFilters.integrations?.map(String),
+                    values: statsFilters.integrations?.values.map(String),
                 },
                 {
                     member: TicketMember.Channel,
                     operator: ReportingFilterOperator.Equals,
-                    values: statsFilters.channels,
+                    values: statsFilters.channels?.values,
                 },
                 {
                     member: TicketMember.Tags,
                     operator: ReportingFilterOperator.Equals,
-                    values: statsFilters.tags?.map(String),
+                    values: statsFilters.tags?.[0]?.values.map(String),
                 },
             ],
             measures: [TicketMessagesMeasure.MedianResolutionTime],
@@ -94,7 +103,7 @@ describe('medianResolutionTimeMetricPerAgent', () => {
 
         expect(
             medianResolutionTimeMetricPerAgentQueryFactory(
-                { ...statsFilters, agents },
+                { ...statsFilters, agents: withDefaultLogicalOperator(agents) },
                 timezone,
                 sorting,
             ),
@@ -115,12 +124,12 @@ describe('medianResolutionTimeMetricPerAgent', () => {
                 {
                     member: TicketMessagesMember.Integration,
                     operator: ReportingFilterOperator.Equals,
-                    values: statsFilters.integrations?.map(String),
+                    values: statsFilters.integrations?.values.map(String),
                 },
                 {
                     member: TicketMember.Channel,
                     operator: ReportingFilterOperator.Equals,
-                    values: statsFilters.channels,
+                    values: statsFilters.channels?.values,
                 },
                 {
                     member: TicketMember.AssigneeUserId,
@@ -130,7 +139,7 @@ describe('medianResolutionTimeMetricPerAgent', () => {
                 {
                     member: TicketMember.Tags,
                     operator: ReportingFilterOperator.Equals,
-                    values: statsFilters.tags?.map(String),
+                    values: statsFilters.tags?.[0]?.values.map(String),
                 },
             ],
             measures: [TicketMessagesMeasure.MedianResolutionTime],
@@ -147,14 +156,22 @@ describe('medianResolutionTimeMetricPerAgent', () => {
 describe('medianResolutionTimeMetricPerChannelQueryFactory', () => {
     const periodStart = moment()
     const periodEnd = periodStart.add(7, 'days')
-    const statsFilters: LegacyStatsFilters = {
+    const statsFilters: StatsFilters = {
         period: {
             end_datetime: periodEnd.toISOString(),
             start_datetime: periodStart.toISOString(),
         },
-        channels: [TicketChannel.Email, TicketChannel.Chat],
-        integrations: [1],
-        tags: [1, 2],
+        channels: withDefaultLogicalOperator([
+            TicketChannel.Email,
+            TicketChannel.Chat,
+        ]),
+        integrations: withDefaultLogicalOperator([1]),
+        tags: [
+            {
+                ...withDefaultLogicalOperator([1, 2]),
+                filterInstanceId: TagFilterInstanceId.First,
+            },
+        ],
     }
     const timezone = 'someTimeZone'
     const sorting = OrderDirection.Asc
@@ -182,17 +199,17 @@ describe('medianResolutionTimeMetricPerChannelQueryFactory', () => {
                 {
                     member: TicketMessagesMember.Integration,
                     operator: ReportingFilterOperator.Equals,
-                    values: statsFilters.integrations?.map(String),
+                    values: statsFilters.integrations?.values.map(String),
                 },
                 {
                     member: TicketMember.Channel,
                     operator: ReportingFilterOperator.Equals,
-                    values: statsFilters.channels,
+                    values: statsFilters.channels?.values,
                 },
                 {
                     member: TicketMember.Tags,
                     operator: ReportingFilterOperator.Equals,
-                    values: statsFilters.tags?.map(String),
+                    values: statsFilters.tags?.[0]?.values.map(String),
                 },
             ],
             measures: [TicketMessagesMeasure.MedianResolutionTime],
@@ -209,7 +226,7 @@ describe('medianResolutionTimeMetricPerChannelQueryFactory', () => {
 
         expect(
             medianResolutionTimeMetricPerChannelQueryFactory(
-                { ...statsFilters, agents },
+                { ...statsFilters, agents: withDefaultLogicalOperator(agents) },
                 timezone,
                 sorting,
             ),
@@ -230,12 +247,12 @@ describe('medianResolutionTimeMetricPerChannelQueryFactory', () => {
                 {
                     member: TicketMessagesMember.Integration,
                     operator: ReportingFilterOperator.Equals,
-                    values: statsFilters.integrations?.map(String),
+                    values: statsFilters.integrations?.values.map(String),
                 },
                 {
                     member: TicketMember.Channel,
                     operator: ReportingFilterOperator.Equals,
-                    values: statsFilters.channels,
+                    values: statsFilters.channels?.values,
                 },
                 {
                     member: TicketMember.AssigneeUserId,
@@ -245,7 +262,7 @@ describe('medianResolutionTimeMetricPerChannelQueryFactory', () => {
                 {
                     member: TicketMember.Tags,
                     operator: ReportingFilterOperator.Equals,
-                    values: statsFilters.tags?.map(String),
+                    values: statsFilters.tags?.[0]?.values.map(String),
                 },
             ],
             measures: [TicketMessagesMeasure.MedianResolutionTime],
@@ -262,14 +279,22 @@ describe('medianResolutionTimeMetricPerChannelQueryFactory', () => {
 describe('resolutionTimeMetricPerTicketQueryFactory', () => {
     const periodStart = moment()
     const periodEnd = periodStart.add(7, 'days')
-    const statsFilters: LegacyStatsFilters = {
+    const statsFilters: StatsFilters = {
         period: {
             end_datetime: periodEnd.toISOString(),
             start_datetime: periodStart.toISOString(),
         },
-        channels: [TicketChannel.Email, TicketChannel.Chat],
-        integrations: [1],
-        tags: [1, 2],
+        channels: withDefaultLogicalOperator([
+            TicketChannel.Email,
+            TicketChannel.Chat,
+        ]),
+        integrations: withDefaultLogicalOperator([1]),
+        tags: [
+            {
+                ...withDefaultLogicalOperator([1, 2]),
+                filterInstanceId: TagFilterInstanceId.First,
+            },
+        ],
     }
     const timezone = 'someTimeZone'
     const sorting = OrderDirection.Asc
@@ -298,7 +323,10 @@ describe('resolutionTimeMetricPerTicketQueryFactory', () => {
 
     it('should build a query with agents filter and sorting', () => {
         const agents = [2]
-        const filters = { ...statsFilters, agents }
+        const filters = {
+            ...statsFilters,
+            agents: withDefaultLogicalOperator(agents),
+        }
 
         expect(
             resolutionTimeMetricPerTicketDrillDownQueryFactory(

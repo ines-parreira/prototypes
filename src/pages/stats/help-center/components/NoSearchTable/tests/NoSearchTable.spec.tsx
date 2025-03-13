@@ -3,7 +3,7 @@ import React from 'react'
 import { screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 
-import { useNewStatsFilters } from 'hooks/reporting/support-performance/useNewStatsFilters'
+import { useStatsFilters } from 'hooks/reporting/support-performance/useStatsFilters'
 import { ReportingGranularity } from 'models/reporting/types'
 import NoSearchTable from 'pages/stats/help-center/components/NoSearchTable/NoSearchTable'
 import { useNoSearchResultsMetrics } from 'pages/stats/help-center/hooks/useNoSearchResultsMetrics'
@@ -13,8 +13,8 @@ jest.mock('pages/stats/help-center/hooks/useNoSearchResultsMetrics', () => ({
     useNoSearchResultsMetrics: jest.fn(),
 }))
 
-jest.mock('hooks/reporting/support-performance/useNewStatsFilters')
-const useNewStatsFiltersMock = assumeMock(useNewStatsFilters)
+jest.mock('hooks/reporting/support-performance/useStatsFilters')
+const useStatsFiltersMock = assumeMock(useStatsFilters)
 
 const mockUseNoSearchResultsMetrics = jest.mocked(useNoSearchResultsMetrics)
 
@@ -31,11 +31,10 @@ describe('<NoSearchTable/>', () => {
     }
     const timezone = 'US'
     beforeEach(() => {
-        useNewStatsFiltersMock.mockReturnValue({
+        useStatsFiltersMock.mockReturnValue({
             cleanStatsFilters: statsFilters,
             userTimezone: timezone,
             granularity: ReportingGranularity.Day,
-            isAnalyticsNewFilters: true,
         })
         mockUseNoSearchResultsMetrics.mockReturnValue({
             data: [],

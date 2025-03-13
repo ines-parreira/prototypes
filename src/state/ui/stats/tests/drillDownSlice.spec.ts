@@ -39,11 +39,9 @@ import {
     getDrillDownMetric,
     getDrillDownMetricColumn,
     getDrillDownModalState,
-    getIsNewFilter,
     initialState,
     setCurrentPage,
     setMetricData,
-    setShouldUseNewFilterData,
     SLA_FORMAT,
 } from 'state/ui/stats/drillDownSlice'
 import {
@@ -144,15 +142,6 @@ describe('drillDownSlice', () => {
 
             expect(newState.export.isLoading).toEqual(false)
         })
-
-        it('should set new filter value to true', () => {
-            const newState = drillDownSlice.reducer(
-                initialState,
-                setShouldUseNewFilterData(true),
-            )
-
-            expect(newState.isNewFilter).toBeTruthy
-        })
     })
 
     describe('selectors', () => {
@@ -169,7 +158,6 @@ describe('drillDownSlice', () => {
                         isOpen,
                         currentPage,
                         metricData,
-                        isNewFilter: false,
                     },
                 },
             },
@@ -188,10 +176,6 @@ describe('drillDownSlice', () => {
 
         it('getDrillDownMetric', () => {
             expect(getDrillDownMetric(state)).toEqual(metricData)
-        })
-
-        it('getIsNewFilter', () => {
-            expect(getIsNewFilter(state)).toBeFalsy
         })
 
         it.each([

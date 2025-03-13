@@ -1,6 +1,6 @@
 import React from 'react'
 
-import { useNewStatsFilters } from 'hooks/reporting/support-performance/useNewStatsFilters'
+import { useStatsFilters } from 'hooks/reporting/support-performance/useStatsFilters'
 import ChartCard from 'pages/stats/ChartCard'
 import { DashboardChartProps } from 'pages/stats/dashboards/types'
 import HelpCenterStatsTable, {
@@ -59,7 +59,7 @@ export const PerformanceByArticle = ({
     dashboard,
     chartId,
 }: Props) => {
-    const { cleanStatsFilters, userTimezone } = useNewStatsFilters()
+    const { cleanStatsFilters, userTimezone } = useStatsFilters()
     const [currentPage, setCurrentPage] = React.useState(1)
 
     const onPageChange = (page: number) => {

@@ -4,15 +4,14 @@ import { useParams } from 'react-router-dom'
 
 import { useAIAgentMetrics } from 'hooks/reporting/automate/useAIAgentInsightsDataset'
 import { useAIAgentUserId } from 'hooks/reporting/automate/useAIAgentUserId'
-import { useNewAutomateFilters } from 'hooks/reporting/automate/useNewAutomateFilters'
+import { useAutomateFilters } from 'hooks/reporting/automate/useAutomateFilters'
 import useAppSelector from 'hooks/useAppSelector'
 import { useAiAgentNavigation } from 'pages/aiAgent/hooks/useAiAgentNavigation'
 import { useGetCustomTicketsFieldsDefinitionData } from 'pages/aiAgent/insights/IntentTableWidget/hooks/useGetCustomTicketsFieldsDefinitionData'
+import { IntentsPerformance } from 'pages/aiAgent/insights/widgets/IntentsPerformance/IntentsPerformance'
 import PerformanceTip from 'pages/stats/PerformanceTip'
-import { getPageStatsFilters } from 'state/stats/selectors'
+import { getPageStatsFiltersWithLogicalOperators } from 'state/stats/selectors'
 import { AIInsightsMetric } from 'state/ui/stats/types'
-
-import { IntentsPerformance } from '../IntentsPerformance/IntentsPerformance'
 
 const getPerformanceTipType = (
     top10P: number,
@@ -27,13 +26,15 @@ const getPerformanceTipType = (
 }
 
 export const Level1IntentsPerformance = () => {
-    const pageStatsFilters = useAppSelector(getPageStatsFilters)
+    const pageStatsFilters = useAppSelector(
+        getPageStatsFiltersWithLogicalOperators,
+    )
 
     const { shopName } = useParams<{
         shopName: string
     }>()
 
-    const { userTimezone } = useNewAutomateFilters()
+    const { userTimezone } = useAutomateFilters()
     const aiAgentMetrics = useAIAgentMetrics(pageStatsFilters, userTimezone)
 
     const aiAgentUserId = useAIAgentUserId()

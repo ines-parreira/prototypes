@@ -4,8 +4,9 @@ import {
     TableDataSources,
     TableSummaryDataSources,
 } from 'hooks/reporting/common/useTableReportData'
+import { getCsvFileNameWithDates } from 'hooks/reporting/common/utils'
 import { Metric } from 'hooks/reporting/metrics'
-import { getCsvFileNameWithDates } from 'hooks/reporting/support-performance/overview/useDownloadOverviewData'
+import { useStatsFilters } from 'hooks/reporting/support-performance/useStatsFilters'
 import { MetricWithDecile } from 'hooks/reporting/useMetricPerDimension'
 import useAppSelector from 'hooks/useAppSelector'
 import {
@@ -41,7 +42,6 @@ import {
     fetchOutboundCallsMetricPerAgent,
     fetchTotalCallsMetricPerAgent,
 } from 'pages/stats/voice/hooks/metricsPerDimension'
-import { useNewVoiceStatsFilters } from 'pages/stats/voice/hooks/useNewVoiceStatsFilters'
 import { useVoiceAgentsMetrics } from 'pages/stats/voice/hooks/useVoiceAgentsMetrics'
 import { useVoiceAgentsSummaryMetrics } from 'pages/stats/voice/hooks/useVoiceAgentsSummaryMetrics'
 import { getSortedAgents } from 'state/ui/stats/agentPerformanceSlice'
@@ -235,7 +235,7 @@ export const createReport = (
 
 export const useVoiceAgentsReportData = () => {
     const agents = useAppSelector<User[]>(getSortedAgents)
-    const { cleanStatsFilters, userTimezone } = useNewVoiceStatsFilters()
+    const { cleanStatsFilters, userTimezone } = useStatsFilters()
     const { reportData, isLoading, period } = useVoiceAgentsMetrics(
         cleanStatsFilters,
         userTimezone,

@@ -6,8 +6,8 @@ import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
 import { useCustomFieldsTicketCount } from 'hooks/reporting/metricsPerCustomField'
+import { useTicketsDistribution } from 'hooks/reporting/ticket-insights/useTicketsDistribution'
 import { ReportingMetricItem } from 'hooks/reporting/useMetricPerDimension'
-import { useTicketsDistribution } from 'hooks/reporting/useTicketsDistribution'
 import { Cubes } from 'models/reporting/cubes'
 import {
     TicketCustomFieldsDimension,

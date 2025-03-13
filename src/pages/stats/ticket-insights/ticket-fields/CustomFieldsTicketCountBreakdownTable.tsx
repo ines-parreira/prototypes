@@ -4,7 +4,7 @@ import classNames from 'classnames'
 
 import { Skeleton } from '@gorgias/merchant-ui-kit'
 
-import { useNewStatsFilters } from 'hooks/reporting/support-performance/useNewStatsFilters'
+import { useStatsFilters } from 'hooks/reporting/support-performance/useStatsFilters'
 import { useCustomFieldsTicketCountPerCustomFields } from 'hooks/reporting/ticket-insights/useCustomFieldsTicketCountPerCustomFields'
 import { BREAKDOWN_FIELD } from 'hooks/reporting/withBreakdown'
 import useAppDispatch from 'hooks/useAppDispatch'
@@ -56,7 +56,7 @@ export const CustomFieldsTicketCountBreakdownTable = ({
     const setOrdering = (column: TicketInsightsOrder['column']) =>
         dispatch(setOrder({ column }))
 
-    const { granularity } = useNewStatsFilters()
+    const { granularity } = useStatsFilters()
     const {
         data: customFieldDataRows,
         dateTimes,

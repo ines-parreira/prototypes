@@ -7,7 +7,7 @@ import { Tag } from '@gorgias/api-queries'
 
 import { useTagSearch } from 'hooks/reporting/common/useTagSearch'
 import { useTagsTicketCount } from 'hooks/reporting/metricsPerPeriod'
-import { useNewStatsFilters } from 'hooks/reporting/support-performance/useNewStatsFilters'
+import { useStatsFilters } from 'hooks/reporting/support-performance/useStatsFilters'
 import { useTagsTicketCountTimeSeries } from 'hooks/reporting/timeSeries'
 import { MetricPerDimensionTrend } from 'hooks/reporting/useMetricPerDimension'
 import { TimeSeriesDataItem } from 'hooks/reporting/useTimeSeries'
@@ -54,8 +54,7 @@ const getSortedData = (
 
 export const useTagsTimeSeries = (topAmount = 10) => {
     const { tagsState } = useTagSearch()
-    const { cleanStatsFilters, userTimezone, granularity } =
-        useNewStatsFilters()
+    const { cleanStatsFilters, userTimezone, granularity } = useStatsFilters()
 
     const tags: Tag[] = useMemo(() => {
         return Object.keys(tagsState).map(

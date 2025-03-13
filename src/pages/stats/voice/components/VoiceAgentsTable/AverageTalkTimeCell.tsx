@@ -3,6 +3,7 @@ import React from 'react'
 import { Skeleton } from '@gorgias/merchant-ui-kit'
 
 import { User } from 'config/types/user'
+import { useStatsFilters } from 'hooks/reporting/support-performance/useStatsFilters'
 import useAppSelector from 'hooks/useAppSelector'
 import BodyCell from 'pages/common/components/table/cells/BodyCell'
 import {
@@ -12,7 +13,6 @@ import {
 import { DrillDownModalTrigger } from 'pages/stats/DrillDownModalTrigger'
 import { VOICE_METRIC_COLUMN_WIDTH } from 'pages/stats/voice/constants/voiceAgents'
 import { useAverageTalkTimeMetricPerAgent } from 'pages/stats/voice/hooks/metricsPerDimension'
-import { useNewVoiceStatsFilters } from 'pages/stats/voice/hooks/useNewVoiceStatsFilters'
 import { isSortingMetricLoading } from 'state/ui/stats/agentPerformanceSlice'
 import { VoiceAgentsMetrics } from 'state/ui/stats/drillDownSlice'
 
@@ -24,7 +24,7 @@ type Props = {
 }
 
 const AverageTalkTimeCell = ({ agent, metricData }: Props) => {
-    const { cleanStatsFilters, userTimezone } = useNewVoiceStatsFilters()
+    const { cleanStatsFilters, userTimezone } = useStatsFilters()
 
     const isMetricLoading = useAppSelector(isSortingMetricLoading)
     const { data, isFetching } = useAverageTalkTimeMetricPerAgent(

@@ -15,7 +15,8 @@ import {
     fetchTicketsClosedPerHour,
     useTicketsClosedPerHour,
 } from 'hooks/reporting/useTicketsClosedPerHour'
-import { fromLegacyStatsFilters } from 'state/stats/utils'
+import { withDefaultLogicalOperator } from 'models/reporting/queryFactories/utils'
+import { StatsFilters, TagFilterInstanceId } from 'models/stat/types'
 import { RootState, StoreDispatch } from 'state/types'
 import { initialState as uiStatsInitialState } from 'state/ui/stats/filtersSlice'
 import { assumeMock } from 'utils/testing'
@@ -29,17 +30,22 @@ const fetchOnlineTimeMetricMock = assumeMock(fetchOnlineTimeMetric)
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
 
 describe('TicketsClosedPerHour', () => {
-    const statsFilters = {
+    const statsFilters: StatsFilters = {
         period: {
             start_datetime: '2021-05-29T00:00:00+02:00',
             end_datetime: '2021-06-04T23:59:59+02:00',
         },
-        integrations: [456],
-        agents: [1, 2],
-        tags: [123],
+        integrations: withDefaultLogicalOperator([456]),
+        agents: withDefaultLogicalOperator([1, 2]),
+        tags: [
+            {
+                ...withDefaultLogicalOperator([123]),
+                filterInstanceId: TagFilterInstanceId.First,
+            },
+        ],
     }
     const defaultState = {
-        stats: { filters: fromLegacyStatsFilters(statsFilters) },
+        stats: { filters: statsFilters },
         ui: {
             stats: {
                 filters: uiStatsInitialState,

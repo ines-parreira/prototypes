@@ -10,11 +10,7 @@ import { logEvent, SegmentEvent } from 'common/segment'
 import { DrillDownModalTrigger } from 'pages/stats/DrillDownModalTrigger'
 import { OverviewMetric } from 'pages/stats/support-performance/overview/SupportPerformanceOverviewConfig'
 import { RootState, StoreDispatch } from 'state/types'
-import {
-    DrillDownMetric,
-    setMetricData,
-    setShouldUseNewFilterData,
-} from 'state/ui/stats/drillDownSlice'
+import { DrillDownMetric, setMetricData } from 'state/ui/stats/drillDownSlice'
 import { VoiceAgentsMetric, VoiceMetric } from 'state/ui/stats/types'
 import { assumeMock } from 'utils/testing'
 
@@ -65,10 +61,7 @@ describe('<DrillDownModalTrigger />', () => {
 
         render(
             <Provider store={store}>
-                <DrillDownModalTrigger
-                    metricData={metricData}
-                    useNewFilterData={true}
-                >
+                <DrillDownModalTrigger metricData={metricData}>
                     {trigger}
                 </DrillDownModalTrigger>
             </Provider>,
@@ -78,9 +71,6 @@ describe('<DrillDownModalTrigger />', () => {
 
         await waitFor(() => {
             expect(store.getActions()).toContainEqual(setMetricData(metricData))
-            expect(store.getActions()).toContainEqual(
-                setShouldUseNewFilterData(true),
-            )
         })
     })
 

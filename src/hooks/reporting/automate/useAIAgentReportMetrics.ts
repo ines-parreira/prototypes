@@ -7,10 +7,10 @@ import { useCustomFieldDefinitions } from 'custom-fields/hooks/queries/useCustom
 import { AutomateStatsMeasureLabelMap } from 'hooks/reporting/automate/automateStatsMeasureLabelMap'
 import { useAutomateMetricsTimeSeries } from 'hooks/reporting/automate/useAutomationDataset'
 import { calculateGreyArea } from 'hooks/reporting/automate/utils'
+import { getCsvFileNameWithDates } from 'hooks/reporting/common/utils'
 import { useAgentsMetrics } from 'hooks/reporting/support-performance/agents/useAgentsMetrics'
 import { useAgentsSummaryMetrics } from 'hooks/reporting/support-performance/agents/useAgentsSummaryMetrics'
-import { getCsvFileNameWithDates } from 'hooks/reporting/support-performance/overview/useDownloadOverviewData'
-import { useNewStatsFilters } from 'hooks/reporting/support-performance/useNewStatsFilters'
+import { useStatsFilters } from 'hooks/reporting/support-performance/useStatsFilters'
 import { useCustomFieldsTicketCountTimeSeries } from 'hooks/reporting/timeSeries'
 import { useAgentsTableConfigSetting } from 'hooks/reporting/useAgentsTableConfigSetting'
 import { getPeriodDateTimes } from 'hooks/reporting/useTimeSeries'
@@ -63,7 +63,7 @@ export const useAgentPerformanceMetrics = () => {
 export const useAutomatedTicketsMetrics = () => {
     const statsFilters = useAppSelector(getStatsFiltersWithLogicalOperators)
     const automateStatsMeasureLabelMap = AutomateStatsMeasureLabelMap
-    const { userTimezone, granularity } = useNewStatsFilters()
+    const { userTimezone, granularity } = useStatsFilters()
 
     const timeseries = useAutomateMetricsTimeSeries(
         statsFilters,
@@ -105,8 +105,7 @@ export const useAutomatedTicketsMetrics = () => {
 }
 
 export const useTicketInsightsMetrics = () => {
-    const { cleanStatsFilters, userTimezone, granularity } =
-        useNewStatsFilters()
+    const { cleanStatsFilters, userTimezone, granularity } = useStatsFilters()
     const selectedCustomField = useAppSelector(getSelectedCustomField)
     const order = useAppSelector(getCustomFieldsOrder)
 

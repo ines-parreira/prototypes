@@ -4,7 +4,7 @@ import { Skeleton } from '@gorgias/merchant-ui-kit'
 
 import analyticsColors from 'assets/css/new/stats/modern.json'
 import { useSatisfiedOrBreachedTicketsTimeSeries } from 'hooks/reporting/sla/useSatisfiedOrBreachedTicketsTimeSeries'
-import { useNewStatsFilters } from 'hooks/reporting/support-performance/useNewStatsFilters'
+import { useStatsFilters } from 'hooks/reporting/support-performance/useStatsFilters'
 import { TicketSLAStatus } from 'models/reporting/cubes/sla/TicketSLACube'
 import ChartCard from 'pages/stats/ChartCard'
 import BarChart from 'pages/stats/common/components/charts/BarChart/BarChart'
@@ -35,8 +35,7 @@ export const AchievedAndBreachedTicketsChart = ({
     chartId,
     dashboard,
 }: DashboardChartProps) => {
-    const { cleanStatsFilters, userTimezone, granularity } =
-        useNewStatsFilters()
+    const { cleanStatsFilters, userTimezone, granularity } = useStatsFilters()
 
     const { data, isLoading } = useSatisfiedOrBreachedTicketsTimeSeries(
         cleanStatsFilters,

@@ -2,8 +2,8 @@ import React, { useEffect, useMemo, useState } from 'react'
 
 import { useCustomFieldDefinitions } from 'custom-fields/hooks/queries/useCustomFieldDefinitions'
 import { useAIAgentUserId } from 'hooks/reporting/automate/useAIAgentUserId'
+import { useAutomateFilters } from 'hooks/reporting/automate/useAutomateFilters'
 import { useAutomateMetricsTrend } from 'hooks/reporting/automate/useAutomationDataset'
-import { useNewAutomateFilters } from 'hooks/reporting/automate/useNewAutomateFilters'
 import useAppSelector from 'hooks/useAppSelector'
 import { useGridSize } from 'hooks/useGridSize'
 import { FilterKey } from 'models/stat/types'
@@ -32,7 +32,7 @@ import { getSelectedCustomField } from 'state/ui/stats/ticketInsightsSlice'
 
 export default function AutomateAiAgentStatsReport() {
     const statsFilters = useAppSelector(getStatsFiltersWithLogicalOperators)
-    const { userTimezone } = useNewAutomateFilters()
+    const { userTimezone } = useAutomateFilters()
     const [isNoActivityAlertDismissed, setIsNoActivityAlertDismissed] =
         useState(false)
 

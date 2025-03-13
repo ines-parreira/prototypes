@@ -9,6 +9,7 @@ import { integrationsState, shopifyIntegration } from 'fixtures/integrations'
 import { CONVERT_ROUTE_PARAM_NAME } from 'pages/convert/common/constants'
 import * as useIsConvertPerformanceViewEnabled from 'pages/convert/common/hooks/useIsConvertPerformanceViewEnabled'
 import { LogicalOperatorEnum } from 'pages/stats/common/components/Filter/constants'
+import { RevenueStatsContent } from 'pages/stats/convert/containers/RevenueStatsContent/RevenueStatsContent'
 import useCampaignPerformanceTimeSeries from 'pages/stats/convert/hooks/stats/useCampaignPerformanceTimeSeries'
 import useGetCampaignRevenueTimeSeries from 'pages/stats/convert/hooks/stats/useGetCampaignRevenueTimeSeries'
 import { useGetTotalsStat } from 'pages/stats/convert/hooks/stats/useGetTotalsStat'
@@ -16,8 +17,6 @@ import { useCampaignStatsFilters } from 'pages/stats/convert/hooks/useCampaignSt
 import { useReportChartRestrictions } from 'pages/stats/report-chart-restrictions/useReportChartRestrictions'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 import { assumeMock, renderWithStore } from 'utils/testing'
-
-import { RevenueStatsContent } from '../RevenueStatsContent'
 
 jest.mock('pages/stats/report-chart-restrictions/useReportChartRestrictions')
 const useReportChartRestrictionsMock = assumeMock(useReportChartRestrictions)

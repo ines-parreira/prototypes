@@ -2,13 +2,10 @@ import React from 'react'
 
 import { UseQueryResult } from '@tanstack/react-query'
 import { render, screen, waitFor } from '@testing-library/react'
-import userEvent from '@testing-library/user-event'
 import { fromJS } from 'immutable'
-import { mockFlags } from 'jest-launchdarkly-mock'
 import { Provider } from 'react-redux'
 
 import { logEvent, SegmentEvent } from 'common/segment'
-import { FeatureFlagKey } from 'config/featureFlags'
 import { useArticleViewTimeSeries } from 'hooks/reporting/help-center/useArticleViewTimeSeries'
 import { TimeSeriesDataItem } from 'hooks/reporting/useTimeSeries'
 import { withDefaultLogicalOperator } from 'models/reporting/queryFactories/utils'
@@ -21,7 +18,10 @@ import AIBanner from 'pages/stats/help-center/components/AIBanner'
 import HelpCenterStats from 'pages/stats/help-center/pages/HelpCenterStats'
 import { HELP_CENTER_STATS_TEST_IDS } from 'pages/stats/help-center/pages/tests/constants'
 import { useReportChartRestrictions } from 'pages/stats/report-chart-restrictions/useReportChartRestrictions'
-import { initialState } from 'state/stats/statsSlice'
+import {
+    initialState,
+    mergeStatsFiltersWithLogicalOperator,
+} from 'state/stats/statsSlice'
 import { RootState } from 'state/types'
 import configureStore from 'store/configureStore.prod'
 import { InitialRootState } from 'types'
@@ -127,9 +127,6 @@ describe('<HelpCenterStats />', () => {
         } as any)
         FiltersPanelMock.mockImplementation(() => <div>FiltersPanelMock</div>)
         AIBannerMock.mockImplementation(() => <div />)
-        mockFlags({
-            [FeatureFlagKey.AnalyticsNewFiltersHelpCenter]: false,
-        })
     })
 
     it('should render page with title and sections', () => {
@@ -222,57 +219,6 @@ describe('<HelpCenterStats />', () => {
         ).toBeInTheDocument()
     })
 
-    it('should change help center when filter changed', () => {
-        mockUseHelpCenterList.mockReturnValue({
-            isLoading: false,
-            helpCenters: getHelpCentersResponseFixture.data,
-            hasMore: false,
-            fetchMore: jest.fn(),
-        })
-
-        renderComponent()
-
-        expect(mockUseArticleViewTimeSeries).toHaveBeenCalledWith(
-            expect.objectContaining({
-                helpCenters: [helpCenters[0].id],
-            }),
-            expect.anything(),
-            expect.anything(),
-        )
-
-        userEvent.click(screen.getByText(helpCenters[0].name))
-        userEvent.click(screen.getByText(helpCenters[1].name))
-
-        expect(mockUseArticleViewTimeSeries).toHaveBeenLastCalledWith(
-            expect.objectContaining({
-                helpCenters: [helpCenters[1].id],
-            }),
-            expect.anything(),
-            expect.anything(),
-        )
-    })
-
-    it('should set initial help center filter by sorted help center list', () => {
-        const helpCenterFixture = getHelpCentersResponseFixture.data[0]
-        mockUseHelpCenterList.mockReturnValue({
-            isLoading: false,
-            helpCenters: [
-                { ...helpCenterFixture, name: 'B', id: 3 },
-                { ...helpCenterFixture, name: 'A', id: 1 },
-                { ...helpCenterFixture, name: 'C', id: 2 },
-                { ...helpCenterFixture, name: 'D', id: 4 },
-            ],
-            hasMore: false,
-            fetchMore: jest.fn(),
-        })
-
-        renderComponent()
-
-        expect(
-            screen.getByTestId(HELP_CENTER_STATS_TEST_IDS.FILTER),
-        ).toHaveTextContent('A')
-    })
-
     it('should set initial help center filter with first help center from the list', async () => {
         const helpCenterFixture = getHelpCentersResponseFixture.data[0]
         const helpCenters = [
@@ -311,12 +257,17 @@ describe('<HelpCenterStats />', () => {
             fetchMore: jest.fn(),
         })
 
-        renderWithStore(<HelpCenterStats />, state)
+        const { store } = renderWithStore(<HelpCenterStats />, state)
 
         await waitFor(() => {
-            expect(
-                screen.getByTestId(HELP_CENTER_STATS_TEST_IDS.FILTER),
-            ).toHaveTextContent(helpCenters.sort(getSortByName)[0].name)
+            expect(store.getActions()).toContainEqual(
+                mergeStatsFiltersWithLogicalOperator({
+                    helpCenters: withDefaultLogicalOperator<number>([
+                        helpCenters.sort(getSortByName)[0].id,
+                    ]),
+                    localeCodes: withDefaultLogicalOperator(['en-US']),
+                }),
+            )
         })
     })
 
@@ -350,64 +301,34 @@ describe('<HelpCenterStats />', () => {
                 integrations: [],
             }),
         } as RootState
+        const hc = [
+            { ...helpCenterFixture, name: 'B', id: 3 },
+            { ...helpCenterFixture, name: 'A', id: 1 },
+            { ...helpCenterFixture, name: 'C', id: 2 },
+            selectedHelpCenter,
+        ]
+
         mockUseHelpCenterList.mockReturnValue({
             isLoading: false,
-            helpCenters: [
-                { ...helpCenterFixture, name: 'B', id: 3 },
-                { ...helpCenterFixture, name: 'A', id: 1 },
-                { ...helpCenterFixture, name: 'C', id: 2 },
-                selectedHelpCenter,
-            ],
+            helpCenters: hc,
             hasMore: false,
             fetchMore: jest.fn(),
         })
 
-        renderWithStore(<HelpCenterStats />, state)
+        const { store } = renderWithStore(<HelpCenterStats />, state)
 
         await waitFor(() => {
-            expect(
-                screen.getByTestId(HELP_CENTER_STATS_TEST_IDS.FILTER),
-            ).toHaveTextContent(selectedHelpCenter.name)
+            expect(store.getActions()).toContainEqual(
+                expect.objectContaining({
+                    payload: expect.objectContaining({
+                        helpCenters: withDefaultLogicalOperator<number>([
+                            selectedHelpCenter.id,
+                        ]),
+                        localeCodes: withDefaultLogicalOperator([]),
+                    }),
+                }),
+            )
         })
-    })
-
-    it('should change language when filter changed', () => {
-        mockUseHelpCenterList.mockReturnValue({
-            isLoading: false,
-            helpCenters: [
-                {
-                    ...getHelpCentersResponseFixture.data[0],
-                    supported_locales: ['en-US', 'fr-FR'],
-                },
-            ],
-            hasMore: false,
-            fetchMore: jest.fn(),
-        })
-
-        renderComponent()
-
-        expect(mockUseArticleViewTimeSeries).toHaveBeenCalledWith(
-            expect.objectContaining({
-                localeCodes: ['en-US', 'fr-FR'],
-            }),
-            expect.anything(),
-            expect.anything(),
-        )
-
-        // Open dropdown
-        userEvent.click(screen.getByText('2 languages'))
-        // Select language
-        userEvent.click(screen.getByText('English'))
-        // Close dropdown
-        userEvent.click(document.body)
-
-        expect(mockUseArticleViewTimeSeries).toHaveBeenLastCalledWith(
-            expect.objectContaining({
-                localeCodes: ['fr-FR'],
-            }),
-            expect.anything(),
-            expect.anything(),
-        )
     })
 
     it('should show AIBanner', () => {
@@ -420,17 +341,9 @@ describe('<HelpCenterStats />', () => {
         expect(AIBannerMock).toHaveBeenCalled()
     })
 
-    describe('FilterPanel', () => {
-        beforeEach(() => {
-            mockFlags({
-                [FeatureFlagKey.AnalyticsNewFiltersHelpCenter]: true,
-            })
-        })
+    it('should show Filters Panel', () => {
+        renderComponent()
 
-        it('should show New Filters Panel', () => {
-            renderComponent()
-
-            expect(FiltersPanelMock).toHaveBeenCalled()
-        })
+        expect(FiltersPanelMock).toHaveBeenCalled()
     })
 })

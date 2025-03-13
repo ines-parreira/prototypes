@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 
-import { useNewStatsFilters } from 'hooks/reporting/support-performance/useNewStatsFilters'
+import { useStatsFilters } from 'hooks/reporting/support-performance/useStatsFilters'
 import Modal from 'pages/common/components/modal/Modal'
 import HelpCenterStatsTable, {
     TableCellType,
@@ -59,7 +59,7 @@ type Props = {
 }
 
 export const SearchTermsTable = ({ helpCenterDomain }: Props) => {
-    const { cleanStatsFilters, userTimezone } = useNewStatsFilters()
+    const { cleanStatsFilters, userTimezone } = useStatsFilters()
     const [currentPage, setCurrentPage] = useState(1)
 
     const [modalState, setModalState] = useState<ModalStateType>(modalIntiState)

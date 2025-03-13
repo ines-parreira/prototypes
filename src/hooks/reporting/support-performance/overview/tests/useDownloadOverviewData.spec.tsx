@@ -9,18 +9,19 @@ import { integrationsState } from 'fixtures/integrations'
 import { useDistributionTrendReportData } from 'hooks/reporting/common/useDistributionTrendReportData'
 import { useTimeSeriesReportData } from 'hooks/reporting/common/useTimeSeriesReportData'
 import { useTrendReportData } from 'hooks/reporting/common/useTrendReportData'
+import { getCsvFileNameWithDates } from 'hooks/reporting/common/utils'
 import { fetchWorkloadPerChannelDistribution } from 'hooks/reporting/distributions'
 import {
     CUSTOMER_EXPERIENCE_REPORT_FILE_NAME,
-    getCsvFileNameWithDates,
     TICKET_VOLUME_REPORT_FILE_NAME,
     useDownloadOverViewData,
     WORKLOAD_REPORT_FILE_NAME,
 } from 'hooks/reporting/support-performance/overview/useDownloadOverviewData'
-import { useNewStatsFilters } from 'hooks/reporting/support-performance/useNewStatsFilters'
+import { useStatsFilters } from 'hooks/reporting/support-performance/useStatsFilters'
 import { useTimeSeries } from 'hooks/reporting/useTimeSeries'
+import { withDefaultLogicalOperator } from 'models/reporting/queryFactories/utils'
 import { ReportingGranularity } from 'models/reporting/types'
-import { LegacyStatsFilters } from 'models/stat/types'
+import { StatsFilters, TagFilterInstanceId } from 'models/stat/types'
 import { DEFAULT_TIMEZONE } from 'pages/stats/convert/constants/components'
 import {
     MESSAGES_SENT_LABEL,
@@ -30,14 +31,13 @@ import {
     createTimeSeriesReport,
     createTrendReport,
 } from 'services/reporting/supportPerformanceReportingService'
-import { fromLegacyStatsFilters } from 'state/stats/utils'
 import { assumeMock } from 'utils/testing'
 
 jest.mock('utils/file')
 jest.mock('services/reporting/supportPerformanceReportingService')
 
-jest.mock('hooks/reporting/support-performance/useNewStatsFilters')
-const useNewStatsFiltersMock = assumeMock(useNewStatsFilters)
+jest.mock('hooks/reporting/support-performance/useStatsFilters')
+const useNewStatsFiltersMock = assumeMock(useStatsFilters)
 
 jest.mock('services/reporting/supportPerformanceReportingService')
 const saveTrendReportMock = assumeMock(createTrendReport)
@@ -55,15 +55,22 @@ const useDistributionTrendReportDataMock = assumeMock(
 )
 
 describe('useDownloadOverviewData', () => {
-    const defaultStatsFilters: LegacyStatsFilters = {
+    const defaultStatsFilters: StatsFilters = {
         period: {
             start_datetime: '2021-02-03T00:00:00.000Z',
             end_datetime: '2021-02-03T23:59:59.999Z',
         },
-        channels: [TicketChannel.Chat],
-        integrations: [integrationsState.integrations[0].id],
-        agents: [agents[0].id],
-        tags: [1],
+        channels: withDefaultLogicalOperator([TicketChannel.Chat]),
+        integrations: withDefaultLogicalOperator([
+            integrationsState.integrations[0].id,
+        ]),
+        agents: withDefaultLogicalOperator([agents[0].id]),
+        tags: [
+            {
+                ...withDefaultLogicalOperator([1]),
+                filterInstanceId: TagFilterInstanceId.First,
+            },
+        ],
     }
 
     const defaultTimeSeries = {
@@ -79,8 +86,7 @@ describe('useDownloadOverviewData', () => {
 
     beforeEach(() => {
         useNewStatsFiltersMock.mockReturnValue({
-            cleanStatsFilters: fromLegacyStatsFilters(defaultStatsFilters),
-            isAnalyticsNewFilters: true,
+            cleanStatsFilters: defaultStatsFilters,
             granularity: ReportingGranularity.Day,
             userTimezone: DEFAULT_TIMEZONE,
         })
@@ -157,7 +163,7 @@ describe('useDownloadOverviewData', () => {
         })
 
         expect(useDistributionTrendReportDataMock).toHaveBeenCalledWith(
-            fromLegacyStatsFilters(defaultStatsFilters),
+            defaultStatsFilters,
             'UTC',
             {
                 fetchCurrentDistribution: fetchWorkloadPerChannelDistribution,

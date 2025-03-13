@@ -1,9 +1,7 @@
 import React, { ComponentProps } from 'react'
 
 import { fromJS } from 'immutable'
-import { mockFlags } from 'jest-launchdarkly-mock'
 
-import { FeatureFlagKey } from 'config/featureFlags'
 import { account } from 'fixtures/account'
 import { ActivateCustomerSatisfactionSurveyTip } from 'pages/stats/ActivateCustomerSatisfactionSurveyTip'
 import { TrendCard } from 'pages/stats/common/components/TrendCard'
@@ -49,9 +47,6 @@ describe('CustomerSatisfactionTrendCard', () => {
     } as RootState
 
     beforeEach(() => {
-        mockFlags({
-            [FeatureFlagKey.AnalyticsNewFilters]: false,
-        })
         TrendCardMock.mockImplementation(
             ({ tip }: ComponentProps<typeof TrendCard>) => <div>{tip}</div>,
         )

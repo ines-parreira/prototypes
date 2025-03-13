@@ -1,8 +1,6 @@
 import React from 'react'
 
-import { useFlags } from 'launchdarkly-react-client-sdk'
-
-import { FeatureFlagKey } from 'config/featureFlags'
+import { useCleanStatsFilters } from 'hooks/reporting/useCleanStatsFilters'
 import { useGridSize } from 'hooks/useGridSize'
 import { FilterKey } from 'models/stat/types'
 import { AnalyticsFooter } from 'pages/stats/AnalyticsFooter'
@@ -16,12 +14,10 @@ import {
     SatisfactionReportConfig,
 } from 'pages/stats/quality-management/satisfaction/SatisfactionReportConfig'
 import StatsPage from 'pages/stats/StatsPage'
-import { SupportPerformanceFilters } from 'pages/stats/support-performance/SupportPerformanceFilters'
 
 export default function SatisfactionReport() {
     const getGridCellSize = useGridSize()
-    const isAnalyticsNewFilters =
-        !!useFlags()[FeatureFlagKey.AnalyticsNewFilters]
+    useCleanStatsFilters()
 
     return (
         <div className="full-width">
@@ -29,36 +25,30 @@ export default function SatisfactionReport() {
                 title={SatisfactionReportConfig.reportName}
                 titleExtra={
                     <>
-                        <SupportPerformanceFilters
-                            hidden={isAnalyticsNewFilters}
-                        />
                         <SatisfactionDownloadDataButton />
                     </>
                 }
             >
-                {isAnalyticsNewFilters && (
-                    <DashboardSection>
-                        <DashboardGridCell size={getGridCellSize(12)}>
-                            <FiltersPanelWrapper
-                                optionalFilters={
-                                    SatisfactionReportConfig.reportFilters
-                                        .optional
-                                }
-                                filterSettingsOverrides={{
-                                    [FilterKey.Period]: {
-                                        initialSettings: {
-                                            maxSpan: 365,
-                                        },
+                <DashboardSection>
+                    <DashboardGridCell size={getGridCellSize(12)}>
+                        <FiltersPanelWrapper
+                            optionalFilters={
+                                SatisfactionReportConfig.reportFilters.optional
+                            }
+                            filterSettingsOverrides={{
+                                [FilterKey.Period]: {
+                                    initialSettings: {
+                                        maxSpan: 365,
                                     },
-                                }}
-                                persistentFilters={
-                                    SatisfactionReportConfig.reportFilters
-                                        .persistent
-                                }
-                            />
-                        </DashboardGridCell>
-                    </DashboardSection>
-                )}
+                                },
+                            }}
+                            persistentFilters={
+                                SatisfactionReportConfig.reportFilters
+                                    .persistent
+                            }
+                        />
+                    </DashboardGridCell>
+                </DashboardSection>
                 <DashboardSection>
                     <DashboardGridCell size={getGridCellSize(4)}>
                         <DashboardComponent

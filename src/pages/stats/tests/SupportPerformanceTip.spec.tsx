@@ -12,16 +12,16 @@ import { agents } from 'fixtures/agents'
 import { integrationsState } from 'fixtures/integrations'
 import { tags } from 'fixtures/tag'
 import { teams } from 'fixtures/teams'
-import { useNewStatsFilters } from 'hooks/reporting/support-performance/useNewStatsFilters'
+import { useStatsFilters } from 'hooks/reporting/support-performance/useStatsFilters'
 import * as PerformanceTipHook from 'hooks/reporting/usePerformanceTips'
+import { withDefaultLogicalOperator } from 'models/reporting/queryFactories/utils'
 import { ReportingGranularity } from 'models/reporting/types'
-import { LegacyStatsFilters } from 'models/stat/types'
+import { StatsFilters, TagFilterInstanceId } from 'models/stat/types'
 import { DEFAULT_TIMEZONE } from 'pages/stats/convert/constants/components'
 import { SupportPerformanceTip } from 'pages/stats/SupportPerformanceTip'
 import { MetricName } from 'services/reporting/constants'
 import { TipQualifier } from 'services/supportPerformanceTipService'
 import { AccountSettingType } from 'state/currentAccount/types'
-import { fromLegacyStatsFilters } from 'state/stats/utils'
 import { RootState, StoreDispatch } from 'state/types'
 import { initialState as uiStatsInitialState } from 'state/ui/stats/filtersSlice'
 import { assumeMock } from 'utils/testing'
@@ -29,19 +29,26 @@ import { assumeMock } from 'utils/testing'
 jest.mock('hooks/reporting/usePerformanceTips')
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
 
-jest.mock('hooks/reporting/support-performance/useNewStatsFilters')
-const useNewStatsFiltersMock = assumeMock(useNewStatsFilters)
+jest.mock('hooks/reporting/support-performance/useStatsFilters')
+const useStatsFiltersMock = assumeMock(useStatsFilters)
 
 describe('SupportPerformanceTip', () => {
-    const defaultStatsFilters: LegacyStatsFilters = {
+    const defaultStatsFilters: StatsFilters = {
         period: {
             start_datetime: '2021-02-03T00:00:00.000Z',
             end_datetime: '2021-02-03T23:59:59.999Z',
         },
-        channels: [TicketChannel.Chat],
-        integrations: [integrationsState.integrations[0].id],
-        agents: [agents[0].id],
-        tags: [1],
+        channels: withDefaultLogicalOperator([TicketChannel.Chat]),
+        integrations: withDefaultLogicalOperator([
+            integrationsState.integrations[0].id,
+        ]),
+        agents: withDefaultLogicalOperator([agents[0].id]),
+        tags: [
+            {
+                ...withDefaultLogicalOperator([1]),
+                filterInstanceId: TagFilterInstanceId.First,
+            },
+        ],
     }
     const metric = MetricName.MessagesPerTicket
     const tag = tags[0]
@@ -66,7 +73,7 @@ describe('SupportPerformanceTip', () => {
         currentAccount: fromJS(defaultAccount),
         integrations: fromJS(integrationsState),
         stats: {
-            filters: fromLegacyStatsFilters(defaultStatsFilters),
+            filters: defaultStatsFilters,
         },
         agents: fromJS({
             all: agents,
@@ -85,10 +92,9 @@ describe('SupportPerformanceTip', () => {
     } as RootState
 
     beforeEach(() => {
-        useNewStatsFiltersMock.mockReturnValue({
-            cleanStatsFilters: fromLegacyStatsFilters(defaultStatsFilters),
+        useStatsFiltersMock.mockReturnValue({
+            cleanStatsFilters: defaultStatsFilters,
             userTimezone: DEFAULT_TIMEZONE,
-            isAnalyticsNewFilters: true,
             granularity: ReportingGranularity.Day,
         })
     })
@@ -154,10 +160,9 @@ describe('SupportPerformanceTip', () => {
 
     it('should pass legacyStatsFilters to the data hook', () => {
         const useTrendSpy = jest.fn()
-        useNewStatsFiltersMock.mockReturnValue({
+        useStatsFiltersMock.mockReturnValue({
             cleanStatsFilters: defaultStatsFilters,
             userTimezone: DEFAULT_TIMEZONE,
-            isAnalyticsNewFilters: true,
             granularity: ReportingGranularity.Day,
         })
 
@@ -183,7 +188,7 @@ describe('SupportPerformanceTip', () => {
         )
 
         expect(useTrendSpy).toHaveBeenCalledWith(
-            fromLegacyStatsFilters(defaultStatsFilters),
+            defaultStatsFilters,
             DEFAULT_TIMEZONE,
         )
     })

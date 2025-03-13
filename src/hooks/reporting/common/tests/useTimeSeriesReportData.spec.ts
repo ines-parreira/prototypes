@@ -21,8 +21,9 @@ import {
 } from 'hooks/reporting/timeSeries'
 import { TicketSLAStatus } from 'models/reporting/cubes/sla/TicketSLACube'
 import { TicketMeasure } from 'models/reporting/cubes/TicketCube'
+import { withDefaultLogicalOperator } from 'models/reporting/queryFactories/utils'
 import { ReportingGranularity } from 'models/reporting/types'
-import { LegacyStatsFilters } from 'models/stat/types'
+import { StatsFilters, TagFilterInstanceId } from 'models/stat/types'
 import {
     ACHIEVED_SLA_LABEL,
     BREACHED_SLA_LABEL,
@@ -59,15 +60,22 @@ const fetchSatisfiedOrBreachedTicketsTimeSeriesMock = assumeMock(
 )
 
 describe('timeSeriesReportData', () => {
-    const defaultStatsFilters: LegacyStatsFilters = {
+    const defaultStatsFilters: StatsFilters = {
         period: {
             start_datetime: '2021-02-03T00:00:00.000Z',
             end_datetime: '2021-02-03T23:59:59.999Z',
         },
-        channels: [TicketChannel.Chat],
-        integrations: [integrationsState.integrations[0].id],
-        agents: [agents[0].id],
-        tags: [1],
+        channels: withDefaultLogicalOperator([TicketChannel.Chat]),
+        integrations: withDefaultLogicalOperator([
+            integrationsState.integrations[0].id,
+        ]),
+        agents: withDefaultLogicalOperator([agents[0].id]),
+        tags: [
+            {
+                ...withDefaultLogicalOperator([1]),
+                filterInstanceId: TagFilterInstanceId.First,
+            },
+        ],
     }
 
     const defaultTimeSeries = {

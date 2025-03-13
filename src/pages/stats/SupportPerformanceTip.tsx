@@ -1,6 +1,6 @@
 import React from 'react'
 
-import { useNewStatsFilters } from 'hooks/reporting/support-performance/useNewStatsFilters'
+import { useStatsFilters } from 'hooks/reporting/support-performance/useStatsFilters'
 import { MetricTrendHook } from 'hooks/reporting/useMetricTrend'
 import { usePerformanceTips } from 'hooks/reporting/usePerformanceTips'
 import PerformanceTip from 'pages/stats/PerformanceTip'
@@ -14,7 +14,7 @@ export const SupportPerformanceTip = ({
     metric: MetricName
     useTrend: MetricTrendHook
 }) => {
-    const { cleanStatsFilters, userTimezone } = useNewStatsFilters()
+    const { cleanStatsFilters, userTimezone } = useStatsFilters()
 
     const trend = useTrend(cleanStatsFilters, userTimezone)
     const tip = usePerformanceTips(metric, trend?.data?.value || null)

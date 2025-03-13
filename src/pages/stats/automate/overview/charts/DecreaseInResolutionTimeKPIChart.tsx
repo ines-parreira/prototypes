@@ -1,7 +1,7 @@
 import React from 'react'
 
+import { useAutomateFilters } from 'hooks/reporting/automate/useAutomateFilters'
 import { useDecreaseInResolutionTimeTrend } from 'hooks/reporting/automate/useDecreaseInResolutionTimeTrend'
-import { useNewAutomateFilters } from 'hooks/reporting/automate/useNewAutomateFilters'
 import { DecreaseInResolutionTimeMetric } from 'pages/automate/automate-metrics'
 import { DashboardChartProps } from 'pages/stats/dashboards/types'
 
@@ -9,7 +9,7 @@ export const DecreaseInResolutionTimeKPIChart = ({
     chartId,
     dashboard,
 }: DashboardChartProps) => {
-    const { statsFilters, userTimezone } = useNewAutomateFilters()
+    const { statsFilters, userTimezone } = useAutomateFilters()
     const decreaseInResolutionTimeTrend = useDecreaseInResolutionTimeTrend(
         statsFilters,
         userTimezone,

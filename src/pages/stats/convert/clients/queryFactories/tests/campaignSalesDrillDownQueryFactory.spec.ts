@@ -2,7 +2,8 @@ import moment from 'moment'
 
 import { TicketChannel } from 'business/types/ticket'
 import { OrderDirection } from 'models/api/types'
-import { LegacyStatsFilters } from 'models/stat/types'
+import { withDefaultLogicalOperator } from 'models/reporting/queryFactories/utils'
+import { StatsFilters } from 'models/stat/types'
 import { LogicalOperatorEnum } from 'pages/stats/common/components/Filter/constants'
 import {
     Cube,
@@ -17,17 +18,17 @@ describe('campaignSalesDrillDownQueryFactory', () => {
     const periodStart = moment()
     const periodEnd = periodStart.add(7, 'days')
     const selectedCampaignIds = ['13b8f506-f77f-4740-bbc1-e61412029445']
-    const statsFilters: LegacyStatsFilters = {
+    const statsFilters: StatsFilters = {
         period: {
             end_datetime: periodEnd.toISOString(),
             start_datetime: periodStart.toISOString(),
         },
-        channels: [TicketChannel.Chat],
-        integrations: [1],
-        campaigns: [
+        channels: withDefaultLogicalOperator([TicketChannel.Chat]),
+        integrations: withDefaultLogicalOperator([1]),
+        campaigns: withDefaultLogicalOperator([
             '13b8f506-f77f-4740-bbc1-e61412029445',
             '1c1edb2c-2ffc-4a5f-a59e-8267e804e252',
-        ],
+        ]),
     }
     const shopName = 'shopify:athlete-shift'
     const timezone = 'someTimeZone'
@@ -67,7 +68,7 @@ describe('campaignSalesDrillDownQueryFactory', () => {
                 {
                     member: `${Cube.orderConversion}.${SharedDimension.campaignId}`,
                     operator: FilterOperator.equals,
-                    values: statsFilters.campaigns,
+                    values: statsFilters.campaigns?.values,
                 },
                 {
                     member: `${Cube.orderConversion}.${SharedDimension.shopName}`,

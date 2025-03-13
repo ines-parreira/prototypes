@@ -2,7 +2,7 @@ import moment from 'moment/moment'
 
 import useMetricTrend from 'hooks/reporting/useMetricTrend'
 import { HelpCenterTrackingEventMeasures } from 'models/reporting/cubes/HelpCenterTrackingEventCube'
-import { LegacyStatsFilters } from 'models/stat/types'
+import { StatsFilters } from 'models/stat/types'
 import { useSearchRequestedTrend } from 'pages/stats/help-center/hooks/useSearchRequestedTrend'
 import { formatReportingQueryDate } from 'utils/reporting'
 
@@ -23,7 +23,7 @@ describe('useSearchRequestedTrend', () => {
     it('should call metric trend hook with correct params', () => {
         const periodStart = formatReportingQueryDate(moment())
         const periodEnd = formatReportingQueryDate(moment().subtract(7, 'd'))
-        const statsFilters: LegacyStatsFilters = {
+        const statsFilters: StatsFilters = {
             period: {
                 start_datetime: periodStart,
                 end_datetime: periodEnd,

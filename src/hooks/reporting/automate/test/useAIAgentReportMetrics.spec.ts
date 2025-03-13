@@ -19,10 +19,10 @@ import {
 } from 'hooks/reporting/automate/useAIAgentReportMetrics'
 import { useAutomateMetricsTimeSeries } from 'hooks/reporting/automate/useAutomationDataset'
 import { calculateGreyArea } from 'hooks/reporting/automate/utils'
+import { getCsvFileNameWithDates } from 'hooks/reporting/common/utils'
 import { useAgentsMetrics } from 'hooks/reporting/support-performance/agents/useAgentsMetrics'
 import { useAgentsSummaryMetrics } from 'hooks/reporting/support-performance/agents/useAgentsSummaryMetrics'
-import { getCsvFileNameWithDates } from 'hooks/reporting/support-performance/overview/useDownloadOverviewData'
-import { useNewStatsFilters } from 'hooks/reporting/support-performance/useNewStatsFilters'
+import { useStatsFilters } from 'hooks/reporting/support-performance/useStatsFilters'
 import { useCustomFieldsTicketCountTimeSeries } from 'hooks/reporting/timeSeries'
 import { useAgentsTableConfigSetting } from 'hooks/reporting/useAgentsTableConfigSetting'
 import { getPeriodDateTimes } from 'hooks/reporting/useTimeSeries'
@@ -99,8 +99,8 @@ jest.mock('hooks/reporting/useAgentsTableConfigSetting')
 const useAgentsTableConfigSettingMock = assumeMock(useAgentsTableConfigSetting)
 
 // useAutomatedTicketsMetrics
-jest.mock('hooks/reporting/support-performance/useNewStatsFilters')
-const useNewStatsFiltersMock = assumeMock(useNewStatsFilters)
+jest.mock('hooks/reporting/support-performance/useStatsFilters')
+const useNewStatsFiltersMock = assumeMock(useStatsFilters)
 
 jest.mock('hooks/reporting/automate/useAutomationDataset')
 const useAutomateMetricsTimeSeriesMock = assumeMock(
@@ -191,7 +191,6 @@ describe('useAutomatedTicketsMetrics', () => {
             },
             userTimezone: 'UTC',
             granularity: ReportingGranularity.Day,
-            isAnalyticsNewFilters: false,
         })
 
         useAutomateMetricsTimeSeriesMock.mockReturnValue({
@@ -265,7 +264,6 @@ describe('useTicketInsightsMetrics', () => {
             },
             userTimezone: 'UTC',
             granularity: ReportingGranularity.Day,
-            isAnalyticsNewFilters: false,
         })
 
         useCustomFieldsTicketCountTimeSeriesMock.mockReturnValue({
@@ -342,7 +340,6 @@ describe('useAIAgentReportMetrics', () => {
             },
             userTimezone: 'UTC',
             granularity: ReportingGranularity.Day,
-            isAnalyticsNewFilters: false,
         })
 
         useAutomateMetricsTimeSeriesMock.mockReturnValue({
@@ -380,7 +377,6 @@ describe('useAIAgentReportMetrics', () => {
             },
             userTimezone: 'UTC',
             granularity: ReportingGranularity.Day,
-            isAnalyticsNewFilters: false,
         })
 
         useCustomFieldsTicketCountTimeSeriesMock.mockReturnValue({

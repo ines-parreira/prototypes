@@ -3,13 +3,13 @@ import moment from 'moment'
 
 import { AutomateStatsMeasureLabelMap } from 'hooks/reporting/automate/automateStatsMeasureLabelMap'
 import { AutomateTrendMetrics } from 'hooks/reporting/automate/types'
+import { useAutomateFilters } from 'hooks/reporting/automate/useAutomateFilters'
 import {
     fetchAutomateMetricsTimeSeries,
     useAutomateMetricsTimeSeries,
     useAutomateMetricsTrend,
 } from 'hooks/reporting/automate/useAutomationDataset'
-import { useNewAutomateFilters } from 'hooks/reporting/automate/useNewAutomateFilters'
-import { getCsvFileNameWithDates } from 'hooks/reporting/support-performance/overview/useDownloadOverviewData'
+import { getCsvFileNameWithDates } from 'hooks/reporting/common/utils'
 import { AutomationBillingEventMeasure } from 'models/reporting/cubes/automate/AutomationBillingEventCube'
 import { ReportingGranularity } from 'models/reporting/types'
 import { StatsFilters } from 'models/stat/types'
@@ -40,8 +40,8 @@ import {
 import { createCsv } from 'utils/file'
 import { assumeMock } from 'utils/testing'
 
-jest.mock('hooks/reporting/automate/useNewAutomateFilters')
-const useNewAutomateFiltersMock = assumeMock(useNewAutomateFilters)
+jest.mock('hooks/reporting/automate/useAutomateFilters')
+const useNewAutomateFiltersMock = assumeMock(useAutomateFilters)
 
 jest.mock('hooks/reporting/automate/useAutomationDataset')
 const useAutomateMetricsTrendMock = assumeMock(useAutomateMetricsTrend)
@@ -117,7 +117,6 @@ describe('reporting', () => {
     beforeEach(() => {
         useNewAutomateFiltersMock.mockReturnValue({
             granularity: ReportingGranularity.Day,
-            isAnalyticsNewFiltersAutomate: true,
             statsFilters: { period },
             userTimezone: 'UTC',
         })

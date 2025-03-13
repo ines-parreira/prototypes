@@ -1,6 +1,6 @@
 import React, { ReactNode } from 'react'
 
-import { useNewStatsFilters } from 'hooks/reporting/support-performance/useNewStatsFilters'
+import { useStatsFilters } from 'hooks/reporting/support-performance/useStatsFilters'
 import { MetricTrendHook } from 'hooks/reporting/useMetricTrend'
 import BigNumberMetric from 'pages/stats/BigNumberMetric'
 import TrendBadge from 'pages/stats/common/components/TrendBadge'
@@ -45,8 +45,7 @@ export const TrendCard = ({
     interpretAs: 'more-is-better' | 'less-is-better' | 'neutral'
     metricFormat?: MetricTrendFormat
 } & DashboardChartProps) => {
-    const { cleanStatsFilters, userTimezone, isAnalyticsNewFilters } =
-        useNewStatsFilters()
+    const { cleanStatsFilters, userTimezone } = useStatsFilters()
 
     const trend = useTrend(cleanStatsFilters, userTimezone)
     const formattedMetric = formatMetricValue(
@@ -90,7 +89,6 @@ export const TrendCard = ({
                                 metricName: drillDownMetric,
                             } as DrillDownMetric
                         }
-                        useNewFilterData={isAnalyticsNewFilters}
                     >
                         {formattedMetric}
                     </DrillDownModalTrigger>

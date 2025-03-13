@@ -1,12 +1,10 @@
 import React from 'react'
 
 import { renderHook } from '@testing-library/react-hooks'
-import { mockFlags } from 'jest-launchdarkly-mock'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import { FeatureFlagKey } from 'config/featureFlags'
 import { useChannelsSortingQuery } from 'hooks/reporting/support-performance/useChannelsSortingQuery'
 import { MetricWithDecile } from 'hooks/reporting/useMetricPerDimension'
 import { opposite, OrderDirection } from 'models/api/types'
@@ -53,9 +51,6 @@ describe('useChannelsSortingQuery', () => {
             isFetching: false,
             data: null,
             isError: false,
-        })
-        mockFlags({
-            [FeatureFlagKey.AnalyticsNewFilters]: false,
         })
     })
 
@@ -315,51 +310,7 @@ describe('useChannelsSortingQuery', () => {
         expect(store.getActions()).toContainEqual(sortingLoading())
     })
 
-    it('should check that queryHook was called with legacy filters', () => {
-        const state = {
-            stats: {
-                filters: {
-                    ...filtersInitialState.filters,
-                    tags: [
-                        {
-                            ...withDefaultLogicalOperator(mockedTags),
-                            filterInstanceId: TagFilterInstanceId.First,
-                        },
-                    ],
-                    channels: withDefaultLogicalOperator(mockedChannels),
-                },
-            },
-            ui: {
-                stats: {
-                    [channelsSlice.name]: initialState,
-                    filters: uiFiltersInitialState,
-                },
-            },
-        } as RootState
-        const store = mockStore(state)
-        const column = ChannelsTableColumns.CustomerSatisfaction
-
-        renderHook(() => useChannelsSortingQuery(column, queryHook), {
-            wrapper: ({ children }) => (
-                <Provider store={store}>{children}</Provider>
-            ),
-        })
-
-        expect(queryHook).toHaveBeenCalledWith(
-            expect.objectContaining({
-                tags: mockedTags,
-                channels: mockedChannels,
-            }),
-            expect.anything(),
-            expect.anything(),
-        )
-    })
-
     it('should check that queryHook was called with stats filters with logical operator', () => {
-        mockFlags({
-            [FeatureFlagKey.AnalyticsNewFilters]: true,
-        })
-
         const state = {
             stats: {
                 filters: {

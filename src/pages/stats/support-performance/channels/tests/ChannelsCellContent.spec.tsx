@@ -1,9 +1,7 @@
 import React from 'react'
 
 import { screen } from '@testing-library/react'
-import { mockFlags } from 'jest-launchdarkly-mock'
 
-import { FeatureFlagKey } from 'config/featureFlags'
 import { withDefaultLogicalOperator } from 'models/reporting/queryFactories/utils'
 import { TagFilterInstanceId } from 'models/stat/types'
 import { formatMetricValue } from 'pages/stats/common/utils'
@@ -62,10 +60,6 @@ describe('<ChannelsCellContent />', () => {
         updated_datetime: null,
     }
     const column = ChannelsTableColumns.TicketHandleTime
-
-    beforeEach(() => {
-        mockFlags({ [FeatureFlagKey.AnalyticsNewFilters]: false })
-    })
 
     it('should render loading placeholder', () => {
         const metricHook = () => ({
@@ -176,37 +170,7 @@ describe('<ChannelsCellContent />', () => {
         expect(document.querySelector('.heatmap')).toBeInTheDocument()
     })
 
-    it('should check if use metric hook is called with legacy stats filters', () => {
-        const metricHook = jest.fn(() => ({
-            isFetching: true,
-            isError: false,
-            data: {
-                value: null,
-                decile: null,
-                allData: [],
-            },
-        }))
-
-        renderWithStore(
-            <ChannelsCellContent
-                channel={channel}
-                column={column}
-                width={0}
-                useMetric={metricHook}
-            />,
-            defaultState,
-        )
-
-        expect((metricHook.mock.calls[0] as Record<string, any>[])[0]).toEqual(
-            expect.objectContaining({
-                tags: mockedTags,
-                helpCenters: mockedHelpCenters,
-            }),
-        )
-    })
-
     it('should check if use metric hook is called with stats filters with logical operator', () => {
-        mockFlags({ [FeatureFlagKey.AnalyticsNewFilters]: true })
         const metricHook = jest.fn(() => ({
             isFetching: true,
             isError: false,

@@ -7,10 +7,10 @@ import {
     useTimeSeriesReportData,
 } from 'hooks/reporting/common/useTimeSeriesReportData'
 import { useTrendReportData } from 'hooks/reporting/common/useTrendReportData'
+import { getCsvFileNameWithDates } from 'hooks/reporting/common/utils'
 import { useSanitizedDashboard } from 'hooks/reporting/dashboards/useSanitizedDashboard'
 import { MetricPerDimensionFetch } from 'hooks/reporting/distributions'
-import { getCsvFileNameWithDates } from 'hooks/reporting/support-performance/overview/useDownloadOverviewData'
-import { useNewStatsFilters } from 'hooks/reporting/support-performance/useNewStatsFilters'
+import { useStatsFilters } from 'hooks/reporting/support-performance/useStatsFilters'
 import { MetricTrendFetch } from 'hooks/reporting/useMetricTrend'
 import {
     TimeSeriesFetch,
@@ -161,8 +161,7 @@ const TIME_SERIES_FILE_SUFFIX = 'timeSeries'
 const DISTRIBUTIONS_FILE_SUFFIX = 'distributions'
 
 export const useDashboardData = (dashboard: DashboardSchema) => {
-    const { cleanStatsFilters, userTimezone, granularity } =
-        useNewStatsFilters()
+    const { cleanStatsFilters, userTimezone, granularity } = useStatsFilters()
 
     const sanitizedDashboard = useSanitizedDashboard(dashboard)
 

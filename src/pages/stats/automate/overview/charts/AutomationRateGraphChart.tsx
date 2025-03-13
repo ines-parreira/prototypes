@@ -1,7 +1,7 @@
 import React, { useMemo } from 'react'
 
+import { useAutomateFilters } from 'hooks/reporting/automate/useAutomateFilters'
 import { useAutomationRateTimeSeriesData } from 'hooks/reporting/automate/useAutomationRateTimeSeriesData'
-import { useNewAutomateFilters } from 'hooks/reporting/automate/useNewAutomateFilters'
 import {
     automatePercentLabel,
     getGreyAreaAndChartParam,
@@ -22,7 +22,7 @@ export const AutomationRateGraphChart = ({
     chartId,
     dashboard,
 }: DashboardChartProps) => {
-    const { statsFilters, userTimezone, granularity } = useNewAutomateFilters()
+    const { statsFilters, userTimezone, granularity } = useAutomateFilters()
     const { data: timeSeries, isFetching } = useAutomationRateTimeSeriesData(
         statsFilters,
         userTimezone,

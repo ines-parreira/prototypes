@@ -9,7 +9,6 @@ import {
 } from 'hooks/reporting/metrics'
 import {
     AgentOnlyFilters,
-    LegacyStatsFilters,
     Period,
     StatsFilters,
     StatsFiltersWithLogicalOperator,
@@ -17,12 +16,8 @@ import {
 
 export const periodAndAgentOnlyFilters = (statsFilters: {
     period: Period
-    agents?:
-        | LegacyStatsFilters['agents']
-        | StatsFiltersWithLogicalOperator['agents']
-}): AgentOnlyFilters<
-    LegacyStatsFilters['agents'] | StatsFiltersWithLogicalOperator['agents']
-> => ({
+    agents?: StatsFiltersWithLogicalOperator['agents']
+}): AgentOnlyFilters<StatsFiltersWithLogicalOperator['agents']> => ({
     period: statsFilters.period,
     ...(statsFilters?.agents
         ? {

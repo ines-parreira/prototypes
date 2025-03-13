@@ -5,10 +5,10 @@ import { useResponseRateTrend } from 'hooks/reporting/quality-management/satisfa
 import { useSatisfactionScoreTrend } from 'hooks/reporting/quality-management/satisfaction/useSatisfactionScoreTrend'
 import { useSurveyScores } from 'hooks/reporting/quality-management/satisfaction/useSurveyScores'
 import { useSurveysSentTrend } from 'hooks/reporting/quality-management/satisfaction/useSurveysSentTrend'
-import { useNewStatsFilters } from 'hooks/reporting/support-performance/useNewStatsFilters'
+import { useStatsFilters } from 'hooks/reporting/support-performance/useStatsFilters'
 
 export const useSatisfactionMetrics = () => {
-    const { cleanStatsFilters, userTimezone } = useNewStatsFilters()
+    const { cleanStatsFilters, userTimezone } = useStatsFilters()
 
     const satisfactionScoreTrend = useSatisfactionScoreTrend(
         cleanStatsFilters,

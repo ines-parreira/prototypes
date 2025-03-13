@@ -24,7 +24,6 @@ type VoiceCallCallerExperienceMetricProps = {
     metricTrend: MetricTrend
     statsFilters: StatsFilters
     metricData: VoiceMetrics
-    isAnalyticsNewFilters?: boolean
 } & DashboardChartProps
 
 function VoiceCallCallerExperienceMetric({
@@ -33,7 +32,6 @@ function VoiceCallCallerExperienceMetric({
     statsFilters,
     metricTrend,
     metricData,
-    isAnalyticsNewFilters = false,
     dashboard,
     chartId,
 }: VoiceCallCallerExperienceMetricProps) {
@@ -77,7 +75,6 @@ function VoiceCallCallerExperienceMetric({
                 <DrillDownModalTrigger
                     enabled={!!voiceCallsAverageTime}
                     metricData={metricData}
-                    useNewFilterData={isAnalyticsNewFilters}
                 >
                     {metricValue}
                 </DrillDownModalTrigger>

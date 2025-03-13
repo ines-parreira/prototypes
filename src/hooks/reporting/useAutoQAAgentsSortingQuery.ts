@@ -4,7 +4,7 @@ import { PayloadAction } from '@reduxjs/toolkit'
 // eslint-disable-next-line no-restricted-imports
 import { useDispatch } from 'react-redux'
 
-import { useNewStatsFilters } from 'hooks/reporting/support-performance/useNewStatsFilters'
+import { useStatsFilters } from 'hooks/reporting/support-performance/useStatsFilters'
 import { MetricWithDecile } from 'hooks/reporting/useMetricPerDimension'
 import useAppSelector from 'hooks/useAppSelector'
 import { opposite, OrderDirection } from 'models/api/types'
@@ -85,7 +85,7 @@ const useResetPageOnQueryUpdate = (
     pageSet: (page: number) => PayloadAction<number>,
 ) => {
     const dispatch = useDispatch()
-    const { cleanStatsFilters } = useNewStatsFilters()
+    const { cleanStatsFilters } = useStatsFilters()
 
     useEffect(() => {
         dispatch(pageSet(1))

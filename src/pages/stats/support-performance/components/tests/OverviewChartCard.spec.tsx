@@ -8,7 +8,7 @@ import thunk from 'redux-thunk'
 import { TicketChannel } from 'business/types/ticket'
 import { agents } from 'fixtures/agents'
 import { integrationsState } from 'fixtures/integrations'
-import { useNewStatsFilters } from 'hooks/reporting/support-performance/useNewStatsFilters'
+import { useStatsFilters } from 'hooks/reporting/support-performance/useStatsFilters'
 import {
     useMessagesSentTimeSeries,
     useOneTouchTicketsTimeSeries,
@@ -18,14 +18,14 @@ import {
     useZeroTouchTicketsTimeSeries,
 } from 'hooks/reporting/timeSeries'
 import { useTimeSeries } from 'hooks/reporting/useTimeSeries'
+import { withDefaultLogicalOperator } from 'models/reporting/queryFactories/utils'
 import { ReportingGranularity } from 'models/reporting/types'
-import { LegacyStatsFilters } from 'models/stat/types'
+import { StatsFilters, TagFilterInstanceId } from 'models/stat/types'
 import { CHART_TOOLTIP_TARGET as barChartTooltipTarget } from 'pages/stats/common/components/charts/BarChart/BarChart'
 import { CHART_TOOLTIP_TARGET as lineChartTooltipTarget } from 'pages/stats/common/components/charts/LineChart/LineChart'
 import { DEFAULT_TIMEZONE } from 'pages/stats/convert/constants/components'
 import { OverviewChartCard } from 'pages/stats/support-performance/components/OverviewChartCard'
 import { OverviewChartConfig } from 'pages/stats/support-performance/overview/SupportPerformanceOverviewConfig'
-import { fromLegacyStatsFilters } from 'state/stats/utils'
 import { RootState, StoreDispatch } from 'state/types'
 import { initialState as uiStatsInitialState } from 'state/ui/stats/filtersSlice'
 import { assumeMock } from 'utils/testing'
@@ -42,47 +42,37 @@ const useZeroTouchTicketsTimeSeriesMock = assumeMock(
     useZeroTouchTicketsTimeSeries,
 )
 
-jest.mock('hooks/reporting/support-performance/useNewStatsFilters')
-const useNewStatsFiltersMock = assumeMock(useNewStatsFilters)
+jest.mock('hooks/reporting/support-performance/useStatsFilters')
+const useStatsFiltersMock = assumeMock(useStatsFilters)
 
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
 
 describe('<OverviewChartCard />', () => {
-    const defaultStatsFilters: LegacyStatsFilters = {
+    const defaultStatsFilters: StatsFilters = {
         period: {
             start_datetime: '2021-02-03T00:00:00.000Z',
             end_datetime: '2021-02-03T23:59:59.999Z',
         },
-        channels: [TicketChannel.Chat],
-        integrations: [integrationsState.integrations[0].id],
-        agents: [agents[0].id],
-        tags: [1],
+        channels: withDefaultLogicalOperator([TicketChannel.Chat]),
+        integrations: withDefaultLogicalOperator([
+            integrationsState.integrations[0].id,
+        ]),
+        agents: withDefaultLogicalOperator([agents[0].id]),
+        tags: [
+            {
+                ...withDefaultLogicalOperator([1]),
+                filterInstanceId: TagFilterInstanceId.First,
+            },
+        ],
     }
     const defaultState = {
         stats: {
-            filters: fromLegacyStatsFilters(defaultStatsFilters),
+            filters: defaultStatsFilters,
         },
         ui: {
             stats: { filters: uiStatsInitialState },
         },
     } as RootState
-
-    beforeEach(() => {
-        jest.resetAllMocks()
-        useTicketsCreatedTimeSeriesMock.mockReturnValue(defaultTimeSeries)
-        useTicketsClosedTimeSeriesMock.mockReturnValue(defaultTimeSeries)
-        useTicketsRepliedTimeSeriesMock.mockReturnValue(defaultTimeSeries)
-        useMessagesSentTimeSeriesMock.mockReturnValue(defaultTimeSeries)
-        useOneTouchTicketsTimeSeriesMock.mockReturnValue(defaultTimeSeries)
-        useZeroTouchTicketsTimeSeriesMock.mockReturnValue(defaultTimeSeries)
-        useNewStatsFiltersMock.mockReturnValue({
-            cleanStatsFilters: defaultStatsFilters,
-            userTimezone: DEFAULT_TIMEZONE,
-            granularity: ReportingGranularity.Day,
-            isAnalyticsNewFilters: true,
-        })
-    })
-
     const defaultTimeSeries = {
         data: [
             [
@@ -93,6 +83,20 @@ describe('<OverviewChartCard />', () => {
             ],
         ],
     } as ReturnType<typeof useTimeSeries>
+    beforeEach(() => {
+        jest.resetAllMocks()
+        useTicketsCreatedTimeSeriesMock.mockReturnValue(defaultTimeSeries)
+        useTicketsClosedTimeSeriesMock.mockReturnValue(defaultTimeSeries)
+        useTicketsRepliedTimeSeriesMock.mockReturnValue(defaultTimeSeries)
+        useMessagesSentTimeSeriesMock.mockReturnValue(defaultTimeSeries)
+        useOneTouchTicketsTimeSeriesMock.mockReturnValue(defaultTimeSeries)
+        useZeroTouchTicketsTimeSeriesMock.mockReturnValue(defaultTimeSeries)
+        useStatsFiltersMock.mockReturnValue({
+            cleanStatsFilters: defaultStatsFilters,
+            userTimezone: DEFAULT_TIMEZONE,
+            granularity: ReportingGranularity.Day,
+        })
+    })
 
     it.each(Object.values(OverviewChartConfig))(
         'should fetch TimeSeries data and render with line chart',
@@ -132,11 +136,10 @@ describe('<OverviewChartCard />', () => {
         const granularity = ReportingGranularity.Day
 
         it('should pas legacyStatsFilters to useTimeSeries', () => {
-            useNewStatsFiltersMock.mockReturnValue({
-                cleanStatsFilters: fromLegacyStatsFilters(defaultStatsFilters),
+            useStatsFiltersMock.mockReturnValue({
+                cleanStatsFilters: defaultStatsFilters,
                 userTimezone: DEFAULT_TIMEZONE,
                 granularity: ReportingGranularity.Day,
-                isAnalyticsNewFilters: false,
             })
             const useTimeSeriesSpy = jest
                 .fn()
@@ -152,18 +155,17 @@ describe('<OverviewChartCard />', () => {
             )
 
             expect(useTimeSeriesSpy).toHaveBeenCalledWith(
-                fromLegacyStatsFilters(defaultStatsFilters),
+                defaultStatsFilters,
                 userTimezone,
                 granularity,
             )
         })
 
         it('should pas statsFilterWithLogicalOperators to useTimeSeries', () => {
-            useNewStatsFiltersMock.mockReturnValue({
-                cleanStatsFilters: fromLegacyStatsFilters(defaultStatsFilters),
+            useStatsFiltersMock.mockReturnValue({
+                cleanStatsFilters: defaultStatsFilters,
                 userTimezone: DEFAULT_TIMEZONE,
                 granularity: ReportingGranularity.Day,
-                isAnalyticsNewFilters: true,
             })
             const useTimeSeriesSpy = jest
                 .fn()
@@ -179,7 +181,7 @@ describe('<OverviewChartCard />', () => {
             )
 
             expect(useTimeSeriesSpy).toHaveBeenCalledWith(
-                fromLegacyStatsFilters(defaultStatsFilters),
+                defaultStatsFilters,
                 userTimezone,
                 granularity,
             )

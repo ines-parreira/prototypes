@@ -3,14 +3,14 @@ import React from 'react'
 import { act, fireEvent, render, waitFor } from '@testing-library/react'
 
 import { logEvent, SegmentEvent } from 'common/segment'
+import { getCsvFileNameWithDates } from 'hooks/reporting/common/utils'
 import {
     SLA_REPORT_FILENAME,
     useDownloadSLAsData,
 } from 'hooks/reporting/sla/useDownloadSLAsData'
-import { getCsvFileNameWithDates } from 'hooks/reporting/support-performance/overview/useDownloadOverviewData'
-import { useNewStatsFilters } from 'hooks/reporting/support-performance/useNewStatsFilters'
+import { useStatsFilters } from 'hooks/reporting/support-performance/useStatsFilters'
 import { ReportingGranularity } from 'models/reporting/types'
-import { LegacyStatsFilters } from 'models/stat/types'
+import { StatsFilters } from 'models/stat/types'
 import {
     DEFAULT_TIMEZONE,
     DOWNLOAD_DATA_BUTTON_LABEL,
@@ -24,13 +24,13 @@ const logEventMock = logEvent as jest.MockedFunction<typeof logEvent>
 
 jest.mock('utils/file')
 const saveZippedFilesMock = assumeMock(saveZippedFiles)
-jest.mock('hooks/reporting/support-performance/useNewStatsFilters')
-const useNewStatsFiltersMock = assumeMock(useNewStatsFilters)
+jest.mock('hooks/reporting/support-performance/useStatsFilters')
+const useStatsFiltersMock = assumeMock(useStatsFilters)
 
 jest.mock('hooks/reporting/sla/useDownloadSLAsData')
 const useDownloadSLAsDataMock = assumeMock(useDownloadSLAsData)
 
-const defaultStatsFilters: LegacyStatsFilters = {
+const defaultStatsFilters: StatsFilters = {
     period: {
         start_datetime: '2021-02-03T00:00:00.000',
         end_datetime: '2021-02-03T23:59:59.999',
@@ -47,11 +47,10 @@ describe('DownloadSLAsData', () => {
     }
 
     beforeEach(() => {
-        useNewStatsFiltersMock.mockReturnValue({
+        useStatsFiltersMock.mockReturnValue({
             cleanStatsFilters: defaultStatsFilters,
             userTimezone: DEFAULT_TIMEZONE,
             granularity: ReportingGranularity.Day,
-            isAnalyticsNewFilters: true,
         })
         useDownloadSLAsDataMock.mockReturnValue({
             files: reportData,

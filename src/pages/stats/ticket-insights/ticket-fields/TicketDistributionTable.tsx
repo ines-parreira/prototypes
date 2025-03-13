@@ -1,12 +1,9 @@
 import React from 'react'
 
-import { useFlags } from 'launchdarkly-react-client-sdk'
-
 import colors from '@gorgias/design-tokens/dist/tokens/colors.json'
 import { Skeleton } from '@gorgias/merchant-ui-kit'
 
-import { FeatureFlagKey } from 'config/featureFlags'
-import { useTicketsDistribution } from 'hooks/reporting/useTicketsDistribution'
+import { useTicketsDistribution } from 'hooks/reporting/ticket-insights/useTicketsDistribution'
 import useAppSelector from 'hooks/useAppSelector'
 import { useWidthBasedOnScreen } from 'hooks/useWidthBasedOnScreen'
 import BodyCell from 'pages/common/components/table/cells/BodyCell'
@@ -76,10 +73,6 @@ const NoDataFallback = () => {
     return <NoDataAvailable style={{ minHeight: 300 }} />
 }
 
-const useIsAnalyticsNewFilters = () => {
-    return !!useFlags()[FeatureFlagKey.AnalyticsNewFilters]
-}
-
 type CustomField = Omit<ReturnType<typeof getSelectedCustomField>, 'isLoading'>
 
 const TicketDistributionTable = ({
@@ -87,8 +80,6 @@ const TicketDistributionTable = ({
 }: {
     selectedCustomField: CustomField
 }) => {
-    const isAnalyticsNewFilters = useIsAnalyticsNewFilters()
-
     const {
         isFetching,
         topData,
@@ -128,7 +119,6 @@ const TicketDistributionTable = ({
                                         customFieldId: selectedCustomField.id,
                                         customFieldValue: [item.category],
                                     }}
-                                    useNewFilterData={isAnalyticsNewFilters}
                                 >
                                     {formatMetricValue(
                                         item.value,
@@ -191,7 +181,6 @@ const TicketDistributionTable = ({
                                     customFieldId: selectedCustomField.id,
                                     customFieldValue: null,
                                 }}
-                                useNewFilterData={isAnalyticsNewFilters}
                             >
                                 {formatMetricValue(ticketsCountTotal)}
                             </DrillDownModalTrigger>

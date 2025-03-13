@@ -26,8 +26,9 @@ import { ticketsCreatedTimeSeriesQueryFactory } from 'models/reporting/queryFact
 import { ticketsRepliedTimeSeriesQueryFactory } from 'models/reporting/queryFactories/support-performance/ticketsReplied'
 import { customFieldsTicketCountTimeSeriesQueryFactory } from 'models/reporting/queryFactories/ticket-insights/customFieldsTicketCount'
 import { tagsTicketCountTimeSeriesFactory } from 'models/reporting/queryFactories/ticket-insights/tagsTicketCount'
+import { withDefaultLogicalOperator } from 'models/reporting/queryFactories/utils'
 import { ReportingGranularity } from 'models/reporting/types'
-import { StatsFilters } from 'models/stat/types'
+import { StatsFilters, TagFilterInstanceId } from 'models/stat/types'
 import { assumeMock } from 'utils/testing'
 
 jest.mock('hooks/reporting/useTimeSeries')
@@ -71,15 +72,23 @@ describe('time series', () => {
         ],
     ])('%s', (_, useTrendFn, queryFactory) => {
         it('should use query factory for $testName', () => {
-            const filters = {
+            const filters: StatsFilters = {
                 period: {
                     start_datetime: '2021-05-29T00:00:00+02:00',
                     end_datetime: '2021-06-04T23:59:59+02:00',
                 },
-                channels: [TicketChannel.Email, TicketChannel.Chat],
-                integrations: [1],
-                agents: [2],
-                tags: [1, 2],
+                channels: withDefaultLogicalOperator([
+                    TicketChannel.Email,
+                    TicketChannel.Chat,
+                ]),
+                integrations: withDefaultLogicalOperator([1]),
+                agents: withDefaultLogicalOperator([2]),
+                tags: [
+                    {
+                        ...withDefaultLogicalOperator([1, 2]),
+                        filterInstanceId: TagFilterInstanceId.First,
+                    },
+                ],
             }
 
             renderHook(() => useTrendFn(filters, timezone, granularity))
@@ -113,15 +122,23 @@ describe('time series', () => {
         ],
     ])('%s', (_testName, fetchTimeSeriesFn, queryFactory) => {
         it('should use fetchMethod $testName', async () => {
-            const filters = {
+            const filters: StatsFilters = {
                 period: {
                     start_datetime: '2021-05-29T00:00:00+02:00',
                     end_datetime: '2021-06-04T23:59:59+02:00',
                 },
-                channels: [TicketChannel.Email, TicketChannel.Chat],
-                integrations: [1],
-                agents: [2],
-                tags: [1, 2],
+                channels: withDefaultLogicalOperator([
+                    TicketChannel.Email,
+                    TicketChannel.Chat,
+                ]),
+                integrations: withDefaultLogicalOperator([1]),
+                agents: withDefaultLogicalOperator([2]),
+                tags: [
+                    {
+                        ...withDefaultLogicalOperator([1, 2]),
+                        filterInstanceId: TagFilterInstanceId.First,
+                    },
+                ],
             }
 
             await fetchTimeSeriesFn(filters, timezone, granularity)

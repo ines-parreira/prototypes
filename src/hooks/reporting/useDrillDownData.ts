@@ -1,5 +1,6 @@
 import { useMemo } from 'react'
 
+import { useStatsFilters } from 'hooks/reporting/support-performance/useStatsFilters'
 import {
     useMetricPerDimension,
     useMetricPerDimensionWithEnrichment,
@@ -23,13 +24,8 @@ import { getHumanAndAutomationBotAgentsJS } from 'state/agents/selectors'
 import {
     DrillDownMetric,
     getDrillDownCurrentPage,
-    getIsNewFilter,
     setCurrentPage,
 } from 'state/ui/stats/drillDownSlice'
-import {
-    getCleanStatsFiltersWithLogicalOperatorsWithTimezone,
-    getCleanStatsFiltersWithTimezone,
-} from 'state/ui/stats/selectors'
 import {
     AgentsTableColumn,
     AIInsightsMetric,
@@ -90,17 +86,7 @@ export const getDrillDownMetricOrder = (
 }
 
 export const useDrillDownQuery = (metricData: DrillDownMetric) => {
-    const isAnalyticsNewFilters = useAppSelector(getIsNewFilter)
-    const { cleanStatsFilters: legacyStatsFilters } = useAppSelector(
-        getCleanStatsFiltersWithTimezone,
-    )
-    const {
-        cleanStatsFilters: statsFiltersWithLogicalOperators,
-        userTimezone,
-    } = useAppSelector(getCleanStatsFiltersWithLogicalOperatorsWithTimezone)
-    const cleanStatsFilters = isAnalyticsNewFilters
-        ? statsFiltersWithLogicalOperators
-        : legacyStatsFilters
+    const { cleanStatsFilters, userTimezone } = useStatsFilters()
 
     return getDrillDownQuery(metricData)(
         cleanStatsFilters,

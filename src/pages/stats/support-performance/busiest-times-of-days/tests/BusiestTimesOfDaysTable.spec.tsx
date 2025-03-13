@@ -5,7 +5,7 @@ import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import { useNewStatsFilters } from 'hooks/reporting/support-performance/useNewStatsFilters'
+import { useStatsFilters } from 'hooks/reporting/support-performance/useStatsFilters'
 import { ReportingGranularity } from 'models/reporting/types'
 import { BusiestTimesOfDaysTable } from 'pages/stats/support-performance/busiest-times-of-days/BusiestTimesOfDaysTable'
 import {
@@ -19,8 +19,8 @@ import {
 import { assumeMock } from 'utils/testing'
 
 const mockStore = configureMockStore([thunk])
-jest.mock('hooks/reporting/support-performance/useNewStatsFilters')
-const useNewStatsFiltersMock = assumeMock(useNewStatsFilters)
+jest.mock('hooks/reporting/support-performance/useStatsFilters')
+const useStatsFiltersMock = assumeMock(useStatsFilters)
 
 describe('<BusiestTimesOfDaysTable />', () => {
     const defaultStatsFilters = {
@@ -31,11 +31,10 @@ describe('<BusiestTimesOfDaysTable />', () => {
     }
 
     beforeEach(() => {
-        useNewStatsFiltersMock.mockReturnValue({
+        useStatsFiltersMock.mockReturnValue({
             userTimezone: 'someTimezone',
             cleanStatsFilters: defaultStatsFilters,
             granularity: ReportingGranularity.Day,
-            isAnalyticsNewFilters: true,
         })
     })
 

@@ -7,6 +7,7 @@ import thunk from 'redux-thunk'
 
 import { logEvent, SegmentEvent } from 'common/segment'
 import { OrderDirection } from 'models/api/types'
+import { withDefaultLogicalOperator } from 'models/reporting/queryFactories/utils'
 import { ReportingGranularity } from 'models/reporting/types'
 import { DOWNLOAD_DATA_BUTTON_LABEL } from 'pages/stats/constants'
 import { DownloadTicketFieldsDataButton } from 'pages/stats/ticket-insights/ticket-fields/DownloadTicketFieldsDataButton'
@@ -101,7 +102,7 @@ describe('DownloadTicketFieldsDataButton', () => {
         fireEvent.click(screen.getByRole('button'))
 
         expect(useCustomFieldsReportDataMock).toHaveBeenCalledWith(
-            statsFilters,
+            { ...statsFilters, integrations: withDefaultLogicalOperator([]) },
             userTimezone,
             granularity,
             defaultOrder,

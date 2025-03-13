@@ -1,8 +1,6 @@
 import { renderHook } from '@testing-library/react-hooks'
-import { useFlags } from 'launchdarkly-react-client-sdk'
 import moment from 'moment/moment'
 
-import { FeatureFlagKey } from 'config/featureFlags'
 import useAppSelector from 'hooks/useAppSelector'
 import { StatsFilters } from 'models/stat/types'
 import {
@@ -44,76 +42,12 @@ const statsFilters: StatsFilters = {
 }
 const userTimezone = 'UTC'
 
-const mockUseFlags = useFlags as jest.MockedFunction<typeof useFlags>
-
 describe('useVoiceAgentsSummaryMetrics', () => {
     it('should return agents performance summary metrics', () => {
         useAppSelectorMock.mockReturnValue({
             cleanStatsFilters: statsFilters,
             userTimezone,
         })
-        useTotalCallsMetricMock.mockReturnValue(metricData)
-        useAnsweredCallsMetricMock.mockReturnValue(metricData)
-        useMissedCallsMetricMock.mockReturnValue(metricData)
-        useDeclinedCallsMetricMock.mockReturnValue(metricData)
-        useOutboundCallsMetricMock.mockReturnValue(metricData)
-        useAverageTalkTimeMetricMock.mockReturnValue(metricData)
-
-        const { result } = renderHook(() =>
-            useVoiceAgentsSummaryMetrics(statsFilters, userTimezone),
-        )
-
-        expect(result.current).toEqual({
-            summaryData: {
-                totalCallsMetric: metricData,
-                answeredCallsMetric: metricData,
-                missedCallsMetric: metricData,
-                declinedCallsMetric: metricData,
-                outboundCallsMetric: metricData,
-                averageTalkTimeMetric: metricData,
-            },
-            isLoading: false,
-            period: {
-                end_datetime: formatReportingQueryDate(periodStart),
-                start_datetime: formatReportingQueryDate(periodEnd),
-            },
-        })
-
-        expect(useTotalCallsMetricMock).toHaveBeenCalledWith(
-            statsFilters,
-            userTimezone,
-        )
-        expect(useAnsweredCallsMetricMock).toHaveBeenCalledWith(
-            statsFilters,
-            userTimezone,
-        )
-        expect(useMissedCallsMetricMock).toHaveBeenCalledWith(
-            statsFilters,
-            userTimezone,
-        )
-        expect(useDeclinedCallsMetricMock).toHaveBeenCalledWith(
-            statsFilters,
-            userTimezone,
-        )
-        expect(useOutboundCallsMetricMock).toHaveBeenCalledWith(
-            statsFilters,
-            userTimezone,
-        )
-        expect(useAverageTalkTimeMetricMock).toHaveBeenCalledWith(
-            statsFilters,
-            userTimezone,
-        )
-    })
-})
-
-describe('useVoiceAgentsSummaryMetrics with AnalyticsNewFiltersVoice', () => {
-    beforeEach(() => {
-        mockUseFlags.mockReturnValue({
-            [FeatureFlagKey.AnalyticsNewFiltersVoice]: true,
-        })
-    })
-
-    it('should return agents performance summary metrics', () => {
         useTotalCallsMetricMock.mockReturnValue(metricData)
         useAnsweredCallsMetricMock.mockReturnValue(metricData)
         useMissedCallsMetricMock.mockReturnValue(metricData)

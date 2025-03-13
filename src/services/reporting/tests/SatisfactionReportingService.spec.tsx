@@ -7,13 +7,13 @@ import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
 import { useTables } from 'hooks/reporting/common/useTableReportData'
+import { getCsvFileNameWithDates } from 'hooks/reporting/common/utils'
 import { useSatisfactionMetrics } from 'hooks/reporting/quality-management/satisfaction/useSatisfactionMetrics'
 import {
     fetchScoredSurveys,
     useScoredSurveys,
 } from 'hooks/reporting/quality-management/satisfaction/useScoredSurveys'
 import { fetchSurveyScores } from 'hooks/reporting/quality-management/satisfaction/useSurveyScores'
-import { getCsvFileNameWithDates } from 'hooks/reporting/support-performance/overview/useDownloadOverviewData'
 import { TicketSatisfactionSurveyDimension } from 'models/reporting/cubes/TicketSatisfactionSurveyCube'
 import { formatMetricValue } from 'pages/stats/common/utils'
 import { getFormattedInfo } from 'pages/stats/quality-management/satisfaction/AverageScorePerDimensionTrendChart/utils'

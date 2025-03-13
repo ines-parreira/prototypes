@@ -16,11 +16,13 @@ import {
     basicYearlyHelpdeskPlan,
     HELPDESK_PRODUCT_ID,
 } from 'fixtures/productPrices'
+import { useCleanStatsFilters } from 'hooks/reporting/useCleanStatsFilters'
 import { FilterKey } from 'models/stat/types'
 import { TrendCard } from 'pages/stats/common/components/TrendCard'
 import { AUTO_QA_FILTER_KEYS } from 'pages/stats/common/filters/constants'
 import FiltersPanelWrapper from 'pages/stats/common/filters/FiltersPanelWrapper/FiltersPanelWrapper'
 import { DrillDownModalTrigger } from 'pages/stats/DrillDownModalTrigger'
+import { useReportChartRestrictions } from 'pages/stats/report-chart-restrictions/useReportChartRestrictions'
 import { OverviewChartCard } from 'pages/stats/support-performance/components/OverviewChartCard'
 import { MessagesReceivedTrendCard } from 'pages/stats/support-performance/overview/charts/MessagesReceivedTrendCard'
 import { TicketsCreatedVsClosedChart } from 'pages/stats/support-performance/overview/charts/TicketsCreatedVsClosedChart'
@@ -47,9 +49,6 @@ jest.mock('pages/stats/DrillDownModalTrigger.tsx', () => ({
     DrillDownModalTrigger: ({
         children,
     }: ComponentProps<typeof DrillDownModalTrigger>) => children,
-}))
-jest.mock('pages/stats/support-performance/SupportPerformanceFilters', () => ({
-    SupportPerformanceFilters: () => <div />,
 }))
 jest.mock(
     'pages/stats/support-performance/overview/DownloadOverviewData.tsx',
@@ -78,6 +77,8 @@ jest.mock(
     'pages/stats/support-performance/overview/charts/WorkloadPerChannelChart',
 )
 const workloadPerChannelChartMock = assumeMock(WorkloadPerChannelChart)
+jest.mock('hooks/reporting/useCleanStatsFilters')
+const useCleanStatsFiltersMock = assumeMock(useCleanStatsFilters)
 
 jest.mock(
     'pages/stats/common/filters/FiltersPanelWrapper',
@@ -97,6 +98,9 @@ jest.mock(
 )
 const MessagesReceivedTrendCardMock = assumeMock(MessagesReceivedTrendCard)
 
+jest.mock('pages/stats/report-chart-restrictions/useReportChartRestrictions')
+const useReportChartRestrictionsMock = assumeMock(useReportChartRestrictions)
+
 const defaultState = {
     billing: fromJS(billingState),
 }
@@ -104,6 +108,10 @@ const defaultState = {
 describe('<SupportPerformanceOverview />', () => {
     beforeEach(() => {
         jest.resetAllMocks()
+        useReportChartRestrictionsMock.mockReturnValue({
+            isChartRestrictedToCurrentUser: () => false,
+            isRouteRestrictedToCurrentUser: () => false,
+        })
         trendCardMock.mockImplementation(({ tip }) => (
             <div>TrendCardMock {tip}</div>
         ))
@@ -122,7 +130,6 @@ describe('<SupportPerformanceOverview />', () => {
         ZeroTouchTicketsTrendCardMock.mockImplementation(() => <div />)
         MessagesReceivedTrendCardMock.mockImplementation(() => <div />)
         mockFlags({
-            [FeatureFlagKey.AnalyticsNewFilters]: false,
             [FeatureFlagKey.ReportingZeroTouchTicketsMetric]: true,
             [FeatureFlagKey.ReportingMessagesReceivedMetric]: true,
         })
@@ -240,13 +247,7 @@ describe('<SupportPerformanceOverview />', () => {
     })
 
     describe('FiltersHeader', () => {
-        beforeEach(() => {
-            mockFlags({
-                [FeatureFlagKey.AnalyticsNewFilters]: true,
-            })
-        })
-
-        it('should show New Filters Panel and render expected filters', () => {
+        it('should show Filters Panel and render expected filters', () => {
             const { getByText } = render(
                 <Provider store={mockStore(defaultState)}>
                     <SupportPerformanceOverviewReport />
@@ -256,12 +257,10 @@ describe('<SupportPerformanceOverview />', () => {
             PERFORMANCE_OVERVIEW_OPTIONAL_FILTERS.forEach((filter) => {
                 expect(getByText(filter)).toBeInTheDocument()
             })
+            expect(useCleanStatsFiltersMock).toHaveBeenCalled()
         })
 
-        it('should show New Filters Panel and render expected filters with score filter', () => {
-            mockFlags({
-                [FeatureFlagKey.AnalyticsNewFilters]: true,
-            })
+        it('should show Filters Panel and render expected filters with score filter', () => {
             const { getByText } = render(
                 <Provider store={mockStore(defaultState)}>
                     <SupportPerformanceOverviewReport />
@@ -276,7 +275,7 @@ describe('<SupportPerformanceOverview />', () => {
             })
         })
 
-        it('should show New Filters Panel and render expected filters with resolution completeness and communication skills filters', () => {
+        it('should show Filters Panel and render expected filters with resolution completeness and communication skills filters', () => {
             const state = {
                 ...defaultState,
                 currentAccount: fromJS({
@@ -292,9 +291,6 @@ describe('<SupportPerformanceOverview />', () => {
                     },
                 }),
             }
-            mockFlags({
-                [FeatureFlagKey.AnalyticsNewFilters]: true,
-            })
             const { getByText } = render(
                 <Provider store={mockStore(state)}>
                     <SupportPerformanceOverviewReport />

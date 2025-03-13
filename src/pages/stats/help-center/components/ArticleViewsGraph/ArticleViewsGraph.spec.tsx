@@ -6,7 +6,7 @@ import { CoreScaleOptions, Scale } from 'chart.js'
 import moment from 'moment'
 
 import { useArticleViewTimeSeries } from 'hooks/reporting/help-center/useArticleViewTimeSeries'
-import { useNewStatsFilters } from 'hooks/reporting/support-performance/useNewStatsFilters'
+import { useStatsFilters } from 'hooks/reporting/support-performance/useStatsFilters'
 import { TimeSeriesDataItem } from 'hooks/reporting/useTimeSeries'
 import { ReportingGranularity } from 'models/reporting/types'
 import ArticleViewsGraph, {
@@ -17,8 +17,8 @@ import { assumeMock } from 'utils/testing'
 jest.mock('hooks/reporting/help-center/useArticleViewTimeSeries', () => ({
     useArticleViewTimeSeries: jest.fn(),
 }))
-jest.mock('hooks/reporting/support-performance/useNewStatsFilters')
-const useNewStatsFiltersMock = assumeMock(useNewStatsFilters)
+jest.mock('hooks/reporting/support-performance/useStatsFilters')
+const useStatsFiltersMock = assumeMock(useStatsFilters)
 
 const mockUseArticleViewTimeSeries = jest.mocked(useArticleViewTimeSeries)
 const defaultArticleViewTimeSeriesResponse = {
@@ -39,11 +39,10 @@ describe('<ArticleViewsGraphComponent />', () => {
     }
 
     beforeEach(() => {
-        useNewStatsFiltersMock.mockReturnValue({
+        useStatsFiltersMock.mockReturnValue({
             cleanStatsFilters: statsFilters,
             userTimezone: 'US',
             granularity: ReportingGranularity.Day,
-            isAnalyticsNewFilters: true,
         })
         mockUseArticleViewTimeSeries.mockClear()
         mockUseArticleViewTimeSeries.mockReturnValue(

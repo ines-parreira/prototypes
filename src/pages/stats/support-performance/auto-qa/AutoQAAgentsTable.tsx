@@ -4,7 +4,7 @@ import classNames from 'classnames'
 // eslint-disable-next-line no-restricted-imports
 import { useDispatch } from 'react-redux'
 
-import { useNewStatsFilters } from 'hooks/reporting/support-performance/useNewStatsFilters'
+import { useStatsFilters } from 'hooks/reporting/support-performance/useStatsFilters'
 import { useAutoQAAgentsSortingQuery } from 'hooks/reporting/useAutoQAAgentsSortingQuery'
 import useAppSelector from 'hooks/useAppSelector'
 import useMeasure from 'hooks/useMeasure'
@@ -67,7 +67,7 @@ export const AutoQAAgentsTable = () => {
         agents: paginatedAgents,
         allAgents: agents,
     } = useAppSelector(getPaginatedAutoQAAgents)
-    const statsFilters = useNewStatsFilters()
+    const statsFilters = useStatsFilters()
     const isHeatmapMode = useAppSelector(getHeatmapMode)
     const isSortingLoading = useAppSelector(isSortingMetricLoading)
     const onPageChangeCallback = (page: number) => {

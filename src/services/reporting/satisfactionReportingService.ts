@@ -1,6 +1,7 @@
 import moment from 'moment/moment'
 
 import { useTables } from 'hooks/reporting/common/useTableReportData'
+import { getCsvFileNameWithDates } from 'hooks/reporting/common/utils'
 import { useSatisfactionMetrics } from 'hooks/reporting/quality-management/satisfaction/useSatisfactionMetrics'
 import {
     fetchScoredSurveys,
@@ -8,8 +9,7 @@ import {
     useScoredSurveys,
 } from 'hooks/reporting/quality-management/satisfaction/useScoredSurveys'
 import { fetchSurveyScores } from 'hooks/reporting/quality-management/satisfaction/useSurveyScores'
-import { getCsvFileNameWithDates } from 'hooks/reporting/support-performance/overview/useDownloadOverviewData'
-import { useNewStatsFilters } from 'hooks/reporting/support-performance/useNewStatsFilters'
+import { useStatsFilters } from 'hooks/reporting/support-performance/useStatsFilters'
 import { MetricWithDecile } from 'hooks/reporting/useMetricPerDimension'
 import { MetricTrend } from 'hooks/reporting/useMetricTrend'
 import { TicketDimension } from 'models/reporting/cubes/TicketCube'
@@ -144,8 +144,7 @@ export const saveReport = (data: SatisfactionReportData, period: Period) => {
 }
 
 export const useSatisfactionReportData = () => {
-    const { cleanStatsFilters, userTimezone, granularity } =
-        useNewStatsFilters()
+    const { cleanStatsFilters, userTimezone, granularity } = useStatsFilters()
     const { reportData, isLoading, period } = useSatisfactionMetrics()
     const { data, isFetching: isFetchingScoredSurveys } = useScoredSurveys(
         cleanStatsFilters,

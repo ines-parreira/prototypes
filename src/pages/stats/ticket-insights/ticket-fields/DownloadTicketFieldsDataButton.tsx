@@ -1,7 +1,7 @@
 import React from 'react'
 
 import { logEvent, SegmentEvent } from 'common/segment'
-import { useNewStatsFilters } from 'hooks/reporting/support-performance/useNewStatsFilters'
+import { useStatsFilters } from 'hooks/reporting/support-performance/useStatsFilters'
 import useAppSelector from 'hooks/useAppSelector'
 import { DownloadDataButton } from 'pages/stats/support-performance/components/DownloadDataButton'
 import { useCustomFieldsReportData } from 'services/reporting/ticketFieldsReportingService'
@@ -15,8 +15,7 @@ export const DownloadTicketFieldsDataButton = ({
 }: {
     selectedCustomFieldId: number
 }) => {
-    const { cleanStatsFilters, userTimezone, granularity } =
-        useNewStatsFilters()
+    const { cleanStatsFilters, userTimezone, granularity } = useStatsFilters()
     const order = useAppSelector(getCustomFieldsOrder)
 
     const { files, fileName, isLoading } = useCustomFieldsReportData(

@@ -1,7 +1,7 @@
 import { renderHook } from '@testing-library/react-hooks'
 
-import { getCsvFileNameWithDates } from 'hooks/reporting/support-performance/overview/useDownloadOverviewData'
-import { useNewStatsFilters } from 'hooks/reporting/support-performance/useNewStatsFilters'
+import { getCsvFileNameWithDates } from 'hooks/reporting/common/utils'
+import { useStatsFilters } from 'hooks/reporting/support-performance/useStatsFilters'
 import {
     fetchMessagesReceivedTimeSeries,
     fetchMessagesSentTimeSeries,
@@ -41,8 +41,8 @@ const fetchTicketsCreatedTimeSeriesMock = assumeMock(
     fetchTicketsCreatedTimeSeries,
 )
 
-jest.mock('hooks/reporting/support-performance/useNewStatsFilters')
-const useNewStatsFiltersMock = assumeMock(useNewStatsFilters)
+jest.mock('hooks/reporting/support-performance/useStatsFilters')
+const useNewStatsFiltersMock = assumeMock(useStatsFilters)
 
 describe('busiestTimesOfDaysReportingService', () => {
     const timeZone = 'America/Los_Angeles'
@@ -110,7 +110,6 @@ describe('busiestTimesOfDaysReportingService', () => {
                 cleanStatsFilters: statsFilters,
                 userTimezone: timeZone,
                 granularity: ReportingGranularity.Day,
-                isAnalyticsNewFilters: true,
             })
         })
 

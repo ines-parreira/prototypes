@@ -3,7 +3,7 @@ import React from 'react'
 import { render } from '@testing-library/react'
 
 import { useAIAgentMetrics } from 'hooks/reporting/automate/useAIAgentInsightsDataset'
-import { useNewAutomateFilters } from 'hooks/reporting/automate/useNewAutomateFilters'
+import { useAutomateFilters } from 'hooks/reporting/automate/useAutomateFilters'
 import useAppSelector from 'hooks/useAppSelector'
 
 import { IntentsPerformance } from '../IntentsPerformance/IntentsPerformance'
@@ -16,8 +16,8 @@ jest.mock('../IntentsPerformance/IntentsPerformance', () => ({
 jest.mock('hooks/reporting/automate/useAIAgentInsightsDataset')
 const useAIAgentMetricsMock = useAIAgentMetrics as jest.Mock
 
-jest.mock('hooks/reporting/automate/useNewAutomateFilters')
-const useNewAutomateFiltersMock = useNewAutomateFilters as jest.Mock
+jest.mock('hooks/reporting/automate/useAutomateFilters')
+const useNewAutomateFiltersMock = useAutomateFilters as jest.Mock
 
 jest.mock('state/stats/selectors')
 jest.mock('hooks/useAppSelector')

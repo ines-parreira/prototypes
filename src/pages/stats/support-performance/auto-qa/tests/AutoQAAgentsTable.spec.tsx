@@ -7,7 +7,7 @@ import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
 import { agents } from 'fixtures/agents'
-import { useNewStatsFilters } from 'hooks/reporting/support-performance/useNewStatsFilters'
+import { useStatsFilters } from 'hooks/reporting/support-performance/useStatsFilters'
 import { ReportingGranularity } from 'models/reporting/types'
 import { DrillDownModalTrigger } from 'pages/stats/DrillDownModalTrigger'
 import { AgentsCellContent } from 'pages/stats/support-performance/agents/AgentsCellContent'
@@ -63,8 +63,8 @@ const getPageStatsFiltersMock = assumeMock(getPageStatsFilters)
 const getHeatmapModeMock = assumeMock(getHeatmapMode)
 const isSortingMetricLoadingMock = assumeMock(isSortingMetricLoading)
 
-jest.mock('hooks/reporting/support-performance/useNewStatsFilters')
-const useNewStatsFiltersMock = assumeMock(useNewStatsFilters)
+jest.mock('hooks/reporting/support-performance/useStatsFilters')
+const useStatsFiltersMock = assumeMock(useStatsFilters)
 
 jest.mock('pages/stats/support-performance/agents/AgentsCellContent')
 const AgentsCellContentMock = assumeMock(AgentsCellContent)
@@ -95,10 +95,9 @@ describe('<AutoQAAgentsTable />', () => {
             perPage: 1,
         })
         getPageStatsFiltersMock.mockReturnValue(filters as any)
-        useNewStatsFiltersMock.mockReturnValue({
+        useStatsFiltersMock.mockReturnValue({
             cleanStatsFilters: filters,
             userTimezone: 'UTC',
-            isAnalyticsNewFilters: false,
             granularity: ReportingGranularity.Day,
         })
         getHeatmapModeMock.mockReturnValue(false)

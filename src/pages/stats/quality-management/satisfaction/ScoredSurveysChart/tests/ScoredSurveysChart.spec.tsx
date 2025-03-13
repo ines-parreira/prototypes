@@ -4,9 +4,9 @@ import { render, screen } from '@testing-library/react'
 import moment from 'moment'
 
 import { useScoredSurveys } from 'hooks/reporting/quality-management/satisfaction/useScoredSurveys'
-import { useNewStatsFilters } from 'hooks/reporting/support-performance/useNewStatsFilters'
+import { useStatsFilters } from 'hooks/reporting/support-performance/useStatsFilters'
 import { ReportingGranularity } from 'models/reporting/types'
-import { LegacyStatsFilters } from 'models/stat/types'
+import { StatsFilters } from 'models/stat/types'
 import { NumberedPagination } from 'pages/common/components/Paginations'
 import ScoredSurveysChart from 'pages/stats/quality-management/satisfaction/ScoredSurveysChart/ScoredSurveysChart'
 import ScoredSurveysTable from 'pages/stats/quality-management/satisfaction/ScoredSurveysChart/ScoredSurveysTable'
@@ -16,8 +16,8 @@ import { assumeMock } from 'utils/testing'
 jest.mock('hooks/reporting/quality-management/satisfaction/useScoredSurveys')
 const useScoredSurveysMock = assumeMock(useScoredSurveys)
 
-jest.mock('hooks/reporting/support-performance/useNewStatsFilters')
-const useNewStatsFiltersMock = assumeMock(useNewStatsFilters)
+jest.mock('hooks/reporting/support-performance/useStatsFilters')
+const useStatsFiltersMock = assumeMock(useStatsFilters)
 
 jest.mock('pages/common/components/Paginations')
 const NumberedPaginationMock = assumeMock(NumberedPagination)
@@ -27,32 +27,31 @@ jest.mock(
 )
 const ScoredSurveysTableMock = assumeMock(ScoredSurveysTable)
 
-const periodStart = formatReportingQueryDate(moment())
-const periodEnd = formatReportingQueryDate(moment().subtract(7, 'd'))
-const statsFilters: LegacyStatsFilters = {
-    period: {
-        start_datetime: periodStart,
-        end_datetime: periodEnd,
-    },
-}
-const timezone = 'UTC'
-
 const renderComponent = () => {
     render(<ScoredSurveysChart />)
 }
 
 describe('<CommentHighlightsChart/>', () => {
+    const periodStart = formatReportingQueryDate(moment())
+    const periodEnd = formatReportingQueryDate(moment().subtract(7, 'd'))
+    const statsFilters: StatsFilters = {
+        period: {
+            start_datetime: periodStart,
+            end_datetime: periodEnd,
+        },
+    }
+    const timezone = 'UTC'
+
     beforeEach(() => {
         ScoredSurveysTableMock.mockImplementation(() => (
             <div>Scored Surveys Table</div>
         ))
         NumberedPaginationMock.mockImplementation(() => <div>Pagination</div>)
 
-        useNewStatsFiltersMock.mockReturnValue({
+        useStatsFiltersMock.mockReturnValue({
             cleanStatsFilters: statsFilters,
             userTimezone: timezone,
             granularity: ReportingGranularity.Day,
-            isAnalyticsNewFilters: true,
         })
 
         useScoredSurveysMock.mockReturnValue({

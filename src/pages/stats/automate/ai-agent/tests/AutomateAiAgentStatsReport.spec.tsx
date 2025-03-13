@@ -47,8 +47,8 @@ const getSelectedCustomFieldMock =
 jest.mock('hooks/reporting/automate/useAutomationDataset')
 const useAutomateMetricsTrendMock = useAutomateMetricsTrend as jest.Mock
 
-jest.mock('hooks/reporting/automate/useNewAutomateFilters', () => ({
-    useNewAutomateFilters: () => ({
+jest.mock('hooks/reporting/automate/useAutomateFilters', () => ({
+    useAutomateFilters: () => ({
         userTimezone: 'UTC',
         granularity: 'day',
     }),

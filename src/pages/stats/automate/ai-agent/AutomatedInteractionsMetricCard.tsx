@@ -1,8 +1,8 @@
 import React, { useMemo } from 'react'
 
 import { useAIAgentUserId } from 'hooks/reporting/automate/useAIAgentUserId'
+import { useAutomateFilters } from 'hooks/reporting/automate/useAutomateFilters'
 import { useAutomateMetricsTrend } from 'hooks/reporting/automate/useAutomationDataset'
-import { useNewAutomateFilters } from 'hooks/reporting/automate/useNewAutomateFilters'
 import useAppSelector from 'hooks/useAppSelector'
 import { FilterKey } from 'models/stat/types'
 import { AutomatedInteractionsMetric } from 'pages/automate/automate-metrics/AutomatedInteractionsMetric'
@@ -14,7 +14,7 @@ export function AutomatedInteractionsMetricCard({
     chartId,
     dashboard,
 }: DashboardChartProps) {
-    const { userTimezone } = useNewAutomateFilters()
+    const { userTimezone } = useAutomateFilters()
 
     const statsFilters = useAppSelector(getStatsFiltersWithLogicalOperators)
 

@@ -1,7 +1,7 @@
 import React from 'react'
 
+import { useAutomateFilters } from 'hooks/reporting/automate/useAutomateFilters'
 import { useDecreaseInFirstResponseTimeTrend } from 'hooks/reporting/automate/useDecreaseInFirstResponseTimeTrend'
-import { useNewAutomateFilters } from 'hooks/reporting/automate/useNewAutomateFilters'
 import { AutomationDecreaseInFirstResponseTimeMetric } from 'pages/automate/automate-metrics'
 import { DashboardChartProps } from 'pages/stats/dashboards/types'
 
@@ -9,7 +9,7 @@ export const AutomationDecreaseInFirstResponseTimeTrendChart = ({
     chartId,
     dashboard,
 }: DashboardChartProps) => {
-    const { statsFilters, userTimezone } = useNewAutomateFilters()
+    const { statsFilters, userTimezone } = useAutomateFilters()
     const decreaseInFirstResponseTimeTrend =
         useDecreaseInFirstResponseTimeTrend(statsFilters, userTimezone)
 

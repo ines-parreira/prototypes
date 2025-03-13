@@ -40,9 +40,6 @@ jest.mock(
         ))
     },
 )
-jest.mock('pages/stats/support-performance/SupportPerformanceFilters', () => ({
-    SupportPerformanceFilters: () => <div />,
-}))
 
 jest.mock(
     'pages/stats/quality-management/satisfaction/SatisfactionScoreTrendCard',
@@ -105,7 +102,6 @@ describe('<Satisfaction>', () => {
 
     beforeEach(() => {
         mockFlags({
-            [FeatureFlagKey.AnalyticsNewFilters]: true,
             [FeatureFlagKey.NewSatisfactionReport]: true,
         })
         SatisfactionScoreTrendCardMock.mockImplementation(componentMock)

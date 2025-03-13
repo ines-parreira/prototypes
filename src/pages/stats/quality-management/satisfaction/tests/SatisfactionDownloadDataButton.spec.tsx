@@ -4,7 +4,7 @@ import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 
 import { logEvent, SegmentEvent } from 'common/segment'
-import { getCsvFileNameWithDates } from 'hooks/reporting/support-performance/overview/useDownloadOverviewData'
+import { getCsvFileNameWithDates } from 'hooks/reporting/common/utils'
 import { SatisfactionDownloadDataButton } from 'pages/stats/quality-management/satisfaction/SatisfactionDownloadDataButton'
 import {
     SATISFACTION_METRICS_FILE_NAME,

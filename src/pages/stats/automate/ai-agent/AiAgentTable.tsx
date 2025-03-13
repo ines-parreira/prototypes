@@ -2,13 +2,13 @@ import React from 'react'
 
 import { User } from 'config/types/user'
 import { useAIAgentUser } from 'hooks/reporting/automate/useAIAgentUserId'
-import { useNewStatsFilters } from 'hooks/reporting/support-performance/useNewStatsFilters'
+import { useStatsFilters } from 'hooks/reporting/support-performance/useStatsFilters'
 import { withDefaultLogicalOperator } from 'models/reporting/queryFactories/utils'
 import { FilterKey, StatsFiltersWithLogicalOperator } from 'models/stat/types'
 import { AgentsTable } from 'pages/stats/support-performance/agents/AgentsTable'
 
 export const AiAgentTable = () => {
-    const statsFilters = useNewStatsFilters()
+    const statsFilters = useStatsFilters()
     const aiAgentUser = useAIAgentUser()
     const users = aiAgentUser ? [aiAgentUser] : []
     const cleanStatsFilters = {

@@ -2,9 +2,7 @@ import React, { ComponentProps } from 'react'
 
 import { screen } from '@testing-library/react'
 import { fromJS } from 'immutable'
-import { mockFlags } from 'jest-launchdarkly-mock'
 
-import { FeatureFlagKey } from 'config/featureFlags'
 import { account } from 'fixtures/account'
 import { billingState } from 'fixtures/billing'
 import {
@@ -13,6 +11,7 @@ import {
     basicYearlyHelpdeskPlan,
     HELPDESK_PRODUCT_ID,
 } from 'fixtures/productPrices'
+import { useCleanStatsFilters } from 'hooks/reporting/useCleanStatsFilters'
 import FiltersPanelWrapper from 'pages/stats/common/filters/FiltersPanelWrapper/FiltersPanelWrapper'
 import { useReportChartRestrictions } from 'pages/stats/report-chart-restrictions/useReportChartRestrictions'
 import { AccuracyTrendCard } from 'pages/stats/support-performance/auto-qa/AccuracyTrendCard'
@@ -37,11 +36,6 @@ import { assumeMock, renderWithStore } from 'utils/testing'
 jest.mock('pages/stats/report-chart-restrictions/useReportChartRestrictions')
 const useReportChartRestrictionsMock = assumeMock(useReportChartRestrictions)
 
-const componentMock = () => <div />
-
-jest.mock('pages/stats/support-performance/SupportPerformanceFilters', () => ({
-    SupportPerformanceFilters: componentMock,
-}))
 jest.mock('pages/stats/DrillDownModal.tsx', () => ({
     DrillDownModal: () => null,
 }))
@@ -88,7 +82,8 @@ const AutoQAAgentPerformanceHeatmapSwitchMock = assumeMock(
 )
 jest.mock('pages/stats/support-performance/auto-qa/AutoQADownloadDataButton')
 const AutoQADownloadButtonMock = assumeMock(AutoQADownloadDataButton)
-
+jest.mock('hooks/reporting/useCleanStatsFilters')
+const useCleanStatsFiltersMock = assumeMock(useCleanStatsFilters)
 jest.mock(
     'pages/stats/common/filters/FiltersPanelWrapper',
     () => (props: ComponentProps<typeof FiltersPanelWrapper>) => {
@@ -98,57 +93,26 @@ jest.mock(
     },
 )
 
-const state = {
-    billing: fromJS(billingState),
-    currentAccount: fromJS({
-        ...account,
-        current_subscription: {
-            products: {
-                [HELPDESK_PRODUCT_ID]: basicYearlyHelpdeskPlan.price_id,
-                [AUTOMATION_PRODUCT_ID]: basicYearlyAutomationPlan.price_id,
-            },
-            status: 'active',
-        },
-    }),
-} as RootState
-
 describe('AutoQA', () => {
+    const componentMock = () => <div />
+    const state = {
+        billing: fromJS(billingState),
+        currentAccount: fromJS({
+            ...account,
+            current_subscription: {
+                products: {
+                    [HELPDESK_PRODUCT_ID]: basicYearlyHelpdeskPlan.price_id,
+                    [AUTOMATION_PRODUCT_ID]: basicYearlyAutomationPlan.price_id,
+                },
+                status: 'active',
+            },
+        }),
+    } as RootState
+
     beforeEach(() => {
         useReportChartRestrictionsMock.mockReturnValue({
             isChartRestrictedToCurrentUser: () => false,
         } as any)
-
-        NumberOfClosedTicketsReviewedTrendCardMock.mockImplementation(
-            componentMock,
-        )
-        ResolutionCompletenessTrendCardMock.mockImplementation(componentMock)
-        CommunicationSkillsTrendCardMock.mockImplementation(componentMock)
-        LanguageProficiencyTrendCardMock.mockImplementation(componentMock)
-        AccuracyTrendCardMock.mockImplementation(componentMock)
-        EfficiencyTrendCardMock.mockImplementation(componentMock)
-        InternalComplianceTrendCardMock.mockImplementation(componentMock)
-        BrandVoiceTrendCardMock.mockImplementation(componentMock)
-        AutoQAAgentsTableMock.mockImplementation(componentMock)
-        AutoQAAgentPerformanceHeatmapSwitchMock.mockImplementation(
-            componentMock,
-        )
-        AutoQADownloadButtonMock.mockImplementation(componentMock)
-    })
-
-    it('should render page title', () => {
-        renderWithStore(<AutoQA />, state)
-
-        expect(screen.getByText(AUTO_QA_PAGE_TITLE)).toBeInTheDocument()
-        expect(NumberOfClosedTicketsReviewedTrendCardMock).toHaveBeenCalled()
-        expect(ResolutionCompletenessTrendCardMock).toHaveBeenCalled()
-        expect(CommunicationSkillsTrendCardMock).toHaveBeenCalled()
-        expect(AutoQAAgentPerformanceHeatmapSwitchMock).toHaveBeenCalled()
-        expect(AutoQAAgentsTableMock).toHaveBeenCalled()
-    })
-})
-
-describe('AutoQA with isAnalyticsNewFilters', () => {
-    beforeEach(() => {
         NumberOfClosedTicketsReviewedTrendCardMock.mockImplementation(() => (
             <div />
         ))
@@ -164,9 +128,6 @@ describe('AutoQA with isAnalyticsNewFilters', () => {
             componentMock,
         )
         AutoQADownloadButtonMock.mockImplementation(componentMock)
-        mockFlags({
-            [FeatureFlagKey.AnalyticsNewFilters]: true,
-        })
     })
 
     it('should render page title', () => {
@@ -189,9 +150,6 @@ describe('AutoQA with isAnalyticsNewFilters', () => {
     })
 
     it('should render AutoQA page with optional filters and Auto QA dimensions filters added', () => {
-        mockFlags({
-            [FeatureFlagKey.AnalyticsNewFilters]: true,
-        })
         const extendedAutoQAFilters = [...AUTO_QA_OPTIONAL_FILTERS]
 
         renderWithStore(<AutoQA />, state)
@@ -200,5 +158,6 @@ describe('AutoQA with isAnalyticsNewFilters', () => {
         extendedAutoQAFilters.forEach((optionalFilter) => {
             expect(screen.getByText(optionalFilter)).toBeTruthy()
         })
+        expect(useCleanStatsFiltersMock).toHaveBeenCalled()
     })
 })

@@ -2,7 +2,7 @@ import { useMemo } from 'react'
 
 import _zip from 'lodash/zip'
 
-import { useNewStatsFilters } from 'hooks/reporting/support-performance/useNewStatsFilters'
+import { useStatsFilters } from 'hooks/reporting/support-performance/useStatsFilters'
 import { useCustomFieldsTicketCountTimeSeries } from 'hooks/reporting/timeSeries'
 import {
     getPeriodDateTimes,
@@ -59,8 +59,7 @@ export const useCustomFieldsTicketCountPerCustomFields = (
     const breakdownField = BREAKDOWN_FIELD
     const valueField = VALUE_FIELD
 
-    const { cleanStatsFilters, userTimezone, granularity } =
-        useNewStatsFilters()
+    const { cleanStatsFilters, userTimezone, granularity } = useStatsFilters()
     const order = useAppSelector(getCustomFieldsOrder)
     const dateTimes = getPeriodDateTimes(
         getFilterDateRange(cleanStatsFilters.period),

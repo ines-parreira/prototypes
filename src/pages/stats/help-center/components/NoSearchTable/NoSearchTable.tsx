@@ -1,6 +1,6 @@
 import React from 'react'
 
-import { useNewStatsFilters } from 'hooks/reporting/support-performance/useNewStatsFilters'
+import { useStatsFilters } from 'hooks/reporting/support-performance/useStatsFilters'
 import ChartCard from 'pages/stats/ChartCard'
 import { DashboardChartProps } from 'pages/stats/dashboards/types'
 import HelpCenterStatsTable, {
@@ -29,7 +29,7 @@ const columns = [
 export const NO_SEARCH_TABLE_TITLE = 'No search results'
 
 const NoSearchTable = ({ chartId, dashboard }: DashboardChartProps) => {
-    const { cleanStatsFilters, userTimezone } = useNewStatsFilters()
+    const { cleanStatsFilters, userTimezone } = useStatsFilters()
     const [currentPage, setCurrentPage] = React.useState(1)
 
     const { data, total, isLoading } = useNoSearchResultsMetrics({

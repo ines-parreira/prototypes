@@ -17,7 +17,7 @@ import {
     satisfiedOrBreachedTicketsTimeSeriesQueryFactory,
 } from 'models/reporting/queryFactories/sla/satisfiedOrBreachedTickets'
 import { ServiceLevelAgreements } from 'pages/stats/sla/ServiceLevelAgreements'
-import { getCleanStatsFiltersWithTimezone } from 'state/ui/stats/selectors'
+import { getCleanStatsFiltersWithLogicalOperatorsWithTimezone } from 'state/ui/stats/selectors'
 
 const slaPoliciesResponse = {
     object: 'list',
@@ -145,7 +145,9 @@ const storyConfig: Meta = {
 
 const Template: StoryFn<ComponentProps<typeof ServiceLevelAgreements>> = () => {
     const { cleanStatsFilters, userTimezone, granularity } =
-        getCleanStatsFiltersWithTimezone(defaultState as any)
+        getCleanStatsFiltersWithLogicalOperatorsWithTimezone(
+            defaultState as any,
+        )
 
     appQueryClient.setQueryData(
         ['slaPolicies', 'listSlaPolicies', { queryParams: undefined }],

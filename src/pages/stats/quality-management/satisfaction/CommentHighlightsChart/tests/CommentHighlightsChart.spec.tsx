@@ -4,10 +4,10 @@ import { render, screen } from '@testing-library/react'
 import moment from 'moment'
 
 import { useCommentHighlights } from 'hooks/reporting/quality-management/satisfaction/useCommentHighlights'
-import { useNewStatsFilters } from 'hooks/reporting/support-performance/useNewStatsFilters'
+import { useStatsFilters } from 'hooks/reporting/support-performance/useStatsFilters'
 import useAppSelector from 'hooks/useAppSelector'
 import { ReportingGranularity } from 'models/reporting/types'
-import { LegacyStatsFilters } from 'models/stat/types'
+import { StatsFilters } from 'models/stat/types'
 import CommentHighlightsCarousel from 'pages/stats/quality-management/satisfaction/CommentHighlightsChart/CommentHighlightsCarousel'
 import CommentHighlightsChart from 'pages/stats/quality-management/satisfaction/CommentHighlightsChart/CommentHighlightsChart'
 import CommentHighlightCsatSentimentToggle from 'pages/stats/quality-management/satisfaction/CommentHighlightsChart/CommentHighlightsCsatSentimentToggle'
@@ -20,8 +20,8 @@ jest.mock(
 )
 const useCommentHighlightsMock = assumeMock(useCommentHighlights)
 
-jest.mock('hooks/reporting/support-performance/useNewStatsFilters')
-const useNewStatsFiltersMock = assumeMock(useNewStatsFilters)
+jest.mock('hooks/reporting/support-performance/useStatsFilters')
+const useStatsFiltersMock = assumeMock(useStatsFilters)
 
 jest.mock(
     'pages/stats/quality-management/satisfaction/CommentHighlightsChart/CommentHighlightsCarousel',
@@ -38,21 +38,21 @@ const CommentHighlightCsatSentimentToggleMock = assumeMock(
 jest.mock('hooks/useAppSelector')
 const useAppSelectorMock = assumeMock(useAppSelector)
 
-const periodStart = formatReportingQueryDate(moment())
-const periodEnd = formatReportingQueryDate(moment().subtract(7, 'd'))
-const statsFilters: LegacyStatsFilters = {
-    period: {
-        start_datetime: periodStart,
-        end_datetime: periodEnd,
-    },
-}
-const timezone = 'UTC'
-
 const renderComponent = () => {
     render(<CommentHighlightsChart />)
 }
 
 describe('<CommentHighlightsChart/>', () => {
+    const periodStart = formatReportingQueryDate(moment())
+    const periodEnd = formatReportingQueryDate(moment().subtract(7, 'd'))
+    const statsFilters: StatsFilters = {
+        period: {
+            start_datetime: periodStart,
+            end_datetime: periodEnd,
+        },
+    }
+    const timezone = 'UTC'
+
     beforeEach(() => {
         CommentHighlightsCarouselMock.mockImplementation(() => (
             <div>Comment Highlights Chart</div>
@@ -60,11 +60,10 @@ describe('<CommentHighlightsChart/>', () => {
         CommentHighlightCsatSentimentToggleMock.mockImplementation(() => (
             <div>Csat Sentiment Toggle</div>
         ))
-        useNewStatsFiltersMock.mockReturnValue({
+        useStatsFiltersMock.mockReturnValue({
             cleanStatsFilters: statsFilters,
             userTimezone: timezone,
             granularity: ReportingGranularity.Day,
-            isAnalyticsNewFilters: true,
         })
         useCommentHighlightsMock.mockReturnValue({
             isFetching: false,

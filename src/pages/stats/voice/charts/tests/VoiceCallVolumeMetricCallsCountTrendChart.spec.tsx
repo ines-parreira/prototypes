@@ -2,59 +2,65 @@ import React from 'react'
 
 import { render } from '@testing-library/react'
 
+import { useStatsFilters } from 'hooks/reporting/support-performance/useStatsFilters'
+import { withDefaultLogicalOperator } from 'models/reporting/queryFactories/utils'
+import { StatsFilters } from 'models/stat/types'
+
 import '@testing-library/jest-dom/extend-expect'
 
 import { agents } from 'fixtures/agents'
 import { VoiceCallSegment } from 'models/reporting/cubes/VoiceCallCube'
 import { ReportingGranularity } from 'models/reporting/types'
 import { DashboardSchema } from 'pages/stats/dashboards/types'
+import { VoiceCallVolumeMetricCallsCountTrendChart } from 'pages/stats/voice/charts/VoiceCallVolumeMetricCallsCountTrendChart'
 import VoiceCallVolumeMetric from 'pages/stats/voice/components/VoiceCallVolumeMetric/VoiceCallVolumeMetric'
-import { useNewVoiceStatsFilters } from 'pages/stats/voice/hooks/useNewVoiceStatsFilters'
+import VoiceCallVolumeMetricEmpty from 'pages/stats/voice/components/VoiceCallVolumeMetric/VoiceCallVolumeMetricEmpty'
 import { useVoiceCallCountTrend } from 'pages/stats/voice/hooks/useVoiceCallCountTrend'
 import { fromLegacyStatsFilters } from 'state/stats/utils'
 import { assumeMock } from 'utils/testing'
 
-import VoiceCallVolumeMetricEmpty from '../../components/VoiceCallVolumeMetric/VoiceCallVolumeMetricEmpty'
-import { VoiceCallVolumeMetricCallsCountTrendChart } from '../VoiceCallVolumeMetricCallsCountTrendChart'
-
-jest.mock('pages/stats/voice/hooks/useNewVoiceStatsFilters')
 jest.mock('pages/stats/voice/hooks/useVoiceCallCountTrend')
+const useVoiceCallCountTrendMock = assumeMock(useVoiceCallCountTrend)
 jest.mock(
     'pages/stats/voice/components/VoiceCallVolumeMetric/VoiceCallVolumeMetric',
 )
+const VoiceCallVolumeMetricMock = assumeMock(VoiceCallVolumeMetric)
 jest.mock(
     'pages/stats/voice/components/VoiceCallVolumeMetric/VoiceCallVolumeMetricEmpty',
 )
-
-const useNewVoiceStatsFiltersMock = assumeMock(useNewVoiceStatsFilters)
-const useVoiceCallCountTrendMock = assumeMock(useVoiceCallCountTrend)
-const VoiceCallVolumeMetricMock = assumeMock(VoiceCallVolumeMetric)
-VoiceCallVolumeMetricMock.mockImplementation(({ title, hint }) => (
-    <div>
-        <h1>{title}</h1>
-        <h2>{hint}</h2>
-    </div>
-))
 const VoiceCallVolumeMetricEmptyMock = assumeMock(VoiceCallVolumeMetricEmpty)
-VoiceCallVolumeMetricEmptyMock.mockImplementation(({ title, hint }) => (
-    <div>
-        <h1>{title}</h1>
-        <h2>{hint}</h2>
-    </div>
-))
-
-const dashboard: DashboardSchema = {
-    id: 1,
-    name: 'Test Report',
-    emoji: '📊',
-    children: [],
-    analytics_filter_id: 123,
-}
+jest.mock('hooks/reporting/support-performance/useStatsFilters')
+const useStatsFiltersMock = assumeMock(useStatsFilters)
 
 describe('VoiceCallVolumeMetricCallsCountTrendChart', () => {
+    const dashboard: DashboardSchema = {
+        id: 1,
+        name: 'Test Report',
+        emoji: '📊',
+        children: [],
+        analytics_filter_id: 123,
+    }
+    beforeEach(() => {
+        VoiceCallVolumeMetricMock.mockImplementation(({ title, hint }) => (
+            <div>
+                <h1>{title}</h1>
+                <h2>{hint}</h2>
+            </div>
+        ))
+
+        VoiceCallVolumeMetricEmptyMock.mockImplementation(({ title, hint }) => (
+            <div>
+                <h1>{title}</h1>
+                <h2>{hint}</h2>
+            </div>
+        ))
+    })
+
     it.each([
         {
-            additionalFilters: { agents: [agents[0].id] },
+            additionalFilters: {
+                agents: withDefaultLogicalOperator([agents[0].id]),
+            },
             hideWithAgentsFilter: false,
         },
         {
@@ -75,18 +81,17 @@ describe('VoiceCallVolumeMetricCallsCountTrendChart', () => {
             }
             useVoiceCallCountTrendMock.mockReturnValue(metricTrend)
 
-            const filters = {
+            const filters: StatsFilters = {
                 period: {
                     start_datetime: '2023-12-11T00:00:00.000Z',
                     end_datetime: '2023-12-11T23:59:59.999Z',
                 },
                 ...additionalFilters,
             }
-            useNewVoiceStatsFiltersMock.mockReturnValue({
+            useStatsFiltersMock.mockReturnValue({
                 cleanStatsFilters: filters,
                 granularity: ReportingGranularity.Day,
                 userTimezone: 'UTC',
-                isAnalyticsNewFilters: true,
             })
 
             const { getByText } = render(
@@ -126,11 +131,10 @@ describe('VoiceCallVolumeMetricCallsCountTrendChart', () => {
             },
             agents: [agents[0].id],
         })
-        useNewVoiceStatsFiltersMock.mockReturnValue({
+        useStatsFiltersMock.mockReturnValue({
             cleanStatsFilters: filters,
             granularity: ReportingGranularity.Day,
             userTimezone: 'UTC',
-            isAnalyticsNewFilters: true,
         })
 
         const { getByText } = render(

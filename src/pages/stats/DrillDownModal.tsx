@@ -8,22 +8,20 @@ import ModalHeader from 'pages/common/components/modal/ModalHeader'
 import { CampaignSalesDrillDownTableContent } from 'pages/stats/convert/components/CampaignSalesDrillDownTableContent'
 import { getDrillDownHook } from 'pages/stats/DrillDownHookConfig'
 import { DrillDownInfoBar } from 'pages/stats/DrillDownInfoBar'
+import { DrillDownTable } from 'pages/stats/DrillDownTable'
 import { TicketDrillDownTableContent } from 'pages/stats/TicketDrillDownTableContent'
+import VoiceCallDrillDownTableContent from 'pages/stats/voice/components/VoiceCallTable/VoiceCallDrillDownTableContent'
 import {
     closeDrillDownModal,
     DrillDownMetric,
     getDrillDownMetric,
     getDrillDownModalState,
-    setShouldUseNewFilterData,
 } from 'state/ui/stats/drillDownSlice'
 import {
     ConvertMetric,
     VoiceAgentsMetric,
     VoiceMetric,
 } from 'state/ui/stats/types'
-
-import { DrillDownTable } from './DrillDownTable'
-import VoiceCallDrillDownTableContent from './voice/components/VoiceCallTable/VoiceCallDrillDownTableContent'
 
 const getTableContent = (
     metricData: DrillDownMetric,
@@ -65,7 +63,6 @@ export const DrillDownModal = () => {
             isOpen={isOpen}
             onClose={() => {
                 dispatch(closeDrillDownModal())
-                dispatch(setShouldUseNewFilterData(false))
             }}
         >
             <ModalHeader title={metricData?.title} />

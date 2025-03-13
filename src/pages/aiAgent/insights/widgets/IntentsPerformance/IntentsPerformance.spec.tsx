@@ -2,31 +2,27 @@ import React from 'react'
 
 import { fireEvent, render, screen } from '@testing-library/react'
 
-import { useNewStatsFilters } from 'hooks/reporting/support-performance/useNewStatsFilters'
+import { useStatsFilters } from 'hooks/reporting/support-performance/useStatsFilters'
 import useAppDispatch from 'hooks/useAppDispatch'
 import { useGridSize } from 'hooks/useGridSize'
 import useLocalStorage from 'hooks/useLocalStorage'
 import { MetricTrendFormat } from 'pages/stats/common/utils'
 import { OverviewMetric } from 'pages/stats/support-performance/overview/SupportPerformanceOverviewConfig'
+import { assumeMock } from 'utils/testing'
 
 import { IntentsPerformance } from './IntentsPerformance'
 
-// Mock dependencies
-jest.mock('hooks/reporting/support-performance/useNewStatsFilters', () => ({
-    useNewStatsFilters: jest.fn(),
-}))
-
+jest.mock('hooks/reporting/support-performance/useStatsFilters')
 jest.mock('hooks/useGridSize', () => ({
     useGridSize: jest.fn(),
 }))
-
 jest.mock('hooks/useLocalStorage', () => jest.fn())
 jest.mock('hooks/useAppDispatch', () => jest.fn())
 
-const mockUseNewStatsFilters = useNewStatsFilters as jest.Mock
-const mockUseGridSize = useGridSize as jest.Mock
-const mockUseLocalStorage = useLocalStorage as jest.Mock
-const mockUseAppDispatch = useAppDispatch as jest.Mock
+const mockUseStatsFilters = useStatsFilters as jest.Mock
+const mockUseGridSize = assumeMock(useGridSize) as jest.Mock
+const mockUseLocalStorage = assumeMock(useLocalStorage) as jest.Mock
+const mockUseAppDispatch = assumeMock(useAppDispatch) as jest.Mock
 
 // Set default values
 const period = {
@@ -100,7 +96,7 @@ const metric4 = {
 
 describe('IntentsPerformance', () => {
     beforeEach(() => {
-        mockUseNewStatsFilters.mockReturnValue({ isAnalyticsNewFilters: true })
+        mockUseStatsFilters.mockReturnValue({})
         mockUseGridSize.mockReturnValue(() => 3)
         mockUseLocalStorage.mockReturnValue([true, jest.fn()])
         mockUseAppDispatch.mockReturnValue(() => null)

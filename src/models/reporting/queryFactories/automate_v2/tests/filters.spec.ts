@@ -5,21 +5,20 @@ import {
     billableTicketDatasetAdditionalFilters,
     mapTicketChannelsToAutomateChannels,
 } from 'models/reporting/queryFactories/automate_v2/filters'
+import { withDefaultLogicalOperator } from 'models/reporting/queryFactories/utils'
 import { ReportingFilterOperator } from 'models/reporting/types'
-import { fromLegacyStatsFilters } from 'state/stats/utils'
+import { StatsFilters } from 'models/stat/types'
 
 describe('billableTicketDatasetAdditionalFilters', () => {
-    const legacyStatsFilters = {
+    const statsFiltersWithLogicalOperator: StatsFilters = {
         period: {
             start_datetime: '',
             end_datetime: '',
         },
-        channels: ['email', 'contact_form'],
+        channels: withDefaultLogicalOperator(['email', 'contact_form']),
     }
-    const statsFiltersWithLogicalOperator =
-        fromLegacyStatsFilters(legacyStatsFilters)
 
-    it.each([legacyStatsFilters, statsFiltersWithLogicalOperator])(
+    it.each([statsFiltersWithLogicalOperator])(
         'should return BillableTickets filter for channels',
         (statsFilters) => {
             const reportingFilters =
@@ -29,7 +28,7 @@ describe('billableTicketDatasetAdditionalFilters', () => {
                 member: BillableTicketDatasetFilterMember.Channel,
                 operator: ReportingFilterOperator.Equals,
                 values: mapTicketChannelsToAutomateChannels(
-                    legacyStatsFilters.channels,
+                    statsFiltersWithLogicalOperator.channels?.values,
                 ),
             })
         },
@@ -64,17 +63,15 @@ describe('billableTicketDatasetAdditionalFilters', () => {
 })
 
 describe('automationDatasetAdditionalFilters', () => {
-    const legacyStatsFilters = {
+    const statsFiltersWithLogicalOperator: StatsFilters = {
         period: {
             start_datetime: '',
             end_datetime: '',
         },
-        channels: ['email', 'contact_form'],
+        channels: withDefaultLogicalOperator(['email', 'contact_form']),
     }
-    const statsFiltersWithLogicalOperator =
-        fromLegacyStatsFilters(legacyStatsFilters)
 
-    it.each([legacyStatsFilters, statsFiltersWithLogicalOperator])(
+    it.each([statsFiltersWithLogicalOperator])(
         'should return BillableTickets filter for channels',
         (statsFilters) => {
             const reportingFilters =
@@ -84,7 +81,7 @@ describe('automationDatasetAdditionalFilters', () => {
                 member: AutomationDatasetFilterMember.Channel,
                 operator: ReportingFilterOperator.Equals,
                 values: mapTicketChannelsToAutomateChannels(
-                    legacyStatsFilters.channels,
+                    statsFiltersWithLogicalOperator.channels?.values,
                 ),
             })
         },

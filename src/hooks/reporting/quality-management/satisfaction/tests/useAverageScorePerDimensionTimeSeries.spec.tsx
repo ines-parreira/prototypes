@@ -14,7 +14,7 @@ import {
     useAverageCSATPerChannelTimeseries,
     useAverageCSATPerIntegrationTimeseries,
 } from 'hooks/reporting/quality-management/satisfaction/useAverageScorePerDimensionTimeSeries'
-import { useNewStatsFilters } from 'hooks/reporting/support-performance/useNewStatsFilters'
+import { useStatsFilters } from 'hooks/reporting/support-performance/useStatsFilters'
 import {
     fetchTimeSeriesPerDimension,
     useTimeSeriesPerDimension,
@@ -34,7 +34,7 @@ const mockStore = configureMockStore([thunk])
 
 jest.mock('hooks/reporting/timeSeries')
 jest.mock('hooks/reporting/metricsPerPeriod')
-jest.mock('hooks/reporting/support-performance/useNewStatsFilters')
+jest.mock('hooks/reporting/support-performance/useStatsFilters')
 jest.mock('hooks/reporting/useTimeSeries')
 
 jest.mock('services/reporting/SLAsReportingService', () => ({
@@ -42,7 +42,7 @@ jest.mock('services/reporting/SLAsReportingService', () => ({
 }))
 
 const useTimeSeriesPerDimensionMock = jest.mocked(useTimeSeriesPerDimension)
-const useNewStatsFiltersMock = jest.mocked(useNewStatsFilters)
+const useNewStatsFiltersMock = jest.mocked(useStatsFilters)
 
 describe('useAverageScorePerDimensionTimeSeries', () => {
     const mockFilters = {
@@ -94,7 +94,6 @@ describe('useAverageScorePerDimensionTimeSeries', () => {
         useNewStatsFiltersMock.mockReturnValue({
             granularity: ReportingGranularity.Hour,
             cleanStatsFilters: mockFilters,
-            isAnalyticsNewFilters: true,
             userTimezone: 'UTC',
         })
 

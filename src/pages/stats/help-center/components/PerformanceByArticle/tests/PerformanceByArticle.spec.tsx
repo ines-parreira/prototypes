@@ -6,7 +6,7 @@ import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import { useNewStatsFilters } from 'hooks/reporting/support-performance/useNewStatsFilters'
+import { useStatsFilters } from 'hooks/reporting/support-performance/useStatsFilters'
 import { ReportingGranularity } from 'models/reporting/types'
 import { TableCellType } from 'pages/stats/help-center/components/HelpCenterStatsTable/HelpCenterStatsTable'
 import { PerformanceByArticle } from 'pages/stats/help-center/components/PerformanceByArticle/PerformanceByArticle'
@@ -19,8 +19,8 @@ jest.mock(
         usePerformanceByArticleMetrics: jest.fn(),
     }),
 )
-jest.mock('hooks/reporting/support-performance/useNewStatsFilters')
-const useNewStatsFiltersMock = assumeMock(useNewStatsFilters)
+jest.mock('hooks/reporting/support-performance/useStatsFilters')
+const useStatsFiltersMock = assumeMock(useStatsFilters)
 const mockUsePerformanceByArticleMetrics = jest.mocked(
     usePerformanceByArticleMetrics,
 )
@@ -53,23 +53,11 @@ describe('<PerformanceByArticle/>', () => {
     const timezone = 'US'
 
     beforeEach(() => {
-        useNewStatsFiltersMock.mockReturnValue({
+        useStatsFiltersMock.mockReturnValue({
             cleanStatsFilters: statsFilters,
             userTimezone: timezone,
             granularity: ReportingGranularity.Day,
-            isAnalyticsNewFilters: true,
         })
-        // useSelectedHelpCenterMock.mockReturnValue({
-        //     activeHelpCenters: [],
-        //     helpCenters: [],
-        //     isLoading: false,
-        //     selectedHelpCenter: {} as any,
-        //     setStatsFilters: noop,
-        //     sortedHelpCenters: [],
-        //     statsFilters,
-        //     helpCenterId,
-        //     selectedHelpCenterDomain: helpCenterDomain,
-        // })
         mockUsePerformanceByArticleMetrics.mockClear()
         mockUsePerformanceByArticleMetrics.mockReturnValue({
             data: [[]],

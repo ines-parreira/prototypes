@@ -2,16 +2,16 @@ import React from 'react'
 
 import { QueryClientProvider } from '@tanstack/react-query'
 import { render } from '@testing-library/react'
-import { mockFlags } from 'jest-launchdarkly-mock'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import { FeatureFlagKey } from 'config/featureFlags'
 import { User } from 'config/types/user'
 import { agents } from 'fixtures/agents'
-import { LegacyStatsFilters } from 'models/stat/types'
+import { withDefaultLogicalOperator } from 'models/reporting/queryFactories/utils'
+import { StatsFilters } from 'models/stat/types'
 import * as DrillDownModalTrigger from 'pages/stats/DrillDownModalTrigger'
+import AverageTalkTimeCell from 'pages/stats/voice/components/VoiceAgentsTable/AverageTalkTimeCell'
 import { useAverageTalkTimeMetricPerAgent } from 'pages/stats/voice/hooks/metricsPerDimension'
 import { RootState, StoreDispatch } from 'state/types'
 import { initialState as agentPerformanceInitialState } from 'state/ui/stats/agentPerformanceSlice'
@@ -19,8 +19,6 @@ import { AGENT_PERFORMANCE_SLICE_NAME } from 'state/ui/stats/constants'
 import { VoiceAgentsMetric } from 'state/ui/stats/types'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 import { assumeMock } from 'utils/testing'
-
-import AverageTalkTimeCell from '../AverageTalkTimeCell'
 
 const DrillDownModalTriggerSpy = jest.spyOn(
     DrillDownModalTrigger,
@@ -39,12 +37,12 @@ const metricData = {
 }
 
 const renderComponent = () => {
-    const statsFilters: LegacyStatsFilters = {
+    const statsFilters: StatsFilters = {
         period: {
             start_datetime: '2023-12-11T00:00:00.000Z',
             end_datetime: '2023-12-11T23:59:59.999Z',
         },
-        agents: [agents[0].id],
+        agents: withDefaultLogicalOperator([agents[0].id]),
     }
     const state = {
         stats: {
@@ -130,24 +128,5 @@ describe('AverageTalkTimeCell', () => {
         expect(
             container.getElementsByClassName('react-loading-skeleton'),
         ).toHaveLength(1)
-    })
-})
-
-describe('AverageTalkTimeCell with the new filters', () => {
-    beforeEach(() => {
-        mockFlags({
-            [FeatureFlagKey.AnalyticsNewFiltersVoice]: true,
-        })
-    })
-
-    it('should render the component', () => {
-        useMetricMock.mockReturnValue({
-            isFetching: false,
-            isError: false,
-            data: { value: 12, decile: null, allData: [] },
-        })
-
-        const { getByText } = renderComponent()
-        expect(getByText('12s')).toBeInTheDocument()
     })
 })

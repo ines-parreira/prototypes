@@ -2,7 +2,7 @@ import React from 'react'
 
 import classNames from 'classnames'
 
-import { useNewStatsFilters } from 'hooks/reporting/support-performance/useNewStatsFilters'
+import { useStatsFilters } from 'hooks/reporting/support-performance/useStatsFilters'
 import {
     BREAKDOWN_FIELD,
     TicketCustomFieldsTicketCountTimeSeriesDataWithPercentageAndDecile,
@@ -78,7 +78,7 @@ export const CustomFieldsTicketCountDataRowContent = (props: DataRowProps) => {
     const valueMode = useAppSelector(getValueMode)
     const isHeatmapMode = useAppSelector(getHeatmapMode) && level === 0
     const hasChildren = Array.isArray(children) && children.length > 0
-    const { isAnalyticsNewFilters, granularity } = useNewStatsFilters()
+    const { granularity } = useStatsFilters()
     const isMobile = useScreenSize() === SCREEN_SIZE.SMALL
 
     return (
@@ -139,7 +139,6 @@ export const CustomFieldsTicketCountDataRowContent = (props: DataRowProps) => {
                         customFieldId: selectedCustomField?.id || null,
                         customFieldValue: initialCustomFieldValue,
                     }}
-                    useNewFilterData={isAnalyticsNewFilters}
                 >
                     {formatAccordingToValueMode(valueMode)({
                         value: value,
@@ -190,7 +189,6 @@ export const CustomFieldsTicketCountDataRowContent = (props: DataRowProps) => {
                                 granularity,
                             ),
                         }}
-                        useNewFilterData={isAnalyticsNewFilters}
                     >
                         {formatAccordingToValueMode(valueMode)(data)}
                     </DrillDownModalTrigger>

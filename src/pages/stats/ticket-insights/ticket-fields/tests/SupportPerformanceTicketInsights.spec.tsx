@@ -2,12 +2,10 @@ import React, { ComponentProps } from 'react'
 
 import { UseQueryResult } from '@tanstack/react-query'
 import { render } from '@testing-library/react'
-import { mockFlags } from 'jest-launchdarkly-mock'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import { FeatureFlagKey } from 'config/featureFlags'
 import { useCustomFieldDefinitions } from 'custom-fields/hooks/queries/useCustomFieldDefinitions'
 import { CustomField } from 'custom-fields/types'
 import useAppSelector from 'hooks/useAppSelector'
@@ -16,8 +14,6 @@ import { AUTO_QA_FILTER_KEYS } from 'pages/stats/common/filters/constants'
 import FiltersPanelWrapper from 'pages/stats/common/filters/FiltersPanelWrapper/FiltersPanelWrapper'
 import { DrillDownModal } from 'pages/stats/DrillDownModal'
 import { useReportChartRestrictions } from 'pages/stats/report-chart-restrictions/useReportChartRestrictions'
-import { SupportPerformanceFilters } from 'pages/stats/support-performance/SupportPerformanceFilters'
-import { CustomFieldSelect } from 'pages/stats/ticket-insights/ticket-fields/CustomFieldSelect'
 import { CustomFieldsTicketCountBreakdownTableChart } from 'pages/stats/ticket-insights/ticket-fields/CustomFieldsTicketCountBreakdownTableChart'
 import { DownloadTicketFieldsDataButton } from 'pages/stats/ticket-insights/ticket-fields/DownloadTicketFieldsDataButton'
 import { SupportPerformanceTicketInsights } from 'pages/stats/ticket-insights/ticket-fields/SupportPerformanceTicketInsights'
@@ -39,8 +35,6 @@ import { assumeMock } from 'utils/testing'
 jest.mock('pages/stats/report-chart-restrictions/useReportChartRestrictions')
 const useReportChartRestrictionsMock = assumeMock(useReportChartRestrictions)
 
-jest.mock('pages/stats/support-performance/SupportPerformanceFilters.tsx')
-const SupportPerformanceFiltersMock = assumeMock(SupportPerformanceFilters)
 jest.mock(
     'pages/stats/common/filters/FiltersPanelWrapper',
     () => (props: ComponentProps<typeof FiltersPanelWrapper>) => {
@@ -49,8 +43,6 @@ jest.mock(
         ))
     },
 )
-jest.mock('pages/stats/ticket-insights/ticket-fields/CustomFieldSelect.tsx')
-const CustomFieldSelectMock = assumeMock(CustomFieldSelect)
 jest.mock(
     'pages/stats/ticket-insights/ticket-fields/TicketDistributionTable.tsx',
 )
@@ -109,9 +101,6 @@ describe('<SupportPerformanceTicketInsights />', () => {
         useReportChartRestrictionsMock.mockReturnValue({
             isChartRestrictedToCurrentUser: () => false,
         } as any)
-
-        SupportPerformanceFiltersMock.mockImplementation(componentMock)
-        CustomFieldSelectMock.mockImplementation(componentMock)
         TicketDistributionTableMock.mockImplementation(componentMock)
         TicketInsightsFieldTrendMock.mockImplementation(componentMock)
         CustomFieldsTicketCountBreakdownTableChartMock.mockImplementation(
@@ -120,10 +109,6 @@ describe('<SupportPerformanceTicketInsights />', () => {
         TicketFieldsBlankStateMock.mockImplementation(componentMock)
         DownloadTicketFieldsDataButtonMock.mockImplementation(componentMock)
         DrillDownModalMock.mockImplementation(componentMock)
-
-        mockFlags({
-            [FeatureFlagKey.AnalyticsNewFilters]: false,
-        })
     })
 
     it('should render the page title', () => {
@@ -137,19 +122,7 @@ describe('<SupportPerformanceTicketInsights />', () => {
         expect(title).toBeInTheDocument()
     })
 
-    it('should render the Filters', () => {
-        render(
-            <Provider store={mockStore(defaultState)}>
-                <SupportPerformanceTicketInsights />
-            </Provider>,
-        )
-
-        expect(SupportPerformanceFiltersMock).toHaveBeenCalled()
-    })
-
     it('should render the Filters Panel when behind the flag', () => {
-        mockFlags({ [FeatureFlagKey.AnalyticsNewFilters]: true })
-
         const { getByText } = render(
             <Provider store={mockStore(defaultState)}>
                 <SupportPerformanceTicketInsights />
@@ -162,9 +135,6 @@ describe('<SupportPerformanceTicketInsights />', () => {
     })
 
     it('should render the Filters Panel with default optional filters and a Score filter', () => {
-        mockFlags({
-            [FeatureFlagKey.AnalyticsNewFilters]: true,
-        })
         const extendedTicketInsightsOptionalFilters = [
             ...TICKET_INSIGHTS_OPTIONAL_FILTERS,
         ]
@@ -181,9 +151,6 @@ describe('<SupportPerformanceTicketInsights />', () => {
     })
 
     it('should render the Filters Panel with default optional filters and a Resolution Completeness and Communication Skills filters', () => {
-        mockFlags({
-            [FeatureFlagKey.AnalyticsNewFilters]: true,
-        })
         const extendedTicketInsightsOptionalFilters = [
             ...TICKET_INSIGHTS_OPTIONAL_FILTERS,
             ...AUTO_QA_FILTER_KEYS,
@@ -198,16 +165,6 @@ describe('<SupportPerformanceTicketInsights />', () => {
         extendedTicketInsightsOptionalFilters.forEach((filter) => {
             expect(getByText(filter)).toBeInTheDocument()
         })
-    })
-
-    it('should render the CustomFieldSelect', () => {
-        render(
-            <Provider store={mockStore(defaultState)}>
-                <SupportPerformanceTicketInsights />
-            </Provider>,
-        )
-
-        expect(CustomFieldSelectMock).toHaveBeenCalled()
     })
 
     it('should render the TicketDistributionTable', () => {

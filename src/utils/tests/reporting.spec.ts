@@ -12,11 +12,15 @@ import {
 } from 'models/reporting/cubes/TicketCube'
 import { TicketMessagesMember } from 'models/reporting/cubes/TicketMessagesCube'
 import { messagesSentQueryFactory } from 'models/reporting/queryFactories/support-performance/messagesSent'
-import { withLogicalOperator } from 'models/reporting/queryFactories/utils'
+import {
+    withDefaultLogicalOperator,
+    withLogicalOperator,
+} from 'models/reporting/queryFactories/utils'
 import {
     ReportingFilterOperator,
     ReportingGranularity,
 } from 'models/reporting/types'
+import { StatsFilters, TagFilterInstanceId } from 'models/stat/types'
 import { LogicalOperatorEnum } from 'pages/stats/common/components/Filter/constants'
 import {
     agentFilter,
@@ -50,18 +54,29 @@ describe('reporting utils', () => {
                         start_datetime: '2021-05-29T00:00:00.000+02:00',
                         end_datetime: '2021-06-04T23:59:59.000+02:00',
                     },
-                    channels: [TicketChannel.Email, TicketChannel.Chat],
-                    integrations: [1],
-                    agents: [2],
-                    tags: [1, 2],
-                    score: ['3', '4'],
-                    resolutionCompleteness: ['3', '4'],
-                    communicationSkills: ['3', '4'],
-                    languageProficiency: ['3', '4'],
-                    accuracy: ['3', '4'],
-                    efficiency: ['3', '4'],
-                    internalCompliance: ['3', '4'],
-                    brandVoice: ['3', '4'],
+                    channels: withDefaultLogicalOperator([
+                        TicketChannel.Email,
+                        TicketChannel.Chat,
+                    ]),
+                    integrations: withDefaultLogicalOperator([1]),
+                    agents: withDefaultLogicalOperator([2]),
+                    tags: [
+                        {
+                            ...withDefaultLogicalOperator([1, 2]),
+                            filterInstanceId: TagFilterInstanceId.First,
+                        },
+                    ],
+                    score: withDefaultLogicalOperator(['3', '4']),
+                    resolutionCompleteness: withDefaultLogicalOperator([
+                        '3',
+                        '4',
+                    ]),
+                    communicationSkills: withDefaultLogicalOperator(['3', '4']),
+                    languageProficiency: withDefaultLogicalOperator(['3', '4']),
+                    accuracy: withDefaultLogicalOperator(['3', '4']),
+                    efficiency: withDefaultLogicalOperator(['3', '4']),
+                    internalCompliance: withDefaultLogicalOperator(['3', '4']),
+                    brandVoice: withDefaultLogicalOperator(['3', '4']),
                 }),
             ).toEqual([
                 {
@@ -138,16 +153,24 @@ describe('reporting utils', () => {
         })
 
         it('should convert SLAStatsFilters to an array of ReportingFilter', () => {
-            const statsFilters = {
+            const statsFilters: StatsFilters = {
                 period: {
                     start_datetime: '2021-05-29T00:00:00.000+02:00',
                     end_datetime: '2021-06-04T23:59:59.000+02:00',
                 },
-                channels: [TicketChannel.Email, TicketChannel.Chat],
-                integrations: [1],
-                agents: [2],
-                tags: [1, 2],
-                slaPolicies: ['2', '4'],
+                channels: withDefaultLogicalOperator([
+                    TicketChannel.Email,
+                    TicketChannel.Chat,
+                ]),
+                integrations: withDefaultLogicalOperator([1]),
+                agents: withDefaultLogicalOperator([2]),
+                tags: [
+                    {
+                        ...withDefaultLogicalOperator([1, 2]),
+                        filterInstanceId: TagFilterInstanceId.First,
+                    },
+                ],
+                slaPolicies: withDefaultLogicalOperator(['2', '4']),
             }
 
             expect(
@@ -163,7 +186,7 @@ describe('reporting utils', () => {
                 {
                     member: TicketSLAMember.SlaPolicyUuid,
                     operator: ReportingFilterOperator.Equals,
-                    values: statsFilters.slaPolicies,
+                    values: statsFilters.slaPolicies?.values,
                 },
             ])
         })
@@ -175,8 +198,8 @@ describe('reporting utils', () => {
                         start_datetime: '2021-05-29T00:00:00.000+02:00',
                         end_datetime: '2021-06-04T23:59:59.000+02:00',
                     },
-                    helpCenters: [1],
-                    localeCodes: ['en-US'],
+                    helpCenters: withDefaultLogicalOperator([1]),
+                    localeCodes: withDefaultLogicalOperator(['en-US']),
                 }),
             ).toEqual([
                 {

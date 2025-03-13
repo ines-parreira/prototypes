@@ -7,7 +7,7 @@ import { MemoryRouter } from 'react-router-dom'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import { useNewStatsFilters } from 'hooks/reporting/support-performance/useNewStatsFilters'
+import { useStatsFilters } from 'hooks/reporting/support-performance/useStatsFilters'
 import useAppSelector from 'hooks/useAppSelector'
 import {
     IntentTable,
@@ -28,8 +28,8 @@ import { assumeMock } from 'utils/testing'
 jest.mock('hooks/useAppSelector')
 const useAppSelectorMock = jest.mocked(useAppSelector)
 
-jest.mock('hooks/reporting/support-performance/useNewStatsFilters')
-const useNewStatsFiltersMock = assumeMock(useNewStatsFilters)
+jest.mock('hooks/reporting/support-performance/useStatsFilters')
+const useStatsFiltersMock = assumeMock(useStatsFilters)
 
 jest.mock('hooks/reporting/automate/useAIAgentUserId')
 
@@ -112,10 +112,10 @@ describe('Intent Table components', () => {
     describe('IntentTable', () => {
         beforeEach(() => {
             useAppSelectorMock.mockReturnValue(false)
-            useNewStatsFiltersMock.mockReturnValue({
+            useStatsFiltersMock.mockReturnValue({
                 cleanStatsFilters: filters,
                 userTimezone,
-            } as unknown as ReturnType<typeof useNewStatsFilters>)
+            } as unknown as ReturnType<typeof useStatsFilters>)
         })
         it('renders table with data', () => {
             const store = mockStore(initialState)
@@ -224,10 +224,10 @@ describe('Intent Table components', () => {
                 },
             }
             const store = mockStore(noDataState)
-            useNewStatsFiltersMock.mockReturnValue({
+            useStatsFiltersMock.mockReturnValue({
                 cleanStatsFilters: filters,
                 userTimezone,
-            } as unknown as ReturnType<typeof useNewStatsFilters>)
+            } as unknown as ReturnType<typeof useStatsFilters>)
 
             renderWithProvider(
                 <IntentTableWithDefaultState tableTitle="Test Table" />,
@@ -247,10 +247,10 @@ describe('Intent Table components', () => {
             }
 
             useAppSelectorMock.mockReturnValue(paginatedIntents)
-            useNewStatsFiltersMock.mockReturnValue({
+            useStatsFiltersMock.mockReturnValue({
                 cleanStatsFilters: filters,
                 userTimezone,
-            } as unknown as ReturnType<typeof useNewStatsFilters>)
+            } as unknown as ReturnType<typeof useStatsFilters>)
             const store = mockStore({
                 ...initialState,
                 ui: {

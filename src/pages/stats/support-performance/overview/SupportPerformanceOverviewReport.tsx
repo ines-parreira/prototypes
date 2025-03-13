@@ -3,6 +3,7 @@ import React from 'react'
 import { useFlags } from 'launchdarkly-react-client-sdk'
 
 import { FeatureFlagKey } from 'config/featureFlags'
+import { useCleanStatsFilters } from 'hooks/reporting/useCleanStatsFilters'
 import { useGridSize } from 'hooks/useGridSize'
 import useLocalStorage from 'hooks/useLocalStorage'
 import { FilterKey } from 'models/stat/types'
@@ -21,12 +22,9 @@ import {
     OverviewChart,
     SupportPerformanceOverviewReportConfig,
 } from 'pages/stats/support-performance/overview/SupportPerformanceOverviewReportConfig'
-import { SupportPerformanceFilters } from 'pages/stats/support-performance/SupportPerformanceFilters'
 import TipsToggle from 'pages/stats/TipsToggle'
 
 export default function SupportPerformanceOverviewReport() {
-    const isAnalyticsNewFilters =
-        !!useFlags()[FeatureFlagKey.AnalyticsNewFilters]
     const isReportingZeroTouchTicketsMetricEnabled =
         !!useFlags()[FeatureFlagKey.ReportingZeroTouchTicketsMetric]
     const isReportingMessagesReceivedMetricEnabled =
@@ -37,46 +35,43 @@ export default function SupportPerformanceOverviewReport() {
         true,
     )
     const getGridCellSize = useGridSize()
+    useCleanStatsFilters()
     const workloadSectionKPIGridCellSize =
         isReportingMessagesReceivedMetricEnabled ? 3 : 4
+
     return (
         <div className="full-width">
             <StatsPage
                 title={SupportPerformanceOverviewReportConfig.reportName}
                 titleExtra={
                     <>
-                        <SupportPerformanceFilters
-                            hidden={isAnalyticsNewFilters}
-                        />
                         <DownloadOverviewData />
                     </>
                 }
             >
-                {isAnalyticsNewFilters && (
-                    <DashboardSection>
-                        <DashboardGridCell
-                            size={getGridCellSize(12)}
-                            className="pb-0"
-                        >
-                            <FiltersPanelWrapper
-                                persistentFilters={[
-                                    FilterKey.Period,
-                                    FilterKey.AggregationWindow,
-                                ]}
-                                optionalFilters={
-                                    PERFORMANCE_OVERVIEW_OPTIONAL_FILTERS
-                                }
-                                filterSettingsOverrides={{
-                                    [FilterKey.Period]: {
-                                        initialSettings: {
-                                            maxSpan: 365,
-                                        },
+                <DashboardSection>
+                    <DashboardGridCell
+                        size={getGridCellSize(12)}
+                        className="pb-0"
+                    >
+                        <FiltersPanelWrapper
+                            persistentFilters={[
+                                FilterKey.Period,
+                                FilterKey.AggregationWindow,
+                            ]}
+                            optionalFilters={
+                                PERFORMANCE_OVERVIEW_OPTIONAL_FILTERS
+                            }
+                            filterSettingsOverrides={{
+                                [FilterKey.Period]: {
+                                    initialSettings: {
+                                        maxSpan: 365,
                                     },
-                                }}
-                            />
-                        </DashboardGridCell>
-                    </DashboardSection>
-                )}
+                                },
+                            }}
+                        />
+                    </DashboardGridCell>
+                </DashboardSection>
                 <DashboardSection
                     title="Customer experience"
                     titleExtra={

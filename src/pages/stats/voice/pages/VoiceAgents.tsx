@@ -1,21 +1,14 @@
 import React from 'react'
 
-import { useFlags } from 'launchdarkly-react-client-sdk'
 import moment from 'moment'
 
-import { FeatureFlagKey } from 'config/featureFlags'
 import { PaywallConfig, paywallConfigs } from 'config/paywalls'
-import { useCleanStatsFiltersWithLogicalOperators } from 'hooks/reporting/useCleanStatsFilters'
-import useAppSelector from 'hooks/useAppSelector'
+import { useCleanStatsFilters } from 'hooks/reporting/useCleanStatsFilters'
 import { useGridSize } from 'hooks/useGridSize'
 import { ProductType } from 'models/billing/types'
 import { FilterKey } from 'models/stat/types'
 import withProductEnabledPaywall from 'pages/common/utils/withProductEnabledPaywall'
 import { AnalyticsFooter } from 'pages/stats/AnalyticsFooter'
-import DEPRECATED_AgentsStatsFilter from 'pages/stats/common/filters/DEPRECATED_AgentsStatsFilter'
-import DEPRECATED_IntegrationsStatsFilter from 'pages/stats/common/filters/DEPRECATED_IntegrationsStatsFilter'
-import DEPRECATED_PeriodStatsFilter from 'pages/stats/common/filters/DEPRECATED_PeriodStatsFilter'
-import DEPRECATED_TagsStatsFilter from 'pages/stats/common/filters/DEPRECATED_TagsStatsFilter'
 import FiltersPanelWrapper from 'pages/stats/common/filters/FiltersPanelWrapper'
 import DashboardGridCell from 'pages/stats/DashboardGridCell'
 import { DashboardComponent } from 'pages/stats/dashboards/DashboardComponent'
@@ -27,28 +20,11 @@ import {
     VoiceAgentsChart,
     VoiceAgentsReportConfig,
 } from 'pages/stats/voice/pages/VoiceAgentsReportConfig'
+import VoicePaywall from 'pages/stats/voice/VoicePaywall'
 import { AccountFeature } from 'state/currentAccount/types'
-import { getPhoneIntegrations } from 'state/integrations/selectors'
-import {
-    getPageStatsFilters,
-    getPageStatsFiltersWithLogicalOperators,
-} from 'state/stats/selectors'
-
-import VoicePaywall from '../VoicePaywall'
 
 function VoiceAgents() {
-    const phoneIntegrations = useAppSelector(getPhoneIntegrations)
-    const statsFilters = useAppSelector(getPageStatsFilters)
-
-    const pageStatsFiltersWithLogicalOperators = useAppSelector(
-        getPageStatsFiltersWithLogicalOperators,
-    )
-    useCleanStatsFiltersWithLogicalOperators(
-        pageStatsFiltersWithLogicalOperators,
-    )
-
-    const isVoiceAgentsNewFilters =
-        !!useFlags()[FeatureFlagKey.AnalyticsNewFiltersVoice]
+    useCleanStatsFilters()
 
     const getGridCellSize = useGridSize()
 
@@ -57,67 +33,33 @@ function VoiceAgents() {
             title={VoiceAgentsReportConfig.reportName}
             titleExtra={
                 <>
-                    {!isVoiceAgentsNewFilters && (
-                        <>
-                            <DEPRECATED_IntegrationsStatsFilter
-                                value={statsFilters.integrations}
-                                integrations={phoneIntegrations}
-                                isMultiple
-                                variant={'ghost'}
-                            />
-                            <DEPRECATED_TagsStatsFilter
-                                value={statsFilters.tags}
-                                variant={'ghost'}
-                            />
-                            <DEPRECATED_AgentsStatsFilter
-                                value={statsFilters.agents}
-                                variant={'ghost'}
-                            />
-                            <DEPRECATED_PeriodStatsFilter
-                                initialSettings={{
+                    <VoiceAgentsDownloadDataButton />
+                </>
+            }
+        >
+            <DashboardSection>
+                <DashboardGridCell size={getGridCellSize(12)} className="pb-0">
+                    <FiltersPanelWrapper
+                        filterSettingsOverrides={{
+                            [FilterKey.Period]: {
+                                initialSettings: {
                                     minDate: moment(
                                         MIN_DATE_FOR_ADVANCED_VOICE_STATS,
                                         'YYYY-MM-DD',
                                     ).toDate(),
                                     maxSpan: 365,
-                                }}
-                                value={statsFilters.period}
-                                variant={'ghost'}
-                            />
-                        </>
-                    )}
-                    <VoiceAgentsDownloadDataButton />
-                </>
-            }
-        >
-            {isVoiceAgentsNewFilters && (
-                <DashboardSection>
-                    <DashboardGridCell
-                        size={getGridCellSize(12)}
-                        className="pb-0"
-                    >
-                        <FiltersPanelWrapper
-                            filterSettingsOverrides={{
-                                [FilterKey.Period]: {
-                                    initialSettings: {
-                                        minDate: moment(
-                                            MIN_DATE_FOR_ADVANCED_VOICE_STATS,
-                                            'YYYY-MM-DD',
-                                        ).toDate(),
-                                        maxSpan: 365,
-                                    },
                                 },
-                            }}
-                            persistentFilters={
-                                VoiceAgentsReportConfig.reportFilters.persistent
-                            }
-                            optionalFilters={
-                                VoiceAgentsReportConfig.reportFilters.optional
-                            }
-                        />
-                    </DashboardGridCell>
-                </DashboardSection>
-            )}
+                            },
+                        }}
+                        persistentFilters={
+                            VoiceAgentsReportConfig.reportFilters.persistent
+                        }
+                        optionalFilters={
+                            VoiceAgentsReportConfig.reportFilters.optional
+                        }
+                    />
+                </DashboardGridCell>
+            </DashboardSection>
             <DashboardSection>
                 <DashboardGridCell>
                     <DashboardComponent

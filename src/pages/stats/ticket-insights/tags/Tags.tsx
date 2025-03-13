@@ -1,7 +1,6 @@
 import React from 'react'
 
-import { useCleanStatsFiltersWithLogicalOperators } from 'hooks/reporting/useCleanStatsFilters'
-import useAppSelector from 'hooks/useAppSelector'
+import { useCleanStatsFilters } from 'hooks/reporting/useCleanStatsFilters'
 import { useGridSize } from 'hooks/useGridSize'
 import { FilterKey } from 'models/stat/types'
 import { AnalyticsFooter } from 'pages/stats/AnalyticsFooter'
@@ -15,12 +14,10 @@ import {
     TicketInsightsTagsReportConfig,
 } from 'pages/stats/ticket-insights/tags/TagsReportConfig'
 import { TagsReportDownloadDataButton } from 'pages/stats/ticket-insights/tags/TagsReportDownloadDataButton'
-import { getPageStatsFiltersWithLogicalOperators } from 'state/stats/selectors'
 
 export function Tags() {
     const getGridCellSize = useGridSize()
-    const statsFilters = useAppSelector(getPageStatsFiltersWithLogicalOperators)
-    useCleanStatsFiltersWithLogicalOperators(statsFilters)
+    useCleanStatsFilters()
 
     return (
         <div className="full-width">

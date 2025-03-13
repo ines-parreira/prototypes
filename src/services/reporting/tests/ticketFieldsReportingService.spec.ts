@@ -1,7 +1,7 @@
 import { UseQueryResult } from '@tanstack/react-query'
 import { renderHook } from '@testing-library/react-hooks'
 
-import { getCsvFileNameWithDates } from 'hooks/reporting/support-performance/overview/useDownloadOverviewData'
+import { getCsvFileNameWithDates } from 'hooks/reporting/common/utils'
 import {
     fetchCustomFieldsTicketCountTimeSeries,
     useCustomFieldsTicketCountTimeSeries,

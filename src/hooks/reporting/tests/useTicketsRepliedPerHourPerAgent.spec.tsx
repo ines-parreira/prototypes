@@ -17,6 +17,8 @@ import {
 } from 'models/reporting/cubes/agentxp/AgentTimeTrackingCube'
 import { HelpdeskMessageMeasure } from 'models/reporting/cubes/HelpdeskMessageCube'
 import { TicketMember } from 'models/reporting/cubes/TicketCube'
+import { withDefaultLogicalOperator } from 'models/reporting/queryFactories/utils'
+import { StatsFilters, TagFilterInstanceId } from 'models/stat/types'
 import { assumeMock } from 'utils/testing'
 
 jest.mock('hooks/reporting/metricsPerAgent')
@@ -30,14 +32,19 @@ const fetchTicketsRepliedMetricPerAgentMock = assumeMock(
 const fetchOnlineTimePerAgentMock = assumeMock(fetchOnlineTimePerAgent)
 
 describe('TicketsRepliedPerHourPerAgent.ts', () => {
-    const statsFilters = {
+    const statsFilters: StatsFilters = {
         period: {
             start_datetime: '2021-05-29T00:00:00+02:00',
             end_datetime: '2021-06-04T23:59:59+02:00',
         },
-        integrations: [456],
-        agents: [1, 2],
-        tags: [123],
+        integrations: withDefaultLogicalOperator([456]),
+        agents: withDefaultLogicalOperator([1, 2]),
+        tags: [
+            {
+                ...withDefaultLogicalOperator([123]),
+                filterInstanceId: TagFilterInstanceId.First,
+            },
+        ],
     }
     const timeZone = 'UTC'
     const ticketsRepliedValue = 50

@@ -2,12 +2,11 @@ import React from 'react'
 
 import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import noop from 'lodash/noop'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import { useNewStatsFilters } from 'hooks/reporting/support-performance/useNewStatsFilters'
+import { useStatsFilters } from 'hooks/reporting/support-performance/useStatsFilters'
 import { useMetric } from 'hooks/reporting/useMetric'
 import { useMetricPerDimension } from 'hooks/reporting/useMetricPerDimension'
 import {
@@ -28,8 +27,8 @@ jest.mock('hooks/reporting/useMetricPerDimension', () => ({
 jest.mock('pages/stats/help-center/hooks/useSearchQueryMetrics', () => ({
     useSearchQueryMetrics: () => ({ data: [] }),
 }))
-jest.mock('hooks/reporting/support-performance/useNewStatsFilters')
-const useNewStatsFiltersMock = assumeMock(useNewStatsFilters)
+jest.mock('hooks/reporting/support-performance/useStatsFilters')
+const useStatsFiltersMock = assumeMock(useStatsFilters)
 jest.mock('pages/stats/help-center/hooks/useSelectedHelpCenter')
 const useSelectedHelpCenterMock = assumeMock(useSelectedHelpCenter)
 
@@ -58,18 +57,16 @@ describe('<SearchTermsTable/>', () => {
     }
     const timezone = 'US'
     beforeEach(() => {
-        useNewStatsFiltersMock.mockReturnValue({
+        useStatsFiltersMock.mockReturnValue({
             cleanStatsFilters: statsFilters,
             userTimezone: timezone,
             granularity: ReportingGranularity.Day,
-            isAnalyticsNewFilters: true,
         })
         useSelectedHelpCenterMock.mockReturnValue({
             activeHelpCenters: [],
             helpCenters: [],
             isLoading: false,
             selectedHelpCenter: {} as any,
-            setStatsFilters: noop,
             sortedHelpCenters: [],
             statsFilters,
             helpCenterId: 123,

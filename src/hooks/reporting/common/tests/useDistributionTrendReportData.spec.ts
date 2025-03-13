@@ -5,19 +5,27 @@ import { TicketChannel } from 'business/types/ticket'
 import { agents } from 'fixtures/agents'
 import { integrationsState } from 'fixtures/integrations'
 import { useDistributionTrendReportData } from 'hooks/reporting/common/useDistributionTrendReportData'
-import { LegacyStatsFilters } from 'models/stat/types'
+import { withDefaultLogicalOperator } from 'models/reporting/queryFactories/utils'
+import { StatsFilters, TagFilterInstanceId } from 'models/stat/types'
 import { formatMetricValue } from 'pages/stats/common/utils'
 
 describe('useDistributionTrendReportData', () => {
-    const defaultStatsFilters: LegacyStatsFilters = {
+    const defaultStatsFilters: StatsFilters = {
         period: {
             start_datetime: '2021-02-03T00:00:00.000Z',
             end_datetime: '2021-02-03T23:59:59.999Z',
         },
-        channels: [TicketChannel.Chat],
-        integrations: [integrationsState.integrations[0].id],
-        agents: [agents[0].id],
-        tags: [1],
+        channels: withDefaultLogicalOperator([TicketChannel.Chat]),
+        integrations: withDefaultLogicalOperator([
+            integrationsState.integrations[0].id,
+        ]),
+        agents: withDefaultLogicalOperator([agents[0].id]),
+        tags: [
+            {
+                ...withDefaultLogicalOperator([1]),
+                filterInstanceId: TagFilterInstanceId.First,
+            },
+        ],
     }
 
     const emailResult = {

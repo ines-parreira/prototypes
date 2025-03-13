@@ -1,8 +1,6 @@
 import React from 'react'
 
-import { useFlags } from 'launchdarkly-react-client-sdk'
-
-import { FeatureFlagKey } from 'config/featureFlags'
+import { useCleanStatsFilters } from 'hooks/reporting/useCleanStatsFilters'
 import { useGridSize } from 'hooks/useGridSize'
 import { FilterKey } from 'models/stat/types'
 import { AnalyticsFooter } from 'pages/stats/AnalyticsFooter'
@@ -17,13 +15,10 @@ import {
     AutoQAChart,
     AutoQAReportConfig,
 } from 'pages/stats/support-performance/auto-qa/AutoQAReportConfig'
-import { SupportPerformanceFilters } from 'pages/stats/support-performance/SupportPerformanceFilters'
 
 export default function AutoQA() {
     const getGridCellSize = useGridSize()
-
-    const isAnalyticsNewFilters =
-        !!useFlags()[FeatureFlagKey.AnalyticsNewFilters]
+    useCleanStatsFilters()
 
     const trendCardColumnWidth = 3
     const manualDimensionTrendCardColumnWidth = 3
@@ -34,37 +29,32 @@ export default function AutoQA() {
                 title={AUTO_QA_PAGE_TITLE}
                 titleExtra={
                     <>
-                        <SupportPerformanceFilters
-                            hidden={isAnalyticsNewFilters}
-                        />
                         <AutoQADownloadDataButton />
                     </>
                 }
             >
-                {isAnalyticsNewFilters && (
-                    <DashboardSection>
-                        <DashboardGridCell
-                            size={getGridCellSize(12)}
-                            className="pb-0"
-                        >
-                            <FiltersPanelWrapper
-                                filterSettingsOverrides={{
-                                    [FilterKey.Period]: {
-                                        initialSettings: {
-                                            maxSpan: 365,
-                                        },
+                <DashboardSection>
+                    <DashboardGridCell
+                        size={getGridCellSize(12)}
+                        className="pb-0"
+                    >
+                        <FiltersPanelWrapper
+                            filterSettingsOverrides={{
+                                [FilterKey.Period]: {
+                                    initialSettings: {
+                                        maxSpan: 365,
                                     },
-                                }}
-                                persistentFilters={
-                                    AutoQAReportConfig.reportFilters.persistent
-                                }
-                                optionalFilters={
-                                    AutoQAReportConfig.reportFilters.optional
-                                }
-                            />
-                        </DashboardGridCell>
-                    </DashboardSection>
-                )}
+                                },
+                            }}
+                            persistentFilters={
+                                AutoQAReportConfig.reportFilters.persistent
+                            }
+                            optionalFilters={
+                                AutoQAReportConfig.reportFilters.optional
+                            }
+                        />
+                    </DashboardGridCell>
+                </DashboardSection>
                 <DashboardSection>
                     <DashboardGridCell
                         size={getGridCellSize(trendCardColumnWidth)}

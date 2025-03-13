@@ -3,8 +3,7 @@ import React from 'react'
 import { useFlags } from 'launchdarkly-react-client-sdk'
 
 import { FeatureFlagKey } from 'config/featureFlags'
-import { useCleanStatsFiltersWithLogicalOperators } from 'hooks/reporting/useCleanStatsFilters'
-import useAppSelector from 'hooks/useAppSelector'
+import { useCleanStatsFilters } from 'hooks/reporting/useCleanStatsFilters'
 import { useGridSize } from 'hooks/useGridSize'
 import { FilterKey } from 'models/stat/types'
 import { AiSalesAgentChart } from 'pages/stats/aiSalesAgent/AiSalesAgentMetricsConfig'
@@ -19,12 +18,9 @@ import DashboardGridCell from 'pages/stats/DashboardGridCell'
 import { DashboardComponent } from 'pages/stats/dashboards/DashboardComponent'
 import DashboardSection from 'pages/stats/DashboardSection'
 import StatsPage from 'pages/stats/StatsPage'
-import { getPageStatsFiltersWithLogicalOperators } from 'state/stats/selectors'
 
 const AiSalesAgentSalesOverview = () => {
-    const statsFilters = useAppSelector(getPageStatsFiltersWithLogicalOperators)
-    useCleanStatsFiltersWithLogicalOperators(statsFilters)
-
+    useCleanStatsFilters()
     const getGridCellSize = useGridSize()
     const isDiscountSectionVisible: boolean | undefined =
         useFlags()[FeatureFlagKey.StandaloneAiSalesDiscountSection]

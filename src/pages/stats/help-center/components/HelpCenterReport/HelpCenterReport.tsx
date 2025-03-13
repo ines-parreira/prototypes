@@ -1,18 +1,13 @@
 import React from 'react'
 
-import { useFlags } from 'launchdarkly-react-client-sdk'
 import moment from 'moment/moment'
 
-import { FeatureFlagKey } from 'config/featureFlags'
 import { useGridSize } from 'hooks/useGridSize'
 import { FilterKey } from 'models/stat/types'
 import { useHasAccessToAILibrary } from 'pages/settings/helpCenter/components/AIArticlesLibraryView/hooks/useHasAccessToAILibrary'
 import { useHelpCenterAIArticlesLibrary } from 'pages/settings/helpCenter/components/AIArticlesLibraryView/hooks/useHelpCenterAIArticlesLibrary'
 import { AnalyticsFooter } from 'pages/stats/AnalyticsFooter'
-import DEPRECATED_HelpCenterFilter from 'pages/stats/common/filters/DEPRECATED_HelpCenterFilter/DEPRECATED_HelpCenterFilter'
-import PeriodStatsFilter from 'pages/stats/common/filters/DEPRECATED_PeriodStatsFilter'
 import FiltersPanelWrapper from 'pages/stats/common/filters/FiltersPanelWrapper'
-import DEPRECATED_HelpCenterStatsLanguageFilter from 'pages/stats/common/filters/HelpCenterStatsLanguageFilter/DEPRECATED_HelpCenterStatsLanguageFilter'
 import { DEFAULT_LOCALE } from 'pages/stats/common/utils'
 import DashboardGridCell from 'pages/stats/DashboardGridCell'
 import { DashboardComponent } from 'pages/stats/dashboards/DashboardComponent'
@@ -31,15 +26,7 @@ import StatsPage from 'pages/stats/StatsPage'
 const DATE_WHEN_START_COLLECTION_EVENTS = '2023-11-16'
 
 export const HelpCenterReport = () => {
-    const isAnalyticsNewFilters =
-        !!useFlags()[FeatureFlagKey.AnalyticsNewFiltersHelpCenter]
-
-    const { selectedHelpCenter, statsFilters, setStatsFilters, helpCenters } =
-        useSelectedHelpCenter()
-
-    const onLanguageFilterChange = (localeCodes: string[]) => {
-        setStatsFilters({ localeCodes })
-    }
+    const { selectedHelpCenter, statsFilters } = useSelectedHelpCenter()
 
     const isEndDateBeforeStartCollectionEvents = moment(
         statsFilters.period.start_datetime,
@@ -57,57 +44,29 @@ export const HelpCenterReport = () => {
 
     return (
         <div className="full-width">
-            <StatsPage
-                title={HelpCenterReportConfig.reportName}
-                titleExtra={
-                    !isAnalyticsNewFilters && (
-                        <>
-                            <DEPRECATED_HelpCenterStatsLanguageFilter
-                                supportedLocales={
-                                    selectedHelpCenter.supported_locales
-                                }
-                                selectedLocaleCodes={
-                                    statsFilters.localeCodes?.values ?? []
-                                }
-                                onFilterChange={onLanguageFilterChange}
-                            />
-                            <PeriodStatsFilter
-                                initialSettings={{
-                                    maxSpan: 365,
-                                }}
-                                value={statsFilters.period}
-                                variant="ghost"
-                            />
-                        </>
-                    )
-                }
-            >
-                {isAnalyticsNewFilters && (
-                    <DashboardSection>
-                        <DashboardGridCell
-                            size={getGridCellSize(12)}
-                            className="pb-0"
-                        >
-                            <FiltersPanelWrapper
-                                persistentFilters={
-                                    HelpCenterReportConfig.reportFilters
-                                        .persistent
-                                }
-                                optionalFilters={
-                                    HelpCenterReportConfig.reportFilters
-                                        .optional
-                                }
-                                filterSettingsOverrides={{
-                                    [FilterKey.Period]: {
-                                        initialSettings: {
-                                            maxSpan: 365,
-                                        },
+            <StatsPage title={HelpCenterReportConfig.reportName}>
+                <DashboardSection>
+                    <DashboardGridCell
+                        size={getGridCellSize(12)}
+                        className="pb-0"
+                    >
+                        <FiltersPanelWrapper
+                            persistentFilters={
+                                HelpCenterReportConfig.reportFilters.persistent
+                            }
+                            optionalFilters={
+                                HelpCenterReportConfig.reportFilters.optional
+                            }
+                            filterSettingsOverrides={{
+                                [FilterKey.Period]: {
+                                    initialSettings: {
+                                        maxSpan: 365,
                                     },
-                                }}
-                            />
-                        </DashboardGridCell>
-                    </DashboardSection>
-                )}
+                                },
+                            }}
+                        />
+                    </DashboardGridCell>
+                </DashboardSection>
                 <DashboardSection title="" className="pb-0">
                     {isEndDateBeforeStartCollectionEvents && (
                         <DashboardGridCell>
@@ -122,15 +81,6 @@ export const HelpCenterReport = () => {
                         <DashboardGridCell>
                             <UnpublishedHelpCenterAlert
                                 helpCenterId={selectedHelpCenter.id}
-                            />
-                        </DashboardGridCell>
-                    )}
-                    {!isAnalyticsNewFilters && (
-                        <DashboardGridCell>
-                            <DEPRECATED_HelpCenterFilter
-                                selectedHelpCenter={selectedHelpCenter}
-                                helpCenters={helpCenters}
-                                setSelectedHelpCenter={setStatsFilters}
                             />
                         </DashboardGridCell>
                     )}

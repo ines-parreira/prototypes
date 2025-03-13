@@ -5,6 +5,7 @@ import {
     TableSummaryDataSources,
     useTableReportData,
 } from 'hooks/reporting/common/useTableReportData'
+import { getCsvFileNameWithDates } from 'hooks/reporting/common/utils'
 import {
     fetchClosedTicketsMetric,
     fetchCustomerSatisfactionMetric,
@@ -31,10 +32,9 @@ import {
     fetchZeroTouchTicketsMetricPerAgent,
 } from 'hooks/reporting/metricsPerAgent'
 import { fetchPercentageOfClosedTicketsMetricPerAgent } from 'hooks/reporting/support-performance/agents/usePercentageOfClosedTicketsMetricPerAgent'
-import { getCsvFileNameWithDates } from 'hooks/reporting/support-performance/overview/useDownloadOverviewData'
 import { fetchOneTouchTicketsPercentageMetricTrend } from 'hooks/reporting/support-performance/overview/useOneTouchTicketsPercentageMetricTrend'
 import { fetchZeroTouchTicketsMetricTrend } from 'hooks/reporting/support-performance/overview/useZeroTouchTicketsMetricTrend'
-import { useNewStatsFilters } from 'hooks/reporting/support-performance/useNewStatsFilters'
+import { useStatsFilters } from 'hooks/reporting/support-performance/useStatsFilters'
 import { useAgentsTableConfigSetting } from 'hooks/reporting/useAgentsTableConfigSetting'
 import { fetchMessagesSentPerHour } from 'hooks/reporting/useMessagesSentPerHour'
 import { fetchMessagesSentPerHourPerAgent } from 'hooks/reporting/useMessagesSentPerHourPerAgent'
@@ -215,7 +215,7 @@ export const agentsSummaryDataSources: TableSummaryDataSources<AgentsReportData>
 export const useDownloadAgentsPerformanceData = () => {
     const agents = useAppSelector<User[]>(getSortedAgents)
     const { columnsOrder, rowsOrder } = useAgentsTableConfigSetting()
-    const { cleanStatsFilters, userTimezone } = useNewStatsFilters()
+    const { cleanStatsFilters, userTimezone } = useStatsFilters()
 
     const { data: reportData, isFetching } = useTableReportData<
         keyof AgentsReportData,

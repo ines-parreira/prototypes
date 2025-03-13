@@ -3,7 +3,7 @@ import React from 'react'
 import { User, UserRole } from 'config/types/user'
 import { agents } from 'fixtures/agents'
 import { useAIAgentUser } from 'hooks/reporting/automate/useAIAgentUserId'
-import { useNewStatsFilters } from 'hooks/reporting/support-performance/useNewStatsFilters'
+import { useStatsFilters } from 'hooks/reporting/support-performance/useStatsFilters'
 import { withDefaultLogicalOperator } from 'models/reporting/queryFactories/utils'
 import { ReportingGranularity } from 'models/reporting/types'
 import { AiAgentTable } from 'pages/stats/automate/ai-agent/AiAgentTable'
@@ -15,8 +15,8 @@ import { assumeMock, renderWithStore } from 'utils/testing'
 jest.mock('pages/stats/support-performance/agents/AgentsTable')
 const AgentsTableMock = assumeMock(AgentsTable)
 
-jest.mock('hooks/reporting/support-performance/useNewStatsFilters')
-const useNewStatsFiltersMock = assumeMock(useNewStatsFilters)
+jest.mock('hooks/reporting/support-performance/useStatsFilters')
+const useStatsFiltersMock = assumeMock(useStatsFilters)
 
 jest.mock('hooks/reporting/automate/useAIAgentUserId')
 const useAIAgentUserMock = assumeMock(useAIAgentUser)
@@ -32,15 +32,14 @@ describe('AiAgentTable', () => {
     const statsFiltersWithUserTimezone = {
         cleanStatsFilters: defaultStatsFilters,
         userTimezone: 'UTC',
-        isAnalyticsNewFilters: true,
-        reportingGranularity: ReportingGranularity.Day,
+        granularity: ReportingGranularity.Day,
     }
 
     beforeEach(() => {
         AgentsTableMock.mockImplementation(() => <div />)
         useAIAgentUserMock.mockReturnValue(aiAgent)
-        useNewStatsFiltersMock.mockReturnValue(
-            statsFiltersWithUserTimezone as any,
+        useStatsFiltersMock.mockReturnValue(
+            statsFiltersWithUserTimezone as ReturnType<typeof useStatsFilters>,
         )
     })
 

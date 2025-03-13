@@ -6,7 +6,7 @@ import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import { useNewStatsFilters } from 'hooks/reporting/support-performance/useNewStatsFilters'
+import { useStatsFilters } from 'hooks/reporting/support-performance/useStatsFilters'
 import { useCustomFieldsTicketCountPerCustomFields } from 'hooks/reporting/ticket-insights/useCustomFieldsTicketCountPerCustomFields'
 import { getPeriodDateTimes } from 'hooks/reporting/useTimeSeries'
 import { BREAKDOWN_FIELD, VALUE_FIELD } from 'hooks/reporting/withBreakdown'
@@ -41,8 +41,8 @@ jest.mock(
 const useCustomFieldsTicketCountPerCustomFieldsMock = assumeMock(
     useCustomFieldsTicketCountPerCustomFields,
 )
-jest.mock('hooks/reporting/support-performance/useNewStatsFilters')
-const useNewStatsFiltersMock = assumeMock(useNewStatsFilters)
+jest.mock('hooks/reporting/support-performance/useStatsFilters')
+const useStatsFiltersMock = assumeMock(useStatsFilters)
 jest.mock('pages/stats/NoDataAvailable')
 const NoDataAvailableMock = assumeMock(NoDataAvailable)
 
@@ -149,11 +149,10 @@ describe('<CustomFieldsTicketCountBreakdownTable />', () => {
     ]
 
     beforeEach(() => {
-        useNewStatsFiltersMock.mockReturnValue({
+        useStatsFiltersMock.mockReturnValue({
             userTimezone: 'someTimezone',
             cleanStatsFilters: defaultStatsFilters,
             granularity: ReportingGranularity.Day,
-            isAnalyticsNewFilters: true,
         })
 
         useCustomFieldsTicketCountPerCustomFieldsMock.mockReturnValue({

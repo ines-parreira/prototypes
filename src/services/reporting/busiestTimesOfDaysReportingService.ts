@@ -1,4 +1,4 @@
-import { getCsvFileNameWithDates } from 'hooks/reporting/support-performance/overview/useDownloadOverviewData'
+import { getCsvFileNameWithDates } from 'hooks/reporting/common/utils'
 import { TimeSeriesHook } from 'hooks/reporting/useTimeSeries'
 import { ReportingGranularity } from 'models/reporting/types'
 import { Period, StatsFilters } from 'models/stat/types'

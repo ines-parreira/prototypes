@@ -5,7 +5,7 @@ import classnames from 'classnames'
 import { Skeleton } from '@gorgias/merchant-ui-kit'
 
 import { MetricPerChannelQueryHook } from 'hooks/reporting/support-performance/channels/metricsPerChannel'
-import { useNewStatsFilters } from 'hooks/reporting/support-performance/useNewStatsFilters'
+import { useStatsFilters } from 'hooks/reporting/support-performance/useStatsFilters'
 import useAppSelector from 'hooks/useAppSelector'
 import { Channel } from 'models/channel/types'
 import BodyCell from 'pages/common/components/table/cells/BodyCell'
@@ -41,8 +41,7 @@ export const ChannelsCellContent = ({
     useMetric: MetricPerChannelQueryHook
 }) => {
     const isHeatmapMode = useAppSelector(getHeatmapMode)
-    const { cleanStatsFilters, userTimezone, isAnalyticsNewFilters } =
-        useNewStatsFilters()
+    const { cleanStatsFilters, userTimezone } = useStatsFilters()
 
     const { isFetching, data } = useMetric(
         cleanStatsFilters,
@@ -92,7 +91,6 @@ export const ChannelsCellContent = ({
                         metricName: column,
                         perChannel: channel.slug,
                     }}
-                    useNewFilterData={isAnalyticsNewFilters}
                 >
                     {cellContent}
                 </DrillDownModalTrigger>

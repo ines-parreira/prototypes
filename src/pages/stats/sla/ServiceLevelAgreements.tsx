@@ -1,8 +1,6 @@
 import React from 'react'
 
-import { useFlags } from 'launchdarkly-react-client-sdk'
-
-import { FeatureFlagKey } from 'config/featureFlags'
+import { useCleanStatsFilters } from 'hooks/reporting/useCleanStatsFilters'
 import { useGridSize } from 'hooks/useGridSize'
 import { FilterKey } from 'models/stat/types'
 import { AnalyticsFooter } from 'pages/stats/AnalyticsFooter'
@@ -11,21 +9,18 @@ import DashboardGridCell from 'pages/stats/DashboardGridCell'
 import { DashboardComponent } from 'pages/stats/dashboards/DashboardComponent'
 import DashboardSection from 'pages/stats/DashboardSection'
 import { DownloadSLAsData } from 'pages/stats/sla/components/DownloadSLAsData'
-import { SLAPolicySelect } from 'pages/stats/sla/components/SLAPolicySelect'
 import { WithSlaEmptyState } from 'pages/stats/sla/components/WithSlaEmptyState'
 import {
     ServiceLevelAgreementsChart,
     ServiceLevelAgreementsReportConfig,
 } from 'pages/stats/sla/ServiceLevelAgreementsReportConfig'
 import StatsPage from 'pages/stats/StatsPage'
-import { SupportPerformanceFilters } from 'pages/stats/support-performance/SupportPerformanceFilters'
 
 const OVERVIEW_SECTION_LABEL = 'Overview'
 
 export function ServiceLevelAgreements() {
     const getGridCellSize = useGridSize()
-    const isAnalyticsNewFilters =
-        !!useFlags()[FeatureFlagKey.AnalyticsNewFilters]
+    useCleanStatsFilters()
 
     return (
         <WithSlaEmptyState>
@@ -34,46 +29,38 @@ export function ServiceLevelAgreements() {
                     title={ServiceLevelAgreementsReportConfig.reportName}
                     titleExtra={
                         <>
-                            <SupportPerformanceFilters
-                                hidden={isAnalyticsNewFilters}
-                            />
                             <DownloadSLAsData />
                         </>
                     }
                 >
-                    {isAnalyticsNewFilters && (
-                        <DashboardSection>
-                            <DashboardGridCell
-                                size={getGridCellSize(12)}
-                                className="pb-0"
-                            >
-                                <FiltersPanelWrapper
-                                    persistentFilters={
-                                        ServiceLevelAgreementsReportConfig
-                                            .reportFilters.persistent
-                                    }
-                                    optionalFilters={
-                                        ServiceLevelAgreementsReportConfig
-                                            .reportFilters.optional
-                                    }
-                                    filterSettingsOverrides={{
-                                        [FilterKey.Period]: {
-                                            initialSettings: {
-                                                maxSpan: 365,
-                                            },
+                    <DashboardSection>
+                        <DashboardGridCell
+                            size={getGridCellSize(12)}
+                            className="pb-0"
+                        >
+                            <FiltersPanelWrapper
+                                persistentFilters={
+                                    ServiceLevelAgreementsReportConfig
+                                        .reportFilters.persistent
+                                }
+                                optionalFilters={
+                                    ServiceLevelAgreementsReportConfig
+                                        .reportFilters.optional
+                                }
+                                filterSettingsOverrides={{
+                                    [FilterKey.Period]: {
+                                        initialSettings: {
+                                            maxSpan: 365,
                                         },
-                                    }}
-                                />
-                            </DashboardGridCell>
-                        </DashboardSection>
-                    )}
+                                    },
+                                }}
+                            />
+                        </DashboardGridCell>
+                    </DashboardSection>
                     <DashboardSection
                         title={OVERVIEW_SECTION_LABEL}
                         className="pb-0"
                     >
-                        {!isAnalyticsNewFilters && <SLAPolicySelect />}
-                    </DashboardSection>
-                    <DashboardSection>
                         <DashboardGridCell size={getGridCellSize(6)}>
                             <DashboardComponent
                                 chart={

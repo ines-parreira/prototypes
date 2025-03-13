@@ -7,14 +7,14 @@ import {
     VoiceEventsByAgentMember,
     VoiceEventsByAgentSegment,
 } from 'models/reporting/cubes/VoiceEventsByAgent'
-import { ReportingFilterOperator } from 'models/reporting/types'
-import { StatsFilters } from 'models/stat/types'
-import { formatReportingQueryDate } from 'utils/reporting'
-
+import { withDefaultLogicalOperator } from 'models/reporting/queryFactories/utils'
 import {
     declinedVoiceCallsCountPerAgentQueryFactory,
     declinedVoiceCallsCountQueryFactory,
-} from '../voiceEventsByAgent'
+} from 'models/reporting/queryFactories/voice/voiceEventsByAgent'
+import { ReportingFilterOperator } from 'models/reporting/types'
+import { StatsFilters, TagFilterInstanceId } from 'models/stat/types'
+import { formatReportingQueryDate } from 'utils/reporting'
 
 describe('voice events by agent factories', () => {
     const periodStart = formatReportingQueryDate(moment())
@@ -92,7 +92,12 @@ describe('voice events by agent factories', () => {
                     end_datetime: periodEnd,
                     start_datetime: periodStart,
                 },
-                tags: [1, 2],
+                tags: [
+                    {
+                        ...withDefaultLogicalOperator([1, 2]),
+                        filterInstanceId: TagFilterInstanceId.First,
+                    },
+                ],
             }
             const query = factory(statsFilters, 'UTC')
             expect(query.filters).toEqual(

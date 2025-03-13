@@ -6,7 +6,7 @@ import { Skeleton } from '@gorgias/merchant-ui-kit'
 
 import { FeatureFlagKey } from 'config/featureFlags'
 import { useWorkloadPerChannelDistribution } from 'hooks/reporting/distributions'
-import { useNewStatsFilters } from 'hooks/reporting/support-performance/useNewStatsFilters'
+import { useStatsFilters } from 'hooks/reporting/support-performance/useStatsFilters'
 import IconButton from 'pages/common/components/button/IconButton'
 import ChartCard from 'pages/stats/ChartCard'
 import { DashboardChartProps } from 'pages/stats/dashboards/types'
@@ -34,7 +34,7 @@ export const WorkloadPerChannelChart = ({
         )
     }, [isDeferredLoadingEnabled])
 
-    const { cleanStatsFilters, userTimezone } = useNewStatsFilters()
+    const { cleanStatsFilters, userTimezone } = useStatsFilters()
 
     const workloadPerChannel = useWorkloadPerChannelDistribution(
         cleanStatsFilters,

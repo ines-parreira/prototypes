@@ -39,7 +39,8 @@ import { oneTouchTicketsPerChannelQueryFactory } from 'models/reporting/queryFac
 import { ticketsCreatedPerChannelPerChannelQueryFactory } from 'models/reporting/queryFactories/support-performance/ticketsCreated'
 import { ticketsRepliedMetricPerChannelQueryFactory } from 'models/reporting/queryFactories/support-performance/ticketsReplied'
 import { zeroTouchTicketsPerChannelQueryFactory } from 'models/reporting/queryFactories/support-performance/zeroTouchTickets'
-import { LegacyStatsFilters } from 'models/stat/types'
+import { withDefaultLogicalOperator } from 'models/reporting/queryFactories/utils'
+import { StatsFilters, TagFilterInstanceId } from 'models/stat/types'
 import { assumeMock } from 'utils/testing'
 
 jest.mock('hooks/reporting/useMetricPerDimension')
@@ -49,14 +50,22 @@ const fetchMetricPerDimensionMock = assumeMock(fetchMetricPerDimension)
 describe('metricsPerChannel', () => {
     const periodStart = moment()
     const periodEnd = periodStart.add(7, 'days')
-    const statsFilters: LegacyStatsFilters = {
+    const statsFilters: StatsFilters = {
         period: {
             end_datetime: periodEnd.toISOString(),
             start_datetime: periodStart.toISOString(),
         },
-        channels: [TicketChannel.Email, TicketChannel.Chat],
-        integrations: [1],
-        tags: [1, 2],
+        channels: withDefaultLogicalOperator([
+            TicketChannel.Email,
+            TicketChannel.Chat,
+        ]),
+        integrations: withDefaultLogicalOperator([1]),
+        tags: [
+            {
+                ...withDefaultLogicalOperator([1, 2]),
+                filterInstanceId: TagFilterInstanceId.First,
+            },
+        ],
     }
     const timezone = 'someTimeZone'
     const sorting = OrderDirection.Asc

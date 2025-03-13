@@ -1,8 +1,6 @@
 import React from 'react'
 
-import { useFlags } from 'launchdarkly-react-client-sdk'
-
-import { FeatureFlagKey } from 'config/featureFlags'
+import { useCleanStatsFilters } from 'hooks/reporting/useCleanStatsFilters'
 import { useGridSize } from 'hooks/useGridSize'
 import { FilterKey } from 'models/stat/types'
 import { AnalyticsFooter } from 'pages/stats/AnalyticsFooter'
@@ -17,15 +15,12 @@ import {
     AgentsChart,
     SupportPerformanceAgentsReportConfig,
 } from 'pages/stats/support-performance/agents/SupportPerformanceAgentsReportConfig'
-import { SupportPerformanceFilters } from 'pages/stats/support-performance/SupportPerformanceFilters'
 
 export const AGENTS_PAGE_TITLE = 'Agents'
 
 export default function SupportPerformanceAgentsReport() {
-    const isAnalyticsNewFilters =
-        !!useFlags()[FeatureFlagKey.AnalyticsNewFilters]
-
     const getGridCellSize = useGridSize()
+    useCleanStatsFilters()
 
     return (
         <div className="full-width">
@@ -33,39 +28,34 @@ export default function SupportPerformanceAgentsReport() {
                 title={AGENTS_PAGE_TITLE}
                 titleExtra={
                     <>
-                        <SupportPerformanceFilters
-                            hidden={isAnalyticsNewFilters}
-                        />
                         <DownloadAgentsPerformanceDataButton />
                     </>
                 }
             >
-                {isAnalyticsNewFilters && (
-                    <DashboardSection>
-                        <DashboardGridCell
-                            size={getGridCellSize(12)}
-                            className="pb-0"
-                        >
-                            <FiltersPanelWrapper
-                                persistentFilters={
-                                    SupportPerformanceAgentsReportConfig
-                                        .reportFilters.persistent
-                                }
-                                optionalFilters={
-                                    SupportPerformanceAgentsReportConfig
-                                        .reportFilters.optional
-                                }
-                                filterSettingsOverrides={{
-                                    [FilterKey.Period]: {
-                                        initialSettings: {
-                                            maxSpan: 365,
-                                        },
+                <DashboardSection>
+                    <DashboardGridCell
+                        size={getGridCellSize(12)}
+                        className="pb-0"
+                    >
+                        <FiltersPanelWrapper
+                            persistentFilters={
+                                SupportPerformanceAgentsReportConfig
+                                    .reportFilters.persistent
+                            }
+                            optionalFilters={
+                                SupportPerformanceAgentsReportConfig
+                                    .reportFilters.optional
+                            }
+                            filterSettingsOverrides={{
+                                [FilterKey.Period]: {
+                                    initialSettings: {
+                                        maxSpan: 365,
                                     },
-                                }}
-                            />
-                        </DashboardGridCell>
-                    </DashboardSection>
-                )}
+                                },
+                            }}
+                        />
+                    </DashboardGridCell>
+                </DashboardSection>
                 <DashboardSection
                     title={AGENTS_SHOUT_OUTS_TITLE}
                     className="pb-0"

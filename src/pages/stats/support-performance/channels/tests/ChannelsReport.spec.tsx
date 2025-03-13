@@ -1,9 +1,7 @@
 import React, { ComponentProps } from 'react'
 
 import { fromJS } from 'immutable'
-import { mockFlags } from 'jest-launchdarkly-mock'
 
-import { FeatureFlagKey } from 'config/featureFlags'
 import { account } from 'fixtures/account'
 import { billingState } from 'fixtures/billing'
 import {
@@ -12,6 +10,7 @@ import {
     basicYearlyHelpdeskPlan,
     HELPDESK_PRODUCT_ID,
 } from 'fixtures/productPrices'
+import { useCleanStatsFilters } from 'hooks/reporting/useCleanStatsFilters'
 import { AUTO_QA_FILTER_KEYS } from 'pages/stats/common/filters/constants'
 import FiltersPanelWrapper from 'pages/stats/common/filters/FiltersPanelWrapper/FiltersPanelWrapper'
 import { DrillDownModalTrigger } from 'pages/stats/DrillDownModalTrigger'
@@ -22,10 +21,9 @@ import {
 } from 'pages/stats/support-performance/channels/ChannelsReportConfig'
 import { RootState } from 'state/types'
 import { channelsSlice, initialState } from 'state/ui/stats/channelsSlice'
-import { renderWithStore } from 'utils/testing'
+import { assumeMock, renderWithStore } from 'utils/testing'
 
 const componentMock = () => <div />
-const defaultFiltersText = 'default_filters'
 
 jest.mock('pages/stats/DrillDownModal.tsx', () => ({
     DrillDownModal: () => null,
@@ -34,10 +32,6 @@ jest.mock('pages/stats/DrillDownModalTrigger.tsx', () => ({
     DrillDownModalTrigger: ({
         children,
     }: ComponentProps<typeof DrillDownModalTrigger>) => children,
-}))
-jest.mock('pages/stats/support-performance/SupportPerformanceFilters', () => ({
-    SupportPerformanceFilters: ({ hidden = false }: { hidden: boolean }) =>
-        hidden ? null : <div>{defaultFiltersText}</div>,
 }))
 jest.mock(
     'pages/stats/common/filters/FiltersPanelWrapper',
@@ -62,6 +56,8 @@ jest.mock(
 jest.mock('pages/stats/support-performance/channels/ChannelsTable', () => ({
     ChannelsTable: componentMock,
 }))
+jest.mock('hooks/reporting/useCleanStatsFilters')
+const useCleanStatsFiltersMock = assumeMock(useCleanStatsFilters)
 
 describe('ChannelsReport', () => {
     const defaultState = {
@@ -71,49 +67,21 @@ describe('ChannelsReport', () => {
         billing: fromJS(billingState),
     } as RootState
 
-    beforeEach(() => {
-        mockFlags({
-            [FeatureFlagKey.AnalyticsNewFilters]: false,
-        })
-    })
-
     it('should render channels report component', () => {
         const { getByText } = renderWithStore(<ChannelsReport />, defaultState)
 
         expect(getByText(CHANNELS_REPORT_PAGE_TITLE)).toBeInTheDocument()
     })
 
-    it('should render channels report component with default filters', () => {
-        const { getByText, queryByText } = renderWithStore(
-            <ChannelsReport />,
-            defaultState,
-        )
-
-        expect(getByText(defaultFiltersText)).toBeInTheDocument()
-        CHANNEL_REPORT_OPTIONAL_FILTERS.forEach((optionalFilter) => {
-            expect(queryByText(optionalFilter)).not.toBeInTheDocument()
-        })
-    })
-
     it('should render channels report component with filters panel', () => {
-        mockFlags({
-            [FeatureFlagKey.AnalyticsNewFilters]: true,
-        })
-        const { getByText, queryByText } = renderWithStore(
-            <ChannelsReport />,
-            defaultState,
-        )
+        const { getByText } = renderWithStore(<ChannelsReport />, defaultState)
 
-        expect(queryByText(defaultFiltersText)).not.toBeInTheDocument()
         CHANNEL_REPORT_OPTIONAL_FILTERS.forEach((optionalFilter) => {
             expect(getByText(optionalFilter)).toBeInTheDocument()
         })
     })
 
     it('should render channels report component with filters panel, default optional filters and a Score filter', () => {
-        mockFlags({
-            [FeatureFlagKey.AnalyticsNewFilters]: true,
-        })
         const extendedChannelsReportFilters = [
             ...CHANNEL_REPORT_OPTIONAL_FILTERS,
         ]
@@ -123,6 +91,7 @@ describe('ChannelsReport', () => {
         extendedChannelsReportFilters.forEach((optionalFilter) => {
             expect(getByText(optionalFilter)).toBeInTheDocument()
         })
+        expect(useCleanStatsFiltersMock).toHaveBeenCalled()
     })
 
     it('should render channels report component with filters panel, default optional filters and a Resolution Completeness and Communication Skills filters', () => {
@@ -140,9 +109,6 @@ describe('ChannelsReport', () => {
                 },
             }),
         }
-        mockFlags({
-            [FeatureFlagKey.AnalyticsNewFilters]: true,
-        })
         const extendedChannelsReportFilters = [
             ...CHANNEL_REPORT_OPTIONAL_FILTERS,
             ...AUTO_QA_FILTER_KEYS,

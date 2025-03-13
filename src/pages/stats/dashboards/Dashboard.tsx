@@ -1,7 +1,6 @@
 import React from 'react'
 
-import { useCleanStatsFiltersWithLogicalOperators } from 'hooks/reporting/useCleanStatsFilters'
-import useAppSelector from 'hooks/useAppSelector'
+import { useCleanStatsFilters } from 'hooks/reporting/useCleanStatsFilters'
 import { useGridSize } from 'hooks/useGridSize'
 import { FilterKey } from 'models/stat/types'
 import FiltersPanelWrapper from 'pages/stats/common/filters/FiltersPanelWrapper'
@@ -24,7 +23,6 @@ import {
 import { useFiltersFromDashboard } from 'pages/stats/dashboards/useFiltersFromDashboard'
 import { updateChartPosition } from 'pages/stats/dashboards/utils'
 import DashboardSection from 'pages/stats/DashboardSection'
-import { getPageStatsFiltersWithLogicalOperators } from 'state/stats/selectors'
 
 type Props = {
     dashboard: DashboardSchema
@@ -39,12 +37,7 @@ export const Dashboard = ({
 }: Props) => {
     const getGridCellSize = useGridSize()
 
-    const pageStatsFiltersWithLogicalOperators = useAppSelector(
-        getPageStatsFiltersWithLogicalOperators,
-    )
-    useCleanStatsFiltersWithLogicalOperators(
-        pageStatsFiltersWithLogicalOperators,
-    )
+    useCleanStatsFilters()
     const { persistentFilters, optionalFilters } =
         useFiltersFromDashboard(dashboard)
 

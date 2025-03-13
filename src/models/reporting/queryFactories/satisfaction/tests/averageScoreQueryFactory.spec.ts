@@ -18,7 +18,7 @@ import {
     ReportingFilterOperator,
     ReportingGranularity,
 } from 'models/reporting/types'
-import { LegacyStatsFilters, StatsFilters } from 'models/stat/types'
+import { StatsFilters } from 'models/stat/types'
 import { fromLegacyStatsFilters } from 'state/stats/utils'
 import {
     DRILLDOWN_QUERY_LIMIT,
@@ -156,7 +156,7 @@ describe('averageScoreDrillDownQueryFactory', () => {
 describe('averageScoreDrillDownWithScoreQueryBuilder', () => {
     const periodStart = moment()
     const periodEnd = moment(periodStart).add(7, 'days')
-    const statsFilters: LegacyStatsFilters = {
+    const statsFilters: StatsFilters = {
         period: {
             start_datetime: periodStart.toISOString(),
             end_datetime: periodEnd.toISOString(),
@@ -172,7 +172,7 @@ describe('averageScoreDrillDownWithScoreQueryBuilder', () => {
         const query = builder(statsFilters, timezone)
 
         const expectedFilters = {
-            ...fromLegacyStatsFilters(statsFilters),
+            ...statsFilters,
             score: withLogicalOperator([score]),
         }
         const expectedQuery = averageScoreDrillDownQueryFactory(

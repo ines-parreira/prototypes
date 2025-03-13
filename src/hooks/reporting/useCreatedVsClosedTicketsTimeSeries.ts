@@ -1,4 +1,4 @@
-import { useNewStatsFilters } from 'hooks/reporting/support-performance/useNewStatsFilters'
+import { useStatsFilters } from 'hooks/reporting/support-performance/useStatsFilters'
 import {
     useTicketsClosedTimeSeries,
     useTicketsCreatedTimeSeries,
@@ -10,8 +10,7 @@ import {
 } from 'services/reporting/constants'
 
 export const useCreatedVsClosedTicketsTimeSeries = () => {
-    const { cleanStatsFilters, userTimezone, granularity } =
-        useNewStatsFilters()
+    const { cleanStatsFilters, userTimezone, granularity } = useStatsFilters()
 
     const closedTicketsTimeSeries = useTicketsClosedTimeSeries(
         cleanStatsFilters,

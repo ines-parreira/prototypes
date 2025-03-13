@@ -258,7 +258,6 @@ const DrillDownModalWrapper = ({
                     enabled={!!metricValue}
                     highlighted
                     metricData={drillDownMetricData}
-                    useNewFilterData={true}
                     segmentEventName={
                         SegmentEvent.AiAgentTicketDrilldownClicked
                     }

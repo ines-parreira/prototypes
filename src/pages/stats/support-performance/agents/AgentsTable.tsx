@@ -3,7 +3,7 @@ import React, { FunctionComponent, UIEventHandler, useState } from 'react'
 import classNames from 'classnames'
 
 import { User } from 'config/types/user'
-import { useNewStatsFilters } from 'hooks/reporting/support-performance/useNewStatsFilters'
+import { useStatsFilters } from 'hooks/reporting/support-performance/useStatsFilters'
 import { useAgentsSortingQuery } from 'hooks/reporting/useAgentsSortingQuery'
 import { useAgentsTableConfigSetting } from 'hooks/reporting/useAgentsTableConfigSetting'
 import useAppDispatch from 'hooks/useAppDispatch'
@@ -68,7 +68,6 @@ type AgentsTableProps = {
         allAgents: User[]
     }
     statsFilters: {
-        isAnalyticsNewFilters: boolean
         cleanStatsFilters: StatsFilters
         userTimezone: string
     }
@@ -201,7 +200,7 @@ export const AgentsTable = ({
 
 export const AgentsTableWithDefaultState = () => {
     const paginatedAgents = useAppSelector(getPaginatedAgents)
-    const statsFilters = useNewStatsFilters()
+    const statsFilters = useStatsFilters()
     const isHeatmapMode = useAppSelector(getHeatmapMode)
 
     return (

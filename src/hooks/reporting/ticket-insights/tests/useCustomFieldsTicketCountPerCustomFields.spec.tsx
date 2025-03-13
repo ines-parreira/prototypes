@@ -6,7 +6,7 @@ import _zip from 'lodash/zip'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 
-import { useNewStatsFilters } from 'hooks/reporting/support-performance/useNewStatsFilters'
+import { useStatsFilters } from 'hooks/reporting/support-performance/useStatsFilters'
 import {
     calculateDecile,
     enrichWithPercentagesAndDeciles,
@@ -31,8 +31,8 @@ jest.mock('hooks/reporting/timeSeries')
 const useCustomFieldsTicketCountTimeSeriesMock = assumeMock(
     useCustomFieldsTicketCountTimeSeries,
 )
-jest.mock('hooks/reporting/support-performance/useNewStatsFilters')
-const useNewStatsFiltersMock = assumeMock(useNewStatsFilters)
+jest.mock('hooks/reporting/support-performance/useStatsFilters')
+const useNewStatsFiltersMock = assumeMock(useStatsFilters)
 jest.mock('state/ui/stats/ticketInsightsSlice')
 const getCustomFieldOrderMock = assumeMock(getCustomFieldsOrder)
 const getValueModeMock = assumeMock(getValueMode)
@@ -83,7 +83,6 @@ describe('useCustomFieldsTicketCountPerCustomFields', () => {
             cleanStatsFilters: defaultStatsFilters,
             userTimezone: 'UTC',
             granularity: ReportingGranularity.Day,
-            isAnalyticsNewFilters: true,
         })
         useCustomFieldsTicketCountTimeSeriesMock.mockReturnValue({
             data,

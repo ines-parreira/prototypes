@@ -3,7 +3,7 @@ import React, { useMemo } from 'react'
 import analyticsColorsModern from 'assets/css/new/stats/modern.json'
 import { logEvent, SegmentEvent } from 'common/segment'
 import { useSurveyScores } from 'hooks/reporting/quality-management/satisfaction/useSurveyScores'
-import { useNewStatsFilters } from 'hooks/reporting/support-performance/useNewStatsFilters'
+import { useStatsFilters } from 'hooks/reporting/support-performance/useStatsFilters'
 import { MetricWithDecile } from 'hooks/reporting/useMetricPerDimension'
 import useAppDispatch from 'hooks/useAppDispatch'
 import {
@@ -19,10 +19,7 @@ import { AverageScoreTrend } from 'pages/stats/quality-management/satisfaction/A
 import css from 'pages/stats/quality-management/satisfaction/AverageSurveyScoreDonutChart/AverageSurveyScoreDonutChart.less'
 import { SatisfactionMetricConfig } from 'pages/stats/quality-management/satisfaction/SatisfactionMetricsConfig'
 import { OneDimensionalDataItem } from 'pages/stats/types'
-import {
-    setMetricData,
-    setShouldUseNewFilterData,
-} from 'state/ui/stats/drillDownSlice'
+import { setMetricData } from 'state/ui/stats/drillDownSlice'
 import {
     SatisfactionAverageSurveyScoreMetric,
     SatisfactionMetric,
@@ -104,9 +101,7 @@ export default function AverageSurveyScoreDonutChart(
     props: DashboardChartProps,
 ) {
     const dispatch = useAppDispatch()
-
-    const { cleanStatsFilters, userTimezone, isAnalyticsNewFilters } =
-        useNewStatsFilters()
+    const { cleanStatsFilters, userTimezone } = useStatsFilters()
 
     const scores = useSurveyScores(cleanStatsFilters, userTimezone)
 
@@ -134,10 +129,6 @@ export default function AverageSurveyScoreDonutChart(
         const metricData = { title, metricName: drillDownMetric }
 
         dispatch(setMetricData(metricData))
-
-        if (isAnalyticsNewFilters) {
-            dispatch(setShouldUseNewFilterData(true))
-        }
 
         logEvent(SegmentEvent.StatClicked, {
             metric: metricData.metricName,

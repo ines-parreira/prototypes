@@ -1,7 +1,7 @@
 import React, { useCallback, useMemo } from 'react'
 
 import { getMetricQuery } from 'hooks/reporting/quality-management/satisfaction/utils'
-import { useNewStatsFilters } from 'hooks/reporting/support-performance/useNewStatsFilters'
+import { useStatsFilters } from 'hooks/reporting/support-performance/useStatsFilters'
 import useAppSelector from 'hooks/useAppSelector'
 import { TicketMessagesDimension } from 'models/reporting/cubes/TicketMessagesCube'
 import { LineChart } from 'pages/stats/common/components/charts/LineChart/LineChart'
@@ -18,8 +18,7 @@ import { getIntegrations } from 'state/integrations/selectors'
 const DIMENSION = TicketMessagesDimension.Integration
 
 export const AverageScorePerIntegrationMetric = () => {
-    const { cleanStatsFilters, userTimezone, granularity } =
-        useNewStatsFilters()
+    const { cleanStatsFilters, userTimezone, granularity } = useStatsFilters()
     const useMetricQuery = getMetricQuery(DIMENSION)
     const { isFetching, data, isError } = useMetricQuery(
         cleanStatsFilters,

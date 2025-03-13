@@ -4,7 +4,7 @@ import { useArticleViewTimeSeries } from 'hooks/reporting/help-center/useArticle
 import * as useTimeSeries from 'hooks/reporting/useTimeSeries'
 import { HelpCenterTrackingEventMeasures } from 'models/reporting/cubes/HelpCenterTrackingEventCube'
 import { ReportingGranularity } from 'models/reporting/types'
-import { LegacyStatsFilters } from 'models/stat/types'
+import { StatsFilters } from 'models/stat/types'
 import { formatReportingQueryDate } from 'utils/reporting'
 
 jest.mock('hooks/reporting/useTimeSeries')
@@ -21,7 +21,7 @@ describe('useArticleViewTimeSeries', () => {
     it('should call useTimeSeries hook with correct params', () => {
         const periodStart = formatReportingQueryDate(moment())
         const periodEnd = formatReportingQueryDate(moment().subtract(7, 'd'))
-        const statsFilters: LegacyStatsFilters = {
+        const statsFilters: StatsFilters = {
             period: {
                 start_datetime: periodStart,
                 end_datetime: periodEnd,

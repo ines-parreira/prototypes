@@ -17,7 +17,7 @@ import {
     voiceCallCountQueryFactory,
 } from 'models/reporting/queryFactories/voice/voiceCall'
 import { declinedVoiceCallsCountQueryFactory } from 'models/reporting/queryFactories/voice/voiceEventsByAgent'
-import { LegacyStatsFilters } from 'models/stat/types'
+import { StatsFilters } from 'models/stat/types'
 import { formatReportingQueryDate, withFilter } from 'utils/reporting'
 import { assumeMock } from 'utils/testing'
 
@@ -44,7 +44,7 @@ const useMetricMock = assumeMock(useMetric)
 const fetchMetricMock = assumeMock(fetchMetric)
 
 describe('metricsPerDimension', () => {
-    const statsFilters: LegacyStatsFilters = {
+    const statsFilters: StatsFilters = {
         period: {
             end_datetime: formatReportingQueryDate(moment()),
             start_datetime: formatReportingQueryDate(moment()),

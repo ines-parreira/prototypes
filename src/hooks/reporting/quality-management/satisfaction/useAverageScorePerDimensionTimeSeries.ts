@@ -1,5 +1,5 @@
 import { User } from 'config/types/user'
-import { useNewStatsFilters } from 'hooks/reporting/support-performance/useNewStatsFilters'
+import { useStatsFilters } from 'hooks/reporting/support-performance/useStatsFilters'
 import {
     fetchTimeSeriesPerDimension,
     useTimeSeriesPerDimension,
@@ -204,7 +204,7 @@ export const useAverageCSATPerDimensionTimeSeries = (
     timezone: string,
     dimension: TicketDimension | TicketMessagesDimension,
 ) => {
-    const { granularity } = useNewStatsFilters()
+    const { granularity } = useStatsFilters()
 
     return useAverageCSATScorePerDimensionTimeSeries(
         dimension,

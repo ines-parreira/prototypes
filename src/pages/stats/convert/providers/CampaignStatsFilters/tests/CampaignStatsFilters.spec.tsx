@@ -1,12 +1,9 @@
 import React from 'react'
 
 import { fromJS } from 'immutable'
-import { useFlags } from 'launchdarkly-react-client-sdk'
 
-import { FeatureFlagKey } from 'config/featureFlags'
 import { campaign } from 'fixtures/campaign'
 import { integrationsState } from 'fixtures/integrations'
-import { LogicalOperatorEnum } from 'pages/stats/common/components/Filter/constants'
 import { useGetCampaignsForStore } from 'pages/stats/convert/hooks/useGetCampaignsForStore'
 import { useShopifyIntegrations } from 'pages/stats/convert/hooks/useShopifyIntegrations'
 import { CampaignStatsFilters } from 'pages/stats/convert/providers/CampaignStatsFilters/CampaignStatsFilters'
@@ -32,8 +29,6 @@ jest.mock('react-router-dom', () => ({
         CONVERT_ROUTE_PARAM_NAME: '1',
     })),
 }))
-
-const mockUseFlags = useFlags as jest.MockedFunction<typeof useFlags>
 
 const deletedCampaignId = '8bd36873-35fc-4b99-83ac-701f20d570bd'
 const deletedCampaign = {
@@ -65,9 +60,6 @@ const state = {
 describe('CampaignStatsFilters', () => {
     beforeEach(() => {
         useShopifyIntegrationsMock.mockReturnValue([{ id: 1 } as any])
-        mockUseFlags.mockReturnValue({
-            [FeatureFlagKey.AnalyticsNewFiltersConvert]: false,
-        })
     })
 
     it('should provide the correct value for campaigns', () => {
@@ -113,9 +105,6 @@ describe('CampaignStatsFilters without storeIntegrationId', () => {
     } as RootState
     beforeEach(() => {
         useShopifyIntegrationsMock.mockReturnValue([{ id: 1 } as any])
-        mockUseFlags.mockReturnValue({
-            [FeatureFlagKey.AnalyticsNewFiltersConvert]: false,
-        })
     })
 
     it('should provide the correct value for campaigns', () => {
@@ -130,89 +119,5 @@ describe('CampaignStatsFilters without storeIntegrationId', () => {
 
         expect(getByText(campaign.id)).toBeInTheDocument()
         expect(queryByText(deletedCampaignId)).toBeInTheDocument()
-    })
-})
-
-describe('CampaignStatsFilters with AnalyticsNewFiltersConvert', () => {
-    const state = {
-        integrations: fromJS(integrationsState),
-        stats: { filters: defaultStatsFilters },
-    } as RootState
-    beforeEach(() => {
-        useShopifyIntegrationsMock.mockReturnValue([{ id: 1 } as any])
-        mockUseFlags.mockReturnValue({
-            [FeatureFlagKey.AnalyticsNewFiltersConvert]: true,
-        })
-    })
-
-    it('should provide the correct value for campaigns', () => {
-        useGetCampaignsForStoreMock.mockReturnValue(campaignsForStore as any)
-
-        const { getByText, queryByText } = renderWithStore(
-            <CampaignStatsFilters>
-                <TestComponent />
-            </CampaignStatsFilters>,
-            state,
-        )
-
-        expect(getByText(campaign.id)).toBeInTheDocument()
-        expect(queryByText(deletedCampaignId)).toBeInTheDocument()
-    })
-
-    it('should provide the correct value for channelConnectionExternalIds', () => {
-        useGetCampaignsForStoreMock.mockReturnValue(campaignsForStore as any)
-
-        const TestComponent = () => (
-            <FiltersContext.Consumer>
-                {({ channelConnectionExternalIds }) => (
-                    <div>{channelConnectionExternalIds}</div>
-                )}
-            </FiltersContext.Consumer>
-        )
-
-        const { getByText } = renderWithStore(
-            <CampaignStatsFilters>
-                <TestComponent />
-            </CampaignStatsFilters>,
-            state,
-        )
-
-        expect(getByText(channelConnectionExternalId)).toBeInTheDocument()
-    })
-
-    it('should provide the correct value for selectedIntegrations', () => {
-        const selectedIntegrationId = 1234
-        const state = {
-            integrations: fromJS([]),
-            stats: {
-                filters: {
-                    ...defaultStatsFilters,
-                    storeIntegrations: {
-                        values: [selectedIntegrationId],
-                        operator: LogicalOperatorEnum.ONE_OF,
-                    },
-                },
-            },
-        } as RootState
-        useGetCampaignsForStoreMock.mockReturnValue(campaignsForStore as any)
-
-        const TestComponent = () => {
-            return (
-                <FiltersContext.Consumer>
-                    {({ selectedIntegrations }) => (
-                        <div>{selectedIntegrations}</div>
-                    )}
-                </FiltersContext.Consumer>
-            )
-        }
-
-        const { getByText } = renderWithStore(
-            <CampaignStatsFilters>
-                <TestComponent />
-            </CampaignStatsFilters>,
-            state,
-        )
-
-        expect(getByText(selectedIntegrationId)).toBeInTheDocument()
     })
 })

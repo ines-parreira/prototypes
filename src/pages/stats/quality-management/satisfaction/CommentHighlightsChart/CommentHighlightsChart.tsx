@@ -1,7 +1,7 @@
 import React, { useMemo } from 'react'
 
 import { useCommentHighlights } from 'hooks/reporting/quality-management/satisfaction/useCommentHighlights'
-import { useNewStatsFilters } from 'hooks/reporting/support-performance/useNewStatsFilters'
+import { useStatsFilters } from 'hooks/reporting/support-performance/useStatsFilters'
 import useAppSelector from 'hooks/useAppSelector'
 import ChartCard from 'pages/stats/ChartCard'
 import { DashboardChartProps } from 'pages/stats/dashboards/types'
@@ -22,7 +22,7 @@ const QUERY_SCORES = {
 }
 
 export default function CommentHighlightsChart(props: DashboardChartProps) {
-    const { cleanStatsFilters, userTimezone } = useNewStatsFilters()
+    const { cleanStatsFilters, userTimezone } = useStatsFilters()
     const commentHighlightsCsatSentiment = useAppSelector(
         getCommentHighlightsCsatSentiment,
     )

@@ -17,11 +17,12 @@ import {
     messagesSentQueryFactory,
     messagesSentTimeSeriesQueryFactory,
 } from 'models/reporting/queryFactories/support-performance/messagesSent'
+import { withDefaultLogicalOperator } from 'models/reporting/queryFactories/utils'
 import {
     ReportingFilterOperator,
     ReportingGranularity,
 } from 'models/reporting/types'
-import { LegacyStatsFilters, StatsFilters } from 'models/stat/types'
+import { StatsFilters, TagFilterInstanceId } from 'models/stat/types'
 import {
     DRILLDOWN_QUERY_LIMIT,
     formatReportingQueryDate,
@@ -148,14 +149,22 @@ describe('messagesSentTimeSeriesQueryFactory', () => {
 describe('messagesSentMetricPerAgentQueryFactory', () => {
     const periodStart = moment()
     const periodEnd = periodStart.add(7, 'days')
-    const statsFilters: LegacyStatsFilters = {
+    const statsFilters: StatsFilters = {
         period: {
             end_datetime: periodEnd.toISOString(),
             start_datetime: periodStart.toISOString(),
         },
-        channels: [TicketChannel.Email, TicketChannel.Chat],
-        integrations: [1],
-        tags: [1, 2],
+        channels: withDefaultLogicalOperator([
+            TicketChannel.Email,
+            TicketChannel.Chat,
+        ]),
+        integrations: withDefaultLogicalOperator([1]),
+        tags: [
+            {
+                ...withDefaultLogicalOperator([1, 2]),
+                filterInstanceId: TagFilterInstanceId.First,
+            },
+        ],
     }
     const timezone = 'someTimeZone'
     const sorting = OrderDirection.Asc
@@ -171,7 +180,10 @@ describe('messagesSentMetricPerAgentQueryFactory', () => {
 
     it('should build a query with and agents sorting', () => {
         const agents = [2]
-        const filters = { ...statsFilters, agents }
+        const filters = {
+            ...statsFilters,
+            agents: withDefaultLogicalOperator(agents),
+        }
         expect(
             messagesSentMetricPerAgentQueryFactory(filters, timezone, sorting),
         ).toEqual({
@@ -185,14 +197,22 @@ describe('messagesSentMetricPerAgentQueryFactory', () => {
 describe('messagesSentMetricPerTicketQueryFactory', () => {
     const periodStart = moment()
     const periodEnd = periodStart.add(7, 'days')
-    const statsFilters: LegacyStatsFilters = {
+    const statsFilters: StatsFilters = {
         period: {
             end_datetime: periodEnd.toISOString(),
             start_datetime: periodStart.toISOString(),
         },
-        channels: [TicketChannel.Email, TicketChannel.Chat],
-        integrations: [1],
-        tags: [1, 2],
+        channels: withDefaultLogicalOperator([
+            TicketChannel.Email,
+            TicketChannel.Chat,
+        ]),
+        integrations: withDefaultLogicalOperator([1]),
+        tags: [
+            {
+                ...withDefaultLogicalOperator([1, 2]),
+                filterInstanceId: TagFilterInstanceId.First,
+            },
+        ],
     }
     const timezone = 'someTimeZone'
     const sorting = OrderDirection.Asc
@@ -220,7 +240,10 @@ describe('messagesSentMetricPerTicketQueryFactory', () => {
 
     it('should build a query with agents filter and sorting', () => {
         const agents = [2]
-        const filters = { ...statsFilters, agents }
+        const filters = {
+            ...statsFilters,
+            agents: withDefaultLogicalOperator(agents),
+        }
 
         expect(
             messagesSentMetricPerTicketDrillDownQueryFactory(

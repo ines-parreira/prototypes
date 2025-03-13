@@ -4,7 +4,7 @@ import { Scale } from 'chart.js'
 import moment from 'moment/moment'
 
 import { useArticleViewTimeSeries } from 'hooks/reporting/help-center/useArticleViewTimeSeries'
-import { useNewStatsFilters } from 'hooks/reporting/support-performance/useNewStatsFilters'
+import { useStatsFilters } from 'hooks/reporting/support-performance/useStatsFilters'
 import { TimeSeriesDataItem } from 'hooks/reporting/useTimeSeries'
 import { ReportingGranularity } from 'models/reporting/types'
 import ChartCard from 'pages/stats/ChartCard'
@@ -68,7 +68,7 @@ export const ArticleViewsGraphComponent = ({
 }
 
 const ArticleViewsGraph = ({ chartId, dashboard }: DashboardChartProps) => {
-    const { cleanStatsFilters, userTimezone } = useNewStatsFilters()
+    const { cleanStatsFilters, userTimezone } = useStatsFilters()
     const articleViewTimeSeries = useArticleViewTimeSeries(
         cleanStatsFilters,
         userTimezone,

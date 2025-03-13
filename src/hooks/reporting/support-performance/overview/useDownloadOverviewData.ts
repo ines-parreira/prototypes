@@ -1,19 +1,18 @@
 import { useMemo } from 'react'
 
 import { useFlags } from 'launchdarkly-react-client-sdk'
-import moment from 'moment'
 
 import { FeatureFlagKey } from 'config/featureFlags'
 import { useDistributionTrendReportData } from 'hooks/reporting/common/useDistributionTrendReportData'
 import { useTimeSeriesReportData } from 'hooks/reporting/common/useTimeSeriesReportData'
 import { useTrendReportData } from 'hooks/reporting/common/useTrendReportData'
+import { getCsvFileNameWithDates } from 'hooks/reporting/common/utils'
 import {
     fetchWorkloadPerChannelDistribution,
     fetchWorkloadPerChannelDistributionForPreviousPeriod,
     MetricPerDimensionFetch,
 } from 'hooks/reporting/distributions'
-import { useNewStatsFilters } from 'hooks/reporting/support-performance/useNewStatsFilters'
-import { Period } from 'models/stat/types'
+import { useStatsFilters } from 'hooks/reporting/support-performance/useStatsFilters'
 import { MetricTrendFormat } from 'pages/stats/common/utils'
 import {
     OverviewChartConfig,
@@ -21,10 +20,7 @@ import {
     OverviewMetricConfig,
     TimeSeriesMetric,
 } from 'pages/stats/support-performance/overview/SupportPerformanceOverviewConfig'
-import {
-    DATE_TIME_FORMAT,
-    WORKLOAD_BY_CHANNEL_LABEL,
-} from 'services/reporting/constants'
+import { WORKLOAD_BY_CHANNEL_LABEL } from 'services/reporting/constants'
 import {
     createTimeSeriesReport,
     createTrendReport,
@@ -76,23 +72,13 @@ export const getWorkloadReportSource = (
     return workloadReportSource.map((metric) => OverviewMetricConfig[metric])
 }
 
-export const getCsvFileNameWithDates = (period: Period, reportName: string) => {
-    const export_datetime = moment().format(DATE_TIME_FORMAT)
-    const startDate = moment(period.start_datetime).format(DATE_TIME_FORMAT)
-    const endDate = moment(period.end_datetime).format(DATE_TIME_FORMAT)
-    const periodPrefix = `${startDate}_${endDate}`
-
-    return `${periodPrefix}-${reportName}-${export_datetime}.csv`
-}
-
 export const useDownloadOverViewData = (fetchingEnabled = true) => {
     const isReportingZeroTouchTicketsMetricEnabled =
         useFlags()[FeatureFlagKey.ReportingZeroTouchTicketsMetric]
     const isReportingMessagesReceivedMetricEnabled =
         useFlags()[FeatureFlagKey.ReportingMessagesReceivedMetric]
 
-    const { cleanStatsFilters, userTimezone, granularity } =
-        useNewStatsFilters()
+    const { cleanStatsFilters, userTimezone, granularity } = useStatsFilters()
 
     const workloadReportSource = useMemo(
         () =>

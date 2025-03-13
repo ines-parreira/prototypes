@@ -137,7 +137,6 @@ export const TopUsedTagsChart = ({
                                                         TagsMetric.TicketCount,
                                                     tagId: item.category,
                                                 }}
-                                                useNewFilterData
                                             >
                                                 {formatMetricValue(
                                                     item.value,

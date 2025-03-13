@@ -1,6 +1,6 @@
 import React from 'react'
 
-import { useNewStatsFilters } from 'hooks/reporting/support-performance/useNewStatsFilters'
+import { useStatsFilters } from 'hooks/reporting/support-performance/useStatsFilters'
 import { TimeSeriesHook } from 'hooks/reporting/useTimeSeries'
 import ChartCard from 'pages/stats/ChartCard'
 import BarChart from 'pages/stats/common/components/charts/BarChart/BarChart'
@@ -22,8 +22,7 @@ export const OverviewChartCard = ({
     useTimeSeries: TimeSeriesHook
     chartType: 'bar' | 'line'
 } & DashboardChartProps) => {
-    const { cleanStatsFilters, userTimezone, granularity } =
-        useNewStatsFilters()
+    const { cleanStatsFilters, userTimezone, granularity } = useStatsFilters()
 
     const timeSeries = useTimeSeries(
         cleanStatsFilters,

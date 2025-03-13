@@ -8,10 +8,15 @@ import { agents } from 'fixtures/agents'
 import { integrationsState } from 'fixtures/integrations'
 import { useTimeSeriesReportData } from 'hooks/reporting/common/useTimeSeriesReportData'
 import { useTrendReportData } from 'hooks/reporting/common/useTrendReportData'
-import { useNewStatsFilters } from 'hooks/reporting/support-performance/useNewStatsFilters'
+import { getCsvFileNameWithDates } from 'hooks/reporting/common/utils'
+import { useStatsFilters } from 'hooks/reporting/support-performance/useStatsFilters'
 import { useTimeSeries } from 'hooks/reporting/useTimeSeries'
 import { ReportingGranularity } from 'models/reporting/types'
 import { LegacyStatsFilters } from 'models/stat/types'
+import useAiSalesAgentOverviewReportData, {
+    AI_SALES_AGENT_GMV_INFLUENCED_OVER_TIME,
+    AI_SALES_AGENT_METRIC_FILE_NAME,
+} from 'pages/stats/aiSalesAgent/hooks/aiSalesAgentReportingService'
 import { DEFAULT_TIMEZONE } from 'pages/stats/convert/constants/components'
 import {
     createTimeSeriesReport,
@@ -20,17 +25,11 @@ import {
 import { fromLegacyStatsFilters } from 'state/stats/utils'
 import { assumeMock } from 'utils/testing'
 
-import useAiSalesAgentOverviewReportData, {
-    AI_SALES_AGENT_GMV_INFLUENCED_OVER_TIME,
-    AI_SALES_AGENT_METRIC_FILE_NAME,
-    getCsvFileNameWithDates,
-} from '../aiSalesAgentReportingService'
-
 jest.mock('utils/file')
 jest.mock('services/reporting/supportPerformanceReportingService')
 
-jest.mock('hooks/reporting/support-performance/useNewStatsFilters')
-const useNewStatsFiltersMock = assumeMock(useNewStatsFilters)
+jest.mock('hooks/reporting/support-performance/useStatsFilters')
+const useStatsFiltersMock = assumeMock(useStatsFilters)
 
 jest.mock('services/reporting/supportPerformanceReportingService')
 const saveTrendReportMock = assumeMock(createTrendReport)
@@ -66,9 +65,8 @@ describe('useAiSalesAgentOverviewReportData', () => {
     } as ReturnType<typeof useTimeSeries>
 
     beforeEach(() => {
-        useNewStatsFiltersMock.mockReturnValue({
+        useStatsFiltersMock.mockReturnValue({
             cleanStatsFilters: fromLegacyStatsFilters(defaultStatsFilters),
-            isAnalyticsNewFilters: true,
             granularity: ReportingGranularity.Day,
             userTimezone: DEFAULT_TIMEZONE,
         })

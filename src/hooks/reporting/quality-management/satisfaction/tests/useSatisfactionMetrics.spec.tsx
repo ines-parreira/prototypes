@@ -9,7 +9,7 @@ import { useSatisfactionMetrics } from 'hooks/reporting/quality-management/satis
 import { useSatisfactionScoreTrend } from 'hooks/reporting/quality-management/satisfaction/useSatisfactionScoreTrend'
 import { useSurveyScores } from 'hooks/reporting/quality-management/satisfaction/useSurveyScores'
 import { useSurveysSentTrend } from 'hooks/reporting/quality-management/satisfaction/useSurveysSentTrend'
-import { useNewStatsFilters } from 'hooks/reporting/support-performance/useNewStatsFilters'
+import { useStatsFilters } from 'hooks/reporting/support-performance/useStatsFilters'
 import { MetricTrend } from 'hooks/reporting/useMetricTrend'
 import { TicketSatisfactionSurveyDimension } from 'models/reporting/cubes/TicketSatisfactionSurveyCube'
 import { ReportingGranularity } from 'models/reporting/types'
@@ -29,8 +29,8 @@ const useResponseRateTrendMock = assumeMock(useResponseRateTrend)
 jest.mock('hooks/reporting/quality-management/satisfaction/useSurveysSentTrend')
 const useSurveysSentTrendMock = assumeMock(useSurveysSentTrend)
 
-jest.mock('hooks/reporting/support-performance/useNewStatsFilters')
-const useNewStatsFiltersMock = assumeMock(useNewStatsFilters)
+jest.mock('hooks/reporting/support-performance/useStatsFilters')
+const useNewStatsFiltersMock = assumeMock(useStatsFilters)
 
 jest.mock(
     'hooks/reporting/quality-management/satisfaction/useAverageScoreTrend',
@@ -79,7 +79,6 @@ describe('useSatisfactionMetrics', () => {
         cleanStatsFilters: initialState.filters,
         userTimezone: 'UTC',
         granularity: ReportingGranularity.Day,
-        isAnalyticsNewFilters: false,
     })
 
     it('should return data from all hooks', () => {

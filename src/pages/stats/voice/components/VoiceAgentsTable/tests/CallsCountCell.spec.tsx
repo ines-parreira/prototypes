@@ -2,15 +2,14 @@ import React from 'react'
 
 import { QueryClientProvider } from '@tanstack/react-query'
 import { render } from '@testing-library/react'
-import { mockFlags } from 'jest-launchdarkly-mock'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import { FeatureFlagKey } from 'config/featureFlags'
 import { User } from 'config/types/user'
 import { agents } from 'fixtures/agents'
-import { LegacyStatsFilters } from 'models/stat/types'
+import { withDefaultLogicalOperator } from 'models/reporting/queryFactories/utils'
+import { StatsFilters } from 'models/stat/types'
 import * as DrillDownModalTrigger from 'pages/stats/DrillDownModalTrigger'
 import { useTotalCallsMetricPerAgent } from 'pages/stats/voice/hooks/metricsPerDimension'
 import { RootState, StoreDispatch } from 'state/types'
@@ -39,12 +38,12 @@ const renderComponent = (
     metricData: typeof defaultMetricData | null = defaultMetricData,
     isDrillDownEnabled?: boolean,
 ) => {
-    const statsFilters: LegacyStatsFilters = {
+    const statsFilters: StatsFilters = {
         period: {
             start_datetime: '2023-12-11T00:00:00.000Z',
             end_datetime: '2023-12-11T23:59:59.999Z',
         },
-        agents: [agents[0].id],
+        agents: withDefaultLogicalOperator([agents[0].id]),
     }
     const state = {
         stats: {
@@ -171,24 +170,5 @@ describe('CallsCountCell', () => {
 
         expect(queryByText('12')).toBeInTheDocument()
         expect(DrillDownModalTriggerSpy).not.toHaveBeenCalled()
-    })
-})
-
-describe('CallsCountCell with the new filters', () => {
-    beforeEach(() => {
-        mockFlags({
-            [FeatureFlagKey.AnalyticsNewFiltersVoice]: true,
-        })
-    })
-
-    it('should render average talk time', () => {
-        const useMetricMock = jest.fn().mockReturnValue({
-            isFetching: false,
-            isError: false,
-            data: { value: 12, decile: null, allData: [] },
-        })
-
-        const { getByText } = renderComponent(useMetricMock)
-        expect(getByText('12')).toBeInTheDocument()
     })
 })

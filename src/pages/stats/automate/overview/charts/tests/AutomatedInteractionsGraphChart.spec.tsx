@@ -3,11 +3,11 @@ import React from 'react'
 import { render } from '@testing-library/react'
 
 import { AutomateTimeseries } from 'hooks/reporting/automate/types'
+import { useAutomateFilters } from 'hooks/reporting/automate/useAutomateFilters'
 import {
     useAutomateMetricsTimeSeries,
     useAutomateMetricsTrend,
 } from 'hooks/reporting/automate/useAutomationDataset'
-import { useNewAutomateFilters } from 'hooks/reporting/automate/useNewAutomateFilters'
 import { ReportingGranularity } from 'models/reporting/types'
 import { AutomatedInteractionsGraphChart } from 'pages/stats/automate/overview/charts/AutomatedInteractionsGraphChart'
 import * as ChartCard from 'pages/stats/ChartCard'
@@ -22,8 +22,8 @@ jest.mock('hooks/reporting/automate/useAutomationDataset')
 const useAutomateMetricsTimeSeriesMock = assumeMock(
     useAutomateMetricsTimeSeries,
 )
-jest.mock('hooks/reporting/automate/useNewAutomateFilters')
-const useNewAutomateFiltersMock = assumeMock(useNewAutomateFilters)
+jest.mock('hooks/reporting/automate/useAutomateFilters')
+const useAutomateFiltersMock = assumeMock(useAutomateFilters)
 
 describe('AutomatedInteractionsGraphChart', () => {
     jest.useFakeTimers().setSystemTime(new Date('2024-04-20T00:00:00Z'))
@@ -66,11 +66,10 @@ describe('AutomatedInteractionsGraphChart', () => {
     }
 
     beforeEach(() => {
-        useNewAutomateFiltersMock.mockReturnValue({
+        useAutomateFiltersMock.mockReturnValue({
             statsFilters,
             userTimezone,
             granularity,
-            isAnalyticsNewFiltersAutomate: true,
         })
         useAutomateMetricsTrendMock.mockReturnValue({
             automatedInteractionTrend: {

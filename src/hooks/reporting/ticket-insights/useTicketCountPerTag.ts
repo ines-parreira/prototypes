@@ -2,7 +2,7 @@ import { orderBy } from 'lodash'
 
 import { Tag } from '@gorgias/api-queries'
 
-import { useNewStatsFilters } from 'hooks/reporting/support-performance/useNewStatsFilters'
+import { useStatsFilters } from 'hooks/reporting/support-performance/useStatsFilters'
 import { useTagsTicketCountTimeSeries } from 'hooks/reporting/timeSeries'
 import {
     getPeriodDateTimes,
@@ -95,8 +95,7 @@ export const getFormattedDataWithTotals = (
 export const useTicketCountPerTag = () => {
     const dispatch = useAppDispatch()
     const order = useAppSelector(getTagsOrder)
-    const { cleanStatsFilters, userTimezone, granularity } =
-        useNewStatsFilters()
+    const { cleanStatsFilters, userTimezone, granularity } = useStatsFilters()
     const tags = useAppSelector(getEntitiesTags)
     const { data: timeSeriesData, isLoading } = useTagsTicketCountTimeSeries(
         cleanStatsFilters,

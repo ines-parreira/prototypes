@@ -44,10 +44,7 @@ import {
     customFieldsTicketCountPerTicketDrillDownQueryFactory,
 } from 'models/reporting/queryFactories/ticket-insights/customFieldsTicketCount'
 import { tagsTicketCountDrillDownQueryFactory } from 'models/reporting/queryFactories/ticket-insights/tagsTicketCount'
-import {
-    isFilterWithLogicalOperator,
-    withDefaultLogicalOperator,
-} from 'models/reporting/queryFactories/utils'
+import { withDefaultLogicalOperator } from 'models/reporting/queryFactories/utils'
 import {
     connectedCallsListQueryFactory,
     liveDashboardConnectedCallsListQueryFactory,
@@ -56,17 +53,11 @@ import {
     voiceCallListQueryFactory,
     waitingTimeCallsListQueryFactory,
 } from 'models/reporting/queryFactories/voice/voiceCall'
-import {
-    FilterKey,
-    LegacyStatsFilters,
-    StatsFilters,
-    StatsFiltersWithLogicalOperator,
-} from 'models/stat/types'
+import { FilterKey, StatsFilters } from 'models/stat/types'
 import { campaignSalesDrillDownQueryFactory } from 'pages/stats/convert/clients/queryFactories/campaignSalesDrillDownQueryFactory'
 import { AutoQAAgentsTableColumn } from 'pages/stats/support-performance/auto-qa/AutoQAAgentsTableConfig'
 import { ChannelColumnConfig } from 'pages/stats/support-performance/channels/ChannelsTableConfig'
 import { OverviewMetric } from 'pages/stats/support-performance/overview/SupportPerformanceOverviewConfig'
-import { fromLegacyStatsFilters } from 'state/stats/utils'
 import { DrillDownMetric } from 'state/ui/stats/drillDownSlice'
 import {
     AgentsTableColumn,
@@ -99,19 +90,9 @@ const queryBuilderWithAgentFilter =
         timezone: string,
         sorting?: OrderDirection,
     ) => {
-        const areFiltersWithLogicalOperator = Object.values(FilterKey).some(
-            (val) =>
-                val !== FilterKey.Period &&
-                val !== FilterKey.AggregationWindow &&
-                isFilterWithLogicalOperator(statsFilters?.[val] || []),
-        )
-        const statsFiltersWithLogicalOperators = areFiltersWithLogicalOperator
-            ? (statsFilters as StatsFiltersWithLogicalOperator)
-            : fromLegacyStatsFilters(statsFilters as LegacyStatsFilters)
-
         return queryBuilder(
             {
-                ...statsFiltersWithLogicalOperators,
+                ...statsFilters,
                 agents: withDefaultLogicalOperator([agentId]),
             },
             timezone,
@@ -129,23 +110,12 @@ const queryBuilderWithChannelFilter =
         timezone: string,
         sorting?: OrderDirection,
     ) => {
-        const areFiltersWithLogicalOperator = Object.values(FilterKey).some(
-            (val) =>
-                val !== FilterKey.Period &&
-                val !== FilterKey.AggregationWindow &&
-                isFilterWithLogicalOperator(statsFilters?.[val] || []),
-        )
-        const statsFiltersWithLogicalOperators = areFiltersWithLogicalOperator
-            ? (statsFilters as StatsFiltersWithLogicalOperator)
-            : fromLegacyStatsFilters(statsFilters as LegacyStatsFilters)
-
         return queryBuilder(
             {
-                ...statsFiltersWithLogicalOperators,
+                ...statsFilters,
                 channels: withDefaultLogicalOperator(
                     [channel],
-                    statsFiltersWithLogicalOperators[FilterKey.Channels]
-                        ?.operator,
+                    statsFilters[FilterKey.Channels]?.operator,
                 ),
             },
             timezone,

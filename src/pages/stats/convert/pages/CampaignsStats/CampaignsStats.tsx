@@ -5,7 +5,6 @@ import { useFlags } from 'launchdarkly-react-client-sdk'
 import { isEmpty } from 'lodash'
 import { Redirect, useParams } from 'react-router-dom'
 
-import { FeatureFlagKey } from 'config/featureFlags'
 import { useGridSize } from 'hooks/useGridSize'
 import { FilterKey } from 'models/stat/types'
 import Alert, { AlertType } from 'pages/common/components/Alert/Alert'
@@ -19,7 +18,6 @@ import { CampaignsLegacyReportConfig } from 'pages/stats/convert/campaigns/Campa
 import { CAMPAIGNS_REPORT_TITLE } from 'pages/stats/convert/campaigns/CampaignsPerformanceReportConfig'
 import DownloadOverviewData from 'pages/stats/convert/components/DownloadOverviewData'
 import RequestABTest from 'pages/stats/convert/components/RequestABTest'
-import { RevenueFilters } from 'pages/stats/convert/containers/RevenueFilters'
 import { RevenueStatsContent } from 'pages/stats/convert/containers/RevenueStatsContent'
 import { useShopifyIntegrations } from 'pages/stats/convert/hooks/useShopifyIntegrations'
 import css from 'pages/stats/convert/pages/CampaignsStats/CampaignsStats.less'
@@ -35,8 +33,6 @@ type CampaignsStatsProps = {
 const CAMPAIGN_PERFORMANCE_REPORT_TITLE = 'Performance'
 
 const CampaignsStats = ({ isConvertSubscriber }: CampaignsStatsProps) => {
-    const AnalyticsNewFiltersConvert =
-        !!useFlags()[FeatureFlagKey.AnalyticsNewFiltersConvert]
     const { [CONVERT_ROUTE_PARAM_NAME]: chatIntegrationId } =
         useParams<ConvertRouteParams>()
 
@@ -55,40 +51,37 @@ const CampaignsStats = ({ isConvertSubscriber }: CampaignsStatsProps) => {
                 titleExtra={
                     <>
                         {showButton ? <RequestABTest /> : null}
-                        {!AnalyticsNewFiltersConvert && <RevenueFilters />}
                         {isConvertPerformanceViewEnabled && (
                             <DownloadOverviewData />
                         )}
                     </>
                 }
             >
-                {AnalyticsNewFiltersConvert && (
-                    <DashboardSection>
-                        <DashboardGridCell
-                            size={getGridCellSize(12)}
-                            className="pb-0"
-                        >
-                            <FiltersPanelWrapper
-                                filterSettingsOverrides={{
-                                    [FilterKey.Period]: {
-                                        initialSettings: {
-                                            maxSpan: 90,
-                                        },
+                <DashboardSection>
+                    <DashboardGridCell
+                        size={getGridCellSize(12)}
+                        className="pb-0"
+                    >
+                        <FiltersPanelWrapper
+                            filterSettingsOverrides={{
+                                [FilterKey.Period]: {
+                                    initialSettings: {
+                                        maxSpan: 90,
                                     },
-                                }}
-                                persistentFilters={
-                                    CampaignsLegacyReportConfig.reportFilters
-                                        .persistent
-                                }
-                                optionalFilters={
-                                    CampaignsLegacyReportConfig.reportFilters
-                                        .optional
-                                }
-                                withSavedFilters={false}
-                            />
-                        </DashboardGridCell>
-                    </DashboardSection>
-                )}
+                                },
+                            }}
+                            persistentFilters={
+                                CampaignsLegacyReportConfig.reportFilters
+                                    .persistent
+                            }
+                            optionalFilters={
+                                CampaignsLegacyReportConfig.reportFilters
+                                    .optional
+                            }
+                            withSavedFilters={false}
+                        />
+                    </DashboardGridCell>
+                </DashboardSection>
                 <ConvertLimitBanner classes={'mt-4 ml-4 mr-4'} />
                 <RevenueStatsContent />
             </StatsPage>

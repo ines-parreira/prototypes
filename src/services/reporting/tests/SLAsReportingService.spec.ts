@@ -1,4 +1,4 @@
-import { getCsvFileNameWithDates } from 'hooks/reporting/support-performance/overview/useDownloadOverviewData'
+import { getCsvFileNameWithDates } from 'hooks/reporting/common/utils'
 import { createTimeSeriesPerDimensionReport } from 'services/reporting/SLAsReportingService'
 import { createCsv } from 'utils/file'
 

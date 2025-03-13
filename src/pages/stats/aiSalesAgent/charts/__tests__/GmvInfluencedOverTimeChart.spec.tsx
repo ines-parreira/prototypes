@@ -5,27 +5,26 @@ import { render, screen } from '@testing-library/react'
 import { TooltipItem } from 'chart.js'
 import moment from 'moment/moment'
 
-import { useNewStatsFilters } from 'hooks/reporting/support-performance/useNewStatsFilters'
+import { useStatsFilters } from 'hooks/reporting/support-performance/useStatsFilters'
 import { TimeSeriesDataItem } from 'hooks/reporting/useTimeSeries'
 import { ReportingGranularity } from 'models/reporting/types'
 import { StatsFilters } from 'models/stat/types'
+import GmvInfluencedOverTimeChart, {
+    percentLabel,
+    renderTooltipLabel,
+} from 'pages/stats/aiSalesAgent/charts/GmvInfluencedOverTimeChart'
 import { useGmvInfluenceOverTimeSeries } from 'pages/stats/aiSalesAgent/metrics/useGmvInfluenceOverTimeSeries'
 import LineChart from 'pages/stats/common/components/charts/LineChart/LineChart'
 import { formatReportingQueryDate } from 'utils/reporting'
 import { assumeMock } from 'utils/testing'
-
-import GmvInfluencedOverTimeChart, {
-    percentLabel,
-    renderTooltipLabel,
-} from '../GmvInfluencedOverTimeChart'
 
 jest.mock('hooks/reporting/timeSeries')
 jest.mock('pages/stats/common/components/charts/LineChart/LineChart')
 const LineChartMock = assumeMock(LineChart)
 LineChartMock.mockImplementation(() => <div>line-chart</div>)
 
-jest.mock('hooks/reporting/support-performance/useNewStatsFilters')
-const useNewStatsFiltersMock = assumeMock(useNewStatsFilters)
+jest.mock('hooks/reporting/support-performance/useStatsFilters')
+const useStatsFiltersMock = assumeMock(useStatsFilters)
 
 jest.mock('pages/stats/aiSalesAgent/metrics/useGmvInfluenceOverTimeSeries')
 const useGmvInfluenceOverTimeSeriesMock = assumeMock(
@@ -105,11 +104,10 @@ describe('<GmvInfluencedOverTimeChart />', () => {
     const granularity = ReportingGranularity.Day
 
     beforeAll(() => {
-        useNewStatsFiltersMock.mockReturnValue({
+        useStatsFiltersMock.mockReturnValue({
             cleanStatsFilters: statsFilters,
             userTimezone,
             granularity,
-            isAnalyticsNewFilters: true,
         })
 
         useGmvInfluenceOverTimeSeriesMock.mockReturnValue({

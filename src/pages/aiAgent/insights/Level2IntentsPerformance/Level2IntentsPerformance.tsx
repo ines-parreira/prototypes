@@ -4,25 +4,27 @@ import { useParams } from 'react-router-dom'
 
 import { useInsightPerformanceMetrics } from 'hooks/reporting/automate/useAIAgentInsightsL2Dataset'
 import { useAIAgentUserId } from 'hooks/reporting/automate/useAIAgentUserId'
-import { useNewAutomateFilters } from 'hooks/reporting/automate/useNewAutomateFilters'
+import { useAutomateFilters } from 'hooks/reporting/automate/useAutomateFilters'
 import { transformIntentName } from 'hooks/reporting/automate/utils'
 import useAppSelector from 'hooks/useAppSelector'
 import { useGetCustomTicketsFieldsDefinitionData } from 'pages/aiAgent/insights/IntentTableWidget/hooks/useGetCustomTicketsFieldsDefinitionData'
 import { IntentsPerformance } from 'pages/aiAgent/insights/widgets/IntentsPerformance/IntentsPerformance'
-import { getPageStatsFilters } from 'state/stats/selectors'
+import { getPageStatsFiltersWithLogicalOperators } from 'state/stats/selectors'
 import { AIInsightsMetric } from 'state/ui/stats/types'
 
 const INTENT_LEVEL = 2
 
 export const Level2IntentsPerformance = () => {
-    const pageStatsFilters = useAppSelector(getPageStatsFilters)
+    const pageStatsFilters = useAppSelector(
+        getPageStatsFiltersWithLogicalOperators,
+    )
 
     const { intentId } = useParams<{
         shopName: string
         intentId: string
     }>()
 
-    const { userTimezone } = useNewAutomateFilters()
+    const { userTimezone } = useAutomateFilters()
     const aiAgentMetrics = useInsightPerformanceMetrics({
         filters: pageStatsFilters,
         timezone: userTimezone,

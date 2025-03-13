@@ -8,12 +8,14 @@ import {
     billableTicketDatasetExcludingAIAgentQueryFactory,
     billableTicketDatasetResolvedByAIAgentQueryFactory,
 } from 'models/reporting/queryFactories/automate_v2/metrics'
+import { withDefaultLogicalOperator } from 'models/reporting/queryFactories/utils'
 import { ReportingFilterOperator } from 'models/reporting/types'
+import { StatsFilters } from 'models/stat/types'
 
 describe('Automate metrics', () => {
     const timezone = 'UTC'
-    const filters = {
-        channels: ['chat'],
+    const filters: StatsFilters = {
+        channels: withDefaultLogicalOperator(['chat']),
         period: {
             start_datetime: '2021-01-01T00:00:00Z',
             end_datetime: '2021-01-02T00:00:00Z',

@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 
-import { useNewStatsFilters } from 'hooks/reporting/support-performance/useNewStatsFilters'
+import { useStatsFilters } from 'hooks/reporting/support-performance/useStatsFilters'
 import { DashboardChartProps } from 'pages/stats/dashboards/types'
 import OverviewCard from 'pages/stats/help-center/components/OverviewCard/OverviewCard'
 import {
@@ -13,7 +13,7 @@ export const SearchesTrendCard = ({
     chartId,
     dashboard,
 }: DashboardChartProps) => {
-    const { cleanStatsFilters, userTimezone } = useNewStatsFilters()
+    const { cleanStatsFilters, userTimezone } = useStatsFilters()
     const searchesMetricTrend = useSearchRequestedTrend(
         cleanStatsFilters,
         userTimezone,

@@ -10,7 +10,7 @@ import thunk from 'redux-thunk'
 import { FeatureFlagKey } from 'config/featureFlags'
 import { useFlag } from 'core/flags'
 import { agents } from 'fixtures/agents'
-import { useNewStatsFilters } from 'hooks/reporting/support-performance/useNewStatsFilters'
+import { useStatsFilters } from 'hooks/reporting/support-performance/useStatsFilters'
 import { ReportingGranularity } from 'models/reporting/types'
 import { DrillDownModalTrigger } from 'pages/stats/DrillDownModalTrigger'
 import { AgentsCellContent } from 'pages/stats/support-performance/agents/AgentsCellContent'
@@ -68,8 +68,8 @@ const getPaginatedAgentsMock = assumeMock(getPaginatedAgents)
 const isSortingMetricLoadingMock = assumeMock(isSortingMetricLoading)
 const getHeatmapModeMock = assumeMock(getHeatmapMode)
 
-jest.mock('hooks/reporting/support-performance/useNewStatsFilters')
-const useNewStatsFiltersMock = assumeMock(useNewStatsFilters)
+jest.mock('hooks/reporting/support-performance/useStatsFilters')
+const useStatsFiltersMock = assumeMock(useStatsFilters)
 
 jest.mock('pages/stats/support-performance/agents/AgentsCellContent')
 const AgentsCellContentMock = assumeMock(AgentsCellContent)
@@ -107,7 +107,6 @@ describe('<AgentsTable>', () => {
     const statsFiltersWithTimeZone = {
         cleanStatsFilters: statsFilters,
         userTimezone: 'UTC',
-        isAnalyticsNewFilters: false,
         granularity: ReportingGranularity.Day,
     }
     isSortingMetricLoadingMock.mockReturnValue(false)
@@ -332,9 +331,7 @@ describe('<AgentsTable>', () => {
     describe('AgentsTableWithDefaultState', () => {
         const filteredAgents = agents.slice(1)
         beforeEach(() => {
-            useNewStatsFiltersMock.mockReturnValue(
-                statsFiltersWithTimeZone as any,
-            )
+            useStatsFiltersMock.mockReturnValue(statsFiltersWithTimeZone as any)
             getPaginatedAgentsMock.mockReturnValue({
                 agents: filteredAgents,
                 allAgents: agents,

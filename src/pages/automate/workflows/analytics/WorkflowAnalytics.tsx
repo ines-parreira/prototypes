@@ -6,7 +6,7 @@ import { Container } from 'reactstrap'
 
 import { DateAndTimeFormatting } from 'constants/datetime'
 import { useWorkflowDataset } from 'hooks/reporting/automate/useWorkflowDataset'
-import { useCleanStatsFiltersWithLogicalOperators } from 'hooks/reporting/useCleanStatsFilters'
+import { useCleanStatsFilters } from 'hooks/reporting/useCleanStatsFilters'
 import useAppSelector from 'hooks/useAppSelector'
 import useGetDateAndTimeFormat from 'hooks/useGetDateAndTimeFormat'
 import { WorkflowStatsFilters } from 'models/stat/types'
@@ -63,7 +63,7 @@ export default function WorkflowAnalytics({
     )
 
     const statsFilters = useAppSelector(getPageStatsFiltersWithLogicalOperators)
-    useCleanStatsFiltersWithLogicalOperators(statsFilters)
+    useCleanStatsFilters()
 
     const filters = useMemo<WorkflowStatsFilters>(() => {
         const period = getWorkflowAnalyticsDateRange({

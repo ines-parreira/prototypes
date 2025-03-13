@@ -1,9 +1,10 @@
 import { useMemo } from 'react'
 
+import { withDefaultLogicalOperator } from 'models/reporting/queryFactories/utils'
 import { HELP_CENTER_MAX_CREATION } from 'pages/settings/helpCenter/constants'
 import { useHelpCenterList } from 'pages/settings/helpCenter/hooks/useHelpCenterList'
 import { getHelpCenterDomain } from 'pages/settings/helpCenter/utils/helpCenter.utils'
-import { useStatsFilters } from 'pages/stats/help-center/hooks/useStatsFilters'
+import { useHelpCenterStatsFilters } from 'pages/stats/help-center/hooks/useHelpCenterStatsFilters'
 import { getSortByName } from 'utils/getSortByName'
 
 export const useSelectedHelpCenter = () => {
@@ -17,16 +18,18 @@ export const useSelectedHelpCenter = () => {
     )
     const statsFiltersInitState = useMemo(
         () => ({
-            helpCenters: sortedHelpCenters[0] ? [sortedHelpCenters[0].id] : [],
+            helpCenters: sortedHelpCenters[0]
+                ? withDefaultLogicalOperator([sortedHelpCenters[0].id])
+                : withDefaultLogicalOperator([]),
             localeCodes: sortedHelpCenters[0]
-                ? sortedHelpCenters[0].supported_locales
-                : [],
+                ? withDefaultLogicalOperator(
+                      sortedHelpCenters[0].supported_locales,
+                  )
+                : withDefaultLogicalOperator([]),
         }),
         [sortedHelpCenters],
     )
-    const [statsFilters, setStatsFilters] = useStatsFilters(
-        statsFiltersInitState,
-    )
+    const [statsFilters] = useHelpCenterStatsFilters(statsFiltersInitState)
     const activeHelpCenters = useMemo(
         () =>
             helpCenters.filter(
@@ -48,7 +51,6 @@ export const useSelectedHelpCenter = () => {
         selectedHelpCenter,
         selectedHelpCenterDomain,
         statsFilters,
-        setStatsFilters,
         activeHelpCenters,
         sortedHelpCenters,
         helpCenters,

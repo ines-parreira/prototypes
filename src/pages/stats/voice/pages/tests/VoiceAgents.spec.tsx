@@ -1,14 +1,12 @@
 import React from 'react'
 
 import { QueryClientProvider } from '@tanstack/react-query'
-import { fireEvent, render } from '@testing-library/react'
+import { render } from '@testing-library/react'
 import { fromJS, Map } from 'immutable'
-import { mockFlags } from 'jest-launchdarkly-mock'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import { FeatureFlagKey } from 'config/featureFlags'
 import { account } from 'fixtures/account'
 import { agents } from 'fixtures/agents'
 import { billingState } from 'fixtures/billing'
@@ -20,20 +18,14 @@ import {
 } from 'fixtures/productPrices'
 import { tags } from 'fixtures/tag'
 import { user } from 'fixtures/users'
-import {
-    FilterComponentKey,
-    FilterKey,
-    LegacyStatsFilters,
-} from 'models/stat/types'
-import { ADD_FILTER_BUTTON_LABEL } from 'pages/stats/common/filters/AddFilterButton'
-import { FilterLabels } from 'pages/stats/common/filters/constants'
+import { withDefaultLogicalOperator } from 'models/reporting/queryFactories/utils'
+import { StatsFilters, TagFilterInstanceId } from 'models/stat/types'
 import {
     VOICE_AGENTS_PAGE_TITLE,
     VOICE_CALL_ACTIVITY_TITLE,
 } from 'pages/stats/voice/constants/voiceAgents'
 import VoiceAgents from 'pages/stats/voice/pages/VoiceAgents'
 import { AccountFeature } from 'state/currentAccount/types'
-import { fromLegacyStatsFilters } from 'state/stats/utils'
 import { RootState, StoreDispatch } from 'state/types'
 import { initialState as agentPerformanceInitialState } from 'state/ui/stats/agentPerformanceSlice'
 import { AGENT_PERFORMANCE_SLICE_NAME } from 'state/ui/stats/constants'
@@ -48,17 +40,22 @@ jest.mock('pages/stats/voice/VoicePaywall', () => () => <div>VoicePaywall</div>)
 const queryClient = mockQueryClient()
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
 
-const statsFilters: LegacyStatsFilters = {
+const statsFilters: StatsFilters = {
     period: {
         start_datetime: '2023-12-11T00:00:00.000Z',
         end_datetime: '2023-12-11T23:59:59.999Z',
     },
-    integrations: [123],
-    agents: [agents[0].id],
-    tags: [tags[0].id],
-    score: ['4'],
-    resolutionCompleteness: ['12'],
-    communicationSkills: ['1'],
+    integrations: withDefaultLogicalOperator([123]),
+    agents: withDefaultLogicalOperator([agents[0].id]),
+    tags: [
+        {
+            ...withDefaultLogicalOperator([tags[0].id]),
+            filterInstanceId: TagFilterInstanceId.First,
+        },
+    ],
+    score: withDefaultLogicalOperator(['4']),
+    resolutionCompleteness: withDefaultLogicalOperator(['12']),
+    communicationSkills: withDefaultLogicalOperator(['1']),
 }
 
 const getState = (featureEnabled: boolean) =>
@@ -83,13 +80,13 @@ const getState = (featureEnabled: boolean) =>
         }),
         billing: fromJS(billingState),
         stats: {
-            filters: fromLegacyStatsFilters(statsFilters),
+            filters: statsFilters,
         },
         integrations: fromJS({ integrations: [] }),
         ui: {
             stats: {
                 filters: {
-                    cleanStatsFilters: fromLegacyStatsFilters(statsFilters),
+                    cleanStatsFilters: statsFilters,
                     isFilterDirty: false,
                     appliedSavedFilterId: null,
                     savedFilterDraft: null,
@@ -114,38 +111,7 @@ const renderVoiceAgents = (featureEnabled = true) => {
     )
 }
 
-describe('VoiceAgents with the new filters', () => {
-    beforeAll(() => {
-        mockFlags({
-            [FeatureFlagKey.AnalyticsNewFiltersVoice]: true,
-        })
-    })
-
-    it('should render page when AnalyticsNewFiltersVoice is true', () => {
-        const { getByText, getAllByText } = renderVoiceAgents()
-        expect(getByText(VOICE_AGENTS_PAGE_TITLE)).toBeInTheDocument()
-
-        fireEvent.click(getByText(ADD_FILTER_BUTTON_LABEL))
-
-        expect(
-            getByText(FilterLabels[FilterComponentKey.PhoneIntegrations]),
-        ).toBeInTheDocument()
-        expect(
-            getAllByText(FilterLabels[FilterKey.Tags])[0],
-        ).toBeInTheDocument()
-        expect(
-            getAllByText(FilterLabels[FilterKey.Agents])[0],
-        ).toBeInTheDocument()
-    })
-})
-
 describe('VoiceAgents', () => {
-    beforeAll(() => {
-        mockFlags({
-            [FeatureFlagKey.AnalyticsNewFiltersVoice]: false,
-        })
-    })
-
     it('should render page', () => {
         const { queryByText } = renderVoiceAgents()
 
@@ -154,13 +120,6 @@ describe('VoiceAgents', () => {
         expect(queryByText(VOICE_CALL_ACTIVITY_TITLE)).toBeInTheDocument()
 
         expect(queryByText('Voice add-on features')).toBeNull()
-
-        // filters
-        expect(queryByText('All integrations')).toBeInTheDocument()
-        expect(queryByText('1 tag')).toBeInTheDocument()
-        expect(queryByText('1 agent')).toBeInTheDocument()
-        expect(queryByText('Dec 11, 2023')).toBeInTheDocument()
-        expect(queryByText('Download data')).toBeInTheDocument()
 
         // footer
         expect(

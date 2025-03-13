@@ -5,7 +5,7 @@ import { fromJS } from 'immutable'
 
 import { Tag } from '@gorgias/api-queries'
 
-import { useNewStatsFilters } from 'hooks/reporting/support-performance/useNewStatsFilters'
+import { useStatsFilters } from 'hooks/reporting/support-performance/useStatsFilters'
 import { calculateDecile } from 'hooks/reporting/ticket-insights/useCustomFieldsTicketCountPerCustomFields'
 import { useTicketCountPerTag } from 'hooks/reporting/ticket-insights/useTicketCountPerTag'
 import { TimeSeriesDataItem } from 'hooks/reporting/useTimeSeries'
@@ -47,7 +47,7 @@ export const AllUsedTagsTable = ({
     heatmapMode: boolean
     valueMode: ValueMode
 }) => {
-    const { granularity, isAnalyticsNewFilters } = useNewStatsFilters()
+    const { granularity } = useStatsFilters()
     const [currentPage, setCurrentPage] = useState(1)
     const [ref, { width }] = useMeasure<HTMLDivElement>()
     const [isTableScrolled, setIsTableScrolled] = useState(false)
@@ -147,9 +147,6 @@ export const AllUsedTagsTable = ({
                                       {...row}
                                       granularity={granularity}
                                       isTableScrolled={isTableScrolled}
-                                      isAnalyticsNewFilters={
-                                          isAnalyticsNewFilters
-                                      }
                                       isHeatmapMode={heatmapMode}
                                       valueMode={valueMode}
                                       grandTotal={grandTotal}
@@ -187,7 +184,6 @@ const TableRow = ({
     timeSeries,
     isTableScrolled,
     granularity,
-    isAnalyticsNewFilters,
     isHeatmapMode,
     valueMode,
     grandTotal,
@@ -199,7 +195,6 @@ const TableRow = ({
     timeSeries: TimeSeriesDataItem[]
     isTableScrolled: boolean
     granularity: AggregationWindow
-    isAnalyticsNewFilters: boolean
     isHeatmapMode: boolean
     valueMode: ValueMode
     grandTotal: number
@@ -238,7 +233,6 @@ const TableRow = ({
                         tagId: tagId,
                         metricName: TagsMetric.TicketCount,
                     }}
-                    useNewFilterData={isAnalyticsNewFilters}
                 >
                     {format(valueMode)(
                         valueMode === ValueMode.TotalCount
@@ -278,7 +272,6 @@ const TableRow = ({
                                 granularity,
                             ),
                         }}
-                        useNewFilterData={isAnalyticsNewFilters}
                     >
                         {format(valueMode)(
                             valueMode === ValueMode.TotalCount

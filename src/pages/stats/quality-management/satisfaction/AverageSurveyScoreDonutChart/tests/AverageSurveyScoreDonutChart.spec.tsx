@@ -6,14 +6,14 @@ import moment from 'moment'
 import analyticsColorsModern from 'assets/css/new/stats/modern.json'
 import { logEvent, SegmentEvent } from 'common/segment'
 import { useSurveyScores } from 'hooks/reporting/quality-management/satisfaction/useSurveyScores'
-import { useNewStatsFilters } from 'hooks/reporting/support-performance/useNewStatsFilters'
+import { useStatsFilters } from 'hooks/reporting/support-performance/useStatsFilters'
 import useAppDispatch from 'hooks/useAppDispatch'
 import {
     TicketSatisfactionSurveyDimension,
     TicketSatisfactionSurveyMeasure,
 } from 'models/reporting/cubes/TicketSatisfactionSurveyCube'
 import { ReportingGranularity } from 'models/reporting/types'
-import { LegacyStatsFilters } from 'models/stat/types'
+import { StatsFilters } from 'models/stat/types'
 import DonutChart from 'pages/stats/common/components/charts/DonutChart/DonutChart'
 import AverageSurveyScoreDonutChart from 'pages/stats/quality-management/satisfaction/AverageSurveyScoreDonutChart/AverageSurveyScoreDonutChart'
 import { SatisfactionAverageSurveyScoreMetric } from 'state/ui/stats/types'
@@ -26,8 +26,8 @@ const logEventMock = assumeMock(logEvent)
 jest.mock('hooks/reporting/quality-management/satisfaction/useSurveyScores')
 const mockUseSurveyScores = assumeMock(useSurveyScores)
 
-jest.mock('hooks/reporting/support-performance/useNewStatsFilters')
-const useNewStatsFiltersMock = assumeMock(useNewStatsFilters)
+jest.mock('hooks/reporting/support-performance/useStatsFilters')
+const useStatsFiltersMock = assumeMock(useStatsFilters)
 
 jest.mock('pages/stats/common/components/charts/DonutChart/DonutChart')
 const DonutChartMock = assumeMock(DonutChart)
@@ -35,30 +35,29 @@ const DonutChartMock = assumeMock(DonutChart)
 jest.mock('hooks/useAppDispatch')
 const useAppDispatchMock = assumeMock(useAppDispatch)
 
-const periodStart = formatReportingQueryDate(moment())
-const periodEnd = formatReportingQueryDate(moment().subtract(7, 'd'))
-const statsFilters: LegacyStatsFilters = {
-    period: {
-        start_datetime: periodStart,
-        end_datetime: periodEnd,
-    },
-}
-const timezone = 'UTC'
-
 const renderComponent = () => {
     render(<AverageSurveyScoreDonutChart />)
 }
 
 describe('<AverageSurveyScoreDonutChart/>', () => {
+    const periodStart = formatReportingQueryDate(moment())
+    const periodEnd = formatReportingQueryDate(moment().subtract(7, 'd'))
+    const statsFilters: StatsFilters = {
+        period: {
+            start_datetime: periodStart,
+            end_datetime: periodEnd,
+        },
+    }
+    const timezone = 'UTC'
+
     beforeEach(() => {
         logEventMock.mockClear()
         useAppDispatchMock.mockReturnValue(jest.fn())
         DonutChartMock.mockImplementation(() => <div>Donut Chart</div>)
-        useNewStatsFiltersMock.mockReturnValue({
+        useStatsFiltersMock.mockReturnValue({
             cleanStatsFilters: statsFilters,
             userTimezone: timezone,
             granularity: ReportingGranularity.Day,
-            isAnalyticsNewFilters: true,
         })
         mockUseSurveyScores.mockReturnValue({
             isFetching: false,
@@ -219,11 +218,6 @@ describe('<AverageSurveyScoreDonutChart/>', () => {
                 title: 'Average CSAT',
             },
             type: 'drillDown/setMetricData',
-        })
-
-        expect(mockDispatch).toHaveBeenCalledWith({
-            payload: true,
-            type: 'drillDown/setShouldUseNewFilterData',
         })
 
         expect(logEvent).toHaveBeenCalledWith(SegmentEvent.StatClicked, {

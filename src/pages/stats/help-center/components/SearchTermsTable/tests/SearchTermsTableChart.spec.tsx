@@ -1,7 +1,6 @@
 import React from 'react'
 
 import { render, screen } from '@testing-library/react'
-import noop from 'lodash/noop'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
@@ -44,7 +43,6 @@ describe('SearchTermsTableChart', () => {
             helpCenters: [],
             isLoading: false,
             selectedHelpCenter: {} as any,
-            setStatsFilters: noop,
             sortedHelpCenters: [],
             statsFilters,
             helpCenterId: 123,
@@ -67,7 +65,6 @@ describe('SearchTermsTableChart', () => {
             helpCenters: [],
             isLoading: false,
             selectedHelpCenter: {} as any,
-            setStatsFilters: noop,
             sortedHelpCenters: [],
             statsFilters,
             helpCenterId: 123,

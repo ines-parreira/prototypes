@@ -16,10 +16,10 @@ import { useResolutionCompletenessPerAgent } from 'hooks/reporting/support-perfo
 import { useResolutionCompletenessTrend } from 'hooks/reporting/support-performance/auto-qa/useResolutionCompletenessTrend'
 import { useReviewedClosedTicketsPerAgent } from 'hooks/reporting/support-performance/auto-qa/useReviewedClosedTicketsPerAgent'
 import { useReviewedClosedTicketsTrend } from 'hooks/reporting/support-performance/auto-qa/useReviewedClosedTicketsTrend'
-import { useNewStatsFilters } from 'hooks/reporting/support-performance/useNewStatsFilters'
+import { useStatsFilters } from 'hooks/reporting/support-performance/useStatsFilters'
 
 export const useAutoQAMetrics = () => {
-    const { cleanStatsFilters, userTimezone } = useNewStatsFilters()
+    const { cleanStatsFilters, userTimezone } = useStatsFilters()
 
     const reviewedClosedTicketsTrend = useReviewedClosedTicketsTrend(
         cleanStatsFilters,

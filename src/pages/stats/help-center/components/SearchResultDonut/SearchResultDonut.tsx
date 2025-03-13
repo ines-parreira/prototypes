@@ -1,6 +1,6 @@
 import React from 'react'
 
-import { useNewStatsFilters } from 'hooks/reporting/support-performance/useNewStatsFilters'
+import { useStatsFilters } from 'hooks/reporting/support-performance/useStatsFilters'
 import ChartCard from 'pages/stats/ChartCard'
 import DonutChart from 'pages/stats/common/components/charts/DonutChart/DonutChart'
 import { DashboardChartProps } from 'pages/stats/dashboards/types'
@@ -13,7 +13,7 @@ import { useSearchResultRange } from 'pages/stats/help-center/hooks/useSearchRes
 import { NoDataAvailable } from 'pages/stats/NoDataAvailable'
 
 const SearchResultDonut = ({ chartId, dashboard }: DashboardChartProps) => {
-    const { cleanStatsFilters, userTimezone } = useNewStatsFilters()
+    const { cleanStatsFilters, userTimezone } = useStatsFilters()
     const { data, isLoading } = useSearchResultRange(
         cleanStatsFilters,
         userTimezone,

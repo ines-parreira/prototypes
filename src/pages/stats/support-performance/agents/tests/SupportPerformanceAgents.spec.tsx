@@ -2,10 +2,8 @@ import React, { ComponentProps } from 'react'
 
 import { screen } from '@testing-library/react'
 import { fromJS } from 'immutable'
-import { mockFlags } from 'jest-launchdarkly-mock'
 import { MemoryRouter } from 'react-router-dom'
 
-import { FeatureFlagKey } from 'config/featureFlags'
 import { account } from 'fixtures/account'
 import { billingState } from 'fixtures/billing'
 import {
@@ -17,6 +15,7 @@ import {
 import { useAgentsMetrics } from 'hooks/reporting/support-performance/agents/useAgentsMetrics'
 import { useAgentsSummaryMetrics } from 'hooks/reporting/support-performance/agents/useAgentsSummaryMetrics'
 import { useAgentsTableConfigSetting } from 'hooks/reporting/useAgentsTableConfigSetting'
+import { useCleanStatsFilters } from 'hooks/reporting/useCleanStatsFilters'
 import { AnalyticsFooter } from 'pages/stats/AnalyticsFooter'
 import { AUTO_QA_FILTER_KEYS } from 'pages/stats/common/filters/constants'
 import FiltersPanelWrapper from 'pages/stats/common/filters/FiltersPanelWrapper'
@@ -32,7 +31,6 @@ import { AGENTS_OPTIONAL_FILTERS } from 'pages/stats/support-performance/agents/
 import { TopCsatPerformers } from 'pages/stats/support-performance/agents/TopCsatPerformers'
 import { TopFirstResponseTimePerformers } from 'pages/stats/support-performance/agents/TopFirstResponseTimePerformers'
 import { TopResponseTimePerformers } from 'pages/stats/support-performance/agents/TopResponseTimePerformers'
-import { SupportPerformanceFilters } from 'pages/stats/support-performance/SupportPerformanceFilters'
 import { RootState } from 'state/types'
 import { assumeMock, renderWithStore } from 'utils/testing'
 
@@ -43,8 +41,6 @@ jest.unmock('react-router-dom')
 jest.mock('state/ui/stats/agentPerformanceSlice')
 jest.mock('pages/stats/support-performance/agents/AgentsTable.tsx')
 const AgentTableWithDefaultStateMock = assumeMock(AgentsTableWithDefaultState)
-jest.mock('pages/stats/support-performance/SupportPerformanceFilters.tsx')
-const SupportPerformanceFiltersMock = assumeMock(SupportPerformanceFilters)
 jest.mock(
     'pages/stats/common/filters/FiltersPanelWrapper/FiltersPanelWrapper',
     () => (props: ComponentProps<typeof FiltersPanelWrapper>) => {
@@ -86,6 +82,9 @@ const useAgentsTableConfigSettingMock = assumeMock(useAgentsTableConfigSetting)
 jest.mock('pages/stats/DrillDownModal.tsx', () => ({
     DrillDownModal: () => null,
 }))
+jest.mock('hooks/reporting/useCleanStatsFilters')
+const useCleanStatsFiltersMock = assumeMock(useCleanStatsFilters)
+
 const componentMock = () => <div />
 
 const defaultState = {
@@ -93,7 +92,6 @@ const defaultState = {
 } as RootState
 
 describe('SupportPerformanceAgents', () => {
-    SupportPerformanceFiltersMock.mockImplementation(componentMock)
     AgentsPerformanceCardExtraMock.mockImplementation(componentMock)
     AgentTableWithDefaultStateMock.mockImplementation(componentMock)
     TopCsatPerformersMock.mockImplementation(componentMock)
@@ -164,9 +162,7 @@ describe('SupportPerformanceAgents', () => {
         expect(TopClosedTicketsPerformersMock).toHaveBeenCalled()
     })
 
-    it('should render New FiltersPanel and hide legacy filters', () => {
-        mockFlags({ [FeatureFlagKey.AnalyticsNewFilters]: true })
-
+    it('should render FiltersPanel', () => {
         const { getByText } = renderWithStore(
             <MemoryRouter>
                 <SupportPerformanceAgentsReport />
@@ -174,19 +170,13 @@ describe('SupportPerformanceAgents', () => {
             defaultState,
         )
 
-        expect(SupportPerformanceFiltersMock).toHaveBeenCalledWith(
-            expect.objectContaining({ hidden: true }),
-            {},
-        )
         AGENTS_OPTIONAL_FILTERS.forEach((filter) => {
             expect(getByText(filter)).toBeInTheDocument()
         })
+        expect(useCleanStatsFiltersMock).toHaveBeenCalled()
     })
 
-    it('should render New FiltersPanel and score filter should be present in the FiltersPanel', () => {
-        mockFlags({
-            [FeatureFlagKey.AnalyticsNewFilters]: true,
-        })
+    it('should render FiltersPanel and score filter should be present in the FiltersPanel', () => {
         const extendedOptionalFilters = [...AGENTS_OPTIONAL_FILTERS]
 
         const { getByText } = renderWithStore(
@@ -196,16 +186,12 @@ describe('SupportPerformanceAgents', () => {
             defaultState,
         )
 
-        expect(SupportPerformanceFiltersMock).toHaveBeenCalledWith(
-            expect.objectContaining({ hidden: true }),
-            {},
-        )
         extendedOptionalFilters.forEach((filter) => {
             expect(getByText(filter)).toBeInTheDocument()
         })
     })
 
-    it('should render New FiltersPanel and resolution completeness and communication skills filters should be present in the FiltersPanel', () => {
+    it('should render FiltersPanel and resolution completeness and communication skills filters should be present in the FiltersPanel', () => {
         const state = {
             ...defaultState,
             currentAccount: fromJS({
@@ -220,9 +206,6 @@ describe('SupportPerformanceAgents', () => {
                 },
             }),
         } as RootState
-        mockFlags({
-            [FeatureFlagKey.AnalyticsNewFilters]: true,
-        })
         const extendedOptionalFilters = [
             ...AGENTS_OPTIONAL_FILTERS,
             ...AUTO_QA_FILTER_KEYS,
@@ -235,10 +218,6 @@ describe('SupportPerformanceAgents', () => {
             state,
         )
 
-        expect(SupportPerformanceFiltersMock).toHaveBeenCalledWith(
-            expect.objectContaining({ hidden: true }),
-            {},
-        )
         extendedOptionalFilters.forEach((filter) => {
             expect(getByText(filter)).toBeInTheDocument()
         })

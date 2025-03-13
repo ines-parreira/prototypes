@@ -1,6 +1,6 @@
 import { Tag } from '@gorgias/api-queries'
 
-import { getCsvFileNameWithDates } from 'hooks/reporting/support-performance/overview/useDownloadOverviewData'
+import { getCsvFileNameWithDates } from 'hooks/reporting/common/utils'
 import {
     FormattedDataItem,
     getFormattedDataWithTotals,

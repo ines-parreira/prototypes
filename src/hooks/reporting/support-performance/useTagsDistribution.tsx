@@ -1,7 +1,7 @@
 import { useMemo } from 'react'
 
 import { useTagsTicketCount } from 'hooks/reporting/metricsPerPeriod'
-import { useNewStatsFilters } from 'hooks/reporting/support-performance/useNewStatsFilters'
+import { useStatsFilters } from 'hooks/reporting/support-performance/useStatsFilters'
 import useAppSelector from 'hooks/useAppSelector'
 import { OrderDirection } from 'models/api/types'
 import {
@@ -38,7 +38,7 @@ function getTicketCount(value?: ItemType) {
 }
 
 export const useTagsDistribution = (topAmount = 10) => {
-    const { cleanStatsFilters, userTimezone } = useNewStatsFilters()
+    const { cleanStatsFilters, userTimezone } = useStatsFilters()
     const tags = useAppSelector(getEntitiesTags)
 
     const { data, isFetching } = useTagsTicketCount(

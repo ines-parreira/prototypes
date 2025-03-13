@@ -3,6 +3,7 @@ import {
     TableDataSources,
     useTableReportData,
 } from 'hooks/reporting/common/useTableReportData'
+import { getCsvFileNameWithDates } from 'hooks/reporting/common/utils'
 import {
     fetchClosedTicketsMetricPerChannel,
     fetchCreatedTicketsMetricPerChannel,
@@ -15,9 +16,8 @@ import {
     fetchTicketsRepliedMetricPerChannel,
 } from 'hooks/reporting/support-performance/channels/metricsPerChannel'
 import { fetchPercentageOfCreatedTicketsMetricPerChannel } from 'hooks/reporting/support-performance/channels/usePercentageOfCreatedTicketsMetricPerChannel'
-import { getCsvFileNameWithDates } from 'hooks/reporting/support-performance/overview/useDownloadOverviewData'
-import { useNewStatsFilters } from 'hooks/reporting/support-performance/useNewStatsFilters'
 import { useSortedChannels } from 'hooks/reporting/support-performance/useSortedChannels'
+import { useStatsFilters } from 'hooks/reporting/support-performance/useStatsFilters'
 import { useChannelsTableSetting } from 'hooks/reporting/useChannelsTableConfigSetting'
 import { MetricWithDecile } from 'hooks/reporting/useMetricPerDimension'
 import { Channel } from 'models/channel/types'
@@ -89,7 +89,7 @@ export const ChannelsMetricsDataSources: TableDataSources<ChannelsReportData> =
     ]
 
 export const useChannelsReportMetrics = () => {
-    const { cleanStatsFilters, userTimezone } = useNewStatsFilters()
+    const { cleanStatsFilters, userTimezone } = useStatsFilters()
     const { columnsOrder } = useChannelsTableSetting()
     const { sortedChannels: channels, isLoading } = useSortedChannels()
 

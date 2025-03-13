@@ -17,7 +17,7 @@ import {
     messagesPerTicketQueryFactory,
 } from 'models/reporting/queryFactories/support-performance/messagesPerTicket'
 import { ReportingFilterOperator } from 'models/reporting/types'
-import { LegacyStatsFilters } from 'models/stat/types'
+import { StatsFilters } from 'models/stat/types'
 import { subtractDaysFromDate } from 'utils/date'
 import {
     DRILLDOWN_QUERY_LIMIT,
@@ -29,7 +29,7 @@ import {
 describe('messagesPerTicketQueryFactory', () => {
     const periodStart = formatReportingQueryDate(moment())
     const periodEnd = formatReportingQueryDate(moment())
-    const statsFilters: LegacyStatsFilters = {
+    const statsFilters: StatsFilters = {
         period: {
             end_datetime: periodEnd,
             start_datetime: periodStart,
@@ -82,7 +82,7 @@ describe('messagesPerTicketQueryFactory', () => {
 describe('messagesPerTicketDrillDownQueryFactory', () => {
     const periodStart = formatReportingQueryDate(moment())
     const periodEnd = formatReportingQueryDate(moment())
-    const statsFilters: LegacyStatsFilters = {
+    const statsFilters: StatsFilters = {
         period: {
             end_datetime: periodEnd,
             start_datetime: periodStart,

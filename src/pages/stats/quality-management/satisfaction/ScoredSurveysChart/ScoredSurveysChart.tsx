@@ -4,7 +4,7 @@ import {
     ScoredSurveyDataKey,
     useScoredSurveys,
 } from 'hooks/reporting/quality-management/satisfaction/useScoredSurveys'
-import { useNewStatsFilters } from 'hooks/reporting/support-performance/useNewStatsFilters'
+import { useStatsFilters } from 'hooks/reporting/support-performance/useStatsFilters'
 import { opposite, OrderDirection } from 'models/api/types'
 import { NumberedPagination } from 'pages/common/components/Paginations'
 import ChartCard from 'pages/stats/ChartCard'
@@ -27,7 +27,7 @@ const initialTableState: TableState = {
 }
 
 export default function ScoredSurveysChart(props: DashboardChartProps) {
-    const { cleanStatsFilters, userTimezone } = useNewStatsFilters()
+    const { cleanStatsFilters, userTimezone } = useStatsFilters()
     const { data, isFetching } = useScoredSurveys(
         cleanStatsFilters,
         userTimezone,

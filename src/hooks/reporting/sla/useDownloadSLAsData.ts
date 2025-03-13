@@ -2,14 +2,14 @@ import { useMemo } from 'react'
 
 import { useTimeSeriesPerDimensionReportData } from 'hooks/reporting/common/useTimeSeriesReportData'
 import { useTrendReportData } from 'hooks/reporting/common/useTrendReportData'
+import { getCsvFileNameWithDates } from 'hooks/reporting/common/utils'
 import { fetchSatisfiedOrBreachedTicketsTimeSeries } from 'hooks/reporting/sla/useSatisfiedOrBreachedTicketsTimeSeries'
 import {
     fetchBreachedSlaTicketsTrend,
     fetchSatisfiedSlaTicketsTrend,
 } from 'hooks/reporting/sla/useSLAsTicketsTrends'
 import { fetchTicketSlaAchievementRateTrend } from 'hooks/reporting/sla/useTicketSlaAchievementRate'
-import { getCsvFileNameWithDates } from 'hooks/reporting/support-performance/overview/useDownloadOverviewData'
-import { useNewStatsFilters } from 'hooks/reporting/support-performance/useNewStatsFilters'
+import { useStatsFilters } from 'hooks/reporting/support-performance/useStatsFilters'
 import { TicketSLAStatus } from 'models/reporting/cubes/sla/TicketSLACube'
 import { SlaMetricConfig } from 'pages/stats/sla/SlaConfig'
 import {
@@ -69,8 +69,7 @@ export const slaTrendSource = [
 ]
 
 export const useDownloadSLAsData = () => {
-    const { cleanStatsFilters, userTimezone, granularity } =
-        useNewStatsFilters()
+    const { cleanStatsFilters, userTimezone, granularity } = useStatsFilters()
 
     const slaTrends = useTrendReportData(
         cleanStatsFilters,

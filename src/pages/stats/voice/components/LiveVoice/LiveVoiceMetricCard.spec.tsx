@@ -101,7 +101,6 @@ describe('LiveVoiceMetricCard', () => {
                     metricName: props.metricName,
                     title: props.title,
                 },
-                useNewFilterData: true,
             }),
             {},
         )

@@ -4,12 +4,10 @@ import { within } from '@testing-library/dom'
 import { act, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { fromJS } from 'immutable'
-import { mockFlags } from 'jest-launchdarkly-mock'
 import { Provider } from 'react-redux'
 
 import { Tag, useListSlaPolicies } from '@gorgias/api-queries'
 
-import { FeatureFlagKey } from 'config/featureFlags'
 import { useGetCustomFieldDefinitions } from 'custom-fields/hooks/queries/queries'
 import { apiListCursorPaginationResponse } from 'fixtures/axiosResponse'
 import { billingState } from 'fixtures/billing'
@@ -53,7 +51,6 @@ import {
 } from 'pages/stats/common/filters/helpers'
 import { getHasAutomate } from 'state/billing/selectors'
 import { initialState, statsSlice } from 'state/stats/statsSlice'
-import { fromLegacyStatsFilters } from 'state/stats/utils'
 import { RootState } from 'state/types'
 import {
     initialState as busiestTimesInitialState,
@@ -211,9 +208,6 @@ describe('FiltersPanel', () => {
         useGetCustomFieldDefinitionsMock.mockReturnValue(
             apiListCursorPaginationResponse(customFieldsMockResponse) as any,
         )
-        mockFlags({
-            [FeatureFlagKey.AnalyticsCustomFieldsFilter]: true,
-        })
         useTagSearchMock.mockReturnValue({
             tags: someTags,
             handleTagsSearch: jest.fn(),
@@ -566,10 +560,10 @@ describe('FiltersPanel', () => {
         const state = {
             ...defaultState,
             [statsSlice.name]: {
-                filters: fromLegacyStatsFilters({
+                filters: {
                     period: initialState.filters.period,
-                    [optionalFilter]: ['1', '2'],
-                }),
+                    [optionalFilter]: withDefaultLogicalOperator(['1', '2']),
+                },
             },
         } as RootState
 
@@ -590,9 +584,9 @@ describe('FiltersPanel', () => {
         const state = {
             ...defaultState,
             [statsSlice.name]: {
-                filters: fromLegacyStatsFilters({
+                filters: {
                     period: initialState.filters.period,
-                }),
+                },
             },
         } as RootState
 
@@ -625,10 +619,13 @@ describe('FiltersPanel', () => {
             {
                 ...defaultState,
                 [statsSlice.name]: {
-                    filters: fromLegacyStatsFilters({
+                    filters: {
                         period: initialState.filters.period,
-                        [optionalFilter]: ['1', '2'],
-                    }),
+                        [optionalFilter]: withDefaultLogicalOperator([
+                            '1',
+                            '2',
+                        ]),
+                    },
                 },
             },
         )
@@ -645,9 +642,9 @@ describe('FiltersPanel', () => {
             {
                 ...defaultState,
                 [statsSlice.name]: {
-                    filters: fromLegacyStatsFilters({
+                    filters: {
                         period: initialState.filters.period,
-                    }),
+                    },
                 },
             },
         )
@@ -661,10 +658,10 @@ describe('FiltersPanel', () => {
         const state = {
             ...defaultState,
             [statsSlice.name]: {
-                filters: fromLegacyStatsFilters({
+                filters: {
                     period: initialState.filters.period,
-                    [optionalFilter]: ['1', '2'],
-                }),
+                    [optionalFilter]: withDefaultLogicalOperator(['1', '2']),
+                },
             },
         } as RootState
 
@@ -688,9 +685,9 @@ describe('FiltersPanel', () => {
             {
                 ...defaultState,
                 [statsSlice.name]: {
-                    filters: fromLegacyStatsFilters({
+                    filters: {
                         period: initialState.filters.period,
-                    }),
+                    },
                 },
             },
         )
@@ -706,11 +703,16 @@ describe('FiltersPanel', () => {
         const state = {
             ...defaultState,
             [statsSlice.name]: {
-                filters: fromLegacyStatsFilters({
+                filters: {
                     period: initialState.filters.period,
-                    [optionalFilter]: ['1', '2'],
-                    [FilterKey.CustomFields]: ['1:field'],
-                }),
+                    [optionalFilter]: withDefaultLogicalOperator(['1', '2']),
+                    [FilterKey.CustomFields]: [
+                        {
+                            ...withDefaultLogicalOperator(['1:field']),
+                            customFieldId: 1,
+                        },
+                    ],
+                },
             },
         } as RootState
 
@@ -751,47 +753,14 @@ describe('FiltersPanel', () => {
         })
     })
 
-    it('should not render customFields filter when the flag is disabled', () => {
-        mockFlags({
-            [FeatureFlagKey.AnalyticsCustomFieldsFilter]: false,
-        })
-        const customFieldsFilters = [FilterKey.CustomFields]
+    it('should hide and show optional filters', async () => {
         const state = {
             ...defaultState,
             [statsSlice.name]: {
-                filters: fromLegacyStatsFilters({
+                filters: {
                     period: initialState.filters.period,
-                    [optionalFilter]: ['1', '2'],
-                    [FilterKey.CustomFields]: ['1:field'],
-                }),
-            },
-        } as RootState
-
-        renderWithStore(
-            <FiltersPanel
-                persistentFilters={persistentFilters}
-                optionalFilters={customFieldsFilters}
-            />,
-            state,
-        )
-
-        expect(
-            screen.queryByText(customFieldsMockResponse.data[0].label),
-        ).not.toBeInTheDocument()
-    })
-
-    it('should hide and unhide optional filters', async () => {
-        mockFlags({
-            [FeatureFlagKey.AnalyticsCustomFieldsFilter]: false,
-        })
-
-        const state = {
-            ...defaultState,
-            [statsSlice.name]: {
-                filters: fromLegacyStatsFilters({
-                    period: initialState.filters.period,
-                    [optionalFilter]: ['1', '2'],
-                }),
+                    [optionalFilter]: withDefaultLogicalOperator(['1', '2']),
+                },
             },
         } as RootState
 

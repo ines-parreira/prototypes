@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 
-import { useNewStatsFilters } from 'hooks/reporting/support-performance/useNewStatsFilters'
+import { useStatsFilters } from 'hooks/reporting/support-performance/useStatsFilters'
 import { TopProductRecommendationTableStats } from 'pages/stats/aiSalesAgent/components/TopProductRecommendationTableStats'
 import { useProductRecommendations } from 'pages/stats/aiSalesAgent/metrics/useProductRecommendations'
 import ChartCard from 'pages/stats/ChartCard'
@@ -12,7 +12,7 @@ const TopProductRecommendationTable = ({
     chartId,
     dashboard,
 }: DashboardChartProps) => {
-    const { cleanStatsFilters, userTimezone } = useNewStatsFilters()
+    const { cleanStatsFilters, userTimezone } = useStatsFilters()
 
     const data = useProductRecommendations(cleanStatsFilters, userTimezone)
 

@@ -1,6 +1,6 @@
 import React from 'react'
 
-import { useNewAutomateFilters } from 'hooks/reporting/automate/useNewAutomateFilters'
+import { useAutomateFilters } from 'hooks/reporting/automate/useAutomateFilters'
 import { useTimeSavedByAgentsTrend } from 'hooks/reporting/automate/useTimeSavedByAgentsTrend'
 import { TimeSavedByAgentsMetric } from 'pages/automate/automate-metrics/TimeSavedByAgentsMetric'
 import { DashboardChartProps } from 'pages/stats/dashboards/types'
@@ -9,7 +9,7 @@ export const TimeSavedByAgentsKPIChart = ({
     chartId,
     dashboard,
 }: DashboardChartProps) => {
-    const { statsFilters, userTimezone } = useNewAutomateFilters()
+    const { statsFilters, userTimezone } = useAutomateFilters()
     const timeSavedByAgentsTrend = useTimeSavedByAgentsTrend(
         statsFilters,
         userTimezone,

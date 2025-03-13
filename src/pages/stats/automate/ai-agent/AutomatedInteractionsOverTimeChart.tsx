@@ -3,8 +3,8 @@ import React, { useMemo } from 'react'
 import moment from 'moment'
 
 import { useAIAgentUserId } from 'hooks/reporting/automate/useAIAgentUserId'
+import { useAutomateFilters } from 'hooks/reporting/automate/useAutomateFilters'
 import { useAutomateMetricsTimeSeries } from 'hooks/reporting/automate/useAutomationDataset'
-import { useNewAutomateFilters } from 'hooks/reporting/automate/useNewAutomateFilters'
 import { calculateGreyArea } from 'hooks/reporting/automate/utils'
 import useAppSelector from 'hooks/useAppSelector'
 import { FilterKey } from 'models/stat/types'
@@ -44,7 +44,7 @@ export function AutomatedInteractionsOverTimeChart({
         [aiAgentUserId, statsFilters],
     )
 
-    const { userTimezone, granularity } = useNewAutomateFilters()
+    const { userTimezone, granularity } = useAutomateFilters()
     const timeseries = useAutomateMetricsTimeSeries(
         statsFiltersWithAiAgent,
         userTimezone,

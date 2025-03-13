@@ -195,7 +195,6 @@ describe('DrillDownData hooks', () => {
                     stats: {
                         drillDown: {
                             ...initialState.ui.stats.drillDown,
-                            isNewFilter: true,
                         },
                     },
                 },

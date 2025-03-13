@@ -15,13 +15,13 @@ import {
     useWorkloadPerChannelDistribution,
     useWorkloadPerChannelDistributionForPreviousPeriod,
 } from 'hooks/reporting/distributions'
-import { useNewStatsFilters } from 'hooks/reporting/support-performance/useNewStatsFilters'
+import { useStatsFilters } from 'hooks/reporting/support-performance/useStatsFilters'
+import { withDefaultLogicalOperator } from 'models/reporting/queryFactories/utils'
 import { ReportingGranularity } from 'models/reporting/types'
-import { LegacyStatsFilters } from 'models/stat/types'
+import { StatsFilters, TagFilterInstanceId } from 'models/stat/types'
 import { DEFAULT_TIMEZONE } from 'pages/stats/convert/constants/components'
 import GaugeChart from 'pages/stats/GaugeChart'
 import { WorkloadPerChannelChart } from 'pages/stats/support-performance/overview/charts/WorkloadPerChannelChart'
-import { fromLegacyStatsFilters } from 'state/stats/utils'
 import { RootState, StoreDispatch } from 'state/types'
 import { initialState as uiStatsInitialState } from 'state/ui/stats/filtersSlice'
 import { assumeMock } from 'utils/testing'
@@ -33,29 +33,35 @@ jest.mock('hooks/reporting/distributions')
 const useWorkloadPerChannelDistributionMock = assumeMock(
     useWorkloadPerChannelDistribution,
 )
-jest.mock('hooks/reporting/support-performance/useNewStatsFilters')
-const useNewStatsFiltersMock = assumeMock(useNewStatsFilters)
+jest.mock('hooks/reporting/support-performance/useStatsFilters')
+const useStatsFiltersMock = assumeMock(useStatsFilters)
 
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
 
 describe('<WorkloadPerChannelChart />', () => {
     jest.spyOn(LD, 'useFlags').mockImplementation(() => ({
         [FeatureFlagKey.AnalyticsDeferredLoadingExperiment]: false,
-        [FeatureFlagKey.AnalyticsNewFilters]: false,
     }))
-    const defaultStatsFilters: LegacyStatsFilters = {
+    const defaultStatsFilters: StatsFilters = {
         period: {
             start_datetime: '2021-02-03T00:00:00.000Z',
             end_datetime: '2021-02-03T23:59:59.999Z',
         },
-        channels: [TicketChannel.Chat],
-        integrations: [integrationsState.integrations[0].id],
-        agents: [agents[0].id],
-        tags: [1],
+        channels: withDefaultLogicalOperator([TicketChannel.Chat]),
+        integrations: withDefaultLogicalOperator([
+            integrationsState.integrations[0].id,
+        ]),
+        agents: withDefaultLogicalOperator([agents[0].id]),
+        tags: [
+            {
+                ...withDefaultLogicalOperator([1]),
+                filterInstanceId: TagFilterInstanceId.First,
+            },
+        ],
     }
     const defaultState = {
         stats: {
-            filters: fromLegacyStatsFilters(defaultStatsFilters),
+            filters: defaultStatsFilters,
         },
         ui: {
             stats: { filters: uiStatsInitialState },
@@ -81,9 +87,8 @@ describe('<WorkloadPerChannelChart />', () => {
             workloadDistribution,
         )
         gaugeChartMock.mockImplementation(() => <div />)
-        useNewStatsFiltersMock.mockReturnValue({
-            cleanStatsFilters: fromLegacyStatsFilters(defaultStatsFilters),
-            isAnalyticsNewFilters: true,
+        useStatsFiltersMock.mockReturnValue({
+            cleanStatsFilters: defaultStatsFilters,
             granularity: ReportingGranularity.Day,
             userTimezone: DEFAULT_TIMEZONE,
         })
@@ -199,10 +204,12 @@ describe('<WorkloadPerChannelChart />', () => {
     })
 
     describe('statsFilters', () => {
-        it('should call data hook with legacyStatsFilters', () => {
-            useNewStatsFiltersMock.mockReturnValue({
+        it('should call data hook with statsFiltersWithLogicalOperators', () => {
+            jest.spyOn(LD, 'useFlags').mockImplementation(() => ({
+                [FeatureFlagKey.AnalyticsDeferredLoadingExperiment]: false,
+            }))
+            useStatsFiltersMock.mockReturnValue({
                 cleanStatsFilters: defaultStatsFilters,
-                isAnalyticsNewFilters: false,
                 granularity: ReportingGranularity.Day,
                 userTimezone: DEFAULT_TIMEZONE,
             })
@@ -218,34 +225,6 @@ describe('<WorkloadPerChannelChart />', () => {
 
             expect(useWorkloadPerChannelDistributionMock).toHaveBeenCalledWith(
                 defaultStatsFilters,
-                DEFAULT_TIMEZONE,
-                true,
-            )
-        })
-
-        it('should call data hook with statsFiltersWithLogicalOperators', () => {
-            jest.spyOn(LD, 'useFlags').mockImplementation(() => ({
-                [FeatureFlagKey.AnalyticsDeferredLoadingExperiment]: false,
-                [FeatureFlagKey.AnalyticsNewFilters]: true,
-            }))
-            useNewStatsFiltersMock.mockReturnValue({
-                cleanStatsFilters: fromLegacyStatsFilters(defaultStatsFilters),
-                isAnalyticsNewFilters: true,
-                granularity: ReportingGranularity.Day,
-                userTimezone: DEFAULT_TIMEZONE,
-            })
-            useWorkloadPerChannelDistributionMock.mockReturnValue({
-                data: undefined,
-            } as any)
-
-            render(
-                <Provider store={mockStore(defaultState)}>
-                    <WorkloadPerChannelChart />
-                </Provider>,
-            )
-
-            expect(useWorkloadPerChannelDistributionMock).toHaveBeenCalledWith(
-                fromLegacyStatsFilters(defaultStatsFilters),
                 DEFAULT_TIMEZONE,
                 true,
             )

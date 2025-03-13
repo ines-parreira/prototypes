@@ -226,7 +226,7 @@ export type StatsFiltersWithLogicalOperator = {
     [FilterComponentKey.StoreIntegrations]?: WithLogicalOperator<number>
 }
 
-export type StatsFilters = LegacyStatsFilters | StatsFiltersWithLogicalOperator
+export type StatsFilters = StatsFiltersWithLogicalOperator
 
 export enum StatType {
     ArticleRecommendationAutomationRate = 'article-recommendation-automation-rate',

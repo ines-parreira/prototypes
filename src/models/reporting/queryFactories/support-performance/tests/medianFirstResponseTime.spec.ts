@@ -17,8 +17,9 @@ import {
     medianFirstResponseTimeMetricPerAgentQueryFactory,
     medianFirstResponseTimeQueryFactory,
 } from 'models/reporting/queryFactories/support-performance/medianFirstResponseTime'
+import { withDefaultLogicalOperator } from 'models/reporting/queryFactories/utils'
 import { ReportingFilterOperator } from 'models/reporting/types'
-import { LegacyStatsFilters } from 'models/stat/types'
+import { StatsFilters, TagFilterInstanceId } from 'models/stat/types'
 import {
     DRILLDOWN_QUERY_LIMIT,
     formatReportingQueryDate,
@@ -29,14 +30,22 @@ import {
 describe('medianFirstResponseTimeMetricPerAgent', () => {
     const periodStart = moment()
     const periodEnd = periodStart.add(7, 'days')
-    const statsFilters: LegacyStatsFilters = {
+    const statsFilters: StatsFilters = {
         period: {
             end_datetime: periodEnd.toISOString(),
             start_datetime: periodStart.toISOString(),
         },
-        channels: [TicketChannel.Email, TicketChannel.Chat],
-        integrations: [1],
-        tags: [1, 2],
+        channels: withDefaultLogicalOperator([
+            TicketChannel.Email,
+            TicketChannel.Chat,
+        ]),
+        integrations: withDefaultLogicalOperator([1]),
+        tags: [
+            {
+                ...withDefaultLogicalOperator([1, 2]),
+                filterInstanceId: TagFilterInstanceId.First,
+            },
+        ],
     }
     const timezone = 'someTimeZone'
     const sorting = OrderDirection.Asc
@@ -72,17 +81,17 @@ describe('medianFirstResponseTimeMetricPerAgent', () => {
                 {
                     member: TicketMessagesMember.Integration,
                     operator: ReportingFilterOperator.Equals,
-                    values: statsFilters.integrations?.map(String),
+                    values: statsFilters.integrations?.values.map(String),
                 },
                 {
                     member: TicketMember.Channel,
                     operator: ReportingFilterOperator.Equals,
-                    values: statsFilters.channels,
+                    values: statsFilters.channels?.values.map(String),
                 },
                 {
                     member: TicketMember.Tags,
                     operator: ReportingFilterOperator.Equals,
-                    values: statsFilters.tags?.map(String),
+                    values: statsFilters.tags?.[0]?.values.map(String),
                 },
             ],
             measures: [TicketMessagesMeasure.MedianFirstResponseTime],
@@ -96,7 +105,7 @@ describe('medianFirstResponseTimeMetricPerAgent', () => {
 
         expect(
             medianFirstResponseTimeMetricPerAgentQueryFactory(
-                { ...statsFilters, agents },
+                { ...statsFilters, agents: withDefaultLogicalOperator(agents) },
                 timezone,
                 sorting,
             ),
@@ -130,17 +139,17 @@ describe('medianFirstResponseTimeMetricPerAgent', () => {
                 {
                     member: TicketMessagesMember.Integration,
                     operator: ReportingFilterOperator.Equals,
-                    values: statsFilters.integrations?.map(String),
+                    values: statsFilters.integrations?.values.map(String),
                 },
                 {
                     member: TicketMember.Channel,
                     operator: ReportingFilterOperator.Equals,
-                    values: statsFilters.channels,
+                    values: statsFilters.channels?.values,
                 },
                 {
                     member: TicketMember.Tags,
                     operator: ReportingFilterOperator.Equals,
-                    values: statsFilters.tags?.map(String),
+                    values: statsFilters.tags?.[0]?.values.map(String),
                 },
             ],
             measures: [TicketMessagesMeasure.MedianFirstResponseTime],
@@ -154,14 +163,22 @@ describe('medianFirstResponseTimeMetricPerAgent', () => {
 describe('firstResponseTimeMetricPerTicketQueryFactory', () => {
     const periodStart = moment()
     const periodEnd = periodStart.add(7, 'days')
-    const statsFilters: LegacyStatsFilters = {
+    const statsFilters: StatsFilters = {
         period: {
             end_datetime: periodEnd.toISOString(),
             start_datetime: periodStart.toISOString(),
         },
-        channels: [TicketChannel.Email, TicketChannel.Chat],
-        integrations: [1],
-        tags: [1, 2],
+        channels: withDefaultLogicalOperator([
+            TicketChannel.Email,
+            TicketChannel.Chat,
+        ]),
+        integrations: withDefaultLogicalOperator([1]),
+        tags: [
+            {
+                ...withDefaultLogicalOperator([1, 2]),
+                filterInstanceId: TagFilterInstanceId.First,
+            },
+        ],
     }
     const timezone = 'someTimeZone'
     const sorting = OrderDirection.Asc
@@ -196,7 +213,10 @@ describe('firstResponseTimeMetricPerTicketQueryFactory', () => {
 
     it('should build a query with agents filter and sorting', () => {
         const agents = [2]
-        const filters = { ...statsFilters, agents }
+        const filters = {
+            ...statsFilters,
+            agents: withDefaultLogicalOperator(agents),
+        }
 
         expect(
             firstResponseTimeMetricPerTicketDrillDownQueryFactory(

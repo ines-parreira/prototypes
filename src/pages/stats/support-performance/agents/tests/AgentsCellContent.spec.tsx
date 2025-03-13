@@ -91,7 +91,6 @@ describe('<AgentsCellContent />', () => {
                 statsFilters={{
                     cleanStatsFilters: statsFilters,
                     userTimezone,
-                    isAnalyticsNewFilters: true,
                 }}
             />,
             defaultState,
@@ -135,7 +134,6 @@ describe('<AgentsCellContent />', () => {
                 statsFilters={{
                     cleanStatsFilters: statsFilters,
                     userTimezone,
-                    isAnalyticsNewFilters: true,
                 }}
             />,
             defaultState,
@@ -172,7 +170,6 @@ describe('<AgentsCellContent />', () => {
                 statsFilters={{
                     cleanStatsFilters: statsFilters,
                     userTimezone,
-                    isAnalyticsNewFilters: true,
                 }}
             />,
             defaultState,
@@ -202,7 +199,6 @@ describe('<AgentsCellContent />', () => {
                 statsFilters={{
                     cleanStatsFilters: statsFilters,
                     userTimezone,
-                    isAnalyticsNewFilters: true,
                 }}
             />,
             defaultState,

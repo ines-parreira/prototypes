@@ -17,26 +17,35 @@ import {
     ticketAverageHandleTimeQueryFactory,
     ticketHandleTimePerTicketDrillDownQueryFactory,
 } from 'models/reporting/queryFactories/agentxp/ticketHandleTime'
+import { withDefaultLogicalOperator } from 'models/reporting/queryFactories/utils'
 import { ReportingFilterOperator } from 'models/reporting/types'
-import { LegacyStatsFilters } from 'models/stat/types'
+import { StatsFilters, TagFilterInstanceId } from 'models/stat/types'
 import {
     DRILLDOWN_QUERY_LIMIT,
     formatReportingQueryDate,
     TicketDrillDownFilter,
 } from 'utils/reporting'
 
-describe('onlineTimePerAgentQueryFactory', () => {
+describe('ticketHandleTime', () => {
     const periodStart = moment()
     const periodEnd = periodStart.add(7, 'days')
-    const statsFilters: LegacyStatsFilters = {
+    const statsFilters: StatsFilters = {
         period: {
             end_datetime: periodEnd.toISOString(),
             start_datetime: periodStart.toISOString(),
         },
-        channels: [TicketChannel.Email, TicketChannel.Chat],
-        integrations: [1],
-        tags: [1, 2],
-        agents: [1],
+        channels: withDefaultLogicalOperator([
+            TicketChannel.Email,
+            TicketChannel.Chat,
+        ]),
+        integrations: withDefaultLogicalOperator([1]),
+        tags: [
+            {
+                ...withDefaultLogicalOperator([1, 2]),
+                filterInstanceId: TagFilterInstanceId.First,
+            },
+        ],
+        agents: withDefaultLogicalOperator([1]),
     }
     const timezone = 'someTimeZone'
     const sorting = OrderDirection.Asc
@@ -61,24 +70,22 @@ describe('onlineTimePerAgentQueryFactory', () => {
                     {
                         member: TicketMessagesMember.Integration,
                         operator: ReportingFilterOperator.Equals,
-                        values: statsFilters.integrations?.map((i) =>
-                            String(i),
-                        ),
+                        values: statsFilters.integrations?.values.map(String),
                     },
                     {
                         member: TicketMember.Channel,
                         operator: ReportingFilterOperator.Equals,
-                        values: statsFilters.channels,
+                        values: statsFilters.channels?.values,
                     },
                     {
                         member: TicketMember.AssigneeUserId,
                         operator: ReportingFilterOperator.Equals,
-                        values: statsFilters.agents?.map((i) => String(i)),
+                        values: statsFilters.agents?.values.map(String),
                     },
                     {
                         member: TicketMember.Tags,
                         operator: ReportingFilterOperator.Equals,
-                        values: statsFilters.tags?.map((i) => String(i)),
+                        values: statsFilters.tags?.[0].values.map(String),
                     },
                 ],
                 measures: [HandleTimeMeasure.AverageHandleTime],
@@ -110,24 +117,22 @@ describe('onlineTimePerAgentQueryFactory', () => {
                     {
                         member: TicketMessagesMember.Integration,
                         operator: ReportingFilterOperator.Equals,
-                        values: statsFilters.integrations?.map((i) =>
-                            String(i),
-                        ),
+                        values: statsFilters.integrations?.values.map(String),
                     },
                     {
                         member: TicketMember.Channel,
                         operator: ReportingFilterOperator.Equals,
-                        values: statsFilters.channels?.map((i) => String(i)),
+                        values: statsFilters.channels?.values,
                     },
                     {
                         member: TicketMember.AssigneeUserId,
                         operator: ReportingFilterOperator.Equals,
-                        values: statsFilters.agents?.map((i) => String(i)),
+                        values: statsFilters.agents?.values.map(String),
                     },
                     {
                         member: TicketMember.Tags,
                         operator: ReportingFilterOperator.Equals,
-                        values: statsFilters.tags?.map((i) => String(i)),
+                        values: statsFilters.tags?.[0].values.map(String),
                     },
                 ],
                 measures: [HandleTimeMeasure.AverageHandleTime],
@@ -164,24 +169,22 @@ describe('onlineTimePerAgentQueryFactory', () => {
                     {
                         member: TicketMessagesMember.Integration,
                         operator: ReportingFilterOperator.Equals,
-                        values: statsFilters.integrations?.map((i) =>
-                            String(i),
-                        ),
+                        values: statsFilters.integrations?.values.map(String),
                     },
                     {
                         member: TicketMember.Channel,
                         operator: ReportingFilterOperator.Equals,
-                        values: statsFilters.channels?.map((i) => String(i)),
+                        values: statsFilters.channels?.values.map(String),
                     },
                     {
                         member: TicketMember.AssigneeUserId,
                         operator: ReportingFilterOperator.Equals,
-                        values: statsFilters.agents?.map((i) => String(i)),
+                        values: statsFilters.agents?.values.map(String),
                     },
                     {
                         member: TicketMember.Tags,
                         operator: ReportingFilterOperator.Equals,
-                        values: statsFilters.tags?.map((i) => String(i)),
+                        values: statsFilters.tags?.[0].values.map(String),
                     },
                     TicketDrillDownFilter,
                 ],
@@ -218,24 +221,22 @@ describe('onlineTimePerAgentQueryFactory', () => {
                     {
                         member: TicketMessagesMember.Integration,
                         operator: ReportingFilterOperator.Equals,
-                        values: statsFilters.integrations?.map((i) =>
-                            String(i),
-                        ),
+                        values: statsFilters.integrations?.values.map(String),
                     },
                     {
                         member: TicketMember.Channel,
                         operator: ReportingFilterOperator.Equals,
-                        values: statsFilters.channels?.map((i) => String(i)),
+                        values: statsFilters.channels?.values.map(String),
                     },
                     {
                         member: TicketMember.AssigneeUserId,
                         operator: ReportingFilterOperator.Equals,
-                        values: statsFilters.agents?.map((i) => String(i)),
+                        values: statsFilters.agents?.values.map(String),
                     },
                     {
                         member: TicketMember.Tags,
                         operator: ReportingFilterOperator.Equals,
-                        values: statsFilters.tags?.map((i) => String(i)),
+                        values: statsFilters.tags?.[0].values.map(String),
                     },
                     TicketDrillDownFilter,
                 ],
@@ -271,24 +272,22 @@ describe('onlineTimePerAgentQueryFactory', () => {
                     {
                         member: TicketMessagesMember.Integration,
                         operator: ReportingFilterOperator.Equals,
-                        values: statsFilters.integrations?.map((i) =>
-                            String(i),
-                        ),
+                        values: statsFilters.integrations?.values.map(String),
                     },
                     {
                         member: TicketMember.Channel,
                         operator: ReportingFilterOperator.Equals,
-                        values: statsFilters.channels?.map((i) => String(i)),
+                        values: statsFilters.channels?.values.map(String),
                     },
                     {
                         member: TicketMember.AssigneeUserId,
                         operator: ReportingFilterOperator.Equals,
-                        values: statsFilters.agents?.map((i) => String(i)),
+                        values: statsFilters.agents?.values.map(String),
                     },
                     {
                         member: TicketMember.Tags,
                         operator: ReportingFilterOperator.Equals,
-                        values: statsFilters.tags?.map((i) => String(i)),
+                        values: statsFilters.tags?.[0].values.map(String),
                     },
                     TicketDrillDownFilter,
                 ],
@@ -322,24 +321,22 @@ describe('onlineTimePerAgentQueryFactory', () => {
                     {
                         member: TicketMessagesMember.Integration,
                         operator: ReportingFilterOperator.Equals,
-                        values: statsFilters.integrations?.map((i) =>
-                            String(i),
-                        ),
+                        values: statsFilters.integrations?.values.map(String),
                     },
                     {
                         member: TicketMember.Channel,
                         operator: ReportingFilterOperator.Equals,
-                        values: statsFilters.channels?.map((i) => String(i)),
+                        values: statsFilters.channels?.values.map(String),
                     },
                     {
                         member: TicketMember.AssigneeUserId,
                         operator: ReportingFilterOperator.Equals,
-                        values: statsFilters.agents?.map((i) => String(i)),
+                        values: statsFilters.agents?.values.map(String),
                     },
                     {
                         member: TicketMember.Tags,
                         operator: ReportingFilterOperator.Equals,
-                        values: statsFilters.tags?.map((i) => String(i)),
+                        values: statsFilters.tags?.[0].values.map(String),
                     },
                     TicketDrillDownFilter,
                 ],

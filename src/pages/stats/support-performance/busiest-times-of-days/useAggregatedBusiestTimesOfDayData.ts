@@ -1,6 +1,6 @@
 import { useMemo } from 'react'
 
-import { useNewStatsFilters } from 'hooks/reporting/support-performance/useNewStatsFilters'
+import { useStatsFilters } from 'hooks/reporting/support-performance/useStatsFilters'
 import { TimeSeriesHook } from 'hooks/reporting/useTimeSeries'
 import { ReportingGranularity } from 'models/reporting/types'
 import { getAggregatedBusiestTimesOfDayData } from 'pages/stats/support-performance/busiest-times-of-days/utils'
@@ -8,7 +8,7 @@ import { getAggregatedBusiestTimesOfDayData } from 'pages/stats/support-performa
 export const useAggregatedBusiestTimesOfDayData = (
     useMetricQuery: TimeSeriesHook,
 ) => {
-    const { cleanStatsFilters, userTimezone } = useNewStatsFilters()
+    const { cleanStatsFilters, userTimezone } = useStatsFilters()
 
     const data = useMetricQuery(
         cleanStatsFilters,

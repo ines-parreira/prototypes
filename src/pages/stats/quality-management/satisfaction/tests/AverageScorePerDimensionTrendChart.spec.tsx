@@ -17,7 +17,7 @@ import {
     useAverageCSATPerChannelTimeseries,
     useAverageCSATPerIntegrationTimeseries,
 } from 'hooks/reporting/quality-management/satisfaction/useAverageScorePerDimensionTimeSeries'
-import { useNewStatsFilters } from 'hooks/reporting/support-performance/useNewStatsFilters'
+import { useStatsFilters } from 'hooks/reporting/support-performance/useStatsFilters'
 import { TicketSatisfactionSurveyMeasure } from 'models/reporting/cubes/TicketSatisfactionSurveyCube'
 import { ReportingGranularity } from 'models/reporting/types'
 import { AverageScorePerDimensionTrendChart } from 'pages/stats/quality-management/satisfaction/AverageScorePerDimensionTrendChart/AverageScorePerDimensionTrendChart'
@@ -26,7 +26,7 @@ import { assumeMock } from 'utils/testing'
 jest.mock(
     'hooks/reporting/quality-management/satisfaction/useAverageScorePerDimensionTimeSeries',
 )
-jest.mock('hooks/reporting/support-performance/useNewStatsFilters')
+jest.mock('hooks/reporting/support-performance/useStatsFilters')
 jest.mock('@gorgias/merchant-ui-kit', () => {
     return {
         ...jest.requireActual('@gorgias/merchant-ui-kit'),
@@ -90,7 +90,7 @@ const useAverageCSATPerAssigneeTimeseriesMock = assumeMock(
 const useAverageCSATPerIntegrationTimeseriesMock = assumeMock(
     useAverageCSATPerIntegrationTimeseries,
 )
-const useNewStatsFiltersMock = assumeMock(useNewStatsFilters)
+const useStatsFiltersMock = assumeMock(useStatsFilters)
 
 const renderComponent = (state: any) => {
     return render(
@@ -261,10 +261,9 @@ describe('<AverageScorePerDimensionTrendChart>', () => {
     }
 
     beforeEach(() => {
-        useNewStatsFiltersMock.mockReturnValue({
+        useStatsFiltersMock.mockReturnValue({
             granularity: ReportingGranularity.Hour,
             cleanStatsFilters: defaultFilters,
-            isAnalyticsNewFilters: true,
             userTimezone: 'UTC',
         })
 

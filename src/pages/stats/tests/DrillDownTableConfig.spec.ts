@@ -11,10 +11,7 @@ import {
     voiceCallListQueryFactory,
     waitingTimeCallsListQueryFactory,
 } from 'models/reporting/queryFactories/voice/voiceCall'
-import {
-    LegacyStatsFilters,
-    StatsFiltersWithLogicalOperator,
-} from 'models/stat/types'
+import { StatsFilters } from 'models/stat/types'
 import { LogicalOperatorEnum } from 'pages/stats/common/components/Filter/constants'
 import { campaignSalesDrillDownQueryFactory } from 'pages/stats/convert/clients/queryFactories/campaignSalesDrillDownQueryFactory'
 import { getDrillDownQuery } from 'pages/stats/DrillDownTableConfig'
@@ -355,7 +352,7 @@ describe('getDrillDownQuery', () => {
     it('should be populated with agentId filter', () => {
         const periodStart = moment()
         const periodEnd = periodStart.add(7, 'days')
-        const statsFilters: LegacyStatsFilters = {
+        const statsFilters: StatsFilters = {
             period: {
                 end_datetime: periodEnd.toISOString(),
                 start_datetime: periodStart.toISOString(),
@@ -383,7 +380,7 @@ describe('getDrillDownQuery', () => {
     it('should be populated with channel filter', () => {
         const periodStart = moment()
         const periodEnd = periodStart.add(7, 'days')
-        const statsFilters: LegacyStatsFilters = {
+        const statsFilters: StatsFilters = {
             period: {
                 end_datetime: periodEnd.toISOString(),
                 start_datetime: periodStart.toISOString(),
@@ -411,7 +408,7 @@ describe('getDrillDownQuery', () => {
     it('should be populated with tagId and default dateRange', () => {
         const periodStart = moment()
         const periodEnd = periodStart.clone().add(7, 'days')
-        const statsFilters: LegacyStatsFilters = {
+        const statsFilters: StatsFilters = {
             period: {
                 end_datetime: periodEnd.toISOString(),
                 start_datetime: periodStart.toISOString(),
@@ -437,7 +434,7 @@ describe('getDrillDownQuery', () => {
     it('should be populated with tagId and dateRange', () => {
         const periodStart = moment()
         const periodEnd = periodStart.clone().add(7, 'days')
-        const statsFilters: LegacyStatsFilters = {
+        const statsFilters: StatsFilters = {
             period: {
                 end_datetime: periodEnd.toISOString(),
                 start_datetime: periodStart.toISOString(),
@@ -468,7 +465,7 @@ describe('getDrillDownQuery', () => {
     it('should be populated with channel filter using statsFiltersWithLogicalOperator', () => {
         const periodStart = moment()
         const periodEnd = periodStart.add(7, 'days')
-        const statsFilters: StatsFiltersWithLogicalOperator = {
+        const statsFilters: StatsFilters = {
             period: {
                 end_datetime: periodEnd.toISOString(),
                 start_datetime: periodStart.toISOString(),
@@ -497,7 +494,7 @@ describe('getDrillDownQuery', () => {
     it('should be populated with agent filter using statsFiltersWithLogicalOperator', () => {
         const periodStart = moment()
         const periodEnd = periodStart.add(7, 'days')
-        const statsFilters: StatsFiltersWithLogicalOperator = {
+        const statsFilters: StatsFilters = {
             period: {
                 end_datetime: periodEnd.toISOString(),
                 start_datetime: periodStart.toISOString(),
@@ -613,7 +610,7 @@ describe('getDrillDownQuery', () => {
     it('should be populated with shopName and selectedCampaignIds filter', () => {
         const periodStart = moment()
         const periodEnd = periodStart.add(7, 'days')
-        const statsFilters: LegacyStatsFilters = {
+        const statsFilters: StatsFilters = {
             period: {
                 end_datetime: periodEnd.toISOString(),
                 start_datetime: periodStart.toISOString(),
@@ -638,7 +635,7 @@ describe('getDrillDownQuery', () => {
     it('should be populated with TagId', () => {
         const periodStart = moment()
         const periodEnd = periodStart.add(7, 'days')
-        const statsFilters: LegacyStatsFilters = {
+        const statsFilters: StatsFilters = {
             period: {
                 end_datetime: periodEnd.toISOString(),
                 start_datetime: periodStart.toISOString(),
@@ -668,7 +665,7 @@ describe('getDrillDownQuery', () => {
     it('should be populated with customFieldId', () => {
         const periodStart = moment()
         const periodEnd = periodStart.add(7, 'days')
-        const statsFilters: LegacyStatsFilters = {
+        const statsFilters: StatsFilters = {
             period: {
                 end_datetime: periodEnd.toISOString(),
                 start_datetime: periodStart.toISOString(),

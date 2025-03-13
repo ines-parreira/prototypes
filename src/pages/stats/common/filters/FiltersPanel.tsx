@@ -8,11 +8,9 @@ import React, {
     useState,
 } from 'react'
 
-import { useFlags } from 'launchdarkly-react-client-sdk'
 import _isEqual from 'lodash/isEqual'
 import { connect } from 'react-redux'
 
-import { FeatureFlagKey } from 'config/featureFlags'
 import { useCustomFieldDefinitions } from 'custom-fields/hooks/queries/useCustomFieldDefinitions'
 import useAppSelector from 'hooks/useAppSelector'
 import usePrevious from 'hooks/usePrevious'
@@ -182,27 +180,23 @@ export type ActiveFilter =
 const useCustomFieldFilters = (
     cleanStatsFilters: StatsFiltersWithLogicalOperator,
 ): CustomFieldFilter[] => {
-    const isAnalyticsCustomFieldsFilter =
-        !!useFlags()[FeatureFlagKey.AnalyticsCustomFieldsFilter]
     const { data: { data: activeFields = [] } = {} } =
         useCustomFieldDefinitions(activeParams)
     const activeDropdownFields = activeFields.filter(selectDropdownTextFields)
 
-    return isAnalyticsCustomFieldsFilter
-        ? activeDropdownFields.map((field) => ({
-              type: FilterKey.CustomFields,
-              key: `${FilterKey.CustomFields}::${field.id}`,
-              filterName: field.label,
-              customFieldId: field.id,
-              active:
-                  (
-                      cleanStatsFilters[FilterKey.CustomFields]?.find(
-                          (filter) => filter.customFieldId === field.id,
-                      )?.values ?? []
-                  ).length > 0,
-              initializeAsOpen: false,
-          }))
-        : []
+    return activeDropdownFields.map((field) => ({
+        type: FilterKey.CustomFields,
+        key: `${FilterKey.CustomFields}::${field.id}`,
+        filterName: field.label,
+        customFieldId: field.id,
+        active:
+            (
+                cleanStatsFilters[FilterKey.CustomFields]?.find(
+                    (filter) => filter.customFieldId === field.id,
+                )?.values ?? []
+            ).length > 0,
+        initializeAsOpen: false,
+    }))
 }
 
 export const FiltersPanelComponent = ({

@@ -1,10 +1,10 @@
 import React, { useMemo } from 'react'
 
+import { useAutomateFilters } from 'hooks/reporting/automate/useAutomateFilters'
 import {
     useAutomateMetricsTimeSeries,
     useAutomateMetricsTrend,
 } from 'hooks/reporting/automate/useAutomationDataset'
-import { useNewAutomateFilters } from 'hooks/reporting/automate/useNewAutomateFilters'
 import {
     getGreyAreaAndChartParam,
     renderAutomateTooltipLabel,
@@ -24,7 +24,7 @@ export const AutomatedInteractionsGraphChart = ({
     chartId,
     dashboard,
 }: DashboardChartProps) => {
-    const { statsFilters, userTimezone, granularity } = useNewAutomateFilters()
+    const { statsFilters, userTimezone, granularity } = useAutomateFilters()
     const { automatedInteractionTrend } = useAutomateMetricsTrend(
         statsFilters,
         userTimezone,

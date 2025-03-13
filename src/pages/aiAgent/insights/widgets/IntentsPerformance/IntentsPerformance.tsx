@@ -1,7 +1,6 @@
 import React, { ReactNode } from 'react'
 
 import { SegmentEvent } from 'common/segment'
-import { useNewStatsFilters } from 'hooks/reporting/support-performance/useNewStatsFilters'
 import { MetricTrend } from 'hooks/reporting/useMetricTrend'
 import { useGridSize } from 'hooks/useGridSize'
 import useLocalStorage from 'hooks/useLocalStorage'
@@ -66,7 +65,6 @@ export const IntentsPerformance = ({
     period,
     metrics,
 }: IntentsPerformanceProps) => {
-    const { isAnalyticsNewFilters } = useNewStatsFilters()
     const getGridCellSize = useGridSize()
 
     const [areTipsVisible, setAreTipsVisible] = useLocalStorage(
@@ -158,7 +156,6 @@ export const IntentsPerformance = ({
                                             ...config.drillDownMetricAdditionalData,
                                         } as DrillDownMetric
                                     }
-                                    useNewFilterData={isAnalyticsNewFilters}
                                     segmentEventName={
                                         SegmentEvent.AiAgentTicketDrilldownClicked
                                     }

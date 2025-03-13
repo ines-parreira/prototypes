@@ -1,14 +1,13 @@
 import React from 'react'
 
+import { useStatsFilters } from 'hooks/reporting/support-performance/useStatsFilters'
 import { VoiceCallSegment } from 'models/reporting/cubes/VoiceCallCube'
 import { StatsFilters } from 'models/stat/types'
 import { DashboardChartProps } from 'pages/stats/dashboards/types'
 import { isFilterEmpty } from 'pages/stats/utils'
 import VoiceCallVolumeMetric from 'pages/stats/voice/components/VoiceCallVolumeMetric/VoiceCallVolumeMetric'
-import { useNewVoiceStatsFilters } from 'pages/stats/voice/hooks/useNewVoiceStatsFilters'
+import VoiceCallVolumeMetricEmpty from 'pages/stats/voice/components/VoiceCallVolumeMetric/VoiceCallVolumeMetricEmpty'
 import { useVoiceCallCountTrend } from 'pages/stats/voice/hooks/useVoiceCallCountTrend'
-
-import VoiceCallVolumeMetricEmpty from '../components/VoiceCallVolumeMetric/VoiceCallVolumeMetricEmpty'
 
 type CallsCountDashboardChartProps = DashboardChartProps & {
     title: string
@@ -25,7 +24,7 @@ export const VoiceCallVolumeMetricCallsCountTrendChart = ({
     segment,
     hideWithAgentsFilter = false,
 }: CallsCountDashboardChartProps) => {
-    const { cleanStatsFilters, userTimezone } = useNewVoiceStatsFilters()
+    const { cleanStatsFilters, userTimezone } = useStatsFilters()
     const shouldHide =
         hideWithAgentsFilter && !isFilterEmpty(cleanStatsFilters.agents)
 

@@ -1,22 +1,20 @@
 import React from 'react'
 
 import { renderHook } from '@testing-library/react-hooks'
-import { mockFlags } from 'jest-launchdarkly-mock'
 import moment from 'moment'
 import { Provider } from 'react-redux'
 
-import { FeatureFlagKey } from 'config/featureFlags'
 import { channels } from 'fixtures/channels'
 import {
     fetchTableReportData,
     useTableReportData,
 } from 'hooks/reporting/common/useTableReportData'
+import { getCsvFileNameWithDates } from 'hooks/reporting/common/utils'
 import {
     CHANNELS_REPORT_FILE_NAME,
     fetchChannelsTableReportData,
     useChannelsReportMetrics,
 } from 'hooks/reporting/support-performance/channels/useChannelsReportMetrics'
-import { getCsvFileNameWithDates } from 'hooks/reporting/support-performance/overview/useDownloadOverviewData'
 import { useSortedChannels } from 'hooks/reporting/support-performance/useSortedChannels'
 import { OrderDirection } from 'models/api/types'
 import { withDefaultLogicalOperator } from 'models/reporting/queryFactories/utils'
@@ -105,7 +103,6 @@ describe('useChannelsReportMetrics', () => {
     }
 
     beforeEach(() => {
-        mockFlags({ [FeatureFlagKey.AnalyticsNewFilters]: false })
         useSortedChannelsMock.mockReturnValue({
             sortedChannels: channels,
             isLoading: false,
@@ -126,26 +123,7 @@ describe('useChannelsReportMetrics', () => {
         expect(result.current).toEqual(expectedMetrics)
     })
 
-    it('should call one of hooks with the legacy stats filters', () => {
-        renderHook(() => useChannelsReportMetrics(), {
-            wrapper: ({ children }) => (
-                <Provider store={mockStore(state)}> {children} </Provider>
-            ),
-        })
-
-        expect(useTableReportDataMock).toHaveBeenCalledWith(
-            expect.objectContaining({
-                tags: mockedTags,
-                channels: mockedChannels,
-            }),
-            expect.anything(),
-            expect.anything(),
-        )
-    })
-
     it('should call one of hooks with stats filters with default logical operator', () => {
-        mockFlags({ [FeatureFlagKey.AnalyticsNewFilters]: true })
-
         renderHook(() => useChannelsReportMetrics(), {
             wrapper: ({ children }) => (
                 <Provider store={mockStore(state)}> {children} </Provider>

@@ -3,6 +3,7 @@ import React from 'react'
 import { Skeleton } from '@gorgias/merchant-ui-kit'
 
 import { User } from 'config/types/user'
+import { useStatsFilters } from 'hooks/reporting/support-performance/useStatsFilters'
 import useAppSelector from 'hooks/useAppSelector'
 import BodyCell from 'pages/common/components/table/cells/BodyCell'
 import {
@@ -10,13 +11,11 @@ import {
     NOT_AVAILABLE_PLACEHOLDER,
 } from 'pages/stats/common/utils'
 import { DrillDownModalTrigger } from 'pages/stats/DrillDownModalTrigger'
+import css from 'pages/stats/voice/components/VoiceAgentsTable/VoiceAgentsTable.less'
 import { VOICE_METRIC_COLUMN_WIDTH } from 'pages/stats/voice/constants/voiceAgents'
 import { useTotalCallsMetricPerAgent } from 'pages/stats/voice/hooks/metricsPerDimension'
-import { useNewVoiceStatsFilters } from 'pages/stats/voice/hooks/useNewVoiceStatsFilters'
 import { isSortingMetricLoading } from 'state/ui/stats/agentPerformanceSlice'
 import { VoiceAgentsMetrics } from 'state/ui/stats/drillDownSlice'
-
-import css from './VoiceAgentsTable.less'
 
 type Props = {
     agent: User
@@ -31,8 +30,7 @@ const CallsCountCell = ({
     metricData,
     isDrillDownEnabled = true,
 }: Props) => {
-    const { cleanStatsFilters, userTimezone, isAnalyticsNewFilters } =
-        useNewVoiceStatsFilters()
+    const { cleanStatsFilters, userTimezone } = useStatsFilters()
 
     const isMetricLoading = useAppSelector(isSortingMetricLoading)
     const { data, isFetching } = useMetricPerAgent(
@@ -63,7 +61,6 @@ const CallsCountCell = ({
                     }}
                     enabled={isDrillDownEnabled && !!metricValue}
                     highlighted
-                    useNewFilterData={isAnalyticsNewFilters}
                 >
                     {formattedValue}
                 </DrillDownModalTrigger>

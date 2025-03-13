@@ -33,7 +33,6 @@ export type AggregateRowType = keyof typeof aggregateRowConfig
 type AgentsSummaryProps = {
     isTableScrolled: boolean
     statsFilters: {
-        isAnalyticsNewFilters: boolean
         cleanStatsFilters: StatsFilters
         userTimezone: string
     }

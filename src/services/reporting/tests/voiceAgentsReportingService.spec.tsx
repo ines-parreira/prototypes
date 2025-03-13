@@ -9,8 +9,9 @@ import configureMockStore from 'redux-mock-store'
 import { User, UserRole, UserSettingType } from 'config/types/user'
 import { agents } from 'fixtures/agents'
 import { fetchTableReportData } from 'hooks/reporting/common/useTableReportData'
+import { getCsvFileNameWithDates } from 'hooks/reporting/common/utils'
 import { Metric } from 'hooks/reporting/metrics'
-import { getCsvFileNameWithDates } from 'hooks/reporting/support-performance/overview/useDownloadOverviewData'
+import { useStatsFilters } from 'hooks/reporting/support-performance/useStatsFilters'
 import {
     MetricWithDecile,
     QueryReturnType,
@@ -30,7 +31,6 @@ import { ReportingGranularity } from 'models/reporting/types'
 import { StatsFilters } from 'models/stat/types'
 import { BusiestTimeOfDaysMetrics } from 'pages/stats/support-performance/busiest-times-of-days/types'
 import { VOICE_AGENTS_CALL_ACTIVITY_FILE_NAME } from 'pages/stats/voice/constants/voiceAgents'
-import { useNewVoiceStatsFilters } from 'pages/stats/voice/hooks/useNewVoiceStatsFilters'
 import { useVoiceAgentsMetrics } from 'pages/stats/voice/hooks/useVoiceAgentsMetrics'
 import { useVoiceAgentsSummaryMetrics } from 'pages/stats/voice/hooks/useVoiceAgentsSummaryMetrics'
 import {
@@ -49,8 +49,8 @@ jest.mock('hooks/reporting/common/useTableReportData')
 const fetchTableReportDataMock = assumeMock(fetchTableReportData)
 jest.mock('state/ui/stats/agentPerformanceSlice')
 const getSortedAgentsMock = assumeMock(getSortedAgents)
-jest.mock('pages/stats/voice/hooks/useNewVoiceStatsFilters')
-const useNewVoiceStatsFiltersMock = assumeMock(useNewVoiceStatsFilters)
+jest.mock('hooks/reporting/support-performance/useStatsFilters')
+const useStatsFiltersMock = assumeMock(useStatsFilters)
 jest.mock('pages/stats/voice/hooks/useVoiceAgentsMetrics')
 const useVoiceAgentsMetricsMock = assumeMock(useVoiceAgentsMetrics)
 jest.mock('pages/stats/voice/hooks/useVoiceAgentsSummaryMetrics')
@@ -317,10 +317,9 @@ describe('voiceAgentsPerformanceReportingService', () => {
 
         beforeEach(() => {
             getSortedAgentsMock.mockReturnValue([])
-            useNewVoiceStatsFiltersMock.mockReturnValue({
+            useStatsFiltersMock.mockReturnValue({
                 cleanStatsFilters: { period },
                 userTimezone: 'UTC',
-                isAnalyticsNewFilters: true,
                 granularity: ReportingGranularity.Day,
             })
             useVoiceAgentsMetricsMock.mockReturnValue({

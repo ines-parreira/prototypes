@@ -8,8 +8,9 @@ import {
     VoiceCallMember,
     VoiceCallSegment,
 } from 'models/reporting/cubes/VoiceCallCube'
+import { withDefaultLogicalOperator } from 'models/reporting/queryFactories/utils'
 import { ReportingFilterOperator } from 'models/reporting/types'
-import { StatsFilters } from 'models/stat/types'
+import { StatsFilters, TagFilterInstanceId } from 'models/stat/types'
 import { VoiceCallDisplayStatus } from 'models/voiceCall/types'
 import { getLiveVoicePeriodFilter } from 'pages/stats/voice/components/LiveVoice/utils'
 import { MIN_DATE_FOR_ADVANCED_VOICE_STATS } from 'pages/stats/voice/constants/voiceOverview'
@@ -428,7 +429,12 @@ describe('voice queries factories', () => {
                     end_datetime: periodEnd,
                     start_datetime: periodStart,
                 },
-                tags: [1, 2],
+                tags: [
+                    {
+                        ...withDefaultLogicalOperator([1, 2]),
+                        filterInstanceId: TagFilterInstanceId.First,
+                    },
+                ],
             }
             const query = factory(statsFilters, 'UTC')
             expect(query.filters).toEqual(

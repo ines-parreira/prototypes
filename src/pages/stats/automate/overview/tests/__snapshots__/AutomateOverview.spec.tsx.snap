@@ -25,31 +25,6 @@ exports[`<AutomateOverview /> Autoresponder deprecation should return false when
           <div
             class="d-flex flex-wrap float-right"
           >
-            <div>
-              <button
-                aria-disabled="false"
-                class="wrapper ghost secondary medium"
-                type="button"
-              >
-                <i
-                  aria-hidden="true"
-                  class="material-icons icon medium"
-                >
-                  calendar_today
-                </i>
-                <span
-                  class="content"
-                >
-                  Feb 3, 2021
-                </span>
-                <i
-                  aria-hidden="true"
-                  class="material-icons icon medium"
-                >
-                  arrow_drop_down
-                </i>
-              </button>
-            </div>
             <div />
           </div>
         </div>
@@ -90,6 +65,150 @@ exports[`<AutomateOverview /> Autoresponder deprecation should return false when
               class="closeIcon"
               src="test-file-stub"
             />
+          </div>
+        </div>
+      </div>
+      <div
+        class="wrapper"
+      >
+        <div
+          class="wrapper"
+        >
+          <div
+            class="cell"
+            style="grid-column: span 12 / span 12;"
+          >
+            <div
+              class="outerWrapper"
+            >
+              <div
+                class="wrapper"
+              >
+                <div
+                  class="wrapper"
+                >
+                  <div
+                    class="filterContainer"
+                  >
+                    <div
+                      class="container"
+                      data-testid="filter-name"
+                    >
+                      <div
+                        class="text"
+                      >
+                        Date
+                      </div>
+                    </div>
+                    <div>
+                      <div>
+                        <div
+                          class="container"
+                          data-testid="filter-value"
+                        >
+                          <div
+                            class="text"
+                          >
+                            Feb 3, 2021
+                          </div>
+                          <i
+                            class="material-icons rounded dropdownIcon"
+                          >
+                            arrow_drop_down
+                          </i>
+                        </div>
+                      </div>
+                       
+                    </div>
+                  </div>
+                  <div
+                    class="container"
+                  >
+                    <div
+                      class="container"
+                      data-testid="filter-name"
+                    >
+                      <div
+                        class="text"
+                      >
+                        Aggregation
+                      </div>
+                    </div>
+                    <div>
+                      <div
+                        class="container"
+                        data-testid="filter-value"
+                      >
+                        <div
+                          class="text"
+                        >
+                          Select value...
+                        </div>
+                        <i
+                          class="material-icons rounded dropdownIcon"
+                        >
+                          arrow_drop_down
+                        </i>
+                      </div>
+                    </div>
+                  </div>
+                  <button
+                    aria-disabled="false"
+                    class="wrapper ghost primary small"
+                    title="Add Filter"
+                    type="button"
+                  >
+                    <i
+                      aria-hidden="true"
+                      class="material-icons icon small"
+                    >
+                      add
+                    </i>
+                    <span
+                      class="content"
+                    >
+                       
+                      Add Filter
+                    </span>
+                  </button>
+                </div>
+                <div
+                  class="buttonsWrapper"
+                >
+                  <div
+                    class="applyFiltersButton wrapper"
+                  >
+                    <button
+                      aria-disabled="false"
+                      class="wrapper mainAction small fill primary small"
+                      id="apply-saved-filter"
+                      type="button"
+                    >
+                      <span
+                        class="content"
+                      >
+                        Apply Saved Filter
+                      </span>
+                    </button>
+                    <button
+                      aria-disabled="false"
+                      class="wrapper toggle small wrapper fill small fill primary small"
+                      type="button"
+                    >
+                      <span
+                        class="content"
+                      >
+                        <i
+                          class="material-icons icon"
+                        >
+                          arrow_drop_down
+                        </i>
+                      </span>
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -630,31 +749,6 @@ exports[`<AutomateOverview /> Performance Tips light-error should show tips with
                 <div
                   class="d-flex flex-wrap float-right"
                 >
-                  <div>
-                    <button
-                      aria-disabled="false"
-                      class="wrapper ghost secondary medium"
-                      type="button"
-                    >
-                      <i
-                        aria-hidden="true"
-                        class="material-icons icon medium"
-                      >
-                        calendar_today
-                      </i>
-                      <span
-                        class="content"
-                      >
-                        Feb 3, 2021
-                      </span>
-                      <i
-                        aria-hidden="true"
-                        class="material-icons icon medium"
-                      >
-                        arrow_drop_down
-                      </i>
-                    </button>
-                  </div>
                   <div />
                 </div>
               </div>
@@ -695,6 +789,150 @@ exports[`<AutomateOverview /> Performance Tips light-error should show tips with
                     class="closeIcon"
                     src="test-file-stub"
                   />
+                </div>
+              </div>
+            </div>
+            <div
+              class="wrapper"
+            >
+              <div
+                class="wrapper"
+              >
+                <div
+                  class="cell"
+                  style="grid-column: span 12 / span 12;"
+                >
+                  <div
+                    class="outerWrapper"
+                  >
+                    <div
+                      class="wrapper"
+                    >
+                      <div
+                        class="wrapper"
+                      >
+                        <div
+                          class="filterContainer"
+                        >
+                          <div
+                            class="container"
+                            data-testid="filter-name"
+                          >
+                            <div
+                              class="text"
+                            >
+                              Date
+                            </div>
+                          </div>
+                          <div>
+                            <div>
+                              <div
+                                class="container"
+                                data-testid="filter-value"
+                              >
+                                <div
+                                  class="text"
+                                >
+                                  Feb 3, 2021
+                                </div>
+                                <i
+                                  class="material-icons rounded dropdownIcon"
+                                >
+                                  arrow_drop_down
+                                </i>
+                              </div>
+                            </div>
+                             
+                          </div>
+                        </div>
+                        <div
+                          class="container"
+                        >
+                          <div
+                            class="container"
+                            data-testid="filter-name"
+                          >
+                            <div
+                              class="text"
+                            >
+                              Aggregation
+                            </div>
+                          </div>
+                          <div>
+                            <div
+                              class="container"
+                              data-testid="filter-value"
+                            >
+                              <div
+                                class="text"
+                              >
+                                Select value...
+                              </div>
+                              <i
+                                class="material-icons rounded dropdownIcon"
+                              >
+                                arrow_drop_down
+                              </i>
+                            </div>
+                          </div>
+                        </div>
+                        <button
+                          aria-disabled="false"
+                          class="wrapper ghost primary small"
+                          title="Add Filter"
+                          type="button"
+                        >
+                          <i
+                            aria-hidden="true"
+                            class="material-icons icon small"
+                          >
+                            add
+                          </i>
+                          <span
+                            class="content"
+                          >
+                             
+                            Add Filter
+                          </span>
+                        </button>
+                      </div>
+                      <div
+                        class="buttonsWrapper"
+                      >
+                        <div
+                          class="applyFiltersButton wrapper"
+                        >
+                          <button
+                            aria-disabled="false"
+                            class="wrapper mainAction small fill primary small"
+                            id="apply-saved-filter"
+                            type="button"
+                          >
+                            <span
+                              class="content"
+                            >
+                              Apply Saved Filter
+                            </span>
+                          </button>
+                          <button
+                            aria-disabled="false"
+                            class="wrapper toggle small wrapper fill small fill primary small"
+                            type="button"
+                          >
+                            <span
+                              class="content"
+                            >
+                              <i
+                                class="material-icons icon"
+                              >
+                                arrow_drop_down
+                              </i>
+                            </span>
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
@@ -1206,7 +1444,7 @@ exports[`<AutomateOverview /> Performance Tips light-error should show tips with
       </div>
     </div>
     <div
-      class="daterangepicker ltr show-ranges show-calendar opensleft"
+      class="daterangepicker ltr show-ranges show-calendar opensright"
     >
       <div
         class="ranges"
@@ -1313,6 +1551,18 @@ exports[`<AutomateOverview /> Performance Tips light-error should show tips with
          
       </div>
     </div>
+    <div
+      data-floating-ui-portal=""
+      id="floating-ui-65"
+    />
+    <div
+      data-floating-ui-portal=""
+      id="floating-ui-67"
+    />
+    <div
+      data-floating-ui-portal=""
+      id="floating-ui-69"
+    />
   </body>,
   "container": <div>
     <div
@@ -1339,31 +1589,6 @@ exports[`<AutomateOverview /> Performance Tips light-error should show tips with
               <div
                 class="d-flex flex-wrap float-right"
               >
-                <div>
-                  <button
-                    aria-disabled="false"
-                    class="wrapper ghost secondary medium"
-                    type="button"
-                  >
-                    <i
-                      aria-hidden="true"
-                      class="material-icons icon medium"
-                    >
-                      calendar_today
-                    </i>
-                    <span
-                      class="content"
-                    >
-                      Feb 3, 2021
-                    </span>
-                    <i
-                      aria-hidden="true"
-                      class="material-icons icon medium"
-                    >
-                      arrow_drop_down
-                    </i>
-                  </button>
-                </div>
                 <div />
               </div>
             </div>
@@ -1404,6 +1629,150 @@ exports[`<AutomateOverview /> Performance Tips light-error should show tips with
                   class="closeIcon"
                   src="test-file-stub"
                 />
+              </div>
+            </div>
+          </div>
+          <div
+            class="wrapper"
+          >
+            <div
+              class="wrapper"
+            >
+              <div
+                class="cell"
+                style="grid-column: span 12 / span 12;"
+              >
+                <div
+                  class="outerWrapper"
+                >
+                  <div
+                    class="wrapper"
+                  >
+                    <div
+                      class="wrapper"
+                    >
+                      <div
+                        class="filterContainer"
+                      >
+                        <div
+                          class="container"
+                          data-testid="filter-name"
+                        >
+                          <div
+                            class="text"
+                          >
+                            Date
+                          </div>
+                        </div>
+                        <div>
+                          <div>
+                            <div
+                              class="container"
+                              data-testid="filter-value"
+                            >
+                              <div
+                                class="text"
+                              >
+                                Feb 3, 2021
+                              </div>
+                              <i
+                                class="material-icons rounded dropdownIcon"
+                              >
+                                arrow_drop_down
+                              </i>
+                            </div>
+                          </div>
+                           
+                        </div>
+                      </div>
+                      <div
+                        class="container"
+                      >
+                        <div
+                          class="container"
+                          data-testid="filter-name"
+                        >
+                          <div
+                            class="text"
+                          >
+                            Aggregation
+                          </div>
+                        </div>
+                        <div>
+                          <div
+                            class="container"
+                            data-testid="filter-value"
+                          >
+                            <div
+                              class="text"
+                            >
+                              Select value...
+                            </div>
+                            <i
+                              class="material-icons rounded dropdownIcon"
+                            >
+                              arrow_drop_down
+                            </i>
+                          </div>
+                        </div>
+                      </div>
+                      <button
+                        aria-disabled="false"
+                        class="wrapper ghost primary small"
+                        title="Add Filter"
+                        type="button"
+                      >
+                        <i
+                          aria-hidden="true"
+                          class="material-icons icon small"
+                        >
+                          add
+                        </i>
+                        <span
+                          class="content"
+                        >
+                           
+                          Add Filter
+                        </span>
+                      </button>
+                    </div>
+                    <div
+                      class="buttonsWrapper"
+                    >
+                      <div
+                        class="applyFiltersButton wrapper"
+                      >
+                        <button
+                          aria-disabled="false"
+                          class="wrapper mainAction small fill primary small"
+                          id="apply-saved-filter"
+                          type="button"
+                        >
+                          <span
+                            class="content"
+                          >
+                            Apply Saved Filter
+                          </span>
+                        </button>
+                        <button
+                          aria-disabled="false"
+                          class="wrapper toggle small wrapper fill small fill primary small"
+                          type="button"
+                        >
+                          <span
+                            class="content"
+                          >
+                            <i
+                              class="material-icons icon"
+                            >
+                              arrow_drop_down
+                            </i>
+                          </span>
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
@@ -1997,31 +2366,6 @@ exports[`<AutomateOverview /> Performance Tips light-success should show tips wi
                 <div
                   class="d-flex flex-wrap float-right"
                 >
-                  <div>
-                    <button
-                      aria-disabled="false"
-                      class="wrapper ghost secondary medium"
-                      type="button"
-                    >
-                      <i
-                        aria-hidden="true"
-                        class="material-icons icon medium"
-                      >
-                        calendar_today
-                      </i>
-                      <span
-                        class="content"
-                      >
-                        Feb 3, 2021
-                      </span>
-                      <i
-                        aria-hidden="true"
-                        class="material-icons icon medium"
-                      >
-                        arrow_drop_down
-                      </i>
-                    </button>
-                  </div>
                   <div />
                 </div>
               </div>
@@ -2062,6 +2406,150 @@ exports[`<AutomateOverview /> Performance Tips light-success should show tips wi
                     class="closeIcon"
                     src="test-file-stub"
                   />
+                </div>
+              </div>
+            </div>
+            <div
+              class="wrapper"
+            >
+              <div
+                class="wrapper"
+              >
+                <div
+                  class="cell"
+                  style="grid-column: span 12 / span 12;"
+                >
+                  <div
+                    class="outerWrapper"
+                  >
+                    <div
+                      class="wrapper"
+                    >
+                      <div
+                        class="wrapper"
+                      >
+                        <div
+                          class="filterContainer"
+                        >
+                          <div
+                            class="container"
+                            data-testid="filter-name"
+                          >
+                            <div
+                              class="text"
+                            >
+                              Date
+                            </div>
+                          </div>
+                          <div>
+                            <div>
+                              <div
+                                class="container"
+                                data-testid="filter-value"
+                              >
+                                <div
+                                  class="text"
+                                >
+                                  Feb 3, 2021
+                                </div>
+                                <i
+                                  class="material-icons rounded dropdownIcon"
+                                >
+                                  arrow_drop_down
+                                </i>
+                              </div>
+                            </div>
+                             
+                          </div>
+                        </div>
+                        <div
+                          class="container"
+                        >
+                          <div
+                            class="container"
+                            data-testid="filter-name"
+                          >
+                            <div
+                              class="text"
+                            >
+                              Aggregation
+                            </div>
+                          </div>
+                          <div>
+                            <div
+                              class="container"
+                              data-testid="filter-value"
+                            >
+                              <div
+                                class="text"
+                              >
+                                Select value...
+                              </div>
+                              <i
+                                class="material-icons rounded dropdownIcon"
+                              >
+                                arrow_drop_down
+                              </i>
+                            </div>
+                          </div>
+                        </div>
+                        <button
+                          aria-disabled="false"
+                          class="wrapper ghost primary small"
+                          title="Add Filter"
+                          type="button"
+                        >
+                          <i
+                            aria-hidden="true"
+                            class="material-icons icon small"
+                          >
+                            add
+                          </i>
+                          <span
+                            class="content"
+                          >
+                             
+                            Add Filter
+                          </span>
+                        </button>
+                      </div>
+                      <div
+                        class="buttonsWrapper"
+                      >
+                        <div
+                          class="applyFiltersButton wrapper"
+                        >
+                          <button
+                            aria-disabled="false"
+                            class="wrapper mainAction small fill primary small"
+                            id="apply-saved-filter"
+                            type="button"
+                          >
+                            <span
+                              class="content"
+                            >
+                              Apply Saved Filter
+                            </span>
+                          </button>
+                          <button
+                            aria-disabled="false"
+                            class="wrapper toggle small wrapper fill small fill primary small"
+                            type="button"
+                          >
+                            <span
+                              class="content"
+                            >
+                              <i
+                                class="material-icons icon"
+                              >
+                                arrow_drop_down
+                              </i>
+                            </span>
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
@@ -2573,7 +3061,7 @@ exports[`<AutomateOverview /> Performance Tips light-success should show tips wi
       </div>
     </div>
     <div
-      class="daterangepicker ltr show-ranges show-calendar opensleft"
+      class="daterangepicker ltr show-ranges show-calendar opensright"
     >
       <div
         class="ranges"
@@ -2680,6 +3168,18 @@ exports[`<AutomateOverview /> Performance Tips light-success should show tips wi
          
       </div>
     </div>
+    <div
+      data-floating-ui-portal=""
+      id="floating-ui-71"
+    />
+    <div
+      data-floating-ui-portal=""
+      id="floating-ui-73"
+    />
+    <div
+      data-floating-ui-portal=""
+      id="floating-ui-75"
+    />
   </body>,
   "container": <div>
     <div
@@ -2706,31 +3206,6 @@ exports[`<AutomateOverview /> Performance Tips light-success should show tips wi
               <div
                 class="d-flex flex-wrap float-right"
               >
-                <div>
-                  <button
-                    aria-disabled="false"
-                    class="wrapper ghost secondary medium"
-                    type="button"
-                  >
-                    <i
-                      aria-hidden="true"
-                      class="material-icons icon medium"
-                    >
-                      calendar_today
-                    </i>
-                    <span
-                      class="content"
-                    >
-                      Feb 3, 2021
-                    </span>
-                    <i
-                      aria-hidden="true"
-                      class="material-icons icon medium"
-                    >
-                      arrow_drop_down
-                    </i>
-                  </button>
-                </div>
                 <div />
               </div>
             </div>
@@ -2771,6 +3246,150 @@ exports[`<AutomateOverview /> Performance Tips light-success should show tips wi
                   class="closeIcon"
                   src="test-file-stub"
                 />
+              </div>
+            </div>
+          </div>
+          <div
+            class="wrapper"
+          >
+            <div
+              class="wrapper"
+            >
+              <div
+                class="cell"
+                style="grid-column: span 12 / span 12;"
+              >
+                <div
+                  class="outerWrapper"
+                >
+                  <div
+                    class="wrapper"
+                  >
+                    <div
+                      class="wrapper"
+                    >
+                      <div
+                        class="filterContainer"
+                      >
+                        <div
+                          class="container"
+                          data-testid="filter-name"
+                        >
+                          <div
+                            class="text"
+                          >
+                            Date
+                          </div>
+                        </div>
+                        <div>
+                          <div>
+                            <div
+                              class="container"
+                              data-testid="filter-value"
+                            >
+                              <div
+                                class="text"
+                              >
+                                Feb 3, 2021
+                              </div>
+                              <i
+                                class="material-icons rounded dropdownIcon"
+                              >
+                                arrow_drop_down
+                              </i>
+                            </div>
+                          </div>
+                           
+                        </div>
+                      </div>
+                      <div
+                        class="container"
+                      >
+                        <div
+                          class="container"
+                          data-testid="filter-name"
+                        >
+                          <div
+                            class="text"
+                          >
+                            Aggregation
+                          </div>
+                        </div>
+                        <div>
+                          <div
+                            class="container"
+                            data-testid="filter-value"
+                          >
+                            <div
+                              class="text"
+                            >
+                              Select value...
+                            </div>
+                            <i
+                              class="material-icons rounded dropdownIcon"
+                            >
+                              arrow_drop_down
+                            </i>
+                          </div>
+                        </div>
+                      </div>
+                      <button
+                        aria-disabled="false"
+                        class="wrapper ghost primary small"
+                        title="Add Filter"
+                        type="button"
+                      >
+                        <i
+                          aria-hidden="true"
+                          class="material-icons icon small"
+                        >
+                          add
+                        </i>
+                        <span
+                          class="content"
+                        >
+                           
+                          Add Filter
+                        </span>
+                      </button>
+                    </div>
+                    <div
+                      class="buttonsWrapper"
+                    >
+                      <div
+                        class="applyFiltersButton wrapper"
+                      >
+                        <button
+                          aria-disabled="false"
+                          class="wrapper mainAction small fill primary small"
+                          id="apply-saved-filter"
+                          type="button"
+                        >
+                          <span
+                            class="content"
+                          >
+                            Apply Saved Filter
+                          </span>
+                        </button>
+                        <button
+                          aria-disabled="false"
+                          class="wrapper toggle small wrapper fill small fill primary small"
+                          type="button"
+                        >
+                          <span
+                            class="content"
+                          >
+                            <i
+                              class="material-icons icon"
+                            >
+                              arrow_drop_down
+                            </i>
+                          </span>
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
@@ -3364,31 +3983,6 @@ exports[`<AutomateOverview /> Performance Tips success should show tips with sen
                 <div
                   class="d-flex flex-wrap float-right"
                 >
-                  <div>
-                    <button
-                      aria-disabled="false"
-                      class="wrapper ghost secondary medium"
-                      type="button"
-                    >
-                      <i
-                        aria-hidden="true"
-                        class="material-icons icon medium"
-                      >
-                        calendar_today
-                      </i>
-                      <span
-                        class="content"
-                      >
-                        Feb 3, 2021
-                      </span>
-                      <i
-                        aria-hidden="true"
-                        class="material-icons icon medium"
-                      >
-                        arrow_drop_down
-                      </i>
-                    </button>
-                  </div>
                   <div />
                 </div>
               </div>
@@ -3429,6 +4023,150 @@ exports[`<AutomateOverview /> Performance Tips success should show tips with sen
                     class="closeIcon"
                     src="test-file-stub"
                   />
+                </div>
+              </div>
+            </div>
+            <div
+              class="wrapper"
+            >
+              <div
+                class="wrapper"
+              >
+                <div
+                  class="cell"
+                  style="grid-column: span 12 / span 12;"
+                >
+                  <div
+                    class="outerWrapper"
+                  >
+                    <div
+                      class="wrapper"
+                    >
+                      <div
+                        class="wrapper"
+                      >
+                        <div
+                          class="filterContainer"
+                        >
+                          <div
+                            class="container"
+                            data-testid="filter-name"
+                          >
+                            <div
+                              class="text"
+                            >
+                              Date
+                            </div>
+                          </div>
+                          <div>
+                            <div>
+                              <div
+                                class="container"
+                                data-testid="filter-value"
+                              >
+                                <div
+                                  class="text"
+                                >
+                                  Feb 3, 2021
+                                </div>
+                                <i
+                                  class="material-icons rounded dropdownIcon"
+                                >
+                                  arrow_drop_down
+                                </i>
+                              </div>
+                            </div>
+                             
+                          </div>
+                        </div>
+                        <div
+                          class="container"
+                        >
+                          <div
+                            class="container"
+                            data-testid="filter-name"
+                          >
+                            <div
+                              class="text"
+                            >
+                              Aggregation
+                            </div>
+                          </div>
+                          <div>
+                            <div
+                              class="container"
+                              data-testid="filter-value"
+                            >
+                              <div
+                                class="text"
+                              >
+                                Select value...
+                              </div>
+                              <i
+                                class="material-icons rounded dropdownIcon"
+                              >
+                                arrow_drop_down
+                              </i>
+                            </div>
+                          </div>
+                        </div>
+                        <button
+                          aria-disabled="false"
+                          class="wrapper ghost primary small"
+                          title="Add Filter"
+                          type="button"
+                        >
+                          <i
+                            aria-hidden="true"
+                            class="material-icons icon small"
+                          >
+                            add
+                          </i>
+                          <span
+                            class="content"
+                          >
+                             
+                            Add Filter
+                          </span>
+                        </button>
+                      </div>
+                      <div
+                        class="buttonsWrapper"
+                      >
+                        <div
+                          class="applyFiltersButton wrapper"
+                        >
+                          <button
+                            aria-disabled="false"
+                            class="wrapper mainAction small fill primary small"
+                            id="apply-saved-filter"
+                            type="button"
+                          >
+                            <span
+                              class="content"
+                            >
+                              Apply Saved Filter
+                            </span>
+                          </button>
+                          <button
+                            aria-disabled="false"
+                            class="wrapper toggle small wrapper fill small fill primary small"
+                            type="button"
+                          >
+                            <span
+                              class="content"
+                            >
+                              <i
+                                class="material-icons icon"
+                              >
+                                arrow_drop_down
+                              </i>
+                            </span>
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
@@ -3940,7 +4678,7 @@ exports[`<AutomateOverview /> Performance Tips success should show tips with sen
       </div>
     </div>
     <div
-      class="daterangepicker ltr show-ranges show-calendar opensleft"
+      class="daterangepicker ltr show-ranges show-calendar opensright"
     >
       <div
         class="ranges"
@@ -4047,6 +4785,18 @@ exports[`<AutomateOverview /> Performance Tips success should show tips with sen
          
       </div>
     </div>
+    <div
+      data-floating-ui-portal=""
+      id="floating-ui-77"
+    />
+    <div
+      data-floating-ui-portal=""
+      id="floating-ui-79"
+    />
+    <div
+      data-floating-ui-portal=""
+      id="floating-ui-81"
+    />
   </body>,
   "container": <div>
     <div
@@ -4073,31 +4823,6 @@ exports[`<AutomateOverview /> Performance Tips success should show tips with sen
               <div
                 class="d-flex flex-wrap float-right"
               >
-                <div>
-                  <button
-                    aria-disabled="false"
-                    class="wrapper ghost secondary medium"
-                    type="button"
-                  >
-                    <i
-                      aria-hidden="true"
-                      class="material-icons icon medium"
-                    >
-                      calendar_today
-                    </i>
-                    <span
-                      class="content"
-                    >
-                      Feb 3, 2021
-                    </span>
-                    <i
-                      aria-hidden="true"
-                      class="material-icons icon medium"
-                    >
-                      arrow_drop_down
-                    </i>
-                  </button>
-                </div>
                 <div />
               </div>
             </div>
@@ -4138,6 +4863,150 @@ exports[`<AutomateOverview /> Performance Tips success should show tips with sen
                   class="closeIcon"
                   src="test-file-stub"
                 />
+              </div>
+            </div>
+          </div>
+          <div
+            class="wrapper"
+          >
+            <div
+              class="wrapper"
+            >
+              <div
+                class="cell"
+                style="grid-column: span 12 / span 12;"
+              >
+                <div
+                  class="outerWrapper"
+                >
+                  <div
+                    class="wrapper"
+                  >
+                    <div
+                      class="wrapper"
+                    >
+                      <div
+                        class="filterContainer"
+                      >
+                        <div
+                          class="container"
+                          data-testid="filter-name"
+                        >
+                          <div
+                            class="text"
+                          >
+                            Date
+                          </div>
+                        </div>
+                        <div>
+                          <div>
+                            <div
+                              class="container"
+                              data-testid="filter-value"
+                            >
+                              <div
+                                class="text"
+                              >
+                                Feb 3, 2021
+                              </div>
+                              <i
+                                class="material-icons rounded dropdownIcon"
+                              >
+                                arrow_drop_down
+                              </i>
+                            </div>
+                          </div>
+                           
+                        </div>
+                      </div>
+                      <div
+                        class="container"
+                      >
+                        <div
+                          class="container"
+                          data-testid="filter-name"
+                        >
+                          <div
+                            class="text"
+                          >
+                            Aggregation
+                          </div>
+                        </div>
+                        <div>
+                          <div
+                            class="container"
+                            data-testid="filter-value"
+                          >
+                            <div
+                              class="text"
+                            >
+                              Select value...
+                            </div>
+                            <i
+                              class="material-icons rounded dropdownIcon"
+                            >
+                              arrow_drop_down
+                            </i>
+                          </div>
+                        </div>
+                      </div>
+                      <button
+                        aria-disabled="false"
+                        class="wrapper ghost primary small"
+                        title="Add Filter"
+                        type="button"
+                      >
+                        <i
+                          aria-hidden="true"
+                          class="material-icons icon small"
+                        >
+                          add
+                        </i>
+                        <span
+                          class="content"
+                        >
+                           
+                          Add Filter
+                        </span>
+                      </button>
+                    </div>
+                    <div
+                      class="buttonsWrapper"
+                    >
+                      <div
+                        class="applyFiltersButton wrapper"
+                      >
+                        <button
+                          aria-disabled="false"
+                          class="wrapper mainAction small fill primary small"
+                          id="apply-saved-filter"
+                          type="button"
+                        >
+                          <span
+                            class="content"
+                          >
+                            Apply Saved Filter
+                          </span>
+                        </button>
+                        <button
+                          aria-disabled="false"
+                          class="wrapper toggle small wrapper fill small fill primary small"
+                          type="button"
+                        >
+                          <span
+                            class="content"
+                          >
+                            <i
+                              class="material-icons icon"
+                            >
+                              arrow_drop_down
+                            </i>
+                          </span>
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
@@ -4727,31 +5596,6 @@ exports[`<AutomateOverview /> Quickresponse deprecation should return false when
           <div
             class="d-flex flex-wrap float-right"
           >
-            <div>
-              <button
-                aria-disabled="false"
-                class="wrapper ghost secondary medium"
-                type="button"
-              >
-                <i
-                  aria-hidden="true"
-                  class="material-icons icon medium"
-                >
-                  calendar_today
-                </i>
-                <span
-                  class="content"
-                >
-                  Feb 3, 2021
-                </span>
-                <i
-                  aria-hidden="true"
-                  class="material-icons icon medium"
-                >
-                  arrow_drop_down
-                </i>
-              </button>
-            </div>
             <div />
           </div>
         </div>
@@ -4792,6 +5636,150 @@ exports[`<AutomateOverview /> Quickresponse deprecation should return false when
               class="closeIcon"
               src="test-file-stub"
             />
+          </div>
+        </div>
+      </div>
+      <div
+        class="wrapper"
+      >
+        <div
+          class="wrapper"
+        >
+          <div
+            class="cell"
+            style="grid-column: span 12 / span 12;"
+          >
+            <div
+              class="outerWrapper"
+            >
+              <div
+                class="wrapper"
+              >
+                <div
+                  class="wrapper"
+                >
+                  <div
+                    class="filterContainer"
+                  >
+                    <div
+                      class="container"
+                      data-testid="filter-name"
+                    >
+                      <div
+                        class="text"
+                      >
+                        Date
+                      </div>
+                    </div>
+                    <div>
+                      <div>
+                        <div
+                          class="container"
+                          data-testid="filter-value"
+                        >
+                          <div
+                            class="text"
+                          >
+                            Feb 3, 2021
+                          </div>
+                          <i
+                            class="material-icons rounded dropdownIcon"
+                          >
+                            arrow_drop_down
+                          </i>
+                        </div>
+                      </div>
+                       
+                    </div>
+                  </div>
+                  <div
+                    class="container"
+                  >
+                    <div
+                      class="container"
+                      data-testid="filter-name"
+                    >
+                      <div
+                        class="text"
+                      >
+                        Aggregation
+                      </div>
+                    </div>
+                    <div>
+                      <div
+                        class="container"
+                        data-testid="filter-value"
+                      >
+                        <div
+                          class="text"
+                        >
+                          Select value...
+                        </div>
+                        <i
+                          class="material-icons rounded dropdownIcon"
+                        >
+                          arrow_drop_down
+                        </i>
+                      </div>
+                    </div>
+                  </div>
+                  <button
+                    aria-disabled="false"
+                    class="wrapper ghost primary small"
+                    title="Add Filter"
+                    type="button"
+                  >
+                    <i
+                      aria-hidden="true"
+                      class="material-icons icon small"
+                    >
+                      add
+                    </i>
+                    <span
+                      class="content"
+                    >
+                       
+                      Add Filter
+                    </span>
+                  </button>
+                </div>
+                <div
+                  class="buttonsWrapper"
+                >
+                  <div
+                    class="applyFiltersButton wrapper"
+                  >
+                    <button
+                      aria-disabled="false"
+                      class="wrapper mainAction small fill primary small"
+                      id="apply-saved-filter"
+                      type="button"
+                    >
+                      <span
+                        class="content"
+                      >
+                        Apply Saved Filter
+                      </span>
+                    </button>
+                    <button
+                      aria-disabled="false"
+                      class="wrapper toggle small wrapper fill small fill primary small"
+                      type="button"
+                    >
+                      <span
+                        class="content"
+                      >
+                        <i
+                          class="material-icons icon"
+                        >
+                          arrow_drop_down
+                        </i>
+                      </span>
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -5311,31 +6299,6 @@ exports[`<AutomateOverview /> Quickresponse deprecation should return false when
           <div
             class="d-flex flex-wrap float-right"
           >
-            <div>
-              <button
-                aria-disabled="false"
-                class="wrapper ghost secondary medium"
-                type="button"
-              >
-                <i
-                  aria-hidden="true"
-                  class="material-icons icon medium"
-                >
-                  calendar_today
-                </i>
-                <span
-                  class="content"
-                >
-                  Feb 3, 2021
-                </span>
-                <i
-                  aria-hidden="true"
-                  class="material-icons icon medium"
-                >
-                  arrow_drop_down
-                </i>
-              </button>
-            </div>
             <div />
           </div>
         </div>
@@ -5376,6 +6339,150 @@ exports[`<AutomateOverview /> Quickresponse deprecation should return false when
               class="closeIcon"
               src="test-file-stub"
             />
+          </div>
+        </div>
+      </div>
+      <div
+        class="wrapper"
+      >
+        <div
+          class="wrapper"
+        >
+          <div
+            class="cell"
+            style="grid-column: span 12 / span 12;"
+          >
+            <div
+              class="outerWrapper"
+            >
+              <div
+                class="wrapper"
+              >
+                <div
+                  class="wrapper"
+                >
+                  <div
+                    class="filterContainer"
+                  >
+                    <div
+                      class="container"
+                      data-testid="filter-name"
+                    >
+                      <div
+                        class="text"
+                      >
+                        Date
+                      </div>
+                    </div>
+                    <div>
+                      <div>
+                        <div
+                          class="container"
+                          data-testid="filter-value"
+                        >
+                          <div
+                            class="text"
+                          >
+                            Feb 3, 2021
+                          </div>
+                          <i
+                            class="material-icons rounded dropdownIcon"
+                          >
+                            arrow_drop_down
+                          </i>
+                        </div>
+                      </div>
+                       
+                    </div>
+                  </div>
+                  <div
+                    class="container"
+                  >
+                    <div
+                      class="container"
+                      data-testid="filter-name"
+                    >
+                      <div
+                        class="text"
+                      >
+                        Aggregation
+                      </div>
+                    </div>
+                    <div>
+                      <div
+                        class="container"
+                        data-testid="filter-value"
+                      >
+                        <div
+                          class="text"
+                        >
+                          Select value...
+                        </div>
+                        <i
+                          class="material-icons rounded dropdownIcon"
+                        >
+                          arrow_drop_down
+                        </i>
+                      </div>
+                    </div>
+                  </div>
+                  <button
+                    aria-disabled="false"
+                    class="wrapper ghost primary small"
+                    title="Add Filter"
+                    type="button"
+                  >
+                    <i
+                      aria-hidden="true"
+                      class="material-icons icon small"
+                    >
+                      add
+                    </i>
+                    <span
+                      class="content"
+                    >
+                       
+                      Add Filter
+                    </span>
+                  </button>
+                </div>
+                <div
+                  class="buttonsWrapper"
+                >
+                  <div
+                    class="applyFiltersButton wrapper"
+                  >
+                    <button
+                      aria-disabled="false"
+                      class="wrapper mainAction small fill primary small"
+                      id="apply-saved-filter"
+                      type="button"
+                    >
+                      <span
+                        class="content"
+                      >
+                        Apply Saved Filter
+                      </span>
+                    </button>
+                    <button
+                      aria-disabled="false"
+                      class="wrapper toggle small wrapper fill small fill primary small"
+                      type="button"
+                    >
+                      <span
+                        class="content"
+                      >
+                        <i
+                          class="material-icons icon"
+                        >
+                          arrow_drop_down
+                        </i>
+                      </span>
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -5912,31 +7019,6 @@ exports[`<AutomateOverview /> should display AAO 1`] = `
           <div
             class="d-flex flex-wrap float-right"
           >
-            <div>
-              <button
-                aria-disabled="false"
-                class="wrapper ghost secondary medium"
-                type="button"
-              >
-                <i
-                  aria-hidden="true"
-                  class="material-icons icon medium"
-                >
-                  calendar_today
-                </i>
-                <span
-                  class="content"
-                >
-                  Feb 3, 2021
-                </span>
-                <i
-                  aria-hidden="true"
-                  class="material-icons icon medium"
-                >
-                  arrow_drop_down
-                </i>
-              </button>
-            </div>
             <div />
           </div>
         </div>
@@ -5977,6 +7059,150 @@ exports[`<AutomateOverview /> should display AAO 1`] = `
               class="closeIcon"
               src="test-file-stub"
             />
+          </div>
+        </div>
+      </div>
+      <div
+        class="wrapper"
+      >
+        <div
+          class="wrapper"
+        >
+          <div
+            class="cell"
+            style="grid-column: span 12 / span 12;"
+          >
+            <div
+              class="outerWrapper"
+            >
+              <div
+                class="wrapper"
+              >
+                <div
+                  class="wrapper"
+                >
+                  <div
+                    class="filterContainer"
+                  >
+                    <div
+                      class="container"
+                      data-testid="filter-name"
+                    >
+                      <div
+                        class="text"
+                      >
+                        Date
+                      </div>
+                    </div>
+                    <div>
+                      <div>
+                        <div
+                          class="container"
+                          data-testid="filter-value"
+                        >
+                          <div
+                            class="text"
+                          >
+                            Feb 3, 2021
+                          </div>
+                          <i
+                            class="material-icons rounded dropdownIcon"
+                          >
+                            arrow_drop_down
+                          </i>
+                        </div>
+                      </div>
+                       
+                    </div>
+                  </div>
+                  <div
+                    class="container"
+                  >
+                    <div
+                      class="container"
+                      data-testid="filter-name"
+                    >
+                      <div
+                        class="text"
+                      >
+                        Aggregation
+                      </div>
+                    </div>
+                    <div>
+                      <div
+                        class="container"
+                        data-testid="filter-value"
+                      >
+                        <div
+                          class="text"
+                        >
+                          Select value...
+                        </div>
+                        <i
+                          class="material-icons rounded dropdownIcon"
+                        >
+                          arrow_drop_down
+                        </i>
+                      </div>
+                    </div>
+                  </div>
+                  <button
+                    aria-disabled="false"
+                    class="wrapper ghost primary small"
+                    title="Add Filter"
+                    type="button"
+                  >
+                    <i
+                      aria-hidden="true"
+                      class="material-icons icon small"
+                    >
+                      add
+                    </i>
+                    <span
+                      class="content"
+                    >
+                       
+                      Add Filter
+                    </span>
+                  </button>
+                </div>
+                <div
+                  class="buttonsWrapper"
+                >
+                  <div
+                    class="applyFiltersButton wrapper"
+                  >
+                    <button
+                      aria-disabled="false"
+                      class="wrapper mainAction small fill primary small"
+                      id="apply-saved-filter"
+                      type="button"
+                    >
+                      <span
+                        class="content"
+                      >
+                        Apply Saved Filter
+                      </span>
+                    </button>
+                    <button
+                      aria-disabled="false"
+                      class="wrapper toggle small wrapper fill small fill primary small"
+                      type="button"
+                    >
+                      <span
+                        class="content"
+                      >
+                        <i
+                          class="material-icons icon"
+                        >
+                          arrow_drop_down
+                        </i>
+                      </span>
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -6513,31 +7739,6 @@ exports[`<AutomateOverview /> should display paywall 1`] = `
           <div
             class="d-flex flex-wrap float-right"
           >
-            <div>
-              <button
-                aria-disabled="false"
-                class="wrapper ghost secondary medium"
-                type="button"
-              >
-                <i
-                  aria-hidden="true"
-                  class="material-icons icon medium"
-                >
-                  calendar_today
-                </i>
-                <span
-                  class="content"
-                >
-                  Feb 3, 2021
-                </span>
-                <i
-                  aria-hidden="true"
-                  class="material-icons icon medium"
-                >
-                  arrow_drop_down
-                </i>
-              </button>
-            </div>
             <div />
           </div>
         </div>
@@ -6578,6 +7779,150 @@ exports[`<AutomateOverview /> should display paywall 1`] = `
               class="closeIcon"
               src="test-file-stub"
             />
+          </div>
+        </div>
+      </div>
+      <div
+        class="wrapper"
+      >
+        <div
+          class="wrapper"
+        >
+          <div
+            class="cell"
+            style="grid-column: span 12 / span 12;"
+          >
+            <div
+              class="outerWrapper"
+            >
+              <div
+                class="wrapper"
+              >
+                <div
+                  class="wrapper"
+                >
+                  <div
+                    class="filterContainer"
+                  >
+                    <div
+                      class="container"
+                      data-testid="filter-name"
+                    >
+                      <div
+                        class="text"
+                      >
+                        Date
+                      </div>
+                    </div>
+                    <div>
+                      <div>
+                        <div
+                          class="container"
+                          data-testid="filter-value"
+                        >
+                          <div
+                            class="text"
+                          >
+                            Feb 3, 2021
+                          </div>
+                          <i
+                            class="material-icons rounded dropdownIcon"
+                          >
+                            arrow_drop_down
+                          </i>
+                        </div>
+                      </div>
+                       
+                    </div>
+                  </div>
+                  <div
+                    class="container"
+                  >
+                    <div
+                      class="container"
+                      data-testid="filter-name"
+                    >
+                      <div
+                        class="text"
+                      >
+                        Aggregation
+                      </div>
+                    </div>
+                    <div>
+                      <div
+                        class="container"
+                        data-testid="filter-value"
+                      >
+                        <div
+                          class="text"
+                        >
+                          Select value...
+                        </div>
+                        <i
+                          class="material-icons rounded dropdownIcon"
+                        >
+                          arrow_drop_down
+                        </i>
+                      </div>
+                    </div>
+                  </div>
+                  <button
+                    aria-disabled="false"
+                    class="wrapper ghost primary small"
+                    title="Add Filter"
+                    type="button"
+                  >
+                    <i
+                      aria-hidden="true"
+                      class="material-icons icon small"
+                    >
+                      add
+                    </i>
+                    <span
+                      class="content"
+                    >
+                       
+                      Add Filter
+                    </span>
+                  </button>
+                </div>
+                <div
+                  class="buttonsWrapper"
+                >
+                  <div
+                    class="applyFiltersButton wrapper"
+                  >
+                    <button
+                      aria-disabled="false"
+                      class="wrapper mainAction small fill primary small"
+                      id="apply-saved-filter"
+                      type="button"
+                    >
+                      <span
+                        class="content"
+                      >
+                        Apply Saved Filter
+                      </span>
+                    </button>
+                    <button
+                      aria-disabled="false"
+                      class="wrapper toggle small wrapper fill small fill primary small"
+                      type="button"
+                    >
+                      <span
+                        class="content"
+                      >
+                        <i
+                          class="material-icons icon"
+                        >
+                          arrow_drop_down
+                        </i>
+                      </span>
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </div>

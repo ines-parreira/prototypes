@@ -5,7 +5,7 @@ import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import { useTicketsDistribution } from 'hooks/reporting/useTicketsDistribution'
+import { useTicketsDistribution } from 'hooks/reporting/ticket-insights/useTicketsDistribution'
 import {
     TicketCustomFieldsDimension,
     TicketCustomFieldsMeasure,
@@ -22,7 +22,7 @@ const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
 
 jest.mock('state/ui/stats/ticketInsightsSlice')
 const getSelectedCustomFieldMock = assumeMock(getSelectedCustomField)
-jest.mock('hooks/reporting/useTicketsDistribution')
+jest.mock('hooks/reporting/ticket-insights/useTicketsDistribution')
 const useTicketsDistributionMock = assumeMock(useTicketsDistribution)
 
 jest.mock(

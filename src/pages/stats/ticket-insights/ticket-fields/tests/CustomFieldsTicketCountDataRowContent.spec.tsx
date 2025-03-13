@@ -4,7 +4,7 @@ import { render, screen } from '@testing-library/react'
 import { forEach } from 'lodash'
 import { Provider } from 'react-redux'
 
-import { useNewStatsFilters } from 'hooks/reporting/support-performance/useNewStatsFilters'
+import { useStatsFilters } from 'hooks/reporting/support-performance/useStatsFilters'
 import { BREAKDOWN_FIELD, VALUE_FIELD } from 'hooks/reporting/withBreakdown'
 import { ReportingGranularity } from 'models/reporting/types'
 import { NOT_AVAILABLE_PLACEHOLDER } from 'pages/stats/common/utils'
@@ -51,8 +51,8 @@ jest.mock(
 const getValueModeMock = assumeMock(getValueMode)
 const getHeatmapModeMock = assumeMock(getHeatmapMode)
 
-jest.mock('hooks/reporting/support-performance/useNewStatsFilters')
-const useNewStatsFiltersMock = assumeMock(useNewStatsFilters)
+jest.mock('hooks/reporting/support-performance/useStatsFilters')
+const useStatsFiltersMock = assumeMock(useStatsFilters)
 const getSelectedCustomFieldMock = assumeMock(getSelectedCustomField)
 
 describe('<CustomFieldsTicketCountDataRowContent />', () => {
@@ -77,7 +77,7 @@ describe('<CustomFieldsTicketCountDataRowContent />', () => {
     beforeEach(() => {
         getValueModeMock.mockReturnValue(ValueMode.TotalCount)
         getHeatmapModeMock.mockReturnValue(false)
-        useNewStatsFiltersMock.mockReturnValue({
+        useStatsFiltersMock.mockReturnValue({
             granularity: ReportingGranularity.Week,
             cleanStatsFilters: {
                 period: {

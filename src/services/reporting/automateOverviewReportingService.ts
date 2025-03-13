@@ -3,14 +3,14 @@ import { useMemo } from 'react'
 import moment from 'moment/moment'
 
 import { AutomateStatsMeasureLabelMap } from 'hooks/reporting/automate/automateStatsMeasureLabelMap'
+import { useAutomateFilters } from 'hooks/reporting/automate/useAutomateFilters'
 import {
     fetchAutomateMetricsTimeSeries,
     useAutomateMetricsTimeSeries,
     useAutomateMetricsTrend,
 } from 'hooks/reporting/automate/useAutomationDataset'
-import { useNewAutomateFilters } from 'hooks/reporting/automate/useNewAutomateFilters'
 import { calculateGreyArea } from 'hooks/reporting/automate/utils'
-import { getCsvFileNameWithDates } from 'hooks/reporting/support-performance/overview/useDownloadOverviewData'
+import { getCsvFileNameWithDates } from 'hooks/reporting/common/utils'
 import { MetricTrend } from 'hooks/reporting/useMetricTrend'
 import { TimeSeriesDataItem } from 'hooks/reporting/useTimeSeries'
 import { ReportingGranularity } from 'models/reporting/types'
@@ -338,7 +338,7 @@ const useImpactReport = (statsFilters: StatsFilters, userTimezone: string) => {
 }
 
 export const useAutomateOverviewReportData = () => {
-    const { statsFilters, userTimezone, granularity } = useNewAutomateFilters()
+    const { statsFilters, userTimezone, granularity } = useAutomateFilters()
     const impactReport = useImpactReport(statsFilters, userTimezone)
     const performanceReport = useAutomatePerformanceReport(
         statsFilters,

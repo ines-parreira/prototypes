@@ -4,7 +4,7 @@ import {
     useSatisfiedOrBreachedTicketsInPolicyPerStatus,
     useSatisfiedOrBreachedTicketsInPolicyPerStatusTrend,
 } from 'hooks/reporting/sla/useSatisfiedOrBreachedTicketsInPolicyPerStatus'
-import { useNewStatsFilters } from 'hooks/reporting/support-performance/useNewStatsFilters'
+import { useStatsFilters } from 'hooks/reporting/support-performance/useStatsFilters'
 import { MetricTrend } from 'hooks/reporting/useMetricTrend'
 import { TicketSLAStatus } from 'models/reporting/cubes/sla/TicketSLACube'
 import { StatsFilters } from 'models/stat/types'
@@ -20,7 +20,7 @@ const getSlaAchievementRate = (
     )
 
 export const useTicketSlaAchievementRate = (): Metric => {
-    const { cleanStatsFilters, userTimezone } = useNewStatsFilters()
+    const { cleanStatsFilters, userTimezone } = useStatsFilters()
 
     const satisfiedSlaTickets = useSatisfiedOrBreachedTicketsInPolicyPerStatus(
         cleanStatsFilters,

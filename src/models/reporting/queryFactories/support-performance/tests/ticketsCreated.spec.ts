@@ -13,11 +13,12 @@ import {
     ticketsCreatedQueryFactory,
     ticketsCreatedTimeSeriesQueryFactory,
 } from 'models/reporting/queryFactories/support-performance/ticketsCreated'
+import { withDefaultLogicalOperator } from 'models/reporting/queryFactories/utils'
 import {
     ReportingFilterOperator,
     ReportingGranularity,
 } from 'models/reporting/types'
-import { LegacyStatsFilters, StatsFilters } from 'models/stat/types'
+import { StatsFilters } from 'models/stat/types'
 import {
     DRILLDOWN_QUERY_LIMIT,
     formatReportingQueryDate,
@@ -67,9 +68,9 @@ describe('ticketsCreatedQueryFactory', () => {
 
     it('should build expected query with Agents filter and sorting', () => {
         const agentIds = [1, 2]
-        const filters: LegacyStatsFilters = {
+        const filters: StatsFilters = {
             period: statsFilters.period,
-            agents: agentIds,
+            agents: withDefaultLogicalOperator(agentIds),
         }
         const sorting = OrderDirection.Asc
 
@@ -164,9 +165,9 @@ describe('ticketsCreatedTimeSeriesQueryFactory', () => {
 
     it('should build expected query with Agents filter', () => {
         const agentIds = [1, 2]
-        const filters: LegacyStatsFilters = {
+        const filters: StatsFilters = {
             period: statsFilters.period,
-            agents: agentIds,
+            agents: withDefaultLogicalOperator(agentIds),
         }
         const query = ticketsCreatedTimeSeriesQueryFactory(
             filters,
@@ -217,7 +218,7 @@ describe('ticketsCreatedTimeSeriesQueryFactory', () => {
 describe('ticketsCreatedPerTicketDrillDownQueryFactory', () => {
     const periodStart = '2021-05-29T00:00:00.000'
     const periodEnd = '2021-06-04T23:59:59.000'
-    const statsFilters: LegacyStatsFilters = {
+    const statsFilters: StatsFilters = {
         period: {
             start_datetime: periodStart,
             end_datetime: periodEnd,

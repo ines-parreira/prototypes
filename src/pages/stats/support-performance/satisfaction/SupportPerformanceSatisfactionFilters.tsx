@@ -5,7 +5,7 @@ import {
     SATISFACTION_SURVEY_MAX_SCORE,
     SATISFACTION_SURVEY_MIN_SCORE,
 } from 'config/stats'
-import { useCleanStatsFiltersWithLogicalOperators } from 'hooks/reporting/useCleanStatsFilters'
+import { useCleanStatsFilters } from 'hooks/reporting/useCleanStatsFilters'
 import useAppSelector from 'hooks/useAppSelector'
 import DEPRECATED_AgentsStatsFilter from 'pages/stats/common/filters/DEPRECATED_AgentsStatsFilter'
 import ChannelsStatsFilter from 'pages/stats/common/filters/DEPRECATED_ChannelsStatsFilter'
@@ -15,18 +15,12 @@ import { DEPRECATED_ScoreStatsFilter } from 'pages/stats/common/filters/DEPRECAT
 import DEPRECATED_TagsStatsFilter from 'pages/stats/common/filters/DEPRECATED_TagsStatsFilter'
 import {
     getMessagingAndAppIntegrationsStatsFilter,
-    getPageStatsFiltersWithLogicalOperators,
     getStatsFilters,
     getStatsMessagingAndAppIntegrations,
 } from 'state/stats/selectors'
 
 export const SupportPerformanceSatisfactionFilters = () => {
-    const pageStatsFiltersWithLogicalOperators = useAppSelector(
-        getPageStatsFiltersWithLogicalOperators,
-    )
-    useCleanStatsFiltersWithLogicalOperators(
-        pageStatsFiltersWithLogicalOperators,
-    )
+    useCleanStatsFilters()
     const statsFilters = useAppSelector(getStatsFilters)
     const messagingIntegrations = useAppSelector(
         getStatsMessagingAndAppIntegrations,

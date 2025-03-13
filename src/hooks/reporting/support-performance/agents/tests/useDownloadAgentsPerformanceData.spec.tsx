@@ -6,12 +6,12 @@ import { Provider } from 'react-redux'
 
 import { agents } from 'fixtures/agents'
 import { useTableReportData } from 'hooks/reporting/common/useTableReportData'
+import { getCsvFileNameWithDates } from 'hooks/reporting/common/utils'
 import {
     AGENTS_REPORT_FILE_NAME,
     fetchAgentsTableReportData,
     useDownloadAgentsPerformanceData,
 } from 'hooks/reporting/support-performance/agents/useDownloadAgentsPerformanceData'
-import { getCsvFileNameWithDates } from 'hooks/reporting/support-performance/overview/useDownloadOverviewData'
 import { useAgentsTableConfigSetting } from 'hooks/reporting/useAgentsTableConfigSetting'
 import { OrderDirection } from 'models/api/types'
 import { ReportingGranularity } from 'models/reporting/types'

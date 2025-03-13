@@ -1,4 +1,4 @@
-import { getCsvFileNameWithDates } from 'hooks/reporting/support-performance/overview/useDownloadOverviewData'
+import { getCsvFileNameWithDates } from 'hooks/reporting/common/utils'
 import { Period } from 'models/stat/types'
 import { createCsv } from 'utils/file'
 

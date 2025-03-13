@@ -41,7 +41,7 @@ import { ADD_FILTER_BUTTON_LABEL } from 'pages/stats/common/filters/AddFilterBut
 import { FilterLabels } from 'pages/stats/common/filters/constants'
 import DEPRECATED_TagsStatsFilter from 'pages/stats/common/filters/DEPRECATED_TagsStatsFilter'
 import { AccountFeature, AccountSettingType } from 'state/currentAccount/types'
-import { mergeStatsFilters } from 'state/stats/statsSlice'
+import { mergeStatsFiltersWithLogicalOperator } from 'state/stats/statsSlice'
 import { RootState, StoreDispatch } from 'state/types'
 import { initialState } from 'state/ui/stats/filtersSlice'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
@@ -338,7 +338,6 @@ describe('<AutomateOverview />', () => {
         it('should display new filters panel when the feature flag is enabled', async () => {
             mockFlags({
                 [FeatureFlagKey.AutomateOverviewChannelsFilter]: true,
-                [FeatureFlagKey.AnalyticsNewFiltersAutomate]: true,
             })
             const store = mockStore(defaultState)
             render(
@@ -367,7 +366,6 @@ describe('<AutomateOverview />', () => {
         it('should display new filters panel without Channels filter if feature flag is disabled', async () => {
             mockFlags({
                 [FeatureFlagKey.AutomateOverviewChannelsFilter]: false,
-                [FeatureFlagKey.AnalyticsNewFiltersAutomate]: true,
             })
             const store = mockStore(defaultState)
             render(
@@ -401,7 +399,7 @@ describe('<AutomateOverview />', () => {
         )
 
         expect(store.getActions()).toContainEqual(
-            mergeStatsFilters({
+            mergeStatsFiltersWithLogicalOperator({
                 period: {
                     start_datetime: '2022-01-06T00:00:00Z',
                     end_datetime: '2022-02-02T23:59:59Z',

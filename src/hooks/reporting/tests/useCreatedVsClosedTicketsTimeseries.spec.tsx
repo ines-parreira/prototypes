@@ -2,11 +2,9 @@ import React, { ComponentType } from 'react'
 
 import { UseQueryResult } from '@tanstack/react-query'
 import { renderHook } from '@testing-library/react-hooks'
-import { mockFlags } from 'jest-launchdarkly-mock'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 
-import { FeatureFlagKey } from 'config/featureFlags'
 import {
     useTicketsClosedTimeSeries,
     useTicketsCreatedTimeSeries,
@@ -16,7 +14,6 @@ import { TimeSeriesDataItem } from 'hooks/reporting/useTimeSeries'
 import { ReportingGranularity } from 'models/reporting/types'
 import { LogicalOperatorEnum } from 'pages/stats/common/components/Filter/constants'
 import { formatTimeSeriesData } from 'pages/stats/common/utils'
-import { fromFiltersWithLogicalOperators } from 'state/stats/utils'
 import { RootState, StoreDispatch } from 'state/types'
 import { periodAndAggregationWindowToReportingGranularity } from 'utils/reporting'
 import { assumeMock } from 'utils/testing'
@@ -91,7 +88,6 @@ describe('useCreatedVsClosedTicketsTimeSeries', () => {
         mockedPeriodAndAggregationWindowToReportingGranularity.mockReturnValue(
             mockGranularity,
         )
-        mockFlags({ [FeatureFlagKey.AnalyticsNewFilters]: false })
     })
 
     it('should return formatted time series for closed and created tickets', () => {
@@ -113,27 +109,6 @@ describe('useCreatedVsClosedTicketsTimeSeries', () => {
             }),
         )
         expect(mockedFormatTimeSeriesData).toHaveBeenCalledTimes(2)
-        expect(mockedUseTicketsClosedTimeSeries).toHaveBeenCalledWith(
-            fromFiltersWithLogicalOperators(filters),
-            mockTimezone,
-            mockGranularity,
-        )
-        expect(mockedUseTicketsCreatedTimeSeries).toHaveBeenCalledWith(
-            fromFiltersWithLogicalOperators(filters),
-            mockTimezone,
-            mockGranularity,
-        )
-    })
-
-    it('should pass stats filters with logical operators', () => {
-        mockFlags({ [FeatureFlagKey.AnalyticsNewFilters]: true })
-
-        renderHook(() => useCreatedVsClosedTicketsTimeSeries(), {
-            wrapper: (({ children }) => (
-                <Provider store={mockStore(defaultState)}>{children}</Provider>
-            )) as ComponentType,
-        })
-
         expect(mockedUseTicketsClosedTimeSeries).toHaveBeenCalledWith(
             filters,
             mockTimezone,

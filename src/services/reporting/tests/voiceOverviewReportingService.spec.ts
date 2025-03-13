@@ -2,17 +2,18 @@ import { renderHook } from '@testing-library/react-hooks'
 
 import { agents } from 'fixtures/agents'
 import { tags } from 'fixtures/tag'
-import { getCsvFileNameWithDates } from 'hooks/reporting/support-performance/overview/useDownloadOverviewData'
+import { getCsvFileNameWithDates } from 'hooks/reporting/common/utils'
+import { useStatsFilters } from 'hooks/reporting/support-performance/useStatsFilters'
 import { VoiceCallSegment } from 'models/reporting/cubes/VoiceCallCube'
+import { withDefaultLogicalOperator } from 'models/reporting/queryFactories/utils'
 import { ReportingGranularity } from 'models/reporting/types'
-import { LegacyStatsFilters, StatsFilters } from 'models/stat/types'
+import { StatsFilters, TagFilterInstanceId } from 'models/stat/types'
 import { LogicalOperatorEnum } from 'pages/stats/common/components/Filter/constants'
 import {
     VOICE_OVERVIEW_CALL_EXPERIENCE_REPORT_FILE_NAME,
     VOICE_OVERVIEW_CALL_VOLUME_REPORT_FILE_NAME,
     VOICE_OVERVIEW_REPORT_FILE_NAME,
 } from 'pages/stats/voice/constants/voiceOverview'
-import { useNewVoiceStatsFilters } from 'pages/stats/voice/hooks/useNewVoiceStatsFilters'
 import { useVoiceCallAverageTimeTrend } from 'pages/stats/voice/hooks/useVoiceCallAverageTimeTrend'
 import { useVoiceCallCountTrend } from 'pages/stats/voice/hooks/useVoiceCallCountTrend'
 import { VoiceCallAverageTimeMetric } from 'pages/stats/voice/models/types'
@@ -21,7 +22,6 @@ import {
     DEPRECATED_useVoiceOverviewReportData,
     useVoiceOverviewReportData,
 } from 'services/reporting/voiceOverviewReportingService'
-import { fromLegacyStatsFilters } from 'state/stats/utils'
 import * as files from 'utils/file'
 import { assumeMock } from 'utils/testing'
 
@@ -31,18 +31,23 @@ jest.mock('pages/stats/voice/hooks/useVoiceCallAverageTimeTrend')
 const useVoiceCallAverageTimeTrendMock = assumeMock(
     useVoiceCallAverageTimeTrend,
 )
-jest.mock('pages/stats/voice/hooks/useNewVoiceStatsFilters')
-const useNewVoiceStatsFiltersMock = assumeMock(useNewVoiceStatsFilters)
+jest.mock('hooks/reporting/support-performance/useStatsFilters')
+const useStatsFiltersMock = assumeMock(useStatsFilters)
 
 describe('DEPRECATED_useVoiceOverviewReportData', () => {
     const period = {
         start_datetime: '2023-12-11T00:00:00.000Z',
         end_datetime: '2023-12-11T23:59:59.999Z',
     }
-    const statsFilters: LegacyStatsFilters = {
+    const statsFilters: StatsFilters = {
         period,
-        agents: [agents[0].id],
-        tags: [tags[0].id],
+        agents: withDefaultLogicalOperator([agents[0].id]),
+        tags: [
+            {
+                ...withDefaultLogicalOperator([tags[0].id]),
+                filterInstanceId: TagFilterInstanceId.First,
+            },
+        ],
     }
     const dateSeries: Parameters<typeof DEPRECATED_saveReport>[1] = period
     const data: Parameters<typeof DEPRECATED_saveReport>[0] = {
@@ -133,11 +138,10 @@ describe('DEPRECATED_useVoiceOverviewReportData', () => {
                 isFetching: false,
                 isError: false,
             })
-            useNewVoiceStatsFiltersMock.mockReturnValue({
-                cleanStatsFilters: fromLegacyStatsFilters(statsFilters),
+            useStatsFiltersMock.mockReturnValue({
+                cleanStatsFilters: statsFilters,
                 granularity: ReportingGranularity.Day,
                 userTimezone: 'UTC',
-                isAnalyticsNewFilters: true,
             })
         })
 
@@ -195,11 +199,10 @@ describe('voiceOverviewReportingService', () => {
                 isFetching: false,
                 isError: false,
             })
-            useNewVoiceStatsFiltersMock.mockReturnValue({
+            useStatsFiltersMock.mockReturnValue({
                 cleanStatsFilters: statsFilters,
                 granularity: ReportingGranularity.Day,
                 userTimezone: 'UTC',
-                isAnalyticsNewFilters: true,
             })
 
             const createCsvMock = jest.spyOn(files, 'createCsv')
@@ -299,11 +302,10 @@ describe('voiceOverviewReportingService', () => {
                 isFetching: false,
                 isError: false,
             })
-            useNewVoiceStatsFiltersMock.mockReturnValue({
+            useStatsFiltersMock.mockReturnValue({
                 cleanStatsFilters: statsFilters,
                 granularity: ReportingGranularity.Day,
                 userTimezone: 'UTC',
-                isAnalyticsNewFilters: true,
             })
 
             const createCsvMock = jest.spyOn(files, 'createCsv')

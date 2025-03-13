@@ -16,7 +16,8 @@ import {
 } from 'hooks/reporting/support-performance/agents/usePercentageOfClosedTicketsMetricPerAgent'
 import { OrderDirection } from 'models/api/types'
 import { TicketMeasure } from 'models/reporting/cubes/TicketCube'
-import { LegacyStatsFilters } from 'models/stat/types'
+import { withDefaultLogicalOperator } from 'models/reporting/queryFactories/utils'
+import { StatsFilters, TagFilterInstanceId } from 'models/stat/types'
 import { assumeMock } from 'utils/testing'
 
 jest.mock('hooks/reporting/metricsPerAgent')
@@ -33,14 +34,22 @@ const fetchClosedTicketsMetricPerAgentMock = assumeMock(
 describe('PercentageOfClosedTicketsMetricPerAgent', () => {
     const periodStart = moment()
     const periodEnd = periodStart.add(7, 'days')
-    const statsFilters: LegacyStatsFilters = {
+    const statsFilters: StatsFilters = {
         period: {
             end_datetime: periodEnd.toISOString(),
             start_datetime: periodStart.toISOString(),
         },
-        channels: [TicketChannel.Email, TicketChannel.Chat],
-        integrations: [1],
-        tags: [1, 2],
+        channels: withDefaultLogicalOperator([
+            TicketChannel.Email,
+            TicketChannel.Chat,
+        ]),
+        integrations: withDefaultLogicalOperator([1]),
+        tags: [
+            {
+                ...withDefaultLogicalOperator([1, 2]),
+                filterInstanceId: TagFilterInstanceId.First,
+            },
+        ],
     }
     const timezone = 'someTimeZone'
     const sorting = OrderDirection.Asc

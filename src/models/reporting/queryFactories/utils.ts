@@ -309,13 +309,6 @@ export function withDefaultCustomFieldAndLogicalOperator({
 
 export const TICKET_CUSTOM_FIELDS_API_SEPARATOR = '::'
 
-const isStringArray = (
-    customFieldsArray: string[] | CustomFieldFilter[] | undefined,
-): customFieldsArray is string[] =>
-    Array.isArray(customFieldsArray) &&
-    customFieldsArray.length > 0 &&
-    typeof customFieldsArray[0] === 'string'
-
 export const getCustomFieldValueSerializer =
     (customFieldId: number) => (field: CustomFieldValue) =>
         `${customFieldId}${TICKET_CUSTOM_FIELDS_API_SEPARATOR}${field}`
@@ -357,21 +350,11 @@ export const injectDrillDownCustomFieldId = (
         ),
     }
 
-    if (hasFilter(customFields)) {
-        const currentValue = statsFilters[FilterKey.CustomFields]
-        if (isStringArray(currentValue)) {
-            filters[FilterKey.CustomFields] = [
-                ...currentValue.filter(removeDuplicateInstances(customFieldId)),
-                ...customFieldFilterWithPrefixedId.values,
-            ]
-        } else if (currentValue !== undefined) {
-            filters[FilterKey.CustomFields] = [
-                ...currentValue.map(
-                    removeDuplicateFilterInstances(customFieldId),
-                ),
-                customFieldFilterWithPrefixedId,
-            ]
-        }
+    if (customFields && hasFilter(customFields)) {
+        filters[FilterKey.CustomFields] = [
+            ...customFields.map(removeDuplicateFilterInstances(customFieldId)),
+            customFieldFilterWithPrefixedId,
+        ]
     } else {
         filters[FilterKey.CustomFields] = [customFieldFilterWithPrefixedId]
     }

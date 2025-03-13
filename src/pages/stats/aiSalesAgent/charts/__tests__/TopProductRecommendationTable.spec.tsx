@@ -4,13 +4,12 @@ import { render, screen } from '@testing-library/react'
 import moment from 'moment/moment'
 import { Provider } from 'react-redux'
 
+import TopProductRecommendationTable from 'pages/stats/aiSalesAgent/charts/TopProductRecommendationTable'
 import { ProductTableKeys } from 'pages/stats/aiSalesAgent/constants'
 import { useProductRecommendations } from 'pages/stats/aiSalesAgent/metrics/useProductRecommendations'
 import { RootState } from 'state/types'
 import { initialState as uiFiltersInitialState } from 'state/ui/stats/filtersSlice'
 import { assumeMock, mockStore } from 'utils/testing'
-
-import TopProductRecommendationTable from '../TopProductRecommendationTable'
 
 jest.mock('pages/stats/aiSalesAgent/metrics/useProductRecommendations')
 const useProductRecommendationsMock = assumeMock(useProductRecommendations)

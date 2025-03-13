@@ -2,14 +2,13 @@ import React from 'react'
 
 import { QueryClientProvider } from '@tanstack/react-query'
 import { render } from '@testing-library/react'
-import { mockFlags } from 'jest-launchdarkly-mock'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import { FeatureFlagKey } from 'config/featureFlags'
 import { agents } from 'fixtures/agents'
-import { LegacyStatsFilters } from 'models/stat/types'
+import { withDefaultLogicalOperator } from 'models/reporting/queryFactories/utils'
+import { StatsFilters } from 'models/stat/types'
 import TeamAverageTalkTimeCell from 'pages/stats/voice/components/VoiceAgentsTable/TeamAverageTalkTimeCell'
 import { useAverageTalkTimeMetric } from 'pages/stats/voice/hooks/agentMetrics'
 import { RootState, StoreDispatch } from 'state/types'
@@ -25,12 +24,12 @@ jest.mock('pages/stats/voice/hooks/agentMetrics')
 const useMetricMock = assumeMock(useAverageTalkTimeMetric)
 
 const renderComponent = () => {
-    const statsFilters: LegacyStatsFilters = {
+    const statsFilters: StatsFilters = {
         period: {
             start_datetime: '2023-12-11T00:00:00.000Z',
             end_datetime: '2023-12-11T23:59:59.999Z',
         },
-        agents: [agents[0].id],
+        agents: withDefaultLogicalOperator([agents[0].id]),
     }
     const state = {
         stats: {
@@ -116,24 +115,5 @@ describe('TeamAverageTalkTimeCell', () => {
         expect(
             container.getElementsByClassName('react-loading-skeleton'),
         ).toHaveLength(1)
-    })
-})
-
-describe('TeamAverageTalkTimeCell with the new filters', () => {
-    beforeEach(() => {
-        mockFlags({
-            [FeatureFlagKey.AnalyticsNewFiltersVoice]: true,
-        })
-    })
-
-    it('should render the component with the new filters', () => {
-        useMetricMock.mockReturnValue({
-            isFetching: false,
-            isError: false,
-            data: { value: 12 },
-        })
-
-        const { getByText } = renderComponent()
-        expect(getByText('12s')).toBeInTheDocument()
     })
 })

@@ -2,9 +2,7 @@ import React, { ComponentProps } from 'react'
 
 import { screen } from '@testing-library/react'
 import { fromJS } from 'immutable'
-import { mockFlags } from 'jest-launchdarkly-mock'
 
-import { FeatureFlagKey } from 'config/featureFlags'
 import { account } from 'fixtures/account'
 import { billingState } from 'fixtures/billing'
 import {
@@ -13,6 +11,7 @@ import {
     basicYearlyHelpdeskPlan,
     HELPDESK_PRODUCT_ID,
 } from 'fixtures/productPrices'
+import { useCleanStatsFilters } from 'hooks/reporting/useCleanStatsFilters'
 import { FilterKey } from 'models/stat/types'
 import { AnalyticsFooter } from 'pages/stats/AnalyticsFooter'
 import { AUTO_QA_FILTER_KEYS } from 'pages/stats/common/filters/constants'
@@ -26,7 +25,6 @@ import {
 } from 'pages/stats/support-performance/busiest-times-of-days/BusiestTimesReportConfig'
 import { BusiestTimeOfDaysMetrics } from 'pages/stats/support-performance/busiest-times-of-days/types'
 import { getMetricQuery } from 'pages/stats/support-performance/busiest-times-of-days/utils'
-import { SupportPerformanceFilters } from 'pages/stats/support-performance/SupportPerformanceFilters'
 import { RootState } from 'state/types'
 import {
     busiestTimesSlice,
@@ -34,8 +32,6 @@ import {
 } from 'state/ui/stats/busiestTimesSlice'
 import { assumeMock, renderWithStore } from 'utils/testing'
 
-jest.mock('pages/stats/support-performance/SupportPerformanceFilters')
-const FiltersMock = assumeMock(SupportPerformanceFilters)
 jest.mock(
     'pages/stats/common/filters/FiltersPanelWrapper/FiltersPanelWrapper',
     () => (props: ComponentProps<typeof FiltersPanelWrapper>) => {
@@ -59,6 +55,9 @@ jest.mock(
 const BusiestTimesOfDaysDownloadDataButtonMock = assumeMock(
     BusiestTimesOfDaysDownloadDataButton,
 )
+jest.mock('hooks/reporting/useCleanStatsFilters')
+const useCleanStatsFiltersMock = assumeMock(useCleanStatsFilters)
+
 const componentMock = () => <div />
 
 describe('BusiestTimesOfDays page', () => {
@@ -70,7 +69,6 @@ describe('BusiestTimesOfDays page', () => {
     } as RootState
 
     beforeEach(() => {
-        FiltersMock.mockImplementation(componentMock)
         AnalyticsFooterMock.mockImplementation(componentMock)
         BusiestTimesOfDaysTableMock.mockImplementation(componentMock)
         BusiestTimesOfDaysDownloadDataButtonMock.mockImplementation(
@@ -96,9 +94,7 @@ describe('BusiestTimesOfDays page', () => {
         )
     })
 
-    it('should render FiltersPanel with New Filters when flag is enabled', () => {
-        mockFlags({ [FeatureFlagKey.AnalyticsNewFilters]: true })
-
+    it('should render FiltersPanel', () => {
         const { getByText } = renderWithStore(
             <BusiestTimesOfDays />,
             defaultState,
@@ -107,12 +103,10 @@ describe('BusiestTimesOfDays page', () => {
         BUSIEST_TIME_OF_DAY_OPTIONAL_FILTERS.forEach((optionalFilter) => {
             expect(getByText(optionalFilter)).toBeInTheDocument()
         })
+        expect(useCleanStatsFiltersMock).toHaveBeenCalled()
     })
 
     it('should render FiltersPanel with New Filters and Score filter', () => {
-        mockFlags({
-            [FeatureFlagKey.AnalyticsNewFilters]: true,
-        })
         const extendedBusiestTimeOfDaysOptionalFilters = [
             ...BUSIEST_TIME_OF_DAY_OPTIONAL_FILTERS,
             FilterKey.Score,
@@ -128,7 +122,7 @@ describe('BusiestTimesOfDays page', () => {
         })
     })
 
-    it('should render FiltersPanel with New Filters and Resolution Completeness and Communication Skills filters', () => {
+    it('should render FiltersPanel with Resolution Completeness and Communication Skills filters', () => {
         const state = {
             ...defaultState,
             currentAccount: fromJS({
@@ -143,9 +137,6 @@ describe('BusiestTimesOfDays page', () => {
                 },
             }),
         }
-        mockFlags({
-            [FeatureFlagKey.AnalyticsNewFilters]: true,
-        })
         const extendedBusiestTimeOfDaysOptionalFilters = [
             ...BUSIEST_TIME_OF_DAY_OPTIONAL_FILTERS,
             ...AUTO_QA_FILTER_KEYS,

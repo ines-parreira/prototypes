@@ -6,14 +6,14 @@ import moment from 'moment'
 
 import { FeatureFlagKey } from 'config/featureFlags'
 import { useFilteredAutomatedInteractions } from 'hooks/reporting/automate/automationTrends'
-import { useNewAutomateFilters } from 'hooks/reporting/automate/useNewAutomateFilters'
+import { useAutomateFilters } from 'hooks/reporting/automate/useAutomateFilters'
+import { useLast28daysForAutomateRedirect } from 'hooks/reporting/automate/useLast28daysForAutomateRedirect'
 import useLocalStorage from 'hooks/useLocalStorage'
 import { FilterKey } from 'models/stat/types'
 import Alert, { AlertType } from 'pages/common/components/Alert/Alert'
 import { AnalyticsFooter } from 'pages/stats/AnalyticsFooter'
 import css from 'pages/stats/automate/overview/AutomateOverview.less'
 import { AutomateOverviewDownloadDataButton } from 'pages/stats/automate/overview/AutomateOverviewDownloadDataButton'
-import { AutomateOverviewFilters } from 'pages/stats/automate/overview/AutomateOverviewFilters'
 import {
     AutomateOverviewChart,
     AutomateOverviewReportConfig,
@@ -30,8 +30,8 @@ import TipsToggle from 'pages/stats/TipsToggle'
 const BILLING_PIPE_LINE_DATE = 'June 20, 2023'
 
 export default function AutomateOverviewContent() {
-    const { statsFilters, userTimezone, isAnalyticsNewFiltersAutomate } =
-        useNewAutomateFilters()
+    useLast28daysForAutomateRedirect()
+    const { statsFilters, userTimezone } = useAutomateFilters()
     const automatedInteractionTrend = useFilteredAutomatedInteractions(
         statsFilters,
         userTimezone,
@@ -65,11 +65,6 @@ export default function AutomateOverviewContent() {
                 title={PAGE_TITLE_AUTOMATE_PAYWALL}
                 titleExtra={
                     <>
-                        <AutomateOverviewFilters
-                            isAnalyticsNewFiltersAutomate={
-                                isAnalyticsNewFiltersAutomate
-                            }
-                        />
                         <AutomateOverviewDownloadDataButton />
                     </>
                 }
@@ -114,35 +109,33 @@ export default function AutomateOverviewContent() {
                         </div>
                     )
                 )}
-                {isAnalyticsNewFiltersAutomate && (
-                    <DashboardSection>
-                        <DashboardGridCell size={12}>
-                            <FiltersPanelWrapper
-                                persistentFilters={
-                                    AutomateOverviewReportConfig.reportFilters
-                                        .persistent
-                                }
-                                optionalFilters={
-                                    isAutomateOverviewChannelsFilter
-                                        ? [FilterKey.Channels]
-                                        : []
-                                }
-                                filterSettingsOverrides={{
-                                    [FilterKey.Period]: {
-                                        initialSettings: {
-                                            maxSpan: 365,
-                                        },
+                <DashboardSection>
+                    <DashboardGridCell size={12}>
+                        <FiltersPanelWrapper
+                            persistentFilters={
+                                AutomateOverviewReportConfig.reportFilters
+                                    .persistent
+                            }
+                            optionalFilters={
+                                isAutomateOverviewChannelsFilter
+                                    ? [FilterKey.Channels]
+                                    : []
+                            }
+                            filterSettingsOverrides={{
+                                [FilterKey.Period]: {
+                                    initialSettings: {
+                                        maxSpan: 365,
                                     },
-                                    // Disable channel filter until fix channels for AI Agent events
-                                    // [FilterKey.Channels]: {
-                                    //     channelsFilter:
-                                    //         AUTOMATE_ENABLED_CHANNELS,
-                                    // },
-                                }}
-                            />
-                        </DashboardGridCell>
-                    </DashboardSection>
-                )}
+                                },
+                                // Disable channel filter until fix channels for AI Agent events
+                                // [FilterKey.Channels]: {
+                                //     channelsFilter:
+                                //         AUTOMATE_ENABLED_CHANNELS,
+                                // },
+                            }}
+                        />
+                    </DashboardGridCell>
+                </DashboardSection>
                 <DashboardSection
                     title="Performance"
                     titleExtra={

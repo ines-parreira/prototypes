@@ -8,10 +8,10 @@ import {
     useTimeSeriesReportData,
 } from 'hooks/reporting/common/useTimeSeriesReportData'
 import { useTrendReportData } from 'hooks/reporting/common/useTrendReportData'
+import { getCsvFileNameWithDates } from 'hooks/reporting/common/utils'
 import { useDashboardData } from 'hooks/reporting/dashboards/useDashboardData'
 import { useSanitizedDashboard } from 'hooks/reporting/dashboards/useSanitizedDashboard'
-import { getCsvFileNameWithDates } from 'hooks/reporting/support-performance/overview/useDownloadOverviewData'
-import { useNewStatsFilters } from 'hooks/reporting/support-performance/useNewStatsFilters'
+import { useStatsFilters } from 'hooks/reporting/support-performance/useStatsFilters'
 import { useAgentsTableConfigSetting } from 'hooks/reporting/useAgentsTableConfigSetting'
 import { ReportingGranularity } from 'models/reporting/types'
 import { StatsFilters } from 'models/stat/types'
@@ -55,8 +55,8 @@ const useTimeSeriesPerDimensionReportDataMock = assumeMock(
 )
 jest.mock('hooks/reporting/common/useTableReportData')
 const useTablesMock = assumeMock(useTables)
-jest.mock('hooks/reporting/support-performance/useNewStatsFilters')
-const useNewStatsFiltersMock = assumeMock(useNewStatsFilters)
+jest.mock('hooks/reporting/support-performance/useStatsFilters')
+const useStatsFiltersMock = assumeMock(useStatsFilters)
 jest.mock('hooks/reporting/useAgentsTableConfigSetting')
 const useAgentsTableConfigSettingMock = assumeMock(useAgentsTableConfigSetting)
 
@@ -126,11 +126,10 @@ describe('useDownloadDashboardData', () => {
         useAgentsTableConfigSettingMock.mockReturnValue({
             columnsOrder: [],
         } as unknown as ReturnType<typeof useAgentsTableConfigSetting>)
-        useNewStatsFiltersMock.mockReturnValue({
+        useStatsFiltersMock.mockReturnValue({
             cleanStatsFilters: statsFilters,
             userTimezone,
             granularity,
-            isAnalyticsNewFilters: true,
         })
         useTrendReportDataMock.mockReturnValue({ data: [], isFetching: false })
         useTimeSeriesReportDataMock.mockReturnValue({

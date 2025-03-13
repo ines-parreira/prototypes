@@ -23,10 +23,11 @@ import {
 } from 'hooks/reporting/metricTrends'
 import { useOneTouchTicketsPercentageMetricTrend } from 'hooks/reporting/support-performance/overview/useOneTouchTicketsPercentageMetricTrend'
 import { useZeroTouchTicketsMetricTrend } from 'hooks/reporting/support-performance/overview/useZeroTouchTicketsMetricTrend'
-import { useNewStatsFilters } from 'hooks/reporting/support-performance/useNewStatsFilters'
+import { useStatsFilters } from 'hooks/reporting/support-performance/useStatsFilters'
 import { MetricTrend } from 'hooks/reporting/useMetricTrend'
+import { withDefaultLogicalOperator } from 'models/reporting/queryFactories/utils'
 import { ReportingGranularity } from 'models/reporting/types'
-import { LegacyStatsFilters } from 'models/stat/types'
+import { StatsFilters, TagFilterInstanceId } from 'models/stat/types'
 import TrendBadge, {
     DEFAULT_BADGE_TEXT,
 } from 'pages/stats/common/components/TrendBadge'
@@ -39,7 +40,6 @@ import {
     OverviewMetricConfig,
 } from 'pages/stats/support-performance/overview/SupportPerformanceOverviewConfig'
 import { getBadgeTooltipForPreviousPeriod } from 'pages/stats/utils'
-import { fromLegacyStatsFilters } from 'state/stats/utils'
 import { RootState, StoreDispatch } from 'state/types'
 import { initialState as uiStatsInitialState } from 'state/ui/stats/filtersSlice'
 import { assumeMock } from 'utils/testing'
@@ -86,24 +86,31 @@ const useOneTouchTicketTrendMock = assumeMock(
     useOneTouchTicketsPercentageMetricTrend,
 )
 const useZeroTouchTicketsTrendMock = assumeMock(useZeroTouchTicketsMetricTrend)
-jest.mock('hooks/reporting/support-performance/useNewStatsFilters')
-const useNewStatsFiltersMock = assumeMock(useNewStatsFilters)
+jest.mock('hooks/reporting/support-performance/useStatsFilters')
+const useStatsFiltersMock = assumeMock(useStatsFilters)
 
 describe('<TrendCard />', () => {
-    const defaultStatsFilters: LegacyStatsFilters = {
+    const defaultStatsFilters: StatsFilters = {
         period: {
             start_datetime: '2021-02-03T00:00:00.000Z',
             end_datetime: '2021-02-03T23:59:59.999Z',
         },
-        channels: [TicketChannel.Chat],
-        integrations: [integrationsState.integrations[0].id],
-        agents: [agents[0].id],
-        tags: [1],
+        channels: withDefaultLogicalOperator([TicketChannel.Chat]),
+        integrations: withDefaultLogicalOperator([
+            integrationsState.integrations[0].id,
+        ]),
+        agents: withDefaultLogicalOperator([agents[0].id]),
+        tags: [
+            {
+                ...withDefaultLogicalOperator([1]),
+                filterInstanceId: TagFilterInstanceId.First,
+            },
+        ],
     }
 
     const defaultState = {
         stats: {
-            filters: fromLegacyStatsFilters(defaultStatsFilters),
+            filters: defaultStatsFilters,
         },
         ui: {
             stats: { filters: uiStatsInitialState },
@@ -218,9 +225,8 @@ describe('<TrendCard />', () => {
         useTicketHandleTimeTrendMock.mockReturnValue(ticketHandleTimeTrend)
 
         trendBadgeMock.mockImplementation(() => <>{DEFAULT_BADGE_TEXT}</>)
-        useNewStatsFiltersMock.mockReturnValue({
-            cleanStatsFilters: fromLegacyStatsFilters(defaultStatsFilters),
-            isAnalyticsNewFilters: true,
+        useStatsFiltersMock.mockReturnValue({
+            cleanStatsFilters: defaultStatsFilters,
             granularity: ReportingGranularity.Day,
             userTimezone: DEFAULT_TIMEZONE,
         })
@@ -284,9 +290,8 @@ describe('<TrendCard />', () => {
     })
 
     it('should call useTrend with legacyStatsFilters', () => {
-        useNewStatsFiltersMock.mockReturnValue({
+        useStatsFiltersMock.mockReturnValue({
             cleanStatsFilters: defaultStatsFilters,
-            isAnalyticsNewFilters: false,
             granularity: ReportingGranularity.Day,
             userTimezone: DEFAULT_TIMEZONE,
         })
@@ -314,9 +319,8 @@ describe('<TrendCard />', () => {
     })
 
     it('should call useTrend with statsFiltersWithLogicalOperators', () => {
-        useNewStatsFiltersMock.mockReturnValue({
-            cleanStatsFilters: fromLegacyStatsFilters(defaultStatsFilters),
-            isAnalyticsNewFilters: true,
+        useStatsFiltersMock.mockReturnValue({
+            cleanStatsFilters: defaultStatsFilters,
             granularity: ReportingGranularity.Day,
             userTimezone: DEFAULT_TIMEZONE,
         })
@@ -338,7 +342,7 @@ describe('<TrendCard />', () => {
         )
 
         expect(useTrendSpy).toHaveBeenCalledWith(
-            fromLegacyStatsFilters(defaultStatsFilters),
+            defaultStatsFilters,
             DEFAULT_TIMEZONE,
         )
     })

@@ -1,7 +1,7 @@
 import React from 'react'
 
+import { useAutomateFilters } from 'hooks/reporting/automate/useAutomateFilters'
 import { useAutomationRateTrend } from 'hooks/reporting/automate/useAutomationRateTrend'
-import { useNewAutomateFilters } from 'hooks/reporting/automate/useNewAutomateFilters'
 import useLocalStorage from 'hooks/useLocalStorage'
 import { AutomationRateMetric } from 'pages/automate/automate-metrics'
 import { AAO_TIPS_VISIBILITY_KEY } from 'pages/stats/automate/overview/constants'
@@ -12,7 +12,7 @@ export const AutomationRateKPIChart = ({
     dashboard,
 }: DashboardChartProps) => {
     const [areTipsVisible] = useLocalStorage(AAO_TIPS_VISIBILITY_KEY, true)
-    const { statsFilters, userTimezone } = useNewAutomateFilters()
+    const { statsFilters, userTimezone } = useAutomateFilters()
     const automationRateTrend = useAutomationRateTrend(
         statsFilters,
         userTimezone,

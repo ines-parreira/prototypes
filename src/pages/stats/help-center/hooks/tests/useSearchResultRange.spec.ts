@@ -6,10 +6,9 @@ import {
     HelpCenterTrackingEventDimensions,
     HelpCenterTrackingEventMeasures,
 } from 'models/reporting/cubes/HelpCenterTrackingEventCube'
-import { LegacyStatsFilters } from 'models/stat/types'
+import { StatsFilters } from 'models/stat/types'
+import { useSearchResultRange } from 'pages/stats/help-center/hooks/useSearchResultRange'
 import { formatReportingQueryDate } from 'utils/reporting'
-
-import { useSearchResultRange } from '../useSearchResultRange'
 
 jest.mock('hooks/reporting/useMetricPerDimension', () => ({
     useMetricPerDimension: jest.fn(),
@@ -17,17 +16,17 @@ jest.mock('hooks/reporting/useMetricPerDimension', () => ({
 
 const mockUseMetricPerDimension = jest.mocked(useMetricPerDimension)
 
-const periodStart = formatReportingQueryDate(moment())
-const periodEnd = formatReportingQueryDate(moment().subtract(7, 'd'))
-const statsFilters: LegacyStatsFilters = {
-    period: {
-        start_datetime: periodStart,
-        end_datetime: periodEnd,
-    },
-}
-const timezone = 'UTC'
-
 describe('useSearchResultRange', () => {
+    const periodStart = formatReportingQueryDate(moment())
+    const periodEnd = formatReportingQueryDate(moment().subtract(7, 'd'))
+    const statsFilters: StatsFilters = {
+        period: {
+            start_datetime: periodStart,
+            end_datetime: periodEnd,
+        },
+    }
+    const timezone = 'UTC'
+
     it('should return empty data when no data from the cube.js', () => {
         mockUseMetricPerDimension.mockReturnValue({
             isFetching: false,

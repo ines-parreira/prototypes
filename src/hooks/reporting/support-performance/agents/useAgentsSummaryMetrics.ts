@@ -12,7 +12,7 @@ import {
     useTicketsRepliedMetric,
 } from 'hooks/reporting/metrics'
 import { useOneTouchTicketsPercentageMetricTrend } from 'hooks/reporting/support-performance/overview/useOneTouchTicketsPercentageMetricTrend'
-import { useNewStatsFilters } from 'hooks/reporting/support-performance/useNewStatsFilters'
+import { useStatsFilters } from 'hooks/reporting/support-performance/useStatsFilters'
 import { useMessagesSentPerHour } from 'hooks/reporting/useMessagesSentPerHour'
 import { useTicketsClosedPerHour } from 'hooks/reporting/useTicketsClosedPerHour'
 import { useTicketsRepliedPerHour } from 'hooks/reporting/useTicketsRepliedPerHour'
@@ -20,7 +20,7 @@ import { useTicketsRepliedPerHour } from 'hooks/reporting/useTicketsRepliedPerHo
 import { useZeroTouchTicketsMetricTrend } from '../overview/useZeroTouchTicketsMetricTrend'
 
 export function useAgentsSummaryMetrics() {
-    const { cleanStatsFilters, userTimezone } = useNewStatsFilters()
+    const { cleanStatsFilters, userTimezone } = useStatsFilters()
     const customerSatisfactionMetric = useCustomerSatisfactionMetric(
         cleanStatsFilters,
         userTimezone,

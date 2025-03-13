@@ -27,7 +27,6 @@ export type AgentsCellContentProps = {
     bodyCellProps?: PropsWithRef<BodyCellProps>
     useMetricPerAgentQueryHook: MetricQueryPerAgentQuery
     statsFilters: {
-        isAnalyticsNewFilters: boolean
         cleanStatsFilters: StatsFilters
         userTimezone: string
     }
@@ -47,8 +46,7 @@ export const AgentsCellContent = ({
     isHeatmapMode,
     isSortingMetricLoading,
 }: AgentsCellContentProps) => {
-    const { isAnalyticsNewFilters, cleanStatsFilters, userTimezone } =
-        statsFilters
+    const { cleanStatsFilters, userTimezone } = statsFilters
     const { data, isFetching } = useMetricPerAgentQueryHook(
         cleanStatsFilters,
         userTimezone,
@@ -83,7 +81,6 @@ export const AgentsCellContent = ({
                     enabled={!!metricValue}
                     highlighted
                     metricData={drillDownMetricData}
-                    useNewFilterData={isAnalyticsNewFilters}
                 >
                     {formattedMetric}
                 </DrillDownModalTrigger>

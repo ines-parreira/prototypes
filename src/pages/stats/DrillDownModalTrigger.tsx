@@ -9,11 +9,7 @@ import useAppDispatch from 'hooks/useAppDispatch'
 import useId from 'hooks/useId'
 import { hintTooltipDelay } from 'pages/stats/common/constants'
 import css from 'pages/stats/DrillDownModalTrigger.less'
-import {
-    DrillDownMetric,
-    setMetricData,
-    setShouldUseNewFilterData,
-} from 'state/ui/stats/drillDownSlice'
+import { DrillDownMetric, setMetricData } from 'state/ui/stats/drillDownSlice'
 import {
     ConvertMetric,
     VoiceAgentsMetric,
@@ -26,7 +22,6 @@ type Props = {
     metricData: DrillDownMetric
     enabled?: boolean
     highlighted?: boolean
-    useNewFilterData?: boolean
     segmentEventName?: SegmentEvent
 }
 
@@ -60,16 +55,12 @@ export const DrillDownModalTrigger = ({
     metricData,
     enabled = true,
     highlighted = false,
-    useNewFilterData = false,
     segmentEventName = SegmentEvent.StatClicked,
 }: PropsWithChildren<Props>) => {
     const dispatch = useAppDispatch()
 
     const handleClick = () => {
         dispatch(setMetricData(metricData))
-        if (useNewFilterData) {
-            dispatch(setShouldUseNewFilterData(true))
-        }
         logEvent(segmentEventName, { metric: metricData.metricName })
     }
 

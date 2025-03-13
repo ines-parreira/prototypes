@@ -12,9 +12,11 @@ import { CampaignPreview } from 'models/convert/campaign/types'
 import { IntegrationType } from 'models/integration/constants'
 import * as isConvertSubscriberHook from 'pages/common/hooks/useIsConvertSubscriber'
 import useGetConvertStatus from 'pages/convert/common/hooks/useGetConvertStatus'
+import FiltersPanelWrapper from 'pages/stats/common/filters/FiltersPanelWrapper'
 import { useGetCampaignsForStore } from 'pages/stats/convert/hooks/useGetCampaignsForStore'
 import ConvertCampaignsStats from 'pages/stats/convert/pages/CampaignsStats/CampaignsStats'
 import CampaignStatsPaywallView from 'pages/stats/convert/pages/CampaignsStats/CampaignStatsPaywallView'
+import { DrillDownModal } from 'pages/stats/DrillDownModal'
 import { RootState } from 'state/types'
 import { getStateWithHelpdeskPlan } from 'utils/paywallTesting'
 import { assumeMock, mockStore, renderWithRouter } from 'utils/testing'
@@ -29,20 +31,16 @@ jest.mock('pages/stats/convert/components/RequestABTest', () => () => {
     return <div>RequestABTest</div>
 })
 
-jest.mock('../../../containers/RevenueStatsContent', () => ({
+jest.mock('pages/stats/convert/containers/RevenueStatsContent', () => ({
     RevenueStatsContent: () => {
         return <div>ConvertStatsContent</div>
     },
 }))
 
-jest.mock('../../../containers/RevenueFilters', () => ({
-    RevenueFilters: () => {
-        return <div>Filters</div>
-    },
-}))
-jest.mock('pages/stats/DrillDownModal.tsx', () => ({
-    DrillDownModal: () => null,
-}))
+jest.mock('pages/stats/common/filters/FiltersPanelWrapper/FiltersPanelWrapper')
+const FiltersPanelWrapperMock = assumeMock(FiltersPanelWrapper)
+jest.mock('pages/stats/DrillDownModal.tsx')
+const DrillDownModalMock = assumeMock(DrillDownModal)
 
 jest.mock('hooks/reporting/useCleanStatsFilters')
 
@@ -89,7 +87,8 @@ describe('CampaignsStats', () => {
             isConvertSubscriberHook,
             'useIsConvertSubscriber',
         ).mockImplementation(() => true)
-
+        FiltersPanelWrapperMock.mockImplementation(() => <div />)
+        DrillDownModalMock.mockImplementation(() => <div />)
         useGetConvertStatusMock.mockReturnValue(convertStatusOk)
 
         useGetCampaignsForStoreMock.mockReturnValue({

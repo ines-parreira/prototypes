@@ -5,7 +5,7 @@ import _fromPairs from 'lodash/fromPairs'
 import _sortBy from 'lodash/sortBy'
 
 import { useCustomFieldsTicketCount } from 'hooks/reporting/metricsPerCustomField'
-import { useNewStatsFilters } from 'hooks/reporting/support-performance/useNewStatsFilters'
+import { useStatsFilters } from 'hooks/reporting/support-performance/useStatsFilters'
 import { useCustomFieldsTicketCountTimeSeries } from 'hooks/reporting/timeSeries'
 import useAppSelector from 'hooks/useAppSelector'
 import { OrderDirection } from 'models/api/types'
@@ -17,8 +17,7 @@ import { getSelectedCustomField } from 'state/ui/stats/ticketInsightsSlice'
 const DATASET_VISIBILITY_ITEMS = 3
 
 export const useTicketsFieldTrend = (topAmount = 10) => {
-    const { cleanStatsFilters, userTimezone, granularity } =
-        useNewStatsFilters()
+    const { cleanStatsFilters, userTimezone, granularity } = useStatsFilters()
     const selectedCustomField = useAppSelector(getSelectedCustomField)
 
     const { data = {}, isFetching } = useCustomFieldsTicketCountTimeSeries(

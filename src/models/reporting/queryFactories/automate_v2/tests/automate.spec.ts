@@ -4,8 +4,9 @@ import {
     AutomationDatasetFilterMember,
     AutomationDatasetMeasure,
 } from 'models/reporting/cubes/automate_v2/AutomationDatasetCube'
+import { withDefaultLogicalOperator } from 'models/reporting/queryFactories/utils'
 import { ReportingFilterOperator } from 'models/reporting/types'
-import { LegacyStatsFilters } from 'models/stat/types'
+import { StatsFilters } from 'models/stat/types'
 import { formatReportingQueryDate } from 'utils/reporting'
 
 import { automationDatasetQueryFactory } from '../metrics'
@@ -13,12 +14,12 @@ import { automationDatasetQueryFactory } from '../metrics'
 describe('Automate', () => {
     const periodStart = formatReportingQueryDate(moment())
     const periodEnd = formatReportingQueryDate(moment())
-    const statsFilters: LegacyStatsFilters = {
+    const statsFilters: StatsFilters = {
         period: {
             end_datetime: periodEnd,
             start_datetime: periodStart,
         },
-        channels: ['chat', 'help-center'],
+        channels: withDefaultLogicalOperator(['chat', 'help-center']),
     }
     const timezone = 'someTimeZone'
 

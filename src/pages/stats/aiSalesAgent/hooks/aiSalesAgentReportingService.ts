@@ -1,12 +1,10 @@
 import { useMemo } from 'react'
 
-import moment from 'moment'
-
 import { useTimeSeriesReportData } from 'hooks/reporting/common/useTimeSeriesReportData'
 import { useTrendReportData } from 'hooks/reporting/common/useTrendReportData'
-import { useNewStatsFilters } from 'hooks/reporting/support-performance/useNewStatsFilters'
+import { getCsvFileNameWithDates } from 'hooks/reporting/common/utils'
+import { useStatsFilters } from 'hooks/reporting/support-performance/useStatsFilters'
 import { MetricTrendFetch } from 'hooks/reporting/useMetricTrend'
-import { Period } from 'models/stat/types'
 import {
     AiSalesAgentChart,
     AiSalesAgentChartConfig,
@@ -15,7 +13,6 @@ import {
     type TrendMetric,
 } from 'pages/stats/aiSalesAgent/AiSalesAgentMetricsConfig'
 import { MetricValueFormat } from 'pages/stats/common/utils'
-import { DATE_TIME_FORMAT } from 'services/reporting/constants'
 import {
     createTimeSeriesReport,
     createTrendReport,
@@ -25,15 +22,6 @@ export const AI_SALES_AGENT_OVERVIEW_FILENAME = 'ai-sales-agent-overview'
 export const AI_SALES_AGENT_METRIC_FILE_NAME = 'metrics'
 export const AI_SALES_AGENT_GMV_INFLUENCED_OVER_TIME =
     'gmv-influenced-over-time'
-
-export const getCsvFileNameWithDates = (period: Period, reportName: string) => {
-    const export_datetime = moment().format(DATE_TIME_FORMAT)
-    const startDate = moment(period.start_datetime).format(DATE_TIME_FORMAT)
-    const endDate = moment(period.end_datetime).format(DATE_TIME_FORMAT)
-    const periodPrefix = `${startDate}_${endDate}`
-
-    return `${periodPrefix}-${reportName}-${export_datetime}.csv`
-}
 
 const metricSource: TrendMetric[] = [
     AiSalesAgentChart.AiSalesAgentTotalSalesConv,
@@ -69,8 +57,7 @@ const timeSeriesReportSource = timeSeriesSource.map(
 )
 
 const useAiSalesAgentOverviewReportData = () => {
-    const { cleanStatsFilters, userTimezone, granularity } =
-        useNewStatsFilters()
+    const { cleanStatsFilters, userTimezone, granularity } = useStatsFilters()
 
     const trendData = useTrendReportData(
         cleanStatsFilters,
