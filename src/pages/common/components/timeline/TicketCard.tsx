@@ -67,10 +67,12 @@ export default function TicketCard({
                         owner={ticket.assignee_team?.name}
                     />
                     <span className={css.separator}>•</span>
-                    ID: {ticket.id}
+                    <span className={css.metaText}>ID: {ticket.id}</span>
                     <span className={css.separator}>•</span>
-                    {ticket.messages_count} message
-                    {ticket.messages_count > 1 && 's'}
+                    <span className={css.metaText}>
+                        {ticket.messages_count} message
+                        {ticket.messages_count > 1 && 's'}
+                    </span>
                 </div>
             </div>
         </div>

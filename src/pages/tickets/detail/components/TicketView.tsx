@@ -8,12 +8,11 @@ import { FeatureFlagKey } from 'config/featureFlags'
 import useFlag from 'core/flags/hooks/useFlag'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
-import useEffectOnce from 'hooks/useEffectOnce'
 import LegacyTimeline from 'pages/common/components/timeline/LegacyTimeline'
 import Timeline from 'pages/common/components/timeline/Timeline'
 import TicketBody from 'pages/tickets/detail/components/TicketBody'
 import { getCustomersState } from 'state/customers/selectors'
-import { displayHistoryOnNextPage, toggleHistory } from 'state/ticket/actions'
+import { toggleHistory } from 'state/ticket/actions'
 import {
     getBody,
     getDisplayHistory,
@@ -59,26 +58,6 @@ export const TicketView = ({
         () => (customers.get('customerHistory') as Map<any, any>) || fromJS({}),
         [customers],
     )
-
-    // We are using useEffect here to sync state when ticket state changes :(
-    useEffectOnce(() => {
-        const shouldDisplayHistoryOnNextPage = ticket.getIn([
-            '_internal',
-            'shouldDisplayHistoryOnNextPage',
-        ]) as boolean
-        const displayHistory = ticket.getIn([
-            '_internal',
-            'displayHistory',
-        ]) as boolean
-
-        if (shouldDisplayHistoryOnNextPage !== displayHistory) {
-            dispatch(toggleHistory(shouldDisplayHistoryOnNextPage))
-        }
-
-        if (shouldDisplayHistoryOnNextPage) {
-            dispatch(displayHistoryOnNextPage(false))
-        }
-    })
 
     useEffect(() => {
         const ticketContent = ticketContentRef.current
@@ -141,9 +120,6 @@ export const TicketView = ({
                     <div className={classnames(css.timelineContainer, 'pb-4')}>
                         {hasNewTimeline ? (
                             <Timeline
-                                onTicketClick={() =>
-                                    dispatch(displayHistoryOnNextPage())
-                                }
                                 ticketId={ticket.get('id')}
                                 onLoaded={() => {
                                     // Make sure react has the time to render the list before scrolling
@@ -154,9 +130,6 @@ export const TicketView = ({
                             />
                         ) : (
                             <LegacyTimeline
-                                displayHistoryOnNextPage={() =>
-                                    dispatch(displayHistoryOnNextPage())
-                                }
                                 currentTicketId={ticket.get('id')}
                                 customerHistory={customerHistory}
                             />

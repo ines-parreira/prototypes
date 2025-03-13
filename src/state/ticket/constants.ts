@@ -70,9 +70,6 @@ export const SEND_INTENT_FEEDBACK_SUCCESS = 'SEND_INTENT_FEEDBACK_SUCCESS'
 
 export const TOGGLE_HISTORY = 'TOGGLE_HISTORY'
 
-// State-related
-export const DISPLAY_HISTORY_ON_NEXT_PAGE = 'DISPLAY_HISTORY_ON_NEXT_PAGE'
-
 // Merge events from sockets updates coming from server
 export const MERGE_TICKET = 'MERGE_TICKET'
 export const MERGE_CUSTOMER = 'MERGE_CUSTOMER'

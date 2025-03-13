@@ -85,7 +85,6 @@ exports[`ticket actions applyMacro() dispatches actions 1`] = `
       "_internal": Immutable.Map {
         "displayHistory": false,
         "shouldDisplayAuditLogEvents": false,
-        "shouldDisplayHistoryOnNextPage": false,
         "loading": Immutable.Map {
           "fetchTicket": false,
           "deleteMessage": false,
@@ -175,7 +174,6 @@ exports[`ticket actions applyMacroAction() 1`] = `
     "_internal": Immutable.Map {
       "displayHistory": false,
       "shouldDisplayAuditLogEvents": false,
-      "shouldDisplayHistoryOnNextPage": false,
       "loading": Immutable.Map {
         "fetchTicket": false,
         "deleteMessage": false,
@@ -401,27 +399,6 @@ exports[`ticket actions displayAuditLogEvents() should skip satisfaction survey 
 ]
 `;
 
-exports[`ticket actions displayHistoryOnNextPage() 1`] = `
-{
-  "state": true,
-  "type": "DISPLAY_HISTORY_ON_NEXT_PAGE",
-}
-`;
-
-exports[`ticket actions displayHistoryOnNextPage() 2`] = `
-{
-  "state": false,
-  "type": "DISPLAY_HISTORY_ON_NEXT_PAGE",
-}
-`;
-
-exports[`ticket actions displayHistoryOnNextPage() 3`] = `
-{
-  "state": true,
-  "type": "DISPLAY_HISTORY_ON_NEXT_PAGE",
-}
-`;
-
 exports[`ticket actions fetchTicket() existing instagram ticket 1`] = `
 [
   {
@@ -502,7 +479,6 @@ exports[`ticket actions fetchTicket() existing instagram ticket 1`] = `
       "_internal": Immutable.Map {
         "displayHistory": false,
         "shouldDisplayAuditLogEvents": false,
-        "shouldDisplayHistoryOnNextPage": false,
         "loading": Immutable.Map {
           "fetchTicket": false,
           "deleteMessage": false,
@@ -630,7 +606,6 @@ exports[`ticket actions fetchTicket() existing ticket 1`] = `
       "_internal": Immutable.Map {
         "displayHistory": false,
         "shouldDisplayAuditLogEvents": false,
-        "shouldDisplayHistoryOnNextPage": false,
         "loading": Immutable.Map {
           "fetchTicket": false,
           "deleteMessage": false,
@@ -707,7 +682,6 @@ exports[`ticket actions fetchTicket() new ticket 1`] = `
       "_internal": Immutable.Map {
         "displayHistory": false,
         "shouldDisplayAuditLogEvents": false,
-        "shouldDisplayHistoryOnNextPage": false,
         "loading": Immutable.Map {
           "fetchTicket": false,
           "deleteMessage": false,
@@ -798,7 +772,6 @@ exports[`ticket actions fetchTicket() should send ticket-viewed event when ticke
       "_internal": Immutable.Map {
         "displayHistory": false,
         "shouldDisplayAuditLogEvents": false,
-        "shouldDisplayHistoryOnNextPage": false,
         "loading": Immutable.Map {
           "fetchTicket": false,
           "deleteMessage": false,
@@ -934,7 +907,6 @@ exports[`ticket actions goToNextTicket() should fetch next ticket and go to this
       "_internal": Immutable.Map {
         "displayHistory": false,
         "shouldDisplayAuditLogEvents": false,
-        "shouldDisplayHistoryOnNextPage": false,
         "loading": Immutable.Map {
           "fetchTicket": false,
           "deleteMessage": false,
@@ -1045,7 +1017,6 @@ exports[`ticket actions goToNextTicket() should fetch next ticket and go to this
       "_internal": Immutable.Map {
         "displayHistory": false,
         "shouldDisplayAuditLogEvents": false,
-        "shouldDisplayHistoryOnNextPage": false,
         "loading": Immutable.Map {
           "fetchTicket": false,
           "deleteMessage": false,
@@ -1167,7 +1138,6 @@ exports[`ticket actions goToNextTicket() should fetch next ticket and wait for p
       "_internal": Immutable.Map {
         "displayHistory": false,
         "shouldDisplayAuditLogEvents": false,
-        "shouldDisplayHistoryOnNextPage": false,
         "loading": Immutable.Map {
           "fetchTicket": false,
           "deleteMessage": false,
@@ -1298,7 +1268,6 @@ exports[`ticket actions goToPrevTicket() should fetch previous ticket and go to 
       "_internal": Immutable.Map {
         "displayHistory": false,
         "shouldDisplayAuditLogEvents": false,
-        "shouldDisplayHistoryOnNextPage": false,
         "loading": Immutable.Map {
           "fetchTicket": false,
           "deleteMessage": false,
@@ -1409,7 +1378,6 @@ exports[`ticket actions goToPrevTicket() should fetch previous ticket and go to 
       "_internal": Immutable.Map {
         "displayHistory": false,
         "shouldDisplayAuditLogEvents": false,
-        "shouldDisplayHistoryOnNextPage": false,
         "loading": Immutable.Map {
           "fetchTicket": false,
           "deleteMessage": false,
@@ -1531,7 +1499,6 @@ exports[`ticket actions goToPrevTicket() should fetch previous ticket and wait f
       "_internal": Immutable.Map {
         "displayHistory": false,
         "shouldDisplayAuditLogEvents": false,
-        "shouldDisplayHistoryOnNextPage": false,
         "loading": Immutable.Map {
           "fetchTicket": false,
           "deleteMessage": false,
@@ -1633,7 +1600,6 @@ exports[`ticket actions handleMessageActionError() should fetch the ticket becau
       "_internal": Immutable.Map {
         "displayHistory": false,
         "shouldDisplayAuditLogEvents": false,
-        "shouldDisplayHistoryOnNextPage": false,
         "loading": Immutable.Map {
           "fetchTicket": false,
           "deleteMessage": false,
@@ -1735,7 +1701,6 @@ exports[`ticket actions handleMessageError() should fetch the ticket because the
       "_internal": Immutable.Map {
         "displayHistory": false,
         "shouldDisplayAuditLogEvents": false,
-        "shouldDisplayHistoryOnNextPage": false,
         "loading": Immutable.Map {
           "fetchTicket": false,
           "deleteMessage": false,

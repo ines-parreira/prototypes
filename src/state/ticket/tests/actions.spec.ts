@@ -906,12 +906,6 @@ describe('ticket actions', () => {
         expect(actions.toggleHistory(false)).toMatchSnapshot()
     })
 
-    it('displayHistoryOnNextPage()', () => {
-        expect(actions.displayHistoryOnNextPage(true)).toMatchSnapshot()
-        expect(actions.displayHistoryOnNextPage(false)).toMatchSnapshot()
-        expect(actions.displayHistoryOnNextPage()).toMatchSnapshot()
-    })
-
     it('deleteTicket()', () => {
         mockServer.onDelete('/api/tickets/13/').reply(200)
         return store

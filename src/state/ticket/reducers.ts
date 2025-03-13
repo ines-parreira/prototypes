@@ -43,7 +43,6 @@ export const initialState: TicketState = fromJS({
     _internal: {
         displayHistory: false,
         shouldDisplayAuditLogEvents: false,
-        shouldDisplayHistoryOnNextPage: false,
         loading: {
             fetchTicket: false,
             deleteMessage: false,
@@ -181,10 +180,7 @@ export default function reducer(
         }
 
         case types.CLEAR_TICKET: {
-            return initialState.setIn(
-                ['_internal', 'shouldDisplayHistoryOnNextPage'],
-                state.getIn(['_internal', 'shouldDisplayHistoryOnNextPage']),
-            )
+            return initialState
         }
 
         case types.ADD_TICKET_TAGS: {
@@ -450,12 +446,6 @@ export default function reducer(
 
             return state.setIn(['_internal', 'displayHistory'], displayHistory)
         }
-
-        case types.DISPLAY_HISTORY_ON_NEXT_PAGE:
-            return state.setIn(
-                ['_internal', 'shouldDisplayHistoryOnNextPage'],
-                action.state,
-            )
 
         case customerTypes.MERGE_CUSTOMERS_SUCCESS: {
             if (

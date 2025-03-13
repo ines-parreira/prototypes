@@ -15,15 +15,10 @@ import css from './Timeline.less'
 
 type Props = {
     ticketId?: number
-    onTicketClick?: (ticketId: number) => unknown
     onLoaded?: () => unknown
 }
 
-export default function Timeline({
-    ticketId = 0,
-    onTicketClick,
-    onLoaded,
-}: Props) {
+export default function Timeline({ ticketId = 0, onLoaded }: Props) {
     const [hasCalledOnLoaded, setHasCalledOnLoaded] = React.useState(false)
     const customersLoading = useAppSelector(getLoading).toJS() as {
         history: boolean
@@ -78,7 +73,6 @@ export default function Timeline({
                                                   logEvent(
                                                       SegmentEvent.CustomerTimelineTicketClicked,
                                                   )
-                                                  onTicketClick?.(ticket.id)
                                                   history.push(
                                                       `/app/ticket/${ticket.id}`,
                                                   )

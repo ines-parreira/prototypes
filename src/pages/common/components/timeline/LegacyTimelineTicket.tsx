@@ -8,7 +8,6 @@ import { logEvent, SegmentEvent } from 'common/segment'
 import DatetimeLabel from 'pages/common/utils/DatetimeLabel'
 import { AgentLabel, StatusLabel } from 'pages/common/utils/labels'
 import history from 'pages/history'
-import { displayHistoryOnNextPage } from 'state/ticket/actions'
 import { stripHTML } from 'utils'
 
 import SourceIcon from '../SourceIcon'
@@ -16,7 +15,6 @@ import SourceIcon from '../SourceIcon'
 import css from './LegacyTimelineTicket.less'
 
 type Props = {
-    displayHistoryOnNextPage?: typeof displayHistoryOnNextPage
     isCurrent: boolean
     ticket: Map<any, any>
 }
@@ -26,10 +24,6 @@ export default class LegacyTimelineTicket extends Component<Props> {
 
     _goToTicket = (e: MouseEvent) => {
         e.preventDefault()
-
-        if (this.props.displayHistoryOnNextPage) {
-            this.props.displayHistoryOnNextPage(true)
-        }
 
         logEvent(SegmentEvent.CustomerTimelineTicketClicked)
 

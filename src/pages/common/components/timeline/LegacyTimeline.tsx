@@ -3,13 +3,11 @@ import React, { Component } from 'react'
 import classnames from 'classnames'
 import { fromJS, List, Map } from 'immutable'
 
-import { displayHistoryOnNextPage } from '../../../../state/ticket/actions'
 import LegacyTimelineTicket from './LegacyTimelineTicket'
 
 import css from './Timeline.less'
 
 type Props = {
-    displayHistoryOnNextPage?: typeof displayHistoryOnNextPage
     customerHistory: Map<any, any>
     currentTicketId: number
     displayAll: boolean
@@ -27,13 +25,8 @@ export default class LegacyTimeline extends Component<Props> {
     }
 
     render() {
-        const {
-            currentTicketId,
-            customerHistory,
-            displayHistoryOnNextPage,
-            displayAll,
-            revert,
-        } = this.props
+        const { currentTicketId, customerHistory, displayAll, revert } =
+            this.props
 
         if (!customerHistory.get('hasHistory') && !displayAll) {
             return null
@@ -52,9 +45,6 @@ export default class LegacyTimeline extends Component<Props> {
                         if (obj.get('channel')) {
                             return (
                                 <LegacyTimelineTicket
-                                    displayHistoryOnNextPage={
-                                        displayHistoryOnNextPage
-                                    }
                                     isCurrent={
                                         currentTicketId === obj.get('id')
                                     }

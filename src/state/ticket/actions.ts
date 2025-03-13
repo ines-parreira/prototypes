@@ -1363,13 +1363,6 @@ export function toggleHistory(state?: boolean) {
     }
 }
 
-export function displayHistoryOnNextPage(state = true) {
-    return {
-        type: types.DISPLAY_HISTORY_ON_NEXT_PAGE,
-        state,
-    }
-}
-
 export function deleteTicket(id: number) {
     return (dispatch: StoreDispatch): Promise<ReturnType<StoreDispatch>> => {
         return client.delete(`/api/tickets/${id}/`).then(

@@ -123,7 +123,6 @@ describe('<TicketView />', () => {
 
         expect(TimelineMock).toHaveBeenCalledWith(
             {
-                onTicketClick: expect.any(Function),
                 onLoaded: expect.any(Function),
                 ticketId: 0,
             },

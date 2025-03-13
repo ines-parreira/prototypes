@@ -841,30 +841,6 @@ describe('ticket reducers', () => {
         ).toMatchSnapshot()
     })
 
-    it('should handle DISPLAY_HISTORY_ON_NEXT_PAGE', () => {
-        expect(
-            reducer(initialState, {
-                type: types.DISPLAY_HISTORY_ON_NEXT_PAGE,
-                state: true,
-            } as unknown as GorgiasAction).toJS(),
-        ).toMatchSnapshot()
-
-        // set false
-        expect(
-            reducer(
-                initialState.mergeDeep({
-                    _internal: {
-                        shouldDisplayHistoryOnNextPage: true,
-                    },
-                }),
-                {
-                    type: types.DISPLAY_HISTORY_ON_NEXT_PAGE,
-                    state: false,
-                } as unknown as GorgiasAction,
-            ).toJS(),
-        ).toMatchSnapshot()
-    })
-
     it('should handle MERGE_CUSTOMERS_SUCCESS', () => {
         // success
         // should do nothing since there is no customer in state for now

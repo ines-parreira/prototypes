@@ -94,7 +94,7 @@ describe('<Timeline />', () => {
 
     it('should call TicketCard for each ticket with a channel, in correct order, with correct props', () => {
         const ticketId = 3
-        render(<Timeline onTicketClick={() => {}} ticketId={ticketId} />)
+        render(<Timeline ticketId={ticketId} />)
 
         expect(TicketCard).toHaveBeenCalledTimes(2)
         expect(TicketCard).toHaveBeenNthCalledWith(
@@ -117,12 +117,10 @@ describe('<Timeline />', () => {
         )
     })
 
-    it('should call onTicketClick, log event and redirect when ticket is clicked', () => {
-        const onTicketClick = jest.fn()
-        render(<Timeline onTicketClick={onTicketClick} />)
+    it('should log event and redirect when ticket is clicked', () => {
+        render(<Timeline />)
 
         TicketCardMock.mock.calls[0][0].onClick?.(ticket1.id)
-        expect(onTicketClick).toHaveBeenCalledWith(1)
         expect(history.push).toHaveBeenCalledWith(`/app/ticket/${ticket1.id}`)
         expect(logEvent).toHaveBeenCalledWith(
             SegmentEvent.CustomerTimelineTicketClicked,

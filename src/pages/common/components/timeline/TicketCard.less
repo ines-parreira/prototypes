@@ -60,6 +60,7 @@
     }
 
     .subject {
+        color: var(--neutral-grey-6);
         .body-semibold();
         overflow: hidden;
         text-overflow: ellipsis;
@@ -86,5 +87,11 @@
     .separator {
         margin: 0 @layout-spacing-xxs;
         color: var(--neutral-grey-3);
+    }
+
+    .metaText {
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
     }
 }

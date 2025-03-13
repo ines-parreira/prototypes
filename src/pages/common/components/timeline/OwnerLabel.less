@@ -5,13 +5,16 @@
         display: flex;
         align-items: center;
         gap: @layout-spacing-xxs;
+        overflow: hidden;
 
         .icon {
+            flex-shrink: 0;
             font-size: 16px;
             color: var(--neutral-grey-4);
         }
 
         .teamIcon {
+            flex-shrink: 0;
             width: 16px;
             height: 16px;
             background-color: var(--neutral-grey-4);
@@ -25,5 +28,11 @@
         .icon {
             color: var(--feedback-warning-3);
         }
+    }
+
+    .textContent {
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
     }
 }

@@ -2450,7 +2450,6 @@ exports[`actions new message sendTicketMessage should submit new message 1`] = `
       "_internal": Immutable.Map {
         "displayHistory": false,
         "shouldDisplayAuditLogEvents": false,
-        "shouldDisplayHistoryOnNextPage": false,
         "loading": Immutable.Map {
           "fetchTicket": false,
           "deleteMessage": false,

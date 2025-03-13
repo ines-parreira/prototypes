@@ -27,7 +27,7 @@ export function OwnerLabel({
             ) : (
                 <div className={css.teamIcon} />
             )}
-            <span>{label}</span>
+            <span className={css.textContent}>{label}</span>
         </span>
     )
 }
