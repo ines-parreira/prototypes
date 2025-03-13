@@ -5,7 +5,7 @@ import { StoreActivation } from 'pages/aiAgent/Activation/components/AiAgentActi
 import { reducer } from 'pages/aiAgent/Activation/hooks/storeActivationReducer'
 import { useStoresConfigurationMutation } from 'pages/aiAgent/hooks/useStoresConfigurationMutation'
 
-const computeActivationScore = (
+export const computeActivationScore = (
     storeConfigs: Pick<
         StoreConfiguration,
         | 'scopes'

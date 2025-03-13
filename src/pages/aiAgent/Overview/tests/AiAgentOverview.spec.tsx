@@ -1,3 +1,6 @@
+// must be kept as first import in the file
+import 'pages/aiAgent/test/mock-activation-hooks.utils'
+
 import React from 'react'
 
 import { QueryClientProvider } from '@tanstack/react-query'
@@ -121,21 +124,5 @@ describe('AiAgentOverview', () => {
         })
         const { queryByText } = renderComponent()
         expect(queryByText('Resources')).toBeFalsy()
-    })
-
-    it('should log event ai-agent-activate-main-button-clicked when clicking activation button', () => {
-        mockFlags({
-            [FeatureFlagKey.AiAgentActivation]: true,
-        })
-        const { getByText } = renderComponent()
-        const activationButton = getByText('Manage')
-        expect(activationButton).toBeTruthy()
-
-        activationButton.click()
-
-        expect(logEventMock).toHaveBeenCalledWith(
-            segment.SegmentEvent.AiAgentActivateMainButtonClicked,
-            { page: 'ai-agent-overview' },
-        )
     })
 })

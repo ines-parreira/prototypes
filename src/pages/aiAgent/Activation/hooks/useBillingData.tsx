@@ -21,7 +21,8 @@ export const useBillingData = () => {
 
     return useMemo(
         () => ({
-            plan: earlyAccessAutomatePlanQuery.data,
+            earlyAccessPlan: earlyAccessAutomatePlanQuery.data,
+            currentPlan: billingState?.data?.current_plans?.automate,
             isPreviewModalVisible,
             setIsPreviewModalVisible,
             isOnNewPlan,

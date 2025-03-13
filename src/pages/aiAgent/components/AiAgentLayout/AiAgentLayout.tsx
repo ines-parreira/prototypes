@@ -3,6 +3,7 @@ import React, { ReactNode, useMemo } from 'react'
 import classnames from 'classnames'
 
 import { logEvent, SegmentEvent } from 'common/segment'
+import { useActivation } from 'pages/aiAgent/Activation/hooks/useActivation'
 import { useAccountStoreConfiguration } from 'pages/aiAgent/hooks/useAccountStoreConfiguration'
 import Button from 'pages/common/components/button/Button'
 import history from 'pages/history'
@@ -33,27 +34,38 @@ export const AiAgentLayout = ({
         storeNames: [shopName],
     })
 
+    const { ActivationModal, EarlyAccessModal, ActivationButton } =
+        useActivation()
+
     const AiAgentTitle = useMemo(() => {
         return (
             <div className={css.customAiAgentTitle}>
-                <h1 className="d-flex align-items-center">{title}</h1>
-                {aiAgentTicketViewId && (
-                    <Button
-                        size="small"
-                        intent="secondary"
-                        onClick={() => {
-                            logEvent(SegmentEvent.AiAgentViewTicketsClicked)
-                            history.push(`/app/views/${aiAgentTicketViewId}`, {
-                                skipRedirect: true,
-                            })
-                        }}
-                    >
-                        View AI Agent Tickets
-                    </Button>
-                )}
+                <div className={css.customAiAgentTitleSubContainer}>
+                    <h1 className="d-flex align-items-center">{title}</h1>
+                    {aiAgentTicketViewId && (
+                        <Button
+                            size="small"
+                            intent="secondary"
+                            onClick={() => {
+                                logEvent(SegmentEvent.AiAgentViewTicketsClicked)
+                                history.push(
+                                    `/app/views/${aiAgentTicketViewId}`,
+                                    {
+                                        skipRedirect: true,
+                                    },
+                                )
+                            }}
+                        >
+                            View AI Agent Tickets
+                        </Button>
+                    )}
+                </div>
+                <div>
+                    <ActivationButton />
+                </div>
             </div>
         )
-    }, [aiAgentTicketViewId, title])
+    }, [aiAgentTicketViewId, title, ActivationButton])
 
     return (
         <AiAgentView
@@ -63,6 +75,8 @@ export const AiAgentLayout = ({
             className={classnames(css.container, className)}
         >
             {children}
+            <ActivationModal />
+            <EarlyAccessModal />
         </AiAgentView>
     )
 }

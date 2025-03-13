@@ -20,13 +20,12 @@ type Props = {
 }
 export const ActivationManageButton = ({ onClick, progress }: Props) => {
     const captionText = getCaptionText(progress)
-    const percentage = Math.round(progress * 100)
     return (
         <button type="button" className={css.button} onClick={onClick}>
             <div className={css.progressStatus}>
                 <ActivationProgress
                     className={css.progress}
-                    percentage={percentage}
+                    percentage={progress}
                 />
                 <div className={css.caption}>{captionText}</div>
             </div>

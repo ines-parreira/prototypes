@@ -4,7 +4,7 @@ import cn from 'classnames'
 
 import { Badge, Button, Skeleton } from '@gorgias/merchant-ui-kit'
 
-import { AutomateEarlyAccessPlan } from 'models/billing/types'
+import { AutomateEarlyAccessPlan, AutomatePlan } from 'models/billing/types'
 import {
     getAutomateEarlyAccessPricesFormatted,
     getPlanPriceFormatted,
@@ -29,7 +29,8 @@ type Props = {
     onStayClick: () => void
     onClose: () => void
     isOpen: boolean
-    plan?: AutomateEarlyAccessPlan | null
+    currentPlan?: AutomatePlan | null
+    earlyAccessPlan?: AutomateEarlyAccessPlan | null
     disableUpgradeButton: boolean
 }
 export const EarlyAccessModal = ({
@@ -38,11 +39,12 @@ export const EarlyAccessModal = ({
     onStayClick,
     onClose,
     isOpen,
-    plan,
+    currentPlan,
+    earlyAccessPlan,
     disableUpgradeButton,
 }: Props) => {
     const { amountAfterDiscount, discount } =
-        getAutomateEarlyAccessPricesFormatted(plan)
+        getAutomateEarlyAccessPricesFormatted(earlyAccessPlan)
     return (
         <Modal
             isOpen={isOpen}
@@ -137,7 +139,7 @@ export const EarlyAccessModal = ({
                                     {isLoading ? (
                                         <Skeleton width={140} />
                                     ) : (
-                                        `${getPlanPriceFormatted(plan)}/${plan?.cadence}`
+                                        `${getPlanPriceFormatted(currentPlan)}/${currentPlan?.cadence}`
                                     )}
                                 </span>
                             </div>
@@ -216,14 +218,14 @@ export const EarlyAccessModal = ({
                                     {isLoading ? (
                                         <Skeleton width={140} height={22} />
                                     ) : (
-                                        `${amountAfterDiscount}/${plan?.cadence}`
+                                        `${amountAfterDiscount}/${currentPlan?.cadence}`
                                     )}
                                 </span>
                                 <span className={css.subPrice}>
                                     {isLoading ? (
                                         <Skeleton width={210} height={12} />
                                     ) : (
-                                        `${discount}/${plan?.cadence} for 12 months`
+                                        `${discount}/${currentPlan?.cadence} for 12 months`
                                     )}
                                 </span>
                             </div>

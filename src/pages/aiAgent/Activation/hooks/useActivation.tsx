@@ -1,6 +1,7 @@
 import React, { useMemo, useState } from 'react'
 
 import { useFlags } from 'launchdarkly-react-client-sdk'
+import { useParams } from 'react-router-dom'
 
 import { logEvent, SegmentEvent } from 'common/segment'
 import { FeatureFlagKey } from 'config/featureFlags'
@@ -14,6 +15,7 @@ import { getShopifyIntegrationsSortedByName } from 'state/integrations/selectors
 
 import { PageName } from '../types'
 import { useBillingData } from './useBillingData'
+import { computeActivationScore } from './useStoreActivations'
 
 export const useActivation = (pageName?: PageName) => {
     const [isModalVisible, setIsModalVisible] = useState(false)
@@ -21,9 +23,21 @@ export const useActivation = (pageName?: PageName) => {
     const currentAccount = useAppSelector(getCurrentAccountState)
     const accountDomain = currentAccount.get('domain')
     const stores = useAppSelector(getShopifyIntegrationsSortedByName)
+    const { shopName } = useParams<{
+        shopName: string
+    }>()
     const storesName = useMemo(
-        () => stores.map((store) => store.name),
-        [stores],
+        () =>
+            stores
+                .map((store) => store.name)
+                .filter((store) => {
+                    if (shopName) {
+                        return store === shopName
+                    }
+
+                    return true
+                }),
+        [stores, shopName],
     )
 
     const { storeConfigurations } = useStoreConfigurationForAccount({
@@ -31,12 +45,21 @@ export const useActivation = (pageName?: PageName) => {
         storesName,
     })
 
+    const { totalScore, currentScore } = computeActivationScore(
+        storeConfigurations ?? [],
+    )
+
+    const progressPercentage = totalScore
+        ? Math.round((currentScore / totalScore) * 100)
+        : 0
+
     const {
         isOnNewPlan,
         setIsPreviewModalVisible,
         isPreviewModalVisible,
         isCurrentUserAdmin,
-        plan,
+        currentPlan,
+        earlyAccessPlan,
         isLoading,
     } = useBillingData()
 
@@ -54,7 +77,7 @@ export const useActivation = (pageName?: PageName) => {
                                 },
                             )
                         }}
-                        progress={0.5}
+                        progress={progressPercentage}
                     />
                 ) : null,
             ActivationModal: () => (
@@ -80,7 +103,8 @@ export const useActivation = (pageName?: PageName) => {
                     onClose={() => setIsPreviewModalVisible(false)}
                     onStayClick={() => setIsPreviewModalVisible(false)}
                     onUpgradeClick={() => {}}
-                    plan={plan}
+                    currentPlan={currentPlan}
+                    earlyAccessPlan={earlyAccessPlan}
                     disableUpgradeButton={!isCurrentUserAdmin}
                 />
             ),
@@ -91,12 +115,14 @@ export const useActivation = (pageName?: PageName) => {
             storeConfigurations,
             accountDomain,
             pageName,
-            plan,
+            currentPlan,
+            earlyAccessPlan,
             isPreviewModalVisible,
             isOnNewPlan,
             isCurrentUserAdmin,
             isLoading,
             setIsPreviewModalVisible,
+            progressPercentage,
         ],
     )
 }

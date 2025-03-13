@@ -1,3 +1,6 @@
+// must be kept as first import in the file
+import 'pages/aiAgent/test/mock-activation-hooks.utils'
+
 import React from 'react'
 
 import { QueryClientProvider, UseQueryResult } from '@tanstack/react-query'
@@ -32,6 +35,7 @@ import useGetAppImageUrl from '../hooks/useGetAppImageUrl'
 jest.mock('models/workflows/queries')
 jest.mock('../hooks/useGetAppImageUrl')
 jest.mock('pages/aiAgent/hooks/useAiAgentEnabled')
+jest.mock('pages/aiAgent/Activation/hooks/useActivation')
 
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
 const mockUseGetAppImageUrl = jest.mocked(useGetAppImageUrl)

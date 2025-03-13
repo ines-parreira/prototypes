@@ -1,3 +1,6 @@
+// must be kept as first import in the file
+import 'pages/aiAgent/test/mock-activation-hooks.utils'
+
 import React from 'react'
 
 import { QueryClientProvider } from '@tanstack/react-query'
@@ -44,17 +47,6 @@ jest.mock('pages/aiAgent/insights/IntentTableWidget/IntentTableWidget', () => ({
 jest.mock('pages/stats/DrillDownModal', () => ({
     DrillDownModal: jest.fn(() => <></>),
 }))
-
-jest.mock('moment', () => {
-    const actualMoment = jest.requireActual<typeof moment>('moment')
-    return jest.fn((params) => {
-        if (params) {
-            return actualMoment(params)
-        }
-
-        return actualMoment('2024-01-01T12:00:00.000Z')
-    })
-})
 
 const defaultStore = {
     currentAccount: fromJS({

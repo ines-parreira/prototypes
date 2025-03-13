@@ -1,3 +1,6 @@
+// must be kept as first import in the file
+import 'pages/aiAgent/test/mock-activation-hooks.utils'
+
 import React from 'react'
 
 import { screen } from '@testing-library/react'
