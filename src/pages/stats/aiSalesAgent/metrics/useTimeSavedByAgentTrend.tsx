@@ -1,11 +1,15 @@
 import { useMemo } from 'react'
 
 import {
-    fetchOnlineTimeTrend,
-    useOnlineTimeTrend,
+    fetchTicketHandleTimeTrend,
+    useTicketHandleTimeTrend,
 } from 'hooks/reporting/metricTrends'
 import { MetricTrend } from 'hooks/reporting/useMetricTrend'
 import { StatsFilters } from 'models/stat/types'
+import {
+    fetchSuccessRateTrend,
+    useSuccessRateTrend,
+} from 'pages/stats/aiSalesAgent/metrics/useSuccessRateTrend'
 
 import {
     fetchTotalNumberOfAgentConverationsTrend,
@@ -14,33 +18,41 @@ import {
 
 const calculateTimeSavedByAgents = (
     numberOfInteractions: MetricTrend,
-    automatedInteractionTrend: MetricTrend,
+    ticketHandleTimeData: MetricTrend,
+    successRateData: MetricTrend,
 ) => {
     return {
         value:
             (numberOfInteractions.data?.value ?? 0) *
-            (automatedInteractionTrend.data?.value ?? 0),
+            (successRateData.data?.value ?? 0) *
+            (ticketHandleTimeData.data?.value ?? 0),
         prevValue:
             (numberOfInteractions.data?.prevValue ?? 0) *
-            (automatedInteractionTrend.data?.prevValue ?? 0),
+            (successRateData.data?.prevValue ?? 0) *
+            (ticketHandleTimeData.data?.prevValue ?? 0),
     }
 }
 
 const useTimeSavedByAgentTrend = (filters: StatsFilters, timezone: string) => {
     const totalNumberOfAgentConverationsData =
         useTotalNumberOfAgentConverationsTrend(filters, timezone)
-    const onlineTimeData = useOnlineTimeTrend(filters, timezone)
+    const ticketHandleTimeData = useTicketHandleTimeTrend(filters, timezone)
+    const successRateData = useSuccessRateTrend(filters, timezone)
 
     const isFetching =
         totalNumberOfAgentConverationsData.isFetching ||
-        onlineTimeData.isFetching
+        ticketHandleTimeData.isFetching ||
+        successRateData.isFetching
     const isError =
-        totalNumberOfAgentConverationsData.isError || onlineTimeData.isError
+        totalNumberOfAgentConverationsData.isError ||
+        ticketHandleTimeData.isError ||
+        successRateData.isError
 
     const data = useMemo(() => {
         if (
             !totalNumberOfAgentConverationsData.data ||
-            !onlineTimeData.data ||
+            !ticketHandleTimeData.data ||
+            !successRateData.data ||
             isFetching ||
             isError
         ) {
@@ -49,11 +61,13 @@ const useTimeSavedByAgentTrend = (filters: StatsFilters, timezone: string) => {
 
         return calculateTimeSavedByAgents(
             totalNumberOfAgentConverationsData,
-            onlineTimeData,
+            ticketHandleTimeData,
+            successRateData,
         )
     }, [
         totalNumberOfAgentConverationsData,
-        onlineTimeData,
+        ticketHandleTimeData,
+        successRateData,
         isError,
         isFetching,
     ])
@@ -70,18 +84,26 @@ const fetchTimeSavedByAgentTrend = (
 ) => {
     return Promise.all([
         fetchTotalNumberOfAgentConverationsTrend(filters, timezone),
-        fetchOnlineTimeTrend(filters, timezone),
+        fetchTicketHandleTimeTrend(filters, timezone),
+        fetchSuccessRateTrend(filters, timezone),
     ])
-        .then(([totalNumberOfAgentConverationsData, onlineTimeData]) => {
-            return {
-                isFetching: false,
-                isError: false,
-                data: calculateTimeSavedByAgents(
-                    totalNumberOfAgentConverationsData,
-                    onlineTimeData,
-                ),
-            }
-        })
+        .then(
+            ([
+                totalNumberOfAgentConverationsData,
+                ticketHandleTimeData,
+                successRateData,
+            ]) => {
+                return {
+                    isFetching: false,
+                    isError: false,
+                    data: calculateTimeSavedByAgents(
+                        totalNumberOfAgentConverationsData,
+                        ticketHandleTimeData,
+                        successRateData,
+                    ),
+                }
+            },
+        )
         .catch(() => ({
             isFetching: false,
             isError: true,

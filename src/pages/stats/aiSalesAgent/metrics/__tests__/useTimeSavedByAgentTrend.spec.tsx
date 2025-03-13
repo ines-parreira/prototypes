@@ -6,10 +6,14 @@ import { act, renderHook } from '@testing-library/react-hooks/dom'
 import moment from 'moment'
 
 import {
-    fetchOnlineTimeTrend,
-    useOnlineTimeTrend,
+    fetchTicketHandleTimeTrend,
+    useTicketHandleTimeTrend,
 } from 'hooks/reporting/metricTrends'
 import { StatsFilters } from 'models/stat/types'
+import {
+    fetchSuccessRateTrend,
+    useSuccessRateTrend,
+} from 'pages/stats/aiSalesAgent/metrics/useSuccessRateTrend'
 import {
     fetchTotalNumberOfAgentConverationsTrend,
     useTotalNumberOfAgentConverationsTrend,
@@ -49,15 +53,25 @@ const fetchTotalNumberOfAgentConverationsTrendMock = assumeMock(
     fetchTotalNumberOfAgentConverationsTrend,
 )
 
+jest.mock('pages/stats/aiSalesAgent/metrics/useSuccessRateTrend')
+const useSuccessRateTrendMock = assumeMock(useSuccessRateTrend)
+const fetchSuccessRateTrendMock = assumeMock(fetchSuccessRateTrend)
+
 jest.mock('hooks/reporting/metricTrends')
-const useOnlineTimeTrendMock = assumeMock(useOnlineTimeTrend)
-const fetchOnlineTimeTrendMock = assumeMock(fetchOnlineTimeTrend)
+const useTicketHandleTimeTrendMock = assumeMock(useTicketHandleTimeTrend)
+const fetchTicketHandleTimeTrendMock = assumeMock(fetchTicketHandleTimeTrend)
 
 describe('timeSavedByAgentTrend', () => {
     describe('useTimeSavedByAgentTrend', () => {
-        it('should return correct metric data when the query resolves', async () => {
-            act(() => jest.runAllTimers())
-
+        beforeEach(() => {
+            useSuccessRateTrendMock.mockReturnValue({
+                isFetching: false,
+                isError: false,
+                data: {
+                    value: 10,
+                    prevValue: 2,
+                },
+            })
             useTotalNumberOfAgentConverationsTrendMock.mockReturnValue({
                 isFetching: false,
                 isError: false,
@@ -66,7 +80,7 @@ describe('timeSavedByAgentTrend', () => {
                     prevValue: 2,
                 },
             })
-            useOnlineTimeTrendMock.mockReturnValue({
+            useTicketHandleTimeTrendMock.mockReturnValue({
                 isFetching: false,
                 isError: false,
                 data: {
@@ -74,6 +88,10 @@ describe('timeSavedByAgentTrend', () => {
                     prevValue: 1,
                 },
             })
+        })
+
+        it('should return correct metric data when the query resolves', async () => {
+            act(() => jest.runAllTimers())
 
             const { result } = renderHook(
                 () => useTimeSavedByAgentTrend(filters, timezone),
@@ -89,8 +107,8 @@ describe('timeSavedByAgentTrend', () => {
             await waitFor(() => {
                 expect(result.current).toEqual({
                     data: {
-                        prevValue: 2,
-                        value: 20,
+                        prevValue: 4,
+                        value: 200,
                     },
                     isError: false,
                     isFetching: false,
@@ -101,20 +119,21 @@ describe('timeSavedByAgentTrend', () => {
         it('should retrun correct value if cube returns null', async () => {
             act(() => jest.runAllTimers())
 
-            useTotalNumberOfAgentConverationsTrendMock.mockReturnValue({
+            useSuccessRateTrendMock.mockReturnValue({
                 isFetching: false,
                 isError: false,
                 data: {
                     value: null,
                     prevValue: null,
                 },
-            })
-            useOnlineTimeTrendMock.mockReturnValue({
+            } as unknown as ReturnType<typeof useSuccessRateTrend>)
+
+            useTotalNumberOfAgentConverationsTrendMock.mockReturnValue({
                 isFetching: false,
                 isError: false,
                 data: {
-                    value: 2,
-                    prevValue: 1,
+                    value: null,
+                    prevValue: null,
                 },
             })
 
@@ -143,9 +162,15 @@ describe('timeSavedByAgentTrend', () => {
     })
 
     describe('fetchimeSavedByAgentTrend', () => {
-        it('should return correct metric data when the query resolves', async () => {
-            act(() => jest.runAllTimers())
-
+        beforeEach(() => {
+            fetchSuccessRateTrendMock.mockReturnValue({
+                isFetching: false,
+                isError: false,
+                data: {
+                    value: 10,
+                    prevValue: 2,
+                },
+            } as unknown as ReturnType<typeof fetchSuccessRateTrend>)
             fetchTotalNumberOfAgentConverationsTrendMock.mockReturnValue({
                 isFetching: false,
                 isError: false,
@@ -156,21 +181,25 @@ describe('timeSavedByAgentTrend', () => {
             } as unknown as ReturnType<
                 typeof fetchTotalNumberOfAgentConverationsTrend
             >)
-            fetchOnlineTimeTrendMock.mockReturnValue({
+            fetchTicketHandleTimeTrendMock.mockReturnValue({
                 isFetching: false,
                 isError: false,
                 data: {
                     value: 2,
                     prevValue: 1,
                 },
-            } as unknown as ReturnType<typeof fetchOnlineTimeTrend>)
+            } as unknown as ReturnType<typeof fetchTicketHandleTimeTrend>)
+        })
+
+        it('should return correct metric data when the query resolves', async () => {
+            act(() => jest.runAllTimers())
 
             const result = await fetchTimeSavedByAgentTrend(filters, timezone)
 
             expect(result).toEqual({
                 data: {
-                    prevValue: 2,
-                    value: 20,
+                    prevValue: 4,
+                    value: 200,
                 },
                 isError: false,
                 isFetching: false,
@@ -179,6 +208,12 @@ describe('timeSavedByAgentTrend', () => {
 
         it('should retrun correct value if cube returns null', async () => {
             act(() => jest.runAllTimers())
+
+            fetchSuccessRateTrendMock.mockReturnValue({
+                isFetching: false,
+                isError: false,
+                data: { value: null, prevValue: null },
+            } as unknown as ReturnType<typeof fetchSuccessRateTrend>)
 
             fetchTotalNumberOfAgentConverationsTrendMock.mockReturnValue({
                 isFetching: false,
@@ -190,14 +225,14 @@ describe('timeSavedByAgentTrend', () => {
             } as unknown as ReturnType<
                 typeof fetchTotalNumberOfAgentConverationsTrend
             >)
-            fetchOnlineTimeTrendMock.mockReturnValue({
+            fetchTicketHandleTimeTrendMock.mockReturnValue({
                 isFetching: false,
                 isError: false,
                 data: {
                     value: null,
                     prevValue: null,
                 },
-            } as unknown as ReturnType<typeof fetchOnlineTimeTrend>)
+            } as unknown as ReturnType<typeof fetchTicketHandleTimeTrend>)
 
             const result = await fetchTimeSavedByAgentTrend(filters, timezone)
 
