@@ -14,22 +14,15 @@ import { account } from 'fixtures/account'
 import { billingState } from 'fixtures/billing'
 import { chatIntegrationFixtures } from 'fixtures/chat'
 import { integrationsState, shopifyIntegration } from 'fixtures/integrations'
-import {
-    getOnboardingData,
-    updateOnboardingData,
-} from 'models/aiAgent/resources/configuration'
 import { DiscountStrategy } from 'pages/aiAgent/Onboarding/components/steps/PersonalityStep/DiscountStrategy'
 import { PersonalityStep } from 'pages/aiAgent/Onboarding/components/steps/PersonalityStep/PersonalityStep'
 import { PersuasionLevel } from 'pages/aiAgent/Onboarding/components/steps/PersonalityStep/PersuasionLevel'
 import { StepProps } from 'pages/aiAgent/Onboarding/components/steps/types'
+import { useGetOnboardingData } from 'pages/aiAgent/Onboarding/hooks/useGetOnboardingData'
+import { useUpdateOnboarding } from 'pages/aiAgent/Onboarding/hooks/useUpdateOnboarding'
 import { AiAgentScopes, WizardStepEnum } from 'pages/aiAgent/Onboarding/types'
 import { RootState, StoreDispatch } from 'state/types'
-import { renderWithRouter } from 'utils/testing'
-
-jest.mock('models/aiAgent/resources/configuration', () => ({
-    getOnboardingData: jest.fn(),
-    updateOnboardingData: jest.fn(),
-}))
+import { assumeMock, renderWithRouter } from 'utils/testing'
 
 const trackRect = {
     left: 0,
@@ -49,9 +42,6 @@ const history = createMemoryHistory({
     ],
 })
 
-const mockGetOnboardingData = getOnboardingData as jest.Mock
-const mockUpdateOnboardingData = updateOnboardingData as jest.Mock
-
 const queryClient = new QueryClient()
 
 const mockStore = configureMockStore<RootState, StoreDispatch>()
@@ -63,6 +53,13 @@ const defaultState = {
         integrations: [shopifyIntegration, ...chatIntegrationFixtures],
     }),
 } as RootState
+
+jest.mock('pages/aiAgent/Onboarding/hooks/useGetOnboardingData')
+const useGetOnboardingDataMock = assumeMock(useGetOnboardingData)
+
+const mutateUpdateOnboardingMock = jest.fn()
+jest.mock('pages/aiAgent/Onboarding/hooks/useUpdateOnboarding')
+const useUpdateOnboardingMock = assumeMock(useUpdateOnboarding)
 
 const goToStep = jest.fn()
 
@@ -92,26 +89,24 @@ const renderComponent = (
 describe('PersonalityStep - With prepopulated data', () => {
     beforeAll(() => {
         queryClient.clear()
-        // ✅ Mock getOnboardingData function
-        mockGetOnboardingData.mockResolvedValue(
-            Promise.resolve([
-                {
-                    id: 1,
-                    salesPersuasionLevel: PersuasionLevel.Moderate,
-                    salesDiscountStrategyLevel: DiscountStrategy.Balanced,
-                    salesDiscountMax: 0.1,
-                    scopes: [AiAgentScopes.SALES],
-                    shopName: shopifyIntegration.meta.shop_name,
-                },
-            ]),
-        )
 
-        // // ✅ Mock updateOnboardingData function
-        mockUpdateOnboardingData.mockResolvedValue(
-            Promise.resolve({
-                success: true,
-            }),
-        )
+        useGetOnboardingDataMock.mockReturnValue({
+            isLoading: false,
+            data: {
+                id: '1',
+                salesPersuasionLevel: PersuasionLevel.Moderate,
+                salesDiscountStrategyLevel: DiscountStrategy.Balanced,
+                salesDiscountMax: 0.1,
+                scopes: [AiAgentScopes.SALES],
+                shopName: shopifyIntegration.meta.shop_name,
+                currentStepName: WizardStepEnum.SALES_PERSONALITY,
+            },
+        })
+
+        useUpdateOnboardingMock.mockReturnValue({
+            mutate: jest.fn(),
+            isLoading: false,
+        } as any)
 
         jest.useFakeTimers()
     })
@@ -141,26 +136,28 @@ describe('PersonalityStep - With prepopulated data', () => {
 
 describe('PersonalityStep - Empty state', () => {
     beforeAll(() => {
-        // ✅ Mock getOnboardingData function
-        mockGetOnboardingData.mockResolvedValue(
-            Promise.resolve([
-                {
-                    id: 1,
-                    salesPersuasionLevel: PersuasionLevel.Moderate,
-                    salesDiscountStrategyLevel: DiscountStrategy.Balanced,
-                    salesDiscountMax: null,
-                    scopes: [AiAgentScopes.SALES],
-                    shopName: shopifyIntegration.meta.shop_name,
-                },
-            ]),
-        )
+        useGetOnboardingDataMock.mockReturnValue({
+            isLoading: false,
+            data: {
+                id: '1',
+                salesPersuasionLevel: PersuasionLevel.Moderate,
+                salesDiscountStrategyLevel: DiscountStrategy.Balanced,
+                salesDiscountMax: null,
+                scopes: [AiAgentScopes.SALES],
+                shopName: shopifyIntegration.meta.shop_name,
+                currentStepName: WizardStepEnum.SALES_PERSONALITY,
+            },
+        })
 
-        // // ✅ Mock updateOnboardingData function
-        mockUpdateOnboardingData.mockResolvedValue(
-            Promise.resolve({
-                success: true,
-            }),
+        mutateUpdateOnboardingMock.mockImplementation(
+            (data: any, { onSuccess }: { onSuccess: () => {} }) => {
+                onSuccess()
+            },
         )
+        useUpdateOnboardingMock.mockReturnValue({
+            mutate: mutateUpdateOnboardingMock,
+            isLoading: false,
+        } as any)
 
         jest.useFakeTimers()
     })

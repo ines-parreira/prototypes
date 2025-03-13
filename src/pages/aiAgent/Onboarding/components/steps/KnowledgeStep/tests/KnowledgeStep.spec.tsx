@@ -93,8 +93,6 @@ const renderWithProvider = (props = defaultProps) => {
 
 describe('KnowledgeStep', () => {
     beforeEach(() => {
-        // ✅ Mock getOnboardingData function
-
         mockUseGetOnboardingData.mockReturnValue({
             data: {
                 id: 1,

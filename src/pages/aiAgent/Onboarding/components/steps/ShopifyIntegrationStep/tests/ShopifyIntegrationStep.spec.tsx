@@ -11,25 +11,25 @@ import { account } from 'fixtures/account'
 import { billingState } from 'fixtures/billing'
 import { chatIntegrationFixtures } from 'fixtures/chat'
 import { integrationsState, shopifyIntegration } from 'fixtures/integrations'
-import {
-    createOnboardingData,
-    getOnboardingData,
-    getOnboardingDataByShopName,
-    updateOnboardingData,
-} from 'models/aiAgent/resources/configuration'
 
 import '@testing-library/jest-dom/extend-expect'
 
 import { StoreConfiguration } from 'models/aiAgent/types'
 import { StoreIntegration } from 'models/integration/types'
 import { useStoreConfigurationForAccount } from 'pages/aiAgent/hooks/useStoreConfigurationForAccount'
+import { DiscountStrategy } from 'pages/aiAgent/Onboarding/components/steps/PersonalityStep/DiscountStrategy'
+import { PersuasionLevel } from 'pages/aiAgent/Onboarding/components/steps/PersonalityStep/PersuasionLevel'
 import { ShopifyIntegrationStep } from 'pages/aiAgent/Onboarding/components/steps/ShopifyIntegrationStep/ShopifyIntegrationStep'
+import { useCreateOnboarding } from 'pages/aiAgent/Onboarding/hooks/useCreateOnboarding'
+import { useGetOnboardingData } from 'pages/aiAgent/Onboarding/hooks/useGetOnboardingData'
+import { useGetOnboardingDataByShopName } from 'pages/aiAgent/Onboarding/hooks/useGetOnboardingDataByShopName'
 import { useShopifyIntegrations } from 'pages/aiAgent/Onboarding/hooks/useShopifyIntegrations'
+import { useUpdateOnboarding } from 'pages/aiAgent/Onboarding/hooks/useUpdateOnboarding'
 import { WizardStepEnum } from 'pages/aiAgent/Onboarding/types'
 import { useShopifyIntegrationAndScope } from 'pages/common/hooks/useShopifyIntegrationAndScope'
 import { useEmailIntegrations } from 'pages/settings/contactForm/hooks/useEmailIntegrations'
 import { RootState, StoreDispatch } from 'state/types'
-import { renderWithRouter } from 'utils/testing'
+import { assumeMock, renderWithRouter } from 'utils/testing'
 
 // Mock the useShopifyIntegrations hook
 jest.mock('pages/aiAgent/Onboarding/hooks/useShopifyIntegrations')
@@ -37,24 +37,26 @@ jest.mock('pages/common/hooks/useShopifyIntegrationAndScope')
 jest.mock('pages/settings/contactForm/hooks/useEmailIntegrations')
 jest.mock('pages/aiAgent/hooks/useStoreConfigurationForAccount')
 
-jest.mock('models/aiAgent/resources/configuration', () => ({
-    getOnboardingData: jest.fn(),
-    getOnboardingDataByShopName: jest.fn(),
-    createOnboardingData: jest.fn(),
-    updateOnboardingData: jest.fn(),
-}))
-
-const mockGetOnboardingData = getOnboardingData as jest.Mock
-const mockGetOnboardingDataByShopName = getOnboardingDataByShopName as jest.Mock
-const mockCreateOnboardingData = createOnboardingData as jest.Mock
-const mockUpdateOnboardingData = updateOnboardingData as jest.Mock
-
 const mockUseShopifyIntegrations = useShopifyIntegrations as jest.Mock
 const mockUseShopifyIntegrationAndScope =
     useShopifyIntegrationAndScope as jest.Mock
 const mockUseEmailIntegrations = useEmailIntegrations as jest.Mock
 const mockUseStoreConfigurationForAccount =
     useStoreConfigurationForAccount as jest.Mock
+
+jest.mock('pages/aiAgent/Onboarding/hooks/useGetOnboardingData')
+const useGetOnboardingDataMock = assumeMock(useGetOnboardingData)
+
+jest.mock('pages/aiAgent/Onboarding/hooks/useGetOnboardingDataByShopName')
+const useGetOnboardingDataByShopNameMock = assumeMock(
+    useGetOnboardingDataByShopName,
+)
+
+jest.mock('pages/aiAgent/Onboarding/hooks/useUpdateOnboarding')
+const useUpdateOnboardingMock = assumeMock(useUpdateOnboarding)
+
+jest.mock('pages/aiAgent/Onboarding/hooks/useCreateOnboarding')
+const useCreateOnboardingMock = assumeMock(useCreateOnboarding)
 
 const queryClient = new QueryClient()
 
@@ -113,45 +115,33 @@ describe('ShopifyIntegrationStep', () => {
             defaultIntegration: true,
         })
 
-        // ✅ Mock getOnboardingData function
-        mockGetOnboardingData.mockResolvedValue(Promise.resolve([]))
+        useGetOnboardingDataMock.mockReturnValue({
+            isLoading: false,
+            data: undefined,
+        })
 
-        // ✅ Mock getOnboardingDataByShopName function
-        mockGetOnboardingDataByShopName.mockResolvedValue(
-            Promise.resolve([
-                {
-                    id: '1',
-                    shopName: 'Test Store',
-                    currentStepName: 'CHANNELS',
-                },
-                {
-                    id: '2',
-                    shopName: 'Test Store 1',
-                    currentStepName: 'CHANNELS',
-                },
-                {
-                    id: '3',
-                    shopName: 'Test Store 2',
-                    currentStepName: 'CHANNELS',
-                },
-            ]),
-        )
+        useGetOnboardingDataByShopNameMock.mockReturnValue({
+            isLoading: false,
+            data: {
+                id: '1',
+                shopName: 'Test Store',
+                salesPersuasionLevel: PersuasionLevel.Moderate,
+                salesDiscountStrategyLevel: DiscountStrategy.Balanced,
+                salesDiscountMax: 0.8,
+                scopes: [],
+                currentStepName: WizardStepEnum.CHANNELS,
+            },
+        } as any)
 
-        // ✅ Mock createOnboardingData function
-        mockCreateOnboardingData.mockResolvedValue(
-            Promise.resolve({
-                id: '456',
-                shopName: 'New Test Store',
-                currentStepName: 'CHANNELS',
-            }),
-        )
+        useUpdateOnboardingMock.mockReturnValue({
+            mutate: jest.fn(),
+            isLoading: false,
+        } as any)
 
-        // // ✅ Mock updateOnboardingData function
-        mockUpdateOnboardingData.mockResolvedValue(
-            Promise.resolve({
-                success: true,
-            }),
-        )
+        useCreateOnboardingMock.mockReturnValue({
+            mutate: jest.fn(),
+            isLoading: false,
+        } as any)
     })
 
     beforeAll(() => {

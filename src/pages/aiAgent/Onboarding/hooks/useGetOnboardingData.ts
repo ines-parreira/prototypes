@@ -1,10 +1,11 @@
-import { useQuery } from '@tanstack/react-query'
+import { useMemo } from 'react'
 
-import { getOnboardingData } from 'models/aiAgent/resources/configuration'
 import { OnboardingData } from 'models/aiAgent/types'
 import { DiscountStrategy } from 'pages/aiAgent/Onboarding/components/steps/PersonalityStep/DiscountStrategy'
 import { PersuasionLevel } from 'pages/aiAgent/Onboarding/components/steps/PersonalityStep/PersuasionLevel'
 import { AiAgentScopes, WizardStepEnum } from 'pages/aiAgent/Onboarding/types'
+
+import { useGetOnboardings } from './useGetOnboardings'
 
 type OnboardingDataWithoutId = Omit<OnboardingData, 'id'>
 
@@ -21,26 +22,28 @@ export const defaultOnboardingData: OnboardingDataWithoutId = {
 }
 
 export const useGetOnboardingData = (shopName?: string) => {
-    return useQuery({
-        queryKey: ['onboardingData', shopName],
-        queryFn: async (): Promise<
-            OnboardingData | OnboardingDataWithoutId
-        > => {
-            const data = await getOnboardingData()
-            const selectedShopData = data.find(
-                (item: OnboardingData) => item.shopName === shopName,
-            )
-            if (shopName && selectedShopData) {
-                return selectedShopData
-            }
-            const onGoingOnboarding = data.find(
-                (item: OnboardingData) => !item.shopName,
-            )
-            if (onGoingOnboarding) {
-                return onGoingOnboarding
-            }
-            return defaultOnboardingData
-        },
-        staleTime: Infinity,
-    })
+    const { data: onboardingList, isLoading } = useGetOnboardings()
+
+    const data = useMemo(():
+        | OnboardingData
+        | OnboardingDataWithoutId
+        | undefined => {
+        if (!onboardingList) return undefined
+
+        const selectedShopData = onboardingList.find(
+            (item: OnboardingData) => item.shopName === shopName,
+        )
+        if (shopName && selectedShopData) {
+            return selectedShopData
+        }
+        const onGoingOnboarding = onboardingList.find(
+            (item: OnboardingData) => !item.shopName,
+        )
+        if (onGoingOnboarding) {
+            return onGoingOnboarding
+        }
+        return defaultOnboardingData
+    }, [shopName, onboardingList])
+
+    return { data, isLoading }
 }

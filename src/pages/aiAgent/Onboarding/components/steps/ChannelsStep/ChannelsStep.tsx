@@ -38,6 +38,7 @@ import useCheckOnboardingCompleted from 'pages/aiAgent/Onboarding/hooks/useCheck
 import useCheckStoreIntegration from 'pages/aiAgent/Onboarding/hooks/useCheckStoreIntegration'
 import { useGetChatIntegrationColor } from 'pages/aiAgent/Onboarding/hooks/useGetChatIntegrationColor'
 import { useGetOnboardingData } from 'pages/aiAgent/Onboarding/hooks/useGetOnboardingData'
+import { useGetOnboardings } from 'pages/aiAgent/Onboarding/hooks/useGetOnboardings'
 import { useOnboardingIntegrationRedirection } from 'pages/aiAgent/Onboarding/hooks/useOnboardingIntegrationRedirection'
 import { useSteps } from 'pages/aiAgent/Onboarding/hooks/useSteps'
 import { useUpdateOnboarding } from 'pages/aiAgent/Onboarding/hooks/useUpdateOnboarding'
@@ -118,6 +119,8 @@ export const ChannelsStep: React.FC<StepProps> = ({
     const { data, isLoading: isLoadingOnboardingData } =
         useGetOnboardingData(shopName)
 
+    const { data: currentOnboardings } = useGetOnboardings()
+
     const { redirectToIntegration, integrationId, integrationType } =
         useOnboardingIntegrationRedirection()
 
@@ -155,7 +158,7 @@ export const ChannelsStep: React.FC<StepProps> = ({
         isLoadingStoreConfigurations
 
     const usedEmailIntegrations = useMemo(() => {
-        return storeConfigurations
+        const usedInConfigurations = storeConfigurations
             ? storeConfigurations.reduce<number[]>(
                   (acc, element) =>
                       acc.concat(
@@ -166,7 +169,17 @@ export const ChannelsStep: React.FC<StepProps> = ({
                   [],
               )
             : []
-    }, [storeConfigurations])
+
+        const usedInOnboarding = currentOnboardings
+            ? currentOnboardings
+                  .filter((element) => element.shopName !== shopName)
+                  .reduce<
+                      number[]
+                  >((acc, element) => acc.concat(element.emailIntegrationIds ?? []), [])
+            : []
+
+        return [...usedInConfigurations, ...usedInOnboarding]
+    }, [storeConfigurations, currentOnboardings, shopName])
 
     const usedChatChannels = useMemo(() => {
         return storeConfigurations
@@ -240,12 +253,16 @@ export const ChannelsStep: React.FC<StepProps> = ({
                 data?.currentStepName === WizardStepEnum.CHANNELS
                     ? true
                     : !!data?.emailIntegrationIds?.length,
-            emailIntegrationIds: preselectedEmails,
+            emailIntegrationIds: preselectedEmails.filter(
+                (entry) => !usedEmailIntegrations.includes(entry),
+            ),
             chatChannelEnabled:
                 data?.currentStepName === WizardStepEnum.CHANNELS
                     ? true
                     : !!data?.chatIntegrationIds?.length,
-            chatIntegrationIds: preselectedChats,
+            chatIntegrationIds: preselectedChats.filter(
+                (entry) => !usedChatChannels.includes(entry),
+            ),
         },
         mode: 'onChange',
         resolver: zodResolver(schema),

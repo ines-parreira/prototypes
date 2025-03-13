@@ -27,6 +27,7 @@ import { DiscountStrategy } from 'pages/aiAgent/Onboarding/components/steps/Pers
 import { PersuasionLevel } from 'pages/aiAgent/Onboarding/components/steps/PersonalityStep/PersuasionLevel'
 import { StepProps } from 'pages/aiAgent/Onboarding/components/steps/types'
 import { useGetOnboardingData } from 'pages/aiAgent/Onboarding/hooks/useGetOnboardingData'
+import { useGetOnboardings } from 'pages/aiAgent/Onboarding/hooks/useGetOnboardings'
 import { useUpdateOnboarding } from 'pages/aiAgent/Onboarding/hooks/useUpdateOnboarding'
 import { AiAgentScopes, WizardStepEnum } from 'pages/aiAgent/Onboarding/types'
 import { SelfServiceChatChannel } from 'pages/automate/common/hooks/useSelfServiceChatChannels'
@@ -67,9 +68,12 @@ const useStoreConfigurationForAccountMock = assumeMock(
 jest.mock('pages/aiAgent/Onboarding/hooks/useGetOnboardingData')
 const useGetOnboardingDataMock = assumeMock(useGetOnboardingData)
 
+jest.mock('pages/aiAgent/Onboarding/hooks/useGetOnboardings')
+const useGetOnboardingsMock = assumeMock(useGetOnboardings)
+
 const mutateUpdateOnboardingMock = jest.fn()
 jest.mock('pages/aiAgent/Onboarding/hooks/useUpdateOnboarding')
-const mockUpdateOnboardingMock = assumeMock(useUpdateOnboarding)
+const useUpdateOnboardingMock = assumeMock(useUpdateOnboarding)
 
 jest.mock('pages/aiAgent/Onboarding/hooks/useCheckStoreIntegration', () => ({
     __esModule: true,
@@ -78,17 +82,11 @@ jest.mock('pages/aiAgent/Onboarding/hooks/useCheckStoreIntegration', () => ({
 
 jest.mock(
     'pages/aiAgent/Onboarding/components/steps/ChannelsStep/hooks/usePreselectedChat',
-    () => ({
-        usePreselectedChat: jest.fn(),
-    }),
 )
 const usePreselectedChatMock = assumeMock(usePreselectedChat)
 
 jest.mock(
     'pages/aiAgent/Onboarding/components/steps/ChannelsStep/hooks/usePreselectedEmails',
-    () => ({
-        usePreselectedEmails: jest.fn(),
-    }),
 )
 const usePreselectedEmailsMock = assumeMock(usePreselectedEmails)
 
@@ -143,10 +141,17 @@ describe('ChannelsStep - empty state', () => {
 
         mockUseShopifyIntegrationAndScope.mockReturnValue({ integration: true })
 
-        // ✅ Mock getOnboardingData function
+        usePreselectedEmailsMock.mockReturnValue([])
+        usePreselectedChatMock.mockReturnValue([])
+
+        useGetOnboardingsMock.mockReturnValue({
+            data: [defaultOnboardingData],
+            isLoading: false,
+        } as any)
+
         useGetOnboardingDataMock.mockReturnValue({
             data: {
-                id: '1',
+                id: 1,
                 salesPersuasionLevel: PersuasionLevel.Moderate,
                 salesDiscountStrategyLevel: DiscountStrategy.Balanced,
                 salesDiscountMax: 0.8,
@@ -157,8 +162,7 @@ describe('ChannelsStep - empty state', () => {
             isLoading: false,
         } as any)
 
-        // // ✅ Mock updateOnboardingData function
-        mockUpdateOnboardingMock.mockReturnValue({
+        useUpdateOnboardingMock.mockReturnValue({
             mutate: mutateUpdateOnboardingMock,
             isLoading: false,
         } as any)
@@ -323,6 +327,54 @@ describe('ChannelsStep - empty state', () => {
             expect(defaultProps.goToStep).toHaveBeenCalledWith(
                 WizardStepEnum.PERSONALITY_PREVIEW,
             )
+        })
+    })
+
+    it('should disable email integration from another onboarding', async () => {
+        useGetOnboardingsMock.mockReturnValue({
+            data: [
+                {
+                    ...defaultOnboardingData,
+                    shopName: "Another shop's name",
+                    emailIntegrationIds: [1, 15],
+                },
+            ],
+            isLoading: false,
+        } as any)
+
+        renderWithProvider()
+
+        await waitFor(() => {
+            expect(
+                screen.getByText(
+                    'Enable your AI Agent to respond to customers via email.',
+                ),
+            ).toBeInTheDocument()
+        })
+
+        const emailCheckbox = screen.getByLabelText('Email')
+        userEvent.click(emailCheckbox)
+
+        await waitFor(() => {
+            expect(
+                screen.queryByText(
+                    /AI agent will respond to the following emails/,
+                ),
+            ).toBeInTheDocument()
+        })
+
+        const dropdown = screen.getByRole('combobox')
+        fireEvent.focus(dropdown)
+
+        await waitFor(() => {
+            expect(
+                screen.getByText('support@acme.gorgias.io'),
+            ).toBeInTheDocument()
+            expect(
+                screen.queryAllByText(
+                    'Email already used by AI Agent in another store',
+                ),
+            ).toHaveLength(2)
         })
     })
 
@@ -630,7 +682,11 @@ describe('ChannelsStep - With preloaded data', () => {
 
         mockUseShopifyIntegrationAndScope.mockReturnValue({ integration: true })
 
-        // ✅ Mock getOnboardingData function
+        useGetOnboardingsMock.mockReturnValue({
+            data: [defaultOnboardingData],
+            isLoading: false,
+        } as any)
+
         useGetOnboardingDataMock.mockReturnValue({
             data: {
                 id: 1,
@@ -645,7 +701,7 @@ describe('ChannelsStep - With preloaded data', () => {
             isLoading: false,
         } as any)
 
-        mockUpdateOnboardingMock.mockReturnValue({
+        useUpdateOnboardingMock.mockReturnValue({
             mutate: mutateUpdateOnboardingMock,
             isLoading: false,
         } as any)
@@ -657,7 +713,7 @@ describe('ChannelsStep - With preloaded data', () => {
     ) => {
         usePreselectedChatMock.mockReturnValue([3])
         usePreselectedEmailsMock.mockReturnValue([5])
-        // ✅ Mock getOnboardingData function
+
         useGetOnboardingDataMock.mockReturnValue({
             data: {
                 id: 1,

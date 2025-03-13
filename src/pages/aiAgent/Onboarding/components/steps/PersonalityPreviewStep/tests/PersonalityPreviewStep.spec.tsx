@@ -11,24 +11,20 @@ import { account } from 'fixtures/account'
 import { billingState } from 'fixtures/billing'
 import { chatIntegrationFixtures } from 'fixtures/chat'
 import { integrationsState, shopifyIntegration } from 'fixtures/integrations'
-import {
-    getOnboardingData,
-    updateOnboardingData,
-} from 'models/aiAgent/resources/configuration'
 import { PersonalityPreviewStep } from 'pages/aiAgent/Onboarding/components/steps/PersonalityPreviewStep/PersonalityPreviewStep'
 import { DiscountStrategy } from 'pages/aiAgent/Onboarding/components/steps/PersonalityStep/DiscountStrategy'
 import { PersuasionLevel } from 'pages/aiAgent/Onboarding/components/steps/PersonalityStep/PersuasionLevel'
+import { useGetOnboardingData } from 'pages/aiAgent/Onboarding/hooks/useGetOnboardingData'
+import { useUpdateOnboarding } from 'pages/aiAgent/Onboarding/hooks/useUpdateOnboarding'
 import { AiAgentScopes, WizardStepEnum } from 'pages/aiAgent/Onboarding/types'
 import { RootState, StoreDispatch } from 'state/types'
-import { renderWithRouter } from 'utils/testing'
+import { assumeMock, renderWithRouter } from 'utils/testing'
 
-jest.mock('models/aiAgent/resources/configuration', () => ({
-    getOnboardingData: jest.fn(),
-    updateOnboardingData: jest.fn(),
-}))
+jest.mock('pages/aiAgent/Onboarding/hooks/useGetOnboardingData')
+const useGetOnboardingDataMock = assumeMock(useGetOnboardingData)
 
-const mockGetOnboardingData = getOnboardingData as jest.Mock
-const mockUpdateOnboardingData = updateOnboardingData as jest.Mock
+jest.mock('pages/aiAgent/Onboarding/hooks/useUpdateOnboarding')
+const mockUpdateOnboardingMock = assumeMock(useUpdateOnboarding)
 
 const mockStore = configureMockStore<RootState, StoreDispatch>()
 
@@ -71,31 +67,32 @@ const renderComponent = (state?: RootState) => {
 
 describe('<PersonalityPreviewStep />', () => {
     describe.each([
-        ['sales', [AiAgentScopes.SALES]],
-        ['support', [AiAgentScopes.SUPPORT]],
-        ['mixed', [AiAgentScopes.SALES, AiAgentScopes.SUPPORT]],
-    ])('with scope defined as %s', (scopeName, scopes) => {
+        ['sales', [AiAgentScopes.SALES], WizardStepEnum.SALES_PERSONALITY],
+        ['support', [AiAgentScopes.SUPPORT], WizardStepEnum.KNOWLEDGE],
+        [
+            'mixed',
+            [AiAgentScopes.SALES, AiAgentScopes.SUPPORT],
+            WizardStepEnum.SALES_PERSONALITY,
+        ],
+    ])('with scope defined as %s', (scopeName, scopes, nextStep) => {
         beforeEach(() => {
-            // ✅ Mock getOnboardingData function
-            mockGetOnboardingData.mockResolvedValue(
-                Promise.resolve([
-                    {
-                        id: 1,
-                        salesPersuasionLevel: PersuasionLevel.Moderate,
-                        salesDiscountStrategyLevel: DiscountStrategy.Balanced,
-                        salesDiscountMax: 0.8,
-                        scopes,
-                        shopName: shopifyIntegration.meta.shop_name,
-                    },
-                ]),
-            )
+            useGetOnboardingDataMock.mockReturnValue({
+                isLoading: false,
+                data: {
+                    id: '1',
+                    salesPersuasionLevel: PersuasionLevel.Moderate,
+                    salesDiscountStrategyLevel: DiscountStrategy.Balanced,
+                    salesDiscountMax: 0.8,
+                    scopes,
+                    shopName: shopifyIntegration.meta.shop_name,
+                    currentStepName: WizardStepEnum.PERSONALITY_PREVIEW,
+                },
+            })
 
-            // // ✅ Mock updateOnboardingData function
-            mockUpdateOnboardingData.mockResolvedValue(
-                Promise.resolve({
-                    success: true,
-                }),
-            )
+            mockUpdateOnboardingMock.mockReturnValue({
+                mutate: jest.fn(),
+                isLoading: false,
+            } as any)
         })
 
         it('should render with the title', () => {
@@ -164,9 +161,7 @@ describe('<PersonalityPreviewStep />', () => {
 
             fireEvent.click(screen.getByText(/Next/i))
 
-            const expectedCalledWith = WizardStepEnum.SALES_PERSONALITY
-
-            expect(goToStep).toHaveBeenCalledWith(expectedCalledWith)
+            expect(goToStep).toHaveBeenCalledWith(nextStep)
         })
     })
 })

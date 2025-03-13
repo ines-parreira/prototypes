@@ -13,21 +13,14 @@ import { account } from 'fixtures/account'
 import { billingState } from 'fixtures/billing'
 import { chatIntegrationFixtures } from 'fixtures/chat'
 import { integrationsState, shopifyIntegration } from 'fixtures/integrations'
-import {
-    getOnboardingData,
-    updateOnboardingData,
-} from 'models/aiAgent/resources/configuration'
 import { HandoverStep } from 'pages/aiAgent/Onboarding/components/steps/HandoverStep/HandoverStep'
 import { DiscountStrategy } from 'pages/aiAgent/Onboarding/components/steps/PersonalityStep/DiscountStrategy'
 import { PersuasionLevel } from 'pages/aiAgent/Onboarding/components/steps/PersonalityStep/PersuasionLevel'
-import { AiAgentScopes } from 'pages/aiAgent/Onboarding/types'
+import { useGetOnboardingData } from 'pages/aiAgent/Onboarding/hooks/useGetOnboardingData'
+import { useUpdateOnboarding } from 'pages/aiAgent/Onboarding/hooks/useUpdateOnboarding'
+import { AiAgentScopes, WizardStepEnum } from 'pages/aiAgent/Onboarding/types'
 import { RootState, StoreDispatch } from 'state/types'
-import { renderWithRouter } from 'utils/testing'
-
-jest.mock('models/aiAgent/resources/configuration', () => ({
-    getOnboardingData: jest.fn(),
-    updateOnboardingData: jest.fn(),
-}))
+import { assumeMock, renderWithRouter } from 'utils/testing'
 
 const mockStore = configureMockStore<RootState, StoreDispatch>()
 
@@ -39,8 +32,11 @@ const defaultState = {
     }),
 } as RootState
 
-const mockGetOnboardingData = getOnboardingData as jest.Mock
-const mockUpdateOnboardingData = updateOnboardingData as jest.Mock
+jest.mock('pages/aiAgent/Onboarding/hooks/useGetOnboardingData')
+const useGetOnboardingDataMock = assumeMock(useGetOnboardingData)
+
+jest.mock('pages/aiAgent/Onboarding/hooks/useUpdateOnboarding')
+const mockUpdateOnboardingMock = assumeMock(useUpdateOnboarding)
 
 const mockGoToStep = jest.fn()
 
@@ -73,25 +69,23 @@ const renderComponent = () => {
 
 describe('HandoverStep', () => {
     beforeEach(() => {
-        mockGetOnboardingData.mockResolvedValue(
-            Promise.resolve([
-                {
-                    id: 1,
-                    salesPersuasionLevel: PersuasionLevel.Moderate,
-                    salesDiscountStrategyLevel: DiscountStrategy.Balanced,
-                    salesDiscountMax: 0.8,
-                    scopes: [AiAgentScopes.SUPPORT, AiAgentScopes.SALES],
-                    shopName: shopifyIntegration.meta.shop_name,
-                },
-            ]),
-        )
+        useGetOnboardingDataMock.mockReturnValue({
+            isLoading: false,
+            data: {
+                id: '1',
+                salesPersuasionLevel: PersuasionLevel.Moderate,
+                salesDiscountStrategyLevel: DiscountStrategy.Balanced,
+                salesDiscountMax: 0.8,
+                scopes: [AiAgentScopes.SUPPORT, AiAgentScopes.SALES],
+                shopName: shopifyIntegration.meta.shop_name,
+                currentStepName: WizardStepEnum.HANDOVER,
+            },
+        })
 
-        // // ✅ Mock updateOnboardingData function
-        mockUpdateOnboardingData.mockResolvedValue(
-            Promise.resolve({
-                success: true,
-            }),
-        )
+        mockUpdateOnboardingMock.mockReturnValue({
+            mutate: jest.fn(),
+            isLoading: false,
+        } as any)
     })
 
     beforeAll(() => {
