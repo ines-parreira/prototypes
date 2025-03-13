@@ -1,4 +1,12 @@
-import React, { FC, Ref, useMemo } from 'react'
+import React, {
+    FC,
+    Ref,
+    useCallback,
+    useEffect,
+    useMemo,
+    useRef,
+    useState,
+} from 'react'
 
 import classnames from 'classnames'
 import { Map } from 'immutable'
@@ -40,6 +48,7 @@ const AiAgentChatConversation: FC<Props> = ({
     messages,
     removeLinksFromMessages,
 }) => {
+    const [, setIdx] = useState(0)
     const sanitizedMessage = useMemo(() => {
         if (removeLinksFromMessages) {
             return messages.map((message) => {
@@ -55,42 +64,109 @@ const AiAgentChatConversation: FC<Props> = ({
     }, [removeLinksFromMessages, messages])
 
     // group messages by fromAgent but create a new group when fromAgent changes
-    const groupedMessages = sanitizedMessage.reduce(
-        (acc, message) => {
-            const lastGroup = acc[acc.length - 1]
-            if (lastGroup && lastGroup.fromAgent === message.fromAgent) {
-                lastGroup.messages.push(message)
-            } else {
-                acc.push({ fromAgent: message.fromAgent, messages: [message] })
-            }
-            return acc
+    const groupedMessages = useMemo(() => {
+        return sanitizedMessage.reduce(
+            (acc, message) => {
+                const lastGroup = acc[acc.length - 1]
+                if (lastGroup && lastGroup.fromAgent === message.fromAgent) {
+                    lastGroup.messages.push(message)
+                } else {
+                    acc.push({
+                        fromAgent: message.fromAgent,
+                        messages: [message],
+                    })
+                }
+                return acc
+            },
+            [] as { fromAgent: boolean; messages: ConversationMessage[] }[],
+        )
+    }, [sanitizedMessage])
+
+    const content = useRef<any>(null)
+    let addMessage: NodeJS.Timeout | null = null
+
+    const showMessages = useCallback(
+        (newMessages: HTMLElement[]) => {
+            addMessage = setInterval(() => {
+                setIdx((prev) => {
+                    if (prev < groupedMessages.length) {
+                        newMessages[prev].classList.add(css.active)
+                        return prev + 1
+                    }
+
+                    if (addMessage) {
+                        clearInterval(addMessage)
+                    }
+
+                    return prev
+                })
+            }, 600)
         },
-        [] as { fromAgent: boolean; messages: ConversationMessage[] }[],
+        [groupedMessages, addMessage],
     )
+
+    const resetMessages = (newMessages: HTMLElement[]) => {
+        newMessages.forEach((message: any) =>
+            message.classList.remove(css.active),
+        )
+        setIdx(0)
+    }
+
+    useEffect(() => {
+        const newMessages: HTMLElement[] = Array.from(content.current?.children)
+
+        resetMessages(newMessages)
+        showMessages(newMessages)
+
+        return () => {
+            if (addMessage) {
+                clearInterval(addMessage)
+            }
+        }
+    }, [groupedMessages, showMessages, addMessage])
 
     return (
         <div ref={innerRef} className={classnames(css.content, className)}>
-            {groupedMessages.map(({ fromAgent, messages }, index) =>
-                fromAgent ? (
-                    <AgentMessages
-                        key={index}
-                        currentUser={user}
-                        messages={messages}
-                        chatTitle={user.get('name')}
-                        avatar={avatar}
-                        language={language}
-                        conversationColor={conversationColor}
-                        backgroundColor="#FFFFFF"
-                    />
-                ) : (
-                    <CustomerInitialMessages
-                        key={index}
-                        conversationColor={conversationColor}
-                        messages={messages.map((message) => message.content)}
-                        hideConversationTimestamp={true}
-                    />
-                ),
-            )}
+            <div ref={content}>
+                {groupedMessages.map(({ fromAgent, messages }, index) =>
+                    fromAgent ? (
+                        <div
+                            key={`agent-message-${index}`}
+                            className={classnames(
+                                css.agentMessage,
+                                css.message,
+                            )}
+                        >
+                            <AgentMessages
+                                currentUser={user}
+                                messages={messages}
+                                chatTitle={user.get('name')}
+                                avatar={avatar}
+                                language={language}
+                                conversationColor={conversationColor}
+                                backgroundColor="#FFFFFF"
+                            />
+                        </div>
+                    ) : (
+                        <div
+                            key={`customer-message-${index}`}
+                            className={classnames(
+                                css.customerMessage,
+                                css.message,
+                            )}
+                        >
+                            <CustomerInitialMessages
+                                conversationColor={conversationColor}
+                                messages={messages.map(
+                                    (message: ConversationMessage) =>
+                                        message.content,
+                                )}
+                                hideConversationTimestamp={true}
+                            />
+                        </div>
+                    ),
+                )}
+            </div>
         </div>
     )
 }

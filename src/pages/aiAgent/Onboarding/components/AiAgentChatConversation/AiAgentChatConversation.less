@@ -7,5 +7,28 @@
         pointer-events: initial;
         display: flex;
         flex-direction: column;
+        min-width: 384px;
+    }
+
+    .agentMessage.active {
+        transition:
+            opacity 360ms ease-out,
+            transform 360ms ease-out;
+    }
+
+    .customerMessage.active {
+        transition:
+            opacity 480ms ease-out,
+            transform 480ms ease-out;
+    }
+
+    .message {
+        opacity: 0;
+        transform: translateY(-20px) scale(0.95);
+    }
+
+    .active {
+        opacity: 1;
+        transform: translateY(0) scale(1);
     }
 }
