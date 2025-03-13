@@ -4,7 +4,9 @@ import {
     MetricWithDecile,
     useMetricPerDimension,
 } from 'hooks/reporting/useMetricPerDimension'
+import useAppSelector from 'hooks/useAppSelector'
 import { useGetProductsByIdsFromIntegration } from 'models/integration/queries'
+import { IntegrationType } from 'models/integration/types'
 import { Cubes } from 'models/reporting/cubes'
 import {
     AiSalesAgentConversationsDimension,
@@ -25,6 +27,7 @@ import {
 } from 'models/reporting/queryFactories/ai-sales-agent/metrics'
 import { isFilterWithLogicalOperator } from 'models/reporting/queryFactories/utils'
 import { StatsFilters } from 'models/stat/types'
+import { getIntegrationByIdAndType } from 'state/integrations/selectors'
 
 import { ProductTableKeys } from '../constants'
 import { ProductTableContentCell } from '../types/productTable'
@@ -75,6 +78,11 @@ const useProductRecommendations = (filters: StatsFilters, timezone: string) => {
     )
         ? filters.storeIntegrations.values[0]
         : 0
+
+    const storeIntegration = useAppSelector(
+        getIntegrationByIdAndType(storeIntegrationId, IntegrationType.Shopify),
+    )
+
     const productIds = Object.keys(productTotals).map(Number)
     const productsData = useGetProductsByIdsFromIntegration(
         storeIntegrationId,
@@ -118,7 +126,18 @@ const useProductRecommendations = (filters: StatsFilters, timezone: string) => {
                         productTotals[product.id],
                     ) * 100,
             },
-            product: product,
+            product: {
+                ...product,
+                url:
+                    storeIntegration !== undefined &&
+                    storeIntegration.type === 'shopify' &&
+                    storeIntegration.meta?.shop_domain &&
+                    product?.handle
+                        ? `https://${storeIntegration.meta?.shop_domain}/products/${
+                              product?.handle
+                          }`
+                        : '',
+            },
         }))
     }, [
         productIds,
@@ -126,6 +145,7 @@ const useProductRecommendations = (filters: StatsFilters, timezone: string) => {
         boughtTotalData,
         clickTotalData,
         productTotals,
+        storeIntegration,
     ])
 
     return {

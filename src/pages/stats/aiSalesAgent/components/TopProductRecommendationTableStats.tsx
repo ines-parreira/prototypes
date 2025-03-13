@@ -58,7 +58,17 @@ export const TopProductRecommendationTableStats = ({
         key: ProductTableKeys,
     ): any => {
         if (key === ProductTableKeys.Name) {
-            return cell.product?.title
+            return cell.product.url ? (
+                <a
+                    href={cell.product?.url}
+                    target="_blank"
+                    rel="noreferrer noopener"
+                >
+                    {cell.product?.title}
+                </a>
+            ) : (
+                cell.product?.title
+            )
         }
 
         return cell.metrics[key] ?? 0
@@ -118,11 +128,7 @@ export const TopProductRecommendationTableStats = ({
             const data = getDataFromTableCell(cell, column.key)
 
             if (column.format === ProductTableValueFormat.Product) {
-                return (
-                    <BodyCell>
-                        <a href="#">{data}</a>
-                    </BodyCell>
-                )
+                return <BodyCell>{data}</BodyCell>
             }
 
             if (column.format === ProductTableValueFormat.Percentage) {

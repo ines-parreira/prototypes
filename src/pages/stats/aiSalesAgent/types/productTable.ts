@@ -1,6 +1,10 @@
 import { Product } from 'constants/integrations/types/shopify'
 import { ProductTableKeys } from 'pages/stats/aiSalesAgent/constants'
 
+export interface ProductTable extends Product {
+    url?: string
+}
+
 export enum ProductTableValueFormat {
     Product = 'product',
     Number = 'number',
@@ -8,7 +12,7 @@ export enum ProductTableValueFormat {
 }
 
 export interface ProductTableContentCell {
-    product: Product
+    product: ProductTable
     metrics: Partial<Record<ProductTableKeys, string | number>>
 }
 
