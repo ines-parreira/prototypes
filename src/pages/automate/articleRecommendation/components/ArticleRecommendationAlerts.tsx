@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom'
 
 import useLocalStorage from 'hooks/useLocalStorage'
 import Alert, { AlertType } from 'pages/common/components/Alert/Alert'
+import { useIsAutomateSettings } from 'settings/automate/hooks/useIsAutomateSettings'
 
 import { CLOSED_MANY_HELP_CENTERS_ALERT_KEY } from '../constants'
 
@@ -78,12 +79,16 @@ export const ConnectedChannelsInfoAlert = ({
     shopName: string
     shopType: string
 }) => {
+    const isAutomateSettings = useIsAutomateSettings()
+    const url = isAutomateSettings
+        ? `/app/settings/article-recommendations/${shopType}/${shopName}/channels`
+        : `/app/automation/${shopType}/${shopName}/connected-channels`
     return (
         <Alert className={css.alert} icon>
             Control where customers receive article recommendations in{' '}
             <Link
                 to={{
-                    pathname: `/app/automation/${shopType}/${shopName}/connected-channels`,
+                    pathname: url,
                     state: {
                         from: 'article-recommendation',
                     },

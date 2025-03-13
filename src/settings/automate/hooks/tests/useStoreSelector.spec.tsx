@@ -29,8 +29,18 @@ const createWrapper =
 
 describe('useStoreSelector', () => {
     const integrations = [
-        { id: 1, type: IntegrationType.Shopify, name: 'my-first-store' },
-        { id: 2, type: IntegrationType.Shopify, name: 'my-second-store' },
+        {
+            id: 1,
+            type: IntegrationType.Shopify,
+            name: 'my-first-store',
+            meta: { shop_name: 'my-first-store' },
+        },
+        {
+            id: 2,
+            type: IntegrationType.Shopify,
+            name: 'my-second-store',
+            meta: { shop_name: 'my-second-store' },
+        },
     ] as StoreIntegration[]
 
     beforeEach(() => {

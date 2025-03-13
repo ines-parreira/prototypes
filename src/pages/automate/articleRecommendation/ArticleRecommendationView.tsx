@@ -15,6 +15,7 @@ import useSelfServiceChatChannels from 'pages/automate/common/hooks/useSelfServi
 import useSelfServiceConfiguration from 'pages/automate/common/hooks/useSelfServiceConfiguration'
 import { HELP_CENTER_MAX_CREATION } from 'pages/settings/helpCenter/constants'
 import { useHelpCenterList } from 'pages/settings/helpCenter/hooks/useHelpCenterList'
+import { useIsAutomateSettings } from 'settings/automate/hooks/useIsAutomateSettings'
 
 import { ARTICLE_RECOMMENDATION } from '../common/components/constants'
 import HelpCenterSelect from '../common/components/HelpCenterSelect'
@@ -31,7 +32,12 @@ import {
 
 import css from './ArticleRecommendationView.less'
 
-const ArticleRecommendationView = () => {
+type Props = {
+    basePath?: string
+}
+
+const ArticleRecommendationView = ({ basePath: overrideBasePath }: Props) => {
+    const isAutomateSettings = useIsAutomateSettings()
     useHistoryTracking(SegmentEvent.AutomateArticleRecommendationVisited)
     const { shopType, shopName } = useParams<{
         shopType: string
@@ -92,16 +98,19 @@ const ArticleRecommendationView = () => {
         })
     })
 
-    const basePath = `/app/automation/:shopType/:shopName/article-recommendation`
+    const basePath =
+        overrideBasePath ||
+        `/app/automation/:shopType/:shopName/article-recommendation`
 
     const articleRecommendation = (
         <AutomateView
-            title={ARTICLE_RECOMMENDATION}
+            title={isAutomateSettings ? undefined : ARTICLE_RECOMMENDATION}
             isLoading={isLoading}
-            headerNavbarItems={getArticleRecommendationNavItems(
-                shopType,
-                shopName,
-            )}
+            headerNavbarItems={
+                !isAutomateSettings
+                    ? getArticleRecommendationNavItems(shopType, shopName)
+                    : undefined
+            }
         >
             <AutomateViewContent
                 description="Automatically send a Help Center article in response to customer questions in Chat, if a relevant article exists. If a customer requests more help, a ticket will be created for an agent to handle."

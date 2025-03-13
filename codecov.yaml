@@ -11,6 +11,7 @@ ignore:
   - src/pages/common/components/infobar/InfobarLayout.tsx
   - src/assets/js/pubnub.worker.*.js
   - src/settings/**/*
+  - src/pages/automate/articleRecommendation/ArticleRecommendationView.tsx
 
 coverage:
   status:

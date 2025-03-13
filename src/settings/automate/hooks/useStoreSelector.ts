@@ -3,6 +3,7 @@ import type { ChangeEvent } from 'react'
 
 import { useHistory, useParams } from 'react-router-dom'
 
+import { getShopNameFromStoreIntegration } from 'models/selfServiceConfiguration/utils'
 import useStoreIntegrations from 'pages/automate/common/hooks/useStoreIntegrations'
 
 export function useStoreSelector(basePath: string) {
@@ -20,7 +21,8 @@ export function useStoreSelector(basePath: string) {
     const selected = useMemo(
         () =>
             sortedIntegrations.find(
-                (integration) => integration.name === shopName,
+                (integration) =>
+                    getShopNameFromStoreIntegration(integration) === shopName,
             ),
         [shopName, sortedIntegrations],
     )
@@ -33,7 +35,8 @@ export function useStoreSelector(basePath: string) {
             )
             if (!integration) return
 
-            history.push(`${basePath}/${integration.type}/${integration.name}`)
+            const name = getShopNameFromStoreIntegration(integration)
+            history.push(`${basePath}/${integration.type}/${name}`)
         },
         [basePath, history, sortedIntegrations],
     )
@@ -41,7 +44,8 @@ export function useStoreSelector(basePath: string) {
     useEffect(() => {
         if (shopName || !sortedIntegrations.length) return
         const integration = sortedIntegrations[0]
-        history.replace(`${basePath}/${integration.type}/${integration.name}`)
+        const name = getShopNameFromStoreIntegration(integration)
+        history.replace(`${basePath}/${integration.type}/${name}`)
     }, [basePath, history, shopName, sortedIntegrations])
 
     return useMemo(

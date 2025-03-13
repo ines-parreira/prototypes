@@ -28,10 +28,13 @@ import { getSingleHelpCenterResponseFixture } from 'pages/settings/helpCenter/fi
 import { getLocalesResponseFixture } from 'pages/settings/helpCenter/fixtures/getLocalesResponse.fixtures'
 import useCurrentHelpCenter from 'pages/settings/helpCenter/hooks/useCurrentHelpCenter'
 import { useSupportedLocales } from 'pages/settings/helpCenter/providers/SupportedLocales'
+import { useIsAutomateSettings } from 'settings/automate/hooks/useIsAutomateSettings'
 import { RootState, StoreDispatch } from 'state/types'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 import { getLDClient } from 'utils/launchDarkly'
+import { assumeMock } from 'utils/testing'
 
+import { ARTICLE_RECOMMENDATION } from '../../common/components/constants'
 import TrainMyAiView from '../TrainMyAiView'
 
 jest.mock('pages/settings/helpCenter/hooks/useCurrentHelpCenter')
@@ -42,6 +45,10 @@ jest.mock(
 jest.mock('pages/automate/common/hooks/useHelpCenterPublishedArticlesCount')
 jest.mock('pages/automate/common/hooks/useSelfServiceChatChannels')
 jest.mock('pages/automate/common/hooks/useApplicationsAutomationSettings')
+jest.mock('settings/automate/hooks/useIsAutomateSettings', () => ({
+    useIsAutomateSettings: jest.fn(),
+}))
+const useIsAutomateSettingsMock = assumeMock(useIsAutomateSettings)
 jest.mock('utils/launchDarkly')
 jest.mock('react-router-dom', () => ({
     // eslint-disable-next-line @typescript-eslint/no-unnecessary-type-assertion
@@ -150,6 +157,7 @@ describe('<TrainMyAiView />', () => {
     } as RootState
 
     beforeEach(() => {
+        useIsAutomateSettingsMock.mockReturnValue(false)
         allFlagsMock.mockReturnValue({})
         useParamsMock.mockReturnValue({
             shopType: 'shopify',
@@ -1088,5 +1096,22 @@ describe('<TrainMyAiView />', () => {
             ],
             { onError: expect.any(Function) },
         )
+    })
+    it('should not render the title and navigation when on automate settings', () => {
+        useIsAutomateSettingsMock.mockReturnValue(true)
+        render(
+            <BrowserRouter>
+                <QueryClientProvider client={queryClient}>
+                    <Provider store={mockStore(defaultState)}>
+                        <TrainMyAiView />
+                    </Provider>
+                </QueryClientProvider>
+            </BrowserRouter>,
+        )
+        expect(
+            screen.queryByText(ARTICLE_RECOMMENDATION),
+        ).not.toBeInTheDocument()
+        expect(screen.queryByText('Train')).not.toBeInTheDocument()
+        expect(screen.queryByText('Configuration')).not.toBeInTheDocument()
     })
 })

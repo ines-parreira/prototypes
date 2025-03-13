@@ -19,6 +19,7 @@ import Button from 'pages/common/components/button/Button'
 import LinkButton from 'pages/common/components/button/LinkButton'
 import Paywall from 'pages/common/components/Paywall/Paywall'
 import ProgressBar from 'pages/common/components/ProgressBar/ProgressBar'
+import { useIsAutomateSettings } from 'settings/automate/hooks/useIsAutomateSettings'
 
 import gorgiasLogo from '../../../assets/img/gorgias-logo.svg'
 import { assetsUrl } from '../../../utils'
@@ -43,6 +44,7 @@ import { RecommendationDisabled } from './components/TrainMyAiAlerts'
 import css from './TrainMyAiView.less'
 
 const TrainMyAiView = () => {
+    const isAutomateSettings = useIsAutomateSettings()
     const leftColRef = useRef<HTMLDivElement>(null)
     const rightColRef = useRef<HTMLDivElement>(null)
 
@@ -279,7 +281,9 @@ const TrainMyAiView = () => {
         }
     }, [isAllFeedbacksProvided])
 
-    const baseUrl = `/app/automation/${shopType}/${shopName}/article-recommendation`
+    const baseUrl = isAutomateSettings
+        ? `/app/settings/article-recommendations/${shopType}/${shopName}`
+        : `/app/automation/${shopType}/${shopName}/article-recommendation`
 
     const shouldShowPaywall =
         !isLoading &&
@@ -290,10 +294,10 @@ const TrainMyAiView = () => {
 
     return (
         <AutomateView
-            title={ARTICLE_RECOMMENDATION}
+            title={isAutomateSettings ? undefined : ARTICLE_RECOMMENDATION}
             isLoading={isLoading}
             headerNavbarItems={
-                !isLoading
+                !isAutomateSettings && !isLoading
                     ? getArticleRecommendationNavItems(shopType, shopName)
                     : undefined
             }

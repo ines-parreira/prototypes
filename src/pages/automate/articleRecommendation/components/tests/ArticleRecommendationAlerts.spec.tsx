@@ -2,6 +2,9 @@ import React from 'react'
 
 import { render, screen } from '@testing-library/react'
 
+import { useIsAutomateSettings } from 'settings/automate/hooks/useIsAutomateSettings'
+import { assumeMock } from 'utils/testing'
+
 import {
     ConnectedChannelsInfoAlert,
     EmptyHelpCenterAlert,
@@ -9,7 +12,16 @@ import {
     NoHelpCenterAlert,
 } from '../ArticleRecommendationAlerts'
 
+jest.mock('settings/automate/hooks/useIsAutomateSettings', () => ({
+    useIsAutomateSettings: jest.fn(),
+}))
+const useIsAutomateSettingsMock = assumeMock(useIsAutomateSettings)
+
 describe('ArticleRecommendationAlerts', () => {
+    beforeEach(() => {
+        useIsAutomateSettingsMock.mockReturnValue(false)
+    })
+
     it('should render <NoHelpCenterAlert />', () => {
         render(<NoHelpCenterAlert />)
 
@@ -38,5 +50,16 @@ describe('ArticleRecommendationAlerts', () => {
         )
 
         expect(screen.getByText(/control where customer/i)).toBeInTheDocument()
+    })
+    it('should render when in automate settings', () => {
+        useIsAutomateSettingsMock.mockReturnValue(true)
+        render(
+            <ConnectedChannelsInfoAlert
+                shopName="shop-name"
+                shopType="shopify"
+            />,
+        )
+
+        expect(screen.getByText('Channels')).toBeInTheDocument()
     })
 })
