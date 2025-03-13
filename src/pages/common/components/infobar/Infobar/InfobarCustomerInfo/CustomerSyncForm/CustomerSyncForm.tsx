@@ -1,6 +1,5 @@
 import React, { FormEvent, useCallback, useEffect, useState } from 'react'
 
-import { uuid4 } from '@sentry/utils'
 import { Map } from 'immutable'
 
 import {
@@ -95,15 +94,10 @@ export default function CustomerSyncForm({
                 updateCustomer({
                     integrationId: formState.store,
                     data: {
-                        account_id: activeCustomer.get('accountId'),
-                        customer_id: activeCustomer.get('id'),
                         email: formState.email,
-                        execution_id: uuid4().toString(),
                         first_name: firstName,
                         last_name: lastName,
-                        integration_id: formState.store,
                         phone: formState.phone ? formState.phone : null,
-                        triggered_by: 'UserAction',
                         address: {
                             address1: formState.address,
                             address2: formState.apartment,
