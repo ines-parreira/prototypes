@@ -147,10 +147,7 @@ describe('useActivation', () => {
     })
 
     it('should close the EarlyAccessModal when clicking on the cross button or outside of the modal', () => {
-        mockUseFlags.mockReturnValue({
-            [FeatureFlagKey.AiAgentActivation]: true,
-        })
-        mockedUseBillingData.mockReturnValue({
+        mockedUseEarlyAccessModalState.mockReturnValue({
             isOnNewPlan: false,
             setIsPreviewModalVisible: jest.fn(),
             isPreviewModalVisible: false,
@@ -212,10 +209,7 @@ describe('useActivation', () => {
     })
 
     it('should close the EarlyAccessModal when clicking on the stay on current plan button', () => {
-        mockUseFlags.mockReturnValue({
-            [FeatureFlagKey.AiAgentActivation]: true,
-        })
-        mockedUseBillingData.mockReturnValue({
+        mockedUseEarlyAccessModalState.mockReturnValue({
             isOnNewPlan: false,
             setIsPreviewModalVisible: jest.fn(),
             isPreviewModalVisible: false,
