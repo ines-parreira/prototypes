@@ -17,9 +17,9 @@ export const useBannerCarousel = () => {
         useState<number>(0)
 
     useEffect(() => {
-        if (mergedBannersList.length === 1) {
-            setCurrentBannerPosition(0)
-        }
+        setCurrentBannerPosition((prev) =>
+            Math.max(0, Math.min(prev, mergedBannersList.length - 1)),
+        )
     }, [mergedBannersList.length])
 
     const onPrevious = useCallback(() => {

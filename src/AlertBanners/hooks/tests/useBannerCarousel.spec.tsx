@@ -173,4 +173,37 @@ describe('useBannerCarousel', () => {
             ],
         ).toBe(banner)
     })
+
+    it('should adjust position when a banner is removed from context', () => {
+        useLegacyAlertBannersMock.mockReturnValue([legacyBanner])
+        useBannersContextMock.mockReturnValue([banner, banner])
+
+        const { result, rerender } = renderHook(() => useBannerCarousel())
+
+        act(() => {
+            result.current.onNext()
+            result.current.onNext()
+        })
+
+        expect(result.current.currentBannerPosition).toBe(2)
+        expect(
+            result.current.mergedBannersList[
+                result.current.currentBannerPosition
+            ],
+        ).toBe(banner)
+
+        // Simulate removing the last banner from context
+        act(() => {
+            // Update the mock to return one less banner
+            useBannersContextMock.mockReturnValue([banner])
+            rerender()
+        })
+
+        expect(result.current.currentBannerPosition).toBe(1)
+        expect(
+            result.current.mergedBannersList[
+                result.current.currentBannerPosition
+            ],
+        ).toBe(banner)
+    })
 })
