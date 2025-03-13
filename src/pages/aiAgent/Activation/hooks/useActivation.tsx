@@ -1,10 +1,10 @@
 import React, { useMemo, useState } from 'react'
 
-import { useFlags } from 'launchdarkly-react-client-sdk'
 import { useParams } from 'react-router-dom'
 
 import { logEvent, SegmentEvent } from 'common/segment'
 import { FeatureFlagKey } from 'config/featureFlags'
+import { useFlag } from 'core/flags'
 import useAppSelector from 'hooks/useAppSelector'
 import { ActivationManageButton } from 'pages/aiAgent/Activation/components/ActivationManageButton/ActivationManageButton'
 import { AiAgentActivationModal } from 'pages/aiAgent/Activation/components/AiAgentActivationModal/AiAgentActivationModal'
@@ -13,12 +13,12 @@ import { useStoreConfigurationForAccount } from 'pages/aiAgent/hooks/useStoreCon
 import { getCurrentAccountState } from 'state/currentAccount/selectors'
 import { getShopifyIntegrationsSortedByName } from 'state/integrations/selectors'
 
-import { useBillingData } from './useBillingData'
+import { useEarlyAccessModalState } from './useEarlyAccessModalState'
 import { computeActivationScore } from './useStoreActivations'
 
 export const useActivation = (pageName: string) => {
     const [isModalVisible, setIsModalVisible] = useState(false)
-    const hasActivationEnabled = useFlags()[FeatureFlagKey.AiAgentActivation]
+    const hasActivationEnabled = useFlag(FeatureFlagKey.AiAgentActivation)
     const currentAccount = useAppSelector(getCurrentAccountState)
     const accountDomain = currentAccount.get('domain')
     const stores = useAppSelector(getShopifyIntegrationsSortedByName)
@@ -60,7 +60,7 @@ export const useActivation = (pageName: string) => {
         currentPlan,
         earlyAccessPlan,
         isLoading,
-    } = useBillingData()
+    } = useEarlyAccessModalState()
 
     return useMemo(
         () => ({
