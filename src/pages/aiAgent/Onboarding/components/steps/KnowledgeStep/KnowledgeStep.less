@@ -1,5 +1,6 @@
 @import (reference) '~@gorgias/design-tokens/dist/css/layout';
 @import (reference) '~css/typography.less';
+@import (reference) '../../../layout/ConvAiOnboardingLayout';
 
 :local {
     .card {
@@ -10,5 +11,33 @@
     .separator {
         margin-top: @layout-spacing-s;
         margin-bottom: @layout-spacing-m;
+    }
+
+    [class*='ConvAiOnboardingLayout--onboardingBody'] {
+        @media @tablets-up {
+            display: flex;
+        }
+
+        [class*='ConvAiOnboardingLayout--onboardingContentContainer'] {
+            @media @tablets-up {
+                width: 50%;
+            }
+        }
+
+        [class*='ConvAiOnboardingLayout--onboardingPreviewContainerWrapper'] {
+            @media @tablets-up {
+                width: 50%;
+            }
+
+            max-width: 100%;
+
+            [class*='ConvAiOnboardingLayout--onboardingPreviewContainer--'] {
+                max-width: 100%;
+
+                [class*='ConvAiOnboardingLayout--ghostContainer'] {
+                    max-width: 100%;
+                }
+            }
+        }
     }
 }
