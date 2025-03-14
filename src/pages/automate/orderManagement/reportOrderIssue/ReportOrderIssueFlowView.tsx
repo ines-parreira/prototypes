@@ -3,10 +3,12 @@ import React, { useState } from 'react'
 import { Link, useHistory, useParams } from 'react-router-dom'
 import { Breadcrumb, BreadcrumbItem } from 'reactstrap'
 
+import { Button } from '@gorgias/merchant-ui-kit'
+
 import AutomateView from 'pages/automate/common/components/AutomateView'
 import AutomateViewContent from 'pages/automate/common/components/AutomateViewContent'
 import { ORDER_MANAGEMENT } from 'pages/automate/common/components/constants'
-import Button from 'pages/common/components/button/Button'
+import { useIsAutomateSettings } from 'settings/automate/hooks/useIsAutomateSettings'
 
 import ReportOrderIssueScenarioList from './components/ReportOrderIssueScenarioList'
 import useReportOrderIssueFlowScenarios from './hooks/useReportOrderIssueFlowScenarios'
@@ -20,10 +22,13 @@ const ReportOrderIssueFlowView = () => {
     const { scenarios, selfServiceConfiguration, handleScenariosUpdate } =
         useReportOrderIssueFlowScenarios(shopName)
     const [hasHoveredScenario, setHasHoveredScenario] = useState(false)
+    const isAutomateSettings = useIsAutomateSettings()
 
     const handleCreateScenarioClick = () => {
         history.push(
-            `/app/automation/shopify/${shopName}/order-management/report-issue/new`,
+            isAutomateSettings
+                ? `/app/settings/order-management/shopify/${shopName}/report-issue/new`
+                : `/app/automation/shopify/${shopName}/order-management/report-issue/new`,
         )
     }
 
@@ -32,16 +37,20 @@ const ReportOrderIssueFlowView = () => {
     return (
         <AutomateView
             title={
-                <Breadcrumb>
-                    <BreadcrumbItem>
-                        <Link
-                            to={`/app/automation/shopify/${shopName}/order-management`}
-                        >
-                            {ORDER_MANAGEMENT}
-                        </Link>
-                    </BreadcrumbItem>
-                    <BreadcrumbItem active>Report order issue</BreadcrumbItem>
-                </Breadcrumb>
+                isAutomateSettings ? undefined : (
+                    <Breadcrumb>
+                        <BreadcrumbItem>
+                            <Link
+                                to={`/app/automation/shopify/${shopName}/order-management`}
+                            >
+                                {ORDER_MANAGEMENT}
+                            </Link>
+                        </BreadcrumbItem>
+                        <BreadcrumbItem active>
+                            Report order issue
+                        </BreadcrumbItem>
+                    </Breadcrumb>
+                )
             }
             action={
                 <Button onClick={handleCreateScenarioClick}>
@@ -55,9 +64,16 @@ const ReportOrderIssueFlowView = () => {
                 helpUrl="https://docs.gorgias.com/en-US/how-to-customize-the-report-order-issue-flow-81863"
                 helpTitle="How to Customize The Report Order Issue Flow"
             >
-                <div className={css.captionContainer}>
-                    <i className="material-icons md-2">arrow_downward</i>
-                    <span>Scenarios apply in the order below</span>
+                <div className={css.wrapper}>
+                    <div className={css.captionContainer}>
+                        <i className="material-icons md-2">arrow_downward</i>
+                        <span>Scenarios apply in the order below</span>
+                    </div>
+                    {isAutomateSettings && (
+                        <Button onClick={handleCreateScenarioClick}>
+                            Create Scenario
+                        </Button>
+                    )}
                 </div>
                 <ReportOrderIssueScenarioList
                     items={scenarios}

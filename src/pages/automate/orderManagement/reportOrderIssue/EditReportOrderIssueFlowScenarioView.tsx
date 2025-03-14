@@ -9,6 +9,7 @@ import AutomateView from 'pages/automate/common/components/AutomateView'
 import AutomateViewContent from 'pages/automate/common/components/AutomateViewContent'
 import { ORDER_MANAGEMENT } from 'pages/automate/common/components/constants'
 import ConfirmButton from 'pages/common/components/button/ConfirmButton'
+import { useIsAutomateSettings } from 'settings/automate/hooks/useIsAutomateSettings'
 
 import ReportOrderIssueScenarioForm from './components/ReportOrderIssueScenarioForm'
 import ReportOrderIssueScenarioFormContext, {
@@ -33,6 +34,7 @@ const EditReportOrderIssueFlowScenarioView = () => {
         handleScenarioUpdate,
         handleScenarioDelete,
     } = useReportOrderIssueFlowScenario(shopName, parseInt(scenarioIndex, 10))
+    const isAutomateSettings = useIsAutomateSettings()
 
     const [errors, setErrors] = useState<Record<string, true>>({})
     const [dirtyScenario, setDirtyScenario] = useState(scenario)
@@ -92,27 +94,29 @@ const EditReportOrderIssueFlowScenarioView = () => {
     return (
         <AutomateView
             title={
-                <Breadcrumb>
-                    <BreadcrumbItem>
-                        <Link
-                            to={`/app/automation/shopify/${shopName}/order-management`}
-                        >
-                            {ORDER_MANAGEMENT}
-                        </Link>
-                    </BreadcrumbItem>
-                    <BreadcrumbItem>
-                        <Link
-                            to={`/app/automation/shopify/${shopName}/order-management/report-issue`}
-                        >
-                            Report order issue
-                        </Link>
-                    </BreadcrumbItem>
-                    {dirtyScenario && (
-                        <BreadcrumbItem active>
-                            {dirtyScenario.title}
+                isAutomateSettings ? undefined : (
+                    <Breadcrumb>
+                        <BreadcrumbItem>
+                            <Link
+                                to={`/app/automation/shopify/${shopName}/order-management`}
+                            >
+                                {ORDER_MANAGEMENT}
+                            </Link>
                         </BreadcrumbItem>
-                    )}
-                </Breadcrumb>
+                        <BreadcrumbItem>
+                            <Link
+                                to={`/app/automation/shopify/${shopName}/order-management/report-issue`}
+                            >
+                                Report order issue
+                            </Link>
+                        </BreadcrumbItem>
+                        {dirtyScenario && (
+                            <BreadcrumbItem active>
+                                {dirtyScenario.title}
+                            </BreadcrumbItem>
+                        )}
+                    </Breadcrumb>
+                )
             }
             isLoading={isLoading}
         >

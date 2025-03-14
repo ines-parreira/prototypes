@@ -8,6 +8,7 @@ import { ResponseMessageContent } from 'models/selfServiceConfiguration/types'
 import AutomateView from 'pages/automate/common/components/AutomateView'
 import AutomateViewContent from 'pages/automate/common/components/AutomateViewContent'
 import { ORDER_MANAGEMENT } from 'pages/automate/common/components/constants'
+import { useIsAutomateSettings } from 'settings/automate/hooks/useIsAutomateSettings'
 
 import TrackOrderUnfulfilledMessage from './components/TrackOrderUnfulfilledMessage'
 import { DEFAULT_UNFULFILLED_MESSAGE } from './constants'
@@ -29,6 +30,7 @@ export default function TrackOrderFlowView() {
     const [errors, setErrors] = useState<Record<string, true>>({})
     const [dirtyTrackOrderFlow, setDirtyTrackOrderFlow] =
         useState(trackOrderFlow)
+    const isAutomateSettings = useIsAutomateSettings()
 
     useEffect(() => {
         setDirtyTrackOrderFlow(trackOrderFlow)
@@ -88,16 +90,18 @@ export default function TrackOrderFlowView() {
     return (
         <AutomateView
             title={
-                <Breadcrumb>
-                    <BreadcrumbItem>
-                        <Link
-                            to={`/app/automation/shopify/${shopName}/order-management`}
-                        >
-                            {ORDER_MANAGEMENT}
-                        </Link>
-                    </BreadcrumbItem>
-                    <BreadcrumbItem active>Track order</BreadcrumbItem>
-                </Breadcrumb>
+                isAutomateSettings ? undefined : (
+                    <Breadcrumb>
+                        <BreadcrumbItem>
+                            <Link
+                                to={`/app/automation/shopify/${shopName}/order-management`}
+                            >
+                                {ORDER_MANAGEMENT}
+                            </Link>
+                        </BreadcrumbItem>
+                        <BreadcrumbItem active>Track order</BreadcrumbItem>
+                    </Breadcrumb>
+                )
             }
             isLoading={isLoading}
         >

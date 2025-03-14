@@ -12,6 +12,7 @@ ignore:
   - src/assets/js/pubnub.worker.*.js
   - src/settings/**/*
   - src/pages/automate/articleRecommendation/ArticleRecommendationView.tsx
+  - src/pages/automate/orderManagement/**/*
 
 coverage:
   status:

@@ -12,6 +12,7 @@ import {
 import AutomateView from 'pages/automate/common/components/AutomateView'
 import AutomateViewContent from 'pages/automate/common/components/AutomateViewContent'
 import { ORDER_MANAGEMENT } from 'pages/automate/common/components/constants'
+import { useIsAutomateSettings } from 'settings/automate/hooks/useIsAutomateSettings'
 import { getHasAutomate } from 'state/billing/selectors'
 
 import ReturnOrderAction from './components/ReturnOrderAction'
@@ -33,6 +34,7 @@ const ReturnOrderFlowView = () => {
         handleReturnOrderFlowUpdate,
     } = useReturnOrderFlow(shopName)
     const hasAutomate = useAppSelector(getHasAutomate)
+    const isAutomateSettings = useIsAutomateSettings()
 
     const [errors, setErrors] = useState<Record<string, true>>({})
     const [dirtyReturnOrderFlow, setDirtyReturnOrderFlow] =
@@ -106,16 +108,18 @@ const ReturnOrderFlowView = () => {
     return (
         <AutomateView
             title={
-                <Breadcrumb>
-                    <BreadcrumbItem>
-                        <Link
-                            to={`/app/automation/shopify/${shopName}/order-management`}
-                        >
-                            {ORDER_MANAGEMENT}
-                        </Link>
-                    </BreadcrumbItem>
-                    <BreadcrumbItem active>Return order</BreadcrumbItem>
-                </Breadcrumb>
+                isAutomateSettings ? undefined : (
+                    <Breadcrumb>
+                        <BreadcrumbItem>
+                            <Link
+                                to={`/app/automation/shopify/${shopName}/order-management`}
+                            >
+                                {ORDER_MANAGEMENT}
+                            </Link>
+                        </BreadcrumbItem>
+                        <BreadcrumbItem active>Return order</BreadcrumbItem>
+                    </Breadcrumb>
+                )
             }
             isLoading={isLoading}
         >

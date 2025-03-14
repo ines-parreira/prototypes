@@ -5,20 +5,23 @@ import { IntegrationType, StoreIntegration } from 'models/integration/types'
 import { getHasAutomate } from 'state/billing/selectors'
 import { getIntegrationsByTypes } from 'state/integrations/selectors'
 
-const useStoreIntegrations = () => {
+const useStoreIntegrations = (types?: IntegrationType[]) => {
     const hasAutomate = useAppSelector(getHasAutomate)
+
     const getStoreIntegrations = useMemo(
         () =>
             getIntegrationsByTypes(
-                hasAutomate
-                    ? [
-                          IntegrationType.Shopify,
-                          IntegrationType.BigCommerce,
-                          IntegrationType.Magento2,
-                      ]
-                    : [IntegrationType.Shopify],
+                types
+                    ? types
+                    : hasAutomate
+                      ? [
+                            IntegrationType.Shopify,
+                            IntegrationType.BigCommerce,
+                            IntegrationType.Magento2,
+                        ]
+                      : [IntegrationType.Shopify],
             ),
-        [hasAutomate],
+        [types, hasAutomate],
     )
 
     return useAppSelector(getStoreIntegrations) as StoreIntegration[]

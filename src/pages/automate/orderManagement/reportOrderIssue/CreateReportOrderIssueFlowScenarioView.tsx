@@ -11,6 +11,7 @@ import {
 import AutomateView from 'pages/automate/common/components/AutomateView'
 import AutomateViewContent from 'pages/automate/common/components/AutomateViewContent'
 import { ORDER_MANAGEMENT } from 'pages/automate/common/components/constants'
+import { useIsAutomateSettings } from 'settings/automate/hooks/useIsAutomateSettings'
 
 import ReportOrderIssueScenarioForm from './components/ReportOrderIssueScenarioForm'
 import ReportOrderIssueScenarioFormContext, {
@@ -29,6 +30,7 @@ const CreateReportOrderIssueFlowScenarioView = () => {
         selfServiceConfiguration,
         handleScenarioCreate,
     } = useReportOrderIssueFlowScenarios(shopName)
+    const isAutomateSettings = useIsAutomateSettings()
 
     const [errors, setErrors] = useState<Record<string, true>>({})
     const [scenario, setScenario] =
@@ -73,7 +75,9 @@ const CreateReportOrderIssueFlowScenarioView = () => {
     }
     const handleCancel = () => {
         history.push(
-            `/app/automation/shopify/${shopName}/order-management/report-issue`,
+            isAutomateSettings
+                ? `/app/settings/order-management/shopify/${shopName}/report-issue`
+                : `/app/automation/shopify/${shopName}/order-management/report-issue`,
         )
     }
 
@@ -82,23 +86,25 @@ const CreateReportOrderIssueFlowScenarioView = () => {
     return (
         <AutomateView
             title={
-                <Breadcrumb>
-                    <BreadcrumbItem>
-                        <Link
-                            to={`/app/automation/shopify/${shopName}/order-management`}
-                        >
-                            {ORDER_MANAGEMENT}
-                        </Link>
-                    </BreadcrumbItem>
-                    <BreadcrumbItem>
-                        <Link
-                            to={`/app/automation/shopify/${shopName}/order-management/report-issue`}
-                        >
-                            Report order issue
-                        </Link>
-                    </BreadcrumbItem>
-                    <BreadcrumbItem active>Create scenario</BreadcrumbItem>
-                </Breadcrumb>
+                isAutomateSettings ? undefined : (
+                    <Breadcrumb>
+                        <BreadcrumbItem>
+                            <Link
+                                to={`/app/automation/shopify/${shopName}/order-management`}
+                            >
+                                {ORDER_MANAGEMENT}
+                            </Link>
+                        </BreadcrumbItem>
+                        <BreadcrumbItem>
+                            <Link
+                                to={`/app/automation/shopify/${shopName}/order-management/report-issue`}
+                            >
+                                Report order issue
+                            </Link>
+                        </BreadcrumbItem>
+                        <BreadcrumbItem active>Create scenario</BreadcrumbItem>
+                    </Breadcrumb>
+                )
             }
             isLoading={isLoading}
         >

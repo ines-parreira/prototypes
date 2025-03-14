@@ -13,6 +13,7 @@ import {
 import AutomateView from 'pages/automate/common/components/AutomateView'
 import AutomateViewContent from 'pages/automate/common/components/AutomateViewContent'
 import { ORDER_MANAGEMENT } from 'pages/automate/common/components/constants'
+import { useIsAutomateSettings } from 'settings/automate/hooks/useIsAutomateSettings'
 import { getHasAutomate } from 'state/billing/selectors'
 
 import CancelOrderFlowPreview from './CancelOrderFlowPreview'
@@ -34,6 +35,7 @@ const CancelOrderFlowView = () => {
         handleCancelOrderFlowUpdate,
     } = useCancelOrderFlow(shopName)
     const hasAutomate = useAppSelector(getHasAutomate)
+    const isAutomateSettings = useIsAutomateSettings()
 
     const [errors, setErrors] = useState<Record<string, true>>({})
     const [dirtyCancelOrderFlow, setDirtyCancelOrderFlow] =
@@ -113,16 +115,18 @@ const CancelOrderFlowView = () => {
     return (
         <AutomateView
             title={
-                <Breadcrumb>
-                    <BreadcrumbItem>
-                        <Link
-                            to={`/app/automation/shopify/${shopName}/order-management`}
-                        >
-                            {ORDER_MANAGEMENT}
-                        </Link>
-                    </BreadcrumbItem>
-                    <BreadcrumbItem active>Cancel order</BreadcrumbItem>
-                </Breadcrumb>
+                isAutomateSettings ? undefined : (
+                    <Breadcrumb>
+                        <BreadcrumbItem>
+                            <Link
+                                to={`/app/automation/shopify/${shopName}/order-management`}
+                            >
+                                {ORDER_MANAGEMENT}
+                            </Link>
+                        </BreadcrumbItem>
+                        <BreadcrumbItem active>Cancel order</BreadcrumbItem>
+                    </Breadcrumb>
+                )
             }
             isLoading={isLoading}
         >

@@ -3,16 +3,18 @@ import type { ChangeEvent } from 'react'
 
 import { useHistory, useParams } from 'react-router-dom'
 
+import { IntegrationType } from 'models/integration/constants'
 import { getShopNameFromStoreIntegration } from 'models/selfServiceConfiguration/utils'
 import useStoreIntegrations from 'pages/automate/common/hooks/useStoreIntegrations'
 
-export function useStoreSelector(basePath: string) {
+export function useStoreSelector(basePath: string, types?: IntegrationType[]) {
     const history = useHistory()
     const { shopName } = useParams<{
         shopName?: string
     }>()
 
-    const integrations = useStoreIntegrations()
+    const integrations = useStoreIntegrations(types)
+
     const sortedIntegrations = useMemo(
         () => [...integrations].sort((a, b) => a.name.localeCompare(b.name)),
         [integrations],

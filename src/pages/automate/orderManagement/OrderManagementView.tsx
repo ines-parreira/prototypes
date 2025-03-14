@@ -21,6 +21,7 @@ import useContactFormsAutomationSettings from 'pages/automate/common/hooks/useCo
 import useSelfServiceConfiguration from 'pages/automate/common/hooks/useSelfServiceConfiguration'
 import AutomateSubscriptionButton from 'pages/settings/billing/automate/AutomateSubscriptionButton'
 import AutomateSubscriptionModal from 'pages/settings/billing/automate/AutomateSubscriptionModal'
+import { useIsAutomateSettings } from 'settings/automate/hooks/useIsAutomateSettings'
 import { getHasAutomate } from 'state/billing/selectors'
 
 import { ORDER_MANAGEMENT } from '../common/components/constants'
@@ -60,6 +61,8 @@ const OrderManagementView = () => {
     const history = useHistory()
     const { pathname } = useLocation()
     const { shopName } = useParams<{ shopName: string }>()
+    const isAutomateSettings = useIsAutomateSettings()
+
     const {
         isUpdatePending,
         selfServiceConfiguration,
@@ -163,7 +166,10 @@ const OrderManagementView = () => {
         )
 
     return (
-        <AutomateView title={ORDER_MANAGEMENT} isLoading={isLoading}>
+        <AutomateView
+            title={isAutomateSettings ? undefined : ORDER_MANAGEMENT}
+            isLoading={isLoading}
+        >
             <AutomateViewContent
                 description="Let customers track and manage orders in Chat, Help Center, and Contact Form with personalized options based on order status."
                 helpUrl="https://docs.gorgias.com/en-US/installing-self-service-81861"
