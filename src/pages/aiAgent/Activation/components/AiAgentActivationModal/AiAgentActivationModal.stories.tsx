@@ -3,13 +3,21 @@ import React from 'react'
 import { action } from '@storybook/addon-actions'
 import { Meta, StoryObj } from '@storybook/react'
 import { QueryClientProvider } from '@tanstack/react-query'
+import { Map } from 'immutable'
+import { Provider } from 'react-redux'
 import { MemoryRouter } from 'react-router-dom'
+import configureMockStore from 'redux-mock-store'
 
 import { appQueryClient } from 'api/queryClient'
+import { user } from 'fixtures/users'
 import { AiAgentScope, StoreConfiguration } from 'models/aiAgent/types'
 import { ToneOfVoice } from 'pages/aiAgent/constants'
 
 import { AiAgentActivationModal } from './AiAgentActivationModal'
+
+const defaultState = {
+    currentUser: Map(user),
+}
 
 const dummyStoreConfig: StoreConfiguration = {
     storeName: 'steve-madden',
@@ -68,11 +76,13 @@ const meta: Meta<typeof AiAgentActivationModal> = {
     },
     decorators: [
         (Story) => (
-            <QueryClientProvider client={appQueryClient}>
-                <MemoryRouter initialEntries={['/']}>
-                    <Story />
-                </MemoryRouter>
-            </QueryClientProvider>
+            <Provider store={configureMockStore()(defaultState)}>
+                <QueryClientProvider client={appQueryClient}>
+                    <MemoryRouter initialEntries={['/']}>
+                        <Story />
+                    </MemoryRouter>
+                </QueryClientProvider>
+            </Provider>
         ),
     ],
 }

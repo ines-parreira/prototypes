@@ -4,8 +4,13 @@
 :local {
     .modal {
         .modalContent {
+            max-height: 100%;
             border: 0;
             border-radius: 12px;
+        }
+
+        .modalDialog {
+            height: 90vh;
         }
     }
 
@@ -13,6 +18,7 @@
         display: flex;
         justify-content: space-between;
         align-items: center;
+        flex-shrink: 0;
         height: 96px;
         padding-inline: 40px;
         border-top-left-radius: inherit;
@@ -28,6 +34,7 @@
 
     .modalBody {
         padding: 24px;
+        overflow-y: auto;
     }
 
     .storeCardsList {

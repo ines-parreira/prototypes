@@ -64,8 +64,10 @@ export const AiAgentActivationModal = ({
         <Modal
             className={css.modal}
             classNameContent={css.modalContent}
+            classNameDialog={css.modalDialog}
             isOpen={isOpen}
             onClose={onClose}
+            // innerScrollBehavior
         >
             <div className={css.modalHeader}>
                 <div className={css.modalTitle}>Manage AI Agent Activation</div>
