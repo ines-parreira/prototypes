@@ -12,9 +12,9 @@ import {
 } from 'pages/stats/aiSalesAgent/metrics/useSuccessRateTrend'
 
 import {
-    fetchTotalSalesOportunityAIConvTrend,
-    useTotalSalesOportunityAIConvTrend,
-} from './useTotalSalesOportunityAIConvTrend'
+    fetchTotalSalesOpportunityAIConvTrend,
+    useTotalSalesOpportunityAIConvTrend,
+} from './useTotalSalesOpportunityAIConvTrend'
 
 const calculateTimeSavedByAgents = (
     numberOfInteractions: MetricTrend,
@@ -35,7 +35,7 @@ const calculateTimeSavedByAgents = (
 
 const useTimeSavedByAgentTrend = (filters: StatsFilters, timezone: string) => {
     const totalNumberOfAgentSalesConverationsData =
-        useTotalSalesOportunityAIConvTrend(filters, timezone)
+        useTotalSalesOpportunityAIConvTrend(filters, timezone)
     const ticketHandleTimeData = useTicketHandleTimeTrend(filters, timezone)
     const successRateData = useSuccessRateTrend(filters, timezone)
 
@@ -83,7 +83,7 @@ const fetchTimeSavedByAgentTrend = (
     timezone: string,
 ) => {
     return Promise.all([
-        fetchTotalSalesOportunityAIConvTrend(filters, timezone),
+        fetchTotalSalesOpportunityAIConvTrend(filters, timezone),
         fetchTicketHandleTimeTrend(filters, timezone),
         fetchSuccessRateTrend(filters, timezone),
     ])
