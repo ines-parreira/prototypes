@@ -69,6 +69,11 @@ export default function VoiceIntegrationSecondaryNavigation({
                     IVR
                 </NavLink>
             )}
+            {exposeQueues && (
+                <NavLink to={`${baseURL}/settings`} exact>
+                    New settings
+                </NavLink>
+            )}
         </SecondaryNavbar>
     )
 }

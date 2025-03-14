@@ -1,5 +1,6 @@
 import React from 'react'
 
+import { QueryClientProvider } from '@tanstack/react-query'
 import { fireEvent, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { fromJS } from 'immutable'
@@ -19,6 +20,7 @@ import * as api from 'pages/integrations/integration/components/phone/actions'
 import { Account } from 'state/currentAccount/types'
 import * as actions from 'state/integrations/actions'
 import { RootState, StoreDispatch } from 'state/types'
+import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 import { renderWithRouter } from 'utils/testing'
 
 import VoiceIntegrationVoicemail from '../VoiceIntegrationVoicemail'
@@ -115,9 +117,11 @@ const renderVoiceIntegrationVoicemail = (
     integration: PhoneIntegration,
 ) =>
     renderWithRouter(
-        <Provider store={mockStore(storeState)}>
-            <VoiceIntegrationVoicemail integration={integration} />
-        </Provider>,
+        <QueryClientProvider client={mockQueryClient()}>
+            <Provider store={mockStore(storeState)}>
+                <VoiceIntegrationVoicemail integration={integration} />
+            </Provider>
+        </QueryClientProvider>,
     )
 
 describe('<VoiceIntegrationVoicemail /> render', () => {

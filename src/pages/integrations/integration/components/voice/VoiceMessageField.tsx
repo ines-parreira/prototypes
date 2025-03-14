@@ -1,5 +1,12 @@
 import React, { useCallback, useEffect, useState } from 'react'
 
+import _get from 'lodash/get'
+
+import { useUploadCustomVoiceRecording } from '@gorgias/api-queries'
+import { CustomRecordingType } from '@gorgias/api-types'
+
+import useAppDispatch from 'hooks/useAppDispatch'
+import { GorgiasApiResponseDataError } from 'models/api/types'
 import {
     MAX_VOICE_RECORDING_FILE_SIZE_MB,
     TEXT_TO_SPEECH_MAX_LENGTH,
@@ -12,6 +19,8 @@ import {
 } from 'models/integration/types'
 import RadioButton from 'pages/common/components/RadioButton'
 import Textarea from 'pages/common/forms/TextArea'
+import { notify } from 'state/notifications/actions'
+import { NotificationStatus } from 'state/notifications/types'
 import { countLines } from 'utils/string'
 
 import useVoiceMessageValidation from './hooks/useVoiceMessageValidation'
@@ -27,6 +36,8 @@ type Props = {
     horizontal?: boolean
     radioButtonId?: string
     isDisabled?: boolean
+    shouldUpload?: boolean
+    customRecordingType?: CustomRecordingType
 }
 
 const VoiceMessageField = ({
@@ -37,7 +48,10 @@ const VoiceMessageField = ({
     horizontal = false,
     radioButtonId = '',
     isDisabled = false,
+    shouldUpload = false,
+    customRecordingType,
 }: Props): JSX.Element => {
+    const dispatch = useAppDispatch()
     const { validateVoiceRecordingUpload } = useVoiceMessageValidation()
     const [voiceRecordingPath, setVoiceRecordingPath] = useState<
         string | undefined
@@ -63,15 +77,53 @@ const VoiceMessageField = ({
         [value, onChange],
     )
 
-    const handleVoiceRecordingUpload = useCallback(
-        async (event: React.ChangeEvent<HTMLInputElement>) => {
-            const voiceRecordingUpload = await validateVoiceRecordingUpload(
-                event,
-                maxRecordingDuration,
-                MAX_VOICE_RECORDING_FILE_SIZE_MB,
-                horizontal,
-            )
-            if (voiceRecordingUpload) {
+    const { mutate: uploadFile, isLoading } = useUploadCustomVoiceRecording({
+        mutation: {
+            onSuccess: (response) => {
+                const newValue: VoiceMessageRecording = {
+                    voice_recording_file_path: response.data.url,
+                    voice_message_type: VoiceMessageType.VoiceRecording,
+                    new_voice_recording_file_type: response.data.content_type,
+                    new_voice_recording_file_name: response.data.name,
+                }
+                setVoiceRecordingPath(newValue.voice_recording_file_path)
+                onChange(newValue)
+            },
+            onError: (err) => {
+                const error = _get(err, 'response.data.error', '') as
+                    | GorgiasApiResponseDataError
+                    | undefined
+                void dispatch(
+                    notify({
+                        title:
+                            error?.msg || 'Failed to upload custom recording',
+                        status: NotificationStatus.Error,
+                    }),
+                )
+            },
+        },
+    })
+
+    const handleVoiceRecordingUpload = async (
+        event: React.ChangeEvent<HTMLInputElement>,
+    ) => {
+        const voiceRecordingUpload = await validateVoiceRecordingUpload(
+            event,
+            maxRecordingDuration,
+            MAX_VOICE_RECORDING_FILE_SIZE_MB,
+            horizontal,
+        )
+        if (voiceRecordingUpload) {
+            if (shouldUpload && customRecordingType) {
+                const { uploadedFile } = voiceRecordingUpload
+                const params = {
+                    type: customRecordingType,
+                    ...(value.voice_recording_file_path
+                        ? { replaces: value.voice_recording_file_path }
+                        : {}),
+                }
+                uploadFile({ data: { file: uploadedFile }, params })
+            } else {
                 const { url, newVoiceFields } = voiceRecordingUpload
                 setVoiceRecordingPath(url)
 
@@ -82,15 +134,8 @@ const VoiceMessageField = ({
                 }
                 onChange(newValue)
             }
-        },
-        [
-            value,
-            onChange,
-            maxRecordingDuration,
-            horizontal,
-            validateVoiceRecordingUpload,
-        ],
-    )
+        }
+    }
 
     if (horizontal) {
         return (
@@ -127,6 +172,7 @@ const VoiceMessageField = ({
                         uploadLabel={'Upload File'}
                         maxSizeInMB={MAX_VOICE_RECORDING_FILE_SIZE_MB}
                         isDisabled={isDisabled}
+                        isLoading={isLoading}
                     />
                 )}
                 {value.voice_message_type === VoiceMessageType.TextToSpeech && (

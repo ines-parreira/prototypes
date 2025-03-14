@@ -1,6 +1,5 @@
 import React from 'react'
 
-import { render } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
@@ -12,6 +11,7 @@ import {
 } from 'models/integration/constants'
 import { IvrSmsDeflection, VoiceMessageType } from 'models/integration/types'
 import { RootState, StoreDispatch } from 'state/types'
+import { renderWithQueryClientProvider } from 'tests/reactQueryTestingUtils'
 
 import IvrMenuActionSendToSMSField from '../IvrMenuActionSendToSMSField'
 
@@ -26,7 +26,7 @@ describe('<IvrMenuActionSendToSMSField />', () => {
         integrations: any = [],
         isDrawerOpen = false,
     ) =>
-        render(
+        renderWithQueryClientProvider(
             <Provider store={mockStore({})}>
                 <IvrMenuActionSendToSMSField
                     settings={settings}

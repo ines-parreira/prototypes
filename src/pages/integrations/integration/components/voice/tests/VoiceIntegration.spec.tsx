@@ -3,11 +3,13 @@ import React from 'react'
 import { screen } from '@testing-library/react'
 
 import { useFlag } from 'core/flags'
+import useAppSelector from 'hooks/useAppSelector'
 import { assumeMock, renderWithRouter } from 'utils/testing'
 
 import VoiceIntegration from '../VoiceIntegration'
 
-jest.mock('hooks/useAppSelector', () => (fn: () => void) => fn())
+jest.mock('hooks/useAppSelector')
+const useAppSelectorMock = assumeMock(useAppSelector)
 jest.mock('core/flags')
 jest.mock(
     'pages/integrations/integration/components/voice/VoiceIntegrationQueueRoutes',
@@ -74,5 +76,21 @@ describe('VoiceIntegration', () => {
         renderComponent()
 
         expect(screen.getByText('QueueRoutes')).toBeInTheDocument()
+    })
+
+    it('should render integration settings under FF', () => {
+        useAppSelectorMock.mockReturnValue({
+            id: 1,
+            name: 'testing',
+            type: 'phone',
+            meta: {
+                function: 'standard',
+            },
+        })
+        useFlagMock.mockReturnValue(true)
+
+        renderComponent()
+
+        expect(screen.queryByText('New settings')).toBeInTheDocument()
     })
 })

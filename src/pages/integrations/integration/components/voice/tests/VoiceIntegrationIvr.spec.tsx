@@ -1,6 +1,5 @@
 import React from 'react'
 
-import { render } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { Provider } from 'react-redux'
 import { Router } from 'react-router-dom'
@@ -14,6 +13,7 @@ import {
     VoiceMessageType,
 } from 'models/integration/types'
 import history from 'pages/history'
+import { renderWithQueryClientProvider } from 'tests/reactQueryTestingUtils'
 
 import VoiceIntegrationIvr from '../VoiceIntegrationIvr'
 
@@ -63,7 +63,7 @@ const ivrIntegration = {
 
 describe('<VoiceIntegrationIvr />', () => {
     const renderComponent = () => {
-        return render(
+        return renderWithQueryClientProvider(
             <Router history={history}>
                 <Provider store={mockStore()}>
                     <VoiceIntegrationIvr integration={ivrIntegration} />

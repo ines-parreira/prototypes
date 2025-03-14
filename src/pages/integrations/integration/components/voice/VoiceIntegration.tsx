@@ -29,6 +29,7 @@ import { getDefaultRoutes } from '../../utils/defaultRoutes'
 import { PHONE_INTEGRATION_BASE_URL as baseURL } from './constants'
 import VoiceIntegrationDetails from './VoiceIntegrationDetails'
 import VoiceIntegrationQueueRoutes from './VoiceIntegrationQueueRoutes'
+import VoiceIntegrationSettings from './VoiceIntegrationSettings'
 
 export default function VoiceIntegration() {
     const config = getIntegrationConfig(IntegrationType.Phone)
@@ -90,6 +91,16 @@ export default function VoiceIntegration() {
             <Switch>
                 {currentIntegration && (
                     <>
+                        {exposeQueues && (
+                            <Route
+                                path={`${baseURL}/:integrationId/settings`}
+                                exact
+                            >
+                                <VoiceIntegrationSettings
+                                    integration={currentIntegration}
+                                />
+                            </Route>
+                        )}
                         <Route
                             path={`${baseURL}/:integrationId/preferences`}
                             exact

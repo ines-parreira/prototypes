@@ -1,6 +1,6 @@
 import React from 'react'
 
-import { fireEvent, render } from '@testing-library/react'
+import { fireEvent } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { fromJS } from 'immutable'
 import { times } from 'lodash'
@@ -14,6 +14,7 @@ import {
     VoiceMessageType,
 } from 'models/integration/types'
 import { RootState } from 'state/types'
+import { renderWithQueryClientProvider } from 'tests/reactQueryTestingUtils'
 
 import IvrMenuActionsFieldArray from '../IvrMenuActionsFieldArray'
 
@@ -41,7 +42,7 @@ describe('<IvrMenuActionsFieldArray />', () => {
         options: IvrMenuAction[],
         integrationsState = [],
     ) =>
-        render(
+        renderWithQueryClientProvider(
             <Provider
                 store={mockStore({
                     integrations: fromJS({ integrations: integrationsState }),

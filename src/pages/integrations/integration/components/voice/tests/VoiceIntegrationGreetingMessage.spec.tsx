@@ -1,5 +1,6 @@
 import React from 'react'
 
+import { QueryClientProvider } from '@tanstack/react-query'
 import { fireEvent } from '@testing-library/react'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
@@ -17,6 +18,7 @@ import {
 } from 'models/integration/types'
 import { Account } from 'state/currentAccount/types'
 import { RootState, StoreDispatch } from 'state/types'
+import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 import { assumeMock, renderWithRouter } from 'utils/testing'
 
 import useVoiceIntegrationGreetingMessage from '../hooks/useVoiceIntegrationGreetingMessage'
@@ -99,7 +101,9 @@ const standardIntegration: PhoneIntegration = {
 const renderVoiceIntegrationGreetingMessage = (integration: PhoneIntegration) =>
     renderWithRouter(
         <Provider store={store}>
-            <VoiceIntegrationGreetingMessage integration={integration} />
+            <QueryClientProvider client={mockQueryClient()}>
+                <VoiceIntegrationGreetingMessage integration={integration} />
+            </QueryClientProvider>
         </Provider>,
     )
 

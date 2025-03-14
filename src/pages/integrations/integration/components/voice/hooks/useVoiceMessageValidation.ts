@@ -83,7 +83,7 @@ export default function useVoiceMessageValidation() {
             new_voice_recording_file_name: uploadedFile.name,
             new_voice_recording_file_type: uploadedFile.type,
         }
-        return { url, newVoiceFields }
+        return { url, newVoiceFields, uploadedFile }
     }
 
     const validateVoiceMessage = (payload: Maybe<VoiceMessage>) => {
