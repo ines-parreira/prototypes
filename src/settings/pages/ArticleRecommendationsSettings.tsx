@@ -31,7 +31,7 @@ export function ArticleRecommendationsSettings() {
             <Header className={css.header} title="Article recommendations">
                 <StoreSelector
                     integrations={integrations}
-                    selected={selected?.id}
+                    selected={selected}
                     onChange={onChange}
                 />
             </Header>

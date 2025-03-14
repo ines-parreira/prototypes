@@ -1,5 +1,4 @@
 import { useCallback, useEffect, useMemo } from 'react'
-import type { ChangeEvent } from 'react'
 
 import { useHistory, useParams } from 'react-router-dom'
 
@@ -30,11 +29,8 @@ export function useStoreSelector(basePath: string, types?: IntegrationType[]) {
     )
 
     const handleChange = useCallback(
-        (e: ChangeEvent<HTMLSelectElement>) => {
-            const integrationId = parseInt(e.currentTarget.value, 10)
-            const integration = sortedIntegrations.find(
-                (i) => i.id === integrationId,
-            )
+        (value: number) => {
+            const integration = sortedIntegrations.find((i) => i.id === value)
             if (!integration) return
 
             const name = getShopNameFromStoreIntegration(integration)

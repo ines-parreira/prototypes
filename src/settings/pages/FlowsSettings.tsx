@@ -29,7 +29,7 @@ export function FlowsSettings() {
             <Header className={css.header} title="Flows">
                 <StoreSelector
                     integrations={integrations}
-                    selected={selected?.id}
+                    selected={selected}
                     onChange={onChange}
                 />
             </Header>

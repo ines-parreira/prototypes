@@ -1,5 +1,5 @@
 import React from 'react'
-import type { ChangeEvent, ReactNode } from 'react'
+import type { ReactNode } from 'react'
 
 import { renderHook } from '@testing-library/react-hooks'
 import { createBrowserHistory } from 'history'
@@ -68,9 +68,7 @@ describe('useStoreSelector', () => {
             wrapper: createWrapper(history),
         })
 
-        result.current.onChange({
-            currentTarget: { value: '2' },
-        } as ChangeEvent<HTMLSelectElement>)
+        result.current.onChange(2)
 
         expect(history.location.pathname).toBe(
             `${BASE_PATH}/shopify/my-second-store`,

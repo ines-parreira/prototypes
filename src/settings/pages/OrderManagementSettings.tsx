@@ -99,7 +99,7 @@ export function OrderManagementSettings() {
             >
                 <StoreSelector
                     integrations={integrations}
-                    selected={selected?.id}
+                    selected={selected}
                     onChange={onChange}
                 />
             </Header>
