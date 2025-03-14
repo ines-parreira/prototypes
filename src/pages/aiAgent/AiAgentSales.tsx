@@ -8,7 +8,7 @@ import { FeatureFlagKey } from 'config/featureFlags'
 import { AiAgentLayout } from './components/AiAgentLayout/AiAgentLayout'
 import { SalesPaywall } from './components/SalesPaywall/SalesPaywall'
 import { SalesSettings } from './components/SalesSettings/SalesSettings'
-import { AI_AGENT } from './constants'
+import { AI_AGENT, SALES } from './constants'
 
 import css from './AiAgentSales.less'
 
@@ -30,13 +30,12 @@ export const AiAgentSales = () => {
         </div>
     )
 
-    return isStandaloneMenuEnabled ? (
-        content
-    ) : (
+    return (
         <AiAgentLayout
             shopName={shopName}
             className={css.container}
-            title={AI_AGENT}
+            title={isStandaloneMenuEnabled ? SALES.pageTitle : AI_AGENT}
+            hideViewAiAgentTicketsButton={isStandaloneMenuEnabled}
         >
             {content}
         </AiAgentLayout>

@@ -16,7 +16,10 @@ export const SUPPORT_ACTIONS = 'Support Actions'
 export const ACTIONS = 'Actions'
 export const TEST = 'Test'
 export const PREVIEW = 'Preview'
-export const SALES = 'Sales'
+export const SALES = {
+    navbarItem: 'Sales',
+    pageTitle: 'Sales skills',
+}
 
 export const SIGNATURE_MAX_LENGTH = 250
 export const CUSTOM_TONE_OF_VOICE_MAX_LENGTH = 1500

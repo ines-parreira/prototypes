@@ -57,4 +57,12 @@ describe('<AiAgentLayout />', () => {
             skipRedirect: true,
         })
     })
+
+    it('should hide ai agent ticket view button if hideAiAgentTicketsViewButton props is passed', () => {
+        renderComponent({ hideViewAiAgentTicketsButton: true })
+        const ticketViewButton = screen.queryByRole('button', {
+            name: 'View AI Agent Tickets',
+        })
+        expect(ticketViewButton).not.toBeInTheDocument()
+    })
 })

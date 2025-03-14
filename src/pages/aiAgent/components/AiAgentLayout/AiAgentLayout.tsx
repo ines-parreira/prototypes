@@ -22,6 +22,7 @@ type Props = {
     className?: string
     title: ReactNode
     isLoading?: boolean
+    hideViewAiAgentTicketsButton?: boolean
 }
 
 export const AiAgentLayout = ({
@@ -30,6 +31,7 @@ export const AiAgentLayout = ({
     children,
     title,
     isLoading,
+    hideViewAiAgentTicketsButton,
 }: Props) => {
     const headerNavbarItems = useAiAgentHeaderNavbarItems(shopName)
 
@@ -50,7 +52,7 @@ export const AiAgentLayout = ({
             <div className={css.customAiAgentTitle}>
                 <div className={css.customAiAgentTitleSubContainer}>
                     <h1 className="d-flex align-items-center">{title}</h1>
-                    {aiAgentTicketViewId && (
+                    {!hideViewAiAgentTicketsButton && aiAgentTicketViewId && (
                         <Button
                             size="small"
                             intent="secondary"
@@ -73,7 +75,12 @@ export const AiAgentLayout = ({
                 </div>
             </div>
         )
-    }, [aiAgentTicketViewId, title, ActivationButton])
+    }, [
+        hideViewAiAgentTicketsButton,
+        aiAgentTicketViewId,
+        title,
+        ActivationButton,
+    ])
 
     return (
         <AiAgentView

@@ -167,7 +167,7 @@ const useNavigationItems = (
                 },
                 {
                     route: routes.sales,
-                    title: SALES,
+                    title: SALES.navbarItem,
                 },
                 {
                     route: routes.test,
@@ -205,7 +205,7 @@ const useNavigationItems = (
             },
             {
                 route: routes.sales,
-                title: SALES,
+                title: SALES.navbarItem,
             },
             {
                 route: routes.test,

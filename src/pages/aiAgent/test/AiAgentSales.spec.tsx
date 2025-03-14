@@ -38,6 +38,6 @@ describe('<AiAgentSales />', () => {
         })
         renderComponent()
 
-        expect(screen.queryByText('Sales skills')).toBeInTheDocument()
+        expect(screen.queryByText('AI Agent')).toBeInTheDocument()
     })
 })
