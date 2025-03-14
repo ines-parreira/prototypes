@@ -39,7 +39,8 @@ export function CustomerTimelineWidget({ isEditing }: Props) {
     ).toJS() as ReduxCustomerHistory
 
     const ticketCount = customerHistory.tickets.length
-    const hasHistory = customerHistory.triedLoading && ticketCount > 0
+    const hasNoTickets = customerHistory.triedLoading && ticketCount === 0
+    const hasNoHistory = customerHistory.triedLoading && ticketCount < 2
     const { openTicketCount, snoozedTicketCount } = getTicketsCount(
         customerHistory.tickets,
     )
@@ -60,22 +61,27 @@ export function CustomerTimelineWidget({ isEditing }: Props) {
 
     if (isHistoryLoading) {
         return (
-            <span className={css.timelineWidget}>
+            <div className={css.timelineWidget}>
                 <LoadingSpinner size="small" className={css.mr} />
-            </span>
-        )
-    }
-
-    if (!hasHistory) {
-        return (
-            <div className={`${css.timelineWidget} ${css.noHistory}`}>
-                <ForumIcon /> This customer doesn’t have any tickets yet.
             </div>
         )
     }
 
+    let textContent: React.ReactNode = (
+        <>
+            {ticketCount} ticket{ticketCount > 1 ? 's' : ''}
+            {openTicketCount > 0 && <>, {openTicketCount} open</>}
+            {snoozedTicketCount > 0 && <>, {snoozedTicketCount} snoozed</>}
+        </>
+    )
+    if (hasNoTickets)
+        textContent = 'This customer doesn’t have any tickets yet.'
+    if (showToggle && hasNoHistory) textContent = 'No other tickets'
+
     return (
-        <div className={css.timelineWidget}>
+        <div
+            className={`${css.timelineWidget} ${hasNoHistory ? css.noTimeline : ''}`}
+        >
             {showToggle ? (
                 <Button
                     className={css.mr}
@@ -83,17 +89,14 @@ export function CustomerTimelineWidget({ isEditing }: Props) {
                     onClick={handleToggleClick}
                     size="small"
                     leadingIcon={isHistoryDisplayed ? 'close' : 'forum'}
+                    isDisabled={hasNoHistory}
                 >
                     {isHistoryDisplayed ? 'Close' : 'Open'} Timeline
                 </Button>
             ) : (
                 <ForumIcon />
             )}
-            <span className={css.ticketCount}>
-                {ticketCount} ticket{ticketCount > 1 ? 's' : ''}
-                {openTicketCount > 0 && <>, {openTicketCount} open</>}
-                {snoozedTicketCount > 0 && <>, {snoozedTicketCount} snoozed</>}
-            </span>
+            <span className={css.ticketCount}>{textContent}</span>
         </div>
     )
 }

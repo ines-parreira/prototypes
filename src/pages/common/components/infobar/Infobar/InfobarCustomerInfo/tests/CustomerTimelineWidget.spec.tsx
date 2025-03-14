@@ -82,32 +82,6 @@ describe('CustomerTimelineButton', () => {
         expect(screen.getByRole('status')).toBeInTheDocument()
     })
 
-    it('should display a message when there are no tickets', () => {
-        getCustomerHistoryMock.mockReturnValue(
-            fromJS({ tickets: [], triedLoading: true }),
-        )
-
-        render(<CustomerTimelineWidget isEditing={false} />)
-
-        expect(
-            screen.getByText(/doesn’t have any tickets yet/i),
-        ).toBeInTheDocument()
-    })
-
-    it('should not display any button if editing or in customer context but a forum icon', () => {
-        getContextMock.mockReturnValue(WidgetEnvironment.Customer)
-        const { rerender } = render(
-            <CustomerTimelineWidget isEditing={false} />,
-        )
-        expect(screen.queryByRole('button')).toBeNull()
-
-        getContextMock.mockReturnValue(WidgetEnvironment.Ticket)
-        rerender(<CustomerTimelineWidget isEditing={true} />)
-        expect(screen.queryByRole('button')).toBeNull()
-
-        expect(screen.getByText(/forum/i)).toBeInTheDocument()
-    })
-
     it('should dispatch toggleHistory with correct value when clicked', () => {
         const { rerender } = render(
             <CustomerTimelineWidget isEditing={false} />,
@@ -153,20 +127,70 @@ describe('CustomerTimelineButton', () => {
         )
     })
 
-    it('should display the correct number of tickets', () => {
+    it('should display that there is no history', () => {
+        getCustomerHistoryMock.mockReturnValue(
+            fromJS({ tickets: [], triedLoading: true }),
+        )
+
         const { rerender } = render(
             <CustomerTimelineWidget isEditing={false} />,
         )
 
-        expect(screen.getByText(/2 open/i)).toBeInTheDocument()
-        expect(screen.getByText(/1 snoozed/i)).toBeInTheDocument()
-        expect(screen.getByText(/5 tickets/i)).toBeInTheDocument()
+        expect(screen.getByText('No other tickets')).toBeInTheDocument()
 
         getCustomerHistoryMock.mockReturnValue(
             fromJS({ tickets: [closedTickets[0]], triedLoading: true }),
         )
 
         rerender(<CustomerTimelineWidget isEditing={false} />)
-        expect(screen.getByText('1 ticket')).toBeInTheDocument()
+        expect(screen.getByText('No other tickets')).toBeInTheDocument()
+    })
+
+    it('should display the correct number of tickets', () => {
+        render(<CustomerTimelineWidget isEditing={false} />)
+
+        expect(screen.getByText(/2 open/i)).toBeInTheDocument()
+        expect(screen.getByText(/1 snoozed/i)).toBeInTheDocument()
+        expect(screen.getByText(/5 tickets/i)).toBeInTheDocument()
+    })
+
+    describe('Customer context or edit mode', () => {
+        it('should display a message when there are no tickets', () => {
+            getContextMock.mockReturnValue(WidgetEnvironment.Customer)
+            getCustomerHistoryMock.mockReturnValue(
+                fromJS({ tickets: [], triedLoading: true }),
+            )
+
+            render(<CustomerTimelineWidget isEditing={false} />)
+
+            expect(
+                screen.getByText(/doesn’t have any tickets yet/i),
+            ).toBeInTheDocument()
+        })
+
+        it('should display that there is only 1 ticket', () => {
+            getContextMock.mockReturnValue(WidgetEnvironment.Customer)
+            getCustomerHistoryMock.mockReturnValue(
+                fromJS({ tickets: [closedTickets[0]], triedLoading: true }),
+            )
+
+            render(<CustomerTimelineWidget isEditing={false} />)
+
+            expect(screen.getByText('1 ticket')).toBeInTheDocument()
+        })
+
+        it('should not display any button but a forum icon', () => {
+            getContextMock.mockReturnValue(WidgetEnvironment.Customer)
+            const { rerender } = render(
+                <CustomerTimelineWidget isEditing={false} />,
+            )
+            expect(screen.queryByRole('button')).toBeNull()
+
+            getContextMock.mockReturnValue(WidgetEnvironment.Ticket)
+            rerender(<CustomerTimelineWidget isEditing={true} />)
+            expect(screen.queryByRole('button')).toBeNull()
+
+            expect(screen.getByText(/forum/i)).toBeInTheDocument()
+        })
     })
 })
