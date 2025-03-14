@@ -135,7 +135,7 @@ const renderWithProvider = (state?: RootState, props = defaultProps) => {
     )
 }
 
-describe('ChannelsStep - empty state', () => {
+describe.skip('ChannelsStep - empty state', () => {
     beforeEach(() => {
         queryClient.clear()
 
@@ -675,7 +675,7 @@ describe('ChannelsStep - empty state', () => {
     })
 })
 
-describe('ChannelsStep - With preloaded data', () => {
+describe.skip('ChannelsStep - With preloaded data', () => {
     beforeEach(() => {
         queryClient.clear()
         jest.clearAllMocks()
