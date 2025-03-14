@@ -4,6 +4,8 @@ import { IntegrationType } from 'models/integration/constants'
 import { getIconFromType } from 'state/integrations/helpers'
 import { assetsUrl } from 'utils'
 
+import css from './IntegrationIcon.less'
+
 type Props = {
     kind: IntegrationType
 }
@@ -17,5 +19,12 @@ export function IntegrationIcon({ kind }: Props) {
         [kind],
     )
 
-    return <img alt={`${kind} logo`} role="presentation" src={src} />
+    return (
+        <img
+            alt={`${kind} logo`}
+            className={css.icon}
+            role="presentation"
+            src={src}
+        />
+    )
 }
