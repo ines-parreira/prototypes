@@ -2,6 +2,7 @@ import React from 'react'
 
 import { Button } from '@gorgias/merchant-ui-kit'
 
+import { useNotify } from 'hooks/useNotify'
 import { StoreConfiguration } from 'models/aiAgent/types'
 import { ActivationProgress } from 'pages/aiAgent/Activation/components/ActivationProgress/ActivationProgress'
 import { AiAgentActivationStoreCard as StoreCard } from 'pages/aiAgent/Activation/components/AiAgentActivationStoreCard/AiAgentActivationStoreCard'
@@ -43,11 +44,20 @@ export const AiAgentActivationModal = ({
         storeConfigurations: storeConfigs,
         pageName,
     })
-
+    const notify = useNotify()
     const progressPercentage = Math.round((currentScore / totalScore) * 100)
 
     const onSaveClick = async () => {
-        await onSave()
+        try {
+            await onSave()
+            await notify.success(
+                'Successfully updated activation status for AI Agent',
+            )
+        } catch {
+            await notify.error(
+                'Changes to AI Agent activation status could not be successfully saved. Please try again.',
+            )
+        }
         onClose()
     }
 

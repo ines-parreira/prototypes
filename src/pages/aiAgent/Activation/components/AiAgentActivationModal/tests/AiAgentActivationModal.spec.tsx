@@ -5,16 +5,23 @@ import { fireEvent, render } from '@testing-library/react'
 import '@testing-library/jest-dom/extend-expect'
 
 import { QueryClientProvider } from '@tanstack/react-query'
+import userEvent from '@testing-library/user-event'
 import { fromJS } from 'immutable'
 import { Provider } from 'react-redux'
 
 import { appQueryClient } from 'api/queryClient'
 import { billingState } from 'fixtures/billing'
 import { AiAgentScope, StoreConfiguration } from 'models/aiAgent/types'
+import { useStoresConfigurationMutation } from 'pages/aiAgent/hooks/useStoresConfigurationMutation'
 import { RootState } from 'state/types'
-import { mockStore } from 'utils/testing'
+import { assumeMock, mockStore } from 'utils/testing'
 
 import { AiAgentActivationModal } from '../AiAgentActivationModal'
+
+jest.mock('pages/aiAgent/hooks/useStoresConfigurationMutation')
+const useStoresConfigurationMutationMock = assumeMock(
+    useStoresConfigurationMutation,
+)
 
 const storeSupportWithEmailAndChatAndSales = {
     storeName: 'storeSupportWithEmailAndChatAndSales',
@@ -35,6 +42,16 @@ const storeSupportWithEmailAndChat = {
 } as any as StoreConfiguration
 
 describe('<AiAgentActivationModal />', () => {
+    const upsertStoresConfigurationMock = jest.fn()
+
+    beforeEach(() => {
+        useStoresConfigurationMutationMock.mockReturnValue({
+            upsertStoresConfiguration: upsertStoresConfigurationMock,
+            isLoading: false,
+            error: null,
+        })
+    })
+
     it('should render the modal with correct title and progress', () => {
         const onCloseMock = jest.fn()
         const { getByText } = render(
@@ -98,7 +115,7 @@ describe('<AiAgentActivationModal />', () => {
         const salesToggleLabel = getAllByRole('switch')[1]
         expect(salesToggleLabel).toBeInTheDocument()
         expect(salesToggleLabel).toHaveAttribute('aria-checked', 'false')
-        await fireEvent.click(salesToggleLabel!)
+        fireEvent.click(salesToggleLabel!)
         expect(onSalesEnabledMock).toHaveBeenCalled()
         expect(salesToggleLabel).toHaveAttribute('aria-checked', 'false')
     })
@@ -106,7 +123,7 @@ describe('<AiAgentActivationModal />', () => {
     it('should allow enabling sales if parent caller ask for it', async () => {
         const onCloseMock = jest.fn()
         const onSalesEnabledMock = jest.fn().mockReturnValue(true)
-        const { getAllByRole } = render(
+        const { getAllByRole, getByText } = render(
             <Provider
                 store={mockStore({
                     billing: fromJS(billingState),
@@ -132,8 +149,12 @@ describe('<AiAgentActivationModal />', () => {
         const salesToggleLabel = getAllByRole('switch')[1]
         expect(salesToggleLabel).toBeInTheDocument()
         expect(salesToggleLabel).toHaveAttribute('aria-checked', 'false')
-        await fireEvent.click(salesToggleLabel!)
+        fireEvent.click(salesToggleLabel!)
         expect(onSalesEnabledMock).toHaveBeenCalled()
         expect(salesToggleLabel).toHaveAttribute('aria-checked', 'true')
+
+        const button = getByText('Save')
+        userEvent.click(button)
+        expect(upsertStoresConfigurationMock).toHaveBeenCalled()
     })
 })
