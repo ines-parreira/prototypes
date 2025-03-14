@@ -59,7 +59,7 @@ export const IntentNameCellContent = ({
         <BodyCellWrapper
             bodyCellProps={{
                 width: getColumnWidth(column),
-                showCursor: hasL2DrilldownEnabled && isL1Drilldown,
+                isClickable: hasL2DrilldownEnabled && isL1Drilldown,
             }}
         >
             <div className="body-medium" onClick={goToIntent}>
@@ -219,14 +219,16 @@ export const BodyCellWrapper = ({
     bodyCellProps: {
         width: number
         justifyContent?: 'right'
-        showCursor?: boolean
+        isClickable?: boolean
     }
 }) => {
     return (
         <BodyCell
             justifyContent={bodyCellProps.justifyContent}
             innerClassName={
-                bodyCellProps.showCursor ? undefined : intentTableCss.cellCursor
+                bodyCellProps.isClickable
+                    ? intentTableCss.clickableCell
+                    : intentTableCss.notClickableCell
             }
         >
             {isLoading ? (
