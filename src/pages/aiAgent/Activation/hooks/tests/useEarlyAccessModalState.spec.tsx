@@ -55,12 +55,14 @@ describe('useEarlyAccessModalState', () => {
             )
             mockGetCurrentAccountState.mockReturnValue(fromJS({ id: 1 }))
 
-            const { result } = renderHook(() => useEarlyAccessModalState())
+            const { result } = renderHook(() =>
+                useEarlyAccessModalState({ hasActivationEnabled: true }),
+            )
 
             expect(result.current.isPreviewModalVisible).toBeTruthy()
 
             const { result: result2 } = renderHook(() =>
-                useEarlyAccessModalState(),
+                useEarlyAccessModalState({ hasActivationEnabled: true }),
             )
 
             expect(result2.current.isPreviewModalVisible).toBeFalsy()

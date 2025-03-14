@@ -60,7 +60,7 @@ export const useActivation = (pageName: string) => {
         currentPlan,
         earlyAccessPlan,
         isLoading,
-    } = useEarlyAccessModalState()
+    } = useEarlyAccessModalState({ hasActivationEnabled })
 
     return useMemo(
         () => ({

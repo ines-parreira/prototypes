@@ -31,9 +31,15 @@ const useAutoDisplaySalesEarlyAccessModal = (
     }, [currentAccount, hasActivationEnabled, shouldDisplayModal, showModal])
 }
 
-export const useEarlyAccessModalState = () => {
-    const earlyAccessAutomatePlanQuery = useEarlyAccessAutomatePlan()
-    const billingState = useBillingState()
+export const useEarlyAccessModalState = ({
+    hasActivationEnabled,
+}: {
+    hasActivationEnabled: boolean
+}) => {
+    const earlyAccessAutomatePlanQuery = useEarlyAccessAutomatePlan({
+        enabled: hasActivationEnabled,
+    })
+    const billingState = useBillingState({ enabled: hasActivationEnabled })
 
     const [isPreviewModalVisible, setIsPreviewModalVisible] = useState(false)
     const isOnNewPlan =
