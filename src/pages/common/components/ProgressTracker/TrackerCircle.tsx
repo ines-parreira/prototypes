@@ -70,7 +70,6 @@ const TrackerCircle = ({
     const bgColor = backgroundColor ?? relativeLighten(color, 0.5)
     const strokeW = strokeWidth ?? radius / 2.5
     const size = (radius * 2 + strokeW) * 1.01
-    const labelY = radius / 2 + strokeW / 2
 
     return (
         <svg
@@ -96,13 +95,15 @@ const TrackerCircle = ({
             </g>
             <foreignObject
                 x={0}
-                y={labelY}
-                height="50%"
+                y={0}
+                height="100%"
                 width="100%"
                 fontSize={radius / 1.5}
             >
-                <div className={css.label} title={label}>
-                    {label}
+                <div className={css.labelContainer}>
+                    <span className={css.label} title={label}>
+                        {label}
+                    </span>
                 </div>
             </foreignObject>
         </svg>
