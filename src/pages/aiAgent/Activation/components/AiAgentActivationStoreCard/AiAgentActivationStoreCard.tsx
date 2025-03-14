@@ -51,6 +51,7 @@ type Props = {
     onSupportChatChange: (newValue: boolean) => void
     onSupportEmailChange: (newValue: boolean) => void
     isDisabled?: boolean
+    closeModal: () => void
 }
 export const AiAgentActivationStoreCard = ({
     store: { name, title, support, sales, alerts },
@@ -59,6 +60,7 @@ export const AiAgentActivationStoreCard = ({
     onSupportChatChange,
     onSupportEmailChange,
     isDisabled,
+    closeModal,
 }: Props) => {
     const enablementList = [
         sales.enabled,
@@ -98,6 +100,7 @@ export const AiAgentActivationStoreCard = ({
                                               key="cta"
                                               className={css.alertCta}
                                               to={alert.cta.to}
+                                              onClick={closeModal}
                                           >
                                               {alert.cta.label}
                                           </Link>
@@ -166,7 +169,10 @@ export const AiAgentActivationStoreCard = ({
                             </div>
                             <div className={css.channelCaption}>
                                 {support.chat.isIntegrationMissing ? (
-                                    <Link to={routes.settingsChannels}>
+                                    <Link
+                                        to={routes.settingsChannels}
+                                        onClick={closeModal}
+                                    >
                                         Select Integration for Chat
                                     </Link>
                                 ) : (
@@ -206,7 +212,10 @@ export const AiAgentActivationStoreCard = ({
                             </div>
                             <div className={css.channelCaption}>
                                 {support.email.isIntegrationMissing ? (
-                                    <Link to={routes.settingsChannels}>
+                                    <Link
+                                        to={routes.settingsChannels}
+                                        onClick={closeModal}
+                                    >
                                         Select Integration for Email
                                     </Link>
                                 ) : (

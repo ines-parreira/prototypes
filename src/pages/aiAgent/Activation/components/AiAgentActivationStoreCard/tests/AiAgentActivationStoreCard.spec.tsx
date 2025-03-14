@@ -34,6 +34,20 @@ const storeWithoutAlert = {
     },
     alert: [],
 } as any as StoreActivation
+const storeWithIntegrationMissing = {
+    ...storeWithoutAlert,
+    support: {
+        ...storeWithoutAlert.support,
+        chat: {
+            ...storeWithoutAlert.support.chat,
+            isIntegrationMissing: true,
+        },
+        email: {
+            ...storeWithoutAlert.support.email,
+            isIntegrationMissing: true,
+        },
+    },
+} as any as StoreActivation
 const storeWithAlert = {
     ...storeWithoutAlert,
     alerts: [
@@ -51,6 +65,7 @@ describe('<AiAgentActivationStoreCard />', () => {
     const onSupportChange = jest.fn()
     const onSupportChatChange = jest.fn()
     const onSupportEmailChange = jest.fn()
+    const closeModal = jest.fn()
 
     beforeEach(() => {
         jest.clearAllMocks()
@@ -63,6 +78,7 @@ describe('<AiAgentActivationStoreCard />', () => {
             onSupportChange,
             onSupportChatChange,
             onSupportEmailChange,
+            closeModal,
         })
 
         expect(getByText('Steve Madden')).toBeInTheDocument()
@@ -84,6 +100,7 @@ describe('<AiAgentActivationStoreCard />', () => {
             onSupportChange,
             onSupportChatChange,
             onSupportEmailChange,
+            closeModal,
         })
 
         const supportChatCheckbox = getByLabelText('Chat')
@@ -98,10 +115,47 @@ describe('<AiAgentActivationStoreCard />', () => {
             onSupportChange,
             onSupportChatChange,
             onSupportEmailChange,
+            closeModal,
         })
 
         const supportChatCheckbox = getByLabelText('Chat')
         userEvent.click(supportChatCheckbox!)
         expect(onSupportChatChange).not.toHaveBeenCalled()
     })
+
+    it('should close the modal when clicking on an alert link', () => {
+        const { getByText } = renderComponent({
+            store: storeWithAlert,
+            onSalesChange,
+            onSupportChange,
+            onSupportChatChange,
+            onSupportEmailChange,
+            closeModal,
+        })
+
+        const visitKnowledge = getByText('Visit Knowledge')
+        userEvent.click(visitKnowledge)
+        expect(closeModal).toHaveBeenCalled()
+    })
+
+    it.each([
+        { integration: 'chat', text: 'Select Integration for Chat' },
+        { integration: 'email', text: 'Select Integration for Email' },
+    ])(
+        'should close the modal when clicking on a missing $integration integration',
+        ({ text }) => {
+            const { getByText } = renderComponent({
+                store: storeWithIntegrationMissing,
+                onSalesChange,
+                onSupportChange,
+                onSupportChatChange,
+                onSupportEmailChange,
+                closeModal,
+            })
+
+            const missingIntegrationLink = getByText(text)
+            userEvent.click(missingIntegrationLink)
+            expect(closeModal).toHaveBeenCalled()
+        },
+    )
 })

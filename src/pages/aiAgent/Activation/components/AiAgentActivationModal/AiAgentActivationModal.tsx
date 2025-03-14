@@ -104,6 +104,7 @@ export const AiAgentActivationModal = ({
                                 onSupportEmailChange={(value) =>
                                     onSupportEmailChange(storeName, value)
                                 }
+                                closeModal={onClose}
                             />
                         ),
                     )}
