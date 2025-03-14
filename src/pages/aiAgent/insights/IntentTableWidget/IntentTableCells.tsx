@@ -20,6 +20,7 @@ import {
     IntentTableColumn,
 } from 'pages/aiAgent/insights/IntentTableWidget/types'
 import BodyCell from 'pages/common/components/table/cells/BodyCell'
+import { HintTooltip } from 'pages/stats/common/HintTooltip'
 import { DEFAULT_LOCALE, formatMetricValue } from 'pages/stats/common/utils'
 import { DrillDownModalTrigger } from 'pages/stats/DrillDownModalTrigger'
 import { DrillDownMetric } from 'state/ui/stats/drillDownSlice'
@@ -55,6 +56,8 @@ export const IntentNameCellContent = ({
         }
     }
 
+    const showHint = !isL1Drilldown && intent.id.endsWith('Other')
+
     return (
         <BodyCellWrapper
             bodyCellProps={{
@@ -62,8 +65,15 @@ export const IntentNameCellContent = ({
                 isClickable: hasL2DrilldownEnabled && isL1Drilldown,
             }}
         >
-            <div className="body-medium" onClick={goToIntent}>
+            <div className={intentTableCss.intentNameCell} onClick={goToIntent}>
                 {intent[column]}
+                {showHint && (
+                    <HintTooltip
+                        title={
+                            "Many tickets may initially be classified as 'Other'. Over time, they’ll be grouped into more specific topics as AI Agent learns from past tickets."
+                        }
+                    />
+                )}
             </div>
         </BodyCellWrapper>
     )

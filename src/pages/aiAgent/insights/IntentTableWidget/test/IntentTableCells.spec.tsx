@@ -114,6 +114,37 @@ describe('IntentTableCells', () => {
             link.click()
             expect(mockHistoryPush).not.toHaveBeenCalled()
         })
+
+        it('shows a hint tooltip if isL1Drilldown is false and intent id ends with "Other"', () => {
+            renderTableCell(
+                <IntentNameCellContent
+                    intent={{ ...mockIntent, id: '1::2::Other' }}
+                    column={IntentTableColumn.IntentName}
+                />,
+            )
+            expect(screen.getByText('info')).toBeInTheDocument()
+        })
+
+        it('does not show a hint tooltip if isL1Drilldown is false and intent id does not end with "Other"', () => {
+            renderTableCell(
+                <IntentNameCellContent
+                    intent={{ ...mockIntent, id: '1::2' }}
+                    column={IntentTableColumn.IntentName}
+                />,
+            )
+            expect(screen.queryByText('info')).not.toBeInTheDocument()
+        })
+
+        it('does not show a hint tooltip if isL1Drilldown is true', () => {
+            renderTableCell(
+                <IntentNameCellContent
+                    intent={{ ...mockIntent, id: '1::2::Other' }}
+                    column={IntentTableColumn.IntentName}
+                    intentLevel={2}
+                />,
+            )
+            expect(screen.queryByText('info')).not.toBeInTheDocument()
+        })
     })
 
     describe('IntentDefaultCellContent', () => {
