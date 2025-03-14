@@ -71,6 +71,7 @@ type PerformanceOverviewMetrics = {
         | OverviewMetric.MessagesReceived
         | OverviewMetric.MessagesPerTicket
         | OverviewMetric.MedianResolutionTime
+        | OverviewMetric.AverageResponseTime
         | OverviewMetric.MedianFirstResponseTime
         | OverviewMetric.CustomerSatisfaction
         | OverviewMetric.OneTouchTickets

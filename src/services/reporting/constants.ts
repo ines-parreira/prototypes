@@ -2,6 +2,7 @@ import { TicketSLAStatus } from 'models/reporting/cubes/sla/TicketSLACube'
 
 export const CUSTOMER_SATISFACTION_LABEL = 'Average CSAT'
 export const MEDIAN_FIRST_RESPONSE_TIME_LABEL = 'First response time'
+export const AVERAGE_RESPONSE_TIME_LABEL = 'Average response time'
 export const MEDIAN_RESOLUTION_TIME_LABEL = 'Resolution time'
 export const MESSAGES_PER_TICKET_LABEL = 'Messages per ticket'
 export const OPEN_TICKETS_LABEL = 'Open tickets'

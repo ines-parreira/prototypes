@@ -8,6 +8,7 @@ import { integrationsState } from 'fixtures/integrations'
 import { useAIAgentUser } from 'hooks/reporting/automate/useAIAgentUserId'
 import { useTrendReportData } from 'hooks/reporting/common/useTrendReportData'
 import {
+    fetchAverageResponseTimeTrend,
     fetchClosedTicketsTrend,
     fetchMessagesReceivedTrend,
     fetchMessagesSentTrend,
@@ -24,6 +25,11 @@ import { StatsFilters, TagFilterInstanceId } from 'models/stat/types'
 import { useMoneySavedPerInteractionWithAutomate } from 'pages/automate/common/hooks/useMoneySavedPerInteractionWithAutomate'
 import { formatMetricValue } from 'pages/stats/common/utils'
 import {
+    OverviewMetric,
+    OverviewMetricConfig,
+} from 'pages/stats/support-performance/overview/SupportPerformanceOverviewConfig'
+import {
+    AVERAGE_RESPONSE_TIME_LABEL,
     MESSAGES_RECEIVED_LABEL,
     MESSAGES_SENT_LABEL,
     ONE_TOUCH_TICKETS_LABEL,
@@ -36,12 +42,15 @@ import {
 import { assumeMock } from 'utils/testing'
 
 jest.mock('hooks/reporting/metricTrends')
-const useOpenTicketsTrendMock = assumeMock(fetchOpenTicketsTrend)
-const useClosedTicketsTrendMock = assumeMock(fetchClosedTicketsTrend)
-const useTicketsCreatedTrendMock = assumeMock(fetchTicketsCreatedTrend)
-const useTicketsRepliedTrendMock = assumeMock(fetchTicketsRepliedTrend)
-const useMessagesSentTrendMock = assumeMock(fetchMessagesSentTrend)
-const useMessagesReceivedTrendMock = assumeMock(fetchMessagesReceivedTrend)
+const fetchOpenTicketsTrendMock = assumeMock(fetchOpenTicketsTrend)
+const fetchClosedTicketsTrendMock = assumeMock(fetchClosedTicketsTrend)
+const fetchTicketsCreatedTrendMock = assumeMock(fetchTicketsCreatedTrend)
+const fetchTicketsRepliedTrendMock = assumeMock(fetchTicketsRepliedTrend)
+const fetchMessagesSentTrendMock = assumeMock(fetchMessagesSentTrend)
+const fetchMessagesReceivedTrendMock = assumeMock(fetchMessagesReceivedTrend)
+const fetchAverageResponseTimeTrendMock = assumeMock(
+    fetchAverageResponseTimeTrend,
+)
 jest.mock(
     'hooks/reporting/support-performance/overview/useOneTouchTicketsPercentageMetricTrend',
 )
@@ -52,7 +61,6 @@ jest.mock(
     'hooks/reporting/support-performance/overview/useZeroTouchTicketsMetricTrend',
 )
 const useZeroTouchTicketsMock = assumeMock(fetchZeroTouchTicketsMetricTrend)
-
 jest.mock('hooks/reporting/automate/useAIAgentUserId')
 const useAIAgentUserMock = assumeMock(useAIAgentUser)
 
@@ -136,6 +144,13 @@ describe('useTrendReport', () => {
             prevValue: 20,
         },
     }
+    const averageResponseTimeMetricTrend = {
+        ...defaultMetricTrend,
+        data: {
+            value: 100,
+            prevValue: 20,
+        },
+    }
     const zeroTouchTicketMetricTrend = {
         ...defaultMetricTrend,
         data: {
@@ -196,13 +211,20 @@ describe('useTrendReport', () => {
             id: 23,
         } as User)
         useMoneySavedPerInteractionWithAutomateMock.mockReturnValue(123)
-        useOpenTicketsTrendMock.mockResolvedValue(openTicketsMetricTrend)
-        useClosedTicketsTrendMock.mockResolvedValue(closedTicketsMetricTrend)
-        useTicketsCreatedTrendMock.mockResolvedValue(createdTicketsMetricTrend)
-        useTicketsRepliedTrendMock.mockResolvedValue(repliedTicketsMetricTrend)
-        useMessagesSentTrendMock.mockResolvedValue(messagesSentMetricTrend)
-        useMessagesReceivedTrendMock.mockResolvedValue(
+        fetchOpenTicketsTrendMock.mockResolvedValue(openTicketsMetricTrend)
+        fetchClosedTicketsTrendMock.mockResolvedValue(closedTicketsMetricTrend)
+        fetchTicketsCreatedTrendMock.mockResolvedValue(
+            createdTicketsMetricTrend,
+        )
+        fetchTicketsRepliedTrendMock.mockResolvedValue(
+            repliedTicketsMetricTrend,
+        )
+        fetchMessagesSentTrendMock.mockResolvedValue(messagesSentMetricTrend)
+        fetchMessagesReceivedTrendMock.mockResolvedValue(
             messagesReceivedMetricTrend,
+        )
+        fetchAverageResponseTimeTrendMock.mockResolvedValue(
+            averageResponseTimeMetricTrend,
         )
         useOneTouchTicketsMock.mockResolvedValue(oneTouchTicketMetricTrend)
         useZeroTouchTicketsMock.mockResolvedValue(zeroTouchTicketMetricTrend)
@@ -213,7 +235,7 @@ describe('useTrendReport', () => {
             useTrendReportData(
                 defaultStatsFilters,
                 'UTC',
-                getWorkloadReportSource(true, true),
+                getWorkloadReportSource(true, true, true),
             ),
         )
 
@@ -222,7 +244,6 @@ describe('useTrendReport', () => {
                 isFetching: false,
                 data: [
                     ...resultData,
-
                     {
                         label: ZERO_TOUCH_TICKETS_LABEL,
                         value: formatMetricValue(
@@ -241,6 +262,21 @@ describe('useTrendReport', () => {
                             messagesReceivedMetricTrend.data.prevValue,
                         ),
                     },
+                    {
+                        label: AVERAGE_RESPONSE_TIME_LABEL,
+                        value: formatMetricValue(
+                            averageResponseTimeMetricTrend.data.value,
+                            OverviewMetricConfig[
+                                OverviewMetric.AverageResponseTime
+                            ].metricFormat,
+                        ),
+                        prevValue: formatMetricValue(
+                            averageResponseTimeMetricTrend.data.prevValue,
+                            OverviewMetricConfig[
+                                OverviewMetric.AverageResponseTime
+                            ].metricFormat,
+                        ),
+                    },
                 ],
             })
         })
@@ -251,7 +287,7 @@ describe('useTrendReport', () => {
             useTrendReportData(
                 defaultStatsFilters,
                 'UTC',
-                getWorkloadReportSource(false, false),
+                getWorkloadReportSource(false, false, false),
             ),
         )
 
@@ -268,7 +304,24 @@ describe('useTrendReport', () => {
             useTrendReportData(
                 defaultStatsFilters,
                 'UTC',
-                getWorkloadReportSource(false, false),
+                getWorkloadReportSource(false, false, false),
+            ),
+        )
+
+        await waitFor(() => {
+            expect(result.current).toEqual({
+                isFetching: false,
+                data: resultData,
+            })
+        })
+    })
+
+    it('should return the labeled data without average response time', async () => {
+        const { result } = renderHook(() =>
+            useTrendReportData(
+                defaultStatsFilters,
+                'UTC',
+                getWorkloadReportSource(false, false, false),
             ),
         )
 
@@ -281,13 +334,13 @@ describe('useTrendReport', () => {
     })
 
     it('should return no data on error', async () => {
-        useOpenTicketsTrendMock.mockRejectedValue({})
+        fetchOpenTicketsTrendMock.mockRejectedValue({})
 
         const { result } = renderHook(() =>
             useTrendReportData(
                 defaultStatsFilters,
                 'UTC',
-                getWorkloadReportSource(true, true),
+                getWorkloadReportSource(true, true, true),
             ),
         )
 

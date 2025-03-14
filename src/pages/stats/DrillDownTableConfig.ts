@@ -25,6 +25,7 @@ import {
     breachedTicketsDrillDownQueryFactory,
     satisfiedOrBreachedTicketsDrillDownQueryFactory,
 } from 'models/reporting/queryFactories/sla/satisfiedOrBreachedTickets'
+import { averageResponseTimeMetricPerTicketDrillDownQueryFactory } from 'models/reporting/queryFactories/support-performance/averageResponseTime'
 import { closedTicketsPerTicketDrillDownQueryFactory } from 'models/reporting/queryFactories/support-performance/closedTickets'
 import { customerSatisfactionMetricDrillDownQueryFactory } from 'models/reporting/queryFactories/support-performance/customerSatisfaction'
 import { firstResponseTimeMetricPerTicketDrillDownQueryFactory } from 'models/reporting/queryFactories/support-performance/medianFirstResponseTime'
@@ -129,6 +130,8 @@ export const getDrillDownQuery = (
     switch (metricName.metricName) {
         case OverviewMetric.CustomerSatisfaction:
             return customerSatisfactionMetricDrillDownQueryFactory
+        case OverviewMetric.AverageResponseTime:
+            return averageResponseTimeMetricPerTicketDrillDownQueryFactory
         case OverviewMetric.MedianFirstResponseTime:
             return firstResponseTimeMetricPerTicketDrillDownQueryFactory
         case OverviewMetric.MedianResolutionTime:

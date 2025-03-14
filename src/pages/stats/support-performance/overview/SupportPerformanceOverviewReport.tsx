@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useMemo } from 'react'
 
 import { useFlags } from 'launchdarkly-react-client-sdk'
 
@@ -24,11 +24,52 @@ import {
 } from 'pages/stats/support-performance/overview/SupportPerformanceOverviewReportConfig'
 import TipsToggle from 'pages/stats/TipsToggle'
 
+const getProductivitySectionKPIWidths = (
+    isReportingAverageResponseTimeEnabled: boolean,
+    isReportingZeroTouchTicketsMetricEnabled: boolean,
+) => {
+    let handleTimeWidth = 4
+    let firstRowWidth = 3
+    let secondRowWidth = 4
+
+    if (
+        isReportingAverageResponseTimeEnabled &&
+        !isReportingZeroTouchTicketsMetricEnabled
+    ) {
+        firstRowWidth = 4
+        handleTimeWidth = 6
+        secondRowWidth = 6
+    }
+    if (
+        !isReportingAverageResponseTimeEnabled &&
+        !isReportingZeroTouchTicketsMetricEnabled
+    ) {
+        handleTimeWidth = 3
+        secondRowWidth = 3
+    }
+
+    if (isReportingZeroTouchTicketsMetricEnabled) {
+        firstRowWidth = 4
+    }
+
+    if (
+        !isReportingAverageResponseTimeEnabled &&
+        isReportingZeroTouchTicketsMetricEnabled
+    ) {
+        secondRowWidth = 6
+    }
+
+    return { handleTimeWidth, firstRowWidth, secondRowWidth }
+}
+
 export default function SupportPerformanceOverviewReport() {
+    const isReportingMessagesReceivedMetricEnabled =
+        !!useFlags()[FeatureFlagKey.ReportingMessagesReceivedMetric]
+
     const isReportingZeroTouchTicketsMetricEnabled =
         !!useFlags()[FeatureFlagKey.ReportingZeroTouchTicketsMetric]
-    const isReportingMessagesReceivedMetricEnabled =
-        useFlags()[FeatureFlagKey.ReportingMessagesReceivedMetric]
+    const isReportingAverageResponseTimeEnabled =
+        !!useFlags()[FeatureFlagKey.ReportingAverageResponseTime]
 
     const [areTipsVisible, setAreTipsVisible] = useLocalStorage(
         STATS_TIPS_VISIBILITY_KEY,
@@ -38,6 +79,18 @@ export default function SupportPerformanceOverviewReport() {
     useCleanStatsFilters()
     const workloadSectionKPIGridCellSize =
         isReportingMessagesReceivedMetricEnabled ? 3 : 4
+
+    const { handleTimeWidth, firstRowWidth, secondRowWidth } = useMemo(
+        () =>
+            getProductivitySectionKPIWidths(
+                isReportingAverageResponseTimeEnabled,
+                isReportingZeroTouchTicketsMetricEnabled,
+            ),
+        [
+            isReportingAverageResponseTimeEnabled,
+            isReportingZeroTouchTicketsMetricEnabled,
+        ],
+    )
 
     return (
         <div className="full-width">
@@ -76,7 +129,7 @@ export default function SupportPerformanceOverviewReport() {
                     title="Customer experience"
                     titleExtra={
                         <TipsToggle
-                            isVisible={!!areTipsVisible}
+                            isVisible={areTipsVisible}
                             onClick={() => setAreTipsVisible(!areTipsVisible)}
                         />
                     }
@@ -169,48 +222,46 @@ export default function SupportPerformanceOverviewReport() {
                 </DashboardSection>
 
                 <DashboardSection title="Productivity">
-                    <DashboardGridCell
-                        size={getGridCellSize(
-                            isReportingZeroTouchTicketsMetricEnabled ? 4 : 3,
-                        )}
-                    >
+                    <DashboardGridCell size={getGridCellSize(firstRowWidth)}>
                         <DashboardComponent
                             chart={OverviewChart.TicketsRepliedTrendCard}
                             config={SupportPerformanceOverviewReportConfig}
                         />
                     </DashboardGridCell>
-                    <DashboardGridCell
-                        size={getGridCellSize(
-                            isReportingZeroTouchTicketsMetricEnabled ? 4 : 3,
-                        )}
-                    >
+                    <DashboardGridCell size={getGridCellSize(firstRowWidth)}>
                         <DashboardComponent
                             chart={OverviewChart.MessagesSentTrendCard}
                             config={SupportPerformanceOverviewReportConfig}
                         />
                     </DashboardGridCell>
-                    <DashboardGridCell
-                        size={getGridCellSize(
-                            isReportingZeroTouchTicketsMetricEnabled ? 4 : 3,
-                        )}
-                    >
+                    {isReportingAverageResponseTimeEnabled && (
+                        <DashboardGridCell
+                            size={getGridCellSize(firstRowWidth)}
+                        >
+                            <DashboardComponent
+                                chart={
+                                    OverviewChart.AverageResponseTimeTrendCard
+                                }
+                                config={SupportPerformanceOverviewReportConfig}
+                            />
+                        </DashboardGridCell>
+                    )}
+                    <DashboardGridCell size={getGridCellSize(handleTimeWidth)}>
                         <DashboardComponent
                             chart={OverviewChart.TicketHandleTimeTrendCard}
                             config={SupportPerformanceOverviewReportConfig}
                         />
                     </DashboardGridCell>
-                    <DashboardGridCell
-                        size={getGridCellSize(
-                            isReportingZeroTouchTicketsMetricEnabled ? 6 : 3,
-                        )}
-                    >
+                    <DashboardGridCell size={getGridCellSize(secondRowWidth)}>
                         <DashboardComponent
                             chart={OverviewChart.OneTouchTicketsTrendCard}
                             config={SupportPerformanceOverviewReportConfig}
                         />
                     </DashboardGridCell>
                     {isReportingZeroTouchTicketsMetricEnabled && (
-                        <DashboardGridCell size={getGridCellSize(6)}>
+                        <DashboardGridCell
+                            size={getGridCellSize(secondRowWidth)}
+                        >
                             <DashboardComponent
                                 chart={OverviewChart.ZeroTouchTicketsTrendCard}
                                 config={SupportPerformanceOverviewReportConfig}

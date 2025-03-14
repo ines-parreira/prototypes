@@ -9,9 +9,10 @@ import {
     DataExportFormat,
     ReportConfig,
 } from 'pages/stats/dashboards/types'
+import { AverageResponseTimeTrendCard } from 'pages/stats/support-performance/overview/charts/AverageResponseTimeTrendCard'
 import { CustomerSatisfactionTrendCard } from 'pages/stats/support-performance/overview/charts/CustomerSatisfactionTrendCard'
+import { MedianFirstResponseTimeTrendCard } from 'pages/stats/support-performance/overview/charts/MedianFirstResponseTimeTrendCard'
 import { MedianResolutionTimeTrendCard } from 'pages/stats/support-performance/overview/charts/MedianResolutionTimeTrendCard'
-import { MedianFirstResponseTimeTrendCard } from 'pages/stats/support-performance/overview/charts/MedianResponseTimeTrendCard'
 import { MessagesPerTicketTrendCard } from 'pages/stats/support-performance/overview/charts/MessagesPerTicketTrendCard'
 import { MessagesReceivedTrendCard } from 'pages/stats/support-performance/overview/charts/MessagesReceivedTrendCard'
 import { MessagesSentGraph } from 'pages/stats/support-performance/overview/charts/MessagesSentGraph'
@@ -45,6 +46,7 @@ export const SUPPORT_PERFORMANCE_OVERVIEW_PAGE_TITLE =
 
 export enum OverviewChart {
     CustomerSatisfactionTrendCard = 'customer_satisfaction_trend_card',
+    AverageResponseTimeTrendCard = 'average_response_time_trend_card',
     MedianFirstResponseTimeTrendCard = 'median_first_response_time_trend_card',
     MedianResolutionTimeTrendCard = 'median_resolution_time_trend_card',
     MessagesPerTicketTrendCard = 'messages_per_ticket_trend_card',
@@ -109,6 +111,27 @@ export const SupportPerformanceOverviewReportConfig: ReportConfig<OverviewChart>
                 ],
                 description:
                     OverviewMetricConfig[OverviewMetric.MedianFirstResponseTime]
+                        .hint.title,
+                chartType: ChartType.Card,
+            },
+            [OverviewChart.AverageResponseTimeTrendCard]: {
+                chartComponent: AverageResponseTimeTrendCard,
+                label: OverviewMetricConfig[OverviewMetric.AverageResponseTime]
+                    .title,
+                csvProducer: [
+                    {
+                        type: DataExportFormat.Trend,
+                        fetch: OverviewMetricConfig[
+                            OverviewMetric.AverageResponseTime
+                        ].fetchTrend,
+                        metricFormat:
+                            OverviewMetricConfig[
+                                OverviewMetric.AverageResponseTime
+                            ].metricFormat,
+                    },
+                ],
+                description:
+                    OverviewMetricConfig[OverviewMetric.AverageResponseTime]
                         .hint.title,
                 chartType: ChartType.Card,
             },

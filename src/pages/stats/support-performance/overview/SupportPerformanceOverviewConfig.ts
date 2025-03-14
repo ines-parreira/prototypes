@@ -1,4 +1,5 @@
 import {
+    fetchAverageResponseTimeTrend,
     fetchClosedTicketsTrend,
     fetchCustomerSatisfactionTrend,
     fetchMedianFirstResponseTimeTrend,
@@ -10,6 +11,7 @@ import {
     fetchTicketHandleTimeTrend,
     fetchTicketsCreatedTrend,
     fetchTicketsRepliedTrend,
+    useAverageResponseTimeTrend,
     useClosedTicketsTrend,
     useCustomerSatisfactionTrend,
     useMedianFirstResponseTimeTrend,
@@ -54,6 +56,7 @@ import { AUTO_QA_FILTER_KEYS } from 'pages/stats/common/filters/constants'
 import { MetricTrendFormat } from 'pages/stats/common/utils'
 import { TooltipData } from 'pages/stats/types'
 import {
+    AVERAGE_RESPONSE_TIME_LABEL,
     CREATED_VS_CLOSED_TICKETS_LABEL,
     CUSTOMER_SATISFACTION_LABEL,
     MEDIAN_FIRST_RESPONSE_TIME_LABEL,
@@ -73,6 +76,7 @@ import {
 
 export enum OverviewMetric {
     CustomerSatisfaction = 'customer_satisfaction',
+    AverageResponseTime = 'average_response_time',
     MedianFirstResponseTime = 'median_first_response_time',
     MessagesPerTicket = 'messages_per_ticket',
     MessagesSent = 'messages_sent',
@@ -108,6 +112,16 @@ export const OverviewMetricConfig: Record<
         metricFormat: 'decimal',
         useTrend: useCustomerSatisfactionTrend,
         fetchTrend: fetchCustomerSatisfactionTrend,
+    },
+    [OverviewMetric.AverageResponseTime]: {
+        title: AVERAGE_RESPONSE_TIME_LABEL,
+        hint: {
+            title: 'Average response time between message sent by customer and response from the ticket agent response',
+        },
+        interpretAs: 'less-is-better',
+        metricFormat: 'duration',
+        useTrend: useAverageResponseTimeTrend,
+        fetchTrend: fetchAverageResponseTimeTrend,
     },
     [OverviewMetric.MedianFirstResponseTime]: {
         title: MEDIAN_FIRST_RESPONSE_TIME_LABEL,

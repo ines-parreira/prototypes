@@ -9,6 +9,7 @@ import { TicketChannel } from 'business/types/ticket'
 import { agents } from 'fixtures/agents'
 import { integrationsState } from 'fixtures/integrations'
 import {
+    useAverageResponseTimeTrend,
     useClosedTicketsTrend,
     useCustomerSatisfactionTrend,
     useMedianFirstResponseTimeTrend,
@@ -91,6 +92,7 @@ const useOneTouchTicketTrendMock = assumeMock(
     useOneTouchTicketsPercentageMetricTrend,
 )
 const useZeroTouchTicketTrendMock = assumeMock(useZeroTouchTicketsMetricTrend)
+const useAverageResponseTimeTrendMock = assumeMock(useAverageResponseTimeTrend)
 const useAverageScoreTrendMock = assumeMock(useAverageScoreTrend)
 jest.mock('hooks/reporting/support-performance/useStatsFilters')
 const useStatsFiltersMock = assumeMock(useStatsFilters)
@@ -184,6 +186,9 @@ describe('<AverageScoreTrend />', () => {
     const messagesReceivedMetricTrend = {
         ...defaultMetricTrend,
     }
+    const useAverageResponseTimeTrend = {
+        ...defaultMetricTrend,
+    }
     const ticketHandleTimeTrend = {
         ...defaultMetricTrend,
     }
@@ -224,6 +229,9 @@ describe('<AverageScoreTrend />', () => {
         )
         useOneTouchTicketTrendMock.mockReturnValue(oneTouchTicketsMetricTrend)
         useZeroTouchTicketTrendMock.mockReturnValue(oneTouchTicketsMetricTrend)
+        useAverageResponseTimeTrendMock.mockReturnValue(
+            useAverageResponseTimeTrend,
+        )
         useTicketHandleTimeTrendMock.mockReturnValue(ticketHandleTimeTrend)
         useAverageScoreTrendMock.mockReturnValue(averageScoreTrend)
 
