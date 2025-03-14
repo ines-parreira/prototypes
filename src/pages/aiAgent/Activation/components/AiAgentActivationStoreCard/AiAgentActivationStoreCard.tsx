@@ -167,10 +167,7 @@ export const AiAgentActivationStoreCard = ({
                             <div className={css.channelCaption}>
                                 {support.chat.isIntegrationMissing ? (
                                     <Link to={routes.settingsChannels}>
-                                        Select Integration for Chat{' '}
-                                        <i className="material-icons">
-                                            open_in_new
-                                        </i>
+                                        Select Integration for Chat
                                     </Link>
                                 ) : (
                                     'Activate Support for Chat'
@@ -210,10 +207,7 @@ export const AiAgentActivationStoreCard = ({
                             <div className={css.channelCaption}>
                                 {support.email.isIntegrationMissing ? (
                                     <Link to={routes.settingsChannels}>
-                                        Select Integration for Email{' '}
-                                        <i className="material-icons">
-                                            open_in_new
-                                        </i>
+                                        Select Integration for Email
                                     </Link>
                                 ) : (
                                     'Activate Support for Email'

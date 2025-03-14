@@ -1170,7 +1170,7 @@ describe('useStoreActivations', () => {
                         to: '/app/automation/shopify/My Store/ai-agent/knowledge',
                     },
                     message:
-                        'At least one knowledge source required. Update in “Knowledge” to be able to activate AI Agent.',
+                        'At least one knowledge source required. Update your knowledge tab to be able to activate AI Agent.',
                     type: 'warning',
                 },
             ])
@@ -1214,7 +1214,7 @@ describe('useStoreActivations', () => {
                         to: '/app/automation/shopify/My Store/ai-agent/knowledge',
                     },
                     message:
-                        'At least one knowledge source required. Update in “Knowledge” to be able to activate AI Agent.',
+                        'At least one knowledge source required. Update your knowledge tab to be able to activate AI Agent.',
                     type: 'warning',
                 },
             ])
@@ -1247,7 +1247,7 @@ describe('useStoreActivations', () => {
                         to: '/app/automation/shopify/My Store/ai-agent/knowledge',
                     },
                     message:
-                        'At least one knowledge source required. Update in “Knowledge” to be able to activate AI Agent.',
+                        'At least one knowledge source required. Update your knowledge tab to be able to activate AI Agent.',
                     type: 'warning',
                 },
             ])

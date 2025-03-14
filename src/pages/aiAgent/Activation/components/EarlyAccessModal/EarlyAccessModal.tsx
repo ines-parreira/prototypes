@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 
 import cn from 'classnames'
 
@@ -46,6 +46,9 @@ export const EarlyAccessModal = ({
     const { amountAfterDiscount, discount } =
         getAutomateEarlyAccessPricesFormatted(earlyAccessPlan)
 
+    const [isTipsOpen, setIsTipsOpen] = useState(false)
+    const toggleTips = () => setIsTipsOpen(!isTipsOpen)
+
     return (
         <Modal
             isOpen={isOpen}
@@ -77,7 +80,7 @@ export const EarlyAccessModal = ({
                             className={css.caption}
                             title="With Support Only"
                         >
-                            with support only
+                            with Support only
                         </CardCaption>
                     </CardHeader>
                     <CardContent className={css.content}>
@@ -232,38 +235,54 @@ export const EarlyAccessModal = ({
                             </div>
                         </div>
                         <div className={css.tips}>
-                            <div className={css.tipTitle}>
+                            <div className={css.tipTitle} onClick={toggleTips}>
                                 <h3>
                                     <i className="material-icons">
                                         auto_awesome
                                     </i>
-                                    Grow GMV with Sales Skills for your AI Agent
+                                    <span>
+                                        Grow GMV with Sales Skills for your AI
+                                        Agent
+                                    </span>
                                 </h3>
+                                <i
+                                    className={cn(
+                                        'material-icons',
+                                        css.toggleTipsIcon,
+                                    )}
+                                >
+                                    {isTipsOpen
+                                        ? 'keyboard_arrow_up'
+                                        : 'keyboard_arrow_down'}
+                                </i>
                             </div>
-                            <ul className={css.tipList}>
-                                <li>
-                                    <i className="material-icons">flare</i>
-                                    <span>
-                                        Meet the first AI Agent that sells via
-                                        playbook
-                                    </span>
-                                </li>
-                                <li>
-                                    <i className="material-icons">flare</i>
-                                    <span>
-                                        Delivers tailored recommendations driven
-                                        by customer behavior
-                                    </span>
-                                </li>
-                                <li>
-                                    <i className="material-icons">flare</i>
-                                    <span>
-                                        AI predicts intent, adjusts discounts,
-                                        adapts engagement, and provides smart
-                                        incentives to drive sales
-                                    </span>
-                                </li>
-                            </ul>
+                            {isTipsOpen && (
+                                <ul className={css.tipList}>
+                                    <li>
+                                        <i className="material-icons">flare</i>
+                                        <span>
+                                            Meet the first AI Agent that sells
+                                            via playbook
+                                        </span>
+                                    </li>
+                                    <li>
+                                        <i className="material-icons">flare</i>
+                                        <span>
+                                            Delivers tailored recommendations
+                                            driven by customer behavior
+                                        </span>
+                                    </li>
+                                    <li>
+                                        <i className="material-icons">flare</i>
+                                        <span>
+                                            AI predicts intent, adjusts
+                                            discounts, adapts engagement, and
+                                            provides smart incentives to drive
+                                            sales
+                                        </span>
+                                    </li>
+                                </ul>
+                            )}
                         </div>
                     </CardContent>
                 </Card>

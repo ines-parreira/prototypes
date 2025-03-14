@@ -96,7 +96,7 @@ export const AllDisabledWithAlert: Story = {
                 {
                     type: AlertType.Warning,
                     message:
-                        'At least one knowledge source required. Update in “Knowledge” to be able to activate AI Agent.',
+                        'At least one knowledge source required. Update your knowledge tab to be able to activate AI Agent.',
                     cta: { label: 'Visit Knowledge', to: '/' },
                 },
             ],
