@@ -37,6 +37,7 @@ type Props = {
     onClose: () => void
     size?: 'small' | 'medium' | 'large' | 'huge'
     forceFocus?: boolean
+    preventCloseClickOutside?: boolean
 }
 
 type ModalContextState = {
@@ -64,6 +65,7 @@ const Modal = (
         onClose,
         size,
         forceFocus = false,
+        preventCloseClickOutside = false,
     }: Props,
     forwardedRef: ForwardedRef<HTMLDivElement>,
 ) => {
@@ -91,19 +93,20 @@ const Modal = (
     useKey(
         'Escape',
         (event) => {
-            if (isOpen && isClosable) {
+            if (!preventCloseClickOutside && isOpen && isClosable) {
                 event.stopPropagation()
 
                 onClose()
             }
         },
         { target: document.body },
-        [isOpen, isClosable, onClose],
+        [isOpen, isClosable, onClose, preventCloseClickOutside],
     )
 
     const handleClose = useCallback(
         (event: MouseEvent) => {
             if (
+                preventCloseClickOutside ||
                 !isClosable ||
                 ref.current?.contains(event.target as Node) ||
                 (mouseDownTarget && mouseDownTarget !== event.target)
@@ -113,7 +116,7 @@ const Modal = (
             event.stopPropagation()
             onClose()
         },
-        [isClosable, onClose, mouseDownTarget],
+        [isClosable, onClose, mouseDownTarget, preventCloseClickOutside],
     )
 
     // Make sure we don’t close the modal if the user has "mousedowned"

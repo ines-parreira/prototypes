@@ -76,6 +76,7 @@ export const EarlyAccessModal = ({
 
     return (
         <Modal
+            preventCloseClickOutside
             isOpen={isOpen}
             onClose={onClose}
             classNameDialog={css.modalDialog}

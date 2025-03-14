@@ -59,6 +59,18 @@ describe('<Modal />', () => {
         expect(minProps.onClose).toHaveBeenCalled()
     })
 
+    it('should not trigger onClose callback when pressing esc because modal is open when preventCloseClickOutside', () => {
+        const { container } = render(
+            <Modal {...minProps} isOpen={true} preventCloseClickOutside>
+                <ModalHeader title="Did you know?" />
+            </Modal>,
+        )
+
+        fireEvent.keyDown(container, { key: 'Escape' })
+
+        expect(minProps.onClose).not.toHaveBeenCalled()
+    })
+
     it('should not trigger onClose callback when pressing esc because modal is closed', () => {
         const { container } = render(
             <Modal {...minProps} isOpen={false}>
@@ -128,5 +140,17 @@ describe('<Modal />', () => {
         fireEvent.click(screen.getByRole('dialog'))
 
         expect(minProps.onClose).toHaveBeenCalled()
+    })
+
+    it('should not close the modal when clicking outside the modal when preventCloseClickOutside', () => {
+        render(
+            <Modal {...minProps} isOpen={true} preventCloseClickOutside>
+                <ModalHeader title="target" />
+            </Modal>,
+        )
+
+        fireEvent.click(screen.getByRole('dialog'))
+
+        expect(minProps.onClose).not.toHaveBeenCalled()
     })
 })

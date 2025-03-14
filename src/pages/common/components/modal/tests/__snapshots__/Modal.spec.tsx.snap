@@ -6,8 +6,8 @@ exports[`<Modal /> should display the modal on the provided container 1`] = `
     id="modal-container"
   >
     <div
-      aria-describedby="modal-6-desc"
-      aria-labelledby="modal-6-title"
+      aria-describedby="modal-7-desc"
+      aria-labelledby="modal-7-title"
       aria-modal="true"
       class="modal"
       role="dialog"
@@ -24,7 +24,7 @@ exports[`<Modal /> should display the modal on the provided container 1`] = `
             <div>
               <div
                 class="title"
-                id="modal-6-title"
+                id="modal-7-title"
               >
                 Did you know?
               </div>
@@ -40,7 +40,7 @@ exports[`<Modal /> should display the modal on the provided container 1`] = `
           </div>
           <div
             class="wrapper"
-            id="modal-6-desc"
+            id="modal-7-desc"
           >
             Ares is the Greek god of courage and war. He is one of the Twelve Olympians, and the son of Zeus and Hera
           </div>

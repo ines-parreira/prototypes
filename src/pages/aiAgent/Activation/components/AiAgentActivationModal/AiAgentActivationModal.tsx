@@ -62,6 +62,7 @@ export const AiAgentActivationModal = ({
 
     return (
         <Modal
+            preventCloseClickOutside
             className={css.modal}
             classNameContent={css.modalContent}
             classNameDialog={css.modalDialog}
