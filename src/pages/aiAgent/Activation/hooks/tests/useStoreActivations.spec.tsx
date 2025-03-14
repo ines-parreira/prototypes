@@ -8,6 +8,7 @@ import * as segment from 'common/segment'
 import { axiosSuccessResponse } from 'fixtures/axiosResponse'
 import { AiAgentScope, StoreConfiguration } from 'models/aiAgent/types'
 import { useGetHelpCenterList } from 'models/helpCenter/queries'
+import { KNOWLEDGE_ALERT_KIND } from 'pages/aiAgent/Activation/hooks/storeActivationReducer'
 import { useStoreActivations } from 'pages/aiAgent/Activation/hooks/useStoreActivations'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 import { assumeMock } from 'utils/testing'
@@ -1081,6 +1082,84 @@ describe('useStoreActivations', () => {
 
             expect(result.current.storeActivations['My Store'].alerts).toEqual([
                 {
+                    kind: KNOWLEDGE_ALERT_KIND,
+                    cta: {
+                        label: 'Visit Knowledge',
+                        to: '/app/automation/shopify/My Store/ai-agent/knowledge',
+                    },
+                    message:
+                        'At least one knowledge source required. Update in “Knowledge” to be able to activate AI Agent.',
+                    type: 'warning',
+                },
+            ])
+        })
+
+        it('should set an only once alert for this store even if useGetHelpCenterList is re-triggered', () => {
+            useGetHelpCenterListMock.mockReturnValueOnce({
+                status: 'success',
+                data: axiosSuccessResponse({
+                    data: [
+                        {
+                            id: 1,
+                            name: 'help center 1',
+                            type: 'faq',
+                        },
+                    ],
+                }),
+            } as any)
+
+            const store = {
+                storeName: 'My Store',
+                helpCenterId: null,
+                scopes: [AiAgentScope.Support, AiAgentScope.Sales],
+                chatChannelDeactivatedDatetime: null,
+                emailChannelDeactivatedDatetime: null,
+                monitoredChatIntegrations: [1],
+                monitoredEmailIntegrations: [
+                    { id: 2, email: 'foo@example.com' },
+                ],
+            } as any as StoreConfiguration
+
+            const { result, rerender } = renderUseStoreActivations({
+                storeConfigurations: [store],
+            })
+
+            expect(result.current.storeActivations['My Store'].alerts).toEqual([
+                {
+                    kind: KNOWLEDGE_ALERT_KIND,
+                    cta: {
+                        label: 'Visit Knowledge',
+                        to: '/app/automation/shopify/My Store/ai-agent/knowledge',
+                    },
+                    message:
+                        'At least one knowledge source required. Update in “Knowledge” to be able to activate AI Agent.',
+                    type: 'warning',
+                },
+            ])
+
+            useGetHelpCenterListMock.mockReturnValueOnce({
+                status: 'success',
+                data: axiosSuccessResponse({
+                    data: [
+                        {
+                            id: 1,
+                            name: 'help center 1',
+                            type: 'faq',
+                        },
+                        {
+                            id: 2,
+                            name: 'help center 1',
+                            type: 'faq',
+                        },
+                    ],
+                }),
+            } as any)
+            rerender({
+                storeConfigurations: [store],
+            })
+            expect(result.current.storeActivations['My Store'].alerts).toEqual([
+                {
+                    kind: KNOWLEDGE_ALERT_KIND,
                     cta: {
                         label: 'Visit Knowledge',
                         to: '/app/automation/shopify/My Store/ai-agent/knowledge',

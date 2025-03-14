@@ -18,6 +18,7 @@ export type StoreActivation = {
     name: string
     title: string
     alerts: {
+        kind: Symbol
         type: AlertType
         message: string
         cta: {

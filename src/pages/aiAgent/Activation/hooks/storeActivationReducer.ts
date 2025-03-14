@@ -6,6 +6,7 @@ import { getAiAgentNavigationRoutes } from 'pages/aiAgent/hooks/useAiAgentNaviga
 import { AlertType } from 'pages/common/components/Alert/Alert'
 import { type Components } from 'rest_api/help_center_api/client.generated'
 
+export const KNOWLEDGE_ALERT_KIND = Symbol('Knowledge Alert')
 export type State = Record<string, StoreActivation>
 type ToggleSalesAction = {
     type: 'CHANGE_SALES'
@@ -191,7 +192,12 @@ const updateHelpCenterFaq = (
         (acc, [storeName, store]) => {
             const isMissingKnowledge =
                 store.configuration.helpCenterId === null && hasHelpCenterFaq
+            const hasKnowledgeAlert = store.alerts.some(
+                (it) => it.kind === KNOWLEDGE_ALERT_KIND,
+            )
+
             const knowledgeAlert = {
+                kind: KNOWLEDGE_ALERT_KIND,
                 type: AlertType.Warning,
                 message:
                     'At least one knowledge source required. Update in “Knowledge” to be able to activate AI Agent.',
@@ -202,7 +208,7 @@ const updateHelpCenterFaq = (
             }
 
             const alerts = store.alerts
-            if (isMissingKnowledge) {
+            if (isMissingKnowledge && !hasKnowledgeAlert) {
                 alerts.push(knowledgeAlert)
             }
             acc[storeName] = {
