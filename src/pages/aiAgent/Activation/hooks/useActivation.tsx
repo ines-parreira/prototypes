@@ -6,6 +6,7 @@ import { logEvent, SegmentEvent } from 'common/segment'
 import { FeatureFlagKey } from 'config/featureFlags'
 import { useFlag } from 'core/flags'
 import useAppSelector from 'hooks/useAppSelector'
+import { StoreConfiguration } from 'models/aiAgent/types'
 import { ActivationManageButton } from 'pages/aiAgent/Activation/components/ActivationManageButton/ActivationManageButton'
 import { AiAgentActivationModal } from 'pages/aiAgent/Activation/components/AiAgentActivationModal/AiAgentActivationModal'
 import { EarlyAccessModal } from 'pages/aiAgent/Activation/components/EarlyAccessModal/EarlyAccessModal'
@@ -14,7 +15,7 @@ import { getCurrentAccountState } from 'state/currentAccount/selectors'
 import { getShopifyIntegrationsSortedByName } from 'state/integrations/selectors'
 
 import { useEarlyAccessModalState } from './useEarlyAccessModalState'
-import { computeActivationScore } from './useStoreActivations'
+import { useStoreActivations } from './useStoreActivations'
 
 export const useActivation = (pageName: string) => {
     const [isModalVisible, setIsModalVisible] = useState(false)
@@ -23,34 +24,41 @@ export const useActivation = (pageName: string) => {
     const accountDomain = currentAccount.get('domain')
     const stores = useAppSelector(getShopifyIntegrationsSortedByName)
     const { shopName } = useParams<{
-        shopName: string
+        shopName?: string
     }>()
-    const storesName = useMemo(
-        () =>
-            stores
-                .map((store) => store.name)
-                .filter((store) => {
-                    if (shopName) {
-                        return store === shopName
-                    }
 
-                    return true
-                }),
-        [stores, shopName],
-    )
+    const filteredStoresName = useMemo(() => {
+        const storeNames = stores.map((store) => store.name)
+        if (shopName) {
+            return storeNames.filter((store) => store === shopName)
+        }
+
+        return storeNames
+    }, [stores, shopName])
 
     const { storeConfigurations } = useStoreConfigurationForAccount({
         accountDomain,
-        storesName,
+        storesName: filteredStoresName,
     })
 
-    const { totalScore, currentScore } = computeActivationScore(
-        storeConfigurations ?? [],
-    )
+    const filteredStoreConfigurations: StoreConfiguration[] = useMemo(() => {
+        if (shopName) {
+            return (
+                storeConfigurations?.filter(
+                    (storeConfiguration) =>
+                        storeConfiguration.storeName === shopName,
+                ) ?? []
+            )
+        }
 
-    const progressPercentage = totalScore
-        ? Math.round((currentScore / totalScore) * 100)
-        : 0
+        return storeConfigurations ?? []
+    }, [storeConfigurations, shopName])
+
+    const { score: progressPercentage } = useStoreActivations({
+        accountDomain,
+        storeConfigurations: filteredStoreConfigurations,
+        pageName,
+    })
 
     const {
         isOnNewPlan,
@@ -85,7 +93,7 @@ export const useActivation = (pageName: string) => {
                     isOpen={isModalVisible}
                     onClose={() => setIsModalVisible(false)}
                     accountDomain={accountDomain}
-                    storeConfigs={storeConfigurations ?? []}
+                    storeConfigs={filteredStoreConfigurations}
                     onSalesEnabled={() => {
                         if (isOnNewPlan) {
                             return true
@@ -137,7 +145,7 @@ export const useActivation = (pageName: string) => {
         [
             hasActivationEnabled,
             isModalVisible,
-            storeConfigurations,
+            filteredStoreConfigurations,
             accountDomain,
             pageName,
             earlyAccessPlan,

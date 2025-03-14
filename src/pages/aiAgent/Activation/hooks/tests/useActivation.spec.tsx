@@ -14,8 +14,10 @@ import { useFlag } from 'core/flags'
 import { account } from 'fixtures/account'
 import { integrationsStateWithShopify } from 'fixtures/integrations'
 import { Cadence } from 'models/billing/types'
+import { useStoreActivations } from 'pages/aiAgent/Activation/hooks/useStoreActivations'
 import { RootState } from 'state/types'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
+import { assumeMock } from 'utils/testing'
 
 import { useActivation } from '../useActivation'
 import { useEarlyAccessModalState } from '../useEarlyAccessModalState'
@@ -43,9 +45,15 @@ const mockedUseEarlyAccessModalState = jest.mocked(useEarlyAccessModalState)
 const mockedUseParams = jest.mocked(useParams)
 const mockUseFlag = jest.mocked(useFlag)
 
+jest.mock('pages/aiAgent/Activation/hooks/useStoreActivations')
+const useStoreActivationsMock = assumeMock(useStoreActivations)
+
 describe('useActivation', () => {
     beforeEach(() => {
         jest.clearAllMocks()
+        useStoreActivationsMock.mockReturnValue({
+            score: 0,
+        } as any)
         mockedUseParams.mockReturnValue({})
         mockUseFlag.mockImplementation(
             (key, __defaultValue) =>

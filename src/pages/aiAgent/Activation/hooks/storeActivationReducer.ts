@@ -256,10 +256,6 @@ export const storeConfigurationToState = (
                 monitoredEmailIntegrations,
             } = storeConfiguration
 
-            const isChatEnabled =
-                scopes.includes(AiAgentScope.Support) &&
-                !chatChannelDeactivatedDatetime
-
             const availableChatsForStore = selfServiceChatChannels[
                 storeName
             ].map((it) => it.value.id)
@@ -268,6 +264,11 @@ export const storeConfigurationToState = (
                 !storeConfiguration.monitoredChatIntegrations.filter((it) =>
                     availableChatsForStore.includes(it),
                 ).length
+
+            const isChatEnabled =
+                scopes.includes(AiAgentScope.Support) &&
+                !chatChannelDeactivatedDatetime &&
+                !isChatIntegrationMissing
 
             const isEmailEnabled =
                 scopes.includes(AiAgentScope.Support) &&

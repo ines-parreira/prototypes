@@ -10,13 +10,20 @@ import { fromJS } from 'immutable'
 import { Provider } from 'react-redux'
 
 import { appQueryClient } from 'api/queryClient'
+import { TicketChannel } from 'business/types/ticket'
 import { billingState } from 'fixtures/billing'
 import { AiAgentScope, StoreConfiguration } from 'models/aiAgent/types'
 import { useStoresConfigurationMutation } from 'pages/aiAgent/hooks/useStoresConfigurationMutation'
+import { useSelfServiceChatChannelsMultiStore } from 'pages/automate/common/hooks/useSelfServiceChatChannels'
 import { RootState } from 'state/types'
 import { assumeMock, mockStore } from 'utils/testing'
 
 import { AiAgentActivationModal } from '../AiAgentActivationModal'
+
+jest.mock('pages/automate/common/hooks/useSelfServiceChatChannels')
+const useSelfServiceChatChannelsMultiStoreMock = assumeMock(
+    useSelfServiceChatChannelsMultiStore,
+)
 
 jest.mock('pages/aiAgent/hooks/useStoresConfigurationMutation')
 const useStoresConfigurationMutationMock = assumeMock(
@@ -49,6 +56,19 @@ describe('<AiAgentActivationModal />', () => {
             upsertStoresConfiguration: upsertStoresConfigurationMock,
             isLoading: false,
             error: null,
+        })
+
+        useSelfServiceChatChannelsMultiStoreMock.mockReturnValue({
+            storeSupportWithEmailAndChatAndSales: [],
+            storeSupportWithEmailAndChat: [
+                {
+                    type: TicketChannel.Chat,
+                    value: {
+                        id: storeSupportWithEmailAndChat
+                            .monitoredChatIntegrations[0],
+                    },
+                } as any,
+            ],
         })
     })
 

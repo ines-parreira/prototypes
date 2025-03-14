@@ -32,7 +32,7 @@ export const AiAgentActivationModal = ({
 }: Props) => {
     const {
         storeActivations,
-        score: { totalScore, currentScore },
+        score: progressPercentage,
         onSalesChange,
         onSupportChange,
         onSupportChatChange,
@@ -45,7 +45,6 @@ export const AiAgentActivationModal = ({
         pageName,
     })
     const notify = useNotify()
-    const progressPercentage = Math.round((currentScore / totalScore) * 100)
 
     const onSaveClick = async () => {
         try {

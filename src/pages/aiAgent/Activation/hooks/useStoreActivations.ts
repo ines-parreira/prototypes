@@ -7,44 +7,39 @@ import { SHOPIFY_INTEGRATION_TYPE } from 'constants/integration'
 import { AiAgentScope, StoreConfiguration } from 'models/aiAgent/types'
 import { useGetHelpCenterList } from 'models/helpCenter/queries'
 import { StoreActivation } from 'pages/aiAgent/Activation/components/AiAgentActivationStoreCard/AiAgentActivationStoreCard'
-import { reducer } from 'pages/aiAgent/Activation/hooks/storeActivationReducer'
+import {
+    reducer,
+    State,
+} from 'pages/aiAgent/Activation/hooks/storeActivationReducer'
 import { useStoresConfigurationMutation } from 'pages/aiAgent/hooks/useStoresConfigurationMutation'
 import { useSelfServiceChatChannelsMultiStore } from 'pages/automate/common/hooks/useSelfServiceChatChannels'
 import { HELP_CENTER_MAX_CREATION } from 'pages/settings/helpCenter/constants'
+import safeDivide from 'pages/stats/aiSalesAgent/util/safeDivide'
 
-export const computeActivationScore = (
-    storeConfigs: Pick<
-        StoreConfiguration,
-        | 'scopes'
-        | 'chatChannelDeactivatedDatetime'
-        | 'emailChannelDeactivatedDatetime'
-    >[],
-): { currentScore: number; totalScore: number } => {
-    const totalStores = storeConfigs.length
+const computeActivationScore = (state: State): number => {
+    const totalStores = Object.values(state).length
     const totalScore = totalStores * 3
 
-    const currentScore = storeConfigs.reduce((score, config) => {
-        let storeScore = 0
-        if (config.scopes.includes(AiAgentScope.Support)) {
-            if (!config.chatChannelDeactivatedDatetime) {
+    const currentScore = Object.values(state).reduce(
+        (score, storeActivation) => {
+            let storeScore = 0
+            if (storeActivation.support.chat.enabled) {
                 storeScore += 1
             }
-            if (!config.emailChannelDeactivatedDatetime) {
+            if (storeActivation.support.email.enabled) {
                 storeScore += 1
             }
-        }
 
-        if (config.scopes.includes(AiAgentScope.Sales)) {
-            storeScore += 1
-        }
+            if (storeActivation.sales.enabled) {
+                storeScore += 1
+            }
 
-        return score + storeScore
-    }, 0)
+            return score + storeScore
+        },
+        0,
+    )
 
-    return {
-        currentScore,
-        totalScore,
-    }
+    return Math.round(safeDivide(currentScore, totalScore) * 100)
 }
 
 export const useStoreActivations = ({
@@ -57,7 +52,7 @@ export const useStoreActivations = ({
     pageName: string
 }): {
     storeActivations: Record<string, StoreActivation>
-    score: { currentScore: number; totalScore: number }
+    score: number
     onSalesChange: (storeName: string, newValue: boolean) => void
     onSupportChange: (storeName: string, newValue: boolean) => void
     onSupportChatChange: (storeName: string, newValue: boolean) => void
@@ -135,7 +130,7 @@ export const useStoreActivations = ({
 
     return {
         storeActivations: state,
-        score: computeActivationScore(storeConfigurations),
+        score: computeActivationScore(state),
         onSalesChange: (storeName: string, newValue: boolean) => {
             dispatch({ type: 'CHANGE_SALES', storeName, newValue })
             logEvent(
