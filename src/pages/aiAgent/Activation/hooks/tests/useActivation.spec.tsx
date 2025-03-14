@@ -53,18 +53,13 @@ describe('useActivation', () => {
         )
     })
 
-    const defaultUseEarlyAccessModalStateReturnValue = {
+    const defaultUseEarlyAccessModalStateReturnValue: ReturnType<
+        typeof useEarlyAccessModalState
+    > = {
         isOnNewPlan: true,
         setIsPreviewModalVisible: jest.fn(),
         isPreviewModalVisible: false,
         isCurrentUserAdmin: true,
-        currentPlan: {
-            amount: 900,
-            currency: 'USD',
-            cadence: Cadence.Month,
-            discount: 132,
-            generation: 5,
-        } as any,
         earlyAccessPlan: {
             amount: 900,
             currency: 'USD',
@@ -73,6 +68,8 @@ describe('useActivation', () => {
             discount: 100,
         } as any,
         isLoading: false,
+        handleSubscriptionUpdate: jest.fn(),
+        isSubscriptionUpdating: false,
     }
 
     it('should return ActivationButton, EarlyAccessModal and ActivationModal components', () => {
@@ -147,27 +144,9 @@ describe('useActivation', () => {
     })
 
     it('should close the EarlyAccessModal when clicking on the cross button or outside of the modal', () => {
-        mockedUseEarlyAccessModalState.mockReturnValue({
-            isOnNewPlan: false,
-            setIsPreviewModalVisible: jest.fn(),
-            isPreviewModalVisible: false,
-            isCurrentUserAdmin: true,
-            currentPlan: {
-                amount: 900,
-                currency: 'USD',
-                cadence: Cadence.Month,
-                discount: 132,
-                generation: 5,
-            } as any,
-            earlyAccessPlan: {
-                amount: 900,
-                currency: 'USD',
-                amount_after_discount: 800,
-                cadence: Cadence.Month,
-                discount: 100,
-            } as any,
-            isLoading: false,
-        })
+        mockedUseEarlyAccessModalState.mockReturnValue(
+            defaultUseEarlyAccessModalStateReturnValue,
+        )
 
         const { result } = renderHook(
             () => useActivation('ai-agent-overview'),
@@ -209,27 +188,9 @@ describe('useActivation', () => {
     })
 
     it('should close the EarlyAccessModal when clicking on the stay on current plan button', () => {
-        mockedUseEarlyAccessModalState.mockReturnValue({
-            isOnNewPlan: false,
-            setIsPreviewModalVisible: jest.fn(),
-            isPreviewModalVisible: false,
-            isCurrentUserAdmin: true,
-            currentPlan: {
-                amount: 900,
-                currency: 'USD',
-                cadence: Cadence.Month,
-                discount: 132,
-                generation: 5,
-            } as any,
-            earlyAccessPlan: {
-                amount: 900,
-                currency: 'USD',
-                amount_after_discount: 800,
-                cadence: Cadence.Month,
-                discount: 100,
-            } as any,
-            isLoading: false,
-        })
+        mockedUseEarlyAccessModalState.mockReturnValue(
+            defaultUseEarlyAccessModalStateReturnValue,
+        )
 
         const { result } = renderHook(
             () => useActivation('ai-agent-overview'),

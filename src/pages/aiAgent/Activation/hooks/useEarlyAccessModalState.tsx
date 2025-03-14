@@ -7,6 +7,9 @@ import {
     useBillingState,
     useEarlyAccessAutomatePlan,
 } from 'models/billing/queries'
+import { useCurrentPriceIds } from 'pages/settings/new_billing/hooks/useGetCurrentPriceIds'
+import { useUpdateSubscription } from 'pages/settings/new_billing/hooks/useUpdateSubscription'
+import { getCurrentPlansByProduct } from 'state/billing/selectors'
 import { getCurrentAccountState } from 'state/currentAccount/selectors'
 import { getCurrentUser } from 'state/currentUser/selectors'
 import { isAdmin } from 'utils'
@@ -57,23 +60,45 @@ export const useEarlyAccessModalState = ({
     const isLoading =
         billingState.isLoading || earlyAccessAutomatePlanQuery.isLoading
 
+    const currentProducts = useAppSelector(getCurrentPlansByProduct)
+    const currentPriceIds = useCurrentPriceIds()
+
+    const priceIdsWithoutAutomationOne = currentPriceIds.filter(
+        (priceId) => priceId !== currentProducts?.automation?.price_id,
+    )
+
+    // The Early Access plan is not able to return the price_id, we uses the plan_id instead
+    const priceIdsAndPlanIdsWithEarlyAccessPlanAdded = [
+        ...priceIdsWithoutAutomationOne!,
+        earlyAccessAutomatePlanQuery.data?.plan_id!,
+    ].filter(Boolean)
+
+    const { isLoading: isSubscriptionUpdating, handleSubscriptionUpdate } =
+        useUpdateSubscription()
+
     return useMemo(
         () => ({
             earlyAccessPlan: earlyAccessAutomatePlanQuery.data,
-            currentPlan,
             isPreviewModalVisible,
             setIsPreviewModalVisible,
             isOnNewPlan,
             isLoading,
             isCurrentUserAdmin,
+            isSubscriptionUpdating,
+            handleSubscriptionUpdate: () =>
+                handleSubscriptionUpdate(
+                    priceIdsAndPlanIdsWithEarlyAccessPlanAdded,
+                ),
         }),
         [
             earlyAccessAutomatePlanQuery.data,
             isPreviewModalVisible,
             isOnNewPlan,
-            currentPlan,
             isLoading,
             isCurrentUserAdmin,
+            isSubscriptionUpdating,
+            handleSubscriptionUpdate,
+            priceIdsAndPlanIdsWithEarlyAccessPlanAdded,
         ],
     )
 }

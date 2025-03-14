@@ -4,7 +4,7 @@ import cn from 'classnames'
 
 import { Badge, Button, Skeleton } from '@gorgias/merchant-ui-kit'
 
-import { AutomateEarlyAccessPlan, AutomatePlan } from 'models/billing/types'
+import { AutomateEarlyAccessPlan } from 'models/billing/types'
 import {
     getAutomateEarlyAccessPricesFormatted,
     getPlanPriceFormatted,
@@ -29,9 +29,9 @@ type Props = {
     onStayClick: () => void
     onClose: () => void
     isOpen: boolean
-    currentPlan?: AutomatePlan | null
     earlyAccessPlan?: AutomateEarlyAccessPlan | null
     disableUpgradeButton: boolean
+    isUpgrading: boolean
 }
 export const EarlyAccessModal = ({
     isLoading,
@@ -39,12 +39,13 @@ export const EarlyAccessModal = ({
     onStayClick,
     onClose,
     isOpen,
-    currentPlan,
     earlyAccessPlan,
     disableUpgradeButton,
+    isUpgrading,
 }: Props) => {
     const { amountAfterDiscount, discount } =
         getAutomateEarlyAccessPricesFormatted(earlyAccessPlan)
+
     return (
         <Modal
             isOpen={isOpen}
@@ -139,7 +140,7 @@ export const EarlyAccessModal = ({
                                     {isLoading ? (
                                         <Skeleton width={140} />
                                     ) : (
-                                        `${getPlanPriceFormatted(currentPlan)}/${currentPlan?.cadence}`
+                                        `${getPlanPriceFormatted(earlyAccessPlan)}/${earlyAccessPlan?.cadence}`
                                     )}
                                 </span>
                             </div>
@@ -218,14 +219,14 @@ export const EarlyAccessModal = ({
                                     {isLoading ? (
                                         <Skeleton width={140} height={22} />
                                     ) : (
-                                        `${amountAfterDiscount}/${currentPlan?.cadence}`
+                                        `${amountAfterDiscount}/${earlyAccessPlan?.cadence}`
                                     )}
                                 </span>
                                 <span className={css.subPrice}>
                                     {isLoading ? (
                                         <Skeleton width={210} height={12} />
                                     ) : (
-                                        `${discount}/${currentPlan?.cadence} for 12 months`
+                                        `${discount}/${earlyAccessPlan?.cadence} for 12 months`
                                     )}
                                 </span>
                             </div>
@@ -275,6 +276,7 @@ export const EarlyAccessModal = ({
                     className={css.principalButton}
                     onClick={onUpgradeClick}
                     isDisabled={disableUpgradeButton}
+                    isLoading={isUpgrading}
                 >
                     Upgrade AI Agent With Early Access Plan
                 </Button>

@@ -7,6 +7,9 @@ import {
     useBillingState,
     useEarlyAccessAutomatePlan,
 } from 'models/billing/queries'
+import { useCurrentPriceIds } from 'pages/settings/new_billing/hooks/useGetCurrentPriceIds'
+import { useUpdateSubscription } from 'pages/settings/new_billing/hooks/useUpdateSubscription'
+import { getCurrentPlansByProduct } from 'state/billing/selectors'
 import { getCurrentAccountState } from 'state/currentAccount/selectors'
 import { getCurrentUser } from 'state/currentUser/selectors'
 
@@ -15,6 +18,10 @@ import { useEarlyAccessModalState } from '../useEarlyAccessModalState'
 jest.mock('models/billing/queries')
 const mockUseEarlyAccessAutomatePlan = jest.mocked(useEarlyAccessAutomatePlan)
 const mockUseBillingState = jest.mocked(useBillingState)
+jest.mock('pages/settings/new_billing/hooks/useGetCurrentPriceIds')
+const mockUseCurrentPriceIds = jest.mocked(useCurrentPriceIds)
+jest.mock('pages/settings/new_billing/hooks/useUpdateSubscription')
+const mockUseUpdateSubscription = jest.mocked(useUpdateSubscription)
 
 jest.mock('hooks/useAppSelector', () => (fn: () => void) => fn())
 jest.mock('state/currentUser/selectors')
@@ -22,6 +29,9 @@ const mockGetCurrentUser = jest.mocked(getCurrentUser)
 
 jest.mock('state/currentAccount/selectors')
 const mockGetCurrentAccountState = jest.mocked(getCurrentAccountState)
+
+jest.mock('state/billing/selectors')
+const mockGetCurrentPlansByProduct = jest.mocked(getCurrentPlansByProduct)
 
 jest.mock('core/flags')
 const mockUseFlag = jest.mocked(useFlag)
@@ -54,6 +64,12 @@ describe('useEarlyAccessModalState', () => {
                 fromJS({ role: { name: 'admin' } }),
             )
             mockGetCurrentAccountState.mockReturnValue(fromJS({ id: 1 }))
+            mockGetCurrentPlansByProduct.mockReturnValue(fromJS({}))
+            mockUseCurrentPriceIds.mockReturnValue([])
+            mockUseUpdateSubscription.mockReturnValue({
+                isLoading: false,
+                handleSubscriptionUpdate: jest.fn(),
+            })
 
             const { result } = renderHook(() =>
                 useEarlyAccessModalState({ hasActivationEnabled: true }),

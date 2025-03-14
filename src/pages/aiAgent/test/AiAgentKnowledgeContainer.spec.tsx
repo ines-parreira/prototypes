@@ -7,7 +7,7 @@ import { QueryClientProvider } from '@tanstack/react-query'
 import { act, fireEvent, screen } from '@testing-library/react'
 import { createMemoryHistory } from 'history'
 import { fromJS } from 'immutable'
-import { useFlags } from 'launchdarkly-react-client-sdk'
+import { mockFlags } from 'jest-launchdarkly-mock'
 import { keyBy } from 'lodash'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
@@ -38,11 +38,6 @@ import { assumeMock, renderWithRouter } from 'utils/testing'
 import { INITIAL_FORM_VALUES } from '../constants'
 import { applicationsAutomationSettingsAiAgentEnabledFixture } from '../fixtures/applicationAutomationSettings.fixture'
 import { getStoreConfigurationFixture } from '../fixtures/storeConfiguration.fixtures'
-
-jest.mock('launchdarkly-react-client-sdk', () => ({
-    useFlag: jest.fn(),
-}))
-const useFlagsMock = assumeMock(useFlags)
 
 jest.mock('pages/aiAgent/providers/AiAgentStoreConfigurationContext', () => ({
     useAiAgentStoreConfigurationContext: jest.fn(),
@@ -235,7 +230,7 @@ describe('AiAgentKnowledgeContainer', () => {
     })
 
     it('should render the external files section when feature flag is enabled', () => {
-        useFlagsMock.mockReturnValue({
+        mockFlags({
             [FeatureFlagKey.AiAgentSnippetsFromExternalFiles]: true,
         })
 

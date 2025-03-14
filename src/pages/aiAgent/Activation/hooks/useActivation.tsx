@@ -57,9 +57,10 @@ export const useActivation = (pageName: string) => {
         setIsPreviewModalVisible,
         isPreviewModalVisible,
         isCurrentUserAdmin,
-        currentPlan,
         earlyAccessPlan,
         isLoading,
+        handleSubscriptionUpdate,
+        isSubscriptionUpdating,
     } = useEarlyAccessModalState({ hasActivationEnabled })
 
     return useMemo(
@@ -99,6 +100,7 @@ export const useActivation = (pageName: string) => {
             EarlyAccessModal: () => (
                 <EarlyAccessModal
                     isLoading={isLoading}
+                    isUpgrading={isSubscriptionUpdating}
                     isOpen={isPreviewModalVisible}
                     onClose={() => {
                         setIsPreviewModalVisible(false)
@@ -120,8 +122,13 @@ export const useActivation = (pageName: string) => {
                             },
                         )
                     }}
-                    onUpgradeClick={() => {}}
-                    currentPlan={currentPlan}
+                    onUpgradeClick={() => {
+                        handleSubscriptionUpdate()
+                            .catch(() => {})
+                            .finally(() => {
+                                setIsPreviewModalVisible(false)
+                            })
+                    }}
                     earlyAccessPlan={earlyAccessPlan}
                     disableUpgradeButton={!isCurrentUserAdmin}
                 />
@@ -133,7 +140,6 @@ export const useActivation = (pageName: string) => {
             storeConfigurations,
             accountDomain,
             pageName,
-            currentPlan,
             earlyAccessPlan,
             isPreviewModalVisible,
             isOnNewPlan,
@@ -141,6 +147,8 @@ export const useActivation = (pageName: string) => {
             isLoading,
             setIsPreviewModalVisible,
             progressPercentage,
+            handleSubscriptionUpdate,
+            isSubscriptionUpdating,
         ],
     )
 }

@@ -15,6 +15,7 @@ import { axiosSuccessResponse } from 'fixtures/axiosResponse'
 import useAppDispatch from 'hooks/useAppDispatch'
 import { useGetHelpCenterList } from 'models/helpCenter/queries'
 import { IntegrationType } from 'models/integration/types'
+import { applyMockActivationHook } from 'pages/aiAgent/test/mock-activation-hooks.utils'
 import { ContactFormFixture } from 'pages/settings/contactForm/fixtures/contacForm'
 import { getHasAutomate } from 'state/billing/selectors'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
@@ -204,6 +205,8 @@ const setupMocks = ({
         ...getHelpCenterListResponse,
         isLoading: isHelpCentersLoading,
     } as unknown as ReturnType<typeof useGetHelpCenterList>)
+
+    applyMockActivationHook()
 }
 
 describe('AiAgentConfigurationContainer', () => {

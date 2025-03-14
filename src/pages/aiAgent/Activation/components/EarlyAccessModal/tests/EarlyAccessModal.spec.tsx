@@ -21,6 +21,7 @@ describe('<EarlyAccessModal />', () => {
                 onStayClick={onStayClickMock}
                 onUpgradeClick={onUpgradeClickMock}
                 disableUpgradeButton={false}
+                isUpgrading={false}
             />,
         )
 
@@ -44,6 +45,7 @@ describe('<EarlyAccessModal />', () => {
                 onStayClick={() => {}}
                 onUpgradeClick={() => {}}
                 disableUpgradeButton={false}
+                isUpgrading={false}
             />,
         )
     })
