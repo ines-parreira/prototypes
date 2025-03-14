@@ -2,6 +2,7 @@ import React from 'react'
 
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { act, fireEvent, screen } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
 import AxiosMock from 'axios-mock-adapter'
 import { fromJS, Map } from 'immutable'
 import { Provider } from 'react-redux'
@@ -24,6 +25,8 @@ import { useShopifyIntegrationAndScope } from 'pages/common/hooks/useShopifyInte
 import { useEmailIntegrations } from 'pages/settings/contactForm/hooks/useEmailIntegrations'
 import { RootState, StoreDispatch } from 'state/types'
 import { renderWithRouter } from 'utils/testing'
+
+import { conversationExamples } from '../../PersonalityPreviewStep/conversationsExamples'
 
 type MutationOptions = { onSuccess: () => void }
 
@@ -51,14 +54,6 @@ jest.mock(
         default: ({ children }: { children: React.ReactNode }) => (
             <div>{children}</div>
         ),
-    }),
-)
-
-jest.mock(
-    'pages/aiAgent/Onboarding/components/AiAgentChatConversation/AiAgentChatConversation',
-    () => ({
-        __esModule: true,
-        default: () => <div>AI Agent Preview</div>,
     }),
 )
 
@@ -130,26 +125,14 @@ describe('<SkillsetStep />', () => {
         axiosMock.onGet('PHRASE_PREDICTION_URL').reply(200, [])
     })
 
-    beforeAll(() => {
-        jest.useFakeTimers()
-    })
-
-    afterAll(() => {
-        jest.useRealTimers()
-    })
-
     it('renders', () => {
         renderComponent()
-
-        jest.runAllTimers()
 
         expect(screen.getByText(/Welcome to AI Agent!/i)).toBeInTheDocument()
     })
 
     it('user can select a goal and click next when there is an integration', () => {
         renderComponent()
-
-        jest.runAllTimers()
 
         expect(screen.getByText('Automate support with AI')).toBeInTheDocument()
 
@@ -183,8 +166,6 @@ describe('<SkillsetStep />', () => {
         })
 
         renderComponent()
-
-        jest.runAllTimers()
 
         expect(screen.getByText('Automate support with AI')).toBeInTheDocument()
 
@@ -221,8 +202,6 @@ describe('<SkillsetStep />', () => {
 
         renderComponent()
 
-        jest.runAllTimers()
-
         expect(screen.getByText('Automate support with AI')).toBeInTheDocument()
 
         act(() => {
@@ -247,4 +226,60 @@ describe('<SkillsetStep />', () => {
 
         expect(goToStep).toHaveBeenCalledWith(WizardStepEnum.EMAIL_INTEGRATION)
     })
+})
+
+describe('<SkillsetStep /> - Show correct preview', () => {
+    beforeEach(() => {
+        // Populate the return values of the mocked hooks
+        mockUseShopifyIntegrationAndScope.mockReturnValue({
+            integration: true,
+        })
+        mockUseEmailIntegrations.mockReturnValue({
+            emailIntegrations: true,
+            defaultIntegration: true,
+        })
+        mockUseGetOnboardingData.mockReturnValue({
+            data: defaultOnboardingData,
+        })
+
+        mockUseUpdateOnboarding.mockReturnValue({
+            mutate: mockUpdateOnboarding,
+            isLoading: false,
+        })
+
+        mockUseCreateOnboarding.mockReturnValue({
+            mutate: mockCreateOnboarding,
+            isLoading: false,
+        })
+        axiosMock.onGet('PHRASE_PREDICTION_URL').reply(200, [])
+    })
+
+    const goals = [
+        {
+            cta: 'Automate support with AI',
+            firstExpectedMessage:
+                conversationExamples.orderStatusAndTracking.messages[0].content,
+        },
+        {
+            cta: 'Boost Sales with a Personal Shopping Assistant',
+            firstExpectedMessage:
+                conversationExamples.productRecommendations.messages[0].content,
+        },
+        {
+            cta: 'Do both: Automate Support and Boost Sales',
+            firstExpectedMessage:
+                conversationExamples.discountCode.messages[0].content,
+        },
+    ]
+
+    it.each(goals)(
+        'renders the correct preview for the goal: %s',
+        async ({ cta, firstExpectedMessage }) => {
+            renderComponent()
+
+            userEvent.click(screen.getByText(cta))
+
+            expect(screen.getByText(firstExpectedMessage)).toBeInTheDocument()
+        },
+    )
 })

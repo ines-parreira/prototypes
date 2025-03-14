@@ -253,6 +253,180 @@ export const conversationExamples: Record<
             },
         ],
     },
+    noDiscountEducational: {
+        messages: [
+            {
+                content: 'I’m looking for a good moisturizer.',
+                isHtml: false,
+                fromAgent: false,
+                attachments: [],
+            },
+            {
+                content:
+                    'I’d be happy to help! For moisturizers, it’s important to know your skin type. Are you looking for something for dry, oily, or combination skin?',
+                isHtml: false,
+                fromAgent: true,
+                attachments: [],
+            },
+            {
+                content: 'I have dry skin.',
+                isHtml: false,
+                fromAgent: false,
+                attachments: [],
+            },
+            {
+                content:
+                    'For dry skin, I recommend a rich, hydrating moisturizer with ingredients like hyaluronic acid or ceramides. Feel free to ask for more details about any products!',
+                isHtml: false,
+                fromAgent: true,
+                attachments: [],
+            },
+        ],
+    },
+    noDiscountBalanced: {
+        messages: [
+            {
+                content: 'I’m looking for a good moisturizer.',
+                isHtml: false,
+                fromAgent: false,
+                attachments: [],
+            },
+            {
+                content:
+                    'I’d be happy to help! For moisturizers, it’s important to know your skin type. Are you looking for something for dry, oily, or combination skin? If you don’t know this moisturizer is good for any skin type.',
+                isHtml: false,
+                fromAgent: true,
+                attachments: [],
+            },
+            {
+                content: 'I have dry skin, also do you have a discount?',
+                isHtml: false,
+                fromAgent: false,
+                attachments: [],
+            },
+            {
+                content:
+                    'At the moment, we don’t have discounts, but these moisturizers are a great investment for your dry skin and will leave you feeling hydrated throughout the day!',
+                isHtml: false,
+                fromAgent: true,
+                attachments: [],
+            },
+        ],
+    },
+    noDiscountAggressive: {
+        messages: [
+            {
+                content: 'I’m looking for a good moisturizer.',
+                isHtml: false,
+                fromAgent: false,
+                attachments: [],
+            },
+            {
+                content:
+                    'If you’re looking to really hydrate your skin, I highly recommend the Lunavelle —it’s a cult favorite for a reason. It’ll leave your skin glowing and soft.',
+                isHtml: false,
+                fromAgent: true,
+                attachments: [],
+            },
+            {
+                content:
+                    'That sounds great, I’ll check it out. Would you have a discount code too?',
+                isHtml: false,
+                fromAgent: false,
+                attachments: [],
+            },
+            {
+                content:
+                    'At the moment, we don’t have discounts, but trust me it’s worth every penny.',
+                isHtml: false,
+                fromAgent: true,
+                attachments: [],
+            },
+        ],
+    },
+    withDiscountEducational: {
+        messages: [
+            {
+                content: 'I’m looking for a good moisturizer.',
+                isHtml: false,
+                fromAgent: false,
+                attachments: [],
+            },
+            {
+                content:
+                    'I’d be happy to help! For moisturizers, it’s important to know your skin type. Are you looking for something for dry, oily, or combination skin?.',
+                isHtml: false,
+                fromAgent: true,
+                attachments: [],
+            },
+            {
+                content: 'I have dry skin.',
+                isHtml: false,
+                fromAgent: false,
+                attachments: [],
+            },
+            {
+                content:
+                    'For dry skin, I recommend a rich, hydrating moisturizer with ingredients like hyaluronic acid or ceramides. Feel free to ask for more details about any products!',
+                isHtml: false,
+                fromAgent: true,
+                attachments: [],
+            },
+        ],
+    },
+    withDiscountBalanced: {
+        messages: [
+            {
+                content: 'I’m looking for a good moisturizer.',
+                isHtml: false,
+                fromAgent: false,
+                attachments: [],
+            },
+            {
+                content:
+                    'I’d be happy to help! For moisturizers, it’s important to know your skin type. Are you looking for something for dry, oily, or combination skin? If you don’t know this moisturizer is good for any skin type.',
+                isHtml: false,
+                fromAgent: true,
+                attachments: [],
+            },
+            {
+                content: 'I have dry skin, also do you have a discount?',
+                isHtml: false,
+                fromAgent: false,
+                attachments: [],
+            },
+            {
+                content:
+                    'Great! Then this moisturizer sounds like the perfect one product for you. And yes here’s your discount code ZYNGQNKUGE ([DISCOUNT-PERCENTAGE]% off).',
+                isHtml: false,
+                fromAgent: true,
+                attachments: [],
+            },
+        ],
+    },
+    withDiscountAggressive: {
+        messages: [
+            {
+                content: 'I’m looking for a good moisturizer.',
+                isHtml: false,
+                fromAgent: false,
+                attachments: [],
+            },
+            {
+                content:
+                    'If you’re looking to really hydrate your skin, I highly recommend the Lunavelle —it’s a cult favorite for a reason. It’ll leave your skin glowing and soft. And here’s ZYNGQNKUGE ([DISCOUNT-PERCENTAGE]% off) to help you decide.',
+                isHtml: false,
+                fromAgent: true,
+                attachments: [],
+            },
+            {
+                content: 'That sounds great, I’ll check it out.',
+                isHtml: false,
+                fromAgent: false,
+                attachments: [],
+            },
+        ],
+    },
 } as const
 
 export const getConversationByPreviewId = (previewId: PreviewId) =>

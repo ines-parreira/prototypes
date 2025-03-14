@@ -24,6 +24,8 @@ import { AiAgentScopes, WizardStepEnum } from 'pages/aiAgent/Onboarding/types'
 import { RootState, StoreDispatch } from 'state/types'
 import { assumeMock, renderWithRouter } from 'utils/testing'
 
+import { conversationExamples } from '../../PersonalityPreviewStep/conversationsExamples'
+
 const trackRect = {
     left: 0,
     width: 400,
@@ -107,14 +109,10 @@ describe('PersonalityStep - With prepopulated data', () => {
             mutate: jest.fn(),
             isLoading: false,
         } as any)
-
-        jest.useFakeTimers()
     })
 
     it('navigates to the next step when Next is clicked', async () => {
         renderComponent()
-
-        jest.runAllTimers()
 
         await waitFor(() => {
             expect(screen.getByDisplayValue('10')).toBeInTheDocument()
@@ -158,19 +156,14 @@ describe('PersonalityStep - Empty state', () => {
             mutate: mutateUpdateOnboardingMock,
             isLoading: false,
         } as any)
-
-        jest.useFakeTimers()
     })
 
     afterAll(() => {
-        jest.useRealTimers()
         queryClient.clear()
     })
 
     it('should render without crashing', () => {
         renderComponent()
-
-        jest.runAllTimers()
 
         expect(
             screen.getByRole('heading', {
@@ -394,5 +387,171 @@ describe('PersonalityStep - Empty state', () => {
         await waitFor(() => {
             expect(goToStep).toHaveBeenCalledWith(WizardStepEnum.KNOWLEDGE)
         })
+    })
+})
+
+describe('PersonalityStep - Preview information', () => {
+    const defaultMockData = {
+        id: '1',
+        salesPersuasionLevel: PersuasionLevel.Moderate,
+        salesDiscountStrategyLevel: DiscountStrategy.Balanced,
+        salesDiscountMax: 0.1,
+        scopes: [AiAgentScopes.SALES],
+        shopName: shopifyIntegration.meta.shop_name,
+        currentStepName: WizardStepEnum.SALES_PERSONALITY,
+    }
+
+    beforeAll(() => {
+        queryClient.clear()
+
+        useGetOnboardingDataMock.mockReturnValue({
+            isLoading: false,
+            data: defaultMockData,
+        })
+
+        useUpdateOnboardingMock.mockReturnValue({
+            mutate: jest.fn(),
+            isLoading: false,
+        } as any)
+    })
+
+    it('renders the correct preview for no discount educational', async () => {
+        const mockData = {
+            ...defaultMockData,
+            salesDiscountStrategyLevel: DiscountStrategy.NoDiscount,
+            salesPersuasionLevel: PersuasionLevel.Educational,
+        }
+        const expectedMessages =
+            conversationExamples.noDiscountEducational.messages
+
+        useGetOnboardingDataMock.mockReturnValue({
+            isLoading: false,
+            data: mockData,
+        })
+
+        renderComponent()
+
+        expect(
+            screen.getByText(
+                expectedMessages[expectedMessages.length - 1].content,
+            ),
+        ).toBeInTheDocument()
+    })
+
+    it('renders the correct preview for no discount moderate', async () => {
+        const mockData = {
+            ...defaultMockData,
+            salesDiscountStrategyLevel: DiscountStrategy.NoDiscount,
+            salesPersuasionLevel: PersuasionLevel.Moderate,
+        }
+        const expectedMessages =
+            conversationExamples.noDiscountBalanced.messages
+
+        useGetOnboardingDataMock.mockReturnValue({
+            isLoading: false,
+            data: mockData,
+        })
+
+        renderComponent()
+
+        expect(
+            screen.getByText(
+                expectedMessages[expectedMessages.length - 1].content,
+            ),
+        ).toBeInTheDocument()
+    })
+
+    it('renders the correct preview for no discount aggressive', async () => {
+        const mockData = {
+            ...defaultMockData,
+            salesDiscountStrategyLevel: DiscountStrategy.NoDiscount,
+            salesPersuasionLevel: PersuasionLevel.Assertive,
+        }
+        const expectedMessages =
+            conversationExamples.noDiscountAggressive.messages
+
+        useGetOnboardingDataMock.mockReturnValue({
+            isLoading: false,
+            data: mockData,
+        })
+
+        renderComponent()
+
+        expect(
+            screen.getByText(
+                expectedMessages[expectedMessages.length - 1].content,
+            ),
+        ).toBeInTheDocument()
+    })
+
+    it('renders the correct preview for with discount educational', async () => {
+        const mockData = {
+            ...defaultMockData,
+            salesDiscountStrategyLevel: DiscountStrategy.Maximized,
+            salesPersuasionLevel: PersuasionLevel.Educational,
+        }
+        const expectedMessages =
+            conversationExamples.withDiscountEducational.messages
+
+        useGetOnboardingDataMock.mockReturnValue({
+            isLoading: false,
+            data: mockData,
+        })
+
+        renderComponent()
+
+        expect(
+            screen.getByText(
+                expectedMessages[expectedMessages.length - 1].content,
+            ),
+        ).toBeInTheDocument()
+    })
+
+    it('renders the correct preview for with discount balanced', async () => {
+        const salesDiscountMax = 15
+        const mockData = {
+            ...defaultMockData,
+            salesDiscountStrategyLevel: DiscountStrategy.Maximized,
+            salesPersuasionLevel: PersuasionLevel.Moderate,
+            salesDiscountMax: salesDiscountMax / 100,
+        }
+        const expectedMessages =
+            conversationExamples.withDiscountBalanced.messages
+
+        useGetOnboardingDataMock.mockReturnValue({
+            isLoading: false,
+            data: mockData,
+        })
+
+        renderComponent()
+
+        const expectedMessage = expectedMessages[
+            expectedMessages.length - 1
+        ].content.replace('[DISCOUNT-PERCENTAGE]', String(salesDiscountMax))
+
+        expect(screen.getByText(expectedMessage)).toBeInTheDocument()
+    })
+
+    it('renders the correct preview for with discount aggressive', async () => {
+        const mockData = {
+            ...defaultMockData,
+            salesDiscountStrategyLevel: DiscountStrategy.Maximized,
+            salesPersuasionLevel: PersuasionLevel.Assertive,
+        }
+        const expectedMessages =
+            conversationExamples.withDiscountAggressive.messages
+
+        useGetOnboardingDataMock.mockReturnValue({
+            isLoading: false,
+            data: mockData,
+        })
+
+        renderComponent()
+
+        expect(
+            screen.getByText(
+                expectedMessages[expectedMessages.length - 1].content,
+            ),
+        ).toBeInTheDocument()
     })
 })

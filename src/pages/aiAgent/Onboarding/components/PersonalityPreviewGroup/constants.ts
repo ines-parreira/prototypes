@@ -51,6 +51,42 @@ export const previews = {
         caption:
             'Inquire about current promotions or troubleshooting discount codes not working.',
     },
+    noDiscountEducational: {
+        id: 'noDiscountEducational',
+        category: 'sales',
+        title: 'No Discount Educational',
+        caption: 'Provide educational responses without offering discounts.',
+    },
+    noDiscountBalanced: {
+        id: 'noDiscountBalanced',
+        category: 'sales',
+        title: 'No Discount Balanced',
+        caption: 'Provide balanced responses without offering discounts.',
+    },
+    noDiscountAggressive: {
+        id: 'noDiscountAggressive',
+        category: 'sales',
+        title: 'No Discount Aggressive',
+        caption: 'Provide Aggressive responses without offering discounts.',
+    },
+    withDiscountEducational: {
+        id: 'withDiscountEducational',
+        category: 'sales',
+        title: 'With Discount Educational',
+        caption: 'Provide educational responses with discounts.',
+    },
+    withDiscountBalanced: {
+        id: 'withDiscountBalanced',
+        category: 'sales',
+        title: 'With Discount Balanced',
+        caption: 'Provide balanced responses with discounts.',
+    },
+    withDiscountAggressive: {
+        id: 'withDiscountAggressive',
+        category: 'sales',
+        title: 'With Discount Aggressive',
+        caption: 'Provide Aggressive responses with discounts.',
+    },
 } as const
 export type PreviewId = keyof typeof previews
 export type Preview = (typeof previews)[PreviewId]

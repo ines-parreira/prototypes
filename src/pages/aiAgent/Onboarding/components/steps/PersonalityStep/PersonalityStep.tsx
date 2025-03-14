@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useMemo } from 'react'
 
 import { zodResolver } from '@hookform/resolvers/zod'
 import { FormProvider, useForm } from 'react-hook-form'
@@ -12,6 +12,7 @@ import AiAgentChatConversation from 'pages/aiAgent/Onboarding/components/AiAgent
 import Card from 'pages/aiAgent/Onboarding/components/Card/Card'
 import MainTitle from 'pages/aiAgent/Onboarding/components/MainTitle/MainTitle'
 import { OnboardingSteppedSlider } from 'pages/aiAgent/Onboarding/components/OnboardingSteppedSlider/OnboardingSteppedSlider'
+import { PreviewId } from 'pages/aiAgent/Onboarding/components/PersonalityPreviewGroup/constants'
 import {
     DiscountStrategy,
     DiscountStrategyLabels,
@@ -46,6 +47,8 @@ import IconTooltip from 'pages/common/forms/IconTooltip/IconTooltip'
 import IconInput from 'pages/common/forms/input/IconInput'
 import InputField from 'pages/common/forms/input/InputField'
 import ChatIntegrationPreview from 'pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationPreview/ChatIntegrationPreview'
+
+import { conversationExamples } from '../PersonalityPreviewStep/conversationsExamples'
 
 const personalitySchema = z
     .object({
@@ -233,6 +236,27 @@ export const PersonalityStep: React.FC<StepProps> = ({
         goToStep(previousStep)
     }
 
+    const preview = useMemo(() => {
+        const capitalizedPersuasionLevel =
+            String(salesPersuasionLevel).charAt(0).toUpperCase() +
+            String(salesPersuasionLevel).slice(1)
+        if (salesDiscountStrategyLevel === DiscountStrategy.NoDiscount) {
+            const previewName = `noDiscount${capitalizedPersuasionLevel}`
+            return conversationExamples[previewName as PreviewId].messages
+        }
+        const previewName = `withDiscount${capitalizedPersuasionLevel}`
+        return conversationExamples[previewName as PreviewId].messages.map(
+            (message) => {
+                const newMessage = { ...message }
+                newMessage.content = message.content.replace(
+                    '[DISCOUNT-PERCENTAGE]',
+                    salesDiscountMax.toString(),
+                )
+                return newMessage
+            },
+        )
+    }, [salesDiscountStrategyLevel, salesPersuasionLevel, salesDiscountMax])
+
     return (
         <FormProvider {...methods}>
             <OnboardingBody>
@@ -367,6 +391,7 @@ export const PersonalityStep: React.FC<StepProps> = ({
                                         conversationColor ??
                                         agentChatConversationSettings.conversationColor,
                                 }}
+                                messages={preview}
                                 removeLinksFromMessages
                             />
                         </ChatIntegrationPreview>

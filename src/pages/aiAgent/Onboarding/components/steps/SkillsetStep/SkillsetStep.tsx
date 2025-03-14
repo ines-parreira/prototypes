@@ -8,6 +8,7 @@ import useAppSelector from 'hooks/useAppSelector'
 import AiAgentChatConversation from 'pages/aiAgent/Onboarding/components/AiAgentChatConversation/AiAgentChatConversation'
 import Goals from 'pages/aiAgent/Onboarding/components/Goals/Goals'
 import MainTitle from 'pages/aiAgent/Onboarding/components/MainTitle/MainTitle'
+import { conversationExamples } from 'pages/aiAgent/Onboarding/components/steps/PersonalityPreviewStep/conversationsExamples'
 import { StepProps } from 'pages/aiAgent/Onboarding/components/steps/types'
 import useCheckOnboardingCompleted from 'pages/aiAgent/Onboarding/hooks/useCheckOnboardingCompleted'
 import { useCreateOnboarding } from 'pages/aiAgent/Onboarding/hooks/useCreateOnboarding'
@@ -144,6 +145,19 @@ export const SkillsetStep: FC<SkillsetStepProps> = ({
         return <Goals value={selectedScope} onSelect={onSkillsetChange} />
     }, [isLoading, selectedScope, onSkillsetChange])
 
+    const previewMessages = useMemo(() => {
+        if (selectedScope.length === 1) {
+            const scope = selectedScope[0]
+            if (scope === AiAgentScopes.SUPPORT) {
+                return conversationExamples.orderStatusAndTracking.messages
+            }
+            if (scope === AiAgentScopes.SALES) {
+                return conversationExamples.productRecommendations.messages
+            }
+        }
+        return conversationExamples.discountCode.messages
+    }, [selectedScope])
+
     return (
         <OnboardingBody>
             <OnboardingContentContainer
@@ -180,6 +194,7 @@ export const SkillsetStep: FC<SkillsetStepProps> = ({
                                         conversationColor ??
                                         agentChatConversationSettings.conversationColor,
                                 }}
+                                messages={previewMessages}
                                 removeLinksFromMessages
                             />
                         </ChatIntegrationPreview>
