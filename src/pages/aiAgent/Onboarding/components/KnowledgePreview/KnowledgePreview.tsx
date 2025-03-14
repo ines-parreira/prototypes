@@ -14,7 +14,7 @@ import { LineChart } from 'pages/stats/common/components/charts/LineChart/LineCh
 
 import css from './KnowledgePreview.less'
 
-const ANIMATION_DURATION = 30000
+const ANIMATION_DURATION = 60000
 
 const KnowledgePreview = () => {
     const { data } = useGetKnowledgeDatasQuery()

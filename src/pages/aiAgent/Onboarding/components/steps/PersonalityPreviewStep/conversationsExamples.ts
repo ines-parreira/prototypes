@@ -112,23 +112,29 @@ export const conversationExamples: Record<
         messages: [
             {
                 content:
-                    'Can I still cancel my order? It was placed yesterday.',
+                    'Hey, I just placed an order but need to cancel it. Can you help?',
                 isHtml: false,
                 fromAgent: false,
                 attachments: [],
             },
             {
                 content:
-                    'Yes, your order is still processing and can be canceled. Please visit: <a href="https://example.com/cancel" target="_blank">Cancel Order</a>. Would you like me to guide you through it?',
+                    ' Let me check… 🕵️‍♂️ Your order is still processing, so I can cancel it for you! Would you like me to proceed?',
                 isHtml: true,
                 fromAgent: true,
                 attachments: [],
             },
             {
-                content:
-                    'No need, I’ll handle it. Thanks for the quick response!',
+                content: 'Yes please!',
                 isHtml: false,
                 fromAgent: false,
+                attachments: [],
+            },
+            {
+                content:
+                    'Done! ✅ Your order has been canceled, and the refund will be back on your payment method in 3-5 business days. Let me know if you need anything else!',
+                isHtml: true,
+                fromAgent: true,
                 attachments: [],
             },
         ],

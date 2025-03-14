@@ -13,13 +13,15 @@ type Props = {
     goal: GoalData
     isSelected: boolean
     onSelect: (scope: AiAgentScopes[]) => void
+    isHidden?: boolean
 }
 
-const Goal: React.FC<Props> = ({ goal, isSelected, onSelect }) => {
+const Goal: React.FC<Props> = ({ goal, isSelected, onSelect, isHidden }) => {
     return (
         <Card
             className={cn({ [css.selected]: isSelected })}
             onClick={() => onSelect(goal.scope)}
+            style={isHidden ? { display: 'none' } : {}}
         >
             <CardContent>
                 <div className={css.goalContainer}>

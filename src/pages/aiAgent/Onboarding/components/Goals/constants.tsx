@@ -21,6 +21,7 @@ export const GoalOption: GoalData[] = [
         image: <CursorClickIcon />,
         title: 'Boost Sales with a Personal Shopping Assistant',
         description: 'Increase your sales with a tailored shopping experience.',
+        isHidden: true,
     },
     {
         type: GoalType.Both,

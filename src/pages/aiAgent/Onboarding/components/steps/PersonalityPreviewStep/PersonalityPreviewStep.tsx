@@ -97,9 +97,9 @@ export const PersonalityPreviewStep: React.FC<StepProps> = ({
                 />
                 <Separator />
                 <AIBanner fillStyle="fill">
-                    Preview AI Agent’s personality, crafted using your brand’s
-                    tone of voice from your website. Fine-tune it anytime in
-                    your Settings.
+                    Preview AI Agent’s personality, crafted using a friendly
+                    tone of voice which you can fine-tune anytime in your
+                    Settings.
                 </AIBanner>
                 <Separator />
                 <PersonalityPreviewGroup
@@ -111,7 +111,7 @@ export const PersonalityPreviewStep: React.FC<StepProps> = ({
             <OnboardingPreviewContainer
                 isLoading={isChatPreviewLoading || isLoading}
                 icon={''}
-                caption="Here’s a sample conversation with your AI Agent, reflecting your brand’s tone. You can adjust its personality in Settings anytime."
+                caption="Here’s a sample conversation with your AI Agent, crafted using a friendly tone of voice. You can adjust its personality in Settings anytime."
             >
                 <div className={css.previewContainer}>
                     <div>

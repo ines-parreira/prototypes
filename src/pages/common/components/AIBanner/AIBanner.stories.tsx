@@ -33,7 +33,7 @@ WithLargeContent.args = {
     className: '',
     hasError: false,
     children:
-        'Preview AI Agent’s personality, crafted using your brand’s tone of voice from your website. Fine-tune it anytime in your Settings.',
+        'Preview AI Agent’s personality, crafted using a friendly tone of voice which you can fine-tune anytime in your Settings.',
 }
 
 export const WithExtraLargeContent = Template.bind({})
@@ -41,7 +41,7 @@ WithExtraLargeContent.args = {
     className: '',
     hasError: false,
     children:
-        'Preview AI Agent’s personality, crafted using your brand’s tone of voice from your website. Fine-tune it anytime in your Settings. It’s a great way to see how your AI Agent will respond to your customers. Select the primary goal you want to achieve with your AI agent. Support customers, automate repetitive tasks, generate leads, or other.',
+        'Preview AI Agent’s personality, crafted using a friendly tone of voice which you can fine-tune anytime in your Settings. It’s a great way to see how your AI Agent will respond to your customers. Select the primary goal you want to achieve with your AI agent. Support customers, automate repetitive tasks, generate leads, or other.',
 }
 
 export const FillStyleFill = Template.bind({})

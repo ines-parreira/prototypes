@@ -24,6 +24,7 @@ const Goals: React.FC<Props> = ({ value, onSelect }) => {
                         goal={goal}
                         isSelected={isEqual(goal.scope, value)}
                         onSelect={onSelect}
+                        isHidden={goal.isHidden}
                     />
                 )
             })}
