@@ -6,9 +6,9 @@ import useMetricTrend, {
 import { gmvInfluencedQueryFactory } from 'models/reporting/queryFactories/ai-sales-agent/metrics'
 import { StatsFilters } from 'models/stat/types'
 import {
-    fetchTotalSalesOportunityAIConvTrend,
-    useTotalSalesOportunityAIConvTrend,
-} from 'pages/stats/aiSalesAgent/metrics/useTotalSalesOportunityAIConvTrend'
+    fetchTotalSalesOpportunityAIConvTrend,
+    useTotalSalesOpportunityAIConvTrend,
+} from 'pages/stats/aiSalesAgent/metrics/useTotalSalesOpportunityAIConvTrend'
 import { infinityNanToZero } from 'pages/stats/aiSalesAgent/metrics/utils'
 import { getPreviousPeriod } from 'utils/reporting'
 
@@ -27,7 +27,7 @@ const useRoiRateTrend = (filters: StatsFilters, timezone: string) => {
             timezone,
         ),
     )
-    const totalAIConvData = useTotalSalesOportunityAIConvTrend(
+    const totalAIConvData = useTotalSalesOpportunityAIConvTrend(
         filters,
         timezone,
     )
@@ -64,7 +64,7 @@ const useRoiRateTrend = (filters: StatsFilters, timezone: string) => {
 
 const fetchRoiRateTrend = (filters: StatsFilters, timezone: string) => {
     return Promise.all([
-        fetchTotalSalesOportunityAIConvTrend(filters, timezone),
+        fetchTotalSalesOpportunityAIConvTrend(filters, timezone),
         fetchMetricTrend(
             gmvInfluencedQueryFactory(filters, timezone),
             gmvInfluencedQueryFactory(

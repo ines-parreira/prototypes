@@ -13,9 +13,9 @@ import { assumeMock } from 'utils/testing'
 
 import { fetchRoiRateTrend, useRoiRateTrend } from '../useRoiRateTrend'
 import {
-    fetchTotalSalesOportunityAIConvTrend,
-    useTotalSalesOportunityAIConvTrend,
-} from '../useTotalSalesOportunityAIConvTrend'
+    fetchTotalSalesOpportunityAIConvTrend,
+    useTotalSalesOpportunityAIConvTrend,
+} from '../useTotalSalesOpportunityAIConvTrend'
 
 const timezone = 'UTC'
 
@@ -34,10 +34,12 @@ const queryClient = mockQueryClient()
 
 jest.useFakeTimers()
 
-jest.mock('pages/stats/aiSalesAgent/metrics/useTotalSalesOportunityAIConvTrend')
-const useTotalAIConvTrendMock = assumeMock(useTotalSalesOportunityAIConvTrend)
+jest.mock(
+    'pages/stats/aiSalesAgent/metrics/useTotalSalesOpportunityAIConvTrend',
+)
+const useTotalAIConvTrendMock = assumeMock(useTotalSalesOpportunityAIConvTrend)
 const fetchTotalAIConvTrendMock = assumeMock(
-    fetchTotalSalesOportunityAIConvTrend,
+    fetchTotalSalesOpportunityAIConvTrend,
 )
 
 jest.mock('models/reporting/queries')

@@ -2,30 +2,32 @@ import { useMemo } from 'react'
 
 import { StatsFilters } from 'models/stat/types'
 import {
-    fetchTotalNumberOfAgentConverationsTrend,
-    useTotalNumberOfAgentConverationsTrend,
-} from 'pages/stats/aiSalesAgent/metrics/useTotalNumberOfAgentConverationsTrend'
-import {
     fetchTotalNumberOfOrders,
     useTotalNumberOfOrders,
 } from 'pages/stats/aiSalesAgent/metrics/useTotalNumberOfOrders'
+import {
+    fetchTotalSalesOpportunityAIConvTrend,
+    useTotalSalesOpportunityAIConvTrend,
+} from 'pages/stats/aiSalesAgent/metrics/useTotalSalesOpportunityAIConvTrend'
 import safeDivide from 'pages/stats/aiSalesAgent/util/safeDivide'
 
 const useConversionRate = (filters: StatsFilters, timezone: string) => {
-    const totalNumberOfAgentConverationsData =
-        useTotalNumberOfAgentConverationsTrend(filters, timezone)
+    const totalSalesOportunityAIConvData = useTotalSalesOpportunityAIConvTrend(
+        filters,
+        timezone,
+    )
     const totalNumberOfOrdersData = useTotalNumberOfOrders(filters, timezone)
 
     const isFetching =
-        totalNumberOfAgentConverationsData.isFetching ||
+        totalSalesOportunityAIConvData.isFetching ||
         totalNumberOfOrdersData.isFetching
     const isError =
-        totalNumberOfAgentConverationsData.isError ||
+        totalSalesOportunityAIConvData.isError ||
         totalNumberOfOrdersData.isError
 
     const data = useMemo(() => {
         if (
-            !totalNumberOfAgentConverationsData.data ||
+            !totalSalesOportunityAIConvData.data ||
             !totalNumberOfOrdersData.data ||
             isFetching ||
             isError
@@ -35,17 +37,17 @@ const useConversionRate = (filters: StatsFilters, timezone: string) => {
 
         const value = safeDivide(
             totalNumberOfOrdersData.data.value,
-            totalNumberOfAgentConverationsData.data.value,
+            totalSalesOportunityAIConvData.data.value,
         )
 
         const prevValue = safeDivide(
             totalNumberOfOrdersData.data.prevValue,
-            totalNumberOfAgentConverationsData.data.prevValue,
+            totalSalesOportunityAIConvData.data.prevValue,
         )
 
         return { value, prevValue }
     }, [
-        totalNumberOfAgentConverationsData,
+        totalSalesOportunityAIConvData,
         totalNumberOfOrdersData,
         isError,
         isFetching,
@@ -61,26 +63,24 @@ const useConversionRate = (filters: StatsFilters, timezone: string) => {
 const fetchConversionRate = (filters: StatsFilters, timezone: string) => {
     return Promise.all([
         fetchTotalNumberOfOrders(filters, timezone),
-        fetchTotalNumberOfAgentConverationsTrend(filters, timezone),
+        fetchTotalSalesOpportunityAIConvTrend(filters, timezone),
     ])
-        .then(
-            ([totalNumberOfOrdersData, totalNumberOfAgentConverationsData]) => {
-                return {
-                    isFetching: false,
-                    isError: false,
-                    data: {
-                        value: safeDivide(
-                            totalNumberOfOrdersData.data?.value,
-                            totalNumberOfAgentConverationsData.data?.value,
-                        ),
-                        prevValue: safeDivide(
-                            totalNumberOfOrdersData.data?.prevValue,
-                            totalNumberOfAgentConverationsData.data?.prevValue,
-                        ),
-                    },
-                }
-            },
-        )
+        .then(([totalNumberOfOrdersData, totalSalesOportunityAIConvData]) => {
+            return {
+                isFetching: false,
+                isError: false,
+                data: {
+                    value: safeDivide(
+                        totalNumberOfOrdersData.data?.value,
+                        totalSalesOportunityAIConvData.data?.value,
+                    ),
+                    prevValue: safeDivide(
+                        totalNumberOfOrdersData.data?.prevValue,
+                        totalSalesOportunityAIConvData.data?.prevValue,
+                    ),
+                },
+            }
+        })
         .catch(() => ({ isFetching: false, isError: true, data: undefined }))
 }
 

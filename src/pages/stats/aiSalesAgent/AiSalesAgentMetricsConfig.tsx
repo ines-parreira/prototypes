@@ -56,9 +56,9 @@ import {
     useTotalProductRecommendations,
 } from 'pages/stats/aiSalesAgent/metrics/useTotalProductRecommendations'
 import {
-    fetchTotalSalesOportunityAIConvTrend,
-    useTotalSalesOportunityAIConvTrend,
-} from 'pages/stats/aiSalesAgent/metrics/useTotalSalesOportunityAIConvTrend'
+    fetchTotalSalesOpportunityAIConvTrend,
+    useTotalSalesOpportunityAIConvTrend,
+} from 'pages/stats/aiSalesAgent/metrics/useTotalSalesOpportunityAIConvTrend'
 import { MetricTrendFormat } from 'pages/stats/common/utils'
 import { TooltipData } from 'pages/stats/types'
 
@@ -130,8 +130,8 @@ export const AiSalesAgentMetricConfig: Record<
         hint: {
             title: 'The total number of conversations handled or influenced by the AI Agent for Sales.',
         },
-        useTrend: useTotalSalesOportunityAIConvTrend,
-        fetchTrend: fetchTotalSalesOportunityAIConvTrend,
+        useTrend: useTotalSalesOpportunityAIConvTrend,
+        fetchTrend: fetchTotalSalesOpportunityAIConvTrend,
         interpretAs: 'more-is-better',
         metricFormat: 'decimal',
     },

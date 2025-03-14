@@ -5,7 +5,7 @@ import { totalNumberofSalesOpportunityConvFromAIAgentQueryFactory } from 'models
 import { StatsFilters } from 'models/stat/types'
 import { getPreviousPeriod } from 'utils/reporting'
 
-const useTotalSalesOportunityAIConvTrend = (
+const useTotalSalesOpportunityAIConvTrend = (
     filters: StatsFilters,
     timezone: string,
 ) =>
@@ -23,7 +23,7 @@ const useTotalSalesOportunityAIConvTrend = (
         ),
     )
 
-const fetchTotalSalesOportunityAIConvTrend = (
+const fetchTotalSalesOpportunityAIConvTrend = (
     filters: StatsFilters,
     timezone: string,
 ) =>
@@ -42,6 +42,6 @@ const fetchTotalSalesOportunityAIConvTrend = (
     )
 
 export {
-    useTotalSalesOportunityAIConvTrend,
-    fetchTotalSalesOportunityAIConvTrend,
+    useTotalSalesOpportunityAIConvTrend,
+    fetchTotalSalesOpportunityAIConvTrend,
 }

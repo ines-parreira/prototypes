@@ -12,9 +12,9 @@ import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 import { assumeMock } from 'utils/testing'
 
 import {
-    fetchTotalSalesOportunityAIConvTrend,
-    useTotalSalesOportunityAIConvTrend,
-} from '../useTotalSalesOportunityAIConvTrend'
+    fetchTotalSalesOpportunityAIConvTrend,
+    useTotalSalesOpportunityAIConvTrend,
+} from '../useTotalSalesOpportunityAIConvTrend'
 
 const timezone = 'UTC'
 
@@ -58,7 +58,7 @@ describe('totalAIConvTrend', () => {
 
             const { result } = renderHook(
                 () =>
-                    useTotalSalesOportunityAIConvTrend(statsFilters, timezone),
+                    useTotalSalesOpportunityAIConvTrend(statsFilters, timezone),
                 {
                     wrapper: ({ children }) => (
                         <QueryClientProvider client={queryClient}>
@@ -96,7 +96,7 @@ describe('totalAIConvTrend', () => {
                 },
             } as unknown as ReturnType<typeof fetchPostReporting>)
 
-            const result = await fetchTotalSalesOportunityAIConvTrend(
+            const result = await fetchTotalSalesOpportunityAIConvTrend(
                 statsFilters,
                 timezone,
             )

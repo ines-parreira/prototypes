@@ -7,13 +7,13 @@ import moment from 'moment'
 
 import { StatsFilters } from 'models/stat/types'
 import {
-    fetchTotalNumberOfAgentConverationsTrend,
-    useTotalNumberOfAgentConverationsTrend,
-} from 'pages/stats/aiSalesAgent/metrics/useTotalNumberOfAgentConverationsTrend'
-import {
     fetchTotalNumberOfOrders,
     useTotalNumberOfOrders,
 } from 'pages/stats/aiSalesAgent/metrics/useTotalNumberOfOrders'
+import {
+    fetchTotalSalesOpportunityAIConvTrend,
+    useTotalSalesOpportunityAIConvTrend,
+} from 'pages/stats/aiSalesAgent/metrics/useTotalSalesOpportunityAIConvTrend'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 import { assumeMock } from 'utils/testing'
 
@@ -37,16 +37,16 @@ const queryClient = mockQueryClient()
 jest.useFakeTimers()
 
 jest.mock(
-    'pages/stats/aiSalesAgent/metrics/useTotalNumberOfAgentConverationsTrend',
+    'pages/stats/aiSalesAgent/metrics/useTotalSalesOpportunityAIConvTrend',
 )
-const useTotalNumberOfAgentConverationsTrendMock = assumeMock(
-    useTotalNumberOfAgentConverationsTrend,
+const useTotalSalesOpportunityAIConvTrendMock = assumeMock(
+    useTotalSalesOpportunityAIConvTrend,
 )
 const useTotalNumberOfOrdersMock = assumeMock(useTotalNumberOfOrders)
 
 jest.mock('pages/stats/aiSalesAgent/metrics/useTotalNumberOfOrders')
-const fetchTotalNumberOfAgentConverationsTrendMock = assumeMock(
-    fetchTotalNumberOfAgentConverationsTrend,
+const fetchTotalSalesOpportunityAIConvTrendMock = assumeMock(
+    fetchTotalSalesOpportunityAIConvTrend,
 )
 const fetchTotalNumberOfOrdersMock = assumeMock(fetchTotalNumberOfOrders)
 
@@ -55,7 +55,7 @@ describe('conversionRate', () => {
         it('should return correct metric data when the query resolves', async () => {
             act(() => jest.runAllTimers())
 
-            useTotalNumberOfAgentConverationsTrendMock.mockReturnValue({
+            useTotalSalesOpportunityAIConvTrendMock.mockReturnValue({
                 isFetching: false,
                 isError: false,
                 data: {
@@ -98,7 +98,7 @@ describe('conversionRate', () => {
         it('should retrun correct value if cube returns null', async () => {
             act(() => jest.runAllTimers())
 
-            useTotalNumberOfAgentConverationsTrendMock.mockReturnValue({
+            useTotalSalesOpportunityAIConvTrendMock.mockReturnValue({
                 isFetching: false,
                 isError: false,
                 data: {
@@ -143,7 +143,7 @@ describe('conversionRate', () => {
         it('should return correct metric data when the query resolves', async () => {
             act(() => jest.runAllTimers())
 
-            fetchTotalNumberOfAgentConverationsTrendMock.mockReturnValue({
+            fetchTotalSalesOpportunityAIConvTrendMock.mockReturnValue({
                 isFetching: false,
                 isError: false,
                 data: {
@@ -151,7 +151,7 @@ describe('conversionRate', () => {
                     prevValue: 2,
                 },
             } as unknown as ReturnType<
-                typeof fetchTotalNumberOfAgentConverationsTrend
+                typeof fetchTotalSalesOpportunityAIConvTrend
             >)
             fetchTotalNumberOfOrdersMock.mockReturnValue({
                 isFetching: false,
@@ -177,7 +177,7 @@ describe('conversionRate', () => {
         it('should retrun correct value if cube returns null', async () => {
             act(() => jest.runAllTimers())
 
-            fetchTotalNumberOfAgentConverationsTrendMock.mockReturnValue({
+            fetchTotalSalesOpportunityAIConvTrendMock.mockReturnValue({
                 isFetching: false,
                 isError: false,
                 data: {
@@ -185,7 +185,7 @@ describe('conversionRate', () => {
                     prevValue: null,
                 },
             } as unknown as ReturnType<
-                typeof fetchTotalNumberOfAgentConverationsTrend
+                typeof fetchTotalSalesOpportunityAIConvTrend
             >)
             fetchTotalNumberOfOrdersMock.mockReturnValue({
                 isFetching: false,
