@@ -22,6 +22,7 @@ import ScriptTagMigrationModal from 'pages/common/components/ScriptTagMigrationM
 import SessionChangeDetection from 'pages/common/components/SessionChangeDetection'
 import Spotlight from 'pages/common/components/Spotlight/Spotlight'
 import OutOfRecoveryCodesModal from 'pages/settings/yourProfile/twoFactorAuthentication/OutOfRecoveryCodesModal'
+import { useAutomateRedirects } from 'settings/automate'
 
 import ImpersonationBanner from '../../../AlertBanners/components/ImpersonationBanner'
 import useActivityTracker from '../hooks/useActivityTracker'
@@ -58,6 +59,8 @@ export default function App({ children }: Props) {
 
     useSharedLogic()
     useActivityTracker()
+
+    useAutomateRedirects()
 
     const isOnboarding = isAiAgentOnboarding(history.location.pathname)
 
