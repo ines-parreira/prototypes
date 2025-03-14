@@ -15,9 +15,9 @@ import {
     useSuccessRateTrend,
 } from 'pages/stats/aiSalesAgent/metrics/useSuccessRateTrend'
 import {
-    fetchTotalNumberOfAgentConverationsTrend,
-    useTotalNumberOfAgentConverationsTrend,
-} from 'pages/stats/aiSalesAgent/metrics/useTotalNumberOfAgentConverationsTrend'
+    fetchTotalSalesOportunityAIConvTrend,
+    useTotalSalesOportunityAIConvTrend,
+} from 'pages/stats/aiSalesAgent/metrics/useTotalSalesOportunityAIConvTrend'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 import { assumeMock } from 'utils/testing'
 
@@ -43,14 +43,12 @@ const queryClient = mockQueryClient()
 
 jest.useFakeTimers()
 
-jest.mock(
-    'pages/stats/aiSalesAgent/metrics/useTotalNumberOfAgentConverationsTrend',
-)
-const useTotalNumberOfAgentConverationsTrendMock = assumeMock(
-    useTotalNumberOfAgentConverationsTrend,
+jest.mock('pages/stats/aiSalesAgent/metrics/useTotalSalesOportunityAIConvTrend')
+const useTotalSalesOportunityAIConvTrendMock = assumeMock(
+    useTotalSalesOportunityAIConvTrend,
 )
 const fetchTotalNumberOfAgentConverationsTrendMock = assumeMock(
-    fetchTotalNumberOfAgentConverationsTrend,
+    fetchTotalSalesOportunityAIConvTrend,
 )
 
 jest.mock('pages/stats/aiSalesAgent/metrics/useSuccessRateTrend')
@@ -72,7 +70,7 @@ describe('timeSavedByAgentTrend', () => {
                     prevValue: 2,
                 },
             })
-            useTotalNumberOfAgentConverationsTrendMock.mockReturnValue({
+            useTotalSalesOportunityAIConvTrendMock.mockReturnValue({
                 isFetching: false,
                 isError: false,
                 data: {
@@ -128,7 +126,7 @@ describe('timeSavedByAgentTrend', () => {
                 },
             } as unknown as ReturnType<typeof useSuccessRateTrend>)
 
-            useTotalNumberOfAgentConverationsTrendMock.mockReturnValue({
+            useTotalSalesOportunityAIConvTrendMock.mockReturnValue({
                 isFetching: false,
                 isError: false,
                 data: {
@@ -179,7 +177,7 @@ describe('timeSavedByAgentTrend', () => {
                     prevValue: 2,
                 },
             } as unknown as ReturnType<
-                typeof fetchTotalNumberOfAgentConverationsTrend
+                typeof fetchTotalSalesOportunityAIConvTrend
             >)
             fetchTicketHandleTimeTrendMock.mockReturnValue({
                 isFetching: false,
@@ -223,7 +221,7 @@ describe('timeSavedByAgentTrend', () => {
                     value: 0,
                 },
             } as unknown as ReturnType<
-                typeof fetchTotalNumberOfAgentConverationsTrend
+                typeof fetchTotalSalesOportunityAIConvTrend
             >)
             fetchTicketHandleTimeTrendMock.mockReturnValue({
                 isFetching: false,
