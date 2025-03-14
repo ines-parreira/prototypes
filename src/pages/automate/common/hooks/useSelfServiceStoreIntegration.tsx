@@ -5,6 +5,28 @@ import { getShopNameFromStoreIntegration } from 'models/selfServiceConfiguration
 
 import useStoreIntegrations from './useStoreIntegrations'
 
+export const useSelfServiceStoreIntegrationMultiStore = (
+    shopType: string,
+    shopNames: string[],
+) => {
+    const storeIntegrations = useStoreIntegrations()
+
+    return useMemo(() => {
+        return shopNames.reduce<Record<string, StoreIntegration | undefined>>(
+            (acc, shopName) => {
+                acc[shopName] = storeIntegrations.find(
+                    (storeIntegration) =>
+                        storeIntegration.type === shopType &&
+                        getShopNameFromStoreIntegration(storeIntegration) ===
+                            shopName,
+                )
+                return acc
+            },
+            {},
+        )
+    }, [storeIntegrations, shopType, shopNames])
+}
+
 const useSelfServiceStoreIntegration = (shopType: string, shopName: string) => {
     const storeIntegrations = useStoreIntegrations()
 

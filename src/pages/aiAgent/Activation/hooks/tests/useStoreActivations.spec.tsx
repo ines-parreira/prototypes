@@ -10,14 +10,22 @@ import { AiAgentScope, StoreConfiguration } from 'models/aiAgent/types'
 import { useGetHelpCenterList } from 'models/helpCenter/queries'
 import { KNOWLEDGE_ALERT_KIND } from 'pages/aiAgent/Activation/hooks/storeActivationReducer'
 import { useStoreActivations } from 'pages/aiAgent/Activation/hooks/useStoreActivations'
+import { mockChatChannels } from 'pages/aiAgent/fixtures/chatChannels.fixture'
+import { useSelfServiceChatChannelsMultiStore } from 'pages/automate/common/hooks/useSelfServiceChatChannels'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 import { assumeMock } from 'utils/testing'
+
+jest.mock('pages/automate/common/hooks/useSelfServiceChatChannels')
+const useSelfServiceChatChannelsMultiStoreMock = assumeMock(
+    useSelfServiceChatChannelsMultiStore,
+)
 
 jest.mock('models/helpCenter/queries')
 const useGetHelpCenterListMock = assumeMock(useGetHelpCenterList)
 
 const queryClient = mockQueryClient()
 const pageName = 'ai-agent-overview'
+
 const renderUseStoreActivations = ({
     storeConfigurations,
 }: {
@@ -42,6 +50,8 @@ const renderUseStoreActivations = ({
 const mockLogEvent = jest.spyOn(segment, 'logEvent').mockImplementation(jest.fn)
 
 describe('useStoreActivations', () => {
+    const STORE_NAME = 'My Store'
+
     beforeEach(() => {
         mockFlags({})
         jest.clearAllMocks()
@@ -52,12 +62,24 @@ describe('useStoreActivations', () => {
                 data: [],
             }),
         } as any)
+
+        useSelfServiceChatChannelsMultiStoreMock.mockReturnValue({
+            [STORE_NAME]: [
+                {
+                    ...mockChatChannels[0],
+                    value: {
+                        ...mockChatChannels[0].value,
+                        id: 1,
+                    },
+                },
+            ],
+        })
     })
 
     describe('when store has no scope + has no deactivated datetime for chat and email', () => {
         it('should have a score of 0 / 3', () => {
             const store = {
-                storeName: 'My Store',
+                storeName: STORE_NAME,
                 scopes: [],
                 chatChannelDeactivatedDatetime: null,
                 emailChannelDeactivatedDatetime: null,
@@ -79,7 +101,7 @@ describe('useStoreActivations', () => {
 
         describe('when store has monitored chat and email integration', () => {
             const store = {
-                storeName: 'My Store',
+                storeName: STORE_NAME,
                 scopes: [],
                 chatChannelDeactivatedDatetime: null,
                 emailChannelDeactivatedDatetime: null,
@@ -300,9 +322,69 @@ describe('useStoreActivations', () => {
             })
         })
 
+        describe('when store has monitored chat but chat is not available chat integration', () => {
+            const store = {
+                storeName: STORE_NAME,
+                scopes: [],
+                chatChannelDeactivatedDatetime: null,
+                emailChannelDeactivatedDatetime: null,
+                monitoredChatIntegrations: [1],
+                monitoredEmailIntegrations: [
+                    { id: 2, email: 'foo@example.com' },
+                ],
+            } as any as StoreConfiguration
+
+            beforeEach(() => {
+                useSelfServiceChatChannelsMultiStoreMock.mockClear()
+                useSelfServiceChatChannelsMultiStoreMock.mockReturnValue({
+                    [STORE_NAME]: [
+                        {
+                            ...mockChatChannels[0],
+                            value: {
+                                ...mockChatChannels[0].value,
+                                id: 42,
+                            },
+                        },
+                    ],
+                })
+            })
+
+            const expectedInitialState = {
+                name: 'My Store',
+                title: 'My Store',
+                configuration: store,
+                alerts: [],
+                support: {
+                    chat: {
+                        enabled: false,
+                        isIntegrationMissing: true,
+                    },
+                    email: {
+                        enabled: false,
+                        isIntegrationMissing: false,
+                    },
+                    enabled: false,
+                },
+                sales: {
+                    enabled: false,
+                    isDisabled: true,
+                },
+            }
+
+            it('should compute initial state', () => {
+                const { result } = renderUseStoreActivations({
+                    storeConfigurations: [store],
+                })
+
+                expect(result.current.storeActivations).toEqual({
+                    'My Store': expectedInitialState,
+                })
+            })
+        })
+
         describe('when store has monitored chat + no monitored email', () => {
             const store = {
-                storeName: 'My Store',
+                storeName: STORE_NAME,
                 scopes: [],
                 chatChannelDeactivatedDatetime: null,
                 emailChannelDeactivatedDatetime: null,
@@ -392,7 +474,7 @@ describe('useStoreActivations', () => {
 
         describe('when store has no monitored chat + monitored email', () => {
             const store = {
-                storeName: 'My Store',
+                storeName: STORE_NAME,
                 scopes: [],
                 chatChannelDeactivatedDatetime: null,
                 emailChannelDeactivatedDatetime: null,
@@ -484,7 +566,7 @@ describe('useStoreActivations', () => {
 
         describe('when store has no monitored chat + no monitored email', () => {
             const store = {
-                storeName: 'My Store',
+                storeName: STORE_NAME,
                 scopes: [],
                 chatChannelDeactivatedDatetime: null,
                 emailChannelDeactivatedDatetime: null,
@@ -558,7 +640,7 @@ describe('useStoreActivations', () => {
     describe('when store has Support scope + no deactivated datetime for chat + deactivated datetime for email', () => {
         it('should have a score of 1 / 3', () => {
             const store = {
-                storeName: 'My Store',
+                storeName: STORE_NAME,
                 scopes: [AiAgentScope.Support],
                 chatChannelDeactivatedDatetime: null,
                 emailChannelDeactivatedDatetime: new Date().toISOString(),
@@ -582,7 +664,7 @@ describe('useStoreActivations', () => {
     describe('when store has Support scope + deactivated datetime for chat + deactivated datetime for email', () => {
         it('should have a score of 0 / 3', () => {
             const store = {
-                storeName: 'My Store',
+                storeName: STORE_NAME,
                 scopes: [AiAgentScope.Support],
                 chatChannelDeactivatedDatetime: new Date().toISOString(),
                 emailChannelDeactivatedDatetime: new Date().toISOString(),
@@ -606,7 +688,7 @@ describe('useStoreActivations', () => {
     describe('when store has Support scope + no deactivated datetime for chat + for email', () => {
         it('should have a score of 2 / 3', () => {
             const store = {
-                storeName: 'My Store',
+                storeName: STORE_NAME,
                 scopes: [AiAgentScope.Support],
                 chatChannelDeactivatedDatetime: null,
                 emailChannelDeactivatedDatetime: null,
@@ -630,7 +712,7 @@ describe('useStoreActivations', () => {
     describe('when store has Support + Sales scope + no deactivated datetime for chat + for email', () => {
         it('should have a score of 3 / 3', () => {
             const store = {
-                storeName: 'My Store',
+                storeName: STORE_NAME,
                 scopes: [AiAgentScope.Support, AiAgentScope.Sales],
                 chatChannelDeactivatedDatetime: null,
                 emailChannelDeactivatedDatetime: null,
@@ -655,7 +737,7 @@ describe('useStoreActivations', () => {
         describe('when the support is disabled', () => {
             it('should log the event ai-agent-activate-modal-skill-disabled', () => {
                 const store = {
-                    storeName: 'My Store',
+                    storeName: STORE_NAME,
                     scopes: [AiAgentScope.Support, AiAgentScope.Sales],
                     chatChannelDeactivatedDatetime: null,
                     emailChannelDeactivatedDatetime: null,
@@ -690,7 +772,7 @@ describe('useStoreActivations', () => {
                 expect(mockLogEvent).toHaveBeenCalledWith(
                     'ai-agent-activate-modal-skill-disabled',
                     {
-                        storeName: 'My Store',
+                        storeName: STORE_NAME,
                         page: pageName,
                         skill: 'support',
                     },
@@ -701,7 +783,7 @@ describe('useStoreActivations', () => {
         describe('when the support is enabled', () => {
             it('should log the event ai-agent-activate-modal-skill-enabled', () => {
                 const store = {
-                    storeName: 'My Store',
+                    storeName: STORE_NAME,
                     scopes: [AiAgentScope.Support],
                     chatChannelDeactivatedDatetime: new Date().toISOString(),
                     emailChannelDeactivatedDatetime: new Date().toISOString(),
@@ -737,7 +819,7 @@ describe('useStoreActivations', () => {
                 expect(mockLogEvent).toHaveBeenCalledWith(
                     'ai-agent-activate-modal-skill-enabled',
                     {
-                        storeName: 'My Store',
+                        storeName: STORE_NAME,
                         page: pageName,
                         skill: 'support',
                     },
@@ -749,7 +831,7 @@ describe('useStoreActivations', () => {
         describe('when the sales is disabled', () => {
             it('should log the event ai-agent-activate-modal-skill-disabled', () => {
                 const store = {
-                    storeName: 'My Store',
+                    storeName: STORE_NAME,
                     scopes: [AiAgentScope.Support, AiAgentScope.Sales],
                     chatChannelDeactivatedDatetime: null,
                     emailChannelDeactivatedDatetime: null,
@@ -781,7 +863,7 @@ describe('useStoreActivations', () => {
                 expect(mockLogEvent).toHaveBeenCalledWith(
                     'ai-agent-activate-modal-skill-disabled',
                     {
-                        storeName: 'My Store',
+                        storeName: STORE_NAME,
                         page: pageName,
                         skill: 'sales',
                     },
@@ -792,7 +874,7 @@ describe('useStoreActivations', () => {
         describe('when the sales is enabled', () => {
             it('should log the event ai-agent-activate-modal-skill-enabled', () => {
                 const store = {
-                    storeName: 'My Store',
+                    storeName: STORE_NAME,
                     scopes: [AiAgentScope.Support],
                     chatChannelDeactivatedDatetime: null,
                     emailChannelDeactivatedDatetime: null,
@@ -825,7 +907,7 @@ describe('useStoreActivations', () => {
                 expect(mockLogEvent).toHaveBeenCalledWith(
                     'ai-agent-activate-modal-skill-enabled',
                     {
-                        storeName: 'My Store',
+                        storeName: STORE_NAME,
                         page: pageName,
                         skill: 'sales',
                     },
@@ -838,7 +920,7 @@ describe('useStoreActivations', () => {
         describe('when the support chat is disabled', () => {
             it('should log the event ai-agent-activate-modal-skill-disabled', () => {
                 const store = {
-                    storeName: 'My Store',
+                    storeName: STORE_NAME,
                     scopes: [AiAgentScope.Support],
                     chatChannelDeactivatedDatetime: null,
                     emailChannelDeactivatedDatetime: null,
@@ -871,7 +953,7 @@ describe('useStoreActivations', () => {
                 expect(mockLogEvent).toHaveBeenCalledWith(
                     'ai-agent-activate-modal-skill-disabled',
                     {
-                        storeName: 'My Store',
+                        storeName: STORE_NAME,
                         page: pageName,
                         skill: 'support',
                         channel: 'chat',
@@ -883,7 +965,7 @@ describe('useStoreActivations', () => {
         describe('when the support chat is enabled', () => {
             it('should log the event ai-agent-activate-modal-skill-enabled', () => {
                 const store = {
-                    storeName: 'My Store',
+                    storeName: STORE_NAME,
                     scopes: [AiAgentScope.Support],
                     chatChannelDeactivatedDatetime: new Date().toISOString(),
                     emailChannelDeactivatedDatetime: null,
@@ -916,7 +998,7 @@ describe('useStoreActivations', () => {
                 expect(mockLogEvent).toHaveBeenCalledWith(
                     'ai-agent-activate-modal-skill-enabled',
                     {
-                        storeName: 'My Store',
+                        storeName: STORE_NAME,
                         page: pageName,
                         skill: 'support',
                         channel: 'chat',
@@ -930,7 +1012,7 @@ describe('useStoreActivations', () => {
         describe('when the support email is disabled', () => {
             it('should log the event ai-agent-activate-modal-skill-disabled', () => {
                 const store = {
-                    storeName: 'My Store',
+                    storeName: STORE_NAME,
                     scopes: [AiAgentScope.Support],
                     chatChannelDeactivatedDatetime: null,
                     emailChannelDeactivatedDatetime: null,
@@ -963,7 +1045,7 @@ describe('useStoreActivations', () => {
                 expect(mockLogEvent).toHaveBeenCalledWith(
                     'ai-agent-activate-modal-skill-disabled',
                     {
-                        storeName: 'My Store',
+                        storeName: STORE_NAME,
                         page: pageName,
                         skill: 'support',
                         channel: 'email',
@@ -975,7 +1057,7 @@ describe('useStoreActivations', () => {
         describe('when the support email is enabled', () => {
             it('should log the event ai-agent-activate-modal-skill-enabled', () => {
                 const store = {
-                    storeName: 'My Store',
+                    storeName: STORE_NAME,
                     scopes: [AiAgentScope.Support],
                     chatChannelDeactivatedDatetime: null,
                     emailChannelDeactivatedDatetime: new Date().toISOString(),
@@ -1008,7 +1090,7 @@ describe('useStoreActivations', () => {
                 expect(mockLogEvent).toHaveBeenCalledWith(
                     'ai-agent-activate-modal-skill-enabled',
                     {
-                        storeName: 'My Store',
+                        storeName: STORE_NAME,
                         page: pageName,
                         skill: 'support',
                         channel: 'email',
@@ -1030,7 +1112,7 @@ describe('useStoreActivations', () => {
             } as any)
 
             const store = {
-                storeName: 'My Store',
+                storeName: STORE_NAME,
                 helpCenterId: null,
                 scopes: [AiAgentScope.Support, AiAgentScope.Sales],
                 chatChannelDeactivatedDatetime: null,
@@ -1065,7 +1147,7 @@ describe('useStoreActivations', () => {
             } as any)
 
             const store = {
-                storeName: 'My Store',
+                storeName: STORE_NAME,
                 helpCenterId: null,
                 scopes: [AiAgentScope.Support, AiAgentScope.Sales],
                 chatChannelDeactivatedDatetime: null,

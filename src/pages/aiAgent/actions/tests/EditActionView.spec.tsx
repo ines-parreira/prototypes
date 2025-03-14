@@ -14,6 +14,7 @@ import thunk from 'redux-thunk'
 import { ulid } from 'ulidx'
 
 import { useFlag } from 'core/flags'
+import { billingState } from 'fixtures/billing'
 import useAppDispatch from 'hooks/useAppDispatch'
 import {
     useGetStoreApps,
@@ -76,6 +77,7 @@ jest.mock('state/integrations/selectors', () => ({
 }))
 
 const mockStore = configureMockStore<RootState, StoreDispatch>([thunk])({
+    billing: fromJS(billingState),
     integrations: fromJS({
         integrations: [
             {

@@ -12,6 +12,7 @@ import configureMockStore from 'redux-mock-store'
 import { ulid } from 'ulidx'
 
 import { useFlag } from 'core/flags'
+import { billingState } from 'fixtures/billing'
 import useAppDispatch from 'hooks/useAppDispatch'
 import {
     useDownloadWorkflowConfigurationStepLogs,
@@ -139,6 +140,7 @@ describe('<CreateActionView />', () => {
         renderWithRouter(
             <Provider
                 store={mockStore({
+                    billing: fromJS(billingState),
                     integrations: fromJS({
                         integrations: [],
                     }),
@@ -164,6 +166,7 @@ describe('<CreateActionView />', () => {
         renderWithRouter(
             <Provider
                 store={mockStore({
+                    billing: fromJS(billingState),
                     integrations: fromJS({
                         integrations: [],
                     }),
@@ -200,6 +203,7 @@ describe('<CreateActionView />', () => {
         renderWithRouter(
             <Provider
                 store={mockStore({
+                    billing: fromJS(billingState),
                     integrations: fromJS({
                         integrations: [],
                     }),
@@ -242,6 +246,7 @@ describe('<CreateActionView />', () => {
         renderWithRouter(
             <Provider
                 store={mockStore({
+                    billing: fromJS(billingState),
                     integrations: fromJS({
                         integrations: [],
                     }),
@@ -274,6 +279,7 @@ describe('<CreateActionView />', () => {
         const { rerender } = renderWithRouter(
             <Provider
                 store={mockStore({
+                    billing: fromJS(billingState),
                     integrations: fromJS({
                         integrations: [],
                     }),
@@ -303,6 +309,7 @@ describe('<CreateActionView />', () => {
         rerender(
             <Provider
                 store={mockStore({
+                    billing: fromJS(billingState),
                     integrations: fromJS({
                         integrations: [],
                     }),
@@ -323,6 +330,7 @@ describe('<CreateActionView />', () => {
         renderWithRouter(
             <Provider
                 store={mockStore({
+                    billing: fromJS(billingState),
                     integrations: fromJS({
                         integrations: [],
                     }),
@@ -353,6 +361,7 @@ describe('<CreateActionView />', () => {
         renderWithRouter(
             <Provider
                 store={mockStore({
+                    billing: fromJS(billingState),
                     integrations: fromJS({
                         integrations: [],
                     }),
@@ -384,6 +393,7 @@ describe('<CreateActionView />', () => {
         renderWithRouter(
             <Provider
                 store={mockStore({
+                    billing: fromJS(billingState),
                     integrations: fromJS({
                         integrations: [],
                     }),
@@ -490,6 +500,7 @@ describe('<CreateActionView />', () => {
         renderWithRouter(
             <Provider
                 store={mockStore({
+                    billing: fromJS(billingState),
                     integrations: fromJS({
                         integrations: [],
                     }),
@@ -563,6 +574,7 @@ describe('<CreateActionView />', () => {
         renderWithRouter(
             <Provider
                 store={mockStore({
+                    billing: fromJS(billingState),
                     integrations: fromJS({
                         integrations: [],
                     }),
@@ -587,6 +599,7 @@ describe('<CreateActionView />', () => {
         renderWithRouter(
             <Provider
                 store={mockStore({
+                    billing: fromJS(billingState),
                     integrations: fromJS({
                         integrations: [],
                     }),
@@ -614,6 +627,7 @@ describe('<CreateActionView />', () => {
         renderWithRouter(
             <Provider
                 store={mockStore({
+                    billing: fromJS(billingState),
                     integrations: fromJS({
                         integrations: [],
                     }),
@@ -763,6 +777,7 @@ describe('<CreateActionView />', () => {
         renderWithRouter(
             <Provider
                 store={mockStore({
+                    billing: fromJS(billingState),
                     integrations: fromJS({
                         integrations: [],
                     }),
@@ -822,6 +837,7 @@ describe('<CreateActionView />', () => {
         const { rerender } = renderWithRouter(
             <Provider
                 store={mockStore({
+                    billing: fromJS(billingState),
                     integrations: fromJS({
                         integrations: [],
                     }),
@@ -853,6 +869,7 @@ describe('<CreateActionView />', () => {
         rerender(
             <Provider
                 store={mockStore({
+                    billing: fromJS(billingState),
                     integrations: fromJS({
                         integrations: [],
                     }),
@@ -886,6 +903,7 @@ describe('<CreateActionView />', () => {
         const { rerender } = renderWithRouter(
             <Provider
                 store={mockStore({
+                    billing: fromJS(billingState),
                     integrations: fromJS({
                         integrations: [],
                     }),
@@ -914,6 +932,7 @@ describe('<CreateActionView />', () => {
         rerender(
             <Provider
                 store={mockStore({
+                    billing: fromJS(billingState),
                     integrations: fromJS({
                         integrations: [],
                     }),
@@ -934,6 +953,7 @@ describe('<CreateActionView />', () => {
         const { rerender } = renderWithRouter(
             <Provider
                 store={mockStore({
+                    billing: fromJS(billingState),
                     integrations: fromJS({
                         integrations: [],
                     }),
@@ -962,6 +982,7 @@ describe('<CreateActionView />', () => {
         rerender(
             <Provider
                 store={mockStore({
+                    billing: fromJS(billingState),
                     integrations: fromJS({
                         integrations: [],
                     }),
@@ -982,6 +1003,7 @@ describe('<CreateActionView />', () => {
         const { rerender } = renderWithRouter(
             <Provider
                 store={mockStore({
+                    billing: fromJS(billingState),
                     integrations: fromJS({
                         integrations: [],
                     }),
@@ -1010,6 +1032,7 @@ describe('<CreateActionView />', () => {
         rerender(
             <Provider
                 store={mockStore({
+                    billing: fromJS(billingState),
                     integrations: fromJS({
                         integrations: [],
                     }),
@@ -1035,6 +1058,7 @@ describe('<CreateActionView />', () => {
         renderWithRouter(
             <Provider
                 store={mockStore({
+                    billing: fromJS(billingState),
                     integrations: fromJS({
                         integrations: [],
                     }),

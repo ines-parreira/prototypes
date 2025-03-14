@@ -3,6 +3,7 @@ import { LDFlagSet } from 'launchdarkly-react-client-sdk'
 import { AiAgentScope, StoreConfiguration } from 'models/aiAgent/types'
 import { StoreActivation } from 'pages/aiAgent/Activation/components/AiAgentActivationStoreCard/AiAgentActivationStoreCard'
 import { getAiAgentNavigationRoutes } from 'pages/aiAgent/hooks/useAiAgentNavigation'
+import { SelfServiceChatChannel } from 'pages/automate/common/hooks/useSelfServiceChatChannels'
 import { AlertType } from 'pages/common/components/Alert/Alert'
 import { type Components } from 'rest_api/help_center_api/client.generated'
 
@@ -31,6 +32,7 @@ type ToggleSupportEmailAction = {
 type UpdateStoreConfiguration = {
     type: 'UPDATE_STORE_CONFIGURATION'
     storeConfigurations: StoreConfiguration[]
+    selfServiceChatChannels: Record<string, SelfServiceChatChannel[]>
 }
 type UpdateHelpCenterFaq = {
     type: 'UPDATE_HELP_CENTER_FAQ'
@@ -242,42 +244,55 @@ const updateHelpCenterFaq = (
 
 export const storeConfigurationToState = (
     _state: State,
-    { storeConfigurations }: UpdateStoreConfiguration,
+    { storeConfigurations, selfServiceChatChannels }: UpdateStoreConfiguration,
 ): State => {
     return storeConfigurations.reduce<Record<string, StoreActivation>>(
         (state, storeConfiguration) => {
-            const isChatEnabled =
-                storeConfiguration.scopes.includes(AiAgentScope.Support) &&
-                !storeConfiguration.chatChannelDeactivatedDatetime
-            const isEmailEnabled =
-                storeConfiguration.scopes.includes(AiAgentScope.Support) &&
-                !storeConfiguration.emailChannelDeactivatedDatetime
+            const {
+                storeName,
+                scopes,
+                chatChannelDeactivatedDatetime,
+                emailChannelDeactivatedDatetime,
+                monitoredEmailIntegrations,
+            } = storeConfiguration
 
-            state[storeConfiguration.storeName] = {
-                name: storeConfiguration.storeName,
-                title: storeConfiguration.storeName,
+            const isChatEnabled =
+                scopes.includes(AiAgentScope.Support) &&
+                !chatChannelDeactivatedDatetime
+
+            const availableChatsForStore = selfServiceChatChannels[
+                storeName
+            ].map((it) => it.value.id)
+
+            const isChatIntegrationMissing =
+                !storeConfiguration.monitoredChatIntegrations.filter((it) =>
+                    availableChatsForStore.includes(it),
+                ).length
+
+            const isEmailEnabled =
+                scopes.includes(AiAgentScope.Support) &&
+                !emailChannelDeactivatedDatetime
+
+            state[storeName] = {
+                name: storeName,
+                title: storeName,
                 alerts: [],
                 configuration: storeConfiguration,
                 support: {
                     enabled: isChatEnabled || isEmailEnabled,
                     chat: {
                         enabled: isChatEnabled,
-                        isIntegrationMissing:
-                            !storeConfiguration.monitoredChatIntegrations
-                                .length,
+                        isIntegrationMissing: isChatIntegrationMissing,
                     },
                     email: {
                         enabled: isEmailEnabled,
                         isIntegrationMissing:
-                            !storeConfiguration.monitoredEmailIntegrations
-                                .length,
+                            !monitoredEmailIntegrations.length,
                     },
                 },
                 sales: {
                     enabled:
-                        storeConfiguration.scopes.includes(
-                            AiAgentScope.Sales,
-                        ) && isChatEnabled,
+                        scopes.includes(AiAgentScope.Sales) && isChatEnabled,
                     isDisabled: !isChatEnabled,
                 },
             }

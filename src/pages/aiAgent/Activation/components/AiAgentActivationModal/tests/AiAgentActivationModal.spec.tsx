@@ -5,9 +5,14 @@ import { fireEvent, render } from '@testing-library/react'
 import '@testing-library/jest-dom/extend-expect'
 
 import { QueryClientProvider } from '@tanstack/react-query'
+import { fromJS } from 'immutable'
+import { Provider } from 'react-redux'
 
 import { appQueryClient } from 'api/queryClient'
+import { billingState } from 'fixtures/billing'
 import { AiAgentScope, StoreConfiguration } from 'models/aiAgent/types'
+import { RootState } from 'state/types'
+import { mockStore } from 'utils/testing'
 
 import { AiAgentActivationModal } from '../AiAgentActivationModal'
 
@@ -33,19 +38,28 @@ describe('<AiAgentActivationModal />', () => {
     it('should render the modal with correct title and progress', () => {
         const onCloseMock = jest.fn()
         const { getByText } = render(
-            <QueryClientProvider client={appQueryClient}>
-                <AiAgentActivationModal
-                    isOpen
-                    pageName="ai-agent-overview"
-                    accountDomain="my-account-domain"
-                    onClose={onCloseMock}
-                    storeConfigs={[
-                        storeSupportWithEmailAndChatAndSales,
-                        storeSupportWithEmailAndChat,
-                    ]}
-                    onSalesEnabled={() => true}
-                />
-            </QueryClientProvider>,
+            <Provider
+                store={mockStore({
+                    billing: fromJS(billingState),
+                    integrations: fromJS({
+                        integrations: [],
+                    }),
+                } as RootState)}
+            >
+                <QueryClientProvider client={appQueryClient}>
+                    <AiAgentActivationModal
+                        isOpen
+                        pageName="ai-agent-overview"
+                        accountDomain="my-account-domain"
+                        onClose={onCloseMock}
+                        storeConfigs={[
+                            storeSupportWithEmailAndChatAndSales,
+                            storeSupportWithEmailAndChat,
+                        ]}
+                        onSalesEnabled={() => true}
+                    />
+                </QueryClientProvider>
+            </Provider>,
         )
 
         expect(getByText('Manage AI Agent Activation')).toBeInTheDocument()
@@ -59,16 +73,25 @@ describe('<AiAgentActivationModal />', () => {
         const onCloseMock = jest.fn()
         const onSalesEnabledMock = jest.fn().mockReturnValue(false)
         const { getAllByRole } = render(
-            <QueryClientProvider client={appQueryClient}>
-                <AiAgentActivationModal
-                    isOpen
-                    accountDomain="my-account-domain"
-                    onClose={onCloseMock}
-                    storeConfigs={[storeSupportWithEmailAndChat]}
-                    onSalesEnabled={onSalesEnabledMock}
-                    pageName="any-page"
-                />
-            </QueryClientProvider>,
+            <Provider
+                store={mockStore({
+                    billing: fromJS(billingState),
+                    integrations: fromJS({
+                        integrations: [],
+                    }),
+                } as RootState)}
+            >
+                <QueryClientProvider client={appQueryClient}>
+                    <AiAgentActivationModal
+                        isOpen
+                        accountDomain="my-account-domain"
+                        onClose={onCloseMock}
+                        storeConfigs={[storeSupportWithEmailAndChat]}
+                        onSalesEnabled={onSalesEnabledMock}
+                        pageName="any-page"
+                    />
+                </QueryClientProvider>
+            </Provider>,
         )
 
         // Sales toggle is the second one
@@ -84,16 +107,25 @@ describe('<AiAgentActivationModal />', () => {
         const onCloseMock = jest.fn()
         const onSalesEnabledMock = jest.fn().mockReturnValue(true)
         const { getAllByRole } = render(
-            <QueryClientProvider client={appQueryClient}>
-                <AiAgentActivationModal
-                    isOpen
-                    accountDomain="my-account-domain"
-                    onClose={onCloseMock}
-                    storeConfigs={[storeSupportWithEmailAndChat]}
-                    onSalesEnabled={onSalesEnabledMock}
-                    pageName="any-page"
-                />
-            </QueryClientProvider>,
+            <Provider
+                store={mockStore({
+                    billing: fromJS(billingState),
+                    integrations: fromJS({
+                        integrations: [],
+                    }),
+                } as RootState)}
+            >
+                <QueryClientProvider client={appQueryClient}>
+                    <AiAgentActivationModal
+                        isOpen
+                        accountDomain="my-account-domain"
+                        onClose={onCloseMock}
+                        storeConfigs={[storeSupportWithEmailAndChat]}
+                        onSalesEnabled={onSalesEnabledMock}
+                        pageName="any-page"
+                    />
+                </QueryClientProvider>
+            </Provider>,
         )
 
         // Sales toggle is the second one

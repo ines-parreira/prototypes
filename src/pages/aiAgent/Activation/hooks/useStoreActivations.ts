@@ -1,13 +1,15 @@
-import { useEffect, useReducer, useRef } from 'react'
+import { useEffect, useMemo, useReducer, useRef } from 'react'
 
 import { useFlags } from 'launchdarkly-react-client-sdk'
 
 import { logEvent, SegmentEvent } from 'common/segment'
+import { SHOPIFY_INTEGRATION_TYPE } from 'constants/integration'
 import { AiAgentScope, StoreConfiguration } from 'models/aiAgent/types'
 import { useGetHelpCenterList } from 'models/helpCenter/queries'
 import { StoreActivation } from 'pages/aiAgent/Activation/components/AiAgentActivationStoreCard/AiAgentActivationStoreCard'
 import { reducer } from 'pages/aiAgent/Activation/hooks/storeActivationReducer'
 import { useStoresConfigurationMutation } from 'pages/aiAgent/hooks/useStoresConfigurationMutation'
+import { useSelfServiceChatChannelsMultiStore } from 'pages/automate/common/hooks/useSelfServiceChatChannels'
 import { HELP_CENTER_MAX_CREATION } from 'pages/settings/helpCenter/constants'
 
 export const computeActivationScore = (
@@ -69,9 +71,22 @@ export const useStoreActivations = ({
 
     const [state, dispatch] = useReducer(reducer, {})
 
-    useEffect(() => {
-        dispatch({ type: 'UPDATE_STORE_CONFIGURATION', storeConfigurations })
+    const storeNames = useMemo(() => {
+        return storeConfigurations.map((it) => it.storeName)
     }, [storeConfigurations])
+
+    const selfServiceChatChannels = useSelfServiceChatChannelsMultiStore(
+        SHOPIFY_INTEGRATION_TYPE,
+        storeNames,
+    )
+
+    useEffect(() => {
+        dispatch({
+            type: 'UPDATE_STORE_CONFIGURATION',
+            storeConfigurations,
+            selfServiceChatChannels,
+        })
+    }, [storeConfigurations, selfServiceChatChannels])
 
     const { data: helpCenterListData, status: getHelpCenterListStatus } =
         useGetHelpCenterList(
