@@ -8,12 +8,10 @@ import {
 } from 'react'
 
 import axios, { CancelToken } from 'axios'
-import { useFlags } from 'launchdarkly-react-client-sdk'
 import _isEmpty from 'lodash/isEmpty'
 
 import { CursorPaginationMeta } from '@gorgias/api-queries'
 
-import { FeatureFlagKey } from 'config/featureFlags'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import useAsyncFn from 'hooks/useAsyncFn'
@@ -115,11 +113,9 @@ export const useSearch = () => {
     const [searchItemsType, setSearchItemsType] = useState<ViewType>(
         defaultSearchItemsType,
     )
-    const hasVoiceProduct = useAppSelector(
+    const showCallsTab = useAppSelector(
         currentAccountHasProduct(ProductType.Voice),
     )
-    const useVoiceCallSearch = !!useFlags()[FeatureFlagKey.VoiceCallSearch]
-    const showCallsTab = useVoiceCallSearch && hasVoiceProduct
 
     const { state: recentSearchQuery, setState: setRecentSearchQuery } =
         useLocalStorageWithExpiry<string>(

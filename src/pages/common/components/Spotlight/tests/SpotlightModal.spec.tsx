@@ -7,7 +7,6 @@ import { act, fireEvent, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { createBrowserHistory } from 'history'
 import { fromJS } from 'immutable'
-import { mockFlags, resetLDMocks } from 'jest-launchdarkly-mock'
 import { stringify } from 'qs'
 import ReactDOM from 'react-dom'
 import { Provider } from 'react-redux'
@@ -15,7 +14,6 @@ import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
 import { logEvent, SegmentEvent } from 'common/segment'
-import { FeatureFlagKey } from 'config/featureFlags'
 import { customer } from 'fixtures/customer'
 import { mockSearchRank } from 'fixtures/searchRank'
 import { ticket } from 'fixtures/ticket'
@@ -185,8 +183,6 @@ describe('<SpotlightModal/>', () => {
             value: jest.fn(),
             writable: true,
         })
-        resetLDMocks()
-        mockFlags({ [FeatureFlagKey.VoiceCallSearch]: true })
     })
 
     beforeEach(() => {
@@ -242,7 +238,6 @@ describe('<SpotlightModal/>', () => {
         })
 
         it('should render & set calls tab if available', async () => {
-            mockFlags({ [FeatureFlagKey.VoiceCallSearch]: true })
             mockCurrentAccountHasProduct.mockReturnValue((() => true) as any)
 
             renderWithRouter(<WrappedSpotlightModal {...minProps} />)
@@ -253,19 +248,6 @@ describe('<SpotlightModal/>', () => {
 
             callsTab?.focus()
             expect(callsTab).toHaveClass('activeTab')
-        })
-
-        it('should not render calls tab if FF is off', async () => {
-            mockFlags({ [FeatureFlagKey.VoiceCallSearch]: false })
-            mockCurrentAccountHasProduct.mockReturnValue((() => true) as any)
-
-            renderWithRouter(<WrappedSpotlightModal {...minProps} />)
-            await act(flushPromises)
-
-            expect(screen.queryByRole('tab', { name: CALLS_LABEL })).toBeNull()
-            expect(getFederatedTab()).toHaveClass('activeTab')
-            expect(getCustomersTab()).toBeInTheDocument()
-            expect(getTicketsTab()).toBeInTheDocument()
         })
 
         it('should not render calls tab if voice product is disabled', async () => {
@@ -288,7 +270,6 @@ describe('<SpotlightModal/>', () => {
 
         it('should not navigate to advanced search on calls tab', () => {
             mockCurrentAccountHasProduct.mockReturnValue((() => true) as any)
-            mockFlags({ [FeatureFlagKey.VoiceCallSearch]: true })
 
             const { queryByText } = renderWithRouter(
                 <WrappedSpotlightModal {...minProps} />,

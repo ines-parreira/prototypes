@@ -1,9 +1,7 @@
 import { KeyboardEvent } from 'react'
 
 import { act, renderHook } from '@testing-library/react-hooks'
-import { mockFlags } from 'jest-launchdarkly-mock'
 
-import { FeatureFlagKey } from 'config/featureFlags'
 import { customer } from 'fixtures/customer'
 import { ticket } from 'fixtures/ticket'
 import { voiceCall } from 'fixtures/voiceCalls'
@@ -71,7 +69,6 @@ describe('useSearch', () => {
                 remove: jest.fn(),
             }
         })
-        mockFlags({ [FeatureFlagKey.VoiceCallSearch]: true })
         useAppSelectorMock.mockReturnValue(true)
     })
 
