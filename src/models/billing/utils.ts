@@ -219,7 +219,8 @@ export function getAutomateEarlyAccessPricesFormatted(
             amountAfterDiscountPrice,
             plan?.currency ?? 'usd',
         ),
-        discount: formatAmount(discountPrice, currency),
+        discount:
+            discountPrice > 0 ? formatAmount(discountPrice, currency) : null,
     }
 }
 

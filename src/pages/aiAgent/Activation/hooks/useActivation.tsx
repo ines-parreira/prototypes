@@ -69,6 +69,7 @@ export const useActivation = (pageName: string) => {
         isLoading,
         handleSubscriptionUpdate,
         isSubscriptionUpdating,
+        currentPlan,
     } = useEarlyAccessModalState({ hasActivationEnabled })
 
     return useMemo(
@@ -138,6 +139,7 @@ export const useActivation = (pageName: string) => {
                             })
                     }}
                     earlyAccessPlan={earlyAccessPlan}
+                    currentPlan={currentPlan}
                     disableUpgradeButton={!isCurrentUserAdmin}
                 />
             ),
@@ -149,6 +151,7 @@ export const useActivation = (pageName: string) => {
             accountDomain,
             pageName,
             earlyAccessPlan,
+            currentPlan,
             isPreviewModalVisible,
             isOnNewPlan,
             isCurrentUserAdmin,

@@ -79,6 +79,7 @@ export const useEarlyAccessModalState = ({
     return useMemo(
         () => ({
             earlyAccessPlan: earlyAccessAutomatePlanQuery.data,
+            currentPlan,
             isPreviewModalVisible,
             setIsPreviewModalVisible,
             isOnNewPlan,
@@ -92,6 +93,7 @@ export const useEarlyAccessModalState = ({
         }),
         [
             earlyAccessAutomatePlanQuery.data,
+            currentPlan,
             isPreviewModalVisible,
             isOnNewPlan,
             isLoading,

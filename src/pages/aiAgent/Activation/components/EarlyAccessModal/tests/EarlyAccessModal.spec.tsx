@@ -5,6 +5,8 @@ import userEvent from '@testing-library/user-event'
 
 import '@testing-library/jest-dom/extend-expect'
 
+import { Cadence } from 'models/billing/types'
+
 import { EarlyAccessModal } from '../EarlyAccessModal'
 
 describe('<EarlyAccessModal />', () => {
@@ -80,5 +82,63 @@ describe('<EarlyAccessModal />', () => {
                 'Meet the first AI Agent that sells via playbook',
             ),
         ).toBeInTheDocument()
+    })
+
+    it('should render good pricing values', () => {
+        const { getAllByText } = render(
+            <EarlyAccessModal
+                isOpen
+                isLoading={false}
+                onClose={() => {}}
+                onStayClick={() => {}}
+                onUpgradeClick={() => {}}
+                disableUpgradeButton={false}
+                isUpgrading={false}
+                earlyAccessPlan={
+                    {
+                        amount: 90000,
+                        currency: 'USD',
+                        amount_after_discount: 72000,
+                        cadence: Cadence.Month,
+                        discount: 18000,
+                        extra_ticket_cost: 2.2,
+                        num_quota_tickets: 450,
+                    } as any
+                }
+                currentPlan={
+                    {
+                        amount: 90000,
+                        currency: 'USD',
+                        cadence: Cadence.Month,
+                        num_quota_tickets: 450,
+                        extra_ticket_cost: 2.5,
+                    } as any
+                }
+            />,
+        )
+
+        const [currentPlan, newPlan] = getAllByText(
+            'per automated conversation',
+        )
+
+        expect(currentPlan).toBeInTheDocument()
+        expect(newPlan).toBeInTheDocument()
+        expect(currentPlan.textContent).toContain(
+            '$2 per automated conversation',
+        )
+        expect(newPlan.textContent).toContain(
+            '$1.60 per automated conversation',
+        )
+
+        const [currentPlanExtraCost, newPlanExtraCost] =
+            getAllByText('Overage:')
+        expect(currentPlanExtraCost).toBeInTheDocument()
+        expect(newPlanExtraCost).toBeInTheDocument()
+        expect(currentPlanExtraCost.parentElement?.textContent).toContain(
+            'Overage: $2.50',
+        )
+        expect(newPlanExtraCost.parentElement?.textContent).toContain(
+            'Overage: $2.20',
+        )
     })
 })

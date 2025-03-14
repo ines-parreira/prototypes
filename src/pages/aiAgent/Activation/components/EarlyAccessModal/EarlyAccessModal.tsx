@@ -4,7 +4,7 @@ import cn from 'classnames'
 
 import { Badge, Button, Skeleton } from '@gorgias/merchant-ui-kit'
 
-import { AutomateEarlyAccessPlan } from 'models/billing/types'
+import { AutomateEarlyAccessPlan, AutomatePlan } from 'models/billing/types'
 import {
     getAutomateEarlyAccessPricesFormatted,
     getPlanPriceFormatted,
@@ -20,6 +20,7 @@ import Modal from 'pages/common/components/modal/Modal'
 import ModalBody from 'pages/common/components/modal/ModalBody'
 import ModalFooter from 'pages/common/components/modal/ModalFooter'
 import ModalHeader from 'pages/common/components/modal/ModalHeader'
+import { formatAmount } from 'pages/settings/new_billing/utils/formatAmount'
 
 import css from './EarlyAccessModal.less'
 
@@ -30,6 +31,7 @@ type Props = {
     onClose: () => void
     isOpen: boolean
     earlyAccessPlan?: AutomateEarlyAccessPlan | null
+    currentPlan?: AutomatePlan | null
     disableUpgradeButton: boolean
     isUpgrading: boolean
 }
@@ -42,9 +44,32 @@ export const EarlyAccessModal = ({
     earlyAccessPlan,
     disableUpgradeButton,
     isUpgrading,
+    currentPlan,
 }: Props) => {
     const { amountAfterDiscount, discount } =
         getAutomateEarlyAccessPricesFormatted(earlyAccessPlan)
+    const currency = currentPlan?.currency ?? 'USD'
+    const currentPlanCostPerAutomatedConversation = formatAmount(
+        (currentPlan?.amount ?? 0) /
+            (currentPlan?.num_quota_tickets ?? 1) /
+            100,
+        currency,
+    )
+    const currentPlanExtraTicketCost = formatAmount(
+        currentPlan?.extra_ticket_cost ?? 0,
+        currency,
+    )
+
+    const earlyAccessPlanCostPerAutomatedConversation = formatAmount(
+        (earlyAccessPlan?.amount_after_discount ?? 0) /
+            (earlyAccessPlan?.num_quota_tickets ?? 1) /
+            100,
+        currency,
+    )
+    const earlyAccessPlanExtraTicketCost = formatAmount(
+        earlyAccessPlan?.extra_ticket_cost ?? 0,
+        currency,
+    )
 
     const [isTipsOpen, setIsTipsOpen] = useState(false)
     const toggleTips = () => setIsTipsOpen(!isTipsOpen)
@@ -117,8 +142,12 @@ export const EarlyAccessModal = ({
                                             arrow_right
                                         </i>
                                     </span>
-                                    <span>$0.60</span> per automated
-                                    conversation
+                                    <span>
+                                        {
+                                            currentPlanCostPerAutomatedConversation
+                                        }
+                                    </span>{' '}
+                                    per automated conversation
                                 </div>
                                 <div className={css.costItem}>
                                     <span className={css.skillStatus}>
@@ -134,7 +163,8 @@ export const EarlyAccessModal = ({
                                             arrow_right
                                         </i>
                                     </span>
-                                    <span>Overage:</span> $1.00
+                                    <span>Overage:</span>{' '}
+                                    {currentPlanExtraTicketCost}
                                 </div>
                             </div>
                             <div className={css.innerContent}>
@@ -196,8 +226,12 @@ export const EarlyAccessModal = ({
                                             arrow_right
                                         </i>
                                     </span>
-                                    <span>$0.60</span> per automated
-                                    conversation
+                                    <span>
+                                        {
+                                            earlyAccessPlanCostPerAutomatedConversation
+                                        }
+                                    </span>{' '}
+                                    per automated conversation
                                 </div>
                                 <div className={css.costItem}>
                                     <span className={css.skillStatus}>
@@ -213,11 +247,12 @@ export const EarlyAccessModal = ({
                                             arrow_right
                                         </i>
                                     </span>
-                                    <span>Overage:</span> $1.00
+                                    <span>Overage:</span>{' '}
+                                    {earlyAccessPlanExtraTicketCost}
                                 </div>
                             </div>
                             <div className={cn(css.innerContent, css.newPrice)}>
-                                <h3>Current Pricing</h3>
+                                <h3>Early Access Pricing</h3>
                                 <span className={css.price}>
                                     {isLoading ? (
                                         <Skeleton width={140} height={22} />
@@ -225,13 +260,15 @@ export const EarlyAccessModal = ({
                                         `${amountAfterDiscount}/${earlyAccessPlan?.cadence}`
                                     )}
                                 </span>
-                                <span className={css.subPrice}>
-                                    {isLoading ? (
-                                        <Skeleton width={210} height={12} />
-                                    ) : (
-                                        `${discount}/${earlyAccessPlan?.cadence} for 12 months`
-                                    )}
-                                </span>
+                                {discount && (
+                                    <span className={css.subPrice}>
+                                        {isLoading ? (
+                                            <Skeleton width={210} height={12} />
+                                        ) : (
+                                            `${discount}/${earlyAccessPlan?.cadence} for 12 months`
+                                        )}
+                                    </span>
+                                )}
                             </div>
                         </div>
                         <div className={css.tips}>
