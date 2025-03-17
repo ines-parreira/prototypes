@@ -99,9 +99,6 @@ describe('useEmailDisconnectedBanner', () => {
             }
         })
         const store = mockStore(state)
-        const openSpy = jest
-            .spyOn(window, 'open')
-            .mockImplementation(() => null)
 
         renderHook(useEmailDisconnectedBanner, {
             wrapper: ({ children }) => (
@@ -112,19 +109,20 @@ describe('useEmailDisconnectedBanner', () => {
         expect(mockedRemoveCategory).toHaveBeenCalledWith(
             BannerCategories.EMAIL_DISCONNECTED,
         )
-        expect(mockedAddBanner).toHaveBeenCalledTimes(2)
-        mockedAddBanner.mock.calls.forEach(([banner]) => banner.CTA.onClick())
-        expect(openSpy.mock.calls).toEqual([
-            ['/integrations/gmail/pre-callback?integration_id=2'],
-            ['/integrations/outlook/pre-callback?integration_id=4'],
-        ])
         expect(
-            mockedAddBanner.mock.calls.map(([banner]) =>
+            mockedAddBanner.mock.calls.map(([banner]) => [
+                banner.CTA.href,
                 renderToStaticMarkup(banner.message),
-            ),
+            ]),
         ).toEqual([
-            'Your email account bob@acme.com is disconnected. Follow the steps in the reconnection email to restore email access.',
-            'Your email account bob@onmicrosoft.acme.com is disconnected. Follow the steps in the reconnection email to restore email access.',
+            [
+                '/integrations/gmail/pre-callback?integration_id=2',
+                'Your email account bob@acme.com is disconnected. Follow the steps in the reconnection email to restore email access.',
+            ],
+            [
+                '/integrations/outlook/pre-callback?integration_id=4',
+                'Your email account bob@onmicrosoft.acme.com is disconnected. Follow the steps in the reconnection email to restore email access.',
+            ],
         ])
     })
 

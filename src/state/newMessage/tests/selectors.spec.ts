@@ -86,6 +86,7 @@ describe('new message selectors', () => {
                     },
                 },
             ],
+            authentication: [],
         })
 
         beforeEach(() => {

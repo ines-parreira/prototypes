@@ -5,12 +5,10 @@ import { createEvent, fireEvent, render, waitFor } from '@testing-library/react'
 import { TicketMessageSourceType } from 'business/types/ticket'
 import { useFlag } from 'core/flags'
 import * as useOutboundChannels from 'hooks/useOutboundChannels'
-import history from 'pages/history'
 import { assumeMock } from 'utils/testing'
 
 import SenderSelectField from '../SenderSelectField'
 
-jest.mock('pages/history')
 jest.mock('core/flags', () => ({
     useFlag: jest.fn(),
 }))
@@ -126,45 +124,24 @@ describe('<SenderSelectField />', () => {
         expect(queryByText('John (+1 213 373 4253)')).toBeInTheDocument()
     })
 
-    describe('deactivated integrations', () => {
-        beforeEach(() => {
-            useSendersForSelectedChannel.mockReturnValue({
-                ...initialState,
-                selectedChannel: TicketMessageSourceType.Email,
-                senders: [
-                    ...initialState.senders,
-                    {
-                        name: 'Old John',
-                        address: 'old-john@shop.com',
-                        displayName: 'Old John (old-john@shop.com)',
-                        channel: 'email',
-                        isDeactivated: true,
-                    },
-                ],
-            })
+    it('should render deactivated integrations', () => {
+        useSendersForSelectedChannel.mockReturnValue({
+            ...initialState,
+            selectedChannel: TicketMessageSourceType.Email,
+            senders: [
+                ...initialState.senders,
+                {
+                    name: 'Old John',
+                    address: 'old-john@shop.com',
+                    displayName: 'Old John (old-john@shop.com)',
+                    channel: 'email',
+                    isDeactivated: true,
+                },
+            ],
         })
-
-        it('it should render deactivated integrations', () => {
-            const { getByText, queryByText } = render(<SenderSelectField />)
-            fireEvent.click(getByText('arrow_drop_down'))
-            expect(
-                queryByText('Old John (old-john@shop.com)'),
-            ).toBeInTheDocument()
-        })
-
-        it('it should render a reconnect button for deactivated integrations', () => {
-            const { container, getByText } = render(<SenderSelectField />)
-            fireEvent.click(getByText('arrow_drop_down'))
-            expect(
-                getByText('Old John (old-john@shop.com)'),
-            ).toBeInTheDocument()
-            const [button] = container.getElementsByTagName('button')
-            expect(button).toBeInTheDocument()
-            fireEvent.click(button)
-            expect(history.push).toHaveBeenCalledWith(
-                `/app/settings/channels/email`,
-            )
-        })
+        const { getByText, queryByText } = render(<SenderSelectField />)
+        fireEvent.click(getByText('arrow_drop_down'))
+        expect(queryByText('Old John (old-john@shop.com)')).toBeInTheDocument()
     })
 
     it('should block onBlur event when clicking on the DropdownBody scrollbar / body', () => {

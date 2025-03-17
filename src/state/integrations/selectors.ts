@@ -344,29 +344,43 @@ export const getBaseEmailIntegration = createSelector(
         ) as Map<any, any>) || fromJS({}),
 )
 
+const getOAuthEmailIntegrationReconnectUrl = (
+    redirectUri: string | undefined,
+    integrationId: number | undefined,
+) => `${redirectUri}?integration_id=${integrationId}`
+
 // return email and gmail integrations formatted as channel
 export const getEmailChannels = createSelector(
     (state: RootState) => state.ticket || fromJS({}),
     getCurrentUserState,
     getEmailIntegrations,
     getDefaultIntegrationSettings,
-    (currentTicket, currentUser, integrations, defaultIntegrations) => {
+    getIntegrationsState,
+    (
+        currentTicket,
+        currentUser,
+        integrations,
+        defaultIntegrations,
+        integrationsState,
+    ) => {
         return integrations.map((integration: Map<any, any>) => {
-            let type = integration.get('type')
-
+            const integrationType: IntegrationType = integration.get('type')
+            let channelType = integrationType
+            let reconnectUrl: string | undefined
             if (
-                [
-                    IntegrationType.Email,
-                    IntegrationType.Gmail,
-                    IntegrationType.Outlook,
-                ].includes(integration.get('type'))
+                integrationType === IntegrationType.Gmail ||
+                integrationType === IntegrationType.Outlook
             ) {
-                type = IntegrationType.Email
+                channelType = IntegrationType.Email
+                reconnectUrl = getOAuthEmailIntegrationReconnectUrl(
+                    integrationsState.authentication[integrationType]
+                        ?.redirect_uri,
+                    integration.get('id'),
+                )
             }
-
             return fromJS({
                 id: integration.get('id'),
-                type,
+                type: channelType,
                 name: integration.get('name'),
                 address: integration.getIn(['meta', 'address']),
                 preferred: integration.getIn(['meta', 'preferred']),
@@ -382,6 +396,7 @@ export const getEmailChannels = createSelector(
                 isDefault:
                     defaultIntegrations?.data?.[IntegrationType.Email] ===
                     integration.get('id'),
+                reconnectUrl: reconnectUrl,
             }) as Map<any, any>
         }) as List<any>
     },
@@ -801,6 +816,9 @@ export const getDeactivatedOAuthEmailIntegrations = createSelector(
             .sort((integration) => integration.id)
             .map((integration) => ({
                 address: integration.meta.address,
-                reconnectUrl: `${state.authentication[integration.type]?.redirect_uri}?integration_id=${integration.id}`,
+                reconnectUrl: getOAuthEmailIntegrationReconnectUrl(
+                    state.authentication[integration.type]?.redirect_uri,
+                    integration.id,
+                ),
             })),
 )

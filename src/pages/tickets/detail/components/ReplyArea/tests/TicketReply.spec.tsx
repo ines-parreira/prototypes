@@ -10,6 +10,7 @@ import { useAgentActivity } from '@gorgias/realtime'
 
 import { TicketMessageSourceType } from 'business/types/ticket'
 import { ACTION_TEMPLATES } from 'config'
+import { UserRole } from 'config/types/user'
 import { MacroActionName } from 'models/macroAction/types'
 
 import { TicketReply } from '../TicketReply'
@@ -104,5 +105,87 @@ describe('<TicketReply />', () => {
         )
 
         expect(queryByText(/Send internal note/)).toBeInTheDocument()
+    })
+
+    it('should render the editor with the correct warning for agents', () => {
+        const store = mockStore({
+            currentUser: fromJS({
+                role: { name: UserRole.Agent },
+            }),
+            integrations: fromJS({
+                integrations: [
+                    {
+                        id: 1,
+                        type: 'gmail',
+                        name: 'Bob At Acme',
+                        meta: { address: 'bob@acme.com' },
+                        deactivated_datetime: '2025-03-12T00:13:40.385400',
+                    },
+                ],
+                authentication: {
+                    gmail: {
+                        redirect_uri: '/integrations/gmail/pre-callback',
+                    },
+                },
+            }),
+            newMessage: fromJS({
+                newMessage: {
+                    source: {
+                        from: { address: 'bob@acme.com' },
+                        type: 'email',
+                    },
+                },
+                state: {},
+            }),
+        })
+
+        const result = render(
+            <Provider store={store}>
+                <TicketReply {...minProps} />
+            </Provider>,
+        )
+
+        expect(result.container).toMatchSnapshot()
+    })
+
+    it('should render the editor with the correct warning for admins', () => {
+        const store = mockStore({
+            currentUser: fromJS({
+                role: { name: UserRole.Admin },
+            }),
+            integrations: fromJS({
+                integrations: [
+                    {
+                        id: 1,
+                        type: 'gmail',
+                        name: 'Bob At Acme',
+                        meta: { address: 'bob@acme.com' },
+                        deactivated_datetime: '2025-03-12T00:13:40.385400',
+                    },
+                ],
+                authentication: {
+                    gmail: {
+                        redirect_uri: '/integrations/gmail/pre-callback',
+                    },
+                },
+            }),
+            newMessage: fromJS({
+                newMessage: {
+                    source: {
+                        from: { address: 'bob@acme.com' },
+                        type: 'email',
+                    },
+                },
+                state: {},
+            }),
+        })
+
+        const result = render(
+            <Provider store={store}>
+                <TicketReply {...minProps} />
+            </Provider>,
+        )
+
+        expect(result.container).toMatchSnapshot()
     })
 })

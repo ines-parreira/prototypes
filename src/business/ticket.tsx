@@ -3,18 +3,19 @@ import React, { ReactNode } from 'react'
 import { Link } from 'react-router-dom'
 
 import { Sender } from 'hooks/useOutboundChannels'
-import { getReconnectUrl } from 'pages/tickets/detail/components/ReplyArea/MessageSourceFields/components/SenderSelectField/utils'
+import { getReconnectUrlByChannel } from 'pages/tickets/detail/components/ReplyArea/MessageSourceFields/components/SenderSelectField/utils'
 import { isNewChannel } from 'services/channels'
 
 import { NotificationStatus } from '../state/notifications/types'
 import { humanize } from './format'
 import { Notification } from './types/notification'
-import { TicketMessageSourceType } from './types/ticket'
+import { TicketChannel, TicketMessageSourceType } from './types/ticket'
 
 export function canReply(
     sender: Maybe<Sender>,
     messageType: TicketMessageSourceType,
     attachmentCount: number,
+    isCurrentUserAdmin: boolean,
     replyOptions?: Maybe<Map<string, any>>,
 ): Maybe<{ message: ReactNode; status: NotificationStatus.Warning }> {
     const explicitReason = replyOptions?.get('reason')
@@ -57,15 +58,43 @@ export function canReply(
     }
 
     if (sender?.isDeactivated) {
-        return {
-            message: (
+        let message: React.JSX.Element
+        if (sender?.channel === TicketChannel.Email) {
+            if (isCurrentUserAdmin) {
+                message = (
+                    <>
+                        Your email account {sender?.address} is disconnected.
+                        Follow the steps in the reconnection email to restore
+                        email access.
+                        <br />
+                        <br />
+                        <a
+                            href={sender?.reconnectUrl}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                        >
+                            Reconnect Now
+                        </a>
+                    </>
+                )
+            } else {
+                message = (
+                    <>
+                        The email account {sender?.address} is disconnected.
+                        Only the Account Owner or an Admin can reconnect it.
+                        Please contact them for assistance.
+                    </>
+                )
+            }
+        } else {
+            message = (
                 <>
-                    <strong>{sender.address}</strong>
+                    <strong>{sender?.address}</strong>
                     <strong> was disconnected</strong> due to a password change,
                     email provider outage, or other changes made to your account
                     <br />
                     <br />
-                    <Link to={getReconnectUrl(sender.channel)}>
+                    <Link to={getReconnectUrlByChannel(sender?.channel)}>
                         Reconnect
                     </Link>{' '}
                     the integration to respond to this customer.
@@ -74,7 +103,10 @@ export function canReply(
                     <strong>Note</strong>: Login credentials may be required to
                     reconnect.
                 </>
-            ),
+            )
+        }
+        return {
+            message: message,
             status: NotificationStatus.Warning,
         }
     }

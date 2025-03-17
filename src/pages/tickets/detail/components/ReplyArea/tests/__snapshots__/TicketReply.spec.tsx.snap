@@ -25,3 +25,44 @@ exports[`<TicketReply /> should render the editor 1`] = `
   </div>
 </div>
 `;
+
+exports[`<TicketReply /> should render the editor with the correct warning for admins 1`] = `
+<div>
+  <div
+    class="component alert-warning"
+  >
+    <div
+      class="alert"
+    >
+      Your email account 
+      bob@acme.com
+       is disconnected. Follow the steps in the reconnection email to restore email access.
+      <br />
+      <br />
+      <a
+        href="/integrations/gmail/pre-callback?integration_id=1"
+        rel="noopener noreferrer"
+        target="_blank"
+      >
+        Reconnect Now
+      </a>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`<TicketReply /> should render the editor with the correct warning for agents 1`] = `
+<div>
+  <div
+    class="component alert-warning"
+  >
+    <div
+      class="alert"
+    >
+      The email account 
+      bob@acme.com
+       is disconnected. Only the Account Owner or an Admin can reconnect it. Please contact them for assistance.
+    </div>
+  </div>
+</div>
+`;

@@ -159,6 +159,9 @@ export const integrationsState = {
             redirect_uri:
                 'https://admin.shopify.com/store/{{shop_name}}/oauth/authorize?scope=read_orders%2Cread_customers%2Cwrite_orders%2Cwrite_customers&state=29949774171f2ae73d6ad2c25119f8c9d879fa5dacee1bc4abe3806d7b2f144f&client_id=d783d0d0ded4ab7a13c20f47533819a3&redirect_uri=https%3A%2F%2Facme-louis.ngrok.io%2Fintegrations%2Fshopify%2Fauth%2Fcallback%2F',
         },
+        gmail: {
+            redirect_uri: '/integrations/gmail/auth/pre-callback',
+        },
     },
     integrations: [
         {

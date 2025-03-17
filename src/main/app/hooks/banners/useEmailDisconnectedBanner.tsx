@@ -33,9 +33,10 @@ function getBanner(
               </React.Fragment>,
               AlertBannerTypes.Error,
               {
-                  type: 'action' as const,
+                  type: 'external' as const,
                   text: 'Reconnect Now',
-                  onClick: () => window.open(integrationReconnectUrl),
+                  opensInNewTab: true,
+                  href: integrationReconnectUrl,
               },
           ]
         : [

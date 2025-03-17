@@ -6,10 +6,12 @@ import { Map } from 'immutable'
 import { Macro } from '@gorgias/api-queries'
 
 import { canReply } from 'business/ticket'
+import { UserRole } from 'config/types/user'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import { useSendersForSelectedChannel } from 'hooks/useOutboundChannels'
 import RichField from 'pages/common/forms/RichField/RichField'
+import { getCurrentUser } from 'state/currentUser/selectors'
 import { deleteAttachment } from 'state/newMessage/actions'
 import {
     getNewMessageAttachments,
@@ -48,10 +50,12 @@ export function TicketReply({
     const newMessageAttachments = useAppSelector(getNewMessageAttachments)
     const newMessageType = useAppSelector(getNewMessageType)
     const { selectedSender } = useSendersForSelectedChannel()
+    const currentUser = useAppSelector(getCurrentUser)
     const canReplyResult = canReply(
         selectedSender,
         newMessageType,
         newMessageAttachments.size,
+        currentUser.getIn(['role', 'name']) === UserRole.Admin,
         ticket.getIn(['reply_options', newMessageType]),
     )
 

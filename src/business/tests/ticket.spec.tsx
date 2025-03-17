@@ -215,6 +215,7 @@ describe('Business', () => {
                         undefined,
                         TicketMessageSourceType.Email,
                         0,
+                        true,
                         replyOptions,
                     ),
                 ).toEqual({
@@ -235,6 +236,7 @@ describe('Business', () => {
                         },
                         TicketMessageSourceType.Email,
                         0,
+                        true,
                     ),
                 ).toEqual({
                     message: (
@@ -259,26 +261,31 @@ describe('Business', () => {
                 expect(
                     canReply(
                         {
-                            channel: 'email',
+                            channel: 'whatsapp-message',
                             verified: true,
-                            address: 'support@acme.com',
-                            name: 'Acme Support',
-                            displayName: 'Acme Support',
+                            address: '+15550430560',
+                            name: 'WhatsApp +15550430560',
+                            displayName: 'WhatsApp +15550430560',
                             isDeactivated: true,
                         },
                         TicketMessageSourceType.Email,
                         0,
+                        true,
                     ),
                 ).toEqual({
                     message: (
                         <>
-                            <strong>support@acme.com</strong>
+                            <strong>+15550430560</strong>
                             <strong> was disconnected</strong> due to a password
                             change, email provider outage, or other changes made
                             to your account
                             <br />
                             <br />
-                            <Link to={'/app/settings/channels/email'}>
+                            <Link
+                                to={
+                                    '/app/settings/integrations/whatsapp/integrations'
+                                }
+                            >
                                 Reconnect
                             </Link>{' '}
                             the integration to respond to this customer.
@@ -286,6 +293,73 @@ describe('Business', () => {
                             <br />
                             <strong>Note</strong>: Login credentials may be
                             required to reconnect.
+                        </>
+                    ),
+                    status: NotificationStatus.Warning,
+                })
+            })
+
+            it('should not allow replying from a deactivated gmail/outlook integration (message for admin)', () => {
+                const senderAddress = 'support@acme.com'
+                expect(
+                    canReply(
+                        {
+                            channel: 'email',
+                            verified: true,
+                            address: senderAddress,
+                            name: 'Acme Support',
+                            displayName: 'Acme Support',
+                            isDeactivated: true,
+                            reconnectUrl: '/test/reconnect/url',
+                        },
+                        TicketMessageSourceType.Email,
+                        0,
+                        true,
+                    ),
+                ).toEqual({
+                    message: (
+                        <>
+                            Your email account {senderAddress} is disconnected.
+                            Follow the steps in the reconnection email to
+                            restore email access.
+                            <br />
+                            <br />
+                            <a
+                                href="/test/reconnect/url"
+                                rel="noopener noreferrer"
+                                target="_blank"
+                            >
+                                Reconnect Now
+                            </a>
+                        </>
+                    ),
+                    status: NotificationStatus.Warning,
+                })
+            })
+
+            it('should not allow replying from a deactivated gmail/outlook integration (message for agent)', () => {
+                const senderAddress = 'support@acme.com'
+                expect(
+                    canReply(
+                        {
+                            channel: 'email',
+                            verified: true,
+                            address: 'support@acme.com',
+                            name: 'Acme Support',
+                            displayName: 'Acme Support',
+                            isDeactivated: true,
+                            reconnectUrl: '/test/reconnect/url',
+                        },
+                        TicketMessageSourceType.Email,
+                        0,
+                        false,
+                    ),
+                ).toEqual({
+                    message: (
+                        <>
+                            The email account {senderAddress} is disconnected.
+                            Only the Account Owner or an Admin can reconnect it.
+                            Please contact them for assistance.
                         </>
                     ),
                     status: NotificationStatus.Warning,
@@ -304,6 +378,7 @@ describe('Business', () => {
                         },
                         TicketMessageSourceType.InstagramDirectMessage,
                         1,
+                        true,
                     ),
                 ).toEqual({
                     message:
@@ -326,6 +401,7 @@ describe('Business', () => {
                         },
                         TicketMessageSourceType.WhatsAppMessage,
                         1,
+                        true,
                     ),
                 ).toEqual({
                     message:
@@ -346,6 +422,7 @@ describe('Business', () => {
                         undefined,
                         'tiktok-shop' as TicketMessageSourceType,
                         0,
+                        true,
                     ),
                 ).toEqual({
                     message: (

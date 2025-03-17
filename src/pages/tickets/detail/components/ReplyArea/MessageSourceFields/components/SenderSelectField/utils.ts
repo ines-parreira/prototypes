@@ -1,7 +1,10 @@
 import { TicketMessageSourceType } from 'business/types/ticket'
 import { ChannelIdentifier } from 'services/channels'
 
-export const getReconnectUrl = (channel: Maybe<ChannelIdentifier>): string => {
+/** Get the URL to the settings page where the user can setup the integrations for this channel*/
+export const getReconnectUrlByChannel = (
+    channel: Maybe<ChannelIdentifier>,
+): string => {
     switch (channel) {
         case TicketMessageSourceType.EmailForward:
         case TicketMessageSourceType.Email: {

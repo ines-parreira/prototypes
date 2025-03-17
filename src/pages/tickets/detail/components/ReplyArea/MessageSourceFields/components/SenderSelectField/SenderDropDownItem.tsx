@@ -6,8 +6,6 @@ import { Sender } from 'hooks/useOutboundChannels'
 import DropdownItem from 'pages/common/components/dropdown/DropdownItem'
 import DefaultIntegrationBadge from 'pages/integrations/integration/components/email/DefaultIntegrationBadge'
 
-import ReconnectButton from './ReconnectButton'
-
 import css from './SenderDropDownItem.less'
 
 const SenderDropDownItem = ({
@@ -39,9 +37,6 @@ const SenderDropDownItem = ({
                     <DefaultIntegrationBadge />
                 )}
             </span>
-            {sender.isDeactivated && (
-                <ReconnectButton channel={sender?.channel} />
-            )}
         </DropdownItem>
     )
 }

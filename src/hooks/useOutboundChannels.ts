@@ -37,6 +37,7 @@ export type Sender = SourceAddress & {
     isDefault?: boolean
     verified?: boolean
     channel?: Maybe<ChannelIdentifier>
+    reconnectUrl?: string
 }
 
 const LEGACY_OUTBOUND_SOURCES_BY_INTEGRATION: Partial<

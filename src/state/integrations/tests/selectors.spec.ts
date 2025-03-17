@@ -349,6 +349,7 @@ describe('integrations selectors', () => {
                         ]),
                         isDefault: false,
                         signature: undefined,
+                        reconnectUrl: undefined,
                         type: state.integrations.getIn([
                             'integrations',
                             '0',
@@ -373,6 +374,7 @@ describe('integrations selectors', () => {
                         ]),
                         isDefault: false,
                         signature: undefined,
+                        reconnectUrl: undefined,
                         type: state.integrations.getIn([
                             'integrations',
                             '4',

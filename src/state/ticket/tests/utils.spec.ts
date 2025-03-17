@@ -612,6 +612,7 @@ describe('ticket utils', () => {
                         fromJS({
                             preferred: true,
                             isDeactivated: false,
+                            reconnectUrl: undefined,
                             verified: true,
                             name: 'Acme Contact',
                             address: 'contact@acme.com',
@@ -642,6 +643,7 @@ describe('ticket utils', () => {
                         fromJS({
                             preferred: true,
                             isDeactivated: false,
+                            reconnectUrl: undefined,
                             verified: true,
                             name: 'Acme Contact',
                             address: 'contact@acme.com',
@@ -1277,6 +1279,7 @@ describe('ticket utils', () => {
                     },
                     verified: true,
                     isDeactivated: false,
+                    reconnectUrl: undefined,
                 }
                 const channels = fromJS([
                     expectedSender,
@@ -1292,6 +1295,7 @@ describe('ticket utils', () => {
                         },
                         verified: true,
                         isDeactivated: false,
+                        reconnectUrl: undefined,
                     },
                 ])
                 const ticket = fromJS({
@@ -1354,6 +1358,7 @@ describe('ticket utils', () => {
                     },
                     verified: true,
                     isDeactivated: false,
+                    reconnectUrl: undefined,
                 },
                 {
                     id: 1,
@@ -1367,6 +1372,7 @@ describe('ticket utils', () => {
                     },
                     verified: true,
                     isDeactivated: false,
+                    reconnectUrl: undefined,
                 },
             ])
             const ticket = fromJS({
@@ -1423,6 +1429,7 @@ describe('ticket utils', () => {
                     },
                     verified: true,
                     isDeactivated: false,
+                    reconnectUrl: undefined,
                 }),
             )
         })
