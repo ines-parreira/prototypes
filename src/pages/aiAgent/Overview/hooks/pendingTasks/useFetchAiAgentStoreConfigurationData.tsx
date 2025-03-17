@@ -10,17 +10,17 @@ export const useFetchAiAgentStoreConfigurationData = ({
     storeName,
     enabled,
 }: Args) => {
-    const { data, isLoading } = useGetStoreConfigurationPure(
+    const { data, isLoading, error } = useGetStoreConfigurationPure(
         {
             accountDomain,
             storeName,
         },
         { enabled },
     )
-
     return {
         data: data?.data.storeConfiguration,
         isLoading,
+        error,
     }
 }
 

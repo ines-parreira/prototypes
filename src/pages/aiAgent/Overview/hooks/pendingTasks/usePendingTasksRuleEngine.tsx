@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react'
 import { useAiAgentNavigation } from 'pages/aiAgent/hooks/useAiAgentNavigation'
 
 import { runRuleEngine } from './ruleEngine'
+import { SetupAiAgentTask } from './tasks/SetupAiAgent.task'
 import { Task } from './tasks/Task'
 import { useFetchActionsData } from './useFetchActionsData'
 import { useFetchAiAgentPlaygroundExecutionsData } from './useFetchAiAgentPlaygroundExecutionsData'
@@ -35,6 +36,7 @@ export const usePendingTasksRuleEngine = ({
     const {
         isLoading: aiAgentStoreConfigurationIsLoading,
         data: aiAgentStoreConfigurationData,
+        error: aiAgentStoreConfigurationInError,
     } = useFetchAiAgentStoreConfigurationData({
         accountDomain,
         storeName,
@@ -166,6 +168,20 @@ export const usePendingTasksRuleEngine = ({
         return {
             isLoading: false,
             pendingTasks: [],
+            completedTasks: [],
+        }
+    }
+
+    // If no config, it means we want to display the setup task only
+    if (aiAgentStoreConfigurationInError) {
+        return {
+            isLoading: false,
+            pendingTasks: [
+                // This task does
+                new SetupAiAgentTask({
+                    aiAgentRoutes: routes,
+                }),
+            ],
             completedTasks: [],
         }
     }

@@ -174,7 +174,7 @@ export const EarlyAccessModal = ({
                                     {isLoading ? (
                                         <Skeleton width={140} />
                                     ) : (
-                                        `${getPlanPriceFormatted(earlyAccessPlan)}/${earlyAccessPlan?.cadence}`
+                                        `${getPlanPriceFormatted(currentPlan)}/${currentPlan?.cadence}`
                                     )}
                                 </span>
                             </div>

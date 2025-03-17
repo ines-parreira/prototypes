@@ -166,6 +166,7 @@ describe('usePendingTasksRuleEngine', () => {
         'should return valid tasks for scopes $scopes',
         ({ scopes, completedTasks, pendingTasks }) => {
             useFetchAiAgentStoreConfigurationDataMock.mockReturnValue({
+                error: undefined,
                 isLoading: false,
                 data: AiAgentStoreConfigurationFixture.start()
                     .withCreatedDatetime(
@@ -199,4 +200,28 @@ describe('usePendingTasksRuleEngine', () => {
             ).toHaveLength(completedTasks)
         },
     )
+
+    it('should return the onboarding task if the store is in error', () => {
+        useFetchAiAgentStoreConfigurationDataMock.mockReturnValue({
+            error: {},
+            isLoading: false,
+            data: undefined,
+        })
+
+        const hook = renderHook(() =>
+            usePendingTasksRuleEngine({
+                accountDomain: 'test',
+                storeName: 'test',
+                storeType: 'shopify',
+            }),
+        )
+
+        expect(hook.result.current.isLoading).toBe(false)
+        expect(
+            // Mapping on title to ease reading error report
+            hook.result.current.pendingTasks.map((t) => t.title)[0],
+        ).toBe('Start your onboarding flow')
+        expect(hook.result.current.completedTasks).toHaveLength(0)
+        expect(hook.result.current.pendingTasks).toHaveLength(1)
+    })
 })

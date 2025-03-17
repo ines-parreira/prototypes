@@ -96,9 +96,9 @@ describe('<EarlyAccessModal />', () => {
                 isUpgrading={false}
                 earlyAccessPlan={
                     {
-                        amount: 90000,
+                        amount: 108000,
                         currency: 'USD',
-                        amount_after_discount: 72000,
+                        amount_after_discount: 90000,
                         cadence: Cadence.Month,
                         discount: 18000,
                         extra_ticket_cost: 2.2,
@@ -126,9 +126,7 @@ describe('<EarlyAccessModal />', () => {
         expect(currentPlan.textContent).toContain(
             '$2 per automated conversation',
         )
-        expect(newPlan.textContent).toContain(
-            '$1.60 per automated conversation',
-        )
+        expect(newPlan.textContent).toContain('$2 per automated conversation')
 
         const [currentPlanExtraCost, newPlanExtraCost] =
             getAllByText('Overage:')
