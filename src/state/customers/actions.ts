@@ -4,11 +4,11 @@ import _isUndefined from 'lodash/isUndefined'
 import { notify as updateNotification } from 'reapop'
 import { UpsertNotificationAction } from 'reapop/dist/reducers/notifications/actions'
 
+import { ListTicketsResult } from '@gorgias/api-queries'
+
 import * as viewsConfig from 'config/views'
 import client from 'models/api/resources'
-import { ApiListResponseLegacyPagination } from 'models/api/types'
 import { Customer, CustomerDraft } from 'models/customer/types'
-import { Ticket } from 'models/ticket/types'
 import { ViewType } from 'models/view/types'
 import history from 'pages/history'
 import { notify } from 'state/notifications/actions'
@@ -210,9 +210,12 @@ export function fetchCustomerHistory(
         })
 
         return client
-            .get<ApiListResponseLegacyPagination<Ticket>>(
-                `/api/customers/${customerId}/tickets/`,
-            )
+            .get<ListTicketsResult>(`/api/tickets/`, {
+                params: {
+                    customer_id: customerId,
+                    limit: 100,
+                },
+            })
             .then((json) => json?.data)
             .then(
                 (resp) => {

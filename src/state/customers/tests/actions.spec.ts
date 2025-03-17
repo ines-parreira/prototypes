@@ -136,9 +136,7 @@ describe('customers actions', () => {
     })
 
     it('fetch customer history', () => {
-        mockServer
-            .onGet('/api/customers/2/tickets/')
-            .reply(200, { data: [{ id: 1 }] })
+        mockServer.onGet('/api/tickets/').reply(200, { data: [{ id: 1 }] })
 
         return store
             .dispatch(actions.fetchCustomerHistory(2))
