@@ -238,7 +238,7 @@ export const AgentsColumnConfig: Record<
     [AgentsTableColumn.MessagesReceived]: {
         format: 'integer',
         hint: {
-            title: 'Messages received on a particular ticket in a given period of time.',
+            title: 'Number of messages received within the selected timeframe.',
         },
         perAgent: true,
     },

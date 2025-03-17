@@ -214,7 +214,7 @@ export const OverviewMetricConfig: Record<
     [OverviewMetric.MessagesReceived]: {
         title: MESSAGES_RECEIVED_LABEL,
         hint: {
-            title: 'Message Received Given Period of Time',
+            title: 'Number of messages received within the selected timeframe',
         },
         interpretAs: 'neutral',
         metricFormat: 'decimal',
