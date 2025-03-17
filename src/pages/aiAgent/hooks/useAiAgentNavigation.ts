@@ -36,6 +36,7 @@ export const getAiAgentNavigationRoutes = (
     const basePath = getAiAgentBasePath(shopName, flags)
     const automationBasePath = '/app/automation'
     const isStandaloneMenuEnabled = flags[FeatureFlagKey.ConvAiStandaloneMenu]
+    const isStandaloneOnboardingEnabled = flags[FeatureFlagKey.ConvAiOnboarding]
 
     const guidancePath = isStandaloneMenuEnabled
         ? 'knowledge/guidance'
@@ -85,7 +86,10 @@ export const getAiAgentNavigationRoutes = (
         actionsTemplates: `${basePath}/${actionsPath}/templates`,
         actionEvents: (configurationId: string) =>
             `${basePath}/${actionsPath}/events/${configurationId}`,
-        onboardingWizard: `${basePath}/new`,
+        onboardingWizard:
+            isStandaloneMenuEnabled && isStandaloneOnboardingEnabled
+                ? `${basePath}/onboarding`
+                : `${basePath}/new`,
         previewMode: `${basePath}/${previewPath}`,
         optimize: `${basePath}/optimize`,
         optimizeIntent: (intentId: string) =>

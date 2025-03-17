@@ -567,6 +567,52 @@ describe('<AIAgentWelcomePageView />', () => {
         })
     })
 
+    it('should redirect to the new onboarding page without search params when Continue Set Up button is clicked with ff active', () => {
+        const history = createMemoryHistory()
+        const historyPushSpy = jest.spyOn(history, 'push')
+
+        const SHOP_NAME = 'my-store'
+        const SHOP_TYPE = 'shopify'
+
+        mockFlags({
+            [FeatureFlagKey.ConvAiStandaloneMenu]: true,
+            [FeatureFlagKey.ConvAiOnboarding]: true,
+        })
+
+        renderWithRouter(
+            <AIAgentWelcomePageView
+                accountDomain="my-account-domain"
+                shopType={SHOP_TYPE}
+                shopName={SHOP_NAME}
+                state="onboardingWizard"
+                emailConnected={{
+                    checked: true,
+                }}
+                helpCenterCreated={{
+                    checked: true,
+                }}
+                helpCenter20Articles={{
+                    checked: true,
+                }}
+                shopifyPermissionUpdated={{
+                    checked: true,
+                }}
+            />,
+            { history },
+        )
+
+        const button = screen.getByRole('button', {
+            name: /Set Up Ai Agent/i,
+        })
+
+        fireEvent.click(button)
+
+        expect(historyPushSpy).toHaveBeenCalledWith({
+            pathname: `/app/ai-agent/${SHOP_TYPE}/${SHOP_NAME}/onboarding`,
+            search: '',
+        })
+    })
+
     it('should render dynamic state for Onboarding Wizard update when storeConfiguration is exist', () => {
         render(
             <AIAgentWelcomePageView
