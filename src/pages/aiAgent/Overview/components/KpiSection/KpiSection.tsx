@@ -1,8 +1,10 @@
-import React from 'react'
+import React, { useMemo } from 'react'
 
 import { useFlags } from 'launchdarkly-react-client-sdk'
 import moment from 'moment'
 import { NavLink } from 'react-router-dom'
+
+import { Button } from '@gorgias/merchant-ui-kit'
 
 import { FeatureFlagKey } from 'config/featureFlags'
 import useAppSelector from 'hooks/useAppSelector'
@@ -18,7 +20,7 @@ import { useMixedKpis } from 'pages/aiAgent/Overview/hooks/useMixedKpis'
 import { useSalesKpis } from 'pages/aiAgent/Overview/hooks/useSalesKpis'
 import { useSupportKpis } from 'pages/aiAgent/Overview/hooks/useSupportKpis'
 import { KpiMetric } from 'pages/aiAgent/Overview/types'
-import Button from 'pages/common/components/button/Button'
+import { STATS_ROUTES } from 'routes/constants'
 import { getCleanStatsFiltersWithTimezone } from 'state/ui/stats/selectors'
 
 import css from './KpiSection.less'
@@ -114,10 +116,21 @@ const KpiForAiAgentType = ({
 }
 
 export const KpiSection = () => {
-    //TODO: Redirect to sales analytics page
     const { isLoading, aiAgentType } = useAiAgentTypeForAccount()
     const hasAnalytics =
         useFlags()[FeatureFlagKey.StandaloneAiSalesAnalyticsPage]
+
+    const analyticsLink = useMemo(() => {
+        if (isLoading) {
+            return ''
+        }
+
+        if (aiAgentType === 'sales' || aiAgentType === 'mixed') {
+            return `/app/stats/${STATS_ROUTES.AI_SALES_AGENT_OVERVIEW}`
+        }
+
+        return `/app/stats/${STATS_ROUTES.AUTOMATE_AI_AGENTS}`
+    }, [isLoading, aiAgentType])
 
     return (
         <OverviewCard>
@@ -125,11 +138,12 @@ export const KpiSection = () => {
                 <div className={css.title}>
                     <CardTitle>AI Agent Performance</CardTitle>
                     {hasAnalytics && (
-                        <NavLink to="/app/automation" exact>
+                        <NavLink to={analyticsLink} exact>
                             <Button
                                 intent="secondary"
                                 size="small"
                                 trailingIcon="open_in_new"
+                                isLoading={isLoading}
                             >
                                 View Full Report
                             </Button>

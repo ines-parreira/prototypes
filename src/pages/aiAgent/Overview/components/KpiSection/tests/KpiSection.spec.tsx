@@ -1,8 +1,11 @@
 import React from 'react'
 
 import { render, screen } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
+import { createMemoryHistory, History } from 'history'
 import { mockFlags } from 'jest-launchdarkly-mock'
 import { Provider } from 'react-redux'
+import { Router } from 'react-router-dom'
 import configureMockStore from 'redux-mock-store'
 
 import { FeatureFlagKey } from 'config/featureFlags'
@@ -49,11 +52,13 @@ const defaultStore = {
     stats: initialStatsFiltersState,
 } as StoreState
 
-const renderComponent = () => {
+const renderComponent = (history: History = createMemoryHistory()) => {
     return render(
-        <Provider store={mockStore(defaultStore)}>
-            <KpiSection />
-        </Provider>,
+        <Router history={history}>
+            <Provider store={mockStore(defaultStore)}>
+                <KpiSection />
+            </Provider>
+        </Router>,
     )
 }
 
@@ -134,29 +139,100 @@ describe('KpiSection', () => {
         expect(screen.queryAllByTestId('skeleton')).toHaveLength(8)
     })
 
-    it('should not render view report button when given sales analytics feature flag is false', () => {
-        useAiAgentTypeMock.mockReturnValue({
-            isLoading: false,
+    describe('View Full Report button', () => {
+        beforeEach(() => {
+            useSalesKpisMock.mockReturnValue({
+                metrics: [],
+            })
+            useSupportKpisMock.mockReturnValue({
+                metrics: [],
+            })
+            useMixedKpisMock.mockReturnValue({
+                metrics: [],
+            })
         })
 
-        const { queryByRole } = renderComponent()
+        it('should not render view report button when given sales analytics feature flag is false', () => {
+            useAiAgentTypeMock.mockReturnValue({
+                isLoading: false,
+            })
 
-        expect(queryByRole('button', { name: 'View Full Report' })).toBeNull()
-    })
+            const { queryByRole } = renderComponent()
 
-    it('should render view report button when given sales analytics feature flag is true', () => {
-        mockFlags({
-            [FeatureFlagKey.StandaloneAiSalesAnalyticsPage]: true,
+            expect(
+                queryByRole('button', { name: 'View Full Report' }),
+            ).toBeNull()
         })
 
-        useAiAgentTypeMock.mockReturnValue({
-            isLoading: false,
+        it('should render view report button when given sales analytics feature flag is true', () => {
+            mockFlags({
+                [FeatureFlagKey.StandaloneAiSalesAnalyticsPage]: true,
+            })
+
+            useAiAgentTypeMock.mockReturnValue({
+                isLoading: false,
+            })
+
+            const { getByRole } = renderComponent()
+
+            expect(
+                getByRole('button', { name: 'View Full Report' }),
+            ).toBeInTheDocument()
         })
 
-        const { getByRole } = renderComponent()
+        it.each(['mixed' as const, 'sales' as const])(
+            'should redirect to AI Agent Sales Analytics when AI Agent type is %s',
+            (aiAgentType) => {
+                const history = createMemoryHistory()
+                mockFlags({
+                    [FeatureFlagKey.StandaloneAiSalesAnalyticsPage]: true,
+                })
 
-        expect(
-            getByRole('button', { name: 'View Full Report' }),
-        ).toBeInTheDocument()
+                useAiAgentTypeMock.mockReturnValue({
+                    isLoading: false,
+                    aiAgentType,
+                })
+
+                const { getByRole } = renderComponent(history)
+                const reportButton = getByRole('button', {
+                    name: 'View Full Report',
+                })
+
+                userEvent.click(reportButton)
+
+                // Add a small delay to allow navigation to complete
+                setTimeout(() => {
+                    expect(history.location.pathname).toEqual(
+                        '/app/stats/ai-sales-agent/overview',
+                    )
+                }, 0)
+            },
+        )
+
+        it('should redirect to AI Agent Support Analytics when AI Agent type is support', () => {
+            const history = createMemoryHistory()
+            mockFlags({
+                [FeatureFlagKey.StandaloneAiSalesAnalyticsPage]: true,
+            })
+
+            useAiAgentTypeMock.mockReturnValue({
+                isLoading: false,
+                aiAgentType: 'support' as const,
+            })
+
+            const { getByRole } = renderComponent(history)
+            const reportButton = getByRole('button', {
+                name: 'View Full Report',
+            })
+
+            userEvent.click(reportButton)
+
+            // Add a small delay to allow navigation to complete
+            setTimeout(() => {
+                expect(history.location.pathname).toEqual(
+                    '/stats/ai-sales-agent/overview',
+                )
+            }, 0)
+        })
     })
 })
