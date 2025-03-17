@@ -37,7 +37,7 @@ export default function SLAFormView({
 }: SLAFormViewProps) {
     const [isArchiveModalOpen, setArchiveModalOpen] = React.useState(false)
 
-    const isTrackTotalHitsEnabled = useFlag(FeatureFlagKey.PauseSLA)
+    const isPauseSLAEnabled = useFlag(FeatureFlagKey.PauseSLA)
 
     return (
         <div className={css.page}>
@@ -78,6 +78,15 @@ export default function SLAFormView({
                                 team(s)."
                         >
                             <MetricsFieldArray />
+                            {isPauseSLAEnabled && (
+                                <FormField
+                                    name="business_hours_only"
+                                    field={ToggleInputField}
+                                    className={settingsCss.mb48}
+                                >
+                                    Pause SLA timer outside of business hours
+                                </FormField>
+                            )}
                             <FormField
                                 name="active"
                                 field={ToggleInputField}
@@ -91,15 +100,6 @@ export default function SLAFormView({
                             >
                                 Enable SLA
                             </FormField>
-                            {isTrackTotalHitsEnabled && (
-                                <FormField
-                                    name="business_hours_only"
-                                    field={ToggleInputField}
-                                    className={settingsCss.mb48}
-                                >
-                                    Pause SLA timer outside of business hours
-                                </FormField>
-                            )}
                         </FormSection>
                         <div className={css.buttonGroup}>
                             <div>
