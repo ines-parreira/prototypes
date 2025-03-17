@@ -141,7 +141,7 @@ export const ChatIntegrationListSelection = ({
                                                     className={css['used-chat']}
                                                 >
                                                     Chat already used by AI
-                                                    Agent in another chat
+                                                    Agent in another store
                                                 </span>
                                             </div>
                                         ) : (

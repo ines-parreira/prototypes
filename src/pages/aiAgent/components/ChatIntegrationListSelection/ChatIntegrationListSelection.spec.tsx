@@ -82,7 +82,7 @@ describe('ChatIntegrationListSelection', () => {
             screen.getByText(mockDisabledChat.value.name),
         ).toBeInTheDocument()
         expect(
-            screen.getByText('Chat already used by AI Agent in another chat'),
+            screen.getByText('Chat already used by AI Agent in another store'),
         ).toBeInTheDocument()
     })
 
@@ -104,7 +104,9 @@ describe('ChatIntegrationListSelection', () => {
             screen.getByText(mockDisabledChat.value.name),
         ).toBeInTheDocument()
         expect(
-            screen.queryByText('Chat already used by AI Agent in another chat'),
+            screen.queryByText(
+                'Chat already used by AI Agent in another store',
+            ),
         ).not.toBeInTheDocument()
     })
 })
