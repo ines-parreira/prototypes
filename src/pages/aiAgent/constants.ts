@@ -14,6 +14,7 @@ export const KNOWLEDGE = 'Knowledge'
 export const GUIDANCE = 'Guidance'
 export const SUPPORT_ACTIONS = 'Support Actions'
 export const ACTIONS = 'Actions'
+export const SOURCE = 'Source'
 export const TEST = 'Test'
 export const PREVIEW = 'Preview'
 export const SALES = {

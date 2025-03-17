@@ -151,21 +151,21 @@ describe('<AiAgentNavbar />', () => {
             expect(navbar.getByText('teststore4')).toBeInTheDocument()
 
             expect(navbar.getAllByText('Optimize').length).toBe(1)
-            expect(navbar.getAllByText('Knowledge').length).toBe(1)
+            expect(navbar.getAllByText('Source').length).toBe(1)
             expect(navbar.getAllByText('Settings').length).toBe(1)
             expect(navbar.getAllByText('Test').length).toBe(1)
 
             fireEvent.click(navbar.getByText('teststore4'))
 
             expect(navbar.getAllByText('Optimize').length).toBe(2)
-            expect(navbar.getAllByText('Knowledge').length).toBe(2)
+            expect(navbar.getAllByText('Source').length).toBe(2)
             expect(navbar.getAllByText('Settings').length).toBe(2)
             expect(navbar.getAllByText('Test').length).toBe(2)
 
             fireEvent.click(navbar.getByText('teststore4'))
 
             expect(navbar.getAllByText('Optimize').length).toBe(1)
-            expect(navbar.getAllByText('Knowledge').length).toBe(1)
+            expect(navbar.getAllByText('Source').length).toBe(1)
             expect(navbar.getAllByText('Settings').length).toBe(1)
             expect(navbar.getAllByText('Test').length).toBe(1)
         })

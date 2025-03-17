@@ -138,7 +138,7 @@ export const AiSalesAgentMetricConfig: Record<
     [AiSalesAgentChart.AiSalesAgentGmv]: {
         title: 'GMV Influenced $',
         hint: {
-            title: 'The total revenue generated from orders placed during or after a conversation with the AI Agent, without human intervention.',
+            title: 'The total revenue generated from orders placed during or after a conversation with the AI Agent for Sales, without human intervention.',
         },
         useTrend: useGmvInfluencedTrend,
         fetchTrend: fetchGmvInfluencedTrend,
@@ -168,7 +168,7 @@ export const AiSalesAgentMetricConfig: Record<
     [AiSalesAgentChart.AiSalesAgentTotalNumberOfOrders]: {
         title: 'Total Number of Orders influenced',
         hint: {
-            title: 'The total number of orders influenced by a conversation with the AI Agent, without human intervention.',
+            title: 'The total number of orders influenced by a conversation with the AI Agent for Sales, without human intervention.',
         },
         useTrend: useTotalNumberOfOrders,
         fetchTrend: fetchTotalNumberOfOrders,
@@ -218,7 +218,7 @@ export const AiSalesAgentMetricConfig: Record<
     [AiSalesAgentChart.AiSalesAgentSuccessRate]: {
         title: 'Success Rate',
         hint: {
-            title: 'The percentage of AI Agent interactions that were successfully automated without human escalation.',
+            title: 'The percentage of AI Agent for Sales interactions that were successfully automated without human escalation.',
         },
         useTrend: useSuccessRateTrend,
         fetchTrend: fetchSuccessRateTrend,
@@ -228,7 +228,7 @@ export const AiSalesAgentMetricConfig: Record<
     [AiSalesAgentChart.AiSalesAgentConversionRate]: {
         title: 'Conversion Rate',
         hint: {
-            title: 'The percentage of AI Agent interactions that resulted in a sale.',
+            title: 'The percentage of AI Agent for Sales interactions that resulted in a sale.',
         },
         useTrend: useConversionRate,
         fetchTrend: fetchConversionRate,
@@ -268,7 +268,7 @@ export const AiSalesAgentMetricConfig: Record<
     [AiSalesAgentChart.AiSalesDiscountRateApplied]: {
         title: '% Discount Applied',
         hint: {
-            title: 'Percentage of discount codes sent by AI Agent used by customers for a purchase over the total of discount codes sent.',
+            title: 'Percentage of discount codes sent by AI Agent for Sales used by customers for a purchase over the total of discount codes sent.',
         },
         useTrend: useDiscountCodesRateApplied,
         fetchTrend: fetchDiscountCodesRateApplied,
@@ -302,7 +302,7 @@ export const AiSalesAgentChartConfig: Record<
     [AiSalesAgentChart.AiSalesAgentGmvInfluencedOverTime]: {
         title: 'GMV Influenced % Over Time ',
         hint: {
-            title: 'The percentage of revenue influenced by the AI Agent over a specific period of time.',
+            title: 'The percentage of revenue influenced by the AI Agent for Sales over a specific period of time.',
         },
         useTimeSeries: useGmvInfluenceOverTimeSeries,
         fetchTimeSeries: fetchGmvInflueceOverTimeSeries,

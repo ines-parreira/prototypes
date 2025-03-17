@@ -101,7 +101,7 @@ const AiSalesAgentSalesOverview = () => {
                     />
                 </DashboardGridCell>
             </DashboardSection>
-            <DashboardSection title="AI Agent Performance">
+            <DashboardSection title="AI Agent Sales Performance">
                 <DashboardGridCell size={getGridCellSize(4)}>
                     <RenderChart
                         chart={AiSalesAgentChart.AiSalesAgentSuccessRate}

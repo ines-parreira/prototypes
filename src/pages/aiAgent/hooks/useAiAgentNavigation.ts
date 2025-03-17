@@ -14,6 +14,8 @@ import {
     PREVIEW,
     SALES,
     SETTINGS,
+    SOURCE,
+    SUPPORT_ACTIONS,
     TEST,
 } from 'pages/aiAgent/constants'
 
@@ -135,7 +137,7 @@ const useNavigationItems = (
                     route: isAiAgentKnowledgeTabEnabled
                         ? routes.knowledge
                         : routes.guidance,
-                    title: KNOWLEDGE,
+                    title: SOURCE,
                     dataCanduId: 'ai-agent-navbar-knowledge',
                     items: [
                         isAiAgentKnowledgeTabEnabled && {
@@ -149,7 +151,7 @@ const useNavigationItems = (
                         },
                         {
                             route: routes.actions,
-                            title: ACTIONS,
+                            title: SUPPORT_ACTIONS,
                         },
                     ].filter((x) => !!x) as NavigationItem[],
                 },

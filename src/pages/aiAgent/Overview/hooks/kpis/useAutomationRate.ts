@@ -28,7 +28,7 @@ export const useAutomationRate = (
 
     return {
         title: 'Automation Rate',
-        hint: 'Automated interactions as a percent of all customer interactions.',
+        hint: 'Automated interactions from AI Agent as a percent of all customer interactions.',
         metricType: StatType.Number,
         metricFormat: 'decimal-to-percent',
         isLoading: result.isFetching,

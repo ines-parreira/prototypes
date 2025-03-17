@@ -69,7 +69,7 @@ describe('AiSalesAgentSalesOverview', () => {
     it('should render', () => {
         renderComponent()
 
-        expect(screen.getByText('AI Agent Sales Overview')).toBeInTheDocument()
+        expect(screen.getByText('AI Agent Sales')).toBeInTheDocument()
         expect(screen.getByText('download-button')).toBeInTheDocument()
     })
 })
