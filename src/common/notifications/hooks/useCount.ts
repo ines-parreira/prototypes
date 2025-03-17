@@ -1,17 +1,17 @@
-import { useEffect } from 'react'
-
 import { useKnockFeed } from '@knocklabs/react'
+
+import useEffectOnce from 'hooks/useEffectOnce'
 
 export default function useCount() {
     const { feedClient, useFeedStore } = useKnockFeed()
 
     const unreadCount = useFeedStore((state) => state.metadata.unread_count)
 
-    useEffect(() => {
+    useEffectOnce(() => {
         if (unreadCount === 0) {
             void feedClient.fetch()
         }
-    }, [feedClient, unreadCount])
+    })
 
     return unreadCount
 }

@@ -35,7 +35,7 @@ describe('useCount', () => {
         expect(result.current).toBe(3)
     })
 
-    it('should fetch the feed if the unread count is 0', () => {
+    it('should fetch the feed if the unread count is 0 on first render', () => {
         renderHook(() => useCount())
         expect(fetch).toHaveBeenCalledWith()
     })
