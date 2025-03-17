@@ -117,6 +117,7 @@ export default {
     resolve: {
         alias: {
             css: `${srcDir}/assets/css/`,
+            'react/jsx-runtime': 'react/jsx-runtime.js',
         },
         extensions: ['.ts', '.tsx', '.js'],
         modules: ['node_modules', srcDir],

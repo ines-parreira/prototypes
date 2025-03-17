@@ -90,7 +90,7 @@
         "@gorgias/merchant-ui-kit": "0.15.2",
         "@gorgias/realtime": "^0.6.2",
         "@hookform/resolvers": "^3.10.0",
-        "@knocklabs/react": "^0.2.23",
+        "@knocklabs/react": "^0.6.0",
         "@reduxjs/toolkit": "^1.9.7",
         "@sentry/react": "7.119.1",
         "@sentry/tracing": "7.119.1",

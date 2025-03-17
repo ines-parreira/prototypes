@@ -145,6 +145,31 @@ describe('useSettings', () => {
         })
     })
 
+    it('should default to true if workflow preferences are conditional', async () => {
+        mockGetKnockPreferences.mockResolvedValue({
+            workflows: {
+                'user-mentioned': {
+                    conditions: [
+                        {
+                            argument: 'arg',
+                            variable: 'var',
+                            operator: 'eq',
+                        },
+                    ],
+                },
+            },
+        })
+
+        const { result, waitForNextUpdate } = renderHook(() => useSettings())
+
+        await act(async () => await waitForNextUpdate())
+        expect(
+            result.current.settings.events['user.mentioned'].channels,
+        ).toEqual({
+            in_app_feed: true,
+        })
+    })
+
     it('should update settings when handleChangeChannel is called', async () => {
         const { result, waitForNextUpdate } = renderHook(() => useSettings())
 

@@ -77,9 +77,13 @@ export default function useSettings() {
                                         !workflowPreferences ||
                                         typeof workflowPreferences === 'boolean'
                                             ? true
-                                            : workflowPreferences.channel_types[
-                                                  channel.type
-                                              ],
+                                            : 'conditions' in
+                                                workflowPreferences
+                                              ? true
+                                              : workflowPreferences
+                                                    .channel_types[
+                                                    channel.type
+                                                ],
                                 }),
                                 eventsAcc[config.type]?.channels || {},
                             ),
