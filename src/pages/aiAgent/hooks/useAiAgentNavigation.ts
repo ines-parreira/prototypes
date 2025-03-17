@@ -137,12 +137,12 @@ const useNavigationItems = (
                     route: isAiAgentKnowledgeTabEnabled
                         ? routes.knowledge
                         : routes.guidance,
-                    title: SOURCE,
+                    title: KNOWLEDGE,
                     dataCanduId: 'ai-agent-navbar-knowledge',
                     items: [
                         isAiAgentKnowledgeTabEnabled && {
                             route: routes.knowledge,
-                            title: GENERAL,
+                            title: SOURCE,
                             exact: true,
                         },
                         {
