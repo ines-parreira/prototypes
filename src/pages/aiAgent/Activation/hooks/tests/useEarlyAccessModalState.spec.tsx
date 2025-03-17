@@ -1,5 +1,9 @@
-import { renderHook } from '@testing-library/react-hooks'
+import React, { ReactNode } from 'react'
+
+import { act, renderHook } from '@testing-library/react-hooks'
 import { fromJS } from 'immutable'
+import { Provider } from 'react-redux'
+import createMockStore from 'redux-mock-store'
 
 import { FeatureFlagKey } from 'config/featureFlags'
 import { useFlag } from 'core/flags'
@@ -8,8 +12,8 @@ import {
     useEarlyAccessAutomatePlan,
 } from 'models/billing/queries'
 import { useCurrentPriceIds } from 'pages/settings/new_billing/hooks/useGetCurrentPriceIds'
-import { useUpdateSubscription } from 'pages/settings/new_billing/hooks/useUpdateSubscription'
 import { getCurrentPlansByProduct } from 'state/billing/selectors'
+import { updateSubscription } from 'state/currentAccount/actions'
 import { getCurrentAccountState } from 'state/currentAccount/selectors'
 import { getCurrentUser } from 'state/currentUser/selectors'
 
@@ -20,8 +24,8 @@ const mockUseEarlyAccessAutomatePlan = jest.mocked(useEarlyAccessAutomatePlan)
 const mockUseBillingState = jest.mocked(useBillingState)
 jest.mock('pages/settings/new_billing/hooks/useGetCurrentPriceIds')
 const mockUseCurrentPriceIds = jest.mocked(useCurrentPriceIds)
-jest.mock('pages/settings/new_billing/hooks/useUpdateSubscription')
-const mockUseUpdateSubscription = jest.mocked(useUpdateSubscription)
+// jest.mock('pages/settings/new_billing/hooks/useUpdateSubscription')
+// const mockUseUpdateSubscription = jest.mocked(useUpdateSubscription)
 
 jest.mock('hooks/useAppSelector', () => (fn: () => void) => fn())
 jest.mock('state/currentUser/selectors')
@@ -36,6 +40,11 @@ const mockGetCurrentPlansByProduct = jest.mocked(getCurrentPlansByProduct)
 jest.mock('core/flags')
 const mockUseFlag = jest.mocked(useFlag)
 
+jest.mock('state/currentAccount/actions')
+const mockUpdateSubscription = jest.mocked(updateSubscription)
+
+const mockStore = createMockStore()
+
 describe('useEarlyAccessModalState', () => {
     beforeEach(() => {
         jest.clearAllMocks()
@@ -45,6 +54,10 @@ describe('useEarlyAccessModalState', () => {
                 defaultValue,
         )
     })
+
+    const wrapper = ({ children }: { children: ReactNode }) => (
+        <Provider store={mockStore()}>{children}</Provider>
+    )
 
     describe('when user is admin and plan is not of 6th generation', () => {
         it('should set isPreviewModalVisible to true only on first render', () => {
@@ -66,22 +79,65 @@ describe('useEarlyAccessModalState', () => {
             mockGetCurrentAccountState.mockReturnValue(fromJS({ id: 1 }))
             mockGetCurrentPlansByProduct.mockReturnValue(fromJS({}))
             mockUseCurrentPriceIds.mockReturnValue([])
-            mockUseUpdateSubscription.mockReturnValue({
-                isLoading: false,
-                handleSubscriptionUpdate: jest.fn(),
-            })
+            mockUpdateSubscription.mockReturnValue({
+                type: 'dummy-action',
+            } as any)
 
-            const { result } = renderHook(() =>
-                useEarlyAccessModalState({ hasActivationEnabled: true }),
+            const { result } = renderHook(
+                () => useEarlyAccessModalState({ hasActivationEnabled: true }),
+                { wrapper },
             )
 
             expect(result.current.isPreviewModalVisible).toBeTruthy()
 
-            const { result: result2 } = renderHook(() =>
-                useEarlyAccessModalState({ hasActivationEnabled: true }),
+            const { result: result2 } = renderHook(
+                () => useEarlyAccessModalState({ hasActivationEnabled: true }),
+                { wrapper },
             )
 
             expect(result2.current.isPreviewModalVisible).toBeFalsy()
+        })
+
+        it('should set focusActivationModal search parameters after upgrading the subscription', async () => {
+            mockUseEarlyAccessAutomatePlan.mockReturnValue({
+                data: {},
+                isLoading: false,
+            } as any)
+            mockUseBillingState.mockReturnValue({
+                data: {
+                    current_plans: {
+                        automate: { generation: 5 },
+                    },
+                },
+                isLoading: false,
+            } as any)
+            mockGetCurrentUser.mockReturnValue(
+                fromJS({ role: { name: 'admin' } }),
+            )
+            mockGetCurrentAccountState.mockReturnValue(fromJS({ id: 1 }))
+            mockGetCurrentPlansByProduct.mockReturnValue(fromJS({}))
+            mockUseCurrentPriceIds.mockReturnValue([])
+            mockUpdateSubscription.mockReturnValue({
+                type: 'dummy-action',
+            } as any)
+
+            const mockPushState = jest.fn()
+            window.history.pushState = mockPushState
+
+            const { result } = renderHook(
+                () => useEarlyAccessModalState({ hasActivationEnabled: true }),
+                { wrapper },
+            )
+
+            await act(async () => {
+                await result.current.handleSubscriptionUpdate()
+            })
+
+            expect(mockPushState).toHaveBeenCalledWith(
+                null,
+                '',
+                'http://localhost/?focusActivationModal=true',
+            )
         })
     })
 })

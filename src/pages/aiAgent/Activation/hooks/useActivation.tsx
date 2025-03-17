@@ -18,7 +18,10 @@ import { useEarlyAccessModalState } from './useEarlyAccessModalState'
 import { useStoreActivations } from './useStoreActivations'
 
 export const useActivation = (pageName: string) => {
-    const [isModalVisible, setIsModalVisible] = useState(false)
+    const searchParams = new URLSearchParams(window.location.search)
+    const [isModalVisible, setIsModalVisible] = useState(
+        searchParams.has('focusActivationModal'),
+    )
     const hasActivationEnabled = useFlag(FeatureFlagKey.AiAgentActivation)
     const currentAccount = useAppSelector(getCurrentAccountState)
     const accountDomain = currentAccount.get('domain')

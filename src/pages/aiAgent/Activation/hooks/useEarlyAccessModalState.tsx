@@ -74,7 +74,13 @@ export const useEarlyAccessModalState = ({
     ].filter(Boolean)
 
     const { isLoading: isSubscriptionUpdating, handleSubscriptionUpdate } =
-        useUpdateSubscription()
+        useUpdateSubscription({
+            onSuccess: () => {
+                const url = new URL(window.location.href)
+                url.searchParams.set('focusActivationModal', 'true')
+                window.history.pushState(null, '', url.toString())
+            },
+        })
 
     return useMemo(
         () => ({

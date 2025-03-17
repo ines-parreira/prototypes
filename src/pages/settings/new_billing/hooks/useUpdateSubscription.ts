@@ -9,13 +9,18 @@ export type HandleSubscriptionUpdate = {
     handleSubscriptionUpdate: (prices: string[]) => Promise<void>
 }
 
-export const useUpdateSubscription = (): HandleSubscriptionUpdate => {
+export const useUpdateSubscription = ({
+    onSuccess,
+}: {
+    onSuccess?: () => void
+} = {}): HandleSubscriptionUpdate => {
     const dispatch = useAppDispatch()
 
     const [{ loading }, handleSubscriptionUpdate] = useAsyncFn(
         async (prices: string[]) => {
             try {
                 await dispatch(updateSubscription({ prices }))
+                onSuccess?.()
                 return Promise.resolve()
             } catch (error) {
                 void dispatch(
