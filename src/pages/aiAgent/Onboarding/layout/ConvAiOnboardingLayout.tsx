@@ -1,5 +1,6 @@
 import React, { ReactNode } from 'react'
 
+import { aiAgentRoutes } from 'pages/aiAgent/hooks/useAiAgentNavigation'
 import OnboardingProgressTracker from 'pages/aiAgent/Onboarding/components/common/OnboardingProgressTracker/OnboardingProgressTracker'
 import GorgiasLogoExtendedIcon from 'pages/aiAgent/Onboarding/layout/GorgiasLogoExtended'
 import IconButton from 'pages/common/components/button/IconButton'
@@ -8,7 +9,7 @@ import history from 'pages/history'
 import css from './ConvAiOnboardingLayout.less'
 
 const onClose = () => {
-    history.push('/app/ai-agent/overview')
+    history.push(aiAgentRoutes.overview)
 }
 
 const CloseButton: React.FC<{ onClose: () => void }> = ({ onClose }) => {

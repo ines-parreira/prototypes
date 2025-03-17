@@ -24,8 +24,6 @@ const mockUseEarlyAccessAutomatePlan = jest.mocked(useEarlyAccessAutomatePlan)
 const mockUseBillingState = jest.mocked(useBillingState)
 jest.mock('pages/settings/new_billing/hooks/useGetCurrentPriceIds')
 const mockUseCurrentPriceIds = jest.mocked(useCurrentPriceIds)
-// jest.mock('pages/settings/new_billing/hooks/useUpdateSubscription')
-// const mockUseUpdateSubscription = jest.mocked(useUpdateSubscription)
 
 jest.mock('hooks/useAppSelector', () => (fn: () => void) => fn())
 jest.mock('state/currentUser/selectors')

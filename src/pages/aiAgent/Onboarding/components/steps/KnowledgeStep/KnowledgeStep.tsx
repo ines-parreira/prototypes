@@ -6,6 +6,7 @@ import { Skeleton } from '@gorgias/merchant-ui-kit'
 
 import useAppSelector from 'hooks/useAppSelector'
 import { ShopifyIntegration } from 'models/integration/types'
+import { useAiAgentNavigation } from 'pages/aiAgent/hooks/useAiAgentNavigation'
 import { Card, CardContent } from 'pages/aiAgent/Onboarding/components/Card'
 import KnowledgePreview from 'pages/aiAgent/Onboarding/components/KnowledgePreview/KnowledgePreview'
 import MainTitle from 'pages/aiAgent/Onboarding/components/MainTitle/MainTitle'
@@ -82,6 +83,7 @@ export const KnowledgeStep: React.FC<StepProps> = ({
         shopName || '',
     )
     const hasHelpCenter = !!helpCenters.length
+    const { routes } = useAiAgentNavigation({ shopName })
 
     const onNextClick = () => {
         if (data && 'id' in data) {
@@ -98,7 +100,7 @@ export const KnowledgeStep: React.FC<StepProps> = ({
 
                 {
                     onSuccess: () => {
-                        history.push('/app/automation/ai-agent-overview')
+                        history.push(routes.overview)
                     },
                 },
             )

@@ -239,9 +239,7 @@ describe('KnowledgeStep', () => {
         })
 
         await waitFor(() => {
-            expect(history.location.pathname).toEqual(
-                '/app/automation/ai-agent-overview',
-            )
+            expect(history.location.pathname).toEqual('/app/ai-agent/overview')
         })
     })
 })

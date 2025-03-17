@@ -24,6 +24,10 @@ export const getAiAgentBasePath = (shopName: string, flags: LDFlagSet) => {
         : `/app/automation/shopify/${shopName}/ai-agent`
 }
 
+export const aiAgentRoutes = {
+    overview: '/app/ai-agent/overview',
+}
+
 /** Retrieve AI Agent routes depending on the conv-ai-standalone-menu feature flag */
 export const getAiAgentNavigationRoutes = (
     shopName: string,
@@ -86,7 +90,7 @@ export const getAiAgentNavigationRoutes = (
         optimize: `${basePath}/optimize`,
         optimizeIntent: (intentId: string) =>
             `${basePath}/optimize/${intentId}`,
-        overview: '/app/ai-agent/overview',
+        overview: aiAgentRoutes.overview,
     }
 }
 

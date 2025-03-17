@@ -47,6 +47,7 @@ import AiAgentScrapedDomainProductsContainer from 'pages/aiAgent/AiAgentScrapedD
 import { AiAgentNavbar } from 'pages/aiAgent/components/AiAgentNavbar/AiAgentNavbar'
 import { RedirectToAiAgentStore } from 'pages/aiAgent/components/RedirectToAiAgentStore/RedirectToAiAgentStore'
 import { useAiAgentItemEnabled } from 'pages/aiAgent/hooks/useAiAgentItemEnabled'
+import { aiAgentRoutes } from 'pages/aiAgent/hooks/useAiAgentNavigation'
 import { Level2IntentsContainer } from 'pages/aiAgent/insights/Level2IntentsContainer/Level2IntentsContainer'
 import { OptimizeContainer } from 'pages/aiAgent/insights/OptimizeContainer/OptimizeContainer'
 import { AiAgentOnboarding } from 'pages/aiAgent/Onboarding/components/AiAgentOnboarding/AiAgentOnboarding'
@@ -1136,7 +1137,7 @@ function AiAgentContent() {
         <Switch>
             {hasStandaloneConvAiOverviewPage && (
                 <Route
-                    path={`${path}/overview`}
+                    path={aiAgentRoutes.overview}
                     component={withUserRoleRequired(
                         AiAgentOverview,
                         AGENT_ROLE,
@@ -1149,7 +1150,11 @@ function AiAgentContent() {
             />
 
             <Route>
-                <RedirectToAiAgentStore />
+                {hasStandaloneConvAiOverviewPage ? (
+                    <Redirect to={aiAgentRoutes.overview} />
+                ) : (
+                    <RedirectToAiAgentStore />
+                )}
             </Route>
         </Switch>
     )
