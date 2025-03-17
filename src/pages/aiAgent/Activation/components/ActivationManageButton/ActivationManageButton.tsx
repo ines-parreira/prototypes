@@ -1,5 +1,7 @@
 import React from 'react'
 
+import cn from 'classnames'
+
 import { ActivationProgress } from 'pages/aiAgent/Activation/components/ActivationProgress/ActivationProgress'
 
 import css from './ActivationManageButton.less'
@@ -17,11 +19,20 @@ type Props = {
     onClick: () => void
     /** Between 0 (not activated) and 1 (fully activated) */
     progress: number
+    variant?: 'flat' | 'bordered'
 }
-export const ActivationManageButton = ({ onClick, progress }: Props) => {
+export const ActivationManageButton = ({
+    onClick,
+    progress,
+    variant = 'bordered',
+}: Props) => {
     const captionText = getCaptionText(progress)
     return (
-        <button type="button" className={css.button} onClick={onClick}>
+        <button
+            type="button"
+            className={cn(css.button, css[variant])}
+            onClick={onClick}
+        >
             <div className={css.progressStatus}>
                 <ActivationProgress
                     className={css.progress}

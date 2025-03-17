@@ -165,18 +165,15 @@ describe('useActivation', () => {
             defaultUseEarlyAccessModalStateReturnValue,
         )
 
-        const { result } = renderHook(
-            () => useActivation('ai-agent-overview'),
-            {
-                wrapper: ({ children }) => (
-                    <QueryClientProvider client={queryClient}>
-                        <Provider store={mockStore(defaultState)}>
-                            {children}
-                        </Provider>
-                    </QueryClientProvider>
-                ),
-            },
-        )
+        const { result } = renderHook(() => useActivation('overview'), {
+            wrapper: ({ children }) => (
+                <QueryClientProvider client={queryClient}>
+                    <Provider store={mockStore(defaultState)}>
+                        {children}
+                    </Provider>
+                </QueryClientProvider>
+            ),
+        })
 
         expect(result.current.ActivationButton).toBeDefined()
         expect(result.current.ActivationModal).toBeDefined()
@@ -198,7 +195,7 @@ describe('useActivation', () => {
         expect(mockedLogEvent).toHaveBeenCalledWith(
             segment.SegmentEvent.AiAgentActivatePreviewPricingModalClosed,
             {
-                page: 'ai-agent-overview',
+                page: 'overview',
                 reason: 'clicked-on-cross-or-outside',
             },
         )
@@ -209,18 +206,15 @@ describe('useActivation', () => {
             defaultUseEarlyAccessModalStateReturnValue,
         )
 
-        const { result } = renderHook(
-            () => useActivation('ai-agent-overview'),
-            {
-                wrapper: ({ children }) => (
-                    <QueryClientProvider client={queryClient}>
-                        <Provider store={mockStore(defaultState)}>
-                            {children}
-                        </Provider>
-                    </QueryClientProvider>
-                ),
-            },
-        )
+        const { result } = renderHook(() => useActivation('overview'), {
+            wrapper: ({ children }) => (
+                <QueryClientProvider client={queryClient}>
+                    <Provider store={mockStore(defaultState)}>
+                        {children}
+                    </Provider>
+                </QueryClientProvider>
+            ),
+        })
 
         expect(result.current.ActivationButton).toBeDefined()
         expect(result.current.ActivationModal).toBeDefined()
@@ -241,7 +235,7 @@ describe('useActivation', () => {
         expect(mockedLogEvent).toHaveBeenCalledWith(
             segment.SegmentEvent.AiAgentActivatePreviewPricingModalClosed,
             {
-                page: 'ai-agent-overview',
+                page: 'overview',
                 reason: 'clicked-on-stay-button',
             },
         )

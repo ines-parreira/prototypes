@@ -87,6 +87,7 @@ export const useActivation = (pageName: string) => {
                             )
                         }}
                         progress={progressPercentage}
+                        variant={pageName === 'overview' ? 'bordered' : 'flat'}
                     />
                 ) : null,
             ActivationModal: () => (
