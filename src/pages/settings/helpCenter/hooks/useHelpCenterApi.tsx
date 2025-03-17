@@ -23,7 +23,7 @@ interface HelpCenterApiClientState {
     client: HelpCenterClient | undefined
 }
 
-const HelpCenterApiClientContext = createContext<
+export const HelpCenterApiClientContext = createContext<
     HelpCenterApiClientState & { agentAbility?: AppAbility }
 >({
     isReady: false,
