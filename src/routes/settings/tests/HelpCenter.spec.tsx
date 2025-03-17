@@ -7,7 +7,6 @@ import { useFlag } from 'core/flags'
 import HelpCenterCreationWizard from 'pages/settings/helpCenter/components/HelpCenterCreationWizard'
 import HelpCenterNewView from 'pages/settings/helpCenter/components/HelpCenterNewView'
 import HelpCenterStartView from 'pages/settings/helpCenter/components/HelpCenterStartView'
-import { HelpCenterApiClientProvider } from 'pages/settings/helpCenter/hooks/useHelpCenterApi'
 import { MigrationApiClientProvider } from 'pages/settings/helpCenter/hooks/useMigrationApi'
 import CurrentHelpCenter from 'pages/settings/helpCenter/providers/CurrentHelpCenter/CurrentHelpCenter'
 import { SupportedLocalesProvider } from 'pages/settings/helpCenter/providers/SupportedLocales'
@@ -23,11 +22,6 @@ jest.mock('react-router-dom', () => ({
 }))
 jest.mock('core/flags', () => ({
     useFlag: jest.fn(),
-}))
-jest.mock('pages/settings/helpCenter/hooks/useHelpCenterApi', () => ({
-    HelpCenterApiClientProvider: jest.fn(({ children }) => (
-        <div>{children}</div>
-    )),
 }))
 jest.mock('pages/settings/helpCenter/hooks/useMigrationApi', () => ({
     MigrationApiClientProvider: jest.fn(({ children }) => (
@@ -58,10 +52,9 @@ describe('ContactForm', () => {
         } as ReturnType<typeof useRouteMatch>)
     })
 
-    it('should call HelpCenterApiClientProvider, MigrationApiClientProvider, and SupportedLocalesProvider', () => {
+    it('should call MigrationApiClientProvider, and SupportedLocalesProvider', () => {
         render(<HelpCenter />)
 
-        expect(HelpCenterApiClientProvider).toHaveBeenCalled()
         expect(MigrationApiClientProvider).toHaveBeenCalled()
         expect(SupportedLocalesProvider).toHaveBeenCalled()
     })

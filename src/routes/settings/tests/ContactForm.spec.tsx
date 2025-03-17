@@ -13,7 +13,6 @@ import {
 import ContactFormCreateView from 'pages/settings/contactForm/views/ContactFormCreateView'
 import ContactFormSettingsView from 'pages/settings/contactForm/views/ContactFormSettingsView'
 import ContactFormStartView from 'pages/settings/contactForm/views/ContactFormStartView'
-import { HelpCenterApiClientProvider } from 'pages/settings/helpCenter/hooks/useHelpCenterApi'
 import { SupportedLocalesProvider } from 'pages/settings/helpCenter/providers/SupportedLocales'
 import { assumeMock } from 'utils/testing'
 
@@ -24,11 +23,6 @@ jest.mock('react-router-dom', () => ({
     Route: jest.fn(() => <div>route</div>),
     Switch: jest.fn(({ children }) => <div>{children}</div>),
     Link: () => <div />,
-}))
-jest.mock('pages/settings/helpCenter/hooks/useHelpCenterApi', () => ({
-    HelpCenterApiClientProvider: jest.fn(({ children }) => (
-        <div>{children}</div>
-    )),
 }))
 jest.mock('pages/settings/helpCenter/providers/SupportedLocales', () => ({
     SupportedLocalesProvider: jest.fn(({ children }) => <div>{children}</div>),
@@ -43,10 +37,9 @@ const mockedRoute = Route as jest.Mock
 const mockedRenderAppSettings = assumeMock(renderAppSettings)
 
 describe('ContactForm', () => {
-    it('should call HelpCenterApiClientProvider and SupportedLocalesProvider', () => {
+    it('should call SupportedLocalesProvider', () => {
         render(<ContactForm />)
 
-        expect(HelpCenterApiClientProvider).toHaveBeenCalled()
         expect(SupportedLocalesProvider).toHaveBeenCalled()
     })
 

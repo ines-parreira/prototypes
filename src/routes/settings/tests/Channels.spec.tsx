@@ -7,7 +7,6 @@ import { PageSection } from 'config/pages'
 import { ADMIN_ROLE } from 'config/user'
 import { RevenueAddonApiClientProvider } from 'pages/convert/common/hooks/useConvertApi'
 import IntegrationDetail from 'pages/integrations/integration/Integration'
-import { HelpCenterApiClientProvider } from 'pages/settings/helpCenter/hooks/useHelpCenterApi'
 import { assumeMock } from 'utils/testing'
 
 import { Channels } from '../Channels'
@@ -20,11 +19,6 @@ jest.mock('react-router-dom', () => ({
 }))
 jest.mock('pages/convert/common/hooks/useConvertApi', () => ({
     RevenueAddonApiClientProvider: jest.fn(({ children }) => (
-        <div>{children}</div>
-    )),
-}))
-jest.mock('pages/settings/helpCenter/hooks/useHelpCenterApi', () => ({
-    HelpCenterApiClientProvider: jest.fn(({ children }) => (
         <div>{children}</div>
     )),
 }))
@@ -46,11 +40,10 @@ describe('Channels', () => {
         } as ReturnType<typeof useRouteMatch>)
     })
 
-    it('should call RevenueAddonApiClientProvider and HelpCenterApiClientProvider', () => {
+    it('should call RevenueAddonApiClientProvider', () => {
         render(<Channels />)
 
         expect(RevenueAddonApiClientProvider).toHaveBeenCalled()
-        expect(HelpCenterApiClientProvider).toHaveBeenCalled()
     })
 
     it('should call renderer and Route with correct props', () => {

@@ -7,7 +7,6 @@ import { useFlag } from 'core/flags'
 import HelpCenterCreationWizard from 'pages/settings/helpCenter/components/HelpCenterCreationWizard'
 import HelpCenterNewView from 'pages/settings/helpCenter/components/HelpCenterNewView'
 import HelpCenterStartView from 'pages/settings/helpCenter/components/HelpCenterStartView'
-import { HelpCenterApiClientProvider } from 'pages/settings/helpCenter/hooks/useHelpCenterApi'
 import { MigrationApiClientProvider } from 'pages/settings/helpCenter/hooks/useMigrationApi'
 import CurrentHelpCenter from 'pages/settings/helpCenter/providers/CurrentHelpCenter/CurrentHelpCenter'
 import { SupportedLocalesProvider } from 'pages/settings/helpCenter/providers/SupportedLocales'
@@ -20,35 +19,29 @@ export function HelpCenter() {
         FeatureFlagKey.HelpCenterCreationWizard,
     )
     return (
-        <HelpCenterApiClientProvider>
-            <MigrationApiClientProvider>
-                <SupportedLocalesProvider>
-                    <Switch>
-                        <Route
-                            path={[
-                                `${path}/`,
-                                `${path}/about`,
-                                `${path}/manage`,
-                            ]}
-                            exact
-                        >
-                            {renderAppSettings(HelpCenterStartView)}
-                        </Route>
+        <MigrationApiClientProvider>
+            <SupportedLocalesProvider>
+                <Switch>
+                    <Route
+                        path={[`${path}/`, `${path}/about`, `${path}/manage`]}
+                        exact
+                    >
+                        {renderAppSettings(HelpCenterStartView)}
+                    </Route>
 
-                        <Route path={`${path}/new`} exact>
-                            {renderAppSettings(
-                                isHelpCenterCreationWizardEnabled
-                                    ? HelpCenterCreationWizard
-                                    : HelpCenterNewView,
-                            )}
-                        </Route>
+                    <Route path={`${path}/new`} exact>
+                        {renderAppSettings(
+                            isHelpCenterCreationWizardEnabled
+                                ? HelpCenterCreationWizard
+                                : HelpCenterNewView,
+                        )}
+                    </Route>
 
-                        <Route path={`${path}/:helpCenterId`}>
-                            {renderAppSettings(CurrentHelpCenter)}
-                        </Route>
-                    </Switch>
-                </SupportedLocalesProvider>
-            </MigrationApiClientProvider>
-        </HelpCenterApiClientProvider>
+                    <Route path={`${path}/:helpCenterId`}>
+                        {renderAppSettings(CurrentHelpCenter)}
+                    </Route>
+                </Switch>
+            </SupportedLocalesProvider>
+        </MigrationApiClientProvider>
     )
 }

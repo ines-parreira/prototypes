@@ -9,7 +9,6 @@ import AppDetail from 'pages/integrations/integration/components/app/App'
 import IntegrationDetail from 'pages/integrations/integration/Integration'
 import IntegrationsStore from 'pages/integrations/Store'
 import MyIntegrations from 'pages/integrations/Store/Mine'
-import { HelpCenterApiClientProvider } from 'pages/settings/helpCenter/hooks/useHelpCenterApi'
 import { assumeMock } from 'utils/testing'
 
 import { renderAppSettings } from '../helpers/settingsRenderer'
@@ -20,12 +19,6 @@ jest.mock('react-router-dom', () => ({
     Switch: jest.fn(({ children }) => <div>{children}</div>),
     useRouteMatch: jest.fn(),
 }))
-jest.mock('pages/settings/helpCenter/hooks/useHelpCenterApi', () => ({
-    HelpCenterApiClientProvider: jest.fn(({ children }) => (
-        <div>{children}</div>
-    )),
-}))
-
 const ComponentToRender = () => <div>OK</div>
 jest.mock('../helpers/settingsRenderer', () => ({
     renderAppSettings: jest.fn(() => ComponentToRender),
@@ -42,12 +35,6 @@ describe('Integration', () => {
         mockedUseRouteMatch.mockReturnValue({
             path: basePath,
         } as ReturnType<typeof useRouteMatch>)
-    })
-
-    it('should call HelpCenterApiClientProvider', () => {
-        render(<Integrations />)
-
-        expect(HelpCenterApiClientProvider).toHaveBeenCalled()
     })
 
     it.each([

@@ -13,6 +13,7 @@ import APIView from 'pages/settings/api/APIView'
 import UserAuditList from 'pages/settings/audit/UserAuditList'
 import AutoMergeSettings from 'pages/settings/autoMerge/AutoMergeSettings'
 import BusinessHours from 'pages/settings/businessHours/BusinessHours'
+import { HelpCenterApiClientProvider } from 'pages/settings/helpCenter/hooks/useHelpCenterApi'
 import SidebarSettings from 'pages/settings/sidebar/SidebarSettings'
 import ManageTags from 'pages/settings/tags/ManageTags'
 import TicketAssignment from 'pages/settings/ticketAssignment/TicketAssignment'
@@ -72,6 +73,12 @@ jest.mock('settings/pages', () => ({
     ),
     FlowsSettings: () => <div>FlowsSettings</div>,
     OrderManagementSettings: () => <div>OrderManagementSettings</div>,
+}))
+
+jest.mock('pages/settings/helpCenter/hooks/useHelpCenterApi', () => ({
+    HelpCenterApiClientProvider: jest.fn(({ children }) => (
+        <div>{children}</div>
+    )),
 }))
 
 jest.mock('../helpers/settingsRenderer', () => ({
@@ -286,6 +293,12 @@ describe('Settings', () => {
         mockedUseRouteMatch.mockReturnValue({
             path: basePath,
         } as ReturnType<typeof useRouteMatch>)
+    })
+
+    it('should call HelpCenterApiClientProvider', () => {
+        render(<SettingRoutes />)
+
+        expect(HelpCenterApiClientProvider).toHaveBeenCalled()
     })
 
     it('should call renderer and Route according to the testing map ', () => {

@@ -5,7 +5,6 @@ import { Route, useRouteMatch } from 'react-router-dom'
 
 import { PageSection } from 'config/pages'
 import { AGENT_ROLE } from 'config/user'
-import { HelpCenterApiClientProvider } from 'pages/settings/helpCenter/hooks/useHelpCenterApi'
 import RuleDetailForm from 'pages/settings/rules/accountRules/RuleDetailForm'
 import RulesLibrary from 'pages/settings/rules/RulesLibrary'
 import RulesView from 'pages/settings/rules/RulesList'
@@ -18,11 +17,6 @@ jest.mock('react-router-dom', () => ({
     Route: jest.fn(() => <div>route</div>),
     Switch: jest.fn(({ children }) => <div>{children}</div>),
     useRouteMatch: jest.fn(),
-}))
-jest.mock('pages/settings/helpCenter/hooks/useHelpCenterApi', () => ({
-    HelpCenterApiClientProvider: jest.fn(({ children }) => (
-        <div>{children}</div>
-    )),
 }))
 
 const ComponentToRender = () => <div>OK</div>
@@ -41,12 +35,6 @@ describe('Rules', () => {
         mockedUseRouteMatch.mockReturnValue({
             path: basePath,
         } as ReturnType<typeof useRouteMatch>)
-    })
-
-    it('should call HelpCenterApiClientProvider', () => {
-        render(<Rules />)
-
-        expect(HelpCenterApiClientProvider).toHaveBeenCalled()
     })
 
     it.each([
