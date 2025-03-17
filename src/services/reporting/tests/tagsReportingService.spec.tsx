@@ -1,5 +1,6 @@
 import { renderHook } from '@testing-library/react-hooks'
 
+import { logEvent, SegmentEvent } from 'common/segment'
 import { tags } from 'fixtures/tag'
 import { getCsvFileNameWithDates } from 'hooks/reporting/common/utils'
 import * as ticketCountPerTag from 'hooks/reporting/ticket-insights/useTicketCountPerTag'
@@ -12,16 +13,23 @@ import {
     createReport,
     fetchTagsReportData,
     TAGS_REPORT_FILE_NAME,
+    useDownloadTagsReportData,
     useTagsReportData,
 } from 'services/reporting/tagsReportingService'
 import { TagsTableOrder } from 'state/ui/stats/tagsReportSlice'
-import { createCsv } from 'utils/file'
+import { createCsv, saveZippedFiles } from 'utils/file'
 import { assumeMock } from 'utils/testing'
 
 jest.mock('hooks/reporting/timeSeries')
 const fetchTagsTicketCountTimeSeriesMock = assumeMock(
     fetchTagsTicketCountTimeSeries,
 )
+
+jest.mock('common/segment')
+jest.mock('utils/file', () => ({
+    ...jest.requireActual('utils/file'),
+    saveZippedFiles: jest.fn(),
+}))
 
 describe('TagsReportingService', () => {
     const tag = tags[0]
@@ -201,6 +209,39 @@ describe('TagsReportingService', () => {
                 fileName,
                 isLoading: false,
             })
+        })
+    })
+
+    describe('useDownloadTagsReportData', () => {
+        it('should return loading state and download function', () => {
+            const { result } = renderHook(() => useDownloadTagsReportData())
+
+            expect(result.current).toEqual({
+                isLoading: false,
+                download: expect.any(Function),
+            })
+        })
+
+        it('should handle download with correct report data', async () => {
+            const { result } = renderHook(() => useDownloadTagsReportData())
+
+            await result.current.download()
+
+            expect(saveZippedFiles).toHaveBeenCalledWith(
+                { [fileName]: createCsv(expectedData) },
+                fileName,
+            )
+        })
+
+        it('should log event when download is called', async () => {
+            const { result } = renderHook(() => useDownloadTagsReportData())
+
+            await result.current.download()
+
+            expect(logEvent).toHaveBeenCalledWith(
+                SegmentEvent.StatDownloadClicked,
+                { name: 'all-metrics' },
+            )
         })
     })
 })

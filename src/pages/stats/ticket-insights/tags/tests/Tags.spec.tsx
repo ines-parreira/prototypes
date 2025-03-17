@@ -1,7 +1,9 @@
 import React, { ComponentProps } from 'react'
 
 import { fromJS } from 'immutable'
+import { useFlags } from 'launchdarkly-react-client-sdk'
 
+import { FeatureFlagKey } from 'config/featureFlags'
 import { account } from 'fixtures/account'
 import { billingState } from 'fixtures/billing'
 import {
@@ -13,6 +15,7 @@ import {
 import { AUTO_QA_FILTER_KEYS } from 'pages/stats/common/filters/constants'
 import FiltersPanelWrapper from 'pages/stats/common/filters/FiltersPanelWrapper/FiltersPanelWrapper'
 import { AllUsedTagsTableChart } from 'pages/stats/ticket-insights/tags/AllUsedTagsTableChart'
+import { TagActionsMenu } from 'pages/stats/ticket-insights/tags/TagActionsMenu'
 import { Tags } from 'pages/stats/ticket-insights/tags/Tags'
 import {
     TAGS_OPTIONAL_FILTERS,
@@ -27,6 +30,9 @@ import { RootState } from 'state/types'
 import { drillDownSlice, initialState } from 'state/ui/stats/drillDownSlice'
 import { initialState as uiStatsInitialState } from 'state/ui/stats/filtersSlice'
 import { assumeMock, renderWithStore } from 'utils/testing'
+
+jest.mock('launchdarkly-react-client-sdk')
+const useFlagsMock = assumeMock(useFlags)
 
 jest.mock(
     'pages/stats/common/filters/FiltersPanelWrapper',
@@ -46,6 +52,8 @@ jest.mock('pages/stats/ticket-insights/tags/TagsReportDownloadDataButton')
 const TagsReportDownloadDataButtonMock = assumeMock(
     TagsReportDownloadDataButton,
 )
+jest.mock('pages/stats/ticket-insights/tags/TagActionsMenu')
+const TagActionsMenuMock = assumeMock(TagActionsMenu)
 
 const componentMock = () => <div />
 
@@ -68,6 +76,10 @@ describe('<Tags>', () => {
         TagsTrendChartMock.mockImplementation(componentMock)
         TopUsedTagsChartMock.mockImplementation(componentMock)
         TagsReportDownloadDataButtonMock.mockImplementation(componentMock)
+        TagActionsMenuMock.mockImplementation(componentMock)
+        useFlagsMock.mockReturnValue({
+            [FeatureFlagKey.ReportingFilteringAndCalculationsTagsReport]: false,
+        })
     })
 
     it('should render new tags page', () => {
@@ -129,5 +141,27 @@ describe('<Tags>', () => {
         renderWithStore(<Tags />, defaultState)
 
         expect(allUsedTagsTableChartMock).toHaveBeenCalled()
+    })
+
+    it('should render TagActionsMenu when feature flag is enabled', () => {
+        useFlagsMock.mockReturnValue({
+            [FeatureFlagKey.ReportingFilteringAndCalculationsTagsReport]: true,
+        })
+
+        renderWithStore(<Tags />, defaultState)
+
+        expect(TagActionsMenuMock).toHaveBeenCalled()
+        expect(TagsReportDownloadDataButtonMock).not.toHaveBeenCalled()
+    })
+
+    it('should render TagsReportDownloadDataButton when feature flag is disabled', () => {
+        useFlagsMock.mockReturnValue({
+            [FeatureFlagKey.ReportingFilteringAndCalculationsTagsReport]: false,
+        })
+
+        renderWithStore(<Tags />, defaultState)
+
+        expect(TagActionsMenuMock).not.toHaveBeenCalled()
+        expect(TagsReportDownloadDataButtonMock).toHaveBeenCalled()
     })
 })

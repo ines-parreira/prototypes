@@ -1,24 +1,16 @@
 import React from 'react'
 
-import { logEvent, SegmentEvent } from 'common/segment'
 import { DownloadDataButton } from 'pages/stats/support-performance/components/DownloadDataButton'
-import { useTagsReportData } from 'services/reporting/tagsReportingService'
-import { saveZippedFiles } from 'utils/file'
+import { useDownloadTagsReportData } from 'services/reporting/tagsReportingService'
 
 const DOWNLOAD_BUTTON_TITLE = 'Download Tags Data'
 
 export const TagsReportDownloadDataButton = () => {
-    const { files, fileName, isLoading } = useTagsReportData()
+    const { download, isLoading } = useDownloadTagsReportData()
 
     return (
         <DownloadDataButton
-            onClick={async () => {
-                logEvent(SegmentEvent.StatDownloadClicked, {
-                    name: 'all-metrics',
-                })
-
-                await saveZippedFiles(files, fileName)
-            }}
+            onClick={download}
             disabled={isLoading}
             title={DOWNLOAD_BUTTON_TITLE}
         />

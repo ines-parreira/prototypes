@@ -1,5 +1,8 @@
+import { useCallback } from 'react'
+
 import { Tag } from '@gorgias/api-queries'
 
+import { logEvent, SegmentEvent } from 'common/segment'
 import { getCsvFileNameWithDates } from 'hooks/reporting/common/utils'
 import {
     FormattedDataItem,
@@ -13,7 +16,7 @@ import { Period, StatsFilters } from 'models/stat/types'
 import { getTagName } from 'pages/stats/ticket-insights/tags/helpers'
 import { formatDates } from 'pages/stats/utils'
 import { TagsTableOrder } from 'state/ui/stats/tagsReportSlice'
-import { createCsv } from 'utils/file'
+import { createCsv, saveZippedFiles } from 'utils/file'
 import { getFilterDateRange } from 'utils/reporting'
 
 export const TAGS_REPORT_FILE_NAME = 'all-used-tags'
@@ -102,4 +105,18 @@ export const fetchTagsReportData = async (
         ),
         isLoading: false,
     }))
+}
+
+export const useDownloadTagsReportData = () => {
+    const { files, fileName, isLoading } = useTagsReportData()
+
+    const download = useCallback(async () => {
+        logEvent(SegmentEvent.StatDownloadClicked, {
+            name: 'all-metrics',
+        })
+
+        await saveZippedFiles(files, fileName)
+    }, [files, fileName])
+
+    return { isLoading, download }
 }

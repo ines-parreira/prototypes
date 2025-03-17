@@ -1,34 +1,26 @@
 import React from 'react'
 
-import { act, fireEvent, screen } from '@testing-library/react'
+import { fireEvent, screen } from '@testing-library/react'
 
-import { logEvent, SegmentEvent } from 'common/segment'
 import { DOWNLOAD_DATA_BUTTON_LABEL } from 'pages/stats/constants'
 import { TagsReportDownloadDataButton } from 'pages/stats/ticket-insights/tags/TagsReportDownloadDataButton'
-import { useTagsReportData } from 'services/reporting/tagsReportingService'
-import { saveZippedFiles } from 'utils/file'
+import { useDownloadTagsReportData } from 'services/reporting/tagsReportingService'
 import { assumeMock, renderWithStore } from 'utils/testing'
 
 jest.mock('services/reporting/tagsReportingService')
-const useTagsReportDataMock = assumeMock(useTagsReportData)
+const useDownloadTagsReportDataMock = assumeMock(useDownloadTagsReportData)
 
-jest.mock('utils/file')
-const saveZippedFilesMock = assumeMock(saveZippedFiles)
-
-jest.mock('common/segment')
-const logEventMock = assumeMock(logEvent)
+const getDownloadButton = () =>
+    screen.getByRole('button', {
+        name: new RegExp(DOWNLOAD_DATA_BUTTON_LABEL),
+    })
 
 describe('<TagsReportDownloadDataButton />', () => {
-    const fileName = 'someFileName'
-    const report = 'reportData'
-    const reportFiles = {
-        [fileName]: report,
-    }
+    const downloadMock = jest.fn()
 
     beforeEach(() => {
-        useTagsReportDataMock.mockReturnValue({
-            files: reportFiles,
-            fileName,
+        useDownloadTagsReportDataMock.mockReturnValue({
+            download: downloadMock,
             isLoading: false,
         })
     })
@@ -36,33 +28,25 @@ describe('<TagsReportDownloadDataButton />', () => {
     it('should render the Button', () => {
         renderWithStore(<TagsReportDownloadDataButton />, {})
 
-        expect(
-            screen.getByRole('button', {
-                name: new RegExp(DOWNLOAD_DATA_BUTTON_LABEL),
-            }),
-        ).toBeInTheDocument()
+        expect(getDownloadButton()).toBeInTheDocument()
     })
 
-    it('should call SaveReport on click', () => {
+    it('should call `download` on click', () => {
         renderWithStore(<TagsReportDownloadDataButton />, {})
 
-        fireEvent.click(screen.getByRole('button'))
+        fireEvent.click(getDownloadButton())
 
-        expect(saveZippedFilesMock).toHaveBeenCalledWith(reportFiles, fileName)
+        expect(downloadMock).toHaveBeenCalled()
     })
 
-    it('should send event to segment and call saveReport on download data button click', () => {
-        renderWithStore(<TagsReportDownloadDataButton />, {})
-
-        act(() => {
-            fireEvent.click(screen.getByRole('button'))
+    it('should disable button when loading', () => {
+        useDownloadTagsReportDataMock.mockReturnValue({
+            download: downloadMock,
+            isLoading: true,
         })
 
-        expect(logEventMock).toHaveBeenCalledWith(
-            SegmentEvent.StatDownloadClicked,
-            expect.objectContaining({
-                name: 'all-metrics',
-            }),
-        )
+        renderWithStore(<TagsReportDownloadDataButton />, {})
+
+        expect(getDownloadButton()).toHaveAttribute('aria-disabled', 'true')
     })
 })
