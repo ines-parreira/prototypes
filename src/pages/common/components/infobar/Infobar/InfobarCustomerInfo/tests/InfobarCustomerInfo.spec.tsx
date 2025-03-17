@@ -17,17 +17,14 @@ import {
 } from 'constants/integration'
 import { useFlag } from 'core/flags'
 import { RootState, StoreDispatch } from 'state/types'
+import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 import { assumeMock } from 'utils/testing'
 
-import { mockQueryClient } from '../../../../../../../tests/reactQueryTestingUtils'
 import InfobarCustomerInfo from '../InfobarCustomerInfo'
 
 jest.mock('core/flags', () => ({
     ...jest.requireActual('core/flags'),
     useFlag: jest.fn(() => false),
-}))
-jest.mock('../LegacyCustomerTimelineButton', () => ({
-    LegacyCustomerTimelineButton: () => <div>LegacyCustomerTimelineButton</div>,
 }))
 jest.mock('../CustomerTimelineWidget', () => ({
     CustomerTimelineWidget: () => <div>CustomerTimelineWidget</div>,
@@ -253,7 +250,9 @@ describe('<InfobarCustomerInfo/>', () => {
                 </Provider>,
             )
 
-            expect(screen.getByText('LegacyCustomerTimelineButton'))
+            expect(
+                screen.getByText('CustomerTimelineWidget'),
+            ).toBeInTheDocument()
 
             expect(container.firstChild).toMatchSnapshot()
         },

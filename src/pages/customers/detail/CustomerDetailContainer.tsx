@@ -1,6 +1,5 @@
 import React, { useEffect, useMemo, useState } from 'react'
 
-import { fromJS, List } from 'immutable'
 import _pick from 'lodash/pick'
 import { connect, ConnectedProps } from 'react-redux'
 import { useParams } from 'react-router-dom'
@@ -18,14 +17,12 @@ import CreateTicketButton from 'pages/common/components/CreateTicket/CreateTicke
 import Loader from 'pages/common/components/Loader/Loader'
 import Modal from 'pages/common/components/modal/Modal'
 import ModalHeader from 'pages/common/components/modal/ModalHeader'
-import LegacyTimeline from 'pages/common/components/timeline/LegacyTimeline'
 import Timeline from 'pages/common/components/timeline/Timeline'
 import CustomerForm from 'pages/customers/common/components/CustomerForm'
 import { fetchCustomer, fetchCustomerHistory } from 'state/customers/actions'
 import * as customersHelpers from 'state/customers/helpers'
 import {
     DEPRECATED_getActiveCustomer,
-    getCustomerHistory,
     getLoading,
     makeGetActiveCustomerChannelsByType,
 } from 'state/customers/selectors'
@@ -40,18 +37,12 @@ const getActiveCustomerTicketChannels = makeGetActiveCustomerChannelsByType([
 
 export const CustomerDetailContainer = ({
     activeCustomer,
-    customerHistory,
     customersLoading,
     fetchCustomer,
     fetchCustomerHistory,
 }: ConnectedProps<typeof connector>) => {
-    const hasNewTimeline = useFlag(FeatureFlagKey.CustomerTimeline, false)
     const filteredChannels = useAppSelector(getActiveCustomerTicketChannels)
     const [isCustomerFormOpen, setIsCustomerFormOpen] = useState(false)
-    const historyLength = useMemo(
-        () => (customerHistory.get('tickets', fromJS([])) as List<any>).size,
-        [customerHistory],
-    )
     const params = useParams<{ customerId?: string }>()
     const customerId = useMemo(() => params.customerId || '', [params])
     const { setRecentItem } = useRecentItems<PickedCustomer>(
@@ -121,23 +112,7 @@ export const CustomerDetailContainer = ({
                     )}
                 </div>
             </div>
-
-            {hasNewTimeline ? (
-                <Timeline />
-            ) : !!customersLoading.get('history') ? (
-                <Loader message="Loading history..." />
-            ) : customerHistory.get('triedLoading', true) && !historyLength ? (
-                <p>This customer has no activity recorded</p>
-            ) : (
-                <div className="my-4">
-                    <LegacyTimeline
-                        customerHistory={customerHistory}
-                        displayAll
-                        revert
-                    />
-                </div>
-            )}
-
+            <Timeline />
             <Modal
                 isOpen={isCustomerFormOpen}
                 onClose={() => setIsCustomerFormOpen(false)}
@@ -159,7 +134,6 @@ export const CustomerDetailContainer = ({
 const connector = connect(
     (state: RootState) => ({
         activeCustomer: DEPRECATED_getActiveCustomer(state),
-        customerHistory: getCustomerHistory(state),
         customersLoading: getLoading(state),
     }),
     {

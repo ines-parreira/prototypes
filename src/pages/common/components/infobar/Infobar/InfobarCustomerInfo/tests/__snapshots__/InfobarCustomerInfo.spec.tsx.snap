@@ -49,8 +49,14 @@ exports[`<InfobarCustomerInfo/> should render basic customer info and empty widg
     <div>
       CustomerChannels
     </div>
+    <div
+      class="ui-separator-separator-f4da separator"
+      data-direction="horizontal"
+      data-variant="solid"
+      role="separator"
+    />
     <div>
-      LegacyCustomerTimelineButton
+      CustomerTimelineWidget
     </div>
   </div>
   <div>
@@ -108,8 +114,14 @@ exports[`<InfobarCustomerInfo/> sources render basic customer info and widgets b
     <div>
       CustomerChannels
     </div>
+    <div
+      class="ui-separator-separator-f4da separator"
+      data-direction="horizontal"
+      data-variant="solid"
+      role="separator"
+    />
     <div>
-      LegacyCustomerTimelineButton
+      CustomerTimelineWidget
     </div>
   </div>
   <div>

@@ -1,10 +1,8 @@
 import React, { ComponentProps } from 'react'
 
-import { render } from '@testing-library/react'
+import { render, waitFor } from '@testing-library/react'
 import { fromJS } from 'immutable'
 
-import useFlag from 'core/flags/hooks/useFlag'
-import LegacyTimeline from 'pages/common/components/timeline/LegacyTimeline'
 import Timeline from 'pages/common/components/timeline/Timeline'
 import { getCustomersState } from 'state/customers/selectors'
 import {
@@ -12,11 +10,10 @@ import {
     getDisplayHistory,
     getTicketState,
 } from 'state/ticket/selectors'
-import { assumeMock } from 'utils/testing'
+import { assumeMock, getLastMockCall } from 'utils/testing'
 
 import TicketView from '../TicketView'
 
-jest.mock('core/flags/hooks/useFlag')
 jest.mock('hooks/useAppSelector', () => jest.fn((fn: () => unknown) => fn()))
 jest.mock('state/customers/selectors', () => {
     const original = jest.requireActual('state/customers/selectors')
@@ -39,9 +36,6 @@ jest.mock('state/ticket/selectors', () => {
 jest.mock('pages/common/components/timeline/Timeline', () =>
     jest.fn(() => <div>Timeline</div>),
 )
-jest.mock('pages/common/components/timeline/LegacyTimeline', () =>
-    jest.fn(() => <div>Legacy Timeline</div>),
-)
 jest.mock('../TicketBody', () => () => <div>TicketBody</div>)
 jest.mock('../TicketBodyNonVirtualized', () => () => (
     <div>TicketBodyNonVirtualized</div>
@@ -51,10 +45,6 @@ jest.mock('../TicketHeaderWrapper/TicketHeaderWrapper', () => () => (
 ))
 jest.mock('../ReplyForm', () => () => <div>ReplyForm</div>)
 
-const useFlagMock = assumeMock(useFlag)
-const LegacyTimelineMock = assumeMock(
-    LegacyTimeline as unknown as typeof Timeline,
-)
 const TimelineMock = assumeMock(Timeline)
 const getCustomersStateMock = assumeMock(getCustomersState)
 const getDisplayHistoryMock = assumeMock(getDisplayHistory)
@@ -63,6 +53,7 @@ const getBodyMock = assumeMock(getBody)
 
 const mockedDispatch = jest.fn()
 jest.mock('hooks/useAppDispatch', () => () => mockedDispatch)
+const scrollToMock = jest.fn()
 
 describe('<TicketView />', () => {
     const minProps = {
@@ -73,7 +64,7 @@ describe('<TicketView />', () => {
     } as unknown as ComponentProps<typeof TicketView>
 
     beforeEach(() => {
-        useFlagMock.mockReturnValue(false)
+        HTMLElement.prototype.scrollTo = jest.fn(scrollToMock)
         getCustomersStateMock.mockReturnValue(
             fromJS({}) as ReturnType<typeof getCustomersState>,
         )
@@ -105,20 +96,11 @@ describe('<TicketView />', () => {
         expect(container.firstChild).toMatchSnapshot()
     })
 
-    it('should call the `LegacyTimeline` component when feature flag is off', () => {
+    it('should call the `Timeline` with correct props', async () => {
         getDisplayHistoryMock.mockReturnValue(
             (() => true) as unknown as ReturnType<typeof getDisplayHistory>,
         )
-        render(<TicketView {...minProps} />)
 
-        expect(LegacyTimelineMock).toHaveBeenCalled()
-    })
-
-    it('should call the `Timeline` component when feature flag is on', () => {
-        getDisplayHistoryMock.mockReturnValue(
-            (() => true) as unknown as ReturnType<typeof getDisplayHistory>,
-        )
-        useFlagMock.mockReturnValue(true)
         render(<TicketView {...minProps} />)
 
         expect(TimelineMock).toHaveBeenCalledWith(
@@ -127,6 +109,14 @@ describe('<TicketView />', () => {
                 ticketId: 0,
             },
             {},
+        )
+
+        getLastMockCall(TimelineMock)[0].onLoaded?.()
+
+        await waitFor(() =>
+            expect(scrollToMock).toHaveBeenCalledWith({
+                top: 0,
+            }),
         )
     })
 })

@@ -33,7 +33,6 @@ import CustomerOptionsDropdownButton from './CustomerOptionsDropdown'
 import { CustomerTimelineWidget } from './CustomerTimelineWidget'
 import { useShouldShowProfileSync } from './helpers'
 import InfobarWidgets from './InfobarWidgets/InfobarWidgets'
-import { LegacyCustomerTimelineButton } from './LegacyCustomerTimelineButton'
 
 import css from './InfobarCustomerInfo.less'
 
@@ -80,7 +79,6 @@ const InfobarCustomerInfo = ({
     sources,
     widgets,
 }: OwnProps) => {
-    const hasNewTimeline = useFlag(FeatureFlagKey.CustomerTimeline, false)
     const shopifyCustomerProfileCreationFeatureEnabled = useFlag(
         FeatureFlagKey.ShopifyCustomerProfileCreation,
         false,
@@ -300,14 +298,8 @@ const InfobarCustomerInfo = ({
                 >
                     <CustomerNote customer={customer} />
                 </CustomerChannels>
-                {hasNewTimeline ? (
-                    <>
-                        <Separator className={css.separator} />
-                        <CustomerTimelineWidget isEditing={isEditing} />
-                    </>
-                ) : (
-                    <LegacyCustomerTimelineButton isEditing={isEditing} />
-                )}
+                <Separator className={css.separator} />
+                <CustomerTimelineWidget isEditing={isEditing} />
             </div>
             {areSourcesReady(sources, widgets.get('currentContext', ''))
                 ? renderWidgets()

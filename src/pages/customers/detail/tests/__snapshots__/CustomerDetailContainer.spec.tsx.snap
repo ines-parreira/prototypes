@@ -44,71 +44,8 @@ exports[`<CustomerDetailContainer /> should display the customer and its history
       </button>
     </div>
   </div>
-  <div
-    class="my-4"
-  >
-    <div
-      class="container"
-    >
-      <a
-        class="component card"
-        href="/app/ticket/152"
-      >
-        <div
-          class="body d-flex align-items-start card-body"
-        >
-          <div
-            class="meta"
-          >
-            <div
-              class="ui-badge-badge-7025 statusLabel ui-badge-uppercase-7025"
-              style="border-radius: 100px;"
-            >
-              open
-            </div>
-            <div
-              class="AgentLabel assigneeLabel"
-            >
-              <span
-                aria-label="Alex Plugaru icon"
-                class="material-icons md-2"
-              >
-                account_circle
-              </span>
-              <span
-                class="name"
-              >
-                Alex Plugaru
-              </span>
-            </div>
-          </div>
-          <div
-            class="details"
-          >
-            <h5
-              class="subject"
-            >
-              Great ticket
-            </h5>
-            <div
-              class="excerpt"
-            />
-          </div>
-          <div
-            class="secondMeta d-flex align-items-center justify-content-end"
-          >
-            <div>
-              2017-07-31T23:07:35.150000+00:00
-            </div>
-            <i
-              class="icon source-icon d-inline-block material-icons secondary sourceIcon uncolored ml-3"
-            >
-              email
-            </i>
-          </div>
-        </div>
-      </a>
-    </div>
+  <div>
+    Timeline
   </div>
 </div>
 `;

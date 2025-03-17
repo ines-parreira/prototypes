@@ -1,14 +1,11 @@
 import React, { useEffect, useMemo, useRef } from 'react'
 
 import classnames from 'classnames'
-import { fromJS, List, Map } from 'immutable'
+import { List } from 'immutable'
 
 import { logEvent, SegmentEvent } from 'common/segment'
-import { FeatureFlagKey } from 'config/featureFlags'
-import useFlag from 'core/flags/hooks/useFlag'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
-import LegacyTimeline from 'pages/common/components/timeline/LegacyTimeline'
 import Timeline from 'pages/common/components/timeline/Timeline'
 import TicketBody from 'pages/tickets/detail/components/TicketBody'
 import { getCustomersState } from 'state/customers/selectors'
@@ -44,7 +41,6 @@ export const TicketView = ({
     onGoToNextTicket,
     onToggleUnread,
 }: Props) => {
-    const hasNewTimeline = useFlag(FeatureFlagKey.CustomerTimeline, false)
     const dispatch = useAppDispatch()
     const pageRef = useRef<HTMLDivElement>(null)
     const ticketContentRef = useRef<HTMLDivElement>(null)
@@ -53,11 +49,6 @@ export const TicketView = ({
     const isHistoryDisplayed = useAppSelector(getDisplayHistory)
     const ticket = useAppSelector(getTicketState)
     const ticketBody = useAppSelector(getBody)
-
-    const customerHistory = useMemo(
-        () => (customers.get('customerHistory') as Map<any, any>) || fromJS({}),
-        [customers],
-    )
 
     useEffect(() => {
         const ticketContent = ticketContentRef.current
@@ -118,22 +109,15 @@ export const TicketView = ({
                     </div>
 
                     <div className={classnames(css.timelineContainer, 'pb-4')}>
-                        {hasNewTimeline ? (
-                            <Timeline
-                                ticketId={ticket.get('id')}
-                                onLoaded={() => {
-                                    // Make sure react has the time to render the list before scrolling
-                                    window.setTimeout(() => {
-                                        pageRef.current?.scrollTo({ top: 0 })
-                                    })
-                                }}
-                            />
-                        ) : (
-                            <LegacyTimeline
-                                currentTicketId={ticket.get('id')}
-                                customerHistory={customerHistory}
-                            />
-                        )}
+                        <Timeline
+                            ticketId={ticket.get('id')}
+                            onLoaded={() => {
+                                // Make sure react has the time to render the list before scrolling
+                                window.setTimeout(() => {
+                                    pageRef.current?.scrollTo({ top: 0 })
+                                })
+                            }}
+                        />
                     </div>
                 </div>
             )}

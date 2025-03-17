@@ -10,7 +10,6 @@ import thunk from 'redux-thunk'
 
 import useFlag from 'core/flags/hooks/useFlag'
 import { customer } from 'fixtures/customer'
-import { ticket } from 'fixtures/ticket'
 import Timeline from 'pages/common/components/timeline/Timeline'
 import { RootState, StoreDispatch } from 'state/types'
 import { assumeMock, renderWithRouter } from 'utils/testing'
@@ -71,11 +70,6 @@ describe('<CustomerDetailContainer />', () => {
                 <CustomerDetailContainer
                     {...minProps}
                     activeCustomer={fromJS(mockActiveCustomer)}
-                    customerHistory={fromJS({
-                        hasHistory: true,
-                        triedLoading: true,
-                        tickets: fromJS([ticket]),
-                    })}
                 />
             </Provider>,
             {
@@ -188,50 +182,6 @@ describe('<CustomerDetailContainer />', () => {
         expect(getByText(/Update customer: /i)).toBeTruthy()
     })
 
-    it('should display loader when history of customer is loading', () => {
-        const { getByText } = renderWithRouter(
-            <Provider store={store}>
-                <CustomerDetailContainer
-                    {...minProps}
-                    activeCustomer={fromJS({ id: 1 })}
-                    customersLoading={Map({
-                        history: true,
-                    })}
-                />
-            </Provider>,
-            {
-                path: '/foo/:customerId?',
-                route: '/foo/1',
-            },
-        )
-
-        expect(getByText(/Loading history/i)).toBeTruthy()
-    })
-
-    it('should display message when no history is present', () => {
-        const { getByText } = renderWithRouter(
-            <Provider store={store}>
-                <CustomerDetailContainer
-                    {...minProps}
-                    activeCustomer={fromJS(mockActiveCustomer)}
-                    customerHistory={fromJS({
-                        hasHistory: true,
-                        triedLoading: true,
-                        tickets: fromJS([]),
-                    })}
-                />
-            </Provider>,
-            {
-                path: '/foo/:customerId?',
-                route: '/foo/1',
-            },
-        )
-
-        expect(
-            getByText(/This customer has no activity recorded/i),
-        ).toBeTruthy()
-    })
-
     it('should call setRecentItems on mount', () => {
         renderWithRouter(
             <Provider store={store}>
@@ -249,18 +199,12 @@ describe('<CustomerDetailContainer />', () => {
         expect(mockSetRecentItem).toHaveBeenCalledWith(mockActiveCustomer)
     })
 
-    it('should call `Timeline` component when feature flag is enabled', () => {
-        useFlagMock.mockReturnValue(true)
+    it('should call `Timeline` component', () => {
         renderWithRouter(
             <Provider store={store}>
                 <CustomerDetailContainer
                     {...minProps}
                     activeCustomer={fromJS(mockActiveCustomer)}
-                    customerHistory={fromJS({
-                        hasHistory: true,
-                        triedLoading: true,
-                        tickets: fromJS([ticket]),
-                    })}
                 />
             </Provider>,
             {
