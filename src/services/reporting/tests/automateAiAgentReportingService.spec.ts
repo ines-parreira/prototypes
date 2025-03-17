@@ -75,6 +75,7 @@ const performance = {
         agents: [],
     },
     summary: metricBuilder({ value: 129 }),
+    total: metricBuilder({ value: 230 }),
     columnsOrder: [AgentsTableColumn.AgentName],
     rowsOrder: [],
 }
@@ -125,6 +126,7 @@ describe('automateAiAgentReportingService', () => {
                 agents,
                 performance.data,
                 performance.summary,
+                performance.total,
                 performance.columnsOrder,
                 [],
             )

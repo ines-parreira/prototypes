@@ -36,12 +36,21 @@ import { fetchOneTouchTicketsPercentageMetricTrend } from 'hooks/reporting/suppo
 import { fetchZeroTouchTicketsMetricTrend } from 'hooks/reporting/support-performance/overview/useZeroTouchTicketsMetricTrend'
 import { useStatsFilters } from 'hooks/reporting/support-performance/useStatsFilters'
 import { useAgentsTableConfigSetting } from 'hooks/reporting/useAgentsTableConfigSetting'
-import { fetchMessagesSentPerHour } from 'hooks/reporting/useMessagesSentPerHour'
+import {
+    fetchMessagesSentPerHour,
+    fetchMessagesSentPerHourPerAgentTotalCapacity,
+} from 'hooks/reporting/useMessagesSentPerHour'
 import { fetchMessagesSentPerHourPerAgent } from 'hooks/reporting/useMessagesSentPerHourPerAgent'
 import { MetricWithDecile } from 'hooks/reporting/useMetricPerDimension'
-import { fetchTicketsClosedPerHour } from 'hooks/reporting/useTicketsClosedPerHour'
+import {
+    fetchTicketsClosedPerHour,
+    fetchTicketsClosedPerHourPerAgentTotalCapacity,
+} from 'hooks/reporting/useTicketsClosedPerHour'
 import { fetchTicketsClosedPerHourPerAgent } from 'hooks/reporting/useTicketsClosedPerHourPerAgent'
-import { fetchTicketsRepliedPerHour } from 'hooks/reporting/useTicketsRepliedPerHour'
+import {
+    fetchTicketsRepliedPerHour,
+    fetchTicketsRepliedPerHourPerAgentTotalCapacity,
+} from 'hooks/reporting/useTicketsRepliedPerHour'
 import { fetchTicketsRepliedPerHourPerAgent } from 'hooks/reporting/useTicketsRepliedPerHourPerAgent'
 import useAppSelector from 'hooks/useAppSelector'
 import { Channel } from 'models/channel/types'
@@ -212,6 +221,23 @@ export const agentsSummaryDataSources: TableSummaryDataSources<AgentsReportData>
         },
     ]
 
+export const agentsTotalDataSources: TableSummaryDataSources<AgentsReportData> =
+    [
+        ...agentsSummaryDataSources,
+        {
+            fetchData: fetchTicketsRepliedPerHourPerAgentTotalCapacity,
+            title: 'repliedTicketsPerHourMetric',
+        },
+        {
+            fetchData: fetchMessagesSentPerHourPerAgentTotalCapacity,
+            title: 'messagesSentPerHourMetric',
+        },
+        {
+            fetchData: fetchTicketsClosedPerHourPerAgentTotalCapacity,
+            title: 'closedTicketsPerHourMetric',
+        },
+    ]
+
 export const useDownloadAgentsPerformanceData = () => {
     const agents = useAppSelector<User[]>(getSortedAgents)
     const { columnsOrder, rowsOrder } = useAgentsTableConfigSetting()
@@ -229,10 +255,16 @@ export const useDownloadAgentsPerformanceData = () => {
             agentsSummaryDataSources,
         )
 
+    const { data: totalData, isFetching: totalIsLoading } = useTableReportData<
+        keyof AgentsReportSummaryData,
+        Metric
+    >(cleanStatsFilters, userTimezone, agentsTotalDataSources)
+
     const { files } = createAgentsReport(
         agents,
         reportData,
         summaryData,
+        totalData,
         columnsOrder,
         rowsOrder,
         getCsvFileNameWithDates(
@@ -248,7 +280,7 @@ export const useDownloadAgentsPerformanceData = () => {
     return {
         files,
         fileName,
-        isLoading: isFetching || summaryIsLoading,
+        isLoading: isFetching || summaryIsLoading || totalIsLoading,
     }
 }
 export const fetchAgentsTableReportData = async (
@@ -268,6 +300,8 @@ export const fetchAgentsTableReportData = async (
 ) => {
     const metricConfig = agentsMetricsDataSources
     const summaryConfig = agentsSummaryDataSources
+    const totalConfig = agentsTotalDataSources
+
     const fileName = getCsvFileNameWithDates(
         cleanStatsFilters.period,
         AGENTS_REPORT_FILE_NAME,
@@ -275,14 +309,16 @@ export const fetchAgentsTableReportData = async (
     return Promise.all([
         fetchTableReportData(cleanStatsFilters, userTimezone, metricConfig),
         fetchTableReportData(cleanStatsFilters, userTimezone, summaryConfig),
+        fetchTableReportData(cleanStatsFilters, userTimezone, totalConfig),
     ])
-        .then(([metrics, summary]) => {
+        .then(([metrics, summary, total]) => {
             return {
                 isLoading: false,
                 ...createAgentsReport(
                     context.agents,
                     metrics.data,
                     summary.data,
+                    total.data,
                     context.columnsOrder,
                     context.rowsOrder,
                     fileName,

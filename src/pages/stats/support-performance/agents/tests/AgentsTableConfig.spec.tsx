@@ -4,9 +4,9 @@ import {
     useMessagesSentMetric,
     useTicketsRepliedMetric,
 } from 'hooks/reporting/metrics'
-import { useMessagesSentPerHour } from 'hooks/reporting/useMessagesSentPerHour'
-import { useTicketsClosedPerHour } from 'hooks/reporting/useTicketsClosedPerHour'
-import { useTicketsRepliedPerHour } from 'hooks/reporting/useTicketsRepliedPerHour'
+import { useMessagesSentPerHourPerAgentTotalCapacity } from 'hooks/reporting/useMessagesSentPerHour'
+import { useTicketsClosedPerHourPerAgentTotalCapacity } from 'hooks/reporting/useTicketsClosedPerHour'
+import { useTicketsRepliedPerHourPerAgentTotalCapacity } from 'hooks/reporting/useTicketsRepliedPerHour'
 import { StatsFilters } from 'models/stat/types'
 import { getTotalsQuery } from 'pages/stats/support-performance/agents/AgentsTableConfig'
 import { AgentsTableColumn } from 'state/ui/stats/types'
@@ -33,14 +33,14 @@ describe('getTotalsQuery', () => {
         expect(result).toBe(useClosedTicketsMetric)
     })
 
-    it('should return useTicketsClosedPerHour for ClosedTicketsPerHour column', () => {
+    it('should return useTicketsClosedPerHourPerAgentTotalCapacity for ClosedTicketsPerHour column', () => {
         const result = getTotalsQuery(AgentsTableColumn.ClosedTicketsPerHour)
-        expect(result).toBe(useTicketsClosedPerHour)
+        expect(result).toBe(useTicketsClosedPerHourPerAgentTotalCapacity)
     })
 
-    it('should return useTicketsRepliedPerHour for RepliedTicketsPerHour column', () => {
+    it('should return useTicketsRepliedPerHourPerAgentTotalCapacity for RepliedTicketsPerHour column', () => {
         const result = getTotalsQuery(AgentsTableColumn.RepliedTicketsPerHour)
-        expect(result).toBe(useTicketsRepliedPerHour)
+        expect(result).toBe(useTicketsRepliedPerHourPerAgentTotalCapacity)
     })
 
     it('should return useTicketsRepliedMetric for RepliedTickets column', () => {
@@ -58,9 +58,9 @@ describe('getTotalsQuery', () => {
         expect(result).toBe(useMessagesReceivedMetric)
     })
 
-    it('should return useMessagesSentPerHour for MessagesSentPerHour column', () => {
+    it('should return useMessagesSentPerHourPerAgentTotalCapacity for MessagesSentPerHour column', () => {
         const result = getTotalsQuery(AgentsTableColumn.MessagesSentPerHour)
-        expect(result).toBe(useMessagesSentPerHour)
+        expect(result).toBe(useMessagesSentPerHourPerAgentTotalCapacity)
     })
 
     describe('columns that return emptyMetricQueryHook', () => {

@@ -28,6 +28,7 @@ export const saveReport = async (
     performance: {
         data: AgentsPerformanceReportData
         summary: Omit<AgentsPerformanceReportData<Metric>, 'agents'>
+        total: Omit<AgentsPerformanceReportData<Metric>, 'agents'>
         columnsOrder: AgentsTableColumn[]
         rowsOrder: AgentsTableRow[]
     },
@@ -48,6 +49,7 @@ export const saveReport = async (
         agents,
         performance.data,
         performance.summary,
+        performance.total,
         performance.columnsOrder,
         performance.rowsOrder,
     )

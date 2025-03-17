@@ -27,12 +27,21 @@ import { usePercentageOfClosedTicketsMetricPerAgent } from 'hooks/reporting/supp
 import { useOneTouchTicketsPercentageMetricPerAgent } from 'hooks/reporting/support-performance/overview/useOneTouchTicketsPercentageMetricPerAgent'
 import { useOneTouchTicketsPercentageMetricTrend } from 'hooks/reporting/support-performance/overview/useOneTouchTicketsPercentageMetricTrend'
 import { useZeroTouchTicketsMetricTrend } from 'hooks/reporting/support-performance/overview/useZeroTouchTicketsMetricTrend'
-import { useMessagesSentPerHour } from 'hooks/reporting/useMessagesSentPerHour'
+import {
+    useMessagesSentPerHour,
+    useMessagesSentPerHourPerAgentTotalCapacity,
+} from 'hooks/reporting/useMessagesSentPerHour'
 import { useMessagesSentPerHourPerAgent } from 'hooks/reporting/useMessagesSentPerHourPerAgent'
 import { MetricWithDecile } from 'hooks/reporting/useMetricPerDimension'
-import { useTicketsClosedPerHour } from 'hooks/reporting/useTicketsClosedPerHour'
+import {
+    useTicketsClosedPerHour,
+    useTicketsClosedPerHourPerAgentTotalCapacity,
+} from 'hooks/reporting/useTicketsClosedPerHour'
 import { useTicketsClosedPerHourPerAgent } from 'hooks/reporting/useTicketsClosedPerHourPerAgent'
-import { useTicketsRepliedPerHour } from 'hooks/reporting/useTicketsRepliedPerHour'
+import {
+    useTicketsRepliedPerHour,
+    useTicketsRepliedPerHourPerAgentTotalCapacity,
+} from 'hooks/reporting/useTicketsRepliedPerHour'
 import { useTicketsRepliedPerHourPerAgent } from 'hooks/reporting/useTicketsRepliedPerHourPerAgent'
 import { OrderDirection } from 'models/api/types'
 import { AgentTimeTrackingMember } from 'models/reporting/cubes/agentxp/AgentTimeTrackingCube'
@@ -435,9 +444,9 @@ export const getTotalsQuery = (column: AgentsTableColumn): MetricQueryHook => {
         case AgentsTableColumn.ClosedTickets:
             return useClosedTicketsMetric
         case AgentsTableColumn.ClosedTicketsPerHour:
-            return useTicketsClosedPerHour
+            return useTicketsClosedPerHourPerAgentTotalCapacity
         case AgentsTableColumn.RepliedTicketsPerHour:
-            return useTicketsRepliedPerHour
+            return useTicketsRepliedPerHourPerAgentTotalCapacity
         case AgentsTableColumn.RepliedTickets:
             return useTicketsRepliedMetric
         case AgentsTableColumn.MessagesSent:
@@ -445,7 +454,7 @@ export const getTotalsQuery = (column: AgentsTableColumn): MetricQueryHook => {
         case AgentsTableColumn.MessagesReceived:
             return useMessagesReceivedMetric
         case AgentsTableColumn.MessagesSentPerHour:
-            return useMessagesSentPerHour
+            return useMessagesSentPerHourPerAgentTotalCapacity
         case AgentsTableColumn.AgentName:
         case AgentsTableColumn.MedianFirstResponseTime:
         case AgentsTableColumn.MedianResolutionTime:

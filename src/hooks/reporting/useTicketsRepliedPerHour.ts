@@ -1,5 +1,6 @@
 import { useMemo } from 'react'
 
+import { calculateTotalCapacity } from 'hooks/reporting/helpers'
 import {
     fetchOnlineTimeMetric,
     fetchTicketsRepliedMetric,
@@ -8,9 +9,17 @@ import {
     useTicketsRepliedMetric,
 } from 'hooks/reporting/metrics'
 import {
+    fetchOnlineTimePerAgent,
+    fetchTicketsRepliedMetricPerAgent,
+    useOnlineTimePerAgent,
+    useTicketsRepliedMetricPerAgent,
+} from 'hooks/reporting/metricsPerAgent'
+import {
     calculateMetricPerHour,
     periodAndAgentOnlyFilters,
 } from 'hooks/reporting/useMessagesSentPerHour'
+import { HelpdeskMessageMeasure } from 'models/reporting/cubes/HelpdeskMessageCube'
+import { TicketDimension } from 'models/reporting/cubes/TicketCube'
 import { StatsFilters } from 'models/stat/types'
 
 const formatResult = (repliedTickets: Metric, onlineTime: Metric) => {
@@ -53,6 +62,42 @@ export const useTicketsRepliedPerHour = (
     }
 }
 
+export const useTicketsRepliedPerHourPerAgentTotalCapacity = (
+    statsFilters: StatsFilters,
+    timezone: string,
+): Metric => {
+    const repliedTickets = useTicketsRepliedMetricPerAgent(
+        periodAndAgentOnlyFilters(statsFilters),
+        timezone,
+    )
+
+    const allRepliedTickets = repliedTickets.data?.allData
+
+    const onlineTime = useOnlineTimePerAgent(
+        periodAndAgentOnlyFilters(statsFilters),
+        timezone,
+    )
+
+    const onlineTimeDataPerAllAgents = onlineTime.data?.allData
+
+    const data = useMemo(
+        () =>
+            calculateTotalCapacity(
+                allRepliedTickets,
+                onlineTimeDataPerAllAgents,
+                TicketDimension.MessageSenderId,
+                HelpdeskMessageMeasure.TicketCount,
+            ),
+        [onlineTimeDataPerAllAgents, allRepliedTickets],
+    )
+
+    return {
+        isFetching: repliedTickets.isFetching || onlineTime.isFetching,
+        isError: repliedTickets.isError || onlineTime.isError,
+        data: data,
+    }
+}
+
 export const fetchTicketsRepliedPerHour = async (
     statsFilters: StatsFilters,
     timezone: string,
@@ -69,6 +114,37 @@ export const fetchTicketsRepliedPerHour = async (
     ])
         .then(([repliedTickets, onlineTime]) => ({
             data: formatResult(repliedTickets, onlineTime),
+            isFetching: false,
+            isError: false,
+        }))
+        .catch(() => ({
+            data: { value: null },
+            isFetching: false,
+            isError: true,
+        }))
+}
+
+export const fetchTicketsRepliedPerHourPerAgentTotalCapacity = async (
+    statsFilters: StatsFilters,
+    timezone: string,
+): Promise<Metric> => {
+    return Promise.all([
+        fetchTicketsRepliedMetricPerAgent(
+            periodAndAgentOnlyFilters(statsFilters),
+            timezone,
+        ),
+        fetchOnlineTimePerAgent(
+            periodAndAgentOnlyFilters(statsFilters),
+            timezone,
+        ),
+    ])
+        .then(([repliedTickets, onlineTime]) => ({
+            data: calculateTotalCapacity(
+                repliedTickets.data?.allData,
+                onlineTime.data?.allData,
+                TicketDimension.MessageSenderId,
+                HelpdeskMessageMeasure.TicketCount,
+            ),
             isFetching: false,
             isError: false,
         }))

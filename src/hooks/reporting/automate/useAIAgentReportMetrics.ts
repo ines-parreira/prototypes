@@ -50,6 +50,7 @@ export const useAgentPerformanceMetrics = () => {
     const performance = {
         data: reportData,
         summary: summaryData,
+        total: summaryData,
         columnsOrder,
     }
 
@@ -158,6 +159,7 @@ export const useAIAgentReportMetrics = () => {
         agents,
         performance.data,
         performance.summary,
+        performance.total,
         performance.columnsOrder,
         [],
     )

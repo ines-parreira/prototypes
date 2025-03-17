@@ -66,6 +66,7 @@ type ReportDataMap = Record<
         idField: AgentIdentifierDimension
         metricField: AgentReportMetrics
         summaryData: number | null | undefined
+        totalData: number | null | undefined
     }
 >
 
@@ -120,10 +121,9 @@ const getTotal = (column: AgentsTableColumn, summaryDataMap: ReportDataMap) => {
         return TOTAL_ROW_AGENT_COLUMN_LABEL
 
     if (columnsWithTotals.includes(column)) {
-        const summaryData = summaryDataMap[column].summaryData
-        return formatMetric(column, summaryData)
+        const totalData = summaryDataMap[column].totalData
+        return formatMetric(column, totalData)
     }
-
     return formatMetric(column, null)
 }
 
@@ -163,6 +163,7 @@ export const getData = (
     agents: User[],
     data: AgentsPerformanceReportData,
     summary: Omit<AgentsPerformanceReportData<Metric>, 'agents'>,
+    total: Omit<AgentsPerformanceReportData<Metric>, 'agents'>,
     columnsOrder: AgentsTableColumn[],
     rowsOrder: AgentsTableRow[],
 ) => {
@@ -191,6 +192,7 @@ export const getData = (
             idField: AssigneeUserId,
             metricField: AvgSurveyScore,
             summaryData: null,
+            totalData: null,
         },
         [AgentsTableColumn.CustomerSatisfaction]: {
             column: AgentsTableColumn.CustomerSatisfaction,
@@ -198,6 +200,7 @@ export const getData = (
             idField: AssigneeUserId,
             metricField: AvgSurveyScore,
             summaryData: summary.customerSatisfactionMetric.data?.value,
+            totalData: total.customerSatisfactionMetric.data?.value,
         },
         [AgentsTableColumn.MedianFirstResponseTime]: {
             column: AgentsTableColumn.MedianFirstResponseTime,
@@ -205,6 +208,7 @@ export const getData = (
             idField: FirstHelpdeskMessageUserId,
             metricField: MedianFirstResponseTime,
             summaryData: summary.medianFirstResponseTimeMetric.data?.value,
+            totalData: total.medianFirstResponseTimeMetric.data?.value,
         },
         [AgentsTableColumn.MedianResolutionTime]: {
             column: AgentsTableColumn.MedianResolutionTime,
@@ -212,6 +216,7 @@ export const getData = (
             idField: AssigneeUserId,
             metricField: MedianResolutionTime,
             summaryData: summary.medianResolutionTimeMetric.data?.value,
+            totalData: total.medianResolutionTimeMetric.data?.value,
         },
         [AgentsTableColumn.PercentageOfClosedTickets]: {
             column: AgentsTableColumn.PercentageOfClosedTickets,
@@ -219,6 +224,7 @@ export const getData = (
             idField: AssigneeUserId,
             metricField: TicketCount,
             summaryData: 100,
+            totalData: 100,
         },
         [AgentsTableColumn.ClosedTickets]: {
             column: AgentsTableColumn.ClosedTickets,
@@ -226,6 +232,7 @@ export const getData = (
             idField: AssigneeUserId,
             metricField: TicketCount,
             summaryData: summary.closedTicketsMetric.data?.value,
+            totalData: total.closedTicketsMetric.data?.value,
         },
         [AgentsTableColumn.MessagesSent]: {
             column: AgentsTableColumn.MessagesSent,
@@ -233,6 +240,7 @@ export const getData = (
             idField: SenderId,
             metricField: MessageCount,
             summaryData: summary.messagesSentMetric.data?.value,
+            totalData: total.messagesSentMetric.data?.value,
         },
         [AgentsTableColumn.MessagesReceived]: {
             column: AgentsTableColumn.MessagesReceived,
@@ -240,6 +248,7 @@ export const getData = (
             idField: SenderId,
             metricField: MessageReceivedCount,
             summaryData: summary.messagesReceivedMetric.data?.value,
+            totalData: total.messagesReceivedMetric.data?.value,
         },
         [AgentsTableColumn.RepliedTickets]: {
             column: AgentsTableColumn.RepliedTickets,
@@ -247,6 +256,7 @@ export const getData = (
             idField: MessageSenderId,
             metricField: HelpdeskTicketCount,
             summaryData: summary.ticketsRepliedMetric.data?.value,
+            totalData: total.ticketsRepliedMetric.data?.value,
         },
         [AgentsTableColumn.OneTouchTickets]: {
             column: AgentsTableColumn.OneTouchTickets,
@@ -254,6 +264,7 @@ export const getData = (
             idField: AssigneeUserId,
             metricField: TicketCount,
             summaryData: summary.oneTouchTicketsMetric.data?.value,
+            totalData: total.oneTouchTicketsMetric.data?.value,
         },
         [AgentsTableColumn.ZeroTouchTickets]: {
             column: AgentsTableColumn.ZeroTouchTickets,
@@ -261,6 +272,7 @@ export const getData = (
             idField: AssigneeUserId,
             metricField: TicketCount,
             summaryData: summary.zeroTouchTicketsMetric.data?.value,
+            totalData: total.zeroTouchTicketsMetric.data?.value,
         },
         [AgentsTableColumn.RepliedTicketsPerHour]: {
             column: AgentsTableColumn.RepliedTicketsPerHour,
@@ -268,6 +280,7 @@ export const getData = (
             idField: MessageSenderId,
             metricField: HelpdeskTicketCount,
             summaryData: summary.repliedTicketsPerHourMetric.data?.value,
+            totalData: total.repliedTicketsPerHourMetric.data?.value,
         },
         [AgentsTableColumn.OnlineTime]: {
             column: AgentsTableColumn.OnlineTime,
@@ -275,6 +288,7 @@ export const getData = (
             idField: UserId,
             metricField: OnlineTime,
             summaryData: summary.onlineTimeMetric.data?.value,
+            totalData: total.onlineTimeMetric.data?.value,
         },
         [AgentsTableColumn.MessagesSentPerHour]: {
             column: AgentsTableColumn.MessagesSentPerHour,
@@ -282,6 +296,7 @@ export const getData = (
             idField: SenderId,
             metricField: MessageCount,
             summaryData: summary.messagesSentPerHourMetric.data?.value,
+            totalData: total.messagesSentPerHourMetric.data?.value,
         },
         [AgentsTableColumn.ClosedTicketsPerHour]: {
             column: AgentsTableColumn.ClosedTicketsPerHour,
@@ -289,6 +304,7 @@ export const getData = (
             idField: AssigneeUserId,
             metricField: TicketCount,
             summaryData: summary.closedTicketsPerHourMetric.data?.value,
+            totalData: total.closedTicketsPerHourMetric.data?.value,
         },
         [AgentsTableColumn.TicketHandleTime]: {
             column: AgentsTableColumn.TicketHandleTime,
@@ -296,6 +312,7 @@ export const getData = (
             idField: AssigneeUserId,
             metricField: AverageHandleTime,
             summaryData: summary.ticketHandleTimeMetric.data?.value,
+            totalData: total.ticketHandleTimeMetric.data?.value,
         },
     }
 
@@ -333,11 +350,12 @@ export const createAgentsReport = (
     agents: User[],
     data: AgentsPerformanceReportData | null,
     summary: AgentsPerformanceReportData<Metric> | null,
+    total: AgentsPerformanceReportData<Metric> | null,
     columnsOrder: AgentsTableColumn[],
     rowsOrder: AgentsTableRow[],
     fileName: string,
 ) => {
-    if (data === null || summary === null) {
+    if (data === null || summary === null || total === null) {
         return {
             files: {},
         }
@@ -347,6 +365,7 @@ export const createAgentsReport = (
         agents,
         data,
         summary,
+        total,
         columnsOrder,
         rowsOrder,
     )

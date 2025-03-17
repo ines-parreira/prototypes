@@ -1,5 +1,6 @@
 import { useMemo } from 'react'
 
+import { calculateTotalCapacity } from 'hooks/reporting/helpers'
 import {
     fetchClosedTicketsMetric,
     fetchOnlineTimeMetric,
@@ -8,9 +9,19 @@ import {
     useOnlineTimeMetric,
 } from 'hooks/reporting/metrics'
 import {
+    fetchClosedTicketsMetricPerAgent,
+    fetchOnlineTimePerAgent,
+    useClosedTicketsMetricPerAgent,
+    useOnlineTimePerAgent,
+} from 'hooks/reporting/metricsPerAgent'
+import {
     calculateMetricPerHour,
     periodAndAgentOnlyFilters,
 } from 'hooks/reporting/useMessagesSentPerHour'
+import {
+    TicketDimension,
+    TicketMeasure,
+} from 'models/reporting/cubes/TicketCube'
 import { StatsFilters } from 'models/stat/types'
 
 const formatResult = (closedTickets: Metric, onlineTime: Metric) => {
@@ -53,6 +64,42 @@ export const useTicketsClosedPerHour = (
     }
 }
 
+export const useTicketsClosedPerHourPerAgentTotalCapacity = (
+    statsFilters: StatsFilters,
+    timezone: string,
+): Metric => {
+    const closedTickets = useClosedTicketsMetricPerAgent(
+        periodAndAgentOnlyFilters(statsFilters),
+        timezone,
+    )
+
+    const allClosedTickets = closedTickets.data?.allData
+
+    const onlineTime = useOnlineTimePerAgent(
+        periodAndAgentOnlyFilters(statsFilters),
+        timezone,
+    )
+
+    const onlineTimeDataPerAllAgents = onlineTime.data?.allData
+
+    const data = useMemo(
+        () =>
+            calculateTotalCapacity(
+                allClosedTickets,
+                onlineTimeDataPerAllAgents,
+                TicketDimension.AssigneeUserId,
+                TicketMeasure.TicketCount,
+            ),
+        [allClosedTickets, onlineTimeDataPerAllAgents],
+    )
+
+    return {
+        isFetching: closedTickets.isFetching || onlineTime.isFetching,
+        isError: closedTickets.isError || onlineTime.isError,
+        data: data,
+    }
+}
+
 export const fetchTicketsClosedPerHour = async (
     statsFilters: StatsFilters,
     timezone: string,
@@ -69,6 +116,37 @@ export const fetchTicketsClosedPerHour = async (
     ])
         .then(([closedTickets, onlineTime]) => ({
             data: formatResult(closedTickets, onlineTime),
+            isFetching: false,
+            isError: false,
+        }))
+        .catch(() => ({
+            data: { value: null },
+            isError: true,
+            isFetching: false,
+        }))
+}
+
+export const fetchTicketsClosedPerHourPerAgentTotalCapacity = async (
+    statsFilters: StatsFilters,
+    timezone: string,
+): Promise<Metric> => {
+    return Promise.all([
+        fetchClosedTicketsMetricPerAgent(
+            periodAndAgentOnlyFilters(statsFilters),
+            timezone,
+        ),
+        fetchOnlineTimePerAgent(
+            periodAndAgentOnlyFilters(statsFilters),
+            timezone,
+        ),
+    ])
+        .then(([closedTickets, onlineTime]) => ({
+            data: calculateTotalCapacity(
+                closedTickets.data?.allData,
+                onlineTime.data?.allData,
+                TicketDimension.AssigneeUserId,
+                TicketMeasure.TicketCount,
+            ),
             isFetching: false,
             isError: false,
         }))

@@ -111,6 +111,25 @@ describe('useDownloadAgentsPerformanceData', () => {
             closedTicketsPerHourMetric: summaryMetricReturnValue,
             ticketHandleTimeMetric: summaryMetricReturnValue,
         },
+        totalData: {
+            customerSatisfactionMetric: summaryMetricReturnValue,
+            closedTicketsMetric: summaryMetricReturnValue,
+            medianFirstResponseTimeMetric: summaryMetricReturnValue,
+            messagesSentMetric: summaryMetricReturnValue,
+            percentageOfClosedTicketsMetric: summaryMetricReturnValue,
+            medianResolutionTimeMetric: summaryMetricReturnValue,
+            ticketsRepliedMetric: summaryMetricReturnValue,
+            oneTouchTicketsMetric: {
+                ...summaryMetricReturnValue,
+                data: { ...summaryMetricReturnValue.data, prevValue: 0 },
+            },
+            zeroTouchTicketsMetric: summaryMetricReturnValue,
+            repliedTicketsPerHourMetric: summaryMetricReturnValue,
+            onlineTimeMetric: summaryMetricReturnValue,
+            messagesSentPerHourMetric: summaryMetricReturnValue,
+            closedTicketsPerHourMetric: summaryMetricReturnValue,
+            ticketHandleTimeMetric: summaryMetricReturnValue,
+        },
         isLoading: false,
         period: {
             start_datetime: '2021-02-03T00:00:00.000Z',
@@ -125,6 +144,10 @@ describe('useDownloadAgentsPerformanceData', () => {
         })
         useTableReportDataMock.mockReturnValueOnce({
             data: agentsSummaryMetricsReturnValue.summaryData,
+            isFetching: false,
+        })
+        useTableReportDataMock.mockReturnValueOnce({
+            data: agentsSummaryMetricsReturnValue.totalData,
             isFetching: false,
         })
         useAgentsTableConfigSettingMock.mockReturnValue({
@@ -149,6 +172,10 @@ describe('useDownloadAgentsPerformanceData', () => {
             data: agentsSummaryMetricsReturnValue.summaryData,
             isFetching: true,
         })
+        useTableReportDataMock.mockReturnValueOnce({
+            data: agentsSummaryMetricsReturnValue.totalData,
+            isFetching: true,
+        })
         saveReportMock.mockReturnValue(report)
 
         const { result } = renderHook(
@@ -164,6 +191,7 @@ describe('useDownloadAgentsPerformanceData', () => {
             getSortedAgents(state),
             agentsMetricsReturnValue.reportData,
             agentsSummaryMetricsReturnValue.summaryData,
+            agentsSummaryMetricsReturnValue.totalData,
             columnsOrder,
             rowsOrder,
             fileName,
@@ -200,6 +228,7 @@ describe('useDownloadAgentsPerformanceData', () => {
             getSortedAgents(state),
             agentsMetricsReturnValue.reportData,
             agentsSummaryMetricsReturnValue.summaryData,
+            agentsSummaryMetricsReturnValue.totalData,
             columnsOrder,
             rowsOrder,
             fileName,

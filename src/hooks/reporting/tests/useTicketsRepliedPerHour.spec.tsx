@@ -5,6 +5,7 @@ import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
+import { User } from 'config/types/user'
 import {
     fetchOnlineTimeMetric,
     fetchTicketsRepliedMetric,
@@ -12,9 +13,24 @@ import {
     useTicketsRepliedMetric,
 } from 'hooks/reporting/metrics'
 import {
+    fetchOnlineTimePerAgent,
+    fetchTicketsRepliedMetricPerAgent,
+    useOnlineTimePerAgent,
+    useTicketsRepliedMetricPerAgent,
+} from 'hooks/reporting/metricsPerAgent'
+import { periodAndAgentOnlyFilters } from 'hooks/reporting/useMessagesSentPerHour'
+import {
     fetchTicketsRepliedPerHour,
+    fetchTicketsRepliedPerHourPerAgentTotalCapacity,
     useTicketsRepliedPerHour,
+    useTicketsRepliedPerHourPerAgentTotalCapacity,
 } from 'hooks/reporting/useTicketsRepliedPerHour'
+import {
+    AgentTimeTrackingDimension,
+    AgentTimeTrackingMeasure,
+} from 'models/reporting/cubes/agentxp/AgentTimeTrackingCube'
+import { HelpdeskMessageMeasure } from 'models/reporting/cubes/HelpdeskMessageCube'
+import { TicketMember } from 'models/reporting/cubes/TicketCube'
 import { withDefaultLogicalOperator } from 'models/reporting/queryFactories/utils'
 import { StatsFilters, TagFilterInstanceId } from 'models/stat/types'
 import { RootState, StoreDispatch } from 'state/types'
@@ -26,6 +42,15 @@ const useTicketsRepliedMetricMock = assumeMock(useTicketsRepliedMetric)
 const useOnlineTimeMock = assumeMock(useOnlineTimeMetric)
 const fetchTicketsRepliedMetricMock = assumeMock(fetchTicketsRepliedMetric)
 const fetchOnlineTimeMetricMock = assumeMock(fetchOnlineTimeMetric)
+jest.mock('hooks/reporting/metricsPerAgent')
+const useTicketsRepliedMetricPerAgentMock = assumeMock(
+    useTicketsRepliedMetricPerAgent,
+)
+const useOnlineTimePerAgentMock = assumeMock(useOnlineTimePerAgent)
+const fetchTicketsRepliedMetricPerAgentMock = assumeMock(
+    fetchTicketsRepliedMetricPerAgent,
+)
+const fetchOnlineTimePerAgentMock = assumeMock(fetchOnlineTimePerAgent)
 
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
 
@@ -66,6 +91,41 @@ describe('TicketsRepliedPerHour', () => {
     const onlineTimeReturnValue = {
         data: {
             value: onlineTimeValue,
+        },
+        isFetching: false,
+        isError: false,
+    }
+    const ticketsRepliedValue = 100
+    const agent = {
+        id: 123,
+        name: 'User',
+    } as User
+    const useRepliedTicketsMetricPerAgentReturnValue = {
+        data: {
+            value: ticketsRepliedValue,
+            decile: 5,
+            allData: [
+                {
+                    [HelpdeskMessageMeasure.TicketCount]:
+                        String(ticketsRepliedValue),
+                    [TicketMember.MessageSenderId]: String(agent.id),
+                },
+            ],
+        },
+        isFetching: false,
+        isError: false,
+    }
+    const useOnlineTimePerAgentReturnValue = {
+        data: {
+            value: onlineTimeValue,
+            decile: 5,
+            allData: [
+                {
+                    [AgentTimeTrackingMeasure.OnlineTime]:
+                        String(onlineTimeValue),
+                    [AgentTimeTrackingDimension.UserId]: String(agent.id),
+                },
+            ],
         },
         isFetching: false,
         isError: false,
@@ -300,6 +360,150 @@ describe('TicketsRepliedPerHour', () => {
                 statsFilters,
                 timeZone,
             )
+
+            expect(result).toEqual({
+                data: {
+                    value: null,
+                },
+                isError: true,
+                isFetching: false,
+            })
+        })
+    })
+
+    describe('useTicketsRepliedPerHourPerAgentTotalCapacity', () => {
+        beforeEach(() => {
+            useTicketsRepliedMetricPerAgentMock.mockReturnValue(
+                useRepliedTicketsMetricPerAgentReturnValue,
+            )
+            useOnlineTimePerAgentMock.mockReturnValue(
+                useOnlineTimePerAgentReturnValue,
+            )
+        })
+
+        it('should calculate the metric from messages sent and online time', () => {
+            const { result } = renderHook(() =>
+                useTicketsRepliedPerHourPerAgentTotalCapacity(
+                    statsFilters,
+                    timeZone,
+                ),
+            )
+
+            expect(useTicketsRepliedMetricPerAgentMock).toHaveBeenCalledWith(
+                periodAndAgentOnlyFilters(statsFilters),
+                timeZone,
+            )
+            expect(useOnlineTimePerAgentMock).toHaveBeenCalledWith(
+                periodAndAgentOnlyFilters(statsFilters),
+                timeZone,
+            )
+            expect(result.current).toEqual({
+                data: {
+                    value: ticketsRepliedValue / (onlineTimeValue / 60 / 60),
+                },
+                isError: false,
+                isFetching: false,
+            })
+        })
+
+        it('should return null in case data is empty', () => {
+            useTicketsRepliedMetricPerAgentMock.mockReturnValue({
+                ...useRepliedTicketsMetricPerAgentReturnValue,
+                data: undefined,
+            } as any)
+            useOnlineTimePerAgentMock.mockReturnValue({
+                ...useOnlineTimePerAgentReturnValue,
+                data: undefined,
+            } as any)
+
+            const { result } = renderHook(() =>
+                useTicketsRepliedPerHourPerAgentTotalCapacity(
+                    statsFilters,
+                    timeZone,
+                ),
+            )
+
+            expect(result.current).toEqual({
+                data: { value: null },
+                isError: false,
+                isFetching: false,
+            })
+        })
+    })
+
+    describe('fetchTicketsRepliedPerHourPerAgentTotalCapacity', () => {
+        beforeEach(() => {
+            fetchTicketsRepliedMetricPerAgentMock.mockResolvedValue(
+                useRepliedTicketsMetricPerAgentReturnValue,
+            )
+            fetchOnlineTimePerAgentMock.mockResolvedValue(
+                useOnlineTimePerAgentReturnValue,
+            )
+        })
+        it('should calculate the metric from messages sent and online time', async () => {
+            const result =
+                await fetchTicketsRepliedPerHourPerAgentTotalCapacity(
+                    statsFilters,
+                    timeZone,
+                )
+
+            expect(fetchTicketsRepliedMetricPerAgentMock).toHaveBeenCalledWith(
+                periodAndAgentOnlyFilters(statsFilters),
+                timeZone,
+            )
+            expect(fetchOnlineTimePerAgentMock).toHaveBeenCalledWith(
+                periodAndAgentOnlyFilters(statsFilters),
+                timeZone,
+            )
+            expect(result).toEqual({
+                data: {
+                    value: ticketsRepliedValue / (onlineTimeValue / 60 / 60),
+                },
+                isError: false,
+                isFetching: false,
+            })
+        })
+
+        it('should return empty data when no data', async () => {
+            fetchTicketsRepliedMetricPerAgentMock.mockResolvedValue({
+                ...useRepliedTicketsMetricPerAgentReturnValue,
+                data: undefined,
+            } as any)
+            fetchOnlineTimePerAgentMock.mockResolvedValue({
+                ...fetchOnlineTimePerAgentMock,
+                data: undefined,
+            } as any)
+
+            const result =
+                await fetchTicketsRepliedPerHourPerAgentTotalCapacity(
+                    statsFilters,
+                    timeZone,
+                )
+
+            expect(result).toEqual({
+                data: {
+                    value: null,
+                },
+                isError: false,
+                isFetching: false,
+            })
+        })
+
+        it('should return empty data on error', async () => {
+            fetchTicketsRepliedMetricPerAgentMock.mockRejectedValue({
+                ...useRepliedTicketsMetricPerAgentReturnValue,
+                data: undefined,
+            } as any)
+            fetchOnlineTimePerAgentMock.mockResolvedValue({
+                ...fetchOnlineTimePerAgentMock,
+                data: undefined,
+            } as any)
+
+            const result =
+                await fetchTicketsRepliedPerHourPerAgentTotalCapacity(
+                    statsFilters,
+                    timeZone,
+                )
 
             expect(result).toEqual({
                 data: {

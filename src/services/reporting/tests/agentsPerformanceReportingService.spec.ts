@@ -131,8 +131,11 @@ const reportDataFactory = (
     const summaryData: AgentsPerformanceReportData<Metric> = {
         ...{ ...baseMetrics, ...metricsOverride },
     }
+    const totalData: AgentsPerformanceReportData<Metric> = {
+        ...{ ...baseMetrics, ...metricsOverride },
+    }
 
-    return { agents, data, summaryData, testName }
+    return { agents, data, summaryData, totalData, testName }
 }
 
 const testCaseReportData = reportDataFactory(
@@ -162,7 +165,7 @@ const testCasesData = [
 describe('agentsPerformanceReportingService', () => {
     it.each(testCasesData)(
         'should call saveReport with $testName',
-        ({ agents, data, summaryData, testName }) => {
+        ({ agents, data, summaryData, totalData, testName }) => {
             const fakeReport1 = 'someString'
 
             jest.spyOn(files, 'createCsv').mockReturnValue(fakeReport1)
@@ -171,6 +174,7 @@ describe('agentsPerformanceReportingService', () => {
                 agents,
                 data,
                 summaryData,
+                totalData,
                 columnsOrder,
                 rowsOrder,
                 testName,
@@ -191,11 +195,12 @@ describe('agentsPerformanceReportingService', () => {
             .spyOn(files, 'createCsv')
             .mockReturnValue(fakeReport1)
 
-        const { data, summaryData } = testCaseReportData
+        const { data, summaryData, totalData } = testCaseReportData
         createAgentsReport(
             agents,
             data,
             summaryData,
+            totalData,
             columnsOrder,
             rowsOrder,
             fileName,
@@ -209,11 +214,12 @@ describe('agentsPerformanceReportingService', () => {
     it('should return empty when no data', () => {
         const fileName = 'someFileName'
 
-        const { summaryData } = testCaseReportData
+        const { summaryData, totalData } = testCaseReportData
         const result = createAgentsReport(
             agents,
             null,
             summaryData,
+            totalData,
             columnsOrder,
             rowsOrder,
             fileName,
@@ -225,10 +231,28 @@ describe('agentsPerformanceReportingService', () => {
     it('should return empty when no summary data', () => {
         const fileName = 'someFileName'
 
-        const { data } = testCaseReportData
+        const { data, totalData } = testCaseReportData
         const result = createAgentsReport(
             agents,
             data,
+            null,
+            totalData,
+            columnsOrder,
+            rowsOrder,
+            fileName,
+        )
+
+        expect(result).toEqual({ files: {} })
+    })
+
+    it('should return empty when no total data', () => {
+        const fileName = 'someFileName'
+
+        const { data, summaryData } = testCaseReportData
+        const result = createAgentsReport(
+            agents,
+            data,
+            summaryData,
             null,
             columnsOrder,
             rowsOrder,
@@ -240,7 +264,7 @@ describe('agentsPerformanceReportingService', () => {
 
     describe('aggregation rows', () => {
         it('should include average row when specified in rowsOrder', () => {
-            const { agents, data, summaryData } = testCaseReportData
+            const { agents, data, summaryData, totalData } = testCaseReportData
             const columnsOrder = [
                 AgentsTableColumn.AgentName,
                 AgentsTableColumn.ClosedTickets,
@@ -251,6 +275,7 @@ describe('agentsPerformanceReportingService', () => {
                 agents,
                 data,
                 summaryData,
+                totalData,
                 columnsOrder,
                 rowsOrder,
             )
@@ -264,7 +289,7 @@ describe('agentsPerformanceReportingService', () => {
         })
 
         it('should include total row when specified in rowsOrder', () => {
-            const { agents, data, summaryData } = testCaseReportData
+            const { agents, data, summaryData, totalData } = testCaseReportData
             const columnsOrder = [
                 AgentsTableColumn.AgentName,
                 AgentsTableColumn.ClosedTickets,
@@ -276,6 +301,7 @@ describe('agentsPerformanceReportingService', () => {
                 agents,
                 data,
                 summaryData,
+                totalData,
                 columnsOrder,
                 rowsOrder,
             )
@@ -290,7 +316,7 @@ describe('agentsPerformanceReportingService', () => {
         })
 
         it('should include both average and total rows in the specified order', () => {
-            const { agents, data, summaryData } = testCaseReportData
+            const { agents, data, summaryData, totalData } = testCaseReportData
             const columnsOrder = [
                 AgentsTableColumn.AgentName,
                 AgentsTableColumn.ClosedTickets,
@@ -301,6 +327,7 @@ describe('agentsPerformanceReportingService', () => {
                 agents,
                 data,
                 summaryData,
+                totalData,
                 columnsOrder,
                 rowsOrder,
             )
@@ -349,6 +376,7 @@ describe('agentsPerformanceReportingService', () => {
             const result = getData(
                 multipleAgents,
                 baseMetricBuilder(reportDataWithCubeMetrics),
+                mockSummaryData,
                 mockSummaryData,
                 columnsOrder,
                 [AgentsTableRow.Average],

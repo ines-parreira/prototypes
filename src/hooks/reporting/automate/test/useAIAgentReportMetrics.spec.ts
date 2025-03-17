@@ -160,6 +160,7 @@ describe('useAgentPerformanceMetrics', () => {
             performance: {
                 data: { 'agents-metrics': [] },
                 summary: { 'agents-summary-metrics': [] },
+                total: { 'agents-summary-metrics': [] },
                 columnsOrder: [AgentsTableColumn.AgentName],
             },
             performanceDataIsLoading: false,
