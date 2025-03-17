@@ -1,5 +1,6 @@
 import React, { ReactNode } from 'react'
 
+import { useHideBanners } from 'AlertBanners/hooks/useHideBanners'
 import { aiAgentRoutes } from 'pages/aiAgent/hooks/useAiAgentNavigation'
 import OnboardingProgressTracker from 'pages/aiAgent/Onboarding/components/common/OnboardingProgressTracker/OnboardingProgressTracker'
 import GorgiasLogoExtendedIcon from 'pages/aiAgent/Onboarding/layout/GorgiasLogoExtended'
@@ -114,5 +115,6 @@ export const OnboardingContentContainer: React.FC<{
 export const ConvAiOnboardingLayout: React.FC<{
     children: ReactNode
 }> = ({ children }) => {
+    useHideBanners()
     return <div className={css.onboardingLayout}>{children}</div>
 }
