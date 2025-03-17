@@ -616,6 +616,7 @@ describe('voice queries factories', () => {
                     values: [],
                 },
             ],
+            order: [['VoiceCall.createdAt', 'desc']],
         })
     })
 
@@ -661,6 +662,7 @@ describe('voice queries factories', () => {
                     },
                 ],
                 segments: expectedSegments,
+                order: [['VoiceCall.createdAt', 'desc']],
             })
         },
     )
@@ -702,6 +704,7 @@ describe('voice queries factories', () => {
                         values: [],
                     },
                 ],
+                order: [['VoiceCall.createdAt', 'desc']],
             })
         })
 
@@ -763,6 +766,7 @@ describe('voice queries factories', () => {
                     },
                 ],
                 segments: [],
+                order: [['VoiceCall.createdAt', 'desc']],
             })
         })
 

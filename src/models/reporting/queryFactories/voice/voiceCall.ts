@@ -156,11 +156,14 @@ export const waitTimeSetFilter = {
 export const connectedCallsListQueryFactory = (
     filters: StatsFilters,
     timezone: string,
+    order: VoiceCallDimension = VoiceCallDimension.CreatedAt,
+    sorting: OrderDirection = OrderDirection.Desc,
 ): ReportingQuery<VoiceCallCube> => ({
     measures: [VoiceCallMeasure.VoiceCallCount],
     dimensions: voiceCallListDimensions,
     timezone,
     filters: [...voiceCallDefaultFilters(filters), connectedCallsFilter],
+    order: [[order, sorting]],
 })
 
 export const liveDashboardConnectedCallsListQueryFactory = (
@@ -183,6 +186,8 @@ export const waitingTimeCallsListQueryFactory = (
     filters: StatsFilters,
     timezone: string,
     segment?: VoiceCallSegment,
+    order: VoiceCallDimension = VoiceCallDimension.CreatedAt,
+    sorting: OrderDirection = OrderDirection.Desc,
     includeLiveData: boolean = false,
 ): ReportingQuery<VoiceCallCube> => ({
     measures: [VoiceCallMeasure.VoiceCallCount],
@@ -190,6 +195,7 @@ export const waitingTimeCallsListQueryFactory = (
     timezone,
     filters: [...voiceCallDefaultFilters(filters), waitTimeSetFilter],
     segments: withStatisticsDefaultSegment(segment, includeLiveData),
+    order: [[order, sorting]],
 })
 
 export const liveDashboardWaitingTimeCallsListQueryFactory = (
@@ -207,6 +213,8 @@ export const liveDashboardWaitingTimeCallsListQueryFactory = (
         },
         timezone,
         segment,
+        undefined,
+        undefined,
         true,
     )
 }
@@ -273,6 +281,8 @@ export const voiceCallListQueryFactory = (
 export const liveDashBoardVoiceCallListQueryFactory = (
     filters: StatsFilters,
     segment?: VoiceCallSegment,
+    order: VoiceCallDimension = VoiceCallDimension.CreatedAt,
+    sorting: OrderDirection = OrderDirection.Desc,
 ): ReportingQuery<VoiceCallCube> => {
     const timezone = getAccountBusinessHoursTimezone()
     const period = getLiveVoicePeriodFilter(timezone)
@@ -287,8 +297,8 @@ export const liveDashBoardVoiceCallListQueryFactory = (
         segment,
         undefined,
         undefined,
-        undefined,
-        undefined,
+        order,
+        sorting,
         undefined,
         true,
     )
