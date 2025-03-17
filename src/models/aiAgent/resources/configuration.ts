@@ -1,6 +1,7 @@
 import axios from 'axios'
 
 import { HelpCenter } from 'models/helpCenter/types'
+import { AiAgentChannel } from 'pages/aiAgent/constants'
 import { isProduction, isStaging } from 'utils/environment'
 
 import gorgiasAppsAuthInterceptor from '../../../utils/gorgiasAppsAuth'
@@ -10,6 +11,8 @@ import {
     CreateOnboardingNotificationStatePayload,
     CreateStoreConfigurationPayload,
     GetStoreConfigurationParams,
+    HandoverConfigurationData,
+    HandoverConfigurationResponse,
     OnboardingData,
     OnboardingNotificationStateResponse,
     StoreConfigurationResponse,
@@ -233,5 +236,45 @@ export const updateOnboardingData = async (
         `/onboardings/${id}`,
         updateData,
     )
+    return response.data
+}
+
+/**
+ * Endpoints "/accounts/<gorgiasDomain>/stores/<storeName>/handover-configurations"
+ */
+
+export const getAiAgentStoreHandoverConfigurations = async (
+    accountDomain: string,
+    storeName: string,
+    channel?: AiAgentChannel,
+) => {
+    const queryParams = new URLSearchParams()
+
+    if (channel) {
+        queryParams.set('channel', channel)
+    }
+
+    let url = `/config/accounts/${accountDomain}/stores/${storeName}/handover-configurations`
+
+    if (queryParams.toString()) {
+        url += `?${queryParams.toString()}`
+    }
+
+    const response = await apiClient.get<HandoverConfigurationResponse>(url)
+
+    return response.data
+}
+
+export const upsertAiAgentStoreHandoverConfiguration = async (
+    accountDomain: string,
+    storeName: string,
+    integrationId: number,
+    data: HandoverConfigurationData,
+) => {
+    const response = await apiClient.put<HandoverConfigurationData>(
+        `/config/accounts/${accountDomain}/stores/${storeName}/handover-configurations/${integrationId}`,
+        data,
+    )
+
     return response.data
 }

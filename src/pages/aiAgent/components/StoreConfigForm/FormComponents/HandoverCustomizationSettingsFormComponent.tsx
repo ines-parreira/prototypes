@@ -96,7 +96,9 @@ export const HandoverCustomizationSettingsFormComponent = ({
                         </span>
                     </AccordionHeader>
                     <AccordionBody>
-                        <HandoverCustomizationOfflineSettings />
+                        <HandoverCustomizationOfflineSettings
+                            integration={selectedChat.value}
+                        />
                     </AccordionBody>
                 </AccordionItem>
                 <AccordionItem>

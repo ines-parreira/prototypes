@@ -33,6 +33,12 @@ export type GetStoreConfigurationForAccountParams = {
     withWizard?: boolean
 }
 
+export type GetStoreHandoverConfigurationParams = {
+    accountDomain: string
+    storeName: string
+    channel?: AiAgentChannel
+}
+
 export type StoreConfigurationResponse = {
     storeConfiguration: StoreConfiguration
 }
@@ -220,4 +226,19 @@ export type SalesSettingsData = {
     salesPersuasionLevel: PersuasionLevel
     salesDiscountStrategyLevel: DiscountStrategy
     salesDiscountMax: number
+}
+
+export type HandoverConfigurationData = {
+    accountId: number
+    storeName: string
+    shopType: string
+    integrationId: number
+    channel: AiAgentChannel
+    onlineInstructions: string | null
+    offlineInstructions: string | null
+    shareBusinessHours: boolean
+}
+
+export type HandoverConfigurationResponse = {
+    handoverConfigurations: HandoverConfigurationData[]
 }

@@ -9,10 +9,12 @@ import {
     createStoreSnippetHelpCenter,
     createWelcomePageAcknowledged,
     getAccountConfiguration,
+    getAiAgentStoreHandoverConfigurations,
     getOnboardingNotificationState,
     getStoreConfiguration,
     getWelcomePageAcknowledged,
     upsertAccountConfiguration,
+    upsertAiAgentStoreHandoverConfiguration,
     upsertOnboardingNotificationState,
     upsertStoreConfiguration,
     upsertStoresConfiguration,
@@ -34,6 +36,7 @@ import {
     GetPlaygroundExecutionsParams,
     GetStoreConfigurationForAccountParams,
     GetStoreConfigurationParams,
+    GetStoreHandoverConfigurationParams,
     StoreConfigurationResponse,
 } from './types'
 
@@ -408,6 +411,46 @@ export const useGetPlaygroundExecutions = (
         staleTime: STALE_TIME_MS,
         cacheTime: CACHE_TIME_MS,
         enabled: !!params.accountDomain && !!params.storeName,
+        ...overrides,
+    })
+}
+
+export const handoverConfigurationKeys = {
+    all: () => ['aiAgentHandoverConfigurations'] as const,
+    details: () => [...handoverConfigurationKeys.all(), 'detail'] as const,
+    detail: (params: GetStoreHandoverConfigurationParams) =>
+        [...handoverConfigurationKeys.details(), params] as const,
+}
+
+export const useGetStoreHandoverConfigurations = (
+    params: GetStoreHandoverConfigurationParams,
+    overrides?: UseQueryOptions<
+        Awaited<ReturnType<typeof getAiAgentStoreHandoverConfigurations>>
+    >,
+) => {
+    return useQuery({
+        queryKey: handoverConfigurationKeys.detail(params),
+        queryFn: () =>
+            getAiAgentStoreHandoverConfigurations(
+                params.accountDomain,
+                params.storeName,
+                params.channel,
+            ),
+        staleTime: STALE_TIME_MS,
+        cacheTime: CACHE_TIME_MS,
+        enabled: !!params.accountDomain && !!params.storeName,
+        ...overrides,
+    })
+}
+
+export const useUpsertStoreHandoverConfiguration = (
+    overrides?: MutationOverrides<
+        typeof upsertAiAgentStoreHandoverConfiguration
+    >,
+) => {
+    return useMutation({
+        mutationFn: (params) =>
+            upsertAiAgentStoreHandoverConfiguration(...params),
         ...overrides,
     })
 }

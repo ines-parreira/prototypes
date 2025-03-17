@@ -1,8 +1,12 @@
 import MockAdapter from 'axios-mock-adapter'
 
-import { AiAgentOnboardingState } from 'models/aiAgent/types'
+import {
+    AiAgentOnboardingState,
+    HandoverConfigurationResponse,
+} from 'models/aiAgent/types'
 import authClient from 'models/api/resources'
 import { HelpCenter } from 'models/helpCenter/types'
+import { AiAgentChannel } from 'pages/aiAgent/constants'
 import { getAccountConfigurationWithHttpIntegrationFixture } from 'pages/aiAgent/fixtures/accountConfiguration.fixture'
 import { getOnboardingNotificationStateFixture } from 'pages/aiAgent/fixtures/onboardingNotificationState.fixture'
 import { getStoreConfigurationFixture } from 'pages/aiAgent/fixtures/storeConfiguration.fixtures'
@@ -17,6 +21,7 @@ import {
     createStoreSnippetHelpCenter,
     createWelcomePageAcknowledged,
     getAccountConfiguration,
+    getAiAgentStoreHandoverConfigurations,
     getOnboardingData,
     getOnboardingDataByShopName,
     getOnboardingNotificationState,
@@ -24,6 +29,7 @@ import {
     getWelcomePageAcknowledged,
     updateOnboardingData,
     upsertAccountConfiguration,
+    upsertAiAgentStoreHandoverConfiguration,
     upsertOnboardingNotificationState,
     upsertStoreConfiguration,
     upsertStoresConfiguration,
@@ -592,6 +598,129 @@ describe('Configuration', () => {
 
                 await expect(
                     updateOnboardingData(1, { shopName: 'Updated Onboarding' }),
+                ).rejects.toThrow('Request failed with status code 400')
+            })
+        })
+
+        describe('getAiAgentStoreHandoverConfigurations', () => {
+            const mockData: HandoverConfigurationResponse = {
+                handoverConfigurations: [
+                    {
+                        accountId: 1,
+                        storeName: 'gorgiastest',
+                        shopType: 'shopify',
+                        integrationId: 5008,
+                        channel: AiAgentChannel.Chat,
+                        onlineInstructions: null,
+                        offlineInstructions: 'Offline instructions',
+                        shareBusinessHours: false,
+                    },
+                ],
+            }
+            it('should resolve with the correct data on success', async () => {
+                apiServer
+                    .onGet(
+                        '/config/accounts/1/stores/1/handover-configurations',
+                    )
+                    .reply(200, mockData)
+
+                const res = await getAiAgentStoreHandoverConfigurations(
+                    '1',
+                    '1',
+                )
+
+                expect(res).toEqual(mockData)
+            })
+
+            test.each([AiAgentChannel.Chat, AiAgentChannel.Email])(
+                'should handle channel query param correctly',
+                async (channel) => {
+                    apiServer
+                        .onGet(
+                            `/config/accounts/1/stores/1/handover-configurations?channel=${channel}`,
+                        )
+                        .reply(200, mockData)
+
+                    const res = await getAiAgentStoreHandoverConfigurations(
+                        '1',
+                        '1',
+                        channel,
+                    )
+
+                    expect(res).toEqual(mockData)
+                },
+            )
+
+            it('should handle an error correctly', async () => {
+                const accountDomain = '1'
+                const storeName = '1'
+
+                apiServer
+                    .onGet(
+                        `/config/accounts/1/stores/1/handover-configurations`,
+                    )
+                    .reply(400)
+
+                await expect(
+                    getAiAgentStoreHandoverConfigurations(
+                        accountDomain,
+                        storeName,
+                    ),
+                ).rejects.toThrow('Request failed with status code 400')
+            })
+        })
+
+        describe('upsertAiAgentStoreHandoverConfiguration', () => {
+            const mockData = {
+                handoverConfiguration: {
+                    accountId: 1,
+                    storeName: 'gorgiastest',
+                    shopType: 'shopify',
+                    integrationId: 5008,
+                    channel: 'chat',
+                    onlineInstructions: null,
+                    offlineInstructions: 'Offline instructions',
+                    shareBusinessHours: false,
+                    createdDatetime: '2025-03-06T17:04:32.477Z',
+                    updatedDatetime: '2025-03-06T17:04:32.477Z',
+                },
+            }
+
+            const payload = {
+                ...mockData.handoverConfiguration,
+                channel: AiAgentChannel.Chat,
+                offlineInstructions: 'Updated instructions',
+            }
+            it('should resolve with the correct data on success', async () => {
+                apiServer
+                    .onPut(
+                        '/config/accounts/1/stores/1/handover-configurations/5008',
+                    )
+                    .reply(200, mockData)
+
+                const res = await upsertAiAgentStoreHandoverConfiguration(
+                    '1',
+                    '1',
+                    5008,
+                    payload,
+                )
+                expect(res).toEqual(mockData)
+            })
+
+            it('should handle an error correctly', async () => {
+                apiServer
+                    .onPut(
+                        '/config/accounts/1/stores/1/handover-configurations/5008',
+                    )
+                    .reply(400)
+
+                await expect(
+                    upsertAiAgentStoreHandoverConfiguration(
+                        '1',
+                        '1',
+                        5008,
+                        payload,
+                    ),
                 ).rejects.toThrow('Request failed with status code 400')
             })
         })

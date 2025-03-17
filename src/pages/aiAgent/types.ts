@@ -105,3 +105,8 @@ export type HandoverCustomizationFallbackSettingsFormMultiLanguageValues = {
 export type HandoverCustomizationFallbackSettingsFormValues = {
     fallbackMessage?: string
 }
+
+export type HandoverCustomizationOfflineSettingsFormValues = {
+    offlineInstructions: string
+    shareBusinessHours: boolean
+}

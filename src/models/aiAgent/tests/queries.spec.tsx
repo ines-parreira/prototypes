@@ -9,6 +9,7 @@ import { FeatureFlagKey } from 'config/featureFlags'
 import { CreatePlaygroundBody } from 'models/aiAgentPlayground/types'
 import { getAIGuidanceFixture } from 'pages/aiAgent/fixtures/aiGuidance.fixture'
 import { customToneOfVoicePreviewFixture } from 'pages/aiAgent/fixtures/customToneOfVoicePreview.fixture'
+import { getHandoverConfigurationsFixture } from 'pages/aiAgent/fixtures/handoverConfiguration.fixture'
 import { getOnboardingNotificationStateFixture } from 'pages/aiAgent/fixtures/onboardingNotificationState.fixture'
 import { getStoreConfigurationFixture } from 'pages/aiAgent/fixtures/storeConfiguration.fixtures'
 import { useHelpCenterApi } from 'pages/settings/helpCenter/hooks/useHelpCenterApi'
@@ -19,22 +20,27 @@ import { assumeMock } from 'utils/testing'
 import {
     CACHE_TIME_MS,
     getWelcomePageAcknowledgedKey,
+    STALE_TIME_MS,
     useCreateOnboardingNotificationState,
     useCreateWelcomePageAcknowledged,
     useGenerateCustomToneOfVoicePreview,
     useGetAIGeneratedGuidances,
     useGetOnboardingNotificationState,
     useGetStoreConfigurationPure,
+    useGetStoreHandoverConfigurations,
     useGetStoresConfigurationForAccount,
     useGetWelcomePageAcknowledged,
     useUpsertOnboardingNotificationState,
+    useUpsertStoreHandoverConfiguration,
 } from '../queries'
 import {
     createOnboardingNotificationState,
     createWelcomePageAcknowledged,
+    getAiAgentStoreHandoverConfigurations,
     getOnboardingNotificationState,
     getStoreConfiguration,
     getWelcomePageAcknowledged,
+    upsertAiAgentStoreHandoverConfiguration,
     upsertOnboardingNotificationState,
 } from '../resources/configuration'
 import * as guidanceResources from '../resources/guidances'
@@ -51,6 +57,8 @@ jest.mock('models/aiAgent/resources/configuration', () => ({
     getOnboardingNotificationState: jest.fn(),
     createOnboardingNotificationState: jest.fn(),
     upsertOnboardingNotificationState: jest.fn(),
+    getAiAgentStoreHandoverConfigurations: jest.fn(),
+    upsertAiAgentStoreHandoverConfiguration: jest.fn(),
 }))
 
 const mockGetStoreConfiguration = assumeMock(getStoreConfiguration)
@@ -670,6 +678,103 @@ describe('queries', () => {
             ).mutationFn
 
             await expect(mutationFn([storeName])).resolves.toEqual(mockData)
+        })
+    })
+
+    describe('useGetStoreHandoverConfigurations', () => {
+        it('should call useQuery with the correct parameters', async () => {
+            const accountDomain = 'test-account'
+            const storeName = 'test-store'
+            const channel = undefined
+            const mockData = getHandoverConfigurationsFixture()
+
+            ;(
+                getAiAgentStoreHandoverConfigurations as jest.Mock
+            ).mockResolvedValue(mockData)
+
+            renderHook(
+                () =>
+                    useGetStoreHandoverConfigurations({
+                        accountDomain,
+                        storeName,
+                    }),
+                { wrapper },
+            )
+
+            expect(useQuerySpy).toHaveBeenCalledWith({
+                queryKey: [
+                    'aiAgentHandoverConfigurations',
+                    'detail',
+                    { accountDomain, storeName, channel },
+                ],
+                queryFn: expect.any(Function),
+                staleTime: STALE_TIME_MS,
+                cacheTime: CACHE_TIME_MS,
+                enabled: true,
+            })
+
+            const queryFn = (
+                useQuerySpy.mock.calls[0][0] as unknown as {
+                    queryFn: () => any
+                }
+            ).queryFn
+
+            await expect(queryFn()).resolves.toEqual(mockData)
+        })
+
+        it('should not fetch data if overrides enabled is false', () => {
+            const accountDomain = 'test-account'
+            const storeName = 'test-store'
+            const mockData = getHandoverConfigurationsFixture()
+
+            ;(
+                getAiAgentStoreHandoverConfigurations as jest.Mock
+            ).mockResolvedValue(mockData)
+
+            renderHook(
+                () =>
+                    useGetOnboardingNotificationState(
+                        { accountDomain, storeName },
+                        { enabled: false },
+                    ),
+                { wrapper },
+            )
+
+            expect(getAiAgentStoreHandoverConfigurations).not.toHaveBeenCalled()
+        })
+    })
+
+    describe('useUpsertStoreHandoverConfiguration', () => {
+        it('should call useMutation with the correct parameters', async () => {
+            const storeName = 'test-store'
+
+            const overrides = { cacheTime: 2000, retry: true }
+            const mockDataToBeUpserted =
+                getHandoverConfigurationsFixture().handoverConfigurations[0]
+
+            ;(
+                upsertAiAgentStoreHandoverConfiguration as jest.Mock
+            ).mockResolvedValue(mockDataToBeUpserted)
+
+            renderHook(() => useUpsertStoreHandoverConfiguration(overrides), {
+                wrapper,
+            })
+
+            expect(useMutationSpy).toHaveBeenCalledWith({
+                mutationFn: expect.any(Function),
+                cacheTime: 2000,
+                retry: true,
+            })
+
+            const mutationFn = (
+                useMutationSpy.mock.calls[0][0] as unknown as {
+                    mutationFn: (args: [string]) => any
+                }
+            ).mutationFn
+
+            await expect(mutationFn([storeName])).resolves.toEqual(
+                mockDataToBeUpserted,
+            )
         })
     })
 })

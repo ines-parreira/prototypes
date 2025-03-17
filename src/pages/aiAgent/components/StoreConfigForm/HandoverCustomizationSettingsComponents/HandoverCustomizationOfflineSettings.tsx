@@ -1,19 +1,78 @@
-import React from 'react'
+import React, { useCallback } from 'react'
 
 import cn from 'classnames'
 
-import { Button } from '@gorgias/merchant-ui-kit'
+import { Button, LoadingSpinner } from '@gorgias/merchant-ui-kit'
 
 import { Label } from 'gorgias-design-system/Input/Label'
+import { GorgiasChatIntegration } from 'models/integration/types'
+import { useHandoverCustomizationOfflineSettingsForm } from 'pages/aiAgent/hooks/useHandoverCustomizationOfflineSettingsForm'
+import { formFieldsConfiguration } from 'pages/aiAgent/utils/handoverCustomizationOfflineSettingsForm.utils'
 import Caption from 'pages/common/forms/Caption/Caption'
 import TextArea from 'pages/common/forms/TextArea'
 import ToggleInput from 'pages/common/forms/ToggleInput'
 
 import css from './HandoverCustomizationOfflineSettings.less'
 
-// This component will be completed in the next PRs. Until then, the hanlers are implemented only with empty functions.
+type Props = {
+    integration: GorgiasChatIntegration
+}
 
-const HandoverCustomizationOfflineSettings = () => {
+const HandoverCustomizationOfflineSettings = ({ integration }: Props) => {
+    const {
+        isLoading,
+        formValues,
+        updateValue,
+        handleOnSave,
+        handleOnCancel,
+        isSaving,
+    } = useHandoverCustomizationOfflineSettingsForm({
+        integration,
+    })
+
+    const onOfflineInstructionsChange = useCallback(
+        (value: string) => {
+            updateValue('offlineInstructions', value)
+        },
+        [updateValue],
+    )
+
+    const onBusinessHoursToggle = useCallback(
+        (nextValue: boolean, event: React.MouseEvent<HTMLLabelElement>) => {
+            event.preventDefault()
+            updateValue('shareBusinessHours', nextValue)
+        },
+        [updateValue],
+    )
+
+    const onSave = useCallback(
+        (e: React.MouseEvent<HTMLButtonElement>) => {
+            e.preventDefault()
+            handleOnSave()
+        },
+        [handleOnSave],
+    )
+
+    const onCancel = useCallback(
+        (e: React.MouseEvent<HTMLButtonElement>) => {
+            e.preventDefault()
+            handleOnCancel()
+        },
+        [handleOnCancel],
+    )
+
+    if (isLoading) {
+        return (
+            <div
+                className={cn(css.spinner, css.loadingContainer)}
+                aria-busy="true"
+                aria-label="Loading"
+            >
+                <LoadingSpinner />
+            </div>
+        )
+    }
+
     return (
         <div>
             <div className={css.offlineInstructionsContainer}>
@@ -29,8 +88,13 @@ const HandoverCustomizationOfflineSettings = () => {
                     rows={5}
                     name="handover-customization-offline-instructions"
                     aria-label="Offline instructions"
+                    role="textbox"
+                    maxLength={
+                        formFieldsConfiguration.offlineInstructions.maxLength
+                    }
                     placeholder={`Apologize and acknowledge the issue. Request the customers’ email address for our team to reach back.`}
-                    onChange={() => {}}
+                    onChange={onOfflineInstructionsChange}
+                    value={formValues.offlineInstructions}
                     error={undefined}
                 />
                 <Caption className="caption-regular mt-1">
@@ -42,24 +106,24 @@ const HandoverCustomizationOfflineSettings = () => {
 
             <div className="mb-5 d-flex align-items-center">
                 <ToggleInput
-                    isToggled={true}
+                    isToggled={formValues.shareBusinessHours}
                     name="share-business-hours-toggle"
                     id="share-business-hours-toggle"
                     aria-label="Share business hours in handover message"
-                    onClick={() => {}}
+                    onClick={onBusinessHoursToggle}
+                />
+
+                <span className="body-semibold">
+                    Share business hours in handover message
+                </span>
+                <a
+                    href="/app/settings/business-hours"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className={cn(css.link, css.businessHoursLink)}
                 >
-                    <span className="body-semibold">
-                        Share business hours in handover message
-                    </span>
-                    <a
-                        href="/app/settings/business-hours"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className={cn(css.link, css.businessHoursLink)}
-                    >
-                        View Business Hours
-                    </a>
-                </ToggleInput>
+                    View Business Hours
+                </a>
             </div>
 
             <section className="mb-0">
@@ -68,7 +132,8 @@ const HandoverCustomizationOfflineSettings = () => {
                     color="primary"
                     className="mr-2"
                     size="small"
-                    onClick={() => {}}
+                    onClick={onSave}
+                    isDisabled={isSaving}
                 >
                     Save Changes
                 </Button>
@@ -77,7 +142,7 @@ const HandoverCustomizationOfflineSettings = () => {
                     intent="secondary"
                     color="secondary"
                     size="small"
-                    onClick={() => {}}
+                    onClick={onCancel}
                 >
                     Cancel
                 </Button>
