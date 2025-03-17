@@ -107,6 +107,10 @@ export const useStoreActivations = ({
         useStoresConfigurationMutation({ accountDomain })
 
     const onSave = async () => {
+        logEvent(SegmentEvent.AiAgentActivateCloseActivationModal, {
+            page: pageName,
+            reason: 'clicked-on-save-button',
+        })
         const updatedConfigurations: StoreConfiguration[] = Object.values(
             state,
         ).map((store) => {

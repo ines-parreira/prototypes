@@ -96,7 +96,16 @@ export const useActivation = (pageName: string) => {
             ActivationModal: () => (
                 <AiAgentActivationModal
                     isOpen={isModalVisible}
-                    onClose={() => setIsModalVisible(false)}
+                    onClose={() => {
+                        setIsModalVisible(false)
+                        logEvent(
+                            SegmentEvent.AiAgentActivateCloseActivationModal,
+                            {
+                                page: pageName,
+                                reason: 'clicked-on-cancel-or-clicked-outside',
+                            },
+                        )
+                    }}
                     accountDomain={accountDomain}
                     storeConfigs={filteredStoreConfigurations}
                     onSalesEnabled={() => {

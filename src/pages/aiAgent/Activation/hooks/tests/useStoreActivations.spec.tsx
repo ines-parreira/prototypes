@@ -1238,4 +1238,35 @@ describe('useStoreActivations', () => {
             ])
         })
     })
+
+    describe('when user clicks on Save button', () => {
+        it('should log the event ai-agent-activate-close-activation-modal', () => {
+            const store = {
+                storeName: 'My Store',
+                scopes: [AiAgentScope.Support],
+                chatChannelDeactivatedDatetime: null,
+                emailChannelDeactivatedDatetime: new Date().toISOString(),
+                monitoredChatIntegrations: [1],
+                monitoredEmailIntegrations: [
+                    { id: 2, email: 'foo@example.com' },
+                ],
+            } as any as StoreConfiguration
+
+            const { result } = renderUseStoreActivations({
+                storeConfigurations: [store],
+            })
+
+            act(() => {
+                result.current.onSave()
+            })
+
+            expect(mockLogEvent).toHaveBeenCalledWith(
+                'ai-agent-activate-close-activation-modal',
+                {
+                    page: pageName,
+                    reason: 'clicked-on-save-button',
+                },
+            )
+        })
+    })
 })
