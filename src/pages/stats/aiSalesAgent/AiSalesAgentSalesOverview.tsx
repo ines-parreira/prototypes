@@ -1,6 +1,7 @@
 import React from 'react'
 
 import { useFlags } from 'launchdarkly-react-client-sdk'
+import moment from 'moment'
 
 import { FeatureFlagKey } from 'config/featureFlags'
 import { useCleanStatsFilters } from 'hooks/reporting/useCleanStatsFilters'
@@ -10,7 +11,10 @@ import { AiSalesAgentChart } from 'pages/stats/aiSalesAgent/AiSalesAgentMetricsC
 import AiSalesAgentOverviewDownloadButton from 'pages/stats/aiSalesAgent/AiSalesAgentOverviewDownloadButton'
 import { AiSalesAgentReportConfig } from 'pages/stats/aiSalesAgent/AiSalesAgentReportConfig'
 import { RenderChart } from 'pages/stats/aiSalesAgent/components/RenderChart'
-import { PAGE_TITLE_AI_SALES_AGENT_SALES_OVERVIEW } from 'pages/stats/aiSalesAgent/constants'
+import {
+    MIN_DATE_FOR_SALES_AGENT_STATS,
+    PAGE_TITLE_AI_SALES_AGENT_SALES_OVERVIEW,
+} from 'pages/stats/aiSalesAgent/constants'
 import { AnalyticsFooter } from 'pages/stats/AnalyticsFooter'
 import FiltersPanelWrapper from 'pages/stats/common/filters/FiltersPanelWrapper'
 import { CampaignStatsFilters } from 'pages/stats/convert/providers/CampaignStatsFilters'
@@ -41,6 +45,10 @@ const AiSalesAgentSalesOverview = () => {
                             filterSettingsOverrides={{
                                 [FilterKey.Period]: {
                                     initialSettings: {
+                                        minDate: moment(
+                                            MIN_DATE_FOR_SALES_AGENT_STATS,
+                                            'YYYY-MM-DD',
+                                        ).toDate(),
                                         maxSpan: 365,
                                     },
                                 },
