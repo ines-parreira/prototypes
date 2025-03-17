@@ -106,6 +106,7 @@ export default function CustomerSyncForm({
                                   city: formState.city,
                                   country_code: formState.countryCode,
                                   zip: formState.postalCode,
+                                  province_code: formState.stateOrProvince,
                               }
                             : undefined,
                     },
@@ -129,6 +130,7 @@ export default function CustomerSyncForm({
                                   city: formState.city,
                                   country_code: formState.countryCode,
                                   zip: formState.postalCode,
+                                  province_code: formState.stateOrProvince,
                               }
                             : undefined,
                     },
