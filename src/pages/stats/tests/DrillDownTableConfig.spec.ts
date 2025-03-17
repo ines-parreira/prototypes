@@ -98,6 +98,10 @@ describe('getDrillDownQuery', () => {
             metricName: AgentsTableColumn.MedianFirstResponseTime,
             perAgentId: 123,
         },
+        {
+            metricName: AgentsTableColumn.AverageResponseTime,
+            perAgentId: 123,
+        },
         { metricName: AgentsTableColumn.MedianResolutionTime, perAgentId: 123 },
         { metricName: AgentsTableColumn.MessagesSent, perAgentId: 123 },
         { metricName: AgentsTableColumn.MessagesReceived, perAgentId: 123 },

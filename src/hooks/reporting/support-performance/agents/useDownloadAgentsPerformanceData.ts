@@ -7,6 +7,7 @@ import {
 } from 'hooks/reporting/common/useTableReportData'
 import { getCsvFileNameWithDates } from 'hooks/reporting/common/utils'
 import {
+    fetchAverageResponseTimeMetric,
     fetchClosedTicketsMetric,
     fetchCustomerSatisfactionMetric,
     fetchMedianFirstResponseTimeMetric,
@@ -19,6 +20,7 @@ import {
     Metric,
 } from 'hooks/reporting/metrics'
 import {
+    fetchAverageResponseTimeMetricPerAgent,
     fetchClosedTicketsMetricPerAgent,
     fetchCustomerSatisfactionMetricPerAgent,
     fetchMedianFirstResponseTimeMetricPerAgent,
@@ -71,6 +73,7 @@ export const AGENTS_REPORT_FILE_NAME = 'agents-metrics'
 export type AgentsReportMetricDataPoints =
     | 'customerSatisfactionMetric'
     | 'medianFirstResponseTimeMetric'
+    | 'averageResponseTimeMetric'
     | 'medianResolutionTimeMetric'
     | 'percentageOfClosedTicketsMetric'
     | 'closedTicketsMetric'
@@ -99,6 +102,10 @@ export const agentsMetricsDataSources: TableDataSources<AgentsReportData> = [
     {
         fetchData: fetchMedianFirstResponseTimeMetricPerAgent,
         title: 'medianFirstResponseTimeMetric',
+    },
+    {
+        fetchData: fetchAverageResponseTimeMetricPerAgent,
+        title: 'averageResponseTimeMetric',
     },
     {
         fetchData: fetchTicketsRepliedMetricPerAgent,
@@ -162,6 +169,10 @@ export const agentsSummaryDataSources: TableSummaryDataSources<AgentsReportData>
         {
             fetchData: fetchMedianFirstResponseTimeMetric,
             title: 'medianFirstResponseTimeMetric',
+        },
+        {
+            fetchData: fetchAverageResponseTimeMetric,
+            title: 'averageResponseTimeMetric',
         },
         {
             fetchData: fetchTicketsRepliedMetric,

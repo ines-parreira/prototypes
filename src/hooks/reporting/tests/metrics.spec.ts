@@ -2,6 +2,7 @@ import { renderHook } from '@testing-library/react-hooks'
 import moment from 'moment'
 
 import {
+    fetchAverageResponseTimeMetric,
     fetchClosedTicketsMetric,
     fetchCustomerSatisfactionMetric,
     fetchMedianFirstResponseTimeMetric,
@@ -15,6 +16,7 @@ import {
     fetchTicketsRepliedMetric,
     fetchZeroTouchTicketsMetric,
     ignoreNotAssignedTicketsFilter,
+    useAverageResponseTimeMetric,
     useClosedTicketsMetric,
     useCustomerSatisfactionMetric,
     useMedianFirstResponseTimeMetric,
@@ -31,6 +33,7 @@ import {
 import { fetchMetric, useMetric } from 'hooks/reporting/useMetric'
 import { onlineTimeQueryFactory } from 'models/reporting/queryFactories/agentxp/onlineTime'
 import { ticketAverageHandleTimeQueryFactory } from 'models/reporting/queryFactories/agentxp/ticketHandleTime'
+import { averageResponseTimeQueryFactory } from 'models/reporting/queryFactories/support-performance/averageResponseTime'
 import { closedTicketsQueryFactory } from 'models/reporting/queryFactories/support-performance/closedTickets'
 import { customerSatisfactionQueryFactory } from 'models/reporting/queryFactories/support-performance/customerSatisfaction'
 import { medianFirstResponseTimeQueryFactory } from 'models/reporting/queryFactories/support-performance/medianFirstResponseTime'
@@ -85,6 +88,11 @@ describe('metrics', () => {
             'useMedianFirstResponseTimeMetric',
             useMedianFirstResponseTimeMetric,
             medianFirstResponseTimeQueryFactory,
+        ],
+        [
+            'useAverageResponseTimeMetric',
+            useAverageResponseTimeMetric,
+            averageResponseTimeQueryFactory,
         ],
         [
             'useMedianResolutionTimeMetric',
@@ -147,6 +155,11 @@ describe('metrics', () => {
             'fetchMedianFirstResponseTimeMetric',
             fetchMedianFirstResponseTimeMetric,
             medianFirstResponseTimeQueryFactory,
+        ],
+        [
+            'fetchAverageResponseTimeMetric',
+            fetchAverageResponseTimeMetric,
+            averageResponseTimeQueryFactory,
         ],
         [
             'fetchMedianResolutionTimeMetric',

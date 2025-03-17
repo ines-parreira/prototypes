@@ -166,6 +166,11 @@ export const getDrillDownQuery = (
                 metricName.perAgentId,
                 firstResponseTimeMetricPerTicketDrillDownQueryFactory,
             )
+        case AgentsTableColumn.AverageResponseTime:
+            return queryBuilderWithAgentFilter(
+                metricName.perAgentId,
+                averageResponseTimeMetricPerTicketDrillDownQueryFactory,
+            )
         case AgentsTableColumn.MedianResolutionTime:
             return queryBuilderWithAgentFilter(
                 metricName.perAgentId,

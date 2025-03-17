@@ -5,6 +5,7 @@ import moment from 'moment/moment'
 import { Provider } from 'react-redux'
 
 import {
+    useAverageResponseTimeMetricPerAgent,
     useClosedTicketsMetricPerAgent,
     useCustomerSatisfactionMetricPerAgent,
     useMedianFirstResponseTimeMetricPerAgent,
@@ -50,6 +51,9 @@ const useClosedTicketsMetricPerAgentMock = assumeMock(
 )
 const useMedianFirstResponseTimeMetricPerAgentMock = assumeMock(
     useMedianFirstResponseTimeMetricPerAgent,
+)
+const useAverageResponseTimeMetricPerAgentMock = assumeMock(
+    useAverageResponseTimeMetricPerAgent,
 )
 const useMessagesSentMetricPerAgentMock = assumeMock(
     useMessagesSentMetricPerAgent,
@@ -104,6 +108,7 @@ describe('useAgentsMetric', () => {
             closedTicketsMetric: metricData,
             customerSatisfactionMetric: metricData,
             medianFirstResponseTimeMetric: metricData,
+            averageResponseTimeMetric: metricData,
             messagesSentMetric: metricData,
             messagesReceivedMetric: metricData,
             percentageOfClosedTicketsMetric: metricData,
@@ -142,6 +147,7 @@ describe('useAgentsMetric', () => {
         )
         useClosedTicketsMetricPerAgentMock.mockReturnValue(metricData)
         useMedianFirstResponseTimeMetricPerAgentMock.mockReturnValue(metricData)
+        useAverageResponseTimeMetricPerAgentMock.mockReturnValue(metricData)
         useMessagesSentMetricPerAgentMock.mockReturnValue(metricData)
         useMessagesReceivedMetricPerAgentMock.mockReturnValue(metricData)
         useMedianResolutionTimeMetricPerAgentMock.mockReturnValue(metricData)

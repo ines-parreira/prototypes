@@ -1,6 +1,7 @@
 import { User } from 'config/types/user'
 import {
     Metric,
+    useAverageResponseTimeMetric,
     useClosedTicketsMetric,
     useCustomerSatisfactionMetric,
     useMedianFirstResponseTimeMetric,
@@ -12,6 +13,7 @@ import {
     useTicketsRepliedMetric,
 } from 'hooks/reporting/metrics'
 import {
+    useAverageResponseTimeMetricPerAgent,
     useClosedTicketsMetricPerAgent,
     useCustomerSatisfactionMetricPerAgent,
     useMedianFirstResponseTimeMetricPerAgent,
@@ -56,6 +58,7 @@ import {
 import { MetricValueFormat } from 'pages/stats/common/utils'
 import { TooltipData } from 'pages/stats/types'
 import {
+    AVERAGE_RESPONSE_TIME_LABEL,
     CLOSED_TICKETS_PER_HOUR,
     CUSTOMER_SATISFACTION_LABEL,
     MEDIAN_FIRST_RESPONSE_TIME_LABEL,
@@ -151,6 +154,7 @@ export const TableLabels: Record<AgentsTableColumn, string> = {
     [AgentsTableColumn.CustomerSatisfaction]: CUSTOMER_SATISFACTION_LABEL,
     [AgentsTableColumn.MedianFirstResponseTime]:
         MEDIAN_FIRST_RESPONSE_TIME_LABEL,
+    [AgentsTableColumn.AverageResponseTime]: AVERAGE_RESPONSE_TIME_LABEL,
     [AgentsTableColumn.MedianResolutionTime]: MEDIAN_RESOLUTION_TIME_LABEL,
     [AgentsTableColumn.ClosedTickets]: TICKETS_CLOSED_LABEL,
     [AgentsTableColumn.PercentageOfClosedTickets]: PERCENT_OF_CLOSED_TICKETS,
@@ -216,6 +220,13 @@ export const AgentsColumnConfig: Record<
         hint: {
             title: 'Median time between 1st customer message and 1st agent response, for tickets where the response was sent within the selected timeframe',
             link: 'https://link.gorgias.com/gs6',
+        },
+        perAgent: false,
+    },
+    [AgentsTableColumn.AverageResponseTime]: {
+        format: 'duration',
+        hint: {
+            title: 'Average response time between message sent by customer and response from the ticket agent response',
         },
         perAgent: false,
     },
@@ -363,6 +374,8 @@ export const getQuery = (
             })
         case AgentsTableColumn.MedianFirstResponseTime:
             return useMedianFirstResponseTimeMetricPerAgent
+        case AgentsTableColumn.AverageResponseTime:
+            return useAverageResponseTimeMetricPerAgent
         case AgentsTableColumn.RepliedTickets:
             return useTicketsRepliedMetricPerAgent
         case AgentsTableColumn.PercentageOfClosedTickets:
@@ -420,6 +433,8 @@ export const getSummaryQuery = (column: AgentsTableColumn): MetricQueryHook => {
             return useMessagesReceivedMetric
         case AgentsTableColumn.MedianResolutionTime:
             return useMedianResolutionTimeMetric
+        case AgentsTableColumn.AverageResponseTime:
+            return useAverageResponseTimeMetric
         case AgentsTableColumn.CustomerSatisfaction:
             return useCustomerSatisfactionMetric
         case AgentsTableColumn.OneTouchTickets:
@@ -457,6 +472,7 @@ export const getTotalsQuery = (column: AgentsTableColumn): MetricQueryHook => {
             return useMessagesSentPerHourPerAgentTotalCapacity
         case AgentsTableColumn.AgentName:
         case AgentsTableColumn.MedianFirstResponseTime:
+        case AgentsTableColumn.AverageResponseTime:
         case AgentsTableColumn.MedianResolutionTime:
         case AgentsTableColumn.CustomerSatisfaction:
         case AgentsTableColumn.OneTouchTickets:

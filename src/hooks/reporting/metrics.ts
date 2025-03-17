@@ -3,6 +3,7 @@ import { OrderDirection } from 'models/api/types'
 import { TicketMember } from 'models/reporting/cubes/TicketCube'
 import { onlineTimeQueryFactory } from 'models/reporting/queryFactories/agentxp/onlineTime'
 import { ticketAverageHandleTimeQueryFactory } from 'models/reporting/queryFactories/agentxp/ticketHandleTime'
+import { averageResponseTimeQueryFactory } from 'models/reporting/queryFactories/support-performance/averageResponseTime'
 import { closedTicketsQueryFactory } from 'models/reporting/queryFactories/support-performance/closedTickets'
 import { customerSatisfactionQueryFactory } from 'models/reporting/queryFactories/support-performance/customerSatisfaction'
 import { medianFirstResponseTimeQueryFactory } from 'models/reporting/queryFactories/support-performance/medianFirstResponseTime'
@@ -107,6 +108,28 @@ export const fetchMedianFirstResponseTimeMetric = async (
     fetchMetric(
         withFilter(
             medianFirstResponseTimeQueryFactory(statsFilters, timezone),
+            ignoreNotAssignedTicketsFilter,
+        ),
+    )
+
+export const useAverageResponseTimeMetric = (
+    statsFilters: StatsFilters,
+    timezone: string,
+): Metric =>
+    useMetric(
+        withFilter(
+            averageResponseTimeQueryFactory(statsFilters, timezone),
+            ignoreNotAssignedTicketsFilter,
+        ),
+    )
+
+export const fetchAverageResponseTimeMetric = async (
+    statsFilters: StatsFilters,
+    timezone: string,
+): Promise<Metric> =>
+    fetchMetric(
+        withFilter(
+            averageResponseTimeQueryFactory(statsFilters, timezone),
             ignoreNotAssignedTicketsFilter,
         ),
     )

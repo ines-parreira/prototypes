@@ -27,6 +27,7 @@ import {
 import {
     TicketMessagesDimension,
     TicketMessagesMeasure,
+    TicketMessagesMember,
 } from 'models/reporting/cubes/TicketMessagesCube'
 import { TicketSatisfactionSurveyMeasure } from 'models/reporting/cubes/TicketSatisfactionSurveyCube'
 import {
@@ -50,6 +51,7 @@ type AgentIdentifierDimension =
     | HelpdeskMessageDimension.SenderId
     | AgentTimeTrackingDimension.UserId
     | TicketDimension.MessageSenderId
+    | TicketMessagesMember.SenderId
 
 type AgentReportMetrics =
     | HelpdeskMessageCubeWithJoins['dimensions']
@@ -73,6 +75,7 @@ type ReportDataMap = Record<
 export interface AgentsPerformanceReportData<T = MetricWithDecile> {
     customerSatisfactionMetric: T
     medianFirstResponseTimeMetric: T
+    averageResponseTimeMetric: T
     medianResolutionTimeMetric: T
     percentageOfClosedTicketsMetric: T
     closedTicketsMetric: T
@@ -173,6 +176,7 @@ export const getData = (
         TicketMessagesDimension.FirstHelpdeskMessageUserId
     const MedianFirstResponseTime =
         TicketMessagesMeasure.MedianFirstResponseTime
+    const AverageResponseTime = TicketMessagesMeasure.AverageResponseTime
     const MedianResolutionTime = TicketMessagesMeasure.MedianResolutionTime
     const TicketCount = TicketMeasure.TicketCount
     const SenderId = HelpdeskMessageDimension.SenderId
@@ -205,10 +209,18 @@ export const getData = (
         [AgentsTableColumn.MedianFirstResponseTime]: {
             column: AgentsTableColumn.MedianFirstResponseTime,
             metricData: data.medianFirstResponseTimeMetric,
-            idField: FirstHelpdeskMessageUserId,
+            idField: TicketMessagesMember.SenderId,
             metricField: MedianFirstResponseTime,
             summaryData: summary.medianFirstResponseTimeMetric.data?.value,
             totalData: total.medianFirstResponseTimeMetric.data?.value,
+        },
+        [AgentsTableColumn.AverageResponseTime]: {
+            column: AgentsTableColumn.AverageResponseTime,
+            metricData: data.averageResponseTimeMetric,
+            idField: FirstHelpdeskMessageUserId,
+            metricField: AverageResponseTime,
+            summaryData: summary.averageResponseTimeMetric.data?.value,
+            totalData: summary.averageResponseTimeMetric.data?.value,
         },
         [AgentsTableColumn.MedianResolutionTime]: {
             column: AgentsTableColumn.MedianResolutionTime,

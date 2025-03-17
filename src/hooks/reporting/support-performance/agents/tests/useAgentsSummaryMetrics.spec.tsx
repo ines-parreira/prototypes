@@ -1,6 +1,7 @@
 import { renderHook } from '@testing-library/react-hooks'
 
 import {
+    useAverageResponseTimeMetric,
     useClosedTicketsMetric,
     useCustomerSatisfactionMetric,
     useMedianFirstResponseTimeMetric,
@@ -30,6 +31,9 @@ const useClosedTicketsMetricMock = assumeMock(useClosedTicketsMetric)
 
 const useMedianFirstResponseTimeMetricMock = assumeMock(
     useMedianFirstResponseTimeMetric,
+)
+const useAverageResponseTimeMetricMock = assumeMock(
+    useAverageResponseTimeMetric,
 )
 const useMessagesSentMetricMock = assumeMock(useMessagesSentMetric)
 const useMessagesReceivedMetricMock = assumeMock(useMessagesReceivedMetric)
@@ -81,6 +85,7 @@ describe('useAgentsSummaryMetrics', () => {
             closedTicketsMetric: metricData,
             customerSatisfactionMetric: metricData,
             medianFirstResponseTimeMetric: metricData,
+            averageResponseTimeMetric: metricData,
             messagesSentMetric: metricData,
             messagesReceivedMetric: metricData,
             percentageOfClosedTicketsMetric: metricData,
@@ -107,6 +112,7 @@ describe('useAgentsSummaryMetrics', () => {
     useClosedTicketsMetricMock.mockReturnValue(metricData)
     useClosedTicketsMetricMock.mockReturnValue(metricData)
     useMedianFirstResponseTimeMetricMock.mockReturnValue(metricData)
+    useAverageResponseTimeMetricMock.mockReturnValue(metricData)
     useMessagesSentMetricMock.mockReturnValue(metricData)
     useMessagesReceivedMetricMock.mockReturnValue(metricData)
     useMedianResolutionTimeMetricMock.mockReturnValue(metricData)

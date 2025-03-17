@@ -7,6 +7,7 @@ import { OrderDirection } from 'models/api/types'
 import { Cubes } from 'models/reporting/cubes'
 import { onlineTimePerAgentQueryFactory } from 'models/reporting/queryFactories/agentxp/onlineTime'
 import { ticketAverageHandleTimePerAgentQueryFactory } from 'models/reporting/queryFactories/agentxp/ticketHandleTime'
+import { averageResponseTimeMetricPerAgentQueryFactory } from 'models/reporting/queryFactories/support-performance/averageResponseTime'
 import { closedTicketsPerAgentQueryFactory } from 'models/reporting/queryFactories/support-performance/closedTickets'
 import { customerSatisfactionMetricPerAgentQueryFactory } from 'models/reporting/queryFactories/support-performance/customerSatisfaction'
 import { medianFirstResponseTimeMetricPerAgentQueryFactory } from 'models/reporting/queryFactories/support-performance/medianFirstResponseTime'
@@ -58,6 +59,13 @@ export const useMedianFirstResponseTimeMetricPerAgent =
 
 export const fetchMedianFirstResponseTimeMetricPerAgent =
     createFetchPerDimension(medianFirstResponseTimeMetricPerAgentQueryFactory)
+
+export const useAverageResponseTimeMetricPerAgent =
+    createMetricPerDimensionHook(averageResponseTimeMetricPerAgentQueryFactory)
+
+export const fetchAverageResponseTimeMetricPerAgent = createFetchPerDimension(
+    averageResponseTimeMetricPerAgentQueryFactory,
+)
 
 export const useTicketsRepliedMetricPerAgent = createMetricPerDimensionHook(
     ticketsRepliedMetricPerAgentQueryFactory,
