@@ -1,28 +1,30 @@
 import React, { useCallback, useEffect, useRef } from 'react'
 
 import classNames from 'classnames'
+import { useFlags } from 'launchdarkly-react-client-sdk'
 import { useHistory } from 'react-router-dom'
 
 import { Skeleton } from '@gorgias/merchant-ui-kit'
 
 import { AiAgentNotificationType } from 'automate/notifications/types'
 import { logEvent, SegmentEvent } from 'common/segment'
+import { FeatureFlagKey } from 'config/featureFlags'
 import useAppDispatch from 'hooks/useAppDispatch'
 import {
     AiAgentOnboardingState,
     OnboardingNotificationState,
     StoreConfiguration,
 } from 'models/aiAgent/types'
+import { AIAgentPaywallSetup } from 'pages/aiAgent/components/AIAgentPaywallSetup/AIAgentPaywallSetup'
+import { WIZARD_UPDATE_QUERY_KEY } from 'pages/aiAgent/constants'
 import { useAiAgentNavigation } from 'pages/aiAgent/hooks/useAiAgentNavigation'
+import { useAiAgentOnboardingNotification } from 'pages/aiAgent/hooks/useAiAgentOnboardingNotification'
+import { useWelcomePageAcknowledgedMutation } from 'pages/aiAgent/hooks/useWelcomePageAcknowledgedMutation'
 import Button from 'pages/common/components/button/Button'
 import PageHeader from 'pages/common/components/PageHeader'
 import { notify } from 'state/notifications/actions'
 import { NotificationStatus } from 'state/notifications/types'
 import { assetsUrl } from 'utils'
-
-import { WIZARD_UPDATE_QUERY_KEY } from '../../constants'
-import { useAiAgentOnboardingNotification } from '../../hooks/useAiAgentOnboardingNotification'
-import { useWelcomePageAcknowledgedMutation } from '../../hooks/useWelcomePageAcknowledgedMutation'
 
 import css from './AIAgentWelcomePageView.less'
 
@@ -58,6 +60,8 @@ type Props = AiAgentWelcomePageProps &
 export const AIAgentWelcomePageView = (props: Props) => {
     const { isLoading, createWelcomePageAcknowledged } =
         useWelcomePageAcknowledgedMutation({ shopName: props.shopName })
+    const hasPaywallSetupEnabled =
+        useFlags()[FeatureFlagKey.StandaloneAiAgentSalesPaywallSetup]
 
     const {
         isAdmin,
@@ -264,7 +268,13 @@ export const AIAgentWelcomePageView = (props: Props) => {
         props.state,
     ])
 
-    return (
+    return hasPaywallSetupEnabled ? (
+        <AIAgentPaywallSetup
+            onOnboardingWizardClick={onOnboardingWizardClick}
+            isLoading={isLoading || isLoadingOnboardingNotificationState}
+            isOnUpdateOnboardingWizard={isOnUpdateOnboardingWizard}
+        />
+    ) : (
         <div className={css.pageContainer}>
             <PageHeader title="AI Agent"></PageHeader>
             <div className={css.contentContainer}>

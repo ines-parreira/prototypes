@@ -137,7 +137,7 @@ export const AIAgentWelcomePageDynamic = ({
                       }
             }
             helpCenterCreated={
-                helpCentersConnectedToStoreIds.length !== 0
+                helpCentersConnectedToStoreIds?.length !== 0
                     ? { checked: true }
                     : {
                           checked: false,
