@@ -58,7 +58,7 @@ describe('useEarlyAccessModalState', () => {
     )
 
     describe('when user is admin and plan is not of 6th generation', () => {
-        it('should set isPreviewModalVisible to true only on first render', () => {
+        beforeEach(() => {
             mockUseEarlyAccessAutomatePlan.mockReturnValue({
                 data: {},
                 isLoading: false,
@@ -80,7 +80,9 @@ describe('useEarlyAccessModalState', () => {
             mockUpdateSubscription.mockReturnValue({
                 type: 'dummy-action',
             } as any)
+        })
 
+        it('should set isPreviewModalVisible to true only on first render', () => {
             const { result } = renderHook(
                 () => useEarlyAccessModalState({ hasActivationEnabled: true }),
                 { wrapper },
@@ -96,29 +98,20 @@ describe('useEarlyAccessModalState', () => {
             expect(result2.current.isPreviewModalVisible).toBeFalsy()
         })
 
-        it('should set focusActivationModal search parameters after upgrading the subscription', async () => {
-            mockUseEarlyAccessAutomatePlan.mockReturnValue({
-                data: {},
-                isLoading: false,
-            } as any)
-            mockUseBillingState.mockReturnValue({
-                data: {
-                    current_plans: {
-                        automate: { generation: 5 },
-                    },
-                },
-                isLoading: false,
-            } as any)
-            mockGetCurrentUser.mockReturnValue(
-                fromJS({ role: { name: 'admin' } }),
+        it('should not set isPreviewModalVisible to true on first render if autoDisplayDisabled is true', () => {
+            const { result } = renderHook(
+                () =>
+                    useEarlyAccessModalState({
+                        hasActivationEnabled: true,
+                        autoDisplayDisabled: true,
+                    }),
+                { wrapper },
             )
-            mockGetCurrentAccountState.mockReturnValue(fromJS({ id: 1 }))
-            mockGetCurrentPlansByProduct.mockReturnValue(fromJS({}))
-            mockUseCurrentPriceIds.mockReturnValue([])
-            mockUpdateSubscription.mockReturnValue({
-                type: 'dummy-action',
-            } as any)
 
+            expect(result.current.isPreviewModalVisible).toBeFalsy()
+        })
+
+        it('should set focusActivationModal search parameters after upgrading the subscription', async () => {
             const mockPushState = jest.fn()
             window.history.pushState = mockPushState
 

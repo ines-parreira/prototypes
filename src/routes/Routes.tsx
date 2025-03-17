@@ -1130,8 +1130,10 @@ export function AiAgentBaseRoutes({ match: { path } }: RouteComponentProps) {
 
 function AiAgentContent() {
     const { path } = useRouteMatch()
-    const hasStandaloneConvAiOverviewPage =
-        useFlags()[FeatureFlagKey.StandaloneConvAiOverviewPage]
+    const hasStandaloneConvAiOverviewPage = useFlag(
+        FeatureFlagKey.StandaloneConvAiOverviewPage,
+        null, // null means FF is not set yet
+    )
 
     return (
         <Switch>
@@ -1150,10 +1152,12 @@ function AiAgentContent() {
             />
 
             <Route>
-                {hasStandaloneConvAiOverviewPage ? (
+                {hasStandaloneConvAiOverviewPage === true ? (
                     <Redirect to={aiAgentRoutes.overview} />
                 ) : (
-                    <RedirectToAiAgentStore />
+                    hasStandaloneConvAiOverviewPage === false && (
+                        <RedirectToAiAgentStore />
+                    )
                 )}
             </Route>
         </Switch>

@@ -17,7 +17,12 @@ import { getShopifyIntegrationsSortedByName } from 'state/integrations/selectors
 import { useEarlyAccessModalState } from './useEarlyAccessModalState'
 import { useStoreActivations } from './useStoreActivations'
 
-export const useActivation = (pageName: string) => {
+export const useActivation = (
+    pageName: string,
+    options: {
+        autoDisplayEarlyAccessDisabled?: boolean
+    } = {},
+) => {
     const searchParams = new URLSearchParams(window.location.search)
     const [isModalVisible, setIsModalVisible] = useState(
         searchParams.has('focusActivationModal'),
@@ -73,7 +78,10 @@ export const useActivation = (pageName: string) => {
         handleSubscriptionUpdate,
         isSubscriptionUpdating,
         currentPlan,
-    } = useEarlyAccessModalState({ hasActivationEnabled })
+    } = useEarlyAccessModalState({
+        hasActivationEnabled,
+        autoDisplayDisabled: options.autoDisplayEarlyAccessDisabled,
+    })
 
     return useMemo(
         () => ({

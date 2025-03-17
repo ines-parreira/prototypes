@@ -36,8 +36,10 @@ const useAutoDisplaySalesEarlyAccessModal = (
 
 export const useEarlyAccessModalState = ({
     hasActivationEnabled,
+    autoDisplayDisabled,
 }: {
     hasActivationEnabled: boolean
+    autoDisplayDisabled?: boolean
 }) => {
     const earlyAccessAutomatePlanQuery = useEarlyAccessAutomatePlan({
         enabled: hasActivationEnabled,
@@ -53,7 +55,9 @@ export const useEarlyAccessModalState = ({
     const currentPlan = billingState?.data?.current_plans?.automate
 
     useAutoDisplaySalesEarlyAccessModal(
-        isCurrentUserAdmin && currentPlan?.generation !== 6,
+        !autoDisplayDisabled &&
+            isCurrentUserAdmin &&
+            currentPlan?.generation !== 6,
         () => setIsPreviewModalVisible(true),
     )
 
