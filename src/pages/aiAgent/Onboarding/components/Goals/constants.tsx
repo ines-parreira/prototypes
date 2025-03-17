@@ -27,7 +27,7 @@ export const GoalOption: GoalData[] = [
         type: GoalType.Both,
         scope: [AiAgentScopes.SUPPORT, AiAgentScopes.SALES],
         image: <RocketIcon />,
-        title: 'Do both: Automate Support and Boost Sales',
+        title: 'Automate Support and Boost Sales',
         description: 'Use our duo AI Agents to handle common customer queries.',
     },
 ]

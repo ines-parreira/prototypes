@@ -15,7 +15,7 @@ describe('<Goals />', () => {
             screen.getByText('Boost Sales with a Personal Shopping Assistant'),
         ).toBeInTheDocument()
         expect(
-            screen.getByText('Do both: Automate Support and Boost Sales'),
+            screen.getByText('Automate Support and Boost Sales'),
         ).toBeInTheDocument()
     })
 

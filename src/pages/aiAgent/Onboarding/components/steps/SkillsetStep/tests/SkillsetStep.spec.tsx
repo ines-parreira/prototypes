@@ -266,7 +266,7 @@ describe('<SkillsetStep /> - Show correct preview', () => {
                 conversationExamples.productRecommendations.messages[0].content,
         },
         {
-            cta: 'Do both: Automate Support and Boost Sales',
+            cta: 'Automate Support and Boost Sales',
             firstExpectedMessage:
                 conversationExamples.discountCode.messages[0].content,
         },

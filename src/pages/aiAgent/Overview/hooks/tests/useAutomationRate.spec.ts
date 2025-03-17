@@ -49,7 +49,7 @@ describe('useAutomationRate', () => {
         )
 
         expect(result.current).toEqual({
-            title: 'Automation Rate',
+            title: 'AI Agent Automation Rate',
             hint: 'Automated interactions from AI Agent as a percent of all customer interactions.',
             metricType: StatType.Number,
             metricFormat: 'decimal-to-percent',
@@ -69,7 +69,7 @@ describe('useAutomationRate', () => {
         )
 
         expect(result.current).toEqual({
-            title: 'Automation Rate',
+            title: 'AI Agent Automation Rate',
             hint: 'Automated interactions from AI Agent as a percent of all customer interactions.',
             metricType: StatType.Number,
             metricFormat: 'decimal-to-percent',
