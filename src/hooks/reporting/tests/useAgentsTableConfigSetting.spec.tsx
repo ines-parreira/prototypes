@@ -11,12 +11,10 @@ import { useFlag } from 'core/flags'
 import { account } from 'fixtures/account'
 import { useAgentsTableConfigSetting } from 'hooks/reporting/useAgentsTableConfigSetting'
 import {
-    agentPerformanceRowsWithTotal,
+    agentPerformanceRows,
     agentPerformanceTableActiveView,
-    agentPerformanceTableActiveViewWithTotal,
     TableColumnsOrder,
     TableRowsOrder,
-    TableRowsOrderWithTotal,
 } from 'pages/stats/support-performance/agents/AgentsTableConfig'
 import { submitAgentTableConfigView } from 'state/currentAccount/actions'
 import {
@@ -62,11 +60,11 @@ describe('useAgentsTableConfigSetting', () => {
                 AgentsTableColumn.MessagesReceived,
                 AgentsTableColumn.AverageResponseTime,
             ],
-            rowsOrder: TableRowsOrderWithTotal,
+            rowsOrder: TableRowsOrder,
             currentView: {
-                ...agentPerformanceTableActiveViewWithTotal,
+                ...agentPerformanceTableActiveView,
                 metrics: [
-                    ...agentPerformanceTableActiveViewWithTotal.metrics,
+                    ...agentPerformanceTableActiveView.metrics,
                     {
                         id: AgentsTableColumn.ZeroTouchTickets,
                         visibility: null,
@@ -80,7 +78,13 @@ describe('useAgentsTableConfigSetting', () => {
                         visibility: null,
                     },
                 ],
-                rows: agentPerformanceRowsWithTotal,
+                rows: [
+                    ...agentPerformanceRows,
+                    {
+                        id: AgentsTableRow.Total,
+                        visibility: false,
+                    },
+                ],
             },
             submitActiveView: expect.any(Function),
         })
@@ -271,12 +275,10 @@ describe('useAgentsTableConfigSetting', () => {
             ),
         })
 
-        await result.current.submitActiveView(
-            agentPerformanceTableActiveViewWithTotal,
-        )
+        await result.current.submitActiveView(agentPerformanceTableActiveView)
 
         expect(submitAgentTableConfigViewMock).toHaveBeenCalledWith(
-            agentPerformanceTableActiveViewWithTotal,
+            agentPerformanceTableActiveView,
         )
     })
 })

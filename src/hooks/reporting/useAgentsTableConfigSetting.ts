@@ -5,7 +5,6 @@ import { useFlag } from 'core/flags'
 import { useTableConfigSetting } from 'hooks/reporting/useTableConfigSetting'
 import {
     agentPerformanceTableActiveView,
-    agentPerformanceTableActiveViewWithTotal,
     TableColumnsOrder,
     TableRowsOrder,
     TableRowsOrderWithTotal,
@@ -50,9 +49,7 @@ export const useAgentsTableConfigSetting = () => {
 
     return useTableConfigSetting<AgentsTableColumn, AgentsTableRow>(
         getAgentsTableConfigSettingsJS,
-        isReportingAgentsTableAverageAndTotalEnabled
-            ? agentPerformanceTableActiveViewWithTotal
-            : agentPerformanceTableActiveView,
+        agentPerformanceTableActiveView,
         columnsOrder,
         isReportingAgentsTableAverageAndTotalEnabled
             ? TableRowsOrderWithTotal

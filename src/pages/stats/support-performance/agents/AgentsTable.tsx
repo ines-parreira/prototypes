@@ -123,9 +123,10 @@ export const AgentsTable = ({
                     </TableHead>
                     <TableBody>
                         {withAggregateRows &&
-                            rowsOrder.map((row) => (
+                            rowsOrder.map((row, index) => (
                                 <AgentsSummaryRow
                                     isTableScrolled={isTableScrolled}
+                                    isEmphasized={index === 0}
                                     statsFilters={statsFilters}
                                     agents={allAgents}
                                     columns={columnsOrder}

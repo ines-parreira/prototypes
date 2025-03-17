@@ -19,8 +19,7 @@ import {
     TOGGLE_LABEL,
 } from 'pages/stats/common/components/Table/EditTableColumns'
 import {
-    agentPerformanceRowsWithTotal,
-    agentPerformanceTableActiveViewWithTotal,
+    agentPerformanceTableActiveView,
     AgentsColumnConfig,
     AgentsRowConfig,
     AgentsTableViews,
@@ -158,10 +157,10 @@ describe('<AgentsEditColumns>', () => {
         const input = element.getElementsByTagName('input')[0]
 
         fireEvent.click(element)
-        expect(input).not.toBeChecked()
+        expect(input).toBeChecked()
 
         fireEvent.click(element)
-        expect(input).toBeChecked()
+        expect(input).not.toBeChecked()
     })
 
     it('should dispatch submit new setting on save', async () => {
@@ -186,7 +185,7 @@ describe('<AgentsEditColumns>', () => {
             expect(submitAgentSettingSpy).toHaveBeenCalledWith({
                 id: expect.any(String),
                 name: expect.any(String),
-                metrics: agentPerformanceTableActiveViewWithTotal.metrics.map(
+                metrics: agentPerformanceTableActiveView.metrics.map(
                     (metric) => {
                         if (metric.id === AgentsTableColumn.ClosedTickets) {
                             return {
@@ -261,6 +260,7 @@ describe('<AgentsEditColumns>', () => {
                 }
                 return metric
             }),
+            rows: [],
         })
     })
 
@@ -273,8 +273,8 @@ describe('<AgentsEditColumns>', () => {
         const activeView = {
             id: activeViewId,
             name: 'Some name',
-            metrics: agentPerformanceTableActiveViewWithTotal.metrics,
-            rows: agentPerformanceTableActiveViewWithTotal.rows,
+            metrics: agentPerformanceTableActiveView.metrics,
+            rows: agentPerformanceTableActiveView.rows,
         } as any
         const state = {
             currentAccount: fromJS({
@@ -314,7 +314,7 @@ describe('<AgentsEditColumns>', () => {
             expect(submitAgentSettingSpy).toHaveBeenCalledWith({
                 id: expect.any(String),
                 name: expect.any(String),
-                metrics: agentPerformanceTableActiveViewWithTotal?.metrics.map(
+                metrics: agentPerformanceTableActiveView.metrics.map(
                     (metric) => {
                         if (metric.id === AgentsTableColumn.ClosedTickets) {
                             return {
@@ -325,7 +325,10 @@ describe('<AgentsEditColumns>', () => {
                         return metric
                     },
                 ),
-                rows: agentPerformanceRowsWithTotal,
+                rows: [
+                    { id: AgentsTableRow.Average, visibility: true },
+                    { id: AgentsTableRow.Total, visibility: false },
+                ],
             })
         })
     })
@@ -335,7 +338,7 @@ describe('<AgentsEditColumns>', () => {
         const activeView = {
             id: activeViewId,
             name: 'Some name',
-            metrics: agentPerformanceTableActiveViewWithTotal.metrics,
+            metrics: agentPerformanceTableActiveView.metrics,
         }
         const state = {
             currentAccount: fromJS({
@@ -374,8 +377,8 @@ describe('<AgentsEditColumns>', () => {
             id: activeViewId,
             name: 'Some name',
             metrics: [
-                agentPerformanceTableActiveViewWithTotal.metrics[0],
-                agentPerformanceTableActiveViewWithTotal.metrics[1],
+                agentPerformanceTableActiveView.metrics[0],
+                agentPerformanceTableActiveView.metrics[1],
             ],
         }
 
@@ -425,7 +428,7 @@ describe('<AgentsEditColumns>', () => {
         const items = document.getElementsByClassName('dropdown-item')
 
         const metricsWithoutLeadColumn =
-            agentPerformanceTableActiveViewWithTotal.metrics.filter(
+            agentPerformanceTableActiveView.metrics.filter(
                 (m) => m.id !== leadColumn,
             )
 
@@ -439,9 +442,9 @@ describe('<AgentsEditColumns>', () => {
     it('should allow changing order of columns with drag and drop', () => {
         useFlagMock.mockReturnValue(false)
         const firstOrderableItemLabel =
-            TableLabels[agentPerformanceTableActiveViewWithTotal.metrics[1].id]
+            TableLabels[agentPerformanceTableActiveView.metrics[1].id]
         const lastItemLabel =
-            TableLabels[agentPerformanceTableActiveViewWithTotal.metrics[5].id]
+            TableLabels[agentPerformanceTableActiveView.metrics[5].id]
 
         render(
             <Provider store={mockStore({})}>
@@ -471,10 +474,8 @@ describe('<AgentsEditColumns>', () => {
 
     it('should allow changing order or rows with drag and drop', () => {
         useFlagMock.mockReturnValue(true)
-        const firstOrderableItemLabel =
-            TableRowLabels[agentPerformanceTableActiveViewWithTotal.rows[0].id]
-        const lastItemLabel =
-            TableRowLabels[agentPerformanceTableActiveViewWithTotal.rows[1].id]
+        const firstOrderableItemLabel = TableRowLabels[AgentsTableRow.Average]
+        const lastItemLabel = TableRowLabels[AgentsTableRow.Total]
 
         render(
             <Provider store={mockStore({})}>
@@ -525,7 +526,7 @@ describe('<AgentsEditColumns>', () => {
 
     it('should render correct row label when rowLabels is provided', () => {
         useFlagMock.mockReturnValue(true)
-        const expectedLabel = TableRowLabels[AgentsTableRow.Total]
+        const expectedLabel = TableRowLabels[AgentsTableRow.Average]
 
         render(
             <Provider store={mockStore({})}>

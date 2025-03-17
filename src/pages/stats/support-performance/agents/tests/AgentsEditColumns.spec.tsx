@@ -16,12 +16,12 @@ import {
 } from 'pages/stats/common/components/Table/EditTableColumns'
 import { AgentsEditColumns } from 'pages/stats/support-performance/agents/AgentsEditColumns'
 import {
-    agentPerformanceTableActiveViewWithTotal,
+    agentPerformanceTableActiveView,
     TableLabels,
 } from 'pages/stats/support-performance/agents/AgentsTableConfig'
 import * as currentAccount from 'state/currentAccount/actions'
 import { RootState, StoreDispatch } from 'state/types'
-import { AgentsTableColumn } from 'state/ui/stats/types'
+import { AgentsTableColumn, AgentsTableRow } from 'state/ui/stats/types'
 import { assumeMock } from 'utils/testing'
 
 const manager = createDragDropManager(HTML5Backend, undefined, undefined)
@@ -107,18 +107,19 @@ describe('<AgentsEditColumns>', () => {
         expect(submitSettingSpy).toBeCalledWith({
             id: expect.any(String),
             name: expect.any(String),
-            metrics: agentPerformanceTableActiveViewWithTotal.metrics.map(
-                (metric) => {
-                    if (metric.id === AgentsTableColumn.ClosedTickets) {
-                        return {
-                            ...metric,
-                            visibility: false,
-                        }
+            metrics: agentPerformanceTableActiveView.metrics.map((metric) => {
+                if (metric.id === AgentsTableColumn.ClosedTickets) {
+                    return {
+                        ...metric,
+                        visibility: false,
                     }
-                    return metric
-                },
-            ),
-            rows: agentPerformanceTableActiveViewWithTotal?.rows,
+                }
+                return metric
+            }),
+            rows: [
+                { id: AgentsTableRow.Average, visibility: true },
+                { id: AgentsTableRow.Total, visibility: false },
+            ],
         })
     })
 
@@ -135,7 +136,7 @@ describe('<AgentsEditColumns>', () => {
         const items = document.getElementsByClassName('dropdown-item')
 
         const metricsWithoutLeadColumn =
-            agentPerformanceTableActiveViewWithTotal.metrics.filter(
+            agentPerformanceTableActiveView.metrics.filter(
                 (m) => m.id !== AgentsTableColumn.AgentName,
             )
 
@@ -149,9 +150,9 @@ describe('<AgentsEditColumns>', () => {
     it('should allow changing order with drag and drop', () => {
         useFlagMock.mockReturnValue(false)
         const firstOrderableItemLabel =
-            TableLabels[agentPerformanceTableActiveViewWithTotal.metrics[1].id]
+            TableLabels[agentPerformanceTableActiveView.metrics[1].id]
         const lastItemLabel =
-            TableLabels[agentPerformanceTableActiveViewWithTotal.metrics[5].id]
+            TableLabels[agentPerformanceTableActiveView.metrics[5].id]
 
         render(
             <Provider store={mockStore({})}>

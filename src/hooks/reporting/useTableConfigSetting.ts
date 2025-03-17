@@ -67,10 +67,10 @@ export const useTableConfigSetting = <
 
     const currentViewRowsInOrder = useMemo(
         () =>
-            (defaultCurrentView?.rows ?? [])
+            (defaultCurrentView?.rows ?? fallbackView.rows ?? [])
                 .map((row) => row.id)
                 .filter((rowId) => rowsOrder.includes(rowId)),
-        [defaultCurrentView, rowsOrder],
+        [defaultCurrentView, fallbackView, rowsOrder],
     )
 
     const columnsMissingInSettings = useMemo(
@@ -122,26 +122,26 @@ export const useTableConfigSetting = <
 
     const currentViewRows = useMemo(() => {
         if (rowsOrder.length === 0) {
-            return
+            return []
         }
 
         return rowsInOrder?.map((row) => {
-            const savedSetting = (defaultCurrentView?.rows ?? []).find(
-                (entry) => entry.id === row,
-            )
+            const savedSetting = (
+                defaultCurrentView?.rows ??
+                fallbackView.rows ??
+                []
+            ).find((entry) => entry.id === row)
+
             return {
                 id: row,
-                visibility:
-                    savedSetting?.visibility !== undefined
-                        ? savedSetting?.visibility
-                        : null,
+                visibility: savedSetting?.visibility || false,
             }
         })
-    }, [rowsInOrder, defaultCurrentView, rowsOrder])
+    }, [rowsInOrder, defaultCurrentView, rowsOrder, fallbackView])
 
     const filteredRowsOrder = useMemo(
         () =>
-            (currentViewRows || [])
+            currentViewRows
                 .filter((row) => row.visibility !== false)
                 .map((row) => row.id),
         [currentViewRows],

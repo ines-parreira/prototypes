@@ -38,6 +38,7 @@ type AgentsSummaryProps = {
     }
     agents: User[]
     type: AggregateRowType
+    isEmphasized?: boolean
 }
 
 const AgentsSummaryColumn = ({
@@ -46,9 +47,8 @@ const AgentsSummaryColumn = ({
     isTableScrolled,
     statsFilters,
     agents,
+    isEmphasized,
 }: AgentsSummaryProps & { column: AgentsTableColumn }) => {
-    const isTotalRow = type === AgentsTableRow.Total
-
     const { CellComponent, getQuery } = aggregateRowConfig[type]
 
     const isHeaderColumn = column === AgentsTableColumn.AgentName
@@ -69,7 +69,7 @@ const AgentsSummaryColumn = ({
             })}
             innerClassName={classNames(
                 css.BodyCellContent,
-                isTotalRow && css.bold,
+                isEmphasized && css.bold,
             )}
             isLoading={isFetching}
         >
@@ -85,6 +85,7 @@ const AgentsSummaryColumn = ({
 export const AgentsSummaryRow = ({
     columns,
     isTableScrolled,
+    isEmphasized,
     statsFilters,
     agents,
     type,
@@ -96,6 +97,7 @@ export const AgentsSummaryRow = ({
                     column={column}
                     type={type}
                     isTableScrolled={isTableScrolled}
+                    isEmphasized={isEmphasized}
                     statsFilters={statsFilters}
                     agents={agents}
                     key={column}

@@ -103,8 +103,8 @@ export const TableColumnsOrder: AgentsTableColumn[] = [
 export const TableRowsOrder: AgentsTableRow[] = [AgentsTableRow.Average]
 
 export const TableRowsOrderWithTotal: AgentsTableRow[] = [
-    AgentsTableRow.Total,
     AgentsTableRow.Average,
+    AgentsTableRow.Total,
 ]
 
 export const agentPerformanceMetrics = TableColumnsOrder.map((column) => ({
@@ -117,13 +117,6 @@ export const agentPerformanceRows = TableRowsOrder.map((row) => ({
     visibility: true,
 }))
 
-export const agentPerformanceRowsWithTotal = TableRowsOrderWithTotal.map(
-    (row) => ({
-        id: row,
-        visibility: true,
-    }),
-)
-
 export const AgentsTableViews: TableSetting<AgentsTableColumn, AgentsTableRow> =
     {
         active_view: AgentsTableViewIdentifier.AgentPerformanceMetrics,
@@ -135,13 +128,6 @@ export const agentPerformanceTableActiveView = {
     name: 'Agent performance metrics',
     metrics: agentPerformanceMetrics,
     rows: agentPerformanceRows,
-}
-
-export const agentPerformanceTableActiveViewWithTotal = {
-    id: AgentsTableViewIdentifier.AgentPerformanceMetrics,
-    name: 'Agent performance metrics',
-    metrics: agentPerformanceMetrics,
-    rows: agentPerformanceRowsWithTotal,
 }
 
 export const TableRowLabels: Record<AgentsTableRow, string> = {

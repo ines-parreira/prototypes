@@ -4,6 +4,7 @@ import { render, screen } from '@testing-library/react'
 import { fromJS } from 'immutable'
 
 import { agents } from 'fixtures/agents'
+import css from 'pages/stats/AnalyticsTable.less'
 import { AgentsSummaryRow } from 'pages/stats/support-performance/agents/AgentsSummaryRow'
 import {
     getSummaryQuery,
@@ -87,6 +88,26 @@ describe('<AgentsSummaryRow', () => {
 
         expect(screen.getByText('Total')).toBeInTheDocument()
         expect(screen.getByText(`${metricValue}%`)).toBeInTheDocument()
+    })
+
+    it('should return have bold text if isEmphasized', () => {
+        render(
+            <AgentsSummaryRow
+                statsFilters={statsFilters}
+                agents={agentsList}
+                columns={columns}
+                isTableScrolled={false}
+                type={AgentsTableRow.Total}
+                isEmphasized={true}
+            />,
+            {
+                container: document.body.appendChild(tableBody),
+            },
+        )
+
+        expect(screen.getByText('Total').classList.contains(css.bold)).toBe(
+            true,
+        )
     })
 
     it('should render the loading skeleton', () => {
