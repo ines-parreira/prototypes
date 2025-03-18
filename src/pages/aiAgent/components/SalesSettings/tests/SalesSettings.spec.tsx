@@ -94,7 +94,6 @@ describe('<SalesSettings />', () => {
             expect(
                 screen.getByRole('button', { name: 'Save Changes' }),
             ).not.toBeAriaDisabled()
-            expect(screen.getByText(/Fine-tune how your AI Agent/))
         })
     })
 

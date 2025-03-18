@@ -22,7 +22,6 @@ import {
 import { useAiAgentStoreConfigurationContext } from 'pages/aiAgent/providers/AiAgentStoreConfigurationContext'
 import { formatDiscountMax } from 'pages/aiAgent/utils/sales-discount.utils'
 import AIBanner from 'pages/common/components/AIBanner/AIBanner'
-import Alert from 'pages/common/components/Alert/Alert'
 import UnsavedChangesPrompt from 'pages/common/components/UnsavedChangesPrompt'
 import IconTooltip from 'pages/common/forms/IconTooltip/IconTooltip'
 import IconInput from 'pages/common/forms/input/IconInput'
@@ -205,11 +204,6 @@ export const SalesSettings = () => {
             <FormProvider {...methods}>
                 <div className={css.salesSettingsContent}>
                     <div className={css.settings}>
-                        <Alert icon className={css.info}>
-                            Fine-tune how your AI Agent engages in sales
-                            conversations to align with your brand strategy.
-                        </Alert>
-
                         <section className={css.card}>
                             <div className={css.titleContainer}>
                                 <label
