@@ -204,8 +204,11 @@ describe('stats components utils', () => {
 
     describe('formatDuration', () => {
         it.each<[string, number, string]>([
+            ['negative second', -20, '-20s'],
             ['empty value', 0, '0s'],
+            ['less than a second', 0.6, '0s'],
             ['second', 1, '1s'],
+            ['second with decimal', 1.8, '1s'],
             ['minute', 60, '1m'],
             ['hour', 3600, '1h'],
             ['day', 24 * 3600, '1d'],
@@ -213,6 +216,7 @@ describe('stats components utils', () => {
         ])('should match template for %s', (testName, duration, expected) => {
             expect(formatDuration(duration)).toBe(expected)
         })
+
         it.each<[number, string]>([
             [1, '1mo'],
             [2, '1mo 01d'],

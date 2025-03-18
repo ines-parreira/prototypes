@@ -8,7 +8,7 @@ describe('toDuration', () => {
         [0, 0],
         [null, null],
     ])(
-        'Should return 0s 0s when value=%s and prevValue=%s',
+        'Should return 0h 0m when value=%s and prevValue=%s',
         (value, prevValue) => {
             expect(
                 toDuration({

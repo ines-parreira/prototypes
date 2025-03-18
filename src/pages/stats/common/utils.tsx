@@ -83,7 +83,7 @@ export const formatCurrency = (value: number, currency: string) => {
  * Display a duration in days, hours, minutes and seconds
  */
 export const formatDuration = (value: number, precision = 9) => {
-    if (!value) {
+    if (!value || (value > -1 && value < 1)) {
         return '0s'
     }
 

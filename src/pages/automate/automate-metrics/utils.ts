@@ -19,6 +19,7 @@ export const toPercentage = (value: number) =>
 export const toDuration = (trend: MetricTrend) => {
     return (
         (trend.data?.value &&
+            trend.data.value >= 1 &&
             formatMetricValue(trend.data?.value, 'duration')) ||
         '0h 0m'
     )
