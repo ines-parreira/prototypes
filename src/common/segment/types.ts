@@ -75,6 +75,7 @@ export enum SegmentEvent {
     AutomateTopQuestionsSectionDismissArticle = 'automate/top-questions-section-dismiss-article',
     AutoMergeSettingsUpdated = 'auto-merge-settings-updated',
     AutoQATicketInteraction = 'auto-qa-ticket-interaction',
+    BannerCarouselNavigationClicked = 'banner-carousel-navigation-clicked',
     BigCommerceCreateOrderAddLineItemDiscount = 'bigcommerce/create-order/add-line-item-discount',
     BigCommerceCreateOrderAddOrderDiscount = 'bigcommerce/create-order/add-order-discount',
     BigCommerceCreateOrderAddRow = 'bigcommerce/create-order/add-row',

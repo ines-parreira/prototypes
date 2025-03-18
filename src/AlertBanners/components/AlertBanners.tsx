@@ -2,6 +2,7 @@ import React from 'react'
 
 import { AlertBanner, AlertBannerTypes } from 'AlertBanners'
 import { MergedBanner } from 'AlertBanners/Context/types'
+import { logEvent, SegmentEvent } from 'common/segment'
 import { FeatureFlagKey } from 'config/featureFlags'
 import { useFlag } from 'core/flags'
 
@@ -68,8 +69,18 @@ export const AlertBanners = () => {
                     CTA={selectedBanner?.CTA}
                     prefix={
                         <CarouselNavigation
-                            onPrevious={onPrevious}
-                            onNext={onNext}
+                            onPrevious={() => {
+                                logEvent(
+                                    SegmentEvent.BannerCarouselNavigationClicked,
+                                )
+                                onPrevious()
+                            }}
+                            onNext={() => {
+                                logEvent(
+                                    SegmentEvent.BannerCarouselNavigationClicked,
+                                )
+                                onNext()
+                            }}
                             currentIndex={currentBannerPosition + 1}
                             total={mergedBannersList?.length}
                         />
