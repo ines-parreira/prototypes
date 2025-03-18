@@ -12,9 +12,9 @@ import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 import { assumeMock } from 'utils/testing'
 
 import {
-    fetchDiscountCodesOffered,
-    useDiscountCodesOffered,
-} from '../useDiscountCodesOffered'
+    fetchDiscountCodesOfferedTrend,
+    useDiscountCodesOfferedTrend,
+} from '../useDiscountCodesOfferedTrend'
 
 const timezone = 'UTC'
 
@@ -37,13 +37,13 @@ const fetchPostReportingMock = assumeMock(fetchPostReporting)
 
 jest.useFakeTimers()
 
-describe('DiscountCodesOffered', () => {
+describe('DiscountCodesOfferedTrend', () => {
     const defaultReporting = {
         isFetching: false,
         isError: false,
     } as UseQueryResult
 
-    describe('useDiscountCodesOffered', () => {
+    describe('useDiscountCodesOfferedTrend', () => {
         it('should return correct metric data when the query resolves', async () => {
             usePostReportingMock.mockReturnValueOnce({
                 ...defaultReporting,
@@ -57,7 +57,7 @@ describe('DiscountCodesOffered', () => {
             act(() => jest.runAllTimers())
 
             const { result } = renderHook(
-                () => useDiscountCodesOffered(statsFilters, timezone),
+                () => useDiscountCodesOfferedTrend(statsFilters, timezone),
                 {
                     wrapper: ({ children }) => (
                         <QueryClientProvider client={queryClient}>
@@ -79,7 +79,7 @@ describe('DiscountCodesOffered', () => {
             })
         })
     })
-    describe('fetchDiscountCodesOffered', () => {
+    describe('fetchDiscountCodesOfferedTrend', () => {
         it('should return the correct data when the query resolves', async () => {
             fetchPostReportingMock.mockReturnValueOnce({
                 data: {
@@ -94,7 +94,7 @@ describe('DiscountCodesOffered', () => {
                 },
             } as unknown as ReturnType<typeof fetchPostReporting>)
 
-            const result = await fetchDiscountCodesOffered(
+            const result = await fetchDiscountCodesOfferedTrend(
                 statsFilters,
                 timezone,
             )

@@ -5,7 +5,10 @@ import { discountCodesAppliedQueryFactory } from 'models/reporting/queryFactorie
 import { StatsFilters } from 'models/stat/types'
 import { getPreviousPeriod } from 'utils/reporting'
 
-const useDiscountCodesApplied = (filters: StatsFilters, timezone: string) =>
+const useDiscountCodesAppliedTrend = (
+    filters: StatsFilters,
+    timezone: string,
+) =>
     useMetricTrend(
         discountCodesAppliedQueryFactory(filters, timezone),
         discountCodesAppliedQueryFactory(
@@ -17,7 +20,10 @@ const useDiscountCodesApplied = (filters: StatsFilters, timezone: string) =>
         ),
     )
 
-const fetchDiscountCodesApplied = (filters: StatsFilters, timezone: string) =>
+const fetchDiscountCodesAppliedTrend = (
+    filters: StatsFilters,
+    timezone: string,
+) =>
     fetchMetricTrend(
         discountCodesAppliedQueryFactory(filters, timezone),
         discountCodesAppliedQueryFactory(
@@ -29,4 +35,4 @@ const fetchDiscountCodesApplied = (filters: StatsFilters, timezone: string) =>
         ),
     )
 
-export { useDiscountCodesApplied, fetchDiscountCodesApplied }
+export { useDiscountCodesAppliedTrend, fetchDiscountCodesAppliedTrend }

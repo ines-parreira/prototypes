@@ -1,114 +1,68 @@
-import { useMemo } from 'react'
-
 import {
     fetchTicketHandleTimeTrend,
     useTicketHandleTimeTrend,
 } from 'hooks/reporting/metricTrends'
-import { MetricTrend } from 'hooks/reporting/useMetricTrend'
 import { StatsFilters } from 'models/stat/types'
 import {
     fetchSuccessRateTrend,
     useSuccessRateTrend,
 } from 'pages/stats/aiSalesAgent/metrics/useSuccessRateTrend'
 
+import { fetchGenericTrend, useGenericTrend } from './useGenericTrend'
 import {
     fetchTotalSalesOpportunityAIConvTrend,
     useTotalSalesOpportunityAIConvTrend,
 } from './useTotalSalesOpportunityAIConvTrend'
 
 const calculateTimeSavedByAgents = (
-    numberOfInteractions: MetricTrend,
-    ticketHandleTimeData: MetricTrend,
-    successRateData: MetricTrend,
+    numberOfInteractions: number,
+    ticketHandleTimeData: number,
+    successRateData: number,
 ) => {
-    return {
-        value:
-            (numberOfInteractions.data?.value ?? 0) *
-            (successRateData.data?.value ?? 0) *
-            (ticketHandleTimeData.data?.value ?? 0),
-        prevValue:
-            (numberOfInteractions.data?.prevValue ?? 0) *
-            (successRateData.data?.prevValue ?? 0) *
-            (ticketHandleTimeData.data?.prevValue ?? 0),
-    }
+    return (
+        (numberOfInteractions ?? 0) *
+        (successRateData ?? 0) *
+        (ticketHandleTimeData ?? 0)
+    )
 }
+const useTimeSavedByAgentTrend = (filters: StatsFilters, timezone: string) =>
+    useGenericTrend(
+        {
+            totalNumberOfAgentSalesConverations:
+                useTotalSalesOpportunityAIConvTrend(filters, timezone),
+            ticketHandleTime: useTicketHandleTimeTrend(filters, timezone),
+            successRate: useSuccessRateTrend(filters, timezone),
+        },
+        ({
+            totalNumberOfAgentSalesConverations,
+            ticketHandleTime,
+            successRate,
+        }) =>
+            calculateTimeSavedByAgents(
+                totalNumberOfAgentSalesConverations,
+                ticketHandleTime,
+                successRate,
+            ),
+    )
 
-const useTimeSavedByAgentTrend = (filters: StatsFilters, timezone: string) => {
-    const totalNumberOfAgentSalesConverationsData =
-        useTotalSalesOpportunityAIConvTrend(filters, timezone)
-    const ticketHandleTimeData = useTicketHandleTimeTrend(filters, timezone)
-    const successRateData = useSuccessRateTrend(filters, timezone)
-
-    const isFetching =
-        totalNumberOfAgentSalesConverationsData.isFetching ||
-        ticketHandleTimeData.isFetching ||
-        successRateData.isFetching
-    const isError =
-        totalNumberOfAgentSalesConverationsData.isError ||
-        ticketHandleTimeData.isError ||
-        successRateData.isError
-
-    const data = useMemo(() => {
-        if (
-            !totalNumberOfAgentSalesConverationsData.data ||
-            !ticketHandleTimeData.data ||
-            !successRateData.data ||
-            isFetching ||
-            isError
-        ) {
-            return undefined
-        }
-
-        return calculateTimeSavedByAgents(
-            totalNumberOfAgentSalesConverationsData,
-            ticketHandleTimeData,
-            successRateData,
-        )
-    }, [
-        totalNumberOfAgentSalesConverationsData,
-        ticketHandleTimeData,
-        successRateData,
-        isError,
-        isFetching,
-    ])
-    return {
-        data,
-        isFetching,
-        isError,
-    }
-}
-
-const fetchTimeSavedByAgentTrend = (
-    filters: StatsFilters,
-    timezone: string,
-) => {
-    return Promise.all([
-        fetchTotalSalesOpportunityAIConvTrend(filters, timezone),
-        fetchTicketHandleTimeTrend(filters, timezone),
-        fetchSuccessRateTrend(filters, timezone),
-    ])
-        .then(
-            ([
-                totalNumberOfAgentSalesConverationsData,
-                ticketHandleTimeData,
-                successRateData,
-            ]) => {
-                return {
-                    isFetching: false,
-                    isError: false,
-                    data: calculateTimeSavedByAgents(
-                        totalNumberOfAgentSalesConverationsData,
-                        ticketHandleTimeData,
-                        successRateData,
-                    ),
-                }
-            },
-        )
-        .catch(() => ({
-            isFetching: false,
-            isError: true,
-            data: undefined,
-        }))
-}
+const fetchTimeSavedByAgentTrend = (filters: StatsFilters, timezone: string) =>
+    fetchGenericTrend(
+        {
+            totalNumberOfAgentSalesConverations:
+                fetchTotalSalesOpportunityAIConvTrend(filters, timezone),
+            ticketHandleTime: fetchTicketHandleTimeTrend(filters, timezone),
+            successRate: fetchSuccessRateTrend(filters, timezone),
+        },
+        ({
+            totalNumberOfAgentSalesConverations,
+            ticketHandleTime,
+            successRate,
+        }) =>
+            calculateTimeSavedByAgents(
+                totalNumberOfAgentSalesConverations,
+                ticketHandleTime,
+                successRate,
+            ),
+    )
 
 export { useTimeSavedByAgentTrend, fetchTimeSavedByAgentTrend }

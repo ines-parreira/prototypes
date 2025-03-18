@@ -17,9 +17,9 @@ import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 import { assumeMock } from 'utils/testing'
 
 import {
-    fetchAverageOrderValue,
-    useAverageOrderValue,
-} from '../useAverageOrderValue'
+    fetchAverageOrderValueTrend,
+    useAverageOrderValueTrend,
+} from '../useAverageOrderValueTrend'
 
 const timezone = 'UTC'
 
@@ -42,8 +42,8 @@ jest.mock('hooks/reporting/useMultipleMetricsTrend')
 const useMultipleMetricsTrendsMock = assumeMock(useMultipleMetricsTrends)
 const fetchMultipleMetricsTrendsMock = assumeMock(fetchMultipleMetricsTrends)
 
-describe('averageOrderValue', () => {
-    describe('useAverageOrderValue', () => {
+describe('averageOrderValueTrend', () => {
+    describe('useAverageOrderValueTrend', () => {
         beforeEach(() => {
             useMultipleMetricsTrendsMock.mockReturnValue({
                 isFetching: false,
@@ -65,7 +65,7 @@ describe('averageOrderValue', () => {
             act(() => jest.runAllTimers())
 
             const { result } = renderHook(
-                () => useAverageOrderValue(statsFilters, timezone),
+                () => useAverageOrderValueTrend(statsFilters, timezone),
                 {
                     wrapper: ({ children }) => (
                         <QueryClientProvider client={queryClient}>
@@ -88,7 +88,7 @@ describe('averageOrderValue', () => {
         })
     })
 
-    describe('fetchAverageOrderValue', () => {
+    describe('fetchAverageOrderValueTrend', () => {
         beforeEach(() => {
             fetchMultipleMetricsTrendsMock.mockResolvedValue({
                 data: {
@@ -107,7 +107,10 @@ describe('averageOrderValue', () => {
         })
 
         it('should return correct metric data when the query resolves', async () => {
-            const result = await fetchAverageOrderValue(statsFilters, timezone)
+            const result = await fetchAverageOrderValueTrend(
+                statsFilters,
+                timezone,
+            )
 
             expect(result).toEqual({
                 data: {

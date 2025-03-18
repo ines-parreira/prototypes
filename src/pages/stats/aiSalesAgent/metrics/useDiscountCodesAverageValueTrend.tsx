@@ -5,7 +5,7 @@ import { discountCodesAverageQueryFactory } from 'models/reporting/queryFactorie
 import { StatsFilters } from 'models/stat/types'
 import { getPreviousPeriod } from 'utils/reporting'
 
-const useDiscountCodesAverageValue = (
+const useDiscountCodesAverageValueTrend = (
     filters: StatsFilters,
     timezone: string,
 ) =>
@@ -20,7 +20,7 @@ const useDiscountCodesAverageValue = (
         ),
     )
 
-const fetchDiscountCodesAverageValue = (
+const fetchDiscountCodesAverageValueTrend = (
     filters: StatsFilters,
     timezone: string,
 ) =>
@@ -35,4 +35,7 @@ const fetchDiscountCodesAverageValue = (
         ),
     )
 
-export { useDiscountCodesAverageValue, fetchDiscountCodesAverageValue }
+export {
+    useDiscountCodesAverageValueTrend,
+    fetchDiscountCodesAverageValueTrend,
+}

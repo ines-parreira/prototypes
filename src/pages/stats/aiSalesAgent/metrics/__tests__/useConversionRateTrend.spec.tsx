@@ -7,9 +7,9 @@ import moment from 'moment'
 
 import { StatsFilters } from 'models/stat/types'
 import {
-    fetchTotalNumberOfOrders,
-    useTotalNumberOfOrders,
-} from 'pages/stats/aiSalesAgent/metrics/useTotalNumberOfOrders'
+    fetchTotalNumberOfOrdersTrend,
+    useTotalNumberOfOrdersTrend,
+} from 'pages/stats/aiSalesAgent/metrics/useTotalNumberOfOrdersTrend'
 import {
     fetchTotalSalesOpportunityAIConvTrend,
     useTotalSalesOpportunityAIConvTrend,
@@ -17,7 +17,10 @@ import {
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 import { assumeMock } from 'utils/testing'
 
-import { fetchConversionRate, useConversionRate } from '../useConversionRate'
+import {
+    fetchConversionRateTrend,
+    useConversionRateTrend,
+} from '../useConversionRateTrend'
 
 const timezone = 'UTC'
 
@@ -42,16 +45,16 @@ jest.mock(
 const useTotalSalesOpportunityAIConvTrendMock = assumeMock(
     useTotalSalesOpportunityAIConvTrend,
 )
-const useTotalNumberOfOrdersMock = assumeMock(useTotalNumberOfOrders)
+const useTotalNumberOfOrdersMock = assumeMock(useTotalNumberOfOrdersTrend)
 
-jest.mock('pages/stats/aiSalesAgent/metrics/useTotalNumberOfOrders')
+jest.mock('pages/stats/aiSalesAgent/metrics/useTotalNumberOfOrdersTrend')
 const fetchTotalSalesOpportunityAIConvTrendMock = assumeMock(
     fetchTotalSalesOpportunityAIConvTrend,
 )
-const fetchTotalNumberOfOrdersMock = assumeMock(fetchTotalNumberOfOrders)
+const fetchTotalNumberOfOrdersMock = assumeMock(fetchTotalNumberOfOrdersTrend)
 
-describe('conversionRate', () => {
-    describe('useConversionRate', () => {
+describe('conversionRateTrend', () => {
+    describe('useConversionRateTrend', () => {
         it('should return correct metric data when the query resolves', async () => {
             act(() => jest.runAllTimers())
 
@@ -73,7 +76,7 @@ describe('conversionRate', () => {
             })
 
             const { result } = renderHook(
-                () => useConversionRate(filters, timezone),
+                () => useConversionRateTrend(filters, timezone),
                 {
                     wrapper: ({ children }) => (
                         <QueryClientProvider client={queryClient}>
@@ -116,7 +119,7 @@ describe('conversionRate', () => {
             })
 
             const { result } = renderHook(
-                () => useConversionRate(filters, timezone),
+                () => useConversionRateTrend(filters, timezone),
                 {
                     wrapper: ({ children }) => (
                         <QueryClientProvider client={queryClient}>
@@ -139,7 +142,7 @@ describe('conversionRate', () => {
         })
     })
 
-    describe('fetchConversionRate', () => {
+    describe('fetchConversionRateTrend', () => {
         it('should return correct metric data when the query resolves', async () => {
             act(() => jest.runAllTimers())
 
@@ -160,9 +163,9 @@ describe('conversionRate', () => {
                     value: 2,
                     prevValue: 1,
                 },
-            } as unknown as ReturnType<typeof fetchTotalNumberOfOrders>)
+            } as unknown as ReturnType<typeof fetchTotalNumberOfOrdersTrend>)
 
-            const result = await fetchConversionRate(filters, timezone)
+            const result = await fetchConversionRateTrend(filters, timezone)
 
             expect(result).toEqual({
                 data: {
@@ -194,9 +197,9 @@ describe('conversionRate', () => {
                     value: null,
                     prevValue: null,
                 },
-            } as unknown as ReturnType<typeof fetchTotalNumberOfOrders>)
+            } as unknown as ReturnType<typeof fetchTotalNumberOfOrdersTrend>)
 
-            const result = await fetchConversionRate(filters, timezone)
+            const result = await fetchConversionRateTrend(filters, timezone)
 
             expect(result).toEqual({
                 data: {

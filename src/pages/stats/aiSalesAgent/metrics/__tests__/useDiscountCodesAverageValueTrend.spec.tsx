@@ -8,14 +8,13 @@ import moment from 'moment'
 import { AiSalesAgentOrdersMeasure } from 'models/reporting/cubes/ai-sales-agent/AiSalesAgentOrders'
 import { fetchPostReporting, usePostReporting } from 'models/reporting/queries'
 import { StatsFilters } from 'models/stat/types'
-import {
-    fetchTotalProductRecommendations,
-    useTotalProductRecommendations,
-} from 'pages/stats/aiSalesAgent/metrics/useTotalProductRecommendations'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 import { assumeMock } from 'utils/testing'
 
-import { fetchProductBuyRate, useProductBuyRate } from '../useProductBuyRate'
+import {
+    fetchDiscountCodesAverageValueTrend,
+    useDiscountCodesAverageValueTrend,
+} from '../useDiscountCodesAverageValueTrend'
 
 const timezone = 'UTC'
 
@@ -36,45 +35,29 @@ jest.mock('models/reporting/queries')
 const usePostReportingMock = assumeMock(usePostReporting)
 const fetchPostReportingMock = assumeMock(fetchPostReporting)
 
-jest.mock('pages/stats/aiSalesAgent/metrics/useTotalProductRecommendations')
-const useTotalProductRecommendationsMock = assumeMock(
-    useTotalProductRecommendations,
-)
-const fetchTotalProductRecommendationsMock = assumeMock(
-    fetchTotalProductRecommendations,
-)
-
 jest.useFakeTimers()
 
-describe('productBuyRate', () => {
+describe('DiscountCodesAverageValueTrend', () => {
     const defaultReporting = {
         isFetching: false,
         isError: false,
     } as UseQueryResult
 
-    describe('useProductBuyRate', () => {
+    describe('useDiscountCodesAverageValueTrend', () => {
         it('should return correct metric data when the query resolves', async () => {
-            useTotalProductRecommendationsMock.mockReturnValue({
-                isFetching: false,
-                isError: false,
-                data: {
-                    value: 2,
-                    prevValue: 3,
-                },
-            })
             usePostReportingMock.mockReturnValueOnce({
                 ...defaultReporting,
-                data: 3,
+                data: 32,
             } as UseQueryResult)
             usePostReportingMock.mockReturnValueOnce({
                 ...defaultReporting,
-                data: 6,
+                data: 24,
             } as UseQueryResult)
 
             act(() => jest.runAllTimers())
 
             const { result } = renderHook(
-                () => useProductBuyRate(statsFilters, timezone),
+                () => useDiscountCodesAverageValueTrend(statsFilters, timezone),
                 {
                     wrapper: ({ children }) => (
                         <QueryClientProvider client={queryClient}>
@@ -87,8 +70,8 @@ describe('productBuyRate', () => {
             await waitFor(() => {
                 expect(result.current).toEqual({
                     data: {
-                        value: 150,
-                        prevValue: 200,
+                        value: 32,
+                        prevValue: 24,
                     },
                     isError: false,
                     isFetching: false,
@@ -96,36 +79,30 @@ describe('productBuyRate', () => {
             })
         })
     })
-
-    describe('fetchProductBuyRate', () => {
+    describe('fetchDiscountCodesAverageValueTrend', () => {
         it('should return the correct data when the query resolves', async () => {
-            fetchTotalProductRecommendationsMock.mockReturnValue({
-                isFetching: false,
-                isError: false,
-                data: {
-                    value: 2,
-                    prevValue: 3,
-                },
-            } as unknown as ReturnType<typeof fetchTotalProductRecommendations>)
             fetchPostReportingMock.mockReturnValueOnce({
                 data: {
                     ...defaultReporting,
-                    data: [{ [AiSalesAgentOrdersMeasure.Count]: 3 }],
+                    data: [{ [AiSalesAgentOrdersMeasure.AverageDiscount]: 32 }],
                 },
             } as unknown as ReturnType<typeof fetchPostReporting>)
             fetchPostReportingMock.mockReturnValueOnce({
                 data: {
                     ...defaultReporting,
-                    data: [{ [AiSalesAgentOrdersMeasure.Count]: 6 }],
+                    data: [{ [AiSalesAgentOrdersMeasure.AverageDiscount]: 24 }],
                 },
             } as unknown as ReturnType<typeof fetchPostReporting>)
 
-            const result = await fetchProductBuyRate(statsFilters, timezone)
+            const result = await fetchDiscountCodesAverageValueTrend(
+                statsFilters,
+                timezone,
+            )
 
             expect(result).toEqual({
                 data: {
-                    value: 150,
-                    prevValue: 200,
+                    value: 32,
+                    prevValue: 24,
                 },
                 isError: false,
                 isFetching: false,

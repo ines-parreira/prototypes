@@ -5,7 +5,7 @@ import { totalNumberOfOrderQueryFactory } from 'models/reporting/queryFactories/
 import { StatsFilters } from 'models/stat/types'
 import { getPreviousPeriod } from 'utils/reporting'
 
-const useTotalNumberOfOrders = (filters: StatsFilters, timezone: string) =>
+const useTotalNumberOfOrdersTrend = (filters: StatsFilters, timezone: string) =>
     useMetricTrend(
         totalNumberOfOrderQueryFactory(filters, timezone),
         totalNumberOfOrderQueryFactory(
@@ -17,7 +17,10 @@ const useTotalNumberOfOrders = (filters: StatsFilters, timezone: string) =>
         ),
     )
 
-const fetchTotalNumberOfOrders = (filters: StatsFilters, timezone: string) =>
+const fetchTotalNumberOfOrdersTrend = (
+    filters: StatsFilters,
+    timezone: string,
+) =>
     fetchMetricTrend(
         totalNumberOfOrderQueryFactory(filters, timezone),
         totalNumberOfOrderQueryFactory(
@@ -29,4 +32,4 @@ const fetchTotalNumberOfOrders = (filters: StatsFilters, timezone: string) =>
         ),
     )
 
-export { useTotalNumberOfOrders, fetchTotalNumberOfOrders }
+export { useTotalNumberOfOrdersTrend, fetchTotalNumberOfOrdersTrend }

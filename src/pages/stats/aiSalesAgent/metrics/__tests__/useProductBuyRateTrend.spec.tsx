@@ -5,7 +5,7 @@ import { waitFor } from '@testing-library/react'
 import { act, renderHook } from '@testing-library/react-hooks/dom'
 import moment from 'moment'
 
-import { ConvertTrackingEventsMeasure } from 'models/reporting/cubes/convert/ConvertTrackingEventsCube'
+import { AiSalesAgentOrdersMeasure } from 'models/reporting/cubes/ai-sales-agent/AiSalesAgentOrders'
 import { fetchPostReporting, usePostReporting } from 'models/reporting/queries'
 import { StatsFilters } from 'models/stat/types'
 import {
@@ -16,9 +16,9 @@ import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 import { assumeMock } from 'utils/testing'
 
 import {
-    fetchProductClickRate,
-    useProductClickRate,
-} from '../useProductClickRate'
+    fetchProductBuyRateTrend,
+    useProductBuyRateTrend,
+} from '../useProductBuyRateTrend'
 
 const timezone = 'UTC'
 
@@ -49,13 +49,13 @@ const fetchTotalProductRecommendationsMock = assumeMock(
 
 jest.useFakeTimers()
 
-describe('productClickRate', () => {
+describe('productBuyRateTrend', () => {
     const defaultReporting = {
         isFetching: false,
         isError: false,
     } as UseQueryResult
 
-    describe('useProductClickRate', () => {
+    describe('useProductBuyRateTrend', () => {
         it('should return correct metric data when the query resolves', async () => {
             useTotalProductRecommendationsMock.mockReturnValue({
                 isFetching: false,
@@ -77,7 +77,7 @@ describe('productClickRate', () => {
             act(() => jest.runAllTimers())
 
             const { result } = renderHook(
-                () => useProductClickRate(statsFilters, timezone),
+                () => useProductBuyRateTrend(statsFilters, timezone),
                 {
                     wrapper: ({ children }) => (
                         <QueryClientProvider client={queryClient}>
@@ -100,7 +100,7 @@ describe('productClickRate', () => {
         })
     })
 
-    describe('fetchProductClickRate', () => {
+    describe('fetchProductBuyRateTrend', () => {
         it('should return the correct data when the query resolves', async () => {
             fetchTotalProductRecommendationsMock.mockReturnValue({
                 isFetching: false,
@@ -113,17 +113,20 @@ describe('productClickRate', () => {
             fetchPostReportingMock.mockReturnValueOnce({
                 data: {
                     ...defaultReporting,
-                    data: [{ [ConvertTrackingEventsMeasure.Clicks]: 3 }],
+                    data: [{ [AiSalesAgentOrdersMeasure.Count]: 3 }],
                 },
             } as unknown as ReturnType<typeof fetchPostReporting>)
             fetchPostReportingMock.mockReturnValueOnce({
                 data: {
                     ...defaultReporting,
-                    data: [{ [ConvertTrackingEventsMeasure.Clicks]: 6 }],
+                    data: [{ [AiSalesAgentOrdersMeasure.Count]: 6 }],
                 },
             } as unknown as ReturnType<typeof fetchPostReporting>)
 
-            const result = await fetchProductClickRate(statsFilters, timezone)
+            const result = await fetchProductBuyRateTrend(
+                statsFilters,
+                timezone,
+            )
 
             expect(result).toEqual({
                 data: {

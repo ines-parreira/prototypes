@@ -12,9 +12,9 @@ import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 import { assumeMock } from 'utils/testing'
 
 import {
-    fetchDiscountCodesAverageValue,
-    useDiscountCodesAverageValue,
-} from '../useDiscountCodesAverageValue'
+    fetchTotalNumberOfOrdersTrend,
+    useTotalNumberOfOrdersTrend,
+} from '../useTotalNumberOfOrdersTrend'
 
 const timezone = 'UTC'
 
@@ -37,27 +37,27 @@ const fetchPostReportingMock = assumeMock(fetchPostReporting)
 
 jest.useFakeTimers()
 
-describe('DiscountCodesAverageValue', () => {
+describe('totalNumberOfOrdersTrend', () => {
     const defaultReporting = {
         isFetching: false,
         isError: false,
     } as UseQueryResult
 
-    describe('useDiscountCodesAverageValue', () => {
+    describe('useTotalNumberOfOrdersTrend', () => {
         it('should return correct metric data when the query resolves', async () => {
             usePostReportingMock.mockReturnValueOnce({
                 ...defaultReporting,
-                data: 32,
+                data: 32.41,
             } as UseQueryResult)
             usePostReportingMock.mockReturnValueOnce({
                 ...defaultReporting,
-                data: 24,
+                data: 24.56,
             } as UseQueryResult)
 
             act(() => jest.runAllTimers())
 
             const { result } = renderHook(
-                () => useDiscountCodesAverageValue(statsFilters, timezone),
+                () => useTotalNumberOfOrdersTrend(statsFilters, timezone),
                 {
                     wrapper: ({ children }) => (
                         <QueryClientProvider client={queryClient}>
@@ -70,8 +70,8 @@ describe('DiscountCodesAverageValue', () => {
             await waitFor(() => {
                 expect(result.current).toEqual({
                     data: {
-                        value: 32,
-                        prevValue: 24,
+                        value: 32.41,
+                        prevValue: 24.56,
                     },
                     isError: false,
                     isFetching: false,
@@ -79,30 +79,31 @@ describe('DiscountCodesAverageValue', () => {
             })
         })
     })
-    describe('fetchDiscountCodesAverageValue', () => {
+
+    describe('fetchTotalNumberOfOrdersTrend', () => {
         it('should return the correct data when the query resolves', async () => {
             fetchPostReportingMock.mockReturnValueOnce({
                 data: {
                     ...defaultReporting,
-                    data: [{ [AiSalesAgentOrdersMeasure.AverageDiscount]: 32 }],
+                    data: [{ [AiSalesAgentOrdersMeasure.Count]: 32.41 }],
                 },
             } as unknown as ReturnType<typeof fetchPostReporting>)
             fetchPostReportingMock.mockReturnValueOnce({
                 data: {
                     ...defaultReporting,
-                    data: [{ [AiSalesAgentOrdersMeasure.AverageDiscount]: 24 }],
+                    data: [{ [AiSalesAgentOrdersMeasure.Count]: 24.56 }],
                 },
             } as unknown as ReturnType<typeof fetchPostReporting>)
 
-            const result = await fetchDiscountCodesAverageValue(
+            const result = await fetchTotalNumberOfOrdersTrend(
                 statsFilters,
                 timezone,
             )
 
             expect(result).toEqual({
                 data: {
-                    value: 32,
-                    prevValue: 24,
+                    value: 32.41,
+                    prevValue: 24.56,
                 },
                 isError: false,
                 isFetching: false,

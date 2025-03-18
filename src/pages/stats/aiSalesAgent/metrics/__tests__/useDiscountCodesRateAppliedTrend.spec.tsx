@@ -7,20 +7,20 @@ import moment from 'moment'
 
 import { StatsFilters } from 'models/stat/types'
 import {
-    fetchDiscountCodesApplied,
-    useDiscountCodesApplied,
-} from 'pages/stats/aiSalesAgent/metrics/useDiscountCodesApplied'
+    fetchDiscountCodesAppliedTrend,
+    useDiscountCodesAppliedTrend,
+} from 'pages/stats/aiSalesAgent/metrics/useDiscountCodesAppliedTrend'
 import {
-    fetchDiscountCodesOffered,
-    useDiscountCodesOffered,
-} from 'pages/stats/aiSalesAgent/metrics/useDiscountCodesOffered'
+    fetchDiscountCodesOfferedTrend,
+    useDiscountCodesOfferedTrend,
+} from 'pages/stats/aiSalesAgent/metrics/useDiscountCodesOfferedTrend'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 import { assumeMock } from 'utils/testing'
 
 import {
-    fetchDiscountCodesRateApplied,
-    useDiscountCodesRateApplied,
-} from '../useDiscountCodesRateApplied'
+    fetchDiscountCodesRateAppliedTrend,
+    useDiscountCodesRateAppliedTrend,
+} from '../useDiscountCodesRateAppliedTrend'
 
 const timezone = 'UTC'
 
@@ -37,13 +37,13 @@ const statsFilters: StatsFilters = {
 
 const queryClient = mockQueryClient()
 
-jest.mock('pages/stats/aiSalesAgent/metrics/useDiscountCodesOffered')
-const useDiscountCodesOfferedMock = assumeMock(useDiscountCodesOffered)
-const fetchDiscountCodesOfferedMock = assumeMock(fetchDiscountCodesOffered)
+jest.mock('pages/stats/aiSalesAgent/metrics/useDiscountCodesOfferedTrend')
+const useDiscountCodesOfferedMock = assumeMock(useDiscountCodesOfferedTrend)
+const fetchDiscountCodesOfferedMock = assumeMock(fetchDiscountCodesOfferedTrend)
 
-jest.mock('pages/stats/aiSalesAgent/metrics/useDiscountCodesApplied')
-const useDiscountCodesAppliedMock = assumeMock(useDiscountCodesApplied)
-const fetchDiscountCodesAppliedMock = assumeMock(fetchDiscountCodesApplied)
+jest.mock('pages/stats/aiSalesAgent/metrics/useDiscountCodesAppliedTrend')
+const useDiscountCodesAppliedMock = assumeMock(useDiscountCodesAppliedTrend)
+const fetchDiscountCodesAppliedMock = assumeMock(fetchDiscountCodesAppliedTrend)
 
 describe('DiscountCodesRateApplied', () => {
     describe('useDiscountCodesRateApplied', () => {
@@ -66,7 +66,7 @@ describe('DiscountCodesRateApplied', () => {
             })
 
             const { result } = renderHook(
-                () => useDiscountCodesRateApplied(statsFilters, timezone),
+                () => useDiscountCodesRateAppliedTrend(statsFilters, timezone),
                 {
                     wrapper: ({ children }) => (
                         <QueryClientProvider client={queryClient}>
@@ -98,7 +98,7 @@ describe('DiscountCodesRateApplied', () => {
                     value: 10,
                     prevValue: 20,
                 },
-            } as unknown as ReturnType<typeof fetchDiscountCodesOffered>)
+            } as unknown as ReturnType<typeof fetchDiscountCodesOfferedTrend>)
             fetchDiscountCodesAppliedMock.mockReturnValue({
                 isFetching: false,
                 isError: false,
@@ -106,9 +106,9 @@ describe('DiscountCodesRateApplied', () => {
                     value: 2,
                     prevValue: 2,
                 },
-            } as unknown as ReturnType<typeof fetchDiscountCodesApplied>)
+            } as unknown as ReturnType<typeof fetchDiscountCodesAppliedTrend>)
 
-            const result = await fetchDiscountCodesRateApplied(
+            const result = await fetchDiscountCodesRateAppliedTrend(
                 statsFilters,
                 timezone,
             )

@@ -4,25 +4,25 @@ import {
 } from 'hooks/reporting/useMetricTrend'
 import { TimeSeriesFetch, TimeSeriesHook } from 'hooks/reporting/useTimeSeries'
 import {
-    fetchAverageOrderValue,
-    useAverageOrderValue,
-} from 'pages/stats/aiSalesAgent/metrics/useAverageOrderValue'
+    fetchAverageOrderValueTrend,
+    useAverageOrderValueTrend,
+} from 'pages/stats/aiSalesAgent/metrics/useAverageOrderValueTrend'
 import {
-    fetchDiscountCodesApplied,
-    useDiscountCodesApplied,
-} from 'pages/stats/aiSalesAgent/metrics/useDiscountCodesApplied'
+    fetchDiscountCodesAppliedTrend,
+    useDiscountCodesAppliedTrend,
+} from 'pages/stats/aiSalesAgent/metrics/useDiscountCodesAppliedTrend'
 import {
-    fetchDiscountCodesAverageValue,
-    useDiscountCodesAverageValue,
-} from 'pages/stats/aiSalesAgent/metrics/useDiscountCodesAverageValue'
+    fetchDiscountCodesAverageValueTrend,
+    useDiscountCodesAverageValueTrend,
+} from 'pages/stats/aiSalesAgent/metrics/useDiscountCodesAverageValueTrend'
 import {
-    fetchDiscountCodesOffered,
-    useDiscountCodesOffered,
-} from 'pages/stats/aiSalesAgent/metrics/useDiscountCodesOffered'
+    fetchDiscountCodesOfferedTrend,
+    useDiscountCodesOfferedTrend,
+} from 'pages/stats/aiSalesAgent/metrics/useDiscountCodesOfferedTrend'
 import {
-    fetchDiscountCodesRateApplied,
-    useDiscountCodesRateApplied,
-} from 'pages/stats/aiSalesAgent/metrics/useDiscountCodesRateApplied'
+    fetchDiscountCodesRateAppliedTrend,
+    useDiscountCodesRateAppliedTrend,
+} from 'pages/stats/aiSalesAgent/metrics/useDiscountCodesRateAppliedTrend'
 import {
     fetchGmvInfluencedRateTrend,
     useGmvInfluencedRateTrend,
@@ -48,9 +48,9 @@ import {
     useTimeSavedByAgentTrend,
 } from 'pages/stats/aiSalesAgent/metrics/useTimeSavedByAgentTrend'
 import {
-    fetchTotalNumberOfOrders,
-    useTotalNumberOfOrders,
-} from 'pages/stats/aiSalesAgent/metrics/useTotalNumberOfOrders'
+    fetchTotalNumberOfOrdersTrend,
+    useTotalNumberOfOrdersTrend,
+} from 'pages/stats/aiSalesAgent/metrics/useTotalNumberOfOrdersTrend'
 import {
     fetchTotalProductRecommendations,
     useTotalProductRecommendations,
@@ -63,17 +63,17 @@ import { MetricTrendFormat } from 'pages/stats/common/utils'
 import { TooltipData } from 'pages/stats/types'
 
 import {
-    fetchConversionRate,
-    useConversionRate,
-} from './metrics/useConversionRate'
+    fetchConversionRateTrend,
+    useConversionRateTrend,
+} from './metrics/useConversionRateTrend'
 import {
-    fetchProductBuyRate,
-    useProductBuyRate,
-} from './metrics/useProductBuyRate'
+    fetchProductBuyRateTrend,
+    useProductBuyRateTrend,
+} from './metrics/useProductBuyRateTrend'
 import {
-    fetchProductClickRate,
-    useProductClickRate,
-} from './metrics/useProductClickRate'
+    fetchProductClickRateTrend,
+    useProductClickRateTrend,
+} from './metrics/useProductClickRateTrend'
 
 export enum AiSalesAgentChart {
     AiSalesAgentTotalSalesConv = 'aiSalesTotalSalesConv',
@@ -170,8 +170,8 @@ export const AiSalesAgentMetricConfig: Record<
         hint: {
             title: 'The total number of orders influenced by a conversation with the AI Agent for Sales, without human intervention.',
         },
-        useTrend: useTotalNumberOfOrders,
-        fetchTrend: fetchTotalNumberOfOrders,
+        useTrend: useTotalNumberOfOrdersTrend,
+        fetchTrend: fetchTotalNumberOfOrdersTrend,
         interpretAs: 'more-is-better',
         metricFormat: 'decimal',
     },
@@ -180,8 +180,8 @@ export const AiSalesAgentMetricConfig: Record<
         hint: {
             title: 'The average revenue per order influenced by the AI Agent for Sales.',
         },
-        useTrend: useAverageOrderValue,
-        fetchTrend: fetchAverageOrderValue,
+        useTrend: useAverageOrderValueTrend,
+        fetchTrend: fetchAverageOrderValueTrend,
         interpretAs: 'more-is-better',
         metricFormat: 'currency',
     },
@@ -200,8 +200,8 @@ export const AiSalesAgentMetricConfig: Record<
         hint: {
             title: 'The percentage of product recommendations clicked by customers.',
         },
-        useTrend: useProductClickRate,
-        fetchTrend: fetchProductClickRate,
+        useTrend: useProductClickRateTrend,
+        fetchTrend: fetchProductClickRateTrend,
         interpretAs: 'more-is-better',
         metricFormat: 'percent',
     },
@@ -210,8 +210,8 @@ export const AiSalesAgentMetricConfig: Record<
         hint: {
             title: 'The percentage of product recommendations that led to a purchase.',
         },
-        useTrend: useProductBuyRate,
-        fetchTrend: fetchProductBuyRate,
+        useTrend: useProductBuyRateTrend,
+        fetchTrend: fetchProductBuyRateTrend,
         interpretAs: 'more-is-better',
         metricFormat: 'percent',
     },
@@ -230,8 +230,8 @@ export const AiSalesAgentMetricConfig: Record<
         hint: {
             title: 'The percentage of AI Agent for Sales interactions that resulted in a sale.',
         },
-        useTrend: useConversionRate,
-        fetchTrend: fetchConversionRate,
+        useTrend: useConversionRateTrend,
+        fetchTrend: fetchConversionRateTrend,
         interpretAs: 'more-is-better',
         metricFormat: 'decimal-to-percent',
     },
@@ -250,8 +250,8 @@ export const AiSalesAgentMetricConfig: Record<
         hint: {
             title: 'Number of discount codes that were sent by AI Agent for Sales. ',
         },
-        useTrend: useDiscountCodesOffered,
-        fetchTrend: fetchDiscountCodesOffered,
+        useTrend: useDiscountCodesOfferedTrend,
+        fetchTrend: fetchDiscountCodesOfferedTrend,
         interpretAs: 'more-is-better',
         metricFormat: 'decimal',
     },
@@ -260,8 +260,8 @@ export const AiSalesAgentMetricConfig: Record<
         hint: {
             title: 'Number of discount codes sent by AI Agent for Sales used by customer to make a purchase.',
         },
-        useTrend: useDiscountCodesApplied,
-        fetchTrend: fetchDiscountCodesApplied,
+        useTrend: useDiscountCodesAppliedTrend,
+        fetchTrend: fetchDiscountCodesAppliedTrend,
         interpretAs: 'more-is-better',
         metricFormat: 'decimal',
     },
@@ -270,8 +270,8 @@ export const AiSalesAgentMetricConfig: Record<
         hint: {
             title: 'Percentage of discount codes sent by AI Agent for Sales used by customers for a purchase over the total of discount codes sent.',
         },
-        useTrend: useDiscountCodesRateApplied,
-        fetchTrend: fetchDiscountCodesRateApplied,
+        useTrend: useDiscountCodesRateAppliedTrend,
+        fetchTrend: fetchDiscountCodesRateAppliedTrend,
         interpretAs: 'more-is-better',
         metricFormat: 'decimal-to-percent',
     },
@@ -280,8 +280,8 @@ export const AiSalesAgentMetricConfig: Record<
         hint: {
             title: 'Average discount of all the codes used by customers for a purchase. ',
         },
-        useTrend: useDiscountCodesAverageValue,
-        fetchTrend: fetchDiscountCodesAverageValue,
+        useTrend: useDiscountCodesAverageValueTrend,
+        fetchTrend: fetchDiscountCodesAverageValueTrend,
         interpretAs: 'more-is-better',
         metricFormat: 'decimal',
     },

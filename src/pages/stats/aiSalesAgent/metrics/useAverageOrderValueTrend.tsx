@@ -10,7 +10,7 @@ import { StatsFilters } from 'models/stat/types'
 import safeDivide from 'pages/stats/aiSalesAgent/util/safeDivide'
 import { getPreviousPeriod } from 'utils/reporting'
 
-const useAverageOrderValue = (filters: StatsFilters, timezone: string) => {
+const useAverageOrderValueTrend = (filters: StatsFilters, timezone: string) => {
     const trendData = useMultipleMetricsTrends(
         averageOrderValueQueryFactory(filters, timezone),
         averageOrderValueQueryFactory(
@@ -42,11 +42,14 @@ const useAverageOrderValue = (filters: StatsFilters, timezone: string) => {
     return {
         data: data,
         isFetching: trendData.isFetching,
-        isError: trendData.isFetching,
+        isError: trendData.isError,
     }
 }
 
-const fetchAverageOrderValue = (filters: StatsFilters, timezone: string) => {
+const fetchAverageOrderValueTrend = (
+    filters: StatsFilters,
+    timezone: string,
+) => {
     return fetchMultipleMetricsTrends(
         averageOrderValueQueryFactory(filters, timezone),
         averageOrderValueQueryFactory(
@@ -84,4 +87,4 @@ const fetchAverageOrderValue = (filters: StatsFilters, timezone: string) => {
         }))
 }
 
-export { useAverageOrderValue, fetchAverageOrderValue }
+export { useAverageOrderValueTrend, fetchAverageOrderValueTrend }
