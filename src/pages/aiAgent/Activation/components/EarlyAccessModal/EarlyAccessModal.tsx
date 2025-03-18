@@ -266,7 +266,7 @@ export const EarlyAccessModal = ({
                                         {isLoading ? (
                                             <Skeleton width={210} height={12} />
                                         ) : (
-                                            `${discount}/${earlyAccessPlan?.cadence} for 12 months`
+                                            `Save ${discount}/${earlyAccessPlan?.cadence} for 12 months`
                                         )}
                                     </span>
                                 )}
