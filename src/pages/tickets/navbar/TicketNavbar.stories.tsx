@@ -1,6 +1,7 @@
 import React from 'react'
 
 import { Meta } from '@storybook/react'
+import { QueryClientProvider } from '@tanstack/react-query'
 import { fromJS, Map } from 'immutable'
 import { DndProvider } from 'react-dnd'
 import { HTML5Backend } from 'react-dnd-html5-backend'
@@ -9,11 +10,13 @@ import { MemoryRouter } from 'react-router-dom'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
+import { appQueryClient } from 'api/queryClient'
 import { NavBarProvider } from 'common/navigation/components/NavBarProvider'
 import { NotificationsProvider } from 'common/notifications'
 import { account } from 'fixtures/account'
 import { billingState } from 'fixtures/billing'
 import { newViews } from 'models/view/mocks'
+import VoiceDeviceProvider from 'pages/integrations/integration/components/voice/VoiceDeviceProvider'
 import { TicketNavbarContainer } from 'pages/tickets/navbar/TicketNavbar'
 import { SplitTicketViewProvider } from 'split-ticket-view-toggle'
 import { initialState as currentAccountInitialState } from 'state/currentAccount/reducers'
@@ -73,11 +76,15 @@ const storyConfig: Meta = {
                     <DndProvider backend={HTML5Backend}>
                         <MemoryRouter>
                             <NotificationsProvider>
-                                <NavBarProvider>
-                                    <div>
-                                        <Component />
-                                    </div>
-                                </NavBarProvider>
+                                <QueryClientProvider client={appQueryClient}>
+                                    <VoiceDeviceProvider>
+                                        <NavBarProvider>
+                                            <div>
+                                                <Component />
+                                            </div>
+                                        </NavBarProvider>
+                                    </VoiceDeviceProvider>
+                                </QueryClientProvider>
                             </NotificationsProvider>
                         </MemoryRouter>
                     </DndProvider>

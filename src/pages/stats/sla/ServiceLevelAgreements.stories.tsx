@@ -17,6 +17,7 @@ import {
     satisfiedOrBreachedTicketsTimeSeriesQueryFactory,
 } from 'models/reporting/queryFactories/sla/satisfiedOrBreachedTickets'
 import { ServiceLevelAgreements } from 'pages/stats/sla/ServiceLevelAgreements'
+import { initialState } from 'state/ui/stats/filtersSlice'
 import { getCleanStatsFiltersWithLogicalOperatorsWithTimezone } from 'state/ui/stats/selectors'
 
 const slaPoliciesResponse = {
@@ -102,6 +103,7 @@ const defaultState = {
     ui: {
         stats: {
             filters: {
+                ...initialState,
                 isFilterDirty: false,
                 cleanStatsFilters: {
                     period: {
