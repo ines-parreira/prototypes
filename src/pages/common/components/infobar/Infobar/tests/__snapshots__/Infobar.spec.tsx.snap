@@ -553,21 +553,9 @@ exports[`<Infobar/> should render selected customer 1`] = `
               Back
             </span>
           </button>
-          <div
-            class="float-right d-none d-md-block"
-          >
-            <button
-              aria-disabled="false"
-              class="wrapper fill secondary medium"
-              type="button"
-            >
-              <span
-                class="content"
-              >
-                Merge
-              </span>
-            </button>
-          </div>
+          <button>
+            Set Customer
+          </button>
         </div>
         <div
           data-testid="InfobarCustomerInfo"

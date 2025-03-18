@@ -19,6 +19,7 @@ import {
     similarCustomer,
 } from 'state/infobar/actions'
 import { FETCH_PREVIEW_CUSTOMER_SUCCESS } from 'state/infobar/constants'
+import { setCustomer } from 'state/ticket/actions'
 import { startEditionMode, stopEditionMode } from 'state/widgets/actions'
 import { WidgetEnvironment } from 'state/widgets/types'
 import { assumeMock, renderWithRouter } from 'utils/testing'
@@ -88,8 +89,23 @@ jest.mock(
 jest.mock('pages/common/components/infobar/Infobar/InfobarSearchResultsList')
 const InfobarSearchResultsListMock = assumeMock(InfobarSearchResultsList)
 
+jest.mock(
+    'pages/common/components/infobar/Infobar/InfobarCustomerActions',
+    () => ({
+        __esModule: true,
+        default: ({ setCustomer }: { setCustomer: () => void }) => (
+            <button onClick={setCustomer}>Set Customer</button>
+        ),
+    }),
+)
+
 jest.mock('hooks/useSearchRankScenario')
 const useSearchRankScenarioMock = assumeMock(useSearchRankScenario)
+
+jest.mock('state/ticket/actions', () => ({
+    ...jest.requireActual('state/ticket/actions'),
+    setCustomer: jest.fn(() => () => Promise.resolve()),
+}))
 
 const commonProps: ComponentProps<typeof Infobar> = {
     context: WidgetEnvironment.Ticket,
@@ -544,5 +560,68 @@ describe('<Infobar/>', () => {
         fireEvent.keyDown(getByTestId('Search'), { key: 'Enter' })
 
         expect(mockSearchRank.endScenario).toHaveBeenCalledWith()
+    })
+
+    it('should reset search and return to current customer profile after setting customer', async () => {
+        const mockedSetCustomer = jest.mocked(setCustomer)
+        mockedSearch.mockImplementation(
+            () => () =>
+                Promise.resolve({
+                    resp: {
+                        data: {
+                            data: [{ entity: { id: 7 }, highlights: {} }],
+                        },
+                    },
+                }),
+        )
+        mockedFetchPreviewCustomer.mockImplementation(
+            () => () =>
+                Promise.resolve({
+                    type: FETCH_PREVIEW_CUSTOMER_SUCCESS,
+                    resp: {
+                        id: 7,
+                        data: { name: 'Test Customer' },
+                    },
+                }),
+        )
+
+        const { getByTestId, getByText, queryByText } = renderWithRouter(
+            <Provider store={store}>
+                <Infobar {...commonProps} />
+            </Provider>,
+        )
+
+        // Start search
+        const searchInput = getByTestId('Search')
+        fireEvent.change(searchInput, {
+            target: { value: 'query' },
+        })
+        fireEvent.keyDown(searchInput, { key: 'Enter' })
+
+        // Wait for search results to appear
+        const searchResults = await waitFor(() =>
+            getByTestId('InfobarSearchResultsList'),
+        )
+
+        // Click on the search results container
+        fireEvent.click(searchResults)
+
+        // Wait for the selected customer view to render and verify Set Customer button
+        await waitFor(() => {
+            expect(getByText('Set Customer')).toBeInTheDocument()
+        })
+
+        // Click Set Customer
+        fireEvent.click(getByText('Set Customer'))
+
+        // Verify setCustomer was called
+        expect(mockedSetCustomer).toHaveBeenCalled()
+
+        // Verify that we return to the search view with empty input
+        await waitFor(() => {
+            const searchInput = getByTestId('Search')
+            expect(searchInput).toHaveValue('')
+            expect(queryByText('Set Customer')).not.toBeInTheDocument()
+        })
     })
 })

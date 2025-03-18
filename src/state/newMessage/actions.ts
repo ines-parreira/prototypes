@@ -16,7 +16,6 @@ import {
     TicketChannel,
     TicketMessageSourceType,
     TicketStatus,
-    TicketVia,
 } from 'business/types/ticket'
 import { logEvent, SegmentEvent } from 'common/segment'
 import {
@@ -32,7 +31,6 @@ import { ShopifyProductCardContentType } from 'constants/integrations/shopify'
 import { isCustomFieldValueEmpty } from 'custom-fields/helpers/isCustomFieldValueEmpty'
 import client from 'models/api/resources'
 import { Customer } from 'models/customer/types'
-import { CustomerChannel } from 'models/customerChannel/types'
 import { DiscountCode } from 'models/discountCodes/types'
 import {
     MacroAction,
@@ -335,47 +333,6 @@ export const setReceivers = (
     receivers,
     replaceAll,
 })
-
-export const setActiveCustomerAsReceiver =
-    () => (dispatch: StoreDispatch, getState: () => RootState) => {
-        const state = getState()
-        const ticket = state.ticket
-
-        // We don't want to change address for gorgias_chat tickets
-        // Because different conversation_id might be assigned, so shopper won't receive replies from agent in the same chat
-        if (
-            ticket.getIn(['channel']) === TicketChannel.Chat &&
-            ticket.getIn(['via']) === TicketVia.GorgiasChat
-        ) {
-            return
-        }
-
-        const newMessageSource = selectors.getNewMessageSource(state)
-        const customerChannels: CustomerChannel[] =
-            (
-                ticket.getIn(['customer', 'channels']) as List<CustomerChannel>
-            )?.toJS() || []
-        const sourceType: TicketChannel =
-            newMessageSource.get('type') ?? TicketChannel.Email
-        const sourceTypeToSearch = [
-            TicketChannel.Sms,
-            TicketChannel.Phone,
-            TicketChannel.WhatsApp,
-        ].includes(sourceType)
-            ? TicketChannel.Phone
-            : sourceType
-        const customerChannel = customerChannels.find(
-            (channel: CustomerChannel) => channel.type === sourceTypeToSearch,
-        )
-        const address = customerChannel
-            ? customerChannel.address
-            : ticket.getIn(['customer', 'email'])
-        const name = ticket.getIn(['customer', 'name'])
-
-        if (address && name) {
-            void dispatch(setReceivers({ to: [{ name, address }] }, false))
-        }
-    }
 
 /**
  * Set new message sender. A sender is represented by an integration (email or gmail)
