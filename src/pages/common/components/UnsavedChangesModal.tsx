@@ -2,7 +2,8 @@ import React from 'react'
 
 import _noop from 'lodash/noop'
 
-import Button from 'pages/common/components/button/Button'
+import { Button } from '@gorgias/merchant-ui-kit'
+
 import Modal from 'pages/common/components/modal/Modal'
 import ModalBody from 'pages/common/components/modal/ModalBody'
 import ModalFooter from 'pages/common/components/modal/ModalFooter'

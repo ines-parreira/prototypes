@@ -109,6 +109,18 @@ describe('<VoiceQueueSettingsFormCallFlowSection />', () => {
         ).toBeInTheDocument()
     })
 
+    describe('Linked targets field', () => {
+        it('should transform output correctly', () => {
+            renderComponent()
+
+            const linkedTargetsField = getFormFieldCallByName('linked_targets')
+            expect(linkedTargetsField?.[0]?.outputTransform?.(null)).toEqual([])
+            expect(linkedTargetsField?.[0]?.outputTransform?.(1)).toEqual([
+                { team_id: 1, user_id: null },
+            ])
+        })
+    })
+
     describe('Ring time field', () => {
         it('should transform output correctly', () => {
             renderComponent()

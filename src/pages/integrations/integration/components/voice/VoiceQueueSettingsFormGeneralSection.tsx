@@ -17,6 +17,9 @@ export default function VoiceQueueSettingsFormGeneralSection() {
                 type="number"
                 name="capacity"
                 caption="Once the limit is reached, calls are sent to voicemail."
+                outputTransform={(value) =>
+                    value === '' ? null : Number(value)
+                }
             />
             <FormField
                 name="priority_weight"

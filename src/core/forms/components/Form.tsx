@@ -1,4 +1,4 @@
-import React, { PropsWithChildren } from 'react'
+import React, { PropsWithChildren, useEffect } from 'react'
 
 import {
     FieldValues,
@@ -43,6 +43,18 @@ export function Form<TFieldValues extends FieldValues>({
         errors: errors ? toFieldErrors(errors) : undefined,
         ...props,
     })
+
+    const {
+        formState: { isSubmitSuccessful },
+    } = methods
+
+    const { reset, getValues } = methods
+
+    useEffect(() => {
+        if (isSubmitSuccessful) {
+            reset(getValues())
+        }
+    }, [reset, getValues, isSubmitSuccessful])
 
     return (
         <FormProvider {...methods}>

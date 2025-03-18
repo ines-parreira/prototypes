@@ -25,6 +25,17 @@ describe('VoiceQueueSettingsFormGeneralSection', () => {
         expect(screen.getByText('Priority queue')).toBeInTheDocument()
     })
 
+    describe('Queue capacity field', () => {
+        it('should transform output correctly', () => {
+            renderComponent()
+
+            const queueCapacityField = getFormFieldCallByName('capacity')
+
+            expect(queueCapacityField?.[0]?.outputTransform?.('')).toBe(null)
+            expect(queueCapacityField?.[0]?.outputTransform?.('100')).toBe(100)
+        })
+    })
+
     describe('Priority weight field', () => {
         it('should transform input correctly', () => {
             renderComponent()

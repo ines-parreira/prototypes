@@ -55,8 +55,13 @@ export default function VoiceQueueSettingsFormCallFlowSection() {
                                 }
                                 outputTransform={(value) =>
                                     value === null
-                                        ? null
-                                        : [{ team_id: Number(value) }]
+                                        ? []
+                                        : [
+                                              {
+                                                  team_id: Number(value),
+                                                  user_id: null,
+                                              },
+                                          ]
                                 }
                                 field={VoiceIntegrationPreferencesTeamSelect}
                             />
