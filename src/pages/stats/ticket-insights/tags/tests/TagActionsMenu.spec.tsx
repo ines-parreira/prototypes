@@ -1,8 +1,12 @@
 import React from 'react'
 
-import { fireEvent, render, screen } from '@testing-library/react'
+import { fireEvent, render, screen, within } from '@testing-library/react'
 
 import {
+    EXCLUDE_TAGS_IN_RESULTS,
+    EXCLUDE_TAGS_IN_RESULTS_SUBTITLE,
+    INCLUDE_TAGS_IN_RESULTS,
+    INCLUDE_TAGS_IN_RESULTS_SUBTITLE,
     TAG_ACTIONS_DOWNLOAD_OPTION_LABEL,
     TAG_ACTIONS_TRIGGER_LABEL,
     TagActionsMenu,
@@ -37,6 +41,14 @@ describe('TagActionsMenu', () => {
 
         fireEvent.click(screen.getByLabelText(TAG_ACTIONS_TRIGGER_LABEL))
 
+        expect(screen.getByText(INCLUDE_TAGS_IN_RESULTS)).toBeInTheDocument()
+        expect(
+            screen.getByText(INCLUDE_TAGS_IN_RESULTS_SUBTITLE),
+        ).toBeInTheDocument()
+        expect(screen.getByText(EXCLUDE_TAGS_IN_RESULTS)).toBeInTheDocument()
+        expect(
+            screen.getByText(EXCLUDE_TAGS_IN_RESULTS_SUBTITLE),
+        ).toBeInTheDocument()
         expect(
             screen.getByText(TAG_ACTIONS_DOWNLOAD_OPTION_LABEL),
         ).toBeInTheDocument()
@@ -66,5 +78,35 @@ describe('TagActionsMenu', () => {
 
         fireEvent.click(downloadOption)
         expect(downloadMock).not.toHaveBeenCalled()
+    })
+
+    it('should have include tag option by default and select it', () => {
+        render(<TagActionsMenu />)
+
+        fireEvent.click(screen.getByLabelText(TAG_ACTIONS_TRIGGER_LABEL))
+
+        const spanElement = screen.getByText(INCLUDE_TAGS_IN_RESULTS)
+        const parentDiv = spanElement.parentElement as HTMLElement
+        within(parentDiv).getByText('check')
+
+        fireEvent.click(screen.getByText(INCLUDE_TAGS_IN_RESULTS))
+
+        fireEvent.click(screen.getByLabelText(TAG_ACTIONS_TRIGGER_LABEL))
+
+        within(parentDiv).getByText('check')
+    })
+
+    it('should select exclude_tags', () => {
+        render(<TagActionsMenu />)
+
+        fireEvent.click(screen.getByLabelText(TAG_ACTIONS_TRIGGER_LABEL))
+
+        fireEvent.click(screen.getByText(EXCLUDE_TAGS_IN_RESULTS))
+
+        fireEvent.click(screen.getByLabelText(TAG_ACTIONS_TRIGGER_LABEL))
+
+        const spanElement = screen.getByText(EXCLUDE_TAGS_IN_RESULTS)
+        const parentDiv = spanElement.parentElement as HTMLElement
+        within(parentDiv).getByText('check')
     })
 })
