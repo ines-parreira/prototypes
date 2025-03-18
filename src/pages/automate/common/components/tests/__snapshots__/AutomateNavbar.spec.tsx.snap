@@ -176,7 +176,7 @@ exports[`<AutomateNavbar /> render() should render automate navbar for admin wit
                 <img
                   alt="bigcommerce logo"
                   role="presentation"
-                  src="/assets/img/integrations/bigcommerce-white.svg"
+                  src="/assets/img/integrations/bigcommerce.svg"
                 />
               </div>
               <span
@@ -452,7 +452,7 @@ exports[`<AutomateNavbar /> render() should render automate navbar for agent wit
                 <img
                   alt="bigcommerce logo"
                   role="presentation"
-                  src="/assets/img/integrations/bigcommerce-white.svg"
+                  src="/assets/img/integrations/bigcommerce.svg"
                 />
               </div>
               <span

@@ -8,6 +8,8 @@ import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
 import { FeatureFlagKey } from 'config/featureFlags'
+import { THEME_NAME, useTheme } from 'core/theme'
+import { Theme } from 'core/theme/types'
 import { account } from 'fixtures/account'
 import { StoreConfiguration } from 'models/aiAgent/types'
 import { IntegrationType } from 'models/integration/constants'
@@ -31,6 +33,12 @@ const useStoreConfigurationMock = assumeMock(useStoreConfiguration)
 
 const defaultStoreConfiguration: StoreConfiguration =
     getStoreConfigurationFixture()
+
+jest.mock('core/theme', () => ({
+    ...jest.requireActual('core/theme'),
+    useTheme: jest.fn(),
+}))
+const useThemeMock = assumeMock(useTheme)
 
 const defaultState = {
     currentAccount: fromJS(account),
@@ -268,6 +276,29 @@ describe('AutomateNavbarSectionBlock', () => {
             )
 
             expect(screen.queryByText('Flows')).not.toBeInTheDocument()
+        })
+
+        it('should render expected logo version of Big Commerce on dark theme', () => {
+            useThemeMock.mockReturnValue({
+                resolvedName: THEME_NAME.Dark,
+            } as Theme)
+            renderComponent(
+                <AutomateNavbarSectionBlock
+                    shopType={IntegrationType.BigCommerce}
+                    shopName={shopName}
+                    onToggle={onToggle}
+                    name={name}
+                    isExpanded={isExpanded}
+                    shouldRenderCanduIds={shouldRenderCanduIds}
+                />,
+            )
+
+            expect(
+                screen.getByAltText(`${IntegrationType.BigCommerce} logo`),
+            ).toHaveAttribute(
+                'src',
+                '/assets/img/integrations/bigcommerce-white.svg',
+            )
         })
     })
 })

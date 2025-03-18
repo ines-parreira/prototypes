@@ -7,6 +7,7 @@ import { Badge } from '@gorgias/merchant-ui-kit'
 
 import cssNavbar from 'assets/css/navbar.less'
 import { FeatureFlagKey } from 'config/featureFlags'
+import { THEME_NAME, useTheme } from 'core/theme'
 import useAppSelector from 'hooks/useAppSelector'
 import { IntegrationType } from 'models/integration/constants'
 import { ShopType } from 'models/selfServiceConfiguration/types'
@@ -47,6 +48,7 @@ const AutomateNavbarSectionBlock = ({
     ...props
 }: Props) => {
     const hasAutomate = useAppSelector(getHasAutomate)
+    const theme = useTheme()
 
     const currentAccount = useAppSelector(getCurrentAccountState)
     const accountDomain = currentAccount.get('domain')
@@ -84,7 +86,9 @@ const AutomateNavbarSectionBlock = ({
     const getIconSrc = () => {
         switch (shopType) {
             case IntegrationType.BigCommerce:
-                return assetsUrl('/img/integrations/bigcommerce-white.svg')
+                return assetsUrl(
+                    `/img/integrations/bigcommerce${theme.resolvedName === THEME_NAME.Dark ? '-white' : ''}.svg`,
+                )
             default:
                 return getIconFromType(shopType)
         }
