@@ -21,6 +21,7 @@ const props = {
     agentId: 1,
     isViewingAccountOwner: false,
     isAccountOwner: false,
+    isBotAgent: false,
     setAgentState: jest.fn((cb: (param: AgentState) => AgentState) => cb),
 }
 

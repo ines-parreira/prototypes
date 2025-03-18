@@ -2,6 +2,8 @@ import { useMutation, useQuery, UseQueryOptions } from '@tanstack/react-query'
 
 import { MutationOverrides } from 'types/query'
 
+import { FeatureFlagKey } from '../../config/featureFlags'
+import { useFlag } from '../../core/flags'
 import {
     createAgent,
     deleteAgent,
@@ -24,9 +26,14 @@ export const useListAgent = (
     params?: FetchAgentsOptions,
     overrides?: UseQueryOptions<Awaited<ReturnType<typeof fetchAgents>>>,
 ) => {
+    const displayBotUsers: boolean = useFlag(
+        FeatureFlagKey.BotUserEdition,
+        false,
+    )
+
     return useQuery({
-        queryKey: agentsKeys.list(params),
-        queryFn: () => fetchAgents(params),
+        queryKey: agentsKeys.list({ ...params, displayBotUsers }),
+        queryFn: () => fetchAgents({ ...params, displayBotUsers }),
         ...overrides,
     })
 }

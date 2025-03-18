@@ -18,6 +18,7 @@ type Props = {
     agentId: number
     isViewingAccountOwner: boolean
     isAccountOwner: boolean
+    isBotAgent: boolean
     setAgentState: (arg1: (state: AgentState) => AgentState) => void
 }
 
@@ -28,6 +29,7 @@ export const Info = ({
     agentId,
     isViewingAccountOwner,
     isAccountOwner,
+    isBotAgent,
     setAgentState,
 }: Props) => {
     const { mutate: inviteAgent, isLoading: isInviting } = useInviteAgent(email)
@@ -73,14 +75,15 @@ export const Info = ({
                 }
                 placeholder="robin@mchelpful.com"
                 isRequired
-                isDisabled={isDisabled}
+                isDisabled={isBotAgent || isDisabled}
             />
+
             {isDisabled && (
                 <Tooltip target={emailId}>
                     You cannot edit account owner
                 </Tooltip>
             )}
-            {isEdit && (
+            {isEdit && !isBotAgent && (
                 <Button
                     className={css.inputField}
                     type="button"

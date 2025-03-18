@@ -12,13 +12,14 @@ export enum UserRole {
 
 export type UserDraft = {
     id?: Maybe<number>
-    email: string
+    email?: string
     name: string
     role?: { name: UserRole }
 }
 
 export type User = UserDraft & {
     role: { name: UserRole }
+    email: string
     active: boolean
     bio: Maybe<string>
     country: string | null

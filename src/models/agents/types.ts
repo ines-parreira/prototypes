@@ -26,6 +26,7 @@ export type FetchAgentsOptions = Omit<
         externalId?: string
         roles?: ListUsersRolesItem[]
         relationships?: ListUsersRelationshipsItem[]
+        displayBotUsers?: boolean
     }
 
 export const DateFormattingSetting = {

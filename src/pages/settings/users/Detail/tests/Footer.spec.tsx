@@ -129,6 +129,29 @@ describe('Footer', () => {
         })
     })
 
+    it('should not have a delete button for bot users', async () => {
+        render(
+            <Footer
+                rawData={
+                    {
+                        ...defaultAgentState,
+                        role: { name: UserRole.Agent },
+                    } as User
+                }
+                agentState={defaultAgentState}
+                isViewingAccountOwner
+                isEdit
+                agentId={1}
+                isBotAgent={true}
+            />,
+        )
+
+        const deleteButton = screen.queryByRole('button', {
+            name: /Delete user/,
+        })
+        expect(deleteButton).not.toBeInTheDocument()
+    })
+
     it('should open modal when delete is clicked', () => {
         render(
             <Footer

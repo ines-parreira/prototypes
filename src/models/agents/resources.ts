@@ -6,9 +6,13 @@ import { ApiListResponseCursorPagination } from 'models/api/types'
 import { deepMapKeysToSnakeCase } from 'models/api/utils'
 
 export const fetchAgents = async (options: FetchAgentsOptions = {}) => {
-    const parameters: Record<string, unknown> = deepMapKeysToSnakeCase(options)
+    const { displayBotUsers, ...rest } = options
 
-    parameters.roles = parameters.roles || USER_ROLES
+    const parameters: Record<string, unknown> = deepMapKeysToSnakeCase(rest)
+
+    if (!displayBotUsers) {
+        parameters.roles = parameters.roles || USER_ROLES
+    }
 
     return await client.get<ApiListResponseCursorPagination<User[]>>(
         '/api/users/',

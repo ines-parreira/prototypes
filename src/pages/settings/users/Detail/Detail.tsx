@@ -55,6 +55,7 @@ export const Detail = () => {
     const isSelf = agentId === currentUserId
     const isAccountOwner = currentUserId === accountOwnerId
     const isViewingAccountOwner = agentId === accountOwnerId
+    const isBotAgent = role === UserRole.Bot
 
     if (isEdit && isLoading) {
         return <Loader />
@@ -67,9 +68,12 @@ export const Detail = () => {
     const onSubmit = (e: FormEvent) => {
         e.preventDefault()
         const form: UserDraft = {
-            email: email.trim().toLocaleLowerCase(),
             name: name.trim(),
-            role: { name: role },
+        }
+
+        if (!isBotAgent) {
+            form.email = email?.trim()?.toLocaleLowerCase() ?? ''
+            form.role = { name: role }
         }
 
         if (isSelf) {
@@ -87,7 +91,7 @@ export const Detail = () => {
         <div className="full-width">
             <Header isEdit={isEdit} name={name} />
             <div className={classnames(settingsCss.newPageContainer)}>
-                {isEdit && (
+                {isEdit && !isBotAgent && (
                     <Statuses
                         agentId={agentId}
                         rawData={rawData}
@@ -105,14 +109,18 @@ export const Detail = () => {
                         agentId={agentId}
                         setAgentState={setAgentState}
                         isAccountOwner={isAccountOwner}
+                        isBotAgent={isBotAgent}
                         isViewingAccountOwner={isViewingAccountOwner}
                     />
-                    <Role
-                        role={role}
-                        setAgentState={setAgentState}
-                        isSelf={isSelf}
-                        isViewingAccountOwner={isViewingAccountOwner}
-                    />
+                    {
+                        <Role
+                            role={role}
+                            setAgentState={setAgentState}
+                            isSelf={isSelf}
+                            isBotAgent={isBotAgent}
+                            isViewingAccountOwner={isViewingAccountOwner}
+                        />
+                    }
                     <Footer
                         rawData={rawData}
                         isEdit={isEdit}
@@ -121,6 +129,7 @@ export const Detail = () => {
                         isSaving={isCreating || isUpdating}
                         isViewingAccountOwner={isViewingAccountOwner}
                         isSelf={isSelf}
+                        isBotAgent={isBotAgent}
                     />
                 </form>
             </div>

@@ -19,6 +19,7 @@ type Props = {
     isSaving?: boolean
     isViewingAccountOwner?: boolean
     isSelf?: boolean
+    isBotAgent?: boolean
 }
 
 export const Footer = ({
@@ -29,6 +30,7 @@ export const Footer = ({
     isSaving = false,
     isSelf = false,
     isViewingAccountOwner = false,
+    isBotAgent = false,
 }: Props) => {
     const saveId = 'detail-footer-save-agent-button'
     const deleteId = 'detail-footer-delete-agent-button'
@@ -70,7 +72,7 @@ export const Footer = ({
                     </Button>
                 )}
             </div>
-            {isEdit && (
+            {isEdit && !isBotAgent && (
                 <>
                     <Button
                         id={deleteId}
