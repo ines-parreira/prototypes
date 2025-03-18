@@ -2909,6 +2909,26 @@ export const getReusableLLMPromptCallNodeHasMissingCredentials = (
     }
 }
 
+export const getReusableLLMPromptCallNodeHasInvalidCredentials = (
+    graphApp: VisualBuilderGraphApp | undefined,
+    actionsApp: Pick<ActionsApp, 'auth_type'> | undefined,
+    isTemplate: boolean,
+    trackstarConnection?: TrackstarConnection,
+): boolean => {
+    if (!graphApp || graphApp.type !== 'app' || !actionsApp || isTemplate) {
+        return false
+    }
+
+    switch (actionsApp.auth_type) {
+        case 'trackstar':
+            return !trackstarConnection ? false : trackstarConnection.error
+        case 'api-key':
+        case 'oauth2-token':
+        default:
+            return false
+    }
+}
+
 export const getReusableLLMPromptCallNodeHasCredentials = (
     templateApp: Pick<ActionTemplateApp, 'type'>,
     isTemplate: boolean,
@@ -2969,11 +2989,20 @@ export const getReusableLLMPromptCallNodeStatuses = ({
         hasInputs,
     )
 
+    const hasInvalidCredentials =
+        getReusableLLMPromptCallNodeHasInvalidCredentials(
+            graphApp,
+            actionsApp,
+            isTemplate,
+            trackstarConnection,
+        )
+
     return {
         hasInputs,
         hasMissingValues,
         hasAllValues,
         hasMissingCredentials,
+        hasInvalidCredentials,
         hasCredentials,
         isClickable,
     }

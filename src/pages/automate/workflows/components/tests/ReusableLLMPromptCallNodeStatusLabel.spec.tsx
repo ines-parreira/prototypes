@@ -69,6 +69,15 @@ describe('ReusableLLMPromptCallNodeStatusLabel', () => {
         expect(screen.getByText('Edit values')).toBeInTheDocument()
     })
 
+    it('shows reconnect account message', () => {
+        render(
+            <ReusableLLMPromptCallNodeStatusLabel
+                hasInvalidCredentials={true}
+            />,
+        )
+        expect(screen.getByText('Reconnect account')).toBeInTheDocument()
+    })
+
     it('renders nothing when no props are provided', () => {
         const { container } = render(<ReusableLLMPromptCallNodeStatusLabel />)
         expect(container).toBeEmptyDOMElement()

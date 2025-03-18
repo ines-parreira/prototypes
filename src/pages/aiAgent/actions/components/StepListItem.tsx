@@ -2,10 +2,11 @@ import React, { RefObject } from 'react'
 
 import classNames from 'classnames'
 
+import { IconButton } from '@gorgias/merchant-ui-kit'
+
 import { ActionTemplate, App } from 'pages/automate/actionsPlatform/types'
 import ReusableLLMPromptCallNodeStatusLabel from 'pages/automate/workflows/components/ReusableLLMPromptCallNodeStatusLabel'
 import ReusableLLMPromptCallNodeLabel from 'pages/automate/workflows/editor/visualBuilder/nodes/ReusableLLMPromptCallNodeLabel'
-import IconButton from 'pages/common/components/button/IconButton'
 import { useReorderDnD } from 'pages/common/hooks/useReorderDnD'
 
 import css from './StepListItem.less'
@@ -24,6 +25,7 @@ export type StepListItemProps = {
     hasCredentials: boolean
     hasAllValues: boolean
     hasMissingValues: boolean
+    hasInvalidCredentials: boolean
 }
 
 export const StepListItem = ({
@@ -40,6 +42,7 @@ export const StepListItem = ({
     hasCredentials,
     hasAllValues,
     hasMissingValues,
+    hasInvalidCredentials,
 }: StepListItemProps) => {
     const type = `steps`
     const { dragRef, dropRef, handlerId, isDragging } = useReorderDnD(
@@ -70,15 +73,15 @@ export const StepListItem = ({
                 hasCredentials={hasCredentials}
                 hasAllValues={hasAllValues}
                 hasMissingValues={hasMissingValues}
+                hasInvalidCredentials={hasInvalidCredentials}
             />
             <IconButton
                 fillStyle="ghost"
                 intent="destructive"
                 onClick={onDelete}
                 className={css.deleteButton}
-            >
-                close
-            </IconButton>
+                icon="close"
+            />
         </li>
     )
 }

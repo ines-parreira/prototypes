@@ -160,6 +160,7 @@ export const SimplifiedStepBuilderSteps = ({
                     hasCredentials,
                     hasAllValues,
                     hasMissingValues,
+                    hasInvalidCredentials,
                 } = getReusableLLMPromptCallNodeStatuses({
                     graphApp,
                     actionsApp,
@@ -192,6 +193,7 @@ export const SimplifiedStepBuilderSteps = ({
                     hasCredentials,
                     hasAllValues,
                     hasMissingValues,
+                    hasInvalidCredentials,
                 }
             },
         )
@@ -216,6 +218,14 @@ export const SimplifiedStepBuilderSteps = ({
     )
     const hasMissingCredentials = displayNodesProps.some(
         (props) => props && props.hasMissingCredentials,
+    )
+    const stepsWithInvalidCredentials = displayNodesProps.filter(
+        (
+            props,
+        ): props is Exclude<
+            StepListItemProps & { id: string },
+            null | { app?: null }
+        > => !!props && props.hasInvalidCredentials && !!props.app,
     )
 
     const visualBuilderNodeEditing = graph.nodeEditingId
@@ -249,6 +259,18 @@ export const SimplifiedStepBuilderSteps = ({
                               : 'Provide values for steps below to save this Action.'}
                     </Alert>
                 )}
+                {stepsWithInvalidCredentials.map((step) => (
+                    <Alert
+                        type={AlertType.Warning}
+                        icon
+                        className={css.alert}
+                        key={step.id}
+                    >
+                        We lost connection with {step.app.name}. Reconnect to
+                        avoid disruptions with Action performance.
+                    </Alert>
+                ))}
+
                 <ul className={css.stepList}>
                     {displayNodesProps.map((props, index) => {
                         return (

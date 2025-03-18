@@ -32,6 +32,7 @@ import {
     getReusableLLMPromptCallNodeHasAllValues,
     getReusableLLMPromptCallNodeHasCredentials,
     getReusableLLMPromptCallNodeHasInputs,
+    getReusableLLMPromptCallNodeHasInvalidCredentials,
     getReusableLLMPromptCallNodeHasMissingCredentials,
     getReusableLLMPromptCallNodeHasMissingValues,
     getReusableLLMPromptCallNodeIsClickable,
@@ -5721,6 +5722,36 @@ describe('getReusableLLMPromptCallNodeHasMissingCredentials()', () => {
     })
 })
 
+describe('getReusableLLMPromptCallNodeHasInvalidCredentials()', () => {
+    it('should return true if trackstar connection has error', () => {
+        expect(
+            getReusableLLMPromptCallNodeHasInvalidCredentials(
+                { type: 'app', app_id: '', api_key: '' },
+                { auth_type: 'trackstar' },
+                false,
+                {
+                    connection_id: '123',
+                    store_name: '',
+                    store_type: 'shopify',
+                    account_id: 0,
+                    integration_name: 'sandbox',
+                    error: true,
+                },
+            ),
+        ).toEqual(true)
+    })
+
+    it('should return false if there is no trackstar connection', () => {
+        expect(
+            getReusableLLMPromptCallNodeHasInvalidCredentials(
+                { type: 'app', app_id: '', api_key: '' },
+                { auth_type: 'trackstar' },
+                false,
+            ),
+        ).toEqual(false)
+    })
+})
+
 describe('getReusableLLMPromptCallNodeHasCredentials()', () => {
     it('should return true if action template type is app and it is not a template', () => {
         expect(
@@ -5790,6 +5821,7 @@ describe('getReusableLLMPromptCallNodeStatuses()', () => {
             hasAllValues: true,
             hasMissingCredentials: true,
             hasCredentials: true,
+            hasInvalidCredentials: false,
             isClickable: true,
         })
     })

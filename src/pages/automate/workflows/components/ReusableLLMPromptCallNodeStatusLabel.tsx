@@ -7,6 +7,7 @@ type Props = {
     hasCredentials?: boolean
     hasAllValues?: boolean
     hasMissingValues?: boolean
+    hasInvalidCredentials?: boolean
 }
 
 const ReusableLLMPromptCallNodeStatusLabel = ({
@@ -14,7 +15,15 @@ const ReusableLLMPromptCallNodeStatusLabel = ({
     hasCredentials,
     hasAllValues,
     hasMissingValues,
+    hasInvalidCredentials,
 }: Props) => {
+    if (hasInvalidCredentials) {
+        return (
+            <VisualBuilderNodeIconContent icon="warning" type="warning">
+                Reconnect account
+            </VisualBuilderNodeIconContent>
+        )
+    }
     if (hasMissingCredentials && hasMissingValues) {
         return (
             <VisualBuilderNodeIconContent icon="warning" type="warning">

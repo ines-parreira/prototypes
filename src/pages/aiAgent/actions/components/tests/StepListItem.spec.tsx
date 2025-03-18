@@ -57,6 +57,7 @@ describe('<StepListItem />', () => {
         hasCredentials: false,
         hasAllValues: false,
         hasMissingValues: false,
+        hasInvalidCredentials: false,
     }
 
     it('handles click when step is clickable (app type and not template)', () => {

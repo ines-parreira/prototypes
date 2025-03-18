@@ -97,6 +97,7 @@ const ReusableLLMPromptCallNode = memo(function ReusableLLMPromptCallNode({
         hasCredentials,
         hasAllValues,
         hasMissingValues,
+        hasInvalidCredentials,
     } = getReusableLLMPromptCallNodeStatuses({
         graphApp,
         actionsApp,
@@ -122,6 +123,7 @@ const ReusableLLMPromptCallNode = memo(function ReusableLLMPromptCallNode({
                     hasCredentials={hasCredentials}
                     hasAllValues={hasAllValues}
                     hasMissingValues={hasMissingValues}
+                    hasInvalidCredentials={hasInvalidCredentials}
                 />
                 <NodeDeleteIcon {...deleteProps} />
             </VisualBuilderNode>
