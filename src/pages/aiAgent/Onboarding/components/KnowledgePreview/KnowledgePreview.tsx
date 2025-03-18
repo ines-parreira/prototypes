@@ -1,5 +1,6 @@
 import React, { useEffect, useRef } from 'react'
 
+import { getRGB } from 'gorgias-design-system/utils'
 import {
     Card,
     CardContent,
@@ -39,7 +40,7 @@ const KnowledgePreview = () => {
                 <LineChart
                     data={data?.averageOrders ?? []}
                     options={graphOptions}
-                    customColors={['#C34CED']}
+                    customColors={[getRGB('--accessory-magenta-25')]}
                     hasBackground
                 />
             </CardContent>
@@ -97,7 +98,7 @@ const KnowledgePreview = () => {
                     percentage={data?.averageDiscount ?? 0}
                     color="#FD9B5A"
                     backgroundColor="#FD9B5A3D"
-                    label={data?.averageDiscount.toString()}
+                    label={data?.averageDiscount.toString() + '%'}
                     strokeWidth={9}
                 />
             </CardContent>
@@ -115,7 +116,7 @@ const KnowledgePreview = () => {
                     percentage={data?.repeatRate ?? 0}
                     color="#FD9B5A"
                     backgroundColor="#FD9B5A3D"
-                    label={data?.repeatRate.toString()}
+                    label={data?.repeatRate.toString() + '%'}
                     strokeWidth={9}
                 />
             </CardContent>

@@ -54,9 +54,9 @@ export const chatPreviewSettings = {
     renderFooter: false,
     hideButton: true,
     showBackground: false,
-    mainColor: '#222222',
+    mainColor: 'var(--neutral-grey-6)',
     background:
-        'linear-gradient(180deg, #DDD 0.03%, #EEE 11.9%, #F9F9F9 99.97%)',
+        'linear-gradient(180deg, var(--neutral-grey-3) 0.03%, var(--neutral-grey-2) 11.9%, var(--navigation-background) 99.97%)',
     children: null,
     avatar: {
         imageType: GorgiasChatAvatarImageType.AGENT_PICTURE,
@@ -67,7 +67,7 @@ export const chatPreviewSettings = {
 }
 
 export const agentChatConversationSettings = {
-    conversationColor: '#222222',
+    conversationColor: 'var(--neutral-grey-6)',
     avatar: {
         imageType: GorgiasChatAvatarImageType.AGENT_PICTURE,
         nameType: GorgiasChatAvatarNameType.AGENT_FIRST_NAME,

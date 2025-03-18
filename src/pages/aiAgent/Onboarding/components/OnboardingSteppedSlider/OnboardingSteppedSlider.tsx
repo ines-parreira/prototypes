@@ -1,9 +1,9 @@
 import React from 'react'
 
+import { getRGB } from 'gorgias-design-system/utils'
 import { SteppedSlider } from 'pages/common/components/SteppedSlider/SteppedSlider'
 
-const COLOR = '#C34CED'
-const BACKGROUND_COLOR = 'var(--accessory-magenta-2)'
+const COLOR = '--accessory-magenta-25'
 
 export type OnboardingStep = {
     key: string
@@ -19,12 +19,13 @@ type Props = {
 export const OnboardingSteppedSlider = (props: Props) => {
     const { steps, stepKey, onChange } = props
 
+    const color = getRGB(COLOR)
+
     return (
         <SteppedSlider
             steps={steps}
             stepKey={stepKey}
-            color={COLOR}
-            backgroundColor={BACKGROUND_COLOR}
+            color={color}
             onChange={onChange}
         />
     )

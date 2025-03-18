@@ -2,6 +2,8 @@ import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 
 import { Tooltip } from '@gorgias/merchant-ui-kit'
 
+import { relativeLighten } from 'gorgias-design-system/utils'
+
 import css from './SteppedSlider.less'
 
 type Step = {
@@ -13,7 +15,7 @@ interface SteppedSliderProps {
     steps: Step[]
     stepKey: string
     color: string
-    backgroundColor: string
+    backgroundColor?: string
     onChange: (stepKey: string) => void
 }
 
@@ -154,7 +156,8 @@ export const SteppedSlider: React.FC<SteppedSliderProps> = (props) => {
             <div
                 className={css.track}
                 style={{
-                    backgroundColor: backgroundColor,
+                    backgroundColor:
+                        backgroundColor ?? relativeLighten(color, 0.5),
                 }}
                 ref={trackRef}
                 onClick={handleMouseMove}

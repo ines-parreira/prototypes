@@ -1,10 +1,10 @@
 import React from 'react'
 
+import { getRGB } from 'gorgias-design-system/utils'
 import Button from 'pages/common/components/button/Button'
 import ProgressTracker from 'pages/common/components/ProgressTracker/ProgressTracker'
 
-const STEP_TRACKER_COLOR = '#C34CED'
-//const STEP_TRACKER_COLOR = 'var(--accessory-magenta-2,5)'
+const STEP_TRACKER_COLOR = '--accessory-magenta-25'
 
 type Props = {
     step: number
@@ -28,6 +28,8 @@ const OnboardingProgressTracker = (props: Props) => {
     }
 
     const nextBtnText = step === totalSteps ? 'Finish' : 'Next'
+
+    const color = getRGB(STEP_TRACKER_COLOR)
 
     const cta = (
         <>
@@ -58,7 +60,7 @@ const OnboardingProgressTracker = (props: Props) => {
             totalSteps={totalSteps}
             stepLabel="Step"
             cta={cta}
-            stepTrackerColor={STEP_TRACKER_COLOR}
+            stepTrackerColor={color}
         />
     )
 }

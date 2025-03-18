@@ -4,6 +4,15 @@ import { darken, getContrast, lighten, parseToHsla } from 'color2k'
 import { gorgiasColors } from './styles'
 
 /**
+ * Get the RGB value of a variable
+ * @param colorVariable The variable to get the RGB value for. In the format '--color-name'
+ */
+export const getRGB = (colorVariable: string) => {
+    const body = document.getElementsByTagName('body')[0]
+    return getComputedStyle(body).getPropertyValue(colorVariable)
+}
+
+/**
  * Set the lightness of a color.
  * @param color The color to set the lightness for.
  * @param amount The amount to set the lightness for. A number between 0 and 1.
