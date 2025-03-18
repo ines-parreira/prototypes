@@ -5,6 +5,7 @@ import { FormProvider, useForm } from 'react-hook-form'
 import { useParams } from 'react-router-dom'
 
 import useAppSelector from 'hooks/useAppSelector'
+import { OnboardingData } from 'models/aiAgent/types'
 import AiAgentChatConversation from 'pages/aiAgent/Onboarding/components/AiAgentChatConversation/AiAgentChatConversation'
 import Goals from 'pages/aiAgent/Onboarding/components/Goals/Goals'
 import MainTitle from 'pages/aiAgent/Onboarding/components/MainTitle/MainTitle'
@@ -32,6 +33,11 @@ import { getCurrentAccountState } from 'state/currentAccount/selectors'
 
 import css from './SkillsetStep.less'
 
+type CreateOnboardingData = Pick<
+    OnboardingData,
+    'currentStepName' | 'scopes' | 'gorgiasDomain' | 'shopName' | 'shopType'
+>
+
 type SkillsetFormValues = {
     scopes: AiAgentScopes[]
 }
@@ -47,7 +53,10 @@ export const SkillsetStep: FC<SkillsetStepProps> = ({
     setSelectedScope,
     isStoreSelected,
 }) => {
-    const { shopName } = useParams<{ shopName: string }>()
+    const { shopName, shopType } = useParams<{
+        shopName: string
+        shopType: string
+    }>()
     const { validSteps } = useSteps({ shopName, isStoreSelected })
 
     useCheckOnboardingCompleted()
@@ -106,27 +115,36 @@ export const SkillsetStep: FC<SkillsetStepProps> = ({
         }
         if (data && 'id' in data) {
             // Update onboarding
+            const updateOnboardingData = {
+                ...data,
+                id: data.id as string,
+                scopes: selectedScope,
+            }
+            if (shopName && shopType) {
+                updateOnboardingData.shopName = shopName
+                updateOnboardingData.shopType = shopType
+            }
             doUpdateOnboardingMutation(
                 {
                     id: data.id as string,
-                    data: {
-                        ...data,
-                        id: data.id as string,
-                        scopes: selectedScope,
-                    },
+                    data: updateOnboardingData,
                 },
                 { onSuccess: onNextStep },
             )
         } else {
             // Create onboarding
-            doCreateOnboardingMutation(
-                {
-                    currentStepName: WizardStepEnum.SKILLSET,
-                    scopes: selectedScope,
-                    gorgiasDomain: accountDomain,
-                },
-                { onSuccess: onNextStep },
-            )
+            const onboardingCreatePayload: CreateOnboardingData = {
+                currentStepName: WizardStepEnum.SKILLSET,
+                scopes: selectedScope,
+                gorgiasDomain: accountDomain,
+            }
+            if (shopName && shopType) {
+                onboardingCreatePayload.shopName = shopName
+                onboardingCreatePayload.shopType = shopType
+            }
+            doCreateOnboardingMutation(onboardingCreatePayload, {
+                onSuccess: onNextStep,
+            })
         }
     }, [
         selectedScope,
@@ -135,6 +153,8 @@ export const SkillsetStep: FC<SkillsetStepProps> = ({
         doCreateOnboardingMutation,
         onNextStep,
         accountDomain,
+        shopType,
+        shopName,
     ])
 
     const renderContent = useMemo(() => {

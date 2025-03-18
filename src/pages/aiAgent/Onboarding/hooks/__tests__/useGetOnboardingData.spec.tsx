@@ -33,6 +33,7 @@ describe('useGetOnboardingData', () => {
                 defaultOnboarding,
             ],
             isLoading: false,
+            isFetching: false,
         } as any)
 
         const { result } = renderHook(() =>
@@ -50,6 +51,7 @@ describe('useGetOnboardingData', () => {
         useGetOnboardingsMock.mockReturnValue({
             data: [onboardingData],
             isLoading: false,
+            isFetching: false,
         } as any)
 
         const { result } = renderHook(() => useGetOnboardingData())
@@ -61,6 +63,7 @@ describe('useGetOnboardingData', () => {
         useGetOnboardingsMock.mockReturnValue({
             data: [],
             isLoading: false,
+            isFetching: false,
         } as any)
 
         const { result } = renderHook(() => useGetOnboardingData())

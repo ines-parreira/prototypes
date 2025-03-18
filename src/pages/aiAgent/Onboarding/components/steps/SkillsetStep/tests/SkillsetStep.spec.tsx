@@ -31,9 +31,15 @@ import { conversationExamples } from '../../PersonalityPreviewStep/conversations
 type MutationOptions = { onSuccess: () => void }
 
 // Mock the hooks
-jest.mock('pages/aiAgent/Onboarding/hooks/useGetOnboardingData', () => ({
-    useGetOnboardingData: jest.fn(),
-}))
+jest.mock('pages/aiAgent/Onboarding/hooks/useGetOnboardingData', () => {
+    const actualModule = jest.requireActual(
+        'pages/aiAgent/Onboarding/hooks/useGetOnboardingData',
+    )
+    return {
+        ...actualModule,
+        useGetOnboardingData: jest.fn(),
+    }
+})
 
 jest.mock('pages/aiAgent/Onboarding/hooks/useUpdateOnboarding', () => ({
     useUpdateOnboarding: jest.fn(),
@@ -282,4 +288,77 @@ describe('<SkillsetStep /> - Show correct preview', () => {
             expect(screen.getByText(firstExpectedMessage)).toBeInTheDocument()
         },
     )
+})
+
+describe('<SkillsetStep /> - Shop name and type provided', () => {
+    beforeEach(() => {
+        // Populate the return values of the mocked hooks
+        mockUseShopifyIntegrationAndScope.mockReturnValue({
+            integration: true,
+        })
+        mockUseEmailIntegrations.mockReturnValue({
+            emailIntegrations: true,
+            defaultIntegration: true,
+        })
+        mockUseGetOnboardingData.mockReturnValue({
+            data: defaultOnboardingData,
+        })
+
+        mockUseUpdateOnboarding.mockReturnValue({
+            mutate: mockUpdateOnboarding,
+            isLoading: false,
+        })
+
+        mockUseCreateOnboarding.mockReturnValue({
+            mutate: mockCreateOnboarding,
+            isLoading: false,
+        })
+        axiosMock.onGet('PHRASE_PREDICTION_URL').reply(200, [])
+    })
+
+    it('should include shop name and type on create onboarding', () => {
+        renderComponent()
+
+        act(() => {
+            fireEvent.click(screen.getByText('Automate support with AI'))
+        })
+
+        fireEvent.click(screen.getByText(/Next/i))
+
+        expect(mockCreateOnboarding).toHaveBeenCalledWith(
+            expect.objectContaining({
+                scopes: ['support'],
+                shopName: 'my-shop',
+                shopType: 'shopify',
+            }),
+            expect.objectContaining({ onSuccess: expect.any(Function) }),
+        )
+    })
+
+    it('should include shop name and type on update onboarding', () => {
+        const data = { ...defaultOnboardingData, scopes: [], id: '1' }
+        mockUseGetOnboardingData.mockReturnValue({
+            data,
+        })
+
+        renderComponent()
+
+        act(() => {
+            fireEvent.click(screen.getByText('Automate support with AI'))
+        })
+
+        fireEvent.click(screen.getByText(/Next/i))
+
+        expect(mockUpdateOnboarding).toHaveBeenCalledWith(
+            expect.objectContaining({
+                id: '1',
+                data: expect.objectContaining({
+                    scopes: ['support'],
+                    shopName: 'my-shop',
+                    shopType: 'shopify',
+                }),
+            }),
+            expect.objectContaining({ onSuccess: expect.any(Function) }),
+        )
+    })
 })

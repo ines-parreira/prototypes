@@ -22,7 +22,7 @@ export const defaultOnboardingData: OnboardingDataWithoutId = {
 }
 
 export const useGetOnboardingData = (shopName?: string) => {
-    const { data: onboardingList, isLoading } = useGetOnboardings()
+    const { data: onboardingList, isLoading, isFetching } = useGetOnboardings()
 
     const data = useMemo(():
         | OnboardingData
@@ -45,5 +45,5 @@ export const useGetOnboardingData = (shopName?: string) => {
         return defaultOnboardingData
     }, [shopName, onboardingList])
 
-    return { data, isLoading }
+    return { data, isLoading: isLoading || isFetching }
 }
