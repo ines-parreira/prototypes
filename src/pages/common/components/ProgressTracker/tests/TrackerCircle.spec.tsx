@@ -12,7 +12,6 @@ jest.mock('gorgias-design-system/utils', () => ({
 
 describe('TrackerCircle', () => {
     const color = '#C34CED'
-    const lightenedColor = '#E6A8F5'
     const percentage = 50
 
     beforeEach(() => {
@@ -31,15 +30,10 @@ describe('TrackerCircle', () => {
         expect(circles).toHaveLength(2)
     })
 
-    it('should call relativeLighten with the correct arguments', () => {
-        render(<TrackerCircle color={color} percentage={percentage} />)
-        expect(relativeLighten).toHaveBeenCalledWith(color, 0.5)
-    })
-
     it('should render the Circle components with correct props', () => {
         render(<TrackerCircle color={color} percentage={percentage} />)
         const circles = document.querySelectorAll('circle')
-        expect(circles[0]).toHaveAttribute('stroke', lightenedColor)
+        expect(circles[0]).toHaveAttribute('stroke-opacity', '0.32')
         expect(circles[1]).toHaveAttribute('stroke', color)
         expect(circles[1]).toHaveAttribute('stroke-width', '4.8')
     })

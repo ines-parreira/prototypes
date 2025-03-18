@@ -2,8 +2,6 @@ import React from 'react'
 
 import cn from 'classnames'
 
-import { relativeLighten } from 'gorgias-design-system/utils'
-
 import css from './ProgressTracker.less'
 
 const cleanPercentage = (percentage: number) => {
@@ -17,6 +15,7 @@ type CircleProps = {
     percentage: number
     radius?: number
     strokeWidth?: number
+    opacity?: number
 }
 
 const Circle = ({
@@ -24,6 +23,7 @@ const Circle = ({
     percentage,
     radius = 12,
     strokeWidth = 5,
+    opacity = 1,
 }: CircleProps) => {
     const circ = 2 * Math.PI * radius
     const strokePct = ((100 - percentage) * circ) / 100
@@ -41,6 +41,7 @@ const Circle = ({
             strokeWidth={strokeWidth}
             strokeDasharray={circ}
             strokeDashoffset={percentage ? strokePct : 0}
+            strokeOpacity={opacity}
             strokeLinecap="round"
             shapeRendering="geometricPrecision"
         />
@@ -61,13 +62,11 @@ const TrackerCircle = ({
     className,
     percentage,
     color,
-    backgroundColor,
     radius = 12,
     label,
     strokeWidth,
 }: Props) => {
     const pct = cleanPercentage(percentage)
-    const bgColor = backgroundColor ?? relativeLighten(color, 0.5)
     const strokeW = strokeWidth ?? radius / 2.5
     const size = (radius * 2 + strokeW) * 1.01
 
@@ -81,10 +80,11 @@ const TrackerCircle = ({
         >
             <g transform={`rotate(-90)`}>
                 <Circle
-                    color={bgColor}
+                    color={color}
                     percentage={100}
                     radius={radius}
                     strokeWidth={strokeW}
+                    opacity={0.32}
                 />
                 <Circle
                     color={color}

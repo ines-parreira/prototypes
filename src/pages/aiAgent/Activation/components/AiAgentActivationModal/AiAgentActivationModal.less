@@ -23,7 +23,14 @@
         padding-inline: 40px;
         border-top-left-radius: inherit;
         border-top-right-radius: inherit;
-        background: linear-gradient(to bottom, #ffffff 59%, #f5d4ff 115%);
+        background-color: var(--neutral-grey-0);
+        background-image: radial-gradient(
+            ellipse at bottom,
+            var(--accessory-magenta-2) -25%,
+            var(--neutral-grey-0) 65%
+        );
+        background-size: 140% 120%;
+        background-position-x: center;
         border-bottom: 1px solid var(--neutral-grey-3);
 
         .modalTitle {
@@ -52,5 +59,13 @@
         border-bottom-right-radius: inherit;
         border-top: 1px solid var(--neutral-grey-3);
         gap: @layout-spacing-xs;
+    }
+}
+
+body.dark {
+    :local {
+        .modalHeader {
+            background-size: 140% 280%;
+        }
     }
 }
