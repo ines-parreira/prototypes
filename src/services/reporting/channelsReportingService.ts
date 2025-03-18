@@ -50,6 +50,7 @@ type ReportDataMap = Record<
 
 const TicketCount = TicketMeasure.TicketCount
 const MedianFirstResponseTime = TicketMessagesMeasure.MedianFirstResponseTime
+const AverageResponseTime = TicketMessagesMeasure.AverageResponseTime
 const MedianResolutionTime = TicketMessagesMeasure.MedianResolutionTime
 const HelpdeskTicketCount = HelpdeskMessageMeasure.TicketCount
 const MessageCount = HelpdeskMessageMeasure.MessageCount
@@ -126,6 +127,12 @@ export const saveReport = (
             idField: CHANNEL_DIMENSION,
             metricField: MedianFirstResponseTime,
         },
+        [ChannelsTableColumns.AverageResponseTime]: {
+            column: ChannelsTableColumns.AverageResponseTime,
+            metricData: data.averageResponseTimeMetricPerChannel,
+            idField: CHANNEL_DIMENSION,
+            metricField: AverageResponseTime,
+        },
         [ChannelsTableColumns.MedianResolutionTime]: {
             column: ChannelsTableColumns.MedianResolutionTime,
             metricData: data.medianResolutionTimeMetricPerChannel,
@@ -170,7 +177,7 @@ export const saveReport = (
         },
         [ChannelsTableColumns.TicketHandleTime]: {
             column: ChannelsTableColumns.TicketHandleTime,
-            metricData: data.ticketAverageHandleTimePerChannel,
+            metricData: data?.ticketAverageHandleTimePerChannel,
             idField: CHANNEL_DIMENSION,
             metricField: AverageHandleTime,
         },

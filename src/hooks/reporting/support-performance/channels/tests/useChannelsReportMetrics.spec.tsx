@@ -4,6 +4,8 @@ import { renderHook } from '@testing-library/react-hooks'
 import moment from 'moment'
 import { Provider } from 'react-redux'
 
+import { FeatureFlagKey } from 'config/featureFlags'
+import { useFlag } from 'core/flags'
 import { channels } from 'fixtures/channels'
 import {
     fetchTableReportData,
@@ -16,11 +18,9 @@ import {
     useChannelsReportMetrics,
 } from 'hooks/reporting/support-performance/channels/useChannelsReportMetrics'
 import { useSortedChannels } from 'hooks/reporting/support-performance/useSortedChannels'
-import { OrderDirection } from 'models/api/types'
 import { withDefaultLogicalOperator } from 'models/reporting/queryFactories/utils'
 import { ReportingGranularity } from 'models/reporting/types'
 import { TagFilterInstanceId } from 'models/stat/types'
-import { BusiestTimeOfDaysMetrics } from 'pages/stats/support-performance/busiest-times-of-days/types'
 import { columnsOrder } from 'pages/stats/support-performance/channels/ChannelsTableConfig'
 import { saveReport } from 'services/reporting/channelsReportingService'
 import { RootState } from 'state/types'
@@ -34,6 +34,9 @@ jest.mock('hooks/reporting/common/useTableReportData')
 const useTableReportDataMock = assumeMock(useTableReportData)
 const useSortedChannelsMock = assumeMock(useSortedChannels)
 const fetchTableReportDataMock = assumeMock(fetchTableReportData)
+
+jest.mock('core/flags')
+const mockUseFlag = assumeMock(useFlag)
 
 describe('useChannelsReportMetrics', () => {
     const periodStart = moment()
@@ -87,6 +90,7 @@ describe('useChannelsReportMetrics', () => {
         closedTicketsMetricPerChannel: metricData,
         ticketAverageHandleTimePerChannel: metricData,
         medianFirstResponseTimeMetricPerChannel: metricData,
+        averageResponseTimeMetricPerChannel: metricData,
         medianResolutionTimeMetricPerChannel: metricData,
         ticketsRepliedMetricPerChannel: metricData,
         messagesSentMetricPerChannel: metricData,
@@ -123,6 +127,24 @@ describe('useChannelsReportMetrics', () => {
         expect(result.current).toEqual(expectedMetrics)
     })
 
+    it('should return channels metrics with AverageResponseTime', () => {
+        mockUseFlag.mockImplementation(
+            (flag) => flag === FeatureFlagKey.ReportingAverageResponseTime,
+        )
+
+        const { result } = renderHook(() => useChannelsReportMetrics(), {
+            wrapper: ({ children }) => (
+                <Provider store={mockStore(state)}> {children} </Provider>
+            ),
+        })
+
+        expect(result.current.reportData).toEqual(
+            expect.objectContaining({
+                averageResponseTimeMetricPerChannel: metricData,
+            }),
+        )
+    })
+
     it('should call one of hooks with stats filters with default logical operator', () => {
         renderHook(() => useChannelsReportMetrics(), {
             wrapper: ({ children }) => (
@@ -153,24 +175,9 @@ describe('useChannelsReportMetrics', () => {
                 data: {},
             })
             const context = {
-                agents: [],
-                agentsQA: [],
-                columnsOrder: [],
                 channels: [],
                 channelColumnsOrder: [],
-                selectedBTODMetric: BusiestTimeOfDaysMetrics.TicketsCreated,
-                customFieldsOrder: {
-                    direction: OrderDirection.Asc,
-                    column: 1,
-                },
-                selectedCustomFieldId: null,
-                tags: {},
-                tagsTableOrder: {
-                    direction: OrderDirection.Asc,
-                    column: 1,
-                },
-                integrations: [],
-                getAgentDetails: () => undefined,
+                isReportingAverageResponseTimeEnabled: false,
             }
             const fileName = getCsvFileNameWithDates(
                 statsFilters.period,
@@ -201,24 +208,9 @@ describe('useChannelsReportMetrics', () => {
                 data: {},
             })
             const context = {
-                agents: [],
-                agentsQA: [],
-                columnsOrder: [],
                 channels: [],
                 channelColumnsOrder: [],
-                selectedBTODMetric: BusiestTimeOfDaysMetrics.TicketsCreated,
-                customFieldsOrder: {
-                    direction: OrderDirection.Asc,
-                    column: 1,
-                },
-                selectedCustomFieldId: null,
-                tags: {},
-                tagsTableOrder: {
-                    direction: OrderDirection.Asc,
-                    column: 1,
-                },
-                integrations: [],
-                getAgentDetails: () => undefined,
+                isReportingAverageResponseTimeEnabled: false,
             }
             const fileName = getCsvFileNameWithDates(
                 statsFilters.period,

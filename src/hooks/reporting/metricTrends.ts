@@ -70,7 +70,6 @@ export const useMedianFirstResponseTimeTrend = getTrendHook(
 export const fetchMedianFirstResponseTimeTrend = getTrendFetch(
     medianFirstResponseTimeQueryFactory,
 )
-
 export const useAverageResponseTimeTrend = getTrendHook(
     averageResponseTimeQueryFactory,
 )

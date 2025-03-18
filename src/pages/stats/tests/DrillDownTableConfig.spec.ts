@@ -183,6 +183,10 @@ describe('getDrillDownQuery', () => {
             perChannel: 'email',
         },
         {
+            metricName: ChannelsTableColumns.AverageResponseTime,
+            perChannel: 'email',
+        },
+        {
             metricName: ChannelsTableColumns.MedianResolutionTime,
             perChannel: 'email',
         },

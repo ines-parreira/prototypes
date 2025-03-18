@@ -1,3 +1,5 @@
+import { FeatureFlagKey } from 'config/featureFlags'
+import { useFlag } from 'core/flags'
 import {
     fetchTableReportData,
     TableDataSources,
@@ -5,6 +7,7 @@ import {
 } from 'hooks/reporting/common/useTableReportData'
 import { getCsvFileNameWithDates } from 'hooks/reporting/common/utils'
 import {
+    fetchAverageResponseTimeMetricPerChannel,
     fetchClosedTicketsMetricPerChannel,
     fetchCreatedTicketsMetricPerChannel,
     fetchCustomerSatisfactionMetricPerChannel,
@@ -33,6 +36,7 @@ export type ChannelsReportDataPoints =
     | 'createdTicketsMetricPerChannel'
     | 'customerSatisfactionMetricPerChannel'
     | 'medianFirstResponseTimeMetricPerChannel'
+    | 'averageResponseTimeMetricPerChannel'
     | 'medianResolutionTimeMetricPerChannel'
     | 'messagesSentMetricPerChannel'
     | 'messagesReceivedMetricPerChannel'
@@ -88,15 +92,45 @@ export const ChannelsMetricsDataSources: TableDataSources<ChannelsReportData> =
         },
     ]
 
+const ChannelsMetricsDataSourcesWithoutAverageResponseTime: TableDataSources<ChannelsReportData> =
+    [
+        ...ChannelsMetricsDataSources,
+        {
+            fetchData: () =>
+                Promise.resolve({
+                    data: null,
+                    isFetching: false,
+                    isError: false,
+                }),
+            title: 'averageResponseTimeMetricPerChannel',
+        },
+    ]
+
+const ChannelsMetricsDataSourcesWithAverageResponseTime: TableDataSources<ChannelsReportData> =
+    [
+        ...ChannelsMetricsDataSources,
+        {
+            fetchData: fetchAverageResponseTimeMetricPerChannel,
+            title: 'averageResponseTimeMetricPerChannel',
+        },
+    ]
+
 export const useChannelsReportMetrics = () => {
     const { cleanStatsFilters, userTimezone } = useStatsFilters()
     const { columnsOrder } = useChannelsTableSetting()
     const { sortedChannels: channels, isLoading } = useSortedChannels()
+    const isReportingAverageResponseTimeEnabled = useFlag(
+        FeatureFlagKey.ReportingAverageResponseTime,
+    )
+
+    const dataSources = isReportingAverageResponseTimeEnabled
+        ? ChannelsMetricsDataSourcesWithAverageResponseTime
+        : ChannelsMetricsDataSourcesWithoutAverageResponseTime
 
     const { data: reportData, isFetching } = useTableReportData<
         keyof ChannelsReportData,
         MetricWithDecile
-    >(cleanStatsFilters, userTimezone, ChannelsMetricsDataSources)
+    >(cleanStatsFilters, userTimezone, dataSources)
 
     const fileName = getCsvFileNameWithDates(
         cleanStatsFilters.period,
@@ -121,15 +155,18 @@ export const fetchChannelsTableReportData = async (
     context: {
         channels: Channel[]
         channelColumnsOrder: ChannelsTableColumns[]
+        isReportingAverageResponseTimeEnabled: boolean
     },
 ) => {
-    const metricConfig = ChannelsMetricsDataSources
+    const dataSources = context.isReportingAverageResponseTimeEnabled
+        ? ChannelsMetricsDataSourcesWithAverageResponseTime
+        : ChannelsMetricsDataSourcesWithoutAverageResponseTime
     const fileName = getCsvFileNameWithDates(
         cleanStatsFilters.period,
         CHANNELS_REPORT_FILE_NAME,
     )
     return Promise.all([
-        fetchTableReportData(cleanStatsFilters, userTimezone, metricConfig),
+        fetchTableReportData(cleanStatsFilters, userTimezone, dataSources),
     ])
         .then(([metrics]) => {
             return {

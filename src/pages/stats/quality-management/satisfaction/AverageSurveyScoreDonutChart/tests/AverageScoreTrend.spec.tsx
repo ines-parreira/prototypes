@@ -244,7 +244,7 @@ describe('<AverageScoreTrend />', () => {
     })
 
     it.each(Object.values(OverviewMetric))(
-        'should render customer experience section with a badge tooltip #$# %#',
+        'should render customer experience section with a badge tooltip %s %#',
         (overviewMetric) => {
             render(
                 <Provider store={mockStore(defaultState)}>

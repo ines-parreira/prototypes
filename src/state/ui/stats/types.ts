@@ -144,6 +144,7 @@ export enum ChannelsTableColumns {
     MessagesSent = 'channels_messages_sent',
     MessagesReceived = 'channels_messages_received',
     CustomerSatisfaction = 'channels_customer_satisfaction',
+    AverageResponseTime = 'channels_average_response_time',
 }
 
 export type TableColumnSet =

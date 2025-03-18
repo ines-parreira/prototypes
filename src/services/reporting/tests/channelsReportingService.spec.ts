@@ -76,6 +76,11 @@ describe('channelsReportingService', () => {
                 TicketMessagesMeasure.MedianFirstResponseTime,
                 '5',
             ),
+            averageResponseTimeMetricPerChannel: exampleData(
+                channelA.slug,
+                TicketMessagesMeasure.MedianFirstResponseTime,
+                '5',
+            ),
             medianResolutionTimeMetricPerChannel: exampleData(
                 channelA.slug,
                 TicketMessagesMeasure.MedianResolutionTime,

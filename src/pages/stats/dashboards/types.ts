@@ -123,6 +123,7 @@ export type ReportFetch = (
         rowsOrder: AgentsTableRow[]
         channels: Channel[]
         channelColumnsOrder: ChannelsTableColumns[]
+        isReportingAverageResponseTimeEnabled: boolean
         selectedBTODMetric: BusiestTimeOfDaysMetrics
         customFieldsOrder: TicketInsightsOrder
         selectedCustomFieldId: string | null

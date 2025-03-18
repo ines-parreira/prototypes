@@ -125,6 +125,7 @@ export type ChannelMetricColumn =
     | ChannelsTableColumns.ClosedTickets
     | ChannelsTableColumns.TicketHandleTime
     | ChannelsTableColumns.FirstResponseTime
+    | ChannelsTableColumns.AverageResponseTime
     | ChannelsTableColumns.MedianResolutionTime
     | ChannelsTableColumns.TicketsReplied
     | ChannelsTableColumns.MessagesSent

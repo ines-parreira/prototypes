@@ -4,6 +4,7 @@ import { useFlags } from 'launchdarkly-react-client-sdk'
 
 import { FeatureFlagKey } from 'config/featureFlags'
 import { User } from 'config/types/user'
+import { useFlag } from 'core/flags'
 import { useAIAgentUserId } from 'hooks/reporting/automate/useAIAgentUserId'
 import { useSortedChannels } from 'hooks/reporting/support-performance/useSortedChannels'
 import { useAgentsTableConfigSetting } from 'hooks/reporting/useAgentsTableConfigSetting'
@@ -51,6 +52,9 @@ export const useTables = (
         useFlags()[
             FeatureFlagKey.AutomateNonFilteredDenominatorInAutomationRate
         ]
+    const isReportingAverageResponseTimeEnabled = useFlag(
+        FeatureFlagKey.ReportingAverageResponseTime,
+    )
     const aiAgentUserId = useAIAgentUserId()
     const [tableData, setTableData] = useState<{
         isFetching: boolean
@@ -110,6 +114,7 @@ export const useTables = (
             rowsOrder,
             channels: sortedChannels,
             channelColumnsOrder,
+            isReportingAverageResponseTimeEnabled,
             customFieldsOrder,
             selectedCustomFieldId:
                 selectedCustomField.id !== null
@@ -132,6 +137,7 @@ export const useTables = (
             rowsOrder,
             sortedChannels,
             channelColumnsOrder,
+            isReportingAverageResponseTimeEnabled,
             customFieldsOrder,
             selectedCustomField.id,
             selectedBTODMetric,

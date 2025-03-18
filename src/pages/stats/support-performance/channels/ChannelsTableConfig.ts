@@ -1,5 +1,6 @@
 import {
     MetricPerChannelQueryHook,
+    useAverageResponseTimeMetricPerChannel,
     useClosedTicketsMetricPerChannel,
     useCreatedTicketsMetricPerChannel,
     useCustomerSatisfactionMetricPerChannel,
@@ -12,6 +13,7 @@ import {
 } from 'hooks/reporting/support-performance/channels/metricsPerChannel'
 import { usePercentageOfCreatedTicketsMetricPerChannel } from 'hooks/reporting/support-performance/channels/usePercentageOfCreatedTicketsMetricPerChannel'
 import { ticketHandleTimePerTicketDrillDownQueryFactory } from 'models/reporting/queryFactories/agentxp/ticketHandleTime'
+import { averageResponseTimeMetricPerTicketDrillDownQueryFactory } from 'models/reporting/queryFactories/support-performance/averageResponseTime'
 import { closedTicketsPerTicketDrillDownQueryFactory } from 'models/reporting/queryFactories/support-performance/closedTickets'
 import { customerSatisfactionMetricDrillDownQueryFactory } from 'models/reporting/queryFactories/support-performance/customerSatisfaction'
 import { firstResponseTimeMetricPerTicketDrillDownQueryFactory } from 'models/reporting/queryFactories/support-performance/medianFirstResponseTime'
@@ -33,6 +35,8 @@ import {
 } from 'pages/stats/support-performance/overview/SupportPerformanceOverviewConfig'
 import { TooltipData } from 'pages/stats/types'
 import {
+    AVERAGE_RESPONSE_TIME_LABEL,
+    CHANNEL_COLUMN_LABEL,
     CUSTOMER_SATISFACTION_LABEL,
     MEDIAN_FIRST_RESPONSE_TIME_LABEL,
     MEDIAN_RESOLUTION_TIME_LABEL,
@@ -64,13 +68,8 @@ export const columnsOrder: ChannelsTableColumns[] = [
     ChannelsTableColumns.CustomerSatisfaction,
 ]
 
-export const columnsOrderWithMessagesReceived: ChannelsTableColumns[] = [
-    ...columnsOrder,
-    ChannelsTableColumns.MessagesReceived,
-]
-
 export const ChannelsTableLabels: Record<ChannelsTableColumns, string> = {
-    [ChannelsTableColumns.Channel]: 'Channel',
+    [ChannelsTableColumns.Channel]: CHANNEL_COLUMN_LABEL,
     [ChannelsTableColumns.TicketsCreated]: TICKETS_CREATED_LABEL,
     [ChannelsTableColumns.CreatedTicketsPercentage]: PERCENT_OF_CREATED_TICKETS,
     [ChannelsTableColumns.ClosedTickets]: TICKETS_CLOSED_LABEL,
@@ -81,6 +80,7 @@ export const ChannelsTableLabels: Record<ChannelsTableColumns, string> = {
     [ChannelsTableColumns.MessagesSent]: MESSAGES_SENT_LABEL,
     [ChannelsTableColumns.MessagesReceived]: MESSAGES_RECEIVED_LABEL,
     [ChannelsTableColumns.CustomerSatisfaction]: CUSTOMER_SATISFACTION_LABEL,
+    [ChannelsTableColumns.AverageResponseTime]: AVERAGE_RESPONSE_TIME_LABEL,
 }
 
 export const ChannelColumnConfig: Record<
@@ -137,6 +137,12 @@ export const ChannelColumnConfig: Record<
         hint: OverviewMetricConfig[OverviewMetric.MedianFirstResponseTime].hint,
         useMetric: useMedianFirstResponseTimeMetricPerChannel,
         drillDownQuery: firstResponseTimeMetricPerTicketDrillDownQueryFactory,
+    },
+    [ChannelsTableColumns.AverageResponseTime]: {
+        format: 'duration',
+        hint: OverviewMetricConfig[OverviewMetric.AverageResponseTime].hint,
+        useMetric: useAverageResponseTimeMetricPerChannel,
+        drillDownQuery: averageResponseTimeMetricPerTicketDrillDownQueryFactory,
     },
     [ChannelsTableColumns.MedianResolutionTime]: {
         format: 'duration',

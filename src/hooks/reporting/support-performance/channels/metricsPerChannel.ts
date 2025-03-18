@@ -2,12 +2,10 @@ import {
     createFetchPerDimension,
     createMetricPerDimensionHook,
 } from 'hooks/reporting/metricsPerAgent'
-import {
-    MetricWithDecile,
-    useMetricPerDimension,
-} from 'hooks/reporting/useMetricPerDimension'
+import { MetricWithDecile } from 'hooks/reporting/useMetricPerDimension'
 import { OrderDirection } from 'models/api/types'
 import { ticketAverageHandleTimePerAgentPerChannelQueryFactory } from 'models/reporting/queryFactories/agentxp/ticketHandleTime'
+import { averageResponseTimeMetricPerChannelQueryFactory } from 'models/reporting/queryFactories/support-performance/averageResponseTime'
 import { closedTicketsPerChannelQueryFactory } from 'models/reporting/queryFactories/support-performance/closedTickets'
 import { customerSatisfactionMetricPerChannelQueryFactory } from 'models/reporting/queryFactories/support-performance/customerSatisfaction'
 import { medianFirstResponseTimeMetricPerChannelQueryFactory } from 'models/reporting/queryFactories/support-performance/medianFirstResponseTime'
@@ -27,24 +25,22 @@ export type MetricPerChannelQueryHook = (
     channel?: string,
 ) => MetricWithDecile
 
-export const useMedianFirstResponseTimeMetricPerChannel: MetricPerChannelQueryHook =
-    (
-        statsFilters: StatsFilters,
-        timezone: string,
-        sorting?: OrderDirection,
-        channel?: string,
-    ) =>
-        useMetricPerDimension(
-            medianFirstResponseTimeMetricPerChannelQueryFactory(
-                statsFilters,
-                timezone,
-                sorting,
-            ),
-            channel,
-        )
+export const useMedianFirstResponseTimeMetricPerChannel =
+    createMetricPerDimensionHook(
+        medianFirstResponseTimeMetricPerChannelQueryFactory,
+    )
 
 export const fetchMedianFirstResponseTimeMetricPerChannel =
     createFetchPerDimension(medianFirstResponseTimeMetricPerChannelQueryFactory)
+
+export const useAverageResponseTimeMetricPerChannel =
+    createMetricPerDimensionHook(
+        averageResponseTimeMetricPerChannelQueryFactory,
+    )
+
+export const fetchAverageResponseTimeMetricPerChannel = createFetchPerDimension(
+    averageResponseTimeMetricPerChannelQueryFactory,
+)
 
 export const useTicketsRepliedMetricPerChannel = createMetricPerDimensionHook(
     ticketsRepliedMetricPerChannelQueryFactory,
