@@ -4,7 +4,7 @@ import { Placement } from '@floating-ui/react'
 
 import { Tooltip } from '@gorgias/merchant-ui-kit'
 
-import StatsHelpIcon from '../../../../stats/common/components/StatsHelpIcon'
+import StatsHelpIcon from '../../../stats/common/components/StatsHelpIcon'
 
 import css from './InfoIconWithTooltip.less'
 

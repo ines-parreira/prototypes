@@ -1,12 +1,16 @@
 import React, { Component, SyntheticEvent } from 'react'
 
 import { fromJS } from 'immutable'
+import { LDFlagSet, withLDConsumer } from 'launchdarkly-react-client-sdk'
 import { isArray } from 'lodash'
 import _forIn from 'lodash/forIn'
 import _isEmpty from 'lodash/isEmpty'
 import { connect, ConnectedProps } from 'react-redux'
 import { Container, Form, FormGroup, FormText, Label } from 'reactstrap'
 
+import { Button } from '@gorgias/merchant-ui-kit'
+
+import { FeatureFlagKey } from 'config/featureFlags'
 import { ContentType, HttpMethod } from 'models/api/types'
 import { EventType } from 'models/event/types'
 import {
@@ -16,7 +20,6 @@ import {
     IntegrationType,
 } from 'models/integration/types'
 import Alert, { AlertType } from 'pages/common/components/Alert/Alert'
-import Button from 'pages/common/components/button/Button'
 import ConfirmButton from 'pages/common/components/button/ConfirmButton'
 import Loader from 'pages/common/components/Loader/Loader'
 import CheckBox from 'pages/common/forms/CheckBox'
@@ -29,6 +32,7 @@ import ObjectListField, {
 } from 'pages/integrations/integration/components/http/Integration/ObjectListField'
 import { INTEGRATION_REMOVAL_CONFIGURATION_TEXT } from 'pages/integrations/integration/constants'
 import css from 'pages/settings/settings.less'
+import InfoIconWithTooltip from 'pages/tickets/common/components/InfoIconWithTooltip'
 import {
     activateIntegration,
     deactivateIntegration,
@@ -42,6 +46,7 @@ import { validateWebhookURL, validateWebhookURLToPattern } from 'utils'
 type Props = {
     integration: HttpIntegration | undefined
     isUpdate: boolean
+    flags?: LDFlagSet
 } & ConnectedProps<typeof connector>
 
 type State = {
@@ -58,6 +63,8 @@ type State = {
     ticketUpdated: boolean
     ticketSelfUnsnoozed: boolean
     ticketMessageFailed: boolean
+    ticketAssignmentUpdated?: boolean
+    ticketStatusUpdated?: boolean
     url: string
 }
 
@@ -70,11 +77,13 @@ export class Integration extends Component<Props, State> {
         method: HttpMethod.Get,
         requestContentType: ContentType.Json,
         responseContentType: ContentType.Json,
-        ticketCreated: true,
-        ticketUpdated: true,
-        ticketSelfUnsnoozed: true,
-        ticketMessageCreated: true,
-        ticketMessageFailed: true,
+        ticketCreated: false,
+        ticketUpdated: false,
+        ticketSelfUnsnoozed: false,
+        ticketMessageCreated: false,
+        ticketMessageFailed: false,
+        ticketAssignmentUpdated: false,
+        ticketStatusUpdated: false,
         headers: [],
         form: '',
     }
@@ -114,6 +123,7 @@ export class Integration extends Component<Props, State> {
             formData = this._objectToParameters(formData)
         }
         const headers = integration.http?.headers
+
         return {
             name: integration.name,
             description: integration.description || '',
@@ -123,15 +133,20 @@ export class Integration extends Component<Props, State> {
             requestContentType: integration.http?.request_content_type,
             responseContentType: integration.http?.response_content_type,
             ticketCreated:
-                integration.http?.triggers['ticket-created'] || false,
+                integration.http?.triggers['ticket-created'] ?? false,
             ticketUpdated:
-                integration.http?.triggers['ticket-updated'] || false,
+                integration.http?.triggers['ticket-updated'] ?? false,
             ticketSelfUnsnoozed:
-                integration.http?.triggers['ticket-self-unsnoozed'] || false,
+                integration.http?.triggers['ticket-self-unsnoozed'] ?? false,
             ticketMessageCreated:
-                integration.http?.triggers['ticket-message-created'] || false,
+                integration.http?.triggers['ticket-message-created'] ?? false,
             ticketMessageFailed:
-                integration.http?.triggers['ticket-message-failed'] || false,
+                integration.http?.triggers['ticket-message-failed'] ?? false,
+            ticketAssignmentUpdated:
+                integration.http?.triggers['ticket-assignment-updated'] ??
+                false,
+            ticketStatusUpdated:
+                integration.http?.triggers['ticket-status-updated'] ?? false,
             form: formData,
         }
     }
@@ -140,6 +155,32 @@ export class Integration extends Component<Props, State> {
         const { loading, integration } = this.props
         if (!loading || !integration) return false
         return loading.updateIntegration === integration.id
+    }
+
+    _isDisabled = () => {
+        if (this.props.flags?.[FeatureFlagKey.HttpIntegrationsRevamp]) {
+            return (
+                !this.state.name ||
+                !this.state.url ||
+                (!this.state.ticketCreated &&
+                    !this.state.ticketUpdated &&
+                    !this.state.ticketSelfUnsnoozed &&
+                    !this.state.ticketMessageCreated &&
+                    !this.state.ticketMessageFailed &&
+                    !this.state.ticketAssignmentUpdated &&
+                    !this.state.ticketStatusUpdated)
+            )
+        }
+
+        return (
+            !this.state.name ||
+            !this.state.url ||
+            (!this.state.ticketCreated &&
+                !this.state.ticketUpdated &&
+                !this.state.ticketSelfUnsnoozed &&
+                !this.state.ticketMessageCreated &&
+                !this.state.ticketMessageFailed)
+        )
     }
 
     _onRequestContentTypeChange(value: string) {
@@ -228,6 +269,10 @@ export class Integration extends Component<Props, State> {
                         this.state.ticketMessageCreated,
                     [EventType.TicketMessageFailed]:
                         this.state.ticketMessageFailed,
+                    [EventType.TicketAssignmentUpdated]:
+                        this.state.ticketAssignmentUpdated,
+                    [EventType.TicketStatusUpdated]:
+                        this.state.ticketStatusUpdated,
                 },
                 form,
             },
@@ -302,15 +347,29 @@ export class Integration extends Component<Props, State> {
             ticketSelfUnsnoozed,
             ticketMessageCreated,
             ticketMessageFailed,
+            ticketAssignmentUpdated,
+            ticketStatusUpdated,
         } = this.state
+
+        const HTTP_REVAMP_FF: boolean =
+            this.props.flags?.[FeatureFlagKey.HttpIntegrationsRevamp]
 
         const form = this.state.form
 
         const isSubmitting = this._isSubmitting()
 
+        const isDisabled = this._isDisabled()
+
         const isActive = !integration?.deactivated_datetime
 
         const isIncomplete = isUpdate && !integration?.http
+
+        const isOldTriggerSelected =
+            ticketCreated ||
+            ticketUpdated ||
+            ticketSelfUnsnoozed ||
+            ticketMessageCreated ||
+            ticketMessageFailed
 
         if (isUpdate && !integration) {
             return <Loader />
@@ -373,6 +432,11 @@ export class Integration extends Component<Props, State> {
                                         </FormText>
                                     </p>
                                     <CheckBox
+                                        isDisabled={
+                                            HTTP_REVAMP_FF &&
+                                            (ticketAssignmentUpdated ||
+                                                ticketStatusUpdated)
+                                        }
                                         className="mb-2"
                                         name="http.triggers.ticket-created"
                                         isChecked={ticketCreated}
@@ -385,6 +449,11 @@ export class Integration extends Component<Props, State> {
                                         Ticket created
                                     </CheckBox>
                                     <CheckBox
+                                        isDisabled={
+                                            HTTP_REVAMP_FF &&
+                                            (ticketAssignmentUpdated ||
+                                                ticketStatusUpdated)
+                                        }
                                         className="mb-2"
                                         name="http.triggers.ticket-updated"
                                         isChecked={ticketUpdated}
@@ -396,7 +465,93 @@ export class Integration extends Component<Props, State> {
                                     >
                                         Ticket updated
                                     </CheckBox>
+                                    {HTTP_REVAMP_FF && (
+                                        <>
+                                            <CheckBox
+                                                isDisabled={
+                                                    isOldTriggerSelected
+                                                }
+                                                className="mb-2"
+                                                name="http.triggers.ticket-assignment-updated"
+                                                isChecked={
+                                                    ticketAssignmentUpdated
+                                                }
+                                                onChange={(value: boolean) =>
+                                                    this.setState({
+                                                        ticketAssignmentUpdated:
+                                                            value,
+                                                    })
+                                                }
+                                            >
+                                                Ticket assignment updated
+                                                <InfoIconWithTooltip
+                                                    id="tooltip-ticket-assignment-updated"
+                                                    tooltipProps={{
+                                                        autohide: true,
+                                                        placement: 'bottom',
+                                                    }}
+                                                >
+                                                    <>
+                                                        This trigger and the
+                                                        &apos;Ticket created,
+                                                        Ticket updated, Ticket
+                                                        self unsnoozed, Ticket
+                                                        message created and
+                                                        Ticket message failed
+                                                        &apos; triggers are
+                                                        mutually exclusive.
+                                                        Selecting this trigger
+                                                        results in a shorter
+                                                        payload.
+                                                    </>
+                                                </InfoIconWithTooltip>
+                                            </CheckBox>
+                                            <CheckBox
+                                                isDisabled={
+                                                    isOldTriggerSelected
+                                                }
+                                                className="mb-2"
+                                                name="http.triggers.ticket-status-updated"
+                                                isChecked={ticketStatusUpdated}
+                                                onChange={(value: boolean) =>
+                                                    this.setState({
+                                                        ticketStatusUpdated:
+                                                            value,
+                                                    })
+                                                }
+                                            >
+                                                Ticket status updated
+                                                <InfoIconWithTooltip
+                                                    id="tooltip-ticket-status-updated"
+                                                    tooltipProps={{
+                                                        autohide: true,
+                                                        placement: 'bottom',
+                                                    }}
+                                                >
+                                                    <>
+                                                        This trigger and the
+                                                        &apos;Ticket created,
+                                                        Ticket updated, Ticket
+                                                        self unsnoozed, Ticket
+                                                        message created and
+                                                        Ticket message failed
+                                                        &apos; triggers are
+                                                        mutually exclusive.
+                                                        Selecting this trigger
+                                                        results in a shorter
+                                                        payload.
+                                                    </>
+                                                </InfoIconWithTooltip>
+                                            </CheckBox>
+                                        </>
+                                    )}
+
                                     <CheckBox
+                                        isDisabled={
+                                            HTTP_REVAMP_FF &&
+                                            (ticketAssignmentUpdated ||
+                                                ticketStatusUpdated)
+                                        }
                                         className="mb-2"
                                         name="http.triggers.ticket-self-unsnoozed"
                                         isChecked={ticketSelfUnsnoozed}
@@ -409,6 +564,11 @@ export class Integration extends Component<Props, State> {
                                         Ticket self unsnoozed
                                     </CheckBox>
                                     <CheckBox
+                                        isDisabled={
+                                            HTTP_REVAMP_FF &&
+                                            (ticketAssignmentUpdated ||
+                                                ticketStatusUpdated)
+                                        }
                                         className="mb-2"
                                         name="http.triggers.ticket-message-created"
                                         isChecked={ticketMessageCreated}
@@ -421,6 +581,11 @@ export class Integration extends Component<Props, State> {
                                         Ticket message created
                                     </CheckBox>
                                     <CheckBox
+                                        isDisabled={
+                                            HTTP_REVAMP_FF &&
+                                            (ticketAssignmentUpdated ||
+                                                ticketStatusUpdated)
+                                        }
                                         className="mb-2"
                                         name="http.triggers.ticket-message-failed"
                                         isChecked={ticketMessageFailed}
@@ -565,6 +730,7 @@ export class Integration extends Component<Props, State> {
                                         type="submit"
                                         className="mr-2"
                                         isLoading={isSubmitting}
+                                        isDisabled={isDisabled}
                                     >
                                         {isUpdate
                                             ? 'Save changes'
@@ -633,4 +799,4 @@ const connector = connect(
     },
 )
 
-export default connector(Integration)
+export default connector(withLDConsumer()(Integration))

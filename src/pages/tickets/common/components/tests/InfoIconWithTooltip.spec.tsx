@@ -5,7 +5,7 @@ import { render, screen } from '@testing-library/react'
 import InfoIconWithTooltip from '../InfoIconWithTooltip'
 
 // Mocking the StatsHelpIcon component
-jest.mock('../../../../../stats/common/components/StatsHelpIcon', () => () => (
+jest.mock('../../../../stats/common/components/StatsHelpIcon', () => () => (
     <div data-testid="stats-help-icon" />
 ))
 

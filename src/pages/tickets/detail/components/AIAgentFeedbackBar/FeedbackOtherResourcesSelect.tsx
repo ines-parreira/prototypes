@@ -19,9 +19,9 @@ import SelectInputBox from 'pages/common/forms/input/SelectInputBox'
 import { useAIAgentGetOtherResources } from 'pages/tickets/detail/hooks/useAIAgentGetOtherResources'
 import { addTags, removeTag } from 'state/ticket/actions'
 
+import InfoIconWithTooltip from '../../../common/components/InfoIconWithTooltip'
 import { RESOURCE_ICONS, RESOURCE_LABELS } from './constants'
 import Deprecated_MultiLevelSelect from './Deprecated_MultiLevelSelect/Deprecated_MultiLevelSelect'
-import InfoIconWithTooltip from './InfoIconWithTooltip'
 
 import css from './FeedbackOtherResourcesSelect.less'
 

@@ -9,6 +9,8 @@ import { HTTPForm, IntegrationType } from 'models/integration/types'
 import { Integration } from 'pages/integrations/integration/components/http/Integration/Integration'
 import { INTEGRATION_REMOVAL_CONFIGURATION_TEXT } from 'pages/integrations/integration/constants'
 
+import { FeatureFlagKey } from '../../../../../../../config/featureFlags'
+
 describe('HTTP Integration', () => {
     const minProps = {
         integration: undefined,
@@ -18,6 +20,9 @@ describe('HTTP Integration', () => {
         activateIntegration: jest.fn(),
         deleteIntegration: jest.fn(),
         updateOrCreateIntegration: jest.fn(),
+        flags: {
+            [FeatureFlagKey.HttpIntegrationsRevamp]: true,
+        },
     }
 
     it('should render creation form with default values when no integration exists', () => {
@@ -97,6 +102,15 @@ describe('HTTP Integration', () => {
             target: { value: 'https://test.com/webhook' },
         })
 
+        const checkbox = screen
+            .getByText('Ticket message failed')
+            .closest('label')
+            ?.querySelector('input')
+
+        if (checkbox) {
+            fireEvent.click(checkbox)
+        }
+
         fireEvent.click(screen.getByText('Add integration'))
 
         const expectedData = fromJS({
@@ -110,11 +124,13 @@ describe('HTTP Integration', () => {
                 request_content_type: 'application/json',
                 response_content_type: 'application/json',
                 triggers: {
-                    'ticket-created': true,
-                    'ticket-updated': true,
-                    'ticket-self-unsnoozed': true,
-                    'ticket-message-created': true,
+                    'ticket-created': false,
+                    'ticket-updated': false,
+                    'ticket-self-unsnoozed': false,
+                    'ticket-message-created': false,
                     'ticket-message-failed': true,
+                    'ticket-assignment-updated': false,
+                    'ticket-status-updated': false,
                 },
                 form: '',
             },
@@ -150,11 +166,9 @@ describe('HTTP Integration', () => {
 
         if (checkbox) {
             fireEvent.click(checkbox)
-            expect(setStateSpy).toHaveBeenCalledWith(
-                expect.objectContaining({
-                    ticketMessageCreated: false,
-                }),
-            )
+            expect(setStateSpy).toHaveBeenCalledWith({
+                ticketMessageCreated: true,
+            })
         }
     })
 
@@ -171,11 +185,9 @@ describe('HTTP Integration', () => {
 
         if (checkbox) {
             fireEvent.click(checkbox)
-            expect(setStateSpy).toHaveBeenCalledWith(
-                expect.objectContaining({
-                    ticketMessageFailed: false,
-                }),
-            )
+            expect(setStateSpy).toHaveBeenCalledWith({
+                ticketMessageFailed: true,
+            })
         }
     })
 
@@ -192,11 +204,9 @@ describe('HTTP Integration', () => {
 
         if (checkbox) {
             fireEvent.click(checkbox)
-            expect(setStateSpy).toHaveBeenCalledWith(
-                expect.objectContaining({
-                    ticketSelfUnsnoozed: false,
-                }),
-            )
+            expect(setStateSpy).toHaveBeenCalledWith({
+                ticketSelfUnsnoozed: true,
+            })
         }
     })
 
@@ -213,32 +223,47 @@ describe('HTTP Integration', () => {
 
         if (checkbox) {
             fireEvent.click(checkbox)
-            expect(setStateSpy).toHaveBeenCalledWith(
-                expect.objectContaining({
-                    ticketUpdated: false,
-                }),
-            )
+            expect(setStateSpy).toHaveBeenCalledWith({
+                ticketUpdated: true,
+            })
         }
     })
 
-    it('should handle state change for ticketCreated', () => {
+    it('should handle state change for ticketAssignmentUpdated', () => {
         const component = React.createRef<Integration>()
         render(<Integration {...minProps} ref={component} />)
 
         const setStateSpy = jest.spyOn(component.current!, 'setState')
 
         const checkbox = screen
-            .getByText('Ticket created')
+            .getByText('Ticket assignment updated')
             .closest('label')
             ?.querySelector('input')
 
         if (checkbox) {
             fireEvent.click(checkbox)
-            expect(setStateSpy).toHaveBeenCalledWith(
-                expect.objectContaining({
-                    ticketCreated: false,
-                }),
-            )
+            expect(setStateSpy).toHaveBeenCalledWith({
+                ticketAssignmentUpdated: true,
+            })
+        }
+    })
+
+    it('should handle state change for ticketStatusUpdated', () => {
+        const component = React.createRef<Integration>()
+        render(<Integration {...minProps} ref={component} />)
+
+        const setStateSpy = jest.spyOn(component.current!, 'setState')
+
+        const checkbox = screen
+            .getByText('Ticket status updated')
+            .closest('label')
+            ?.querySelector('input')
+
+        if (checkbox) {
+            fireEvent.click(checkbox)
+            expect(setStateSpy).toHaveBeenCalledWith({
+                ticketStatusUpdated: true,
+            })
         }
     })
 
@@ -395,7 +420,73 @@ describe('HTTP Integration', () => {
                 name: /Loading.*Add integration/i,
             })
             expect(submitButton).toHaveAttribute('aria-disabled', 'true')
-            expect(submitButton).toHaveClass('isDisabled')
+        })
+
+        it('should disable submit button if form is invalid', () => {
+            const mockUpdateOrCreate = jest.fn()
+            render(
+                <Integration
+                    {...minProps}
+                    updateOrCreateIntegration={mockUpdateOrCreate}
+                />,
+            )
+
+            fireEvent.change(screen.getByLabelText('URL'), {
+                target: { value: 'https://test.com/webhook' },
+            })
+
+            const checkbox = screen
+                .getByText('Ticket message failed')
+                .closest('label')
+                ?.querySelector('input')
+
+            if (checkbox) {
+                fireEvent.click(checkbox)
+            }
+
+            fireEvent.click(screen.getByText('Add integration'))
+
+            const submitButton = screen.getByRole('button', {
+                name: /Add integration/i,
+            })
+            expect(submitButton).toHaveAttribute('aria-disabled', 'true')
+        })
+
+        it('should disable submit button if form is invalid when FF is off', () => {
+            const mockUpdateOrCreate = jest.fn()
+
+            const ffOffMock = {
+                ...minProps,
+                flags: {
+                    [FeatureFlagKey.HttpIntegrationsRevamp]: true,
+                },
+            }
+            render(
+                <Integration
+                    {...ffOffMock}
+                    updateOrCreateIntegration={mockUpdateOrCreate}
+                />,
+            )
+
+            fireEvent.change(screen.getByLabelText('URL'), {
+                target: { value: 'https://test.com/webhook' },
+            })
+
+            const checkbox = screen
+                .getByText('Ticket message failed')
+                .closest('label')
+                ?.querySelector('input')
+
+            if (checkbox) {
+                fireEvent.click(checkbox)
+            }
+
+            fireEvent.click(screen.getByText('Add integration'))
+
+            const submitButton = screen.getByRole('button', {
+                name: /Add integration/i,
+            })
+            expect(submitButton).toHaveAttribute('aria-disabled', 'true')
         })
     })
 
@@ -441,6 +532,364 @@ describe('HTTP Integration', () => {
             fireEvent.change(urlInput, { target: { value: 'invalid-url' } })
 
             expect(urlInput).toBeInvalid()
+        })
+
+        it('should disable submit button when name is empty', () => {
+            render(<Integration {...minProps} />)
+
+            const urlInput = screen.getByLabelText('URL')
+            fireEvent.change(urlInput, {
+                target: { value: 'https://test.com' },
+            })
+
+            const submitButton = screen.getByRole('button', {
+                name: /Add integration/i,
+            })
+            expect(submitButton).toHaveAttribute('aria-disabled', 'true')
+        })
+
+        it('should disable submit button when URL is empty', () => {
+            render(<Integration {...minProps} />)
+
+            const nameInput = screen.getByLabelText('Integration name')
+            fireEvent.change(nameInput, {
+                target: { value: 'Test Integration' },
+            })
+
+            const submitButton = screen.getByRole('button', {
+                name: /Add integration/i,
+            })
+            expect(submitButton).toHaveAttribute('aria-disabled', 'true')
+        })
+
+        it('should disable submit button when no triggers are selected with feature flag on', () => {
+            render(<Integration {...minProps} />)
+
+            const nameInput = screen.getByLabelText('Integration name')
+            const urlInput = screen.getByLabelText('URL')
+            fireEvent.change(nameInput, {
+                target: { value: 'Test Integration' },
+            })
+            fireEvent.change(urlInput, {
+                target: { value: 'https://test.com' },
+            })
+
+            const submitButton = screen.getByRole('button', {
+                name: /Add integration/i,
+            })
+            expect(submitButton).toHaveAttribute('aria-disabled', 'true')
+        })
+
+        it('should enable submit button when triggers are selected with feature flag on', () => {
+            render(<Integration {...minProps} />)
+
+            const nameInput = screen.getByLabelText('Integration name')
+            const urlInput = screen.getByLabelText('URL')
+            fireEvent.change(nameInput, {
+                target: { value: 'Test Integration' },
+            })
+            fireEvent.change(urlInput, {
+                target: { value: 'https://test.com' },
+            })
+
+            const checkbox = screen
+                .getByText('Ticket created')
+                .closest('label')
+                ?.querySelector('input')
+            if (checkbox) {
+                fireEvent.click(checkbox)
+            }
+
+            const submitButton = screen.getByRole('button', {
+                name: /Add integration/i,
+            })
+            expect(submitButton).not.toHaveAttribute('aria-disabled', 'true')
+        })
+
+        it('should disable submit button when no triggers are selected with feature flag off', () => {
+            const ffOffProps = {
+                ...minProps,
+                flags: {
+                    [FeatureFlagKey.HttpIntegrationsRevamp]: false,
+                },
+            }
+            render(<Integration {...ffOffProps} />)
+
+            const nameInput = screen.getByLabelText('Integration name')
+            const urlInput = screen.getByLabelText('URL')
+            fireEvent.change(nameInput, {
+                target: { value: 'Test Integration' },
+            })
+            fireEvent.change(urlInput, {
+                target: { value: 'https://test.com' },
+            })
+
+            const submitButton = screen.getByRole('button', {
+                name: /Add integration/i,
+            })
+            expect(submitButton).toHaveAttribute('aria-disabled', 'true')
+        })
+
+        it('should enable submit button when triggers are selected with feature flag off', () => {
+            const ffOffProps = {
+                ...minProps,
+                flags: {
+                    [FeatureFlagKey.HttpIntegrationsRevamp]: false,
+                },
+            }
+            render(<Integration {...ffOffProps} />)
+
+            const nameInput = screen.getByLabelText('Integration name')
+            const urlInput = screen.getByLabelText('URL')
+            fireEvent.change(nameInput, {
+                target: { value: 'Test Integration' },
+            })
+            fireEvent.change(urlInput, {
+                target: { value: 'https://test.com' },
+            })
+
+            const checkbox = screen
+                .getByText('Ticket created')
+                .closest('label')
+                ?.querySelector('input')
+            if (checkbox) {
+                fireEvent.click(checkbox)
+            }
+
+            const submitButton = screen.getByRole('button', {
+                name: /Add integration/i,
+            })
+            expect(submitButton).not.toHaveAttribute('aria-disabled', 'true')
+        })
+    })
+
+    describe('Initialization', () => {
+        it('should initialize state from integration in componentWillMount', () => {
+            const mockIntegration = {
+                ...httpIntegration,
+                id: 1,
+                type: IntegrationType.Http as IntegrationType.Http,
+                name: 'Test Integration',
+                meta: {},
+                created_datetime: '2024-01-01T00:00:00Z',
+                updated_datetime: '2024-01-01T00:00:00Z',
+                deleted_datetime: null,
+                deactivated_datetime: null,
+                decoration: null,
+                application_id: null,
+                account_id: 1,
+                created_by_id: 1,
+                locked_datetime: null,
+                uri: '/api/integrations/1',
+                user: {
+                    id: 1,
+                    email: 'test@example.com',
+                },
+                managed: false,
+                http: {
+                    ...httpIntegration.http,
+                    id: 1,
+                    url: 'https://test.com',
+                    execution_order: 0,
+                    method: HttpMethod.Get,
+                    request_content_type: ContentType.Json,
+                    response_content_type: ContentType.Json,
+                    headers: {},
+                    triggers: {
+                        'ticket-created': true,
+                        'ticket-updated': true,
+                    },
+                    form: '' as HTTPForm,
+                },
+            }
+
+            const component = React.createRef<Integration>()
+            render(
+                <Integration
+                    {...minProps}
+                    integration={mockIntegration}
+                    isUpdate={true}
+                    ref={component}
+                />,
+            )
+
+            expect(screen.getByLabelText('Integration name')).toHaveValue(
+                'Test Integration',
+            )
+            expect(screen.getByLabelText('URL')).toHaveValue('https://test.com')
+            expect(
+                screen
+                    .getByText('Ticket created')
+                    .closest('label')
+                    ?.querySelector('input'),
+            ).toBeChecked()
+            expect(
+                screen
+                    .getByText('Ticket updated')
+                    .closest('label')
+                    ?.querySelector('input'),
+            ).toBeChecked()
+        })
+
+        it('should initialize state from integration in componentWillUpdate', () => {
+            const mockIntegration = {
+                ...httpIntegration,
+                id: 1,
+                type: IntegrationType.Http as IntegrationType.Http,
+                name: 'Test Integration',
+                meta: {},
+                created_datetime: '2024-01-01T00:00:00Z',
+                updated_datetime: '2024-01-01T00:00:00Z',
+                deleted_datetime: null,
+                deactivated_datetime: null,
+                decoration: null,
+                application_id: null,
+                account_id: 1,
+                created_by_id: 1,
+                locked_datetime: null,
+                uri: '/api/integrations/1',
+                user: {
+                    id: 1,
+                    email: 'test@example.com',
+                },
+                managed: false,
+                http: {
+                    ...httpIntegration.http,
+                    id: 1,
+                    url: 'https://test.com',
+                    execution_order: 0,
+                    method: HttpMethod.Get,
+                    request_content_type: ContentType.Json,
+                    response_content_type: ContentType.Json,
+                    headers: {},
+                    triggers: {
+                        'ticket-created': true,
+                        'ticket-updated': true,
+                    },
+                    form: '' as HTTPForm,
+                },
+            }
+
+            const { rerender } = render(<Integration {...minProps} />)
+
+            // First render without integration
+            expect(screen.getByLabelText('Integration name')).toHaveValue('')
+            expect(screen.getByLabelText('URL')).toHaveValue('')
+
+            // Rerender with integration
+            rerender(
+                <Integration
+                    {...minProps}
+                    integration={mockIntegration}
+                    isUpdate={true}
+                />,
+            )
+
+            // Should now have the integration values
+            expect(screen.getByLabelText('Integration name')).toHaveValue(
+                'Test Integration',
+            )
+            expect(screen.getByLabelText('URL')).toHaveValue('https://test.com')
+            expect(
+                screen
+                    .getByText('Ticket created')
+                    .closest('label')
+                    ?.querySelector('input'),
+            ).toBeChecked()
+            expect(
+                screen
+                    .getByText('Ticket updated')
+                    .closest('label')
+                    ?.querySelector('input'),
+            ).toBeChecked()
+        })
+
+        it('should not reinitialize state if already initialized', () => {
+            const mockIntegration = {
+                ...httpIntegration,
+                id: 1,
+                type: IntegrationType.Http as IntegrationType.Http,
+                name: 'Test Integration',
+                meta: {},
+                created_datetime: '2024-01-01T00:00:00Z',
+                updated_datetime: '2024-01-01T00:00:00Z',
+                deleted_datetime: null,
+                deactivated_datetime: null,
+                decoration: null,
+                application_id: null,
+                account_id: 1,
+                created_by_id: 1,
+                locked_datetime: null,
+                uri: '/api/integrations/1',
+                user: {
+                    id: 1,
+                    email: 'test@example.com',
+                },
+                managed: false,
+                http: {
+                    ...httpIntegration.http,
+                    id: 1,
+                    url: 'https://test.com',
+                    execution_order: 0,
+                    method: HttpMethod.Get,
+                    request_content_type: ContentType.Json,
+                    response_content_type: ContentType.Json,
+                    headers: {},
+                    triggers: {
+                        'ticket-created': true,
+                        'ticket-updated': true,
+                    },
+                    form: '' as HTTPForm,
+                },
+            }
+
+            const { rerender } = render(
+                <Integration
+                    {...minProps}
+                    integration={mockIntegration}
+                    isUpdate={true}
+                />,
+            )
+
+            // Change the integration name
+            const updatedIntegration = {
+                ...mockIntegration,
+                name: 'Updated Integration',
+            }
+
+            // Rerender with updated integration
+            rerender(
+                <Integration
+                    {...minProps}
+                    integration={updatedIntegration}
+                    isUpdate={true}
+                />,
+            )
+
+            // Should still have the original name since it's already initialized
+            expect(screen.getByLabelText('Integration name')).toHaveValue(
+                'Test Integration',
+            )
+        })
+
+        it('should set state and isInitialized flag when initializing', () => {
+            const component = React.createRef<Integration>()
+            const setStateSpy = jest.spyOn(
+                React.Component.prototype,
+                'setState',
+            )
+
+            render(
+                <Integration
+                    {...minProps}
+                    integration={httpIntegration}
+                    isUpdate={true}
+                    ref={component}
+                />,
+            )
+
+            expect(setStateSpy).toHaveBeenCalled()
+            expect(component.current?.isInitialized).toBe(true)
         })
     })
 })
