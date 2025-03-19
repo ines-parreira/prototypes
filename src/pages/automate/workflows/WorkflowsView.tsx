@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react'
+import React, { createElement, useMemo } from 'react'
 
 import classNames from 'classnames'
 import { useFlags } from 'launchdarkly-react-client-sdk'
@@ -95,6 +95,22 @@ export default function WorkflowsView({
         })
     })
 
+    const workflowsHeader = (
+        <div className={css.pageHeaderContainer}>
+            {displayAiAgentMovedBanner && <AiAgentMovedBanner />}
+            <PageHeader title={FLOWS}>
+                <div className={css.headerContainer}>
+                    <Button onClick={goToNewWorkflowPage} intent="secondary">
+                        Create Custom Flow
+                    </Button>
+                    <Button onClick={goToWorkflowTemplatesPage}>
+                        Create From Template
+                    </Button>
+                </div>
+            </PageHeader>
+        </div>
+    )
+
     const workflowsElement =
         isFetchPending || !storeIntegrationId ? (
             <div className={css.spinner}>
@@ -183,46 +199,29 @@ export default function WorkflowsView({
     )
 
     return (
-        <div className="full-width overflow-auto">
-            <div className={css.pageHeaderContainer}>
-                {isRootAutomateFlowsRoute && (
-                    <>
-                        {displayAiAgentMovedBanner && <AiAgentMovedBanner />}
-                        <PageHeader title={FLOWS}>
-                            <div className={css.headerContainer}>
-                                <Button
-                                    onClick={goToNewWorkflowPage}
-                                    intent="secondary"
-                                >
-                                    Create Custom Flow
-                                </Button>
-                                <Button onClick={goToWorkflowTemplatesPage}>
-                                    Create From Template
-                                </Button>
-                            </div>
-                        </PageHeader>
-                    </>
-                )}
-            </div>
-
-            <Switch>
-                <Route path={path} exact>
+        <Switch>
+            <Route path={path} exact>
+                <div className={css.container}>
+                    {isRootAutomateFlowsRoute && workflowsHeader}
                     {workflowsElement}
-                </Route>
-                <Route path={`${path}/quick-responses`} exact>
-                    <Redirect to={baseURL} />
-                </Route>
+                </div>
+            </Route>
+            <Route path={`${path}/quick-responses`} exact>
+                <Redirect to={baseURL} />
+            </Route>
 
-                <Route
-                    path={`${path}/templates`}
-                    exact
-                    component={withUserRoleRequired(
-                        WorkflowTemplatesViewContainer,
-                        AGENT_ROLE,
+            <Route path={`${path}/templates`} exact>
+                <div className={css.container}>
+                    {isRootAutomateFlowsRoute && workflowsHeader}
+                    {createElement(
+                        withUserRoleRequired(
+                            WorkflowTemplatesViewContainer,
+                            AGENT_ROLE,
+                        ),
                     )}
-                />
-            </Switch>
-        </div>
+                </div>
+            </Route>
+        </Switch>
     )
 }
 
