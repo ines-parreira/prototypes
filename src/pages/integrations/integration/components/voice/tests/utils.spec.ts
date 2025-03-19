@@ -1,6 +1,11 @@
+import { voiceQueue } from 'fixtures/voiceQueue'
 import { VoiceMessageType } from 'models/integration/constants'
 
-import { getVoiceMessagePayload, isValueInRange } from '../utils'
+import {
+    getVoiceMessagePayload,
+    getVoiceQueueEditableFields,
+    isValueInRange,
+} from '../utils'
 
 describe('isValueInRange', () => {
     it('should check if a number is inside the range', () => {
@@ -67,6 +72,26 @@ describe('getVoiceMessagePayload', () => {
             expect(getVoiceMessagePayload(voice_message)).toEqual({
                 voice_message_type: VoiceMessageType.VoiceRecording,
             })
+        })
+    })
+})
+
+describe('getVoiceQueueEditableFields', () => {
+    const mockQueue = voiceQueue
+
+    it('should return all editable fields from the queue', () => {
+        const result = getVoiceQueueEditableFields(mockQueue)
+
+        expect(result).toEqual({
+            name: voiceQueue.name,
+            capacity: voiceQueue.capacity,
+            priority_weight: voiceQueue.priority_weight,
+            distribution_mode: voiceQueue.distribution_mode,
+            linked_targets: voiceQueue.linked_targets,
+            ring_time: voiceQueue.ring_time,
+            target_scope: voiceQueue.target_scope,
+            wait_time: voiceQueue.wait_time,
+            wait_music: voiceQueue.wait_music,
         })
     })
 })

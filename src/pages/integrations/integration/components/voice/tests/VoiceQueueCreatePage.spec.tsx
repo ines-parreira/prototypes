@@ -1,15 +1,10 @@
-import React from 'react'
-
 import { screen, waitFor } from '@testing-library/react'
 import { act } from '@testing-library/react-hooks'
-import userEvent from '@testing-library/user-event'
+import fireEvent from '@testing-library/user-event'
 
 import { createVoiceQueues } from '@gorgias/api-client'
 
-import useAppDispatch from 'hooks/useAppDispatch'
 import history from 'pages/history'
-import { notify } from 'state/notifications/actions'
-import { NotificationStatus } from 'state/notifications/types'
 import { renderWithQueryClientAndRouter } from 'tests/renderWIthQueryClientAndRouter'
 import { assumeMock } from 'utils/testing'
 
@@ -19,8 +14,12 @@ import VoiceQueueCreatePage from '../VoiceQueueCreatePage'
 jest.mock('@gorgias/api-client')
 const createVoiceQueuesMock = assumeMock(createVoiceQueues)
 
-jest.mock('state/notifications/actions', () => ({
-    notify: jest.fn(),
+const mockNotify = {
+    success: jest.fn(),
+    error: jest.fn(),
+}
+jest.mock('hooks/useNotify', () => ({
+    useNotify: () => mockNotify,
 }))
 
 jest.mock('pages/history')
@@ -28,9 +27,6 @@ jest.mock('pages/history')
 jest.mock('../VoiceQueueEditOrCreateForm', () => () => (
     <div data-testid="queue-form">VoiceQueueEditOrCreateForm</div>
 ))
-
-jest.mock('hooks/useAppDispatch')
-const useAppDispatchMock = assumeMock(useAppDispatch)
 
 jest.mock('../VoiceFormSubmitButton', () => ({ children }: any) => (
     <button type="submit">{children}</button>
@@ -52,10 +48,6 @@ describe('VoiceQueueCreatePage', () => {
     const renderComponent = () =>
         renderWithQueryClientAndRouter(<VoiceQueueCreatePage />)
 
-    beforeEach(() => {
-        useAppDispatchMock.mockImplementation(() => jest.fn())
-    })
-
     it('renders the create queue form with all necessary components', () => {
         renderComponent()
 
@@ -73,14 +65,13 @@ describe('VoiceQueueCreatePage', () => {
         renderComponent()
 
         act(() => {
-            userEvent.click(screen.getByText('Save changes'))
+            fireEvent.click(screen.getByText('Save changes'))
         })
 
         await waitFor(() => {
-            expect(notify).toHaveBeenCalledWith({
-                status: NotificationStatus.Success,
-                message: "'Test Queue' queue was successfully created.",
-            })
+            expect(mockNotify.success).toHaveBeenCalledWith(
+                "'Test Queue' queue was successfully created.",
+            )
         })
 
         expect(history.push).toHaveBeenCalledWith(
@@ -94,14 +85,13 @@ describe('VoiceQueueCreatePage', () => {
         renderComponent()
 
         act(() => {
-            userEvent.click(screen.getByText('Save changes'))
+            fireEvent.click(screen.getByText('Save changes'))
         })
 
         await waitFor(() => {
-            expect(notify).toHaveBeenCalledWith({
-                status: NotificationStatus.Error,
-                message: "We couldn't save your preferences. Please try again.",
-            })
+            expect(mockNotify.error).toHaveBeenCalledWith(
+                "We couldn't save your preferences. Please try again.",
+            )
         })
     })
 

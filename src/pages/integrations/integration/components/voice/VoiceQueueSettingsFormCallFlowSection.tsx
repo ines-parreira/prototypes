@@ -17,7 +17,7 @@ import VoiceSettingAccordionItem from './VoiceSettingAccordionItem'
 
 import css from './VoiceQueueSettingsFormCallFlowSection.less'
 
-const RING_TIME_MIN_VALUE = 5
+const RING_TIME_MIN_VALUE = 10
 const RING_TIME_MAX_VALUE = 600
 
 export default function VoiceQueueSettingsFormCallFlowSection() {
@@ -95,7 +95,7 @@ export default function VoiceQueueSettingsFormCallFlowSection() {
                             <FormField
                                 field={TextField}
                                 name="ring_time"
-                                caption="Set a time between 5 and 600 seconds (10 minutes)."
+                                caption="Set a time between 10 and 600 seconds (10 minutes)."
                                 label=""
                                 suffix={
                                     <Button intent="secondary">seconds</Button>

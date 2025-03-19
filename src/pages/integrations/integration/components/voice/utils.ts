@@ -1,6 +1,8 @@
 import {
     UpdatePhoneIntegrationSettingsRecordingNotification,
+    UpdateVoiceQueue,
     VoiceMessageType,
+    VoiceQueue,
 } from '@gorgias/api-queries'
 
 import { VoiceMessage } from 'models/integration/types'
@@ -60,5 +62,21 @@ export const getVoiceMessagePayload = (
                 new_voice_recording_file_type:
                     voice_message.new_voice_recording_file_type,
             }
+    }
+}
+
+export const getVoiceQueueEditableFields = (
+    queue: VoiceQueue,
+): UpdateVoiceQueue => {
+    return {
+        name: queue.name,
+        capacity: queue.capacity,
+        priority_weight: queue.priority_weight,
+        distribution_mode: queue.distribution_mode,
+        linked_targets: queue.linked_targets,
+        ring_time: queue.ring_time,
+        target_scope: queue.target_scope,
+        wait_time: queue.wait_time,
+        wait_music: queue.wait_music,
     }
 }

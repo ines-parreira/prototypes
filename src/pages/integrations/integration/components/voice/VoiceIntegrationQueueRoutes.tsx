@@ -2,6 +2,7 @@ import { Route } from 'react-router-dom'
 
 import { PHONE_INTEGRATION_BASE_URL as baseURL } from './constants'
 import VoiceQueueCreatePage from './VoiceQueueCreatePage'
+import VoiceQueueEditPage from './VoiceQueueEditPage'
 
 export default function VoiceIntegrationQueueRoutes() {
     return (
@@ -11,6 +12,9 @@ export default function VoiceIntegrationQueueRoutes() {
             </Route>
             <Route path={`${baseURL}/queues/new`} exact>
                 <VoiceQueueCreatePage />
+            </Route>
+            <Route path={`${baseURL}/queues/:id`} exact>
+                <VoiceQueueEditPage />
             </Route>
         </>
     )

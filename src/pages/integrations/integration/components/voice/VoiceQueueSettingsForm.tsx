@@ -1,4 +1,4 @@
-import React, { ComponentProps, ReactNode } from 'react'
+import { ComponentProps, ReactNode } from 'react'
 
 import { DefaultValues } from 'react-hook-form'
 
@@ -6,43 +6,52 @@ import {
     CreateVoiceQueue,
     PhoneRingingBehaviour,
     UpdateVoiceQueue,
-    VoiceQueue,
     VoiceQueueTargetScope,
 } from '@gorgias/api-queries'
+import {
+    validateCreateVoiceQueue,
+    validateUpdateVoiceQueue,
+} from '@gorgias/api-validators'
 
-import { Form } from 'core/forms'
+import { Form, toFormErrors } from 'core/forms'
 
 import VoiceFormUnsavedChangesPrompt from './VoiceFormUnsavedChangesPrompt'
-import { DEFAULT_WAIT_MUSIC_PREFERENCES } from './waitMusicLibraryConstants'
+import { QUEUE_DEFAULT_WAIT_MUSIC_PREFERENCES } from './waitMusicLibraryConstants'
 
 export default function VoiceQueueSettingsForm<
-    T extends UpdateVoiceQueue | CreateVoiceQueue | VoiceQueue,
+    T extends UpdateVoiceQueue | CreateVoiceQueue,
 >({
     children,
     onSubmit,
+    initialValues,
 }: {
     children: ReactNode
     onSubmit: ComponentProps<typeof Form<T>>['onValidSubmit']
+    initialValues?: T
 }): JSX.Element {
-    // TODO: Uncomment when all fields are added to the form
-    // const validator = (values: T) => {
-    //     return toFormErrors(validateVoiceQueue(values)) as Partial<
-    //         Record<keyof T, unknown>
-    //     >
-    // }
+    const validator = (values: T) => {
+        const validator = !!initialValues
+            ? validateUpdateVoiceQueue
+            : validateCreateVoiceQueue
+        return toFormErrors(validator(values)) as Partial<
+            Record<keyof T, unknown>
+        >
+    }
 
     return (
         <>
             <Form<T>
                 onValidSubmit={onSubmit}
-                defaultValues={DEFAULT_VALUES as DefaultValues<T>}
+                defaultValues={
+                    (initialValues ?? DEFAULT_VALUES) as DefaultValues<T>
+                }
                 mode="onChange"
                 resetOptions={{
                     keepDirty: false,
                     keepDefaultValues: false,
                     keepDirtyValues: false,
                 }}
-                // validator={validator}
+                validator={validator}
             >
                 {children}
                 <VoiceFormUnsavedChangesPrompt onSave={onSubmit} />
@@ -60,5 +69,5 @@ const DEFAULT_VALUES: UpdateVoiceQueue | CreateVoiceQueue = {
     ring_time: 30,
     target_scope: VoiceQueueTargetScope.AllAgents,
     wait_time: 120,
-    wait_music: DEFAULT_WAIT_MUSIC_PREFERENCES,
+    wait_music: QUEUE_DEFAULT_WAIT_MUSIC_PREFERENCES,
 }

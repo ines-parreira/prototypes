@@ -104,3 +104,8 @@ export const DEFAULT_WAIT_MUSIC_PREFERENCES = {
     type: WaitMusicType.Library,
     library: STATIC_WAIT_MUSIC_LIBRARY[DEFAULT_STATIC_WAIT_MUSIC_LIBRARY_INDEX],
 }
+
+export const QUEUE_DEFAULT_WAIT_MUSIC_PREFERENCES = {
+    type: WaitMusicType.Library,
+    library: STATIC_WAIT_MUSIC_LIBRARY[0],
+}

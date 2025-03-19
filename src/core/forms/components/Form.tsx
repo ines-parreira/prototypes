@@ -51,9 +51,9 @@ export function Form<TFieldValues extends FieldValues>({
 
     const {
         formState: { isSubmitSuccessful },
+        reset,
+        getValues,
     } = methods
-
-    const { reset, getValues } = methods
 
     useEffect(() => {
         if (isSubmitSuccessful) {

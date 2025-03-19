@@ -1,4 +1,4 @@
-import React, { ReactNode } from 'react'
+import { ReactNode } from 'react'
 
 import { fireEvent, screen, waitFor } from '@testing-library/react'
 import { act, renderHook } from '@testing-library/react-hooks'
@@ -7,11 +7,13 @@ import { useFormContext } from 'react-hook-form'
 import {
     CreateVoiceQueue,
     PhoneRingingBehaviour,
+    UpdateVoiceQueue,
     VoiceQueueTargetScope,
 } from '@gorgias/api-queries'
 import * as validators from '@gorgias/api-validators'
 
 import { FormField } from 'core/forms/components/FormField'
+import { voiceQueue } from 'fixtures/voiceQueue'
 import useAppDispatch from 'hooks/useAppDispatch'
 import UnsavedChangesPrompt from 'pages/common/components/UnsavedChangesPrompt'
 import { notify } from 'state/notifications/actions'
@@ -19,10 +21,11 @@ import { NotificationStatus } from 'state/notifications/types'
 import { assumeMock, getLastMockCall, renderWithRouter } from 'utils/testing'
 
 import VoiceQueueSettingsForm from '../VoiceQueueSettingsForm'
-import { DEFAULT_WAIT_MUSIC_PREFERENCES } from '../waitMusicLibraryConstants'
+import { QUEUE_DEFAULT_WAIT_MUSIC_PREFERENCES } from '../waitMusicLibraryConstants'
 
 jest.mock('@gorgias/api-validators', () => ({
-    validateVoiceQueue: jest.fn(),
+    validateCreateVoiceQueue: jest.fn(),
+    validateUpdateVoiceQueue: jest.fn(),
 }))
 
 jest.mock('pages/common/components/UnsavedChangesPrompt')
@@ -34,11 +37,20 @@ jest.mock('state/notifications/actions', () => ({
 jest.mock('hooks/useAppDispatch')
 const useAppDispatchMock = assumeMock(useAppDispatch)
 
-const mockValidateVoiceQueue = validators.validateVoiceQueue as jest.Mock
+const mockValidateCreateVoiceQueue =
+    validators.validateCreateVoiceQueue as jest.Mock
+const mockValidateUpdateVoiceQueue =
+    validators.validateUpdateVoiceQueue as jest.Mock
 
 const onSubmitMock = jest.fn()
-const wrapper = (props: { children: ReactNode }) => (
-    <VoiceQueueSettingsForm onSubmit={onSubmitMock}>
+const wrapper = (props: {
+    children?: ReactNode
+    initialValues?: UpdateVoiceQueue
+}) => (
+    <VoiceQueueSettingsForm
+        onSubmit={onSubmitMock}
+        initialValues={props.initialValues}
+    >
         {props.children}
         <div>Form Content</div>
         <FormField label="Name" name="name" />
@@ -55,15 +67,16 @@ const defaultValues: CreateVoiceQueue = {
     ring_time: 30,
     target_scope: VoiceQueueTargetScope.AllAgents,
     wait_time: 120,
-    wait_music: DEFAULT_WAIT_MUSIC_PREFERENCES,
+    wait_music: QUEUE_DEFAULT_WAIT_MUSIC_PREFERENCES,
 }
 
 describe('VoiceQueueSettingsForm', () => {
-    const renderComponent = () =>
-        renderWithRouter(wrapper({ children: <div /> }))
+    const renderComponent = (initialValues?: UpdateVoiceQueue) =>
+        renderWithRouter(wrapper({ children: <div />, initialValues }))
 
     beforeEach(() => {
-        mockValidateVoiceQueue.mockReturnValue({})
+        mockValidateCreateVoiceQueue.mockReturnValue({})
+        mockValidateUpdateVoiceQueue.mockReturnValue({})
         UnsavedChangesPromptMock.mockReturnValue(
             <div>Unsaved Changes Prompt</div>,
         )
@@ -92,14 +105,31 @@ describe('VoiceQueueSettingsForm', () => {
         expect(result.current.getValues()).toEqual(defaultValues)
     })
 
-    it.skip('should show validation errors when form is invalid', async () => {
+    it('should initialize with initial values', () => {
+        const { result } = renderHook(
+            () => useFormContext<CreateVoiceQueue>(),
+            {
+                wrapper: ({ children }) =>
+                    wrapper({
+                        initialValues: voiceQueue,
+                        children,
+                    }),
+            },
+        )
+
+        expect(result.current.getValues()).toEqual(voiceQueue)
+    })
+
+    it('should show validation errors when create form is invalid', async () => {
         const validationErrors = [
             {
                 path: 'name',
-                message: 'Name is required',
+                message: 'Name is invalid',
             },
         ]
-        mockValidateVoiceQueue.mockReturnValue({ errors: validationErrors })
+        mockValidateCreateVoiceQueue.mockReturnValue({
+            errors: validationErrors,
+        })
 
         renderComponent()
 
@@ -108,6 +138,26 @@ describe('VoiceQueueSettingsForm', () => {
                 target: { value: null },
             })
         })
+
+        fireEvent.click(screen.getByRole('button', { name: /submit/i }))
+
+        await waitFor(() => {
+            expect(screen.getByText('Name is invalid')).toBeInTheDocument()
+        })
+    })
+
+    it('should show validation errors when update form is invalid', async () => {
+        const validationErrors = [
+            {
+                path: 'name',
+                message: 'Name is required',
+            },
+        ]
+        mockValidateUpdateVoiceQueue.mockReturnValue({
+            errors: validationErrors,
+        })
+
+        renderComponent(voiceQueue)
 
         fireEvent.click(screen.getByRole('button', { name: /submit/i }))
 
@@ -123,7 +173,12 @@ describe('VoiceQueueSettingsForm', () => {
                 message: 'Name is required',
             },
         ]
-        mockValidateVoiceQueue.mockReturnValue({ errors: validationErrors })
+        mockValidateCreateVoiceQueue.mockReturnValue({
+            errors: validationErrors,
+        })
+        mockValidateUpdateVoiceQueue.mockReturnValue({
+            errors: validationErrors,
+        })
         renderComponent()
 
         act(() => {

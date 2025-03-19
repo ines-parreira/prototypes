@@ -12,6 +12,8 @@ import {
 import { friendlyName } from 'pages/phoneNumbers/utils'
 import { getNewPhoneNumber } from 'state/entities/phoneNumbers/selectors'
 
+import VoiceQueueBreadcrumbs from './VoiceQueueBreadcrumbs'
+
 type Props = {
     type: IntegrationType.Phone | IntegrationType.Sms | IntegrationType.WhatsApp
     integration?: PhoneIntegration | SmsIntegration | WhatsAppIntegration
@@ -98,14 +100,7 @@ export default function PhoneIntegrationBreadcrumbs({
                 integrationId !== 'migration' && (
                     <BreadcrumbItem>{name}</BreadcrumbItem>
                 )}
-            {queuePathMatch?.params.queueId === 'new' && (
-                <>
-                    <BreadcrumbItem>
-                        <Link to={`${baseUrl}/queues`}>{name}</Link>
-                    </BreadcrumbItem>
-                    <BreadcrumbItem>Add call queue</BreadcrumbItem>
-                </>
-            )}
+            {queueId && <VoiceQueueBreadcrumbs queueId={queueId} />}
         </Breadcrumb>
     )
 }

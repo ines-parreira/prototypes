@@ -1,5 +1,3 @@
-import React from 'react'
-
 import { screen } from '@testing-library/react'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
@@ -13,9 +11,13 @@ import {
     VoiceMessageType,
 } from 'models/integration/types'
 import { RootState, StoreDispatch } from 'state/types'
-import { renderWithRouter } from 'utils/testing'
+import { assumeMock, renderWithRouter } from 'utils/testing'
 
 import PhoneIntegrationBreadcrumbs from '../PhoneIntegrationBreadcrumbs'
+import VoiceQueueBreadcrumbs from '../VoiceQueueBreadcrumbs'
+
+jest.mock('../VoiceQueueBreadcrumbs')
+const VoiceQueueBreadcrumbsMock = assumeMock(VoiceQueueBreadcrumbs)
 
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>()
 const store = mockStore({
@@ -68,6 +70,12 @@ describe('<PhoneIntegrationBreadcrumbs/>', () => {
         managed: false,
     }
 
+    beforeEach(() => {
+        VoiceQueueBreadcrumbsMock.mockReturnValue(
+            <div>VoiceQueueBreadcrumbsMock</div>,
+        )
+    })
+
     describe('render()', () => {
         it('should render for voice integrations', () => {
             renderWithRouter(
@@ -95,18 +103,32 @@ describe('<PhoneIntegrationBreadcrumbs/>', () => {
             expect(screen.getByText('SMS')).toBeInTheDocument()
         })
 
-        it('should render for Voice Queues', () => {
+        it.each([
+            {
+                queueId: 'new',
+            },
+            {
+                queueId: '123',
+            },
+        ])('should render for Voice Queues', ({ queueId }) => {
             renderWithRouter(
                 <Provider store={store}>
                     <PhoneIntegrationBreadcrumbs type={IntegrationType.Phone} />
                 </Provider>,
                 {
-                    route: '/app/settings/channels/phone/queues/new',
+                    route: `/app/settings/channels/phone/queues/${queueId}`,
                 },
             )
 
-            expect(screen.getByText('Voice')).toBeInTheDocument()
-            expect(screen.getByText('Add call queue')).toBeInTheDocument()
+            expect(
+                screen.getByText('VoiceQueueBreadcrumbsMock'),
+            ).toBeInTheDocument()
+            expect(VoiceQueueBreadcrumbsMock).toHaveBeenCalledWith(
+                {
+                    queueId,
+                },
+                {},
+            )
         })
     })
 })
