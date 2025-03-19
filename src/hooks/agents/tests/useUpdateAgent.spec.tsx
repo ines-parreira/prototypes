@@ -85,9 +85,10 @@ describe('useUpdateAgent', () => {
 
         expect(handleError).toHaveBeenNthCalledWith(
             1,
-            myError,
-            'Failed to update team member',
+            null,
+            null,
             mockedDispatch,
+            'Error while updating user',
         )
     })
 })

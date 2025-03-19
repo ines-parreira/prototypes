@@ -37,6 +37,28 @@ describe('handleError', () => {
         expect(notify).toHaveBeenNthCalledWith(1, {
             message,
             status: NotificationStatus.Error,
+            allowHTML: true,
+        })
+        expect(mockedDispatch).toHaveBeenCalledTimes(1)
+    })
+
+    it('should dispatch default error message with title', () => {
+        const message = 'default message'
+        const title = 'title'
+
+        handleError(
+            {
+                response: undefined,
+            },
+            message,
+            mockedDispatch,
+            title,
+        )
+        expect(notify).toHaveBeenNthCalledWith(1, {
+            message,
+            status: NotificationStatus.Error,
+            title,
+            allowHTML: true,
         })
         expect(mockedDispatch).toHaveBeenCalledTimes(1)
     })

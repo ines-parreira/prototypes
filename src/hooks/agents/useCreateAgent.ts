@@ -8,6 +8,7 @@ import {
 import { CREATE_AGENT_SUCCESS } from 'state/agents/constants'
 import { notify } from 'state/notifications/actions'
 import { NotificationStatus } from 'state/notifications/types'
+import { errorToChildren } from 'utils'
 
 import { handleError } from './errorHandler'
 
@@ -31,7 +32,15 @@ export const useCreateAgent = () => {
                 }),
             )
         },
-        onError: (error) =>
-            handleError(error, 'Failed to create team member', dispatch),
+        onError: (error) => {
+            const mappedError = errorToChildren(error)
+
+            handleError(
+                null,
+                mappedError as string,
+                dispatch,
+                'Error while creating user',
+            )
+        },
     })
 }

@@ -67,14 +67,15 @@ describe('useCreateAgent', () => {
         usePureCreateAgentMock.mock.calls[0][0]?.onError!(
             myError,
             [agents[0]],
-            undefined,
+            'Failed to create team member',
         )
 
         expect(handleError).toHaveBeenNthCalledWith(
             1,
-            myError,
-            'Failed to create team member',
+            null,
+            null,
             mockedDispatch,
+            'Error while creating user',
         )
     })
 })

@@ -9,6 +9,7 @@ import { UPDATE_AGENT_SUCCESS } from 'state/agents/constants'
 import { notify } from 'state/notifications/actions'
 import { NotificationStatus } from 'state/notifications/types'
 
+import { errorToChildren } from '../../utils'
 import { handleError } from './errorHandler'
 
 export const useUpdateAgent = () => {
@@ -31,7 +32,15 @@ export const useUpdateAgent = () => {
                 }),
             )
         },
-        onError: (error) =>
-            handleError(error, 'Failed to update team member', dispatch),
+        onError: (error) => {
+            const mappedError = errorToChildren(error)
+
+            handleError(
+                null,
+                mappedError as string,
+                dispatch,
+                'Error while updating user',
+            )
+        },
     })
 }

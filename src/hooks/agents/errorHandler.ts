@@ -8,6 +8,7 @@ export function handleError(
     error: unknown,
     defaultMsg: string,
     dispatch: StoreDispatch,
+    title?: string,
 ) {
     if (axios.isAxiosError(error)) {
         const msg = (
@@ -25,8 +26,10 @@ export function handleError(
     }
     void dispatch(
         notify({
+            ...(title && { title }),
             status: NotificationStatus.Error,
             message: defaultMsg,
+            allowHTML: true,
         }),
     )
 }
