@@ -1,4 +1,4 @@
-import React from 'react'
+import { isValidElement } from 'react'
 
 import classnames from 'classnames'
 import { Emoji } from 'emoji-mart'
@@ -371,7 +371,7 @@ export const RenderLabel = ({
         return null
     }
 
-    if (React.isValidElement(value)) {
+    if (isValidElement(value)) {
         return value
     }
 

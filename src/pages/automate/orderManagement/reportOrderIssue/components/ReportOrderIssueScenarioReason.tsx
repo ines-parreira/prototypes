@@ -1,5 +1,3 @@
-import React from 'react'
-
 import { SELECTABLE_REASONS_DROPDOWN_OPTIONS } from 'models/selfServiceConfiguration/constants'
 import {
     ReportIssueCaseReason,

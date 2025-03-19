@@ -1,5 +1,3 @@
-import React from 'react'
-
 import { getIconFromType } from 'state/integrations/helpers'
 
 import { useStoreIntegrationByShopName } from '../../hooks/useStoreIntegrationByShopName'

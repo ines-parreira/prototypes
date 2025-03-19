@@ -1,5 +1,3 @@
-import React from 'react'
-
 import { useHistory } from 'react-router-dom'
 
 import { ContactForm } from 'models/contactForm/types'

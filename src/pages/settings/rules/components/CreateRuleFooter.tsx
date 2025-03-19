@@ -1,5 +1,3 @@
-import React from 'react'
-
 import classnames from 'classnames'
 
 import ruleTemplates from 'assets/img/presentationals/rule-templates.png'

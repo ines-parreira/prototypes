@@ -1,5 +1,3 @@
-import React from 'react'
-
 import TextArea from 'pages/common/forms/TextArea'
 
 import FormLabel from './FormLabel'

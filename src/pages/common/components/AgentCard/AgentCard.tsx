@@ -1,5 +1,3 @@
-import React from 'react'
-
 import Avatar from 'pages/common/components/Avatar/Avatar'
 
 import css from './AgentCard.less'

@@ -1,5 +1,3 @@
-import React from 'react'
-
 import { useFormState } from 'react-hook-form'
 
 import Button from 'pages/common/components/button/Button'

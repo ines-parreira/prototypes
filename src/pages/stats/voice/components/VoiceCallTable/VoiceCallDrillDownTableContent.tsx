@@ -1,5 +1,3 @@
-import React from 'react'
-
 import { useDrillDownData } from 'hooks/reporting/useDrillDownData'
 import { formatVoiceDrillDownRowData } from 'pages/stats/DrillDownFormatters'
 import { DrillDownMetric } from 'state/ui/stats/drillDownSlice'

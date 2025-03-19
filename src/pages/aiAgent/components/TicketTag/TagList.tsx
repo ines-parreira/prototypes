@@ -1,5 +1,3 @@
-import React from 'react'
-
 import { Tag } from 'models/aiAgent/types'
 import Button from 'pages/common/components/button/Button'
 import IconButton from 'pages/common/components/button/IconButton'

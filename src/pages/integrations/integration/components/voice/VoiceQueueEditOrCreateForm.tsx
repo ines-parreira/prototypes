@@ -1,5 +1,3 @@
-import React from 'react'
-
 import VoiceQueueSettingsFormCallFlowSection from './VoiceQueueSettingsFormCallFlowSection'
 import VoiceQueueSettingsFormGeneralSection from './VoiceQueueSettingsFormGeneralSection'
 

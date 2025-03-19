@@ -1,5 +1,3 @@
-import React from 'react'
-
 import gorgiasLogo from '../../../../../../../assets/img/gorgias-logo.svg'
 
 import css from './AIArticlesLibraryPreviewEmptyState.less'

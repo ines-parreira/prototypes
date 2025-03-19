@@ -1,5 +1,3 @@
-import React from 'react'
-
 import _get from 'lodash/get'
 import Slider from 'react-slick'
 import { Card, CardBody, CardImg, CardSubtitle, CardTitle } from 'reactstrap'

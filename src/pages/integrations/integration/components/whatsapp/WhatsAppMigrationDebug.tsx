@@ -1,5 +1,3 @@
-import React from 'react'
-
 import useWhatsAppMigration from 'hooks/useWhatsAppMigration'
 import SettingsContent from 'pages/settings/SettingsContent'
 

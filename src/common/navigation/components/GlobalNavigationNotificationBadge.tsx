@@ -1,5 +1,3 @@
-import React from 'react'
-
 import useCount from 'common/notifications/hooks/useCount'
 
 import css from './GlobalNavigationNotificationBadge.less'

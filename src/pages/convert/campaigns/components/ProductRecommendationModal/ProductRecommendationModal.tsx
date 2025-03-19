@@ -1,5 +1,3 @@
-import React from 'react'
-
 import { Modal, ModalBody, ModalHeader } from 'reactstrap'
 
 import { Badge } from '@gorgias/merchant-ui-kit'

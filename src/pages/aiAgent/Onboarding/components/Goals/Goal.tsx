@@ -1,5 +1,3 @@
-import React from 'react'
-
 import cn from 'classnames'
 
 import { Card, CardContent } from 'pages/aiAgent/Onboarding/components/Card'

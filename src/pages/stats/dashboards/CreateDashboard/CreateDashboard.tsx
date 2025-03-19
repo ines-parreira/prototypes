@@ -1,5 +1,3 @@
-import React from 'react'
-
 import { DASHBOARDS_DOCUMENTATION_URL } from 'pages/stats/dashboards/constants'
 import { ChartsFrameSVG } from 'pages/stats/dashboards/CreateDashboard/ChartsFrameSVG'
 import css from 'pages/stats/dashboards/CreateDashboard/CreateDashboard.less'

@@ -1,5 +1,3 @@
-import React from 'react'
-
 import { NewPhoneNumber } from 'models/phoneNumber/types'
 
 import CountryFlag from './CountryFlag'

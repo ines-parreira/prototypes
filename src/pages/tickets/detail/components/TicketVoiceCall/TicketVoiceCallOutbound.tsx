@@ -1,5 +1,3 @@
-import React from 'react'
-
 import { OutboundVoiceCall } from 'models/voiceCall/types'
 import { isFinalVoiceCallStatus } from 'models/voiceCall/utils'
 import VoiceCallAgentLabel from 'pages/common/components/VoiceCallAgentLabel/VoiceCallAgentLabel'

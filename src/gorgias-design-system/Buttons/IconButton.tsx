@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
 /* eslint-disable @typescript-eslint/restrict-template-expressions */
-import React, { HTMLAttributes } from 'react'
+import type { FC, HTMLAttributes, ReactNode } from 'react'
 
 import { Theme, useTheme } from '@emotion/react'
 import styled from '@emotion/styled'
@@ -188,16 +188,21 @@ type IconButtonProps = {
     /**
      * The icon that is placed inside the button.
      */
-    icon: React.ReactNode
+    icon: ReactNode
 }
 
 /**
  * A button component with an icon inside.
  * The color of the icon is applied to any element with the class `withFill`.
  */
-const IconButton: React.FC<
-    HTMLAttributes<HTMLButtonElement> & IconButtonProps
-> = ({ disabled, size, variant, fill, icon, ...props }) => {
+const IconButton: FC<HTMLAttributes<HTMLButtonElement> & IconButtonProps> = ({
+    disabled,
+    size,
+    variant,
+    fill,
+    icon,
+    ...props
+}) => {
     const theme: Theme = useTheme()
     return (
         <StyledButton

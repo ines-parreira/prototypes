@@ -1,5 +1,3 @@
-import React from 'react'
-
 import { FormField } from 'core/forms'
 import ToggleInputField from 'pages/common/forms/ToggleInputField'
 

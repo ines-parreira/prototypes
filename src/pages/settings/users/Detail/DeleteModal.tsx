@@ -1,5 +1,3 @@
-import React from 'react'
-
 import { useDeleteAgent } from 'hooks/agents/useDeleteAgent'
 import Button from 'pages/common/components/button/Button'
 import Modal from 'pages/common/components/modal/Modal'

@@ -1,5 +1,3 @@
-import React from 'react'
-
 import _noop from 'lodash/noop'
 
 import type { Option } from '../../../../../common/components/RichDropdown/types'

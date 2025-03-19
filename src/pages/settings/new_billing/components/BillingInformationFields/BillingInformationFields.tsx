@@ -1,5 +1,3 @@
-import React from 'react'
-
 import { TaxIdFields } from 'pages/settings/new_billing/components/BillingInformationFields/components/TaxIdFields'
 import { EmailField } from 'pages/settings/new_billing/components/EmailField/EmailField'
 import { StripeAddressFields } from 'pages/settings/new_billing/components/StripeAddressFields/StripeAddressFields'

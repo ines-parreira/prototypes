@@ -1,5 +1,3 @@
-import React from 'react'
-
 import { HintTooltip } from 'pages/stats/common/HintTooltip'
 import {
     formatMetricValue,

@@ -1,5 +1,3 @@
-import React from 'react'
-
 import avatar1 from './avatar-1.jpg'
 import avatar2 from './avatar-2.jpg'
 import avatar3 from './avatar-3.jpg'

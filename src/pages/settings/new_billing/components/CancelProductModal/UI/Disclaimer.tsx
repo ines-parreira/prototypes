@@ -1,5 +1,3 @@
-import React from 'react'
-
 import CheckBox from 'pages/common/forms/CheckBox'
 
 import css from './Disclaimer.less'

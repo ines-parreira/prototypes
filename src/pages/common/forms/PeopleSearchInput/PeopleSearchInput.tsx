@@ -1,4 +1,3 @@
-import React from 'react'
 import type { KeyboardEventHandler } from 'react'
 
 import classnames from 'classnames'

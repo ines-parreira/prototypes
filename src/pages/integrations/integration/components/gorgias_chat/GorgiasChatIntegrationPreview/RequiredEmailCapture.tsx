@@ -1,5 +1,3 @@
-import React from 'react'
-
 import InputPrompt from 'gorgias-design-system/Input/InputPrompt'
 
 import {

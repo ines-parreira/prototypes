@@ -1,5 +1,3 @@
-import React from 'react'
-
 import { Progress } from 'reactstrap'
 
 import Button from 'pages/common/components/button/Button'

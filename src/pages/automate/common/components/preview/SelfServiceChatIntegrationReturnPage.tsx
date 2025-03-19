@@ -1,5 +1,3 @@
-import React from 'react'
-
 import {
     getPrimaryLanguageFromChatConfig,
     GORGIAS_CHAT_SSP_TEXTS,

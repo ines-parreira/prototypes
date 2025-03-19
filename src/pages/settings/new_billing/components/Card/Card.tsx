@@ -1,5 +1,3 @@
-import React from 'react'
-
 import css from './Card.less'
 
 export type CardProps = {

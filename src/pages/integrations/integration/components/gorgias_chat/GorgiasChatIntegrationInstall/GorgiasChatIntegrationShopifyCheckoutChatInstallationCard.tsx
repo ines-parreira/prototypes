@@ -1,5 +1,3 @@
-import React from 'react'
-
 import { Map } from 'immutable'
 
 import LinkButton from 'pages/common/components/button/LinkButton'

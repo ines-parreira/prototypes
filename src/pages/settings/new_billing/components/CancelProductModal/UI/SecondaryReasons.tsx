@@ -1,5 +1,3 @@
-import React from 'react'
-
 import RadioFieldSet from 'pages/common/forms/RadioFieldSet'
 
 import Instruction from './Instruction'

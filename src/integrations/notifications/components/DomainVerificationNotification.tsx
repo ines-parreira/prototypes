@@ -1,5 +1,3 @@
-import React from 'react'
-
 import { TicketMessageSourceType } from 'business/types/ticket'
 import { Content, Excerpt, Subtitle } from 'common/notifications'
 import type { ContentProps, Notification } from 'common/notifications'

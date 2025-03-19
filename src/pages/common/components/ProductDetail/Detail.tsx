@@ -1,5 +1,3 @@
-import React from 'react'
-
 import { AlertBanner } from 'AlertBanners'
 
 import Header from './Header'

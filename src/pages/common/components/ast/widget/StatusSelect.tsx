@@ -1,5 +1,3 @@
-import React from 'react'
-
 import { List } from 'immutable'
 import { connect, ConnectedProps } from 'react-redux'
 

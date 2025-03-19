@@ -1,8 +1,6 @@
 import '@testing-library/jest-dom'
 import './mockAudioContext'
 
-import React from 'react'
-
 import MutationObserver from '@sheerun/mutationobserver-shim'
 import { mockFlags } from 'jest-launchdarkly-mock'
 import mockMoment from 'moment'

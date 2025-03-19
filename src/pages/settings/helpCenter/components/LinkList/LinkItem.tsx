@@ -1,5 +1,3 @@
-import React from 'react'
-
 import { FormFeedback, FormGroup, Input } from 'reactstrap'
 import isUrl from 'validator/lib/isURL'
 

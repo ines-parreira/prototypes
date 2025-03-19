@@ -1,11 +1,10 @@
-import React, {
+import { forwardRef, useImperativeHandle, useRef } from 'react'
+import type {
     CSSProperties,
     FC,
     ForwardedRef,
-    forwardRef,
     HTMLAttributes,
-    useImperativeHandle,
-    useRef,
+    ReactNode,
 } from 'react'
 
 import classNames from 'classnames'
@@ -34,7 +33,7 @@ type Props = {
     onTrailIconClick?: () => void
     text?: string
     textClassName?: string
-    trailIcon?: React.ReactNode
+    trailIcon?: ReactNode
 }
 
 const Tag: FC<Props & HTMLAttributes<HTMLDivElement>> = (

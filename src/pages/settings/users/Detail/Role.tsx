@@ -1,4 +1,4 @@
-import React from 'react'
+import { Fragment } from 'react'
 
 import { Label, Tooltip } from '@gorgias/merchant-ui-kit'
 
@@ -48,7 +48,7 @@ export const Role = ({
                 const id = `detail-role-${key}`
                 return (
                     !isBotAgent && (
-                        <React.Fragment key={key}>
+                        <Fragment key={key}>
                             <PreviewRadioButton
                                 id={id}
                                 name="role"
@@ -71,7 +71,7 @@ export const Role = ({
                                         : 'You cannot update your own role'}
                                 </Tooltip>
                             )}
-                        </React.Fragment>
+                        </Fragment>
                     )
                 )
             })}

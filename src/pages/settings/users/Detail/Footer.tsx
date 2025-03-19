@@ -1,4 +1,4 @@
-import React from 'react'
+import { useState } from 'react'
 
 import { Tooltip } from '@gorgias/merchant-ui-kit'
 
@@ -36,7 +36,7 @@ export const Footer = ({
     const deleteId = 'detail-footer-delete-agent-button'
     const isDeleteDisabled = isViewingAccountOwner || isSelf
     const isSaveDisabled = isViewingAccountOwner && !isSelf
-    const [isDeleteModalOpen, setDeleteModalOpen] = React.useState(false)
+    const [isDeleteModalOpen, setDeleteModalOpen] = useState(false)
     const isMissingInfo = !name.trim() || !email.trim()
     const isSameInfo =
         isEdit &&

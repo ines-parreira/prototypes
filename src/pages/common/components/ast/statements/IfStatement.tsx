@@ -1,4 +1,4 @@
-import React, { ComponentProps } from 'react'
+import { Component, type ComponentProps } from 'react'
 
 import classnames from 'classnames'
 import { List, Map } from 'immutable'
@@ -30,7 +30,7 @@ type IfStatementState = {
     isHovered: boolean
 }
 
-export default class IfStatement extends React.Component<
+export default class IfStatement extends Component<
     IfStatementProps,
     IfStatementState
 > {

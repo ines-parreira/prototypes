@@ -1,5 +1,3 @@
-import React from 'react'
-
 import BigNumberMetric from 'pages/stats/BigNumberMetric'
 import { OverviewMetricConfig } from 'pages/stats/convert/constants/ConvertPerformanceOverviewConfig'
 import { usePerformanceTotalStats } from 'pages/stats/convert/hooks/usePerformanceTotalStats'

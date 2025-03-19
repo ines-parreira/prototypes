@@ -1,5 +1,3 @@
-import React from 'react'
-
 import moment from 'moment/moment'
 
 import { useGridSize } from 'hooks/useGridSize'

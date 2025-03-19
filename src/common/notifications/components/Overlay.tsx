@@ -1,5 +1,3 @@
-import React from 'react'
-
 import { CSSTransition } from 'react-transition-group'
 
 import useNotificationsOverlay from '../hooks/useNotificationsOverlay'

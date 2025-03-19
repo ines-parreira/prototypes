@@ -1,5 +1,3 @@
-import React from 'react'
-
 import { User } from 'config/types/user'
 import { useAIAgentUser } from 'hooks/reporting/automate/useAIAgentUserId'
 import { useStatsFilters } from 'hooks/reporting/support-performance/useStatsFilters'

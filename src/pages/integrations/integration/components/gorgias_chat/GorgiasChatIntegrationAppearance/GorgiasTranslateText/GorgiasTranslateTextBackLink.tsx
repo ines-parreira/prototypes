@@ -1,5 +1,3 @@
-import React from 'react'
-
 import { Link } from 'react-router-dom'
 
 import ArrowBackwardIcon from 'assets/img/icons/arrow-backward.svg'

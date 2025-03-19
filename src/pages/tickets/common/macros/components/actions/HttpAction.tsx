@@ -1,4 +1,4 @@
-import React from 'react'
+import { Component } from 'react'
 
 import { fromJS, Map } from 'immutable'
 import { Col, FormGroup, Label, Row } from 'reactstrap'
@@ -24,7 +24,7 @@ type Props = {
     updateActionTitle: (index: number, title: string) => void
 }
 
-export default class HttpAction extends React.Component<Props> {
+export default class HttpAction extends Component<Props> {
     _setTitle = (title: string) => {
         this.props.updateActionTitle(this.props.index, title)
     }

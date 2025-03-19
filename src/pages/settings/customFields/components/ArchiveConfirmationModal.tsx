@@ -1,5 +1,3 @@
-import React from 'react'
-
 import { OBJECT_TYPE_SETTINGS, OBJECT_TYPES } from 'custom-fields/constants'
 import { CustomFieldObjectTypes } from 'custom-fields/types'
 import { ConfirmationModal } from 'pages/settings/helpCenter/components/ConfirmationModal'

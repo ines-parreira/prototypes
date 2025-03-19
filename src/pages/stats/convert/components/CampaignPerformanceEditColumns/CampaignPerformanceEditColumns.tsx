@@ -1,5 +1,3 @@
-import React from 'react'
-
 import { UserRole } from 'config/types/user'
 import useAppSelector from 'hooks/useAppSelector'
 import { EditTableColumns } from 'pages/stats/common/components/Table/EditTableColumns'

@@ -1,5 +1,3 @@
-import React from 'react'
-
 import { DateAndTimeFormatting } from 'constants/datetime'
 import useGetDateAndTimeFormat from 'hooks/useGetDateAndTimeFormat'
 import Alert, { AlertType } from 'pages/common/components/Alert/Alert'

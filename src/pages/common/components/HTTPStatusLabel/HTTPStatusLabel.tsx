@@ -1,5 +1,3 @@
-import React from 'react'
-
 import HTTPStatus from 'httpstatus'
 
 import { Badge, ColorType } from '@gorgias/merchant-ui-kit'

@@ -1,5 +1,3 @@
-import React from 'react'
-
 import { UserSettingType } from 'config/types/user'
 import { ViewType } from 'models/view/types'
 import ViewNavbarView from 'pages/common/components/ViewNavbarView/ViewNavbarView'

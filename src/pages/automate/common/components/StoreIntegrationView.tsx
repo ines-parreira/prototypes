@@ -1,5 +1,3 @@
-import React from 'react'
-
 import storeIntegrations from 'assets/img/self-service/e-commerce-integrations.svg'
 import LinkButton from 'pages/common/components/button/LinkButton'
 import PageHeader from 'pages/common/components/PageHeader'

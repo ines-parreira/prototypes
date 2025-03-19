@@ -1,5 +1,3 @@
-import React from 'react'
-
 import { ActiveContent, Navbar } from 'common/navigation'
 
 import StatsNavbarView from './components/StatsNavbarView'

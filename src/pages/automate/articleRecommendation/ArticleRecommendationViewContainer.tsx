@@ -1,5 +1,3 @@
-import React from 'react'
-
 import useAppSelector from 'hooks/useAppSelector'
 import { getHasAutomate } from 'state/billing/selectors'
 

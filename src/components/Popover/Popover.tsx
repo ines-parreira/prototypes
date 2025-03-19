@@ -1,10 +1,5 @@
-import React, {
-    PropsWithChildren,
-    ReactNode,
-    RefObject,
-    useLayoutEffect,
-    useRef,
-} from 'react'
+import { useLayoutEffect, useRef } from 'react'
+import type { PropsWithChildren, ReactNode, RefObject } from 'react'
 
 import {
     arrow,
@@ -30,7 +25,7 @@ import Button, { type ButtonProps } from 'pages/common/components/button/Button'
 import css from './Popover.less'
 
 type Props = {
-    buttonProps?: React.PropsWithChildren<Omit<ButtonProps, 'children'>>
+    buttonProps?: PropsWithChildren<Omit<ButtonProps, 'children'>>
     footer?: ReactNode
     isOpen: boolean
     offsetValue?: OffsetOptions

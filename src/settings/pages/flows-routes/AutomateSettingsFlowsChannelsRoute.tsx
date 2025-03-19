@@ -1,4 +1,4 @@
-import React from 'react'
+import { createElement } from 'react'
 
 import { AGENT_ROLE } from 'config/user'
 import SelfServiceContactFormsProvider from 'pages/automate/common/providers/SelfServiceContactFormsProvider'
@@ -10,7 +10,7 @@ export function AutomateSettingsChannelsRoute() {
     return (
         <SelfServiceHelpCentersProvider>
             <SelfServiceContactFormsProvider>
-                {React.createElement(
+                {createElement(
                     rootWithUserRoleRequired(
                         ConnectedChannelsViewContainer,
                         AGENT_ROLE,

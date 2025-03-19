@@ -1,5 +1,3 @@
-import React from 'react'
-
 import { PlaygroundActionsItem } from './PlaygroundActionsItem'
 import { PlaygroundAction } from './types'
 

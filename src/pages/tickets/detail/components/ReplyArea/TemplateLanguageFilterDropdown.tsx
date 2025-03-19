@@ -1,5 +1,3 @@
-import React from 'react'
-
 import useAppSelector from 'hooks/useAppSelector'
 import { SourceAddress } from 'models/ticket/types'
 import { useListWhatsAppMessageTemplates } from 'models/whatsAppMessageTemplates/queries'

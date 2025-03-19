@@ -1,4 +1,4 @@
-import React, { HTMLAttributes } from 'react'
+import type { FC, HTMLAttributes } from 'react'
 
 import styled from '@emotion/styled'
 
@@ -28,7 +28,7 @@ const StyledAvatarGroup = styled.div`
  * Avatars placed in this component will be displayed in reverse order.
  * @param children The <Avatar\/> components to be displayed.
  */
-const AvatarGroup: React.FC<HTMLAttributes<HTMLDivElement>> = ({
+const AvatarGroup: FC<HTMLAttributes<HTMLDivElement>> = ({
     children,
     ...props
 }) => {

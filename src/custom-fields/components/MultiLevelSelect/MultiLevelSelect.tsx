@@ -1,4 +1,5 @@
-import React, { RefObject, useCallback, useMemo, useRef, useState } from 'react'
+import { useCallback, useMemo, useRef, useState } from 'react'
+import type { ComponentType, RefObject } from 'react'
 
 import { Placement } from '@floating-ui/react'
 import classNames from 'classnames'
@@ -77,7 +78,7 @@ export type MultiLevelSelectProps<
     customDisplayValue?: (
         value: InferCustomFieldValueType<AllowMultiValues> | undefined,
     ) => string
-    CustomInput?: React.ComponentType<CustomInputProps>
+    CustomInput?: ComponentType<CustomInputProps>
     placement?: Placement
 }
 

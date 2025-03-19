@@ -1,5 +1,3 @@
-import React from 'react'
-
 import { Skeleton } from '@gorgias/merchant-ui-kit'
 
 import { useListRecordings } from 'models/voiceCall/queries'

@@ -1,4 +1,4 @@
-import React from 'react'
+import { useRef } from 'react'
 
 import { SegmentEvent } from 'common/segment'
 import useEffectOnce from 'hooks/useEffectOnce'
@@ -42,7 +42,7 @@ const GorgiasChatCreationWizardStep: React.FC<Props> = ({
 }) => {
     const logWizardEvent = useLogWizardEvent()
 
-    const contentRef = React.useRef<HTMLDivElement>(null)
+    const contentRef = useRef<HTMLDivElement>(null)
     const contentIsIntersecting =
         useIsIntersectingWithBrowserViewport(contentRef)
 

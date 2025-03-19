@@ -1,5 +1,3 @@
-import React from 'react'
-
 import cn from 'classnames'
 
 import SourceIcon from 'pages/common/components/SourceIcon'

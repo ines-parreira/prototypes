@@ -1,4 +1,4 @@
-import React from 'react'
+import { Component } from 'react'
 
 import { fromJS, Map } from 'immutable'
 
@@ -10,7 +10,7 @@ type Props = {
     updateActionArgs: (index: number, args: Map<string, any>) => void
 }
 
-export default class SetSubjectAction extends React.Component<Props> {
+export default class SetSubjectAction extends Component<Props> {
     componentDidMount() {
         if (!this.props.action.getIn(['arguments', 'subject'])) {
             this.props.updateActionArgs(this.props.index, fromJS({}))

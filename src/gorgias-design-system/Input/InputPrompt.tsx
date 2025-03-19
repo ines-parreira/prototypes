@@ -1,6 +1,4 @@
 /* eslint-disable @typescript-eslint/no-unsafe-call */
-import React from 'react'
-
 import { useTheme } from '@emotion/react'
 import styled from '@emotion/styled'
 

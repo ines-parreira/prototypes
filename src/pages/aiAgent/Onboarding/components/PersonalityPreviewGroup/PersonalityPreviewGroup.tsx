@@ -1,5 +1,3 @@
-import React from 'react'
-
 import { getPreviewsForPreviewType, Preview, PreviewId } from './constants'
 import { PersonalityPreviewItem } from './PersonalityPreviewItem'
 

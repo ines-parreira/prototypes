@@ -1,5 +1,3 @@
-import React from 'react'
-
 import { useAutomateFilters } from 'hooks/reporting/automate/useAutomateFilters'
 import { useDecreaseInFirstResponseTimeTrend } from 'hooks/reporting/automate/useDecreaseInFirstResponseTimeTrend'
 import { AutomationDecreaseInFirstResponseTimeMetric } from 'pages/automate/automate-metrics'

@@ -1,5 +1,3 @@
-import React from 'react'
-
 import useCurrentHelpCenter from '../../hooks/useCurrentHelpCenter'
 import { useHelpCenterPreferencesSettings } from '../../providers/HelpCenterPreferencesSettings'
 import { useSupportedLocales } from '../../providers/SupportedLocales'

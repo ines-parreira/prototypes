@@ -1,5 +1,3 @@
-import React from 'react'
-
 import css from './Deprecated_MultiLevelSelect.less'
 
 export default function CheckIcon() {

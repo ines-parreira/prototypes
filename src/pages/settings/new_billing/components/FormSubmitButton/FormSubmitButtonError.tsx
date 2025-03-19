@@ -1,5 +1,3 @@
-import React from 'react'
-
 import { useFormContext, useFormState } from 'react-hook-form'
 
 import Caption from 'pages/common/forms/Caption/Caption'

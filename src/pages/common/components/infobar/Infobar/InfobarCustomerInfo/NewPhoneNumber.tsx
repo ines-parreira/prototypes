@@ -1,4 +1,4 @@
-import React from 'react'
+import { useState } from 'react'
 
 import { isValidPhoneNumber } from 'libphonenumber-js'
 
@@ -28,9 +28,9 @@ type Props = {
 }
 
 export default function NewPhoneNumber({ customerId }: Props) {
-    const [isModalOpen, setIsModalOpen] = React.useState(false)
-    const [phoneNumber, setPhoneNumber] = React.useState('')
-    const [error, setError] = React.useState<string>()
+    const [isModalOpen, setIsModalOpen] = useState(false)
+    const [phoneNumber, setPhoneNumber] = useState('')
+    const [error, setError] = useState<string>()
 
     const handleModalClose = () => {
         setIsModalOpen(false)

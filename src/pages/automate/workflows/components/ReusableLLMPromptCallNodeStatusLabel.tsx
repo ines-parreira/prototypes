@@ -1,5 +1,3 @@
-import React from 'react'
-
 import VisualBuilderNodeIconContent from '../editor/visualBuilder/nodes/VisualBuilderNodeIconContent'
 
 type Props = {

@@ -1,5 +1,3 @@
-import React from 'react'
-
 import { isEmpty } from 'lodash'
 import { Link, Redirect } from 'react-router-dom'
 import { Breadcrumb, BreadcrumbItem } from 'reactstrap'

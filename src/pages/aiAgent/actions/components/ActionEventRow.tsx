@@ -1,5 +1,3 @@
-import React from 'react'
-
 import classnames from 'classnames'
 import moment from 'moment'
 import { useHistory } from 'react-router-dom'

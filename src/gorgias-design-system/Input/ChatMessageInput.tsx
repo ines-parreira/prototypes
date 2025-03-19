@@ -1,6 +1,4 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import React from 'react'
-
 import styled from '@emotion/styled'
 
 import IconButton from 'gorgias-design-system/Buttons/IconButton'

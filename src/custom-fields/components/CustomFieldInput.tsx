@@ -1,5 +1,3 @@
-import React from 'react'
-
 import MultiLevelSelect from 'custom-fields/components/MultiLevelSelect'
 import { getNumberOrUndefined } from 'custom-fields/helpers/getNumberOrUndefined'
 import {

@@ -1,5 +1,3 @@
-import React from 'react'
-
 import { openChat } from '../../../utils'
 import { AlertType } from './Alert/Alert'
 import LinkAlert from './Alert/LinkAlert'

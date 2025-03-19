@@ -1,5 +1,3 @@
-import React from 'react'
-
 import { useParams } from 'react-router-dom'
 
 import { useInsightPerformanceMetrics } from 'hooks/reporting/automate/useAIAgentInsightsL2Dataset'

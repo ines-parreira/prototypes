@@ -1,4 +1,4 @@
-import React from 'react'
+import { useRef } from 'react'
 
 import classnames from 'classnames'
 
@@ -31,7 +31,7 @@ export default function VoiceRecordingInput({
     isDisabled = false,
     isLoading = false,
 }: PropsVoiceRecordingInput) {
-    const voiceRecordingFileInput = React.useRef<HTMLInputElement>(null)
+    const voiceRecordingFileInput = useRef<HTMLInputElement>(null)
 
     const handleUploadButtonClick = () => {
         voiceRecordingFileInput?.current?.click()

@@ -1,5 +1,3 @@
-import React from 'react'
-
 import { useGetUser } from '@gorgias/api-queries'
 
 import Avatar from 'pages/common/components/Avatar/Avatar'

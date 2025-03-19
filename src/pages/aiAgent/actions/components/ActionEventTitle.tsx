@@ -1,5 +1,3 @@
-import React from 'react'
-
 import webhooksIcon from 'assets/img/icons/webhooks.svg'
 
 import { LlmTriggeredExecution } from '../types'

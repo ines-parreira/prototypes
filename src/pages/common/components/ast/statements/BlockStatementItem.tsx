@@ -1,5 +1,3 @@
-import React from 'react'
-
 import { StatementProps } from 'pages/common/hooks/rule/RuleProvider'
 import { useRuleContext } from 'pages/common/hooks/useRuleContext'
 

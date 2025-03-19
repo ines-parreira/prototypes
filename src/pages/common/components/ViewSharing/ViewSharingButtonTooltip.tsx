@@ -1,5 +1,3 @@
-import React from 'react'
-
 import { UncontrolledTooltip } from 'reactstrap'
 
 type Props = {

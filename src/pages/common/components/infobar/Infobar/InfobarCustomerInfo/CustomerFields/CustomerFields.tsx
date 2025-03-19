@@ -1,5 +1,3 @@
-import React from 'react'
-
 import { OBJECT_TYPES } from 'custom-fields/constants'
 import { useCustomFieldDefinitions } from 'custom-fields/hooks/queries/useCustomFieldDefinitions'
 import { useCustomFieldValues } from 'custom-fields/hooks/queries/useCustomFieldValues'

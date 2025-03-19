@@ -1,5 +1,3 @@
-import React from 'react'
-
 import { useWatch } from 'react-hook-form'
 
 import { TaxIdField } from 'pages/settings/new_billing/components/BillingInformationFields/components/TaxIdField'

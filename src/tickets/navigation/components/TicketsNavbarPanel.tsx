@@ -1,5 +1,3 @@
-import React from 'react'
-
 import { NavbarPanel } from 'core/navigation'
 import TicketNavbar from 'pages/tickets/navbar/TicketNavbar'
 import { useSplitTicketViewSwitcher } from 'split-ticket-view-toggle'

@@ -1,5 +1,3 @@
-import React from 'react'
-
 import VisualBuilderActionTag from 'pages/automate/workflows/components/VisualBuilderActionTag'
 
 import css from './LLMPromptTriggerNodeLabel.less'

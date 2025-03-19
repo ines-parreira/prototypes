@@ -1,10 +1,10 @@
-import React from 'react'
+import { forwardRef } from 'react'
 
 import cn from 'classnames'
 
 import css from './styles.less'
 
-const CardCaption = React.forwardRef<
+const CardCaption = forwardRef<
     HTMLDivElement,
     React.HTMLAttributes<HTMLDivElement>
 >(({ className, ...props }, ref) => (

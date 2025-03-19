@@ -1,4 +1,4 @@
-import React from 'react'
+import { Component } from 'react'
 
 import { fromJS, List, Map, Set } from 'immutable'
 import _clone from 'lodash/clone'
@@ -62,7 +62,7 @@ type State = {
     channels: CustomerChannel[]
 }
 
-export default class MergeCustomersModal extends React.Component<Props, State> {
+export default class MergeCustomersModal extends Component<Props, State> {
     state = _clone(defaultContent)
 
     componentDidMount = () => {

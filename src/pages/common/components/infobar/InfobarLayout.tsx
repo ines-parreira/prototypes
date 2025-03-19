@@ -1,4 +1,4 @@
-import React, { ReactNode } from 'react'
+import { Component, ReactNode } from 'react'
 import type { ComponentType } from 'react'
 
 import classnames from 'classnames'
@@ -32,10 +32,7 @@ type State = {
     width: number
 }
 
-export class InfobarLayout extends React.Component<
-    Props & SavedSizesProps,
-    State
-> {
+export class InfobarLayout extends Component<Props & SavedSizesProps, State> {
     private cursorX: number | null
     private originalWidth: number
     private readonly maxWidth: number

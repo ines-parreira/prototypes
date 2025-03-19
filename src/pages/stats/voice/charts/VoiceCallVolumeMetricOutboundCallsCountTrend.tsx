@@ -1,5 +1,3 @@
-import React from 'react'
-
 import { useStatsFilters } from 'hooks/reporting/support-performance/useStatsFilters'
 import { VoiceCallSegment } from 'models/reporting/cubes/VoiceCallCube'
 import { DashboardChartProps } from 'pages/stats/dashboards/types'

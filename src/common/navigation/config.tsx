@@ -1,5 +1,3 @@
-import React from 'react'
-
 import type { PanelLayoutConfig } from 'pages/PanelLayout'
 
 import GlobalNavigation from './components/GlobalNavigation'

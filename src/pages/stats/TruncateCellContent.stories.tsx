@@ -1,5 +1,3 @@
-import React from 'react'
-
 import { Meta, StoryObj } from '@storybook/react'
 
 import { TruncateCellContent } from 'pages/stats/TruncateCellContent'

@@ -1,5 +1,3 @@
-import React from 'react'
-
 import { EmailDNSRecord, EmailDomain } from '@gorgias/api-queries'
 
 import HeaderCellProperty from 'pages/common/components/table/cells/HeaderCellProperty'

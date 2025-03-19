@@ -1,5 +1,3 @@
-import React from 'react'
-
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import * as ToggleButton from 'pages/common/components/ToggleButton'

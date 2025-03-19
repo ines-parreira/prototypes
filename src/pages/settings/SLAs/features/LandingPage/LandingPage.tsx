@@ -1,5 +1,3 @@
-import React from 'react'
-
 import { TEMPLATES_LIST } from 'pages/settings/SLAs/config/templates'
 import Templates from 'pages/settings/SLAs/features/SLATemplateList/views/Templates'
 

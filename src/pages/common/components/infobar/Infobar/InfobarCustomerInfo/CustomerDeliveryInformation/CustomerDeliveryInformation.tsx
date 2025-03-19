@@ -1,5 +1,3 @@
-import React from 'react'
-
 import { CountryCode } from 'libphonenumber-js'
 
 import CountryInput from 'pages/common/forms/CountryInput/CountryInput'

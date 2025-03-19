@@ -1,5 +1,3 @@
-import React from 'react'
-
 import { useUpdateCustomFieldDefinition } from 'custom-fields/hooks/queries/useUpdateCustomFieldDefinition'
 import { CustomField, CustomFieldInput } from 'custom-fields/types'
 import history from 'pages/history'

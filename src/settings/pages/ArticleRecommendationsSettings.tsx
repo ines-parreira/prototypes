@@ -1,5 +1,3 @@
-import React from 'react'
-
 import cn from 'classnames'
 import { NavLink, Route, Switch, useRouteMatch } from 'react-router-dom'
 

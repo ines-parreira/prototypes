@@ -1,5 +1,3 @@
-import React from 'react'
-
 import { Link } from 'react-router-dom'
 
 import icon from 'assets/img/help-center/no-help-center-icon.png'

@@ -1,5 +1,3 @@
-import React from 'react'
-
 import { PaginationItem } from './components/PaginationItem'
 import { NavigationSize } from './types/NavigationSize'
 

@@ -1,5 +1,3 @@
-import React from 'react'
-
 import { DashboardChartProps } from 'pages/stats/dashboards/types'
 import AgentsShoutOut from 'pages/stats/support-performance/agents/AgentsShoutOut'
 import {

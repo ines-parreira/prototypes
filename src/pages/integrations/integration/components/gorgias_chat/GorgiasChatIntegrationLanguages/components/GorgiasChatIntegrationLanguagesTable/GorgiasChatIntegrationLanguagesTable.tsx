@@ -1,5 +1,3 @@
-import React from 'react'
-
 import TableBody from 'pages/common/components/table/TableBody'
 import TableWrapper from 'pages/common/components/table/TableWrapper'
 

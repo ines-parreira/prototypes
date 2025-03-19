@@ -1,5 +1,3 @@
-import React from 'react'
-
 import { fromJS, List, Map } from 'immutable'
 
 import { Source, Template } from 'models/widget/types'

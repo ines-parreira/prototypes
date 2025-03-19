@@ -1,5 +1,3 @@
-import React from 'react'
-
 import icon from 'assets/img/icons/invalid-filters.svg'
 
 import css from './DeactivatedViewMessage.less'

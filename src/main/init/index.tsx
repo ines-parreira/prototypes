@@ -8,8 +8,6 @@ import './initNotifications'
 import './initQueryClient'
 import './initSocketManager'
 
-import React from 'react'
-
 import { render } from 'react-dom'
 
 import 'init'

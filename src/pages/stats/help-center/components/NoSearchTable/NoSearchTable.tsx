@@ -1,4 +1,4 @@
-import React from 'react'
+import { useState } from 'react'
 
 import { useStatsFilters } from 'hooks/reporting/support-performance/useStatsFilters'
 import ChartCard from 'pages/stats/ChartCard'
@@ -30,7 +30,7 @@ export const NO_SEARCH_TABLE_TITLE = 'No search results'
 
 const NoSearchTable = ({ chartId, dashboard }: DashboardChartProps) => {
     const { cleanStatsFilters, userTimezone } = useStatsFilters()
-    const [currentPage, setCurrentPage] = React.useState(1)
+    const [currentPage, setCurrentPage] = useState(1)
 
     const { data, total, isLoading } = useNoSearchResultsMetrics({
         statsFilters: cleanStatsFilters,

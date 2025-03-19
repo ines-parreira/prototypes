@@ -1,4 +1,4 @@
-import React from 'react'
+import { Component } from 'react'
 
 import { List, Map } from 'immutable'
 
@@ -28,7 +28,7 @@ type TitleWrapperProps = {
     source: Map<string, any>
 }
 
-class TitleWrapper extends React.Component<TitleWrapperProps> {
+class TitleWrapper extends Component<TitleWrapperProps> {
     render() {
         const { source } = this.props
         const reviewSearchURL = makeReviewSearchURL(source.get('title'))
@@ -50,7 +50,7 @@ class TitleWrapper extends React.Component<TitleWrapperProps> {
 type AfterTitleProps = {
     source: Map<string, any>
 }
-class AfterTitle extends React.Component<AfterTitleProps> {
+class AfterTitle extends Component<AfterTitleProps> {
     render() {
         const { source } = this.props
         return (
@@ -72,7 +72,7 @@ class AfterTitle extends React.Component<AfterTitleProps> {
 type BeforeContentReviewsProps = {
     source: Map<string, any>
 }
-class BeforeContent extends React.Component<BeforeContentReviewsProps> {
+class BeforeContent extends Component<BeforeContentReviewsProps> {
     render() {
         const { source } = this.props
         const imagesData: List<Map<string, string>> = source.get(

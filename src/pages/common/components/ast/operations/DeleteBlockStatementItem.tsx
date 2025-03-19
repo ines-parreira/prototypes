@@ -1,4 +1,4 @@
-import React from 'react'
+import { Component } from 'react'
 
 import { List, Map } from 'immutable'
 
@@ -15,7 +15,7 @@ type Props = {
     type: string
 }
 
-export default class DeleteBlockStatementItem extends React.Component<Props> {
+export default class DeleteBlockStatementItem extends Component<Props> {
     _handleClick = () => {
         const { actions, parent } = this.props
         actions.modifyCodeAST(parent, null, RuleOperation.Delete)

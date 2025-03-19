@@ -1,5 +1,3 @@
-import React from 'react'
-
 import css from './RecommendationDivisor.less'
 
 export default function RecommendationDivisor() {

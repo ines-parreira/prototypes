@@ -1,5 +1,3 @@
-import React from 'react'
-
 import { paywallConfigs as defaultPaywallConfigs } from 'config/paywalls'
 import useAppSelector from 'hooks/useAppSelector'
 import {

@@ -1,5 +1,3 @@
-import React from 'react'
-
 import { logEvent, SegmentEvent } from 'common/segment'
 import { TimeSeriesHook } from 'hooks/reporting/useTimeSeries'
 import { DownloadDataButton } from 'pages/stats/support-performance/components/DownloadDataButton'

@@ -1,5 +1,3 @@
-import React from 'react'
-
 import ShortcutIcon from 'pages/common/components/ShortcutIcon/ShortcutIcon'
 
 import { NavBarDisplayMode } from '../hooks/useNavBar/context'

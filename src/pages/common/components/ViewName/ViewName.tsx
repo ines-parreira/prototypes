@@ -1,4 +1,4 @@
-import React from 'react'
+import { memo } from 'react'
 
 import css from './ViewName.less'
 
@@ -18,4 +18,4 @@ const ViewName = ({ viewName = '', emoji }: Props) => {
     )
 }
 
-export default React.memo(ViewName)
+export default memo(ViewName)

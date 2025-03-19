@@ -1,5 +1,3 @@
-import React from 'react'
-
 import Button from 'pages/common/components/button/Button'
 import ModalBody from 'pages/common/components/modal/ModalBody'
 import ModalFooter from 'pages/common/components/modal/ModalFooter'

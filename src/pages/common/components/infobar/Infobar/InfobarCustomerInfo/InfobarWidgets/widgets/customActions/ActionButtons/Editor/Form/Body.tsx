@@ -1,5 +1,3 @@
-import React from 'react'
-
 import { ContentType } from 'models/api/types'
 import JsonField from 'pages/common/forms/JsonField'
 import RadioFieldSet from 'pages/common/forms/RadioFieldSet'

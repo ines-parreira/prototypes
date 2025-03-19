@@ -1,5 +1,3 @@
-import React from 'react'
-
 import { useAutomateFilters } from 'hooks/reporting/automate/useAutomateFilters'
 import { useAutomationRateTrend } from 'hooks/reporting/automate/useAutomationRateTrend'
 import useLocalStorage from 'hooks/useLocalStorage'

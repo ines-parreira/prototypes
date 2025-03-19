@@ -1,4 +1,4 @@
-import React from 'react'
+import { Component } from 'react'
 
 import { fromJS, List } from 'immutable'
 import { connect, ConnectedProps } from 'react-redux'
@@ -17,7 +17,7 @@ type OwnProps = {
     allowUnassign?: boolean
 }
 
-export class AssigneeUserSelectContainer extends React.Component<
+export class AssigneeUserSelectContainer extends Component<
     OwnProps & ConnectedProps<typeof connector>
 > {
     componentDidMount() {

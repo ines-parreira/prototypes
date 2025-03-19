@@ -1,5 +1,3 @@
-import React from 'react'
-
 import { Language } from 'constants/languages'
 
 import { ContactFormDisplayMode } from './types/formDisplayMode.enum'

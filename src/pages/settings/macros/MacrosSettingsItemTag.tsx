@@ -1,5 +1,3 @@
-import React from 'react'
-
 import { Badge, Tooltip } from '@gorgias/merchant-ui-kit'
 
 import TicketTag from 'pages/common/components/TicketTag'

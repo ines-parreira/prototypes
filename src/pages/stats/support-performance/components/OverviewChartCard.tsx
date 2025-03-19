@@ -1,5 +1,3 @@
-import React from 'react'
-
 import { useStatsFilters } from 'hooks/reporting/support-performance/useStatsFilters'
 import { TimeSeriesHook } from 'hooks/reporting/useTimeSeries'
 import ChartCard from 'pages/stats/ChartCard'

@@ -1,10 +1,10 @@
-import React from 'react'
+import { memo } from 'react'
 
 import { useSalesCoupons } from 'models/billing/queries'
 import { BillingInternalViewUI } from 'pages/settings/new_billing/components/BillingInternalViewUI'
 import { useBillingStateWithSideEffects } from 'pages/settings/new_billing/hooks/useBillingStateWithSideEffects'
 
-export default React.memo(BillingInternalView)
+export default memo(BillingInternalView)
 
 export function BillingInternalView() {
     const { data: billingState, ...billingStateQuery } =

@@ -1,5 +1,3 @@
-import React from 'react'
-
 import BigNumberMetric from 'pages/stats/BigNumberMetric'
 import TrendBadge from 'pages/stats/common/components/TrendBadge'
 import { formatMetricValue } from 'pages/stats/common/utils'

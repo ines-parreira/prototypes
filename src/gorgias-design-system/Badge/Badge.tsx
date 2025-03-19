@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-unsafe-return */
-import React from 'react'
+import type { FC, HTMLAttributes } from 'react'
 
 import styled from '@emotion/styled'
 
@@ -19,7 +19,7 @@ export type BadgeColor = Extract<
     | 'accessoryBlack'
 >
 
-export interface BadgeProps extends React.HTMLAttributes<HTMLElement> {
+export interface BadgeProps extends HTMLAttributes<HTMLElement> {
     /**
      * The text to display in the badge.
      */
@@ -62,7 +62,7 @@ const StyledBadge = styled.div<{ color?: BadgeColor }>`
 /**
  * Non-interactive components used to display statuses or information.
  */
-export const Badge: React.FC<BadgeProps> = ({ ...props }: BadgeProps) => {
+export const Badge: FC<BadgeProps> = ({ ...props }: BadgeProps) => {
     const { label, color = 'accessoryBlue' } = props
     return (
         <StyledBadge color={color} {...props}>

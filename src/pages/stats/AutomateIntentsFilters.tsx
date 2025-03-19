@@ -1,5 +1,3 @@
-import React from 'react'
-
 import { useCleanStatsFilters } from 'hooks/reporting/useCleanStatsFilters'
 import useAppSelector from 'hooks/useAppSelector'
 import ChannelsStatsFilter from 'pages/stats/common/filters/DEPRECATED_ChannelsStatsFilter'

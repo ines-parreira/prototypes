@@ -1,5 +1,3 @@
-import React from 'react'
-
 import { UserRole } from 'config/types/user'
 import useAppSelector from 'hooks/useAppSelector'
 import { AgentPerformanceHeatmapSwitch } from 'pages/stats/support-performance/agents/AgentPerformanceHeatmapSwitch'

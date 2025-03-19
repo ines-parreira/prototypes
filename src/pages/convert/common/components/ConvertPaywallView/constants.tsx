@@ -1,5 +1,3 @@
-import React from 'react'
-
 import { CarouselData } from 'pages/common/components/HeroImageCarousel/HeroImageCarousel'
 import { assetsUrl } from 'utils'
 

@@ -1,5 +1,3 @@
-import React from 'react'
-
 import { Panel } from 'core/layout/panels'
 import TicketInfobarContainer from 'pages/tickets/detail/TicketInfobarContainer'
 

@@ -1,5 +1,3 @@
-import React from 'react'
-
 import { getConfigByType } from 'config/views'
 import useAppSelector from 'hooks/useAppSelector'
 import css from 'pages/common/components/ViewTable/Table.less'

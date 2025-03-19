@@ -1,5 +1,3 @@
-import React from 'react'
-
 import { logEvent, SegmentEvent } from 'common/segment'
 import { useDownloadSLAsData } from 'hooks/reporting/sla/useDownloadSLAsData'
 import { DownloadSLAsDataButton } from 'pages/stats/sla/components/DownloadSLAsDataButton'

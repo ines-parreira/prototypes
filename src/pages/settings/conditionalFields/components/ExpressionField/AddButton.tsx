@@ -1,5 +1,3 @@
-import React from 'react'
-
 import { CustomFieldConditionExpression } from '@gorgias/api-queries'
 
 import { useWatch } from 'core/forms'

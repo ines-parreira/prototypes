@@ -1,5 +1,3 @@
-import React from 'react'
-
 import { Tooltip } from '@gorgias/merchant-ui-kit'
 
 import Alert, { AlertType } from 'pages/common/components/Alert/Alert'

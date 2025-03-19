@@ -1,5 +1,3 @@
-import React from 'react'
-
 import gorgiasChatSendMessageIcon from 'assets/img/integrations/gorgias-chat-send-message-icon.svg'
 import Button from 'pages/common/components/button/Button'
 import {

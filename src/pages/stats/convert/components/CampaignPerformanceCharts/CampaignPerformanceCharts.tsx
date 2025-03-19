@@ -1,5 +1,3 @@
-import React from 'react'
-
 import { useGridSize } from 'hooks/useGridSize'
 import {
     CampaignsChart,

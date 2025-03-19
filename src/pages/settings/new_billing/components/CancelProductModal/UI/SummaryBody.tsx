@@ -1,5 +1,3 @@
-import React from 'react'
-
 import { Cadence } from 'models/billing/types'
 
 import SummaryLineItem from './SummaryLineItem'

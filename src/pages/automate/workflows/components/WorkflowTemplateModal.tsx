@@ -1,5 +1,3 @@
-import React from 'react'
-
 import { ChannelTriggerNodeType } from 'pages/automate/workflows/models/visualBuilderGraph.types'
 import { transformWorkflowConfigurationIntoVisualBuilderGraph } from 'pages/automate/workflows/models/workflowConfiguration.model'
 import { WorkflowTemplate } from 'pages/automate/workflows/models/workflowConfiguration.types'

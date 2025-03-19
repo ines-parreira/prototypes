@@ -1,4 +1,5 @@
-import React from 'react'
+import { useEffect, useState } from 'react'
+import type { ChangeEvent, FocusEvent } from 'react'
 
 import { FormFeedback, FormGroup, Input } from 'reactstrap'
 import isUrl from 'validator/lib/isURL'
@@ -10,11 +11,7 @@ import css from './SocialNavigationLinks.less'
 
 type Props = LinkEntity & {
     logo: string
-    onBlur: (
-        ev: React.FocusEvent<HTMLInputElement>,
-        key: 'value',
-        id: number,
-    ) => void
+    onBlur: (ev: FocusEvent<HTMLInputElement>, key: 'value', id: number) => void
 }
 
 export const SocialNavigationItem = ({
@@ -26,13 +23,13 @@ export const SocialNavigationItem = ({
 }: Props): JSX.Element => {
     const errMessage =
         value !== '' && !isUrl(value, isURLOptions) ? 'URL is invalid' : ''
-    const [innerValue, setInnerValue] = React.useState(value)
+    const [innerValue, setInnerValue] = useState(value)
 
-    React.useEffect(() => {
+    useEffect(() => {
         setInnerValue(value)
     }, [value])
 
-    const handleOnChangeValue = (ev: React.ChangeEvent<HTMLInputElement>) => {
+    const handleOnChangeValue = (ev: ChangeEvent<HTMLInputElement>) => {
         setInnerValue(ev.target.value)
     }
 

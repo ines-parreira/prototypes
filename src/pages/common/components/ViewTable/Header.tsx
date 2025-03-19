@@ -1,4 +1,4 @@
-import React, { createRef, KeyboardEvent } from 'react'
+import { Component, createRef, KeyboardEvent, type ReactNode } from 'react'
 
 import classnames from 'classnames'
 import { Map } from 'immutable'
@@ -36,7 +36,7 @@ type OwnProps = {
     isSearch: boolean
     isUpdate: boolean
     type: EntityType
-    viewButtons?: React.ReactNode
+    viewButtons?: ReactNode
 }
 
 type Props = OwnProps & ConnectedProps<typeof connector> & { flags?: LDFlagSet }
@@ -46,7 +46,7 @@ type State = {
     searchTerm: string
 }
 
-export class HeaderContainer extends React.Component<Props, State> {
+export class HeaderContainer extends Component<Props, State> {
     editableTitleRef = createRef<HTMLInputElement>()
 
     state = {

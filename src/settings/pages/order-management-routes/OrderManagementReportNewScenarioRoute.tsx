@@ -1,4 +1,4 @@
-import React from 'react'
+import { createElement } from 'react'
 
 import { StaticContext } from 'react-router'
 import { RouteComponentProps } from 'react-router-dom'
@@ -24,7 +24,7 @@ export const OrderManagementReportNewScenarioRoute = (
 ) => (
     <SelfServiceHelpCentersProvider>
         <SelfServiceContactFormsProvider>
-            {React.createElement(
+            {createElement(
                 withUserRoleRequired(
                     CreateReportOrderIssueFlowScenarioViewContainer,
                     AGENT_ROLE,

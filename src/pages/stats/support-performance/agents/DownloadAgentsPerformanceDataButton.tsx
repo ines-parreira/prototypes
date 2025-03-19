@@ -1,5 +1,3 @@
-import React from 'react'
-
 import { logEvent, SegmentEvent } from 'common/segment'
 import { useDownloadAgentsPerformanceData } from 'hooks/reporting/support-performance/agents/useDownloadAgentsPerformanceData'
 import { DownloadDataButton } from 'pages/stats/support-performance/components/DownloadDataButton'

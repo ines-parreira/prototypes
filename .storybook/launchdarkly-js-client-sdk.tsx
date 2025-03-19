@@ -1,12 +1,15 @@
 /* eslint-disable */
-import React from 'react'
+import type { ComponentType, ReactNode } from 'react'
 
 import { FeatureFlagKey } from '../src/config/featureFlags'
 
-let _flags = Object.keys(FeatureFlagKey).reduce((acc, key) => {
-    acc[key] = false
-    return acc
-}, {})
+let _flags = Object.keys(FeatureFlagKey).reduce<Record<string, boolean>>(
+    (acc, key) => {
+        acc[key] = false
+        return acc
+    },
+    {},
+)
 
 let _mockClient = {
     waitForInitialization: () => Promise.resolve(),
@@ -17,12 +20,18 @@ let _mockClient = {
 }
 
 export const useFlags = () => _flags
-export const withLDConsumer = (options) => (WrappedComponent) => (props) => {
-    const allProps = { ...props }
-    return <WrappedComponent {...allProps} />
-}
+export const withLDConsumer =
+    (_: unknown) =>
+    (WrappedComponent: ComponentType<unknown>) =>
+    (props: object) => {
+        const allProps = { ...props }
+        return <WrappedComponent {...allProps} />
+    }
 
-export function decorator(story, { parameters }) {
+export function decorator(
+    story: () => ReactNode,
+    { parameters }: { parameters: { flags: Record<string, boolean> } },
+) {
     if (parameters && parameters.flags) {
         _flags = parameters.flags
     }

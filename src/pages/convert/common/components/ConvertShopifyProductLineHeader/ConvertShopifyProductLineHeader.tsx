@@ -1,5 +1,3 @@
-import React from 'react'
-
 import css from 'pages/convert/common/components/ConvertShopifyProductLineHeader/ConvertShopifyProductLineHeader.less'
 
 type Props = {

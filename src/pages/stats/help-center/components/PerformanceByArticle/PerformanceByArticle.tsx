@@ -1,4 +1,4 @@
-import React from 'react'
+import { useState } from 'react'
 
 import { useStatsFilters } from 'hooks/reporting/support-performance/useStatsFilters'
 import ChartCard from 'pages/stats/ChartCard'
@@ -60,7 +60,7 @@ export const PerformanceByArticle = ({
     chartId,
 }: Props) => {
     const { cleanStatsFilters, userTimezone } = useStatsFilters()
-    const [currentPage, setCurrentPage] = React.useState(1)
+    const [currentPage, setCurrentPage] = useState(1)
 
     const onPageChange = (page: number) => {
         if (currentPage !== page) {

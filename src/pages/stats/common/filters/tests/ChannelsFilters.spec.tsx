@@ -1,5 +1,3 @@
-import React from 'react'
-
 import { screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 
@@ -41,7 +39,10 @@ const mockedToChannels = assumeMock(toChannel)
 const mockedDispatch = jest.fn()
 jest.mock('hooks/useAppDispatch', () => () => mockedDispatch)
 
-jest.mock('config/views.tsx', () => <div />)
+jest.mock('config/views.tsx', () => ({
+    __esModule: true,
+    default: () => null,
+}))
 
 jest.mock('common/segment', () => ({
     logEvent: jest.fn(),

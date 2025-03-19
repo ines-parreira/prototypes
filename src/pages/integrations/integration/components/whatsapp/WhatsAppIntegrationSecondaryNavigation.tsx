@@ -1,5 +1,3 @@
-import React from 'react'
-
 import { NavLink, useLocation } from 'react-router-dom'
 
 import { IntegrationType, WhatsAppIntegration } from 'models/integration/types'

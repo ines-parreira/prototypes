@@ -1,5 +1,3 @@
-import React from 'react'
-
 import { Separator } from 'pages/common/components/Separator/Separator'
 import { Components } from 'rest_api/workflows_api/client.generated'
 

@@ -1,5 +1,3 @@
-import React from 'react'
-
 import cs from 'classnames'
 import { Link } from 'react-router-dom'
 

@@ -1,5 +1,3 @@
-import React from 'react'
-
 import classnames from 'classnames'
 
 import { View, ViewCategory } from 'models/view/types'

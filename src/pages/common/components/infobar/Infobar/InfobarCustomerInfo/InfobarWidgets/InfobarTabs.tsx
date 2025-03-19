@@ -1,5 +1,3 @@
-import React from 'react'
-
 import { Nav, Navbar, NavItem, NavLink } from 'reactstrap'
 
 import { getWidgetId } from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/helpers'

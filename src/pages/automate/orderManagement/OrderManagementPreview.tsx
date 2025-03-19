@@ -1,5 +1,3 @@
-import React from 'react'
-
 import { History } from 'history'
 
 import { TicketChannel } from 'business/types/ticket'

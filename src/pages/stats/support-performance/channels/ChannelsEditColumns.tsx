@@ -1,5 +1,3 @@
-import React from 'react'
-
 import { useChannelsTableSetting } from 'hooks/reporting/useChannelsTableConfigSetting'
 import { EditTableColumns } from 'pages/stats/common/components/Table/EditTableColumns'
 import {

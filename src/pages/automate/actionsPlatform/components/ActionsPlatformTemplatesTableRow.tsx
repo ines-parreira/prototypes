@@ -1,5 +1,3 @@
-import React from 'react'
-
 import { DateAndTimeFormatting } from 'constants/datetime'
 import useGetDateAndTimeFormat from 'hooks/useGetDateAndTimeFormat'
 import { DraftBadge } from 'pages/automate/workflows/components/DraftBadge'

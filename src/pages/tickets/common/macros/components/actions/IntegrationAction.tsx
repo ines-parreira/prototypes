@@ -1,4 +1,4 @@
-import React from 'react'
+import { Component } from 'react'
 
 import { Map } from 'immutable'
 
@@ -11,7 +11,7 @@ type Props = {
     index: number
 }
 
-class IntegrationAction extends React.Component<Props> {
+class IntegrationAction extends Component<Props> {
     render() {
         const { action } = this.props
 

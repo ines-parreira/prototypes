@@ -1,5 +1,3 @@
-import React from 'react'
-
 import Button from 'pages/common/components/button/Button'
 import ConfirmButton from 'pages/common/components/button/ConfirmButton'
 

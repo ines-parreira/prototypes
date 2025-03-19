@@ -1,5 +1,3 @@
-import React from 'react'
-
 import { Cadence, Plan, ProductType } from 'models/billing/types'
 import {
     getOverageUnitPriceFormatted,

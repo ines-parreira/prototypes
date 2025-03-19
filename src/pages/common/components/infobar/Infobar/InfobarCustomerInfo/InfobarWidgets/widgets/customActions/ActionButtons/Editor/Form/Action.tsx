@@ -1,5 +1,3 @@
-import React from 'react'
-
 import { Label } from '@gorgias/merchant-ui-kit'
 
 import { AVAILABLE_HTTP_METHODS } from 'config'

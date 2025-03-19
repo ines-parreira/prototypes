@@ -1,5 +1,3 @@
-import React from 'react'
-
 import { Map } from 'immutable'
 
 import { Source, Template as TemplateType } from 'models/widget/types'

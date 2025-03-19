@@ -1,5 +1,3 @@
-import React from 'react'
-
 import classnames from 'classnames'
 import { List, Map } from 'immutable'
 import { ListGroup, ListGroupItem } from 'reactstrap'

@@ -1,5 +1,3 @@
-import React from 'react'
-
 import classnames from 'classnames'
 
 import IconTooltip from 'pages/common/forms/IconTooltip/IconTooltip'

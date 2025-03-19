@@ -1,4 +1,4 @@
-import React from 'react'
+import { Fragment } from 'react'
 
 import _isArray from 'lodash/isArray'
 import _isBoolean from 'lodash/isBoolean'
@@ -127,10 +127,10 @@ export function getValueFromData(
                 return data.map(
                     (val: Maybe<string | number | boolean>, index: number) => {
                         return (
-                            <React.Fragment key={index}>
+                            <Fragment key={index}>
                                 {index > 0 && ', '}
                                 {val ? val.toString() : FALLBACK_VALUE}
-                            </React.Fragment>
+                            </Fragment>
                         )
                     },
                 )

@@ -1,5 +1,3 @@
-import React from 'react'
-
 import classnames from 'classnames'
 
 import { HELP_CENTER_DEFAULT_LAYOUT } from '../../constants'

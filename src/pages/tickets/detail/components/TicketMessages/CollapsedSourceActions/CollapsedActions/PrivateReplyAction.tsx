@@ -1,5 +1,3 @@
-import React from 'react'
-
 import messengerIcon from 'assets/img/integrations/facebook-messenger-dark-icon.svg'
 import instagramDirectMessageIcon from 'assets/img/integrations/Instagram-direct-message-blue.svg'
 import { TicketMessage } from 'models/ticket/types'

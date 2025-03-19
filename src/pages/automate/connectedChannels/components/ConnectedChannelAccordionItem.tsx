@@ -1,5 +1,3 @@
-import React from 'react'
-
 import { Link } from 'react-router-dom'
 
 import { TicketChannel } from 'business/types/ticket'

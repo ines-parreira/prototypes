@@ -1,5 +1,3 @@
-import React from 'react'
-
 import { LoadingSpinner } from '@gorgias/merchant-ui-kit'
 
 import css from './Loader.less'

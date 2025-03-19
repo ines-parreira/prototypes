@@ -1,4 +1,4 @@
-import React, { HTMLAttributes } from 'react'
+import { FC, HTMLAttributes } from 'react'
 
 import styled from '@emotion/styled'
 
@@ -103,7 +103,7 @@ export type AvatarProps = {
  * A component that represents a profile picture or an image used to identify a user or a bot.
  * It can display either an image, a bot icon, or initials as fallback.
  */
-const Avatar: React.FC<AvatarProps & HTMLAttributes<HTMLDivElement>> = ({
+const Avatar: FC<AvatarProps & HTMLAttributes<HTMLDivElement>> = ({
     isBot,
     showPlaceholderAvatar,
     src,

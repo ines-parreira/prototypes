@@ -1,5 +1,3 @@
-import React from 'react'
-
 import { fromJS, List } from 'immutable'
 
 import { SELECTABLE_REASONS_DROPDOWN_OPTIONS } from 'models/selfServiceConfiguration/constants'

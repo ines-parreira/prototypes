@@ -1,5 +1,3 @@
-import React from 'react'
-
 import classnames from 'classnames'
 
 import { Label } from '@gorgias/merchant-ui-kit'

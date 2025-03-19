@@ -1,5 +1,3 @@
-import React from 'react'
-
 import { MigrationProvider } from '../../types'
 import MigrationBaseModal from '../MigrationBaseModal'
 import ProviderInfo from '../ProviderInfo'

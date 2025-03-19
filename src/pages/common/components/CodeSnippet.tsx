@@ -1,5 +1,3 @@
-import React from 'react'
-
 import { Alert } from 'reactstrap'
 
 import { withClipboardButton } from '../utils/withClipboardButton/withClipboardButton'

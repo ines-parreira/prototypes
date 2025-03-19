@@ -1,5 +1,3 @@
-import React from 'react'
-
 import { Call } from '@twilio/voice-sdk'
 import classNames from 'classnames'
 

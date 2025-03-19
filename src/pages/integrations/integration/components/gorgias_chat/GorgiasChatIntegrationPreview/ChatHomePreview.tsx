@@ -1,6 +1,4 @@
 // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-import React from 'react'
-
 import styled from '@emotion/styled'
 
 import {

@@ -1,5 +1,3 @@
-import React from 'react'
-
 import _pick from 'lodash/pick'
 
 import { WaitMusicType } from '@gorgias/api-queries'

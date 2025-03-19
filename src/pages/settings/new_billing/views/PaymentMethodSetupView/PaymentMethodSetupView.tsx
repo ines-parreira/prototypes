@@ -1,5 +1,3 @@
-import React from 'react'
-
 import { useBillingContact } from 'models/billing/queries'
 import Loader from 'pages/common/components/Loader/Loader'
 import { StripeElementsProvider } from 'pages/settings/new_billing/components/StripeElementsProvider/StripeElementsProvider'

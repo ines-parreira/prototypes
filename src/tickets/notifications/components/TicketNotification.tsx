@@ -1,5 +1,3 @@
-import React from 'react'
-
 import { Content, Excerpt, Subject, Subtitle } from 'common/notifications'
 import type { ContentProps, Notification } from 'common/notifications'
 

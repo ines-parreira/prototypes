@@ -1,5 +1,3 @@
-import React from 'react'
-
 import { useTagsTimeSeries } from 'hooks/reporting/ticket-insights/useTagsTimeSeries'
 import ChartCard from 'pages/stats/ChartCard'
 import LineChart from 'pages/stats/common/components/charts/LineChart/LineChart'

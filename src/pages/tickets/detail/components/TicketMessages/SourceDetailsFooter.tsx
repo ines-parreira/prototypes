@@ -1,5 +1,3 @@
-import React from 'react'
-
 import classnames from 'classnames'
 
 import { TicketMessage } from 'models/ticket/types'

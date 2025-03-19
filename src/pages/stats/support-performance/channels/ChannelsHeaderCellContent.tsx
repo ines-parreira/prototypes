@@ -1,5 +1,3 @@
-import React from 'react'
-
 import { useChannelsSortingQuery } from 'hooks/reporting/support-performance/useChannelsSortingQuery'
 import { OrderDirection } from 'models/api/types'
 import HeaderCellProperty from 'pages/common/components/table/cells/HeaderCellProperty'

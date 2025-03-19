@@ -1,5 +1,3 @@
-import React from 'react'
-
 import useAppSelector from 'hooks/useAppSelector'
 import useContactFormsAutomationSettings from 'pages/automate/common/hooks/useContactFormAutomationSettings'
 import FlowsBanner from 'pages/settings/contactForm/components/FlowsBanner'

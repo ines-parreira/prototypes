@@ -42,7 +42,12 @@ module.exports = {
                     loose: true,
                 },
             ],
-            '@babel/react',
+            [
+                '@babel/preset-react',
+                {
+                    runtime: 'automatic',
+                },
+            ],
             [
                 '@babel/typescript',
                 {

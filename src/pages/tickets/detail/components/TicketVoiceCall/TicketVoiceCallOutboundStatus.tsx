@@ -1,5 +1,3 @@
-import React from 'react'
-
 import { FeatureFlagKey } from 'config/featureFlags'
 import { useFlag } from 'core/flags'
 import {

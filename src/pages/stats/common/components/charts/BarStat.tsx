@@ -1,4 +1,4 @@
-import React from 'react'
+import { memo } from 'react'
 
 import { List, Map } from 'immutable'
 import _isEqual from 'lodash/isEqual'
@@ -63,4 +63,4 @@ export function BarStat({ config, data, legend }: Props) {
 }
 
 // Use memo to prevent redrawing on state change
-export default React.memo(BarStat, (prev, next) => _isEqual(prev, next))
+export default memo(BarStat, (prev, next) => _isEqual(prev, next))

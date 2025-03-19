@@ -1,5 +1,3 @@
-import React from 'react'
-
 import css from './EmptyTicket.less'
 
 export default function EmptyTicket() {

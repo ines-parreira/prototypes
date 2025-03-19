@@ -1,5 +1,3 @@
-import React from 'react'
-
 import { BadgeItemProps } from 'pages/common/components/BadgetItem'
 
 import { Locale } from '../../../../../../../models/helpCenter/types'

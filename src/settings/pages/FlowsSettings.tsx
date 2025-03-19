@@ -1,5 +1,3 @@
-import React from 'react'
-
 import { NavLink, Route, useRouteMatch } from 'react-router-dom'
 
 import Header from 'pages/common/components/PageHeader'

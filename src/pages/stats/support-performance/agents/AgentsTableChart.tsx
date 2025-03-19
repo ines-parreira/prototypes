@@ -1,5 +1,3 @@
-import React from 'react'
-
 import ChartCard from 'pages/stats/ChartCard'
 import { DashboardChartProps } from 'pages/stats/dashboards/types'
 import { AgentsPerformanceCardExtra } from 'pages/stats/support-performance/agents/AgentsPerformanceCardExtra'

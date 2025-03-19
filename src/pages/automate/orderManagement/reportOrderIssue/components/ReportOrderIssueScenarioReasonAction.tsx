@@ -1,5 +1,3 @@
-import React from 'react'
-
 import classnames from 'classnames'
 import { EditorState } from 'draft-js'
 import { fromJS } from 'immutable'

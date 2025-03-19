@@ -1,5 +1,3 @@
-import React from 'react'
-
 import useEffectOnce from 'hooks/useEffectOnce'
 import useWhatsAppEditor from 'pages/integrations/integration/components/whatsapp/useWhatsAppEditor'
 import WhatsAppMessageTemplateMessage from 'pages/integrations/integration/components/whatsapp/WhatsAppMessageTemplateMessage'

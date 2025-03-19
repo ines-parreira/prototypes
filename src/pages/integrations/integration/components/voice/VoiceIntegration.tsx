@@ -1,5 +1,3 @@
-import React from 'react'
-
 import { Route, Switch, useParams } from 'react-router-dom'
 
 import { Button } from '@gorgias/merchant-ui-kit'

@@ -1,5 +1,3 @@
-import React from 'react'
-
 import { useAgentsTableConfigSetting } from 'hooks/reporting/useAgentsTableConfigSetting'
 import { EditTableColumns } from 'pages/stats/common/components/Table/EditTableColumns'
 import {

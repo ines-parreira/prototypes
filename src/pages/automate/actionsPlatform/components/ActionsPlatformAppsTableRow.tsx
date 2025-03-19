@@ -1,5 +1,3 @@
-import React from 'react'
-
 import classnames from 'classnames'
 
 import BodyCell from 'pages/common/components/table/cells/BodyCell'

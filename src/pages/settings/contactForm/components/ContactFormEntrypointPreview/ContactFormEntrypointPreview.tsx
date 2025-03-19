@@ -1,5 +1,3 @@
-import React from 'react'
-
 import useAppSelector from 'hooks/useAppSelector'
 import { ContactForm } from 'models/contactForm/types'
 import { Integration, IntegrationType } from 'models/integration/types'

@@ -1,5 +1,3 @@
-import React from 'react'
-
 import { Card } from '@gorgias/analytics-ui-kit'
 import { Badge } from '@gorgias/merchant-ui-kit'
 

@@ -1,5 +1,3 @@
-import React from 'react'
-
 import CheckIcon from '../CheckIcon'
 
 import dropdownCss from '../Deprecated_MultiLevelSelect.less'

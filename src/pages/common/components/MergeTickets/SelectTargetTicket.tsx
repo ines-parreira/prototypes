@@ -1,4 +1,4 @@
-import React from 'react'
+import { Component } from 'react'
 
 import { fromJS, List, Map } from 'immutable'
 import { connect, ConnectedProps } from 'react-redux'
@@ -23,7 +23,7 @@ type State = {
     listIsLoading: boolean
 }
 
-class SelectTargetTicket extends React.Component<Props, State> {
+class SelectTargetTicket extends Component<Props, State> {
     state = {
         query: '',
         navigation: fromJS({}),

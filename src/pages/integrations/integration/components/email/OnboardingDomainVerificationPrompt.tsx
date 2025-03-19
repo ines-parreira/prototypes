@@ -1,5 +1,3 @@
-import React from 'react'
-
 import warningIcon from 'assets/img/icons/warning.svg'
 import Button from 'pages/common/components/button/Button'
 import ModalActionsFooter from 'pages/common/components/modal/ModalActionsFooter'

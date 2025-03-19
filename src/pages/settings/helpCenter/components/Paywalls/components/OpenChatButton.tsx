@@ -1,5 +1,3 @@
-import React from 'react'
-
 import { openChat } from '../../../../../../utils'
 
 import css from './OpenChatButton.less'

@@ -1,5 +1,3 @@
-import React from 'react'
-
 import useStoreIntegrations from 'pages/automate/common/hooks/useStoreIntegrations'
 import HeaderCell from 'pages/common/components/table/cells/HeaderCell'
 import HeaderCellProperty from 'pages/common/components/table/cells/HeaderCellProperty'

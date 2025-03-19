@@ -1,5 +1,3 @@
-import React from 'react'
-
 import { EmailIntegration, GmailIntegration } from '@gorgias/api-queries'
 
 import useAppSelector from 'hooks/useAppSelector'

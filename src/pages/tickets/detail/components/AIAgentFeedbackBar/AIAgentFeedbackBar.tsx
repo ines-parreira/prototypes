@@ -1,5 +1,3 @@
-import React from 'react'
-
 import { TicketVia } from 'business/types/ticket'
 import { SegmentEvent } from 'common/segment'
 import { logEventWithSampling } from 'common/segment/segment'

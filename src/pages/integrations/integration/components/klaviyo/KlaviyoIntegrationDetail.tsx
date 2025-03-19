@@ -1,4 +1,4 @@
-import React from 'react'
+import { Component } from 'react'
 
 import type { Map } from 'immutable'
 import { Link } from 'react-router-dom'
@@ -46,7 +46,7 @@ type Props = {
     isUpdate: boolean
 }
 
-class KlaviyoIntegrationDetail extends React.Component<Props> {
+class KlaviyoIntegrationDetail extends Component<Props> {
     state = {
         isSubmitting: false,
         isActivating: false,

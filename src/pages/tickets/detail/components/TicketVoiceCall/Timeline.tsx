@@ -1,5 +1,3 @@
-import React from 'react'
-
 import css from './Timeline.less'
 
 type TimelineProps = {

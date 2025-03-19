@@ -1,5 +1,3 @@
-import React from 'react'
-
 import { useHistory, useParams } from 'react-router-dom'
 
 import { Skeleton } from '@gorgias/merchant-ui-kit'

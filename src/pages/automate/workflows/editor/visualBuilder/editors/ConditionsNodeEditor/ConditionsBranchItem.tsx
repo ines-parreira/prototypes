@@ -1,5 +1,3 @@
-import React from 'react'
-
 import { ConditionSchema } from 'pages/automate/workflows/models/conditions.types'
 import {
     WorkflowVariable,

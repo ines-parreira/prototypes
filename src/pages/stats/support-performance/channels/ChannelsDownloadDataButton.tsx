@@ -1,5 +1,3 @@
-import React from 'react'
-
 import { logEvent, SegmentEvent } from 'common/segment'
 import { useChannelsReportMetrics } from 'hooks/reporting/support-performance/channels/useChannelsReportMetrics'
 import Button from 'pages/common/components/button/Button'

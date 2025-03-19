@@ -1,5 +1,3 @@
-import React from 'react'
-
 import poweredByGorgiasIcon from 'assets/img/integrations/gorgias-chat-powered-by.svg'
 
 import css from './GorgiasChatPoweredBy.less'

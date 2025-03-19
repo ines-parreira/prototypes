@@ -1,4 +1,4 @@
-import React from 'react'
+import { Component } from 'react'
 
 import { fromJS, List, Map } from 'immutable'
 import { connect, ConnectedProps } from 'react-redux'
@@ -15,7 +15,7 @@ type Props = {
     context: WidgetEnvironment
 } & ConnectedProps<typeof connector>
 
-export class InfobarWidgetsEditionTools extends React.Component<Props> {
+export class InfobarWidgetsEditionTools extends Component<Props> {
     _saveWidgets = () => {
         const { dispatch } = this.props
         const { widgets } = this.props

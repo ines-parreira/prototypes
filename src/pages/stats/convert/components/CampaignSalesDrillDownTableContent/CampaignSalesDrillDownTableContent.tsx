@@ -1,5 +1,3 @@
-import React from 'react'
-
 import { useEnrichedDrillDownData } from 'hooks/reporting/useDrillDownData'
 import { EnrichmentFields } from 'models/reporting/types'
 import BodyCell from 'pages/common/components/table/cells/BodyCell'

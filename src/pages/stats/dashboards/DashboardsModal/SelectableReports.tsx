@@ -1,5 +1,3 @@
-import React from 'react'
-
 import classnames from 'classnames'
 
 import IconInput from 'pages/common/forms/input/IconInput'

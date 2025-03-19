@@ -174,6 +174,7 @@ export default {
                                 },
                                 transform: {
                                     react: {
+                                        runtime: 'automatic',
                                         development: isDev,
                                         refresh: isDev,
                                     },

@@ -1,6 +1,6 @@
-import React, {
+import { Component, createRef } from 'react'
+import type {
     ChangeEvent,
-    createRef,
     FocusEvent,
     KeyboardEvent,
     MouseEvent,
@@ -51,7 +51,7 @@ type State = {
     isLoading: boolean
     isInputFocused: boolean
 }
-class MultiSelectAsyncField extends React.Component<Props, State> {
+class MultiSelectAsyncField extends Component<Props, State> {
     static defaultProps: Pick<Props, 'allowCreate' | 'disabled' | 'required'> =
         {
             allowCreate: false,

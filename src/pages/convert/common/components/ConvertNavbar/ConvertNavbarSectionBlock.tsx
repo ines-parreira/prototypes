@@ -1,5 +1,3 @@
-import React from 'react'
-
 import classNames from 'classnames'
 
 import cssNavbar from 'assets/css/navbar.less'

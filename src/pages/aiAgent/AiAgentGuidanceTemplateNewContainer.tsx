@@ -1,5 +1,3 @@
-import React from 'react'
-
 import { Redirect, useParams } from 'react-router-dom'
 
 import { LoadingSpinner } from '@gorgias/merchant-ui-kit'

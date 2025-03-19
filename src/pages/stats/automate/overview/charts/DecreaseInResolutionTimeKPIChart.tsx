@@ -1,5 +1,3 @@
-import React from 'react'
-
 import { useAutomateFilters } from 'hooks/reporting/automate/useAutomateFilters'
 import { useDecreaseInResolutionTimeTrend } from 'hooks/reporting/automate/useDecreaseInResolutionTimeTrend'
 import { DecreaseInResolutionTimeMetric } from 'pages/automate/automate-metrics'

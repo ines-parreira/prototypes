@@ -1,5 +1,3 @@
-import React from 'react'
-
 import { IntegrationType } from 'models/integration/constants'
 import Button from 'pages/common/components/button/Button'
 import AppDetails from 'pages/common/components/ProductDetail'

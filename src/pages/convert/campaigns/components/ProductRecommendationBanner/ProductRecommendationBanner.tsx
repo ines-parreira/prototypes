@@ -1,5 +1,3 @@
-import React from 'react'
-
 import classNames from 'classnames'
 
 import { ProductRecommendationScenario } from 'pages/convert/campaigns/types/CampaignAttachment'

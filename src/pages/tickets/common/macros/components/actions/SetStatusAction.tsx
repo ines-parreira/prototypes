@@ -1,5 +1,3 @@
-import React from 'react'
-
 import { fromJS, Map } from 'immutable'
 import _upperFirst from 'lodash/upperFirst'
 

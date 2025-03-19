@@ -1,5 +1,3 @@
-import React from 'react'
-
 import { useListShopifyOrderMetafields } from '@gorgias/api-queries'
 import { Skeleton } from '@gorgias/merchant-ui-kit'
 

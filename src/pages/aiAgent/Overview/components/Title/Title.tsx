@@ -1,5 +1,3 @@
-import React from 'react'
-
 import MainTitle from 'pages/aiAgent/Onboarding/components/MainTitle/MainTitle'
 import { Subtitle } from 'pages/aiAgent/Onboarding/components/Subtitle/Subtitle'
 import css from 'pages/aiAgent/Overview/components/Title/Title.less'

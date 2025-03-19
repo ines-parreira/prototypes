@@ -1,5 +1,3 @@
-import React from 'react'
-
 import { useStatsFilters } from 'hooks/reporting/support-performance/useStatsFilters'
 import { MetricTrendHook } from 'hooks/reporting/useMetricTrend'
 import { usePerformanceTips } from 'hooks/reporting/usePerformanceTips'

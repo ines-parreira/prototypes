@@ -1,5 +1,3 @@
-import React from 'react'
-
 import { LegacyStatsFilters } from 'models/stat/types'
 import useStoreIntegrations from 'pages/automate/common/hooks/useStoreIntegrations'
 import { Value } from 'pages/common/forms/SelectField/types'

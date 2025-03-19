@@ -1,5 +1,3 @@
-import React from 'react'
-
 import useWhatsAppMigration from 'hooks/useWhatsAppMigration'
 import { WhatsAppCodeVerificationMethod } from 'models/integration/types'
 import Button from 'pages/common/components/button/Button'

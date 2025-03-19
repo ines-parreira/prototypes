@@ -1,5 +1,3 @@
-import React from 'react'
-
 import { CustomFieldValue } from 'custom-fields/types'
 
 import CheckIcon from '../CheckIcon'

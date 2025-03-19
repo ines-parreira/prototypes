@@ -1,5 +1,3 @@
-import React from 'react'
-
 import _omit from 'lodash/omit'
 
 import ColorPicker, {

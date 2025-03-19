@@ -1,5 +1,3 @@
-import React from 'react'
-
 import { Link } from 'react-router-dom'
 
 import icon from 'assets/img/stats/no-slas-icon.png'

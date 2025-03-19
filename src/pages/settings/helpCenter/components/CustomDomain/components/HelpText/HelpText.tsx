@@ -1,5 +1,3 @@
-import React from 'react'
-
 import { isProduction } from '../../../../../../../utils/environment'
 
 import css from '../../CustomDomain.less'

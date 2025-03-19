@@ -1,5 +1,3 @@
-import React from 'react'
-
 import { OrderDirection } from 'models/api/types'
 import HeaderCellProperty from 'pages/common/components/table/cells/HeaderCellProperty'
 import { HintTooltip } from 'pages/stats/common/HintTooltip'

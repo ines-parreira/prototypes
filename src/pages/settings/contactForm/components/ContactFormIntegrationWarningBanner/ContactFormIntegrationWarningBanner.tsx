@@ -1,4 +1,4 @@
-import React from 'react'
+import { useState } from 'react'
 
 import { Link } from 'react-router-dom'
 
@@ -24,9 +24,8 @@ const ContactFormIntegrationWarningBanner = (
 ) => {
     const { details } = props
 
-    const [isConnectDismissed, setIsConnectDismissed] = React.useState(false)
-    const [isPermissionDismissed, setPermissionDismissed] =
-        React.useState(false)
+    const [isConnectDismissed, setIsConnectDismissed] = useState(false)
+    const [isPermissionDismissed, setPermissionDismissed] = useState(false)
 
     if (!details) return null
 

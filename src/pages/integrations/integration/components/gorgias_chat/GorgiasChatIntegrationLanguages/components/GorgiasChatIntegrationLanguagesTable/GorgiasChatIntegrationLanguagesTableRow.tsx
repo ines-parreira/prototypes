@@ -1,5 +1,3 @@
-import React from 'react'
-
 import { Badge } from 'gorgias-design-system/Badge/Badge'
 import BodyCell from 'pages/common/components/table/cells/BodyCell'
 import TableBodyRow from 'pages/common/components/table/TableBodyRow'

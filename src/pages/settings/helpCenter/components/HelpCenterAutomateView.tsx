@@ -1,5 +1,3 @@
-import React from 'react'
-
 import { ConnectedChannelsHelpCenterView } from 'pages/automate/connectedChannels/components/ConnectedChannelsHelpCenterView'
 
 import useCurrentHelpCenter from '../hooks/useCurrentHelpCenter'

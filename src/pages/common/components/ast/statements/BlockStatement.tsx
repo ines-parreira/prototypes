@@ -1,5 +1,3 @@
-import React from 'react'
-
 import { BlockStatementProps } from '../types'
 import BlockStatementItem from './BlockStatementItem'
 

@@ -1,5 +1,3 @@
-import React from 'react'
-
 import classNames from 'classnames'
 
 import defaultProductImage from 'assets/img/presentationals/shopify-product-default-image.png'

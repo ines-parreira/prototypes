@@ -1,5 +1,3 @@
-import React from 'react'
-
 import useInjectStyleToCandu from 'hooks/candu/useInjectStyleToCandu'
 import useCallbackRef from 'hooks/useCallbackRef'
 

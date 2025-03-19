@@ -1,5 +1,3 @@
-import React from 'react'
-
 import { List, Map } from 'immutable'
 import { Link } from 'react-router-dom'
 import { Breadcrumb, BreadcrumbItem, Col, Container, Row } from 'reactstrap'

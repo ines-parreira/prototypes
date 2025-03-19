@@ -1,5 +1,3 @@
-import React from 'react'
-
 import { ContentBlock, ContentState, EditorState } from 'draft-js'
 import findWithRegex from 'find-with-regex'
 

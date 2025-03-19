@@ -1,5 +1,3 @@
-import React from 'react'
-
 import classNamesBind from 'classnames/bind'
 import { fromJS } from 'immutable'
 

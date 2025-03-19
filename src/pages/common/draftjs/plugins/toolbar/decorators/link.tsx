@@ -1,5 +1,3 @@
-import React from 'react'
-
 import { ContentBlock, ContentState } from 'draft-js'
 
 import {

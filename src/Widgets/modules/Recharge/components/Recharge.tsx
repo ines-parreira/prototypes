@@ -1,5 +1,3 @@
-import React from 'react'
-
 import DatetimeLabel from 'pages/common/utils/DatetimeLabel'
 import Template, {
     CustomizationContext,

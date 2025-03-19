@@ -1,4 +1,4 @@
-import React from 'react'
+import { ComponentProps, HTMLProps } from 'react'
 
 import { Link } from 'react-router-dom'
 
@@ -20,12 +20,12 @@ type baseCTAType = {
 type ExternalCTAType = baseCTAType & {
     type: 'external'
     opensInNewTab?: boolean
-} & Required<Pick<React.HTMLProps<HTMLAnchorElement>, 'href'>>
+} & Required<Pick<HTMLProps<HTMLAnchorElement>, 'href'>>
 
 type InternalCTAType = baseCTAType & {
     type: 'internal'
     opensInNewTab?: boolean
-} & Pick<React.ComponentProps<typeof Link>, 'to'>
+} & Pick<ComponentProps<typeof Link>, 'to'>
 
 type ButtonCTAType = baseCTAType & {
     type: 'action'

@@ -1,4 +1,4 @@
-import React from 'react'
+import { type FC, Fragment } from 'react'
 
 import { fromJS } from 'immutable'
 
@@ -20,7 +20,7 @@ type Props = {
     shopName: string
 }
 
-const FeedbackEvents: React.FC<Props> = ({ messages, shopName }) => {
+const FeedbackEvents: FC<Props> = ({ messages, shopName }) => {
     const events = useAIAgentMessageEvents(messages)
 
     const aiAgentNavigation = useAiAgentNavigation({ shopName })
@@ -67,7 +67,7 @@ const FeedbackEvents: React.FC<Props> = ({ messages, shopName }) => {
                 </a>
             </div>
             {filteredEvents.map((event, index) => (
-                <React.Fragment key={index}>
+                <Fragment key={index}>
                     {event.tags.length > 0 && (
                         <div className={css.eventTypeContainer}>
                             <TicketEvent
@@ -95,7 +95,7 @@ const FeedbackEvents: React.FC<Props> = ({ messages, shopName }) => {
                             eventType={event.action}
                         />
                     )}
-                </React.Fragment>
+                </Fragment>
             ))}
         </div>
     )

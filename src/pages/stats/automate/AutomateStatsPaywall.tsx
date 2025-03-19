@@ -1,5 +1,3 @@
-import React from 'react'
-
 import useAppSelector from 'hooks/useAppSelector'
 import AutomatePaywallView from 'pages/automate/common/components/AutomatePaywallView'
 import { AutomateFeatures } from 'pages/automate/common/types'

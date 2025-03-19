@@ -1,5 +1,3 @@
-import React from 'react'
-
 import { Panel } from 'core/layout/panels'
 import { useSplitTicketView } from 'split-ticket-view-toggle'
 import TicketWrapper from 'split-ticket-view/components/TicketWrapper'

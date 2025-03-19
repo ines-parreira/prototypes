@@ -1,5 +1,3 @@
-import React from 'react'
-
 import { Skeleton } from '@gorgias/merchant-ui-kit'
 
 import BigNumberMetric from 'pages/stats/BigNumberMetric'

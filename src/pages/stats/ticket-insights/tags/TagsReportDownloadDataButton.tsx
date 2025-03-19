@@ -1,5 +1,3 @@
-import React from 'react'
-
 import { DownloadDataButton } from 'pages/stats/support-performance/components/DownloadDataButton'
 import { useDownloadTagsReportData } from 'services/reporting/tagsReportingService'
 

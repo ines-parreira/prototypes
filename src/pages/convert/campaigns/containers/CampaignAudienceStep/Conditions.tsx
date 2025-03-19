@@ -1,5 +1,3 @@
-import React from 'react'
-
 import { AdvancedTriggersForm } from 'pages/convert/campaigns/components/AdvancedTriggersForm'
 import { AdvancedTriggersSelect } from 'pages/convert/campaigns/components/AdvancedTriggersSelect'
 import { CampaignDelay } from 'pages/convert/campaigns/components/CampaignDelay'

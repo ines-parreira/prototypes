@@ -1,5 +1,3 @@
-import React from 'react'
-
 import { useStatsFilters } from 'hooks/reporting/support-performance/useStatsFilters'
 import { DashboardChartProps } from 'pages/stats/dashboards/types'
 import VoiceCallCallerExperienceMetric from 'pages/stats/voice/components/VoiceCallerExperienceMetric/VoiceCallCallerExperienceMetric'

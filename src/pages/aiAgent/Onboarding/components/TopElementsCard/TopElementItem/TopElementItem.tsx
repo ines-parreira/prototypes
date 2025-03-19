@@ -1,5 +1,3 @@
-import React from 'react'
-
 import { TopElement } from 'pages/aiAgent/Onboarding/components/TopElementsCard/types'
 
 import css from './TopElementItem.less'

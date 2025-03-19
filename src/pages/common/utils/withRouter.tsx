@@ -1,5 +1,3 @@
-import React from 'react'
-
 import { useLocation, useRouteMatch } from 'react-router-dom'
 
 export default function withRouter(Component: any) {

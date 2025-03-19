@@ -1,5 +1,3 @@
-import React from 'react'
-
 import { GlobalNavigation } from 'common/navigation'
 import { Panel } from 'core/layout/panels'
 

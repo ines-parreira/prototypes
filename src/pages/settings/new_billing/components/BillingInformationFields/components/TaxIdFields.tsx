@@ -1,5 +1,3 @@
-import React from 'react'
-
 import { useWatch } from 'react-hook-form'
 
 import { ABNField } from 'pages/settings/new_billing/components/BillingInformationFields/components/ABNField'

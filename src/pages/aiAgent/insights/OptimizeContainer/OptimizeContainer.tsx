@@ -1,5 +1,3 @@
-import React from 'react'
-
 import { useFlags } from 'launchdarkly-react-client-sdk'
 import moment, { Moment } from 'moment'
 import { useParams } from 'react-router-dom'

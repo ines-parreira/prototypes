@@ -1,5 +1,3 @@
-import React from 'react'
-
 import { VoiceCallSummary } from 'models/voiceCall/types'
 
 import css from './TicketVoiceCallSummary.less'

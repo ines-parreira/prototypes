@@ -1,5 +1,3 @@
-import React from 'react'
-
 import { Col, Row } from 'reactstrap'
 
 import Button from 'pages/common/components/button/Button'

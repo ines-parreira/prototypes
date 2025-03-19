@@ -1,5 +1,3 @@
-import React from 'react'
-
 import css from './AIAgentIntroduction.less'
 
 export const AIAgentIntroduction = () => {

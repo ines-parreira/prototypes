@@ -1,5 +1,3 @@
-import React from 'react'
-
 import { Route, Switch, useRouteMatch } from 'react-router-dom'
 
 import { NotificationsSettings } from 'common/notifications'

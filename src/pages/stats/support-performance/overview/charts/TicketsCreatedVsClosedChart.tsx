@@ -1,5 +1,3 @@
-import React from 'react'
-
 import { useCreatedVsClosedTicketsTimeSeries } from 'hooks/reporting/useCreatedVsClosedTicketsTimeSeries'
 import ChartCard from 'pages/stats/ChartCard'
 import BarChart from 'pages/stats/common/components/charts/BarChart/BarChart'

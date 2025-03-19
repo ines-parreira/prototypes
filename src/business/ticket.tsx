@@ -1,4 +1,4 @@
-import React, { ReactNode } from 'react'
+import type { ReactNode } from 'react'
 
 import { Link } from 'react-router-dom'
 
@@ -58,7 +58,7 @@ export function canReply(
     }
 
     if (sender?.isDeactivated) {
-        let message: React.JSX.Element
+        let message: JSX.Element
         if (sender?.channel === TicketChannel.Email) {
             if (isCurrentUserAdmin) {
                 message = (

@@ -1,5 +1,3 @@
-import React from 'react'
-
 import { Table } from 'reactstrap'
 
 import { OptionSelection } from 'models/integration/resources/bigcommerce'

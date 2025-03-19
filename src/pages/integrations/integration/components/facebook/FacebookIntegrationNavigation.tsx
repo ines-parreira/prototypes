@@ -1,5 +1,3 @@
-import React from 'react'
-
 import { Map } from 'immutable'
 import { NavLink } from 'react-router-dom'
 

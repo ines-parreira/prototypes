@@ -1,5 +1,3 @@
-import React from 'react'
-
 import { EmailDNSRecord } from '@gorgias/api-queries'
 import { Badge, Tooltip } from '@gorgias/merchant-ui-kit'
 

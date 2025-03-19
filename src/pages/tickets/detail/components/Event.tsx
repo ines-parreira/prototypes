@@ -1,4 +1,4 @@
-import React from 'react'
+import { Component } from 'react'
 
 import classnames from 'classnames'
 import { fromJS, Map } from 'immutable'
@@ -87,7 +87,7 @@ type State = {
     showDetails: boolean
 }
 
-export class EventContainer extends React.Component<Props, State> {
+export class EventContainer extends Component<Props, State> {
     static defaultProps: Pick<Props, 'isLast'> = {
         isLast: false,
     }

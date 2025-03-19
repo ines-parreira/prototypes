@@ -1,5 +1,3 @@
-import React from 'react'
-
 import { Col, Row } from 'reactstrap'
 
 import { Label } from '@gorgias/merchant-ui-kit'

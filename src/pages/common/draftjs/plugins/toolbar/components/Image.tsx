@@ -1,4 +1,4 @@
-import React, { ImgHTMLAttributes } from 'react'
+import { Component, type ImgHTMLAttributes } from 'react'
 
 import classnames from 'classnames'
 import {
@@ -30,7 +30,7 @@ type Props = {
 } & ImgHTMLAttributes<HTMLImageElement>
 
 // image render in draft js
-class Image extends React.Component<Props> {
+class Image extends Component<Props> {
     static defaultProps: Pick<Props, 'className' | 'theme'> = {
         className: '',
         theme: {},

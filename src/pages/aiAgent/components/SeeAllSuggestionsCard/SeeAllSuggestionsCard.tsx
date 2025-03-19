@@ -1,5 +1,3 @@
-import React from 'react'
-
 import classNames from 'classnames'
 
 import { logEvent, SegmentEvent } from 'common/segment'

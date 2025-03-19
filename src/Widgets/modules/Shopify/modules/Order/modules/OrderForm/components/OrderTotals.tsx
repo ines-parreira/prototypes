@@ -1,4 +1,4 @@
-import React from 'react'
+import { PureComponent } from 'react'
 
 import classnames from 'classnames'
 import { List, Map } from 'immutable'
@@ -34,7 +34,7 @@ type State = {
     shipping: number
 }
 
-export default class OrderTotals extends React.PureComponent<Props, State> {
+export default class OrderTotals extends PureComponent<Props, State> {
     state = {
         shipping: Number(this.props.payload.getIn(['shipping', 'amount'])),
     }

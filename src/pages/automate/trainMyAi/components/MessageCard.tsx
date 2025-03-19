@@ -1,5 +1,3 @@
-import React from 'react'
-
 import classnames from 'classnames'
 
 import { Paths } from '../../../../rest_api/help_center_api/client.generated'

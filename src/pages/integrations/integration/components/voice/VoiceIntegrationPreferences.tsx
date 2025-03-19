@@ -1,5 +1,3 @@
-import React from 'react'
-
 import { Form } from 'core/forms'
 import { isPhoneIntegration, PhoneIntegration } from 'models/integration/types'
 import css from 'pages/integrations/integration/components/voice/VoiceIntegrationPreferences.less'

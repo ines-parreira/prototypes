@@ -1,5 +1,5 @@
 // Please use src/pages/common/forms/input/InputField.tsx instead
-import React, { ChangeEvent, ReactNode } from 'react'
+import { type ChangeEvent, Component, type ReactNode } from 'react'
 
 import classnames from 'classnames'
 import _omit from 'lodash/omit'
@@ -28,7 +28,7 @@ export type InputFieldState = Record<string, unknown>
 export default class InputField<
     T extends InputFieldProps = InputFieldProps,
     U extends InputFieldState = InputFieldState,
-> extends React.Component<T, U> {
+> extends Component<T, U> {
     static defaultProps: Pick<InputFieldProps, 'type'> = {
         type: 'text',
     }

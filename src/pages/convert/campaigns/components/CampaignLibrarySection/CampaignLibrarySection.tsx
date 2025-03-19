@@ -1,5 +1,3 @@
-import React from 'react'
-
 import { CampaignTemplateSectionType } from 'pages/convert/campaigns/templates/types'
 
 import CampainLibraryTileTemplate from '../CampaignLibraryTileTemplate'

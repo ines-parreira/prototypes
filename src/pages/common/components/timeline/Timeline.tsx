@@ -1,4 +1,4 @@
-import React from 'react'
+import { useState } from 'react'
 
 import { Link } from 'react-router-dom'
 
@@ -20,7 +20,7 @@ type Props = {
 }
 
 export default function Timeline({ ticketId = 0, onLoaded }: Props) {
-    const [hasCalledOnLoaded, setHasCalledOnLoaded] = React.useState(false)
+    const [hasCalledOnLoaded, setHasCalledOnLoaded] = useState(false)
     const customersLoading = useAppSelector(getLoading).toJS() as {
         history: boolean
     }

@@ -1,5 +1,3 @@
-import React from 'react'
-
 import { iconByVisualBuilderNodeType } from '../constants'
 import { VisualBuilderNode } from '../models/visualBuilderGraph.types'
 

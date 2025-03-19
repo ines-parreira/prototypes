@@ -1,4 +1,4 @@
-import React from 'react'
+import { createElement } from 'react'
 
 import { StaticContext } from 'react-router'
 import { RouteComponentProps } from 'react-router-dom'
@@ -20,11 +20,8 @@ type AutomateSettingsFlowsBaseRouteProps = RouteComponentProps<
 export const AutomateSettingsFlowsBaseRoute = (
     props: AutomateSettingsFlowsBaseRouteProps,
 ) =>
-    React.createElement(
-        withUserRoleRequired(WorkflowsViewContainer, AGENT_ROLE),
-        {
-            ...props,
-            shopType: props.match.params.shopType,
-            shopName: props.match.params.shopName,
-        },
-    )
+    createElement(withUserRoleRequired(WorkflowsViewContainer, AGENT_ROLE), {
+        ...props,
+        shopType: props.match.params.shopType,
+        shopName: props.match.params.shopName,
+    })

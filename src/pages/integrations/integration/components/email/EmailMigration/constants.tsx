@@ -1,5 +1,3 @@
-import React from 'react'
-
 import exchangeIcon from 'assets/img/integrations/exchange.svg'
 import googleGroupsIcon from 'assets/img/integrations/google-groups.svg'
 import outlookIcon from 'assets/img/integrations/outlook.svg'

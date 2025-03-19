@@ -1,5 +1,3 @@
-import React from 'react'
-
 import { produce } from 'immer'
 
 import { DateAndTimeFormatting } from 'constants/datetime'

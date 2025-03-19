@@ -1,5 +1,3 @@
-import React from 'react'
-
 import { Link, useRouteMatch } from 'react-router-dom'
 
 import AutomatePaywallView from 'pages/automate/common/components/AutomatePaywallView'

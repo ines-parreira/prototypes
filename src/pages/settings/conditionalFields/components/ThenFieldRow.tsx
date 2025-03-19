@@ -1,5 +1,3 @@
-import React from 'react'
-
 import { ExpressionFieldType } from '@gorgias/api-types'
 
 import { useCustomFieldDefinition } from 'custom-fields/hooks/queries/useCustomFieldDefinition'

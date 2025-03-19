@@ -1,5 +1,3 @@
-import React from 'react'
-
 import { Meta, Story } from '@storybook/react'
 
 import VisibilityCell, { VisibilityCellProps } from './VisibilityCell'

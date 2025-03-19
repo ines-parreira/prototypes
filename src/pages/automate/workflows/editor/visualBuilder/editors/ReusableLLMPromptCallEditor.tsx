@@ -1,5 +1,3 @@
-import React from 'react'
-
 import { LoadingSpinner } from '@gorgias/merchant-ui-kit'
 
 import { useGetWorkflowConfigurationTemplate } from 'models/workflows/queries'

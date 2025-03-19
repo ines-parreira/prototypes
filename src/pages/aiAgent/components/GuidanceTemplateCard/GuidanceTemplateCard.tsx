@@ -1,5 +1,3 @@
-import React from 'react'
-
 import { TemplateCard } from 'pages/common/components/TemplateCard'
 
 import { GuidanceTemplate } from '../../types'

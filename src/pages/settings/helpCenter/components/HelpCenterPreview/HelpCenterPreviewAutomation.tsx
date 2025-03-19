@@ -1,5 +1,3 @@
-import React from 'react'
-
 import classnames from 'classnames'
 
 import cancelIcon from 'assets/img/self-service/cancel.svg'

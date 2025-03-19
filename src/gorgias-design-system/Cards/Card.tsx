@@ -1,4 +1,4 @@
-import React, { HTMLAttributes } from 'react'
+import type { FC, HTMLAttributes, ReactNode } from 'react'
 
 import { useTheme } from '@emotion/react'
 import styled from '@emotion/styled'
@@ -87,17 +87,17 @@ type CardProps = {
     /**
      * The icon to display on the left side of the card.
      */
-    leadIcon?: React.ReactNode
+    leadIcon?: ReactNode
     /**
      * The icon to display on the right side of the card.
      */
-    trailIcon?: React.ReactNode
+    trailIcon?: ReactNode
 }
 
 /**
  * A card that is used to navigate to a different page inside the widget.
  */
-const Card: React.FC<CardProps & HTMLAttributes<HTMLDivElement>> = ({
+const Card: FC<CardProps & HTMLAttributes<HTMLDivElement>> = ({
     title,
     description,
     leadIcon,

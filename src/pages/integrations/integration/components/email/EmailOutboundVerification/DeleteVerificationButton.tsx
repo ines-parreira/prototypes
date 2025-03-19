@@ -1,5 +1,3 @@
-import React from 'react'
-
 import { AxiosError } from 'axios'
 
 import useAppDispatch from 'hooks/useAppDispatch'

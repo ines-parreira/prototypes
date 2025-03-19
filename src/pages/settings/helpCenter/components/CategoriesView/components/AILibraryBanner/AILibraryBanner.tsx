@@ -1,5 +1,3 @@
-import React from 'react'
-
 import { useHistory } from 'react-router-dom'
 
 import { Badge } from '@gorgias/merchant-ui-kit'

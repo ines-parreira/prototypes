@@ -1,5 +1,3 @@
-import React from 'react'
-
 import { assumeMock } from 'utils/testing'
 
 import { useActivation } from '../Activation/hooks/useActivation'

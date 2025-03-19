@@ -1,4 +1,3 @@
-import React from 'react'
 import type { ReactNode } from 'react'
 
 import { ThemeProvider as UIKitThemeProvider } from '@gorgias/merchant-ui-kit'

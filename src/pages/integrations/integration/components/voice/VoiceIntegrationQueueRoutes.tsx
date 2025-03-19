@@ -1,5 +1,3 @@
-import React from 'react'
-
 import { Route } from 'react-router-dom'
 
 import { PHONE_INTEGRATION_BASE_URL as baseURL } from './constants'

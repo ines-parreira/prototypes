@@ -1,5 +1,3 @@
-import React from 'react'
-
 import BigNumberMetric from 'pages/stats/BigNumberMetric'
 import { NOT_AVAILABLE_PLACEHOLDER } from 'pages/stats/common/utils'
 import { DashboardChartProps } from 'pages/stats/dashboards/types'

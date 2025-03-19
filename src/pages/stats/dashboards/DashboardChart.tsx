@@ -1,5 +1,3 @@
-import React from 'react'
-
 import { useIsChartRestricted } from 'hooks/reporting/dashboards/useReportRestrictions'
 import { useGridSize } from 'hooks/useGridSize'
 import { getComponentConfig } from 'pages/stats/dashboards/config'

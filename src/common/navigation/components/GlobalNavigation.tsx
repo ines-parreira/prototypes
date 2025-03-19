@@ -1,5 +1,3 @@
-import React from 'react'
-
 import { FeatureFlagKey } from 'config/featureFlags'
 import { UserRole } from 'config/types/user'
 import { useFlag } from 'core/flags'

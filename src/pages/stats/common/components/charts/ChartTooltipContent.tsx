@@ -1,5 +1,3 @@
-import React from 'react'
-
 import { TooltipLabelStyle, TooltipModel } from 'chart.js'
 
 import { NOT_AVAILABLE_TEXT } from 'pages/stats/common/utils'

@@ -1,5 +1,3 @@
-import React from 'react'
-
 import IconButton from 'pages/common/components/button/IconButton'
 import Group from 'pages/common/components/layout/Group'
 

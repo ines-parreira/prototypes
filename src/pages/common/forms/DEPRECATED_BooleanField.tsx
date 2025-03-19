@@ -1,5 +1,3 @@
-import React from 'react'
-
 import classnames from 'classnames'
 import _omit from 'lodash/omit'
 import { Input as BootstrapInput, FormGroup, FormText, Label } from 'reactstrap'

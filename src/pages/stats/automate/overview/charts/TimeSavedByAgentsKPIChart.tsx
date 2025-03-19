@@ -1,5 +1,3 @@
-import React from 'react'
-
 import { useAutomateFilters } from 'hooks/reporting/automate/useAutomateFilters'
 import { useTimeSavedByAgentsTrend } from 'hooks/reporting/automate/useTimeSavedByAgentsTrend'
 import { TimeSavedByAgentsMetric } from 'pages/automate/automate-metrics/TimeSavedByAgentsMetric'

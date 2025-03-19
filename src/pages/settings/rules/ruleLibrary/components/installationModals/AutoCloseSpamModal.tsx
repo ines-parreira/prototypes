@@ -1,5 +1,3 @@
-import React from 'react'
-
 import classnames from 'classnames'
 
 import FakeTicketComponent from 'pages/settings/rules/components/FakeTicketComponent'

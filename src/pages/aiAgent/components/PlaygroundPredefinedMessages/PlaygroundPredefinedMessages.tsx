@@ -1,5 +1,3 @@
-import React from 'react'
-
 import { PlaygroundTemplateMessage } from '../../types'
 import { PlaygroundActions } from '../PlaygroundActions/PlaygroundActions'
 

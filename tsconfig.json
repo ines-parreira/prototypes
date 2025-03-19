@@ -8,7 +8,7 @@
         "sourceMap": false,
         "target": "es6",
         "lib": ["es2015", "dom", "dom.iterable"],
-        "jsx": "react",
+        "jsx": "react-jsx",
         "allowSyntheticDefaultImports": true,
         "noUnusedLocals": false,
         "skipLibCheck": true,
@@ -31,7 +31,8 @@
         "scripts/deprecated-monitoring/deprecated.monitoring.ts",
         "rspack.app.config.ts",
         "rspack.vendors.config.ts",
-        "rspack.sharedWorker.config.ts"
+        "rspack.sharedWorker.config.ts",
+        ".storybook/launchdarkly-js-client-sdk.tsx"
     ],
     "exclude": ["node_modules", "build", "storybook-static"]
 }

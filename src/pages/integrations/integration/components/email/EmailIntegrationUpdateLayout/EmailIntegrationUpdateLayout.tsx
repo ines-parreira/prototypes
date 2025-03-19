@@ -1,5 +1,3 @@
-import React from 'react'
-
 import { useFlags } from 'launchdarkly-react-client-sdk'
 import { NavLink } from 'react-router-dom'
 import { Breadcrumb, BreadcrumbItem } from 'reactstrap'

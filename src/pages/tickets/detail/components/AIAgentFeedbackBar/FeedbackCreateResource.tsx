@@ -1,5 +1,3 @@
-import React from 'react'
-
 import { useAiAgentNavigation } from 'pages/aiAgent/hooks/useAiAgentNavigation'
 
 import css from './FeedbackCreateResource.less'

@@ -1,5 +1,3 @@
-import React from 'react'
-
 import cn from 'classnames'
 
 import TrackerCircle from 'pages/common/components/ProgressTracker/TrackerCircle'

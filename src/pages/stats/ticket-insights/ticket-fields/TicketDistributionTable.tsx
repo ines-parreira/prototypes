@@ -1,5 +1,3 @@
-import React from 'react'
-
 import colors from '@gorgias/design-tokens/dist/tokens/colors.json'
 import { Skeleton } from '@gorgias/merchant-ui-kit'
 

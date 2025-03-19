@@ -1,5 +1,3 @@
-import React from 'react'
-
 import { WorkflowVariableList } from 'pages/automate/workflows/models/variables.types'
 import { HttpRequestNodeType } from 'pages/automate/workflows/models/visualBuilderGraph.types'
 import Button from 'pages/common/components/button/Button'

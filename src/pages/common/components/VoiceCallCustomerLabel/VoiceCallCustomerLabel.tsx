@@ -1,5 +1,3 @@
-import React from 'react'
-
 import classNames from 'classnames'
 import { fromJS } from 'immutable'
 import { isEmpty } from 'lodash'

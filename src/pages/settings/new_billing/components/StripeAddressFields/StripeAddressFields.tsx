@@ -1,5 +1,3 @@
-import React from 'react'
-
 import { useElements } from '@stripe/react-stripe-js'
 import { StripeAddressElementChangeEvent } from '@stripe/stripe-js'
 import { useController, useFormContext } from 'react-hook-form'

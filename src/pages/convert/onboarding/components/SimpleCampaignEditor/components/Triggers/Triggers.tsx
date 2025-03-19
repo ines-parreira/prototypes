@@ -1,5 +1,3 @@
-import React from 'react'
-
 import { TRIGGERS_CONFIG } from 'pages/convert/campaigns/constants/triggers'
 import { CampaignTrigger } from 'pages/convert/campaigns/types/CampaignTrigger'
 import { CampaignTriggerDeviceTypeValueEnum } from 'pages/convert/campaigns/types/enums/CampaignTriggerDeviceTypeValue.enum'

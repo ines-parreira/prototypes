@@ -1,5 +1,3 @@
-import React from 'react'
-
 import classNames from 'classnames'
 
 import TextInput from 'pages/common/forms/input/TextInput'

@@ -1,5 +1,3 @@
-import React from 'react'
-
 import { Link } from 'react-router-dom'
 
 import { EmailIntegration, GmailIntegration } from '@gorgias/api-queries'

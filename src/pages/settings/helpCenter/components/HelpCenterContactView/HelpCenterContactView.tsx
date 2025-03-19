@@ -1,5 +1,3 @@
-import React from 'react'
-
 import useCurrentHelpCenter from '../../hooks/useCurrentHelpCenter'
 import { useHelpCenterTranslation } from '../../providers/HelpCenterTranslation'
 import HelpCenterPageWrapper from '../HelpCenterPageWrapper'

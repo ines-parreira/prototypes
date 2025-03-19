@@ -1,5 +1,3 @@
-import React from 'react'
-
 import Search from 'pages/common/components/Search'
 
 import css from './ScrapedDomainHeader.less'

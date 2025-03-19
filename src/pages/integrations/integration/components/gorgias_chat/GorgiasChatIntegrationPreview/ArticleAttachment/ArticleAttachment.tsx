@@ -1,5 +1,3 @@
-import React from 'react'
-
 import articlePreviewImg from 'assets/img/article-preview.svg'
 
 import css from './ArticleAttachment.less'

@@ -1,5 +1,3 @@
-import React from 'react'
-
 import { Locale, LocaleCode } from '../../../../models/helpCenter/types'
 import { FlagLanguageItem } from '../../../common/components/LanguageBulletList'
 

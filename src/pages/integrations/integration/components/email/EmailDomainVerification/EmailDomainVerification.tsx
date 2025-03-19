@@ -1,5 +1,3 @@
-import React from 'react'
-
 import { EmailIntegration, GmailIntegration } from '@gorgias/api-queries'
 
 import { OutlookIntegration } from 'models/integration/types'

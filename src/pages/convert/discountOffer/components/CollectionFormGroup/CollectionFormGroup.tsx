@@ -1,5 +1,3 @@
-import React from 'react'
-
 import { FormGroup, InputGroup, Label } from 'reactstrap'
 
 import SelectField from 'pages/common/forms/SelectField/SelectField'

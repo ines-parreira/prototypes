@@ -1,5 +1,3 @@
-import React from 'react'
-
 import { getIconNameBySign } from 'pages/stats/utils'
 
 export const TrendIcon = ({ sign }: { sign: number }) => {

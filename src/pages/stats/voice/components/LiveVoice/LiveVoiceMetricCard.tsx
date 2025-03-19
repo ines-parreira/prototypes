@@ -1,5 +1,3 @@
-import React from 'react'
-
 import { Metric } from 'hooks/reporting/metrics'
 import BigNumberMetric from 'pages/stats/BigNumberMetric'
 import {

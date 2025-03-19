@@ -1,5 +1,3 @@
-import React from 'react'
-
 import { ExpressionOperator } from '@gorgias/api-queries'
 
 import { FormField, useWatch } from 'core/forms'

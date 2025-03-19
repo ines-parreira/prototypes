@@ -1,5 +1,3 @@
-import React from 'react'
-
 import _truncate from 'lodash/truncate'
 
 import BodyCell, {

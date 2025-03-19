@@ -1,5 +1,3 @@
-import React from 'react'
-
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import { TableValueModeSwitch } from 'pages/stats/common/components/Table/TableValueModeSwitch'

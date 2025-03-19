@@ -1,5 +1,3 @@
-import React from 'react'
-
 export const DataRow: React.FC<{
     label: string
     value: string | null | undefined

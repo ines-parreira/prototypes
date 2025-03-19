@@ -1,5 +1,3 @@
-import React from 'react'
-
 import { SelectableOption } from 'pages/common/forms/SelectField/types'
 import { AccountSettingBusinessHours } from 'state/currentAccount/types'
 

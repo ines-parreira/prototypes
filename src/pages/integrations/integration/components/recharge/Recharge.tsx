@@ -1,5 +1,3 @@
-import React from 'react'
-
 import { List as ImmutableList, Map } from 'immutable'
 import { Link, NavLink, useParams } from 'react-router-dom'
 import { Breadcrumb, BreadcrumbItem } from 'reactstrap'

@@ -1,4 +1,5 @@
-import React from 'react'
+import { useState } from 'react'
+import type { ChangeEvent, FC, MouseEvent } from 'react'
 
 import {
     Dropdown,
@@ -26,11 +27,11 @@ type Props = {
     maxHeight?: number
     searchPlaceholder?: string
     selectedList: BadgeItemProps[]
-    onSelectItem: (ev: React.MouseEvent, item: BadgeItemProps) => void
-    onRemoveItem: (ev: React.MouseEvent, item: BadgeItemProps) => void
+    onSelectItem: (ev: MouseEvent, item: BadgeItemProps) => void
+    onRemoveItem: (ev: MouseEvent, item: BadgeItemProps) => void
 }
 
-export const DynamicBadgeList: React.FC<Props> = ({
+export const DynamicBadgeList: FC<Props> = ({
     availableList,
     maxHeight = 215,
     searchPlaceholder = 'Start typing',
@@ -38,12 +39,12 @@ export const DynamicBadgeList: React.FC<Props> = ({
     onSelectItem,
     onRemoveItem,
 }: Props) => {
-    const [isOpen, setOpen] = React.useState(false)
-    const [search, setSearch] = React.useState('')
+    const [isOpen, setOpen] = useState(false)
+    const [search, setSearch] = useState('')
 
     const selectedIds = selectedList.map((item) => item.id)
 
-    const handleOnSearchItem = (ev: React.ChangeEvent<HTMLInputElement>) => {
+    const handleOnSearchItem = (ev: ChangeEvent<HTMLInputElement>) => {
         setSearch(ev.target.value)
     }
 

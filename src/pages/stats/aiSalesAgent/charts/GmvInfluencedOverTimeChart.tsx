@@ -1,5 +1,3 @@
-import React from 'react'
-
 import { TooltipItem } from 'chart.js'
 
 import { useStatsFilters } from 'hooks/reporting/support-performance/useStatsFilters'

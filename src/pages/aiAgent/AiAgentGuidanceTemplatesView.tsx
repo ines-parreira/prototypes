@@ -1,5 +1,3 @@
-import React from 'react'
-
 import BackLink from 'pages/common/components/BackLink'
 
 import { GuidanceTemplatesList } from './components/GuidanceTemplatesList/GuidanceTemplatesList'

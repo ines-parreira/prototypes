@@ -1,5 +1,3 @@
-import React from 'react'
-
 import css from './HelpCenterWizardArticlePreview.less'
 
 type Props = {

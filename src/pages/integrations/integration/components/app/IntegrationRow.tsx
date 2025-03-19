@@ -1,5 +1,3 @@
-import React from 'react'
-
 import { fromJS } from 'immutable'
 
 import { Tooltip } from '@gorgias/merchant-ui-kit'

@@ -1,4 +1,4 @@
-import React from 'react'
+import { useState } from 'react'
 
 import Modal from 'pages/common/components/modal/Modal'
 import ModalActionsFooter from 'pages/common/components/modal/ModalActionsFooter'
@@ -18,7 +18,7 @@ export const ConfirmModalAction = ({
     content,
     title,
 }: Props) => {
-    const [isOpen, setOpen] = React.useState(false)
+    const [isOpen, setOpen] = useState(false)
 
     const handleOnClose = () => {
         setOpen(false)

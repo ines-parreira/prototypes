@@ -1,5 +1,3 @@
-import React from 'react'
-
 import { Skeleton } from '@gorgias/merchant-ui-kit'
 
 import analyticsColors from 'assets/css/new/stats/modern.json'

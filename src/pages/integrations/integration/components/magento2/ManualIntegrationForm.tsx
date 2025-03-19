@@ -1,4 +1,4 @@
-import React from 'react'
+import { useState } from 'react'
 
 import { fromJS, Map } from 'immutable'
 import _get from 'lodash/get'
@@ -51,8 +51,8 @@ const ManualIntegrationForm = ({
 
     const currentValues = { ...metaValues, ...authInitialValues }
 
-    const [values, setValues] = React.useState(currentValues)
-    const [errors, setErrors] = React.useState({})
+    const [values, setValues] = useState(currentValues)
+    const [errors, setErrors] = useState({})
 
     const { storeURL }: { storeURL: string } = values
 

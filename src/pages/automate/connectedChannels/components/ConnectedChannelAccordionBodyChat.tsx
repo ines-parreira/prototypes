@@ -1,5 +1,3 @@
-import React from 'react'
-
 import classNames from 'classnames'
 import { useFlags } from 'launchdarkly-react-client-sdk'
 import { Link } from 'react-router-dom'

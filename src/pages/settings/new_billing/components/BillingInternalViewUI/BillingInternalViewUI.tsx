@@ -1,5 +1,3 @@
-import React from 'react'
-
 import { BillingState, SubscriptionStatus } from 'models/billing/types'
 
 import ProductCardForCoupon from '../../components/ProductCardForCoupon'

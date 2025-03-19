@@ -1,5 +1,3 @@
-import React from 'react'
-
 import _noop from 'lodash/noop'
 
 import { Button } from '@gorgias/merchant-ui-kit'

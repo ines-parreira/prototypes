@@ -1,5 +1,3 @@
-import React from 'react'
-
 import { HELP_CENTER_TEXTS } from 'config/helpCenter'
 import { HelpCenter } from 'models/helpCenter/types'
 import HelpCenterPreviewAutomation from 'pages/settings/helpCenter/components/HelpCenterPreview/HelpCenterPreviewAutomation'

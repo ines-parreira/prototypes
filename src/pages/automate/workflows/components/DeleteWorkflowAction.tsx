@@ -1,5 +1,3 @@
-import React from 'react'
-
 import IconButton from 'pages/common/components/button/IconButton'
 import ConfirmationPopover from 'pages/common/components/popover/ConfirmationPopover'
 

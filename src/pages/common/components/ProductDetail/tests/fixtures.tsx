@@ -1,5 +1,3 @@
-import React from 'react'
-
 import { Infocard, ProductDetail } from '../types'
 
 export const infoCardBannerText = 'I am a banner, trust me.'

@@ -1,5 +1,3 @@
-import React from 'react'
-
 import { logEvent, SegmentEvent } from 'common/segment'
 import Button from 'pages/common/components/button/Button'
 import useAiSalesAgentOverviewReportData from 'pages/stats/aiSalesAgent/hooks/aiSalesAgentReportingService'

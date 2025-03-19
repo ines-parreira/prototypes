@@ -1,4 +1,4 @@
-import React from 'react'
+import { useState } from 'react'
 
 import { Link } from 'react-router-dom'
 
@@ -19,8 +19,7 @@ const HelpCenterAutoEmbedWarningBanner = (
 ) => {
     const { details } = props
 
-    const [isPermissionDismissed, setPermissionDismissed] =
-        React.useState(false)
+    const [isPermissionDismissed, setPermissionDismissed] = useState(false)
 
     if (!details) return null
 

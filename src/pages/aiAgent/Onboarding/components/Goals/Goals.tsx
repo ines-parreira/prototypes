@@ -1,5 +1,3 @@
-import React from 'react'
-
 import isEqual from 'lodash/isEqual'
 
 import { AiAgentScopes } from 'pages/aiAgent/Onboarding/types'

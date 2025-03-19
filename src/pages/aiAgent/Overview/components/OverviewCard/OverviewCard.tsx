@@ -1,5 +1,3 @@
-import React from 'react'
-
 import { Card } from 'pages/aiAgent/Onboarding/components/Card'
 
 import css from './OverviewCard.less'

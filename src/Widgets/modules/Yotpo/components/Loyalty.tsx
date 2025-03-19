@@ -1,4 +1,4 @@
-import React from 'react'
+import { Component } from 'react'
 
 import type { Map } from 'immutable'
 
@@ -10,7 +10,7 @@ type TitleWrapperProps = {
     source: Map<string, any>
 }
 
-class TitleWrapper extends React.Component<TitleWrapperProps> {
+class TitleWrapper extends Component<TitleWrapperProps> {
     render() {
         const { source } = this.props
 

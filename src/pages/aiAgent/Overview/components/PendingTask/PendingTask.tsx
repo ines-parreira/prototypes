@@ -1,4 +1,4 @@
-import React from 'react'
+import { forwardRef } from 'react'
 
 import classNames from 'classnames'
 import { NavLink } from 'react-router-dom'
@@ -16,10 +16,9 @@ import {
 
 import css from './PendingTask.less'
 
-const Div = React.forwardRef<
-    HTMLDivElement,
-    React.HTMLAttributes<HTMLDivElement>
->(({ ...props }, ref) => <div ref={ref} {...props} />)
+const Div = forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDivElement>>(
+    ({ ...props }, ref) => <div ref={ref} {...props} />,
+)
 
 type Props = {
     title?: string

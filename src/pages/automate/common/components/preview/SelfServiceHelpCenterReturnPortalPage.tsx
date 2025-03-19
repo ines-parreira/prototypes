@@ -1,5 +1,3 @@
-import React from 'react'
-
 import { HELP_CENTER_TEXTS } from 'config/helpCenter'
 import { HelpCenter } from 'models/helpCenter/types'
 import Button from 'pages/common/components/button/Button'

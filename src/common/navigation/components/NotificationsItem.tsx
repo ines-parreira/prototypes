@@ -1,5 +1,3 @@
-import React from 'react'
-
 import { useNotificationsOverlay } from 'common/notifications'
 
 import Item from './GlobalNavigationItem'

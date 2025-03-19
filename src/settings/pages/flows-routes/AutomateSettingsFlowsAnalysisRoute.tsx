@@ -1,4 +1,4 @@
-import React from 'react'
+import { createElement } from 'react'
 
 import { StaticContext } from 'react-router'
 import { RouteComponentProps } from 'react-router-dom'
@@ -26,7 +26,7 @@ export const AutomateSettingsFlowsAnalyticsRoute = (
 ) => (
     <SelfServiceHelpCentersProvider>
         <SelfServiceContactFormsProvider>
-            {React.createElement<{
+            {createElement<{
                 shopType: string
                 shopName: string
                 editWorkflowId: string

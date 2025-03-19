@@ -1,5 +1,3 @@
-import React from 'react'
-
 import {
     CampaignsLegacyChart,
     CampaignsLegacyReportConfig,
@@ -13,7 +11,7 @@ const GRID_SIZE = 4
 // Deprecated: it will be deleted soon
 export const CampaignTotalsStat = () => {
     return (
-        <React.Fragment>
+        <>
             <DashboardGridCell size={FIRST_ROW_SIZE}>
                 <DashboardComponent
                     config={CampaignsLegacyReportConfig}
@@ -44,6 +42,6 @@ export const CampaignTotalsStat = () => {
                     chart={CampaignsLegacyChart.CampaignsSalesCountKPIChart}
                 />
             </DashboardGridCell>
-        </React.Fragment>
+        </>
     )
 }

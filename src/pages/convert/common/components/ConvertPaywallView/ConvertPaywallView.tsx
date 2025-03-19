@@ -1,5 +1,3 @@
-import React from 'react'
-
 import { Redirect } from 'react-router-dom'
 
 import convertIcon from 'assets/img/convert/convert-logo.svg'

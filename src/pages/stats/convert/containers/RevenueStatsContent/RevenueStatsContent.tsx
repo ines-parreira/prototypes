@@ -1,5 +1,3 @@
-import React from 'react'
-
 import { useIsConvertPerformanceViewEnabled } from 'pages/convert/common/hooks/useIsConvertPerformanceViewEnabled'
 import {
     CampaignsLegacyChart,

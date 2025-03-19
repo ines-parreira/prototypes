@@ -1,5 +1,3 @@
-import React from 'react'
-
 import { Background } from 'reactflow'
 
 import css from './VisualBuilderBackground.less'

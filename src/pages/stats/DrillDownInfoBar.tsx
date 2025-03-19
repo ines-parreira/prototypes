@@ -1,5 +1,3 @@
-import React from 'react'
-
 import { DrillDownDataHook } from 'hooks/reporting/useDrillDownData'
 import Loader from 'pages/common/components/Loader/Loader'
 import { DrillDownDownloadButton } from 'pages/stats/DrillDownDownloadButton'

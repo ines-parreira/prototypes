@@ -1,5 +1,3 @@
-import React from 'react'
-
 import { AddressElement, AddressElementProps } from '@stripe/react-stripe-js'
 
 export const StripeAddressElement: React.FC<Partial<AddressElementProps>> = ({

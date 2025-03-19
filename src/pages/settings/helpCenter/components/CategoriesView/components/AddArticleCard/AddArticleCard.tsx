@@ -1,5 +1,3 @@
-import React from 'react'
-
 import templateCss from '../ArticleTemplateCard/ArticleTemplateCard.less'
 import css from './AddArticleCard.less'
 

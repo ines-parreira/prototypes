@@ -1,4 +1,4 @@
-import React from 'react'
+import { useCallback, useState } from 'react'
 
 import { useOnClickOutside } from './useOnClickOutside'
 
@@ -12,10 +12,10 @@ export function useOpenToggle(
     ref: React.RefObject<HTMLElement>,
     defaultValue = false,
 ): HookApi {
-    const [isOpen, setOpen] = React.useState(defaultValue)
+    const [isOpen, setOpen] = useState(defaultValue)
 
-    const handleOpen = React.useCallback(() => setOpen(true), [])
-    const handleClose = React.useCallback(() => setOpen(false), [])
+    const handleOpen = useCallback(() => setOpen(true), [])
+    const handleClose = useCallback(() => setOpen(false), [])
 
     useOnClickOutside(ref, handleClose)
 

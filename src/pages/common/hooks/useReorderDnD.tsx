@@ -1,4 +1,4 @@
-import React from 'react'
+import { useRef } from 'react'
 
 import { DropTargetMonitor, useDrag, useDrop } from 'react-dnd'
 
@@ -26,8 +26,8 @@ export const useReorderDnD = <ItemType extends DragItemRequired>(
     callbacks: Callbacks<ItemType> = {},
     canDrag = true,
 ): UseReorderDnDInterface => {
-    const $dropRef = React.useRef<HTMLTableRowElement>(null)
-    const $dragRef = React.useRef<HTMLDivElement>(null)
+    const $dropRef = useRef<HTMLTableRowElement>(null)
+    const $dragRef = useRef<HTMLDivElement>(null)
 
     const [{ handlerId }, drop] = useDrop({
         accept: acceptEntities,

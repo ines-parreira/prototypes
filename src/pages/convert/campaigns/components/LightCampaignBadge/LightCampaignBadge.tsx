@@ -1,5 +1,3 @@
-import React from 'react'
-
 import { Map } from 'immutable'
 
 import Badge from 'gorgias-design-system/Badge/Badge'

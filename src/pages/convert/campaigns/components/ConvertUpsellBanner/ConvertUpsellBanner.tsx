@@ -1,5 +1,3 @@
-import React from 'react'
-
 import Button from 'pages/common/components/button/Button'
 import LinkButton from 'pages/common/components/button/LinkButton'
 import { CONVERT_BOOK_DEMO_LINK } from 'pages/convert/common/constants'

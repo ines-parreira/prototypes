@@ -1,4 +1,4 @@
-import React from 'react'
+import { Component } from 'react'
 
 import { fromJS, List, Map } from 'immutable'
 
@@ -11,7 +11,7 @@ type Props = {
     value: any
 }
 
-export default class Select extends React.Component<Props> {
+export default class Select extends Component<Props> {
     _getOptions = () => {
         const { options } = this.props
 

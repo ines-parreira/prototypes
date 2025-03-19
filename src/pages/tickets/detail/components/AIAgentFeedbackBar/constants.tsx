@@ -1,5 +1,3 @@
-import React from 'react'
-
 export const RESOURCE_ICONS: Record<string, JSX.Element> = {
     'Soft action': <i className="material-icons">play_circle</i>,
     'Hard action': <i className="material-icons">play_circle</i>,

@@ -1,5 +1,3 @@
-import React from 'react'
-
 import { logEvent, SegmentEvent } from 'common/segment'
 import { ArticleTemplate } from 'models/helpCenter/types'
 import Button from 'pages/common/components/button/Button'

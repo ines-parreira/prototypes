@@ -1,5 +1,3 @@
-import React from 'react'
-
 import { Map } from 'immutable'
 
 import { Badge, ColorType } from '@gorgias/merchant-ui-kit'

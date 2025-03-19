@@ -1,4 +1,5 @@
-import React, {
+import {
+    Component,
     ContextType,
     createContext,
     FunctionComponent,
@@ -37,7 +38,7 @@ const ChargeContext = createContext<{
     integrationId: null,
 })
 
-export class AfterTitle extends React.Component<{
+export class AfterTitle extends Component<{
     isEditing?: boolean
     source: Map<any, any>
 }> {
@@ -104,7 +105,7 @@ export class AfterTitle extends React.Component<{
     }
 }
 
-export class SubscriptionAfterTitle extends React.Component<{
+export class SubscriptionAfterTitle extends Component<{
     isEditing?: boolean
     source: Map<any, any>
 }> {
@@ -180,7 +181,7 @@ const statusColors: Record<string, ColorType> = {
     skipped: 'classic',
 }
 
-class BeforeContent extends React.Component<{
+class BeforeContent extends Component<{
     source: Map<any, any>
 }> {
     render() {
@@ -198,7 +199,7 @@ class BeforeContent extends React.Component<{
     }
 }
 
-export class AfterContent extends React.Component<{
+export class AfterContent extends Component<{
     isEditing: boolean
     source: Map<any, any>
 }> {
@@ -245,7 +246,7 @@ type TitleWrapperProps = {
     template: Map<any, any>
 } & ConnectedProps<typeof connectorTitleWrapper>
 
-export class TitleWrapperContainer extends React.Component<TitleWrapperProps> {
+export class TitleWrapperContainer extends Component<TitleWrapperProps> {
     static contextType = ChargeContext
     context!: ContextType<typeof ChargeContext>
     render() {

@@ -1,5 +1,3 @@
-import React from 'react'
-
 import classNames from 'classnames'
 
 import { Badge } from '@gorgias/merchant-ui-kit'

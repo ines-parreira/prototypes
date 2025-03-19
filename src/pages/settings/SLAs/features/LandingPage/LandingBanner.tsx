@@ -1,5 +1,3 @@
-import React from 'react'
-
 import templatesImage from 'assets/img/presentationals/sla-policies.svg'
 
 import css from './LandingBanner.less'

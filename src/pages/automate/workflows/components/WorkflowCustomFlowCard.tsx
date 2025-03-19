@@ -1,5 +1,3 @@
-import React from 'react'
-
 import css from './WorkflowCustomFlowCard.less'
 import templateCss from './WorkflowTemplateCard.less'
 

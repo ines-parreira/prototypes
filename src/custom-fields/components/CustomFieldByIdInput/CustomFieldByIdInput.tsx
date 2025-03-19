@@ -1,5 +1,3 @@
-import React from 'react'
-
 import { useCustomFieldDefinition } from 'custom-fields/hooks/queries/useCustomFieldDefinition'
 import Loader from 'pages/common/components/Loader/Loader'
 

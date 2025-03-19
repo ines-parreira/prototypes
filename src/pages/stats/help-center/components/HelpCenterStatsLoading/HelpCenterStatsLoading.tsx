@@ -1,5 +1,3 @@
-import React from 'react'
-
 import Loader from 'pages/common/components/Loader/Loader'
 import StatsPage from 'pages/stats/StatsPage'
 

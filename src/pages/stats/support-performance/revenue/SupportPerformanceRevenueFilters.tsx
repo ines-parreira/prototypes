@@ -1,5 +1,3 @@
-import React from 'react'
-
 import { useCleanStatsFilters } from 'hooks/reporting/useCleanStatsFilters'
 import useAppSelector from 'hooks/useAppSelector'
 import { useIsConvertSubscriber } from 'pages/common/hooks/useIsConvertSubscriber'

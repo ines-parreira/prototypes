@@ -1,5 +1,3 @@
-import React from 'react'
-
 import { ORDER_MANAGEMENT } from 'pages/automate/common/components/constants'
 
 import {

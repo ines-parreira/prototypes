@@ -1,5 +1,3 @@
-import React from 'react'
-
 import ReactStars from 'react-rating-stars-component'
 
 import { DEFAULT_SIZE, STAR_COLORS } from './constants'

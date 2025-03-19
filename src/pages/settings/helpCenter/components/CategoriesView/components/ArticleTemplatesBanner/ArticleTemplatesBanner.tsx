@@ -1,5 +1,3 @@
-import React from 'react'
-
 import { assetsUrl } from 'utils'
 
 import css from './ArticleTemplatesBanner.less'

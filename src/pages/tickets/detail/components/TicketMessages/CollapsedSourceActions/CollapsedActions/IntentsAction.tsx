@@ -1,5 +1,3 @@
-import React from 'react'
-
 import CollapsedAction from './CollapsedAction'
 
 type Props = {

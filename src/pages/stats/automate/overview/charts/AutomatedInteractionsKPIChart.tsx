@@ -1,5 +1,3 @@
-import React from 'react'
-
 import { useFilteredAutomatedInteractions } from 'hooks/reporting/automate/automationTrends'
 import { useAutomateFilters } from 'hooks/reporting/automate/useAutomateFilters'
 import useLocalStorage from 'hooks/useLocalStorage'

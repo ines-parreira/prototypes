@@ -1,5 +1,3 @@
-import React from 'react'
-
 import { getSizedImageUrl } from '@shopify/theme-images'
 import classnames from 'classnames'
 

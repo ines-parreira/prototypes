@@ -1,4 +1,4 @@
-import React from 'react'
+import { cloneElement, isValidElement } from 'react'
 
 /**
  * It will render to an element that is a composition
@@ -17,9 +17,9 @@ export const ComposedElements = <
         return null
     }
     const composedElement = elements.reduceRight((acc, element) => {
-        return React.isValidElement(element)
-            ? React.cloneElement(element, undefined, acc)
+        return isValidElement(element)
+            ? cloneElement(element, undefined, acc)
             : acc
     }, children) as React.ReactElement
-    return React.cloneElement(composedElement, otherProps)
+    return cloneElement(composedElement, otherProps)
 }

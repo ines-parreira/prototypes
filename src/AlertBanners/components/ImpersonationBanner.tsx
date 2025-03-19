@@ -1,5 +1,3 @@
-import React from 'react'
-
 import { AlertBanner, AlertBannerTypes } from 'AlertBanners'
 import { FeatureFlagKey } from 'config/featureFlags'
 import { useFlag } from 'core/flags'

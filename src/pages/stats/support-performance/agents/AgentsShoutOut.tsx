@@ -1,5 +1,3 @@
-import React from 'react'
-
 import { Skeleton } from '@gorgias/merchant-ui-kit'
 
 import { useStatsFilters } from 'hooks/reporting/support-performance/useStatsFilters'

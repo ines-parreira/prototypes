@@ -1,4 +1,4 @@
-import React from 'react'
+import { useState } from 'react'
 
 import { FeatureFlagKey } from 'config/featureFlags'
 import { useFlag } from 'core/flags'
@@ -35,7 +35,7 @@ export default function SLAFormView({
     isLoading,
     validator,
 }: SLAFormViewProps) {
-    const [isArchiveModalOpen, setArchiveModalOpen] = React.useState(false)
+    const [isArchiveModalOpen, setArchiveModalOpen] = useState(false)
 
     const isPauseSLAEnabled = useFlag(FeatureFlagKey.PauseSLA)
 

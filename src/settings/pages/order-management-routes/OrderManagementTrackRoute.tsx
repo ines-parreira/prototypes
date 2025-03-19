@@ -1,4 +1,4 @@
-import React from 'react'
+import { createElement } from 'react'
 
 import { StaticContext } from 'react-router'
 import { RouteComponentProps } from 'react-router-dom'
@@ -24,7 +24,7 @@ export const OrderManagementTrackRoute = (
 ) => (
     <SelfServiceHelpCentersProvider>
         <SelfServiceContactFormsProvider>
-            {React.createElement(
+            {createElement(
                 withUserRoleRequired(TrackOrderFlowViewContainer, AGENT_ROLE),
                 {
                     ...props,

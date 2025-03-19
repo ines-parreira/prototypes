@@ -1,5 +1,3 @@
-import React from 'react'
-
 import cn from 'classnames'
 
 import { Badge, LoadingSpinner } from '@gorgias/merchant-ui-kit'

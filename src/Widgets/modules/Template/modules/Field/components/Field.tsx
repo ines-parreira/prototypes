@@ -1,5 +1,3 @@
-import React from 'react'
-
 import useAppDispatch from 'hooks/useAppDispatch'
 import { LEAF_TYPES } from 'models/widget/constants'
 import { LeafTemplate, LeafType } from 'models/widget/types'

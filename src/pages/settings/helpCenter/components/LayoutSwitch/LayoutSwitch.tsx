@@ -1,5 +1,3 @@
-import React from 'react'
-
 import image1PageLayout from 'assets/img/icons/layout-1-pager.svg'
 import imageCardLayout from 'assets/img/icons/layout-card.svg'
 import { PreviewRadioButton } from 'pages/common/components/PreviewRadioButton'

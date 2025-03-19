@@ -1,5 +1,3 @@
-import React from 'react'
-
 import { useGetTicketMessage } from '@gorgias/api-queries'
 
 import { Actor, ReplyMetaTicketMessage, Source } from 'models/ticket/types'

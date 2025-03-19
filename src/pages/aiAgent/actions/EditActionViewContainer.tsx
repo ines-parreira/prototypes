@@ -1,5 +1,3 @@
-import React from 'react'
-
 import { useQueryClient } from '@tanstack/react-query'
 import { useFlags } from 'launchdarkly-react-client-sdk'
 import { Redirect, useParams } from 'react-router-dom'

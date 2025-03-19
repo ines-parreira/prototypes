@@ -1,4 +1,4 @@
-import React from 'react'
+import { useState } from 'react'
 
 import { Meta, Story } from '@storybook/react'
 import { noop as _noop } from 'lodash'
@@ -21,7 +21,7 @@ const defaultProps: SubjectLineProps = {
 }
 
 const Template: Story<SubjectLineProps> = (args) => {
-    const [value, setValue] = React.useState(args.value)
+    const [value, setValue] = useState(args.value)
     const onChange = (nextValue: string) => {
         setValue(nextValue)
     }

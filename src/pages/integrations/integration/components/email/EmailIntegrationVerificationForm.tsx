@@ -1,5 +1,3 @@
-import React from 'react'
-
 import { EmailIntegration } from '@gorgias/api-queries'
 
 import { Form } from 'core/forms'

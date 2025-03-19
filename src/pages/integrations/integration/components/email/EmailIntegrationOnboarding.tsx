@@ -1,5 +1,3 @@
-import React from 'react'
-
 import { useFlags } from 'launchdarkly-react-client-sdk'
 
 import { EmailIntegration } from '@gorgias/api-queries'

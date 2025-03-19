@@ -1,5 +1,3 @@
-import React from 'react'
-
 import { Cadence } from 'models/billing/types'
 import { PreviewRadioButton } from 'pages/common/components/PreviewRadioButton'
 

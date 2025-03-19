@@ -1,5 +1,3 @@
-import React from 'react'
-
 import { Badge, ColorType } from '@gorgias/merchant-ui-kit'
 
 import { WhatsAppMessageTemplateCategory } from 'models/whatsAppMessageTemplates/types'

@@ -1,4 +1,4 @@
-import React from 'react'
+import { useState } from 'react'
 
 import classnames from 'classnames'
 import _noop from 'lodash/noop'
@@ -74,7 +74,7 @@ const HelpCenterAutoEmbedCard = ({
 }: HelpCenterAutoEmbedCardProps) => {
     const history = useHistory()
     // Embed modal assistant state
-    const [isEmbedModalOpen, setIsEmbedModalOpen] = React.useState(false)
+    const [isEmbedModalOpen, setIsEmbedModalOpen] = useState(false)
     const currentUser = useAppSelector(getCurrentUser)
     const currentAccount = useAppSelector(getCurrentAccountState)
 

@@ -1,5 +1,3 @@
-import React from 'react'
-
 import BotMessages from './BotMessages'
 import EmailCaptureMessage from './EmailCaptureMessage'
 

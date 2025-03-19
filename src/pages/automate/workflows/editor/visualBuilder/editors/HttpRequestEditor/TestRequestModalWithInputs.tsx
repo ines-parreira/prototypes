@@ -1,5 +1,3 @@
-import React from 'react'
-
 import { WorkflowVariable } from 'pages/automate/workflows/models/variables.types'
 import { HttpRequestNodeType } from 'pages/automate/workflows/models/visualBuilderGraph.types'
 import Modal from 'pages/common/components/modal/Modal'

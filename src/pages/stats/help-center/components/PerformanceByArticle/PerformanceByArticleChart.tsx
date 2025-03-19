@@ -1,5 +1,3 @@
-import React from 'react'
-
 import { DashboardChartProps } from 'pages/stats/dashboards/types'
 import { PerformanceByArticle } from 'pages/stats/help-center/components/PerformanceByArticle/PerformanceByArticle'
 import { useSelectedHelpCenter } from 'pages/stats/help-center/hooks/useSelectedHelpCenter'

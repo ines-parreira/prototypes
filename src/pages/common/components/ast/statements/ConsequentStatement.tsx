@@ -1,5 +1,3 @@
-import React from 'react'
-
 import Foldable from 'pages/common/components/ast/Foldable/Foldable'
 import AddActionOrIfStatement from 'pages/common/components/ast/operations/AddActionOrIfStatement'
 import { StatementProps } from 'pages/common/hooks/rule/RuleProvider'

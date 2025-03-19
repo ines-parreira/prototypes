@@ -1,4 +1,4 @@
-import React from 'react'
+import { Fragment } from 'react'
 
 import { Badge, LoadingSpinner } from '@gorgias/merchant-ui-kit'
 
@@ -38,21 +38,21 @@ export const KnowledgeResourceLine: React.FC<Props> = ({
             <div className={css.status}>
                 {isReady ? (
                     <Badge type={'light-success'}>
-                        <React.Fragment key=".0">
+                        <Fragment key=".0">
                             <i className="material-icons">check_circle</i>
                             <div>Ready</div>
-                        </React.Fragment>
+                        </Fragment>
                     </Badge>
                 ) : (
                     <Badge type={'light-grey'}>
-                        <React.Fragment key=".0">
+                        <Fragment key=".0">
                             <LoadingSpinner
                                 className={css.spinner}
                                 size="small"
                                 data-testid="loading-spinner"
                             />
                             <div>In Process</div>
-                        </React.Fragment>
+                        </Fragment>
                     </Badge>
                 )}
             </div>

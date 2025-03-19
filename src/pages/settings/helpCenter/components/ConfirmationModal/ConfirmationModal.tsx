@@ -1,5 +1,3 @@
-import React from 'react'
-
 import classNames from 'classnames'
 
 import Button, { type ButtonProps } from 'pages/common/components/button/Button'

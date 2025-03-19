@@ -1,5 +1,3 @@
-import React from 'react'
-
 import { HelpCenter } from 'models/helpCenter/types'
 
 import { GuidanceForm } from './components/GuidanceForm/GuidanceForm'

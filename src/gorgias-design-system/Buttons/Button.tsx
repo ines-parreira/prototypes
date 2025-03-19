@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/restrict-template-expressions */
-import React, { HTMLAttributes } from 'react'
+import type { FC, HTMLAttributes, ReactNode } from 'react'
 
 import { useTheme } from '@emotion/react'
 import styled from '@emotion/styled'
@@ -190,17 +190,17 @@ type ButtonProps = {
     /**
      * An icon that is placed before the button text.
      */
-    leadIcon?: React.ReactNode
+    leadIcon?: ReactNode
     /**
      * An icon that is placed after the button text.
      */
-    trailIcon?: React.ReactNode
+    trailIcon?: ReactNode
 }
 
 /**
  * A button component that supports variants, sizes, loading/disabled states and leading/trailing icons.
  */
-const Button: React.FC<HTMLAttributes<HTMLButtonElement> & ButtonProps> = ({
+const Button: FC<HTMLAttributes<HTMLButtonElement> & ButtonProps> = ({
     disabled,
     isLoading,
     isStretched,

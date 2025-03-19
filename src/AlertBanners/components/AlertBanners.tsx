@@ -1,4 +1,4 @@
-import React from 'react'
+import { memo } from 'react'
 
 import { AlertBanner, AlertBannerTypes } from 'AlertBanners'
 import { MergedBanner } from 'AlertBanners/Context/types'
@@ -92,4 +92,4 @@ export const AlertBanners = () => {
     )
 }
 
-export default React.memo(AlertBanners)
+export default memo(AlertBanners)

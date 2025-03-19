@@ -1,5 +1,3 @@
-import React from 'react'
-
 import Feature from '../UI/Feature'
 import { ProductFeature } from './types'
 

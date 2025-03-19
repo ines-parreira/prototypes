@@ -1,5 +1,5 @@
 /* eslint-disable no-console */
-import React from 'react'
+import { Component } from 'react'
 
 import classnames from 'classnames'
 import { EditorState } from 'draft-js'
@@ -157,7 +157,7 @@ type State = {
     sendChatTranscript: boolean
 }
 
-export class GorgiasChatIntegrationPreferencesComponent extends React.Component<
+export class GorgiasChatIntegrationPreferencesComponent extends Component<
     Props,
     State
 > {

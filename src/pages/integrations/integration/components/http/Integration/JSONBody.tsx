@@ -1,4 +1,4 @@
-import React, { ComponentProps } from 'react'
+import { Component, type ComponentProps } from 'react'
 
 import _isEqual from 'lodash/isEqual'
 import _some from 'lodash/some'
@@ -22,7 +22,7 @@ type State = {
     cachedForm: HTTPForm
 }
 
-export default class JSONBody extends React.Component<Props, State> {
+export default class JSONBody extends Component<Props, State> {
     presetOptions = [
         { label: 'JSON template', value: DEFAULT_FORM },
         {

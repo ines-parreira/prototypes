@@ -1,5 +1,3 @@
-import React from 'react'
-
 import Loader from 'pages/common/components/Loader/Loader'
 
 const NoIntegration = ({ loading = false }: { loading?: boolean }) =>

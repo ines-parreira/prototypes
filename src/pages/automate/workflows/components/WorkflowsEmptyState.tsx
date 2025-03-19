@@ -1,5 +1,3 @@
-import React from 'react'
-
 import { Container } from 'reactstrap'
 
 import templatesImage from 'assets/img/workflows/templates.png'

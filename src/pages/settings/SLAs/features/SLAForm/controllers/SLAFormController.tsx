@@ -1,5 +1,3 @@
-import React from 'react'
-
 import { useLocation, useParams } from 'react-router-dom'
 
 import { useGetSlaPolicy } from '@gorgias/api-queries'

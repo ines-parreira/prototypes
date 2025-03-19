@@ -1,6 +1,6 @@
-import React from 'react'
+import type { FC } from 'react'
 
-const SpinnerIcon: React.FC = () => (
+const SpinnerIcon: FC = () => (
     <svg
         width="20"
         height="20"

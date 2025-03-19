@@ -1,5 +1,3 @@
-import React from 'react'
-
 import useGetBadgeTiers from 'pages/aiAgent/insights/IntentTableWidget/BadgeWithTiers/hooks/useGetBadgeTiers'
 
 import css from './BadgeWithTiers.less'

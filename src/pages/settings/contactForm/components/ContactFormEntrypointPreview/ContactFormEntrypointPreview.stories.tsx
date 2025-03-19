@@ -1,5 +1,3 @@
-import React from 'react'
-
 import { Meta, StoryObj } from '@storybook/react'
 
 import SelfServicePreviewContext from 'pages/automate/common/components/preview/SelfServicePreviewContext'

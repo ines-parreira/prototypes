@@ -1,4 +1,8 @@
-import React from 'react'
+import type {
+    HTMLAttributes,
+    MouseEvent as ReactMouseEvent,
+    ReactNode,
+} from 'react'
 
 import { useTheme } from '@emotion/react'
 import styled from '@emotion/styled'
@@ -6,8 +10,7 @@ import styled from '@emotion/styled'
 import { gorgiasColors } from 'gorgias-design-system/styles'
 import { ChatTheme } from 'pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationPreview'
 
-export interface ArticleAttachmentProps
-    extends React.HTMLAttributes<HTMLElement> {
+export interface ArticleAttachmentProps extends HTMLAttributes<HTMLElement> {
     /**
      * Article title
      */
@@ -19,11 +22,11 @@ export interface ArticleAttachmentProps
     /**
      * The icon to display on the left side of the field.
      */
-    leadIcon?: React.ReactNode
+    leadIcon?: ReactNode
     /**
      * Function to be triggered when the article attachment is clicked.
      */
-    onClick?: (event: React.MouseEvent<HTMLElement, MouseEvent>) => void
+    onClick?: (event: ReactMouseEvent<HTMLElement, MouseEvent>) => void
 }
 
 const StyledArticleAttachment = styled.div`

@@ -1,4 +1,4 @@
-import React from 'react'
+import { useState } from 'react'
 
 import classnames from 'classnames'
 import {
@@ -42,9 +42,9 @@ interface DropdownButtonWithSearch {
 const DropdownButtonWithSearch: React.FC<DropdownButtonWithSearch> = (
     props,
 ) => {
-    const [isOpen, setOpen] = React.useState(false)
-    const [search, setSearch] = React.useState('')
-    const [selectedOptions, setSelectedOptions] = React.useState<Option[]>([])
+    const [isOpen, setOpen] = useState(false)
+    const [search, setSearch] = useState('')
+    const [selectedOptions, setSelectedOptions] = useState<Option[]>([])
 
     const handleOnToggle = () => {
         if (isOpen) {

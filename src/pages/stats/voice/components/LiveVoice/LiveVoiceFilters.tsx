@@ -1,5 +1,3 @@
-import React from 'react'
-
 import { useCleanStatsFilters } from 'hooks/reporting/useCleanStatsFilters'
 import { FilterComponentKey, FilterKey } from 'models/stat/types'
 import FiltersPanelWrapper from 'pages/stats/common/filters/FiltersPanelWrapper'

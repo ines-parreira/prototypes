@@ -1,5 +1,3 @@
-import React from 'react'
-
 import { Skeleton } from '@gorgias/merchant-ui-kit'
 
 import { DRILL_DOWN_PER_PAGE } from 'hooks/reporting/useDrillDownData'

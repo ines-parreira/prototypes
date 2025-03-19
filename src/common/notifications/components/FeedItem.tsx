@@ -1,4 +1,4 @@
-import React from 'react'
+import { memo } from 'react'
 
 import cn from 'classnames'
 
@@ -16,7 +16,7 @@ export type Props = {
     onToggleRead?: () => void
 }
 
-export default React.memo(function FeedItem({
+export default memo(function FeedItem({
     notification,
     onClick,
     onToggleRead,

@@ -1,5 +1,3 @@
-import React from 'react'
-
 import _noop from 'lodash/noop'
 
 import { Tooltip } from '@gorgias/merchant-ui-kit'

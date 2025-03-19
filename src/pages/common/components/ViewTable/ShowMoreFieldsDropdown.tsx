@@ -1,4 +1,4 @@
-import React from 'react'
+import { Component } from 'react'
 
 import { List, Map } from 'immutable'
 import { connect, ConnectedProps } from 'react-redux'
@@ -26,7 +26,7 @@ type OwnProps = {
 
 type Props = OwnProps & ConnectedProps<typeof connector>
 
-class ShowMoreFieldsDropdown extends React.Component<Props> {
+class ShowMoreFieldsDropdown extends Component<Props> {
     _setFieldVisibility = (name: string, state: boolean) => {
         if (!state && this.props.visibleFields.size <= 1) {
             return this.props.notify({

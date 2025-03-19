@@ -1,5 +1,3 @@
-import React from 'react'
-
 import { HELP_CENTER_TEXTS } from 'config/helpCenter'
 import { HelpCenter } from 'models/helpCenter/types'
 import { Entrypoint } from 'pages/automate/common/components/WorkflowsFeatureList'

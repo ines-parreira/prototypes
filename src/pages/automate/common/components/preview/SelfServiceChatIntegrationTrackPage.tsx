@@ -1,5 +1,3 @@
-import React from 'react'
-
 import classnames from 'classnames'
 
 import graphicTShirt from 'assets/img/self-service/graphic-t-shirt.png'

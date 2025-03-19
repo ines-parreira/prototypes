@@ -1,5 +1,3 @@
-import React from 'react'
-
 import { Tooltip } from '@gorgias/merchant-ui-kit'
 
 import IconInput from 'pages/common/forms/input/IconInput'

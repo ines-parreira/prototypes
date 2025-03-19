@@ -1,5 +1,3 @@
-import React from 'react'
-
 import ToggleInput from 'pages/common/forms/ToggleInput'
 
 import css from './ContactFormDisplayModeToggle.less'

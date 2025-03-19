@@ -1,5 +1,3 @@
-import React from 'react'
-
 import { THEME_CONFIGS } from 'core/theme'
 import type { HelpdeskThemeName } from 'core/theme'
 import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'

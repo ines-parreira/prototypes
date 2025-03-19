@@ -1,5 +1,3 @@
-import React from 'react'
-
 import HeaderCellProperty from 'pages/common/components/table/cells/HeaderCellProperty'
 import TableHead from 'pages/common/components/table/TableHead'
 import TableWrapper from 'pages/common/components/table/TableWrapper'

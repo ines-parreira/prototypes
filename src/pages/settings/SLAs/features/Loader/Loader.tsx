@@ -1,5 +1,3 @@
-import React from 'react'
-
 import LoaderComponent from 'pages/common/components/Loader/Loader'
 
 import PageHeader from '../PageHeader/PageHeader'

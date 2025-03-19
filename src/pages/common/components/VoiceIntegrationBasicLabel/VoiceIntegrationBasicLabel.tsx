@@ -1,5 +1,3 @@
-import React from 'react'
-
 import useAppSelector from 'hooks/useAppSelector'
 import { formatPhoneNumberInternational } from 'pages/phoneNumbers/utils'
 import { getIntegrationById } from 'state/integrations/selectors'

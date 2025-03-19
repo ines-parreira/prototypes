@@ -1,5 +1,3 @@
-import React from 'react'
-
 import { Redirect, useHistory, useParams } from 'react-router-dom'
 
 import { IntegrationType } from 'models/integration/constants'

@@ -1,10 +1,10 @@
 /* eslint-disable */
-import React from 'react'
+import { Component } from 'react'
 
 import { FroalaEditor } from './froala-config'
 
 let lastId = 0
-export default class FroalaEditorFunctionality extends React.Component {
+export default class FroalaEditorFunctionality extends Component {
     constructor(props) {
         super(props)
 

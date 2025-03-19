@@ -1,4 +1,5 @@
-import React, {
+import {
+    Component,
     ContextType,
     createContext,
     FunctionComponent,
@@ -56,7 +57,7 @@ const statusColors: Record<string, ColorType> = {
     cancelled: 'error',
 }
 
-export class AfterTitle extends React.Component<AfterTitleProps> {
+export class AfterTitle extends Component<AfterTitleProps> {
     static contextType = OrderContext
     context!: ContextType<typeof OrderContext>
 

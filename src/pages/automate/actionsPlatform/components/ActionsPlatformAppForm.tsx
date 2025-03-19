@@ -1,5 +1,3 @@
-import React from 'react'
-
 import { Controller, useForm } from 'react-hook-form'
 import { useHistory } from 'react-router-dom'
 

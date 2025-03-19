@@ -1,5 +1,3 @@
-import React from 'react'
-
 import { Macro } from '@gorgias/api-queries'
 
 import Preview from '../Preview'

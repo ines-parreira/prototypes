@@ -1,5 +1,3 @@
-import React from 'react'
-
 import { getValueFromData } from 'Widgets/modules/Template/helpers/fieldDataMappers'
 
 import css from './Field.less'

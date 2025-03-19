@@ -1,5 +1,3 @@
-import React from 'react'
-
 import classnames from 'classnames'
 import classNamesBind from 'classnames/bind'
 import { fromJS, Map } from 'immutable'

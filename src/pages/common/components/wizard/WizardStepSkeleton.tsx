@@ -1,4 +1,4 @@
-import React from 'react'
+import { useRef } from 'react'
 
 import { isObject } from 'lodash'
 
@@ -40,7 +40,7 @@ const WizardStepSkeleton: React.FC<Props> = ({
     metaStep,
     isLoading,
 }) => {
-    const contentRef = React.useRef<HTMLDivElement>(null)
+    const contentRef = useRef<HTMLDivElement>(null)
     const contentIsIntersecting =
         useIsIntersectingWithBrowserViewport(contentRef)
 

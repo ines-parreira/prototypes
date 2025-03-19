@@ -1,5 +1,5 @@
 // TODO: remove component entirely after Virtualization is tested out
-import React from 'react'
+import { Component } from 'react'
 
 import cn from 'classnames'
 import { List, Map } from 'immutable'
@@ -38,7 +38,7 @@ type State = {
     expandedMessages: number[]
 }
 
-export class TicketBodyNonVirtualized extends React.Component<Props, State> {
+export class TicketBodyNonVirtualized extends Component<Props, State> {
     lastMessageDatetimeAfterMount: Moment | null
 
     _messageCursor = 0

@@ -1,5 +1,3 @@
-import React from 'react'
-
 import { useCampaignReportData } from 'pages/stats/convert/components/DownloadOverviewData/GenerateReportService'
 import { DownloadDataButton } from 'pages/stats/support-performance/components/DownloadDataButton'
 import { saveZippedFiles } from 'utils/file'

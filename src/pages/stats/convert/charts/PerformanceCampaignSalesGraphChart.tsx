@@ -1,5 +1,3 @@
-import React from 'react'
-
 import { ReportingGranularity } from 'models/reporting/types'
 import ChartCard from 'pages/stats/ChartCard'
 import LineChart from 'pages/stats/common/components/charts/LineChart/LineChart'

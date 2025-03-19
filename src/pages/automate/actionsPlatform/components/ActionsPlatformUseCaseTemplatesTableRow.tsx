@@ -1,5 +1,3 @@
-import React from 'react'
-
 import { Badge } from '@gorgias/merchant-ui-kit'
 
 import { DateAndTimeFormatting } from 'constants/datetime'

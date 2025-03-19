@@ -1,4 +1,5 @@
-import React, {
+import {
+    Component,
     ContextType,
     createContext,
     FunctionComponent,
@@ -78,7 +79,7 @@ type AfterTitleProps = {
     source: Map<any, any>
 } & ConnectedProps<typeof connectorAfterTitle>
 
-export class AfterTitle extends React.Component<AfterTitleProps> {
+export class AfterTitle extends Component<AfterTitleProps> {
     static contextType = OrderContext
     context!: ContextType<typeof OrderContext>
 
@@ -206,7 +207,7 @@ type BeforeContentProps = {
     source: Map<any, any>
 } & ConnectedProps<typeof connectorBeforeContent>
 
-export class BeforeContent extends React.Component<BeforeContentProps> {
+export class BeforeContent extends Component<BeforeContentProps> {
     static contextType = OrderContext
     context!: ContextType<typeof OrderContext>
     render() {

@@ -1,4 +1,4 @@
-import React, { ComponentType, CSSProperties } from 'react'
+import { Component, type ComponentType, type CSSProperties } from 'react'
 
 import MultiSelectOptionsField from './MultiSelectOptionsField/MultiSelectOptionsField'
 import { Option } from './MultiSelectOptionsField/types'
@@ -19,7 +19,7 @@ type Props = {
 }
 
 // Deprecated: Use MultiSelectOptionsField instead
-export default class MultiSelectField extends React.Component<Props> {
+export default class MultiSelectField extends Component<Props> {
     static defaultProps = {
         allowCustomValues: false,
         options: [],

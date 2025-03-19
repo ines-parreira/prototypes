@@ -1,5 +1,3 @@
-import React from 'react'
-
 import { useQueryClient } from '@tanstack/react-query'
 
 import { queryKeys, useArchiveSlaPolicy } from '@gorgias/api-queries'

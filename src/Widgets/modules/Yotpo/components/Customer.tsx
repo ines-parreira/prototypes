@@ -1,4 +1,4 @@
-import React, { ContextType } from 'react'
+import { Component, ContextType } from 'react'
 
 import type { Map } from 'immutable'
 
@@ -20,7 +20,7 @@ type AfterTitleProps = {
     source: Map<string, any>
 }
 
-class AfterTitle extends React.Component<AfterTitleProps> {
+class AfterTitle extends Component<AfterTitleProps> {
     render() {
         const { source } = this.props
 
@@ -51,7 +51,7 @@ type TitleWrapperProps = {
     isEditing: boolean
 }
 
-class TitleWrapper extends React.Component<TitleWrapperProps> {
+class TitleWrapper extends Component<TitleWrapperProps> {
     static contextType = IntegrationContext
     context!: ContextType<typeof IntegrationContext>
     render() {
@@ -85,7 +85,7 @@ class TitleWrapper extends React.Component<TitleWrapperProps> {
 type BeforeContentProps = {
     source: Map<string, any>
 }
-class BeforeContent extends React.Component<BeforeContentProps> {
+class BeforeContent extends Component<BeforeContentProps> {
     render() {
         const { source } = this.props
         if (source.size < 2) {

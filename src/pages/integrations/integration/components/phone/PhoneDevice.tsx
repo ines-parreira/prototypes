@@ -1,5 +1,3 @@
-import React from 'react'
-
 import Dropdown from 'pages/common/components/dropdown/Dropdown'
 import DropdownBody from 'pages/common/components/dropdown/DropdownBody'
 

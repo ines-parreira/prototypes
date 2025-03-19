@@ -1,5 +1,3 @@
-import React from 'react'
-
 import BodyCell, {
     Props as BodyCellProps,
 } from 'pages/common/components/table/cells/BodyCell'

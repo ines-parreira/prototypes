@@ -1,5 +1,3 @@
-import React from 'react'
-
 import { getEmojiFlag } from '../../utils/locale'
 
 import css from './LanguageBullet.less'

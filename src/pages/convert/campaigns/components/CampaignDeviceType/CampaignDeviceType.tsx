@@ -1,5 +1,3 @@
-import React from 'react'
-
 import RadioFieldSet from 'pages/common/forms/RadioFieldSet'
 import SelectField from 'pages/common/forms/SelectField/SelectField'
 import { TRIGGERS_CONFIG } from 'pages/convert/campaigns/constants/triggers'

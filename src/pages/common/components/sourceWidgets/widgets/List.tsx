@@ -1,5 +1,3 @@
-import React from 'react'
-
 import classnames from 'classnames'
 
 import { isSourceArray, Source, Template } from 'models/widget/types'

@@ -1,5 +1,3 @@
-import React from 'react'
-
 import { useListLiveCallQueueVoiceCalls } from '@gorgias/api-queries'
 
 import { PaywallConfig, paywallConfigs } from 'config/paywalls'

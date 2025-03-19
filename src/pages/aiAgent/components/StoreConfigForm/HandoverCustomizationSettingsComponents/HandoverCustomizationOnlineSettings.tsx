@@ -1,5 +1,3 @@
-import React from 'react'
-
 import { Button } from '@gorgias/merchant-ui-kit'
 
 import { Label } from 'gorgias-design-system/Input/Label'

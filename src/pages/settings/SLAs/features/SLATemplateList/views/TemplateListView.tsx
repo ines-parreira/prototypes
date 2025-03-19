@@ -1,5 +1,3 @@
-import React from 'react'
-
 import { TEMPLATES_LIST } from 'pages/settings/SLAs/config/templates'
 import PageHeader from 'pages/settings/SLAs/features/PageHeader/PageHeader'
 

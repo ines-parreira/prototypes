@@ -1,5 +1,3 @@
-import React from 'react'
-
 import { AiAgentScopes } from 'pages/aiAgent/Onboarding/types'
 
 import CursorClickIcon from './icons/CursorClickIcon'

@@ -1,5 +1,3 @@
-import React from 'react'
-
 import { getRGB } from 'gorgias-design-system/utils'
 import { SteppedSlider } from 'pages/common/components/SteppedSlider/SteppedSlider'
 

@@ -1,5 +1,3 @@
-import React from 'react'
-
 import { Language } from 'constants/languages'
 import InstallationStep from 'pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationInstall/GorgiasChatIntegrationManualInstallationTabs/components/InstallationStep'
 

@@ -1,5 +1,3 @@
-import React from 'react'
-
 import { MetricTrend } from 'hooks/reporting/useMetricTrend'
 import BigNumberMetric from 'pages/stats/BigNumberMetric'
 import TrendBadge from 'pages/stats/common/components/TrendBadge'

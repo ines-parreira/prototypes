@@ -1,4 +1,4 @@
-import React from 'react'
+import { Component, createRef } from 'react'
 
 import { fromJS, List, Map } from 'immutable'
 import { connect, ConnectedProps } from 'react-redux'
@@ -35,14 +35,14 @@ type State = {
     isLoading: boolean
 }
 
-class MergeTicketsContainer extends React.Component<Props, State> {
+class MergeTicketsContainer extends Component<Props, State> {
     state = {
         targetTicket: null,
         finalTicket: null,
         isLoading: false,
     }
 
-    buttonsRef = React.createRef<HTMLDivElement>()
+    buttonsRef = createRef<HTMLDivElement>()
 
     componentDidUpdate(prevProps: Props) {
         if (prevProps.isOpen && !this.props.isOpen) {

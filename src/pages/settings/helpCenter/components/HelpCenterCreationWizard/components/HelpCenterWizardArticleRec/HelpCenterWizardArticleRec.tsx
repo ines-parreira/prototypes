@@ -1,5 +1,3 @@
-import React from 'react'
-
 import classnames from 'classnames'
 
 import Alert, { AlertType } from 'pages/common/components/Alert/Alert'

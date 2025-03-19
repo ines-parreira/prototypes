@@ -1,5 +1,3 @@
-import React from 'react'
-
 import { get } from 'lodash'
 import { Col, Container, Row } from 'reactstrap'
 

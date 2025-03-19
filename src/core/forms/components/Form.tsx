@@ -1,4 +1,9 @@
-import React, { PropsWithChildren, useEffect } from 'react'
+import { useEffect } from 'react'
+import type {
+    DetailedHTMLProps,
+    FormHTMLAttributes,
+    PropsWithChildren,
+} from 'react'
 
 import {
     FieldValues,
@@ -76,9 +81,6 @@ type HandleSubmitProps<TFieldValues extends FieldValues> = {
 }
 
 type FormElementProps = Omit<
-    React.DetailedHTMLProps<
-        React.FormHTMLAttributes<HTMLFormElement>,
-        HTMLFormElement
-    >,
+    DetailedHTMLProps<FormHTMLAttributes<HTMLFormElement>, HTMLFormElement>,
     'onSubmit' | 'noValidate'
 >

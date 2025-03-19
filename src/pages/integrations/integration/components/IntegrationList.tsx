@@ -1,4 +1,4 @@
-import React, { ReactNode } from 'react'
+import { cloneElement, Component, isValidElement, ReactNode } from 'react'
 
 import classnames from 'classnames'
 import { List, Map } from 'immutable'
@@ -38,7 +38,7 @@ type Props = {
  * A generic component to edit integrations of a given type.
  * We can then have specific components for each integration type using this one.
  */
-class IntegrationList extends React.Component<Props> {
+class IntegrationList extends Component<Props> {
     static defaultProps: Pick<Props, 'createIntegrationButtonHidden'> = {
         createIntegrationButtonHidden: false,
     }
@@ -115,9 +115,9 @@ class IntegrationList extends React.Component<Props> {
                             </Button>
                         )}
                     {!this.props.createIntegrationButtonHidden &&
-                        React.isValidElement(createIntegrationButton) && (
+                        isValidElement(createIntegrationButton) && (
                             <>
-                                {React.cloneElement(createIntegrationButton, {
+                                {cloneElement(createIntegrationButton, {
                                     ...createIntegrationButton.props,
                                     onClick: this.onButtonClick,
                                 })}

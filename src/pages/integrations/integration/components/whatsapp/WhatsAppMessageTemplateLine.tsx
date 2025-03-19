@@ -1,5 +1,3 @@
-import React from 'react'
-
 import InputField from 'pages/common/forms/input/InputField'
 import { sanitizeHtmlDefault } from 'utils/html'
 

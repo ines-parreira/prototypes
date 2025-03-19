@@ -1,5 +1,3 @@
-import React from 'react'
-
 import { LogicalOperator } from 'estree'
 
 import css from './CallExpression.less'

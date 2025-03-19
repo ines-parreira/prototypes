@@ -1,5 +1,3 @@
-import React from 'react'
-
 import moment from 'moment-timezone'
 import { useLocation } from 'react-router-dom'
 

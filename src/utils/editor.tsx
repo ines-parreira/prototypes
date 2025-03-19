@@ -1,4 +1,4 @@
-import React from 'react'
+import { cloneElement } from 'react'
 
 import {
     convertFromHTML as _convertFromHTML,
@@ -172,7 +172,7 @@ export function convertToHTML(contentState: ContentState): string {
                     const quoteElements = Array.from(
                         { length: quoteDepth },
                         (value, i) =>
-                            React.cloneElement(QUOTE_HTML_ELEMENT, {
+                            cloneElement(QUOTE_HTML_ELEMENT, {
                                 key: `quote-level-${i}`,
                             }),
                     )
@@ -182,12 +182,12 @@ export function convertToHTML(contentState: ContentState): string {
                     }
                     return {
                         element: nest ? (
-                            React.cloneElement(element, quoteDataAttr)
+                            cloneElement(element, quoteDataAttr)
                         ) : (
                             <ComposedElements
                                 elements={[
                                     ...quoteElements,
-                                    React.cloneElement(element, quoteDataAttr),
+                                    cloneElement(element, quoteDataAttr),
                                 ]}
                             />
                         ),
@@ -195,7 +195,7 @@ export function convertToHTML(contentState: ContentState): string {
                             <ComposedElements
                                 elements={[
                                     ...quoteElements,
-                                    React.cloneElement(empty, quoteDataAttr),
+                                    cloneElement(empty, quoteDataAttr),
                                 ]}
                             />
                         ),

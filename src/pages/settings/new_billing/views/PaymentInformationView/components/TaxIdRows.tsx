@@ -1,5 +1,3 @@
-import React from 'react'
-
 import { DataRow } from 'pages/settings/new_billing/views/PaymentInformationView/components/DataRow'
 import { BillingContactDetailResponse } from 'state/billing/types'
 
