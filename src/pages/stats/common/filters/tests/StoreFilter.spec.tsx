@@ -8,7 +8,7 @@ import { logEvent, SegmentEvent } from 'common/segment'
 import { billingState } from 'fixtures/billing'
 import { IntegrationType } from 'models/integration/constants'
 import { withLogicalOperator } from 'models/reporting/queryFactories/utils'
-import { FilterComponentKey } from 'models/stat/types'
+import { FilterKey } from 'models/stat/types'
 import { getIntegration } from 'pages/automate/workflows/hooks/tests/fixtures/utils'
 import {
     FILTER_DROPDOWN_ICON,
@@ -87,9 +87,7 @@ describe('StoreFilter', () => {
         renderComponent()
 
         expect(
-            screen.getByText(
-                FilterLabels[FilterComponentKey.StoreIntegrations],
-            ),
+            screen.getByText(FilterLabels[FilterKey.StoreIntegrations]),
         ).toBeTruthy()
     })
 
@@ -159,7 +157,7 @@ describe('StoreFilter', () => {
         userEvent.click(screen.getByText(FILTER_DROPDOWN_ICON))
 
         expect(logEvent).toHaveBeenCalledWith(SegmentEvent.StatFilterSelected, {
-            name: FilterComponentKey.StoreIntegrations,
+            name: FilterKey.StoreIntegrations,
             logical_operator:
                 LogicalOperatorLabel[
                     LogicalOperatorEnum.ONE_OF

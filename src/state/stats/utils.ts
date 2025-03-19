@@ -70,6 +70,7 @@ export const fromPartialLegacyStatsFilters = (
                     }
                     break
                 case FilterKey.Integrations:
+                case FilterKey.StoreIntegrations:
                 case FilterKey.Agents:
                 case FilterKey.HelpCenters:
                     if (statsFilters[key] !== undefined) {
@@ -123,6 +124,7 @@ export const fromLegacyStatsFilters = (
                     }
                     break
                 case FilterKey.Integrations:
+                case FilterKey.StoreIntegrations:
                 case FilterKey.Agents:
                 case FilterKey.HelpCenters:
                     if (
@@ -181,6 +183,7 @@ export const fromFiltersWithLogicalOperators = (
                             acc[filter] = statsFilters[filter]
                         }
                         break
+                    case FilterKey.StoreIntegrations:
                     case FilterKey.Integrations:
                     case FilterKey.Agents:
                     case FilterKey.HelpCenters:
@@ -233,6 +236,7 @@ export const excludeFromFiltersWithLogicalOperators = (
                         acc[key] = statsFilters[key]
                         break
                     case FilterKey.Integrations:
+                    case FilterKey.StoreIntegrations:
                     case FilterKey.Agents:
                     case FilterKey.HelpCenters:
                         acc[key] = statsFilters[key]
@@ -261,6 +265,7 @@ export const savedFilterDraftFiltersFromFiltersWithLogicalOperators = (
             switch (filter) {
                 case FilterKey.Period:
                 case FilterKey.AggregationWindow:
+                case FilterKey.StoreIntegrations:
                     break
                 case FilterKey.Tags: {
                     const currentFilter = statsFilters[filter]

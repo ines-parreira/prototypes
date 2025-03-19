@@ -21,6 +21,7 @@ export const isFilterFilled = (
         case FilterKey.Channels:
         case FilterKey.HelpCenters:
         case FilterKey.Integrations:
+        case FilterKey.StoreIntegrations:
         case FilterKey.LocaleCodes:
         case FilterKey.Score:
         case FilterKey.SlaPolicies:

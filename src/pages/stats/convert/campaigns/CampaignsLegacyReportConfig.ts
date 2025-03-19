@@ -1,4 +1,4 @@
-import { FilterComponentKey, FilterKey, StaticFilter } from 'models/stat/types'
+import { FilterKey, StaticFilter } from 'models/stat/types'
 import { CAMPAIGNS_REPORT_TITLE } from 'pages/stats/convert/campaigns/CampaignsPerformanceReportConfig'
 import { CampaignRevenueKPIChart } from 'pages/stats/convert/charts/CampaignRevenueKPIChart'
 import { CampaignsSalesCountKPIChart } from 'pages/stats/convert/charts/CampaignsSalesCountKPIChart'
@@ -27,7 +27,7 @@ export enum CampaignsLegacyChart {
 const CAMPAIGNS_REPORT_PERSISTENT_FILTERS: StaticFilter[] = [
     FilterKey.Period,
     FilterKey.AggregationWindow,
-    FilterComponentKey.StoreIntegrations,
+    FilterKey.StoreIntegrations,
 ]
 
 const CAMPAIGNS_REPORT_OPTIONAL_FILTERS = [

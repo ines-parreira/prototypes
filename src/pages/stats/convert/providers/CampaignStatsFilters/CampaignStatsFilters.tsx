@@ -62,10 +62,14 @@ export const CampaignStatsFilters = ({ children }: Props) => {
             ? [storeIntegrations[0].id]
             : []
 
-        return statsFilters.storeIntegrations?.values
-            ? statsFilters.storeIntegrations.values
-            : fallback
-    }, [storeIntegrationId, storeIntegrations, statsFilters])
+        const storeIntegrationsInFilter =
+            statsFilters.storeIntegrations?.values ?? []
+        if (storeIntegrationsInFilter.length > 0) {
+            return [storeIntegrationsInFilter[0]]
+        }
+
+        return fallback
+    }, [storeIntegrationId, storeIntegrations, statsFilters.storeIntegrations])
 
     const { campaigns, channelConnectionExternalIds } = useGetCampaignsForStore(
         selectedIntegrations,
@@ -116,8 +120,10 @@ export const CampaignStatsFilters = ({ children }: Props) => {
         if (chatIntegration) {
             dispatch(
                 mergeStatsFiltersWithLogicalOperator({
-                    campaigns: withDefaultLogicalOperator([]),
-                    campaignStatuses: withDefaultLogicalOperator([]),
+                    [FilterKey.Campaigns]: withDefaultLogicalOperator([]),
+                    [FilterKey.CampaignStatuses]: withDefaultLogicalOperator(
+                        [],
+                    ),
                 }),
             )
         }
@@ -141,9 +147,12 @@ export const CampaignStatsFilters = ({ children }: Props) => {
         (integrationIds) => {
             dispatch(
                 mergeStatsFiltersWithLogicalOperator({
-                    integrations: withDefaultLogicalOperator(integrationIds),
-                    campaigns: withDefaultLogicalOperator([]),
-                    campaignStatuses: withDefaultLogicalOperator([]),
+                    [FilterKey.StoreIntegrations]:
+                        withDefaultLogicalOperator(integrationIds),
+                    [FilterKey.Campaigns]: withDefaultLogicalOperator([]),
+                    [FilterKey.CampaignStatuses]: withDefaultLogicalOperator(
+                        [],
+                    ),
                 }),
             )
         },
@@ -154,7 +163,8 @@ export const CampaignStatsFilters = ({ children }: Props) => {
         (campaignIds) => {
             dispatch(
                 mergeStatsFiltersWithLogicalOperator({
-                    campaigns: withDefaultLogicalOperator(campaignIds),
+                    [FilterKey.Campaigns]:
+                        withDefaultLogicalOperator(campaignIds),
                 }),
             )
         },
@@ -165,7 +175,8 @@ export const CampaignStatsFilters = ({ children }: Props) => {
         (statuses) => {
             dispatch(
                 mergeStatsFiltersWithLogicalOperator({
-                    campaignStatuses: withDefaultLogicalOperator(statuses),
+                    [FilterKey.CampaignStatuses]:
+                        withDefaultLogicalOperator(statuses),
                 }),
             )
         },

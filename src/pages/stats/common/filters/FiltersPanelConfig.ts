@@ -79,7 +79,6 @@ export const FilterComponentMap: Record<
         BusiestTimesMetricSelectFilter,
     [FilterComponentKey.CustomField]: CustomFieldFilter,
     [FilterComponentKey.PhoneIntegrations]: PhoneIntegrationsFilterWithState,
-    [FilterComponentKey.StoreIntegrations]: StoreFilterFromContext,
     [FilterKey.Accuracy]: AccuracyFilterWithState,
     [FilterKey.Agents]: AgentsFiltersWithState,
     [FilterKey.AggregationWindow]: AggregationWindowFilterWithState,
@@ -99,6 +98,7 @@ export const FilterComponentMap: Record<
     [FilterKey.ResolutionCompleteness]: ResolutionCompletenessFilterWithState,
     [FilterKey.Score]: ScoreFiltersWithState,
     [FilterKey.SlaPolicies]: SLAPolicyFilterWithState,
+    [FilterKey.StoreIntegrations]: StoreFilterFromContext,
     [FilterKey.Tags]: TagsFilterWithState,
 }
 
@@ -127,8 +127,8 @@ export const SavedFilterComponentMap: Record<
     [FilterKey.LocaleCodes]: () => null,
     [FilterKey.Period]: () => null,
     [FilterKey.SlaPolicies]: () => null,
+    [FilterKey.StoreIntegrations]: () => null,
     [FilterComponentKey.BusiestTimesMetricSelectFilter]: () => null,
     [FilterComponentKey.CustomField]: () => null,
     [FilterComponentKey.PhoneIntegrations]: () => null,
-    [FilterComponentKey.StoreIntegrations]: () => null,
 }

@@ -10,10 +10,7 @@ import {
     withDefaultLogicalOperator,
     withLogicalOperator,
 } from 'models/reporting/queryFactories/utils'
-import {
-    FilterComponentKey,
-    StatsFiltersWithLogicalOperator,
-} from 'models/stat/types'
+import { FilterKey, StatsFiltersWithLogicalOperator } from 'models/stat/types'
 import { LogicalOperatorLabel } from 'pages/stats/common/components/Filter/constants'
 import Filter from 'pages/stats/common/components/Filter/Filter'
 import { FilterLabels } from 'pages/stats/common/filters/constants'
@@ -32,10 +29,10 @@ import { mergeStatsFiltersWithLogicalOperator } from 'state/stats/statsSlice'
 import { RootState } from 'state/types'
 
 type Props = {
-    value: StatsFiltersWithLogicalOperator[FilterComponentKey.StoreIntegrations]
+    value: StatsFiltersWithLogicalOperator[FilterKey.StoreIntegrations]
     storeIntegrations: Integration[]
     dispatchUpdate: (
-        value: StatsFiltersWithLogicalOperator[FilterComponentKey.StoreIntegrations],
+        value: StatsFiltersWithLogicalOperator[FilterKey.StoreIntegrations],
     ) => void
 } & RemovableFilter
 
@@ -82,14 +79,14 @@ export default function StoreFilter({
 
     const handleDropdownClosed = () => {
         logSegmentEvent(
-            FilterComponentKey.StoreIntegrations,
+            FilterKey.StoreIntegrations,
             LogicalOperatorLabel[value.operator],
         )
     }
 
     return (
         <Filter
-            filterName={FilterLabels[FilterComponentKey.StoreIntegrations]}
+            filterName={FilterLabels[FilterKey.StoreIntegrations]}
             filterOptionGroups={options}
             logicalOperators={[]}
             onChangeOption={onOptionChange}
@@ -126,7 +123,7 @@ export const StoreFilterFromContext = () => {
             storeIntegrations={storeIntegrations}
             value={withLogicalOperator(selectedIntegrations)}
             dispatchUpdate={(
-                value: StatsFiltersWithLogicalOperator[FilterComponentKey.StoreIntegrations],
+                value: StatsFiltersWithLogicalOperator[FilterKey.StoreIntegrations],
             ) =>
                 dispatch(
                     mergeStatsFiltersWithLogicalOperator({
@@ -141,7 +138,7 @@ export const StoreFilterFromContext = () => {
 export const StoreFilterWithState = connect(
     (state: RootState) => ({
         value: getStatsFiltersWithLogicalOperators(state)[
-            FilterComponentKey.StoreIntegrations
+            FilterKey.StoreIntegrations
         ],
         storeIntegrations: getStoreIntegrations(state),
     }),

@@ -7,7 +7,7 @@ import { getIconFromType } from 'state/integrations/helpers'
 
 type Props = {
     value: LegacyStatsFilters['integrations']
-    onChange: (value: LegacyStatsFilters['integrations']) => void
+    onChange: (value: Value[]) => void
 }
 /**
  * @deprecated
@@ -24,7 +24,7 @@ const DEPRECATED_SelfServiceIntegrationsFilter = ({
         <SelectFilter
             plural="stores"
             singular="store"
-            onChange={onChange as (value: Value[]) => void}
+            onChange={onChange}
             value={value}
         >
             {storeIntegrations.map((storeIntegration) => (

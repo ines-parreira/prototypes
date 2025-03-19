@@ -1,4 +1,4 @@
-import { FilterComponentKey, FilterKey, StaticFilter } from 'models/stat/types'
+import { FilterKey, StaticFilter } from 'models/stat/types'
 import {
     AiSalesAgentChart,
     AiSalesAgentChartConfig,
@@ -18,7 +18,7 @@ import { STATS_ROUTES } from 'routes/constants'
 export const AI_SALES_AGENTS_PERSISTENT_FILTERS: StaticFilter[] = [
     FilterKey.Period,
     FilterKey.AggregationWindow,
-    FilterComponentKey.StoreIntegrations,
+    FilterKey.StoreIntegrations,
 ]
 export const AI_SALES_AGENTS_OPTIONAL_FILTERS = []
 

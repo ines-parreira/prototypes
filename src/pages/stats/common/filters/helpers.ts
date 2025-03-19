@@ -60,7 +60,6 @@ export const filterKeyToStateKeyMapper = (
     key: StateOnlyFilterKeys | CleanFilterComponentKeys,
 ) => {
     switch (key) {
-        case FilterComponentKey.StoreIntegrations:
         case FilterComponentKey.PhoneIntegrations:
             return FilterKey.Integrations
         case FilterComponentKey.CustomField:

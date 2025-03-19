@@ -1,4 +1,4 @@
-import { FilterComponentKey, FilterKey, StaticFilter } from 'models/stat/types'
+import { FilterKey, StaticFilter } from 'models/stat/types'
 import { PerformanceCampaignSalesGraphChart } from 'pages/stats/convert/charts/PerformanceCampaignSalesGraphChart'
 import { PerformanceCampaignSalesKpiChart } from 'pages/stats/convert/charts/PerformanceCampaignSalesKpiChart'
 import { PerformanceEngagementKpiChart } from 'pages/stats/convert/charts/PerformanceEngagementKpiChart'
@@ -39,7 +39,7 @@ export const CAMPAIGNS_REPORT_TITLE = 'Campaigns'
 const CAMPAIGNS_REPORT_PERSISTENT_FILTERS: StaticFilter[] = [
     FilterKey.Period,
     FilterKey.AggregationWindow,
-    FilterComponentKey.StoreIntegrations,
+    FilterKey.StoreIntegrations,
 ]
 
 const CAMPAIGNS_REPORT_OPTIONAL_FILTERS = [

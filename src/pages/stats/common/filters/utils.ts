@@ -85,7 +85,7 @@ export const getFilterError = ({
 
 export const getValidMemberName = (member: string): string => {
     switch (member) {
-        case FilterComponentKey.StoreIntegrations:
+        case FilterKey.StoreIntegrations:
         case FilterComponentKey.PhoneIntegrations:
             return FilterKey.Integrations
         case FilterComponentKey.CustomField:

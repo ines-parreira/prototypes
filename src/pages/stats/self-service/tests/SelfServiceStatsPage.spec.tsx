@@ -323,7 +323,7 @@ describe('<SelfServiceStatsPage />', () => {
                     start_datetime: '2021-02-03T00:00:00.000Z',
                     end_datetime: '2021-02-03T23:59:59.999Z',
                 },
-                integrations: [integrationsState.integrations[0].id],
+                storeIntegrations: [integrationsState.integrations[0].id],
             }),
         },
         currentAccount: fromJS({

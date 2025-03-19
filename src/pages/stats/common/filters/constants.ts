@@ -38,9 +38,9 @@ export const FilterLabels: Record<FilterKey | FilterComponentKey, string> = {
     [FilterKey.Efficiency]: 'Efficiency',
     [FilterKey.InternalCompliance]: 'Internal compliance',
     [FilterKey.BrandVoice]: 'Brand voice',
+    [FilterKey.StoreIntegrations]: 'Store',
     [FilterComponentKey.BusiestTimesMetricSelectFilter]: 'Ticket Metric',
     [FilterComponentKey.CustomField]: 'Ticket Field',
-    [FilterComponentKey.StoreIntegrations]: 'Store',
     [FilterComponentKey.PhoneIntegrations]: 'Integration',
 }
 export const ReportingGranularityLabels: Record<ReportingGranularity, string> =

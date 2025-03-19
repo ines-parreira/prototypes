@@ -299,9 +299,9 @@ describe('isFilterApplicable', () => {
 
 describe('getValidMemberName', () => {
     it('should return integrations for Store key', () => {
-        expect(
-            getValidMemberName(FilterComponentKey.StoreIntegrations),
-        ).toEqual(FilterKey.Integrations)
+        expect(getValidMemberName(FilterKey.StoreIntegrations)).toEqual(
+            FilterKey.Integrations,
+        )
     })
 
     it('should return integrations for PhoneIntegration key', () => {

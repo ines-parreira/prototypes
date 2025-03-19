@@ -180,7 +180,7 @@ describe('FiltersPanel', () => {
         FilterKey.SlaPolicies,
         FilterComponentKey.BusiestTimesMetricSelectFilter,
         FilterComponentKey.CustomField,
-        FilterComponentKey.StoreIntegrations,
+        FilterKey.StoreIntegrations,
         FilterComponentKey.PhoneIntegrations,
         FilterKey.Campaigns,
         FilterKey.CampaignStatuses,
@@ -195,7 +195,7 @@ describe('FiltersPanel', () => {
         FilterComponentKey.BusiestTimesMetricSelectFilter,
         FilterComponentKey.CustomField,
         FilterComponentKey.PhoneIntegrations,
-        FilterComponentKey.StoreIntegrations,
+        FilterKey.StoreIntegrations,
     ]
 
     const someTags = tags
@@ -1001,7 +1001,7 @@ describe('isFilterTypeWithValues', () => {
             FilterKey.CustomFields,
             FilterKey.Period,
             FilterComponentKey.CustomField,
-            FilterComponentKey.StoreIntegrations,
+            FilterKey.StoreIntegrations,
             FilterComponentKey.BusiestTimesMetricSelectFilter,
         ]
 
@@ -1013,7 +1013,6 @@ describe('isFilterTypeWithValues', () => {
 
 describe('filterKeyToStateKeyMapper', () => {
     it.each<[CleanFilterComponentKeys, FilterKey]>([
-        [FilterComponentKey.StoreIntegrations, FilterKey.Integrations],
         [FilterComponentKey.PhoneIntegrations, FilterKey.Integrations],
         [FilterComponentKey.CustomField, FilterKey.CustomFields],
     ])('should map %s to %s', (input, expected) => {
@@ -1039,18 +1038,17 @@ describe('getFilteredFilterComponentKeys', () => {
     it('should filter out BusiestTimesMetricSelectFilter', () => {
         const keys = [
             FilterComponentKey.BusiestTimesMetricSelectFilter,
-            FilterComponentKey.StoreIntegrations,
+            FilterKey.StoreIntegrations,
         ]
 
         const result = getFilteredFilterComponentKeys(keys)
 
-        expect(result).toEqual([FilterComponentKey.StoreIntegrations])
+        expect(result).toEqual([FilterKey.StoreIntegrations])
     })
 
     it('should include all other keys besides BusiestTimesMetricSelectFilter', () => {
         const keys = [
             FilterComponentKey.BusiestTimesMetricSelectFilter,
-            FilterComponentKey.StoreIntegrations,
             FilterComponentKey.PhoneIntegrations,
             FilterComponentKey.CustomField,
             FilterKey.Agents,
@@ -1062,13 +1060,13 @@ describe('getFilteredFilterComponentKeys', () => {
             FilterKey.LocaleCodes,
             FilterKey.Score,
             FilterKey.SlaPolicies,
+            FilterKey.StoreIntegrations,
             FilterKey.Tags,
         ]
 
         const result = getFilteredFilterComponentKeys(keys)
 
         expect(result).toEqual([
-            FilterComponentKey.StoreIntegrations,
             FilterComponentKey.PhoneIntegrations,
             FilterComponentKey.CustomField,
             FilterKey.Agents,
@@ -1080,6 +1078,7 @@ describe('getFilteredFilterComponentKeys', () => {
             FilterKey.LocaleCodes,
             FilterKey.Score,
             FilterKey.SlaPolicies,
+            FilterKey.StoreIntegrations,
             FilterKey.Tags,
         ])
     })

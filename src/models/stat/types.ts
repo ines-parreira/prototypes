@@ -25,6 +25,7 @@ export enum FilterKey {
     Score = 'score',
     SlaPolicies = 'slaPolicies',
     Tags = 'tags',
+    StoreIntegrations = 'storeIntegrations',
 }
 
 export type StateOnlyFilterKeys = Exclude<
@@ -39,7 +40,6 @@ export type CleanFilterComponentKeys = Exclude<
 
 export enum FilterComponentKey {
     BusiestTimesMetricSelectFilter = 'busiestTimesMetricSelectFilter',
-    StoreIntegrations = 'storeIntegrations',
     PhoneIntegrations = 'phoneIntegrations',
     CustomField = 'customField',
 }
@@ -63,9 +63,9 @@ export type StaticFilter =
     | FilterKey.InternalCompliance
     | FilterKey.BrandVoice
     | FilterKey.ResolutionCompleteness
+    | FilterKey.StoreIntegrations
     | FilterComponentKey.BusiestTimesMetricSelectFilter
     | FilterComponentKey.CustomField
-    | FilterComponentKey.StoreIntegrations
     | FilterComponentKey.PhoneIntegrations
 
 export interface Period {
@@ -117,7 +117,7 @@ export type LegacyStatsFilters = {
     [FilterKey.Score]?: string[]
     [FilterKey.SlaPolicies]?: string[]
     [FilterKey.Tags]?: number[]
-    [FilterComponentKey.StoreIntegrations]?: number[]
+    [FilterKey.StoreIntegrations]?: number[]
 }
 
 export type AgentOnlyFilters<T> = T extends any
@@ -223,7 +223,7 @@ export type StatsFiltersWithLogicalOperator = {
     [FilterKey.Score]?: WithLogicalOperator<string>
     [FilterKey.SlaPolicies]?: WithLogicalOperator<string>
     [FilterKey.Tags]?: TagFilter[]
-    [FilterComponentKey.StoreIntegrations]?: WithLogicalOperator<number>
+    [FilterKey.StoreIntegrations]?: WithLogicalOperator<number>
 }
 
 export type StatsFilters = StatsFiltersWithLogicalOperator

@@ -1,9 +1,7 @@
-// eslint-disable-line import/no-unresolved
 import React, { useCallback, useEffect, useMemo, useState } from 'react'
 
 import classnames from 'classnames'
 import { parse } from 'csv-parse/sync'
-// eslint-disable-line import/no-unresolved
 import { stringify } from 'csv-stringify/sync'
 
 import {
@@ -67,10 +65,10 @@ export const SelfServiceStatsPage = (): JSX.Element => {
         getCleanStatsFiltersWithTimezone,
     )
     const pageStatsFilters = useMemo<LegacyStatsFilters>(() => {
-        const { period, integrations } = statsFilters
+        const { period, storeIntegrations } = statsFilters
         return {
             period,
-            integrations,
+            integrations: storeIntegrations,
         }
     }, [statsFilters])
 
