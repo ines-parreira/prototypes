@@ -10,7 +10,7 @@ import {
 import { getAgentsTableConfigSettingsJS } from 'state/currentAccount/selectors'
 import { AgentsTableColumn, AgentsTableRow } from 'state/ui/stats/types'
 
-export const AgentsEditColumns = () => {
+export const AgentsEditColumns = ({ canduId }: { canduId?: string }) => {
     return (
         <EditTableColumns<AgentsTableColumn, AgentsTableRow>
             settingsSelector={getAgentsTableConfigSettingsJS}
@@ -22,6 +22,7 @@ export const AgentsEditColumns = () => {
             leadColumn={AgentsTableColumn.AgentName}
             leadRow={AgentsTableRow.Total}
             useTableSetting={useAgentsTableConfigSetting}
+            canduId={canduId}
         />
     )
 }

@@ -59,6 +59,7 @@ export const EditTableColumns = <
     tooltips,
     rowTooltips,
     leadColumn,
+    canduId,
 }: {
     settingsSelector: Selector<
         RootState,
@@ -77,6 +78,7 @@ export const EditTableColumns = <
             activeView: TableView<T, R>,
         ) => Promise<ReturnType<StoreDispatch>> | Promise<boolean>
     }
+    canduId?: string
 }) => {
     const [dropdownOpen, setDropdownOpen] = useState(false)
     const toggle = () => setDropdownOpen((prevState) => !prevState)
@@ -99,6 +101,7 @@ export const EditTableColumns = <
                 className={classNames(css.dropdownToggle, {
                     [css.active]: dropdownOpen,
                 })}
+                data-candu-id={canduId}
             >
                 <i className="icon material-icons md-2">table_chart</i>
                 {TOGGLE_LABEL}
