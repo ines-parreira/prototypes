@@ -11,7 +11,10 @@ import React, {
 import classnames from 'classnames'
 import { Map } from 'immutable'
 
-import { GorgiasChatAvatarSettings } from 'models/integration/types'
+import {
+    GorgiasChatAvatarNameType,
+    GorgiasChatAvatarSettings,
+} from 'models/integration/types'
 import { removeATags } from 'pages/aiAgent/utils/removeATags'
 import { ProductCardAttachment } from 'pages/common/draftjs/plugins/toolbar/components/AddProductLink'
 import AgentMessages from 'pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationPreview/AgentMessages'
@@ -62,6 +65,11 @@ const AiAgentChatConversation: FC<Props> = ({
         }
         return messages
     }, [removeLinksFromMessages, messages])
+
+    const aiAgentAvatar = {
+        ...avatar,
+        nameType: GorgiasChatAvatarNameType.CHAT_TITLE,
+    } as GorgiasChatAvatarSettings
 
     // group messages by fromAgent but create a new group when fromAgent changes
     const groupedMessages = useMemo(() => {
@@ -127,7 +135,7 @@ const AiAgentChatConversation: FC<Props> = ({
 
     return (
         <div ref={innerRef} className={classnames(css.content, className)}>
-            <div ref={content}>
+            <div ref={content} className={css.messages}>
                 {groupedMessages.map(({ fromAgent, messages }, index) =>
                     fromAgent ? (
                         <div
@@ -141,7 +149,7 @@ const AiAgentChatConversation: FC<Props> = ({
                                 currentUser={user}
                                 messages={messages}
                                 chatTitle={user.get('name')}
-                                avatar={avatar}
+                                avatar={aiAgentAvatar}
                                 language={language}
                                 conversationColor={conversationColor}
                                 backgroundColor="#FFFFFF"
