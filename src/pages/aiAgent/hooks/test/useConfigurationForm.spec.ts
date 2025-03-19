@@ -237,4 +237,48 @@ describe('useConfigurationForm', () => {
 
         expect(mockOnSuccess).toHaveBeenCalled()
     })
+
+    it('should show conflict error notification when receiving 409 status', async () => {
+        const mockError = {
+            isAxiosError: true,
+            response: {
+                status: 409,
+            },
+        }
+
+        mockUseStoreConfigurationMutation.mockReturnValue({
+            isLoading: false,
+            upsertStoreConfiguration: mockUpdateStoreConfiguration,
+            createStoreConfiguration:
+                mockCreateStoreConfiguration.mockRejectedValueOnce(mockError),
+            error: null,
+        })
+
+        const { result } = renderHook(() =>
+            useConfigurationForm({
+                shopName,
+                initValues: {
+                    monitoredChatIntegrations: [],
+                    monitoredEmailIntegrations: [],
+                    emailChannelDeactivatedDatetime: '',
+                    chatChannelDeactivatedDatetime: '',
+                    signature: 'valid signature',
+                    helpCenterId: 1,
+                },
+            }),
+        )
+
+        await act(async () => {
+            await result.current.handleOnSave({
+                shopName: 'test-shop',
+            })
+        })
+
+        expect(mockDispatch).toHaveBeenCalled()
+        expect(notify).toHaveBeenCalledWith({
+            message:
+                'Email address or chat channel already used by AI Agent on a different store.',
+            status: 'error',
+        })
+    })
 })

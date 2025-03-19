@@ -202,15 +202,11 @@ export const useConfigurationForm = ({
 
             return res
         } catch (error) {
-            if (
-                isAxiosError(error) &&
-                _get(error, 'response.data.message') ===
-                    'Email address already used by AI Agent on a different store.'
-            ) {
+            if (isAxiosError(error) && _get(error, 'response.status') === 409) {
                 void dispatch(
                     notify({
                         message:
-                            'Email address already used by AI Agent on a different store.',
+                            'Email address or chat channel already used by AI Agent on a different store.',
                         status: NotificationStatus.Error,
                     }),
                 )
