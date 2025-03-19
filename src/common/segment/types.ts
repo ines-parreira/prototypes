@@ -1,6 +1,7 @@
 export enum SegmentEvent {
     AiAgentActionPerformedPostReceivedOnboardingNotification = 'ai-agent-action-performed-post-received-onboarding-notification',
     AiAgentActivateCloseActivationModal = 'ai-agent-activate-close-activation-modal',
+    AiAgentActivateEarlyAccessModalViewed = 'ai-agent-activate-early-access-modal-viewed',
     AiAgentActivateMainButtonClicked = 'ai-agent-activate-main-button-clicked',
     AiAgentActivateModalSkillEnabled = 'ai-agent-activate-modal-skill-enabled',
     AiAgentActivateModalSkillDisabled = 'ai-agent-activate-modal-skill-disabled',

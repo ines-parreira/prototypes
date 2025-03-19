@@ -312,4 +312,53 @@ describe('useActivation', () => {
             { page: 'any-page' },
         )
     })
+
+    it('should log event ai-agent-activate-early-access-modal-viewed when the early access modal is displayed', () => {
+        mockedUseEarlyAccessModalState.mockReturnValue({
+            isOnNewPlan: true,
+            setIsPreviewModalVisible: jest.fn(),
+            isPreviewModalVisible: true,
+            isCurrentUserAdmin: true,
+            earlyAccessPlan: {
+                amount: 900,
+                currency: 'USD',
+                amount_after_discount: 720,
+                cadence: Cadence.Month,
+                discount: 180,
+                extra_ticket_cost: 1.2,
+                num_quota_tickets: 450,
+            } as any,
+            currentPlan: {
+                amount: 900,
+                currency: 'USD',
+                cadence: Cadence.Month,
+                num_quota_tickets: 450,
+                extra_ticket_cost: 2,
+            } as any,
+            isLoading: false,
+            handleSubscriptionUpdate: jest.fn(),
+            isSubscriptionUpdating: false,
+        })
+
+        const { result } = renderHook(() => useActivation('any-page'), {
+            wrapper: ({ children }) => (
+                <QueryClientProvider client={queryClient}>
+                    <Provider store={mockStore(defaultState)}>
+                        {children}
+                    </Provider>
+                </QueryClientProvider>
+            ),
+        })
+
+        expect(result.current.ActivationButton).toBeDefined()
+        expect(result.current.ActivationModal).toBeDefined()
+        expect(result.current.EarlyAccessModal).toBeDefined()
+
+        expect(result.current.EarlyAccessModal()?.props.isOpen).toBe(true)
+
+        expect(mockedLogEvent).toHaveBeenCalledWith(
+            segment.SegmentEvent.AiAgentActivateEarlyAccessModalViewed,
+            { page: 'any-page' },
+        )
+    })
 })

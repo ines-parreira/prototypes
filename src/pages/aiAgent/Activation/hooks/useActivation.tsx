@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from 'react'
+import React, { useEffect, useMemo, useState } from 'react'
 
 import { useParams } from 'react-router-dom'
 
@@ -82,6 +82,15 @@ export const useActivation = (
         hasActivationEnabled,
         autoDisplayDisabled: options.autoDisplayEarlyAccessDisabled,
     })
+
+    // Log when the early access modal is displayed
+    useEffect(() => {
+        if (isPreviewModalVisible) {
+            logEvent(SegmentEvent.AiAgentActivateEarlyAccessModalViewed, {
+                page: pageName,
+            })
+        }
+    }, [isPreviewModalVisible, pageName])
 
     return useMemo(
         () => ({
