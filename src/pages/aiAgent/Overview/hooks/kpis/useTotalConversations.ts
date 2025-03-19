@@ -34,6 +34,7 @@ export const useTotalConversations = (
         metricType: StatType.Number,
         metricFormat: 'decimal',
         isLoading: result.isFetching,
+        'data-candu-id': 'ai-agent-overview-kpi-total-conversations',
         ...result.data?.[
             TicketCustomFieldsMeasure.TicketCustomFieldsTicketCount
         ],

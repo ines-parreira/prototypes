@@ -24,10 +24,12 @@ type Props = {
     onToggle: () => void
     name: string
     isExpanded: boolean
+    index?: number
 }
 export const AiAgentNavbarSectionBlock = ({
     shopType,
     shopName,
+    index,
     ...props
 }: Props) => {
     const { navigationItems, routes } = useAiAgentNavigation({ shopName })
@@ -70,7 +72,10 @@ export const AiAgentNavbarSectionBlock = ({
                             cssNavbar.isNested,
                         )}
                         {...(item.dataCanduId && {
-                            ['data-candu-id']: item.dataCanduId,
+                            ['data-candu-id']:
+                                index === 0
+                                    ? `${item.dataCanduId}-first-store`
+                                    : item.dataCanduId,
                         })}
                     >
                         <NavbarLink to={item.route}>

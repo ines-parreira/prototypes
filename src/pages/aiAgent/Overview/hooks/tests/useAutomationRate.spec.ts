@@ -49,6 +49,7 @@ describe('useAutomationRate', () => {
         )
 
         expect(result.current).toEqual({
+            'data-candu-id': 'ai-agent-overview-kpi-automation-rate',
             title: 'AI Agent Automation Rate',
             hint: 'Automated interactions from AI Agent as a percent of all customer interactions.',
             metricType: StatType.Number,
@@ -69,6 +70,7 @@ describe('useAutomationRate', () => {
         )
 
         expect(result.current).toEqual({
+            'data-candu-id': 'ai-agent-overview-kpi-automation-rate',
             title: 'AI Agent Automation Rate',
             hint: 'Automated interactions from AI Agent as a percent of all customer interactions.',
             metricType: StatType.Number,

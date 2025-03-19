@@ -18,6 +18,7 @@ type Props = {
     isLoading?: boolean
     title: ReactNode
     tip?: ReactNode
+    'data-candu-id'?: string
 } & DashboardChartProps
 
 export default function MetricCard({
@@ -29,31 +30,34 @@ export default function MetricCard({
     chartId,
     title,
     tip,
+    ...props
 }: Props) {
     return (
-        <Card className={classnames(css.card, className)}>
-            <div className={css.wrapper}>
-                <div className={css.title}>
-                    {title}
-                    {hint && <HintTooltip {...hint} />}
+        <div data-candu-id={props['data-candu-id']}>
+            <Card className={classnames(css.card, className)}>
+                <div className={css.wrapper}>
+                    <div className={css.title}>
+                        {title}
+                        {hint && <HintTooltip {...hint} />}
+                    </div>
+                    {chartId && (
+                        <ChartsActionMenu
+                            chartId={chartId}
+                            dashboard={dashboard}
+                            chartName={title}
+                        />
+                    )}
                 </div>
-                {chartId && (
-                    <ChartsActionMenu
-                        chartId={chartId}
-                        dashboard={dashboard}
-                        chartName={title}
-                    />
-                )}
-            </div>
 
-            {children}
+                {children}
 
-            {tip &&
-                (isLoading ? (
-                    <Skeleton height={132} className={css.tip} inline />
-                ) : (
-                    <div className={css.tip}>{tip}</div>
-                ))}
-        </Card>
+                {tip &&
+                    (isLoading ? (
+                        <Skeleton height={132} className={css.tip} inline />
+                    ) : (
+                        <div className={css.tip}>{tip}</div>
+                    ))}
+            </Card>
+        </div>
     )
 }

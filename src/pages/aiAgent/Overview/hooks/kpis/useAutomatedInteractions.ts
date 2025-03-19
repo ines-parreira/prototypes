@@ -18,6 +18,7 @@ export const useAutomatedInteractions = (
         metricType: StatType.Number,
         metricFormat: 'decimal',
         isLoading: aiAgentTicketNoHandover.isFetching,
+        'data-candu-id': 'ai-agent-overview-kpi-automated-interactions',
         ...aiAgentTicketNoHandover.data?.[
             TicketCustomFieldsMeasure.TicketCustomFieldsTicketCount
         ],

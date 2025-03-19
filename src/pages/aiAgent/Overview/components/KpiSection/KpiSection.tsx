@@ -63,6 +63,7 @@ const KpiContainer = ({
                             hint={metric.hint}
                             metricType={metric.metricType}
                             metricFormat={metric.metricFormat}
+                            data-candu-id={metric['data-candu-id']}
                         />
                     )
                 })}
@@ -133,7 +134,7 @@ export const KpiSection = () => {
     }, [isLoading, aiAgentType])
 
     return (
-        <OverviewCard>
+        <OverviewCard data-candu-id="ai-agent-overview-performance-block">
             <div className={css.titleWrapper}>
                 <div className={css.title}>
                     <CardTitle>AI Agent Performance</CardTitle>

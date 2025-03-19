@@ -68,6 +68,7 @@ export const useCsat = (filters: StatsFilters, timezone: string): KpiMetric => {
         metricType: StatType.Number,
         metricFormat: 'decimal',
         isLoading: result.isFetching || storeConfigurationsLoading,
+        'data-candu-id': 'ai-agent-overview-kpi-csat',
         ...result.data?.[TicketSatisfactionSurveyMeasure.AvgSurveyScore],
     }
 }

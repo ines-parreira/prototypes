@@ -32,6 +32,7 @@ export const useAutomationRate = (
         metricType: StatType.Number,
         metricFormat: 'decimal-to-percent',
         isLoading: result.isFetching,
+        'data-candu-id': 'ai-agent-overview-kpi-automation-rate',
         ...result.data,
     }
 }

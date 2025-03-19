@@ -34,7 +34,9 @@ export const AiAgentNavbar = () => {
                     )}
                 >
                     <NavbarLink to="/app/ai-agent/overview" exact>
-                        <span>Overview</span>
+                        <span data-candu-id="ai-agent-navbar-overview">
+                            Overview
+                        </span>
                     </NavbarLink>
                 </div>
             )}

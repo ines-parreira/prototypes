@@ -24,6 +24,7 @@ type Props = {
     metricFormat?: MetricTrendFormat
     currency?: string
     hint?: string
+    'data-candu-id'?: string
 }
 
 export const Kpi = ({
@@ -35,6 +36,7 @@ export const Kpi = ({
     currency,
     hint,
     isLoading,
+    ...props
 }: Props) => {
     const formattedValue = useMemo(() => {
         if (value === undefined) {
@@ -66,6 +68,7 @@ export const Kpi = ({
                     hint: hint ? { title: hint } : undefined,
                     title: cardTitle,
                 }}
+                data-candu-id={props['data-candu-id']}
             >
                 <BigNumberMetric
                     isLoading={isLoading}

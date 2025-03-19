@@ -46,6 +46,7 @@ export const useCoverageRate = (
         metricType: StatType.Number,
         metricFormat: 'decimal-to-percent',
         isLoading: result.isFetching,
+        'data-candu-id': 'ai-agent-overview-kpi-coverage-rate',
         ...result.data,
     }
 }

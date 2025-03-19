@@ -47,6 +47,7 @@ describe('useAutomatedInteractions', () => {
         expect(result.current).toEqual({
             title: 'Automated Interactions',
             hint: 'Total of fully automated AI Agent interactions solved without any agent intervention.',
+            'data-candu-id': 'ai-agent-overview-kpi-automated-interactions',
             metricType: StatType.Number,
             metricFormat: 'decimal',
             value: 450,
@@ -67,6 +68,7 @@ describe('useAutomatedInteractions', () => {
         expect(result.current).toEqual({
             title: 'Automated Interactions',
             hint: 'Total of fully automated AI Agent interactions solved without any agent intervention.',
+            'data-candu-id': 'ai-agent-overview-kpi-automated-interactions',
             metricType: StatType.Number,
             metricFormat: 'decimal',
             isLoading: true,

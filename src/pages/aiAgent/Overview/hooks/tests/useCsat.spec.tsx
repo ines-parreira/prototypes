@@ -87,6 +87,7 @@ describe('useCsat', () => {
         const { result } = renderUseCsat(filters, timezone)
 
         expect(result.current).toEqual({
+            'data-candu-id': 'ai-agent-overview-kpi-csat',
             title: 'CSAT (Customer Satisfaction Score)',
             hint: 'The average satisfaction rating for AI Agent interactions, based on surveys sent after ticket resolution',
             metricType: StatType.Number,
@@ -214,6 +215,7 @@ describe('useCsat', () => {
             const { result } = renderUseCsat(filters, timezone)
 
             expect(result.current).toEqual({
+                'data-candu-id': 'ai-agent-overview-kpi-csat',
                 title: 'CSAT (Customer Satisfaction Score)',
                 hint: 'The average satisfaction rating for AI Agent interactions, based on surveys sent after ticket resolution',
                 metricType: StatType.Number,

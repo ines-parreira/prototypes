@@ -49,6 +49,7 @@ describe('useGmvInfluenced', () => {
         expect(result.current).toEqual({
             title: 'GMV Influenced',
             hint: 'The total revenue generated from orders placed during or after a conversation with the AI Agent, without human intervention.',
+            'data-candu-id': 'ai-agent-overview-kpi-gmv-influenced',
             metricType: StatType.Currency,
             value: 12000,
             prevValue: 10000,
@@ -76,6 +77,7 @@ describe('useGmvInfluenced', () => {
         expect(result.current).toEqual({
             title: 'GMV Influenced',
             hint: 'The total revenue generated from orders placed during or after a conversation with the AI Agent, without human intervention.',
+            'data-candu-id': 'ai-agent-overview-kpi-gmv-influenced',
             metricType: StatType.Currency,
             value: 12000,
             prevValue: 10000,
@@ -99,6 +101,7 @@ describe('useGmvInfluenced', () => {
         expect(result.current).toEqual({
             title: 'GMV Influenced',
             hint: 'The total revenue generated from orders placed during or after a conversation with the AI Agent, without human intervention.',
+            'data-candu-id': 'ai-agent-overview-kpi-gmv-influenced',
             metricType: StatType.Currency,
             isLoading: true,
             currency: 'USD',

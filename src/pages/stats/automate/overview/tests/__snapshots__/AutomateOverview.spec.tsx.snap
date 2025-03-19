@@ -248,99 +248,101 @@ exports[`<AutomateOverview /> Autoresponder deprecation should return false when
             class="cell"
             style="grid-column: span 6 / span 6;"
           >
-            <div
-              class="Card--wrapper--3AkmE card"
-            >
+            <div>
               <div
-                class="wrapper"
+                class="Card--wrapper--3AkmE card"
               >
                 <div
-                  class="title"
+                  class="wrapper"
                 >
-                  Automation rate
                   <div
-                    class="wrapper tooltip"
+                    class="title"
                   >
-                    <i
-                      class="material-icons-outlined icon"
-                      id="tooltip-abc"
+                    Automation rate
+                    <div
+                      class="wrapper tooltip"
                     >
-                      info
-                    </i>
+                      <i
+                        class="material-icons-outlined icon"
+                        id="tooltip-abc"
+                      >
+                        info
+                      </i>
+                    </div>
                   </div>
                 </div>
-              </div>
-              <div
-                class="wrapper heading-page-semibold"
-              >
-                9,300%
-                <div>
-                  TrendBadgeMock
-                </div>
-              </div>
-              <div
-                class="tip"
-              >
                 <div
-                  class="wrapper success"
+                  class="wrapper heading-page-semibold"
+                >
+                  9,300%
+                  <div>
+                    TrendBadgeMock
+                  </div>
+                </div>
+                <div
+                  class="tip"
                 >
                   <div
-                    class="sentiment"
+                    class="wrapper success"
                   >
-                    <div>
-                      <span
-                        class="label"
+                    <div
+                      class="sentiment"
+                    >
+                      <div>
+                        <span
+                          class="label"
+                        >
+                          Avg. merchant:
+                        </span>
+                        <span
+                          class="value"
+                          id="tip-tooltip-success"
+                        >
+                          14%
+                        </span>
+                      </div>
+                      <div>
+                        <span
+                          class="label"
+                        >
+                          Top 5%:
+                        </span>
+                        <span
+                          class="value"
+                        >
+                          48%
+                        </span>
+                      </div>
+                    </div>
+                    <div
+                      class="separator"
+                    />
+                    <div
+                      class="iconWrapper"
+                    >
+                      <i
+                        class="material-icons-outlined icon success"
                       >
-                        Avg. merchant:
-                      </span>
-                      <span
-                        class="value"
-                        id="tip-tooltip-success"
-                      >
-                        14%
+                        sentiment_very_satisfied
+                      </i>
+                      <span>
+                        You’re doing great
                       </span>
                     </div>
-                    <div>
-                      <span
-                        class="label"
+                    <div
+                      data-candu-id="performance-tip-data-rate"
+                    >
+                      Set up all
+                       
+                      <a
+                        href="https://link.gorgias.com/aut"
+                        target="blank"
                       >
-                        Top 5%:
-                      </span>
-                      <span
-                        class="value"
-                      >
-                        48%
-                      </span>
+                        Automate features
+                      </a>
+                       
+                      to improve your automation rate across all of your channels.
                     </div>
-                  </div>
-                  <div
-                    class="separator"
-                  />
-                  <div
-                    class="iconWrapper"
-                  >
-                    <i
-                      class="material-icons-outlined icon success"
-                    >
-                      sentiment_very_satisfied
-                    </i>
-                    <span>
-                      You’re doing great
-                    </span>
-                  </div>
-                  <div
-                    data-candu-id="performance-tip-data-rate"
-                  >
-                    Set up all
-                     
-                    <a
-                      href="https://link.gorgias.com/aut"
-                      target="blank"
-                    >
-                      Automate features
-                    </a>
-                     
-                    to improve your automation rate across all of your channels.
                   </div>
                 </div>
               </div>
@@ -350,77 +352,79 @@ exports[`<AutomateOverview /> Autoresponder deprecation should return false when
             class="cell"
             style="grid-column: span 6 / span 6;"
           >
-            <div
-              class="Card--wrapper--3AkmE card"
-            >
+            <div>
               <div
-                class="wrapper"
+                class="Card--wrapper--3AkmE card"
               >
                 <div
-                  class="title"
+                  class="wrapper"
                 >
-                  Automated interactions
                   <div
-                    class="wrapper tooltip"
+                    class="title"
                   >
-                    <i
-                      class="material-icons-outlined icon"
-                      id="tooltip-abc"
+                    Automated interactions
+                    <div
+                      class="wrapper tooltip"
                     >
-                      info
-                    </i>
+                      <i
+                        class="material-icons-outlined icon"
+                        id="tooltip-abc"
+                      >
+                        info
+                      </i>
+                    </div>
                   </div>
                 </div>
-              </div>
-              <div
-                class="wrapper heading-page-semibold"
-              >
-                93
-                <div>
-                  TrendBadgeMock
-                </div>
-              </div>
-              <div
-                class="tip"
-              >
                 <div
-                  class="wrapper neutral"
+                  class="wrapper heading-page-semibold"
+                >
+                  93
+                  <div>
+                    TrendBadgeMock
+                  </div>
+                </div>
+                <div
+                  class="tip"
                 >
                   <div
-                    class="iconWrapper"
+                    class="wrapper neutral"
                   >
-                    <i
-                      class="material-icons-outlined icon neutral"
+                    <div
+                      class="iconWrapper"
                     >
-                      lightbulb
-                    </i>
-                    <span>
-                      Tip
-                    </span>
-                  </div>
-                  <div
-                    data-candu-id="performance-tip-data-interactions"
-                  >
-                    Check out our
-                     
-                    <a
-                      href="https://link.gorgias.com/aut-playbook"
-                      target="blank"
+                      <i
+                        class="material-icons-outlined icon neutral"
+                      >
+                        lightbulb
+                      </i>
+                      <span>
+                        Tip
+                      </span>
+                    </div>
+                    <div
+                      data-candu-id="performance-tip-data-interactions"
                     >
+                      Check out our
                        
-                      Automation Playbook
-                    </a>
-                     
-                    for tactical tips on how to use Automate to its full potential. Visit
-                    <a
-                      href="/app/settings/billing"
-                      target="blank"
-                    >
+                      <a
+                        href="https://link.gorgias.com/aut-playbook"
+                        target="blank"
+                      >
+                         
+                        Automation Playbook
+                      </a>
                        
-                      billing
-                    </a>
-                     
-                    to make sure your Automate plan is the right size for you.
+                      for tactical tips on how to use Automate to its full potential. Visit
+                      <a
+                        href="/app/settings/billing"
+                        target="blank"
+                      >
+                         
+                        billing
+                      </a>
+                       
+                      to make sure your Automate plan is the right size for you.
+                    </div>
                   </div>
                 </div>
               </div>
@@ -447,34 +451,36 @@ exports[`<AutomateOverview /> Autoresponder deprecation should return false when
             class="cell"
             style="grid-column: span 6 / span 6;"
           >
-            <div
-              class="Card--wrapper--3AkmE card"
-            >
+            <div>
               <div
-                class="wrapper"
+                class="Card--wrapper--3AkmE card"
               >
                 <div
-                  class="title"
+                  class="wrapper"
                 >
-                  Cost saved
                   <div
-                    class="wrapper tooltip"
+                    class="title"
                   >
-                    <i
-                      class="material-icons-outlined icon"
-                      id="tooltip-abc"
+                    Cost saved
+                    <div
+                      class="wrapper tooltip"
                     >
-                      info
-                    </i>
+                      <i
+                        class="material-icons-outlined icon"
+                        id="tooltip-abc"
+                      >
+                        info
+                      </i>
+                    </div>
                   </div>
                 </div>
-              </div>
-              <div
-                class="wrapper heading-page-semibold"
-              >
-                $228
-                <div>
-                  TrendBadgeMock
+                <div
+                  class="wrapper heading-page-semibold"
+                >
+                  $228
+                  <div>
+                    TrendBadgeMock
+                  </div>
                 </div>
               </div>
             </div>
@@ -483,34 +489,36 @@ exports[`<AutomateOverview /> Autoresponder deprecation should return false when
             class="cell"
             style="grid-column: span 6 / span 6;"
           >
-            <div
-              class="Card--wrapper--3AkmE card"
-            >
+            <div>
               <div
-                class="wrapper"
+                class="Card--wrapper--3AkmE card"
               >
                 <div
-                  class="title"
+                  class="wrapper"
                 >
-                  Decrease in resolution time
                   <div
-                    class="wrapper tooltip"
+                    class="title"
                   >
-                    <i
-                      class="material-icons-outlined icon"
-                      id="tooltip-abc"
+                    Decrease in resolution time
+                    <div
+                      class="wrapper tooltip"
                     >
-                      info
-                    </i>
+                      <i
+                        class="material-icons-outlined icon"
+                        id="tooltip-abc"
+                      >
+                        info
+                      </i>
+                    </div>
                   </div>
                 </div>
-              </div>
-              <div
-                class="wrapper heading-page-semibold"
-              >
-                1m 31s
-                <div>
-                  TrendBadgeMock
+                <div
+                  class="wrapper heading-page-semibold"
+                >
+                  1m 31s
+                  <div>
+                    TrendBadgeMock
+                  </div>
                 </div>
               </div>
             </div>
@@ -519,34 +527,36 @@ exports[`<AutomateOverview /> Autoresponder deprecation should return false when
             class="cell"
             style="grid-column: span 6 / span 6;"
           >
-            <div
-              class="Card--wrapper--3AkmE card"
-            >
+            <div>
               <div
-                class="wrapper"
+                class="Card--wrapper--3AkmE card"
               >
                 <div
-                  class="title"
+                  class="wrapper"
                 >
-                  Decrease in first response time
                   <div
-                    class="wrapper tooltip"
+                    class="title"
                   >
-                    <i
-                      class="material-icons-outlined icon"
-                      id="tooltip-abc"
+                    Decrease in first response time
+                    <div
+                      class="wrapper tooltip"
                     >
-                      info
-                    </i>
+                      <i
+                        class="material-icons-outlined icon"
+                        id="tooltip-abc"
+                      >
+                        info
+                      </i>
+                    </div>
                   </div>
                 </div>
-              </div>
-              <div
-                class="wrapper heading-page-semibold"
-              >
-                1m 31s
-                <div>
-                  TrendBadgeMock
+                <div
+                  class="wrapper heading-page-semibold"
+                >
+                  1m 31s
+                  <div>
+                    TrendBadgeMock
+                  </div>
                 </div>
               </div>
             </div>
@@ -972,99 +982,101 @@ exports[`<AutomateOverview /> Performance Tips light-error should show tips with
                   class="cell"
                   style="grid-column: span 6 / span 6;"
                 >
-                  <div
-                    class="Card--wrapper--3AkmE card"
-                  >
+                  <div>
                     <div
-                      class="wrapper"
+                      class="Card--wrapper--3AkmE card"
                     >
                       <div
-                        class="title"
+                        class="wrapper"
                       >
-                        Automation rate
                         <div
-                          class="wrapper tooltip"
+                          class="title"
                         >
-                          <i
-                            class="material-icons-outlined icon"
-                            id="tooltip-abc"
+                          Automation rate
+                          <div
+                            class="wrapper tooltip"
                           >
-                            info
-                          </i>
+                            <i
+                              class="material-icons-outlined icon"
+                              id="tooltip-abc"
+                            >
+                              info
+                            </i>
+                          </div>
                         </div>
                       </div>
-                    </div>
-                    <div
-                      class="wrapper heading-page-semibold"
-                    >
-                      4%
-                      <div>
-                        TrendBadgeMock
-                      </div>
-                    </div>
-                    <div
-                      class="tip"
-                    >
                       <div
-                        class="wrapper light-error"
+                        class="wrapper heading-page-semibold"
+                      >
+                        4%
+                        <div>
+                          TrendBadgeMock
+                        </div>
+                      </div>
+                      <div
+                        class="tip"
                       >
                         <div
-                          class="sentiment"
+                          class="wrapper light-error"
                         >
-                          <div>
-                            <span
-                              class="label"
+                          <div
+                            class="sentiment"
+                          >
+                            <div>
+                              <span
+                                class="label"
+                              >
+                                Avg. merchant:
+                              </span>
+                              <span
+                                class="value"
+                                id="tip-tooltip-light-error"
+                              >
+                                14%
+                              </span>
+                            </div>
+                            <div>
+                              <span
+                                class="label"
+                              >
+                                Top 5%:
+                              </span>
+                              <span
+                                class="value"
+                              >
+                                48%
+                              </span>
+                            </div>
+                          </div>
+                          <div
+                            class="separator"
+                          />
+                          <div
+                            class="iconWrapper"
+                          >
+                            <i
+                              class="material-icons-outlined icon light-error"
                             >
-                              Avg. merchant:
-                            </span>
-                            <span
-                              class="value"
-                              id="tip-tooltip-light-error"
-                            >
-                              14%
+                              sentiment_neutral
+                            </i>
+                            <span>
+                              Room for improvement
                             </span>
                           </div>
-                          <div>
-                            <span
-                              class="label"
+                          <div
+                            data-candu-id="performance-tip-data-rate"
+                          >
+                            Set up all
+                             
+                            <a
+                              href="https://link.gorgias.com/aut"
+                              target="blank"
                             >
-                              Top 5%:
-                            </span>
-                            <span
-                              class="value"
-                            >
-                              48%
-                            </span>
+                              Automate features
+                            </a>
+                             
+                            to improve your automation rate across all of your channels.
                           </div>
-                        </div>
-                        <div
-                          class="separator"
-                        />
-                        <div
-                          class="iconWrapper"
-                        >
-                          <i
-                            class="material-icons-outlined icon light-error"
-                          >
-                            sentiment_neutral
-                          </i>
-                          <span>
-                            Room for improvement
-                          </span>
-                        </div>
-                        <div
-                          data-candu-id="performance-tip-data-rate"
-                        >
-                          Set up all
-                           
-                          <a
-                            href="https://link.gorgias.com/aut"
-                            target="blank"
-                          >
-                            Automate features
-                          </a>
-                           
-                          to improve your automation rate across all of your channels.
                         </div>
                       </div>
                     </div>
@@ -1074,77 +1086,79 @@ exports[`<AutomateOverview /> Performance Tips light-error should show tips with
                   class="cell"
                   style="grid-column: span 6 / span 6;"
                 >
-                  <div
-                    class="Card--wrapper--3AkmE card"
-                  >
+                  <div>
                     <div
-                      class="wrapper"
+                      class="Card--wrapper--3AkmE card"
                     >
                       <div
-                        class="title"
+                        class="wrapper"
                       >
-                        Automated interactions
                         <div
-                          class="wrapper tooltip"
+                          class="title"
                         >
-                          <i
-                            class="material-icons-outlined icon"
-                            id="tooltip-abc"
+                          Automated interactions
+                          <div
+                            class="wrapper tooltip"
                           >
-                            info
-                          </i>
+                            <i
+                              class="material-icons-outlined icon"
+                              id="tooltip-abc"
+                            >
+                              info
+                            </i>
+                          </div>
                         </div>
                       </div>
-                    </div>
-                    <div
-                      class="wrapper heading-page-semibold"
-                    >
-                      93
-                      <div>
-                        TrendBadgeMock
-                      </div>
-                    </div>
-                    <div
-                      class="tip"
-                    >
                       <div
-                        class="wrapper neutral"
+                        class="wrapper heading-page-semibold"
+                      >
+                        93
+                        <div>
+                          TrendBadgeMock
+                        </div>
+                      </div>
+                      <div
+                        class="tip"
                       >
                         <div
-                          class="iconWrapper"
+                          class="wrapper neutral"
                         >
-                          <i
-                            class="material-icons-outlined icon neutral"
+                          <div
+                            class="iconWrapper"
                           >
-                            lightbulb
-                          </i>
-                          <span>
-                            Tip
-                          </span>
-                        </div>
-                        <div
-                          data-candu-id="performance-tip-data-interactions"
-                        >
-                          Check out our
-                           
-                          <a
-                            href="https://link.gorgias.com/aut-playbook"
-                            target="blank"
+                            <i
+                              class="material-icons-outlined icon neutral"
+                            >
+                              lightbulb
+                            </i>
+                            <span>
+                              Tip
+                            </span>
+                          </div>
+                          <div
+                            data-candu-id="performance-tip-data-interactions"
                           >
+                            Check out our
                              
-                            Automation Playbook
-                          </a>
-                           
-                          for tactical tips on how to use Automate to its full potential. Visit
-                          <a
-                            href="/app/settings/billing"
-                            target="blank"
-                          >
+                            <a
+                              href="https://link.gorgias.com/aut-playbook"
+                              target="blank"
+                            >
+                               
+                              Automation Playbook
+                            </a>
                              
-                            billing
-                          </a>
-                           
-                          to make sure your Automate plan is the right size for you.
+                            for tactical tips on how to use Automate to its full potential. Visit
+                            <a
+                              href="/app/settings/billing"
+                              target="blank"
+                            >
+                               
+                              billing
+                            </a>
+                             
+                            to make sure your Automate plan is the right size for you.
+                          </div>
                         </div>
                       </div>
                     </div>
@@ -1171,34 +1185,36 @@ exports[`<AutomateOverview /> Performance Tips light-error should show tips with
                   class="cell"
                   style="grid-column: span 6 / span 6;"
                 >
-                  <div
-                    class="Card--wrapper--3AkmE card"
-                  >
+                  <div>
                     <div
-                      class="wrapper"
+                      class="Card--wrapper--3AkmE card"
                     >
                       <div
-                        class="title"
+                        class="wrapper"
                       >
-                        Cost saved
                         <div
-                          class="wrapper tooltip"
+                          class="title"
                         >
-                          <i
-                            class="material-icons-outlined icon"
-                            id="tooltip-abc"
+                          Cost saved
+                          <div
+                            class="wrapper tooltip"
                           >
-                            info
-                          </i>
+                            <i
+                              class="material-icons-outlined icon"
+                              id="tooltip-abc"
+                            >
+                              info
+                            </i>
+                          </div>
                         </div>
                       </div>
-                    </div>
-                    <div
-                      class="wrapper heading-page-semibold"
-                    >
-                      $228
-                      <div>
-                        TrendBadgeMock
+                      <div
+                        class="wrapper heading-page-semibold"
+                      >
+                        $228
+                        <div>
+                          TrendBadgeMock
+                        </div>
                       </div>
                     </div>
                   </div>
@@ -1207,34 +1223,36 @@ exports[`<AutomateOverview /> Performance Tips light-error should show tips with
                   class="cell"
                   style="grid-column: span 6 / span 6;"
                 >
-                  <div
-                    class="Card--wrapper--3AkmE card"
-                  >
+                  <div>
                     <div
-                      class="wrapper"
+                      class="Card--wrapper--3AkmE card"
                     >
                       <div
-                        class="title"
+                        class="wrapper"
                       >
-                        Decrease in resolution time
                         <div
-                          class="wrapper tooltip"
+                          class="title"
                         >
-                          <i
-                            class="material-icons-outlined icon"
-                            id="tooltip-abc"
+                          Decrease in resolution time
+                          <div
+                            class="wrapper tooltip"
                           >
-                            info
-                          </i>
+                            <i
+                              class="material-icons-outlined icon"
+                              id="tooltip-abc"
+                            >
+                              info
+                            </i>
+                          </div>
                         </div>
                       </div>
-                    </div>
-                    <div
-                      class="wrapper heading-page-semibold"
-                    >
-                      1m 31s
-                      <div>
-                        TrendBadgeMock
+                      <div
+                        class="wrapper heading-page-semibold"
+                      >
+                        1m 31s
+                        <div>
+                          TrendBadgeMock
+                        </div>
                       </div>
                     </div>
                   </div>
@@ -1243,34 +1261,36 @@ exports[`<AutomateOverview /> Performance Tips light-error should show tips with
                   class="cell"
                   style="grid-column: span 6 / span 6;"
                 >
-                  <div
-                    class="Card--wrapper--3AkmE card"
-                  >
+                  <div>
                     <div
-                      class="wrapper"
+                      class="Card--wrapper--3AkmE card"
                     >
                       <div
-                        class="title"
+                        class="wrapper"
                       >
-                        Decrease in first response time
                         <div
-                          class="wrapper tooltip"
+                          class="title"
                         >
-                          <i
-                            class="material-icons-outlined icon"
-                            id="tooltip-abc"
+                          Decrease in first response time
+                          <div
+                            class="wrapper tooltip"
                           >
-                            info
-                          </i>
+                            <i
+                              class="material-icons-outlined icon"
+                              id="tooltip-abc"
+                            >
+                              info
+                            </i>
+                          </div>
                         </div>
                       </div>
-                    </div>
-                    <div
-                      class="wrapper heading-page-semibold"
-                    >
-                      1m 31s
-                      <div>
-                        TrendBadgeMock
+                      <div
+                        class="wrapper heading-page-semibold"
+                      >
+                        1m 31s
+                        <div>
+                          TrendBadgeMock
+                        </div>
                       </div>
                     </div>
                   </div>
@@ -1812,99 +1832,101 @@ exports[`<AutomateOverview /> Performance Tips light-error should show tips with
                 class="cell"
                 style="grid-column: span 6 / span 6;"
               >
-                <div
-                  class="Card--wrapper--3AkmE card"
-                >
+                <div>
                   <div
-                    class="wrapper"
+                    class="Card--wrapper--3AkmE card"
                   >
                     <div
-                      class="title"
+                      class="wrapper"
                     >
-                      Automation rate
                       <div
-                        class="wrapper tooltip"
+                        class="title"
                       >
-                        <i
-                          class="material-icons-outlined icon"
-                          id="tooltip-abc"
+                        Automation rate
+                        <div
+                          class="wrapper tooltip"
                         >
-                          info
-                        </i>
+                          <i
+                            class="material-icons-outlined icon"
+                            id="tooltip-abc"
+                          >
+                            info
+                          </i>
+                        </div>
                       </div>
                     </div>
-                  </div>
-                  <div
-                    class="wrapper heading-page-semibold"
-                  >
-                    4%
-                    <div>
-                      TrendBadgeMock
-                    </div>
-                  </div>
-                  <div
-                    class="tip"
-                  >
                     <div
-                      class="wrapper light-error"
+                      class="wrapper heading-page-semibold"
+                    >
+                      4%
+                      <div>
+                        TrendBadgeMock
+                      </div>
+                    </div>
+                    <div
+                      class="tip"
                     >
                       <div
-                        class="sentiment"
+                        class="wrapper light-error"
                       >
-                        <div>
-                          <span
-                            class="label"
+                        <div
+                          class="sentiment"
+                        >
+                          <div>
+                            <span
+                              class="label"
+                            >
+                              Avg. merchant:
+                            </span>
+                            <span
+                              class="value"
+                              id="tip-tooltip-light-error"
+                            >
+                              14%
+                            </span>
+                          </div>
+                          <div>
+                            <span
+                              class="label"
+                            >
+                              Top 5%:
+                            </span>
+                            <span
+                              class="value"
+                            >
+                              48%
+                            </span>
+                          </div>
+                        </div>
+                        <div
+                          class="separator"
+                        />
+                        <div
+                          class="iconWrapper"
+                        >
+                          <i
+                            class="material-icons-outlined icon light-error"
                           >
-                            Avg. merchant:
-                          </span>
-                          <span
-                            class="value"
-                            id="tip-tooltip-light-error"
-                          >
-                            14%
+                            sentiment_neutral
+                          </i>
+                          <span>
+                            Room for improvement
                           </span>
                         </div>
-                        <div>
-                          <span
-                            class="label"
+                        <div
+                          data-candu-id="performance-tip-data-rate"
+                        >
+                          Set up all
+                           
+                          <a
+                            href="https://link.gorgias.com/aut"
+                            target="blank"
                           >
-                            Top 5%:
-                          </span>
-                          <span
-                            class="value"
-                          >
-                            48%
-                          </span>
+                            Automate features
+                          </a>
+                           
+                          to improve your automation rate across all of your channels.
                         </div>
-                      </div>
-                      <div
-                        class="separator"
-                      />
-                      <div
-                        class="iconWrapper"
-                      >
-                        <i
-                          class="material-icons-outlined icon light-error"
-                        >
-                          sentiment_neutral
-                        </i>
-                        <span>
-                          Room for improvement
-                        </span>
-                      </div>
-                      <div
-                        data-candu-id="performance-tip-data-rate"
-                      >
-                        Set up all
-                         
-                        <a
-                          href="https://link.gorgias.com/aut"
-                          target="blank"
-                        >
-                          Automate features
-                        </a>
-                         
-                        to improve your automation rate across all of your channels.
                       </div>
                     </div>
                   </div>
@@ -1914,77 +1936,79 @@ exports[`<AutomateOverview /> Performance Tips light-error should show tips with
                 class="cell"
                 style="grid-column: span 6 / span 6;"
               >
-                <div
-                  class="Card--wrapper--3AkmE card"
-                >
+                <div>
                   <div
-                    class="wrapper"
+                    class="Card--wrapper--3AkmE card"
                   >
                     <div
-                      class="title"
+                      class="wrapper"
                     >
-                      Automated interactions
                       <div
-                        class="wrapper tooltip"
+                        class="title"
                       >
-                        <i
-                          class="material-icons-outlined icon"
-                          id="tooltip-abc"
+                        Automated interactions
+                        <div
+                          class="wrapper tooltip"
                         >
-                          info
-                        </i>
+                          <i
+                            class="material-icons-outlined icon"
+                            id="tooltip-abc"
+                          >
+                            info
+                          </i>
+                        </div>
                       </div>
                     </div>
-                  </div>
-                  <div
-                    class="wrapper heading-page-semibold"
-                  >
-                    93
-                    <div>
-                      TrendBadgeMock
-                    </div>
-                  </div>
-                  <div
-                    class="tip"
-                  >
                     <div
-                      class="wrapper neutral"
+                      class="wrapper heading-page-semibold"
+                    >
+                      93
+                      <div>
+                        TrendBadgeMock
+                      </div>
+                    </div>
+                    <div
+                      class="tip"
                     >
                       <div
-                        class="iconWrapper"
+                        class="wrapper neutral"
                       >
-                        <i
-                          class="material-icons-outlined icon neutral"
+                        <div
+                          class="iconWrapper"
                         >
-                          lightbulb
-                        </i>
-                        <span>
-                          Tip
-                        </span>
-                      </div>
-                      <div
-                        data-candu-id="performance-tip-data-interactions"
-                      >
-                        Check out our
-                         
-                        <a
-                          href="https://link.gorgias.com/aut-playbook"
-                          target="blank"
+                          <i
+                            class="material-icons-outlined icon neutral"
+                          >
+                            lightbulb
+                          </i>
+                          <span>
+                            Tip
+                          </span>
+                        </div>
+                        <div
+                          data-candu-id="performance-tip-data-interactions"
                         >
+                          Check out our
                            
-                          Automation Playbook
-                        </a>
-                         
-                        for tactical tips on how to use Automate to its full potential. Visit
-                        <a
-                          href="/app/settings/billing"
-                          target="blank"
-                        >
+                          <a
+                            href="https://link.gorgias.com/aut-playbook"
+                            target="blank"
+                          >
+                             
+                            Automation Playbook
+                          </a>
                            
-                          billing
-                        </a>
-                         
-                        to make sure your Automate plan is the right size for you.
+                          for tactical tips on how to use Automate to its full potential. Visit
+                          <a
+                            href="/app/settings/billing"
+                            target="blank"
+                          >
+                             
+                            billing
+                          </a>
+                           
+                          to make sure your Automate plan is the right size for you.
+                        </div>
                       </div>
                     </div>
                   </div>
@@ -2011,34 +2035,36 @@ exports[`<AutomateOverview /> Performance Tips light-error should show tips with
                 class="cell"
                 style="grid-column: span 6 / span 6;"
               >
-                <div
-                  class="Card--wrapper--3AkmE card"
-                >
+                <div>
                   <div
-                    class="wrapper"
+                    class="Card--wrapper--3AkmE card"
                   >
                     <div
-                      class="title"
+                      class="wrapper"
                     >
-                      Cost saved
                       <div
-                        class="wrapper tooltip"
+                        class="title"
                       >
-                        <i
-                          class="material-icons-outlined icon"
-                          id="tooltip-abc"
+                        Cost saved
+                        <div
+                          class="wrapper tooltip"
                         >
-                          info
-                        </i>
+                          <i
+                            class="material-icons-outlined icon"
+                            id="tooltip-abc"
+                          >
+                            info
+                          </i>
+                        </div>
                       </div>
                     </div>
-                  </div>
-                  <div
-                    class="wrapper heading-page-semibold"
-                  >
-                    $228
-                    <div>
-                      TrendBadgeMock
+                    <div
+                      class="wrapper heading-page-semibold"
+                    >
+                      $228
+                      <div>
+                        TrendBadgeMock
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -2047,34 +2073,36 @@ exports[`<AutomateOverview /> Performance Tips light-error should show tips with
                 class="cell"
                 style="grid-column: span 6 / span 6;"
               >
-                <div
-                  class="Card--wrapper--3AkmE card"
-                >
+                <div>
                   <div
-                    class="wrapper"
+                    class="Card--wrapper--3AkmE card"
                   >
                     <div
-                      class="title"
+                      class="wrapper"
                     >
-                      Decrease in resolution time
                       <div
-                        class="wrapper tooltip"
+                        class="title"
                       >
-                        <i
-                          class="material-icons-outlined icon"
-                          id="tooltip-abc"
+                        Decrease in resolution time
+                        <div
+                          class="wrapper tooltip"
                         >
-                          info
-                        </i>
+                          <i
+                            class="material-icons-outlined icon"
+                            id="tooltip-abc"
+                          >
+                            info
+                          </i>
+                        </div>
                       </div>
                     </div>
-                  </div>
-                  <div
-                    class="wrapper heading-page-semibold"
-                  >
-                    1m 31s
-                    <div>
-                      TrendBadgeMock
+                    <div
+                      class="wrapper heading-page-semibold"
+                    >
+                      1m 31s
+                      <div>
+                        TrendBadgeMock
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -2083,34 +2111,36 @@ exports[`<AutomateOverview /> Performance Tips light-error should show tips with
                 class="cell"
                 style="grid-column: span 6 / span 6;"
               >
-                <div
-                  class="Card--wrapper--3AkmE card"
-                >
+                <div>
                   <div
-                    class="wrapper"
+                    class="Card--wrapper--3AkmE card"
                   >
                     <div
-                      class="title"
+                      class="wrapper"
                     >
-                      Decrease in first response time
                       <div
-                        class="wrapper tooltip"
+                        class="title"
                       >
-                        <i
-                          class="material-icons-outlined icon"
-                          id="tooltip-abc"
+                        Decrease in first response time
+                        <div
+                          class="wrapper tooltip"
                         >
-                          info
-                        </i>
+                          <i
+                            class="material-icons-outlined icon"
+                            id="tooltip-abc"
+                          >
+                            info
+                          </i>
+                        </div>
                       </div>
                     </div>
-                  </div>
-                  <div
-                    class="wrapper heading-page-semibold"
-                  >
-                    1m 31s
-                    <div>
-                      TrendBadgeMock
+                    <div
+                      class="wrapper heading-page-semibold"
+                    >
+                      1m 31s
+                      <div>
+                        TrendBadgeMock
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -2589,99 +2619,101 @@ exports[`<AutomateOverview /> Performance Tips light-success should show tips wi
                   class="cell"
                   style="grid-column: span 6 / span 6;"
                 >
-                  <div
-                    class="Card--wrapper--3AkmE card"
-                  >
+                  <div>
                     <div
-                      class="wrapper"
+                      class="Card--wrapper--3AkmE card"
                     >
                       <div
-                        class="title"
+                        class="wrapper"
                       >
-                        Automation rate
                         <div
-                          class="wrapper tooltip"
+                          class="title"
                         >
-                          <i
-                            class="material-icons-outlined icon"
-                            id="tooltip-abc"
+                          Automation rate
+                          <div
+                            class="wrapper tooltip"
                           >
-                            info
-                          </i>
+                            <i
+                              class="material-icons-outlined icon"
+                              id="tooltip-abc"
+                            >
+                              info
+                            </i>
+                          </div>
                         </div>
                       </div>
-                    </div>
-                    <div
-                      class="wrapper heading-page-semibold"
-                    >
-                      38%
-                      <div>
-                        TrendBadgeMock
-                      </div>
-                    </div>
-                    <div
-                      class="tip"
-                    >
                       <div
-                        class="wrapper light-success"
+                        class="wrapper heading-page-semibold"
+                      >
+                        38%
+                        <div>
+                          TrendBadgeMock
+                        </div>
+                      </div>
+                      <div
+                        class="tip"
                       >
                         <div
-                          class="sentiment"
+                          class="wrapper light-success"
                         >
-                          <div>
-                            <span
-                              class="label"
+                          <div
+                            class="sentiment"
+                          >
+                            <div>
+                              <span
+                                class="label"
+                              >
+                                Avg. merchant:
+                              </span>
+                              <span
+                                class="value"
+                                id="tip-tooltip-light-success"
+                              >
+                                14%
+                              </span>
+                            </div>
+                            <div>
+                              <span
+                                class="label"
+                              >
+                                Top 5%:
+                              </span>
+                              <span
+                                class="value"
+                              >
+                                48%
+                              </span>
+                            </div>
+                          </div>
+                          <div
+                            class="separator"
+                          />
+                          <div
+                            class="iconWrapper"
+                          >
+                            <i
+                              class="material-icons-outlined icon light-success"
                             >
-                              Avg. merchant:
-                            </span>
-                            <span
-                              class="value"
-                              id="tip-tooltip-light-success"
-                            >
-                              14%
+                              sentiment_satisfied
+                            </i>
+                            <span>
+                              You’re doing good
                             </span>
                           </div>
-                          <div>
-                            <span
-                              class="label"
+                          <div
+                            data-candu-id="performance-tip-data-rate"
+                          >
+                            Set up all
+                             
+                            <a
+                              href="https://link.gorgias.com/aut"
+                              target="blank"
                             >
-                              Top 5%:
-                            </span>
-                            <span
-                              class="value"
-                            >
-                              48%
-                            </span>
+                              Automate features
+                            </a>
+                             
+                            to improve your automation rate across all of your channels.
                           </div>
-                        </div>
-                        <div
-                          class="separator"
-                        />
-                        <div
-                          class="iconWrapper"
-                        >
-                          <i
-                            class="material-icons-outlined icon light-success"
-                          >
-                            sentiment_satisfied
-                          </i>
-                          <span>
-                            You’re doing good
-                          </span>
-                        </div>
-                        <div
-                          data-candu-id="performance-tip-data-rate"
-                        >
-                          Set up all
-                           
-                          <a
-                            href="https://link.gorgias.com/aut"
-                            target="blank"
-                          >
-                            Automate features
-                          </a>
-                           
-                          to improve your automation rate across all of your channels.
                         </div>
                       </div>
                     </div>
@@ -2691,77 +2723,79 @@ exports[`<AutomateOverview /> Performance Tips light-success should show tips wi
                   class="cell"
                   style="grid-column: span 6 / span 6;"
                 >
-                  <div
-                    class="Card--wrapper--3AkmE card"
-                  >
+                  <div>
                     <div
-                      class="wrapper"
+                      class="Card--wrapper--3AkmE card"
                     >
                       <div
-                        class="title"
+                        class="wrapper"
                       >
-                        Automated interactions
                         <div
-                          class="wrapper tooltip"
+                          class="title"
                         >
-                          <i
-                            class="material-icons-outlined icon"
-                            id="tooltip-abc"
+                          Automated interactions
+                          <div
+                            class="wrapper tooltip"
                           >
-                            info
-                          </i>
+                            <i
+                              class="material-icons-outlined icon"
+                              id="tooltip-abc"
+                            >
+                              info
+                            </i>
+                          </div>
                         </div>
                       </div>
-                    </div>
-                    <div
-                      class="wrapper heading-page-semibold"
-                    >
-                      93
-                      <div>
-                        TrendBadgeMock
-                      </div>
-                    </div>
-                    <div
-                      class="tip"
-                    >
                       <div
-                        class="wrapper neutral"
+                        class="wrapper heading-page-semibold"
+                      >
+                        93
+                        <div>
+                          TrendBadgeMock
+                        </div>
+                      </div>
+                      <div
+                        class="tip"
                       >
                         <div
-                          class="iconWrapper"
+                          class="wrapper neutral"
                         >
-                          <i
-                            class="material-icons-outlined icon neutral"
+                          <div
+                            class="iconWrapper"
                           >
-                            lightbulb
-                          </i>
-                          <span>
-                            Tip
-                          </span>
-                        </div>
-                        <div
-                          data-candu-id="performance-tip-data-interactions"
-                        >
-                          Check out our
-                           
-                          <a
-                            href="https://link.gorgias.com/aut-playbook"
-                            target="blank"
+                            <i
+                              class="material-icons-outlined icon neutral"
+                            >
+                              lightbulb
+                            </i>
+                            <span>
+                              Tip
+                            </span>
+                          </div>
+                          <div
+                            data-candu-id="performance-tip-data-interactions"
                           >
+                            Check out our
                              
-                            Automation Playbook
-                          </a>
-                           
-                          for tactical tips on how to use Automate to its full potential. Visit
-                          <a
-                            href="/app/settings/billing"
-                            target="blank"
-                          >
+                            <a
+                              href="https://link.gorgias.com/aut-playbook"
+                              target="blank"
+                            >
+                               
+                              Automation Playbook
+                            </a>
                              
-                            billing
-                          </a>
-                           
-                          to make sure your Automate plan is the right size for you.
+                            for tactical tips on how to use Automate to its full potential. Visit
+                            <a
+                              href="/app/settings/billing"
+                              target="blank"
+                            >
+                               
+                              billing
+                            </a>
+                             
+                            to make sure your Automate plan is the right size for you.
+                          </div>
                         </div>
                       </div>
                     </div>
@@ -2788,34 +2822,36 @@ exports[`<AutomateOverview /> Performance Tips light-success should show tips wi
                   class="cell"
                   style="grid-column: span 6 / span 6;"
                 >
-                  <div
-                    class="Card--wrapper--3AkmE card"
-                  >
+                  <div>
                     <div
-                      class="wrapper"
+                      class="Card--wrapper--3AkmE card"
                     >
                       <div
-                        class="title"
+                        class="wrapper"
                       >
-                        Cost saved
                         <div
-                          class="wrapper tooltip"
+                          class="title"
                         >
-                          <i
-                            class="material-icons-outlined icon"
-                            id="tooltip-abc"
+                          Cost saved
+                          <div
+                            class="wrapper tooltip"
                           >
-                            info
-                          </i>
+                            <i
+                              class="material-icons-outlined icon"
+                              id="tooltip-abc"
+                            >
+                              info
+                            </i>
+                          </div>
                         </div>
                       </div>
-                    </div>
-                    <div
-                      class="wrapper heading-page-semibold"
-                    >
-                      $228
-                      <div>
-                        TrendBadgeMock
+                      <div
+                        class="wrapper heading-page-semibold"
+                      >
+                        $228
+                        <div>
+                          TrendBadgeMock
+                        </div>
                       </div>
                     </div>
                   </div>
@@ -2824,34 +2860,36 @@ exports[`<AutomateOverview /> Performance Tips light-success should show tips wi
                   class="cell"
                   style="grid-column: span 6 / span 6;"
                 >
-                  <div
-                    class="Card--wrapper--3AkmE card"
-                  >
+                  <div>
                     <div
-                      class="wrapper"
+                      class="Card--wrapper--3AkmE card"
                     >
                       <div
-                        class="title"
+                        class="wrapper"
                       >
-                        Decrease in resolution time
                         <div
-                          class="wrapper tooltip"
+                          class="title"
                         >
-                          <i
-                            class="material-icons-outlined icon"
-                            id="tooltip-abc"
+                          Decrease in resolution time
+                          <div
+                            class="wrapper tooltip"
                           >
-                            info
-                          </i>
+                            <i
+                              class="material-icons-outlined icon"
+                              id="tooltip-abc"
+                            >
+                              info
+                            </i>
+                          </div>
                         </div>
                       </div>
-                    </div>
-                    <div
-                      class="wrapper heading-page-semibold"
-                    >
-                      1m 31s
-                      <div>
-                        TrendBadgeMock
+                      <div
+                        class="wrapper heading-page-semibold"
+                      >
+                        1m 31s
+                        <div>
+                          TrendBadgeMock
+                        </div>
                       </div>
                     </div>
                   </div>
@@ -2860,34 +2898,36 @@ exports[`<AutomateOverview /> Performance Tips light-success should show tips wi
                   class="cell"
                   style="grid-column: span 6 / span 6;"
                 >
-                  <div
-                    class="Card--wrapper--3AkmE card"
-                  >
+                  <div>
                     <div
-                      class="wrapper"
+                      class="Card--wrapper--3AkmE card"
                     >
                       <div
-                        class="title"
+                        class="wrapper"
                       >
-                        Decrease in first response time
                         <div
-                          class="wrapper tooltip"
+                          class="title"
                         >
-                          <i
-                            class="material-icons-outlined icon"
-                            id="tooltip-abc"
+                          Decrease in first response time
+                          <div
+                            class="wrapper tooltip"
                           >
-                            info
-                          </i>
+                            <i
+                              class="material-icons-outlined icon"
+                              id="tooltip-abc"
+                            >
+                              info
+                            </i>
+                          </div>
                         </div>
                       </div>
-                    </div>
-                    <div
-                      class="wrapper heading-page-semibold"
-                    >
-                      1m 31s
-                      <div>
-                        TrendBadgeMock
+                      <div
+                        class="wrapper heading-page-semibold"
+                      >
+                        1m 31s
+                        <div>
+                          TrendBadgeMock
+                        </div>
                       </div>
                     </div>
                   </div>
@@ -3429,99 +3469,101 @@ exports[`<AutomateOverview /> Performance Tips light-success should show tips wi
                 class="cell"
                 style="grid-column: span 6 / span 6;"
               >
-                <div
-                  class="Card--wrapper--3AkmE card"
-                >
+                <div>
                   <div
-                    class="wrapper"
+                    class="Card--wrapper--3AkmE card"
                   >
                     <div
-                      class="title"
+                      class="wrapper"
                     >
-                      Automation rate
                       <div
-                        class="wrapper tooltip"
+                        class="title"
                       >
-                        <i
-                          class="material-icons-outlined icon"
-                          id="tooltip-abc"
+                        Automation rate
+                        <div
+                          class="wrapper tooltip"
                         >
-                          info
-                        </i>
+                          <i
+                            class="material-icons-outlined icon"
+                            id="tooltip-abc"
+                          >
+                            info
+                          </i>
+                        </div>
                       </div>
                     </div>
-                  </div>
-                  <div
-                    class="wrapper heading-page-semibold"
-                  >
-                    38%
-                    <div>
-                      TrendBadgeMock
-                    </div>
-                  </div>
-                  <div
-                    class="tip"
-                  >
                     <div
-                      class="wrapper light-success"
+                      class="wrapper heading-page-semibold"
+                    >
+                      38%
+                      <div>
+                        TrendBadgeMock
+                      </div>
+                    </div>
+                    <div
+                      class="tip"
                     >
                       <div
-                        class="sentiment"
+                        class="wrapper light-success"
                       >
-                        <div>
-                          <span
-                            class="label"
+                        <div
+                          class="sentiment"
+                        >
+                          <div>
+                            <span
+                              class="label"
+                            >
+                              Avg. merchant:
+                            </span>
+                            <span
+                              class="value"
+                              id="tip-tooltip-light-success"
+                            >
+                              14%
+                            </span>
+                          </div>
+                          <div>
+                            <span
+                              class="label"
+                            >
+                              Top 5%:
+                            </span>
+                            <span
+                              class="value"
+                            >
+                              48%
+                            </span>
+                          </div>
+                        </div>
+                        <div
+                          class="separator"
+                        />
+                        <div
+                          class="iconWrapper"
+                        >
+                          <i
+                            class="material-icons-outlined icon light-success"
                           >
-                            Avg. merchant:
-                          </span>
-                          <span
-                            class="value"
-                            id="tip-tooltip-light-success"
-                          >
-                            14%
+                            sentiment_satisfied
+                          </i>
+                          <span>
+                            You’re doing good
                           </span>
                         </div>
-                        <div>
-                          <span
-                            class="label"
+                        <div
+                          data-candu-id="performance-tip-data-rate"
+                        >
+                          Set up all
+                           
+                          <a
+                            href="https://link.gorgias.com/aut"
+                            target="blank"
                           >
-                            Top 5%:
-                          </span>
-                          <span
-                            class="value"
-                          >
-                            48%
-                          </span>
+                            Automate features
+                          </a>
+                           
+                          to improve your automation rate across all of your channels.
                         </div>
-                      </div>
-                      <div
-                        class="separator"
-                      />
-                      <div
-                        class="iconWrapper"
-                      >
-                        <i
-                          class="material-icons-outlined icon light-success"
-                        >
-                          sentiment_satisfied
-                        </i>
-                        <span>
-                          You’re doing good
-                        </span>
-                      </div>
-                      <div
-                        data-candu-id="performance-tip-data-rate"
-                      >
-                        Set up all
-                         
-                        <a
-                          href="https://link.gorgias.com/aut"
-                          target="blank"
-                        >
-                          Automate features
-                        </a>
-                         
-                        to improve your automation rate across all of your channels.
                       </div>
                     </div>
                   </div>
@@ -3531,77 +3573,79 @@ exports[`<AutomateOverview /> Performance Tips light-success should show tips wi
                 class="cell"
                 style="grid-column: span 6 / span 6;"
               >
-                <div
-                  class="Card--wrapper--3AkmE card"
-                >
+                <div>
                   <div
-                    class="wrapper"
+                    class="Card--wrapper--3AkmE card"
                   >
                     <div
-                      class="title"
+                      class="wrapper"
                     >
-                      Automated interactions
                       <div
-                        class="wrapper tooltip"
+                        class="title"
                       >
-                        <i
-                          class="material-icons-outlined icon"
-                          id="tooltip-abc"
+                        Automated interactions
+                        <div
+                          class="wrapper tooltip"
                         >
-                          info
-                        </i>
+                          <i
+                            class="material-icons-outlined icon"
+                            id="tooltip-abc"
+                          >
+                            info
+                          </i>
+                        </div>
                       </div>
                     </div>
-                  </div>
-                  <div
-                    class="wrapper heading-page-semibold"
-                  >
-                    93
-                    <div>
-                      TrendBadgeMock
-                    </div>
-                  </div>
-                  <div
-                    class="tip"
-                  >
                     <div
-                      class="wrapper neutral"
+                      class="wrapper heading-page-semibold"
+                    >
+                      93
+                      <div>
+                        TrendBadgeMock
+                      </div>
+                    </div>
+                    <div
+                      class="tip"
                     >
                       <div
-                        class="iconWrapper"
+                        class="wrapper neutral"
                       >
-                        <i
-                          class="material-icons-outlined icon neutral"
+                        <div
+                          class="iconWrapper"
                         >
-                          lightbulb
-                        </i>
-                        <span>
-                          Tip
-                        </span>
-                      </div>
-                      <div
-                        data-candu-id="performance-tip-data-interactions"
-                      >
-                        Check out our
-                         
-                        <a
-                          href="https://link.gorgias.com/aut-playbook"
-                          target="blank"
+                          <i
+                            class="material-icons-outlined icon neutral"
+                          >
+                            lightbulb
+                          </i>
+                          <span>
+                            Tip
+                          </span>
+                        </div>
+                        <div
+                          data-candu-id="performance-tip-data-interactions"
                         >
+                          Check out our
                            
-                          Automation Playbook
-                        </a>
-                         
-                        for tactical tips on how to use Automate to its full potential. Visit
-                        <a
-                          href="/app/settings/billing"
-                          target="blank"
-                        >
+                          <a
+                            href="https://link.gorgias.com/aut-playbook"
+                            target="blank"
+                          >
+                             
+                            Automation Playbook
+                          </a>
                            
-                          billing
-                        </a>
-                         
-                        to make sure your Automate plan is the right size for you.
+                          for tactical tips on how to use Automate to its full potential. Visit
+                          <a
+                            href="/app/settings/billing"
+                            target="blank"
+                          >
+                             
+                            billing
+                          </a>
+                           
+                          to make sure your Automate plan is the right size for you.
+                        </div>
                       </div>
                     </div>
                   </div>
@@ -3628,34 +3672,36 @@ exports[`<AutomateOverview /> Performance Tips light-success should show tips wi
                 class="cell"
                 style="grid-column: span 6 / span 6;"
               >
-                <div
-                  class="Card--wrapper--3AkmE card"
-                >
+                <div>
                   <div
-                    class="wrapper"
+                    class="Card--wrapper--3AkmE card"
                   >
                     <div
-                      class="title"
+                      class="wrapper"
                     >
-                      Cost saved
                       <div
-                        class="wrapper tooltip"
+                        class="title"
                       >
-                        <i
-                          class="material-icons-outlined icon"
-                          id="tooltip-abc"
+                        Cost saved
+                        <div
+                          class="wrapper tooltip"
                         >
-                          info
-                        </i>
+                          <i
+                            class="material-icons-outlined icon"
+                            id="tooltip-abc"
+                          >
+                            info
+                          </i>
+                        </div>
                       </div>
                     </div>
-                  </div>
-                  <div
-                    class="wrapper heading-page-semibold"
-                  >
-                    $228
-                    <div>
-                      TrendBadgeMock
+                    <div
+                      class="wrapper heading-page-semibold"
+                    >
+                      $228
+                      <div>
+                        TrendBadgeMock
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -3664,34 +3710,36 @@ exports[`<AutomateOverview /> Performance Tips light-success should show tips wi
                 class="cell"
                 style="grid-column: span 6 / span 6;"
               >
-                <div
-                  class="Card--wrapper--3AkmE card"
-                >
+                <div>
                   <div
-                    class="wrapper"
+                    class="Card--wrapper--3AkmE card"
                   >
                     <div
-                      class="title"
+                      class="wrapper"
                     >
-                      Decrease in resolution time
                       <div
-                        class="wrapper tooltip"
+                        class="title"
                       >
-                        <i
-                          class="material-icons-outlined icon"
-                          id="tooltip-abc"
+                        Decrease in resolution time
+                        <div
+                          class="wrapper tooltip"
                         >
-                          info
-                        </i>
+                          <i
+                            class="material-icons-outlined icon"
+                            id="tooltip-abc"
+                          >
+                            info
+                          </i>
+                        </div>
                       </div>
                     </div>
-                  </div>
-                  <div
-                    class="wrapper heading-page-semibold"
-                  >
-                    1m 31s
-                    <div>
-                      TrendBadgeMock
+                    <div
+                      class="wrapper heading-page-semibold"
+                    >
+                      1m 31s
+                      <div>
+                        TrendBadgeMock
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -3700,34 +3748,36 @@ exports[`<AutomateOverview /> Performance Tips light-success should show tips wi
                 class="cell"
                 style="grid-column: span 6 / span 6;"
               >
-                <div
-                  class="Card--wrapper--3AkmE card"
-                >
+                <div>
                   <div
-                    class="wrapper"
+                    class="Card--wrapper--3AkmE card"
                   >
                     <div
-                      class="title"
+                      class="wrapper"
                     >
-                      Decrease in first response time
                       <div
-                        class="wrapper tooltip"
+                        class="title"
                       >
-                        <i
-                          class="material-icons-outlined icon"
-                          id="tooltip-abc"
+                        Decrease in first response time
+                        <div
+                          class="wrapper tooltip"
                         >
-                          info
-                        </i>
+                          <i
+                            class="material-icons-outlined icon"
+                            id="tooltip-abc"
+                          >
+                            info
+                          </i>
+                        </div>
                       </div>
                     </div>
-                  </div>
-                  <div
-                    class="wrapper heading-page-semibold"
-                  >
-                    1m 31s
-                    <div>
-                      TrendBadgeMock
+                    <div
+                      class="wrapper heading-page-semibold"
+                    >
+                      1m 31s
+                      <div>
+                        TrendBadgeMock
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -4206,99 +4256,101 @@ exports[`<AutomateOverview /> Performance Tips success should show tips with sen
                   class="cell"
                   style="grid-column: span 6 / span 6;"
                 >
-                  <div
-                    class="Card--wrapper--3AkmE card"
-                  >
+                  <div>
                     <div
-                      class="wrapper"
+                      class="Card--wrapper--3AkmE card"
                     >
                       <div
-                        class="title"
+                        class="wrapper"
                       >
-                        Automation rate
                         <div
-                          class="wrapper tooltip"
+                          class="title"
                         >
-                          <i
-                            class="material-icons-outlined icon"
-                            id="tooltip-abc"
+                          Automation rate
+                          <div
+                            class="wrapper tooltip"
                           >
-                            info
-                          </i>
+                            <i
+                              class="material-icons-outlined icon"
+                              id="tooltip-abc"
+                            >
+                              info
+                            </i>
+                          </div>
                         </div>
                       </div>
-                    </div>
-                    <div
-                      class="wrapper heading-page-semibold"
-                    >
-                      58%
-                      <div>
-                        TrendBadgeMock
-                      </div>
-                    </div>
-                    <div
-                      class="tip"
-                    >
                       <div
-                        class="wrapper success"
+                        class="wrapper heading-page-semibold"
+                      >
+                        58%
+                        <div>
+                          TrendBadgeMock
+                        </div>
+                      </div>
+                      <div
+                        class="tip"
                       >
                         <div
-                          class="sentiment"
+                          class="wrapper success"
                         >
-                          <div>
-                            <span
-                              class="label"
+                          <div
+                            class="sentiment"
+                          >
+                            <div>
+                              <span
+                                class="label"
+                              >
+                                Avg. merchant:
+                              </span>
+                              <span
+                                class="value"
+                                id="tip-tooltip-success"
+                              >
+                                14%
+                              </span>
+                            </div>
+                            <div>
+                              <span
+                                class="label"
+                              >
+                                Top 5%:
+                              </span>
+                              <span
+                                class="value"
+                              >
+                                48%
+                              </span>
+                            </div>
+                          </div>
+                          <div
+                            class="separator"
+                          />
+                          <div
+                            class="iconWrapper"
+                          >
+                            <i
+                              class="material-icons-outlined icon success"
                             >
-                              Avg. merchant:
-                            </span>
-                            <span
-                              class="value"
-                              id="tip-tooltip-success"
-                            >
-                              14%
+                              sentiment_very_satisfied
+                            </i>
+                            <span>
+                              You’re doing great
                             </span>
                           </div>
-                          <div>
-                            <span
-                              class="label"
+                          <div
+                            data-candu-id="performance-tip-data-rate"
+                          >
+                            Set up all
+                             
+                            <a
+                              href="https://link.gorgias.com/aut"
+                              target="blank"
                             >
-                              Top 5%:
-                            </span>
-                            <span
-                              class="value"
-                            >
-                              48%
-                            </span>
+                              Automate features
+                            </a>
+                             
+                            to improve your automation rate across all of your channels.
                           </div>
-                        </div>
-                        <div
-                          class="separator"
-                        />
-                        <div
-                          class="iconWrapper"
-                        >
-                          <i
-                            class="material-icons-outlined icon success"
-                          >
-                            sentiment_very_satisfied
-                          </i>
-                          <span>
-                            You’re doing great
-                          </span>
-                        </div>
-                        <div
-                          data-candu-id="performance-tip-data-rate"
-                        >
-                          Set up all
-                           
-                          <a
-                            href="https://link.gorgias.com/aut"
-                            target="blank"
-                          >
-                            Automate features
-                          </a>
-                           
-                          to improve your automation rate across all of your channels.
                         </div>
                       </div>
                     </div>
@@ -4308,77 +4360,79 @@ exports[`<AutomateOverview /> Performance Tips success should show tips with sen
                   class="cell"
                   style="grid-column: span 6 / span 6;"
                 >
-                  <div
-                    class="Card--wrapper--3AkmE card"
-                  >
+                  <div>
                     <div
-                      class="wrapper"
+                      class="Card--wrapper--3AkmE card"
                     >
                       <div
-                        class="title"
+                        class="wrapper"
                       >
-                        Automated interactions
                         <div
-                          class="wrapper tooltip"
+                          class="title"
                         >
-                          <i
-                            class="material-icons-outlined icon"
-                            id="tooltip-abc"
+                          Automated interactions
+                          <div
+                            class="wrapper tooltip"
                           >
-                            info
-                          </i>
+                            <i
+                              class="material-icons-outlined icon"
+                              id="tooltip-abc"
+                            >
+                              info
+                            </i>
+                          </div>
                         </div>
                       </div>
-                    </div>
-                    <div
-                      class="wrapper heading-page-semibold"
-                    >
-                      93
-                      <div>
-                        TrendBadgeMock
-                      </div>
-                    </div>
-                    <div
-                      class="tip"
-                    >
                       <div
-                        class="wrapper neutral"
+                        class="wrapper heading-page-semibold"
+                      >
+                        93
+                        <div>
+                          TrendBadgeMock
+                        </div>
+                      </div>
+                      <div
+                        class="tip"
                       >
                         <div
-                          class="iconWrapper"
+                          class="wrapper neutral"
                         >
-                          <i
-                            class="material-icons-outlined icon neutral"
+                          <div
+                            class="iconWrapper"
                           >
-                            lightbulb
-                          </i>
-                          <span>
-                            Tip
-                          </span>
-                        </div>
-                        <div
-                          data-candu-id="performance-tip-data-interactions"
-                        >
-                          Check out our
-                           
-                          <a
-                            href="https://link.gorgias.com/aut-playbook"
-                            target="blank"
+                            <i
+                              class="material-icons-outlined icon neutral"
+                            >
+                              lightbulb
+                            </i>
+                            <span>
+                              Tip
+                            </span>
+                          </div>
+                          <div
+                            data-candu-id="performance-tip-data-interactions"
                           >
+                            Check out our
                              
-                            Automation Playbook
-                          </a>
-                           
-                          for tactical tips on how to use Automate to its full potential. Visit
-                          <a
-                            href="/app/settings/billing"
-                            target="blank"
-                          >
+                            <a
+                              href="https://link.gorgias.com/aut-playbook"
+                              target="blank"
+                            >
+                               
+                              Automation Playbook
+                            </a>
                              
-                            billing
-                          </a>
-                           
-                          to make sure your Automate plan is the right size for you.
+                            for tactical tips on how to use Automate to its full potential. Visit
+                            <a
+                              href="/app/settings/billing"
+                              target="blank"
+                            >
+                               
+                              billing
+                            </a>
+                             
+                            to make sure your Automate plan is the right size for you.
+                          </div>
                         </div>
                       </div>
                     </div>
@@ -4405,34 +4459,36 @@ exports[`<AutomateOverview /> Performance Tips success should show tips with sen
                   class="cell"
                   style="grid-column: span 6 / span 6;"
                 >
-                  <div
-                    class="Card--wrapper--3AkmE card"
-                  >
+                  <div>
                     <div
-                      class="wrapper"
+                      class="Card--wrapper--3AkmE card"
                     >
                       <div
-                        class="title"
+                        class="wrapper"
                       >
-                        Cost saved
                         <div
-                          class="wrapper tooltip"
+                          class="title"
                         >
-                          <i
-                            class="material-icons-outlined icon"
-                            id="tooltip-abc"
+                          Cost saved
+                          <div
+                            class="wrapper tooltip"
                           >
-                            info
-                          </i>
+                            <i
+                              class="material-icons-outlined icon"
+                              id="tooltip-abc"
+                            >
+                              info
+                            </i>
+                          </div>
                         </div>
                       </div>
-                    </div>
-                    <div
-                      class="wrapper heading-page-semibold"
-                    >
-                      $228
-                      <div>
-                        TrendBadgeMock
+                      <div
+                        class="wrapper heading-page-semibold"
+                      >
+                        $228
+                        <div>
+                          TrendBadgeMock
+                        </div>
                       </div>
                     </div>
                   </div>
@@ -4441,34 +4497,36 @@ exports[`<AutomateOverview /> Performance Tips success should show tips with sen
                   class="cell"
                   style="grid-column: span 6 / span 6;"
                 >
-                  <div
-                    class="Card--wrapper--3AkmE card"
-                  >
+                  <div>
                     <div
-                      class="wrapper"
+                      class="Card--wrapper--3AkmE card"
                     >
                       <div
-                        class="title"
+                        class="wrapper"
                       >
-                        Decrease in resolution time
                         <div
-                          class="wrapper tooltip"
+                          class="title"
                         >
-                          <i
-                            class="material-icons-outlined icon"
-                            id="tooltip-abc"
+                          Decrease in resolution time
+                          <div
+                            class="wrapper tooltip"
                           >
-                            info
-                          </i>
+                            <i
+                              class="material-icons-outlined icon"
+                              id="tooltip-abc"
+                            >
+                              info
+                            </i>
+                          </div>
                         </div>
                       </div>
-                    </div>
-                    <div
-                      class="wrapper heading-page-semibold"
-                    >
-                      1m 31s
-                      <div>
-                        TrendBadgeMock
+                      <div
+                        class="wrapper heading-page-semibold"
+                      >
+                        1m 31s
+                        <div>
+                          TrendBadgeMock
+                        </div>
                       </div>
                     </div>
                   </div>
@@ -4477,34 +4535,36 @@ exports[`<AutomateOverview /> Performance Tips success should show tips with sen
                   class="cell"
                   style="grid-column: span 6 / span 6;"
                 >
-                  <div
-                    class="Card--wrapper--3AkmE card"
-                  >
+                  <div>
                     <div
-                      class="wrapper"
+                      class="Card--wrapper--3AkmE card"
                     >
                       <div
-                        class="title"
+                        class="wrapper"
                       >
-                        Decrease in first response time
                         <div
-                          class="wrapper tooltip"
+                          class="title"
                         >
-                          <i
-                            class="material-icons-outlined icon"
-                            id="tooltip-abc"
+                          Decrease in first response time
+                          <div
+                            class="wrapper tooltip"
                           >
-                            info
-                          </i>
+                            <i
+                              class="material-icons-outlined icon"
+                              id="tooltip-abc"
+                            >
+                              info
+                            </i>
+                          </div>
                         </div>
                       </div>
-                    </div>
-                    <div
-                      class="wrapper heading-page-semibold"
-                    >
-                      1m 31s
-                      <div>
-                        TrendBadgeMock
+                      <div
+                        class="wrapper heading-page-semibold"
+                      >
+                        1m 31s
+                        <div>
+                          TrendBadgeMock
+                        </div>
                       </div>
                     </div>
                   </div>
@@ -5046,99 +5106,101 @@ exports[`<AutomateOverview /> Performance Tips success should show tips with sen
                 class="cell"
                 style="grid-column: span 6 / span 6;"
               >
-                <div
-                  class="Card--wrapper--3AkmE card"
-                >
+                <div>
                   <div
-                    class="wrapper"
+                    class="Card--wrapper--3AkmE card"
                   >
                     <div
-                      class="title"
+                      class="wrapper"
                     >
-                      Automation rate
                       <div
-                        class="wrapper tooltip"
+                        class="title"
                       >
-                        <i
-                          class="material-icons-outlined icon"
-                          id="tooltip-abc"
+                        Automation rate
+                        <div
+                          class="wrapper tooltip"
                         >
-                          info
-                        </i>
+                          <i
+                            class="material-icons-outlined icon"
+                            id="tooltip-abc"
+                          >
+                            info
+                          </i>
+                        </div>
                       </div>
                     </div>
-                  </div>
-                  <div
-                    class="wrapper heading-page-semibold"
-                  >
-                    58%
-                    <div>
-                      TrendBadgeMock
-                    </div>
-                  </div>
-                  <div
-                    class="tip"
-                  >
                     <div
-                      class="wrapper success"
+                      class="wrapper heading-page-semibold"
+                    >
+                      58%
+                      <div>
+                        TrendBadgeMock
+                      </div>
+                    </div>
+                    <div
+                      class="tip"
                     >
                       <div
-                        class="sentiment"
+                        class="wrapper success"
                       >
-                        <div>
-                          <span
-                            class="label"
+                        <div
+                          class="sentiment"
+                        >
+                          <div>
+                            <span
+                              class="label"
+                            >
+                              Avg. merchant:
+                            </span>
+                            <span
+                              class="value"
+                              id="tip-tooltip-success"
+                            >
+                              14%
+                            </span>
+                          </div>
+                          <div>
+                            <span
+                              class="label"
+                            >
+                              Top 5%:
+                            </span>
+                            <span
+                              class="value"
+                            >
+                              48%
+                            </span>
+                          </div>
+                        </div>
+                        <div
+                          class="separator"
+                        />
+                        <div
+                          class="iconWrapper"
+                        >
+                          <i
+                            class="material-icons-outlined icon success"
                           >
-                            Avg. merchant:
-                          </span>
-                          <span
-                            class="value"
-                            id="tip-tooltip-success"
-                          >
-                            14%
+                            sentiment_very_satisfied
+                          </i>
+                          <span>
+                            You’re doing great
                           </span>
                         </div>
-                        <div>
-                          <span
-                            class="label"
+                        <div
+                          data-candu-id="performance-tip-data-rate"
+                        >
+                          Set up all
+                           
+                          <a
+                            href="https://link.gorgias.com/aut"
+                            target="blank"
                           >
-                            Top 5%:
-                          </span>
-                          <span
-                            class="value"
-                          >
-                            48%
-                          </span>
+                            Automate features
+                          </a>
+                           
+                          to improve your automation rate across all of your channels.
                         </div>
-                      </div>
-                      <div
-                        class="separator"
-                      />
-                      <div
-                        class="iconWrapper"
-                      >
-                        <i
-                          class="material-icons-outlined icon success"
-                        >
-                          sentiment_very_satisfied
-                        </i>
-                        <span>
-                          You’re doing great
-                        </span>
-                      </div>
-                      <div
-                        data-candu-id="performance-tip-data-rate"
-                      >
-                        Set up all
-                         
-                        <a
-                          href="https://link.gorgias.com/aut"
-                          target="blank"
-                        >
-                          Automate features
-                        </a>
-                         
-                        to improve your automation rate across all of your channels.
                       </div>
                     </div>
                   </div>
@@ -5148,77 +5210,79 @@ exports[`<AutomateOverview /> Performance Tips success should show tips with sen
                 class="cell"
                 style="grid-column: span 6 / span 6;"
               >
-                <div
-                  class="Card--wrapper--3AkmE card"
-                >
+                <div>
                   <div
-                    class="wrapper"
+                    class="Card--wrapper--3AkmE card"
                   >
                     <div
-                      class="title"
+                      class="wrapper"
                     >
-                      Automated interactions
                       <div
-                        class="wrapper tooltip"
+                        class="title"
                       >
-                        <i
-                          class="material-icons-outlined icon"
-                          id="tooltip-abc"
+                        Automated interactions
+                        <div
+                          class="wrapper tooltip"
                         >
-                          info
-                        </i>
+                          <i
+                            class="material-icons-outlined icon"
+                            id="tooltip-abc"
+                          >
+                            info
+                          </i>
+                        </div>
                       </div>
                     </div>
-                  </div>
-                  <div
-                    class="wrapper heading-page-semibold"
-                  >
-                    93
-                    <div>
-                      TrendBadgeMock
-                    </div>
-                  </div>
-                  <div
-                    class="tip"
-                  >
                     <div
-                      class="wrapper neutral"
+                      class="wrapper heading-page-semibold"
+                    >
+                      93
+                      <div>
+                        TrendBadgeMock
+                      </div>
+                    </div>
+                    <div
+                      class="tip"
                     >
                       <div
-                        class="iconWrapper"
+                        class="wrapper neutral"
                       >
-                        <i
-                          class="material-icons-outlined icon neutral"
+                        <div
+                          class="iconWrapper"
                         >
-                          lightbulb
-                        </i>
-                        <span>
-                          Tip
-                        </span>
-                      </div>
-                      <div
-                        data-candu-id="performance-tip-data-interactions"
-                      >
-                        Check out our
-                         
-                        <a
-                          href="https://link.gorgias.com/aut-playbook"
-                          target="blank"
+                          <i
+                            class="material-icons-outlined icon neutral"
+                          >
+                            lightbulb
+                          </i>
+                          <span>
+                            Tip
+                          </span>
+                        </div>
+                        <div
+                          data-candu-id="performance-tip-data-interactions"
                         >
+                          Check out our
                            
-                          Automation Playbook
-                        </a>
-                         
-                        for tactical tips on how to use Automate to its full potential. Visit
-                        <a
-                          href="/app/settings/billing"
-                          target="blank"
-                        >
+                          <a
+                            href="https://link.gorgias.com/aut-playbook"
+                            target="blank"
+                          >
+                             
+                            Automation Playbook
+                          </a>
                            
-                          billing
-                        </a>
-                         
-                        to make sure your Automate plan is the right size for you.
+                          for tactical tips on how to use Automate to its full potential. Visit
+                          <a
+                            href="/app/settings/billing"
+                            target="blank"
+                          >
+                             
+                            billing
+                          </a>
+                           
+                          to make sure your Automate plan is the right size for you.
+                        </div>
                       </div>
                     </div>
                   </div>
@@ -5245,34 +5309,36 @@ exports[`<AutomateOverview /> Performance Tips success should show tips with sen
                 class="cell"
                 style="grid-column: span 6 / span 6;"
               >
-                <div
-                  class="Card--wrapper--3AkmE card"
-                >
+                <div>
                   <div
-                    class="wrapper"
+                    class="Card--wrapper--3AkmE card"
                   >
                     <div
-                      class="title"
+                      class="wrapper"
                     >
-                      Cost saved
                       <div
-                        class="wrapper tooltip"
+                        class="title"
                       >
-                        <i
-                          class="material-icons-outlined icon"
-                          id="tooltip-abc"
+                        Cost saved
+                        <div
+                          class="wrapper tooltip"
                         >
-                          info
-                        </i>
+                          <i
+                            class="material-icons-outlined icon"
+                            id="tooltip-abc"
+                          >
+                            info
+                          </i>
+                        </div>
                       </div>
                     </div>
-                  </div>
-                  <div
-                    class="wrapper heading-page-semibold"
-                  >
-                    $228
-                    <div>
-                      TrendBadgeMock
+                    <div
+                      class="wrapper heading-page-semibold"
+                    >
+                      $228
+                      <div>
+                        TrendBadgeMock
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -5281,34 +5347,36 @@ exports[`<AutomateOverview /> Performance Tips success should show tips with sen
                 class="cell"
                 style="grid-column: span 6 / span 6;"
               >
-                <div
-                  class="Card--wrapper--3AkmE card"
-                >
+                <div>
                   <div
-                    class="wrapper"
+                    class="Card--wrapper--3AkmE card"
                   >
                     <div
-                      class="title"
+                      class="wrapper"
                     >
-                      Decrease in resolution time
                       <div
-                        class="wrapper tooltip"
+                        class="title"
                       >
-                        <i
-                          class="material-icons-outlined icon"
-                          id="tooltip-abc"
+                        Decrease in resolution time
+                        <div
+                          class="wrapper tooltip"
                         >
-                          info
-                        </i>
+                          <i
+                            class="material-icons-outlined icon"
+                            id="tooltip-abc"
+                          >
+                            info
+                          </i>
+                        </div>
                       </div>
                     </div>
-                  </div>
-                  <div
-                    class="wrapper heading-page-semibold"
-                  >
-                    1m 31s
-                    <div>
-                      TrendBadgeMock
+                    <div
+                      class="wrapper heading-page-semibold"
+                    >
+                      1m 31s
+                      <div>
+                        TrendBadgeMock
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -5317,34 +5385,36 @@ exports[`<AutomateOverview /> Performance Tips success should show tips with sen
                 class="cell"
                 style="grid-column: span 6 / span 6;"
               >
-                <div
-                  class="Card--wrapper--3AkmE card"
-                >
+                <div>
                   <div
-                    class="wrapper"
+                    class="Card--wrapper--3AkmE card"
                   >
                     <div
-                      class="title"
+                      class="wrapper"
                     >
-                      Decrease in first response time
                       <div
-                        class="wrapper tooltip"
+                        class="title"
                       >
-                        <i
-                          class="material-icons-outlined icon"
-                          id="tooltip-abc"
+                        Decrease in first response time
+                        <div
+                          class="wrapper tooltip"
                         >
-                          info
-                        </i>
+                          <i
+                            class="material-icons-outlined icon"
+                            id="tooltip-abc"
+                          >
+                            info
+                          </i>
+                        </div>
                       </div>
                     </div>
-                  </div>
-                  <div
-                    class="wrapper heading-page-semibold"
-                  >
-                    1m 31s
-                    <div>
-                      TrendBadgeMock
+                    <div
+                      class="wrapper heading-page-semibold"
+                    >
+                      1m 31s
+                      <div>
+                        TrendBadgeMock
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -5819,99 +5889,101 @@ exports[`<AutomateOverview /> Quickresponse deprecation should return false when
             class="cell"
             style="grid-column: span 6 / span 6;"
           >
-            <div
-              class="Card--wrapper--3AkmE card"
-            >
+            <div>
               <div
-                class="wrapper"
+                class="Card--wrapper--3AkmE card"
               >
                 <div
-                  class="title"
+                  class="wrapper"
                 >
-                  Automation rate
                   <div
-                    class="wrapper tooltip"
+                    class="title"
                   >
-                    <i
-                      class="material-icons-outlined icon"
-                      id="tooltip-abc"
+                    Automation rate
+                    <div
+                      class="wrapper tooltip"
                     >
-                      info
-                    </i>
+                      <i
+                        class="material-icons-outlined icon"
+                        id="tooltip-abc"
+                      >
+                        info
+                      </i>
+                    </div>
                   </div>
                 </div>
-              </div>
-              <div
-                class="wrapper heading-page-semibold"
-              >
-                9,300%
-                <div>
-                  TrendBadgeMock
-                </div>
-              </div>
-              <div
-                class="tip"
-              >
                 <div
-                  class="wrapper success"
+                  class="wrapper heading-page-semibold"
+                >
+                  9,300%
+                  <div>
+                    TrendBadgeMock
+                  </div>
+                </div>
+                <div
+                  class="tip"
                 >
                   <div
-                    class="sentiment"
+                    class="wrapper success"
                   >
-                    <div>
-                      <span
-                        class="label"
+                    <div
+                      class="sentiment"
+                    >
+                      <div>
+                        <span
+                          class="label"
+                        >
+                          Avg. merchant:
+                        </span>
+                        <span
+                          class="value"
+                          id="tip-tooltip-success"
+                        >
+                          14%
+                        </span>
+                      </div>
+                      <div>
+                        <span
+                          class="label"
+                        >
+                          Top 5%:
+                        </span>
+                        <span
+                          class="value"
+                        >
+                          48%
+                        </span>
+                      </div>
+                    </div>
+                    <div
+                      class="separator"
+                    />
+                    <div
+                      class="iconWrapper"
+                    >
+                      <i
+                        class="material-icons-outlined icon success"
                       >
-                        Avg. merchant:
-                      </span>
-                      <span
-                        class="value"
-                        id="tip-tooltip-success"
-                      >
-                        14%
+                        sentiment_very_satisfied
+                      </i>
+                      <span>
+                        You’re doing great
                       </span>
                     </div>
-                    <div>
-                      <span
-                        class="label"
+                    <div
+                      data-candu-id="performance-tip-data-rate"
+                    >
+                      Set up all
+                       
+                      <a
+                        href="https://link.gorgias.com/aut"
+                        target="blank"
                       >
-                        Top 5%:
-                      </span>
-                      <span
-                        class="value"
-                      >
-                        48%
-                      </span>
+                        Automate features
+                      </a>
+                       
+                      to improve your automation rate across all of your channels.
                     </div>
-                  </div>
-                  <div
-                    class="separator"
-                  />
-                  <div
-                    class="iconWrapper"
-                  >
-                    <i
-                      class="material-icons-outlined icon success"
-                    >
-                      sentiment_very_satisfied
-                    </i>
-                    <span>
-                      You’re doing great
-                    </span>
-                  </div>
-                  <div
-                    data-candu-id="performance-tip-data-rate"
-                  >
-                    Set up all
-                     
-                    <a
-                      href="https://link.gorgias.com/aut"
-                      target="blank"
-                    >
-                      Automate features
-                    </a>
-                     
-                    to improve your automation rate across all of your channels.
                   </div>
                 </div>
               </div>
@@ -5921,77 +5993,79 @@ exports[`<AutomateOverview /> Quickresponse deprecation should return false when
             class="cell"
             style="grid-column: span 6 / span 6;"
           >
-            <div
-              class="Card--wrapper--3AkmE card"
-            >
+            <div>
               <div
-                class="wrapper"
+                class="Card--wrapper--3AkmE card"
               >
                 <div
-                  class="title"
+                  class="wrapper"
                 >
-                  Automated interactions
                   <div
-                    class="wrapper tooltip"
+                    class="title"
                   >
-                    <i
-                      class="material-icons-outlined icon"
-                      id="tooltip-abc"
+                    Automated interactions
+                    <div
+                      class="wrapper tooltip"
                     >
-                      info
-                    </i>
+                      <i
+                        class="material-icons-outlined icon"
+                        id="tooltip-abc"
+                      >
+                        info
+                      </i>
+                    </div>
                   </div>
                 </div>
-              </div>
-              <div
-                class="wrapper heading-page-semibold"
-              >
-                93
-                <div>
-                  TrendBadgeMock
-                </div>
-              </div>
-              <div
-                class="tip"
-              >
                 <div
-                  class="wrapper neutral"
+                  class="wrapper heading-page-semibold"
+                >
+                  93
+                  <div>
+                    TrendBadgeMock
+                  </div>
+                </div>
+                <div
+                  class="tip"
                 >
                   <div
-                    class="iconWrapper"
+                    class="wrapper neutral"
                   >
-                    <i
-                      class="material-icons-outlined icon neutral"
+                    <div
+                      class="iconWrapper"
                     >
-                      lightbulb
-                    </i>
-                    <span>
-                      Tip
-                    </span>
-                  </div>
-                  <div
-                    data-candu-id="performance-tip-data-interactions"
-                  >
-                    Check out our
-                     
-                    <a
-                      href="https://link.gorgias.com/aut-playbook"
-                      target="blank"
+                      <i
+                        class="material-icons-outlined icon neutral"
+                      >
+                        lightbulb
+                      </i>
+                      <span>
+                        Tip
+                      </span>
+                    </div>
+                    <div
+                      data-candu-id="performance-tip-data-interactions"
                     >
+                      Check out our
                        
-                      Automation Playbook
-                    </a>
-                     
-                    for tactical tips on how to use Automate to its full potential. Visit
-                    <a
-                      href="/app/settings/billing"
-                      target="blank"
-                    >
+                      <a
+                        href="https://link.gorgias.com/aut-playbook"
+                        target="blank"
+                      >
+                         
+                        Automation Playbook
+                      </a>
                        
-                      billing
-                    </a>
-                     
-                    to make sure your Automate plan is the right size for you.
+                      for tactical tips on how to use Automate to its full potential. Visit
+                      <a
+                        href="/app/settings/billing"
+                        target="blank"
+                      >
+                         
+                        billing
+                      </a>
+                       
+                      to make sure your Automate plan is the right size for you.
+                    </div>
                   </div>
                 </div>
               </div>
@@ -6018,34 +6092,36 @@ exports[`<AutomateOverview /> Quickresponse deprecation should return false when
             class="cell"
             style="grid-column: span 6 / span 6;"
           >
-            <div
-              class="Card--wrapper--3AkmE card"
-            >
+            <div>
               <div
-                class="wrapper"
+                class="Card--wrapper--3AkmE card"
               >
                 <div
-                  class="title"
+                  class="wrapper"
                 >
-                  Cost saved
                   <div
-                    class="wrapper tooltip"
+                    class="title"
                   >
-                    <i
-                      class="material-icons-outlined icon"
-                      id="tooltip-abc"
+                    Cost saved
+                    <div
+                      class="wrapper tooltip"
                     >
-                      info
-                    </i>
+                      <i
+                        class="material-icons-outlined icon"
+                        id="tooltip-abc"
+                      >
+                        info
+                      </i>
+                    </div>
                   </div>
                 </div>
-              </div>
-              <div
-                class="wrapper heading-page-semibold"
-              >
-                $228
-                <div>
-                  TrendBadgeMock
+                <div
+                  class="wrapper heading-page-semibold"
+                >
+                  $228
+                  <div>
+                    TrendBadgeMock
+                  </div>
                 </div>
               </div>
             </div>
@@ -6054,34 +6130,36 @@ exports[`<AutomateOverview /> Quickresponse deprecation should return false when
             class="cell"
             style="grid-column: span 6 / span 6;"
           >
-            <div
-              class="Card--wrapper--3AkmE card"
-            >
+            <div>
               <div
-                class="wrapper"
+                class="Card--wrapper--3AkmE card"
               >
                 <div
-                  class="title"
+                  class="wrapper"
                 >
-                  Decrease in resolution time
                   <div
-                    class="wrapper tooltip"
+                    class="title"
                   >
-                    <i
-                      class="material-icons-outlined icon"
-                      id="tooltip-abc"
+                    Decrease in resolution time
+                    <div
+                      class="wrapper tooltip"
                     >
-                      info
-                    </i>
+                      <i
+                        class="material-icons-outlined icon"
+                        id="tooltip-abc"
+                      >
+                        info
+                      </i>
+                    </div>
                   </div>
                 </div>
-              </div>
-              <div
-                class="wrapper heading-page-semibold"
-              >
-                1m 31s
-                <div>
-                  TrendBadgeMock
+                <div
+                  class="wrapper heading-page-semibold"
+                >
+                  1m 31s
+                  <div>
+                    TrendBadgeMock
+                  </div>
                 </div>
               </div>
             </div>
@@ -6090,34 +6168,36 @@ exports[`<AutomateOverview /> Quickresponse deprecation should return false when
             class="cell"
             style="grid-column: span 6 / span 6;"
           >
-            <div
-              class="Card--wrapper--3AkmE card"
-            >
+            <div>
               <div
-                class="wrapper"
+                class="Card--wrapper--3AkmE card"
               >
                 <div
-                  class="title"
+                  class="wrapper"
                 >
-                  Decrease in first response time
                   <div
-                    class="wrapper tooltip"
+                    class="title"
                   >
-                    <i
-                      class="material-icons-outlined icon"
-                      id="tooltip-abc"
+                    Decrease in first response time
+                    <div
+                      class="wrapper tooltip"
                     >
-                      info
-                    </i>
+                      <i
+                        class="material-icons-outlined icon"
+                        id="tooltip-abc"
+                      >
+                        info
+                      </i>
+                    </div>
                   </div>
                 </div>
-              </div>
-              <div
-                class="wrapper heading-page-semibold"
-              >
-                1m 31s
-                <div>
-                  TrendBadgeMock
+                <div
+                  class="wrapper heading-page-semibold"
+                >
+                  1m 31s
+                  <div>
+                    TrendBadgeMock
+                  </div>
                 </div>
               </div>
             </div>
@@ -6522,99 +6602,101 @@ exports[`<AutomateOverview /> Quickresponse deprecation should return false when
             class="cell"
             style="grid-column: span 6 / span 6;"
           >
-            <div
-              class="Card--wrapper--3AkmE card"
-            >
+            <div>
               <div
-                class="wrapper"
+                class="Card--wrapper--3AkmE card"
               >
                 <div
-                  class="title"
+                  class="wrapper"
                 >
-                  Automation rate
                   <div
-                    class="wrapper tooltip"
+                    class="title"
                   >
-                    <i
-                      class="material-icons-outlined icon"
-                      id="tooltip-abc"
+                    Automation rate
+                    <div
+                      class="wrapper tooltip"
                     >
-                      info
-                    </i>
+                      <i
+                        class="material-icons-outlined icon"
+                        id="tooltip-abc"
+                      >
+                        info
+                      </i>
+                    </div>
                   </div>
                 </div>
-              </div>
-              <div
-                class="wrapper heading-page-semibold"
-              >
-                9,300%
-                <div>
-                  TrendBadgeMock
-                </div>
-              </div>
-              <div
-                class="tip"
-              >
                 <div
-                  class="wrapper success"
+                  class="wrapper heading-page-semibold"
+                >
+                  9,300%
+                  <div>
+                    TrendBadgeMock
+                  </div>
+                </div>
+                <div
+                  class="tip"
                 >
                   <div
-                    class="sentiment"
+                    class="wrapper success"
                   >
-                    <div>
-                      <span
-                        class="label"
+                    <div
+                      class="sentiment"
+                    >
+                      <div>
+                        <span
+                          class="label"
+                        >
+                          Avg. merchant:
+                        </span>
+                        <span
+                          class="value"
+                          id="tip-tooltip-success"
+                        >
+                          14%
+                        </span>
+                      </div>
+                      <div>
+                        <span
+                          class="label"
+                        >
+                          Top 5%:
+                        </span>
+                        <span
+                          class="value"
+                        >
+                          48%
+                        </span>
+                      </div>
+                    </div>
+                    <div
+                      class="separator"
+                    />
+                    <div
+                      class="iconWrapper"
+                    >
+                      <i
+                        class="material-icons-outlined icon success"
                       >
-                        Avg. merchant:
-                      </span>
-                      <span
-                        class="value"
-                        id="tip-tooltip-success"
-                      >
-                        14%
+                        sentiment_very_satisfied
+                      </i>
+                      <span>
+                        You’re doing great
                       </span>
                     </div>
-                    <div>
-                      <span
-                        class="label"
+                    <div
+                      data-candu-id="performance-tip-data-rate"
+                    >
+                      Set up all
+                       
+                      <a
+                        href="https://link.gorgias.com/aut"
+                        target="blank"
                       >
-                        Top 5%:
-                      </span>
-                      <span
-                        class="value"
-                      >
-                        48%
-                      </span>
+                        Automate features
+                      </a>
+                       
+                      to improve your automation rate across all of your channels.
                     </div>
-                  </div>
-                  <div
-                    class="separator"
-                  />
-                  <div
-                    class="iconWrapper"
-                  >
-                    <i
-                      class="material-icons-outlined icon success"
-                    >
-                      sentiment_very_satisfied
-                    </i>
-                    <span>
-                      You’re doing great
-                    </span>
-                  </div>
-                  <div
-                    data-candu-id="performance-tip-data-rate"
-                  >
-                    Set up all
-                     
-                    <a
-                      href="https://link.gorgias.com/aut"
-                      target="blank"
-                    >
-                      Automate features
-                    </a>
-                     
-                    to improve your automation rate across all of your channels.
                   </div>
                 </div>
               </div>
@@ -6624,77 +6706,79 @@ exports[`<AutomateOverview /> Quickresponse deprecation should return false when
             class="cell"
             style="grid-column: span 6 / span 6;"
           >
-            <div
-              class="Card--wrapper--3AkmE card"
-            >
+            <div>
               <div
-                class="wrapper"
+                class="Card--wrapper--3AkmE card"
               >
                 <div
-                  class="title"
+                  class="wrapper"
                 >
-                  Automated interactions
                   <div
-                    class="wrapper tooltip"
+                    class="title"
                   >
-                    <i
-                      class="material-icons-outlined icon"
-                      id="tooltip-abc"
+                    Automated interactions
+                    <div
+                      class="wrapper tooltip"
                     >
-                      info
-                    </i>
+                      <i
+                        class="material-icons-outlined icon"
+                        id="tooltip-abc"
+                      >
+                        info
+                      </i>
+                    </div>
                   </div>
                 </div>
-              </div>
-              <div
-                class="wrapper heading-page-semibold"
-              >
-                93
-                <div>
-                  TrendBadgeMock
-                </div>
-              </div>
-              <div
-                class="tip"
-              >
                 <div
-                  class="wrapper neutral"
+                  class="wrapper heading-page-semibold"
+                >
+                  93
+                  <div>
+                    TrendBadgeMock
+                  </div>
+                </div>
+                <div
+                  class="tip"
                 >
                   <div
-                    class="iconWrapper"
+                    class="wrapper neutral"
                   >
-                    <i
-                      class="material-icons-outlined icon neutral"
+                    <div
+                      class="iconWrapper"
                     >
-                      lightbulb
-                    </i>
-                    <span>
-                      Tip
-                    </span>
-                  </div>
-                  <div
-                    data-candu-id="performance-tip-data-interactions"
-                  >
-                    Check out our
-                     
-                    <a
-                      href="https://link.gorgias.com/aut-playbook"
-                      target="blank"
+                      <i
+                        class="material-icons-outlined icon neutral"
+                      >
+                        lightbulb
+                      </i>
+                      <span>
+                        Tip
+                      </span>
+                    </div>
+                    <div
+                      data-candu-id="performance-tip-data-interactions"
                     >
+                      Check out our
                        
-                      Automation Playbook
-                    </a>
-                     
-                    for tactical tips on how to use Automate to its full potential. Visit
-                    <a
-                      href="/app/settings/billing"
-                      target="blank"
-                    >
+                      <a
+                        href="https://link.gorgias.com/aut-playbook"
+                        target="blank"
+                      >
+                         
+                        Automation Playbook
+                      </a>
                        
-                      billing
-                    </a>
-                     
-                    to make sure your Automate plan is the right size for you.
+                      for tactical tips on how to use Automate to its full potential. Visit
+                      <a
+                        href="/app/settings/billing"
+                        target="blank"
+                      >
+                         
+                        billing
+                      </a>
+                       
+                      to make sure your Automate plan is the right size for you.
+                    </div>
                   </div>
                 </div>
               </div>
@@ -6721,34 +6805,36 @@ exports[`<AutomateOverview /> Quickresponse deprecation should return false when
             class="cell"
             style="grid-column: span 6 / span 6;"
           >
-            <div
-              class="Card--wrapper--3AkmE card"
-            >
+            <div>
               <div
-                class="wrapper"
+                class="Card--wrapper--3AkmE card"
               >
                 <div
-                  class="title"
+                  class="wrapper"
                 >
-                  Cost saved
                   <div
-                    class="wrapper tooltip"
+                    class="title"
                   >
-                    <i
-                      class="material-icons-outlined icon"
-                      id="tooltip-abc"
+                    Cost saved
+                    <div
+                      class="wrapper tooltip"
                     >
-                      info
-                    </i>
+                      <i
+                        class="material-icons-outlined icon"
+                        id="tooltip-abc"
+                      >
+                        info
+                      </i>
+                    </div>
                   </div>
                 </div>
-              </div>
-              <div
-                class="wrapper heading-page-semibold"
-              >
-                $228
-                <div>
-                  TrendBadgeMock
+                <div
+                  class="wrapper heading-page-semibold"
+                >
+                  $228
+                  <div>
+                    TrendBadgeMock
+                  </div>
                 </div>
               </div>
             </div>
@@ -6757,34 +6843,36 @@ exports[`<AutomateOverview /> Quickresponse deprecation should return false when
             class="cell"
             style="grid-column: span 6 / span 6;"
           >
-            <div
-              class="Card--wrapper--3AkmE card"
-            >
+            <div>
               <div
-                class="wrapper"
+                class="Card--wrapper--3AkmE card"
               >
                 <div
-                  class="title"
+                  class="wrapper"
                 >
-                  Decrease in resolution time
                   <div
-                    class="wrapper tooltip"
+                    class="title"
                   >
-                    <i
-                      class="material-icons-outlined icon"
-                      id="tooltip-abc"
+                    Decrease in resolution time
+                    <div
+                      class="wrapper tooltip"
                     >
-                      info
-                    </i>
+                      <i
+                        class="material-icons-outlined icon"
+                        id="tooltip-abc"
+                      >
+                        info
+                      </i>
+                    </div>
                   </div>
                 </div>
-              </div>
-              <div
-                class="wrapper heading-page-semibold"
-              >
-                1m 31s
-                <div>
-                  TrendBadgeMock
+                <div
+                  class="wrapper heading-page-semibold"
+                >
+                  1m 31s
+                  <div>
+                    TrendBadgeMock
+                  </div>
                 </div>
               </div>
             </div>
@@ -6793,34 +6881,36 @@ exports[`<AutomateOverview /> Quickresponse deprecation should return false when
             class="cell"
             style="grid-column: span 6 / span 6;"
           >
-            <div
-              class="Card--wrapper--3AkmE card"
-            >
+            <div>
               <div
-                class="wrapper"
+                class="Card--wrapper--3AkmE card"
               >
                 <div
-                  class="title"
+                  class="wrapper"
                 >
-                  Decrease in first response time
                   <div
-                    class="wrapper tooltip"
+                    class="title"
                   >
-                    <i
-                      class="material-icons-outlined icon"
-                      id="tooltip-abc"
+                    Decrease in first response time
+                    <div
+                      class="wrapper tooltip"
                     >
-                      info
-                    </i>
+                      <i
+                        class="material-icons-outlined icon"
+                        id="tooltip-abc"
+                      >
+                        info
+                      </i>
+                    </div>
                   </div>
                 </div>
-              </div>
-              <div
-                class="wrapper heading-page-semibold"
-              >
-                1m 31s
-                <div>
-                  TrendBadgeMock
+                <div
+                  class="wrapper heading-page-semibold"
+                >
+                  1m 31s
+                  <div>
+                    TrendBadgeMock
+                  </div>
                 </div>
               </div>
             </div>
@@ -7242,99 +7332,101 @@ exports[`<AutomateOverview /> should display AAO 1`] = `
             class="cell"
             style="grid-column: span 6 / span 6;"
           >
-            <div
-              class="Card--wrapper--3AkmE card"
-            >
+            <div>
               <div
-                class="wrapper"
+                class="Card--wrapper--3AkmE card"
               >
                 <div
-                  class="title"
+                  class="wrapper"
                 >
-                  Automation rate
                   <div
-                    class="wrapper tooltip"
+                    class="title"
                   >
-                    <i
-                      class="material-icons-outlined icon"
-                      id="tooltip-abc"
+                    Automation rate
+                    <div
+                      class="wrapper tooltip"
                     >
-                      info
-                    </i>
+                      <i
+                        class="material-icons-outlined icon"
+                        id="tooltip-abc"
+                      >
+                        info
+                      </i>
+                    </div>
                   </div>
                 </div>
-              </div>
-              <div
-                class="wrapper heading-page-semibold"
-              >
-                9,300%
-                <div>
-                  TrendBadgeMock
-                </div>
-              </div>
-              <div
-                class="tip"
-              >
                 <div
-                  class="wrapper success"
+                  class="wrapper heading-page-semibold"
+                >
+                  9,300%
+                  <div>
+                    TrendBadgeMock
+                  </div>
+                </div>
+                <div
+                  class="tip"
                 >
                   <div
-                    class="sentiment"
+                    class="wrapper success"
                   >
-                    <div>
-                      <span
-                        class="label"
+                    <div
+                      class="sentiment"
+                    >
+                      <div>
+                        <span
+                          class="label"
+                        >
+                          Avg. merchant:
+                        </span>
+                        <span
+                          class="value"
+                          id="tip-tooltip-success"
+                        >
+                          14%
+                        </span>
+                      </div>
+                      <div>
+                        <span
+                          class="label"
+                        >
+                          Top 5%:
+                        </span>
+                        <span
+                          class="value"
+                        >
+                          48%
+                        </span>
+                      </div>
+                    </div>
+                    <div
+                      class="separator"
+                    />
+                    <div
+                      class="iconWrapper"
+                    >
+                      <i
+                        class="material-icons-outlined icon success"
                       >
-                        Avg. merchant:
-                      </span>
-                      <span
-                        class="value"
-                        id="tip-tooltip-success"
-                      >
-                        14%
+                        sentiment_very_satisfied
+                      </i>
+                      <span>
+                        You’re doing great
                       </span>
                     </div>
-                    <div>
-                      <span
-                        class="label"
+                    <div
+                      data-candu-id="performance-tip-data-rate"
+                    >
+                      Set up all
+                       
+                      <a
+                        href="https://link.gorgias.com/aut"
+                        target="blank"
                       >
-                        Top 5%:
-                      </span>
-                      <span
-                        class="value"
-                      >
-                        48%
-                      </span>
+                        Automate features
+                      </a>
+                       
+                      to improve your automation rate across all of your channels.
                     </div>
-                  </div>
-                  <div
-                    class="separator"
-                  />
-                  <div
-                    class="iconWrapper"
-                  >
-                    <i
-                      class="material-icons-outlined icon success"
-                    >
-                      sentiment_very_satisfied
-                    </i>
-                    <span>
-                      You’re doing great
-                    </span>
-                  </div>
-                  <div
-                    data-candu-id="performance-tip-data-rate"
-                  >
-                    Set up all
-                     
-                    <a
-                      href="https://link.gorgias.com/aut"
-                      target="blank"
-                    >
-                      Automate features
-                    </a>
-                     
-                    to improve your automation rate across all of your channels.
                   </div>
                 </div>
               </div>
@@ -7344,77 +7436,79 @@ exports[`<AutomateOverview /> should display AAO 1`] = `
             class="cell"
             style="grid-column: span 6 / span 6;"
           >
-            <div
-              class="Card--wrapper--3AkmE card"
-            >
+            <div>
               <div
-                class="wrapper"
+                class="Card--wrapper--3AkmE card"
               >
                 <div
-                  class="title"
+                  class="wrapper"
                 >
-                  Automated interactions
                   <div
-                    class="wrapper tooltip"
+                    class="title"
                   >
-                    <i
-                      class="material-icons-outlined icon"
-                      id="tooltip-abc"
+                    Automated interactions
+                    <div
+                      class="wrapper tooltip"
                     >
-                      info
-                    </i>
+                      <i
+                        class="material-icons-outlined icon"
+                        id="tooltip-abc"
+                      >
+                        info
+                      </i>
+                    </div>
                   </div>
                 </div>
-              </div>
-              <div
-                class="wrapper heading-page-semibold"
-              >
-                93
-                <div>
-                  TrendBadgeMock
-                </div>
-              </div>
-              <div
-                class="tip"
-              >
                 <div
-                  class="wrapper neutral"
+                  class="wrapper heading-page-semibold"
+                >
+                  93
+                  <div>
+                    TrendBadgeMock
+                  </div>
+                </div>
+                <div
+                  class="tip"
                 >
                   <div
-                    class="iconWrapper"
+                    class="wrapper neutral"
                   >
-                    <i
-                      class="material-icons-outlined icon neutral"
+                    <div
+                      class="iconWrapper"
                     >
-                      lightbulb
-                    </i>
-                    <span>
-                      Tip
-                    </span>
-                  </div>
-                  <div
-                    data-candu-id="performance-tip-data-interactions"
-                  >
-                    Check out our
-                     
-                    <a
-                      href="https://link.gorgias.com/aut-playbook"
-                      target="blank"
+                      <i
+                        class="material-icons-outlined icon neutral"
+                      >
+                        lightbulb
+                      </i>
+                      <span>
+                        Tip
+                      </span>
+                    </div>
+                    <div
+                      data-candu-id="performance-tip-data-interactions"
                     >
+                      Check out our
                        
-                      Automation Playbook
-                    </a>
-                     
-                    for tactical tips on how to use Automate to its full potential. Visit
-                    <a
-                      href="/app/settings/billing"
-                      target="blank"
-                    >
+                      <a
+                        href="https://link.gorgias.com/aut-playbook"
+                        target="blank"
+                      >
+                         
+                        Automation Playbook
+                      </a>
                        
-                      billing
-                    </a>
-                     
-                    to make sure your Automate plan is the right size for you.
+                      for tactical tips on how to use Automate to its full potential. Visit
+                      <a
+                        href="/app/settings/billing"
+                        target="blank"
+                      >
+                         
+                        billing
+                      </a>
+                       
+                      to make sure your Automate plan is the right size for you.
+                    </div>
                   </div>
                 </div>
               </div>
@@ -7441,34 +7535,36 @@ exports[`<AutomateOverview /> should display AAO 1`] = `
             class="cell"
             style="grid-column: span 6 / span 6;"
           >
-            <div
-              class="Card--wrapper--3AkmE card"
-            >
+            <div>
               <div
-                class="wrapper"
+                class="Card--wrapper--3AkmE card"
               >
                 <div
-                  class="title"
+                  class="wrapper"
                 >
-                  Cost saved
                   <div
-                    class="wrapper tooltip"
+                    class="title"
                   >
-                    <i
-                      class="material-icons-outlined icon"
-                      id="tooltip-abc"
+                    Cost saved
+                    <div
+                      class="wrapper tooltip"
                     >
-                      info
-                    </i>
+                      <i
+                        class="material-icons-outlined icon"
+                        id="tooltip-abc"
+                      >
+                        info
+                      </i>
+                    </div>
                   </div>
                 </div>
-              </div>
-              <div
-                class="wrapper heading-page-semibold"
-              >
-                $228
-                <div>
-                  TrendBadgeMock
+                <div
+                  class="wrapper heading-page-semibold"
+                >
+                  $228
+                  <div>
+                    TrendBadgeMock
+                  </div>
                 </div>
               </div>
             </div>
@@ -7477,34 +7573,36 @@ exports[`<AutomateOverview /> should display AAO 1`] = `
             class="cell"
             style="grid-column: span 6 / span 6;"
           >
-            <div
-              class="Card--wrapper--3AkmE card"
-            >
+            <div>
               <div
-                class="wrapper"
+                class="Card--wrapper--3AkmE card"
               >
                 <div
-                  class="title"
+                  class="wrapper"
                 >
-                  Decrease in resolution time
                   <div
-                    class="wrapper tooltip"
+                    class="title"
                   >
-                    <i
-                      class="material-icons-outlined icon"
-                      id="tooltip-abc"
+                    Decrease in resolution time
+                    <div
+                      class="wrapper tooltip"
                     >
-                      info
-                    </i>
+                      <i
+                        class="material-icons-outlined icon"
+                        id="tooltip-abc"
+                      >
+                        info
+                      </i>
+                    </div>
                   </div>
                 </div>
-              </div>
-              <div
-                class="wrapper heading-page-semibold"
-              >
-                1m 31s
-                <div>
-                  TrendBadgeMock
+                <div
+                  class="wrapper heading-page-semibold"
+                >
+                  1m 31s
+                  <div>
+                    TrendBadgeMock
+                  </div>
                 </div>
               </div>
             </div>
@@ -7513,34 +7611,36 @@ exports[`<AutomateOverview /> should display AAO 1`] = `
             class="cell"
             style="grid-column: span 6 / span 6;"
           >
-            <div
-              class="Card--wrapper--3AkmE card"
-            >
+            <div>
               <div
-                class="wrapper"
+                class="Card--wrapper--3AkmE card"
               >
                 <div
-                  class="title"
+                  class="wrapper"
                 >
-                  Decrease in first response time
                   <div
-                    class="wrapper tooltip"
+                    class="title"
                   >
-                    <i
-                      class="material-icons-outlined icon"
-                      id="tooltip-abc"
+                    Decrease in first response time
+                    <div
+                      class="wrapper tooltip"
                     >
-                      info
-                    </i>
+                      <i
+                        class="material-icons-outlined icon"
+                        id="tooltip-abc"
+                      >
+                        info
+                      </i>
+                    </div>
                   </div>
                 </div>
-              </div>
-              <div
-                class="wrapper heading-page-semibold"
-              >
-                1m 31s
-                <div>
-                  TrendBadgeMock
+                <div
+                  class="wrapper heading-page-semibold"
+                >
+                  1m 31s
+                  <div>
+                    TrendBadgeMock
+                  </div>
                 </div>
               </div>
             </div>
@@ -7962,99 +8062,101 @@ exports[`<AutomateOverview /> should display paywall 1`] = `
             class="cell"
             style="grid-column: span 6 / span 6;"
           >
-            <div
-              class="Card--wrapper--3AkmE card"
-            >
+            <div>
               <div
-                class="wrapper"
+                class="Card--wrapper--3AkmE card"
               >
                 <div
-                  class="title"
+                  class="wrapper"
                 >
-                  Automation rate
                   <div
-                    class="wrapper tooltip"
+                    class="title"
                   >
-                    <i
-                      class="material-icons-outlined icon"
-                      id="tooltip-abc"
+                    Automation rate
+                    <div
+                      class="wrapper tooltip"
                     >
-                      info
-                    </i>
+                      <i
+                        class="material-icons-outlined icon"
+                        id="tooltip-abc"
+                      >
+                        info
+                      </i>
+                    </div>
                   </div>
                 </div>
-              </div>
-              <div
-                class="wrapper heading-page-semibold"
-              >
-                9,300%
-                <div>
-                  TrendBadgeMock
-                </div>
-              </div>
-              <div
-                class="tip"
-              >
                 <div
-                  class="wrapper success"
+                  class="wrapper heading-page-semibold"
+                >
+                  9,300%
+                  <div>
+                    TrendBadgeMock
+                  </div>
+                </div>
+                <div
+                  class="tip"
                 >
                   <div
-                    class="sentiment"
+                    class="wrapper success"
                   >
-                    <div>
-                      <span
-                        class="label"
+                    <div
+                      class="sentiment"
+                    >
+                      <div>
+                        <span
+                          class="label"
+                        >
+                          Avg. merchant:
+                        </span>
+                        <span
+                          class="value"
+                          id="tip-tooltip-success"
+                        >
+                          14%
+                        </span>
+                      </div>
+                      <div>
+                        <span
+                          class="label"
+                        >
+                          Top 5%:
+                        </span>
+                        <span
+                          class="value"
+                        >
+                          48%
+                        </span>
+                      </div>
+                    </div>
+                    <div
+                      class="separator"
+                    />
+                    <div
+                      class="iconWrapper"
+                    >
+                      <i
+                        class="material-icons-outlined icon success"
                       >
-                        Avg. merchant:
-                      </span>
-                      <span
-                        class="value"
-                        id="tip-tooltip-success"
-                      >
-                        14%
+                        sentiment_very_satisfied
+                      </i>
+                      <span>
+                        You’re doing great
                       </span>
                     </div>
-                    <div>
-                      <span
-                        class="label"
+                    <div
+                      data-candu-id="performance-tip-data-rate"
+                    >
+                      Set up all
+                       
+                      <a
+                        href="https://link.gorgias.com/aut"
+                        target="blank"
                       >
-                        Top 5%:
-                      </span>
-                      <span
-                        class="value"
-                      >
-                        48%
-                      </span>
+                        Automate features
+                      </a>
+                       
+                      to improve your automation rate across all of your channels.
                     </div>
-                  </div>
-                  <div
-                    class="separator"
-                  />
-                  <div
-                    class="iconWrapper"
-                  >
-                    <i
-                      class="material-icons-outlined icon success"
-                    >
-                      sentiment_very_satisfied
-                    </i>
-                    <span>
-                      You’re doing great
-                    </span>
-                  </div>
-                  <div
-                    data-candu-id="performance-tip-data-rate"
-                  >
-                    Set up all
-                     
-                    <a
-                      href="https://link.gorgias.com/aut"
-                      target="blank"
-                    >
-                      Automate features
-                    </a>
-                     
-                    to improve your automation rate across all of your channels.
                   </div>
                 </div>
               </div>
@@ -8064,77 +8166,79 @@ exports[`<AutomateOverview /> should display paywall 1`] = `
             class="cell"
             style="grid-column: span 6 / span 6;"
           >
-            <div
-              class="Card--wrapper--3AkmE card"
-            >
+            <div>
               <div
-                class="wrapper"
+                class="Card--wrapper--3AkmE card"
               >
                 <div
-                  class="title"
+                  class="wrapper"
                 >
-                  Automated interactions
                   <div
-                    class="wrapper tooltip"
+                    class="title"
                   >
-                    <i
-                      class="material-icons-outlined icon"
-                      id="tooltip-abc"
+                    Automated interactions
+                    <div
+                      class="wrapper tooltip"
                     >
-                      info
-                    </i>
+                      <i
+                        class="material-icons-outlined icon"
+                        id="tooltip-abc"
+                      >
+                        info
+                      </i>
+                    </div>
                   </div>
                 </div>
-              </div>
-              <div
-                class="wrapper heading-page-semibold"
-              >
-                93
-                <div>
-                  TrendBadgeMock
-                </div>
-              </div>
-              <div
-                class="tip"
-              >
                 <div
-                  class="wrapper neutral"
+                  class="wrapper heading-page-semibold"
+                >
+                  93
+                  <div>
+                    TrendBadgeMock
+                  </div>
+                </div>
+                <div
+                  class="tip"
                 >
                   <div
-                    class="iconWrapper"
+                    class="wrapper neutral"
                   >
-                    <i
-                      class="material-icons-outlined icon neutral"
+                    <div
+                      class="iconWrapper"
                     >
-                      lightbulb
-                    </i>
-                    <span>
-                      Tip
-                    </span>
-                  </div>
-                  <div
-                    data-candu-id="performance-tip-data-interactions"
-                  >
-                    Check out our
-                     
-                    <a
-                      href="https://link.gorgias.com/aut-playbook"
-                      target="blank"
+                      <i
+                        class="material-icons-outlined icon neutral"
+                      >
+                        lightbulb
+                      </i>
+                      <span>
+                        Tip
+                      </span>
+                    </div>
+                    <div
+                      data-candu-id="performance-tip-data-interactions"
                     >
+                      Check out our
                        
-                      Automation Playbook
-                    </a>
-                     
-                    for tactical tips on how to use Automate to its full potential. Visit
-                    <a
-                      href="/app/settings/billing"
-                      target="blank"
-                    >
+                      <a
+                        href="https://link.gorgias.com/aut-playbook"
+                        target="blank"
+                      >
+                         
+                        Automation Playbook
+                      </a>
                        
-                      billing
-                    </a>
-                     
-                    to make sure your Automate plan is the right size for you.
+                      for tactical tips on how to use Automate to its full potential. Visit
+                      <a
+                        href="/app/settings/billing"
+                        target="blank"
+                      >
+                         
+                        billing
+                      </a>
+                       
+                      to make sure your Automate plan is the right size for you.
+                    </div>
                   </div>
                 </div>
               </div>
@@ -8161,34 +8265,36 @@ exports[`<AutomateOverview /> should display paywall 1`] = `
             class="cell"
             style="grid-column: span 6 / span 6;"
           >
-            <div
-              class="Card--wrapper--3AkmE card"
-            >
+            <div>
               <div
-                class="wrapper"
+                class="Card--wrapper--3AkmE card"
               >
                 <div
-                  class="title"
+                  class="wrapper"
                 >
-                  Cost saved
                   <div
-                    class="wrapper tooltip"
+                    class="title"
                   >
-                    <i
-                      class="material-icons-outlined icon"
-                      id="tooltip-abc"
+                    Cost saved
+                    <div
+                      class="wrapper tooltip"
                     >
-                      info
-                    </i>
+                      <i
+                        class="material-icons-outlined icon"
+                        id="tooltip-abc"
+                      >
+                        info
+                      </i>
+                    </div>
                   </div>
                 </div>
-              </div>
-              <div
-                class="wrapper heading-page-semibold"
-              >
-                $228
-                <div>
-                  TrendBadgeMock
+                <div
+                  class="wrapper heading-page-semibold"
+                >
+                  $228
+                  <div>
+                    TrendBadgeMock
+                  </div>
                 </div>
               </div>
             </div>
@@ -8197,34 +8303,36 @@ exports[`<AutomateOverview /> should display paywall 1`] = `
             class="cell"
             style="grid-column: span 6 / span 6;"
           >
-            <div
-              class="Card--wrapper--3AkmE card"
-            >
+            <div>
               <div
-                class="wrapper"
+                class="Card--wrapper--3AkmE card"
               >
                 <div
-                  class="title"
+                  class="wrapper"
                 >
-                  Decrease in resolution time
                   <div
-                    class="wrapper tooltip"
+                    class="title"
                   >
-                    <i
-                      class="material-icons-outlined icon"
-                      id="tooltip-abc"
+                    Decrease in resolution time
+                    <div
+                      class="wrapper tooltip"
                     >
-                      info
-                    </i>
+                      <i
+                        class="material-icons-outlined icon"
+                        id="tooltip-abc"
+                      >
+                        info
+                      </i>
+                    </div>
                   </div>
                 </div>
-              </div>
-              <div
-                class="wrapper heading-page-semibold"
-              >
-                1m 31s
-                <div>
-                  TrendBadgeMock
+                <div
+                  class="wrapper heading-page-semibold"
+                >
+                  1m 31s
+                  <div>
+                    TrendBadgeMock
+                  </div>
                 </div>
               </div>
             </div>
@@ -8233,34 +8341,36 @@ exports[`<AutomateOverview /> should display paywall 1`] = `
             class="cell"
             style="grid-column: span 6 / span 6;"
           >
-            <div
-              class="Card--wrapper--3AkmE card"
-            >
+            <div>
               <div
-                class="wrapper"
+                class="Card--wrapper--3AkmE card"
               >
                 <div
-                  class="title"
+                  class="wrapper"
                 >
-                  Decrease in first response time
                   <div
-                    class="wrapper tooltip"
+                    class="title"
                   >
-                    <i
-                      class="material-icons-outlined icon"
-                      id="tooltip-abc"
+                    Decrease in first response time
+                    <div
+                      class="wrapper tooltip"
                     >
-                      info
-                    </i>
+                      <i
+                        class="material-icons-outlined icon"
+                        id="tooltip-abc"
+                      >
+                        info
+                      </i>
+                    </div>
                   </div>
                 </div>
-              </div>
-              <div
-                class="wrapper heading-page-semibold"
-              >
-                1m 31s
-                <div>
-                  TrendBadgeMock
+                <div
+                  class="wrapper heading-page-semibold"
+                >
+                  1m 31s
+                  <div>
+                    TrendBadgeMock
+                  </div>
                 </div>
               </div>
             </div>

@@ -47,6 +47,7 @@ describe('useCoverageRate', () => {
         const { result } = renderHook(() => useCoverageRate(filters, timezone))
 
         expect(result.current).toEqual({
+            'data-candu-id': 'ai-agent-overview-kpi-coverage-rate',
             title: 'Coverage Rate',
             hint: 'Percentage of tickets that AI Agent attempted to respond to.',
             metricType: StatType.Number,
@@ -66,6 +67,7 @@ describe('useCoverageRate', () => {
 
         expect(result.current).toEqual({
             title: 'Coverage Rate',
+            'data-candu-id': 'ai-agent-overview-kpi-coverage-rate',
             hint: 'Percentage of tickets that AI Agent attempted to respond to.',
             metricType: StatType.Number,
             metricFormat: 'decimal-to-percent',

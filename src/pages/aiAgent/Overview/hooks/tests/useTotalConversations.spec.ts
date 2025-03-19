@@ -56,6 +56,7 @@ describe('useTotalConversations', () => {
         expect(result.current).toEqual({
             title: 'Total AI Sales Conversations',
             hint: 'The total number of conversations handled or influenced by the AI Agent for Sales.',
+            'data-candu-id': 'ai-agent-overview-kpi-total-conversations',
             metricType: StatType.Number,
             metricFormat: 'decimal',
             value: 843,
@@ -88,6 +89,7 @@ describe('useTotalConversations', () => {
         expect(result.current).toEqual({
             title: 'Total AI Sales Conversations',
             hint: 'The total number of conversations handled or influenced by the AI Agent for Sales.',
+            'data-candu-id': 'ai-agent-overview-kpi-total-conversations',
             metricType: StatType.Number,
             metricFormat: 'decimal',
             value: 843,
@@ -108,6 +110,7 @@ describe('useTotalConversations', () => {
         expect(result.current).toEqual({
             title: 'Total AI Sales Conversations',
             hint: 'The total number of conversations handled or influenced by the AI Agent for Sales.',
+            'data-candu-id': 'ai-agent-overview-kpi-total-conversations',
             metricType: StatType.Number,
             metricFormat: 'decimal',
             isLoading: true,

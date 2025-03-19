@@ -11,4 +11,5 @@ export type KpiMetric = {
     metricType: StatType.Number | StatType.Currency
     currency?: string
     metricFormat?: MetricTrendFormat
+    'data-candu-id'?: string
 }

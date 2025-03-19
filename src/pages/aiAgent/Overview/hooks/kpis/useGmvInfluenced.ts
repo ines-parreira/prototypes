@@ -35,6 +35,7 @@ export const useGmvInfluenced = (
         metricType: StatType.Currency,
         isLoading: result.isFetching,
         currency,
+        'data-candu-id': 'ai-agent-overview-kpi-gmv-influenced',
         ...result.data,
     }
 }
