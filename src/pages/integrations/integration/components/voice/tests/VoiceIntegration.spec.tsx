@@ -1,5 +1,3 @@
-import React from 'react'
-
 import { screen } from '@testing-library/react'
 
 import { useFlag } from 'core/flags'
@@ -53,6 +51,9 @@ jest.mock(
     'pages/integrations/integration/components/voice/VoiceIntegrationPreferences',
     () => () => <div>VoiceIntegrationPreferences</div>,
 )
+jest.mock('../VoiceIntegrationSettingsPage', () => () => (
+    <div>VoiceIntegrationSettings</div>
+))
 
 const useFlagMock = assumeMock(useFlag)
 

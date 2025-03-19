@@ -1,0 +1,19 @@
+@import (reference) '~@gorgias/design-tokens/dist/css/layout';
+
+:local {
+    .phoneNumberHeader {
+        display: flex;
+        gap: @layout-spacing-xxs;
+        align-items: center;
+        margin-bottom: @layout-spacing-xs;
+
+        .label {
+            width: unset;
+            margin-bottom: 0;
+        }
+    }
+
+    .label {
+        margin-bottom: @layout-spacing-xs;
+    }
+}

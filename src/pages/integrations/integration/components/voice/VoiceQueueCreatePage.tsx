@@ -11,7 +11,7 @@ import { notify } from 'state/notifications/actions'
 import { NotificationStatus } from 'state/notifications/types'
 
 import { PHONE_INTEGRATION_BASE_URL } from './constants'
-import QueueFormSubmitButton from './QueueFormSubmitButton'
+import VoiceFormSubmitButton from './VoiceFormSubmitButton'
 import VoiceQueueEditOrCreateForm from './VoiceQueueEditOrCreateForm'
 import VoiceQueueSettingsForm from './VoiceQueueSettingsForm'
 
@@ -53,9 +53,9 @@ export default function VoiceQueueCreatePage() {
                 <VoiceQueueSettingsForm onSubmit={handleSubmit}>
                     <VoiceQueueEditOrCreateForm />
                     <div className={css.buttons}>
-                        <QueueFormSubmitButton>
+                        <VoiceFormSubmitButton>
                             Save changes
-                        </QueueFormSubmitButton>
+                        </VoiceFormSubmitButton>
                         <Link to={`${PHONE_INTEGRATION_BASE_URL}/queues`}>
                             <Button intent="secondary">Cancel</Button>
                         </Link>

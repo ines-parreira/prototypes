@@ -9,7 +9,7 @@ import {
 } from '@gorgias/api-queries'
 
 import useAppDispatch from 'hooks/useAppDispatch'
-import { DEFAULT_RECORDING_NOTIFICATION } from 'models/integration/constants'
+import { DEPRECATED_DEFAULT_RECORDING_NOTIFICATION } from 'models/integration/constants'
 import {
     PhoneIntegration,
     PhoneIntegrationMeta,
@@ -122,7 +122,7 @@ export const getDefaultValues = (integration: PhoneIntegration): FormValues => {
                 wait_time: DEFAULT_WAIT_TIME_PREFERENCES,
             },
             send_calls_to_voicemail: false,
-            recording_notification: DEFAULT_RECORDING_NOTIFICATION,
+            recording_notification: DEPRECATED_DEFAULT_RECORDING_NOTIFICATION,
         },
     }
 

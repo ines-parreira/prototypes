@@ -1,11 +1,9 @@
-import React from 'react'
-
 import { render, screen } from '@testing-library/react'
 import { useFormState } from 'react-hook-form'
 
 import { assumeMock } from 'utils/testing'
 
-import QueueFormSubmitButton from '../QueueFormSubmitButton'
+import VoiceFormSubmitButton from '../VoiceFormSubmitButton'
 
 jest.mock('react-hook-form', () => ({
     useFormState: jest.fn(),
@@ -18,7 +16,7 @@ type FormState = {
     isValid: boolean
 }
 
-describe('QueueFormSubmitButton', () => {
+describe('VoiceFormSubmitButton', () => {
     const defaultFormState: FormState = {
         isDirty: true,
         isValid: true,
@@ -33,7 +31,7 @@ describe('QueueFormSubmitButton', () => {
             ...formState,
         } as ReturnType<typeof useFormState>)
 
-        render(<QueueFormSubmitButton>{children}</QueueFormSubmitButton>)
+        render(<VoiceFormSubmitButton>{children}</VoiceFormSubmitButton>)
 
         return {
             button: screen.getByRole('button', { name: children }),

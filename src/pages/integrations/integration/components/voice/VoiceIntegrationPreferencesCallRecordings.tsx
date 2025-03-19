@@ -3,10 +3,11 @@ import { useFlags } from 'launchdarkly-react-client-sdk'
 import { useFormContext } from 'react-hook-form'
 import { Label } from 'reactstrap'
 
-import { VoiceMessage, VoiceMessageType } from '@gorgias/api-queries'
+import { VoiceMessageType } from '@gorgias/api-queries'
 
 import { FeatureFlagKey } from 'config/featureFlags'
 import { FormField } from 'core/forms'
+import { VoiceMessage } from 'models/integration/types'
 import ToggleInputField from 'pages/common/forms/ToggleInputField'
 import settingsCss from 'pages/settings/settings.less'
 

@@ -32,7 +32,7 @@ jest.mock('../VoiceQueueEditOrCreateForm', () => () => (
 jest.mock('hooks/useAppDispatch')
 const useAppDispatchMock = assumeMock(useAppDispatch)
 
-jest.mock('../QueueFormSubmitButton', () => ({ children }: any) => (
+jest.mock('../VoiceFormSubmitButton', () => ({ children }: any) => (
     <button type="submit">{children}</button>
 ))
 
