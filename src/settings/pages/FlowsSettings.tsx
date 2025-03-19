@@ -1,5 +1,6 @@
 import { NavLink, Route, useRouteMatch } from 'react-router-dom'
 
+import { getShopNameFromStoreIntegration } from 'models/selfServiceConfiguration/utils'
 import Header from 'pages/common/components/PageHeader'
 import SecondaryNavbar from 'pages/common/components/SecondaryNavbar/SecondaryNavbar'
 import { StoreSelector, useStoreSelector } from 'settings/automate'
@@ -18,8 +19,12 @@ export function FlowsSettings() {
     const { path } = useRouteMatch()
     const { integrations, onChange, selected } = useStoreSelector(BASE_PATH)
 
+    const selectedName = selected
+        ? getShopNameFromStoreIntegration(selected)
+        : undefined
+
     const selectedPath = selected
-        ? `${BASE_PATH}/${selected.type}/${selected.name}`
+        ? `${BASE_PATH}/${selected.type}/${selectedName}`
         : undefined
 
     return (

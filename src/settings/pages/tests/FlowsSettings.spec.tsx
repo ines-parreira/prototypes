@@ -50,7 +50,12 @@ const initialState = {
 
 describe('FlowsSettings', () => {
     const integrations = [
-        { id: 1, type: IntegrationType.Shopify, name: 'my-first-store' },
+        {
+            id: 1,
+            type: IntegrationType.Shopify,
+            name: 'my-first-store',
+            meta: {},
+        },
     ] as StoreIntegration[]
 
     let onChange: jest.Mock
