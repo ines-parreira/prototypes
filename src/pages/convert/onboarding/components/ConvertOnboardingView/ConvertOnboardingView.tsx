@@ -39,7 +39,7 @@ import ConvertOnboardingStep from '../ConvertOnboardingStep'
 import css from './ConvertOnboardingView.less'
 
 const BOOK_CALL_URL =
-    'https://calendly.com/gorgias-implementation/convert-implementation?utm_medium=in_product&utm_source=helpdesk&utm_campaign=onboarding_flow'
+    'https://calendly.com/d/crqk-wt9-6cs/gorgias-convert-onboarding-kick-off?utm_medium=in_product&utm_source=helpdesk&utm_campaign=onboarding_flow'
 
 const ConvertOnboardingView = () => {
     const { [CONVERT_ROUTE_PARAM_NAME]: integrationId } =
