@@ -209,7 +209,7 @@ export const getData = (
         [AgentsTableColumn.MedianFirstResponseTime]: {
             column: AgentsTableColumn.MedianFirstResponseTime,
             metricData: data.medianFirstResponseTimeMetric,
-            idField: TicketMessagesMember.SenderId,
+            idField: TicketMessagesDimension.FirstHelpdeskMessageUserId,
             metricField: MedianFirstResponseTime,
             summaryData: summary.medianFirstResponseTimeMetric.data?.value,
             totalData: total.medianFirstResponseTimeMetric.data?.value,
