@@ -814,6 +814,7 @@ export const CampaignDetailsForm = ({
                                                 isLightCampaign={
                                                     isLightCampaign
                                                 }
+                                                isShopifyStore={isShopifyStore}
                                             />
                                         )}
                                     </Accordion>

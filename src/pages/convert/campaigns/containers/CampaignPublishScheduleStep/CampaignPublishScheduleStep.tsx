@@ -28,6 +28,7 @@ import {
     CampaignScheduleModeEnum,
     CampaignScheduleRuleValueEnum,
 } from 'pages/convert/campaigns/types/enums/CampaignScheduleSettingsValues.enum'
+import { isActiveStatus } from 'pages/convert/campaigns/types/enums/CampaignStatus.enum'
 import { CampaignTriggerType } from 'pages/convert/campaigns/types/enums/CampaignTriggerType.enum'
 import ConvertSubscriptionModal from 'pages/convert/common/components/ConvertSubscriptionModal'
 import { getBusinessHoursSettings } from 'state/currentAccount/selectors'
@@ -49,6 +50,7 @@ type Props = {
     isDisabled?: boolean
     isConvertSubscriber?: boolean
     isLightCampaign?: boolean
+    isShopifyStore?: boolean
 }
 
 export const CampaignPublishScheduleStep = ({
@@ -58,10 +60,13 @@ export const CampaignPublishScheduleStep = ({
     isDisabled = false,
     isConvertSubscriber = false,
     isLightCampaign = false,
+    isShopifyStore = false,
 }: Props) => {
     const { isEditMode } = useCampaignFormContext()
     const { campaign, updateCampaign, triggers } = useCampaignDetailsContext()
     const convertModal = useModalManager('ConvertSubscriber')
+
+    const isCampaignActive = isActiveStatus(campaign.status)
 
     const businessHoursSettings = useAppSelector(getBusinessHoursSettings)
     const timezone = businessHoursSettings?.data?.timezone ?? DEFAULT_TIMEZONE
@@ -198,6 +203,11 @@ export const CampaignPublishScheduleStep = ({
                             label: 'Publish now',
                             caption:
                                 'Launch your campaign immediately to start running on your store right away',
+                            disabled:
+                                !isCampaignActive &&
+                                !isConvertSubscriber &&
+                                !isLightCampaign &&
+                                isShopifyStore,
                         },
                         {
                             value: CampaignScheduleModeEnum.SaveAndPublishLater,

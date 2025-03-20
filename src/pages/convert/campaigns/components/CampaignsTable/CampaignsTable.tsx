@@ -63,6 +63,9 @@ const TOGGLE_TOOLTIP_AB_TEST_COMPLETED =
 const TOGGLE_TOOLTIP_SCHEDULE =
     'To re-publish the campaign, update the scheduling time.'
 
+const TOGGLE_TOOLTIP_LIGHT_ONLY =
+    'You can activate only light campaigns. Upgrade to enable more campaigns.'
+
 type Props = {
     data: Campaign[]
     integration: Map<any, any>
@@ -205,12 +208,18 @@ export const CampaignsTable = ({
             ) as LanguageUI
 
             const isCampaignActive = isActiveStatus(campaign.status)
+            const isOnlyLightAllowed =
+                !campaignCreationAllowed && !campaign.is_light
+
             const toggleDisabled = campaign.ab_group
                 ? campaign.ab_group?.status === ABGroupStatus.Completed ||
                   isAtCampaignsLimit ||
-                  isOverCampaignsLimit
+                  isOverCampaignsLimit ||
+                  isOnlyLightAllowed
                 : !isCampaignActive &&
-                  (isAtCampaignsLimit || isOverCampaignsLimit)
+                  (isAtCampaignsLimit ||
+                      isOverCampaignsLimit ||
+                      isOnlyLightAllowed)
 
             const hasCampaignEnded =
                 campaign.status === CampaignStatus.Inactive &&
@@ -243,7 +252,9 @@ export const CampaignsTable = ({
                                         ? TOGGLE_TOOLTIP_AB_TEST_COMPLETED
                                         : campaign.schedule && hasCampaignEnded
                                           ? TOGGLE_TOOLTIP_SCHEDULE
-                                          : TOGGLE_TOOLTIP_MAX_ACTIVE_CAMPAIGNS}
+                                          : isOnlyLightAllowed
+                                            ? TOGGLE_TOOLTIP_LIGHT_ONLY
+                                            : TOGGLE_TOOLTIP_MAX_ACTIVE_CAMPAIGNS}
                                 </Tooltip>
                             )}
                         </BodyCell>
