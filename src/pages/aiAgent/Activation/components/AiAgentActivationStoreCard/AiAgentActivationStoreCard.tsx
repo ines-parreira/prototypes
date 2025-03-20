@@ -8,7 +8,7 @@ import { StoreConfiguration } from 'models/aiAgent/types'
 import { useAiAgentNavigation } from 'pages/aiAgent/hooks/useAiAgentNavigation'
 import Alert, { AlertType } from 'pages/common/components/Alert/Alert'
 import CheckBox from 'pages/common/forms/CheckBox'
-import ToggleInput from 'pages/common/forms/ToggleInput'
+import { NewToggleButton } from 'pages/common/forms/NewToggleButton'
 
 import css from './AiAgentActivationStoreCard.less'
 
@@ -124,14 +124,14 @@ export const AiAgentActivationStoreCard = ({
                 <div>
                     <div className={css.heading}>
                         <div className={css.title}>Support</div>
-                        <ToggleInput
+                        <NewToggleButton
                             isDisabled={
                                 isDisabledCore ||
                                 (support.chat.isIntegrationMissing &&
                                     support.email.isIntegrationMissing)
                             }
-                            isToggled={support.enabled}
-                            onClick={onSupportChange}
+                            checked={support.enabled}
+                            onChange={onSupportChange}
                         />
                     </div>
 
@@ -231,10 +231,10 @@ export const AiAgentActivationStoreCard = ({
                 >
                     <div className={css.heading}>
                         <div className={css.title}>Sales</div>
-                        <ToggleInput
+                        <NewToggleButton
                             isDisabled={isDisabledCore || sales.isDisabled}
-                            isToggled={sales.enabled}
-                            onClick={onSalesChange}
+                            checked={sales.enabled}
+                            onChange={onSalesChange}
                         />
                     </div>
                     <div className={css.description}>
