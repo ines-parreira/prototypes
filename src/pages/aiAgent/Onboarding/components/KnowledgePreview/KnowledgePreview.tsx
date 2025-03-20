@@ -57,7 +57,6 @@ const KnowledgePreview = () => {
                     radius={54}
                     percentage={data?.experienceScore ?? 0}
                     color="#FD9B5A"
-                    backgroundColor="#FD9B5A3D"
                     label={data?.experienceScore.toString()}
                     strokeWidth={9}
                 />
@@ -97,7 +96,6 @@ const KnowledgePreview = () => {
                     radius={54}
                     percentage={data?.averageDiscount ?? 0}
                     color="#FD9B5A"
-                    backgroundColor="#FD9B5A3D"
                     label={data?.averageDiscount.toString() + '%'}
                     strokeWidth={9}
                 />
@@ -115,7 +113,6 @@ const KnowledgePreview = () => {
                     radius={54}
                     percentage={data?.repeatRate ?? 0}
                     color="#FD9B5A"
-                    backgroundColor="#FD9B5A3D"
                     label={data?.repeatRate.toString() + '%'}
                     strokeWidth={9}
                 />

@@ -86,6 +86,8 @@ export const gorgiasColors = {
     accessoryRed: '#FFEAEA',
     accessoryBlack: '#DDDDDD',
 
+    accessoryMagenta25: '#C34CED',
+
     accessoryBlueText: '#115CB5',
     accessoryPinkText: '#9411B5',
     accessoryYellowText: '#8A6800',

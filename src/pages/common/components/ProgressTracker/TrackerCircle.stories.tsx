@@ -36,7 +36,6 @@ export const Default: Story = {
 export const WithLabel: Story = {
     args: {
         color: '#FD9B5A',
-        backgroundColor: '#FD9B5A3D',
         percentage: 50,
         radius: 54,
         strokeWidth: 9,

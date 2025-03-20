@@ -12,10 +12,14 @@ type Props = {
     stepTrackerColor: string
 }
 
-const ProgressTracker = (props: Props) => {
-    const { stepLabel, step, totalSteps, cta, stepTrackerColor, className } =
-        props
-
+const ProgressTracker = ({
+    stepLabel,
+    step,
+    totalSteps,
+    cta,
+    stepTrackerColor,
+    className,
+}: Props) => {
     const percentage = (step / totalSteps) * 100
     return (
         <div className={classNames(css.container, className)}>
@@ -24,10 +28,11 @@ const ProgressTracker = (props: Props) => {
                     <TrackerCircle
                         percentage={percentage}
                         color={stepTrackerColor}
+                        radius={14}
                     />
                 </div>
                 <div className={css.label}>
-                    {stepLabel ? stepLabel + ' ' : ''}
+                    {stepLabel && stepLabel + ' '}
                     {step}/{totalSteps}
                 </div>
             </div>

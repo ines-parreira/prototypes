@@ -30,7 +30,7 @@ export const AiAgentActivationModal = ({
 }: Props) => {
     const {
         storeActivations,
-        score: progressPercentage,
+        progressPercentage,
         onSalesChange,
         onSupportChange,
         onSupportChatChange,
@@ -66,7 +66,6 @@ export const AiAgentActivationModal = ({
             classNameDialog={css.modalDialog}
             isOpen={isOpen}
             onClose={onClose}
-            // innerScrollBehavior
         >
             <div className={css.modalHeader}>
                 <div className={css.modalTitle}>Manage AI Agent Activation</div>

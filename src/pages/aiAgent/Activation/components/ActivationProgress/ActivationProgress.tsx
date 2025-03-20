@@ -13,9 +13,6 @@ export const ActivationProgress = ({ className, percentage }: Props) => {
         <TrackerCircle
             className={cn(css.progress, className)}
             percentage={percentage}
-            color="#C34CED"
-            radius={18}
-            strokeWidth={3}
             label={`${percentage}%`}
         />
     )

@@ -62,7 +62,7 @@ export const useActivation = (
         return storeConfigurations ?? []
     }, [storeConfigurations, shopName])
 
-    const { score: progressPercentage } = useStoreActivations({
+    const { progressPercentage } = useStoreActivations({
         accountDomain,
         storeConfigurations: filteredStoreConfigurations,
         pageName,

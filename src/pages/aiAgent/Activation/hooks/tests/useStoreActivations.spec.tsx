@@ -93,7 +93,7 @@ describe('useStoreActivations', () => {
                 storeConfigurations: [store],
             })
 
-            expect(result.current.score).toEqual(0)
+            expect(result.current.progressPercentage).toEqual(0)
         })
 
         describe('when store has monitored chat and email integration', () => {
@@ -651,7 +651,7 @@ describe('useStoreActivations', () => {
                 storeConfigurations: [store],
             })
 
-            expect(result.current.score).toEqual(33)
+            expect(result.current.progressPercentage).toEqual(33)
         })
     })
 
@@ -672,7 +672,7 @@ describe('useStoreActivations', () => {
                 storeConfigurations: [store],
             })
 
-            expect(result.current.score).toEqual(0)
+            expect(result.current.progressPercentage).toEqual(0)
         })
     })
 
@@ -693,7 +693,7 @@ describe('useStoreActivations', () => {
                 storeConfigurations: [store],
             })
 
-            expect(result.current.score).toEqual(67)
+            expect(result.current.progressPercentage).toEqual(67)
         })
     })
 
@@ -714,7 +714,7 @@ describe('useStoreActivations', () => {
                 storeConfigurations: [store],
             })
 
-            expect(result.current.score).toEqual(100)
+            expect(result.current.progressPercentage).toEqual(100)
         })
     })
 

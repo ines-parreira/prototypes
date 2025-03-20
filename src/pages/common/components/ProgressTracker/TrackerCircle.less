@@ -1,0 +1,41 @@
+@import (reference) '~@gorgias/design-tokens/dist/css/layout.less';
+@import (reference) '~css/typography.less';
+
+:local {
+    .trackerCircle {
+        position: relative;
+        width: 100%;
+    }
+
+    .circle {
+        transform: rotate(-90deg);
+        transform-origin: center;
+        transition: 0.3s ease-out;
+
+        &.hidden {
+            opacity: 0;
+        }
+
+        &.progressCircle {
+            filter: drop-shadow(-3px 0px 3px #00000029);
+        }
+    }
+
+    .labelContainer {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 100%;
+        height: 100%;
+    }
+
+    .label {
+        fill: var(--neutral-grey-6);
+        font-weight: @body-medium-font-weight;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        overflow: hidden;
+        max-width: 80%;
+        text-align: center;
+    }
+}

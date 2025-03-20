@@ -1,6 +1,8 @@
 import cn from 'classnames'
 
-import css from './ProgressTracker.less'
+import { gorgiasColors } from 'gorgias-design-system/styles'
+
+import css from './TrackerCircle.less'
 
 const cleanPercentage = (percentage: number) => {
     const isNegativeOrNaN = !Number.isFinite(+percentage) || percentage < 0
@@ -9,36 +11,41 @@ const cleanPercentage = (percentage: number) => {
 }
 
 type CircleProps = {
+    className?: string
     color: string
-    percentage: number
+    percentage?: number
     radius?: number
     strokeWidth?: number
     opacity?: number
 }
 
 const Circle = ({
+    className,
     color,
-    percentage,
-    radius = 12,
-    strokeWidth = 5,
+    percentage = 100,
+    radius = 18,
+    strokeWidth = 3,
     opacity = 1,
 }: CircleProps) => {
     const circ = 2 * Math.PI * radius
-    const strokePct = ((100 - percentage) * circ) / 100
-    const stroke = strokePct !== circ ? color : ''
-    const cx = (radius + strokeWidth / 2) * -1
+    const progressValue = (percentage * circ) / 100
+    const cx = radius + strokeWidth / 2
     const cy = radius + strokeWidth / 2
 
     return (
         <circle
+            className={cn(
+                css.circle,
+                { [css.hidden]: percentage === 0 },
+                className,
+            )}
             r={radius}
             cx={cx}
             cy={cy}
             fill="none"
-            stroke={stroke}
+            stroke={color}
             strokeWidth={strokeWidth}
-            strokeDasharray={circ}
-            strokeDashoffset={percentage ? strokePct : 0}
+            strokeDasharray={`${progressValue} ${circ}`}
             strokeOpacity={opacity}
             strokeLinecap="round"
             shapeRendering="geometricPrecision"
@@ -49,24 +56,22 @@ const Circle = ({
 type Props = {
     className?: string
     percentage: number
-    color: string
-    backgroundColor?: string
-    radius?: number
     label?: string
+    color?: string
+    radius?: number
     strokeWidth?: number
 }
 
 const TrackerCircle = ({
     className,
     percentage,
-    color,
-    radius = 12,
     label,
-    strokeWidth,
+    color = gorgiasColors.accessoryMagenta25,
+    radius = 18,
+    strokeWidth = 4,
 }: Props) => {
     const pct = cleanPercentage(percentage)
-    const strokeW = strokeWidth ?? radius / 2.5
-    const size = (radius * 2 + strokeW) * 1.01
+    const size = radius * 2 + strokeWidth
 
     return (
         <svg
@@ -74,23 +79,22 @@ const TrackerCircle = ({
             height={size}
             viewBox={`0 0 ${size} ${size}`}
             fill="none"
-            className={cn(css.circle, className)}
+            className={cn(css.trackerCircle, className)}
+            style={{ overflow: 'visible' }}
         >
-            <g transform={`rotate(-90)`}>
-                <Circle
-                    color={color}
-                    percentage={100}
-                    radius={radius}
-                    strokeWidth={strokeW}
-                    opacity={0.32}
-                />
-                <Circle
-                    color={color}
-                    percentage={pct}
-                    radius={radius}
-                    strokeWidth={strokeW}
-                />
-            </g>
+            <Circle
+                color={color}
+                radius={radius}
+                strokeWidth={strokeWidth}
+                opacity={0.32}
+            />
+            <Circle
+                className={css.progressCircle}
+                color={color}
+                percentage={pct}
+                radius={radius}
+                strokeWidth={strokeWidth}
+            />
             <foreignObject
                 x={0}
                 y={0}

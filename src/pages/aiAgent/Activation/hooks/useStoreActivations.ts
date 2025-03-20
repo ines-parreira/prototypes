@@ -16,7 +16,7 @@ import { useSelfServiceChatChannelsMultiStore } from 'pages/automate/common/hook
 import { HELP_CENTER_MAX_CREATION } from 'pages/settings/helpCenter/constants'
 import safeDivide from 'pages/stats/aiSalesAgent/util/safeDivide'
 
-const computeActivationScore = (state: State): number => {
+const computeActivationPercentage = (state: State): number => {
     const totalStores = Object.values(state).length
     const totalScore = totalStores * 3
 
@@ -52,7 +52,7 @@ export const useStoreActivations = ({
     pageName: string
 }): {
     storeActivations: Record<string, StoreActivation>
-    score: number
+    progressPercentage: number
     onSalesChange: (storeName: string, newValue: boolean) => void
     onSupportChange: (storeName: string, newValue: boolean) => void
     onSupportChatChange: (storeName: string, newValue: boolean) => void
@@ -134,7 +134,7 @@ export const useStoreActivations = ({
 
     return {
         storeActivations: state,
-        score: computeActivationScore(state),
+        progressPercentage: computeActivationPercentage(state),
         onSalesChange: (storeName: string, newValue: boolean) => {
             dispatch({ type: 'CHANGE_SALES', storeName, newValue })
             logEvent(
