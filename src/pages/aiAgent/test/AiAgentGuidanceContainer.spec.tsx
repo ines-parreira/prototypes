@@ -5,10 +5,12 @@ import React from 'react'
 
 import { fireEvent, screen, within } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
+import { mockFlags } from 'jest-launchdarkly-mock'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
+import { FeatureFlagKey } from 'config/featureFlags'
 import { axiosSuccessResponse } from 'fixtures/axiosResponse'
 import { useGetHelpCenterList } from 'models/helpCenter/queries'
 import { useAiAgentEnabled } from 'pages/aiAgent/hooks/useAiAgentEnabled'
@@ -139,6 +141,7 @@ const mockedAiAgentStoreConfigurationContext = {
 
 describe('<AiAgentGuidanceContainer />', () => {
     beforeEach(() => {
+        jest.clearAllMocks()
         mockedUseAiAgentStoreConfigurationContext.mockReturnValue({
             ...mockedAiAgentStoreConfigurationContext,
             storeConfiguration: getStoreConfigurationFixture({
@@ -161,6 +164,10 @@ describe('<AiAgentGuidanceContainer />', () => {
 
         mockUseEnableAiAgent.mockReturnValue({
             updateSettingsAfterAiAgentEnabled: jest.fn(),
+        })
+
+        mockFlags({
+            [FeatureFlagKey.ConvAiStandaloneMenu]: false,
         })
     })
 
@@ -255,6 +262,24 @@ describe('<AiAgentGuidanceContainer />', () => {
             '/app/automation/shopify/test-shop/ai-agent/guidance/new',
         )
     })
+
+    it.each([
+        { standaloneMenuFlag: false, title: 'AI Agent' },
+        { standaloneMenuFlag: true, title: 'Knowledge' },
+    ])(
+        'should render guidance page with title "$title" when standalone menu flag is $standaloneMenuFlag',
+        ({ standaloneMenuFlag, title }) => {
+            mockFlags({
+                [FeatureFlagKey.ConvAiStandaloneMenu]: standaloneMenuFlag,
+            })
+
+            renderComponent()
+
+            expect(
+                screen.queryByText(title, { selector: 'h1' }),
+            ).toBeInTheDocument()
+        },
+    )
 
     it('should redirect to guidance library page on click', () => {
         mockedUseGuidanceAiSuggestions.mockReturnValue({

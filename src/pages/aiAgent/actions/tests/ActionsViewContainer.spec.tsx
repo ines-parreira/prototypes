@@ -1,11 +1,14 @@
 import React from 'react'
 
 import { QueryClientProvider } from '@tanstack/react-query'
+import { screen } from '@testing-library/react'
 import { fromJS } from 'immutable'
+import { mockFlags } from 'jest-launchdarkly-mock'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
+import { FeatureFlagKey } from 'config/featureFlags'
 import { billingState } from 'fixtures/billing'
 import { IntegrationType } from 'models/integration/constants'
 import {
@@ -91,4 +94,22 @@ describe('ActionsViewContainer', () => {
     it('renders without error', () => {
         renderComponent()
     })
+
+    it.each([
+        { standaloneMenuFlag: false, title: 'AI Agent' },
+        { standaloneMenuFlag: true, title: 'Knowledge' },
+    ])(
+        'should render guidance page with title "$title" when standalone menu flag is $standaloneMenuFlag',
+        ({ standaloneMenuFlag, title }) => {
+            mockFlags({
+                [FeatureFlagKey.ConvAiStandaloneMenu]: standaloneMenuFlag,
+            })
+
+            renderComponent()
+
+            expect(
+                screen.queryByText(title, { selector: 'h1' }),
+            ).toBeInTheDocument()
+        },
+    )
 })

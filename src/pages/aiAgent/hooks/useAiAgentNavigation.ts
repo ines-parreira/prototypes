@@ -14,7 +14,7 @@ import {
     PREVIEW,
     SALES,
     SETTINGS,
-    SOURCE,
+    SOURCES,
     SUPPORT_ACTIONS,
     TEST,
 } from 'pages/aiAgent/constants'
@@ -143,7 +143,7 @@ const useNavigationItems = (
                     items: [
                         isAiAgentKnowledgeTabEnabled && {
                             route: routes.knowledge,
-                            title: SOURCE,
+                            title: SOURCES,
                             exact: true,
                         },
                         {
@@ -178,7 +178,7 @@ const useNavigationItems = (
                 },
                 {
                     route: routes.sales,
-                    title: SALES.navbarItem,
+                    title: SALES,
                     dataCanduId: 'ai-agent-navbar-sales',
                 },
                 {
@@ -220,7 +220,7 @@ const useNavigationItems = (
             },
             {
                 route: routes.sales,
-                title: SALES.navbarItem,
+                title: SALES,
                 dataCanduId: 'ai-agent-navbar-sales',
             },
             {

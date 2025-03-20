@@ -14,13 +14,10 @@ export const KNOWLEDGE = 'Knowledge'
 export const GUIDANCE = 'Guidance'
 export const SUPPORT_ACTIONS = 'Support Actions'
 export const ACTIONS = 'Actions'
-export const SOURCE = 'Source'
+export const SOURCES = 'Sources'
 export const TEST = 'Test'
 export const PREVIEW = 'Preview'
-export const SALES = {
-    navbarItem: 'Sales',
-    pageTitle: 'Sales skills',
-}
+export const SALES = 'Sales Skills'
 
 export const SIGNATURE_MAX_LENGTH = 250
 export const CUSTOM_TONE_OF_VOICE_MAX_LENGTH = 1500

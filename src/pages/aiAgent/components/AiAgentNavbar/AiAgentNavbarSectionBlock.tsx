@@ -39,7 +39,7 @@ export const AiAgentNavbarSectionBlock = ({
     }
 
     const itemName = (item: any) => {
-        return item.title === SALES.navbarItem ? (
+        return item.title === SALES ? (
             <div className={css.item}>
                 {item.title}
                 <Badge type="blue">BETA</Badge>

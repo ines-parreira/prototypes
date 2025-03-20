@@ -32,7 +32,7 @@ export const AiAgentSales = () => {
         <AiAgentLayout
             shopName={shopName}
             className={css.container}
-            title={isStandaloneMenuEnabled ? SALES.pageTitle : AI_AGENT}
+            title={isStandaloneMenuEnabled ? SALES : AI_AGENT}
             hideViewAiAgentTicketsButton={isStandaloneMenuEnabled}
         >
             {content}

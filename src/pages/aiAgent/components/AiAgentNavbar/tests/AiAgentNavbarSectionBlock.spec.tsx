@@ -47,7 +47,7 @@ describe('AiAgentNavbarSectionBlock', () => {
             navigationItems: [
                 { route: '/route1', title: 'Route 1', dataCanduId: 'candu-1' },
                 { route: '/route2', title: 'Route 2' },
-                { route: '/route3', title: 'Sales' },
+                { route: '/route3', title: 'Sales Skills' },
             ],
         })
         mockUseAiAgentOnboardingState.mockReturnValue(OnboardingState.Onboarded)
@@ -66,7 +66,7 @@ describe('AiAgentNavbarSectionBlock', () => {
         expect(screen.getByAltText('shopify logo')).toBeInTheDocument()
         expect(screen.getByText('Route 1')).toBeInTheDocument()
         expect(screen.getByText('Route 2')).toBeInTheDocument()
-        expect(screen.getByText('Sales')).toBeInTheDocument()
+        expect(screen.getByText('Sales Skills')).toBeInTheDocument()
         expect(screen.getByText('BETA')).toBeInTheDocument()
         expect(screen.queryByText('Get Started')).not.toBeInTheDocument()
     })

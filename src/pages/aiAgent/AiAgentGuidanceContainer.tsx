@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo } from 'react'
+import { useEffect, useMemo } from 'react'
 
 import { useFlags } from 'launchdarkly-react-client-sdk'
 import { Link, useParams } from 'react-router-dom'
@@ -15,7 +15,7 @@ import { reportError } from 'utils/errors'
 import { AiAgentGuidanceView } from './AiAgentGuidanceView'
 import PostCompletionWizardModal from './AiAgentOnboardingWizard/PostCompletionWizardModal'
 import { AiAgentLayout } from './components/AiAgentLayout/AiAgentLayout'
-import { AI_AGENT, GUIDANCE } from './constants'
+import { AI_AGENT, KNOWLEDGE } from './constants'
 import { useAiAgentNavigation } from './hooks/useAiAgentNavigation'
 
 import css from './AiAgentGuidanceContainer.less'
@@ -82,7 +82,7 @@ export const AiAgentGuidanceContainer = () => {
             <AiAgentLayout
                 shopName={shopName}
                 className={css.container}
-                title={isStandaloneMenuEnabled ? GUIDANCE : AI_AGENT}
+                title={isStandaloneMenuEnabled ? KNOWLEDGE : AI_AGENT}
                 isLoading={isStoreConfigLoading || isLoadingHelpCenters}
             >
                 <AutomateViewContent>
@@ -102,7 +102,7 @@ export const AiAgentGuidanceContainer = () => {
         <AiAgentLayout
             shopName={shopName}
             className={css.container}
-            title={isStandaloneMenuEnabled ? GUIDANCE : AI_AGENT}
+            title={isStandaloneMenuEnabled ? KNOWLEDGE : AI_AGENT}
             isLoading={isStoreConfigLoading || isLoadingHelpCenters}
         >
             <AiAgentGuidanceView

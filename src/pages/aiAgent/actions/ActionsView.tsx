@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import { useEffect } from 'react'
 
 import { useFlags } from 'launchdarkly-react-client-sdk'
 import { Link, useParams } from 'react-router-dom'
@@ -11,7 +11,7 @@ import {
     useGetWorkflowConfigurationTemplates,
 } from 'models/workflows/queries'
 import { AiAgentLayout } from 'pages/aiAgent/components/AiAgentLayout/AiAgentLayout'
-import { ACTIONS, AI_AGENT } from 'pages/aiAgent/constants'
+import { AI_AGENT, KNOWLEDGE } from 'pages/aiAgent/constants'
 import { useAiAgentNavigation } from 'pages/aiAgent/hooks/useAiAgentNavigation'
 import AutomateViewEmptyStateBanner from 'pages/automate/common/components/AutomateViewEmptyStateBanner'
 
@@ -73,7 +73,7 @@ const ActionsView = () => {
                 isTemplateConfigurationsInitialLoading
             }
             className={css.container}
-            title={isStandaloneMenuEnabled ? ACTIONS : AI_AGENT}
+            title={isStandaloneMenuEnabled ? KNOWLEDGE : AI_AGENT}
         >
             {showFakeActions || storeWfConfigurations.length > 0 ? (
                 <div className={css.actionsListContainer}>

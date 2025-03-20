@@ -46,7 +46,7 @@ describe('useAiAgentNavigation', () => {
             },
             {
                 route: '/app/automation/shopify/test/ai-agent/sales',
-                title: 'Sales',
+                title: 'Sales Skills',
                 dataCanduId: 'ai-agent-navbar-sales',
             },
             {
@@ -125,7 +125,7 @@ describe('useAiAgentNavigation', () => {
             },
             {
                 route: '/app/automation/shopify/test/ai-agent/sales',
-                title: 'Sales',
+                title: 'Sales Skills',
                 dataCanduId: 'ai-agent-navbar-sales',
             },
             {
@@ -168,8 +168,8 @@ describe('useAiAgentNavigation', () => {
             },
             {
                 route: '/app/automation/shopify/test/ai-agent/sales',
+                title: 'Sales Skills',
                 dataCanduId: 'ai-agent-navbar-sales',
-                title: 'Sales',
             },
             {
                 route: '/app/automation/shopify/test/ai-agent/test',
