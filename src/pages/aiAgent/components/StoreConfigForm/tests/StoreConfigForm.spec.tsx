@@ -265,6 +265,7 @@ describe('<StoreConfigForm />', () => {
         salesDiscountMax: null,
         salesDiscountStrategyLevel: null,
         salesPersuasionLevel: null,
+        isConversationStartersEnabled: false,
     }
 
     const initialFormValues: FormValues = {

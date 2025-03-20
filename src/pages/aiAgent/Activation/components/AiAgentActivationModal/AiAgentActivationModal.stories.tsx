@@ -54,6 +54,7 @@ const dummyStoreConfig: StoreConfiguration = {
     salesDiscountMax: null,
     salesDiscountStrategyLevel: null,
     salesPersuasionLevel: null,
+    isConversationStartersEnabled: false,
 }
 const dummyStoreConfig2: StoreConfiguration = {
     ...dummyStoreConfig,

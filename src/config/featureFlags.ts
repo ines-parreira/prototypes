@@ -143,4 +143,5 @@ export enum FeatureFlagKey {
     ExposeVoiceQueues = 'expose-voice-queues-to-users',
     WhatsAppMigrationsDebug = 'whatsapp-migration-debug',
     AiAgentHandoverCustomizationConfiguration = 'helpdesk-ai-agent-handover-customization-enabled',
+    ConversationStarters = 'conversation-starters',
 }

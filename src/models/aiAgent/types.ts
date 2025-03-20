@@ -83,6 +83,8 @@ export type StoreConfiguration = {
     salesDiscountMax: number | null
     salesDiscountStrategyLevel: DiscountStrategy | null
     salesPersuasionLevel: PersuasionLevel | null
+
+    isConversationStartersEnabled: boolean
 }
 
 export type CreateStoreConfigurationPayload = Pick<
@@ -241,4 +243,8 @@ export type HandoverConfigurationData = {
 
 export type HandoverConfigurationResponse = {
     handoverConfigurations: HandoverConfigurationData[]
+}
+
+export type SalesVolumeData = {
+    isConversationStartersEnabled: boolean
 }

@@ -15,8 +15,10 @@ import {
     SALES,
     SETTINGS,
     SOURCES,
+    STRATEGY,
     SUPPORT_ACTIONS,
     TEST,
+    VOLUME,
 } from 'pages/aiAgent/constants'
 
 export const getAiAgentBasePath = (shopName: string, flags: LDFlagSet) => {
@@ -97,6 +99,7 @@ export const getAiAgentNavigationRoutes = (
         optimizeIntent: (intentId: string) =>
             `${basePath}/optimize/${intentId}`,
         overview: aiAgentRoutes.overview,
+        volume: `${basePath}/sales/volume`,
     }
 }
 
@@ -124,6 +127,9 @@ const useNavigationItems = (
 
     const isStandaloneMenuEnabled =
         useFlags()[FeatureFlagKey.ConvAiStandaloneMenu]
+
+    const isConversationStartersEnabled =
+        !!flags[FeatureFlagKey.ConversationStarters]
 
     return useMemo<NavigationItem[]>(() => {
         if (isStandaloneMenuEnabled) {
@@ -180,6 +186,19 @@ const useNavigationItems = (
                     route: routes.sales,
                     title: SALES,
                     dataCanduId: 'ai-agent-navbar-sales',
+                    items: isConversationStartersEnabled
+                        ? ([
+                              {
+                                  route: routes.sales,
+                                  title: STRATEGY,
+                                  exact: true,
+                              },
+                              {
+                                  route: routes.volume,
+                                  title: VOLUME,
+                              },
+                          ].filter((x) => !!x) as NavigationItem[])
+                        : undefined,
                 },
                 {
                     route: routes.test,
@@ -235,10 +254,11 @@ const useNavigationItems = (
             },
         ].filter((x) => !!x) as NavigationItem[]
     }, [
-        isStandaloneMenuEnabled,
         isAiAgentKnowledgeTabEnabled,
         isAiAgentOptimizeTabEnabled,
+        isConversationStartersEnabled,
         isGorgiasUser,
+        isStandaloneMenuEnabled,
         routes,
     ])
 }

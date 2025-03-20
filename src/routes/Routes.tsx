@@ -44,6 +44,7 @@ import { AiAgentPreviewModeSettingsContainer } from 'pages/aiAgent/AiAgentPrevie
 import { AiAgentSales } from 'pages/aiAgent/AiAgentSales'
 import AiAgentScrapedDomainPagesContainer from 'pages/aiAgent/AiAgentScrapedDomainContent/AiAgentScrapedDomainPagesContainer'
 import AiAgentScrapedDomainProductsContainer from 'pages/aiAgent/AiAgentScrapedDomainContent/AiAgentScrapedDomainProductsContainer'
+import { AiAgentVolume } from 'pages/aiAgent/AiAgentVolume'
 import { AiAgentNavbar } from 'pages/aiAgent/components/AiAgentNavbar/AiAgentNavbar'
 import { RedirectToAiAgentStore } from 'pages/aiAgent/components/RedirectToAiAgentStore/RedirectToAiAgentStore'
 import { useAiAgentItemEnabled } from 'pages/aiAgent/hooks/useAiAgentItemEnabled'
@@ -730,6 +731,16 @@ function AiAgentRoutes({ match: { path }, location }: RouteComponentProps) {
                             path={`${path}/sales`}
                             exact
                             component={AiAgentSales}
+                        />
+                    </AiAgentErrorBoundary>
+                    <AiAgentErrorBoundary
+                        section="ai-agent-volume"
+                        team={OBS_ADOPT_SENTRY_TEAM}
+                    >
+                        <Route
+                            path={`${path}/sales/volume`}
+                            exact
+                            component={AiAgentVolume}
                         />
                     </AiAgentErrorBoundary>
                 </AiAgentStoreConfigurationProvider>

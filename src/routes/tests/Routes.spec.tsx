@@ -113,6 +113,10 @@ const useAiAgentItemEnabledMock = assumeMock(useAiAgentItemEnabled)
 jest.mock('routes/StatsRoutes')
 const StatsRoutesMock = assumeMock(StatsRoutes)
 
+jest.mock('pages/aiAgent/AiAgentVolume', () => ({
+    AiAgentVolume: () => <div>AiAgentVolume</div>,
+}))
+
 const mockHistory = createBrowserHistory()
 const mockStore = configureMockStore()
 const mockUseFlag = useFlag as jest.Mock
@@ -533,6 +537,26 @@ describe('<Routes/>', () => {
             )
 
             expect(screen.getByText('AiAgentSales')).toBeInTheDocument()
+        })
+
+        it('should render volume page under sales', () => {
+            mockFlags({
+                [FeatureFlagKey.StandaloneAIAgentSalesPage]: true,
+            })
+
+            render(
+                <Provider store={mockStore(defaultState)}>
+                    <MemoryRouter
+                        initialEntries={[
+                            '/app/ai-agent/shopify/test-shop/sales/volume',
+                        ]}
+                    >
+                        <Routes />
+                    </MemoryRouter>
+                </Provider>,
+            )
+
+            expect(screen.getByText('AiAgentVolume')).toBeInTheDocument()
         })
     })
 
