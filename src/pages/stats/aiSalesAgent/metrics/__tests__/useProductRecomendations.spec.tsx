@@ -1,5 +1,3 @@
-import React from 'react'
-
 import { QueryClientProvider, UseQueryResult } from '@tanstack/react-query'
 import { waitFor } from '@testing-library/react'
 import { act, renderHook } from '@testing-library/react-hooks/dom'
@@ -9,19 +7,34 @@ import { Provider } from 'react-redux'
 
 import { Product } from 'constants/integrations/types/shopify'
 import { integrationsState, shopifyIntegration } from 'fixtures/integrations'
-import { useMetricPerDimension } from 'hooks/reporting/useMetricPerDimension'
+import {
+    fetchMetricPerDimension,
+    useMetricPerDimension,
+} from 'hooks/reporting/useMetricPerDimension'
 import { useGetProductsByIdsFromIntegration } from 'models/integration/queries'
 import {
     AiSalesAgentConversationsDimension,
     AiSalesAgentConversationsMeasure,
 } from 'models/reporting/cubes/ai-sales-agent/AiSalesAgentConversations'
+import {
+    AiSalesAgentOrdersDimension,
+    AiSalesAgentOrdersMeasure,
+} from 'models/reporting/cubes/ai-sales-agent/AiSalesAgentOrders'
+import {
+    ConvertTrackingEventsDimension,
+    ConvertTrackingEventsMeasure,
+} from 'models/reporting/cubes/convert/ConvertTrackingEventsCube'
 import { StatsFilters } from 'models/stat/types'
 import { LogicalOperatorEnum } from 'pages/stats/common/components/Filter/constants'
+import { fetchIntegrationProducts as fetchIntegrationProductsByIds } from 'state/integrations/helpers'
 import { RootState } from 'state/types'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 import { assumeMock, mockStore } from 'utils/testing'
 
-import { useProductRecommendations } from '../useProductRecommendations'
+import {
+    fetchProductRecommendations,
+    useProductRecommendations,
+} from '../useProductRecommendations'
 
 const timezone = 'UTC'
 
@@ -44,10 +57,16 @@ const queryClient = mockQueryClient()
 
 jest.mock('hooks/reporting/useMetricPerDimension')
 const useMetricPerDimensionMock = assumeMock(useMetricPerDimension)
+const fetchMetricPerDimensionMock = assumeMock(fetchMetricPerDimension)
 
 jest.mock('models/integration/queries')
 const useGetProductsByIdsFromIntegrationMock = assumeMock(
     useGetProductsByIdsFromIntegration,
+)
+
+jest.mock('state/integrations/helpers')
+const mockFetchIntegrationProductsByIds = assumeMock(
+    fetchIntegrationProductsByIds,
 )
 
 jest.useFakeTimers()
@@ -98,24 +117,24 @@ describe('productRecommendations', () => {
             )
         }
 
-    beforeEach(() => {
-        useMetricPerDimensionMock.mockReturnValue({
-            ...defaultReporting,
-            data: {
-                ...exampleMetricData,
-            },
+    describe('useProductRecommendations', () => {
+        beforeEach(() => {
+            useMetricPerDimensionMock.mockReturnValue({
+                ...defaultReporting,
+                data: {
+                    ...exampleMetricData,
+                },
+            })
+
+            useGetProductsByIdsFromIntegrationMock.mockReturnValue({
+                isFetching: false,
+                isError: false,
+                data: [product],
+            } as unknown as UseQueryResult<Product[]>)
+
+            act(() => jest.runAllTimers())
         })
 
-        useGetProductsByIdsFromIntegrationMock.mockReturnValue({
-            isFetching: false,
-            isError: false,
-            data: [product],
-        } as unknown as UseQueryResult<Product[]>)
-
-        act(() => jest.runAllTimers())
-    })
-
-    describe('useProductRecommendations', () => {
         it('should return empty `url` if integration is missing', async () => {
             const stateWithoutIntegration = {
                 integrations: fromJS(integrationsState).mergeDeep({
@@ -220,6 +239,124 @@ describe('productRecommendations', () => {
                     isError: false,
                     isFetching: false,
                 })
+            })
+        })
+    })
+
+    describe('fetchProductRecommendations', () => {
+        beforeEach(() => {
+            jest.clearAllMocks()
+        })
+
+        it('should fetch and map product recommendations successfully', async () => {
+            fetchMetricPerDimensionMock
+                .mockResolvedValueOnce({
+                    isFetching: false,
+                    isError: false,
+                    data: {
+                        value: 0,
+                        decile: 0,
+                        allData: [
+                            {
+                                [AiSalesAgentConversationsDimension.ProductId]:
+                                    '1',
+                                [AiSalesAgentConversationsMeasure.Count]: '100',
+                            },
+                        ],
+                    },
+                })
+                .mockResolvedValueOnce({
+                    isFetching: false,
+                    isError: false,
+                    data: {
+                        value: 0,
+                        decile: 0,
+                        allData: [
+                            {
+                                [ConvertTrackingEventsDimension.ProductId]: '1',
+                                [ConvertTrackingEventsMeasure.Clicks]: '50',
+                            },
+                        ],
+                    },
+                })
+                .mockResolvedValueOnce({
+                    isFetching: false,
+                    isError: false,
+                    data: {
+                        value: 0,
+                        decile: 0,
+                        allData: [
+                            {
+                                [AiSalesAgentOrdersDimension.InfluencedProductId]:
+                                    '1',
+                                [AiSalesAgentOrdersMeasure.Count]: '10',
+                            },
+                        ],
+                    },
+                })
+
+            mockFetchIntegrationProductsByIds.mockResolvedValue([
+                fromJS({
+                    ...product,
+                    id: 1,
+                    name: 'Product 1',
+                }),
+            ])
+
+            const result = await fetchProductRecommendations(
+                statsFilters,
+                timezone,
+            )
+
+            expect(result).toEqual({
+                data: [
+                    {
+                        btr: 0.1,
+                        ctr: 0.5,
+                        name: 'Product 1',
+                        recommendations: 100,
+                    },
+                ],
+                isFetching: false,
+                isError: false,
+            })
+        })
+
+        it('should handle errors gracefully', async () => {
+            fetchMetricPerDimensionMock.mockRejectedValue(
+                new Error('API Error'),
+            )
+
+            const result = await fetchProductRecommendations(
+                statsFilters,
+                timezone,
+            )
+
+            expect(result).toEqual({
+                data: [],
+                isFetching: false,
+                isError: true,
+            })
+        })
+
+        it('should return empty data when no products are found', async () => {
+            fetchMetricPerDimensionMock.mockResolvedValue({
+                isFetching: false,
+                isError: false,
+                data: { value: 0, decile: 0, allData: [] },
+            })
+
+            mockFetchIntegrationProductsByIds.mockResolvedValue([])
+
+            const result = await fetchProductRecommendations(
+                statsFilters,
+                timezone,
+            )
+
+            expect(result).toEqual({
+                data: [],
+                isFetching: false,
+                isError: false,
             })
         })
     })

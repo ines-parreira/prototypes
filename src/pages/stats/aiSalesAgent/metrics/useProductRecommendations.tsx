@@ -1,6 +1,7 @@
 import { useMemo } from 'react'
 
 import {
+    fetchMetricPerDimension,
     MetricWithDecile,
     useMetricPerDimension,
 } from 'hooks/reporting/useMetricPerDimension'
@@ -27,6 +28,7 @@ import {
 } from 'models/reporting/queryFactories/ai-sales-agent/metrics'
 import { isFilterWithLogicalOperator } from 'models/reporting/queryFactories/utils'
 import { StatsFilters } from 'models/stat/types'
+import { fetchIntegrationProducts as fetchIntegrationProductsByIds } from 'state/integrations/helpers'
 import { getIntegrationByIdAndType } from 'state/integrations/selectors'
 
 import { ProductTableKeys } from '../constants'
@@ -163,4 +165,85 @@ const useProductRecommendations = (filters: StatsFilters, timezone: string) => {
     }
 }
 
-export { useProductRecommendations }
+const fetchProductRecommendations = async (
+    filters: StatsFilters,
+    timezone: string,
+) => {
+    try {
+        // Determine store integration ID
+        const storeIntegrationId = isFilterWithLogicalOperator(
+            filters.storeIntegrations,
+        )
+            ? filters.storeIntegrations.values[0]
+            : 0
+
+        // Fetch metrics data
+        const [recommendationsTotalData, clickTotalData, boughtTotalData] =
+            await Promise.all([
+                fetchMetricPerDimension(
+                    productRecommendationsQueryFactory(filters, timezone),
+                ),
+                fetchMetricPerDimension(
+                    productClicksQueryFactory(filters, timezone),
+                ),
+                fetchMetricPerDimension(
+                    productBoughtQueryFactory(filters, timezone),
+                ),
+            ])
+
+        // Map metrics
+        const productTotals = mapMetrics(
+            recommendationsTotalData,
+            AiSalesAgentConversationsDimension.ProductId,
+            AiSalesAgentConversationsMeasure.Count,
+        )
+
+        const clickTotals = mapMetrics(
+            clickTotalData,
+            ConvertTrackingEventsDimension.ProductId,
+            ConvertTrackingEventsMeasure.Clicks,
+        )
+        const boughtTotals = mapMetrics(
+            boughtTotalData,
+            AiSalesAgentOrdersDimension.InfluencedProductId,
+            AiSalesAgentOrdersMeasure.Count,
+        )
+
+        // Fetch product details
+        const productIds = Object.keys(productTotals).map(Number)
+        const productsData = await fetchIntegrationProductsByIds(
+            storeIntegrationId,
+            productIds,
+        )
+
+        // Map product data
+        const data = (productsData ?? []).map((product) => ({
+            [ProductTableKeys.Name]: product.get('title'),
+            [ProductTableKeys.NumberOfRecommendations]:
+                productTotals[product.get('id')],
+            [ProductTableKeys.CTR]: safeDivide(
+                clickTotals[product.get('id')],
+                productTotals[product.get('id')],
+            ),
+            [ProductTableKeys.BTR]: safeDivide(
+                boughtTotals[product.get('id')],
+                productTotals[product.get('id')],
+            ),
+        }))
+
+        return {
+            data,
+            isFetching: false,
+            isError: false,
+        }
+    } catch (error) {
+        console.error('Error fetching product recommendations:', error)
+        return {
+            data: [],
+            isFetching: false,
+            isError: true,
+        }
+    }
+}
+
+export { useProductRecommendations, fetchProductRecommendations }

@@ -1,10 +1,15 @@
 import { useMemo } from 'react'
 
+import {
+    fetchTableReportData,
+    useTableReportData,
+} from 'hooks/reporting/common/useTableReportData'
 import { useTimeSeriesReportData } from 'hooks/reporting/common/useTimeSeriesReportData'
 import { useTrendReportData } from 'hooks/reporting/common/useTrendReportData'
 import { getCsvFileNameWithDates } from 'hooks/reporting/common/utils'
 import { useStatsFilters } from 'hooks/reporting/support-performance/useStatsFilters'
 import { MetricTrendFetch } from 'hooks/reporting/useMetricTrend'
+import { StatsFilters } from 'models/stat/types'
 import {
     AiSalesAgentChart,
     AiSalesAgentChartConfig,
@@ -12,16 +17,29 @@ import {
     type TimeSeriesMetric,
     type TrendMetric,
 } from 'pages/stats/aiSalesAgent/AiSalesAgentMetricsConfig'
-import { MetricValueFormat } from 'pages/stats/common/utils'
+import {
+    PRODUCT_TABLE_CELLS,
+    ProductTableConfig,
+    ProductTableKeys,
+} from 'pages/stats/aiSalesAgent/constants'
+import {
+    formatMetricValue,
+    MetricValueFormat,
+    NOT_AVAILABLE_PLACEHOLDER,
+} from 'pages/stats/common/utils'
 import {
     createTimeSeriesReport,
     createTrendReport,
 } from 'services/reporting/supportPerformanceReportingService'
+import { createCsv } from 'utils/file'
+
+import { fetchProductRecommendations } from '../metrics/useProductRecommendations'
 
 export const AI_SALES_AGENT_OVERVIEW_FILENAME = 'ai-sales-agent-overview'
 export const AI_SALES_AGENT_METRIC_FILE_NAME = 'metrics'
 export const AI_SALES_AGENT_GMV_INFLUENCED_OVER_TIME =
     'gmv-influenced-over-time'
+export const AI_SALES_AGENT_RECOMMENDED_PRODUCT = 'recommended-products'
 
 const metricSource: TrendMetric[] = [
     AiSalesAgentChart.AiSalesAgentTotalSalesConv,
@@ -55,6 +73,79 @@ const timeSeriesSource: TimeSeriesMetric[] = [
 const timeSeriesReportSource = timeSeriesSource.map(
     (metric: TimeSeriesMetric) => AiSalesAgentChartConfig[metric],
 )
+
+const formatMetric = (column: ProductTableKeys, value?: number | null) => {
+    return ProductTableConfig[column].metricFormat
+        ? formatMetricValue(
+              value,
+              ProductTableConfig[column].metricFormat,
+              NOT_AVAILABLE_PLACEHOLDER,
+          )
+        : value
+}
+
+const tableReportDataSource = [
+    {
+        title: 'totalProductRecommendations',
+        fetchData: fetchProductRecommendations,
+    },
+]
+
+export const createReport = (data: any, fileName: string) => {
+    if (!data) {
+        return {
+            files: {},
+        }
+    }
+
+    const reportData = [
+        PRODUCT_TABLE_CELLS.map((cell) => cell.title),
+        ...(data?.totalProductRecommendations?.data ?? []).map((row: any) => {
+            return PRODUCT_TABLE_CELLS.map((cell) => {
+                return formatMetric(cell.key, row[cell.key])
+            })
+        }),
+    ]
+
+    return {
+        files: {
+            [fileName]: createCsv(reportData),
+        },
+        fileName,
+    }
+}
+
+export const fetchTopProductRecommendationsReportData = async (
+    filters: StatsFilters,
+    timezone: string,
+) => {
+    const fileName = getCsvFileNameWithDates(
+        filters.period,
+        AI_SALES_AGENT_RECOMMENDED_PRODUCT,
+    )
+
+    return Promise.all([
+        fetchTableReportData(filters, timezone, tableReportDataSource),
+    ])
+        .then((data) => {
+            const report = createReport(data, fileName)
+
+            return {
+                files: {
+                    ...report.files,
+                },
+                fileName: fileName,
+                isLoading: false,
+                isError: false,
+            }
+        })
+        .catch(() => ({
+            isLoading: false,
+            isError: true,
+            files: {},
+            fileName,
+        }))
+}
 
 const useAiSalesAgentOverviewReportData = () => {
     const { cleanStatsFilters, userTimezone, granularity } = useStatsFilters()
@@ -92,6 +183,20 @@ const useAiSalesAgentOverviewReportData = () => {
         ),
     )
 
+    const tableData = useTableReportData(
+        cleanStatsFilters,
+        userTimezone,
+        tableReportDataSource,
+    )
+
+    const tableReport = createReport(
+        tableData.data,
+        getCsvFileNameWithDates(
+            cleanStatsFilters.period,
+            AI_SALES_AGENT_RECOMMENDED_PRODUCT,
+        ),
+    )
+
     const fileName = getCsvFileNameWithDates(
         cleanStatsFilters.period,
         AI_SALES_AGENT_OVERVIEW_FILENAME,
@@ -101,6 +206,7 @@ const useAiSalesAgentOverviewReportData = () => {
         files: {
             ...metricReport.files,
             ...gmvOverTimeSeries.files,
+            ...tableReport.files,
         },
         fileName,
         isLoading: loading,

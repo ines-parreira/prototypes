@@ -1,7 +1,4 @@
-import {
-    ProductTableColumn,
-    ProductTableValueFormat,
-} from './types/productTable'
+import { ProductTableColumn } from './types/productTable'
 
 export const MIN_DATE_FOR_SALES_AGENT_STATS = '2025-02-21'
 
@@ -22,22 +19,21 @@ export const PRODUCT_TABLE_CELLS: ProductTableColumn[] = [
     {
         key: ProductTableKeys.Name,
         title: 'Product name',
-        format: ProductTableValueFormat.Product,
     },
     {
         key: ProductTableKeys.NumberOfRecommendations,
         title: '# times recommended',
-        format: ProductTableValueFormat.Number,
+        metricFormat: 'integer',
     },
     {
         key: ProductTableKeys.CTR,
         title: 'Click Rate',
-        format: ProductTableValueFormat.Percentage,
+        metricFormat: 'decimal-to-percent',
     },
     {
         key: ProductTableKeys.BTR,
         title: 'Buy Rate',
-        format: ProductTableValueFormat.Percentage,
+        metricFormat: 'decimal-to-percent',
     },
 ]
 

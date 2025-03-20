@@ -6,6 +6,7 @@ import { renderHook } from '@testing-library/react-hooks'
 import { TicketChannel } from 'business/types/ticket'
 import { agents } from 'fixtures/agents'
 import { integrationsState } from 'fixtures/integrations'
+import { fetchTableReportData } from 'hooks/reporting/common/useTableReportData'
 import { useTimeSeriesReportData } from 'hooks/reporting/common/useTimeSeriesReportData'
 import { useTrendReportData } from 'hooks/reporting/common/useTrendReportData'
 import { getCsvFileNameWithDates } from 'hooks/reporting/common/utils'
@@ -16,6 +17,8 @@ import { LegacyStatsFilters } from 'models/stat/types'
 import useAiSalesAgentOverviewReportData, {
     AI_SALES_AGENT_GMV_INFLUENCED_OVER_TIME,
     AI_SALES_AGENT_METRIC_FILE_NAME,
+    createReport,
+    fetchTopProductRecommendationsReportData,
 } from 'pages/stats/aiSalesAgent/hooks/aiSalesAgentReportingService'
 import { DEFAULT_TIMEZONE } from 'pages/stats/convert/constants/components'
 import {
@@ -25,7 +28,6 @@ import {
 import { fromLegacyStatsFilters } from 'state/stats/utils'
 import { assumeMock } from 'utils/testing'
 
-jest.mock('utils/file')
 jest.mock('services/reporting/supportPerformanceReportingService')
 
 jest.mock('hooks/reporting/support-performance/useStatsFilters')
@@ -40,6 +42,15 @@ const useTrendReportDataMock = assumeMock(useTrendReportData)
 
 jest.mock('hooks/reporting/common/useTimeSeriesReportData')
 const useTimeSeriesReportDataMock = assumeMock(useTimeSeriesReportData)
+
+jest.mock('hooks/reporting/common/useTableReportData', () => ({
+    fetchTableReportData: jest.fn(),
+    useTableReportData: jest.fn(),
+}))
+
+jest.mock('hooks/reporting/common/utils', () => ({
+    getCsvFileNameWithDates: jest.fn(),
+}))
 
 describe('useAiSalesAgentOverviewReportData', () => {
     const defaultStatsFilters: LegacyStatsFilters = {
@@ -111,6 +122,100 @@ describe('useAiSalesAgentOverviewReportData', () => {
                     AI_SALES_AGENT_GMV_INFLUENCED_OVER_TIME,
                 ),
             )
+        })
+    })
+})
+
+describe('fetchTopProductRecommendationsReportData', () => {
+    const mockFilters = {
+        period: {
+            start_datetime: '2021-02-03T00:00:00.000Z',
+            end_datetime: '2021-02-03T23:59:59.999Z',
+        },
+    }
+    const mockTimezone = 'UTC'
+    const mockFileName = 'mock-file.csv'
+
+    beforeEach(() => {
+        jest.clearAllMocks()
+        ;(fetchTableReportData as jest.Mock).mockResolvedValue([{ data: [] }])
+        ;(getCsvFileNameWithDates as jest.Mock).mockReturnValue(mockFileName)
+    })
+
+    it('should fetch and return report data successfully', async () => {
+        const result = await fetchTopProductRecommendationsReportData(
+            mockFilters,
+            mockTimezone,
+        )
+
+        expect(fetchTableReportData).toHaveBeenCalledWith(
+            mockFilters,
+            mockTimezone,
+            expect.any(Array),
+        )
+        expect(getCsvFileNameWithDates).toHaveBeenCalledWith(
+            mockFilters.period,
+            expect.any(String),
+        )
+        expect(result).toEqual({
+            files: expect.any(Object),
+            fileName: mockFileName,
+            isLoading: false,
+            isError: false,
+        })
+    })
+
+    it('should handle errors and return error state', async () => {
+        ;(fetchTableReportData as jest.Mock).mockRejectedValue(
+            new Error('Fetch error'),
+        )
+
+        const result = await fetchTopProductRecommendationsReportData(
+            mockFilters,
+            mockTimezone,
+        )
+
+        expect(result).toEqual({
+            files: {},
+            fileName: mockFileName,
+            isLoading: false,
+            isError: true,
+        })
+    })
+})
+
+describe('createReport', () => {
+    const mockFileName = 'mock-file.csv'
+
+    it('should create a report with valid data', () => {
+        const mockData = {
+            totalProductRecommendations: {
+                data: [
+                    {
+                        btr: 0.1,
+                        ctr: 0.5,
+                        name: 'Product 1',
+                        recommendations: 100,
+                    },
+                ],
+            },
+        }
+
+        const result = createReport(mockData, mockFileName)
+
+        expect(result).toEqual({
+            files: {
+                [mockFileName]: expect.any(String),
+            },
+            fileName: mockFileName,
+        })
+    })
+
+    it('should return empty files for undefined data', () => {
+        const result = createReport(undefined, mockFileName)
+
+        expect(result).toEqual({
+            files: {},
         })
     })
 })

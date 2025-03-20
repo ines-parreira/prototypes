@@ -1,14 +1,9 @@
 import { Product } from 'constants/integrations/types/shopify'
 import { ProductTableKeys } from 'pages/stats/aiSalesAgent/constants'
+import { MetricValueFormat } from 'pages/stats/common/utils'
 
 export interface ProductTable extends Product {
     url?: string
-}
-
-export enum ProductTableValueFormat {
-    Product = 'product',
-    Number = 'number',
-    Percentage = 'percentage',
 }
 
 export interface ProductTableContentCell {
@@ -17,7 +12,7 @@ export interface ProductTableContentCell {
 }
 
 export interface ProductTableColumn {
-    format: ProductTableValueFormat
     key: ProductTableKeys
     title: string
+    metricFormat?: MetricValueFormat
 }

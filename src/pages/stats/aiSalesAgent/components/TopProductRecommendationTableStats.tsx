@@ -20,7 +20,6 @@ import { useSortedAndPaginatedTableRows } from 'pages/stats/aiSalesAgent/hooks/u
 import {
     ProductTableColumn,
     ProductTableContentCell,
-    ProductTableValueFormat,
 } from 'pages/stats/aiSalesAgent/types/productTable'
 import { formatNumber } from 'pages/stats/common/utils'
 
@@ -127,15 +126,11 @@ export const TopProductRecommendationTableStats = ({
 
             const data = getDataFromTableCell(cell, column.key)
 
-            if (column.format === ProductTableValueFormat.Product) {
-                return <BodyCell>{data}</BodyCell>
-            }
-
-            if (column.format === ProductTableValueFormat.Percentage) {
+            if (column.metricFormat === 'decimal-to-percent') {
                 return <BodyCell>{formatPercentage(data)}</BodyCell>
             }
 
-            if (column.format === ProductTableValueFormat.Number) {
+            if (column.metricFormat === 'integer') {
                 return <BodyCell>{formatNumber(data)}</BodyCell>
             }
 

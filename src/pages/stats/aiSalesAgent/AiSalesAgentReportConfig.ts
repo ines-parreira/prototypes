@@ -7,6 +7,7 @@ import {
 import AiSalesAgentTrendCard from 'pages/stats/aiSalesAgent/charts/AiSalesAgentTrendCard'
 import GmvInfluencedOverTimeChart from 'pages/stats/aiSalesAgent/charts/GmvInfluencedOverTimeChart'
 import TopProductRecommendationTable from 'pages/stats/aiSalesAgent/charts/TopProductRecommendationTable'
+import { fetchTopProductRecommendationsReportData } from 'pages/stats/aiSalesAgent/hooks/aiSalesAgentReportingService'
 import { ReportsIDs } from 'pages/stats/dashboards/constants'
 import {
     ChartType,
@@ -245,7 +246,12 @@ export const AiSalesAgentReportConfig: ReportConfig<AiSalesAgentChart> = {
             label: 'Top Products Recommended',
             description: undefined,
             chartComponent: TopProductRecommendationTable,
-            csvProducer: [],
+            csvProducer: [
+                {
+                    type: DataExportFormat.Table,
+                    fetch: fetchTopProductRecommendationsReportData,
+                },
+            ],
         },
     },
 }
