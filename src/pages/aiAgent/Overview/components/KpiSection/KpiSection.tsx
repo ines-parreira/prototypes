@@ -91,15 +91,18 @@ const KpiForAiAgentType = ({
     isLoading: boolean
     aiAgentType?: AiAgentType
 }) => {
-    const filters: StatsFilters = {
-        period: {
-            start_datetime: moment()
-                .subtract(28, 'days')
-                .startOf('day')
-                .format(),
-            end_datetime: moment().format(),
-        },
-    }
+    const filters: StatsFilters = useMemo(
+        () => ({
+            period: {
+                start_datetime: moment()
+                    .subtract(28, 'days')
+                    .startOf('day')
+                    .format(),
+                end_datetime: moment().format(),
+            },
+        }),
+        [],
+    )
     const { userTimezone } = useAppSelector(getCleanStatsFiltersWithTimezone)
 
     if (isLoading || !aiAgentType) {
