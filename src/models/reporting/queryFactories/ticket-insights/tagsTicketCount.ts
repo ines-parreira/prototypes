@@ -24,6 +24,26 @@ import {
     TicketStatsFiltersMembers,
 } from 'utils/reporting'
 
+export const totalTaggedTicketCountQueryFactory = (
+    filters: StatsFilters,
+    timezone: string,
+    sorting?: OrderDirection,
+): ReportingQuery<TicketTagsEnrichedCube> => ({
+    measures: [TicketTagsEnrichedMeasure.TicketCount],
+    dimensions: [],
+    timezone,
+    segments: [],
+    filters: [
+        ...NotSpamNorTrashedTicketsFilter,
+        ...statsFiltersToReportingFilters(TicketStatsFiltersMembers, filters),
+    ],
+    ...(sorting
+        ? {
+              order: [[TicketTagsEnrichedMeasure.TicketCount, sorting]],
+          }
+        : {}),
+})
+
 export const tagsTicketCountQueryFactory = (
     filters: StatsFilters,
     timezone: string,
@@ -51,6 +71,22 @@ export const tagsTicketCountTimeSeriesFactory = (
     sorting?: OrderDirection,
 ): TimeSeriesQuery<TicketCubeWithJoins> => ({
     ...tagsTicketCountQueryFactory(filters, timezone, sorting),
+    timeDimensions: [
+        {
+            dimension: TicketTagsEnrichedDimension.Timestamp,
+            granularity,
+            dateRange: getFilterDateRange(filters.period),
+        },
+    ],
+})
+
+export const totalTaggedTicketCountTimeSeriesFactory = (
+    filters: StatsFilters,
+    timezone: string,
+    granularity: ReportingGranularity,
+    sorting?: OrderDirection,
+): TimeSeriesQuery<TicketCubeWithJoins> => ({
+    ...totalTaggedTicketCountQueryFactory(filters, timezone, sorting),
     timeDimensions: [
         {
             dimension: TicketTagsEnrichedDimension.Timestamp,

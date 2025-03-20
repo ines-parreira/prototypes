@@ -1,9 +1,14 @@
+import { useFlags } from 'launchdarkly-react-client-sdk'
 import { orderBy } from 'lodash'
 
 import { Tag } from '@gorgias/api-queries'
 
+import { FeatureFlagKey } from 'config/featureFlags'
 import { useStatsFilters } from 'hooks/reporting/support-performance/useStatsFilters'
-import { useTagsTicketCountTimeSeries } from 'hooks/reporting/timeSeries'
+import {
+    useTagsTicketCountTimeSeries,
+    useTotalTaggedTicketCountTimeSeries,
+} from 'hooks/reporting/timeSeries'
 import {
     getPeriodDateTimes,
     TimeSeriesDataItem,
@@ -67,17 +72,10 @@ const getOrderBy = (order: TagsTableOrder) => {
     }
 }
 
-export const getFormattedDataWithTotals = (
-    timeSeriesData: TimeSeriesPerDimension | undefined,
-    tags: Record<string, Tag | undefined>,
-    order: TagsTableOrder,
-) => {
-    const timeData = timeSeriesData
-        ? getOrderBy(order)(formatTimeSeriesPerDimension(timeSeriesData, tags))
-        : []
+const getTagWiseTicketTotals = (data: FormattedDataItem[]) => {
+    const grandTotal = data.reduce((sum, item) => sum + item.total, 0)
 
-    const grandTotal = timeData.reduce((sum, item) => sum + item.total, 0)
-    const columnTotals = timeData.reduce<number[]>((totals, item) => {
+    const columnTotals = data.reduce<number[]>((totals, item) => {
         item.timeSeries.forEach(
             (dataPoint, index) =>
                 (totals[index] = dataPoint.value + (totals[index] ?? 0)),
@@ -86,37 +84,87 @@ export const getFormattedDataWithTotals = (
     }, [])
 
     return {
-        data: timeData,
-        grandTotal,
         columnTotals,
+        grandTotal,
     }
 }
 
+const getOverallTicketTotals = (timeSeriesData: TimeSeriesDataItem[]) => {
+    const columnTotals = timeSeriesData.map((item) => item.value)
+
+    const grandTotal = columnTotals.reduce((sum, item) => sum + item, 0)
+
+    return {
+        columnTotals,
+        grandTotal,
+    }
+}
+
+export const getFormattedData = (
+    timeSeriesData: TimeSeriesPerDimension | undefined,
+    tags: Record<string, Tag | undefined>,
+    order: TagsTableOrder,
+) => {
+    return timeSeriesData
+        ? getOrderBy(order)(formatTimeSeriesPerDimension(timeSeriesData, tags))
+        : []
+}
+
 export const useTicketCountPerTag = () => {
+    const featureFlags = useFlags()
+
+    const isReportingFilteringAndCalculationsTagsReportEnabled =
+        !!featureFlags[
+            FeatureFlagKey.ReportingFilteringAndCalculationsTagsReport
+        ]
+
     const dispatch = useAppDispatch()
     const order = useAppSelector(getTagsOrder)
     const { cleanStatsFilters, userTimezone, granularity } = useStatsFilters()
     const tags = useAppSelector(getEntitiesTags)
-    const { data: timeSeriesData, isLoading } = useTagsTicketCountTimeSeries(
+
+    const totalTaggedTicketCountTimeSeries =
+        useTotalTaggedTicketCountTimeSeries(
+            cleanStatsFilters,
+            userTimezone,
+            granularity,
+        )
+
+    const tagsTicketTimeCountTimeSeries = useTagsTicketCountTimeSeries(
         cleanStatsFilters,
         userTimezone,
         granularity,
     )
+
     const dateTimes = getPeriodDateTimes(
         getFilterDateRange(cleanStatsFilters.period),
         granularity,
     )
 
-    const timeData = getFormattedDataWithTotals(timeSeriesData, tags, order)
+    const timeData = getFormattedData(
+        tagsTicketTimeCountTimeSeries.data,
+        tags,
+        order,
+    )
+
+    const totals = isReportingFilteringAndCalculationsTagsReportEnabled
+        ? getOverallTicketTotals(
+              totalTaggedTicketCountTimeSeries.data?.[0] || [],
+          )
+        : getTagWiseTicketTotals(timeData)
 
     const setOrdering = (column: 'tag' | 'total' | number) => {
         dispatch(setOrder({ column }))
     }
 
+    const isLoading =
+        tagsTicketTimeCountTimeSeries.isLoading ||
+        totalTaggedTicketCountTimeSeries.isLoading
+
     return {
-        data: timeData.data,
-        grandTotal: timeData.grandTotal,
-        columnTotals: timeData.columnTotals,
+        data: timeData,
+        columnTotals: totals.columnTotals,
+        grandTotal: totals.grandTotal,
         dateTimes,
         isLoading,
         order,

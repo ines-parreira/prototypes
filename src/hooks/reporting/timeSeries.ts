@@ -14,7 +14,10 @@ import { ticketsCreatedTimeSeriesQueryFactory } from 'models/reporting/queryFact
 import { ticketsRepliedTimeSeriesQueryFactory } from 'models/reporting/queryFactories/support-performance/ticketsReplied'
 import { zeroTouchTicketsTimeSeriesQueryFactory } from 'models/reporting/queryFactories/support-performance/zeroTouchTickets'
 import { customFieldsTicketCountTimeSeriesQueryFactory } from 'models/reporting/queryFactories/ticket-insights/customFieldsTicketCount'
-import { tagsTicketCountTimeSeriesFactory } from 'models/reporting/queryFactories/ticket-insights/tagsTicketCount'
+import {
+    tagsTicketCountTimeSeriesFactory,
+    totalTaggedTicketCountTimeSeriesFactory,
+} from 'models/reporting/queryFactories/ticket-insights/tagsTicketCount'
 import { ReportingGranularity, TimeSeriesQuery } from 'models/reporting/types'
 import { StatsFilters } from 'models/stat/types'
 
@@ -172,4 +175,7 @@ export const useTagsTicketCountTimeSeries = getTimeSeriesPerDimensionHook(
 )
 export const fetchTagsTicketCountTimeSeries = getTimeSeriesPerDimensionFetch(
     tagsTicketCountTimeSeriesFactory,
+)
+export const useTotalTaggedTicketCountTimeSeries = getTimeSeriesHook(
+    totalTaggedTicketCountTimeSeriesFactory,
 )

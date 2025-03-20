@@ -9,6 +9,8 @@ import {
     tagsTicketCountDrillDownQueryFactory,
     tagsTicketCountQueryFactory,
     tagsTicketCountTimeSeriesFactory,
+    totalTaggedTicketCountQueryFactory,
+    totalTaggedTicketCountTimeSeriesFactory,
 } from 'models/reporting/queryFactories/ticket-insights/tagsTicketCount'
 import {
     ReportingFilterOperator,
@@ -280,6 +282,78 @@ describe('tagsTicketCount query factories', () => {
                     values: [],
                 },
             ])
+        })
+    })
+
+    describe('totalTaggedTicketCountQueryFactory', () => {
+        it('should build a query', () => {
+            const query = totalTaggedTicketCountQueryFactory(
+                statsFilters,
+                timezone,
+            )
+
+            expect(query).toEqual({
+                measures: [TicketTagsEnrichedMeasure.TicketCount],
+                dimensions: [],
+                timezone,
+                filters: [
+                    ...NotSpamNorTrashedTicketsFilter,
+                    ...statsFiltersToReportingFilters(
+                        TicketStatsFiltersMembers,
+                        statsFilters,
+                    ),
+                ],
+                segments: [],
+            })
+        })
+
+        it('should build a query with sorting', () => {
+            const query = totalTaggedTicketCountQueryFactory(
+                statsFilters,
+                timezone,
+                sorting,
+            )
+
+            expect(query).toEqual({
+                measures: [TicketTagsEnrichedMeasure.TicketCount],
+                dimensions: [],
+                timezone,
+                filters: [
+                    ...NotSpamNorTrashedTicketsFilter,
+                    ...statsFiltersToReportingFilters(
+                        TicketStatsFiltersMembers,
+                        statsFilters,
+                    ),
+                ],
+                order: [[TicketTagsEnrichedMeasure.TicketCount, sorting]],
+                segments: [],
+            })
+        })
+    })
+
+    describe('totalTaggedTicketCountTimeSeriesFactory', () => {
+        it('should build a query with Time dimensions', () => {
+            const query = totalTaggedTicketCountTimeSeriesFactory(
+                statsFilters,
+                timezone,
+                granularity,
+                sorting,
+            )
+
+            expect(query).toEqual({
+                ...totalTaggedTicketCountQueryFactory(
+                    statsFilters,
+                    timezone,
+                    sorting,
+                ),
+                timeDimensions: [
+                    {
+                        dimension: TicketTagsEnrichedDimension.Timestamp,
+                        granularity,
+                        dateRange: getFilterDateRange(statsFilters.period),
+                    },
+                ],
+            })
         })
     })
 })

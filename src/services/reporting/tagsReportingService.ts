@@ -6,7 +6,7 @@ import { logEvent, SegmentEvent } from 'common/segment'
 import { getCsvFileNameWithDates } from 'hooks/reporting/common/utils'
 import {
     FormattedDataItem,
-    getFormattedDataWithTotals,
+    getFormattedData,
     useTicketCountPerTag,
 } from 'hooks/reporting/ticket-insights/useTicketCountPerTag'
 import { fetchTagsTicketCountTimeSeries } from 'hooks/reporting/timeSeries'
@@ -94,11 +94,7 @@ export const fetchTagsReportData = async (
         granularity,
     ).then((result) => ({
         ...createReport(
-            getFormattedDataWithTotals(
-                result,
-                context.tags,
-                context.tagsTableOrder,
-            ).data,
+            getFormattedData(result, context.tags, context.tagsTableOrder),
             dateTimes,
             statsFilters.period,
             granularity,

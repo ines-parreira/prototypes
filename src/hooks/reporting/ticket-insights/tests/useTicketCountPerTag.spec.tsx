@@ -1,13 +1,16 @@
-import React from 'react'
-
 import { act, renderHook } from '@testing-library/react-hooks'
+import { useFlags } from 'launchdarkly-react-client-sdk'
 import _keyBy from 'lodash/keyBy'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 
+import { FeatureFlagKey } from 'config/featureFlags'
 import { tags } from 'fixtures/tag'
 import { useTicketCountPerTag } from 'hooks/reporting/ticket-insights/useTicketCountPerTag'
-import { useTagsTicketCountTimeSeries } from 'hooks/reporting/timeSeries'
+import {
+    useTagsTicketCountTimeSeries,
+    useTotalTaggedTicketCountTimeSeries,
+} from 'hooks/reporting/timeSeries'
 import { getPeriodDateTimes } from 'hooks/reporting/useTimeSeries'
 import { OrderDirection } from 'models/api/types'
 import { ReportingGranularity } from 'models/reporting/types'
@@ -21,9 +24,15 @@ import {
 import { getFilterDateRange } from 'utils/reporting'
 import { assumeMock } from 'utils/testing'
 
+jest.mock('launchdarkly-react-client-sdk')
+const useFlagsMock = assumeMock(useFlags)
+
 jest.mock('hooks/reporting/timeSeries')
 const useTagsTicketCountTimeSeriesMock = assumeMock(
     useTagsTicketCountTimeSeries,
+)
+const useTotalTaggedTicketCountTimeSeriesMock = assumeMock(
+    useTotalTaggedTicketCountTimeSeries,
 )
 const mockStore = configureMockStore<RootState, StoreDispatch>()
 
@@ -58,13 +67,13 @@ describe('useTicketCountPerTag', () => {
         [tagId]: [
             [
                 {
-                    dateTime: '2024-09-26T00:00:00.000',
+                    dateTime: period.start_datetime,
                     value: 37,
                     label: 'TicketTagsEnriched.ticketCount',
                 },
 
                 {
-                    dateTime: '2024-09-27T00:00:00.000',
+                    dateTime: period.end_datetime,
                     value: 18,
                     label: 'TicketTagsEnriched.ticketCount',
                 },
@@ -73,13 +82,13 @@ describe('useTicketCountPerTag', () => {
         [anotherTagId]: [
             [
                 {
-                    dateTime: '2024-09-26T00:00:00.000',
+                    dateTime: period.start_datetime,
                     value: 12,
                     label: 'TicketTagsEnriched.ticketCount',
                 },
 
                 {
-                    dateTime: '2024-09-27T00:00:00.000',
+                    dateTime: period.end_datetime,
                     value: 45,
                     label: 'TicketTagsEnriched.ticketCount',
                 },
@@ -88,13 +97,13 @@ describe('useTicketCountPerTag', () => {
         [thirdTagId]: [
             [
                 {
-                    dateTime: '2024-09-26T00:00:00.000',
+                    dateTime: period.start_datetime,
                     value: 24,
                     label: 'TicketTagsEnriched.ticketCount',
                 },
 
                 {
-                    dateTime: '2024-09-27T00:00:00.000',
+                    dateTime: period.end_datetime,
                     value: 30,
                     label: 'TicketTagsEnriched.ticketCount',
                 },
@@ -103,23 +112,48 @@ describe('useTicketCountPerTag', () => {
         [deletedTagId]: [
             [
                 {
-                    dateTime: '2024-09-26T00:00:00.000',
+                    dateTime: period.start_datetime,
                     value: 999,
                     label: 'TicketTagsEnriched.ticketCount',
                 },
 
                 {
-                    dateTime: '2024-09-27T00:00:00.000',
+                    dateTime: period.end_datetime,
                     value: 999,
                     label: 'TicketTagsEnriched.ticketCount',
                 },
             ],
         ],
     }
+
+    const exampleTotalTaggedTicketCountTimeSeries = [
+        [
+            {
+                dateTime: period.start_datetime,
+                value: 37,
+                label: 'TicketTagsEnriched.ticketCount',
+            },
+            {
+                dateTime: period.end_datetime,
+                value: 18,
+                label: 'TicketTagsEnriched.ticketCount',
+            },
+        ],
+    ]
+
     beforeEach(() => {
         useTagsTicketCountTimeSeriesMock.mockReturnValue({
             data: exampleResponse,
             isLoading: false,
+        } as any)
+
+        useTotalTaggedTicketCountTimeSeriesMock.mockReturnValue({
+            data: exampleTotalTaggedTicketCountTimeSeries,
+            isLoading: false,
+        } as any)
+
+        useFlagsMock.mockReturnValue({
+            [FeatureFlagKey.ReportingFilteringAndCalculationsTagsReport]: false,
         } as any)
     })
 
@@ -193,6 +227,50 @@ describe('useTicketCountPerTag', () => {
         })
     })
 
+    it('should apply the new percent calculations when the feature flag is enabled', () => {
+        useFlagsMock.mockReturnValue({
+            [FeatureFlagKey.ReportingFilteringAndCalculationsTagsReport]: true,
+        } as any)
+
+        const { result } = renderHook(() => useTicketCountPerTag(), {
+            wrapper: ({ children }) => (
+                <Provider store={mockStore(defaultState)}>{children}</Provider>
+            ),
+        })
+
+        expect(result.current.grandTotal).toEqual(
+            exampleTotalTaggedTicketCountTimeSeries[0].reduce(
+                (sum, item) => sum + item.value,
+                0,
+            ),
+        )
+        expect(result.current.columnTotals).toEqual(
+            exampleTotalTaggedTicketCountTimeSeries[0].map(
+                (item) => item.value,
+            ),
+        )
+    })
+
+    it('should return defaults when no data and the feature flag is enabled', () => {
+        useFlagsMock.mockReturnValue({
+            [FeatureFlagKey.ReportingFilteringAndCalculationsTagsReport]: true,
+        } as any)
+
+        useTotalTaggedTicketCountTimeSeriesMock.mockReturnValue({
+            data: undefined,
+            isLoading: false,
+        } as any)
+
+        const { result } = renderHook(() => useTicketCountPerTag(), {
+            wrapper: ({ children }) => (
+                <Provider store={mockStore(defaultState)}>{children}</Provider>
+            ),
+        })
+
+        expect(result.current.grandTotal).toEqual(0)
+        expect(result.current.columnTotals).toEqual([])
+    })
+
     it('should return data sorted by first time Series column', () => {
         const state: RootState = {
             ...defaultState,
@@ -237,6 +315,11 @@ describe('useTicketCountPerTag', () => {
             data: undefined,
             isLoading: true,
         } as any)
+        useTotalTaggedTicketCountTimeSeriesMock.mockReturnValue({
+            data: undefined,
+            isLoading: true,
+        } as any)
+
         const { result } = renderHook(() => useTicketCountPerTag(), {
             wrapper: ({ children }) => (
                 <Provider store={mockStore(defaultState)}>{children}</Provider>
