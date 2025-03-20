@@ -1,0 +1,76 @@
+@import '~@gorgias/design-tokens/dist/css/layout';
+@import '~css/typography';
+
+:local {
+    .toggleButton {
+        --toggleButtonWidth: 34px;
+        --knobSize: 13px;
+        --knobPaddingX: 3px;
+
+        position: relative;
+        width: var(--toggleButtonWidth);
+        height: 20px;
+        border-radius: 100px;
+        background-color: var(--neutral-grey-5);
+        cursor: pointer;
+        transition: 0.2s;
+
+        &:hover {
+            box-shadow: 0px 1px 2px 0px #16161629;
+        }
+
+        &.checked {
+            background-color: var(--main-primary);
+
+            &.disabled .knob i {
+                color: var(--neutral-grey-3);
+            }
+        }
+
+        &.disabled {
+            background-color: var(--neutral-grey-3);
+            pointer-events: none;
+        }
+    }
+
+    .knob {
+        --translateX: var(--knobPaddingX);
+        --rotate: -180deg;
+        position: absolute;
+        top: 50%;
+        transform: translate(var(--translateX), -50%) rotate(var(--rotate));
+        width: var(--knobSize);
+        height: var(--knobSize);
+        border-radius: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background-color: var(--neutral-grey-0);
+        color: var(--neutral-grey-1);
+        transition: 0.2s;
+
+        i {
+            font-size: 11px;
+            font-weight: 600;
+            color: var(--neutral-grey-5);
+            opacity: 0;
+            transition: 0.2s;
+        }
+    }
+
+    .checked .knob {
+        --translateX: calc(
+            var(--toggleButtonWidth) - var(--knobSize) - var(--knobPaddingX)
+        );
+        --rotate: 0deg;
+
+        i {
+            opacity: 1;
+            color: var(--main-primary);
+        }
+    }
+
+    .checkboxInput {
+        display: none;
+    }
+}

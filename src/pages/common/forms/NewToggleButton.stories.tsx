@@ -1,0 +1,20 @@
+import React from 'react'
+
+import { Meta, StoryObj } from '@storybook/react'
+
+import { NewToggleButton } from './NewToggleButton'
+
+const meta: Meta<typeof NewToggleButton> = {
+    title: 'AI Agent/Activation/NewToggleButton',
+    component: NewToggleButton,
+    args: {},
+}
+
+export default meta
+
+type Story = StoryObj<typeof NewToggleButton>
+
+export const NewToggleButtonDefault: Story = {
+    render: (args) => <NewToggleButton {...args} />,
+    args: {},
+}
