@@ -170,7 +170,7 @@ export const useActivation = (
                     }}
                     earlyAccessPlan={earlyAccessPlan}
                     currentPlan={currentPlan}
-                    disableUpgradeButton={!isCurrentUserAdmin}
+                    userIsAdmin={isCurrentUserAdmin}
                 />
             ),
         }),

@@ -16,6 +16,7 @@ import {
     CardHeader,
     CardTitle,
 } from 'pages/aiAgent/Onboarding/components/Card'
+import Alert, { AlertType } from 'pages/common/components/Alert/Alert'
 import Modal from 'pages/common/components/modal/Modal'
 import ModalBody from 'pages/common/components/modal/ModalBody'
 import ModalFooter from 'pages/common/components/modal/ModalFooter'
@@ -32,7 +33,7 @@ type Props = {
     isOpen: boolean
     earlyAccessPlan?: AutomateEarlyAccessPlan | null
     currentPlan?: AutomatePlan | null
-    disableUpgradeButton: boolean
+    userIsAdmin: boolean
     isUpgrading: boolean
 }
 export const EarlyAccessModal = ({
@@ -42,7 +43,7 @@ export const EarlyAccessModal = ({
     onClose,
     isOpen,
     earlyAccessPlan,
-    disableUpgradeButton,
+    userIsAdmin,
     isUpgrading,
     currentPlan,
 }: Props) => {
@@ -94,6 +95,12 @@ export const EarlyAccessModal = ({
                 className={css.header}
             />
             <ModalBody className={css.body}>
+                {!userIsAdmin && (
+                    <Alert className={css.alert} type={AlertType.Warning} icon>
+                        You do not have admin access. Contact your admin to
+                        upgrade.
+                    </Alert>
+                )}
                 <Card className={cn(css.card, css.currentPlanCard)}>
                     <CardHeader className={css.header}>
                         <CardTitle className={css.cardTitle}>
@@ -330,9 +337,9 @@ export const EarlyAccessModal = ({
                     fillStyle="fill"
                     intent="primary"
                     size="medium"
-                    className={css.principalButton}
+                    className={cn({ [css.principalButton]: userIsAdmin })}
                     onClick={onUpgradeClick}
-                    isDisabled={disableUpgradeButton}
+                    isDisabled={!userIsAdmin}
                     isLoading={isUpgrading}
                 >
                     Upgrade AI Agent With Early Access Plan
@@ -343,6 +350,7 @@ export const EarlyAccessModal = ({
                     size="medium"
                     className={css.secondaryButton}
                     onClick={onStayClick}
+                    isDisabled={!userIsAdmin}
                 >
                     Stay On Current Plan
                 </Button>

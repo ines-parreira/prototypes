@@ -31,3 +31,15 @@ export const EarlyAccessModalDefault: Story = {
         onUpgradeClick: action('onUpgradeClick'),
     },
 }
+
+export const EarlyAccessModalNonAdmin: Story = {
+    render: (args) => <EarlyAccessModal {...args} />,
+    args: {
+        isLoading: false,
+        isOpen: true,
+        onClose: action('onClose'),
+        onStayClick: action('onStayClick'),
+        onUpgradeClick: action('onUpgradeClick'),
+        userIsAdmin: false,
+    },
+}

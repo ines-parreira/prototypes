@@ -22,7 +22,7 @@ describe('<EarlyAccessModal />', () => {
                 onClose={onCloseMock}
                 onStayClick={onStayClickMock}
                 onUpgradeClick={onUpgradeClickMock}
-                disableUpgradeButton={false}
+                userIsAdmin={true}
                 isUpgrading={false}
             />,
         )
@@ -47,7 +47,7 @@ describe('<EarlyAccessModal />', () => {
                 onClose={() => {}}
                 onStayClick={() => {}}
                 onUpgradeClick={() => {}}
-                disableUpgradeButton={false}
+                userIsAdmin={true}
                 isUpgrading={false}
             />,
         )
@@ -61,7 +61,7 @@ describe('<EarlyAccessModal />', () => {
                 onClose={() => {}}
                 onStayClick={() => {}}
                 onUpgradeClick={() => {}}
-                disableUpgradeButton={false}
+                userIsAdmin={true}
                 isUpgrading={false}
             />,
         )
@@ -92,7 +92,7 @@ describe('<EarlyAccessModal />', () => {
                 onClose={() => {}}
                 onStayClick={() => {}}
                 onUpgradeClick={() => {}}
-                disableUpgradeButton={false}
+                userIsAdmin={true}
                 isUpgrading={false}
                 earlyAccessPlan={
                     {
@@ -138,5 +138,49 @@ describe('<EarlyAccessModal />', () => {
         expect(newPlanExtraCost.parentElement?.textContent).toContain(
             'Overage: $2.20',
         )
+    })
+
+    it.each([
+        {
+            userIsAdmin: true,
+            testName:
+                'should render the modal with enabled CTAs if user is admin',
+        },
+        {
+            userIsAdmin: true,
+            testName:
+                'should render the modal with warning and disabled CTAs if user is not admin',
+        },
+    ])('$testName', ({ userIsAdmin }) => {
+        const { queryByText } = render(
+            <EarlyAccessModal
+                isOpen
+                isLoading={true}
+                onClose={() => {}}
+                onStayClick={() => {}}
+                onUpgradeClick={() => {}}
+                userIsAdmin={userIsAdmin}
+                isUpgrading={false}
+            />,
+        )
+
+        const upgradeCta = queryByText(
+            'Upgrade AI Agent With Early Access Plan',
+        )?.parentElement
+        // I wanted to check the disabled attribute, but the Button component does not have a disabled attribute 😅
+        const stayCta = queryByText('Stay On Current Plan')
+        const warningBanner = queryByText(
+            'You do not have admin access. Contact your admin to upgrade.',
+        )
+
+        if (userIsAdmin) {
+            expect(upgradeCta).toBeAriaEnabled()
+            expect(stayCta).toBeAriaEnabled()
+            expect(warningBanner).not.toBeInTheDocument()
+        } else {
+            expect(upgradeCta).toBeAriaDisabled()
+            expect(stayCta).toBeAriaDisabled()
+            expect(warningBanner).toBeInTheDocument()
+        }
     })
 })
