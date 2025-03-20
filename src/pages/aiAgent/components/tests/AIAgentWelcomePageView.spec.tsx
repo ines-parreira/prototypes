@@ -30,7 +30,7 @@ const MOCK_WIZARD_VALUES = {
 }
 
 jest.mock('@gorgias/merchant-ui-kit', () => ({
-    __esModule: true,
+    ...jest.requireActual('@gorgias/merchant-ui-kit'),
     Skeleton: () => <div>loading-skeleton</div>,
 }))
 

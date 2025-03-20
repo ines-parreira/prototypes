@@ -1,20 +1,31 @@
+import { useFlags } from 'launchdarkly-react-client-sdk'
+
+import { FeatureFlagKey } from 'config/featureFlags'
 import useAppSelector from 'hooks/useAppSelector'
+import { AiAgentPaywallView } from 'pages/aiAgent/AiAgentPaywallView'
+import { AIAgentPaywallFeatures } from 'pages/aiAgent/types'
+import useStoreIntegrations from 'pages/automate/common/hooks/useStoreIntegrations'
+import { AutomateFeatures } from 'pages/automate/common/types'
 import { ErrorBoundary } from 'pages/ErrorBoundary'
 import { getHasAutomate } from 'state/billing/selectors'
 
-import useStoreIntegrations from '../hooks/useStoreIntegrations'
-import { AutomateFeatures } from '../types'
 import AutomateLandingPage from './AutomateLandingPage'
 import AutomatePaywallView from './AutomatePaywallView'
 import StoreIntegrationView from './StoreIntegrationView'
 
 const AutomateLandingPageContainer = () => {
     const hasAutomateFeature = useAppSelector(getHasAutomate)
+    const hasNewAutomatePaywall =
+        useFlags()[FeatureFlagKey.StandaloneAiAgentAutomatePaywall]
 
     const storeIntegrations = useStoreIntegrations()
 
     if (!hasAutomateFeature) {
-        return (
+        return hasNewAutomatePaywall ? (
+            <AiAgentPaywallView
+                aiAgentPaywallFeature={AIAgentPaywallFeatures.Automate}
+            />
+        ) : (
             <AutomatePaywallView automateFeature={AutomateFeatures.Automate} />
         )
     }

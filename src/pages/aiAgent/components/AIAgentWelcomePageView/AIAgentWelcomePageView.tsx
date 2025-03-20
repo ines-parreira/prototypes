@@ -1,10 +1,10 @@
-import React, { useCallback, useEffect, useRef } from 'react'
+import { useCallback, useEffect, useRef } from 'react'
 
 import classNames from 'classnames'
 import { useFlags } from 'launchdarkly-react-client-sdk'
 import { useHistory } from 'react-router-dom'
 
-import { Skeleton } from '@gorgias/merchant-ui-kit'
+import { Button, Skeleton } from '@gorgias/merchant-ui-kit'
 
 import { AiAgentNotificationType } from 'automate/notifications/types'
 import { logEvent, SegmentEvent } from 'common/segment'
@@ -15,12 +15,12 @@ import {
     OnboardingNotificationState,
     StoreConfiguration,
 } from 'models/aiAgent/types'
-import { AIAgentPaywallSetup } from 'pages/aiAgent/components/AIAgentPaywallSetup/AIAgentPaywallSetup'
+import { AiAgentPaywallView } from 'pages/aiAgent/AiAgentPaywallView'
 import { WIZARD_UPDATE_QUERY_KEY } from 'pages/aiAgent/constants'
 import { useAiAgentNavigation } from 'pages/aiAgent/hooks/useAiAgentNavigation'
 import { useAiAgentOnboardingNotification } from 'pages/aiAgent/hooks/useAiAgentOnboardingNotification'
 import { useWelcomePageAcknowledgedMutation } from 'pages/aiAgent/hooks/useWelcomePageAcknowledgedMutation'
-import Button from 'pages/common/components/button/Button'
+import { AIAgentPaywallFeatures } from 'pages/aiAgent/types'
 import PageHeader from 'pages/common/components/PageHeader'
 import { notify } from 'state/notifications/actions'
 import { NotificationStatus } from 'state/notifications/types'
@@ -269,14 +269,25 @@ export const AIAgentWelcomePageView = (props: Props) => {
     ])
 
     return hasPaywallSetupEnabled ? (
-        <AIAgentPaywallSetup
-            onOnboardingWizardClick={onOnboardingWizardClick}
-            isLoading={isLoading || isLoadingOnboardingNotificationState}
-            isOnUpdateOnboardingWizard={isOnUpdateOnboardingWizard}
-        />
+        <AiAgentPaywallView
+            aiAgentPaywallFeature={AIAgentPaywallFeatures.SalesSetup}
+        >
+            <Button
+                intent="primary"
+                size="medium"
+                onClick={onOnboardingWizardClick}
+                isDisabled={isLoading}
+                trailingIcon="auto_awesome"
+            >
+                {isOnUpdateOnboardingWizard
+                    ? 'Continue Setup'
+                    : 'Set Up AI Agent'}
+            </Button>
+            <div data-candu-id="ai-agent-welcome-page" />
+        </AiAgentPaywallView>
     ) : (
         <div className={css.pageContainer}>
-            <PageHeader title="AI Agent"></PageHeader>
+            <PageHeader title="AI Agent" />
             <div className={css.contentContainer}>
                 <div className={css.leftContainer}>
                     <div className={css.content}>

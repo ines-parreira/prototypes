@@ -2,6 +2,12 @@
 @import (reference) '~css/typography.less';
 
 :local {
+    .pageContainer {
+        position: relative;
+        width: 100%;
+        height: 100%;
+    }
+
     .background {
         width: 910px;
         height: 1390px;
@@ -14,7 +20,7 @@
         left: -400px;
     }
 
-    .salesPaywall {
+    .setupPaywall {
         display: flex;
         height: 100%;
     }
@@ -77,5 +83,16 @@
     .content {
         width: 100%;
         max-width: 640px;
+        border-radius: @layout-spacing-m;
+    }
+
+    .actionButtons {
+        display: flex;
+        gap: @layout-spacing-xs;
+    }
+
+    .roiButton {
+        margin-top: @layout-spacing-xs;
+        padding: 0 @layout-spacing-xxs !important;
     }
 }

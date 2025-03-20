@@ -110,3 +110,9 @@ export type HandoverCustomizationOfflineSettingsFormValues = {
     offlineInstructions: string
     shareBusinessHours: boolean
 }
+
+export enum AIAgentPaywallFeatures {
+    Automate = 'Automate',
+    SalesWaitlist = 'SalesWaitlist',
+    SalesSetup = 'SalesSetup',
+}
