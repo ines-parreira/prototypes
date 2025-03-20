@@ -6,6 +6,7 @@ export const LITE_AGENT_ROLE = UserRole.LiteAgent
 export const BASIC_AGENT_ROLE = UserRole.BasicAgent
 export const AGENT_ROLE = UserRole.Agent
 export const ADMIN_ROLE = UserRole.Admin
+export const GORGIAS_AGENT_ROLE = UserRole.GorgiasAgent
 
 export const USER_ROLES_ORDERED_BY_PRIVILEGES = Object.freeze([
     UserRole.ObserverAgent,
@@ -13,6 +14,7 @@ export const USER_ROLES_ORDERED_BY_PRIVILEGES = Object.freeze([
     UserRole.BasicAgent,
     UserRole.Agent,
     UserRole.Admin,
+    UserRole.GorgiasAgent,
 ]) as UserRole[]
 
 export const USER_ROLES = USER_ROLES_ORDERED_BY_PRIVILEGES

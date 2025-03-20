@@ -40,7 +40,7 @@ exports[`<RestrictedPage/> should render for a specific page 1`] = `
       an
        
       <b>
-        Admin
+        Admin or Internal Agent
       </b>
       .
     </p>
@@ -87,7 +87,7 @@ exports[`<RestrictedPage/> should render for admin role and include higher permi
       an
        
       <b>
-        Admin
+        Admin or Internal Agent
       </b>
       .
     </p>
@@ -134,7 +134,7 @@ exports[`<RestrictedPage/> should render for agent role and include higher permi
       a
        
       <b>
-        Lead Agent or Admin
+        Lead Agent, Admin or Internal Agent
       </b>
       .
     </p>
@@ -181,7 +181,7 @@ exports[`<RestrictedPage/> should render for basic-agent role and include higher
       a
        
       <b>
-        Basic Agent, Lead Agent or Admin
+        Basic Agent, Lead Agent, Admin or Internal Agent
       </b>
       .
     </p>
@@ -228,7 +228,52 @@ exports[`<RestrictedPage/> should render for bot role and include higher permiss
       an
        
       <b>
-        Admin
+        Internal Agent
+      </b>
+      .
+    </p>
+    <a
+      class="link"
+      href="https://docs.gorgias.com/user/adding-team-members#user_permissions"
+      rel="noopener noreferrer"
+      target="_blank"
+    >
+      See all permissions
+    </a>
+  </div>
+</div>
+`;
+
+exports[`<RestrictedPage/> should render for internal-agent role and include higher permission roles 1`] = `
+<div
+  class="full-width"
+>
+  <div
+    class="content"
+  >
+    <div
+      class="badge"
+    >
+      <div
+        class="ui-badge-badge-7025 ui-badge-uppercase-7025"
+        style="border-radius: 100px;"
+      />
+    </div>
+    <h2
+      class="heading"
+    >
+      Restricted access
+    </h2>
+    <p
+      class="description"
+    >
+      To be able to see 
+      this page
+       you need to be 
+      an
+       
+      <b>
+        Internal Agent
       </b>
       .
     </p>
@@ -275,7 +320,7 @@ exports[`<RestrictedPage/> should render for lite-agent role and include higher 
       a
        
       <b>
-        Lite Agent, Basic Agent, Lead Agent or Admin
+        Lite Agent, Basic Agent, Lead Agent, Admin or Internal Agent
       </b>
       .
     </p>
@@ -322,7 +367,7 @@ exports[`<RestrictedPage/> should render for observer-agent role and include hig
       an
        
       <b>
-        Observer Agent, Lite Agent, Basic Agent, Lead Agent or Admin
+        Observer Agent, Lite Agent, Basic Agent, Lead Agent, Admin or Internal Agent
       </b>
       .
     </p>
