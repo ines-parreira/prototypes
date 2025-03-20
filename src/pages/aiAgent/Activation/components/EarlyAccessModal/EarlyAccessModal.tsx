@@ -87,10 +87,20 @@ export const EarlyAccessModal = ({
             <ModalHeader
                 title={<h1>Upgrade & Get Early Access Pricing</h1>}
                 subtitle={
-                    <h3>
-                        Sign up before May 2025 to secure your current pricing
-                        tier before rates increase.
-                    </h3>
+                    <div>
+                        <h3>
+                            Sign up before May 2025 to secure your current
+                            pricing tier before rates increase.
+                        </h3>
+                        <a
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            href="https://calendly.com/d/cnsp-8pz-3z5/ai-sales-agent-implementation-kick-off?utm_source=pmm&utm_medium=product&utm_campaign=billing"
+                        >
+                            Contact Our Team To Learn More{' '}
+                            <i className="material-icons">open_in_new</i>
+                        </a>
+                    </div>
                 }
                 className={css.header}
             />

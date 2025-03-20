@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from 'react'
+import React, { useCallback, useEffect, useMemo, useState } from 'react'
 
 import { useParams } from 'react-router-dom'
 
@@ -83,7 +83,6 @@ export const useActivation = (
         autoDisplayDisabled: options.autoDisplayEarlyAccessDisabled,
     })
 
-    // Log when the early access modal is displayed
     useEffect(() => {
         if (isPreviewModalVisible) {
             logEvent(SegmentEvent.AiAgentActivateEarlyAccessModalViewed, {
@@ -92,104 +91,115 @@ export const useActivation = (
         }
     }, [isPreviewModalVisible, pageName])
 
-    return useMemo(
-        () => ({
-            ActivationButton: () =>
-                hasActivationEnabled ? (
-                    <ActivationManageButton
-                        onClick={() => {
-                            setIsModalVisible((prev) => !prev)
-                            logEvent(
-                                SegmentEvent.AiAgentActivateMainButtonClicked,
-                                {
-                                    page: pageName,
-                                },
-                            )
-                        }}
-                        progress={progressPercentage}
-                        variant={pageName === 'overview' ? 'bordered' : 'flat'}
-                    />
-                ) : null,
-            ActivationModal: () => (
-                <AiAgentActivationModal
-                    isOpen={isModalVisible}
-                    onClose={() => {
-                        setIsModalVisible(false)
-                        logEvent(
-                            SegmentEvent.AiAgentActivateCloseActivationModal,
-                            {
-                                page: pageName,
-                                reason: 'clicked-on-cancel-or-clicked-outside',
-                            },
-                        )
-                    }}
-                    accountDomain={accountDomain}
-                    storeConfigs={filteredStoreConfigurations}
-                    onSalesEnabled={() => {
-                        if (isOnNewPlan) {
-                            return true
-                        }
+    const ConnectedActivationModal = useCallback(
+        () => (
+            <AiAgentActivationModal
+                isOpen={isModalVisible}
+                onClose={() => {
+                    setIsModalVisible(false)
+                    logEvent(SegmentEvent.AiAgentActivateCloseActivationModal, {
+                        page: pageName,
+                        reason: 'clicked-on-cancel-or-clicked-outside',
+                    })
+                }}
+                accountDomain={accountDomain}
+                storeConfigs={filteredStoreConfigurations}
+                onSalesEnabled={() => {
+                    if (isOnNewPlan) {
+                        return true
+                    }
 
-                        setIsPreviewModalVisible(true)
-                        return false
-                    }}
-                    pageName={pageName}
-                />
-            ),
-            EarlyAccessModal: () => (
-                <EarlyAccessModal
-                    isLoading={isLoading}
-                    isUpgrading={isSubscriptionUpdating}
-                    isOpen={isPreviewModalVisible}
-                    onClose={() => {
-                        setIsPreviewModalVisible(false)
-                        logEvent(
-                            SegmentEvent.AiAgentActivatePreviewPricingModalClosed,
-                            {
-                                page: pageName,
-                                reason: 'clicked-on-cross-or-outside',
-                            },
-                        )
-                    }}
-                    onStayClick={() => {
-                        setIsPreviewModalVisible(false)
-                        logEvent(
-                            SegmentEvent.AiAgentActivatePreviewPricingModalClosed,
-                            {
-                                page: pageName,
-                                reason: 'clicked-on-stay-button',
-                            },
-                        )
-                    }}
-                    onUpgradeClick={() => {
-                        handleSubscriptionUpdate()
-                            .catch(() => {})
-                            .finally(() => {
-                                setIsPreviewModalVisible(false)
-                            })
-                    }}
-                    earlyAccessPlan={earlyAccessPlan}
-                    currentPlan={currentPlan}
-                    userIsAdmin={isCurrentUserAdmin}
-                />
-            ),
-        }),
+                    setIsPreviewModalVisible(true)
+                    return false
+                }}
+                pageName={pageName}
+            />
+        ),
         [
-            hasActivationEnabled,
             isModalVisible,
-            filteredStoreConfigurations,
+            setIsModalVisible,
             accountDomain,
-            pageName,
-            earlyAccessPlan,
-            currentPlan,
-            isPreviewModalVisible,
+            filteredStoreConfigurations,
             isOnNewPlan,
-            isCurrentUserAdmin,
-            isLoading,
             setIsPreviewModalVisible,
-            progressPercentage,
-            handleSubscriptionUpdate,
-            isSubscriptionUpdating,
+            pageName,
         ],
     )
+
+    const ConnectedActivationButton = useCallback(
+        () =>
+            hasActivationEnabled ? (
+                <ActivationManageButton
+                    onClick={() => {
+                        setIsModalVisible((prev) => !prev)
+                        logEvent(
+                            SegmentEvent.AiAgentActivateMainButtonClicked,
+                            {
+                                page: pageName,
+                            },
+                        )
+                    }}
+                    progress={progressPercentage}
+                    variant={pageName === 'overview' ? 'bordered' : 'flat'}
+                />
+            ) : null,
+        [hasActivationEnabled, progressPercentage, pageName],
+    )
+
+    const ConnectedEarlyAccessModal = useCallback(
+        () => (
+            <EarlyAccessModal
+                isLoading={isLoading}
+                isUpgrading={isSubscriptionUpdating}
+                isOpen={isPreviewModalVisible}
+                onClose={() => {
+                    setIsPreviewModalVisible(false)
+                    logEvent(
+                        SegmentEvent.AiAgentActivatePreviewPricingModalClosed,
+                        {
+                            page: pageName,
+                            reason: 'clicked-on-cross-or-outside',
+                        },
+                    )
+                }}
+                onStayClick={() => {
+                    setIsPreviewModalVisible(false)
+                    logEvent(
+                        SegmentEvent.AiAgentActivatePreviewPricingModalClosed,
+                        {
+                            page: pageName,
+                            reason: 'clicked-on-stay-button',
+                        },
+                    )
+                }}
+                onUpgradeClick={() => {
+                    handleSubscriptionUpdate()
+                        .catch(() => {})
+                        .finally(() => {
+                            setIsPreviewModalVisible(false)
+                        })
+                }}
+                earlyAccessPlan={earlyAccessPlan}
+                currentPlan={currentPlan}
+                userIsAdmin={isCurrentUserAdmin}
+            />
+        ),
+        [
+            isLoading,
+            isSubscriptionUpdating,
+            isPreviewModalVisible,
+            setIsPreviewModalVisible,
+            handleSubscriptionUpdate,
+            earlyAccessPlan,
+            currentPlan,
+            isCurrentUserAdmin,
+            pageName,
+        ],
+    )
+
+    return {
+        ActivationModal: ConnectedActivationModal,
+        ActivationButton: ConnectedActivationButton,
+        EarlyAccessModal: ConnectedEarlyAccessModal,
+    }
 }

@@ -147,7 +147,7 @@ describe('<EarlyAccessModal />', () => {
                 'should render the modal with enabled CTAs if user is admin',
         },
         {
-            userIsAdmin: true,
+            userIsAdmin: false,
             testName:
                 'should render the modal with warning and disabled CTAs if user is not admin',
         },

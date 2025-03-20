@@ -361,4 +361,80 @@ describe('useActivation', () => {
             { page: 'any-page' },
         )
     })
+
+    it('should return null component for ActivationButton if the feature flag is disabled', () => {
+        mockUseFlag.mockImplementation(
+            (key, __defaultValue) =>
+                (({ [FeatureFlagKey.AiAgentActivation]: false }) as any)[key],
+        )
+        mockedUseEarlyAccessModalState.mockReturnValue(
+            defaultUseEarlyAccessModalStateReturnValue,
+        )
+
+        const { result } = renderHook(() => useActivation('any-page'), {
+            wrapper: ({ children }) => (
+                <QueryClientProvider client={queryClient}>
+                    <Provider store={mockStore(defaultState)}>
+                        {children}
+                    </Provider>
+                </QueryClientProvider>
+            ),
+        })
+
+        expect(result.current.ActivationButton).toBeDefined()
+        expect(result.current.ActivationModal).toBeDefined()
+        expect(result.current.EarlyAccessModal).toBeDefined()
+
+        expect(result.current.ActivationButton()).toBeNull()
+    })
+
+    it('should not display the previewModal when clicking on sales button if user is on new plan', () => {
+        const setIsPreviewModalVisibleMocked = jest.fn()
+        mockedUseEarlyAccessModalState.mockReturnValue({
+            ...defaultUseEarlyAccessModalStateReturnValue,
+            isOnNewPlan: true,
+            setIsPreviewModalVisible: setIsPreviewModalVisibleMocked,
+        })
+
+        const { result } = renderHook(() => useActivation('any-page'), {
+            wrapper: ({ children }) => (
+                <QueryClientProvider client={queryClient}>
+                    <Provider store={mockStore(defaultState)}>
+                        {children}
+                    </Provider>
+                </QueryClientProvider>
+            ),
+        })
+
+        const onSaleEnabledResult = result.current
+            .ActivationModal()
+            .props.onSalesEnabled()
+        expect(onSaleEnabledResult).toBe(true)
+        expect(setIsPreviewModalVisibleMocked).not.toHaveBeenCalled()
+    })
+
+    it('should display the previewModal when clicking on sales button if user is not on new plan', () => {
+        const setIsPreviewModalVisibleMocked = jest.fn()
+        mockedUseEarlyAccessModalState.mockReturnValue({
+            ...defaultUseEarlyAccessModalStateReturnValue,
+            isOnNewPlan: false,
+            setIsPreviewModalVisible: setIsPreviewModalVisibleMocked,
+        })
+
+        const { result } = renderHook(() => useActivation('any-page'), {
+            wrapper: ({ children }) => (
+                <QueryClientProvider client={queryClient}>
+                    <Provider store={mockStore(defaultState)}>
+                        {children}
+                    </Provider>
+                </QueryClientProvider>
+            ),
+        })
+
+        const onSaleEnabledResult = result.current
+            .ActivationModal()
+            .props.onSalesEnabled()
+        expect(onSaleEnabledResult).toBe(false)
+        expect(setIsPreviewModalVisibleMocked).toHaveBeenCalled()
+    })
 })
