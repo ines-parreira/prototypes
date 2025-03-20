@@ -35,6 +35,7 @@ describe('useAiAgentNavigation', () => {
             {
                 route: '/app/automation/shopify/test/ai-agent/guidance',
                 title: 'Guidance',
+                dataCanduId: 'ai-agent-navbar-guidance',
                 exact: false,
             },
             {
@@ -46,10 +47,12 @@ describe('useAiAgentNavigation', () => {
             {
                 route: '/app/automation/shopify/test/ai-agent/sales',
                 title: 'Sales',
+                dataCanduId: 'ai-agent-navbar-sales',
             },
             {
                 route: '/app/automation/shopify/test/ai-agent/test',
                 title: 'Test',
+                dataCanduId: 'ai-agent-navbar-test',
             },
         ])
     })
@@ -66,9 +69,9 @@ describe('useAiAgentNavigation', () => {
         expect(result.current.navigationItems).toEqual(
             expect.arrayContaining([
                 {
-                    dataCanduId: 'ai-agent-navbar-knowledge',
                     route: '/app/automation/shopify/test/ai-agent/knowledge',
                     title: 'Knowledge',
+                    dataCanduId: 'ai-agent-navbar-knowledge',
                 },
             ]),
         )
@@ -88,6 +91,7 @@ describe('useAiAgentNavigation', () => {
                 {
                     route: '/app/automation/shopify/test/ai-agent/optimize',
                     title: 'Optimize',
+                    dataCanduId: 'ai-agent-navbar-optimize',
                     exact: false,
                 },
             ]),
@@ -110,6 +114,7 @@ describe('useAiAgentNavigation', () => {
             {
                 route: '/app/automation/shopify/test/ai-agent/guidance',
                 title: 'Guidance',
+                dataCanduId: 'ai-agent-navbar-guidance',
                 exact: false,
             },
             {
@@ -121,14 +126,17 @@ describe('useAiAgentNavigation', () => {
             {
                 route: '/app/automation/shopify/test/ai-agent/sales',
                 title: 'Sales',
+                dataCanduId: 'ai-agent-navbar-sales',
             },
             {
                 route: '/app/automation/shopify/test/ai-agent/test',
                 title: 'Test',
+                dataCanduId: 'ai-agent-navbar-test',
             },
             {
                 route: '/app/automation/shopify/test/ai-agent/preview-mode',
                 title: 'Preview',
+                dataCanduId: 'ai-agent-navbar-preview',
             },
         ])
     })
@@ -149,6 +157,7 @@ describe('useAiAgentNavigation', () => {
             {
                 route: '/app/automation/shopify/test/ai-agent/guidance',
                 title: 'Guidance',
+                dataCanduId: 'ai-agent-navbar-guidance',
                 exact: false,
             },
             {
@@ -159,10 +168,12 @@ describe('useAiAgentNavigation', () => {
             },
             {
                 route: '/app/automation/shopify/test/ai-agent/sales',
+                dataCanduId: 'ai-agent-navbar-sales',
                 title: 'Sales',
             },
             {
                 route: '/app/automation/shopify/test/ai-agent/test',
+                dataCanduId: 'ai-agent-navbar-test',
                 title: 'Test',
             },
         ])
@@ -186,14 +197,17 @@ describe('useAiAgentNavigation', () => {
                     exact: false,
                     route: '/app/automation/shopify/test/ai-agent/guidance',
                     title: 'Guidance',
+                    dataCanduId: 'ai-agent-navbar-guidance',
                 },
                 {
                     route: '/app/automation/shopify/test/ai-agent/test',
                     title: 'Test',
+                    dataCanduId: 'ai-agent-navbar-test',
                 },
                 {
                     route: '/app/automation/shopify/test/ai-agent/preview-mode',
                     title: 'Preview',
+                    dataCanduId: 'ai-agent-navbar-preview',
                 },
             ]),
         )
@@ -216,15 +230,18 @@ describe('useAiAgentNavigation', () => {
                 {
                     exact: false,
                     route: '/app/automation/shopify/test/ai-agent/guidance',
+                    dataCanduId: 'ai-agent-navbar-guidance',
                     title: 'Guidance',
                 },
                 {
                     route: '/app/automation/shopify/test/ai-agent/test',
+                    dataCanduId: 'ai-agent-navbar-test',
                     title: 'Test',
                 },
                 {
                     route: '/app/automation/shopify/test/ai-agent/preview-mode',
                     title: 'Preview',
+                    dataCanduId: 'ai-agent-navbar-preview',
                 },
             ]),
         )

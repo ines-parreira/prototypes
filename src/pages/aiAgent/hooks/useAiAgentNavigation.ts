@@ -131,6 +131,7 @@ const useNavigationItems = (
                 isAiAgentOptimizeTabEnabled && {
                     route: routes.optimize,
                     title: OPTIMIZE,
+                    dataCanduId: 'ai-agent-navbar-optimize',
                     exact: false,
                 },
                 {
@@ -178,9 +179,11 @@ const useNavigationItems = (
                 {
                     route: routes.sales,
                     title: SALES.navbarItem,
+                    dataCanduId: 'ai-agent-navbar-sales',
                 },
                 {
                     route: routes.test,
+                    dataCanduId: 'ai-agent-navbar-test',
                     title: TEST,
                 },
             ].filter((x) => !!x) as NavigationItem[]
@@ -191,6 +194,7 @@ const useNavigationItems = (
                 route: routes.optimize,
                 title: OPTIMIZE,
                 exact: false,
+                dataCanduId: 'ai-agent-navbar-optimize',
             },
             {
                 route: routes.configuration(),
@@ -205,6 +209,7 @@ const useNavigationItems = (
             {
                 route: routes.guidance,
                 title: GUIDANCE,
+                dataCanduId: 'ai-agent-navbar-guidance',
                 exact: false,
             },
             {
@@ -216,14 +221,17 @@ const useNavigationItems = (
             {
                 route: routes.sales,
                 title: SALES.navbarItem,
+                dataCanduId: 'ai-agent-navbar-sales',
             },
             {
                 route: routes.test,
                 title: TEST,
+                dataCanduId: 'ai-agent-navbar-test',
             },
             isGorgiasUser && {
                 route: routes.previewMode,
                 title: PREVIEW,
+                dataCanduId: 'ai-agent-navbar-preview',
             },
         ].filter((x) => !!x) as NavigationItem[]
     }, [
