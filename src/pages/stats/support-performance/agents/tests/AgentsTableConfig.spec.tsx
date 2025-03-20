@@ -1,9 +1,9 @@
 import {
-    useAverageResponseTimeMetric,
     useClosedTicketsMetric,
     useCustomerSatisfactionMetric,
     useMedianFirstResponseTimeMetric,
     useMedianResolutionTimeMetric,
+    useMedianResponseTimeMetric,
     useMessagesReceivedMetric,
     useMessagesSentMetric,
     useOnlineTimeMetric,
@@ -87,7 +87,7 @@ describe('getTotalsQuery', () => {
         const nonApplicableColumns = [
             AgentsTableColumn.AgentName,
             AgentsTableColumn.MedianFirstResponseTime,
-            AgentsTableColumn.AverageResponseTime,
+            AgentsTableColumn.MedianResponseTime,
             AgentsTableColumn.MedianResolutionTime,
             AgentsTableColumn.CustomerSatisfaction,
             AgentsTableColumn.OneTouchTickets,
@@ -133,7 +133,7 @@ describe('getSummaryQuery', () => {
         [AgentsTableColumn.MessagesSent, useMessagesSentMetric],
         [AgentsTableColumn.MessagesReceived, useMessagesReceivedMetric],
         [AgentsTableColumn.MessagesSentPerHour, useMessagesSentPerHour],
-        [AgentsTableColumn.AverageResponseTime, useAverageResponseTimeMetric],
+        [AgentsTableColumn.MedianResponseTime, useMedianResponseTimeMetric],
         [
             AgentsTableColumn.MedianFirstResponseTime,
             useMedianFirstResponseTimeMetric,

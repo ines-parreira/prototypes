@@ -58,7 +58,7 @@ describe('useAgentsTableConfigSetting', () => {
                 ...TableColumnsOrder,
                 AgentsTableColumn.ZeroTouchTickets,
                 AgentsTableColumn.MessagesReceived,
-                AgentsTableColumn.AverageResponseTime,
+                AgentsTableColumn.MedianResponseTime,
             ],
             rowsOrder: TableRowsOrder,
             currentView: {
@@ -74,7 +74,7 @@ describe('useAgentsTableConfigSetting', () => {
                         visibility: null,
                     },
                     {
-                        id: AgentsTableColumn.AverageResponseTime,
+                        id: AgentsTableColumn.MedianResponseTime,
                         visibility: null,
                     },
                 ],

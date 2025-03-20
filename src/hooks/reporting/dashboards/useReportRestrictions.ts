@@ -69,7 +69,7 @@ export const useReportRestrictions = () => {
                 !isReportingMessagesReceivedMetricEnabled,
             [OverviewChart.ZeroTouchTicketsTrendCard]:
                 !isReportingZeroTouchTicketsMetricEnabled,
-            [OverviewChart.AverageResponseTimeTrendCard]:
+            [OverviewChart.MedianResponseTimeTrendCard]:
                 !isReportingAverageResponseTimeEnabled,
             [VoiceOverviewChart.DEPRECATED_VoiceCallVolumeMetricMissedCallsCountTrendChart]:
                 shouldShowNewUnansweredStatuses,

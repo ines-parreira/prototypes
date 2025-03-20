@@ -2,11 +2,11 @@ import { renderHook } from '@testing-library/react-hooks'
 import moment from 'moment'
 
 import {
-    fetchAverageResponseTimeMetric,
     fetchClosedTicketsMetric,
     fetchCustomerSatisfactionMetric,
     fetchMedianFirstResponseTimeMetric,
     fetchMedianResolutionTimeMetric,
+    fetchMedianResponseTimeMetric,
     fetchMessagesReceivedMetric,
     fetchMessagesSentMetric,
     fetchOneTouchTicketsMetric,
@@ -16,11 +16,11 @@ import {
     fetchTicketsRepliedMetric,
     fetchZeroTouchTicketsMetric,
     ignoreNotAssignedTicketsFilter,
-    useAverageResponseTimeMetric,
     useClosedTicketsMetric,
     useCustomerSatisfactionMetric,
     useMedianFirstResponseTimeMetric,
     useMedianResolutionTimeMetric,
+    useMedianResponseTimeMetric,
     useMessagesReceivedMetric,
     useMessagesSentMetric,
     useOneTouchTicketsMetric,
@@ -33,11 +33,11 @@ import {
 import { fetchMetric, useMetric } from 'hooks/reporting/useMetric'
 import { onlineTimeQueryFactory } from 'models/reporting/queryFactories/agentxp/onlineTime'
 import { ticketAverageHandleTimeQueryFactory } from 'models/reporting/queryFactories/agentxp/ticketHandleTime'
-import { averageResponseTimeQueryFactory } from 'models/reporting/queryFactories/support-performance/averageResponseTime'
 import { closedTicketsQueryFactory } from 'models/reporting/queryFactories/support-performance/closedTickets'
 import { customerSatisfactionQueryFactory } from 'models/reporting/queryFactories/support-performance/customerSatisfaction'
 import { medianFirstResponseTimeQueryFactory } from 'models/reporting/queryFactories/support-performance/medianFirstResponseTime'
 import { medianResolutionTimeQueryFactory } from 'models/reporting/queryFactories/support-performance/medianResolutionTime'
+import { medianResponseTimeQueryFactory } from 'models/reporting/queryFactories/support-performance/medianResponseTime'
 import { messagesReceivedQueryFactory } from 'models/reporting/queryFactories/support-performance/messagesReceived'
 import { messagesSentQueryFactory } from 'models/reporting/queryFactories/support-performance/messagesSent'
 import { oneTouchTicketsQueryFactory } from 'models/reporting/queryFactories/support-performance/oneTouchTickets'
@@ -90,9 +90,9 @@ describe('metrics', () => {
             medianFirstResponseTimeQueryFactory,
         ],
         [
-            'useAverageResponseTimeMetric',
-            useAverageResponseTimeMetric,
-            averageResponseTimeQueryFactory,
+            'useMedianResponseTimeMetric',
+            useMedianResponseTimeMetric,
+            medianResponseTimeQueryFactory,
         ],
         [
             'useMedianResolutionTimeMetric',
@@ -157,9 +157,9 @@ describe('metrics', () => {
             medianFirstResponseTimeQueryFactory,
         ],
         [
-            'fetchAverageResponseTimeMetric',
-            fetchAverageResponseTimeMetric,
-            averageResponseTimeQueryFactory,
+            'fetchMedianResponseTimeMetric',
+            fetchMedianResponseTimeMetric,
+            medianResponseTimeQueryFactory,
         ],
         [
             'fetchMedianResolutionTimeMetric',

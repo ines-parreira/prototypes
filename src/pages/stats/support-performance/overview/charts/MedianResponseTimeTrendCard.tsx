@@ -5,16 +5,16 @@ import {
     OverviewMetricConfig,
 } from 'pages/stats/support-performance/overview/SupportPerformanceOverviewConfig'
 
-export const AverageResponseTimeTrendCard = ({
+export const MedianResponseTimeTrendCard = ({
     chartId,
     dashboard,
 }: DashboardChartProps) => {
     return (
         <TrendCard
-            {...OverviewMetricConfig[OverviewMetric.AverageResponseTime]}
+            {...OverviewMetricConfig[OverviewMetric.MedianResponseTime]}
             chartId={chartId}
             dashboard={dashboard}
-            drillDownMetric={OverviewMetric.AverageResponseTime}
+            drillDownMetric={OverviewMetric.MedianResponseTime}
         />
     )
 }

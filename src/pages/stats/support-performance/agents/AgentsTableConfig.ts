@@ -1,11 +1,11 @@
 import { User } from 'config/types/user'
 import {
     Metric,
-    useAverageResponseTimeMetric,
     useClosedTicketsMetric,
     useCustomerSatisfactionMetric,
     useMedianFirstResponseTimeMetric,
     useMedianResolutionTimeMetric,
+    useMedianResponseTimeMetric,
     useMessagesReceivedMetric,
     useMessagesSentMetric,
     useOnlineTimeMetric,
@@ -13,11 +13,11 @@ import {
     useTicketsRepliedMetric,
 } from 'hooks/reporting/metrics'
 import {
-    useAverageResponseTimeMetricPerAgent,
     useClosedTicketsMetricPerAgent,
     useCustomerSatisfactionMetricPerAgent,
     useMedianFirstResponseTimeMetricPerAgent,
     useMedianResolutionTimeMetricPerAgent,
+    useMedianResponseTimeMetricPerAgent,
     useMessagesReceivedMetricPerAgent,
     useMessagesSentMetricPerAgent,
     useOnlineTimePerAgent,
@@ -50,6 +50,7 @@ import { AgentTimeTrackingMember } from 'models/reporting/cubes/agentxp/AgentTim
 import { HelpdeskMessageMember } from 'models/reporting/cubes/HelpdeskMessageCube'
 import { TicketMember } from 'models/reporting/cubes/TicketCube'
 import { TicketMessagesMember } from 'models/reporting/cubes/TicketMessagesCube'
+import { TicketMessagesEnrichedResponseTimesDimension } from 'models/reporting/cubes/TicketMessagesEnrichedResponseTimesCube'
 import { StatsFilters } from 'models/stat/types'
 import {
     isExtraLargeScreen,
@@ -140,7 +141,7 @@ export const TableLabels: Record<AgentsTableColumn, string> = {
     [AgentsTableColumn.CustomerSatisfaction]: CUSTOMER_SATISFACTION_LABEL,
     [AgentsTableColumn.MedianFirstResponseTime]:
         MEDIAN_FIRST_RESPONSE_TIME_LABEL,
-    [AgentsTableColumn.AverageResponseTime]: AVERAGE_RESPONSE_TIME_LABEL,
+    [AgentsTableColumn.MedianResponseTime]: AVERAGE_RESPONSE_TIME_LABEL,
     [AgentsTableColumn.MedianResolutionTime]: MEDIAN_RESOLUTION_TIME_LABEL,
     [AgentsTableColumn.ClosedTickets]: TICKETS_CLOSED_LABEL,
     [AgentsTableColumn.PercentageOfClosedTickets]: PERCENT_OF_CLOSED_TICKETS,
@@ -209,7 +210,7 @@ export const AgentsColumnConfig: Record<
         },
         perAgent: false,
     },
-    [AgentsTableColumn.AverageResponseTime]: {
+    [AgentsTableColumn.MedianResponseTime]: {
         format: 'duration',
         hint: {
             title: 'Average response time between message sent by customer and response from the ticket agent response',
@@ -360,8 +361,8 @@ export const getQuery = (
             })
         case AgentsTableColumn.MedianFirstResponseTime:
             return useMedianFirstResponseTimeMetricPerAgent
-        case AgentsTableColumn.AverageResponseTime:
-            return useAverageResponseTimeMetricPerAgent
+        case AgentsTableColumn.MedianResponseTime:
+            return useMedianResponseTimeMetricPerAgent
         case AgentsTableColumn.RepliedTickets:
             return useTicketsRepliedMetricPerAgent
         case AgentsTableColumn.PercentageOfClosedTickets:
@@ -419,8 +420,8 @@ export const getSummaryQuery = (column: AgentsTableColumn): MetricQueryHook => {
             return useMessagesReceivedMetric
         case AgentsTableColumn.MedianResolutionTime:
             return useMedianResolutionTimeMetric
-        case AgentsTableColumn.AverageResponseTime:
-            return useAverageResponseTimeMetric
+        case AgentsTableColumn.MedianResponseTime:
+            return useMedianResponseTimeMetric
         case AgentsTableColumn.CustomerSatisfaction:
             return useCustomerSatisfactionMetric
         case AgentsTableColumn.OneTouchTickets:
@@ -458,7 +459,7 @@ export const getTotalsQuery = (column: AgentsTableColumn): MetricQueryHook => {
             return useMessagesSentPerHourPerAgentTotalCapacity
         case AgentsTableColumn.AgentName:
         case AgentsTableColumn.MedianFirstResponseTime:
-        case AgentsTableColumn.AverageResponseTime:
+        case AgentsTableColumn.MedianResponseTime:
         case AgentsTableColumn.MedianResolutionTime:
         case AgentsTableColumn.CustomerSatisfaction:
         case AgentsTableColumn.OneTouchTickets:
@@ -479,6 +480,7 @@ export const agentIdFields = [
     TicketMember.MessageSenderId,
     TicketMember.MessageSenderIdToExclude,
     TicketMessagesMember.FirstHelpdeskMessageUserId,
+    TicketMessagesEnrichedResponseTimesDimension.TicketMessageUserId,
     HelpdeskMessageMember.SenderId,
     AgentTimeTrackingMember.UserId,
 ]

@@ -9,11 +9,11 @@ import { TicketChannel } from 'business/types/ticket'
 import { agents } from 'fixtures/agents'
 import { integrationsState } from 'fixtures/integrations'
 import {
-    useAverageResponseTimeTrend,
     useClosedTicketsTrend,
     useCustomerSatisfactionTrend,
     useMedianFirstResponseTimeTrend,
     useMedianResolutionTimeTrend,
+    useMedianResponseTimeTrend,
     useMessagesPerTicketTrend,
     useMessagesReceivedTrend,
     useMessagesSentTrend,
@@ -72,7 +72,7 @@ const useCustomerSatisfactionTrendMock = assumeMock(
 const useMedianFirstResponseTimeTrendMock = assumeMock(
     useMedianFirstResponseTimeTrend,
 )
-const useAverageResponseTimeTrendMock = assumeMock(useAverageResponseTimeTrend)
+const useMedianResponseTimeTrendMock = assumeMock(useMedianResponseTimeTrend)
 const useMedianResolutionTimeTrendMock = assumeMock(
     useMedianResolutionTimeTrend,
 )
@@ -146,7 +146,7 @@ describe('<TrendCard />', () => {
             prevValue,
         },
     }
-    const averageResponseTimeMetricTrend = {
+    const medianResponseTimeMetricTrend = {
         ...defaultMetricTrend,
         data: {
             interpretAs: 'less-is-better',
@@ -216,8 +216,8 @@ describe('<TrendCard />', () => {
         useMedianFirstResponseTimeTrendMock.mockReturnValue(
             medianFirstResponseTimeMetricTrend,
         )
-        useAverageResponseTimeTrendMock.mockReturnValue(
-            averageResponseTimeMetricTrend,
+        useMedianResponseTimeTrendMock.mockReturnValue(
+            medianResponseTimeMetricTrend,
         )
         useMedianResolutionTimeTrendMock.mockReturnValue(
             medianResolutionTimeMetricTrend,

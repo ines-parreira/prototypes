@@ -37,7 +37,7 @@ export const useAgentsTableConfigSetting = () => {
                 ? [AgentsTableColumn.MessagesReceived]
                 : []),
             ...(isReportingAverageResponseTimeEnabled
-                ? [AgentsTableColumn.AverageResponseTime]
+                ? [AgentsTableColumn.MedianResponseTime]
                 : []),
         ],
         [

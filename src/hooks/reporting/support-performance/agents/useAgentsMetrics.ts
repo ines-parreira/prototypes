@@ -1,11 +1,11 @@
 import { useMemo } from 'react'
 
 import {
-    useAverageResponseTimeMetricPerAgent,
     useClosedTicketsMetricPerAgent,
     useCustomerSatisfactionMetricPerAgent,
     useMedianFirstResponseTimeMetricPerAgent,
     useMedianResolutionTimeMetricPerAgent,
+    useMedianResponseTimeMetricPerAgent,
     useMessagesReceivedMetricPerAgent,
     useMessagesSentMetricPerAgent,
     useOnlineTimePerAgent,
@@ -41,7 +41,7 @@ export function useAgentsMetrics() {
             cleanStatsFilters,
             userTimezone,
         )
-    const averageResponseTimeMetric = useAverageResponseTimeMetricPerAgent(
+    const medianResponseTimeMetric = useMedianResponseTimeMetricPerAgent(
         cleanStatsFilters,
         userTimezone,
     )
@@ -92,7 +92,7 @@ export function useAgentsMetrics() {
 
     const loading = useMemo(() => {
         return Object.values({
-            averageResponseTimeMetric,
+            medianResponseTimeMetric,
             closedTicketsMetric,
             closedTicketsPerHourMetric,
             customerSatisfactionMetric,
@@ -110,7 +110,7 @@ export function useAgentsMetrics() {
             zeroTouchTicketsMetric,
         }).some((metric) => metric.isFetching)
     }, [
-        averageResponseTimeMetric,
+        medianResponseTimeMetric,
         closedTicketsMetric,
         closedTicketsPerHourMetric,
         customerSatisfactionMetric,
@@ -130,7 +130,7 @@ export function useAgentsMetrics() {
 
     return {
         reportData: {
-            averageResponseTimeMetric,
+            medianResponseTimeMetric,
             closedTicketsMetric,
             closedTicketsPerHourMetric,
             customerSatisfactionMetric,

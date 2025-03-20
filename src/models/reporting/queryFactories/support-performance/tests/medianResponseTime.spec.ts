@@ -6,18 +6,20 @@ import {
     TicketDimension,
     TicketMember,
 } from 'models/reporting/cubes/TicketCube'
+import { TicketMessagesMember } from 'models/reporting/cubes/TicketMessagesCube'
 import {
-    TicketMessagesDimension,
-    TicketMessagesMeasure,
-    TicketMessagesMember,
-} from 'models/reporting/cubes/TicketMessagesCube'
-import {
-    averageResponseTimeMetricPerAgentQueryFactory,
-    averageResponseTimeMetricPerChannelQueryFactory,
-    averageResponseTimeMetricPerTicketDrillDownQueryFactory,
-    averageResponseTimeQueryFactory,
-} from 'models/reporting/queryFactories/support-performance/averageResponseTime'
+    TicketMessagesEnrichedResponseTimesDimension,
+    TicketMessagesEnrichedResponseTimesMeasure,
+    TicketMessagesEnrichedResponseTimesMember,
+    TicketMessagesEnrichedResponseTimesSegment,
+} from 'models/reporting/cubes/TicketMessagesEnrichedResponseTimesCube'
 import { CHANNEL_DIMENSION } from 'models/reporting/queryFactories/support-performance/constants'
+import {
+    medianResponseTimeMetricPerAgentQueryFactory,
+    medianResponseTimeMetricPerChannelQueryFactory,
+    medianResponseTimeMetricPerTicketDrillDownQueryFactory,
+    medianResponseTimeQueryFactory,
+} from 'models/reporting/queryFactories/support-performance/medianResponseTime'
 import { withDefaultLogicalOperator } from 'models/reporting/queryFactories/utils'
 import { ReportingFilterOperator } from 'models/reporting/types'
 import { StatsFilters, TagFilterInstanceId } from 'models/stat/types'
@@ -28,7 +30,7 @@ import {
     TicketDrillDownFilter,
 } from 'utils/reporting'
 
-describe('averageResponseTime', () => {
+describe('medianResponseTime', () => {
     const periodStart = moment()
     const periodEnd = periodStart.add(7, 'days')
     const statsFilters: StatsFilters = {
@@ -51,25 +53,19 @@ describe('averageResponseTime', () => {
     const timezone = 'someTimeZone'
     const sorting = OrderDirection.Asc
 
-    describe('averageResponseTimeMetricPerAgent', () => {
+    describe('medianResponseTimeMetricPerAgent', () => {
         it('should build a query', () => {
             expect(
-                averageResponseTimeMetricPerAgentQueryFactory(
+                medianResponseTimeMetricPerAgentQueryFactory(
                     statsFilters,
                     timezone,
                 ),
             ).toEqual({
-                dimensions: [TicketMessagesDimension.SenderId],
+                dimensions: [
+                    TicketMessagesEnrichedResponseTimesDimension.TicketMessageUserId,
+                ],
                 filters: [
                     ...NotSpamNorTrashedTicketsFilter,
-                    {
-                        member: TicketMessagesMember.SentDatetime,
-                        operator: ReportingFilterOperator.InDateRange,
-                        values: [
-                            formatReportingQueryDate(periodStart),
-                            formatReportingQueryDate(periodEnd),
-                        ],
-                    },
                     {
                         member: TicketMember.PeriodStart,
                         operator: ReportingFilterOperator.AfterDate,
@@ -96,8 +92,12 @@ describe('averageResponseTime', () => {
                         values: statsFilters.tags?.[0]?.values.map(String),
                     },
                 ],
-                measures: [TicketMessagesMeasure.AverageResponseTime],
-                segments: [],
+                measures: [
+                    TicketMessagesEnrichedResponseTimesMeasure.MedianResponseTime,
+                ],
+                segments: [
+                    TicketMessagesEnrichedResponseTimesSegment.ConversationStarted,
+                ],
                 timezone: timezone,
             })
         })
@@ -106,7 +106,7 @@ describe('averageResponseTime', () => {
             const agents = [2]
 
             expect(
-                averageResponseTimeMetricPerAgentQueryFactory(
+                medianResponseTimeMetricPerAgentQueryFactory(
                     {
                         ...statsFilters,
                         agents: withDefaultLogicalOperator(agents),
@@ -115,22 +115,12 @@ describe('averageResponseTime', () => {
                     sorting,
                 ),
             ).toEqual({
-                dimensions: [TicketMessagesDimension.SenderId],
+                dimensions: [
+                    TicketMessagesEnrichedResponseTimesDimension.TicketMessageUserId,
+                ],
                 filters: [
                     ...NotSpamNorTrashedTicketsFilter,
-                    {
-                        member: TicketMessagesMember.SentDatetime,
-                        operator: ReportingFilterOperator.InDateRange,
-                        values: [
-                            formatReportingQueryDate(periodStart),
-                            formatReportingQueryDate(periodEnd),
-                        ],
-                    },
-                    {
-                        member: TicketMessagesMember.SenderId,
-                        operator: ReportingFilterOperator.Equals,
-                        values: agents?.map(String),
-                    },
+
                     {
                         member: TicketMember.PeriodStart,
                         operator: ReportingFilterOperator.AfterDate,
@@ -152,23 +142,37 @@ describe('averageResponseTime', () => {
                         values: statsFilters.channels?.values,
                     },
                     {
+                        member: TicketMessagesEnrichedResponseTimesMember.TicketMessageUserId,
+                        operator: ReportingFilterOperator.Equals,
+                        values: agents?.map(String),
+                    },
+                    {
                         member: TicketMember.Tags,
                         operator: ReportingFilterOperator.Equals,
                         values: statsFilters.tags?.[0]?.values.map(String),
                     },
                 ],
-                measures: [TicketMessagesMeasure.AverageResponseTime],
-                order: [[TicketMessagesMeasure.AverageResponseTime, sorting]],
-                segments: [],
+                measures: [
+                    TicketMessagesEnrichedResponseTimesMeasure.MedianResponseTime,
+                ],
+                order: [
+                    [
+                        TicketMessagesEnrichedResponseTimesMeasure.MedianResponseTime,
+                        sorting,
+                    ],
+                ],
+                segments: [
+                    TicketMessagesEnrichedResponseTimesSegment.ConversationStarted,
+                ],
                 timezone: timezone,
             })
         })
     })
 
-    describe('averageResponseTimeMetricPerChannel', () => {
+    describe('medianResponseTimeMetricPerChannel', () => {
         it('should build a query', () => {
             expect(
-                averageResponseTimeMetricPerChannelQueryFactory(
+                medianResponseTimeMetricPerChannelQueryFactory(
                     statsFilters,
                     timezone,
                 ),
@@ -177,14 +181,6 @@ describe('averageResponseTime', () => {
                 filters: [
                     ...NotSpamNorTrashedTicketsFilter,
                     {
-                        member: TicketMessagesMember.SentDatetime,
-                        operator: ReportingFilterOperator.InDateRange,
-                        values: [
-                            formatReportingQueryDate(periodStart),
-                            formatReportingQueryDate(periodEnd),
-                        ],
-                    },
-                    {
                         member: TicketMember.PeriodStart,
                         operator: ReportingFilterOperator.AfterDate,
                         values: [formatReportingQueryDate(periodStart)],
@@ -210,8 +206,12 @@ describe('averageResponseTime', () => {
                         values: statsFilters.tags?.[0]?.values.map(String),
                     },
                 ],
-                measures: [TicketMessagesMeasure.AverageResponseTime],
-                segments: [],
+                measures: [
+                    TicketMessagesEnrichedResponseTimesMeasure.MedianResponseTime,
+                ],
+                segments: [
+                    TicketMessagesEnrichedResponseTimesSegment.ConversationStarted,
+                ],
                 timezone: timezone,
             })
         })
@@ -220,7 +220,7 @@ describe('averageResponseTime', () => {
             const agents = [2]
 
             expect(
-                averageResponseTimeMetricPerChannelQueryFactory(
+                medianResponseTimeMetricPerChannelQueryFactory(
                     {
                         ...statsFilters,
                         agents: withDefaultLogicalOperator(agents),
@@ -232,19 +232,7 @@ describe('averageResponseTime', () => {
                 dimensions: [CHANNEL_DIMENSION],
                 filters: [
                     ...NotSpamNorTrashedTicketsFilter,
-                    {
-                        member: TicketMessagesMember.SentDatetime,
-                        operator: ReportingFilterOperator.InDateRange,
-                        values: [
-                            formatReportingQueryDate(periodStart),
-                            formatReportingQueryDate(periodEnd),
-                        ],
-                    },
-                    {
-                        member: TicketMessagesMember.SenderId,
-                        operator: ReportingFilterOperator.Equals,
-                        values: agents?.map(String),
-                    },
+
                     {
                         member: TicketMember.PeriodStart,
                         operator: ReportingFilterOperator.AfterDate,
@@ -266,38 +254,53 @@ describe('averageResponseTime', () => {
                         values: statsFilters.channels?.values,
                     },
                     {
+                        member: TicketMessagesEnrichedResponseTimesMember.TicketMessageUserId,
+                        operator: ReportingFilterOperator.Equals,
+                        values: agents?.map(String),
+                    },
+                    {
                         member: TicketMember.Tags,
                         operator: ReportingFilterOperator.Equals,
                         values: statsFilters.tags?.[0]?.values.map(String),
                     },
                 ],
-                measures: [TicketMessagesMeasure.AverageResponseTime],
-                order: [[TicketMessagesMeasure.AverageResponseTime, sorting]],
-                segments: [],
+                measures: [
+                    TicketMessagesEnrichedResponseTimesMeasure.MedianResponseTime,
+                ],
+                order: [
+                    [
+                        TicketMessagesEnrichedResponseTimesMeasure.MedianResponseTime,
+                        sorting,
+                    ],
+                ],
+                segments: [
+                    TicketMessagesEnrichedResponseTimesSegment.ConversationStarted,
+                ],
                 timezone: timezone,
             })
         })
     })
 
-    describe('averageResponseTimeMetricPerTicketQueryFactory', () => {
+    describe('medianResponseTimeMetricPerTicketQueryFactory', () => {
         it('should build a query', () => {
             expect(
-                averageResponseTimeMetricPerTicketDrillDownQueryFactory(
+                medianResponseTimeMetricPerTicketDrillDownQueryFactory(
                     statsFilters,
                     timezone,
                 ),
             ).toEqual({
-                ...averageResponseTimeQueryFactory(statsFilters, timezone),
+                ...medianResponseTimeQueryFactory(statsFilters, timezone),
                 measures: [],
                 dimensions: [
                     TicketDimension.TicketId,
-                    ...averageResponseTimeMetricPerAgentQueryFactory(
+                    TicketMessagesEnrichedResponseTimesDimension.ResponseTime,
+                    ...medianResponseTimeMetricPerAgentQueryFactory(
                         statsFilters,
                         timezone,
                     ).dimensions,
                 ],
                 filters: [
-                    ...averageResponseTimeMetricPerAgentQueryFactory(
+                    ...medianResponseTimeMetricPerAgentQueryFactory(
                         statsFilters,
                         timezone,
                     ).filters,
@@ -315,33 +318,39 @@ describe('averageResponseTime', () => {
             }
 
             expect(
-                averageResponseTimeMetricPerTicketDrillDownQueryFactory(
+                medianResponseTimeMetricPerTicketDrillDownQueryFactory(
                     filters,
                     timezone,
                     sorting,
                 ),
             ).toEqual({
-                ...averageResponseTimeMetricPerAgentQueryFactory(
+                ...medianResponseTimeMetricPerAgentQueryFactory(
                     filters,
                     timezone,
                 ),
                 measures: [],
                 dimensions: [
                     TicketDimension.TicketId,
-                    ...averageResponseTimeMetricPerAgentQueryFactory(
+                    TicketMessagesEnrichedResponseTimesDimension.ResponseTime,
+                    ...medianResponseTimeMetricPerAgentQueryFactory(
                         statsFilters,
                         timezone,
                     ).dimensions,
                 ],
                 filters: [
-                    ...averageResponseTimeMetricPerAgentQueryFactory(
+                    ...medianResponseTimeMetricPerAgentQueryFactory(
                         filters,
                         timezone,
                     ).filters,
                     TicketDrillDownFilter,
                 ],
                 limit: DRILLDOWN_QUERY_LIMIT,
-                order: [[TicketMessagesMeasure.AverageResponseTime, sorting]],
+                order: [
+                    [
+                        TicketMessagesEnrichedResponseTimesDimension.ResponseTime,
+                        sorting,
+                    ],
+                ],
             })
         })
     })

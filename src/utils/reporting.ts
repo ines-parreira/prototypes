@@ -20,6 +20,7 @@ import {
 import { TicketSLAMember } from 'models/reporting/cubes/sla/TicketSLACube'
 import { TicketMeasure, TicketMember } from 'models/reporting/cubes/TicketCube'
 import { TicketMessagesMember } from 'models/reporting/cubes/TicketMessagesCube'
+import { TicketMessagesEnrichedResponseTimesMember } from 'models/reporting/cubes/TicketMessagesEnrichedResponseTimesCube'
 import {
     addOptionalFilter,
     hasFilter,
@@ -73,6 +74,11 @@ export const TicketStatsFiltersMembers: StatsFiltersMembers = {
     tags: TicketMember.Tags,
     customFields: TicketMember.CustomField,
     ...AutoQAFiltersMembers,
+}
+
+export const TicketMessagesEnrichedResponseTimesMembers: StatsFiltersMembers = {
+    ...TicketStatsFiltersMembers,
+    agents: TicketMessagesEnrichedResponseTimesMember.TicketMessageUserId,
 }
 
 export const TicketSLAStatsFiltersMembers: StatsFiltersMembers = {

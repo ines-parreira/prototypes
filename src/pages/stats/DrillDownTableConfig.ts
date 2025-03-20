@@ -25,11 +25,11 @@ import {
     breachedTicketsDrillDownQueryFactory,
     satisfiedOrBreachedTicketsDrillDownQueryFactory,
 } from 'models/reporting/queryFactories/sla/satisfiedOrBreachedTickets'
-import { averageResponseTimeMetricPerTicketDrillDownQueryFactory } from 'models/reporting/queryFactories/support-performance/averageResponseTime'
 import { closedTicketsPerTicketDrillDownQueryFactory } from 'models/reporting/queryFactories/support-performance/closedTickets'
 import { customerSatisfactionMetricDrillDownQueryFactory } from 'models/reporting/queryFactories/support-performance/customerSatisfaction'
 import { firstResponseTimeMetricPerTicketDrillDownQueryFactory } from 'models/reporting/queryFactories/support-performance/medianFirstResponseTime'
 import { resolutionTimeMetricPerTicketDrillDownQueryFactory } from 'models/reporting/queryFactories/support-performance/medianResolutionTime'
+import { medianResponseTimeMetricPerTicketDrillDownQueryFactory } from 'models/reporting/queryFactories/support-performance/medianResponseTime'
 import { messagesPerTicketDrillDownQueryFactory } from 'models/reporting/queryFactories/support-performance/messagesPerTicket'
 import { messagesReceivedMetricPerTicketDrillDownQueryFactory } from 'models/reporting/queryFactories/support-performance/messagesReceived'
 import { messagesSentMetricPerTicketDrillDownQueryFactory } from 'models/reporting/queryFactories/support-performance/messagesSent'
@@ -130,8 +130,8 @@ export const getDrillDownQuery = (
     switch (metricName.metricName) {
         case OverviewMetric.CustomerSatisfaction:
             return customerSatisfactionMetricDrillDownQueryFactory
-        case OverviewMetric.AverageResponseTime:
-            return averageResponseTimeMetricPerTicketDrillDownQueryFactory
+        case OverviewMetric.MedianResponseTime:
+            return medianResponseTimeMetricPerTicketDrillDownQueryFactory
         case OverviewMetric.MedianFirstResponseTime:
             return firstResponseTimeMetricPerTicketDrillDownQueryFactory
         case OverviewMetric.MedianResolutionTime:
@@ -166,10 +166,10 @@ export const getDrillDownQuery = (
                 metricName.perAgentId,
                 firstResponseTimeMetricPerTicketDrillDownQueryFactory,
             )
-        case AgentsTableColumn.AverageResponseTime:
+        case AgentsTableColumn.MedianResponseTime:
             return queryBuilderWithAgentFilter(
                 metricName.perAgentId,
-                averageResponseTimeMetricPerTicketDrillDownQueryFactory,
+                medianResponseTimeMetricPerTicketDrillDownQueryFactory,
             )
         case AgentsTableColumn.MedianResolutionTime:
             return queryBuilderWithAgentFilter(
@@ -319,7 +319,7 @@ export const getDrillDownQuery = (
         case ChannelsTableColumns.TicketsCreated:
         case ChannelsTableColumns.CreatedTicketsPercentage:
         case ChannelsTableColumns.FirstResponseTime:
-        case ChannelsTableColumns.AverageResponseTime:
+        case ChannelsTableColumns.MedianResponseTime:
         case ChannelsTableColumns.MedianResolutionTime:
         case ChannelsTableColumns.TicketsReplied:
         case ChannelsTableColumns.MessagesSent:

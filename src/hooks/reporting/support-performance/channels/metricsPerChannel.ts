@@ -5,11 +5,11 @@ import {
 import { MetricWithDecile } from 'hooks/reporting/useMetricPerDimension'
 import { OrderDirection } from 'models/api/types'
 import { ticketAverageHandleTimePerAgentPerChannelQueryFactory } from 'models/reporting/queryFactories/agentxp/ticketHandleTime'
-import { averageResponseTimeMetricPerChannelQueryFactory } from 'models/reporting/queryFactories/support-performance/averageResponseTime'
 import { closedTicketsPerChannelQueryFactory } from 'models/reporting/queryFactories/support-performance/closedTickets'
 import { customerSatisfactionMetricPerChannelQueryFactory } from 'models/reporting/queryFactories/support-performance/customerSatisfaction'
 import { medianFirstResponseTimeMetricPerChannelQueryFactory } from 'models/reporting/queryFactories/support-performance/medianFirstResponseTime'
 import { medianResolutionTimeMetricPerChannelQueryFactory } from 'models/reporting/queryFactories/support-performance/medianResolutionTime'
+import { medianResponseTimeMetricPerChannelQueryFactory } from 'models/reporting/queryFactories/support-performance/medianResponseTime'
 import { messagesReceivedMetricPerChannelQueryFactory } from 'models/reporting/queryFactories/support-performance/messagesReceived'
 import { messagesSentMetricPerChannelQueryFactory } from 'models/reporting/queryFactories/support-performance/messagesSent'
 import { oneTouchTicketsPerChannelQueryFactory } from 'models/reporting/queryFactories/support-performance/oneTouchTickets'
@@ -33,13 +33,11 @@ export const useMedianFirstResponseTimeMetricPerChannel =
 export const fetchMedianFirstResponseTimeMetricPerChannel =
     createFetchPerDimension(medianFirstResponseTimeMetricPerChannelQueryFactory)
 
-export const useAverageResponseTimeMetricPerChannel =
-    createMetricPerDimensionHook(
-        averageResponseTimeMetricPerChannelQueryFactory,
-    )
+export const useMedianResponseTimeMetricPerChannel =
+    createMetricPerDimensionHook(medianResponseTimeMetricPerChannelQueryFactory)
 
-export const fetchAverageResponseTimeMetricPerChannel = createFetchPerDimension(
-    averageResponseTimeMetricPerChannelQueryFactory,
+export const fetchMedianResponseTimeMetricPerChannel = createFetchPerDimension(
+    medianResponseTimeMetricPerChannelQueryFactory,
 )
 
 export const useTicketsRepliedMetricPerChannel = createMetricPerDimensionHook(

@@ -70,7 +70,7 @@ export const getWorkloadReportSource = (
         workloadReportSource.push(OverviewMetric.MessagesReceived)
     }
     if (isReportingAverageResponseTimeEnabled) {
-        workloadReportSource.push(OverviewMetric.AverageResponseTime)
+        workloadReportSource.push(OverviewMetric.MedianResponseTime)
     }
 
     return workloadReportSource.map((metric) => OverviewMetricConfig[metric])

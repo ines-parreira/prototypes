@@ -90,7 +90,7 @@ describe('useChannelsReportMetrics', () => {
         closedTicketsMetricPerChannel: metricData,
         ticketAverageHandleTimePerChannel: metricData,
         medianFirstResponseTimeMetricPerChannel: metricData,
-        averageResponseTimeMetricPerChannel: metricData,
+        medianResponseTimeMetricPerChannel: metricData,
         medianResolutionTimeMetricPerChannel: metricData,
         ticketsRepliedMetricPerChannel: metricData,
         messagesSentMetricPerChannel: metricData,
@@ -127,7 +127,7 @@ describe('useChannelsReportMetrics', () => {
         expect(result.current).toEqual(expectedMetrics)
     })
 
-    it('should return channels metrics with AverageResponseTime', () => {
+    it('should return channels metrics with MedianResponseTime', () => {
         mockUseFlag.mockImplementation(
             (flag) => flag === FeatureFlagKey.ReportingAverageResponseTime,
         )
@@ -140,7 +140,7 @@ describe('useChannelsReportMetrics', () => {
 
         expect(result.current.reportData).toEqual(
             expect.objectContaining({
-                averageResponseTimeMetricPerChannel: metricData,
+                medianResponseTimeMetricPerChannel: metricData,
             }),
         )
     })

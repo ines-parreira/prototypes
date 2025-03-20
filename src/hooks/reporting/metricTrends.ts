@@ -5,11 +5,11 @@ import { OrderDirection } from 'models/api/types'
 import { Cubes } from 'models/reporting/cubes'
 import { onlineTimeQueryFactory } from 'models/reporting/queryFactories/agentxp/onlineTime'
 import { ticketAverageHandleTimeQueryFactory } from 'models/reporting/queryFactories/agentxp/ticketHandleTime'
-import { averageResponseTimeQueryFactory } from 'models/reporting/queryFactories/support-performance/averageResponseTime'
 import { closedTicketsQueryFactory } from 'models/reporting/queryFactories/support-performance/closedTickets'
 import { customerSatisfactionQueryFactory } from 'models/reporting/queryFactories/support-performance/customerSatisfaction'
 import { medianFirstResponseTimeQueryFactory } from 'models/reporting/queryFactories/support-performance/medianFirstResponseTime'
 import { medianResolutionTimeQueryFactory } from 'models/reporting/queryFactories/support-performance/medianResolutionTime'
+import { medianResponseTimeQueryFactory } from 'models/reporting/queryFactories/support-performance/medianResponseTime'
 import { messagesPerTicketQueryFactory } from 'models/reporting/queryFactories/support-performance/messagesPerTicket'
 import { messagesReceivedQueryFactory } from 'models/reporting/queryFactories/support-performance/messagesReceived'
 import { messagesSentQueryFactory } from 'models/reporting/queryFactories/support-performance/messagesSent'
@@ -70,12 +70,12 @@ export const useMedianFirstResponseTimeTrend = getTrendHook(
 export const fetchMedianFirstResponseTimeTrend = getTrendFetch(
     medianFirstResponseTimeQueryFactory,
 )
-export const useAverageResponseTimeTrend = getTrendHook(
-    averageResponseTimeQueryFactory,
+export const useMedianResponseTimeTrend = getTrendHook(
+    medianResponseTimeQueryFactory,
 )
 
-export const fetchAverageResponseTimeTrend = getTrendFetch(
-    averageResponseTimeQueryFactory,
+export const fetchMedianResponseTimeTrend = getTrendFetch(
+    medianResponseTimeQueryFactory,
 )
 
 export const useMessagesPerTicketTrend = getTrendHook(

@@ -99,7 +99,7 @@ describe('getDrillDownQuery', () => {
             perAgentId: 123,
         },
         {
-            metricName: AgentsTableColumn.AverageResponseTime,
+            metricName: AgentsTableColumn.MedianResponseTime,
             perAgentId: 123,
         },
         { metricName: AgentsTableColumn.MedianResolutionTime, perAgentId: 123 },
@@ -183,7 +183,7 @@ describe('getDrillDownQuery', () => {
             perChannel: 'email',
         },
         {
-            metricName: ChannelsTableColumns.AverageResponseTime,
+            metricName: ChannelsTableColumns.MedianResponseTime,
             perChannel: 'email',
         },
         {
@@ -219,7 +219,7 @@ describe('getDrillDownQuery', () => {
         { metricName: OverviewMetric.MessagesReceived },
         { metricName: OverviewMetric.MessagesPerTicket },
         { metricName: OverviewMetric.MedianResolutionTime },
-        { metricName: OverviewMetric.AverageResponseTime },
+        { metricName: OverviewMetric.MedianResponseTime },
         { metricName: OverviewMetric.MedianFirstResponseTime },
         { metricName: OverviewMetric.CustomerSatisfaction },
         { metricName: OverviewMetric.OneTouchTickets },

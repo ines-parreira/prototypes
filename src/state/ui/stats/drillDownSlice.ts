@@ -71,7 +71,7 @@ type PerformanceOverviewMetrics = {
         | OverviewMetric.MessagesReceived
         | OverviewMetric.MessagesPerTicket
         | OverviewMetric.MedianResolutionTime
-        | OverviewMetric.AverageResponseTime
+        | OverviewMetric.MedianResponseTime
         | OverviewMetric.MedianFirstResponseTime
         | OverviewMetric.CustomerSatisfaction
         | OverviewMetric.OneTouchTickets
@@ -83,7 +83,7 @@ export type AgentMetricColumn =
     | AgentsTableColumn.CustomerSatisfaction
     | AgentsTableColumn.MedianFirstResponseTime
     | AgentsTableColumn.MedianResolutionTime
-    | AgentsTableColumn.AverageResponseTime
+    | AgentsTableColumn.MedianResponseTime
     | AgentsTableColumn.MessagesSent
     | AgentsTableColumn.MessagesReceived
     | AgentsTableColumn.PercentageOfClosedTickets
@@ -125,7 +125,7 @@ export type ChannelMetricColumn =
     | ChannelsTableColumns.ClosedTickets
     | ChannelsTableColumns.TicketHandleTime
     | ChannelsTableColumns.FirstResponseTime
-    | ChannelsTableColumns.AverageResponseTime
+    | ChannelsTableColumns.MedianResponseTime
     | ChannelsTableColumns.MedianResolutionTime
     | ChannelsTableColumns.TicketsReplied
     | ChannelsTableColumns.MessagesSent

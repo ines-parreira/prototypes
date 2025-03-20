@@ -32,7 +32,7 @@ describe('useChannelsTableConfigSetting.ts', () => {
         )
     })
 
-    it('should add AverageResponseTime column when the feature flag is on', () => {
+    it('should add MedianResponseTime column when the feature flag is on', () => {
         mockUseFlag.mockImplementation(
             (flag) => flag === FeatureFlagKey.ReportingAverageResponseTime,
         )
@@ -41,7 +41,7 @@ describe('useChannelsTableConfigSetting.ts', () => {
         expect(useTableConfigSettingMock).toHaveBeenCalledWith(
             getChannelsTableConfigSettingsJS,
             channelsReportTableActiveView,
-            [...columnsOrder, ChannelsTableColumns.AverageResponseTime],
+            [...columnsOrder, ChannelsTableColumns.MedianResponseTime],
             [],
             submitChannelsTableConfigView,
         )

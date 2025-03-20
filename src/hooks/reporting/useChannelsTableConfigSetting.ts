@@ -23,7 +23,7 @@ export const useChannelsTableSetting = () => {
         () => [
             ...columnsOrder,
             ...(isReportingAverageResponseTimeEnabled
-                ? [ChannelsTableColumns.AverageResponseTime]
+                ? [ChannelsTableColumns.MedianResponseTime]
                 : []),
             ...(isReportingMessagesReceivedMetricEnabled
                 ? [ChannelsTableColumns.MessagesReceived]

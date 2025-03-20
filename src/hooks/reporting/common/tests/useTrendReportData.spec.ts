@@ -8,8 +8,8 @@ import { integrationsState } from 'fixtures/integrations'
 import { useAIAgentUser } from 'hooks/reporting/automate/useAIAgentUserId'
 import { useTrendReportData } from 'hooks/reporting/common/useTrendReportData'
 import {
-    fetchAverageResponseTimeTrend,
     fetchClosedTicketsTrend,
+    fetchMedianResponseTimeTrend,
     fetchMessagesReceivedTrend,
     fetchMessagesSentTrend,
     fetchOpenTicketsTrend,
@@ -48,8 +48,8 @@ const fetchTicketsCreatedTrendMock = assumeMock(fetchTicketsCreatedTrend)
 const fetchTicketsRepliedTrendMock = assumeMock(fetchTicketsRepliedTrend)
 const fetchMessagesSentTrendMock = assumeMock(fetchMessagesSentTrend)
 const fetchMessagesReceivedTrendMock = assumeMock(fetchMessagesReceivedTrend)
-const fetchAverageResponseTimeTrendMock = assumeMock(
-    fetchAverageResponseTimeTrend,
+const fetchMedianResponseTimeTrendMock = assumeMock(
+    fetchMedianResponseTimeTrend,
 )
 jest.mock(
     'hooks/reporting/support-performance/overview/useOneTouchTicketsPercentageMetricTrend',
@@ -144,7 +144,7 @@ describe('useTrendReport', () => {
             prevValue: 20,
         },
     }
-    const averageResponseTimeMetricTrend = {
+    const medianResponseTimeMetricTrend = {
         ...defaultMetricTrend,
         data: {
             value: 100,
@@ -223,8 +223,8 @@ describe('useTrendReport', () => {
         fetchMessagesReceivedTrendMock.mockResolvedValue(
             messagesReceivedMetricTrend,
         )
-        fetchAverageResponseTimeTrendMock.mockResolvedValue(
-            averageResponseTimeMetricTrend,
+        fetchMedianResponseTimeTrendMock.mockResolvedValue(
+            medianResponseTimeMetricTrend,
         )
         useOneTouchTicketsMock.mockResolvedValue(oneTouchTicketMetricTrend)
         useZeroTouchTicketsMock.mockResolvedValue(zeroTouchTicketMetricTrend)
@@ -265,15 +265,15 @@ describe('useTrendReport', () => {
                     {
                         label: AVERAGE_RESPONSE_TIME_LABEL,
                         value: formatMetricValue(
-                            averageResponseTimeMetricTrend.data.value,
+                            medianResponseTimeMetricTrend.data.value,
                             OverviewMetricConfig[
-                                OverviewMetric.AverageResponseTime
+                                OverviewMetric.MedianResponseTime
                             ].metricFormat,
                         ),
                         prevValue: formatMetricValue(
-                            averageResponseTimeMetricTrend.data.prevValue,
+                            medianResponseTimeMetricTrend.data.prevValue,
                             OverviewMetricConfig[
-                                OverviewMetric.AverageResponseTime
+                                OverviewMetric.MedianResponseTime
                             ].metricFormat,
                         ),
                     },

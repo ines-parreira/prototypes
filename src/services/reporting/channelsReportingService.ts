@@ -17,6 +17,7 @@ import {
 } from 'models/reporting/cubes/HelpdeskMessageCube'
 import { TicketMeasure } from 'models/reporting/cubes/TicketCube'
 import { TicketMessagesMeasure } from 'models/reporting/cubes/TicketMessagesCube'
+import { TicketMessagesEnrichedResponseTimesMeasure } from 'models/reporting/cubes/TicketMessagesEnrichedResponseTimesCube'
 import { TicketSatisfactionSurveyMeasure } from 'models/reporting/cubes/TicketSatisfactionSurveyCube'
 import { CHANNEL_DIMENSION } from 'models/reporting/queryFactories/support-performance/constants'
 import {
@@ -50,7 +51,8 @@ type ReportDataMap = Record<
 
 const TicketCount = TicketMeasure.TicketCount
 const MedianFirstResponseTime = TicketMessagesMeasure.MedianFirstResponseTime
-const AverageResponseTime = TicketMessagesMeasure.AverageResponseTime
+const MedianResponseTime =
+    TicketMessagesEnrichedResponseTimesMeasure.MedianResponseTime
 const MedianResolutionTime = TicketMessagesMeasure.MedianResolutionTime
 const HelpdeskTicketCount = HelpdeskMessageMeasure.TicketCount
 const MessageCount = HelpdeskMessageMeasure.MessageCount
@@ -127,11 +129,11 @@ export const saveReport = (
             idField: CHANNEL_DIMENSION,
             metricField: MedianFirstResponseTime,
         },
-        [ChannelsTableColumns.AverageResponseTime]: {
-            column: ChannelsTableColumns.AverageResponseTime,
-            metricData: data.averageResponseTimeMetricPerChannel,
+        [ChannelsTableColumns.MedianResponseTime]: {
+            column: ChannelsTableColumns.MedianResponseTime,
+            metricData: data.medianResponseTimeMetricPerChannel,
             idField: CHANNEL_DIMENSION,
-            metricField: AverageResponseTime,
+            metricField: MedianResponseTime,
         },
         [ChannelsTableColumns.MedianResolutionTime]: {
             column: ChannelsTableColumns.MedianResolutionTime,

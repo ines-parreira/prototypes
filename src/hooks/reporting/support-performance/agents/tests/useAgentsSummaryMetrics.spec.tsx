@@ -1,11 +1,11 @@
 import { renderHook } from '@testing-library/react-hooks'
 
 import {
-    useAverageResponseTimeMetric,
     useClosedTicketsMetric,
     useCustomerSatisfactionMetric,
     useMedianFirstResponseTimeMetric,
     useMedianResolutionTimeMetric,
+    useMedianResponseTimeMetric,
     useMessagesReceivedMetric,
     useMessagesSentMetric,
     useOnlineTimeMetric,
@@ -32,9 +32,7 @@ const useClosedTicketsMetricMock = assumeMock(useClosedTicketsMetric)
 const useMedianFirstResponseTimeMetricMock = assumeMock(
     useMedianFirstResponseTimeMetric,
 )
-const useAverageResponseTimeMetricMock = assumeMock(
-    useAverageResponseTimeMetric,
-)
+const useMedianResponseTimeMetricMock = assumeMock(useMedianResponseTimeMetric)
 const useMessagesSentMetricMock = assumeMock(useMessagesSentMetric)
 const useMessagesReceivedMetricMock = assumeMock(useMessagesReceivedMetric)
 const useMedianResolutionTimeMetricMock = assumeMock(
@@ -85,7 +83,7 @@ describe('useAgentsSummaryMetrics', () => {
             closedTicketsMetric: metricData,
             customerSatisfactionMetric: metricData,
             medianFirstResponseTimeMetric: metricData,
-            averageResponseTimeMetric: metricData,
+            medianResponseTimeMetric: metricData,
             messagesSentMetric: metricData,
             messagesReceivedMetric: metricData,
             percentageOfClosedTicketsMetric: metricData,
@@ -112,7 +110,7 @@ describe('useAgentsSummaryMetrics', () => {
     useClosedTicketsMetricMock.mockReturnValue(metricData)
     useClosedTicketsMetricMock.mockReturnValue(metricData)
     useMedianFirstResponseTimeMetricMock.mockReturnValue(metricData)
-    useAverageResponseTimeMetricMock.mockReturnValue(metricData)
+    useMedianResponseTimeMetricMock.mockReturnValue(metricData)
     useMessagesSentMetricMock.mockReturnValue(metricData)
     useMessagesReceivedMetricMock.mockReturnValue(metricData)
     useMedianResolutionTimeMetricMock.mockReturnValue(metricData)

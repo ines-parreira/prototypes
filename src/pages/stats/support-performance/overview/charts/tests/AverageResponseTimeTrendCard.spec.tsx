@@ -3,7 +3,7 @@ import React from 'react'
 import { render } from '@testing-library/react'
 
 import { TrendCard } from 'pages/stats/common/components/TrendCard'
-import { AverageResponseTimeTrendCard } from 'pages/stats/support-performance/overview/charts/AverageResponseTimeTrendCard'
+import { MedianResponseTimeTrendCard } from 'pages/stats/support-performance/overview/charts/MedianResponseTimeTrendCard'
 import {
     OverviewMetric,
     OverviewMetricConfig,
@@ -14,19 +14,20 @@ import { assumeMock } from 'utils/testing'
 jest.mock('pages/stats/common/components/TrendCard')
 const TrendCardMock = assumeMock(TrendCard)
 
-describe('AverageResponseTimeTrendCard', () => {
+describe('MedianResponseTimeTrendCard', () => {
     beforeEach(() => {
         TrendCardMock.mockImplementation(() => <div />)
     })
-    it('should render Trend Card with metric config', () => {
-        const chartId = OverviewChart.AverageResponseTimeTrendCard
 
-        render(<AverageResponseTimeTrendCard chartId={chartId} />)
+    it('should render Trend Card with metric config', () => {
+        const chartId = OverviewChart.MedianResponseTimeTrendCard
+
+        render(<MedianResponseTimeTrendCard chartId={chartId} />)
 
         expect(TrendCardMock).toHaveBeenCalledWith(
             {
-                ...OverviewMetricConfig[OverviewMetric.AverageResponseTime],
-                drillDownMetric: OverviewMetric.AverageResponseTime,
+                ...OverviewMetricConfig[OverviewMetric.MedianResponseTime],
+                drillDownMetric: OverviewMetric.MedianResponseTime,
                 chartId,
             },
             {},

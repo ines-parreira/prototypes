@@ -7,12 +7,12 @@ import {
 } from 'hooks/reporting/common/useTableReportData'
 import { getCsvFileNameWithDates } from 'hooks/reporting/common/utils'
 import {
-    fetchAverageResponseTimeMetricPerChannel,
     fetchClosedTicketsMetricPerChannel,
     fetchCreatedTicketsMetricPerChannel,
     fetchCustomerSatisfactionMetricPerChannel,
     fetchMedianFirstResponseTimeMetricPerChannel,
     fetchMedianResolutionTimeMetricPerChannel,
+    fetchMedianResponseTimeMetricPerChannel,
     fetchMessagesReceivedMetricPerChannel,
     fetchMessagesSentMetricPerChannel,
     fetchTicketAverageHandleTimePerChannel,
@@ -36,7 +36,7 @@ export type ChannelsReportDataPoints =
     | 'createdTicketsMetricPerChannel'
     | 'customerSatisfactionMetricPerChannel'
     | 'medianFirstResponseTimeMetricPerChannel'
-    | 'averageResponseTimeMetricPerChannel'
+    | 'medianResponseTimeMetricPerChannel'
     | 'medianResolutionTimeMetricPerChannel'
     | 'messagesSentMetricPerChannel'
     | 'messagesReceivedMetricPerChannel'
@@ -92,7 +92,7 @@ export const ChannelsMetricsDataSources: TableDataSources<ChannelsReportData> =
         },
     ]
 
-const ChannelsMetricsDataSourcesWithoutAverageResponseTime: TableDataSources<ChannelsReportData> =
+const ChannelsMetricsDataSourcesWithoutMedianResponseTime: TableDataSources<ChannelsReportData> =
     [
         ...ChannelsMetricsDataSources,
         {
@@ -102,16 +102,16 @@ const ChannelsMetricsDataSourcesWithoutAverageResponseTime: TableDataSources<Cha
                     isFetching: false,
                     isError: false,
                 }),
-            title: 'averageResponseTimeMetricPerChannel',
+            title: 'medianResponseTimeMetricPerChannel',
         },
     ]
 
-const ChannelsMetricsDataSourcesWithAverageResponseTime: TableDataSources<ChannelsReportData> =
+const ChannelsMetricsDataSourcesWithMedianResponseTime: TableDataSources<ChannelsReportData> =
     [
         ...ChannelsMetricsDataSources,
         {
-            fetchData: fetchAverageResponseTimeMetricPerChannel,
-            title: 'averageResponseTimeMetricPerChannel',
+            fetchData: fetchMedianResponseTimeMetricPerChannel,
+            title: 'medianResponseTimeMetricPerChannel',
         },
     ]
 
@@ -124,8 +124,8 @@ export const useChannelsReportMetrics = () => {
     )
 
     const dataSources = isReportingAverageResponseTimeEnabled
-        ? ChannelsMetricsDataSourcesWithAverageResponseTime
-        : ChannelsMetricsDataSourcesWithoutAverageResponseTime
+        ? ChannelsMetricsDataSourcesWithMedianResponseTime
+        : ChannelsMetricsDataSourcesWithoutMedianResponseTime
 
     const { data: reportData, isFetching } = useTableReportData<
         keyof ChannelsReportData,
@@ -159,8 +159,8 @@ export const fetchChannelsTableReportData = async (
     },
 ) => {
     const dataSources = context.isReportingAverageResponseTimeEnabled
-        ? ChannelsMetricsDataSourcesWithAverageResponseTime
-        : ChannelsMetricsDataSourcesWithoutAverageResponseTime
+        ? ChannelsMetricsDataSourcesWithMedianResponseTime
+        : ChannelsMetricsDataSourcesWithoutMedianResponseTime
     const fileName = getCsvFileNameWithDates(
         cleanStatsFilters.period,
         CHANNELS_REPORT_FILE_NAME,

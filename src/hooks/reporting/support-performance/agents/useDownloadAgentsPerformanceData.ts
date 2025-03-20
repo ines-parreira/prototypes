@@ -7,11 +7,11 @@ import {
 } from 'hooks/reporting/common/useTableReportData'
 import { getCsvFileNameWithDates } from 'hooks/reporting/common/utils'
 import {
-    fetchAverageResponseTimeMetric,
     fetchClosedTicketsMetric,
     fetchCustomerSatisfactionMetric,
     fetchMedianFirstResponseTimeMetric,
     fetchMedianResolutionTimeMetric,
+    fetchMedianResponseTimeMetric,
     fetchMessagesReceivedMetric,
     fetchMessagesSentMetric,
     fetchOnlineTimeMetric,
@@ -20,11 +20,11 @@ import {
     Metric,
 } from 'hooks/reporting/metrics'
 import {
-    fetchAverageResponseTimeMetricPerAgent,
     fetchClosedTicketsMetricPerAgent,
     fetchCustomerSatisfactionMetricPerAgent,
     fetchMedianFirstResponseTimeMetricPerAgent,
     fetchMedianResolutionTimeMetricPerAgent,
+    fetchMedianResponseTimeMetricPerAgent,
     fetchMessagesReceivedMetricPerAgent,
     fetchMessagesSentMetricPerAgent,
     fetchOneTouchTicketsMetricPerAgent,
@@ -73,7 +73,7 @@ export const AGENTS_REPORT_FILE_NAME = 'agents-metrics'
 export type AgentsReportMetricDataPoints =
     | 'customerSatisfactionMetric'
     | 'medianFirstResponseTimeMetric'
-    | 'averageResponseTimeMetric'
+    | 'medianResponseTimeMetric'
     | 'medianResolutionTimeMetric'
     | 'percentageOfClosedTicketsMetric'
     | 'closedTicketsMetric'
@@ -104,8 +104,8 @@ export const agentsMetricsDataSources: TableDataSources<AgentsReportData> = [
         title: 'medianFirstResponseTimeMetric',
     },
     {
-        fetchData: fetchAverageResponseTimeMetricPerAgent,
-        title: 'averageResponseTimeMetric',
+        fetchData: fetchMedianResponseTimeMetricPerAgent,
+        title: 'medianResponseTimeMetric',
     },
     {
         fetchData: fetchTicketsRepliedMetricPerAgent,
@@ -171,8 +171,8 @@ export const agentsSummaryDataSources: TableSummaryDataSources<AgentsReportData>
             title: 'medianFirstResponseTimeMetric',
         },
         {
-            fetchData: fetchAverageResponseTimeMetric,
-            title: 'averageResponseTimeMetric',
+            fetchData: fetchMedianResponseTimeMetric,
+            title: 'medianResponseTimeMetric',
         },
         {
             fetchData: fetchTicketsRepliedMetric,

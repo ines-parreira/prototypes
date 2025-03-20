@@ -24,7 +24,7 @@ import FiltersPanelWrapper from 'pages/stats/common/filters/FiltersPanelWrapper/
 import { DrillDownModalTrigger } from 'pages/stats/DrillDownModalTrigger'
 import { useReportChartRestrictions } from 'pages/stats/report-chart-restrictions/useReportChartRestrictions'
 import { OverviewChartCard } from 'pages/stats/support-performance/components/OverviewChartCard'
-import { AverageResponseTimeTrendCard } from 'pages/stats/support-performance/overview/charts/AverageResponseTimeTrendCard'
+import { MedianResponseTimeTrendCard } from 'pages/stats/support-performance/overview/charts/MedianResponseTimeTrendCard'
 import { MessagesReceivedTrendCard } from 'pages/stats/support-performance/overview/charts/MessagesReceivedTrendCard'
 import { TicketsCreatedVsClosedChart } from 'pages/stats/support-performance/overview/charts/TicketsCreatedVsClosedChart'
 import { WorkloadPerChannelChart } from 'pages/stats/support-performance/overview/charts/WorkloadPerChannelChart'
@@ -99,11 +99,9 @@ jest.mock(
 )
 const MessagesReceivedTrendCardMock = assumeMock(MessagesReceivedTrendCard)
 jest.mock(
-    'pages/stats/support-performance/overview/charts/AverageResponseTimeTrendCard',
+    'pages/stats/support-performance/overview/charts/MedianResponseTimeTrendCard',
 )
-const AverageResponseTimeTrendCardMock = assumeMock(
-    AverageResponseTimeTrendCard,
-)
+const MedianResponseTimeTrendCardMock = assumeMock(MedianResponseTimeTrendCard)
 
 jest.mock('pages/stats/report-chart-restrictions/useReportChartRestrictions')
 const useReportChartRestrictionsMock = assumeMock(useReportChartRestrictions)
@@ -136,7 +134,7 @@ describe('<SupportPerformanceOverview />', () => {
         ))
         ZeroTouchTicketsTrendCardMock.mockImplementation(() => <div />)
         MessagesReceivedTrendCardMock.mockImplementation(() => <div />)
-        AverageResponseTimeTrendCardMock.mockImplementation(() => <div />)
+        MedianResponseTimeTrendCardMock.mockImplementation(() => <div />)
         mockFlags({
             [FeatureFlagKey.ReportingZeroTouchTicketsMetric]: true,
             [FeatureFlagKey.ReportingMessagesReceivedMetric]: true,
@@ -197,7 +195,7 @@ describe('<SupportPerformanceOverview />', () => {
         expect(ZeroTouchTicketsTrendCardMock).toHaveBeenCalled()
     })
 
-    it('should render AverageResponseTimeTrendCard TrendCard', () => {
+    it('should render MedianResponseTimeTrendCard TrendCard', () => {
         mockFlags({
             [FeatureFlagKey.ReportingAverageResponseTime]: true,
         })
@@ -208,7 +206,7 @@ describe('<SupportPerformanceOverview />', () => {
             </Provider>,
         )
 
-        expect(AverageResponseTimeTrendCardMock).toHaveBeenCalled()
+        expect(MedianResponseTimeTrendCardMock).toHaveBeenCalled()
     })
 
     it('should render Messages Received TrendCard', () => {

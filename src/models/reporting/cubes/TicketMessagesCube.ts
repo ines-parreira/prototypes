@@ -3,7 +3,6 @@ import { Cube } from 'models/reporting/types'
 
 export enum TicketMessagesMeasure {
     MedianFirstResponseTime = 'TicketMessagesEnriched.medianFirstResponseTime',
-    AverageResponseTime = 'TicketMessagesEnriched.averageResponseTime',
     MedianResolutionTime = 'TicketMessagesEnriched.medianResolutionTime',
     MessagesAverage = 'TicketMessagesEnriched.messagesAverage',
 }
@@ -12,7 +11,6 @@ export enum TicketMessagesDimension {
     FirstMessageChannel = 'TicketMessagesEnriched.firstMessageChannel',
     Integration = 'TicketMessagesEnriched.integration',
     FirstHelpdeskMessageUserId = 'TicketMessagesEnriched.firstHelpdeskMessageUserId',
-    SenderId = 'TicketMessagesEnriched.senderId',
     OneTouchTickets = 'TicketMessagesEnriched.oneTouchTickets',
     ZeroTouchTickets = 'TicketMessagesEnriched.zeroTouchTickets',
     MessagesCount = 'TicketMessagesEnriched.messagesCount',

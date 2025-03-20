@@ -103,7 +103,7 @@ const agents: User[] = [
 const baseMetricBuilder = (reportData: any) => ({
     closedTicketsMetric: buildQuery(false, reportData),
     customerSatisfactionMetric: buildQuery(false, reportData),
-    averageResponseTimeMetric: buildQuery(false, reportData),
+    medianResponseTimeMetric: buildQuery(false, reportData),
     medianFirstResponseTimeMetric: buildQuery(false, reportData),
     messagesSentMetric: buildQuery(false, reportData),
     messagesReceivedMetric: buildQuery(false, reportData),

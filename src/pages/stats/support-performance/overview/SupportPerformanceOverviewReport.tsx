@@ -240,7 +240,7 @@ export default function SupportPerformanceOverviewReport() {
                         >
                             <DashboardComponent
                                 chart={
-                                    OverviewChart.AverageResponseTimeTrendCard
+                                    OverviewChart.MedianResponseTimeTrendCard
                                 }
                                 config={SupportPerformanceOverviewReportConfig}
                             />

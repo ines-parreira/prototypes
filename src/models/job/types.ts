@@ -4,6 +4,7 @@ import { ConvertOrderConversionCube } from 'models/reporting/cubes/ConvertOrderC
 import { HelpdeskCustomerMessagesReceivedEnrichedCubeWithJoins } from 'models/reporting/cubes/HelpdeskCustomerMessagesReceivedEnrichedCube'
 import { HelpdeskMessageCubeWithJoins } from 'models/reporting/cubes/HelpdeskMessageCube'
 import { TicketSLACubeWithJoins } from 'models/reporting/cubes/sla/TicketSLACube'
+import { TicketMessagesEnrichedResponseTimes } from 'models/reporting/cubes/TicketMessagesEnrichedResponseTimesCube'
 import { TicketTagsEnrichedCube } from 'models/reporting/cubes/TicketTagsEnrichedCube'
 import { VoiceCallCube } from 'models/reporting/cubes/VoiceCallCube'
 import { ReportingQuery } from 'models/reporting/types'
@@ -66,6 +67,7 @@ export type DrillDownReportingQuery = ReportingQuery<
     | TicketSLACubeWithJoins
     | VoiceCallCube
     | TicketTagsEnrichedCube
+    | TicketMessagesEnrichedResponseTimes
 >
 
 export type ReportingQueryJobParams = {

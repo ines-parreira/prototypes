@@ -13,7 +13,7 @@ export enum AgentsTableColumn {
     AgentName = 'agent_name',
     CustomerSatisfaction = 'agent_customer_satisfaction',
     MedianFirstResponseTime = 'agent_median_first_response_time',
-    AverageResponseTime = 'agent_average_response_time',
+    MedianResponseTime = 'agent_median_response_time',
     MedianResolutionTime = 'agent_median_resolution_time',
     MessagesSent = 'agent_messages_sent',
     MessagesReceived = 'agent_messages_received',
@@ -144,7 +144,7 @@ export enum ChannelsTableColumns {
     MessagesSent = 'channels_messages_sent',
     MessagesReceived = 'channels_messages_received',
     CustomerSatisfaction = 'channels_customer_satisfaction',
-    AverageResponseTime = 'channels_average_response_time',
+    MedianResponseTime = 'channels_median_response_time',
 }
 
 export type TableColumnSet =

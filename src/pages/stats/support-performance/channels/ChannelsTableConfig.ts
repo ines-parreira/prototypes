@@ -1,11 +1,11 @@
 import {
     MetricPerChannelQueryHook,
-    useAverageResponseTimeMetricPerChannel,
     useClosedTicketsMetricPerChannel,
     useCreatedTicketsMetricPerChannel,
     useCustomerSatisfactionMetricPerChannel,
     useMedianFirstResponseTimeMetricPerChannel,
     useMedianResolutionTimeMetricPerChannel,
+    useMedianResponseTimeMetricPerChannel,
     useMessagesReceivedMetricPerChannel,
     useMessagesSentMetricPerChannel,
     useTicketAverageHandleTimePerChannel,
@@ -13,11 +13,11 @@ import {
 } from 'hooks/reporting/support-performance/channels/metricsPerChannel'
 import { usePercentageOfCreatedTicketsMetricPerChannel } from 'hooks/reporting/support-performance/channels/usePercentageOfCreatedTicketsMetricPerChannel'
 import { ticketHandleTimePerTicketDrillDownQueryFactory } from 'models/reporting/queryFactories/agentxp/ticketHandleTime'
-import { averageResponseTimeMetricPerTicketDrillDownQueryFactory } from 'models/reporting/queryFactories/support-performance/averageResponseTime'
 import { closedTicketsPerTicketDrillDownQueryFactory } from 'models/reporting/queryFactories/support-performance/closedTickets'
 import { customerSatisfactionMetricDrillDownQueryFactory } from 'models/reporting/queryFactories/support-performance/customerSatisfaction'
 import { firstResponseTimeMetricPerTicketDrillDownQueryFactory } from 'models/reporting/queryFactories/support-performance/medianFirstResponseTime'
 import { resolutionTimeMetricPerTicketDrillDownQueryFactory } from 'models/reporting/queryFactories/support-performance/medianResolutionTime'
+import { medianResponseTimeMetricPerTicketDrillDownQueryFactory } from 'models/reporting/queryFactories/support-performance/medianResponseTime'
 import { messagesReceivedMetricPerTicketDrillDownQueryFactory } from 'models/reporting/queryFactories/support-performance/messagesReceived'
 import { messagesSentMetricPerTicketDrillDownQueryFactory } from 'models/reporting/queryFactories/support-performance/messagesSent'
 import { ticketsCreatedPerTicketDrillDownQueryFactory } from 'models/reporting/queryFactories/support-performance/ticketsCreated'
@@ -80,7 +80,7 @@ export const ChannelsTableLabels: Record<ChannelsTableColumns, string> = {
     [ChannelsTableColumns.MessagesSent]: MESSAGES_SENT_LABEL,
     [ChannelsTableColumns.MessagesReceived]: MESSAGES_RECEIVED_LABEL,
     [ChannelsTableColumns.CustomerSatisfaction]: CUSTOMER_SATISFACTION_LABEL,
-    [ChannelsTableColumns.AverageResponseTime]: AVERAGE_RESPONSE_TIME_LABEL,
+    [ChannelsTableColumns.MedianResponseTime]: AVERAGE_RESPONSE_TIME_LABEL,
 }
 
 export const ChannelColumnConfig: Record<
@@ -138,11 +138,11 @@ export const ChannelColumnConfig: Record<
         useMetric: useMedianFirstResponseTimeMetricPerChannel,
         drillDownQuery: firstResponseTimeMetricPerTicketDrillDownQueryFactory,
     },
-    [ChannelsTableColumns.AverageResponseTime]: {
+    [ChannelsTableColumns.MedianResponseTime]: {
         format: 'duration',
-        hint: OverviewMetricConfig[OverviewMetric.AverageResponseTime].hint,
-        useMetric: useAverageResponseTimeMetricPerChannel,
-        drillDownQuery: averageResponseTimeMetricPerTicketDrillDownQueryFactory,
+        hint: OverviewMetricConfig[OverviewMetric.MedianResponseTime].hint,
+        useMetric: useMedianResponseTimeMetricPerChannel,
+        drillDownQuery: medianResponseTimeMetricPerTicketDrillDownQueryFactory,
     },
     [ChannelsTableColumns.MedianResolutionTime]: {
         format: 'duration',
