@@ -1,7 +1,10 @@
 import { useFormContext } from 'react-hook-form'
 import { Link } from 'react-router-dom'
 
-import { PhoneIntegration } from '@gorgias/api-queries'
+import {
+    PhoneIntegration,
+    UpdateAllPhoneIntegrationSettings,
+} from '@gorgias/api-queries'
 import { Label } from '@gorgias/merchant-ui-kit'
 
 import { FormField } from 'core/forms'
@@ -9,8 +12,6 @@ import useAppSelector from 'hooks/useAppSelector'
 import EmojiTextInput from 'pages/common/forms/EmojiTextInput/EmojiTextInput'
 import PhoneNumberInput from 'pages/common/forms/PhoneNumberInput/PhoneNumberInput'
 import { getNewPhoneNumber } from 'state/entities/phoneNumbers/selectors'
-
-import { FormValues } from './useVoicePreferencesForm'
 
 import css from './VoiceIntegrationSettingsFormGeneralSection.less'
 
@@ -21,12 +22,16 @@ type Props = {
 function VoiceIntegrationSettingsFormGeneralSection({
     integration,
 }: Props): JSX.Element {
-    const methods = useFormContext<FormValues>()
+    const methods = useFormContext<
+        UpdateAllPhoneIntegrationSettings | PhoneIntegration
+    >()
     const { setValue, watch } = methods
 
     const emoji = watch('meta.emoji')
     const phoneNumberId = watch('meta.phone_number_id')
-    const phoneNumber = useAppSelector(getNewPhoneNumber(phoneNumberId))
+    const phoneNumber = phoneNumberId
+        ? useAppSelector(getNewPhoneNumber(phoneNumberId))
+        : ''
 
     return (
         <>
@@ -38,7 +43,7 @@ function VoiceIntegrationSettingsFormGeneralSection({
                     name="name"
                     id="name"
                     field={EmojiTextInput}
-                    emoji={emoji}
+                    emoji={emoji ?? null}
                     placeholder="Ex: Company Support Line"
                     isRequired
                     onEmojiChange={(emoji: string | null) =>
@@ -62,7 +67,7 @@ function VoiceIntegrationSettingsFormGeneralSection({
                     {phoneNumber && (
                         <PhoneNumberInput
                             value={phoneNumber.phone_number_friendly}
-                            isDisabled={true}
+                            disabled={true}
                         />
                     )}
                 </div>

@@ -1,6 +1,4 @@
-import React from 'react'
-
-import { fireEvent, waitFor } from '@testing-library/react'
+import { act, fireEvent, waitFor } from '@testing-library/react'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 
@@ -338,24 +336,26 @@ describe('<VoiceMessageField horizontal="true" />', () => {
 
             const input = container.querySelector('input[type="file"]')
             expect(input).toBeInTheDocument()
-            if (input) {
-                fireEvent.change(input, { target: { files: [file] } })
-            }
+            act(() => {
+                if (input) {
+                    fireEvent.change(input, { target: { files: [file] } })
+                }
 
-            ;(
-                useUploadCustomVoiceRecordingMock as jest.MockedFunction<
-                    typeof useUploadCustomVoiceRecording
-                >
-            ).mock.calls[0][0]?.mutation?.onSuccess!(
-                axiosSuccessResponse<UploadedCustomRecording>({
-                    url: 'https://example.com/voice-recording.mp3',
-                    name: 'example.mp3',
-                    content_type: 'audio/mpeg',
-                    size: 23,
-                }),
-                '' as any,
-                '' as any,
-            )
+                ;(
+                    useUploadCustomVoiceRecordingMock as jest.MockedFunction<
+                        typeof useUploadCustomVoiceRecording
+                    >
+                ).mock.calls[0][0]?.mutation?.onSuccess!(
+                    axiosSuccessResponse<UploadedCustomRecording>({
+                        url: 'https://example.com/voice-recording.mp3',
+                        name: 'example.mp3',
+                        content_type: 'audio/mpeg',
+                        size: 23,
+                    }),
+                    '' as any,
+                    '' as any,
+                )
+            })
 
             await waitFor(() => {
                 expect(mutateUploadMock).toHaveBeenCalledWith({
@@ -368,8 +368,6 @@ describe('<VoiceMessageField horizontal="true" />', () => {
                     voice_message_type: VoiceMessageType.VoiceRecording,
                     voice_recording_file_path:
                         'https://example.com/voice-recording.mp3',
-                    new_voice_recording_file_name: 'example.mp3',
-                    new_voice_recording_file_type: 'audio/mpeg',
                 })
             })
         })
@@ -384,17 +382,19 @@ describe('<VoiceMessageField horizontal="true" />', () => {
             }
 
             const { container } = renderWithUpload(message)
-            ;(
-                useUploadCustomVoiceRecordingMock as jest.MockedFunction<
-                    typeof useUploadCustomVoiceRecording
-                >
-            ).mock.calls[0][0]?.mutation?.onError!(
-                {
-                    response: { data: { error: 'error' } },
-                },
-                '' as any,
-                '' as any,
-            )
+            act(() => {
+                ;(
+                    useUploadCustomVoiceRecordingMock as jest.MockedFunction<
+                        typeof useUploadCustomVoiceRecording
+                    >
+                ).mock.calls[0][0]?.mutation?.onError!(
+                    {
+                        response: { data: { error: 'error' } },
+                    },
+                    '' as any,
+                    '' as any,
+                )
+            })
 
             const input = container.querySelector('input[type="file"]')
             expect(input).toBeInTheDocument()
@@ -440,9 +440,11 @@ describe('<VoiceMessageField horizontal="true" />', () => {
 
             const input = container.querySelector('input[type="file"]')
             expect(input).toBeInTheDocument()
-            if (input) {
-                fireEvent.change(input, { target: { files: [file] } })
-            }
+            act(() => {
+                if (input) {
+                    fireEvent.change(input, { target: { files: [file] } })
+                }
+            })
 
             await waitFor(() => {
                 expect(mutateUploadMock).toHaveBeenCalledWith({
@@ -456,8 +458,6 @@ describe('<VoiceMessageField horizontal="true" />', () => {
                     voice_message_type: VoiceMessageType.VoiceRecording,
                     voice_recording_file_path:
                         'https://example.com/voice-recording.mp3',
-                    new_voice_recording_file_name: 'example.mp3',
-                    new_voice_recording_file_type: 'audio/mpeg',
                 })
             })
         })

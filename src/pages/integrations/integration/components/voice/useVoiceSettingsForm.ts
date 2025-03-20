@@ -11,7 +11,11 @@ import {
 import useAppDispatch from 'hooks/useAppDispatch'
 import { useNotify } from 'hooks/useNotify'
 import { isGorgiasApiError } from 'models/api/types'
-import { DEFAULT_RECORDING_NOTIFICATION } from 'models/integration/constants'
+import {
+    DEFAULT_GREETING_MESSAGE,
+    DEFAULT_RECORDING_NOTIFICATION,
+    VOICEMAIL_DEFAULT_VOICE_MESSAGE,
+} from 'models/integration/constants'
 import history from 'pages/history'
 import { fetchIntegrations } from 'state/integrations/actions'
 import {
@@ -101,6 +105,14 @@ export const getDefaultValues = (
             },
             send_calls_to_voicemail: false,
             recording_notification: DEFAULT_RECORDING_NOTIFICATION,
+            voicemail: {
+                ...VOICEMAIL_DEFAULT_VOICE_MESSAGE,
+                outside_business_hours: {
+                    use_during_business_hours_settings: true,
+                    ...VOICEMAIL_DEFAULT_VOICE_MESSAGE,
+                },
+            },
+            greeting_message: DEFAULT_GREETING_MESSAGE,
         },
     }
 

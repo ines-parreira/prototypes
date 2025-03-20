@@ -3,7 +3,11 @@ import React, { useCallback, useEffect, useState } from 'react'
 import _get from 'lodash/get'
 
 import { useUploadCustomVoiceRecording } from '@gorgias/api-queries'
-import { CustomRecordingType } from '@gorgias/api-types'
+import {
+    VoiceMessage as ApiVoiceMessage,
+    VoiceMessageType as ApiVoiceMessageType,
+    CustomRecordingType,
+} from '@gorgias/api-types'
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import { GorgiasApiResponseDataError } from 'models/api/types'
@@ -13,7 +17,6 @@ import {
 } from 'models/integration/constants'
 import {
     VoiceMessage,
-    VoiceMessageRecording,
     VoiceMessageTextToSpeech,
     VoiceMessageType,
 } from 'models/integration/types'
@@ -54,7 +57,7 @@ const VoiceMessageField = ({
     const dispatch = useAppDispatch()
     const { validateVoiceRecordingUpload } = useVoiceMessageValidation()
     const [voiceRecordingPath, setVoiceRecordingPath] = useState<
-        string | undefined
+        string | undefined | null
     >()
 
     useEffect(() => {
@@ -80,11 +83,9 @@ const VoiceMessageField = ({
     const { mutate: uploadFile, isLoading } = useUploadCustomVoiceRecording({
         mutation: {
             onSuccess: (response) => {
-                const newValue: VoiceMessageRecording = {
+                const newValue: ApiVoiceMessage = {
                     voice_recording_file_path: response.data.url,
-                    voice_message_type: VoiceMessageType.VoiceRecording,
-                    new_voice_recording_file_type: response.data.content_type,
-                    new_voice_recording_file_name: response.data.name,
+                    voice_message_type: ApiVoiceMessageType.VoiceRecording,
                 }
                 setVoiceRecordingPath(newValue.voice_recording_file_path)
                 onChange(newValue)
@@ -127,7 +128,7 @@ const VoiceMessageField = ({
                 const { url, newVoiceFields } = voiceRecordingUpload
                 setVoiceRecordingPath(url)
 
-                const newValue: VoiceMessageRecording = {
+                const newValue: VoiceMessage = {
                     ...value,
                     ...newVoiceFields,
                     voice_message_type: VoiceMessageType.VoiceRecording,
@@ -227,7 +228,7 @@ const VoiceMessageField = ({
 }
 
 type VoiceMessageRadioButtonProps = {
-    selectedVoiceMessageType: VoiceMessageType
+    selectedVoiceMessageType: VoiceMessageType | ApiVoiceMessageType
     onChange: (value: string) => void
     label?: string
     caption?: string

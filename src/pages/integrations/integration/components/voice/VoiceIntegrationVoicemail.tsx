@@ -148,14 +148,14 @@ export default function VoiceIntegrationVoicemail({
                     <div>
                         <VoiceMessageField
                             value={payload ?? VOICEMAIL_DEFAULT_VOICE_MESSAGE}
-                            onChange={(message) =>
+                            onChange={(message) => {
                                 setPayload((payload) => ({
                                     ...message,
                                     allow_to_leave_voicemail:
                                         payload?.allow_to_leave_voicemail ??
                                         true,
                                 }))
-                            }
+                            }}
                             horizontal={true}
                             allowNone
                         />

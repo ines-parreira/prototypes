@@ -14,7 +14,11 @@ import {
 
 import { integrationsState } from 'fixtures/integrations'
 import useAppDispatch from 'hooks/useAppDispatch'
-import { DEFAULT_RECORDING_NOTIFICATION } from 'models/integration/constants'
+import {
+    DEFAULT_GREETING_MESSAGE,
+    DEFAULT_RECORDING_NOTIFICATION,
+    VOICEMAIL_DEFAULT_VOICE_MESSAGE,
+} from 'models/integration/constants'
 import { fetchIntegrations } from 'state/integrations/actions'
 import { UPDATE_INTEGRATION_ERROR } from 'state/integrations/constants'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
@@ -189,6 +193,14 @@ describe('getDefaultValues', () => {
                 },
                 send_calls_to_voicemail: false,
                 recording_notification: DEFAULT_RECORDING_NOTIFICATION,
+                greeting_message: DEFAULT_GREETING_MESSAGE,
+                voicemail: {
+                    ...VOICEMAIL_DEFAULT_VOICE_MESSAGE,
+                    outside_business_hours: {
+                        use_during_business_hours_settings: true,
+                        ...VOICEMAIL_DEFAULT_VOICE_MESSAGE,
+                    },
+                },
             },
         })
     })
@@ -225,6 +237,14 @@ describe('getDefaultValues', () => {
                         DEFAULT_RECORDING_NOTIFICATION.text_to_speech_content,
                 },
                 send_calls_to_voicemail: false,
+                greeting_message: DEFAULT_GREETING_MESSAGE,
+                voicemail: {
+                    ...VOICEMAIL_DEFAULT_VOICE_MESSAGE,
+                    outside_business_hours: {
+                        use_during_business_hours_settings: true,
+                        ...VOICEMAIL_DEFAULT_VOICE_MESSAGE,
+                    },
+                },
             },
         })
     })

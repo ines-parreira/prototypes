@@ -74,26 +74,30 @@ export type PhoneIntegrationIvrSettings = {
 }
 
 export type VoiceMessageTextToSpeech = {
-    voice_message_type: VoiceMessageType.TextToSpeech
+    voice_message_type: VoiceMessageType.TextToSpeech | 'text_to_speech'
     text_to_speech_content: Maybe<string>
 }
 
 export type VoiceMessageRecording = {
-    voice_message_type: VoiceMessageType.VoiceRecording
-    voice_recording_file_path?: string
+    voice_message_type: VoiceMessageType.VoiceRecording | 'voice_recording'
+    voice_recording_file_path?: string | null
     new_voice_recording_file?: Maybe<string>
     new_voice_recording_file_name?: string
     new_voice_recording_file_type?: string
 }
 
 export type VoiceMessageNone = {
-    voice_message_type: VoiceMessageType.None
+    voice_message_type: VoiceMessageType.None | 'none'
 }
 
 export type VoiceMessage = {
-    voice_message_type: VoiceMessageType
+    voice_message_type:
+        | VoiceMessageType
+        | 'voice_recording'
+        | 'text_to_speech'
+        | 'none'
     text_to_speech_content?: Maybe<string>
-    voice_recording_file_path?: string
+    voice_recording_file_path?: string | null
 } & (VoiceMessageTextToSpeech | VoiceMessageRecording | VoiceMessageNone)
 
 export type IvrMenuAction =

@@ -49,6 +49,9 @@ const UnsavedChangesPromptMock = assumeMock(UnsavedChangesPrompt)
 jest.mock('../VoiceFormSubmitButton', () => ({ children }: any) => (
     <button type="submit">{children}</button>
 ))
+jest.mock('../VoiceIntegrationSettingsFormCallFlowSection', () => () => (
+    <div>VoiceIntegrationSettingsFormCallFlowSection</div>
+))
 
 describe('<VoiceIntegrationSettingsForm />', () => {
     const props = {
@@ -111,6 +114,9 @@ describe('<VoiceIntegrationSettingsForm />', () => {
         expect(screen.getByText('Call flow')).toBeInTheDocument()
         expect(
             screen.getByText('Configure how incoming calls are handled'),
+        ).toBeInTheDocument()
+        expect(
+            screen.getByText('VoiceIntegrationSettingsFormCallFlowSection'),
         ).toBeInTheDocument()
 
         expect(screen.getByText('Save changes')).toBeInTheDocument()

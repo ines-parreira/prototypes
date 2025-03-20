@@ -13,6 +13,7 @@ import {
 } from './useVoiceSettingsForm'
 import GenericVoiceFormSubmitButton from './VoiceFormSubmitButton'
 import VoiceFormUnsavedChangesPrompt from './VoiceFormUnsavedChangesPrompt'
+import VoiceIntegrationSettingsFormCallFlowSection from './VoiceIntegrationSettingsFormCallFlowSection'
 import VoiceIntegrationSettingsFormGeneralSection from './VoiceIntegrationSettingsFormGeneralSection'
 
 import css from './VoiceIntegrationSettingsForm.less'
@@ -41,6 +42,7 @@ function VoiceIntegrationSettingsForm({ integration }: Props): JSX.Element {
                             Configure how incoming calls are handled
                         </p>
                     </div>
+                    <VoiceIntegrationSettingsFormCallFlowSection />
                 </div>
             </div>
             <div className={css.buttons}>

@@ -1,0 +1,19 @@
+@import (reference) '~@gorgias/design-tokens/dist/css/layout';
+
+:local {
+    .container {
+        display: flex;
+        flex-direction: column;
+        gap: @layout-spacing-m;
+    }
+
+    .innerSection {
+        display: flex;
+        flex-direction: column;
+        gap: @layout-spacing-s;
+
+        .outsideBusinessHoursMessage {
+            margin-bottom: @layout-spacing-s;
+        }
+    }
+}

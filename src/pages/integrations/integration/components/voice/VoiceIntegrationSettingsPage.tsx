@@ -1,9 +1,16 @@
 import { useParams } from 'react-router-dom'
 
-import { PhoneIntegration, useGetIntegration } from '@gorgias/api-queries'
-import { isPhoneIntegration } from '@gorgias/api-validators'
+import {
+    PhoneIntegration,
+    UpdateAllPhoneIntegrationSettings,
+    useGetIntegration,
+} from '@gorgias/api-queries'
+import {
+    isPhoneIntegration,
+    validateUpdateAllPhoneIntegrationSettings,
+} from '@gorgias/api-validators'
 
-import { Form } from 'core/forms'
+import { Form, toFormErrors } from 'core/forms'
 import SettingsContent from 'pages/settings/SettingsContent'
 import SettingsPageContainer from 'pages/settings/SettingsPageContainer'
 
@@ -35,6 +42,11 @@ function VoiceIntegrationSettingsPage() {
                         keepDirty: false,
                         keepDefaultValues: false,
                         keepDirtyValues: false,
+                    }}
+                    validator={(values: UpdateAllPhoneIntegrationSettings) => {
+                        return toFormErrors(
+                            validateUpdateAllPhoneIntegrationSettings(values),
+                        )
                     }}
                 >
                     <VoiceIntegrationSettingsForm integration={integration} />

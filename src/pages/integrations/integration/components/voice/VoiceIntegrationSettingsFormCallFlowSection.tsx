@@ -1,0 +1,67 @@
+import { CustomRecordingType } from '@gorgias/api-types'
+
+import { FormField } from 'core/forms'
+import Accordion from 'pages/common/components/accordion/Accordion'
+
+import { formVoiceMessageValidation } from './hooks/useVoiceMessageValidation'
+import VoiceIntegrationSettingCallRecording from './VoiceIntegrationSettingCallRecording'
+import VoiceIntegrationSettingCallTranscription from './VoiceIntegrationSettingCallTranscription'
+import VoiceIntegrationSettingDistributionBehavior from './VoiceIntegrationSettingDistributionBehavior'
+import VoiceIntegrationSettingVoicemail from './VoiceIntegrationSettingVoicemail'
+import VoiceMessageField from './VoiceMessageField'
+import VoiceSettingAccordionItem from './VoiceSettingAccordionItem'
+
+const MAX_RECORDING_DURATION = 30
+
+function VoiceIntegrationSettingsFormCallFlowSection(): JSX.Element {
+    return (
+        <div>
+            <Accordion>
+                <VoiceSettingAccordionItem
+                    subtitle={'Greeting message'}
+                    description={'Customize your greeting message'}
+                >
+                    <FormField
+                        field={VoiceMessageField}
+                        name={'meta.greeting_message'}
+                        maxRecordingDuration={MAX_RECORDING_DURATION}
+                        allowNone
+                        horizontal={true}
+                        shouldUpload={true}
+                        customRecordingType={
+                            CustomRecordingType.GreetingMessage
+                        }
+                        radioButtonId={'greeting-message'}
+                        validation={formVoiceMessageValidation}
+                    />
+                </VoiceSettingAccordionItem>
+                <VoiceSettingAccordionItem
+                    subtitle={'Distribution behavior'}
+                    description={'Customize where to route your callers'}
+                >
+                    <VoiceIntegrationSettingDistributionBehavior />
+                </VoiceSettingAccordionItem>
+                <VoiceSettingAccordionItem
+                    subtitle={'Voicemail'}
+                    description={'Customize your voicemail'}
+                >
+                    <VoiceIntegrationSettingVoicemail />
+                </VoiceSettingAccordionItem>
+                <VoiceSettingAccordionItem
+                    subtitle={'Call recording'}
+                    description={'Toggle call recordings on / off'}
+                >
+                    <VoiceIntegrationSettingCallRecording />
+                </VoiceSettingAccordionItem>
+                <VoiceSettingAccordionItem
+                    subtitle={'Call transcription'}
+                    description={'Toggle automatic call transcription on / off'}
+                >
+                    <VoiceIntegrationSettingCallTranscription />
+                </VoiceSettingAccordionItem>
+            </Accordion>
+        </div>
+    )
+}
+
+export default VoiceIntegrationSettingsFormCallFlowSection

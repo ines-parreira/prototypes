@@ -1,0 +1,20 @@
+@import (reference) '~@gorgias/design-tokens/dist/css/layout';
+
+:local {
+    .container {
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+    }
+
+    .sectionData {
+        display: flex;
+        flex-direction: column;
+        gap: @layout-spacing-m;
+    }
+
+    .labelWithTooltip {
+        display: flex;
+        align-items: center;
+    }
+}
