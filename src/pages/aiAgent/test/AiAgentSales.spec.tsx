@@ -22,8 +22,10 @@ import { mockStore, renderWithRouter } from 'utils/testing'
 
 import { AiAgentSales } from '../AiAgentSales'
 
-jest.mock('../components/SalesPaywall/SalesPaywall', () => ({
-    SalesPaywall: jest.fn(() => <div data-testid="sales-paywall" />),
+jest.mock('../AiAgentPaywallView', () => ({
+    AiAgentPaywallView: jest.fn(() => (
+        <div data-testid="ai-agent-paywall-view" />
+    )),
 }))
 
 jest.mock('../components/SalesSettings/SalesSettings', () => ({
@@ -95,7 +97,9 @@ describe('<AiAgentSales />', () => {
                 })
                 renderComponent()
 
-                expect(screen.getByTestId('sales-paywall')).toBeInTheDocument()
+                expect(
+                    screen.getByTestId('ai-agent-paywall-view'),
+                ).toBeInTheDocument()
 
                 expect(
                     screen.queryByText(title, { selector: 'h1' }),
