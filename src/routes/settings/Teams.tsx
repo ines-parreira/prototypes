@@ -2,7 +2,7 @@ import { Route, Switch, useRouteMatch } from 'react-router-dom'
 
 import { PageSection } from 'config/pages'
 import { ADMIN_ROLE } from 'config/user'
-import TeamsForm from 'pages/settings/teams/Form'
+import { Form } from 'pages/settings/teams/Form'
 import TeamsList from 'pages/settings/teams/List'
 import List from 'pages/settings/teams/members/List'
 
@@ -20,7 +20,7 @@ export function Teams() {
             </Route>
 
             <Route path={`${path}/:id`} exact>
-                {renderAppSettings(TeamsForm, {
+                {renderAppSettings(Form, {
                     roleParams: [ADMIN_ROLE, PageSection.Teams],
                 })}
             </Route>

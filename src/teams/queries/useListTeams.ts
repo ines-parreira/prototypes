@@ -11,7 +11,7 @@ import { handleError } from 'hooks/agents/errorHandler'
 import useAppDispatch from 'hooks/useAppDispatch'
 import { fetchTeams } from 'models/team/resources'
 
-export default function useListTeams(
+export function useListTeams(
     params?: Parameters<typeof fetchTeams>[0],
     query?: UseInfiniteQueryOptions<
         Awaited<ReturnType<typeof fetchTeams>>,

@@ -1,9 +1,9 @@
-import React, { Component, SyntheticEvent } from 'react'
+import React, { SyntheticEvent, useEffect, useState } from 'react'
 
 import classnames from 'classnames'
 import { Emoji, EmojiData } from 'emoji-mart'
-import { connect, ConnectedProps } from 'react-redux'
-import { NavLink, RouteComponentProps } from 'react-router-dom'
+import _cloneDeep from 'lodash/cloneDeep'
+import { NavLink, useParams } from 'react-router-dom'
 import {
     Form as BootstrapForm,
     Breadcrumb,
@@ -16,159 +16,99 @@ import {
     Row,
 } from 'reactstrap'
 
-import { withAppNode, WithAppNodeProps } from 'appNode'
-import { GorgiasApiError } from 'models/api/types'
-import { deleteTeam, fetchTeam, updateTeam } from 'models/team/resources'
-import { Team } from 'models/team/types'
-import Button from 'pages/common/components/button/Button'
+import { Team } from '@gorgias/api-queries'
+import { Button, IconButton, LoadingSpinner } from '@gorgias/merchant-ui-kit'
+
+import { useAppNode } from 'appNode'
 import ConfirmButton from 'pages/common/components/button/ConfirmButton'
-import IconButton from 'pages/common/components/button/IconButton'
 import EmojiPicker from 'pages/common/components/EmojiPicker/EmojiPicker'
-import Loader from 'pages/common/components/Loader/Loader'
 import PageHeader from 'pages/common/components/PageHeader'
 import SecondaryNavbar from 'pages/common/components/SecondaryNavbar/SecondaryNavbar'
 import InputField from 'pages/common/forms/input/InputField'
-import withRouter from 'pages/common/utils/withRouter'
 import history from 'pages/history'
 import settingsCss from 'pages/settings/settings.less'
-import { notify } from 'state/notifications/actions'
-import { NotificationStatus } from 'state/notifications/types'
-import {
-    deleteTeamSuccess,
-    fetchTeamSuccess,
-    updateTeamSuccess,
-} from 'state/teams/actions'
+import { useDeleteTeam, useFetchTeam, useUpdateTeam } from 'teams/queries'
 
 import css from './Form.less'
 
-type OwnProps = RouteComponentProps<{ id: string }>
+export const Form = () => {
+    const { id: idString } = useParams<{
+        id: string
+    }>()
+    const id = parseInt(idString)
+    const appNode = useAppNode()
 
-type Props = OwnProps & ConnectedProps<typeof connector> & WithAppNodeProps
+    const [isEmojiPickerOpen, setIsEmojiPickerOpen] = useState(false)
+    const [team, setTeam] = useState<Team>()
 
-type State = {
-    team?: Team
-    isFetching: boolean
-    isSubmitting: boolean
-    isEmojiPickerOpen: boolean
-}
+    const { data, isLoading } = useFetchTeam(id)
+    const { mutate: updateTeam, isLoading: isSubmitting } = useUpdateTeam(id)
+    const { mutateAsync: deleteTeam } = useDeleteTeam()
 
-export class FormContainer extends Component<Props, State> {
-    state: State = {
-        isFetching: false,
-        isSubmitting: false,
-        isEmojiPickerOpen: false,
-    }
+    useEffect(() => {
+        setTeam(_cloneDeep(data?.data))
+    }, [data])
 
-    componentDidMount() {
-        void this._fetchTeam(this.props.teamId)
-    }
-
-    _fetchTeam = async (id: number) => {
-        this.setState({ isFetching: true })
-
-        try {
-            const res = await fetchTeam(id)
-
-            this.setState({
-                team: res,
-            })
-            this.props.fetchTeamSuccess(res)
-        } catch (error) {
-            void this.props.notify({
-                message: (error as GorgiasApiError).response.data.error.msg,
-                status: NotificationStatus.Error,
-            })
-        } finally {
-            this.setState({ isFetching: false })
-        }
-    }
-
-    _onSubmit = async (e: SyntheticEvent) => {
+    const onSubmit = (e: SyntheticEvent) => {
         e.preventDefault()
-        this.setState({ isSubmitting: true })
-        const team = this.state.team
 
         if (!!team) {
-            try {
-                await updateTeam(team)
-                this.props.updateTeamSuccess(team)
-            } catch (error) {
-                const { response } = error as GorgiasApiError
-
-                void this.props.notify({
-                    message: response.data.error.msg,
-                    status: NotificationStatus.Error,
-                })
-            } finally {
-                this.setState({ isSubmitting: false })
-            }
+            updateTeam({ id, data: team })
         }
     }
 
-    _delete = async () => {
-        const team = this.state.team
-
+    const handleDeleteTeam = async () => {
         if (!!team) {
             try {
-                await deleteTeam(team.id)
-
+                await deleteTeam({ id })
                 history.push('/app/settings/teams')
-                this.props.deleteTeamSuccess(team.id)
-            } catch (error) {
-                const { response } = error as GorgiasApiError
-
-                void this.props.notify({
-                    message: response.data.error.msg,
-                    status: NotificationStatus.Error,
-                })
+            } catch {
+                // handled in the hook
             }
         }
     }
 
-    _toggleEmojiPicker = () => {
-        this.setState({
-            isEmojiPickerOpen: !this.state.isEmojiPickerOpen,
-        })
+    const toggleEmojiPicker = () => {
+        setIsEmojiPickerOpen(!isEmojiPickerOpen)
     }
 
-    render() {
-        if (this.state.isFetching) {
-            return <Loader />
-        }
+    const emoji = team?.decoration?.emoji as string | EmojiData | undefined
 
-        const team = this.state.team
-        const emoji = team?.decoration?.emoji
+    return (
+        <div className="full-width">
+            <PageHeader
+                title={
+                    <Breadcrumb>
+                        <BreadcrumbItem>
+                            <NavLink to="/app/settings/teams" exact>
+                                Teams
+                            </NavLink>
+                        </BreadcrumbItem>
+                        <BreadcrumbItem active>
+                            Edit {team?.name}
+                        </BreadcrumbItem>
+                    </Breadcrumb>
+                }
+            />
 
-        return (
-            <div className="full-width">
-                <PageHeader
-                    title={
-                        <Breadcrumb>
-                            <BreadcrumbItem>
-                                <NavLink to="/app/settings/teams" exact>
-                                    Teams
-                                </NavLink>
-                            </BreadcrumbItem>
-                            <BreadcrumbItem active>
-                                Edit {team?.name}
-                            </BreadcrumbItem>
-                        </Breadcrumb>
-                    }
-                />
-
-                <SecondaryNavbar>
-                    <NavLink
-                        to={`/app/settings/teams/${team?.id || ''}/members`}
-                        exact
-                    >
-                        Team members
-                    </NavLink>
-                    <NavLink to={`/app/settings/teams/${team?.id || ''}`} exact>
-                        Settings
-                    </NavLink>
-                </SecondaryNavbar>
-                <div className={settingsCss.pageContainer}>
-                    <BootstrapForm onSubmit={this._onSubmit}>
+            <SecondaryNavbar>
+                <NavLink
+                    to={`/app/settings/teams/${team?.id || ''}/members`}
+                    exact
+                >
+                    Team members
+                </NavLink>
+                <NavLink to={`/app/settings/teams/${team?.id || ''}`} exact>
+                    Settings
+                </NavLink>
+            </SecondaryNavbar>
+            <div className={settingsCss.pageContainer}>
+                {isLoading ? (
+                    <div className={css.spinner}>
+                        <LoadingSpinner size="big" />
+                    </div>
+                ) : (
+                    <BootstrapForm onSubmit={onSubmit}>
                         <Row>
                             <Col lg={6}>
                                 <div className="d-flex">
@@ -183,11 +123,9 @@ export class FormContainer extends Component<Props, State> {
                                         value={team?.name || ''}
                                         onChange={(value) =>
                                             !!team &&
-                                            this.setState({
-                                                team: {
-                                                    ...team,
-                                                    name: value,
-                                                },
+                                            setTeam({
+                                                ...team,
+                                                name: value,
                                             })
                                         }
                                         isRequired
@@ -208,9 +146,7 @@ export class FormContainer extends Component<Props, State> {
                                                 )}
                                                 intent="secondary"
                                                 id="add-emoji"
-                                                onClick={
-                                                    this._toggleEmojiPicker
-                                                }
+                                                onClick={toggleEmojiPicker}
                                             >
                                                 {emoji ? (
                                                     <div
@@ -237,37 +173,30 @@ export class FormContainer extends Component<Props, State> {
                                             </Button>
                                             {!!emoji && !!team && (
                                                 <IconButton
+                                                    icon="close"
                                                     className={css.removeEmoji}
                                                     intent="secondary"
                                                     onClick={() =>
-                                                        this.setState({
-                                                            team: {
-                                                                ...team,
-                                                                decoration: {
-                                                                    ...team.decoration,
-                                                                    emoji: undefined,
-                                                                },
+                                                        setTeam({
+                                                            ...team,
+                                                            decoration: {
+                                                                ...team.decoration,
+                                                                emoji: undefined,
                                                             },
                                                         })
                                                     }
-                                                >
-                                                    close
-                                                </IconButton>
+                                                />
                                             )}
                                         </ButtonGroup>
                                         <Popover
                                             placement="right"
-                                            isOpen={
-                                                this.state.isEmojiPickerOpen
-                                            }
+                                            isOpen={isEmojiPickerOpen}
                                             target="add-emoji"
-                                            toggle={this._toggleEmojiPicker}
+                                            toggle={toggleEmojiPicker}
                                             hideArrow={true}
                                             className={css.popover}
                                             trigger="legacy"
-                                            container={
-                                                this.props.appNode ?? undefined
-                                            }
+                                            container={appNode ?? undefined}
                                         >
                                             <PopoverBody className="p-0">
                                                 <EmojiPicker
@@ -276,17 +205,14 @@ export class FormContainer extends Component<Props, State> {
                                                         emoji: EmojiData,
                                                     ) => {
                                                         !!team &&
-                                                            this.setState({
-                                                                team: {
-                                                                    ...team,
-                                                                    decoration:
-                                                                        {
-                                                                            ...team.decoration,
-                                                                            emoji,
-                                                                        },
+                                                            setTeam({
+                                                                ...team,
+                                                                decoration: {
+                                                                    ...team.decoration,
+                                                                    emoji,
                                                                 },
                                                             })
-                                                        this._toggleEmojiPicker()
+                                                        toggleEmojiPicker()
                                                     }}
                                                 />
                                             </PopoverBody>
@@ -301,11 +227,9 @@ export class FormContainer extends Component<Props, State> {
                                     value={team?.description || ''}
                                     onChange={(value) =>
                                         !!team &&
-                                        this.setState({
-                                            team: {
-                                                ...team,
-                                                description: value,
-                                            },
+                                        setTeam({
+                                            ...team,
+                                            description: value,
                                         })
                                     }
                                 />
@@ -313,7 +237,7 @@ export class FormContainer extends Component<Props, State> {
                                     <Button
                                         type="submit"
                                         className="mr-2"
-                                        isLoading={this.state.isSubmitting}
+                                        isLoading={isSubmitting}
                                     >
                                         Save team
                                     </Button>
@@ -328,7 +252,7 @@ export class FormContainer extends Component<Props, State> {
                                             </span>
                                         }
                                         intent="destructive"
-                                        onConfirm={this._delete}
+                                        onConfirm={handleDeleteTeam}
                                         className="float-right"
                                         leadingIcon="delete"
                                     >
@@ -338,22 +262,8 @@ export class FormContainer extends Component<Props, State> {
                             </Col>
                         </Row>
                     </BootstrapForm>
-                </div>
+                )}
             </div>
-        )
-    }
+        </div>
+    )
 }
-
-const connector = connect(
-    (state, ownProps: OwnProps) => ({
-        teamId: parseInt(ownProps.match.params.id),
-    }),
-    {
-        deleteTeamSuccess,
-        fetchTeamSuccess,
-        notify,
-        updateTeamSuccess,
-    },
-)
-
-export default withRouter(connector(withAppNode(FormContainer)))

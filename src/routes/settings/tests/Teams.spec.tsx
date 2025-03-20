@@ -5,7 +5,7 @@ import { Route, useRouteMatch } from 'react-router-dom'
 
 import { PageSection } from 'config/pages'
 import { ADMIN_ROLE } from 'config/user'
-import TeamsForm from 'pages/settings/teams/Form'
+import { Form } from 'pages/settings/teams/Form'
 import TeamsList from 'pages/settings/teams/List'
 import List from 'pages/settings/teams/members/List'
 import { assumeMock } from 'utils/testing'
@@ -49,7 +49,7 @@ describe('Teams', () => {
             {
                 callOrder: 1,
                 path: basePath + '/:id',
-                component: TeamsForm,
+                component: Form,
             },
         ],
         [

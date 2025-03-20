@@ -14,7 +14,7 @@ import { Team } from 'models/team/types'
 import Button from 'pages/common/components/button/Button'
 import DropdownFooter from 'pages/common/components/dropdown/DropdownFooter'
 import useSearch from 'search/useSearch'
-import useListTeams from 'teams/useListTeams'
+import { useListTeams } from 'teams/queries'
 
 import TeamDropdownItem from './TeamDropdownItem'
 

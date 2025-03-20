@@ -1,27 +1,27 @@
 import { QueryClient, useQueryClient } from '@tanstack/react-query'
 import { renderHook } from '@testing-library/react-hooks'
 
-import { useDeleteMacro as useDeleteMacroPrimitive } from '@gorgias/api-queries'
+import { useDeleteTeam as useDeleteTeamPrimitive } from '@gorgias/api-queries'
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import { notify } from 'state/notifications/actions'
 import { NotificationStatus } from 'state/notifications/types'
 import { assumeMock } from 'utils/testing'
 
-import { useDeleteMacro } from '../useDeleteMacro'
+import { useDeleteTeam } from '../useDeleteTeam'
 
 jest.mock('@gorgias/api-queries', () => ({
     __esModule: true,
-    useDeleteMacro: jest.fn(),
+    useDeleteTeam: jest.fn(),
     queryKeys: {
-        macros: {
-            listMacros: () => ({ pop: () => null }),
+        teams: {
+            listTeams: () => ({ pop: () => null }),
         },
     },
 }))
 
-const useDeleteMacroPrimitiveMock = assumeMock(useDeleteMacroPrimitive)
-const mockMutateDeleteMacro = jest.fn()
+const useDeleteTeamPrimitiveMock = assumeMock(useDeleteTeamPrimitive)
+const mockMutateDeleteTeam = jest.fn()
 
 jest.mock('hooks/useAppDispatch', () => jest.fn())
 const useAppDispatchMock = assumeMock(useAppDispatch)
@@ -31,15 +31,15 @@ const useQueryClientMock = assumeMock(useQueryClient)
 
 jest.mock('state/notifications/actions')
 
-describe('useDeleteMacro', () => {
+describe('useDeleteTeam', () => {
     const invalidateQueriesMock = jest.fn()
     const dispatchMock = jest.fn()
 
     beforeEach(() => {
         useAppDispatchMock.mockReturnValue(dispatchMock)
-        useDeleteMacroPrimitiveMock.mockReturnValue({
-            mutateAsync: mockMutateDeleteMacro,
-        } as unknown as ReturnType<typeof useDeleteMacroPrimitive>)
+        useDeleteTeamPrimitiveMock.mockReturnValue({
+            mutateAsync: mockMutateDeleteTeam,
+        } as unknown as ReturnType<typeof useDeleteTeamPrimitive>)
         useQueryClientMock.mockImplementation(
             () =>
                 ({
@@ -50,7 +50,7 @@ describe('useDeleteMacro', () => {
 
     it('should handle settled request', () => {
         const onSettled = jest.fn()
-        const { result } = renderHook(() => useDeleteMacro())
+        const { result } = renderHook(() => useDeleteTeam())
 
         void result.current.mutateAsync(
             {
@@ -61,7 +61,7 @@ describe('useDeleteMacro', () => {
             },
         )
         ;(
-            useDeleteMacroPrimitiveMock.mock.calls[0][0]
+            useDeleteTeamPrimitiveMock.mock.calls[0][0]
                 ?.mutation as unknown as {
                 onSettled: () => void
             }
@@ -73,7 +73,7 @@ describe('useDeleteMacro', () => {
     it('should handle failed request', () => {
         const msg = 'nope'
         const onError = jest.fn()
-        const { result } = renderHook(() => useDeleteMacro())
+        const { result } = renderHook(() => useDeleteTeam())
 
         void result.current.mutateAsync(
             {
@@ -84,7 +84,7 @@ describe('useDeleteMacro', () => {
             },
         )
         ;(
-            useDeleteMacroPrimitiveMock.mock.calls[0][0]
+            useDeleteTeamPrimitiveMock.mock.calls[0][0]
                 ?.mutation as unknown as {
                 onError: (args: unknown) => void
             }
@@ -109,7 +109,7 @@ describe('useDeleteMacro', () => {
     it('should handle successful request', () => {
         const id = 111
         const onSettled = jest.fn()
-        const { result } = renderHook(() => useDeleteMacro())
+        const { result } = renderHook(() => useDeleteTeam())
         void result.current.mutateAsync(
             {
                 id: 111,
@@ -119,7 +119,7 @@ describe('useDeleteMacro', () => {
             },
         )
         ;(
-            useDeleteMacroPrimitiveMock.mock.calls[0][0]
+            useDeleteTeamPrimitiveMock.mock.calls[0][0]
                 ?.mutation as unknown as {
                 onSuccess: (resp: unknown) => void
             }
@@ -130,7 +130,7 @@ describe('useDeleteMacro', () => {
         })
 
         expect(notify).toHaveBeenNthCalledWith(1, {
-            message: 'Successfully deleted macro',
+            message: 'Successfully deleted team',
             status: NotificationStatus.Success,
         })
     })

@@ -6,7 +6,7 @@ import { fireEvent, render, screen, waitFor } from '@testing-library/react'
 import { focusOnNextItem } from 'components/Dropdown'
 import { DropdownContext } from 'pages/common/components/dropdown/Dropdown'
 import useSearch from 'search/useSearch'
-import useListTeams from 'teams/useListTeams'
+import { useListTeams } from 'teams/queries'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 
 import TeamAssigneeDropdownMenu from '../TeamAssigneeDropdownMenu'
@@ -15,7 +15,7 @@ import TeamDropdownItem from '../TeamDropdownItem'
 jest.mock('components/Dropdown/focusOnNextItem')
 const mockFocusOnNextItem = focusOnNextItem as jest.Mock
 
-jest.mock('teams/useListTeams')
+jest.mock('teams/queries')
 const mockUseListTeams = useListTeams as jest.Mock
 
 jest.mock('search/useSearch')
