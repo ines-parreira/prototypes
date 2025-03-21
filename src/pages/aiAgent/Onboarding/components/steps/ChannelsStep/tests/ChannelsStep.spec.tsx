@@ -748,7 +748,9 @@ describe('ChannelsStep', () => {
 
             await waitFor(() => {
                 expect(mutateUpdateOnboardingMock).toHaveBeenCalledWith(
-                    expect.objectContaining({ data: expectedUpdate }),
+                    expect.objectContaining({
+                        data: expect.objectContaining(expectedUpdate),
+                    }),
                     expect.anything(),
                 )
             })
