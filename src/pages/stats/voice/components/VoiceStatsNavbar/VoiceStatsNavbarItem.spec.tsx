@@ -27,6 +27,7 @@ describe('<VoiceStatsNavbarItem />', () => {
     beforeEach(() => {
         useReportChartRestrictionsMock.mockReturnValue({
             isRouteRestrictedToCurrentUser: () => false,
+            isModuleRestrictedToCurrentUser: () => false,
         } as any)
     })
 

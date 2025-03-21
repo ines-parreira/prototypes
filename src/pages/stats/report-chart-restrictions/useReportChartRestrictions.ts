@@ -9,6 +9,7 @@ import {
 } from 'pages/stats/dashboards/config'
 import {
     ChartRestriction,
+    ModuleRestriction,
     RBAC_RESTRICTIONS,
     ReportRestriction,
     RestrictedComponentType,
@@ -22,9 +23,28 @@ export const getAccountRestrictions = (currentAccountId: number) => {
     return currentConfigurations !== undefined ? currentConfigurations : []
 }
 
+export const getUserModuleRestrictions = (
+    currentUser: Immutable.Map<any, any>,
+    accountRestrictions: (
+        | ChartRestriction
+        | ReportRestriction
+        | ModuleRestriction
+    )[],
+) => {
+    return accountRestrictions.filter(
+        (configuration) =>
+            !hasRole(currentUser, configuration.role) &&
+            configuration.type === RestrictedComponentType.Module,
+    )
+}
+
 export const getUserReportsRestrictions = (
     currentUser: Immutable.Map<any, any>,
-    accountRestrictions: (ChartRestriction | ReportRestriction)[],
+    accountRestrictions: (
+        | ChartRestriction
+        | ReportRestriction
+        | ModuleRestriction
+    )[],
 ) => {
     return accountRestrictions.filter(
         (configuration) =>
@@ -35,7 +55,11 @@ export const getUserReportsRestrictions = (
 
 export const getUserChartsRestrictions = (
     currentUser: Immutable.Map<any, any>,
-    accountRestrictions: (ChartRestriction | ReportRestriction)[],
+    accountRestrictions: (
+        | ChartRestriction
+        | ReportRestriction
+        | ModuleRestriction
+    )[],
 ) => {
     return accountRestrictions.filter(
         (configuration) =>
@@ -55,6 +79,11 @@ export const useReportChartRestrictions = () => {
         [currentAccountId],
     )
 
+    const moduleRestrictions = useMemo(
+        () => getUserModuleRestrictions(currentUser, accountRestrictions),
+        [accountRestrictions, currentUser],
+    )
+
     const userReportRestrictions = useMemo(
         () => getUserReportsRestrictions(currentUser, accountRestrictions),
         [accountRestrictions, currentUser],
@@ -63,6 +92,17 @@ export const useReportChartRestrictions = () => {
     const userChartRestrictions = useMemo(
         () => getUserChartsRestrictions(currentUser, accountRestrictions),
         [accountRestrictions, currentUser],
+    )
+
+    const isModuleRestrictedToCurrentUser = useCallback(
+        (url: string): boolean => {
+            return !!moduleRestrictions.find((restriction) =>
+                restriction.ids.find(
+                    (restrictionUrl) => restrictionUrl === url,
+                ),
+            )
+        },
+        [moduleRestrictions],
     )
 
     const isRouteRestrictedToCurrentUser = useCallback(
@@ -119,5 +159,6 @@ export const useReportChartRestrictions = () => {
     return {
         isRouteRestrictedToCurrentUser,
         isChartRestrictedToCurrentUser,
+        isModuleRestrictedToCurrentUser,
     }
 }

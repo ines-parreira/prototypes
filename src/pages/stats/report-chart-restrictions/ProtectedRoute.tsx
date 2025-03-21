@@ -9,12 +9,14 @@ export const ProtectedRoute = ({
     children: ReactElement<any, any>
     path: string | string[]
 }) => {
-    const { isRouteRestrictedToCurrentUser } = useReportChartRestrictions()
+    const { isRouteRestrictedToCurrentUser, isModuleRestrictedToCurrentUser } =
+        useReportChartRestrictions()
 
     if (
         path &&
         typeof path === 'string' &&
-        isRouteRestrictedToCurrentUser(path)
+        (isRouteRestrictedToCurrentUser(path) ||
+            isModuleRestrictedToCurrentUser(path))
     ) {
         return null
     }

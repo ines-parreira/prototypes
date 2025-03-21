@@ -239,6 +239,7 @@ describe('AutomateAiAgentStatsReport', () => {
         useReportChartRestrictionsMock.mockReturnValue({
             isChartRestrictedToCurrentUser: () => false,
             isRouteRestrictedToCurrentUser: () => false,
+            isModuleRestrictedToCurrentUser: () => false,
         })
 
         return render(<AutomateAiAgentStatsReport />)

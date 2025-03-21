@@ -5,7 +5,6 @@ import { useRouteMatch } from 'react-router-dom'
 
 import useScrollActiveItemIntoView from 'hooks/useScrollActiveItemIntoView/useScrollActiveItemIntoView'
 import NavbarLink from 'pages/common/components/navbar/NavbarLink'
-import { useReportChartRestrictions } from 'pages/stats/report-chart-restrictions/useReportChartRestrictions'
 import { STATS_ROUTES } from 'routes/constants'
 import { assumeMock } from 'utils/testing'
 
@@ -23,24 +22,12 @@ const useRouteMatchMock = assumeMock(useRouteMatch)
 jest.mock('hooks/useScrollActiveItemIntoView/useScrollActiveItemIntoView')
 const useScrollActiveItemIntoViewMock = assumeMock(useScrollActiveItemIntoView)
 
-jest.mock(
-    'pages/stats/report-chart-restrictions/useReportChartRestrictions',
-    () => ({
-        useReportChartRestrictions: jest.fn(),
-    }),
-)
-const useReportChartRestrictionsMock = assumeMock(useReportChartRestrictions)
-
 const path = STATS_ROUTES.SUPPORT_PERFORMANCE_AGENTS
 
 describe('NavbarLink', () => {
     beforeEach(() => {
         useRouteMatchMock.mockReturnValue({
             isExact: true,
-        } as any)
-
-        useReportChartRestrictionsMock.mockReturnValue({
-            isRouteRestrictedToCurrentUser: () => false,
         } as any)
     })
 

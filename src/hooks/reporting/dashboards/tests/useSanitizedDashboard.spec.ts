@@ -33,6 +33,7 @@ describe('useSanitizedDashboard', () => {
         useReportChartRestrictionsMock.mockImplementation(() => ({
             isChartRestrictedToCurrentUser: () => false,
             isRouteRestrictedToCurrentUser: () => false,
+            isModuleRestrictedToCurrentUser: () => false,
         }))
 
         const { result } = renderHook(() => useSanitizedDashboard(dashboard))
@@ -61,6 +62,7 @@ describe('useSanitizedDashboard', () => {
             isChartRestrictedToCurrentUser: (chartId) =>
                 chartId === 'customer_satisfaction_trend_card',
             isRouteRestrictedToCurrentUser: () => true,
+            isModuleRestrictedToCurrentUser: () => false,
         }))
 
         const { result } = renderHook(() => useSanitizedDashboard(dashboard))
@@ -103,6 +105,7 @@ describe('useSanitizedDashboard', () => {
             isChartRestrictedToCurrentUser: (chartId) =>
                 chartId === 'customer_satisfaction_trend_card',
             isRouteRestrictedToCurrentUser: () => true,
+            isModuleRestrictedToCurrentUser: () => false,
         }))
 
         const { result } = renderHook(() => useSanitizedDashboard(dashboard))
@@ -141,6 +144,7 @@ describe('useSanitizedDashboard', () => {
         useReportChartRestrictionsMock.mockImplementation(() => ({
             isChartRestrictedToCurrentUser: () => false,
             isRouteRestrictedToCurrentUser: () => false,
+            isModuleRestrictedToCurrentUser: () => false,
         }))
 
         const { result } = renderHook(() => useSanitizedDashboard(dashboard))

@@ -6,10 +6,9 @@ import { Link } from 'react-router-dom'
 import { Tooltip } from '@gorgias/merchant-ui-kit'
 
 import navbarCss from 'assets/css/navbar.less'
+import css from 'common/navigation/components/GlobalNavigationItem.less'
 import { TooltipDelay, type TooltipDelayValue } from 'core/ui/tooltip.utils'
 import useId from 'hooks/useId'
-
-import css from './GlobalNavigationItem.less'
 
 export type GlobalNavigationItemTooltipTrigger = 'hover'[]
 

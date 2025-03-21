@@ -15,9 +15,10 @@ jest.mock(
 const useReportChartRestrictionsMock = assumeMock(useReportChartRestrictions)
 
 describe('ProtectedRoute', () => {
-    it('should not render the children when the path is restricted', () => {
+    it('should not render the children when the path is not restricted', () => {
         useReportChartRestrictionsMock.mockReturnValue({
             isRouteRestrictedToCurrentUser: () => false,
+            isModuleRestrictedToCurrentUser: () => false,
         } as any)
 
         render(
@@ -29,9 +30,25 @@ describe('ProtectedRoute', () => {
         expect(screen.getByText('children')).toBeInTheDocument()
     })
 
-    it('should render the children when the path is not restricted', () => {
+    it('should render the children when the path is restricted', () => {
         useReportChartRestrictionsMock.mockReturnValue({
             isRouteRestrictedToCurrentUser: () => true,
+            isModuleRestrictedToCurrentUser: () => false,
+        } as any)
+
+        render(
+            <ProtectedRoute path="/any/path">
+                <div>children</div>
+            </ProtectedRoute>,
+        )
+
+        expect(screen.queryByText('children')).not.toBeInTheDocument()
+    })
+
+    it('should render the children when the module navigation route is restricted', () => {
+        useReportChartRestrictionsMock.mockReturnValue({
+            isRouteRestrictedToCurrentUser: () => false,
+            isModuleRestrictedToCurrentUser: () => true,
         } as any)
 
         render(

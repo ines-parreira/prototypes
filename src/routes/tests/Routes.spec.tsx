@@ -17,6 +17,8 @@ import * as billingFixtures from 'fixtures/billing'
 import { billingState } from 'fixtures/billing'
 import { user } from 'fixtures/users'
 import { useAiAgentItemEnabled } from 'pages/aiAgent/hooks/useAiAgentItemEnabled'
+import { ProtectedRoute } from 'pages/stats/report-chart-restrictions/ProtectedRoute'
+import { useReportChartRestrictions } from 'pages/stats/report-chart-restrictions/useReportChartRestrictions'
 import Routes from 'routes/Routes'
 import { StatsRoutes } from 'routes/StatsRoutes'
 import { initialState } from 'state/billing/reducers'
@@ -116,10 +118,19 @@ const StatsRoutesMock = assumeMock(StatsRoutes)
 jest.mock('pages/aiAgent/AiAgentVolume', () => ({
     AiAgentVolume: () => <div>AiAgentVolume</div>,
 }))
+jest.mock(
+    'pages/stats/report-chart-restrictions/useReportChartRestrictions',
+    () => ({
+        useReportChartRestrictions: jest.fn(),
+    }),
+)
+const useReportChartRestrictionsMock = assumeMock(useReportChartRestrictions)
 
 const mockHistory = createBrowserHistory()
 const mockStore = configureMockStore()
 const mockUseFlag = useFlag as jest.Mock
+jest.mock('pages/stats/report-chart-restrictions/ProtectedRoute')
+const ProtectedRouteMock = assumeMock(ProtectedRoute)
 
 window.loadGorgiasChat = jest.fn()
 
@@ -137,6 +148,10 @@ describe('<Routes/>', () => {
         mockHistory.replace('/app')
         useAiAgentItemEnabledMock.mockReturnValue(false)
         StatsRoutesMock.mockImplementation(() => <div />)
+        ProtectedRouteMock.mockImplementation(({ children }) => children)
+        useReportChartRestrictionsMock.mockReturnValue({
+            isModuleRestrictedToCurrentUser: () => false,
+        } as any)
     })
 
     afterEach(() => {

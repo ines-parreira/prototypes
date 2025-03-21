@@ -2,10 +2,9 @@ import React from 'react'
 
 import { fireEvent, render, waitFor } from '@testing-library/react'
 
+import { GlobalNavigationSpotlight } from 'common/navigation/components/GlobalNavigationSpotlight'
 import { logEvent, SegmentEvent } from 'common/segment'
 import * as platform from 'utils/platform'
-
-import { GlobalNavigationSpotlight } from '../GlobalNavigationSpotlight'
 
 jest.mock('common/segment')
 

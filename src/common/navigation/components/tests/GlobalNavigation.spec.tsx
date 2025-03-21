@@ -3,20 +3,20 @@ import React from 'react'
 import { render } from '@testing-library/react'
 import { fromJS } from 'immutable'
 
-import { FeatureFlagKey } from 'config/featureFlags'
-import { UserRole } from 'config/types/user'
-import { useFlag } from 'core/flags'
-import { getHasAutomate } from 'state/billing/selectors'
-import { getCurrentUser } from 'state/currentUser/selectors'
-import { assumeMock } from 'utils/testing'
-
-import useActiveItem from '../../hooks/useActiveItem'
+import GlobalNavigation from 'common/navigation/components/GlobalNavigation'
+import useActiveItem from 'common/navigation/hooks/useActiveItem'
 import {
     NavBarContext,
     NavBarContextType,
     NavBarDisplayMode,
-} from '../../hooks/useNavBar/context'
-import GlobalNavigation from '../GlobalNavigation'
+} from 'common/navigation/hooks/useNavBar/context'
+import { FeatureFlagKey } from 'config/featureFlags'
+import { UserRole } from 'config/types/user'
+import { useFlag } from 'core/flags'
+import { useReportChartRestrictions } from 'pages/stats/report-chart-restrictions/useReportChartRestrictions'
+import { getHasAutomate } from 'state/billing/selectors'
+import { getCurrentUser } from 'state/currentUser/selectors'
+import { assumeMock } from 'utils/testing'
 
 jest.mock('state/currentUser/selectors', () => ({ getCurrentUser: jest.fn() }))
 const getCurrentUserMock = assumeMock(getCurrentUser)
@@ -37,6 +37,14 @@ jest.mock('../UserItem', () => () => <div>UserItem</div>)
 
 jest.mock('core/flags')
 const mockUseFlag = useFlag as jest.Mock
+
+jest.mock(
+    'pages/stats/report-chart-restrictions/useReportChartRestrictions',
+    () => ({
+        useReportChartRestrictions: jest.fn(),
+    }),
+)
+const useReportChartRestrictionsMock = assumeMock(useReportChartRestrictions)
 
 describe('GlobalNavigation', () => {
     const mockNavBarContextValues: NavBarContextType = {
@@ -63,6 +71,9 @@ describe('GlobalNavigation', () => {
         )
         useActiveItemMock.mockReturnValue('tickets')
         mockUseFlag.mockImplementation(() => false)
+        useReportChartRestrictionsMock.mockReturnValue({
+            isModuleRestrictedToCurrentUser: () => false,
+        } as any)
     })
 
     it('should render the menu icon when the nav is pinned', () => {
@@ -135,6 +146,15 @@ describe('GlobalNavigation', () => {
     it('should render the stats icon', () => {
         const { getByText } = renderWithContext()
         expect(getByText('bar_chart')).toBeInTheDocument()
+    })
+
+    it('should not return stats icon if isModuleRestrictedToCurrentUser is true', () => {
+        useReportChartRestrictionsMock.mockReturnValue({
+            isModuleRestrictedToCurrentUser: () => true,
+        } as any)
+
+        const { queryByText } = renderWithContext()
+        expect(queryByText('bar_chart')).not.toBeInTheDocument()
     })
 
     it('should render the settings icon', () => {

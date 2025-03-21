@@ -125,6 +125,7 @@ import { HelpCenterApiClientProvider } from 'pages/settings/helpCenter/hooks/use
 import RevenueCampaignsStats from 'pages/stats/convert/pages/CampaignsStats'
 import CampaignStatsPaywallView from 'pages/stats/convert/pages/CampaignsStats/CampaignStatsPaywallView'
 import DefaultStatsFilters from 'pages/stats/DefaultStatsFilters'
+import { useReportChartRestrictions } from 'pages/stats/report-chart-restrictions/useReportChartRestrictions'
 import CreateShopifyCharge from 'pages/tasks/detail/CreateShopifyCharge'
 import CreditShopifyBillingIntegration from 'pages/tasks/detail/CreditShopifyBillingIntegration'
 import ImportPhoneNumber from 'pages/tasks/detail/ImportPhoneNumber'
@@ -150,6 +151,7 @@ export function AppRoutes() {
     const { path } = useRouteMatch()
     const location = useLocation()
     const isAiAgentAssistantEnabled = useFlag(FeatureFlagKey.AiAgentAssistant)
+    const { isModuleRestrictedToCurrentUser } = useReportChartRestrictions()
 
     useEffect(() => {
         if (isAiAgentAssistantEnabled) {
@@ -165,9 +167,11 @@ export function AppRoutes() {
             <Route path={`${path}/user`} render={UserRoutes} />
             <Route path={`${path}/ticket`} render={TicketRoutes} />
             <Route path={`${path}/admin/tasks`} render={AdminTasksRoutes} />
-            <Route path={`${path}/stats`}>
-                <StatsRoutes />
-            </Route>
+            {!isModuleRestrictedToCurrentUser(`${path}/stats`) && (
+                <Route path={`${path}/stats`}>
+                    <StatsRoutes />
+                </Route>
+            )}
             <Route path={`${path}/automation`} render={AutomationRoutes} />
             <Route path={`${path}/ai-agent`} render={AiAgentBaseRoutes} />
             <Route path={`${path}/convert`}>

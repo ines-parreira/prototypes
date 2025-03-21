@@ -78,6 +78,7 @@ describe('<RevenueStatsContent />', () => {
         useReportChartRestrictionsMock.mockReturnValue({
             isRouteRestrictedToCurrentUser: () => false,
             isChartRestrictedToCurrentUser: () => false,
+            isModuleRestrictedToCurrentUser: () => false,
         })
         useCampaignStatsFiltersMock.mockReturnValue({
             selectedPeriod: {

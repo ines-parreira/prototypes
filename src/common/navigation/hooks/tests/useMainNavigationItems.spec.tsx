@@ -1,11 +1,11 @@
 import { renderHook } from '@testing-library/react-hooks'
 import { fromJS } from 'immutable'
 
+import { useMainNavigationItems } from 'common/navigation/hooks/useMainNavigationItems'
 import { UserRole } from 'config/types/user'
 import { useAiAgentItemEnabled } from 'pages/aiAgent/hooks/useAiAgentItemEnabled'
+import { BASE_STATS_PATH } from 'routes/constants'
 import { assumeMock } from 'utils/testing'
-
-import { useMainNavigationItems } from '../useMainNavigationItems'
 
 jest.mock('hooks/useAppSelector', () => (fn: () => void) => fn())
 
@@ -57,7 +57,9 @@ describe('MainNavigation', () => {
 
     it('should render the statistics menu item', () => {
         const { result } = renderHook(() => useMainNavigationItems(basicUser))
-        expect(result.current.map((item) => item.url)).toContain('/app/stats')
+        expect(result.current.map((item) => item.url)).toContain(
+            BASE_STATS_PATH,
+        )
     })
 
     it('should render the settings menu item', () => {

@@ -23,6 +23,7 @@ import {
 import {
     getAccountRestrictions,
     getUserChartsRestrictions,
+    getUserModuleRestrictions,
     getUserReportsRestrictions,
     useReportChartRestrictions,
 } from 'pages/stats/report-chart-restrictions/useReportChartRestrictions'
@@ -48,6 +49,7 @@ const restrictedAccountId = 123
 const nonExistentChartIdAndPartOfRestrictedReport =
     OverviewChart.MedianResolutionTimeTrendCard
 const strictlyRestrictedChartId = SatisfactionChart.SatisfactionScoreTrendCard
+const strictlyRestrictedNavigationUrl = 'some/test/url'
 
 const RBAC_RESTRICTIONS_MOCK: RestrictionsPerCustomer = {
     [restrictedAccountId]: [
@@ -72,6 +74,11 @@ const RBAC_RESTRICTIONS_MOCK: RestrictionsPerCustomer = {
         {
             ids: [strictlyRestrictedChartId],
             type: RestrictedComponentType.Chart,
+            role: UserRole.BasicAgent,
+        },
+        {
+            ids: [strictlyRestrictedNavigationUrl],
+            type: RestrictedComponentType.Module,
             role: UserRole.BasicAgent,
         },
     ],
@@ -106,6 +113,34 @@ describe('getAccountRestrictions', () => {
         expect(getAccountRestrictions(restrictedAccountId)).toEqual(
             RBAC_RESTRICTIONS_MOCK[restrictedAccountId],
         )
+    })
+})
+
+describe('getUserModuleRestrictions', () => {
+    beforeEach(() => {
+        jest.replaceProperty(
+            constants,
+            'RBAC_RESTRICTIONS',
+            RBAC_RESTRICTIONS_MOCK as any,
+        )
+    })
+
+    it('should return an empty list for a permitted account', () => {
+        expect(
+            getUserModuleRestrictions(
+                permittedUser,
+                getAccountRestrictions(permittedAccountId),
+            ),
+        ).toEqual([])
+    })
+
+    it('should return a configuration list for a restricted account', () => {
+        expect(
+            getUserModuleRestrictions(
+                restrictedUser,
+                getAccountRestrictions(restrictedAccountId),
+            ),
+        ).toEqual([currentConfig[4]])
     })
 })
 
@@ -175,6 +210,48 @@ describe('useReportChartRestrictions', () => {
         useReportRestrictionsMock.mockReturnValue({
             reportRestrictionsMap: {},
             chartRestrictionsMap: {},
+        })
+    })
+
+    describe('isModuleRestrictedToCurrentUser', () => {
+        it('should return true for a restricted route', () => {
+            mockUseAppSelector
+                .mockReturnValueOnce(restrictedAccountId)
+                .mockReturnValueOnce(restrictedUser)
+
+            const { result } = renderHook(() => useReportChartRestrictions())
+
+            expect(
+                result.current.isModuleRestrictedToCurrentUser(
+                    strictlyRestrictedNavigationUrl,
+                ),
+            ).toEqual(true)
+        })
+
+        it('should return false for a non-restricted route', () => {
+            mockUseAppSelector
+                .mockReturnValueOnce(restrictedAccountId)
+                .mockReturnValueOnce(restrictedUser)
+
+            const { result } = renderHook(() => useReportChartRestrictions())
+
+            expect(
+                result.current.isModuleRestrictedToCurrentUser('any-other-url'),
+            ).toEqual(false)
+        })
+
+        it('should return false for a permitted account', () => {
+            mockUseAppSelector
+                .mockReturnValueOnce(permittedAccountId)
+                .mockReturnValueOnce(restrictedUser)
+
+            const { result } = renderHook(() => useReportChartRestrictions())
+
+            expect(
+                result.current.isModuleRestrictedToCurrentUser(
+                    strictlyRestrictedNavigationUrl,
+                ),
+            ).toEqual(false)
         })
     })
 

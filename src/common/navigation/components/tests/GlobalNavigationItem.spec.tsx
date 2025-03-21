@@ -2,9 +2,8 @@ import React from 'react'
 
 import { render, screen } from '@testing-library/react'
 
-import GlobalNavigationItem from '../GlobalNavigationItem'
-
-import css from '../GlobalNavigationItem.less'
+import GlobalNavigationItem from 'common/navigation/components/GlobalNavigationItem'
+import css from 'common/navigation/components/GlobalNavigationItem.less'
 
 describe('GlobalNavigationItem', () => {
     it('should render an inactive item', () => {
@@ -25,6 +24,7 @@ describe('GlobalNavigationItem', () => {
         )
         expect(screen.getByText('home').parentNode).toHaveClass(css.active)
     })
+
     it('should render an link item', () => {
         render(
             <GlobalNavigationItem
@@ -36,6 +36,7 @@ describe('GlobalNavigationItem', () => {
         )
         expect(screen.getByText('home').closest('a')).toBeInTheDocument()
     })
+
     it('should render an button item', () => {
         render(
             <GlobalNavigationItem
