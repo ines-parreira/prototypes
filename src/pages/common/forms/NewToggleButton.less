@@ -2,6 +2,8 @@
 @import '~css/typography';
 
 :local {
+    @primary-color: var(--new-toggle-button-color);
+
     .toggleButton {
         --toggleButtonWidth: 34px;
         --knobSize: 13px;
@@ -20,7 +22,7 @@
         }
 
         &.checked {
-            background-color: var(--main-primary);
+            background-color: @primary-color;
 
             &.disabled .knob i {
                 color: var(--neutral-grey-3);
@@ -66,7 +68,7 @@
 
         i {
             opacity: 1;
-            color: var(--main-primary);
+            color: @primary-color;
         }
     }
 

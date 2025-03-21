@@ -209,13 +209,8 @@ describe('ChannelsStep', () => {
 
             renderWithProvider()
 
-            await waitFor(() => {
-                expect(screen.getByLabelText('Email')).toBeInTheDocument()
-                expect(screen.getByLabelText('Chat')).toBeInTheDocument()
-            })
-
-            expect(screen.getByLabelText('Email')).toBeChecked()
-            expect(screen.getByLabelText('Chat')).toBeChecked()
+            expect(screen.getAllByRole('checkbox')[0]).toBeChecked()
+            expect(screen.getAllByRole('checkbox')[1]).toBeChecked()
         })
 
         it('renders the component with main title and cards', async () => {
@@ -230,6 +225,64 @@ describe('ChannelsStep', () => {
                         'Enable your AI Agent to respond to customers via email.',
                     ),
                 ).toBeInTheDocument()
+            })
+        })
+
+        it('selects an additional email and proceeds to next step', async () => {
+            renderWithProvider()
+
+            // Ensure email card is visible and click it to enable
+            await waitFor(() => {
+                expect(
+                    screen.getByText(
+                        'Enable your AI Agent to respond to customers via email.',
+                    ),
+                ).toBeInTheDocument()
+            })
+
+            userEvent.click(
+                screen.getByText(
+                    'Enable your AI Agent to respond to customers via email.',
+                ),
+            )
+
+            await waitFor(() => {
+                expect(
+                    screen.getByText(
+                        /AI agent will respond to the following emails/,
+                    ),
+                ).toBeInTheDocument()
+            })
+
+            const emailCombobox = screen.getByRole('combobox')
+            fireEvent.focus(emailCombobox)
+
+            await waitFor(() => {
+                expect(
+                    screen.getByText('support@acme.gorgias.io'),
+                ).toBeInTheDocument()
+                expect(
+                    screen.getByText('billing+1@acme.gorgias.io'),
+                ).toBeInTheDocument()
+            })
+
+            userEvent.click(screen.getByText('billing+1@acme.gorgias.io'))
+
+            const nextButton = screen.getByText('Next')
+            userEvent.click(nextButton)
+
+            await waitFor(() => {
+                expect(mutateUpdateOnboardingMock).toHaveBeenCalledWith(
+                    expect.objectContaining({
+                        data: expect.objectContaining({
+                            emailIntegrationIds: [7],
+                        }),
+                    }),
+                    expect.anything(),
+                )
+                expect(defaultProps.goToStep).toHaveBeenCalledWith(
+                    WizardStepEnum.PERSONALITY_PREVIEW,
+                )
             })
         })
 
@@ -286,30 +339,7 @@ describe('ChannelsStep', () => {
         it('renders the dropdowns and allow next step (click on checkbox)', async () => {
             renderWithProvider()
 
-            await waitFor(() => {
-                expect(
-                    screen.getByText(
-                        'Enable your AI Agent to respond to customers via email.',
-                    ),
-                ).toBeInTheDocument()
-                expect(
-                    screen.getByText(
-                        'Enable your AI Agent to respond to customers via chat.',
-                    ),
-                ).toBeInTheDocument()
-            })
-
-            // Setup chat
-            const chatCheckbox = screen.getByLabelText('Chat')
-            userEvent.click(chatCheckbox)
-
-            await waitFor(() => {
-                expect(
-                    screen.queryByText(
-                        /AI Agent responds to tickets sent to the following Chats/,
-                    ),
-                ).toBeInTheDocument()
-            })
+            userEvent.click(screen.getByText('Chat'))
 
             const chatDropdown = screen.getByText(
                 'Select one or more chat integrations',
@@ -345,16 +375,7 @@ describe('ChannelsStep', () => {
 
             renderWithProvider()
 
-            await waitFor(() => {
-                expect(
-                    screen.getByText(
-                        'Enable your AI Agent to respond to customers via email.',
-                    ),
-                ).toBeInTheDocument()
-            })
-
-            const emailCheckbox = screen.getByLabelText('Email')
-            userEvent.click(emailCheckbox)
+            userEvent.click(screen.getByText('Email'))
 
             await waitFor(() => {
                 expect(
@@ -382,24 +403,8 @@ describe('ChannelsStep', () => {
         it('handles error on no channel', async () => {
             renderWithProvider()
 
-            // Components are rendered
-            await waitFor(() => {
-                expect(screen.getByText(title)).toBeInTheDocument()
-
-                expect(
-                    screen.getByText(
-                        'Enable your AI Agent to respond to customers via email.',
-                    ),
-                ).toBeInTheDocument()
-                expect(
-                    screen.getByText(
-                        'Enable your AI Agent to respond to customers via chat.',
-                    ),
-                ).toBeInTheDocument()
-            })
-
-            expect(screen.getByLabelText('Chat')).not.toBeChecked()
-            expect(screen.getByLabelText('Email')).not.toBeChecked()
+            expect(screen.getAllByRole('checkbox')[0]).not.toBeChecked()
+            expect(screen.getAllByRole('checkbox')[1]).not.toBeChecked()
 
             // Click on next button
             const nextButton = screen.getByText('Next')
@@ -514,7 +519,7 @@ describe('ChannelsStep', () => {
                 isLoading: false,
             } as any)
 
-            renderWithProvider({
+            const screen = renderWithProvider({
                 ...defaultState,
                 integrations: (
                     fromJS(integrationsState) as Map<any, any>
@@ -540,17 +545,20 @@ describe('ChannelsStep', () => {
             })
 
             // Setup chat
-            const emailCheckbox = screen.getByText('Email')
-            userEvent.click(emailCheckbox)
-
-            expect(screen.getByLabelText('Email')).not.toBeChecked()
-            expect(screen.getByLabelText('Chat')).toBeChecked()
+            userEvent.click(screen.getByText('Email'))
 
             await waitFor(() => {
                 expect(
                     screen.queryByText(/Personalize your Chat widget/),
                 ).toBeInTheDocument()
             })
+
+            // Find the color field input (based on label)
+            const colorInput = screen.getByPlaceholderText('ex: #eeeeee')
+            expect(colorInput).toBeInTheDocument()
+
+            // Change color value (simulate user input)
+            fireEvent.change(colorInput, { target: { value: '#ff00ff' } })
 
             // Click on next button
             const nextButton = screen.getByText('Next')
@@ -733,8 +741,8 @@ describe('ChannelsStep', () => {
             const screen = renderWithProvider()
 
             await waitFor(() => {
-                expect(screen.getByLabelText('Email')).toBeChecked()
-                expect(screen.getByLabelText('Chat')).toBeChecked()
+                expect(screen.getAllByRole('checkbox')[1]).toBeChecked()
+                expect(screen.getAllByRole('checkbox')[0]).toBeChecked()
             })
 
             const integration = screen.getByText(integrationType)

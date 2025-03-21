@@ -21,10 +21,10 @@ import {
     EmailIntegrationListSelection,
     EmailItem,
 } from 'pages/aiAgent/components/EmailIntegrationListSelection/EmailIntegrationListSelection'
+import { ToggleCard } from 'pages/aiAgent/components/ToggleCard/ToggleCard'
 import { useGetUsedEmailIntegrations } from 'pages/aiAgent/hooks/useGetUsedEmailIntegrations'
 import { useStoreConfigurationForAccount } from 'pages/aiAgent/hooks/useStoreConfigurationForAccount'
 import AiAgentChatConversation from 'pages/aiAgent/Onboarding/components/AiAgentChatConversation/AiAgentChatConversation'
-import { Card, CardContent } from 'pages/aiAgent/Onboarding/components/Card'
 import MainTitle from 'pages/aiAgent/Onboarding/components/MainTitle/MainTitle'
 import { Separator } from 'pages/aiAgent/Onboarding/components/Separator/Separator'
 import css from 'pages/aiAgent/Onboarding/components/steps/ChannelsStep/ChannelsStep.less'
@@ -59,7 +59,6 @@ import useSelfServiceChatChannels, {
     SelfServiceChatChannel,
 } from 'pages/automate/common/hooks/useSelfServiceChatChannels'
 import AIBanner from 'pages/common/components/AIBanner/AIBanner'
-import CheckBox from 'pages/common/forms/CheckBox'
 import ColorField from 'pages/common/forms/ColorField'
 import ChatIntegrationPreview from 'pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationPreview/ChatIntegrationPreview'
 import { getCurrentDomain } from 'state/currentAccount/selectors'
@@ -109,10 +108,8 @@ export const ChannelsStep: React.FC<StepProps> = ({
     goToStep,
     isStoreSelected,
 }) => {
-    const chatCheckboxRef = useRef<HTMLDivElement | null>(null)
     const chatDropdownRef = useRef<HTMLDivElement | null>(null)
     const chatColorPickerRef = useRef<HTMLDivElement | null>(null)
-    const emailCheckboxRef = useRef<HTMLDivElement | null>(null)
     const emailDropdownRef = useRef<HTMLDivElement | null>(null)
 
     const { shopName } = useParams<{ shopName: string }>()
@@ -405,7 +402,7 @@ export const ChannelsStep: React.FC<StepProps> = ({
                     isOpen={modalOpen}
                     onClose={() => setModalOpen((prev) => !prev)}
                     redirectToIntegration={redirectToEmailIntegration}
-                ></EmailIntegrationModal>
+                />
                 {(errors.emailChannelEnabled || errors.chatChannelEnabled) && (
                     <AIBanner
                         hasError={true}
@@ -418,199 +415,113 @@ export const ChannelsStep: React.FC<StepProps> = ({
 
                 {data?.scopes.includes(AiAgentScopes.SUPPORT) && (
                     <>
-                        <Card
-                            className={css.card}
-                            onClick={({ target }) => {
-                                const clickedOnCheckboxOrDropdown =
-                                    target instanceof HTMLElement &&
-                                    (emailDropdownRef.current?.contains(
-                                        target,
-                                    ) ||
-                                        emailCheckboxRef.current?.contains(
-                                            target,
-                                        ))
-
-                                if (clickedOnCheckboxOrDropdown) {
-                                    return
-                                }
-
+                        <ToggleCard
+                            checked={emailChannelEnabled}
+                            onChange={() =>
                                 handleUpdate(
                                     'emailChannelEnabled',
                                     !emailChannelEnabled,
                                 )
-                            }}
+                            }
+                            title="Email"
+                            subtitle="Enable your AI Agent to respond to customers via email."
                         >
-                            <CardContent>
-                                <div ref={emailCheckboxRef}>
-                                    <CheckBox
-                                        isChecked={emailChannelEnabled}
-                                        className={css.checkbox}
-                                        onChange={(nextValue) =>
-                                            handleUpdate(
-                                                'emailChannelEnabled',
-                                                nextValue,
-                                            )
-                                        }
-                                    >
-                                        Email
-                                    </CheckBox>
-                                </div>
-                                <p>
-                                    Enable your AI Agent to respond to customers
-                                    via email.
-                                </p>
-                                {emailChannelEnabled && (
-                                    <div ref={emailDropdownRef}>
-                                        <Label
-                                            isRequired={true}
-                                            className={css.label}
-                                            id="monitored-email-channels"
-                                        >
-                                            AI agent will respond to the
-                                            following emails
-                                        </Label>
-                                        <EmailIntegrationListSelection
-                                            labelId="monitored-email-channels"
-                                            selectedIds={
-                                                emailIntegrationIds ?? []
-                                            }
-                                            onSelectionChange={(
-                                                nextSelectedIds,
-                                            ) =>
-                                                handleUpdate(
-                                                    'emailIntegrationIds',
-                                                    nextSelectedIds,
-                                                )
-                                            }
-                                            emailItems={emailChannels}
-                                            error={
-                                                errors.emailIntegrationIds
-                                                    ?.message
-                                            }
-                                            isDisabled={false}
-                                            sortingCallback={
-                                                emailSortingCallback
-                                            }
-                                            withDefaultTag
-                                        />
-                                        <a
-                                            // The href is for a11y purposes only
-                                            href={emailIntegrationPath}
-                                            className={css.link}
-                                            onClick={(event) => {
-                                                event.preventDefault()
-                                                setModalOpen(true)
-                                            }}
-                                        >
-                                            Don’t see the email you want? Click
-                                            here
-                                        </a>
-                                    </div>
-                                )}
-                            </CardContent>
-                        </Card>
+                            <div ref={emailDropdownRef}>
+                                <Label
+                                    isRequired={true}
+                                    className={css.label}
+                                    id="monitored-email-channels"
+                                >
+                                    AI agent will respond to the following
+                                    emails
+                                </Label>
+                                <EmailIntegrationListSelection
+                                    labelId="monitored-email-channels"
+                                    selectedIds={emailIntegrationIds ?? []}
+                                    onSelectionChange={(nextSelectedIds) =>
+                                        handleUpdate(
+                                            'emailIntegrationIds',
+                                            nextSelectedIds,
+                                        )
+                                    }
+                                    emailItems={emailChannels}
+                                    error={errors.emailIntegrationIds?.message}
+                                    isDisabled={false}
+                                    sortingCallback={emailSortingCallback}
+                                    withDefaultTag
+                                />
+                                <a
+                                    // The href is for a11y purposes only
+                                    href={emailIntegrationPath}
+                                    className={css.link}
+                                    onClick={(event) => {
+                                        event.preventDefault()
+                                        setModalOpen(true)
+                                    }}
+                                >
+                                    Don’t see the email you want? Click here
+                                </a>
+                            </div>
+                        </ToggleCard>
                         <Separator />
                     </>
                 )}
 
-                <Card
-                    className={css.card}
-                    onClick={({ target }) => {
-                        const clickedOnCheckboxOrDropdown =
-                            target instanceof HTMLElement &&
-                            (chatDropdownRef.current?.contains(target) ||
-                                chatCheckboxRef.current?.contains(target) ||
-                                chatColorPickerRef.current?.contains(target))
-
-                        if (clickedOnCheckboxOrDropdown) {
-                            return
-                        }
-
+                <ToggleCard
+                    checked={chatChannelEnabled}
+                    onChange={() =>
                         handleUpdate('chatChannelEnabled', !chatChannelEnabled)
-                    }}
+                    }
+                    title="Chat"
+                    subtitle="Enable your AI Agent to respond to customers via chat."
                 >
-                    <CardContent>
-                        <div ref={chatCheckboxRef}>
-                            <CheckBox
-                                isChecked={chatChannelEnabled}
-                                className={css.checkbox}
-                                onChange={(nextValue) =>
+                    {createNewChat ? (
+                        <>
+                            <p>
+                                Personalize your Chat widget to match your
+                                brand’s style and start connecting with a
+                                instantly. Once the chat is created, you can
+                                customize it further in your settings.
+                            </p>
+                            <div ref={chatColorPickerRef}>
+                                <ColorField
+                                    shouldStopPropagation
+                                    value={newChatColor}
+                                    onChange={(nextValue) =>
+                                        setNewChatColor(nextValue)
+                                    }
+                                    label="Pick your main color"
+                                />
+                            </div>
+                        </>
+                    ) : (
+                        <div ref={chatDropdownRef}>
+                            <Label
+                                isRequired={true}
+                                className={css.label}
+                                id="monitored-chat-channels"
+                            >
+                                AI Agent responds to tickets sent to the
+                                following Chats
+                            </Label>
+                            <ChatIntegrationListSelection
+                                labelId="monitored-chat-channels"
+                                selectedIds={chatIntegrationIds ?? []}
+                                onSelectionChange={(nextSelectedIds) =>
                                     handleUpdate(
-                                        'chatChannelEnabled',
-                                        nextValue,
+                                        'chatIntegrationIds',
+                                        nextSelectedIds,
                                     )
                                 }
-                            >
-                                Chat
-                            </CheckBox>
+                                chatItems={chatChannels}
+                                error={errors.chatIntegrationIds?.message}
+                                isDisabled={false}
+                                sortingCallback={chatSortingCallback}
+                                withDisabledText
+                            />
                         </div>
-                        <p>
-                            Enable your AI Agent to respond to customers via
-                            chat.
-                        </p>
-                        {chatChannelEnabled && (
-                            <>
-                                {createNewChat ? (
-                                    <>
-                                        <p>
-                                            Personalize your Chat widget to
-                                            match your brand’s style and start
-                                            connecting with a instantly. Once
-                                            the chat is created, you can
-                                            customize it further in your
-                                            settings.
-                                        </p>
-                                        <div ref={chatColorPickerRef}>
-                                            <ColorField
-                                                shouldStopPropagation
-                                                value={newChatColor}
-                                                onChange={(nextValue) =>
-                                                    setNewChatColor(nextValue)
-                                                }
-                                                label="Pick your main color"
-                                            />
-                                        </div>
-                                    </>
-                                ) : (
-                                    <div ref={chatDropdownRef}>
-                                        <Label
-                                            isRequired={true}
-                                            className={css.label}
-                                            id="monitored-chat-channels"
-                                        >
-                                            AI Agent responds to tickets sent to
-                                            the following Chats
-                                        </Label>
-                                        <ChatIntegrationListSelection
-                                            labelId="monitored-chat-channels"
-                                            selectedIds={
-                                                chatIntegrationIds ?? []
-                                            }
-                                            onSelectionChange={(
-                                                nextSelectedIds,
-                                            ) =>
-                                                handleUpdate(
-                                                    'chatIntegrationIds',
-                                                    nextSelectedIds,
-                                                )
-                                            }
-                                            chatItems={chatChannels}
-                                            error={
-                                                errors.chatIntegrationIds
-                                                    ?.message
-                                            }
-                                            isDisabled={false}
-                                            sortingCallback={
-                                                chatSortingCallback
-                                            }
-                                            withDisabledText
-                                        />
-                                    </div>
-                                )}
-                            </>
-                        )}
-                    </CardContent>
-                </Card>
+                    )}
+                </ToggleCard>
             </>
         )
     }

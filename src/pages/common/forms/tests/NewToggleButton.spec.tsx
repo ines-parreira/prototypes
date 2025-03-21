@@ -32,6 +32,7 @@ describe('<NewToggleButton />', () => {
         const { getByRole } = renderComponent({ onChange: onChangeMock })
 
         fireEvent.click(getByRole('checkbox'))
+        expect(onChangeMock).toHaveBeenCalledTimes(1)
         expect(onChangeMock).toHaveBeenCalledWith(true)
     })
 

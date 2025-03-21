@@ -1,0 +1,62 @@
+@import '~@gorgias/design-tokens/dist/css/layout';
+@import '~@gorgias/design-tokens/dist/css/typographyMixins';
+
+:local {
+    .toggleCard {
+        & > * {
+            padding: @layout-spacing-m;
+        }
+
+        &Active {
+            background-color: var(--neutral-grey-0);
+            border-color: var(--accessory-magenta-25);
+        }
+
+        display: flex;
+        flex-direction: column;
+        border: 1px solid var(--neutral-grey-3);
+        border-radius: @layout-spacing-xs;
+    }
+
+    .headerSection {
+        cursor: pointer;
+        display: flex;
+        flex-direction: row;
+        gap: @layout-spacing-s;
+        border-radius: inherit;
+
+        &WithContent {
+            border-bottom-right-radius: 0;
+            border-bottom-left-radius: 0;
+        }
+
+        &:hover {
+            background-color: var(--accessory-magenta-1);
+        }
+
+        .headerSectionTextBlock {
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            gap: @layout-spacing-xxs;
+
+            .headerSectionTitle {
+                .heading-subsection-semibold();
+                color: var(--neutral-grey-6);
+            }
+
+            .headerSectionSubtitle {
+                .body-regular();
+                color: var(--neutral-grey-5);
+            }
+        }
+    }
+
+    .unshrinkable {
+        flex-shrink: 0;
+    }
+
+    .contentSection {
+        border-top: 1px solid var(--neutral-grey-3);
+    }
+}
