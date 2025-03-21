@@ -21,6 +21,9 @@ import {
     SocketEventType,
 } from '../types'
 
+jest.unmock('services/socketManager')
+jest.unmock('services/socketManager/socketManager')
+
 const logEventSpy = jest.spyOn(segment, 'logEvent')
 
 describe('SocketManager', () => {

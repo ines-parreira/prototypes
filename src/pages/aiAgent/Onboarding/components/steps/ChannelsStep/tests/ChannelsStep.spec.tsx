@@ -136,7 +136,7 @@ const renderWithProvider = (state?: RootState, props = defaultProps) => {
 }
 
 describe('ChannelsStep', () => {
-    describe.skip('ChannelsStep - empty state', () => {
+    describe('ChannelsStep - empty state', () => {
         beforeEach(() => {
             mockUseShopifyIntegrationAndScope.mockReturnValue({
                 integration: true,
@@ -676,7 +676,7 @@ describe('ChannelsStep', () => {
         })
     })
 
-    describe.skip('ChannelsStep - With preloaded data', () => {
+    describe('ChannelsStep - With preloaded data', () => {
         beforeEach(() => {
             jest.clearAllMocks()
 

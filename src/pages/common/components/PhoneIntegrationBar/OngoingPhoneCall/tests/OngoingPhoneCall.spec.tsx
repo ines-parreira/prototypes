@@ -28,6 +28,9 @@ jest.mock('@twilio/voice-sdk')
 
 jest.mock('@gorgias/api-queries')
 
+jest.unmock('services/socketManager')
+jest.unmock('services/socketManager/socketManager')
+
 jest.mock('../CallTransferDropdown', () => ({
     __esModule: true,
     default: ({

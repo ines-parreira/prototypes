@@ -339,3 +339,32 @@ jest.mock('core/theme/useTheme.ts', () => {
 })
 
 jest.mock('utils/launchDarkly')
+
+const SocketManagerMock = () => ({
+    registerJoinEvents: jest.fn(),
+    registerReceivedEvents: jest.fn(),
+    registerSendEvents: jest.fn(),
+    unregisterReceivedEvents: jest.fn(),
+    onMessage: jest.fn(),
+    onHealthCheck: jest.fn(),
+    onServerMessage: jest.fn(),
+    onDisconnect: jest.fn(),
+    onConnect: jest.fn(),
+    send: jest.fn(),
+    join: jest.fn(),
+    leave: jest.fn(),
+    dispatchReduxAction: jest.fn(),
+    onReload: jest.fn(),
+    resetWorker: jest.fn(),
+})
+
+/*running the SocketManager creates flakiness in the tests
+  due to the setTimeout of onDisconnect triggering an action dispatch*/
+jest.mock('services/socketManager', () => ({
+    __esModule: true,
+    default: SocketManagerMock(),
+}))
+jest.mock('services/socketManager/socketManager', () => ({
+    __esModule: true,
+    default: SocketManagerMock(),
+}))
