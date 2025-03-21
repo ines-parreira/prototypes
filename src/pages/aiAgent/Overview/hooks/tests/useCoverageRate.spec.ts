@@ -2,8 +2,10 @@ import { renderHook } from '@testing-library/react-hooks/dom'
 
 import { useCustomFieldDefinitions } from 'custom-fields/hooks/queries/useCustomFieldDefinitions'
 import { ticketFieldDefinitions } from 'fixtures/customField'
+import { useAutomationRateTrend } from 'hooks/reporting/automate/useAutomationRateTrend'
 import { useMultipleMetricsTrends } from 'hooks/reporting/useMultipleMetricsTrend'
-import { StatsFilters, StatType } from 'models/stat/types'
+import { StatsFilters } from 'models/stat/types'
+import { useAiAgentAutomationRate } from 'pages/aiAgent/Overview/hooks/kpis/useAiAgentAutomationRate'
 import { useCoverageRate } from 'pages/aiAgent/Overview/hooks/kpis/useCoverageRate'
 import { assumeMock } from 'utils/testing'
 
@@ -12,6 +14,12 @@ const useCustomFieldDefinitionsMock = assumeMock(useCustomFieldDefinitions)
 
 jest.mock('hooks/reporting/useMultipleMetricsTrend')
 const useMultipleMetricsTrendsMock = assumeMock(useMultipleMetricsTrends)
+
+jest.mock('hooks/reporting/automate/useAutomationRateTrend')
+const useAutomationRateTrendMock = assumeMock(useAutomationRateTrend)
+
+jest.mock('pages/aiAgent/Overview/hooks/kpis/useAiAgentAutomationRate')
+const useAiAgentAutomationRateMock = assumeMock(useAiAgentAutomationRate)
 
 const timezone = 'UTC'
 const filters: StatsFilters = {
@@ -23,57 +31,164 @@ const filters: StatsFilters = {
 
 describe('useCoverageRate', () => {
     beforeEach(() => {
+        jest.clearAllMocks()
+
         useCustomFieldDefinitionsMock.mockReturnValue({
             data: { data: ticketFieldDefinitions },
             isLoading: false,
         } as any)
     })
 
-    it('should return correct metric data when the query resolves', () => {
-        useMultipleMetricsTrendsMock.mockReturnValue({
-            data: {
-                'TicketCustomFieldsEnriched.ticketCount': {
-                    value: 3.1,
-                    prevValue: 3.5,
-                },
-                'TicketEnriched.ticketCount': {
-                    value: 2,
-                    prevValue: 1,
-                },
-            },
-            isFetching: false,
-        } as any)
+    it.each([
+        {
+            automationRateTrendLoading: true,
+            iAgentAutomationRateLoading: true,
+            aiAgentCoverageRateLoading: true,
+        },
+        {
+            automationRateTrendLoading: true,
+            iAgentAutomationRateLoading: false,
+            aiAgentCoverageRateLoading: true,
+        },
+        {
+            automationRateTrendLoading: true,
+            iAgentAutomationRateLoading: true,
+            aiAgentCoverageRateLoading: false,
+        },
+        {
+            automationRateTrendLoading: false,
+            iAgentAutomationRateLoading: true,
+            aiAgentCoverageRateLoading: true,
+        },
+        {
+            automationRateTrendLoading: false,
+            iAgentAutomationRateLoading: false,
+            aiAgentCoverageRateLoading: true,
+        },
+        {
+            automationRateTrendLoading: false,
+            iAgentAutomationRateLoading: true,
+            aiAgentCoverageRateLoading: false,
+        },
+        {
+            automationRateTrendLoading: true,
+            iAgentAutomationRateLoading: false,
+            aiAgentCoverageRateLoading: false,
+        },
+    ])(
+        'should return loading state when the query is still loading ($automationRateTrendLoading, $iAgentAutomationRateLoading, $aiAgentCoverageRateLoading)',
+        ({
+            iAgentAutomationRateLoading,
+            automationRateTrendLoading,
+            aiAgentCoverageRateLoading,
+        }) => {
+            useMultipleMetricsTrendsMock.mockReturnValue({
+                isFetching: aiAgentCoverageRateLoading,
+            } as any)
 
-        const { result } = renderHook(() => useCoverageRate(filters, timezone))
+            useAutomationRateTrendMock.mockReturnValue({
+                isFetching: automationRateTrendLoading,
+            } as any)
 
-        expect(result.current).toEqual({
-            'data-candu-id': 'ai-agent-overview-kpi-coverage-rate',
-            title: 'Coverage Rate',
-            hint: 'Percentage of tickets that AI Agent attempted to respond to.',
-            metricType: StatType.Number,
-            metricFormat: 'decimal-to-percent',
-            value: 1.55,
-            prevValue: 3.5,
-            isLoading: false,
+            useAiAgentAutomationRateMock.mockReturnValue({
+                isLoading: iAgentAutomationRateLoading,
+            } as any)
+
+            const { result } = renderHook(() =>
+                useCoverageRate(filters, timezone),
+            )
+
+            expect(result.current).toEqual({
+                'data-candu-id': 'ai-agent-overview-kpi-coverage-rate',
+                metricFormat: 'decimal-to-percent',
+                value: null,
+                prevValue: null,
+                isLoading: true,
+            })
+        },
+    )
+
+    describe('when queries are not loading', () => {
+        beforeEach(() => {
+            useMultipleMetricsTrendsMock.mockReturnValue({
+                data: {
+                    'TicketCustomFieldsEnriched.ticketCount': {
+                        value: 3.1,
+                        prevValue: 3.5,
+                    },
+                    'TicketEnriched.ticketCount': {
+                        value: 2,
+                        prevValue: 1,
+                    },
+                },
+                isFetching: false,
+            } as any)
         })
-    })
 
-    it('should return loading state when the query is still loading', () => {
-        useMultipleMetricsTrendsMock.mockReturnValue({
-            isFetching: true,
-        } as any)
+        it('should return AI Agent Coverage Rate when global automation rate lower than AI agent automation rate', () => {
+            useAutomationRateTrendMock.mockReturnValue({
+                isFetching: false,
+                data: {
+                    value: 0.2,
+                    prevValue: 0,
+                },
+            } as any)
 
-        const { result } = renderHook(() => useCoverageRate(filters, timezone))
+            useAiAgentAutomationRateMock.mockReturnValue({
+                isLoading: false,
+                value: 0.5,
+                prevValue: 0,
+            } as any)
 
-        expect(result.current).toEqual({
-            title: 'Coverage Rate',
-            'data-candu-id': 'ai-agent-overview-kpi-coverage-rate',
-            hint: 'Percentage of tickets that AI Agent attempted to respond to.',
-            metricType: StatType.Number,
-            metricFormat: 'decimal-to-percent',
-            value: 0,
-            prevValue: 0,
-            isLoading: true,
+            const { result } = renderHook(() =>
+                useCoverageRate(filters, timezone),
+            )
+
+            expect(result.current).toEqual({
+                'data-candu-id': 'ai-agent-overview-kpi-coverage-rate',
+                title: 'Coverage Rate',
+                hint: {
+                    title: 'Percentage of tickets that AI Agent attempted to respond to.',
+                },
+                metricFormat: 'decimal-to-percent',
+                value: 1.55,
+                prevValue: 3.5,
+                isLoading: false,
+            })
+        })
+
+        it('should return Global Coverage Rate when global automation rate bigger than AI agent automation rate', () => {
+            useAutomationRateTrendMock.mockReturnValue({
+                isFetching: false,
+                data: {
+                    value: 0.5,
+                    prevValue: 0,
+                },
+            } as any)
+
+            useAiAgentAutomationRateMock.mockReturnValue({
+                isLoading: false,
+                value: 0.2,
+                prevValue: 0,
+            } as any)
+
+            const { result } = renderHook(() =>
+                useCoverageRate(filters, timezone),
+            )
+
+            expect(result.current).toEqual({
+                'data-candu-id': 'ai-agent-overview-kpi-coverage-rate',
+                title: 'Automation Rate',
+                hint: {
+                    link: 'https://link.gorgias.com/mnp',
+                    linkText: 'How is it calculated?',
+                    title: 'Automated interactions as a percent of all customer interactions.',
+                },
+                metricFormat: 'decimal-to-percent',
+                value: 0.5,
+                prevValue: 0,
+                isLoading: false,
+            })
         })
     })
 })

@@ -5,8 +5,8 @@ import { useSupportKpis } from 'pages/aiAgent/Overview/hooks/useSupportKpis'
 jest.mock('pages/aiAgent/Overview/hooks/kpis/useAutomatedInteractions', () => ({
     useAutomatedInteractions: jest.fn(() => 'mockAutomatedInteractions'),
 }))
-jest.mock('pages/aiAgent/Overview/hooks/kpis/useAutomationRate', () => ({
-    useAutomationRate: jest.fn(() => 'mockAutomationRate'),
+jest.mock('pages/aiAgent/Overview/hooks/kpis/useAiAgentAutomationRate', () => ({
+    useAiAgentAutomationRate: jest.fn(() => 'mockAiAgentAutomationRate'),
 }))
 jest.mock('pages/aiAgent/Overview/hooks/kpis/useCoverageRate', () => ({
     useCoverageRate: jest.fn(() => 'mockCoverageRate'),
@@ -29,7 +29,7 @@ describe('useSupportKpis', () => {
 
         expect(result.current.metrics).toEqual([
             'mockCoverageRate',
-            'mockAutomationRate',
+            'mockAiAgentAutomationRate',
             'mockAutomatedInteractions',
             'mockCsat',
         ])

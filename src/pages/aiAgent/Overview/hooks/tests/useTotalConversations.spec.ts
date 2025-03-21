@@ -7,7 +7,7 @@ import { CustomField } from 'custom-fields/types'
 import { useMultipleMetricsTrends } from 'hooks/reporting/useMultipleMetricsTrend'
 import { ApiListResponseCursorPagination } from 'models/api/types'
 import { TicketCustomFieldsMeasure } from 'models/reporting/cubes/TicketCustomFieldsCube'
-import { StatsFilters, StatType } from 'models/stat/types'
+import { StatsFilters } from 'models/stat/types'
 import { useTotalConversations } from 'pages/aiAgent/Overview/hooks/kpis/useTotalConversations'
 import { assumeMock } from 'utils/testing'
 
@@ -55,9 +55,10 @@ describe('useTotalConversations', () => {
 
         expect(result.current).toEqual({
             title: 'Total AI Sales Conversations',
-            hint: 'The total number of conversations handled or influenced by the AI Agent for Sales.',
+            hint: {
+                title: 'The total number of conversations handled or influenced by the AI Agent for Sales.',
+            },
             'data-candu-id': 'ai-agent-overview-kpi-total-conversations',
-            metricType: StatType.Number,
             metricFormat: 'decimal',
             value: 843,
             prevValue: 754,
@@ -88,9 +89,10 @@ describe('useTotalConversations', () => {
 
         expect(result.current).toEqual({
             title: 'Total AI Sales Conversations',
-            hint: 'The total number of conversations handled or influenced by the AI Agent for Sales.',
+            hint: {
+                title: 'The total number of conversations handled or influenced by the AI Agent for Sales.',
+            },
             'data-candu-id': 'ai-agent-overview-kpi-total-conversations',
-            metricType: StatType.Number,
             metricFormat: 'decimal',
             value: 843,
             prevValue: 754,
@@ -109,9 +111,10 @@ describe('useTotalConversations', () => {
 
         expect(result.current).toEqual({
             title: 'Total AI Sales Conversations',
-            hint: 'The total number of conversations handled or influenced by the AI Agent for Sales.',
+            hint: {
+                title: 'The total number of conversations handled or influenced by the AI Agent for Sales.',
+            },
             'data-candu-id': 'ai-agent-overview-kpi-total-conversations',
-            metricType: StatType.Number,
             metricFormat: 'decimal',
             isLoading: true,
         })

@@ -33,7 +33,7 @@ type Props = {
         period: string
     }
     metricFormat?: MetricTrendFormat
-    basicStyle?: boolean
+    currency?: string
 }
 
 export default function TrendBadge({
@@ -44,6 +44,7 @@ export default function TrendBadge({
     interpretAs = 'neutral',
     tooltipData,
     metricFormat,
+    currency,
 }: Props) {
     const id = useId()
     const badgeId = `badge-${id}`
@@ -71,7 +72,12 @@ export default function TrendBadge({
             {tooltipData && formattedTrend && (
                 <Tooltip target={`#${badgeId}`}>
                     {getTooltipText(
-                        formatMetricValue(prevValue, metricFormat),
+                        formatMetricValue(
+                            prevValue,
+                            metricFormat,
+                            undefined,
+                            currency,
+                        ),
                         tooltipData.period,
                     )}
                 </Tooltip>

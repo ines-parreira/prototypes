@@ -3,7 +3,7 @@ import { mockFlags } from 'jest-launchdarkly-mock'
 
 import { FeatureFlagKey } from 'config/featureFlags'
 import useMetricTrend from 'hooks/reporting/useMetricTrend'
-import { StatsFilters, StatType } from 'models/stat/types'
+import { StatsFilters } from 'models/stat/types'
 import { useGmvInfluenced } from 'pages/aiAgent/Overview/hooks/kpis/useGmvInfluenced'
 import { useCurrency } from 'pages/aiAgent/Overview/hooks/useCurrency'
 import { assumeMock } from 'utils/testing'
@@ -48,9 +48,11 @@ describe('useGmvInfluenced', () => {
 
         expect(result.current).toEqual({
             title: 'GMV Influenced',
-            hint: 'The total revenue generated from orders placed during or after a conversation with the AI Agent, without human intervention.',
+            hint: {
+                title: 'The total revenue generated from orders placed during or after a conversation with the AI Agent, without human intervention.',
+            },
             'data-candu-id': 'ai-agent-overview-kpi-gmv-influenced',
-            metricType: StatType.Currency,
+            metricFormat: 'currency',
             value: 12000,
             prevValue: 10000,
             isLoading: false,
@@ -76,9 +78,11 @@ describe('useGmvInfluenced', () => {
 
         expect(result.current).toEqual({
             title: 'GMV Influenced',
-            hint: 'The total revenue generated from orders placed during or after a conversation with the AI Agent, without human intervention.',
+            hint: {
+                title: 'The total revenue generated from orders placed during or after a conversation with the AI Agent, without human intervention.',
+            },
             'data-candu-id': 'ai-agent-overview-kpi-gmv-influenced',
-            metricType: StatType.Currency,
+            metricFormat: 'currency',
             value: 12000,
             prevValue: 10000,
             isLoading: false,
@@ -100,9 +104,11 @@ describe('useGmvInfluenced', () => {
 
         expect(result.current).toEqual({
             title: 'GMV Influenced',
-            hint: 'The total revenue generated from orders placed during or after a conversation with the AI Agent, without human intervention.',
+            hint: {
+                title: 'The total revenue generated from orders placed during or after a conversation with the AI Agent, without human intervention.',
+            },
             'data-candu-id': 'ai-agent-overview-kpi-gmv-influenced',
-            metricType: StatType.Currency,
+            metricFormat: 'currency',
             isLoading: true,
             currency: 'USD',
             hidden: false,

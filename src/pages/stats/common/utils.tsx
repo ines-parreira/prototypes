@@ -228,6 +228,7 @@ export const formatMetricValue = (
     value: number | null | undefined,
     format: MetricValueFormat = 'decimal',
     notAvailableText: string = NOT_AVAILABLE_TEXT,
+    currency: string = 'USD',
 ) => {
     if (value === null || value === undefined) {
         return notAvailableText
@@ -260,7 +261,7 @@ export const formatMetricValue = (
     }
 
     if (format === 'currency') {
-        return `${formatCurrency(value, 'USD')}`
+        return `${formatCurrency(value, currency)}`
     }
 
     if (format === 'ratio') {

@@ -9,7 +9,7 @@ import { user } from 'fixtures/users'
 import { useMultipleMetricsTrends } from 'hooks/reporting/useMultipleMetricsTrend'
 import { useGetStoresConfigurationForAccount } from 'models/aiAgent/queries'
 import { IntegrationType } from 'models/integration/constants'
-import { StatsFilters, StatType } from 'models/stat/types'
+import { StatsFilters } from 'models/stat/types'
 import { useCsat } from 'pages/aiAgent/Overview/hooks/kpis/useCsat'
 import { getIntegration } from 'pages/automate/workflows/hooks/tests/fixtures/utils'
 import { RootState } from 'state/types'
@@ -89,8 +89,9 @@ describe('useCsat', () => {
         expect(result.current).toEqual({
             'data-candu-id': 'ai-agent-overview-kpi-csat',
             title: 'CSAT (Customer Satisfaction Score)',
-            hint: 'The average satisfaction rating for AI Agent interactions, based on surveys sent after ticket resolution',
-            metricType: StatType.Number,
+            hint: {
+                title: 'The average satisfaction rating for AI Agent interactions, based on surveys sent after ticket resolution',
+            },
             metricFormat: 'decimal',
             value: 3.1,
             prevValue: 3.5,
@@ -217,8 +218,9 @@ describe('useCsat', () => {
             expect(result.current).toEqual({
                 'data-candu-id': 'ai-agent-overview-kpi-csat',
                 title: 'CSAT (Customer Satisfaction Score)',
-                hint: 'The average satisfaction rating for AI Agent interactions, based on surveys sent after ticket resolution',
-                metricType: StatType.Number,
+                hint: {
+                    title: 'The average satisfaction rating for AI Agent interactions, based on surveys sent after ticket resolution',
+                },
                 metricFormat: 'decimal',
                 isLoading: true,
                 hidden: false,

@@ -1,14 +1,13 @@
-import { StatType } from 'models/stat/types'
 import { MetricTrendFormat } from 'pages/stats/common/utils'
+import { TooltipData } from 'pages/stats/types'
 
 export type KpiMetric = {
     hidden?: boolean
     isLoading: boolean
-    title: string
-    hint: string
+    title?: string
+    hint?: TooltipData
     value?: number | null
     prevValue?: number | null
-    metricType: StatType.Number | StatType.Currency
     currency?: string
     metricFormat?: MetricTrendFormat
     'data-candu-id'?: string

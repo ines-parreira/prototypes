@@ -8,8 +8,8 @@ jest.mock('pages/aiAgent/Overview/hooks/kpis/useCoverageRate', () => ({
 jest.mock('pages/aiAgent/Overview/hooks/kpis/useGmvInfluenced', () => ({
     useGmvInfluenced: jest.fn(() => 'mockGmvInfluenced'),
 }))
-jest.mock('pages/aiAgent/Overview/hooks/kpis/useAutomationRate', () => ({
-    useAutomationRate: jest.fn(() => 'mockAutomationRate'),
+jest.mock('pages/aiAgent/Overview/hooks/kpis/useAiAgentAutomationRate', () => ({
+    useAiAgentAutomationRate: jest.fn(() => 'mockAiAgentAutomationRate'),
 }))
 jest.mock('pages/aiAgent/Overview/hooks/kpis/useCsat', () => ({
     useCsat: jest.fn(() => 'mockCsat'),
@@ -30,7 +30,7 @@ describe('useMixedKpis', () => {
         expect(result.current.metrics).toEqual([
             'mockCoverageRate',
             'mockGmvInfluenced',
-            'mockAutomationRate',
+            'mockAiAgentAutomationRate',
             'mockCsat',
         ])
     })

@@ -5,7 +5,7 @@ import { useMultipleMetricsTrends } from 'hooks/reporting/useMultipleMetricsTren
 import useAppSelector from 'hooks/useAppSelector'
 import { TicketSatisfactionSurveyMeasure } from 'models/reporting/cubes/TicketSatisfactionSurveyCube'
 import { customerSatisfactionQueryFactory } from 'models/reporting/queryFactories/support-performance/customerSatisfaction'
-import { FilterKey, StatsFilters, StatType } from 'models/stat/types'
+import { FilterKey, StatsFilters } from 'models/stat/types'
 import { useStoreConfigurationForAccount } from 'pages/aiAgent/hooks/useStoreConfigurationForAccount'
 import { KpiMetric } from 'pages/aiAgent/Overview/types'
 import { LogicalOperatorEnum } from 'pages/stats/common/components/Filter/constants'
@@ -64,8 +64,9 @@ export const useCsat = (filters: StatsFilters, timezone: string): KpiMetric => {
     return {
         hidden: !hasEmailAgentEnabled,
         title: 'CSAT (Customer Satisfaction Score)',
-        hint: 'The average satisfaction rating for AI Agent interactions, based on surveys sent after ticket resolution',
-        metricType: StatType.Number,
+        hint: {
+            title: 'The average satisfaction rating for AI Agent interactions, based on surveys sent after ticket resolution',
+        },
         metricFormat: 'decimal',
         isLoading: result.isFetching || storeConfigurationsLoading,
         'data-candu-id': 'ai-agent-overview-kpi-csat',

@@ -61,8 +61,8 @@ const KpiContainer = ({
                             prevValue={metric.prevValue ?? undefined}
                             title={metric.title}
                             hint={metric.hint}
-                            metricType={metric.metricType}
                             metricFormat={metric.metricFormat}
+                            currency={metric.currency}
                             data-candu-id={metric['data-candu-id']}
                         />
                     )

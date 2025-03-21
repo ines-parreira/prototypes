@@ -1,12 +1,17 @@
+import { useMemo } from 'react'
+
 import { getAiAgentCoverageRate } from 'hooks/reporting/automate/automateStatsCalculatedTrends'
+import { useAutomationRateTrend } from 'hooks/reporting/automate/useAutomationRateTrend'
 import { useMultipleMetricsTrends } from 'hooks/reporting/useMultipleMetricsTrend'
 import { TicketMeasure } from 'models/reporting/cubes/TicketCube'
 import { TicketCustomFieldsMeasure } from 'models/reporting/cubes/TicketCustomFieldsCube'
 import { customFieldsTicketTotalCountQueryFactory } from 'models/reporting/queryFactories/ticket-insights/customFieldsTicketCount'
-import { StatsFilters, StatType } from 'models/stat/types'
+import { StatsFilters } from 'models/stat/types'
+import { useAiAgentAutomationRate } from 'pages/aiAgent/Overview/hooks/kpis/useAiAgentAutomationRate'
 import { useAllTickets } from 'pages/aiAgent/Overview/hooks/kpis/useAllTickets'
 import { useCustomFieldOutcome } from 'pages/aiAgent/Overview/hooks/useCustomFieldOutcome'
 import { KpiMetric } from 'pages/aiAgent/Overview/types'
+import { AUTOMATION_RATE_TOOLTIP } from 'pages/automate/automate-metrics/AutomationRateMetric'
 import { getPreviousPeriod } from 'utils/reporting'
 
 export const useCoverageRate = (
@@ -30,7 +35,10 @@ export const useCoverageRate = (
         }),
     )
 
-    const result = getAiAgentCoverageRate({
+    const {
+        isFetching: aiAgentCoverageRateIsFetching,
+        data: aiAgentCoverageRateData,
+    } = getAiAgentCoverageRate({
         isFetching: allTickets.isFetching || aiAgentTickets.isFetching,
         isError: allTickets.isError || aiAgentTickets.isError,
         aiAgentTickets:
@@ -40,13 +48,56 @@ export const useCoverageRate = (
         allTickets: allTickets.data?.[TicketMeasure.TicketCount],
     })
 
+    const { isFetching: automationRateIsFetching, data: automationRateData } =
+        useAutomationRateTrend(filters, timezone)
+    const {
+        isLoading: aiAgentAutomationRateIsLoading,
+        value: aiAgentAutomationRateValue,
+    } = useAiAgentAutomationRate(filters, timezone)
+
+    const coverageRate = useMemo<
+        Pick<KpiMetric, 'hint' | 'isLoading' | 'prevValue' | 'value'>
+    >(() => {
+        if (
+            automationRateIsFetching ||
+            aiAgentAutomationRateIsLoading ||
+            aiAgentCoverageRateIsFetching
+        ) {
+            return {
+                isLoading: true,
+                value: null,
+                prevValue: null,
+            }
+        }
+
+        if ((aiAgentAutomationRateValue ?? 0) > automationRateData.value) {
+            return {
+                title: 'Coverage Rate',
+                isLoading: false,
+                hint: {
+                    title: 'Percentage of tickets that AI Agent attempted to respond to.',
+                },
+                ...aiAgentCoverageRateData,
+            }
+        }
+        return {
+            title: 'Automation Rate',
+            isLoading: false,
+            hint: AUTOMATION_RATE_TOOLTIP,
+            ...automationRateData,
+        }
+    }, [
+        automationRateIsFetching,
+        aiAgentAutomationRateIsLoading,
+        aiAgentCoverageRateIsFetching,
+        aiAgentAutomationRateValue,
+        automationRateData,
+        aiAgentCoverageRateData,
+    ])
+
     return {
-        title: 'Coverage Rate',
-        hint: 'Percentage of tickets that AI Agent attempted to respond to.',
-        metricType: StatType.Number,
         metricFormat: 'decimal-to-percent',
-        isLoading: result.isFetching,
         'data-candu-id': 'ai-agent-overview-kpi-coverage-rate',
-        ...result.data,
+        ...coverageRate,
     }
 }

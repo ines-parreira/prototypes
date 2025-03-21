@@ -9,7 +9,6 @@ import { Router } from 'react-router-dom'
 import configureMockStore from 'redux-mock-store'
 
 import { FeatureFlagKey } from 'config/featureFlags'
-import { StatType } from 'models/stat/types'
 import {
     AiAgentType,
     useAiAgentTypeForAccount,
@@ -81,8 +80,7 @@ describe('KpiSection', () => {
                     {
                         isLoading: true,
                         title: `My ${aiAgentType} metric`,
-                        hint: `My ${aiAgentType} hint`,
-                        metricType: StatType.Number,
+                        hint: { title: `My ${aiAgentType} hint` },
                     },
                 ],
             })
@@ -100,19 +98,17 @@ describe('KpiSection', () => {
                     {
                         isLoading: false,
                         title: `My ${aiAgentType} metric`,
-                        hint: `My ${aiAgentType} hint`,
+                        hint: { title: `My ${aiAgentType} hint` },
                         value: 100,
                         prevValue: 90,
-                        metricType: StatType.Number,
                     },
                     {
                         hidden: true,
                         isLoading: false,
                         title: `My hidden ${aiAgentType} metric`,
-                        hint: `My hidden ${aiAgentType} hint`,
+                        hint: { title: `My hidden ${aiAgentType} hint` },
                         value: 100,
                         prevValue: 90,
-                        metricType: StatType.Number,
                     },
                 ],
             })

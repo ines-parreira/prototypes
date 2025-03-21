@@ -1,12 +1,12 @@
 import { getAiAgentCoverageRate } from 'hooks/reporting/automate/automateStatsCalculatedTrends'
 import { TicketMeasure } from 'models/reporting/cubes/TicketCube'
 import { TicketCustomFieldsMeasure } from 'models/reporting/cubes/TicketCustomFieldsCube'
-import { StatsFilters, StatType } from 'models/stat/types'
+import { StatsFilters } from 'models/stat/types'
 import { useAiAgentTicketNoHandover } from 'pages/aiAgent/Overview/hooks/kpis/useAiAgentTicketNoHandover'
 import { useAllTickets } from 'pages/aiAgent/Overview/hooks/kpis/useAllTickets'
 import { KpiMetric } from 'pages/aiAgent/Overview/types'
 
-export const useAutomationRate = (
+export const useAiAgentAutomationRate = (
     filters: StatsFilters,
     timezone: string,
 ): KpiMetric => {
@@ -28,8 +28,9 @@ export const useAutomationRate = (
 
     return {
         title: 'AI Agent Automation Rate',
-        hint: 'Automated interactions from AI Agent as a percent of all customer interactions.',
-        metricType: StatType.Number,
+        hint: {
+            title: 'Automated interactions from AI Agent as a percent of all customer interactions.',
+        },
         metricFormat: 'decimal-to-percent',
         isLoading: result.isFetching,
         'data-candu-id': 'ai-agent-overview-kpi-automation-rate',

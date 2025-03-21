@@ -3,8 +3,8 @@ import { renderHook } from '@testing-library/react-hooks/dom'
 import { useCustomFieldDefinitions } from 'custom-fields/hooks/queries/useCustomFieldDefinitions'
 import { ticketFieldDefinitions } from 'fixtures/customField'
 import { useMultipleMetricsTrends } from 'hooks/reporting/useMultipleMetricsTrend'
-import { StatsFilters, StatType } from 'models/stat/types'
-import { useAutomationRate } from 'pages/aiAgent/Overview/hooks/kpis/useAutomationRate'
+import { StatsFilters } from 'models/stat/types'
+import { useAiAgentAutomationRate } from 'pages/aiAgent/Overview/hooks/kpis/useAiAgentAutomationRate'
 import { assumeMock } from 'utils/testing'
 
 jest.mock('hooks/reporting/useMultipleMetricsTrend')
@@ -45,14 +45,15 @@ describe('useAutomationRate', () => {
         } as any)
 
         const { result } = renderHook(() =>
-            useAutomationRate(filters, timezone),
+            useAiAgentAutomationRate(filters, timezone),
         )
 
         expect(result.current).toEqual({
             'data-candu-id': 'ai-agent-overview-kpi-automation-rate',
             title: 'AI Agent Automation Rate',
-            hint: 'Automated interactions from AI Agent as a percent of all customer interactions.',
-            metricType: StatType.Number,
+            hint: {
+                title: 'Automated interactions from AI Agent as a percent of all customer interactions.',
+            },
             metricFormat: 'decimal-to-percent',
             isLoading: false,
             prevValue: 3.5,
@@ -66,14 +67,15 @@ describe('useAutomationRate', () => {
         } as any)
 
         const { result } = renderHook(() =>
-            useAutomationRate(filters, timezone),
+            useAiAgentAutomationRate(filters, timezone),
         )
 
         expect(result.current).toEqual({
             'data-candu-id': 'ai-agent-overview-kpi-automation-rate',
             title: 'AI Agent Automation Rate',
-            hint: 'Automated interactions from AI Agent as a percent of all customer interactions.',
-            metricType: StatType.Number,
+            hint: {
+                title: 'Automated interactions from AI Agent as a percent of all customer interactions.',
+            },
             metricFormat: 'decimal-to-percent',
             isLoading: true,
             value: 0,

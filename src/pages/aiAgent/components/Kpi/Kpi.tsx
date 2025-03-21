@@ -2,16 +2,15 @@ import React, { useMemo } from 'react'
 
 import { Skeleton } from '@gorgias/merchant-ui-kit'
 
-import { StatType } from 'models/stat/types'
 import BigNumberMetric from 'pages/stats/BigNumberMetric'
 import TrendBadge from 'pages/stats/common/components/TrendBadge'
 import {
-    formatCurrency,
     formatMetricValue,
     MetricTrendFormat,
     NOT_AVAILABLE_PLACEHOLDER,
 } from 'pages/stats/common/utils'
 import MetricCard from 'pages/stats/MetricCard'
+import { TooltipData } from 'pages/stats/types'
 
 import css from './Kpi.less'
 
@@ -20,10 +19,9 @@ type Props = {
     isLoading?: boolean
     value?: number
     prevValue?: number
-    metricType?: StatType.Number | StatType.Currency
     metricFormat?: MetricTrendFormat
     currency?: string
-    hint?: string
+    hint?: TooltipData
     'data-candu-id'?: string
 }
 
@@ -31,7 +29,6 @@ export const Kpi = ({
     title,
     value,
     prevValue,
-    metricType,
     metricFormat,
     currency,
     hint,
@@ -43,13 +40,8 @@ export const Kpi = ({
             return NOT_AVAILABLE_PLACEHOLDER
         }
 
-        switch (metricType) {
-            case StatType.Number:
-                return formatMetricValue(value, metricFormat)
-            case StatType.Currency:
-                return formatCurrency(value, currency ?? 'USD')
-        }
-    }, [metricType, metricFormat, value, currency])
+        return formatMetricValue(value, metricFormat, undefined, currency)
+    }, [metricFormat, value, currency])
 
     const cardTitle = useMemo(() => {
         if (title === undefined) {
@@ -60,31 +52,30 @@ export const Kpi = ({
     }, [title])
 
     return (
-        <>
-            <MetricCard
-                {...{
-                    isLoading,
-                    className: css.card,
-                    hint: hint ? { title: hint } : undefined,
-                    title: cardTitle,
-                }}
-                data-candu-id={props['data-candu-id']}
+        <MetricCard
+            {...{
+                isLoading,
+                className: css.card,
+                hint: hint,
+                title: cardTitle,
+            }}
+            data-candu-id={props['data-candu-id']}
+        >
+            <BigNumberMetric
+                isLoading={isLoading}
+                className={css.metric}
+                trendBadge={
+                    <TrendBadge
+                        value={value}
+                        prevValue={prevValue}
+                        metricFormat={metricFormat}
+                        currency={currency}
+                        interpretAs="more-is-better"
+                    />
+                }
             >
-                <BigNumberMetric
-                    isLoading={isLoading}
-                    className={css.metric}
-                    trendBadge={
-                        <TrendBadge
-                            value={value}
-                            prevValue={prevValue}
-                            metricFormat="percent"
-                            interpretAs="more-is-better"
-                        />
-                    }
-                >
-                    {formattedValue}
-                </BigNumberMetric>
-            </MetricCard>
-        </>
+                {formattedValue}
+            </BigNumberMetric>
+        </MetricCard>
     )
 }

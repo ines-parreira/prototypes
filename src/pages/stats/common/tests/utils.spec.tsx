@@ -280,10 +280,16 @@ describe('stats components utils', () => {
             ).toBe('35%')
         })
 
-        it('should show $ sign when format is "currency"', () => {
+        it('should show $ sign when format is "currency" and currency not specified', () => {
             expect(formatMetricValue(123456.789, 'currency')).toBe(
                 '$123,456.79',
             )
+        })
+
+        it('should show $ sign when format is "currency" and currency is specified', () => {
+            expect(
+                formatMetricValue(123456.789, 'currency', undefined, 'JPY'),
+            ).toBe('¥123,456.79')
         })
 
         it('should render `x` sign if format is ratio', () => {

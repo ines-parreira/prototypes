@@ -3,7 +3,7 @@ import { renderHook } from '@testing-library/react-hooks/dom'
 import { useCustomFieldDefinitions } from 'custom-fields/hooks/queries/useCustomFieldDefinitions'
 import { ticketFieldDefinitions } from 'fixtures/customField'
 import { useMultipleMetricsTrends } from 'hooks/reporting/useMultipleMetricsTrend'
-import { StatsFilters, StatType } from 'models/stat/types'
+import { StatsFilters } from 'models/stat/types'
 import { useAutomatedInteractions } from 'pages/aiAgent/Overview/hooks/kpis/useAutomatedInteractions'
 import { assumeMock } from 'utils/testing'
 
@@ -46,9 +46,10 @@ describe('useAutomatedInteractions', () => {
 
         expect(result.current).toEqual({
             title: 'Automated Interactions',
-            hint: 'Total of fully automated AI Agent interactions solved without any agent intervention.',
+            hint: {
+                title: 'Total of fully automated AI Agent interactions solved without any agent intervention.',
+            },
             'data-candu-id': 'ai-agent-overview-kpi-automated-interactions',
-            metricType: StatType.Number,
             metricFormat: 'decimal',
             value: 450,
             prevValue: 300,
@@ -67,9 +68,10 @@ describe('useAutomatedInteractions', () => {
 
         expect(result.current).toEqual({
             title: 'Automated Interactions',
-            hint: 'Total of fully automated AI Agent interactions solved without any agent intervention.',
+            hint: {
+                title: 'Total of fully automated AI Agent interactions solved without any agent intervention.',
+            },
             'data-candu-id': 'ai-agent-overview-kpi-automated-interactions',
-            metricType: StatType.Number,
             metricFormat: 'decimal',
             isLoading: true,
         })

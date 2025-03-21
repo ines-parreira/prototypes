@@ -4,8 +4,6 @@ import React from 'react'
 
 import { render, screen } from '@testing-library/react'
 
-import { StatType } from 'models/stat/types'
-
 import { Kpi } from '../Kpi'
 
 describe('Kpi', () => {
@@ -15,7 +13,6 @@ describe('Kpi', () => {
                 title="Number KPI"
                 value={1500}
                 prevValue={1200}
-                metricType={StatType.Number}
                 metricFormat="decimal"
             />,
         )
@@ -25,7 +22,7 @@ describe('Kpi', () => {
     })
 
     it('should not render undefined when value is undefined', () => {
-        render(<Kpi title="Number KPI" metricType={StatType.Number} />)
+        render(<Kpi title="Number KPI" />)
         expect(screen.queryByText('undefined')).not.toBeInTheDocument()
     })
 
@@ -35,7 +32,7 @@ describe('Kpi', () => {
                 title="Currency KPI"
                 value={1234.56}
                 prevValue={1000}
-                metricType={StatType.Currency}
+                metricFormat="currency"
             />,
         )
 
@@ -43,19 +40,19 @@ describe('Kpi', () => {
         expect(screen.getByText('$1,234.56')).toBeInTheDocument()
     })
 
-    it('should format value as currency when metric type is StatType.Currency and currency USD', () => {
+    it('should format value as currency when metric type is StatType.Currency and currency JPY', () => {
         render(
             <Kpi
                 title="Currency KPI"
                 value={1234.56}
                 prevValue={1000}
-                metricType={StatType.Currency}
-                currency="USD"
+                metricFormat="currency"
+                currency="JPY"
             />,
         )
 
         expect(screen.getByText('Currency KPI')).toBeInTheDocument()
-        expect(screen.getByText('$1,234.56')).toBeInTheDocument()
+        expect(screen.getByText('¥1,234.56')).toBeInTheDocument()
     })
 
     it('should format value with 2 numbers after the comma when it is a really long number', () => {
@@ -64,9 +61,8 @@ describe('Kpi', () => {
                 title="Rate KPI"
                 value={0.8755555555}
                 prevValue={0.85}
-                metricType={StatType.Number}
                 metricFormat="decimal-to-percent"
-                hint="Conversion hint"
+                hint={{ title: 'Conversion hint' }}
                 isLoading={false}
             />,
         )
