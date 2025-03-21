@@ -13,7 +13,6 @@ import { ConnectYourDefaultEmailTask } from './tasks/ConnectYourDefaultEmail.tas
 import { Create3to5GuidancesTask } from './tasks/Create3to5Guidances.task'
 import { CreateAnActionTask } from './tasks/CreateAnAction.task'
 import { CreateYourFirstGuidanceTask } from './tasks/CreateYourFirstGuidance.task'
-import { DefineHandoverTopicsTask } from './tasks/DefineHandoverTopics.task'
 import { EnableAIAgentOnChatTask } from './tasks/EnableAIAgentOnChat.task'
 import { EnableAIAgentOnEmailTask } from './tasks/EnableAIAgentOnEmail.task'
 import { InstallYourChatTask } from './tasks/InstallYourChat.task'
@@ -73,7 +72,6 @@ const tasksPerAiAgentType: Record<
         new CreateYourFirstGuidanceTask(data, routes),
         new PublishYourFirstGuidanceTask(data, routes),
         new Create3to5GuidancesTask(data, routes),
-        new DefineHandoverTopicsTask(data, routes),
         new TestAIAgentTask(data, routes),
         new CreateAnActionTask(data, routes),
         new SetYourActionsLiveTask(data, routes),
@@ -90,7 +88,6 @@ const tasksPerAiAgentType: Record<
         new PublishYourFirstGuidanceTask(data, routes),
         new Create3to5GuidancesTask(data, routes),
         new UploadAnExternalDocTask(data, routes),
-        new DefineHandoverTopicsTask(data, routes),
         new TestAIAgentTask(data, routes),
         new GiveFeedbackAIAgentTask(data, routes),
     ],
@@ -108,7 +105,6 @@ const tasksPerAiAgentType: Record<
         new CreateYourFirstGuidanceTask(data, routes),
         new PublishYourFirstGuidanceTask(data, routes),
         new Create3to5GuidancesTask(data, routes),
-        new DefineHandoverTopicsTask(data, routes),
         new TestAIAgentTask(data, routes),
         new CreateAnActionTask(data, routes),
         new SetYourActionsLiveTask(data, routes),

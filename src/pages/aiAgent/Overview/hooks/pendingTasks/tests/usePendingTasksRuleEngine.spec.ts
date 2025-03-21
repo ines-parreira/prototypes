@@ -149,17 +149,17 @@ describe('usePendingTasksRuleEngine', () => {
     it.each([
         {
             scopes: [AiAgentScope.Support, AiAgentScope.Sales],
-            pendingTasks: 6,
+            pendingTasks: 5,
             completedTasks: 13,
         },
         {
             scopes: [AiAgentScope.Support],
-            pendingTasks: 6,
+            pendingTasks: 5,
             completedTasks: 12,
         },
         {
             scopes: [AiAgentScope.Sales],
-            pendingTasks: 4,
+            pendingTasks: 3,
             completedTasks: 9,
         },
     ])(
@@ -177,7 +177,6 @@ describe('usePendingTasksRuleEngine', () => {
                     .withoutConnectedHelpCenter()
                     .withChatChannelEnabled()
                     .withEmailChannelEnabled()
-                    .withoutHandoverTopic()
                     .build(),
             })
 
