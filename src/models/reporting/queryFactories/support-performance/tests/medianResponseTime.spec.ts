@@ -290,10 +290,11 @@ describe('medianResponseTime', () => {
                 ),
             ).toEqual({
                 ...medianResponseTimeQueryFactory(statsFilters, timezone),
-                measures: [],
+                measures: [
+                    TicketMessagesEnrichedResponseTimesMeasure.MedianResponseTime,
+                ],
                 dimensions: [
                     TicketDimension.TicketId,
-                    TicketMessagesEnrichedResponseTimesDimension.ResponseTime,
                     ...medianResponseTimeMetricPerAgentQueryFactory(
                         statsFilters,
                         timezone,
@@ -328,10 +329,11 @@ describe('medianResponseTime', () => {
                     filters,
                     timezone,
                 ),
-                measures: [],
+                measures: [
+                    TicketMessagesEnrichedResponseTimesMeasure.MedianResponseTime,
+                ],
                 dimensions: [
                     TicketDimension.TicketId,
-                    TicketMessagesEnrichedResponseTimesDimension.ResponseTime,
                     ...medianResponseTimeMetricPerAgentQueryFactory(
                         statsFilters,
                         timezone,
@@ -347,7 +349,7 @@ describe('medianResponseTime', () => {
                 limit: DRILLDOWN_QUERY_LIMIT,
                 order: [
                     [
-                        TicketMessagesEnrichedResponseTimesDimension.ResponseTime,
+                        TicketMessagesEnrichedResponseTimesMeasure.MedianResponseTime,
                         sorting,
                     ],
                 ],

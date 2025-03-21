@@ -84,19 +84,17 @@ export const medianResponseTimeMetricPerTicketDrillDownQueryFactory = (
     )
     return {
         ...baseQuery,
-        measures: [],
-        dimensions: [
-            TicketDimension.TicketId,
-            TicketMessagesEnrichedResponseTimesDimension.ResponseTime,
-            ...baseQuery.dimensions,
+        measures: [
+            TicketMessagesEnrichedResponseTimesMeasure.MedianResponseTime,
         ],
+        dimensions: [TicketDimension.TicketId, ...baseQuery.dimensions],
         filters: [...baseQuery.filters, TicketDrillDownFilter],
         limit: DRILLDOWN_QUERY_LIMIT,
         ...(sorting
             ? {
                   order: [
                       [
-                          TicketMessagesEnrichedResponseTimesDimension.ResponseTime,
+                          TicketMessagesEnrichedResponseTimesMeasure.MedianResponseTime,
                           sorting,
                       ],
                   ],
