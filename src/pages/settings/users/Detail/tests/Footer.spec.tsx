@@ -142,7 +142,7 @@ describe('Footer', () => {
                 isViewingAccountOwner
                 isEdit
                 agentId={1}
-                isBotAgent={true}
+                isInternal={true}
             />,
         )
 

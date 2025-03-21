@@ -13,7 +13,7 @@ const props = {
     role: UserRole.Agent,
     setAgentState: jest.fn((cb: (param: AgentState) => AgentState) => cb),
     isSelf: false,
-    isBotAgent: false,
+    isInternal: false,
     isViewingAccountOwner: false,
 }
 
@@ -26,8 +26,18 @@ describe('Role', () => {
     })
 
     it('should render only role label for bot', () => {
-        render(<Role {...props} role={UserRole.Bot} isBotAgent={true} />)
+        render(<Role {...props} role={UserRole.Bot} isInternal={true} />)
         expect(screen.getByText('Bot')).toBeInTheDocument()
+        for (const [, { label }] of ORDERED_ROLES_META_BY_USER_ROLE) {
+            expect(screen.queryByText(label)).not.toBeInTheDocument()
+        }
+    })
+
+    it('should render only role label for internal agent', () => {
+        render(
+            <Role {...props} role={UserRole.GorgiasAgent} isInternal={true} />,
+        )
+        expect(screen.getByText('Gorgias Support')).toBeInTheDocument()
         for (const [, { label }] of ORDERED_ROLES_META_BY_USER_ROLE) {
             expect(screen.queryByText(label)).not.toBeInTheDocument()
         }

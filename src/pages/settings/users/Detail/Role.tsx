@@ -15,7 +15,7 @@ type Props = {
     role: UserRole
     setAgentState: (arg1: (state: AgentState) => AgentState) => void
     isSelf: boolean
-    isBotAgent: boolean
+    isInternal: boolean
     isViewingAccountOwner: boolean
 }
 
@@ -23,15 +23,15 @@ export const Role = ({
     role,
     setAgentState,
     isSelf,
-    isBotAgent,
+    isInternal,
     isViewingAccountOwner,
 }: Props) => {
     const isDisabled = isSelf || isViewingAccountOwner
     return (
         <>
             <Label className={css.label}>Role</Label>
-            {isBotAgent && <RoleLabel role={{ name: role }} />}
-            {!isBotAgent && (
+            {isInternal && <RoleLabel role={{ name: role }} />}
+            {!isInternal && (
                 <p>
                     For a comprehensive permissions table,{' '}
                     <a
@@ -47,7 +47,7 @@ export const Role = ({
             {ORDERED_ROLES_META_BY_USER_ROLE.map(([key, orderedRole]) => {
                 const id = `detail-role-${key}`
                 return (
-                    !isBotAgent && (
+                    !isInternal && (
                         <Fragment key={key}>
                             <PreviewRadioButton
                                 id={id}

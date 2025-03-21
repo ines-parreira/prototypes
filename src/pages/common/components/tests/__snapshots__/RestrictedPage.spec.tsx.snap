@@ -257,7 +257,9 @@ exports[`<RestrictedPage/> should render for internal-agent role and include hig
       <div
         class="ui-badge-badge-7025 ui-badge-uppercase-7025"
         style="border-radius: 100px;"
-      />
+      >
+        Gorgias Support
+      </div>
     </div>
     <h2
       class="heading"

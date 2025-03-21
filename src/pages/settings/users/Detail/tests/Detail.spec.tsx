@@ -191,7 +191,7 @@ describe('Detail', () => {
             {
                 agentId: 1,
                 email: 'mister@love.com',
-                isBotAgent: false,
+                isInternal: false,
                 isAccountOwner: true,
                 isEdit: true,
                 isViewingAccountOwner: true,
@@ -202,7 +202,7 @@ describe('Detail', () => {
         )
         expect(mockedRoles).toHaveBeenLastCalledWith(
             {
-                isBotAgent: false,
+                isInternal: false,
                 isSelf: true,
                 isViewingAccountOwner: true,
                 role: 'basic-agent',
@@ -218,7 +218,7 @@ describe('Detail', () => {
                     name: 'M. Love',
                     role: 'basic-agent',
                 },
-                isBotAgent: false,
+                isInternal: false,
                 isEdit: true,
                 isSaving: false,
                 isSelf: true,

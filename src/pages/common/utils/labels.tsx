@@ -287,6 +287,9 @@ export const RoleLabel = ({
     } else if (role.name === UserRole.Bot) {
         color = 'blue'
         label = 'Bot'
+    } else if (role.name === UserRole.GorgiasAgent) {
+        color = 'blue'
+        label = 'Gorgias Support'
     }
 
     return <Badge type={color}>{label}</Badge>
