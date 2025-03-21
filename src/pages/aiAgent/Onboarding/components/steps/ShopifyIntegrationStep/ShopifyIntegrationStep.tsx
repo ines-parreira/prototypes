@@ -20,6 +20,7 @@ import StatusBadge, {
 import css from 'pages/aiAgent/Onboarding/components/steps/ShopifyIntegrationStep/ShopifyIntegrationStep.less'
 import { StepProps } from 'pages/aiAgent/Onboarding/components/steps/types'
 import useCheckOnboardingCompleted from 'pages/aiAgent/Onboarding/hooks/useCheckOnboardingCompleted'
+import { useCheckStoreAlreadyConfigured } from 'pages/aiAgent/Onboarding/hooks/useCheckStoreAlreadyConfigured'
 import { useCreateOnboarding } from 'pages/aiAgent/Onboarding/hooks/useCreateOnboarding'
 import { useGenerateToneOfVoice } from 'pages/aiAgent/Onboarding/hooks/useGenerateToneOfVoice'
 import { useGetOnboardingData } from 'pages/aiAgent/Onboarding/hooks/useGetOnboardingData'
@@ -75,6 +76,7 @@ export const ShopifyIntegrationStep: React.FC<ShopifyIntegrationStepProps> = ({
     const { emailIntegrations, defaultIntegration } = useEmailIntegrations()
 
     useCheckOnboardingCompleted()
+    useCheckStoreAlreadyConfigured()
 
     const {
         mutate: doUpdateOnboardingMutation,

@@ -2,11 +2,17 @@ import { renderHook } from '@testing-library/react-hooks'
 import { fromJS } from 'immutable'
 import { useHistory, useParams } from 'react-router-dom'
 
+import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import useCheckStoreIntegration from 'pages/aiAgent/Onboarding/hooks/useCheckStoreIntegration'
 import { useGetOnboardingData } from 'pages/aiAgent/Onboarding/hooks/useGetOnboardingData'
 import { WizardStepEnum } from 'pages/aiAgent/Onboarding/types'
+import { notify as notifyAction } from 'state/notifications/actions'
+import { NotificationStatus } from 'state/notifications/types'
+import { assumeMock } from 'utils/testing'
 
+jest.mock('hooks/useAppDispatch')
+jest.mock('state/notifications/actions')
 jest.mock('hooks/useAppSelector')
 jest.mock('react-router-dom', () => ({
     useParams: jest.fn(),
@@ -18,6 +24,9 @@ const mockUseAppSelector = useAppSelector as jest.Mock
 const mockUseParams = useParams as jest.Mock
 const mockUseHistory = useHistory as jest.Mock
 const mockUseGetOnboardingData = useGetOnboardingData as jest.Mock
+const notifyActionMock = assumeMock(notifyAction)
+const useAppDispatchMock = assumeMock(useAppDispatch)
+const mockDispatch = jest.fn()
 
 describe('useCheckStoreIntegration', () => {
     let mockHistoryPush: jest.Mock
@@ -25,6 +34,8 @@ describe('useCheckStoreIntegration', () => {
     beforeEach(() => {
         mockHistoryPush = jest.fn()
         mockUseHistory.mockReturnValue({ push: mockHistoryPush })
+        useAppDispatchMock.mockReturnValue(mockDispatch)
+        notifyActionMock.mockReturnValue(mockDispatch)
     })
 
     it('should not redirect when isLoading is true', () => {
@@ -34,7 +45,7 @@ describe('useCheckStoreIntegration', () => {
         )
         mockUseGetOnboardingData.mockReturnValue({
             data: null,
-            isLoading: true, // Simulate loading state
+            isLoading: true,
         })
 
         const { result } = renderHook(() => useCheckStoreIntegration())
@@ -50,25 +61,33 @@ describe('useCheckStoreIntegration', () => {
         )
         mockUseGetOnboardingData.mockReturnValue({
             data: { id: '123', shopName: 'valid-store' },
-            isLoading: false, // Data loaded
+            isLoading: false,
         })
 
         const { result } = renderHook(() => useCheckStoreIntegration())
 
         expect(mockHistoryPush).not.toHaveBeenCalled()
+        expect(mockDispatch).not.toHaveBeenCalled()
         expect(result.current).toBeNull()
     })
 
     it('should redirect to Shopify integration step when storeIntegration is empty', () => {
         mockUseParams.mockReturnValue({ shopName: 'empty-store' })
-        mockUseAppSelector.mockReturnValue(fromJS({})) // Simulate empty store integration
+        mockUseAppSelector.mockReturnValue(fromJS({}))
         mockUseGetOnboardingData.mockReturnValue({
-            data: null, // Simulate no onboarding data
+            data: null,
             isLoading: false,
         })
 
         renderHook(() => useCheckStoreIntegration())
 
+        expect(mockDispatch).toHaveBeenCalledTimes(1)
+        expect(notifyActionMock).toHaveBeenCalledWith({
+            status: NotificationStatus.Error,
+            message:
+                'There are no existing store integrations. Redirecting to the shopify integration step.',
+            id: 'store-integration-empty-error',
+        })
         expect(mockHistoryPush).toHaveBeenCalledWith(
             `/app/ai-agent/onboarding/${WizardStepEnum.SHOPIFY_INTEGRATION}`,
         )

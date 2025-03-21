@@ -37,6 +37,7 @@ import { usePreselectedEmails } from 'pages/aiAgent/Onboarding/components/steps/
 import { createChatConfiguration } from 'pages/aiAgent/Onboarding/components/steps/ChannelsStep/utils/createGorgiasConfiguration'
 import { StepProps } from 'pages/aiAgent/Onboarding/components/steps/types'
 import useCheckOnboardingCompleted from 'pages/aiAgent/Onboarding/hooks/useCheckOnboardingCompleted'
+import { useCheckStoreAlreadyConfigured } from 'pages/aiAgent/Onboarding/hooks/useCheckStoreAlreadyConfigured'
 import useCheckStoreIntegration from 'pages/aiAgent/Onboarding/hooks/useCheckStoreIntegration'
 import { useGetChatIntegrationColor } from 'pages/aiAgent/Onboarding/hooks/useGetChatIntegrationColor'
 import { useGetOnboardingData } from 'pages/aiAgent/Onboarding/hooks/useGetOnboardingData'
@@ -169,6 +170,7 @@ export const ChannelsStep: React.FC<StepProps> = ({
 
     useCheckStoreIntegration()
     useCheckOnboardingCompleted()
+    useCheckStoreAlreadyConfigured()
 
     const emailIntegrationPath = '/app/settings/channels/email/new'
 

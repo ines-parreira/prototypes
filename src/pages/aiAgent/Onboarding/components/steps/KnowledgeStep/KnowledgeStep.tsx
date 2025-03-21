@@ -18,6 +18,7 @@ import {
     TemporaryKnowledgeData,
 } from 'pages/aiAgent/Onboarding/components/steps/types'
 import useCheckOnboardingCompleted from 'pages/aiAgent/Onboarding/hooks/useCheckOnboardingCompleted'
+import { useCheckStoreAlreadyConfigured } from 'pages/aiAgent/Onboarding/hooks/useCheckStoreAlreadyConfigured'
 import useCheckStoreIntegration from 'pages/aiAgent/Onboarding/hooks/useCheckStoreIntegration'
 import { useGetHelpCentersByShopName } from 'pages/aiAgent/Onboarding/hooks/useGetHelpCentersByShopName'
 import { useGetKnowledgeStatusByShopName } from 'pages/aiAgent/Onboarding/hooks/useGetKnowledgeStatusByShopName'
@@ -51,6 +52,7 @@ export const KnowledgeStep: React.FC<StepProps> = ({
 
     useCheckStoreIntegration()
     useCheckOnboardingCompleted()
+    useCheckStoreAlreadyConfigured()
 
     const {
         mutate: doUpdateOnboardingMutation,

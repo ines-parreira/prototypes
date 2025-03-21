@@ -14,6 +14,7 @@ import MainTitle from 'pages/aiAgent/Onboarding/components/MainTitle/MainTitle'
 import { conversationExamples } from 'pages/aiAgent/Onboarding/components/steps/PersonalityPreviewStep/conversationsExamples'
 import { StepProps } from 'pages/aiAgent/Onboarding/components/steps/types'
 import useCheckOnboardingCompleted from 'pages/aiAgent/Onboarding/hooks/useCheckOnboardingCompleted'
+import { useCheckStoreAlreadyConfigured } from 'pages/aiAgent/Onboarding/hooks/useCheckStoreAlreadyConfigured'
 import { useCreateOnboarding } from 'pages/aiAgent/Onboarding/hooks/useCreateOnboarding'
 import { useGenerateToneOfVoice } from 'pages/aiAgent/Onboarding/hooks/useGenerateToneOfVoice'
 import { useGetChatIntegrationColor } from 'pages/aiAgent/Onboarding/hooks/useGetChatIntegrationColor'
@@ -70,6 +71,7 @@ export const SkillsetStep: FC<SkillsetStepProps> = ({
     const { validSteps } = useSteps({ shopName, isStoreSelected })
 
     useCheckOnboardingCompleted()
+    useCheckStoreAlreadyConfigured()
 
     const shopifyIntegrations = useShopifyIntegrations()
     const currentIntegration = useMemo(
