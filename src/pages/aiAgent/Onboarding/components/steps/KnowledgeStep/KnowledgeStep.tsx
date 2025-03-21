@@ -98,7 +98,10 @@ export const KnowledgeStep: React.FC<StepProps> = ({
 
                 {
                     onSuccess: () => {
-                        history.push(routes.overview)
+                        history.push({
+                            pathname: routes.overview,
+                            search: `?shopName=${encodeURIComponent(shopName)}&from=onboarding`,
+                        })
                     },
                 },
             )

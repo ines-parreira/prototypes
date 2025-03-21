@@ -1,7 +1,4 @@
-import React, { useEffect, useState } from 'react'
-
 import { useFlags } from 'launchdarkly-react-client-sdk'
-import { useLocation } from 'react-router-dom'
 
 import modalImage from 'assets/img/ai-agent/ai_agent_onboarding_thankyou.png'
 import { logEvent, SegmentEvent } from 'common/segment'
@@ -14,14 +11,13 @@ import { KpiSection } from 'pages/aiAgent/Overview/components/KpiSection/KpiSect
 import { ResourcesSection } from 'pages/aiAgent/Overview/components/ResourcesSection/ResourcesSection'
 import { Separator } from 'pages/aiAgent/Overview/components/Separator/Separator'
 import { Title } from 'pages/aiAgent/Overview/components/Title/Title'
+import { useThankYouModal } from 'pages/aiAgent/Overview/hooks/useThankYouModal'
 import { AiAgentOverviewLayout } from 'pages/aiAgent/Overview/layout/AiAgentOverviewLayout'
 import { getCurrentUser } from 'state/currentUser/selectors'
 
 import { PendingTasksSectionConnected } from './components/PendingTasksSection/PendingTasksSectionConnected'
 
 export const AiAgentOverview = () => {
-    const [isOpen, setIsOpen] = useState(false)
-    const { state }: { state: { from: string } } = useLocation()
     const currentUser = useAppSelector(getCurrentUser)
 
     const hasResourceSection =
@@ -34,11 +30,11 @@ export const AiAgentOverview = () => {
         logEvent(SegmentEvent.AiAgentOverviewPageView)
     })
 
-    useEffect(() => {
-        if (state?.from) {
-            setIsOpen(state?.from === '/app/ai-agent/onboarding')
-        }
-    }, [state])
+    const { isOpen, isLoading, handleModalAction, modalContent } =
+        useThankYouModal()
+
+    const onConfirmModal = () => handleModalAction('confirm')
+    const onCloseModal = () => handleModalAction('close')
 
     return (
         <AiAgentOverviewLayout>
@@ -56,13 +52,14 @@ export const AiAgentOverview = () => {
             )}
             <ThankYouModal
                 isOpen={isOpen}
-                title="Your account is ready!"
-                description=""
+                title={modalContent.title}
+                description={modalContent.description}
                 image={<img src={modalImage} alt="Thank you" />}
-                actionLabel="Go live with AI agent"
-                closeLabel="Close"
-                onClick={() => setIsOpen(false)}
-                onClose={() => setIsOpen(false)}
+                actionLabel={modalContent.actionLabel}
+                closeLabel={modalContent.closeLabel}
+                onClick={onConfirmModal}
+                onClose={onCloseModal}
+                isLoading={isLoading}
             />
             <ActivationModal />
             <EarlyAccessModal />

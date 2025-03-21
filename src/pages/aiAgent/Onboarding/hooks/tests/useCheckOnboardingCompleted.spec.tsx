@@ -51,14 +51,17 @@ describe('useCheckOnboardingCompleted', () => {
     it('should redirect to the SKILLSET step when onboarding is completed', () => {
         mockUseParams.mockReturnValue({ shopName: 'completed-store' })
         mockUseGetOnboardingData.mockReturnValue({
-            data: { completedDatetime: '2024-02-21T12:00:00Z' }, // Simulating completion
+            data: {
+                completedDatetime: '2024-02-21T12:00:00Z',
+                shopType: 'shopify',
+            },
             isLoading: false,
         })
 
         renderHook(() => useCheckOnboardingCompleted())
 
         expect(mockHistoryPush).toHaveBeenCalledWith(
-            `/app/ai-agent/onboarding/undefined/completed-store`,
+            `/app/ai-agent/shopify/completed-store/knowledge`,
         )
     })
 })

@@ -13,7 +13,7 @@ const useCheckOnboardingCompleted = (): null => {
     }
 
     if (data?.completedDatetime) {
-        history.push(`/app/ai-agent/onboarding/${data.shopType}/${shopName}`)
+        history.push(`/app/ai-agent/${data.shopType}/${shopName}/knowledge`)
     }
 
     return null
