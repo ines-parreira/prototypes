@@ -79,7 +79,7 @@ describe('VoiceIntegration', () => {
         expect(screen.getByText('QueueRoutes')).toBeInTheDocument()
     })
 
-    it('should render integration settings under FF', () => {
+    it('should render integration settings', () => {
         useAppSelectorMock.mockReturnValue({
             id: 1,
             name: 'testing',
@@ -92,6 +92,62 @@ describe('VoiceIntegration', () => {
 
         renderComponent()
 
-        expect(screen.queryByText('New settings')).toBeInTheDocument()
+        expect(screen.queryByText('Preferences')).toBeNull()
+        expect(screen.queryByText('Voicemail')).toBeNull()
+        expect(screen.queryByText('Greetings & Music')).toBeNull()
+    })
+
+    it('should render old route for IVR integration', () => {
+        useAppSelectorMock.mockReturnValue({
+            id: 1,
+            name: 'testing',
+            type: 'phone',
+            meta: {
+                function: 'ivr',
+            },
+        })
+        useFlagMock.mockReturnValue(true)
+
+        renderComponent()
+
+        expect(screen.queryByText('Preferences')).toBeInTheDocument()
+        expect(screen.queryByText('Voicemail')).toBeInTheDocument()
+        expect(screen.queryByText('IVR')).toBeInTheDocument()
+    })
+
+    it('should render integration settings with FF off', () => {
+        useAppSelectorMock.mockReturnValue({
+            id: 1,
+            name: 'testing',
+            type: 'phone',
+            meta: {
+                function: 'standard',
+            },
+        })
+        useFlagMock.mockReturnValue(false)
+
+        renderComponent()
+
+        expect(screen.queryByText('Preferences')).toBeInTheDocument()
+        expect(screen.queryByText('Voicemail')).toBeInTheDocument()
+        expect(screen.queryByText('Greetings & Music')).toBeInTheDocument()
+    })
+
+    it('should render old route for IVR integration with FF off', () => {
+        useAppSelectorMock.mockReturnValue({
+            id: 1,
+            name: 'testing',
+            type: 'phone',
+            meta: {
+                function: 'ivr',
+            },
+        })
+        useFlagMock.mockReturnValue(false)
+
+        renderComponent()
+
+        expect(screen.queryByText('Preferences')).toBeInTheDocument()
+        expect(screen.queryByText('Voicemail')).toBeInTheDocument()
+        expect(screen.queryByText('IVR')).toBeInTheDocument()
     })
 })

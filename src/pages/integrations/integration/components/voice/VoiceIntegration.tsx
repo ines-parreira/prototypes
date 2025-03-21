@@ -6,7 +6,11 @@ import { FeatureFlagKey } from 'config/featureFlags'
 import { useFlag } from 'core/flags'
 import useAppSelector from 'hooks/useAppSelector'
 import useSearch from 'hooks/useSearch'
-import { IntegrationType, isPhoneIntegration } from 'models/integration/types'
+import {
+    IntegrationType,
+    isPhoneIntegration,
+    isStandardPhoneIntegration,
+} from 'models/integration/types'
 import PageHeader from 'pages/common/components/PageHeader'
 import ConnectLink from 'pages/integrations/components/ConnectLink'
 import PhoneIntegrationBreadcrumbs from 'pages/integrations/integration/components/phone/PhoneIntegrationBreadcrumbs'
@@ -49,6 +53,8 @@ export default function VoiceIntegration() {
         }
     })
     const phoneIntegrations = useAppSelector(getPhoneIntegrations)
+    const isStandardIntegration = isStandardPhoneIntegration(currentIntegration)
+    const showNewSettingsPage = exposeQueues && isStandardIntegration
 
     const routes = getDefaultRoutes(baseURL, phoneIntegrations)
 
@@ -82,50 +88,58 @@ export default function VoiceIntegration() {
                 )}
             </PageHeader>
 
-            <VoiceIntegrationSecondaryNavigation
-                integration={currentIntegration}
-            />
+            {!showNewSettingsPage && (
+                <VoiceIntegrationSecondaryNavigation
+                    integration={currentIntegration}
+                />
+            )}
 
             <Switch>
                 {currentIntegration && (
                     <>
-                        {exposeQueues && (
+                        {showNewSettingsPage ? (
                             <Route
-                                path={`${baseURL}/:integrationId/settings`}
+                                path={`${baseURL}/:integrationId/preferences`}
                                 exact
                             >
                                 <VoiceIntegrationSettingsPage />
                             </Route>
+                        ) : (
+                            <>
+                                <Route
+                                    path={`${baseURL}/:integrationId/preferences`}
+                                    exact
+                                >
+                                    <VoiceIntegrationPreferences
+                                        integration={currentIntegration}
+                                    />
+                                </Route>
+                                <Route
+                                    path={`${baseURL}/:integrationId/voicemail`}
+                                    exact
+                                >
+                                    <VoiceIntegrationVoicemail
+                                        integration={currentIntegration}
+                                    />
+                                </Route>
+                                <Route
+                                    path={`${baseURL}/:integrationId/greetings-music`}
+                                    exact
+                                >
+                                    <VoiceIntegrationGreetingMessage
+                                        integration={currentIntegration}
+                                    />
+                                </Route>
+                                <Route
+                                    path={`${baseURL}/:integrationId/ivr`}
+                                    exact
+                                >
+                                    <VoiceIntegrationIvr
+                                        integration={currentIntegration}
+                                    />
+                                </Route>
+                            </>
                         )}
-                        <Route
-                            path={`${baseURL}/:integrationId/preferences`}
-                            exact
-                        >
-                            <VoiceIntegrationPreferences
-                                integration={currentIntegration}
-                            />
-                        </Route>
-                        <Route
-                            path={`${baseURL}/:integrationId/voicemail`}
-                            exact
-                        >
-                            <VoiceIntegrationVoicemail
-                                integration={currentIntegration}
-                            />
-                        </Route>
-                        <Route
-                            path={`${baseURL}/:integrationId/greetings-music`}
-                            exact
-                        >
-                            <VoiceIntegrationGreetingMessage
-                                integration={currentIntegration}
-                            />
-                        </Route>
-                        <Route path={`${baseURL}/:integrationId/ivr`} exact>
-                            <VoiceIntegrationIvr
-                                integration={currentIntegration}
-                            />
-                        </Route>
                     </>
                 )}
                 <Route path={routes.integrations} exact>
