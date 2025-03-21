@@ -60,11 +60,11 @@ describe('<TopProductRecommendationTable />', () => {
             </Provider>,
         )
 
-        expect(screen.getByText('Top Products Recommended')).toBeInTheDocument()
+        expect(screen.getByText('Top products recommended')).toBeInTheDocument()
         expect(screen.getByText('Product name')).toBeInTheDocument()
-        expect(screen.getByText('# times recommended')).toBeInTheDocument()
-        expect(screen.getByText('Click Rate')).toBeInTheDocument()
-        expect(screen.getByText('Buy Rate')).toBeInTheDocument()
+        expect(screen.getByText('Times recommended')).toBeInTheDocument()
+        expect(screen.getByText('Click rate')).toBeInTheDocument()
+        expect(screen.getByText('Buy rate')).toBeInTheDocument()
     })
 
     it('navigates pages correctly', () => {
@@ -101,20 +101,20 @@ describe('<TopProductRecommendationTable />', () => {
         expect(screen.getByText('Product 19')).toBeInTheDocument()
 
         // Sort by CTR
-        screen.getByText('Click Rate').click()
+        screen.getByText('Click rate').click()
         expect(screen.getByText('Product 20')).toBeInTheDocument()
         expect(screen.getByText('Product 19')).toBeInTheDocument()
 
         // Sort by Number of Recommendations
-        screen.getByText('# times recommended').click()
+        screen.getByText('Times recommended').click()
         expect(screen.getByText('Product 1')).toBeInTheDocument()
         expect(screen.getByText('Product 2')).toBeInTheDocument()
 
         // Sort by BTR
-        screen.getByText('Buy Rate').click()
+        screen.getByText('Buy rate').click()
         expect(screen.getByText('Product 1')).toBeInTheDocument()
         expect(screen.getByText('Product 2')).toBeInTheDocument()
-        screen.getByText('Buy Rate').click()
+        screen.getByText('Buy rate').click()
         expect(screen.getByText('Product 20')).toBeInTheDocument()
         expect(screen.getByText('Product 19')).toBeInTheDocument()
     })

@@ -107,4 +107,19 @@ describe('<TopProductRecommendationTableStats />', () => {
         expect(screen.getByText('Product name')).toBeInTheDocument()
         expect(screen.queryByText('Product 1')).not.toBeInTheDocument()
     })
+
+    it('renders no data without rows', () => {
+        render(
+            <TopProductRecommendationTableStats
+                isLoading={false}
+                rows={[]}
+                offset={0}
+                perPage={10}
+                onClickNextPage={() => {}}
+                onClickPrevPage={() => {}}
+            />,
+        )
+
+        expect(screen.queryByText('No data available')).toBeInTheDocument()
+    })
 })

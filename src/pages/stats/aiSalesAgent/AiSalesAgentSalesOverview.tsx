@@ -55,7 +55,7 @@ const AiSalesAgentSalesOverview = () => {
                     </CampaignStatsFilters>
                 </DashboardGridCell>
             </DashboardSection>
-            <DashboardSection title="Main Metrics">
+            <DashboardSection title="Main metrics">
                 <DashboardGridCell size={getGridCellSize(3)}>
                     <RenderChart
                         chart={AiSalesAgentChart.AiSalesAgentTotalSalesConv}
@@ -91,7 +91,7 @@ const AiSalesAgentSalesOverview = () => {
                     />
                 </DashboardGridCell>
             </DashboardSection>
-            <DashboardSection title="Order Data">
+            <DashboardSection title="Order data">
                 <DashboardGridCell size={getGridCellSize(6)}>
                     <RenderChart
                         chart={
@@ -107,7 +107,7 @@ const AiSalesAgentSalesOverview = () => {
                     />
                 </DashboardGridCell>
             </DashboardSection>
-            <DashboardSection title="AI Agent Sales Performance">
+            <DashboardSection title="AI Agent Sales performance">
                 <DashboardGridCell size={getGridCellSize(4)}>
                     <RenderChart
                         chart={AiSalesAgentChart.AiSalesAgentSuccessRate}
@@ -155,7 +155,7 @@ const AiSalesAgentSalesOverview = () => {
                     </DashboardGridCell>
                 </DashboardSection>
             )}
-            <DashboardSection title="Product Recommendations Performance">
+            <DashboardSection title="Product recommendations performance">
                 <DashboardGridCell size={getGridCellSize(4)}>
                     <RenderChart
                         chart={
@@ -177,7 +177,7 @@ const AiSalesAgentSalesOverview = () => {
                     />
                 </DashboardGridCell>
             </DashboardSection>
-            <DashboardSection title="">
+            <DashboardSection>
                 <DashboardGridCell size={12}>
                     <DashboardComponent
                         config={AiSalesAgentReportConfig}

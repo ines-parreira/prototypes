@@ -22,6 +22,7 @@ import {
     ProductTableContentCell,
 } from 'pages/stats/aiSalesAgent/types/productTable'
 import { formatNumber } from 'pages/stats/common/utils'
+import { NoDataAvailable } from 'pages/stats/NoDataAvailable'
 
 import css from './TopProductRecommendationTableStats.less'
 
@@ -158,6 +159,10 @@ export const TopProductRecommendationTableStats = ({
             : paginatedRows.map(renderRows)
     }, [isLoading, paginatedRows, renderRows, perPage])
 
+    if (rows.length === 0 && !isLoading) {
+        return <NoDataAvailable className={css.noData} />
+    }
+
     return (
         <>
             <div ref={ref} className={css.container}>
@@ -168,24 +173,15 @@ export const TopProductRecommendationTableStats = ({
                         )}
                     </TableHead>
                     <TableBody>
-                        {rows.length === 0 ? (
+                        {isLoading ? (
                             <TableBodyRow>
-                                {isLoading ? (
-                                    columnsOrder.map((column) => (
-                                        <BodyCell key={column}>
-                                            <div style={{ width: '100%' }}>
-                                                <Skeleton
-                                                    count={1}
-                                                    width="100%"
-                                                />
-                                            </div>
-                                        </BodyCell>
-                                    ))
-                                ) : (
-                                    <BodyCell colSpan={columnsOrder.length}>
-                                        No data available
+                                {columnsOrder.map((column) => (
+                                    <BodyCell key={column}>
+                                        <div style={{ width: '100%' }}>
+                                            <Skeleton count={1} width="100%" />
+                                        </div>
                                     </BodyCell>
-                                )}
+                                ))}
                             </TableBodyRow>
                         ) : (
                             renderTableBody()

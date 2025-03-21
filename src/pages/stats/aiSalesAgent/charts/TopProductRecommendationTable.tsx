@@ -35,7 +35,8 @@ const TopProductRecommendationTable = ({
 
     return (
         <ChartCard
-            title="Top Products Recommended"
+            title="Top products recommended"
+            noPadding={true}
             chartId={chartId}
             dashboard={dashboard}
         >

@@ -1,5 +1,8 @@
 @import (reference) '~css/typography.less';
+@import (reference) '~css/new/mixins.less';
 @import (reference) '~@gorgias/design-tokens/dist/css/layout.less';
+
+@table-max-height: 744px;
 
 :local {
     .wrapper {
@@ -86,7 +89,11 @@
 
     .pagination {
         margin-top: @layout-spacing-xs;
-        margin-left: @layout-spacing-xs;
+        margin-left: @layout-spacing-m;
         margin-bottom: @layout-spacing-xs;
+    }
+
+    .noData {
+        height: 324px;
     }
 }

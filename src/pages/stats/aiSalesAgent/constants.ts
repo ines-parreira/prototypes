@@ -22,17 +22,17 @@ export const PRODUCT_TABLE_CELLS: ProductTableColumn[] = [
     },
     {
         key: ProductTableKeys.NumberOfRecommendations,
-        title: '# times recommended',
+        title: 'Times recommended',
         metricFormat: 'integer',
     },
     {
         key: ProductTableKeys.CTR,
-        title: 'Click Rate',
+        title: 'Click rate',
         metricFormat: 'decimal-to-percent',
     },
     {
         key: ProductTableKeys.BTR,
-        title: 'Buy Rate',
+        title: 'Buy rate',
         metricFormat: 'decimal-to-percent',
     },
 ]
