@@ -15,6 +15,11 @@ jest.mock(
     () => () => <div>VoiceQueueEditPage</div>,
 )
 
+jest.mock(
+    'pages/integrations/integration/components/voice/VoiceQueueListPage',
+    () => () => <div>VoiceQueueListPage</div>,
+)
+
 describe('VoiceIntegrationQueueRoutes', () => {
     const renderComponent = (route: string = '') =>
         renderWithRouter(<VoiceIntegrationQueueRoutes />, { route })
@@ -22,7 +27,7 @@ describe('VoiceIntegrationQueueRoutes', () => {
     it('should render QUEUE LIST at /queues', () => {
         renderComponent(baseURL + '/queues')
 
-        expect(screen.getByText('QUEUE LIST')).toBeInTheDocument()
+        expect(screen.getByText('VoiceQueueListPage')).toBeInTheDocument()
     })
 
     it('should render VoiceQueueCreatePage at /queues/new', () => {

@@ -18,10 +18,11 @@ import SettingsPageContainer from 'pages/settings/SettingsPageContainer'
 import { PHONE_INTEGRATION_BASE_URL } from './constants'
 import { getVoiceQueueEditableFields } from './utils'
 import VoiceFormSubmitButton from './VoiceFormSubmitButton'
+import VoiceQueueDelete from './VoiceQueueDelete'
 import VoiceQueueEditOrCreateForm from './VoiceQueueEditOrCreateForm'
 import VoiceQueueSettingsForm from './VoiceQueueSettingsForm'
 
-import css from './VoiceQueueCreatePage.less'
+import css from './VoiceQueueEditPage.less'
 
 export default function VoiceQueueEditPage() {
     const { id: idParam } = useParams<{ id: string }>()
@@ -78,12 +79,15 @@ export default function VoiceQueueEditPage() {
                 >
                     <VoiceQueueEditOrCreateForm />
                     <div className={css.buttons}>
-                        <VoiceFormSubmitButton>
-                            Save changes
-                        </VoiceFormSubmitButton>
-                        <Link to={`${PHONE_INTEGRATION_BASE_URL}/queues`}>
-                            <Button intent="secondary">Cancel</Button>
-                        </Link>
+                        <div className={css.leftButtons}>
+                            <VoiceFormSubmitButton>
+                                Save changes
+                            </VoiceFormSubmitButton>
+                            <Link to={`${PHONE_INTEGRATION_BASE_URL}/queues`}>
+                                <Button intent="secondary">Cancel</Button>
+                            </Link>
+                        </div>
+                        <VoiceQueueDelete queue={queue.data} />
                     </div>
                 </VoiceQueueSettingsForm>
             </SettingsContent>

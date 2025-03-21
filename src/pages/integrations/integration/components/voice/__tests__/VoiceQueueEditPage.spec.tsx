@@ -77,6 +77,7 @@ describe('VoiceQueueEditPage', () => {
             expect(screen.getByTestId('settings-form')).toBeInTheDocument()
             expect(screen.getByText('Save changes')).toBeInTheDocument()
             expect(screen.getByText('Cancel')).toBeInTheDocument()
+            expect(screen.getByText('Delete queue')).toBeInTheDocument()
         })
     })
 
