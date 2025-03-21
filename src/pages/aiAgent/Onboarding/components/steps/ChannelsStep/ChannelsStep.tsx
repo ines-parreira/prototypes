@@ -7,6 +7,7 @@ import { useParams } from 'react-router-dom'
 
 import { Label } from '@gorgias/merchant-ui-kit'
 
+import { logEvent, SegmentEvent } from 'common/segment'
 import { GORGIAS_CHAT_DEFAULT_COLOR } from 'config/integrations/gorgias_chat'
 import {
     EMAIL_INTEGRATION_TYPES,
@@ -301,13 +302,52 @@ export const ChannelsStep: React.FC<StepProps> = ({
         }))
     }, [emailIntegrations, usedEmailIntegrations])
 
-    // Handle selection change and update cache
+    const logChannelViewEvent = (
+        updatedField: keyof ChannelsFormValues,
+        updatedValue: boolean,
+        currentEmailValue: boolean,
+        currentChatValue: boolean,
+    ) => {
+        const newEmailValue =
+            updatedField === 'emailChannelEnabled'
+                ? updatedValue
+                : currentEmailValue
+        const newChatValue =
+            updatedField === 'chatChannelEnabled'
+                ? updatedValue
+                : currentChatValue
+
+        let channel: 'email' | 'chat' | 'both' | null = null
+
+        if (newEmailValue && newChatValue) {
+            channel = 'both'
+        } else if (newEmailValue) {
+            channel = 'email'
+        } else if (newChatValue) {
+            channel = 'chat'
+        }
+
+        if (channel) {
+            logEvent(SegmentEvent.AiAgentNewOnboardingWizardChannelSelected, {
+                channel,
+            })
+        }
+    }
+
     const handleUpdate = (field: keyof ChannelsFormValues, value: any) => {
         setValue(field, value, {
             shouldValidate: true,
             shouldDirty: true,
             shouldTouch: true,
         })
+        if (field === 'emailChannelEnabled' || field === 'chatChannelEnabled') {
+            logChannelViewEvent(
+                field,
+                value,
+                emailChannelEnabled,
+                chatChannelEnabled,
+            )
+        }
     }
 
     // Handle form submission

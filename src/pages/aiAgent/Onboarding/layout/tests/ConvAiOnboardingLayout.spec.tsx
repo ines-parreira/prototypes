@@ -1,21 +1,24 @@
-import React from 'react'
-
-import { render, screen, waitFor } from '@testing-library/react'
+import { screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 
+import * as segment from 'common/segment'
 import {
     ConvAiOnboardingLayout,
     OnboardingContentContainer,
+    OnboardingPreviewContainer,
 } from 'pages/aiAgent/Onboarding/layout/ConvAiOnboardingLayout'
+import { WizardStepEnum } from 'pages/aiAgent/Onboarding/types'
 import history from 'pages/history'
-import { assumeMock } from 'utils/testing'
+import { assumeMock, renderWithRouter } from 'utils/testing'
 
 jest.mock('pages/history')
+jest.mock('common/segment')
 const historyPushMock = assumeMock(history.push)
+const logEventMock = assumeMock(segment.logEvent)
 
 describe('ConvAiOnboardingLayout', () => {
     it('should redirect to overview page when clicking on Close', () => {
-        render(
+        renderWithRouter(
             <OnboardingContentContainer
                 totalSteps={7}
                 currentStep={1}
@@ -38,7 +41,7 @@ describe('ConvAiOnboardingLayout', () => {
             <div class="ui-banner-banner" style="display: block;">Banner 2</div>
         `
 
-        const { unmount } = render(
+        const { unmount } = renderWithRouter(
             <ConvAiOnboardingLayout>Content</ConvAiOnboardingLayout>,
         )
 
@@ -56,5 +59,31 @@ describe('ConvAiOnboardingLayout', () => {
                 expect((banner as HTMLElement).style.display).toBe('block')
             })
         })
+    })
+})
+
+describe('OnboardingPreviewContainer', () => {
+    it('should call logEvent and redirect to overview on close', () => {
+        renderWithRouter(
+            <OnboardingPreviewContainer isLoading={true} icon="info">
+                Some content
+            </OnboardingPreviewContainer>,
+            {
+                path: '/app/ai-agent/:shopType/:shopName/onboarding/:step',
+                route: `/app/ai-agent/shopify/1/onboarding/${WizardStepEnum.CHANNELS}`,
+            },
+        )
+
+        const closeBtn = screen.getByText(/close/i)
+        userEvent.click(closeBtn)
+
+        expect(logEventMock).toHaveBeenCalledWith(
+            segment.SegmentEvent.AiAgentNewOnboardingWizardButtonClicked,
+            {
+                step: WizardStepEnum.CHANNELS,
+                type: 'close',
+            },
+        )
+        expect(historyPushMock).toHaveBeenCalledWith('/app/ai-agent/overview')
     })
 })

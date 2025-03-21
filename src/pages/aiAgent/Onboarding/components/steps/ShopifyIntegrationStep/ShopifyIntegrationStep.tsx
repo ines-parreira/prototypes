@@ -65,7 +65,10 @@ export const ShopifyIntegrationStep: React.FC<ShopifyIntegrationStepProps> = ({
     setIsStoreSelected,
     isStoreSelected,
 }) => {
-    const { shopName } = useParams<{ shopName: string }>()
+    const { shopName, shopType } = useParams<{
+        shopName: string
+        shopType: string
+    }>()
     const { validSteps } = useSteps({ shopName, isStoreSelected })
     const { redirectToIntegration } = useOnboardingIntegrationRedirection()
     const shopifyIntegrations = useShopifyIntegrations()
@@ -73,8 +76,6 @@ export const ShopifyIntegrationStep: React.FC<ShopifyIntegrationStepProps> = ({
 
     useCheckOnboardingCompleted()
 
-    const { data, isLoading: isLoadingOnboardingData } =
-        useGetOnboardingData(shopName)
     const {
         mutate: doUpdateOnboardingMutation,
         isLoading: isUpdatingOnboarding,
@@ -94,13 +95,6 @@ export const ShopifyIntegrationStep: React.FC<ShopifyIntegrationStepProps> = ({
 
     const [shopError, setShopError] = useState<string | null>(null)
 
-    const methods = useForm<ShopifyFormValues>({
-        values: {
-            shopName: data?.shopName ?? '',
-            shopType: data?.shopType ?? '',
-        },
-    })
-
     const { isLoading: isLoadingStoreConfigurations, storeConfigurations } =
         useStoreConfigurationForAccount({
             accountDomain,
@@ -117,6 +111,13 @@ export const ShopifyIntegrationStep: React.FC<ShopifyIntegrationStepProps> = ({
             ),
     )
 
+    const methods = useForm<ShopifyFormValues>({
+        values: {
+            shopName: shopName ?? '',
+            shopType: shopType ?? '',
+        },
+    })
+
     const {
         watch,
         setValue,
@@ -129,6 +130,9 @@ export const ShopifyIntegrationStep: React.FC<ShopifyIntegrationStepProps> = ({
         watch('shopName') || filteredShopifyIntegrations[0]?.name
     const selectedShopType =
         watch('shopType') || filteredShopifyIntegrations[0]?.type
+
+    const { data, isLoading: isLoadingOnboardingData } =
+        useGetOnboardingData(selectedShop)
 
     const isLoading =
         isLoadingOnboardingData ||
@@ -213,7 +217,7 @@ export const ShopifyIntegrationStep: React.FC<ShopifyIntegrationStepProps> = ({
             updatedData.customToneOfVoiceGuidance = toneOfVoice
         }
 
-        if (data && 'id' in data && selectedShop === shopName) {
+        if (data && 'id' in data) {
             doUpdateOnboardingMutation(
                 { ...data, id: data.id as string, data: updatedData },
                 {

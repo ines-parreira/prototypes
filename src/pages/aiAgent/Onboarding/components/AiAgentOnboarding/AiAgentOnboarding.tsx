@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo, useState } from 'react'
+import { useCallback, useEffect, useMemo, useState } from 'react'
 
 import { useFlags } from 'launchdarkly-react-client-sdk'
 import {
@@ -9,6 +9,7 @@ import {
     useParams,
 } from 'react-router-dom'
 
+import { logEvent, SegmentEvent } from 'common/segment'
 import { FeatureFlagKey } from 'config/featureFlags'
 import { useAiAgentNavigation } from 'pages/aiAgent/hooks/useAiAgentNavigation'
 import { ChannelsStep } from 'pages/aiAgent/Onboarding/components/steps/ChannelsStep/ChannelsStep'
@@ -73,6 +74,12 @@ export const AiAgentOnboarding = () => {
         () => validSteps.some((validStep) => validStep.step === step),
         [validSteps, step],
     )
+
+    useEffect(() => {
+        logEvent(SegmentEvent.AiAgentNewOnboardingWizardStepViewed, {
+            step,
+        })
+    }, [step])
 
     if (isConvAiOnboardingEnabled === false) {
         return <Redirect to={routes.main} />

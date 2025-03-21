@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react'
+import { FC, useMemo } from 'react'
 
 import { zodResolver } from '@hookform/resolvers/zod'
 import { FormProvider, useForm } from 'react-hook-form'
@@ -7,6 +7,7 @@ import { z } from 'zod'
 
 import { Label } from '@gorgias/merchant-ui-kit'
 
+import { logEvent, SegmentEvent } from 'common/segment'
 import { OnboardingData, SalesSettingsData } from 'models/aiAgent/types'
 import AiAgentChatConversation from 'pages/aiAgent/Onboarding/components/AiAgentChatConversation/AiAgentChatConversation'
 import Card from 'pages/aiAgent/Onboarding/components/Card/Card'
@@ -77,7 +78,7 @@ const personalitySchema = z
         },
     )
 
-export const PersonalityStep: React.FC<StepProps> = ({
+export const PersonalityStep: FC<StepProps> = ({
     currentStep,
     totalSteps,
     goToStep,
@@ -134,6 +135,16 @@ export const PersonalityStep: React.FC<StepProps> = ({
     const salesDiscountStrategyLevel = watch('salesDiscountStrategyLevel')
     const salesDiscountMax = watch('salesDiscountMax')
 
+    const logViewEvent = (
+        persuasion: PersuasionLevel,
+        discount: DiscountStrategy,
+    ) => {
+        logEvent(SegmentEvent.AiAgentNewOnboardingWizardSalesGaugesUsed, {
+            persuasion,
+            discount,
+        })
+    }
+
     const handleSliderChange = (
         field: keyof SalesSettingsData,
         value: PersuasionLevel | DiscountStrategy | number,
@@ -161,6 +172,22 @@ export const PersonalityStep: React.FC<StepProps> = ({
         if (field === 'salesDiscountStrategyLevel') {
             void trigger('salesDiscountMax')
         }
+
+        if (
+            field === 'salesPersuasionLevel' ||
+            field === 'salesDiscountStrategyLevel'
+        ) {
+            const newPersuasion =
+                field === 'salesPersuasionLevel'
+                    ? (value as PersuasionLevel)
+                    : salesPersuasionLevel
+            const newDiscount =
+                field === 'salesDiscountStrategyLevel'
+                    ? (value as DiscountStrategy)
+                    : salesDiscountStrategyLevel
+
+            logViewEvent(newPersuasion, newDiscount)
+        }
     }
 
     const onChangeDiscountMax = (value: string) => {
@@ -173,14 +200,16 @@ export const PersonalityStep: React.FC<StepProps> = ({
         }
 
         const parsedValue = Number(value)
-        setValue(
-            'salesDiscountMax',
-            !value || isNaN(parsedValue) ? 0 : parsedValue,
-            {
-                shouldValidate: true,
-                shouldDirty: true,
-            },
-        )
+        const safeValue = !value || isNaN(parsedValue) ? 0 : parsedValue
+
+        setValue('salesDiscountMax', safeValue, {
+            shouldValidate: true,
+            shouldDirty: true,
+        })
+
+        logEvent(SegmentEvent.AiAgentNewOnboardingWizardDiscountChanged, {
+            value: safeValue,
+        })
 
         if (parsedValue === 0) {
             setValue(
@@ -200,6 +229,7 @@ export const PersonalityStep: React.FC<StepProps> = ({
             onNextStep()
             return
         }
+
         if (data && 'id' in data) {
             const updatedData: OnboardingData = {
                 ...data,
@@ -217,6 +247,14 @@ export const PersonalityStep: React.FC<StepProps> = ({
                 { id: data.id as string, data: updatedData },
                 {
                     onSuccess: () => {
+                        logEvent(
+                            SegmentEvent.AiAgentNewOnboardingWizardSalesGaugesSaved,
+                            {
+                                persuasion: salesPersuasionLevel,
+                                discount: salesDiscountStrategyLevel,
+                            },
+                        )
+
                         onNextStep()
                     },
                 },

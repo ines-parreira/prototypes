@@ -4,6 +4,7 @@ import { isEqual } from 'lodash'
 import { FormProvider, useForm } from 'react-hook-form'
 import { useParams } from 'react-router-dom'
 
+import { logEvent, SegmentEvent } from 'common/segment'
 import useAppSelector from 'hooks/useAppSelector'
 import { OnboardingData } from 'models/aiAgent/types'
 import { ToneOfVoice } from 'pages/aiAgent/constants'
@@ -118,6 +119,9 @@ export const SkillsetStep: FC<SkillsetStepProps> = ({
 
     const onSkillsetChange = useCallback(
         (newSkillset: AiAgentScopes[]) => {
+            logEvent(SegmentEvent.AiAgentNewOnboardingWizardSkillSelected, {
+                skill: newSkillset,
+            })
             setValue('scopes', newSkillset)
         },
         [setValue],

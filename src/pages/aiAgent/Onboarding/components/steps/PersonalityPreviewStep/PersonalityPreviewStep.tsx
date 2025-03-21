@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 
 import { useParams } from 'react-router-dom'
 
+import { logEvent, SegmentEvent } from 'common/segment'
 import AiAgentChatConversation from 'pages/aiAgent/Onboarding/components/AiAgentChatConversation/AiAgentChatConversation'
 import MainTitle from 'pages/aiAgent/Onboarding/components/MainTitle/MainTitle'
 import {
@@ -83,6 +84,17 @@ export const PersonalityPreviewStep: React.FC<StepProps> = ({
         goToStep(previousStep)
     }
 
+    const handlePreviewSelect = (preview: {
+        caption: string
+        title: string
+        id: PreviewId
+    }) => {
+        setSelectedPreview(preview)
+        logEvent(SegmentEvent.AiAgentNewOnboardingWizardTovClicked, {
+            title: preview.title,
+        })
+    }
+
     return (
         <OnboardingBody>
             <OnboardingContentContainer
@@ -105,7 +117,7 @@ export const PersonalityPreviewStep: React.FC<StepProps> = ({
                 <PersonalityPreviewGroup
                     previewType={previewType}
                     selectedPreviewId={selectedPreview?.id}
-                    onPreviewSelect={(preview) => setSelectedPreview(preview)}
+                    onPreviewSelect={handlePreviewSelect}
                 />
             </OnboardingContentContainer>
             <OnboardingPreviewContainer

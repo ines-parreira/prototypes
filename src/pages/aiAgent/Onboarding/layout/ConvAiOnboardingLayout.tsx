@@ -1,6 +1,9 @@
 import React, { ReactNode } from 'react'
 
+import { useParams } from 'react-router-dom'
+
 import { useHideBanners } from 'AlertBanners/hooks/useHideBanners'
+import { logEvent, SegmentEvent } from 'common/segment'
 import { aiAgentRoutes } from 'pages/aiAgent/hooks/useAiAgentNavigation'
 import OnboardingProgressTracker from 'pages/aiAgent/Onboarding/components/common/OnboardingProgressTracker/OnboardingProgressTracker'
 import GorgiasLogoExtendedIcon from 'pages/aiAgent/Onboarding/layout/GorgiasLogoExtended'
@@ -53,11 +56,21 @@ export const OnboardingPreviewContainer: React.FC<{
     icon: string | JSX.Element
     caption?: string
 }> = ({ children, isLoading, icon, caption }) => {
+    const { step } = useParams<{ step: string }>()
+
+    const onCloseAction = () => {
+        logEvent(SegmentEvent.AiAgentNewOnboardingWizardButtonClicked, {
+            step,
+            type: 'close',
+        })
+        onClose()
+    }
+
     return (
         <div className={css.onboardingPreviewContainerWrapper}>
             <div className={css.onboardingPreviewContainer}>
                 <div className={css.onboardingPreviewClose}>
-                    <CloseButton onClose={onClose} />
+                    <CloseButton onClose={onCloseAction} />
                 </div>
                 {isLoading && (
                     <div className={css.ghostContainer}>
@@ -90,12 +103,38 @@ export const OnboardingContentContainer: React.FC<{
     onBackClick,
     isLoading,
 }) => {
+    const { step } = useParams<{ step: string }>()
+
+    const onCloseAction = () => {
+        logEvent(SegmentEvent.AiAgentNewOnboardingWizardButtonClicked, {
+            Step: step,
+            type: 'close',
+        })
+        onClose()
+    }
+
+    const onNextAction = () => {
+        logEvent(SegmentEvent.AiAgentNewOnboardingWizardButtonClicked, {
+            Step: step,
+            type: 'next',
+        })
+        onNextClick()
+    }
+
+    const onBackAction = () => {
+        logEvent(SegmentEvent.AiAgentNewOnboardingWizardButtonClicked, {
+            Step: step,
+            type: 'back',
+        })
+        onBackClick()
+    }
+
     return (
         <div className={css.onboardingContentContainer}>
             <div className={css.onboardingHeader}>
                 <GorgiasLogoExtendedIcon />
                 <div className={css.onboardingHeaderClose}>
-                    <CloseButton onClose={onClose} />
+                    <CloseButton onClose={onCloseAction} />
                 </div>
             </div>
             <div>{children}</div>
@@ -103,8 +142,8 @@ export const OnboardingContentContainer: React.FC<{
                 <OnboardingProgressTracker
                     step={currentStep}
                     totalSteps={totalSteps}
-                    onBackClick={onBackClick}
-                    onNextClick={onNextClick}
+                    onBackClick={onBackAction}
+                    onNextClick={onNextAction}
                     isLoading={isLoading ?? false}
                 />
             </div>
