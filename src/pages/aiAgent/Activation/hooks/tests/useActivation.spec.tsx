@@ -5,7 +5,7 @@ import { render } from '@testing-library/react'
 import { act, renderHook } from '@testing-library/react-hooks'
 import { fromJS } from 'immutable'
 import { Provider } from 'react-redux'
-import { useParams } from 'react-router-dom'
+import { MemoryRouter } from 'react-router-dom'
 import configureMockStore from 'redux-mock-store'
 
 import * as segment from 'common/segment'
@@ -24,9 +24,6 @@ import { useEarlyAccessModalState } from '../useEarlyAccessModalState'
 
 jest.mock('launchdarkly-react-client-sdk')
 jest.mock('../useEarlyAccessModalState')
-jest.mock('react-router-dom', () => ({
-    useParams: jest.fn(),
-}))
 jest.mock('core/flags')
 
 const mockedLogEvent = jest
@@ -42,11 +39,20 @@ const defaultState = {
 const queryClient = mockQueryClient()
 
 const mockedUseEarlyAccessModalState = jest.mocked(useEarlyAccessModalState)
-const mockedUseParams = jest.mocked(useParams)
 const mockUseFlag = jest.mocked(useFlag)
 
 jest.mock('pages/aiAgent/Activation/hooks/useStoreActivations')
 const useStoreActivationsMock = assumeMock(useStoreActivations)
+
+const buildWrapper =
+    (location: string = '/') =>
+    ({ children }: { children: React.ReactNode }) => (
+        <MemoryRouter initialEntries={[location]}>
+            <QueryClientProvider client={queryClient}>
+                <Provider store={mockStore(defaultState)}>{children}</Provider>
+            </QueryClientProvider>
+        </MemoryRouter>
+    )
 
 describe('useActivation', () => {
     beforeEach(() => {
@@ -54,7 +60,6 @@ describe('useActivation', () => {
         useStoreActivationsMock.mockReturnValue({
             score: 0,
         } as any)
-        mockedUseParams.mockReturnValue({})
         mockUseFlag.mockImplementation(
             (key, __defaultValue) =>
                 (({ [FeatureFlagKey.AiAgentActivation]: true }) as any)[key],
@@ -95,13 +100,7 @@ describe('useActivation', () => {
         )
 
         const { result } = renderHook(() => useActivation('any-page'), {
-            wrapper: ({ children }) => (
-                <QueryClientProvider client={queryClient}>
-                    <Provider store={mockStore(defaultState)}>
-                        {children}
-                    </Provider>
-                </QueryClientProvider>
-            ),
+            wrapper: buildWrapper(),
         })
 
         expect(result.current.ActivationButton).toBeDefined()
@@ -115,7 +114,7 @@ describe('useActivation', () => {
         expect(result.current.ActivationModal().props.isOpen).toBe(true)
 
         act(() => {
-            result.current.ActivationButton()?.props.onClick()
+            result.current.ActivationModal()?.props.onClose()
         })
 
         expect(result.current.ActivationModal().props.isOpen).toBe(false)
@@ -127,13 +126,7 @@ describe('useActivation', () => {
         )
 
         const { result } = renderHook(() => useActivation('any-page'), {
-            wrapper: ({ children }) => (
-                <QueryClientProvider client={queryClient}>
-                    <Provider store={mockStore(defaultState)}>
-                        {children}
-                    </Provider>
-                </QueryClientProvider>
-            ),
+            wrapper: buildWrapper(),
         })
 
         expect(result.current.ActivationButton).toBeDefined()
@@ -147,7 +140,7 @@ describe('useActivation', () => {
         expect(result.current.ActivationModal().props.isOpen).toBe(true)
 
         act(() => {
-            result.current.ActivationButton()?.props.onClick()
+            result.current.ActivationModal()?.props.onClose()
         })
 
         expect(result.current.ActivationModal().props.isOpen).toBe(false)
@@ -166,13 +159,7 @@ describe('useActivation', () => {
         )
 
         const { result } = renderHook(() => useActivation('overview'), {
-            wrapper: ({ children }) => (
-                <QueryClientProvider client={queryClient}>
-                    <Provider store={mockStore(defaultState)}>
-                        {children}
-                    </Provider>
-                </QueryClientProvider>
-            ),
+            wrapper: buildWrapper(),
         })
 
         expect(result.current.ActivationButton).toBeDefined()
@@ -207,13 +194,7 @@ describe('useActivation', () => {
         )
 
         const { result } = renderHook(() => useActivation('overview'), {
-            wrapper: ({ children }) => (
-                <QueryClientProvider client={queryClient}>
-                    <Provider store={mockStore(defaultState)}>
-                        {children}
-                    </Provider>
-                </QueryClientProvider>
-            ),
+            wrapper: buildWrapper(),
         })
 
         expect(result.current.ActivationButton).toBeDefined()
@@ -248,15 +229,7 @@ describe('useActivation', () => {
 
         const { result } = renderHook(
             () => useActivation('ai-agent-overview'),
-            {
-                wrapper: ({ children }) => (
-                    <QueryClientProvider client={queryClient}>
-                        <Provider store={mockStore(defaultState)}>
-                            {children}
-                        </Provider>
-                    </QueryClientProvider>
-                ),
-            },
+            { wrapper: buildWrapper() },
         )
 
         expect(result.current.ActivationButton).toBeDefined()
@@ -290,13 +263,7 @@ describe('useActivation', () => {
         )
 
         const { result } = renderHook(() => useActivation('any-page'), {
-            wrapper: ({ children }) => (
-                <QueryClientProvider client={queryClient}>
-                    <Provider store={mockStore(defaultState)}>
-                        {children}
-                    </Provider>
-                </QueryClientProvider>
-            ),
+            wrapper: buildWrapper(),
         })
 
         const ActivationButton = result.current.ActivationButton
@@ -341,13 +308,7 @@ describe('useActivation', () => {
         })
 
         const { result } = renderHook(() => useActivation('any-page'), {
-            wrapper: ({ children }) => (
-                <QueryClientProvider client={queryClient}>
-                    <Provider store={mockStore(defaultState)}>
-                        {children}
-                    </Provider>
-                </QueryClientProvider>
-            ),
+            wrapper: buildWrapper(),
         })
 
         expect(result.current.ActivationButton).toBeDefined()
@@ -372,13 +333,7 @@ describe('useActivation', () => {
         )
 
         const { result } = renderHook(() => useActivation('any-page'), {
-            wrapper: ({ children }) => (
-                <QueryClientProvider client={queryClient}>
-                    <Provider store={mockStore(defaultState)}>
-                        {children}
-                    </Provider>
-                </QueryClientProvider>
-            ),
+            wrapper: buildWrapper(),
         })
 
         expect(result.current.ActivationButton).toBeDefined()
@@ -397,13 +352,7 @@ describe('useActivation', () => {
         })
 
         const { result } = renderHook(() => useActivation('any-page'), {
-            wrapper: ({ children }) => (
-                <QueryClientProvider client={queryClient}>
-                    <Provider store={mockStore(defaultState)}>
-                        {children}
-                    </Provider>
-                </QueryClientProvider>
-            ),
+            wrapper: buildWrapper(),
         })
 
         const onSaleEnabledResult = result.current
@@ -422,13 +371,7 @@ describe('useActivation', () => {
         })
 
         const { result } = renderHook(() => useActivation('any-page'), {
-            wrapper: ({ children }) => (
-                <QueryClientProvider client={queryClient}>
-                    <Provider store={mockStore(defaultState)}>
-                        {children}
-                    </Provider>
-                </QueryClientProvider>
-            ),
+            wrapper: buildWrapper(),
         })
 
         const onSaleEnabledResult = result.current

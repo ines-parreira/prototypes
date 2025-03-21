@@ -12,3 +12,10 @@ export const SalesEarlyAccessUtils = (accountId: number) => ({
         )
     },
 })
+
+export const FocusActivationModal = {
+    searchParam: 'focusActivationModal',
+    buildSearchParam(storeName: string = 'true') {
+        return `${this.searchParam}=${storeName}`
+    },
+}

@@ -14,7 +14,7 @@ import { getCurrentAccountState } from 'state/currentAccount/selectors'
 import { getCurrentUser } from 'state/currentUser/selectors'
 import { isAdmin } from 'utils'
 
-import { SalesEarlyAccessUtils } from '../utils'
+import { FocusActivationModal, SalesEarlyAccessUtils } from '../utils'
 
 const useAutoDisplaySalesEarlyAccessModal = (
     shouldDisplayModal: boolean,
@@ -81,7 +81,7 @@ export const useEarlyAccessModalState = ({
         useUpdateSubscription({
             onSuccess: () => {
                 const url = new URL(window.location.href)
-                url.searchParams.set('focusActivationModal', 'true')
+                url.searchParams.set(FocusActivationModal.searchParam, 'true')
                 window.history.pushState(null, '', url.toString())
             },
         })

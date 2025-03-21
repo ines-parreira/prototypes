@@ -1,5 +1,7 @@
 import { useEffect, useState } from 'react'
 
+import { FeatureFlagKey } from 'config/featureFlags'
+import { useFlag } from 'core/flags'
 import { useAiAgentNavigation } from 'pages/aiAgent/hooks/useAiAgentNavigation'
 
 import { runRuleEngine } from './ruleEngine'
@@ -124,6 +126,8 @@ export const usePendingTasksRuleEngine = ({
         pendingTasks: [],
     })
 
+    const isActivationEnabled = useFlag(FeatureFlagKey.AiAgentActivation, false)
+
     useEffect(() => {
         if (isReady) {
             setTasks(
@@ -142,6 +146,7 @@ export const usePendingTasksRuleEngine = ({
                         chatIntegrationsStatus: chatIntegrationsStatusData,
                         ticketView: ticketViewData,
                         pageInteractions: pageInteractionsData,
+                        isActivationEnabled,
                     },
                     {
                         aiAgentRoutes: routes,
@@ -162,6 +167,7 @@ export const usePendingTasksRuleEngine = ({
         chatIntegrationsStatusData,
         ticketViewData,
         pageInteractionsData,
+        isActivationEnabled,
     ]) /* eslint-enable react-hooks/exhaustive-deps */
 
     if (shouldFakeTasks) {

@@ -14,6 +14,7 @@ export const buildRuleEngineData = (
     chatIntegrationsStatus: {} as any,
     ticketView: {} as any,
     pageInteractions: {} as any,
+    isActivationEnabled: false,
     ...data,
 })
 

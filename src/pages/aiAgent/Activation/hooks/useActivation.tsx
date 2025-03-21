@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useMemo, useState } from 'react'
+import { useCallback, useEffect, useMemo } from 'react'
 
 import { useParams } from 'react-router-dom'
 
@@ -14,6 +14,7 @@ import { useStoreConfigurationForAccount } from 'pages/aiAgent/hooks/useStoreCon
 import { getCurrentAccountState } from 'state/currentAccount/selectors'
 import { getShopifyIntegrationsSortedByName } from 'state/integrations/selectors'
 
+import { useActivationModalDisclosure } from './useActivationModalDisclosure'
 import { useEarlyAccessModalState } from './useEarlyAccessModalState'
 import { useStoreActivations } from './useStoreActivations'
 
@@ -23,10 +24,9 @@ export const useActivation = (
         autoDisplayEarlyAccessDisabled?: boolean
     } = {},
 ) => {
-    const searchParams = new URLSearchParams(window.location.search)
-    const [isModalVisible, setIsModalVisible] = useState(
-        searchParams.has('focusActivationModal'),
-    )
+    const { isModalVisible, setIsModalVisible, closeModal } =
+        useActivationModalDisclosure()
+
     const hasActivationEnabled = useFlag(FeatureFlagKey.AiAgentActivation)
     const currentAccount = useAppSelector(getCurrentAccountState)
     const accountDomain = currentAccount.get('domain')
@@ -96,7 +96,7 @@ export const useActivation = (
             <AiAgentActivationModal
                 isOpen={isModalVisible}
                 onClose={() => {
-                    setIsModalVisible(false)
+                    closeModal()
                     logEvent(SegmentEvent.AiAgentActivateCloseActivationModal, {
                         page: pageName,
                         reason: 'clicked-on-cancel-or-clicked-outside',
@@ -117,7 +117,7 @@ export const useActivation = (
         ),
         [
             isModalVisible,
-            setIsModalVisible,
+            closeModal,
             accountDomain,
             filteredStoreConfigurations,
             isOnNewPlan,
@@ -131,7 +131,7 @@ export const useActivation = (
             hasActivationEnabled ? (
                 <ActivationManageButton
                     onClick={() => {
-                        setIsModalVisible((prev) => !prev)
+                        setIsModalVisible(true)
                         logEvent(
                             SegmentEvent.AiAgentActivateMainButtonClicked,
                             {
@@ -143,7 +143,7 @@ export const useActivation = (
                     variant={pageName === 'overview' ? 'bordered' : 'flat'}
                 />
             ) : null,
-        [hasActivationEnabled, progressPercentage, pageName],
+        [hasActivationEnabled, setIsModalVisible, progressPercentage, pageName],
     )
 
     const ConnectedEarlyAccessModal = useCallback(

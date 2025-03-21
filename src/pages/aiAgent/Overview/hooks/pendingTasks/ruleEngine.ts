@@ -47,6 +47,7 @@ export type RuleEngineData = {
     chatIntegrationsStatus: ChatIntegrationsStatusData
     ticketView: TicketViewData
     pageInteractions: PageInteractionsData
+    isActivationEnabled: boolean
 }
 
 export type RuleEngineRoutes = {
