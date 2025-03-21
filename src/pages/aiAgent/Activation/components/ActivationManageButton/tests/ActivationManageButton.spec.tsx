@@ -9,8 +9,8 @@ import { ActivationManageButton } from '../ActivationManageButton'
 describe('<ActivationManageButton />', () => {
     it.each([
         { progress: 0, text: 'Activate AI Agent' },
-        { progress: 0.5, text: 'Partially Activated' },
-        { progress: 1, text: 'Fully Activated' },
+        { progress: 50, text: 'Partially Activated' },
+        { progress: 100, text: 'Fully Activated' },
     ])(
         'should render the button with "$text" when progress is $progress',
         ({ progress, text }) => {
@@ -22,6 +22,7 @@ describe('<ActivationManageButton />', () => {
             )
 
             expect(getByText(text)).toBeInTheDocument()
+            expect(getByText(`${progress}%`)).toBeInTheDocument()
             expect(getByText('Manage')).toBeInTheDocument()
         },
     )

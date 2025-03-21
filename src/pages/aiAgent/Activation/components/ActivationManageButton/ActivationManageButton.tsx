@@ -7,7 +7,7 @@ import css from './ActivationManageButton.less'
 const getCaptionText = (activationProgress: number) => {
     if (activationProgress === 0) {
         return 'Activate AI Agent'
-    } else if (activationProgress === 1) {
+    } else if (activationProgress === 100) {
         return 'Fully Activated'
     }
     return 'Partially Activated'
@@ -15,7 +15,6 @@ const getCaptionText = (activationProgress: number) => {
 
 type Props = {
     onClick: () => void
-    /** Between 0 (not activated) and 1 (fully activated) */
     progress: number
     variant?: 'flat' | 'bordered'
 }
