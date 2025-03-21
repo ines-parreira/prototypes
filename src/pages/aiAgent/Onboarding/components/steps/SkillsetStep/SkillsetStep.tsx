@@ -6,6 +6,7 @@ import { useParams } from 'react-router-dom'
 
 import useAppSelector from 'hooks/useAppSelector'
 import { OnboardingData } from 'models/aiAgent/types'
+import { ToneOfVoice } from 'pages/aiAgent/constants'
 import AiAgentChatConversation from 'pages/aiAgent/Onboarding/components/AiAgentChatConversation/AiAgentChatConversation'
 import Goals from 'pages/aiAgent/Onboarding/components/Goals/Goals'
 import MainTitle from 'pages/aiAgent/Onboarding/components/MainTitle/MainTitle'
@@ -13,8 +14,10 @@ import { conversationExamples } from 'pages/aiAgent/Onboarding/components/steps/
 import { StepProps } from 'pages/aiAgent/Onboarding/components/steps/types'
 import useCheckOnboardingCompleted from 'pages/aiAgent/Onboarding/hooks/useCheckOnboardingCompleted'
 import { useCreateOnboarding } from 'pages/aiAgent/Onboarding/hooks/useCreateOnboarding'
+import { useGenerateToneOfVoice } from 'pages/aiAgent/Onboarding/hooks/useGenerateToneOfVoice'
 import { useGetChatIntegrationColor } from 'pages/aiAgent/Onboarding/hooks/useGetChatIntegrationColor'
 import { useGetOnboardingData } from 'pages/aiAgent/Onboarding/hooks/useGetOnboardingData'
+import { useShopifyIntegrations } from 'pages/aiAgent/Onboarding/hooks/useShopifyIntegrations'
 import { useSteps } from 'pages/aiAgent/Onboarding/hooks/useSteps'
 import { useUpdateOnboarding } from 'pages/aiAgent/Onboarding/hooks/useUpdateOnboarding'
 import {
@@ -35,7 +38,13 @@ import css from './SkillsetStep.less'
 
 type CreateOnboardingData = Pick<
     OnboardingData,
-    'currentStepName' | 'scopes' | 'gorgiasDomain' | 'shopName' | 'shopType'
+    | 'currentStepName'
+    | 'scopes'
+    | 'gorgiasDomain'
+    | 'shopName'
+    | 'shopType'
+    | 'toneOfVoice'
+    | 'customToneOfVoiceGuidance'
 >
 
 type SkillsetFormValues = {
@@ -61,6 +70,12 @@ export const SkillsetStep: FC<SkillsetStepProps> = ({
 
     useCheckOnboardingCompleted()
 
+    const shopifyIntegrations = useShopifyIntegrations()
+    const currentIntegration = useMemo(
+        () => shopifyIntegrations.find((store) => store.name === shopName),
+        [shopifyIntegrations, shopName],
+    )
+
     const { data, isLoading: isLoadingOnboardingData } =
         useGetOnboardingData(shopName)
 
@@ -73,13 +88,19 @@ export const SkillsetStep: FC<SkillsetStepProps> = ({
         isLoading: isCreatingOnboarding,
     } = useCreateOnboarding()
 
+    const { generateToneOfVoice, isLoading: isToneOfVoiceLoading } =
+        useGenerateToneOfVoice()
+
     const currentAccount = useAppSelector(getCurrentAccountState)
 
     const accountDomain = currentAccount.get('domain')
 
     // Loading state
     const isLoading =
-        isLoadingOnboardingData || isUpdatingOnboarding || isCreatingOnboarding
+        isLoadingOnboardingData ||
+        isUpdatingOnboarding ||
+        isCreatingOnboarding ||
+        isToneOfVoiceLoading
 
     // Form initialization
     const methods = useForm<SkillsetFormValues>({
@@ -108,22 +129,39 @@ export const SkillsetStep: FC<SkillsetStepProps> = ({
         goToStep(nextStep)
     }, [validSteps, currentStep, goToStep])
 
-    const handleSubmit = useCallback(() => {
+    const handleSubmit = useCallback(async () => {
         if (isEqual(selectedScope, data?.scopes) && data && 'id' in data) {
             onNextStep()
             return
         }
+
+        const onboardingPayload: CreateOnboardingData = {
+            currentStepName: WizardStepEnum.SKILLSET,
+            scopes: selectedScope,
+            gorgiasDomain: accountDomain,
+        }
+
+        if (shopName && shopType) {
+            onboardingPayload.shopName = shopName
+            onboardingPayload.shopType = shopType
+        }
+
+        if (currentIntegration && !data?.customToneOfVoiceGuidance) {
+            const toneOfVoice = await generateToneOfVoice(
+                currentIntegration.meta.shop_domain,
+            )
+            onboardingPayload.toneOfVoice = toneOfVoice && ToneOfVoice.Custom
+            onboardingPayload.customToneOfVoiceGuidance = toneOfVoice
+        }
+
         if (data && 'id' in data) {
             // Update onboarding
             const updateOnboardingData = {
                 ...data,
+                ...onboardingPayload,
                 id: data.id as string,
-                scopes: selectedScope,
             }
-            if (shopName && shopType) {
-                updateOnboardingData.shopName = shopName
-                updateOnboardingData.shopType = shopType
-            }
+
             doUpdateOnboardingMutation(
                 {
                     id: data.id as string,
@@ -133,16 +171,7 @@ export const SkillsetStep: FC<SkillsetStepProps> = ({
             )
         } else {
             // Create onboarding
-            const onboardingCreatePayload: CreateOnboardingData = {
-                currentStepName: WizardStepEnum.SKILLSET,
-                scopes: selectedScope,
-                gorgiasDomain: accountDomain,
-            }
-            if (shopName && shopType) {
-                onboardingCreatePayload.shopName = shopName
-                onboardingCreatePayload.shopType = shopType
-            }
-            doCreateOnboardingMutation(onboardingCreatePayload, {
+            doCreateOnboardingMutation(onboardingPayload, {
                 onSuccess: onNextStep,
             })
         }
@@ -155,6 +184,8 @@ export const SkillsetStep: FC<SkillsetStepProps> = ({
         accountDomain,
         shopType,
         shopName,
+        generateToneOfVoice,
+        currentIntegration,
     ])
 
     const renderContent = useMemo(() => {

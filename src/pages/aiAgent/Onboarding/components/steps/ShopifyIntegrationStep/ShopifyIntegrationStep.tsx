@@ -6,7 +6,9 @@ import { z } from 'zod'
 
 import shopify from 'assets/img/integrations/shopify.png'
 import useAppSelector from 'hooks/useAppSelector'
+import { OnboardingData } from 'models/aiAgent/types'
 import { IntegrationType, StoreIntegration } from 'models/integration/types'
+import { ToneOfVoice } from 'pages/aiAgent/constants'
 import { useStoreConfigurationForAccount } from 'pages/aiAgent/hooks/useStoreConfigurationForAccount'
 import { DropdownSelector } from 'pages/aiAgent/Onboarding/components/DropdownSelector/DropdownSelector'
 import IntegrationCard from 'pages/aiAgent/Onboarding/components/IntegrationCard'
@@ -19,8 +21,8 @@ import css from 'pages/aiAgent/Onboarding/components/steps/ShopifyIntegrationSte
 import { StepProps } from 'pages/aiAgent/Onboarding/components/steps/types'
 import useCheckOnboardingCompleted from 'pages/aiAgent/Onboarding/hooks/useCheckOnboardingCompleted'
 import { useCreateOnboarding } from 'pages/aiAgent/Onboarding/hooks/useCreateOnboarding'
+import { useGenerateToneOfVoice } from 'pages/aiAgent/Onboarding/hooks/useGenerateToneOfVoice'
 import { useGetOnboardingData } from 'pages/aiAgent/Onboarding/hooks/useGetOnboardingData'
-import { useGetOnboardingDataByShopName } from 'pages/aiAgent/Onboarding/hooks/useGetOnboardingDataByShopName'
 import { useOnboardingIntegrationRedirection } from 'pages/aiAgent/Onboarding/hooks/useOnboardingIntegrationRedirection'
 import { useShopifyIntegrations } from 'pages/aiAgent/Onboarding/hooks/useShopifyIntegrations'
 import { useSteps } from 'pages/aiAgent/Onboarding/hooks/useSteps'
@@ -66,7 +68,7 @@ export const ShopifyIntegrationStep: React.FC<ShopifyIntegrationStepProps> = ({
     const { shopName } = useParams<{ shopName: string }>()
     const { validSteps } = useSteps({ shopName, isStoreSelected })
     const { redirectToIntegration } = useOnboardingIntegrationRedirection()
-    const shopifyIntegrations: StoreIntegration[] = useShopifyIntegrations()
+    const shopifyIntegrations = useShopifyIntegrations()
     const { emailIntegrations, defaultIntegration } = useEmailIntegrations()
 
     useCheckOnboardingCompleted()
@@ -81,6 +83,8 @@ export const ShopifyIntegrationStep: React.FC<ShopifyIntegrationStepProps> = ({
         mutate: doCreateOnboardingMutation,
         isLoading: isCreatingOnboarding,
     } = useCreateOnboarding()
+    const { generateToneOfVoice, isLoading: isToneOfVoiceLoading } =
+        useGenerateToneOfVoice()
 
     const currentAccount = useAppSelector(getCurrentAccountState)
 
@@ -126,11 +130,11 @@ export const ShopifyIntegrationStep: React.FC<ShopifyIntegrationStepProps> = ({
     const selectedShopType =
         watch('shopType') || filteredShopifyIntegrations[0]?.type
 
-    const { data: onBoardingDataBySelectedShop } =
-        useGetOnboardingDataByShopName(selectedShop)
-
     const isLoading =
-        isLoadingOnboardingData || isUpdatingOnboarding || isCreatingOnboarding
+        isLoadingOnboardingData ||
+        isUpdatingOnboarding ||
+        isCreatingOnboarding ||
+        isToneOfVoiceLoading
 
     const selectedIntegration = useMemo(
         () =>
@@ -177,7 +181,7 @@ export const ShopifyIntegrationStep: React.FC<ShopifyIntegrationStepProps> = ({
         history.push(newPath)
     }
 
-    const onNextClick = () => {
+    const onNextClick = async () => {
         if (!filteredShopifyIntegrations.length) {
             setShopError(
                 'No Shopify store connected. Please connect a store before proceeding.',
@@ -185,7 +189,7 @@ export const ShopifyIntegrationStep: React.FC<ShopifyIntegrationStepProps> = ({
             return
         }
 
-        const updatedData = {
+        const updatedData: Partial<OnboardingData> = {
             scopes: data?.scopes,
             gorgiasDomain: accountDomain,
             shopName: selectedShop,
@@ -195,10 +199,20 @@ export const ShopifyIntegrationStep: React.FC<ShopifyIntegrationStepProps> = ({
                     : WizardStepEnum.CHANNELS,
         }
 
-        if ((!isDirty && !!data?.shopName) || onBoardingDataBySelectedShop) {
+        if (!isDirty && !!data?.shopName) {
             goToNextStep()
             return
         }
+
+        if (!data?.customToneOfVoiceGuidance) {
+            const toneOfVoice = await generateToneOfVoice(
+                selectedIntegration.meta?.shop_domain,
+            )
+
+            updatedData.toneOfVoice = toneOfVoice && ToneOfVoice.Custom
+            updatedData.customToneOfVoiceGuidance = toneOfVoice
+        }
+
         if (data && 'id' in data && selectedShop === shopName) {
             doUpdateOnboardingMutation(
                 { ...data, id: data.id as string, data: updatedData },

@@ -19,7 +19,7 @@ import {
     isSmsIntegration,
     isStandardPhoneIntegration,
     isWhatsAppIntegration,
-    StoreIntegration,
+    ShopifyIntegration,
     WhatsAppIntegration,
 } from 'models/integration/types'
 import {
@@ -177,7 +177,7 @@ export const getIntegrationsByType = <T extends Integration>(
     })
 
 export const getShopifyIntegrationsSortedByName = createSelector(
-    getIntegrationsByType<StoreIntegration>(IntegrationType.Shopify),
+    getIntegrationsByType<ShopifyIntegration>(IntegrationType.Shopify),
     (storeIntegrations) =>
         [...storeIntegrations].sort((a, b) => compare(a.name, b.name)),
 )

@@ -342,7 +342,7 @@ export const ChannelsStep: React.FC<StepProps> = ({
     const onNextClick = (savedIntegrationId?: number) => {
         if (data && 'id' in data) {
             const updatedData = {
-                shopName,
+                ...data,
                 currentStepName: WizardStepEnum.PERSONALITY_PREVIEW,
                 emailIntegrationIds: emailChannelEnabled
                     ? emailIntegrationIds

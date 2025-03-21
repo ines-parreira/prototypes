@@ -21,6 +21,7 @@ import { DiscountStrategy } from 'pages/aiAgent/Onboarding/components/steps/Pers
 import { PersuasionLevel } from 'pages/aiAgent/Onboarding/components/steps/PersonalityStep/PersuasionLevel'
 import { ShopifyIntegrationStep } from 'pages/aiAgent/Onboarding/components/steps/ShopifyIntegrationStep/ShopifyIntegrationStep'
 import { useCreateOnboarding } from 'pages/aiAgent/Onboarding/hooks/useCreateOnboarding'
+import { useGenerateToneOfVoice } from 'pages/aiAgent/Onboarding/hooks/useGenerateToneOfVoice'
 import { useGetOnboardingData } from 'pages/aiAgent/Onboarding/hooks/useGetOnboardingData'
 import { useGetOnboardingDataByShopName } from 'pages/aiAgent/Onboarding/hooks/useGetOnboardingDataByShopName'
 import { useShopifyIntegrations } from 'pages/aiAgent/Onboarding/hooks/useShopifyIntegrations'
@@ -57,6 +58,9 @@ const useUpdateOnboardingMock = assumeMock(useUpdateOnboarding)
 
 jest.mock('pages/aiAgent/Onboarding/hooks/useCreateOnboarding')
 const useCreateOnboardingMock = assumeMock(useCreateOnboarding)
+
+jest.mock('pages/aiAgent/Onboarding/hooks/useGenerateToneOfVoice')
+const useGenerateToneOfVoiceMock = assumeMock(useGenerateToneOfVoice)
 
 const queryClient = new QueryClient()
 
@@ -120,6 +124,13 @@ describe('ShopifyIntegrationStep', () => {
             data: undefined,
         })
 
+        useGenerateToneOfVoiceMock.mockReturnValue({
+            isLoading: false,
+            generateToneOfVoice: jest
+                .fn()
+                .mockResolvedValue('Here is the tone of voice'),
+        })
+
         useGetOnboardingDataByShopNameMock.mockReturnValue({
             isLoading: false,
             data: {
@@ -134,12 +145,16 @@ describe('ShopifyIntegrationStep', () => {
         } as any)
 
         useUpdateOnboardingMock.mockReturnValue({
-            mutate: jest.fn(),
+            mutate: (data: any, { onSuccess }: { onSuccess: () => {} }) => {
+                onSuccess()
+            },
             isLoading: false,
         } as any)
 
         useCreateOnboardingMock.mockReturnValue({
-            mutate: jest.fn(),
+            mutate: (data: any, { onSuccess }: { onSuccess: () => {} }) => {
+                onSuccess()
+            },
             isLoading: false,
         } as any)
     })

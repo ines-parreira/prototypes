@@ -205,6 +205,10 @@ export type GetPlaygroundExecutionsParams = {
     storeName: string
 }
 
+export type ToneOfVoiceResponse = {
+    tone_of_voice: string
+}
+
 export type OnboardingData = {
     id: string
     currentStepName: string
@@ -222,6 +226,8 @@ export type OnboardingData = {
     gorgiasDomain?: string
     completedDatetime?: string
     faqHelpCenterId?: number
+    toneOfVoice?: string
+    customToneOfVoiceGuidance?: string
 }
 
 export type SalesSettingsData = {

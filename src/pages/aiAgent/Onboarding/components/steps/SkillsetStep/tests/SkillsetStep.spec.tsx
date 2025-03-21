@@ -1,7 +1,7 @@
 import React from 'react'
 
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
-import { act, fireEvent, screen } from '@testing-library/react'
+import { act, fireEvent, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import AxiosMock from 'axios-mock-adapter'
 import { fromJS, Map } from 'immutable'
@@ -13,8 +13,10 @@ import { billingState } from 'fixtures/billing'
 import { chatIntegrationFixtures } from 'fixtures/chat'
 import { integrationsState, shopifyIntegration } from 'fixtures/integrations'
 import axiosClient from 'models/api/resources'
+import { ToneOfVoice } from 'pages/aiAgent/constants'
 import { SkillsetStep } from 'pages/aiAgent/Onboarding/components/steps/SkillsetStep/SkillsetStep'
 import { useCreateOnboarding } from 'pages/aiAgent/Onboarding/hooks/useCreateOnboarding'
+import { useGenerateToneOfVoice } from 'pages/aiAgent/Onboarding/hooks/useGenerateToneOfVoice'
 import {
     defaultOnboardingData,
     useGetOnboardingData,
@@ -24,7 +26,7 @@ import { WizardStepEnum } from 'pages/aiAgent/Onboarding/types'
 import { useShopifyIntegrationAndScope } from 'pages/common/hooks/useShopifyIntegrationAndScope'
 import { useEmailIntegrations } from 'pages/settings/contactForm/hooks/useEmailIntegrations'
 import { RootState, StoreDispatch } from 'state/types'
-import { renderWithRouter } from 'utils/testing'
+import { assumeMock, renderWithRouter } from 'utils/testing'
 
 import { conversationExamples } from '../../PersonalityPreviewStep/conversationsExamples'
 
@@ -47,6 +49,9 @@ jest.mock('pages/aiAgent/Onboarding/hooks/useUpdateOnboarding', () => ({
 jest.mock('pages/aiAgent/Onboarding/hooks/useCreateOnboarding', () => ({
     useCreateOnboarding: jest.fn(),
 }))
+
+jest.mock('pages/aiAgent/Onboarding/hooks/useGenerateToneOfVoice')
+const useGenerateToneOfVoiceMock = assumeMock(useGenerateToneOfVoice)
 
 const axiosMock = new AxiosMock(axiosClient)
 
@@ -100,10 +105,12 @@ const renderComponent = () => {
         </QueryClientProvider>,
         {
             path: '/app/ai-agent/:shopType/:shopName/onboarding',
-            route: '/app/ai-agent/shopify/my-shop/onboarding',
+            route: `/app/ai-agent/${shopifyIntegration.type}/${shopifyIntegration.name}/onboarding`,
         },
     )
 }
+
+const TONE_OF_VOICE = 'Here is the tone of voice'
 
 describe('<SkillsetStep />', () => {
     beforeEach(() => {
@@ -128,6 +135,12 @@ describe('<SkillsetStep />', () => {
             mutate: mockCreateOnboarding,
             isLoading: false,
         })
+
+        useGenerateToneOfVoiceMock.mockReturnValue({
+            isLoading: false,
+            generateToneOfVoice: jest.fn().mockResolvedValue(TONE_OF_VOICE),
+        })
+
         axiosMock.onGet('PHRASE_PREDICTION_URL').reply(200, [])
     })
 
@@ -137,7 +150,7 @@ describe('<SkillsetStep />', () => {
         expect(screen.getByText(/Welcome to AI Agent!/i)).toBeInTheDocument()
     })
 
-    it('user can select a goal and click next when there is an integration', () => {
+    it('user can select a goal and click next when there is an integration', async () => {
         renderComponent()
 
         expect(screen.getByText('Automate support with AI')).toBeInTheDocument()
@@ -148,10 +161,12 @@ describe('<SkillsetStep />', () => {
 
         fireEvent.click(screen.getByText(/Next/i))
 
-        expect(mockCreateOnboarding).toHaveBeenCalledWith(
-            expect.objectContaining({ scopes: ['support'] }),
-            expect.objectContaining({ onSuccess: expect.any(Function) }),
-        )
+        await waitFor(() => {
+            expect(mockCreateOnboarding).toHaveBeenCalledWith(
+                expect.objectContaining({ scopes: ['support'] }),
+                expect.objectContaining({ onSuccess: expect.any(Function) }),
+            )
+        })
 
         /* eslint-disable @typescript-eslint/no-unsafe-member-access */
         const onSuccessCallback = (
@@ -166,7 +181,7 @@ describe('<SkillsetStep />', () => {
         expect(goToStep).toHaveBeenCalledWith(WizardStepEnum.CHANNELS)
     })
 
-    it('user can select a goal and click next when there is not an integration', () => {
+    it('user can select a goal and click next when there is not an integration', async () => {
         mockUseShopifyIntegrationAndScope.mockReturnValue({
             integration: false,
         })
@@ -181,10 +196,12 @@ describe('<SkillsetStep />', () => {
 
         fireEvent.click(screen.getByText(/Next/i))
 
-        expect(mockCreateOnboarding).toHaveBeenCalledWith(
-            expect.objectContaining({ scopes: ['support'] }),
-            expect.objectContaining({ onSuccess: expect.any(Function) }),
-        )
+        await waitFor(() => {
+            expect(mockCreateOnboarding).toHaveBeenCalledWith(
+                expect.objectContaining({ scopes: ['support'] }),
+                expect.objectContaining({ onSuccess: expect.any(Function) }),
+            )
+        })
 
         const onSuccessCallback = (
             mockCreateOnboarding.mock.calls[0][1] as MutationOptions
@@ -200,7 +217,7 @@ describe('<SkillsetStep />', () => {
         )
     })
 
-    it('user can select a goal and click next when there is no email integration', () => {
+    it('user can select a goal and click next when there is no email integration', async () => {
         mockUseEmailIntegrations.mockReturnValue({
             emailIntegrations: false,
             defaultIntegration: false,
@@ -216,10 +233,12 @@ describe('<SkillsetStep />', () => {
 
         fireEvent.click(screen.getByText(/Next/i))
 
-        expect(mockCreateOnboarding).toHaveBeenCalledWith(
-            expect.objectContaining({ scopes: ['support'] }),
-            expect.objectContaining({ onSuccess: expect.any(Function) }),
-        )
+        await waitFor(() => {
+            expect(mockCreateOnboarding).toHaveBeenCalledWith(
+                expect.objectContaining({ scopes: ['support'] }),
+                expect.objectContaining({ onSuccess: expect.any(Function) }),
+            )
+        })
 
         const onSuccessCallback = (
             mockCreateOnboarding.mock.calls[0][1] as MutationOptions
@@ -257,6 +276,12 @@ describe('<SkillsetStep /> - Show correct preview', () => {
             mutate: mockCreateOnboarding,
             isLoading: false,
         })
+
+        useGenerateToneOfVoiceMock.mockReturnValue({
+            isLoading: false,
+            generateToneOfVoice: jest.fn().mockResolvedValue(TONE_OF_VOICE),
+        })
+
         axiosMock.onGet('PHRASE_PREDICTION_URL').reply(200, [])
     })
 
@@ -313,10 +338,16 @@ describe('<SkillsetStep /> - Shop name and type provided', () => {
             mutate: mockCreateOnboarding,
             isLoading: false,
         })
+
+        useGenerateToneOfVoiceMock.mockReturnValue({
+            isLoading: false,
+            generateToneOfVoice: jest.fn().mockResolvedValue(TONE_OF_VOICE),
+        })
+
         axiosMock.onGet('PHRASE_PREDICTION_URL').reply(200, [])
     })
 
-    it('should include shop name and type on create onboarding', () => {
+    it('should include shop name and type on create onboarding', async () => {
         renderComponent()
 
         act(() => {
@@ -325,17 +356,21 @@ describe('<SkillsetStep /> - Shop name and type provided', () => {
 
         fireEvent.click(screen.getByText(/Next/i))
 
-        expect(mockCreateOnboarding).toHaveBeenCalledWith(
-            expect.objectContaining({
-                scopes: ['support'],
-                shopName: 'my-shop',
-                shopType: 'shopify',
-            }),
-            expect.objectContaining({ onSuccess: expect.any(Function) }),
-        )
+        await waitFor(() => {
+            expect(mockCreateOnboarding).toHaveBeenCalledWith(
+                expect.objectContaining({
+                    scopes: ['support'],
+                    shopName: shopifyIntegration.name,
+                    shopType: shopifyIntegration.type,
+                    toneOfVoice: ToneOfVoice.Custom,
+                    customToneOfVoiceGuidance: TONE_OF_VOICE,
+                }),
+                expect.objectContaining({ onSuccess: expect.any(Function) }),
+            )
+        })
     })
 
-    it('should include shop name and type on update onboarding', () => {
+    it('should include shop name and type on update onboarding', async () => {
         const data = { ...defaultOnboardingData, scopes: [], id: '1' }
         mockUseGetOnboardingData.mockReturnValue({
             data,
@@ -349,16 +384,20 @@ describe('<SkillsetStep /> - Shop name and type provided', () => {
 
         fireEvent.click(screen.getByText(/Next/i))
 
-        expect(mockUpdateOnboarding).toHaveBeenCalledWith(
-            expect.objectContaining({
-                id: '1',
-                data: expect.objectContaining({
-                    scopes: ['support'],
-                    shopName: 'my-shop',
-                    shopType: 'shopify',
+        await waitFor(() => {
+            expect(mockUpdateOnboarding).toHaveBeenCalledWith(
+                expect.objectContaining({
+                    id: '1',
+                    data: expect.objectContaining({
+                        scopes: ['support'],
+                        shopName: shopifyIntegration.name,
+                        shopType: shopifyIntegration.type,
+                        toneOfVoice: ToneOfVoice.Custom,
+                        customToneOfVoiceGuidance: TONE_OF_VOICE,
+                    }),
                 }),
-            }),
-            expect.objectContaining({ onSuccess: expect.any(Function) }),
-        )
+                expect.objectContaining({ onSuccess: expect.any(Function) }),
+            )
+        })
     })
 })
