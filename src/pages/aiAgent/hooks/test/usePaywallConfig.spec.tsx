@@ -138,34 +138,32 @@ describe('usePaywallConfig', () => {
         )
 
         const expectedConfig: PaywallFeature = {
-            title: 'for Sales',
+            title: 'with Automate features',
             subtitle:
-                'Introducing AI Agent for Sales, your team’s newest member to drive conversion.',
+                "Introducing AI Agent - with Support and Sales skills, your team's newest member for seamless customer interactions.",
             descriptions: [
-                'Provides 24/7 pre-sales assistance to guide shoppers, answer questions, and reduce drop-off.',
-                'Offers dynamic discounts to convert hesitant buyers without compromising margins.',
-                'Personalizes product recommendations using real-time data and customer input.',
+                'Leads customers to fast resolutions in seconds, not hours.',
+                'Enhances team productivity, reducing workload & response times by automating up to 60% of your tickets.',
+                'Offers tailored discounts and product recommendations to drive personalized shopping experiences.',
+                'Automate features: Flows with logic to answer FAQs, suggest products, and manage orders by status.',
             ],
             toggleElements: [
                 {
-                    title: 'Sales Strategy',
+                    title: 'Support',
+                    contentSrc: assetsUrl(
+                        '/video/ai-agent_paywall_support.mp4',
+                    ),
+                    type: 'video',
+                },
+                {
+                    title: 'Sales',
                     contentSrc: SalesStrategy,
                     type: 'image',
                 },
-                {
-                    title: 'Dynamic Discount',
-                    contentSrc: DynamicDiscount,
-                    type: 'image',
-                },
-                {
-                    title: 'Product Recommendations',
-                    contentSrc: ProductRecommendations,
-                    type: 'image',
-                },
             ],
-            contentSubtitle: 'Sales features',
-            hideLearnMore: true,
-            showRoiCalculator: false,
+            contentSubtitle: 'AI Agent Skills',
+            hideLearnMore: false,
+            showRoiCalculator: true,
         }
 
         expect(result.current).toMatchObject(expectedConfig)

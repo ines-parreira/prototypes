@@ -46,7 +46,7 @@ import AiAgentScrapedDomainPagesContainer from 'pages/aiAgent/AiAgentScrapedDoma
 import AiAgentScrapedDomainProductsContainer from 'pages/aiAgent/AiAgentScrapedDomainContent/AiAgentScrapedDomainProductsContainer'
 import { AiAgentVolume } from 'pages/aiAgent/AiAgentVolume'
 import { AiAgentNavbar } from 'pages/aiAgent/components/AiAgentNavbar/AiAgentNavbar'
-import { RedirectToAiAgentStore } from 'pages/aiAgent/components/RedirectToAiAgentStore/RedirectToAiAgentStore'
+import { AiAgentRedirect } from 'pages/aiAgent/components/AiAgentRedirect/AiAgentRedirect'
 import { useAiAgentItemEnabled } from 'pages/aiAgent/hooks/useAiAgentItemEnabled'
 import { aiAgentRoutes } from 'pages/aiAgent/hooks/useAiAgentNavigation'
 import { Level2IntentsContainer } from 'pages/aiAgent/insights/Level2IntentsContainer/Level2IntentsContainer'
@@ -1167,13 +1167,7 @@ function AiAgentContent() {
             />
 
             <Route>
-                {hasStandaloneConvAiOverviewPage === true ? (
-                    <Redirect to={aiAgentRoutes.overview} />
-                ) : (
-                    hasStandaloneConvAiOverviewPage === false && (
-                        <RedirectToAiAgentStore />
-                    )
-                )}
+                <AiAgentRedirect />
             </Route>
         </Switch>
     )

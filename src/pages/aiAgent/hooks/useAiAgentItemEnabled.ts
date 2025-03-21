@@ -14,5 +14,13 @@ export const useAiAgentItemEnabled = () => {
         false,
     )
 
-    return hasAiAgentStandaloneMenu && (hasAutomate || hasAiAgentPreview)
+    const hasAiAgentPaywallAutomate = useFlag<boolean>(
+        FeatureFlagKey.StandaloneAiAgentAutomatePaywall,
+        false,
+    )
+
+    return (
+        hasAiAgentStandaloneMenu &&
+        (hasAutomate || hasAiAgentPaywallAutomate || hasAiAgentPreview)
+    )
 }

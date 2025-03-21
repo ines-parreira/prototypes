@@ -76,6 +76,7 @@ export const renderWithRouter = (
                     <Route path={path}>{newUi}</Route>
                 </Router>,
             ),
+        history,
     }
 }
 

@@ -20,6 +20,7 @@ export const usePaywallConfig = (
 ): PaywallFeature => {
     switch (aiAgentPaywallFeature) {
         case AIAgentPaywallFeatures.Automate:
+        default:
             return {
                 title: 'with Automate features',
                 subtitle:
@@ -49,7 +50,6 @@ export const usePaywallConfig = (
                 showRoiCalculator: true,
             }
         case AIAgentPaywallFeatures.SalesWaitlist:
-        default:
             return {
                 title: 'for Sales',
                 subtitle:
