@@ -3432,17 +3432,17 @@
     downshift "^9.0.6"
     react-loading-skeleton "^3.5.0"
 
-"@gorgias/realtime@^0.6.3":
-  version "0.6.3"
-  resolved "https://npm.pkg.github.com/download/@gorgias/realtime/0.6.3/9ebfea499eb3134428ad8d40f2b8a35818541ff6#9ebfea499eb3134428ad8d40f2b8a35818541ff6"
-  integrity sha512-5H+WDN73iWDJbYUH9nVXsyjV15WfIDfjlKNu62rwi+3cxX6FgNvxFAn+kkP6gHYFycLnEgR884XjDmdZJiLB5Q==
+"@gorgias/realtime@^0.6.5":
+  version "0.6.5"
+  resolved "https://npm.pkg.github.com/download/@gorgias/realtime/0.6.5/8f1ad92639c6666d7ca7cd5a09afc803ffc9414b#8f1ad92639c6666d7ca7cd5a09afc803ffc9414b"
+  integrity sha512-xKhjfab1fo+JSnnkEQDpYoVSRO4K8I+FcTHetmssewxFr3Ej2fcEorhE3eg+8eTIBRTLOhdD7o7zKgy10jp5Fg==
   dependencies:
     "@gorgias/api-queries" "^0.6.1"
     "@tanstack/react-query" "4.36.1"
     immer "^10.1.1"
     lodash-es "^4.17.21"
     path-to-regexp "^8.2.0"
-    pubnub "^9.2.0"
+    pubnub "^9.3.0"
     pubnub-react "^3.0.2"
 
 "@gorgias/static-analysis@0.3.0":
@@ -15389,10 +15389,10 @@ pubnub-react@^3.0.2:
   dependencies:
     ts-invariant "^0.10.3"
 
-pubnub@^9.2.0:
-  version "9.2.0"
-  resolved "https://registry.yarnpkg.com/pubnub/-/pubnub-9.2.0.tgz#d3b94810cb8993e87f79d9368142b66e04f1319b"
-  integrity sha512-AXnHznIw/i70KrKiUWFZT07tBRNIz7MkxrCXjFMIIRlNmB2qO7pDJwrjXCNxgOGa1LYM/SP6rmc2CRfBbLlZRg==
+pubnub@^9.3.0:
+  version "9.3.0"
+  resolved "https://registry.yarnpkg.com/pubnub/-/pubnub-9.3.0.tgz#6ddff46abe4a44a5a008c0de21d6fdb1d1b2c728"
+  integrity sha512-RRsgAoMJ5WfYx5iudoegQjab2Rz5zkCp5xaVlUrYpNqIIkefWpUxE7Kss3ROwoBi7h1kY1PNpjg95BjqyFXnTw==
   dependencies:
     agentkeepalive "^3.5.2"
     buffer "^6.0.3"

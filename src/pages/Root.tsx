@@ -93,6 +93,8 @@ const Root = ({ store }: Props) => {
                         <RealtimeProvider
                             publishKey={window.PUBNUB_PUBLISH_KEY}
                             subscribeKey={window.PUBNUB_SUBSCRIBE_KEY}
+                            presenceTimeout={5}
+                            heartbeatInterval={2}
                             subscriptionWorkerUrl={pubNubWorkerUrl}
                             subscriptionWorkerUnsubscribeOfflineClients={true}
                             subscriptionWorkerOfflineClientsCheckInterval={5}
