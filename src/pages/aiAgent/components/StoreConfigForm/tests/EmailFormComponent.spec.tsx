@@ -1,10 +1,22 @@
 import React from 'react'
 
-import { fireEvent, render, screen } from '@testing-library/react'
+import { QueryClientProvider } from '@tanstack/react-query'
+import { fireEvent, screen } from '@testing-library/react'
+import { fromJS, Map } from 'immutable'
 import { useFlags } from 'launchdarkly-react-client-sdk'
+import { Provider } from 'react-redux'
+import configureMockStore from 'redux-mock-store'
+import thunk from 'redux-thunk'
 
 import { FeatureFlagKey } from 'config/featureFlags'
+import { account } from 'fixtures/account'
+import { billingState } from 'fixtures/billing'
+import { chatIntegrationFixtures } from 'fixtures/chat'
+import { integrationsState, shopifyIntegration } from 'fixtures/integrations'
 import useAppSelector from 'hooks/useAppSelector'
+import { RootState, StoreDispatch } from 'state/types'
+import { mockQueryClient } from 'tests/reactQueryTestingUtils'
+import { renderWithRouter } from 'utils/testing'
 
 import { EmailFormComponent } from '../FormComponents/EmailFormComponent'
 
@@ -12,9 +24,6 @@ import { EmailFormComponent } from '../FormComponents/EmailFormComponent'
 jest.mock('launchdarkly-react-client-sdk')
 
 jest.mock('hooks/useAppSelector', () => jest.fn())
-jest.mock('state/integrations/selectors', () => ({
-    getIntegrationsByTypes: jest.fn(),
-}))
 
 type EmailItem = {
     id: number
@@ -53,16 +62,35 @@ const mockUseAppSelector = jest.mocked(useAppSelector)
 const mockUseFlags = jest.mocked(useFlags)
 const mockUpdateValue = jest.fn()
 
+const mockStore = configureMockStore<RootState, StoreDispatch>([thunk])
+
+const defaultState = {
+    currentAccount: fromJS(account),
+    billing: fromJS(billingState),
+    integrations: (fromJS(integrationsState) as Map<any, any>).mergeDeep({
+        integrations: [shopifyIntegration, ...chatIntegrationFixtures],
+    }),
+} as RootState
+
+const defaultProps = {
+    monitoredEmailIntegrations: null,
+    updateValue: mockUpdateValue,
+}
+
+const renderWithProvider = (props: any = defaultProps) => {
+    renderWithRouter(
+        <QueryClientProvider client={mockQueryClient()}>
+            <Provider store={mockStore(defaultState)}>
+                <EmailFormComponent {...props} />
+            </Provider>
+        </QueryClientProvider>,
+    )
+}
 describe('EmailFormComponent', () => {
     const mockEmailIntegrations = [
         { id: 1, meta: { address: 'email1@example.com' } },
         { id: 2, meta: { address: 'email2@example.com' } },
     ]
-
-    const defaultProps = {
-        monitoredEmailIntegrations: null,
-        updateValue: mockUpdateValue,
-    }
 
     beforeEach(() => {
         mockUseAppSelector.mockReturnValue(mockEmailIntegrations)
@@ -73,8 +101,8 @@ describe('EmailFormComponent', () => {
     })
 
     it('renders the form with default email list and shows required label', () => {
-        render(<EmailFormComponent {...defaultProps} isRequired={true} />)
-
+        renderWithProvider({ ...defaultProps, isRequired: true })
+        screen.debug(document.body, Infinity)
         expect(
             screen.getByText(
                 /AI Agent responds to tickets sent to the following email addresses/,
@@ -95,7 +123,7 @@ describe('EmailFormComponent', () => {
             ],
         }
 
-        render(<EmailFormComponent {...props} />)
+        renderWithProvider(props)
 
         expect(
             screen.getByText(
@@ -105,7 +133,7 @@ describe('EmailFormComponent', () => {
     })
 
     it('calls updateValue when an email integration is selected', () => {
-        render(<EmailFormComponent {...defaultProps} />)
+        renderWithProvider()
 
         fireEvent.click(screen.getByText('Select Email'))
 
@@ -120,7 +148,7 @@ describe('EmailFormComponent', () => {
             [FeatureFlagKey.AiAgentChat]: true,
         })
 
-        render(<EmailFormComponent {...defaultProps} />)
+        renderWithProvider()
 
         expect(
             screen.getByText(
@@ -137,7 +165,7 @@ describe('EmailFormComponent', () => {
             [FeatureFlagKey.AiAgentChat]: false,
         })
 
-        render(<EmailFormComponent {...defaultProps} isRequired={true} />)
+        renderWithProvider({ ...defaultProps, isRequired: true })
 
         expect(
             screen.getByText('One or more addresses required.'),

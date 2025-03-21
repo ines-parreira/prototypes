@@ -21,6 +21,7 @@ import {
     EmailIntegrationListSelection,
     EmailItem,
 } from 'pages/aiAgent/components/EmailIntegrationListSelection/EmailIntegrationListSelection'
+import { useGetUsedEmailIntegrations } from 'pages/aiAgent/hooks/useGetUsedEmailIntegrations'
 import { useStoreConfigurationForAccount } from 'pages/aiAgent/hooks/useStoreConfigurationForAccount'
 import AiAgentChatConversation from 'pages/aiAgent/Onboarding/components/AiAgentChatConversation/AiAgentChatConversation'
 import { Card, CardContent } from 'pages/aiAgent/Onboarding/components/Card'
@@ -39,7 +40,6 @@ import useCheckOnboardingCompleted from 'pages/aiAgent/Onboarding/hooks/useCheck
 import useCheckStoreIntegration from 'pages/aiAgent/Onboarding/hooks/useCheckStoreIntegration'
 import { useGetChatIntegrationColor } from 'pages/aiAgent/Onboarding/hooks/useGetChatIntegrationColor'
 import { useGetOnboardingData } from 'pages/aiAgent/Onboarding/hooks/useGetOnboardingData'
-import { useGetOnboardings } from 'pages/aiAgent/Onboarding/hooks/useGetOnboardings'
 import { useOnboardingIntegrationRedirection } from 'pages/aiAgent/Onboarding/hooks/useOnboardingIntegrationRedirection'
 import { useSteps } from 'pages/aiAgent/Onboarding/hooks/useSteps'
 import { useUpdateOnboarding } from 'pages/aiAgent/Onboarding/hooks/useUpdateOnboarding'
@@ -120,8 +120,6 @@ export const ChannelsStep: React.FC<StepProps> = ({
     const { data, isLoading: isLoadingOnboardingData } =
         useGetOnboardingData(shopName)
 
-    const { data: currentOnboardings } = useGetOnboardings()
-
     const { redirectToIntegration, integrationId, integrationType } =
         useOnboardingIntegrationRedirection()
 
@@ -158,30 +156,7 @@ export const ChannelsStep: React.FC<StepProps> = ({
         isUpdatingOnboarding ||
         isLoadingStoreConfigurations
 
-    const usedEmailIntegrations = useMemo(() => {
-        const usedInConfigurations = storeConfigurations
-            ? storeConfigurations.reduce<number[]>(
-                  (acc, element) =>
-                      acc.concat(
-                          element.monitoredEmailIntegrations.map(
-                              (item) => item.id,
-                          ),
-                      ),
-                  [],
-              )
-            : []
-
-        const usedInOnboarding = currentOnboardings
-            ? currentOnboardings
-                  .filter((element) => element.shopName !== shopName)
-                  .reduce<
-                      number[]
-                  >((acc, element) => acc.concat(element.emailIntegrationIds ?? []), [])
-            : []
-
-        return [...usedInConfigurations, ...usedInOnboarding]
-    }, [storeConfigurations, currentOnboardings, shopName])
-
+    const usedEmailIntegrations = useGetUsedEmailIntegrations()
     const usedChatChannels = useMemo(() => {
         return storeConfigurations
             ? storeConfigurations.reduce<number[]>(

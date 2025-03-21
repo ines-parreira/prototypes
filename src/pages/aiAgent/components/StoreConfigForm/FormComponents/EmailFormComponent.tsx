@@ -9,11 +9,12 @@ import { FeatureFlagKey } from 'config/featureFlags'
 import { EMAIL_INTEGRATION_TYPES } from 'constants/integration'
 import useAppSelector from 'hooks/useAppSelector'
 import { StoreConfiguration } from 'models/aiAgent/types'
+import { EmailIntegrationListSelection } from 'pages/aiAgent/components/EmailIntegrationListSelection/EmailIntegrationListSelection'
+import { INITIAL_FORM_VALUES } from 'pages/aiAgent/constants'
+import { useGetUsedEmailIntegrations } from 'pages/aiAgent/hooks/useGetUsedEmailIntegrations'
+import { emailSortingCallback } from 'pages/aiAgent/Onboarding/components/steps/ChannelsStep/ChannelsStep'
+import { FormValues, UpdateValue } from 'pages/aiAgent/types'
 import { getIntegrationsByTypes } from 'state/integrations/selectors'
-
-import { INITIAL_FORM_VALUES } from '../../../constants'
-import { FormValues, UpdateValue } from '../../../types'
-import { EmailIntegrationListSelection } from '../../EmailIntegrationListSelection/EmailIntegrationListSelection'
 
 import css from './EmailFormComponent.less'
 
@@ -48,12 +49,15 @@ export const EmailFormComponent = ({
         [],
     )
     const emailIntegrations = useAppSelector(selector)
+    const usedEmailIntegrations = useGetUsedEmailIntegrations()
     const emailItems = useMemo(() => {
         return emailIntegrations.map((integration) => ({
             email: integration.meta.address,
             id: integration.id,
+            isDefault: integration.meta.preferred,
+            isDisabled: usedEmailIntegrations.includes(integration.id),
         }))
-    }, [emailIntegrations])
+    }, [emailIntegrations, usedEmailIntegrations])
 
     useEffect(() => {
         if (
@@ -106,9 +110,11 @@ export const EmailFormComponent = ({
                         : INITIAL_FORM_VALUES.monitoredEmailIntegrations
                 }
                 onSelectionChange={handleSelectEmailIntegration}
+                sortingCallback={emailSortingCallback}
                 emailItems={emailItems}
                 hasError={!isEmailIntegrationsValid}
                 isDisabled={isDisabled}
+                withDefaultTag
             />
             <div
                 className={classnames(css.formInputFooterInfo, {
