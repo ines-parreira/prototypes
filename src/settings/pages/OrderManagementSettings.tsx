@@ -91,7 +91,7 @@ export function OrderManagementSettings() {
                             )}
                         </Breadcrumb>
                     ) : (
-                        'Order management'
+                        'Order Management'
                     )
                 }
             >

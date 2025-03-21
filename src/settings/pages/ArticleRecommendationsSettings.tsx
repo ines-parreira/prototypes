@@ -26,7 +26,7 @@ export function ArticleRecommendationsSettings() {
 
     return (
         <div className={css.container}>
-            <Header className={css.header} title="Article recommendations">
+            <Header className={css.header} title="Article Recommendations">
                 <StoreSelector
                     integrations={integrations}
                     selected={selected}

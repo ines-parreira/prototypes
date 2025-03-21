@@ -77,13 +77,13 @@ const productivitySection: Category = {
             requiredRole: AGENT_ROLE,
             requiredFeatureFlags: [FeatureFlagKey.AutomateSettingsRevamp],
             to: 'order-management',
-            text: 'Order management',
+            text: 'Order Management',
         },
         {
             requiredRole: AGENT_ROLE,
             requiredFeatureFlags: [FeatureFlagKey.AutomateSettingsRevamp],
             to: 'article-recommendations',
-            text: 'Article recommendations',
+            text: 'Article Recommendations',
         },
     ],
 }
