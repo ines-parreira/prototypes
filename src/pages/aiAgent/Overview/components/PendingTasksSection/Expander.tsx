@@ -9,12 +9,10 @@ export type ExpanderProps = {
     isExpanded: boolean
     onClick: () => void
     controlId: string
-    tasksCount?: number
 }
 export const Expander = ({
     isLoading,
     isExpanded,
-    tasksCount,
     onClick,
     controlId,
 }: ExpanderProps) => {
@@ -29,9 +27,7 @@ export const Expander = ({
             aria-expanded={isExpanded}
             aria-controls={controlId}
         >
-            {isExpanded
-                ? 'Collapse'
-                : `Show all tasks (${tasksCount ?? 0} total)`}
+            {isExpanded ? 'Show less' : 'Show all'}
             <i className={classNames('material-icons', css.expanderIcon)}>
                 {isExpanded ? 'arrow_drop_up' : 'arrow_drop_down'}
             </i>

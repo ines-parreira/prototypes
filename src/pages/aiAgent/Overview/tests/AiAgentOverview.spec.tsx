@@ -85,7 +85,7 @@ describe('AiAgentOverview', () => {
 
         expect(queryByText(/Welcome,.*/)).toBeTruthy()
         expect(queryByText('AI Agent Performance')).toBeTruthy()
-        expect(queryByText('Complete AI Agent Setup')).toBeTruthy()
+        expect(queryByText('Setup Your Store')).toBeTruthy()
     })
 
     it('should not renders the Thank You modal', () => {

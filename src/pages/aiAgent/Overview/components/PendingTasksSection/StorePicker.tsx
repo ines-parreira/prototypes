@@ -1,9 +1,13 @@
 import React, { useMemo } from 'react'
 
-import Filter from 'pages/stats/common/components/Filter'
-import { DropdownOption } from 'pages/stats/types'
+import { IntegrationType } from 'models/integration/constants'
+import SelectField from 'pages/common/forms/SelectField/SelectField'
+import { Value } from 'pages/common/forms/SelectField/types'
+import { getIconFromType } from 'state/integrations/helpers'
 
-type Store = { id: number; name: string; type: string }
+import css from './StorePicker.less'
+
+type Store = { id: number; name: string; type: IntegrationType }
 type Props = {
     stores: Store[]
     onStoreChange: (store: Store) => void
@@ -11,8 +15,18 @@ type Props = {
 }
 
 const storeToOption = (store: Store) => ({
-    label: store.name,
-    value: `${store.id}`,
+    value: store.id,
+    text: store.name,
+    label: (
+        <div className={css.filterLabel}>
+            <img
+                src={getIconFromType(store.type)}
+                className={css.shopLabelIcon}
+                alt="logo"
+            />
+            {store.name}
+        </div>
+    ),
 })
 
 export const StorePicker = ({
@@ -22,26 +36,20 @@ export const StorePicker = ({
 }: Props) => {
     const options = useMemo(() => stores.map(storeToOption), [stores])
 
-    const onOptionChange = (opt: DropdownOption) => {
-        const store = stores.find((store) => store.id === parseInt(opt.value))!
+    const onOptionChange = (value: Value) => {
+        const store = stores.find((store) => store.id === value)!
         onStoreChange(store)
     }
 
     return (
-        <Filter
-            filterName={'Store'}
-            filterOptionGroups={[{ options: options }]}
-            logicalOperators={[]}
-            onChangeOption={onOptionChange}
-            onSelectAll={() => {}}
-            onRemoveAll={() => {}}
-            onChangeLogicalOperator={() => {}}
-            selectedOptions={[storeToOption(selectedStore)]}
-            isMultiple={false}
-            showSearch={false}
-            showQuickSelect={false}
-            isPersistent
-            shouldCloseOnSelect
-        />
+        <div className={css.dropdownWrapper}>
+            <SelectField
+                value={selectedStore.id}
+                onChange={onOptionChange}
+                options={options}
+                dropdownMenuClassName={css.filterDropdownMenu}
+                showSelectedOption
+            />
+        </div>
     )
 }

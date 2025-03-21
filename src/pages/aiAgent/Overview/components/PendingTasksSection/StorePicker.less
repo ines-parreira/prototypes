@@ -1,0 +1,28 @@
+@import (reference) '~@gorgias/design-tokens/dist/css/layout.less';
+@import (reference) '~css/typography';
+@import (reference) '~css/new/mixins';
+
+:local {
+    .dropdownWrapper {
+        width: 240px;
+    }
+
+    .filterDropdownMenu {
+        min-width: 272px;
+        right: 0 !important;
+        left: unset !important;
+        transform: translate3d(0, 32px, 0) !important;
+    }
+
+    .shopLabelIcon {
+        height: 16px;
+        width: 16px;
+    }
+
+    .filterLabel {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        gap: 8px;
+    }
+}

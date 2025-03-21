@@ -2,88 +2,45 @@
 @import (reference) '~css/typography';
 
 :local {
-    .bar {
-        height: 16px;
-        position: relative;
+    .wrapper {
+        display: flex;
+        flex-direction: column;
+        gap: @layout-spacing-s;
     }
-    .dashLine {
-        position: absolute;
-        top: calc(50% - 1px);
-        left: 0;
+
+    .progress {
+        /* Remove default appearance */
+        -webkit-appearance: none;
+        appearance: none;
+
         width: 100%;
-        height: 2px;
-
-        background:
-            radial-gradient(
-                    circle closest-side,
-                    var(--neutral-grey-3) 100%,
-                    #0000
-                )
-                50%/3px 100%,
-            linear-gradient(90deg, var(--neutral-grey-3) 50%, #0000 0) 50%/6px
-                100%;
-
-        // Mirroring the gradient to finish with a plain dash
-        transform: scaleX(-1);
-    }
-    .plainDot {
-        position: absolute;
-    }
-    .wrapperDot {
-        border-radius: 16px;
-        height: 16px;
-        width: 16px;
-        background-color: var(--neutral-grey-2);
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        overflow: hidden;
-    }
-    .centerDot {
-        border-radius: 6px;
-        height: 6px;
-        width: 6px;
-        background-color: white;
-        box-shadow: 0px 3px 4px 2px rgba(0, 0, 0, 0.2);
-    }
-    .gradientLine {
-        position: absolute;
-        top: calc(50% - 2px);
-        left: 0;
-        border-top-left-radius: 2px;
-        border-bottom-left-radius: 2px;
-
         height: 4px;
-        background: linear-gradient(
-            to right,
-            #c3c2ff 0%,
-            #9088f5 80%,
-            #ffc657 100%
-        );
-    }
-    .legendContainer {
-        margin-top: 8px;
-        color: var(--neutral-grey-5);
-        font-size: 11px;
-        font-weight: 600;
-        line-height: 14px;
-        display: flex;
-        justify-content: space-between;
-        padding: 0 5px;
-        position: relative;
-    }
-    .legendItem {
-        flex-grow: 1;
-        text-align: center;
-        flex: 1 1 0;
-        text-transform: uppercase;
 
-        &:first-child {
-            text-align: left;
+        /* Unfilled part (Firefox) */
+        border: none;
+        border-radius: 2px;
+        background-color: #c34ced52;
+
+        /* Filled part (Webkit) */
+        &::-webkit-progress-value {
+            background-color: #c34ced;
+            border-radius: 2px;
         }
 
-        &:last-child {
-            text-align: right;
+        /* Unfilled part (Webkit) */
+        &::-webkit-progress-bar {
+            background-color: #c34ced52;
+            border-radius: 2px;
         }
+
+        /* Filled part (Firefox) */
+        &::-moz-progress-bar {
+            background-color: #c34ced;
+            border-radius: 2px;
+        }
+    }
+
+    .description {
+        .caption-allcaps();
     }
 }

@@ -1,3 +1,7 @@
+import { useMemo } from 'react'
+
+import pluralize from 'pluralize'
+
 import { Skeleton } from '@gorgias/merchant-ui-kit'
 
 import css from './PendingTasksCompletionBar.less'
@@ -8,48 +12,39 @@ type Props = {
     isLoading?: boolean
 }
 
-export const PendingTasksCompletionBar: React.FC<Props> = ({
+export const PendingTasksCompletionBar = ({
     totalTasksCompleted = 0,
     totalTasks = 1,
     isLoading,
 }: Props) => {
-    let ariaProps: Record<string, string | number> = {}
-    if (isLoading) {
-        ariaProps = { 'aria-busy': 'true', 'aria-live': 'polite' }
-    } else {
-        ariaProps = {
-            'aria-valuenow': totalTasksCompleted,
-            'aria-valuemin': 0,
-            'aria-valuemax': totalTasks,
-            'aria-valuetext': `You completed ${totalTasksCompleted} tasks on a total of ${totalTasks}`,
+    const remainingTasks = totalTasks - totalTasksCompleted
+
+    const { progressValue, progressMax } = useMemo(() => {
+        // Required because otherwise the progress is unfilled
+        if (totalTasksCompleted === 0 && totalTasks === 0) {
+            return {
+                progressValue: 1,
+                progressMax: 1,
+            }
         }
-    }
 
-    const position = Math.min(100, (totalTasksCompleted / totalTasks) * 100)
+        return {
+            progressValue: totalTasksCompleted,
+            progressMax: totalTasks,
+        }
+    }, [totalTasksCompleted, totalTasks])
 
-    return (
-        <div role="progressbar" {...ariaProps}>
-            <div className={css.bar}>
-                {isLoading ? (
-                    <Skeleton height={16} />
-                ) : (
-                    <>
-                        <div className={css.dashLine}></div>
-                        <div
-                            className={css.gradientLine}
-                            style={{ width: `${position}%` }}
-                        />
-                        <div
-                            className={css.plainDot}
-                            /** Dot is 16px width, to center it we remove 50% of 16px */
-                            style={{ left: `calc(${position}% - 8px)` }}
-                        >
-                            <div className={css.wrapperDot}>
-                                <div className={css.centerDot}></div>
-                            </div>
-                        </div>
-                    </>
-                )}
+    return isLoading ? (
+        <Skeleton height={34} />
+    ) : (
+        <div className={css.wrapper}>
+            <progress
+                className={css.progress}
+                value={progressValue}
+                max={progressMax}
+            />
+            <div className={css.description}>
+                {pluralize('task', remainingTasks, true)} remaining
             </div>
         </div>
     )

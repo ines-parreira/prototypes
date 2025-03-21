@@ -2,6 +2,7 @@ import React, { useCallback, useMemo, useState } from 'react'
 
 import useAppSelector from 'hooks/useAppSelector'
 import useLocalStorageWithExpiry from 'hooks/useLocalStorageWithExpiry'
+import { IntegrationType } from 'models/integration/constants'
 import { PendingTasksSection } from 'pages/aiAgent/Overview/components/PendingTasksSection/PendingTasksSection'
 import { usePendingTasksRuleEngine } from 'pages/aiAgent/Overview/hooks/pendingTasks/usePendingTasksRuleEngine'
 import {
@@ -13,7 +14,7 @@ import { getShopifyIntegrationsSortedByName } from 'state/integrations/selectors
 type Store = {
     id: number
     name: string
-    type: string
+    type: IntegrationType
 }
 
 const expireIn1Hour = 3_600 * 1_000
@@ -33,7 +34,7 @@ export const PendingTasksSectionConnected = () => {
             rawStores.map<Store>((store) => ({
                 name: store.name,
                 id: store.id,
-                type: store.type as string,
+                type: store.type,
             })),
         [rawStores],
     )

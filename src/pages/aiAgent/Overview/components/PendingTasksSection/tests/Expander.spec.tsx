@@ -8,7 +8,6 @@ import { Expander, ExpanderProps } from '../Expander'
 const defaultProps = {
     isLoading: false,
     isExpanded: false,
-    tasksCount: 6,
     onClick: jest.fn(),
     controlId: 'test',
 }
@@ -30,16 +29,16 @@ describe('Expander', () => {
         renderTemplate()
 
         expect(getSkeleton()).toBeNull()
-        expect(screen.getByText('Show all tasks (6 total)')).toBeInTheDocument()
-        expect(screen.queryByText('Collapse')).toBeNull()
+        expect(screen.getByText('Show all')).toBeInTheDocument()
+        expect(screen.queryByText('Show less')).toBeNull()
     })
 
     it('render the component after loading with no tasksCount', () => {
-        renderTemplate({ ...defaultProps, tasksCount: undefined })
+        renderTemplate({ ...defaultProps })
 
         expect(getSkeleton()).toBeNull()
-        expect(screen.getByText('Show all tasks (0 total)')).toBeInTheDocument()
-        expect(screen.queryByText('Collapse')).toBeNull()
+        expect(screen.getByText('Show all')).toBeInTheDocument()
+        expect(screen.queryByText('Show less')).toBeNull()
     })
 
     it('should expand when clicking on expand button', () => {
@@ -50,8 +49,8 @@ describe('Expander', () => {
         })
 
         expect(getButton()).toHaveAttribute('aria-expanded', 'true')
-        expect(screen.queryByText('Show all tasks (6 total)')).toBeNull()
-        expect(screen.getByText('Collapse')).toBeInTheDocument()
+        expect(screen.queryByText('Show all')).toBeNull()
+        expect(screen.getByText('Show less')).toBeInTheDocument()
     })
 
     it('should call onClick when clicking on expand button', () => {

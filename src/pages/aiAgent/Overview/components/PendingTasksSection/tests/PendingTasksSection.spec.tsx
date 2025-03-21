@@ -3,6 +3,7 @@ import React from 'react'
 import { fireEvent, render, screen } from '@testing-library/react'
 import { act } from '@testing-library/react-hooks'
 
+import { IntegrationType } from 'models/integration/constants'
 import { AlwaysDisplayedTask } from 'pages/aiAgent/Overview/hooks/pendingTasks/tasks/tests/AlwaysDisplayed.task'
 import { AlwaysHiddenTask } from 'pages/aiAgent/Overview/hooks/pendingTasks/tasks/tests/AlwaysHidden.task'
 
@@ -31,8 +32,18 @@ describe('PendingTasksSection', () => {
                 pendingTasks={pendingTasks}
                 isLoading={true}
                 onStoreChange={() => {}}
-                selectedStore={{ id: 1, name: 'test store', type: 'shopify' }}
-                stores={[{ id: 1, name: 'test store', type: 'shopify' }]}
+                selectedStore={{
+                    id: 1,
+                    name: 'test store',
+                    type: IntegrationType.Shopify,
+                }}
+                stores={[
+                    {
+                        id: 1,
+                        name: 'test store',
+                        type: IntegrationType.Shopify,
+                    },
+                ]}
             />,
         )
 
@@ -50,13 +61,80 @@ describe('PendingTasksSection', () => {
                 pendingTasks={pendingTasks}
                 isLoading={false}
                 onStoreChange={() => {}}
-                selectedStore={{ id: 1, name: 'test store', type: 'shopify' }}
-                stores={[{ id: 1, name: 'test store', type: 'shopify' }]}
+                selectedStore={{
+                    id: 1,
+                    name: 'test store',
+                    type: IntegrationType.Shopify,
+                }}
+                stores={[
+                    {
+                        id: 1,
+                        name: 'test store',
+                        type: IntegrationType.Shopify,
+                    },
+                ]}
             />,
         )
 
         expect(screen.getAllByRole('link')[0]).not.toHaveAttribute('aria-busy')
-        expect(screen.getByText('Show all tasks (6 total)')).toBeInTheDocument()
+        expect(screen.getByText('Show all')).toBeInTheDocument()
+    })
+
+    it('render the store selector when multiple stores', () => {
+        jest.useFakeTimers()
+        render(
+            <PendingTasksSection
+                completedTasks={completedTasks}
+                pendingTasks={pendingTasks}
+                isLoading={false}
+                onStoreChange={() => {}}
+                selectedStore={{
+                    id: 1,
+                    name: 'test store',
+                    type: IntegrationType.Shopify,
+                }}
+                stores={[
+                    {
+                        id: 1,
+                        name: 'test store',
+                        type: IntegrationType.Shopify,
+                    },
+                    {
+                        id: 2,
+                        name: 'other test store',
+                        type: IntegrationType.Shopify,
+                    },
+                ]}
+            />,
+        )
+
+        expect(screen.getAllByText('test store')).not.toHaveLength(0)
+    })
+
+    it('not render the store selector when single store', () => {
+        jest.useFakeTimers()
+        render(
+            <PendingTasksSection
+                completedTasks={completedTasks}
+                pendingTasks={pendingTasks}
+                isLoading={false}
+                onStoreChange={() => {}}
+                selectedStore={{
+                    id: 1,
+                    name: 'test store',
+                    type: IntegrationType.Shopify,
+                }}
+                stores={[
+                    {
+                        id: 1,
+                        name: 'test store',
+                        type: IntegrationType.Shopify,
+                    },
+                ]}
+            />,
+        )
+
+        expect(screen.queryAllByText('test store')).toHaveLength(0)
     })
 
     it('render the component after loading when all tasks are completed', () => {
@@ -67,8 +145,18 @@ describe('PendingTasksSection', () => {
                 pendingTasks={[]}
                 isLoading={false}
                 onStoreChange={() => {}}
-                selectedStore={{ id: 1, name: 'test store', type: 'shopify' }}
-                stores={[{ id: 1, name: 'test store', type: 'shopify' }]}
+                selectedStore={{
+                    id: 1,
+                    name: 'test store',
+                    type: IntegrationType.Shopify,
+                }}
+                stores={[
+                    {
+                        id: 1,
+                        name: 'test store',
+                        type: IntegrationType.Shopify,
+                    },
+                ]}
             />,
         )
 
@@ -86,8 +174,18 @@ describe('PendingTasksSection', () => {
                 pendingTasks={pendingTasks}
                 isLoading={false}
                 onStoreChange={() => {}}
-                selectedStore={{ id: 1, name: 'test store', type: 'shopify' }}
-                stores={[{ id: 1, name: 'test store', type: 'shopify' }]}
+                selectedStore={{
+                    id: 1,
+                    name: 'test store',
+                    type: IntegrationType.Shopify,
+                }}
+                stores={[
+                    {
+                        id: 1,
+                        name: 'test store',
+                        type: IntegrationType.Shopify,
+                    },
+                ]}
             />,
         )
 
@@ -103,6 +201,6 @@ describe('PendingTasksSection', () => {
         expect(screen.getByRole('region').childNodes).toHaveLength(
             pendingTasks.length,
         )
-        expect(screen.getByText('Collapse')).toBeInTheDocument()
+        expect(screen.getByText('Show less')).toBeInTheDocument()
     })
 })

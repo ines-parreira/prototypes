@@ -3,6 +3,7 @@ import React, { useState } from 'react'
 import classNames from 'classnames'
 
 import partyPopperImg from 'assets/img/ai-agent/ai-agent_party-popper.svg'
+import { IntegrationType } from 'models/integration/constants'
 import { CardTitle } from 'pages/aiAgent/Onboarding/components/Card'
 import { OverviewCard } from 'pages/aiAgent/Overview/components/OverviewCard/OverviewCard'
 
@@ -19,7 +20,7 @@ export const pendingTasksCollapsibleId = 'overview-pending-tasks-collapsible'
 type Store = {
     name: string
     id: number
-    type: string
+    type: IntegrationType
 }
 type Props = {
     selectedStore: Store
@@ -69,7 +70,7 @@ export const PendingTasksSection = ({
                 <div className={css.titleContainer}>
                     <CardTitle>
                         <div className={css.title}>
-                            Complete AI Agent Setup
+                            Setup Your Store
                             <i
                                 className={classNames(
                                     'material-icons',
@@ -80,12 +81,14 @@ export const PendingTasksSection = ({
                             </i>
                         </div>
                     </CardTitle>
+                </div>
+                {stores.length > 1 && (
                     <StorePicker
                         stores={stores}
                         selectedStore={selectedStore}
                         onStoreChange={onStoreChange}
                     />
-                </div>
+                )}
                 <PendingTasksCompletionBar
                     isLoading={isLoading}
                     totalTasks={pendingTasks.length + completedTasks.length}
@@ -121,7 +124,6 @@ export const PendingTasksSection = ({
                             <div className={css.expanderContainer}>
                                 <Expander
                                     controlId={pendingTasksCollapsibleId}
-                                    tasksCount={pendingTasks?.length}
                                     isLoading={isLoading}
                                     isExpanded={isPendingTasksExpanded}
                                     onClick={() =>
