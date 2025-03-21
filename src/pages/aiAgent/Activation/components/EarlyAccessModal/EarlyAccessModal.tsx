@@ -92,6 +92,7 @@ export const EarlyAccessModal = ({
                             Sign up before May 2025 to secure your current
                             pricing tier before rates increase.
                         </h3>
+                        {/* To uncomment on April 1st, 2025
                         <a
                             target="_blank"
                             rel="noopener noreferrer"
@@ -99,7 +100,7 @@ export const EarlyAccessModal = ({
                         >
                             Contact Our Team To Learn More{' '}
                             <i className="material-icons">open_in_new</i>
-                        </a>
+                        </a> */}
                     </div>
                 }
                 className={css.header}
