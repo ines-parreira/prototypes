@@ -11,6 +11,6 @@ export const useMixedKpis = (filters: StatsFilters, timezone: string) => {
     const csat = useCsat(filters, timezone)
 
     return {
-        metrics: [coverageRate, gmvInfluenced, automationRate, csat],
+        metrics: [coverageRate, automationRate, gmvInfluenced, csat],
     }
 }

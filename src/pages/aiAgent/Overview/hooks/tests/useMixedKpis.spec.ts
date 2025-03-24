@@ -29,8 +29,8 @@ describe('useMixedKpis', () => {
 
         expect(result.current.metrics).toEqual([
             'mockCoverageRate',
-            'mockGmvInfluenced',
             'mockAiAgentAutomationRate',
+            'mockGmvInfluenced',
             'mockCsat',
         ])
     })
