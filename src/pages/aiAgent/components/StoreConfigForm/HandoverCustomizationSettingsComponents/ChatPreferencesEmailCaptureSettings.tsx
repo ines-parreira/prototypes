@@ -1,4 +1,4 @@
-import classnames from 'classnames'
+import cn from 'classnames'
 
 import {
     GORGIAS_CHAT_WIDGET_EMAIL_CAPTURE_ALWAYS_REQUIRED,
@@ -29,7 +29,7 @@ const emailCaptureOptions: RadioFieldOption[] = [
         label: (
             <>
                 Required
-                <IconTooltip className={css.icon}>
+                <IconTooltip className={cn(css.icon, css.tooltipIcon)}>
                     Note: In case of handover, customers may exit the Chat
                     without providing the required email, leading to tickets
                     with no associated email address.
@@ -47,7 +47,7 @@ const ChatPreferencesEmailCaptureSettings = ({
 }: Props) => {
     return (
         <div>
-            <h4 className={classnames(css.title, 'mb-1')}>Email capture</h4>
+            <h4 className={cn(css.title, 'mb-1')}>Email capture</h4>
             <p className="mb-4">
                 Collect the customer’s email when AI Agent can’t respond and
                 needs to handover to your team.

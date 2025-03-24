@@ -151,4 +151,17 @@ describe('<Accordion />', () => {
             )
         })
     })
+
+    it('should render accordion component with custom className', () => {
+        const { container } = render(
+            <Accordion className="custom-class">
+                <AccordionItem id="1">
+                    <AccordionHeader>Header 1</AccordionHeader>
+                    <AccordionBody>Body 1</AccordionBody>
+                </AccordionItem>
+            </Accordion>,
+        )
+
+        expect(container.querySelector('.custom-class')).toBeInTheDocument()
+    })
 })

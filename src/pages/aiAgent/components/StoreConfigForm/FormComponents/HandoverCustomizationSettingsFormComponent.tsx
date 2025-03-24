@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo, useState } from 'react'
+import { useCallback, useMemo, useState } from 'react'
 
 import cn from 'classnames'
 
@@ -88,7 +88,7 @@ export const HandoverCustomizationSettingsFormComponent = ({
                     />
                 )}
             </div>
-            <Accordion>
+            <Accordion className={css.sectionsAccordion}>
                 <AccordionItem>
                     <AccordionHeader>
                         <span className="body-semibold">
@@ -103,14 +103,11 @@ export const HandoverCustomizationSettingsFormComponent = ({
                 </AccordionItem>
                 <AccordionItem>
                     <AccordionHeader>
-                        <div
-                            className={cn(
-                                css['accordion-header'],
-                                'd-flex align-items-center',
-                            )}
-                        >
+                        <div className={'d-flex align-items-center'}>
                             <span className="body-semibold">When online</span>
-                            <IconTooltip className={css.icon}>
+                            <IconTooltip
+                                className={cn(css.icon, css.tooltipIcon)}
+                            >
                                 If agents are not available when Chat is online,
                                 offline Chat settings will be used and business
                                 hours won’t be shared

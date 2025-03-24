@@ -1,10 +1,13 @@
-import React, {
+import {
+    HTMLAttributes,
     ReactNode,
     useCallback,
     useEffect,
     useMemo,
     useState,
 } from 'react'
+
+import cn from 'classnames'
 
 import AccordionContext, { AccordionContextType } from './AccordionContext'
 
@@ -17,7 +20,7 @@ export type AccordionProps<T = string | string[] | null> = {
     onChange?: (expandedItem: T) => void
     onHoveredItemChange?: (hoveredItem: string | null) => void
     children?: ReactNode
-}
+} & Pick<HTMLAttributes<HTMLDivElement>, 'className'>
 
 const Accordion = <T extends string | string[] | null>({
     defaultExpandedItem = null as T,
@@ -26,6 +29,7 @@ const Accordion = <T extends string | string[] | null>({
     onHoveredItemChange,
     onChange,
     children,
+    className,
 }: AccordionProps<T>) => {
     const isControlled = expandedItemProp !== undefined
     const [expandedItem, setExpandedItem] = useState<T>(
@@ -75,7 +79,7 @@ const Accordion = <T extends string | string[] | null>({
 
     return (
         <AccordionContext.Provider value={accordionContext}>
-            <div className={css.container}>{children}</div>
+            <div className={cn(css.container, className)}>{children}</div>
         </AccordionContext.Provider>
     )
 }

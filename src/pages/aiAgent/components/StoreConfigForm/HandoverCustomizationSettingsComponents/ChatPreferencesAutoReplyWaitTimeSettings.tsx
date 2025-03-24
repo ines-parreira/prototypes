@@ -1,4 +1,4 @@
-import classnames from 'classnames'
+import cn from 'classnames'
 
 import {
     GORGIAS_CHAT_AUTO_RESPONDER_REPLY_DYNAMIC,
@@ -27,7 +27,7 @@ const autoResponderOptions: RadioFieldOption[] = [
             <>
                 Dynamic wait time (recommended)
                 <IconTooltip
-                    className={css.icon}
+                    className={cn(css.icon, css.tooltipIcon)}
                     tooltipProps={{
                         placement: 'top',
                         autohide: false,
@@ -64,7 +64,7 @@ const ChatPreferencesAutoReplyWaitTimeSettings = ({
 }: Props) => {
     return (
         <div>
-            <h4 className={classnames(css.title, 'mb-1')}>Wait time</h4>
+            <h4 className={cn(css.title, 'mb-1')}>Wait time</h4>
             <p className="mb-4">
                 Let customers know how fast they can expect a response from an
                 agent.
@@ -84,7 +84,7 @@ const ChatPreferencesAutoReplyWaitTimeSettings = ({
 
             <div className="mb-3">
                 <RadioFieldSet
-                    className={classnames('mb-2', css.radioFieldSet)}
+                    className={cn('mb-2', css.radioFieldSet)}
                     options={autoResponderOptions}
                     selectedValue={autoResponderReply}
                     onChange={(value) => onAutoResponderReplyChange(value)}
