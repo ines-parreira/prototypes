@@ -30,6 +30,9 @@ jest.mock('common/segment', () => ({
 }))
 jest.mock('hooks/useAppDispatch', () => () => mockedDispatch)
 jest.mock('hooks/useAppSelector', () => (fn: () => void) => fn())
+jest.mock('state/billing/selectors', () => ({
+    getHasAutomate: jest.fn(() => false),
+}))
 jest.mock('state/currentUser/selectors', () => ({
     getCurrentUser: jest.fn(),
 }))

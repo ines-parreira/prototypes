@@ -40,6 +40,7 @@ import { PhoneNumbers } from '../PhoneNumbers'
 import { Rules } from '../Rules'
 import {
     PaywalledArticleRecommendations,
+    PaywalledAutomate,
     PaywalledFlows,
     PaywalledOrderManagement,
     SettingRoutes,
@@ -271,17 +272,23 @@ const testingMap = [
     {
         callOrder: 28,
         exact: undefined,
+        path: `${basePath}/automate`,
+        component: PaywalledAutomate,
+    },
+    {
+        callOrder: 29,
+        exact: undefined,
         path: `${basePath}/article-recommendations/:shopType?/:shopName?`,
         component: PaywalledArticleRecommendations,
     },
     {
-        callOrder: 29,
+        callOrder: 30,
         exact: undefined,
         path: `${basePath}/flows/:shopType?/:shopName?`,
         component: PaywalledFlows,
     },
     {
-        callOrder: 30,
+        callOrder: 31,
         exact: undefined,
         path: `${basePath}/order-management/:shopType?/:shopName?`,
         component: PaywalledOrderManagement,

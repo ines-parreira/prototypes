@@ -28,6 +28,7 @@ import {
 import { AutomatePaywall } from 'settings/automate'
 import {
     ArticleRecommendationsSettings,
+    AutomateSettings,
     FlowsSettings,
     OrderManagementSettings,
 } from 'settings/pages'
@@ -54,6 +55,12 @@ import { Users } from './Users'
 export const PaywalledArticleRecommendations = () => (
     <AutomatePaywall>
         <ArticleRecommendationsSettings />
+    </AutomatePaywall>
+)
+
+export const PaywalledAutomate = () => (
+    <AutomatePaywall>
+        <AutomateSettings />
     </AutomatePaywall>
 )
 
@@ -185,6 +192,11 @@ export function SettingRoutes() {
                     {renderAppSettings(AutoMergeSettings)}
                 </Route>
 
+                <Route path={`${path}/automate`}>
+                    {renderAppSettings(PaywalledAutomate, {
+                        roleParams: [AGENT_ROLE],
+                    })}
+                </Route>
                 <Route
                     path={`${path}/article-recommendations/:shopType?/:shopName?`}
                 >

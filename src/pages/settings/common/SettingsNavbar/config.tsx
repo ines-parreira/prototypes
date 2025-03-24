@@ -70,18 +70,34 @@ const productivitySection: Category = {
         {
             requiredRole: AGENT_ROLE,
             requiredFeatureFlags: [FeatureFlagKey.AutomateSettingsRevamp],
+            shouldRender: (hasAutomate) => !hasAutomate,
+            to: 'automate',
+            text: 'Automate',
+            extra: (
+                <Badge type="magenta" className={cssNavbar.badge}>
+                    <i className="material-icons">auto_awesome</i>
+                    UPGRADE
+                </Badge>
+            ),
+        },
+        {
+            requiredRole: AGENT_ROLE,
+            requiredFeatureFlags: [FeatureFlagKey.AutomateSettingsRevamp],
+            shouldRender: (hasAutomate) => hasAutomate,
             to: 'flows',
             text: 'Flows',
         },
         {
             requiredRole: AGENT_ROLE,
             requiredFeatureFlags: [FeatureFlagKey.AutomateSettingsRevamp],
+            shouldRender: (hasAutomate) => hasAutomate,
             to: 'order-management',
             text: 'Order Management',
         },
         {
             requiredRole: AGENT_ROLE,
             requiredFeatureFlags: [FeatureFlagKey.AutomateSettingsRevamp],
+            shouldRender: (hasAutomate) => hasAutomate,
             to: 'article-recommendations',
             text: 'Article Recommendations',
         },

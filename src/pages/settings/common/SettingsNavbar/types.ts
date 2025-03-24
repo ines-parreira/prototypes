@@ -9,6 +9,7 @@ export type CategoryLink = {
     className?: string
     requiredRole?: UserRole
     requiredFeatureFlags?: FeatureFlagKey[]
+    shouldRender?: (hasAutomate: boolean) => boolean
     text: string
     to: string
     extra?: ReactNode
