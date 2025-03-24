@@ -3,8 +3,6 @@ import { AiAgentOnboardingWizardStep } from 'models/aiAgent/types'
 import {
     AiAgentChannel,
     CUSTOM_TONE_OF_VOICE_MAX_LENGTH,
-    EXCLUDED_TOPIC_MAX_LENGTH,
-    MAX_EXCLUDED_TOPICS,
     SIGNATURE_MAX_LENGTH,
     ToneOfVoice,
 } from '../../constants'
@@ -24,7 +22,6 @@ const VALID_FORM_VALUES: ValidFormValues = {
     silentHandover: null,
     monitoredEmailIntegrations: [],
     tags: null,
-    excludedTopics: null,
     signature: 'Signature',
     toneOfVoice: null,
     customToneOfVoiceGuidance: null,
@@ -168,53 +165,6 @@ describe('store-configuration-validation', () => {
                     DEFAULT_OPTIONS,
                 ),
             ).toThrow(StoreConfigurationValidationMessage.FieldsMissing)
-        })
-
-        it('should throw an error if excluded topics have empty fields', () => {
-            const formValues: FormValues = {
-                ...VALID_FORM_VALUES,
-                excludedTopics: [''],
-            }
-            expect(() =>
-                getValidStoreConfigurationFormValues(
-                    formValues,
-                    [],
-                    false,
-                    DEFAULT_OPTIONS,
-                ),
-            ).toThrow(StoreConfigurationValidationMessage.ExcludedTopicEmpty)
-        })
-
-        it('should throw an error if excluded topics are too big', () => {
-            const formValues: FormValues = {
-                ...VALID_FORM_VALUES,
-                excludedTopics: Array<string>(MAX_EXCLUDED_TOPICS + 1).fill(
-                    'a',
-                ),
-            }
-            expect(() =>
-                getValidStoreConfigurationFormValues(
-                    formValues,
-                    [],
-                    false,
-                    DEFAULT_OPTIONS,
-                ),
-            ).toThrow(StoreConfigurationValidationMessage.ExcludedTopicsLength)
-        })
-
-        it('should throw an error if excluded topic is too big', () => {
-            const formValues: FormValues = {
-                ...VALID_FORM_VALUES,
-                excludedTopics: ['a'.repeat(EXCLUDED_TOPIC_MAX_LENGTH + 1)],
-            }
-            expect(() =>
-                getValidStoreConfigurationFormValues(
-                    formValues,
-                    [],
-                    false,
-                    DEFAULT_OPTIONS,
-                ),
-            ).toThrow(StoreConfigurationValidationMessage.ExcludedTopicLength)
         })
 
         it('should throw an error if tags have empty fields', () => {

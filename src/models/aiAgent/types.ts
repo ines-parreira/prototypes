@@ -100,6 +100,7 @@ export type CreateStoreConfigurationPayload = Pick<
     | 'monitoredChatIntegrations'
     | 'chatChannelDeactivatedDatetime'
     | 'emailChannelDeactivatedDatetime'
+    | 'excludedTopics'
 > &
     WizardProps
 

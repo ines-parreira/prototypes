@@ -28,7 +28,6 @@ export type FormValues = {
     silentHandover: boolean | null
     monitoredEmailIntegrations: { id: number; email: string }[] | null
     tags: Tag[] | null
-    excludedTopics: string[] | null
     signature: string | null
     toneOfVoice: ToneOfVoice | null
     customToneOfVoiceGuidance: string | null

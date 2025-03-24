@@ -24,7 +24,6 @@ export const getFormValuesFromStoreConfiguration = (
     ticketSampleRate: null, // deprecated
     monitoredEmailIntegrations: storeConfig.monitoredEmailIntegrations,
     tags: storeConfig.tags,
-    excludedTopics: storeConfig.excludedTopics,
     signature: storeConfig.signature,
     toneOfVoice: storeConfig.toneOfVoice,
     customToneOfVoiceGuidance: storeConfig.customToneOfVoiceGuidance,

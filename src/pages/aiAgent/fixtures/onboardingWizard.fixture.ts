@@ -16,7 +16,6 @@ export const getStoreConfigurationFormValuesFixture = (
     monitoredEmailIntegrations: [],
     monitoredChatIntegrations: [],
     tags: [],
-    excludedTopics: [],
     signature: 'This response was created by AI',
     toneOfVoice: ToneOfVoice.Friendly,
     customToneOfVoiceGuidance:

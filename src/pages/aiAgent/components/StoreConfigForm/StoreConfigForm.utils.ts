@@ -1,4 +1,7 @@
-import { CreateStoreConfigurationPayload } from 'models/aiAgent/types'
+import {
+    CreateStoreConfigurationPayload,
+    StoreConfiguration,
+} from 'models/aiAgent/types'
 
 import { ToneOfVoice } from '../../constants'
 import { ValidFormValues } from '../../types'
@@ -7,6 +10,7 @@ import { filterNonNull } from '../../util'
 export const getStoreConfigurationFromFormValues = (
     storeName: string,
     formValues: ValidFormValues,
+    storeConfiguration?: StoreConfiguration,
 ): CreateStoreConfigurationPayload => {
     const {
         helpCenterId,
@@ -43,6 +47,7 @@ export const getStoreConfigurationFromFormValues = (
         ...dirtyFormValues,
         trialModeActivatedDatetime,
         previewModeActivatedDatetime,
+        excludedTopics: storeConfiguration?.excludedTopics ?? [],
         previewModeValidUntilDatetime:
             formValues.previewModeValidUntilDatetime ?? null,
         chatChannelDeactivatedDatetime:

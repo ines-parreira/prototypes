@@ -9,11 +9,10 @@ import React, {
 } from 'react'
 
 import { useId } from '@floating-ui/react'
-import { List } from 'immutable'
 import { useFlags } from 'launchdarkly-react-client-sdk'
 import { Link, useParams } from 'react-router-dom'
 
-import { Label } from '@gorgias/merchant-ui-kit'
+import { Button, Label } from '@gorgias/merchant-ui-kit'
 
 // Absolute Imports
 import { AI_AGENT_SENTRY_TEAM } from 'common/const/sentryTeamNames'
@@ -31,10 +30,8 @@ import { FormValues } from 'pages/aiAgent/types'
 import HelpCenterSelect, {
     EMPTY_HELP_CENTER_ID,
 } from 'pages/automate/common/components/HelpCenterSelect'
-import Button from 'pages/common/components/button/Button'
 import UnsavedChangesPrompt from 'pages/common/components/UnsavedChangesPrompt'
 import IconTooltip from 'pages/common/forms/IconTooltip/IconTooltip'
-import ListField from 'pages/common/forms/ListField'
 import ToggleInput from 'pages/common/forms/ToggleInput'
 import history from 'pages/history'
 import { getIntegrationsByTypes } from 'state/integrations/selectors'
@@ -48,9 +45,7 @@ import { AiAgentConfigurationModal } from '../../AiAgentConfigurationView/AiAgen
 import PostCompletionWizardModal from '../../AiAgentOnboardingWizard/PostCompletionWizardModal'
 import { TicketPreview } from '../../AiAgentOnboardingWizard/TicketPreview'
 import {
-    EXCLUDED_TOPIC_MAX_LENGTH,
     INITIAL_FORM_VALUES,
-    MAX_EXCLUDED_TOPICS,
     WIZARD_POST_COMPLETION_QUERY_KEY,
     WIZARD_POST_COMPLETION_STATE,
 } from '../../constants'
@@ -66,6 +61,7 @@ import { isHandoffEnabled } from '../../util'
 import { AIAgentIntroduction } from '../AIAgentIntroduction/AIAgentIntroduction'
 import { AiAgentPreviewModeSection } from '../AIAgentPreviewModeSection/AiAgentPreviewModeSection'
 import { ConfigurationSection } from '../ConfigurationSection/ConfigurationSection'
+import { HandoverTopicsModal } from '../HandoverTopicsModel/HandoverTopicsModal'
 import { PublicSourcesSection } from '../PublicSourcesSection/PublicSourcesSection'
 import TagList from '../TicketTag/TagList'
 import { ChannelsFormComponent } from './FormComponents/ChannelsFormComponent'
@@ -120,6 +116,10 @@ export const StoreConfigForm = ({
     const [isUrlSyncFail, setIsUrlSyncFail] = useState(false)
 
     const [sectionQueryParam, setSectionQueryParam] = useSearchParam('section')
+
+    const [isHandoverTopicsModalOpen, setIsHandoverTopicsModalOpen] =
+        useState(false)
+
     const [wizardQueryParam, setWizardQueryParam] = useSearchParam(
         WIZARD_POST_COMPLETION_QUERY_KEY,
     )
@@ -740,30 +740,24 @@ export const StoreConfigForm = ({
                                         Handover topics
                                     </Label>
                                     <div className={css.formGroupDescription}>
-                                        Define topics for AI Agent to always
-                                        hand over to agents.
+                                        <a
+                                            href="#"
+                                            onClick={(e) => {
+                                                e.preventDefault()
+                                                setIsHandoverTopicsModalOpen(
+                                                    true,
+                                                )
+                                            }}
+                                            className={css.handoverTopicsLink}
+                                            role="button"
+                                            aria-haspopup="dialog"
+                                            aria-label="Define handover topics"
+                                        >
+                                            Define
+                                        </a>{' '}
+                                        topics that should always be handed over
+                                        to your team.
                                     </div>
-                                    <ListField
-                                        className={css.container}
-                                        items={List(
-                                            formValues.excludedTopics !== null
-                                                ? formValues.excludedTopics
-                                                : INITIAL_FORM_VALUES.excludedTopics,
-                                        )}
-                                        onChange={(
-                                            excludedTopics: List<string>,
-                                        ) => {
-                                            updateValue(
-                                                'excludedTopics',
-                                                excludedTopics.toJS(),
-                                            )
-                                        }}
-                                        placeholder="e.g. Invoice and billing, Data privacy, or Complaints"
-                                        maxLength={EXCLUDED_TOPIC_MAX_LENGTH}
-                                        maxItems={MAX_EXCLUDED_TOPICS}
-                                        addLabel="Add Topic"
-                                        dataCanduId="ai-agent-configuration-handover-topics"
-                                    />
                                 </div>
                                 <div className={css.formGroup}>
                                     <Label className={css.subsectionHeader}>
@@ -859,7 +853,12 @@ export const StoreConfigForm = ({
                 />
             </div>
             <PostCompletionWizardModal />
-
+            <HandoverTopicsModal
+                isOpen={isHandoverTopicsModalOpen}
+                onClose={() => setIsHandoverTopicsModalOpen(false)}
+                accountDomain={accountDomain}
+                shopName={shopName}
+            />
             <AiAgentConfigurationModal
                 isOpen={isAiAgentConfigurationModalOpen}
                 onClose={onCloseAiAgentConfigurationModal}

@@ -80,32 +80,6 @@ export const getValidStoreConfigurationFormValues = (
         }
     }
 
-    if (
-        formValues.excludedTopics !== null &&
-        formValues.excludedTopics.length > 0
-    ) {
-        const hasEmptyFields = formValues.excludedTopics.some(
-            (topic) => topic === '',
-        )
-        if (hasEmptyFields) {
-            throw new Error(
-                StoreConfigurationValidationMessage.ExcludedTopicEmpty,
-            )
-        }
-        if (formValues.excludedTopics.length > MAX_EXCLUDED_TOPICS) {
-            throw new Error(
-                StoreConfigurationValidationMessage.ExcludedTopicsLength,
-            )
-        }
-        for (const topic of formValues.excludedTopics) {
-            if (topic.length > EXCLUDED_TOPIC_MAX_LENGTH) {
-                throw new Error(
-                    StoreConfigurationValidationMessage.ExcludedTopicLength,
-                )
-            }
-        }
-    }
-
     if (formValues.tags !== null && formValues.tags.length > 0) {
         const hasEmptyFields = formValues.tags.some(
             (tag) => tag.name === '' || tag.description === '',

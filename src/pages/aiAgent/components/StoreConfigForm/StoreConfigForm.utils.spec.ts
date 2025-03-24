@@ -1,3 +1,5 @@
+import { getStoreConfigurationFixture } from 'pages/aiAgent/fixtures/storeConfiguration.fixtures'
+
 import { ToneOfVoice } from '../../constants'
 import { ValidFormValues } from '../../types'
 import { filterNonNull } from '../../util'
@@ -62,10 +64,16 @@ describe('getStoreConfigurationFromFormValues', () => {
         ;(filterNonNull as jest.Mock).mockReset()
     })
     it('should return correct values', () => {
-        const result = getStoreConfigurationFromFormValues(storeName, {
-            ...formValues,
-            toneOfVoice: ToneOfVoice.Professional,
-        })
+        const result = getStoreConfigurationFromFormValues(
+            storeName,
+            {
+                ...formValues,
+                toneOfVoice: ToneOfVoice.Professional,
+            },
+            getStoreConfigurationFixture({
+                excludedTopics: ['topic1', 'topic2'],
+            }),
+        )
 
         expect(filterNonNull).toHaveBeenCalled()
 

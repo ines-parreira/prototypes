@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useState } from 'react'
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 
 import { isAxiosError } from 'axios'
 import { useFlags } from 'launchdarkly-react-client-sdk'
@@ -55,13 +55,21 @@ export const useConfigurationForm = ({
 
     const { storeConfiguration } = useAiAgentStoreConfigurationContext()
 
+    // Only update form values if the form hasn't been initialized yet
+    // This is used to prevent the form from being updated when the store configuration is updated
+    const isInitializedRef = useRef(false)
+
     useEffect(() => {
-        if (storeConfiguration) {
-            setFormValues(
-                getFormValuesFromStoreConfiguration(storeConfiguration),
-            )
-        } else {
-            setFormValues(defaultValues)
+        if (!isInitializedRef.current) {
+            if (storeConfiguration) {
+                setFormValues(
+                    getFormValuesFromStoreConfiguration(storeConfiguration),
+                )
+            } else {
+                setFormValues(defaultValues)
+            }
+
+            isInitializedRef.current = true
         }
     }, [defaultValues, storeConfiguration])
 
@@ -142,6 +150,7 @@ export const useConfigurationForm = ({
         const configurationToSubmit = getStoreConfigurationFromFormValues(
             shopName,
             validFormValues,
+            storeConfiguration,
         )
 
         let res

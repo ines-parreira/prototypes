@@ -276,7 +276,6 @@ describe('<StoreConfigForm />', () => {
         ticketSampleRate: null,
         silentHandover: false,
         tags: [],
-        excludedTopics: [],
         signature: 'This response was created by AI',
         toneOfVoice: ToneOfVoice.Friendly,
         customToneOfVoiceGuidance:

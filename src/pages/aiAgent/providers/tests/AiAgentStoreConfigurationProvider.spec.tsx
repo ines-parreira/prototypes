@@ -146,6 +146,7 @@ describe('AiAgentStoreConfigurationProvider', () => {
             signature: 'This response was created by AI',
             monitoredEmailIntegrations: [],
             monitoredChatIntegrations: [],
+            excludedTopics: [],
         }
 
         await act(
