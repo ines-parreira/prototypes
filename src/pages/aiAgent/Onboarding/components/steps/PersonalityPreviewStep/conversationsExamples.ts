@@ -403,7 +403,7 @@ export const conversationExamples: Record<
             },
             {
                 content:
-                    'Great! Then this moisturizer sounds like the perfect one product for you. And yes here’s your discount code ZYNGQNKUGE ([DISCOUNT-PERCENTAGE]% off).',
+                    'Great! Then this moisturizer sounds like the perfect product for you. And yes here’s your discount code ZYNGQNKUGE ([DISCOUNT-PERCENTAGE]% off).',
                 isHtml: false,
                 fromAgent: true,
                 attachments: [],
