@@ -276,14 +276,14 @@ export const AiSalesAgentMetricConfig: Record<
         metricFormat: 'decimal-to-percent',
     },
     [AiSalesAgentChart.AiSalesAverageDiscount]: {
-        title: 'Average discount',
+        title: 'Average discount used',
         hint: {
-            title: 'Average discount of all the codes used by customers for a purchase. ',
+            title: 'Average discount (in $) of all the codes used by customers for a purchase.',
         },
         useTrend: useDiscountCodesAverageValueTrend,
         fetchTrend: fetchDiscountCodesAverageValueTrend,
         interpretAs: 'more-is-better',
-        metricFormat: 'decimal',
+        metricFormat: 'currency',
     },
 }
 

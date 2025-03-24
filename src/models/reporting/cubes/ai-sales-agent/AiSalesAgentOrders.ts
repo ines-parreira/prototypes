@@ -4,6 +4,7 @@ export enum AiSalesAgentOrdersMeasure {
     Gmv = 'AiSalesAgentOrders.gmv',
     GmvUsd = 'AiSalesAgentOrders.gmvUsd',
     AverageDiscount = 'AiSalesAgentOrders.averageDiscount',
+    AverageDiscountUsd = 'AiSalesAgentOrders.averageDiscountUsd',
     Count = 'AiSalesAgentOrders.count',
 }
 

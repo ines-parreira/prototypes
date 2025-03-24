@@ -78,19 +78,58 @@ describe('DiscountCodesAverageValueTrend', () => {
                 })
             })
         })
+
+        it('should return correct data if clickhouse returns null', async () => {
+            usePostReportingMock.mockReturnValueOnce({
+                ...defaultReporting,
+                data: null,
+            } as UseQueryResult)
+            usePostReportingMock.mockReturnValueOnce({
+                ...defaultReporting,
+                data: 24,
+            } as UseQueryResult)
+
+            act(() => jest.runAllTimers())
+
+            const { result } = renderHook(
+                () => useDiscountCodesAverageValueTrend(statsFilters, timezone),
+                {
+                    wrapper: ({ children }) => (
+                        <QueryClientProvider client={queryClient}>
+                            {children}
+                        </QueryClientProvider>
+                    ),
+                },
+            )
+
+            await waitFor(() => {
+                expect(result.current).toEqual({
+                    data: {
+                        value: 0,
+                        prevValue: 24,
+                    },
+                    isError: false,
+                    isFetching: false,
+                })
+            })
+        })
     })
     describe('fetchDiscountCodesAverageValueTrend', () => {
         it('should return the correct data when the query resolves', async () => {
             fetchPostReportingMock.mockReturnValueOnce({
                 data: {
                     ...defaultReporting,
-                    data: [{ [AiSalesAgentOrdersMeasure.AverageDiscount]: 32 }],
+                    data: [
+                        { [AiSalesAgentOrdersMeasure.AverageDiscountUsd]: 32 },
+                    ],
                 },
             } as unknown as ReturnType<typeof fetchPostReporting>)
             fetchPostReportingMock.mockReturnValueOnce({
                 data: {
                     ...defaultReporting,
-                    data: [{ [AiSalesAgentOrdersMeasure.AverageDiscount]: 24 }],
+                    data: [
+                        { [AiSalesAgentOrdersMeasure.AverageDiscountUsd]: 24 },
+                    ],
                 },
             } as unknown as ReturnType<typeof fetchPostReporting>)
 
@@ -103,6 +142,42 @@ describe('DiscountCodesAverageValueTrend', () => {
                 data: {
                     value: 32,
                     prevValue: 24,
+                },
+                isError: false,
+                isFetching: false,
+            })
+        })
+
+        it('should return correct data if clickhouse returns null', async () => {
+            fetchPostReportingMock.mockReturnValueOnce({
+                data: {
+                    ...defaultReporting,
+                    data: [
+                        { [AiSalesAgentOrdersMeasure.AverageDiscountUsd]: 32 },
+                    ],
+                },
+            } as unknown as ReturnType<typeof fetchPostReporting>)
+            fetchPostReportingMock.mockReturnValueOnce({
+                data: {
+                    ...defaultReporting,
+                    data: [
+                        {
+                            [AiSalesAgentOrdersMeasure.AverageDiscountUsd]:
+                                null,
+                        },
+                    ],
+                },
+            } as unknown as ReturnType<typeof fetchPostReporting>)
+
+            const result = await fetchDiscountCodesAverageValueTrend(
+                statsFilters,
+                timezone,
+            )
+
+            expect(result).toEqual({
+                data: {
+                    value: 32,
+                    prevValue: 0,
                 },
                 isError: false,
                 isFetching: false,

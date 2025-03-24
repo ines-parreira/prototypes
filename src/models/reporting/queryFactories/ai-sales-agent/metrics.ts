@@ -371,7 +371,7 @@ export const discountCodesAverageQueryFactory = (
     filters: StatsFilters,
     timezone: string,
 ): ReportingQuery<AiSalesAgentOrdersCube> => ({
-    measures: [AiSalesAgentOrdersMeasure.AverageDiscount],
+    measures: [AiSalesAgentOrdersMeasure.AverageDiscountUsd],
     dimensions: [],
     filters: [
         {
