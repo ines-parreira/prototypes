@@ -2,6 +2,19 @@
 @import (reference) '~css/typography';
 
 :local {
+    @filledColor: hsla(
+        var(--accessory-magenta-25-h),
+        var(--accessory-magenta-25-s),
+        var(--accessory-magenta-25-l),
+        1
+    );
+    @unfilledColor: hsla(
+        var(--accessory-magenta-25-h),
+        var(--accessory-magenta-25-s),
+        var(--accessory-magenta-25-l),
+        0.32
+    );
+
     .wrapper {
         display: flex;
         flex-direction: column;
@@ -11,6 +24,7 @@
     .progress {
         /* Remove default appearance */
         -webkit-appearance: none;
+        -moz-appearance: none;
         appearance: none;
 
         width: 100%;
@@ -19,23 +33,28 @@
         /* Unfilled part (Firefox) */
         border: none;
         border-radius: 2px;
-        background-color: #c34ced52;
+        background-color: @unfilledColor;
+
+        /* Prevent to add the background color twice on Webkit */
+        @supports (-webkit-appearance: none) and (not (-moz-appearance: none)) {
+            background-color: initial;
+        }
 
         /* Filled part (Webkit) */
         &::-webkit-progress-value {
-            background-color: #c34ced;
+            background-color: @filledColor;
             border-radius: 2px;
         }
 
         /* Unfilled part (Webkit) */
         &::-webkit-progress-bar {
-            background-color: #c34ced52;
+            background-color: @unfilledColor;
             border-radius: 2px;
         }
 
         /* Filled part (Firefox) */
         &::-moz-progress-bar {
-            background-color: #c34ced;
+            background-color: @filledColor;
             border-radius: 2px;
         }
     }
