@@ -1,3 +1,5 @@
+import { Location } from 'history'
+
 export const SalesEarlyAccessUtils = (accountId: number) => ({
     get modalDisplayedAtKey() {
         return `account-${accountId}.aiSalesAgentEarlyAccessModalDisplayedAt`
@@ -17,5 +19,11 @@ export const FocusActivationModal = {
     searchParam: 'focusActivationModal',
     buildSearchParam(storeName: string = 'true') {
         return `${this.searchParam}=${storeName}`
+    },
+    extractStoreName(location: Location) {
+        const searchParams = new URLSearchParams(location.search)
+        const storeName = searchParams.get(this.searchParam)
+        if (storeName === 'true') return undefined
+        return storeName
     },
 }

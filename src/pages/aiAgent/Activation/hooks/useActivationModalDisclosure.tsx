@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 
-import { useHistory, useLocation } from 'react-router-dom'
+import { useHistory, useLocation, useParams } from 'react-router-dom'
 
 import { FocusActivationModal } from '../utils'
 
@@ -10,6 +10,9 @@ export const useActivationModalDisclosure = () => {
     const [isModalVisible, setIsModalVisible] = useState(
         location.search.includes(FocusActivationModal.searchParam),
     )
+    const params = useParams<{ shopName?: string }>()
+    const shopName =
+        FocusActivationModal.extractStoreName(location) ?? params.shopName
 
     const closeModal = () => {
         setIsModalVisible(false)
@@ -26,5 +29,5 @@ export const useActivationModalDisclosure = () => {
         }
     }, [location.search, setIsModalVisible])
 
-    return { isModalVisible, setIsModalVisible, closeModal }
+    return { isModalVisible, setIsModalVisible, closeModal, shopName }
 }

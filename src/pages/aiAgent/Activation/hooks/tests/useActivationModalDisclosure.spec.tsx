@@ -1,7 +1,7 @@
 import { act } from '@testing-library/react'
 import { renderHook } from '@testing-library/react-hooks'
 import { createMemoryHistory } from 'history'
-import { Router } from 'react-router-dom'
+import { Route, Router } from 'react-router-dom'
 
 import { FocusActivationModal } from '../../utils'
 import { useActivationModalDisclosure } from '../useActivationModalDisclosure'
@@ -9,7 +9,9 @@ import { useActivationModalDisclosure } from '../useActivationModalDisclosure'
 const renderHookWithRouter = (initialEntry = '/') => {
     const history = createMemoryHistory({ initialEntries: [initialEntry] })
     const wrapper = ({ children }: { children: React.ReactNode }) => (
-        <Router history={history}>{children}</Router>
+        <Router history={history}>
+            <Route path="/:shopName?">{children}</Route>
+        </Router>
     )
 
     return {
@@ -78,5 +80,38 @@ describe('useActivationModalDisclosure', () => {
         })
 
         expect(result.current.isModalVisible).toBe(false)
+    })
+
+    describe('shopName extraction', () => {
+        const searchParamStoreName = 'store-from-search'
+        const routeParamStoreName = 'store-from-route'
+
+        it('should extract store name from search param over route param', () => {
+            const { result } = renderHookWithRouter(
+                `/?${FocusActivationModal.searchParam}=${searchParamStoreName}&otherParam=value`,
+            )
+
+            expect(result.current.shopName).toBe(searchParamStoreName)
+        })
+
+        it('should fallback to route param when search param is not present', () => {
+            const { result } = renderHookWithRouter(`/${routeParamStoreName}`)
+
+            expect(result.current.shopName).toBe(routeParamStoreName)
+        })
+
+        it('should return undefined when no search param or route param is present', () => {
+            const { result } = renderHookWithRouter()
+
+            expect(result.current.shopName).toBe(undefined)
+        })
+
+        it('should return undefined when search param is "true"', () => {
+            const { result } = renderHookWithRouter(
+                `/?${FocusActivationModal.searchParam}=true`,
+            )
+
+            expect(result.current.shopName).toBe(undefined)
+        })
     })
 })

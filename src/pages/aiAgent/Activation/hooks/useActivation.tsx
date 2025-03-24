@@ -1,7 +1,5 @@
 import { useCallback, useEffect, useMemo } from 'react'
 
-import { useParams } from 'react-router-dom'
-
 import { logEvent, SegmentEvent } from 'common/segment'
 import { FeatureFlagKey } from 'config/featureFlags'
 import { useFlag } from 'core/flags'
@@ -24,16 +22,13 @@ export const useActivation = (
         autoDisplayEarlyAccessDisabled?: boolean
     } = {},
 ) => {
-    const { isModalVisible, setIsModalVisible, closeModal } =
+    const { isModalVisible, setIsModalVisible, closeModal, shopName } =
         useActivationModalDisclosure()
 
     const hasActivationEnabled = useFlag(FeatureFlagKey.AiAgentActivation)
     const currentAccount = useAppSelector(getCurrentAccountState)
     const accountDomain = currentAccount.get('domain')
     const stores = useAppSelector(getShopifyIntegrationsSortedByName)
-    const { shopName } = useParams<{
-        shopName?: string
-    }>()
 
     const filteredStoresName = useMemo(() => {
         const storeNames = stores.map((store) => store.name)

@@ -3,9 +3,10 @@ import React from 'react'
 import { QueryClientProvider } from '@tanstack/react-query'
 import { render } from '@testing-library/react'
 import { act, renderHook } from '@testing-library/react-hooks'
+import { createMemoryHistory } from 'history'
 import { fromJS } from 'immutable'
 import { Provider } from 'react-redux'
-import { MemoryRouter } from 'react-router-dom'
+import { Route, Router } from 'react-router-dom'
 import configureMockStore from 'redux-mock-store'
 
 import * as segment from 'common/segment'
@@ -44,15 +45,29 @@ const mockUseFlag = jest.mocked(useFlag)
 jest.mock('pages/aiAgent/Activation/hooks/useStoreActivations')
 const useStoreActivationsMock = assumeMock(useStoreActivations)
 
-const buildWrapper =
-    (location: string = '/') =>
-    ({ children }: { children: React.ReactNode }) => (
-        <MemoryRouter initialEntries={[location]}>
+const renderHookWithRouter = ({
+    pageName = 'any-page',
+    initialEntry = '/',
+}: {
+    pageName?: string
+    initialEntry?: string
+} = {}) => {
+    const history = createMemoryHistory({ initialEntries: [initialEntry] })
+    const wrapper = ({ children }: { children: React.ReactNode }) => (
+        <Router history={history}>
             <QueryClientProvider client={queryClient}>
-                <Provider store={mockStore(defaultState)}>{children}</Provider>
+                <Provider store={mockStore(defaultState)}>
+                    <Route path="/:shopName?">{children}</Route>
+                </Provider>
             </QueryClientProvider>
-        </MemoryRouter>
+        </Router>
     )
+
+    return {
+        ...renderHook(() => useActivation(pageName), { wrapper }),
+        history,
+    }
+}
 
 describe('useActivation', () => {
     beforeEach(() => {
@@ -99,9 +114,7 @@ describe('useActivation', () => {
             defaultUseEarlyAccessModalStateReturnValue,
         )
 
-        const { result } = renderHook(() => useActivation('any-page'), {
-            wrapper: buildWrapper(),
-        })
+        const { result } = renderHookWithRouter()
 
         expect(result.current.ActivationButton).toBeDefined()
         expect(result.current.ActivationModal).toBeDefined()
@@ -125,9 +138,7 @@ describe('useActivation', () => {
             defaultUseEarlyAccessModalStateReturnValue,
         )
 
-        const { result } = renderHook(() => useActivation('any-page'), {
-            wrapper: buildWrapper(),
-        })
+        const { result } = renderHookWithRouter()
 
         expect(result.current.ActivationButton).toBeDefined()
         expect(result.current.ActivationModal).toBeDefined()
@@ -158,9 +169,7 @@ describe('useActivation', () => {
             defaultUseEarlyAccessModalStateReturnValue,
         )
 
-        const { result } = renderHook(() => useActivation('overview'), {
-            wrapper: buildWrapper(),
-        })
+        const { result } = renderHookWithRouter({ pageName: 'overview' })
 
         expect(result.current.ActivationButton).toBeDefined()
         expect(result.current.ActivationModal).toBeDefined()
@@ -193,9 +202,7 @@ describe('useActivation', () => {
             defaultUseEarlyAccessModalStateReturnValue,
         )
 
-        const { result } = renderHook(() => useActivation('overview'), {
-            wrapper: buildWrapper(),
-        })
+        const { result } = renderHookWithRouter({ pageName: 'overview' })
 
         expect(result.current.ActivationButton).toBeDefined()
         expect(result.current.ActivationModal).toBeDefined()
@@ -227,10 +234,9 @@ describe('useActivation', () => {
             defaultUseEarlyAccessModalStateReturnValue,
         )
 
-        const { result } = renderHook(
-            () => useActivation('ai-agent-overview'),
-            { wrapper: buildWrapper() },
-        )
+        const { result } = renderHookWithRouter({
+            pageName: 'ai-agent-overview',
+        })
 
         expect(result.current.ActivationButton).toBeDefined()
         expect(result.current.ActivationModal).toBeDefined()
@@ -262,9 +268,7 @@ describe('useActivation', () => {
             defaultUseEarlyAccessModalStateReturnValue,
         )
 
-        const { result } = renderHook(() => useActivation('any-page'), {
-            wrapper: buildWrapper(),
-        })
+        const { result } = renderHookWithRouter()
 
         const ActivationButton = result.current.ActivationButton
         const { getByText } = render(<ActivationButton />)
@@ -307,9 +311,7 @@ describe('useActivation', () => {
             isSubscriptionUpdating: false,
         })
 
-        const { result } = renderHook(() => useActivation('any-page'), {
-            wrapper: buildWrapper(),
-        })
+        const { result } = renderHookWithRouter()
 
         expect(result.current.ActivationButton).toBeDefined()
         expect(result.current.ActivationModal).toBeDefined()
@@ -332,9 +334,7 @@ describe('useActivation', () => {
             defaultUseEarlyAccessModalStateReturnValue,
         )
 
-        const { result } = renderHook(() => useActivation('any-page'), {
-            wrapper: buildWrapper(),
-        })
+        const { result } = renderHookWithRouter()
 
         expect(result.current.ActivationButton).toBeDefined()
         expect(result.current.ActivationModal).toBeDefined()
@@ -351,9 +351,7 @@ describe('useActivation', () => {
             setIsPreviewModalVisible: setIsPreviewModalVisibleMocked,
         })
 
-        const { result } = renderHook(() => useActivation('any-page'), {
-            wrapper: buildWrapper(),
-        })
+        const { result } = renderHookWithRouter()
 
         const onSaleEnabledResult = result.current
             .ActivationModal()
@@ -370,9 +368,7 @@ describe('useActivation', () => {
             setIsPreviewModalVisible: setIsPreviewModalVisibleMocked,
         })
 
-        const { result } = renderHook(() => useActivation('any-page'), {
-            wrapper: buildWrapper(),
-        })
+        const { result } = renderHookWithRouter()
 
         const onSaleEnabledResult = result.current
             .ActivationModal()
