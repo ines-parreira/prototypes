@@ -506,7 +506,7 @@ describe('<Routes/>', () => {
                 },
                 {
                     from: '/app/automation/shopify/test-shop/ai-agent/actions',
-                    to: '/app/ai-agent/shopify/test-shop/knowledge/actions',
+                    to: '/app/ai-agent/shopify/test-shop/actions',
                 },
                 {
                     from: '/app/automation/shopify/test-shop/ai-agent/preview-mode',

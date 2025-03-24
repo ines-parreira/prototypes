@@ -97,7 +97,7 @@ describe('ActionsViewContainer', () => {
 
     it.each([
         { standaloneMenuFlag: false, title: 'AI Agent' },
-        { standaloneMenuFlag: true, title: 'Knowledge' },
+        { standaloneMenuFlag: true, title: 'Support Actions' },
     ])(
         'should render guidance page with title "$title" when standalone menu flag is $standaloneMenuFlag',
         ({ standaloneMenuFlag, title }) => {

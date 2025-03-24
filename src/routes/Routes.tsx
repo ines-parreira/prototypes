@@ -448,16 +448,6 @@ function AiAgentRoutes({ match: { path }, location }: RouteComponentProps) {
             )
         }
 
-        if (
-            location.pathname.includes('/actions') &&
-            !newLocation.pathname.includes('/knowledge/actions')
-        ) {
-            newLocation.pathname = newLocation.pathname.replace(
-                '/actions',
-                '/knowledge/actions',
-            )
-        }
-
         if (location.pathname.includes('/preview-mode')) {
             newLocation.pathname = newLocation.pathname.replace(
                 '/preview-mode',
@@ -526,7 +516,6 @@ function AiAgentRoutes({ match: { path }, location }: RouteComponentProps) {
                         />
                     </AiAgentErrorBoundary>
 
-                    {/* TODO: Remove this in favour of `/knowledge/actions`, after fully migrate to new AI Agent standalone menu */}
                     <Switch>
                         <Route
                             path={`${path}/actions`}
@@ -700,33 +689,6 @@ function AiAgentRoutes({ match: { path }, location }: RouteComponentProps) {
                             />
                         </Switch>
                     </AiAgentErrorBoundary>
-                    <Switch>
-                        <Route
-                            path={`${path}/knowledge/actions`}
-                            exact
-                            component={ActionsViewContainer}
-                        />
-                        <Route
-                            path={`${path}/knowledge/actions/new`}
-                            exact
-                            component={CreateActionView}
-                        />
-                        <Route
-                            path={`${path}/knowledge/actions/edit/:id`}
-                            exact
-                            component={EditActionViewContainer}
-                        />
-                        <Route
-                            path={`${path}/knowledge/actions/templates`}
-                            exact
-                            component={ActionsTemplatesViewContainer}
-                        />
-                        <Route
-                            path={`${path}/knowledge/actions/events/:id`}
-                            exact
-                            component={ActionEventsViewContainer}
-                        />
-                    </Switch>
                     <AiAgentErrorBoundary
                         section="ai-agent-sales"
                         team={OBS_ADOPT_SENTRY_TEAM}

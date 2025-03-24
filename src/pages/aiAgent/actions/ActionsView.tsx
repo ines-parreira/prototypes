@@ -11,7 +11,7 @@ import {
     useGetWorkflowConfigurationTemplates,
 } from 'models/workflows/queries'
 import { AiAgentLayout } from 'pages/aiAgent/components/AiAgentLayout/AiAgentLayout'
-import { AI_AGENT, KNOWLEDGE } from 'pages/aiAgent/constants'
+import { AI_AGENT, SUPPORT_ACTIONS } from 'pages/aiAgent/constants'
 import { useAiAgentNavigation } from 'pages/aiAgent/hooks/useAiAgentNavigation'
 import AutomateViewEmptyStateBanner from 'pages/automate/common/components/AutomateViewEmptyStateBanner'
 
@@ -73,7 +73,7 @@ const ActionsView = () => {
                 isTemplateConfigurationsInitialLoading
             }
             className={css.container}
-            title={isStandaloneMenuEnabled ? KNOWLEDGE : AI_AGENT}
+            title={isStandaloneMenuEnabled ? SUPPORT_ACTIONS : AI_AGENT}
         >
             {showFakeActions || storeWfConfigurations.length > 0 ? (
                 <div className={css.actionsListContainer}>

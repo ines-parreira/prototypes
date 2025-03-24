@@ -299,15 +299,6 @@ describe('useAiAgentNavigation', () => {
             )
         })
 
-        it('should return /knowledge/actions path', () => {
-            const { result } = renderHook(() =>
-                useAiAgentNavigation({ shopName: 'test' }),
-            )
-            expect(result.current.routes.actions).toEqual(
-                '/app/ai-agent/shopify/test/knowledge/actions',
-            )
-        })
-
         it('should return /settings/preview path when user is a Gorgias user', () => {
             window.USER_IMPERSONATED = true
 
@@ -329,6 +320,16 @@ describe('useAiAgentNavigation', () => {
 
             expect(result.current.routes.sales).toEqual(
                 '/app/ai-agent/shopify/test/sales',
+            )
+        })
+
+        it('should return /actions/new?template_id=1 path', () => {
+            const { result } = renderHook(() =>
+                useAiAgentNavigation({ shopName: 'test' }),
+            )
+
+            expect(result.current.routes.newAction('1')).toEqual(
+                '/app/ai-agent/shopify/test/actions/new?template_id=1',
             )
         })
     })

@@ -46,10 +46,6 @@ export const getAiAgentNavigationRoutes = (
         ? 'knowledge/guidance'
         : 'guidance'
 
-    const actionsPath = isStandaloneMenuEnabled
-        ? 'knowledge/actions'
-        : 'actions'
-
     const previewPath = isStandaloneMenuEnabled
         ? 'settings/preview'
         : 'preview-mode'
@@ -82,14 +78,14 @@ export const getAiAgentNavigationRoutes = (
         configuration: (section?: 'knowledge' | 'email') =>
             `${basePath}/settings${section ? `?section=${section}` : ''}`,
         settingsChannels: `${basePath}/${settingsChannelsPath}`,
-        actions: `${basePath}/${actionsPath}`,
+        actions: `${basePath}/actions`,
         newAction: (templateId?: string) =>
-            `${basePath}/${actionsPath}/new${templateId ? `?template_id=${templateId}` : ''}`,
+            `${basePath}/actions/new${templateId ? `?template_id=${templateId}` : ''}`,
         editAction: (configurationId: string) =>
-            `${basePath}/${actionsPath}/edit/${configurationId}`,
-        actionsTemplates: `${basePath}/${actionsPath}/templates`,
+            `${basePath}/actions/edit/${configurationId}`,
+        actionsTemplates: `${basePath}/actions/templates`,
         actionEvents: (configurationId: string) =>
-            `${basePath}/${actionsPath}/events/${configurationId}`,
+            `${basePath}/actions/events/${configurationId}`,
         onboardingWizard:
             isStandaloneMenuEnabled && isStandaloneOnboardingEnabled
                 ? `${basePath}/onboarding`
@@ -156,10 +152,6 @@ const useNavigationItems = (
                             route: routes.guidance,
                             title: GUIDANCE,
                         },
-                        {
-                            route: routes.actions,
-                            title: SUPPORT_ACTIONS,
-                        },
                     ].filter((x) => !!x) as NavigationItem[],
                 },
                 {
@@ -181,6 +173,11 @@ const useNavigationItems = (
                             title: PREVIEW,
                         },
                     ].filter((x) => !!x) as NavigationItem[],
+                },
+                {
+                    route: routes.actions,
+                    title: SUPPORT_ACTIONS,
+                    dataCanduId: 'ai-agent-navbar-support-actions',
                 },
                 {
                     route: routes.sales,
