@@ -55,13 +55,13 @@ export const AiAgentRedirect = () => {
         )
     }
 
+    if (!firstStore) {
+        return <StoreIntegrationView title="AI Agent" />
+    }
+
     if (hasStandaloneConvAiOverviewPage) {
         return <Redirect to={aiAgentRoutes.overview} />
     }
 
-    if (firstStore) {
-        return <Redirect to={aiAgentNavigation.routes.main} />
-    }
-
-    return <StoreIntegrationView title="AI Agent" />
+    return <Redirect to={aiAgentNavigation.routes.main} />
 }

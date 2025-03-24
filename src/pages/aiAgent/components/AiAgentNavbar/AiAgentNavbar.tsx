@@ -8,6 +8,7 @@ import useAppSelector from 'hooks/useAppSelector'
 import NavbarLink from 'pages/common/components/navbar/NavbarLink'
 import css from 'pages/convert/common/components/ConvertNavbar/ConvertNavbar.less'
 import { getHasAutomate } from 'state/billing/selectors'
+import { getShopifyIntegrationsSortedByName } from 'state/integrations/selectors'
 
 import { AiAgentNavbarView } from './AiAgentNavbarView'
 
@@ -17,8 +18,12 @@ export const AiAgentNavbar = () => {
         useFlags()[FeatureFlagKey.AIAgentPreviewModeAllowed]
     const hasStandaloneConvAiOverviewPage =
         useFlags()[FeatureFlagKey.StandaloneConvAiOverviewPage]
+    const storeIntegrations = useAppSelector(getShopifyIntegrationsSortedByName)
 
-    if (!hasAutomate && !hasAiAgentPreview) {
+    if (
+        (!hasAutomate && !hasAiAgentPreview) ||
+        storeIntegrations.length === 0
+    ) {
         return <Navbar activeContent={ActiveContent.AiAgent} title="AI Agent" />
     }
 

@@ -285,7 +285,7 @@ describe('<AiAgentNavbar />', () => {
             expect(queryByText('Overview')).toBeInTheDocument()
         })
 
-        it('should not render Overview menu item when flag StandaloneConvAiOverviewPage true', () => {
+        it('should not render Overview menu item when flag StandaloneConvAiOverviewPage false', () => {
             mockUseFlags.mockReturnValue({
                 [FeatureFlagKey.StandaloneConvAiOverviewPage]: false,
             })
@@ -300,6 +300,33 @@ describe('<AiAgentNavbar />', () => {
                                 ...account.current_subscription,
                                 products: automationSubscriptionProductPrices,
                             },
+                        }),
+                    })}
+                >
+                    <ThemeProvider>
+                        <AiAgentNavbar />
+                    </ThemeProvider>
+                </Provider>,
+                { wrapper },
+            )
+
+            expect(queryByText('Overview')).not.toBeInTheDocument()
+        })
+
+        it('should not render Overview menu item when there is no store connected', () => {
+            const { queryByText } = render(
+                <Provider
+                    store={mockStore({
+                        ...defaultState,
+                        currentAccount: fromJS({
+                            ...account,
+                            current_subscription: {
+                                ...account.current_subscription,
+                                products: automationSubscriptionProductPrices,
+                            },
+                        }),
+                        integrations: fromJS({
+                            integrations: [],
                         }),
                     })}
                 >
