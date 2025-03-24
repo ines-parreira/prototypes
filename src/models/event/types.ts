@@ -321,6 +321,7 @@ export enum RuleActionFailureCauses {
     NoSnoozeClosedTicket = 'no-snooze-closed-ticket',
     NoSnoozePastDate = 'snooze-datetime-in-past',
     NoTeamAssignUserNotFound = 'team-not-found',
+    TooManyRuleReplies = 'too-many-rule-replies',
 }
 
 export enum RuleActionFailureSeverity {
@@ -399,5 +400,9 @@ export const rulesActionsFailures: {
     [RuleActionFailureCauses.NoTeamAssignUserNotFound]: {
         description: 'Could not find the team to assign this ticket to.',
         severity: RuleActionFailureSeverity.Error,
+    },
+    [RuleActionFailureCauses.TooManyRuleReplies]: {
+        description: 'Too many auto-replies have been sent by this rule.',
+        severity: RuleActionFailureSeverity.Warning,
     },
 }
