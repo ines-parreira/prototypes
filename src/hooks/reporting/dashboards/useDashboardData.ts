@@ -16,7 +16,7 @@ import {
     TimeSeriesFetch,
     TimeSeriesPerDimensionFetch,
 } from 'hooks/reporting/useTimeSeries'
-import { AiSalesAgentReportConfig } from 'pages/stats/aiSalesAgent/AiSalesAgentReportConfig'
+import { AiSalesAgentReportConfig } from 'pages/stats/automate/aiSalesAgent/AiSalesAgentReportConfig'
 import { AutomateOverviewReportConfig } from 'pages/stats/automate/overview/AutomateOverviewReportConfig'
 import { MetricTrendFormat, MetricValueFormat } from 'pages/stats/common/utils'
 import { CampaignsLegacyReportConfig } from 'pages/stats/convert/campaigns/CampaignsLegacyReportConfig'

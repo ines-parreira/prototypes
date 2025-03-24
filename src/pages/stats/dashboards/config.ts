@@ -1,11 +1,11 @@
 import _flatten from 'lodash/flatten'
 
-import { AiSalesAgentChart } from 'pages/stats//aiSalesAgent/AiSalesAgentMetricsConfig'
-import { AiSalesAgentReportConfig } from 'pages/stats/aiSalesAgent/AiSalesAgentReportConfig'
 import {
     AutomateAiAgentsChart,
     AutomateAiAgentsReportConfig,
 } from 'pages/stats/automate/ai-agent/AutomateAiAgentsReportConfig'
+import { AiSalesAgentChart } from 'pages/stats/automate/aiSalesAgent/AiSalesAgentMetricsConfig'
+import { AiSalesAgentReportConfig } from 'pages/stats/automate/aiSalesAgent/AiSalesAgentReportConfig'
 import {
     AutomateOverviewChart,
     AutomateOverviewReportConfig,

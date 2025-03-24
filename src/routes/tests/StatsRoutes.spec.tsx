@@ -20,8 +20,8 @@ import {
 import { RevenueAddonApiClientProvider } from 'pages/convert/common/hooks/useConvertApi'
 import { HelpCenterApiClientProvider } from 'pages/settings/helpCenter/hooks/useHelpCenterApi'
 import { SupportedLocalesProvider } from 'pages/settings/helpCenter/providers/SupportedLocales'
-import AiSalesAgentSalesOverview from 'pages/stats/aiSalesAgent/AiSalesAgentSalesOverview'
 import AutomateAiAgentStatsReport from 'pages/stats/automate/ai-agent/AutomateAiAgentStatsReport'
+import AiSalesAgentSalesOverview from 'pages/stats/automate/aiSalesAgent/AiSalesAgentSalesOverview'
 import AutomateStatsPaywall from 'pages/stats/automate/AutomateStatsPaywall'
 import AutomateIntents from 'pages/stats/AutomateIntents'
 import AutomateMacros from 'pages/stats/AutomateMacros'
@@ -211,7 +211,7 @@ const RevenueAddonApiClientProviderMock = assumeMock(
 )
 jest.mock('pages/stats/support-performance/auto-qa/AutoQA')
 const AutoQAMock = assumeMock(AutoQA)
-jest.mock('pages/stats/aiSalesAgent/AiSalesAgentSalesOverview')
+jest.mock('pages/stats/automate/aiSalesAgent/AiSalesAgentSalesOverview')
 const AiSalesAgentSalesOverviewMock = assumeMock(AiSalesAgentSalesOverview)
 
 describe('StatsRoutes', () => {

@@ -23,6 +23,9 @@ src/state/ui/stats @gorgias/crm-reporting
 src/utils/reporting.ts @gorgias/crm-reporting
 src/utils/tests/reporting.spec.ts @gorgias/crm-reporting
 
+# Conv AI Orchestration scope
+src/pages/aiAgent/ @gorgias/conv-ai-orchestration
+
 # Conv AI scope @gorgias/conv-ai-actions
 
 src/pages/automate @gorgias/conv-ai-actions
@@ -56,7 +59,7 @@ src/models/contactForm @gorgias/conv-ai-orchestration
 src/models/convert @gorgias/marketing-suite
 src/pages/convert @gorgias/marketing-suite
 src/pages/stats/convert @gorgias/marketing-suite
-src/pages/stats/aiSalesAgent @gorgias/marketing-suite
+src/pages/stats/automate/aiSalesAgent @gorgias/marketing-suite
 src/pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationCampaigns @gorgias/marketing-suite
 src/pages/aiAgent/Onboarding/ @gorgias/marketing-suite
 
@@ -136,9 +139,6 @@ src/models/reporting/cubes/automate/ @gorgias/conv-ai-knowledge-insights
 src/models/reporting/cubes/automate_v2/ @gorgias/conv-ai-knowledge-insights
 src/pages/stats/Automate* @gorgias/conv-ai-knowledge-insights
 src/pages/aiAgent/AiAgentOnboardingWizard @gorgias/conv-ai-knowledge-insights
-
-# Conv AI Orchestration scope
-src/pages/aiAgent/ @gorgias/conv-ai-orchestration
 
 # Platform Streaming Infrastructure scope @gorgias/platform-streaming-infrastructure
 src/pages/settings/rules @gorgias/platform-streaming-infrastructure

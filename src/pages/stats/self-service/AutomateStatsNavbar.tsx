@@ -8,7 +8,7 @@ import AutomateNavbarPaywallNavbarLink from 'pages/automate/common/components/Au
 import NavbarLink, {
     NavbarLinkProps,
 } from 'pages/common/components/navbar/NavbarLink'
-import { LINK_AI_SALES_AGENT_TEXT } from 'pages/stats/aiSalesAgent/constants'
+import { LINK_AI_SALES_AGENT_TEXT } from 'pages/stats/automate/aiSalesAgent/constants'
 import {
     PAGE_TITLE_AI_AGENT,
     PAGE_TITLE_OVERVIEW,

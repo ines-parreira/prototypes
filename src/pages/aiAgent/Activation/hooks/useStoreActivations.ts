@@ -14,7 +14,7 @@ import {
 import { useStoresConfigurationMutation } from 'pages/aiAgent/hooks/useStoresConfigurationMutation'
 import { useSelfServiceChatChannelsMultiStore } from 'pages/automate/common/hooks/useSelfServiceChatChannels'
 import { HELP_CENTER_MAX_CREATION } from 'pages/settings/helpCenter/constants'
-import safeDivide from 'pages/stats/aiSalesAgent/util/safeDivide'
+import safeDivide from 'pages/stats/automate/aiSalesAgent/util/safeDivide'
 
 const computeActivationPercentage = (state: State): number => {
     const totalStores = Object.values(state).length
