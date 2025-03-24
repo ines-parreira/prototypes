@@ -2,11 +2,13 @@ import { fromJS, List, Map } from 'immutable'
 import _isNumber from 'lodash/isNumber'
 import moment from 'moment'
 
+import { isImmutable } from 'common/utils'
+import { MAX_RECENT_VIEWS } from 'config/views'
+import { View } from 'models/view/types'
 import { tryLocalStorage } from 'services/common/utils'
+import { getCode } from 'utils'
+import { reportError } from 'utils/errors'
 
-import { MAX_RECENT_VIEWS } from '../../config/views'
-import { View } from '../../models/view/types'
-import { getCode } from '../../utils'
 import { GorgiasAction, RootState } from '../types'
 import * as constants from './constants'
 import * as selectors from './selectors'
@@ -336,32 +338,43 @@ export default function reducer(
 
         case constants.FETCH_LIST_VIEW_START: {
             let newState = state
+            try {
+                // if fetched view is a real view (not new view created, not search, etc.) we save it's id
+                if (_isNumber(action.viewId) && action.viewId > 0) {
+                    newState = newState.setIn(
+                        ['_internal', 'lastViewId'],
+                        action.viewId,
+                    )
+                }
 
-            // if fetched view is a real view (not new view created, not search, etc.) we save it's id
-            if (_isNumber(action.viewId) && action.viewId > 0) {
+                if (action.discreet) {
+                    newState = newState.setIn(
+                        ['_internal', 'loading', 'fetchListDiscreet'],
+                        true,
+                    )
+                } else {
+                    newState = newState
+                        .setIn(['_internal', 'loading', 'fetchList'], true)
+                        .setIn(['_internal', 'selectedItemsIds'], fromJS([]))
+                }
+
+                // reset total resources count so as to prevent the previous resource count
+                // from being displayed while the new count is being fetched
                 newState = newState.setIn(
-                    ['_internal', 'lastViewId'],
-                    action.viewId,
+                    ['_internal', 'navigation', 'total_resources'],
+                    null,
                 )
-            }
+            } catch {
+                const error = new Error('Failed to reset total resources count')
+                const isStateImmutable = isImmutable(newState)
 
-            if (action.discreet) {
-                newState = newState.setIn(
-                    ['_internal', 'loading', 'fetchListDiscreet'],
-                    true,
-                )
-            } else {
-                newState = newState
-                    .setIn(['_internal', 'loading', 'fetchList'], true)
-                    .setIn(['_internal', 'selectedItemsIds'], fromJS([]))
+                reportError(error, {
+                    extra: {
+                        state: isStateImmutable ? newState.toJS() : newState,
+                        isImmutable: isStateImmutable,
+                    },
+                })
             }
-
-            // reset total resources count so as to prevent the previous resource count
-            // from being displayed while the new count is being fetched
-            newState = newState.setIn(
-                ['_internal', 'navigation', 'total_resources'],
-                null,
-            )
 
             return newState
         }

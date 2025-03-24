@@ -1,6 +1,8 @@
 import { fromJS, Map } from 'immutable'
 import moment from 'moment'
 
+import { reportError } from 'utils/errors'
+
 import * as fixtures from '../../../fixtures/views'
 import { ViewType } from '../../../models/view/types'
 import { RootState } from '../../types'
@@ -9,6 +11,10 @@ import { SEARCH_VIEW_FIELD_CONFIG_STORAGE_KEY } from '../constants'
 import reducers, { initialState } from '../reducers'
 import * as selectors from '../selectors'
 import * as utils from '../utils'
+
+const mockReportError = reportError as jest.Mock
+
+jest.mock('utils/errors')
 
 describe('reducers', () => {
     describe('views', () => {
@@ -526,14 +532,8 @@ describe('reducers', () => {
             )
         })
 
-        it('should reset total_resources meta parameter', () => {
-            const state = fromJS({
-                _internal: {
-                    navigation: {
-                        total_resources: 100,
-                    },
-                },
-            })
+        it('should handle FETCH_LIST_VIEW_START', () => {
+            const state = fromJS({})
 
             expect(
                 reducers(state, {
@@ -549,6 +549,82 @@ describe('reducers', () => {
                     },
                     selectedItemsIds: [],
                 },
+            })
+        })
+
+        it('should set lastViewId', () => {
+            const state = fromJS({})
+
+            expect(
+                reducers(state, {
+                    type: types.FETCH_LIST_VIEW_START,
+                    viewId: 1,
+                }).toJS(),
+            ).toEqual({
+                _internal: expect.objectContaining({
+                    lastViewId: 1,
+                }),
+            })
+        })
+
+        describe('FETCH_LIST_VIEW_START', () => {
+            it('should mark loading as discrete', () => {
+                const state = fromJS({})
+
+                expect(
+                    reducers(state, {
+                        type: types.FETCH_LIST_VIEW_START,
+                        discreet: true,
+                    }).toJS(),
+                ).toEqual({
+                    _internal: expect.objectContaining({
+                        loading: {
+                            fetchListDiscreet: true,
+                        },
+                    }),
+                })
+            })
+
+            it('should reset total_resources meta parameter', () => {
+                const state = fromJS({
+                    _internal: {
+                        navigation: {
+                            total_resources: 100,
+                        },
+                    },
+                })
+
+                expect(
+                    reducers(state, {
+                        type: types.FETCH_LIST_VIEW_START,
+                    }).toJS(),
+                ).toEqual({
+                    _internal: expect.objectContaining({
+                        navigation: {
+                            total_resources: null,
+                        },
+                    }),
+                })
+            })
+
+            it('should catch total_resources setting error', () => {
+                const state = fromJS({})
+
+                // Mock the setIn method to throw an error
+                const setInMock = jest.fn().mockImplementation(() => {
+                    throw new Error()
+                })
+                const newState = state
+                newState.setIn = setInMock
+
+                reducers(newState, {
+                    type: types.FETCH_LIST_VIEW_START,
+                }).toJS()
+
+                expect(mockReportError).toHaveBeenCalledWith(
+                    new Error('Failed to reset total resources count'),
+                    { extra: { state: {}, isImmutable: true } },
+                )
             })
         })
     })
