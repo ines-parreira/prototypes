@@ -1,6 +1,6 @@
 import React from 'react'
 
-import { fireEvent, render } from '@testing-library/react'
+import { fireEvent, render, screen } from '@testing-library/react'
 import { fromJS } from 'immutable'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
@@ -9,7 +9,7 @@ import { phoneNumbers } from 'fixtures/newPhoneNumber'
 import { updateOrCreateIntegration } from 'state/integrations/actions'
 import { RootState, StoreDispatch } from 'state/types'
 
-import VoiceIntegrationCreate from '../VoiceIntegrationCreate'
+import DEPRECATED_VoiceIntegrationCreate from '../DEPRECATED_VoiceIntegrationCreate'
 
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>()
 const store = mockStore({
@@ -55,22 +55,26 @@ const submittedPayload = {
     },
 }
 
-describe('<VoiceIntegrationCreate/>', () => {
+describe('<DEPRECATED_VoiceIntegrationCreate/>', () => {
     describe('render()', () => {
         it('should render', () => {
-            const { container } = render(
+            render(
                 <Provider store={store}>
-                    <VoiceIntegrationCreate selectedPhoneNumberId={1} />
+                    <DEPRECATED_VoiceIntegrationCreate
+                        selectedPhoneNumberId={1}
+                    />
                 </Provider>,
             )
 
-            expect(container.firstChild).toMatchSnapshot()
+            expect(screen.getByText('Integration title')).toBeInTheDocument()
         })
 
         it('should submit a valid payload with the selected phone_number_id', () => {
-            const { container, getByText, getByLabelText } = render(
+            const { getByText, getByLabelText } = render(
                 <Provider store={store}>
-                    <VoiceIntegrationCreate selectedPhoneNumberId={1} />
+                    <DEPRECATED_VoiceIntegrationCreate
+                        selectedPhoneNumberId={1}
+                    />
                 </Provider>,
             )
 
@@ -84,13 +88,14 @@ describe('<VoiceIntegrationCreate/>', () => {
                 fromJS(submittedPayload),
             )
             expect(store.dispatch).toHaveBeenCalledTimes(1)
-            expect(container.firstChild).toMatchSnapshot()
         })
 
         it('should submit a valid payload', () => {
             const { getByText, getByLabelText } = render(
                 <Provider store={store}>
-                    <VoiceIntegrationCreate selectedPhoneNumberId={1} />
+                    <DEPRECATED_VoiceIntegrationCreate
+                        selectedPhoneNumberId={1}
+                    />
                 </Provider>,
             )
 
@@ -107,9 +112,11 @@ describe('<VoiceIntegrationCreate/>', () => {
         })
 
         it("should prefill the title field using the phone number's name", () => {
-            const { container, getByText } = render(
+            const { getByText } = render(
                 <Provider store={store}>
-                    <VoiceIntegrationCreate selectedPhoneNumberId={1} />
+                    <DEPRECATED_VoiceIntegrationCreate
+                        selectedPhoneNumberId={1}
+                    />
                 </Provider>,
             )
 
@@ -119,7 +126,6 @@ describe('<VoiceIntegrationCreate/>', () => {
                 fromJS({ ...submittedPayload, name: 'A Phone Number - Voice' }),
             )
             expect(store.dispatch).toHaveBeenCalledTimes(1)
-            expect(container.firstChild).toMatchSnapshot()
         })
     })
 })

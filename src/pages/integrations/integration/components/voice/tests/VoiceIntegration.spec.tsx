@@ -4,6 +4,7 @@ import { useFlag } from 'core/flags'
 import useAppSelector from 'hooks/useAppSelector'
 import { assumeMock, renderWithRouter } from 'utils/testing'
 
+import { PHONE_INTEGRATION_BASE_URL } from '../constants'
 import VoiceIntegration from '../VoiceIntegration'
 
 jest.mock('hooks/useAppSelector')
@@ -12,6 +13,10 @@ jest.mock('core/flags')
 jest.mock(
     'pages/integrations/integration/components/voice/VoiceIntegrationQueueRoutes',
     () => () => <div>QueueRoutes</div>,
+)
+jest.mock(
+    'pages/integrations/integration/components/voice/VoiceIntegrationOnboarding/VoiceIntegrationOnboarding',
+    () => () => <div>VoiceIntegrationOnboarding</div>,
 )
 jest.mock('state/integrations/selectors', () => ({
     getIntegrationById: jest.fn(),
@@ -28,8 +33,8 @@ jest.mock(
     () => () => <div>VoiceIntegrationDetails</div>,
 )
 jest.mock(
-    'pages/integrations/integration/components/voice/VoiceIntegrationCreate',
-    () => () => <div>VoiceIntegrationCreate</div>,
+    'pages/integrations/integration/components/voice/DEPRECATED_VoiceIntegrationCreate',
+    () => () => <div>DEPRECATED_VoiceIntegrationCreate</div>,
 )
 jest.mock(
     'pages/integrations/integration/components/phone/PhoneIntegrationsList',
@@ -63,6 +68,7 @@ describe('VoiceIntegration', () => {
 
     beforeEach(() => {
         useFlagMock.mockReturnValue(true)
+        useAppSelectorMock.mockReturnValue(null)
     })
 
     it('should not render Queues when FF is off', () => {
@@ -149,5 +155,22 @@ describe('VoiceIntegration', () => {
         expect(screen.queryByText('Preferences')).toBeInTheDocument()
         expect(screen.queryByText('Voicemail')).toBeInTheDocument()
         expect(screen.queryByText('IVR')).toBeInTheDocument()
+    })
+
+    it('should render the VoiceIntegrationOnboarding component on /new', () => {
+        renderComponent(`${PHONE_INTEGRATION_BASE_URL}/new`)
+
+        expect(
+            screen.getByText('VoiceIntegrationOnboarding'),
+        ).toBeInTheDocument()
+    })
+
+    it('should render the DEPRECATED_VoiceIntegrationCreate component on /new when FF is off', () => {
+        useFlagMock.mockReturnValue(false)
+        renderComponent(`${PHONE_INTEGRATION_BASE_URL}/new`)
+
+        expect(
+            screen.getByText('DEPRECATED_VoiceIntegrationCreate'),
+        ).toBeInTheDocument()
     })
 })

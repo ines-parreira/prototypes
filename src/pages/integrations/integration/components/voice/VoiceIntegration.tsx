@@ -15,7 +15,7 @@ import PageHeader from 'pages/common/components/PageHeader'
 import ConnectLink from 'pages/integrations/components/ConnectLink'
 import PhoneIntegrationBreadcrumbs from 'pages/integrations/integration/components/phone/PhoneIntegrationBreadcrumbs'
 import PhoneIntegrationsList from 'pages/integrations/integration/components/phone/PhoneIntegrationsList'
-import VoiceIntegrationCreate from 'pages/integrations/integration/components/voice/VoiceIntegrationCreate'
+import DEPRECATED_VoiceIntegrationCreate from 'pages/integrations/integration/components/voice/DEPRECATED_VoiceIntegrationCreate'
 import VoiceIntegrationGreetingMessage from 'pages/integrations/integration/components/voice/VoiceIntegrationGreetingMessage'
 import VoiceIntegrationIvr from 'pages/integrations/integration/components/voice/VoiceIntegrationIvr'
 import VoiceIntegrationPreferences from 'pages/integrations/integration/components/voice/VoiceIntegrationPreferences'
@@ -30,6 +30,7 @@ import {
 import { getDefaultRoutes } from '../../utils/defaultRoutes'
 import { PHONE_INTEGRATION_BASE_URL as baseURL } from './constants'
 import VoiceIntegrationDetails from './VoiceIntegrationDetails'
+import VoiceIntegrationOnboarding from './VoiceIntegrationOnboarding/VoiceIntegrationOnboarding'
 import VoiceIntegrationQueueRoutes from './VoiceIntegrationQueueRoutes'
 import VoiceIntegrationSettingsPage from './VoiceIntegrationSettingsPage'
 
@@ -146,14 +147,18 @@ export default function VoiceIntegration() {
                     <PhoneIntegrationsList type={IntegrationType.Phone} />
                 </Route>
                 <Route path={`${baseURL}/new`} exact>
-                    <VoiceIntegrationCreate
-                        selectedPhoneNumberId={
-                            phoneNumberId
-                                ? Number.parseInt(phoneNumberId, 10)
-                                : undefined
-                        }
-                        pricingLink={config?.pricingLink}
-                    />
+                    {exposeQueues ? (
+                        <VoiceIntegrationOnboarding />
+                    ) : (
+                        <DEPRECATED_VoiceIntegrationCreate
+                            selectedPhoneNumberId={
+                                phoneNumberId
+                                    ? Number.parseInt(phoneNumberId, 10)
+                                    : undefined
+                            }
+                            pricingLink={config?.pricingLink}
+                        />
+                    )}
                 </Route>
                 <Route path={routes.about} exact>
                     <VoiceIntegrationDetails />

@@ -31,7 +31,7 @@ type Props = {
     pricingLink?: string
 }
 
-function VoiceIntegrationCreate({
+function DEPRECATED_VoiceIntegrationCreate({
     selectedPhoneNumberId,
     pricingLink,
 }: Props): JSX.Element {
@@ -182,4 +182,4 @@ function VoiceIntegrationCreate({
     )
 }
 
-export default VoiceIntegrationCreate
+export default DEPRECATED_VoiceIntegrationCreate
