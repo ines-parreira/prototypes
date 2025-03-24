@@ -1,34 +1,86 @@
 import React from 'react'
 
-import { render, screen } from '@testing-library/react'
+import { fireEvent, render, screen } from '@testing-library/react'
+import { Provider } from 'react-redux'
+
+import { Language } from 'constants/languages'
+import {
+    GorgiasChatAutoResponderReply,
+    GorgiasChatEmailCaptureType,
+    GorgiasChatIntegration,
+} from 'models/integration/types'
+import { useHandoverCustomizationOnlineSettingsForm } from 'pages/aiAgent/hooks/useHandoverCustomizationOnlineSettingsForm'
+import { mockQueryClientProvider } from 'tests/reactQueryTestingUtils'
+import { mockStore } from 'utils/testing'
 
 import HandoverCustomizationOnlineSettings from '../HandoverCustomizationOnlineSettings'
 
-jest.mock('../ChatPreferencesEmailCaptureSettings', () => ({
-    __esModule: true,
-    default: jest.fn(() => (
-        <div data-testid="mock-email-capture-settings">
-            mocked email capture settings
-        </div>
-    )),
-}))
+// Mock dependencies
+jest.mock('pages/aiAgent/hooks/useHandoverCustomizationOnlineSettingsForm')
 
-jest.mock('../ChatPreferencesAutoReplyWaitTimeSettings', () => ({
-    __esModule: true,
-    default: jest.fn(() => (
-        <div data-testid="mock-auto-reply-settings">
-            mocked auto reply settings
-        </div>
-    )),
-}))
+const mockedIntegration = {
+    type: 'gorgias_chat',
+    id: '1',
+    meta: {
+        app_id: 'test-app-id',
+        languages: [
+            { language: Language.EnglishUs },
+            { language: Language.FrenchFr },
+        ],
+        shop_name: 'test-store',
+        shop_type: 'shopify',
+        shop_id: '123',
+        shop_domain: 'test-store.myshopify.com',
+    },
+} as unknown as GorgiasChatIntegration
+
+const QueryClientProvider = mockQueryClientProvider()
+
+const defaultState = {}
+
+const renderComponent = (
+    integration: GorgiasChatIntegration = mockedIntegration,
+) => {
+    render(
+        <Provider store={mockStore(defaultState)}>
+            <QueryClientProvider>
+                <HandoverCustomizationOnlineSettings
+                    integration={integration}
+                />
+            </QueryClientProvider>
+        </Provider>,
+    )
+}
 
 describe('HandoverCustomizationOnlineSettings', () => {
+    const mockUpdateValue = jest.fn()
+    const mockHandleOnSave = jest.fn()
+    const mockHandleOnCancel = jest.fn()
+
+    const mockOnlineValuesForm = {
+        formValues: {
+            onlineInstructions: 'Default instructions',
+            emailCaptureEnabled: false,
+            emailCaptureEnforcement: GorgiasChatEmailCaptureType.Optional,
+            autoResponderEnabled: false,
+            autoResponderReply: GorgiasChatAutoResponderReply.ReplyDynamic,
+        },
+        updateValue: mockUpdateValue,
+        handleOnSave: mockHandleOnSave,
+        handleOnCancel: mockHandleOnCancel,
+        isLoading: false,
+        isSaving: false,
+    }
     beforeEach(() => {
         jest.clearAllMocks()
+        // Default mock implementation
+        ;(
+            useHandoverCustomizationOnlineSettingsForm as jest.Mock
+        ).mockReturnValue(mockOnlineValuesForm)
     })
 
     it('renders component with all required elements', () => {
-        render(<HandoverCustomizationOnlineSettings />)
+        renderComponent(mockedIntegration)
 
         // Check for main section headers
         screen.getByText('Online instructions')
@@ -52,17 +104,149 @@ describe('HandoverCustomizationOnlineSettings', () => {
         })
 
         expect(chatPreferencesLink.getAttribute('href')).toBe(
-            '/app/settings/channels/gorgias_chat',
+            `/app/settings/channels/gorgias_chat/${mockedIntegration.id}/preferences`,
         )
 
         expect(chatPreferencesLink.getAttribute('target')).toBe('_blank')
 
         // Check for mocked child components
-        screen.getByText('mocked email capture settings')
-        screen.getByText('mocked auto reply settings')
+        screen.getByText(/Enable email capture/i)
+
+        screen.getByText(/Send wait time/i)
 
         // Check for buttons
         screen.getByText('Save Changes')
         screen.getByText('Cancel')
+    })
+
+    describe('Loading State', () => {
+        it('should show loading spinner when isLoading is true', () => {
+            ;(
+                useHandoverCustomizationOnlineSettingsForm as jest.Mock
+            ).mockReturnValue({
+                isLoading: true,
+            })
+
+            renderComponent(mockedIntegration)
+
+            screen.getByLabelText('Loading')
+
+            expect(screen.queryByText('Instructions')).toBeNull()
+        })
+    })
+
+    describe('Form Interactions', () => {
+        it('should handle online instructions changes', async () => {
+            renderComponent()
+
+            fireEvent.change(
+                screen.getByRole('textbox', {
+                    name: 'Online instructions',
+                }),
+                { target: { value: 'New instructions' } },
+            )
+
+            expect(mockUpdateValue).toHaveBeenCalledWith(
+                'onlineInstructions',
+                'New instructions',
+            )
+        })
+
+        it('should handle email capture toggle change', () => {
+            renderComponent()
+
+            const toggle = screen.getByRole('switch', {
+                name: /Enable email capture/i,
+            })
+            fireEvent.click(toggle)
+
+            expect(mockUpdateValue).toHaveBeenCalledWith(
+                'emailCaptureEnabled',
+                true,
+            )
+        })
+
+        it('should handle email capture enforcement change', () => {
+            renderComponent()
+            const option = screen.getByRole('radio', {
+                name: /Required/i,
+            })
+
+            fireEvent.click(option)
+
+            expect(mockUpdateValue).toHaveBeenCalledWith(
+                'emailCaptureEnforcement',
+                GorgiasChatEmailCaptureType.AlwaysRequired,
+            )
+        })
+
+        it('should handle send wait time toggle change', () => {
+            renderComponent()
+
+            const toggle = screen.getByRole('switch', {
+                name: /Provide auto-reply wait time in the chat/i,
+            })
+            fireEvent.click(toggle)
+
+            expect(mockUpdateValue).toHaveBeenCalledWith(
+                'autoResponderEnabled',
+                true,
+            )
+        })
+
+        it('should handle auto responder reply change', () => {
+            renderComponent()
+            const option = screen.getByRole('radio', {
+                name: /In a few minutes/i,
+            })
+            fireEvent.click(option)
+
+            expect(mockUpdateValue).toHaveBeenCalledWith(
+                'autoResponderReply',
+                GorgiasChatAutoResponderReply.ReplyInMinutes,
+            )
+        })
+    })
+
+    describe('Save and Cancel Actions', () => {
+        it('should disable save button when isSaving is true', () => {
+            ;(
+                useHandoverCustomizationOnlineSettingsForm as jest.Mock
+            ).mockReturnValue({
+                ...mockOnlineValuesForm,
+                isLoading: false,
+                isSaving: true,
+            })
+
+            renderComponent()
+
+            const saveButton = screen.getByRole('button', {
+                name: 'Save Changes',
+            })
+
+            expect(saveButton).toHaveAttribute('aria-disabled', 'true')
+        })
+
+        it('should handle save button click', () => {
+            renderComponent()
+
+            const saveButton = screen.getByRole('button', {
+                name: 'Save Changes',
+            })
+            fireEvent.click(saveButton)
+
+            expect(mockHandleOnSave).toHaveBeenCalled()
+        })
+
+        it('should handle cancel button click', () => {
+            renderComponent()
+
+            const cancelButton = screen.getByRole('button', {
+                name: 'Cancel',
+            })
+            fireEvent.click(cancelButton)
+
+            expect(mockHandleOnCancel).toHaveBeenCalled()
+        })
     })
 })

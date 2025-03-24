@@ -1,9 +1,8 @@
+import { useCallback } from 'react'
+
 import cn from 'classnames'
 
-import {
-    GORGIAS_CHAT_WIDGET_EMAIL_CAPTURE_ALWAYS_REQUIRED,
-    GORGIAS_CHAT_WIDGET_EMAIL_CAPTURE_OPTIONAL,
-} from 'config/integrations/gorgias_chat'
+import { GorgiasChatEmailCaptureType } from 'models/integration/types'
 import IconTooltip from 'pages/common/forms/IconTooltip/IconTooltip'
 import RadioFieldSet, {
     RadioFieldOption,
@@ -14,18 +13,20 @@ import css from './ChatPreferencesEmailCaptureSettings.less'
 
 type Props = {
     isEnabled: boolean
-    emailCaptureEnforcement: string
+    emailCaptureEnforcement?: GorgiasChatEmailCaptureType
     onToggleEnablement: (enabled: boolean) => void
-    onEmailCaptureEnforcementChange: (enforcement: string) => void
+    onEmailCaptureEnforcementChange: (
+        enforcement: GorgiasChatEmailCaptureType,
+    ) => void
 }
 
 const emailCaptureOptions: RadioFieldOption[] = [
     {
-        value: GORGIAS_CHAT_WIDGET_EMAIL_CAPTURE_OPTIONAL,
+        value: GorgiasChatEmailCaptureType.Optional,
         label: 'Optional',
     },
     {
-        value: GORGIAS_CHAT_WIDGET_EMAIL_CAPTURE_ALWAYS_REQUIRED,
+        value: GorgiasChatEmailCaptureType.AlwaysRequired,
         label: (
             <>
                 Required
@@ -45,6 +46,19 @@ const ChatPreferencesEmailCaptureSettings = ({
     onToggleEnablement,
     onEmailCaptureEnforcementChange,
 }: Props) => {
+    const onToggleChange = useCallback(
+        (value: boolean) => onToggleEnablement(value),
+        [onToggleEnablement],
+    )
+
+    const onEnforcementChange = useCallback(
+        (value: string) =>
+            onEmailCaptureEnforcementChange(
+                value as GorgiasChatEmailCaptureType,
+            ),
+        [onEmailCaptureEnforcementChange],
+    )
+
     return (
         <div>
             <h4 className={cn(css.title, 'mb-1')}>Email capture</h4>
@@ -58,7 +72,7 @@ const ChatPreferencesEmailCaptureSettings = ({
                     isToggled={isEnabled}
                     id="email-capture-toggle"
                     aria-label="Enable email capture"
-                    onClick={(value) => onToggleEnablement(value)}
+                    onClick={onToggleChange}
                 >
                     <b>Enable email capture</b>
                 </ToggleInput>
@@ -67,8 +81,8 @@ const ChatPreferencesEmailCaptureSettings = ({
             <RadioFieldSet
                 isDisabled={!isEnabled}
                 options={emailCaptureOptions}
-                selectedValue={emailCaptureEnforcement}
-                onChange={(value) => onEmailCaptureEnforcementChange(value)}
+                selectedValue={emailCaptureEnforcement ?? null}
+                onChange={onEnforcementChange}
             />
         </div>
     )

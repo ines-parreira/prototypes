@@ -1,6 +1,13 @@
-import { Button } from '@gorgias/merchant-ui-kit'
+import React, { useCallback, useMemo } from 'react'
+
+import cn from 'classnames'
+
+import { Button, LoadingSpinner } from '@gorgias/merchant-ui-kit'
 
 import { Label } from 'gorgias-design-system/Input/Label'
+import { GorgiasChatIntegration } from 'models/integration/types'
+import { useHandoverCustomizationOnlineSettingsForm } from 'pages/aiAgent/hooks/useHandoverCustomizationOnlineSettingsForm'
+import { formFieldsConfiguration } from 'pages/aiAgent/utils/handoverCustomizationOnlineSettingsForm.utils'
 import Alert, { AlertType } from 'pages/common/components/Alert/Alert'
 import Caption from 'pages/common/forms/Caption/Caption'
 import TextArea from 'pages/common/forms/TextArea'
@@ -10,8 +17,91 @@ import ChatPreferencesEmailCaptureSettings from './ChatPreferencesEmailCaptureSe
 
 import css from './HandoverCustomizationOnlineSettings.less'
 
-/// TODO: The real implementation of the component actions will be done in the next PRs - For now, the actions are empty functions
-const HandoverCustomizationOnlineSettings = () => {
+type Props = {
+    integration: GorgiasChatIntegration
+}
+
+const HandoverCustomizationOnlineSettings = ({ integration }: Props) => {
+    const {
+        isLoading,
+        isSaving,
+        formValues,
+        updateValue,
+        handleOnSave,
+        handleOnCancel,
+    } = useHandoverCustomizationOnlineSettingsForm({
+        integration,
+    })
+
+    const chatPreferencesLink = useMemo(
+        () =>
+            `/app/settings/channels/gorgias_chat/${integration.id}/preferences`,
+        [integration],
+    )
+
+    const onOnlineInstructionsChange = useCallback(
+        (value: string) => {
+            updateValue('onlineInstructions', value)
+        },
+        [updateValue],
+    )
+
+    const onEmailCaptureEnabledChange = useCallback(
+        (value: boolean) => {
+            updateValue('emailCaptureEnabled', value)
+        },
+        [updateValue],
+    )
+
+    const onEmailCaptureEnforcementChange = useCallback(
+        (value: string) => {
+            updateValue('emailCaptureEnforcement', value)
+        },
+        [updateValue],
+    )
+
+    const onAutoResponderEnabledChange = useCallback(
+        (value: boolean) => {
+            updateValue('autoResponderEnabled', value)
+        },
+        [updateValue],
+    )
+
+    const onAutoResponderReplyChange = useCallback(
+        (value: string) => {
+            updateValue('autoResponderReply', value)
+        },
+        [updateValue],
+    )
+
+    const onSave = useCallback(
+        (e: React.MouseEvent<HTMLButtonElement>) => {
+            e.preventDefault()
+            handleOnSave()
+        },
+        [handleOnSave],
+    )
+
+    const onCancel = useCallback(
+        (e: React.MouseEvent<HTMLButtonElement>) => {
+            e.preventDefault()
+            handleOnCancel()
+        },
+        [handleOnCancel],
+    )
+
+    if (isLoading) {
+        return (
+            <div
+                className={cn(css.spinner, css.loadingContainer)}
+                aria-busy="true"
+                aria-label="Loading"
+            >
+                <LoadingSpinner />
+            </div>
+        )
+    }
+
     return (
         <div>
             <div className={css.onlineInstructionsContainer}>
@@ -29,7 +119,11 @@ const HandoverCustomizationOnlineSettings = () => {
                     placeholder={`Apologize and acknowledge the issue. Tell the customer that you’re connecting them with someone.`}
                     role="textbox"
                     aria-label="Online instructions"
-                    onChange={() => {}}
+                    value={formValues.onlineInstructions}
+                    maxLength={
+                        formFieldsConfiguration.onlineInstructions.maxLength
+                    }
+                    onChange={onOnlineInstructionsChange}
                     error={undefined}
                 />
                 <Caption className="caption-regular mt-1">
@@ -46,7 +140,7 @@ const HandoverCustomizationOnlineSettings = () => {
             <Alert type={AlertType.Info} icon="info" className="mb-4">
                 Changes to the settings below will be reflected in your{' '}
                 <a
-                    href="/app/settings/channels/gorgias_chat"
+                    href={chatPreferencesLink}
                     target="_blank"
                     rel="noopener noreferrer"
                 >
@@ -55,18 +149,20 @@ const HandoverCustomizationOnlineSettings = () => {
             </Alert>
             <div className={css.emailCaptureSettingContainer}>
                 <ChatPreferencesEmailCaptureSettings
-                    isEnabled={true}
-                    emailCaptureEnforcement="optional"
-                    onToggleEnablement={() => {}}
-                    onEmailCaptureEnforcementChange={() => {}}
+                    isEnabled={formValues.emailCaptureEnabled}
+                    emailCaptureEnforcement={formValues.emailCaptureEnforcement}
+                    onToggleEnablement={onEmailCaptureEnabledChange}
+                    onEmailCaptureEnforcementChange={
+                        onEmailCaptureEnforcementChange
+                    }
                 />
             </div>
             <div className={css.autoReplyWaitTimeSettingsContainer}>
                 <ChatPreferencesAutoReplyWaitTimeSettings
-                    isEnabled={true}
-                    autoResponderReply="reply-dynamic"
-                    onToggleEnablement={() => {}}
-                    onAutoResponderReplyChange={() => {}}
+                    isEnabled={formValues.autoResponderEnabled}
+                    autoResponderReply={formValues.autoResponderReply}
+                    onToggleEnablement={onAutoResponderEnabledChange}
+                    onAutoResponderReplyChange={onAutoResponderReplyChange}
                 />
             </div>
 
@@ -76,7 +172,8 @@ const HandoverCustomizationOnlineSettings = () => {
                     color="primary"
                     className="mr-2"
                     size="small"
-                    onClick={() => {}}
+                    onClick={onSave}
+                    isDisabled={isSaving}
                 >
                     Save Changes
                 </Button>
@@ -85,7 +182,7 @@ const HandoverCustomizationOnlineSettings = () => {
                     intent="secondary"
                     color="secondary"
                     size="small"
-                    onClick={() => {}}
+                    onClick={onCancel}
                 >
                     Cancel
                 </Button>

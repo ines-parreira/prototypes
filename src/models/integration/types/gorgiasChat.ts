@@ -43,6 +43,7 @@ export type GorgiasChatIntegrationMeta = {
     language?: string
     languages?: LanguageItem[]
     preferences?: {
+        email_capture_enabled?: boolean
         email_capture_enforcement: GorgiasChatEmailCaptureType
         auto_responder?: {
             enabled: boolean
@@ -86,6 +87,14 @@ export enum GorgiasChatEmailCaptureType {
     Optional = 'optional',
     RequiredOutsideBusinessHours = 'required-outside-business-hours',
     AlwaysRequired = 'always-required',
+}
+
+export enum GorgiasChatAutoResponderReply {
+    ReplyShortly = 'reply-shortly',
+    ReplyInMinutes = 'reply-in-minutes',
+    ReplyInHours = 'reply-in-hours',
+    ReplyInDay = 'reply-in-day',
+    ReplyDynamic = 'reply-dynamic',
 }
 
 export type SelfServiceConfiguration = {

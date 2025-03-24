@@ -2,17 +2,14 @@ import React from 'react'
 
 import { fireEvent, render, screen } from '@testing-library/react'
 
-import {
-    GORGIAS_CHAT_WIDGET_EMAIL_CAPTURE_ALWAYS_REQUIRED,
-    GORGIAS_CHAT_WIDGET_EMAIL_CAPTURE_OPTIONAL,
-} from 'config/integrations/gorgias_chat'
+import { GorgiasChatEmailCaptureType } from 'models/integration/types'
 
 import ChatPreferencesEmailCaptureSettings from '../ChatPreferencesEmailCaptureSettings'
 
 describe('ChatPreferencesEmailCaptureSettings', () => {
     const defaultProps = {
         isEnabled: true,
-        emailCaptureEnforcement: GORGIAS_CHAT_WIDGET_EMAIL_CAPTURE_OPTIONAL,
+        emailCaptureEnforcement: GorgiasChatEmailCaptureType.Optional,
         onToggleEnablement: jest.fn(),
         onEmailCaptureEnforcementChange: jest.fn(),
     }
@@ -68,9 +65,7 @@ describe('ChatPreferencesEmailCaptureSettings', () => {
 
         expect(
             defaultProps.onEmailCaptureEnforcementChange,
-        ).toHaveBeenCalledWith(
-            GORGIAS_CHAT_WIDGET_EMAIL_CAPTURE_ALWAYS_REQUIRED,
-        )
+        ).toHaveBeenCalledWith(GorgiasChatEmailCaptureType.AlwaysRequired)
     })
 
     it('calls onEmailCaptureEnforcementChange when radio option "optional" is selected', () => {
@@ -78,7 +73,7 @@ describe('ChatPreferencesEmailCaptureSettings', () => {
             <ChatPreferencesEmailCaptureSettings
                 {...defaultProps}
                 emailCaptureEnforcement={
-                    GORGIAS_CHAT_WIDGET_EMAIL_CAPTURE_ALWAYS_REQUIRED
+                    GorgiasChatEmailCaptureType.AlwaysRequired
                 }
             />,
         )
@@ -90,7 +85,7 @@ describe('ChatPreferencesEmailCaptureSettings', () => {
 
         expect(
             defaultProps.onEmailCaptureEnforcementChange,
-        ).toHaveBeenCalledWith(GORGIAS_CHAT_WIDGET_EMAIL_CAPTURE_OPTIONAL)
+        ).toHaveBeenCalledWith(GorgiasChatEmailCaptureType.Optional)
     })
 
     it('disables radio options when isEnabled is false', () => {
@@ -112,7 +107,7 @@ describe('ChatPreferencesEmailCaptureSettings', () => {
             <ChatPreferencesEmailCaptureSettings
                 {...defaultProps}
                 emailCaptureEnforcement={
-                    GORGIAS_CHAT_WIDGET_EMAIL_CAPTURE_ALWAYS_REQUIRED
+                    GorgiasChatEmailCaptureType.AlwaysRequired
                 }
             />,
         )

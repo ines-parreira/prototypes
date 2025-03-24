@@ -1,9 +1,9 @@
 import { HandoverConfigurationData } from 'models/aiAgent/types'
 import { IntegrationType } from 'models/integration/types'
 
-import { AiAgentChannel } from '../constants'
 import { AiAgentStoreHandoverConfiguration } from '../hooks/useFetchAiAgentHandoverConfiguration'
 import { HandoverCustomizationOfflineSettingsFormValues } from '../types'
+import { createHandoverConfigurationData } from './handoverCustomizationConfiguration.utils'
 
 const initialFormFieldValues: HandoverCustomizationOfflineSettingsFormValues = {
     offlineInstructions: '',
@@ -42,67 +42,39 @@ export const getInitialFormValues = () => {
     return initialFormFieldValues
 }
 
-const mapIntegrationTypeToAiAgentChannel = (type: IntegrationType) => {
-    switch (type) {
-        case IntegrationType.GorgiasChat:
-            return AiAgentChannel.Chat
-        case IntegrationType.Email:
-            return AiAgentChannel.Email
-        default:
-            // TODO check if this is correct
-            return AiAgentChannel.Chat
-    }
-}
-
-const createBaseHandoverConfigurationData = (
-    accountId: number,
-    storeName: string,
-    shopType: string,
-    integrationId: number,
-    type: IntegrationType,
-): HandoverConfigurationData => {
-    return {
-        accountId,
-        storeName,
-        shopType,
-        integrationId,
-        channel: mapIntegrationTypeToAiAgentChannel(type),
-        onlineInstructions: null,
-        offlineInstructions: null,
-        shareBusinessHours: false,
-    }
+type MapFormValuesToHandoverConfigurationDataProps = {
+    accountId: number
+    storeName: string
+    shopType: string
+    integrationId: number
+    integrationType: IntegrationType
+    formValues: HandoverCustomizationOfflineSettingsFormValues
+    configuration?: AiAgentStoreHandoverConfiguration
 }
 
 /**
  * This function maps the handover customization offline form values to the handover configuration data
- * @param accountId - The account id
- * @param storeName - The store name
- * @param shopType - The shop type
- * @param integrationId - The integration id
- * @param type - The integration type
- * @param formValues - The form values
- * @param configuration - The current configuration data
  * @returns The handover configuration data
  */
-export const mapFormValuesToHandoverConfigurationData = (
-    accountId: number,
-    storeName: string,
-    shopType: string,
-    integrationId: number,
-    type: IntegrationType,
-    formValues: HandoverCustomizationOfflineSettingsFormValues,
-    configuration?: AiAgentStoreHandoverConfiguration,
-): HandoverConfigurationData => {
+export const mapFormValuesToHandoverConfigurationData = ({
+    accountId,
+    storeName,
+    shopType,
+    integrationId,
+    integrationType,
+    formValues,
+    configuration,
+}: MapFormValuesToHandoverConfigurationDataProps): HandoverConfigurationData => {
     let newConfiguration = configuration
     if (!newConfiguration) {
         // in cases where the configuration is not uploaded yet, we create a new one
-        newConfiguration = createBaseHandoverConfigurationData(
+        newConfiguration = createHandoverConfigurationData({
             accountId,
             storeName,
             shopType,
             integrationId,
-            type,
-        )
+            integrationType,
+        })
     }
 
     return {

@@ -1,10 +1,8 @@
+import { useCallback } from 'react'
+
 import cn from 'classnames'
 
-import {
-    GORGIAS_CHAT_AUTO_RESPONDER_REPLY_DYNAMIC,
-    GORGIAS_CHAT_AUTO_RESPONDER_REPLY_IN_HOURS,
-    GORGIAS_CHAT_AUTO_RESPONDER_REPLY_IN_MINUTES,
-} from 'config/integrations/gorgias_chat'
+import { GorgiasChatAutoResponderReply } from 'models/integration/types'
 import IconTooltip from 'pages/common/forms/IconTooltip/IconTooltip'
 import RadioFieldSet, {
     RadioFieldOption,
@@ -15,14 +13,14 @@ import css from './ChatPreferencesAutoReplyWaitTimeSettings.less'
 
 type Props = {
     isEnabled: boolean
-    autoResponderReply: string
+    autoResponderReply: GorgiasChatAutoResponderReply | null
     onToggleEnablement: (enabled: boolean) => void
-    onAutoResponderReplyChange: (reply: string) => void
+    onAutoResponderReplyChange: (reply: GorgiasChatAutoResponderReply) => void
 }
 
 const autoResponderOptions: RadioFieldOption[] = [
     {
-        value: GORGIAS_CHAT_AUTO_RESPONDER_REPLY_DYNAMIC,
+        value: GorgiasChatAutoResponderReply.ReplyDynamic,
         label: (
             <>
                 Dynamic wait time (recommended)
@@ -47,11 +45,11 @@ const autoResponderOptions: RadioFieldOption[] = [
         ),
     },
     {
-        value: GORGIAS_CHAT_AUTO_RESPONDER_REPLY_IN_MINUTES,
+        value: GorgiasChatAutoResponderReply.ReplyInMinutes,
         label: 'In a few minutes',
     },
     {
-        value: GORGIAS_CHAT_AUTO_RESPONDER_REPLY_IN_HOURS,
+        value: GorgiasChatAutoResponderReply.ReplyInHours,
         label: 'In a few hours',
     },
 ]
@@ -62,6 +60,17 @@ const ChatPreferencesAutoReplyWaitTimeSettings = ({
     onToggleEnablement,
     onAutoResponderReplyChange,
 }: Props) => {
+    const onToggleChange = useCallback(
+        (value: boolean) => onToggleEnablement(value),
+        [onToggleEnablement],
+    )
+
+    const onReplyTypeChange = useCallback(
+        (value: string) =>
+            onAutoResponderReplyChange(value as GorgiasChatAutoResponderReply),
+        [onAutoResponderReplyChange],
+    )
+
     return (
         <div>
             <h4 className={cn(css.title, 'mb-1')}>Wait time</h4>
@@ -75,7 +84,7 @@ const ChatPreferencesAutoReplyWaitTimeSettings = ({
                     id="auto-reply-wait-time-toggle"
                     isToggled={isEnabled}
                     aria-label="Provide auto-reply wait time in the chat"
-                    onClick={(value) => onToggleEnablement(value)}
+                    onClick={onToggleChange}
                 />
                 <div className="ml-1">
                     <b>Send wait time</b>
@@ -87,7 +96,7 @@ const ChatPreferencesAutoReplyWaitTimeSettings = ({
                     className={cn('mb-2', css.radioFieldSet)}
                     options={autoResponderOptions}
                     selectedValue={autoResponderReply}
-                    onChange={(value) => onAutoResponderReplyChange(value)}
+                    onChange={onReplyTypeChange}
                     isDisabled={!isEnabled}
                 />
             </div>

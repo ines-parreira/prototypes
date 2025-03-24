@@ -243,8 +243,8 @@ export type HandoverConfigurationData = {
     shopType: string
     integrationId: number
     channel: AiAgentChannel
-    onlineInstructions: string | null
-    offlineInstructions: string | null
+    onlineInstructions: Maybe<string>
+    offlineInstructions: Maybe<string>
     shareBusinessHours: boolean
 }
 

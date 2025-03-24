@@ -1,5 +1,9 @@
 import { AiAgentOnboardingWizardStep, Tag } from 'models/aiAgent/types'
 import { CreateArticleDto, LocaleCode } from 'models/helpCenter/types'
+import {
+    GorgiasChatAutoResponderReply,
+    GorgiasChatEmailCaptureType,
+} from 'models/integration/types'
 import { Components } from 'rest_api/help_center_api/client.generated'
 
 import { AiAgentChannel, ToneOfVoice } from './constants'
@@ -114,4 +118,12 @@ export enum AIAgentPaywallFeatures {
     Automate = 'Automate',
     SalesWaitlist = 'SalesWaitlist',
     SalesSetup = 'SalesSetup',
+}
+
+export type HandoverCustomizationOnlineSettingsFormValues = {
+    onlineInstructions: string
+    emailCaptureEnabled: boolean
+    emailCaptureEnforcement: GorgiasChatEmailCaptureType
+    autoResponderEnabled: boolean
+    autoResponderReply: GorgiasChatAutoResponderReply
 }

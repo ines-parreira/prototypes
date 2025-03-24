@@ -1,0 +1,196 @@
+import { fromJS } from 'immutable'
+
+import {
+    GORGIAS_CHAT_AUTO_RESPONDER_ENABLED_DEFAULT,
+    GORGIAS_CHAT_WIDGET_EMAIL_CAPTURE_DEFAULT,
+    GORGIAS_CHAT_WIDGET_EMAIL_CAPTURE_ENABLED_DEFAULT,
+} from 'config/integrations/gorgias_chat'
+import { HandoverConfigurationData } from 'models/aiAgent/types'
+import {
+    GorgiasChatAutoResponderReply,
+    GorgiasChatEmailCaptureType,
+    GorgiasChatIntegration,
+    GorgiasChatIntegrationMeta,
+    IntegrationType,
+} from 'models/integration/types'
+
+import { AiAgentStoreHandoverConfiguration } from '../hooks/useFetchAiAgentHandoverConfiguration'
+import { HandoverCustomizationOnlineSettingsFormValues } from '../types'
+import { createHandoverConfigurationData } from './handoverCustomizationConfiguration.utils'
+
+export const initialFormFieldValues: HandoverCustomizationOnlineSettingsFormValues =
+    {
+        onlineInstructions: '',
+        emailCaptureEnabled: GORGIAS_CHAT_WIDGET_EMAIL_CAPTURE_ENABLED_DEFAULT,
+        emailCaptureEnforcement: GORGIAS_CHAT_WIDGET_EMAIL_CAPTURE_DEFAULT,
+        autoResponderEnabled: GORGIAS_CHAT_AUTO_RESPONDER_ENABLED_DEFAULT,
+        autoResponderReply: GorgiasChatAutoResponderReply.ReplyDynamic,
+    }
+
+/**
+ * This object maps each field from the settings form to its configuration.
+ * it contains the friendly name of the field and validation constraints
+ */
+export const formFieldsConfiguration: Record<
+    keyof HandoverCustomizationOnlineSettingsFormValues,
+    {
+        required: boolean
+        friendlyName: string
+        maxLength?: number
+    }
+> = {
+    onlineInstructions: {
+        friendlyName: 'Online instructions',
+        required: false,
+        maxLength: 255,
+    },
+    emailCaptureEnabled: {
+        friendlyName: 'Enable email capture',
+        required: false,
+    },
+    emailCaptureEnforcement: {
+        friendlyName: 'Email capture enforcement option',
+        required: false,
+    },
+    autoResponderEnabled: {
+        friendlyName: 'Enable send wait time',
+        required: false,
+    },
+    autoResponderReply: {
+        friendlyName: 'Send wait time option',
+        required: false,
+    },
+}
+
+export const getIntegrationPreferencesFormDataFragment = (
+    integration: GorgiasChatIntegration,
+): Pick<
+    HandoverCustomizationOnlineSettingsFormValues,
+    | 'emailCaptureEnabled'
+    | 'emailCaptureEnforcement'
+    | 'autoResponderEnabled'
+    | 'autoResponderReply'
+> => {
+    /// from the integration preferences
+    const { meta } = integration
+
+    const emailCaptureEnabled =
+        meta?.preferences?.email_capture_enabled ??
+        initialFormFieldValues.emailCaptureEnabled
+
+    const emailCaptureEnforcement = (meta?.preferences
+        ?.email_capture_enforcement ??
+        initialFormFieldValues.emailCaptureEnforcement) as GorgiasChatEmailCaptureType
+
+    const autoResponderEnabled =
+        meta?.preferences?.auto_responder?.enabled ??
+        initialFormFieldValues.autoResponderEnabled
+
+    const autoResponderReply = (meta?.preferences?.auto_responder?.reply ??
+        initialFormFieldValues.autoResponderReply) as GorgiasChatAutoResponderReply
+
+    return {
+        emailCaptureEnabled,
+        emailCaptureEnforcement,
+        autoResponderEnabled,
+        autoResponderReply,
+    }
+}
+
+export const getHandoverConfigurationFormDataFragment = (
+    currentHandoverConfiguration?: HandoverConfigurationData,
+): Pick<
+    HandoverCustomizationOnlineSettingsFormValues,
+    'onlineInstructions'
+> => {
+    const onlineInstructions =
+        currentHandoverConfiguration?.onlineInstructions ?? ''
+
+    return {
+        onlineInstructions,
+    }
+}
+
+export const hasAnyChangeInFormValues = <T extends Object>(
+    currentValues: T,
+    originalValues: Partial<T>,
+) => {
+    for (const key of Object.keys(currentValues)) {
+        if (
+            originalValues[key as keyof T] !== undefined &&
+            currentValues[key as keyof T] !== originalValues[key as keyof T]
+        ) {
+            return true
+        }
+    }
+    return false
+}
+
+export const mapFromFormValuesToIntegrationPreferences = (
+    formValues: HandoverCustomizationOnlineSettingsFormValues,
+    integration: GorgiasChatIntegration,
+) => {
+    const { meta } = integration
+
+    const { preferences: currentPreferences } = meta
+
+    const changedPreferences: GorgiasChatIntegrationMeta['preferences'] = {
+        email_capture_enabled: formValues.emailCaptureEnabled,
+        email_capture_enforcement: formValues.emailCaptureEnforcement,
+        auto_responder: {
+            enabled: formValues.autoResponderEnabled,
+            reply: formValues.autoResponderReply,
+        },
+    }
+
+    const newPreferences = currentPreferences
+        ? { ...currentPreferences, ...changedPreferences }
+        : changedPreferences
+
+    const payload = {
+        id: integration.id,
+        meta: {
+            ...meta,
+            preferences: newPreferences,
+        },
+    }
+
+    return fromJS(payload)
+}
+
+type MapFormValuesToHandoverConfigurationDataProps = {
+    accountId: number
+    storeName: string
+    shopType: string
+    integrationId: number
+    integrationType: IntegrationType
+    formValues: HandoverCustomizationOnlineSettingsFormValues
+    configuration?: AiAgentStoreHandoverConfiguration
+}
+
+export const mapFormValuesToHandoverConfigurationData = ({
+    accountId,
+    storeName,
+    shopType,
+    integrationId,
+    integrationType,
+    formValues,
+    configuration,
+}: MapFormValuesToHandoverConfigurationDataProps): HandoverConfigurationData => {
+    let newConfiguration = configuration
+    if (!newConfiguration) {
+        // in cases where the configuration is not uploaded yet, we create a new one
+        newConfiguration = createHandoverConfigurationData({
+            accountId,
+            storeName,
+            shopType,
+            integrationId,
+            integrationType,
+        })
+    }
+
+    return {
+        ...newConfiguration,
+        onlineInstructions: formValues.onlineInstructions,
+    }
+}

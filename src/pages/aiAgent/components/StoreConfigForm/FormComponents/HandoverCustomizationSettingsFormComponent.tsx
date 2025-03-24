@@ -44,8 +44,8 @@ export const HandoverCustomizationSettingsFormComponent = ({
 }: Props) => {
     const chatChannels = useSelfServiceChatChannels(shopType, shopName)
 
-    const [selectedChat, setSelectedChat] = useState(
-        getSelectedChat(chatChannels, monitoredChatIntegrationIds),
+    const [selectedChatId, setSelectedChatId] = useState(
+        getSelectedChat(chatChannels, monitoredChatIntegrationIds)?.value.id,
     )
 
     const availableChats = useMemo(() => {
@@ -54,11 +54,15 @@ export const HandoverCustomizationSettingsFormComponent = ({
         )
     }, [chatChannels, monitoredChatIntegrationIds])
 
+    const selectedChat = useMemo(() => {
+        return availableChats.find((chat) => chat.value.id === selectedChatId)
+    }, [availableChats, selectedChatId])
+
     const onSelectedChatChange = useCallback(
         (value: Value) => {
             const chat = availableChats.find((chat) => chat.value.id === value)
             if (chat) {
-                setSelectedChat(chat)
+                setSelectedChatId(chat.value.id)
             }
         },
         [availableChats],
@@ -115,7 +119,9 @@ export const HandoverCustomizationSettingsFormComponent = ({
                         </div>
                     </AccordionHeader>
                     <AccordionBody>
-                        <HandoverCustomizationOnlineSettings />
+                        <HandoverCustomizationOnlineSettings
+                            integration={selectedChat.value}
+                        />
                     </AccordionBody>
                 </AccordionItem>
                 <AccordionItem>

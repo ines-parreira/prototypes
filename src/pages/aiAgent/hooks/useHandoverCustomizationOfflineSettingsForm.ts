@@ -138,15 +138,15 @@ export const useHandoverCustomizationOfflineSettingsForm = ({
             return
         }
 
-        const mergedData = mapFormValuesToHandoverConfigurationData(
+        const mergedData = mapFormValuesToHandoverConfigurationData({
             accountId,
             storeName,
             shopType,
             integrationId,
             integrationType,
             formValues,
-            currentHandoverConfiguration,
-        )
+            configuration: currentHandoverConfiguration,
+        })
 
         try {
             setIsSaving(true)

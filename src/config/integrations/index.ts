@@ -1,3 +1,5 @@
+import { GorgiasChatAutoResponderReply } from 'models/integration/types'
+
 import * as bigcommerce from './bigcommerce'
 import CHAT_AUTO_RESPONDER_TEXTS_IMPORT from './chat_auto_responder_texts.json'
 import * as facebook from './facebook'
@@ -15,13 +17,18 @@ const allIntegrations = [
     bigcommerce,
 ]
 
-export const CHAT_AUTO_RESPONDER_REPLY_SHORTLY = 'reply-shortly'
-export const CHAT_AUTO_RESPONDER_REPLY_IN_MINUTES = 'reply-in-minutes'
-export const CHAT_AUTO_RESPONDER_REPLY_IN_HOURS = 'reply-in-hours'
-export const CHAT_AUTO_RESPONDER_REPLY_IN_DAY = 'reply-in-day'
+export const CHAT_AUTO_RESPONDER_REPLY_SHORTLY =
+    GorgiasChatAutoResponderReply.ReplyShortly
+export const CHAT_AUTO_RESPONDER_REPLY_IN_MINUTES =
+    GorgiasChatAutoResponderReply.ReplyInMinutes
+export const CHAT_AUTO_RESPONDER_REPLY_IN_HOURS =
+    GorgiasChatAutoResponderReply.ReplyInHours
+export const CHAT_AUTO_RESPONDER_REPLY_IN_DAY =
+    GorgiasChatAutoResponderReply.ReplyInDay
 export const CHAT_AUTO_RESPONDER_REPLY_DEFAULT =
     CHAT_AUTO_RESPONDER_REPLY_SHORTLY
 export const CHAT_AUTO_RESPONDER_ENABLED_DEFAULT = false
+
 export const CHAT_AUTO_RESPONDER_REPLY_OPTIONS = [
     CHAT_AUTO_RESPONDER_REPLY_SHORTLY,
     CHAT_AUTO_RESPONDER_REPLY_IN_MINUTES,

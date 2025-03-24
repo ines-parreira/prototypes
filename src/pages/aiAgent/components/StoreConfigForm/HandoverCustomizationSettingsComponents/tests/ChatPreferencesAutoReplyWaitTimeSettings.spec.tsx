@@ -2,18 +2,14 @@ import React from 'react'
 
 import { fireEvent, render, screen } from '@testing-library/react'
 
-import {
-    GORGIAS_CHAT_AUTO_RESPONDER_REPLY_DYNAMIC,
-    GORGIAS_CHAT_AUTO_RESPONDER_REPLY_IN_HOURS,
-    GORGIAS_CHAT_AUTO_RESPONDER_REPLY_IN_MINUTES,
-} from 'config/integrations/gorgias_chat'
+import { GorgiasChatAutoResponderReply } from 'models/integration/types'
 
 import ChatPreferencesAutoReplyWaitTimeSettings from '../ChatPreferencesAutoReplyWaitTimeSettings'
 
 describe('ChatPreferencesAutoReplyWaitTimeSettings', () => {
     const defaultProps = {
         isEnabled: true,
-        autoResponderReply: GORGIAS_CHAT_AUTO_RESPONDER_REPLY_DYNAMIC,
+        autoResponderReply: GorgiasChatAutoResponderReply.ReplyDynamic,
         onToggleEnablement: jest.fn(),
         onAutoResponderReplyChange: jest.fn(),
     }
@@ -68,7 +64,7 @@ describe('ChatPreferencesAutoReplyWaitTimeSettings', () => {
         fireEvent.click(option)
 
         expect(defaultProps.onAutoResponderReplyChange).toHaveBeenCalledWith(
-            GORGIAS_CHAT_AUTO_RESPONDER_REPLY_IN_MINUTES,
+            GorgiasChatAutoResponderReply.ReplyInMinutes,
         )
     })
 
@@ -81,7 +77,7 @@ describe('ChatPreferencesAutoReplyWaitTimeSettings', () => {
         fireEvent.click(option)
 
         expect(defaultProps.onAutoResponderReplyChange).toHaveBeenCalledWith(
-            GORGIAS_CHAT_AUTO_RESPONDER_REPLY_IN_HOURS,
+            GorgiasChatAutoResponderReply.ReplyInHours,
         )
     })
 
@@ -90,7 +86,7 @@ describe('ChatPreferencesAutoReplyWaitTimeSettings', () => {
             <ChatPreferencesAutoReplyWaitTimeSettings
                 {...defaultProps}
                 autoResponderReply={
-                    GORGIAS_CHAT_AUTO_RESPONDER_REPLY_IN_MINUTES
+                    GorgiasChatAutoResponderReply.ReplyInMinutes
                 }
             />,
         )
@@ -101,7 +97,7 @@ describe('ChatPreferencesAutoReplyWaitTimeSettings', () => {
         fireEvent.click(option)
 
         expect(defaultProps.onAutoResponderReplyChange).toHaveBeenCalledWith(
-            GORGIAS_CHAT_AUTO_RESPONDER_REPLY_DYNAMIC,
+            GorgiasChatAutoResponderReply.ReplyDynamic,
         )
     })
 
@@ -123,7 +119,7 @@ describe('ChatPreferencesAutoReplyWaitTimeSettings', () => {
         render(
             <ChatPreferencesAutoReplyWaitTimeSettings
                 {...defaultProps}
-                autoResponderReply={GORGIAS_CHAT_AUTO_RESPONDER_REPLY_IN_HOURS}
+                autoResponderReply={GorgiasChatAutoResponderReply.ReplyInHours}
             />,
         )
 

@@ -4,6 +4,8 @@ import { Language as LanguagePickerItem } from 'pages/common/components/Language
 
 import { Language } from '../../constants/languages'
 import {
+    GorgiasChatAutoResponderReply,
+    GorgiasChatEmailCaptureType,
     GorgiasChatIntegrationMeta,
     GorgiasChatPosition,
     GorgiasChatPositionAlignmentEnum,
@@ -121,11 +123,12 @@ export const GORGIAS_CHAT_DEFAULT_FONTS = [
 
 // Email capture
 export const GORGIAS_CHAT_WIDGET_EMAIL_CAPTURE_ENABLED_DEFAULT = true
-export const GORGIAS_CHAT_WIDGET_EMAIL_CAPTURE_OPTIONAL = 'optional'
+export const GORGIAS_CHAT_WIDGET_EMAIL_CAPTURE_OPTIONAL =
+    GorgiasChatEmailCaptureType.Optional
 export const GORGIAS_CHAT_WIDGET_EMAIL_CAPTURE_REQUIRED_OUTSIDE_BUSINESS_HOURS_DEPRECATED =
-    'required-outside-business-hours'
+    GorgiasChatEmailCaptureType.RequiredOutsideBusinessHours
 export const GORGIAS_CHAT_WIDGET_EMAIL_CAPTURE_ALWAYS_REQUIRED =
-    'always-required'
+    GorgiasChatEmailCaptureType.AlwaysRequired
 export const GORGIAS_CHAT_WIDGET_EMAIL_CAPTURE_DEFAULT =
     GORGIAS_CHAT_WIDGET_EMAIL_CAPTURE_OPTIONAL
 
@@ -137,18 +140,23 @@ export const GORGIAS_CHAT_WIDGET_PRIVACY_POLICY_DISCLAIMER_ENABLED_DEFAULT =
 
 // Auto responder
 export const GORGIAS_CHAT_AUTO_RESPONDER_ENABLED_DEFAULT = true
-export const GORGIAS_CHAT_AUTO_RESPONDER_REPLY_SHORTLY = 'reply-shortly'
-export const GORGIAS_CHAT_AUTO_RESPONDER_REPLY_IN_MINUTES = 'reply-in-minutes'
-export const GORGIAS_CHAT_AUTO_RESPONDER_REPLY_IN_HOURS = 'reply-in-hours'
-export const GORGIAS_CHAT_AUTO_RESPONDER_REPLY_IN_DAY = 'reply-in-day'
-export const GORGIAS_CHAT_AUTO_RESPONDER_REPLY_DYNAMIC = 'reply-dynamic'
+export const GORGIAS_CHAT_AUTO_RESPONDER_REPLY_SHORTLY =
+    GorgiasChatAutoResponderReply.ReplyShortly
+export const GORGIAS_CHAT_AUTO_RESPONDER_REPLY_IN_MINUTES =
+    GorgiasChatAutoResponderReply.ReplyInMinutes
+export const GORGIAS_CHAT_AUTO_RESPONDER_REPLY_IN_HOURS =
+    GorgiasChatAutoResponderReply.ReplyInHours
+export const GORGIAS_CHAT_AUTO_RESPONDER_REPLY_IN_DAY =
+    GorgiasChatAutoResponderReply.ReplyInDay
+export const GORGIAS_CHAT_AUTO_RESPONDER_REPLY_DYNAMIC =
+    GorgiasChatAutoResponderReply.ReplyDynamic
 
 export const GORGIAS_CHAT_AUTO_RESPONDER_REPLY_OPTIONS = [
-    GORGIAS_CHAT_AUTO_RESPONDER_REPLY_DYNAMIC,
-    GORGIAS_CHAT_AUTO_RESPONDER_REPLY_SHORTLY,
-    GORGIAS_CHAT_AUTO_RESPONDER_REPLY_IN_MINUTES,
-    GORGIAS_CHAT_AUTO_RESPONDER_REPLY_IN_HOURS,
-    GORGIAS_CHAT_AUTO_RESPONDER_REPLY_IN_DAY,
+    GorgiasChatAutoResponderReply.ReplyDynamic,
+    GorgiasChatAutoResponderReply.ReplyShortly,
+    GorgiasChatAutoResponderReply.ReplyInMinutes,
+    GorgiasChatAutoResponderReply.ReplyInHours,
+    GorgiasChatAutoResponderReply.ReplyInDay,
 ] as const
 
 export const isAutoresponderReply = (

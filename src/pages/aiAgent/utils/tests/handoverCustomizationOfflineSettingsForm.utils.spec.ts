@@ -34,14 +34,14 @@ describe('handoverCustomizationOfflineSettingsForm.utils', () => {
                         shareBusinessHours: true,
                     }
 
-                const result = mapFormValuesToHandoverConfigurationData(
-                    mockAccountId,
-                    mockStoreName,
-                    mockShopType,
-                    mockIntegrationId,
-                    IntegrationType.GorgiasChat,
+                const result = mapFormValuesToHandoverConfigurationData({
+                    accountId: mockAccountId,
+                    storeName: mockStoreName,
+                    shopType: mockShopType,
+                    integrationId: mockIntegrationId,
+                    integrationType: IntegrationType.GorgiasChat,
                     formValues,
-                )
+                })
 
                 expect(result).toEqual({
                     accountId: mockAccountId,
@@ -49,7 +49,7 @@ describe('handoverCustomizationOfflineSettingsForm.utils', () => {
                     shopType: mockShopType,
                     integrationId: mockIntegrationId,
                     channel: AiAgentChannel.Chat,
-                    onlineInstructions: null,
+                    onlineInstructions: undefined,
                     offlineInstructions: 'Custom offline instructions',
                     shareBusinessHours: true,
                 })
@@ -74,15 +74,15 @@ describe('handoverCustomizationOfflineSettingsForm.utils', () => {
                         shareBusinessHours: true,
                     }
 
-                const result = mapFormValuesToHandoverConfigurationData(
-                    mockAccountId,
-                    mockStoreName,
-                    mockShopType,
-                    mockIntegrationId,
-                    IntegrationType.GorgiasChat,
+                const result = mapFormValuesToHandoverConfigurationData({
+                    accountId: mockAccountId,
+                    storeName: mockStoreName,
+                    shopType: mockShopType,
+                    integrationId: mockIntegrationId,
+                    integrationType: IntegrationType.GorgiasChat,
                     formValues,
-                    existingConfiguration,
-                )
+                    configuration: existingConfiguration,
+                })
 
                 expect(result).toEqual({
                     ...existingConfiguration,
@@ -100,14 +100,14 @@ describe('handoverCustomizationOfflineSettingsForm.utils', () => {
                         shareBusinessHours: true,
                     }
 
-                const result = mapFormValuesToHandoverConfigurationData(
-                    mockAccountId,
-                    mockStoreName,
-                    mockShopType,
-                    mockIntegrationId,
-                    IntegrationType.Email,
+                const result = mapFormValuesToHandoverConfigurationData({
+                    accountId: mockAccountId,
+                    storeName: mockStoreName,
+                    shopType: mockShopType,
+                    integrationId: mockIntegrationId,
+                    integrationType: IntegrationType.Email,
                     formValues,
-                )
+                })
 
                 expect(result).toEqual({
                     accountId: mockAccountId,
@@ -115,7 +115,7 @@ describe('handoverCustomizationOfflineSettingsForm.utils', () => {
                     shopType: mockShopType,
                     integrationId: mockIntegrationId,
                     channel: AiAgentChannel.Email,
-                    onlineInstructions: null,
+                    onlineInstructions: undefined,
                     offlineInstructions: 'New Email offline instructions',
                     shareBusinessHours: true,
                 })
@@ -143,15 +143,15 @@ describe('handoverCustomizationOfflineSettingsForm.utils', () => {
                         shareBusinessHours: true,
                     }
 
-                const result = mapFormValuesToHandoverConfigurationData(
-                    mockAccountId,
-                    mockStoreName,
-                    mockShopType,
-                    mockIntegrationId,
-                    IntegrationType.Email,
+                const result = mapFormValuesToHandoverConfigurationData({
+                    accountId: mockAccountId,
+                    storeName: mockStoreName,
+                    shopType: mockShopType,
+                    integrationId: mockIntegrationId,
+                    integrationType: IntegrationType.Email,
                     formValues,
-                    existingConfiguration,
-                )
+                    configuration: existingConfiguration,
+                })
 
                 expect(result).toEqual({
                     ...existingConfiguration,
@@ -169,14 +169,14 @@ describe('handoverCustomizationOfflineSettingsForm.utils', () => {
                         shareBusinessHours: false,
                     }
 
-                const result = mapFormValuesToHandoverConfigurationData(
-                    mockAccountId,
-                    mockStoreName,
-                    mockShopType,
-                    mockIntegrationId,
-                    IntegrationType.GorgiasChat,
-                    emptyFormValues,
-                )
+                const result = mapFormValuesToHandoverConfigurationData({
+                    accountId: mockAccountId,
+                    storeName: mockStoreName,
+                    shopType: mockShopType,
+                    integrationId: mockIntegrationId,
+                    integrationType: IntegrationType.GorgiasChat,
+                    formValues: emptyFormValues,
+                })
 
                 expect(result).toEqual({
                     accountId: mockAccountId,
@@ -184,7 +184,7 @@ describe('handoverCustomizationOfflineSettingsForm.utils', () => {
                     shopType: mockShopType,
                     integrationId: mockIntegrationId,
                     channel: AiAgentChannel.Chat,
-                    onlineInstructions: null,
+                    onlineInstructions: undefined,
                     offlineInstructions: '',
                     shareBusinessHours: false,
                 })
@@ -197,14 +197,14 @@ describe('handoverCustomizationOfflineSettingsForm.utils', () => {
                         shareBusinessHours: false,
                     }
 
-                const result = mapFormValuesToHandoverConfigurationData(
-                    mockAccountId,
-                    mockStoreName,
-                    mockShopType,
-                    mockIntegrationId,
-                    IntegrationType.Email,
-                    emptyFormValues,
-                )
+                const result = mapFormValuesToHandoverConfigurationData({
+                    accountId: mockAccountId,
+                    storeName: mockStoreName,
+                    shopType: mockShopType,
+                    integrationId: mockIntegrationId,
+                    integrationType: IntegrationType.Email,
+                    formValues: emptyFormValues,
+                })
 
                 expect(result).toEqual({
                     accountId: mockAccountId,
@@ -213,7 +213,7 @@ describe('handoverCustomizationOfflineSettingsForm.utils', () => {
                     integrationId: mockIntegrationId,
                     channel: AiAgentChannel.Email,
                     offlineInstructions: '',
-                    onlineInstructions: null,
+                    onlineInstructions: undefined,
                     shareBusinessHours: false,
                 })
             })
@@ -239,15 +239,15 @@ describe('handoverCustomizationOfflineSettingsForm.utils', () => {
                         shareBusinessHours: false,
                     }
 
-                const result = mapFormValuesToHandoverConfigurationData(
-                    mockAccountId,
-                    mockStoreName,
-                    mockShopType,
-                    mockIntegrationId,
-                    IntegrationType.Email,
+                const result = mapFormValuesToHandoverConfigurationData({
+                    accountId: mockAccountId,
+                    storeName: mockStoreName,
+                    shopType: mockShopType,
+                    integrationId: mockIntegrationId,
+                    integrationType: IntegrationType.Email,
                     formValues,
-                    existingConfiguration,
-                )
+                    configuration: existingConfiguration,
+                })
 
                 // The result should contain existing configuration with only form values updated
                 expect(result).toEqual({
