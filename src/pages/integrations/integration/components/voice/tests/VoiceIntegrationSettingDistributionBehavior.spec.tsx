@@ -1,6 +1,5 @@
-import { render } from '@testing-library/react'
-
 import { FormField, useFormContext } from 'core/forms'
+import { renderWithQueryClientProvider } from 'tests/reactQueryTestingUtils'
 import { assumeMock } from 'utils/testing'
 
 import VoiceIntegrationSettingDistributionBehavior from '../VoiceIntegrationSettingDistributionBehavior'
@@ -16,12 +15,17 @@ const mockUseFormContextReturnValue = {
 jest.mock('react-hook-form')
 const useFormContextMock = assumeMock(useFormContext)
 
+jest.mock('../VoiceQueueSummary', () => () => <div>VoiceQueueSummary</div>)
+
 describe('VoiceIntegrationSettingDistributionBehavior', () => {
     const renderComponent = (
         props: {
             showVoicemailOutsideBusinessHours?: boolean
         } = {},
-    ) => render(<VoiceIntegrationSettingDistributionBehavior {...props} />)
+    ) =>
+        renderWithQueryClientProvider(
+            <VoiceIntegrationSettingDistributionBehavior {...props} />,
+        )
 
     beforeEach(() => {
         FormFieldMock.mockImplementation(({ label }: any) => <div>{label}</div>)
@@ -29,7 +33,7 @@ describe('VoiceIntegrationSettingDistributionBehavior', () => {
     })
 
     it('should render send calls to voicemail', () => {
-        watchMock.mockReturnValue(true)
+        watchMock.mockReturnValue([true, null])
 
         const { queryByText } = renderComponent()
         expect(FormFieldMock).toHaveBeenCalledWith(
@@ -59,7 +63,7 @@ describe('VoiceIntegrationSettingDistributionBehavior', () => {
     })
 
     it('should render distribution options', () => {
-        watchMock.mockReturnValue(false)
+        watchMock.mockReturnValue([false, 20])
 
         const { getByText } = renderComponent()
 
@@ -67,6 +71,7 @@ describe('VoiceIntegrationSettingDistributionBehavior', () => {
         expect(
             getByText('Send calls to voicemail outside business hours'),
         ).toBeInTheDocument()
+        expect(getByText('VoiceQueueSummary')).toBeInTheDocument()
 
         expect(FormFieldMock).toHaveBeenCalledWith(
             expect.objectContaining({
@@ -89,7 +94,7 @@ describe('VoiceIntegrationSettingDistributionBehavior', () => {
     })
 
     it('should hide voicemail outside business hours', () => {
-        watchMock.mockReturnValue(false)
+        watchMock.mockReturnValue([false, 20])
 
         const { queryByText } = renderComponent({
             showVoicemailOutsideBusinessHours: false,
@@ -108,7 +113,7 @@ describe('VoiceIntegrationSettingDistributionBehavior', () => {
     `(
         'should transform send_calls_to_voicemail correctly',
         ({ sendCallsToVoicemail, inputValue }) => {
-            watchMock.mockReturnValue(true)
+            watchMock.mockReturnValue([true, null])
 
             FormFieldMock.mockImplementation(
                 ({ inputTransform, outputTransform }: any) => (

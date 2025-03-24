@@ -9,6 +9,7 @@ import IconTooltip from 'pages/common/forms/IconTooltip/IconTooltip'
 import PreviewRadioFieldSet from 'pages/common/forms/PreviewRadioFieldSet'
 
 import { PHONE_INTEGRATION_BASE_URL } from './constants'
+import VoiceQueueSummary from './VoiceQueueSummary'
 
 import css from './VoiceIntegrationSettingDistributionBehavior.less'
 
@@ -20,7 +21,10 @@ function VoiceIntegrationSettingDistributionBehavior({
     showVoicemailOutsideBusinessHours = true,
 }: VoiceIntegrationSettingDistributionBehaviorProps) {
     const { watch } = useFormContext<UpdateAllPhoneIntegrationSettings>()
-    const send_calls_to_voicemail = watch('meta.send_calls_to_voicemail')
+    const [send_calls_to_voicemail, queue_id] = watch([
+        'meta.send_calls_to_voicemail',
+        'meta.queue_id',
+    ])
 
     return (
         <div className={css.container}>
@@ -77,6 +81,7 @@ function VoiceIntegrationSettingDistributionBehavior({
                             </>
                         }
                     />
+                    {queue_id && <VoiceQueueSummary queue_id={queue_id} />}
                     {showVoicemailOutsideBusinessHours && (
                         <FormField
                             name="meta.preferences.voicemail_outside_business_hours"

@@ -1,0 +1,13 @@
+@import (reference) '~@gorgias/design-tokens/dist/css/layout';
+@import (reference) '~css/typography';
+
+:local {
+    .linkButton {
+        margin-left: -8px; // this is needed to align the button with the content
+    }
+
+    .collapsibleTitle {
+        .component-button-small();
+        color: var(--main-primary);
+    }
+}
