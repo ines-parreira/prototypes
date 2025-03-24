@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 
 import { useHistory, useLocation, useParams } from 'react-router-dom'
 
@@ -14,13 +14,13 @@ export const useActivationModalDisclosure = () => {
     const shopName =
         FocusActivationModal.extractStoreName(location) ?? params.shopName
 
-    const closeModal = () => {
+    const closeModal = useCallback(() => {
         setIsModalVisible(false)
         // Remove the focusActivationModal search param from the current url
         const searchParams = new URLSearchParams(location.search)
         searchParams.delete(FocusActivationModal.searchParam)
         history.push(`${location.pathname}?${searchParams.toString()}`)
-    }
+    }, [history, location.search, location.pathname])
 
     useEffect(() => {
         const searchParams = new URLSearchParams(location.search)

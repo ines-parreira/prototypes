@@ -376,4 +376,27 @@ describe('useActivation', () => {
         expect(onSaleEnabledResult).toBe(false)
         expect(setIsPreviewModalVisibleMocked).toHaveBeenCalled()
     })
+
+    // This test is necessary to prevent regressions in the future if any props of the components change and the memoization is not working properly
+    it('should not change the components after a rerender if nothing changed', () => {
+        mockedUseEarlyAccessModalState.mockReturnValue(
+            defaultUseEarlyAccessModalStateReturnValue,
+        )
+
+        const { result, rerender } = renderHookWithRouter()
+
+        const initialResult = result.current
+
+        rerender()
+
+        const finalResult = result.current
+
+        expect(initialResult.ActivationButton).toBe(
+            finalResult.ActivationButton,
+        )
+        expect(initialResult.ActivationModal).toBe(finalResult.ActivationModal)
+        expect(initialResult.EarlyAccessModal).toBe(
+            finalResult.EarlyAccessModal,
+        )
+    })
 })
