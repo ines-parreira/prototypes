@@ -7,15 +7,12 @@ import {
 import {
     aiAgentTicketsWithIntentQueryFactory,
     aiAgentTouchedTicketQueryFactory,
-    allTicketsForAiAgentTotalCountQueryFactory,
+    aiAgentTouchedTicketTotalCountQueryFactory,
     customerSatisfactionPerIntentLevelQueryFactory,
     recommendedResourceQueryFactory,
 } from 'models/reporting/queryFactories/ai-agent-insights/metrics'
-import { customFieldsTicketCountQueryFactory } from 'models/reporting/queryFactories/ticket-insights/customFieldsTicketCount'
-import {
-    ReportingFilter,
-    ReportingFilterOperator,
-} from 'models/reporting/types'
+import { aiAgentTicketsPerIntentCountQueryFactory } from 'models/reporting/queryFactories/ticket-insights/customFieldsTicketCount'
+import { ReportingFilterOperator } from 'models/reporting/types'
 import { StatsFilters } from 'models/stat/types'
 import { NotSpamNorTrashedTicketsFilter } from 'utils/reporting'
 
@@ -30,13 +27,15 @@ export const useTotalAiAgentTicketsByCustomField = (
     filters: StatsFilters,
     timezone: string,
     intentFieldId: number,
+    outcomeFieldId: number,
     sorting?: OrderDirection,
 ) =>
     useMetric(
-        allTicketsForAiAgentTotalCountQueryFactory({
+        aiAgentTouchedTicketTotalCountQueryFactory({
             filters,
             timezone,
             intentFieldId,
+            outcomeFieldId,
             sorting,
         }),
     )
@@ -64,39 +63,30 @@ export const useAiAgentTickets = (
         }),
     )
 
-export const useAiAgentTicketCountPerIntent = (
-    filters: StatsFilters,
-    timezone: string,
-    intentFieldId: number | undefined,
-    ticketIds?: string[] | undefined,
-    sorting?: OrderDirection,
-    customFieldValue?: string,
-) => {
-    const additionalFilters: ReportingFilter[] = []
-    if (ticketIds && ticketIds.length) {
-        additionalFilters.push({
-            member: TicketDimension.TicketId,
-            operator: ReportingFilterOperator.In,
-            values: ticketIds,
-        })
-    }
-
-    if (customFieldValue) {
-        additionalFilters.push({
-            member: TicketCustomFieldsMember.TicketCustomFieldsValueString,
-            operator: ReportingFilterOperator.StartsWith,
-            values: [customFieldValue],
-        })
-    }
-
+export const useAiAgentTicketCountPerIntent = ({
+    filters,
+    timezone,
+    intentFieldId,
+    ticketIds,
+    sorting,
+    intentId,
+}: {
+    filters: StatsFilters
+    timezone: string
+    intentFieldId: number
+    ticketIds?: string[]
+    sorting?: OrderDirection
+    intentId?: string
+}) => {
     return useMetricPerDimension(
-        customFieldsTicketCountQueryFactory(
+        aiAgentTicketsPerIntentCountQueryFactory({
             filters,
             timezone,
-            String(intentFieldId || -1),
+            intentFieldId: intentFieldId,
             sorting,
-            additionalFilters,
-        ),
+            ticketIds: ticketIds,
+            intentId: intentId,
+        }),
     )
 }
 
@@ -105,14 +95,18 @@ export const useCustomerSatisfactionMetricPerIntentLevel = (
     timezone: string,
     sorting?: OrderDirection,
     assigneeUserId?: string,
+    intentCustomFieldId?: number,
+    outcomeCustomFieldId?: number,
 ) => {
     return useMetricPerDimension(
-        customerSatisfactionPerIntentLevelQueryFactory(
+        customerSatisfactionPerIntentLevelQueryFactory({
             filters,
             timezone,
             sorting,
             assigneeUserId,
-        ),
+            intentFieldId: intentCustomFieldId,
+            outcomeFieldId: outcomeCustomFieldId,
+        }),
     )
 }
 
@@ -138,7 +132,7 @@ export const useAIAgentTicketsWithIntent = (
 
 export const useGetTicketIntentsForTicketIds = (
     timezone: string,
-    customFieldId: string | null,
+    customFieldId?: number,
     sorting?: OrderDirection,
     ticketIds?: string[] | null,
 ) => {
@@ -150,11 +144,15 @@ export const useGetTicketIntentsForTicketIds = (
         ],
         timezone,
         filters: [
-            {
-                member: TicketCustomFieldsMember.TicketCustomFieldsCustomFieldId,
-                operator: ReportingFilterOperator.Equals,
-                values: [customFieldId],
-            },
+            ...(customFieldId
+                ? [
+                      {
+                          member: TicketCustomFieldsMember.TicketCustomFieldsCustomFieldId,
+                          operator: ReportingFilterOperator.Equals,
+                          values: [String(customFieldId)],
+                      },
+                  ]
+                : []),
             ...(ticketIds
                 ? [
                       {

@@ -368,7 +368,6 @@ export const getDrillDownQuery = (
                     metricName.intentFieldId,
                     metricName.intentFieldValues,
                     metricName.outcomeFieldId,
-                    metricName.dateRange || statsFilters.period,
                     sorting,
                 )
         case AIInsightsMetric.TicketDrillDownPerCoverageRate:
@@ -382,7 +381,6 @@ export const getDrillDownQuery = (
                     timezone,
                     metricName.outcomeFieldId || -1,
                     metricName.intentFieldId || -1,
-                    metricName.dateRange || statsFilters.period,
                     sorting,
                 )
 
@@ -396,6 +394,8 @@ export const getDrillDownQuery = (
                     statsFilters,
                     timezone,
                     metricName.perAgentId,
+                    metricName.intentFieldId,
+                    metricName.outcomeFieldId,
                     sorting,
                 )
 

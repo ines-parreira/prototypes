@@ -80,6 +80,7 @@ export const Level2IntentsPerformance = () => {
                     drillDownMetricAdditionalData: {
                         perAgentId: aiAgentUserId,
                         intentFieldId: intentCustomFieldId,
+                        outcomeFieldId: outcomeCustomFieldId,
                         intentFieldValues: [intentId],
                     },
                 },

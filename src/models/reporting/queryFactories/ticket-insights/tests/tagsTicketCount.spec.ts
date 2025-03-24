@@ -1,5 +1,8 @@
 import { OrderDirection } from 'models/api/types'
-import { TicketDimension } from 'models/reporting/cubes/TicketCube'
+import {
+    TicketDimension,
+    TicketMember,
+} from 'models/reporting/cubes/TicketCube'
 import {
     TicketTagsEnrichedDimension,
     TicketTagsEnrichedMeasure,
@@ -218,63 +221,62 @@ describe('tagsTicketCount query factories', () => {
 
     describe('coverageRateTicketDrillDownQueryFactory', () => {
         it('should return a query with the correct base query structure for coverageRateTicketDrillDownQueryFactory', () => {
-            const customFieldPeriod = {
-                start_datetime: periodStart,
-                end_datetime: periodEnd,
-            }
-
             const query = coverageRateTicketDrillDownQueryFactory(
                 statsFilters,
                 timezone,
                 customFieldId,
                 intentFieldId,
-                customFieldPeriod,
                 sorting,
             )
 
             expect(query.filters).toEqual([
                 {
-                    member: 'TicketEnriched.isTrashed',
-                    operator: 'equals',
+                    member: TicketMember.IsTrashed,
+                    operator: ReportingFilterOperator.Equals,
                     values: ['0'],
                 },
                 {
-                    member: 'TicketEnriched.isSpam',
-                    operator: 'equals',
+                    member: TicketMember.IsSpam,
+                    operator: ReportingFilterOperator.Equals,
                     values: ['0'],
                 },
                 {
-                    member: 'TicketEnriched.periodStart',
-                    operator: 'afterDate',
+                    member: TicketMember.PeriodStart,
+                    operator: ReportingFilterOperator.AfterDate,
                     values: ['2021-05-29T00:00:00.000'],
                 },
                 {
-                    member: 'TicketEnriched.periodEnd',
-                    operator: 'beforeDate',
+                    member: TicketMember.PeriodEnd,
+                    operator: ReportingFilterOperator.BeforeDate,
                     values: ['2021-06-04T23:59:59.000'],
                 },
                 {
-                    member: 'TicketEnriched.totalCustomFieldIdsToMatch',
-                    operator: 'equals',
-                    values: ['2'],
+                    member: TicketMember.TotalCustomFieldIdsToMatch,
+                    operator: ReportingFilterOperator.Equals,
+                    values: ['1'],
                 },
                 {
-                    member: 'TicketEnriched.customField',
-                    operator: 'startsWith',
-                    values: ['2::', '1::'],
+                    member: TicketMember.CustomField,
+                    operator: ReportingFilterOperator.StartsWith,
+                    values: ['1::'],
                 },
                 {
-                    member: 'TicketEnriched.customFieldToExclude',
-                    operator: 'notStartsWith',
-                    values: ['2::Other::No Reply'],
-                },
-                {
-                    member: 'TicketCustomFieldsEnriched.customFieldUpdatedDatetime',
-                    operator: 'inDateRange',
+                    member: TicketMember.CreatedDatetime,
+                    operator: ReportingFilterOperator.InDateRange,
                     values: [
                         '2021-05-29T00:00:00.000',
                         '2021-06-04T23:59:59.000',
                     ],
+                },
+                {
+                    member: TicketMember.CustomFieldToExclude,
+                    operator: ReportingFilterOperator.NotStartsWith,
+                    values: ['2::Other::No Reply'],
+                },
+                {
+                    member: TicketMember.CustomField,
+                    operator: ReportingFilterOperator.NotStartsWith,
+                    values: ['1::Close::Without message'],
                 },
                 {
                     member: 'TicketEnriched.ticketCount',

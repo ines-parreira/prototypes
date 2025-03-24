@@ -9,13 +9,12 @@ import {
     RecommendedResourcesFilterMember,
     RecommendedResourcesMeasure,
 } from 'models/reporting/cubes/automate_v2/RecommendedResourcesCube'
-import { TicketDimension } from 'models/reporting/cubes/TicketCube'
 import {
     aiAgentTouchedTicketQueryFactory,
-    allTicketsForAiAgentTotalCountQueryFactory,
+    aiAgentTouchedTicketTotalCountQueryFactory,
     customerSatisfactionPerIntentLevelQueryFactory,
 } from 'models/reporting/queryFactories/ai-agent-insights/metrics'
-import { customFieldsTicketCountQueryFactory } from 'models/reporting/queryFactories/ticket-insights/customFieldsTicketCount'
+import { aiAgentTicketsPerIntentCountQueryFactory } from 'models/reporting/queryFactories/ticket-insights/customFieldsTicketCount'
 import { ReportingFilterOperator } from 'models/reporting/types'
 import { formatReportingQueryDate } from 'utils/reporting'
 import { assumeMock } from 'utils/testing'
@@ -45,6 +44,7 @@ describe('aiAgentMetrics', () => {
     const sorting = OrderDirection.Asc
     const intentFieldId = 1
     const outcomeFieldId = 2
+    const intentId = 'Order'
 
     describe('useTotalAiAgentTicketsByCustomField', () => {
         it('should pass the query to useMetric hook', () => {
@@ -54,16 +54,18 @@ describe('aiAgentMetrics', () => {
                         filters,
                         timezone,
                         intentFieldId,
+                        outcomeFieldId,
                         sorting,
                     ),
                 {},
             )
 
             expect(useMetricMock).toHaveBeenCalledWith(
-                allTicketsForAiAgentTotalCountQueryFactory({
+                aiAgentTouchedTicketTotalCountQueryFactory({
                     filters,
                     timezone,
                     intentFieldId,
+                    outcomeFieldId,
                     sorting,
                 }),
             )
@@ -126,50 +128,70 @@ describe('aiAgentMetrics', () => {
         it('should pass the query to useMetricPerDimension hook', () => {
             renderHook(
                 () =>
-                    useAiAgentTicketCountPerIntent(
+                    useAiAgentTicketCountPerIntent({
                         filters,
                         timezone,
                         intentFieldId,
-                    ),
+                    }),
                 {},
             )
 
             expect(useMetricPerDimensionMock).toHaveBeenCalledWith(
-                customFieldsTicketCountQueryFactory(
+                aiAgentTicketsPerIntentCountQueryFactory({
                     filters,
                     timezone,
-                    String(intentFieldId),
-                ),
+                    intentFieldId,
+                }),
             )
         })
 
-        it('should pass additional filters to useMetricPerDimension hook', () => {
+        it('should pass additional filters with ticket ids to useMetricPerDimension hook', () => {
             renderHook(
                 () =>
-                    useAiAgentTicketCountPerIntent(
+                    useAiAgentTicketCountPerIntent({
                         filters,
                         timezone,
                         intentFieldId,
-                        ['1', '2'],
+                        ticketIds: ['1', '2'],
                         sorting,
-                    ),
+                    }),
                 {},
             )
 
             expect(useMetricPerDimensionMock).toHaveBeenCalledWith(
-                customFieldsTicketCountQueryFactory(
+                aiAgentTicketsPerIntentCountQueryFactory({
                     filters,
                     timezone,
-                    String(intentFieldId),
+                    intentFieldId: intentFieldId,
+                    ticketIds: ['1', '2'],
                     sorting,
-                    [
-                        {
-                            member: TicketDimension.TicketId,
-                            operator: ReportingFilterOperator.In,
-                            values: ['1', '2'],
-                        },
-                    ],
-                ),
+                }),
+            )
+        })
+
+        it('should pass additional filters with ticket ids and intentId to useMetricPerDimension hook', () => {
+            renderHook(
+                () =>
+                    useAiAgentTicketCountPerIntent({
+                        filters,
+                        timezone,
+                        intentFieldId,
+                        ticketIds: ['1', '2'],
+                        intentId: intentId,
+                        sorting,
+                    }),
+                {},
+            )
+
+            expect(useMetricPerDimensionMock).toHaveBeenCalledWith(
+                aiAgentTicketsPerIntentCountQueryFactory({
+                    filters,
+                    timezone,
+                    intentFieldId: intentFieldId,
+                    ticketIds: ['1', '2'],
+                    intentId: intentId,
+                    sorting,
+                }),
             )
         })
     })
@@ -360,11 +382,11 @@ describe('aiAgentMetrics', () => {
             )
 
             expect(useMetricPerDimensionMock).toHaveBeenCalledWith(
-                customerSatisfactionPerIntentLevelQueryFactory(
+                customerSatisfactionPerIntentLevelQueryFactory({
                     filters,
                     timezone,
                     sorting,
-                ),
+                }),
             )
         })
     })

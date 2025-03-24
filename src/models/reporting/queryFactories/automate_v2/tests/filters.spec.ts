@@ -1,6 +1,8 @@
 import { AutomationDatasetFilterMember } from 'models/reporting/cubes/automate_v2/AutomationDatasetCube'
 import { BillableTicketDatasetFilterMember } from 'models/reporting/cubes/automate_v2/BillableTicketDatasetCube'
+import { TicketMember } from 'models/reporting/cubes/TicketCube'
 import {
+    aiAgentTicketsDefaultFilters,
     automationDatasetAdditionalFilters,
     billableTicketDatasetAdditionalFilters,
     mapTicketChannelsToAutomateChannels,
@@ -118,5 +120,65 @@ describe('automationDatasetAdditionalFilters', () => {
 describe('mapTicketChannelsToAutomateChannels', () => {
     it('should return empty array on undefined', () => {
         expect(mapTicketChannelsToAutomateChannels(undefined)).toEqual([])
+    })
+})
+
+describe('aiAgentTicketsDefaultFilters', () => {
+    const filters: StatsFilters = {
+        period: {
+            start_datetime: '2021-01-01T00:00:00.000',
+            end_datetime: '2021-01-02T00:00:00.000',
+        },
+    }
+
+    it('should return default filters with outcome and intent field ids and outcome values to exclude', () => {
+        const result = aiAgentTicketsDefaultFilters({
+            filters,
+            outcomeFieldId: 1,
+            intentFieldId: 2,
+            outcomeValuesToExclude: ['1::handover'],
+        })
+        expect(result).toEqual([
+            {
+                member: TicketMember.CreatedDatetime,
+                operator: ReportingFilterOperator.InDateRange,
+                values: ['2021-01-01T00:00:00.000', '2021-01-02T00:00:00.000'],
+            },
+            {
+                member: TicketMember.CustomFieldToExclude,
+                operator: ReportingFilterOperator.NotStartsWith,
+                values: ['2::Other::No Reply'],
+            },
+            {
+                member: TicketMember.CustomField,
+                operator: ReportingFilterOperator.NotStartsWith,
+                values: ['1::Close::Without message', '1::handover'],
+            },
+        ])
+    })
+
+    it('should return default filters without outcome values to exclude', () => {
+        const result = aiAgentTicketsDefaultFilters({
+            filters,
+            outcomeFieldId: 1,
+            intentFieldId: 2,
+        })
+        expect(result).toEqual([
+            {
+                member: TicketMember.CreatedDatetime,
+                operator: ReportingFilterOperator.InDateRange,
+                values: ['2021-01-01T00:00:00.000', '2021-01-02T00:00:00.000'],
+            },
+            {
+                member: TicketMember.CustomFieldToExclude,
+                operator: ReportingFilterOperator.NotStartsWith,
+                values: ['2::Other::No Reply'],
+            },
+            {
+                member: TicketMember.CustomField,
+                operator: ReportingFilterOperator.NotStartsWith,
+                values: ['1::Close::Without message'],
+            },
+        ])
     })
 })

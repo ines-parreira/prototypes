@@ -157,9 +157,9 @@ export type AIInsightsMetrics = {
     }
     perAgentId?: string
     outcomeFieldValues?: string[]
-    outcomeFieldId?: number | null
+    outcomeFieldId?: number
     intentFieldValues?: string[]
-    intentFieldId?: number | null
+    intentFieldId?: number
 } & CommonMetrics
 
 export type TagsFieldsMetrics = {

@@ -1,6 +1,11 @@
 import { AutomationDatasetFilterMember } from 'models/reporting/cubes/automate_v2/AutomationDatasetCube'
 import { BillableTicketDatasetFilterMember } from 'models/reporting/cubes/automate_v2/BillableTicketDatasetCube'
 import { RecommendedResourcesFilterMember } from 'models/reporting/cubes/automate_v2/RecommendedResourcesCube'
+import { TicketMember } from 'models/reporting/cubes/TicketCube'
+import {
+    AI_INTENT_TO_EXCLUDE,
+    AI_OUTCOME_TO_EXCLUDE,
+} from 'models/reporting/queryFactories/ai-agent-insights/metrics'
 import {
     addOptionalFilter,
     isFilterWithLogicalOperator,
@@ -53,6 +58,50 @@ export const billableTicketDatasetDefaultFilters = (
         values: [formatReportingQueryDate(filters.period.end_datetime)],
     },
 ]
+
+export const aiAgentTicketsDefaultFilters = ({
+    filters,
+    outcomeFieldId,
+    intentFieldId,
+    outcomeValuesToExclude,
+}: {
+    filters: StatsFilters
+    outcomeFieldId?: number
+    intentFieldId?: number
+    outcomeValuesToExclude?: string[]
+}) => {
+    const allOutcomeValuesToExclude = [
+        `${outcomeFieldId}::${AI_OUTCOME_TO_EXCLUDE}`,
+    ]
+    if (outcomeValuesToExclude && outcomeValuesToExclude.length > 0) {
+        allOutcomeValuesToExclude.push(...outcomeValuesToExclude)
+    }
+
+    return [
+        {
+            member: TicketMember.CreatedDatetime,
+            operator: ReportingFilterOperator.InDateRange,
+            values: [
+                formatReportingQueryDate(filters.period.start_datetime),
+                formatReportingQueryDate(filters.period.end_datetime),
+            ],
+        },
+        {
+            member: TicketMember.CustomFieldToExclude,
+            operator: ReportingFilterOperator.NotStartsWith,
+            values: [`${intentFieldId}::${AI_INTENT_TO_EXCLUDE}`],
+        },
+        ...(allOutcomeValuesToExclude && allOutcomeValuesToExclude.length > 0
+            ? [
+                  {
+                      member: TicketMember.CustomField,
+                      operator: ReportingFilterOperator.NotStartsWith,
+                      values: allOutcomeValuesToExclude,
+                  },
+              ]
+            : []),
+    ]
+}
 
 export const billableTicketDatasetAdditionalFilters = (
     filters: StatsFilters,

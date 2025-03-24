@@ -139,6 +139,7 @@ export const IntentTable = ({
                     title: intentName,
                     perAgentId: aiAgentUserId,
                     intentFieldId: intentCustomFieldId ?? null,
+                    outcomeFieldId: outcomeCustomFieldId ?? null,
                     intentFieldValues: [intent.id],
                     customFieldId: null,
                     customFieldValue: null,

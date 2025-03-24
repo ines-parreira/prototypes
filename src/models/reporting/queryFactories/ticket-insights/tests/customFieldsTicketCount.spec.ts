@@ -41,6 +41,8 @@ describe('customFieldsTicketCountQueryFactory', () => {
     const timezone = 'UTC'
     const sorting = OrderDirection.Asc
     const perAgentId = '1'
+    const mockIntentFieldId = 123
+    const mockOutcomeFieldId = 456
 
     describe('customFieldsTicketCountQueryFactory', () => {
         it('should build expected query', () => {
@@ -467,10 +469,8 @@ describe('customFieldsTicketCountQueryFactory', () => {
         }
 
         const mockTimezone = 'UTC'
-        const mockIntentFieldId = 123
+
         const mockIntentFieldsValueStrings = ['value1', 'value2']
-        const mockOutcomeFieldId = 456
-        const mockCustomFieldPeriod = mockFilters.period
         const mockSorting = OrderDirection.Desc
 
         test('returns correct query structure with all parameters', () => {
@@ -481,7 +481,6 @@ describe('customFieldsTicketCountQueryFactory', () => {
                     mockIntentFieldId,
                     mockIntentFieldsValueStrings,
                     mockOutcomeFieldId,
-                    mockCustomFieldPeriod,
                     mockSorting,
                 )
 
@@ -491,33 +490,33 @@ describe('customFieldsTicketCountQueryFactory', () => {
                 timezone: mockTimezone,
                 filters: [
                     {
-                        member: 'TicketEnriched.isTrashed',
-                        operator: 'equals',
+                        member: TicketMember.IsTrashed,
+                        operator: ReportingFilterOperator.Equals,
                         values: ['0'],
                     },
                     {
-                        member: 'TicketEnriched.isSpam',
-                        operator: 'equals',
+                        member: TicketMember.IsSpam,
+                        operator: ReportingFilterOperator.Equals,
                         values: ['0'],
                     },
                     {
-                        member: 'TicketEnriched.periodStart',
-                        operator: 'afterDate',
+                        member: TicketMember.PeriodStart,
+                        operator: ReportingFilterOperator.AfterDate,
                         values: ['2023-01-01T00:00:00.000'],
                     },
                     {
-                        member: 'TicketEnriched.periodEnd',
-                        operator: 'beforeDate',
+                        member: TicketMember.PeriodEnd,
+                        operator: ReportingFilterOperator.BeforeDate,
                         values: ['2023-01-31T23:59:59.000'],
                     },
                     {
-                        member: 'TicketEnriched.totalCustomFieldIdsToMatch',
-                        operator: 'equals',
+                        member: TicketMember.TotalCustomFieldIdsToMatch,
+                        operator: ReportingFilterOperator.Equals,
                         values: ['2'],
                     },
                     {
-                        member: 'TicketEnriched.customField',
-                        operator: 'startsWith',
+                        member: TicketMember.CustomField,
+                        operator: ReportingFilterOperator.StartsWith,
                         values: [
                             `${mockIntentFieldId}::${mockIntentFieldsValueStrings[0]}`,
                             `${mockIntentFieldId}::${mockIntentFieldsValueStrings[1]}`,
@@ -525,13 +524,24 @@ describe('customFieldsTicketCountQueryFactory', () => {
                         ],
                     },
                     {
-                        member: 'TicketCustomFieldsEnriched.customFieldUpdatedDatetime',
-                        operator: 'inDateRange',
+                        member: TicketMember.CreatedDatetime,
+                        operator: ReportingFilterOperator.InDateRange,
                         values: [
                             '2023-01-01T00:00:00.000',
                             '2023-01-31T23:59:59.000',
                         ],
                     },
+                    {
+                        member: TicketMember.CustomFieldToExclude,
+                        operator: ReportingFilterOperator.NotStartsWith,
+                        values: ['123::Other::No Reply'],
+                    },
+                    {
+                        member: TicketMember.CustomField,
+                        operator: ReportingFilterOperator.NotStartsWith,
+                        values: ['456::Close::Without message'],
+                    },
+
                     {
                         member: 'TicketEnriched.ticketCount',
                         operator: 'measureFilter',
@@ -551,7 +561,6 @@ describe('customFieldsTicketCountQueryFactory', () => {
                     mockIntentFieldId,
                     null,
                     mockOutcomeFieldId,
-                    mockCustomFieldPeriod,
                     mockSorting,
                 )
 
@@ -574,7 +583,6 @@ describe('customFieldsTicketCountQueryFactory', () => {
                     mockIntentFieldId,
                     mockIntentFieldsValueStrings,
                     mockOutcomeFieldId,
-                    mockCustomFieldPeriod,
                 )
 
             expect(query.order).toEqual([
@@ -590,39 +598,64 @@ describe('customFieldsTicketCountQueryFactory', () => {
                     statsFilters,
                     timezone,
                     perAgentId,
+                    mockIntentFieldId,
+                    mockOutcomeFieldId,
                     sorting,
                 )
 
             expect(query.filters).toEqual([
                 {
-                    member: 'TicketEnriched.isTrashed',
-                    operator: 'equals',
+                    member: TicketMember.IsTrashed,
+                    operator: ReportingFilterOperator.Equals,
                     values: ['0'],
                 },
                 {
-                    member: 'TicketEnriched.isSpam',
-                    operator: 'equals',
+                    member: TicketMember.IsSpam,
+                    operator: ReportingFilterOperator.Equals,
                     values: ['0'],
                 },
                 {
-                    member: 'TicketEnriched.periodStart',
-                    operator: 'afterDate',
+                    member: TicketMember.PeriodStart,
+                    operator: ReportingFilterOperator.AfterDate,
                     values: ['2021-05-29T00:00:00.000'],
                 },
                 {
-                    member: 'TicketEnriched.periodEnd',
-                    operator: 'beforeDate',
+                    member: TicketMember.PeriodEnd,
+                    operator: ReportingFilterOperator.BeforeDate,
                     values: ['2021-06-04T23:59:59.000'],
+                },
+                {
+                    member: TicketMember.AssigneeUserId,
+                    operator: ReportingFilterOperator.Equals,
+                    values: ['1'],
+                },
+                {
+                    member: TicketMember.CustomField,
+                    operator: ReportingFilterOperator.StartsWith,
+                    values: ['456::'],
+                },
+                {
+                    member: TicketMember.CreatedDatetime,
+                    operator: ReportingFilterOperator.InDateRange,
+                    values: [
+                        '2021-05-29T00:00:00.000',
+                        '2021-06-04T23:59:59.000',
+                    ],
+                },
+                {
+                    member: TicketMember.CustomFieldToExclude,
+                    operator: ReportingFilterOperator.NotStartsWith,
+                    values: ['123::Other::No Reply'],
+                },
+                {
+                    member: TicketMember.CustomField,
+                    operator: ReportingFilterOperator.NotStartsWith,
+                    values: ['456::Close::Without message'],
                 },
                 {
                     member: 'TicketEnriched.ticketCount',
                     operator: 'measureFilter',
                     values: [],
-                },
-                {
-                    member: TicketMember.AssigneeUserId,
-                    operator: ReportingFilterOperator.Equals,
-                    values: [perAgentId],
                 },
             ])
         })

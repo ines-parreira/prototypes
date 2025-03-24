@@ -4,7 +4,11 @@ import {
     RecommendedResourcesFilterMember,
     RecommendedResourcesMeasure,
 } from 'models/reporting/cubes/automate_v2/RecommendedResourcesCube'
-import { TicketMeasure, TicketMember } from 'models/reporting/cubes/TicketCube'
+import {
+    TicketDimension,
+    TicketMeasure,
+    TicketMember,
+} from 'models/reporting/cubes/TicketCube'
 import {
     TicketSatisfactionSurveyDimension,
     TicketSatisfactionSurveyMeasure,
@@ -32,10 +36,19 @@ describe('AI Agent metrics', () => {
             end_datetime: '2021-01-02T00:00:00Z',
         },
     }
+    const intentFieldId = 1
+    const outcomeFieldId = 2
+    const sorting = OrderDirection.Asc
 
     it('customerSatisfactionPerIntentLevelQueryFactory', () => {
         expect(
-            customerSatisfactionPerIntentLevelQueryFactory(filters, timezone),
+            customerSatisfactionPerIntentLevelQueryFactory({
+                filters,
+                timezone,
+                intentFieldId,
+                outcomeFieldId,
+                sorting,
+            }),
         ).toEqual({
             dimensions: [
                 TicketSatisfactionSurveyDimension.TicketId,
@@ -57,6 +70,29 @@ describe('AI Agent metrics', () => {
                         formatReportingQueryDate(filters.period.end_datetime),
                     ],
                 },
+                {
+                    member: TicketMember.CustomField,
+                    operator: ReportingFilterOperator.StartsWith,
+                    values: [`${outcomeFieldId}::`],
+                },
+                {
+                    member: TicketMember.CreatedDatetime,
+                    operator: ReportingFilterOperator.InDateRange,
+                    values: [
+                        formatReportingQueryDate(filters.period.start_datetime),
+                        formatReportingQueryDate(filters.period.end_datetime),
+                    ],
+                },
+                {
+                    member: TicketMember.CustomFieldToExclude,
+                    operator: ReportingFilterOperator.NotStartsWith,
+                    values: [`${intentFieldId}::Other::No Reply`],
+                },
+                {
+                    member: TicketMember.CustomField,
+                    operator: ReportingFilterOperator.NotStartsWith,
+                    values: ['2::Close::Without message'],
+                },
             ],
             measures: [
                 TicketSatisfactionSurveyMeasure.ScoredSurveysCount,
@@ -64,17 +100,20 @@ describe('AI Agent metrics', () => {
             ],
             segments: [TicketSatisfactionSurveySegment.SurveyScored],
             timezone: timezone,
+            order: [[TicketSatisfactionSurveyMeasure.AvgSurveyScore, sorting]],
         })
     })
 
     it('customerSatisfactionPerIntentLevelQueryFactory with user id', () => {
         expect(
-            customerSatisfactionPerIntentLevelQueryFactory(
+            customerSatisfactionPerIntentLevelQueryFactory({
                 filters,
                 timezone,
-                OrderDirection.Asc,
-                '1',
-            ),
+                sorting: OrderDirection.Asc,
+                outcomeFieldId,
+                intentFieldId,
+                assigneeUserId: '1',
+            }),
         ).toEqual({
             dimensions: [
                 TicketSatisfactionSurveyDimension.TicketId,
@@ -100,6 +139,29 @@ describe('AI Agent metrics', () => {
                     member: TicketMember.AssigneeUserId,
                     operator: ReportingFilterOperator.Equals,
                     values: ['1'],
+                },
+                {
+                    member: TicketMember.CustomField,
+                    operator: ReportingFilterOperator.StartsWith,
+                    values: [`${outcomeFieldId}::`],
+                },
+                {
+                    member: TicketMember.CreatedDatetime,
+                    operator: ReportingFilterOperator.InDateRange,
+                    values: [
+                        formatReportingQueryDate(filters.period.start_datetime),
+                        formatReportingQueryDate(filters.period.end_datetime),
+                    ],
+                },
+                {
+                    member: TicketMember.CustomFieldToExclude,
+                    operator: ReportingFilterOperator.NotStartsWith,
+                    values: [`${intentFieldId}::Other::No Reply`],
+                },
+                {
+                    member: TicketMember.CustomField,
+                    operator: ReportingFilterOperator.NotStartsWith,
+                    values: ['2::Close::Without message'],
                 },
             ],
             order: [['TicketSatisfactionSurveyEnriched.avgSurveyScore', 'asc']],
@@ -150,30 +212,19 @@ describe('AI Agent metrics', () => {
         const result = aiAgentTicketsWithIntentQueryFactory(filters, timezone)
         expect(result).toEqual({
             measures: [],
-            dimensions: [
-                'TicketEnriched.ticketId',
-                'TicketEnriched.customField',
-            ],
+            dimensions: [TicketDimension.TicketId, TicketDimension.CustomField],
             timezone: 'UTC',
             filters: [
                 ...NotSpamNorTrashedTicketsFilter,
                 {
-                    member: 'TicketEnriched.periodStart',
-                    operator: 'afterDate',
+                    member: TicketMember.PeriodStart,
+                    operator: ReportingFilterOperator.AfterDate,
                     values: ['2021-01-01T00:00:00.000'],
                 },
                 {
-                    member: 'TicketEnriched.periodEnd',
-                    operator: 'beforeDate',
+                    member: TicketMember.PeriodEnd,
+                    operator: ReportingFilterOperator.BeforeDate,
                     values: ['2021-01-02T00:00:00.000'],
-                },
-                {
-                    member: 'TicketCustomFieldsEnriched.customFieldUpdatedDatetime',
-                    operator: 'inDateRange',
-                    values: [
-                        formatReportingQueryDate(filters.period.start_datetime),
-                        formatReportingQueryDate(filters.period.end_datetime),
-                    ],
                 },
             ],
         })
@@ -216,14 +267,6 @@ describe('AI Agent metrics', () => {
                     member: 'TicketEnriched.periodEnd',
                     operator: 'beforeDate',
                     values: ['2021-01-02T00:00:00.000'],
-                },
-                {
-                    member: 'TicketCustomFieldsEnriched.customFieldUpdatedDatetime',
-                    operator: 'inDateRange',
-                    values: [
-                        formatReportingQueryDate(filters.period.start_datetime),
-                        formatReportingQueryDate(filters.period.end_datetime),
-                    ],
                 },
             ],
             order: [['TicketCustomFieldsEnriched.valueString', 'asc']],
@@ -268,17 +311,30 @@ describe('AI Agent metrics', () => {
                 {
                     member: TicketMember.TotalCustomFieldIdsToMatch,
                     operator: ReportingFilterOperator.Equals,
-                    values: ['2'],
+                    values: ['1'],
                 },
                 {
                     member: TicketMember.CustomField,
                     operator: ReportingFilterOperator.StartsWith,
-                    values: ['2::', '1::handover'],
+                    values: ['1::handover'],
+                },
+                {
+                    member: TicketMember.CreatedDatetime,
+                    operator: ReportingFilterOperator.InDateRange,
+                    values: [
+                        formatReportingQueryDate(filters.period.start_datetime),
+                        formatReportingQueryDate(filters.period.end_datetime),
+                    ],
                 },
                 {
                     member: TicketMember.CustomFieldToExclude,
                     operator: ReportingFilterOperator.NotStartsWith,
                     values: ['2::Other::No Reply'],
+                },
+                {
+                    member: TicketMember.CustomField,
+                    operator: ReportingFilterOperator.NotStartsWith,
+                    values: ['1::Close::Without message'],
                 },
             ],
             order: [[TicketMeasure.TicketCount, 'asc']],
@@ -289,7 +345,8 @@ describe('AI Agent metrics', () => {
         const result = allTicketsForAiAgentTotalCountQueryFactory({
             filters,
             timezone,
-            intentFieldId: 1,
+            intentFieldId: 2,
+            outcomeFieldId: 1,
             sorting: OrderDirection.Asc,
         })
 
@@ -325,9 +382,22 @@ describe('AI Agent metrics', () => {
                     values: AI_AGENT_TICKETS_CHANNELS,
                 },
                 {
+                    member: TicketMember.CreatedDatetime,
+                    operator: ReportingFilterOperator.InDateRange,
+                    values: [
+                        formatReportingQueryDate(filters.period.start_datetime),
+                        formatReportingQueryDate(filters.period.end_datetime),
+                    ],
+                },
+                {
                     member: TicketMember.CustomFieldToExclude,
                     operator: ReportingFilterOperator.NotStartsWith,
-                    values: ['1::Other::No Reply'],
+                    values: ['2::Other::No Reply'],
+                },
+                {
+                    member: TicketMember.CustomField,
+                    operator: ReportingFilterOperator.NotStartsWith,
+                    values: ['1::Close::Without message'],
                 },
             ],
             order: [[TicketMeasure.TicketCount, 'asc']],

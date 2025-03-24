@@ -128,6 +128,7 @@ export const getDecreaseInResolutionTimeTrend = (
 }
 
 // SUCCESS RATE: #AI_AGENT_AUTOMATED_INTERACTIONS / #tickets with outcome field excluding tickets with Other::No reply intents
+// Since it is possible to have data above 100%, we will limit the value to 100% until we fix the underlying data issue
 export const getAiAgentSuccessRate = ({
     isFetching,
     isError,
@@ -143,13 +144,19 @@ export const getAiAgentSuccessRate = ({
         isFetching,
         isError,
         data: {
-            value: calculateRate(
-                aiAgentAutomatedInteractions?.value,
-                aiAgentTickets?.value,
+            value: Math.min(
+                calculateRate(
+                    aiAgentAutomatedInteractions?.value,
+                    aiAgentTickets?.value,
+                ),
+                1,
             ),
-            prevValue: calculateRate(
-                aiAgentAutomatedInteractions?.prevValue,
-                aiAgentTickets?.prevValue,
+            prevValue: Math.min(
+                calculateRate(
+                    aiAgentAutomatedInteractions?.prevValue,
+                    aiAgentTickets?.prevValue,
+                ),
+                1,
             ),
         },
     }

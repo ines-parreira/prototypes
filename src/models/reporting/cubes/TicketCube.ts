@@ -65,6 +65,7 @@ export enum TicketMember {
     EfficiencyScore = 'TicketEnriched.efficiencyScore',
     InternalComplianceScore = 'TicketEnriched.internalComplianceScore',
     BrandVoiceScore = 'TicketEnriched.brandVoiceScore',
+    TicketId = 'TicketEnriched.ticketId',
 }
 
 export type TicketTimeDimensions =

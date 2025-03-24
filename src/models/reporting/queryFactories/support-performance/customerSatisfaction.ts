@@ -1,13 +1,17 @@
 import { OrderDirection } from 'models/api/types'
 import { HelpdeskMessageCubeWithJoins } from 'models/reporting/cubes/HelpdeskMessageCube'
-import { TicketDimension } from 'models/reporting/cubes/TicketCube'
+import {
+    TicketDimension,
+    TicketMember,
+} from 'models/reporting/cubes/TicketCube'
 import {
     TicketSatisfactionSurveyDimension,
     TicketSatisfactionSurveyMeasure,
     TicketSatisfactionSurveySegment,
 } from 'models/reporting/cubes/TicketSatisfactionSurveyCube'
+import { aiAgentTicketsDefaultFilters } from 'models/reporting/queryFactories/automate_v2/filters'
 import { CHANNEL_DIMENSION } from 'models/reporting/queryFactories/support-performance/constants'
-import { ReportingQuery } from 'models/reporting/types'
+import { ReportingFilterOperator, ReportingQuery } from 'models/reporting/types'
 import { StatsFilters } from 'models/stat/types'
 import {
     DRILLDOWN_QUERY_LIMIT,
@@ -33,6 +37,57 @@ export const customerSatisfactionQueryFactory = (
             TicketStatsFiltersMembers,
             statsFilters,
         ),
+    ],
+    ...(sorting
+        ? {
+              order: [
+                  [TicketSatisfactionSurveyMeasure.AvgSurveyScore, sorting],
+              ],
+          }
+        : {}),
+})
+
+export const customerSatisfactionForAIAgentTicketsQueryFactory = ({
+    filters,
+    timezone,
+    sorting,
+    intentFieldId,
+    outcomeFieldId,
+    aiAgentUserId,
+}: {
+    filters: StatsFilters
+    timezone: string
+    sorting?: OrderDirection
+    intentFieldId?: number
+    outcomeFieldId?: number
+    aiAgentUserId?: string
+}): ReportingQuery<HelpdeskMessageCubeWithJoins> => ({
+    measures: [TicketSatisfactionSurveyMeasure.AvgSurveyScore],
+    dimensions: [],
+    timezone,
+    segments: [TicketSatisfactionSurveySegment.SurveyScored],
+    filters: [
+        ...NotSpamNorTrashedTicketsFilter,
+        ...statsFiltersToReportingFilters(TicketStatsFiltersMembers, filters),
+        ...(aiAgentUserId
+            ? [
+                  {
+                      member: TicketMember.AssigneeUserId,
+                      operator: ReportingFilterOperator.Equals,
+                      values: [aiAgentUserId],
+                  },
+              ]
+            : []),
+        {
+            member: TicketMember.CustomField,
+            operator: ReportingFilterOperator.StartsWith,
+            values: [`${outcomeFieldId}::`],
+        },
+        ...aiAgentTicketsDefaultFilters({
+            filters,
+            intentFieldId,
+            outcomeFieldId,
+        }),
     ],
     ...(sorting
         ? {

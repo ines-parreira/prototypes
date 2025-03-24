@@ -153,7 +153,10 @@ export const Level1IntentsPerformance = () => {
                         AIInsightsMetric.TicketDrillDownPerCustomerSatisfaction,
                     drillDownMetricAdditionalData: {
                         perAgentId: aiAgentUserId,
-                        customFieldId: outcomeCustomFieldId,
+                        intentFieldId: intentCustomFieldId,
+                        outcomeFieldId: outcomeCustomFieldId,
+                        customFieldId: null,
+                        customFieldValue: null,
                     },
                 },
             ]}
