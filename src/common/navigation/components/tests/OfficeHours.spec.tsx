@@ -2,12 +2,14 @@ import React from 'react'
 
 import { render } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
+import { fromJS } from 'immutable'
 
 import { logEvent, SegmentEvent } from 'common/segment'
 import { useFlag } from 'core/flags'
 import type { HelpdeskPlan } from 'models/billing/types'
 import { getCurrentHelpdeskPlan } from 'state/billing/selectors'
 import { isTrialing as getIsTrialing } from 'state/currentAccount/selectors'
+import { getCurrentUser } from 'state/currentUser/selectors'
 import { assumeMock } from 'utils/testing'
 
 import OfficeHours from '../OfficeHours'
@@ -36,6 +38,12 @@ const getCurrentHelpdeskPlanMock = assumeMock(getCurrentHelpdeskPlan)
 jest.mock('state/currentAccount/selectors', () => ({ isTrialing: jest.fn() }))
 const getIsTrialingMock = assumeMock(getIsTrialing)
 
+jest.mock('state/currentUser/selectors', () => ({
+    getCurrentUser: jest.fn(),
+}))
+
+const getCurrentUserMock = assumeMock(getCurrentUser)
+
 describe('OfficeHours', () => {
     let onToggle: jest.Mock
 
@@ -45,6 +53,11 @@ describe('OfficeHours', () => {
         } as HelpdeskPlan)
         getIsTrialingMock.mockReturnValue(false)
         useFlagMock.mockReturnValue(true)
+        getCurrentUserMock.mockReturnValue(
+            fromJS({
+                email: 'test@example.com',
+            }),
+        )
 
         onToggle = jest.fn()
     })
@@ -92,7 +105,10 @@ describe('OfficeHours', () => {
         userEvent.click(el)
         expect(logEvent).toHaveBeenCalledWith(
             SegmentEvent.MenuUserLinkClicked,
-            { link: 'office-hours' },
+            {
+                link: 'office-hours',
+                user_email: 'test@example.com',
+            },
         )
         expect(onToggle).toHaveBeenCalledWith()
     })

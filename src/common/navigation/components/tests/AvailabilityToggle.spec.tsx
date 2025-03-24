@@ -7,6 +7,7 @@ import { logEvent, SegmentEvent } from 'common/segment'
 import useAppDispatch from 'hooks/useAppDispatch'
 import { submitSetting } from 'state/currentUser/actions'
 import {
+    getCurrentUser,
     isAvailable as getIsAvailable,
     getIsPreferencesLoading,
     getPreferences,
@@ -35,10 +36,12 @@ jest.mock('state/currentUser/selectors', () => ({
     getIsPreferencesLoading: jest.fn(),
     getPreferences: jest.fn(),
     isAvailable: jest.fn(),
+    getCurrentUser: jest.fn(),
 }))
 const getIsAvailableMock = assumeMock(getIsAvailable)
 const getIsPreferencesLoadingMock = assumeMock(getIsPreferencesLoading)
 const getPreferencesMock = assumeMock(getPreferences)
+const getCurrentUserMock = assumeMock(getCurrentUser)
 
 describe('AvailabilityToggle', () => {
     let dispatch: jest.Mock
@@ -51,6 +54,11 @@ describe('AvailabilityToggle', () => {
         getIsPreferencesLoadingMock.mockReturnValue(false)
         getPreferencesMock.mockReturnValue(
             fromJS({ data: { available: true } }),
+        )
+        getCurrentUserMock.mockReturnValue(
+            fromJS({
+                email: 'test@example.com',
+            }),
         )
     })
 
@@ -70,7 +78,7 @@ describe('AvailabilityToggle', () => {
         fireEvent.click(getByRole('switch'))
         expect(logEvent).toHaveBeenCalledWith(
             SegmentEvent.MenuUserLinkClicked,
-            { link: 'available-on-off' },
+            { link: 'available-on-off', user_email: 'test@example.com' },
         )
         expect(submitSetting).toHaveBeenCalledWith(
             { data: { available: false } },

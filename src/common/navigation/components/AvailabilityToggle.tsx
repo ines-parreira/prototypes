@@ -8,6 +8,7 @@ import useAppSelector from 'hooks/useAppSelector'
 import ToggleInput from 'pages/common/forms/ToggleInput'
 import { submitSetting } from 'state/currentUser/actions'
 import {
+    getCurrentUser,
     isAvailable as getIsAvailable,
     getIsPreferencesLoading,
     getPreferences,
@@ -20,15 +21,19 @@ export default function AvailabilityToggle() {
     const currentUserPreferences = useAppSelector(getPreferences)
     const isAvailable = useAppSelector(getIsAvailable)
     const isLoading = useAppSelector(getIsPreferencesLoading)
+    const currentUser = useAppSelector(getCurrentUser)
 
     const updateAvailability = useCallback(() => {
         const newPreferences = currentUserPreferences.updateIn(
             ['data', 'available'],
             (status) => !status,
         )
-        logEvent(SegmentEvent.MenuUserLinkClicked, { link: 'available-on-off' })
+        logEvent(SegmentEvent.MenuUserLinkClicked, {
+            link: 'available-on-off',
+            user_email: currentUser.get('email'),
+        })
         void dispatch(submitSetting(newPreferences.toJS(), false))
-    }, [currentUserPreferences, dispatch])
+    }, [currentUserPreferences, dispatch, currentUser])
 
     return (
         <button

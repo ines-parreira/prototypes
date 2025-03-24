@@ -3,6 +3,7 @@ import type { ReactNode } from 'react'
 
 import { render } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
+import { fromJS } from 'immutable'
 import { StaticRouter } from 'react-router-dom'
 
 import { logEvent, SegmentEvent } from 'common/segment'
@@ -14,6 +15,7 @@ import {
     unregisterAppActivityTrackerHooks,
 } from 'services/activityTracker'
 import shortcutManager from 'services/shortcutManager'
+import { getCurrentUser } from 'state/currentUser/selectors'
 import { ignoreHTML } from 'tests/ignoreHTML'
 import { assumeMock } from 'utils/testing'
 
@@ -30,6 +32,7 @@ jest.mock(
 jest.mock('pages/common/components/NoticeableIndicator', () => () => (
     <div>NoticeableIndicator</div>
 ))
+jest.mock('hooks/useAppSelector', () => (fn: () => void) => fn())
 jest.mock(
     'services/activityTracker',
     () =>
@@ -53,11 +56,16 @@ jest.mock(
         }) as typeof import('core/theme'),
 )
 const useThemeMock = assumeMock(useTheme)
+const getCurrentUserMock = assumeMock(getCurrentUser)
 
 jest.mock('../AvailabilityToggle', () => () => <div>AvailabilityToggle</div>)
 jest.mock('../MainNavigation', () => () => <div>MainNavigation</div>)
 jest.mock('../OfficeHours', () => () => <div>OfficeHours</div>)
 jest.mock('../ThemeMenu', () => () => <div>ThemeMenu</div>)
+
+jest.mock('state/currentUser/selectors', () => ({
+    getCurrentUser: jest.fn(),
+}))
 
 const wrapper = ({ children }: { children: ReactNode }) => (
     <StaticRouter location="/app">{children}</StaticRouter>
@@ -73,6 +81,11 @@ describe('UserMenu', () => {
             resolvedName: THEME_NAME.Classic,
             tokens: themeTokenMap[THEME_NAME.Classic],
         })
+        getCurrentUserMock.mockReturnValue(
+            fromJS({
+                email: 'test@example.com',
+            }),
+        )
     })
 
     it('should render the main screen', () => {
@@ -101,7 +114,10 @@ describe('UserMenu', () => {
         userEvent.click(getByText(label))
         expect(logEvent).toHaveBeenCalledWith(
             SegmentEvent.MenuUserLinkClicked,
-            { link },
+            {
+                link,
+                user_email: 'test@example.com',
+            },
         )
         expect(onClose).toHaveBeenCalledWith()
     })
@@ -114,7 +130,10 @@ describe('UserMenu', () => {
         userEvent.click(getByText('Log out'))
         expect(logEvent).toHaveBeenCalledWith(
             SegmentEvent.MenuUserLinkClicked,
-            { link: 'log-out' },
+            {
+                link: 'log-out',
+                user_email: 'test@example.com',
+            },
         )
 
         expect(logActivityEvent).toHaveBeenCalledWith(
@@ -152,9 +171,11 @@ describe('UserMenu', () => {
         userEvent.click(getByText(label))
         expect(logEvent).toHaveBeenCalledWith(
             SegmentEvent.MenuUserLinkClicked,
-            { link },
+            {
+                link,
+                user_email: 'test@example.com',
+            },
         )
-
         expect(onClose).toHaveBeenCalledWith()
     })
 
@@ -171,7 +192,10 @@ describe('UserMenu', () => {
         )
         expect(logEvent).toHaveBeenCalledWith(
             SegmentEvent.MenuUserLinkClicked,
-            { link: 'keyboard-shortcuts' },
+            {
+                link: 'keyboard-shortcuts',
+                user_email: 'test@example.com',
+            },
         )
         expect(onClose).toHaveBeenCalledWith()
     })
@@ -202,7 +226,10 @@ describe('UserMenu', () => {
         userEvent.click(getByText('Latest updates'))
         expect(logEvent).toHaveBeenCalledWith(
             SegmentEvent.MenuUserLinkClicked,
-            { link: 'latest-updates' },
+            {
+                link: 'latest-updates',
+                user_email: 'test@example.com',
+            },
         )
         expect(window.noticeable.do).toHaveBeenCalledWith(
             'widget:open',
@@ -222,7 +249,10 @@ describe('UserMenu', () => {
         userEvent.click(getByText(label))
         expect(logEvent).toHaveBeenCalledWith(
             SegmentEvent.MenuUserLinkClicked,
-            { link },
+            {
+                link,
+                user_email: 'test@example.com',
+            },
         )
         expect(onClose).toHaveBeenCalledWith()
     })

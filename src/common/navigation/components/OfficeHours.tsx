@@ -6,6 +6,7 @@ import { useFlag } from 'core/flags'
 import useAppSelector from 'hooks/useAppSelector'
 import { getCurrentHelpdeskPlan } from 'state/billing/selectors'
 import { isTrialing as getIsTrialing } from 'state/currentAccount/selectors'
+import { getCurrentUser } from 'state/currentUser/selectors'
 
 import css from './UserMenu.less'
 
@@ -17,6 +18,7 @@ export default function OfficeHours({ onToggleDropdown }: Props) {
     const hasOfficeHours = useFlag(FeatureFlagKey.OfficeHours)
     const product = useAppSelector(getCurrentHelpdeskPlan)
     const isTrialing = useAppSelector(getIsTrialing)
+    const currentUser = useAppSelector(getCurrentUser)
 
     const isPro = product?.name.toLowerCase() === 'pro'
 
@@ -34,6 +36,7 @@ export default function OfficeHours({ onToggleDropdown }: Props) {
             onClick={() => {
                 logEvent(SegmentEvent.MenuUserLinkClicked, {
                     link: 'office-hours',
+                    user_email: currentUser.get('email'),
                 })
                 onToggleDropdown()
             }}

@@ -4,6 +4,7 @@ import cn from 'classnames'
 
 import { logEvent, SegmentEvent } from 'common/segment'
 import { THEME_CONFIGS, useTheme } from 'core/theme'
+import useAppSelector from 'hooks/useAppSelector'
 import DropdownBody from 'pages/common/components/dropdown/DropdownBody'
 import DropdownHeader from 'pages/common/components/dropdown/DropdownHeader'
 import DropdownItemLabel from 'pages/common/components/dropdown/DropdownItemLabel'
@@ -17,6 +18,7 @@ import {
     unregisterAppActivityTrackerHooks,
 } from 'services/activityTracker'
 import shortcutManager from 'services/shortcutManager'
+import { getCurrentUser } from 'state/currentUser/selectors'
 
 import AvailabilityToggle from './AvailabilityToggle'
 import NavbarLink from './NavbarLink'
@@ -38,6 +40,7 @@ type Props = {
 
 export default function UserMenu({ onClose }: Props) {
     const theme = useTheme()
+    const currentUser = useAppSelector(getCurrentUser)
     const [activeScreen, setActiveScreen] = useState<ActiveScreen>(
         ActiveScreen.Main,
     )
@@ -82,6 +85,7 @@ export default function UserMenu({ onClose }: Props) {
                         onClick={() => {
                             logEvent(SegmentEvent.MenuUserLinkClicked, {
                                 link: 'your-profile',
+                                user_email: currentUser.get('email'),
                             })
                             onClose()
                         }}
@@ -148,6 +152,7 @@ export default function UserMenu({ onClose }: Props) {
                         onClick={() => {
                             logEvent(SegmentEvent.MenuUserLinkClicked, {
                                 link: 'referral-program',
+                                user_email: currentUser.get('email'),
                             })
                             onClose()
                         }}
@@ -164,6 +169,7 @@ export default function UserMenu({ onClose }: Props) {
                         onClick={() => {
                             logEvent(SegmentEvent.MenuUserLinkClicked, {
                                 link: 'log-out',
+                                user_email: currentUser.get('email'),
                             })
                             logActivityEvent(ActivityEvents.UserClosedApp)
                             void unregisterAppActivityTrackerHooks()
@@ -200,6 +206,7 @@ export default function UserMenu({ onClose }: Props) {
                         onClick={() => {
                             logEvent(SegmentEvent.MenuUserLinkClicked, {
                                 link: 'helpdocs',
+                                user_email: currentUser.get('email'),
                             })
                             onClose()
                         }}
@@ -220,6 +227,7 @@ export default function UserMenu({ onClose }: Props) {
                         onClick={() => {
                             logEvent(SegmentEvent.MenuUserLinkClicked, {
                                 link: 'gorgiaswebinars',
+                                user_email: currentUser.get('email'),
                             })
                             onClose()
                         }}
@@ -243,6 +251,7 @@ export default function UserMenu({ onClose }: Props) {
                         onClick={() => {
                             logEvent(SegmentEvent.MenuUserLinkClicked, {
                                 link: 'gorgiasacademy',
+                                user_email: currentUser.get('email'),
                             })
                             onClose()
                         }}
@@ -263,6 +272,7 @@ export default function UserMenu({ onClose }: Props) {
                         onClick={() => {
                             logEvent(SegmentEvent.MenuUserLinkClicked, {
                                 link: 'gorgiascommunity',
+                                user_email: currentUser.get('email'),
                             })
                             onClose()
                         }}
@@ -284,6 +294,7 @@ export default function UserMenu({ onClose }: Props) {
                             )
                             logEvent(SegmentEvent.MenuUserLinkClicked, {
                                 link: 'keyboard-shortcuts',
+                                user_email: currentUser.get('email'),
                             })
                             onClose()
                         }}
@@ -317,6 +328,7 @@ export default function UserMenu({ onClose }: Props) {
                         onClick={() => {
                             logEvent(SegmentEvent.MenuUserLinkClicked, {
                                 link: 'latest-updates',
+                                user_email: currentUser.get('email'),
                             })
                             window.noticeable.do(
                                 'widget:open',
@@ -340,6 +352,7 @@ export default function UserMenu({ onClose }: Props) {
                         onClick={() => {
                             logEvent(SegmentEvent.MenuUserLinkClicked, {
                                 link: 'roadmap',
+                                user_email: currentUser.get('email'),
                             })
                             onClose()
                         }}
@@ -357,6 +370,7 @@ export default function UserMenu({ onClose }: Props) {
                         onClick={() => {
                             logEvent(SegmentEvent.MenuUserLinkClicked, {
                                 link: 'service-status',
+                                user_email: currentUser.get('email'),
                             })
                             onClose()
                         }}
