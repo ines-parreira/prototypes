@@ -295,16 +295,12 @@ describe('medianResponseTime', () => {
                 ],
                 dimensions: [
                     TicketDimension.TicketId,
-                    ...medianResponseTimeMetricPerAgentQueryFactory(
-                        statsFilters,
-                        timezone,
-                    ).dimensions,
+                    ...medianResponseTimeQueryFactory(statsFilters, timezone)
+                        .dimensions,
                 ],
                 filters: [
-                    ...medianResponseTimeMetricPerAgentQueryFactory(
-                        statsFilters,
-                        timezone,
-                    ).filters,
+                    ...medianResponseTimeQueryFactory(statsFilters, timezone)
+                        .filters,
                     TicketDrillDownFilter,
                 ],
                 limit: DRILLDOWN_QUERY_LIMIT,
@@ -325,25 +321,18 @@ describe('medianResponseTime', () => {
                     sorting,
                 ),
             ).toEqual({
-                ...medianResponseTimeMetricPerAgentQueryFactory(
-                    filters,
-                    timezone,
-                ),
+                ...medianResponseTimeQueryFactory(filters, timezone),
                 measures: [
                     TicketMessagesEnrichedResponseTimesMeasure.MedianResponseTime,
                 ],
                 dimensions: [
                     TicketDimension.TicketId,
-                    ...medianResponseTimeMetricPerAgentQueryFactory(
-                        statsFilters,
-                        timezone,
-                    ).dimensions,
+                    ...medianResponseTimeQueryFactory(statsFilters, timezone)
+                        .dimensions,
                 ],
                 filters: [
-                    ...medianResponseTimeMetricPerAgentQueryFactory(
-                        filters,
-                        timezone,
-                    ).filters,
+                    ...medianResponseTimeQueryFactory(filters, timezone)
+                        .filters,
                     TicketDrillDownFilter,
                 ],
                 limit: DRILLDOWN_QUERY_LIMIT,

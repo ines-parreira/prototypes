@@ -78,16 +78,13 @@ export const medianResponseTimeMetricPerTicketDrillDownQueryFactory = (
     timezone: string,
     sorting?: OrderDirection,
 ): ReportingQuery<TicketCubeWithJoins> => {
-    const baseQuery = medianResponseTimeMetricPerAgentQueryFactory(
-        filters,
-        timezone,
-    )
+    const baseQuery = medianResponseTimeQueryFactory(filters, timezone)
     return {
         ...baseQuery,
         measures: [
             TicketMessagesEnrichedResponseTimesMeasure.MedianResponseTime,
         ],
-        dimensions: [TicketDimension.TicketId, ...baseQuery.dimensions],
+        dimensions: [TicketDimension.TicketId],
         filters: [...baseQuery.filters, TicketDrillDownFilter],
         limit: DRILLDOWN_QUERY_LIMIT,
         ...(sorting
