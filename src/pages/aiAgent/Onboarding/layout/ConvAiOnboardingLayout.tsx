@@ -4,15 +4,24 @@ import { useParams } from 'react-router-dom'
 
 import { useHideBanners } from 'AlertBanners/hooks/useHideBanners'
 import { logEvent, SegmentEvent } from 'common/segment'
-import { aiAgentRoutes } from 'pages/aiAgent/hooks/useAiAgentNavigation'
+import {
+    aiAgentRoutes,
+    getAiAgentNavigationRoutes,
+} from 'pages/aiAgent/hooks/useAiAgentNavigation'
 import OnboardingProgressTracker from 'pages/aiAgent/Onboarding/components/common/OnboardingProgressTracker/OnboardingProgressTracker'
 import GorgiasLogoExtendedIcon from 'pages/aiAgent/Onboarding/layout/GorgiasLogoExtended'
 import IconButton from 'pages/common/components/button/IconButton'
 import history from 'pages/history'
+import { getLDClient } from 'utils/launchDarkly'
 
 import css from './ConvAiOnboardingLayout.less'
 
-const onClose = () => {
+const onClose = (shopName?: string) => {
+    if (shopName) {
+        const flags = getLDClient().allFlags()
+        history.push(getAiAgentNavigationRoutes(shopName, flags).main)
+        return
+    }
     history.push(aiAgentRoutes.overview)
 }
 
@@ -56,14 +65,14 @@ export const OnboardingPreviewContainer: React.FC<{
     icon: string | JSX.Element
     caption?: string
 }> = ({ children, isLoading, icon, caption }) => {
-    const { step } = useParams<{ step: string }>()
+    const { step, shopName } = useParams<{ step: string; shopName: string }>()
 
     const onCloseAction = () => {
         logEvent(SegmentEvent.AiAgentNewOnboardingWizardButtonClicked, {
             step,
             type: 'close',
         })
-        onClose()
+        onClose(shopName)
     }
 
     return (
@@ -103,14 +112,14 @@ export const OnboardingContentContainer: React.FC<{
     onBackClick,
     isLoading,
 }) => {
-    const { step } = useParams<{ step: string }>()
+    const { step, shopName } = useParams<{ step: string; shopName: string }>()
 
     const onCloseAction = () => {
         logEvent(SegmentEvent.AiAgentNewOnboardingWizardButtonClicked, {
             Step: step,
             type: 'close',
         })
-        onClose()
+        onClose(shopName)
     }
 
     const onNextAction = () => {

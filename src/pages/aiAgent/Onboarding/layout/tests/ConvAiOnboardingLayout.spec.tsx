@@ -1,5 +1,6 @@
 import { screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
+import { useParams } from 'react-router-dom'
 
 import * as segment from 'common/segment'
 import {
@@ -16,8 +17,66 @@ jest.mock('common/segment')
 const historyPushMock = assumeMock(history.push)
 const logEventMock = assumeMock(segment.logEvent)
 
+jest.mock('react-router-dom', () => ({
+    ...jest.requireActual('react-router-dom'),
+    useParams: jest.fn(() => ({
+        step: 'channels',
+        shopName: undefined,
+    })),
+}))
+const useParamsMock = assumeMock(useParams)
+
+jest.mock('pages/aiAgent/hooks/useAiAgentNavigation', () => ({
+    getAiAgentNavigationRoutes: jest.fn((shopName, __) => ({
+        main: `/app/ai-agent/shopify/${shopName}`,
+    })),
+    aiAgentRoutes: {
+        overview: '/app/ai-agent/overview',
+    },
+}))
+
 describe('ConvAiOnboardingLayout', () => {
-    it('should redirect to overview page when clicking on Close', () => {
+    it('should redirect to overview page when clicking on Close when no shop name is provided', () => {
+        renderWithRouter(
+            <OnboardingContentContainer
+                totalSteps={7}
+                currentStep={1}
+                onNextClick={() => {}}
+                onBackClick={() => {}}
+            >
+                Content
+            </OnboardingContentContainer>,
+        )
+
+        const closeButton = screen.getByText(/close/)
+        userEvent.click(closeButton)
+
+        expect(historyPushMock).toHaveBeenCalledWith('/app/ai-agent/overview')
+    })
+
+    it('should redirect to the paywall when clicking on Content Close with shop name', () => {
+        useParamsMock.mockReturnValueOnce({ shopName: 'hellohello' })
+        renderWithRouter(
+            <OnboardingContentContainer
+                totalSteps={7}
+                currentStep={1}
+                onNextClick={() => {}}
+                onBackClick={() => {}}
+            >
+                Content
+            </OnboardingContentContainer>,
+        )
+
+        const closeButton = screen.getByText(/close/)
+        userEvent.click(closeButton)
+
+        expect(historyPushMock).toHaveBeenCalledWith(
+            '/app/ai-agent/shopify/hellohello',
+        )
+    })
+
+    it('should redirect to preview when clicking on Preview Close without shop name', () => {
+        useParamsMock.mockReturnValueOnce({ shopName: undefined })
         renderWithRouter(
             <OnboardingContentContainer
                 totalSteps={7}
@@ -84,6 +143,36 @@ describe('OnboardingPreviewContainer', () => {
                 type: 'close',
             },
         )
+        expect(historyPushMock).toHaveBeenCalledWith('/app/ai-agent/overview')
+    })
+
+    it('should redirect to the paywall when clicking on Preview Close with shop name', () => {
+        useParamsMock.mockReturnValueOnce({ shopName: 'hellohello' })
+        renderWithRouter(
+            <OnboardingPreviewContainer isLoading={false} icon="info">
+                Content
+            </OnboardingPreviewContainer>,
+        )
+
+        const closeButton = screen.getByText(/close/)
+        userEvent.click(closeButton)
+
+        expect(historyPushMock).toHaveBeenCalledWith(
+            '/app/ai-agent/shopify/hellohello',
+        )
+    })
+
+    it('should redirect to the overview when clicking on Preview Close without shop name', () => {
+        useParamsMock.mockReturnValueOnce({ shopName: undefined })
+        renderWithRouter(
+            <OnboardingPreviewContainer isLoading={false} icon="info">
+                Content
+            </OnboardingPreviewContainer>,
+        )
+
+        const closeButton = screen.getByText(/close/)
+        userEvent.click(closeButton)
+
         expect(historyPushMock).toHaveBeenCalledWith('/app/ai-agent/overview')
     })
 })
