@@ -4,10 +4,10 @@ import { Tooltip } from '@gorgias/merchant-ui-kit'
 
 import CustomFieldInput from 'custom-fields/components/CustomFieldInput'
 import Label from 'custom-fields/components/Label'
-import { getLabel } from 'custom-fields/components/MultiLevelSelect/helpers/getLabels'
 import { isMultiValue } from 'custom-fields/components/MultiLevelSelect/helpers/isMultiValue'
 import { OBJECT_TYPES } from 'custom-fields/constants'
 import { getNumberOrUndefined } from 'custom-fields/helpers/getNumberOrUndefined'
+import { getValueLabel } from 'custom-fields/helpers/getValueLabels'
 import {
     isDropdownInput,
     isNumberInput,
@@ -109,7 +109,7 @@ export default function CustomerField({
                         boundariesElement: document.body,
                     }}
                 >
-                    {getLabel(currentValue)}
+                    {getValueLabel(currentValue)}
                 </Tooltip>
             )}
             <CustomFieldInput

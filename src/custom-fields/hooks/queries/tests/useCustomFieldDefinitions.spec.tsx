@@ -1,9 +1,6 @@
 import React from 'react'
 
 import { renderHook } from '@testing-library/react-hooks'
-import { Provider } from 'react-redux'
-import configureMockStore from 'redux-mock-store'
-import thunk from 'redux-thunk'
 
 import { useGetCustomFieldDefinitions } from 'custom-fields/hooks/queries/queries'
 import {
@@ -11,7 +8,6 @@ import {
     axiosSuccessResponse,
 } from 'fixtures/axiosResponse'
 import { ticketDropdownFieldDefinition } from 'fixtures/customField'
-import { NotificationStatus } from 'state/notifications/types'
 import { assumeMock } from 'utils/testing'
 
 import {
@@ -24,22 +20,15 @@ const useGetCustomFieldDefinitionsMock = assumeMock(
     useGetCustomFieldDefinitions,
 )
 
-const mockStore = configureMockStore([thunk])()
-
 describe('useCustomFieldDefinitions', () => {
     beforeEach(() => {
-        mockStore.clearActions()
         jest.resetAllMocks()
     })
 
     const listParams = { archived: false, object_type: 'Ticket' } as const
 
     it('should call useGetCustomFieldDefinitions with proper id', () => {
-        renderHook(() => useCustomFieldDefinitions(listParams), {
-            wrapper: ({ children }) => (
-                <Provider store={mockStore}>{children}</Provider>
-            ),
-        })
+        renderHook(() => useCustomFieldDefinitions(listParams))
 
         expect(useGetCustomFieldDefinitionsMock.mock.calls[0][0]).toBe(
             listParams,
@@ -47,11 +36,7 @@ describe('useCustomFieldDefinitions', () => {
     })
 
     it('should provide a stale time param', () => {
-        renderHook(() => useCustomFieldDefinitions(listParams), {
-            wrapper: ({ children }) => (
-                <Provider store={mockStore}>{children}</Provider>
-            ),
-        })
+        renderHook(() => useCustomFieldDefinitions(listParams))
 
         expect(
             useGetCustomFieldDefinitionsMock.mock.calls[0][1]?.staleTime,
@@ -59,11 +44,7 @@ describe('useCustomFieldDefinitions', () => {
     })
 
     it('should provide a select param that picks the correct subset of data', () => {
-        renderHook(() => useCustomFieldDefinitions(listParams), {
-            wrapper: ({ children }) => (
-                <Provider store={mockStore}>{children}</Provider>
-            ),
-        })
+        renderHook(() => useCustomFieldDefinitions(listParams))
 
         const ticketDropdownFieldDefinitions = apiListCursorPaginationResponse([
             ticketDropdownFieldDefinition,
@@ -76,21 +57,12 @@ describe('useCustomFieldDefinitions', () => {
         ).toBe(ticketDropdownFieldDefinitions)
     })
 
-    it('should provide a onError param that calls the notify action', () => {
-        renderHook(() => useCustomFieldDefinitions(listParams), {
-            wrapper: ({ children }) => (
-                <Provider store={mockStore}>{children}</Provider>
-            ),
-        })
+    it('should provide a meta param with an error message', () => {
+        renderHook(() => useCustomFieldDefinitions(listParams))
 
-        useGetCustomFieldDefinitionsMock.mock.calls[0][1]?.onError!(undefined)
-
-        expect(mockStore.getActions()).toMatchObject([
-            {
-                payload: {
-                    status: NotificationStatus.Error,
-                },
-            },
-        ])
+        expect(
+            useGetCustomFieldDefinitionsMock.mock.calls[0][1]?.meta
+                ?.errorMessage,
+        ).toBe('Failed to fetch custom fields')
     })
 })

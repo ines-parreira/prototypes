@@ -8,7 +8,7 @@ import { fromJS } from 'immutable'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 
-import { getLabel } from 'custom-fields/components/MultiLevelSelect/helpers/getLabels'
+import { getValueLabel } from 'custom-fields/helpers/getValueLabels'
 import client from 'models/api/resources'
 import {
     updateCustomFieldError,
@@ -74,7 +74,7 @@ describe('<DropdownField />', () => {
         )
         await waitFor(() => {
             userEvent.hover(screen.getByRole('textbox'))
-            expect(screen.getByText(getLabel(fieldState.value)))
+            expect(screen.getByText(getValueLabel(fieldState.value)))
         })
     })
 

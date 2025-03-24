@@ -4,7 +4,7 @@ import { CustomFieldConditionExpressionValues } from '@gorgias/api-queries'
 import { SelectField } from '@gorgias/merchant-ui-kit'
 
 import MultiLevelSelect from 'custom-fields/components/MultiLevelSelect'
-import { getStealthLabel } from 'custom-fields/components/MultiLevelSelect/helpers/getLabels'
+import { getShortValueLabel } from 'custom-fields/helpers/getValueLabels'
 import {
     isDropdownInput,
     isNumberInput,
@@ -120,7 +120,7 @@ export const ValueField = forwardRef(function ValueField(
                             if (value.length >= 4) {
                                 return `${value.length} fields selected`
                             }
-                            return value.map(getStealthLabel).join(', ')
+                            return value.map(getShortValueLabel).join(', ')
                         }}
                         dropdownAutoWidth
                         isDisabled={isDisabled}

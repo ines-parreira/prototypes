@@ -1,22 +1,16 @@
 import React from 'react'
 
 import { renderHook } from '@testing-library/react-hooks'
-import { Provider } from 'react-redux'
-import configureMockStore from 'redux-mock-store'
-import thunk from 'redux-thunk'
 
 import { useGetCustomFieldDefinition } from 'custom-fields/hooks/queries/queries'
 import { axiosSuccessResponse } from 'fixtures/axiosResponse'
 import { ticketDropdownFieldDefinition } from 'fixtures/customField'
-import { NotificationStatus } from 'state/notifications/types'
 import { assumeMock } from 'utils/testing'
 
 import { useCustomFieldDefinition } from '../useCustomFieldDefinition'
 
 jest.mock('custom-fields/hooks/queries/queries')
 const useGetCustomFieldDefinitionMock = assumeMock(useGetCustomFieldDefinition)
-
-const mockStore = configureMockStore([thunk])()
 
 describe('useCustomFieldDefinition', () => {
     beforeEach(() => {
@@ -26,11 +20,7 @@ describe('useCustomFieldDefinition', () => {
     const customFieldId = 123
 
     it('should call useGetCustomFieldDefinition with proper id', () => {
-        renderHook(() => useCustomFieldDefinition(customFieldId), {
-            wrapper: ({ children }) => (
-                <Provider store={mockStore}>{children}</Provider>
-            ),
-        })
+        renderHook(() => useCustomFieldDefinition(customFieldId))
 
         expect(useGetCustomFieldDefinitionMock.mock.calls[0][0]).toBe(
             customFieldId,
@@ -38,11 +28,7 @@ describe('useCustomFieldDefinition', () => {
     })
 
     it('should provide a select param that picks the correct subset of data', () => {
-        renderHook(() => useCustomFieldDefinition(customFieldId), {
-            wrapper: ({ children }) => (
-                <Provider store={mockStore}>{children}</Provider>
-            ),
-        })
+        renderHook(() => useCustomFieldDefinition(customFieldId))
 
         expect(
             useGetCustomFieldDefinitionMock.mock.calls[0][1]?.select!(
@@ -51,21 +37,20 @@ describe('useCustomFieldDefinition', () => {
         ).toBe(ticketDropdownFieldDefinition)
     })
 
-    it('should provide a onError param that calls the notify action', () => {
-        renderHook(() => useCustomFieldDefinition(customFieldId), {
-            wrapper: ({ children }) => (
-                <Provider store={mockStore}>{children}</Provider>
-            ),
-        })
+    it('should provide a staleTime param of 1 hour', () => {
+        renderHook(() => useCustomFieldDefinition(customFieldId))
 
-        useGetCustomFieldDefinitionMock.mock.calls[0][1]?.onError!(undefined)
+        expect(
+            useGetCustomFieldDefinitionMock.mock.calls[0][1]?.staleTime,
+        ).toBe(60 * 60 * 1000)
+    })
 
-        expect(mockStore.getActions()).toMatchObject([
-            {
-                payload: {
-                    status: NotificationStatus.Error,
-                },
-            },
-        ])
+    it('should provide a meta param with an error message', () => {
+        renderHook(() => useCustomFieldDefinition(customFieldId))
+
+        expect(
+            useGetCustomFieldDefinitionMock.mock.calls[0][1]?.meta
+                ?.errorMessage,
+        ).toBe('Failed to fetch custom field')
     })
 })

@@ -67,12 +67,12 @@ exports[`<TicketField /> should render the appropriate field 2`] = `
     </label>
     <span
       class="wrapper"
-      id="ticket-whateva-custom-field-value-input-2"
+      id="ticket-whateva-custom-field-value-input-12345"
     >
       <input
         autocomplete="off"
         class="baseStyles stealth"
-        id="ticket-whateva-custom-field-value-input-2-input"
+        id="ticket-whateva-custom-field-value-input-12345-input"
         name="Dropdown field"
         placeholder="+Add"
         type="text"
@@ -108,12 +108,12 @@ exports[`<TicketField /> should render the appropriate field 3`] = `
     </label>
     <span
       class="wrapper"
-      id="ticket-whateva-custom-field-value-input-2"
+      id="ticket-whateva-custom-field-value-input-123456"
     >
       <input
         autocomplete="off"
         class="baseStyles stealth"
-        id="ticket-whateva-custom-field-value-input-2-input"
+        id="ticket-whateva-custom-field-value-input-123456-input"
         name="Yes/No field"
         placeholder="+Add"
         type="text"
@@ -149,7 +149,7 @@ exports[`<TicketField /> should render the appropriate field 4`] = `
       <input
         autocomplete="off"
         class="baseStyles stealth"
-        id="ticket-whateva-custom-field-value-number-input-123"
+        id="ticket-whateva-custom-field-value-number-input-1234"
         max="10"
         min="1"
         name="Number field"

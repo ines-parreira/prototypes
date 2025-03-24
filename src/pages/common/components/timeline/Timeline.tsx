@@ -1,11 +1,13 @@
-import { useState } from 'react'
+import { memo, useState } from 'react'
 
 import { Link } from 'react-router-dom'
 
+import { CustomField, ObjectType } from '@gorgias/api-queries'
 import { LoadingSpinner } from '@gorgias/merchant-ui-kit'
 
 import GorgiasLogo from 'assets/img/gorgias-logo.svg'
 import { logEvent, SegmentEvent } from 'common/segment'
+import { useCustomFieldDefinitions } from 'custom-fields/hooks/queries/useCustomFieldDefinitions'
 import useAppSelector from 'hooks/useAppSelector'
 import { getCustomerHistory, getLoading } from 'state/customers/selectors'
 
@@ -19,8 +21,17 @@ type Props = {
     onLoaded?: () => unknown
 }
 
-export default function Timeline({ ticketId = 0, onLoaded }: Props) {
+export function Timeline({ ticketId = 0, onLoaded }: Props) {
     const [hasCalledOnLoaded, setHasCalledOnLoaded] = useState(false)
+
+    const {
+        data: { data: customFieldDefinitions } = {},
+        isLoading: isLoadingCFDefinitions,
+    } = useCustomFieldDefinitions({
+        archived: false,
+        object_type: ObjectType.Ticket,
+    })
+
     const customersLoading = useAppSelector(getLoading).toJS() as {
         history: boolean
     }
@@ -76,6 +87,13 @@ export default function Timeline({ ticketId = 0, onLoaded }: Props) {
                                     <TicketCard
                                         ticket={ticket}
                                         isHighlighted={isCurrentTicket}
+                                        isLoadingCFDefinitions={
+                                            isLoadingCFDefinitions
+                                        }
+                                        customFieldDefinitions={
+                                            (customFieldDefinitions ||
+                                                []) as CustomField[]
+                                        }
                                     />
                                 </Link>
                             </li>
@@ -85,3 +103,5 @@ export default function Timeline({ ticketId = 0, onLoaded }: Props) {
         </div>
     )
 }
+
+export default memo(Timeline)

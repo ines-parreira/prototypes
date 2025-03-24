@@ -1,9 +1,12 @@
-import React from 'react'
-
 import { render, screen } from '@testing-library/react'
 import { fromJS } from 'immutable'
 
+import { ObjectType } from '@gorgias/api-queries'
+
 import { logEvent, SegmentEvent } from 'common/segment'
+import { useCustomFieldDefinitions } from 'custom-fields/hooks/queries/useCustomFieldDefinitions'
+import { apiListCursorPaginationResponse } from 'fixtures/axiosResponse'
+import { ticketInputFieldDefinition } from 'fixtures/customField'
 import { getCustomerHistory, getLoading } from 'state/customers/selectors'
 import { assumeMock } from 'utils/testing'
 
@@ -15,6 +18,9 @@ jest.mock('common/segment', () => ({
     SegmentEvent: {
         CustomerTimelineTicketClicked: 'CustomerTimelineTicketClicked',
     },
+}))
+jest.mock('custom-fields/hooks/queries/useCustomFieldDefinitions', () => ({
+    useCustomFieldDefinitions: jest.fn(),
 }))
 jest.mock('hooks/useAppSelector', () => (fn: () => unknown) => fn())
 jest.mock('state/customers/selectors', () => {
@@ -28,14 +34,21 @@ jest.mock('state/customers/selectors', () => {
 })
 jest.mock('../TicketCard', () => jest.fn(() => <div>TicketCard</div>))
 
+const useCustomFieldDefinitionsMock = assumeMock(useCustomFieldDefinitions)
 const getCustomerHistoryMock = assumeMock(getCustomerHistory)
 const getLoadingMock = assumeMock(getLoading)
+
+const defaultFieldDefinitions = {
+    data: apiListCursorPaginationResponse([ticketInputFieldDefinition]),
+    isLoading: false,
+} as ReturnType<typeof useCustomFieldDefinitions>
 
 describe('<Timeline />', () => {
     const ticket1 = { id: 1, channel: 'email' }
     const ticket2 = { id: 2 }
     const ticket3 = { id: 3, channel: 'email' }
     beforeEach(() => {
+        useCustomFieldDefinitionsMock.mockReturnValue(defaultFieldDefinitions)
         getCustomerHistoryMock.mockReturnValue(
             fromJS({
                 triedLoading: true,
@@ -87,6 +100,32 @@ describe('<Timeline />', () => {
         expect(onLoaded).toHaveBeenCalledTimes(1)
     })
 
+    it('should call useCustomFieldDefinitions with correct params', () => {
+        render(<Timeline />)
+
+        expect(useCustomFieldDefinitionsMock).toHaveBeenCalledWith({
+            archived: false,
+            object_type: ObjectType.Ticket,
+        })
+    })
+
+    it('should handle custom field definitions loading correctly', () => {
+        useCustomFieldDefinitionsMock.mockReturnValue({
+            data: undefined,
+            isLoading: true,
+        } as ReturnType<typeof useCustomFieldDefinitions>)
+
+        render(<Timeline />)
+
+        expect(TicketCard).toHaveBeenCalledWith(
+            expect.objectContaining({
+                isLoadingCFDefinitions: true,
+                customFieldDefinitions: [],
+            }),
+            {},
+        )
+    })
+
     it('should call TicketCard for each ticket with a channel, in correct order, with correct props', () => {
         const ticketId = 3
         render(<Timeline ticketId={ticketId} />)
@@ -96,6 +135,8 @@ describe('<Timeline />', () => {
             1,
             {
                 isHighlighted: false,
+                customFieldDefinitions: [ticketInputFieldDefinition],
+                isLoadingCFDefinitions: false,
                 ticket: ticket1,
             },
             {},
@@ -104,6 +145,8 @@ describe('<Timeline />', () => {
             2,
             {
                 isHighlighted: true,
+                customFieldDefinitions: [ticketInputFieldDefinition],
+                isLoadingCFDefinitions: false,
                 ticket: ticket3,
             },
             {},

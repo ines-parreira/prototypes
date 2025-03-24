@@ -1,6 +1,6 @@
-import { getLabel, getStealthLabel } from '../getLabels'
+import { getShortValueLabel, getValueLabel } from '../getValueLabels'
 
-describe('getStealthLabel', () => {
+describe('getShortValueLabel', () => {
     it.each([
         ['hello::world::foo', 'foo'],
         ['hello::world', 'world'],
@@ -13,15 +13,15 @@ describe('getStealthLabel', () => {
     ])(
         'should the correct path',
         (
-            input: Parameters<typeof getStealthLabel>[0],
-            output: ReturnType<typeof getStealthLabel>,
+            input: Parameters<typeof getShortValueLabel>[0],
+            output: ReturnType<typeof getShortValueLabel>,
         ) => {
-            expect(getStealthLabel(input)).toEqual(output)
+            expect(getShortValueLabel(input)).toEqual(output)
         },
     )
 })
 
-describe('getLabel', () => {
+describe('getValueLabel', () => {
     it.each([
         ['hello::world::foo', 'hello > world > foo'],
         ['hello::world', 'hello > world'],
@@ -34,10 +34,10 @@ describe('getLabel', () => {
     ])(
         'should the correct path',
         (
-            input: Parameters<typeof getLabel>[0],
-            output: ReturnType<typeof getLabel>,
+            input: Parameters<typeof getValueLabel>[0],
+            output: ReturnType<typeof getValueLabel>,
         ) => {
-            expect(getLabel(input)).toEqual(output)
+            expect(getValueLabel(input)).toEqual(output)
         },
     )
 })

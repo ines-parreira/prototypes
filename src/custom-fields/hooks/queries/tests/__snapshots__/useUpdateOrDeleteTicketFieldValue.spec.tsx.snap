@@ -3,7 +3,7 @@
 exports[`useUpdateOrDeleteTicketFieldValue should update the prediction value when the value is mutated 1`] = `
 {
   "payload": {
-    "id": 2,
+    "id": 12345,
     "prediction": {
       "confidence": 80,
       "confirmed": false,

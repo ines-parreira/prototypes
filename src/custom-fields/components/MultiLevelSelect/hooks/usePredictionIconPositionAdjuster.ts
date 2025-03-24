@@ -1,8 +1,7 @@
 import { useEffect, useRef, useState } from 'react'
 
+import { getShortValueLabel } from 'custom-fields/helpers/getValueLabels'
 import { CustomFieldValue } from 'custom-fields/types'
-
-import { getStealthLabel } from '../helpers/getLabels'
 
 const ICON_WIDTH = 17
 const SPACE = 6
@@ -23,7 +22,7 @@ export const usePredictionIconPositionAdjuster = ({
     useEffect(() => {
         const current = hiddenRef.current
         if (current && shouldShowIcon) {
-            current.textContent = getStealthLabel(value)
+            current.textContent = getShortValueLabel(value)
             const inputWidth = inputDimensions?.width ?? 0
             // if dummy element containing value is too close to the limit,
             // take the input width as reference

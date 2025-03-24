@@ -62,7 +62,7 @@ export const ticketNumberFieldDefinition: CustomField & {
     definition: CustomTypeDefinitionNumber
 } = {
     ...fieldBaseDefinition,
-    id: 123,
+    id: 1234,
     priority: 1,
     label: 'Number field',
     description: 'This is a number field',
@@ -80,7 +80,7 @@ export const ticketDropdownFieldDefinition: CustomField & {
     definition: CustomTypeDefinitionText<CustomFieldInputSettingsDropdown>
 } = {
     ...fieldBaseDefinition,
-    id: 2,
+    id: 12345,
     priority: 2,
     label: 'Dropdown field',
     description: 'This is a dropdown field',
@@ -101,7 +101,7 @@ export const ticketBooleanFieldDefinition: CustomField & {
     definition: CustomTypeDefinitionBoolean
 } = {
     ...fieldBaseDefinition,
-    id: 2,
+    id: 123456,
     priority: 2,
     label: 'Yes/No field',
     description: 'This is a boolean field',
@@ -186,7 +186,7 @@ export const aiManagedTicketInputFieldDefinition: CustomField = {
 
 export const aiAgentManagedTicketDropdownFieldDefinition: CustomField = {
     ...ticketInputFieldDefinition,
-    id: 2,
+    id: 1234567,
     priority: 2,
     label: 'Dropdown field',
     managed_type: 'ai_intent',

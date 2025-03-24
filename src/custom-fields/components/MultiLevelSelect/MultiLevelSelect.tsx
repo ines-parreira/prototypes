@@ -10,6 +10,10 @@ import { Tooltip } from '@gorgias/merchant-ui-kit'
 
 import { UserRole } from 'config/types/user'
 import StealthInput from 'custom-fields/components/StealthInput'
+import {
+    getShortValueLabel,
+    getValueLabel,
+} from 'custom-fields/helpers/getValueLabels'
 import { isCustomFieldValueEmpty } from 'custom-fields/helpers/isCustomFieldValueEmpty'
 import {
     CustomFieldPrediction,
@@ -32,7 +36,6 @@ import { CHOICE_VALUES_SYMBOL, PREVIOUS_BUTTON_ID } from './constants'
 import { buildTreeOfChoices } from './helpers/buildTreeOfChoices'
 import { getCurrentPathFromFullValue } from './helpers/getCurrentPathFromFullValue'
 import { getFullValueFromCurrentPath } from './helpers/getFullValueFromCurrentPath'
-import { getLabel, getStealthLabel } from './helpers/getLabels'
 import isMultiValueEmpty from './helpers/isMultiValueEmpty'
 import { isOutdatedValue } from './helpers/isOutdatedValue'
 import { useA11yDropdown } from './hooks/useA11yDropdown'
@@ -115,8 +118,8 @@ export default function MultiLevelSelect<
     const displayValue = customDisplayValue
         ? customDisplayValue(value)
         : showFullValue || isMultiValueAllowed(allowMultiValues, value)
-          ? getLabel(value)
-          : getStealthLabel(value)
+          ? getValueLabel(value)
+          : getShortValueLabel(value)
 
     const [previousValue, setPreviousValue] =
         useState<Maybe<CustomFieldValue>>(null)
@@ -344,7 +347,7 @@ export default function MultiLevelSelect<
                     ) : (
                         <>
                             {Object.keys(currentBranch).map((choice) => {
-                                const label = getLabel(choice)
+                                const label = getValueLabel(choice)
                                 return (
                                     <DropdownItem
                                         key={choice}
@@ -368,7 +371,7 @@ export default function MultiLevelSelect<
                             {Array.from(
                                 currentBranch[CHOICE_VALUES_SYMBOL],
                             ).map((choice) => {
-                                const label = getLabel(choice)
+                                const label = getValueLabel(choice)
                                 const fullValue = getFullValueFromCurrentPath(
                                     currentPath,
                                     choice,

@@ -1,22 +1,33 @@
 import cn from 'classnames'
 
-import { TicketSummary } from '@gorgias/api-queries'
+import { CustomField, TicketSummary } from '@gorgias/api-queries'
 import { TicketStatus } from '@gorgias/api-types'
 
+import { FeatureFlagKey } from 'config/featureFlags'
+import { useFlag } from 'core/flags'
 import DatetimeLabel from 'pages/common/utils/DatetimeLabel'
 import { StatusLabel } from 'pages/common/utils/labels'
 
 import { OwnerLabel } from './OwnerLabel'
 import { SourceBadge } from './SourceBadge'
+import TicketFields from './TicketFields'
 
 import css from './TicketCard.less'
 
 type Props = {
     ticket: TicketSummary
     isHighlighted?: boolean
+    customFieldDefinitions?: CustomField[]
+    isLoadingCFDefinitions?: boolean
 }
 
-export default function TicketCard({ ticket, isHighlighted = false }: Props) {
+export default function TicketCard({
+    ticket,
+    isHighlighted = false,
+    customFieldDefinitions,
+    isLoadingCFDefinitions = false,
+}: Props) {
+    const hasNewTimeline = useFlag(FeatureFlagKey.CustomerTimeline)
     return (
         <div
             className={cn(css.card, {
@@ -43,7 +54,16 @@ export default function TicketCard({ ticket, isHighlighted = false }: Props) {
                         }
                     />
                 </div>
-                <div className={css.excerpt}>{ticket.excerpt}</div>
+                {hasNewTimeline ? (
+                    <TicketFields
+                        definitions={customFieldDefinitions}
+                        fieldValues={ticket.custom_fields}
+                        isLoading={isLoadingCFDefinitions}
+                        className={css.ticketFields}
+                    />
+                ) : (
+                    <div className={css.excerpt}>{ticket.excerpt}</div>
+                )}
                 <div className={css.meta}>
                     <OwnerLabel
                         type="agent"

@@ -5,9 +5,9 @@ import { Tooltip } from '@gorgias/merchant-ui-kit'
 import { logEvent, SegmentEvent } from 'common/segment'
 import Label from 'custom-fields/components/Label'
 import MultiLevelSelect from 'custom-fields/components/MultiLevelSelect'
-import { getLabel } from 'custom-fields/components/MultiLevelSelect/helpers/getLabels'
 import { isOutdatedValue } from 'custom-fields/components/MultiLevelSelect/helpers/isOutdatedValue'
 import { MultiLevelSelectProps } from 'custom-fields/components/MultiLevelSelect/MultiLevelSelect'
+import { getValueLabel } from 'custom-fields/helpers/getValueLabels'
 import { isCustomFieldValueEmpty } from 'custom-fields/helpers/isCustomFieldValueEmpty'
 import { useUpdateOrDeleteTicketFieldValue } from 'custom-fields/hooks/queries/useUpdateOrDeleteTicketFieldValue'
 import { CustomFieldState, CustomFieldValue } from 'custom-fields/types'
@@ -101,7 +101,7 @@ export default function DropdownField(props: Props) {
             >
                 {!isValueEmpty && (
                     <Tooltip placement="left" target={inputId} autohide={false}>
-                        {getLabel(value)}
+                        {getValueLabel(value)}
                     </Tooltip>
                 )}
             </Label>

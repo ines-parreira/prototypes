@@ -1,5 +1,6 @@
 import { useMemo, useState } from 'react'
 
+import { getValueLabel } from 'custom-fields/helpers/getValueLabels'
 import { CustomFieldValue } from 'custom-fields/types'
 
 import {
@@ -7,7 +8,6 @@ import {
     DROPDOWN_NESTING_FANCY_DELIMITER,
 } from '../constants'
 import { getFullValueFromCurrentPath } from '../helpers/getFullValueFromCurrentPath'
-import { getLabel } from '../helpers/getLabels'
 import { ChoicesTree, SearchResults } from '../types'
 
 export function useSearch({
@@ -61,7 +61,7 @@ function searchChoices(
                 value.toLowerCase().includes(search.toLowerCase()))
         ) {
             searchResults.push({
-                label: getLabel(value),
+                label: getValueLabel(value),
                 path: currentPath.join(DROPDOWN_NESTING_FANCY_DELIMITER),
                 value: getFullValueFromCurrentPath(currentPath, value),
             })

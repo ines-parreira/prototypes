@@ -2,7 +2,21 @@
 import { QueryCache, QueryClient } from '@tanstack/react-query'
 import { isAxiosError } from 'axios'
 
-export const queryCache = new QueryCache()
+export type Meta = {
+    errorMessage?: string | undefined
+}
+
+export const queryCache = new QueryCache({
+    onError: (error, query) => {
+        const meta = query.meta as Meta | undefined
+        if (meta?.errorMessage) {
+            // TODO: Dispatch a notify action here.
+            // As of today, using store.dispatch to notify the user
+            // about the error creates a circular dependency :(
+            console.error(meta.errorMessage)
+        }
+    },
+})
 
 const HTTP_STATUS_TO_NOT_RETRY = [400, 401, 403, 404, 419, 429]
 

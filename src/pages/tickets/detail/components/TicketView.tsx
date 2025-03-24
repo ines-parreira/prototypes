@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useRef } from 'react'
+import React, { useCallback, useEffect, useMemo, useRef } from 'react'
 
 import classnames from 'classnames'
 import { List } from 'immutable'
@@ -84,6 +84,13 @@ export const TicketView = ({
         [ticket],
     )
 
+    const onTimelineLoaded = useCallback(() => {
+        // Make sure react has the time to render the list before scrolling
+        window.setTimeout(() => {
+            pageRef.current?.scrollTo({ top: 0 })
+        })
+    }, [])
+
     return (
         <div
             className={classnames(css.page, {
@@ -111,12 +118,7 @@ export const TicketView = ({
                     <div className={classnames(css.timelineContainer, 'pb-4')}>
                         <Timeline
                             ticketId={ticket.get('id')}
-                            onLoaded={() => {
-                                // Make sure react has the time to render the list before scrolling
-                                window.setTimeout(() => {
-                                    pageRef.current?.scrollTo({ top: 0 })
-                                })
-                            }}
+                            onLoaded={onTimelineLoaded}
                         />
                     </div>
                 </div>

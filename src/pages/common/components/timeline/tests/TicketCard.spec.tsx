@@ -1,21 +1,27 @@
-import React from 'react'
-
 import { render, screen } from '@testing-library/react'
 
-import '@testing-library/jest-dom'
-
-import { TicketSummary } from '@gorgias/api-queries'
+import { CustomField, TicketSummary } from '@gorgias/api-queries'
 import { TicketStatus } from '@gorgias/api-types'
 
+import { useFlag } from 'core/flags'
+import { ticketInputFieldDefinition } from 'fixtures/customField'
 import DatetimeLabel from 'pages/common/utils/DatetimeLabel'
+import { assumeMock } from 'utils/testing'
 
 import { SourceBadge } from '../SourceBadge'
 import TicketCard from '../TicketCard'
+import TicketFields from '../TicketFields'
 
+jest.mock('core/flags', () => ({
+    useFlag: jest.fn(),
+}))
 jest.mock('pages/common/utils/DatetimeLabel', () => jest.fn(() => <div />))
 jest.mock('../SourceBadge', () => ({
     SourceBadge: jest.fn(() => <div />),
 }))
+jest.mock('../TicketFields', () => jest.fn(() => <div />))
+
+const useFlagMock = assumeMock(useFlag)
 
 const ticket = {
     id: 1,
@@ -32,6 +38,10 @@ const ticket = {
 } as TicketSummary
 
 describe('TicketCard', () => {
+    beforeEach(() => {
+        useFlagMock.mockReturnValue(false)
+    })
+
     it('should render the ticket info', () => {
         render(<TicketCard ticket={ticket} isHighlighted={false} />)
 
@@ -98,5 +108,29 @@ describe('TicketCard', () => {
         )
 
         expect(screen.getByText('snoozed')).toBeInTheDocument()
+    })
+
+    it('should call TicketFields when CustomerTimeline feature flag is enabled', () => {
+        useFlagMock.mockReturnValue(true)
+
+        const definitions = [ticketInputFieldDefinition as CustomField]
+
+        render(
+            <TicketCard
+                ticket={ticket}
+                customFieldDefinitions={definitions}
+                isLoadingCFDefinitions={true}
+            />,
+        )
+
+        expect(TicketFields).toHaveBeenCalledWith(
+            {
+                definitions,
+                fieldValues: ticket.custom_fields,
+                isLoading: true,
+                className: expect.any(String),
+            },
+            {},
+        )
     })
 })
