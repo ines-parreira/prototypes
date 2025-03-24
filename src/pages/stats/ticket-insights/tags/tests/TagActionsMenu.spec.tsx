@@ -2,6 +2,7 @@ import React from 'react'
 
 import { fireEvent, render, screen, within } from '@testing-library/react'
 
+import { logEvent, SegmentEvent } from 'common/segment'
 import {
     EXCLUDE_TAGS_IN_RESULTS,
     EXCLUDE_TAGS_IN_RESULTS_SUBTITLE,
@@ -16,6 +17,8 @@ import { assumeMock } from 'utils/testing'
 
 jest.mock('services/reporting/tagsReportingService')
 const useDownloadTagsReportDataMock = assumeMock(useDownloadTagsReportData)
+jest.mock('common/segment')
+const logEventMock = assumeMock(logEvent)
 
 describe('TagActionsMenu', () => {
     const downloadMock = jest.fn()
@@ -94,6 +97,10 @@ describe('TagActionsMenu', () => {
         fireEvent.click(screen.getByLabelText(TAG_ACTIONS_TRIGGER_LABEL))
 
         within(parentDiv).getByText('check')
+
+        expect(logEventMock).toHaveBeenCalledWith(
+            SegmentEvent.StatTagsIncludeRelatedClicked,
+        )
     })
 
     it('should select exclude_tags', () => {
@@ -108,5 +115,9 @@ describe('TagActionsMenu', () => {
         const spanElement = screen.getByText(EXCLUDE_TAGS_IN_RESULTS)
         const parentDiv = spanElement.parentElement as HTMLElement
         within(parentDiv).getByText('check')
+
+        expect(logEventMock).toHaveBeenCalledWith(
+            SegmentEvent.StatTagsExcludeRelatedClicked,
+        )
     })
 })

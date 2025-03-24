@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from 'react'
 
 import { IconButton } from '@gorgias/merchant-ui-kit'
 
+import { logEvent, SegmentEvent } from 'common/segment'
 import Dropdown from 'pages/common/components/dropdown/Dropdown'
 import DropdownBody from 'pages/common/components/dropdown/DropdownBody'
 import DropdownItem from 'pages/common/components/dropdown/DropdownItem'
@@ -70,9 +71,11 @@ export function TagActionsMenu() {
 
     const includeTagsAction = () => {
         setSelectedOption(TagSelection.includeTags)
+        logEvent(SegmentEvent.StatTagsIncludeRelatedClicked)
     }
     const excludeTagsAction = () => {
         setSelectedOption(TagSelection.excludeTags)
+        logEvent(SegmentEvent.StatTagsExcludeRelatedClicked)
     }
 
     return (
