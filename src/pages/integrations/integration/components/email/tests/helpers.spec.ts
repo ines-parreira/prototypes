@@ -208,13 +208,10 @@ describe('helpers', () => {
 
     describe('canIntegrationDomainBeVerified', () => {
         it('should return false for common domains', () => {
-            isBaseEmailIntegrationSpy.mockReturnValue(false)
-            isCommonDomainSpy.mockReturnValue(true)
-
             expect(
                 canIntegrationDomainBeVerified({
                     meta: {
-                        address: '',
+                        address: 'test@gmail.com',
                     },
                 } as any),
             ).toBe(false)
@@ -234,13 +231,10 @@ describe('helpers', () => {
         })
 
         it('should return false for base email integrations', () => {
-            isBaseEmailIntegrationSpy.mockReturnValue(true)
-            isCommonDomainSpy.mockReturnValue(false)
-
             expect(
                 canIntegrationDomainBeVerified({
                     meta: {
-                        address: '',
+                        address: 'test@gorgias.com',
                     },
                 } as any),
             ).toBe(false)

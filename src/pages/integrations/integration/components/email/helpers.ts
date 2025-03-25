@@ -23,7 +23,6 @@ import {
 } from 'models/integration/types'
 
 import { commonDomains } from './EmailDomainVerification/constants'
-import * as helpers from './helpers'
 
 export const isSingleSenderVerificationInProgress = (
     integration: EmailIntegration,
@@ -126,8 +125,8 @@ export const canIntegrationDomainBeVerified = (
         | NEW_GmailIntegration,
 ): boolean => {
     return (
-        !helpers.isBaseEmailIntegration(emailIntegration) &&
-        !helpers.isCommonDomainEmail(emailIntegration.meta.address)
+        !isBaseEmailIntegration(emailIntegration) &&
+        !isCommonDomainEmail(emailIntegration.meta.address)
     )
 }
 

@@ -13,7 +13,7 @@ import { FeatureFlagKey } from 'config/featureFlags'
 import { useFlag } from 'core/flags'
 import useAppSelector from 'hooks/useAppSelector'
 import {
-    isBaseEmailIntegration,
+    canIntegrationDomainBeVerified,
     isOutboundDomainVerified,
 } from 'pages/integrations/integration/components/email/helpers'
 import { getCurrentUser } from 'state/currentUser/selectors'
@@ -49,13 +49,14 @@ export const useEmailDomainVerificationBanner = () => {
     const currentUser = useAppSelector(getCurrentUser)
     const isUserAdmin = isAdmin(currentUser)
 
-    const emailIntegrationsBaseExcluded = emailIntegrations.filter(
-        (integration: Map<any, any>) =>
-            !isBaseEmailIntegration(integration.toJS()),
-    )
+    const canIntegrationDomainBeVerifiedList = useMemo(() => {
+        return emailIntegrations.filter((integration: Map<any, any>) =>
+            canIntegrationDomainBeVerified(integration.toJS()),
+        )
+    }, [emailIntegrations])
 
     const allEmailIntegrationsHaveDomainVerified =
-        emailIntegrationsBaseExcluded.every((integration: Map<any, any>) =>
+        canIntegrationDomainBeVerifiedList.every((integration: Map<any, any>) =>
             isOutboundDomainVerified(integration.toJS()),
         )
 
