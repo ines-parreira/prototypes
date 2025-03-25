@@ -41,6 +41,7 @@ export function initLaunchDarkly(
         client = LDClient.initialize(
             window.GORGIAS_LAUNCHDARKLY_CLIENT_ID,
             LDContext,
+            { bootstrap: 'localStorage' },
         )
     } catch (err) {
         console.error(err)
