@@ -2,6 +2,7 @@ import React from 'react'
 
 import { QueryClientProvider } from '@tanstack/react-query'
 import { act, fireEvent, screen, waitFor } from '@testing-library/react'
+import { createMemoryHistory } from 'history'
 import { produce } from 'immer'
 import { fromJS } from 'immutable'
 import { Provider } from 'react-redux'
@@ -169,5 +170,53 @@ describe('<ActionsPlatformEditTemplateView />', () => {
 
         expect(mockEditActionTemplate).not.toHaveBeenCalled()
         expect(screen.getByText('Action name is required')).toBeInTheDocument()
+    })
+
+    it('should navigate back to templates page when clicking back button', () => {
+        const history = createMemoryHistory()
+        const historyPushSpy = jest.spyOn(history, 'push')
+
+        renderWithRouter(
+            <Provider store={mockStore}>
+                <QueryClientProvider client={queryClient}>
+                    <ActionsPlatformEditTemplateView
+                        template={template as ActionTemplate}
+                    />
+                </QueryClientProvider>
+            </Provider>,
+            { history },
+        )
+
+        act(() => {
+            fireEvent.click(screen.getByText('Back to templates'))
+        })
+
+        expect(historyPushSpy).toHaveBeenCalledWith(
+            '/app/ai-agent/actions-platform',
+        )
+    })
+
+    it('should navigate back to templates page when clicking cancel', () => {
+        const history = createMemoryHistory()
+        const historyPushSpy = jest.spyOn(history, 'push')
+
+        renderWithRouter(
+            <Provider store={mockStore}>
+                <QueryClientProvider client={queryClient}>
+                    <ActionsPlatformEditTemplateView
+                        template={template as ActionTemplate}
+                    />
+                </QueryClientProvider>
+            </Provider>,
+            { history },
+        )
+
+        act(() => {
+            fireEvent.click(screen.getByText('Cancel'))
+        })
+
+        expect(historyPushSpy).toHaveBeenCalledWith(
+            '/app/ai-agent/actions-platform',
+        )
     })
 })

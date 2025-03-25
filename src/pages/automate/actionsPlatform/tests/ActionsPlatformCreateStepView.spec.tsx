@@ -152,7 +152,7 @@ describe('<ActionsPlatformCreateStepView />', () => {
         })
 
         expect(historyPushSpy).toHaveBeenCalledWith(
-            '/app/automation/actions-platform/steps',
+            '/app/ai-agent/actions-platform/steps',
         )
     })
 

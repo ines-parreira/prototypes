@@ -124,7 +124,7 @@ describe('<ActionsPlatformCreateAppFormView />', () => {
         ])
         await waitFor(() => {
             expect(historyPushSpy).toHaveBeenCalledWith(
-                '/app/automation/actions-platform/apps',
+                '/app/ai-agent/actions-platform/apps',
             )
         })
     })

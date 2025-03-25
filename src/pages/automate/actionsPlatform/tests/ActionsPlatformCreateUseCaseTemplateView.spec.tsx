@@ -260,7 +260,7 @@ describe('<ActionsPlatformCreateUseCaseTemplateView />', () => {
 
         await waitFor(() => {
             expect(historyPushSpy).toHaveBeenCalledWith(
-                '/app/automation/actions-platform/use-cases',
+                '/app/ai-agent/actions-platform/use-cases',
             )
         })
     })
@@ -285,5 +285,49 @@ describe('<ActionsPlatformCreateUseCaseTemplateView />', () => {
 
         expect(mockCreateActionTemplate).not.toHaveBeenCalled()
         expect(screen.getByText('Action name is required')).toBeInTheDocument()
+    })
+
+    it('should navigate to use cases page when clicking back button', async () => {
+        const history = createMemoryHistory()
+        const historyPushSpy = jest.spyOn(history, 'push')
+
+        renderWithRouterAndDnD(
+            <Provider store={mockStore}>
+                <ActionsPlatformCreateUseCaseTemplateView />
+            </Provider>,
+            { history },
+        )
+
+        act(() => {
+            fireEvent.click(screen.getByText('Back to templates'))
+        })
+
+        await waitFor(() => {
+            expect(historyPushSpy).toHaveBeenCalledWith(
+                '/app/ai-agent/actions-platform/use-cases',
+            )
+        })
+    })
+
+    it('should navigate to use cases page when clicking cancel', async () => {
+        const history = createMemoryHistory()
+        const historyPushSpy = jest.spyOn(history, 'push')
+
+        renderWithRouterAndDnD(
+            <Provider store={mockStore}>
+                <ActionsPlatformCreateUseCaseTemplateView />
+            </Provider>,
+            { history },
+        )
+
+        act(() => {
+            fireEvent.click(screen.getByText('Cancel'))
+        })
+
+        await waitFor(() => {
+            expect(historyPushSpy).toHaveBeenCalledWith(
+                '/app/ai-agent/actions-platform/use-cases',
+            )
+        })
     })
 })

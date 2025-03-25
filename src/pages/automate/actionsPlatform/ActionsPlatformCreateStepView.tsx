@@ -150,7 +150,7 @@ const ActionsPlatformCreateStepView = () => {
             ])
 
             history.push(
-                `/app/automation/actions-platform/steps/edit/${visualBuilderGraphDirty.id}`,
+                `/app/ai-agent/actions-platform/steps/edit/${visualBuilderGraphDirty.id}`,
             )
         },
         [
@@ -196,9 +196,7 @@ const ActionsPlatformCreateStepView = () => {
                     <Button
                         intent="secondary"
                         onClick={() => {
-                            history.push(
-                                '/app/automation/actions-platform/steps',
-                            )
+                            history.push('/app/ai-agent/actions-platform/steps')
                         }}
                         isDisabled={
                             isCreateActionTemplateLoading || isAppsLoading

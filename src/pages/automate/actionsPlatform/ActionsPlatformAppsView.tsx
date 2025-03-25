@@ -52,22 +52,22 @@ const ActionsPlatformAppsView = () => {
             title="Actions platform"
             headerNavbarItems={[
                 {
-                    route: '/app/automation/actions-platform',
+                    route: '/app/ai-agent/actions-platform',
                     title: 'Templates',
                     exact: true,
                 },
                 {
-                    route: '/app/automation/actions-platform/use-cases',
+                    route: '/app/ai-agent/actions-platform/use-cases',
                     title: 'Use case templates',
                     exact: true,
                 },
                 {
-                    route: '/app/automation/actions-platform/steps',
+                    route: '/app/ai-agent/actions-platform/steps',
                     title: 'Steps',
                     exact: true,
                 },
                 {
-                    route: '/app/automation/actions-platform/apps',
+                    route: '/app/ai-agent/actions-platform/apps',
                     title: 'Apps',
                     exact: true,
                 },
@@ -83,7 +83,7 @@ const ActionsPlatformAppsView = () => {
                     <Button
                         onClick={() => {
                             history.push(
-                                '/app/automation/actions-platform/apps/new',
+                                '/app/ai-agent/actions-platform/apps/new',
                             )
                         }}
                     >
@@ -112,7 +112,7 @@ const ActionsPlatformAppsView = () => {
                             actionsApp={actionsApp}
                             onClick={() => {
                                 history.push(
-                                    `/app/automation/actions-platform/apps/edit/${actionsApp.id}`,
+                                    `/app/ai-agent/actions-platform/apps/edit/${actionsApp.id}`,
                                 )
                             }}
                         />

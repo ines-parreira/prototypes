@@ -1,5 +1,4 @@
 import type { ReactNode } from 'react'
-import React from 'react'
 
 import { fireEvent, render, screen, within } from '@testing-library/react'
 import { fromJS, Map } from 'immutable'
@@ -10,6 +9,7 @@ import configureMockStore from 'redux-mock-store'
 
 import { NavBarProvider } from 'common/navigation/components/NavBarProvider'
 import { FeatureFlagKey } from 'config/featureFlags'
+import { useFlag } from 'core/flags'
 import { ThemeProvider } from 'core/theme'
 import { account, automationSubscriptionProductPrices } from 'fixtures/account'
 import { billingState } from 'fixtures/billing'
@@ -40,11 +40,82 @@ jest.mock('common/notifications/components/Button', () => ({
     default: () => <div>NotificationsButton</div>,
 }))
 
+jest.mock('core/flags')
+const mockUseFlag = jest.mocked(useFlag)
+
 const wrapper = ({ children }: { children: ReactNode }) => (
     <StaticRouter location="/app/ai-agent/shopify/teststore1/optimize">
         <NavBarProvider>{children}</NavBarProvider>
     </StaticRouter>
 )
+
+const integrations = (fromJS(integrationsState) as Map<any, any>).mergeIn(
+    ['integrations'],
+    fromJS([
+        {
+            id: 99,
+            name: 'teststore1',
+            deleted_datetime: null,
+            meta: {
+                shop_name: 'teststore1',
+            },
+            deactivated_datetime: null,
+            type: 'shopify',
+        },
+        {
+            id: 100,
+            name: 'teststore2',
+            deleted_datetime: null,
+            meta: {
+                shop_name: 'teststore2',
+            },
+            deactivated_datetime: null,
+            type: 'shopify',
+        },
+        {
+            id: 101,
+            name: 'teststore3',
+            deleted_datetime: null,
+            meta: {
+                shop_name: 'teststore3',
+            },
+            deactivated_datetime: null,
+            type: 'shopify',
+        },
+        {
+            id: 102,
+            name: 'teststore4',
+            deleted_datetime: null,
+            meta: {
+                shop_name: 'teststore4',
+            },
+            deactivated_datetime: null,
+            type: 'shopify',
+        },
+    ]),
+)
+
+const defaultState: Partial<RootState> = {
+    currentUser: fromJS(user),
+    currentAccount: fromJS(account),
+    billing: fromJS(billingState),
+    integrations,
+}
+
+const renderNavbar = ({ store }: { store?: Partial<RootState> } = {}) =>
+    render(
+        <Provider
+            store={mockStore({
+                ...defaultState,
+                ...store,
+            })}
+        >
+            <ThemeProvider>
+                <AiAgentNavbar />
+            </ThemeProvider>
+        </Provider>,
+        { wrapper },
+    )
 
 describe('<AiAgentNavbar />', () => {
     beforeEach(() => {
@@ -68,80 +139,19 @@ describe('<AiAgentNavbar />', () => {
         })
     })
 
-    const integrations = (fromJS(integrationsState) as Map<any, any>).mergeIn(
-        ['integrations'],
-        fromJS([
-            {
-                id: 99,
-                name: 'teststore1',
-                deleted_datetime: null,
-                meta: {
-                    shop_name: 'teststore1',
-                },
-                deactivated_datetime: null,
-                type: 'shopify',
-            },
-            {
-                id: 100,
-                name: 'teststore2',
-                deleted_datetime: null,
-                meta: {
-                    shop_name: 'teststore2',
-                },
-                deactivated_datetime: null,
-                type: 'shopify',
-            },
-            {
-                id: 101,
-                name: 'teststore3',
-                deleted_datetime: null,
-                meta: {
-                    shop_name: 'teststore3',
-                },
-                deactivated_datetime: null,
-                type: 'shopify',
-            },
-            {
-                id: 102,
-                name: 'teststore4',
-                deleted_datetime: null,
-                meta: {
-                    shop_name: 'teststore4',
-                },
-                deactivated_datetime: null,
-                type: 'shopify',
-            },
-        ]),
-    )
-
-    const defaultState: Partial<RootState> = {
-        currentUser: fromJS(user),
-        currentAccount: fromJS(account),
-        billing: fromJS(billingState),
-        integrations,
-    }
-
     describe('render()', () => {
         it('should render ai agent navbar with all options', () => {
-            render(
-                <Provider
-                    store={mockStore({
-                        ...defaultState,
-                        currentAccount: fromJS({
-                            ...account,
-                            current_subscription: {
-                                ...account.current_subscription,
-                                products: automationSubscriptionProductPrices,
-                            },
-                        }),
-                    })}
-                >
-                    <ThemeProvider>
-                        <AiAgentNavbar />
-                    </ThemeProvider>
-                </Provider>,
-                { wrapper },
-            )
+            renderNavbar({
+                store: {
+                    currentAccount: fromJS({
+                        ...account,
+                        current_subscription: {
+                            ...account.current_subscription,
+                            products: automationSubscriptionProductPrices,
+                        },
+                    }),
+                },
+            })
 
             const navbar = within(screen.getByTestId('ai-agent-navbar'))
 
@@ -171,18 +181,7 @@ describe('<AiAgentNavbar />', () => {
         })
 
         it('should not render ai agent navbar without automate', () => {
-            const { queryByText } = render(
-                <Provider
-                    store={mockStore({
-                        ...defaultState,
-                    })}
-                >
-                    <ThemeProvider>
-                        <AiAgentNavbar />
-                    </ThemeProvider>
-                </Provider>,
-                { wrapper },
-            )
+            const { queryByText } = renderNavbar()
 
             expect(queryByText('teststore1')).not.toBeInTheDocument()
         })
@@ -203,25 +202,17 @@ describe('<AiAgentNavbar />', () => {
                 },
                 isLoading: false,
             })
-            const { queryByText, queryAllByText } = render(
-                <Provider
-                    store={mockStore({
-                        ...defaultState,
-                        currentAccount: fromJS({
-                            ...account,
-                            current_subscription: {
-                                ...account.current_subscription,
-                                products: automationSubscriptionProductPrices,
-                            },
-                        }),
-                    })}
-                >
-                    <ThemeProvider>
-                        <AiAgentNavbar />
-                    </ThemeProvider>
-                </Provider>,
-                { wrapper },
-            )
+            const { queryByText, queryAllByText } = renderNavbar({
+                store: {
+                    currentAccount: fromJS({
+                        ...account,
+                        current_subscription: {
+                            ...account.current_subscription,
+                            products: automationSubscriptionProductPrices,
+                        },
+                    }),
+                },
+            })
 
             expect(queryByText('teststore1')).toBeInTheDocument()
             expect(queryAllByText('Optimize').length).toBe(0)
@@ -231,28 +222,20 @@ describe('<AiAgentNavbar />', () => {
         })
 
         it('should render no stores', () => {
-            const { queryByText } = render(
-                <Provider
-                    store={mockStore({
-                        ...defaultState,
-                        integrations: (
-                            fromJS(integrationsState) as Map<any, any>
-                        ).mergeIn(['integrations'], fromJS([])),
-                        currentAccount: fromJS({
-                            ...account,
-                            current_subscription: {
-                                ...account.current_subscription,
-                                products: automationSubscriptionProductPrices,
-                            },
-                        }),
-                    })}
-                >
-                    <ThemeProvider>
-                        <AiAgentNavbar />
-                    </ThemeProvider>
-                </Provider>,
-                { wrapper },
-            )
+            const { queryByText } = renderNavbar({
+                store: {
+                    integrations: (
+                        fromJS(integrationsState) as Map<any, any>
+                    ).mergeIn(['integrations'], fromJS([])),
+                    currentAccount: fromJS({
+                        ...account,
+                        current_subscription: {
+                            ...account.current_subscription,
+                            products: automationSubscriptionProductPrices,
+                        },
+                    }),
+                },
+            })
 
             expect(queryByText('teststore1')).not.toBeInTheDocument()
         })
@@ -290,25 +273,17 @@ describe('<AiAgentNavbar />', () => {
                 [FeatureFlagKey.StandaloneConvAiOverviewPage]: false,
             })
 
-            const { queryByText } = render(
-                <Provider
-                    store={mockStore({
-                        ...defaultState,
-                        currentAccount: fromJS({
-                            ...account,
-                            current_subscription: {
-                                ...account.current_subscription,
-                                products: automationSubscriptionProductPrices,
-                            },
-                        }),
-                    })}
-                >
-                    <ThemeProvider>
-                        <AiAgentNavbar />
-                    </ThemeProvider>
-                </Provider>,
-                { wrapper },
-            )
+            const { queryByText } = renderNavbar({
+                store: {
+                    currentAccount: fromJS({
+                        ...account,
+                        current_subscription: {
+                            ...account.current_subscription,
+                            products: automationSubscriptionProductPrices,
+                        },
+                    }),
+                },
+            })
 
             expect(queryByText('Overview')).not.toBeInTheDocument()
         })
@@ -338,6 +313,25 @@ describe('<AiAgentNavbar />', () => {
             )
 
             expect(queryByText('Overview')).not.toBeInTheDocument()
+        })
+
+        it('should render ai agent navbar with actions internal platform', () => {
+            mockUseFlag.mockReturnValue(true)
+
+            const { queryByText } = renderNavbar({
+                store: {
+                    integrations,
+                    currentAccount: fromJS({
+                        ...account,
+                        current_subscription: {
+                            ...account.current_subscription,
+                            products: automationSubscriptionProductPrices,
+                        },
+                    }),
+                },
+            })
+
+            expect(queryByText('Actions platform')).toBeInTheDocument()
         })
     })
 })

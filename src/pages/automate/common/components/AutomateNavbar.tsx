@@ -58,7 +58,7 @@ const AutomateNavbar = () => {
                         )}
                     {isActionsInternalPlatformEnabled && (
                         <div className={navbarCss['link-wrapper']}>
-                            <NavbarLink to="/app/automation/actions-platform">
+                            <NavbarLink to="/app/ai-agent/actions-platform">
                                 <span>Actions platform</span>
                             </NavbarLink>
                         </div>

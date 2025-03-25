@@ -85,22 +85,22 @@ const ActionsPlatformStepsView = () => {
             title="Actions platform"
             headerNavbarItems={[
                 {
-                    route: '/app/automation/actions-platform',
+                    route: '/app/ai-agent/actions-platform',
                     title: 'Templates',
                     exact: true,
                 },
                 {
-                    route: '/app/automation/actions-platform/use-cases',
+                    route: '/app/ai-agent/actions-platform/use-cases',
                     title: 'Use case templates',
                     exact: true,
                 },
                 {
-                    route: '/app/automation/actions-platform/steps',
+                    route: '/app/ai-agent/actions-platform/steps',
                     title: 'Steps',
                     exact: true,
                 },
                 {
-                    route: '/app/automation/actions-platform/apps',
+                    route: '/app/ai-agent/actions-platform/apps',
                     title: 'Apps',
                     exact: true,
                 },
@@ -116,7 +116,7 @@ const ActionsPlatformStepsView = () => {
                     <Button
                         onClick={() => {
                             history.push(
-                                '/app/automation/actions-platform/steps/new',
+                                '/app/ai-agent/actions-platform/steps/new',
                             )
                         }}
                     >
@@ -143,7 +143,7 @@ const ActionsPlatformStepsView = () => {
                         app={getAppFromTemplateApp(step.apps[0])}
                         onClick={() => {
                             history.push(
-                                `/app/automation/actions-platform/steps/edit/${step.id}`,
+                                `/app/ai-agent/actions-platform/steps/edit/${step.id}`,
                             )
                         }}
                         onDelete={() => {

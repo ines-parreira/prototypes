@@ -111,7 +111,7 @@ describe('<ActionsPlatformEditAppFormView />', () => {
         ])
         await waitFor(() => {
             expect(historyPushSpy).toHaveBeenCalledWith(
-                '/app/automation/actions-platform/apps',
+                '/app/ai-agent/actions-platform/apps',
             )
         })
     })
@@ -159,7 +159,7 @@ describe('<ActionsPlatformEditAppFormView />', () => {
         )
 
         expect(history.location.pathname).toEqual(
-            '/app/automation/actions-platform/apps',
+            '/app/ai-agent/actions-platform/apps',
         )
     })
 })

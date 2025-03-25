@@ -121,22 +121,22 @@ const ActionsPlatformEditUseCaseTemplateView = ({ template }: Props) => {
             title="Actions platform"
             headerNavbarItems={[
                 {
-                    route: '/app/automation/actions-platform',
+                    route: '/app/ai-agent/actions-platform',
                     title: 'Templates',
                     exact: true,
                 },
                 {
-                    route: '/app/automation/actions-platform/use-cases',
+                    route: '/app/ai-agent/actions-platform/use-cases',
                     title: 'Use case templates',
                     exact: false,
                 },
                 {
-                    route: '/app/automation/actions-platform/steps',
+                    route: '/app/ai-agent/actions-platform/steps',
                     title: 'Steps',
                     exact: true,
                 },
                 {
-                    route: '/app/automation/actions-platform/apps',
+                    route: '/app/ai-agent/actions-platform/apps',
                     title: 'Apps',
                     exact: true,
                 },
@@ -147,7 +147,7 @@ const ActionsPlatformEditUseCaseTemplateView = ({ template }: Props) => {
                 fillStyle="ghost"
                 className={css.backButton}
                 onClick={() => {
-                    history.push('/app/automation/actions-platform/use-cases')
+                    history.push('/app/ai-agent/actions-platform/use-cases')
                 }}
             >
                 <ButtonIconLabel icon="arrow_back">
@@ -171,9 +171,7 @@ const ActionsPlatformEditUseCaseTemplateView = ({ template }: Props) => {
                 <Button
                     intent="secondary"
                     onClick={() => {
-                        history.push(
-                            '/app/automation/actions-platform/use-cases',
-                        )
+                        history.push('/app/ai-agent/actions-platform/use-cases')
                     }}
                 >
                     Cancel

@@ -1,4 +1,4 @@
-import React, { ComponentType, PropsWithChildren, ReactNode } from 'react'
+import { ComponentType, PropsWithChildren, ReactNode } from 'react'
 
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { act, render, screen, waitFor } from '@testing-library/react'
@@ -114,6 +114,10 @@ const useAiAgentItemEnabledMock = assumeMock(useAiAgentItemEnabled)
 
 jest.mock('routes/StatsRoutes')
 const StatsRoutesMock = assumeMock(StatsRoutes)
+
+jest.mock('pages/aiAgent/components/AiAgentRedirect/AiAgentRedirect', () => ({
+    AiAgentRedirect: () => <div>AiAgentRedirect</div>,
+}))
 
 jest.mock('pages/aiAgent/AiAgentVolume', () => ({
     AiAgentVolume: () => <div>AiAgentVolume</div>,
@@ -305,7 +309,7 @@ describe('<Routes/>', () => {
             )
 
             act(() => {
-                mockHistory.push('/app/automation/actions-platform')
+                mockHistory.push('/app/ai-agent/actions-platform')
             })
 
             expect(
@@ -326,7 +330,7 @@ describe('<Routes/>', () => {
             )
 
             act(() => {
-                mockHistory.push('/app/automation/actions-platform/apps')
+                mockHistory.push('/app/ai-agent/actions-platform/apps')
             })
 
             expect(
@@ -334,20 +338,18 @@ describe('<Routes/>', () => {
             ).toBeInTheDocument()
         })
 
-        it('should render not actions platform templates page if feature flag is toggled off', () => {
+        it('should not render actions platform templates page if feature flag is toggled off', () => {
             mockUseFlag.mockReturnValue(false)
 
             renderWithRouter(
                 <Provider store={mockStore({})}>
                     <Routes />
                 </Provider>,
-                {
-                    history: mockHistory,
-                },
+                { history: mockHistory },
             )
 
             act(() => {
-                mockHistory.push('/app/automation/actions-platform')
+                mockHistory.push('/app/ai-agent/actions-platform')
             })
 
             expect(
@@ -368,7 +370,7 @@ describe('<Routes/>', () => {
             )
 
             act(() => {
-                mockHistory.push('/app/automation/actions-platform/apps/new')
+                mockHistory.push('/app/ai-agent/actions-platform/apps/new')
             })
 
             expect(
@@ -389,7 +391,7 @@ describe('<Routes/>', () => {
             )
 
             act(() => {
-                mockHistory.push('/app/automation/actions-platform/apps/new')
+                mockHistory.push('/app/ai-agent/actions-platform/apps/new')
             })
 
             expect(
@@ -410,7 +412,7 @@ describe('<Routes/>', () => {
             )
 
             act(() => {
-                mockHistory.push('/app/automation/actions-platform/apps/edit/1')
+                mockHistory.push('/app/ai-agent/actions-platform/apps/edit/1')
             })
 
             expect(
@@ -431,7 +433,7 @@ describe('<Routes/>', () => {
             )
 
             act(() => {
-                mockHistory.push('/app/automation/actions-platform/apps/edit/1')
+                mockHistory.push('/app/ai-agent/actions-platform/apps/edit/1')
             })
 
             expect(

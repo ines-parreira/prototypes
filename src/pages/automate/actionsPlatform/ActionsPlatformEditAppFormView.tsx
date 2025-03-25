@@ -26,7 +26,7 @@ const ActionsPlatformEditAppFormView = () => {
     const isLoading = isAppsLoading || isGetActionsAppInitialLoading
 
     if (!isLoading && !actionsApp) {
-        return <Redirect to="/app/automation/actions-platform/apps" />
+        return <Redirect to="/app/ai-agent/actions-platform/apps" />
     }
 
     return (
@@ -34,22 +34,22 @@ const ActionsPlatformEditAppFormView = () => {
             title="Actions platform"
             headerNavbarItems={[
                 {
-                    route: '/app/automation/actions-platform',
+                    route: '/app/ai-agent/actions-platform',
                     title: 'Templates',
                     exact: true,
                 },
                 {
-                    route: '/app/automation/actions-platform/use-cases',
+                    route: '/app/ai-agent/actions-platform/use-cases',
                     title: 'Use case templates',
                     exact: true,
                 },
                 {
-                    route: '/app/automation/actions-platform/steps',
+                    route: '/app/ai-agent/actions-platform/steps',
                     title: 'Steps',
                     exact: true,
                 },
                 {
-                    route: '/app/automation/actions-platform/apps',
+                    route: '/app/ai-agent/actions-platform/apps',
                     title: 'Apps',
                     exact: false,
                 },
@@ -62,7 +62,7 @@ const ActionsPlatformEditAppFormView = () => {
                 onSubmit={async (value) => {
                     await editActionsApp([{ id: value.id }, value])
 
-                    history.push('/app/automation/actions-platform/apps')
+                    history.push('/app/ai-agent/actions-platform/apps')
                 }}
                 isSubmitting={isEditActionsAppLoading}
             />

@@ -4,7 +4,9 @@ import { useFlags } from 'launchdarkly-react-client-sdk'
 import navbarCss from 'assets/css/navbar.less'
 import { ActiveContent, Navbar } from 'common/navigation'
 import { FeatureFlagKey } from 'config/featureFlags'
+import { useFlag } from 'core/flags'
 import useAppSelector from 'hooks/useAppSelector'
+import { aiAgentRoutes } from 'pages/aiAgent/hooks/useAiAgentNavigation'
 import NavbarLink from 'pages/common/components/navbar/NavbarLink'
 import css from 'pages/convert/common/components/ConvertNavbar/ConvertNavbar.less'
 import { getHasAutomate } from 'state/billing/selectors'
@@ -19,6 +21,10 @@ export const AiAgentNavbar = () => {
     const hasStandaloneConvAiOverviewPage =
         useFlags()[FeatureFlagKey.StandaloneConvAiOverviewPage]
     const storeIntegrations = useAppSelector(getShopifyIntegrationsSortedByName)
+
+    const isActionsInternalPlatformEnabled = useFlag(
+        FeatureFlagKey.ActionsInternalPlatform,
+    )
 
     if (
         (!hasAutomate && !hasAiAgentPreview) ||
@@ -37,8 +43,16 @@ export const AiAgentNavbar = () => {
                     )}
                     data-candu-id="ai-agent-navbar-overview"
                 >
-                    <NavbarLink to="/app/ai-agent/overview" exact>
+                    <NavbarLink to={aiAgentRoutes.overview} exact>
                         <span>Overview</span>
+                    </NavbarLink>
+                </div>
+            )}
+
+            {isActionsInternalPlatformEnabled && (
+                <div className={navbarCss['link-wrapper']}>
+                    <NavbarLink to={aiAgentRoutes.actionsPlatform}>
+                        <span>Actions platform</span>
                     </NavbarLink>
                 </div>
             )}

@@ -16,7 +16,7 @@ const ActionsPlatformEditUseCaseTemplateViewContainer = () => {
     }
 
     if (!template || !template.category) {
-        return <Redirect to="/app/automation/actions-platform/use-cases" />
+        return <Redirect to="/app/ai-agent/actions-platform/use-cases" />
     }
 
     return <ActionsPlatformEditUseCaseTemplateView template={template} />

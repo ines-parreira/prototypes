@@ -117,7 +117,7 @@ describe('<ActionsPlatformAppsView />', () => {
         })
 
         expect(historyPushSpy).toHaveBeenCalledWith(
-            '/app/automation/actions-platform/apps/new',
+            '/app/ai-agent/actions-platform/apps/new',
         )
     })
 
@@ -138,7 +138,7 @@ describe('<ActionsPlatformAppsView />', () => {
         })
 
         expect(historyPushSpy).toHaveBeenCalledWith(
-            '/app/automation/actions-platform/apps/edit/1',
+            '/app/ai-agent/actions-platform/apps/edit/1',
         )
     })
 })

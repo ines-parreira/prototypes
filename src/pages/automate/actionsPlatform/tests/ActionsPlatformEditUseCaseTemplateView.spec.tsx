@@ -300,4 +300,38 @@ describe('<ActionsPlatformEditUseCaseTemplateView />', () => {
         expect(mockEditActionTemplate).not.toHaveBeenCalled()
         expect(screen.getByText('Action name is required')).toBeInTheDocument()
     })
+
+    it('should navigate back when clicking back button', () => {
+        const mockPush = jest.fn()
+        jest.spyOn(require('react-router-dom'), 'useHistory').mockReturnValue({
+            push: mockPush,
+        })
+
+        renderApp(template as ActionTemplate)
+
+        act(() => {
+            fireEvent.click(screen.getByText('Back to templates'))
+        })
+
+        expect(mockPush).toHaveBeenCalledWith(
+            '/app/ai-agent/actions-platform/use-cases',
+        )
+    })
+
+    it('should navigate back when clicking cancel button', () => {
+        const mockPush = jest.fn()
+        jest.spyOn(require('react-router-dom'), 'useHistory').mockReturnValue({
+            push: mockPush,
+        })
+
+        renderApp(template as ActionTemplate)
+
+        act(() => {
+            fireEvent.click(screen.getByText('Cancel'))
+        })
+
+        expect(mockPush).toHaveBeenCalledWith(
+            '/app/ai-agent/actions-platform/use-cases',
+        )
+    })
 })

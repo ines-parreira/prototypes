@@ -149,22 +149,22 @@ const ActionsPlatformEditTemplateView = ({ template }: Props) => {
             title="Actions platform"
             headerNavbarItems={[
                 {
-                    route: '/app/automation/actions-platform',
+                    route: '/app/ai-agent/actions-platform',
                     title: 'Templates',
                     exact: false,
                 },
                 {
-                    route: '/app/automation/actions-platform/use-cases',
+                    route: '/app/ai-agent/actions-platform/use-cases',
                     title: 'Use case templates',
                     exact: true,
                 },
                 {
-                    route: '/app/automation/actions-platform/steps',
+                    route: '/app/ai-agent/actions-platform/steps',
                     title: 'Steps',
                     exact: true,
                 },
                 {
-                    route: '/app/automation/actions-platform/apps',
+                    route: '/app/ai-agent/actions-platform/apps',
                     title: 'Apps',
                     exact: true,
                 },
@@ -175,7 +175,7 @@ const ActionsPlatformEditTemplateView = ({ template }: Props) => {
                 fillStyle="ghost"
                 className={css.backButton}
                 onClick={() => {
-                    history.push('/app/automation/actions-platform')
+                    history.push('/app/ai-agent/actions-platform')
                 }}
             >
                 <ButtonIconLabel icon="arrow_back">
@@ -218,7 +218,7 @@ const ActionsPlatformEditTemplateView = ({ template }: Props) => {
                 <Button
                     intent="secondary"
                     onClick={() => {
-                        history.push('/app/automation/actions-platform')
+                        history.push('/app/ai-agent/actions-platform')
                     }}
                 >
                     Cancel

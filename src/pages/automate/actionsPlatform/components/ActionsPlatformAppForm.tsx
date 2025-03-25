@@ -60,7 +60,7 @@ const ActionsPlatformAppForm = ({
                 fillStyle="ghost"
                 intent="secondary"
                 onClick={() => {
-                    history.push('/app/automation/actions-platform/apps')
+                    history.push('/app/ai-agent/actions-platform/apps')
                 }}
                 className={css.backButton}
                 leadingIcon="arrow_back"

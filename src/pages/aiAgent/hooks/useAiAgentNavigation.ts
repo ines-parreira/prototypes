@@ -30,6 +30,7 @@ export const getAiAgentBasePath = (shopName: string, flags: LDFlagSet) => {
 
 export const aiAgentRoutes = {
     overview: '/app/ai-agent/overview',
+    actionsPlatform: '/app/ai-agent/actions-platform',
 }
 
 /** Retrieve AI Agent routes depending on the conv-ai-standalone-menu feature flag */
@@ -55,14 +56,22 @@ export const getAiAgentNavigationRoutes = (
         : 'settings'
 
     return {
+        // Automation routes
         automation: `${automationBasePath}`,
         automationOrderManagement: `${automationBasePath}/shopify/${shopName}/order-management`,
         automationFlows: `${automationBasePath}/shopify/${shopName}/flows`,
+
+        // AI Agent global routes
+        overview: aiAgentRoutes.overview,
+        actionsPlatform: aiAgentRoutes.actionsPlatform,
+
+        // AI Agent routes
         main: basePath,
         settings: `${basePath}/settings`,
         test: `${basePath}/test`,
         knowledge: `${basePath}/knowledge`,
         sales: `${basePath}/sales`,
+        volume: `${basePath}/sales/volume`,
         pagesContent: `${basePath}/knowledge/pages-content`,
         productsContent: `${basePath}/knowledge/products-content`,
         guidance: `${basePath}/${guidancePath}`,
@@ -94,8 +103,6 @@ export const getAiAgentNavigationRoutes = (
         optimize: `${basePath}/optimize`,
         optimizeIntent: (intentId: string) =>
             `${basePath}/optimize/${intentId}`,
-        overview: aiAgentRoutes.overview,
-        volume: `${basePath}/sales/volume`,
     }
 }
 

@@ -297,7 +297,7 @@ describe('<ActionsPlatformCreateTemplateView />', () => {
 
         await waitFor(() => {
             expect(historyPushSpy).toHaveBeenCalledWith(
-                '/app/automation/actions-platform',
+                '/app/ai-agent/actions-platform',
             )
         })
     })
@@ -336,5 +336,45 @@ describe('<ActionsPlatformCreateTemplateView />', () => {
 
         expect(mockCreateActionTemplate).not.toHaveBeenCalled()
         expect(screen.getByText('Action name is required')).toBeInTheDocument()
+    })
+
+    it('should navigate back to templates page when clicking back button', () => {
+        const history = createMemoryHistory()
+        const historyPushSpy = jest.spyOn(history, 'push')
+
+        renderWithRouter(
+            <Provider store={mockStore}>
+                <ActionsPlatformCreateTemplateView />
+            </Provider>,
+            { history },
+        )
+
+        act(() => {
+            fireEvent.click(screen.getByText('Back to templates'))
+        })
+
+        expect(historyPushSpy).toHaveBeenCalledWith(
+            '/app/ai-agent/actions-platform',
+        )
+    })
+
+    it('should navigate back to templates page when clicking cancel', () => {
+        const history = createMemoryHistory()
+        const historyPushSpy = jest.spyOn(history, 'push')
+
+        renderWithRouter(
+            <Provider store={mockStore}>
+                <ActionsPlatformCreateTemplateView />
+            </Provider>,
+            { history },
+        )
+
+        act(() => {
+            fireEvent.click(screen.getByText('Cancel'))
+        })
+
+        expect(historyPushSpy).toHaveBeenCalledWith(
+            '/app/ai-agent/actions-platform',
+        )
     })
 })

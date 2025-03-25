@@ -16,7 +16,7 @@ const ActionsPlatformEditStepViewContainer = () => {
     }
 
     if (!template) {
-        return <Redirect to="/app/automation/actions-platform/steps" />
+        return <Redirect to="/app/ai-agent/actions-platform/steps" />
     }
 
     return <ActionsPlatformEditStepView template={template} />
