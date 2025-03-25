@@ -408,7 +408,7 @@ describe('SimplifiedStepBuilder', () => {
             mockContextDispatch,
         )
 
-        const deleteIcon = screen.getByRole('button', { name: 'close' })
+        const deleteIcon = screen.getByRole('button', { name: 'Delete step' })
         fireEvent.click(deleteIcon)
 
         expect(mockDispatch).toHaveBeenCalledWith({

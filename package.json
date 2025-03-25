@@ -88,7 +88,7 @@
         "@gorgias/design-tokens": "^0.4.0",
         "@gorgias/event-tracker-api": "1.1.0",
         "@gorgias/event-tracker-browser": "2.0.3",
-        "@gorgias/merchant-ui-kit": "0.15.2",
+        "@gorgias/merchant-ui-kit": "^0.22.0",
         "@gorgias/realtime": "^0.6.5",
         "@hookform/resolvers": "^3.10.0",
         "@knocklabs/react": "^0.6.0",

@@ -1,5 +1,3 @@
-import React from 'react'
-
 import { render } from '@testing-library/react'
 import { fromJS } from 'immutable'
 
@@ -21,36 +19,6 @@ describe('ImpersonatedBanner', () => {
     beforeEach(() => {
         window.USER_IMPERSONATED = null
         useFlagMock.mockReturnValue(false)
-    })
-
-    it('should render with prefix when carousel flag is ON', () => {
-        window.USER_IMPERSONATED = true
-        window.GORGIAS_CLUSTER = 'cluster'
-        useFlagMock.mockReturnValue(true)
-        useAppSelectorMock.mockReturnValue(
-            fromJS({
-                id: '1',
-                email: 'heya',
-            }),
-        )
-
-        const { container } = render(<ImpersonationBanner />)
-        expect(container.querySelector('.prefixHolder')).toBeInTheDocument()
-    })
-
-    it('should render without prefix when carousel flag is OFF', () => {
-        window.USER_IMPERSONATED = true
-        window.GORGIAS_CLUSTER = 'cluster'
-        useFlagMock.mockReturnValue(false)
-        useAppSelectorMock.mockReturnValue(
-            fromJS({
-                id: '1',
-                email: 'heya',
-            }),
-        )
-
-        const { container } = render(<ImpersonationBanner />)
-        expect(container.querySelector('.prefixHolder')).not.toBeInTheDocument()
     })
 
     it('should render banner content', () => {

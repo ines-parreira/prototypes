@@ -159,6 +159,7 @@ const ActionFormInput = ({
                     isDisabled={isDisabled || isSemiImmutable}
                     fillStyle="ghost"
                     onClick={onDelete}
+                    aria-label="close"
                 />
             </div>
             {disabledTooltip && isDisabled && (

@@ -1,4 +1,4 @@
-import { Box, IconButton } from '@gorgias/merchant-ui-kit'
+import { Box, IconButton, Separator } from '@gorgias/merchant-ui-kit'
 
 type CarouselNavigationProps = {
     onPrevious: VoidFunction
@@ -13,23 +13,25 @@ export const CarouselNavigation = ({
     currentIndex,
     total,
 }: CarouselNavigationProps) => {
+    if (total <= 1) {
+        return null
+    }
+
     return (
-        <Box>
+        <Box alignItems="center">
             <IconButton
                 icon="chevron_left"
                 intent="secondary"
                 fillStyle="ghost"
                 onClick={total > 1 ? onPrevious : undefined}
-                isDisabled={total <= 1}
+                aria-label="previous banner"
             />
-            <IconButton
-                icon="chevron_right"
-                intent="secondary"
-                fillStyle="ghost"
-                onClick={total > 1 ? onNext : undefined}
-                isDisabled={total <= 1}
-            />
-            <Box ml="16px" mr="16px" alignItems="center" flexWrap="nowrap">
+            <Box
+                w="40px"
+                alignItems="center"
+                flexWrap="nowrap"
+                justifyContent="center"
+            >
                 <span
                     style={{
                         whiteSpace: 'nowrap',
@@ -40,6 +42,16 @@ export const CarouselNavigation = ({
                 >
                     {currentIndex} of {total}
                 </span>
+            </Box>
+            <IconButton
+                icon="chevron_right"
+                intent="secondary"
+                fillStyle="ghost"
+                onClick={total > 1 ? onNext : undefined}
+                aria-label="next banner"
+            />
+            <Box ml="16px" mr="16px" h="30px">
+                <Separator direction="vertical" />
             </Box>
         </Box>
     )

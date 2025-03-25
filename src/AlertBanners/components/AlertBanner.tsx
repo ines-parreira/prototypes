@@ -16,9 +16,10 @@ export type AlertBannerProps = {
     'aria-label'?: string
     CTA?: AlertBannerCTATypes
     onClose?: () => void
+    isClosable?: boolean
     message: ReactNode | string
     type?: AlertBannerTypes
-    prefix?: ReactNode
+    suffix?: ReactNode
     variant?: BannerVariant
     fillStyle?: BannerFillStyle
 } & Pick<HTMLAttributes<HTMLDivElement>, 'aria-label'>
@@ -28,7 +29,8 @@ export function AlertBanner({
     message,
     CTA: CTAProps,
     onClose,
-    prefix,
+    isClosable,
+    suffix,
     type = AlertBannerTypes.Info,
     variant = 'full',
     fillStyle = 'fill',
@@ -39,8 +41,9 @@ export function AlertBanner({
             variant={variant}
             fillStyle={fillStyle}
             onClose={onClose}
+            isClosable={isClosable}
             type={typeFallbackBanner(type)}
-            prefix={prefix}
+            suffix={suffix}
             action={CTAProps && <CTA {...CTAProps} />}
         >
             {typeof message === 'string' ? (

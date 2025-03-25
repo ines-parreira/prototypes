@@ -1,20 +1,11 @@
 import { AlertBanner, AlertBannerTypes } from 'AlertBanners'
-import { FeatureFlagKey } from 'config/featureFlags'
-import { useFlag } from 'core/flags'
 
 import useAppSelector from '../../hooks/useAppSelector'
 import { getCurrentAccountState } from '../../state/currentAccount/selectors'
 import { getCurrentUser } from '../../state/currentUser/selectors'
 import { getEnvironment } from '../../utils/environment'
 
-import css from './AlertBanner.less'
-
 const ImpersonationBanner = () => {
-    const carouselBannerFlag: boolean = useFlag(
-        FeatureFlagKey.BannerCarousel,
-        false,
-    )
-
     const currentUser = useAppSelector(getCurrentUser)
     const currentAccount = useAppSelector(getCurrentAccountState)
 
@@ -22,11 +13,6 @@ const ImpersonationBanner = () => {
         return (
             <AlertBanner
                 type={AlertBannerTypes.Warning}
-                prefix={
-                    carouselBannerFlag && (
-                        <div className={css.prefixHolder}></div>
-                    )
-                }
                 message={
                     <>
                         Impersonating{' '}

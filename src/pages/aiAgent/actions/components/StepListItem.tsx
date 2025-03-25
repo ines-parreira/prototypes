@@ -81,6 +81,7 @@ export const StepListItem = ({
                 onClick={onDelete}
                 className={css.deleteButton}
                 icon="close"
+                aria-label="Delete step"
             />
         </li>
     )

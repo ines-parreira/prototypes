@@ -1,5 +1,3 @@
-import React from 'react'
-
 import { fireEvent, render, screen } from '@testing-library/react'
 
 import { CarouselNavigation } from '../CarouselNavigation'
@@ -22,13 +20,13 @@ describe('CarouselNavigation', () => {
     it('calls previousCallback when clicking previous button', () => {
         render(<CarouselNavigation {...defaultProps} />)
 
-        fireEvent.click(screen.getByText('chevron_left'))
+        fireEvent.click(screen.getByRole('button', { name: 'previous banner' }))
         expect(defaultProps.onPrevious).toHaveBeenCalledTimes(1)
     })
     it('calls nextCallback when clicking next button', () => {
         render(<CarouselNavigation {...defaultProps} />)
 
-        fireEvent.click(screen.getByText('chevron_right'))
+        fireEvent.click(screen.getByRole('button', { name: 'next banner' }))
         expect(defaultProps.onNext).toHaveBeenCalledTimes(1)
     })
 
@@ -43,7 +41,7 @@ describe('CarouselNavigation', () => {
         expect(screen.getByText('3 of 3')).toBeInTheDocument()
     })
 
-    it('should disable navigation when total is 1', () => {
+    it('should not show navigation when total is 1', () => {
         const props = {
             onPrevious: jest.fn(),
             onNext: jest.fn(),
@@ -53,11 +51,12 @@ describe('CarouselNavigation', () => {
 
         render(<CarouselNavigation {...props} />)
 
-        fireEvent.click(screen.getByText('chevron_left'))
-        fireEvent.click(screen.getByText('chevron_right'))
-
-        expect(props.onPrevious).not.toHaveBeenCalled()
-        expect(props.onNext).not.toHaveBeenCalled()
+        expect(
+            screen.queryByRole('button', { name: 'previous banner' }),
+        ).not.toBeInTheDocument()
+        expect(
+            screen.queryByRole('button', { name: 'next banner' }),
+        ).not.toBeInTheDocument()
     })
 
     it('should enable navigation when total is greater than 1', () => {
@@ -70,10 +69,10 @@ describe('CarouselNavigation', () => {
 
         render(<CarouselNavigation {...props} />)
 
-        fireEvent.click(screen.getByText('chevron_left'))
-        fireEvent.click(screen.getByText('chevron_right'))
-
+        fireEvent.click(screen.getByRole('button', { name: 'previous banner' }))
         expect(props.onPrevious).toHaveBeenCalledTimes(1)
+
+        fireEvent.click(screen.getByRole('button', { name: 'next banner' }))
         expect(props.onNext).toHaveBeenCalledTimes(1)
     })
 })

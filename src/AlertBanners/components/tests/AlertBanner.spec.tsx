@@ -64,9 +64,9 @@ describe('<AlertBanner/>', () => {
         expect(CTA).toHaveBeenCalledWith(CTAProps, {})
     })
 
-    it('should render prefix if provided', () => {
-        render(<AlertBanner {...minProps} prefix={<div>Prefix</div>} />)
+    it('should render suffix if provided', () => {
+        render(<AlertBanner {...minProps} suffix={<div>Suffix</div>} />)
 
-        expect(screen.getByText('Prefix')).toBeInTheDocument()
+        expect(screen.getByText('Suffix')).toBeInTheDocument()
     })
 })

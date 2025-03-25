@@ -1,5 +1,7 @@
 import { memo } from 'react'
 
+import { noop } from 'lodash'
+
 import { AlertBanner, AlertBannerTypes } from 'AlertBanners'
 import { MergedBanner } from 'AlertBanners/Context/types'
 import { logEvent, SegmentEvent } from 'common/segment'
@@ -44,7 +46,8 @@ export const AlertBanners = () => {
                                 ? banner?.instanceId
                                 : banner?.id
                         }
-                        onClose={banner?.onClose}
+                        onClose={banner?.onClose ?? noop}
+                        isClosable={!!banner?.onClose}
                         type={typeFallbackBanner(banner?.type)}
                         CTA={banner?.CTA}
                         message={banner?.message}
@@ -65,9 +68,10 @@ export const AlertBanners = () => {
             {!!mergedBannersList.length && (
                 <AlertBanner
                     type={typeFallbackBanner(selectedBanner?.type)}
-                    onClose={selectedBanner?.onClose}
+                    onClose={selectedBanner?.onClose ?? noop}
+                    isClosable={!!selectedBanner?.onClose}
                     CTA={selectedBanner?.CTA}
-                    prefix={
+                    suffix={
                         <CarouselNavigation
                             onPrevious={() => {
                                 logEvent(
