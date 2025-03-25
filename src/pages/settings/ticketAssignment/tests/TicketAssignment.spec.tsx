@@ -9,10 +9,10 @@ import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
 import { TicketChannel } from 'business/types/ticket'
-import { FeatureFlagKey } from 'config/featureFlags'
 import { account } from 'fixtures/account'
 import { teams } from 'fixtures/teams'
 import { user } from 'fixtures/users'
+import UnsavedChangesPrompt from 'pages/common/components/UnsavedChangesPrompt'
 import MultiSelectOptionsField from 'pages/common/forms/MultiSelectOptionsField/MultiSelectOptionsField'
 import { fetchChats } from 'state/chats/actions'
 import { submitSetting } from 'state/currentAccount/actions'
@@ -67,6 +67,11 @@ const submitSettingMock = (
     submitSetting as jest.MockedFunction<typeof submitSetting>
 ).mockReturnValue(() => Promise.resolve())
 
+jest.mock('pages/common/components/UnsavedChangesPrompt', () =>
+    jest.fn().mockReturnValue(null),
+)
+const UnsavedChangesPromptMock = UnsavedChangesPrompt as jest.Mock
+
 const ticketAssignmentSetting: AccountSettingTicketAssignment = {
     id: 1,
     type: AccountSettingType.TicketAssignment,
@@ -93,9 +98,6 @@ const defaultState = {
 } as RootState
 
 const mockStore = configureMockStore<RootState>([thunk])
-const flags = {
-    [FeatureFlagKey.UnassignOnUserUnavailability]: true,
-}
 
 describe('<TicketAssignment/>', () => {
     it('should call `submitSetting` and call `fetchChats` on submit when the account has no `ticket-assignment` setting', async () => {
@@ -106,7 +108,7 @@ describe('<TicketAssignment/>', () => {
                     currentAccount: fromJS({}),
                 })}
             >
-                <TicketAssignment flags={flags} />
+                <TicketAssignment />
             </Provider>,
         )
 
@@ -120,7 +122,7 @@ describe('<TicketAssignment/>', () => {
     it('should call `submitSetting` and not call `fetchChats` on submit when nor the `auto_assign_to_teams` setting nor the `assignment_channels` setting has changed', async () => {
         const { getByText } = render(
             <Provider store={mockStore(defaultState)}>
-                <TicketAssignment flags={flags} />
+                <TicketAssignment />
             </Provider>,
         )
 
@@ -134,7 +136,7 @@ describe('<TicketAssignment/>', () => {
     it('should call `fetchChats` on submit when the `auto_assign_to_teams` setting has changed', async () => {
         const { getByText } = render(
             <Provider store={mockStore(defaultState)}>
-                <TicketAssignment flags={flags} />
+                <TicketAssignment />
             </Provider>,
         )
 
@@ -149,7 +151,7 @@ describe('<TicketAssignment/>', () => {
     it('should call `fetchChats` on submit when the `assignment_channels` setting has changed and `auto_assign_to_teams` is enabled', async () => {
         const { getByText } = render(
             <Provider store={mockStore(defaultState)}>
-                <TicketAssignment flags={flags} />
+                <TicketAssignment />
             </Provider>,
         )
 
@@ -180,7 +182,7 @@ describe('<TicketAssignment/>', () => {
                     }),
                 })}
             >
-                <TicketAssignment flags={flags} />
+                <TicketAssignment />
             </Provider>,
         )
 
@@ -212,7 +214,7 @@ describe('<TicketAssignment/>', () => {
                     }),
                 })}
             >
-                <TicketAssignment flags={flags} />
+                <TicketAssignment />
             </Provider>,
         )
 
@@ -231,7 +233,7 @@ describe('<TicketAssignment/>', () => {
     it('should send updated unassign on user unavailability settings on submit', async () => {
         const { getByText } = render(
             <Provider store={mockStore(defaultState)}>
-                <TicketAssignment flags={flags} />
+                <TicketAssignment />
             </Provider>,
         )
 
@@ -261,7 +263,7 @@ describe('<TicketAssignment/>', () => {
                     currentAccount: fromJS({}),
                 })}
             >
-                <TicketAssignment flags={flags} />
+                <TicketAssignment />
             </Provider>,
         )
 
@@ -301,7 +303,7 @@ describe('<TicketAssignment/>', () => {
                     }),
                 })}
             >
-                <TicketAssignment flags={flags} />
+                <TicketAssignment />
             </Provider>,
         )
 
@@ -318,7 +320,7 @@ describe('<TicketAssignment/>', () => {
         submitSettingMock.mockReturnValueOnce(() => new Promise(_noop))
         const { container, getByText } = render(
             <Provider store={mockStore(defaultState)}>
-                <TicketAssignment flags={flags} />
+                <TicketAssignment />
             </Provider>,
         )
 
@@ -335,10 +337,66 @@ describe('<TicketAssignment/>', () => {
                     teams: fromJS({ all: {} }),
                 })}
             >
-                <TicketAssignment flags={flags} />
+                <TicketAssignment />
             </Provider>,
         )
 
         expect(container.firstChild).toMatchSnapshot()
+    })
+
+    it('should render the unsaved changes prompt when the user tries to navigate away with unsaved changes', () => {
+        const { getByText } = render(
+            <Provider store={mockStore(defaultState)}>
+                <TicketAssignment />
+            </Provider>,
+        )
+
+        fireEvent.click(getByText('Auto-assign tickets'))
+
+        expect(UnsavedChangesPromptMock).toHaveBeenLastCalledWith(
+            expect.objectContaining({
+                when: true,
+            }),
+            {},
+        )
+    })
+
+    it('should not render the unsaved changes prompt when the props have changed to reflect saved changes', () => {
+        const { getByText, rerender } = render(
+            <Provider store={mockStore(defaultState)}>
+                <TicketAssignment />
+            </Provider>,
+        )
+
+        fireEvent.click(getByText('Auto-assign tickets'))
+
+        rerender(
+            <Provider
+                store={mockStore({
+                    ...defaultState,
+                    currentAccount: fromJS({
+                        ...account,
+                        settings: [
+                            {
+                                ...ticketAssignmentSetting,
+                                data: {
+                                    ...ticketAssignmentSetting.data,
+                                    auto_assign_to_teams: false,
+                                },
+                            },
+                        ],
+                    }),
+                })}
+            >
+                <TicketAssignment />
+            </Provider>,
+        )
+
+        expect(UnsavedChangesPromptMock).toHaveBeenLastCalledWith(
+            expect.objectContaining({
+                when: false,
+            }),
+            {},
+        )
     })
 })
