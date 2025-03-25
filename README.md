@@ -19,11 +19,12 @@ It's built using ReactJS + Redux + many other smaller tools.
         -   [Running Linting](#running-linting)
         -   [Adding Linting rules](#adding-linting-rules)
     -   [Formatting](#formatting)
-        -   [Static analysis](#static-analysis)
-            -   [Deprecated entries](#deprecated-entries)
-                -   [Generate new snapshot](#generate-new-snapshot)
-                -   [Deprecated entries lint check](#deprecated-entries-lint-check)
-                -   [Add new deprecated entries](#add-new-deprecated-entries)
+    -   [Platform](#platform)
+        -   [Deprecated entries](#deprecated-entries)
+            -   [Generate new snapshot](#generate-new-snapshot)
+            -   [Deprecated entries lint check](#deprecated-entries-lint-check)
+            -   [Add new deprecated entries](#add-new-deprecated-entries)
+        -   [Dependencies NodeJS Engine check](#dependencies-nodejs-engine-check)
     -   [Contributing](#contributing)
     -   [FAQ / Troubleshooting](#faq--troubleshooting)
         -   [yarn dependencies installation error](#yarn-dependencies-installation-error)
@@ -120,19 +121,19 @@ New linting [rules](https://oxc.rs/docs/guide/usage/linter/rules.html) can be ad
 
 Formatting is done on save, via Prettier. Make sure to have the [Prettier extension](https://prettier.io/docs/editors) installed in your IDE.
 
-### Static analysis
+## Platform
 
-#### Deprecated entries
+### Deprecated entries
 
-##### Generate new snapshot
+#### Generate new snapshot
 
 This script will generate a new snapshot of the deprecated code according to the `sa.config.ts` file.
 
 ```bash
-yarn static-analysis:deprecated
+yarn platform:deprecated-analysis
 ```
 
-##### Deprecated entries lint check
+#### Deprecated entries lint check
 
 This script will check if there are any new deprecated entries in the codebase based on the current snapshot.
 
@@ -140,7 +141,7 @@ This script will check if there are any new deprecated entries in the codebase b
 yarn lint:deprecated
 ```
 
-##### Add new deprecated entries
+#### Add new deprecated entries
 
 To add new deprecated entries, you can use the `@deprecated` JSDoc comment, with a following `@date` (used to prioritize the deprecation) and an optional `@type` which is used to categorize the deprecation (e.g. `ui-migration`).
 
@@ -155,7 +156,23 @@ const Component = () => {
 }
 ```
 
-Once you add the `@deprecated` comment, you can run `yarn static-analysis:deprecated` to generate a new snapshot.
+Once you add the `@deprecated` comment, you can run `yarn platform:deprecated-analysis` to generate a new snapshot.
+
+### Dependencies NodeJS Engine check
+
+This script will give you the list of dependencies which are incompatible with any specified NodeJS version.
+
+Update the target version in the [dependencies-engines.ts](scripts/dependencies-management/dependencies-engines.ts) file
+
+```typescript
+const TARGET_VERSION = '22.0.0'
+```
+
+And run:
+
+```bash
+yarn platform:check-node-engines
+```
 
 ## Contributing
 
