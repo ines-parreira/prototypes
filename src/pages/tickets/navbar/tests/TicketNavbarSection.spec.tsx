@@ -50,7 +50,23 @@ describe('<TicketNavbarSection/>', () => {
                 <TicketNavbarSectionContainer {...minProps} {...props} />
             </DndProvider>,
         )
-
         expect(container.firstChild).toMatchSnapshot()
+    })
+
+    it('should set the correct data-candu-id attribute on the section name element', () => {
+        const { container } = render(
+            <DndProvider backend={HTML5Backend}>
+                <TicketNavbarSectionContainer {...minProps} isExpanded={true} />
+            </DndProvider>,
+        )
+
+        const sectionNameElement = container.querySelector('[data-candu-id]')
+        expect(sectionNameElement).toBeTruthy()
+
+        const expectedDataId = `ticket-navbar-section-test-view`
+        expect(sectionNameElement).toHaveAttribute(
+            'data-candu-id',
+            expectedDataId,
+        )
     })
 })

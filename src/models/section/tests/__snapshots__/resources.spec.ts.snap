@@ -5,7 +5,7 @@ exports[`section resources createSection should resolve with a new Section on su
   "created_datetime": "2020-10-14T14:26:35.921523+00:00",
   "decoration": null,
   "id": 1,
-  "name": "foo",
+  "name": "test View",
   "private": false,
   "updated_datetime": "2020-10-14T14:26:35.921523+00:00",
   "uri": "foo",
@@ -23,7 +23,7 @@ exports[`section resources createSection should resolve with a new Section on su
   "patch": [],
   "post": [
     {
-      "data": "{"name":"foo","private":false,"decoration":null}",
+      "data": "{"name":"test View","private":false,"decoration":null}",
       "env": {
         "Blob": [Function],
         "FormData": [Function],
@@ -69,7 +69,7 @@ exports[`section resources fetchSections should resolve with a Section list on s
       "created_datetime": "2020-10-14T14:26:35.921523+00:00",
       "decoration": null,
       "id": 1,
-      "name": "foo",
+      "name": "test View",
       "private": false,
       "updated_datetime": "2020-10-14T14:26:35.921523+00:00",
       "uri": "foo",
@@ -78,7 +78,7 @@ exports[`section resources fetchSections should resolve with a Section list on s
       "created_datetime": "2020-10-14T14:26:35.921523+00:00",
       "decoration": null,
       "id": 1,
-      "name": "foo",
+      "name": "test View",
       "private": false,
       "updated_datetime": "2020-10-14T14:26:35.921523+00:00",
       "uri": "foo",
@@ -87,7 +87,7 @@ exports[`section resources fetchSections should resolve with a Section list on s
       "created_datetime": "2020-10-14T14:26:35.921523+00:00",
       "decoration": null,
       "id": 1,
-      "name": "foo",
+      "name": "test View",
       "private": false,
       "updated_datetime": "2020-10-14T14:26:35.921523+00:00",
       "uri": "foo",
@@ -101,7 +101,7 @@ exports[`section resources updateSection should resolve with an updated Section 
   "created_datetime": "2020-10-14T14:26:35.921523+00:00",
   "decoration": null,
   "id": 1,
-  "name": "foo",
+  "name": "test View",
   "private": false,
   "updated_datetime": "2020-10-14T14:26:35.921523+00:00",
   "uri": "foo",
@@ -120,7 +120,7 @@ exports[`section resources updateSection should resolve with an updated Section 
   "post": [],
   "put": [
     {
-      "data": "{"decoration":null,"name":"foo"}",
+      "data": "{"decoration":null,"name":"test View"}",
       "env": {
         "Blob": [Function],
         "FormData": [Function],

@@ -49,6 +49,7 @@ const TicketNavbarViewLink = (
 
     return (
         <div
+            data-candu-id={`ticket-navbar-view-link-${view.name.replace(' ', '-').toLowerCase()}`}
             id={ticketNavbarId}
             ref={ref}
             className={classnames(navbarCss['link-wrapper'], {

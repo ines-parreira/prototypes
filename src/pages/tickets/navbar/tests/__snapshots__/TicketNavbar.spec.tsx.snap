@@ -23,7 +23,7 @@ exports[`<TicketNavbar/> should close a new section modal when clicking close se
         </div>
         <div>
           element: 
-          {"children":[{"id":1,"section_id":1,"type":"ticket-list","visibility":"public"}],"data":{"created_datetime":"2020-10-14T14:26:35.921523+00:00","id":1,"name":"foo","private":false,"decoration":null,"uri":"foo","updated_datetime":"2020-10-14T14:26:35.921523+00:00"},"type":"section"}
+          {"children":[{"id":1,"section_id":1,"type":"ticket-list","visibility":"public"}],"data":{"created_datetime":"2020-10-14T14:26:35.921523+00:00","id":1,"name":"test View","private":false,"decoration":null,"uri":"foo","updated_datetime":"2020-10-14T14:26:35.921523+00:00"},"type":"section"}
         </div>
       </div>
     </div>
@@ -151,7 +151,7 @@ exports[`<TicketNavbar/> should display shared actions for lead-agent/admin 1`] 
         </div>
         <div>
           element: 
-          {"children":[{"id":1,"section_id":1,"type":"ticket-list","visibility":"public"}],"data":{"created_datetime":"2020-10-14T14:26:35.921523+00:00","id":1,"name":"foo","private":false,"decoration":null,"uri":"foo","updated_datetime":"2020-10-14T14:26:35.921523+00:00"},"type":"section"}
+          {"children":[{"id":1,"section_id":1,"type":"ticket-list","visibility":"public"}],"data":{"created_datetime":"2020-10-14T14:26:35.921523+00:00","id":1,"name":"test View","private":false,"decoration":null,"uri":"foo","updated_datetime":"2020-10-14T14:26:35.921523+00:00"},"type":"section"}
         </div>
         <div
           data-testid="TicketNavbarContent-delete"
@@ -275,7 +275,7 @@ exports[`<TicketNavbar/> should open a new section modal when clicking create se
         </div>
         <div>
           element: 
-          {"children":[{"id":1,"section_id":1,"type":"ticket-list","visibility":"public"}],"data":{"created_datetime":"2020-10-14T14:26:35.921523+00:00","id":1,"name":"foo","private":false,"decoration":null,"uri":"foo","updated_datetime":"2020-10-14T14:26:35.921523+00:00"},"type":"section"}
+          {"children":[{"id":1,"section_id":1,"type":"ticket-list","visibility":"public"}],"data":{"created_datetime":"2020-10-14T14:26:35.921523+00:00","id":1,"name":"test View","private":false,"decoration":null,"uri":"foo","updated_datetime":"2020-10-14T14:26:35.921523+00:00"},"type":"section"}
         </div>
       </div>
     </div>
@@ -393,7 +393,7 @@ exports[`<TicketNavbar/> should render 1`] = `
         </div>
         <div>
           element: 
-          {"children":[{"id":1,"section_id":1,"type":"ticket-list","visibility":"public"}],"data":{"created_datetime":"2020-10-14T14:26:35.921523+00:00","id":1,"name":"foo","private":false,"decoration":null,"uri":"foo","updated_datetime":"2020-10-14T14:26:35.921523+00:00"},"type":"section"}
+          {"children":[{"id":1,"section_id":1,"type":"ticket-list","visibility":"public"}],"data":{"created_datetime":"2020-10-14T14:26:35.921523+00:00","id":1,"name":"test View","private":false,"decoration":null,"uri":"foo","updated_datetime":"2020-10-14T14:26:35.921523+00:00"},"type":"section"}
         </div>
       </div>
     </div>
@@ -511,7 +511,7 @@ exports[`<TicketNavbar/> should update the draft form on change 1`] = `
         </div>
         <div>
           element: 
-          {"children":[{"id":1,"section_id":1,"type":"ticket-list","visibility":"public"}],"data":{"created_datetime":"2020-10-14T14:26:35.921523+00:00","id":1,"name":"foo","private":false,"decoration":null,"uri":"foo","updated_datetime":"2020-10-14T14:26:35.921523+00:00"},"type":"section"}
+          {"children":[{"id":1,"section_id":1,"type":"ticket-list","visibility":"public"}],"data":{"created_datetime":"2020-10-14T14:26:35.921523+00:00","id":1,"name":"test View","private":false,"decoration":null,"uri":"foo","updated_datetime":"2020-10-14T14:26:35.921523+00:00"},"type":"section"}
         </div>
       </div>
     </div>

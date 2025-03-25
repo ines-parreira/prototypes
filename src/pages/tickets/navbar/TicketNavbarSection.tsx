@@ -114,6 +114,7 @@ export function TicketNavbarSectionContainer({
                             </i>
                         </div>
                         <div
+                            data-candu-id={`ticket-navbar-section-${section.name.replace(' ', '-').toLowerCase()}`}
                             onClick={handleClick}
                             className={classnames(
                                 navbarSectionCss.name,
