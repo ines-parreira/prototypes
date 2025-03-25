@@ -1,72 +1,15 @@
 {
   "summary": {
     "totalEntries": 32,
-    "totalUsages": 1077,
-    "reportGeneratedAt": "2025-03-07T08:44:46.246Z"
+    "totalUsages": 1111,
+    "reportGeneratedAt": "2025-03-25T10:56:07.563Z"
   },
   "entries": [
     {
       "type": "feature-component",
       "entries": [
         {
-          "usageCount": 14,
-          "name": "DEPRECATED_PeriodStatsFilter",
-          "nodeType": "FunctionDeclaration",
-          "deprecationDate": "2024-06-26",
-          "deprecationType": "feature-component",
-          "declarationFile": "src/pages/stats/common/filters/DEPRECATED_PeriodStatsFilter.tsx",
-          "usageUrls": {
-            "named": [],
-            "default": [
-              "src/pages/automate/workflows/analytics/WorkflowAnalytics.tsx",
-              "src/pages/stats/AutomateIntentsFilters.tsx",
-              "src/pages/stats/AutomateMacros.tsx",
-              "src/pages/stats/automate/overview/AutomateOverviewFilters.tsx",
-              "src/pages/stats/common/filters/PeriodStatsFilter.stories.tsx",
-              "src/pages/stats/common/filters/tests/DEPRECATED_PeriodStatsFilter.spec.tsx",
-              "src/pages/stats/convert/containers/RevenueFilters/RevenueFilters.tsx",
-              "src/pages/stats/help-center/components/HelpCenterReport/HelpCenterReport.tsx",
-              "src/pages/stats/self-service/DEPRECATED_SelfServiceStatsPageFilters.tsx",
-              "src/pages/stats/support-performance/SupportPerformanceFilters.tsx",
-              "src/pages/stats/support-performance/revenue/SupportPerformanceRevenueFilters.tsx",
-              "src/pages/stats/support-performance/satisfaction/SupportPerformanceSatisfactionFilters.tsx",
-              "src/pages/stats/voice/pages/VoiceAgents.tsx",
-              "src/pages/stats/voice/pages/VoiceOverview.tsx"
-            ]
-          },
-          "defaultImportNames": [
-            "PeriodStatsFilter",
-            "DEPRECATED_PeriodStatsFilter"
-          ]
-        },
-        {
-          "usageCount": 10,
-          "name": "DEPRECATED_TagsStatsFilter",
-          "nodeType": "FunctionDeclaration",
-          "deprecationDate": "2024-07-29",
-          "deprecationType": "feature-component",
-          "declarationFile": "src/pages/stats/common/filters/DEPRECATED_TagsStatsFilter.tsx",
-          "usageUrls": {
-            "named": [],
-            "default": [
-              "src/pages/stats/automate/overview/tests/AutomateOverview.spec.tsx",
-              "src/pages/stats/common/filters/tests/DEPRECATED_TagsStatsFilter.spec.tsx",
-              "src/pages/stats/support-performance/SupportPerformanceFilters.tsx",
-              "src/pages/stats/support-performance/revenue/SupportPerformanceRevenueFilters.tsx",
-              "src/pages/stats/support-performance/revenue/tests/SupportPerformanceRevenue.spec.tsx",
-              "src/pages/stats/support-performance/satisfaction/SupportPerformanceSatisfactionFilters.tsx",
-              "src/pages/stats/support-performance/satisfaction/tests/SupportPerformanceSatisfaction.spec.tsx",
-              "src/pages/stats/tests/LiveAgents.spec.tsx",
-              "src/pages/stats/voice/pages/VoiceAgents.tsx",
-              "src/pages/stats/voice/pages/VoiceOverview.tsx"
-            ]
-          },
-          "defaultImportNames": [
-            "DEPRECATED_TagsStatsFilter"
-          ]
-        },
-        {
-          "usageCount": 9,
+          "usageCount": 8,
           "name": "DEPRECATED_ChannelsStatsFilter",
           "nodeType": "FunctionDeclaration",
           "deprecationDate": "2024-06-27",
@@ -81,7 +24,6 @@
               "src/pages/stats/LiveOverviewFilters.tsx",
               "src/pages/stats/common/filters/tests/ChanelsStatsFilter.spec.tsx",
               "src/pages/stats/common/filters/tests/ChannelsStatsFilter.spec.tsx",
-              "src/pages/stats/support-performance/SupportPerformanceFilters.tsx",
               "src/pages/stats/support-performance/revenue/SupportPerformanceRevenueFilters.tsx",
               "src/pages/stats/support-performance/satisfaction/SupportPerformanceSatisfactionFilters.tsx"
             ]
@@ -92,7 +34,55 @@
           ]
         },
         {
+          "usageCount": 8,
+          "name": "DEPRECATED_PeriodStatsFilter",
+          "nodeType": "FunctionDeclaration",
+          "deprecationDate": "2024-06-26",
+          "deprecationType": "feature-component",
+          "declarationFile": "src/pages/stats/common/filters/DEPRECATED_PeriodStatsFilter.tsx",
+          "usageUrls": {
+            "named": [],
+            "default": [
+              "src/pages/automate/workflows/analytics/WorkflowAnalytics.tsx",
+              "src/pages/stats/AutomateIntentsFilters.tsx",
+              "src/pages/stats/AutomateMacros.tsx",
+              "src/pages/stats/common/filters/PeriodStatsFilter.stories.tsx",
+              "src/pages/stats/common/filters/tests/DEPRECATED_PeriodStatsFilter.spec.tsx",
+              "src/pages/stats/self-service/DEPRECATED_SelfServiceStatsPageFilters.tsx",
+              "src/pages/stats/support-performance/revenue/SupportPerformanceRevenueFilters.tsx",
+              "src/pages/stats/support-performance/satisfaction/SupportPerformanceSatisfactionFilters.tsx"
+            ]
+          },
+          "defaultImportNames": [
+            "PeriodStatsFilter",
+            "DEPRECATED_PeriodStatsFilter"
+          ]
+        },
+        {
           "usageCount": 7,
+          "name": "DEPRECATED_TagsStatsFilter",
+          "nodeType": "FunctionDeclaration",
+          "deprecationDate": "2024-07-29",
+          "deprecationType": "feature-component",
+          "declarationFile": "src/pages/stats/common/filters/DEPRECATED_TagsStatsFilter.tsx",
+          "usageUrls": {
+            "named": [],
+            "default": [
+              "src/pages/stats/automate/overview/tests/AutomateOverview.spec.tsx",
+              "src/pages/stats/common/filters/tests/DEPRECATED_TagsStatsFilter.spec.tsx",
+              "src/pages/stats/support-performance/revenue/SupportPerformanceRevenueFilters.tsx",
+              "src/pages/stats/support-performance/revenue/tests/SupportPerformanceRevenue.spec.tsx",
+              "src/pages/stats/support-performance/satisfaction/SupportPerformanceSatisfactionFilters.tsx",
+              "src/pages/stats/support-performance/satisfaction/tests/SupportPerformanceSatisfaction.spec.tsx",
+              "src/pages/stats/tests/LiveAgents.spec.tsx"
+            ]
+          },
+          "defaultImportNames": [
+            "DEPRECATED_TagsStatsFilter"
+          ]
+        },
+        {
+          "usageCount": 4,
           "name": "DEPRECATED_AgentsStatsFilter",
           "nodeType": "FunctionDeclaration",
           "deprecationDate": "2024-07-19",
@@ -104,10 +94,7 @@
               "src/pages/stats/LiveAgentsFilters.tsx",
               "src/pages/stats/LiveOverviewFilters.tsx",
               "src/pages/stats/common/filters/tests/AgentsStatsFilter.spec.tsx",
-              "src/pages/stats/support-performance/SupportPerformanceFilters.tsx",
-              "src/pages/stats/support-performance/satisfaction/SupportPerformanceSatisfactionFilters.tsx",
-              "src/pages/stats/voice/pages/VoiceAgents.tsx",
-              "src/pages/stats/voice/pages/VoiceOverview.tsx"
+              "src/pages/stats/support-performance/satisfaction/SupportPerformanceSatisfactionFilters.tsx"
             ]
           },
           "defaultImportNames": [
@@ -115,7 +102,7 @@
           ]
         },
         {
-          "usageCount": 7,
+          "usageCount": 4,
           "name": "DEPRECATED_IntegrationsStatsFilter",
           "nodeType": "FunctionDeclaration",
           "deprecationDate": "2024-07-03",
@@ -126,11 +113,8 @@
             "default": [
               "src/pages/stats/AutomateMacros.tsx",
               "src/pages/stats/common/filters/tests/DEPRECATED_IntegrationsStatsFilter.spec.tsx",
-              "src/pages/stats/support-performance/SupportPerformanceFilters.tsx",
               "src/pages/stats/support-performance/revenue/SupportPerformanceRevenueFilters.tsx",
-              "src/pages/stats/support-performance/satisfaction/SupportPerformanceSatisfactionFilters.tsx",
-              "src/pages/stats/voice/pages/VoiceAgents.tsx",
-              "src/pages/stats/voice/pages/VoiceOverview.tsx"
+              "src/pages/stats/support-performance/satisfaction/SupportPerformanceSatisfactionFilters.tsx"
             ]
           },
           "defaultImportNames": [
@@ -188,42 +172,6 @@
           "defaultImportNames": [
             "DEPRECATED_SenderSelectField",
             "SenderSelectField"
-          ]
-        },
-        {
-          "usageCount": 2,
-          "name": "DEPRECATED_HelpCenterStatsLanguageFilter",
-          "nodeType": "VariableDeclaration",
-          "deprecationDate": "2023-11-29",
-          "deprecationType": "feature-component",
-          "declarationFile": "src/pages/stats/common/filters/HelpCenterStatsLanguageFilter/DEPRECATED_HelpCenterStatsLanguageFilter.tsx",
-          "usageUrls": {
-            "named": [],
-            "default": [
-              "src/pages/stats/common/filters/HelpCenterStatsLanguageFilter/tests/HelpCenterStatsLanguageFilter.spec.tsx",
-              "src/pages/stats/help-center/components/HelpCenterReport/HelpCenterReport.tsx"
-            ]
-          },
-          "defaultImportNames": [
-            "DEPRECATED_HelpCenterStatsLanguageFilter"
-          ]
-        },
-        {
-          "usageCount": 2,
-          "name": "DEPRECATED_HelpCenterFilter",
-          "nodeType": "VariableDeclaration",
-          "deprecationDate": "2023-11-08",
-          "deprecationType": "feature-component",
-          "declarationFile": "src/pages/stats/common/filters/DEPRECATED_HelpCenterFilter/DEPRECATED_HelpCenterFilter.tsx",
-          "usageUrls": {
-            "named": [],
-            "default": [
-              "src/pages/stats/common/filters/DEPRECATED_HelpCenterFilter/DEPRECATED_HelpCenterFilter.spec.tsx",
-              "src/pages/stats/help-center/components/HelpCenterReport/HelpCenterReport.tsx"
-            ]
-          },
-          "defaultImportNames": [
-            "DEPRECATED_HelpCenterFilter"
           ]
         },
         {
@@ -319,23 +267,24 @@
               "src/common/state/actions/triggerTicketFieldsRefreshAndInvalidation.ts",
               "src/hooks/reporting/automate/useAutomationRateTimeSeriesData.ts",
               "src/hooks/reporting/automate/useAutomationRateTrend.ts",
-              "src/hooks/reporting/automate/useNewAutomateFilters.ts",
               "src/hooks/reporting/common/useTableReportData.ts",
               "src/hooks/reporting/common/useTrendReportData.ts",
               "src/hooks/reporting/dashboards/useReportRestrictions.ts",
               "src/hooks/reporting/support-performance/overview/useDownloadOverviewData.ts",
-              "src/hooks/reporting/support-performance/useNewStatsFilters.ts",
+              "src/hooks/reporting/ticket-insights/tests/useTicketCountPerTag.spec.tsx",
+              "src/hooks/reporting/ticket-insights/useTicketCountPerTag.ts",
               "src/models/aiAgent/queries.ts",
+              "src/pages/aiAgent/Activation/hooks/useStoreActivations.ts",
               "src/pages/aiAgent/AiAgentConfigurationView/AiAgentConfigurationView.tsx",
               "src/pages/aiAgent/AiAgentGuidanceContainer.tsx",
               "src/pages/aiAgent/AiAgentGuidanceLibraryContainer.tsx",
               "src/pages/aiAgent/AiAgentGuidanceTemplatesContainer.tsx",
               "src/pages/aiAgent/AiAgentKnowledgeContainer.tsx",
               "src/pages/aiAgent/AiAgentMainViewContainer.tsx",
-              "src/pages/aiAgent/AiAgentOnboardingWizard/AiAgentOnboardingWizard.tsx",
               "src/pages/aiAgent/AiAgentOnboardingWizard/AiAgentOnboardingWizardKnowledge.tsx",
               "src/pages/aiAgent/AiAgentOnboardingWizard/AiAgentOnboardingWizardPersonalize.tsx",
               "src/pages/aiAgent/AiAgentOnboardingWizard/hooks/useAiAgentOnboardingWizard.tsx",
+              "src/pages/aiAgent/AiAgentPaywallView.tsx",
               "src/pages/aiAgent/AiAgentPlaygroundContainer.tsx",
               "src/pages/aiAgent/AiAgentPreviewModeSettings/AiAgentPreviewModeSettingsView.tsx",
               "src/pages/aiAgent/AiAgentSales.tsx",
@@ -357,6 +306,8 @@
               "src/pages/aiAgent/actions/hooks/use3plIntegrations.ts",
               "src/pages/aiAgent/actions/tests/ActionsList.spec.tsx",
               "src/pages/aiAgent/components/AIAgentPreviewModeSection/AiAgentPreviewModeSection.tsx",
+              "src/pages/aiAgent/components/AIAgentWelcomePageView/AIAgentWelcomePageView.tsx",
+              "src/pages/aiAgent/components/AiAgentLayout/AiAgentLayout.tsx",
               "src/pages/aiAgent/components/AiAgentNavbar/AiAgentNavbar.tsx",
               "src/pages/aiAgent/components/AiAgentNavbar/tests/AiAgentNavbar.spec.tsx",
               "src/pages/aiAgent/components/GuidanceBreadcrumbs/GuidanceBreadcrumbs.tsx",
@@ -366,6 +317,8 @@
               "src/pages/aiAgent/components/StoreConfigForm/FormComponents/tests/ChannelsFormComponent.spec.tsx",
               "src/pages/aiAgent/components/StoreConfigForm/StoreConfigForm.tsx",
               "src/pages/aiAgent/components/StoreConfigForm/tests/EmailFormComponent.spec.tsx",
+              "src/pages/aiAgent/components/VolumeSettings/VolumeSettings.tsx",
+              "src/pages/aiAgent/components/VolumeSettings/tests/VolumeSettings.spec.tsx",
               "src/pages/aiAgent/hooks/test/useAiAgentNavigation.spec.ts",
               "src/pages/aiAgent/hooks/test/useShowAiAgentStandaloneMenu.spec.ts",
               "src/pages/aiAgent/hooks/useAiAgentNavigation.ts",
@@ -378,10 +331,14 @@
               "src/pages/aiAgent/insights/OptimizeContainer/OptimizeContainer.tsx",
               "src/pages/aiAgent/providers/AiAgentAccountConfigurationProvider.tsx",
               "src/pages/aiAgent/providers/AiAgentStoreConfigurationProvider.tsx",
-              "src/pages/aiAgent/test/AiAgentKnowledgeContainer.spec.tsx",
+              "src/pages/aiAgent/test/AIAgentPaywallView.spec.tsx",
               "src/pages/automate/actionsPlatform/hooks/tests/useEnabledActionStepsByApp.spec.ts",
               "src/pages/automate/actionsPlatform/hooks/useGetIsActionStepEnabled.ts",
               "src/pages/automate/articleRecommendation/ArticleRecommendationView.tsx",
+              "src/pages/automate/articleRecommendation/ArticleRecommendationViewContainer.tsx",
+              "src/pages/automate/articleRecommendation/tests/ArticleRecommendationViewContainer.spec.tsx",
+              "src/pages/automate/common/components/AutomateAllRecommendationsContainer.tsx",
+              "src/pages/automate/common/components/AutomateLandingPageContainer.tsx",
               "src/pages/automate/common/components/AutomateNavbar.tsx",
               "src/pages/automate/common/components/AutomateNavbarSectionBlock.tsx",
               "src/pages/automate/common/components/AutomatePaywallView.tsx",
@@ -410,7 +367,6 @@
               "src/pages/common/components/ScriptTagMigrationBanner/ScriptTagMigrationBanner.tsx",
               "src/pages/common/components/ScriptTagMigrationBanner/hooks/useStoresRequiringScriptTagMigration.ts",
               "src/pages/common/components/ScriptTagMigrationModal/ScriptTagMigrationModal.tsx",
-              "src/pages/common/components/Spotlight/useSearch.ts",
               "src/pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/bigcommerce/Customer.tsx",
               "src/pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/bigcommerce/OrderWidget.tsx",
               "src/pages/common/hooks/useIsConvertSubscriber.ts",
@@ -481,31 +437,22 @@
               "src/pages/settings/helpCenter/queries.ts",
               "src/pages/settings/new_billing/components/SummaryTotal/SummaryTotal.tsx",
               "src/pages/settings/new_billing/hooks/tests/useAutomatedHelpdeskCancellationFlowAvailable.spec.ts",
+              "src/pages/stats/automate/AutomateStatsPaywall.tsx",
+              "src/pages/stats/automate/aiSalesAgent/AiSalesAgentSalesOverview.tsx",
               "src/pages/stats/automate/aiSalesAgent/components/RenderChart.tsx",
               "src/pages/stats/automate/overview/AutomateOverviewContent.tsx",
               "src/pages/stats/common/components/StatsNavbarView.tsx",
-              "src/pages/stats/common/filters/FiltersPanel.tsx",
               "src/pages/stats/convert/pages/CampaignsStats/CampaignsStats.tsx",
               "src/pages/stats/convert/pages/CampaignsStats/__tests__/CampaignsStats.spec.tsx",
-              "src/pages/stats/convert/providers/CampaignStatsFilters/CampaignStatsFilters.tsx",
-              "src/pages/stats/convert/providers/CampaignStatsFilters/tests/CampaignStatsFilters.spec.tsx",
               "src/pages/stats/dashboards/DashboardComponent.tsx",
-              "src/pages/stats/help-center/components/HelpCenterReport/HelpCenterReport.tsx",
-              "src/pages/stats/quality-management/satisfaction/SatisfactionReport.tsx",
               "src/pages/stats/self-service/AutomateStatsNavbar.tsx",
-              "src/pages/stats/sla/ServiceLevelAgreements.tsx",
-              "src/pages/stats/support-performance/agents/SupportPerformanceAgentsReport.tsx",
-              "src/pages/stats/support-performance/auto-qa/AutoQA.tsx",
-              "src/pages/stats/support-performance/busiest-times-of-days/BusiestTimesOfDays.tsx",
-              "src/pages/stats/support-performance/channels/ChannelsReport.tsx",
+              "src/pages/stats/support-performance/agents/AgentsPerformanceCardExtra.tsx",
+              "src/pages/stats/support-performance/agents/tests/AgentsPerformanceCardExtra.spec.tsx",
               "src/pages/stats/support-performance/overview/DownloadOverviewData.tsx",
               "src/pages/stats/support-performance/overview/SupportPerformanceOverviewReport.tsx",
               "src/pages/stats/support-performance/overview/charts/WorkloadPerChannelChart.tsx",
-              "src/pages/stats/ticket-insights/ticket-fields/SupportPerformanceTicketInsights.tsx",
-              "src/pages/stats/ticket-insights/ticket-fields/TicketDistributionTable.tsx",
-              "src/pages/stats/voice/hooks/tests/useVoiceAgentsSummaryMetrics.spec.ts",
-              "src/pages/stats/voice/hooks/useNewVoiceStatsFilters.ts",
-              "src/pages/stats/voice/pages/VoiceAgents.tsx",
+              "src/pages/stats/ticket-insights/tags/Tags.tsx",
+              "src/pages/stats/ticket-insights/tags/tests/Tags.spec.tsx",
               "src/pages/tickets/common/macros/components/MacroMessageActionsHeader.tsx",
               "src/pages/tickets/common/macros/components/actions/AddInternalNoteAction.tsx",
               "src/pages/tickets/common/macros/components/actions/ResponseAction.tsx",
@@ -516,7 +463,8 @@
               "src/pages/tickets/detail/components/TicketMessages/TicketMessages.tsx",
               "src/pages/tickets/detail/hooks/useRuleSuggestionForDemos.ts",
               "src/routes/Routes.tsx",
-              "src/routes/StatsRoutes.tsx"
+              "src/routes/StatsRoutes.tsx",
+              "src/settings/automate/components/AutomatePaywall.tsx"
             ],
             "default": []
           }
@@ -805,7 +753,7 @@
       "type": "ui-kit-migration",
       "entries": [
         {
-          "usageCount": 609,
+          "usageCount": 593,
           "name": "Button",
           "nodeType": "VariableDeclaration",
           "deprecationDate": "2024-03-04",
@@ -836,9 +784,7 @@
               "src/pages/aiAgent/AiAgentPreviewModeSettings/AiAgentPreviewModeSettingsView.tsx",
               "src/pages/aiAgent/AiAgentScrapedDomainContent/AiAgentScrapedDomainContentHeader.tsx",
               "src/pages/aiAgent/Onboarding/components/IntegrationCard/IntegrationCard.tsx",
-              "src/pages/aiAgent/Onboarding/components/ThankYouModal/ThankYouModal.tsx",
               "src/pages/aiAgent/Onboarding/components/common/OnboardingProgressTracker/OnboardingProgressTracker.tsx",
-              "src/pages/aiAgent/Overview/components/KpiSection/KpiSection.tsx",
               "src/pages/aiAgent/actions/CreateActionView.tsx",
               "src/pages/aiAgent/actions/EditActionView.tsx",
               "src/pages/aiAgent/actions/components/ActionEventRow.tsx",
@@ -854,7 +800,6 @@
               "src/pages/aiAgent/actions/components/UseCaseTemplateModal.tsx",
               "src/pages/aiAgent/actions/components/ViewActionEventsButton.tsx",
               "src/pages/aiAgent/components/AIAgentPreviewModeSection/AiAgentPreviewModeSection.tsx",
-              "src/pages/aiAgent/components/AIAgentWelcomePageView/AIAgentWelcomePageView.tsx",
               "src/pages/aiAgent/components/AiAgentLayout/AiAgentLayout.tsx",
               "src/pages/aiAgent/components/AiGuidanceEmptyState/AiGuidanceEmptyState.tsx",
               "src/pages/aiAgent/components/GuidanceEmptyState/GuidanceEmptyState.tsx",
@@ -866,10 +811,8 @@
               "src/pages/aiAgent/components/PlaygroundSegmentControl/PlaygroundSegmentControl.tsx",
               "src/pages/aiAgent/components/PublicSourcesSection/PublicSourcesItem.tsx",
               "src/pages/aiAgent/components/PublicSourcesSection/PublicSourcesSection.tsx",
-              "src/pages/aiAgent/components/SalesSettings/SalesSettings.tsx",
               "src/pages/aiAgent/components/SeeAllSuggestionsCard/SeeAllSuggestionsCard.tsx",
               "src/pages/aiAgent/components/StoreConfigForm/FormComponents/SettingsBanner.tsx",
-              "src/pages/aiAgent/components/StoreConfigForm/StoreConfigForm.tsx",
               "src/pages/aiAgent/components/TicketTag/TagList.tsx",
               "src/pages/automate/actionsPlatform/ActionsPlatformAppsView.tsx",
               "src/pages/automate/actionsPlatform/ActionsPlatformCreateStepView.tsx",
@@ -899,7 +842,6 @@
               "src/pages/automate/connectedChannels/components/CurrentlyViewingDropdown.tsx",
               "src/pages/automate/connectedChannels/components/FeatureSettings.tsx",
               "src/pages/automate/connectedChannels/components/FlowsSettings.tsx",
-              "src/pages/automate/orderManagement/reportOrderIssue/ReportOrderIssueFlowView.tsx",
               "src/pages/automate/orderManagement/reportOrderIssue/components/ReportOrderIssueScenarioConditionRule.tsx",
               "src/pages/automate/orderManagement/reportOrderIssue/components/ReportOrderIssueScenarioConditions.tsx",
               "src/pages/automate/orderManagement/reportOrderIssue/components/ReportOrderIssueScenarioReason.tsx",
@@ -968,7 +910,6 @@
               "src/pages/common/components/TemplateCard/BaseCard.tsx",
               "src/pages/common/components/UniqueDiscountOfferCreateModal/UniqueDiscountOfferCreateModal.tsx",
               "src/pages/common/components/UniqueDiscountOfferResults/UniqueDiscountOfferResults.tsx",
-              "src/pages/common/components/UnsavedChangesModal.tsx",
               "src/pages/common/components/UpgradeButton/UpgradeButton.tsx",
               "src/pages/common/components/ViewSharing/ViewSharingButton.tsx",
               "src/pages/common/components/ViewSharing/ViewSharingModal/ViewSharingModal.tsx",
@@ -1015,7 +956,6 @@
               "src/pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/customActions/ActionButtons/Editor/Form/Parameters/Parameters.tsx",
               "src/pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/customActions/Links/Editor.tsx",
               "src/pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/customActions/Links/Links.tsx",
-              "src/pages/common/components/infobar/Infobar/InfobarCustomerInfo/LegacyCustomerTimelineButton.tsx",
               "src/pages/common/components/infobar/Infobar/InfobarCustomerInfo/NewPhoneNumber.tsx",
               "src/pages/common/components/infobar/Infobar/InfobarWidgetsEditionTools.tsx",
               "src/pages/common/components/layout/Group.stories.tsx",
@@ -1157,7 +1097,6 @@
               "src/pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationQuickReplies/GorgiasChatIntegrationQuickReplies.tsx",
               "src/pages/integrations/integration/components/gorgias_chat/components/CustomizeTranslationsButton.tsx",
               "src/pages/integrations/integration/components/http/HTTP.tsx",
-              "src/pages/integrations/integration/components/http/Integration/Integration.tsx",
               "src/pages/integrations/integration/components/http/Integration/ObjectListField.tsx",
               "src/pages/integrations/integration/components/http/Overview/Details.tsx",
               "src/pages/integrations/integration/components/klaviyo/KlaviyoIntegrationDetail.tsx",
@@ -1179,11 +1118,10 @@
               "src/pages/integrations/integration/components/sms/SmsIntegrationCreate.tsx",
               "src/pages/integrations/integration/components/sms/SmsIntegrationDetails.tsx",
               "src/pages/integrations/integration/components/sms/SmsIntegrationPreferences.tsx",
+              "src/pages/integrations/integration/components/voice/DEPRECATED_VoiceIntegrationCreate.tsx",
               "src/pages/integrations/integration/components/voice/IvrMenuActionField.tsx",
               "src/pages/integrations/integration/components/voice/IvrMenuActionSendToSMSField.tsx",
               "src/pages/integrations/integration/components/voice/IvrMenuActionsFieldArray.tsx",
-              "src/pages/integrations/integration/components/voice/VoiceIntegration.tsx",
-              "src/pages/integrations/integration/components/voice/VoiceIntegrationCreate.tsx",
               "src/pages/integrations/integration/components/voice/VoiceIntegrationDetails.tsx",
               "src/pages/integrations/integration/components/voice/VoiceIntegrationGreetingMessage.tsx",
               "src/pages/integrations/integration/components/voice/VoiceIntegrationIvr.tsx",
@@ -1231,7 +1169,6 @@
               "src/pages/settings/customFields/CustomFields.tsx",
               "src/pages/settings/customFields/components/DropdownCSVImport.tsx",
               "src/pages/settings/customFields/components/DropdownInput.tsx",
-              "src/pages/settings/customFields/components/FieldForm.tsx",
               "src/pages/settings/helpCenter/components/AIArticlesLibraryView/components/AIArticleArchiveModal/AIArticleArchiveModal.tsx",
               "src/pages/settings/helpCenter/components/AIArticlesLibraryView/components/AIArticlesLibraryArticleEditor/AIArticlesLibraryArticleEditor.tsx",
               "src/pages/settings/helpCenter/components/AIArticlesLibraryView/components/AIArticlesLibraryList/AIArticlesLibraryList.tsx",
@@ -1329,7 +1266,6 @@
               "src/pages/settings/tags/Table.tsx",
               "src/pages/settings/tags/TableActions/BulkDeleteButton.tsx",
               "src/pages/settings/tags/TableActions/MergeButton.tsx",
-              "src/pages/settings/teams/Form.tsx",
               "src/pages/settings/teams/List.tsx",
               "src/pages/settings/teams/RuleCreationModalContent.tsx",
               "src/pages/settings/teams/TeamCreationModal.tsx",
@@ -1354,12 +1290,11 @@
               "src/pages/stats/ActivateCustomerSatisfactionSurveyTip.tsx",
               "src/pages/stats/DrillDownDownloadButton.tsx",
               "src/pages/stats/TipsToggle.tsx",
-              "src/pages/stats/automate/aiSalesAgent/AiSalesAgentOverviewDownloadButton.tsx",
               "src/pages/stats/automate/ai-agent/AiAgentStatsEmptyState.tsx",
+              "src/pages/stats/automate/aiSalesAgent/AiSalesAgentOverviewDownloadButton.tsx",
               "src/pages/stats/common/PeriodPicker.tsx",
               "src/pages/stats/common/components/Table/EditTableColumns.tsx",
               "src/pages/stats/common/filters/AddFilterButton.tsx",
-              "src/pages/stats/common/filters/DEPRECATED_HelpCenterFilter/DEPRECATED_HelpCenterFilter.tsx",
               "src/pages/stats/common/filters/SavedFilterMenu.tsx",
               "src/pages/stats/common/filters/SavedFiltersActions/ApplySavedFilters/ApplySavedFilters.tsx",
               "src/pages/stats/common/filters/SavedFiltersActions/SaveFilters/SaveFilters.tsx",
@@ -1377,8 +1312,6 @@
               "src/pages/stats/self-service/SelfServiceFeaturePreview.tsx",
               "src/pages/stats/sla/ServiceLevelAgreementsEmptyState.tsx",
               "src/pages/stats/sla/components/DownloadSLAsDataButton.tsx",
-              "src/pages/stats/sla/components/SLAPolicySelect.tsx",
-              "src/pages/stats/support-performance/busiest-times-of-days/BusiestTimesOfDaysMetricSelect.tsx",
               "src/pages/stats/support-performance/channels/ChannelsDownloadDataButton.tsx",
               "src/pages/stats/support-performance/components/DownloadDataButton.tsx",
               "src/pages/stats/ticket-insights/tags/TagsBlankState.tsx",
@@ -1414,7 +1347,6 @@
               "src/pages/tickets/detail/components/TicketFeedback/TicketFeedback.tsx",
               "src/pages/tickets/detail/components/TicketFields/TicketFields.tsx",
               "src/pages/tickets/detail/components/TicketMessages/AIAgentFeedback.tsx",
-              "src/pages/tickets/detail/components/TicketMessages/Error.tsx",
               "src/pages/tickets/detail/components/TicketVoiceCall/TranscriptionData.tsx",
               "src/pages/tickets/list/OnboardingSidePanel.tsx",
               "src/pages/tickets/list/components/TicketListActions.tsx",
@@ -1432,7 +1364,7 @@
           ]
         },
         {
-          "usageCount": 125,
+          "usageCount": 121,
           "name": "IconButton",
           "nodeType": "VariableDeclaration",
           "deprecationDate": "2024-03-05",
@@ -1449,9 +1381,7 @@
               "src/pages/App.tsx",
               "src/pages/aiAgent/Onboarding/layout/ConvAiOnboardingLayout.tsx",
               "src/pages/aiAgent/actions/components/ActionEventSidePanel.tsx",
-              "src/pages/aiAgent/actions/components/ActionFormInput.tsx",
               "src/pages/aiAgent/actions/components/DeleteActionConfirmation.tsx",
-              "src/pages/aiAgent/actions/components/StepListItem.tsx",
               "src/pages/aiAgent/components/GuidanceList/GuidanceList.tsx",
               "src/pages/aiAgent/components/Knowledge/ExternalFilesSection.tsx",
               "src/pages/aiAgent/components/PublicSourcesSection/PublicSourcesItem.tsx",
@@ -1544,7 +1474,6 @@
               "src/pages/settings/rules/accountRules/components/RuleRow.tsx",
               "src/pages/settings/tags/ManageTags.tsx",
               "src/pages/settings/tags/Row.tsx",
-              "src/pages/settings/teams/Form.tsx",
               "src/pages/settings/teams/members/Row.tsx",
               "src/pages/stats/common/filters/SavedFiltersPanel.tsx",
               "src/pages/stats/convert/components/CampaignTableStats/components/CampaignTableCell/CampaignTableCell.tsx",
@@ -1557,7 +1486,6 @@
               "src/pages/tickets/detail/components/AuditLogEvent.tsx",
               "src/pages/tickets/detail/components/Event.tsx",
               "src/pages/tickets/detail/components/PrivateReplyEvent/PrivateReplyEvent.tsx",
-              "src/pages/tickets/detail/components/ReplyArea/MessageSourceFields/components/SenderSelectField/ReconnectButton.tsx",
               "src/pages/tickets/detail/components/TicketDetails/TicketStatus.tsx",
               "src/pages/tickets/detail/components/TicketMessages/AIAgentFeedback.tsx",
               "src/pages/tickets/list/components/TicketListActions.tsx",
@@ -1570,6 +1498,112 @@
           },
           "defaultImportNames": [
             "IconButton"
+          ]
+        },
+        {
+          "usageCount": 65,
+          "name": "ToggleInput",
+          "nodeType": "VariableDeclaration",
+          "deprecationDate": "2025-03-25",
+          "deprecationType": "ui-kit-migration",
+          "declarationFile": "src/pages/common/forms/ToggleInput.tsx",
+          "usageUrls": {
+            "named": [],
+            "default": [
+              "src/common/navigation/components/AvailabilityToggle.tsx",
+              "src/pages/aiAgent/AiAgentPreviewModeSettings/AiAgentPreviewModeSettingsView.tsx",
+              "src/pages/aiAgent/actions/components/ActionFormView.tsx",
+              "src/pages/aiAgent/actions/components/ActionsRow.tsx",
+              "src/pages/aiAgent/components/GuidanceForm/GuidanceForm.tsx",
+              "src/pages/aiAgent/components/GuidanceList/GuidanceList.tsx",
+              "src/pages/aiAgent/components/StoreConfigForm/FormComponents/ChannelToggleInput.tsx",
+              "src/pages/aiAgent/components/StoreConfigForm/HandoverCustomizationSettingsComponents/ChatPreferencesAutoReplyWaitTimeSettings.tsx",
+              "src/pages/aiAgent/components/StoreConfigForm/HandoverCustomizationSettingsComponents/ChatPreferencesEmailCaptureSettings.tsx",
+              "src/pages/aiAgent/components/StoreConfigForm/HandoverCustomizationSettingsComponents/HandoverCustomizationOfflineSettings.tsx",
+              "src/pages/aiAgent/components/StoreConfigForm/StoreConfigForm.tsx",
+              "src/pages/aiAgent/components/VolumeSettings/VolumeSettings.tsx",
+              "src/pages/automate/common/components/WorkflowItem.tsx",
+              "src/pages/automate/connectedChannels/components/ConnectedChannelFeatureToggle.tsx",
+              "src/pages/automate/connectedChannels/components/FeatureSettings.tsx",
+              "src/pages/automate/orderManagement/components/OrderManagementFlowItem.tsx",
+              "src/pages/automate/orderManagement/reportOrderIssue/components/ReportOrderIssueScenarioReasonAction.tsx",
+              "src/pages/automate/workflows/editor/visualBuilder/editors/HttpRequestEditor/index.tsx",
+              "src/pages/automate/workflows/editor/visualBuilder/publisher/channels/ChannelToggle.tsx",
+              "src/pages/common/components/Collapse/Collapse.stories.tsx",
+              "src/pages/common/components/accordion/Accordion.stories.tsx",
+              "src/pages/common/draftjs/plugins/toolbar/components/AddUtm.tsx",
+              "src/pages/common/forms/ToggleInput.stories.tsx",
+              "src/pages/common/forms/ToggleInputField.tsx",
+              "src/pages/common/forms/tests/ToggleInput.spec.tsx",
+              "src/pages/common/forms/tests/ToggleInputField.spec.tsx",
+              "src/pages/convert/campaigns/components/CampaignIncognitoVisitorsSwitch/CampaignIncognitoVisitorsSwitch.tsx",
+              "src/pages/convert/campaigns/components/CampaignWithNoReply/CampaignWithNoReply.tsx",
+              "src/pages/convert/campaigns/components/CampaignsTable/CampaignsTable.tsx",
+              "src/pages/convert/campaigns/components/ContactCaptureForm/steps/PostSubmissionMessage/PostSubmissionMessage.tsx",
+              "src/pages/convert/campaigns/components/MaximumCampaignDisplayed/MaximumCampaignDisplayed.tsx",
+              "src/pages/convert/campaigns/components/TimeBetweenCampaigns/TimeBetweenCampaigns.tsx",
+              "src/pages/convert/common/components/ConvertCampaignsListPlaceholder/ConvertCampaignsTablePlaceholder.tsx",
+              "src/pages/convert/settings/components/TermsAndConditionsSetting.tsx",
+              "src/pages/integrations/integration/components/aircall/AircallIntegrationListItem.tsx",
+              "src/pages/integrations/integration/components/email/EmailIntegrationUpdate/EmailIntegrationUpdate.tsx",
+              "src/pages/integrations/integration/components/facebook/FacebookIntegrationPreferences.tsx",
+              "src/pages/integrations/integration/components/facebook/FacebookIntegrationSetup/FacebookIntegrationSetup.tsx",
+              "src/pages/integrations/integration/components/gorgias_chat/GorgiasChatCreationWizard/components/steps/GorgiasChatCreationWizardStepAutomate.tsx",
+              "src/pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationAppearance/GorgiasChatIntegrationAppearance.tsx",
+              "src/pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationPreferences/ControlTicketVolumeControls.tsx",
+              "src/pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationPreferences/GorgiasChatIntegrationPreferences.tsx",
+              "src/pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationQuickReplies/GorgiasChatIntegrationQuickReplies.tsx",
+              "src/pages/integrations/integration/components/http/Overview/List.tsx",
+              "src/pages/integrations/integration/components/shopify/Integration.tsx",
+              "src/pages/settings/SLAs/features/SLAForm/views/MetricsFieldArray.tsx",
+              "src/pages/settings/SLAs/features/SLAList/views/ToggleCell.tsx",
+              "src/pages/settings/access/Access.tsx",
+              "src/pages/settings/access/SsoToggleButton.tsx",
+              "src/pages/settings/access/TwoFactorAuthenticationEnforcement.tsx",
+              "src/pages/settings/conditionalFields/components/ConditionalFieldRow.tsx",
+              "src/pages/settings/contactForm/components/ContactFormDisplayModeToggle/ContactFormDisplayModeToggle.tsx",
+              "src/pages/settings/helpCenter/components/HelpCenterContactView/components/ChatApplication/ChatApplication.tsx",
+              "src/pages/settings/helpCenter/components/HelpCenterContactView/components/ContactFormInfoSection/ContactFormInfoSection.tsx",
+              "src/pages/settings/helpCenter/components/HelpCenterContactView/components/PhoneContactInfoSection/PhoneContactInfoSection.tsx",
+              "src/pages/settings/helpCenter/components/HelpCenterCreationWizard/components/HelpCenterWizardArticleRec/HelpCenterWizardArticleRec.tsx",
+              "src/pages/settings/helpCenter/components/HelpCenterCreationWizard/components/HelpCenterWizardOrderManagement/HelpCenterWizardOrderManagement.tsx",
+              "src/pages/settings/helpCenter/components/HelpCenterCustomizationView.tsx",
+              "src/pages/settings/helpCenter/components/UpdateToggle/UpdateToggle.tsx",
+              "src/pages/settings/new_billing/components/AutoUpgradeToggle/AutoUpgradeToggle.tsx",
+              "src/pages/settings/rules/accountRules/components/RuleRow.tsx",
+              "src/pages/settings/rules/accountRules/components/ruleEditors/DefaultRuleEditor.tsx",
+              "src/pages/settings/rules/accountRules/components/ruleEditors/ManagedRuleEditor.tsx",
+              "src/pages/settings/yourProfile/components/ForwardingCallsPreferences.tsx",
+              "src/pages/settings/yourProfile/components/YourProfileView.tsx"
+            ]
+          },
+          "defaultImportNames": [
+            "ToggleInput"
+          ]
+        },
+        {
+          "usageCount": 9,
+          "name": "ToggleInputField",
+          "nodeType": "VariableDeclaration",
+          "deprecationDate": "2025-03-25",
+          "deprecationType": "ui-kit-migration",
+          "declarationFile": "src/pages/common/forms/ToggleInputField.tsx",
+          "usageUrls": {
+            "named": [],
+            "default": [
+              "src/pages/common/forms/tests/ToggleInputField.spec.tsx",
+              "src/pages/integrations/integration/components/voice/VoiceIntegrationPreferencesCallRecordings.tsx",
+              "src/pages/integrations/integration/components/voice/VoiceIntegrationPreferencesTranscription.tsx",
+              "src/pages/integrations/integration/components/voice/VoiceIntegrationSettingCallRecording.tsx",
+              "src/pages/integrations/integration/components/voice/VoiceIntegrationSettingCallTranscription.tsx",
+              "src/pages/integrations/integration/components/voice/VoiceQueueSettingsFormGeneralSection.tsx",
+              "src/pages/settings/SLAs/features/SLAForm/views/SLAFormView.tsx",
+              "src/pages/settings/conditionalFields/components/ConditionForm.tsx",
+              "src/pages/settings/conditionalFields/components/tests/ConditionForm.spec.tsx"
+            ]
+          },
+          "defaultImportNames": [
+            "ToggleInputField"
           ]
         }
       ]

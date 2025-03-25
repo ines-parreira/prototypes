@@ -10,15 +10,22 @@ type ToggleInputFieldProps = {
     'onChange' | 'value' | 'isToggled' | 'onClick'
 >
 
-export default forwardRef(function ToggleInputField(
-    { value, onChange, ...toggleInputProps }: ToggleInputFieldProps,
-    __ref,
-) {
-    return (
-        <ToggleInput
-            {...toggleInputProps}
-            isToggled={value}
-            onClick={onChange}
-        />
-    )
-})
+/**
+ * @deprecated This component is deprecated and will be removed in future versions.
+ * Please use `<ToggleField />` from @gorgias/merchant-ui-kit instead.
+ * @date 2025-03-25
+ * @type ui-kit-migration
+ */
+const ToggleInputField = forwardRef<HTMLDivElement, ToggleInputFieldProps>(
+    function ToggleInputField({ value, onChange, ...toggleInputProps }, __ref) {
+        return (
+            <ToggleInput
+                {...toggleInputProps}
+                isToggled={value}
+                onClick={onChange}
+            />
+        )
+    },
+)
+
+export default ToggleInputField

@@ -32,6 +32,12 @@ type Props = {
 > &
     Pick<AriaAttributes, 'aria-label'>
 
+/**
+ * @deprecated This component is deprecated and will be removed in future versions.
+ * Please use `<ToggleField />` from @gorgias/merchant-ui-kit instead.
+ * @date 2025-03-25
+ * @type ui-kit-migration
+ */
 const ToggleInput = ({
     caption,
     children,
