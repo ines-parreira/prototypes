@@ -19,6 +19,7 @@ import {
 import { RootState } from 'state/types'
 import { ViewFilter } from 'state/views/types'
 import { formatDatetime } from 'utils'
+import { calculatePercentage } from 'utils/reporting'
 
 export const DEFAULT_LOCALE = 'en-US'
 export const NOT_AVAILABLE_TEXT = 'N/A'
@@ -320,6 +321,28 @@ export const formatMetricTrend = (
         formattedTrend: formattedDiff,
         sign: diff > 0 ? 1 : diff < 0 ? -1 : 0,
     }
+}
+
+export const getFormattedPercentage = (value: number, total: number) => {
+    return formatMetricValue(
+        calculatePercentage(value, total) || null,
+        'percent-refined',
+        NOT_AVAILABLE_PLACEHOLDER,
+    )
+}
+
+export const getFormattedDelta = (currentValue: number, previousValue = 0) => {
+    const { formattedTrend, sign = 0 } = formatMetricTrend(
+        currentValue,
+        previousValue,
+        'percent',
+    )
+
+    const prefix = sign > 0 ? '+' : sign < 0 ? '-' : ''
+
+    const delta = formattedTrend || NOT_AVAILABLE_PLACEHOLDER
+
+    return [prefix, delta].filter(Boolean).join(' ')
 }
 
 export const SHORT_FORMAT = 'MMM Do, YYYY'

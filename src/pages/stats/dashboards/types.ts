@@ -129,6 +129,7 @@ export type ReportFetch = (
         selectedCustomFieldId: string | null
         tags: Record<string, Tag | undefined>
         tagsTableOrder: TagsTableOrder
+        isExtendedReportingEnabled: boolean
         integrations: Integration[]
         getAgentDetails: (id: number) => User | undefined
         isAutomateNonFilteredDenominatorInAutomationRate: boolean | undefined

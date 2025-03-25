@@ -4,74 +4,239 @@ import { Tag } from '@gorgias/api-queries'
 
 import { logEvent, SegmentEvent } from 'common/segment'
 import { getCsvFileNameWithDates } from 'hooks/reporting/common/utils'
+import { useStatsFilters } from 'hooks/reporting/support-performance/useStatsFilters'
 import {
-    FormattedDataItem,
-    getFormattedData,
-    useTicketCountPerTag,
-} from 'hooks/reporting/ticket-insights/useTicketCountPerTag'
-import { fetchTagsTicketCountTimeSeries } from 'hooks/reporting/timeSeries'
-import { getPeriodDateTimes } from 'hooks/reporting/useTimeSeries'
+    formatAndOrderTagTimeSeries,
+    getOverallTicketTotals,
+    getTagName,
+} from 'hooks/reporting/ticket-insights/helpers'
+import { useTagsReportContext } from 'hooks/reporting/ticket-insights/useTagsReportContext'
+import {
+    fetchTagsTicketCountTimeSeries,
+    fetchTotalTaggedTicketCountTimeSeries,
+    useTagsTicketCountTimeSeries,
+    useTotalTaggedTicketCountTimeSeries,
+} from 'hooks/reporting/timeSeries'
+import {
+    getPeriodDateTimes,
+    TimeSeriesDataItem,
+    TimeSeriesPerDimension,
+} from 'hooks/reporting/useTimeSeries'
 import { ReportingGranularity } from 'models/reporting/types'
 import { Period, StatsFilters } from 'models/stat/types'
-import { getTagName } from 'pages/stats/ticket-insights/tags/helpers'
+import {
+    getFormattedDelta,
+    getFormattedPercentage,
+} from 'pages/stats/common/utils'
 import { formatDates } from 'pages/stats/utils'
 import { TagsTableOrder } from 'state/ui/stats/tagsReportSlice'
 import { createCsv, saveZippedFiles } from 'utils/file'
-import { getFilterDateRange } from 'utils/reporting'
+import { getFilterDateRange, getPreviousPeriod } from 'utils/reporting'
 
 export const TAGS_REPORT_FILE_NAME = 'all-used-tags'
 
-const getTagsTabularData = (data: FormattedDataItem[], dateTimes: string[]) => {
-    const labelsRow = ['tag', 'total', ...dateTimes]
-    const dataRows = data.map((row) => [
-        getTagName({ name: row.tag?.name, id: row.tagId }),
-        row.total,
-        ...row.timeSeries.map((item) => item.value),
-    ])
+type TagsTicketCountTimeSeries = TimeSeriesPerDimension
+type TotalTaggedTicketCountTimeSeries = TimeSeriesDataItem[][]
 
-    return [labelsRow, ...dataRows]
+type Context = {
+    tags: Record<string, Tag | undefined>
+    tagsTableOrder: TagsTableOrder
+    isExtendedReportingEnabled: boolean
 }
 
-export const createReport = (
-    data: FormattedDataItem[],
-    dateTimes: string[],
+enum Column {
+    Delta = 'delta',
+    Percentage = 'percentage',
+    Tag = 'tag',
+    Total = 'total',
+}
+
+const getTimeColumnLabel = (
+    granularity: ReportingGranularity,
+    dateTime: string,
+) => {
+    return formatDates(granularity, dateTime)
+}
+
+const getTimeColumnLabels = (
     period: Period,
     granularity: ReportingGranularity,
 ) => {
-    const formattedDateTimes = dateTimes.map((item) =>
-        formatDates(granularity, item),
+    const dateTimes = getPeriodDateTimes(
+        getFilterDateRange(period),
+        granularity,
     )
-    const tagsData = getTagsTabularData(data, formattedDateTimes)
-    const fileName = getCsvFileNameWithDates(period, TAGS_REPORT_FILE_NAME)
 
+    return dateTimes.map((date) => getTimeColumnLabel(granularity, date))
+}
+
+const processData = (
+    currentTagsTicketCountTimeSeries: TagsTicketCountTimeSeries,
+    previousTagsTicketCountTimeSeries: TagsTicketCountTimeSeries,
+    totalTaggedTicketCountTimeSeries: TotalTaggedTicketCountTimeSeries,
+    granularity: ReportingGranularity,
+    context: Context,
+) => {
+    const { grandTotal: totalTaggedTicketCount } = getOverallTicketTotals(
+        totalTaggedTicketCountTimeSeries[0],
+    )
+
+    const currentFormattedData = formatAndOrderTagTimeSeries(
+        currentTagsTicketCountTimeSeries,
+        context,
+    )
+
+    const previousFormattedData = formatAndOrderTagTimeSeries(
+        previousTagsTicketCountTimeSeries,
+        context,
+    )
+
+    const processedData = currentFormattedData.map((item) => {
+        const previousItem = previousFormattedData.find(
+            (p) => p.tagId === item.tagId,
+        )
+
+        const entry: Record<string, string | number> = {
+            [Column.Tag]: getTagName({ name: item.tag?.name, id: item.tagId }),
+            [Column.Total]: item.total,
+            [Column.Percentage]: getFormattedPercentage(
+                item.total,
+                totalTaggedTicketCount,
+            ),
+            [Column.Delta]: getFormattedDelta(item.total, previousItem?.total),
+        }
+
+        item.timeSeries.forEach((timeSeries) => {
+            const timeColumnLabel = getTimeColumnLabel(
+                granularity,
+                timeSeries.dateTime,
+            )
+
+            entry[timeColumnLabel] = timeSeries.value
+        })
+
+        return entry
+    })
+
+    return processedData
+}
+
+type TableContents = (string | number)[][]
+
+const convertToTable = (
+    data: ReturnType<typeof processData>,
+    columns: string[],
+): TableContents => {
+    const rows = data.map((item) => columns.map((column) => item[column]))
+    return [columns, ...rows]
+}
+
+const createFile = (content: TableContents, fileName: string) => {
     return {
-        files: {
-            [fileName]: createCsv(tagsData),
-        },
         fileName: fileName,
+        files: { [fileName]: createCsv(content) },
     }
 }
 
-export const useTagsReportData = () => {
-    const {
-        data: ticketCountPerTagData,
-        dateTimes,
-        isLoading,
-        cleanStatsFilters,
+const createReport = (
+    currentTagsTicketCountTimeSeries: TagsTicketCountTimeSeries,
+    previousTagsTicketCountTimeSeries: TagsTicketCountTimeSeries,
+    totalTaggedTicketCountTimeSeries: TotalTaggedTicketCountTimeSeries,
+    statsFilters: StatsFilters,
+    granularity: ReportingGranularity,
+    context: Context,
+) => {
+    const processedData = processData(
+        currentTagsTicketCountTimeSeries,
+        previousTagsTicketCountTimeSeries,
+        totalTaggedTicketCountTimeSeries,
         granularity,
-    } = useTicketCountPerTag()
-
-    const report = createReport(
-        ticketCountPerTagData,
-        dateTimes,
-        cleanStatsFilters.period,
-        granularity,
+        context,
     )
 
-    return {
-        ...report,
-        isLoading,
+    const staticColumns: string[] = [Column.Tag, Column.Total]
+
+    if (context.isExtendedReportingEnabled) {
+        staticColumns.push(Column.Percentage, Column.Delta)
     }
+
+    const timeColumns = getTimeColumnLabels(statsFilters.period, granularity)
+
+    const columns = [...staticColumns, ...timeColumns]
+
+    const fileContents = convertToTable(processedData, columns)
+    const fileName = getCsvFileNameWithDates(
+        statsFilters.period,
+        TAGS_REPORT_FILE_NAME,
+    )
+
+    return createFile(fileContents, fileName)
+}
+
+const getPreviousStatsFilters = (statsFilters: StatsFilters) => ({
+    ...statsFilters,
+    period: getPreviousPeriod(statsFilters.period),
+})
+
+export const useTagsReportData = () => {
+    const statsFilters = useStatsFilters()
+
+    const currentTagsTicketCountTimeSeries = useTagsTicketCountTimeSeries(
+        statsFilters.cleanStatsFilters,
+        statsFilters.userTimezone,
+        statsFilters.granularity,
+    )
+
+    const previousTagsTicketCountTimeSeries = useTagsTicketCountTimeSeries(
+        getPreviousStatsFilters(statsFilters.cleanStatsFilters),
+        statsFilters.userTimezone,
+        statsFilters.granularity,
+    )
+
+    const totalTaggedTicketCountTimeSeries =
+        useTotalTaggedTicketCountTimeSeries(
+            statsFilters.cleanStatsFilters,
+            statsFilters.userTimezone,
+            statsFilters.granularity,
+        )
+
+    const context = useTagsReportContext()
+
+    const report = createReport(
+        currentTagsTicketCountTimeSeries.data || {},
+        previousTagsTicketCountTimeSeries.data || {},
+        totalTaggedTicketCountTimeSeries.data || [[]],
+        statsFilters.cleanStatsFilters,
+        statsFilters.granularity,
+        context,
+    )
+
+    const isLoading =
+        currentTagsTicketCountTimeSeries.isLoading ||
+        previousTagsTicketCountTimeSeries.isLoading ||
+        totalTaggedTicketCountTimeSeries.isLoading
+
+    return { ...report, isLoading }
+}
+
+const fetchData = async (
+    statsFilters: StatsFilters,
+    userTimezone: string,
+    granularity: ReportingGranularity,
+) => {
+    return await Promise.all([
+        fetchTagsTicketCountTimeSeries(statsFilters, userTimezone, granularity),
+        fetchTagsTicketCountTimeSeries(
+            getPreviousStatsFilters(statsFilters),
+            userTimezone,
+            granularity,
+        ),
+        fetchTotalTaggedTicketCountTimeSeries(
+            statsFilters,
+            userTimezone,
+            granularity,
+        ),
+    ])
 }
 
 export const fetchTagsReportData = async (
@@ -81,26 +246,25 @@ export const fetchTagsReportData = async (
     context: {
         tags: Record<string, Tag | undefined>
         tagsTableOrder: TagsTableOrder
+        isExtendedReportingEnabled: boolean
     },
 ) => {
-    const dateTimes = getPeriodDateTimes(
-        getFilterDateRange(statsFilters.period),
+    const [
+        currentTagsTicketCountTimeSeries,
+        previousTagsTicketCountTimeSeries,
+        totalTaggedTicketCountTimeSeries,
+    ] = await fetchData(statsFilters, userTimezone, granularity)
+
+    const report = createReport(
+        currentTagsTicketCountTimeSeries,
+        previousTagsTicketCountTimeSeries,
+        totalTaggedTicketCountTimeSeries,
+        statsFilters,
         granularity,
+        context,
     )
 
-    return fetchTagsTicketCountTimeSeries(
-        statsFilters,
-        userTimezone,
-        granularity,
-    ).then((result) => ({
-        ...createReport(
-            getFormattedData(result, context.tags, context.tagsTableOrder),
-            dateTimes,
-            statsFilters.period,
-            granularity,
-        ),
-        isLoading: false,
-    }))
+    return { ...report, isLoading: false }
 }
 
 export const useDownloadTagsReportData = () => {

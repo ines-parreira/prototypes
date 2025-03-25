@@ -55,6 +55,9 @@ export const useTables = (
     const isReportingAverageResponseTimeEnabled = useFlag(
         FeatureFlagKey.ReportingAverageResponseTime,
     )
+    const isReportingFilteringAndCalculationsTagsReportEnabled = useFlag(
+        FeatureFlagKey.ReportingFilteringAndCalculationsTagsReport,
+    )
     const aiAgentUserId = useAIAgentUserId()
     const [tableData, setTableData] = useState<{
         isFetching: boolean
@@ -123,6 +126,8 @@ export const useTables = (
             selectedBTODMetric,
             tags,
             tagsTableOrder,
+            isExtendedReportingEnabled:
+                isReportingFilteringAndCalculationsTagsReportEnabled,
             getAgentDetails,
             integrations,
             isAutomateNonFilteredDenominatorInAutomationRate,
@@ -143,6 +148,7 @@ export const useTables = (
             selectedBTODMetric,
             tags,
             tagsTableOrder,
+            isReportingFilteringAndCalculationsTagsReportEnabled,
             getAgentDetails,
             integrations,
             isAutomateNonFilteredDenominatorInAutomationRate,

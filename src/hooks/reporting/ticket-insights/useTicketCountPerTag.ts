@@ -1,114 +1,21 @@
 import { useFlags } from 'launchdarkly-react-client-sdk'
-import { orderBy } from 'lodash'
-
-import { Tag } from '@gorgias/api-queries'
 
 import { FeatureFlagKey } from 'config/featureFlags'
 import { useStatsFilters } from 'hooks/reporting/support-performance/useStatsFilters'
 import {
+    formatAndOrderTagTimeSeries,
+    getOverallTicketTotals,
+    getTagWiseTicketTotals,
+} from 'hooks/reporting/ticket-insights/helpers'
+import { useTagsReportContext } from 'hooks/reporting/ticket-insights/useTagsReportContext'
+import {
     useTagsTicketCountTimeSeries,
     useTotalTaggedTicketCountTimeSeries,
 } from 'hooks/reporting/timeSeries'
-import {
-    getPeriodDateTimes,
-    TimeSeriesDataItem,
-    TimeSeriesPerDimension,
-} from 'hooks/reporting/useTimeSeries'
+import { getPeriodDateTimes } from 'hooks/reporting/useTimeSeries'
 import useAppDispatch from 'hooks/useAppDispatch'
-import useAppSelector from 'hooks/useAppSelector'
-import { getTagName } from 'pages/stats/ticket-insights/tags/helpers'
-import { getEntitiesTags } from 'state/entities/tags/selectors'
-import {
-    getTagsOrder,
-    setOrder,
-    TagsTableOrder,
-} from 'state/ui/stats/tagsReportSlice'
+import { setOrder } from 'state/ui/stats/tagsReportSlice'
 import { getFilterDateRange } from 'utils/reporting'
-
-export type FormattedDataItem = {
-    tagId: string
-    tag?: Tag
-    total: number
-    timeSeries: TimeSeriesDataItem[]
-}
-
-const formatTimeSeriesPerDimension = (
-    timeSeriesData: TimeSeriesPerDimension,
-    tags: Record<string, Tag | undefined>,
-): FormattedDataItem[] =>
-    Object.entries(timeSeriesData).map(([key, value]) => ({
-        tagId: key,
-        tag: tags[key],
-        total: (value[0] ?? []).reduce((sum, item) => sum + item.value, 0),
-        timeSeries: value[0] ?? [],
-    }))
-
-const getOrderBy = (order: TagsTableOrder) => {
-    const orderColumn = order.column
-    switch (orderColumn) {
-        case 'tag':
-            return (data: FormattedDataItem[]) =>
-                orderBy(
-                    data,
-                    (item: FormattedDataItem) =>
-                        getTagName({ name: item.tag?.name, id: item.tagId }),
-                    order.direction,
-                )
-        case 'total':
-            return (data: FormattedDataItem[]) =>
-                orderBy(
-                    data,
-                    (item: FormattedDataItem) => item.total,
-                    order.direction,
-                )
-        default:
-            return (data: FormattedDataItem[]) =>
-                orderBy(
-                    data,
-                    (item: FormattedDataItem) =>
-                        item.timeSeries[orderColumn]?.value,
-                    order.direction,
-                )
-    }
-}
-
-const getTagWiseTicketTotals = (data: FormattedDataItem[]) => {
-    const grandTotal = data.reduce((sum, item) => sum + item.total, 0)
-
-    const columnTotals = data.reduce<number[]>((totals, item) => {
-        item.timeSeries.forEach(
-            (dataPoint, index) =>
-                (totals[index] = dataPoint.value + (totals[index] ?? 0)),
-        )
-        return totals
-    }, [])
-
-    return {
-        columnTotals,
-        grandTotal,
-    }
-}
-
-const getOverallTicketTotals = (timeSeriesData: TimeSeriesDataItem[]) => {
-    const columnTotals = timeSeriesData.map((item) => item.value)
-
-    const grandTotal = columnTotals.reduce((sum, item) => sum + item, 0)
-
-    return {
-        columnTotals,
-        grandTotal,
-    }
-}
-
-export const getFormattedData = (
-    timeSeriesData: TimeSeriesPerDimension | undefined,
-    tags: Record<string, Tag | undefined>,
-    order: TagsTableOrder,
-) => {
-    return timeSeriesData
-        ? getOrderBy(order)(formatTimeSeriesPerDimension(timeSeriesData, tags))
-        : []
-}
 
 export const useTicketCountPerTag = () => {
     const featureFlags = useFlags()
@@ -119,9 +26,10 @@ export const useTicketCountPerTag = () => {
         ]
 
     const dispatch = useAppDispatch()
-    const order = useAppSelector(getTagsOrder)
+
     const { cleanStatsFilters, userTimezone, granularity } = useStatsFilters()
-    const tags = useAppSelector(getEntitiesTags)
+
+    const tagsReportContext = useTagsReportContext()
 
     const totalTaggedTicketCountTimeSeries =
         useTotalTaggedTicketCountTimeSeries(
@@ -141,10 +49,9 @@ export const useTicketCountPerTag = () => {
         granularity,
     )
 
-    const timeData = getFormattedData(
+    const timeData = formatAndOrderTagTimeSeries(
         tagsTicketTimeCountTimeSeries.data,
-        tags,
-        order,
+        tagsReportContext,
     )
 
     const totals = isReportingFilteringAndCalculationsTagsReportEnabled
@@ -167,7 +74,7 @@ export const useTicketCountPerTag = () => {
         grandTotal: totals.grandTotal,
         dateTimes,
         isLoading,
-        order,
+        order: tagsReportContext.tagsTableOrder,
         setOrdering,
         cleanStatsFilters,
         granularity,

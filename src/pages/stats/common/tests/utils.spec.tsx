@@ -35,6 +35,8 @@ import {
     formatNumber,
     formatTimeSeriesData,
     getDateRangePickerLabel,
+    getFormattedDelta,
+    getFormattedPercentage,
     last365DaysStartingFromToday,
     lastWeekDateRange,
     move,
@@ -838,6 +840,42 @@ describe('stats components utils', () => {
             const actual = move(array, 0, 1)
 
             expect(actual).toEqual([2, 1, 3])
+        })
+    })
+
+    describe('getPercent', () => {
+        it('should calculate percentage correctly for valid inputs', () => {
+            expect(getFormattedPercentage(50, 100)).toBe('50%')
+        })
+
+        it('should handle zero total', () => {
+            expect(getFormattedPercentage(10, 0)).toBe(
+                NOT_AVAILABLE_PLACEHOLDER,
+            )
+        })
+
+        it('should handle zero value with non-zero total', () => {
+            expect(getFormattedPercentage(0, 100)).toBe(
+                NOT_AVAILABLE_PLACEHOLDER,
+            )
+        })
+    })
+
+    describe('getDelta', () => {
+        it('should format positive changes with a plus sign', () => {
+            expect(getFormattedDelta(100, 50)).toBe('+ 100%')
+        })
+
+        it('should format negative changes with a minus sign', () => {
+            expect(getFormattedDelta(50, 100)).toBe('- 50%')
+        })
+
+        it('should handle no change', () => {
+            expect(getFormattedDelta(100, 100)).toBe('0%')
+        })
+
+        it('should handle single value with default previousValue', () => {
+            expect(getFormattedDelta(20)).toBe(NOT_AVAILABLE_PLACEHOLDER)
         })
     })
 })

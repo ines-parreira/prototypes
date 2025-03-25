@@ -179,3 +179,7 @@ export const fetchTagsTicketCountTimeSeries = getTimeSeriesPerDimensionFetch(
 export const useTotalTaggedTicketCountTimeSeries = getTimeSeriesHook(
     totalTaggedTicketCountTimeSeriesFactory,
 )
+
+export const fetchTotalTaggedTicketCountTimeSeries = getTimeSeriesFetch(
+    totalTaggedTicketCountTimeSeriesFactory,
+)
