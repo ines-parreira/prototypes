@@ -122,18 +122,18 @@ describe('CustomerSyncForm', () => {
 
         expect(
             screen.getByText(
-                'Please enter a valid email address to sync this profile with Shopify. Syncing requires the customer’s email.',
+                'Please enter a valid email address to sync this profile with Shopify. Syncing requires the customer’s email',
             ),
         ).toBeInTheDocument()
         expect(
-            screen.getByText('Please select shopify store.'),
+            screen.getByText('Please select shopify store'),
         ).toBeInTheDocument()
         expect(
-            screen.getByText('Please enter a street name and house number.'),
+            screen.getByText('Please enter a street name and house number'),
         ).toBeInTheDocument()
-        expect(screen.getByText('Please enter a city.')).toBeInTheDocument()
-        expect(screen.getByText('Please select a state.')).toBeInTheDocument()
-        expect(screen.getByText('Please enter a zip code.')).toBeInTheDocument()
+        expect(screen.getByText('Please enter a city')).toBeInTheDocument()
+        expect(screen.getByText('Please select a state')).toBeInTheDocument()
+        expect(screen.getByText('Please enter a zip code')).toBeInTheDocument()
     })
 
     it('handles form submission when creating a customer with address', async () => {

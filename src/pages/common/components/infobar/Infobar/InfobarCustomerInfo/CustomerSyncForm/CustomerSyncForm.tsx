@@ -212,16 +212,19 @@ export default function CustomerSyncForm({
                             onChange={onChange}
                             hasError={performedValidation && !formState.store}
                         />
-                        <h3>Contact Information</h3>
+                        <h3 className={css.contactInformation}>
+                            Contact Information
+                        </h3>
                         <InputField
                             name="email"
                             label="Email"
                             placeholder="sam.hopper@gmail.com"
+                            className={css.inputField}
                             value={formState.email}
                             onChange={(email) => onChange({ email })}
                             error={
                                 performedValidation && !formState.email
-                                    ? 'Please enter a valid email address to sync this profile with Shopify. Syncing requires the customer’s email.'
+                                    ? 'Please enter a valid email address to sync this profile with Shopify. Syncing requires the customer’s email'
                                     : ''
                             }
                         />
@@ -230,14 +233,16 @@ export default function CustomerSyncForm({
                             name="name"
                             label="Name"
                             placeholder="Sam Hopper"
+                            className={css.inputField}
                             value={formState.name}
                             onChange={(name) => onChange({ name })}
                         />
 
                         <PhoneNumberInput
+                            name="phone"
                             label="Phone number"
                             placeholder="000-000-0000"
-                            name="phone"
+                            className={css.inputField}
                             value={formState.phone}
                             onChange={(phone) => onChange({ phone })}
                         />

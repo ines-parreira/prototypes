@@ -47,9 +47,7 @@ const ShopifyStoreSelect = ({
                     }
                 />
                 {hasError && (
-                    <div className={css.error}>
-                        Please select shopify store.
-                    </div>
+                    <div className={css.error}>Please select shopify store</div>
                 )}
             </div>
         </div>

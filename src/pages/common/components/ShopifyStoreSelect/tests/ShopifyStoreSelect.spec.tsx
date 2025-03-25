@@ -52,7 +52,7 @@ describe('ShopifyStoreSelect', () => {
         )
 
         expect(
-            screen.getByText('Please select shopify store.'),
+            screen.getByText('Please select shopify store'),
         ).toBeInTheDocument()
     })
 

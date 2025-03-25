@@ -1,3 +1,7 @@
+@import '~@gorgias/design-tokens/dist/css/layout';
+
+@import (reference) '~css/typography';
+
 :local {
     .formContainer {
         display: flex;
@@ -6,5 +10,11 @@
     }
     .customerSyncForm {
         max-width: 50rem;
+    }
+    .inputField {
+        margin: 0 0 @layout-spacing-xs;
+    }
+    .contactInformation {
+        margin-bottom: @layout-spacing-s;
     }
 }

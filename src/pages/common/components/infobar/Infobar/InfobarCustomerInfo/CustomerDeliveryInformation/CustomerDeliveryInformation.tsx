@@ -32,6 +32,7 @@ export default function CustomerDeliveryInformation({
             <CountryInput
                 label="Country"
                 placeholder="Search country"
+                className={css.inputField}
                 value={formState.countryCode}
                 onChange={(countryCode) =>
                     onChange({
@@ -45,18 +46,20 @@ export default function CustomerDeliveryInformation({
                 name="company"
                 label="Company"
                 placeholder="Gorgias"
+                className={css.inputField}
                 value={formState.company}
                 onChange={(company) => onChange({ company })}
             />
             <InputField
                 name="address"
                 label="Address"
+                className={css.inputField}
                 value={formState.address}
                 placeholder="Gorgias street"
                 onChange={(address) => onChange({ address })}
                 error={
                     hasAddressError
-                        ? 'Please enter a street name and house number.'
+                        ? 'Please enter a street name and house number'
                         : ''
                 }
             />
@@ -65,6 +68,7 @@ export default function CustomerDeliveryInformation({
                 name="apartment"
                 label="Apartment, suite, etc"
                 placeholder="Unit #2, Floor 5"
+                className={css.inputField}
                 value={formState.apartment}
                 onChange={(apartment) => onChange({ apartment })}
             />
@@ -77,7 +81,7 @@ export default function CustomerDeliveryInformation({
                     placeholder="New York City"
                     value={formState.city}
                     onChange={(city) => onChange({ city })}
-                    error={hasCityError ? 'Please enter a city.' : ''}
+                    error={hasCityError ? 'Please enter a city' : ''}
                 />
 
                 <ProvinceInput
@@ -90,7 +94,7 @@ export default function CustomerDeliveryInformation({
                     }
                     hasError={hasStateOrProvinceError}
                     error={
-                        hasStateOrProvinceError ? 'Please select a state.' : ''
+                        hasStateOrProvinceError ? 'Please select a state' : ''
                     }
                 />
                 <InputField
@@ -100,7 +104,7 @@ export default function CustomerDeliveryInformation({
                     placeholder="90210"
                     value={formState.postalCode}
                     onChange={(postalCode) => onChange({ postalCode })}
-                    error={hasPostalCodeError ? 'Please enter a zip code.' : ''}
+                    error={hasPostalCodeError ? 'Please enter a zip code' : ''}
                 />
             </div>
         </>
