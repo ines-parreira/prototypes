@@ -8,6 +8,7 @@ import { ActiveContent, Navbar } from 'common/navigation'
 import { logEvent, SegmentEvent } from 'common/segment'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
+import useStoreIntegrations from 'pages/automate/common/hooks/useStoreIntegrations'
 import { buildPasswordAnd2FaText } from 'pages/settings/yourProfile/twoFactorAuthentication/utils'
 import { getHasAutomate } from 'state/billing/selectors'
 import { getCurrentAccountState } from 'state/currentAccount/selectors'
@@ -25,6 +26,7 @@ const SettingsNavbar = () => {
     const pathname = useLocation().pathname
     const featureFlags = useFlags()
     const hasAutomate = useAppSelector(getHasAutomate)
+    const integrations = useStoreIntegrations()
 
     return (
         <Navbar activeContent={ActiveContent.Settings} title="Settings">
@@ -51,7 +53,11 @@ const SettingsNavbar = () => {
                                     !requiredFeatureFlags.every(
                                         (flag) => featureFlags[flag],
                                     )) ||
-                                (shouldRender && !shouldRender(hasAutomate))
+                                (shouldRender &&
+                                    !shouldRender({
+                                        hasAutomate,
+                                        integrations,
+                                    }))
                             ) {
                                 return null
                             }

@@ -40,6 +40,17 @@ jest.mock('state/currentAccount/selectors', () => ({
     getCurrentAccountState: jest.fn(),
 }))
 
+jest.mock('pages/automate/common/hooks/useStoreIntegrations', () => ({
+    __esModule: true,
+    default: jest.fn(() => [
+        {
+            id: '1',
+            name: 'Integration 1',
+            type: 'integration',
+        },
+    ]),
+}))
+
 const mockedHasRole = assumeMock(hasRole)
 const mockedLogEvent = assumeMock(logEvent)
 const mockedGetCurrentUser = assumeMock(getCurrentUser)

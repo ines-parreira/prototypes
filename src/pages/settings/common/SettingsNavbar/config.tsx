@@ -4,14 +4,33 @@ import cssNavbar from 'assets/css/navbar.less'
 import { FeatureFlagKey } from 'config/featureFlags'
 import { ADMIN_ROLE, AGENT_ROLE } from 'config/user'
 import { OBJECT_TYPES } from 'custom-fields/constants'
+import useAppSelector from 'hooks/useAppSelector'
 import { IntegrationType } from 'models/integration/types'
+import useStoreIntegrations from 'pages/automate/common/hooks/useStoreIntegrations'
 import { CONTACT_FORM_PAGE_TITLE } from 'pages/settings/contactForm/constants'
 import {
     CUSTOM_FIELD_CONDITIONS_ROUTE,
     CUSTOM_FIELD_ROUTES,
 } from 'routes/constants'
+import { getHasAutomate } from 'state/billing/selectors'
 
 import { Category } from './types'
+
+function AutomateUpgradeBadge() {
+    const hasAutomate = useAppSelector(getHasAutomate)
+    const integrations = useStoreIntegrations()
+
+    if (hasAutomate && integrations.length === 0) {
+        return null
+    }
+
+    return (
+        <Badge type="magenta" className={cssNavbar.badge}>
+            <i className="material-icons">auto_awesome</i>
+            UPGRADE
+        </Badge>
+    )
+}
 
 const productivitySection: Category = {
     name: 'Productivity',
@@ -70,34 +89,33 @@ const productivitySection: Category = {
         {
             requiredRole: AGENT_ROLE,
             requiredFeatureFlags: [FeatureFlagKey.AutomateSettingsRevamp],
-            shouldRender: (hasAutomate) => !hasAutomate,
+            shouldRender: ({ hasAutomate, integrations }) =>
+                !hasAutomate || integrations.length === 0,
             to: 'automate',
             text: 'Automate',
-            extra: (
-                <Badge type="magenta" className={cssNavbar.badge}>
-                    <i className="material-icons">auto_awesome</i>
-                    UPGRADE
-                </Badge>
-            ),
+            extra: <AutomateUpgradeBadge />,
         },
         {
             requiredRole: AGENT_ROLE,
             requiredFeatureFlags: [FeatureFlagKey.AutomateSettingsRevamp],
-            shouldRender: (hasAutomate) => hasAutomate,
+            shouldRender: ({ hasAutomate, integrations }) =>
+                hasAutomate && integrations.length > 0,
             to: 'flows',
             text: 'Flows',
         },
         {
             requiredRole: AGENT_ROLE,
             requiredFeatureFlags: [FeatureFlagKey.AutomateSettingsRevamp],
-            shouldRender: (hasAutomate) => hasAutomate,
+            shouldRender: ({ hasAutomate, integrations }) =>
+                hasAutomate && integrations.length > 0,
             to: 'order-management',
             text: 'Order Management',
         },
         {
             requiredRole: AGENT_ROLE,
             requiredFeatureFlags: [FeatureFlagKey.AutomateSettingsRevamp],
-            shouldRender: (hasAutomate) => hasAutomate,
+            shouldRender: ({ hasAutomate, integrations }) =>
+                hasAutomate && integrations.length > 0,
             to: 'article-recommendations',
             text: 'Article Recommendations',
         },
