@@ -1,13 +1,13 @@
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useRef, useState } from 'react'
 
 import { IconButton } from '@gorgias/merchant-ui-kit'
 
 import { logEvent, SegmentEvent } from 'common/segment'
+import { useTagResultsSelection } from 'hooks/useTagResultsSelection'
 import Dropdown from 'pages/common/components/dropdown/Dropdown'
 import DropdownBody from 'pages/common/components/dropdown/DropdownBody'
 import DropdownItem from 'pages/common/components/dropdown/DropdownItem'
 import IconInput from 'pages/common/forms/input/IconInput'
-import { useTagResultsSelection } from 'pages/stats/ticket-insights/tags/helpers'
 import css from 'pages/stats/ticket-insights/tags/TagActionsMenu.less'
 import { useDownloadTagsReportData } from 'services/reporting/tagsReportingService'
 
@@ -56,26 +56,23 @@ const TagDropdownItem = ({
 }
 
 export function TagActionsMenu() {
+    const [tagResultsSelection, setTagResultsSelection] =
+        useTagResultsSelection()
+
     const triggerRef = useRef<HTMLButtonElement>(null)
-    const tagResultsSelection = useTagResultsSelection()
 
     const [isOpen, setIsOpen] = useState(false)
-    const [selectedOption, setSelectedOption] =
-        useState<TagSelection>(tagResultsSelection)
-
-    useEffect(() => {
-        setSelectedOption(tagResultsSelection)
-    }, [tagResultsSelection])
 
     const { download, isLoading } = useDownloadTagsReportData()
 
     const includeTagsAction = () => {
-        setSelectedOption(TagSelection.includeTags)
         logEvent(SegmentEvent.StatTagsIncludeRelatedClicked)
+        setTagResultsSelection(TagSelection.includeTags)
     }
+
     const excludeTagsAction = () => {
-        setSelectedOption(TagSelection.excludeTags)
         logEvent(SegmentEvent.StatTagsExcludeRelatedClicked)
+        setTagResultsSelection(TagSelection.excludeTags)
     }
 
     return (
@@ -102,13 +99,17 @@ export function TagActionsMenu() {
                         label={INCLUDE_TAGS_IN_RESULTS}
                         subtitle={INCLUDE_TAGS_IN_RESULTS_SUBTITLE}
                         onClick={includeTagsAction}
-                        isSelected={selectedOption === TagSelection.includeTags}
+                        isSelected={
+                            tagResultsSelection === TagSelection.includeTags
+                        }
                     />
                     <TagDropdownItem
                         label={EXCLUDE_TAGS_IN_RESULTS}
                         subtitle={EXCLUDE_TAGS_IN_RESULTS_SUBTITLE}
                         onClick={excludeTagsAction}
-                        isSelected={selectedOption === TagSelection.excludeTags}
+                        isSelected={
+                            tagResultsSelection === TagSelection.excludeTags
+                        }
                     />
                     <div className={css.separator} />
                     <DropdownItem

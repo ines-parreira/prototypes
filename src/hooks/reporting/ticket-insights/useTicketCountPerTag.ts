@@ -3,6 +3,7 @@ import { useFlags } from 'launchdarkly-react-client-sdk'
 import { FeatureFlagKey } from 'config/featureFlags'
 import { useStatsFilters } from 'hooks/reporting/support-performance/useStatsFilters'
 import {
+    filterTimeDataWithSelectedTags,
     formatAndOrderTagTimeSeries,
     getOverallTicketTotals,
     getTagWiseTicketTotals,
@@ -14,11 +15,13 @@ import {
 } from 'hooks/reporting/timeSeries'
 import { getPeriodDateTimes } from 'hooks/reporting/useTimeSeries'
 import useAppDispatch from 'hooks/useAppDispatch'
+import { useTagResultsSelection } from 'hooks/useTagResultsSelection'
 import { setOrder } from 'state/ui/stats/tagsReportSlice'
 import { getFilterDateRange } from 'utils/reporting'
 
 export const useTicketCountPerTag = () => {
     const featureFlags = useFlags()
+    const [tagResultsSelection] = useTagResultsSelection()
 
     const isReportingFilteringAndCalculationsTagsReportEnabled =
         !!featureFlags[
@@ -49,10 +52,16 @@ export const useTicketCountPerTag = () => {
         granularity,
     )
 
-    const timeData = formatAndOrderTagTimeSeries(
+    const formattedTimeData = formatAndOrderTagTimeSeries(
         tagsTicketTimeCountTimeSeries.data,
         tagsReportContext,
     )
+
+    const timeData = filterTimeDataWithSelectedTags({
+        data: formattedTimeData,
+        statsFilters: cleanStatsFilters,
+        tagResultsSelection,
+    })
 
     const totals = isReportingFilteringAndCalculationsTagsReportEnabled
         ? getOverallTicketTotals(

@@ -167,6 +167,7 @@ export type DataExportFetch =
 export interface DashboardChartProps {
     chartId?: string
     dashboard?: DashboardSchema
+    additionalProps?: any
 }
 
 export type ChartConfig = {

@@ -6,7 +6,11 @@ import {
     TimeSeriesDataItem,
     TimeSeriesPerDimension,
 } from 'hooks/reporting/useTimeSeries'
+import { TagSelection } from 'hooks/useTagResultsSelection'
+import { StatsFilters } from 'models/stat/types'
 import { TagsTableOrder } from 'state/ui/stats/tagsReportSlice'
+
+import { getTagValuesByOperator } from '../helpers'
 
 export const getTagName = ({
     name,
@@ -110,4 +114,30 @@ export const getOverallTicketTotals = (
         columnTotals,
         grandTotal,
     }
+}
+
+export const filterTimeDataWithSelectedTags = ({
+    data,
+    statsFilters,
+    tagResultsSelection,
+}: {
+    data: TagTimeSeriesItem[]
+    statsFilters: StatsFilters
+    tagResultsSelection: TagSelection
+}) => {
+    const selectedTags = getTagValuesByOperator(statsFilters)
+
+    if (
+        tagResultsSelection === TagSelection.includeTags ||
+        selectedTags.length === 0
+    ) {
+        return data
+    }
+
+    return data.reduce<TagTimeSeriesItem[]>((acc, item) => {
+        if (selectedTags.includes(Number(item.tagId))) {
+            acc.push(item)
+        }
+        return acc
+    }, [])
 }

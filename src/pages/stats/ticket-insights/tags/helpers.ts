@@ -1,5 +1,7 @@
-import useSessionStorage from 'hooks/useSessionStorage'
-import { TagSelection } from 'pages/stats/ticket-insights/tags/TagActionsMenu'
+import {
+    TAG_RESULTS_SELECTION_KEY,
+    TagSelection,
+} from 'hooks/useTagResultsSelection'
 
 export const getTagName = ({
     name,
@@ -11,22 +13,14 @@ export const getTagName = ({
     return name || `${id} (deleted)`
 }
 
-const TAG_RESULTS_SELECTION_KEY = 'tag-results-selection'
-
-export const useTagResultsSelection = (): TagSelection => {
-    const defaultSelection = TagSelection.includeTags
-    const [selectedOption] = useSessionStorage<string>(
-        TAG_RESULTS_SELECTION_KEY,
-        JSON.stringify(defaultSelection),
-        true,
-    )
-
+export const getTagResultsSelectionFromSessionStorage = (): TagSelection => {
+    const selection = window.sessionStorage.getItem(TAG_RESULTS_SELECTION_KEY)
     if (
-        selectedOption === TagSelection.includeTags ||
-        selectedOption === TagSelection.excludeTags
+        selection === TagSelection.includeTags ||
+        selection === TagSelection.excludeTags
     ) {
-        return selectedOption
+        return selection
     }
 
-    return defaultSelection
+    return TagSelection.includeTags
 }

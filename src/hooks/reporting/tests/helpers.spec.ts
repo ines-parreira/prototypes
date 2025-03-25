@@ -15,6 +15,8 @@ const messagesSentMeasure = HelpdeskMessageMeasure.MessageCount
 const onlineTimeMeasure = AgentTimeTrackingMeasure.OnlineTime
 const onlineTimeAgentID = AgentTimeTrackingDimension.UserId
 
+jest.mock('hooks/useAppSelector')
+
 describe('calculateTotalCapacity', () => {
     const agentId = '789726418'
     const agentsMessagesSent = 62

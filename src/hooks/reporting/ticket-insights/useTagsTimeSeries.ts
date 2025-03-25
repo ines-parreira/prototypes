@@ -6,13 +6,19 @@ import _sortBy from 'lodash/sortBy'
 import { Tag } from '@gorgias/api-queries'
 
 import { useTagSearch } from 'hooks/reporting/common/useTagSearch'
+import { getTagValuesByOperator } from 'hooks/reporting/helpers'
 import { useTagsTicketCount } from 'hooks/reporting/metricsPerPeriod'
 import { useStatsFilters } from 'hooks/reporting/support-performance/useStatsFilters'
 import { useTagsTicketCountTimeSeries } from 'hooks/reporting/timeSeries'
 import { MetricPerDimensionTrend } from 'hooks/reporting/useMetricPerDimension'
 import { TimeSeriesDataItem } from 'hooks/reporting/useTimeSeries'
+import {
+    TagSelection,
+    useTagResultsSelection,
+} from 'hooks/useTagResultsSelection'
 import { OrderDirection } from 'models/api/types'
 import { TicketTagsEnrichedMember } from 'models/reporting/cubes/TicketTagsEnrichedCube'
+import { StatsFilters } from 'models/stat/types'
 import { getTagName } from 'pages/stats/ticket-insights/tags/helpers'
 
 const DATASET_VISIBILITY_ITEMS = 3
@@ -52,8 +58,36 @@ const getSortedData = (
     return { dataToRender, labels, tooltips, initialVisibility }
 }
 
+export const filterTimeSeriesWithSelectedTags = ({
+    data,
+    statsFilters,
+    tagResultsSelection,
+}: {
+    data: Record<string, TimeSeriesDataItem[][]>
+    statsFilters: StatsFilters
+    tagResultsSelection: TagSelection
+}) => {
+    const tags = getTagValuesByOperator(statsFilters)
+
+    if (tagResultsSelection === TagSelection.includeTags || tags.length === 0) {
+        return data
+    }
+
+    return Object.entries(data).reduce<Record<string, TimeSeriesDataItem[][]>>(
+        (acc, [key, value]) => {
+            if (tags.includes(Number(key))) {
+                acc[key] = value
+            }
+            return acc
+        },
+        {},
+    )
+}
+
 export const useTagsTimeSeries = (topAmount = 10) => {
     const { tagsState } = useTagSearch()
+    const [tagResultsSelection] = useTagResultsSelection()
+
     const { cleanStatsFilters, userTimezone, granularity } = useStatsFilters()
 
     const tags: Tag[] = useMemo(() => {
@@ -62,12 +96,19 @@ export const useTagsTimeSeries = (topAmount = 10) => {
         )
     }, [tagsState])
 
-    const { data = {}, isFetching } = useTagsTicketCountTimeSeries(
-        cleanStatsFilters,
-        userTimezone,
-        granularity,
-        OrderDirection.Desc,
-    )
+    const { data: tagsTicketCountTimeSeriesData = {}, isFetching } =
+        useTagsTicketCountTimeSeries(
+            cleanStatsFilters,
+            userTimezone,
+            granularity,
+            OrderDirection.Desc,
+        )
+
+    const data = filterTimeSeriesWithSelectedTags({
+        data: tagsTicketCountTimeSeriesData,
+        statsFilters: cleanStatsFilters,
+        tagResultsSelection,
+    })
 
     const tagsTicketCount = useTagsTicketCount(
         cleanStatsFilters,

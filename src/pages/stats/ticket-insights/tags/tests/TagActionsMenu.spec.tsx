@@ -4,6 +4,10 @@ import { fireEvent, render, screen, within } from '@testing-library/react'
 
 import { logEvent, SegmentEvent } from 'common/segment'
 import {
+    TagSelection,
+    useTagResultsSelection,
+} from 'hooks/useTagResultsSelection'
+import {
     EXCLUDE_TAGS_IN_RESULTS,
     EXCLUDE_TAGS_IN_RESULTS_SUBTITLE,
     INCLUDE_TAGS_IN_RESULTS,
@@ -19,9 +23,12 @@ jest.mock('services/reporting/tagsReportingService')
 const useDownloadTagsReportDataMock = assumeMock(useDownloadTagsReportData)
 jest.mock('common/segment')
 const logEventMock = assumeMock(logEvent)
+jest.mock('hooks/useTagResultsSelection')
+const useTagResultsSelectionMock = assumeMock(useTagResultsSelection)
 
 describe('TagActionsMenu', () => {
     const downloadMock = jest.fn()
+    const setTagResultsSelection = jest.fn()
 
     beforeEach(() => {
         jest.clearAllMocks()
@@ -29,6 +36,10 @@ describe('TagActionsMenu', () => {
             download: downloadMock,
             isLoading: false,
         })
+        useTagResultsSelectionMock.mockReturnValue([
+            TagSelection.includeTags,
+            setTagResultsSelection,
+        ])
     })
 
     it('renders the actions button', () => {
@@ -112,9 +123,9 @@ describe('TagActionsMenu', () => {
 
         fireEvent.click(screen.getByLabelText(TAG_ACTIONS_TRIGGER_LABEL))
 
-        const spanElement = screen.getByText(EXCLUDE_TAGS_IN_RESULTS)
-        const parentDiv = spanElement.parentElement as HTMLElement
-        within(parentDiv).getByText('check')
+        expect(setTagResultsSelection).toHaveBeenCalledWith(
+            TagSelection.excludeTags,
+        )
 
         expect(logEventMock).toHaveBeenCalledWith(
             SegmentEvent.StatTagsExcludeRelatedClicked,

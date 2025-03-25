@@ -6,15 +6,19 @@ import configureMockStore from 'redux-mock-store'
 
 import { FeatureFlagKey } from 'config/featureFlags'
 import { tags } from 'fixtures/tag'
+import { filterTimeDataWithSelectedTags } from 'hooks/reporting/ticket-insights/helpers'
 import { useTicketCountPerTag } from 'hooks/reporting/ticket-insights/useTicketCountPerTag'
 import {
     useTagsTicketCountTimeSeries,
     useTotalTaggedTicketCountTimeSeries,
 } from 'hooks/reporting/timeSeries'
 import { getPeriodDateTimes } from 'hooks/reporting/useTimeSeries'
+import { TagSelection } from 'hooks/useTagResultsSelection'
 import { OrderDirection } from 'models/api/types'
 import { ReportingGranularity } from 'models/reporting/types'
-import { Period } from 'models/stat/types'
+import { Period, TagFilterInstanceId } from 'models/stat/types'
+import { LogicalOperatorEnum } from 'pages/stats/common/components/Filter/constants'
+import { defaultStatsFilters } from 'state/stats/statsSlice'
 import { RootState, StoreDispatch } from 'state/types'
 import {
     initialState,
@@ -505,6 +509,95 @@ describe('useTicketCountPerTag', () => {
             expect(store.getActions()).toContainEqual(
                 setOrder({ column: 'total' }),
             )
+        })
+    })
+
+    describe('filterTimeDataWithSelectedTags', () => {
+        const firstTagId = 525510
+
+        const data = [
+            {
+                tagId: firstTagId.toString(),
+                tag: {
+                    created_datetime: '2025-02-26T22:47:11.927981+00:00',
+                    decoration: {
+                        color: '#f50ca9',
+                    },
+                    deleted_datetime: null,
+                    description: null,
+                    id: 712667,
+                    name: 'Chat campaign - Exit Intent',
+                    uri: '/api/tags/712667/',
+                    usage: 3,
+                },
+                total: 3,
+                timeSeries: [
+                    {
+                        dateTime: '2024-12-16T00:00:00.000',
+                        value: 0,
+                        label: 'TicketTagsEnriched.ticketCount',
+                    },
+                ],
+            },
+            {
+                tagId: '713249',
+                tag: {
+                    created_datetime: '2025-03-03T13:13:30.178619+00:00',
+                    decoration: {
+                        color: '#430950',
+                    },
+                    deleted_datetime: null,
+                    description: null,
+                    id: 713249,
+                    name: 'Chat campaign - French visitors',
+                    uri: '/api/tags/713249/',
+                    usage: 3,
+                },
+                total: 3,
+                timeSeries: [
+                    {
+                        dateTime: '2024-12-16T00:00:00.000',
+                        value: 0,
+                        label: 'TicketTagsEnriched.ticketCount',
+                    },
+                    {
+                        dateTime: '2024-12-23T00:00:00.000',
+                        value: 0,
+                        label: 'TicketTagsEnriched.ticketCount',
+                    },
+                ],
+            },
+        ]
+
+        const statsFilters = {
+            ...defaultStatsFilters,
+            tags: [
+                {
+                    operator: LogicalOperatorEnum.ALL_OF,
+                    values: [firstTagId],
+                    filterInstanceId: TagFilterInstanceId.First,
+                },
+            ],
+        }
+
+        it('should return filtered data if tagResultsSelection is equal to TagSelection.excludeTags', () => {
+            const { result } = renderHook(
+                () =>
+                    filterTimeDataWithSelectedTags({
+                        data,
+                        statsFilters,
+                        tagResultsSelection: TagSelection.excludeTags,
+                    }),
+                {
+                    wrapper: ({ children }) => (
+                        <Provider store={mockStore(defaultState)}>
+                            {children}
+                        </Provider>
+                    ),
+                },
+            )
+
+            expect(result.current).toEqual([data[0]])
         })
     })
 })

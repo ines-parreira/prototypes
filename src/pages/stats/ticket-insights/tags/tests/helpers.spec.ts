@@ -1,32 +1,60 @@
-import useSessionStorage from 'hooks/useSessionStorage'
-import { useTagResultsSelection } from 'pages/stats/ticket-insights/tags/helpers'
-import { TagSelection } from 'pages/stats/ticket-insights/tags/TagActionsMenu'
-import { assumeMock } from 'utils/testing'
+import {
+    TAG_RESULTS_SELECTION_KEY,
+    TagSelection,
+} from 'hooks/useTagResultsSelection'
+import { getTagResultsSelectionFromSessionStorage } from 'pages/stats/ticket-insights/tags/helpers'
 
-jest.mock('hooks/useSessionStorage')
-const useSessionStorageMock = assumeMock(useSessionStorage)
-describe('getTagResultsSelection', () => {
+const localStorageMock = (() => {
+    const store = {} as any
+
+    return {
+        getItem(key: string) {
+            return store[key] || null
+        },
+        setItem(key: string, value: string) {
+            store[key] = value.toString()
+        },
+    }
+})()
+
+Object.defineProperty(window, 'sessionStorage', {
+    value: localStorageMock,
+})
+
+describe('getTagResultsSelectionFromSessionStorage', () => {
     it('should return include_tags by default', () => {
-        useSessionStorageMock.mockReturnValue([TagSelection.includeTags] as any)
+        const result = getTagResultsSelectionFromSessionStorage()
 
-        expect(useTagResultsSelection()).toBe(TagSelection.includeTags)
+        expect(result).toBe(TagSelection.includeTags)
     })
 
-    it('should return include_tags by default', () => {
-        useSessionStorageMock.mockReturnValue(['another-value'] as any)
+    it('should return include_tags after setting it', () => {
+        window.sessionStorage.setItem(
+            TAG_RESULTS_SELECTION_KEY,
+            TagSelection.includeTags,
+        )
 
-        expect(useTagResultsSelection()).toBe(TagSelection.includeTags)
+        const result = getTagResultsSelectionFromSessionStorage()
+
+        expect(result).toBe(TagSelection.includeTags)
     })
 
-    it('should return exclude_tags', () => {
-        useSessionStorageMock.mockReturnValue([TagSelection.excludeTags] as any)
+    it('should return exclude_tags after setting it', () => {
+        window.sessionStorage.setItem(
+            TAG_RESULTS_SELECTION_KEY,
+            TagSelection.excludeTags,
+        )
 
-        expect(useTagResultsSelection()).toBe(TagSelection.excludeTags)
+        const result = getTagResultsSelectionFromSessionStorage()
+
+        expect(result).toBe(TagSelection.excludeTags)
     })
 
-    it('should return default value if session storage is empty', () => {
-        useSessionStorageMock.mockReturnValue([null] as any)
+    it('should return include_tags after setting the wrong value', () => {
+        window.sessionStorage.setItem(TAG_RESULTS_SELECTION_KEY, 'other')
 
-        expect(useTagResultsSelection()).toBe(TagSelection.includeTags)
+        const result = getTagResultsSelectionFromSessionStorage()
+
+        expect(result).toBe(TagSelection.includeTags)
     })
 })
