@@ -14,6 +14,7 @@ import Card from 'pages/aiAgent/Onboarding/components/Card/Card'
 import MainTitle from 'pages/aiAgent/Onboarding/components/MainTitle/MainTitle'
 import { OnboardingSteppedSlider } from 'pages/aiAgent/Onboarding/components/OnboardingSteppedSlider/OnboardingSteppedSlider'
 import { PreviewId } from 'pages/aiAgent/Onboarding/components/PersonalityPreviewGroup/constants'
+import { conversationExamples } from 'pages/aiAgent/Onboarding/components/steps/PersonalityPreviewStep/conversationsExamples'
 import {
     DiscountStrategy,
     DiscountStrategyLabels,
@@ -32,6 +33,7 @@ import useCheckStoreIntegration from 'pages/aiAgent/Onboarding/hooks/useCheckSto
 import { useGetChatIntegrationColor } from 'pages/aiAgent/Onboarding/hooks/useGetChatIntegrationColor'
 import { useGetOnboardingData } from 'pages/aiAgent/Onboarding/hooks/useGetOnboardingData'
 import { useSteps } from 'pages/aiAgent/Onboarding/hooks/useSteps'
+import { useTransformToneOfVoiceConversations } from 'pages/aiAgent/Onboarding/hooks/useTransformToneOfVoiceConversations'
 import { useUpdateOnboarding } from 'pages/aiAgent/Onboarding/hooks/useUpdateOnboarding'
 import {
     OnboardingBody,
@@ -49,8 +51,6 @@ import IconTooltip from 'pages/common/forms/IconTooltip/IconTooltip'
 import IconInput from 'pages/common/forms/input/IconInput'
 import InputField from 'pages/common/forms/input/InputField'
 import ChatIntegrationPreview from 'pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationPreview/ChatIntegrationPreview'
-
-import { conversationExamples } from '../PersonalityPreviewStep/conversationsExamples'
 
 const personalitySchema = z
     .object({
@@ -100,6 +100,9 @@ export const PersonalityStep: FC<StepProps> = ({
         shopName,
         chatIntegrationIds: data?.chatIntegrationIds,
     })
+
+    const { conversations, isLoading: isPreviewLoading } =
+        useTransformToneOfVoiceConversations(shopName)
 
     const isLoading = isLoadingOnboardingData || isUpdatingOnboarding
 
@@ -277,15 +280,17 @@ export const PersonalityStep: FC<StepProps> = ({
     }
 
     const preview = useMemo(() => {
+        const previewConversations = conversations ?? conversationExamples
+
         const capitalizedPersuasionLevel =
             String(salesPersuasionLevel).charAt(0).toUpperCase() +
             String(salesPersuasionLevel).slice(1)
         if (salesDiscountStrategyLevel === DiscountStrategy.NoDiscount) {
             const previewName = `noDiscount${capitalizedPersuasionLevel}`
-            return conversationExamples[previewName as PreviewId].messages
+            return previewConversations[previewName as PreviewId].messages
         }
         const previewName = `withDiscount${capitalizedPersuasionLevel}`
-        return conversationExamples[previewName as PreviewId].messages.map(
+        return previewConversations[previewName as PreviewId].messages.map(
             (message) => {
                 const newMessage = { ...message }
                 newMessage.content = message.content.replace(
@@ -295,7 +300,12 @@ export const PersonalityStep: FC<StepProps> = ({
                 return newMessage
             },
         )
-    }, [salesDiscountStrategyLevel, salesPersuasionLevel, salesDiscountMax])
+    }, [
+        salesDiscountStrategyLevel,
+        salesPersuasionLevel,
+        salesDiscountMax,
+        conversations,
+    ])
 
     return (
         <FormProvider {...methods}>
@@ -412,7 +422,7 @@ export const PersonalityStep: FC<StepProps> = ({
                     </div>
                 </OnboardingContentContainer>
                 <OnboardingPreviewContainer
-                    isLoading={isLoading}
+                    isLoading={isLoading || isPreviewLoading}
                     icon={''}
                     caption="This is a sample conversation with AI Agent. It will evolve as you onboard."
                 >

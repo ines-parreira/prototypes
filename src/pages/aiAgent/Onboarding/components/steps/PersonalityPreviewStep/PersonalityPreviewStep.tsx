@@ -11,7 +11,6 @@ import {
 } from 'pages/aiAgent/Onboarding/components/PersonalityPreviewGroup/constants'
 import { PersonalityPreviewGroup } from 'pages/aiAgent/Onboarding/components/PersonalityPreviewGroup/PersonalityPreviewGroup'
 import { Separator } from 'pages/aiAgent/Onboarding/components/Separator/Separator'
-import { useFetchPersonalityPreviewChatScenario } from 'pages/aiAgent/Onboarding/components/steps/PersonalityPreviewStep/mockedHooks'
 import css from 'pages/aiAgent/Onboarding/components/steps/PersonalityPreviewStep/PersonalityPreviewStep.less'
 import { mapScopeToPreviewType } from 'pages/aiAgent/Onboarding/components/steps/PersonalityPreviewStep/PersonalityPreviewStep.utils'
 import { StepProps } from 'pages/aiAgent/Onboarding/components/steps/types'
@@ -21,6 +20,7 @@ import useCheckStoreIntegration from 'pages/aiAgent/Onboarding/hooks/useCheckSto
 import { useGetChatIntegrationColor } from 'pages/aiAgent/Onboarding/hooks/useGetChatIntegrationColor'
 import { useGetOnboardingData } from 'pages/aiAgent/Onboarding/hooks/useGetOnboardingData'
 import { useSteps } from 'pages/aiAgent/Onboarding/hooks/useSteps'
+import { useTransformToneOfVoiceConversations } from 'pages/aiAgent/Onboarding/hooks/useTransformToneOfVoiceConversations'
 import {
     OnboardingBody,
     OnboardingContentContainer,
@@ -57,6 +57,9 @@ export const PersonalityPreviewStep: React.FC<StepProps> = ({
         id: PreviewId
     }>()
 
+    const { conversations, isLoading: isPreviewLoading } =
+        useTransformToneOfVoiceConversations(shopName)
+
     // Select first preview automatically when loaded
     useEffect(() => {
         if (selectedPreview) {
@@ -65,9 +68,6 @@ export const PersonalityPreviewStep: React.FC<StepProps> = ({
 
         setSelectedPreview(getFirstPreviewForPreviewType(previewType))
     }, [previewType, selectedPreview])
-
-    const { data: chatPreviewData, isLoading: isChatPreviewLoading } =
-        useFetchPersonalityPreviewChatScenario(previewType, selectedPreview?.id)
 
     const { mainColor, conversationColor } = useGetChatIntegrationColor({
         shopName,
@@ -123,7 +123,7 @@ export const PersonalityPreviewStep: React.FC<StepProps> = ({
                 />
             </OnboardingContentContainer>
             <OnboardingPreviewContainer
-                isLoading={isChatPreviewLoading || isLoading}
+                isLoading={isPreviewLoading || isLoading}
                 icon={''}
                 caption="Here’s a sample conversation with your AI Agent, crafted using a friendly tone of voice. You can adjust its personality in Settings anytime."
             >
@@ -143,7 +143,12 @@ export const PersonalityPreviewStep: React.FC<StepProps> = ({
                                         conversationColor ??
                                         agentChatConversationSettings.conversationColor,
                                 }}
-                                messages={chatPreviewData.messages}
+                                messages={
+                                    conversations && selectedPreview?.id
+                                        ? conversations[selectedPreview?.id]
+                                              .messages
+                                        : []
+                                }
                                 removeLinksFromMessages
                             />
                         </ChatIntegrationPreview>

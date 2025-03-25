@@ -23,11 +23,13 @@ import {
 } from 'pages/aiAgent/Onboarding/components/steps/ChannelsStep/ChannelsStep'
 import { usePreselectedChat } from 'pages/aiAgent/Onboarding/components/steps/ChannelsStep/hooks/usePreselectedChat'
 import { usePreselectedEmails } from 'pages/aiAgent/Onboarding/components/steps/ChannelsStep/hooks/usePreselectedEmails'
+import { conversationExamples } from 'pages/aiAgent/Onboarding/components/steps/PersonalityPreviewStep/conversationsExamples'
 import { DiscountStrategy } from 'pages/aiAgent/Onboarding/components/steps/PersonalityStep/DiscountStrategy'
 import { PersuasionLevel } from 'pages/aiAgent/Onboarding/components/steps/PersonalityStep/PersuasionLevel'
 import { StepProps } from 'pages/aiAgent/Onboarding/components/steps/types'
 import { useGetOnboardingData } from 'pages/aiAgent/Onboarding/hooks/useGetOnboardingData'
 import { useGetOnboardings } from 'pages/aiAgent/Onboarding/hooks/useGetOnboardings'
+import { useTransformToneOfVoiceConversations } from 'pages/aiAgent/Onboarding/hooks/useTransformToneOfVoiceConversations'
 import { useUpdateOnboarding } from 'pages/aiAgent/Onboarding/hooks/useUpdateOnboarding'
 import { AiAgentScopes, WizardStepEnum } from 'pages/aiAgent/Onboarding/types'
 import { SelfServiceChatChannel } from 'pages/automate/common/hooks/useSelfServiceChatChannels'
@@ -91,6 +93,11 @@ jest.mock(
     'pages/aiAgent/Onboarding/components/steps/ChannelsStep/hooks/usePreselectedEmails',
 )
 const usePreselectedEmailsMock = assumeMock(usePreselectedEmails)
+
+jest.mock('pages/aiAgent/Onboarding/hooks/useTransformToneOfVoiceConversations')
+const useTransformToneOfVoiceConversationsMock = assumeMock(
+    useTransformToneOfVoiceConversations,
+)
 
 const goToStep = jest.fn()
 
@@ -199,6 +206,12 @@ describe('ChannelsStep', () => {
                     onSuccess()
                 },
             )
+
+            useTransformToneOfVoiceConversationsMock.mockReturnValue({
+                conversations: conversationExamples,
+                isLoading: false,
+                preview: undefined,
+            })
         })
 
         it('renders with the checkbox enabled by default if the step is channels', async () => {
@@ -715,6 +728,12 @@ describe('ChannelsStep', () => {
                 mutate: mutateUpdateOnboardingMock,
                 isLoading: false,
             } as any)
+
+            useTransformToneOfVoiceConversationsMock.mockReturnValue({
+                conversations: conversationExamples,
+                isLoading: false,
+                preview: undefined,
+            })
         })
 
         const testIntegrationDisabling = async (

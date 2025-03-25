@@ -81,44 +81,4 @@ export const agentChatConversationSettings = {
             profile_picture_url: avatarImage,
         },
     }),
-    messages: [
-        {
-            content:
-                'Hi, I’m after a long dress for everyday wear, something comfortable and cute.',
-            isHtml: false,
-            fromAgent: false,
-            attachments: [],
-        },
-        {
-            content:
-                'Hi 👋  Our sizes are made for all shapes and body types. Check out this standard size chart for a measurement guide and international conversion.',
-            isHtml: true,
-            fromAgent: true,
-            attachments: [],
-        },
-        {
-            content: 'Was this helpful?',
-            isHtml: true,
-            fromAgent: true,
-            attachments: [],
-        },
-        {
-            content: 'Yes!',
-            isHtml: false,
-            fromAgent: false,
-            attachments: [],
-        },
-        {
-            content: 'Thanks for your help!',
-            isHtml: false,
-            fromAgent: false,
-            attachments: [],
-        },
-        {
-            content: 'You are welcome!',
-            isHtml: true,
-            fromAgent: true,
-            attachments: [],
-        },
-    ],
 }

@@ -25,6 +25,7 @@ import { ToggleCard } from 'pages/aiAgent/components/ToggleCard/ToggleCard'
 import { useGetUsedEmailIntegrations } from 'pages/aiAgent/hooks/useGetUsedEmailIntegrations'
 import { useStoreConfigurationForAccount } from 'pages/aiAgent/hooks/useStoreConfigurationForAccount'
 import AiAgentChatConversation from 'pages/aiAgent/Onboarding/components/AiAgentChatConversation/AiAgentChatConversation'
+import EmailIntegrationModal from 'pages/aiAgent/Onboarding/components/EmailIntegrationModal/EmailIntegrationModal'
 import MainTitle from 'pages/aiAgent/Onboarding/components/MainTitle/MainTitle'
 import { Separator } from 'pages/aiAgent/Onboarding/components/Separator/Separator'
 import css from 'pages/aiAgent/Onboarding/components/steps/ChannelsStep/ChannelsStep.less'
@@ -35,6 +36,7 @@ import {
 import { usePreselectedChat } from 'pages/aiAgent/Onboarding/components/steps/ChannelsStep/hooks/usePreselectedChat'
 import { usePreselectedEmails } from 'pages/aiAgent/Onboarding/components/steps/ChannelsStep/hooks/usePreselectedEmails'
 import { createChatConfiguration } from 'pages/aiAgent/Onboarding/components/steps/ChannelsStep/utils/createGorgiasConfiguration'
+import { conversationExamples } from 'pages/aiAgent/Onboarding/components/steps/PersonalityPreviewStep/conversationsExamples'
 import { StepProps } from 'pages/aiAgent/Onboarding/components/steps/types'
 import useCheckOnboardingCompleted from 'pages/aiAgent/Onboarding/hooks/useCheckOnboardingCompleted'
 import { useCheckStoreAlreadyConfigured } from 'pages/aiAgent/Onboarding/hooks/useCheckStoreAlreadyConfigured'
@@ -43,6 +45,7 @@ import { useGetChatIntegrationColor } from 'pages/aiAgent/Onboarding/hooks/useGe
 import { useGetOnboardingData } from 'pages/aiAgent/Onboarding/hooks/useGetOnboardingData'
 import { useOnboardingIntegrationRedirection } from 'pages/aiAgent/Onboarding/hooks/useOnboardingIntegrationRedirection'
 import { useSteps } from 'pages/aiAgent/Onboarding/hooks/useSteps'
+import { useTransformToneOfVoiceConversations } from 'pages/aiAgent/Onboarding/hooks/useTransformToneOfVoiceConversations'
 import { useUpdateOnboarding } from 'pages/aiAgent/Onboarding/hooks/useUpdateOnboarding'
 import {
     LoadingPulserIcon,
@@ -70,8 +73,6 @@ import {
 } from 'state/integrations/selectors'
 import { notify } from 'state/notifications/actions'
 import { NotificationStatus } from 'state/notifications/types'
-
-import EmailIntegrationModal from '../../EmailIntegrationModal/EmailIntegrationModal'
 
 export const emailSortingCallback = (a: EmailItem, b: EmailItem) => {
     if (a.isDisabled && !b.isDisabled) {
@@ -120,6 +121,12 @@ export const ChannelsStep: React.FC<StepProps> = ({
 
     const { redirectToIntegration, integrationId, integrationType } =
         useOnboardingIntegrationRedirection()
+
+    const {
+        preview,
+        conversations,
+        isLoading: isPreviewLoading,
+    } = useTransformToneOfVoiceConversations(shopName)
 
     const {
         mutate: doUpdateOnboardingMutation,
@@ -357,6 +364,7 @@ export const ChannelsStep: React.FC<StepProps> = ({
         if (data && 'id' in data) {
             const updatedData = {
                 ...data,
+                preview: preview,
                 currentStepName: WizardStepEnum.PERSONALITY_PREVIEW,
                 emailIntegrationIds: emailChannelEnabled
                     ? emailIntegrationIds
@@ -543,7 +551,10 @@ export const ChannelsStep: React.FC<StepProps> = ({
                     <Separator />
                     {renderContent()}
                 </OnboardingContentContainer>
-                <OnboardingPreviewContainer isLoading={false} icon={''}>
+                <OnboardingPreviewContainer
+                    isLoading={isPreviewLoading}
+                    icon={''}
+                >
                     <div className={css.previewContainer}>
                         <div>
                             <ChatIntegrationPreview
@@ -559,6 +570,10 @@ export const ChannelsStep: React.FC<StepProps> = ({
                                             conversationColor ?? newChatColor,
                                         removeLinksFromMessages: true,
                                     }}
+                                    messages={
+                                        conversations?.default?.messages ??
+                                        conversationExamples.default.messages
+                                    }
                                 />
                             </ChatIntegrationPreview>
                         </div>

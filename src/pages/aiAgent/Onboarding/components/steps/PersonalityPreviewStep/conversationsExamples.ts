@@ -1,10 +1,54 @@
 import { ConversationMessage } from 'pages/aiAgent/Onboarding/components/AiAgentChatConversation/AiAgentChatConversation'
 import { PreviewId } from 'pages/aiAgent/Onboarding/components/PersonalityPreviewGroup/constants'
 
-export const conversationExamples: Record<
+export type ConversationExamples = Record<
     PreviewId,
     { messages: ConversationMessage[] }
-> = {
+>
+
+export const conversationExamples: ConversationExamples = {
+    default: {
+        messages: [
+            {
+                content:
+                    'Hi, I’m after a long dress for everyday wear, something comfortable and cute.',
+                isHtml: false,
+                fromAgent: false,
+                attachments: [],
+            },
+            {
+                content:
+                    'Hi 👋  Our sizes are made for all shapes and body types. Check out this standard size chart for a measurement guide and international conversion.',
+                isHtml: true,
+                fromAgent: true,
+                attachments: [],
+            },
+            {
+                content: 'Was this helpful?',
+                isHtml: true,
+                fromAgent: true,
+                attachments: [],
+            },
+            {
+                content: 'Yes!',
+                isHtml: false,
+                fromAgent: false,
+                attachments: [],
+            },
+            {
+                content: 'Thanks for your help!',
+                isHtml: false,
+                fromAgent: false,
+                attachments: [],
+            },
+            {
+                content: 'You are welcome!',
+                isHtml: true,
+                fromAgent: true,
+                attachments: [],
+            },
+        ],
+    },
     billingAndPayment: {
         messages: [
             {
@@ -434,6 +478,3 @@ export const conversationExamples: Record<
         ],
     },
 } as const
-
-export const getConversationByPreviewId = (previewId: PreviewId) =>
-    conversationExamples[previewId]

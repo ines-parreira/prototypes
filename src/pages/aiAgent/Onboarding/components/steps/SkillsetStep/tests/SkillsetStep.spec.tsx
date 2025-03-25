@@ -14,6 +14,7 @@ import { chatIntegrationFixtures } from 'fixtures/chat'
 import { integrationsState, shopifyIntegration } from 'fixtures/integrations'
 import axiosClient from 'models/api/resources'
 import { ToneOfVoice } from 'pages/aiAgent/constants'
+import { conversationExamples } from 'pages/aiAgent/Onboarding/components/steps/PersonalityPreviewStep/conversationsExamples'
 import { SkillsetStep } from 'pages/aiAgent/Onboarding/components/steps/SkillsetStep/SkillsetStep'
 import { useCreateOnboarding } from 'pages/aiAgent/Onboarding/hooks/useCreateOnboarding'
 import { useGenerateToneOfVoice } from 'pages/aiAgent/Onboarding/hooks/useGenerateToneOfVoice'
@@ -27,8 +28,6 @@ import { useShopifyIntegrationAndScope } from 'pages/common/hooks/useShopifyInte
 import { useEmailIntegrations } from 'pages/settings/contactForm/hooks/useEmailIntegrations'
 import { RootState, StoreDispatch } from 'state/types'
 import { assumeMock, renderWithRouter } from 'utils/testing'
-
-import { conversationExamples } from '../../PersonalityPreviewStep/conversationsExamples'
 
 type MutationOptions = { onSuccess: () => void }
 

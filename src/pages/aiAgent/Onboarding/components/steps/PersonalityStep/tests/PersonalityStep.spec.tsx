@@ -14,17 +14,17 @@ import { account } from 'fixtures/account'
 import { billingState } from 'fixtures/billing'
 import { chatIntegrationFixtures } from 'fixtures/chat'
 import { integrationsState, shopifyIntegration } from 'fixtures/integrations'
+import { conversationExamples } from 'pages/aiAgent/Onboarding/components/steps/PersonalityPreviewStep/conversationsExamples'
 import { DiscountStrategy } from 'pages/aiAgent/Onboarding/components/steps/PersonalityStep/DiscountStrategy'
 import { PersonalityStep } from 'pages/aiAgent/Onboarding/components/steps/PersonalityStep/PersonalityStep'
 import { PersuasionLevel } from 'pages/aiAgent/Onboarding/components/steps/PersonalityStep/PersuasionLevel'
 import { StepProps } from 'pages/aiAgent/Onboarding/components/steps/types'
 import { useGetOnboardingData } from 'pages/aiAgent/Onboarding/hooks/useGetOnboardingData'
+import { useTransformToneOfVoiceConversations } from 'pages/aiAgent/Onboarding/hooks/useTransformToneOfVoiceConversations'
 import { useUpdateOnboarding } from 'pages/aiAgent/Onboarding/hooks/useUpdateOnboarding'
 import { AiAgentScopes, WizardStepEnum } from 'pages/aiAgent/Onboarding/types'
 import { RootState, StoreDispatch } from 'state/types'
 import { assumeMock, renderWithRouter } from 'utils/testing'
-
-import { conversationExamples } from '../../PersonalityPreviewStep/conversationsExamples'
 
 const trackRect = {
     left: 0,
@@ -62,6 +62,11 @@ const useGetOnboardingDataMock = assumeMock(useGetOnboardingData)
 const mutateUpdateOnboardingMock = jest.fn()
 jest.mock('pages/aiAgent/Onboarding/hooks/useUpdateOnboarding')
 const useUpdateOnboardingMock = assumeMock(useUpdateOnboarding)
+
+jest.mock('pages/aiAgent/Onboarding/hooks/useTransformToneOfVoiceConversations')
+const useTransformToneOfVoiceConversationsMock = assumeMock(
+    useTransformToneOfVoiceConversations,
+)
 
 const goToStep = jest.fn()
 
@@ -109,6 +114,12 @@ describe('PersonalityStep - With prepopulated data', () => {
             mutate: jest.fn(),
             isLoading: false,
         } as any)
+
+        useTransformToneOfVoiceConversationsMock.mockReturnValue({
+            conversations: conversationExamples,
+            isLoading: false,
+            preview: undefined,
+        })
     })
 
     it('navigates to the next step when Next is clicked', async () => {
@@ -156,6 +167,12 @@ describe('PersonalityStep - Empty state', () => {
             mutate: mutateUpdateOnboardingMock,
             isLoading: false,
         } as any)
+
+        useTransformToneOfVoiceConversationsMock.mockReturnValue({
+            conversations: conversationExamples,
+            isLoading: false,
+            preview: undefined,
+        })
     })
 
     afterAll(() => {
@@ -413,6 +430,12 @@ describe('PersonalityStep - Preview information', () => {
             mutate: jest.fn(),
             isLoading: false,
         } as any)
+
+        useTransformToneOfVoiceConversationsMock.mockReturnValue({
+            conversations: conversationExamples,
+            isLoading: false,
+            preview: undefined,
+        })
     })
 
     it('renders the correct preview for no discount educational', async () => {

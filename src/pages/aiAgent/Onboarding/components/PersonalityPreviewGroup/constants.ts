@@ -1,4 +1,11 @@
 export const previews = {
+    default: {
+        id: 'default',
+        category: 'support',
+        title: 'Default',
+        caption:
+            'Provide a default experience for your customers without any specific focus.',
+    },
     billingAndPayment: {
         id: 'billingAndPayment',
         category: 'support',

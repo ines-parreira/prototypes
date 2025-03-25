@@ -15,16 +15,24 @@ import { PersonalityPreviewStep } from 'pages/aiAgent/Onboarding/components/step
 import { DiscountStrategy } from 'pages/aiAgent/Onboarding/components/steps/PersonalityStep/DiscountStrategy'
 import { PersuasionLevel } from 'pages/aiAgent/Onboarding/components/steps/PersonalityStep/PersuasionLevel'
 import { useGetOnboardingData } from 'pages/aiAgent/Onboarding/hooks/useGetOnboardingData'
+import { useTransformToneOfVoiceConversations } from 'pages/aiAgent/Onboarding/hooks/useTransformToneOfVoiceConversations'
 import { useUpdateOnboarding } from 'pages/aiAgent/Onboarding/hooks/useUpdateOnboarding'
 import { AiAgentScopes, WizardStepEnum } from 'pages/aiAgent/Onboarding/types'
 import { RootState, StoreDispatch } from 'state/types'
 import { assumeMock, renderWithRouter } from 'utils/testing'
+
+import { conversationExamples } from '../conversationsExamples'
 
 jest.mock('pages/aiAgent/Onboarding/hooks/useGetOnboardingData')
 const useGetOnboardingDataMock = assumeMock(useGetOnboardingData)
 
 jest.mock('pages/aiAgent/Onboarding/hooks/useUpdateOnboarding')
 const mockUpdateOnboardingMock = assumeMock(useUpdateOnboarding)
+
+jest.mock('pages/aiAgent/Onboarding/hooks/useTransformToneOfVoiceConversations')
+const useTransformToneOfVoiceConversationsMock = assumeMock(
+    useTransformToneOfVoiceConversations,
+)
 
 const mockStore = configureMockStore<RootState, StoreDispatch>()
 
@@ -93,6 +101,12 @@ describe('<PersonalityPreviewStep />', () => {
                 mutate: jest.fn(),
                 isLoading: false,
             } as any)
+
+            useTransformToneOfVoiceConversationsMock.mockReturnValue({
+                conversations: conversationExamples,
+                isLoading: false,
+                preview: undefined,
+            })
         })
 
         it('should render with the title', () => {

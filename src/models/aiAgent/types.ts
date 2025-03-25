@@ -210,6 +210,21 @@ export type ToneOfVoiceResponse = {
     tone_of_voice: string
 }
 
+export type TransformToneOfVoiceMessage = {
+    id: string
+    message: string
+    from_agent: boolean
+}
+
+export type TransformToneOfVoiceConversation = {
+    id: string
+    messages: TransformToneOfVoiceMessage[]
+}
+
+export type TransformToneOfVoiceResponse = {
+    conversations: TransformToneOfVoiceConversation[]
+}
+
 export type OnboardingData = {
     id: string
     currentStepName: string
@@ -229,6 +244,7 @@ export type OnboardingData = {
     faqHelpCenterId?: number
     toneOfVoice?: string
     customToneOfVoiceGuidance?: string
+    preview?: string
 }
 
 export type SalesSettingsData = {
