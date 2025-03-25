@@ -1,0 +1,282 @@
+import { waitFor } from '@testing-library/react'
+import { act, renderHook } from '@testing-library/react-hooks'
+
+import useSelfServiceChatChannels, {
+    SelfServiceChatChannel,
+} from 'pages/automate/common/hooks/useSelfServiceChatChannels'
+
+import {
+    getAvailableChats,
+    getFirstAvailableChat,
+} from '../../utils/handoverCustomizationSettingsFormComponent.utils'
+import {
+    HandoverCustomizationFormType,
+    useHandoverCustomizationComponent,
+} from '../useHandoverCustomizationComponent'
+
+// Mock the useSelfServiceChatChannels hook
+jest.mock('pages/automate/common/hooks/useSelfServiceChatChannels')
+
+jest.mock('../../utils/handoverCustomizationSettingsFormComponent.utils')
+
+describe('useHandoverCustomizationComponent', () => {
+    const mockChatChannels = [
+        {
+            value: { id: 1, name: 'Chat 1' },
+        },
+        {
+            value: { id: 2, name: 'Chat 2' },
+        },
+        {
+            value: { id: 3, name: 'Chat 3' },
+        },
+        {
+            value: { id: 4, name: 'Chat 4' },
+        },
+        {
+            value: { id: 5, name: 'Chat 5' },
+        },
+    ] as SelfServiceChatChannel[]
+
+    const mockedMonitoredChatIntegrationIds = [1, 2, 3]
+
+    const defaultProps = {
+        shopName: 'test-shop',
+        shopType: 'shopify',
+        monitoredChatIntegrationIds: mockedMonitoredChatIntegrationIds,
+    }
+
+    beforeEach(() => {
+        jest.clearAllMocks()
+        jest.resetAllMocks()
+        ;(useSelfServiceChatChannels as jest.Mock).mockReturnValue(
+            mockChatChannels,
+        )
+        ;(getAvailableChats as jest.Mock).mockReturnValue(mockChatChannels)
+        ;(getFirstAvailableChat as jest.Mock).mockReturnValue(
+            mockChatChannels[0],
+        )
+    })
+
+    describe('useHandoverCustomizationComponent', () => {
+        describe('chat selection', () => {
+            it('should initialize with no chat selected when there is no available chats', () => {
+                ;(getAvailableChats as jest.Mock).mockReturnValue([])
+                ;(getFirstAvailableChat as jest.Mock).mockReturnValue(undefined)
+
+                const { result } = renderHook(() =>
+                    useHandoverCustomizationComponent(defaultProps),
+                )
+
+                expect(result.current.availableChats).toEqual([])
+                expect(result.current.selectedChat).toBeUndefined()
+            })
+
+            it('should initialize with the first available chat selected', () => {
+                ;(getAvailableChats as jest.Mock).mockReturnValue(
+                    mockChatChannels,
+                )
+                ;(getFirstAvailableChat as jest.Mock).mockReturnValue(
+                    mockChatChannels[0],
+                )
+
+                const { result } = renderHook(() =>
+                    useHandoverCustomizationComponent(defaultProps),
+                )
+
+                expect(result.current.availableChats).toEqual(mockChatChannels)
+                expect(result.current.selectedChat).toEqual(mockChatChannels[0])
+            })
+        })
+
+        it('should handle chat selection change', () => {
+            const { result } = renderHook(() =>
+                useHandoverCustomizationComponent(defaultProps),
+            )
+
+            act(() => {
+                result.current.onSelectedChatChange(2)
+            })
+
+            expect(result.current.availableChats).toEqual(mockChatChannels)
+            expect(result.current.selectedChat).toEqual(mockChatChannels[1])
+        })
+    })
+
+    describe('settings section management', () => {
+        it('should initialize disabled when there is no available chats', () => {
+            ;(useSelfServiceChatChannels as jest.Mock).mockReturnValue([])
+            ;(getAvailableChats as jest.Mock).mockReturnValue([])
+            ;(getFirstAvailableChat as jest.Mock).mockReturnValue(undefined)
+
+            const { result } = renderHook(() =>
+                useHandoverCustomizationComponent(defaultProps),
+            )
+
+            expect(result.current.isHandoverSectionDisabled).toBeTruthy()
+        })
+
+        it('should initialize disabled when there is no monitored chat integrations', () => {
+            ;(getFirstAvailableChat as jest.Mock).mockReturnValue(undefined)
+
+            const { result } = renderHook(() =>
+                useHandoverCustomizationComponent({
+                    ...defaultProps,
+                    monitoredChatIntegrationIds: [],
+                }),
+            )
+
+            expect(result.current.isHandoverSectionDisabled).toBeTruthy()
+        })
+        it('should initialize with all settings sections closed but not disabled', () => {
+            const { result } = renderHook(() =>
+                useHandoverCustomizationComponent(defaultProps),
+            )
+
+            expect(result.current.activeSettingsSection).toBeUndefined()
+            expect(result.current.isHandoverSectionDisabled).toBeFalsy()
+        })
+
+        test.each([
+            HandoverCustomizationFormType.OFFLINE_SETTINGS,
+            HandoverCustomizationFormType.ONLINE_SETTINGS,
+            HandoverCustomizationFormType.FALLBACK_SETTINGS,
+        ])('should handle settings section change to %s', (section) => {
+            const { result } = renderHook(() =>
+                useHandoverCustomizationComponent(defaultProps),
+            )
+
+            act(() => {
+                result.current.onActiveSettingsSectionChange(section)
+            })
+
+            expect(result.current.activeSettingsSection).toBe(section)
+        })
+        it('should disable settings and remove active section when the list of monitored chat integrations changes to empty', async () => {
+            const props = { ...defaultProps }
+
+            const { result, rerender } = renderHook(() =>
+                useHandoverCustomizationComponent(props),
+            )
+
+            act(() => {
+                result.current.onActiveSettingsSectionChange(
+                    HandoverCustomizationFormType.OFFLINE_SETTINGS,
+                )
+            })
+
+            expect(result.current.activeSettingsSection).toBe(
+                HandoverCustomizationFormType.OFFLINE_SETTINGS,
+            )
+
+            expect(result.current.isHandoverSectionDisabled).toBeFalsy()
+
+            // change the list of available chats to empty return empty array
+            ;(getAvailableChats as jest.Mock).mockReturnValue([])
+
+            props.monitoredChatIntegrationIds = []
+
+            rerender()
+
+            await waitFor(() => {
+                expect(result.current.activeSettingsSection).toBeUndefined()
+                expect(result.current.isHandoverSectionDisabled).toBeTruthy()
+            })
+        })
+
+        it('should clear the selected active section keeping the component enabled when the active section is changed to null', () => {
+            const { result } = renderHook(() =>
+                useHandoverCustomizationComponent(defaultProps),
+            )
+
+            act(() => {
+                result.current.onActiveSettingsSectionChange(
+                    HandoverCustomizationFormType.FALLBACK_SETTINGS,
+                )
+            })
+
+            expect(result.current.activeSettingsSection).toBe(
+                HandoverCustomizationFormType.FALLBACK_SETTINGS,
+            )
+
+            act(() => {
+                result.current.onActiveSettingsSectionChange(undefined)
+            })
+
+            expect(result.current.activeSettingsSection).toBeUndefined()
+            expect(result.current.isHandoverSectionDisabled).toBeFalsy()
+        })
+
+        it('should clear the selected active section keeping the component enabled when the selected chat is changed to undefined', async () => {
+            const { result } = renderHook(() =>
+                useHandoverCustomizationComponent(defaultProps),
+            )
+
+            act(() => {
+                result.current.onSelectedChatChange(undefined)
+            })
+
+            await waitFor(() => {
+                expect(result.current.activeSettingsSection).toBeUndefined()
+            })
+        })
+    })
+
+    describe('chat list updates', () => {
+        it('should update to first available chat when available chats change and remove the previous selected chat from the list', () => {
+            const props = { ...defaultProps }
+            const { result, rerender } = renderHook(() =>
+                useHandoverCustomizationComponent(props),
+            )
+
+            // Initial state check
+            expect(result.current.selectedChat).toBe(mockChatChannels[0])
+
+            // Update monitored chats to exclude current selection
+            props.monitoredChatIntegrationIds = [2, 3]
+            ;(getAvailableChats as jest.Mock).mockReturnValue([
+                mockChatChannels[1],
+                mockChatChannels[2],
+                mockChatChannels[3],
+                mockChatChannels[4],
+            ])
+            ;(getFirstAvailableChat as jest.Mock).mockReturnValue(
+                mockChatChannels[1],
+            )
+
+            rerender()
+
+            // Should select the first available chat from new list
+            expect(result.current.selectedChat).toBe(mockChatChannels[1])
+        })
+
+        it('should keep the selected chat when the list changes but contains the previous selected chat', () => {
+            const props = { ...defaultProps }
+            const { result, rerender } = renderHook(() =>
+                useHandoverCustomizationComponent(props),
+            )
+
+            // Initial state check
+            expect(result.current.selectedChat).toBe(mockChatChannels[0])
+
+            // Update monitored chats to exclude current selection
+            props.monitoredChatIntegrationIds = [2, 3]
+            ;(getAvailableChats as jest.Mock).mockReturnValue([
+                mockChatChannels[0],
+                mockChatChannels[2],
+                mockChatChannels[3],
+                mockChatChannels[4],
+            ])
+
+            // change the first available chat forced to validate the test
+            ;(getFirstAvailableChat as jest.Mock).mockReturnValue(
+                mockChatChannels[1],
+            )
+
+            rerender()
+
+            // Should select the first available chat from new list
+            expect(result.current.selectedChat).toBe(mockChatChannels[0])
+        })
+    })
+})
