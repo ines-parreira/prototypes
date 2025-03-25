@@ -169,7 +169,24 @@ export const useActivation = (
                 }}
                 onUpgradeClick={() => {
                     handleSubscriptionUpdate()
-                        .catch(() => {})
+                        .then(() => {
+                            logEvent(
+                                SegmentEvent.AiAgentActivatePreviewPricingModalClosed,
+                                {
+                                    page: pageName,
+                                    reason: 'upgraded',
+                                },
+                            )
+                        })
+                        .catch(() => {
+                            logEvent(
+                                SegmentEvent.AiAgentActivatePreviewPricingModalClosed,
+                                {
+                                    page: pageName,
+                                    reason: 'upgrade-failed',
+                                },
+                            )
+                        })
                         .finally(() => {
                             setIsPreviewModalVisible(false)
                         })

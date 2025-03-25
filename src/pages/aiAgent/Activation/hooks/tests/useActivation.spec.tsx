@@ -1,7 +1,7 @@
 import React from 'react'
 
 import { QueryClientProvider } from '@tanstack/react-query'
-import { render } from '@testing-library/react'
+import { render, waitFor } from '@testing-library/react'
 import { act, renderHook } from '@testing-library/react-hooks'
 import { createMemoryHistory } from 'history'
 import { fromJS } from 'immutable'
@@ -398,5 +398,65 @@ describe('useActivation', () => {
         expect(initialResult.EarlyAccessModal).toBe(
             finalResult.EarlyAccessModal,
         )
+    })
+
+    it('should close the ActivationModal when clicking on upgrade and log event ai-agent-activate-close-activation-modal with upgrade reason', async () => {
+        mockedUseEarlyAccessModalState.mockReturnValue({
+            ...defaultUseEarlyAccessModalStateReturnValue,
+            handleSubscriptionUpdate: jest.fn().mockResolvedValue({}),
+            isOnNewPlan: false,
+        })
+
+        const { result } = renderHookWithRouter({
+            pageName: 'ai-agent-overview',
+        })
+
+        expect(result.current.ActivationButton).toBeDefined()
+        expect(result.current.ActivationModal).toBeDefined()
+        expect(result.current.EarlyAccessModal).toBeDefined()
+
+        act(() => {
+            result.current.EarlyAccessModal()?.props.onUpgradeClick()
+        })
+
+        await waitFor(() => {
+            expect(mockedLogEvent).toHaveBeenCalledWith(
+                segment.SegmentEvent.AiAgentActivatePreviewPricingModalClosed,
+                {
+                    page: 'ai-agent-overview',
+                    reason: 'upgraded',
+                },
+            )
+        })
+    })
+
+    it('should close the ActivationModal when clicking on upgrade and log event ai-agent-activate-close-activation-modal with upgrade-failed reason', async () => {
+        mockedUseEarlyAccessModalState.mockReturnValue({
+            ...defaultUseEarlyAccessModalStateReturnValue,
+            handleSubscriptionUpdate: jest.fn().mockRejectedValue({}),
+            isOnNewPlan: false,
+        })
+
+        const { result } = renderHookWithRouter({
+            pageName: 'ai-agent-overview',
+        })
+
+        expect(result.current.ActivationButton).toBeDefined()
+        expect(result.current.ActivationModal).toBeDefined()
+        expect(result.current.EarlyAccessModal).toBeDefined()
+
+        act(() => {
+            result.current.EarlyAccessModal()?.props.onUpgradeClick()
+        })
+
+        await waitFor(() => {
+            expect(mockedLogEvent).toHaveBeenCalledWith(
+                segment.SegmentEvent.AiAgentActivatePreviewPricingModalClosed,
+                {
+                    page: 'ai-agent-overview',
+                    reason: 'upgrade-failed',
+                },
+            )
+        })
     })
 })
