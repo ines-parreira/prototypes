@@ -210,11 +210,13 @@ export function getPlanPriceFormatted(plan: Plan | undefined | null): string {
 export function getAutomateEarlyAccessPricesFormatted(
     plan: AutomateEarlyAccessPlan | undefined | null,
 ) {
+    const amountPrice = (plan?.amount ?? 0) / 100
     const amountAfterDiscountPrice = (plan?.amount_after_discount ?? 0) / 100
     const discountPrice = (plan?.discount ?? 0) / 100
     const currency = plan?.currency ?? 'usd'
 
     return {
+        amount: formatAmount(amountPrice, currency),
         amountAfterDiscount: formatAmount(
             amountAfterDiscountPrice,
             plan?.currency ?? 'usd',

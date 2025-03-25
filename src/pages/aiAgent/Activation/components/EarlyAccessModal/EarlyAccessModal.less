@@ -96,7 +96,8 @@
             .heading-subsection-regular();
             margin: 0;
             display: grid;
-            grid-template-columns: 170px auto 225px;
+            grid-template-columns: 200px auto 260px;
+            gap: @layout-spacing-xs;
         }
 
         .innerContent {
@@ -120,6 +121,10 @@
         .price {
             .heading-subsection-semibold();
             font-size: 24px;
+        }
+
+        .compareAtPrice {
+            text-decoration: line-through;
         }
 
         .subPrice {

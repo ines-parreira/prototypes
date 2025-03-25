@@ -140,6 +140,33 @@ describe('<EarlyAccessModal />', () => {
         )
     })
 
+    it('should display discount information when available', () => {
+        const { getByText } = render(
+            <EarlyAccessModal
+                isOpen
+                isLoading={false}
+                onClose={() => {}}
+                onStayClick={() => {}}
+                onUpgradeClick={() => {}}
+                userIsAdmin={true}
+                isUpgrading={false}
+                earlyAccessPlan={
+                    {
+                        amount: 108000,
+                        currency: 'USD',
+                        amount_after_discount: 90000,
+                        cadence: Cadence.Month,
+                        discount: 18000,
+                        extra_ticket_cost: 2.2,
+                        num_quota_tickets: 450,
+                    } as any
+                }
+            />,
+        )
+
+        expect(getByText('Save $180/month for 12 months')).toBeInTheDocument()
+    })
+
     it.each([
         {
             userIsAdmin: true,

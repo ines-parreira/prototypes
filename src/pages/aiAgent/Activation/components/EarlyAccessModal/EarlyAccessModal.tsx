@@ -47,7 +47,7 @@ export const EarlyAccessModal = ({
     isUpgrading,
     currentPlan,
 }: Props) => {
-    const { amountAfterDiscount, discount } =
+    const { amountAfterDiscount, discount, amount } =
         getAutomateEarlyAccessPricesFormatted(earlyAccessPlan)
     const currency = currentPlan?.currency ?? 'USD'
     const currentPlanCostPerAutomatedConversation = formatAmount(
@@ -276,7 +276,25 @@ export const EarlyAccessModal = ({
                                     {isLoading ? (
                                         <Skeleton width={140} height={22} />
                                     ) : (
-                                        `${amountAfterDiscount}/${earlyAccessPlan?.cadence}`
+                                        <>
+                                            {amount &&
+                                                amount !==
+                                                    amountAfterDiscount && (
+                                                    <>
+                                                        <span
+                                                            className={
+                                                                css.compareAtPrice
+                                                            }
+                                                        >
+                                                            {amount}
+                                                        </span>{' '}
+                                                    </>
+                                                )}
+                                            <span>
+                                                {amountAfterDiscount}/
+                                                {earlyAccessPlan?.cadence}
+                                            </span>
+                                        </>
                                     )}
                                 </span>
                                 {discount && (
