@@ -1049,58 +1049,66 @@ function AiAgentContent() {
 
     return (
         <Switch>
-            {isActionsInternalPlatformEnabled && (
-                <>
-                    <Route path={`${path}/actions-platform`} exact>
-                        <ActionsPlatformTemplatesView />
-                    </Route>
-                    <Route path={`${path}/actions-platform/use-cases`} exact>
-                        <ActionsPlatformUseCaseTemplatesView />
-                    </Route>
-                    <Route path={`${path}/actions-platform/steps`} exact>
-                        <ActionsPlatformStepsView />
-                    </Route>
-                    <Route path={`${path}/actions-platform/apps`} exact>
-                        <ActionsPlatformAppsView />
-                    </Route>
-                    <Route path={`${path}/actions-platform/apps/new`} exact>
-                        <ActionsPlatformCreateAppFormView />
-                    </Route>
-                    <Route
-                        path={`${path}/actions-platform/apps/edit/:id`}
-                        exact
-                    >
-                        <ActionsPlatformEditAppFormView />
-                    </Route>
-                    <Route path={`${path}/actions-platform/new`} exact>
-                        <ActionsPlatformCreateTemplateView />
-                    </Route>
-                    <Route path={`${path}/actions-platform/edit/:id`} exact>
-                        <ActionsPlatformEditTemplateViewContainer />
-                    </Route>
-                    <Route
-                        path={`${path}/actions-platform/use-cases/new`}
-                        exact
-                    >
-                        <ActionsPlatformCreateUseCaseTemplateView />
-                    </Route>
-                    <Route
-                        path={`${path}/actions-platform/use-cases/edit/:id`}
-                        exact
-                    >
-                        <ActionsPlatformEditUseCaseTemplateViewContainer />
-                    </Route>
-                    <Route path={`${path}/actions-platform/steps/new`} exact>
-                        <ActionsPlatformCreateStepView />
-                    </Route>
-                    <Route
-                        path={`${path}/actions-platform/steps/edit/:id`}
-                        exact
-                    >
-                        <ActionsPlatformEditStepViewContainer />
-                    </Route>
-                </>
-            )}
+            <Route path={`${path}/actions-platform`} exact>
+                {isActionsInternalPlatformEnabled && (
+                    <ActionsPlatformTemplatesView />
+                )}
+            </Route>
+            <Route path={`${path}/actions-platform/use-cases`} exact>
+                {isActionsInternalPlatformEnabled && (
+                    <ActionsPlatformUseCaseTemplatesView />
+                )}
+            </Route>
+            <Route path={`${path}/actions-platform/steps`} exact>
+                {isActionsInternalPlatformEnabled && (
+                    <ActionsPlatformStepsView />
+                )}
+            </Route>
+            <Route path={`${path}/actions-platform/apps`} exact>
+                {isActionsInternalPlatformEnabled && (
+                    <ActionsPlatformAppsView />
+                )}
+            </Route>
+            <Route path={`${path}/actions-platform/apps/new`} exact>
+                {isActionsInternalPlatformEnabled && (
+                    <ActionsPlatformCreateAppFormView />
+                )}
+            </Route>
+            <Route path={`${path}/actions-platform/apps/edit/:id`} exact>
+                {isActionsInternalPlatformEnabled && (
+                    <ActionsPlatformEditAppFormView />
+                )}
+            </Route>
+            <Route path={`${path}/actions-platform/new`} exact>
+                {isActionsInternalPlatformEnabled && (
+                    <ActionsPlatformCreateTemplateView />
+                )}
+            </Route>
+            <Route path={`${path}/actions-platform/edit/:id`} exact>
+                {isActionsInternalPlatformEnabled && (
+                    <ActionsPlatformEditTemplateViewContainer />
+                )}
+            </Route>
+            <Route path={`${path}/actions-platform/use-cases/new`} exact>
+                {isActionsInternalPlatformEnabled && (
+                    <ActionsPlatformCreateUseCaseTemplateView />
+                )}
+            </Route>
+            <Route path={`${path}/actions-platform/use-cases/edit/:id`} exact>
+                {isActionsInternalPlatformEnabled && (
+                    <ActionsPlatformEditUseCaseTemplateViewContainer />
+                )}
+            </Route>
+            <Route path={`${path}/actions-platform/steps/new`} exact>
+                {isActionsInternalPlatformEnabled && (
+                    <ActionsPlatformCreateStepView />
+                )}
+            </Route>
+            <Route path={`${path}/actions-platform/steps/edit/:id`} exact>
+                {isActionsInternalPlatformEnabled && (
+                    <ActionsPlatformEditStepViewContainer />
+                )}
+            </Route>
 
             {hasStandaloneConvAiOverviewPage && (
                 <Route
