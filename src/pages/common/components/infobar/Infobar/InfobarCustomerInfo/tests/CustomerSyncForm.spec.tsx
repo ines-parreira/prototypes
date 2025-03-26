@@ -99,7 +99,7 @@ describe('CustomerSyncForm', () => {
         expect(
             screen.getByText('Sync John Smith profile to Shopify'),
         ).toBeInTheDocument()
-        expect(screen.getByLabelText('Email')).toBeInTheDocument()
+        expect(screen.getByLabelText('Email*')).toBeInTheDocument()
         expect(screen.getByLabelText('Name')).toBeInTheDocument()
         expect(screen.getByText('Phone number')).toBeInTheDocument()
     })
@@ -173,7 +173,7 @@ describe('CustomerSyncForm', () => {
             </QueryClientProvider>,
         )
 
-        fireEvent.change(screen.getByLabelText('Email'), {
+        fireEvent.change(screen.getByLabelText('Email*'), {
             target: { value: 'john.smith@example.com' },
         })
         fireEvent.change(screen.getByLabelText('Name'), {
@@ -278,7 +278,7 @@ describe('CustomerSyncForm', () => {
             </QueryClientProvider>,
         )
 
-        fireEvent.change(screen.getByLabelText('Email'), {
+        fireEvent.change(screen.getByLabelText('Email*'), {
             target: { value: 'john.smith@example.com' },
         })
         fireEvent.change(screen.getByLabelText('Name'), {
@@ -343,7 +343,7 @@ describe('CustomerSyncForm', () => {
             </QueryClientProvider>,
         )
 
-        fireEvent.change(screen.getByLabelText('Email'), {
+        fireEvent.change(screen.getByLabelText('Email*'), {
             target: { value: 'john.smith@example.com' },
         })
         fireEvent.change(screen.getByLabelText('Name'), {
@@ -449,7 +449,7 @@ describe('CustomerSyncForm', () => {
             </QueryClientProvider>,
         )
 
-        fireEvent.change(screen.getByLabelText('Email'), {
+        fireEvent.change(screen.getByLabelText('Email*'), {
             target: { value: 'john.smith@example.com' },
         })
         fireEvent.change(screen.getByLabelText('Name'), {

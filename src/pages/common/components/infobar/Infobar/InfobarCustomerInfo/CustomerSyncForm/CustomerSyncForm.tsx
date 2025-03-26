@@ -7,7 +7,7 @@ import {
     useScheduleShopifyCreateNewCustomerAction,
     useScheduleShopifyUpdateCustomerAction,
 } from '@gorgias/api-queries'
-import { Button } from '@gorgias/merchant-ui-kit'
+import { Button, TextField } from '@gorgias/merchant-ui-kit'
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import { IntegrationType } from 'models/integration/constants'
@@ -18,7 +18,6 @@ import ModalBody from 'pages/common/components/modal/ModalBody'
 import ModalHeader from 'pages/common/components/modal/ModalHeader'
 import ShopifyStoreSelect from 'pages/common/components/ShopifyStoreSelect/ShopifyStoreSelect'
 import CheckBox from 'pages/common/forms/CheckBox'
-import InputField from 'pages/common/forms/input/InputField'
 import PhoneNumberInput from 'pages/common/forms/PhoneNumberInput/PhoneNumberInput'
 import { notify } from 'state/notifications/actions'
 import { NotificationStatus } from 'state/notifications/types'
@@ -215,10 +214,12 @@ export default function CustomerSyncForm({
                         <h3 className={css.contactInformation}>
                             Contact Information
                         </h3>
-                        <InputField
+                        <TextField
                             name="email"
                             label="Email"
+                            type="email"
                             placeholder="sam.hopper@gmail.com"
+                            isRequired
                             className={css.inputField}
                             value={formState.email}
                             onChange={(email) => onChange({ email })}
@@ -229,7 +230,7 @@ export default function CustomerSyncForm({
                             }
                         />
 
-                        <InputField
+                        <TextField
                             name="name"
                             label="Name"
                             placeholder="Sam Hopper"

@@ -1,8 +1,9 @@
 import { CountryCode } from 'libphonenumber-js'
 
+import { TextField } from '@gorgias/merchant-ui-kit'
+
 import CountryInput from 'pages/common/forms/CountryInput/CountryInput'
 import { getCountryLabel } from 'pages/common/forms/CountryInput/utils'
-import InputField from 'pages/common/forms/input/InputField'
 import ProvinceInput from 'pages/common/forms/ProvinceInput/ProvinceInput'
 
 import { FormState } from '../CustomerSyncForm/useCustomerSyncForm'
@@ -42,7 +43,7 @@ export default function CustomerDeliveryInformation({
                     })
                 }
             />
-            <InputField
+            <TextField
                 name="company"
                 label="Company"
                 placeholder="Gorgias"
@@ -50,7 +51,7 @@ export default function CustomerDeliveryInformation({
                 value={formState.company}
                 onChange={(company) => onChange({ company })}
             />
-            <InputField
+            <TextField
                 name="address"
                 label="Address"
                 className={css.inputField}
@@ -64,7 +65,7 @@ export default function CustomerDeliveryInformation({
                 }
             />
 
-            <InputField
+            <TextField
                 name="apartment"
                 label="Apartment, suite, etc"
                 placeholder="Unit #2, Floor 5"
@@ -74,7 +75,7 @@ export default function CustomerDeliveryInformation({
             />
 
             <div className={css.areaContainer}>
-                <InputField
+                <TextField
                     name="city"
                     label="City"
                     className={css.areaItem}
@@ -97,7 +98,7 @@ export default function CustomerDeliveryInformation({
                         hasStateOrProvinceError ? 'Please select a state' : ''
                     }
                 />
-                <InputField
+                <TextField
                     name="zip"
                     label="ZIP/Postal code"
                     className={css.areaItem}
