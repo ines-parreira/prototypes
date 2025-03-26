@@ -1,7 +1,9 @@
 import React, { ComponentProps } from 'react'
 
 import { render, screen } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
 
+import { logEvent, SegmentEvent } from 'common/segment'
 import { THEME_NAME } from 'core/theme'
 
 import Content from '../Content'
@@ -31,6 +33,15 @@ jest.mock(
                 data-height={height}
             />
         ),
+)
+
+jest.mock(
+    'common/segment',
+    () =>
+        ({
+            ...jest.requireActual('common/segment'),
+            logEvent: jest.fn(),
+        }) as typeof import('common/segment'),
 )
 
 const sharedProps: ComponentProps<typeof Content> = {
@@ -276,5 +287,20 @@ describe('Content', () => {
                 THEME_NAME.Light,
             ),
         ).toBeTruthy()
+    })
+
+    it('should track when showing full content', () => {
+        const { getByText } = render(
+            <Content
+                {...sharedProps}
+                text="text"
+                html="long html"
+                strippedHtml="stripped html"
+                strippedText="stripped text"
+            />,
+        )
+
+        userEvent.click(getByText('…'))
+        expect(logEvent).toHaveBeenCalledWith(SegmentEvent.MessageThreadClicked)
     })
 })

@@ -3,6 +3,7 @@ import React, { useContext, useMemo } from 'react'
 import classNames from 'classnames'
 import ReactPlayer from 'react-player'
 
+import { logEvent, SegmentEvent } from 'common/segment'
 import { TicketMessage } from 'models/ticket/types'
 import Ellipsis from 'pages/common/components/Ellipsis'
 import MessageQuoteContext from 'pages/tickets/detail/components/MessageQuoteContext'
@@ -96,6 +97,11 @@ const Content = ({
         [contentToRender, isHtml],
     )
 
+    const handleShowFullContent = () => {
+        logEvent(SegmentEvent.MessageThreadClicked)
+        toggleQuote(messageId)
+    }
+
     if (!displayedContent && !isStripped) {
         return null
     }
@@ -130,7 +136,7 @@ const Content = ({
             {isStripped && (
                 <Ellipsis
                     title="Show full content"
-                    onClick={() => toggleQuote(messageId)}
+                    onClick={handleShowFullContent}
                 />
             )}
 

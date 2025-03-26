@@ -229,6 +229,7 @@ export enum SegmentEvent {
     MacrosQuickReplyTooltip = 'macros-quick-reply-tooltip',
     MenuMainLinkClicked = 'menu-main-link-clicked',
     MenuUserLinkClicked = 'menu-user-link-clicked',
+    MessageThreadClicked = 'message-thread-clicked',
     ModalToggled = 'modal-toggled',
     NavbarViewMoved = 'navbar-view-moved',
     NavbarViewToggled = 'navbar-view-toggled',
