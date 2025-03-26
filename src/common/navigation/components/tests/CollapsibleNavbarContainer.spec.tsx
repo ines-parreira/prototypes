@@ -74,35 +74,4 @@ describe('CollapsibleNavbarContainer', () => {
 
         expect(mockOnNavHover).toHaveBeenCalled()
     })
-
-    it('renders children only when not collapsed', () => {
-        const mockOnNavHover = jest.fn()
-
-        mockUseNavBar.mockReturnValue({
-            ...mockNavBarContextValues,
-            navBarDisplay: NavBarDisplayMode.Collapsed,
-            onNavHover: mockOnNavHover,
-        })
-
-        const { container, rerender } = renderWithContext()
-        const content = container.querySelector(
-            '[data-name="navbar-collapsible-container"]',
-        )
-        expect(content?.textContent).toBe('')
-
-        mockUseNavBar.mockReturnValue({
-            ...mockNavBarContextValues,
-            navBarDisplay: NavBarDisplayMode.Open,
-            onNavHover: mockOnNavHover,
-        })
-
-        rerender(
-            <NavBarContext.Provider value={mockNavBarContextValues}>
-                <Panels size={100}>
-                    <CollapsibleNavbarContainer {...defaultProps} />
-                </Panels>
-            </NavBarContext.Provider>,
-        )
-        expect(content?.textContent).toBe('Test Content')
-    })
 })

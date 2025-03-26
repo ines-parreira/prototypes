@@ -13,6 +13,10 @@
         background: var(--navigation-background);
         overflow-x: hidden;
 
+        &[data-display='collapsed'] {
+            left: -48px;
+        }
+
         &[data-display='collapsed'],
         &[data-display='open'] {
             pointer-events: none;

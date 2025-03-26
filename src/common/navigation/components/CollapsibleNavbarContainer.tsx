@@ -1,6 +1,5 @@
 import React, { ComponentProps, forwardRef } from 'react'
 
-import { NavBarDisplayMode } from '../hooks/useNavBar/context'
 import { useNavBar } from '../hooks/useNavBar/useNavBar'
 
 import css from './CollapsibleNavbarContainer.less'
@@ -31,9 +30,7 @@ export const CollapsibleNavbarContainer = forwardRef<
                 onFocus={onNavHover}
                 className={css.container}
             >
-                {navBarDisplay === NavBarDisplayMode.Collapsed
-                    ? null
-                    : children}
+                {children}
             </div>
         </>
     )
