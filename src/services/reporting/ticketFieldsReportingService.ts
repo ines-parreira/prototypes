@@ -1,7 +1,9 @@
 import _flatten from 'lodash/flatten'
 import _orderBy from 'lodash/orderBy'
 
+import { logEvent, SegmentEvent } from 'common/segment'
 import { getCsvFileNameWithDates } from 'hooks/reporting/common/utils'
+import { useStatsFilters } from 'hooks/reporting/support-performance/useStatsFilters'
 import {
     fetchCustomFieldsTicketCountTimeSeries,
     useCustomFieldsTicketCountTimeSeries,
@@ -10,12 +12,16 @@ import {
     getPeriodDateTimes,
     TimeSeriesDataItem,
 } from 'hooks/reporting/useTimeSeries'
+import useAppSelector from 'hooks/useAppSelector'
 import { OrderDirection } from 'models/api/types'
 import { ReportingGranularity } from 'models/reporting/types'
 import { Period, StatsFilters } from 'models/stat/types'
 import { formatDates } from 'pages/stats/utils'
-import { TicketInsightsOrder } from 'state/ui/stats/ticketInsightsSlice'
-import { createCsv } from 'utils/file'
+import {
+    getCustomFieldsOrder,
+    TicketInsightsOrder,
+} from 'state/ui/stats/ticketInsightsSlice'
+import { createCsv, saveZippedFiles } from 'utils/file'
 import { getFilterDateRange } from 'utils/reporting'
 
 export const TICKET_FIELDS_DOWNLOAD_FILE_NAME = 'ticket-fields'
@@ -60,13 +66,14 @@ export const formatData = (
     ),
 ]
 
-export const useCustomFieldsReportData = (
-    statsFilters: StatsFilters,
-    userTimezone: string,
-    granularity: ReportingGranularity,
-    customFieldsOrder: TicketInsightsOrder,
-    selectedCustomFieldId: string,
-) => {
+export const useCustomFieldsReportData = (selectedCustomFieldId: string) => {
+    const {
+        cleanStatsFilters: statsFilters,
+        userTimezone,
+        granularity,
+    } = useStatsFilters()
+    const customFieldsOrder = useAppSelector(getCustomFieldsOrder)
+
     const { data: timeSeriesData, isLoading } =
         useCustomFieldsTicketCountTimeSeries(
             statsFilters,
@@ -81,16 +88,26 @@ export const useCustomFieldsReportData = (
         dateTimes,
         customFieldsOrder.direction,
     )
+
     const fileName = getCsvFileNameWithDates(
         statsFilters.period,
         TICKET_FIELDS_DOWNLOAD_FILE_NAME,
     )
 
+    const files = {
+        [fileName]: createCsv(ticketFieldsData),
+    }
+
+    const download = async () => {
+        logEvent(SegmentEvent.StatDownloadClicked, {
+            name: 'all-metrics',
+        })
+
+        await saveZippedFiles(files, fileName)
+    }
+
     return {
-        files: {
-            [fileName]: createCsv(ticketFieldsData),
-        },
-        fileName,
+        download,
         isLoading,
     }
 }

@@ -113,6 +113,7 @@ export enum FeatureFlagKey {
     RedirectDeprecatedTicketRoutes = 'redirect-deprecated-ticket-routes',
     ReportingAgentsTableAverageAndTotal = 'reporting-agents-table-average-and-total',
     ReportingFilteringAndCalculationsTagsReport = 'reporting-filtering-and-calculations-tags-report',
+    ReportingExtendFieldAndTag = 'reporting-extend-field-and-tag-reporting',
     ReportingMessagesReceivedMetric = 'reporting-messages-received-metric',
     ReportingAverageResponseTime = 'reporting-average-response-time',
     ReportingZeroTouchTicketsMetric = 'reporting-zero-touch-tickets-metric',

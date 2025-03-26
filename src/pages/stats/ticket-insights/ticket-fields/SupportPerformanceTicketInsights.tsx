@@ -1,8 +1,12 @@
+import { useFlags } from 'launchdarkly-react-client-sdk'
+
+import { FeatureFlagKey } from 'config/featureFlags'
 import { useCleanStatsFilters } from 'hooks/reporting/useCleanStatsFilters'
 import useAppSelector from 'hooks/useAppSelector'
 import { useGridSize } from 'hooks/useGridSize'
 import { FilterKey } from 'models/stat/types'
 import { AnalyticsFooter } from 'pages/stats/AnalyticsFooter'
+import { SharedActionsMenu } from 'pages/stats/common/components/SharedActionsMenu/SharedActionsMenu'
 import FiltersPanelWrapper from 'pages/stats/common/filters/FiltersPanelWrapper'
 import DashboardGridCell from 'pages/stats/DashboardGridCell'
 import { DashboardComponent } from 'pages/stats/dashboards/DashboardComponent'
@@ -14,12 +18,20 @@ import {
     TicketFieldsChart,
     TicketFieldsReportConfig,
 } from 'pages/stats/ticket-insights/ticket-fields/TicketInsightsFieldsReportConfig'
+import { useCustomFieldsReportData } from 'services/reporting/ticketFieldsReportingService'
 import { getSelectedCustomField } from 'state/ui/stats/ticketInsightsSlice'
 
 export function SupportPerformanceTicketInsights() {
+    const featureFlags = useFlags()
     const getGridCellSize = useGridSize()
     useCleanStatsFilters()
     const selectedCustomField = useAppSelector(getSelectedCustomField)
+    const isReportingExtendFieldAndTagEnabled =
+        !!featureFlags[FeatureFlagKey.ReportingExtendFieldAndTag]
+
+    const { download, isLoading } = useCustomFieldsReportData(
+        String(selectedCustomField.id),
+    )
 
     if (!selectedCustomField.isLoading && selectedCustomField.id === null) {
         return (
@@ -37,11 +49,17 @@ export function SupportPerformanceTicketInsights() {
             title={TicketFieldsReportConfig.reportName}
             titleExtra={
                 selectedCustomField.id ? (
-                    <>
+                    isReportingExtendFieldAndTagEnabled ? (
+                        <SharedActionsMenu
+                            downloadAction={download}
+                            isDownloadLoading={isLoading}
+                            isTicketFieldsReport
+                        />
+                    ) : (
                         <DownloadTicketFieldsDataButton
                             selectedCustomFieldId={selectedCustomField.id}
                         />
-                    </>
+                    )
                 ) : null
             }
         >

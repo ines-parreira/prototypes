@@ -2,14 +2,17 @@ import React, { ComponentProps } from 'react'
 
 import { UseQueryResult } from '@tanstack/react-query'
 import { render } from '@testing-library/react'
+import { useFlags } from 'launchdarkly-react-client-sdk'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
+import { FeatureFlagKey } from 'config/featureFlags'
 import { useCustomFieldDefinitions } from 'custom-fields/hooks/queries/useCustomFieldDefinitions'
 import { CustomField } from 'custom-fields/types'
 import useAppSelector from 'hooks/useAppSelector'
 import { ApiListResponseCursorPagination } from 'models/api/types'
+import { SharedActionsMenu } from 'pages/stats/common/components/SharedActionsMenu/SharedActionsMenu'
 import { AUTO_QA_FILTER_KEYS } from 'pages/stats/common/filters/constants'
 import FiltersPanelWrapper from 'pages/stats/common/filters/FiltersPanelWrapper/FiltersPanelWrapper'
 import { DrillDownModal } from 'pages/stats/DrillDownModal'
@@ -24,6 +27,7 @@ import {
     TICKET_INSIGHTS_PAGE_TITLE,
 } from 'pages/stats/ticket-insights/ticket-fields/TicketInsightsFieldsReportConfig'
 import { TicketInsightsFieldTrend } from 'pages/stats/ticket-insights/ticket-fields/TicketInsightsFieldTrend'
+import { useCustomFieldsReportData } from 'services/reporting/ticketFieldsReportingService'
 import { initialState } from 'state/stats/statsSlice'
 import { RootState, StoreDispatch } from 'state/types'
 import {
@@ -73,7 +77,14 @@ const CustomFieldsTicketCountBreakdownTableChartMock = assumeMock(
 )
 jest.mock('pages/stats/DrillDownModal')
 const DrillDownModalMock = assumeMock(DrillDownModal)
-const componentMock = () => <div />
+const componentMock = jest.fn(() => <div />)
+jest.mock('launchdarkly-react-client-sdk')
+const useFlagsMock = assumeMock(useFlags)
+jest.mock('services/reporting/ticketFieldsReportingService')
+const useCustomFieldsReportDataMock = assumeMock(useCustomFieldsReportData)
+jest.mock('pages/stats/common/components/SharedActionsMenu/SharedActionsMenu')
+const TagActionsMenuMock = assumeMock(SharedActionsMenu)
+const downloadActionMock = jest.fn()
 
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
 
@@ -109,6 +120,14 @@ describe('<SupportPerformanceTicketInsights />', () => {
         TicketFieldsBlankStateMock.mockImplementation(componentMock)
         DownloadTicketFieldsDataButtonMock.mockImplementation(componentMock)
         DrillDownModalMock.mockImplementation(componentMock)
+        TagActionsMenuMock.mockImplementation(componentMock)
+        useFlagsMock.mockReturnValue({
+            [FeatureFlagKey.ReportingExtendFieldAndTag]: false,
+        })
+        useCustomFieldsReportDataMock.mockReturnValue({
+            download: downloadActionMock,
+            isLoading: false,
+        })
     })
 
     it('should render the page title', () => {
@@ -132,6 +151,32 @@ describe('<SupportPerformanceTicketInsights />', () => {
         TICKET_INSIGHTS_OPTIONAL_FILTERS.forEach((filter) => {
             expect(getByText(filter)).toBeInTheDocument()
         })
+    })
+
+    it('should render DownloadTicketFieldsDataButton when feature flag is disabled', () => {
+        render(
+            <Provider store={mockStore(defaultState)}>
+                <SupportPerformanceTicketInsights />
+            </Provider>,
+        )
+
+        expect(TagActionsMenuMock).not.toHaveBeenCalled()
+        expect(DownloadTicketFieldsDataButtonMock).toHaveBeenCalled()
+    })
+
+    it('should render TagActionsMenu when feature flag is enabled', () => {
+        useFlagsMock.mockReturnValue({
+            [FeatureFlagKey.ReportingExtendFieldAndTag]: true,
+        })
+
+        render(
+            <Provider store={mockStore(defaultState)}>
+                <SupportPerformanceTicketInsights />
+            </Provider>,
+        )
+
+        expect(TagActionsMenuMock).toHaveBeenCalled()
+        expect(DownloadTicketFieldsDataButtonMock).not.toHaveBeenCalled()
     })
 
     it('should render the Filters Panel with default optional filters and a Score filter', () => {

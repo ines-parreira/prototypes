@@ -12,10 +12,10 @@ import {
     basicYearlyHelpdeskPlan,
     HELPDESK_PRODUCT_ID,
 } from 'fixtures/productPrices'
+import { SharedActionsMenu } from 'pages/stats/common/components/SharedActionsMenu/SharedActionsMenu'
 import { AUTO_QA_FILTER_KEYS } from 'pages/stats/common/filters/constants'
 import FiltersPanelWrapper from 'pages/stats/common/filters/FiltersPanelWrapper/FiltersPanelWrapper'
 import { AllUsedTagsTableChart } from 'pages/stats/ticket-insights/tags/AllUsedTagsTableChart'
-import { TagActionsMenu } from 'pages/stats/ticket-insights/tags/TagActionsMenu'
 import { Tags } from 'pages/stats/ticket-insights/tags/Tags'
 import {
     TAGS_OPTIONAL_FILTERS,
@@ -24,6 +24,7 @@ import {
 import { TagsReportDownloadDataButton } from 'pages/stats/ticket-insights/tags/TagsReportDownloadDataButton'
 import { TagsTrendChart } from 'pages/stats/ticket-insights/tags/TagsTrendChart'
 import { TopUsedTagsChart } from 'pages/stats/ticket-insights/tags/TopUsedTagsChart'
+import { useDownloadTagsReportData } from 'services/reporting/tagsReportingService'
 import { defaultStatsFilters } from 'state/stats/statsSlice'
 import { fromLegacyStatsFilters } from 'state/stats/utils'
 import { RootState } from 'state/types'
@@ -52,8 +53,10 @@ jest.mock('pages/stats/ticket-insights/tags/TagsReportDownloadDataButton')
 const TagsReportDownloadDataButtonMock = assumeMock(
     TagsReportDownloadDataButton,
 )
-jest.mock('pages/stats/ticket-insights/tags/TagActionsMenu')
-const TagActionsMenuMock = assumeMock(TagActionsMenu)
+jest.mock('pages/stats/common/components/SharedActionsMenu/SharedActionsMenu')
+const TagActionsMenuMock = assumeMock(SharedActionsMenu)
+jest.mock('services/reporting/tagsReportingService')
+const useDownloadTagsReportDataMock = assumeMock(useDownloadTagsReportData)
 
 const componentMock = () => <div />
 
@@ -79,6 +82,11 @@ describe('<Tags>', () => {
         TagActionsMenuMock.mockImplementation(componentMock)
         useFlagsMock.mockReturnValue({
             [FeatureFlagKey.ReportingFilteringAndCalculationsTagsReport]: false,
+            [FeatureFlagKey.ReportingExtendFieldAndTag]: false,
+        })
+        useDownloadTagsReportDataMock.mockReturnValue({
+            download: jest.fn(),
+            isLoading: false,
         })
     })
 

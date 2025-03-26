@@ -5,36 +5,44 @@ import { useCleanStatsFilters } from 'hooks/reporting/useCleanStatsFilters'
 import { useGridSize } from 'hooks/useGridSize'
 import { FilterKey } from 'models/stat/types'
 import { AnalyticsFooter } from 'pages/stats/AnalyticsFooter'
+import { SharedActionsMenu } from 'pages/stats/common/components/SharedActionsMenu/SharedActionsMenu'
 import FiltersPanelWrapper from 'pages/stats/common/filters/FiltersPanelWrapper'
 import DashboardGridCell from 'pages/stats/DashboardGridCell'
 import { DashboardComponent } from 'pages/stats/dashboards/DashboardComponent'
 import DashboardSection from 'pages/stats/DashboardSection'
 import StatsPage from 'pages/stats/StatsPage'
-import { TagActionsMenu } from 'pages/stats/ticket-insights/tags/TagActionsMenu'
 import {
     TicketInsightsTagsChart,
     TicketInsightsTagsReportConfig,
 } from 'pages/stats/ticket-insights/tags/TagsReportConfig'
 import { TagsReportDownloadDataButton } from 'pages/stats/ticket-insights/tags/TagsReportDownloadDataButton'
+import { useDownloadTagsReportData } from 'services/reporting/tagsReportingService'
 
 export function Tags() {
     const featureFlags = useFlags()
+    const { download, isLoading } = useDownloadTagsReportData()
+    const getGridCellSize = useGridSize()
+    useCleanStatsFilters()
 
     const isReportingFilteringAndCalculationsTagsReportEnabled =
         !!featureFlags[
             FeatureFlagKey.ReportingFilteringAndCalculationsTagsReport
         ]
-
-    const getGridCellSize = useGridSize()
-    useCleanStatsFilters()
+    const isReportingExtendFieldAndTagEnabled =
+        !!featureFlags[FeatureFlagKey.ReportingExtendFieldAndTag]
 
     return (
         <div className="full-width">
             <StatsPage
                 title={TicketInsightsTagsReportConfig.reportName}
                 titleExtra={
-                    isReportingFilteringAndCalculationsTagsReportEnabled ? (
-                        <TagActionsMenu />
+                    isReportingFilteringAndCalculationsTagsReportEnabled ||
+                    isReportingExtendFieldAndTagEnabled ? (
+                        <SharedActionsMenu
+                            downloadAction={download}
+                            isDownloadLoading={isLoading}
+                            isTagsReport
+                        />
                     ) : (
                         <TagsReportDownloadDataButton />
                     )

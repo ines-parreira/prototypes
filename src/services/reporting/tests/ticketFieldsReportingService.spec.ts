@@ -1,7 +1,9 @@
 import { UseQueryResult } from '@tanstack/react-query'
 import { renderHook } from '@testing-library/react-hooks'
 
+import { logEvent, SegmentEvent } from 'common/segment'
 import { getCsvFileNameWithDates } from 'hooks/reporting/common/utils'
+import { useStatsFilters } from 'hooks/reporting/support-performance/useStatsFilters'
 import {
     fetchCustomFieldsTicketCountTimeSeries,
     useCustomFieldsTicketCountTimeSeries,
@@ -10,6 +12,7 @@ import {
     getPeriodDateTimes,
     TimeSeriesDataItem,
 } from 'hooks/reporting/useTimeSeries'
+import useAppSelector from 'hooks/useAppSelector'
 import { OrderDirection } from 'models/api/types'
 import { ReportingGranularity } from 'models/reporting/types'
 import { formatDates } from 'pages/stats/utils'
@@ -21,6 +24,7 @@ import {
     useCustomFieldsReportData,
 } from 'services/reporting/ticketFieldsReportingService'
 import * as files from 'utils/file'
+import { saveZippedFiles } from 'utils/file'
 import { getFilterDateRange } from 'utils/reporting'
 import { assumeMock } from 'utils/testing'
 
@@ -31,7 +35,12 @@ const useCustomFieldsTicketCountTimeSeriesMock = assumeMock(
 const fetchCustomFieldsTicketCountTimeSeriesMock = assumeMock(
     fetchCustomFieldsTicketCountTimeSeries,
 )
+jest.mock('hooks/useAppSelector')
+const useAppSelectorMock = assumeMock(useAppSelector)
+jest.mock('hooks/reporting/support-performance/useStatsFilters')
+const useStatsFiltersMock = assumeMock(useStatsFilters)
 jest.mock('utils/file')
+jest.mock('common/segment')
 
 describe('ticketFieldsReportingService', () => {
     const dateSeries: Parameters<typeof formatData>[1] = ['2023-06-07']
@@ -103,44 +112,47 @@ describe('ticketFieldsReportingService', () => {
             TICKET_FIELDS_DOWNLOAD_FILE_NAME,
         )
 
-        it('should call createCsv with a report', () => {
+        beforeEach(() => {
+            useStatsFiltersMock.mockReturnValue({
+                cleanStatsFilters: statsFilters,
+                userTimezone,
+                granularity,
+            })
+            useAppSelectorMock.mockReturnValue({
+                customFieldsOrder,
+            })
+        })
+
+        it('should call createCsv with a download action & loading state', () => {
             const createCsvSpy = jest.spyOn(files, 'createCsv')
 
             const { result } = renderHook(() =>
-                useCustomFieldsReportData(
-                    statsFilters,
-                    userTimezone,
-                    granularity,
-                    customFieldsOrder,
-                    String(selectedCustomFieldId),
-                ),
+                useCustomFieldsReportData(String(selectedCustomFieldId)),
             )
 
             expect(createCsvSpy).toHaveBeenCalledWith(formattedReport)
             expect(result.current).toEqual({
-                files: {
-                    [fileName]: files.createCsv(formattedReport),
-                },
-                fileName,
                 isLoading: false,
+                download: expect.any(Function),
             })
         })
-        it('should return a report', () => {
+
+        it('should return a download action that triggers a logEvent & saveZippedFiles', async () => {
             const { result } = renderHook(() =>
-                useCustomFieldsReportData(
-                    statsFilters,
-                    userTimezone,
-                    granularity,
-                    customFieldsOrder,
-                    String(selectedCustomFieldId),
-                ),
+                useCustomFieldsReportData(String(selectedCustomFieldId)),
             )
 
-            expect(result.current).toEqual({
-                files: {},
+            await result.current.download()
+
+            expect(saveZippedFiles).toHaveBeenCalledWith(
+                { [fileName]: files.createCsv(formattedReport) },
                 fileName,
-                isLoading: false,
-            })
+            )
+
+            expect(logEvent).toHaveBeenCalledWith(
+                SegmentEvent.StatDownloadClicked,
+                { name: 'all-metrics' },
+            )
         })
     })
 
