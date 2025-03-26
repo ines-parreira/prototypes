@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo } from 'react'
+import React, { useEffect, useMemo, useState } from 'react'
 
 import {
     AlertBannerTypes,
@@ -58,7 +58,8 @@ function getBanner(
 }
 
 export const useEmailDisconnectedBanner = () => {
-    const { addBanner, removeCategory } = useBanners()
+    const { addBanner, removeBanner } = useBanners()
+    const [__, setBannerState] = useState(new Array<string>())
 
     const bannerList = useFlag(FeatureFlagKey.GlobalBannerRefactor, {
         emailDisconnectedBanner: false,
@@ -73,22 +74,34 @@ export const useEmailDisconnectedBanner = () => {
         getDeactivatedOAuthEmailIntegrations,
     )
 
-    const banners = useMemo(
-        () =>
-            deactivatedOAuthEmailIntegrations.map((integration) =>
-                getBanner(
-                    isForAdminUser,
-                    integration.address,
-                    integration.reconnectUrl,
-                ),
+    const banners = useMemo(() => {
+        if (!isBannerEnabled) {
+            return []
+        }
+        return deactivatedOAuthEmailIntegrations.map((integration) =>
+            getBanner(
+                isForAdminUser,
+                integration.address,
+                integration.reconnectUrl,
             ),
-        [isForAdminUser, deactivatedOAuthEmailIntegrations],
-    )
+        )
+    }, [isForAdminUser, isBannerEnabled, deactivatedOAuthEmailIntegrations])
 
     useEffect(() => {
-        removeCategory(defaultBannerProps.category)
-        if (isBannerEnabled) {
-            banners.forEach(addBanner)
-        }
-    }, [addBanner, removeCategory, isBannerEnabled, banners])
+        setBannerState((prevBannerState) => {
+            const newBannerState = banners.map((banner) => banner.instanceId)
+            // remove banners that do not exist anymore
+            prevBannerState
+                .filter((id) => !newBannerState.includes(id))
+                .forEach((id) => removeBanner(defaultBannerProps.category, id))
+            // add new banners
+            banners
+                .filter(
+                    (banner) => !prevBannerState.includes(banner.instanceId),
+                )
+                .forEach(addBanner)
+            // update banners state
+            return newBannerState
+        })
+    }, [addBanner, removeBanner, banners])
 }

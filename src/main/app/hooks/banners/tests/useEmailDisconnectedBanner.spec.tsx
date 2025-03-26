@@ -1,5 +1,3 @@
-import React from 'react'
-
 import { renderHook } from '@testing-library/react-hooks'
 import { fromJS } from 'immutable'
 import { renderToStaticMarkup } from 'react-dom/server'
@@ -10,6 +8,9 @@ import { BannerCategories } from 'AlertBanners'
 import { FeatureFlagKey } from 'config/featureFlags'
 import { UserRole } from 'config/types/user'
 import { useFlag } from 'core/flags'
+import { getCurrentUser } from 'state/currentUser/selectors'
+import { getDeactivatedOAuthEmailIntegrations } from 'state/integrations/selectors'
+import { assumeMock } from 'utils/testing'
 
 import { useEmailDisconnectedBanner } from '../useEmailDisconnectedBanner'
 
@@ -17,7 +18,7 @@ jest.mock('core/flags')
 const mockUseFlag = useFlag as jest.Mock
 
 const mockedAddBanner = jest.fn()
-const mockedRemoveCategory = jest.fn()
+const mockedRemoveBanner = jest.fn()
 jest.mock(
     'AlertBanners',
     () =>
@@ -25,55 +26,58 @@ jest.mock(
             ...jest.requireActual('AlertBanners'),
             useBanners: () => ({
                 addBanner: mockedAddBanner,
-                removeCategory: mockedRemoveCategory,
+                removeBanner: mockedRemoveBanner,
             }),
         }) as Record<string, unknown>,
 )
 
+jest.mock('state/currentUser/selectors', () => ({
+    ...jest.requireActual('state/currentUser/selectors'),
+    getCurrentUser: jest.fn(),
+}))
+const mockedGetCurrentUser = assumeMock(getCurrentUser)
+
+jest.mock('state/integrations/selectors', () => ({
+    ...jest.requireActual('state/integrations/selectors'),
+    getDeactivatedOAuthEmailIntegrations: jest.fn(),
+}))
+const mockedGetDeactivatedOAuthEmailIntegrations = assumeMock(
+    getDeactivatedOAuthEmailIntegrations,
+)
+
 const mockStore = configureStore([])
-const state = {
-    currentUser: fromJS({
-        role: { name: UserRole.Admin },
-    }),
-    integrations: fromJS({
-        integrations: [
-            {
-                id: 1,
-                type: 'gmail',
-                meta: { address: 'alice@acme.com' },
-                deactivated_datetime: null,
-            },
-            {
-                id: 2,
-                type: 'gmail',
-                meta: { address: 'bob@acme.com' },
-                deactivated_datetime: '2025-03-12T00:13:40.385400',
-            },
-            {
-                id: 3,
-                type: 'outlook',
-                meta: { address: 'alice@onmicrosoft.acme.com' },
-                deactivated_datetime: null,
-            },
-            {
-                id: 4,
-                type: 'outlook',
-                meta: { address: 'bob@onmicrosoft.acme.com' },
-                deactivated_datetime: '2025-03-11T12:17:50.000000',
-            },
-        ],
-        authentication: {
-            gmail: { redirect_uri: '/integrations/gmail/pre-callback' },
-            outlook: { redirect_uri: '/integrations/outlook/pre-callback' },
-        },
-    }),
-}
 
 describe('useEmailDisconnectedBanner', () => {
     beforeEach(() => {
-        mockedAddBanner.mockReset()
-        mockedRemoveCategory.mockReset()
         mockUseFlag.mockReset()
+        mockUseFlag.mockImplementation((flag) => {
+            if (flag === FeatureFlagKey.GlobalBannerRefactor) {
+                return {
+                    emailDisconnectedBanner: true,
+                }
+            }
+        })
+        mockedAddBanner.mockReset()
+        mockedRemoveBanner.mockReset()
+        mockedGetCurrentUser.mockReset()
+        mockedGetCurrentUser.mockReturnValue(
+            fromJS({
+                role: { name: UserRole.Admin },
+            }),
+        )
+        mockedGetDeactivatedOAuthEmailIntegrations.mockReset()
+        mockedGetDeactivatedOAuthEmailIntegrations.mockReturnValue([
+            {
+                address: 'bob@acme.com',
+                reconnectUrl:
+                    '/integrations/gmail/pre-callback?integration_id=404',
+            },
+            {
+                address: 'bob@onmicrosoft.acme.com',
+                reconnectUrl:
+                    '/integrations/outlook/pre-callback?integration_id=418',
+            },
+        ])
     })
 
     it('should not call addBanner if FF is not enabled', () => {
@@ -85,30 +89,23 @@ describe('useEmailDisconnectedBanner', () => {
             }
         })
 
-        renderHook(useEmailDisconnectedBanner)
+        renderHook(useEmailDisconnectedBanner, {
+            wrapper: ({ children }) => (
+                <Provider store={mockStore()}>{children}</Provider>
+            ),
+        })
 
         expect(mockedAddBanner).not.toHaveBeenCalled()
     })
 
     it('should call addBanner with the banner for admins', () => {
-        mockUseFlag.mockImplementation((flag) => {
-            if (flag === FeatureFlagKey.GlobalBannerRefactor) {
-                return {
-                    emailDisconnectedBanner: true,
-                }
-            }
-        })
-        const store = mockStore(state)
-
         renderHook(useEmailDisconnectedBanner, {
             wrapper: ({ children }) => (
-                <Provider store={store}>{children}</Provider>
+                <Provider store={mockStore()}>{children}</Provider>
             ),
         })
 
-        expect(mockedRemoveCategory).toHaveBeenCalledWith(
-            BannerCategories.EMAIL_DISCONNECTED,
-        )
+        expect(mockedAddBanner).toHaveBeenCalledTimes(2)
         expect(
             mockedAddBanner.mock.calls.map(([banner]) => [
                 banner.CTA.href,
@@ -116,40 +113,29 @@ describe('useEmailDisconnectedBanner', () => {
             ]),
         ).toEqual([
             [
-                '/integrations/gmail/pre-callback?integration_id=2',
+                '/integrations/gmail/pre-callback?integration_id=404',
                 'Your email account bob@acme.com is disconnected. Follow the steps in the reconnection email to restore email access.',
             ],
             [
-                '/integrations/outlook/pre-callback?integration_id=4',
+                '/integrations/outlook/pre-callback?integration_id=418',
                 'Your email account bob@onmicrosoft.acme.com is disconnected. Follow the steps in the reconnection email to restore email access.',
             ],
         ])
     })
 
     it('should call addBanner with the banner for agents', () => {
-        mockUseFlag.mockImplementation((flag) => {
-            if (flag === FeatureFlagKey.GlobalBannerRefactor) {
-                return {
-                    emailDisconnectedBanner: true,
-                }
-            }
-        })
-        const store = mockStore({
-            ...state,
-            currentUser: fromJS({
+        mockedGetCurrentUser.mockReturnValue(
+            fromJS({
                 role: { name: UserRole.Agent },
             }),
-        })
+        )
 
         renderHook(useEmailDisconnectedBanner, {
             wrapper: ({ children }) => (
-                <Provider store={store}>{children}</Provider>
+                <Provider store={mockStore()}>{children}</Provider>
             ),
         })
 
-        expect(mockedRemoveCategory).toHaveBeenCalledWith(
-            BannerCategories.EMAIL_DISCONNECTED,
-        )
         expect(mockedAddBanner).toHaveBeenCalledTimes(2)
         expect(
             mockedAddBanner.mock.calls.map(([banner]) =>
@@ -162,5 +148,33 @@ describe('useEmailDisconnectedBanner', () => {
         expect(
             mockedAddBanner.mock.calls.map(([banner]) => banner.CTA),
         ).toEqual([undefined, undefined])
+    })
+
+    it('should call removeBanner for banners that need to be removed', () => {
+        // run the hook and check that the banners state got updated
+        const { rerender } = renderHook(useEmailDisconnectedBanner, {
+            wrapper: ({ children }) => (
+                <Provider store={mockStore()}>{children}</Provider>
+            ),
+        })
+        expect(mockedAddBanner).toHaveBeenCalledTimes(2)
+        mockedAddBanner.mockReset()
+
+        // now change the integrations' state
+        mockedGetDeactivatedOAuthEmailIntegrations.mockReturnValue([
+            {
+                address: 'bob@onmicrosoft.acme.com',
+                reconnectUrl: '/integrations/outlook/pre-callback',
+            },
+        ])
+
+        rerender()
+
+        // check that we remove the banner for bob@acme.com
+        expect(mockedAddBanner).not.toHaveBeenCalled()
+        expect(mockedRemoveBanner).toHaveBeenCalledWith(
+            BannerCategories.EMAIL_DISCONNECTED,
+            'email-disconnected-banner-bob@acme.com',
+        )
     })
 })
