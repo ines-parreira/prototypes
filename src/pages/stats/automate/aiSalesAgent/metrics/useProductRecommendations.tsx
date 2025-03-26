@@ -2,13 +2,11 @@ import { useMemo } from 'react'
 
 import {
     fetchMetricPerDimension,
-    MetricWithDecile,
     useMetricPerDimension,
 } from 'hooks/reporting/useMetricPerDimension'
 import useAppSelector from 'hooks/useAppSelector'
 import { useGetProductsByIdsFromIntegration } from 'models/integration/queries'
 import { IntegrationType } from 'models/integration/types'
-import { Cubes } from 'models/reporting/cubes'
 import {
     AiSalesAgentConversationsDimension,
     AiSalesAgentConversationsMeasure,
@@ -30,28 +28,11 @@ import { isFilterWithLogicalOperator } from 'models/reporting/queryFactories/uti
 import { StatsFilters } from 'models/stat/types'
 import { fetchIntegrationProducts as fetchIntegrationProductsByIds } from 'state/integrations/helpers'
 import { getIntegrationByIdAndType } from 'state/integrations/selectors'
+import { mapMetrics } from 'utils/reporting'
 
 import { ProductTableKeys } from '../constants'
 import { ProductTableContentCell } from '../types/productTable'
 import safeDivide from '../util/safeDivide'
-
-function mapMetrics<TCube extends Cubes = Cubes>(
-    metrics: MetricWithDecile<TCube>,
-    dimension: TCube['dimensions'],
-    measure: TCube['measures'],
-) {
-    if (metrics.isFetching || metrics.isError || !metrics.data) {
-        return {}
-    }
-
-    return metrics.data.allData.reduce<Record<number, number>>(
-        (a, record) => ({
-            ...a,
-            [Number(record[dimension])]: Number(record[measure]),
-        }),
-        {},
-    )
-}
 
 const useProductRecommendations = (filters: StatsFilters, timezone: string) => {
     // Get recommendations totals

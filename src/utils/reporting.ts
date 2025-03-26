@@ -424,3 +424,21 @@ export const sortAllData = (
 
     return sortedArray.concat(_difference(allData, nonNullValues))
 }
+
+export const mapMetrics = <TCube extends Cubes = Cubes>(
+    metrics: MetricWithDecile<TCube>,
+    dimension: TCube['dimensions'],
+    measure: TCube['measures'],
+) => {
+    if (metrics.isFetching || metrics.isError || !metrics.data) {
+        return {}
+    }
+
+    return metrics.data.allData.reduce<Record<number, number>>(
+        (a, record) => ({
+            ...a,
+            [Number(record[dimension])]: Number(record[measure]),
+        }),
+        {},
+    )
+}

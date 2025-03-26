@@ -1,6 +1,8 @@
-import { useEffect, useRef } from 'react'
+import React, { useEffect, useRef } from 'react'
 
 import { getRGB } from 'gorgias-design-system/utils'
+import useAppSelector from 'hooks/useAppSelector'
+import { ShopifyIntegration } from 'models/integration/types'
 import {
     Card,
     CardContent,
@@ -12,12 +14,21 @@ import TopProductsCard from 'pages/aiAgent/Onboarding/components/TopProductsCard
 import { useGetKnowledgeDatasQuery } from 'pages/aiAgent/Onboarding/hooks/useGetKnowledgeDatasQuery'
 import TrackerCircle from 'pages/common/components/ProgressTracker/TrackerCircle'
 import { LineChart } from 'pages/stats/common/components/charts/LineChart/LineChart'
+import { getShopifyIntegrationByShopName } from 'state/integrations/selectors'
 
 import css from './KnowledgePreview.less'
 
 const ANIMATION_DURATION = 60000
 
-const KnowledgePreview = () => {
+type Props = {
+    shopName: string
+}
+
+const KnowledgePreview: React.FC<Props> = ({ shopName }) => {
+    const shopifyIntegration: ShopifyIntegration = useAppSelector(
+        getShopifyIntegrationByShopName(shopName || ''),
+    ).toJS()
+
     const { data } = useGetKnowledgeDatasQuery()
 
     const graphOptions = {
@@ -67,8 +78,8 @@ const KnowledgePreview = () => {
     const topProductsCard = (
         <TopProductsCard
             className={css.topProducts}
+            integration={shopifyIntegration}
             title="Top Products"
-            products={data?.products ?? []}
         />
     )
 

@@ -1,3 +1,4 @@
+import { OrderDirection } from 'models/api/types'
 import {
     AiSalesAgentConversationsCube,
     AiSalesAgentConversationsDimension,
@@ -7,6 +8,7 @@ import {
 import {
     AiSalesAgentOrdersCube,
     AiSalesAgentOrdersDimension,
+    AiSalesAgentOrdersFilterMember,
     AiSalesAgentOrdersMeasure,
 } from 'models/reporting/cubes/ai-sales-agent/AiSalesAgentOrders'
 import {
@@ -315,6 +317,22 @@ export const productRecommendationsQueryFactory = (
         ),
     ],
     timezone,
+})
+
+export const topProductRecommendationsQueryFactory = (
+    storeIntegrationId: number,
+): ReportingQuery<AiSalesAgentOrdersCube> => ({
+    measures: [AiSalesAgentOrdersMeasure.Count],
+    dimensions: [AiSalesAgentOrdersDimension.ProductId],
+    filters: [
+        {
+            member: AiSalesAgentOrdersFilterMember.IntegrationId,
+            operator: ReportingFilterOperator.Equals,
+            values: [storeIntegrationId.toString()],
+        },
+    ],
+    order: [[AiSalesAgentOrdersMeasure.Count, OrderDirection.Desc]],
+    limit: 10, // fetch more just in case
 })
 
 export const discountCodesOfferedQueryFactory = (

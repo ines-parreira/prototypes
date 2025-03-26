@@ -5,7 +5,7 @@ import { render, screen } from '@testing-library/react'
 import TopProductItem from '../TopProductItem'
 
 const product = {
-    id: '1',
+    id: 1,
     title: 'Nike Air Max plus',
     description: '1593 sales',
     price: 199,

@@ -1,5 +1,6 @@
 import cn from 'classnames'
 
+import { ShopifyIntegration } from 'models/integration/types'
 import {
     Card,
     CardContent,
@@ -7,27 +8,39 @@ import {
     CardTitle,
 } from 'pages/aiAgent/Onboarding/components/Card'
 
-import TopProductItem from './TopProductItem'
-import { Product } from './types'
+import useTopProducts from './hooks'
+import TopProductItem, { TopProductItemSkeleton } from './TopProductItem'
 
 import css from './TopProductsCard.less'
 
 type Props = {
     className?: string
     title: string
-    products: Product[]
+    integration: ShopifyIntegration
 }
 
-const TopProductsCard = ({ className, title, products }: Props) => {
+const TopProductsCard = ({ className, title, integration }: Props) => {
+    const { data: products, isLoading } = useTopProducts({
+        shopIntegrationId: integration?.id,
+        currency: integration?.meta?.currency,
+    })
+
     return (
         <Card className={cn(css.topProductsContainer, className)}>
             <CardHeader>
                 <CardTitle>{title}</CardTitle>
             </CardHeader>
             <CardContent className={css.content}>
-                {products.map((product: Product) => (
-                    <TopProductItem product={product} key={product.id} />
-                ))}
+                {!isLoading &&
+                    products.map((product) => (
+                        <TopProductItem product={product} key={product.id} />
+                    ))}
+                {isLoading && (
+                    <>
+                        <TopProductItemSkeleton />
+                        <TopProductItemSkeleton />
+                    </>
+                )}
             </CardContent>
         </Card>
     )

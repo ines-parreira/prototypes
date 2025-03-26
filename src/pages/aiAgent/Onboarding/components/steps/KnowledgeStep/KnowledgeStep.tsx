@@ -174,7 +174,7 @@ export const KnowledgeStep: React.FC<StepProps> = ({
                 isLoading={false}
                 icon={<GorgiasIcon size="40%" />}
             >
-                <KnowledgePreview />
+                <KnowledgePreview shopName={shopName} />
             </OnboardingPreviewContainer>
         </OnboardingBody>
     )

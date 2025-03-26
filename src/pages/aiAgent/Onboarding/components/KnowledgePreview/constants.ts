@@ -44,7 +44,7 @@ export const mockedCategories: TopElement[] = [
 
 export const mockedProducts: Product[] = [
     {
-        id: 'location-1',
+        id: 1,
         title: 'Nike Air Max plus',
         description: '1593 sales',
         price: 199,
@@ -52,7 +52,7 @@ export const mockedProducts: Product[] = [
             'https://athlete-shift.myshopify.com/cdn/shop/products/8cd561824439482e3cea5ba8e3a6e2f6.jpg?v=1661766740&width=533',
     },
     {
-        id: 'location-2',
+        id: 2,
         title: 'Nike Air Max plus',
         description: '1593 sales',
         price: 199,
@@ -60,7 +60,7 @@ export const mockedProducts: Product[] = [
             'https://athlete-shift.myshopify.com/cdn/shop/products/8cd561824439482e3cea5ba8e3a6e2f6.jpg?v=1661766740&width=533',
     },
     {
-        id: 'location-3',
+        id: 3,
         title: 'Nike Air Max plus',
         description: '1593 sales',
         price: 199,
@@ -68,7 +68,7 @@ export const mockedProducts: Product[] = [
             'https://athlete-shift.myshopify.com/cdn/shop/products/8cd561824439482e3cea5ba8e3a6e2f6.jpg?v=1661766740&width=533',
     },
     {
-        id: 'location-4',
+        id: 4,
         title: 'Nike Air Max plus',
         description: '1593 sales',
         price: 199,

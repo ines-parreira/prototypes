@@ -20,12 +20,13 @@ import { integrationsState, shopifyIntegration } from 'fixtures/integrations'
 import { AiAgentOnboarding } from 'pages/aiAgent/Onboarding/components/AiAgentOnboarding/AiAgentOnboarding'
 import { DiscountStrategy } from 'pages/aiAgent/Onboarding/components/steps/PersonalityStep/DiscountStrategy'
 import { PersuasionLevel } from 'pages/aiAgent/Onboarding/components/steps/PersonalityStep/PersuasionLevel'
+import useTopProducts from 'pages/aiAgent/Onboarding/components/TopProductsCard/hooks'
 import { useGetOnboardingData } from 'pages/aiAgent/Onboarding/hooks/useGetOnboardingData'
 import { AiAgentScopes, WizardStepEnum } from 'pages/aiAgent/Onboarding/types'
 import { useShopifyIntegrationAndScope } from 'pages/common/hooks/useShopifyIntegrationAndScope'
 import { useEmailIntegrations } from 'pages/settings/contactForm/hooks/useEmailIntegrations'
 import { RootState, StoreDispatch } from 'state/types'
-import { renderWithRouter } from 'utils/testing'
+import { assumeMock, renderWithRouter } from 'utils/testing'
 
 const mockStore = configureMockStore<RootState, StoreDispatch>()
 
@@ -68,6 +69,9 @@ jest.mock('pages/aiAgent/Onboarding/hooks/useGetOnboardingData', () => ({
     useGetOnboardingData: jest.fn(),
 }))
 
+jest.mock('pages/aiAgent/Onboarding/components/TopProductsCard/hooks')
+const useTopProductsMock = assumeMock(useTopProducts)
+
 const mockUseShopifyIntegrationAndScope =
     useShopifyIntegrationAndScope as jest.Mock
 const mockUseEmailIntegrations = useEmailIntegrations as jest.Mock
@@ -78,6 +82,7 @@ const history = createMemoryHistory()
 
 const renderComponent = (
     initialRoute = '/app/ai-agent/onboarding/skillset',
+    defaultPath = '/app/ai-agent/onboarding/:step',
 ) => {
     history.push(initialRoute)
 
@@ -87,7 +92,7 @@ const renderComponent = (
                 <AiAgentOnboarding />
             </Provider>
         </QueryClientProvider>,
-        { history, path: '/app/ai-agent/onboarding/:step' },
+        { history, path: defaultPath },
     )
 }
 
@@ -110,6 +115,10 @@ describe('AiAgentOnboarding', () => {
                 scopes: [AiAgentScopes.SUPPORT, AiAgentScopes.SALES],
                 shopName: shopifyIntegration.meta.shop_name,
             },
+        })
+        useTopProductsMock.mockReturnValue({
+            isLoading: false,
+            data: [],
         })
 
         jest.spyOn(LD, 'useFlags').mockImplementation(() => ({
@@ -166,7 +175,10 @@ describe('AiAgentOnboarding', () => {
     })
 
     it('should navigate to the previous step when Back button is clicked', async () => {
-        renderComponent(`/app/ai-agent/onboarding/${WizardStepEnum.KNOWLEDGE}`)
+        renderComponent(
+            `/app/ai-agent/shopify/shopify-store/onboarding/${WizardStepEnum.KNOWLEDGE}`,
+            '/app/ai-agent/:shopType/:shopName/onboarding/:step',
+        )
 
         jest.runAllTimers()
 
