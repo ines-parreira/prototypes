@@ -1,9 +1,9 @@
-import React, { useCallback, useEffect, useMemo, useState } from 'react'
+import { useCallback, useEffect, useMemo, useState } from 'react'
 
 import { useHistory, useParams } from 'react-router-dom'
 import { ulid } from 'ulidx'
 
-import { Label, Skeleton } from '@gorgias/merchant-ui-kit'
+import { Chip, Label, Skeleton } from '@gorgias/merchant-ui-kit'
 
 import orderSelectionIcon from 'assets/img/workflows/icons/order-selection-sm-neutral.svg'
 import { useGetWorkflowConfigurationTemplates } from 'models/workflows/queries'
@@ -34,7 +34,6 @@ import {
     WorkflowConfigurationBuilder,
 } from 'pages/automate/workflows/models/workflowConfiguration.model'
 import Button from 'pages/common/components/button/Button'
-import { Chip } from 'pages/common/components/Chip'
 import Modal from 'pages/common/components/modal/Modal'
 import ModalActionsFooter from 'pages/common/components/modal/ModalActionsFooter'
 import ModalBody from 'pages/common/components/modal/ModalBody'

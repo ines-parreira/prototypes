@@ -1,6 +1,6 @@
-import React, { MouseEvent, useEffect, useState } from 'react'
+import { MouseEvent, useEffect, useState } from 'react'
 
-import { Chip } from 'pages/common/components/Chip'
+import { Chip } from '@gorgias/merchant-ui-kit'
 
 import { QuickFilterType } from '../../types/QuickFilter'
 
