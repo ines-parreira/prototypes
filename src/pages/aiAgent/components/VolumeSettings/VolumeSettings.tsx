@@ -13,7 +13,7 @@ import useAppDispatch from 'hooks/useAppDispatch'
 import { SalesVolumeData } from 'models/aiAgent/types'
 import { useAiAgentStoreConfigurationContext } from 'pages/aiAgent/providers/AiAgentStoreConfigurationContext'
 import UnsavedChangesPrompt from 'pages/common/components/UnsavedChangesPrompt'
-import ToggleInput from 'pages/common/forms/ToggleInput'
+import { NewToggleButton } from 'pages/common/forms/NewToggleButton'
 import { notify } from 'state/notifications/actions'
 import { NotificationStatus } from 'state/notifications/types'
 
@@ -58,15 +58,21 @@ export const VolumeSettings = () => {
     const isConversationStartersEnabled = watch('isConversationStartersEnabled')
 
     const toggle = useCallback(() => {
-        setValue(
-            'isConversationStartersEnabled',
-            !isConversationStartersEnabled,
-            {
-                shouldDirty: true,
-                shouldValidate: false,
-            },
-        )
-    }, [isConversationStartersEnabled, setValue])
+        if (isConversationStartersFeatureEnabled) {
+            setValue(
+                'isConversationStartersEnabled',
+                !isConversationStartersEnabled,
+                {
+                    shouldDirty: true,
+                    shouldValidate: false,
+                },
+            )
+        }
+    }, [
+        isConversationStartersFeatureEnabled,
+        isConversationStartersEnabled,
+        setValue,
+    ])
 
     const onSave = useCallback(async () => {
         if (storeConfiguration) {
@@ -122,7 +128,7 @@ export const VolumeSettings = () => {
                                 </strong>
                             </Box>
                             <Box>
-                                <p>
+                                <p className={css.body}>
                                     Display up to 4 AI-generated conversation
                                     starters on product pages. Starters are
                                     high-quality, relevant, and easy to answer,
@@ -131,15 +137,17 @@ export const VolumeSettings = () => {
                                 </p>
                             </Box>
                             <Box>
-                                <ToggleInput
-                                    isDisabled={
-                                        !isConversationStartersFeatureEnabled
-                                    }
-                                    isToggled={isConversationStartersEnabled}
-                                    onClick={toggle}
-                                >
+                                <label className={css.label}>
+                                    <NewToggleButton
+                                        checked={isConversationStartersEnabled}
+                                        isDisabled={
+                                            !isConversationStartersFeatureEnabled
+                                        }
+                                        onChange={toggle}
+                                        stopPropagation
+                                    />
                                     Enable conversation starters
-                                </ToggleInput>
+                                </label>
                             </Box>
                         </Box>
                         <Box className={css.buttonParent}>

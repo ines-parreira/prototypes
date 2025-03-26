@@ -2,8 +2,31 @@
 @import (reference) '~css/typography';
 
 :local {
+    .label {
+        cursor: pointer;
+        display: flex;
+        justify-content: space-between;
+        gap: @layout-spacing-xs;
+        color: var(--neutral-grey-6);
+    }
+
     .title {
         margin-bottom: @layout-spacing-xxs;
+        font-family: @heading-sub-section-semibold-font-family;
+        font-size: @heading-sub-section-semibold-font-size;
+        letter-spacing: @heading-sub-section-semibold-letter-spacing;
+        line-height: @heading-sub-section-semibold-line-height;
+        font-weight: @heading-sub-section-semibold-font-weight;
+        color: var(--neutral-grey-6);
+    }
+
+    .body {
+        font-family: @body-regular-font-family;
+        font-size: @body-regular-font-size;
+        letter-spacing: @body-regular-letter-spacing;
+        line-height: @body-regular-line-height;
+        font-weight: @body-regular-font-weight;
+        color: var(--neutral-grey-5);
     }
 
     .buttonParent {

@@ -63,7 +63,7 @@ const mockedUseFlags = jest.mocked(useFlags)
 
 const getSwitch = (result: RenderComponentReturn) =>
     result.getByRole('switch', {
-        name: 'Enable conversation starters',
+        name: 'check Enable conversation starters',
     })
 
 const getSaveButton = (result: RenderComponentReturn) =>
