@@ -1,5 +1,3 @@
-import React from 'react'
-
 import { QueryClientProvider } from '@tanstack/react-query'
 import { screen } from '@testing-library/react'
 import { createMemoryHistory } from 'history'
@@ -7,10 +5,10 @@ import { fromJS } from 'immutable'
 import { mockFlags } from 'jest-launchdarkly-mock'
 import { keyBy } from 'lodash'
 import { Provider } from 'react-redux'
+import { useParams } from 'react-router-dom'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import { logEvent, SegmentEvent } from 'common/segment'
 import { FeatureFlagKey } from 'config/featureFlags'
 import { account } from 'fixtures/account'
 import { axiosSuccessResponse } from 'fixtures/axiosResponse'
@@ -30,7 +28,10 @@ import { useAiAgentOnboardingNotification } from '../hooks/useAiAgentOnboardingN
 import { useStoreConfiguration } from '../hooks/useStoreConfiguration'
 
 jest.mock('launchdarkly-react-client-sdk')
-
+jest.mock(
+    'pages/settings/billing/automate/AutomateSubscriptionModal',
+    () => () => <div>Automate Subscription Modal</div>,
+)
 jest.mock('../hooks/useWelcomePageAcknowledged')
 const mockUseWelcomePageAcknowledged = jest.mocked(useWelcomePageAcknowledged)
 
@@ -97,6 +98,15 @@ jest.mock('pages/aiAgent/hooks/useFileIngestion', () => ({
         ingestedFiles: [],
     }),
 }))
+
+const SHOP_TYPE = 'shopify'
+const SHOP_NAME = 'test-shop'
+
+jest.mock('react-router-dom', () => ({
+    ...jest.requireActual('react-router-dom'),
+    useParams: jest.fn(),
+}))
+const useParamsMock = assumeMock(useParams)
 
 const mockStore = configureMockStore([thunk])
 
@@ -180,9 +190,7 @@ const renderComponent = ({
     )
 
 const setupMocks = ({
-    trialModeFlag = false,
-    welcomePageFlag = 'off',
-    onBoardingWizardFlag = false,
+    optimizeTabFlag = false,
     isStoreConfigurationLoading = false,
     isHelpCentersLoading = false,
     isWelcomePageAcknowledgedLoading = false,
@@ -190,9 +198,7 @@ const setupMocks = ({
     hasStoreConfiguration = true,
 } = {}) => {
     mockFlags({
-        [FeatureFlagKey.AiAgentTrialMode]: trialModeFlag,
-        [FeatureFlagKey.AIAgentWelcomePage]: welcomePageFlag,
-        [FeatureFlagKey.AiAgentOnboardingWizard]: onBoardingWizardFlag,
+        [FeatureFlagKey.AiAgentOptimizeTab]: optimizeTabFlag,
     })
 
     mockGetHasAutomate.mockReturnValue(false)
@@ -237,8 +243,9 @@ const setupMocks = ({
 describe('AiAgentMainViewContainer', () => {
     beforeEach(() => {
         jest.resetAllMocks()
-        mockFlags({
-            [FeatureFlagKey.AiAgentTrialMode]: false,
+        useParamsMock.mockReturnValue({
+            shopType: SHOP_TYPE,
+            shopName: SHOP_NAME,
         })
     })
 
@@ -248,107 +255,10 @@ describe('AiAgentMainViewContainer', () => {
         expect(screen.getByText('Loading...')).toBeInTheDocument()
     })
 
-    it('hides the toggle if in trial mode', () => {
-        setupMocks({ trialModeFlag: true })
-        renderComponent()
-        expect(screen.queryByText('Enable AI Agent')).not.toBeInTheDocument()
-    })
-
     it('renders loader if loading welcome page acknowledged', () => {
         setupMocks({ isWelcomePageAcknowledgedLoading: true })
         renderComponent()
-        expect(screen.getByText('Loading...')).toBeInTheDocument
-    })
-
-    it('renders the dynamic welcome page if account ID is odd and feature flag is set to dynamic_odd_static_even', () => {
-        setupMocks({
-            welcomePageFlag: 'dynamic_odd_static_even',
-            hasStoreConfiguration: false,
-        })
-
-        renderComponent()
-
-        expect(
-            screen.queryByText(
-                'Prepare AI Agent to automate 60% of your email and contact form tickets by completing these steps',
-            ),
-        ).toBeInTheDocument()
-
-        expect(logEvent).toHaveBeenCalledWith(
-            SegmentEvent.AiAgentWelcomePageViewed,
-            { version: 'Dynamic', store: 'test-shop' },
-        )
-    })
-
-    it('renders the static welcome page if account ID is even and feature flag is set to dynamic_odd_static_even', () => {
-        setupMocks({
-            welcomePageFlag: 'dynamic_odd_static_even',
-            hasStoreConfiguration: false,
-        })
-        renderComponent({ accountId: 2 })
-
-        expect(
-            screen.queryByText(
-                'Introducing AI Agent, your team’s newest member for seamless customer interactions who can:',
-            ),
-        ).toBeInTheDocument()
-
-        expect(logEvent).toHaveBeenCalledWith(
-            SegmentEvent.AiAgentWelcomePageViewed,
-            { version: 'Basic', store: 'test-shop' },
-        )
-    })
-
-    it('renders the static welcome page if account ID is odd and feature flag is set to static_odd_dynamic_even', () => {
-        setupMocks({
-            welcomePageFlag: 'static_odd_dynamic_even',
-            hasStoreConfiguration: false,
-        })
-        renderComponent()
-
-        expect(
-            screen.queryByText(
-                'Introducing AI Agent, your team’s newest member for seamless customer interactions who can:',
-            ),
-        ).toBeInTheDocument()
-
-        expect(logEvent).toHaveBeenCalledWith(
-            SegmentEvent.AiAgentWelcomePageViewed,
-            { version: 'Basic', store: 'test-shop' },
-        )
-    })
-
-    it('renders the dynamic welcome page if account ID is even and feature flag is set to static_odd_dynamic_even', () => {
-        setupMocks({
-            welcomePageFlag: 'static_odd_dynamic_even',
-            hasStoreConfiguration: false,
-        })
-        renderComponent({ accountId: 2 })
-
-        expect(
-            screen.queryByText(
-                'Prepare AI Agent to automate 60% of your email and contact form tickets by completing these steps',
-            ),
-        ).toBeInTheDocument()
-
-        expect(logEvent).toHaveBeenCalledWith(
-            SegmentEvent.AiAgentWelcomePageViewed,
-            { version: 'Dynamic', store: 'test-shop' },
-        )
-    })
-
-    it('renders the dynamic welcome page for onboarding wizard if the the flag is enabled', () => {
-        setupMocks({
-            onBoardingWizardFlag: true,
-            hasStoreConfiguration: false,
-        })
-
-        renderComponent()
-        expect(
-            screen.queryByText(
-                'Prepare AI Agent to automate 60% of your email, Chat and Contact Form tickets by completing these steps:',
-            ),
-        ).toBeInTheDocument()
+        expect(screen.getByText('Loading...')).toBeInTheDocument()
     })
 
     it('redirects to guidance page if onboarding wizard is done', () => {
@@ -372,6 +282,31 @@ describe('AiAgentMainViewContainer', () => {
 
         expect(historyPushSpy).toHaveBeenCalledWith(
             expect.stringContaining('ai-agent/settings'),
+        )
+    })
+
+    it('redirects to guidance page if onboarding wizard is done', () => {
+        const history = createMemoryHistory()
+        const historyPushSpy = jest
+            .spyOn(history, 'replace')
+            .mockImplementationOnce(jest.fn)
+
+        setupMocks({
+            optimizeTabFlag: true,
+            hasStoreConfiguration: false,
+        })
+
+        renderWithRouter(
+            <Provider store={mockStore(getState())}>
+                <QueryClientProvider client={mockQueryClient()}>
+                    <AiAgentMainViewContainer />
+                </QueryClientProvider>
+            </Provider>,
+            { history },
+        )
+
+        expect(historyPushSpy).toHaveBeenCalledWith(
+            `/app/automation/${SHOP_TYPE}/${SHOP_NAME}/ai-agent/optimize`,
         )
     })
 })

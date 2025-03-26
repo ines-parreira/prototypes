@@ -119,7 +119,6 @@ const AiAgentMainViewContainer = () => {
         case OnboardingState.WelcomeDynamic:
             return (
                 <AIAgentWelcomePageDynamic
-                    state="dynamic"
                     accountDomain={accountDomain}
                     shopType={shopType}
                     shopName={shopName}
@@ -128,7 +127,6 @@ const AiAgentMainViewContainer = () => {
         case OnboardingState.WelcomeStatic:
             return (
                 <AIAgentWelcomePageView
-                    state="static"
                     accountDomain={accountDomain}
                     shopType={shopType}
                     shopName={shopName}
@@ -137,7 +135,6 @@ const AiAgentMainViewContainer = () => {
         case OnboardingState.OnboardingWizard:
             return (
                 <AIAgentWelcomePageDynamic
-                    state="onboardingWizard"
                     accountDomain={accountDomain}
                     shopType={shopType}
                     shopName={shopName}

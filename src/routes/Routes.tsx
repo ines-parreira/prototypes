@@ -47,7 +47,6 @@ import AiAgentScrapedDomainProductsContainer from 'pages/aiAgent/AiAgentScrapedD
 import { AiAgentVolume } from 'pages/aiAgent/AiAgentVolume'
 import { AiAgentNavbar } from 'pages/aiAgent/components/AiAgentNavbar/AiAgentNavbar'
 import { AiAgentRedirect } from 'pages/aiAgent/components/AiAgentRedirect/AiAgentRedirect'
-import { useAiAgentItemEnabled } from 'pages/aiAgent/hooks/useAiAgentItemEnabled'
 import { aiAgentRoutes } from 'pages/aiAgent/hooks/useAiAgentNavigation'
 import { Level2IntentsContainer } from 'pages/aiAgent/insights/Level2IntentsContainer/Level2IntentsContainer'
 import { OptimizeContainer } from 'pages/aiAgent/insights/OptimizeContainer/OptimizeContainer'
@@ -735,8 +734,6 @@ export function AutomationRoutes() {
 function AutomationContent() {
     const { path } = useRouteMatch()
 
-    const isAiAgentItemEnabled = useAiAgentItemEnabled()
-
     return (
         <Switch>
             <Route path={`${path}/ai-recommendations`} exact>
@@ -964,15 +961,10 @@ function AutomationContent() {
                 <AutomateLandingPageContainer />
             </Route>
 
-            {!isAiAgentItemEnabled && (
-                <Route
-                    path={`${path}/ai-agent-overview`}
-                    component={withUserRoleRequired(
-                        AiAgentOverview,
-                        AGENT_ROLE,
-                    )}
-                />
-            )}
+            <Route
+                path={`${path}/ai-agent-overview`}
+                component={withUserRoleRequired(AiAgentOverview, AGENT_ROLE)}
+            />
 
             <Route>
                 <Redirect to={`${path}`} />

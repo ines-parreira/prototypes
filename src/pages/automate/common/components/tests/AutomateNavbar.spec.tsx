@@ -20,7 +20,6 @@ import { billingState } from 'fixtures/billing'
 import { integrationsState } from 'fixtures/integrations'
 import { user } from 'fixtures/users'
 import { getStoreConfigurationFixture } from 'pages/aiAgent/fixtures/storeConfiguration.fixtures'
-import { useAiAgentItemEnabled } from 'pages/aiAgent/hooks/useAiAgentItemEnabled'
 import { useStoreConfiguration } from 'pages/aiAgent/hooks/useStoreConfiguration'
 import { RootState } from 'state/types'
 import { assumeMock } from 'utils/testing'
@@ -48,9 +47,6 @@ jest.mock('common/notifications/components/Button', () => ({
     default: () => <div>NotificationsButton</div>,
 }))
 
-jest.mock('pages/aiAgent/hooks/useAiAgentItemEnabled')
-const useAiAgentItemEnabledMock = assumeMock(useAiAgentItemEnabled)
-
 const wrapper = ({ children }: { children: ReactNode }) => (
     <StaticRouter location="/app">
         <NavBarProvider>{children}</NavBarProvider>
@@ -59,7 +55,6 @@ const wrapper = ({ children }: { children: ReactNode }) => (
 
 describe('<AutomateNavbar />', () => {
     beforeEach(() => {
-        useAiAgentItemEnabledMock.mockReturnValue(false)
         mockUseFlag.mockReturnValue(false)
         useStoreConfigurationMock.mockReturnValue({
             storeConfiguration: defaultStoreConfiguration,
@@ -228,8 +223,7 @@ describe('<AutomateNavbar />', () => {
             expect(queryByText('Actions platform')).toBeInTheDocument()
         })
 
-        it('should render AI Agent overview menu item when flag StandaloneConvAiOverviewPage is ON and AI Agent menu item is not enabled', () => {
-            useAiAgentItemEnabledMock.mockReturnValue(false)
+        it('should render AI Agent overview menu item when flag StandaloneConvAiOverviewPage is ON', () => {
             allFlagsMock.mockReturnValue({
                 [FeatureFlagKey.StandaloneConvAiOverviewPage]: true,
             })
@@ -260,40 +254,7 @@ describe('<AutomateNavbar />', () => {
             expect(screen.getByText('AI Agent Overview')).toBeInTheDocument()
         })
 
-        it('should not render AI Agent overview menu item when flag StandaloneConvAiOverviewPage is ON and AI Agent menu item is enabled', () => {
-            useAiAgentItemEnabledMock.mockReturnValue(true)
-            allFlagsMock.mockReturnValue({
-                [FeatureFlagKey.StandaloneConvAiOverviewPage]: true,
-            })
-
-            const { queryByText } = render(
-                <Provider
-                    store={mockStore({
-                        ...defaultState,
-                        integrations,
-                        currentAccount: fromJS({
-                            ...account,
-                            current_subscription: {
-                                ...account.current_subscription,
-                                products: automationSubscriptionProductPrices,
-                            },
-                        }),
-                    })}
-                >
-                    <DndProvider backend={HTML5Backend}>
-                        <ThemeProvider>
-                            <AutomateNavbar />
-                        </ThemeProvider>
-                    </DndProvider>
-                </Provider>,
-                { wrapper },
-            )
-
-            expect(queryByText('AI Agent Overview')).not.toBeInTheDocument()
-        })
-
-        it('should not render AI Agent overview menu item when flag StandaloneConvAiOverviewPage is OFF and AI Agent menu item is enabled', () => {
-            useAiAgentItemEnabledMock.mockReturnValue(true)
+        it('should not render AI Agent overview menu item when flag StandaloneConvAiOverviewPage is OFF', () => {
             allFlagsMock.mockReturnValue({
                 [FeatureFlagKey.StandaloneConvAiOverviewPage]: false,
             })

@@ -3,14 +3,9 @@ import { fromJS } from 'immutable'
 
 import { useMainNavigationItems } from 'common/navigation/hooks/useMainNavigationItems'
 import { UserRole } from 'config/types/user'
-import { useAiAgentItemEnabled } from 'pages/aiAgent/hooks/useAiAgentItemEnabled'
 import { BASE_STATS_PATH } from 'routes/constants'
-import { assumeMock } from 'utils/testing'
 
 jest.mock('hooks/useAppSelector', () => (fn: () => void) => fn())
-
-jest.mock('pages/aiAgent/hooks/useAiAgentItemEnabled')
-const useAiAgentItemEnabledMock = assumeMock(useAiAgentItemEnabled)
 
 describe('MainNavigation', () => {
     const basicUser = fromJS({ role: { name: UserRole.BasicAgent } })
@@ -72,22 +67,6 @@ describe('MainNavigation', () => {
     it('should not render the AI Agent menu item for non-agent users', () => {
         const { result } = renderHook(() => useMainNavigationItems(basicUser))
         expect(result.current.map((item) => item.url)).not.toContain(
-            '/app/ai-agent',
-        )
-    })
-
-    it('should not render the AI Agent menu item if the feature flag is enabled but user does not have access to automate', () => {
-        useAiAgentItemEnabledMock.mockReturnValue(false)
-        const { result } = renderHook(() => useMainNavigationItems(agentUser))
-        expect(result.current.map((item) => item.url)).not.toContain(
-            '/app/ai-agent',
-        )
-    })
-
-    it('should render the AI Agent menu item if the feature flag is enabled and user has access to automate', () => {
-        useAiAgentItemEnabledMock.mockReturnValue(true)
-        const { result } = renderHook(() => useMainNavigationItems(agentUser))
-        expect(result.current.map((item) => item.url)).toContain(
             '/app/ai-agent',
         )
     })

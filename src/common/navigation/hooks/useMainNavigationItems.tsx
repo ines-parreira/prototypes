@@ -5,7 +5,6 @@ import { Map } from 'immutable'
 import { Badge } from '@gorgias/merchant-ui-kit'
 
 import { UserRole } from 'config/types/user'
-import { useAiAgentItemEnabled } from 'pages/aiAgent/hooks/useAiAgentItemEnabled'
 import { hasRole } from 'utils'
 
 import mainNavigationCSS from '../components/MainNavigation.less'
@@ -34,8 +33,6 @@ export type MenuItem = {
 export const useMainNavigationItems = (
     currentUser: Map<any, any>,
 ): MenuItem[] => {
-    const isAiAgentItemEnabled = useAiAgentItemEnabled()
-
     return useMemo(() => {
         const menuItems: Array<MenuItem & { onlyIf?: boolean }> = [
             {
@@ -65,7 +62,6 @@ export const useMainNavigationItems = (
                 ),
                 segmentProp: { link: 'ai-agent' },
                 requiredRole: UserRole.Agent,
-                onlyIf: isAiAgentItemEnabled,
             },
             {
                 url: '/app/convert',
@@ -106,5 +102,5 @@ export const useMainNavigationItems = (
                     hasRole(currentUser, item.requiredRole),
             )
             .filter((item) => item.onlyIf !== false)
-    }, [currentUser, isAiAgentItemEnabled])
+    }, [currentUser])
 }

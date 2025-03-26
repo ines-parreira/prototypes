@@ -1,20 +1,29 @@
-import React from 'react'
-
-import { fireEvent, render, screen, waitFor } from '@testing-library/react'
-import { createMemoryHistory } from 'history'
+import { screen } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
+import { createMemoryHistory, History } from 'history'
+import { fromJS } from 'immutable'
 import { mockFlags } from 'jest-launchdarkly-mock'
+import { Provider } from 'react-redux'
+import configureMockStore from 'redux-mock-store'
+import thunk from 'redux-thunk'
 
 import { logEvent, SegmentEvent } from 'common/segment'
 import { FeatureFlagKey } from 'config/featureFlags'
-import useAppDispatch from 'hooks/useAppDispatch'
+import { account } from 'fixtures/account'
+import { billingState } from 'fixtures/billing'
+import { chatIntegrationFixtures } from 'fixtures/chat'
+import { shopifyIntegration } from 'fixtures/integrations'
 import { AiAgentOnboardingWizardStep } from 'models/aiAgent/types'
-import { notify } from 'state/notifications/actions'
+import { WIZARD_UPDATE_QUERY_KEY } from 'pages/aiAgent/constants'
+import { getStoreConfigurationFixture } from 'pages/aiAgent/fixtures/storeConfiguration.fixtures'
+import { useWelcomePageAcknowledgedMutation } from 'pages/aiAgent/hooks/useWelcomePageAcknowledgedMutation'
+import { RootState, StoreDispatch } from 'state/types'
 import { renderWithRouter } from 'utils/testing'
 
-import { WIZARD_UPDATE_QUERY_KEY } from '../../constants'
-import { getStoreConfigurationFixture } from '../../fixtures/storeConfiguration.fixtures'
-import { useWelcomePageAcknowledgedMutation } from '../../hooks/useWelcomePageAcknowledgedMutation'
-import { AIAgentWelcomePageView } from '../AIAgentWelcomePageView/AIAgentWelcomePageView'
+import {
+    AiAgentWelcomePageProps,
+    AIAgentWelcomePageView,
+} from '../AIAgentWelcomePageView/AIAgentWelcomePageView'
 
 const MOCK_WIZARD_VALUES = {
     wizard: {
@@ -29,10 +38,8 @@ const MOCK_WIZARD_VALUES = {
     },
 }
 
-jest.mock('@gorgias/merchant-ui-kit', () => ({
-    ...jest.requireActual('@gorgias/merchant-ui-kit'),
-    Skeleton: () => <div>loading-skeleton</div>,
-}))
+const SHOP_NAME = 'my-store'
+const SHOP_TYPE = 'shopify'
 
 jest.mock('../../hooks/useWelcomePageAcknowledgedMutation', () => ({
     useWelcomePageAcknowledgedMutation: jest.fn(() => ({
@@ -54,12 +61,6 @@ jest.mock('../../hooks/useAiAgentOnboardingNotification', () => ({
     })),
 }))
 
-jest.mock('hooks/useAppDispatch')
-
-jest.mock('state/notifications/actions', () => ({
-    notify: jest.fn(),
-}))
-
 jest.mock('common/segment', () => ({
     logEvent: jest.fn(),
     SegmentEvent: {
@@ -72,17 +73,47 @@ mockFlags({
     [FeatureFlagKey.AiAgentOnboardingWizard]: false,
 })
 
-describe('<AIAgentWelcomePageView />', () => {
-    const assertText = (text: string, occurences = 1) => {
-        expect(screen.queryAllByText(text)).toHaveLength(occurences)
-    }
+const defaultState = {
+    currentAccount: fromJS(account),
+    billing: fromJS(billingState),
+    integrations: fromJS({
+        integrations: [shopifyIntegration, ...chatIntegrationFixtures],
+    }),
+} as RootState
 
-    const assertHref = (href: string, occurences = 1) => {
-        const links = screen.queryAllByRole('link')
-        expect(
-            links.filter((link) => link.getAttribute('href') === href),
-        ).toHaveLength(occurences)
-    }
+const mockStore = configureMockStore<RootState, StoreDispatch>([thunk])
+
+const defaultProps = {
+    accountDomain: 'my-account-domain',
+    shopType: 'shopify',
+    shopName: 'my-store',
+    state: 'loading',
+}
+const renderWithProvider = (
+    props: Partial<AiAgentWelcomePageProps> = defaultProps,
+    history?: History,
+) => {
+    renderWithRouter(
+        <Provider store={mockStore(defaultState)}>
+            <AIAgentWelcomePageView {...defaultProps} {...props} />
+        </Provider>,
+        { history },
+    )
+}
+
+describe('<AIAgentWelcomePageView />', () => {
+    beforeEach(() => {
+        jest.clearAllMocks()
+        jest.resetModules()
+        mockFlags({
+            [FeatureFlagKey.AiAgentOnboardingWizard]: false,
+            [FeatureFlagKey.ConvAiStandaloneMenu]: true,
+            [FeatureFlagKey.ConvAiOnboarding]: true,
+        })
+        ;(useWelcomePageAcknowledgedMutation as jest.Mock).mockReturnValue({
+            isLoading: false,
+        })
+    })
 
     const assertButtonAndLearnMore = () => {
         expect(
@@ -90,75 +121,32 @@ describe('<AIAgentWelcomePageView />', () => {
                 selector: 'button span',
             }),
         ).toBeInTheDocument()
-
-        const item1 = screen.getByText(
-            'Join our AI Agent Masterclass live webinar',
-        )
-        expect(item1).toContainElement(screen.getByText('ondemand_video'))
-        expect(item1).toHaveAttribute(
-            'href',
-            'https://link.gorgias.com/ai-agent-webinar-product',
-        )
-
-        const item2 = screen.getByText('How to set up AI Agent')
-        expect(item2).toContainElement(screen.getByText('chrome_reader_mode'))
-        expect(item2).toHaveAttribute(
-            'href',
-            'https://link.gorgias.com/ai-agent-help-product',
-        )
     }
 
-    it('should render loading state correctly', async () => {
-        render(
-            <AIAgentWelcomePageView
-                accountDomain="my-account-domain"
-                shopType="shopify"
-                shopName="my-store"
-                state="loading"
-            />,
-        )
-        expect(await screen.findAllByText('loading-skeleton')).toHaveLength(5)
-        expect(logEvent).not.toHaveBeenCalled()
-    })
-
     it('should render static state correctly', () => {
-        render(
-            <AIAgentWelcomePageView
-                accountDomain="my-account-domain"
-                shopType="shopify"
-                shopName="my-store"
-                state="static"
-            />,
-        )
+        renderWithProvider()
 
         expect(
             screen.getByText(
-                'Introducing AI Agent, your team’s newest member for seamless customer interactions who can:',
+                /Introducing AI Agent - with Support and Sales skills, your team’s newest member for seamless customer interactions/,
             ),
         ).toBeInTheDocument()
         expect(
             screen.getByText(
-                'Consume all your brand’s knowledge, identity and tone',
-            ),
-        ).toBeInTheDocument()
-        expect(
-            screen.getByText('Follow Guidance built by you'),
-        ).toBeInTheDocument()
-        expect(
-            screen.getByText(
-                'Enhance team productivity, reducing workload & response times',
+                /Lead customers to fast resolutions in seconds, not hours/,
             ),
         ).toBeInTheDocument()
         expect(
             screen.getByText(
-                'Guide customers towards swift resolutions in seconds, not hours',
+                /Enhance team productivity, reducing workload & response times by automating up to 60% of your tickets/,
             ),
         ).toBeInTheDocument()
         expect(
             screen.getByText(
-                'Continuously improve based on your reviews & feedback',
+                /Offer tailored discounts and product recommendations to drive personalized shopping experiences/,
             ),
         ).toBeInTheDocument()
+        expect(screen.getByText(/AI Agent Skills/)).toBeInTheDocument()
 
         assertButtonAndLearnMore()
 
@@ -168,444 +156,33 @@ describe('<AIAgentWelcomePageView />', () => {
         )
     })
 
-    it('should call createWelcomePageAcknowledged with correct parameters on button click in static state', async () => {
-        const createWelcomePageAcknowledgedMock = jest.fn()
+    it('should disable button when loading', async () => {
         ;(useWelcomePageAcknowledgedMutation as jest.Mock).mockReturnValue({
-            createWelcomePageAcknowledged: createWelcomePageAcknowledgedMock,
-            isLoading: false,
-        })
-
-        render(
-            <AIAgentWelcomePageView
-                state="static"
-                accountDomain="my-account-domain"
-                shopType="shopify"
-                shopName="my-shop"
-            />,
-        )
-
-        const button = screen.getByRole('button', {
-            name: /Set Up AI Agent/i,
-        })
-
-        fireEvent.click(button)
-
-        expect(createWelcomePageAcknowledgedMock).toHaveBeenCalledWith([
-            'my-account-domain',
-            'my-shop',
-        ])
-
-        await waitFor(() =>
-            expect(logEvent).toHaveBeenLastCalledWith(
-                SegmentEvent.AiAgentWelcomePageCtaClicked,
-                { version: 'Basic', store: 'my-shop' },
-            ),
-        )
-    })
-
-    it('should render dynamic state correctly when nothing is checked', () => {
-        render(
-            <AIAgentWelcomePageView
-                accountDomain="my-account-domain"
-                shopType="shopify"
-                shopName="my-store"
-                state="dynamic"
-                emailConnected={{
-                    checked: false,
-                    link: 'welcome-page-connect-email-link',
-                }}
-                helpCenterCreated={{
-                    checked: false,
-                    link: 'welcome-page-create-help-center-link',
-                }}
-                helpCenter20Articles={{
-                    checked: false,
-                    link: 'welcome-page-add-articles-link',
-                }}
-            />,
-        )
-
-        assertText(
-            'Prepare AI Agent to automate 60% of your email and contact form tickets by completing these steps',
-        )
-        assertText('Connect an email to this store')
-        assertText('Create or import a Help Center')
-        assertText('Add 20+ articles to your Help Center')
-
-        assertHref('welcome-page-connect-email-link')
-        assertHref('welcome-page-create-help-center-link')
-        assertHref('welcome-page-add-articles-link')
-
-        assertText('1')
-        assertText('2')
-        assertText('3')
-
-        assertText('checked', 0)
-
-        expect(logEvent).toHaveBeenCalledWith(
-            SegmentEvent.AiAgentWelcomePageViewed,
-            { version: 'Dynamic', store: 'my-store' },
-        )
-
-        assertButtonAndLearnMore()
-    })
-
-    it('should render dynamic state correctly when some are checked', () => {
-        render(
-            <AIAgentWelcomePageView
-                accountDomain="my-account-domain"
-                shopType="shopify"
-                shopName="my-store"
-                state="dynamic"
-                emailConnected={{
-                    checked: false,
-                    link: 'welcome-page-connect-email-link',
-                }}
-                helpCenterCreated={{
-                    checked: true,
-                }}
-                helpCenter20Articles={{
-                    checked: true,
-                }}
-            />,
-        )
-
-        assertText(
-            'Prepare AI Agent to automate 60% of your email and contact form tickets by completing these steps',
-        )
-        assertText('Connect an email to this store')
-        assertText('Create or import a Help Center')
-        assertText('Add 20+ articles to your Help Center')
-
-        assertHref('welcome-page-connect-email-link')
-        assertHref('welcome-page-create-help-center-link', 0)
-        assertHref('welcome-page-add-articles-link', 0)
-
-        assertText('1')
-        assertText('2', 0)
-        assertText('3', 0)
-
-        assertText('checked', 2)
-    })
-
-    it('should render dynamic state correctly when all are checked', () => {
-        render(
-            <AIAgentWelcomePageView
-                accountDomain="my-account-domain"
-                shopType="shopify"
-                shopName="my-store"
-                state="dynamic"
-                emailConnected={{
-                    checked: true,
-                }}
-                helpCenterCreated={{
-                    checked: true,
-                }}
-                helpCenter20Articles={{
-                    checked: true,
-                }}
-            />,
-        )
-
-        assertText(
-            'Prepare AI Agent to automate 60% of your email and contact form tickets by completing these steps',
-        )
-        assertText('Connect an email to this store')
-        assertText('Create or import a Help Center')
-        assertText('Add 20+ articles to your Help Center')
-
-        assertHref('welcome-page-connect-email-link', 0)
-        assertHref('welcome-page-create-help-center-link', 0)
-        assertHref('welcome-page-add-articles-link', 0)
-
-        assertText('1', 0)
-        assertText('2', 0)
-        assertText('3', 0)
-
-        assertText('checked', 3)
-    })
-
-    it('should call createWelcomePageAcknowledged with correct parameters on button click in dynamic state', async () => {
-        const createWelcomePageAcknowledgedMock = jest.fn()
-        ;(useWelcomePageAcknowledgedMutation as jest.Mock).mockReturnValue({
-            createWelcomePageAcknowledged: createWelcomePageAcknowledgedMock,
-            isLoading: false,
-        })
-
-        render(
-            <AIAgentWelcomePageView
-                accountDomain="my-account-domain"
-                shopType="shopify"
-                shopName="my-store"
-                state="dynamic"
-                emailConnected={{
-                    checked: true,
-                }}
-                helpCenterCreated={{
-                    checked: true,
-                }}
-                helpCenter20Articles={{
-                    checked: true,
-                }}
-            />,
-        )
-
-        const button = screen.getByRole('button', {
-            name: /Set Up AI Agent/i,
-        })
-
-        fireEvent.click(button)
-
-        expect(createWelcomePageAcknowledgedMock).toHaveBeenCalledWith([
-            'my-account-domain',
-            'my-store',
-        ])
-
-        await waitFor(() =>
-            expect(logEvent).toHaveBeenLastCalledWith(
-                SegmentEvent.AiAgentWelcomePageCtaClicked,
-                { version: 'Dynamic', store: 'my-store' },
-            ),
-        )
-    })
-
-    it('should disable button when loading', () => {
-        const createWelcomePageAcknowledgedMock = jest.fn()
-        ;(useWelcomePageAcknowledgedMutation as jest.Mock).mockReturnValue({
-            createWelcomePageAcknowledged: createWelcomePageAcknowledgedMock,
             isLoading: true,
         })
 
-        render(
-            <AIAgentWelcomePageView
-                state="static"
-                accountDomain="my-account-domain"
-                shopType="shopify"
-                shopName="my-shop"
-            />,
-        )
+        renderWithProvider()
 
         const button = screen.getByRole<HTMLButtonElement>('button', {
             name: /Set Up AI Agent/i,
         })
 
-        fireEvent.click(button)
+        await userEvent.click(button)
 
-        expect(createWelcomePageAcknowledgedMock).not.toHaveBeenCalled()
         expect(button).toBeAriaDisabled()
     })
 
-    it('should call dispatch with correct parameters on mutation failure', async () => {
-        const createWelcomePageAcknowledgedMock = jest
-            .fn()
-            .mockRejectedValueOnce(new Error('Test Error'))
-            .mockRejectedValueOnce('Some other error')
+    it('should redirect to AiAgentOnboardingWizard page when Set up AI Agent button is clicked', async () => {
+        const history = createMemoryHistory()
+        const historyPushSpy = jest.spyOn(history, 'push')
 
-        ;(useWelcomePageAcknowledgedMutation as jest.Mock).mockReturnValue({
-            createWelcomePageAcknowledged: createWelcomePageAcknowledgedMock,
-            isLoading: false,
-        })
-
-        const dispatchMock = jest.fn()
-        ;(useAppDispatch as jest.Mock).mockReturnValue(dispatchMock)
-
-        const notifyMock = jest.fn(() => 'notify-return')
-        ;(notify as jest.Mock).mockImplementation(notifyMock)
-
-        render(
-            <AIAgentWelcomePageView
-                state="static"
-                accountDomain="my-account-domain"
-                shopType="shopify"
-                shopName="my-shop"
-            />,
-        )
+        renderWithProvider({}, history)
 
         const button = screen.getByRole('button', {
             name: /Set Up AI Agent/i,
         })
 
-        fireEvent.click(button)
-
-        await waitFor(() =>
-            expect(dispatchMock).toHaveBeenLastCalledWith('notify-return'),
-        )
-
-        await waitFor(() =>
-            expect(notifyMock).toHaveBeenLastCalledWith({
-                message: 'Test Error',
-                status: 'error',
-            }),
-        )
-
-        fireEvent.click(button)
-
-        await waitFor(() =>
-            expect(dispatchMock).toHaveBeenLastCalledWith('notify-return'),
-        )
-
-        await waitFor(() =>
-            expect(notifyMock).toHaveBeenLastCalledWith({
-                message: 'An unknown error occurred',
-                status: 'error',
-            }),
-        )
-    })
-    it('should render onboardingWizard state with the correct copy', () => {
-        render(
-            <AIAgentWelcomePageView
-                accountDomain="my-account-domain"
-                shopType="shopify"
-                shopName="my-store"
-                state="onboardingWizard"
-                emailConnected={{
-                    checked: true,
-                }}
-                helpCenterCreated={{
-                    checked: true,
-                }}
-                helpCenter20Articles={{
-                    checked: true,
-                }}
-                shopifyPermissionUpdated={{
-                    checked: true,
-                }}
-            />,
-        )
-
-        assertText(
-            'Prepare AI Agent to automate 60% of your email, Chat and Contact Form tickets by completing these steps:',
-        )
-        assertText('Update your Shopify integration')
-        assertText('Connect an email to this store')
-        assertText('Create or import a Help Center')
-        assertText('Add 20+ articles to your Help Center')
-    })
-
-    it('should redirect to AiAgentOnboardingWizard page when Set up AI Agent button is clicked', () => {
-        const history = createMemoryHistory()
-        const historyPushSpy = jest.spyOn(history, 'push')
-
-        const SHOP_NAME = 'my-store'
-        const SHOP_TYPE = 'shopify'
-
-        renderWithRouter(
-            <AIAgentWelcomePageView
-                accountDomain="my-account-domain"
-                shopType={SHOP_TYPE}
-                shopName={SHOP_NAME}
-                state="onboardingWizard"
-                emailConnected={{
-                    checked: true,
-                }}
-                helpCenterCreated={{
-                    checked: true,
-                }}
-                helpCenter20Articles={{
-                    checked: true,
-                }}
-                shopifyPermissionUpdated={{
-                    checked: true,
-                }}
-            />,
-            { history },
-        )
-
-        const button = screen.getByRole('button', {
-            name: /Set Up AI Agent/i,
-        })
-
-        fireEvent.click(button)
-
-        expect(historyPushSpy).toHaveBeenCalledWith({
-            pathname: `/app/automation/${SHOP_TYPE}/${SHOP_NAME}/ai-agent/new`,
-            search: '',
-        })
-    })
-
-    it('should redirect to AiAgentOnboardingWizard page with search params when Continue Set Up button is clicked', () => {
-        const history = createMemoryHistory()
-        const historyPushSpy = jest.spyOn(history, 'push')
-
-        const SHOP_NAME = 'my-store'
-        const SHOP_TYPE = 'shopify'
-
-        renderWithRouter(
-            <AIAgentWelcomePageView
-                accountDomain="my-account-domain"
-                shopType={SHOP_TYPE}
-                shopName={SHOP_NAME}
-                storeConfiguration={getStoreConfigurationFixture(
-                    MOCK_WIZARD_VALUES,
-                )}
-                state="onboardingWizard"
-                emailConnected={{
-                    checked: true,
-                }}
-                helpCenterCreated={{
-                    checked: true,
-                }}
-                helpCenter20Articles={{
-                    checked: true,
-                }}
-                shopifyPermissionUpdated={{
-                    checked: true,
-                }}
-            />,
-            { history },
-        )
-
-        const button = screen.getByRole('button', {
-            name: /Continue Setup/i,
-        })
-
-        fireEvent.click(button)
-
-        expect(historyPushSpy).toHaveBeenCalledWith({
-            pathname: `/app/automation/${SHOP_TYPE}/${SHOP_NAME}/ai-agent/new`,
-            search: `?${WIZARD_UPDATE_QUERY_KEY}=true`,
-        })
-    })
-
-    it('should redirect to the new onboarding page without search params when Continue Set Up button is clicked with ff active', () => {
-        const history = createMemoryHistory()
-        const historyPushSpy = jest.spyOn(history, 'push')
-
-        const SHOP_NAME = 'my-store'
-        const SHOP_TYPE = 'shopify'
-
-        mockFlags({
-            [FeatureFlagKey.ConvAiStandaloneMenu]: true,
-            [FeatureFlagKey.ConvAiOnboarding]: true,
-        })
-
-        renderWithRouter(
-            <AIAgentWelcomePageView
-                accountDomain="my-account-domain"
-                shopType={SHOP_TYPE}
-                shopName={SHOP_NAME}
-                state="onboardingWizard"
-                emailConnected={{
-                    checked: true,
-                }}
-                helpCenterCreated={{
-                    checked: true,
-                }}
-                helpCenter20Articles={{
-                    checked: true,
-                }}
-                shopifyPermissionUpdated={{
-                    checked: true,
-                }}
-            />,
-            { history },
-        )
-
-        const button = screen.getByRole('button', {
-            name: /Set Up Ai Agent/i,
-        })
-
-        fireEvent.click(button)
+        await userEvent.click(button)
 
         expect(historyPushSpy).toHaveBeenCalledWith({
             pathname: `/app/ai-agent/${SHOP_TYPE}/${SHOP_NAME}/onboarding`,
@@ -613,38 +190,58 @@ describe('<AIAgentWelcomePageView />', () => {
         })
     })
 
-    it('should render dynamic state for Onboarding Wizard update when storeConfiguration is exist', () => {
-        render(
-            <AIAgentWelcomePageView
-                accountDomain="my-account-domain"
-                shopType="shopify"
-                shopName="my-store"
-                storeConfiguration={getStoreConfigurationFixture(
-                    MOCK_WIZARD_VALUES,
-                )}
-                state="onboardingWizard"
-                emailConnected={{
-                    checked: true,
-                }}
-                helpCenterCreated={{
-                    checked: true,
-                }}
-                helpCenter20Articles={{
-                    checked: true,
-                }}
-                shopifyPermissionUpdated={{
-                    checked: true,
-                }}
-            />,
+    it('should redirect to AiAgentOnboardingWizard page with search params when Continue Set Up button is clicked', async () => {
+        const history = createMemoryHistory()
+        const historyPushSpy = jest.spyOn(history, 'push')
+
+        renderWithProvider(
+            {
+                storeConfiguration:
+                    getStoreConfigurationFixture(MOCK_WIZARD_VALUES),
+            },
+            history,
         )
 
-        assertText(
-            'Prepare AI Agent to automate 60% of your tickets by completing these steps:',
-        )
-        assertText('Update your Shopify integration')
-        assertText('Connect an email to this store')
-        assertText('Create or import a Help Center')
-        assertText('Add 20+ articles to your Help Center')
+        const button = screen.getByRole('button', {
+            name: /Continue Setup/i,
+        })
+
+        await userEvent.click(button)
+
+        expect(historyPushSpy).toHaveBeenCalledWith({
+            pathname: `/app/ai-agent/${SHOP_TYPE}/${SHOP_NAME}/onboarding`,
+            search: `?${WIZARD_UPDATE_QUERY_KEY}=true`,
+        })
+    })
+
+    it('should redirect to the new onboarding page without search params when Continue Set Up button is clicked', async () => {
+        const history = createMemoryHistory()
+        const historyPushSpy = jest.spyOn(history, 'push')
+
+        mockFlags({
+            [FeatureFlagKey.ConvAiStandaloneMenu]: true,
+            [FeatureFlagKey.ConvAiOnboarding]: true,
+        })
+
+        renderWithProvider({}, history)
+
+        const button = screen.getByRole('button', {
+            name: /Set Up AI Agent/i,
+        })
+
+        await userEvent.click(button)
+
+        expect(historyPushSpy).toHaveBeenCalledWith({
+            pathname: `/app/ai-agent/${SHOP_TYPE}/${SHOP_NAME}/onboarding`,
+            search: '',
+        })
+    })
+
+    it('should render dynamic state for Onboarding Wizard update when storeConfiguration exists', () => {
+        renderWithProvider({
+            storeConfiguration:
+                getStoreConfigurationFixture(MOCK_WIZARD_VALUES),
+        })
 
         expect(
             screen.getByRole('button', {

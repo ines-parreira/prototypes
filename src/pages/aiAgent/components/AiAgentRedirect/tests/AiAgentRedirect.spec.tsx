@@ -110,8 +110,6 @@ describe('RedirectToAiAgentStore', () => {
     test('redirects to overview page when StandaloneConvAiOverviewPage flag is enabled', () => {
         mockUseFlag.mockImplementation((flag) => {
             switch (flag) {
-                case FeatureFlagKey.StandaloneAiAgentAutomatePaywall:
-                    return false
                 case FeatureFlagKey.StandaloneConvAiOverviewPage:
                     return true
                 default:
@@ -149,8 +147,6 @@ describe('RedirectToAiAgentStore', () => {
                 ({ overviewPageFlag }) => {
                     mockUseFlag.mockImplementation((flag) => {
                         switch (flag) {
-                            case FeatureFlagKey.StandaloneAiAgentAutomatePaywall:
-                                return true
                             case FeatureFlagKey.StandaloneConvAiOverviewPage:
                                 return overviewPageFlag
                             default:

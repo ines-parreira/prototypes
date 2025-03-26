@@ -6,7 +6,6 @@ import { ActiveContent, Navbar } from 'common/navigation'
 import { FeatureFlagKey } from 'config/featureFlags'
 import { useFlag } from 'core/flags'
 import useAppSelector from 'hooks/useAppSelector'
-import { useAiAgentItemEnabled } from 'pages/aiAgent/hooks/useAiAgentItemEnabled'
 import NavbarLink from 'pages/common/components/navbar/NavbarLink'
 import { getHasAutomate } from 'state/billing/selectors'
 
@@ -23,7 +22,6 @@ const AutomateNavbar = () => {
     )
     const hasStandaloneConvAiOverviewPage =
         useFlags()[FeatureFlagKey.StandaloneConvAiOverviewPage]
-    const isAiAgentItemEnabled = useAiAgentItemEnabled()
 
     return (
         <Navbar activeContent={ActiveContent.Automate} title="Automate">
@@ -40,22 +38,21 @@ const AutomateNavbar = () => {
                             <span>Overview</span>
                         </NavbarLink>
                     </div>
-                    {!isAiAgentItemEnabled &&
-                        hasStandaloneConvAiOverviewPage && (
-                            <div
-                                className={classNames(
-                                    navbarCss['link-wrapper'],
-                                    css.navbarItem,
-                                )}
+                    {hasStandaloneConvAiOverviewPage && (
+                        <div
+                            className={classNames(
+                                navbarCss['link-wrapper'],
+                                css.navbarItem,
+                            )}
+                        >
+                            <NavbarLink
+                                to="/app/automation/ai-agent-overview"
+                                exact
                             >
-                                <NavbarLink
-                                    to="/app/automation/ai-agent-overview"
-                                    exact
-                                >
-                                    <span>AI Agent Overview</span>
-                                </NavbarLink>
-                            </div>
-                        )}
+                                <span>AI Agent Overview</span>
+                            </NavbarLink>
+                        </div>
+                    )}
                     {isActionsInternalPlatformEnabled && (
                         <div className={navbarCss['link-wrapper']}>
                             <NavbarLink to="/app/ai-agent/actions-platform">

@@ -18,10 +18,6 @@ import { getShopifyIntegrationsSortedByName } from 'state/integrations/selectors
 import css from './AiAgentRedirect.less'
 
 export const AiAgentRedirect = () => {
-    const hasAiAgentAutomatePaywall = useFlag(
-        FeatureFlagKey.StandaloneAiAgentAutomatePaywall,
-        null, // null means FF is not set yet
-    )
     const hasStandaloneConvAiOverviewPage = useFlag(
         FeatureFlagKey.StandaloneConvAiOverviewPage,
         null, // null means FF is not set yet
@@ -35,9 +31,7 @@ export const AiAgentRedirect = () => {
         shopName: firstStore?.name ?? '',
     })
 
-    const isLoading =
-        hasAiAgentAutomatePaywall === null ||
-        hasStandaloneConvAiOverviewPage === null
+    const isLoading = hasStandaloneConvAiOverviewPage === null
 
     if (isLoading) {
         return (
@@ -47,7 +41,7 @@ export const AiAgentRedirect = () => {
         )
     }
 
-    if (!hasAutomate && hasAiAgentAutomatePaywall) {
+    if (!hasAutomate) {
         return (
             <AiAgentPaywallView
                 aiAgentPaywallFeature={AIAgentPaywallFeatures.Automate}

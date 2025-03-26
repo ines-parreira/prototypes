@@ -1,11 +1,9 @@
 import React, { useMemo } from 'react'
 
 import { IntegrationType } from 'models/integration/constants'
-import { hasShopifyRequiredPermissions } from 'pages/aiAgent/utils/shopify-integration.utils'
 import { useHasEmailToStoreConnection } from 'pages/automate/common/components/TopQuestions/useHasEmailToStoreConnection'
 import { useHelpCentersArticleCount } from 'pages/automate/common/hooks/useHelpCentersArticleCount'
 import useSelfServiceStoreIntegration from 'pages/automate/common/hooks/useSelfServiceStoreIntegration'
-import { useShopifyIntegrationAndScope } from 'pages/common/hooks/useShopifyIntegrationAndScope'
 import { useHelpCenterList } from 'pages/settings/helpCenter/hooks/useHelpCenterList'
 
 import {
@@ -14,49 +12,20 @@ import {
     DynamicItem,
 } from './components/AIAgentWelcomePageView/AIAgentWelcomePageView'
 
-type Props = AiAgentWelcomePageProps & {
-    state: 'dynamic' | 'onboardingWizard'
-}
-
 export const AIAgentWelcomePageDynamic = ({
     accountDomain,
     shopType,
     shopName,
     storeConfiguration,
-    state,
-}: Props) => {
-    const isOnboardingWizard = state === 'onboardingWizard'
-
-    // Check - Shopify integration permission
-    const { integration: shopifyIntegration } =
-        useShopifyIntegrationAndScope(shopName)
-
-    const shopifyPermissionUpdated = useMemo(() => {
-        if (!isOnboardingWizard || !shopifyIntegration) return undefined
-
-        const shopifyNeedPermissions =
-            !hasShopifyRequiredPermissions(shopifyIntegration)
-
-        if (shopifyNeedPermissions) {
-            return {
-                checked: false,
-                link: `/api/integrations/${shopifyIntegration.id}/sync_permissions`,
-            }
-        }
-
-        return { checked: true }
-    }, [isOnboardingWizard, shopifyIntegration])
-
+}: AiAgentWelcomePageProps) => {
     // Check - Email integrations
     const storeIntegration = useSelfServiceStoreIntegration(
         IntegrationType.Shopify,
         shopName,
     )
 
-    const {
-        isLoading: isHasEmailToStoreConnectionLoading,
-        hasEmailToStoreConnection,
-    } = useHasEmailToStoreConnection(storeIntegration?.id)
+    const { isLoading: isHasEmailToStoreConnectionLoading } =
+        useHasEmailToStoreConnection(storeIntegration?.id)
 
     // Check - Help Center
     const helpCenterList = useHelpCenterList({ shop_name: shopName })
@@ -113,7 +82,6 @@ export const AIAgentWelcomePageDynamic = ({
     ) {
         return (
             <AIAgentWelcomePageView
-                state="loading"
                 accountDomain={accountDomain}
                 shopType={shopType}
                 shopName={shopName}
@@ -123,29 +91,10 @@ export const AIAgentWelcomePageDynamic = ({
 
     return (
         <AIAgentWelcomePageView
-            state={state}
             accountDomain={accountDomain}
             shopType={shopType}
             shopName={shopName}
             storeConfiguration={storeConfiguration}
-            emailConnected={
-                hasEmailToStoreConnection
-                    ? { checked: true }
-                    : {
-                          checked: false,
-                          link: '/app/settings/channels/email',
-                      }
-            }
-            helpCenterCreated={
-                helpCentersConnectedToStoreIds?.length !== 0
-                    ? { checked: true }
-                    : {
-                          checked: false,
-                          link: '/app/settings/help-center/new',
-                      }
-            }
-            helpCenter20Articles={has20Articles}
-            shopifyPermissionUpdated={shopifyPermissionUpdated}
         />
     )
 }

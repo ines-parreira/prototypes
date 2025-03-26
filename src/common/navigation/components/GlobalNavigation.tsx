@@ -12,7 +12,6 @@ import { FeatureFlagKey } from 'config/featureFlags'
 import { UserRole } from 'config/types/user'
 import { useFlag } from 'core/flags'
 import useAppSelector from 'hooks/useAppSelector'
-import { useAiAgentItemEnabled } from 'pages/aiAgent/hooks/useAiAgentItemEnabled'
 import { useReportChartRestrictions } from 'pages/stats/report-chart-restrictions/useReportChartRestrictions'
 import { BASE_STATS_PATH } from 'routes/constants'
 import { getCurrentUser } from 'state/currentUser/selectors'
@@ -23,7 +22,6 @@ export default function GlobalNavigation() {
     const activeItem = useActiveItem()
     const navBarMenuIcon = useNavBarMenuIcon()
     const { onMenuToggle, onNavHover, onNavLeave } = useNavBar()
-    const isAiAgentItemEnabled = useAiAgentItemEnabled()
     const isAutomateRevampEnabled = useFlag(
         FeatureFlagKey.AutomateSettingsRevamp,
     )
@@ -82,17 +80,16 @@ export default function GlobalNavigation() {
                                 data-candu-id="global-navigation-menu-automation-page"
                             />
                         )}
-                    {isAiAgentItemEnabled &&
-                        hasRole(currentUser, UserRole.Agent) && (
-                            <GlobalNavigationItem
-                                icon="auto_awesome"
-                                label="AI Agent"
-                                isActive={activeItem === 'ai-agent'}
-                                tooltip={<span>AI Agent</span>}
-                                url="/app/ai-agent"
-                                data-candu-id="global-navigation-menu-ai-agent-page"
-                            />
-                        )}
+                    {hasRole(currentUser, UserRole.Agent) && (
+                        <GlobalNavigationItem
+                            icon="auto_awesome"
+                            label="AI Agent"
+                            isActive={activeItem === 'ai-agent'}
+                            tooltip={<span>AI Agent</span>}
+                            url="/app/ai-agent"
+                            data-candu-id="global-navigation-menu-ai-agent-page"
+                        />
+                    )}
                     {hasRole(currentUser, UserRole.Admin) && (
                         <GlobalNavigationItem
                             icon="monetization_on"

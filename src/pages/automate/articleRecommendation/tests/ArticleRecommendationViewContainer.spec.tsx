@@ -1,12 +1,10 @@
 import { QueryClientProvider } from '@tanstack/react-query'
 import { screen } from '@testing-library/react'
 import { fromJS } from 'immutable'
-import { useFlags } from 'launchdarkly-react-client-sdk'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import { FeatureFlagKey } from 'config/featureFlags'
 import { billingState } from 'fixtures/billing'
 import { selfServiceConfiguration1 } from 'fixtures/self_service_configurations'
 import useSelfServiceConfiguration from 'pages/automate/common/hooks/useSelfServiceConfiguration'
@@ -23,7 +21,6 @@ jest.mock('launchdarkly-react-client-sdk')
 
 const queryClient = mockQueryClient()
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
-const mockUseFlags = jest.mocked(useFlags)
 
 const defaultState = {
     billing: fromJS(billingState),
@@ -63,34 +60,7 @@ describe('<ArticleRecommendationPreview />', () => {
         })
     })
 
-    it('should display the old paywall when the feature-flag is not enable', () => {
-        renderWithRouter(
-            <QueryClientProvider client={queryClient}>
-                <Provider
-                    store={mockStore({
-                        ...defaultState,
-                    })}
-                >
-                    <ArticleRecommendationViewContainer />
-                </Provider>
-            </QueryClientProvider>,
-            {
-                path: `/app/automation/:shopType/:shopName/article-recommendation`,
-                route: '/app/automation/shopify/test-shop/article-recommendation',
-            },
-        )
-        expect(
-            screen.getByText(
-                'Automate 60%+ of your support with AI and grow your brand',
-            ),
-        ).toBeInTheDocument()
-    })
-
-    it('should display the new paywall when the feature-flag is enable', () => {
-        mockUseFlags.mockReturnValue({
-            [FeatureFlagKey.StandaloneAiAgentAutomatePaywall]: true,
-        })
-
+    it('should display the new paywall', () => {
         renderWithRouter(
             <QueryClientProvider client={queryClient}>
                 <Provider

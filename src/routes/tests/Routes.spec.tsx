@@ -16,7 +16,6 @@ import { account } from 'fixtures/account'
 import * as billingFixtures from 'fixtures/billing'
 import { billingState } from 'fixtures/billing'
 import { user } from 'fixtures/users'
-import { useAiAgentItemEnabled } from 'pages/aiAgent/hooks/useAiAgentItemEnabled'
 import { ProtectedRoute } from 'pages/stats/report-chart-restrictions/ProtectedRoute'
 import { useReportChartRestrictions } from 'pages/stats/report-chart-restrictions/useReportChartRestrictions'
 import Routes from 'routes/Routes'
@@ -109,9 +108,6 @@ jest.mock('pages/aiAgent/AiAgentSales', () => ({
     AiAgentSales: () => <div>AiAgentSales</div>,
 }))
 
-jest.mock('pages/aiAgent/hooks/useAiAgentItemEnabled')
-const useAiAgentItemEnabledMock = assumeMock(useAiAgentItemEnabled)
-
 jest.mock('routes/StatsRoutes')
 const StatsRoutesMock = assumeMock(StatsRoutes)
 
@@ -150,7 +146,6 @@ describe('<Routes/>', () => {
     beforeEach(() => {
         mockUseFlag.mockReturnValue(false)
         mockHistory.replace('/app')
-        useAiAgentItemEnabledMock.mockReturnValue(false)
         StatsRoutesMock.mockImplementation(() => <div />)
         ProtectedRouteMock.mockImplementation(({ children }) => children)
         useReportChartRestrictionsMock.mockReturnValue({
