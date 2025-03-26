@@ -1,4 +1,4 @@
-import { useMemo } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 
 import { EMAIL_INTEGRATION_TYPES } from 'constants/integration'
 import useAppSelector from 'hooks/useAppSelector'
@@ -11,6 +11,22 @@ import { useAiAgentStoreConfigurationContext } from '../providers/AiAgentStoreCo
 import { FormValues } from '../types'
 import { isAiAgentEnabled } from '../util'
 import { getFormValuesFromStoreConfiguration } from './utils/configurationForm.utils'
+
+type EmailItem = {
+    email: string
+    id: number
+}
+
+const areEmailListsEqual = (arr1: EmailItem[], arr2: EmailItem[]): boolean => {
+    if (!arr1 || !arr2) return false
+    if (arr1.length !== arr2.length) return false
+
+    return arr1.every((item1) =>
+        arr2.some(
+            (item2) => item1.id === item2.id && item1.email === item2.email,
+        ),
+    )
+}
 
 /**
  * A custom hook that enables the capability to create a form for the store configuration of AI agent.
@@ -33,12 +49,18 @@ export const useStoreConfigurationForm = (
         [],
     )
     const emailIntegrations = useAppSelector(selector)
-    const emailItems = useMemo(() => {
-        return emailIntegrations.map((integration) => ({
+    const [emailItems, setEmailItems] = useState<EmailItem[]>([])
+
+    useEffect(() => {
+        const newEmails = emailIntegrations.map((integration) => ({
             email: integration.meta.address,
             id: integration.id,
         }))
-    }, [emailIntegrations])
+
+        if (areEmailListsEqual(newEmails, emailItems)) return
+
+        setEmailItems(newEmails)
+    }, [emailIntegrations, emailItems])
 
     const { storeConfiguration } = useAiAgentStoreConfigurationContext()
 

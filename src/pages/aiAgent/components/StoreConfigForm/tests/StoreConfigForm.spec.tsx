@@ -203,8 +203,6 @@ const useLocalStorageSpy = jest.spyOn(
     'default',
 ) as jest.Mock
 
-useLocalStorageSpy.mockReturnValue([[], jest.fn()])
-
 const renderComponent = (
     props?: Partial<ComponentProps<typeof StoreConfigForm>>,
 ) =>
@@ -347,6 +345,8 @@ describe('<StoreConfigForm />', () => {
         mockUseAiAgentOnboardingNotification.mockReturnValue(
             defaultUseAiAgentOnboardingNotification,
         )
+
+        useLocalStorageSpy.mockReturnValue([[], jest.fn()])
     })
 
     afterAll(() => {
@@ -1104,8 +1104,8 @@ describe('<StoreConfigForm />', () => {
             })
         })
 
-        it('should not display modal if data persisted in localStorage', async () => {
-            useLocalStorageSpy.mockReturnValueOnce([['test-shop'], null])
+        it('should not display modal if the shop has already viewed the modal and persisted in the local storage', async () => {
+            useLocalStorageSpy.mockReturnValue([['test-shop'], null])
             mockedUseAccountStoreConfiguration.mockReturnValue({
                 accountConfiguration: undefined,
                 aiAgentTicketViewId: 1,
