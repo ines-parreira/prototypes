@@ -24,9 +24,9 @@ describe('<TicketNavbarViewLink /> - candu link part', () => {
         // Create a minimal view object for testing
         const view = {
             id: 'view1',
-            name: 'Test View',
-            slug: 'test-view',
-            decoration: { emoji: '😊' },
+            name: 'Handover',
+            slug: 'handover',
+            decoration: { emoji: '🧑‍💻' },
             section_id: null,
             deactivated_datetime: null,
         } as unknown as View
@@ -37,7 +37,7 @@ describe('<TicketNavbarViewLink /> - candu link part', () => {
             </MemoryRouter>,
         )
 
-        const expectedDataCanduId = 'ticket-navbar-view-link-test-view'
+        const expectedDataCanduId = 'ticket-navbar-ai-agent-view-link-handover'
 
         const sectionNameElement = container.querySelector('[data-candu-id]')
         expect(sectionNameElement).toBeTruthy()

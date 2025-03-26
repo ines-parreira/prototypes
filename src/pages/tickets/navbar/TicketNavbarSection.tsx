@@ -16,6 +16,7 @@ import navbarSectionCss from 'pages/common/components/navbar/NavbarSectionBlock.
 import { RootState } from 'state/types'
 import { TicketNavbarElementType } from 'state/ui/ticketNavbar/types'
 import { hasRole } from 'utils'
+import { addCanduLinkForValidViewOrSection } from 'utils/views'
 
 import { TicketNavbarSectionElement } from './TicketNavbarContent'
 import TicketNavbarDropTarget from './TicketNavbarDropTarget'
@@ -69,6 +70,7 @@ export function TicketNavbarSectionContainer({
         // eslint-disable-next-line react-hooks/exhaustive-deps
         [],
     )
+    const canduId = addCanduLinkForValidViewOrSection('section', section)
     const handleClick = () => onSectionClick(section.id)
 
     drag(nameRef)
@@ -114,7 +116,7 @@ export function TicketNavbarSectionContainer({
                             </i>
                         </div>
                         <div
-                            data-candu-id={`ticket-navbar-section-${section.name.replace(' ', '-').toLowerCase()}`}
+                            {...(canduId ? { 'data-candu-id': canduId } : {})}
                             onClick={handleClick}
                             className={classnames(
                                 navbarSectionCss.name,

@@ -26,7 +26,6 @@ exports[`<TicketNavbarSection/> should render a section (views collapsed) 1`] = 
         </div>
         <div
           class="name name"
-          data-candu-id="ticket-navbar-section-test-view"
           title="test View"
         >
           test View
@@ -102,7 +101,6 @@ exports[`<TicketNavbarSection/> should render a section (views expanded) 1`] = `
         </div>
         <div
           class="name name"
-          data-candu-id="ticket-navbar-section-test-view"
           title="test View"
         >
           test View

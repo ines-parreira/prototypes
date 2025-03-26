@@ -53,20 +53,34 @@ describe('<TicketNavbarSection/>', () => {
         expect(container.firstChild).toMatchSnapshot()
     })
 
-    it('should set the correct data-candu-id attribute on the section name element', () => {
+    it('should display the candu link for AI Agent', () => {
+        const section = {
+            ...minProps.sectionElement.data,
+            decoration: {
+                emoji: '✨',
+            },
+            name: 'AI Agent',
+        }
+
         const { container } = render(
             <DndProvider backend={HTML5Backend}>
-                <TicketNavbarSectionContainer {...minProps} isExpanded={true} />
+                <TicketNavbarSectionContainer
+                    {...minProps}
+                    sectionElement={{
+                        ...minProps.sectionElement,
+                        data: section,
+                    }}
+                />
             </DndProvider>,
         )
 
-        const sectionNameElement = container.querySelector('[data-candu-id]')
-        expect(sectionNameElement).toBeTruthy()
+        const element = container.querySelector('[data-candu-id]')
 
-        const expectedDataId = `ticket-navbar-section-test-view`
-        expect(sectionNameElement).toHaveAttribute(
+        // Assert that the element exists and has the correct value
+        expect(element).toBeInTheDocument()
+        expect(element).toHaveAttribute(
             'data-candu-id',
-            expectedDataId,
+            'ticket-navbar-ai-agent-section-link-ai-agent',
         )
     })
 })

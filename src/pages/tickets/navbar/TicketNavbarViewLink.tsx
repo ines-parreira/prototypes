@@ -19,6 +19,7 @@ import ViewName from 'pages/common/components/ViewName/ViewName'
 import { useSplitTicketView } from 'split-ticket-view-toggle'
 import { activeViewIdSet } from 'state/ui/views/actions'
 import { isTicketPath } from 'utils'
+import { addCanduLinkForValidViewOrSection } from 'utils/views'
 
 type Props = {
     className?: string
@@ -44,12 +45,13 @@ const TicketNavbarViewLink = (
 
     const dispatch = useAppDispatch()
     const ticketNavbarId = `ticket-navbar-view-${view.id}`
+    const canduId = addCanduLinkForValidViewOrSection('view', view)
 
     useScrollActiveItemIntoView(ref, isActiveView, true)
 
     return (
         <div
-            data-candu-id={`ticket-navbar-view-link-${view.name.replace(' ', '-').toLowerCase()}`}
+            {...(canduId ? { 'data-candu-id': canduId } : {})}
             id={ticketNavbarId}
             ref={ref}
             className={classnames(navbarCss['link-wrapper'], {
