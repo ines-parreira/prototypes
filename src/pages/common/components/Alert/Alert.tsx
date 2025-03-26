@@ -49,6 +49,11 @@ type Props = {
     type?: AlertType
 } & HTMLAttributes<HTMLDivElement>
 
+/**
+ * @deprecated This component is being phased out. Please use `<Banner variant="inline" />` from `@gorgias/merchant-ui-kit` instead.
+ * @date 2024-03-05
+ * @type ui-kit-migration
+ */
 const Alert = ({
     children,
     className,
