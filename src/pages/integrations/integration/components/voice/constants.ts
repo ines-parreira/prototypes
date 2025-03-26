@@ -22,3 +22,5 @@ export const DEFAULT_TRANSCRIBE_PREFERENCES = {
     voicemails: false,
     recordings: false,
 }
+
+export const QUEUE_LIST_PAGE_SIZE = 10

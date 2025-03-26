@@ -1,0 +1,23 @@
+@import (reference) '~@gorgias/design-tokens/dist/css/layout';
+
+:local {
+    .table {
+        .headerCell {
+            color: var(--neutral-grey-4);
+        }
+
+        tr {
+            td :last-child {
+                a {
+                    color: var(--neutral-grey-4);
+                }
+            }
+
+            &:hover {
+                a {
+                    color: var(--main-primary) !important;
+                }
+            }
+        }
+    }
+}

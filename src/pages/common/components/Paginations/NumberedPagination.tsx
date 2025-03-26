@@ -57,6 +57,12 @@ type Props = {
      * Callback fired when the page is changed.
      */
     onChange?: (page: number) => void
+
+    /**
+     * Whether to hide the pagination when there is only one page.
+     * @default false
+     */
+    hideOnSinglePage?: boolean
 }
 
 export const NumberedPagination = ({
@@ -69,6 +75,7 @@ export const NumberedPagination = ({
     siblingCount = 1,
     size = 'medium',
     onChange,
+    hideOnSinglePage = false,
 }: Props) => {
     const [currentPage, setCurrentPage] = useState(page ?? defaultPage)
 
@@ -112,6 +119,10 @@ export const NumberedPagination = ({
             }
         })
     }, [classNameItem, count, currentPage, handlePageChange, rawItems, size])
+
+    if (hideOnSinglePage && count <= 1) {
+        return null
+    }
 
     return (
         <div className={className}>

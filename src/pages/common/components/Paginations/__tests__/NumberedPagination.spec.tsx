@@ -11,6 +11,14 @@ describe('<NumberedPagination />', () => {
         expect(container).toMatchSnapshot()
     })
 
+    it('should not render the component if the count is less than 1 and hideOnSinglePage is true', () => {
+        const { container } = render(
+            <NumberedPagination count={0} hideOnSinglePage />,
+        )
+
+        expect(container.innerHTML).toBe('')
+    })
+
     it('should render all pages if they fit', () => {
         const { getAllByLabelText } = render(<NumberedPagination count={5} />)
 
