@@ -113,6 +113,7 @@ type Props = {
     uploadType?: UploadType
     getWorkflowVariables?: () => WorkflowVariableList
     getGuidanceVariables?: () => GuidanceVariableList
+    onKeyDown?: (event: KeyboardEvent) => void
 } & ToolbarPluginProps &
     MentionFilteredSuggestionsProps &
     GrammarlyUsageTrackingProps
@@ -441,6 +442,7 @@ export class RichFieldEditor extends Component<Props, State> {
     }
 
     _customKeyBindingFn = (e: KeyboardEvent) => {
+        this.props.onKeyDown?.(e)
         if (e.key === 'Enter' && KeyBindingUtil.hasCommandModifier(e)) {
             return null
         }

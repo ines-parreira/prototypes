@@ -1,31 +1,21 @@
-import React, { useCallback, useMemo } from 'react'
+import React, { useCallback } from 'react'
 
-import { ContentState } from 'draft-js'
+import _debounce from 'lodash/debounce'
 import _throttle from 'lodash/throttle'
 
 import { useAgentActivity } from '@gorgias/realtime'
 
-import { TicketMessageSourceType } from 'business/types/ticket'
-import useAppSelector from 'hooks/useAppSelector'
-import { getCurrentUserId } from 'state/currentUser/selectors'
 import { TYPING_ACTIVITY_AGENT_TIMEOUT_MS } from 'state/newMessage/constants'
-import { hasOnlySignatureText } from 'state/newMessage/emailExtraUtils'
-import {
-    getNewMessageSignature,
-    getNewMessageType,
-} from 'state/newMessage/selectors'
-import { getTicket } from 'state/ticket/selectors'
 
 export type TypingActivityProps = {
-    handleTypingActivity: (contentState: ContentState) => void
+    handleTypingActivity: () => void
 }
 
 export default function withTypingActivity<P>(
     WrappedComponent: React.ComponentType<P & TypingActivityProps>,
 ) {
     return function WithTypingActivityWrapper(props: P) {
-        const { startTyping, stopTyping, getTicketActivity } =
-            useAgentActivity()
+        const { startTyping, stopTyping } = useAgentActivity()
 
         // eslint-disable-next-line react-hooks/exhaustive-deps
         const throttledStartTyping = useCallback(
@@ -35,53 +25,28 @@ export default function withTypingActivity<P>(
             [startTyping],
         )
 
-        const currentUserId = useAppSelector(getCurrentUserId)
-        const ticket = useAppSelector(getTicket)
-        const newMessageSourceType = useAppSelector(getNewMessageType)
-        const signature = useAppSelector(getNewMessageSignature)
-        const { id: ticketId } = ticket
-
-        const isCurrentUserTypingOnTicket = useMemo(
-            () =>
-                getTicketActivity(ticketId).typing.some(
-                    (user) => user.id === currentUserId,
-                ),
-            [currentUserId, getTicketActivity, ticketId],
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+        const debouncedStopTyping = useCallback(
+            _debounce(stopTyping, TYPING_ACTIVITY_AGENT_TIMEOUT_MS),
+            [stopTyping],
         )
 
-        const handleResponseText = useCallback(
-            (contentState: ContentState) => {
-                if (contentState && newMessageSourceType && ticketId) {
-                    const plainText = contentState.getPlainText()
+        const handleTypingActivity = useCallback(() => {
+            throttledStartTyping()
+            debouncedStopTyping()
+        }, [throttledStartTyping, debouncedStopTyping])
 
-                    const shouldSendTypingEvent =
-                        plainText &&
-                        !hasOnlySignatureText(contentState, signature) &&
-                        newMessageSourceType !==
-                            TicketMessageSourceType.InternalNote
-
-                    if (shouldSendTypingEvent) {
-                        throttledStartTyping()
-                    } else if (isCurrentUserTypingOnTicket) {
-                        throttledStartTyping.cancel()
-                        stopTyping()
-                    }
-                }
-            },
-            [
-                isCurrentUserTypingOnTicket,
-                newMessageSourceType,
-                signature,
-                stopTyping,
-                throttledStartTyping,
-                ticketId,
-            ],
-        )
+        React.useEffect(() => {
+            return () => {
+                throttledStartTyping.cancel()
+                debouncedStopTyping.cancel()
+            }
+        }, [throttledStartTyping, debouncedStopTyping])
 
         return (
             <WrappedComponent
                 {...props}
-                handleTypingActivity={handleResponseText}
+                handleTypingActivity={handleTypingActivity}
             />
         )
     }

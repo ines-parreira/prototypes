@@ -398,9 +398,9 @@ describe('TicketReplyEditor component', () => {
     })
 
     it('should call onTypingActivity', () => {
-        jest.useFakeTimers()
         const mockHandleTypingActivity = jest.fn()
-        render(
+
+        const { container } = render(
             <Provider store={store}>
                 <TicketReplyEditorContainer
                     {...minProps}
@@ -415,7 +415,8 @@ describe('TicketReplyEditor component', () => {
             </Provider>,
         )
 
-        jest.advanceTimersByTime(100)
+        const editor = container.querySelector('.public-DraftEditor-content')!
+        fireEvent.keyDown(editor)
 
         expect(mockHandleTypingActivity).toHaveBeenCalled()
     })

@@ -2,127 +2,64 @@ import React from 'react'
 
 import { render } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import { ContentState } from 'draft-js'
-import { fromJS } from 'immutable'
 
 import { useAgentActivity } from '@gorgias/realtime'
-
-import { TicketMessageSourceType } from 'business/types/ticket'
-import useAppSelector from 'hooks/useAppSelector'
-import { getCurrentUserId } from 'state/currentUser/selectors'
-import {
-    getNewMessageSignature,
-    getNewMessageType,
-} from 'state/newMessage/selectors'
-import { getTicket } from 'state/ticket/selectors'
 
 import withTypingActivity, { TypingActivityProps } from '../withTypingActivity'
 
 jest.mock('@gorgias/realtime')
 const mockUseAgentActivity = useAgentActivity as jest.Mock
-const mockGetTicketActivity = jest.fn()
 const mockStartTyping = jest.fn()
 const mockStopTyping = jest.fn()
 
-jest.mock('hooks/useAppSelector')
-const mockUseAppSelector = useAppSelector as jest.Mock
-
-jest.mock('state/currentUser/selectors')
-const mockGetCurrentUserId = getCurrentUserId as unknown as jest.Mock
-jest.mock('state/ticket/selectors')
-const mockGetTicket = getTicket as unknown as jest.Mock
-jest.mock('state/newMessage/selectors')
-const mockGetNewMessageType = getNewMessageType as unknown as jest.Mock
-const mockGetNewMessageSignature = getNewMessageSignature as jest.Mock
-
-let contentState: ContentState
+jest.useFakeTimers()
 
 describe('withTypingActivity', () => {
     beforeEach(() => {
-        contentState = ContentState.createFromText('')
-
-        mockGetTicketActivity.mockReturnValue({ typing: [] })
         mockUseAgentActivity.mockReturnValue({
             startTyping: mockStartTyping,
             stopTyping: mockStopTyping,
-            getTicketActivity: mockGetTicketActivity,
         })
-        mockUseAppSelector.mockImplementation(
-            (callback: (...args: unknown[]) => unknown) => callback(),
-        )
-        mockGetTicket.mockReturnValue({ id: 1 })
-        mockGetCurrentUserId.mockReturnValue(1)
-        mockGetNewMessageType.mockReturnValue('email')
-        mockGetNewMessageSignature.mockReturnValue(fromJS({}))
+        jest.clearAllMocks()
+    })
+
+    afterEach(() => {
+        jest.clearAllTimers()
     })
 
     const WrappedComponent = ({
         handleTypingActivity,
     }: TypingActivityProps) => {
-        const handleTyping = () => {
-            handleTypingActivity(contentState)
-        }
-
-        return <div onClick={handleTyping}>Wrapped Component</div>
+        return <div onClick={handleTypingActivity}>wrapped</div>
     }
 
-    it('should register typing start', () => {
-        contentState = ContentState.createFromText('foo')
+    it('should handle typing start', () => {
         const Component = withTypingActivity(WrappedComponent)
-
         const { getByText } = render(<Component />)
-        userEvent.click(getByText('Wrapped Component'))
+
+        userEvent.click(getByText('wrapped'))
+        expect(mockStartTyping).toHaveBeenCalled()
+    })
+
+    it('should handle typing stop after delay', () => {
+        const Component = withTypingActivity(WrappedComponent)
+        const { getByText } = render(<Component />)
+
+        userEvent.click(getByText('wrapped'))
+        jest.runAllTimers()
+
+        expect(mockStopTyping).toHaveBeenCalled()
+    })
+
+    it('should cleanup throttled and debounced functions on unmount', () => {
+        const Component = withTypingActivity(WrappedComponent)
+        const { getByText, unmount } = render(<Component />)
+
+        userEvent.click(getByText('wrapped'))
+        unmount()
+        jest.runAllTimers()
 
         expect(mockStartTyping).toHaveBeenCalledTimes(1)
-    })
-
-    it('should not register typing start if content is empty', () => {
-        contentState = ContentState.createFromText('')
-        const Component = withTypingActivity(WrappedComponent)
-
-        const { getByText } = render(<Component />)
-        userEvent.click(getByText('Wrapped Component'))
-
-        expect(mockStartTyping).not.toHaveBeenCalled()
-    })
-
-    it('should not register typing start if content is only signature', () => {
-        contentState = ContentState.createFromText('\n\nsignature')
-        mockGetNewMessageSignature.mockReturnValue(
-            fromJS({ text: 'signature' }),
-        )
-
-        const Component = withTypingActivity(WrappedComponent)
-
-        const { getByText } = render(<Component />)
-        userEvent.click(getByText('Wrapped Component'))
-
-        expect(mockStartTyping).not.toHaveBeenCalled()
-    })
-
-    it('should not register typing start if content is internal note', () => {
-        contentState = ContentState.createFromText('foo')
-        mockGetNewMessageType.mockReturnValue(
-            TicketMessageSourceType.InternalNote,
-        )
-
-        const Component = withTypingActivity(WrappedComponent)
-
-        const { getByText } = render(<Component />)
-        userEvent.click(getByText('Wrapped Component'))
-
-        expect(mockStartTyping).not.toHaveBeenCalled()
-    })
-
-    it('should register typing stop', () => {
-        mockGetTicketActivity.mockReturnValue({ typing: [{ id: 1 }] })
-
-        contentState = ContentState.createFromText('')
-        const Component = withTypingActivity(WrappedComponent)
-
-        const { getByText } = render(<Component />)
-        userEvent.click(getByText('Wrapped Component'))
-
-        expect(mockStopTyping).toHaveBeenCalledTimes(1)
+        expect(mockStopTyping).not.toHaveBeenCalled()
     })
 })

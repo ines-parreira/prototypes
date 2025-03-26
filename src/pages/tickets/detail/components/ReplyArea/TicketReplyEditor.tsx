@@ -55,11 +55,7 @@ type Props = {
 // debounce the updating of the redux because it's slow otherwise when we type
 export const updateMessageText = _debounce(
     (
-        {
-            newMessage,
-            setResponseText,
-            handleTypingActivity,
-        }: Props & TypingActivityProps,
+        { newMessage, setResponseText }: Props & TypingActivityProps,
         editorState: EditorState,
     ) => {
         if (!newMessage.getIn(['state', 'cacheAdded'])) {
@@ -67,7 +63,6 @@ export const updateMessageText = _debounce(
         }
 
         const contentState = editorState.getCurrentContent()
-        handleTypingActivity(contentState)
         setResponseText(
             Map({
                 contentState,
@@ -378,6 +373,7 @@ export class TicketReplyEditorContainer extends Component<Props, State> {
             applyMacro,
             shouldDisplayQuickReply,
             replyAreaHeader,
+            handleTypingActivity,
         } = this.props
 
         const isNewMessageRichType = isRichType(newMessageType)
@@ -469,6 +465,9 @@ export class TicketReplyEditorContainer extends Component<Props, State> {
                         text: newMessage.getIn(['newMessage', 'body_text']),
                     }}
                     onChange={this.onEditorChange}
+                    onKeyDown={() => {
+                        handleTypingActivity()
+                    }}
                     attachFiles={(files: File[] | FileList) =>
                         this.handleFiles(files, attachmentsMask)
                     }
