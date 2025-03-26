@@ -67,12 +67,17 @@ describe('VoiceIntegrationSettingDistributionBehavior', () => {
 
         const { getByText } = renderComponent()
 
-        expect(getByText('Queue name')).toBeInTheDocument()
         expect(
             getByText('Send calls to voicemail outside business hours'),
         ).toBeInTheDocument()
         expect(getByText('VoiceQueueSummary')).toBeInTheDocument()
 
+        expect(FormFieldMock).toHaveBeenCalledWith(
+            expect.objectContaining({
+                name: 'meta.queue_id',
+            }),
+            {},
+        )
         expect(FormFieldMock).toHaveBeenCalledWith(
             expect.objectContaining({
                 name: 'meta.send_calls_to_voicemail',
@@ -100,7 +105,6 @@ describe('VoiceIntegrationSettingDistributionBehavior', () => {
             showVoicemailOutsideBusinessHours: false,
         })
 
-        expect(queryByText('Queue name')).toBeInTheDocument()
         expect(
             queryByText('Send calls to voicemail outside business hours'),
         ).toBeNull()

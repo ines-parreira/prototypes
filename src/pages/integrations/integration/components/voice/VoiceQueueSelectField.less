@@ -1,0 +1,32 @@
+@import (reference) '~@gorgias/design-tokens/dist/css/layout.less';
+@import (reference) '~css/typography.less';
+
+:local {
+    .container {
+        display: flex;
+        flex-direction: column;
+        gap: @layout-spacing-xxs;
+    }
+
+    .dropdownItem {
+        display: flex;
+        align-items: center;
+        gap: @layout-spacing-xs;
+    }
+
+    .labelWithTooltip {
+        display: flex;
+        align-items: center;
+        width: fit-content;
+        margin-bottom: @layout-spacing-xxs;
+    }
+
+    .error {
+        color: var(--feedback-error-2);
+        margin-bottom: @layout-spacing-xs;
+    }
+
+    .caption {
+        .caption-regular();
+    }
+}
