@@ -1,5 +1,3 @@
-import React from 'react'
-
 import { act, fireEvent, render } from '@testing-library/react'
 
 import {
@@ -16,6 +14,12 @@ function TestComponent() {
         <div data-testid="test-component" data-state={JSON.stringify(navBar)}>
             <button data-testid="home-button" onClick={navBar.onMenuToggle}>
                 Home
+            </button>
+            <button
+                data-testid="toggle-navbar-button"
+                onClick={navBar.onNavBarShortCutToggle}
+            >
+                Toggle Navbar
             </button>
             <div
                 data-testid="navbar-area"
@@ -226,5 +230,34 @@ describe('NavBarProvider', () => {
         )
 
         expect(getState().navBarDisplay).toBe(NavBarDisplayMode.Collapsed)
+    })
+
+    it('handles navbar shortcut toggle correctly', () => {
+        const { getByTestId } = render(
+            <NavBarProvider>
+                <TestComponent />
+            </NavBarProvider>,
+        )
+
+        const toggleButton = getByTestId('toggle-navbar-button')
+        const getState = () =>
+            JSON.parse(
+                getByTestId('test-component').dataset.state!,
+            ) as NavBarContextType
+
+        // Initial state should be Open
+        expect(getState().navBarDisplay).toBe(NavBarDisplayMode.Open)
+
+        // Toggle to Collapsed
+        act(() => {
+            toggleButton.click()
+        })
+        expect(getState().navBarDisplay).toBe(NavBarDisplayMode.Collapsed)
+
+        // Toggle back to Open
+        act(() => {
+            toggleButton.click()
+        })
+        expect(getState().navBarDisplay).toBe(NavBarDisplayMode.Open)
     })
 })

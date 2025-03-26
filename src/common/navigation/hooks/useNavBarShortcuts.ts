@@ -5,14 +5,14 @@ import useShortcuts from 'hooks/useShortcuts'
 import { useNavBar } from './useNavBar/useNavBar'
 
 export const useNavBarShortcuts = () => {
-    const { onMenuToggle } = useNavBar()
+    const { onNavBarShortCutToggle } = useNavBar()
     const actions = useMemo(
         () => ({
             TOGGLE_NAVBAR: {
-                action: () => onMenuToggle(),
+                action: () => onNavBarShortCutToggle(),
             },
         }),
-        [onMenuToggle],
+        [onNavBarShortCutToggle],
     )
 
     return useShortcuts('App', actions)

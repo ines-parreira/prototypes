@@ -9,7 +9,12 @@ import Mousetrap, { ExtendedKeyboardEvent } from 'mousetrap'
 import keymap from 'config/shortcuts'
 import { isEditable } from 'services/common/utils'
 
-import { closest, getModifier, isButton } from './utils'
+import {
+    closest,
+    getModifier,
+    isButton,
+    isGlobalNavigationButton,
+} from './utils'
 
 const mousetrap = new Mousetrap()
 
@@ -49,7 +54,8 @@ export class ShortcutManager {
             combo.includes('mod') ||
             combo.includes('meta') ||
             combo.includes('esc') ||
-            combo.includes('escape')
+            combo.includes('escape') ||
+            isGlobalNavigationButton(element)
         ) {
             return false
         }

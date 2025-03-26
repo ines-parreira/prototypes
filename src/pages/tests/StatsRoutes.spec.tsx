@@ -1,4 +1,4 @@
-import React, { ComponentType, ReactNode } from 'react'
+import { ComponentType, ReactNode } from 'react'
 
 import { act } from '@testing-library/react'
 import { createBrowserHistory } from 'history'
@@ -99,6 +99,7 @@ describe('<StatsRoutes/>', () => {
         onNavLeave: jest.fn(),
         onOverlayHover: jest.fn(),
         onMenuToggle: jest.fn(),
+        onNavBarShortCutToggle: jest.fn(),
     }
 
     const renderStatsRoutes = () => {

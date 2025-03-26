@@ -23,6 +23,7 @@ const mockNavBarContextValues: NavBarContextType = {
     onNavLeave: jest.fn(),
     onOverlayHover: jest.fn(),
     onMenuToggle: jest.fn(),
+    onNavBarShortCutToggle: jest.fn(),
 }
 
 describe('CollapsibleNavbarContainer', () => {

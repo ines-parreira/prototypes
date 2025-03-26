@@ -18,11 +18,11 @@ const useShortcutsMock = useShortcuts as jest.Mock
 const useNavBarMock = useNavBar as jest.Mock
 
 describe('useNavBarShortcuts', () => {
-    let onMenuToggle: jest.Mock
+    let onNavBarShortCutToggle: jest.Mock
 
     beforeEach(() => {
-        onMenuToggle = jest.fn()
-        useNavBarMock.mockReturnValue({ onMenuToggle })
+        onNavBarShortCutToggle = jest.fn()
+        useNavBarMock.mockReturnValue({ onNavBarShortCutToggle })
     })
 
     it('should register navbar shortcuts', () => {
@@ -45,6 +45,6 @@ describe('useNavBarShortcuts', () => {
         )[0][1].TOGGLE_NAVBAR
 
         toggleNavBar()
-        expect(onMenuToggle).toHaveBeenCalled()
+        expect(onNavBarShortCutToggle).toHaveBeenCalled()
     })
 })

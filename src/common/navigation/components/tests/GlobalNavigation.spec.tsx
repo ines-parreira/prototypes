@@ -1,5 +1,3 @@
-import React from 'react'
-
 import { render } from '@testing-library/react'
 import { fromJS } from 'immutable'
 
@@ -56,6 +54,7 @@ describe('GlobalNavigation', () => {
         onNavLeave: jest.fn(),
         onOverlayHover: jest.fn(),
         onMenuToggle: jest.fn(),
+        onNavBarShortCutToggle: jest.fn(),
     }
 
     const renderWithContext = () =>

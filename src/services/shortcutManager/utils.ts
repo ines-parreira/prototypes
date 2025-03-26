@@ -34,6 +34,14 @@ export function getModifier(defaultKey = 'Ctrl'): string {
     return isMac ? '⌘' : defaultKey
 }
 
+export function isGlobalNavigationButton(element: Element): boolean {
+    if (element.getAttribute('aria-label')?.includes('Menu')) {
+        return true
+    }
+
+    return false
+}
+
 /**
  * Check if element is button
  */

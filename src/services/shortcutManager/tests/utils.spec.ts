@@ -37,6 +37,20 @@ describe('shortcutManager utils', () => {
         })
     })
 
+    describe('isGlobalNavigationButton', () => {
+        it('returns true for global navigation button', () => {
+            const button = document.createElement('button')
+            button.setAttribute('aria-label', 'Menu')
+            document.body.appendChild(button)
+            expect(utils.isGlobalNavigationButton(button)).toBe(true)
+        })
+
+        it('returns false for non-global navigation button', () => {
+            const button = document.createElement('button')
+            expect(utils.isGlobalNavigationButton(button)).toBe(false)
+        })
+    })
+
     describe('is button', () => {
         const input = document.createElement('input')
         const button = document.createElement('button')

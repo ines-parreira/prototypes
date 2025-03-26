@@ -1,4 +1,4 @@
-import React, { ReactNode } from 'react'
+import type { ReactNode } from 'react'
 
 import { renderHook } from '@testing-library/react-hooks'
 
@@ -18,6 +18,7 @@ const mockNavBarContextValues: NavBarContextType = {
     onNavLeave: jest.fn(),
     onOverlayHover: jest.fn(),
     onMenuToggle: jest.fn(),
+    onNavBarShortCutToggle: jest.fn(),
 }
 
 const wrapper = ({ children }: { children: ReactNode }) => (

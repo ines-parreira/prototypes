@@ -1,5 +1,3 @@
-import React from 'react'
-
 import { render, screen } from '@testing-library/react'
 
 import {
@@ -23,6 +21,7 @@ const mockNavBarContextValues: NavBarContextType = {
     onNavLeave: jest.fn(),
     onOverlayHover: jest.fn(),
     onMenuToggle: jest.fn(),
+    onNavBarShortCutToggle: jest.fn(),
 }
 
 describe('NavbarPanel', () => {

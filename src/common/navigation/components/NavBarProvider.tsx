@@ -1,4 +1,4 @@
-import React, { ReactNode, useCallback, useMemo, useRef, useState } from 'react'
+import { ReactNode, useCallback, useMemo, useRef, useState } from 'react'
 
 import useLocalStorage from 'hooks/useLocalStorage'
 import { useTimeout } from 'hooks/useTimeout'
@@ -16,6 +16,14 @@ export function NavBarProvider({ children }: { children: ReactNode }) {
     >(NAVBAR_DISPLAY_KEY, NavBarDisplayMode.Open)
     const isFrozenRef = useRef(false)
     const [setTimeout, clearTimeout] = useTimeout()
+
+    const onNavBarShortCutToggle = useCallback(() => {
+        if (navBarDisplay === NavBarDisplayMode.Open) {
+            setNavBarDisplay(NavBarDisplayMode.Collapsed)
+        } else {
+            setNavBarDisplay(NavBarDisplayMode.Open)
+        }
+    }, [navBarDisplay, setNavBarDisplay])
 
     const onMenuToggle = useCallback(() => {
         if (navBarDisplay === NavBarDisplayMode.Open) {
@@ -72,7 +80,7 @@ export function NavBarProvider({ children }: { children: ReactNode }) {
             onNavLeave,
             onOverlayHover,
             onMenuToggle,
-
+            onNavBarShortCutToggle,
             isNavBarVisible: navBarDisplay !== NavBarDisplayMode.Collapsed,
         }),
         [
@@ -83,6 +91,7 @@ export function NavBarProvider({ children }: { children: ReactNode }) {
             onNavLeave,
             onOverlayHover,
             onMenuToggle,
+            onNavBarShortCutToggle,
         ],
     )
 

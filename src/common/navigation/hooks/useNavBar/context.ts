@@ -24,6 +24,7 @@ export type NavBarContextType = {
     onNavLeave: () => void
     onOverlayHover: () => void
     onMenuToggle: () => void
+    onNavBarShortCutToggle: () => void
     isNavBarVisible: boolean
 }
 
