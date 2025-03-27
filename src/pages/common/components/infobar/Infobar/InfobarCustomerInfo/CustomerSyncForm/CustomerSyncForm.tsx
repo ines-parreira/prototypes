@@ -1,4 +1,10 @@
-import React, { FormEvent, useCallback, useEffect, useState } from 'react'
+import React, {
+    FormEvent,
+    useCallback,
+    useEffect,
+    useMemo,
+    useState,
+} from 'react'
 
 import { Map } from 'immutable'
 
@@ -7,7 +13,7 @@ import {
     useScheduleShopifyCreateNewCustomerAction,
     useScheduleShopifyUpdateCustomerAction,
 } from '@gorgias/api-queries'
-import { Button, TextField } from '@gorgias/merchant-ui-kit'
+import { Button, TextField, Tooltip } from '@gorgias/merchant-ui-kit'
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import { IntegrationType } from 'models/integration/constants'
@@ -54,8 +60,13 @@ export default function CustomerSyncForm({
         error: updateCustomerError,
     } = useScheduleShopifyUpdateCustomerAction()
 
-    const { formState, resetFormState, onChange, isFormValid } =
-        useCustomerSyncForm(activeCustomer)
+    const {
+        formState,
+        resetFormState,
+        resetEmailState,
+        onChange,
+        isFormValid,
+    } = useCustomerSyncForm(activeCustomer)
     const [performedValidation, setPerformedValidation] = useState(false)
 
     const { data: shopifyStores } =
@@ -72,6 +83,18 @@ export default function CustomerSyncForm({
             },
         )
 
+    const isUpdateCustomer: boolean = useMemo(() => {
+        const isUpdate = shopifyStores
+            ?.find(
+                (store: Map<any, any>) => store.get('id') === formState.store,
+            )
+            ?.get('hasCustomerData')
+        if (!isUpdate) {
+            resetEmailState()
+        }
+        return isUpdate
+    }, [shopifyStores, formState.store, resetEmailState])
+
     const handleSyncModalClose = useCallback(() => {
         setPerformedValidation(false)
         resetFormState()
@@ -86,10 +109,7 @@ export default function CustomerSyncForm({
             let firstName = formState.name.split(' ')[0]
             let lastName = formState.name.split(' ')[1]
 
-            let store = shopifyStores?.find(
-                (store: Map<any, any>) => store.get('id') === formState.store,
-            )
-            if (store.get('hasCustomerData')) {
+            if (isUpdateCustomer) {
                 updateCustomer({
                     integrationId: formState.store,
                     data: {
@@ -214,21 +234,31 @@ export default function CustomerSyncForm({
                         <h3 className={css.contactInformation}>
                             Contact Information
                         </h3>
-                        <TextField
-                            name="email"
-                            label="Email"
-                            type="email"
-                            placeholder="sam.hopper@gmail.com"
-                            isRequired
-                            className={css.inputField}
-                            value={formState.email}
-                            onChange={(email) => onChange({ email })}
-                            error={
-                                performedValidation && !formState.email
-                                    ? 'Please enter a valid email address to sync this profile with Shopify. Syncing requires the customer’s email'
-                                    : ''
-                            }
-                        />
+                        <span id="customer-email-wrapper">
+                            <TextField
+                                name="email"
+                                label="Email"
+                                type="email"
+                                placeholder="sam.hopper@gmail.com"
+                                isRequired
+                                isDisabled={!isUpdateCustomer}
+                                className={css.inputField}
+                                value={formState.email}
+                                onChange={(email) => onChange({ email })}
+                                error={
+                                    performedValidation && !formState.email
+                                        ? 'Please enter a valid email address to sync this profile with Shopify. Syncing requires the customer’s email'
+                                        : ''
+                                }
+                            />
+                            <Tooltip
+                                target="customer-email-wrapper"
+                                disabled={isUpdateCustomer}
+                            >
+                                You can&apos;t change the email when creating a
+                                new customer in Shopify
+                            </Tooltip>
+                        </span>
 
                         <TextField
                             name="name"

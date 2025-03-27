@@ -55,6 +55,13 @@ export const useCustomerSyncForm = (activeCustomer: Map<string, any>) => {
         })
     }, [activeCustomer])
 
+    const resetEmailState = useCallback(() => {
+        setFormState((prevState) => ({
+            ...prevState,
+            email: activeCustomer.get('email'),
+        }))
+    }, [activeCustomer])
+
     const isFormValid = () => {
         if (formState.deliveryAddressChecked) {
             return (
@@ -75,6 +82,7 @@ export const useCustomerSyncForm = (activeCustomer: Map<string, any>) => {
     return {
         formState,
         resetFormState,
+        resetEmailState,
         setFormState,
         onChange,
         isFormValid,
