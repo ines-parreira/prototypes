@@ -11,6 +11,7 @@ import {
     getTagName,
 } from 'hooks/reporting/ticket-insights/helpers'
 import { useTagsReportContext } from 'hooks/reporting/ticket-insights/useTagsReportContext'
+import { filterTimeSeriesWithSelectedTags } from 'hooks/reporting/ticket-insights/useTagsTimeSeries'
 import {
     fetchTagsTicketCountTimeSeries,
     fetchTotalTaggedTicketCountTimeSeries,
@@ -22,6 +23,7 @@ import {
     TimeSeriesDataItem,
     TimeSeriesPerDimension,
 } from 'hooks/reporting/useTimeSeries'
+import { TagSelection } from 'hooks/useTagResultsSelection'
 import { ReportingGranularity } from 'models/reporting/types'
 import { Period, StatsFilters } from 'models/stat/types'
 import {
@@ -42,6 +44,7 @@ type Context = {
     tags: Record<string, Tag | undefined>
     tagsTableOrder: TagsTableOrder
     isExtendedReportingEnabled: boolean
+    tagResultsSelection: TagSelection
 }
 
 enum Column {
@@ -146,9 +149,23 @@ const createReport = (
     granularity: ReportingGranularity,
     context: Context,
 ) => {
+    const currentFilteredTagsTicketCountTimeSeries =
+        filterTimeSeriesWithSelectedTags({
+            data: currentTagsTicketCountTimeSeries,
+            tagResultsSelection: context.tagResultsSelection,
+            statsFilters,
+        })
+
+    const previousFilteredTagsTicketCountTimeSeries =
+        filterTimeSeriesWithSelectedTags({
+            data: previousTagsTicketCountTimeSeries,
+            tagResultsSelection: context.tagResultsSelection,
+            statsFilters,
+        })
+
     const processedData = processData(
-        currentTagsTicketCountTimeSeries,
-        previousTagsTicketCountTimeSeries,
+        currentFilteredTagsTicketCountTimeSeries,
+        previousFilteredTagsTicketCountTimeSeries,
         totalTaggedTicketCountTimeSeries,
         granularity,
         context,
@@ -165,6 +182,7 @@ const createReport = (
     const columns = [...staticColumns, ...timeColumns]
 
     const fileContents = convertToTable(processedData, columns)
+
     const fileName = getCsvFileNameWithDates(
         statsFilters.period,
         TAGS_REPORT_FILE_NAME,
@@ -247,6 +265,7 @@ export const fetchTagsReportData = async (
         tags: Record<string, Tag | undefined>
         tagsTableOrder: TagsTableOrder
         isExtendedReportingEnabled: boolean
+        tagResultsSelection: TagSelection
     },
 ) => {
     const [

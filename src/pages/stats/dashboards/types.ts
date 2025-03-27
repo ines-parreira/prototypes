@@ -9,6 +9,7 @@ import {
     TimeSeriesFetch,
     TimeSeriesPerDimensionFetch,
 } from 'hooks/reporting/useTimeSeries'
+import { TagSelection } from 'hooks/useTagResultsSelection'
 import { Channel } from 'models/channel/types'
 import { Integration } from 'models/integration/types'
 import { ReportingGranularity } from 'models/reporting/types'
@@ -135,6 +136,7 @@ export type ReportFetch = (
         isAutomateNonFilteredDenominatorInAutomationRate: boolean | undefined
         aiAgentUserId: string | undefined
         campaignsReportContext: CampaignReportContext
+        tagResultsSelection: TagSelection
     },
 ) => Promise<{
     isLoading: boolean

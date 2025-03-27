@@ -19,6 +19,7 @@ import {
     fetchTimeSeriesPerDimension,
     useTimeSeriesPerDimension,
 } from 'hooks/reporting/useTimeSeries'
+import { TagSelection } from 'hooks/useTagResultsSelection'
 import { OrderDirection } from 'models/api/types'
 import { TicketDimension } from 'models/reporting/cubes/TicketCube'
 import { TicketMessagesDimension } from 'models/reporting/cubes/TicketMessagesCube'
@@ -260,6 +261,7 @@ describe('fetch download methods', () => {
     const mockContext = {
         getAgentDetails: (id: number) => ({ id, name: `Agent ${id}` }),
         integrations: [{ id: 1, name: 'Integration 1' }],
+        tagResultsSelection: TagSelection.includeTags,
     } as any
 
     const mockTimeSeriesData = {

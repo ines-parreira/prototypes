@@ -15,8 +15,11 @@ import {
     TimeSeriesDataItem,
     TimeSeriesPerDimension,
 } from 'hooks/reporting/useTimeSeries'
+import { TagSelection } from 'hooks/useTagResultsSelection'
 import { OrderDirection } from 'models/api/types'
 import { ReportingGranularity } from 'models/reporting/types'
+import { TagFilterInstanceId } from 'models/stat/types'
+import { LogicalOperatorEnum } from 'pages/stats/common/components/Filter/constants'
 import { getTagName } from 'pages/stats/ticket-insights/tags/helpers'
 import { formatDates } from 'pages/stats/utils'
 import {
@@ -138,7 +141,24 @@ describe('TagsReportingService', () => {
         tags: tags.reduce((acc, tag) => ({ ...acc, [tag.id]: tag }), {}),
         tagsTableOrder,
         isExtendedReportingEnabled: false,
+        tagResultsSelection: TagSelection.includeTags,
     }
+
+    const statsFiltersWithTags = {
+        period,
+        tags: [
+            {
+                operator: LogicalOperatorEnum.ONE_OF,
+                values: [tag.id],
+                filterInstanceId: TagFilterInstanceId.First,
+            },
+        ],
+    }
+
+    const expectedFilteredData = [
+        [...columns, ...timeColumns],
+        ['billing', 123, 100, 23, 0],
+    ]
 
     beforeEach(() => {
         useTagsTicketCountTimeSeriesMock.mockReturnValue({
@@ -150,11 +170,11 @@ describe('TagsReportingService', () => {
             data: totalTaggedTicketCountTimeSeries,
             isLoading: false,
         } as any)
+
+        useTagsReportContextMock.mockReturnValue(context)
     })
 
     describe('useTagsReportData()', () => {
-        useTagsReportContextMock.mockReturnValue(context)
-
         it('should fetch and format Tags Report data', () => {
             const { result } = renderHook(() => useTagsReportData())
 
@@ -264,6 +284,29 @@ describe('TagsReportingService', () => {
             const { result } = renderHook(() => useTagsReportData())
             expect(result.current.isLoading).toBe(true)
         })
+
+        it('should filter time series with selected tags', () => {
+            useTagsReportContextMock.mockReturnValue({
+                ...context,
+                tagResultsSelection: TagSelection.excludeTags,
+            })
+
+            useStatsFiltersMock.mockReturnValue({
+                cleanStatsFilters: statsFiltersWithTags,
+                userTimezone: timezone,
+                granularity,
+            })
+
+            const { result } = renderHook(() => useTagsReportData())
+
+            expect(result.current).toEqual({
+                files: {
+                    [fileName]: createCsv(expectedFilteredData),
+                },
+                fileName,
+                isLoading: false,
+            })
+        })
     })
 
     describe('fetchTicketCountPerTag', () => {
@@ -278,6 +321,23 @@ describe('TagsReportingService', () => {
             expect(result).toEqual({
                 files: {
                     [fileName]: createCsv(expectedData),
+                },
+                fileName,
+                isLoading: false,
+            })
+        })
+
+        it('should filter result if TagSelection equals excludeTags', async () => {
+            const result = await fetchTagsReportData(
+                statsFiltersWithTags,
+                timezone,
+                granularity,
+                { ...context, tagResultsSelection: TagSelection.excludeTags },
+            )
+
+            expect(result).toEqual({
+                files: {
+                    [fileName]: createCsv(expectedFilteredData),
                 },
                 fileName,
                 isLoading: false,

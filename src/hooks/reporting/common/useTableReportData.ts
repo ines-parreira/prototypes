@@ -12,6 +12,7 @@ import { useChannelsTableSetting } from 'hooks/reporting/useChannelsTableConfigS
 import { MetricFetch } from 'hooks/reporting/useMetric'
 import { MetricWithDecileFetch } from 'hooks/reporting/useMetricPerDimension'
 import useAppSelector from 'hooks/useAppSelector'
+import { useTagResultsSelection } from 'hooks/useTagResultsSelection'
 import { ReportingGranularity } from 'models/reporting/types'
 import { StatsFilters } from 'models/stat/types'
 import { CampaignReportContext } from 'pages/stats/convert/components/DownloadOverviewData/GenerateReportService'
@@ -68,6 +69,7 @@ export const useTables = (
     })
     const { columnsOrder, rowsOrder } = useAgentsTableConfigSetting()
     const { columnsOrder: channelColumnsOrder } = useChannelsTableSetting()
+    const [tagResultsSelection] = useTagResultsSelection()
 
     const agents = useAppSelector<User[]>(getSortedAgents)
     const agentsQA = useAppSelector<User[]>(getSortedAutoQAAgents)
@@ -133,6 +135,7 @@ export const useTables = (
             isAutomateNonFilteredDenominatorInAutomationRate,
             aiAgentUserId,
             campaignsReportContext,
+            tagResultsSelection,
         }),
         [
             agents,
@@ -153,6 +156,7 @@ export const useTables = (
             integrations,
             isAutomateNonFilteredDenominatorInAutomationRate,
             aiAgentUserId,
+            tagResultsSelection,
         ],
     )
 
