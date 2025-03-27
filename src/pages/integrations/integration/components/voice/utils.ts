@@ -78,5 +78,6 @@ export const getVoiceQueueEditableFields = (
         target_scope: queue.target_scope,
         wait_time: queue.wait_time,
         wait_music: queue.wait_music,
+        status: queue.status,
     }
 }

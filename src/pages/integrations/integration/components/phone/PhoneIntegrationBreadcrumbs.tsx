@@ -50,6 +50,10 @@ export default function PhoneIntegrationBreadcrumbs({
 
     const queueId = queuePathMatch?.params.queueId
 
+    if (queueId) {
+        return <VoiceQueueBreadcrumbs queueId={queueId} />
+    }
+
     return (
         <Breadcrumb>
             {type === IntegrationType.WhatsApp && (
@@ -100,7 +104,6 @@ export default function PhoneIntegrationBreadcrumbs({
                 integrationId !== 'migration' && (
                     <BreadcrumbItem>{name}</BreadcrumbItem>
                 )}
-            {queueId && <VoiceQueueBreadcrumbs queueId={queueId} />}
         </Breadcrumb>
     )
 }
