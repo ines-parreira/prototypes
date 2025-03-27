@@ -19,6 +19,7 @@ import {
     similarCustomer,
 } from 'state/infobar/actions'
 import { FETCH_PREVIEW_CUSTOMER_SUCCESS } from 'state/infobar/constants'
+import { setActiveCustomerAsReceiver } from 'state/newMessage/actions'
 import { setCustomer } from 'state/ticket/actions'
 import { startEditionMode, stopEditionMode } from 'state/widgets/actions'
 import { WidgetEnvironment } from 'state/widgets/types'
@@ -105,6 +106,10 @@ const useSearchRankScenarioMock = assumeMock(useSearchRankScenario)
 jest.mock('state/ticket/actions', () => ({
     ...jest.requireActual('state/ticket/actions'),
     setCustomer: jest.fn(() => () => Promise.resolve()),
+}))
+
+jest.mock('state/newMessage/actions', () => ({
+    setActiveCustomerAsReceiver: jest.fn(() => () => Promise.resolve()),
 }))
 
 const commonProps: ComponentProps<typeof Infobar> = {
@@ -564,6 +569,11 @@ describe('<Infobar/>', () => {
 
     it('should reset search and return to current customer profile after setting customer', async () => {
         const mockedSetCustomer = jest.mocked(setCustomer)
+        const mockedSetActiveCustomerAsReceiver = jest.mocked(
+            setActiveCustomerAsReceiver,
+        )
+
+        // Mock search response
         mockedSearch.mockImplementation(
             () => () =>
                 Promise.resolve({
@@ -574,19 +584,30 @@ describe('<Infobar/>', () => {
                     },
                 }),
         )
+
+        // Mock fetchPreviewCustomer response
         mockedFetchPreviewCustomer.mockImplementation(
-            () => () =>
+            (id) => () =>
                 Promise.resolve({
                     type: FETCH_PREVIEW_CUSTOMER_SUCCESS,
                     resp: {
-                        id: 7,
+                        id,
                         data: { name: 'Test Customer' },
                     },
                 }),
         )
 
+        const testStore = mockStore({
+            currentUser: fromJS(agents[1]),
+            ticket: fromJS({}),
+        })
+        // @ts-ignore
+        testStore.dispatch = jest.fn((param: () => unknown) =>
+            typeof param === 'function' ? param() : param,
+        )
+
         const { getByTestId, getByText, queryByText } = renderWithRouter(
-            <Provider store={store}>
+            <Provider store={testStore}>
                 <Infobar {...commonProps} />
             </Provider>,
         )
@@ -614,8 +635,11 @@ describe('<Infobar/>', () => {
         // Click Set Customer
         fireEvent.click(getByText('Set Customer'))
 
-        // Verify setCustomer was called
-        expect(mockedSetCustomer).toHaveBeenCalled()
+        // Wait for async actions to complete
+        await waitFor(() => {
+            expect(mockedSetCustomer).toHaveBeenCalled()
+            expect(mockedSetActiveCustomerAsReceiver).toHaveBeenCalled()
+        })
 
         // Verify that we return to the search view with empty input
         await waitFor(() => {

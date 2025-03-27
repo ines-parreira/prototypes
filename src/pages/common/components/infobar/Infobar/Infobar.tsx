@@ -31,6 +31,7 @@ import history from 'pages/history'
 import { getCurrentUser } from 'state/currentUser/selectors'
 import * as customersActions from 'state/customers/actions'
 import * as infobarActions from 'state/infobar/actions'
+import { setActiveCustomerAsReceiver } from 'state/newMessage/actions'
 import { setCustomer } from 'state/ticket/actions'
 import * as widgetsActions from 'state/widgets/actions'
 import { WidgetEnvironment } from 'state/widgets/types'
@@ -236,9 +237,9 @@ export const Infobar = ({
     }
 
     const handleSetCustomer = () => {
-        void dispatch(setCustomer(selectedCustomer)).then(
-            returnToCurrentCustomerProfile,
-        )
+        void dispatch(setCustomer(selectedCustomer))
+            .then(returnToCurrentCustomerProfile)
+            .then(() => dispatch(setActiveCustomerAsReceiver()))
     }
 
     const hasFetchedWidgets = widgets.getIn(['_internal', 'hasFetchedWidgets'])

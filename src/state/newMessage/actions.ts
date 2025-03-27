@@ -87,6 +87,7 @@ import { getMomentNow } from 'utils/date'
 import { convertToHTML } from 'utils/editor'
 import { reportError } from 'utils/errors'
 
+import { CustomerChannel } from '../../models/customerChannel/types'
 import * as constants from './constants'
 import {
     addEmailExtraContent,
@@ -333,6 +334,35 @@ export const setReceivers = (
     receivers,
     replaceAll,
 })
+
+export const setActiveCustomerAsReceiver =
+    () => (dispatch: StoreDispatch, getState: () => RootState) => {
+        const state = getState()
+        const ticket = state.ticket
+
+        // We only change this when type is Email
+        if (ticket.getIn(['channel']) !== TicketChannel.Email) {
+            return
+        }
+
+        const customerChannels: CustomerChannel[] =
+            (
+                ticket.getIn(['customer', 'channels']) as List<CustomerChannel>
+            )?.toJS() || []
+
+        const customerChannel = customerChannels.find(
+            (channel: CustomerChannel) => channel.type === TicketChannel.Email,
+        )
+
+        const address = customerChannel
+            ? customerChannel.address
+            : ticket.getIn(['customer', 'email'])
+        const name = ticket.getIn(['customer', 'name'])
+
+        if (address && name) {
+            void dispatch(setReceivers({ to: [{ name, address }] }, false))
+        }
+    }
 
 /**
  * Set new message sender. A sender is represented by an integration (email or gmail)

@@ -2243,4 +2243,112 @@ describe('actions', () => {
             )
         })
     })
+
+    describe('setActiveCustomerAsReceiver', () => {
+        it('should set email receiver based on active customer', () => {
+            store = mockStore({
+                ticket: emailTicket
+                    .setIn(['channel'], TicketChannel.Email)
+                    .setIn(['customer', 'name'], 'Marc')
+                    .setIn(
+                        ['customer', 'channels'],
+                        fromJS([
+                            {
+                                address: 'marc.wall@gmail.com',
+                                type: 'email',
+                            },
+                        ]),
+                    ),
+                newMessage: initialState,
+            })
+            store.dispatch(actions.setActiveCustomerAsReceiver())
+
+            expect(store.getActions()).toEqual([
+                {
+                    type: types.NEW_MESSAGE_SET_RECEIVERS,
+                    receivers: {
+                        to: [{ name: 'Marc', address: 'marc.wall@gmail.com' }],
+                    },
+                    replaceAll: false,
+                },
+            ])
+        })
+
+        it('should use customer email when no channel with type Email exists', () => {
+            store = mockStore({
+                ticket: emailTicket
+                    .setIn(['channel'], TicketChannel.Email)
+                    .setIn(['customer', 'name'], 'Marc')
+                    .setIn(['customer', 'email'], 'marc.wall@gmail.com')
+                    .setIn(
+                        ['customer', 'channels'],
+                        fromJS([
+                            {
+                                address: '123456789',
+                                type: 'phone',
+                            },
+                        ]),
+                    ),
+                newMessage: initialState,
+            })
+            store.dispatch(actions.setActiveCustomerAsReceiver())
+
+            expect(store.getActions()).toEqual([
+                {
+                    type: types.NEW_MESSAGE_SET_RECEIVERS,
+                    receivers: {
+                        to: [{ name: 'Marc', address: 'marc.wall@gmail.com' }],
+                    },
+                    replaceAll: false,
+                },
+            ])
+        })
+
+        it('should not set receiver when customer has no name', () => {
+            store = mockStore({
+                ticket: emailTicket
+                    .setIn(['channel'], TicketChannel.Email)
+                    .setIn(['customer', 'name'], '')
+                    .setIn(['customer', 'email'], 'john@example.com')
+                    .setIn(
+                        ['customer', 'channels'],
+                        fromJS([
+                            {
+                                address: 'john@example.com',
+                                type: 'email',
+                            },
+                        ]),
+                    ),
+                newMessage: initialState,
+            })
+            store.dispatch(actions.setActiveCustomerAsReceiver())
+
+            expect(store.getActions()).toEqual([])
+        })
+
+        it('should not set receiver when customer has no email', () => {
+            store = mockStore({
+                ticket: emailTicket
+                    .setIn(['channel'], TicketChannel.Email)
+                    .setIn(['customer', 'name'], 'Bob'),
+                newMessage: initialState,
+            })
+            store.dispatch(actions.setActiveCustomerAsReceiver())
+
+            expect(store.getActions()).toEqual([])
+        })
+
+        it('should return early when ticket channel is not Email', () => {
+            store = mockStore({
+                ticket: emailTicket
+                    .setIn(['channel'], TicketChannel.Phone)
+                    .setIn(['customer', 'name'], 'Marc')
+                    .setIn(['customer', 'email'], 'marc.wall@gmail.com'),
+                newMessage: initialState,
+            })
+            store.dispatch(actions.setActiveCustomerAsReceiver())
+
+            expect(store.getActions()).toEqual([])
+        })
+    })
 })
