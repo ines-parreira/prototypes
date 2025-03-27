@@ -682,11 +682,37 @@ describe('<FilterTopbar />', () => {
         expect(queryByText('This view cannot be saved')).toBeInTheDocument()
     })
 
-    it('should render Ticket Fields filter when FF is enabled and when in search mode', () => {
-        mockUseFlag.mockReturnValue(true)
+    it('should render Ticket Fields filter when in search mode', () => {
         const { getByLabelText, getByText } = render(
             <Provider store={mockStore(defaultState)}>
                 <FilterTopbar {...minProps} isSearch={true} />
+            </Provider>,
+        )
+
+        const addFilterButton = getByLabelText('Add filter')
+        fireEvent.click(addFilterButton)
+
+        expect(getByText('Ticket field')).toBeInTheDocument()
+    })
+
+    it('should not render Ticket Fields filter when FF is disabled', () => {
+        const { getByLabelText, queryByText } = render(
+            <Provider store={mockStore(defaultState)}>
+                <FilterTopbar {...minProps} />
+            </Provider>,
+        )
+
+        const addFilterButton = getByLabelText('Add filter')
+        fireEvent.click(addFilterButton)
+
+        expect(queryByText('Ticket field')).not.toBeInTheDocument()
+    })
+
+    it('should render Ticket Fields filter when FF is enabled', () => {
+        mockUseFlag.mockReturnValue(true)
+        const { getByLabelText, getByText } = render(
+            <Provider store={mockStore(defaultState)}>
+                <FilterTopbar {...minProps} />
             </Provider>,
         )
 

@@ -370,19 +370,20 @@ export const FilterTopbar = ({
         }, [dispatch, activeView])
 
     const isTicketFieldsViewFilterEnabled = useFlag(
-        FeatureFlagKey.FilterSearchViewsByTicketFields,
+        FeatureFlagKey.FilterViewsByTicketFields,
     )
 
     const filterableFields = (config.get('fields') as List<any>)
-        .filter(
-            (field: Map<any, any>) =>
+        .filter((field: Map<any, any>) => {
+            return (
                 !!field.get('filter') &&
-                ((
-                    field.getIn(['filter', 'showInModes'], []) as string[]
-                ).includes('search')
-                    ? isSearch && isTicketFieldsViewFilterEnabled
-                    : true),
-        )
+                (field.get('path', '') === 'custom_fields'
+                    ? isSearch
+                        ? true
+                        : isTicketFieldsViewFilterEnabled
+                    : true)
+            )
+        })
         .sortBy((field: Map<any, any>) => field.get('title') as string)
 
     const totalSearchResources = useMemo(() => {
