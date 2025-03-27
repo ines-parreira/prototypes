@@ -90,13 +90,6 @@ const KnowledgePreview: React.FC<Props> = ({ shopName }) => {
         />
     )
 
-    const topCategoriesCard = (
-        <TopElementsCard
-            title="Top Categories"
-            topElements={data?.categories ?? []}
-        />
-    )
-
     const averageDiscountCard = (
         <Card className={css.score}>
             <CardHeader>
@@ -137,7 +130,6 @@ const KnowledgePreview: React.FC<Props> = ({ shopName }) => {
         topProductsCard,
         repeatRateCard,
         averageOrdersCard,
-        topCategoriesCard,
         averageDiscountCard,
     ]
 
@@ -145,7 +137,6 @@ const KnowledgePreview: React.FC<Props> = ({ shopName }) => {
         topProductsCard,
         repeatRateCard,
         averageOrdersCard,
-        topCategoriesCard,
         averageDiscountCard,
         topLocationsCard,
         scoreCard,
