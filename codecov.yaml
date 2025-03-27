@@ -15,6 +15,7 @@ ignore:
   - src/pages/automate/orderManagement/**/*
   - src/pages/settings/common/SettingsNavbar/config.tsx
   - src/routes/settings/Settings.tsx
+  - src/main/init/index.tsx
 
 coverage:
   status:
