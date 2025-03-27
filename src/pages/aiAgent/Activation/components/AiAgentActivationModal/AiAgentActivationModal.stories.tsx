@@ -18,6 +18,7 @@ const defaultState = {
 }
 
 const dummyStoreConfig: StoreConfiguration = {
+    shopType: 'shopify',
     storeName: 'steve-madden',
     scopes: [AiAgentScope.Sales, AiAgentScope.Support],
     conversationBot: {

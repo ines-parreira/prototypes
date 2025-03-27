@@ -5,6 +5,7 @@ import { ToneOfVoice } from '../constants'
 export const getStoreConfigurationFixture = (
     props?: Partial<StoreConfiguration>,
 ): StoreConfiguration => ({
+    shopType: 'shopify',
     conversationBot: {
         id: 1,
         email: 'bot@gorgias.com',

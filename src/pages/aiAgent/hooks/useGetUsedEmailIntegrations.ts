@@ -8,9 +8,11 @@ import { useGetOnboardings } from 'pages/aiAgent/Onboarding/hooks/useGetOnboardi
 import { getCurrentDomain } from 'state/currentAccount/selectors'
 import { getShopifyIntegrationsSortedByName } from 'state/integrations/selectors'
 
-export const useGetUsedEmailIntegrations = () => {
+export const useGetUsedEmailIntegrations = (shopNameParam?: string) => {
     const accountDomain = useAppSelector(getCurrentDomain)
-    const { shopName } = useParams<{ shopName: string }>()
+    const { shopName: shopNameFromParams } = useParams<{ shopName: string }>()
+
+    const shopName = shopNameParam || shopNameFromParams
 
     const stores = useAppSelector(getShopifyIntegrationsSortedByName)
     const { data: currentOnboardings } = useGetOnboardings()

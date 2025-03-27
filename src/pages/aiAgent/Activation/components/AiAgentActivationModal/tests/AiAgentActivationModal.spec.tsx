@@ -14,21 +14,30 @@ import { TicketChannel } from 'business/types/ticket'
 import { billingState } from 'fixtures/billing'
 import { AiAgentScope, StoreConfiguration } from 'models/aiAgent/types'
 import { useStoresConfigurationMutation } from 'pages/aiAgent/hooks/useStoresConfigurationMutation'
-import { useSelfServiceChatChannelsMultiStore } from 'pages/automate/common/hooks/useSelfServiceChatChannels'
 import { RootState } from 'state/types'
 import { assumeMock, mockStore } from 'utils/testing'
 
 import { AiAgentActivationModal } from '../AiAgentActivationModal'
 
-jest.mock('pages/automate/common/hooks/useSelfServiceChatChannels')
-const useSelfServiceChatChannelsMultiStoreMock = assumeMock(
-    useSelfServiceChatChannelsMultiStore,
-)
+jest.mock('pages/automate/common/hooks/useSelfServiceChatChannels', () => ({
+    __esModule: true,
+    useSelfServiceChatChannelsMultiStore: jest.fn(),
+    default: () => [],
+}))
+
+const {
+    useSelfServiceChatChannelsMultiStore:
+        useSelfServiceChatChannelsMultiStoreMock,
+} = jest.requireMock('pages/automate/common/hooks/useSelfServiceChatChannels')
 
 jest.mock('pages/aiAgent/hooks/useStoresConfigurationMutation')
 const useStoresConfigurationMutationMock = assumeMock(
     useStoresConfigurationMutation,
 )
+
+jest.mock('pages/aiAgent/hooks/useGetUsedEmailIntegrations', () => ({
+    useGetUsedEmailIntegrations: () => [],
+}))
 
 const storeSupportWithEmailAndChatAndSales = {
     storeName: 'storeSupportWithEmailAndChatAndSales',

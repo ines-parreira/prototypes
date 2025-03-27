@@ -1,5 +1,6 @@
-import React, { ComponentProps } from 'react'
+import { ComponentProps } from 'react'
 
+import { fireEvent, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 
 import { AlertType } from 'pages/common/components/Alert/Alert'
@@ -9,6 +10,48 @@ import {
     AiAgentActivationStoreCard,
     StoreActivation,
 } from '../AiAgentActivationStoreCard'
+
+jest.mock('hooks/useAppSelector', () => ({
+    __esModule: true,
+    default: () => [
+        {
+            id: 1,
+            meta: {
+                address: 'foo@example.com',
+                preferred: true,
+            },
+        },
+        {
+            id: 2,
+            meta: {
+                address: 'another@example.com',
+                preferred: false,
+            },
+        },
+        {
+            id: 3,
+            meta: {
+                address: 'test@example.com',
+                preferred: false,
+            },
+        },
+    ],
+}))
+
+jest.mock('pages/aiAgent/hooks/useGetUsedEmailIntegrations', () => ({
+    useGetUsedEmailIntegrations: () => [3],
+}))
+jest.mock('pages/automate/common/hooks/useSelfServiceChatChannels', () => ({
+    __esModule: true,
+    default: () => [
+        {
+            value: {
+                id: 1,
+                name: 'Chat Channel 1',
+            },
+        },
+    ],
+}))
 
 const renderComponent = (
     props: ComponentProps<typeof AiAgentActivationStoreCard>,
@@ -33,6 +76,10 @@ const storeWithoutAlert = {
         },
     },
     alert: [],
+    configuration: {
+        shopType: 'shopify',
+        shopName: 'steve-madden',
+    },
 } as any as StoreActivation
 const storeWithIntegrationMissing = {
     ...storeWithoutAlert,
@@ -83,8 +130,12 @@ describe('<AiAgentActivationStoreCard />', () => {
 
         expect(getByText('Steve Madden')).toBeInTheDocument()
 
-        expect(getByText('Activate Support for Chat')).toBeInTheDocument()
-        expect(getByText('Activate Support for Email')).toBeInTheDocument()
+        expect(
+            getByText('Activate Support for integrated chats.'),
+        ).toBeInTheDocument()
+        expect(
+            getByText('Activate Support for integrated emails.'),
+        ).toBeInTheDocument()
 
         expect(
             getByText(
@@ -158,4 +209,69 @@ describe('<AiAgentActivationStoreCard />', () => {
             expect(closeModal).toHaveBeenCalled()
         },
     )
+
+    it('should display tooltips for integrated emails when hovering', async () => {
+        const { getAllByText, getByRole } = renderComponent({
+            store: storeWithoutAlert,
+            onSalesChange,
+            onSupportChange,
+            onSupportChatChange,
+            onSupportEmailChange,
+            closeModal,
+        })
+
+        const integratedEmailsSection = getAllByText(
+            /integrated emails/i,
+        )[0].closest('div') as HTMLElement
+
+        expect(integratedEmailsSection).toBeInTheDocument()
+
+        const emailTooltipIcon = integratedEmailsSection.querySelector(
+            '.material-icons-outlined.icon',
+        )
+
+        expect(emailTooltipIcon).toBeInTheDocument()
+
+        fireEvent.mouseOver(emailTooltipIcon as HTMLElement)
+
+        await waitFor(() => {
+            expect(getByRole('tooltip')).toHaveTextContent('integrated emails:')
+            expect(getByRole('tooltip')).toHaveTextContent('foo@example.com')
+            expect(getByRole('tooltip')).toHaveTextContent(
+                'another@example.com',
+            )
+            expect(getByRole('tooltip')).not.toHaveTextContent(
+                'test@example.com',
+            )
+        })
+    })
+
+    it('should display tooltips for integrated chats when hovering', async () => {
+        const { getByRole, getAllByText } = renderComponent({
+            store: storeWithoutAlert,
+            onSalesChange,
+            onSupportChange,
+            onSupportChatChange,
+            onSupportEmailChange,
+            closeModal,
+        })
+
+        const integratedChatsSection = getAllByText(
+            /integrated chats/i,
+        )[0].closest('div') as HTMLElement
+
+        expect(integratedChatsSection).toBeInTheDocument()
+
+        const chatTooltipIcon = integratedChatsSection.querySelector(
+            '.material-icons-outlined.icon',
+        )
+        expect(chatTooltipIcon).toBeInTheDocument()
+
+        fireEvent.mouseOver(chatTooltipIcon as HTMLElement)
+
+        await waitFor(() => {
+            expect(getByRole('tooltip')).toHaveTextContent('integrated chats:')
+            expect(getByRole('tooltip')).toHaveTextContent('Chat Channel 1')
+        })
+    })
 })

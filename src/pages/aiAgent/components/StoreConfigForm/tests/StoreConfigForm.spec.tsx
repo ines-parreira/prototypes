@@ -227,6 +227,7 @@ const renderComponent = (
 
 describe('<StoreConfigForm />', () => {
     const storeConfiguration = {
+        shopType: 'shopify',
         chatChannelDeactivatedDatetime: null,
         emailChannelDeactivatedDatetime: null,
         trialModeActivatedDatetime: '2024-07-30T12:33:02.750Z',

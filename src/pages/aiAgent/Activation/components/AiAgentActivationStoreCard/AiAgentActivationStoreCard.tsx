@@ -1,14 +1,22 @@
+import { useMemo } from 'react'
+
 import cn from 'classnames'
 import { Link } from 'react-router-dom'
 
 import { Tooltip } from '@gorgias/merchant-ui-kit'
 
 import warningIcon from 'assets/img/icons/warning.svg'
+import { EMAIL_INTEGRATION_TYPES } from 'constants/integration'
+import useAppSelector from 'hooks/useAppSelector'
 import { StoreConfiguration } from 'models/aiAgent/types'
 import { useAiAgentNavigation } from 'pages/aiAgent/hooks/useAiAgentNavigation'
+import { useGetUsedEmailIntegrations } from 'pages/aiAgent/hooks/useGetUsedEmailIntegrations'
+import useSelfServiceChatChannels from 'pages/automate/common/hooks/useSelfServiceChatChannels'
 import Alert, { AlertType } from 'pages/common/components/Alert/Alert'
 import CheckBox from 'pages/common/forms/CheckBox'
+import IconTooltip from 'pages/common/forms/IconTooltip/IconTooltip'
 import { NewToggleButton } from 'pages/common/forms/NewToggleButton'
+import { getIntegrationsByTypes } from 'state/integrations/selectors'
 
 import css from './AiAgentActivationStoreCard.less'
 
@@ -52,7 +60,7 @@ type Props = {
     closeModal: () => void
 }
 export const AiAgentActivationStoreCard = ({
-    store: { name, title, support, sales, alerts },
+    store: { name, title, support, sales, alerts, configuration },
     onSalesChange,
     onSupportChange,
     onSupportChatChange,
@@ -69,6 +77,29 @@ export const AiAgentActivationStoreCard = ({
         current: enablementList.filter(Boolean).length,
         total: enablementList.length,
     }
+
+    const chatChannels = useSelfServiceChatChannels(
+        configuration.shopType,
+        configuration.storeName,
+    )
+    const selector = useMemo(
+        () => getIntegrationsByTypes(EMAIL_INTEGRATION_TYPES),
+        [],
+    )
+    const emailIntegrations = useAppSelector(selector)
+    const usedEmailIntegrations = useGetUsedEmailIntegrations(
+        configuration.storeName,
+    )
+    const emailItems = useMemo(() => {
+        return emailIntegrations
+            .map((integration) => ({
+                email: integration.meta.address,
+                id: integration.id,
+                isDefault: integration.meta.preferred,
+                isDisabled: usedEmailIntegrations.includes(integration.id),
+            }))
+            .filter((item) => item.isDisabled === false)
+    }, [emailIntegrations, usedEmailIntegrations])
 
     const { routes } = useAiAgentNavigation({ shopName: name })
 
@@ -174,7 +205,41 @@ export const AiAgentActivationStoreCard = ({
                                         Select Integration for Chat
                                     </Link>
                                 ) : (
-                                    'Activate Support for Chat'
+                                    <div className={css.labelContainer}>
+                                        <span>
+                                            Activate Support for integrated
+                                            chats.
+                                            {chatChannels.length > 0 && (
+                                                <IconTooltip
+                                                    className={css.icon}
+                                                    tooltipProps={{
+                                                        placement: 'top-start',
+                                                    }}
+                                                >
+                                                    integrated chats:
+                                                    <div>
+                                                        {chatChannels.map(
+                                                            (channel) => (
+                                                                <div
+                                                                    key={
+                                                                        channel
+                                                                            .value
+                                                                            .id
+                                                                    }
+                                                                >
+                                                                    {
+                                                                        channel
+                                                                            .value
+                                                                            .name
+                                                                    }
+                                                                </div>
+                                                            ),
+                                                        )}
+                                                    </div>
+                                                </IconTooltip>
+                                            )}
+                                        </span>
+                                    </div>
                                 )}
                             </div>
                         </div>
@@ -217,7 +282,37 @@ export const AiAgentActivationStoreCard = ({
                                         Select Integration for Email
                                     </Link>
                                 ) : (
-                                    'Activate Support for Email'
+                                    <div className={css.labelContainer}>
+                                        <span>
+                                            Activate Support for integrated
+                                            emails.
+                                            {emailItems.length > 0 && (
+                                                <IconTooltip
+                                                    className={css.icon}
+                                                    tooltipProps={{
+                                                        placement: 'top-start',
+                                                    }}
+                                                >
+                                                    integrated emails:
+                                                    <div>
+                                                        {emailItems.map(
+                                                            (channel) => (
+                                                                <div
+                                                                    key={
+                                                                        channel.id
+                                                                    }
+                                                                >
+                                                                    {
+                                                                        channel.email
+                                                                    }
+                                                                </div>
+                                                            ),
+                                                        )}
+                                                    </div>
+                                                </IconTooltip>
+                                            )}
+                                        </span>
+                                    </div>
                                 )}
                             </div>
                         </div>
