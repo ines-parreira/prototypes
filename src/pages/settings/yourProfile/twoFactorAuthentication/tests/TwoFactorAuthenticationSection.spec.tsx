@@ -88,36 +88,58 @@ describe('<TwoFactorAuthenticationSection />', () => {
             },
         )
 
-        it.each([true, false])(
-            'should open or not the Two-Factor Authentication Modal via queryParam',
-            (has2FAEnabled) => {
-                const store = mockStore({
-                    currentUser: fromJS({
-                        has_2fa_enabled: has2FAEnabled,
-                    }),
-                })
+        it('should not open the Two-Factor Authentication Modal for the Gorgias Agent', async () => {
+            const store = mockStore({
+                currentUser: fromJS({
+                    has_2fa_enabled: false,
+                    role: { name: 'internal-agent' },
+                }),
+            })
 
-                renderWithRouter(
-                    <Provider store={store}>
-                        <TwoFactorAuthenticationSection />
-                    </Provider>,
-                    {
-                        path: 'app/settings/password-2fa',
-                        route: 'app/settings/password-2fa?enforce_2fa_setup_modal=true',
-                    },
-                )
+            const { findByText } = renderWithRouter(
+                <Provider store={store}>
+                    <TwoFactorAuthenticationSection />
+                </Provider>,
+            )
 
-                const modalQuery = screen.queryByText(
-                    /TwoFactorAuthenticationModal mocked/,
-                )
+            const button = await findByText(/Enable 2FA/)
+            fireEvent.click(button)
 
-                if (has2FAEnabled) {
-                    expect(modalQuery).toBeNull()
-                } else {
-                    expect(modalQuery).not.toBeNull()
-                }
-            },
-        )
+            const modalQuery = screen.queryByText(
+                /TwoFactorAuthenticationModal mocked/,
+            )
+            expect(modalQuery).toBeNull()
+        }),
+            it.each([true, false])(
+                'should open or not the Two-Factor Authentication Modal via queryParam',
+                (has2FAEnabled) => {
+                    const store = mockStore({
+                        currentUser: fromJS({
+                            has_2fa_enabled: has2FAEnabled,
+                        }),
+                    })
+
+                    renderWithRouter(
+                        <Provider store={store}>
+                            <TwoFactorAuthenticationSection />
+                        </Provider>,
+                        {
+                            path: 'app/settings/password-2fa',
+                            route: 'app/settings/password-2fa?enforce_2fa_setup_modal=true',
+                        },
+                    )
+
+                    const modalQuery = screen.queryByText(
+                        /TwoFactorAuthenticationModal mocked/,
+                    )
+
+                    if (has2FAEnabled) {
+                        expect(modalQuery).toBeNull()
+                    } else {
+                        expect(modalQuery).not.toBeNull()
+                    }
+                },
+            )
 
         it('should show the enforcement message without the date', () => {
             const store = mockStore({

@@ -98,6 +98,29 @@ describe('<TwoFactorAuthenticationEnforcement />', () => {
             expect(on2FAEnforced).toHaveBeenCalledWith('2023-06-16T12:34:56')
         })
 
+        it('should be disabled for the Gorgias agent', () => {
+            const on2FAEnforced = jest.fn()
+            const store = mockStore({
+                currentUser: fromJS({
+                    has_2fa_enabled: false,
+                    role: { name: 'internal-agent' },
+                }),
+            })
+
+            render(
+                <Provider store={store}>
+                    <TwoFactorAuthenticationEnforcement
+                        {...minProps}
+                        twoFAEnforcedDatetime={null}
+                        on2FAEnforced={on2FAEnforced}
+                    />
+                </Provider>,
+            )
+
+            const toggle = screen.getByLabelText('Require 2FA for all users')
+            expect(toggle).toHaveProperty('disabled')
+        })
+
         it('should open 2fa setup modal because user does not have it enabled and enforce 2fa on finish', async () => {
             const on2FAEnforced = jest.fn()
 

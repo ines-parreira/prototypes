@@ -4,6 +4,7 @@ import classnames from 'classnames'
 
 import { Badge } from '@gorgias/merchant-ui-kit'
 
+import { UserRole } from 'config/types/user'
 import { DateAndTimeFormatting } from 'constants/datetime'
 import useAppSelector from 'hooks/useAppSelector'
 import useSearch from 'hooks/useSearch'
@@ -16,7 +17,10 @@ import {
     getTwoFAEnforcedDatetime,
     is2FAEnforcedSelector,
 } from 'state/currentAccount/selectors'
-import { has2FaEnabled as has2FaEnabledSelector } from 'state/currentUser/selectors'
+import {
+    getCurrentUser,
+    has2FaEnabled as has2FaEnabledSelector,
+} from 'state/currentUser/selectors'
 
 import { isRecentLogin } from '../utils'
 import TwoFactorAuthenticationDisableModal from './TwoFactorAuthenticationDisableModal'
@@ -24,6 +28,9 @@ import TwoFactorAuthenticationDisableModal from './TwoFactorAuthenticationDisabl
 export default function TwoFactorAuthenticationSection() {
     const [is2FASetupModalOpen, setIs2FASetupModalOpen] = useState(false)
     const [isDisableModalOpen, setIsDisableModalOpen] = useState(false)
+    const currentUser = useAppSelector(getCurrentUser)
+    const isGorgiasAgent =
+        currentUser.getIn(['role', 'name']) === UserRole.GorgiasAgent
 
     const shouldEnforce2FASetupModal =
         useSearch<{
@@ -74,7 +81,8 @@ export default function TwoFactorAuthenticationSection() {
                 className="mr-2"
                 intent={has2FAEnabled ? 'secondary' : 'primary'}
                 onClick={() => {
-                    setIs2FASetupModalOpen(true)
+                    if (isGorgiasAgent) alert('Disabled for internal users')
+                    else setIs2FASetupModalOpen(true)
                 }}
             >
                 {has2FAEnabled ? 'Update 2FA' : 'Enable 2FA'}

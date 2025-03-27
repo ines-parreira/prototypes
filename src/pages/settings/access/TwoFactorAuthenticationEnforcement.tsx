@@ -1,10 +1,11 @@
-import React, { useCallback, useState } from 'react'
+import React, { useCallback, useMemo, useState } from 'react'
 
 import classNames from 'classnames'
 import moment, { Moment } from 'moment'
 
 import { Label } from '@gorgias/merchant-ui-kit'
 
+import { UserRole } from 'config/types/user'
 import useAppSelector from 'hooks/useAppSelector'
 import ConfirmationPopover from 'pages/common/components/popover/ConfirmationPopover'
 import { DatePicker } from 'pages/common/forms/DatePicker'
@@ -16,6 +17,7 @@ import {
     TWO_FA_WARN_LESS_THAN_DAYS,
 } from 'state/currentUser/constants'
 import {
+    getCurrentUser,
     getTimezone,
     has2FaEnabled as has2FaEnabledSelector,
 } from 'state/currentUser/selectors'
@@ -64,6 +66,14 @@ export default function TwoFactorAuthenticationEnforcement({
 
     const is2FAEnforced = !!twoFAEnforcedDatetime
     const enforcementDatetime = setTimezone(twoFAEnforcedDatetime, userTimezone)
+
+    const currentUser = useAppSelector(getCurrentUser)
+    const isGorgiasAgent =
+        currentUser.getIn(['role', 'name']) === UserRole.GorgiasAgent
+    const isDisabled = useMemo(
+        () => (isGorgiasAgent ? true : disabled),
+        [isGorgiasAgent, disabled],
+    )
 
     const set2FAEnforced = useCallback(
         (value: moment.Moment | null, showConfirmationPopover?: () => void) => {
@@ -115,7 +125,7 @@ export default function TwoFactorAuthenticationEnforcement({
                     name="twoFAEnforcementToggle"
                     isToggled={is2FAEnforced}
                     isLoading={loading || twoFAModalVisible}
-                    isDisabled={disabled}
+                    isDisabled={isDisabled}
                     onClick={handleToggle}
                 >
                     Require 2FA for all users
@@ -126,7 +136,7 @@ export default function TwoFactorAuthenticationEnforcement({
                         <Label
                             htmlFor="twoFAEnforcementDatetime"
                             isRequired
-                            isDisabled={disabled || loading}
+                            isDisabled={isDisabled || loading}
                             className="mb-2"
                         >
                             Enforcement time
@@ -194,7 +204,7 @@ export default function TwoFactorAuthenticationEnforcement({
                                             value={enforcementDatetime.format(
                                                 'L LT',
                                             )}
-                                            isDisabled={disabled || loading}
+                                            isDisabled={isDisabled || loading}
                                             ref={elementRef}
                                             data-1p-ignore
                                         />
