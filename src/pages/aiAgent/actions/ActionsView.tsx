@@ -19,7 +19,11 @@ import ActionsList from './components/ActionsList'
 import ActionsUseCaseTemplatesCards from './components/ActionsUseCaseTemplatesCards'
 import BrowseAllActionsButton from './components/BrowseAllActionsButton'
 import CreateCustomActionButton from './components/CreateCustomActionButton'
-import { ACTIONS_DESCRIPTION } from './constants'
+import {
+    ACTIONS_DESCRIPTION_CURRENT_STATE_DISCLAIMER,
+    ACTIONS_DESCRIPTION_INTRO,
+    EMPTY_STATE_BANNER_ACTIONS_DESCRIPTION,
+} from './constants'
 import { handleError } from './hooks/errorHandler'
 
 import css from './ActionsView.less'
@@ -79,9 +83,10 @@ const ActionsView = () => {
                 <div className={css.actionsListContainer}>
                     <div className={css.actionListDescription}>
                         <div data-candu-id="custom-action-view-header">
-                            {ACTIONS_DESCRIPTION} When enabled, you can preview
-                            Actions in the{' '}
-                            <Link to={routes.test}>test area</Link>.
+                            {ACTIONS_DESCRIPTION_INTRO}
+                            When enabled, you can preview Actions in the{' '}
+                            <Link to={routes.test}>test area</Link>.{' '}
+                            {ACTIONS_DESCRIPTION_CURRENT_STATE_DISCLAIMER}
                         </div>
                         <div className={css.actionButtons}>
                             <CreateCustomActionButton />
@@ -95,7 +100,7 @@ const ActionsView = () => {
                     <AutomateViewEmptyStateBanner
                         id="actions"
                         title="Create Actions for AI Agent to automate top customer requests with your 3rd party apps"
-                        description={ACTIONS_DESCRIPTION}
+                        description={EMPTY_STATE_BANNER_ACTIONS_DESCRIPTION}
                         image={emptyStateTemplate}
                     />
                     <div className={css.templateCards}>
