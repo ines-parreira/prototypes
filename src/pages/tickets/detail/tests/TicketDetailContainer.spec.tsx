@@ -1431,7 +1431,7 @@ describe('TicketDetailContainer component', () => {
 
     describe('ticket fields', () => {
         it.each([true, false])(
-            'should not allow ticket to be set to close if errored. Conditional fields enabled: %s',
+            'should not allow ticket to be set to close if errored. Field Conditions enabled: %s',
             async (conditionalFieldsEnabled: boolean) => {
                 mockedUseFlag.mockReturnValue(conditionalFieldsEnabled)
                 mockedServer.onGet('/api/custom-fields/').reply(200, {

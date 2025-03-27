@@ -195,7 +195,7 @@ describe('<FieldForm/>', () => {
         })
     })
 
-    it('should show three options instead of a checkbox when conditional fields are enabled', () => {
+    it('should show three options instead of a checkbox when fields conditions are enabled', () => {
         mockFlags({
             [FeatureFlagKey.TicketConditionalFields]: true,
         })

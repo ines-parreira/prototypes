@@ -33,7 +33,7 @@ import css from './ConditionalFields.less'
 export const MAX_CONDITIONS = 70
 
 export default function ConditionalFields() {
-    useTitle('Conditional fields')
+    useTitle('Field Conditions')
     const [listingNode, setListingNode] = useCallbackRef()
     const [landingNode, setLandingNode] = useCallbackRef()
 
@@ -160,7 +160,7 @@ const NoExistingConditions = ({
     return (
         <div className={css.emptyViewContainer}>
             <h2 className={css.emptyViewContainerHeader}>
-                Get started with Conditional Fields
+                Get started with Field Conditions
             </h2>
             <p className={css.emptyViewContainerText}>
                 Create condition to display ticket fields.

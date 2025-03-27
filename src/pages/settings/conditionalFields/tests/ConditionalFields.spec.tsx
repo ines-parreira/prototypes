@@ -70,7 +70,7 @@ describe('<ConditionalFields/>', () => {
         render(<ConditionalFields />)
 
         expect(
-            screen.getByText(/Get started with Conditional Fields/),
+            screen.getByText(/Get started with Field Conditions/),
         ).toBeDefined()
         // expect(screen.queryByTestId('custom-fields-list')).toBeNull()
     })
