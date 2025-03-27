@@ -30,18 +30,7 @@
         "eqeqeq": ["error", "always", { "null": "ignore" }],
         "import/default": "off",
         "import/namespace": "off",
-        "import/no-anonymous-default-export": [
-            "error",
-            {
-                "allowAnonymousClass": false,
-                "allowAnonymousFunction": false,
-                "allowArray": true,
-                "allowArrowFunction": false,
-                "allowCallExpression": true,
-                "allowLiteral": false,
-                "allowObject": true
-            }
-        ],
+        "import/no-anonymous-default-export": "warn",
         "import/no-duplicates": "error",
         "import/no-named-as-default": "warn",
         "import/no-named-as-default-member": "off",
@@ -78,6 +67,7 @@
         "no-unused-vars": "off",
         "no-useless-escape": "off",
         "react-hooks/exhaustive-deps": "error",
+        "react-hooks/rules-of-hooks": "warn",
         "react/jsx-key": ["error", { "checkFragmentShorthand": true }],
         "react/no-find-dom-node": "off",
         "react/no-unescaped-entities": "error",
