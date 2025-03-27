@@ -4,7 +4,7 @@ import { ConnectYourDefaultEmailTask } from '../ConnectYourDefaultEmail.task'
 import { buildRuleEngineData, buildRuleEngineRoutes } from './utils'
 
 describe('ConnectYourDefaultEmail', () => {
-    it('should display the task if email channel is enabled, and a default email integration is set in store configuration', () => {
+    it('should not display the task if email channel is enabled, and a default email integration is set in store configuration', () => {
         const emailIntegrations = EmailIntegrationsDataFixture.start()
             .withEmailIntegration({
                 isDefault: true,
@@ -40,7 +40,7 @@ describe('ConnectYourDefaultEmail', () => {
             }),
             buildRuleEngineRoutes(),
         )
-        expect(task.display).toBe(true)
+        expect(task.display).toBe(false)
     })
 
     it('should not display the task if the email channel is not enabled', () => {

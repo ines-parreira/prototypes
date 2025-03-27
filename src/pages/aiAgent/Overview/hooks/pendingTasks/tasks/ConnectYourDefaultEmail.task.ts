@@ -31,8 +31,8 @@ export class ConnectYourDefaultEmailTask extends Task {
             return false
         }
 
-        return data.aiAgentStoreConfiguration.monitoredEmailIntegrations.some(
-            (ei) => ei.id === defaultEmailIntegration.id,
+        return data.aiAgentStoreConfiguration.monitoredEmailIntegrations.every(
+            (ei) => ei.id !== defaultEmailIntegration.id,
         )
     }
 
