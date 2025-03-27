@@ -5,7 +5,6 @@ import { TicketStatus } from '@gorgias/api-types'
 
 import { useFlag } from 'core/flags'
 import { ticketInputFieldDefinition } from 'fixtures/customField'
-import DatetimeLabel from 'pages/common/utils/DatetimeLabel'
 import { assumeMock } from 'utils/testing'
 
 import { SourceBadge } from '../SourceBadge'
@@ -37,13 +36,18 @@ const ticket = {
     messages_count: 1,
 } as TicketSummary
 
+const defaultProps = {
+    ticket,
+    displayedDate: <span>my displayed date</span>,
+}
+
 describe('TicketCard', () => {
     beforeEach(() => {
         useFlagMock.mockReturnValue(false)
     })
 
     it('should render the ticket info', () => {
-        render(<TicketCard ticket={ticket} isHighlighted={false} />)
+        render(<TicketCard {...defaultProps} />)
 
         expect(screen.getByText('Test Subject')).toBeInTheDocument()
         expect(screen.getByText('Test Excerpt')).toBeInTheDocument()
@@ -51,22 +55,17 @@ describe('TicketCard', () => {
         expect(screen.getByText('Team Name')).toBeInTheDocument()
         expect(screen.getByText('open')).toBeInTheDocument()
         expect(screen.getByText(/ID: 1/)).toBeInTheDocument()
+        expect(screen.getByText('my displayed date')).toBeInTheDocument()
         expect(SourceBadge).toHaveBeenCalledWith(
             {
                 channel: ticket.channel,
             },
             {},
         )
-        expect(DatetimeLabel).toHaveBeenCalledWith(
-            {
-                dateTime: ticket.last_message_datetime,
-            },
-            {},
-        )
     })
 
     it("should correctly render ticket's message count", () => {
-        render(<TicketCard ticket={ticket} isHighlighted={false} />)
+        render(<TicketCard {...defaultProps} />)
 
         expect(screen.getByText(/1 message/)).toBeInTheDocument()
 
@@ -77,8 +76,8 @@ describe('TicketCard', () => {
 
         render(
             <TicketCard
+                {...defaultProps}
                 ticket={ticketWithMultipleMessages}
-                isHighlighted={false}
             />,
         )
 
@@ -87,11 +86,11 @@ describe('TicketCard', () => {
 
     it('highlights the ticket card when isHighlighted is true', () => {
         const { container, rerender } = render(
-            <TicketCard ticket={ticket} isHighlighted={true} />,
+            <TicketCard {...defaultProps} isHighlighted={true} />,
         )
         expect(container.firstChild).toHaveClass('highlight')
 
-        rerender(<TicketCard ticket={ticket} />)
+        rerender(<TicketCard {...defaultProps} />)
 
         expect(container.firstChild).not.toHaveClass('highlight')
     })
@@ -99,6 +98,7 @@ describe('TicketCard', () => {
     it("should render snoozed status when ticket's snooze_datetime is set", () => {
         render(
             <TicketCard
+                {...defaultProps}
                 ticket={{
                     ...ticket,
                     status: TicketStatus.Closed,
@@ -117,7 +117,7 @@ describe('TicketCard', () => {
 
         render(
             <TicketCard
-                ticket={ticket}
+                {...defaultProps}
                 customFieldDefinitions={definitions}
                 isLoadingCFDefinitions={true}
             />,

@@ -19,6 +19,10 @@ import { Channel } from 'services/channels'
 import { BillingProducts } from 'state/billing/types'
 import { Account } from 'state/currentAccount/types'
 
+export type KeysMatching<T, V> = {
+    [K in keyof T]-?: T[K] extends V ? K : never
+}[keyof T]
+
 export type Schemas = Map<any, any>
 
 export type GorgiasInitialStateRecentChatTicket = Omit<

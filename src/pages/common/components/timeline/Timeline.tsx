@@ -7,10 +7,15 @@ import { LoadingSpinner } from '@gorgias/merchant-ui-kit'
 
 import GorgiasLogo from 'assets/img/gorgias-logo.svg'
 import { logEvent, SegmentEvent } from 'common/segment'
+import { FeatureFlagKey } from 'config/featureFlags'
+import { useFlag } from 'core/flags'
 import { useCustomFieldDefinitions } from 'custom-fields/hooks/queries/useCustomFieldDefinitions'
 import useAppSelector from 'hooks/useAppSelector'
 import { getCustomerHistory, getLoading } from 'state/customers/selectors'
 
+import DisplayedDate from './DisplayedDate'
+import { useSort } from './hooks/useSort'
+import { Sort } from './Sort'
 import TicketCard from './TicketCard'
 import { ReduxCustomerHistory } from './types'
 
@@ -22,6 +27,7 @@ type Props = {
 }
 
 export function Timeline({ ticketId = 0, onLoaded }: Props) {
+    const hasNewTimeline = useFlag(FeatureFlagKey.CustomerTimeline)
     const [hasCalledOnLoaded, setHasCalledOnLoaded] = useState(false)
 
     const {
@@ -38,6 +44,10 @@ export function Timeline({ ticketId = 0, onLoaded }: Props) {
     const customerHistory = useAppSelector(
         getCustomerHistory,
     ).toJS() as ReduxCustomerHistory
+
+    const { sortedTickets, sortOption, setSortOption } = useSort(
+        customerHistory.tickets,
+    )
 
     if (customersLoading.history) {
         return (
@@ -61,16 +71,16 @@ export function Timeline({ ticketId = 0, onLoaded }: Props) {
         )
     }
 
-    const tickets = customerHistory.tickets.sort(
-        (a, b) =>
-            new Date(b.last_message_datetime || b.created_datetime).getTime() -
-            new Date(a.last_message_datetime || a.created_datetime).getTime(),
-    )
-
     return (
-        <div className={css.container}>
+        <div>
+            {hasNewTimeline && (
+                <div className={css.filtersContainer}>
+                    <div></div>
+                    <Sort value={sortOption} onChange={setSortOption} />
+                </div>
+            )}
             <ol className={css.list}>
-                {tickets
+                {sortedTickets
                     .filter((ticket) => ticket.channel)
                     .map((ticket) => {
                         const isCurrentTicket = ticketId === ticket.id
@@ -85,6 +95,7 @@ export function Timeline({ ticketId = 0, onLoaded }: Props) {
                                     }}
                                 >
                                     <TicketCard
+                                        className={css.card}
                                         ticket={ticket}
                                         isHighlighted={isCurrentTicket}
                                         isLoadingCFDefinitions={
@@ -94,6 +105,10 @@ export function Timeline({ ticketId = 0, onLoaded }: Props) {
                                             (customFieldDefinitions ||
                                                 []) as CustomField[]
                                         }
+                                        displayedDate={DisplayedDate(
+                                            sortOption,
+                                            ticket,
+                                        )}
                                     />
                                 </Link>
                             </li>

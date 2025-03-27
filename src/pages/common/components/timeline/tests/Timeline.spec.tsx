@@ -1,9 +1,10 @@
-import { render, screen } from '@testing-library/react'
+import { fireEvent, render, screen } from '@testing-library/react'
 import { fromJS } from 'immutable'
 
-import { ObjectType } from '@gorgias/api-queries'
+import { ObjectType, TicketSummary } from '@gorgias/api-queries'
 
 import { logEvent, SegmentEvent } from 'common/segment'
+import { useFlag } from 'core/flags'
 import { useCustomFieldDefinitions } from 'custom-fields/hooks/queries/useCustomFieldDefinitions'
 import { apiListCursorPaginationResponse } from 'fixtures/axiosResponse'
 import { ticketInputFieldDefinition } from 'fixtures/customField'
@@ -13,6 +14,9 @@ import { assumeMock } from 'utils/testing'
 import TicketCard from '../TicketCard'
 import Timeline from '../Timeline'
 
+jest.mock('core/flags', () => ({
+    useFlag: jest.fn(),
+}))
 jest.mock('common/segment', () => ({
     logEvent: jest.fn(),
     SegmentEvent: {
@@ -33,10 +37,13 @@ jest.mock('state/customers/selectors', () => {
     }
 })
 jest.mock('../TicketCard', () => jest.fn(() => <div>TicketCard</div>))
+jest.mock('../DisplayedDate', () => jest.fn(() => 'Mocked DatetimeLabel'))
 
 const useCustomFieldDefinitionsMock = assumeMock(useCustomFieldDefinitions)
 const getCustomerHistoryMock = assumeMock(getCustomerHistory)
 const getLoadingMock = assumeMock(getLoading)
+const TicketCardMock = assumeMock(TicketCard)
+const useFlagMock = assumeMock(useFlag)
 
 const defaultFieldDefinitions = {
     data: apiListCursorPaginationResponse([ticketInputFieldDefinition]),
@@ -44,9 +51,20 @@ const defaultFieldDefinitions = {
 } as ReturnType<typeof useCustomFieldDefinitions>
 
 describe('<Timeline />', () => {
-    const ticket1 = { id: 1, channel: 'email' }
-    const ticket2 = { id: 2 }
-    const ticket3 = { id: 3, channel: 'email' }
+    const ticket1 = {
+        id: 1,
+        created_datetime: '2024-01-02T03:04:05.123456+00:00',
+        channel: 'email',
+    } as TicketSummary
+    const ticket2 = {
+        id: 2,
+        created_datetime: '2023-01-02T03:04:05.123456+00:00',
+    } as TicketSummary
+    const ticket3 = {
+        id: 3,
+        created_datetime: '2022-01-02T03:04:05.123456+00:00',
+        channel: 'email',
+    } as TicketSummary
     beforeEach(() => {
         useCustomFieldDefinitionsMock.mockReturnValue(defaultFieldDefinitions)
         getCustomerHistoryMock.mockReturnValue(
@@ -60,6 +78,7 @@ describe('<Timeline />', () => {
                 history: false,
             }),
         )
+        useFlagMock.mockReturnValue(false)
     })
 
     it('should render loading spinner', () => {
@@ -134,20 +153,24 @@ describe('<Timeline />', () => {
         expect(TicketCard).toHaveBeenNthCalledWith(
             1,
             {
+                className: expect.any(String),
                 isHighlighted: false,
                 customFieldDefinitions: [ticketInputFieldDefinition],
                 isLoadingCFDefinitions: false,
                 ticket: ticket1,
+                displayedDate: 'Mocked DatetimeLabel',
             },
             {},
         )
         expect(TicketCard).toHaveBeenNthCalledWith(
             2,
             {
+                className: expect.any(String),
                 isHighlighted: true,
                 customFieldDefinitions: [ticketInputFieldDefinition],
                 isLoadingCFDefinitions: false,
                 ticket: ticket3,
+                displayedDate: 'Mocked DatetimeLabel',
             },
             {},
         )
@@ -162,5 +185,28 @@ describe('<Timeline />', () => {
             SegmentEvent.CustomerTimelineTicketClicked,
         )
         expect(link).toHaveAttribute('to', '/app/ticket/1')
+    })
+
+    describe('Sorting', () => {
+        it('should not render SelectField when feature flag is off', () => {
+            render(<Timeline />)
+
+            expect(screen.queryByRole('combobox')).toBeNull()
+        })
+
+        it('should call sort tickets when a SelectField option is clicked', () => {
+            useFlagMock.mockReturnValue(true)
+            render(<Timeline />)
+
+            TicketCardMock.mockClear()
+
+            fireEvent.click(screen.getByRole('combobox'))
+            fireEvent.click(
+                screen.getByRole('option', { name: 'arrow_upward Created' }),
+            )
+
+            expect(TicketCardMock.mock.calls[0][0].ticket).toEqual(ticket3)
+            expect(TicketCardMock.mock.calls[1][0].ticket).toEqual(ticket1)
+        })
     })
 })

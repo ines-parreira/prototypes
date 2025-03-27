@@ -1,3 +1,5 @@
+import type { ReactNode } from 'react'
+
 import cn from 'classnames'
 
 import { CustomField, TicketSummary } from '@gorgias/api-queries'
@@ -5,7 +7,6 @@ import { TicketStatus } from '@gorgias/api-types'
 
 import { FeatureFlagKey } from 'config/featureFlags'
 import { useFlag } from 'core/flags'
-import DatetimeLabel from 'pages/common/utils/DatetimeLabel'
 import { StatusLabel } from 'pages/common/utils/labels'
 
 import { OwnerLabel } from './OwnerLabel'
@@ -15,7 +16,9 @@ import TicketFields from './TicketFields'
 import css from './TicketCard.less'
 
 type Props = {
+    className?: string
     ticket: TicketSummary
+    displayedDate: ReactNode
     isHighlighted?: boolean
     customFieldDefinitions?: CustomField[]
     isLoadingCFDefinitions?: boolean
@@ -26,11 +29,13 @@ export default function TicketCard({
     isHighlighted = false,
     customFieldDefinitions,
     isLoadingCFDefinitions = false,
+    displayedDate,
+    className,
 }: Props) {
     const hasNewTimeline = useFlag(FeatureFlagKey.CustomerTimeline)
     return (
         <div
-            className={cn(css.card, {
+            className={cn(css.card, className, {
                 [css.highlight]: isHighlighted,
             })}
         >
@@ -47,12 +52,7 @@ export default function TicketCard({
                             }
                         />
                     </span>
-                    <DatetimeLabel
-                        dateTime={
-                            ticket.last_message_datetime ||
-                            ticket.created_datetime
-                        }
-                    />
+                    <span>{displayedDate}</span>
                 </div>
                 {hasNewTimeline ? (
                     <TicketFields
