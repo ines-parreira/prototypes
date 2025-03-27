@@ -1,14 +1,12 @@
 import React, { useCallback, useMemo, useRef, useState } from 'react'
 
 import classnames from 'classnames'
-import { useFlags } from 'launchdarkly-react-client-sdk'
 import { isEqual, keyBy, startCase } from 'lodash'
 import { Link } from 'react-router-dom'
 
 import { Label, Tooltip } from '@gorgias/merchant-ui-kit'
 
 import { TicketChannel } from 'business/types/ticket'
-import { FeatureFlagKey } from 'config/featureFlags'
 import { getLanguagesFromChatConfig } from 'config/integrations/gorgias_chat'
 import { SelfServiceConfiguration } from 'models/selfServiceConfiguration/types'
 import { useListWorkflowEntryPoints } from 'models/workflows/queries'
@@ -187,8 +185,6 @@ export const FlowsSettings = ({
         workflowEntrypoints,
         entrypointLabelByWorkflowId,
     ])
-    // If the Flows recommendation feature flag is enabled, we won't limit the merchant to 6 flows
-    const hasUnlimitedFlows = useFlags()[FeatureFlagKey.MLFlowsRecommendation]
 
     const currentFlowsCount = enabledWorkflows.length
     const items =
@@ -270,9 +266,7 @@ export const FlowsSettings = ({
             <Button
                 id="add-flow-button"
                 intent="secondary"
-                isDisabled={
-                    currentFlowsCount >= FLOWS_LIMIT && !hasUnlimitedFlows
-                }
+                isDisabled={currentFlowsCount >= FLOWS_LIMIT}
                 ref={dropdownTargetRef}
                 onClick={() => setIsFlowSelectorDropdownOpen((prev) => !prev)}
             >
@@ -281,7 +275,7 @@ export const FlowsSettings = ({
                     arrow_drop_down
                 </i>
             </Button>
-            {currentFlowsCount >= FLOWS_LIMIT && !hasUnlimitedFlows && (
+            {currentFlowsCount >= FLOWS_LIMIT && (
                 <Tooltip
                     trigger={['hover']}
                     placement="top"

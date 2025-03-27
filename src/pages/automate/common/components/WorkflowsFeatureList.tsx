@@ -1,6 +1,5 @@
 import React, { ReactNode, useMemo, useRef, useState } from 'react'
 
-import { useFlags } from 'launchdarkly-react-client-sdk'
 import _isEqual from 'lodash/isEqual'
 import _keyBy from 'lodash/keyBy'
 import _uniq from 'lodash/uniq'
@@ -8,9 +7,7 @@ import { Link } from 'react-router-dom'
 
 import { Label } from '@gorgias/merchant-ui-kit'
 
-import { TicketChannel } from 'business/types/ticket'
 import { logEvent, SegmentEvent } from 'common/segment'
-import { FeatureFlagKey } from 'config/featureFlags'
 import { ListWfConfigurationsResponseDto } from 'pages/automate/workflows/types'
 import Button from 'pages/common/components/button/Button'
 
@@ -147,13 +144,7 @@ const WorkflowsFeatureList = ({
         channelLanguages,
     )
 
-    const isMLFlowRecommendationEnabled =
-        useFlags()[FeatureFlagKey.MLFlowsRecommendation]
-
-    const isLimitReached =
-        channelType === TicketChannel.Chat && isMLFlowRecommendationEnabled
-            ? false
-            : enabledEntrypointsCount >= maxActiveWorkflows
+    const isLimitReached = enabledEntrypointsCount >= maxActiveWorkflows
 
     return (
         <div className={css.container}>

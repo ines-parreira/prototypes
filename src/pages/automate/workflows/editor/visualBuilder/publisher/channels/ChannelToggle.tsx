@@ -1,11 +1,9 @@
 import React, { useCallback, useMemo } from 'react'
 
-import { useFlags } from 'launchdarkly-react-client-sdk'
 import _ from 'lodash'
 
 import { TicketChannel } from 'business/types/ticket'
 import { logEvent, SegmentEvent } from 'common/segment'
-import { FeatureFlagKey } from 'config/featureFlags'
 import { getLanguagesFromChatConfig } from 'config/integrations/gorgias_chat'
 import { MAX_ACTIVE_FLOWS } from 'pages/automate/common/components/constants'
 import {
@@ -59,9 +57,6 @@ const ChannelToggle = ({
     const isChat = TicketChannel.Chat === channel.type
     const idKey = isChat ? 'workflow_id' : 'id'
 
-    const isMLFlowRecommendationEnabled =
-        useFlags()[FeatureFlagKey.MLFlowsRecommendation]
-
     const clonedWorkflows = useMemo(() => {
         return _.cloneDeep(workflows || [])
     }, [workflows])
@@ -110,12 +105,8 @@ const ChannelToggle = ({
         const enabledFlowsCount = clonedWorkflows.filter(
             (workflow) => workflow.enabled,
         ).length
-        if (isChat) {
-            if (isMLFlowRecommendationEnabled) return false
-            return enabledFlowsCount >= MAX_ACTIVE_FLOWS
-        }
         return enabledFlowsCount >= MAX_ACTIVE_FLOWS
-    }, [clonedWorkflows, isChat, isMLFlowRecommendationEnabled])
+    }, [clonedWorkflows])
 
     return (
         <div>

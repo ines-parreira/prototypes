@@ -96,7 +96,6 @@ export enum FeatureFlagKey {
     MacroForwardByEmail = 'macro-forward-by-email',
     MacroResponseTextCcBcc = 'macro-response-text-cc-bcc',
     MLFeaturesKillswitch = 'ml-features-killswitch',
-    MLFlowsRecommendation = 'ml-flows-recommendation',
     NewDomainVerification = 'new-domain-verification',
     NewSatisfactionReport = 'new-satisfaction-report',
     NewSenderSelect = 'new-sender-select',

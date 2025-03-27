@@ -1,11 +1,9 @@
 import React from 'react'
 
 import { render } from '@testing-library/react'
-import { useFlags } from 'launchdarkly-react-client-sdk'
 
 import { LegacyChannelSlug } from '@gorgias/api-queries'
 
-import { FeatureFlagKey } from 'config/featureFlags'
 import useAppSelector from 'hooks/useAppSelector'
 import useApplicationsAutomationSettings from 'pages/automate/common/hooks/useApplicationsAutomationSettings'
 import { SelfServiceChatChannel } from 'pages/automate/common/hooks/useSelfServiceChatChannels'
@@ -19,9 +17,6 @@ import { useConnectedChannelsViewContext } from '../../ConnectedChannelsViewCont
 import ConnectedChannelAccordionBodyChat from '../ConnectedChannelAccordionBodyChat'
 import ConnectedChannelFeatureToggle from '../ConnectedChannelFeatureToggle'
 
-jest.mock('launchdarkly-react-client-sdk', () => ({
-    useFlags: jest.fn(),
-}))
 jest.mock('pages/automate/common/hooks/useApplicationsAutomationSettings', () =>
     jest.fn(),
 )
@@ -51,9 +46,6 @@ const mockChannel = {
 
 describe('ConnectedChannelAccordionBodyChat', () => {
     beforeEach(() => {
-        ;(useFlags as jest.Mock).mockReturnValue({
-            [FeatureFlagKey.MLFlowsRecommendation]: false,
-        })
         ;(useApplicationsAutomationSettings as jest.Mock).mockReturnValue({
             applicationsAutomationSettings: {
                 'app-1': {

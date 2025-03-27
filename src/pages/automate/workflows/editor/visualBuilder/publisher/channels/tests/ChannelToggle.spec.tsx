@@ -2,7 +2,6 @@ import React from 'react'
 
 import { QueryClientProvider } from '@tanstack/react-query'
 import { render, screen } from '@testing-library/react'
-import { useFlags } from 'launchdarkly-react-client-sdk'
 
 import { LegacyChannelSlug } from '@gorgias/api-queries'
 
@@ -11,8 +10,6 @@ import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 
 import ChannelToggle from '../ChannelToggle'
 
-jest.mock('launchdarkly-react-client-sdk')
-const mockUseFlags = useFlags as jest.MockedFunction<typeof useFlags>
 jest.mock('pages/common/forms/ToggleInput', () =>
     jest.fn(({ children }) => <div>{children}</div>),
 )
@@ -74,10 +71,6 @@ const chatProps = {
 }
 const queryClient = mockQueryClient()
 describe('ChannelToggle', () => {
-    beforeEach(() => {
-        mockUseFlags.mockReturnValue({ MLFlowsRecommendation: false })
-    })
-
     const renderWithQueryClient = (children: any) => {
         return (
             <QueryClientProvider client={queryClient}>

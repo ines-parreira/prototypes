@@ -1,10 +1,8 @@
 import classNames from 'classnames'
-import { useFlags } from 'launchdarkly-react-client-sdk'
 import { Link } from 'react-router-dom'
 
 import { TicketChannel } from 'business/types/ticket'
 import { logEvent, SegmentEvent } from 'common/segment'
-import { FeatureFlagKey } from 'config/featureFlags'
 import { getLanguagesFromChatConfig } from 'config/integrations/gorgias_chat'
 import useAppSelector from 'hooks/useAppSelector'
 import useApplicationsAutomationSettings from 'pages/automate/common/hooks/useApplicationsAutomationSettings'
@@ -32,9 +30,6 @@ type Props = {
 
 const ConnectedChannelAccordionBodyChat = ({ channel }: Props) => {
     const applicationId = channel.value.meta.app_id!
-
-    const isMLFlowRecommendationEnabled =
-        useFlags()[FeatureFlagKey.MLFlowsRecommendation]
 
     const {
         applicationsAutomationSettings,
@@ -98,11 +93,6 @@ const ConnectedChannelAccordionBodyChat = ({ channel }: Props) => {
         }
     }
 
-    const maxActiveWorkflows =
-        isMLFlowRecommendationEnabled && workflows?.entrypoints?.length
-            ? workflows.entrypoints.length
-            : MAX_ACTIVE_FLOWS
-
     const channelLanguages = getLanguagesFromChatConfig(
         channel.value.meta,
     ) as ChannelLanguage[]
@@ -115,7 +105,7 @@ const ConnectedChannelAccordionBodyChat = ({ channel }: Props) => {
                 integrationId={channel.value.id}
                 channelLanguages={channelLanguages}
                 entrypoints={workflows.entrypoints || []}
-                maxActiveWorkflows={maxActiveWorkflows}
+                maxActiveWorkflows={MAX_ACTIVE_FLOWS}
                 configurations={configurations}
                 allEntrypoints={allEntrypoints}
                 limitTooltipMessage={
