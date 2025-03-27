@@ -8,10 +8,10 @@ import { GorgiasChatIntegration } from 'models/integration/types'
 import { getCurrentAccountState } from 'state/currentAccount/selectors'
 
 import { HandoverCustomizationOfflineSettingsFormValues } from '../types'
+import { mapFormValuesToHandoverConfigurationData } from '../utils/handoverCustomizationConfiguration.utils'
 import {
     formFieldsConfiguration,
-    getInitialFormValues,
-    mapFormValuesToHandoverConfigurationData,
+    initialFormFieldValues,
 } from '../utils/handoverCustomizationOfflineSettingsForm.utils'
 import { useAiAgentHandoverConfigurationMutation } from './useAiAgentHandoverConfigurationMutation'
 import { useFetchAiAgentStoreHandoverConfiguration } from './useFetchAiAgentHandoverConfiguration'
@@ -57,7 +57,7 @@ export const useHandoverCustomizationOfflineSettingsForm = ({
 
     const [formValues, setFormValues] =
         useState<HandoverCustomizationOfflineSettingsFormValues>(
-            getInitialFormValues(),
+            initialFormFieldValues,
         )
 
     const [hasError, setHasError] = useState(false)
@@ -66,7 +66,7 @@ export const useHandoverCustomizationOfflineSettingsForm = ({
 
     const initialFormValues = useMemo(() => {
         if (!currentHandoverConfiguration) {
-            return getInitialFormValues()
+            return initialFormFieldValues
         }
 
         return {

@@ -33,11 +33,6 @@ export const useFetchAiAgentStoreHandoverConfigurations = ({
     }
 }
 
-export type AiAgentStoreHandoverConfigurationList = Exclude<
-    ReturnType<typeof useFetchAiAgentStoreHandoverConfigurations>['data'],
-    null | undefined
->
-
 export const useFetchAiAgentStoreHandoverConfiguration = ({
     accountDomain,
     storeName,

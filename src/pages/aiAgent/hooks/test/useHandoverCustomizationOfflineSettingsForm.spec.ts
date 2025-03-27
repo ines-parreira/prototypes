@@ -6,12 +6,9 @@ import {
     GorgiasChatIntegration,
     IntegrationType,
 } from 'models/integration/types'
+import { mapFormValuesToHandoverConfigurationData } from 'pages/aiAgent/utils/handoverCustomizationConfiguration.utils'
 
-import { HandoverCustomizationOfflineSettingsFormValues } from '../../types'
-import {
-    getInitialFormValues,
-    mapFormValuesToHandoverConfigurationData,
-} from '../../utils/handoverCustomizationOfflineSettingsForm.utils'
+import { initialFormFieldValues } from '../../utils/handoverCustomizationOfflineSettingsForm.utils'
 import { useAiAgentHandoverConfigurationMutation } from '../useAiAgentHandoverConfigurationMutation'
 import { useFetchAiAgentStoreHandoverConfiguration } from '../useFetchAiAgentHandoverConfiguration'
 import { useHandoverCustomizationOfflineSettingsForm } from '../useHandoverCustomizationOfflineSettingsForm'
@@ -29,6 +26,9 @@ jest.mock('../useAiAgentHandoverConfigurationMutation', () => ({
 }))
 
 jest.mock('../../utils/handoverCustomizationOfflineSettingsForm.utils', () => ({
+    ...jest.requireActual(
+        '../../utils/handoverCustomizationOfflineSettingsForm.utils',
+    ),
     formFieldsConfiguration: {
         offlineInstructions: {
             friendlyName: 'Offline instructions',
@@ -40,7 +40,9 @@ jest.mock('../../utils/handoverCustomizationOfflineSettingsForm.utils', () => ({
             required: false,
         },
     },
-    getInitialFormValues: jest.fn(),
+}))
+
+jest.mock('../../utils/handoverCustomizationConfiguration.utils', () => ({
     mapFormValuesToHandoverConfigurationData: jest.fn(),
 }))
 
@@ -54,12 +56,6 @@ describe('useHandoverCustomizationOfflineSettingsForm', () => {
             shop_type: 'Test Type',
         },
     } as GorgiasChatIntegration
-
-    const mockInitialFormValues: HandoverCustomizationOfflineSettingsFormValues =
-        {
-            offlineInstructions: '',
-            shareBusinessHours: false,
-        }
 
     const mockHandoverConfiguration = {
         offlineInstructions: 'Test offline instructions',
@@ -88,9 +84,6 @@ describe('useHandoverCustomizationOfflineSettingsForm', () => {
             success: mockNotifySuccess,
             error: mockNotifyError,
         })
-        ;(getInitialFormValues as jest.Mock).mockReturnValue(
-            mockInitialFormValues,
-        )
         ;(
             useFetchAiAgentStoreHandoverConfiguration as jest.Mock
         ).mockReturnValue({
@@ -122,7 +115,7 @@ describe('useHandoverCustomizationOfflineSettingsForm', () => {
             }),
         )
 
-        expect(result.current.formValues).toEqual(mockInitialFormValues)
+        expect(result.current.formValues).toEqual(initialFormFieldValues)
         expect(result.current.hasChanges).toBe(false)
         expect(result.current.isLoading).toBe(false)
         expect(result.current.isSaving).toBe(false)
@@ -202,7 +195,7 @@ describe('useHandoverCustomizationOfflineSettingsForm', () => {
             result.current.handleOnCancel()
         })
 
-        expect(result.current.formValues).toEqual(mockInitialFormValues)
+        expect(result.current.formValues).toEqual(initialFormFieldValues)
         expect(result.current.hasChanges).toBe(false)
     })
 

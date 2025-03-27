@@ -8,13 +8,13 @@ import { getCurrentAccountState } from 'state/currentAccount/selectors'
 import { updateOrCreateIntegrationRequest } from 'state/integrations/actions'
 
 import { HandoverCustomizationOnlineSettingsFormValues } from '../types'
+import { mapFormValuesToHandoverConfigurationData } from '../utils/handoverCustomizationConfiguration.utils'
 import {
     formFieldsConfiguration,
     getHandoverConfigurationFormDataFragment,
     getIntegrationPreferencesFormDataFragment,
     hasAnyChangeInFormValues,
     initialFormFieldValues,
-    mapFormValuesToHandoverConfigurationData,
     mapFromFormValuesToIntegrationPreferences,
 } from '../utils/handoverCustomizationOnlineSettingsForm.utils'
 import { useAiAgentHandoverConfigurationMutation } from './useAiAgentHandoverConfigurationMutation'

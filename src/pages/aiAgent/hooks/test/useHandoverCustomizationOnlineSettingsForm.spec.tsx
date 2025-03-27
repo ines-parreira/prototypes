@@ -14,6 +14,7 @@ import {
     IntegrationType,
 } from 'models/integration/types'
 import { AiAgentChannel } from 'pages/aiAgent/constants'
+import { mapFormValuesToHandoverConfigurationData } from 'pages/aiAgent/utils/handoverCustomizationConfiguration.utils'
 import { updateOrCreateIntegrationRequest } from 'state/integrations/actions'
 import { mockQueryClientProvider } from 'tests/reactQueryTestingUtils'
 import { mockStore } from 'utils/testing'
@@ -22,7 +23,6 @@ import { HandoverCustomizationOnlineSettingsFormValues } from '../../types'
 import {
     getHandoverConfigurationFormDataFragment,
     getIntegrationPreferencesFormDataFragment,
-    mapFormValuesToHandoverConfigurationData,
     mapFromFormValuesToIntegrationPreferences,
 } from '../../utils/handoverCustomizationOnlineSettingsForm.utils'
 import { useAiAgentHandoverConfigurationMutation } from '../useAiAgentHandoverConfigurationMutation'
@@ -59,11 +59,13 @@ jest.mock('../../utils/handoverCustomizationOnlineSettingsForm.utils', () => ({
             required: false,
         },
     },
-    getInitialFormValues: jest.fn(),
     getIntegrationPreferencesFormDataFragment: jest.fn(),
     getHandoverConfigurationFormDataFragment: jest.fn(),
-    mapFormValuesToHandoverConfigurationData: jest.fn(),
     mapFromFormValuesToIntegrationPreferences: jest.fn(),
+}))
+
+jest.mock('../../utils/handoverCustomizationConfiguration.utils', () => ({
+    mapFormValuesToHandoverConfigurationData: jest.fn(),
 }))
 
 const QueryClientProvider = mockQueryClientProvider()

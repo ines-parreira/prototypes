@@ -3,20 +3,14 @@ import {
     GorgiasChatAutoResponderReply,
     GorgiasChatEmailCaptureType,
     GorgiasChatIntegration,
-    IntegrationType,
 } from 'models/integration/types'
-import { AiAgentStoreHandoverConfiguration } from 'pages/aiAgent/hooks/useFetchAiAgentHandoverConfiguration'
-import { HandoverCustomizationOnlineSettingsFormValues } from 'pages/aiAgent/types'
 
-import { AiAgentChannel } from '../../constants'
-import { createHandoverConfigurationData } from '../handoverCustomizationConfiguration.utils'
 import {
     formFieldsConfiguration,
     getHandoverConfigurationFormDataFragment,
     getIntegrationPreferencesFormDataFragment,
     hasAnyChangeInFormValues,
     initialFormFieldValues,
-    mapFormValuesToHandoverConfigurationData,
     mapFromFormValuesToIntegrationPreferences,
 } from '../handoverCustomizationOnlineSettingsForm.utils'
 
@@ -184,85 +178,6 @@ describe('handoverCustomizationOnlineSettingsForm.utils', () => {
                         },
                     },
                 },
-            })
-        })
-    })
-
-    describe('mapFormValuesToHandoverConfigurationData', () => {
-        const mockAccountId = 123
-        const mockStoreName = 'Test Store'
-        const mockShopType = 'shopify'
-        const mockIntegrationId = 456
-        const mockFormValues: HandoverCustomizationOnlineSettingsFormValues = {
-            onlineInstructions: 'New instructions',
-            emailCaptureEnabled: true,
-            emailCaptureEnforcement:
-                GorgiasChatEmailCaptureType.RequiredOutsideBusinessHours,
-            autoResponderEnabled: true,
-            autoResponderReply: GorgiasChatAutoResponderReply.ReplyInMinutes,
-        }
-
-        beforeEach(() => {
-            jest.clearAllMocks()
-            ;(createHandoverConfigurationData as jest.Mock).mockReturnValue({
-                accountId: mockAccountId,
-                storeName: mockStoreName,
-                shopType: mockShopType,
-                integrationId: mockIntegrationId,
-                channel: AiAgentChannel.Chat,
-                onlineInstructions: '',
-                offlineInstructions: '',
-                shareBusinessHours: false,
-            })
-        })
-
-        it('should create new configuration when none exists', () => {
-            const result = mapFormValuesToHandoverConfigurationData({
-                accountId: mockAccountId,
-                storeName: mockStoreName,
-                shopType: mockShopType,
-                integrationId: mockIntegrationId,
-                integrationType: IntegrationType.GorgiasChat,
-                formValues: mockFormValues,
-            })
-
-            expect(result).toEqual({
-                accountId: mockAccountId,
-                storeName: mockStoreName,
-                shopType: mockShopType,
-                integrationId: mockIntegrationId,
-                channel: AiAgentChannel.Chat,
-                onlineInstructions: 'New instructions',
-                offlineInstructions: '',
-                shareBusinessHours: false,
-            })
-        })
-
-        it('should update existing configuration', () => {
-            const existingConfig: AiAgentStoreHandoverConfiguration = {
-                accountId: mockAccountId,
-                storeName: mockStoreName,
-                shopType: mockShopType,
-                integrationId: mockIntegrationId,
-                channel: AiAgentChannel.Chat,
-                onlineInstructions: 'Old instructions',
-                offlineInstructions: 'Offline instructions',
-                shareBusinessHours: true,
-            }
-
-            const result = mapFormValuesToHandoverConfigurationData({
-                accountId: mockAccountId,
-                storeName: mockStoreName,
-                shopType: mockShopType,
-                integrationId: mockIntegrationId,
-                integrationType: IntegrationType.GorgiasChat,
-                formValues: mockFormValues,
-                configuration: existingConfig,
-            })
-
-            expect(result).toEqual({
-                ...existingConfig,
-                onlineInstructions: 'New instructions',
             })
         })
     })

@@ -11,12 +11,9 @@ import {
     GorgiasChatEmailCaptureType,
     GorgiasChatIntegration,
     GorgiasChatIntegrationMeta,
-    IntegrationType,
 } from 'models/integration/types'
 
-import { AiAgentStoreHandoverConfiguration } from '../hooks/useFetchAiAgentHandoverConfiguration'
 import { HandoverCustomizationOnlineSettingsFormValues } from '../types'
-import { createHandoverConfigurationData } from './handoverCustomizationConfiguration.utils'
 
 export const initialFormFieldValues: HandoverCustomizationOnlineSettingsFormValues =
     {
@@ -156,41 +153,4 @@ export const mapFromFormValuesToIntegrationPreferences = (
     }
 
     return fromJS(payload)
-}
-
-type MapFormValuesToHandoverConfigurationDataProps = {
-    accountId: number
-    storeName: string
-    shopType: string
-    integrationId: number
-    integrationType: IntegrationType
-    formValues: HandoverCustomizationOnlineSettingsFormValues
-    configuration?: AiAgentStoreHandoverConfiguration
-}
-
-export const mapFormValuesToHandoverConfigurationData = ({
-    accountId,
-    storeName,
-    shopType,
-    integrationId,
-    integrationType,
-    formValues,
-    configuration,
-}: MapFormValuesToHandoverConfigurationDataProps): HandoverConfigurationData => {
-    let newConfiguration = configuration
-    if (!newConfiguration) {
-        // in cases where the configuration is not uploaded yet, we create a new one
-        newConfiguration = createHandoverConfigurationData({
-            accountId,
-            storeName,
-            shopType,
-            integrationId,
-            integrationType,
-        })
-    }
-
-    return {
-        ...newConfiguration,
-        onlineInstructions: formValues.onlineInstructions,
-    }
 }
