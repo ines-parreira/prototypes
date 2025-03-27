@@ -1,11 +1,15 @@
-import React from 'react'
-
-import { render, screen } from '@testing-library/react'
+import { QueryClientProvider } from '@tanstack/react-query'
+import { screen } from '@testing-library/react'
 
 import '@testing-library/jest-dom/extend-expect'
 
-import { BrowserRouter } from 'react-router-dom'
+import { fromJS } from 'immutable'
+import { Provider } from 'react-redux'
+import configureMockStore from 'redux-mock-store'
+import thunk from 'redux-thunk'
 
+import { appQueryClient } from 'api/queryClient'
+import { account } from 'fixtures/account'
 import { IntegrationType } from 'models/integration/constants'
 import { ShopType } from 'models/selfServiceConfiguration/types'
 import { AiAgentNavbarSectionBlock } from 'pages/aiAgent/components/AiAgentNavbar/AiAgentNavbarSectionBlock'
@@ -15,7 +19,7 @@ import {
     useAiAgentOnboardingState,
 } from 'pages/aiAgent/hooks/useAiAgentOnboardingState'
 import { useReportChartRestrictions } from 'pages/stats/report-chart-restrictions/useReportChartRestrictions'
-import { assumeMock } from 'utils/testing'
+import { assumeMock, renderWithRouter } from 'utils/testing'
 
 jest.mock('pages/aiAgent/hooks/useAiAgentNavigation')
 jest.mock('pages/aiAgent/hooks/useAiAgentOnboardingState')
@@ -31,15 +35,56 @@ jest.mock(
 )
 const useReportChartRestrictionsMock = assumeMock(useReportChartRestrictions)
 
-describe('AiAgentNavbarSectionBlock', () => {
-    const defaultProps = {
-        shopType: IntegrationType.Shopify as ShopType,
-        shopName: 'Test Shop',
-        onToggle: jest.fn(),
-        name: 'Test Name',
-        isExpanded: true,
-    }
+const mockStore = configureMockStore([thunk])
+const MOCK_EMAIL_ADDRESS = 'test@mail.com'
 
+const defaultState = {
+    currentAccount: fromJS(account),
+    integrations: fromJS({
+        integrations: [
+            {
+                id: 1,
+                type: IntegrationType.Email,
+                name: 'My email integration',
+                meta: {
+                    address: MOCK_EMAIL_ADDRESS,
+                },
+            },
+        ],
+    }),
+    entities: {
+        helpCenter: {
+            helpCenters: {
+                helpCentersById: {
+                    '1': { id: 1, name: 'help center 1', type: 'faq' },
+                    '2': { id: 2, name: 'help center 2', type: 'faq' },
+                },
+            },
+        },
+    },
+}
+
+const defaultProps = {
+    shopType: IntegrationType.Shopify as ShopType,
+    shopName: 'Test Shop',
+    onToggle: jest.fn(),
+    name: 'Test Name',
+    isExpanded: true,
+}
+
+const renderComponent = () => {
+    const { container } = renderWithRouter(
+        <Provider store={mockStore(defaultState)}>
+            <QueryClientProvider client={appQueryClient}>
+                <AiAgentNavbarSectionBlock {...defaultProps} />
+            </QueryClientProvider>
+        </Provider>,
+    )
+
+    return { container }
+}
+
+describe('AiAgentNavbarSectionBlock', () => {
     beforeEach(() => {
         mockUseAiAgentNavigation.mockReturnValue({
             // @ts-ignore We don't test this part
@@ -57,11 +102,7 @@ describe('AiAgentNavbarSectionBlock', () => {
     })
 
     test('renders the component with onboarded state', () => {
-        render(
-            <BrowserRouter>
-                <AiAgentNavbarSectionBlock {...defaultProps} />
-            </BrowserRouter>,
-        )
+        renderComponent()
 
         expect(screen.getByAltText('shopify logo')).toBeInTheDocument()
         expect(screen.getByText('Route 1')).toBeInTheDocument()
@@ -76,11 +117,7 @@ describe('AiAgentNavbarSectionBlock', () => {
             OnboardingState.WelcomeStatic,
         )
 
-        render(
-            <BrowserRouter>
-                <AiAgentNavbarSectionBlock {...defaultProps} />
-            </BrowserRouter>,
-        )
+        renderComponent()
 
         expect(screen.getByAltText('shopify logo')).toBeInTheDocument()
         expect(screen.getByText('Get Started')).toBeInTheDocument()
@@ -94,11 +131,7 @@ describe('AiAgentNavbarSectionBlock', () => {
             OnboardingState.Loading,
         )
 
-        const { container } = render(
-            <BrowserRouter>
-                <AiAgentNavbarSectionBlock {...defaultProps} />
-            </BrowserRouter>,
-        )
+        const { container } = renderComponent()
 
         expect(container.firstChild).toBeNull()
     })
@@ -113,11 +146,7 @@ describe('AiAgentNavbarSectionBlock', () => {
             ],
         })
 
-        render(
-            <BrowserRouter>
-                <AiAgentNavbarSectionBlock {...defaultProps} />
-            </BrowserRouter>,
-        )
+        renderComponent()
 
         expect(screen.queryByText('BETA')).not.toBeInTheDocument()
     })

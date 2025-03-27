@@ -106,7 +106,7 @@ export const getAiAgentNavigationRoutes = (
     }
 }
 
-type NavigationItem = {
+export type NavigationItem = {
     route: string
     title: string
     exact?: boolean

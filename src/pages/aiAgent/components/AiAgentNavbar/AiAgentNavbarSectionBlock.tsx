@@ -1,18 +1,28 @@
 import classNames from 'classnames'
+import { useFlags } from 'launchdarkly-react-client-sdk'
 
 import { Badge } from '@gorgias/merchant-ui-kit'
 
 import cssNavbar from 'assets/css/navbar.less'
+import { FeatureFlagKey } from 'config/featureFlags'
+import useAppSelector from 'hooks/useAppSelector'
 import { ShopType } from 'models/selfServiceConfiguration/types'
-import { SALES } from 'pages/aiAgent/constants'
-import { useAiAgentNavigation } from 'pages/aiAgent/hooks/useAiAgentNavigation'
+import { SALES, SETTINGS } from 'pages/aiAgent/constants'
+import {
+    NavigationItem,
+    useAiAgentNavigation,
+} from 'pages/aiAgent/hooks/useAiAgentNavigation'
 import {
     OnboardingState,
     useAiAgentOnboardingState,
 } from 'pages/aiAgent/hooks/useAiAgentOnboardingState'
+import { useStoreConfiguration } from 'pages/aiAgent/hooks/useStoreConfiguration'
 import NavbarLink from 'pages/common/components/navbar/NavbarLink'
 import NavbarSectionBlock from 'pages/common/components/navbar/NavbarSectionBlock'
+import { getCurrentAccountState } from 'state/currentAccount/selectors'
 import { getIconFromType } from 'state/integrations/helpers'
+
+import { isPreviewModeActivated } from '../StoreConfigForm/StoreConfigForm.utils'
 
 import css from './AiAgentNavbarSectionBlock.less'
 
@@ -31,22 +41,63 @@ export const AiAgentNavbarSectionBlock = ({
     ...props
 }: Props) => {
     const { navigationItems, routes } = useAiAgentNavigation({ shopName })
-
     const onboardingState = useAiAgentOnboardingState(shopName)
+    const currentAccount = useAppSelector(getCurrentAccountState)
+    const accountDomain = currentAccount.get('domain')
+    const { storeConfiguration } = useStoreConfiguration({
+        shopName,
+        accountDomain,
+    })
+    const isTrialModeAvailable = useFlags()[FeatureFlagKey.AiAgentTrialMode]
+
+    const hasAiAgentTrialEnabled = isPreviewModeActivated({
+        isPreviewModeActive: storeConfiguration?.isPreviewModeActive,
+        isTrialModeAvailable: isTrialModeAvailable,
+        emailChannelDeactivatedDatetime:
+            storeConfiguration?.emailChannelDeactivatedDatetime,
+        chatChannelDeactivatedDatetime:
+            storeConfiguration?.chatChannelDeactivatedDatetime,
+        trialModeActivatedDatetime:
+            storeConfiguration?.trialModeActivatedDatetime,
+        previewModeValidUntilDatetime:
+            storeConfiguration?.previewModeValidUntilDatetime,
+    })
+
+    const hasAiAgentEnabled = !!(
+        storeConfiguration &&
+        (!storeConfiguration.emailChannelDeactivatedDatetime ||
+            !storeConfiguration.chatChannelDeactivatedDatetime) &&
+        !hasAiAgentTrialEnabled
+    )
 
     if (onboardingState === OnboardingState.Loading) {
         return null
     }
 
-    const itemName = (item: any) => {
-        return item.title === SALES ? (
-            <div className={css.item}>
-                {item.title}
-                <Badge type="blue">BETA</Badge>
-            </div>
-        ) : (
-            item.title
-        )
+    const itemName = (item: NavigationItem) => {
+        switch (item.title) {
+            case SALES:
+                return (
+                    <div className={css.item}>
+                        {item.title}
+                        <Badge type="blue">BETA</Badge>
+                    </div>
+                )
+            case SETTINGS:
+                return (
+                    <div className={css.item}>
+                        {item.title}
+                        {hasAiAgentTrialEnabled && (
+                            <Badge type={'magenta'}>PREVIEW</Badge>
+                        )}
+                        {hasAiAgentEnabled && (
+                            <Badge type={'light-success'}>LIVE</Badge>
+                        )}
+                    </div>
+                )
+            default:
+                return item.title
+        }
     }
 
     return (
