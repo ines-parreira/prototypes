@@ -604,29 +604,50 @@ export class Integration extends Component<Props, State> {
                                     name="http.url"
                                     label="URL"
                                     title="Example: https://company.com/api"
-                                    placeholder="https://company.com/api/customers?email={{ticket.customer.email}}"
+                                    placeholder={`https://company.com/api/customers?${HTTP_REVAMP_FF ? 'customer_id={{ticket.customer_id}}' : 'email={{ticket.customer.email}}'}`}
                                     required
                                     pattern={validateWebhookURLToPattern(
                                         url,
                                         true,
                                     )}
                                     help={
-                                        <div>
-                                            You can use{' '}
-                                            <code>
-                                                {'{{ticket.customer.email}}'}
-                                            </code>{' '}
-                                            to pass the email of the ticket
-                                            customer. See other{' '}
-                                            <a
-                                                href="https://docs.gorgias.com/macros/macro-variables"
-                                                target="_blank"
-                                                rel="noopener noreferrer"
-                                            >
-                                                variables
-                                            </a>
-                                            .
-                                        </div>
+                                        HTTP_REVAMP_FF ? (
+                                            <div>
+                                                You can use{' '}
+                                                <code>
+                                                    {'{{ticket.customer_id}}'}
+                                                </code>{' '}
+                                                to pass the id of the ticket
+                                                customer. See other{' '}
+                                                <a
+                                                    href="https://developers.gorgias.com/reference/the-tickethttpintegration-object"
+                                                    target="_blank"
+                                                    rel="noopener noreferrer"
+                                                >
+                                                    variables
+                                                </a>
+                                                .
+                                            </div>
+                                        ) : (
+                                            <div>
+                                                You can use{' '}
+                                                <code>
+                                                    {
+                                                        '{{ticket.customer.email}}'
+                                                    }
+                                                </code>{' '}
+                                                to pass the email of the ticket
+                                                customer. See other{' '}
+                                                <a
+                                                    href="https://docs.gorgias.com/macros/macro-variables"
+                                                    target="_blank"
+                                                    rel="noopener noreferrer"
+                                                >
+                                                    variables
+                                                </a>
+                                                .
+                                            </div>
+                                        )
                                     }
                                     value={url}
                                     onChange={(value) =>
