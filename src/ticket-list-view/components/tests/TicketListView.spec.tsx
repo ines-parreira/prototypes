@@ -1,9 +1,8 @@
-import React, { ComponentProps, Fragment, ReactElement, ReactNode } from 'react'
+import { ComponentProps, Fragment, ReactElement, ReactNode } from 'react'
 
-import { act, fireEvent, render } from '@testing-library/react'
+import { act, fireEvent } from '@testing-library/react'
 import { fromJS } from 'immutable'
 import { Provider } from 'react-redux'
-import { MemoryRouter } from 'react-router-dom'
 import { Virtuoso } from 'react-virtuoso'
 import configureMockStore from 'redux-mock-store'
 
@@ -16,7 +15,7 @@ import { setViewEditMode } from 'state/views/actions'
 import useSelection from 'ticket-list-view/hooks/useSelection'
 import useTickets from 'ticket-list-view/hooks/useTickets'
 import { TicketPartial } from 'ticket-list-view/types'
-import { assumeMock } from 'utils/testing'
+import { assumeMock, renderWithRouter } from 'utils/testing'
 
 import useSortOrder from '../../hooks/useSortOrder'
 import Ticket from '../Ticket'
@@ -166,7 +165,7 @@ describe('<TicketListView />', () => {
     })
 
     it('should pause updates when there are selected tickets', () => {
-        render(
+        renderWithRouter(
             <Provider store={store}>
                 <TicketListView viewId={123} />
             </Provider>,
@@ -183,7 +182,7 @@ describe('<TicketListView />', () => {
             selectedTickets: {},
             clear: jest.fn(),
         })
-        render(
+        renderWithRouter(
             <Provider store={store}>
                 <TicketListView viewId={123} />
             </Provider>,
@@ -201,7 +200,7 @@ describe('<TicketListView />', () => {
             selectedTickets: {},
         })
 
-        const { rerender } = render(
+        const { rerender } = renderWithRouter(
             <Provider store={store}>
                 <TicketListView viewId={123} />
             </Provider>,
@@ -223,7 +222,7 @@ describe('<TicketListView />', () => {
     })
 
     it('should display a list of tickets', () => {
-        const { getByText } = render(
+        const { getByText } = renderWithRouter(
             <Provider store={store}>
                 <TicketListView viewId={123} />
             </Provider>,
@@ -233,7 +232,7 @@ describe('<TicketListView />', () => {
     })
 
     it('should register the scrolling element', () => {
-        render(
+        renderWithRouter(
             <Provider store={store}>
                 <TicketListView viewId={123} />
             </Provider>,
@@ -243,7 +242,7 @@ describe('<TicketListView />', () => {
     })
 
     it('should call loadMore when the end of the list is reached', () => {
-        render(
+        renderWithRouter(
             <Provider store={store}>
                 <TicketListView viewId={123} />
             </Provider>,
@@ -274,7 +273,7 @@ describe('<TicketListView />', () => {
             ticketIds: { current: [152] },
         })
 
-        const { getByText } = render(
+        const { getByText } = renderWithRouter(
             <Provider store={store}>
                 <TicketListView viewId={123} />
             </Provider>,
@@ -323,7 +322,7 @@ describe('<TicketListView />', () => {
             ticketIds: { current: [152, 456] },
         })
 
-        const { rerender, getByText } = render(
+        const { rerender, getByText } = renderWithRouter(
             <Provider store={store}>
                 <TicketListView viewId={123} />
             </Provider>,
@@ -365,7 +364,7 @@ describe('<TicketListView />', () => {
             initialLoaded: true,
         })
 
-        const { getByText } = render(
+        const { getByText } = renderWithRouter(
             <Provider store={store}>
                 <TicketListView viewId={123} />
             </Provider>,
@@ -392,7 +391,7 @@ describe('<TicketListView />', () => {
             ...view,
             deactivated_datetime: '2021-01-01T00:00:00Z',
         }
-        const { getByText } = render(
+        const { getByText } = renderWithRouter(
             <Provider
                 store={mockStore({
                     views: fromJS({
@@ -430,7 +429,7 @@ describe('<TicketListView />', () => {
             initialLoaded: true,
         })
 
-        const { getByText } = render(
+        const { getByText } = renderWithRouter(
             <Provider
                 store={mockStore({
                     views: fromJS({
@@ -449,7 +448,7 @@ describe('<TicketListView />', () => {
     })
 
     it('should redirect to edition view', () => {
-        const { getByText } = render(
+        const { getByText } = renderWithRouter(
             <Provider
                 store={mockStore({
                     views: fromJS({
@@ -468,7 +467,7 @@ describe('<TicketListView />', () => {
     })
 
     it('should display bulk actions', () => {
-        const { getByText } = render(
+        const { getByText } = renderWithRouter(
             <Provider store={store}>
                 <TicketListView viewId={123} />
             </Provider>,
@@ -478,7 +477,7 @@ describe('<TicketListView />', () => {
     })
 
     it('should hide bulk actions for view with count 0', () => {
-        const { queryByText } = render(
+        const { queryByText } = renderWithRouter(
             <Provider
                 store={mockStore({
                     views: fromJS({
@@ -507,7 +506,7 @@ describe('<TicketListView />', () => {
                 clear: jest.fn(),
             })
 
-            const { getByText } = render(
+            const { getByText } = renderWithRouter(
                 <Provider store={store}>
                     <TicketListView viewId={123} />
                 </Provider>,
@@ -525,7 +524,7 @@ describe('<TicketListView />', () => {
                 clear: jest.fn(),
             })
 
-            const { getByText } = render(
+            const { getByText } = renderWithRouter(
                 <Provider store={store}>
                     <TicketListView viewId={123} />
                 </Provider>,
@@ -543,7 +542,7 @@ describe('<TicketListView />', () => {
                 clear: jest.fn(),
             })
 
-            const { getByText } = render(
+            const { getByText } = renderWithRouter(
                 <Provider
                     store={mockStore({
                         views: fromJS({
@@ -573,41 +572,13 @@ describe('<TicketListView />', () => {
                 clear: jest.fn(),
             })
 
-            const { getByText } = render(
+            const { getByText } = renderWithRouter(
                 <Provider store={store}>
                     <TicketListView viewId={123} />
                 </Provider>,
             )
 
             expect(getByText('1 selected')).toBeInTheDocument()
-        })
-    })
-
-    describe('title wrapper', () => {
-        it('should apply correct className based on global nav feature flag', () => {
-            useDesktopOnlyShowGlobalNavFeatureFlagMock.mockReturnValue(true)
-            const { container, rerender } = render(
-                <Provider store={store}>
-                    <MemoryRouter initialEntries={['/app/views/123']}>
-                        <TicketListView viewId={123} />
-                    </MemoryRouter>
-                </Provider>,
-            )
-
-            expect(
-                container.querySelector('.globalNavTitleWrapper'),
-            ).toBeInTheDocument()
-
-            useDesktopOnlyShowGlobalNavFeatureFlagMock.mockReturnValue(false)
-            rerender(
-                <Provider store={store}>
-                    <MemoryRouter initialEntries={['/app/views/123']}>
-                        <TicketListView viewId={123} />
-                    </MemoryRouter>
-                </Provider>,
-            )
-
-            expect(container.querySelector('.titleWrapper')).toBeInTheDocument()
         })
     })
 })

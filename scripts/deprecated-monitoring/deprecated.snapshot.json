@@ -1,8 +1,8 @@
 {
   "summary": {
     "totalEntries": 33,
-    "totalUsages": 1228,
-    "reportGeneratedAt": "2025-03-26T09:06:37.152Z"
+    "totalUsages": 1227,
+    "reportGeneratedAt": "2025-03-26T16:54:16.477Z"
   },
   "entries": [
     {
@@ -1364,7 +1364,7 @@
           ]
         },
         {
-          "usageCount": 121,
+          "usageCount": 120,
           "name": "IconButton",
           "nodeType": "VariableDeclaration",
           "deprecationDate": "2024-03-05",
@@ -1490,7 +1490,6 @@
               "src/pages/tickets/detail/components/TicketMessages/AIAgentFeedback.tsx",
               "src/pages/tickets/list/components/TicketListActions.tsx",
               "src/ticket-list-view/components/SortOrderDropdown.tsx",
-              "src/ticket-list-view/components/TicketListView.tsx",
               "src/ticket-list-view/components/bulk-actions/AssignUser.tsx",
               "src/ticket-list-view/components/bulk-actions/CloseTickets.tsx",
               "src/ticket-list-view/components/bulk-actions/MoreActions.tsx"

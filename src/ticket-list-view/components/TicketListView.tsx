@@ -1,4 +1,4 @@
-import React, {
+import {
     Children,
     cloneElement,
     ComponentProps,
@@ -16,12 +16,10 @@ import { fromJS } from 'immutable'
 import { CSSTransition, TransitionGroup } from 'react-transition-group'
 import { Components, Virtuoso, VirtuosoHandle } from 'react-virtuoso'
 
-import { Tooltip } from '@gorgias/merchant-ui-kit'
+import { IconButton, Tooltip } from '@gorgias/merchant-ui-kit'
 
-import { useDesktopOnlyShowGlobalNavFeatureFlag } from 'common/navigation/hooks/useShowGlobalNavFeatureFlag'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
-import IconButton from 'pages/common/components/button/IconButton'
 import CheckBox from 'pages/common/forms/CheckBox'
 import {
     SplitTicketViewToggle,
@@ -81,7 +79,6 @@ export default function TicketListView({
     const view = useAppSelector((state) => getViewPlainJS(state, `${viewId}`))
     const viewCount = useAppSelector(getViewCount(viewId))
     const editViewRef = useRef(null)
-    const showGlobalNav = useDesktopOnlyShowGlobalNavFeatureFlag()
     const areViewFiltersInvalid = !!view?.deactivated_datetime
     const isViewNull = view === null
     const defaultSortOrder = `${view?.order_by || ''}:${view?.order_dir || ''}`
@@ -245,26 +242,24 @@ export default function TicketListView({
 
     return (
         <div className={css.wrapper}>
-            <div
-                className={
-                    showGlobalNav ? css.globalNavTitleWrapper : css.titleWrapper
-                }
-            >
-                <div className={css.headerChild}>
-                    {showGlobalNav && <SplitTicketViewToggle />}
-                    <ViewDecoration view={view} />
-                    <span className={css.title}>{view?.name}</span>
+            <div className={css.titleWrapper}>
+                <div className={css.headerLeft}>
+                    <SplitTicketViewToggle />
+                    <div className={css.titleAndViewDecorationWrapper}>
+                        <ViewDecoration view={view} />
+                        <span className={css.title}>{view?.name}</span>
+                    </div>
                 </div>
-                <div className={cn(css.headerChild, css.buttons)}>
+                <div className={cn(css.headerRight, css.buttons)}>
                     <IconButton
                         ref={editViewRef}
                         className={css.icon}
                         intent="secondary"
                         fillStyle="ghost"
                         onClick={goToViewEdition}
-                    >
-                        tune
-                    </IconButton>
+                        icon="tune"
+                    />
+
                     <Tooltip target={editViewRef} innerProps={{ fade: false }}>
                         Edit view
                     </Tooltip>
