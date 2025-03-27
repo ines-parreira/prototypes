@@ -13,10 +13,12 @@ import { getIntegrationsByType } from 'state/integrations/selectors'
 type Args = {
     chatIds: number[]
     enabled: boolean
+    refetchOnWindowFocus?: boolean
 }
 export const useFetchChatIntegrationsStatusData = ({
     enabled,
     chatIds,
+    refetchOnWindowFocus = true,
 }: Args) => {
     const getChatIntegrations = useMemo(
         () =>
@@ -70,6 +72,7 @@ export const useFetchChatIntegrationsStatusData = ({
             return Promise.all(promises)
         },
         enabled,
+        refetchOnWindowFocus,
     })
 
     return {

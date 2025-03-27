@@ -25,11 +25,15 @@ export const viewItemsDefinitionKeys = {
 
 export const useGetViewTicketUpdates = (
     { viewId, params }: { viewId: number; params?: ViewTicketUpdatesParams },
-    { enabled = true }: { enabled?: boolean },
+    {
+        enabled = true,
+        refetchOnWindowFocus = true,
+    }: { enabled?: boolean; refetchOnWindowFocus?: boolean },
 ) => {
     return useQuery({
         queryFn: () => getViewTicketUpdates(viewId, params),
         queryKey: viewItemsDefinitionKeys.updates(viewId),
         enabled,
+        refetchOnWindowFocus,
     })
 }

@@ -4,18 +4,20 @@ type Args = {
     accountDomain: string
     storeName: string
     enabled: boolean
+    refetchOnWindowFocus?: boolean
 }
 export const useFetchAiAgentStoreConfigurationData = ({
     accountDomain,
     storeName,
     enabled,
+    refetchOnWindowFocus = true,
 }: Args) => {
     const { data, isLoading, error } = useGetStoreConfigurationPure(
         {
             accountDomain,
             storeName,
         },
-        { enabled },
+        { enabled, refetchOnWindowFocus },
     )
     return {
         data: data?.data.storeConfiguration,

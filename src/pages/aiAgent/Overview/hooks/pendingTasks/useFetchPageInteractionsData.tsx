@@ -13,10 +13,12 @@ import { getTimezone } from 'state/currentUser/selectors'
 type Args = {
     storeName: string
     storeType: string
+    refetchOnWindowFocus?: boolean
 }
 export const useFetchPageInteractionsData = ({
     storeName,
     storeType,
+    refetchOnWindowFocus = true,
 }: Args) => {
     const timezone = useAppSelector(getTimezone) ?? 'UTC'
 
@@ -37,7 +39,7 @@ export const useFetchPageInteractionsData = ({
     const { isLoading, data: cubeData } = usePostReporting<
         [CubeData],
         CubeData
-    >(query)
+    >(query, { refetchOnWindowFocus })
 
     // The data fetched by the current hook is only used in cases
     // where this feature flag is enabled, for simplicity we decided

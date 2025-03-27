@@ -5,8 +5,13 @@ import { HELP_CENTER_MAX_CREATION } from 'pages/settings/helpCenter/constants'
 type Args = {
     storeName: string
     enabled: boolean
+    refetchOnWindowFocus?: boolean
 }
-export const useFetchGuidancesData = ({ storeName, enabled }: Args) => {
+export const useFetchGuidancesData = ({
+    storeName,
+    enabled,
+    refetchOnWindowFocus = true,
+}: Args) => {
     const { isLoading: isLoadingGuidanceHelpCenter, data: guidanceHelpCenter } =
         useGetHelpCenterList(
             {
@@ -26,6 +31,7 @@ export const useFetchGuidancesData = ({ storeName, enabled }: Args) => {
     const { guidanceArticles, isGuidanceArticleListLoading } =
         useGuidanceArticles(guidanceHelpCenterId!, {
             enabled: !!guidanceHelpCenterId,
+            refetchOnWindowFocus,
         })
 
     return {

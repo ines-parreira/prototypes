@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo, useState } from 'react'
+import { useCallback, useMemo, useState } from 'react'
 
 import useAppSelector from 'hooks/useAppSelector'
 import useLocalStorageWithExpiry from 'hooks/useLocalStorageWithExpiry'
@@ -64,6 +64,7 @@ export const PendingTasksSectionConnected = () => {
             accountDomain,
             storeName: selectedStore.name,
             storeType: selectedStore.type,
+            refetchOnWindowFocus: false,
         })
 
     return (

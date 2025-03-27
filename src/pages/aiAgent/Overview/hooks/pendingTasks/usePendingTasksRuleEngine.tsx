@@ -27,11 +27,13 @@ type Args = {
     accountDomain: string
     storeName: string
     storeType: string
+    refetchOnWindowFocus?: boolean
 }
 export const usePendingTasksRuleEngine = ({
     accountDomain,
     storeName,
     storeType,
+    refetchOnWindowFocus = true,
 }: Args) => {
     const { routes } = useAiAgentNavigation({ shopName: storeName })
 
@@ -43,19 +45,32 @@ export const usePendingTasksRuleEngine = ({
         accountDomain,
         storeName,
         enabled: !shouldFakeTasks,
+        refetchOnWindowFocus,
     })
 
     const { isLoading: faqHelpCentersDataIsLoading, data: faqHelpCentersData } =
         useFetchFaqHelpCentersData({ enabled: !shouldFakeTasks })
 
     const { isLoading: fileIngestionDataIsLoading, data: fileIngestionData } =
-        useFetchFileIngestionData(storeName, !shouldFakeTasks)
+        useFetchFileIngestionData({
+            storeName,
+            enabled: !shouldFakeTasks,
+            refetchOnWindowFocus,
+        })
 
     const { isLoading: guidancesDataIsLoading, data: guidancesData } =
-        useFetchGuidancesData({ storeName, enabled: !shouldFakeTasks })
+        useFetchGuidancesData({
+            storeName,
+            enabled: !shouldFakeTasks,
+            refetchOnWindowFocus,
+        })
 
     const { isLoading: actionsDataIsLoading, data: actionsData } =
-        useFetchActionsData({ storeName, enabled: !shouldFakeTasks })
+        useFetchActionsData({
+            storeName,
+            enabled: !shouldFakeTasks,
+            refetchOnWindowFocus,
+        })
 
     const {
         isLoading: aiAgentPlaygroundExecutionsDataIsLoading,
@@ -64,11 +79,13 @@ export const usePendingTasksRuleEngine = ({
         accountDomain,
         storeName,
         enabled: !shouldFakeTasks,
+        refetchOnWindowFocus,
     })
 
     const { isLoading: ticketViewDataIsLoading, data: ticketViewData } =
         useTicketViewData({
             accountDomain,
+            refetchOnWindowFocus,
         })
 
     const { data: emailIntegrationsData } = useFetchEmailIntegrationsData()
@@ -83,6 +100,7 @@ export const usePendingTasksRuleEngine = ({
     } = useFetchChatIntegrationsStatusData({
         chatIds: aiAgentStoreConfigurationData?.monitoredChatIntegrations ?? [],
         enabled: !shouldFakeTasks && !!aiAgentStoreConfigurationData,
+        refetchOnWindowFocus,
     })
 
     const {
@@ -91,6 +109,7 @@ export const usePendingTasksRuleEngine = ({
     } = useFetchPageInteractionsData({
         storeName,
         storeType,
+        refetchOnWindowFocus,
     })
 
     const isLoading =

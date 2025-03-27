@@ -3,10 +3,17 @@ import {
     useGetHelpCenterList,
 } from 'models/helpCenter/queries'
 
-export const useFetchFileIngestionData = (
-    storeName: string,
-    enabled: boolean,
-) => {
+type UseFetchFileIngestionArgs = {
+    storeName: string
+    enabled?: boolean
+    refetchOnWindowFocus?: boolean
+}
+
+export const useFetchFileIngestionData = ({
+    storeName,
+    enabled = true,
+    refetchOnWindowFocus = true,
+}: UseFetchFileIngestionArgs) => {
     const { data: snippetHelpCenterData, isLoading: isLoadingHelpCenter } =
         useGetHelpCenterList(
             {
@@ -14,7 +21,7 @@ export const useFetchFileIngestionData = (
                 per_page: 1,
                 shop_name: storeName,
             },
-            { enabled },
+            { enabled, refetchOnWindowFocus },
         )
 
     const snippetHelpCenterId = snippetHelpCenterData?.data?.data[0]?.id
@@ -25,6 +32,7 @@ export const useFetchFileIngestionData = (
         },
         {
             enabled: !!snippetHelpCenterId,
+            refetchOnWindowFocus,
         },
     )
 

@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import { useState } from 'react'
 
 import classNames from 'classnames'
 
@@ -6,6 +6,7 @@ import partyPopperImg from 'assets/img/ai-agent/ai-agent_party-popper.svg'
 import { IntegrationType } from 'models/integration/constants'
 import { CardTitle } from 'pages/aiAgent/Onboarding/components/Card'
 import { OverviewCard } from 'pages/aiAgent/Overview/components/OverviewCard/OverviewCard'
+import { useTaskDisplayLimit } from 'pages/aiAgent/Overview/hooks/pendingTasks/useTaskDisplayLimit'
 
 import { Task } from '../../hooks/pendingTasks/tasks/Task'
 import { PendingTask } from '../PendingTask/PendingTask'
@@ -58,11 +59,11 @@ export const PendingTasksSection = ({
         </>
     )
 
-    // Easy way to manage the collapsible tasks
-    // Collapse animation will come later
+    const maxTasks = useTaskDisplayLimit()
+
     const tasksToDisplay = isPendingTasksExpanded
         ? pendingTasks
-        : pendingTasks?.slice(0, 3)
+        : pendingTasks.slice(0, maxTasks)
 
     return (
         <OverviewCard>
@@ -120,7 +121,7 @@ export const PendingTasksSection = ({
                                     ))}
                             </div>
                         </div>
-                        {pendingTasks.length > 3 && (
+                        {pendingTasks.length > maxTasks && (
                             <div className={css.expanderContainer}>
                                 <Expander
                                     controlId={pendingTasksCollapsibleId}
