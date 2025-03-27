@@ -12,7 +12,7 @@ type ValidIntegration = HttpIntegration & {
     application_id: (typeof AVAILABLE_3PL_INTEGRATIONS)[number]
 }
 
-export default function use3plIntegrations() {
+export default function useThreeplIntegrations() {
     const are3plObjectsEnabled = useFlags()[FeatureFlagKey.Actions3plObjects]
     const integrations = useAppSelector(getIntegrations)
 

@@ -45,7 +45,7 @@ import { NotificationStatus } from 'state/notifications/types'
 
 import { useAiAgentOnboardingNotification } from '../hooks/useAiAgentOnboardingNotification'
 import ActionFormView from './components/ActionFormView'
-import use3plIntegrations from './hooks/use3plIntegrations'
+import useThreeplIntegrations from './hooks/useThreeplIntegrations'
 import useTouchActionGraph from './hooks/useTouchActionGraph'
 import useUpsertAction from './hooks/useUpsertAction'
 import useValidateActionGraph from './hooks/useValidateActionGraph'
@@ -136,7 +136,7 @@ const CreateActionView = () => {
     })
     const { data: actionsApps = [] } = useListActionsApps()
 
-    const availableIntegrations = use3plIntegrations()
+    const availableIntegrations = useThreeplIntegrations()
 
     const [visualBuilderGraphDirty, dispatch] = useVisualBuilderGraphReducer(
         computeNodesPositions(

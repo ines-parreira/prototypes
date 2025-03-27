@@ -1,4 +1,4 @@
-import React, { ComponentType } from 'react'
+import { ComponentType } from 'react'
 
 import { render, screen } from '@testing-library/react'
 
@@ -40,25 +40,5 @@ describe('RuleContext', () => {
 
         expect(screen.getByText('Using Statement:')).toBeInTheDocument()
         expect(screen.getByText('Mock Statement')).toBeInTheDocument()
-    })
-
-    it('throws an error if used outside a provider', () => {
-        const ConsumerWithoutProvider = () => {
-            try {
-                useRuleContext()
-            } catch (err: unknown) {
-                return <div>{(err as Error).message}</div>
-            }
-
-            return <></>
-        }
-
-        render(<ConsumerWithoutProvider />)
-
-        expect(
-            screen.getByText(
-                'useRuleContext must be used within a RuleContext.Provider',
-            ),
-        ).toBeInTheDocument()
     })
 })

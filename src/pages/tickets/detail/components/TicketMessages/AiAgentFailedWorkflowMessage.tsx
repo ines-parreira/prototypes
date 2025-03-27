@@ -28,6 +28,12 @@ interface WorkflowData {
     success?: boolean
 }
 
+interface CompletedWorkflowData {
+    configurationId: string
+    executionId: string
+    success?: true
+}
+
 interface FailedWorkflowMessageProps {
     workflowData: WorkflowData
     originalMessage: React.ReactNode
@@ -37,9 +43,27 @@ const FailedWorkflowMessage = ({
     workflowData,
     originalMessage,
 }: FailedWorkflowMessageProps) => {
-    if (!workflowData.configurationId || !workflowData.executionId)
+    if (!workflowData.configurationId || !workflowData.executionId) {
         return <>{originalMessage}</>
+    }
 
+    return (
+        <PartialSuccessMessageWrapper
+            workflowData={workflowData as CompletedWorkflowData}
+            originalMessage={originalMessage}
+        />
+    )
+}
+
+interface PartialSuccessMessageWrapperProps {
+    workflowData: CompletedWorkflowData
+    originalMessage: React.ReactNode
+}
+
+function PartialSuccessMessageWrapper({
+    workflowData,
+    originalMessage,
+}: PartialSuccessMessageWrapperProps) {
     const { configurationId, executionId } = workflowData
 
     // Get template configurations

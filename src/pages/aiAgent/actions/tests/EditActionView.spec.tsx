@@ -23,9 +23,9 @@ import {
     useListActionsApps,
     useListTrackstarConnections,
 } from 'models/workflows/queries'
-import use3plIntegrations from 'pages/aiAgent/actions/hooks/use3plIntegrations'
 import useAddStoreApp from 'pages/aiAgent/actions/hooks/useAddStoreApp'
 import useDeleteAction from 'pages/aiAgent/actions/hooks/useDeleteAction'
+import useThreeplIntegrations from 'pages/aiAgent/actions/hooks/useThreeplIntegrations'
 import useUpsertAction from 'pages/aiAgent/actions/hooks/useUpsertAction'
 import { useAiAgentEnabled } from 'pages/aiAgent/hooks/useAiAgentEnabled'
 import useApps from 'pages/automate/actionsPlatform/hooks/useApps'
@@ -46,7 +46,7 @@ jest.mock('pages/aiAgent/hooks/useAiAgentEnabled')
 jest.mock('state/notifications/actions')
 jest.mock('hooks/useAppDispatch')
 jest.mock('pages/aiAgent/actions/hooks/useAddStoreApp')
-jest.mock('pages/aiAgent/actions/hooks/use3plIntegrations')
+jest.mock('pages/aiAgent/actions/hooks/useThreeplIntegrations')
 jest.mock('core/flags')
 
 const mockUseGetWorkflowConfigurationTemplates = jest.mocked(
@@ -58,7 +58,7 @@ const mockUseApps = jest.mocked(useApps)
 const mockUseEnableAiAgent = jest.mocked(useAiAgentEnabled)
 const mockUseAppDispatch = jest.mocked(useAppDispatch)
 const mockUseGetStoreApps = jest.mocked(useGetStoreApps)
-const mockuse3plIntegrations = jest.mocked(use3plIntegrations)
+const mockuse3plIntegrations = jest.mocked(useThreeplIntegrations)
 const mockUseAddStoreApp = jest.mocked(useAddStoreApp)
 const mockUseFlag = jest.mocked(useFlag)
 const mockUseGetStoreWorkflowsConfigurations = jest.mocked(

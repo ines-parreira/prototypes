@@ -39,8 +39,8 @@ import { notify } from 'state/notifications/actions'
 import { NotificationStatus } from 'state/notifications/types'
 
 import ActionFormView from './components/ActionFormView'
-import use3plIntegrations from './hooks/use3plIntegrations'
 import useDeleteAction from './hooks/useDeleteAction'
+import useThreeplIntegrations from './hooks/useThreeplIntegrations'
 import useTouchActionGraph from './hooks/useTouchActionGraph'
 import useUpsertAction from './hooks/useUpsertAction'
 import useValidateActionGraph from './hooks/useValidateActionGraph'
@@ -85,7 +85,7 @@ const EditActionView = ({ configuration }: Props) => {
         useState<HTMLButtonElement | null>(null)
     const [isSaveAndTestButtonClicked, setIsSaveAndTestButtonClicked] =
         useState(false)
-    const availableIntegrations = use3plIntegrations()
+    const availableIntegrations = useThreeplIntegrations()
 
     const [visualBuilderGraphDirty, dispatch] = useVisualBuilderGraphReducer(
         computeNodesPositions(
