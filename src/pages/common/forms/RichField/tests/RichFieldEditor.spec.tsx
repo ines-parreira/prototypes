@@ -321,4 +321,24 @@ describe('RichFieldEditor', () => {
         const convertedHTML = convertToHTML(newContentState.getCurrentContent())
         expect(convertedHTML).toBe('<p>foo</p>')
     })
+
+    it('should call handleOnTab when Tab key is pressed', () => {
+        const spyOnchange = jest.fn()
+        const instanceRef = { current: null }
+
+        render(
+            <RichFieldEditor
+                {...defaultProps}
+                editorKey="editor"
+                editorState={editorState}
+                onChange={spyOnchange}
+                ref={instanceRef}
+            />,
+        )
+
+        const editor = document.querySelector('.public-DraftEditor-content')!
+        fireEvent.keyDown(editor, { key: 'Tab', keyCode: 9 })
+
+        expect(spyOnchange).toHaveBeenCalled()
+    })
 })

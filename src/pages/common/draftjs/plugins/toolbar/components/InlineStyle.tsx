@@ -2,6 +2,7 @@ import React, { useMemo } from 'react'
 
 import { RichUtils } from 'draft-js'
 
+import { ORDERED_LIST_ITEM, UNORDERED_LIST_ITEM } from '../constants'
 import { ActionInjectedProps } from '../types'
 import Button from './Button'
 
@@ -39,7 +40,22 @@ const InlineStyle = ({
 
     const toggleBlockType = () => {
         const editorState = getEditorState()
-        setEditorState(RichUtils.toggleBlockType(editorState, style))
+        const blockType = RichUtils.getCurrentBlockType(editorState)
+
+        const isList =
+            blockType === UNORDERED_LIST_ITEM || blockType === ORDERED_LIST_ITEM
+
+        if (isList) {
+            setEditorState(
+                RichUtils.onTab(
+                    { preventDefault: () => {} } as any,
+                    editorState,
+                    4,
+                ),
+            )
+        } else {
+            setEditorState(RichUtils.toggleBlockType(editorState, style))
+        }
     }
 
     return (

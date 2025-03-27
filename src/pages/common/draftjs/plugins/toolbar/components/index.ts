@@ -34,3 +34,10 @@ export const BulletedList = decorateComponentWithProps(InlineStyle, {
     isBlockType: true,
     name: 'Bulleted List',
 })
+
+export const OrderedList = decorateComponentWithProps(InlineStyle, {
+    icon: 'format_list_numbered',
+    style: 'ordered-list-item',
+    isBlockType: true,
+    name: 'Ordered List',
+})

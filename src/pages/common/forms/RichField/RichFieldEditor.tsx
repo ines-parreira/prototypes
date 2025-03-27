@@ -325,6 +325,16 @@ export class RichFieldEditor extends Component<Props, State> {
         return EditorHandledNotHandled.NotHandled
     }
 
+    _handleOnTab = (event: React.KeyboardEvent) => {
+        const { editorState } = this.props
+        const newState = RichUtils.onTab(event, editorState, 4)
+        if (newState) {
+            this.handleChildChange(newState)
+            return EditorHandledNotHandled.Handled
+        }
+        return EditorHandledNotHandled.NotHandled
+    }
+
     _handlePastedText = (
         text: string,
         html: string | undefined,
@@ -506,6 +516,7 @@ export class RichFieldEditor extends Component<Props, State> {
                             onBlur={this._onEditorBlur}
                             plugins={this.plugins}
                             handleKeyCommand={this._handleKeyCommand}
+                            onTab={this._handleOnTab}
                             handlePastedText={this._handlePastedText}
                             readOnly={displayOnly || this.props.readOnly}
                             // once focused we're removing the placeholder (Gmail style)

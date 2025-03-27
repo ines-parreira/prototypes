@@ -60,7 +60,7 @@ describe('NewGuidanceEditor', () => {
         expect(toolbar).toBeInTheDocument()
 
         const buttons = toolbar?.querySelectorAll('button')
-        expect(buttons).toHaveLength(7)
+        expect(buttons).toHaveLength(8)
 
         const icons = container.querySelectorAll('i.material-icons')
         expect(icons[0]).toHaveTextContent('format_bold')
@@ -69,6 +69,7 @@ describe('NewGuidanceEditor', () => {
         expect(icons[3]).toHaveTextContent('link')
         expect(icons[4]).toHaveTextContent('insert_emoticon')
         expect(icons[5]).toHaveTextContent('format_list_bulleted')
+        expect(icons[6]).toHaveTextContent('format_list_numbered')
     })
 
     it('calls onBlur when editor loses focus', () => {

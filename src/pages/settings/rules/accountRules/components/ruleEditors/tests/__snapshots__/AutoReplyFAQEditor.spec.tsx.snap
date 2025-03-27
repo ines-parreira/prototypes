@@ -525,6 +525,22 @@ exports[`<AutoReplyFAQEditor/> should render correctly 1`] = `
                   </i>
                 </span>
               </button>
+              <button
+                aria-disabled="false"
+                class="wrapper button wrapper small fill secondary small"
+                id="toolbar-button-8"
+                type="button"
+              >
+                <span
+                  class="content"
+                >
+                  <i
+                    class="material-icons icon"
+                  >
+                    format_list_numbered
+                  </i>
+                </span>
+              </button>
               <div
                 class="hoverOverlay"
               >
@@ -872,7 +888,7 @@ exports[`<AutoReplyFAQEditor/> should render correctly 1`] = `
               <button
                 aria-disabled="false"
                 class="wrapper button wrapper small fill secondary small"
-                id="toolbar-button-8"
+                id="toolbar-button-9"
                 type="button"
               >
                 <span
@@ -888,7 +904,7 @@ exports[`<AutoReplyFAQEditor/> should render correctly 1`] = `
               <button
                 aria-disabled="false"
                 class="wrapper button wrapper small fill secondary small"
-                id="toolbar-button-9"
+                id="toolbar-button-10"
                 type="button"
               >
                 <span
@@ -904,7 +920,7 @@ exports[`<AutoReplyFAQEditor/> should render correctly 1`] = `
               <button
                 aria-disabled="false"
                 class="wrapper button wrapper small fill secondary small"
-                id="toolbar-button-10"
+                id="toolbar-button-11"
                 type="button"
               >
                 <span
@@ -920,7 +936,7 @@ exports[`<AutoReplyFAQEditor/> should render correctly 1`] = `
               <button
                 aria-disabled="false"
                 class="wrapper button wrapper small fill secondary small"
-                id="toolbar-button-11"
+                id="toolbar-button-12"
                 type="button"
               >
                 <span
@@ -936,7 +952,7 @@ exports[`<AutoReplyFAQEditor/> should render correctly 1`] = `
               <button
                 aria-disabled="false"
                 class="wrapper button wrapper small fill secondary small"
-                id="toolbar-button-12"
+                id="toolbar-button-13"
                 type="button"
               >
                 <span
@@ -952,7 +968,7 @@ exports[`<AutoReplyFAQEditor/> should render correctly 1`] = `
               <button
                 aria-disabled="false"
                 class="wrapper button wrapper small fill secondary small"
-                id="toolbar-button-13"
+                id="toolbar-button-14"
                 type="button"
               >
                 <span
@@ -968,7 +984,7 @@ exports[`<AutoReplyFAQEditor/> should render correctly 1`] = `
               <button
                 aria-disabled="false"
                 class="wrapper button wrapper small fill secondary small"
-                id="toolbar-button-14"
+                id="toolbar-button-15"
                 type="button"
               >
                 <span
@@ -978,6 +994,22 @@ exports[`<AutoReplyFAQEditor/> should render correctly 1`] = `
                     class="material-icons icon"
                   >
                     format_list_bulleted
+                  </i>
+                </span>
+              </button>
+              <button
+                aria-disabled="false"
+                class="wrapper button wrapper small fill secondary small"
+                id="toolbar-button-16"
+                type="button"
+              >
+                <span
+                  class="content"
+                >
+                  <i
+                    class="material-icons icon"
+                  >
+                    format_list_numbered
                   </i>
                 </span>
               </button>

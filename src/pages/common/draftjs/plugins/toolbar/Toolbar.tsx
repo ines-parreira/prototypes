@@ -28,6 +28,7 @@ import {
     Bold,
     BulletedList,
     Italic,
+    OrderedList,
     Underline,
 } from './components/index'
 import WorkflowVariablePicker from './components/WorkflowVariablePicker'
@@ -223,6 +224,9 @@ const Toolbar = ({
                         )}
                     {isActionDisplayed(ActionName.BulletedList) && (
                         <BulletedList {...actionsProps} />
+                    )}
+                    {isActionDisplayed(ActionName.OrderedList) && (
+                        <OrderedList {...actionsProps} />
                     )}
 
                     {buttons?.map(renderButton)}

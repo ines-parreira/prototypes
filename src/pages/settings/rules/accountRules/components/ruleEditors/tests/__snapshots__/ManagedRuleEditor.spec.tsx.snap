@@ -315,7 +315,7 @@ exports[`<ManagedRuleEditor/> auto-reply-faq-questions editor should render corr
                   <button
                     aria-disabled="false"
                     class="wrapper button wrapper small fill secondary small"
-                    id="toolbar-button-37"
+                    id="toolbar-button-41"
                     type="button"
                   >
                     <span
@@ -331,7 +331,7 @@ exports[`<ManagedRuleEditor/> auto-reply-faq-questions editor should render corr
                   <button
                     aria-disabled="false"
                     class="wrapper button wrapper small fill secondary small"
-                    id="toolbar-button-38"
+                    id="toolbar-button-42"
                     type="button"
                   >
                     <span
@@ -347,7 +347,7 @@ exports[`<ManagedRuleEditor/> auto-reply-faq-questions editor should render corr
                   <button
                     aria-disabled="false"
                     class="wrapper button wrapper small fill secondary small"
-                    id="toolbar-button-39"
+                    id="toolbar-button-43"
                     type="button"
                   >
                     <span
@@ -363,7 +363,7 @@ exports[`<ManagedRuleEditor/> auto-reply-faq-questions editor should render corr
                   <button
                     aria-disabled="false"
                     class="wrapper button wrapper small fill secondary small"
-                    id="toolbar-button-40"
+                    id="toolbar-button-44"
                     type="button"
                   >
                     <span
@@ -379,7 +379,7 @@ exports[`<ManagedRuleEditor/> auto-reply-faq-questions editor should render corr
                   <button
                     aria-disabled="false"
                     class="wrapper button wrapper small fill secondary small"
-                    id="toolbar-button-41"
+                    id="toolbar-button-45"
                     type="button"
                   >
                     <span
@@ -395,7 +395,7 @@ exports[`<ManagedRuleEditor/> auto-reply-faq-questions editor should render corr
                   <button
                     aria-disabled="false"
                     class="wrapper button wrapper small fill secondary small"
-                    id="toolbar-button-42"
+                    id="toolbar-button-46"
                     type="button"
                   >
                     <span
@@ -411,7 +411,7 @@ exports[`<ManagedRuleEditor/> auto-reply-faq-questions editor should render corr
                   <button
                     aria-disabled="false"
                     class="wrapper button wrapper small fill secondary small"
-                    id="toolbar-button-43"
+                    id="toolbar-button-47"
                     type="button"
                   >
                     <span
@@ -427,7 +427,7 @@ exports[`<ManagedRuleEditor/> auto-reply-faq-questions editor should render corr
                   <button
                     aria-disabled="false"
                     class="wrapper button wrapper small fill secondary small"
-                    id="toolbar-button-44"
+                    id="toolbar-button-48"
                     type="button"
                   >
                     <span
@@ -437,6 +437,22 @@ exports[`<ManagedRuleEditor/> auto-reply-faq-questions editor should render corr
                         class="material-icons icon"
                       >
                         format_list_bulleted
+                      </i>
+                    </span>
+                  </button>
+                  <button
+                    aria-disabled="false"
+                    class="wrapper button wrapper small fill secondary small"
+                    id="toolbar-button-49"
+                    type="button"
+                  >
+                    <span
+                      class="content"
+                    >
+                      <i
+                        class="material-icons icon"
+                      >
+                        format_list_numbered
                       </i>
                     </span>
                   </button>
@@ -680,7 +696,7 @@ exports[`<ManagedRuleEditor/> auto-reply-faq-questions editor should render corr
                   <button
                     aria-disabled="false"
                     class="wrapper button wrapper small fill secondary small"
-                    id="toolbar-button-45"
+                    id="toolbar-button-50"
                     type="button"
                   >
                     <span
@@ -696,7 +712,7 @@ exports[`<ManagedRuleEditor/> auto-reply-faq-questions editor should render corr
                   <button
                     aria-disabled="false"
                     class="wrapper button wrapper small fill secondary small"
-                    id="toolbar-button-46"
+                    id="toolbar-button-51"
                     type="button"
                   >
                     <span
@@ -712,7 +728,7 @@ exports[`<ManagedRuleEditor/> auto-reply-faq-questions editor should render corr
                   <button
                     aria-disabled="false"
                     class="wrapper button wrapper small fill secondary small"
-                    id="toolbar-button-47"
+                    id="toolbar-button-52"
                     type="button"
                   >
                     <span
@@ -728,7 +744,7 @@ exports[`<ManagedRuleEditor/> auto-reply-faq-questions editor should render corr
                   <button
                     aria-disabled="false"
                     class="wrapper button wrapper small fill secondary small"
-                    id="toolbar-button-48"
+                    id="toolbar-button-53"
                     type="button"
                   >
                     <span
@@ -744,7 +760,7 @@ exports[`<ManagedRuleEditor/> auto-reply-faq-questions editor should render corr
                   <button
                     aria-disabled="false"
                     class="wrapper button wrapper small fill secondary small"
-                    id="toolbar-button-49"
+                    id="toolbar-button-54"
                     type="button"
                   >
                     <span
@@ -760,7 +776,7 @@ exports[`<ManagedRuleEditor/> auto-reply-faq-questions editor should render corr
                   <button
                     aria-disabled="false"
                     class="wrapper button wrapper small fill secondary small"
-                    id="toolbar-button-50"
+                    id="toolbar-button-55"
                     type="button"
                   >
                     <span
@@ -776,7 +792,7 @@ exports[`<ManagedRuleEditor/> auto-reply-faq-questions editor should render corr
                   <button
                     aria-disabled="false"
                     class="wrapper button wrapper small fill secondary small"
-                    id="toolbar-button-51"
+                    id="toolbar-button-56"
                     type="button"
                   >
                     <span
@@ -792,7 +808,7 @@ exports[`<ManagedRuleEditor/> auto-reply-faq-questions editor should render corr
                   <button
                     aria-disabled="false"
                     class="wrapper button wrapper small fill secondary small"
-                    id="toolbar-button-52"
+                    id="toolbar-button-57"
                     type="button"
                   >
                     <span
@@ -802,6 +818,22 @@ exports[`<ManagedRuleEditor/> auto-reply-faq-questions editor should render corr
                         class="material-icons icon"
                       >
                         format_list_bulleted
+                      </i>
+                    </span>
+                  </button>
+                  <button
+                    aria-disabled="false"
+                    class="wrapper button wrapper small fill secondary small"
+                    id="toolbar-button-58"
+                    type="button"
+                  >
+                    <span
+                      class="content"
+                    >
+                      <i
+                        class="material-icons icon"
+                      >
+                        format_list_numbered
                       </i>
                     </span>
                   </button>
@@ -828,15 +860,15 @@ exports[`<ManagedRuleEditor/> auto-reply-faq-questions editor should render corr
           <label
             aria-checked="true"
             class="ui-label-label-3864 label"
-            for="toggle-button-35"
+            for="toggle-button-39"
             role="switch"
           >
             <input
               checked=""
               class="input"
               disabled=""
-              id="toggle-button-35"
-              name="toggle-button-35"
+              id="toggle-button-39"
+              name="toggle-button-39"
               type="checkbox"
             />
             <div
@@ -990,7 +1022,7 @@ exports[`<ManagedRuleEditor/> auto-reply-faq-questions editor should render corr
                       <button
                         aria-disabled="false"
                         class="wrapper button wrapper small fill secondary small"
-                        id="toolbar-button-53"
+                        id="toolbar-button-59"
                         type="button"
                       >
                         <span
@@ -1006,7 +1038,7 @@ exports[`<ManagedRuleEditor/> auto-reply-faq-questions editor should render corr
                       <button
                         aria-disabled="false"
                         class="wrapper button wrapper small fill secondary small"
-                        id="toolbar-button-54"
+                        id="toolbar-button-60"
                         type="button"
                       >
                         <span
@@ -1022,7 +1054,7 @@ exports[`<ManagedRuleEditor/> auto-reply-faq-questions editor should render corr
                       <button
                         aria-disabled="false"
                         class="wrapper button wrapper small fill secondary small"
-                        id="toolbar-button-55"
+                        id="toolbar-button-61"
                         type="button"
                       >
                         <span
@@ -1038,7 +1070,7 @@ exports[`<ManagedRuleEditor/> auto-reply-faq-questions editor should render corr
                       <button
                         aria-disabled="false"
                         class="wrapper button wrapper small fill secondary small"
-                        id="toolbar-button-56"
+                        id="toolbar-button-62"
                         type="button"
                       >
                         <span
@@ -1054,7 +1086,7 @@ exports[`<ManagedRuleEditor/> auto-reply-faq-questions editor should render corr
                       <button
                         aria-disabled="false"
                         class="wrapper button wrapper small fill secondary small"
-                        id="toolbar-button-57"
+                        id="toolbar-button-63"
                         type="button"
                       >
                         <span
@@ -1070,7 +1102,7 @@ exports[`<ManagedRuleEditor/> auto-reply-faq-questions editor should render corr
                       <button
                         aria-disabled="false"
                         class="wrapper button wrapper small fill secondary small"
-                        id="toolbar-button-58"
+                        id="toolbar-button-64"
                         type="button"
                       >
                         <span
@@ -1102,7 +1134,7 @@ exports[`<ManagedRuleEditor/> auto-reply-faq-questions editor should render corr
                       <button
                         aria-disabled="false"
                         class="wrapper button wrapper small fill secondary small"
-                        id="toolbar-button-59"
+                        id="toolbar-button-65"
                         type="button"
                       >
                         <span
@@ -1112,6 +1144,22 @@ exports[`<ManagedRuleEditor/> auto-reply-faq-questions editor should render corr
                             class="material-icons icon"
                           >
                             format_list_bulleted
+                          </i>
+                        </span>
+                      </button>
+                      <button
+                        aria-disabled="false"
+                        class="wrapper button wrapper small fill secondary small"
+                        id="toolbar-button-66"
+                        type="button"
+                      >
+                        <span
+                          class="content"
+                        >
+                          <i
+                            class="material-icons icon"
+                          >
+                            format_list_numbered
                           </i>
                         </span>
                       </button>
@@ -1257,7 +1305,7 @@ exports[`<ManagedRuleEditor/> auto-reply-faq-questions editor should render corr
                       <button
                         aria-disabled="false"
                         class="wrapper button wrapper small fill secondary small"
-                        id="toolbar-button-60"
+                        id="toolbar-button-67"
                         type="button"
                       >
                         <span
@@ -1273,7 +1321,7 @@ exports[`<ManagedRuleEditor/> auto-reply-faq-questions editor should render corr
                       <button
                         aria-disabled="false"
                         class="wrapper button wrapper small fill secondary small"
-                        id="toolbar-button-61"
+                        id="toolbar-button-68"
                         type="button"
                       >
                         <span
@@ -1289,7 +1337,7 @@ exports[`<ManagedRuleEditor/> auto-reply-faq-questions editor should render corr
                       <button
                         aria-disabled="false"
                         class="wrapper button wrapper small fill secondary small"
-                        id="toolbar-button-62"
+                        id="toolbar-button-69"
                         type="button"
                       >
                         <span
@@ -1305,7 +1353,7 @@ exports[`<ManagedRuleEditor/> auto-reply-faq-questions editor should render corr
                       <button
                         aria-disabled="false"
                         class="wrapper button wrapper small fill secondary small"
-                        id="toolbar-button-63"
+                        id="toolbar-button-70"
                         type="button"
                       >
                         <span
@@ -1321,7 +1369,7 @@ exports[`<ManagedRuleEditor/> auto-reply-faq-questions editor should render corr
                       <button
                         aria-disabled="false"
                         class="wrapper button wrapper small fill secondary small"
-                        id="toolbar-button-64"
+                        id="toolbar-button-71"
                         type="button"
                       >
                         <span
@@ -1337,7 +1385,7 @@ exports[`<ManagedRuleEditor/> auto-reply-faq-questions editor should render corr
                       <button
                         aria-disabled="false"
                         class="wrapper button wrapper small fill secondary small"
-                        id="toolbar-button-65"
+                        id="toolbar-button-72"
                         type="button"
                       >
                         <span
@@ -1369,7 +1417,7 @@ exports[`<ManagedRuleEditor/> auto-reply-faq-questions editor should render corr
                       <button
                         aria-disabled="false"
                         class="wrapper button wrapper small fill secondary small"
-                        id="toolbar-button-66"
+                        id="toolbar-button-73"
                         type="button"
                       >
                         <span
@@ -1379,6 +1427,22 @@ exports[`<ManagedRuleEditor/> auto-reply-faq-questions editor should render corr
                             class="material-icons icon"
                           >
                             format_list_bulleted
+                          </i>
+                        </span>
+                      </button>
+                      <button
+                        aria-disabled="false"
+                        class="wrapper button wrapper small fill secondary small"
+                        id="toolbar-button-74"
+                        type="button"
+                      >
+                        <span
+                          class="content"
+                        >
+                          <i
+                            class="material-icons icon"
+                          >
+                            format_list_numbered
                           </i>
                         </span>
                       </button>
@@ -1422,7 +1486,7 @@ exports[`<ManagedRuleEditor/> auto-reply-return-request editor should render cor
         <div>
           <label
             class="ui-label-label-3864 label"
-            for="input-text-67"
+            for="input-text-75"
           >
             Return portal URL
             <abbr
@@ -1437,10 +1501,10 @@ exports[`<ManagedRuleEditor/> auto-reply-return-request editor should render cor
             class="wrapper hasError"
           >
             <input
-              aria-describedby="input-text-67-caption"
+              aria-describedby="input-text-75-caption"
               class="input"
-              id="input-text-67"
-              name="input-text-67"
+              id="input-text-75"
+              name="input-text-75"
               required=""
               type="url"
               value=""
@@ -1448,7 +1512,7 @@ exports[`<ManagedRuleEditor/> auto-reply-return-request editor should render cor
           </div>
           <div
             class="caption error"
-            id="input-text-67-caption"
+            id="input-text-75-caption"
           >
             Enter a valid URL.
           </div>
@@ -1511,371 +1575,6 @@ exports[`<ManagedRuleEditor/> auto-reply-return-request editor should render cor
       >
         <h4>
           Message above return portal link
-        </h4>
-        <div
-          class="field"
-        >
-          <div
-            class="textarea-toolbar"
-          >
-            <div
-              class="btn-group"
-            >
-              <button
-                aria-expanded="false"
-                aria-haspopup="true"
-                class="dropdown-toggle btn-sm mr-2 dropdown-toggle btn btn-secondary"
-                type="button"
-              >
-                Ticket customer
-              </button>
-              <div
-                aria-hidden="true"
-                class="dropdown-menu"
-                role="menu"
-                tabindex="-1"
-              >
-                <div>
-                  <button
-                    class="dropdown-item"
-                    id="variable-0"
-                    role="menuitem"
-                    tabindex="0"
-                    type="button"
-                  >
-                    First name
-                  </button>
-                </div>
-                <div>
-                  <button
-                    class="dropdown-item"
-                    id="variable-1"
-                    role="menuitem"
-                    tabindex="0"
-                    type="button"
-                  >
-                    Last name
-                  </button>
-                </div>
-                <div>
-                  <button
-                    class="dropdown-item"
-                    id="variable-2"
-                    role="menuitem"
-                    tabindex="0"
-                    type="button"
-                  >
-                    Full name
-                  </button>
-                </div>
-                <div>
-                  <button
-                    class="dropdown-item"
-                    id="variable-3"
-                    role="menuitem"
-                    tabindex="0"
-                    type="button"
-                  >
-                    Email
-                  </button>
-                </div>
-              </div>
-            </div>
-            <div
-              class="btn-group"
-            >
-              <button
-                aria-expanded="false"
-                aria-haspopup="true"
-                class="dropdown-toggle btn-sm mr-2 dropdown-toggle btn btn-secondary"
-                type="button"
-              >
-                Current agent
-              </button>
-              <div
-                aria-hidden="true"
-                class="dropdown-menu"
-                role="menu"
-                tabindex="-1"
-              >
-                <div>
-                  <button
-                    class="dropdown-item"
-                    id="variable-0"
-                    role="menuitem"
-                    tabindex="0"
-                    type="button"
-                  >
-                    First name
-                  </button>
-                </div>
-                <div>
-                  <button
-                    class="dropdown-item"
-                    id="variable-1"
-                    role="menuitem"
-                    tabindex="0"
-                    type="button"
-                  >
-                    Last name
-                  </button>
-                </div>
-                <div>
-                  <button
-                    class="dropdown-item"
-                    id="variable-2"
-                    role="menuitem"
-                    tabindex="0"
-                    type="button"
-                  >
-                    Full name
-                  </button>
-                </div>
-                <div>
-                  <button
-                    class="dropdown-item"
-                    id="variable-3"
-                    role="menuitem"
-                    tabindex="0"
-                    type="button"
-                  >
-                    Email
-                  </button>
-                </div>
-                <div>
-                  <button
-                    class="dropdown-item"
-                    id="variable-4"
-                    role="menuitem"
-                    tabindex="0"
-                    type="button"
-                  >
-                    Bio
-                  </button>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div
-            class="rich-textarea-wrapper"
-          >
-            <div
-              class="editor-wrapper"
-            >
-              <div
-                class="withMinHeight"
-              >
-                <div
-                  class="DraftEditor-root"
-                >
-                  <div
-                    class="public-DraftEditorPlaceholder-root"
-                  >
-                    <div
-                      class="public-DraftEditorPlaceholder-inner"
-                      id="placeholder-123"
-                      style="white-space: pre-wrap;"
-                    >
-                      Type {{ for variables }}
-                    </div>
-                  </div>
-                  <div
-                    class="DraftEditor-editorContainer"
-                  >
-                    <div
-                      aria-autocomplete="list"
-                      aria-describedby="placeholder-123"
-                      aria-expanded="true"
-                      class="notranslate public-DraftEditor-content"
-                      contenteditable="true"
-                      role="combobox"
-                      spellcheck="true"
-                      style="outline: none; user-select: text; white-space: pre-wrap; word-wrap: break-word;"
-                    >
-                      <div
-                        data-contents="true"
-                      >
-                        <div
-                          class=""
-                          data-block="true"
-                          data-editor="123"
-                          data-offset-key="123-0-0"
-                        >
-                          <div
-                            class="public-DraftStyleDefault-block public-DraftStyleDefault-ltr"
-                            data-offset-key="123-0-0"
-                          >
-                            <span
-                              data-offset-key="123-0-0"
-                            >
-                              <br
-                                data-text="true"
-                              />
-                            </span>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div
-              class="editor-toolbar page"
-            >
-              <div
-                class="actionsWrapper"
-              >
-                <div
-                  class="actions"
-                >
-                  <button
-                    aria-disabled="false"
-                    class="wrapper button wrapper small fill secondary small"
-                    id="toolbar-button-71"
-                    type="button"
-                  >
-                    <span
-                      class="content"
-                    >
-                      <i
-                        class="material-icons icon"
-                      >
-                        format_bold
-                      </i>
-                    </span>
-                  </button>
-                  <button
-                    aria-disabled="false"
-                    class="wrapper button wrapper small fill secondary small"
-                    id="toolbar-button-72"
-                    type="button"
-                  >
-                    <span
-                      class="content"
-                    >
-                      <i
-                        class="material-icons icon"
-                      >
-                        format_italic
-                      </i>
-                    </span>
-                  </button>
-                  <button
-                    aria-disabled="false"
-                    class="wrapper button wrapper small fill secondary small"
-                    id="toolbar-button-73"
-                    type="button"
-                  >
-                    <span
-                      class="content"
-                    >
-                      <i
-                        class="material-icons icon"
-                      >
-                        format_underline
-                      </i>
-                    </span>
-                  </button>
-                  <button
-                    aria-disabled="false"
-                    class="wrapper button wrapper small fill secondary small"
-                    id="toolbar-button-74"
-                    type="button"
-                  >
-                    <span
-                      class="content"
-                    >
-                      <i
-                        class="material-icons icon"
-                      >
-                        link
-                      </i>
-                    </span>
-                  </button>
-                  <button
-                    aria-disabled="false"
-                    class="wrapper button wrapper small fill secondary small"
-                    id="toolbar-button-75"
-                    type="button"
-                  >
-                    <span
-                      class="content"
-                    >
-                      <i
-                        class="material-icons icon"
-                      >
-                        insert_photo
-                      </i>
-                    </span>
-                  </button>
-                  <button
-                    aria-disabled="false"
-                    class="wrapper button wrapper small fill secondary small"
-                    id="toolbar-button-76"
-                    type="button"
-                  >
-                    <span
-                      class="content"
-                    >
-                      <i
-                        class="material-icons icon"
-                      >
-                        insert_emoticon
-                      </i>
-                    </span>
-                  </button>
-                  <button
-                    aria-disabled="false"
-                    class="wrapper button wrapper small fill secondary small"
-                    id="toolbar-button-77"
-                    type="button"
-                  >
-                    <span
-                      class="content"
-                    >
-                      <i
-                        class="material-icons icon"
-                      >
-                        shopify
-                      </i>
-                    </span>
-                  </button>
-                  <button
-                    aria-disabled="false"
-                    class="wrapper button wrapper small fill secondary small"
-                    id="toolbar-button-78"
-                    type="button"
-                  >
-                    <span
-                      class="content"
-                    >
-                      <i
-                        class="material-icons icon"
-                      >
-                        format_list_bulleted
-                      </i>
-                    </span>
-                  </button>
-                  <div
-                    class="hoverOverlay"
-                  >
-                    Add files as attachments
-                  </div>
-                  <div
-                    class="rightSection"
-                  />
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div
-        class="listWrapper"
-      >
-        <h4>
-          Message below return portal link
         </h4>
         <div
           class="field"
@@ -2222,6 +1921,403 @@ exports[`<ManagedRuleEditor/> auto-reply-return-request editor should render cor
                       </i>
                     </span>
                   </button>
+                  <button
+                    aria-disabled="false"
+                    class="wrapper button wrapper small fill secondary small"
+                    id="toolbar-button-87"
+                    type="button"
+                  >
+                    <span
+                      class="content"
+                    >
+                      <i
+                        class="material-icons icon"
+                      >
+                        format_list_numbered
+                      </i>
+                    </span>
+                  </button>
+                  <div
+                    class="hoverOverlay"
+                  >
+                    Add files as attachments
+                  </div>
+                  <div
+                    class="rightSection"
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div
+        class="listWrapper"
+      >
+        <h4>
+          Message below return portal link
+        </h4>
+        <div
+          class="field"
+        >
+          <div
+            class="textarea-toolbar"
+          >
+            <div
+              class="btn-group"
+            >
+              <button
+                aria-expanded="false"
+                aria-haspopup="true"
+                class="dropdown-toggle btn-sm mr-2 dropdown-toggle btn btn-secondary"
+                type="button"
+              >
+                Ticket customer
+              </button>
+              <div
+                aria-hidden="true"
+                class="dropdown-menu"
+                role="menu"
+                tabindex="-1"
+              >
+                <div>
+                  <button
+                    class="dropdown-item"
+                    id="variable-0"
+                    role="menuitem"
+                    tabindex="0"
+                    type="button"
+                  >
+                    First name
+                  </button>
+                </div>
+                <div>
+                  <button
+                    class="dropdown-item"
+                    id="variable-1"
+                    role="menuitem"
+                    tabindex="0"
+                    type="button"
+                  >
+                    Last name
+                  </button>
+                </div>
+                <div>
+                  <button
+                    class="dropdown-item"
+                    id="variable-2"
+                    role="menuitem"
+                    tabindex="0"
+                    type="button"
+                  >
+                    Full name
+                  </button>
+                </div>
+                <div>
+                  <button
+                    class="dropdown-item"
+                    id="variable-3"
+                    role="menuitem"
+                    tabindex="0"
+                    type="button"
+                  >
+                    Email
+                  </button>
+                </div>
+              </div>
+            </div>
+            <div
+              class="btn-group"
+            >
+              <button
+                aria-expanded="false"
+                aria-haspopup="true"
+                class="dropdown-toggle btn-sm mr-2 dropdown-toggle btn btn-secondary"
+                type="button"
+              >
+                Current agent
+              </button>
+              <div
+                aria-hidden="true"
+                class="dropdown-menu"
+                role="menu"
+                tabindex="-1"
+              >
+                <div>
+                  <button
+                    class="dropdown-item"
+                    id="variable-0"
+                    role="menuitem"
+                    tabindex="0"
+                    type="button"
+                  >
+                    First name
+                  </button>
+                </div>
+                <div>
+                  <button
+                    class="dropdown-item"
+                    id="variable-1"
+                    role="menuitem"
+                    tabindex="0"
+                    type="button"
+                  >
+                    Last name
+                  </button>
+                </div>
+                <div>
+                  <button
+                    class="dropdown-item"
+                    id="variable-2"
+                    role="menuitem"
+                    tabindex="0"
+                    type="button"
+                  >
+                    Full name
+                  </button>
+                </div>
+                <div>
+                  <button
+                    class="dropdown-item"
+                    id="variable-3"
+                    role="menuitem"
+                    tabindex="0"
+                    type="button"
+                  >
+                    Email
+                  </button>
+                </div>
+                <div>
+                  <button
+                    class="dropdown-item"
+                    id="variable-4"
+                    role="menuitem"
+                    tabindex="0"
+                    type="button"
+                  >
+                    Bio
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div
+            class="rich-textarea-wrapper"
+          >
+            <div
+              class="editor-wrapper"
+            >
+              <div
+                class="withMinHeight"
+              >
+                <div
+                  class="DraftEditor-root"
+                >
+                  <div
+                    class="public-DraftEditorPlaceholder-root"
+                  >
+                    <div
+                      class="public-DraftEditorPlaceholder-inner"
+                      id="placeholder-123"
+                      style="white-space: pre-wrap;"
+                    >
+                      Type {{ for variables }}
+                    </div>
+                  </div>
+                  <div
+                    class="DraftEditor-editorContainer"
+                  >
+                    <div
+                      aria-autocomplete="list"
+                      aria-describedby="placeholder-123"
+                      aria-expanded="true"
+                      class="notranslate public-DraftEditor-content"
+                      contenteditable="true"
+                      role="combobox"
+                      spellcheck="true"
+                      style="outline: none; user-select: text; white-space: pre-wrap; word-wrap: break-word;"
+                    >
+                      <div
+                        data-contents="true"
+                      >
+                        <div
+                          class=""
+                          data-block="true"
+                          data-editor="123"
+                          data-offset-key="123-0-0"
+                        >
+                          <div
+                            class="public-DraftStyleDefault-block public-DraftStyleDefault-ltr"
+                            data-offset-key="123-0-0"
+                          >
+                            <span
+                              data-offset-key="123-0-0"
+                            >
+                              <br
+                                data-text="true"
+                              />
+                            </span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div
+              class="editor-toolbar page"
+            >
+              <div
+                class="actionsWrapper"
+              >
+                <div
+                  class="actions"
+                >
+                  <button
+                    aria-disabled="false"
+                    class="wrapper button wrapper small fill secondary small"
+                    id="toolbar-button-88"
+                    type="button"
+                  >
+                    <span
+                      class="content"
+                    >
+                      <i
+                        class="material-icons icon"
+                      >
+                        format_bold
+                      </i>
+                    </span>
+                  </button>
+                  <button
+                    aria-disabled="false"
+                    class="wrapper button wrapper small fill secondary small"
+                    id="toolbar-button-89"
+                    type="button"
+                  >
+                    <span
+                      class="content"
+                    >
+                      <i
+                        class="material-icons icon"
+                      >
+                        format_italic
+                      </i>
+                    </span>
+                  </button>
+                  <button
+                    aria-disabled="false"
+                    class="wrapper button wrapper small fill secondary small"
+                    id="toolbar-button-90"
+                    type="button"
+                  >
+                    <span
+                      class="content"
+                    >
+                      <i
+                        class="material-icons icon"
+                      >
+                        format_underline
+                      </i>
+                    </span>
+                  </button>
+                  <button
+                    aria-disabled="false"
+                    class="wrapper button wrapper small fill secondary small"
+                    id="toolbar-button-91"
+                    type="button"
+                  >
+                    <span
+                      class="content"
+                    >
+                      <i
+                        class="material-icons icon"
+                      >
+                        link
+                      </i>
+                    </span>
+                  </button>
+                  <button
+                    aria-disabled="false"
+                    class="wrapper button wrapper small fill secondary small"
+                    id="toolbar-button-92"
+                    type="button"
+                  >
+                    <span
+                      class="content"
+                    >
+                      <i
+                        class="material-icons icon"
+                      >
+                        insert_photo
+                      </i>
+                    </span>
+                  </button>
+                  <button
+                    aria-disabled="false"
+                    class="wrapper button wrapper small fill secondary small"
+                    id="toolbar-button-93"
+                    type="button"
+                  >
+                    <span
+                      class="content"
+                    >
+                      <i
+                        class="material-icons icon"
+                      >
+                        insert_emoticon
+                      </i>
+                    </span>
+                  </button>
+                  <button
+                    aria-disabled="false"
+                    class="wrapper button wrapper small fill secondary small"
+                    id="toolbar-button-94"
+                    type="button"
+                  >
+                    <span
+                      class="content"
+                    >
+                      <i
+                        class="material-icons icon"
+                      >
+                        shopify
+                      </i>
+                    </span>
+                  </button>
+                  <button
+                    aria-disabled="false"
+                    class="wrapper button wrapper small fill secondary small"
+                    id="toolbar-button-95"
+                    type="button"
+                  >
+                    <span
+                      class="content"
+                    >
+                      <i
+                        class="material-icons icon"
+                      >
+                        format_list_bulleted
+                      </i>
+                    </span>
+                  </button>
+                  <button
+                    aria-disabled="false"
+                    class="wrapper button wrapper small fill secondary small"
+                    id="toolbar-button-96"
+                    type="button"
+                  >
+                    <span
+                      class="content"
+                    >
+                      <i
+                        class="material-icons icon"
+                      >
+                        format_list_numbered
+                      </i>
+                    </span>
+                  </button>
                   <div
                     class="hoverOverlay"
                   >
@@ -2245,15 +2341,15 @@ exports[`<ManagedRuleEditor/> auto-reply-return-request editor should render cor
           <label
             aria-checked="true"
             class="ui-label-label-3864 label"
-            for="toggle-button-69"
+            for="toggle-button-77"
             role="switch"
           >
             <input
               checked=""
               class="input"
               disabled=""
-              id="toggle-button-69"
-              name="toggle-button-69"
+              id="toggle-button-77"
+              name="toggle-button-77"
               type="checkbox"
             />
             <div
@@ -2407,7 +2503,7 @@ exports[`<ManagedRuleEditor/> auto-reply-return-request editor should render cor
                       <button
                         aria-disabled="false"
                         class="wrapper button wrapper small fill secondary small"
-                        id="toolbar-button-87"
+                        id="toolbar-button-97"
                         type="button"
                       >
                         <span
@@ -2423,7 +2519,7 @@ exports[`<ManagedRuleEditor/> auto-reply-return-request editor should render cor
                       <button
                         aria-disabled="false"
                         class="wrapper button wrapper small fill secondary small"
-                        id="toolbar-button-88"
+                        id="toolbar-button-98"
                         type="button"
                       >
                         <span
@@ -2439,7 +2535,7 @@ exports[`<ManagedRuleEditor/> auto-reply-return-request editor should render cor
                       <button
                         aria-disabled="false"
                         class="wrapper button wrapper small fill secondary small"
-                        id="toolbar-button-89"
+                        id="toolbar-button-99"
                         type="button"
                       >
                         <span
@@ -2455,7 +2551,7 @@ exports[`<ManagedRuleEditor/> auto-reply-return-request editor should render cor
                       <button
                         aria-disabled="false"
                         class="wrapper button wrapper small fill secondary small"
-                        id="toolbar-button-90"
+                        id="toolbar-button-100"
                         type="button"
                       >
                         <span
@@ -2471,7 +2567,7 @@ exports[`<ManagedRuleEditor/> auto-reply-return-request editor should render cor
                       <button
                         aria-disabled="false"
                         class="wrapper button wrapper small fill secondary small"
-                        id="toolbar-button-91"
+                        id="toolbar-button-101"
                         type="button"
                       >
                         <span
@@ -2487,7 +2583,7 @@ exports[`<ManagedRuleEditor/> auto-reply-return-request editor should render cor
                       <button
                         aria-disabled="false"
                         class="wrapper button wrapper small fill secondary small"
-                        id="toolbar-button-92"
+                        id="toolbar-button-102"
                         type="button"
                       >
                         <span
@@ -2519,7 +2615,7 @@ exports[`<ManagedRuleEditor/> auto-reply-return-request editor should render cor
                       <button
                         aria-disabled="false"
                         class="wrapper button wrapper small fill secondary small"
-                        id="toolbar-button-93"
+                        id="toolbar-button-103"
                         type="button"
                       >
                         <span
@@ -2529,6 +2625,22 @@ exports[`<ManagedRuleEditor/> auto-reply-return-request editor should render cor
                             class="material-icons icon"
                           >
                             format_list_bulleted
+                          </i>
+                        </span>
+                      </button>
+                      <button
+                        aria-disabled="false"
+                        class="wrapper button wrapper small fill secondary small"
+                        id="toolbar-button-104"
+                        type="button"
+                      >
+                        <span
+                          class="content"
+                        >
+                          <i
+                            class="material-icons icon"
+                          >
+                            format_list_numbered
                           </i>
                         </span>
                       </button>
@@ -2628,7 +2740,7 @@ exports[`<ManagedRuleEditor/> auto-reply-return-request editor should render cor
                       <button
                         aria-disabled="false"
                         class="wrapper button wrapper small fill secondary small"
-                        id="toolbar-button-94"
+                        id="toolbar-button-105"
                         type="button"
                       >
                         <span
@@ -2644,7 +2756,7 @@ exports[`<ManagedRuleEditor/> auto-reply-return-request editor should render cor
                       <button
                         aria-disabled="false"
                         class="wrapper button wrapper small fill secondary small"
-                        id="toolbar-button-95"
+                        id="toolbar-button-106"
                         type="button"
                       >
                         <span
@@ -2660,7 +2772,7 @@ exports[`<ManagedRuleEditor/> auto-reply-return-request editor should render cor
                       <button
                         aria-disabled="false"
                         class="wrapper button wrapper small fill secondary small"
-                        id="toolbar-button-96"
+                        id="toolbar-button-107"
                         type="button"
                       >
                         <span
@@ -2676,7 +2788,7 @@ exports[`<ManagedRuleEditor/> auto-reply-return-request editor should render cor
                       <button
                         aria-disabled="false"
                         class="wrapper button wrapper small fill secondary small"
-                        id="toolbar-button-97"
+                        id="toolbar-button-108"
                         type="button"
                       >
                         <span
@@ -2692,7 +2804,7 @@ exports[`<ManagedRuleEditor/> auto-reply-return-request editor should render cor
                       <button
                         aria-disabled="false"
                         class="wrapper button wrapper small fill secondary small"
-                        id="toolbar-button-98"
+                        id="toolbar-button-109"
                         type="button"
                       >
                         <span
@@ -2708,7 +2820,7 @@ exports[`<ManagedRuleEditor/> auto-reply-return-request editor should render cor
                       <button
                         aria-disabled="false"
                         class="wrapper button wrapper small fill secondary small"
-                        id="toolbar-button-99"
+                        id="toolbar-button-110"
                         type="button"
                       >
                         <span
@@ -2740,7 +2852,7 @@ exports[`<ManagedRuleEditor/> auto-reply-return-request editor should render cor
                       <button
                         aria-disabled="false"
                         class="wrapper button wrapper small fill secondary small"
-                        id="toolbar-button-100"
+                        id="toolbar-button-111"
                         type="button"
                       >
                         <span
@@ -2750,6 +2862,22 @@ exports[`<ManagedRuleEditor/> auto-reply-return-request editor should render cor
                             class="material-icons icon"
                           >
                             format_list_bulleted
+                          </i>
+                        </span>
+                      </button>
+                      <button
+                        aria-disabled="false"
+                        class="wrapper button wrapper small fill secondary small"
+                        id="toolbar-button-112"
+                        type="button"
+                      >
+                        <span
+                          class="content"
+                        >
+                          <i
+                            class="material-icons icon"
+                          >
+                            format_list_numbered
                           </i>
                         </span>
                       </button>
@@ -3190,6 +3318,22 @@ exports[`<ManagedRuleEditor/> auto-reply-wismo editor should render correctly 1`
                       </i>
                     </span>
                   </button>
+                  <button
+                    aria-disabled="false"
+                    class="wrapper button wrapper small fill secondary small"
+                    id="toolbar-button-13"
+                    type="button"
+                  >
+                    <span
+                      class="content"
+                    >
+                      <i
+                        class="material-icons icon"
+                      >
+                        format_list_numbered
+                      </i>
+                    </span>
+                  </button>
                   <div
                     class="hoverOverlay"
                   >
@@ -3430,7 +3574,7 @@ exports[`<ManagedRuleEditor/> auto-reply-wismo editor should render correctly 1`
                   <button
                     aria-disabled="false"
                     class="wrapper button wrapper small fill secondary small"
-                    id="toolbar-button-13"
+                    id="toolbar-button-14"
                     type="button"
                   >
                     <span
@@ -3446,7 +3590,7 @@ exports[`<ManagedRuleEditor/> auto-reply-wismo editor should render correctly 1`
                   <button
                     aria-disabled="false"
                     class="wrapper button wrapper small fill secondary small"
-                    id="toolbar-button-14"
+                    id="toolbar-button-15"
                     type="button"
                   >
                     <span
@@ -3462,7 +3606,7 @@ exports[`<ManagedRuleEditor/> auto-reply-wismo editor should render correctly 1`
                   <button
                     aria-disabled="false"
                     class="wrapper button wrapper small fill secondary small"
-                    id="toolbar-button-15"
+                    id="toolbar-button-16"
                     type="button"
                   >
                     <span
@@ -3478,7 +3622,7 @@ exports[`<ManagedRuleEditor/> auto-reply-wismo editor should render correctly 1`
                   <button
                     aria-disabled="false"
                     class="wrapper button wrapper small fill secondary small"
-                    id="toolbar-button-16"
+                    id="toolbar-button-17"
                     type="button"
                   >
                     <span
@@ -3494,7 +3638,7 @@ exports[`<ManagedRuleEditor/> auto-reply-wismo editor should render correctly 1`
                   <button
                     aria-disabled="false"
                     class="wrapper button wrapper small fill secondary small"
-                    id="toolbar-button-17"
+                    id="toolbar-button-18"
                     type="button"
                   >
                     <span
@@ -3510,7 +3654,7 @@ exports[`<ManagedRuleEditor/> auto-reply-wismo editor should render correctly 1`
                   <button
                     aria-disabled="false"
                     class="wrapper button wrapper small fill secondary small"
-                    id="toolbar-button-18"
+                    id="toolbar-button-19"
                     type="button"
                   >
                     <span
@@ -3526,7 +3670,7 @@ exports[`<ManagedRuleEditor/> auto-reply-wismo editor should render correctly 1`
                   <button
                     aria-disabled="false"
                     class="wrapper button wrapper small fill secondary small"
-                    id="toolbar-button-19"
+                    id="toolbar-button-20"
                     type="button"
                   >
                     <span
@@ -3542,7 +3686,7 @@ exports[`<ManagedRuleEditor/> auto-reply-wismo editor should render correctly 1`
                   <button
                     aria-disabled="false"
                     class="wrapper button wrapper small fill secondary small"
-                    id="toolbar-button-20"
+                    id="toolbar-button-21"
                     type="button"
                   >
                     <span
@@ -3552,6 +3696,22 @@ exports[`<ManagedRuleEditor/> auto-reply-wismo editor should render correctly 1`
                         class="material-icons icon"
                       >
                         format_list_bulleted
+                      </i>
+                    </span>
+                  </button>
+                  <button
+                    aria-disabled="false"
+                    class="wrapper button wrapper small fill secondary small"
+                    id="toolbar-button-22"
+                    type="button"
+                  >
+                    <span
+                      class="content"
+                    >
+                      <i
+                        class="material-icons icon"
+                      >
+                        format_list_numbered
                       </i>
                     </span>
                   </button>
@@ -3740,7 +3900,7 @@ exports[`<ManagedRuleEditor/> auto-reply-wismo editor should render correctly 1`
                       <button
                         aria-disabled="false"
                         class="wrapper button wrapper small fill secondary small"
-                        id="toolbar-button-21"
+                        id="toolbar-button-23"
                         type="button"
                       >
                         <span
@@ -3756,7 +3916,7 @@ exports[`<ManagedRuleEditor/> auto-reply-wismo editor should render correctly 1`
                       <button
                         aria-disabled="false"
                         class="wrapper button wrapper small fill secondary small"
-                        id="toolbar-button-22"
+                        id="toolbar-button-24"
                         type="button"
                       >
                         <span
@@ -3772,7 +3932,7 @@ exports[`<ManagedRuleEditor/> auto-reply-wismo editor should render correctly 1`
                       <button
                         aria-disabled="false"
                         class="wrapper button wrapper small fill secondary small"
-                        id="toolbar-button-23"
+                        id="toolbar-button-25"
                         type="button"
                       >
                         <span
@@ -3788,7 +3948,7 @@ exports[`<ManagedRuleEditor/> auto-reply-wismo editor should render correctly 1`
                       <button
                         aria-disabled="false"
                         class="wrapper button wrapper small fill secondary small"
-                        id="toolbar-button-24"
+                        id="toolbar-button-26"
                         type="button"
                       >
                         <span
@@ -3804,7 +3964,7 @@ exports[`<ManagedRuleEditor/> auto-reply-wismo editor should render correctly 1`
                       <button
                         aria-disabled="false"
                         class="wrapper button wrapper small fill secondary small"
-                        id="toolbar-button-25"
+                        id="toolbar-button-27"
                         type="button"
                       >
                         <span
@@ -3820,7 +3980,7 @@ exports[`<ManagedRuleEditor/> auto-reply-wismo editor should render correctly 1`
                       <button
                         aria-disabled="false"
                         class="wrapper button wrapper small fill secondary small"
-                        id="toolbar-button-26"
+                        id="toolbar-button-28"
                         type="button"
                       >
                         <span
@@ -3852,7 +4012,7 @@ exports[`<ManagedRuleEditor/> auto-reply-wismo editor should render correctly 1`
                       <button
                         aria-disabled="false"
                         class="wrapper button wrapper small fill secondary small"
-                        id="toolbar-button-27"
+                        id="toolbar-button-29"
                         type="button"
                       >
                         <span
@@ -3862,6 +4022,22 @@ exports[`<ManagedRuleEditor/> auto-reply-wismo editor should render correctly 1`
                             class="material-icons icon"
                           >
                             format_list_bulleted
+                          </i>
+                        </span>
+                      </button>
+                      <button
+                        aria-disabled="false"
+                        class="wrapper button wrapper small fill secondary small"
+                        id="toolbar-button-30"
+                        type="button"
+                      >
+                        <span
+                          class="content"
+                        >
+                          <i
+                            class="material-icons icon"
+                          >
+                            format_list_numbered
                           </i>
                         </span>
                       </button>
@@ -4028,7 +4204,7 @@ exports[`<ManagedRuleEditor/> auto-reply-wismo editor should render correctly 1`
                       <button
                         aria-disabled="false"
                         class="wrapper button wrapper small fill secondary small"
-                        id="toolbar-button-28"
+                        id="toolbar-button-31"
                         type="button"
                       >
                         <span
@@ -4044,7 +4220,7 @@ exports[`<ManagedRuleEditor/> auto-reply-wismo editor should render correctly 1`
                       <button
                         aria-disabled="false"
                         class="wrapper button wrapper small fill secondary small"
-                        id="toolbar-button-29"
+                        id="toolbar-button-32"
                         type="button"
                       >
                         <span
@@ -4060,7 +4236,7 @@ exports[`<ManagedRuleEditor/> auto-reply-wismo editor should render correctly 1`
                       <button
                         aria-disabled="false"
                         class="wrapper button wrapper small fill secondary small"
-                        id="toolbar-button-30"
+                        id="toolbar-button-33"
                         type="button"
                       >
                         <span
@@ -4076,7 +4252,7 @@ exports[`<ManagedRuleEditor/> auto-reply-wismo editor should render correctly 1`
                       <button
                         aria-disabled="false"
                         class="wrapper button wrapper small fill secondary small"
-                        id="toolbar-button-31"
+                        id="toolbar-button-34"
                         type="button"
                       >
                         <span
@@ -4092,7 +4268,7 @@ exports[`<ManagedRuleEditor/> auto-reply-wismo editor should render correctly 1`
                       <button
                         aria-disabled="false"
                         class="wrapper button wrapper small fill secondary small"
-                        id="toolbar-button-32"
+                        id="toolbar-button-35"
                         type="button"
                       >
                         <span
@@ -4108,7 +4284,7 @@ exports[`<ManagedRuleEditor/> auto-reply-wismo editor should render correctly 1`
                       <button
                         aria-disabled="false"
                         class="wrapper button wrapper small fill secondary small"
-                        id="toolbar-button-33"
+                        id="toolbar-button-36"
                         type="button"
                       >
                         <span
@@ -4140,7 +4316,7 @@ exports[`<ManagedRuleEditor/> auto-reply-wismo editor should render correctly 1`
                       <button
                         aria-disabled="false"
                         class="wrapper button wrapper small fill secondary small"
-                        id="toolbar-button-34"
+                        id="toolbar-button-37"
                         type="button"
                       >
                         <span
@@ -4150,6 +4326,22 @@ exports[`<ManagedRuleEditor/> auto-reply-wismo editor should render correctly 1`
                             class="material-icons icon"
                           >
                             format_list_bulleted
+                          </i>
+                        </span>
+                      </button>
+                      <button
+                        aria-disabled="false"
+                        class="wrapper button wrapper small fill secondary small"
+                        id="toolbar-button-38"
+                        type="button"
+                      >
+                        <span
+                          class="content"
+                        >
+                          <i
+                            class="material-icons icon"
+                          >
+                            format_list_numbered
                           </i>
                         </span>
                       </button>

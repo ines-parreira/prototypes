@@ -30,6 +30,7 @@ const toolbarActions = [
     ActionName.Emoji,
     ActionName.GuidanceVariable,
     ActionName.BulletedList,
+    ActionName.OrderedList,
 ]
 
 export function NewGuidanceEditor({
