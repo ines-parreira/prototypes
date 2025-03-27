@@ -3,7 +3,7 @@ import { useMemo } from 'react'
 import { FeatureFlagKey } from 'config/featureFlags'
 import { useFlag } from 'core/flags'
 import useAppSelector from 'hooks/useAppSelector'
-import { useTagResultsSelection } from 'hooks/useTagResultsSelection'
+import { useTagResultsSelection } from 'hooks/useResultsSelection'
 import { getEntitiesTags } from 'state/entities/tags/selectors'
 import { getTagsOrder } from 'state/ui/stats/tagsReportSlice'
 

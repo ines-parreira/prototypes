@@ -9,7 +9,7 @@ import {
     TimeSeriesFetch,
     TimeSeriesPerDimensionFetch,
 } from 'hooks/reporting/useTimeSeries'
-import { TagSelection } from 'hooks/useTagResultsSelection'
+import { TagSelection } from 'hooks/useResultsSelection'
 import { Channel } from 'models/channel/types'
 import { Integration } from 'models/integration/types'
 import { ReportingGranularity } from 'models/reporting/types'

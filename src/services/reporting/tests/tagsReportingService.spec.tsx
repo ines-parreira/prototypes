@@ -15,7 +15,7 @@ import {
     TimeSeriesDataItem,
     TimeSeriesPerDimension,
 } from 'hooks/reporting/useTimeSeries'
-import { TagSelection } from 'hooks/useTagResultsSelection'
+import { TagSelection } from 'hooks/useResultsSelection'
 import { OrderDirection } from 'models/api/types'
 import { ReportingGranularity } from 'models/reporting/types'
 import { TagFilterInstanceId } from 'models/stat/types'

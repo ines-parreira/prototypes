@@ -12,7 +12,7 @@ import { useChannelsTableSetting } from 'hooks/reporting/useChannelsTableConfigS
 import { MetricFetch } from 'hooks/reporting/useMetric'
 import { MetricWithDecileFetch } from 'hooks/reporting/useMetricPerDimension'
 import useAppSelector from 'hooks/useAppSelector'
-import { useTagResultsSelection } from 'hooks/useTagResultsSelection'
+import { useTagResultsSelection } from 'hooks/useResultsSelection'
 import { ReportingGranularity } from 'models/reporting/types'
 import { StatsFilters } from 'models/stat/types'
 import { CampaignReportContext } from 'pages/stats/convert/components/DownloadOverviewData/GenerateReportService'

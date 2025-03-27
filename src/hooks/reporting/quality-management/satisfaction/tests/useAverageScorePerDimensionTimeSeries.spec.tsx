@@ -19,7 +19,7 @@ import {
     fetchTimeSeriesPerDimension,
     useTimeSeriesPerDimension,
 } from 'hooks/reporting/useTimeSeries'
-import { TagSelection } from 'hooks/useTagResultsSelection'
+import { TagSelection } from 'hooks/useResultsSelection'
 import { OrderDirection } from 'models/api/types'
 import { TicketDimension } from 'models/reporting/cubes/TicketCube'
 import { TicketMessagesDimension } from 'models/reporting/cubes/TicketMessagesCube'
