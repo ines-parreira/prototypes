@@ -5,11 +5,7 @@ import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import {
-    VoiceMessage as ApiVoiceMessage,
-    VoiceMessageType as ApiVoiceMessageType,
-    WaitMusicType,
-} from '@gorgias/api-queries'
+import { WaitMusicType } from '@gorgias/api-queries'
 
 import {
     IvrMenuActionType,
@@ -24,9 +20,7 @@ import {
 import { RootState } from 'state/types'
 
 import * as utils from '../../utils'
-import useVoiceMessageValidation, {
-    formVoiceMessageValidation,
-} from '../useVoiceMessageValidation'
+import useVoiceMessageValidation from '../useVoiceMessageValidation'
 
 const mockStore = configureMockStore<RootState>([thunk])({} as RootState)
 const getAudioFileDurationSpy = jest.spyOn(utils, 'getAudioFileDuration')
@@ -949,44 +943,4 @@ describe('useVoiceMessageValidation().areWaitMusicPreferencesTheSame', () => {
             expect(result.current).toBe(false)
         },
     )
-})
-
-describe('formVoiceMessageValidation', () => {
-    it.each([
-        {
-            voice_message_type: ApiVoiceMessageType.TextToSpeech,
-            text_to_speech_content: 'Hello!',
-        },
-        {
-            voice_message_type: ApiVoiceMessageType.VoiceRecording,
-            voice_recording_file_path: 'example.mp3',
-        },
-        { voice_message_type: ApiVoiceMessageType.None },
-    ])('should accept valid messages', (message: ApiVoiceMessage) => {
-        const textToSpeechValidation =
-            formVoiceMessageValidation.validate.textToSpeech(message)
-        expect(textToSpeechValidation).toBeUndefined()
-
-        const VoiceMessageValidation =
-            formVoiceMessageValidation.validate.voiceRecording(message)
-        expect(VoiceMessageValidation).toBeUndefined()
-    })
-
-    it('should validate voice recording message', () => {
-        const message = {
-            voice_message_type: ApiVoiceMessageType.VoiceRecording,
-        } as VoiceMessage
-        expect(
-            formVoiceMessageValidation.validate.voiceRecording(message),
-        ).toBe('Voice recording is required')
-    })
-
-    it('should validate text to speech message', () => {
-        const message = {
-            voice_message_type: ApiVoiceMessageType.TextToSpeech,
-        } as ApiVoiceMessage
-        expect(formVoiceMessageValidation.validate.textToSpeech(message)).toBe(
-            'Text to speech content is required',
-        )
-    })
 })

@@ -3,7 +3,6 @@ import { CustomRecordingType } from '@gorgias/api-types'
 import { FormField } from 'core/forms'
 import Accordion from 'pages/common/components/accordion/Accordion'
 
-import { formVoiceMessageValidation } from './hooks/useVoiceMessageValidation'
 import VoiceIntegrationSettingCallRecording from './VoiceIntegrationSettingCallRecording'
 import VoiceIntegrationSettingCallTranscription from './VoiceIntegrationSettingCallTranscription'
 import VoiceIntegrationSettingDistributionBehavior from './VoiceIntegrationSettingDistributionBehavior'
@@ -32,7 +31,6 @@ function VoiceIntegrationSettingsFormCallFlowSection(): JSX.Element {
                             CustomRecordingType.GreetingMessage
                         }
                         radioButtonId={'greeting-message'}
-                        validation={formVoiceMessageValidation}
                     />
                 </VoiceSettingAccordionItem>
                 <VoiceSettingAccordionItem

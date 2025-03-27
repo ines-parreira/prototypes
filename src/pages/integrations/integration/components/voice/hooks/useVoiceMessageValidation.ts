@@ -373,24 +373,3 @@ export default function useVoiceMessageValidation() {
         areWaitMusicPreferencesTheSame,
     }
 }
-
-export const formVoiceMessageValidation = {
-    validate: {
-        textToSpeech: (value: VoiceMessage) => {
-            if (
-                value?.voice_message_type === VoiceMessageType.TextToSpeech &&
-                !value?.text_to_speech_content
-            ) {
-                return 'Text to speech content is required'
-            }
-        },
-        voiceRecording: (value: VoiceMessage) => {
-            if (
-                value?.voice_message_type === VoiceMessageType.VoiceRecording &&
-                !value.voice_recording_file_path
-            ) {
-                return 'Voice recording is required'
-            }
-        },
-    },
-}

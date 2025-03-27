@@ -11,6 +11,7 @@ import {
 } from '@gorgias/api-validators'
 
 import { Form, toFormErrors } from 'core/forms'
+import Loader from 'pages/common/components/Loader/Loader'
 import SettingsContent from 'pages/settings/SettingsContent'
 import SettingsPageContainer from 'pages/settings/SettingsPageContainer'
 
@@ -20,14 +21,18 @@ import VoiceIntegrationSettingsForm from './VoiceIntegrationSettingsForm'
 function VoiceIntegrationSettingsPage() {
     const { integrationId: idParam } = useParams<{ integrationId: string }>()
     const id = Number(idParam)
-    const { isLoading, data } = useGetIntegration(id, {
+    const { isFetching, data } = useGetIntegration(id, {
         query: { refetchOnWindowFocus: false },
     })
 
     const integration = data?.data as PhoneIntegration
     const { onSubmit } = useFormSubmit(integration)
 
-    if (isLoading || !isPhoneIntegration(integration)) {
+    if (isFetching) {
+        return <Loader />
+    }
+
+    if (!isPhoneIntegration(integration)) {
         return <div />
     }
 
@@ -36,7 +41,7 @@ function VoiceIntegrationSettingsPage() {
             <SettingsContent>
                 <Form
                     onValidSubmit={onSubmit}
-                    values={getDefaultValues(integration)}
+                    defaultValues={getDefaultValues(integration)}
                     mode="onChange"
                     resetOptions={{
                         keepDirty: false,

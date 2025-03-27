@@ -7,7 +7,6 @@ import { Label } from '@gorgias/merchant-ui-kit'
 import { FormField } from 'core/forms'
 import ToggleInputField from 'pages/common/forms/ToggleInputField'
 
-import { formVoiceMessageValidation } from './hooks/useVoiceMessageValidation'
 import VoiceMessageField from './VoiceMessageField'
 
 import css from './VoiceIntegrationSettingCallRecording.less'
@@ -51,7 +50,6 @@ function VoiceIntegrationSettingCallRecording() {
                             customRecordingType={
                                 CustomRecordingType.CallRecordingNotification
                             }
-                            validation={formVoiceMessageValidation}
                             radioButtonId="call_recording_notification"
                         />
                     </div>

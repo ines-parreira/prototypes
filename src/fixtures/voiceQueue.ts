@@ -13,8 +13,8 @@ export const voiceQueue: VoiceQueue = {
     priority_weight: 1,
     distribution_mode: PhoneRingingBehaviour.RoundRobin,
     linked_targets: [
-        { team_id: 1, user_id: 1, voice_queue_id: 1 },
-        { team_id: 2, user_id: 2, voice_queue_id: 1 },
+        { team_id: 1, user_id: 1 },
+        { team_id: 2, user_id: 2 },
     ],
     ring_time: 30,
     target_scope: VoiceQueueTargetScope.AllAgents,

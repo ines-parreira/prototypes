@@ -100,6 +100,50 @@ describe('hooks', () => {
             expect(fetchIntegrationsMock).toHaveBeenCalled()
         })
 
+        it('should call exclude recording notification changes if disabled', async () => {
+            updateAllPhoneSettingsMock.mockReturnValue(
+                Promise.resolve({} as HttpResponse<void>),
+            )
+
+            const { result, waitFor } = render()
+            const submittableData = {
+                name: 'new name',
+                meta: {
+                    emoji: 'new emoji',
+                    phone_team_id: 2,
+                    preferences: {
+                        test: 'test',
+                        record_inbound_calls: false,
+                        record_outbound_calls: false,
+                    },
+                    recording_notification: {
+                        voice_message_type: VoiceMessageType.None,
+                    },
+                },
+            } as any
+
+            result.current.onSubmit(submittableData)
+
+            await waitFor(() => {
+                expect(updateAllPhoneSettingsMock).toHaveBeenCalledWith(
+                    phoneIntegration.id,
+                    {
+                        ...submittableData,
+                        meta: {
+                            ...submittableData.meta,
+                            recording_notification: undefined,
+                        },
+                    },
+                    undefined,
+                )
+            })
+
+            expect(mockNotify.success).toHaveBeenCalledWith(
+                'Integration settings successfully updated.',
+            )
+            expect(fetchIntegrationsMock).toHaveBeenCalled()
+        })
+
         it('should dispatch error notification on error', async () => {
             updateAllPhoneSettingsMock.mockRejectedValue('An error occurred')
 

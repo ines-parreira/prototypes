@@ -9,7 +9,6 @@ import useAppSelector from 'hooks/useAppSelector'
 import CheckBoxField from 'pages/common/forms/CheckBoxField'
 import { getBusinessHoursSettings } from 'state/currentAccount/selectors'
 
-import { formVoiceMessageValidation } from './hooks/useVoiceMessageValidation'
 import VoiceMessageField from './VoiceMessageField'
 
 import css from './VoiceIntegrationSettingVoicemail.less'
@@ -37,7 +36,6 @@ function VoiceIntegrationSettingVoicemail() {
                         CustomRecordingType.VoicemailNotification
                     }
                     radioButtonId={'voicemail'}
-                    validation={formVoiceMessageValidation}
                 />
             </div>
             <div className={css.innerSection}>
@@ -68,7 +66,6 @@ function VoiceIntegrationSettingVoicemail() {
                                 CustomRecordingType.VoicemailNotification
                             }
                             radioButtonId={'voicemail-outside-business-hours'}
-                            validation={formVoiceMessageValidation}
                         />
                     </div>
                 )}

@@ -5,7 +5,6 @@ import { FormField } from 'core/forms'
 import useAppSelector from 'hooks/useAppSelector'
 import { assumeMock } from 'utils/testing'
 
-import { formVoiceMessageValidation } from '../hooks/useVoiceMessageValidation'
 import VoiceIntegrationSettingVoicemail from '../VoiceIntegrationSettingVoicemail'
 
 jest.mock('core/forms')
@@ -55,7 +54,6 @@ describe('VoiceIntegrationSettingVoicemail', () => {
                 name: 'meta.voicemail',
                 shouldUpload: true,
                 radioButtonId: 'voicemail',
-                validation: formVoiceMessageValidation,
             }),
             {},
         )
@@ -83,7 +81,6 @@ describe('VoiceIntegrationSettingVoicemail', () => {
                 name: 'meta.voicemail.outside_business_hours',
                 shouldUpload: true,
                 radioButtonId: 'voicemail-outside-business-hours',
-                validation: formVoiceMessageValidation,
             }),
             {},
         )

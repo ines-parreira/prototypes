@@ -4,7 +4,6 @@ import { useFormContext } from 'react-hook-form'
 import { FormField } from 'core/forms'
 import { assumeMock } from 'utils/testing'
 
-import { formVoiceMessageValidation } from '../hooks/useVoiceMessageValidation'
 import VoiceIntegrationSettingCallRecording from '../VoiceIntegrationSettingCallRecording'
 
 jest.mock('core/forms')
@@ -54,7 +53,6 @@ describe('VoiceIntegrationSettingCallRecording', () => {
                 name: 'meta.recording_notification',
                 shouldUpload: true,
                 radioButtonId: 'call_recording_notification',
-                validation: formVoiceMessageValidation,
             }),
             {},
         )

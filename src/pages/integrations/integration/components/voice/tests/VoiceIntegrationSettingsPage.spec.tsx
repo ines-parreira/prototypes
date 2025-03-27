@@ -27,7 +27,7 @@ jest.mock('@gorgias/api-queries')
 const useGetIntegrationMock = assumeMock(useGetIntegration)
 useGetIntegrationMock.mockReturnValue({
     data: { data: phoneIntegration },
-    isLoading: false,
+    isFetching: false,
 } as any)
 
 const useUpdateAllPhoneSettingsMock = assumeMock(useUpdateAllPhoneSettings)
@@ -53,7 +53,7 @@ describe('VoiceIntegrationSettings', () => {
     it('should not render without valid integration', () => {
         useGetIntegrationMock.mockReturnValue({
             data: { data: {} },
-            isLoading: false,
+            isFetching: false,
         } as any)
         const { queryByText } = renderComponent({} as RootState)
 
@@ -63,7 +63,7 @@ describe('VoiceIntegrationSettings', () => {
     it('should not render while loading integration', () => {
         useGetIntegrationMock.mockReturnValue({
             data: { data: {} },
-            isLoading: true,
+            isFetching: true,
         } as any)
         const { queryByText } = renderComponent({} as RootState)
 

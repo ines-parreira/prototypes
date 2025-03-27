@@ -53,9 +53,20 @@ export function useFormSubmit(integration: PhoneIntegration) {
     })
 
     const onSubmit = (data: UpdateAllPhoneIntegrationSettings) => {
+        let meta = { ...data.meta }
+        if (meta && meta.preferences) {
+            const isRecordingEnabled =
+                meta.preferences.record_inbound_calls ||
+                meta.preferences.record_outbound_calls
+
+            if (!isRecordingEnabled) {
+                meta.recording_notification = undefined
+            }
+        }
+
         updateAllPhoneSettings({
             integrationId: integration.id,
-            data,
+            data: { ...data, meta },
         })
     }
 
