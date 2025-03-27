@@ -569,37 +569,41 @@ export const StoreConfigForm = ({
 
             <div className={css.storeConfigSettings}>
                 <form onSubmit={onSubmit} className={css.automateView}>
-                    <AIAgentIntroduction />
                     {shouldDisplayGeneralSections && (
-                        <section>
-                            <div className={css.generalSettingsWrapper}>
-                                <h2 className={css.generalSettingsTitle}>
-                                    General settings
-                                </h2>
-                                <span>How should AI Agent send responses?</span>
-                            </div>
-                            {(trialModeAvailable ||
-                                isFollowUpAiAgentPreviewModeEnabled) && (
-                                <AiAgentPreviewModeSection
-                                    storeConfiguration={storeConfiguration}
+                        <>
+                            <AIAgentIntroduction />
+                            <section>
+                                <div className={css.generalSettingsWrapper}>
+                                    <h2 className={css.generalSettingsTitle}>
+                                        General settings
+                                    </h2>
+                                    <span>
+                                        How should AI Agent send responses?
+                                    </span>
+                                </div>
+                                {(trialModeAvailable ||
+                                    isFollowUpAiAgentPreviewModeEnabled) && (
+                                    <AiAgentPreviewModeSection
+                                        storeConfiguration={storeConfiguration}
+                                        updateValue={updateValue}
+                                        aiAgentMode={aiAgentMode}
+                                        aiAgentPreviewTicketViewId={
+                                            aiAgentPreviewTicketViewId
+                                        }
+                                        isFollowUpAiAgentPreviewModeEnabled={
+                                            isFollowUpAiAgentPreviewModeEnabled
+                                        }
+                                    />
+                                )}
+                                <ToneOfVoiceFormComponent
+                                    toneOfVoice={formValues.toneOfVoice}
+                                    customToneOfVoiceGuidance={
+                                        formValues.customToneOfVoiceGuidance
+                                    }
                                     updateValue={updateValue}
-                                    aiAgentMode={aiAgentMode}
-                                    aiAgentPreviewTicketViewId={
-                                        aiAgentPreviewTicketViewId
-                                    }
-                                    isFollowUpAiAgentPreviewModeEnabled={
-                                        isFollowUpAiAgentPreviewModeEnabled
-                                    }
                                 />
-                            )}
-                            <ToneOfVoiceFormComponent
-                                toneOfVoice={formValues.toneOfVoice}
-                                customToneOfVoiceGuidance={
-                                    formValues.customToneOfVoiceGuidance
-                                }
-                                updateValue={updateValue}
-                            />
-                        </section>
+                            </section>
+                        </>
                     )}
 
                     {shouldDisplayChannelsSection && (

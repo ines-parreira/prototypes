@@ -39,7 +39,7 @@ export const ChannelToggleInput = ({
             }
             isDisabled={isDisabled}
         >
-            Enable AI Agent on {channel === 'chat' ? 'Chat' : 'Email'}
+            Enable AI Agent
         </ToggleInput>
     )
 }

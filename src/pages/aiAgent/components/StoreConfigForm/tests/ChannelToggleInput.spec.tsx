@@ -32,10 +32,14 @@ describe('ChannelToggleInput', () => {
         mockLogEvent.mockClear()
     })
 
-    it('should render for email', () => {
-        renderComponent({ channel: 'email' })
+    test.each(['email', 'chat'])('should render for %s', (channel) => {
+        renderComponent({
+            channel: channel as ComponentProps<
+                typeof ChannelToggleInput
+            >['channel'],
+        })
 
-        expect(screen.getByText('Enable AI Agent on Email')).toBeInTheDocument()
+        screen.getByText('Enable AI Agent')
     })
 
     it.each<['chat' | 'email', SegmentEvent]>([

@@ -97,8 +97,7 @@ export const EmailFormComponent = ({
                 className={css.label}
                 id="monitored-email-channels"
             >
-                AI Agent responds to tickets sent to the following email
-                addresses
+                Select one or more emails
             </Label>
             <EmailIntegrationListSelection
                 labelId="monitored-email-channels"
@@ -123,7 +122,7 @@ export const EmailFormComponent = ({
             >
                 {!isEmailIntegrationsValid
                     ? 'One or more addresses required.'
-                    : 'Select one or more email addresses for AI Agent to use. It will also reply to contact forms linked to these email addresses.'}
+                    : 'AI Agent will also respond to any contact forms linked to these email addresses.'}
             </div>
         </div>
     )

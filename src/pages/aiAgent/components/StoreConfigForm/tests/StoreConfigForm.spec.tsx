@@ -203,6 +203,14 @@ const useLocalStorageSpy = jest.spyOn(
     'default',
 ) as jest.Mock
 
+const findToggle = (type: 'email' | 'chat') =>
+    screen
+        .queryAllByLabelText('Enable AI Agent')
+        .find(
+            (toggle) =>
+                toggle.getAttribute('name') === `toggle-ai-agent-${type}`,
+        )
+
 const renderComponent = (
     props?: Partial<ComponentProps<typeof StoreConfigForm>>,
 ) =>
@@ -364,7 +372,7 @@ describe('<StoreConfigForm />', () => {
         renderComponent()
         expect(
             screen.getByText(
-                'Select one or more email addresses for AI Agent to use. It will also reply to contact forms linked to these email addresses.',
+                'AI Agent will also respond to any contact forms linked to these email addresses.',
             ),
         ).toBeInTheDocument()
     })
@@ -521,7 +529,8 @@ describe('<StoreConfigForm />', () => {
             mockGetHasAutomate.mockReturnValue(false)
             renderComponent()
 
-            const chatToggle = screen.getByLabelText('Enable AI Agent on Chat')
+            const chatToggle = findToggle('chat')
+
             expect(chatToggle).toBeDisabled()
         })
     })
@@ -530,7 +539,7 @@ describe('<StoreConfigForm />', () => {
         mockGetHasAutomate.mockReturnValue(false)
         renderComponent()
 
-        const emailToggle = screen.getByLabelText('Enable AI Agent on Email')
+        const emailToggle = findToggle('email')
         expect(emailToggle).toBeDisabled()
     })
 
@@ -844,9 +853,7 @@ describe('<StoreConfigForm />', () => {
         })
 
         renderComponent()
-        const emailChannelCheckbox = screen.getByLabelText(
-            'Enable AI Agent on Email',
-        )
+        const emailChannelCheckbox = findToggle('email')!
         fireEvent.click(emailChannelCheckbox)
 
         expect(updateValueMocked).toHaveBeenCalledWith(
@@ -868,9 +875,7 @@ describe('<StoreConfigForm />', () => {
             },
         })
         renderComponent()
-        const chatChannelCheckbox = screen.getByLabelText(
-            'Enable AI Agent on Chat',
-        )
+        const chatChannelCheckbox = findToggle('chat')!
         fireEvent.click(chatChannelCheckbox)
         expect(updateValueMocked).toHaveBeenCalledWith(
             'chatChannelDeactivatedDatetime',
@@ -894,9 +899,7 @@ describe('<StoreConfigForm />', () => {
         })
 
         renderComponent()
-        const chatChannelCheckbox = screen.getByLabelText(
-            'Enable AI Agent on Chat',
-        )
+        const chatChannelCheckbox = findToggle('chat')!
         fireEvent.click(chatChannelCheckbox)
 
         expect(updateValueMocked).toHaveBeenCalledTimes(1)
@@ -1218,15 +1221,11 @@ describe('<StoreConfigForm />', () => {
             renderComponent()
 
             expect(
-                screen.getByLabelText(
-                    /AI Agent responds to tickets sent to the following Chats/i,
-                ),
+                screen.getByLabelText(/Select one or more Chats/i),
             ).toBeInvalid()
 
             expect(
-                screen.getByLabelText(
-                    /AI Agent responds to tickets sent to the following email addresses/i,
-                ),
+                screen.getByLabelText(/Select one or more emails/i),
             ).toBeInvalid()
         })
 

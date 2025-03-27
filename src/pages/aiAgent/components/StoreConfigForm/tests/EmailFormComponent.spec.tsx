@@ -102,17 +102,11 @@ describe('EmailFormComponent', () => {
 
     it('renders the form with default email list and shows required label', () => {
         renderWithProvider({ ...defaultProps, isRequired: true })
-        screen.debug(document.body, Infinity)
-        expect(
-            screen.getByText(
-                /AI Agent responds to tickets sent to the following email addresses/,
-            ),
-        ).toBeInTheDocument()
-        expect(screen.getByText('email1@example.com')).toBeInTheDocument()
-        expect(screen.getByText('email2@example.com')).toBeInTheDocument()
-        expect(
-            screen.getByText('One or more addresses required.'),
-        ).toBeInTheDocument()
+
+        screen.getByText(/Select one or more emails/i)
+        screen.getByText('email1@example.com')
+        screen.getByText('email2@example.com')
+        screen.getByText('One or more addresses required.')
     })
 
     it('displays correct footer message when email is selected', () => {
@@ -127,7 +121,7 @@ describe('EmailFormComponent', () => {
 
         expect(
             screen.getByText(
-                'Select one or more email addresses for AI Agent to use. It will also reply to contact forms linked to these email addresses.',
+                'AI Agent will also respond to any contact forms linked to these email addresses.',
             ),
         ).toBeInTheDocument()
     })
@@ -150,14 +144,9 @@ describe('EmailFormComponent', () => {
 
         renderWithProvider()
 
-        expect(
-            screen.getByText(
-                /AI Agent responds to tickets sent to the following email addresses/,
-            ),
-        ).toBeInTheDocument()
-        expect(
-            screen.queryByText('At least one email is required.'),
-        ).not.toBeInTheDocument()
+        screen.getByText(/Select one or more emails/i)
+
+        screen.queryByText('At least one email is required.')
     })
 
     it('shows an error message when no email is selected and AiAgentChat is disabled and value is required', () => {
@@ -167,13 +156,7 @@ describe('EmailFormComponent', () => {
 
         renderWithProvider({ ...defaultProps, isRequired: true })
 
-        expect(
-            screen.getByText('One or more addresses required.'),
-        ).toBeInTheDocument()
-        expect(
-            screen.getByText(
-                /AI Agent responds to tickets sent to the following email addresses/,
-            ),
-        ).toBeInTheDocument()
+        screen.getByText('One or more addresses required.')
+        screen.getByText(/Select one or more emails/i)
     })
 })

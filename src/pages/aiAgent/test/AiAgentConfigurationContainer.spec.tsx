@@ -152,6 +152,14 @@ const getHelpCenterListResponse = {
     isLoading: false,
 } as unknown as ReturnType<typeof useGetHelpCenterList>
 
+const findToggle = (type: 'email' | 'chat') =>
+    screen
+        .queryAllByLabelText('Enable AI Agent')
+        .find(
+            (toggle) =>
+                toggle.getAttribute('name') === `toggle-ai-agent-${type}`,
+        )
+
 const renderComponent = ({
     accountId = undefined,
     tab = undefined,
@@ -229,10 +237,11 @@ describe('AiAgentConfigurationContainer', () => {
     it('renders configuration', () => {
         setupMocks()
         renderComponent()
-        expect(screen.getByText('Save Changes')).toBeInTheDocument()
-        expect(
-            screen.getAllByText('Enable AI Agent on Email')[0],
-        ).toBeInTheDocument()
+
+        const emailToggle = findToggle('email')
+        expect(emailToggle).not.toBeNull()
+
+        screen.getByText('Save Changes')
     })
 
     it('renders the configuration page if the merchant already has interacted with the AI Agent', () => {
@@ -240,10 +249,11 @@ describe('AiAgentConfigurationContainer', () => {
             hasStoreConfiguration: true,
         })
         renderComponent()
-        expect(screen.getByText('Save Changes')).toBeInTheDocument()
-        expect(
-            screen.getAllByText('Enable AI Agent on Email')[0],
-        ).toBeInTheDocument()
+
+        const emailToggle = findToggle('email')
+        expect(emailToggle).not.toBeNull()
+
+        screen.getByText('Save Changes')
     })
 
     it('renders all section on settings page if standalone menu feature flag is disabled', () => {

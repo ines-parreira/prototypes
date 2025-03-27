@@ -73,7 +73,7 @@ export const ChatSettingsFormComponent = ({
                     id="monitored-chat-channels"
                     isRequired={isRequired}
                 >
-                    AI Agent responds to tickets sent to the following Chats
+                    Select one or more Chats
                 </Label>
                 <ChatIntegrationListSelection
                     labelId="monitored-chat-channels"
@@ -96,7 +96,7 @@ export const ChatSettingsFormComponent = ({
                 >
                     {!isChatIntegrationsValid
                         ? 'One or more Chats required.'
-                        : 'Select one or more Chats for AI Agent to use.'}
+                        : null}
                 </div>
             </section>
             <section>
