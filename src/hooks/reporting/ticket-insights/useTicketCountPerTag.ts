@@ -15,7 +15,7 @@ import {
 } from 'hooks/reporting/timeSeries'
 import { getPeriodDateTimes } from 'hooks/reporting/useTimeSeries'
 import useAppDispatch from 'hooks/useAppDispatch'
-import { useTagResultsSelection } from 'hooks/useTagResultsSelection'
+import { useTagResultsSelection } from 'hooks/useResultsSelection'
 import { setOrder } from 'state/ui/stats/tagsReportSlice'
 import { getFilterDateRange } from 'utils/reporting'
 

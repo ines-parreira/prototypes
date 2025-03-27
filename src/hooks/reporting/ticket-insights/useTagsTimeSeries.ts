@@ -12,10 +12,7 @@ import { useStatsFilters } from 'hooks/reporting/support-performance/useStatsFil
 import { useTagsTicketCountTimeSeries } from 'hooks/reporting/timeSeries'
 import { MetricPerDimensionTrend } from 'hooks/reporting/useMetricPerDimension'
 import { TimeSeriesDataItem } from 'hooks/reporting/useTimeSeries'
-import {
-    TagSelection,
-    useTagResultsSelection,
-} from 'hooks/useTagResultsSelection'
+import { TagSelection, useTagResultsSelection } from 'hooks/useResultsSelection'
 import { OrderDirection } from 'models/api/types'
 import { TicketTagsEnrichedMember } from 'models/reporting/cubes/TicketTagsEnrichedCube'
 import { StatsFilters } from 'models/stat/types'

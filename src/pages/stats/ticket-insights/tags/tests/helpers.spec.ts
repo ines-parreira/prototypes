@@ -1,7 +1,7 @@
 import {
-    TAG_RESULTS_SELECTION_KEY,
+    TAGS_RESULTS_SELECTION_KEY,
     TagSelection,
-} from 'hooks/useTagResultsSelection'
+} from 'hooks/useResultsSelection'
 import { getTagResultsSelectionFromSessionStorage } from 'pages/stats/ticket-insights/tags/helpers'
 
 const localStorageMock = (() => {
@@ -30,7 +30,7 @@ describe('getTagResultsSelectionFromSessionStorage', () => {
 
     it('should return include_tags after setting it', () => {
         window.sessionStorage.setItem(
-            TAG_RESULTS_SELECTION_KEY,
+            TAGS_RESULTS_SELECTION_KEY,
             TagSelection.includeTags,
         )
 
@@ -41,7 +41,7 @@ describe('getTagResultsSelectionFromSessionStorage', () => {
 
     it('should return exclude_tags after setting it', () => {
         window.sessionStorage.setItem(
-            TAG_RESULTS_SELECTION_KEY,
+            TAGS_RESULTS_SELECTION_KEY,
             TagSelection.excludeTags,
         )
 
@@ -51,7 +51,7 @@ describe('getTagResultsSelectionFromSessionStorage', () => {
     })
 
     it('should return include_tags after setting the wrong value', () => {
-        window.sessionStorage.setItem(TAG_RESULTS_SELECTION_KEY, 'other')
+        window.sessionStorage.setItem(TAGS_RESULTS_SELECTION_KEY, 'other')
 
         const result = getTagResultsSelectionFromSessionStorage()
 

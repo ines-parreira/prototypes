@@ -3,7 +3,12 @@ import React, { useRef, useState } from 'react'
 import { IconButton } from '@gorgias/merchant-ui-kit'
 
 import { logEvent, SegmentEvent } from 'common/segment'
-import { useTagResultsSelection } from 'hooks/useTagResultsSelection'
+import {
+    TagSelection,
+    TimeframePreferenceSelection,
+    useTagResultsSelection,
+    useTimeframePreferenceSelection,
+} from 'hooks/useResultsSelection'
 import Dropdown from 'pages/common/components/dropdown/Dropdown'
 import DropdownBody from 'pages/common/components/dropdown/DropdownBody'
 import DropdownItem from 'pages/common/components/dropdown/DropdownItem'
@@ -26,11 +31,6 @@ export const RESULTS_BASED_ON_CREATION_DATE =
     'Show results with tags based on ticket creation date'
 export const RESULTS_BASED_ON_CREATION_DATE_SUBTITLE =
     'Only display tags from created tickets within selected date range'
-
-export enum TagSelection {
-    includeTags = 'include_tags',
-    excludeTags = 'exclude_tags',
-}
 
 const TagDropdownItem = ({
     label,
@@ -75,6 +75,8 @@ export function SharedActionsMenu({
 }) {
     const [tagResultsSelection, setTagResultsSelection] =
         useTagResultsSelection()
+    const [timeframePreferenceSelection, seTimeframePreferenceSelection] =
+        useTimeframePreferenceSelection(!!isTagsReport)
 
     const triggerRef = useRef<HTMLButtonElement>(null)
 
@@ -89,8 +91,17 @@ export function SharedActionsMenu({
         logEvent(SegmentEvent.StatTagsExcludeRelatedClicked)
         setTagResultsSelection(TagSelection.excludeTags)
     }
-    const resultBasedOnAllStatusesAction = () => {}
-    const resultBaseOnCreationDateAction = () => {}
+
+    const resultBasedOnAllStatusesAction = () => {
+        seTimeframePreferenceSelection(
+            TimeframePreferenceSelection.basedOnTicketStatuses,
+        )
+    }
+    const resultBaseOnCreationDateAction = () => {
+        seTimeframePreferenceSelection(
+            TimeframePreferenceSelection.basedOnTicketCreationDate,
+        )
+    }
 
     return (
         <>
@@ -147,7 +158,10 @@ export function SharedActionsMenu({
                                     RESULTS_BASED_ON_ALL_STATUSES_SUBTITLE
                                 }
                                 onClick={resultBasedOnAllStatusesAction}
-                                isSelected={true}
+                                isSelected={
+                                    timeframePreferenceSelection ===
+                                    TimeframePreferenceSelection.basedOnTicketStatuses
+                                }
                             />
                             <TagDropdownItem
                                 label={RESULTS_BASED_ON_CREATION_DATE}
@@ -155,7 +169,10 @@ export function SharedActionsMenu({
                                     RESULTS_BASED_ON_CREATION_DATE_SUBTITLE
                                 }
                                 onClick={resultBaseOnCreationDateAction}
-                                isSelected={false}
+                                isSelected={
+                                    timeframePreferenceSelection ===
+                                    TimeframePreferenceSelection.basedOnTicketCreationDate
+                                }
                             />
 
                             <div className={css.separator} />

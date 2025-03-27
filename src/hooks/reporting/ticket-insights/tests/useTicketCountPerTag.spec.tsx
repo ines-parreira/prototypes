@@ -13,7 +13,7 @@ import {
     useTotalTaggedTicketCountTimeSeries,
 } from 'hooks/reporting/timeSeries'
 import { getPeriodDateTimes } from 'hooks/reporting/useTimeSeries'
-import { TagSelection } from 'hooks/useTagResultsSelection'
+import { TagSelection } from 'hooks/useResultsSelection'
 import { OrderDirection } from 'models/api/types'
 import { ReportingGranularity } from 'models/reporting/types'
 import { Period, TagFilterInstanceId } from 'models/stat/types'

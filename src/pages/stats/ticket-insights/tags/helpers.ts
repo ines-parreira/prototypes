@@ -1,7 +1,7 @@
 import {
-    TAG_RESULTS_SELECTION_KEY,
+    TAGS_RESULTS_SELECTION_KEY,
     TagSelection,
-} from 'hooks/useTagResultsSelection'
+} from 'hooks/useResultsSelection'
 
 export const getTagName = ({
     name,
@@ -14,7 +14,7 @@ export const getTagName = ({
 }
 
 export const getTagResultsSelectionFromSessionStorage = (): TagSelection => {
-    const selection = window.sessionStorage.getItem(TAG_RESULTS_SELECTION_KEY)
+    const selection = window.sessionStorage.getItem(TAGS_RESULTS_SELECTION_KEY)
     if (
         selection === TagSelection.includeTags ||
         selection === TagSelection.excludeTags

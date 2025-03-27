@@ -11,7 +11,7 @@ import {
     useTagsTimeSeries,
 } from 'hooks/reporting/ticket-insights/useTagsTimeSeries'
 import { useTagsTicketCountTimeSeries } from 'hooks/reporting/timeSeries'
-import { TagSelection } from 'hooks/useTagResultsSelection'
+import { TagSelection } from 'hooks/useResultsSelection'
 import {
     TicketTagsEnrichedDimension,
     TicketTagsEnrichedMeasure,

@@ -10,10 +10,7 @@ import {
     QueryReturnType,
     useMetricPerDimension,
 } from 'hooks/reporting/useMetricPerDimension'
-import {
-    TagSelection,
-    useTagResultsSelection,
-} from 'hooks/useTagResultsSelection'
+import { TagSelection, useTagResultsSelection } from 'hooks/useResultsSelection'
 import { OrderDirection } from 'models/api/types'
 import {
     TicketTagsEnrichedCube,
@@ -51,7 +48,7 @@ const sorting = OrderDirection.Asc
 
 jest.mock('hooks/reporting/useMetricPerDimension')
 const useMetricPerDimensionMock = assumeMock(useMetricPerDimension)
-jest.mock('hooks/useTagResultsSelection')
+jest.mock('hooks/useResultsSelection')
 const useTagResultsSelectionMock = assumeMock(useTagResultsSelection)
 const setTagResultsSelection = jest.fn()
 
