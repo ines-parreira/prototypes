@@ -12,15 +12,8 @@ import {
     useTimeframePreferenceSelection,
 } from 'hooks/reporting/ticket-insights/useTimeframePreferenceSelection'
 import {
-    EXCLUDE_TAGS_IN_RESULTS,
-    EXCLUDE_TAGS_IN_RESULTS_SUBTITLE,
-    INCLUDE_TAGS_IN_RESULTS,
-    INCLUDE_TAGS_IN_RESULTS_SUBTITLE,
     ReportName,
-    RESULTS_BASED_ON_ALL_STATUSES,
-    RESULTS_BASED_ON_ALL_STATUSES_SUBTITLE,
-    RESULTS_BASED_ON_CREATION_DATE,
-    RESULTS_BASED_ON_CREATION_DATE_SUBTITLE,
+    SHARED_LABELS,
     SharedActionsMenu,
     TAG_ACTIONS_DOWNLOAD_OPTION_LABEL,
     TAG_ACTIONS_TRIGGER_LABEL,
@@ -82,32 +75,32 @@ describe('SharedActionsMenu', () => {
             fireEvent.click(screen.getByLabelText(TAG_ACTIONS_TRIGGER_LABEL))
 
             expect(
-                screen.getByText(INCLUDE_TAGS_IN_RESULTS),
+                screen.getByText(SHARED_LABELS.tags.includeTags),
             ).toBeInTheDocument()
             expect(
-                screen.getByText(INCLUDE_TAGS_IN_RESULTS_SUBTITLE),
+                screen.getByText(SHARED_LABELS.tags.includeTagsSubtitle),
             ).toBeInTheDocument()
             expect(
-                screen.getByText(EXCLUDE_TAGS_IN_RESULTS),
+                screen.getByText(SHARED_LABELS.tags.excludeTags),
             ).toBeInTheDocument()
             expect(
-                screen.getByText(EXCLUDE_TAGS_IN_RESULTS_SUBTITLE),
+                screen.getByText(SHARED_LABELS.tags.excludeTagsSubtitle),
             ).toBeInTheDocument()
             expect(
                 screen.getByText(TAG_ACTIONS_DOWNLOAD_OPTION_LABEL),
             ).toBeInTheDocument()
 
             expect(
-                screen.getByText(RESULTS_BASED_ON_ALL_STATUSES),
+                screen.getByText(SHARED_LABELS.tags.allStatuses),
             ).toBeInTheDocument()
             expect(
-                screen.getByText(RESULTS_BASED_ON_ALL_STATUSES_SUBTITLE),
+                screen.getByText(SHARED_LABELS.tags.allStatusesSubtitle),
             ).toBeInTheDocument()
             expect(
-                screen.getByText(RESULTS_BASED_ON_CREATION_DATE),
+                screen.getByText(SHARED_LABELS.tags.creationDate),
             ).toBeInTheDocument()
             expect(
-                screen.getByText(RESULTS_BASED_ON_CREATION_DATE_SUBTITLE),
+                screen.getByText(SHARED_LABELS.tags.creationDateSubtitle),
             ).toBeInTheDocument()
         })
 
@@ -155,11 +148,11 @@ describe('SharedActionsMenu', () => {
 
             fireEvent.click(screen.getByLabelText(TAG_ACTIONS_TRIGGER_LABEL))
 
-            const spanElement = screen.getByText(INCLUDE_TAGS_IN_RESULTS)
+            const spanElement = screen.getByText(SHARED_LABELS.tags.includeTags)
             const parentDiv = spanElement.parentElement as HTMLElement
             within(parentDiv).getByText('check')
 
-            fireEvent.click(screen.getByText(INCLUDE_TAGS_IN_RESULTS))
+            fireEvent.click(screen.getByText(SHARED_LABELS.tags.includeTags))
 
             fireEvent.click(screen.getByLabelText(TAG_ACTIONS_TRIGGER_LABEL))
 
@@ -181,7 +174,7 @@ describe('SharedActionsMenu', () => {
 
             fireEvent.click(screen.getByLabelText(TAG_ACTIONS_TRIGGER_LABEL))
 
-            fireEvent.click(screen.getByText(EXCLUDE_TAGS_IN_RESULTS))
+            fireEvent.click(screen.getByText(SHARED_LABELS.tags.excludeTags))
 
             fireEvent.click(screen.getByLabelText(TAG_ACTIONS_TRIGGER_LABEL))
 
@@ -205,11 +198,11 @@ describe('SharedActionsMenu', () => {
 
             fireEvent.click(screen.getByLabelText(TAG_ACTIONS_TRIGGER_LABEL))
 
-            const spanElement = screen.getByText(RESULTS_BASED_ON_ALL_STATUSES)
+            const spanElement = screen.getByText(SHARED_LABELS.tags.allStatuses)
             const parentDiv = spanElement.parentElement as HTMLElement
             within(parentDiv).getByText('check')
 
-            fireEvent.click(screen.getByText(RESULTS_BASED_ON_ALL_STATUSES))
+            fireEvent.click(screen.getByText(SHARED_LABELS.tags.allStatuses))
 
             expect(setTimeframePreferenceSelection).toHaveBeenCalledWith(
                 TimeframePreferenceSelection.basedOnTicketStatuses,
@@ -224,7 +217,7 @@ describe('SharedActionsMenu', () => {
             )
 
             fireEvent.click(screen.getByLabelText(TAG_ACTIONS_TRIGGER_LABEL))
-            fireEvent.click(screen.getByText(RESULTS_BASED_ON_CREATION_DATE))
+            fireEvent.click(screen.getByText(SHARED_LABELS.tags.creationDate))
 
             expect(setTimeframePreferenceSelection).toHaveBeenCalledWith(
                 TimeframePreferenceSelection.basedOnTicketCreationDate,
@@ -267,16 +260,20 @@ describe('SharedActionsMenu', () => {
             fireEvent.click(screen.getByLabelText(TAG_ACTIONS_TRIGGER_LABEL))
 
             expect(
-                screen.getByText(RESULTS_BASED_ON_ALL_STATUSES),
+                screen.getByText(SHARED_LABELS.ticketFields.allStatuses),
             ).toBeInTheDocument()
             expect(
-                screen.getByText(RESULTS_BASED_ON_ALL_STATUSES_SUBTITLE),
+                screen.getByText(
+                    SHARED_LABELS.ticketFields.allStatusesSubtitle,
+                ),
             ).toBeInTheDocument()
             expect(
-                screen.getByText(RESULTS_BASED_ON_CREATION_DATE),
+                screen.getByText(SHARED_LABELS.ticketFields.creationDate),
             ).toBeInTheDocument()
             expect(
-                screen.getByText(RESULTS_BASED_ON_CREATION_DATE_SUBTITLE),
+                screen.getByText(
+                    SHARED_LABELS.ticketFields.creationDateSubtitle,
+                ),
             ).toBeInTheDocument()
         })
 
@@ -291,11 +288,15 @@ describe('SharedActionsMenu', () => {
 
             fireEvent.click(screen.getByLabelText(TAG_ACTIONS_TRIGGER_LABEL))
 
-            const spanElement = screen.getByText(RESULTS_BASED_ON_ALL_STATUSES)
+            const spanElement = screen.getByText(
+                SHARED_LABELS.ticketFields.allStatuses,
+            )
             const parentDiv = spanElement.parentElement as HTMLElement
             within(parentDiv).getByText('check')
 
-            fireEvent.click(screen.getByText(RESULTS_BASED_ON_ALL_STATUSES))
+            fireEvent.click(
+                screen.getByText(SHARED_LABELS.ticketFields.allStatuses),
+            )
 
             expect(setTimeframePreferenceSelection).toHaveBeenCalledWith(
                 TimeframePreferenceSelection.basedOnTicketStatuses,
@@ -305,12 +306,14 @@ describe('SharedActionsMenu', () => {
                 SegmentEvent.StatTimeframePreferenceSelection,
                 {
                     value: TimeframePreferenceSelection.basedOnTicketStatuses,
-                    report: 'ticket-fields',
+                    report: ReportName.TicketFields,
                 },
             )
 
             fireEvent.click(screen.getByLabelText(TAG_ACTIONS_TRIGGER_LABEL))
-            fireEvent.click(screen.getByText(RESULTS_BASED_ON_CREATION_DATE))
+            fireEvent.click(
+                screen.getByText(SHARED_LABELS.ticketFields.creationDate),
+            )
 
             expect(setTimeframePreferenceSelection).toHaveBeenCalledWith(
                 TimeframePreferenceSelection.basedOnTicketCreationDate,
@@ -320,7 +323,7 @@ describe('SharedActionsMenu', () => {
                 SegmentEvent.StatTimeframePreferenceSelection,
                 {
                     value: TimeframePreferenceSelection.basedOnTicketCreationDate,
-                    report: 'ticket-fields',
+                    report: ReportName.TicketFields,
                 },
             )
         })

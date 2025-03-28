@@ -19,25 +19,35 @@ import css from 'pages/stats/common/components/SharedActionsMenu/SharedActionsMe
 
 export enum ReportName {
     Tags = 'tags',
-    TicketFields = 'ticket-fields',
+    TicketFields = 'ticketFields',
 }
 
 export const TAG_ACTIONS_TRIGGER_LABEL = 'Actions'
 export const TAG_ACTIONS_DOWNLOAD_OPTION_LABEL = 'Download Data'
-export const INCLUDE_TAGS_IN_RESULTS = 'Include related tags in results'
-export const INCLUDE_TAGS_IN_RESULTS_SUBTITLE =
-    'Show all related tags within filter results'
-export const EXCLUDE_TAGS_IN_RESULTS = 'Exclude related tags in results'
-export const EXCLUDE_TAGS_IN_RESULTS_SUBTITLE =
-    'Do not show tags outside of selected'
-export const RESULTS_BASED_ON_ALL_STATUSES =
-    'Show results with tags based on all ticket statuses'
-export const RESULTS_BASED_ON_ALL_STATUSES_SUBTITLE =
-    'Display tags from all tickets within selected date range'
-export const RESULTS_BASED_ON_CREATION_DATE =
-    'Show results with tags based on ticket creation date'
-export const RESULTS_BASED_ON_CREATION_DATE_SUBTITLE =
-    'Only display tags from created tickets within selected date range'
+export const SHARED_LABELS = {
+    [ReportName.Tags]: {
+        includeTags: 'Include related tags in results',
+        includeTagsSubtitle: 'Show all related tags within filter results',
+        excludeTags: 'Exclude related tags in results',
+        excludeTagsSubtitle: 'Do not show tags outside of selected',
+        allStatuses: 'Show results with tags based on all ticket statuses',
+        allStatusesSubtitle:
+            'Display tags from all tickets within selected date range',
+        creationDate: 'Show results with tags based on ticket creation date',
+        creationDateSubtitle:
+            'Only display tags from created tickets within selected date range',
+    },
+    [ReportName.TicketFields]: {
+        allStatuses:
+            'Show results with ticket fields based on all ticket statuses',
+        allStatusesSubtitle:
+            'Display ticket fields from all tickets within selected date range',
+        creationDate:
+            'Show results with ticket fields based on ticket creation date',
+        creationDateSubtitle:
+            'Only display ticket fields from created tickets within selected date range',
+    },
+}
 
 const TagDropdownItem = ({
     label,
@@ -143,8 +153,10 @@ export function SharedActionsMenu({
                         <>
                             <div className={css.category}>Set Tag Results</div>
                             <TagDropdownItem
-                                label={INCLUDE_TAGS_IN_RESULTS}
-                                subtitle={INCLUDE_TAGS_IN_RESULTS_SUBTITLE}
+                                label={SHARED_LABELS.tags.includeTags}
+                                subtitle={
+                                    SHARED_LABELS.tags.includeTagsSubtitle
+                                }
                                 onClick={includeTagsAction}
                                 isSelected={
                                     tagResultsSelection ===
@@ -152,8 +164,10 @@ export function SharedActionsMenu({
                                 }
                             />
                             <TagDropdownItem
-                                label={EXCLUDE_TAGS_IN_RESULTS}
-                                subtitle={EXCLUDE_TAGS_IN_RESULTS_SUBTITLE}
+                                label={SHARED_LABELS.tags.excludeTags}
+                                subtitle={
+                                    SHARED_LABELS.tags.excludeTagsSubtitle
+                                }
                                 onClick={excludeTagsAction}
                                 isSelected={
                                     tagResultsSelection ===
@@ -170,9 +184,10 @@ export function SharedActionsMenu({
                             </div>
 
                             <TagDropdownItem
-                                label={RESULTS_BASED_ON_ALL_STATUSES}
+                                label={SHARED_LABELS[reportName].allStatuses}
                                 subtitle={
-                                    RESULTS_BASED_ON_ALL_STATUSES_SUBTITLE
+                                    SHARED_LABELS[reportName]
+                                        .allStatusesSubtitle
                                 }
                                 onClick={resultBasedOnAllStatusesAction}
                                 isSelected={
@@ -181,9 +196,10 @@ export function SharedActionsMenu({
                                 }
                             />
                             <TagDropdownItem
-                                label={RESULTS_BASED_ON_CREATION_DATE}
+                                label={SHARED_LABELS[reportName].creationDate}
                                 subtitle={
-                                    RESULTS_BASED_ON_CREATION_DATE_SUBTITLE
+                                    SHARED_LABELS[reportName]
+                                        .creationDateSubtitle
                                 }
                                 onClick={resultBaseOnCreationDateAction}
                                 isSelected={
