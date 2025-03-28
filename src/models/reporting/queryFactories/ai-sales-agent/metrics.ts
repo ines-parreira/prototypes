@@ -409,3 +409,18 @@ export const discountCodesAverageQueryFactory = (
     ],
     timezone,
 })
+
+export const totalNumberOfGroupedSalesOpportunityConvFromAIAgentQueryFactory = (
+    timezone: string,
+): ReportingQuery<AiSalesAgentConversationsCube> => ({
+    measures: [AiSalesAgentConversationsMeasure.Count],
+    dimensions: [AiSalesAgentConversationsDimension.StoreIntegrationId],
+    filters: [
+        {
+            member: AiSalesAgentConversationsDimension.IsSalesOpportunity,
+            operator: ReportingFilterOperator.Equals,
+            values: ['1'],
+        },
+    ],
+    timezone,
+})

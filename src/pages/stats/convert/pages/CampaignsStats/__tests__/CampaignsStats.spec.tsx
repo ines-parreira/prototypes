@@ -1,5 +1,6 @@
 import React from 'react'
 
+import { QueryClientProvider } from '@tanstack/react-query'
 import { createMemoryHistory } from 'history'
 import { fromJS } from 'immutable'
 import { useFlags } from 'launchdarkly-react-client-sdk'
@@ -18,6 +19,7 @@ import ConvertCampaignsStats from 'pages/stats/convert/pages/CampaignsStats/Camp
 import CampaignStatsPaywallView from 'pages/stats/convert/pages/CampaignsStats/CampaignStatsPaywallView'
 import { DrillDownModal } from 'pages/stats/DrillDownModal'
 import { RootState } from 'state/types'
+import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 import { getStateWithHelpdeskPlan } from 'utils/paywallTesting'
 import { assumeMock, mockStore, renderWithRouter } from 'utils/testing'
 
@@ -62,6 +64,16 @@ jest.mock('react-router-dom', () => ({
     useParams: jest.fn(),
 }))
 
+jest.mock('hooks/reporting/support-performance/useStatsFilters', () => ({
+    useStatsFilters: () => ({
+        cleanStatsFilters: {},
+        userTimezone: 'UTC',
+        granularity: 'day',
+    }),
+}))
+
+const queryClient = mockQueryClient()
+
 const useParamsMock = assumeMock(useParams)
 
 describe('CampaignsStats', () => {
@@ -69,15 +81,18 @@ describe('CampaignsStats', () => {
 
     const renderWithStore = (state: Partial<RootState>, props = {}) =>
         renderWithRouter(
-            <Provider store={mockStore(state as any)}>
-                <Route path="/app/stats/convert/campaigns">
-                    <CampaignStatsPaywallView />
-                </Route>
-                <Route path="/app/convert/123/performance">
-                    <CampaignStatsPaywallView />
-                </Route>
-                <ConvertCampaignsStats {...props} />
-            </Provider>,
+            <QueryClientProvider client={queryClient}>
+                <Provider store={mockStore(state as any)}>
+                    <Route path="/app/stats/convert/campaigns">
+                        <CampaignStatsPaywallView />
+                    </Route>
+                    <Route path="/app/convert/123/performance">
+                        <CampaignStatsPaywallView />
+                    </Route>
+                    <ConvertCampaignsStats {...props} />
+                </Provider>
+            </QueryClientProvider>,
+
             { history },
         )
     const mockedState = getStateWithHelpdeskPlan()

@@ -1,6 +1,8 @@
 import { useFlags } from 'launchdarkly-react-client-sdk'
 import moment from 'moment'
 
+import { Skeleton } from '@gorgias/merchant-ui-kit'
+
 import { FeatureFlagKey } from 'config/featureFlags'
 import { useCleanStatsFilters } from 'hooks/reporting/useCleanStatsFilters'
 import { useGridSize } from 'hooks/useGridSize'
@@ -15,6 +17,7 @@ import {
     PAGE_TITLE_AI_SALES_AGENT_SALES_OVERVIEW,
 } from 'pages/stats/automate/aiSalesAgent/constants'
 import FiltersPanelWrapper from 'pages/stats/common/filters/FiltersPanelWrapper'
+import { useFirstStoreWithAiSalesData } from 'pages/stats/convert/hooks/useFirstStoreWithAiSalesData'
 import { CampaignStatsFilters } from 'pages/stats/convert/providers/CampaignStatsFilters'
 import DashboardGridCell from 'pages/stats/DashboardGridCell'
 import { DashboardComponent } from 'pages/stats/dashboards/DashboardComponent'
@@ -27,6 +30,36 @@ const AiSalesAgentSalesOverview = () => {
     const isDiscountSectionVisible: boolean | undefined =
         useFlags()[FeatureFlagKey.StandaloneAiSalesDiscountSection]
 
+    const { isLoading } = useFirstStoreWithAiSalesData({ enabled: true })
+
+    if (isLoading) {
+        return (
+            <StatsPage title={PAGE_TITLE_AI_SALES_AGENT_SALES_OVERVIEW}>
+                <DashboardSection>
+                    <DashboardGridCell size={12}>
+                        <div className="grid grid-cols-4 gap-4">
+                            <Skeleton height={70} />
+                        </div>
+                    </DashboardGridCell>
+                </DashboardSection>
+
+                <DashboardSection title="Main metrics">
+                    <DashboardGridCell size={12}>
+                        <div className="grid grid-cols-4 gap-4">
+                            <Skeleton height={100} />
+                        </div>
+                    </DashboardGridCell>
+                </DashboardSection>
+
+                <DashboardSection title="Order data">
+                    <DashboardGridCell size={12}>
+                        <Skeleton height={300} />
+                    </DashboardGridCell>
+                </DashboardSection>
+            </StatsPage>
+        )
+    }
+
     return (
         <StatsPage
             title={PAGE_TITLE_AI_SALES_AGENT_SALES_OVERVIEW}
@@ -34,7 +67,7 @@ const AiSalesAgentSalesOverview = () => {
         >
             <DashboardSection>
                 <DashboardGridCell size={getGridCellSize(12)} className="pb-0">
-                    <CampaignStatsFilters>
+                    <CampaignStatsFilters isSelectStoreWithData>
                         <FiltersPanelWrapper
                             persistentFilters={
                                 AiSalesAgentReportConfig.reportFilters

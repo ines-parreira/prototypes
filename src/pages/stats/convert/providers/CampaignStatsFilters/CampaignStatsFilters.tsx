@@ -1,10 +1,4 @@
-import React, {
-    ReactNode,
-    useCallback,
-    useEffect,
-    useMemo,
-    useState,
-} from 'react'
+import { ReactNode, useCallback, useEffect, useMemo, useState } from 'react'
 
 import { useParams } from 'react-router-dom'
 
@@ -16,6 +10,7 @@ import { FilterKey } from 'models/stat/types'
 import { CONVERT_ROUTE_PARAM_NAME } from 'pages/convert/common/constants'
 import { ConvertRouteParams } from 'pages/convert/common/types'
 import { LogicalOperatorEnum } from 'pages/stats/common/components/Filter/constants'
+import { useFirstStoreWithAiSalesData } from 'pages/stats/convert/hooks/useFirstStoreWithAiSalesData'
 import { useGetCampaignsForStore } from 'pages/stats/convert/hooks/useGetCampaignsForStore'
 import { useShopifyIntegrations } from 'pages/stats/convert/hooks/useShopifyIntegrations'
 import { getIntegrationById } from 'state/integrations/selectors'
@@ -28,11 +23,15 @@ import { FiltersContext } from './context'
 
 type Props = {
     children: ReactNode
+    isSelectStoreWithData?: boolean
 }
 
 const defaultOperator = LogicalOperatorEnum.ONE_OF
 
-export const CampaignStatsFilters = ({ children }: Props) => {
+export const CampaignStatsFilters = ({
+    children,
+    isSelectStoreWithData = false,
+}: Props) => {
     const { [CONVERT_ROUTE_PARAM_NAME]: chatIntegrationId } =
         useParams<ConvertRouteParams>()
     const chatIntegration = useAppSelector(
@@ -55,21 +54,18 @@ export const CampaignStatsFilters = ({ children }: Props) => {
 
     const storeIntegrations = useShopifyIntegrations()
 
+    const { storeId: fallbackStoreId, isLoading } =
+        useFirstStoreWithAiSalesData({ enabled: isSelectStoreWithData })
+
     const selectedIntegrations = useMemo(() => {
         if (storeIntegrationId) return [storeIntegrationId]
 
-        const fallback = storeIntegrations?.[0]?.id
-            ? [storeIntegrations[0].id]
-            : []
+        const fromFilters = statsFilters.storeIntegrations?.values?.[0]
+        if (fromFilters) return [fromFilters]
 
-        const storeIntegrationsInFilter =
-            statsFilters.storeIntegrations?.values ?? []
-        if (storeIntegrationsInFilter.length > 0) {
-            return [storeIntegrationsInFilter[0]]
-        }
-
-        return fallback
-    }, [storeIntegrationId, storeIntegrations, statsFilters.storeIntegrations])
+        if (fallbackStoreId) return [fallbackStoreId]
+        return []
+    }, [storeIntegrationId, statsFilters.storeIntegrations, fallbackStoreId])
 
     const { campaigns, channelConnectionExternalIds } = useGetCampaignsForStore(
         selectedIntegrations,
@@ -158,6 +154,31 @@ export const CampaignStatsFilters = ({ children }: Props) => {
         },
         [dispatch],
     )
+
+    const [hasDispatchedFallback, setHasDispatchedFallback] = useState(false)
+
+    useEffect(() => {
+        if (isLoading) return
+
+        const currentStoreIds = statsFilters.storeIntegrations?.values ?? []
+
+        const needsFallbackSet =
+            fallbackStoreId &&
+            (!currentStoreIds.length ||
+                !currentStoreIds.includes(fallbackStoreId)) &&
+            !hasDispatchedFallback
+
+        if (needsFallbackSet) {
+            handleChangeIntegration([fallbackStoreId])
+            setHasDispatchedFallback(true)
+        }
+    }, [
+        fallbackStoreId,
+        statsFilters.storeIntegrations,
+        hasDispatchedFallback,
+        handleChangeIntegration,
+        isLoading,
+    ])
 
     const handleChangeCampaigns = useCallback(
         (campaignIds) => {
