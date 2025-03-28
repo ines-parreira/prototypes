@@ -33,14 +33,6 @@ jest.mock('core/flags')
 const useFlagMock = assumeMock(useFlag)
 
 describe('useAgentsTableConfigSetting', () => {
-    beforeEach(() => {
-        useFlagMock.mockImplementation((flag) => {
-            if (flag === FeatureFlagKey.ReportingZeroTouchTicketsMetric) {
-                return false
-            }
-        })
-    })
-
     it('should return default order if no Setting available', () => {
         useFlagMock.mockReturnValue(true)
         const state = {
@@ -56,7 +48,6 @@ describe('useAgentsTableConfigSetting', () => {
         expect(result.current).toEqual({
             columnsOrder: [
                 ...TableColumnsOrder,
-                AgentsTableColumn.ZeroTouchTickets,
                 AgentsTableColumn.MessagesReceived,
                 AgentsTableColumn.MedianResponseTime,
             ],
@@ -65,10 +56,6 @@ describe('useAgentsTableConfigSetting', () => {
                 ...agentPerformanceTableActiveView,
                 metrics: [
                     ...agentPerformanceTableActiveView.metrics,
-                    {
-                        id: AgentsTableColumn.ZeroTouchTickets,
-                        visibility: null,
-                    },
                     {
                         id: AgentsTableColumn.MessagesReceived,
                         visibility: null,
@@ -93,9 +80,6 @@ describe('useAgentsTableConfigSetting', () => {
     it('should return default row order when flag is off', () => {
         useFlagMock.mockImplementation((flag) => {
             if (flag === FeatureFlagKey.ReportingAgentsTableAverageAndTotal) {
-                return false
-            }
-            if (flag === FeatureFlagKey.ReportingZeroTouchTicketsMetric) {
                 return false
             }
         })

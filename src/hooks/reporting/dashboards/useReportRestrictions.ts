@@ -26,8 +26,6 @@ export const useReportRestrictions = () => {
         useFlags()[FeatureFlagKey.HelpCenterAnalytics]
     const isAiAgentStatsPageEnabled =
         useFlags()[FeatureFlagKey.AIAgentStatsPage]
-    const isReportingZeroTouchTicketsMetricEnabled =
-        useFlags()[FeatureFlagKey.ReportingZeroTouchTicketsMetric]
     const isStandaloneSalesOverviewEnabled =
         useFlags()[FeatureFlagKey.StandaloneAiSalesAnalyticsPage]
     const isReportingMessagesReceivedMetricEnabled =
@@ -67,8 +65,6 @@ export const useReportRestrictions = () => {
         () => ({
             [OverviewChart.MessagesReceivedTrendCard]:
                 !isReportingMessagesReceivedMetricEnabled,
-            [OverviewChart.ZeroTouchTicketsTrendCard]:
-                !isReportingZeroTouchTicketsMetricEnabled,
             [OverviewChart.MedianResponseTimeTrendCard]:
                 !isReportingAverageResponseTimeEnabled,
             [VoiceOverviewChart.DEPRECATED_VoiceCallVolumeMetricMissedCallsCountTrendChart]:
@@ -85,7 +81,6 @@ export const useReportRestrictions = () => {
         [
             isReportingAverageResponseTimeEnabled,
             isReportingMessagesReceivedMetricEnabled,
-            isReportingZeroTouchTicketsMetricEnabled,
             shouldShowNewUnansweredStatuses,
         ],
     )

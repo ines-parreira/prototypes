@@ -26,48 +26,20 @@ import TipsToggle from 'pages/stats/TipsToggle'
 
 const getProductivitySectionKPIWidths = (
     isReportingAverageResponseTimeEnabled: boolean,
-    isReportingZeroTouchTicketsMetricEnabled: boolean,
 ) => {
-    let handleTimeWidth = 4
-    let firstRowWidth = 3
+    let firstRowWidth = 6
     let secondRowWidth = 4
 
-    if (
-        isReportingAverageResponseTimeEnabled &&
-        !isReportingZeroTouchTicketsMetricEnabled
-    ) {
-        firstRowWidth = 4
-        handleTimeWidth = 6
-        secondRowWidth = 6
-    }
-    if (
-        !isReportingAverageResponseTimeEnabled &&
-        !isReportingZeroTouchTicketsMetricEnabled
-    ) {
-        handleTimeWidth = 3
-        secondRowWidth = 3
-    }
-
-    if (isReportingZeroTouchTicketsMetricEnabled) {
+    if (isReportingAverageResponseTimeEnabled) {
         firstRowWidth = 4
     }
 
-    if (
-        !isReportingAverageResponseTimeEnabled &&
-        isReportingZeroTouchTicketsMetricEnabled
-    ) {
-        secondRowWidth = 6
-    }
-
-    return { handleTimeWidth, firstRowWidth, secondRowWidth }
+    return { firstRowWidth, secondRowWidth }
 }
 
 export default function SupportPerformanceOverviewReport() {
     const isReportingMessagesReceivedMetricEnabled =
         !!useFlags()[FeatureFlagKey.ReportingMessagesReceivedMetric]
-
-    const isReportingZeroTouchTicketsMetricEnabled =
-        !!useFlags()[FeatureFlagKey.ReportingZeroTouchTicketsMetric]
     const isReportingAverageResponseTimeEnabled =
         !!useFlags()[FeatureFlagKey.ReportingAverageResponseTime]
 
@@ -80,16 +52,12 @@ export default function SupportPerformanceOverviewReport() {
     const workloadSectionKPIGridCellSize =
         isReportingMessagesReceivedMetricEnabled ? 3 : 4
 
-    const { handleTimeWidth, firstRowWidth, secondRowWidth } = useMemo(
+    const { firstRowWidth, secondRowWidth } = useMemo(
         () =>
             getProductivitySectionKPIWidths(
                 isReportingAverageResponseTimeEnabled,
-                isReportingZeroTouchTicketsMetricEnabled,
             ),
-        [
-            isReportingAverageResponseTimeEnabled,
-            isReportingZeroTouchTicketsMetricEnabled,
-        ],
+        [isReportingAverageResponseTimeEnabled],
     )
 
     return (
@@ -246,7 +214,7 @@ export default function SupportPerformanceOverviewReport() {
                             />
                         </DashboardGridCell>
                     )}
-                    <DashboardGridCell size={getGridCellSize(handleTimeWidth)}>
+                    <DashboardGridCell size={getGridCellSize(secondRowWidth)}>
                         <DashboardComponent
                             chart={OverviewChart.TicketHandleTimeTrendCard}
                             config={SupportPerformanceOverviewReportConfig}
@@ -258,16 +226,12 @@ export default function SupportPerformanceOverviewReport() {
                             config={SupportPerformanceOverviewReportConfig}
                         />
                     </DashboardGridCell>
-                    {isReportingZeroTouchTicketsMetricEnabled && (
-                        <DashboardGridCell
-                            size={getGridCellSize(secondRowWidth)}
-                        >
-                            <DashboardComponent
-                                chart={OverviewChart.ZeroTouchTicketsTrendCard}
-                                config={SupportPerformanceOverviewReportConfig}
-                            />
-                        </DashboardGridCell>
-                    )}
+                    <DashboardGridCell size={getGridCellSize(secondRowWidth)}>
+                        <DashboardComponent
+                            chart={OverviewChart.ZeroTouchTicketsTrendCard}
+                            config={SupportPerformanceOverviewReportConfig}
+                        />
+                    </DashboardGridCell>
                     <DashboardGridCell size={getGridCellSize(6)}>
                         <DashboardComponent
                             chart={OverviewChart.TicketsRepliedGraph}

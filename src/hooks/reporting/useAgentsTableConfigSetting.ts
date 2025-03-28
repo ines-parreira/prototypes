@@ -17,9 +17,6 @@ export const useAgentsTableConfigSetting = () => {
     const isReportingAgentsTableAverageAndTotalEnabled = useFlag(
         FeatureFlagKey.ReportingAgentsTableAverageAndTotal,
     )
-    const isReportingZeroTouchTicketsMetricEnabled = useFlag(
-        FeatureFlagKey.ReportingZeroTouchTicketsMetric,
-    )
     const isReportingMessagesReceivedMetricEnabled = useFlag(
         FeatureFlagKey.ReportingMessagesReceivedMetric,
     )
@@ -30,9 +27,6 @@ export const useAgentsTableConfigSetting = () => {
     const columnsOrder = useMemo(
         () => [
             ...TableColumnsOrder,
-            ...(isReportingZeroTouchTicketsMetricEnabled
-                ? [AgentsTableColumn.ZeroTouchTickets]
-                : []),
             ...(isReportingMessagesReceivedMetricEnabled
                 ? [AgentsTableColumn.MessagesReceived]
                 : []),
@@ -41,7 +35,6 @@ export const useAgentsTableConfigSetting = () => {
                 : []),
         ],
         [
-            isReportingZeroTouchTicketsMetricEnabled,
             isReportingMessagesReceivedMetricEnabled,
             isReportingAverageResponseTimeEnabled,
         ],

@@ -94,6 +94,7 @@ export const TableColumnsOrder: AgentsTableColumn[] = [
     AgentsTableColumn.MedianFirstResponseTime,
     AgentsTableColumn.MedianResolutionTime,
     AgentsTableColumn.OneTouchTickets,
+    AgentsTableColumn.ZeroTouchTickets,
     AgentsTableColumn.OnlineTime,
     AgentsTableColumn.MessagesSentPerHour,
     AgentsTableColumn.RepliedTicketsPerHour,

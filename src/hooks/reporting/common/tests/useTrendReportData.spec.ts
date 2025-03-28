@@ -204,6 +204,13 @@ describe('useTrendReport', () => {
                 'percent',
             ),
         },
+        {
+            label: ZERO_TOUCH_TICKETS_LABEL,
+            value: formatMetricValue(zeroTouchTicketMetricTrend.data.value),
+            prevValue: formatMetricValue(
+                zeroTouchTicketMetricTrend.data.prevValue,
+            ),
+        },
     ]
 
     beforeEach(() => {
@@ -235,7 +242,7 @@ describe('useTrendReport', () => {
             useTrendReportData(
                 defaultStatsFilters,
                 'UTC',
-                getWorkloadReportSource(true, true, true),
+                getWorkloadReportSource(true, true),
             ),
         )
 
@@ -244,15 +251,6 @@ describe('useTrendReport', () => {
                 isFetching: false,
                 data: [
                     ...resultData,
-                    {
-                        label: ZERO_TOUCH_TICKETS_LABEL,
-                        value: formatMetricValue(
-                            zeroTouchTicketMetricTrend.data.value,
-                        ),
-                        prevValue: formatMetricValue(
-                            zeroTouchTicketMetricTrend.data.prevValue,
-                        ),
-                    },
                     {
                         label: MESSAGES_RECEIVED_LABEL,
                         value: formatMetricValue(
@@ -282,29 +280,12 @@ describe('useTrendReport', () => {
         })
     })
 
-    it('should return the labeled data without zero touch ticket', async () => {
-        const { result } = renderHook(() =>
-            useTrendReportData(
-                defaultStatsFilters,
-                'UTC',
-                getWorkloadReportSource(false, false, false),
-            ),
-        )
-
-        await waitFor(() => {
-            expect(result.current).toEqual({
-                isFetching: false,
-                data: resultData,
-            })
-        })
-    })
-
     it('should return the labeled data without messagesReceived', async () => {
         const { result } = renderHook(() =>
             useTrendReportData(
                 defaultStatsFilters,
                 'UTC',
-                getWorkloadReportSource(false, false, false),
+                getWorkloadReportSource(false, false),
             ),
         )
 
@@ -321,7 +302,7 @@ describe('useTrendReport', () => {
             useTrendReportData(
                 defaultStatsFilters,
                 'UTC',
-                getWorkloadReportSource(false, false, false),
+                getWorkloadReportSource(false, false),
             ),
         )
 
@@ -340,7 +321,7 @@ describe('useTrendReport', () => {
             useTrendReportData(
                 defaultStatsFilters,
                 'UTC',
-                getWorkloadReportSource(true, true, true),
+                getWorkloadReportSource(true, true),
             ),
         )
 

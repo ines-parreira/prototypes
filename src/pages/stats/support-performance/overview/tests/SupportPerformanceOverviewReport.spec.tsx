@@ -137,7 +137,6 @@ describe('<SupportPerformanceOverview />', () => {
         MessagesReceivedTrendCardMock.mockImplementation(() => <div />)
         MedianResponseTimeTrendCardMock.mockImplementation(() => <div />)
         mockFlags({
-            [FeatureFlagKey.ReportingZeroTouchTicketsMetric]: true,
             [FeatureFlagKey.ReportingMessagesReceivedMetric]: true,
             [FeatureFlagKey.ReportingAgentsTableAverageAndTotal]: true,
         })
@@ -183,10 +182,6 @@ describe('<SupportPerformanceOverview />', () => {
     })
 
     it('should render ZeroTouchTicketsTrendCard TrendCard', () => {
-        mockFlags({
-            [FeatureFlagKey.ReportingZeroTouchTicketsMetric]: true,
-        })
-
         render(
             <Provider store={mockStore(defaultState)}>
                 <SupportPerformanceOverviewReport />

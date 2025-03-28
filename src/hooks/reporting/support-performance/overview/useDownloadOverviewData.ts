@@ -50,7 +50,6 @@ export const timeSeriesReportSource = timeSeriesMetrics.map(
 )
 
 export const getWorkloadReportSource = (
-    isReportingZeroTouchTicketsMetricEnabled: boolean,
     isReportingMessagesReceivedMetricEnabled: boolean,
     isReportingAverageResponseTimeEnabled: boolean,
 ) => {
@@ -61,11 +60,9 @@ export const getWorkloadReportSource = (
         OverviewMetric.TicketsClosed,
         OverviewMetric.MessagesSent,
         OverviewMetric.OneTouchTickets,
+        OverviewMetric.ZeroTouchTickets,
     ]
 
-    if (isReportingZeroTouchTicketsMetricEnabled) {
-        workloadReportSource.push(OverviewMetric.ZeroTouchTickets)
-    }
     if (isReportingMessagesReceivedMetricEnabled) {
         workloadReportSource.push(OverviewMetric.MessagesReceived)
     }
@@ -77,8 +74,6 @@ export const getWorkloadReportSource = (
 }
 
 export const useDownloadOverViewData = (fetchingEnabled = true) => {
-    const isReportingZeroTouchTicketsMetricEnabled =
-        useFlags()[FeatureFlagKey.ReportingZeroTouchTicketsMetric]
     const isReportingMessagesReceivedMetricEnabled =
         useFlags()[FeatureFlagKey.ReportingMessagesReceivedMetric]
     const isReportingAverageResponseTimeEnabled =
@@ -89,12 +84,10 @@ export const useDownloadOverViewData = (fetchingEnabled = true) => {
     const workloadReportSource = useMemo(
         () =>
             getWorkloadReportSource(
-                isReportingZeroTouchTicketsMetricEnabled,
                 isReportingMessagesReceivedMetricEnabled,
                 isReportingAverageResponseTimeEnabled,
             ),
         [
-            isReportingZeroTouchTicketsMetricEnabled,
             isReportingMessagesReceivedMetricEnabled,
             isReportingAverageResponseTimeEnabled,
         ],

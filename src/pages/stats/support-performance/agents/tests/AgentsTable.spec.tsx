@@ -120,7 +120,6 @@ describe('<AgentsTable>', () => {
         it('should render the table title, table header and rows', () => {
             useFlagMock.mockReturnValue(true)
             mockFlags({
-                [FeatureFlagKey.ReportingZeroTouchTicketsMetric]: true,
                 [FeatureFlagKey.ReportingMessagesReceivedMetric]: true,
             })
 
@@ -151,33 +150,11 @@ describe('<AgentsTable>', () => {
             )
         })
 
-        it('should not render zero touch tickets column if feature flag is disabled', () => {
-            useFlagMock.mockReturnValue(false)
-            mockFlags({
-                [FeatureFlagKey.ReportingZeroTouchTicketsMetric]: false,
-            })
-
-            render(
-                <Provider store={mockStore({})}>
-                    <AgentsTable
-                        paginatedAgents={paginatedAgents}
-                        statsFilters={statsFiltersWithTimeZone}
-                    />
-                </Provider>,
-            )
-
-            expect(AgentsHeaderCellContentMock).not.toHaveBeenCalledWith(
-                expect.objectContaining({
-                    title: TableLabels.agent_zero_touch_tickets,
-                }),
-                {},
-            )
-        })
-
         it('should not render messages received column if feature flag is disabled', () => {
-            mockFlags({
-                [FeatureFlagKey.ReportingMessagesReceivedMetric]: false,
-            })
+            useFlagMock.mockImplementation(
+                (flag) =>
+                    !(flag === FeatureFlagKey.ReportingMessagesReceivedMetric),
+            )
 
             render(
                 <Provider store={mockStore({})}>

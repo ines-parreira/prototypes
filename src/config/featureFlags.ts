@@ -113,7 +113,6 @@ export enum FeatureFlagKey {
     ReportingExtendFieldAndTag = 'reporting-extend-field-and-tag-reporting',
     ReportingMessagesReceivedMetric = 'reporting-messages-received-metric',
     ReportingAverageResponseTime = 'reporting-average-response-time',
-    ReportingZeroTouchTicketsMetric = 'reporting-zero-touch-tickets-metric',
     RevenueBetaShopifyHeadless = 'revenue-beta-shopify-headless',
     RevenueBetaTesters = 'revenue-beta-testers',
     RevenueDisableUtmParams = 'revenue-disable-utm-params',
