@@ -18,6 +18,9 @@ It's built using ReactJS + Redux + many other smaller tools.
     -   [Linting](#linting)
         -   [Running Linting](#running-linting)
         -   [Adding Linting rules](#adding-linting-rules)
+    -   [Debugging tools](#debugging-tools)
+        -   [ReactScan](#react-scan)
+        -   [whyDidYouRender](#why-did-you-render)
     -   [Formatting](#formatting)
     -   [Platform](#platform)
         -   [Deprecated entries](#deprecated-entries)
@@ -116,6 +119,118 @@ yarn lint
 ### Adding Linting rules
 
 New linting [rules](https://oxc.rs/docs/guide/usage/linter/rules.html) can be added to the [oxlint.base.json](./scripts/oxlint/oxlint.base.json) file. The changes will be applied automatically when you run `yarn lint` via the `prelint` script.
+
+## Debugging tools
+
+To help identify unnecessary React component re-renders and improve performance during development, we’ve added two tools: [ReactScan](https://react-scan.com/) and [whyDidYouRender](https://github.com/welldone-software/why-did-you-render/tree/version-7). These tools are only active in development mode and have no impact on production builds.
+
+### ReactScan
+
+[ReactScan](https://react-scan.com/) is a visual development tool that highlights React components when they re-render. It shows a floating toolbar in the bottom-right corner with useful debugging info, such as render activity, notification count, and FPS.
+
+We use ReactScan in development to help detect unnecessary re-renders and performance bottlenecks during UI work. It is completely disabled in production builds.
+
+In our setup, ReactScan is:
+
+-   Imported **before React** to ensure accurate tracking
+-   Initialized only in development mode
+-   Disabled by default to avoid flashing or distraction on page load
+
+You can find its integration in [`src/main/init/index.tsx`](src/main/init/index.tsx). Here's a simplified view of how it's used:
+
+```ts
+import React from 'react'
+
+// This is to force react-scan to be imported always before 'React'
+// and guarantee that the rule is applied
+// eslint-disable-next-line no-empty-pattern
+let reactScan = { scan: ({}) => {} }
+if (process.env.NODE_ENV === 'development') {
+    reactScan = require('react-scan')
+}
+
+// Only import and run scan in development
+if (process.env.NODE_ENV === 'development') {
+    reactScan.scan({
+        enabled: false,
+        log: false,
+        showFPS: true,
+        showNotificationCount: true,
+        showToolbar: true,
+    })
+}
+```
+
+1. **From the UI toggle (recommended)**  
+   When ReactScan is loaded, a small floating toolbar appears in the bottom-right corner of the screen during development. You can use the toggle switch in this UI to enable or disable it in real time — no need to reload the page or touch any code.
+
+2. **Via DevTools using localStorage**
+
+```js
+localStorage.setItem(
+    'react-scan-options',
+    JSON.stringify({
+        'react-scan': {
+            enabled: true,
+        },
+    }),
+)
+location.reload()
+```
+
+3. **Permanently by editing the code**  
+   In `src/main/init/index.tsx`, you can change the `enabled` option to `true`:
+
+```ts
+reactScan.scan({
+    enabled: true,
+    ...
+})
+```
+
+### WhyDidYouRender
+
+[whyDidYouRender](https://github.com/welldone-software/why-did-you-render/tree/version-7) is a dev-only library that logs re-renders in the console, along with the reason why a component re-rendered (e.g. prop or state changes).
+
+It’s particularly useful for tracking down components that re-render frequently or unexpectedly. We configure it in development mode only, and typically use it with selective tracking (not globally) to avoid console noise.
+
+#### How it’s imported
+
+`whyDidYouRender` is imported and initialized only in development mode in `src/main/init/index.tsx`:
+
+```ts
+if (process.env.NODE_ENV === 'development') {
+    const whyDidYouRender = require('@welldone-software/why-did-you-render')
+
+    whyDidYouRender(React, {
+        trackAllPureComponents: false,
+    })
+}
+```
+
+This attaches the debugging logic to React without affecting production builds.
+
+#### How to use it
+
+To track a specific component, simply add the following line after the component definition:
+
+```ts
+ComponentName.whyDidYouRender = true
+```
+
+For example:
+
+```ts
+const MyComponent = () => {
+    // ...
+}
+
+MyComponent.whyDidYouRender = true
+```
+
+That’s it — re-render info will now show up in your console whenever `MyComponent` re-renders, including a diff of the changed props or state.
+
+You can also customize the behavior further with additional flags. See the [official docs](https://github.com/welldone-software/why-did-you-render#options) for more.
 
 ## Formatting
 
