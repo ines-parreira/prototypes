@@ -83,6 +83,8 @@ jobs:
       fail-fast: false
       matrix:
         job-index: [1, 2, 3, 4, 5, 6, 7, 8]
+    env:
+      CODECOV_CLI_VERSION: "v10.2.1"
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -101,34 +103,22 @@ jobs:
       - name: Tests
         run: yarn test:ci:cover --shard "${{ matrix.job-index }}/8"
 
-      - uses: actions/upload-artifact@v4
+      - name: Upload coverage to Codecov
+        if: ${{ !cancelled() }}
+        uses: codecov/codecov-action@v5
         with:
-          name: coverage-${{ matrix.job-index }}
-          path: coverage/jest
+          directory: coverage/jest
+          token: ${{ secrets.CODECOV_TOKEN }}
+          flags: unittests-jest-${{ matrix.job-index }}
+          name: codecov-test-coverage-jest-${{ matrix.job-index }}
+          version: ${{ env.CODECOV_CLI_VERSION }}
 
-  codecov:
-    name: Codecov
-    runs-on: gh-actions-small-runner-set
-    needs:
-      - tests
-    strategy:
-      matrix:
-        job-index: [1, 2, 3, 4, 5, 6, 7, 8]
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-
-      - uses: actions/download-artifact@v4
+      - name: Upload test results to Codecov
+        if: ${{ !cancelled() }}
+        uses: codecov/test-results-action@v1
         with:
-          name: coverage-${{ matrix.job-index }}
-
-      - name: Upload codecov report
-        run: |
-          cat ./codecov_pgp_key.asc | gpg --no-default-keyring --keyring trustedb.gpg --import
-          curl -Os https://uploader.codecov.io/latest/linux/codecov
-          curl -Os https://uploader.codecov.io/latest/linux/codecov.SHA256SUM
-          curl -Os https://uploader.codecov.io/latest/linux/codecov.SHA256SUM.sig
-          gpg --keyring ~/.gnupg/trustedb.gpg --verify codecov.SHA256SUM.sig codecov.SHA256SUM
-          shasum -a 256 -c codecov.SHA256SUM
-          chmod +x codecov
-          ./codecov -t ${{ secrets.CODECOV_TOKEN }} -Z
+          files: junit.xml
+          token: ${{ secrets.CODECOV_TOKEN }}
+          flags: unittests-jest-${{ matrix.job-index }}
+          name: codecov-test-results-jest-${{ matrix.job-index }}
+          version: ${{ env.CODECOV_CLI_VERSION }}
