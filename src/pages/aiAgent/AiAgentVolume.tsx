@@ -1,5 +1,3 @@
-import React from 'react'
-
 import { useParams } from 'react-router-dom'
 
 import { AiAgentLayout } from './components/AiAgentLayout/AiAgentLayout'
@@ -15,8 +13,8 @@ export const AiAgentVolume = () => {
 
     return (
         <AiAgentLayout
-            shopName={shopName}
             className={css.container}
+            shopName={shopName}
             title={SALES}
         >
             <VolumeSettings />

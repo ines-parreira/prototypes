@@ -119,8 +119,8 @@ export const VolumeSettings = () => {
             />
 
             <FormProvider {...methods}>
-                <Box flexDirection="row">
-                    <Box className={css.white} flexDirection="column">
+                <Box className={css.container} flexDirection="row">
+                    <Box className={css.leftParent} flexDirection="column">
                         <Box className={css.left} flexDirection="column">
                             <Box>
                                 <strong className={css.title}>

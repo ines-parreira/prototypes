@@ -2,8 +2,13 @@
 @import (reference) '~css/typography';
 
 :local {
+    // Needed to override AiAgentLayout, so we can do dual color backgrounds
+    :global(.container-fluid).container {
+        padding: 0;
+        gap: 0;
+    }
+
     .container {
-        background-color: var(--neutral-grey-0);
         display: flex;
     }
 }
