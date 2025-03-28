@@ -26,15 +26,13 @@ function VoiceIntegrationSettingCallRecording() {
                 <FormField
                     field={ToggleField}
                     name="meta.preferences.record_outbound_calls"
-                >
-                    Outbound calls
-                </FormField>
+                    label="Outbound calls"
+                />
                 <FormField
                     field={ToggleField}
                     name="meta.preferences.record_inbound_calls"
-                >
-                    Inbound calls
-                </FormField>
+                    label="Inbound calls"
+                />
             </div>
             {isCustomRecordingNotificationEnabled && (
                 <div className={css.sectionData}>

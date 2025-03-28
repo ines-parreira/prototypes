@@ -12,8 +12,11 @@ const FormFieldMock = assumeMock(FormField)
 
 describe('<VoiceIntegrationPreferencesTranscription />', () => {
     beforeEach(() => {
-        FormFieldMock.mockImplementation(({ children }: any) => (
-            <div>{children}</div>
+        FormFieldMock.mockImplementation(({ children, label }: any) => (
+            <div>
+                <div>{label}</div>
+                <div>{children}</div>
+            </div>
         ))
     })
 

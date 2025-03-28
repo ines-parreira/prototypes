@@ -15,15 +15,13 @@ function VoiceIntegrationSettingCallTranscription() {
                 <FormField
                     name="meta.preferences.transcribe.recordings"
                     field={ToggleField}
-                >
-                    Call recording
-                </FormField>
+                    label="Call recording"
+                />
                 <FormField
                     name="meta.preferences.transcribe.voicemails"
                     field={ToggleField}
-                >
-                    Voicemail
-                </FormField>
+                    label="Voicemail"
+                />
             </div>
         </div>
     )

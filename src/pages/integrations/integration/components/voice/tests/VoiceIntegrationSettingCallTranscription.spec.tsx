@@ -13,8 +13,11 @@ describe('VoiceIntegrationSettingCallTranscription', () => {
         render(<VoiceIntegrationSettingCallTranscription />)
 
     beforeEach(() => {
-        FormFieldMock.mockImplementation(({ children }: any) => (
-            <div>{children}</div>
+        FormFieldMock.mockImplementation(({ children, label }: any) => (
+            <div>
+                <div>{label}</div>
+                <div>{children}</div>
+            </div>
         ))
     })
 

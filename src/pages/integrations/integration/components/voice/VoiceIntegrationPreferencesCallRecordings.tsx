@@ -50,18 +50,16 @@ export default function VoiceIntegrationPreferencesCallRecordings(): JSX.Element
                 <FormField
                     field={ToggleField}
                     name="meta.preferences.record_inbound_calls"
-                >
-                    Start recording automatically
-                </FormField>
+                    label="Start recording automatically"
+                />
             </div>
             <div>
                 <Label className="control-label">Outbound calls</Label>
                 <FormField
                     field={ToggleField}
                     name="meta.preferences.record_outbound_calls"
-                >
-                    Start recording automatically
-                </FormField>
+                    label="Start recording automatically"
+                />
             </div>
             {showCustomRecordingNotificationSection && (
                 <div>

@@ -29,15 +29,13 @@ export default function VoiceIntegrationPreferencesTranscription(): JSX.Element 
             <FormField
                 name="meta.preferences.transcribe.recordings"
                 field={ToggleField}
-            >
-                Call recording transcription
-            </FormField>
+                label="Call recording transcription"
+            />
             <FormField
                 name="meta.preferences.transcribe.voicemails"
                 field={ToggleField}
-            >
-                Voicemail transcription
-            </FormField>
+                label="Voicemail transcription"
+            />
         </div>
     )
 }
