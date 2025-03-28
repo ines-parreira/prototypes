@@ -2,12 +2,13 @@ import { useCallback } from 'react'
 
 import cn from 'classnames'
 
+import { ToggleField } from '@gorgias/merchant-ui-kit'
+
 import { GorgiasChatEmailCaptureType } from 'models/integration/types'
 import IconTooltip from 'pages/common/forms/IconTooltip/IconTooltip'
 import RadioFieldSet, {
     RadioFieldOption,
 } from 'pages/common/forms/RadioFieldSet'
-import ToggleInput from 'pages/common/forms/ToggleInput'
 
 import css from './ChatPreferencesEmailCaptureSettings.less'
 
@@ -68,14 +69,13 @@ const ChatPreferencesEmailCaptureSettings = ({
             </p>
 
             <div className="mb-4 d-flex align-items-center">
-                <ToggleInput
-                    isToggled={isEnabled}
+                <ToggleField
+                    value={isEnabled}
                     id="email-capture-toggle"
                     aria-label="Enable email capture"
-                    onClick={onToggleChange}
-                >
-                    <b>Enable email capture</b>
-                </ToggleInput>
+                    onChange={onToggleChange}
+                    label={<b>Enable email capture</b>}
+                />
             </div>
 
             <RadioFieldSet

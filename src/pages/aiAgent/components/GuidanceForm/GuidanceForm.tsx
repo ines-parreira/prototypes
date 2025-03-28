@@ -2,6 +2,8 @@ import React, { useState } from 'react'
 
 import _isEqual from 'lodash/isEqual'
 
+import { ToggleField } from '@gorgias/merchant-ui-kit'
+
 import { logEvent, SegmentEvent } from 'common/segment'
 import { FeatureFlagKey } from 'config/featureFlags'
 import { useFlag } from 'core/flags'
@@ -18,7 +20,6 @@ import UnsavedChangesPrompt from 'pages/common/components/UnsavedChangesPrompt'
 import GuidanceVariableTag from 'pages/common/draftjs/plugins/guidance-variables/GuidanceVariableTag'
 import ToolbarProvider from 'pages/common/draftjs/plugins/toolbar/ToolbarProvider'
 import InputField from 'pages/common/forms/input/InputField'
-import ToggleInput from 'pages/common/forms/ToggleInput'
 import history from 'pages/history'
 import { notify } from 'state/notifications/actions'
 import { NotificationStatus } from 'state/notifications/types'
@@ -235,14 +236,13 @@ export const GuidanceForm = ({
                         />
                     )}
 
-                    <ToggleInput
-                        isToggled={formState.isVisible}
-                        onClick={(val) => {
+                    <ToggleField
+                        value={formState.isVisible}
+                        onChange={(val) => {
                             void onChangeVisibility(val)
                         }}
-                    >
-                        Available for AI Agent
-                    </ToggleInput>
+                        label="Available for AI Agent"
+                    />
                 </div>
 
                 <div className={css.btnGroup}>

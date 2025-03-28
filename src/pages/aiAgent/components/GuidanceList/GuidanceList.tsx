@@ -1,5 +1,7 @@
 import React, { useMemo, useState } from 'react'
 
+import { ToggleField } from '@gorgias/merchant-ui-kit'
+
 import { DateAndTimeFormatting } from 'constants/datetime'
 import useGetDateAndTimeFormat from 'hooks/useGetDateAndTimeFormat'
 import { OrderDirection } from 'models/api/types'
@@ -12,7 +14,6 @@ import TableBody from 'pages/common/components/table/TableBody'
 import TableBodyRow from 'pages/common/components/table/TableBodyRow'
 import TableHead from 'pages/common/components/table/TableHead'
 import TableWrapper from 'pages/common/components/table/TableWrapper'
-import ToggleInput from 'pages/common/forms/ToggleInput'
 import { formatDatetime } from 'utils'
 
 import { GuidanceArticle } from '../../types'
@@ -120,10 +121,10 @@ export const GuidanceList = ({
                         onClick={() => onRowClick(article.id)}
                     >
                         <BodyCell innerClassName={css.itemTitle}>
-                            <ToggleInput
-                                isToggled={article.visibility === 'PUBLIC'}
+                            <ToggleField
+                                value={article.visibility === 'PUBLIC'}
                                 aria-label="Toggle guidance visibility"
-                                onClick={(val, event) => {
+                                onChange={(val, event) => {
                                     event.stopPropagation()
                                     onToggle(article.id, val)
                                 }}

@@ -3,6 +3,8 @@ import React, { useMemo } from 'react'
 import classnames from 'classnames'
 import { useParams } from 'react-router-dom'
 
+import { ToggleField } from '@gorgias/merchant-ui-kit'
+
 import { FeatureFlagKey } from 'config/featureFlags'
 import { useFlag } from 'core/flags'
 import ActionsPlatformTemplateConditions from 'pages/automate/actionsPlatform/components/ActionsPlatformTemplateConditions'
@@ -13,7 +15,6 @@ import ActionsPlatformTemplateSteps from 'pages/automate/actionsPlatform/compone
 import { ActionTemplate } from 'pages/automate/actionsPlatform/types'
 import { useVisualBuilderContext } from 'pages/automate/workflows/hooks/useVisualBuilder'
 import { LLMPromptTriggerNodeType } from 'pages/automate/workflows/models/visualBuilderGraph.types'
-import ToggleInput from 'pages/common/forms/ToggleInput'
 
 import { SimplifiedStepBuilder } from './SimplifiedStepBuilder'
 
@@ -175,9 +176,9 @@ const ActionFormView = ({
                         shopType={shopType}
                     />
                 )}
-                <ToggleInput
-                    isToggled={!triggerNode.data.deactivated_datetime}
-                    onClick={(nextValue) => {
+                <ToggleField
+                    value={!triggerNode.data.deactivated_datetime}
+                    onChange={(nextValue) => {
                         dispatch({
                             type: 'SET_LLM_PROMPT_TRIGGER_DEACTIVATED_DATETIME',
                             deactivated_datetime: nextValue
@@ -186,9 +187,8 @@ const ActionFormView = ({
                         })
                     }}
                     caption="When enabled, you can preview this Action in the test area"
-                >
-                    Enable Action
-                </ToggleInput>
+                    label="Enable Action"
+                />
             </div>
         </>
     )

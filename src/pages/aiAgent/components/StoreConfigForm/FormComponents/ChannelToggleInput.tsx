@@ -1,5 +1,6 @@
+import { ToggleField } from '@gorgias/merchant-ui-kit'
+
 import { logEvent, SegmentEvent } from 'common/segment'
-import ToggleInput from 'pages/common/forms/ToggleInput'
 
 type Props = {
     isToggled: boolean
@@ -27,9 +28,9 @@ export const ChannelToggleInput = ({
     }
 
     return (
-        <ToggleInput
-            isToggled={isToggled}
-            onClick={handleClick}
+        <ToggleField
+            value={isToggled}
+            onChange={handleClick}
             name={`toggle-ai-agent-${channel}`}
             // Add new candu selectors after we define them
             dataCanduId={
@@ -38,8 +39,7 @@ export const ChannelToggleInput = ({
                     : 'ai-agent-configuration-chat-toggle'
             }
             isDisabled={isDisabled}
-        >
-            Enable AI Agent
-        </ToggleInput>
+            label="Enable AI Agent"
+        />
     )
 }

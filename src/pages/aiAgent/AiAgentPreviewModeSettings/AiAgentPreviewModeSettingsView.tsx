@@ -3,6 +3,8 @@ import React, { useCallback, useEffect, useState } from 'react'
 import classnames from 'classnames'
 import { useFlags } from 'launchdarkly-react-client-sdk'
 
+import { ToggleField } from '@gorgias/merchant-ui-kit'
+
 import { FeatureFlagKey } from 'config/featureFlags'
 import useAppDispatch from 'hooks/useAppDispatch'
 import { StoreConfiguration } from 'models/aiAgent/types'
@@ -16,7 +18,6 @@ import Alert, { AlertType } from 'pages/common/components/Alert/Alert'
 import Button from 'pages/common/components/button/Button'
 import UnsavedChangesPrompt from 'pages/common/components/UnsavedChangesPrompt'
 import InputField from 'pages/common/forms/input/InputField'
-import ToggleInput from 'pages/common/forms/ToggleInput'
 import { notify } from 'state/notifications/actions'
 import { NotificationStatus } from 'state/notifications/types'
 
@@ -239,9 +240,9 @@ const AiAgentPreviewModeSettingsView: React.FC<
                         </section>
                     )}
                     <section>
-                        <ToggleInput
-                            isToggled={isToggled}
-                            onClick={(value) => {
+                        <ToggleField
+                            value={isToggled}
+                            onChange={(value) => {
                                 setIsToggled(value)
                                 setIsPristine(false)
                             }}
@@ -250,9 +251,8 @@ const AiAgentPreviewModeSettingsView: React.FC<
                                 hasNoKnowledgeBase ||
                                 isLoadingOnboardingNotificationState
                             }
-                        >
-                            Enable Preview
-                        </ToggleInput>
+                            label="Enable Preview"
+                        />
                     </section>
                     <div
                         className={classnames(css.animatedDiv, {

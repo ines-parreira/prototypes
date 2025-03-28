@@ -2,7 +2,7 @@ import React, { useCallback } from 'react'
 
 import cn from 'classnames'
 
-import { Button, LoadingSpinner } from '@gorgias/merchant-ui-kit'
+import { Button, LoadingSpinner, ToggleField } from '@gorgias/merchant-ui-kit'
 
 import { Label } from 'gorgias-design-system/Input/Label'
 import { GorgiasChatIntegration } from 'models/integration/types'
@@ -10,7 +10,6 @@ import { useHandoverCustomizationOfflineSettingsForm } from 'pages/aiAgent/hooks
 import { formFieldsConfiguration } from 'pages/aiAgent/utils/handoverCustomizationOfflineSettingsForm.utils'
 import Caption from 'pages/common/forms/Caption/Caption'
 import TextArea from 'pages/common/forms/TextArea'
-import ToggleInput from 'pages/common/forms/ToggleInput'
 
 import css from './HandoverCustomizationOfflineSettings.less'
 
@@ -106,12 +105,12 @@ const HandoverCustomizationOfflineSettings = ({ integration }: Props) => {
             </div>
 
             <div className="mb-5 d-flex align-items-center">
-                <ToggleInput
-                    isToggled={formValues.shareBusinessHours}
+                <ToggleField
+                    value={formValues.shareBusinessHours}
                     name="share-business-hours-toggle"
                     id="share-business-hours-toggle"
                     aria-label="Share business hours in handover message"
-                    onClick={onBusinessHoursToggle}
+                    onChange={onBusinessHoursToggle}
                 />
 
                 <span className="body-semibold">

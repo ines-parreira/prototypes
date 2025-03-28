@@ -1,5 +1,5 @@
 // External Libraries
-import React, {
+import {
     ComponentProps,
     useCallback,
     useEffect,
@@ -12,7 +12,7 @@ import { useId } from '@floating-ui/react'
 import { useFlags } from 'launchdarkly-react-client-sdk'
 import { Link, useParams } from 'react-router-dom'
 
-import { Button, Label } from '@gorgias/merchant-ui-kit'
+import { Button, Label, ToggleField } from '@gorgias/merchant-ui-kit'
 
 // Absolute Imports
 import { AI_AGENT_SENTRY_TEAM } from 'common/const/sentryTeamNames'
@@ -32,7 +32,6 @@ import HelpCenterSelect, {
 } from 'pages/automate/common/components/HelpCenterSelect'
 import UnsavedChangesPrompt from 'pages/common/components/UnsavedChangesPrompt'
 import IconTooltip from 'pages/common/forms/IconTooltip/IconTooltip'
-import ToggleInput from 'pages/common/forms/ToggleInput'
 import history from 'pages/history'
 import { getIntegrationsByTypes } from 'state/integrations/selectors'
 import { notify } from 'state/notifications/actions'
@@ -714,10 +713,10 @@ export const StoreConfigForm = ({
                                     resolved by AI Agent.
                                 </div>
                                 <div className={css.formGroup}>
-                                    <ToggleInput
+                                    <ToggleField
                                         className={css.featureToggle}
-                                        isToggled={isHandoffToggled}
-                                        onClick={() => {
+                                        value={isHandoffToggled}
+                                        onChange={() => {
                                             if (
                                                 formValues.silentHandover !==
                                                 null
@@ -735,9 +734,8 @@ export const StoreConfigForm = ({
                                         }}
                                         name={toggleHandoffId}
                                         caption="When enabled, AI Agent will promptly respond and tell customers their request is being handed over for further assistance. When disabled, AI Agent will not respond before handing over."
-                                    >
-                                        Tell customers when handing over
-                                    </ToggleInput>
+                                        label="Tell customers when handing over"
+                                    />
                                 </div>
                                 <div className={css.formGroup}>
                                     <Label className={css.subsectionHeader}>

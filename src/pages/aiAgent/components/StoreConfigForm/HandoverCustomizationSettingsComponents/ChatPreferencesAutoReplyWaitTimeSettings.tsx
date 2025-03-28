@@ -2,12 +2,13 @@ import { useCallback } from 'react'
 
 import cn from 'classnames'
 
+import { ToggleField } from '@gorgias/merchant-ui-kit'
+
 import { GorgiasChatAutoResponderReply } from 'models/integration/types'
 import IconTooltip from 'pages/common/forms/IconTooltip/IconTooltip'
 import RadioFieldSet, {
     RadioFieldOption,
 } from 'pages/common/forms/RadioFieldSet'
-import ToggleInput from 'pages/common/forms/ToggleInput'
 
 import css from './ChatPreferencesAutoReplyWaitTimeSettings.less'
 
@@ -79,12 +80,12 @@ const ChatPreferencesAutoReplyWaitTimeSettings = ({
                 agent.
             </p>
             <div className="mb-4 d-flex align-items-center">
-                <ToggleInput
+                <ToggleField
                     name="auto-reply-wait-time-toggle"
                     id="auto-reply-wait-time-toggle"
-                    isToggled={isEnabled}
+                    value={isEnabled}
                     aria-label="Provide auto-reply wait time in the chat"
-                    onClick={onToggleChange}
+                    onChange={onToggleChange}
                 />
                 <div className="ml-1">
                     <b>Send wait time</b>

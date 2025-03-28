@@ -2,7 +2,7 @@ import React, { MouseEvent, useCallback, useMemo, useState } from 'react'
 
 import { Link, useHistory, useParams } from 'react-router-dom'
 
-import { Tooltip } from '@gorgias/merchant-ui-kit'
+import { ToggleField, Tooltip } from '@gorgias/merchant-ui-kit'
 
 import webhooksIcon from 'assets/img/icons/webhooks.svg'
 import { DateAndTimeFormatting } from 'constants/datetime'
@@ -19,7 +19,6 @@ import useGetAppFromTemplateApp from 'pages/automate/actionsPlatform/hooks/useGe
 import BodyCell from 'pages/common/components/table/cells/BodyCell'
 import TableBodyRow from 'pages/common/components/table/TableBodyRow'
 import IconTooltip from 'pages/common/forms/IconTooltip/IconTooltip'
-import ToggleInput from 'pages/common/forms/ToggleInput'
 import { formatDatetime } from 'utils'
 
 import DeleteActionConfirmation from './DeleteActionConfirmation'
@@ -154,11 +153,11 @@ export default function ActionsRow({ action }: Props) {
             )}
             <BodyCell width={360} className={css.nameCell}>
                 <div className={css.nameWrapper}>
-                    <ToggleInput
+                    <ToggleField
                         isLoading={isEditActionLoading}
                         isDisabled={isDeleteActionLoading || isFakeAction}
-                        onClick={handleToggleAction}
-                        isToggled={!action.entrypoints[0]?.deactivated_datetime}
+                        onChange={handleToggleAction}
+                        value={!action.entrypoints[0]?.deactivated_datetime}
                     />
                     {action.apps?.map((templateApp) => {
                         const app = getAppFromTemplateApp(templateApp)
