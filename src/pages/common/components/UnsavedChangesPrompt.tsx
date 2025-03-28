@@ -1,20 +1,26 @@
 import { Prompt } from 'react-router-dom'
 
-import UnsavedChangesModal from './UnsavedChangesModal'
+import UnsavedChangesModal, {
+    UnsavedChangesModalProps,
+} from './UnsavedChangesModal'
 import useUnsavedChangesPrompt from './useUnsavedChangesPrompt'
 
-type Props = {
+type UnsavedChangesPromptProps = {
     onDiscard?: () => void
     onSave: () => Promise<unknown> | void
     shouldRedirectAfterSave?: boolean
     when: boolean | undefined
-}
+} & Pick<
+    UnsavedChangesModalProps,
+    'shouldShowDiscardButton' | 'shouldShowSaveButton' | 'body' | 'title'
+>
 
-const UnsavedChangesPrompt: React.FC<Props> = ({
+const UnsavedChangesPrompt: React.FC<UnsavedChangesPromptProps> = ({
     onDiscard,
     onSave,
     shouldRedirectAfterSave,
     when,
+    ...modalProps
 }) => {
     const { isOpen, onClose, redirectToOriginalLocation, onNavigateAway } =
         useUnsavedChangesPrompt({ when })
@@ -23,6 +29,7 @@ const UnsavedChangesPrompt: React.FC<Props> = ({
         <>
             <Prompt when={when} message={onNavigateAway} />
             <UnsavedChangesModal
+                {...modalProps}
                 onDiscard={() => {
                     onClose()
                     onDiscard && onDiscard()

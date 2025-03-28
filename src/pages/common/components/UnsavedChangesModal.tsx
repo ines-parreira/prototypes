@@ -16,8 +16,8 @@ export type UnsavedChangesModalProps = {
     onSave: () => Promise<void> | void
     body?: React.ReactNode
     title?: string
-    enableDiscardButton?: boolean
-    enableSaveButton?: boolean
+    shouldShowDiscardButton?: boolean
+    shouldShowSaveButton?: boolean
 }
 
 const UnsavedChangesModal: React.FC<UnsavedChangesModalProps> = ({
@@ -25,8 +25,8 @@ const UnsavedChangesModal: React.FC<UnsavedChangesModalProps> = ({
     onSave,
     isOpen,
     onClose,
-    enableDiscardButton = true,
-    enableSaveButton = true,
+    shouldShowDiscardButton = true,
+    shouldShowSaveButton = true,
     body = `Your changes to this page will be lost if you don’t save them.`,
     title = 'Save changes?',
 }) => {
@@ -36,7 +36,7 @@ const UnsavedChangesModal: React.FC<UnsavedChangesModalProps> = ({
             <ModalBody className={css.body}>{body}</ModalBody>
             <ModalFooter className={css.footer}>
                 <div>
-                    {enableDiscardButton && (
+                    {shouldShowDiscardButton && (
                         <Button
                             fillStyle="ghost"
                             intent="destructive"
@@ -50,7 +50,7 @@ const UnsavedChangesModal: React.FC<UnsavedChangesModalProps> = ({
                     <Button intent="secondary" onClick={onClose}>
                         Back To Editing
                     </Button>
-                    {enableSaveButton && (
+                    {shouldShowSaveButton && (
                         <Button onClick={onSave}>Save Changes</Button>
                     )}
                 </div>

@@ -88,11 +88,11 @@ describe('UnsavedChangesModal', () => {
         expect(screen.queryByText('Save Changes')).toBeNull()
     })
 
-    it('hides Discard Changes button when enableDiscardButton is false', () => {
+    it('hides Discard Changes button when should show discard button is false', () => {
         render(
             <UnsavedChangesModal
                 {...defaultProps}
-                enableDiscardButton={false}
+                shouldShowDiscardButton={false}
             />,
         )
 
@@ -104,9 +104,12 @@ describe('UnsavedChangesModal', () => {
         expect(screen.queryByText('Discard Changes')).toBeNull()
     })
 
-    it('hides Save Changes button when enableSaveButton is false', () => {
+    it('hides Save Changes button when should show save button is false', () => {
         render(
-            <UnsavedChangesModal {...defaultProps} enableSaveButton={false} />,
+            <UnsavedChangesModal
+                {...defaultProps}
+                shouldShowSaveButton={false}
+            />,
         )
 
         screen.getByText('Save changes?')
