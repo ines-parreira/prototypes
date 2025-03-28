@@ -2,7 +2,7 @@ import React, { useMemo, useState } from 'react'
 
 import { fromJS, Map } from 'immutable'
 
-import { Label } from '@gorgias/merchant-ui-kit'
+import { Label, ToggleField } from '@gorgias/merchant-ui-kit'
 
 import { SegmentEvent } from 'common/segment'
 import useAppDispatch from 'hooks/useAppDispatch'
@@ -24,7 +24,6 @@ import { useSelfServiceConfigurationUpdate } from 'pages/automate/common/hooks/u
 import Button from 'pages/common/components/button/Button'
 import UnsavedChangesPrompt from 'pages/common/components/UnsavedChangesPrompt'
 import useNavigateWizardSteps from 'pages/common/components/wizard/hooks/useNavigateWizardSteps'
-import ToggleInput from 'pages/common/forms/ToggleInput'
 import history from 'pages/history'
 import { chatApplicationAutomationSettingsUpdated } from 'state/entities/chatsApplicationAutomationSettings/actions'
 import { getChatsApplicationAutomationSettings } from 'state/entities/chatsApplicationAutomationSettings/selectors'
@@ -439,13 +438,12 @@ const GorgiasChatCreationWizardStepAutomate: React.FC<Props> = ({
                             <div className={css.sectionHeading}>
                                 Order management
                             </div>
-                            <ToggleInput
-                                onClick={setCurrentIsOrderManagementEnabled}
-                                isToggled={isOrderManagementEnabled}
+                            <ToggleField
+                                onChange={setCurrentIsOrderManagementEnabled}
+                                value={isOrderManagementEnabled}
                                 isDisabled={isFormDisabled}
-                            >
-                                Allow customers to track orders from my chat
-                            </ToggleInput>
+                                label="Allow customers to track orders from my chat"
+                            />
                         </div>
                     )}
                     {(hasActiveHelpCenter ||
@@ -455,20 +453,24 @@ const GorgiasChatCreationWizardStepAutomate: React.FC<Props> = ({
                             <div className={css.sectionHeading}>
                                 Article Recommendation
                             </div>
-                            <ToggleInput
-                                onClick={
+                            <ToggleField
+                                onChange={
                                     setCurrentIsArticleRecommendationEnabled
                                 }
-                                isToggled={isArticleRecommendationEnabled}
+                                value={isArticleRecommendationEnabled}
                                 isDisabled={isFormDisabled}
-                            >
-                                <span className={css.icon}>
-                                    <i className="material-icons">
-                                        auto_awesome
-                                    </i>
-                                </span>{' '}
-                                Recommend articles from your Help Center with AI
-                            </ToggleInput>
+                                label={
+                                    <>
+                                        <span className={css.icon}>
+                                            <i className="material-icons">
+                                                auto_awesome
+                                            </i>
+                                        </span>{' '}
+                                        Recommend articles from your Help Center
+                                        with AI
+                                    </>
+                                }
+                            />
                             {isArticleRecommendationEnabled &&
                                 !isLoadingSelfServiceConfiguration &&
                                 !isLoadingHelpCenters &&

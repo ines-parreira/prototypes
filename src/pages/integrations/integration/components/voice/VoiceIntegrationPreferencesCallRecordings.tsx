@@ -4,11 +4,11 @@ import { useFormContext } from 'react-hook-form'
 import { Label } from 'reactstrap'
 
 import { VoiceMessageType } from '@gorgias/api-queries'
+import { ToggleField } from '@gorgias/merchant-ui-kit'
 
 import { FeatureFlagKey } from 'config/featureFlags'
 import { FormField } from 'core/forms'
 import { VoiceMessage } from 'models/integration/types'
-import ToggleInputField from 'pages/common/forms/ToggleInputField'
 import settingsCss from 'pages/settings/settings.less'
 
 import { FormValues } from './useVoicePreferencesForm'
@@ -48,7 +48,7 @@ export default function VoiceIntegrationPreferencesCallRecordings(): JSX.Element
             <div>
                 <Label className="control-label">Inbound calls</Label>
                 <FormField
-                    field={ToggleInputField}
+                    field={ToggleField}
                     name="meta.preferences.record_inbound_calls"
                 >
                     Start recording automatically
@@ -57,7 +57,7 @@ export default function VoiceIntegrationPreferencesCallRecordings(): JSX.Element
             <div>
                 <Label className="control-label">Outbound calls</Label>
                 <FormField
-                    field={ToggleInputField}
+                    field={ToggleField}
                     name="meta.preferences.record_outbound_calls"
                 >
                     Start recording automatically

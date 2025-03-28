@@ -8,21 +8,19 @@ exports[`<AircallIntegrationListItem/> render() should render the aircall integr
     <div>
       <label
         aria-checked="true"
-        class="ui-label-label-3864 label"
-        for="toggle-button-1"
+        class="ui-label-label-3864 ui-togglefield-label-52f1"
         role="switch"
       >
         <input
           checked=""
-          class="input"
+          class="ui-togglefield-input-52f1"
           disabled=""
-          id="toggle-button-1"
-          name="toggle-button-1"
           type="checkbox"
         />
         <div
-          class="slider"
+          class="ui-togglefield-slider-52f1"
         />
+        <div />
       </label>
     </div>
   </td>

@@ -74,21 +74,19 @@ exports[`<GorgiasChatIntegrationQuickReplies/> render() should render defaults b
                 <label
                   aria-checked="false"
                   aria-label="Enable quick replies"
-                  class="ui-label-label-3864 label"
-                  for="toggle-button-1"
+                  class="ui-label-label-3864 ui-togglefield-label-52f1"
                   role="switch"
                 >
                   <input
                     aria-label="Enable quick replies"
-                    class="input"
+                    class="ui-togglefield-input-52f1"
                     disabled=""
-                    id="toggle-button-1"
-                    name="toggle-button-1"
                     type="checkbox"
                   />
                   <div
-                    class="slider"
+                    class="ui-togglefield-slider-52f1"
                   />
+                  <div />
                 </label>
               </div>
               <div
@@ -115,7 +113,7 @@ exports[`<GorgiasChatIntegrationQuickReplies/> render() should render defaults b
                   <input
                     class="input"
                     disabled=""
-                    id="input-text-2"
+                    id="input-text-1"
                     maxlength="20"
                     name="item-0"
                     placeholder="Type something (limited to 20 characters)"
@@ -148,7 +146,7 @@ exports[`<GorgiasChatIntegrationQuickReplies/> render() should render defaults b
                   <input
                     class="input"
                     disabled=""
-                    id="input-text-3"
+                    id="input-text-2"
                     maxlength="20"
                     name="item-1"
                     placeholder="Type something (limited to 20 characters)"
@@ -519,21 +517,19 @@ exports[`<GorgiasChatIntegrationQuickReplies/> render() should render quick repl
                 <label
                   aria-checked="true"
                   aria-label="Enable quick replies"
-                  class="ui-label-label-3864 label"
-                  for="toggle-button-4"
+                  class="ui-label-label-3864 ui-togglefield-label-52f1"
                   role="switch"
                 >
                   <input
                     aria-label="Enable quick replies"
-                    class="input"
+                    class="ui-togglefield-input-52f1"
                     disabled=""
-                    id="toggle-button-4"
-                    name="toggle-button-4"
                     type="checkbox"
                   />
                   <div
-                    class="slider"
+                    class="ui-togglefield-slider-52f1"
                   />
+                  <div />
                 </label>
               </div>
               <div
@@ -559,7 +555,7 @@ exports[`<GorgiasChatIntegrationQuickReplies/> render() should render quick repl
                 >
                   <input
                     class="input"
-                    id="input-text-5"
+                    id="input-text-3"
                     maxlength="20"
                     name="item-0"
                     placeholder="Type something (limited to 20 characters)"
@@ -591,7 +587,7 @@ exports[`<GorgiasChatIntegrationQuickReplies/> render() should render quick repl
                 >
                   <input
                     class="input"
-                    id="input-text-6"
+                    id="input-text-4"
                     maxlength="20"
                     name="item-1"
                     placeholder="Type something (limited to 20 characters)"

@@ -107,20 +107,18 @@ exports[`FacebookIntegrationSetup should render an integration for: account elig
               <div>
                 <label
                   aria-checked="false"
-                  class="ui-label-label-3864 label"
-                  for="toggle-button-101"
+                  class="ui-label-label-3864 ui-togglefield-label-52f1"
                   role="switch"
                 >
                   <input
-                    class="input"
+                    class="ui-togglefield-input-52f1"
                     disabled=""
-                    id="toggle-button-101"
-                    name="toggle-button-101"
                     type="checkbox"
                   />
                   <div
-                    class="slider"
+                    class="ui-togglefield-slider-52f1"
                   />
+                  <div />
                 </label>
               </div>
             </div>
@@ -447,20 +445,18 @@ exports[`FacebookIntegrationSetup should render an integration for: account not 
               <div>
                 <label
                   aria-checked="false"
-                  class="ui-label-label-3864 label"
-                  for="toggle-button-121"
+                  class="ui-label-label-3864 ui-togglefield-label-52f1"
                   role="switch"
                 >
                   <input
-                    class="input"
+                    class="ui-togglefield-input-52f1"
                     disabled=""
-                    id="toggle-button-121"
-                    name="toggle-button-121"
                     type="checkbox"
                   />
                   <div
-                    class="slider"
+                    class="ui-togglefield-slider-52f1"
                   />
+                  <div />
                 </label>
               </div>
             </div>
@@ -797,20 +793,18 @@ exports[`FacebookIntegrationSetup should render the integration as enabled with 
               <div>
                 <label
                   aria-checked="true"
-                  class="ui-label-label-3864 label"
-                  for="toggle-button-1"
+                  class="ui-label-label-3864 ui-togglefield-label-52f1"
                   role="switch"
                 >
                   <input
-                    class="input"
+                    class="ui-togglefield-input-52f1"
                     disabled=""
-                    id="toggle-button-1"
-                    name="toggle-button-1"
                     type="checkbox"
                   />
                   <div
-                    class="slider"
+                    class="ui-togglefield-slider-52f1"
                   />
+                  <div />
                 </label>
               </div>
             </div>

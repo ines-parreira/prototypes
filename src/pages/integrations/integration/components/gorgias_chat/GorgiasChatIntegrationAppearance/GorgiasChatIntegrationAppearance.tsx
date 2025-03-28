@@ -1,10 +1,4 @@
-import React, {
-    SyntheticEvent,
-    useEffect,
-    useMemo,
-    useRef,
-    useState,
-} from 'react'
+import { SyntheticEvent, useEffect, useMemo, useRef, useState } from 'react'
 
 import classNames from 'classnames'
 import { produce } from 'immer'
@@ -23,7 +17,7 @@ import {
     Label as ReactStrapLabel,
 } from 'reactstrap'
 
-import { Label, Tooltip } from '@gorgias/merchant-ui-kit'
+import { Label, ToggleField, Tooltip } from '@gorgias/merchant-ui-kit'
 
 import { SegmentEvent } from 'common/segment'
 import { FeatureFlagKey } from 'config/featureFlags'
@@ -74,7 +68,6 @@ import DEPRECATED_InputField from 'pages/common/forms/DEPRECATED_InputField'
 import InputField from 'pages/common/forms/input/InputField'
 import NumberInput from 'pages/common/forms/input/NumberInput'
 import RadioFieldSet from 'pages/common/forms/RadioFieldSet'
-import ToggleInput from 'pages/common/forms/ToggleInput'
 import { useOnClickOutside } from 'pages/common/hooks/useOnClickOutside'
 import { PositionAxis } from 'pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationAppearance/types'
 import GorgiasChatIntegrationHeader from 'pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationHeader'
@@ -1442,21 +1435,22 @@ export const GorgiasChatIntegrationAppearanceComponent = ({
                         {isControlBotLabelEnabled && (
                             <div className={css.formSection}>
                                 <h2 className={css.title}>Chatbot</h2>
-                                <ToggleInput
-                                    isToggled={displayBotLabel}
+                                <ToggleField
+                                    value={displayBotLabel}
                                     name="show-bot-toggle"
-                                    onClick={(value) =>
+                                    onChange={(value) =>
                                         setState((prevState) => ({
                                             ...prevState,
                                             displayBotLabel: value,
                                         }))
                                     }
-                                >
-                                    <b>
-                                        Display ”Bot” next to chat title for
-                                        automated messages
-                                    </b>
-                                </ToggleInput>
+                                    label={
+                                        <b>
+                                            Display ”Bot” next to chat title for
+                                            automated messages
+                                        </b>
+                                    }
+                                />
                             </div>
                         )}
 

@@ -6,6 +6,8 @@ import { connect, ConnectedProps } from 'react-redux'
 import { Link } from 'react-router-dom'
 import { Breadcrumb, BreadcrumbItem, Form } from 'reactstrap'
 
+import { ToggleField } from '@gorgias/merchant-ui-kit'
+
 import { FeatureFlagKey } from 'config/featureFlags'
 import {
     GORGIAS_CHAT_MAIN_FONT_FAMILY_DEFAULT,
@@ -23,7 +25,6 @@ import {
 import Button from 'pages/common/components/button/Button'
 import PageHeader from 'pages/common/components/PageHeader'
 import ListField from 'pages/common/forms/ListField'
-import ToggleInput from 'pages/common/forms/ToggleInput'
 import GorgiasChatIntegrationHeader from 'pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationHeader'
 import { Tab } from 'pages/integrations/integration/types'
 import { RootState } from 'state/types'
@@ -293,9 +294,9 @@ export class GorgiasChatIntegrationQuickRepliesComponent extends Component<
                                     css.mb16,
                                 )}
                             >
-                                <ToggleInput
-                                    isToggled={quickRepliesEnabled}
-                                    onClick={(newValue) =>
+                                <ToggleField
+                                    value={quickRepliesEnabled}
+                                    onChange={(newValue) =>
                                         this.setState({
                                             quickRepliesEnabled: newValue,
                                         })

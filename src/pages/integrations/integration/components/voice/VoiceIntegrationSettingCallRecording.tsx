@@ -2,10 +2,9 @@ import { useFormContext } from 'react-hook-form'
 
 import { UpdateAllPhoneIntegrationSettings } from '@gorgias/api-queries'
 import { CustomRecordingType } from '@gorgias/api-types'
-import { Label } from '@gorgias/merchant-ui-kit'
+import { Label, ToggleField } from '@gorgias/merchant-ui-kit'
 
 import { FormField } from 'core/forms'
-import ToggleInputField from 'pages/common/forms/ToggleInputField'
 
 import VoiceMessageField from './VoiceMessageField'
 
@@ -25,13 +24,13 @@ function VoiceIntegrationSettingCallRecording() {
         <div className={css.container}>
             <div className={css.sectionData}>
                 <FormField
-                    field={ToggleInputField}
+                    field={ToggleField}
                     name="meta.preferences.record_outbound_calls"
                 >
                     Outbound calls
                 </FormField>
                 <FormField
-                    field={ToggleInputField}
+                    field={ToggleField}
                     name="meta.preferences.record_inbound_calls"
                 >
                     Inbound calls

@@ -474,30 +474,30 @@ exports[`<Shopify/> Integration should render 1`] = `
             <div>
               <label
                 aria-checked="true"
-                class="ui-label-label-3864 label"
-                for="sync_customer_notes"
+                class="ui-label-label-3864 ui-togglefield-label-52f1"
                 role="switch"
               >
                 <input
                   checked=""
-                  class="input"
+                  class="ui-togglefield-input-52f1"
                   disabled=""
-                  id="sync_customer_notes"
                   name="sync_customer_notes"
                   type="checkbox"
                 />
                 <div
-                  class="slider"
+                  class="ui-togglefield-slider-52f1"
                 />
-                Synchronize customer notes between Gorgias and Shopify
+                <div>
+                  Synchronize customer notes between Gorgias and Shopify
+                  <div
+                    class="ui-fieldcaption-caption-1f94"
+                  >
+                    When editing notes in both places at the same time, the first one saved will be synchronized.
+                    <br />
+                    Notes will not be synchronized for customers who are associated with more than one Shopify store.
+                  </div>
+                </div>
               </label>
-              <div
-                class="caption caption"
-              >
-                When editing notes in both places at the same time, the first one saved will be synchronized.
-                <br />
-                Notes will not be synchronized for customers who are associated with more than one Shopify store.
-              </div>
             </div>
           </div>
           <div
@@ -506,32 +506,32 @@ exports[`<Shopify/> Integration should render 1`] = `
             <div>
               <label
                 aria-checked="false"
-                class="ui-label-label-3864 label"
-                for="default_address_phone_matching_enabled"
+                class="ui-label-label-3864 ui-togglefield-label-52f1"
                 role="switch"
               >
                 <input
-                  class="input"
+                  class="ui-togglefield-input-52f1"
                   disabled=""
-                  id="default_address_phone_matching_enabled"
                   name="default_address_phone_matching_enabled"
                   type="checkbox"
                 />
                 <div
-                  class="slider"
+                  class="ui-togglefield-slider-52f1"
                 />
-                Match customer by Shopify default address phone number
+                <div>
+                  Match customer by Shopify default address phone number
+                  <div
+                    class="ui-fieldcaption-caption-1f94"
+                  >
+                    Gorgias will search for Shopify customer’s default address for customer matching.
+                    <br />
+                    <b>
+                      Do not enable if you use the same phone number across multiple customers
+                    </b>
+                    , as this will lead to incorrect customer merges.
+                  </div>
+                </div>
               </label>
-              <div
-                class="caption caption"
-              >
-                Gorgias will search for Shopify customer’s default address for customer matching.
-                <br />
-                <b>
-                  Do not enable if you use the same phone number across multiple customers
-                </b>
-                , as this will lead to incorrect customer merges.
-              </div>
             </div>
           </div>
           <div>

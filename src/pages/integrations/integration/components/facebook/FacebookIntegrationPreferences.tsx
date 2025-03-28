@@ -8,6 +8,8 @@ import { connect, ConnectedProps } from 'react-redux'
 import { Link } from 'react-router-dom'
 import { Breadcrumb, BreadcrumbItem, Container, Form } from 'reactstrap'
 
+import { ToggleField } from '@gorgias/merchant-ui-kit'
+
 import {
     CHAT_AUTO_RESPONDER_ENABLED_DEFAULT,
     CHAT_AUTO_RESPONDER_REPLY_DEFAULT,
@@ -16,7 +18,6 @@ import {
 import Button from 'pages/common/components/button/Button'
 import PageHeader from 'pages/common/components/PageHeader'
 import RadioFieldSet from 'pages/common/forms/RadioFieldSet'
-import ToggleInput from 'pages/common/forms/ToggleInput'
 import css from 'pages/settings/settings.less'
 import { updateOrCreateIntegration } from 'state/integrations/actions'
 
@@ -146,9 +147,9 @@ export class FacebookIntegrationPreferences extends Component<Props, State> {
                             <h4>Auto-responder</h4>
 
                             <div className="mb-3 d-flex align-items-center">
-                                <ToggleInput
-                                    onClick={this._setAutoResponderEnabled}
-                                    isToggled={autoResponderEnabled}
+                                <ToggleField
+                                    onChange={this._setAutoResponderEnabled}
+                                    value={autoResponderEnabled}
                                 />
                                 <div className="ml-2">
                                     <b>Enable auto-responder</b>

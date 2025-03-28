@@ -57,7 +57,7 @@ exports[`<GorgiasChatIntegrationPreferences/> _submitPreferences() should submit
             "linked_email_integration": null,
             "live_chat_availability": "auto-based-on-agent-availability",
             "auto_responder": Immutable.Map {
-              "enabled": false,
+              "enabled": true,
               "reply": "reply-in-minutes",
             },
             "privacy_policy_disclaimer_enabled": false,
@@ -149,7 +149,7 @@ exports[`<GorgiasChatIntegrationPreferences/> render() should render the Chat pr
                 </p>
                 <fieldset
                   class="mb-3 radioFieldSet"
-                  name="radio-field-173"
+                  name="radio-field-70"
                 >
                   <div
                     class="option"
@@ -162,7 +162,7 @@ exports[`<GorgiasChatIntegrationPreferences/> render() should render the Chat pr
                         checked=""
                         class="input"
                         id="auto-based-on-agent-availability"
-                        name="radio-field-173"
+                        name="radio-field-70"
                         type="radio"
                       />
                       Live when agents are available
@@ -183,7 +183,7 @@ exports[`<GorgiasChatIntegrationPreferences/> render() should render the Chat pr
                       <input
                         class="input"
                         id="always-live-during-business-hours"
-                        name="radio-field-173"
+                        name="radio-field-70"
                         type="radio"
                       />
                       Always live during business hours
@@ -204,7 +204,7 @@ exports[`<GorgiasChatIntegrationPreferences/> render() should render the Chat pr
                       <input
                         class="input"
                         id="offline"
-                        name="radio-field-173"
+                        name="radio-field-70"
                         type="radio"
                       />
                       Offline
@@ -255,21 +255,20 @@ exports[`<GorgiasChatIntegrationPreferences/> render() should render the Chat pr
                   <div>
                     <label
                       aria-checked="false"
-                      class="ui-label-label-3864 label"
-                      for="toggle-button-174"
+                      class="ui-label-label-3864 ui-togglefield-label-52f1"
                       role="switch"
                     >
                       <input
-                        class="input"
+                        class="ui-togglefield-input-52f1"
                         disabled=""
-                        id="toggle-button-174"
-                        name="toggle-button-174"
                         type="checkbox"
                       />
                       <div
-                        class="slider"
+                        class="ui-togglefield-slider-52f1"
                       />
-                      Remove “Send us a message” button
+                      <div>
+                        Remove “Send us a message” button
+                      </div>
                     </label>
                   </div>
                 </div>
@@ -290,21 +289,19 @@ exports[`<GorgiasChatIntegrationPreferences/> render() should render the Chat pr
                   <label
                     aria-checked="false"
                     aria-label="Hide chat"
-                    class="ui-label-label-3864 label"
-                    for="toggle-button-175"
+                    class="ui-label-label-3864 ui-togglefield-label-52f1"
                     role="switch"
                   >
                     <input
                       aria-label="Hide chat"
-                      class="input"
+                      class="ui-togglefield-input-52f1"
                       disabled=""
-                      id="toggle-button-175"
-                      name="toggle-button-175"
                       type="checkbox"
                     />
                     <div
-                      class="slider"
+                      class="ui-togglefield-slider-52f1"
                     />
+                    <div />
                   </label>
                 </div>
                 <div
@@ -336,20 +333,18 @@ exports[`<GorgiasChatIntegrationPreferences/> render() should render the Chat pr
                 <div>
                   <label
                     aria-checked="false"
-                    class="ui-label-label-3864 label"
-                    for="toggle-button-176"
+                    class="ui-label-label-3864 ui-togglefield-label-52f1"
                     role="switch"
                   >
                     <input
-                      class="input"
+                      class="ui-togglefield-input-52f1"
                       disabled=""
-                      id="toggle-button-176"
-                      name="toggle-button-176"
                       type="checkbox"
                     />
                     <div
-                      class="slider"
+                      class="ui-togglefield-slider-52f1"
                     />
+                    <div />
                   </label>
                 </div>
                 <div
@@ -381,20 +376,18 @@ exports[`<GorgiasChatIntegrationPreferences/> render() should render the Chat pr
                 <div>
                   <label
                     aria-checked="false"
-                    class="ui-label-label-3864 label"
-                    for="toggle-button-177"
+                    class="ui-label-label-3864 ui-togglefield-label-52f1"
                     role="switch"
                   >
                     <input
-                      class="input"
+                      class="ui-togglefield-input-52f1"
                       disabled=""
-                      id="toggle-button-177"
-                      name="toggle-button-177"
                       type="checkbox"
                     />
                     <div
-                      class="slider"
+                      class="ui-togglefield-slider-52f1"
                     />
+                    <div />
                   </label>
                 </div>
                 <div
@@ -425,30 +418,30 @@ exports[`<GorgiasChatIntegrationPreferences/> render() should render the Chat pr
                 <div>
                   <label
                     aria-checked="true"
-                    class="ui-label-label-3864 label"
-                    for="disable-email-capture-toggle"
+                    class="ui-label-label-3864 ui-togglefield-label-52f1"
                     role="switch"
                   >
                     <input
                       checked=""
-                      class="input"
+                      class="ui-togglefield-input-52f1"
                       disabled=""
-                      id="disable-email-capture-toggle"
                       name="disable-email-capture-toggle"
                       type="checkbox"
                     />
                     <div
-                      class="slider"
+                      class="ui-togglefield-slider-52f1"
                     />
-                    <b>
-                      Enable email capture
-                    </b>
+                    <div>
+                      <b>
+                        Enable email capture
+                      </b>
+                    </div>
                   </label>
                 </div>
               </div>
               <fieldset
                 class=""
-                name="radio-field-179"
+                name="radio-field-71"
               >
                 <div
                   class="option"
@@ -461,7 +454,7 @@ exports[`<GorgiasChatIntegrationPreferences/> render() should render the Chat pr
                       checked=""
                       class="input"
                       id="optional"
-                      name="radio-field-179"
+                      name="radio-field-71"
                       type="radio"
                     />
                     Optional
@@ -477,7 +470,7 @@ exports[`<GorgiasChatIntegrationPreferences/> render() should render the Chat pr
                     <input
                       class="input"
                       id="always-required"
-                      name="radio-field-179"
+                      name="radio-field-71"
                       type="radio"
                     />
                     Required
@@ -511,21 +504,22 @@ exports[`<GorgiasChatIntegrationPreferences/> render() should render the Chat pr
                 <div>
                   <label
                     aria-checked="true"
-                    class="ui-label-label-3864 label"
-                    for="auto-responder-toggle"
+                    aria-label="auto-responder-toggle"
+                    class="ui-label-label-3864 ui-togglefield-label-52f1"
                     role="switch"
                   >
                     <input
+                      aria-label="auto-responder-toggle"
                       checked=""
-                      class="input"
+                      class="ui-togglefield-input-52f1"
                       disabled=""
-                      id="auto-responder-toggle"
                       name="auto-responder-toggle"
                       type="checkbox"
                     />
                     <div
-                      class="slider"
+                      class="ui-togglefield-slider-52f1"
                     />
+                    <div />
                   </label>
                 </div>
                 <div
@@ -541,7 +535,7 @@ exports[`<GorgiasChatIntegrationPreferences/> render() should render the Chat pr
               >
                 <fieldset
                   class="mb-2 radioFieldSet"
-                  name="radio-field-181"
+                  name="radio-field-72"
                 >
                   <div
                     class="option"
@@ -554,7 +548,7 @@ exports[`<GorgiasChatIntegrationPreferences/> render() should render the Chat pr
                         checked=""
                         class="input"
                         id="reply-dynamic"
-                        name="radio-field-181"
+                        name="radio-field-72"
                         type="radio"
                       />
                       <div>
@@ -587,7 +581,7 @@ exports[`<GorgiasChatIntegrationPreferences/> render() should render the Chat pr
                       <input
                         class="input"
                         id="reply-in-minutes"
-                        name="radio-field-181"
+                        name="radio-field-72"
                         type="radio"
                       />
                       In a few minutes
@@ -603,7 +597,7 @@ exports[`<GorgiasChatIntegrationPreferences/> render() should render the Chat pr
                       <input
                         class="input"
                         id="reply-in-hours"
-                        name="radio-field-181"
+                        name="radio-field-72"
                         type="radio"
                       />
                       In a few hours

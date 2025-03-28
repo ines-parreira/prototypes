@@ -1,4 +1,4 @@
-import React, { Component, FormEvent, ReactNode } from 'react'
+import { Component, FormEvent, ReactNode } from 'react'
 
 import classNames from 'classnames'
 import copy from 'copy-to-clipboard'
@@ -19,7 +19,7 @@ import {
     InputGroupAddon,
 } from 'reactstrap'
 
-import { Tooltip } from '@gorgias/merchant-ui-kit'
+import { ToggleField, Tooltip } from '@gorgias/merchant-ui-kit'
 
 import { logEvent, SegmentEvent } from 'common/segment'
 import { UploadType } from 'common/types'
@@ -36,7 +36,6 @@ import ConfirmButton from 'pages/common/components/button/ConfirmButton'
 import Loader from 'pages/common/components/Loader/Loader'
 import InputField from 'pages/common/forms/input/InputField'
 import RichFieldWithVariables from 'pages/common/forms/RichFieldWithVariables'
-import ToggleInput from 'pages/common/forms/ToggleInput'
 import EmailIntegrationAddressField from 'pages/integrations/integration/components/email/EmailIntegrationUpdate/EmailIntegrationAddressField'
 import EmailIntegrationDeliverabilitySettings from 'pages/integrations/integration/components/email/EmailIntegrationUpdate/EmailIntegrationDeliverabilitySettings'
 import css from 'pages/integrations/integration/components/email/EmailIntegrationUpdate/EmailIntegrationUpdate.less'
@@ -571,30 +570,28 @@ export class EmailIntegrationUpdateContainer extends Component<Props, State> {
                     </FormGroup>
                     {isGmail && (
                         <FormGroup className={css.gmailTogglesWrapper}>
-                            <ToggleInput
+                            <ToggleField
                                 name="use_gmail_categories"
-                                isToggled={use_gmail_categories}
-                                onClick={(value: boolean) =>
+                                value={use_gmail_categories}
+                                onChange={(value: boolean) =>
                                     this.setState({
                                         use_gmail_categories: value,
                                     })
                                 }
                                 caption="Categories include Social, Promotions, Updates, and Forums"
-                            >
-                                Tag tickets with Gmail categories
-                            </ToggleInput>
-                            <ToggleInput
-                                isToggled={enable_gmail_threading}
-                                onClick={(value: boolean) =>
+                                label="Tag tickets with Gmail categories"
+                            />
+                            <ToggleField
+                                value={enable_gmail_threading}
+                                onChange={(value: boolean) =>
                                     this.setState({
                                         enable_gmail_threading: value,
                                     })
                                 }
                                 caption="Group emails if they have the same recipients, sender, or subject. "
                                 name="enable_gmail_threading"
-                            >
-                                Group emails into conversations
-                            </ToggleInput>
+                                label="Group emails into conversations"
+                            />
                         </FormGroup>
                     )}
                     {(isGmail || isOutlook) && (

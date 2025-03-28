@@ -140,7 +140,7 @@ describe('<GorgiasChatCreationWizardStepAutomate.spec />', () => {
         const labelElements = getAllByRole('switch')
 
         labelElements.forEach((labelElement) => {
-            expect(labelElement).toHaveClass('disabledLabel')
+            expect(labelElement.className).toMatch(/disabledlabel/i)
         })
     })
 
@@ -178,7 +178,7 @@ describe('<GorgiasChatCreationWizardStepAutomate.spec />', () => {
         const labelElements = getAllByRole('switch')
 
         labelElements.forEach((labelElement) => {
-            expect(labelElement).toHaveClass('disabledLabel')
+            expect(labelElement.className).toMatch(/disabledlabel/i)
         })
     })
     it('disables form when isLoadingHelpCenters is true', () => {
@@ -224,7 +224,7 @@ describe('<GorgiasChatCreationWizardStepAutomate.spec />', () => {
         const labelElements = getAllByRole('switch')
 
         labelElements.forEach((labelElement) => {
-            expect(labelElement).toHaveClass('disabledLabel')
+            expect(labelElement.className).toMatch(/disabledlabel/i)
         })
     })
     it('disables form when isLoadingHelpCenters is true', () => {

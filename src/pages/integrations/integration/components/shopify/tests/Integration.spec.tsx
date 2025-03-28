@@ -1,4 +1,4 @@
-import React, { ComponentProps } from 'react'
+import { ComponentProps } from 'react'
 
 import { fireEvent, screen } from '@testing-library/react'
 import { fromJS } from 'immutable'
@@ -6,7 +6,6 @@ import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import * as ToggleInput from 'pages/common/forms/ToggleInput'
 import { INTEGRATION_REMOVAL_CONFIGURATION_TEXT } from 'pages/integrations/integration/constants'
 import * as actions from 'state/integrations/actions'
 import { renderWithRouter } from 'utils/testing'
@@ -187,7 +186,7 @@ describe('<ShopifyIntegration/>', () => {
                 ).toBeAriaDisabled()
                 fireEvent.click(
                     screen.getByRole('checkbox', {
-                        name: optionName,
+                        name: new RegExp(`^${optionName}`),
                     }),
                 )
                 expect(
@@ -197,15 +196,6 @@ describe('<ShopifyIntegration/>', () => {
         )
 
         it('should correctly update the sync customers option based on integration data, after we fetch it', () => {
-            jest.spyOn(ToggleInput, 'default').mockImplementation(
-                ({
-                    name,
-                    isToggled,
-                }: Partial<ComponentProps<typeof ToggleInput.default>>) => (
-                    <div data-testid={name}>{isToggled ? 'true' : 'false'}</div>
-                ),
-            )
-
             // first, simulate still waiting for the integration data
             const component = renderWithRouter(
                 <Provider store={store}>
@@ -229,9 +219,10 @@ describe('<ShopifyIntegration/>', () => {
                 </Provider>,
             )
 
-            expect(screen.getByTestId('sync_customer_notes')).toHaveTextContent(
-                'false',
-            )
+            const toggle = screen.getByRole('switch', {
+                name: /Synchronize customer notes between Gorgias and Shopify/i,
+            })
+            expect(toggle).toHaveAttribute('aria-checked', 'false')
         })
 
         it('when enabling DSA phone matching, should send all the integration meta after asking for confirmation', () => {
@@ -254,13 +245,13 @@ describe('<ShopifyIntegration/>', () => {
             )
 
             fireEvent.click(
-                screen.getByRole('checkbox', {
-                    name: 'Synchronize customer notes between Gorgias and Shopify',
+                screen.getByRole('switch', {
+                    name: /^Synchronize customer notes between Gorgias and Shopify/,
                 }),
             )
             fireEvent.click(
-                screen.getByRole('checkbox', {
-                    name: 'Match customer by Shopify default address phone number',
+                screen.getByRole('switch', {
+                    name: /^Match customer by Shopify default address phone number/,
                 }),
             )
 
@@ -298,13 +289,13 @@ describe('<ShopifyIntegration/>', () => {
             )
 
             fireEvent.click(
-                screen.getByRole('checkbox', {
-                    name: 'Synchronize customer notes between Gorgias and Shopify',
+                screen.getByRole('switch', {
+                    name: /^Synchronize customer notes between Gorgias and Shopify/,
                 }),
             )
             fireEvent.click(
-                screen.getByRole('checkbox', {
-                    name: 'Match customer by Shopify default address phone number',
+                screen.getByRole('switch', {
+                    name: /^Match customer by Shopify default address phone number/,
                 }),
             )
 
@@ -338,8 +329,8 @@ describe('<ShopifyIntegration/>', () => {
             )
 
             fireEvent.click(
-                screen.getByRole('checkbox', {
-                    name: 'Match customer by Shopify default address phone number',
+                screen.getByRole('switch', {
+                    name: /^Match customer by Shopify default address phone number/,
                 }),
             )
 
@@ -354,7 +345,7 @@ describe('<ShopifyIntegration/>', () => {
 
             expect(
                 screen.getByRole('switch', {
-                    name: 'Match customer by Shopify default address phone number',
+                    name: /^Match customer by Shopify default address phone number/,
                 }),
             ).toHaveAttribute('aria-checked', 'false')
             expect(updateOrCreateIntegrationRequest.mock.calls).toEqual([])
@@ -379,8 +370,8 @@ describe('<ShopifyIntegration/>', () => {
             )
 
             fireEvent.click(
-                screen.getByRole('checkbox', {
-                    name: 'Match customer by Shopify default address phone number',
+                screen.getByRole('switch', {
+                    name: /^Match customer by Shopify default address phone number/,
                 }),
             )
 
@@ -395,7 +386,7 @@ describe('<ShopifyIntegration/>', () => {
 
             expect(
                 screen.getByRole('switch', {
-                    name: 'Match customer by Shopify default address phone number',
+                    name: /^Match customer by Shopify default address phone number/,
                 }),
             ).toHaveAttribute('aria-checked', 'true')
 

@@ -84,20 +84,18 @@ exports[`<FacebookIntegrationPreferences/> render() should render the Facebook p
           <div>
             <label
               aria-checked="false"
-              class="ui-label-label-3864 label"
-              for="toggle-button-17"
+              class="ui-label-label-3864 ui-togglefield-label-52f1"
               role="switch"
             >
               <input
-                class="input"
+                class="ui-togglefield-input-52f1"
                 disabled=""
-                id="toggle-button-17"
-                name="toggle-button-17"
                 type="checkbox"
               />
               <div
-                class="slider"
+                class="ui-togglefield-slider-52f1"
               />
+              <div />
             </label>
           </div>
           <div
@@ -128,7 +126,7 @@ exports[`<FacebookIntegrationPreferences/> render() should render the Facebook p
           <fieldset
             class="mb-3"
             disabled=""
-            name="radio-field-18"
+            name="radio-field-9"
           >
             <div
               class="option"
@@ -142,7 +140,7 @@ exports[`<FacebookIntegrationPreferences/> render() should render the Facebook p
                   class="input"
                   disabled=""
                   id="reply-shortly"
-                  name="radio-field-18"
+                  name="radio-field-9"
                   type="radio"
                 />
                 "Thanks for reaching out! Our team will get back to you shortly."
@@ -159,7 +157,7 @@ exports[`<FacebookIntegrationPreferences/> render() should render the Facebook p
                   class="input"
                   disabled=""
                   id="reply-in-minutes"
-                  name="radio-field-18"
+                  name="radio-field-9"
                   type="radio"
                 />
                 "Thanks for reaching out! We typically reply in a few minutes."
@@ -176,7 +174,7 @@ exports[`<FacebookIntegrationPreferences/> render() should render the Facebook p
                   class="input"
                   disabled=""
                   id="reply-in-hours"
-                  name="radio-field-18"
+                  name="radio-field-9"
                   type="radio"
                 />
                 "Thanks for reaching out! We typically reply in a few hours."
@@ -193,7 +191,7 @@ exports[`<FacebookIntegrationPreferences/> render() should render the Facebook p
                   class="input"
                   disabled=""
                   id="reply-in-day"
-                  name="radio-field-18"
+                  name="radio-field-9"
                   type="radio"
                 />
                 "Thanks for reaching out! We typically reply in a day."

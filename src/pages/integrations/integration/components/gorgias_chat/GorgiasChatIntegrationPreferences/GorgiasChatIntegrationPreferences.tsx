@@ -15,7 +15,7 @@ import { connect, ConnectedProps } from 'react-redux'
 import { Link } from 'react-router-dom'
 import { Breadcrumb, BreadcrumbItem, Form, Label } from 'reactstrap'
 
-import { Tooltip } from '@gorgias/merchant-ui-kit'
+import { ToggleField, Tooltip } from '@gorgias/merchant-ui-kit'
 
 import { logEvent, SegmentEvent } from 'common/segment'
 import { FeatureFlagKey } from 'config/featureFlags'
@@ -78,7 +78,6 @@ import { RootState } from '../../../../../../state/types'
 import PageHeader from '../../../../../common/components/PageHeader'
 import RadioFieldSet from '../../../../../common/forms/RadioFieldSet'
 import SelectField from '../../../../../common/forms/SelectField/SelectField'
-import ToggleInput from '../../../../../common/forms/ToggleInput'
 import { isGenericEmailIntegration } from '../../email/helpers'
 import { CustomizeTranslationsButton } from '../components/CustomizeTranslationsButton'
 import { multiLanguageInitialTextsEmptyData } from '../GorgiasChatIntegrationAppearance/GorgiasTranslateText/GorgiasTranslateText'
@@ -1085,9 +1084,9 @@ export class GorgiasChatIntegrationPreferencesComponent extends Component<
                                             'd-flex',
                                         )}
                                     >
-                                        <ToggleInput
-                                            onClick={this._setHide}
-                                            isToggled={hide}
+                                        <ToggleField
+                                            onChange={this._setHide}
+                                            value={hide}
                                             aria-label="Hide chat"
                                         />
                                         <div
@@ -1138,12 +1137,12 @@ export class GorgiasChatIntegrationPreferencesComponent extends Component<
                                             'd-flex',
                                         )}
                                     >
-                                        <ToggleInput
-                                            onClick={
+                                        <ToggleField
+                                            onChange={
                                                 this
                                                     ._setHideOutsideBusinessHours
                                             }
-                                            isToggled={hideOutsideBusinessHours}
+                                            value={hideOutsideBusinessHours}
                                         />
 
                                         <div
@@ -1194,9 +1193,9 @@ export class GorgiasChatIntegrationPreferencesComponent extends Component<
                                             'd-flex',
                                         )}
                                     >
-                                        <ToggleInput
-                                            onClick={this._setHideOnMobile}
-                                            isToggled={hideOnMobile}
+                                        <ToggleField
+                                            onChange={this._setHideOnMobile}
+                                            value={hideOnMobile}
                                         />
 
                                         <div
@@ -1216,12 +1215,12 @@ export class GorgiasChatIntegrationPreferencesComponent extends Component<
                                                 'd-flex',
                                             )}
                                         >
-                                            <ToggleInput
-                                                onClick={
+                                            <ToggleField
+                                                onChange={
                                                     this
                                                         ._setDisplayCampaignsChatHidden
                                                 }
-                                                isToggled={
+                                                value={
                                                     displayCampaignsHiddenChat
                                                 }
                                                 name="display-campaigns-hidden-chat-toggle"
@@ -1263,15 +1262,14 @@ export class GorgiasChatIntegrationPreferencesComponent extends Component<
                                     </p>
 
                                     <div className="mb-4 d-flex align-items-center">
-                                        <ToggleInput
-                                            isToggled={emailCaptureEnabled}
+                                        <ToggleField
+                                            value={emailCaptureEnabled}
                                             name="disable-email-capture-toggle"
-                                            onClick={
+                                            onChange={
                                                 this._setEmailCaptureEnabled
                                             }
-                                        >
-                                            <b>Enable email capture</b>
-                                        </ToggleInput>
+                                            label={<b>Enable email capture</b>}
+                                        />
                                     </div>
 
                                     <RadioFieldSet
@@ -1294,8 +1292,8 @@ export class GorgiasChatIntegrationPreferencesComponent extends Component<
                                                 'd-flex',
                                             )}
                                         >
-                                            <ToggleInput
-                                                onClick={() =>
+                                            <ToggleField
+                                                onChange={() =>
                                                     this._setOfflineModeEnabledDatetime(
                                                         offlineModeEnabledDatetime ===
                                                             null
@@ -1303,7 +1301,7 @@ export class GorgiasChatIntegrationPreferencesComponent extends Component<
                                                             : null,
                                                     )
                                                 }
-                                                isToggled={
+                                                value={
                                                     offlineModeEnabledDatetime ===
                                                     null
                                                 }
@@ -1352,12 +1350,13 @@ export class GorgiasChatIntegrationPreferencesComponent extends Component<
                                         agent.
                                     </p>
                                     <div className="mb-4 d-flex align-items-center">
-                                        <ToggleInput
-                                            onClick={
+                                        <ToggleField
+                                            onChange={
                                                 this._setAutoResponderEnabled
                                             }
                                             name="auto-responder-toggle"
-                                            isToggled={autoResponderEnabled}
+                                            aria-label="auto-responder-toggle"
+                                            value={autoResponderEnabled}
                                         />
                                         <div className="ml-1">
                                             <b>
@@ -1408,12 +1407,12 @@ export class GorgiasChatIntegrationPreferencesComponent extends Component<
                                                 'd-flex',
                                             )}
                                         >
-                                            <ToggleInput
-                                                onClick={
+                                            <ToggleField
+                                                onChange={
                                                     this
                                                         ._setPrivacyPolicyDisclaimerEnabled
                                                 }
-                                                isToggled={
+                                                value={
                                                     privacyPolicyDisclaimerEnabled
                                                 }
                                                 aria-label="Display privacy policy disclaimer"
@@ -1588,11 +1587,11 @@ export class GorgiasChatIntegrationPreferencesComponent extends Component<
                                                 'd-flex',
                                             )}
                                         >
-                                            <ToggleInput
-                                                onClick={
+                                            <ToggleField
+                                                onChange={
                                                     this._setSendChatTranscript
                                                 }
-                                                isToggled={sendChatTranscript}
+                                                value={sendChatTranscript}
                                                 aria-label="Chat transcript"
                                             />
                                             <div

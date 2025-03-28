@@ -82,8 +82,10 @@ describe('<EmailIntegrationUpdateContainer />', () => {
             finalValue: INTEGRATION_NAME,
         },
         {
-            selector: ({ container }: RenderResult) =>
-                container.querySelector('#use_gmail_categories')!,
+            selector: ({ getByRole }: RenderResult) =>
+                getByRole('checkbox', {
+                    name: /tag tickets with gmail categories/i,
+                }),
             newValue: true,
             finalValue: false,
         },

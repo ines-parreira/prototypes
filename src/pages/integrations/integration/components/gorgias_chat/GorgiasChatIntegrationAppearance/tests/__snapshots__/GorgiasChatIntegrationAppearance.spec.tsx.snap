@@ -708,24 +708,24 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                 <div>
                   <label
                     aria-checked="true"
-                    class="ui-label-label-3864 label"
-                    for="show-bot-toggle"
+                    class="ui-label-label-3864 ui-togglefield-label-52f1"
                     role="switch"
                   >
                     <input
                       checked=""
-                      class="input"
+                      class="ui-togglefield-input-52f1"
                       disabled=""
-                      id="show-bot-toggle"
                       name="show-bot-toggle"
                       type="checkbox"
                     />
                     <div
-                      class="slider"
+                      class="ui-togglefield-slider-52f1"
                     />
-                    <b>
-                      Display ”Bot” next to chat title for automated messages
-                    </b>
+                    <div>
+                      <b>
+                        Display ”Bot” next to chat title for automated messages
+                      </b>
+                    </div>
                   </label>
                 </div>
               </div>
@@ -2186,24 +2186,24 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                 <div>
                   <label
                     aria-checked="true"
-                    class="ui-label-label-3864 label"
-                    for="show-bot-toggle"
+                    class="ui-label-label-3864 ui-togglefield-label-52f1"
                     role="switch"
                   >
                     <input
                       checked=""
-                      class="input"
+                      class="ui-togglefield-input-52f1"
                       disabled=""
-                      id="show-bot-toggle"
                       name="show-bot-toggle"
                       type="checkbox"
                     />
                     <div
-                      class="slider"
+                      class="ui-togglefield-slider-52f1"
                     />
-                    <b>
-                      Display ”Bot” next to chat title for automated messages
-                    </b>
+                    <div>
+                      <b>
+                        Display ”Bot” next to chat title for automated messages
+                      </b>
+                    </div>
                   </label>
                 </div>
               </div>
@@ -3683,24 +3683,24 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                 <div>
                   <label
                     aria-checked="true"
-                    class="ui-label-label-3864 label"
-                    for="show-bot-toggle"
+                    class="ui-label-label-3864 ui-togglefield-label-52f1"
                     role="switch"
                   >
                     <input
                       checked=""
-                      class="input"
+                      class="ui-togglefield-input-52f1"
                       disabled=""
-                      id="show-bot-toggle"
                       name="show-bot-toggle"
                       type="checkbox"
                     />
                     <div
-                      class="slider"
+                      class="ui-togglefield-slider-52f1"
                     />
-                    <b>
-                      Display ”Bot” next to chat title for automated messages
-                    </b>
+                    <div>
+                      <b>
+                        Display ”Bot” next to chat title for automated messages
+                      </b>
+                    </div>
                   </label>
                 </div>
               </div>
@@ -5150,24 +5150,24 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should mark the file field
                 <div>
                   <label
                     aria-checked="true"
-                    class="ui-label-label-3864 label"
-                    for="show-bot-toggle"
+                    class="ui-label-label-3864 ui-togglefield-label-52f1"
                     role="switch"
                   >
                     <input
                       checked=""
-                      class="input"
+                      class="ui-togglefield-input-52f1"
                       disabled=""
-                      id="show-bot-toggle"
                       name="show-bot-toggle"
                       type="checkbox"
                     />
                     <div
-                      class="slider"
+                      class="ui-togglefield-slider-52f1"
                     />
-                    <b>
-                      Display ”Bot” next to chat title for automated messages
-                    </b>
+                    <div>
+                      <b>
+                        Display ”Bot” next to chat title for automated messages
+                      </b>
+                    </div>
                   </label>
                 </div>
               </div>
@@ -6617,24 +6617,24 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should not mark the file f
                 <div>
                   <label
                     aria-checked="true"
-                    class="ui-label-label-3864 label"
-                    for="show-bot-toggle"
+                    class="ui-label-label-3864 ui-togglefield-label-52f1"
                     role="switch"
                   >
                     <input
                       checked=""
-                      class="input"
+                      class="ui-togglefield-input-52f1"
                       disabled=""
-                      id="show-bot-toggle"
                       name="show-bot-toggle"
                       type="checkbox"
                     />
                     <div
-                      class="slider"
+                      class="ui-togglefield-slider-52f1"
                     />
-                    <b>
-                      Display ”Bot” next to chat title for automated messages
-                    </b>
+                    <div>
+                      <b>
+                        Display ”Bot” next to chat title for automated messages
+                      </b>
+                    </div>
                   </label>
                 </div>
               </div>
@@ -8084,24 +8084,24 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should not mark the file f
                 <div>
                   <label
                     aria-checked="true"
-                    class="ui-label-label-3864 label"
-                    for="show-bot-toggle"
+                    class="ui-label-label-3864 ui-togglefield-label-52f1"
                     role="switch"
                   >
                     <input
                       checked=""
-                      class="input"
+                      class="ui-togglefield-input-52f1"
                       disabled=""
-                      id="show-bot-toggle"
                       name="show-bot-toggle"
                       type="checkbox"
                     />
                     <div
-                      class="slider"
+                      class="ui-togglefield-slider-52f1"
                     />
-                    <b>
-                      Display ”Bot” next to chat title for automated messages
-                    </b>
+                    <div>
+                      <b>
+                        Display ”Bot” next to chat title for automated messages
+                      </b>
+                    </div>
                   </label>
                 </div>
               </div>
@@ -9437,24 +9437,24 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should preselect shopify i
                 <div>
                   <label
                     aria-checked="true"
-                    class="ui-label-label-3864 label"
-                    for="show-bot-toggle"
+                    class="ui-label-label-3864 ui-togglefield-label-52f1"
                     role="switch"
                   >
                     <input
                       checked=""
-                      class="input"
+                      class="ui-togglefield-input-52f1"
                       disabled=""
-                      id="show-bot-toggle"
                       name="show-bot-toggle"
                       type="checkbox"
                     />
                     <div
-                      class="slider"
+                      class="ui-togglefield-slider-52f1"
                     />
-                    <b>
-                      Display ”Bot” next to chat title for automated messages
-                    </b>
+                    <div>
+                      <b>
+                        Display ”Bot” next to chat title for automated messages
+                      </b>
+                    </div>
                   </label>
                 </div>
               </div>
@@ -13705,24 +13705,24 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should submit and call the
                 <div>
                   <label
                     aria-checked="true"
-                    class="ui-label-label-3864 label"
-                    for="show-bot-toggle"
+                    class="ui-label-label-3864 ui-togglefield-label-52f1"
                     role="switch"
                   >
                     <input
                       checked=""
-                      class="input"
+                      class="ui-togglefield-input-52f1"
                       disabled=""
-                      id="show-bot-toggle"
                       name="show-bot-toggle"
                       type="checkbox"
                     />
                     <div
-                      class="slider"
+                      class="ui-togglefield-slider-52f1"
                     />
-                    <b>
-                      Display ”Bot” next to chat title for automated messages
-                    </b>
+                    <div>
+                      <b>
+                        Display ”Bot” next to chat title for automated messages
+                      </b>
+                    </div>
                   </label>
                 </div>
               </div>
@@ -15183,24 +15183,24 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should submit and call the
                 <div>
                   <label
                     aria-checked="true"
-                    class="ui-label-label-3864 label"
-                    for="show-bot-toggle"
+                    class="ui-label-label-3864 ui-togglefield-label-52f1"
                     role="switch"
                   >
                     <input
                       checked=""
-                      class="input"
+                      class="ui-togglefield-input-52f1"
                       disabled=""
-                      id="show-bot-toggle"
                       name="show-bot-toggle"
                       type="checkbox"
                     />
                     <div
-                      class="slider"
+                      class="ui-togglefield-slider-52f1"
                     />
-                    <b>
-                      Display ”Bot” next to chat title for automated messages
-                    </b>
+                    <div>
+                      <b>
+                        Display ”Bot” next to chat title for automated messages
+                      </b>
+                    </div>
                   </label>
                 </div>
               </div>

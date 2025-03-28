@@ -1,13 +1,14 @@
-import React, { useState } from 'react'
+import { useState } from 'react'
 
 import { Link } from 'react-router-dom'
+
+import { ToggleField } from '@gorgias/merchant-ui-kit'
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import { IntegrationType } from 'models/integration/constants'
 import { HttpIntegration } from 'models/integration/types'
 import Loader from 'pages/common/components/Loader/Loader'
-import ToggleInput from 'pages/common/forms/ToggleInput'
 import {
     activateIntegration,
     deactivateIntegration,
@@ -67,11 +68,11 @@ function List() {
                                     className={css.listItem}
                                     key={integration.id}
                                 >
-                                    <ToggleInput
+                                    <ToggleField
                                         className={css.toggle}
-                                        isToggled={!isDisabled}
+                                        value={!isDisabled}
                                         isLoading={isLoading}
-                                        onClick={handleToggle}
+                                        onChange={handleToggle}
                                     />
                                     <Link to={editLink} className={css.link}>
                                         <span>{integration.name}</span>

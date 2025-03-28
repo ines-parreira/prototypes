@@ -1,7 +1,6 @@
-import { Banner } from '@gorgias/merchant-ui-kit'
+import { Banner, ToggleField } from '@gorgias/merchant-ui-kit'
 
 import { FormField } from 'core/forms'
-import ToggleInputField from 'pages/common/forms/ToggleInputField'
 
 import css from './VoiceIntegrationSettingCallTranscription.less'
 
@@ -15,13 +14,13 @@ function VoiceIntegrationSettingCallTranscription() {
             <div className={css.sectionData}>
                 <FormField
                     name="meta.preferences.transcribe.recordings"
-                    field={ToggleInputField}
+                    field={ToggleField}
                 >
                     Call recording
                 </FormField>
                 <FormField
                     name="meta.preferences.transcribe.voicemails"
-                    field={ToggleInputField}
+                    field={ToggleField}
                 >
                     Voicemail
                 </FormField>

@@ -1,5 +1,6 @@
+import { ToggleField } from '@gorgias/merchant-ui-kit'
+
 import { FormField } from 'core/forms'
-import ToggleInputField from 'pages/common/forms/ToggleInputField'
 
 import css from './VoiceQueueSettingsFormGeneralSection.less'
 
@@ -22,16 +23,15 @@ export default function VoiceQueueSettingsFormGeneralSection() {
             <FormField
                 name="priority_weight"
                 caption="When enabled, calls in this queue are handled before those in other non-priority queues."
-                field={ToggleInputField}
+                field={ToggleField}
                 inputTransform={(value) =>
                     value === PRIORITY_WEIGHT_MAX ? false : true
                 }
                 outputTransform={(value) =>
                     value ? PRIORITY_WEIGHT_MIN : PRIORITY_WEIGHT_MAX
                 }
-            >
-                Priority queue
-            </FormField>
+                label="Priority queue"
+            />
         </div>
     )
 }

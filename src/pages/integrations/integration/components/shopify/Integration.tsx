@@ -1,9 +1,9 @@
-import React, { FormEvent, useCallback, useEffect, useState } from 'react'
+import { FormEvent, useCallback, useEffect, useState } from 'react'
 
 import { Map } from 'immutable'
 import { Col, Container, Row } from 'reactstrap'
 
-import { Label } from '@gorgias/merchant-ui-kit'
+import { Label, ToggleField } from '@gorgias/merchant-ui-kit'
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import Button from 'pages/common/components/button/Button'
@@ -12,7 +12,6 @@ import Loader from 'pages/common/components/Loader/Loader'
 import GroupAddon from 'pages/common/forms/input/GroupAddon'
 import InputGroup from 'pages/common/forms/input/InputGroup'
 import TextInput from 'pages/common/forms/input/TextInput'
-import ToggleInput from 'pages/common/forms/ToggleInput'
 import BackToConvertButton from 'pages/convert/onboarding/components/BackToConvertButton'
 import SyncNotification from 'pages/integrations/integration/components/SyncNotification'
 import { INTEGRATION_REMOVAL_CONFIGURATION_TEXT } from 'pages/integrations/integration/constants'
@@ -185,10 +184,12 @@ export default function Integration({
                         </InputGroup>
 
                         <div className="mb-4">
-                            <ToggleInput
+                            <ToggleField
                                 name="sync_customer_notes"
-                                isToggled={syncCustomerNotes}
-                                onClick={(value) => setSyncCustomerNotes(value)}
+                                value={syncCustomerNotes}
+                                onChange={(value) =>
+                                    setSyncCustomerNotes(value)
+                                }
                                 caption={
                                     <>
                                         When editing notes in both places at the
@@ -200,17 +201,15 @@ export default function Integration({
                                         than one Shopify store.
                                     </>
                                 }
-                            >
-                                Synchronize customer notes between Gorgias and
-                                Shopify
-                            </ToggleInput>
+                                label="Synchronize customer notes between Gorgias and Shopify"
+                            />
                         </div>
 
                         <div className="mb-4">
-                            <ToggleInput
+                            <ToggleField
                                 name="default_address_phone_matching_enabled"
-                                isToggled={defaultAddressPhoneMatchingEnabled}
-                                onClick={(value) =>
+                                value={defaultAddressPhoneMatchingEnabled}
+                                onChange={(value) =>
                                     setDefaultAddressPhoneMatchingEnabled(value)
                                 }
                                 caption={
@@ -228,10 +227,8 @@ export default function Integration({
                                         customer merges.
                                     </>
                                 }
-                            >
-                                Match customer by Shopify default address phone
-                                number
-                            </ToggleInput>
+                                label="Match customer by Shopify default address phone number"
+                            />
                         </div>
 
                         <div>

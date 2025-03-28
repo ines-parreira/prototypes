@@ -1,4 +1,4 @@
-import React, { ComponentProps } from 'react'
+import { ComponentProps } from 'react'
 
 import { fireEvent, render } from '@testing-library/react'
 import { fromJS, Map } from 'immutable'
@@ -22,6 +22,10 @@ import { GORGIAS_CHAT_INTEGRATION_TYPE } from 'constants/integration'
 import { Language } from 'constants/languages'
 import { user } from 'fixtures/users'
 import { IntegrationFromType, IntegrationType } from 'models/integration/types'
+import {
+    ReturnActionType,
+    SelfServiceConfiguration,
+} from 'models/selfServiceConfiguration/types'
 import history from 'pages/history'
 import * as IntegrationsActions from 'state/integrations/actions'
 import { RootState, StoreDispatch } from 'state/types'
@@ -373,7 +377,7 @@ describe('<GorgiasChatIntegrationPreferences/>', () => {
                     },
                 })
 
-                const { getByText, queryByText } = render(
+                const { getByText, queryByText, getByRole } = render(
                     <Router history={history}>
                         <Provider store={mockStore(defaultState)}>
                             <GorgiasChatIntegrationPreferencesComponent
@@ -388,9 +392,10 @@ describe('<GorgiasChatIntegrationPreferences/>', () => {
                         </Provider>
                     </Router>,
                 )
-                const autoResponderCheckbox = document.getElementById(
-                    'auto-responder-toggle',
-                )!
+
+                const autoResponderCheckbox = getByRole('switch', {
+                    name: 'auto-responder-toggle',
+                })
 
                 expect(
                     getByText(
@@ -504,7 +509,7 @@ describe('<GorgiasChatIntegrationPreferences/>', () => {
 
     describe('_setDisplayCampaignsChatHidden()', () => {
         it('should update the display campaigns with hidden chat in the state.', () => {
-            render(
+            const { getByRole } = render(
                 <Router history={history}>
                     <Provider store={mockStore(defaultState)}>
                         <GorgiasChatIntegrationPreferencesComponent
@@ -517,9 +522,9 @@ describe('<GorgiasChatIntegrationPreferences/>', () => {
                 </Router>,
             )
 
-            const displayCampaignsChatHiddenToggle = document.getElementById(
-                'display-campaigns-hidden-chat-toggle',
-            )!
+            const displayCampaignsChatHiddenToggle = getByRole('switch', {
+                name: /Hide chat/i,
+            })
 
             expect(displayCampaignsChatHiddenToggle).not.toBeChecked()
 
@@ -672,9 +677,9 @@ describe('<GorgiasChatIntegrationPreferences/>', () => {
                 </Router>,
             )
 
-            const autoResponderCheckbox = document.getElementById(
-                'auto-responder-toggle',
-            )!
+            const autoResponderCheckbox = getByText(
+                /Send auto-reply with wait time/i,
+            )
 
             fireEvent.click(autoResponderCheckbox)
             fireEvent.click(
@@ -718,6 +723,52 @@ describe('<GorgiasChatIntegrationPreferences/>', () => {
         })
 
         it('should render buttons in loading state because preferences are being submitted', () => {
+            const selfServiceConfiguration: SelfServiceConfiguration = {
+                id: 1,
+                type: IntegrationType.Shopify,
+                shopName: 'my-shop',
+                createdDatetime: '2024-01-01T00:00:00Z',
+                updatedDatetime: '2024-01-02T00:00:00Z',
+                deletedDatetime: null,
+                articleRecommendationHelpCenterId: 123,
+                reportIssuePolicy: {
+                    enabled: true,
+                    cases: [],
+                },
+                trackOrderPolicy: {
+                    enabled: true,
+                    unfulfilledMessage: {
+                        html: '<p>Your order is on the way!</p>',
+                        text: 'Your order is on the way!',
+                    },
+                },
+                cancelOrderPolicy: {
+                    enabled: true,
+                    eligibilities: [],
+                    exceptions: [],
+                    action: {
+                        type: 'automated_response',
+                        responseMessageContent: {
+                            html: '<p>Cancellation request received.</p>',
+                            text: 'Cancellation request received.',
+                        },
+                    },
+                },
+                returnOrderPolicy: {
+                    enabled: true,
+                    eligibilities: [],
+                    exceptions: [],
+                    action: {
+                        type: ReturnActionType.AutomatedResponse,
+                        responseMessageContent: {
+                            html: '<p>Return instructions sent.</p>',
+                            text: 'Return instructions sent.',
+                        },
+                    },
+                },
+                workflowsEntrypoints: [],
+            }
+
             const { getByText } = render(
                 <Router history={history}>
                     <Provider store={mockStore(defaultState)}>
@@ -736,6 +787,7 @@ describe('<GorgiasChatIntegrationPreferences/>', () => {
                                     conversation_color: '#08d123',
                                 },
                             })}
+                            selfServiceConfiguration={selfServiceConfiguration}
                         />
                     </Provider>
                 </Router>,

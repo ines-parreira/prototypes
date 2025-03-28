@@ -4,13 +4,12 @@ import classnames from 'classnames'
 import { Map } from 'immutable'
 import { Link } from 'react-router-dom'
 
-import { Tooltip } from '@gorgias/merchant-ui-kit'
+import { ToggleField, Tooltip } from '@gorgias/merchant-ui-kit'
 
 import { TicketChannel } from 'business/types/ticket'
 import { SelfServiceConfiguration } from 'models/selfServiceConfiguration/types'
 import { ARTICLE_RECOMMENDATION } from 'pages/automate/common/components/constants'
 import { useHelpCenterPublishedArticlesCount } from 'pages/automate/common/hooks/useHelpCenterPublishedArticlesCount'
-import ToggleInput from 'pages/common/forms/ToggleInput'
 
 import css from './GorgiasChatIntegrationPreferences.less'
 
@@ -82,15 +81,12 @@ const ControlTicketVolumeControls: React.FC<Props> = ({
                     className={classnames(css.formGroup, 'd-inline-block')}
                     ref={toggleInputRef}
                 >
-                    <ToggleInput
-                        onClick={onToggle}
-                        isToggled={
-                            disableTicketControlVolume ? false : isToggled
-                        }
+                    <ToggleField
+                        onChange={onToggle}
+                        value={disableTicketControlVolume ? false : isToggled}
                         isDisabled={disableTicketControlVolume}
-                    >
-                        Remove “Send us a message” button
-                    </ToggleInput>
+                        label={`Remove “Send us a message” button`}
+                    />
                 </div>
                 {disableTicketControlVolume && articleRecommendationLink && (
                     <Tooltip target={toggleInputRef} autohide={false}>

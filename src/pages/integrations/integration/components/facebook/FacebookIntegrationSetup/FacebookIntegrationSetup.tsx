@@ -1,4 +1,4 @@
-import React, { Component, FormEvent } from 'react'
+import { Component, FormEvent } from 'react'
 
 import classnames from 'classnames'
 import { fromJS, List, Map } from 'immutable'
@@ -13,6 +13,8 @@ import {
     FormGroup,
 } from 'reactstrap'
 
+import { ToggleField } from '@gorgias/merchant-ui-kit'
+
 import warningIcon from 'assets/img/icons/warning2.svg'
 import pageIconDefault from 'assets/img/integrations/facebook-page.png'
 import { IntegrationType } from 'models/integration/types'
@@ -22,7 +24,6 @@ import Loader from 'pages/common/components/Loader/Loader'
 import PageHeader from 'pages/common/components/PageHeader'
 import Pagination from 'pages/common/components/Pagination'
 import CheckBox from 'pages/common/forms/CheckBox'
-import ToggleInput from 'pages/common/forms/ToggleInput'
 import history from 'pages/history'
 import settingsCss from 'pages/settings/settings.less'
 import { getCurrentHelpdeskPlan } from 'state/billing/selectors'
@@ -453,9 +454,9 @@ export class FacebookIntegrationSetupContainer extends Component<Props, State> {
                                             </div>
                                         </div>
                                         {!nothingToEnable && canModerate && (
-                                            <ToggleInput
-                                                isToggled={pageEnabled}
-                                                onClick={(value) =>
+                                            <ToggleField
+                                                value={pageEnabled}
+                                                onChange={(value) =>
                                                     this._toggleIntegration(
                                                         integration,
                                                         value,

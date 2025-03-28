@@ -1,12 +1,13 @@
-import React, { useState } from 'react'
+import { useState } from 'react'
 
 import { fromJS } from 'immutable'
+
+import { ToggleField } from '@gorgias/merchant-ui-kit'
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAsyncFn from 'hooks/useAsyncFn'
 import { AircallIntegration } from 'models/integration/types'
 import ConfirmButton from 'pages/common/components/button/ConfirmButton'
-import ToggleInput from 'pages/common/forms/ToggleInput'
 import { formatPhoneNumberInternational } from 'pages/phoneNumbers/utils'
 import {
     activateIntegration,
@@ -41,7 +42,7 @@ export default function AircallIntegrationListItem({
     return (
         <tr>
             <td className="smallest align-middle">
-                <ToggleInput isToggled={!isDisabled} onClick={handleToggle} />
+                <ToggleField value={!isDisabled} onChange={handleToggle} />
             </td>
             <td className="align-middle link-full-td">
                 <div className="cell-content">
