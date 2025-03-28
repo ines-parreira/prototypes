@@ -1,4 +1,4 @@
-import { cloneElement, Component, isValidElement, ReactNode } from 'react'
+import { cloneElement, Component, isValidElement, memo, ReactNode } from 'react'
 
 import classnames from 'classnames'
 import { List, Map } from 'immutable'
@@ -19,6 +19,29 @@ import { notify } from 'state/notifications/actions'
 import NoIntegration from './NoIntegration'
 
 import css from '../../../settings/settings.less'
+
+const MemoizedIntegrationItems = memo(
+    ({
+        integrations,
+        integrationToItemDisplay,
+    }: {
+        integrations: List<Map<any, any>>
+        integrationToItemDisplay: (integration: Map<any, any>) => ReactNode
+    }) => {
+        return (
+            <>
+                {integrations
+                    .valueSeq()
+                    .map((integration) =>
+                        integrationToItemDisplay(integration!),
+                    )}
+            </>
+        )
+    },
+    (prevProps, nextProps) => {
+        return prevProps.integrations.equals(nextProps.integrations)
+    },
+)
 
 type Props = {
     integrationType: IntegrationType
@@ -150,11 +173,12 @@ class IntegrationList extends Component<Props> {
                     <Table className="table-integrations mt-3" hover>
                         {tableHeader}
                         <tbody>
-                            {integrations
-                                .valueSeq()
-                                .map((integration) =>
-                                    integrationToItemDisplay(integration!),
-                                )}
+                            <MemoizedIntegrationItems
+                                integrations={integrations}
+                                integrationToItemDisplay={
+                                    integrationToItemDisplay
+                                }
+                            />
                         </tbody>
                     </Table>
                 )}

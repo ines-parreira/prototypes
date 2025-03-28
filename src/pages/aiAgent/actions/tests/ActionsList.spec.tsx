@@ -169,7 +169,7 @@ describe('ActionsList', () => {
         expect(sortedActionsDesc[1]).toHaveTextContent('Action 1')
     })
 
-    it.only('show fake action placeholder', () => {
+    it('show fake action placeholder', () => {
         mockUseFlags.mockReturnValue({
             [FeatureFlagKey.FakeActionPlaceholder]: true,
         })
