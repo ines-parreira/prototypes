@@ -1,8 +1,8 @@
-import React, { ComponentProps, useEffect, useState } from 'react'
+import { ComponentProps, useEffect, useState } from 'react'
 
 import { Meta, Story } from '@storybook/react'
 
-import ToggleInput from 'pages/common/forms/ToggleInput'
+import { ToggleField } from '@gorgias/merchant-ui-kit'
 
 import Collapse from './Collapse'
 
@@ -30,7 +30,7 @@ const Template: Story<ComponentProps<typeof Collapse>> = ({
 
     return (
         <>
-            <ToggleInput isToggled={isOpen} onClick={setIsOpen} />
+            <ToggleField value={isOpen} onChange={setIsOpen} />
             <Collapse isOpen={isOpen} {...props}>
                 <div style={{ width: 500 }}>
                     Lorem ipsum dolor sit amet, consectetur adipiscing elit.

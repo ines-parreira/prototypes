@@ -2,9 +2,10 @@ import React, { ComponentProps } from 'react'
 
 import { Meta, Story } from '@storybook/react'
 
+import { ToggleField } from '@gorgias/merchant-ui-kit'
+
 import CheckBox from 'pages/common/forms/CheckBox'
 import InputField from 'pages/common/forms/input/InputField'
-import ToggleInput from 'pages/common/forms/ToggleInput'
 
 import Accordion from './Accordion'
 import AccordionBody from './AccordionBody'
@@ -146,7 +147,7 @@ WithToggleInput.args = {
         <>
             <AccordionItem>
                 <AccordionHeader>
-                    <ToggleInput isToggled />
+                    <ToggleField value={true} />
                     Header 1
                 </AccordionHeader>
                 <AccordionBody>
@@ -157,7 +158,7 @@ WithToggleInput.args = {
             </AccordionItem>
             <AccordionItem>
                 <AccordionHeader>
-                    <ToggleInput isToggled />
+                    <ToggleField value={true} />
                     Header 2
                 </AccordionHeader>
                 <AccordionBody>
@@ -168,7 +169,7 @@ WithToggleInput.args = {
             </AccordionItem>
             <AccordionItem>
                 <AccordionHeader>
-                    <ToggleInput isToggled={false} />
+                    <ToggleField value={false} />
                     Header 3
                 </AccordionHeader>
                 <AccordionBody>

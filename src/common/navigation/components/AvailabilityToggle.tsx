@@ -1,11 +1,12 @@
-import React, { useCallback } from 'react'
+import { useCallback } from 'react'
 
 import cn from 'classnames'
+
+import { ToggleField } from '@gorgias/merchant-ui-kit'
 
 import { logEvent, SegmentEvent } from 'common/segment'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
-import ToggleInput from 'pages/common/forms/ToggleInput'
 import { submitSetting } from 'state/currentUser/actions'
 import {
     getCurrentUser,
@@ -44,7 +45,7 @@ export default function AvailabilityToggle() {
             onClick={updateAvailability}
         >
             <span>Available</span>
-            <ToggleInput isToggled={isAvailable} isLoading={isLoading} />
+            <ToggleField value={isAvailable} isLoading={isLoading} />
         </button>
     )
 }

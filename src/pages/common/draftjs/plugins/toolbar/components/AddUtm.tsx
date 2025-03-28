@@ -1,10 +1,11 @@
-import React, { KeyboardEvent, useCallback, useState } from 'react'
+import { KeyboardEvent, useCallback, useState } from 'react'
 
 import { Button } from 'reactstrap'
 
+import { ToggleField } from '@gorgias/merchant-ui-kit'
+
 import CheckBox from 'pages/common/forms/CheckBox'
 import DEPRECATED_InputField from 'pages/common/forms/DEPRECATED_InputField'
-import ToggleInput from 'pages/common/forms/ToggleInput'
 import { useCampaignFormContext } from 'pages/convert/campaigns/hooks/useCampaignFormContext'
 import { UtmConfiguration } from 'pages/convert/campaigns/types/CampaignFormConfiguration'
 
@@ -48,10 +49,10 @@ const AddUtm = (props: AddUtmProps) => {
 
     return (
         <div className={css.wrapper} onKeyDown={onKeyDown}>
-            <ToggleInput
+            <ToggleField
                 className="form-item"
-                isToggled={utmEnabled}
-                onClick={() => onUtmEnabledChange(!utmEnabled)}
+                value={utmEnabled}
+                onChange={() => onUtmEnabledChange(!utmEnabled)}
                 caption={
                     <div>
                         <span>
@@ -63,9 +64,8 @@ const AddUtm = (props: AddUtmProps) => {
                         </a>
                     </div>
                 }
-            >
-                Enable UTM tracking
-            </ToggleInput>
+                label="Enable UTM tracking"
+            />
             <DEPRECATED_InputField
                 label="UTM Tracking"
                 className={css.formItem + ' form-item'}
