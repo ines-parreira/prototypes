@@ -11,11 +11,14 @@ import {
     TimeframePreferenceSelection,
     useTimeframePreferenceSelection,
 } from 'hooks/reporting/ticket-insights/useTimeframePreferenceSelection'
+import { useNotify } from 'hooks/useNotify'
 import Dropdown from 'pages/common/components/dropdown/Dropdown'
 import DropdownBody from 'pages/common/components/dropdown/DropdownBody'
 import DropdownItem from 'pages/common/components/dropdown/DropdownItem'
 import IconInput from 'pages/common/forms/input/IconInput'
 import css from 'pages/stats/common/components/SharedActionsMenu/SharedActionsMenu.less'
+import { TAGS_TITLE } from 'pages/stats/ticket-insights/tags/TagsReportConfig'
+import { TICKET_INSIGHTS_PAGE_TITLE } from 'pages/stats/ticket-insights/ticket-fields/TicketInsightsFieldsReportConfig'
 
 export enum ReportName {
     Tags = 'tags',
@@ -47,6 +50,25 @@ export const SHARED_LABELS = {
         creationDateSubtitle:
             'Only display ticket fields from created tickets within selected date range',
     },
+}
+
+const RESULTS_BASED_ON_ALL_STATUSES_NOTIFICATION =
+    'results will now display based on all ticket statuses'
+const RESULTS_BASED_ON_CREATION_DATE_NOTIFICATION =
+    'results will now display based on ticket creation date'
+
+export const createNotificationMessage = (
+    reportName: ReportName,
+    selection: TimeframePreferenceSelection,
+) => {
+    const entity =
+        reportName === ReportName.Tags ? TAGS_TITLE : TICKET_INSIGHTS_PAGE_TITLE
+    const notification =
+        selection === TimeframePreferenceSelection.basedOnTicketStatuses
+            ? RESULTS_BASED_ON_ALL_STATUSES_NOTIFICATION
+            : RESULTS_BASED_ON_CREATION_DATE_NOTIFICATION
+
+    return `${entity} ${notification}`
 }
 
 const TagDropdownItem = ({
@@ -86,11 +108,12 @@ export function SharedActionsMenu({
 }: {
     downloadAction: () => void
     isDownloadLoading: boolean
-    reportName?: ReportName
+    reportName: ReportName
 }) {
     const isTagsReport = reportName === ReportName.Tags
     const isTicketFieldsReport = reportName === ReportName.TicketFields
 
+    const notify = useNotify()
     const [tagResultsSelection, setTagResultsSelection] =
         useTagResultsSelection()
     const [timeframePreferenceSelection, seTimeframePreferenceSelection] =
@@ -111,23 +134,27 @@ export function SharedActionsMenu({
     }
 
     const resultBasedOnAllStatusesAction = () => {
+        const timeFrame = TimeframePreferenceSelection.basedOnTicketStatuses
         logEvent(SegmentEvent.StatTimeframePreferenceSelection, {
-            value: TimeframePreferenceSelection.basedOnTicketStatuses,
+            value: timeFrame,
             report: reportName,
         })
         seTimeframePreferenceSelection(
             TimeframePreferenceSelection.basedOnTicketStatuses,
         )
+        void notify.success(createNotificationMessage(reportName, timeFrame))
     }
 
     const resultBaseOnCreationDateAction = () => {
+        const timeFrame = TimeframePreferenceSelection.basedOnTicketCreationDate
         logEvent(SegmentEvent.StatTimeframePreferenceSelection, {
-            value: TimeframePreferenceSelection.basedOnTicketCreationDate,
+            value: timeFrame,
             report: reportName,
         })
         seTimeframePreferenceSelection(
             TimeframePreferenceSelection.basedOnTicketCreationDate,
         )
+        void notify.success(createNotificationMessage(reportName, timeFrame))
     }
 
     return (

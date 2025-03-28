@@ -11,7 +11,9 @@ import {
     TimeframePreferenceSelection,
     useTimeframePreferenceSelection,
 } from 'hooks/reporting/ticket-insights/useTimeframePreferenceSelection'
+import { useNotify } from 'hooks/useNotify'
 import {
+    createNotificationMessage,
     ReportName,
     SHARED_LABELS,
     SharedActionsMenu,
@@ -28,14 +30,19 @@ jest.mock('hooks/reporting/ticket-insights/useTimeframePreferenceSelection')
 const useTimeframePreferenceSelectionMock = assumeMock(
     useTimeframePreferenceSelection,
 )
+jest.mock('hooks/useNotify')
+const useNotifyMock = assumeMock(useNotify)
 
 describe('SharedActionsMenu', () => {
     const downloadMock = jest.fn()
     const setTagResultsSelection = jest.fn()
     const setTimeframePreferenceSelection = jest.fn()
+    const notifySuccessMock = jest.fn()
 
     beforeEach(() => {
-        jest.clearAllMocks()
+        useNotifyMock.mockReturnValue({
+            success: notifySuccessMock,
+        } as any)
 
         useTagResultsSelectionMock.mockReturnValue([
             TagSelection.includeTags,
@@ -48,7 +55,7 @@ describe('SharedActionsMenu', () => {
         ])
     })
 
-    describe('  reportName={ReportName.Tags}', () => {
+    describe('reportName={ReportName.Tags}', () => {
         it('renders the actions button', () => {
             render(
                 <SharedActionsMenu
@@ -187,7 +194,7 @@ describe('SharedActionsMenu', () => {
             )
         })
 
-        it('should have the correct label selected & select another option', () => {
+        it('should have the correct label selected & select another option and notify on selection', () => {
             render(
                 <SharedActionsMenu
                     reportName={ReportName.Tags}
@@ -212,7 +219,7 @@ describe('SharedActionsMenu', () => {
                 SegmentEvent.StatTimeframePreferenceSelection,
                 {
                     value: TimeframePreferenceSelection.basedOnTicketStatuses,
-                    report: 'tags',
+                    report: ReportName.Tags,
                 },
             )
 
@@ -227,8 +234,14 @@ describe('SharedActionsMenu', () => {
                 SegmentEvent.StatTimeframePreferenceSelection,
                 {
                     value: TimeframePreferenceSelection.basedOnTicketCreationDate,
-                    report: 'tags',
+                    report: ReportName.Tags,
                 },
+            )
+            expect(notifySuccessMock).toHaveBeenCalledWith(
+                createNotificationMessage(
+                    ReportName.Tags,
+                    TimeframePreferenceSelection.basedOnTicketCreationDate,
+                ),
             )
         })
     })
@@ -277,7 +290,7 @@ describe('SharedActionsMenu', () => {
             ).toBeInTheDocument()
         })
 
-        it('should have the correct label selected & select another option', () => {
+        it('should have the correct label selected & select another option and notify on selection', () => {
             render(
                 <SharedActionsMenu
                     reportName={ReportName.TicketFields}
@@ -325,6 +338,12 @@ describe('SharedActionsMenu', () => {
                     value: TimeframePreferenceSelection.basedOnTicketCreationDate,
                     report: ReportName.TicketFields,
                 },
+            )
+            expect(notifySuccessMock).toHaveBeenCalledWith(
+                createNotificationMessage(
+                    ReportName.TicketFields,
+                    TimeframePreferenceSelection.basedOnTicketCreationDate,
+                ),
             )
         })
     })
