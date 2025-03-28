@@ -63,6 +63,17 @@ describe('StatsNavbarView', () => {
         }),
     }
 
+    const mockData = [
+        { id: '1', name: 'Report 1', emoji: '📊' },
+        { id: '2', name: 'Report 2', emoji: 'plus' },
+    ]
+
+    beforeEach(() => {
+        useDashboardActionsMock.mockReturnValue({
+            getDashboardsHandler: () => mockData,
+        } as any)
+    })
+
     it('should render', () => {
         const { container } = renderWithRouterAndDnD(
             <Provider store={mockStore(defaultState)}>
@@ -253,19 +264,6 @@ describe('StatsNavbarView', () => {
     })
 
     it('should render the link to the Dashboards', () => {
-        mockFlags({
-            [FeatureFlagKey.AnalyticsCustomReports]: true,
-        })
-
-        const mockData = [
-            { id: '1', name: 'Report 1', emoji: '📊' },
-            { id: '2', name: 'Report 2', emoji: 'plus' },
-        ]
-
-        useDashboardActionsMock.mockReturnValue({
-            getDashboardsHandler: () => mockData,
-        } as any)
-
         const { container } = renderWithRouterAndDnD(
             <Provider store={mockStore(defaultState)}>
                 <StatsNavbarView />

@@ -13,6 +13,7 @@ import {
 } from 'fixtures/productPrices'
 import { useCleanStatsFilters } from 'hooks/reporting/useCleanStatsFilters'
 import FiltersPanelWrapper from 'pages/stats/common/filters/FiltersPanelWrapper/FiltersPanelWrapper'
+import { ChartsActionMenu } from 'pages/stats/dashboards/ChartsActionMenu/ChartsActionMenu'
 import { useReportChartRestrictions } from 'pages/stats/report-chart-restrictions/useReportChartRestrictions'
 import { AccuracyTrendCard } from 'pages/stats/support-performance/auto-qa/AccuracyTrendCard'
 import AutoQA from 'pages/stats/support-performance/auto-qa/AutoQA'
@@ -92,6 +93,8 @@ jest.mock(
         ))
     },
 )
+jest.mock('pages/stats/dashboards/ChartsActionMenu/ChartsActionMenu')
+const ChartsActionMenuMock = assumeMock(ChartsActionMenu)
 
 describe('AutoQA', () => {
     const componentMock = () => <div />
@@ -128,6 +131,7 @@ describe('AutoQA', () => {
             componentMock,
         )
         AutoQADownloadButtonMock.mockImplementation(componentMock)
+        ChartsActionMenuMock.mockImplementation(componentMock)
     })
 
     it('should render page title', () => {

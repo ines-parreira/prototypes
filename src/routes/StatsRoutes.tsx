@@ -1,6 +1,5 @@
 import React, { useEffect } from 'react'
 
-import { useFlags } from 'launchdarkly-react-client-sdk'
 import {
     Redirect,
     Route,
@@ -11,7 +10,6 @@ import {
 } from 'react-router-dom'
 
 import { logPageChange } from 'common/segment'
-import { FeatureFlagKey } from 'config/featureFlags'
 import { AGENT_ROLE } from 'config/user'
 import useAppSelector from 'hooks/useAppSelector'
 import App from 'pages/App'
@@ -59,8 +57,6 @@ import { getHasAutomate } from 'state/billing/selectors'
 import { currentAccountHasFeature } from 'state/currentAccount/selectors'
 import { AccountFeature } from 'state/currentAccount/types'
 
-type FeatureFlag = boolean | undefined
-
 function HelpCenterStatsRoutes({ match: { path } }: RouteComponentProps) {
     return (
         <HelpCenterApiClientProvider>
@@ -91,9 +87,6 @@ export const StatsRoutes = () => {
     )
 
     const hasAutomate = useAppSelector(getHasAutomate)
-
-    const isAnalyticsCustomReports: FeatureFlag =
-        useFlags()[FeatureFlagKey.AnalyticsCustomReports]
 
     useEffect(logPageChange, [location.pathname])
 
@@ -168,58 +161,49 @@ export const StatsRoutes = () => {
                         )}
                     />
                 </ProtectedRoute>
-                {!!isAnalyticsCustomReports && (
-                    <ProtectedRoute
+                <ProtectedRoute path={`${path}/${STATS_ROUTES.DASHBOARDS_NEW}`}>
+                    <Route
+                        exact
                         path={`${path}/${STATS_ROUTES.DASHBOARDS_NEW}`}
-                    >
-                        <Route
-                            exact
-                            path={`${path}/${STATS_ROUTES.DASHBOARDS_NEW}`}
-                            render={() => (
-                                <HelpCenterApiClientProvider>
-                                    <SupportedLocalesProvider>
-                                        <RevenueAddonApiClientProvider>
-                                            <CampaignStatsFilters>
-                                                <App
-                                                    content={Dashboards}
-                                                    navbar={
-                                                        StatsNavbarContainer
-                                                    }
-                                                />
-                                            </CampaignStatsFilters>
-                                        </RevenueAddonApiClientProvider>
-                                    </SupportedLocalesProvider>
-                                </HelpCenterApiClientProvider>
-                            )}
-                        />
-                    </ProtectedRoute>
-                )}
-                {!!isAnalyticsCustomReports && (
-                    <ProtectedRoute
+                        render={() => (
+                            <HelpCenterApiClientProvider>
+                                <SupportedLocalesProvider>
+                                    <RevenueAddonApiClientProvider>
+                                        <CampaignStatsFilters>
+                                            <App
+                                                content={Dashboards}
+                                                navbar={StatsNavbarContainer}
+                                            />
+                                        </CampaignStatsFilters>
+                                    </RevenueAddonApiClientProvider>
+                                </SupportedLocalesProvider>
+                            </HelpCenterApiClientProvider>
+                        )}
+                    />
+                </ProtectedRoute>
+                <ProtectedRoute
+                    path={`${path}/${STATS_ROUTES.DASHBOARDS_PAGE}`}
+                >
+                    <Route
+                        exact
                         path={`${path}/${STATS_ROUTES.DASHBOARDS_PAGE}`}
-                    >
-                        <Route
-                            exact
-                            path={`${path}/${STATS_ROUTES.DASHBOARDS_PAGE}`}
-                            render={() => (
-                                <HelpCenterApiClientProvider>
-                                    <SupportedLocalesProvider>
-                                        <RevenueAddonApiClientProvider>
-                                            <CampaignStatsFilters>
-                                                <App
-                                                    content={DashboardPage}
-                                                    navbar={
-                                                        StatsNavbarContainer
-                                                    }
-                                                />
-                                            </CampaignStatsFilters>
-                                        </RevenueAddonApiClientProvider>
-                                    </SupportedLocalesProvider>
-                                </HelpCenterApiClientProvider>
-                            )}
-                        />
-                    </ProtectedRoute>
-                )}
+                        render={() => (
+                            <HelpCenterApiClientProvider>
+                                <SupportedLocalesProvider>
+                                    <RevenueAddonApiClientProvider>
+                                        <CampaignStatsFilters>
+                                            <App
+                                                content={DashboardPage}
+                                                navbar={StatsNavbarContainer}
+                                            />
+                                        </CampaignStatsFilters>
+                                    </RevenueAddonApiClientProvider>
+                                </SupportedLocalesProvider>
+                            </HelpCenterApiClientProvider>
+                        )}
+                    />
+                </ProtectedRoute>
+
                 <ProtectedRoute
                     path={`${path}/${STATS_ROUTES.SUPPORT_PERFORMANCE_BUSIEST_TIMES}`}
                 >

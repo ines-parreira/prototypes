@@ -35,8 +35,6 @@ export default function StatsNavbarView() {
     const isTeamLeadOrAdmin = isTeamLead(user)
     const isNewSatisfactionReportEnabled: FeatureFlag =
         useFlags()[FeatureFlagKey.NewSatisfactionReport]
-    const isAnalyticsCustomReports: FeatureFlag =
-        useFlags()[FeatureFlagKey.AnalyticsCustomReports]
 
     const isAutoQANavLinkAvailable = useMemo(
         () => isTeamLeadOrAdmin && hasAutomate,
@@ -62,11 +60,7 @@ export default function StatsNavbarView() {
                 </div>
             </NavbarBlock>
 
-            {!!isAnalyticsCustomReports && (
-                <DashboardsNavbarBlock
-                    navBarLinkProps={COMMON_NAV_LINK_PROPS}
-                />
-            )}
+            <DashboardsNavbarBlock navBarLinkProps={COMMON_NAV_LINK_PROPS} />
 
             <NavbarBlock icon="emoji_events" title="Support Performance">
                 <div className={cssNavbar.menu}>

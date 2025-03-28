@@ -16,6 +16,7 @@ import { FilterKey } from 'models/stat/types'
 import { AnalyticsFooter } from 'pages/stats/AnalyticsFooter'
 import { AUTO_QA_FILTER_KEYS } from 'pages/stats/common/filters/constants'
 import FiltersPanelWrapper from 'pages/stats/common/filters/FiltersPanelWrapper/FiltersPanelWrapper'
+import { ChartsActionMenu } from 'pages/stats/dashboards/ChartsActionMenu/ChartsActionMenu'
 import { BusiestTimesOfDays } from 'pages/stats/support-performance/busiest-times-of-days/BusiestTimesOfDays'
 import { BusiestTimesOfDaysDownloadDataButton } from 'pages/stats/support-performance/busiest-times-of-days/BusiestTimesOfDaysDownloadDataButton'
 import { BusiestTimesOfDaysTable } from 'pages/stats/support-performance/busiest-times-of-days/BusiestTimesOfDaysTable'
@@ -57,6 +58,8 @@ const BusiestTimesOfDaysDownloadDataButtonMock = assumeMock(
 )
 jest.mock('hooks/reporting/useCleanStatsFilters')
 const useCleanStatsFiltersMock = assumeMock(useCleanStatsFilters)
+jest.mock('pages/stats/dashboards/ChartsActionMenu/ChartsActionMenu')
+const ChartsActionMenuMock = assumeMock(ChartsActionMenu)
 
 const componentMock = () => <div />
 
@@ -74,6 +77,7 @@ describe('BusiestTimesOfDays page', () => {
         BusiestTimesOfDaysDownloadDataButtonMock.mockImplementation(
             componentMock,
         )
+        ChartsActionMenuMock.mockReturnValue(componentMock as any)
     })
 
     it('should render the page title', () => {

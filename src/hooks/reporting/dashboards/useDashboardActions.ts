@@ -61,11 +61,6 @@ const handleMutationError = (
     )
 }
 
-export const DASHBOARDS_QUERY_KEY = [
-    'analyticsCustomReports',
-    'getAnalyticsCustomReport',
-]
-
 export const useDashboardActions = () => {
     const queryClient = useQueryClient()
     const dispatch = useAppDispatch()

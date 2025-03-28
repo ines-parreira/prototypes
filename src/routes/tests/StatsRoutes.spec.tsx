@@ -361,7 +361,6 @@ describe('StatsRoutes', () => {
         mockFlags({
             [FeatureFlagKey.NewSatisfactionReport]: true,
             [FeatureFlagKey.AIAgentStatsPage]: true,
-            [FeatureFlagKey.AnalyticsCustomReports]: true,
             [FeatureFlagKey.StandaloneAiSalesAnalyticsPage]: true,
         })
 

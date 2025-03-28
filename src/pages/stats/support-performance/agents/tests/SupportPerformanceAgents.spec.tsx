@@ -19,6 +19,7 @@ import { useCleanStatsFilters } from 'hooks/reporting/useCleanStatsFilters'
 import { AnalyticsFooter } from 'pages/stats/AnalyticsFooter'
 import { AUTO_QA_FILTER_KEYS } from 'pages/stats/common/filters/constants'
 import FiltersPanelWrapper from 'pages/stats/common/filters/FiltersPanelWrapper'
+import { ChartsActionMenu } from 'pages/stats/dashboards/ChartsActionMenu/ChartsActionMenu'
 import { AgentsPerformanceCardExtra } from 'pages/stats/support-performance/agents/AgentsPerformanceCardExtra'
 import { AgentsTableWithDefaultState } from 'pages/stats/support-performance/agents/AgentsTable'
 import { AGENT_PERFORMANCE_SECTION_TITLE } from 'pages/stats/support-performance/agents/AgentsTableChart'
@@ -82,6 +83,8 @@ const useAgentsTableConfigSettingMock = assumeMock(useAgentsTableConfigSetting)
 jest.mock('pages/stats/DrillDownModal.tsx', () => ({
     DrillDownModal: () => null,
 }))
+jest.mock('pages/stats/dashboards/ChartsActionMenu/ChartsActionMenu')
+const ChartsActionMenuMock = assumeMock(ChartsActionMenu)
 jest.mock('hooks/reporting/useCleanStatsFilters')
 const useCleanStatsFiltersMock = assumeMock(useCleanStatsFilters)
 
@@ -100,6 +103,7 @@ describe('SupportPerformanceAgents', () => {
     TopClosedTicketsPerformersMock.mockImplementation(componentMock)
     DownloadAgentsPerformanceDataButtonMock.mockImplementation(componentMock)
     AnalyticsFooterMock.mockImplementation(componentMock)
+    ChartsActionMenuMock.mockImplementation(componentMock)
     useAgentsMetricsMock.mockReturnValue({
         reportData: {
             closedTicketsMetric: {

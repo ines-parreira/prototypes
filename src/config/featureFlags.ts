@@ -24,8 +24,6 @@ export enum FeatureFlagKey {
     AiAgentTrialMode = 'ai-agent-trial-mode-allowed',
     AIAgentWelcomePage = 'ai-agent-welcome-page',
     AIAgentGuidanceTaggingSystem = 'ai-agent-guidance-tagging-system',
-    AnalyticsAutoQA = 'analytics-auto-qa',
-    AnalyticsCustomReports = 'analytics-custom-reports',
     AnalyticsDeferredLoadingExperiment = 'analytics-deferred-loading-experiment',
     AutomateNonFilteredDenominatorInAutomationRate = 'use-non-filtered-automated-interactions-in-automation-rate-denominator',
     AutomateOverviewChannelsFilter = 'automate-overview-channels-filter',

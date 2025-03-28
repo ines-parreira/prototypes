@@ -14,6 +14,7 @@ import { useHelpCenterAIArticlesLibrary } from 'pages/settings/helpCenter/compon
 import { getHelpCentersResponseFixture } from 'pages/settings/helpCenter/fixtures/getHelpCentersResponse.fixture'
 import { useHelpCenterList } from 'pages/settings/helpCenter/hooks/useHelpCenterList'
 import { FiltersPanelWrapper } from 'pages/stats/common/filters/FiltersPanelWrapper/FiltersPanelWrapper'
+import { ChartsActionMenu } from 'pages/stats/dashboards/ChartsActionMenu/ChartsActionMenu'
 import AIBanner from 'pages/stats/help-center/components/AIBanner'
 import HelpCenterStats from 'pages/stats/help-center/pages/HelpCenterStats'
 import { HELP_CENTER_STATS_TEST_IDS } from 'pages/stats/help-center/pages/tests/constants'
@@ -31,7 +32,6 @@ import { assumeMock, renderWithStore } from 'utils/testing'
 jest.mock('pages/stats/report-chart-restrictions/useReportChartRestrictions')
 const useReportChartRestrictionsMock = assumeMock(useReportChartRestrictions)
 
-jest.mock('common/segment')
 jest.mock(
     'pages/stats/common/components/charts/LineChart/LineChart',
     () => () => <div>line-chart</div>,
@@ -42,9 +42,8 @@ jest.mock('pages/stats/help-center/hooks/useArticleViewsTrend', () => ({
 jest.mock('pages/stats/help-center/hooks/useSearchRequestedTrend', () => ({
     useSearchRequestedTrend: () => ({ data: { value: 1 }, isFetching: false }),
 }))
-jest.mock('hooks/reporting/help-center/useArticleViewTimeSeries', () => ({
-    useArticleViewTimeSeries: jest.fn(),
-}))
+jest.mock('hooks/reporting/help-center/useArticleViewTimeSeries')
+const mockUseArticleViewTimeSeries = assumeMock(useArticleViewTimeSeries)
 jest.mock('pages/stats/help-center/hooks/useSearchTermsMetrics', () => ({
     useSearchTermsMetrics: () => ({ data: [], isFetching: false }),
 }))
@@ -57,9 +56,8 @@ jest.mock(
 jest.mock('pages/stats/help-center/hooks/useNoSearchResultsMetrics', () => ({
     useNoSearchResultsMetrics: () => ({ data: [], isFetching: false }),
 }))
-jest.mock('pages/settings/helpCenter/hooks/useHelpCenterList', () => ({
-    useHelpCenterList: jest.fn(),
-}))
+jest.mock('pages/settings/helpCenter/hooks/useHelpCenterList')
+const mockUseHelpCenterList = assumeMock(useHelpCenterList)
 jest.mock('pages/stats/help-center/hooks/useSearchResultRange', () => ({
     useSearchResultRange: () => ({ data: [], isLoading: true }),
 }))
@@ -86,22 +84,24 @@ jest.mock(
     'pages/settings/helpCenter/components/AIArticlesLibraryView/hooks/useHasAccessToAILibrary',
 )
 const useHasAccessToAILibraryMock = assumeMock(useHasAccessToAILibrary)
-const mockUseHelpCenterList = jest.mocked(useHelpCenterList)
-const mockUseArticleViewTimeSeries = jest.mocked(useArticleViewTimeSeries)
-const mockedLogEvent = jest.mocked(logEvent)
-
-const helpCenters = getHelpCentersResponseFixture.data
-
-const renderComponent = () => {
-    const store = configureStore({} as InitialRootState)
-    render(
-        <Provider store={store}>
-            <HelpCenterStats />
-        </Provider>,
-    )
-}
+jest.mock('pages/stats/dashboards/ChartsActionMenu/ChartsActionMenu')
+const ChartsActionMenuMock = assumeMock(ChartsActionMenu)
+jest.mock('common/segment')
+const mockedLogEvent = assumeMock(logEvent)
 
 describe('<HelpCenterStats />', () => {
+    const helpCenters = getHelpCentersResponseFixture.data
+
+    const renderComponent = () => {
+        const store = configureStore({} as InitialRootState)
+        render(
+            <Provider store={store}>
+                <HelpCenterStats />
+            </Provider>,
+        )
+    }
+    const componentMock = () => <div />
+
     beforeEach(() => {
         useReportChartRestrictionsMock.mockReturnValue({
             isChartRestrictedToCurrentUser: () => false,
@@ -125,8 +125,9 @@ describe('<HelpCenterStats />', () => {
         useHelpCenterAIArticlesLibraryMock.mockReturnValue({
             hasNewArticles: false,
         } as any)
-        FiltersPanelMock.mockImplementation(() => <div>FiltersPanelMock</div>)
-        AIBannerMock.mockImplementation(() => <div />)
+        FiltersPanelMock.mockImplementation(componentMock)
+        AIBannerMock.mockImplementation(componentMock)
+        ChartsActionMenuMock.mockImplementation(componentMock)
     })
 
     it('should render page with title and sections', () => {

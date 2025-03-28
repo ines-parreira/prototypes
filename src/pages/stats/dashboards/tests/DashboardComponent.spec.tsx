@@ -1,9 +1,7 @@
 import React from 'react'
 
 import { render, screen } from '@testing-library/react'
-import { mockFlags } from 'jest-launchdarkly-mock'
 
-import { FeatureFlagKey } from 'config/featureFlags'
 import { DashboardComponent } from 'pages/stats/dashboards/DashboardComponent'
 import {
     DashboardChartProps,
@@ -61,20 +59,9 @@ describe('<DashboardComponent />', () => {
         expect(chartComponentMock).not.toHaveBeenCalled()
     })
 
-    it('should not render chartId if featureFlag is false', () => {
-        render(<DashboardComponent chart={chart} config={config} />)
-
-        expect(screen.getByText(content)).toBeInTheDocument()
-        expect(screen.queryByText(chart)).not.toBeInTheDocument()
-    })
-
     it.each([true, undefined])(
         'should pass menu props if withChartMenu is true (or not set)',
         (withChartMenu) => {
-            mockFlags({
-                [FeatureFlagKey.AnalyticsCustomReports]: true,
-            })
-
             render(
                 <DashboardComponent
                     chart={chart}
@@ -95,10 +82,6 @@ describe('<DashboardComponent />', () => {
     )
 
     it('should not pass menu props if withChartMenu is false', () => {
-        mockFlags({
-            [FeatureFlagKey.AnalyticsCustomReports]: true,
-        })
-
         render(
             <DashboardComponent
                 chart={chart}
@@ -116,11 +99,7 @@ describe('<DashboardComponent />', () => {
         )
     })
 
-    it('should render chartId and dashboardId if dashboard exists and featureFlag is true', () => {
-        mockFlags({
-            [FeatureFlagKey.AnalyticsCustomReports]: true,
-        })
-
+    it('should render chartId and dashboardId if dashboard exists', () => {
         render(
             <DashboardComponent
                 config={config}

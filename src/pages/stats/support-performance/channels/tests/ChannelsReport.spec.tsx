@@ -13,6 +13,7 @@ import {
 import { useCleanStatsFilters } from 'hooks/reporting/useCleanStatsFilters'
 import { AUTO_QA_FILTER_KEYS } from 'pages/stats/common/filters/constants'
 import FiltersPanelWrapper from 'pages/stats/common/filters/FiltersPanelWrapper/FiltersPanelWrapper'
+import { ChartsActionMenu } from 'pages/stats/dashboards/ChartsActionMenu/ChartsActionMenu'
 import { DrillDownModalTrigger } from 'pages/stats/DrillDownModalTrigger'
 import { ChannelsReport } from 'pages/stats/support-performance/channels/ChannelsReport'
 import {
@@ -56,6 +57,8 @@ jest.mock(
 jest.mock('pages/stats/support-performance/channels/ChannelsTable', () => ({
     ChannelsTable: componentMock,
 }))
+jest.mock('pages/stats/dashboards/ChartsActionMenu/ChartsActionMenu')
+const ChartsActionMenuMock = assumeMock(ChartsActionMenu)
 jest.mock('hooks/reporting/useCleanStatsFilters')
 const useCleanStatsFiltersMock = assumeMock(useCleanStatsFilters)
 
@@ -66,6 +69,10 @@ describe('ChannelsReport', () => {
         },
         billing: fromJS(billingState),
     } as RootState
+
+    beforeEach(() => {
+        ChartsActionMenuMock.mockReturnValue(componentMock as any)
+    })
 
     it('should render channels report component', () => {
         const { getByText } = renderWithStore(<ChannelsReport />, defaultState)
