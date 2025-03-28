@@ -1,11 +1,10 @@
 import classNames from 'classnames'
 import { Link } from 'react-router-dom'
 
-import { Label } from '@gorgias/merchant-ui-kit'
+import { Label, ToggleField } from '@gorgias/merchant-ui-kit'
 
 import Button from 'pages/common/components/button/Button'
 import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
-import ToggleInput from 'pages/common/forms/ToggleInput'
 
 import css from './FeatureSettings.less'
 
@@ -58,16 +57,15 @@ export const FeatureSettings = ({
             </div>
             {labelSubtitle && <span>{labelSubtitle}</span>}
             <div className={css.toggleContainer}>
-                <ToggleInput
+                <ToggleField
                     isDisabled={disabled}
-                    isToggled={enabled}
+                    value={enabled}
                     isLoading={isLoading}
-                    onClick={() => onToggle?.(!enabled)}
+                    onChange={() => onToggle?.(!enabled)}
                     caption={subtitle}
                     className={css.toggle}
-                >
-                    {label}
-                </ToggleInput>
+                    label={label}
+                />
                 {showConfigurationRequiredAlert && (
                     <Link to={externalLinkUrl}>
                         <Button fillStyle="ghost" size="small">

@@ -1,9 +1,8 @@
-import React, { ReactNode } from 'react'
+import { ReactNode } from 'react'
 
-import { Tooltip } from '@gorgias/merchant-ui-kit'
+import { ToggleField, Tooltip } from '@gorgias/merchant-ui-kit'
 
 import useId from 'hooks/useId'
-import ToggleInput from 'pages/common/forms/ToggleInput'
 
 import css from './ConnectedChannelFeatureToggle.less'
 
@@ -29,16 +28,15 @@ const ConnectedChannelFeatureToggle = ({
     const toggleInputId = `feature-toggle-${useId()}`
     return (
         <div className={css.feature}>
-            <ToggleInput
+            <ToggleField
                 className={css.featureToggle}
-                isToggled={value}
+                value={value}
                 isDisabled={disabled}
-                onClick={onChange}
+                onChange={onChange}
                 caption={description}
                 name={toggleInputId}
-            >
-                {name}
-            </ToggleInput>
+                label={name}
+            />
             {tooltipMessage && (
                 <Tooltip target={`${toggleInputId} + div`}>
                     {tooltipMessage}

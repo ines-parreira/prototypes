@@ -1,11 +1,10 @@
-import React, { ReactNode, RefObject } from 'react'
+import { ReactNode, RefObject } from 'react'
 
 import classnames from 'classnames'
 
-import { Tooltip } from '@gorgias/merchant-ui-kit'
+import { ToggleField, Tooltip } from '@gorgias/merchant-ui-kit'
 
 import useId from 'hooks/useId'
-import ToggleInput from 'pages/common/forms/ToggleInput'
 import { useReorderDnD } from 'pages/common/hooks/useReorderDnD'
 
 import css from './WorkflowItem.less'
@@ -63,14 +62,13 @@ const WorkflowItem = ({
             >
                 drag_indicator
             </i>
-            <ToggleInput
+            <ToggleField
                 name={toggleInputId}
-                isToggled={isEnabled}
-                onClick={handleToggle}
+                value={isEnabled}
+                onChange={handleToggle}
                 isDisabled={!isToggleable}
-            >
-                {name}
-            </ToggleInput>
+                label={name}
+            />
             {warningTooltipMessage && (
                 <>
                     <i

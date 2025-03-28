@@ -1,8 +1,8 @@
-import React, { MouseEvent, ReactNode } from 'react'
+import { MouseEvent, ReactNode } from 'react'
 
 import classnames from 'classnames'
 
-import ToggleInput from 'pages/common/forms/ToggleInput'
+import { ToggleField } from '@gorgias/merchant-ui-kit'
 
 import css from './OrderManagementFlowItem.less'
 
@@ -55,10 +55,10 @@ const OrderManagementFlowItem = ({
             onMouseEnter={onMouseEnter}
             onMouseLeave={onMouseLeave}
         >
-            <ToggleInput
-                isToggled={isEnabled}
+            <ToggleField
+                value={isEnabled}
                 isDisabled={isDisabled}
-                onClick={handleChange}
+                onChange={handleChange}
             />
             <div>
                 <div className={css.title}>{title}</div>

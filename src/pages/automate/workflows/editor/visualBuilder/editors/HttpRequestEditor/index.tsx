@@ -1,9 +1,9 @@
-import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 
 import { produce } from 'immer'
 import _uniq from 'lodash/uniq'
 
-import { Label, Tooltip } from '@gorgias/merchant-ui-kit'
+import { Label, ToggleField, Tooltip } from '@gorgias/merchant-ui-kit'
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import useId from 'hooks/useId'
@@ -24,7 +24,6 @@ import Button from 'pages/common/components/button/Button'
 import { Drawer } from 'pages/common/components/Drawer'
 import Caption from 'pages/common/forms/Caption/Caption'
 import TextInput from 'pages/common/forms/input/TextInput'
-import ToggleInput from 'pages/common/forms/ToggleInput'
 import { notify } from 'state/notifications/actions'
 import { NotificationStatus } from 'state/notifications/types'
 import { saveFileAsDownloaded } from 'utils/file'
@@ -288,21 +287,20 @@ export default function HttpRequestEditor({
                             {selectedApp?.auth_type === 'oauth2-token' &&
                                 visualBuilderGraph.isTemplate && (
                                     <div id={oauth2ToggleId}>
-                                        <ToggleInput
-                                            onClick={() => {
+                                        <ToggleField
+                                            onChange={() => {
                                                 dispatch({
                                                     type: 'TOGGLE_OAUTH2_SETTINGS',
                                                     httpRequestNodeId:
                                                         nodeInEdition.id,
                                                 })
                                             }}
-                                            isToggled={
+                                            value={
                                                 !!nodeInEdition.data
                                                     .oauth2TokenSettings
                                             }
-                                        >
-                                            Enable OAuth2 Authentication
-                                        </ToggleInput>
+                                            label="Enable OAuth2 Authentication"
+                                        />
                                         <Tooltip
                                             placement="top-start"
                                             target={oauth2ToggleId}
@@ -314,21 +312,20 @@ export default function HttpRequestEditor({
                                 )}
                             {selectedApp?.auth_type === 'trackstar' &&
                                 visualBuilderGraph.isTemplate && (
-                                    <ToggleInput
-                                        onClick={() => {
+                                    <ToggleField
+                                        onChange={() => {
                                             dispatch({
                                                 type: 'TOGGLE_TRACKSTAR_AUTH_SETTINGS',
                                                 httpRequestNodeId:
                                                     nodeInEdition.id,
                                             })
                                         }}
-                                        isToggled={
+                                        value={
                                             !!nodeInEdition.data
                                                 .trackstar_integration_name
                                         }
-                                    >
-                                        Enable Trackstar Auth
-                                    </ToggleInput>
+                                        label="Enable Trackstar Auth"
+                                    />
                                 )}
                         </div>
                         <Headers

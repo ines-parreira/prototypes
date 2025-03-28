@@ -1,6 +1,8 @@
-import React, { useCallback, useMemo } from 'react'
+import { useCallback, useMemo } from 'react'
 
 import _ from 'lodash'
+
+import { ToggleField } from '@gorgias/merchant-ui-kit'
 
 import { TicketChannel } from 'business/types/ticket'
 import { logEvent, SegmentEvent } from 'common/segment'
@@ -13,7 +15,6 @@ import {
 import { ChannelLanguage } from 'pages/automate/common/types'
 import useLanguagesMismatchWarnings from 'pages/automate/workflows/hooks/useLanguagesMismatchWarnings'
 import { WorkflowConfiguration } from 'pages/automate/workflows/models/workflowConfiguration.types'
-import ToggleInput from 'pages/common/forms/ToggleInput'
 
 import ChannelWarning from '../helper/ChannelWarning'
 
@@ -110,11 +111,11 @@ const ChannelToggle = ({
 
     return (
         <div>
-            <ToggleInput
+            <ToggleField
                 id={toggleId}
                 className={css.channelToggle}
                 name={channel.value.name}
-                isToggled={isWorkflowEnabled}
+                value={isWorkflowEnabled}
                 isLoading={isLoading}
                 onClick={handleUpdate}
                 isDisabled={
@@ -123,24 +124,27 @@ const ChannelToggle = ({
                         maxWorkflowsLimitReached) &&
                     !isWorkflowEnabled
                 }
-            >
-                <div className={css.channelLabel}>
-                    <div>{channel.value.name} </div>
-                    {
-                        <ChannelWarning
-                            maxWorkflowsLimitReached={maxWorkflowsLimitReached}
-                            channel={channel}
-                            toggleId={toggleId}
-                            isWorkflowEnabled={isWorkflowEnabled}
-                            onlySupportedChannels={onlySupportedChannels}
-                            missMatchMessage={
-                                languagesMismatchWarning &&
-                                languagesMismatchWarning.message
-                            }
-                        />
-                    }
-                </div>
-            </ToggleInput>
+                label={
+                    <div className={css.channelLabel}>
+                        <div>{channel.value.name} </div>
+                        {
+                            <ChannelWarning
+                                maxWorkflowsLimitReached={
+                                    maxWorkflowsLimitReached
+                                }
+                                channel={channel}
+                                toggleId={toggleId}
+                                isWorkflowEnabled={isWorkflowEnabled}
+                                onlySupportedChannels={onlySupportedChannels}
+                                missMatchMessage={
+                                    languagesMismatchWarning &&
+                                    languagesMismatchWarning.message
+                                }
+                            />
+                        }
+                    </div>
+                }
+            />
         </div>
     )
 }

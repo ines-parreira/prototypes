@@ -2,12 +2,13 @@ import classnames from 'classnames'
 import { EditorState } from 'draft-js'
 import { fromJS } from 'immutable'
 
+import { ToggleField } from '@gorgias/merchant-ui-kit'
+
 import { UploadType } from 'common/types'
 import { AUTOMATED_RESPONSE_MESSAGE_TEXT_MAX_LENGTH } from 'models/selfServiceConfiguration/constants'
 import { ReportIssueCaseReasonAction } from 'models/selfServiceConfiguration/types'
 import ToolbarProvider from 'pages/common/draftjs/plugins/toolbar/ToolbarProvider'
 import RichField from 'pages/common/forms/RichField/RichField'
-import ToggleInput from 'pages/common/forms/ToggleInput'
 import { convertToHTML } from 'utils/editor'
 import { trimHTML } from 'utils/html'
 
@@ -69,15 +70,14 @@ const ReportOrderIssueScenarioReasonAction = ({ value, onChange }: Props) => {
                     uploadType={UploadType.PublicAttachment}
                 />
             </ToolbarProvider>
-            <ToggleInput
+            <ToggleField
                 className={css.showHelpfulPromptToggleInput}
                 isDisabled={!value.responseMessageContent.text.length}
-                isToggled={value.showHelpfulPrompt}
-                onClick={handleShowHelpfulPromptChange}
+                value={value.showHelpfulPrompt}
+                onChange={handleShowHelpfulPromptChange}
                 caption="A ticket is created only if customers need more help"
-            >
-                Ask customers if your response was helpful
-            </ToggleInput>
+                label="Ask customers if your response was helpful"
+            />
         </>
     )
 }

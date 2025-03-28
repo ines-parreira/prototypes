@@ -1,18 +1,14 @@
-import React from 'react'
-
 import { QueryClientProvider } from '@tanstack/react-query'
 import { render, screen } from '@testing-library/react'
 
 import { LegacyChannelSlug } from '@gorgias/api-queries'
 
+import useLanguagesMismatchWarnings from 'pages/automate/workflows/hooks/useLanguagesMismatchWarnings'
 import { WorkflowConfiguration } from 'pages/automate/workflows/models/workflowConfiguration.types'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 
 import ChannelToggle from '../ChannelToggle'
 
-jest.mock('pages/common/forms/ToggleInput', () =>
-    jest.fn(({ children }) => <div>{children}</div>),
-)
 jest.mock('../../helper/ChannelWarning', () =>
     jest.fn(() => <div>ChannelWarning</div>),
 )
@@ -22,6 +18,16 @@ jest.mock('common/segment', () => ({
     },
     logEvent: jest.fn(),
 }))
+
+jest.mock(
+    'pages/automate/workflows/hooks/useLanguagesMismatchWarnings',
+    () => ({
+        __esModule: true,
+        default: jest.fn(() => ({
+            getLanguagesMismatchWarning: () => undefined,
+        })),
+    }),
+)
 
 const defaultWorkflowConfiguration = {
     id: 'workflow-1',
@@ -94,5 +100,35 @@ describe('ChannelToggle', () => {
         render(renderWithQueryClient(<ChannelToggle {...(chatProps as any)} />))
         expect(screen.getByText('Default Chat Integration')).toBeInTheDocument()
         expect(screen.getByText('ChannelWarning')).toBeInTheDocument()
+    })
+
+    it('does not render mismatch warning if getLanguagesMismatchWarning returns undefined', () => {
+        ;(useLanguagesMismatchWarnings as jest.Mock).mockReturnValue({
+            getLanguagesMismatchWarning: () => undefined,
+        })
+
+        render(renderWithQueryClient(<ChannelToggle {...(chatProps as any)} />))
+
+        expect(screen.getByText('Default Chat Integration')).toBeInTheDocument()
+        expect(screen.getByText('ChannelWarning')).toBeInTheDocument()
+    })
+
+    it('renders mismatch warning message when getLanguagesMismatchWarning returns an error', () => {
+        const mockMessage = 'Languages do not match!'
+        const mockWarning = {
+            type: 'error',
+            message: mockMessage,
+        }
+
+        ;(useLanguagesMismatchWarnings as jest.Mock).mockReturnValue({
+            getLanguagesMismatchWarning: () => mockWarning,
+        })
+
+        const { getByText } = render(
+            renderWithQueryClient(<ChannelToggle {...(chatProps as any)} />),
+        )
+
+        expect(getByText('Default Chat Integration')).toBeInTheDocument()
+        expect(getByText('ChannelWarning')).toBeInTheDocument()
     })
 })
