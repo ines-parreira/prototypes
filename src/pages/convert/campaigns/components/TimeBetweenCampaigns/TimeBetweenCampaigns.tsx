@@ -1,11 +1,12 @@
-import React, { useEffect, useState } from 'react'
+import { FC, useEffect, useState } from 'react'
 
 import moment from 'moment'
+
+import { ToggleField } from '@gorgias/merchant-ui-kit'
 
 import IconTooltip from 'pages/common/forms/IconTooltip/IconTooltip'
 import NumberInput from 'pages/common/forms/input/NumberInput'
 import SelectField from 'pages/common/forms/SelectField/SelectField'
-import ToggleInput from 'pages/common/forms/ToggleInput'
 import { MinimumTimeBetweenCampaigns } from 'pages/convert/campaigns/types/CampaignMeta'
 
 import {
@@ -32,7 +33,7 @@ type Props = {
     tooltip?: string
 }
 
-export const TimeBetweenCampaigns: React.FC<Props> = ({
+export const TimeBetweenCampaigns: FC<Props> = ({
     config,
     onChange,
     label,
@@ -183,11 +184,11 @@ export const TimeBetweenCampaigns: React.FC<Props> = ({
         <>
             <div className={css.container}>
                 <div className={css.inputContainer}>
-                    <ToggleInput
+                    <ToggleField
                         id="time-between-campaigns"
-                        isToggled={isEnabled}
+                        value={isEnabled}
                         aria-label={label ?? DEFAULT_LABEL}
-                        onClick={handleClickToggle}
+                        onChange={handleClickToggle}
                     />
                     <div>
                         <div className={css.labelWrapper}>

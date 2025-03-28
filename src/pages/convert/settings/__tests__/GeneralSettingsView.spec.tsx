@@ -163,14 +163,16 @@ describe('<GeneralSettingsView />', () => {
             mutateAsync: jest.fn(),
             isLoading: false,
         } as any)
-        const { getByText } = render(
+        const { getByRole } = render(
             <QueryClientProvider client={queryClient}>
                 <Provider store={mockStore({})}>
                     <GeneralSettingsView />
                 </Provider>
             </QueryClientProvider>,
         )
-        const toggle = getByText('Email privacy policy disclaimer')
+        const toggle = getByRole('switch', {
+            name: /Email privacy policy disclaimer/i,
+        })
         expect(toggle).toBeChecked()
     })
 

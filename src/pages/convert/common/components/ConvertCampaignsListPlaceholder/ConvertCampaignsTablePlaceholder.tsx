@@ -1,13 +1,14 @@
-import React, { useMemo } from 'react'
+import { useMemo } from 'react'
 
 import classnames from 'classnames'
+
+import { ToggleField } from '@gorgias/merchant-ui-kit'
 
 import SkeletonLoader from 'pages/common/components/SkeletonLoader'
 import BodyCell from 'pages/common/components/table/cells/BodyCell'
 import TableBody from 'pages/common/components/table/TableBody'
 import TableBodyRow from 'pages/common/components/table/TableBodyRow'
 import TableWrapper from 'pages/common/components/table/TableWrapper'
-import ToggleInput from 'pages/common/forms/ToggleInput'
 
 import { useSortedCampaigns } from '../../../campaigns/hooks/useSortedCampaigns'
 import { Campaign } from '../../../campaigns/types/Campaign'
@@ -32,8 +33,8 @@ const ConvertCampaignsTablePlaceholder = ({
         return (
             <TableBodyRow key={campaign.id} className={css.tableRow}>
                 <BodyCell style={{ width: 88 }}>
-                    <ToggleInput
-                        isToggled={isActiveStatus(campaign.status)}
+                    <ToggleField
+                        value={isActiveStatus(campaign.status)}
                         aria-label={`Campaign status for ${campaign.name}`}
                         isDisabled={true}
                     />

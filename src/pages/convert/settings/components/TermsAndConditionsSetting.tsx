@@ -1,15 +1,16 @@
-import React, { useCallback, useEffect, useMemo } from 'react'
+import { useCallback, useEffect, useMemo } from 'react'
 
 import classnames from 'classnames'
 import { EditorState } from 'draft-js'
 import { fromJS, Map } from 'immutable'
+
+import { ToggleField } from '@gorgias/merchant-ui-kit'
 
 import { mapIntegrationLanguagesToLanguagePicker } from 'config/integrations/gorgias_chat'
 import TabNavigator from 'pages/common/components/TabNavigator/TabNavigator'
 import { ActionName } from 'pages/common/draftjs/plugins/toolbar/types'
 import CheckBox from 'pages/common/forms/CheckBox'
 import RichField from 'pages/common/forms/RichField/RichField'
-import ToggleInput from 'pages/common/forms/ToggleInput'
 import { ErrorMessage } from 'pages/convert/settings/components/styled'
 import { DisclaimerSettings } from 'pages/convert/settings/types'
 import { convertFromHTML, convertToHTML } from 'utils/editor'
@@ -145,12 +146,11 @@ export const TermsAndConditionsSetting = ({
                     [css.disabled]: !disclaimerSettings.disclaimerEnabled,
                 })}
             >
-                <ToggleInput
-                    isToggled={disclaimerSettings.disclaimerEnabled}
-                    onClick={onDisclaimerEnabledChange}
-                >
-                    Email privacy policy disclaimer
-                </ToggleInput>
+                <ToggleField
+                    value={disclaimerSettings.disclaimerEnabled}
+                    onChange={onDisclaimerEnabledChange}
+                    label="Email privacy policy disclaimer"
+                />
                 {disclaimerSettings.disclaimerEnabled && (
                     <>
                         <div className={css.editorTabs}>

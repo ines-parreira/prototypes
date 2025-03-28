@@ -1,11 +1,12 @@
-import React, { createRef, useMemo, useState } from 'react'
+import { createRef, FC, useMemo, useState } from 'react'
 
 import cn from 'classnames'
 import _intersection from 'lodash/intersection'
 
+import { ToggleField } from '@gorgias/merchant-ui-kit'
+
 import useUpdateEffect from 'hooks/useUpdateEffect'
 import IconTooltip from 'pages/common/forms/IconTooltip/IconTooltip'
-import ToggleInput from 'pages/common/forms/ToggleInput'
 import { CONVERT_SHOPIFY_TRIGGERS } from 'pages/convert/campaigns/constants/triggers'
 import { CampaignTriggerMap } from 'pages/convert/campaigns/types/CampaignTriggerMap'
 import { CampaignTriggerType } from 'pages/convert/campaigns/types/enums/CampaignTriggerType.enum'
@@ -58,10 +59,7 @@ const shouldIncognitoTriggerBeDisabled = (
     return evaluation.some(Boolean)
 }
 
-const CampaignIncognitoVisitorsSwitch: React.FC<Props> = ({
-    triggers,
-    onChange,
-}) => {
+const CampaignIncognitoVisitorsSwitch: FC<Props> = ({ triggers, onChange }) => {
     const containerRef = createRef<HTMLDivElement>()
 
     const hasShopifyTrigger = useMemo(() => {
@@ -132,11 +130,11 @@ const CampaignIncognitoVisitorsSwitch: React.FC<Props> = ({
                     [css.disabled]: !hasShopifyTrigger,
                 })}
             >
-                <ToggleInput
+                <ToggleField
                     id="incognito-visitors-toggle"
-                    isToggled={isEnabled}
+                    value={isEnabled}
                     isDisabled={!hasShopifyTrigger}
-                    onClick={handleClickToggle}
+                    onChange={handleClickToggle}
                 />
                 <label
                     htmlFor="incognito-visitors-toggle"

@@ -12,7 +12,7 @@ import { Map } from 'immutable'
 import { useFlags } from 'launchdarkly-react-client-sdk'
 import { Link, useHistory } from 'react-router-dom'
 
-import { Badge, Tooltip } from '@gorgias/merchant-ui-kit'
+import { Badge, ToggleField, Tooltip } from '@gorgias/merchant-ui-kit'
 
 import { FeatureFlagKey } from 'config/featureFlags'
 import {
@@ -32,7 +32,6 @@ import TableBody from 'pages/common/components/table/TableBody'
 import TableBodyRow from 'pages/common/components/table/TableBodyRow'
 import TableHead from 'pages/common/components/table/TableHead'
 import TableWrapper from 'pages/common/components/table/TableWrapper'
-import ToggleInput from 'pages/common/forms/ToggleInput'
 import { abVariantsUrl } from 'pages/convert/abVariants/urls'
 import LightCampaignBadge from 'pages/convert/campaigns/components/LightCampaignBadge/LightCampaignBadge'
 import LightCampaignModal from 'pages/convert/campaigns/components/LightCampaignModal/LightCampaignModal'
@@ -234,12 +233,12 @@ export const CampaignsTable = ({
                     <TableBodyRow className={css.tableRow}>
                         <BodyCell style={{ width: 88 }}>
                             <span id={toggleId}>
-                                <ToggleInput
-                                    isToggled={isCampaignActive}
+                                <ToggleField
+                                    value={isCampaignActive}
                                     isDisabled={
                                         toggleDisabled || hasCampaignEnded
                                     }
-                                    onClick={() => onClickToggle(campaign)}
+                                    onChange={() => onClickToggle(campaign)}
                                     aria-label={`Enable campaign ${campaign.name}`}
                                 />
                             </span>

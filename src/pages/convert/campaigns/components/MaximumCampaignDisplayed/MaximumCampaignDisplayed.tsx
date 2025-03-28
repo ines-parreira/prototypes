@@ -1,8 +1,9 @@
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
+
+import { ToggleField } from '@gorgias/merchant-ui-kit'
 
 import IconTooltip from 'pages/common/forms/IconTooltip/IconTooltip'
 import NumberInput from 'pages/common/forms/input/NumberInput'
-import ToggleInput from 'pages/common/forms/ToggleInput'
 import { CampaignDisplaysInSession } from 'pages/convert/campaigns/types/CampaignMeta'
 
 import css from './MaximumCampaignDisplayed.less'
@@ -100,11 +101,11 @@ export const MaximumCampaignDisplayed = ({
         <>
             <div className={css.container}>
                 <div className={css.inputContainer}>
-                    <ToggleInput
+                    <ToggleField
                         id="maximum-displayed-campaigns"
-                        isToggled={isEnabled}
+                        value={isEnabled}
                         aria-label={label ?? DEFAULT_LABEL}
-                        onClick={handleClickToggle}
+                        onChange={handleClickToggle}
                     />
                     <div>
                         <div className={css.labelWrapper}>

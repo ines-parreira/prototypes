@@ -1,5 +1,3 @@
-import React from 'react'
-
 import { act, fireEvent, render, screen, waitFor } from '@testing-library/react'
 import { fromJS } from 'immutable'
 
@@ -203,7 +201,7 @@ describe('<CampaignsTable />', () => {
         it('displays light campaign modal when toggling active campaign', () => {
             useIsConvertSubscriberSpy.mockImplementation(() => false)
 
-            const { container, getByText } = render(
+            const { container, getByRole } = render(
                 <CampaignsTable {...props} perPage={CAMPAIGNS_COUNT} />,
             )
 
@@ -218,13 +216,15 @@ describe('<CampaignsTable />', () => {
 
             expect(toggles.length).toEqual(ACTIVE_CAMPAIGNS_COUNT)
 
-            const inputId = toggles[0].getAttribute('for') || ''
+            const name = toggles[0].getAttribute('aria-label') || ''
 
-            const activeCampaignToggle = document.getElementById(inputId)
-            expect(activeCampaignToggle).not.toBeNull()
-            activeCampaignToggle && fireEvent.click(activeCampaignToggle)
+            const toggle = getByRole('switch', {
+                name,
+            })
 
-            expect(getByText('Learn About Convert')).toBeInTheDocument()
+            fireEvent.click(toggle)
+
+            expect(screen.getByText('Learn About Convert')).toBeInTheDocument()
         })
     })
 

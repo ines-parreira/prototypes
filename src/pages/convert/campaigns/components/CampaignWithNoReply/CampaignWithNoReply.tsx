@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 
-import ToggleInput from 'pages/common/forms/ToggleInput'
+import { ToggleField } from '@gorgias/merchant-ui-kit'
 
 import css from './CampaignWithNoReply.less'
 
@@ -29,11 +29,11 @@ export const CampaignWithNoReply = ({
     return (
         <>
             <div className={css.container}>
-                <ToggleInput
+                <ToggleField
                     id="campaign-with-no-reply"
-                    isToggled={!isEnabled}
+                    value={!isEnabled}
                     aria-label="Customers can reply to this campaign"
-                    onClick={handleClickToggle}
+                    onChange={handleClickToggle}
                 />
                 <label htmlFor="campaign-with-no-reply" className={css.label}>
                     Customers can reply to this campaign

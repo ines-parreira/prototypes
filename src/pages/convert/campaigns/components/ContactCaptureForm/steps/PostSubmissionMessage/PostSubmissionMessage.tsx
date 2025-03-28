@@ -1,7 +1,9 @@
-import React, { useEffect, useMemo, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 
 import classnames from 'classnames'
 import { fromJS } from 'immutable'
+
+import { ToggleField } from '@gorgias/merchant-ui-kit'
 
 import { UploadType } from 'common/types'
 import {
@@ -10,7 +12,6 @@ import {
 } from 'config/integrations/gorgias_chat'
 import { ActionName } from 'pages/common/draftjs/plugins/toolbar/types'
 import TicketRichField from 'pages/common/forms/RichField/TicketRichField'
-import ToggleInput from 'pages/common/forms/ToggleInput'
 import CampaignPreview from 'pages/convert/campaigns/components/CampaignPreview'
 import { DEFAULT_THANK_YOU_MESSAGE } from 'pages/convert/campaigns/components/CampaignPreview/components/ContactCaptureFormPreview/ContactCaptureFormPreview'
 import { ErrorMessage } from 'pages/convert/campaigns/components/ContactCaptureForm/styled'
@@ -74,15 +75,14 @@ export const PostSubmissionMessage = (props: StepProps) => {
     return (
         <div className={css.container}>
             <div className={css.configurationContainer}>
-                <ToggleInput
-                    isToggled={messageEnabled}
-                    onClick={() => {
+                <ToggleField
+                    value={messageEnabled}
+                    onChange={() => {
                         setMessageEnabled((messageEnabled) => !messageEnabled)
                     }}
                     caption="This is a message that appears once the customer has submitted their details."
-                >
-                    Thank you message
-                </ToggleInput>
+                    label="Thank you message"
+                />
                 {messageEnabled && (
                     <div>
                         <TicketRichField
