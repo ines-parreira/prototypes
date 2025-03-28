@@ -227,7 +227,6 @@ export type WorkflowStepCreateDiscountCode = {
     id: string
     kind: 'create-discount-code'
     settings: {
-        customer_id: string
         integration_id: string
         type: string // e.g. {{values.type}}
         amount: string

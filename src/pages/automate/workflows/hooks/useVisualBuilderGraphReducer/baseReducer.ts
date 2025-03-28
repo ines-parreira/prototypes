@@ -235,7 +235,6 @@ export type VisualBuilderBaseAction =
     | {
           type: 'INSERT_CREATE_DISCOUNT_CODE_NODE'
           beforeNodeId: string
-          customerId: string
           integrationId: string
       }
     | {

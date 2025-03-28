@@ -598,7 +598,6 @@ export function transformWorkflowConfigurationIntoVisualBuilderGraph<
                 id: step.id,
                 type: 'create_discount_code',
                 data: {
-                    customerId: step.settings.customer_id,
                     integrationId: step.settings.integration_id,
                     discountType: step.settings.type,
                     amount: step.settings.amount,

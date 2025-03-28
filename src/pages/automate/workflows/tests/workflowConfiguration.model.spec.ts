@@ -463,7 +463,6 @@ describe('workflowConfiguration is transformed into visualBuilderGraph', () => {
                     settings: {
                         amount: '',
                         type: '',
-                        customer_id: '{{objects.customer.id}}',
                         integration_id: '{{store.helpdesk_integration_id}}',
                         valid_for: '',
                     },
@@ -559,7 +558,6 @@ describe('workflowConfiguration is transformed into visualBuilderGraph', () => {
                 type: 'create_discount_code',
                 data: {
                     amount: '{{values.amount}}',
-                    customerId: '{{objects.customer.id}}',
                     integrationId: '{{store.helpdesk_integration_id}}',
                     discountType: '{{values.discount_type}}',
                     validFor: '{{values.valid_for}}',

@@ -518,7 +518,6 @@ export type ReplaceItemNodeType = Node<
 
 export type CreateDiscountCodeNodeType = Node<
     {
-        customerId: string
         integrationId: string
         discountType: string
         amount: string

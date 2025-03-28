@@ -391,7 +391,6 @@ describe('baseReducer', () => {
         const nextG = baseReducer(g, {
             type: 'INSERT_CREATE_DISCOUNT_CODE_NODE',
             beforeNodeId: 'automated_message1',
-            customerId: 'customerId',
             integrationId: 'integrationId',
         })
 
@@ -401,7 +400,6 @@ describe('baseReducer', () => {
             nextG.nodes.find(
                 (n) =>
                     n.type === 'create_discount_code' &&
-                    n.data.customerId === 'customerId' &&
                     n.data.integrationId === 'integrationId',
             ),
         ).toBeDefined()
@@ -411,7 +409,6 @@ describe('baseReducer', () => {
         const g = baseReducer(visualBuilderGraphSimpleChoicesFixture, {
             type: 'INSERT_CREATE_DISCOUNT_CODE_NODE',
             beforeNodeId: 'automated_message1',
-            customerId: 'customerId',
             integrationId: 'integrationId',
         })
 

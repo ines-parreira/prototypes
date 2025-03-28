@@ -1626,9 +1626,6 @@ export function extractVariablesFromNode(
             break
         case 'create_discount_code':
             variables = [
-                ...extractVariablesFromText(node.data.customerId).map(
-                    (variable) => variable.value,
-                ),
                 ...extractVariablesFromText(node.data.amount).map(
                     (variable) => variable.value,
                 ),

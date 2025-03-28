@@ -632,12 +632,10 @@ const ReplaceItemMenuItem = ({
 const CreateDiscountCodeMenuItem = ({
     nodeId,
     floatingRef,
-    customerId,
     integrationId,
 }: {
     nodeId: string
     floatingRef?: HTMLElement | null
-    customerId: string
     integrationId: string
 }) => {
     const { dispatch } = useVisualBuilderContext()
@@ -649,7 +647,6 @@ const CreateDiscountCodeMenuItem = ({
                 dispatch({
                     type: 'INSERT_CREATE_DISCOUNT_CODE_NODE',
                     beforeNodeId: nodeId,
-                    customerId,
                     integrationId,
                 })
             }}
@@ -838,7 +835,6 @@ const LLMPromptTemplateShopifyMenuItems = ({
             <CreateDiscountCodeMenuItem
                 nodeId={nodeId}
                 floatingRef={floatingRef}
-                customerId="{{objects.customer.id}}"
                 integrationId="{{store.helpdesk_integration_id}}"
             />
             <ReshipForFreeMenuItem

@@ -385,11 +385,10 @@ export const buildReplaceItemNode = ({
 }
 
 export const buildCreateDiscountCodeNode = ({
-    customerId,
     integrationId,
 }: Pick<
     CreateDiscountCodeNodeType['data'],
-    'customerId' | 'integrationId'
+    'integrationId'
 >): CreateDiscountCodeNodeType => {
     const id = ulid()
     return {
@@ -397,7 +396,6 @@ export const buildCreateDiscountCodeNode = ({
         id,
         type: 'create_discount_code',
         data: {
-            customerId,
             integrationId,
             discountType: '',
             amount: '',

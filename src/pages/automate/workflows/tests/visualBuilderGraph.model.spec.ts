@@ -308,7 +308,6 @@ describe('visualBuilderGraph is transformed into workflowConfiguration', () => {
                         id: 'create_discount_code',
                         type: 'create_discount_code',
                         data: {
-                            customerId: '{{objects.customer.id}}',
                             integrationId: '{{store.helpdesk_integration_id}}',
                             amount: '',
                             discountType: '',
@@ -371,12 +370,7 @@ describe('visualBuilderGraph is transformed into workflowConfiguration', () => {
                 kind: 'llm-prompt',
                 settings: {
                     custom_inputs: [],
-                    object_inputs: [
-                        {
-                            kind: 'customer',
-                            integration_id: '{{store.helpdesk_integration_id}}',
-                        },
-                    ],
+                    object_inputs: [],
                     conditions: null,
                     outputs: [
                         {
@@ -393,7 +387,6 @@ describe('visualBuilderGraph is transformed into workflowConfiguration', () => {
                 id: 'create_discount_code',
                 kind: 'create-discount-code',
                 settings: {
-                    customer_id: '{{objects.customer.id}}',
                     integration_id: '{{store.helpdesk_integration_id}}',
                     amount: '{{values.amount}}',
                     type: '{{values.discount_type}}',
@@ -434,7 +427,7 @@ describe('visualBuilderGraph is transformed into workflowConfiguration', () => {
                     },
                     {
                         label: 'Percentange (%)',
-                        value: 'percent',
+                        value: 'percentage',
                     },
                 ],
             },
@@ -479,7 +472,6 @@ describe('visualBuilderGraph is transformed into workflowConfiguration', () => {
                         id: 'create_discount_code',
                         type: 'create_discount_code',
                         data: {
-                            customerId: '{{objects.customer.id}}',
                             integrationId: '{{store.helpdesk_integration_id}}',
                             amount: '',
                             discountType: '',
@@ -517,11 +509,7 @@ describe('visualBuilderGraph is transformed into workflowConfiguration', () => {
                 kind: 'reusable-llm-prompt',
                 settings: {
                     custom_inputs: [],
-                    object_inputs: [
-                        {
-                            kind: 'customer',
-                        },
-                    ],
+                    object_inputs: [],
                     outputs: [
                         {
                             data_type: 'string',

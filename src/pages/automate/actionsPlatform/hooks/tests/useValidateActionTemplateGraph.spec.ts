@@ -174,7 +174,6 @@ describe('useValidateActionTemplateGraph()', () => {
                         id: 'create_discount_code1',
                         type: 'create_discount_code',
                         data: {
-                            customerId: '',
                             integrationId: '',
                             discountType: '',
                             amount: '',

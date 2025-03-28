@@ -1160,7 +1160,10 @@ export function transformVisualBuilderGraphIntoWfConfiguration(
                                     label: 'Fixed amount (currency set in Shopify)',
                                     value: 'fixed',
                                 },
-                                { label: 'Percentange (%)', value: 'percent' },
+                                {
+                                    label: 'Percentange (%)',
+                                    value: 'percentage',
+                                },
                             ],
                         },
                         {
@@ -1187,7 +1190,6 @@ export function transformVisualBuilderGraphIntoWfConfiguration(
                     id: node.id,
                     kind: 'create-discount-code',
                     settings: {
-                        customer_id: node.data.customerId,
                         integration_id: node.data.integrationId,
                         type: '{{values.discount_type}}',
                         amount: '{{values.amount}}',
