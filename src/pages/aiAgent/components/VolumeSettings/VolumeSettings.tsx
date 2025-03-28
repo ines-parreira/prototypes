@@ -11,6 +11,7 @@ import { FeatureFlagKey } from 'config/featureFlags'
 import Launcher from 'gorgias-design-system/Launcher/Launcher'
 import useAppDispatch from 'hooks/useAppDispatch'
 import { SalesVolumeData } from 'models/aiAgent/types'
+import { CHANGES_SAVED_SUCCESS } from 'pages/aiAgent/constants'
 import { useAiAgentStoreConfigurationContext } from 'pages/aiAgent/providers/AiAgentStoreConfigurationContext'
 import UnsavedChangesPrompt from 'pages/common/components/UnsavedChangesPrompt'
 import { NewToggleButton } from 'pages/common/forms/NewToggleButton'
@@ -84,7 +85,7 @@ export const VolumeSettings = () => {
 
                 void dispatch(
                     notify({
-                        message: 'AI Agent configuration saved!',
+                        message: CHANGES_SAVED_SUCCESS,
                         status: NotificationStatus.Success,
                     }),
                 )

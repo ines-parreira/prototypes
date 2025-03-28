@@ -9,6 +9,7 @@ import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
 import { StoreConfiguration } from 'models/aiAgent/types'
+import { CHANGES_SAVED_SUCCESS } from 'pages/aiAgent/constants'
 import { getStoreConfigurationFixture } from 'pages/aiAgent/fixtures/storeConfiguration.fixtures'
 import { DiscountStrategy } from 'pages/aiAgent/Onboarding/components/steps/PersonalityStep/DiscountStrategy'
 import { PersuasionLevel } from 'pages/aiAgent/Onboarding/components/steps/PersonalityStep/PersuasionLevel'
@@ -363,7 +364,7 @@ describe('<SalesSettings />', () => {
                 expect(mockStore.getActions()).toMatchObject([
                     {
                         payload: {
-                            message: 'AI Agent configuration saved!',
+                            message: CHANGES_SAVED_SUCCESS,
                             status: NotificationStatus.Success,
                         },
                     },

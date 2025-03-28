@@ -11,6 +11,7 @@ import thunk from 'redux-thunk'
 
 import { FeatureFlagKey } from 'config/featureFlags'
 import { StoreConfiguration } from 'models/aiAgent/types'
+import { CHANGES_SAVED_SUCCESS } from 'pages/aiAgent/constants'
 import { getStoreConfigurationFixture } from 'pages/aiAgent/fixtures/storeConfiguration.fixtures'
 import { useAiAgentStoreConfigurationContext } from 'pages/aiAgent/providers/AiAgentStoreConfigurationContext'
 import { NotificationStatus } from 'state/notifications/types'
@@ -174,7 +175,7 @@ describe('VolumeSettings', () => {
                 expect(mockStore.getActions()).toMatchObject([
                     {
                         payload: {
-                            message: 'AI Agent configuration saved!',
+                            message: CHANGES_SAVED_SUCCESS,
                             status: NotificationStatus.Success,
                         },
                     },

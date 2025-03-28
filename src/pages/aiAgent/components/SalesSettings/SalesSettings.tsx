@@ -6,6 +6,7 @@ import { Button, Label } from '@gorgias/merchant-ui-kit'
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import { SalesSettingsData } from 'models/aiAgent/types'
+import { CHANGES_SAVED_SUCCESS } from 'pages/aiAgent/constants'
 import { OnboardingSteppedSlider } from 'pages/aiAgent/Onboarding/components/OnboardingSteppedSlider/OnboardingSteppedSlider'
 import {
     DiscountStrategy,
@@ -136,7 +137,7 @@ export const SalesSettings = () => {
 
                 void dispatch(
                     notify({
-                        message: 'AI Agent configuration saved!',
+                        message: CHANGES_SAVED_SUCCESS,
                         status: NotificationStatus.Success,
                     }),
                 )

@@ -16,7 +16,7 @@ import { notify } from 'state/notifications/actions'
 import { NotificationStatus } from 'state/notifications/types'
 
 import { getStoreConfigurationFromFormValues } from '../components/StoreConfigForm/StoreConfigForm.utils'
-import { DEFAULT_FORM_VALUES } from '../constants'
+import { CHANGES_SAVED_SUCCESS, DEFAULT_FORM_VALUES } from '../constants'
 import { FormValues, UpdateValue, ValidFormValues } from '../types'
 import { getValidStoreConfigurationFormValues } from '../utils/store-configuration-validation.utils'
 import { useAiAgentNavigation } from './useAiAgentNavigation'
@@ -204,7 +204,7 @@ export const useConfigurationForm = ({
 
             void dispatch(
                 notify({
-                    message: 'AI Agent configuration saved!',
+                    message: CHANGES_SAVED_SUCCESS,
                     status: NotificationStatus.Success,
                 }),
             )

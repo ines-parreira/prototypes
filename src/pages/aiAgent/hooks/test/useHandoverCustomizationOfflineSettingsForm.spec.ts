@@ -6,6 +6,7 @@ import {
     GorgiasChatIntegration,
     IntegrationType,
 } from 'models/integration/types'
+import { CHANGES_SAVED_SUCCESS } from 'pages/aiAgent/constants'
 import { mapFormValuesToHandoverConfigurationData } from 'pages/aiAgent/utils/handoverCustomizationConfiguration.utils'
 
 import { initialFormFieldValues } from '../../utils/handoverCustomizationOfflineSettingsForm.utils'
@@ -238,9 +239,7 @@ describe('useHandoverCustomizationOfflineSettingsForm', () => {
                 shareBusinessHours: true,
             }),
         )
-        expect(mockNotifySuccess).toHaveBeenCalledWith(
-            'Changes saved successfully!',
-        )
+        expect(mockNotifySuccess).toHaveBeenCalledWith(CHANGES_SAVED_SUCCESS)
         expect(result.current.isSaving).toBe(false)
     })
 

@@ -3,6 +3,7 @@ import { act, renderHook } from '@testing-library/react-hooks'
 import { Language } from 'constants/languages'
 import { useNotify } from 'hooks/useNotify'
 import { GorgiasChatIntegration } from 'models/integration/types'
+import { CHANGES_SAVED_SUCCESS } from 'pages/aiAgent/constants'
 import {
     getInitialFormValues,
     mapFromFormValuesToMultiLanguageText,
@@ -275,9 +276,7 @@ describe('useHandoverCustomizationFallbackSettingsForm', () => {
             expectedMergedMultiLanguageTexts,
         )
 
-        expect(mockNotify.success).toHaveBeenCalledWith(
-            'Changes saved successfully!',
-        )
+        expect(mockNotify.success).toHaveBeenCalledWith(CHANGES_SAVED_SUCCESS)
     })
     it('should handle error save operation', async () => {
         const expectedMergedMultiLanguageTexts = {

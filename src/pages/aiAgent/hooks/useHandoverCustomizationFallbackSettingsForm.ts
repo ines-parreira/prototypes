@@ -6,6 +6,7 @@ import { useNotify } from 'hooks/useNotify'
 import useUpdateEffect from 'hooks/useUpdateEffect'
 import { GorgiasChatIntegration } from 'models/integration/types'
 
+import { CHANGES_SAVED_SUCCESS } from '../constants'
 import { HandoverCustomizationFallbackSettingsFormMultiLanguageValues } from '../types'
 import {
     formFieldsConfiguration,
@@ -124,7 +125,7 @@ export const useHandoverCustomizationFallbackSettingsForm = ({
 
             await updateMultiLanguageTexts(mergedTexts)
 
-            notify.success('Changes saved successfully!')
+            notify.success(CHANGES_SAVED_SUCCESS)
         } catch (error) {
             if (error instanceof Error) {
                 notify.error(error.message)

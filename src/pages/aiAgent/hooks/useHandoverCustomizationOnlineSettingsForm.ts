@@ -7,6 +7,7 @@ import { GorgiasChatIntegration } from 'models/integration/types'
 import { getCurrentAccountState } from 'state/currentAccount/selectors'
 import { updateOrCreateIntegrationRequest } from 'state/integrations/actions'
 
+import { CHANGES_SAVED_SUCCESS } from '../constants'
 import { HandoverCustomizationOnlineSettingsFormValues } from '../types'
 import { mapFormValuesToHandoverConfigurationData } from '../utils/handoverCustomizationConfiguration.utils'
 import {
@@ -224,7 +225,7 @@ export const useHandoverCustomizationOnlineSettingsForm = ({
                 await saveIntegrationPreferences(integrationPreferences)
             }
 
-            notify.success('Changes saved successfully!')
+            notify.success(CHANGES_SAVED_SUCCESS)
         } catch (error) {
             if (error instanceof Error) {
                 notify.error(error.message)
