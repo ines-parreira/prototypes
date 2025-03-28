@@ -346,6 +346,7 @@ export enum SegmentEvent {
     StatViewLinkClicked = 'stat-view-link-clicked',
     StatTagsIncludeRelatedClicked = 'stat-tags-include-related-clicked',
     StatTagsExcludeRelatedClicked = 'stat-tags-exclude-related-clicked',
+    StatTimeframePreferenceSelection = 'stat-timeframe-preference-selection',
     SubscribedToDevNewsletter = 'subscribed-to-dev-newsletter',
     SubscriptionCancellationAutoRenewalClicked = 'subscription/cancellation/cancel-auto-renewal-clicked',
     SubscriptionCancellationChurnMitigationOfferDecision = 'subscription/cancellation/churn-mitigation-offer-decision',

@@ -14,6 +14,7 @@ import {
     EXCLUDE_TAGS_IN_RESULTS_SUBTITLE,
     INCLUDE_TAGS_IN_RESULTS,
     INCLUDE_TAGS_IN_RESULTS_SUBTITLE,
+    ReportName,
     RESULTS_BASED_ON_ALL_STATUSES,
     RESULTS_BASED_ON_ALL_STATUSES_SUBTITLE,
     RESULTS_BASED_ON_CREATION_DATE,
@@ -51,11 +52,11 @@ describe('SharedActionsMenu', () => {
         ])
     })
 
-    describe('isTagsReport', () => {
+    describe('  reportName={ReportName.Tags}', () => {
         it('renders the actions button', () => {
             render(
                 <SharedActionsMenu
-                    isTagsReport
+                    reportName={ReportName.Tags}
                     downloadAction={downloadMock}
                     isDownloadLoading={false}
                 />,
@@ -69,7 +70,7 @@ describe('SharedActionsMenu', () => {
         it('opens dropdown when clicking the button', () => {
             render(
                 <SharedActionsMenu
-                    isTagsReport
+                    reportName={ReportName.Tags}
                     downloadAction={downloadMock}
                     isDownloadLoading={false}
                 />,
@@ -110,7 +111,7 @@ describe('SharedActionsMenu', () => {
         it('triggers download when clicking the download option', () => {
             render(
                 <SharedActionsMenu
-                    isTagsReport
+                    reportName={ReportName.Tags}
                     downloadAction={downloadMock}
                     isDownloadLoading={false}
                 />,
@@ -125,7 +126,7 @@ describe('SharedActionsMenu', () => {
         it('disables download option when loading', () => {
             render(
                 <SharedActionsMenu
-                    isTagsReport
+                    reportName={ReportName.Tags}
                     downloadAction={downloadMock}
                     isDownloadLoading
                 />,
@@ -143,7 +144,7 @@ describe('SharedActionsMenu', () => {
         it('should have include tag option by default and select it', () => {
             render(
                 <SharedActionsMenu
-                    isTagsReport
+                    reportName={ReportName.Tags}
                     downloadAction={downloadMock}
                     isDownloadLoading={false}
                 />,
@@ -169,7 +170,7 @@ describe('SharedActionsMenu', () => {
         it('should select exclude_tags', () => {
             render(
                 <SharedActionsMenu
-                    isTagsReport
+                    reportName={ReportName.Tags}
                     downloadAction={downloadMock}
                     isDownloadLoading={false}
                 />,
@@ -189,13 +190,58 @@ describe('SharedActionsMenu', () => {
                 SegmentEvent.StatTagsExcludeRelatedClicked,
             )
         })
+
+        it('should have the correct label selected & select another option', () => {
+            render(
+                <SharedActionsMenu
+                    reportName={ReportName.Tags}
+                    downloadAction={downloadMock}
+                    isDownloadLoading={false}
+                />,
+            )
+
+            fireEvent.click(screen.getByLabelText(TAG_ACTIONS_TRIGGER_LABEL))
+
+            const spanElement = screen.getByText(RESULTS_BASED_ON_ALL_STATUSES)
+            const parentDiv = spanElement.parentElement as HTMLElement
+            within(parentDiv).getByText('check')
+
+            fireEvent.click(screen.getByText(RESULTS_BASED_ON_ALL_STATUSES))
+
+            expect(setTimeframePreferenceSelection).toHaveBeenCalledWith(
+                TimeframePreferenceSelection.basedOnTicketStatuses,
+            )
+
+            expect(logEventMock).toHaveBeenCalledWith(
+                SegmentEvent.StatTimeframePreferenceSelection,
+                {
+                    value: TimeframePreferenceSelection.basedOnTicketStatuses,
+                    report: 'tags',
+                },
+            )
+
+            fireEvent.click(screen.getByLabelText(TAG_ACTIONS_TRIGGER_LABEL))
+            fireEvent.click(screen.getByText(RESULTS_BASED_ON_CREATION_DATE))
+
+            expect(setTimeframePreferenceSelection).toHaveBeenCalledWith(
+                TimeframePreferenceSelection.basedOnTicketCreationDate,
+            )
+
+            expect(logEventMock).toHaveBeenCalledWith(
+                SegmentEvent.StatTimeframePreferenceSelection,
+                {
+                    value: TimeframePreferenceSelection.basedOnTicketCreationDate,
+                    report: 'tags',
+                },
+            )
+        })
     })
 
     describe('isTicketFieldsReport', () => {
         it('renders the actions button', () => {
             render(
                 <SharedActionsMenu
-                    isTicketFieldsReport
+                    reportName={ReportName.Tags}
                     downloadAction={downloadMock}
                     isDownloadLoading={false}
                 />,
@@ -209,7 +255,7 @@ describe('SharedActionsMenu', () => {
         it('opens dropdown when clicking the button', () => {
             render(
                 <SharedActionsMenu
-                    isTicketFieldsReport
+                    reportName={ReportName.TicketFields}
                     downloadAction={downloadMock}
                     isDownloadLoading={false}
                 />,
@@ -234,7 +280,7 @@ describe('SharedActionsMenu', () => {
         it('should have the correct label selected & select another option', () => {
             render(
                 <SharedActionsMenu
-                    isTicketFieldsReport
+                    reportName={ReportName.TicketFields}
                     downloadAction={downloadMock}
                     isDownloadLoading={false}
                 />,
@@ -252,11 +298,27 @@ describe('SharedActionsMenu', () => {
                 TimeframePreferenceSelection.basedOnTicketStatuses,
             )
 
+            expect(logEventMock).toHaveBeenCalledWith(
+                SegmentEvent.StatTimeframePreferenceSelection,
+                {
+                    value: TimeframePreferenceSelection.basedOnTicketStatuses,
+                    report: 'ticket-fields',
+                },
+            )
+
             fireEvent.click(screen.getByLabelText(TAG_ACTIONS_TRIGGER_LABEL))
             fireEvent.click(screen.getByText(RESULTS_BASED_ON_CREATION_DATE))
 
             expect(setTimeframePreferenceSelection).toHaveBeenCalledWith(
                 TimeframePreferenceSelection.basedOnTicketCreationDate,
+            )
+
+            expect(logEventMock).toHaveBeenCalledWith(
+                SegmentEvent.StatTimeframePreferenceSelection,
+                {
+                    value: TimeframePreferenceSelection.basedOnTicketCreationDate,
+                    report: 'ticket-fields',
+                },
             )
         })
     })

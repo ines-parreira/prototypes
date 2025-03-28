@@ -5,7 +5,10 @@ import { useCleanStatsFilters } from 'hooks/reporting/useCleanStatsFilters'
 import { useGridSize } from 'hooks/useGridSize'
 import { FilterKey } from 'models/stat/types'
 import { AnalyticsFooter } from 'pages/stats/AnalyticsFooter'
-import { SharedActionsMenu } from 'pages/stats/common/components/SharedActionsMenu/SharedActionsMenu'
+import {
+    ReportName,
+    SharedActionsMenu,
+} from 'pages/stats/common/components/SharedActionsMenu/SharedActionsMenu'
 import FiltersPanelWrapper from 'pages/stats/common/filters/FiltersPanelWrapper'
 import DashboardGridCell from 'pages/stats/DashboardGridCell'
 import { DashboardComponent } from 'pages/stats/dashboards/DashboardComponent'
@@ -41,7 +44,7 @@ export function Tags() {
                         <SharedActionsMenu
                             downloadAction={download}
                             isDownloadLoading={isLoading}
-                            isTagsReport
+                            reportName={ReportName.Tags}
                         />
                     ) : (
                         <TagsReportDownloadDataButton />

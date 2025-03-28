@@ -15,6 +15,11 @@ import DropdownItem from 'pages/common/components/dropdown/DropdownItem'
 import IconInput from 'pages/common/forms/input/IconInput'
 import css from 'pages/stats/common/components/SharedActionsMenu/SharedActionsMenu.less'
 
+export enum ReportName {
+    Tags = 'tags',
+    TicketFields = 'ticket-fields',
+}
+
 export const TAG_ACTIONS_TRIGGER_LABEL = 'Actions'
 export const TAG_ACTIONS_DOWNLOAD_OPTION_LABEL = 'Download Data'
 export const INCLUDE_TAGS_IN_RESULTS = 'Include related tags in results'
@@ -65,18 +70,19 @@ const TagDropdownItem = ({
 export function SharedActionsMenu({
     downloadAction,
     isDownloadLoading,
-    isTagsReport,
-    isTicketFieldsReport,
+    reportName,
 }: {
     downloadAction: () => void
     isDownloadLoading: boolean
-    isTagsReport?: boolean
-    isTicketFieldsReport?: boolean
+    reportName?: ReportName
 }) {
+    const isTagsReport = reportName === ReportName.Tags
+    const isTicketFieldsReport = reportName === ReportName.TicketFields
+
     const [tagResultsSelection, setTagResultsSelection] =
         useTagResultsSelection()
     const [timeframePreferenceSelection, seTimeframePreferenceSelection] =
-        useTimeframePreferenceSelection(!!isTagsReport)
+        useTimeframePreferenceSelection(isTagsReport)
 
     const triggerRef = useRef<HTMLButtonElement>(null)
 
@@ -93,11 +99,20 @@ export function SharedActionsMenu({
     }
 
     const resultBasedOnAllStatusesAction = () => {
+        logEvent(SegmentEvent.StatTimeframePreferenceSelection, {
+            value: TimeframePreferenceSelection.basedOnTicketStatuses,
+            report: reportName,
+        })
         seTimeframePreferenceSelection(
             TimeframePreferenceSelection.basedOnTicketStatuses,
         )
     }
+
     const resultBaseOnCreationDateAction = () => {
+        logEvent(SegmentEvent.StatTimeframePreferenceSelection, {
+            value: TimeframePreferenceSelection.basedOnTicketCreationDate,
+            report: reportName,
+        })
         seTimeframePreferenceSelection(
             TimeframePreferenceSelection.basedOnTicketCreationDate,
         )
