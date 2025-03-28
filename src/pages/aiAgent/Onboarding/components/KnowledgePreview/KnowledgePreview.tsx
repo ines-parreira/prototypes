@@ -1,5 +1,7 @@
 import React, { useEffect, useRef } from 'react'
 
+import { Skeleton } from '@gorgias/merchant-ui-kit'
+
 import { getRGB } from 'gorgias-design-system/utils'
 import useAppSelector from 'hooks/useAppSelector'
 import { ShopifyIntegration } from 'models/integration/types'
@@ -11,7 +13,7 @@ import {
 } from 'pages/aiAgent/Onboarding/components/Card'
 import TopElementsCard from 'pages/aiAgent/Onboarding/components/TopElementsCard'
 import TopProductsCard from 'pages/aiAgent/Onboarding/components/TopProductsCard'
-import { useGetKnowledgeDatasQuery } from 'pages/aiAgent/Onboarding/hooks/useGetKnowledgeDatasQuery'
+import { useGetKnowledgePreviewData } from 'pages/aiAgent/Onboarding/hooks/useGetKnowledgePreviewData'
 import TrackerCircle from 'pages/common/components/ProgressTracker/TrackerCircle'
 import { LineChart } from 'pages/stats/common/components/charts/LineChart/LineChart'
 import { getShopifyIntegrationByShopName } from 'state/integrations/selectors'
@@ -29,7 +31,7 @@ const KnowledgePreview: React.FC<Props> = ({ shopName }) => {
         getShopifyIntegrationByShopName(shopName || ''),
     ).toJS()
 
-    const { data } = useGetKnowledgeDatasQuery()
+    const { data } = useGetKnowledgePreviewData()
 
     const graphOptions = {
         elements: {
@@ -48,12 +50,16 @@ const KnowledgePreview: React.FC<Props> = ({ shopName }) => {
                 <CardTitle>Average order per day</CardTitle>
             </CardHeader>
             <CardContent className={css.chartContent}>
-                <LineChart
-                    data={data?.averageOrders ?? []}
-                    options={graphOptions}
-                    customColors={[getRGB('--accessory-magenta-25')]}
-                    hasBackground
-                />
+                {data?.averageOrders !== undefined ? (
+                    <LineChart
+                        data={data.averageOrders}
+                        options={graphOptions}
+                        customColors={[getRGB('--accessory-magenta-25')]}
+                        hasBackground
+                    />
+                ) : (
+                    <Skeleton height="190px" width="300px" />
+                )}
             </CardContent>
         </Card>
     )

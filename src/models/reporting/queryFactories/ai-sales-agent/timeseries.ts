@@ -42,6 +42,31 @@ const createGmvTimeSeriesQuery = (
     }
 }
 
+export const averageOrdersPerDayQuery = (
+    filters: StatsFilters,
+    timezone: string,
+    granularity: ReportingGranularity,
+): TimeSeriesQuery<AiSalesAgentOrdersCube> => {
+    const baseFilters = statsFiltersToReportingFilters(
+        aiSalesAgentOrdersDefaultFiltersMembers,
+        filters,
+    )
+
+    return {
+        measures: [AiSalesAgentOrdersMeasure.Count],
+        dimensions: [],
+        timeDimensions: [
+            {
+                dimension: AiSalesAgentOrdersDimension.PeriodStart,
+                granularity,
+                dateRange: getFilterDateRange(filters.period),
+            },
+        ],
+        timezone,
+        filters: baseFilters,
+    }
+}
+
 export const influencedGmvTimeSeriesQueryFactory = (
     filters: StatsFilters,
     timezone: string,
