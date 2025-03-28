@@ -5,6 +5,7 @@ import { Tag } from '@gorgias/api-queries'
 import { logEvent, SegmentEvent } from 'common/segment'
 import { getCsvFileNameWithDates } from 'hooks/reporting/common/utils'
 import { useStatsFilters } from 'hooks/reporting/support-performance/useStatsFilters'
+import { TagSelection } from 'hooks/reporting/tags/useTagResultsSelection'
 import {
     formatAndOrderTagTimeSeries,
     getOverallTicketTotals,
@@ -23,7 +24,6 @@ import {
     TimeSeriesDataItem,
     TimeSeriesPerDimension,
 } from 'hooks/reporting/useTimeSeries'
-import { TagSelection } from 'hooks/useResultsSelection'
 import { ReportingGranularity } from 'models/reporting/types'
 import { Period, StatsFilters } from 'models/stat/types'
 import {

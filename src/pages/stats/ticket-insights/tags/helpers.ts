@@ -1,7 +1,7 @@
 import {
     TAGS_RESULTS_SELECTION_KEY,
     TagSelection,
-} from 'hooks/useResultsSelection'
+} from 'hooks/reporting/tags/useTagResultsSelection'
 
 export const getTagName = ({
     name,

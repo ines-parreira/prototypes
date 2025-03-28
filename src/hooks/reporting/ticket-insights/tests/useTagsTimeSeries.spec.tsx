@@ -6,12 +6,12 @@ import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
 import { useTagsTicketCount } from 'hooks/reporting/metricsPerPeriod'
+import { TagSelection } from 'hooks/reporting/tags/useTagResultsSelection'
 import {
     filterTimeSeriesWithSelectedTags,
     useTagsTimeSeries,
 } from 'hooks/reporting/ticket-insights/useTagsTimeSeries'
 import { useTagsTicketCountTimeSeries } from 'hooks/reporting/timeSeries'
-import { TagSelection } from 'hooks/useResultsSelection'
 import {
     TicketTagsEnrichedDimension,
     TicketTagsEnrichedMeasure,

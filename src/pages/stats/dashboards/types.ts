@@ -4,12 +4,12 @@ import { Tag } from '@gorgias/api-queries'
 
 import { User } from 'config/types/user'
 import { MetricPerDimensionFetch } from 'hooks/reporting/distributions'
+import { TagSelection } from 'hooks/reporting/tags/useTagResultsSelection'
 import { MetricTrendFetch } from 'hooks/reporting/useMetricTrend'
 import {
     TimeSeriesFetch,
     TimeSeriesPerDimensionFetch,
 } from 'hooks/reporting/useTimeSeries'
-import { TagSelection } from 'hooks/useResultsSelection'
 import { Channel } from 'models/channel/types'
 import { Integration } from 'models/integration/types'
 import { ReportingGranularity } from 'models/reporting/types'

@@ -3,11 +3,14 @@ import {
     getTagValuesByOperator,
 } from 'hooks/reporting/helpers'
 import {
+    TagSelection,
+    useTagResultsSelection,
+} from 'hooks/reporting/tags/useTagResultsSelection'
+import {
     MetricPerDimensionTrend,
     QueryReturnType,
     useMetricPerDimension,
 } from 'hooks/reporting/useMetricPerDimension'
-import { TagSelection, useTagResultsSelection } from 'hooks/useResultsSelection'
 import { OrderDirection } from 'models/api/types'
 import { TicketTagsEnrichedCube } from 'models/reporting/cubes/TicketTagsEnrichedCube'
 import { tagsTicketCountQueryFactory } from 'models/reporting/queryFactories/ticket-insights/tagsTicketCount'

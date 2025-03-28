@@ -5,10 +5,12 @@ import { fireEvent, render, screen, within } from '@testing-library/react'
 import { logEvent, SegmentEvent } from 'common/segment'
 import {
     TagSelection,
-    TimeframePreferenceSelection,
     useTagResultsSelection,
+} from 'hooks/reporting/tags/useTagResultsSelection'
+import {
+    TimeframePreferenceSelection,
     useTimeframePreferenceSelection,
-} from 'hooks/useResultsSelection'
+} from 'hooks/reporting/ticket-insights/useTimeframePreferenceSelection'
 import {
     EXCLUDE_TAGS_IN_RESULTS,
     EXCLUDE_TAGS_IN_RESULTS_SUBTITLE,
@@ -27,8 +29,9 @@ import { assumeMock } from 'utils/testing'
 
 jest.mock('common/segment')
 const logEventMock = assumeMock(logEvent)
-jest.mock('hooks/useResultsSelection')
+jest.mock('hooks/reporting/tags/useTagResultsSelection')
 const useTagResultsSelectionMock = assumeMock(useTagResultsSelection)
+jest.mock('hooks/reporting/ticket-insights/useTimeframePreferenceSelection')
 const useTimeframePreferenceSelectionMock = assumeMock(
     useTimeframePreferenceSelection,
 )

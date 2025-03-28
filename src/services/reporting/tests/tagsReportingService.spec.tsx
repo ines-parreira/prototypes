@@ -4,6 +4,7 @@ import { logEvent, SegmentEvent } from 'common/segment'
 import { tags } from 'fixtures/tag'
 import { getCsvFileNameWithDates } from 'hooks/reporting/common/utils'
 import { useStatsFilters } from 'hooks/reporting/support-performance/useStatsFilters'
+import { TagSelection } from 'hooks/reporting/tags/useTagResultsSelection'
 import { useTagsReportContext } from 'hooks/reporting/ticket-insights/useTagsReportContext'
 import {
     fetchTagsTicketCountTimeSeries,
@@ -15,7 +16,6 @@ import {
     TimeSeriesDataItem,
     TimeSeriesPerDimension,
 } from 'hooks/reporting/useTimeSeries'
-import { TagSelection } from 'hooks/useResultsSelection'
 import { OrderDirection } from 'models/api/types'
 import { ReportingGranularity } from 'models/reporting/types'
 import { TagFilterInstanceId } from 'models/stat/types'

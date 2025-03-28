@@ -1,7 +1,7 @@
 import {
     TAGS_RESULTS_SELECTION_KEY,
     TagSelection,
-} from 'hooks/useResultsSelection'
+} from 'hooks/reporting/tags/useTagResultsSelection'
 import { getTagResultsSelectionFromSessionStorage } from 'pages/stats/ticket-insights/tags/helpers'
 
 const localStorageMock = (() => {

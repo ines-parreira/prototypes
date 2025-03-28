@@ -2,6 +2,7 @@ import { useFlags } from 'launchdarkly-react-client-sdk'
 
 import { FeatureFlagKey } from 'config/featureFlags'
 import { useStatsFilters } from 'hooks/reporting/support-performance/useStatsFilters'
+import { useTagResultsSelection } from 'hooks/reporting/tags/useTagResultsSelection'
 import {
     filterTimeDataWithSelectedTags,
     formatAndOrderTagTimeSeries,
@@ -15,7 +16,6 @@ import {
 } from 'hooks/reporting/timeSeries'
 import { getPeriodDateTimes } from 'hooks/reporting/useTimeSeries'
 import useAppDispatch from 'hooks/useAppDispatch'
-import { useTagResultsSelection } from 'hooks/useResultsSelection'
 import { setOrder } from 'state/ui/stats/tagsReportSlice'
 import { getFilterDateRange } from 'utils/reporting'
 

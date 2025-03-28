@@ -6,6 +6,7 @@ import configureMockStore from 'redux-mock-store'
 
 import { FeatureFlagKey } from 'config/featureFlags'
 import { tags } from 'fixtures/tag'
+import { TagSelection } from 'hooks/reporting/tags/useTagResultsSelection'
 import { filterTimeDataWithSelectedTags } from 'hooks/reporting/ticket-insights/helpers'
 import { useTicketCountPerTag } from 'hooks/reporting/ticket-insights/useTicketCountPerTag'
 import {
@@ -13,7 +14,6 @@ import {
     useTotalTaggedTicketCountTimeSeries,
 } from 'hooks/reporting/timeSeries'
 import { getPeriodDateTimes } from 'hooks/reporting/useTimeSeries'
-import { TagSelection } from 'hooks/useResultsSelection'
 import { OrderDirection } from 'models/api/types'
 import { ReportingGranularity } from 'models/reporting/types'
 import { Period, TagFilterInstanceId } from 'models/stat/types'

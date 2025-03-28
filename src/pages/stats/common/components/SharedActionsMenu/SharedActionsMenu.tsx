@@ -5,10 +5,12 @@ import { IconButton } from '@gorgias/merchant-ui-kit'
 import { logEvent, SegmentEvent } from 'common/segment'
 import {
     TagSelection,
-    TimeframePreferenceSelection,
     useTagResultsSelection,
+} from 'hooks/reporting/tags/useTagResultsSelection'
+import {
+    TimeframePreferenceSelection,
     useTimeframePreferenceSelection,
-} from 'hooks/useResultsSelection'
+} from 'hooks/reporting/ticket-insights/useTimeframePreferenceSelection'
 import Dropdown from 'pages/common/components/dropdown/Dropdown'
 import DropdownBody from 'pages/common/components/dropdown/DropdownBody'
 import DropdownItem from 'pages/common/components/dropdown/DropdownItem'

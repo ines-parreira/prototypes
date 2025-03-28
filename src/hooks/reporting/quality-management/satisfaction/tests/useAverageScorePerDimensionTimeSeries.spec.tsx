@@ -15,11 +15,11 @@ import {
     useAverageCSATPerIntegrationTimeseries,
 } from 'hooks/reporting/quality-management/satisfaction/useAverageScorePerDimensionTimeSeries'
 import { useStatsFilters } from 'hooks/reporting/support-performance/useStatsFilters'
+import { TagSelection } from 'hooks/reporting/tags/useTagResultsSelection'
 import {
     fetchTimeSeriesPerDimension,
     useTimeSeriesPerDimension,
 } from 'hooks/reporting/useTimeSeries'
-import { TagSelection } from 'hooks/useResultsSelection'
 import { OrderDirection } from 'models/api/types'
 import { TicketDimension } from 'models/reporting/cubes/TicketCube'
 import { TicketMessagesDimension } from 'models/reporting/cubes/TicketMessagesCube'

@@ -2,11 +2,11 @@ import { orderBy } from 'lodash'
 
 import { Tag } from '@gorgias/api-queries'
 
+import { TagSelection } from 'hooks/reporting/tags/useTagResultsSelection'
 import {
     TimeSeriesDataItem,
     TimeSeriesPerDimension,
 } from 'hooks/reporting/useTimeSeries'
-import { TagSelection } from 'hooks/useResultsSelection'
 import { StatsFilters } from 'models/stat/types'
 import { TagsTableOrder } from 'state/ui/stats/tagsReportSlice'
 
