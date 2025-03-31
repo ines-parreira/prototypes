@@ -1,99 +1,68 @@
-import React from 'react'
+import { render } from '@testing-library/react'
 
-import { QueryClientProvider } from '@tanstack/react-query'
-import { fireEvent, render, screen, waitFor } from '@testing-library/react'
-import MockAdapter from 'axios-mock-adapter'
-import { DndProvider } from 'react-dnd'
-import { HTML5Backend } from 'react-dnd-html5-backend'
-import { Provider } from 'react-redux'
-import configureMockStore from 'redux-mock-store'
-import thunk from 'redux-thunk'
-
-import { ticketInputFieldDefinition } from 'fixtures/customField'
-import client from 'models/api/resources'
+import { useUpdateCustomFieldDefinition } from 'custom-fields/hooks/queries/useUpdateCustomFieldDefinition'
+import { ticketNumberFieldDefinition } from 'fixtures/customField'
 import history from 'pages/history'
-import { mockQueryClient } from 'tests/reactQueryTestingUtils'
-import { renderWithRouter } from 'utils/testing'
+import { CUSTOM_FIELD_ROUTES } from 'routes/constants'
+import { assumeMock } from 'utils/testing'
 
 import EditFieldForm from '../EditFieldForm'
+import FieldForm from '../FieldForm'
 
-const mockStore = configureMockStore([thunk])()
-const mockedServer = new MockAdapter(client)
-const queryClient = mockQueryClient()
+jest.mock('custom-fields/hooks/queries/useUpdateCustomFieldDefinition')
 
 jest.mock('pages/history', () => ({
     ...jest.requireActual<Record<string, unknown>>('pages/history'),
-    listen: jest.fn(() => jest.fn()),
+    push: jest.fn(() => jest.fn()),
 }))
 
+jest.mock('../FieldForm', () => jest.fn(() => <div>FieldForm</div>))
+
+const useUpdateCustomFieldDefinitionMock = assumeMock(
+    useUpdateCustomFieldDefinition,
+)
+const FieldFormMock = assumeMock(FieldForm)
+
 describe('<EditFieldForm/>', () => {
+    const mutateAsync = jest.fn(() => Promise.resolve())
     beforeEach(() => {
-        mockedServer.reset()
-        queryClient.clear()
+        useUpdateCustomFieldDefinitionMock.mockReturnValue({
+            mutateAsync,
+        } as unknown as ReturnType<typeof useUpdateCustomFieldDefinition>)
     })
 
-    it('should render correctly', () => {
-        const { container } = render(
-            <QueryClientProvider client={queryClient}>
-                <Provider store={mockStore}>
-                    <DndProvider backend={HTML5Backend}>
-                        <EditFieldForm field={ticketInputFieldDefinition} />
-                    </DndProvider>
-                </Provider>
-            </QueryClientProvider>,
+    it('should call FieldForm with correct props', () => {
+        render(<EditFieldForm field={ticketNumberFieldDefinition} />)
+
+        expect(FieldForm).toHaveBeenCalledWith(
+            {
+                field: expect.objectContaining(ticketNumberFieldDefinition),
+                onSubmit: expect.any(Function),
+                onClose: expect.any(Function),
+            },
+            {},
         )
-        expect(container.firstChild).toMatchSnapshot()
     })
 
-    it('should create custom field if the save button is clicked', async () => {
-        mockedServer
-            .onPut(`/api/custom-fields/${ticketInputFieldDefinition.id}`)
-            .reply(200, ticketInputFieldDefinition)
+    it('should call mutate async with proper field', () => {
+        render(<EditFieldForm field={ticketNumberFieldDefinition} />)
 
-        renderWithRouter(
-            <QueryClientProvider client={queryClient}>
-                <Provider store={mockStore}>
-                    <DndProvider backend={HTML5Backend}>
-                        <EditFieldForm field={ticketInputFieldDefinition} />
-                    </DndProvider>
-                </Provider>
-            </QueryClientProvider>,
-        )
+        FieldFormMock.mock.calls[0][0].onSubmit(ticketNumberFieldDefinition)
 
-        const nameInput = screen.getByLabelText(/Name/)
-        fireEvent.change(nameInput, { target: { value: 'Updated name' } })
+        expect(mutateAsync).toHaveBeenCalledWith([
+            ticketNumberFieldDefinition.id,
+            ticketNumberFieldDefinition,
+        ])
+    })
 
-        const saveButton = screen.getByText(/Save/)
-        saveButton.click()
+    it('should call history push when calling onClose prop', () => {
+        render(<EditFieldForm field={ticketNumberFieldDefinition} />)
 
-        await waitFor(() => mockedServer.history.put.length > 0)
-
-        expect(mockedServer.history.put.length).toBe(1)
-        expect(mockedServer.history).toMatchSnapshot()
+        FieldFormMock.mock.calls[0][0].onClose()
 
         expect(history.push).toHaveBeenNthCalledWith(
             1,
-            '/app/settings/ticket-fields',
-        )
-    })
-
-    it('should go back to listing if the cancel button is clicked', () => {
-        render(
-            <QueryClientProvider client={queryClient}>
-                <Provider store={mockStore}>
-                    <DndProvider backend={HTML5Backend}>
-                        <EditFieldForm field={ticketInputFieldDefinition} />
-                    </DndProvider>
-                </Provider>{' '}
-            </QueryClientProvider>,
-        )
-
-        const cancelButton = screen.getByText(/Cancel/)
-        cancelButton.click()
-
-        expect(history.push).toHaveBeenNthCalledWith(
-            1,
-            '/app/settings/ticket-fields',
+            `/app/settings/${CUSTOM_FIELD_ROUTES[ticketNumberFieldDefinition.object_type]}`,
         )
     })
 })

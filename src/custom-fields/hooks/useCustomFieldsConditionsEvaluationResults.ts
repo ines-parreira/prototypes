@@ -12,7 +12,6 @@ import { useCustomFieldConditions } from './queries/useCustomFieldConditions'
 export const useCustomFieldsConditionsEvaluationResults = (
     objectType: CustomFieldObjectTypes,
     sourceObject: Record<string, any>,
-    conditionalFieldsSupported: boolean,
 ): {
     evaluationResults: CustomFieldConditionsEvaluationResults
     conditionsLoading: boolean
@@ -21,7 +20,7 @@ export const useCustomFieldsConditionsEvaluationResults = (
         useCustomFieldConditions({
             objectType: OBJECT_TYPES.TICKET,
             includeDeactivated: false,
-            enabled: conditionalFieldsSupported,
+            enabled: true,
         })
 
     const evaluationResults = useMemo(

@@ -5,8 +5,6 @@ import classNames from 'classnames'
 import { ExpressionFieldType, RequirementType } from '@gorgias/api-types'
 
 import { getWrappedElementCount } from 'common/utils'
-import { FeatureFlagKey } from 'config/featureFlags'
-import { useFlag } from 'core/flags'
 import { AI_MANAGED_TYPES, OBJECT_TYPES } from 'custom-fields/constants'
 import { isFieldRequired } from 'custom-fields/helpers/isFieldRequired'
 import { useCustomFieldDefinitions } from 'custom-fields/hooks/queries/useCustomFieldDefinitions'
@@ -52,9 +50,6 @@ function TicketFields() {
     const hasAttemptedToCloseTicket = useAppSelector(
         getHasAttemptedToCloseTicket,
     )
-    const conditionalFieldsSupported = useFlag(
-        FeatureFlagKey.TicketConditionalFields,
-    )
 
     const {
         data: { data: ticketFieldDefinitions = [] } = {},
@@ -70,7 +65,6 @@ function TicketFields() {
     } = useCustomFieldsConditionsEvaluationResults(
         OBJECT_TYPES.TICKET,
         ticketState,
-        conditionalFieldsSupported,
     )
 
     // Hide AI managed fields

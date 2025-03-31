@@ -1,9 +1,6 @@
-import React from 'react'
-
 import { QueryClientProvider } from '@tanstack/react-query'
 import { render, screen, waitFor } from '@testing-library/react'
 import { Map } from 'immutable'
-import { mockFlags } from 'jest-launchdarkly-mock'
 import { Provider } from 'react-redux'
 import configureMockStore, { MockStoreEnhanced } from 'redux-mock-store'
 import thunk from 'redux-thunk'
@@ -17,8 +14,6 @@ import {
 } from '@gorgias/api-types'
 
 import { appQueryClient } from 'api/queryClient'
-import { FeatureFlagKey } from 'config/featureFlags'
-import useFlag from 'core/flags/hooks/useFlag'
 import { getCustomFields } from 'custom-fields/resources'
 import {
     ticketDropdownFieldDefinition,
@@ -46,7 +41,6 @@ jest.mock('core/flags/hooks/useFlag')
 
 const mockedGetCustomFields = assumeMock(getCustomFields)
 const mockedListCustomFieldConditions = assumeMock(listCustomFieldConditions)
-const mockedUseFlag = assumeMock(useFlag)
 
 const middlewares = [thunk]
 const mockStore = configureMockStore<MockedRootState, StoreDispatch>(
@@ -87,50 +81,7 @@ describe('triggerTicketFieldsRefreshAndInvalidation()', () => {
         } as any)
     })
 
-    it('should dispatch SET_INVALID_CUSTOM_FIELDS_TO_ERRORED with correct errored fields with flag disabled', async () => {
-        // Mock the flag
-        mockFlags({ [FeatureFlagKey.TicketConditionalFields]: false })
-
-        // Render the queries and cache the data
-        render(
-            <QueryClientProvider client={appQueryClient}>
-                <Provider store={store}>
-                    <TicketFields />
-                </Provider>
-            </QueryClientProvider>,
-        )
-        await waitFor(() => {
-            expect(
-                screen.getByText(RegExp(visibleTicketField.label)),
-            ).toBeDefined()
-        })
-
-        // Mock the data for invalidation and re-fetch
-        mockedGetCustomFields.mockResolvedValue({
-            data: {
-                data: [
-                    conditionalTicketField,
-                    visibleTicketField,
-                    requiredTicketField,
-                ],
-            },
-        } as any)
-
-        // Trigger refresh and invalidation
-        await store.dispatch(triggerTicketFieldsRefreshAndInvalidation())
-        expect(store.getActions()).toEqual([
-            {
-                payload: [requiredTicketField.id],
-                type: 'SET_INVALID_CUSTOM_FIELDS_TO_ERRORED',
-            },
-        ])
-    })
-
-    it('should dispatch SET_INVALID_CUSTOM_FIELDS_TO_ERRORED with correct errored fields with flag enabled', async () => {
-        // Mock the flag
-        mockedUseFlag.mockReturnValue(true)
-        mockFlags({ [FeatureFlagKey.TicketConditionalFields]: true })
-
+    it('should dispatch SET_INVALID_CUSTOM_FIELDS_TO_ERRORED with correct errored fields', async () => {
         // Render the queries and cache the data
         render(
             <QueryClientProvider client={appQueryClient}>

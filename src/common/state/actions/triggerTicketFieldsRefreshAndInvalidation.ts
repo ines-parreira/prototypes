@@ -1,10 +1,7 @@
-import { useFlags } from 'launchdarkly-react-client-sdk'
-
 import { listCustomFieldConditions } from '@gorgias/api-client'
 import { queryKeys } from '@gorgias/api-queries'
 
 import { appQueryClient } from 'api/queryClient'
-import { FeatureFlagKey } from 'config/featureFlags'
 import { OBJECT_TYPES } from 'custom-fields/constants'
 import { evaluateCustomFieldsConditions } from 'custom-fields/helpers/evaluateCustomFieldsConditions'
 import { customFieldDefinitionKeys } from 'custom-fields/hooks/queries/queries'
@@ -18,34 +15,28 @@ import setInvalidCustomFieldsToErrored from './setInvalidCustomFieldsToErrored'
 
 export default function triggerTicketFieldsRefreshAndInvalidation() {
     return async (dispatch: StoreDispatch, getState: () => RootState) => {
-        const flags = useFlags()
-        const conditionalFieldsSupported =
-            !!flags[FeatureFlagKey.TicketConditionalFields]
         const currentState = getState()
 
         let customFieldsEvaluatedConditions: CustomFieldConditionsEvaluationResults
-        if (conditionalFieldsSupported) {
-            const customFieldConditionsQueryKey =
-                queryKeys.customFieldConditions.listCustomFieldConditions({
-                    object_type: OBJECT_TYPES.TICKET,
-                    include_deactivated: false,
-                })
-            await appQueryClient.invalidateQueries({
-                queryKey: customFieldConditionsQueryKey,
-            })
 
-            const refetchedCustomFieldConditions =
-                appQueryClient.getQueryData<
-                    Awaited<ReturnType<typeof listCustomFieldConditions>>
-                >(customFieldConditionsQueryKey)?.data?.data || []
-            customFieldsEvaluatedConditions = evaluateCustomFieldsConditions(
-                refetchedCustomFieldConditions,
-                OBJECT_TYPES.TICKET,
-                getTicket(currentState),
-            )
-        } else {
-            customFieldsEvaluatedConditions = {}
-        }
+        const customFieldConditionsQueryKey =
+            queryKeys.customFieldConditions.listCustomFieldConditions({
+                object_type: OBJECT_TYPES.TICKET,
+                include_deactivated: false,
+            })
+        await appQueryClient.invalidateQueries({
+            queryKey: customFieldConditionsQueryKey,
+        })
+
+        const refetchedCustomFieldConditions =
+            appQueryClient.getQueryData<
+                Awaited<ReturnType<typeof listCustomFieldConditions>>
+            >(customFieldConditionsQueryKey)?.data?.data || []
+        customFieldsEvaluatedConditions = evaluateCustomFieldsConditions(
+            refetchedCustomFieldConditions,
+            OBJECT_TYPES.TICKET,
+            getTicket(currentState),
+        )
 
         await appQueryClient.invalidateQueries({
             queryKey: customFieldDefinitionKeys.all(),

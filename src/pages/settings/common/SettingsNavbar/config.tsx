@@ -55,7 +55,6 @@ const productivitySection: Category = {
             requiredRole: ADMIN_ROLE,
             to: CUSTOM_FIELD_CONDITIONS_ROUTE,
             text: 'Field Conditions',
-            requiredFeatureFlags: [FeatureFlagKey.TicketConditionalFields],
             extra: (
                 <Badge type={'blue'} className={cssNavbar.badge}>
                     BETA

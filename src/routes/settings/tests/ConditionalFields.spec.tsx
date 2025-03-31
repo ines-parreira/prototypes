@@ -1,11 +1,8 @@
-import React from 'react'
-
-import { render, screen } from '@testing-library/react'
+import { render } from '@testing-library/react'
 import { Route, useRouteMatch } from 'react-router-dom'
 
 import { PageSection } from 'config/pages'
 import { ADMIN_ROLE } from 'config/user'
-import { useFlag } from 'core/flags'
 import ConditionalField from 'pages/settings/conditionalFields/ConditionalField'
 import ConditionalFieldsComponent from 'pages/settings/conditionalFields/ConditionalFields'
 import { CUSTOM_FIELD_CONDITIONS_ROUTE } from 'routes/constants'
@@ -29,24 +26,14 @@ jest.mock('../helpers/settingsRenderer', () => ({
 }))
 
 const mockedRoute = Route as jest.Mock
-const mockedUseFlag = assumeMock(useFlag)
 const mockedRenderAppSettings = assumeMock(renderAppSettings)
 const mockedUseRouteMatch = assumeMock(useRouteMatch)
 
 describe('ConditionalFields', () => {
     beforeEach(() => {
-        mockedUseFlag.mockReturnValue(true)
         mockedUseRouteMatch.mockReturnValue({
             path: CUSTOM_FIELD_CONDITIONS_ROUTE,
         } as ReturnType<typeof useRouteMatch>)
-    })
-
-    it("should render the NoMatch component if the feature flag isn't enabled", () => {
-        mockedUseFlag.mockReturnValue(false)
-
-        render(<ConditionalFields />)
-
-        expect(screen.getByText('404')).toBeInTheDocument()
     })
 
     it.each([

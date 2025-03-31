@@ -48,16 +48,12 @@ describe('useCustomFieldsConditionsEvaluationResults', () => {
         } as any)
 
         const { result } = renderHook(() =>
-            useCustomFieldsConditionsEvaluationResults(
-                OBJECT_TYPES.TICKET,
-                {},
-                false,
-            ),
+            useCustomFieldsConditionsEvaluationResults(OBJECT_TYPES.TICKET, {}),
         )
         expect(useCustomFieldConditions).toHaveBeenCalledWith({
             objectType: OBJECT_TYPES.TICKET,
             includeDeactivated: false,
-            enabled: false,
+            enabled: true,
         })
         expect(result.current.conditionsLoading).toBe(true)
         expect(result.current.evaluationResults).toEqual({})
@@ -70,14 +66,10 @@ describe('useCustomFieldsConditionsEvaluationResults', () => {
         } as any)
 
         const { result } = renderHook(() =>
-            useCustomFieldsConditionsEvaluationResults(
-                OBJECT_TYPES.TICKET,
-                {
-                    status: 'open',
-                    custom_fields: { 100: { value: 'high' } },
-                },
-                true,
-            ),
+            useCustomFieldsConditionsEvaluationResults(OBJECT_TYPES.TICKET, {
+                status: 'open',
+                custom_fields: { 100: { value: 'high' } },
+            }),
         )
 
         expect(useCustomFieldConditions).toHaveBeenCalledWith({
@@ -98,13 +90,9 @@ describe('useCustomFieldsConditionsEvaluationResults', () => {
         } as any)
 
         const { result } = renderHook(() =>
-            useCustomFieldsConditionsEvaluationResults(
-                OBJECT_TYPES.TICKET,
-                {
-                    status: 'closed',
-                },
-                true,
-            ),
+            useCustomFieldsConditionsEvaluationResults(OBJECT_TYPES.TICKET, {
+                status: 'closed',
+            }),
         )
 
         expect(useCustomFieldConditions).toHaveBeenCalledWith({

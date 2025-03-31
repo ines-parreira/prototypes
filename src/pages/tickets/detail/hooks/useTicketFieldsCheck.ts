@@ -3,8 +3,6 @@ import { useCallback } from 'react'
 import { Macro } from '@gorgias/api-queries'
 
 import { logEvent, SegmentEvent } from 'common/segment'
-import { FeatureFlagKey } from 'config/featureFlags'
-import { useFlag } from 'core/flags'
 import { OBJECT_TYPES } from 'custom-fields/constants'
 import { useCustomFieldDefinitions } from 'custom-fields/hooks/queries/useCustomFieldDefinitions'
 import { useCustomFieldsConditionsEvaluationResults } from 'custom-fields/hooks/useCustomFieldsConditionsEvaluationResults'
@@ -29,9 +27,6 @@ export function useTicketFieldsCheck(ticketId: number) {
     const fieldsState = useAppSelector(getTicketFieldState)
     const appliedMacro = useAppSelector(getAppliedMacro)
     const ticketState = useAppSelector(getTicket)
-    const conditionalFieldsSupported = useFlag(
-        FeatureFlagKey.TicketConditionalFields,
-    )
 
     const {
         data: { data: fieldDefinitions = [] } = {},
@@ -46,7 +41,6 @@ export function useTicketFieldsCheck(ticketId: number) {
     } = useCustomFieldsConditionsEvaluationResults(
         OBJECT_TYPES.TICKET,
         ticketState,
-        conditionalFieldsSupported,
     )
 
     const checkTicketFieldErrors = useCallback(
@@ -62,15 +56,12 @@ export function useTicketFieldsCheck(ticketId: number) {
                           })
                         : fieldsState,
                 fieldDefinitions,
-                evaluatedConditions: conditionalFieldsSupported
-                    ? ticketFieldConditionsEvaluationResults
-                    : {},
+                evaluatedConditions: ticketFieldConditionsEvaluationResults,
             })
 
             if (
                 !isTicketFieldDefinitionLoading &&
-                (!conditionalFieldsSupported ||
-                    !ticketFieldConditionsLoading) &&
+                !ticketFieldConditionsLoading &&
                 invalidFields.length
             ) {
                 logEvent(
@@ -95,7 +86,6 @@ export function useTicketFieldsCheck(ticketId: number) {
             isTicketFieldDefinitionLoading,
             ticketFieldConditionsLoading,
             dispatch,
-            conditionalFieldsSupported,
         ],
     )
 

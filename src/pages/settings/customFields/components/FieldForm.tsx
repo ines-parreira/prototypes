@@ -1,12 +1,10 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react'
 
 import { Location } from 'history'
-import { useFlags } from 'launchdarkly-react-client-sdk'
 import { cloneDeep, pick, set } from 'lodash'
 
 import { Badge, Button, Label, Tooltip } from '@gorgias/merchant-ui-kit'
 
-import { FeatureFlagKey } from 'config/featureFlags'
 import { OBJECT_TYPE_SETTINGS, OBJECT_TYPES } from 'custom-fields/constants'
 import { getUIDataType } from 'custom-fields/helpers/getUIDataType'
 import { useUpdateCustomFieldArchiveStatus } from 'custom-fields/hooks/queries/useUpdateCustomFieldArchiveStatus'
@@ -18,7 +16,6 @@ import {
 } from 'custom-fields/types'
 import UnsavedChangesPrompt from 'pages/common/components/UnsavedChangesPrompt'
 import Caption from 'pages/common/forms/Caption/Caption'
-import CheckBox from 'pages/common/forms/CheckBox'
 import InputField from 'pages/common/forms/input/InputField'
 import TextArea from 'pages/common/forms/TextArea'
 import history from 'pages/history'
@@ -34,7 +31,7 @@ const TOOLTIP_MESSAGE =
 
 interface FieldFormProps {
     field: CustomField | CustomFieldInput
-    onSubmit: (field: CustomFieldInput) => void
+    onSubmit: (field: CustomFieldInput) => Promise<unknown>
     onClose: () => void
     submitLabel?: string
 }
@@ -45,10 +42,7 @@ const pickMap = {
     input_number: ['min', 'max'],
 }
 
-function sanitizeInput(
-    input: CustomFieldInput,
-    useRequirementType: boolean,
-): CustomFieldInput {
+function sanitizeInput(input: CustomFieldInput): CustomFieldInput {
     input.definition.input_settings = pick(
         input.definition.input_settings,
         ['input_type'].concat(
@@ -56,19 +50,11 @@ function sanitizeInput(
         ),
     ) as CustomFieldInput['definition']['input_settings']
 
-    if (!useRequirementType) {
-        delete input.requirement_type
-    }
-
     return input
 }
 
 export default function FieldForm(props: FieldFormProps) {
-    const flags = useFlags()
-    const useRequirementType = !!flags[FeatureFlagKey.TicketConditionalFields]
-
     const objectTypeSettings = OBJECT_TYPE_SETTINGS[props.field.object_type]
-    const customFieldTypeLabel = objectTypeSettings.LABEL
     const customFieldTitleLabel = objectTypeSettings.TITLE_LABEL
     const isAIManaged = isCustomFieldAIManagedType(props.field.managed_type)
     const { mutateAsync } = useUpdateCustomFieldArchiveStatus(
@@ -112,7 +98,7 @@ export default function FieldForm(props: FieldFormProps) {
     const save = async () => {
         setIsLoading(true)
         try {
-            await props.onSubmit(sanitizeInput(form, useRequirementType))
+            await props.onSubmit(sanitizeInput(form))
             setIsFormDirty(false)
             return true
         } catch (e) {
@@ -196,22 +182,12 @@ export default function FieldForm(props: FieldFormProps) {
                 className={css.formRow}
                 isDisabled={isAIManaged}
             />
-            {showRequired && useRequirementType && (
+            {showRequired && (
                 <RequirementTypeInput
                     value={form.requirement_type}
                     onChange={(val) => setValue('requirement_type', val)}
                     className={css.formRow}
                 />
-            )}
-            {showRequired && !useRequirementType && (
-                <CheckBox
-                    isChecked={form.required}
-                    caption={`Enable to prevent agents from closing the ${customFieldTypeLabel} if the field is left empty. Snooze and Send actions will still work.`}
-                    onChange={(val) => setValue('required', val)}
-                    className={css.formRow}
-                >
-                    Required to close {customFieldTypeLabel}
-                </CheckBox>
             )}
             <div className={css.formRow}>
                 <Label

@@ -1,20 +1,16 @@
-import React from 'react'
-
-import { QueryClientProvider } from '@tanstack/react-query'
 import { render } from '@testing-library/react'
-import { DndProvider } from 'react-dnd'
-import { HTML5Backend } from 'react-dnd-html5-backend'
-import { Provider } from 'react-redux'
-import configureMockStore from 'redux-mock-store'
-import thunk from 'redux-thunk'
 
 import { OBJECT_TYPES } from 'custom-fields/constants'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 
 import AddCustomField from '../AddCustomField'
+import AddFieldForm from '../components/AddFieldForm'
 
-const mockStore = configureMockStore([thunk])()
 const queryClient = mockQueryClient()
+
+jest.mock('../components/AddFieldForm', () => {
+    return jest.fn(() => <div>AddFieldForm</div>)
+})
 
 describe('<AddCustomField/>', () => {
     beforeEach(() => {
@@ -23,14 +19,19 @@ describe('<AddCustomField/>', () => {
 
     it('should render', () => {
         const { container } = render(
-            <QueryClientProvider client={queryClient}>
-                <Provider store={mockStore}>
-                    <DndProvider backend={HTML5Backend}>
-                        <AddCustomField objectType={OBJECT_TYPES.TICKET} />
-                    </DndProvider>
-                </Provider>
-            </QueryClientProvider>,
+            <AddCustomField objectType={OBJECT_TYPES.TICKET} />,
         )
         expect(container.firstChild).toMatchSnapshot()
+    })
+
+    it('should call AddFieldForm with correct props', () => {
+        render(<AddCustomField objectType={OBJECT_TYPES.TICKET} />)
+
+        expect(AddFieldForm).toHaveBeenCalledWith(
+            {
+                objectType: OBJECT_TYPES.TICKET,
+            },
+            {},
+        )
     })
 })

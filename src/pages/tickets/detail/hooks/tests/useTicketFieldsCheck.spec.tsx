@@ -9,7 +9,6 @@ import {
     TicketStatus,
 } from '@gorgias/api-types'
 
-import useFlag from 'core/flags/hooks/useFlag'
 import { useCustomFieldConditions } from 'custom-fields/hooks/queries/useCustomFieldConditions'
 import { useCustomFieldDefinitions } from 'custom-fields/hooks/queries/useCustomFieldDefinitions'
 import { ticketInputFieldDefinition as mockTicketInputFieldDefinition } from 'fixtures/customField'
@@ -104,7 +103,6 @@ const mockedTriggerTicketFieldsErrors = assumeMock(triggerTicketFieldsErrors)
 const mockedGetAppliedMacro = assumeMock(getAppliedMacro)
 const mockedGetTicketFieldState = assumeMock(getTicketFieldState)
 const mockedGetTicket = assumeMock(getTicket)
-const mockedUseFlag = assumeMock(useFlag)
 
 // Data here is valid because the required field is provided by the macro
 function mockValidData() {
@@ -236,53 +234,47 @@ describe('useTicketFieldsCheck', () => {
         expect(setHasAttemptedToCloseTicket).toHaveBeenCalledWith(false)
     })
 
-    it.each([true, false])(
-        'should return true if there is a conditional ticket field that was evaluated as required and flag is enabled. Flag enabled: %s',
-        (isEnabled: boolean) => {
-            mockedUseFlag.mockReturnValue(isEnabled)
-            mockedUseCustomFieldDefinitions.mockImplementation(
-                () =>
-                    ({
-                        data: {
-                            data: [
-                                mockRequiredCustomField,
-                                mockConditionalCustomField,
-                            ],
-                        },
-                        isLoading: false,
-                    }) as unknown as ReturnType<
-                        typeof useCustomFieldDefinitions
-                    >,
-            )
-
-            mockedGetTicket.mockReturnValue({
-                status: TicketStatus.Open,
-                custom_fields: {
-                    [mockRequiredCustomField.id]: {
-                        id: mockRequiredCustomField.id,
-                        value: 'Refund',
+    it('should return true if there is a conditional ticket field that was evaluated as required', () => {
+        mockedUseCustomFieldDefinitions.mockImplementation(
+            () =>
+                ({
+                    data: {
+                        data: [
+                            mockRequiredCustomField,
+                            mockConditionalCustomField,
+                        ],
                     },
-                },
-            } as any)
-            mockedGetTicketFieldState.mockReturnValue({
+                    isLoading: false,
+                }) as unknown as ReturnType<typeof useCustomFieldDefinitions>,
+        )
+
+        mockedGetTicket.mockReturnValue({
+            status: TicketStatus.Open,
+            custom_fields: {
                 [mockRequiredCustomField.id]: {
                     id: mockRequiredCustomField.id,
                     value: 'Refund',
                 },
-            })
-            mockedUseCustomFieldConditions.mockReturnValue({
-                customFieldConditions: [
-                    mockRequiredOnIntentAndOpenCustomFieldCondition,
-                ],
-                isLoading: false,
-                isError: false,
-            })
+            },
+        } as any)
+        mockedGetTicketFieldState.mockReturnValue({
+            [mockRequiredCustomField.id]: {
+                id: mockRequiredCustomField.id,
+                value: 'Refund',
+            },
+        })
+        mockedUseCustomFieldConditions.mockReturnValue({
+            customFieldConditions: [
+                mockRequiredOnIntentAndOpenCustomFieldCondition,
+            ],
+            isLoading: false,
+            isError: false,
+        })
 
-            const { result } = renderHook(() => useTicketFieldsCheck(TICKET_ID))
+        const { result } = renderHook(() => useTicketFieldsCheck(TICKET_ID))
 
-            expect(result.current.checkTicketFieldErrors()).toEqual(isEnabled)
-        },
-    )
+        expect(result.current.checkTicketFieldErrors()).toEqual(true)
+    })
 
     it('should return false if there is a conditional ticket field that was evaluated as required, but macro fills it up', () => {
         mockedUseCustomFieldDefinitions.mockImplementation(

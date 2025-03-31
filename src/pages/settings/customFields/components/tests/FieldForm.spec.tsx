@@ -8,10 +8,8 @@ import {
     waitFor,
 } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import { mockFlags } from 'jest-launchdarkly-mock'
 import { omit } from 'lodash'
 
-import { FeatureFlagKey } from 'config/featureFlags'
 import { OBJECT_TYPE_SETTINGS, OBJECT_TYPES } from 'custom-fields/constants'
 import { useUpdateCustomFieldArchiveStatus } from 'custom-fields/hooks/queries/useUpdateCustomFieldArchiveStatus'
 import {
@@ -61,9 +59,6 @@ describe('<FieldForm/>', () => {
             return {
                 mutateAsync: updateMutateMock,
             } as unknown as ReturnType<typeof useUpdateCustomFieldArchiveStatus>
-        })
-        mockFlags({
-            [FeatureFlagKey.TicketConditionalFields]: false,
         })
     })
 
@@ -176,30 +171,7 @@ describe('<FieldForm/>', () => {
         expect(props.onClose).toHaveBeenCalledTimes(1)
     })
 
-    it('should change checkbox required value of is clicked', async () => {
-        const props = {
-            ...defaultProps,
-            field: customFieldInputDefinition,
-        }
-
-        render(<FieldForm {...props} />)
-
-        await userEvent.type(
-            screen.getByLabelText(/Required to close ticket/),
-            'checkbox',
-        )
-        userEvent.click(screen.getByLabelText(/Required to close ticket/))
-        await waitFor(() => {
-            expect(screen.getByLabelText(/Required to close ticket/))
-                .toBeChecked
-        })
-    })
-
-    it('should show three options instead of a checkbox when fields conditions are enabled', () => {
-        mockFlags({
-            [FeatureFlagKey.TicketConditionalFields]: true,
-        })
-
+    it('should show three options', () => {
         render(<FieldForm {...defaultProps} />)
 
         // All three options should be visible

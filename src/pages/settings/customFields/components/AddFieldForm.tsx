@@ -29,13 +29,14 @@ export default function AddFieldForm({
 
     const close = () =>
         history.push(`/app/settings/${CUSTOM_FIELD_ROUTES[objectType]}`)
+
     const handleSubmit = async (field: CustomFieldInput) => {
         logEvent(SegmentEvent.CustomFieldSaveNewFieldClicked, {
             fieldType: field.definition.input_settings.input_type,
             objectType,
         })
 
-        await mutateAsync([field])
+        return mutateAsync([field])
     }
 
     return (

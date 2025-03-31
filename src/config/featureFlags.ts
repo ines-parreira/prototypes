@@ -131,7 +131,6 @@ export enum FeatureFlagKey {
     StandaloneConvAiOverviewPageResourceSection = 'standalone-conv-ai_overview-page-resource-section',
     SwitchToShopifyThemeAppExtension = 'switch-to-shopify-theme-app-extension',
     TagNewDesign = 'tag-new-design',
-    TicketConditionalFields = 'ticket-conditional-fields',
     TicketDemoSuggestion = 'ticket-demo-suggestion',
     ExposeVoiceQueues = 'expose-voice-queues-to-users',
     WhatsAppMigrationsDebug = 'whatsapp-migration-debug',
