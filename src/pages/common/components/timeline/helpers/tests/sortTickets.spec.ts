@@ -17,6 +17,11 @@ describe('sortTickets', () => {
         } as TicketSummary,
         {
             id: 3,
+            created_datetime: '2023-01-04T10:00:00Z',
+            last_message_datetime: '2024-01-05T10:00:00Z',
+        } as TicketSummary,
+        {
+            id: 4,
             created_datetime: '2023-01-03T10:00:00Z',
             last_message_datetime: '2023-01-04T10:00:00Z',
         } as TicketSummary,
@@ -29,7 +34,7 @@ describe('sortTickets', () => {
             label: 'Last message',
         }
         const sortedTickets = sortTickets(tickets, sortOption)
-        expect(sortedTickets.map((ticket) => ticket.id)).toEqual([3, 2, 1])
+        expect(sortedTickets.map((ticket) => ticket.id)).toEqual([4, 2, 1, 3])
     })
 
     it('should sort tickets in descending order', () => {
@@ -39,7 +44,7 @@ describe('sortTickets', () => {
             label: 'Last message',
         }
         const sortedTickets = sortTickets(tickets, sortOption)
-        expect(sortedTickets.map((ticket) => ticket.id)).toEqual([1, 2, 3])
+        expect(sortedTickets.map((ticket) => ticket.id)).toEqual([3, 1, 2, 4])
     })
 
     it('should use fallback sort key if the sort key is not present', () => {
@@ -49,7 +54,7 @@ describe('sortTickets', () => {
             label: 'Last message',
         }
         const sortedTickets = sortTickets(tickets, sortOption)
-        expect(sortedTickets.map((ticket) => ticket.id)).toEqual([1, 2, 3])
+        expect(sortedTickets.map((ticket) => ticket.id)).toEqual([2, 1, 4, 3])
     })
 
     it('should handle empty ticket list', () => {
