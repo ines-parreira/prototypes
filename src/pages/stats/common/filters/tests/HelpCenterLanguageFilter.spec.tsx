@@ -7,10 +7,12 @@ import { logEvent, SegmentEvent } from 'common/segment'
 import { HelpCenter } from 'models/helpCenter/types'
 import { withDefaultLogicalOperator } from 'models/reporting/queryFactories/utils'
 import { FilterKey } from 'models/stat/types'
-import { getHelpCentersResponseFixture } from 'pages/settings/helpCenter/fixtures/getHelpCentersResponse.fixture'
 import {
     FILTER_DROPDOWN_ICON,
     FILTER_VALUE_PLACEHOLDER,
+} from 'pages/common/forms/FilterInput/constants'
+import { getHelpCentersResponseFixture } from 'pages/settings/helpCenter/fixtures/getHelpCentersResponse.fixture'
+import {
     LogicalOperatorEnum,
     LogicalOperatorLabel,
 } from 'pages/stats/common/components/Filter/constants'

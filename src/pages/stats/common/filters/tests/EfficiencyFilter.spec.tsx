@@ -6,11 +6,11 @@ import userEvent from '@testing-library/user-event'
 import { logEvent, SegmentEvent } from 'common/segment'
 import { withLogicalOperator } from 'models/reporting/queryFactories/utils'
 import { FilterKey } from 'models/stat/types'
+import { FILTER_VALUE_PLACEHOLDER } from 'pages/common/forms/FilterInput/constants'
 import {
     FILTER_CLEAR_ICON,
     FILTER_DESELECT_ALL_LABEL,
     FILTER_SELECT_ALL_LABEL,
-    FILTER_VALUE_PLACEHOLDER,
     LogicalOperatorEnum,
     LogicalOperatorLabel,
 } from 'pages/stats/common/components/Filter/constants'

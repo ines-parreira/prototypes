@@ -1,84 +1,60 @@
-import React from 'react'
-
 import { render, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import _times from 'lodash/times'
 
 import FilterValue, {
     getTooltipLabels,
-} from 'pages/stats/common/components/Filter/components/FilterValue/FilterValue'
-import {
-    FILTER_VALUE_MAX_WIDTH,
-    FILTER_VALUE_PLACEHOLDER,
-    LogicalOperatorEnum,
-    REMOVE_FILTER_LABEL,
-} from 'pages/stats/common/components/Filter/constants'
+} from 'pages/common/forms/FilterInput/FilterValue'
 
 describe('FilterValue', () => {
     it('renders without errors', () => {
-        render(
-            <FilterValue
-                optionsLabels={[]}
-                logicalOperator={null}
-                onChange={jest.fn()}
-            />,
-        )
+        render(<FilterValue optionsLabels={[]} onClick={jest.fn()} />)
     })
 
     it('displays the provided values', () => {
         const optionsLabels = ['value1', 'value2', 'value3']
         render(
-            <FilterValue
-                optionsLabels={optionsLabels}
-                logicalOperator={null}
-                onChange={jest.fn()}
-            />,
+            <FilterValue optionsLabels={optionsLabels} onClick={jest.fn()} />,
         )
 
         expect(screen.getByText(optionsLabels.join(', '))).toBeInTheDocument()
     })
 
-    it('calls the onChange callback when a value is changed', () => {
-        const onChangeMock = jest.fn()
-        render(
-            <FilterValue
-                optionsLabels={['value1']}
-                logicalOperator={null}
-                onChange={onChangeMock}
-            />,
-        )
+    it('calls the onClick callback when a value is clicked', () => {
+        const onClickMock = jest.fn()
+        render(<FilterValue optionsLabels={['value1']} onClick={onClickMock} />)
 
         const filterValueElement = screen.getByText('value1')
         userEvent.click(filterValueElement)
 
-        expect(onChangeMock).toHaveBeenCalled()
+        expect(onClickMock).toHaveBeenCalled()
     })
 
-    it('calls the onRemove callback when the remove button is clicked', () => {
-        const onRemoveMock = jest.fn()
+    it('calls the onTrailIconClick callback when the icon is clicked', () => {
+        const onTrailIconClickMock = jest.fn()
         render(
             <FilterValue
                 optionsLabels={['value1']}
-                logicalOperator={null}
-                onChange={jest.fn()}
-                onRemove={onRemoveMock}
+                onClick={jest.fn()}
+                onTrailIconClick={onTrailIconClickMock}
+                trailIcon="close"
             />,
         )
 
         const removeButton = screen.getByText('close')
         userEvent.click(removeButton)
 
-        expect(onRemoveMock).toHaveBeenCalled()
+        expect(onTrailIconClickMock).toHaveBeenCalled()
     })
 
-    it('should not call the onRemove when the remove button is clicked', () => {
-        const onRemoveMock = jest.fn()
+    it('should not call the onTrailIconClick when the icon is clicked', () => {
+        const onTrailIconClickMock = jest.fn()
         render(
             <FilterValue
                 optionsLabels={['value1']}
-                logicalOperator={null}
-                onChange={jest.fn()}
-                onRemove={onRemoveMock}
+                onClick={jest.fn()}
+                onTrailIconClick={onTrailIconClickMock}
+                trailIcon="close"
                 isDisabled
             />,
         )
@@ -86,46 +62,32 @@ describe('FilterValue', () => {
         const removeButton = screen.getByText('close')
         userEvent.click(removeButton)
 
-        expect(onRemoveMock).not.toHaveBeenCalled()
+        expect(onTrailIconClickMock).not.toHaveBeenCalled()
     })
 
-    it('displays the logical operator when it is not provided', () => {
+    it('displays the prefix when it is provided', () => {
         render(
             <FilterValue
                 optionsLabels={['value1']}
-                logicalOperator={LogicalOperatorEnum.NOT_ONE_OF}
-                onChange={jest.fn()}
+                prefix={<div data-testid="prefix">Prefix</div>}
+                onClick={jest.fn()}
             />,
         )
 
-        expect(screen.queryByTestId('logical-operator')).toBeInTheDocument()
-    })
-
-    it("doesn't display the trail icon when it is set to false", () => {
-        render(
-            <FilterValue
-                optionsLabels={['value1']}
-                logicalOperator={null}
-                onChange={jest.fn()}
-                trailIcon={false}
-            />,
-        )
-
-        expect(screen.queryByText('close')).not.toBeInTheDocument()
+        expect(screen.queryByTestId('prefix')).toBeInTheDocument()
     })
 
     it('shows the tooltip when the filter value is too long', async () => {
         Object.defineProperty(HTMLElement.prototype, 'offsetWidth', {
             configurable: true,
-            value: FILTER_VALUE_MAX_WIDTH,
+            value: 120,
         })
 
         render(
             <FilterValue
                 optionsLabels={['value1']}
-                logicalOperator={null}
-                onChange={jest.fn()}
-                trailIcon={false}
+                onClick={jest.fn()}
+                maxWidth={100}
             />,
         )
 
@@ -137,18 +99,21 @@ describe('FilterValue', () => {
         )
     })
 
-    it("doesn't show the Filter content tooltip when hovering over the trail icon", async () => {
+    it('shows the tooltip text when hovering over the trail icon', async () => {
         Object.defineProperty(HTMLElement.prototype, 'offsetWidth', {
             configurable: true,
-            value: FILTER_VALUE_MAX_WIDTH,
+            value: 120,
         })
 
         const valueLabel = 'value1'
+        const tooltipText = 'Tooltip text'
         render(
             <FilterValue
                 optionsLabels={[valueLabel]}
-                logicalOperator={null}
-                onChange={jest.fn()}
+                onClick={jest.fn()}
+                trailIcon="close"
+                trailIconTooltipText={tooltipText}
+                maxWidth={100}
             />,
         )
 
@@ -167,7 +132,7 @@ describe('FilterValue', () => {
         await waitFor(() => {
             const removeTooltip = screen.getByRole('tooltip')
             expect(removeTooltip).toBeInTheDocument()
-            expect(removeTooltip).toHaveTextContent(REMOVE_FILTER_LABEL)
+            expect(removeTooltip).toHaveTextContent(tooltipText)
         })
 
         userEvent.unhover(removeButton)
@@ -185,20 +150,20 @@ describe('getTooltipLabels', () => {
     it('should return a string with all labels separated by commas when the number of labels is less than or equal to 20', () => {
         const optionsLabels = generateLabels(3)
         const expectedString = optionsLabels.join(',\n')
-        const result = getTooltipLabels(optionsLabels)
+        const result = getTooltipLabels(optionsLabels, '')
         expect(result).toEqual(expectedString)
     })
 
     it('should return a string with the first 20 labels separated by commas and a message indicating the number of remaining labels when the number of labels is greater than 20', () => {
         const optionsLabels = generateLabels(25)
-        const result = getTooltipLabels(optionsLabels)
+        const result = getTooltipLabels(optionsLabels, '')
         const expectedString = `${generateLabels(20).join(',\n')},\n5 more...`
         expect(result).toEqual(expectedString)
     })
 
     it('should return an empty string when the optionsLabels array is empty', () => {
         const optionsLabels: string[] = []
-        const result = getTooltipLabels(optionsLabels)
-        expect(result).toEqual(FILTER_VALUE_PLACEHOLDER)
+        const result = getTooltipLabels(optionsLabels, 'placeholder')
+        expect(result).toEqual('placeholder')
     })
 })

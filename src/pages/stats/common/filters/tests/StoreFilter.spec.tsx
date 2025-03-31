@@ -13,6 +13,8 @@ import { getIntegration } from 'pages/automate/workflows/hooks/tests/fixtures/ut
 import {
     FILTER_DROPDOWN_ICON,
     FILTER_VALUE_PLACEHOLDER,
+} from 'pages/common/forms/FilterInput/constants'
+import {
     LogicalOperatorEnum,
     LogicalOperatorLabel,
 } from 'pages/stats/common/components/Filter/constants'

@@ -12,10 +12,12 @@ import { integrationsState } from 'fixtures/integrations'
 import { withDefaultLogicalOperator } from 'models/reporting/queryFactories/utils'
 import { FilterKey, TagFilterInstanceId } from 'models/stat/types'
 import {
-    FILTER_DESELECT_ALL_LABEL,
     FILTER_DROPDOWN_ICON,
-    FILTER_SELECT_ALL_LABEL,
     FILTER_VALUE_PLACEHOLDER,
+} from 'pages/common/forms/FilterInput/constants'
+import {
+    FILTER_DESELECT_ALL_LABEL,
+    FILTER_SELECT_ALL_LABEL,
     LogicalOperatorEnum,
     LogicalOperatorLabel,
 } from 'pages/stats/common/components/Filter/constants'

@@ -8,6 +8,7 @@ import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 
 import { ThemeProvider } from 'core/theme'
+import { FILTER_DROPDOWN_ICON } from 'pages/common/forms/FilterInput/constants'
 import { PeriodFilter } from 'pages/stats/common/filters/PeriodFilter'
 
 const defaultState = {}
@@ -52,7 +53,7 @@ Default.play = ({ canvasElement }) => {
         value: 186,
     })
     const canvas = within(canvasElement)
-    userEvent.click(canvas.getByTestId('filter-value'))
+    userEvent.click(canvas.getByText(FILTER_DROPDOWN_ICON))
 }
 
 export default storyConfig

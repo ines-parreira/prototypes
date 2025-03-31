@@ -11,8 +11,12 @@ import useAppDispatch from 'hooks/useAppDispatch'
 import useEffectOnce from 'hooks/useEffectOnce'
 import useGetDateAndTimeFormat from 'hooks/useGetDateAndTimeFormat'
 import { FilterKey, StatsFilters } from 'models/stat/types'
-import FilterName from 'pages/stats/common/components/Filter/components/FilterName/FilterName'
-import FilterValue from 'pages/stats/common/components/Filter/components/FilterValue/FilterValue'
+import FilterName from 'pages/common/forms/FilterInput/FilterName'
+import FilterValue from 'pages/common/forms/FilterInput/FilterValue'
+import {
+    FILTER_NAME_MAX_WIDTH,
+    FILTER_VALUE_MAX_WIDTH,
+} from 'pages/stats/common/components/Filter/constants'
 import { FilterLabels } from 'pages/stats/common/filters/constants'
 import css from 'pages/stats/common/filters/PeriodFilter.less'
 import { RemovableFilter } from 'pages/stats/common/filters/types'
@@ -118,7 +122,10 @@ export function PeriodFilter({
 
     return (
         <div className={css.filterContainer}>
-            <FilterName name={FilterLabels[FilterKey.Period]} />
+            <FilterName
+                name={FilterLabels[FilterKey.Period]}
+                maxWidth={FILTER_NAME_MAX_WIDTH}
+            />
             <PeriodPicker
                 startDatetime={moment(value.start_datetime)}
                 endDatetime={moment(value.end_datetime)}
@@ -146,9 +153,8 @@ export function PeriodFilter({
             >
                 <FilterValue
                     optionsLabels={[filterLabel]}
-                    logicalOperator={null}
-                    onChange={() => {}}
-                    trailIcon={false}
+                    onClick={() => {}}
+                    maxWidth={FILTER_VALUE_MAX_WIDTH}
                 />{' '}
             </PeriodPicker>
         </div>

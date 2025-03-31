@@ -3,13 +3,15 @@ import React from 'react'
 import { render, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 
+import { FILTER_VALUE_PLACEHOLDER } from 'pages/common/forms/FilterInput/constants'
 import {
-    FILTER_VALUE_PLACEHOLDER,
     FILTER_WARNING_ICON,
     LogicalOperatorEnum,
     LogicalOperatorLabel,
 } from 'pages/stats/common/components/Filter/constants'
-import Filter from 'pages/stats/common/components/Filter/Filter'
+import Filter, {
+    getWarningTooltip,
+} from 'pages/stats/common/components/Filter/Filter'
 import { NON_EXISTENT_VALUES_WARNING_MESSAGE } from 'pages/stats/common/filters/utils'
 
 describe('Filter', () => {
@@ -358,5 +360,63 @@ describe('Filter', () => {
             value: 'option2',
         })
         expect(onDropdownClosedSpy).toHaveBeenCalled()
+    })
+
+    it.each(['not-applicable' as const, 'non-existent' as const])(
+        'should render with warning icon',
+        async (warningType) => {
+            render(
+                <Filter
+                    filterName={filterName}
+                    filterOptionGroups={filterOptionGroups}
+                    selectedOptions={[]}
+                    logicalOperators={logicalOperators}
+                    onChangeOption={onChangeOption}
+                    onSelectAll={onSelectAll}
+                    onRemoveAll={onRemoveAll}
+                    onChangeLogicalOperator={onChangeLogicalOperator}
+                    filterErrors={{
+                        warningType,
+                    }}
+                />,
+            )
+            const warningIcon = screen.getByText(FILTER_WARNING_ICON)
+            userEvent.hover(warningIcon)
+
+            expect(warningIcon).toBeInTheDocument()
+            await waitFor(() => {
+                expect(
+                    screen.getByText(
+                        getWarningTooltip(warningType, filterName),
+                    ),
+                ).toBeInTheDocument()
+            })
+        },
+    )
+
+    it('should render the warning message', async () => {
+        render(
+            <Filter
+                filterName={filterName}
+                filterOptionGroups={filterOptionGroups}
+                selectedOptions={[]}
+                logicalOperators={logicalOperators}
+                onChangeOption={onChangeOption}
+                onSelectAll={onSelectAll}
+                onRemoveAll={onRemoveAll}
+                onChangeLogicalOperator={onChangeLogicalOperator}
+                filterErrors={{
+                    warningType: 'not-applicable',
+                    warningMessage: 'warningMessage',
+                }}
+            />,
+        )
+        const warningIcon = screen.getByText(FILTER_WARNING_ICON)
+        userEvent.hover(warningIcon)
+
+        expect(warningIcon).toBeInTheDocument()
+        await waitFor(() => {
+            expect(screen.getByText('warningMessage')).toBeInTheDocument()
+        })
     })
 })

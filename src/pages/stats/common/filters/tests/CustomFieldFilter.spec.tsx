@@ -12,7 +12,7 @@ import { ApiListResponseCursorPagination } from 'models/api/types'
 import {
     FILTER_DROPDOWN_ICON,
     FILTER_VALUE_PLACEHOLDER,
-} from 'pages/stats/common/components/Filter/constants'
+} from 'pages/common/forms/FilterInput/constants'
 import {
     CUSTOM_FIELD_FILTER_NAME,
     CustomFieldFilter,

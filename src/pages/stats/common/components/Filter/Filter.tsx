@@ -17,14 +17,21 @@ import DropdownQuickSelect from 'pages/common/components/dropdown/DropdownQuickS
 import DropdownSearch from 'pages/common/components/dropdown/DropdownSearch'
 import DropdownSection from 'pages/common/components/dropdown/DropdownSection'
 import InfiniteScroll from 'pages/common/components/InfiniteScroll/InfiniteScroll'
+import FilterName from 'pages/common/forms/FilterInput/FilterName'
+import FilterValue from 'pages/common/forms/FilterInput/FilterValue'
 import FilterDropdownItemLabel from 'pages/stats/common/components/Filter/components/FilterDropdownItemLabel/FilterDropdownItemLabel'
-import FilterName from 'pages/stats/common/components/Filter/components/FilterName/FilterName'
-import FilterValue from 'pages/stats/common/components/Filter/components/FilterValue/FilterValue'
+import { FilterWarningIcon } from 'pages/stats/common/components/Filter/components/FilterWarning/FilterWarningIcon'
 import LogicalOperator from 'pages/stats/common/components/Filter/components/LogicalOperator/LogicalOperator'
+import cssLogicalOperator from 'pages/stats/common/components/Filter/components/LogicalOperator/LogicalOperator.less'
 import {
+    FILTER_CLEAR_ICON,
     FILTER_DESELECT_ALL_LABEL,
+    FILTER_NAME_MAX_WIDTH,
     FILTER_SELECT_ALL_LABEL,
+    FILTER_VALUE_MAX_WIDTH,
     LogicalOperatorEnum,
+    LogicalOperatorLabel,
+    REMOVE_FILTER_LABEL,
 } from 'pages/stats/common/components/Filter/constants'
 import css from 'pages/stats/common/components/Filter/Filter.less'
 import {
@@ -164,19 +171,40 @@ const Filter = ({
         <div className={classNames(css.container, className)}>
             <FilterName
                 name={filterName}
-                warningType={warningType}
-                warningMessage={warningMessage}
+                warning={
+                    warningType && (
+                        <FilterWarningIcon
+                            warningType={warningType}
+                            tooltip={
+                                warningMessage ||
+                                getWarningTooltip(warningType, filterName)
+                            }
+                        />
+                    )
+                }
                 isDisabled={isDisabled}
+                maxWidth={FILTER_NAME_MAX_WIDTH}
             />
             <FilterValue
                 ref={ref}
                 optionsLabels={selectedLabels}
-                trailIcon={!isPersistent}
-                logicalOperator={selectedLogicalOperator}
-                onChange={onToggle}
-                onRemove={onRemove}
+                trailIcon={!isPersistent ? FILTER_CLEAR_ICON : undefined}
+                trailIconTooltipText={REMOVE_FILTER_LABEL}
+                onTrailIconClick={onRemove}
+                prefix={
+                    selectedLogicalOperator && (
+                        <div
+                            className={cssLogicalOperator.logicalOperator}
+                            data-testid="logical-operator"
+                        >
+                            {LogicalOperatorLabel[selectedLogicalOperator]}
+                        </div>
+                    )
+                }
+                onClick={onToggle}
                 pressedState={isDropdownOpen}
                 isDisabled={isDisabled}
+                maxWidth={FILTER_VALUE_MAX_WIDTH}
             />
             <Dropdown
                 isMultiple={isMultiple}
@@ -253,3 +281,13 @@ const Filter = ({
 }
 
 export default Filter
+
+export function getWarningTooltip(
+    warningType: 'non-existent' | 'not-applicable',
+    filterName: string,
+) {
+    if (warningType === 'non-existent') {
+        return 'Some filters or values have been archived or deleted. They will be ignored. Check your settings and update your Saved Filters.'
+    }
+    return `${filterName} filter is not applicable to this report.`
+}

@@ -1,6 +1,7 @@
-import React, {
+import {
     ForwardedRef,
     forwardRef,
+    ReactNode,
     useEffect,
     useImperativeHandle,
     useRef,
@@ -11,20 +12,16 @@ import classNames from 'classnames'
 
 import { Tooltip } from '@gorgias/merchant-ui-kit'
 
-import css from 'pages/stats/common/components/Filter/components/FilterValue/FilterValue.less'
-import cssLogicalOperator from 'pages/stats/common/components/Filter/components/LogicalOperator/LogicalOperator.less'
-import {
-    FILTER_DROPDOWN_ICON,
-    FILTER_VALUE_MAX_WIDTH,
-    FILTER_VALUE_PLACEHOLDER,
-    LogicalOperatorEnum,
-    LogicalOperatorLabel,
-    REMOVE_FILTER_LABEL,
-} from 'pages/stats/common/components/Filter/constants'
+import { FILTER_VALUE_PLACEHOLDER } from './constants'
+
+import css from './FilterValue.less'
 
 const TOOLTIP_LABELS_TO_SHOW = 20
 
-export const getTooltipLabels = (optionsLabels: string[]) => {
+export const getTooltipLabels = (
+    optionsLabels: string[],
+    placeholder: string,
+) => {
     if (
         optionsLabels.length > 0 &&
         optionsLabels.length <= TOOLTIP_LABELS_TO_SHOW
@@ -38,30 +35,36 @@ export const getTooltipLabels = (optionsLabels: string[]) => {
                 `,\n${optionsLabels.length - TOOLTIP_LABELS_TO_SHOW} more...`,
             )
     }
-    return FILTER_VALUE_PLACEHOLDER
+    return placeholder
 }
 
 type Props = {
     optionsLabels: string[]
-    trailIcon?: boolean
+    prefix?: ReactNode
+    trailIcon?: string
+    trailIconTooltipText?: string
     className?: string
-    logicalOperator: LogicalOperatorEnum | null
-    onChange: () => void
-    onRemove?: () => void
+    placeholder?: string
+    onClick: () => void
+    onTrailIconClick?: () => void
     pressedState?: boolean
     isDisabled?: boolean
+    maxWidth?: number
 }
 
 const FilterValue = (
     {
         optionsLabels,
         className,
-        trailIcon = true,
-        logicalOperator,
-        onChange,
-        onRemove,
+        prefix = null,
+        trailIcon,
+        trailIconTooltipText,
+        placeholder = FILTER_VALUE_PLACEHOLDER,
+        onClick,
+        onTrailIconClick,
         pressedState = false,
         isDisabled = false,
+        maxWidth = Infinity,
     }: Props,
     ref: ForwardedRef<HTMLDivElement>,
 ) => {
@@ -70,23 +73,23 @@ const FilterValue = (
     const refTrailIcon = useRef<HTMLElement>(null)
     const [showTooltip, setShowTooltip] = useState(false)
     const [trailIconHovered, setTrailIconHovered] = useState(false)
-    const filterText = optionsLabels.length
+    const textContent = optionsLabels.length
         ? optionsLabels.join(', ')
-        : FILTER_VALUE_PLACEHOLDER
+        : placeholder
 
-    const tooltipLabels = getTooltipLabels(optionsLabels)
+    const tooltipLabels = getTooltipLabels(optionsLabels, placeholder)
 
     useEffect(() => {
         const show =
-            containerRef.current?.offsetWidth === FILTER_VALUE_MAX_WIDTH
+            containerRef.current && containerRef.current?.offsetWidth > maxWidth
 
-        setShowTooltip(show && !trailIconHovered)
-    }, [optionsLabels, trailIconHovered])
+        setShowTooltip(!!(show && !trailIconHovered))
+    }, [optionsLabels, trailIconHovered, maxWidth])
 
     const handleTrailIconClick = (e: React.MouseEvent) => {
         if (!isDisabled) {
             e.stopPropagation()
-            onRemove?.()
+            onTrailIconClick?.()
         }
     }
 
@@ -99,23 +102,15 @@ const FilterValue = (
                     { [css.pressedState]: pressedState && !isDisabled },
                     className,
                 )}
-                onClick={onChange}
-                data-testid="filter-value"
+                onClick={onClick}
             >
-                {!!logicalOperator && (
-                    <div
-                        className={cssLogicalOperator.logicalOperator}
-                        data-testid="logical-operator"
-                    >
-                        {LogicalOperatorLabel[logicalOperator]}
-                    </div>
-                )}
+                {prefix}
                 <div
                     className={classNames(css.text, {
                         [css.disabled]: isDisabled,
                     })}
                 >
-                    {filterText}
+                    {textContent}
                 </div>
                 {trailIcon ? (
                     <i
@@ -125,7 +120,7 @@ const FilterValue = (
                         onMouseLeave={() => setTrailIconHovered(false)}
                         onClick={handleTrailIconClick}
                     >
-                        close
+                        {trailIcon}
                     </i>
                 ) : (
                     <i
@@ -135,11 +130,13 @@ const FilterValue = (
                             css.dropdownIcon,
                         )}
                     >
-                        {FILTER_DROPDOWN_ICON}
+                        arrow_drop_down
                     </i>
                 )}
             </div>
-            <Tooltip target={refTrailIcon}>{REMOVE_FILTER_LABEL}</Tooltip>
+            {trailIconTooltipText && (
+                <Tooltip target={refTrailIcon}>{trailIconTooltipText}</Tooltip>
+            )}
             {showTooltip && (
                 <Tooltip target={containerRef}>
                     <div className={css.tooltip}>{tooltipLabels}</div>

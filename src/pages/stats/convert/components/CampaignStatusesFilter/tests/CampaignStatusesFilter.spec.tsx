@@ -7,10 +7,10 @@ import { logEvent, SegmentEvent } from 'common/segment'
 import { InferredCampaignStatus } from 'models/convert/campaign/types'
 import { withLogicalOperator } from 'models/reporting/queryFactories/utils'
 import { FilterKey } from 'models/stat/types'
+import { FILTER_VALUE_PLACEHOLDER } from 'pages/common/forms/FilterInput/constants'
 import {
     FILTER_DESELECT_ALL_LABEL,
     FILTER_SELECT_ALL_LABEL,
-    FILTER_VALUE_PLACEHOLDER,
 } from 'pages/stats/common/components/Filter/constants'
 import { FilterLabels } from 'pages/stats/common/filters/constants'
 import CampaignStatusesFilter, {
