@@ -422,3 +422,8 @@ export type StatCell =
               url: string
           }
       }
+
+export enum TicketTimeReference {
+    TaggedAt = 'tagged_at',
+    CreatedAt = 'created_at',
+}

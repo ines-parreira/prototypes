@@ -7,14 +7,21 @@ import {
     useTagResultsSelection,
 } from 'hooks/reporting/tags/useTagResultsSelection'
 import {
+    Entity,
+    useTicketTimeReference,
+} from 'hooks/reporting/ticket-insights/useTicketTimeReference'
+import {
     MetricPerDimensionTrend,
     QueryReturnType,
     useMetricPerDimension,
 } from 'hooks/reporting/useMetricPerDimension'
 import { OrderDirection } from 'models/api/types'
 import { TicketTagsEnrichedCube } from 'models/reporting/cubes/TicketTagsEnrichedCube'
-import { tagsTicketCountQueryFactory } from 'models/reporting/queryFactories/ticket-insights/tagsTicketCount'
-import { StatsFilters } from 'models/stat/types'
+import {
+    tagsTicketCountOnCreatedDatetimeQueryFactory,
+    tagsTicketCountQueryFactory,
+} from 'models/reporting/queryFactories/ticket-insights/tagsTicketCount'
+import { StatsFilters, TicketTimeReference } from 'models/stat/types'
 import { getPreviousPeriod } from 'utils/reporting'
 
 export const filterDataWithSelectedTags = ({
@@ -50,13 +57,19 @@ export const useTagsTicketCount = (
     sorting: OrderDirection,
 ): MetricPerDimensionTrend => {
     const [tagResultsSelection] = useTagResultsSelection()
+    const [tagTicketTimeReference] = useTicketTimeReference(Entity.Tag)
+
+    const queryFactory =
+        tagTicketTimeReference === TicketTimeReference.CreatedAt
+            ? tagsTicketCountOnCreatedDatetimeQueryFactory
+            : tagsTicketCountQueryFactory
 
     const currentPeriod = useMetricPerDimension(
-        tagsTicketCountQueryFactory(statsFilters, timezone, sorting),
+        queryFactory(statsFilters, timezone, sorting),
     )
 
     const previousPeriod = useMetricPerDimension(
-        tagsTicketCountQueryFactory(
+        queryFactory(
             {
                 ...statsFilters,
                 period: getPreviousPeriod(statsFilters.period),

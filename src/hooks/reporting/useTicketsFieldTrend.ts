@@ -6,6 +6,10 @@ import _sortBy from 'lodash/sortBy'
 
 import { useCustomFieldsTicketCount } from 'hooks/reporting/metricsPerCustomField'
 import { useStatsFilters } from 'hooks/reporting/support-performance/useStatsFilters'
+import {
+    Entity,
+    useTicketTimeReference,
+} from 'hooks/reporting/ticket-insights/useTicketTimeReference'
 import { useCustomFieldsTicketCountTimeSeries } from 'hooks/reporting/timeSeries'
 import useAppSelector from 'hooks/useAppSelector'
 import { OrderDirection } from 'models/api/types'
@@ -20,12 +24,18 @@ export const useTicketsFieldTrend = (topAmount = 10) => {
     const { cleanStatsFilters, userTimezone, granularity } = useStatsFilters()
     const selectedCustomField = useAppSelector(getSelectedCustomField)
 
+    const [ticketFieldsTicketTimeReference] = useTicketTimeReference(
+        Entity.TicketField,
+    )
+
     const { data = {}, isFetching } = useCustomFieldsTicketCountTimeSeries(
         cleanStatsFilters,
         userTimezone,
         granularity,
         String(selectedCustomField.id),
         OrderDirection.Desc,
+        true,
+        ticketFieldsTicketTimeReference,
     )
 
     const customFieldsTicketCount = useCustomFieldsTicketCount(
@@ -33,6 +43,7 @@ export const useTicketsFieldTrend = (topAmount = 10) => {
         userTimezone,
         String(selectedCustomField.id),
         OrderDirection.Desc,
+        ticketFieldsTicketTimeReference,
     )
 
     const sortedData = _fromPairs(

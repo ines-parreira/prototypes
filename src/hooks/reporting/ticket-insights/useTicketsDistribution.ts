@@ -2,6 +2,10 @@ import { useMemo } from 'react'
 
 import { useCustomFieldsTicketCount } from 'hooks/reporting/metricsPerCustomField'
 import { useStatsFilters } from 'hooks/reporting/support-performance/useStatsFilters'
+import {
+    Entity,
+    useTicketTimeReference,
+} from 'hooks/reporting/ticket-insights/useTicketTimeReference'
 import useAppSelector from 'hooks/useAppSelector'
 import { OrderDirection } from 'models/api/types'
 import {
@@ -20,11 +24,16 @@ export const useTicketsDistribution = (topAmount = 10) => {
     const customFieldDimension =
         TicketCustomFieldsDimension.TicketCustomFieldsValueString
 
+    const [ticketFieldsTicketTimeReference] = useTicketTimeReference(
+        Entity.TicketField,
+    )
+
     const { data, isFetching } = useCustomFieldsTicketCount(
         cleanStatsFilters,
         userTimezone,
         String(selectedCustomField.id),
         OrderDirection.Desc,
+        ticketFieldsTicketTimeReference,
     )
 
     const topData = useMemo(

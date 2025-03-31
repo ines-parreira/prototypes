@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react'
+import { useRef, useState } from 'react'
 
 import { IconButton } from '@gorgias/merchant-ui-kit'
 
@@ -8,10 +8,11 @@ import {
     useTagResultsSelection,
 } from 'hooks/reporting/tags/useTagResultsSelection'
 import {
-    TimeframePreferenceSelection,
-    useTimeframePreferenceSelection,
-} from 'hooks/reporting/ticket-insights/useTimeframePreferenceSelection'
+    Entity,
+    useTicketTimeReference,
+} from 'hooks/reporting/ticket-insights/useTicketTimeReference'
 import { useNotify } from 'hooks/useNotify'
+import { TicketTimeReference } from 'models/stat/types'
 import Dropdown from 'pages/common/components/dropdown/Dropdown'
 import DropdownBody from 'pages/common/components/dropdown/DropdownBody'
 import DropdownItem from 'pages/common/components/dropdown/DropdownItem'
@@ -59,12 +60,12 @@ const RESULTS_BASED_ON_CREATION_DATE_NOTIFICATION =
 
 export const createNotificationMessage = (
     reportName: ReportName,
-    selection: TimeframePreferenceSelection,
+    selection: TicketTimeReference,
 ) => {
     const entity =
         reportName === ReportName.Tags ? TAGS_TITLE : TICKET_INSIGHTS_PAGE_TITLE
     const notification =
-        selection === TimeframePreferenceSelection.basedOnTicketStatuses
+        selection === TicketTimeReference.TaggedAt
             ? RESULTS_BASED_ON_ALL_STATUSES_NOTIFICATION
             : RESULTS_BASED_ON_CREATION_DATE_NOTIFICATION
 
@@ -101,6 +102,11 @@ const TagDropdownItem = ({
     )
 }
 
+const reportToEntity: Record<ReportName, Entity> = {
+    [ReportName.Tags]: Entity.Tag,
+    [ReportName.TicketFields]: Entity.TicketField,
+}
+
 export function SharedActionsMenu({
     downloadAction,
     isDownloadLoading,
@@ -116,8 +122,8 @@ export function SharedActionsMenu({
     const notify = useNotify()
     const [tagResultsSelection, setTagResultsSelection] =
         useTagResultsSelection()
-    const [timeframePreferenceSelection, seTimeframePreferenceSelection] =
-        useTimeframePreferenceSelection(isTagsReport)
+    const [ticketTimeReference, setTicketTimeReference] =
+        useTicketTimeReference(reportToEntity[reportName])
 
     const triggerRef = useRef<HTMLButtonElement>(null)
 
@@ -134,26 +140,22 @@ export function SharedActionsMenu({
     }
 
     const resultBasedOnAllStatusesAction = () => {
-        const timeFrame = TimeframePreferenceSelection.basedOnTicketStatuses
+        const timeFrame = TicketTimeReference.TaggedAt
         logEvent(SegmentEvent.StatTimeframePreferenceSelection, {
             value: timeFrame,
             report: reportName,
         })
-        seTimeframePreferenceSelection(
-            TimeframePreferenceSelection.basedOnTicketStatuses,
-        )
+        setTicketTimeReference(timeFrame)
         void notify.success(createNotificationMessage(reportName, timeFrame))
     }
 
     const resultBaseOnCreationDateAction = () => {
-        const timeFrame = TimeframePreferenceSelection.basedOnTicketCreationDate
+        const timeFrame = TicketTimeReference.CreatedAt
         logEvent(SegmentEvent.StatTimeframePreferenceSelection, {
             value: timeFrame,
             report: reportName,
         })
-        seTimeframePreferenceSelection(
-            TimeframePreferenceSelection.basedOnTicketCreationDate,
-        )
+        setTicketTimeReference(timeFrame)
         void notify.success(createNotificationMessage(reportName, timeFrame))
     }
 
@@ -218,8 +220,8 @@ export function SharedActionsMenu({
                                 }
                                 onClick={resultBasedOnAllStatusesAction}
                                 isSelected={
-                                    timeframePreferenceSelection ===
-                                    TimeframePreferenceSelection.basedOnTicketStatuses
+                                    ticketTimeReference ===
+                                    TicketTimeReference.TaggedAt
                                 }
                             />
                             <TagDropdownItem
@@ -230,8 +232,8 @@ export function SharedActionsMenu({
                                 }
                                 onClick={resultBaseOnCreationDateAction}
                                 isSelected={
-                                    timeframePreferenceSelection ===
-                                    TimeframePreferenceSelection.basedOnTicketCreationDate
+                                    ticketTimeReference ===
+                                    TicketTimeReference.CreatedAt
                                 }
                             />
 

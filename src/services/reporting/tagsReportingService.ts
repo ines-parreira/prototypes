@@ -25,7 +25,7 @@ import {
     TimeSeriesPerDimension,
 } from 'hooks/reporting/useTimeSeries'
 import { ReportingGranularity } from 'models/reporting/types'
-import { Period, StatsFilters } from 'models/stat/types'
+import { Period, StatsFilters, TicketTimeReference } from 'models/stat/types'
 import {
     getFormattedDelta,
     getFormattedPercentage,
@@ -45,6 +45,7 @@ type Context = {
     tagsTableOrder: TagsTableOrder
     isExtendedReportingEnabled: boolean
     tagResultsSelection: TagSelection
+    tagTicketTimeReference: TicketTimeReference
 }
 
 enum Column {
@@ -198,17 +199,22 @@ const getPreviousStatsFilters = (statsFilters: StatsFilters) => ({
 
 export const useTagsReportData = () => {
     const statsFilters = useStatsFilters()
+    const context = useTagsReportContext()
 
     const currentTagsTicketCountTimeSeries = useTagsTicketCountTimeSeries(
         statsFilters.cleanStatsFilters,
         statsFilters.userTimezone,
         statsFilters.granularity,
+        undefined,
+        context.tagTicketTimeReference,
     )
 
     const previousTagsTicketCountTimeSeries = useTagsTicketCountTimeSeries(
         getPreviousStatsFilters(statsFilters.cleanStatsFilters),
         statsFilters.userTimezone,
         statsFilters.granularity,
+        undefined,
+        context.tagTicketTimeReference,
     )
 
     const totalTaggedTicketCountTimeSeries =
@@ -216,9 +222,9 @@ export const useTagsReportData = () => {
             statsFilters.cleanStatsFilters,
             statsFilters.userTimezone,
             statsFilters.granularity,
+            undefined,
+            context.tagTicketTimeReference,
         )
-
-    const context = useTagsReportContext()
 
     const report = createReport(
         currentTagsTicketCountTimeSeries.data || {},
@@ -241,18 +247,29 @@ const fetchData = async (
     statsFilters: StatsFilters,
     userTimezone: string,
     granularity: ReportingGranularity,
+    timeReference: TicketTimeReference,
 ) => {
     return await Promise.all([
-        fetchTagsTicketCountTimeSeries(statsFilters, userTimezone, granularity),
+        fetchTagsTicketCountTimeSeries(
+            statsFilters,
+            userTimezone,
+            granularity,
+            undefined,
+            timeReference,
+        ),
         fetchTagsTicketCountTimeSeries(
             getPreviousStatsFilters(statsFilters),
             userTimezone,
             granularity,
+            undefined,
+            timeReference,
         ),
         fetchTotalTaggedTicketCountTimeSeries(
             statsFilters,
             userTimezone,
             granularity,
+            undefined,
+            timeReference,
         ),
     ])
 }
@@ -261,18 +278,18 @@ export const fetchTagsReportData = async (
     statsFilters: StatsFilters,
     userTimezone: string,
     granularity: ReportingGranularity,
-    context: {
-        tags: Record<string, Tag | undefined>
-        tagsTableOrder: TagsTableOrder
-        isExtendedReportingEnabled: boolean
-        tagResultsSelection: TagSelection
-    },
+    context: Context,
 ) => {
     const [
         currentTagsTicketCountTimeSeries,
         previousTagsTicketCountTimeSeries,
         totalTaggedTicketCountTimeSeries,
-    ] = await fetchData(statsFilters, userTimezone, granularity)
+    ] = await fetchData(
+        statsFilters,
+        userTimezone,
+        granularity,
+        context.tagTicketTimeReference,
+    )
 
     const report = createReport(
         currentTagsTicketCountTimeSeries,

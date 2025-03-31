@@ -13,6 +13,10 @@ import {
     TagSelection,
     useTagResultsSelection,
 } from 'hooks/reporting/tags/useTagResultsSelection'
+import {
+    Entity,
+    useTicketTimeReference,
+} from 'hooks/reporting/ticket-insights/useTicketTimeReference'
 import { useTagsTicketCountTimeSeries } from 'hooks/reporting/timeSeries'
 import { MetricPerDimensionTrend } from 'hooks/reporting/useMetricPerDimension'
 import { TimeSeriesDataItem } from 'hooks/reporting/useTimeSeries'
@@ -96,12 +100,15 @@ export const useTagsTimeSeries = (topAmount = 10) => {
         )
     }, [tagsState])
 
+    const [tagTicketTimeReference] = useTicketTimeReference(Entity.Tag)
+
     const { data: tagsTicketCountTimeSeriesData = {}, isFetching } =
         useTagsTicketCountTimeSeries(
             cleanStatsFilters,
             userTimezone,
             granularity,
             OrderDirection.Desc,
+            tagTicketTimeReference,
         )
 
     const data = filterTimeSeriesWithSelectedTags({

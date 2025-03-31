@@ -38,6 +38,15 @@ import {
     TicketStatsFiltersMembers,
 } from 'utils/reporting'
 
+const createdTicketFilter = (filters: StatsFilters) => ({
+    member: TicketMember.CreatedDatetime,
+    operator: ReportingFilterOperator.InDateRange,
+    values: [
+        formatReportingQueryDate(filters.period.start_datetime),
+        formatReportingQueryDate(filters.period.end_datetime),
+    ],
+})
+
 export const customFieldsTicketCountQueryFactory = (
     filters: StatsFilters,
     timezone: string,
@@ -78,6 +87,28 @@ export const customFieldsTicketCountQueryFactory = (
           }
         : {}),
 })
+
+export const customFieldsTicketCountOnCreatedDatetimeQueryFactory = (
+    filters: StatsFilters,
+    timezone: string,
+    customFieldId: string,
+    sorting?: OrderDirection,
+    additionalFilters?: ReportingFilter[],
+): ReportingQuery<TicketCustomFieldsCube> => {
+    const { filters: baseQueryFilters, ...baseQuery } =
+        customFieldsTicketCountQueryFactory(
+            filters,
+            timezone,
+            customFieldId,
+            sorting,
+            additionalFilters,
+        )
+
+    return {
+        ...baseQuery,
+        filters: [...baseQueryFilters, createdTicketFilter(filters)],
+    }
+}
 
 export const aiAgentTicketsPerIntentCountQueryFactory = ({
     filters,
@@ -342,6 +373,27 @@ export const customFieldsTicketCountTimeSeriesQueryFactory = (
     ],
     timezone,
 })
+
+export const customFieldsTicketCountOnCreatedDatetimeTimeSeriesQueryFactory = (
+    filters: StatsFilters,
+    timezone: string,
+    granularity: ReportingGranularity,
+    customFieldId: string,
+    sorting?: OrderDirection,
+): TimeSeriesQuery<HelpdeskMessageCubeWithJoins> => {
+    const baseQuery = customFieldsTicketCountTimeSeriesQueryFactory(
+        filters,
+        timezone,
+        granularity,
+        customFieldId,
+        sorting,
+    )
+
+    return {
+        ...baseQuery,
+        filters: [...baseQuery.filters, createdTicketFilter(filters)],
+    }
+}
 
 export const customFieldsTicketTotalCountQueryFactory = ({
     filters,

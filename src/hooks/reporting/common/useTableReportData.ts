@@ -8,6 +8,10 @@ import { useFlag } from 'core/flags'
 import { useAIAgentUserId } from 'hooks/reporting/automate/useAIAgentUserId'
 import { useSortedChannels } from 'hooks/reporting/support-performance/useSortedChannels'
 import { useTagResultsSelection } from 'hooks/reporting/tags/useTagResultsSelection'
+import {
+    Entity,
+    useTicketTimeReference,
+} from 'hooks/reporting/ticket-insights/useTicketTimeReference'
 import { useAgentsTableConfigSetting } from 'hooks/reporting/useAgentsTableConfigSetting'
 import { useChannelsTableSetting } from 'hooks/reporting/useChannelsTableConfigSetting'
 import { MetricFetch } from 'hooks/reporting/useMetric'
@@ -59,6 +63,12 @@ export const useTables = (
     const isReportingFilteringAndCalculationsTagsReportEnabled = useFlag(
         FeatureFlagKey.ReportingFilteringAndCalculationsTagsReport,
     )
+
+    const [tagTicketTimeReference] = useTicketTimeReference(Entity.Tag)
+    const [ticketFieldsTicketTimeReference] = useTicketTimeReference(
+        Entity.TicketField,
+    )
+
     const aiAgentUserId = useAIAgentUserId()
     const [tableData, setTableData] = useState<{
         isFetching: boolean
@@ -130,6 +140,8 @@ export const useTables = (
             tagsTableOrder,
             isExtendedReportingEnabled:
                 isReportingFilteringAndCalculationsTagsReportEnabled,
+            tagTicketTimeReference,
+            ticketFieldsTicketTimeReference,
             getAgentDetails,
             integrations,
             isAutomateNonFilteredDenominatorInAutomationRate,
@@ -151,6 +163,8 @@ export const useTables = (
             selectedBTODMetric,
             tags,
             tagsTableOrder,
+            tagTicketTimeReference,
+            ticketFieldsTicketTimeReference,
             isReportingFilteringAndCalculationsTagsReportEnabled,
             getAgentDetails,
             integrations,

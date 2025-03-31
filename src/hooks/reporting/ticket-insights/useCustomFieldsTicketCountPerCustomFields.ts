@@ -3,6 +3,10 @@ import { useMemo } from 'react'
 import _zip from 'lodash/zip'
 
 import { useStatsFilters } from 'hooks/reporting/support-performance/useStatsFilters'
+import {
+    Entity,
+    useTicketTimeReference,
+} from 'hooks/reporting/ticket-insights/useTicketTimeReference'
 import { useCustomFieldsTicketCountTimeSeries } from 'hooks/reporting/timeSeries'
 import {
     getPeriodDateTimes,
@@ -65,12 +69,20 @@ export const useCustomFieldsTicketCountPerCustomFields = (
         getFilterDateRange(cleanStatsFilters.period),
         granularity,
     )
+
+    const [ticketFieldsTicketTimeReference] = useTicketTimeReference(
+        Entity.TicketField,
+    )
+
     const { data: timeSeriesData, isLoading } =
         useCustomFieldsTicketCountTimeSeries(
             cleanStatsFilters,
             userTimezone,
             granularity,
             String(selectedCustomFieldId),
+            undefined,
+            true,
+            ticketFieldsTicketTimeReference,
         )
 
     const data = useMemo(

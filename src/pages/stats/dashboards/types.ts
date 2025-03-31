@@ -13,7 +13,11 @@ import {
 import { Channel } from 'models/channel/types'
 import { Integration } from 'models/integration/types'
 import { ReportingGranularity } from 'models/reporting/types'
-import { StaticFilter, StatsFilters } from 'models/stat/types'
+import {
+    StaticFilter,
+    StatsFilters,
+    TicketTimeReference,
+} from 'models/stat/types'
 import { AutomateAiAgentsChart } from 'pages/stats/automate/ai-agent/AutomateAiAgentsReportConfig'
 import { AiSalesAgentChart } from 'pages/stats/automate/aiSalesAgent/AiSalesAgentMetricsConfig'
 import { AutomateOverviewChart } from 'pages/stats/automate/overview/AutomateOverviewReportConfig'
@@ -131,6 +135,8 @@ export type ReportFetch = (
         tags: Record<string, Tag | undefined>
         tagsTableOrder: TagsTableOrder
         isExtendedReportingEnabled: boolean
+        tagTicketTimeReference: TicketTimeReference
+        ticketFieldsTicketTimeReference: TicketTimeReference
         integrations: Integration[]
         getAgentDetails: (id: number) => User | undefined
         isAutomateNonFilteredDenominatorInAutomationRate: boolean | undefined

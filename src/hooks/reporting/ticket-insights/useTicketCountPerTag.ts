@@ -11,6 +11,10 @@ import {
 } from 'hooks/reporting/ticket-insights/helpers'
 import { useTagsReportContext } from 'hooks/reporting/ticket-insights/useTagsReportContext'
 import {
+    Entity,
+    useTicketTimeReference,
+} from 'hooks/reporting/ticket-insights/useTicketTimeReference'
+import {
     useTagsTicketCountTimeSeries,
     useTotalTaggedTicketCountTimeSeries,
 } from 'hooks/reporting/timeSeries'
@@ -34,17 +38,23 @@ export const useTicketCountPerTag = () => {
 
     const tagsReportContext = useTagsReportContext()
 
+    const [tagTicketTimeReference] = useTicketTimeReference(Entity.Tag)
+
     const totalTaggedTicketCountTimeSeries =
         useTotalTaggedTicketCountTimeSeries(
             cleanStatsFilters,
             userTimezone,
             granularity,
+            undefined,
+            tagTicketTimeReference,
         )
 
     const tagsTicketTimeCountTimeSeries = useTagsTicketCountTimeSeries(
         cleanStatsFilters,
         userTimezone,
         granularity,
+        undefined,
+        tagTicketTimeReference,
     )
 
     const dateTimes = getPeriodDateTimes(

@@ -10,13 +10,18 @@ import {
 } from 'models/reporting/cubes/TicketCustomFieldsCube'
 import {
     aiInsightsCustomerSatisfactionMetricDrillDownQueryFactory,
+    customFieldsTicketCountOnCreatedDatetimeQueryFactory,
+    customFieldsTicketCountOnCreatedDatetimeTimeSeriesQueryFactory,
     customFieldsTicketCountPerIntentLevelPerTicketDrillDownQueryFactory,
     customFieldsTicketCountPerTicketDrillDownQueryFactory,
     customFieldsTicketCountQueryFactory,
     customFieldsTicketTotalCountQueryFactory,
 } from 'models/reporting/queryFactories/ticket-insights/customFieldsTicketCount'
 import { injectDrillDownCustomFieldId } from 'models/reporting/queryFactories/utils'
-import { ReportingFilterOperator } from 'models/reporting/types'
+import {
+    ReportingFilterOperator,
+    ReportingGranularity,
+} from 'models/reporting/types'
 import { FilterKey, StatsFilters } from 'models/stat/types'
 import { LogicalOperatorEnum } from 'pages/stats/common/components/Filter/constants'
 import {
@@ -43,6 +48,7 @@ describe('customFieldsTicketCountQueryFactory', () => {
     const perAgentId = '1'
     const mockIntentFieldId = 123
     const mockOutcomeFieldId = 456
+    const granularity = ReportingGranularity.Day
 
     describe('customFieldsTicketCountQueryFactory', () => {
         it('should build expected query', () => {
@@ -136,6 +142,136 @@ describe('customFieldsTicketCountQueryFactory', () => {
                     ],
                 ],
             })
+        })
+    })
+
+    describe('customFieldsTicketCountOnCreatedDatetimeQueryFactory', () => {
+        it('should build expected query', () => {
+            const actual = customFieldsTicketCountOnCreatedDatetimeQueryFactory(
+                statsFilters,
+                timezone,
+                customFieldId,
+            )
+
+            const expected = {
+                measures: [
+                    TicketCustomFieldsMeasure.TicketCustomFieldsTicketCount,
+                ],
+                dimensions: [
+                    TicketCustomFieldsDimension.TicketCustomFieldsValueString,
+                ],
+                timezone,
+                segments: [],
+                filters: [
+                    {
+                        member: TicketMember.IsTrashed,
+                        operator: ReportingFilterOperator.Equals,
+                        values: ['0'],
+                    },
+                    {
+                        member: TicketMember.IsSpam,
+                        operator: ReportingFilterOperator.Equals,
+                        values: ['0'],
+                    },
+                    {
+                        member: TicketMember.PeriodStart,
+                        operator: ReportingFilterOperator.AfterDate,
+                        values: [periodStart],
+                    },
+                    {
+                        member: TicketMember.PeriodEnd,
+                        operator: ReportingFilterOperator.BeforeDate,
+                        values: [periodEnd],
+                    },
+                    {
+                        member: TicketCustomFieldsMember.TicketCustomFieldsCustomFieldId,
+                        operator: ReportingFilterOperator.Equals,
+                        values: [customFieldId],
+                    },
+                    {
+                        member: TicketCustomFieldsMember.TicketCustomFieldsCustomFieldUpdatedDatetime,
+                        operator: ReportingFilterOperator.InDateRange,
+                        values: [periodStart, periodEnd],
+                    },
+                    {
+                        member: TicketMember.CreatedDatetime,
+                        operator: ReportingFilterOperator.InDateRange,
+                        values: [periodStart, periodEnd],
+                    },
+                ],
+            }
+
+            expect(actual).toEqual(expected)
+        })
+    })
+
+    describe('customFieldsTicketCountOnCreatedDatetimeTimeSeriesQueryFactory', () => {
+        it('should build expected query', () => {
+            const actual =
+                customFieldsTicketCountOnCreatedDatetimeTimeSeriesQueryFactory(
+                    statsFilters,
+                    timezone,
+                    granularity,
+                    customFieldId,
+                )
+
+            const expected = {
+                measures: [
+                    TicketCustomFieldsMeasure.TicketCustomFieldsTicketCount,
+                ],
+                dimensions: [
+                    TicketCustomFieldsDimension.TicketCustomFieldsValueString,
+                ],
+                timezone,
+                segments: [],
+                filters: [
+                    {
+                        member: TicketMember.IsTrashed,
+                        operator: ReportingFilterOperator.Equals,
+                        values: ['0'],
+                    },
+                    {
+                        member: TicketMember.IsSpam,
+                        operator: ReportingFilterOperator.Equals,
+                        values: ['0'],
+                    },
+                    {
+                        member: TicketMember.PeriodStart,
+                        operator: ReportingFilterOperator.AfterDate,
+                        values: [periodStart],
+                    },
+                    {
+                        member: TicketMember.PeriodEnd,
+                        operator: ReportingFilterOperator.BeforeDate,
+                        values: [periodEnd],
+                    },
+                    {
+                        member: TicketCustomFieldsMember.TicketCustomFieldsCustomFieldId,
+                        operator: ReportingFilterOperator.Equals,
+                        values: [customFieldId],
+                    },
+                    {
+                        member: TicketCustomFieldsMember.TicketCustomFieldsCustomFieldUpdatedDatetime,
+                        operator: ReportingFilterOperator.InDateRange,
+                        values: [periodStart, periodEnd],
+                    },
+                    {
+                        member: TicketMember.CreatedDatetime,
+                        operator: ReportingFilterOperator.InDateRange,
+                        values: [periodStart, periodEnd],
+                    },
+                ],
+                timeDimensions: [
+                    {
+                        dimension:
+                            TicketCustomFieldsMember.TicketCustomFieldsCustomFieldUpdatedDatetime,
+                        granularity,
+                        dateRange: [periodStart, periodEnd],
+                    },
+                ],
+            }
+
+            expect(actual).toEqual(expected)
         })
     })
 

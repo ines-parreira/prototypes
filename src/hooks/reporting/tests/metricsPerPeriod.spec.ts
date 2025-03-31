@@ -10,6 +10,7 @@ import {
     TagSelection,
     useTagResultsSelection,
 } from 'hooks/reporting/tags/useTagResultsSelection'
+import { useTicketTimeReference } from 'hooks/reporting/ticket-insights/useTicketTimeReference'
 import {
     QueryReturnType,
     useMetricPerDimension,
@@ -19,9 +20,16 @@ import {
     TicketTagsEnrichedCube,
     TicketTagsEnrichedDimension,
 } from 'models/reporting/cubes/TicketTagsEnrichedCube'
-import { tagsTicketCountQueryFactory } from 'models/reporting/queryFactories/ticket-insights/tagsTicketCount'
+import {
+    tagsTicketCountOnCreatedDatetimeQueryFactory,
+    tagsTicketCountQueryFactory,
+} from 'models/reporting/queryFactories/ticket-insights/tagsTicketCount'
 import { withDefaultLogicalOperator } from 'models/reporting/queryFactories/utils'
-import { StatsFilters, TagFilterInstanceId } from 'models/stat/types'
+import {
+    StatsFilters,
+    TagFilterInstanceId,
+    TicketTimeReference,
+} from 'models/stat/types'
 import { LogicalOperatorEnum } from 'pages/stats/common/components/Filter/constants'
 import { defaultStatsFilters } from 'state/stats/statsSlice'
 import { getPreviousPeriod } from 'utils/reporting'
@@ -56,11 +64,19 @@ const useTagResultsSelectionMock = assumeMock(useTagResultsSelection)
 
 const setTagResultsSelection = jest.fn()
 
+jest.mock('hooks/reporting/ticket-insights/useTicketTimeReference')
+const useTicketTimeReferenceMock = assumeMock(useTicketTimeReference)
+
 describe('useTagsTicketCount', () => {
     beforeEach(() => {
         useTagResultsSelectionMock.mockReturnValue([
             TagSelection.includeTags,
             setTagResultsSelection,
+        ])
+
+        useTicketTimeReferenceMock.mockReturnValue([
+            TicketTimeReference.TaggedAt,
+            jest.fn(),
         ])
     })
 
@@ -83,6 +99,34 @@ describe('useTagsTicketCount', () => {
         )
     })
 
+    it('should pass the query to useMetricPerDimension hook when time reference is created at', () => {
+        useTicketTimeReferenceMock.mockReturnValue([
+            TicketTimeReference.CreatedAt,
+            jest.fn(),
+        ])
+
+        renderHook(() => useTagsTicketCount(statsFilters, timezone, sorting))
+
+        expect(useMetricPerDimensionMock).toHaveBeenCalledWith(
+            tagsTicketCountOnCreatedDatetimeQueryFactory(
+                statsFilters,
+                timezone,
+                sorting,
+            ),
+        )
+
+        expect(useMetricPerDimensionMock).toHaveBeenCalledWith(
+            tagsTicketCountOnCreatedDatetimeQueryFactory(
+                {
+                    ...statsFilters,
+                    period: getPreviousPeriod(statsFilters.period),
+                },
+                timezone,
+                sorting,
+            ),
+        )
+    })
+
     it('should test the returned result of useTagsTicketCount', () => {
         const responseMock = {
             data: { allData: [], value: null, decile: null },
@@ -93,9 +137,11 @@ describe('useTagsTicketCount', () => {
         useMetricPerDimensionMock.mockReturnValueOnce(responseMock)
         useMetricPerDimensionMock.mockReturnValueOnce(responseMock)
 
-        const result = useTagsTicketCount(statsFilters, timezone, sorting)
+        const { result } = renderHook(() =>
+            useTagsTicketCount(statsFilters, timezone, sorting),
+        )
 
-        expect(result).toStrictEqual({
+        expect(result.current).toStrictEqual({
             data: { prevValue: [], value: [] },
             isError: responseMock.isError,
             isFetching: responseMock.isFetching,
@@ -132,9 +178,11 @@ describe('useTagsTicketCount', () => {
         useMetricPerDimensionMock.mockReturnValueOnce(responseMock)
         useMetricPerDimensionMock.mockReturnValueOnce(responseMock)
 
-        const result = useTagsTicketCount(statsFilters, timezone, sorting)
+        const { result } = renderHook(() =>
+            useTagsTicketCount(statsFilters, timezone, sorting),
+        )
 
-        expect(result).toStrictEqual({
+        expect(result.current).toStrictEqual({
             data: {
                 prevValue: [responseMock.data.allData[0]],
                 value: [responseMock.data.allData[0]],
@@ -154,9 +202,11 @@ describe('useTagsTicketCount', () => {
         useMetricPerDimensionMock.mockReturnValueOnce(errorMock)
         useMetricPerDimensionMock.mockReturnValueOnce(errorMock)
 
-        const result = useTagsTicketCount(statsFilters, timezone, sorting)
+        const { result } = renderHook(() =>
+            useTagsTicketCount(statsFilters, timezone, sorting),
+        )
 
-        expect(result).toStrictEqual({
+        expect(result.current).toStrictEqual({
             data: { prevValue: [], value: [] },
             isError: errorMock.isError,
             isFetching: errorMock.isFetching,

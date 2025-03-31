@@ -15,6 +15,7 @@ import {
 import useAppSelector from 'hooks/useAppSelector'
 import { OrderDirection } from 'models/api/types'
 import { ReportingGranularity } from 'models/reporting/types'
+import { TicketTimeReference } from 'models/stat/types'
 import { formatDates } from 'pages/stats/utils'
 import {
     fetchCustomFieldsReportData,
@@ -174,6 +175,8 @@ describe('ticketFieldsReportingService', () => {
                 {
                     customFieldsOrder,
                     selectedCustomFieldId: String(selectedCustomFieldId),
+                    ticketFieldsTicketTimeReference:
+                        TicketTimeReference.CreatedAt,
                 },
             )
 
@@ -195,6 +198,8 @@ describe('ticketFieldsReportingService', () => {
                 {
                     customFieldsOrder,
                     selectedCustomFieldId: String(selectedCustomFieldId),
+                    ticketFieldsTicketTimeReference:
+                        TicketTimeReference.CreatedAt,
                 },
             )
 
@@ -213,6 +218,8 @@ describe('ticketFieldsReportingService', () => {
                 {
                     customFieldsOrder,
                     selectedCustomFieldId: null,
+                    ticketFieldsTicketTimeReference:
+                        TicketTimeReference.CreatedAt,
                 },
             )
 
@@ -233,6 +240,8 @@ describe('ticketFieldsReportingService', () => {
                 {
                     customFieldsOrder,
                     selectedCustomFieldId: String(selectedCustomFieldId),
+                    ticketFieldsTicketTimeReference:
+                        TicketTimeReference.CreatedAt,
                 },
             )
 

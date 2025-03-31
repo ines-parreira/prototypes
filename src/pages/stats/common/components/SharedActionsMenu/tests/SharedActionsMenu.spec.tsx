@@ -1,5 +1,3 @@
-import React from 'react'
-
 import { fireEvent, render, screen, within } from '@testing-library/react'
 
 import { logEvent, SegmentEvent } from 'common/segment'
@@ -7,11 +5,9 @@ import {
     TagSelection,
     useTagResultsSelection,
 } from 'hooks/reporting/tags/useTagResultsSelection'
-import {
-    TimeframePreferenceSelection,
-    useTimeframePreferenceSelection,
-} from 'hooks/reporting/ticket-insights/useTimeframePreferenceSelection'
+import { useTicketTimeReference } from 'hooks/reporting/ticket-insights/useTicketTimeReference'
 import { useNotify } from 'hooks/useNotify'
+import { TicketTimeReference } from 'models/stat/types'
 import {
     createNotificationMessage,
     ReportName,
@@ -24,14 +20,15 @@ import { assumeMock } from 'utils/testing'
 
 jest.mock('common/segment')
 const logEventMock = assumeMock(logEvent)
+
 jest.mock('hooks/reporting/tags/useTagResultsSelection')
 const useTagResultsSelectionMock = assumeMock(useTagResultsSelection)
-jest.mock('hooks/reporting/ticket-insights/useTimeframePreferenceSelection')
-const useTimeframePreferenceSelectionMock = assumeMock(
-    useTimeframePreferenceSelection,
-)
+
 jest.mock('hooks/useNotify')
 const useNotifyMock = assumeMock(useNotify)
+
+jest.mock('hooks/reporting/ticket-insights/useTicketTimeReference')
+const useTicketTimeReferenceMock = assumeMock(useTicketTimeReference)
 
 describe('SharedActionsMenu', () => {
     const downloadMock = jest.fn()
@@ -49,8 +46,8 @@ describe('SharedActionsMenu', () => {
             setTagResultsSelection,
         ])
 
-        useTimeframePreferenceSelectionMock.mockReturnValue([
-            TimeframePreferenceSelection.basedOnTicketStatuses,
+        useTicketTimeReferenceMock.mockReturnValue([
+            TicketTimeReference.TaggedAt,
             setTimeframePreferenceSelection,
         ])
     })
@@ -212,13 +209,13 @@ describe('SharedActionsMenu', () => {
             fireEvent.click(screen.getByText(SHARED_LABELS.tags.allStatuses))
 
             expect(setTimeframePreferenceSelection).toHaveBeenCalledWith(
-                TimeframePreferenceSelection.basedOnTicketStatuses,
+                TicketTimeReference.TaggedAt,
             )
 
             expect(logEventMock).toHaveBeenCalledWith(
                 SegmentEvent.StatTimeframePreferenceSelection,
                 {
-                    value: TimeframePreferenceSelection.basedOnTicketStatuses,
+                    value: TicketTimeReference.TaggedAt,
                     report: ReportName.Tags,
                 },
             )
@@ -227,20 +224,20 @@ describe('SharedActionsMenu', () => {
             fireEvent.click(screen.getByText(SHARED_LABELS.tags.creationDate))
 
             expect(setTimeframePreferenceSelection).toHaveBeenCalledWith(
-                TimeframePreferenceSelection.basedOnTicketCreationDate,
+                TicketTimeReference.CreatedAt,
             )
 
             expect(logEventMock).toHaveBeenCalledWith(
                 SegmentEvent.StatTimeframePreferenceSelection,
                 {
-                    value: TimeframePreferenceSelection.basedOnTicketCreationDate,
+                    value: TicketTimeReference.CreatedAt,
                     report: ReportName.Tags,
                 },
             )
             expect(notifySuccessMock).toHaveBeenCalledWith(
                 createNotificationMessage(
                     ReportName.Tags,
-                    TimeframePreferenceSelection.basedOnTicketCreationDate,
+                    TicketTimeReference.CreatedAt,
                 ),
             )
         })
@@ -312,13 +309,13 @@ describe('SharedActionsMenu', () => {
             )
 
             expect(setTimeframePreferenceSelection).toHaveBeenCalledWith(
-                TimeframePreferenceSelection.basedOnTicketStatuses,
+                TicketTimeReference.TaggedAt,
             )
 
             expect(logEventMock).toHaveBeenCalledWith(
                 SegmentEvent.StatTimeframePreferenceSelection,
                 {
-                    value: TimeframePreferenceSelection.basedOnTicketStatuses,
+                    value: TicketTimeReference.TaggedAt,
                     report: ReportName.TicketFields,
                 },
             )
@@ -329,20 +326,20 @@ describe('SharedActionsMenu', () => {
             )
 
             expect(setTimeframePreferenceSelection).toHaveBeenCalledWith(
-                TimeframePreferenceSelection.basedOnTicketCreationDate,
+                TicketTimeReference.CreatedAt,
             )
 
             expect(logEventMock).toHaveBeenCalledWith(
                 SegmentEvent.StatTimeframePreferenceSelection,
                 {
-                    value: TimeframePreferenceSelection.basedOnTicketCreationDate,
+                    value: TicketTimeReference.CreatedAt,
                     report: ReportName.TicketFields,
                 },
             )
             expect(notifySuccessMock).toHaveBeenCalledWith(
                 createNotificationMessage(
                     ReportName.TicketFields,
-                    TimeframePreferenceSelection.basedOnTicketCreationDate,
+                    TicketTimeReference.CreatedAt,
                 ),
             )
         })

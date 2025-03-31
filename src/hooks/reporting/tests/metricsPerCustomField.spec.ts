@@ -11,9 +11,16 @@ import {
     useMetricPerDimensionWithBreakdown,
 } from 'hooks/reporting/useMetricPerDimension'
 import { OrderDirection } from 'models/api/types'
-import { customFieldsTicketCountQueryFactory } from 'models/reporting/queryFactories/ticket-insights/customFieldsTicketCount'
+import {
+    customFieldsTicketCountOnCreatedDatetimeQueryFactory,
+    customFieldsTicketCountQueryFactory,
+} from 'models/reporting/queryFactories/ticket-insights/customFieldsTicketCount'
 import { withDefaultLogicalOperator } from 'models/reporting/queryFactories/utils'
-import { StatsFilters, TagFilterInstanceId } from 'models/stat/types'
+import {
+    StatsFilters,
+    TagFilterInstanceId,
+    TicketTimeReference,
+} from 'models/stat/types'
 import { assumeMock } from 'utils/testing'
 
 jest.mock('hooks/reporting/useMetricPerDimension')
@@ -62,6 +69,28 @@ describe('metricsPerAgent', () => {
 
             expect(useMetricPerDimensionMock).toHaveBeenCalledWith(
                 customFieldsTicketCountQueryFactory(
+                    statsFilters,
+                    timezone,
+                    customFieldId,
+                    sorting,
+                ),
+            )
+        })
+        it('should pass the query to useMetricPerDimension hook when time reference is created at', () => {
+            renderHook(
+                () =>
+                    useCustomFieldsTicketCount(
+                        statsFilters,
+                        timezone,
+                        customFieldId,
+                        sorting,
+                        TicketTimeReference.CreatedAt,
+                    ),
+                {},
+            )
+
+            expect(useMetricPerDimensionMock).toHaveBeenCalledWith(
+                customFieldsTicketCountOnCreatedDatetimeQueryFactory(
                     statsFilters,
                     timezone,
                     customFieldId,

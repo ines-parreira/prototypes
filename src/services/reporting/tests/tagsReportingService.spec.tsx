@@ -18,7 +18,7 @@ import {
 } from 'hooks/reporting/useTimeSeries'
 import { OrderDirection } from 'models/api/types'
 import { ReportingGranularity } from 'models/reporting/types'
-import { TagFilterInstanceId } from 'models/stat/types'
+import { TagFilterInstanceId, TicketTimeReference } from 'models/stat/types'
 import { LogicalOperatorEnum } from 'pages/stats/common/components/Filter/constants'
 import { getTagName } from 'pages/stats/ticket-insights/tags/helpers'
 import { formatDates } from 'pages/stats/utils'
@@ -142,6 +142,7 @@ describe('TagsReportingService', () => {
         tagsTableOrder,
         isExtendedReportingEnabled: false,
         tagResultsSelection: TagSelection.includeTags,
+        tagTicketTimeReference: TicketTimeReference.TaggedAt,
     }
 
     const statsFiltersWithTags = {

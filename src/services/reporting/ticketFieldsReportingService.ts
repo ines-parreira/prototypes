@@ -5,6 +5,10 @@ import { logEvent, SegmentEvent } from 'common/segment'
 import { getCsvFileNameWithDates } from 'hooks/reporting/common/utils'
 import { useStatsFilters } from 'hooks/reporting/support-performance/useStatsFilters'
 import {
+    Entity,
+    useTicketTimeReference,
+} from 'hooks/reporting/ticket-insights/useTicketTimeReference'
+import {
     fetchCustomFieldsTicketCountTimeSeries,
     useCustomFieldsTicketCountTimeSeries,
 } from 'hooks/reporting/timeSeries'
@@ -15,7 +19,7 @@ import {
 import useAppSelector from 'hooks/useAppSelector'
 import { OrderDirection } from 'models/api/types'
 import { ReportingGranularity } from 'models/reporting/types'
-import { Period, StatsFilters } from 'models/stat/types'
+import { Period, StatsFilters, TicketTimeReference } from 'models/stat/types'
 import { formatDates } from 'pages/stats/utils'
 import {
     getCustomFieldsOrder,
@@ -74,13 +78,21 @@ export const useCustomFieldsReportData = (selectedCustomFieldId: string) => {
     } = useStatsFilters()
     const customFieldsOrder = useAppSelector(getCustomFieldsOrder)
 
+    const [ticketFieldsTicketTimeReference] = useTicketTimeReference(
+        Entity.TicketField,
+    )
+
     const { data: timeSeriesData, isLoading } =
         useCustomFieldsTicketCountTimeSeries(
             statsFilters,
             userTimezone,
             granularity,
-            String(selectedCustomFieldId),
+            selectedCustomFieldId,
+            undefined,
+            true,
+            ticketFieldsTicketTimeReference,
         )
+
     const dateTimes = getFormattedDateTimes(statsFilters.period, granularity)
 
     const ticketFieldsData = formatData(
@@ -119,6 +131,7 @@ export const fetchCustomFieldsReportData = async (
     context: {
         customFieldsOrder: TicketInsightsOrder
         selectedCustomFieldId: string | null
+        ticketFieldsTicketTimeReference: TicketTimeReference
     },
 ): Promise<{
     isLoading: boolean
@@ -140,6 +153,8 @@ export const fetchCustomFieldsReportData = async (
         userTimezone,
         granularity,
         context.selectedCustomFieldId,
+        undefined,
+        context.ticketFieldsTicketTimeReference,
     )
         .then((result) => ({
             isLoading: false,

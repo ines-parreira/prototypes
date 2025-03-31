@@ -2,6 +2,7 @@ import { OrderDirection } from 'models/api/types'
 import {
     TicketCubeWithJoins,
     TicketDimension,
+    TicketMember,
 } from 'models/reporting/cubes/TicketCube'
 import {
     TicketTagsEnrichedCube,
@@ -64,6 +65,15 @@ export const tagsTicketCountQueryFactory = (
         : {}),
 })
 
+const createdTicketFilter = (filters: StatsFilters) => ({
+    member: TicketMember.CreatedDatetime,
+    operator: ReportingFilterOperator.InDateRange,
+    values: [
+        formatReportingQueryDate(filters.period.start_datetime),
+        formatReportingQueryDate(filters.period.end_datetime),
+    ],
+})
+
 export const tagsTicketCountTimeSeriesFactory = (
     filters: StatsFilters,
     timezone: string,
@@ -71,6 +81,36 @@ export const tagsTicketCountTimeSeriesFactory = (
     sorting?: OrderDirection,
 ): TimeSeriesQuery<TicketCubeWithJoins> => ({
     ...tagsTicketCountQueryFactory(filters, timezone, sorting),
+    timeDimensions: [
+        {
+            dimension: TicketTagsEnrichedDimension.Timestamp,
+            granularity,
+            dateRange: getFilterDateRange(filters.period),
+        },
+    ],
+})
+
+export const tagsTicketCountOnCreatedDatetimeQueryFactory = (
+    filters: StatsFilters,
+    timezone: string,
+    sorting?: OrderDirection,
+): ReportingQuery<TicketTagsEnrichedCube> => {
+    const { filters: baseQueryFilters, ...baseQuery } =
+        tagsTicketCountQueryFactory(filters, timezone, sorting)
+
+    return {
+        ...baseQuery,
+        filters: [...baseQueryFilters, createdTicketFilter(filters)],
+    }
+}
+
+export const tagsTicketCountOnCreatedDatetimeTimeSeriesFactory = (
+    filters: StatsFilters,
+    timezone: string,
+    granularity: ReportingGranularity,
+    sorting?: OrderDirection,
+): TimeSeriesQuery<TicketCubeWithJoins> => ({
+    ...tagsTicketCountOnCreatedDatetimeQueryFactory(filters, timezone, sorting),
     timeDimensions: [
         {
             dimension: TicketTagsEnrichedDimension.Timestamp,
@@ -95,6 +135,26 @@ export const totalTaggedTicketCountTimeSeriesFactory = (
         },
     ],
 })
+
+export const totalTaggedTicketCountOnCreatedDatetimeTimeSeriesFactory = (
+    filters: StatsFilters,
+    timezone: string,
+    granularity: ReportingGranularity,
+    sorting?: OrderDirection,
+): TimeSeriesQuery<TicketCubeWithJoins> => {
+    const { filters: baseQueryFilters, ...baseQuery } =
+        totalTaggedTicketCountTimeSeriesFactory(
+            filters,
+            timezone,
+            granularity,
+            sorting,
+        )
+
+    return {
+        ...baseQuery,
+        filters: [...baseQueryFilters, createdTicketFilter(filters)],
+    }
+}
 
 export const tagsTicketCountDrillDownQueryFactory = (
     filters: StatsFilters,

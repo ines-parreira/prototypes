@@ -10,8 +10,10 @@ import {
 import { coverageRateTicketDrillDownQueryFactory } from 'models/reporting/queryFactories/ticket-insights/customFieldsTicketCount'
 import {
     tagsTicketCountDrillDownQueryFactory,
+    tagsTicketCountOnCreatedDatetimeQueryFactory,
     tagsTicketCountQueryFactory,
     tagsTicketCountTimeSeriesFactory,
+    totalTaggedTicketCountOnCreatedDatetimeTimeSeriesFactory,
     totalTaggedTicketCountQueryFactory,
     totalTaggedTicketCountTimeSeriesFactory,
 } from 'models/reporting/queryFactories/ticket-insights/tagsTicketCount'
@@ -108,6 +110,109 @@ describe('tagsTicketCount query factories', () => {
                     },
                 ],
             })
+        })
+    })
+
+    describe('tagsTicketCountOnCreatedDatetimeQueryFactory', () => {
+        it('should build a query', () => {
+            const actual = tagsTicketCountOnCreatedDatetimeQueryFactory(
+                statsFilters,
+                timezone,
+                sorting,
+            )
+
+            const expected = {
+                measures: [TicketTagsEnrichedMeasure.TicketCount],
+                dimensions: [TicketTagsEnrichedDimension.TagId],
+                timezone,
+                segments: [],
+                order: [['TicketTagsEnriched.ticketCount', sorting]],
+                filters: [
+                    {
+                        member: TicketMember.IsTrashed,
+                        operator: ReportingFilterOperator.Equals,
+                        values: ['0'],
+                    },
+                    {
+                        member: TicketMember.IsSpam,
+                        operator: ReportingFilterOperator.Equals,
+                        values: ['0'],
+                    },
+                    {
+                        member: TicketMember.PeriodStart,
+                        operator: ReportingFilterOperator.AfterDate,
+                        values: [periodStart],
+                    },
+                    {
+                        member: TicketMember.PeriodEnd,
+                        operator: ReportingFilterOperator.BeforeDate,
+                        values: [periodEnd],
+                    },
+                    {
+                        member: TicketMember.CreatedDatetime,
+                        operator: ReportingFilterOperator.InDateRange,
+                        values: [periodStart, periodEnd],
+                    },
+                ],
+            }
+
+            expect(actual).toEqual(expected)
+        })
+    })
+
+    describe('totalTaggedTicketCountOnCreatedDatetimeTimeSeriesFactory', () => {
+        it('should build a query', () => {
+            const actual =
+                totalTaggedTicketCountOnCreatedDatetimeTimeSeriesFactory(
+                    statsFilters,
+                    timezone,
+                    granularity,
+                    sorting,
+                )
+
+            const expected = {
+                measures: [TicketTagsEnrichedMeasure.TicketCount],
+                dimensions: [],
+                timezone,
+                segments: [],
+                order: [[TicketTagsEnrichedMeasure.TicketCount, sorting]],
+                timeDimensions: [
+                    {
+                        dimension: TicketTagsEnrichedDimension.Timestamp,
+                        granularity,
+                        dateRange: getFilterDateRange(statsFilters.period),
+                    },
+                ],
+                filters: [
+                    {
+                        member: TicketMember.IsTrashed,
+                        operator: ReportingFilterOperator.Equals,
+                        values: ['0'],
+                    },
+                    {
+                        member: TicketMember.IsSpam,
+                        operator: ReportingFilterOperator.Equals,
+                        values: ['0'],
+                    },
+                    {
+                        member: TicketMember.PeriodStart,
+                        operator: ReportingFilterOperator.AfterDate,
+                        values: [periodStart],
+                    },
+                    {
+                        member: TicketMember.PeriodEnd,
+                        operator: ReportingFilterOperator.BeforeDate,
+                        values: [periodEnd],
+                    },
+                    {
+                        member: TicketMember.CreatedDatetime,
+                        operator: ReportingFilterOperator.InDateRange,
+                        values: [periodStart, periodEnd],
+                    },
+                ],
+            }
+
+            expect(actual).toEqual(expected)
         })
     })
 
