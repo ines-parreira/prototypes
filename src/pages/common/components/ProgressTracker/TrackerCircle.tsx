@@ -1,6 +1,7 @@
 import cn from 'classnames'
 
 import { gorgiasColors } from 'gorgias-design-system/styles'
+import { useDynamicLabelSize } from 'pages/common/hooks/useDynamicLabelSize'
 
 import css from './TrackerCircle.less'
 
@@ -73,6 +74,8 @@ const TrackerCircle = ({
     const pct = cleanPercentage(percentage)
     const size = radius * 2 + strokeWidth
 
+    const { labelContainer, labelSpan } = useDynamicLabelSize()
+
     return (
         <svg
             width={size}
@@ -102,8 +105,8 @@ const TrackerCircle = ({
                 width="100%"
                 fontSize={radius / 1.5}
             >
-                <div className={css.labelContainer}>
-                    <span className={css.label} title={label}>
+                <div className={css.labelContainer} ref={labelContainer}>
+                    <span className={css.label} title={label} ref={labelSpan}>
                         {label}
                     </span>
                 </div>
