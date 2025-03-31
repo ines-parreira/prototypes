@@ -1,36 +1,113 @@
-import React from 'react'
+import { useEffect } from 'react'
 
-import { Button } from '@gorgias/merchant-ui-kit'
+import { useFormContext, useFormState } from 'react-hook-form'
 
+import {
+    PhoneFunction,
+    PhoneIntegration,
+    UpdateAllPhoneIntegrationSettings,
+} from '@gorgias/api-queries'
+import { Button, Label, SelectField } from '@gorgias/merchant-ui-kit'
+import { RawOption } from '@gorgias/merchant-ui-kit/dist/SelectField'
+
+import { FormField } from 'core/forms'
+import useAppSelector from 'hooks/useAppSelector'
 import useSearch from 'hooks/useSearch'
+import { IntegrationType } from 'models/integration/constants'
 import useNavigateWizardSteps from 'pages/common/components/wizard/hooks/useNavigateWizardSteps'
+import EmojiTextInput from 'pages/common/forms/EmojiTextInput/EmojiTextInput'
+import PhoneNumberSelectField from 'pages/phoneNumbers/PhoneNumberSelectField'
+import { getNewPhoneNumbers } from 'state/entities/phoneNumbers/selectors'
 
 import VoiceIntegrationOnboardingCancelButton from './VoiceIntegrationOnboardingCancelButton'
 
 import css from './VoiceIntegrationOnboardingStep.less'
 
-export default function AddPhoneNumberStep() {
+const AddPhoneNumberStep = () => {
     const { phoneNumberId } = useSearch<{
         phoneNumberId: string
     }>()
+    const phoneNumbers = useAppSelector(getNewPhoneNumbers)
+
     const { goToNextStep } = useNavigateWizardSteps()
+    const methods = useFormContext<
+        UpdateAllPhoneIntegrationSettings | PhoneIntegration
+    >()
+    const { setValue, watch } = methods
+    const { isValid } = useFormState()
+
+    const emoji = watch('meta.emoji')
+    const phoneFunction = watch('meta.function')
+
+    useEffect(() => {
+        if (phoneNumberId) {
+            setValue('meta.phone_number_id', parseInt(phoneNumberId))
+        }
+    }, [phoneNumberId, setValue])
 
     return (
-        <>
-            <div>
-                <h1>Add phone number</h1>
-                <p>
-                    {phoneNumberId
-                        ? `Phone number id ${phoneNumberId} selected`
-                        : 'No phone number id found'}
-                </p>
+        <div className={css.container}>
+            <div className={css.formContainer}>
+                <div className={css.header}>Add phone number</div>
+                <div>
+                    <Label className={css.label}>Integration name</Label>
+                    <FormField
+                        name="name"
+                        id="name"
+                        field={EmojiTextInput}
+                        emoji={emoji ?? null}
+                        placeholder="Ex: Company Support Line"
+                        isRequired
+                        onEmojiChange={(emoji: string | null) =>
+                            setValue('meta.emoji', emoji, {
+                                shouldDirty: true,
+                            })
+                        }
+                    />
+                </div>
+                <div>
+                    <Label className={css.label}>Phone number</Label>
+                    <FormField
+                        field={PhoneNumberSelectField}
+                        name={'meta.phone_number_id'}
+                        integrationType={IntegrationType.Phone}
+                        inputTransform={(value) =>
+                            value ? phoneNumbers[value] : null
+                        }
+                        outputTransform={(phoneNumber) => phoneNumber?.id}
+                        isRequired
+                    />
+                </div>
+                <div>
+                    <FormField
+                        name={'meta.function'}
+                        label={'Function'}
+                        field={SelectField}
+                        options={[PhoneFunction.Standard, PhoneFunction.Ivr]}
+                        selectedOption={phoneFunction}
+                        optionMapper={(option: RawOption) => ({
+                            value:
+                                option === PhoneFunction.Standard
+                                    ? 'Standard'
+                                    : 'IVR (Interactive Voice Response)',
+                        })}
+                    />
+                </div>
             </div>
             <div className={css.buttons}>
                 <VoiceIntegrationOnboardingCancelButton />
-                <Button intent="primary" onClick={goToNextStep}>
+                <Button
+                    intent="primary"
+                    isDisabled={!isValid}
+                    onClick={() => {
+                        goToNextStep()
+                    }}
+                >
                     Next
                 </Button>
             </div>
-        </>
+        </div>
     )
 }
+
+export default AddPhoneNumberStep

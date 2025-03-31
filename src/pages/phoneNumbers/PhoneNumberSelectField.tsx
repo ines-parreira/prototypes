@@ -18,7 +18,7 @@ import { getNewPhoneNumbers } from 'state/entities/phoneNumbers/selectors'
 type Props = {
     value: Maybe<NewPhoneNumber> | '_new'
     onChange: (phoneNumber: NewPhoneNumber) => void
-    onCreate: (phoneNumber: NewPhoneNumber) => void
+    onCreate?: (phoneNumber: NewPhoneNumber) => void
     integrationType?: IntegrationType.Phone | IntegrationType.Sms
 }
 
@@ -112,7 +112,7 @@ function PhoneNumberSelectField({
             <PhoneNumberCreateModalForm
                 isOpen={isCreateFormVisible}
                 onClose={() => setIsCreateFormVisible(false)}
-                onCreate={onCreate}
+                onCreate={onCreate ?? onChange}
             />
         </>
     )

@@ -44,11 +44,7 @@ describe('<PhoneNumberSelectField/>', () => {
         it('should open a modal form when selecting the create option', () => {
             const { baseElement } = render(
                 <Provider store={store}>
-                    <PhoneNumberSelectField
-                        value="_new"
-                        onChange={onChange}
-                        onCreate={onCreate}
-                    />
+                    <PhoneNumberSelectField value="_new" onChange={onChange} />
                 </Provider>,
             )
             expect(baseElement).toMatchSnapshot()

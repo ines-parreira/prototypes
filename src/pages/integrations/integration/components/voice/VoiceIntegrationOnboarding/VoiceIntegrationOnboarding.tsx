@@ -1,5 +1,3 @@
-import React from 'react'
-
 import Wizard from 'pages/common/components/wizard/Wizard'
 import WizardProgressHeader from 'pages/common/components/wizard/WizardProgressHeader'
 import WizardStep from 'pages/common/components/wizard/WizardStep'
@@ -12,8 +10,7 @@ import {
     onboardingStepsLabels,
     VoiceIntegrationOnboardingStep,
 } from './constants'
-
-import css from './VoiceIntegrationOnboarding.less'
+import VoiceIntegrationOnboardingForm from './VoiceIntegrationOnboardingForm'
 
 export default function VoiceIntegrationOnboarding() {
     return (
@@ -23,7 +20,7 @@ export default function VoiceIntegrationOnboarding() {
                     startAt={VoiceIntegrationOnboardingStep.AddPhoneNumber}
                     steps={Object.values(VoiceIntegrationOnboardingStep)}
                 >
-                    <div className={css.wizardContainer}>
+                    <VoiceIntegrationOnboardingForm>
                         <WizardProgressHeader labels={onboardingStepsLabels} />
                         <WizardStep
                             name={VoiceIntegrationOnboardingStep.AddPhoneNumber}
@@ -37,7 +34,7 @@ export default function VoiceIntegrationOnboarding() {
                         >
                             <ConfigureCallFlowStep />
                         </WizardStep>
-                    </div>
+                    </VoiceIntegrationOnboardingForm>
                 </Wizard>
             </SettingsContent>
         </SettingsPageContainer>

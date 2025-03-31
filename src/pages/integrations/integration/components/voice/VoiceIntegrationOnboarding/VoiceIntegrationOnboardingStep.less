@@ -1,4 +1,5 @@
 @import (reference) '~@gorgias/design-tokens/dist/css/layout';
+@import (reference) '~css/typography.less';
 
 :local {
     .buttons {
@@ -10,5 +11,25 @@
     .navigationButtons {
         display: flex;
         gap: @layout-spacing-xs;
+    }
+
+    .header {
+        .heading-section-semibold();
+    }
+
+    .container {
+        display: flex;
+        flex-direction: column;
+        gap: @layout-spacing-xl;
+    }
+
+    .formContainer {
+        display: flex;
+        flex-direction: column;
+        gap: @layout-spacing-m;
+    }
+
+    .label {
+        margin-bottom: @layout-spacing-xs;
     }
 }
