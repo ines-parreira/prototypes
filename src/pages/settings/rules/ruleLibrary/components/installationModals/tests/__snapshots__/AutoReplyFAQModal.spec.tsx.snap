@@ -118,6 +118,7 @@ exports[`<AutoReplyFAQModal/> should render the autoclose spam body when Automat
                 class="gravatar"
                 loading="lazy"
                 src="/assets/img/icons/logo.png"
+                style="width: 28px; height: 28px;"
               />
             </div>
           </div>
@@ -329,6 +330,7 @@ exports[`<AutoReplyFAQModal/> should render the autoclose spam body when Automat
                 class="gravatar"
                 loading="lazy"
                 src="/assets/img/icons/logo.png"
+                style="width: 28px; height: 28px;"
               />
             </div>
           </div>

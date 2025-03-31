@@ -12,7 +12,7 @@ exports[`<InfobarCustomerInfo/> should render basic customer info and empty widg
       class="customerProfile"
     >
       <div
-        class="component square mr-3 rounded"
+        class="component square"
         style="width: 36px; height: 36px;"
       >
         <div
@@ -77,7 +77,7 @@ exports[`<InfobarCustomerInfo/> sources render basic customer info and widgets b
       class="customerProfile"
     >
       <div
-        class="component square mr-3 rounded"
+        class="component square"
         style="width: 36px; height: 36px;"
       >
         <div

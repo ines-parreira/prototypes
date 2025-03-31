@@ -35,6 +35,7 @@ exports[`<AISuggestionContactReason /> should display feeback message  1`] = `
               class="gravatar"
               loading="lazy"
               src="/assets/img/icons/gorgias-icon-logo-white.png"
+              style="width: 36px; height: 36px;"
             />
           </div>
         </div>
@@ -118,6 +119,7 @@ exports[`<AISuggestionContactReason /> should match snapshot for prediction  1`]
               class="gravatar"
               loading="lazy"
               src="/assets/img/icons/gorgias-icon-logo-white.png"
+              style="width: 36px; height: 36px;"
             />
           </div>
         </div>
@@ -226,6 +228,7 @@ exports[`<AISuggestionContactReason /> should match snapshot for prediction  2`]
               class="gravatar"
               loading="lazy"
               src="/assets/img/icons/gorgias-icon-logo-white.png"
+              style="width: 36px; height: 36px;"
             />
           </div>
         </div>
@@ -332,6 +335,7 @@ exports[`<AISuggestionContactReason /> should match snapshot for prediction  3`]
               class="gravatar"
               loading="lazy"
               src="/assets/img/icons/gorgias-icon-logo-white.png"
+              style="width: 36px; height: 36px;"
             />
           </div>
         </div>
@@ -438,6 +442,7 @@ exports[`<AISuggestionContactReason /> should match snapshot for prediction  4`]
               class="gravatar"
               loading="lazy"
               src="/assets/img/icons/gorgias-icon-logo-white.png"
+              style="width: 36px; height: 36px;"
             />
           </div>
         </div>
@@ -546,6 +551,7 @@ exports[`<AISuggestionContactReason /> should match snapshot for prediction  5`]
               class="gravatar"
               loading="lazy"
               src="/assets/img/icons/gorgias-icon-logo-white.png"
+              style="width: 36px; height: 36px;"
             />
           </div>
         </div>

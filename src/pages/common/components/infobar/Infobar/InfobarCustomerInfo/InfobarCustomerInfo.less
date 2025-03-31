@@ -8,13 +8,17 @@
 
     .customerProfile {
         display: flex;
-        justify-content: flex-start;
+        justify-content: space-between;
         align-items: center;
-        margin: 0 0 calc(@layout-spacing-xs * 1.5) 0;
+        gap: @layout-spacing-s;
+        margin: 0 0 calc(@layout-spacing-s) 0;
     }
 
     .customerLink {
+        flex-grow: 1;
         white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
     }
 
     .displayName {
@@ -25,9 +29,7 @@
     }
 
     .customerOptions {
-        width: 100%;
-        display: flex;
-        justify-content: flex-end;
+        flex-grow: 0;
     }
 
     .separator {

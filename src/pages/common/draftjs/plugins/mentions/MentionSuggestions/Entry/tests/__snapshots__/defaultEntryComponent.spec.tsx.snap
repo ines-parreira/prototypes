@@ -24,6 +24,7 @@ exports[`DefaultEntryComponent should render 1`] = `
         class="gravatar"
         loading="lazy"
         src="https://gorgias.io/profilepicture.png"
+        style="width: 26px; height: 26px;"
       />
     </div>
     <span

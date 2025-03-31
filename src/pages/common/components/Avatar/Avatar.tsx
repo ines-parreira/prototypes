@@ -186,6 +186,12 @@ export default class Avatar extends Component<Props, State> {
                         alt="avatar"
                         src={this.state.imageUrl}
                         className={css.gravatar}
+                        {...(size && {
+                            style: {
+                                width: `${size}px`,
+                                height: `${size}px`,
+                            },
+                        })}
                     />
                 )}
                 {badgeColor && (

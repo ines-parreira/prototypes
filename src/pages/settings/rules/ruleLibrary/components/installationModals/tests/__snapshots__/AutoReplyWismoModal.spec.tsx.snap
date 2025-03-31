@@ -125,6 +125,7 @@ exports[`<AutoReplyWismoModal/> should render the autoclose spam body when Autom
                 class="gravatar"
                 loading="lazy"
                 src="/assets/img/icons/logo.png"
+                style="width: 28px; height: 28px;"
               />
             </div>
           </div>
@@ -366,6 +367,7 @@ exports[`<AutoReplyWismoModal/> should render the autoclose spam body when Autom
                 class="gravatar"
                 loading="lazy"
                 src="/assets/img/icons/logo.png"
+                style="width: 28px; height: 28px;"
               />
             </div>
           </div>

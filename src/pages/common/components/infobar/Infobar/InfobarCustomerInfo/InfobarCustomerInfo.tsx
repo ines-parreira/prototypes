@@ -262,7 +262,6 @@ const InfobarCustomerInfo = ({
             <div className={css.customerInfo}>
                 <div className={css.customerProfile}>
                     <Avatar
-                        className="mr-3 rounded"
                         name={customer.get('name', '')}
                         email={customer.get('email', '')}
                         url={customer.getIn(['meta', 'profile_picture_url'])}
