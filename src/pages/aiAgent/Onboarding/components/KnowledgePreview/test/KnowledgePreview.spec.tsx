@@ -9,6 +9,8 @@ import useTopProducts from 'pages/aiAgent/Onboarding/components/TopProductsCard/
 import { useGetKnowledgePreviewData } from 'pages/aiAgent/Onboarding/hooks/useGetKnowledgePreviewData'
 import { assumeMock } from 'utils/testing'
 
+import { useGetAverageOrderValueLastMonth } from '../../../hooks/useGetAverageOrderValueLastMonth'
+import { useGetRepeatRateLastMonth } from '../../../hooks/useGetRepeatRateLastMonth'
 import {
     mockedAverageOrders,
     mockedCategories,
@@ -35,6 +37,14 @@ const defaultPreviewData = {
 jest.mock('pages/aiAgent/Onboarding/hooks/useGetKnowledgePreviewData')
 const mockUseGetKnowledgePreviewData = assumeMock(useGetKnowledgePreviewData)
 
+jest.mock('pages/aiAgent/Onboarding/hooks/useGetAverageOrderValueLastMonth')
+const mockUseGetAverageOrderValueLastMonth = assumeMock(
+    useGetAverageOrderValueLastMonth,
+)
+
+jest.mock('pages/aiAgent/Onboarding/hooks/useGetRepeatRateLastMonth')
+const mockUseGetRepeatRateLastMonth = assumeMock(useGetRepeatRateLastMonth)
+
 const renderComponent = () => {
     return render(
         <Provider store={mockStore}>
@@ -55,6 +65,14 @@ describe('KnowledgePreview', () => {
         useTopProductsMock.mockReturnValue({
             isLoading: false,
             data: [],
+        })
+        mockUseGetAverageOrderValueLastMonth.mockReturnValue({
+            isLoading: false,
+            data: 950,
+        })
+        mockUseGetRepeatRateLastMonth.mockReturnValue({
+            isLoading: false,
+            data: 2,
         })
     })
 

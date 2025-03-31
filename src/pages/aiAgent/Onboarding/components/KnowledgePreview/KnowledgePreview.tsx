@@ -13,13 +13,13 @@ import {
 } from 'pages/aiAgent/Onboarding/components/Card'
 import TopElementsCard from 'pages/aiAgent/Onboarding/components/TopElementsCard'
 import TopProductsCard from 'pages/aiAgent/Onboarding/components/TopProductsCard'
+import { useGetAverageOrderValueLastMonth } from 'pages/aiAgent/Onboarding/hooks/useGetAverageOrderValueLastMonth'
 import { useGetKnowledgePreviewData } from 'pages/aiAgent/Onboarding/hooks/useGetKnowledgePreviewData'
+import { useGetRepeatRateLastMonth } from 'pages/aiAgent/Onboarding/hooks/useGetRepeatRateLastMonth'
 import TrackerCircle from 'pages/common/components/ProgressTracker/TrackerCircle'
 import { LineChart } from 'pages/stats/common/components/charts/LineChart/LineChart'
 import { getShopifyIntegrationByShopName } from 'state/integrations/selectors'
 import { compactInteger } from 'utils'
-
-import { useAverageOrderValueLastMonth } from './hooks'
 
 import css from './KnowledgePreview.less'
 
@@ -35,9 +35,12 @@ const KnowledgePreview: React.FC<Props> = ({ shopName }) => {
     ).toJS()
 
     const { data } = useGetKnowledgePreviewData()
+    const { data: repeatRate } = useGetRepeatRateLastMonth({
+        shopIntegrationId: shopifyIntegration.id,
+    })
 
     const { data: averageOrderValue, isLoading: isAverageOrderValueLoading } =
-        useAverageOrderValueLastMonth({
+        useGetAverageOrderValueLastMonth({
             shopIntegrationId: shopifyIntegration.id,
         })
 
@@ -139,9 +142,9 @@ const KnowledgePreview: React.FC<Props> = ({ shopName }) => {
             <CardContent>
                 <TrackerCircle
                     radius={54}
-                    percentage={data?.repeatRate ?? 0}
+                    percentage={repeatRate ?? 0}
                     color="#FD9B5A"
-                    label={data?.repeatRate.toString() + '%'}
+                    label={`${repeatRate}%`}
                     strokeWidth={9}
                 />
             </CardContent>

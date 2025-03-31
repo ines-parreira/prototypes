@@ -5,7 +5,7 @@ import { AiSalesAgentOrdersMeasure } from 'models/reporting/cubes/ai-sales-agent
 import { averageOrderValueLastMonthQueryFactory } from 'models/reporting/queryFactories/ai-sales-agent/metrics'
 import safeDivide from 'pages/stats/automate/aiSalesAgent/util/safeDivide'
 
-export const useAverageOrderValueLastMonth = ({
+export const useGetAverageOrderValueLastMonth = ({
     shopIntegrationId,
 }: {
     shopIntegrationId: number

@@ -25,6 +25,12 @@ import { ReportingFilterOperator, ReportingQuery } from 'models/reporting/types'
 import { StatsFilters } from 'models/stat/types'
 import { statsFiltersToReportingFilters } from 'utils/reporting'
 
+import {
+    AiSalesAgentOrderCustomersCube,
+    AiSalesAgentOrderCustomersFilterMember,
+    AiSalesAgentOrderCustomersMeasure,
+} from '../../cubes/ai-sales-agent/AiSalesAgentOrdersCustomers'
+
 export const averageOrderValueQueryFactory = (
     filters: StatsFilters,
     timezone: string,
@@ -456,4 +462,35 @@ export const totalNumberOfGroupedSalesOpportunityConvFromAIAgentQueryFactory = (
         },
     ],
     timezone,
+})
+
+export const repeatRateQueryFactory = (
+    storeIntegrationId: number,
+): ReportingQuery<AiSalesAgentOrderCustomersCube> => ({
+    measures: [
+        AiSalesAgentOrderCustomersMeasure.Count,
+        AiSalesAgentOrderCustomersMeasure.RecurringCount,
+    ],
+    dimensions: [],
+    filters: [
+        {
+            member: AiSalesAgentOrderCustomersFilterMember.PeriodStart,
+            operator: ReportingFilterOperator.AfterDate,
+            values: [
+                new Date(
+                    new Date().setMonth(new Date().getMonth() - 1),
+                ).toUTCString(),
+            ],
+        },
+        {
+            member: AiSalesAgentOrderCustomersFilterMember.PeriodEnd,
+            operator: ReportingFilterOperator.BeforeDate,
+            values: [new Date().toUTCString()],
+        },
+        {
+            member: AiSalesAgentOrderCustomersFilterMember.IntegrationId,
+            operator: ReportingFilterOperator.Equals,
+            values: [storeIntegrationId.toString()],
+        },
+    ],
 })
