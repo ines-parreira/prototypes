@@ -30,6 +30,7 @@ exports[`toInitialStoreState should return the expected store state 1`] = `
         "deactivated_datetime": null,
         "has_2fa_enabled": false,
         "name": "Alex Plugaru",
+        "client_id": null,
         "external_id": "2",
         "created_datetime": "2016-12-22T19:36:12.487448+00:00",
         "role": Immutable.Map {
@@ -1254,6 +1255,7 @@ exports[`toInitialStoreState should return the expected store state 1`] = `
     "deactivated_datetime": null,
     "has_2fa_enabled": false,
     "name": "Alex Plugaru",
+    "client_id": null,
     "external_id": "2",
     "created_datetime": "2016-12-22T19:36:12.487448+00:00",
     "role": Immutable.Map {

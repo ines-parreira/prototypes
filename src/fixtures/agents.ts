@@ -33,6 +33,7 @@ export const agents: User[] = [
             status_detail_code: AvailabilityStatusDetailCode.NotConnected,
             status: AvailabilityStatusTag.Offline,
         },
+        client_id: null,
     },
     {
         lastname: 'Smith',
@@ -55,6 +56,7 @@ export const agents: User[] = [
         language: 'en-US',
         timezone: 'UTC',
         has_2fa_enabled: false,
+        client_id: null,
     },
 ]
 export const locations = {

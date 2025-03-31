@@ -6,6 +6,7 @@ import { Badge } from '@gorgias/merchant-ui-kit'
 import { AvailabilityStatusTag, User, UserRole } from 'config/types/user'
 import Avatar from 'pages/common/components/Avatar/Avatar'
 import { RoleLabel } from 'pages/common/utils/labels'
+import { AI_AGENT_CLIENT_ID } from 'state/agents/constants'
 import { toJS } from 'utils'
 
 import css from './List.less'
@@ -44,7 +45,12 @@ const Row = ({ agent, isAccountOwner = false }: Props) => {
         has2FaEnabled,
     )
 
-    return (
+    // For now we only want to display bot user if it is the AI Agent.
+    const cannotBeListed =
+        agent?.role?.name === UserRole.Bot &&
+        agent?.client_id !== AI_AGENT_CLIENT_ID
+
+    return cannotBeListed ? null : (
         <li className={css.row}>
             <Link to={editLink} className={css.link}>
                 <span className={cs(css.cell, css.avatar)}>

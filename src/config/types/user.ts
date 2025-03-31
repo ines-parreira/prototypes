@@ -58,6 +58,7 @@ export type User = UserDraft & {
     timezone: string | null
     has_2fa_enabled: boolean
     availability_status?: AvailabilityStatus<AvailabilityStatusChannel.Phone>
+    client_id: string | null
 }
 
 export enum AvailabilityStatusChannel {

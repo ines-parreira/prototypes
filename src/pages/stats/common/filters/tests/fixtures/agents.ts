@@ -30,6 +30,7 @@ export const extendedAgents: User[] = [
         language: 'en-US',
         timezone: 'UTC',
         has_2fa_enabled: false,
+        client_id: null,
     },
     {
         lastname: 'Fu',
@@ -57,6 +58,7 @@ export const extendedAgents: User[] = [
             status_detail_code: AvailabilityStatusDetailCode.NotConnected,
             status: AvailabilityStatusTag.Offline,
         },
+        client_id: null,
     },
     {
         lastname: 'van Leijden',
@@ -79,6 +81,7 @@ export const extendedAgents: User[] = [
         language: 'en-US',
         timezone: 'UTC',
         has_2fa_enabled: true,
+        client_id: null,
     },
     {
         lastname: 'Yang',
@@ -101,5 +104,6 @@ export const extendedAgents: User[] = [
         language: 'en-US',
         timezone: 'UTC',
         has_2fa_enabled: true,
+        client_id: null,
     },
 ]

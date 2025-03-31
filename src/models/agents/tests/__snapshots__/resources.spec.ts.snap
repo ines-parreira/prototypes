@@ -58,6 +58,7 @@ exports[`Agents resources fetchAgents should resolve with a list of agents on su
             "status_detail_code": 1,
           },
           "bio": null,
+          "client_id": null,
           "country": "US",
           "created_datetime": "2017-07-31T21:43:05.483835+00:00",
           "deactivated_datetime": null,
@@ -82,6 +83,7 @@ exports[`Agents resources fetchAgents should resolve with a list of agents on su
         {
           "active": true,
           "bio": null,
+          "client_id": null,
           "country": "US",
           "created_datetime": "2017-07-31T21:43:08.027035+00:00",
           "deactivated_datetime": null,

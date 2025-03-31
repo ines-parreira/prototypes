@@ -128,6 +128,7 @@ describe('voiceAgentsPerformanceReportingService', () => {
         ],
         timezone: null,
         has_2fa_enabled: false,
+        client_id: null,
     }
 
     const agent2: User = {
@@ -155,6 +156,7 @@ describe('voiceAgentsPerformanceReportingService', () => {
         ],
         timezone: null,
         has_2fa_enabled: false,
+        client_id: null,
     }
 
     const testCaseData = [

@@ -47,6 +47,7 @@ export const chatUserConfiguration: User = {
     role: { name: ADMIN_ROLE },
     updated_datetime: '2016-12-22T19:36:12.489432+00:00',
     has_2fa_enabled: false,
+    client_id: null,
 }
 
 export const chatPreviewSettings = {

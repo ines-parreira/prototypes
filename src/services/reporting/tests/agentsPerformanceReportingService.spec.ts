@@ -97,6 +97,7 @@ const agents: User[] = [
         ],
         timezone: 'America/New_York',
         has_2fa_enabled: true,
+        client_id: null,
     },
 ]
 
