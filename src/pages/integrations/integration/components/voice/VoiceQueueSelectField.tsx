@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react'
+import { useRef, useState } from 'react'
 
 import { Link } from 'react-router-dom'
 
@@ -20,6 +20,7 @@ import SelectInputBox, {
 } from 'pages/common/forms/input/SelectInputBox'
 
 import { PHONE_INTEGRATION_BASE_URL } from './constants'
+import CreateNewQueueModal from './CreateNewQueueModal'
 
 import css from './VoiceQueueSelectField.less'
 
@@ -38,11 +39,12 @@ function VoiceQueueSelectField({
     const fieldsetName = name || 'radio-field-' + id
 
     const [isDropdownOpen, setIsDropdownOpen] = useState(false)
+    const [isCreateNewModalOpen, setIsCreateNewModalOpen] = useState(false)
     const targetRef = useRef<HTMLDivElement>(null)
     const floatingRef = useRef<HTMLDivElement>(null)
 
     // todo: we'll need to fetch more pages of data once we figure out pagination
-    const { data, isLoading, error, refetch } = useListVoiceQueues(
+    const { data, isFetching, error, refetch } = useListVoiceQueues(
         {
             order_by: ListVoiceQueuesOrderBy.CreatedDatetimeDesc,
         },
@@ -63,15 +65,8 @@ function VoiceQueueSelectField({
         return queue?.name ?? `Queue #${queue.id}`
     }
 
-    if (isLoading) {
-        return (
-            <>
-                <Skeleton height={32} />
-                <Skeleton height={32} />
-                <Skeleton height={32} />
-                <Skeleton height={32} width={'33%'} />
-            </>
-        )
+    if (isFetching) {
+        return <LoadingSkeleton />
     }
 
     if (!!error) {
@@ -103,7 +98,7 @@ function VoiceQueueSelectField({
                 floating={floatingRef}
                 ref={targetRef}
                 placeholder={'Select queue'}
-                isDisabled={isLoading}
+                isDisabled={isFetching}
             >
                 <SelectInputBoxContext.Consumer>
                     {(context) => (
@@ -129,6 +124,25 @@ function VoiceQueueSelectField({
                                     />
                                 ))}
                             </DropdownBody>
+                            <DropdownItem
+                                className={css.createNew}
+                                option={{
+                                    // @ts-expect-error
+                                    label: (
+                                        <Button
+                                            intent="secondary"
+                                            className={css.createNewButton}
+                                            leadingIcon="add"
+                                        >
+                                            Create queue
+                                        </Button>
+                                    ),
+                                }}
+                                onClick={() => {
+                                    setIsDropdownOpen(false)
+                                    setIsCreateNewModalOpen(true)
+                                }}
+                            />
                         </Dropdown>
                     )}
                 </SelectInputBoxContext.Consumer>
@@ -138,8 +152,27 @@ function VoiceQueueSelectField({
                 settings in{' '}
                 <Link to={`${PHONE_INTEGRATION_BASE_URL}/queues`}>Queues</Link>.
             </div>
+            <CreateNewQueueModal
+                isOpen={isCreateNewModalOpen}
+                onClose={() => setIsCreateNewModalOpen(false)}
+                onCreateSuccess={(id) => {
+                    refetch()
+                    onChange(id)
+                }}
+            />
         </fieldset>
     )
 }
 
 export default VoiceQueueSelectField
+
+const LoadingSkeleton = () => {
+    return (
+        <>
+            <Skeleton height={32} />
+            <Skeleton height={32} />
+            <Skeleton height={32} />
+            <Skeleton height={32} width={'33%'} />
+        </>
+    )
+}

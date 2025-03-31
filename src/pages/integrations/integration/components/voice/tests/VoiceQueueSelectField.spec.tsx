@@ -1,7 +1,10 @@
-import { fireEvent, render } from '@testing-library/react'
+import { fireEvent, render, screen, waitFor } from '@testing-library/react'
 
 import { useListVoiceQueues } from '@gorgias/api-queries'
 
+import { assumeMock, getLastMockCall } from 'utils/testing'
+
+import CreateNewQueueModal from '../CreateNewQueueModal'
 import VoiceQueueSelectField from '../VoiceQueueSelectField'
 
 jest.mock('@gorgias/api-queries', () => ({
@@ -17,6 +20,14 @@ jest.mock(
             Skeleton: () => <div>Skeleton</div>,
         }) as typeof import('@gorgias/merchant-ui-kit'),
 )
+
+jest.mock('../CreateNewQueueModal')
+const CreateNewQueueModalMock = assumeMock(CreateNewQueueModal)
+
+const handleChange = jest.fn()
+const renderComponent = (value?: number) =>
+    render(<VoiceQueueSelectField value={value} onChange={handleChange} />)
+
 describe('<VoiceQueueSelectField />', () => {
     const mockQueues = [
         { id: 1, name: 'Queue 1' },
@@ -24,18 +35,27 @@ describe('<VoiceQueueSelectField />', () => {
         { id: 3, name: 'Queue 3' },
         { id: 4, name: null },
     ]
-    const handleChange = jest.fn()
+
+    beforeEach(() => {
+        ;(useListVoiceQueues as jest.Mock).mockReturnValue({
+            data: { data: { data: mockQueues } },
+            isFetching: false,
+            error: null,
+            refetch: jest.fn(),
+        })
+        CreateNewQueueModalMock.mockImplementation(() => (
+            <div>CreateNewQueueModal</div>
+        ))
+    })
 
     it('should display the selected queue name', () => {
         ;(useListVoiceQueues as jest.Mock).mockReturnValue({
             data: { data: { data: mockQueues } },
-            isLoading: false,
+            isFetching: false,
             error: null,
         })
 
-        const { getByText } = render(
-            <VoiceQueueSelectField value={2} onChange={handleChange} />,
-        )
+        const { getByText } = renderComponent(2)
 
         expect(getByText('Queue name')).toBeInTheDocument()
         expect(getByText('Queue 2')).toBeInTheDocument()
@@ -47,13 +67,11 @@ describe('<VoiceQueueSelectField />', () => {
     it('should open the dropdown when clicked', () => {
         ;(useListVoiceQueues as jest.Mock).mockReturnValue({
             data: { data: { data: mockQueues } },
-            isLoading: false,
+            isFetching: false,
             error: null,
         })
 
-        const { getByText } = render(
-            <VoiceQueueSelectField onChange={handleChange} />,
-        )
+        const { getByText } = renderComponent()
 
         const selectInput = getByText('Select queue')
         fireEvent.focus(selectInput)
@@ -67,13 +85,11 @@ describe('<VoiceQueueSelectField />', () => {
     it('should call the onChange function when a queue is selected', () => {
         ;(useListVoiceQueues as jest.Mock).mockReturnValue({
             data: { data: { data: mockQueues } },
-            isLoading: false,
+            isFetching: false,
             error: null,
         })
 
-        const { getByText } = render(
-            <VoiceQueueSelectField onChange={handleChange} />,
-        )
+        const { getByText } = renderComponent()
 
         const selectInput = getByText('Select queue')
         fireEvent.focus(selectInput)
@@ -87,14 +103,12 @@ describe('<VoiceQueueSelectField />', () => {
         const mockRefetch = jest.fn()
         ;(useListVoiceQueues as jest.Mock).mockReturnValue({
             data: null,
-            isLoading: false,
+            isFetching: false,
             error: new Error('error'),
             refetch: mockRefetch,
         })
 
-        const { getByText } = render(
-            <VoiceQueueSelectField onChange={handleChange} />,
-        )
+        const { getByText } = renderComponent()
 
         expect(
             getByText(
@@ -110,13 +124,11 @@ describe('<VoiceQueueSelectField />', () => {
     it('should display message when there is no selected queue', () => {
         ;(useListVoiceQueues as jest.Mock).mockReturnValue({
             data: { data: { data: mockQueues } },
-            isLoading: false,
+            isFetching: false,
             error: null,
         })
 
-        const { getByText } = render(
-            <VoiceQueueSelectField onChange={handleChange} />,
-        )
+        const { getByText } = renderComponent()
 
         expect(getByText('Select queue')).toBeInTheDocument()
     })
@@ -124,14 +136,41 @@ describe('<VoiceQueueSelectField />', () => {
     it('should display skeletons when data is loading', () => {
         ;(useListVoiceQueues as jest.Mock).mockReturnValue({
             data: { data: { data: mockQueues } },
-            isLoading: true,
+            isFetching: true,
             error: null,
         })
 
-        const { getAllByText } = render(
-            <VoiceQueueSelectField value={2} onChange={handleChange} />,
-        )
+        const { getAllByText } = renderComponent()
 
         expect(getAllByText('Skeleton')).toHaveLength(4)
+    })
+
+    it('should open the create new queue modal when the button is clicked', async () => {
+        renderComponent()
+
+        const selectInput = screen.getByText('Select queue')
+        fireEvent.focus(selectInput)
+
+        fireEvent.click(screen.getByText('Create queue'))
+        expect(CreateNewQueueModalMock).toHaveBeenLastCalledWith(
+            expect.objectContaining({
+                isOpen: true,
+            }),
+            {},
+        )
+
+        const lastCall = getLastMockCall(CreateNewQueueModalMock)
+        lastCall[0].onCreateSuccess(1)
+        expect(handleChange).toHaveBeenCalledWith(1)
+
+        lastCall[0].onClose()
+        await waitFor(() => {
+            expect(CreateNewQueueModalMock).toHaveBeenLastCalledWith(
+                expect.objectContaining({
+                    isOpen: false,
+                }),
+                {},
+            )
+        })
     })
 })

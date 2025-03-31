@@ -67,7 +67,11 @@ export function Form<TFieldValues extends FieldValues>({
                 aria-label="form"
                 noValidate
                 {...props}
-                onSubmit={methods.handleSubmit(onValidSubmit, onInvalidSubmit)}
+                onSubmit={(e) => {
+                    e.stopPropagation()
+                    e.preventDefault()
+                    methods.handleSubmit(onValidSubmit, onInvalidSubmit)(e)
+                }}
             >
                 {children}
             </form>
