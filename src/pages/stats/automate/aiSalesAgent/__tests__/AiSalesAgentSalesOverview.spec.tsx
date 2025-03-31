@@ -37,7 +37,7 @@ jest.mock('pages/stats/AnalyticsFooter', () => ({
     AnalyticsFooter: () => <div>analytics-footer</div>,
 }))
 
-jest.mock('pages/stats/DrillDownModal', () => ({
+jest.mock('pages/stats/common/drill-down/DrillDownModal', () => ({
     DrillDownModal: () => null,
 }))
 

@@ -6,7 +6,7 @@ import { CampaignPreview } from 'models/convert/campaign/types'
 import {
     CampaignSaleDetails,
     ConvertDrillDownRowData,
-} from 'pages/stats/DrillDownFormatters'
+} from 'pages/stats/common/drill-down/DrillDownFormatters'
 
 export type CampaignSalesDrillDownData = CampaignSaleDetails & {
     campaignName: string

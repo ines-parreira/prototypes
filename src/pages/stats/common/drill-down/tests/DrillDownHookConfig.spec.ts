@@ -9,8 +9,8 @@ import {
     formatConvertCampaignSalesDrillDownRowData,
     formatTicketDrillDownRowData,
     formatVoiceDrillDownRowData,
-} from 'pages/stats/DrillDownFormatters'
-import { getDrillDownHook } from 'pages/stats/DrillDownHookConfig'
+} from 'pages/stats/common/drill-down/DrillDownFormatters'
+import { getDrillDownHook } from 'pages/stats/common/drill-down/DrillDownModal'
 import { OverviewMetric } from 'pages/stats/support-performance/overview/SupportPerformanceOverviewConfig'
 import {
     AgentsMetrics,
@@ -171,7 +171,7 @@ describe('getDrillDownHook', () => {
     )
 
     it.each(voiceMetrics)(
-        `should return the correct hook for the metric: $metricName`,
+        `should return the correct hook for the voice metric: $metricName`,
         (metricData) => {
             const hook = getDrillDownHook(metricData)
             hook(metricData)
@@ -183,10 +183,12 @@ describe('getDrillDownHook', () => {
     )
 
     it.each(convertMetrics)(
-        `should return the correct hook for the metric: $metricName`,
+        `should return the correct hook for the convert metric: $metricName`,
         (metricData) => {
             const hook = getDrillDownHook(metricData)
+
             hook(metricData)
+
             expect(useEnrichedDrillDownDataMock).toHaveBeenCalledWith(
                 metricData,
                 [EnrichmentFields.CustomerIntegrationDataByExternalId],

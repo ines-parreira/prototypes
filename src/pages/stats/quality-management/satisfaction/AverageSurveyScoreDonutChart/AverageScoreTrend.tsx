@@ -2,12 +2,12 @@ import { useStatsFilters } from 'hooks/reporting/support-performance/useStatsFil
 import { MetricTrendHook } from 'hooks/reporting/useMetricTrend'
 import BigNumberMetric from 'pages/stats/BigNumberMetric'
 import TrendBadge from 'pages/stats/common/components/TrendBadge'
+import { DrillDownModalTrigger } from 'pages/stats/common/drill-down/DrillDownModalTrigger'
 import {
     formatMetricValue,
     MetricTrendFormat,
     NOT_AVAILABLE_PLACEHOLDER,
 } from 'pages/stats/common/utils'
-import { DrillDownModalTrigger } from 'pages/stats/DrillDownModalTrigger'
 import { OverviewMetric } from 'pages/stats/support-performance/overview/SupportPerformanceOverviewConfig'
 import { getBadgeTooltipForPreviousPeriod } from 'pages/stats/utils'
 import { DrillDownMetric } from 'state/ui/stats/drillDownSlice'

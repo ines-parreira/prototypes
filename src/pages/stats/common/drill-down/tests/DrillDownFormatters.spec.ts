@@ -8,7 +8,7 @@ import { VoiceCallDimension } from 'models/reporting/cubes/VoiceCallCube'
 import {
     formatTicketDrillDownRowData,
     formatVoiceDrillDownRowData,
-} from 'pages/stats/DrillDownFormatters'
+} from 'pages/stats/common/drill-down/DrillDownFormatters'
 
 describe('DrillDownFormatters', () => {
     describe('formatVoiceDrillDownRowData', () => {

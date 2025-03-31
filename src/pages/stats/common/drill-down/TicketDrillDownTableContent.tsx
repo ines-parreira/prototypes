@@ -5,7 +5,6 @@ import {
     defaultEnrichmentFields,
     useEnrichedDrillDownData,
 } from 'hooks/reporting/useDrillDownData'
-import useAppSelector from 'hooks/useAppSelector'
 import { TicketQAScoreMeasure } from 'models/reporting/cubes/auto-qa/TicketQAScoreCube'
 import { EnrichmentFields } from 'models/reporting/types'
 import BodyCell from 'pages/common/components/table/cells/BodyCell'
@@ -16,16 +15,18 @@ import TableHead from 'pages/common/components/table/TableHead'
 import DatetimeLabel from 'pages/common/utils/DatetimeLabel'
 import { AgentAvatar } from 'pages/stats/common/AgentAvatar'
 import { DrillDownTableContentSkeleton } from 'pages/stats/common/components/Table/DrillDownTableContentSkeleton'
+import { formatTicketDrillDownRowData } from 'pages/stats/common/drill-down/DrillDownFormatters'
+import css from 'pages/stats/common/drill-down/DrillDownTable.less'
+import { DrillDownTicketDetailsCell } from 'pages/stats/common/drill-down/DrillDownTicketDetailsCell'
+import { getDrillDownMetricColumn } from 'pages/stats/common/drill-down/helpers'
 import { HintTooltipContent } from 'pages/stats/common/HintTooltip'
 import {
     formatMetricValue,
     NOT_AVAILABLE_PLACEHOLDER,
 } from 'pages/stats/common/utils'
-import { formatTicketDrillDownRowData } from 'pages/stats/DrillDownFormatters'
-import css from 'pages/stats/DrillDownTable.less'
-import { DrillDownTicketDetailsCell } from 'pages/stats/DrillDownTicketDetailsCell'
 import { CSAT_SCORE } from 'pages/stats/quality-management/satisfaction/SatisfactionMetricsConfig'
 import { SLAStatusCell } from 'pages/stats/sla/components/SlaStatusCell'
+import { SLA_FORMAT } from 'pages/stats/sla/SlaConfig'
 import { AutoQAAgentsTableColumn } from 'pages/stats/support-performance/auto-qa/AutoQAAgentsTableConfig'
 import { AutoQACompletenessCell } from 'pages/stats/support-performance/auto-qa/AutoQACompletenessCell'
 import {
@@ -42,8 +43,6 @@ import { TruncateCellContent } from 'pages/stats/TruncateCellContent'
 import {
     AutoQAAgentMetric,
     DrillDownMetric,
-    getDrillDownMetricColumn,
-    SLA_FORMAT,
 } from 'state/ui/stats/drillDownSlice'
 import {
     AIInsightsMetric,
@@ -129,9 +128,8 @@ export const TicketDrillDownTableContent = ({
     const showSurveyScore =
         metricData.metricName === SatisfactionMetric.SatisfactionScore
 
-    const { showMetric, metricTitle, metricValueFormat } = useAppSelector(
-        getDrillDownMetricColumn,
-    )
+    const { showMetric, metricTitle, metricValueFormat } =
+        getDrillDownMetricColumn(metricData)
 
     const isAiInsightsMetric =
         metricData.metricName === AIInsightsMetric.TicketCustomFieldsTicketCount

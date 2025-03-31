@@ -31,7 +31,7 @@ import { initialState as agentPerformanceInitialState } from 'state/ui/stats/age
 import { AGENT_PERFORMANCE_SLICE_NAME } from 'state/ui/stats/constants'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 
-jest.mock('pages/stats/DrillDownModal.tsx', () => ({
+jest.mock('pages/stats/common/drill-down/DrillDownModal.tsx', () => ({
     DrillDownModal: () => null,
 }))
 

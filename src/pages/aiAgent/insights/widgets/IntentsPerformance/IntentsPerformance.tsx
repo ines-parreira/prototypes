@@ -7,6 +7,7 @@ import useLocalStorage from 'hooks/useLocalStorage'
 import type { Period } from 'models/stat/types'
 import BigNumberMetric from 'pages/stats/BigNumberMetric'
 import TrendBadge from 'pages/stats/common/components/TrendBadge'
+import { DrillDownModalTrigger } from 'pages/stats/common/drill-down/DrillDownModalTrigger'
 import {
     formatMetricValue,
     MetricTrendFormat,
@@ -14,7 +15,6 @@ import {
 } from 'pages/stats/common/utils'
 import DashboardGridCell from 'pages/stats/DashboardGridCell'
 import DashboardSection from 'pages/stats/DashboardSection'
-import { DrillDownModalTrigger } from 'pages/stats/DrillDownModalTrigger'
 import MetricCard from 'pages/stats/MetricCard'
 import {
     OverviewMetric,

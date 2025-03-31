@@ -13,9 +13,9 @@ import { CustomField } from 'custom-fields/types'
 import useAppSelector from 'hooks/useAppSelector'
 import { ApiListResponseCursorPagination } from 'models/api/types'
 import { SharedActionsMenu } from 'pages/stats/common/components/SharedActionsMenu/SharedActionsMenu'
+import { DrillDownModal } from 'pages/stats/common/drill-down/DrillDownModal'
 import { AUTO_QA_FILTER_KEYS } from 'pages/stats/common/filters/constants'
 import FiltersPanelWrapper from 'pages/stats/common/filters/FiltersPanelWrapper/FiltersPanelWrapper'
-import { DrillDownModal } from 'pages/stats/DrillDownModal'
 import { useReportChartRestrictions } from 'pages/stats/report-chart-restrictions/useReportChartRestrictions'
 import { CustomFieldsTicketCountBreakdownTableChart } from 'pages/stats/ticket-insights/ticket-fields/CustomFieldsTicketCountBreakdownTableChart'
 import { DownloadTicketFieldsDataButton } from 'pages/stats/ticket-insights/ticket-fields/DownloadTicketFieldsDataButton'
@@ -75,7 +75,7 @@ jest.mock(
 const CustomFieldsTicketCountBreakdownTableChartMock = assumeMock(
     CustomFieldsTicketCountBreakdownTableChart,
 )
-jest.mock('pages/stats/DrillDownModal')
+jest.mock('pages/stats/common/drill-down/DrillDownModal')
 const DrillDownModalMock = assumeMock(DrillDownModal)
 const componentMock = jest.fn(() => <div />)
 jest.mock('launchdarkly-react-client-sdk')

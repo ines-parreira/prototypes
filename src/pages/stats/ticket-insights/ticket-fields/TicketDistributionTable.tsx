@@ -9,6 +9,7 @@ import TableBody from 'pages/common/components/table/TableBody'
 import TableBodyRow from 'pages/common/components/table/TableBodyRow'
 import TableWrapper from 'pages/common/components/table/TableWrapper'
 import ChartCard from 'pages/stats/ChartCard'
+import { DrillDownModalTrigger } from 'pages/stats/common/drill-down/DrillDownModalTrigger'
 import {
     formatMetricValue,
     NOT_AVAILABLE_PLACEHOLDER,
@@ -18,7 +19,6 @@ import {
     DistributionCategoryCell,
     formatCategory,
 } from 'pages/stats/DistributionCategoryCell'
-import { DrillDownModalTrigger } from 'pages/stats/DrillDownModalTrigger'
 import GaugeAddon from 'pages/stats/GaugeAddon'
 import { NoDataAvailable } from 'pages/stats/NoDataAvailable'
 import css from 'pages/stats/ticket-insights/ticket-fields/TicketDistributionTable.less'

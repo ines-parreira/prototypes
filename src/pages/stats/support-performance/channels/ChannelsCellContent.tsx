@@ -8,11 +8,11 @@ import useAppSelector from 'hooks/useAppSelector'
 import { Channel } from 'models/channel/types'
 import BodyCell from 'pages/common/components/table/cells/BodyCell'
 import css from 'pages/stats/AnalyticsTable.less'
+import { DrillDownModalTrigger } from 'pages/stats/common/drill-down/DrillDownModalTrigger'
 import {
     formatMetricValue,
     NOT_AVAILABLE_PLACEHOLDER,
 } from 'pages/stats/common/utils'
-import { DrillDownModalTrigger } from 'pages/stats/DrillDownModalTrigger'
 import heatmapCss from 'pages/stats/heatmap.less'
 import { METRIC_COLUMN_WIDTH } from 'pages/stats/support-performance/agents/AgentsTableConfig'
 import {

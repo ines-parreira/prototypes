@@ -5,13 +5,13 @@ import { getAdvancedVoicePeriodFilters } from 'models/reporting/queryFactories/v
 import { StatsFilters } from 'models/stat/types'
 import BigNumberMetric from 'pages/stats/BigNumberMetric'
 import TrendBadge from 'pages/stats/common/components/TrendBadge'
+import { DrillDownModalTrigger } from 'pages/stats/common/drill-down/DrillDownModalTrigger'
 import {
     comparedPeriodString,
     formatMetricValue,
     NOT_AVAILABLE_PLACEHOLDER,
 } from 'pages/stats/common/utils'
 import { DashboardChartProps } from 'pages/stats/dashboards/types'
-import { DrillDownModalTrigger } from 'pages/stats/DrillDownModalTrigger'
 import MetricCard from 'pages/stats/MetricCard'
 import { VoiceMetrics } from 'state/ui/stats/drillDownSlice'
 import { getPreviousPeriod } from 'utils/reporting'

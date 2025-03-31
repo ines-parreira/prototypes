@@ -1,5 +1,5 @@
 import { useDrillDownData } from 'hooks/reporting/useDrillDownData'
-import { formatVoiceDrillDownRowData } from 'pages/stats/DrillDownFormatters'
+import { formatVoiceDrillDownRowData } from 'pages/stats/common/drill-down/DrillDownFormatters'
 import { DrillDownMetric } from 'state/ui/stats/drillDownSlice'
 
 import { getVoiceDrillDownColumns } from './utils'

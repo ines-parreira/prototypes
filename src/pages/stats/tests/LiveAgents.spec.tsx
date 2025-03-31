@@ -38,7 +38,7 @@ jest.mock(
             return <div>Paywall for {feature}</div>
         },
 )
-jest.mock('pages/stats/DrillDownModal.tsx', () => ({
+jest.mock('pages/stats/common/drill-down/DrillDownModal.tsx', () => ({
     DrillDownModal: () => null,
 }))
 jest.spyOn(Date, 'now').mockImplementation(() => 1487076708000)

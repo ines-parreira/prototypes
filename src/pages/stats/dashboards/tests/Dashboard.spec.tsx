@@ -26,7 +26,7 @@ import { assumeMock, renderWithStore } from 'utils/testing'
 jest.mock('react-router-dom', () => ({
     useParams: jest.fn(),
 }))
-jest.mock('pages/stats/DrillDownModal.tsx', () => ({
+jest.mock('pages/stats/common/drill-down/DrillDownModal.tsx', () => ({
     DrillDownModal: () => null,
 }))
 jest.mock('@gorgias/api-queries')

@@ -3,15 +3,15 @@ import React from 'react'
 import { render, screen } from '@testing-library/react'
 
 import BigNumberMetric from 'pages/stats/BigNumberMetric'
+import { DrillDownModalTrigger } from 'pages/stats/common/drill-down/DrillDownModalTrigger'
 import * as utils from 'pages/stats/common/utils'
-import { DrillDownModalTrigger } from 'pages/stats/DrillDownModalTrigger'
 import MetricCard from 'pages/stats/MetricCard'
 import { LiveVoiceMetricCard } from 'pages/stats/voice/components/LiveVoice/LiveVoiceMetricCard'
 import { assumeMock } from 'utils/testing'
 
 jest.mock('pages/stats/BigNumberMetric')
 jest.mock('pages/stats/MetricCard')
-jest.mock('pages/stats/DrillDownModalTrigger')
+jest.mock('pages/stats/common/drill-down/DrillDownModalTrigger')
 
 const formatMetricValueSpy = jest.spyOn(utils, 'formatMetricValue')
 const BigNumberMetricMock = assumeMock(BigNumberMetric)

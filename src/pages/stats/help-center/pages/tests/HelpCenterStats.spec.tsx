@@ -61,7 +61,7 @@ const mockUseHelpCenterList = assumeMock(useHelpCenterList)
 jest.mock('pages/stats/help-center/hooks/useSearchResultRange', () => ({
     useSearchResultRange: () => ({ data: [], isLoading: true }),
 }))
-jest.mock('pages/stats/DrillDownModal.tsx', () => ({
+jest.mock('pages/stats/common/drill-down/DrillDownModal.tsx', () => ({
     DrillDownModal: () => null,
 }))
 jest.mock('pages/settings/helpCenter/providers/SupportedLocales', () => ({

@@ -7,9 +7,9 @@ import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
 import { useCleanStatsFilters } from 'hooks/reporting/useCleanStatsFilters'
+import { DrillDownModalTrigger } from 'pages/stats/common/drill-down/DrillDownModalTrigger'
 import { AUTO_QA_FILTER_KEYS } from 'pages/stats/common/filters/constants'
 import FiltersPanelWrapper from 'pages/stats/common/filters/FiltersPanelWrapper'
-import { DrillDownModalTrigger } from 'pages/stats/DrillDownModalTrigger'
 import { AchievedAndBreachedTicketsChart } from 'pages/stats/sla/components/AchievedAndBreachedTicketsChart'
 import { AchievementRateTrendCard } from 'pages/stats/sla/components/AchievementRateTrendCard'
 import { BreachedTicketsRateTrendCard } from 'pages/stats/sla/components/BreachedTicketsRateTrendCard'
@@ -29,10 +29,10 @@ jest.mock('pages/stats/sla/components/WithSlaEmptyState', () => ({
         <>{children}</>
     ),
 }))
-jest.mock('pages/stats/DrillDownModal.tsx', () => ({
+jest.mock('pages/stats/common/drill-down/DrillDownModal.tsx', () => ({
     DrillDownModal: () => null,
 }))
-jest.mock('pages/stats/DrillDownModalTrigger.tsx', () => ({
+jest.mock('pages/stats/common/drill-down/DrillDownModalTrigger.tsx', () => ({
     DrillDownModalTrigger: ({
         children,
     }: ComponentProps<typeof DrillDownModalTrigger>) => children,

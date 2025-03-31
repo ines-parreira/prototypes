@@ -4,11 +4,11 @@ import { User } from 'config/types/user'
 import { useStatsFilters } from 'hooks/reporting/support-performance/useStatsFilters'
 import useAppSelector from 'hooks/useAppSelector'
 import BodyCell from 'pages/common/components/table/cells/BodyCell'
+import { DrillDownModalTrigger } from 'pages/stats/common/drill-down/DrillDownModalTrigger'
 import {
     formatMetricValue,
     NOT_AVAILABLE_PLACEHOLDER,
 } from 'pages/stats/common/utils'
-import { DrillDownModalTrigger } from 'pages/stats/DrillDownModalTrigger'
 import { VOICE_METRIC_COLUMN_WIDTH } from 'pages/stats/voice/constants/voiceAgents'
 import { useAverageTalkTimeMetricPerAgent } from 'pages/stats/voice/hooks/metricsPerDimension'
 import { isSortingMetricLoading } from 'state/ui/stats/agentPerformanceSlice'

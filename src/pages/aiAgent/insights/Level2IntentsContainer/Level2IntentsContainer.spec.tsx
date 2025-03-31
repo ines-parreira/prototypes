@@ -21,7 +21,7 @@ jest.mock('pages/aiAgent/hooks/useAiAgentEnabled', () => ({
     useAiAgentEnabled: jest.fn().mockReturnValue(true),
 }))
 
-jest.mock('pages/stats/DrillDownModal', () => ({
+jest.mock('pages/stats/common/drill-down/DrillDownModal', () => ({
     DrillDownModal: jest.fn(() => <></>),
 }))
 

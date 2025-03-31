@@ -36,11 +36,11 @@ import {
     ReportingGranularity,
 } from 'models/reporting/types'
 import { LogicalOperatorEnum } from 'pages/stats/common/components/Filter/constants'
-import { OrderConversionDimension } from 'pages/stats/convert/clients/constants'
 import {
     formatConvertCampaignSalesDrillDownRowData,
     formatTicketDrillDownRowData,
-} from 'pages/stats/DrillDownFormatters'
+} from 'pages/stats/common/drill-down/DrillDownFormatters'
+import { OrderConversionDimension } from 'pages/stats/convert/clients/constants'
 import { OverviewMetric } from 'pages/stats/support-performance/overview/SupportPerformanceOverviewConfig'
 import { getHumanAndAutomationBotAgentsJS } from 'state/agents/selectors'
 import { RootState, StoreDispatch } from 'state/types'

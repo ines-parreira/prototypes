@@ -4,7 +4,7 @@ import { render } from '@testing-library/react'
 
 import StatsPage from '../StatsPage'
 
-jest.mock('pages/stats/DrillDownModal.tsx', () => ({
+jest.mock('pages/stats/common/drill-down/DrillDownModal.tsx', () => ({
     DrillDownModal: () => null,
 }))
 describe('StatsPage', () => {

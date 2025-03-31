@@ -7,7 +7,17 @@ import { useInternalCompliancePerAgent } from 'hooks/reporting/support-performan
 import { useLanguageProficiencyPerAgent } from 'hooks/reporting/support-performance/auto-qa/useLanguageProficiencyPerAgent'
 import { useResolutionCompletenessPerAgent } from 'hooks/reporting/support-performance/auto-qa/useResolutionCompletenessPerAgent'
 import { useReviewedClosedTicketsPerAgent } from 'hooks/reporting/support-performance/auto-qa/useReviewedClosedTicketsPerAgent'
+import { accuracyDrillDownQueryFactory } from 'models/reporting/queryFactories/auto-qa/accuracyQueryFactory'
+import { brandVoiceDrillDownQueryFactory } from 'models/reporting/queryFactories/auto-qa/brandVoiceQueryFactory'
+import { communicationSkillsDrillDownQueryFactory } from 'models/reporting/queryFactories/auto-qa/communicationSkillsQueryFactory'
+import { efficiencyDrillDownQueryFactory } from 'models/reporting/queryFactories/auto-qa/efficiencyQueryFactory'
+import { internalComplianceDrillDownQueryFactory } from 'models/reporting/queryFactories/auto-qa/internalComplianceQueryFactory'
+import { languageProficiencyDrillDownQueryFactory } from 'models/reporting/queryFactories/auto-qa/languageProficiencyQueryFactory'
+import { resolutionCompletenessDrillDownQueryFactory } from 'models/reporting/queryFactories/auto-qa/resolutionCompletenessQueryFactory'
+import { reviewedClosedTicketsDrillDownQueryFactory } from 'models/reporting/queryFactories/auto-qa/reviewedClosedTicketsQueryFactory'
 import { isMediumOrSmallScreen } from 'pages/common/utils/mobile'
+import { DrillDownQueryFactory } from 'pages/stats/common/drill-down/DrillDownTableConfig'
+import { Domain } from 'pages/stats/common/drill-down/types'
 import { MetricValueFormat } from 'pages/stats/common/utils'
 import {
     AGENT_NAME_COLUMN_WIDTH,
@@ -76,54 +86,84 @@ export const AutoQAAgentsColumnConfig: Record<
         title: string
         format: MetricValueFormat
         hint: TooltipData | null
+        showMetric: boolean
+        domain: Domain.Ticket
+        drillDownQuery: DrillDownQueryFactory
     }
 > = {
     [AutoQAAgentsTableColumn.AgentName]: {
         title: 'Agent',
         format: 'integer',
         hint: null,
+        showMetric: false,
+        domain: Domain.Ticket,
+        drillDownQuery: reviewedClosedTicketsDrillDownQueryFactory, // TODO cleanup
     },
     [AutoQAAgentsTableColumn.ReviewedClosedTickets]: {
         title: TrendCardConfig[AutoQAMetric.ReviewedClosedTickets].title,
         format: TrendCardConfig[AutoQAMetric.ReviewedClosedTickets]
             .metricFormat,
         hint: TrendCardConfig[AutoQAMetric.ReviewedClosedTickets].hint,
+        showMetric: false,
+        domain: Domain.Ticket,
+        drillDownQuery: reviewedClosedTicketsDrillDownQueryFactory,
     },
     [AutoQAAgentsTableColumn.ResolutionCompleteness]: {
         title: TrendCardConfig[AutoQAMetric.ResolutionCompleteness].title,
         format: TrendCardConfig[AutoQAMetric.ResolutionCompleteness]
             .metricFormat,
         hint: TrendCardConfig[AutoQAMetric.ResolutionCompleteness].hint,
+        showMetric: false,
+        domain: Domain.Ticket,
+        drillDownQuery: resolutionCompletenessDrillDownQueryFactory,
     },
     [AutoQAAgentsTableColumn.Accuracy]: {
         title: TrendCardConfig[AutoQAMetric.Accuracy].title,
         format: TrendCardConfig[AutoQAMetric.Accuracy].metricFormat,
         hint: TrendCardConfig[AutoQAMetric.Accuracy].hint,
+        showMetric: true,
+        domain: Domain.Ticket,
+        drillDownQuery: accuracyDrillDownQueryFactory,
     },
     [AutoQAAgentsTableColumn.InternalCompliance]: {
         title: TrendCardConfig[AutoQAMetric.InternalCompliance].title,
         format: TrendCardConfig[AutoQAMetric.InternalCompliance].metricFormat,
         hint: TrendCardConfig[AutoQAMetric.InternalCompliance].hint,
+        showMetric: true,
+        domain: Domain.Ticket,
+        drillDownQuery: internalComplianceDrillDownQueryFactory,
     },
     [AutoQAAgentsTableColumn.Efficiency]: {
         title: TrendCardConfig[AutoQAMetric.Efficiency].title,
         format: TrendCardConfig[AutoQAMetric.Efficiency].metricFormat,
         hint: TrendCardConfig[AutoQAMetric.Efficiency].hint,
+        showMetric: true,
+        domain: Domain.Ticket,
+        drillDownQuery: efficiencyDrillDownQueryFactory,
     },
     [AutoQAAgentsTableColumn.CommunicationSkills]: {
         title: TrendCardConfig[AutoQAMetric.CommunicationSkills].title,
         format: TrendCardConfig[AutoQAMetric.CommunicationSkills].metricFormat,
         hint: TrendCardConfig[AutoQAMetric.CommunicationSkills].hint,
+        showMetric: true,
+        domain: Domain.Ticket,
+        drillDownQuery: communicationSkillsDrillDownQueryFactory,
     },
     [AutoQAAgentsTableColumn.LanguageProficiency]: {
         title: TrendCardConfig[AutoQAMetric.LanguageProficiency].title,
         format: TrendCardConfig[AutoQAMetric.LanguageProficiency].metricFormat,
         hint: TrendCardConfig[AutoQAMetric.LanguageProficiency].hint,
+        showMetric: true,
+        domain: Domain.Ticket,
+        drillDownQuery: languageProficiencyDrillDownQueryFactory,
     },
     [AutoQAAgentsTableColumn.BrandVoice]: {
         title: TrendCardConfig[AutoQAMetric.BrandVoice].title,
         format: TrendCardConfig[AutoQAMetric.BrandVoice].metricFormat,
         hint: TrendCardConfig[AutoQAMetric.BrandVoice].hint,
+        showMetric: true,
+        domain: Domain.Ticket,
+        drillDownQuery: brandVoiceDrillDownQueryFactory,
     },
 }
 

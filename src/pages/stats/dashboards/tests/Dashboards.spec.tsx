@@ -29,7 +29,7 @@ jest.mock('hooks/useAppDispatch')
 jest.mock('hooks/useNotify')
 const useNotifyMock = assumeMock(useNotify)
 
-jest.mock('pages/stats/DrillDownModal.tsx', () => ({
+jest.mock('pages/stats/common/drill-down/DrillDownModal.tsx', () => ({
     DrillDownModal: () => null,
 }))
 

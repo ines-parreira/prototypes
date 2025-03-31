@@ -1,4 +1,4 @@
-import moment from 'moment/moment'
+import moment from 'moment'
 
 import { VoiceCallSegment } from 'models/reporting/cubes/VoiceCallCube'
 import { customerSatisfactionMetricDrillDownQueryFactory } from 'models/reporting/queryFactories/support-performance/customerSatisfaction'
@@ -7,16 +7,39 @@ import { tagsTicketCountDrillDownQueryFactory } from 'models/reporting/queryFact
 import { withDefaultLogicalOperator } from 'models/reporting/queryFactories/utils'
 import {
     connectedCallsListQueryFactory,
+    liveDashboardConnectedCallsListQueryFactory,
     liveDashBoardVoiceCallListQueryFactory,
+    liveDashboardWaitingTimeCallsListQueryFactory,
     voiceCallListQueryFactory,
     waitingTimeCallsListQueryFactory,
 } from 'models/reporting/queryFactories/voice/voiceCall'
 import { StatsFilters } from 'models/stat/types'
+import { CSAT_DRILL_DOWN_LABEL } from 'pages/aiAgent/insights/IntentTableWidget/IntentTableConfig'
 import { LogicalOperatorEnum } from 'pages/stats/common/components/Filter/constants'
+import {
+    getDrillDownMetricColumn,
+    getDrillDownQuery,
+} from 'pages/stats/common/drill-down/helpers'
+import { MetricValueFormat } from 'pages/stats/common/utils'
 import { campaignSalesDrillDownQueryFactory } from 'pages/stats/convert/clients/queryFactories/campaignSalesDrillDownQueryFactory'
-import { getDrillDownQuery } from 'pages/stats/DrillDownTableConfig'
-import { AutoQAAgentsTableColumn } from 'pages/stats/support-performance/auto-qa/AutoQAAgentsTableConfig'
+import {
+    CSAT_SCORE,
+    SatisfactionMetricConfig as SatisfactionTrendCardConfig,
+} from 'pages/stats/quality-management/satisfaction/SatisfactionMetricsConfig'
+import { SLA_FORMAT, SLA_STATUS_COLUMN_LABEL } from 'pages/stats/sla/SlaConfig'
+import { TableLabels } from 'pages/stats/support-performance/agents/AgentsTableConfig'
+import {
+    AutoQAAgentsColumnConfig,
+    AutoQAAgentsTableColumn,
+    TableLabels as autoQATableLabels,
+} from 'pages/stats/support-performance/auto-qa/AutoQAAgentsTableConfig'
+import { TrendCardConfig } from 'pages/stats/support-performance/auto-qa/AutoQAMetricsConfig'
+import {
+    ChannelColumnConfig,
+    ChannelsTableLabels,
+} from 'pages/stats/support-performance/channels/ChannelsTableConfig'
 import { OverviewMetric } from 'pages/stats/support-performance/overview/SupportPerformanceOverviewConfig'
+import { MEDIAN_RESOLUTION_TIME_LABEL } from 'services/reporting/constants'
 import {
     AgentsMetrics,
     ChannelsMetrics,
@@ -26,6 +49,7 @@ import {
     SatisfactionMetrics,
     SlaMetrics,
     TagsFieldsMetrics,
+    TicketFieldsMetrics,
 } from 'state/ui/stats/drillDownSlice'
 import {
     AgentsTableColumn,
@@ -43,9 +67,6 @@ import {
 } from 'state/ui/stats/types'
 import { assumeMock } from 'utils/testing'
 
-jest.mock(
-    'models/reporting/queryFactories/support-performance/customerSatisfaction',
-)
 jest.mock('models/reporting/queryFactories/voice/voiceCall')
 jest.mock(
     'pages/stats/convert/clients/queryFactories/campaignSalesDrillDownQueryFactory',
@@ -55,6 +76,9 @@ jest.mock(
 )
 jest.mock('models/reporting/queryFactories/ticket-insights/tagsTicketCount')
 
+jest.mock(
+    'models/reporting/queryFactories/support-performance/customerSatisfaction',
+)
 const customerSatisfactionQueryFactoryMock = assumeMock(
     customerSatisfactionMetricDrillDownQueryFactory,
 )
@@ -81,17 +105,23 @@ const tagsTicketCountPerTicketDrillDownQueryFactoryMock = assumeMock(
 const customFieldsTicketCountPerTicketDrillDownQueryFactoryMock = assumeMock(
     customFieldsTicketCountPerTicketDrillDownQueryFactory,
 )
-
-const periodStart = moment()
-const periodEnd = periodStart.add(7, 'days')
-const statsFilters = {
-    period: {
-        end_datetime: periodEnd.toISOString(),
-        start_datetime: periodStart.toISOString(),
-    },
-}
+const liveDashboardWaitingTimeCallsListQueryFactoryMock = assumeMock(
+    liveDashboardWaitingTimeCallsListQueryFactory,
+)
+const liveDashboardConnectedCallsListQueryFactoryMock = assumeMock(
+    liveDashboardConnectedCallsListQueryFactory,
+)
 
 describe('getDrillDownQuery', () => {
+    const periodStart = moment()
+    const periodEnd = periodStart.add(7, 'days')
+    const statsFilters = {
+        period: {
+            end_datetime: periodEnd.toISOString(),
+            start_datetime: periodStart.toISOString(),
+        },
+    }
+
     const agentsMetrics: AgentsMetrics[] = [
         { metricName: AgentsTableColumn.CustomerSatisfaction, perAgentId: 123 },
         {
@@ -616,6 +646,36 @@ describe('getDrillDownQuery', () => {
         },
     )
 
+    it.each([
+        {
+            metricName: VoiceMetric.QueueAverageWaitTime,
+            drillDownQuery: liveDashboardWaitingTimeCallsListQueryFactoryMock,
+            segment: VoiceCallSegment.inboundCalls,
+        },
+    ])(
+        'should call $drillDownQuery for (%s)',
+        ({ metricName, drillDownQuery, segment }) => {
+            getDrillDownQuery({ metricName })(statsFilters, segment)
+
+            expect(drillDownQuery).toHaveBeenCalledWith(statsFilters, segment)
+        },
+    )
+
+    it.each([
+        {
+            metricName: VoiceMetric.QueueAverageTalkTime,
+            drillDownQuery: liveDashboardConnectedCallsListQueryFactoryMock,
+            segment: undefined,
+        },
+    ])(
+        'should call liveDashboardConnectedCallsListQueryFactoryMock',
+        ({ metricName, drillDownQuery }) => {
+            getDrillDownQuery({ metricName })(statsFilters, 'timezone')
+
+            expect(drillDownQuery).toHaveBeenCalledWith(statsFilters)
+        },
+    )
+
     it('should be populated with shopName and selectedCampaignIds filter', () => {
         const periodStart = moment()
         const periodEnd = periodStart.add(7, 'days')
@@ -682,7 +742,7 @@ describe('getDrillDownQuery', () => {
         }
         const timezone = 'someTimeZone'
 
-        const customFieldMetric = {
+        const customFieldMetric: TicketFieldsMetrics = {
             metricName: TicketFieldsMetric.TicketCustomFieldsTicketCount,
             customFieldId: 123,
             customFieldValue: ['customFieldValue'],
@@ -695,10 +755,227 @@ describe('getDrillDownQuery', () => {
         ).toHaveBeenCalledWith(
             statsFilters,
             timezone,
-            customFieldMetric.customFieldId.toString(),
+            String(customFieldMetric?.customFieldId),
             customFieldMetric.customFieldValue,
             statsFilters.period,
             undefined,
         )
     })
+})
+
+describe('getDrillDownMetric', () => {
+    const voiceAgentsMetricsWithExpectedValues: {
+        metricData: DrillDownMetric
+        expectedValues: {
+            metricTitle: string
+            showMetric: boolean
+            metricValueFormat: MetricValueFormat | typeof SLA_FORMAT
+        }
+    }[] = Object.values(VoiceAgentsMetric).map((name) => ({
+        metricData: { metricName: name, perAgentId: 123 },
+        expectedValues: {
+            metricTitle: '',
+            showMetric: false,
+            metricValueFormat: 'decimal',
+        },
+    }))
+
+    const testCases: {
+        metricData: DrillDownMetric
+        expectedValues: {
+            metricTitle: string
+            showMetric: boolean
+            metricValueFormat: MetricValueFormat | typeof SLA_FORMAT
+        }
+    }[] = [
+        {
+            metricData: {
+                metricName: AgentsTableColumn.OneTouchTickets,
+                perAgentId: 1,
+            },
+            expectedValues: {
+                metricTitle: TableLabels[AgentsTableColumn.OneTouchTickets],
+                showMetric: false,
+                metricValueFormat: 'percent',
+            },
+        },
+        {
+            metricData: {
+                metricName: AgentsTableColumn.ClosedTickets,
+                perAgentId: 1,
+            },
+            expectedValues: {
+                metricTitle: TableLabels[AgentsTableColumn.ClosedTickets],
+                showMetric: false,
+                metricValueFormat: 'integer',
+            },
+        },
+        {
+            metricData: {
+                metricName: OverviewMetric.MedianResolutionTime,
+            },
+            expectedValues: {
+                metricTitle: MEDIAN_RESOLUTION_TIME_LABEL,
+                showMetric: true,
+                metricValueFormat: 'duration',
+            },
+        },
+        {
+            metricData: {
+                metricName: TicketFieldsMetric.TicketCustomFieldsTicketCount,
+                customFieldId: 123,
+                customFieldValue: ['customFieldValue'],
+            },
+            expectedValues: {
+                metricTitle: '',
+                showMetric: false,
+                metricValueFormat: 'decimal',
+            },
+        },
+        {
+            metricData: {
+                metricName: SlaMetric.AchievementRate,
+            },
+            expectedValues: {
+                metricTitle: SLA_STATUS_COLUMN_LABEL,
+                showMetric: true,
+                metricValueFormat: SLA_FORMAT,
+            },
+        },
+        {
+            metricData: {
+                metricName: ChannelsTableColumns.TicketHandleTime,
+                perChannel: 'some-channel',
+            },
+            expectedValues: {
+                metricTitle:
+                    ChannelsTableLabels[ChannelsTableColumns.TicketHandleTime],
+                showMetric: true,
+                metricValueFormat:
+                    ChannelColumnConfig[ChannelsTableColumns.TicketHandleTime]
+                        .format,
+            },
+        },
+        {
+            metricData: {
+                metricName: AutoQAAgentsTableColumn.ResolutionCompleteness,
+                perAgentId: 456,
+            },
+            expectedValues: {
+                metricTitle:
+                    autoQATableLabels[
+                        AutoQAAgentsTableColumn.ResolutionCompleteness
+                    ],
+                showMetric: false,
+                metricValueFormat:
+                    AutoQAAgentsColumnConfig[
+                        AutoQAAgentsTableColumn.ResolutionCompleteness
+                    ].format,
+            },
+        },
+        {
+            metricData: {
+                metricName: AutoQAMetric.ResolutionCompleteness,
+            },
+            expectedValues: {
+                metricTitle:
+                    TrendCardConfig[AutoQAMetric.ResolutionCompleteness].title,
+                showMetric: false,
+                metricValueFormat:
+                    TrendCardConfig[AutoQAMetric.ResolutionCompleteness]
+                        .metricFormat,
+            },
+        },
+        {
+            metricData: {
+                metricName: AutoQAMetric.ReviewedClosedTickets,
+            },
+            expectedValues: {
+                metricTitle:
+                    TrendCardConfig[AutoQAMetric.ReviewedClosedTickets].title,
+                showMetric: false,
+                metricValueFormat:
+                    TrendCardConfig[AutoQAMetric.ReviewedClosedTickets]
+                        .metricFormat,
+            },
+        },
+        {
+            metricData: {
+                metricName: SatisfactionMetric.SatisfactionScore,
+            },
+            expectedValues: {
+                metricTitle:
+                    SatisfactionTrendCardConfig[
+                        SatisfactionMetric.SatisfactionScore
+                    ].title,
+                showMetric: false,
+                metricValueFormat:
+                    SatisfactionTrendCardConfig[
+                        SatisfactionMetric.SatisfactionScore
+                    ].metricFormat,
+            },
+        },
+        {
+            metricData: {
+                metricName: SatisfactionMetric.ResponseRate,
+            },
+            expectedValues: {
+                metricTitle:
+                    SatisfactionTrendCardConfig[SatisfactionMetric.ResponseRate]
+                        .title,
+                showMetric: false,
+                metricValueFormat:
+                    SatisfactionTrendCardConfig[SatisfactionMetric.ResponseRate]
+                        .metricFormat,
+            },
+        },
+        {
+            metricData: {
+                metricName: SatisfactionMetric.SurveysSent,
+            },
+            expectedValues: {
+                metricTitle:
+                    SatisfactionTrendCardConfig[SatisfactionMetric.SurveysSent]
+                        .title,
+                showMetric: false,
+                metricValueFormat:
+                    SatisfactionTrendCardConfig[SatisfactionMetric.SurveysSent]
+                        .metricFormat,
+            },
+        },
+        {
+            metricData: {
+                metricName: SatisfactionMetric.AverageSurveyScore,
+            },
+            expectedValues: {
+                metricTitle: CSAT_SCORE,
+                showMetric: true,
+                metricValueFormat:
+                    SatisfactionTrendCardConfig[
+                        SatisfactionMetric.AverageSurveyScore
+                    ].metricFormat,
+            },
+        },
+        {
+            metricData: {
+                metricName:
+                    AIInsightsMetric.TicketDrillDownPerCustomerSatisfaction,
+                customFieldId: 789,
+                customFieldValue: null,
+            },
+            expectedValues: {
+                metricTitle: CSAT_DRILL_DOWN_LABEL,
+                showMetric: true,
+                metricValueFormat: 'decimal',
+            },
+        },
+        ...voiceAgentsMetricsWithExpectedValues,
+    ]
+
+    it.each(testCases)(
+        'getDrillDownMetricColumn',
+        ({ metricData, expectedValues }) => {
+            expect(getDrillDownMetricColumn(metricData)).toEqual(expectedValues)
+        },
+    )
 })

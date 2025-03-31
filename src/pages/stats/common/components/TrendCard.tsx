@@ -4,13 +4,13 @@ import { useStatsFilters } from 'hooks/reporting/support-performance/useStatsFil
 import { MetricTrendHook } from 'hooks/reporting/useMetricTrend'
 import BigNumberMetric from 'pages/stats/BigNumberMetric'
 import TrendBadge from 'pages/stats/common/components/TrendBadge'
+import { DrillDownModalTrigger } from 'pages/stats/common/drill-down/DrillDownModalTrigger'
 import {
     formatMetricValue,
     MetricTrendFormat,
     NOT_AVAILABLE_PLACEHOLDER,
 } from 'pages/stats/common/utils'
 import { DashboardChartProps } from 'pages/stats/dashboards/types'
-import { DrillDownModalTrigger } from 'pages/stats/DrillDownModalTrigger'
 import MetricCard from 'pages/stats/MetricCard'
 import { OverviewMetric } from 'pages/stats/support-performance/overview/SupportPerformanceOverviewConfig'
 import { TooltipData } from 'pages/stats/types'

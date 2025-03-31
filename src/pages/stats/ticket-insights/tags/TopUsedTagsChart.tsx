@@ -12,6 +12,7 @@ import {
     TREND_BADGE_FORMAT,
 } from 'pages/stats/common/components/TrendBadge'
 import { TrendIcon } from 'pages/stats/common/components/TrendIcon'
+import { DrillDownModalTrigger } from 'pages/stats/common/drill-down/DrillDownModalTrigger'
 import {
     formatMetricTrend,
     formatMetricValue,
@@ -19,7 +20,6 @@ import {
 } from 'pages/stats/common/utils'
 import { DashboardChartProps } from 'pages/stats/dashboards/types'
 import { DistributionCategoryCell } from 'pages/stats/DistributionCategoryCell'
-import { DrillDownModalTrigger } from 'pages/stats/DrillDownModalTrigger'
 import { NoDataAvailable } from 'pages/stats/NoDataAvailable'
 import {
     TicketInsightsTagsMetric,

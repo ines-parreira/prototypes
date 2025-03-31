@@ -80,7 +80,7 @@ jest.mock('hooks/reporting/support-performance/agents/useAgentsSummaryMetrics')
 const useAgentsSummaryMetricsMock = assumeMock(useAgentsSummaryMetrics)
 jest.mock('hooks/reporting/useAgentsTableConfigSetting')
 const useAgentsTableConfigSettingMock = assumeMock(useAgentsTableConfigSetting)
-jest.mock('pages/stats/DrillDownModal.tsx', () => ({
+jest.mock('pages/stats/common/drill-down/DrillDownModal.tsx', () => ({
     DrillDownModal: () => null,
 }))
 jest.mock('pages/stats/dashboards/ChartsActionMenu/ChartsActionMenu')

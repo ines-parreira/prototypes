@@ -1,4 +1,7 @@
+import { tagsTicketCountDrillDownQueryFactory } from 'models/reporting/queryFactories/ticket-insights/tagsTicketCount'
+import { Domain } from 'pages/stats/common/drill-down/types'
 import { TooltipData } from 'pages/stats/types'
+import { TagsMetric } from 'state/ui/stats/types'
 
 export enum TicketInsightsTagsMetric {
     AllUsedTagsTableChart = 'all-used-tags-table-chart',
@@ -32,5 +35,20 @@ export const TicketInsightsTagsMetricConfig: Record<
         hint: {
             title: 'Top 10 used tags: number of tickets labeled with one of the tags within the selected timeframe, and the delta compared to the previous period.',
         },
+    },
+}
+
+export const TagsMetricConfig: Record<
+    TagsMetric,
+    {
+        showMetric: boolean
+        domain: Domain.Ticket
+        drillDownQuery: typeof tagsTicketCountDrillDownQueryFactory
+    }
+> = {
+    [TagsMetric.TicketCount]: {
+        showMetric: false,
+        domain: Domain.Ticket,
+        drillDownQuery: tagsTicketCountDrillDownQueryFactory, // TODO
     },
 }

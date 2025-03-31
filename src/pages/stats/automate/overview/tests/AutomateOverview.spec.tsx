@@ -95,7 +95,7 @@ const useFilteredAutomatedInteractionsMock = assumeMock(
 jest.mock('pages/stats/common/components/TrendBadge')
 const trendBadgeMock = assumeMock(TrendBadge)
 
-jest.mock('pages/stats/DrillDownModal.tsx', () => ({
+jest.mock('pages/stats/common/drill-down/DrillDownModal.tsx', () => ({
     DrillDownModal: () => null,
 }))
 

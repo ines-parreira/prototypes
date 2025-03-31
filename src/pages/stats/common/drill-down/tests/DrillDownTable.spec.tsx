@@ -17,28 +17,25 @@ import {
 } from 'models/reporting/cubes/sla/TicketSLACube'
 import { NumberedPagination } from 'pages/common/components/Paginations'
 import { LogicalOperatorEnum } from 'pages/stats/common/components/Filter/constants'
-import { CampaignSalesDrillDownTableContent } from 'pages/stats/convert/components/CampaignSalesDrillDownTableContent'
-import { useCampaignStatsFilters } from 'pages/stats/convert/hooks/useCampaignStatsFilters'
 import {
     ConvertDrillDownRowData,
     TicketDrillDownRowData,
-} from 'pages/stats/DrillDownFormatters'
-import { DrillDownTable } from 'pages/stats/DrillDownTable'
-import { SlaMetricConfig } from 'pages/stats/sla/SlaConfig'
+} from 'pages/stats/common/drill-down/DrillDownFormatters'
+import { DrillDownTable } from 'pages/stats/common/drill-down/DrillDownTable'
+import { getDrillDownMetricColumn } from 'pages/stats/common/drill-down/helpers'
+import { TicketDrillDownTableContent } from 'pages/stats/common/drill-down/TicketDrillDownTableContent'
+import { CampaignSalesDrillDownTableContent } from 'pages/stats/convert/components/CampaignSalesDrillDownTableContent'
+import { useCampaignStatsFilters } from 'pages/stats/convert/hooks/useCampaignStatsFilters'
+import { SLA_FORMAT, SlaMetricConfig } from 'pages/stats/sla/SlaConfig'
 import {
     COMMUNICATION_SKILLS_LABEL,
     COMPLETENESS_STATUS_COMPLETE,
     RESOLUTION_COMPLETENESS_SHORT_LABEL,
 } from 'pages/stats/support-performance/auto-qa/AutoQAMetricsConfig'
 import { OverviewMetric } from 'pages/stats/support-performance/overview/SupportPerformanceOverviewConfig'
-import { TicketDrillDownTableContent } from 'pages/stats/TicketDrillDownTableContent'
 import { SlaStatusLabel } from 'services/reporting/constants'
 import { RootState, StoreDispatch } from 'state/types'
-import {
-    DrillDownMetric,
-    getDrillDownMetricColumn,
-    SLA_FORMAT,
-} from 'state/ui/stats/drillDownSlice'
+import { DrillDownMetric } from 'state/ui/stats/drillDownSlice'
 import {
     AutoQAMetric,
     ConvertMetric,
@@ -60,7 +57,7 @@ jest.mock(
 jest.mock('pages/common/components/Paginations')
 const numberedPaginationMock = assumeMock(NumberedPagination)
 
-jest.mock('state/ui/stats/drillDownSlice')
+jest.mock('pages/stats/common/drill-down/helpers')
 const getDrillDownMetricColumnMock = assumeMock(getDrillDownMetricColumn)
 jest.mock('hooks/reporting/useDrillDownData')
 const useEnrichedDrillDownDataMock = assumeMock(useEnrichedDrillDownData)

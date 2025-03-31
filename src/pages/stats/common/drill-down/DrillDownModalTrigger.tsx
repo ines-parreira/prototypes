@@ -8,13 +8,12 @@ import { logEvent, SegmentEvent } from 'common/segment'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useId from 'hooks/useId'
 import { hintTooltipDelay } from 'pages/stats/common/constants'
-import css from 'pages/stats/DrillDownModalTrigger.less'
-import { DrillDownMetric, setMetricData } from 'state/ui/stats/drillDownSlice'
+import css from 'pages/stats/common/drill-down/DrillDownModalTrigger.less'
 import {
-    ConvertMetric,
-    VoiceAgentsMetric,
-    VoiceMetric,
-} from 'state/ui/stats/types'
+    DomainsConfig,
+    MetricsConfig,
+} from 'pages/stats/common/drill-down/DrillDownTableConfig'
+import { DrillDownMetric, setMetricData } from 'state/ui/stats/drillDownSlice'
 
 export const TRIGGER_ID = 'drill-down'
 
@@ -25,30 +24,9 @@ type Props = {
     segmentEventName?: SegmentEvent
 }
 
-const getTooltipText = (metricName: string) => {
-    switch (metricName) {
-        case ConvertMetric.CampaignSalesCount:
-            return 'Click to view orders'
-        case VoiceMetric.AverageTalkTime:
-        case VoiceMetric.AverageWaitTime:
-        case VoiceMetric.QueueAverageWaitTime:
-        case VoiceMetric.QueueAverageTalkTime:
-        case VoiceMetric.QueueInboundCalls:
-        case VoiceMetric.DEPRECATED_QueueMissedInboundCalls:
-        case VoiceMetric.QueueInboundUnansweredCalls:
-        case VoiceMetric.QueueInboundMissedCalls:
-        case VoiceMetric.QueueInboundAbandonedCalls:
-        case VoiceMetric.QueueOutboundCalls:
-        case VoiceAgentsMetric.AgentTotalCalls:
-        case VoiceAgentsMetric.AgentInboundAnsweredCalls:
-        case VoiceAgentsMetric.AgentInboundMissedCalls:
-        case VoiceAgentsMetric.AgentOutboundCalls:
-        case VoiceAgentsMetric.AgentAverageTalkTime:
-            return 'Click to view calls'
-        default:
-            return 'Click to view tickets'
-    }
-}
+const getTooltipText = (metricData: DrillDownMetric) =>
+    DomainsConfig[MetricsConfig[metricData.metricName].domain]
+        .modalTriggerTooltipText
 
 export const DrillDownModalTrigger = ({
     children,
@@ -65,7 +43,7 @@ export const DrillDownModalTrigger = ({
     }
 
     const targetId = `${TRIGGER_ID}-${useId()}`
-    const tooltipText = getTooltipText(metricData.metricName)
+    const tooltipText = getTooltipText(metricData)
 
     return (
         <>

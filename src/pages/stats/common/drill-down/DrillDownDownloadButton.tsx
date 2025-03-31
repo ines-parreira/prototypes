@@ -8,7 +8,7 @@ import { useRunningJobs } from 'jobs'
 import { JobContext, JobType } from 'models/job/types'
 import Button from 'pages/common/components/button/Button'
 import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
-import css from 'pages/stats/DrillDownDownloadButton.less'
+import css from 'pages/stats/common/drill-down/DrillDownDownloadButton.less'
 import { getCurrentUser } from 'state/currentUser/selectors'
 import {
     createExportDrillDownJob,

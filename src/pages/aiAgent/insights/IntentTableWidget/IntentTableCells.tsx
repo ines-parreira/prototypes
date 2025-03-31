@@ -20,9 +20,9 @@ import {
     IntentTableColumn,
 } from 'pages/aiAgent/insights/IntentTableWidget/types'
 import BodyCell from 'pages/common/components/table/cells/BodyCell'
+import { DrillDownModalTrigger } from 'pages/stats/common/drill-down/DrillDownModalTrigger'
 import { HintTooltip } from 'pages/stats/common/HintTooltip'
 import { DEFAULT_LOCALE, formatMetricValue } from 'pages/stats/common/utils'
-import { DrillDownModalTrigger } from 'pages/stats/DrillDownModalTrigger'
 import { DrillDownMetric } from 'state/ui/stats/drillDownSlice'
 
 import { INTENT_LEVEL } from '../OptimizeContainer/OptimizeContainer'

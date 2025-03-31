@@ -11,10 +11,10 @@ import {
     HELPDESK_PRODUCT_ID,
 } from 'fixtures/productPrices'
 import { useCleanStatsFilters } from 'hooks/reporting/useCleanStatsFilters'
+import { DrillDownModalTrigger } from 'pages/stats/common/drill-down/DrillDownModalTrigger'
 import { AUTO_QA_FILTER_KEYS } from 'pages/stats/common/filters/constants'
 import FiltersPanelWrapper from 'pages/stats/common/filters/FiltersPanelWrapper/FiltersPanelWrapper'
 import { ChartsActionMenu } from 'pages/stats/dashboards/ChartsActionMenu/ChartsActionMenu'
-import { DrillDownModalTrigger } from 'pages/stats/DrillDownModalTrigger'
 import { ChannelsReport } from 'pages/stats/support-performance/channels/ChannelsReport'
 import {
     CHANNEL_REPORT_OPTIONAL_FILTERS,
@@ -26,10 +26,10 @@ import { assumeMock, renderWithStore } from 'utils/testing'
 
 const componentMock = () => <div />
 
-jest.mock('pages/stats/DrillDownModal.tsx', () => ({
+jest.mock('pages/stats/common/drill-down/DrillDownModal.tsx', () => ({
     DrillDownModal: () => null,
 }))
-jest.mock('pages/stats/DrillDownModalTrigger.tsx', () => ({
+jest.mock('pages/stats/common/drill-down/DrillDownModalTrigger.tsx', () => ({
     DrillDownModalTrigger: ({
         children,
     }: ComponentProps<typeof DrillDownModalTrigger>) => children,

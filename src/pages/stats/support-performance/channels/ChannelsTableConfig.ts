@@ -23,8 +23,9 @@ import { messagesSentMetricPerTicketDrillDownQueryFactory } from 'models/reporti
 import { ticketsCreatedPerTicketDrillDownQueryFactory } from 'models/reporting/queryFactories/support-performance/ticketsCreated'
 import { ticketsRepliedMetricPerTicketDrillDownQueryFactory } from 'models/reporting/queryFactories/support-performance/ticketsReplied'
 import { isMediumOrSmallScreen } from 'pages/common/utils/mobile'
+import { DrillDownQueryFactory } from 'pages/stats/common/drill-down/DrillDownTableConfig'
+import { Domain } from 'pages/stats/common/drill-down/types'
 import { MetricValueFormat } from 'pages/stats/common/utils'
-import { DrillDownQueryFactory } from 'pages/stats/DrillDownTableConfig'
 import {
     METRIC_COLUMN_WIDTH,
     MOBILE_METRIC_COLUMN_WIDTH,
@@ -91,6 +92,8 @@ export const ChannelColumnConfig: Record<
         hint: TooltipData | null
         useMetric: MetricPerChannelQueryHook
         drillDownQuery: DrillDownQueryFactory
+        showMetric: boolean
+        domain: Domain.Ticket
     }
 > = {
     [ChannelsTableColumns.Channel]: {
@@ -106,12 +109,16 @@ export const ChannelColumnConfig: Record<
             },
         }),
         drillDownQuery: ticketsCreatedPerTicketDrillDownQueryFactory, //TODO: clean up
+        showMetric: false,
+        domain: Domain.Ticket,
     },
     [ChannelsTableColumns.TicketsCreated]: {
         format: 'integer',
         hint: OverviewMetricConfig[OverviewMetric.TicketsCreated].hint,
         useMetric: useCreatedTicketsMetricPerChannel,
         drillDownQuery: ticketsCreatedPerTicketDrillDownQueryFactory,
+        showMetric: false,
+        domain: Domain.Ticket,
     },
     [ChannelsTableColumns.CreatedTicketsPercentage]: {
         format: 'percent',
@@ -120,60 +127,80 @@ export const ChannelColumnConfig: Record<
         },
         useMetric: usePercentageOfCreatedTicketsMetricPerChannel,
         drillDownQuery: ticketsCreatedPerTicketDrillDownQueryFactory,
+        showMetric: false,
+        domain: Domain.Ticket,
     },
     [ChannelsTableColumns.ClosedTickets]: {
         format: 'integer',
         hint: OverviewMetricConfig[OverviewMetric.TicketsClosed].hint,
         useMetric: useClosedTicketsMetricPerChannel,
         drillDownQuery: closedTicketsPerTicketDrillDownQueryFactory,
+        showMetric: false,
+        domain: Domain.Ticket,
     },
     [ChannelsTableColumns.TicketHandleTime]: {
         format: 'duration',
         hint: OverviewMetricConfig[OverviewMetric.TicketHandleTime].hint,
         useMetric: useTicketAverageHandleTimePerChannel,
         drillDownQuery: ticketHandleTimePerTicketDrillDownQueryFactory,
+        showMetric: true,
+        domain: Domain.Ticket,
     },
     [ChannelsTableColumns.FirstResponseTime]: {
         format: 'duration',
         hint: OverviewMetricConfig[OverviewMetric.MedianFirstResponseTime].hint,
         useMetric: useMedianFirstResponseTimeMetricPerChannel,
         drillDownQuery: firstResponseTimeMetricPerTicketDrillDownQueryFactory,
+        showMetric: true,
+        domain: Domain.Ticket,
     },
     [ChannelsTableColumns.MedianResponseTime]: {
         format: 'duration',
         hint: OverviewMetricConfig[OverviewMetric.MedianResponseTime].hint,
         useMetric: useMedianResponseTimeMetricPerChannel,
         drillDownQuery: medianResponseTimeMetricPerTicketDrillDownQueryFactory,
+        showMetric: true,
+        domain: Domain.Ticket,
     },
     [ChannelsTableColumns.MedianResolutionTime]: {
         format: 'duration',
         hint: OverviewMetricConfig[OverviewMetric.MedianResolutionTime].hint,
         useMetric: useMedianResolutionTimeMetricPerChannel,
         drillDownQuery: resolutionTimeMetricPerTicketDrillDownQueryFactory,
+        showMetric: true,
+        domain: Domain.Ticket,
     },
     [ChannelsTableColumns.TicketsReplied]: {
         format: 'integer',
         hint: OverviewMetricConfig[OverviewMetric.TicketsReplied].hint,
         useMetric: useTicketsRepliedMetricPerChannel,
         drillDownQuery: ticketsRepliedMetricPerTicketDrillDownQueryFactory,
+        showMetric: false,
+        domain: Domain.Ticket,
     },
     [ChannelsTableColumns.MessagesSent]: {
         format: 'integer',
         hint: OverviewMetricConfig[OverviewMetric.MessagesSent].hint,
         useMetric: useMessagesSentMetricPerChannel,
         drillDownQuery: messagesSentMetricPerTicketDrillDownQueryFactory,
+        showMetric: true,
+        domain: Domain.Ticket,
     },
     [ChannelsTableColumns.MessagesReceived]: {
         format: 'integer',
         hint: OverviewMetricConfig[OverviewMetric.MessagesReceived].hint,
         useMetric: useMessagesReceivedMetricPerChannel,
         drillDownQuery: messagesReceivedMetricPerTicketDrillDownQueryFactory,
+        showMetric: true,
+        domain: Domain.Ticket,
     },
     [ChannelsTableColumns.CustomerSatisfaction]: {
         format: 'decimal',
         hint: OverviewMetricConfig[OverviewMetric.CustomerSatisfaction].hint,
         useMetric: useCustomerSatisfactionMetricPerChannel,
         drillDownQuery: customerSatisfactionMetricDrillDownQueryFactory,
+        showMetric: true,
+        domain: Domain.Ticket,
     },
 }
 

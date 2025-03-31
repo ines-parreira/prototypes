@@ -51,7 +51,23 @@ import {
     MetricTrendHook,
 } from 'hooks/reporting/useMetricTrend'
 import { TimeSeriesFetch, TimeSeriesHook } from 'hooks/reporting/useTimeSeries'
+import { ticketHandleTimePerTicketDrillDownQueryFactory } from 'models/reporting/queryFactories/agentxp/ticketHandleTime'
+import { closedTicketsPerTicketDrillDownQueryFactory } from 'models/reporting/queryFactories/support-performance/closedTickets'
+import { customerSatisfactionMetricDrillDownQueryFactory } from 'models/reporting/queryFactories/support-performance/customerSatisfaction'
+import { firstResponseTimeMetricPerTicketDrillDownQueryFactory } from 'models/reporting/queryFactories/support-performance/medianFirstResponseTime'
+import { resolutionTimeMetricPerTicketDrillDownQueryFactory } from 'models/reporting/queryFactories/support-performance/medianResolutionTime'
+import { medianResponseTimeMetricPerTicketDrillDownQueryFactory } from 'models/reporting/queryFactories/support-performance/medianResponseTime'
+import { messagesPerTicketDrillDownQueryFactory } from 'models/reporting/queryFactories/support-performance/messagesPerTicket'
+import { messagesReceivedMetricPerTicketDrillDownQueryFactory } from 'models/reporting/queryFactories/support-performance/messagesReceived'
+import { messagesSentMetricPerTicketDrillDownQueryFactory } from 'models/reporting/queryFactories/support-performance/messagesSent'
+import { oneTouchTicketsPerTicketQueryFactory } from 'models/reporting/queryFactories/support-performance/oneTouchTickets'
+import { openTicketsPerTicketDrillDownQueryFactory } from 'models/reporting/queryFactories/support-performance/openTickets'
+import { ticketsCreatedPerTicketDrillDownQueryFactory } from 'models/reporting/queryFactories/support-performance/ticketsCreated'
+import { ticketsRepliedMetricPerTicketDrillDownQueryFactory } from 'models/reporting/queryFactories/support-performance/ticketsReplied'
+import { zeroTouchTicketsPerTicketQueryFactory } from 'models/reporting/queryFactories/support-performance/zeroTouchTickets'
 import { FilterKey } from 'models/stat/types'
+import { DrillDownQueryFactory } from 'pages/stats/common/drill-down/DrillDownTableConfig'
+import { Domain } from 'pages/stats/common/drill-down/types'
 import { AUTO_QA_FILTER_KEYS } from 'pages/stats/common/filters/constants'
 import { MetricTrendFormat } from 'pages/stats/common/utils'
 import { TooltipData } from 'pages/stats/types'
@@ -100,6 +116,9 @@ export const OverviewMetricConfig: Record<
         fetchTrend: MetricTrendFetch
         interpretAs: 'more-is-better' | 'less-is-better' | 'neutral'
         metricFormat: MetricTrendFormat
+        showMetric: boolean
+        domain: Domain.Ticket
+        drillDownQuery: DrillDownQueryFactory
     }
 > = {
     [OverviewMetric.CustomerSatisfaction]: {
@@ -112,6 +131,9 @@ export const OverviewMetricConfig: Record<
         metricFormat: 'decimal',
         useTrend: useCustomerSatisfactionTrend,
         fetchTrend: fetchCustomerSatisfactionTrend,
+        showMetric: true,
+        domain: Domain.Ticket,
+        drillDownQuery: customerSatisfactionMetricDrillDownQueryFactory,
     },
     [OverviewMetric.MedianResponseTime]: {
         title: AVERAGE_RESPONSE_TIME_LABEL,
@@ -122,6 +144,9 @@ export const OverviewMetricConfig: Record<
         metricFormat: 'duration',
         useTrend: useMedianResponseTimeTrend,
         fetchTrend: fetchMedianResponseTimeTrend,
+        showMetric: true,
+        domain: Domain.Ticket,
+        drillDownQuery: medianResponseTimeMetricPerTicketDrillDownQueryFactory,
     },
     [OverviewMetric.MedianFirstResponseTime]: {
         title: MEDIAN_FIRST_RESPONSE_TIME_LABEL,
@@ -133,6 +158,9 @@ export const OverviewMetricConfig: Record<
         metricFormat: 'duration',
         useTrend: useMedianFirstResponseTimeTrend,
         fetchTrend: fetchMedianFirstResponseTimeTrend,
+        showMetric: true,
+        domain: Domain.Ticket,
+        drillDownQuery: firstResponseTimeMetricPerTicketDrillDownQueryFactory,
     },
     [OverviewMetric.MedianResolutionTime]: {
         title: MEDIAN_RESOLUTION_TIME_LABEL,
@@ -144,6 +172,9 @@ export const OverviewMetricConfig: Record<
         metricFormat: 'duration',
         useTrend: useMedianResolutionTimeTrend,
         fetchTrend: fetchMedianResolutionTimeTrend,
+        showMetric: true,
+        domain: Domain.Ticket,
+        drillDownQuery: resolutionTimeMetricPerTicketDrillDownQueryFactory,
     },
     [OverviewMetric.MessagesPerTicket]: {
         title: MESSAGES_PER_TICKET_LABEL,
@@ -155,6 +186,9 @@ export const OverviewMetricConfig: Record<
         metricFormat: 'decimal',
         useTrend: useMessagesPerTicketTrend,
         fetchTrend: fetchMessagesPerTicketTrend,
+        showMetric: true,
+        domain: Domain.Ticket,
+        drillDownQuery: messagesPerTicketDrillDownQueryFactory,
     },
     [OverviewMetric.OpenTickets]: {
         title: OPEN_TICKETS_LABEL,
@@ -166,6 +200,9 @@ export const OverviewMetricConfig: Record<
         metricFormat: 'decimal',
         useTrend: useOpenTicketsTrend,
         fetchTrend: fetchOpenTicketsTrend,
+        showMetric: false,
+        domain: Domain.Ticket,
+        drillDownQuery: openTicketsPerTicketDrillDownQueryFactory,
     },
     [OverviewMetric.TicketsClosed]: {
         title: TICKETS_CLOSED_LABEL,
@@ -177,6 +214,9 @@ export const OverviewMetricConfig: Record<
         metricFormat: 'decimal',
         useTrend: useClosedTicketsTrend,
         fetchTrend: fetchClosedTicketsTrend,
+        showMetric: false,
+        domain: Domain.Ticket,
+        drillDownQuery: closedTicketsPerTicketDrillDownQueryFactory,
     },
     [OverviewMetric.TicketsCreated]: {
         title: TICKETS_CREATED_LABEL,
@@ -188,6 +228,9 @@ export const OverviewMetricConfig: Record<
         metricFormat: 'decimal',
         useTrend: useTicketsCreatedTrend,
         fetchTrend: fetchTicketsCreatedTrend,
+        showMetric: false,
+        domain: Domain.Ticket,
+        drillDownQuery: ticketsCreatedPerTicketDrillDownQueryFactory,
     },
     [OverviewMetric.TicketsReplied]: {
         title: TICKETS_REPLIED_LABEL,
@@ -199,6 +242,9 @@ export const OverviewMetricConfig: Record<
         metricFormat: 'decimal',
         useTrend: useTicketsRepliedTrend,
         fetchTrend: fetchTicketsRepliedTrend,
+        showMetric: false,
+        domain: Domain.Ticket,
+        drillDownQuery: ticketsRepliedMetricPerTicketDrillDownQueryFactory,
     },
     [OverviewMetric.MessagesSent]: {
         title: MESSAGES_SENT_LABEL,
@@ -210,6 +256,9 @@ export const OverviewMetricConfig: Record<
         metricFormat: 'decimal',
         useTrend: useMessagesSentTrend,
         fetchTrend: fetchMessagesSentTrend,
+        showMetric: false,
+        domain: Domain.Ticket,
+        drillDownQuery: messagesSentMetricPerTicketDrillDownQueryFactory,
     },
     [OverviewMetric.MessagesReceived]: {
         title: MESSAGES_RECEIVED_LABEL,
@@ -220,6 +269,9 @@ export const OverviewMetricConfig: Record<
         metricFormat: 'decimal',
         useTrend: useMessagesReceivedTrend,
         fetchTrend: fetchMessagesReceivedTrend,
+        showMetric: false,
+        domain: Domain.Ticket,
+        drillDownQuery: messagesReceivedMetricPerTicketDrillDownQueryFactory,
     },
     [OverviewMetric.OneTouchTickets]: {
         title: ONE_TOUCH_TICKETS_LABEL,
@@ -231,6 +283,9 @@ export const OverviewMetricConfig: Record<
         metricFormat: 'percent',
         useTrend: useOneTouchTicketsPercentageMetricTrend,
         fetchTrend: fetchOneTouchTicketsPercentageMetricTrend,
+        showMetric: false,
+        domain: Domain.Ticket,
+        drillDownQuery: oneTouchTicketsPerTicketQueryFactory,
     },
     [OverviewMetric.ZeroTouchTickets]: {
         title: ZERO_TOUCH_TICKETS_LABEL,
@@ -242,6 +297,9 @@ export const OverviewMetricConfig: Record<
         metricFormat: 'decimal',
         useTrend: useZeroTouchTicketsMetricTrend,
         fetchTrend: fetchZeroTouchTicketsMetricTrend,
+        showMetric: false,
+        domain: Domain.Ticket,
+        drillDownQuery: zeroTouchTicketsPerTicketQueryFactory,
     },
     [OverviewMetric.TicketHandleTime]: {
         title: TICKET_HANDLE_TIME_LABEL,
@@ -253,6 +311,9 @@ export const OverviewMetricConfig: Record<
         metricFormat: 'duration',
         useTrend: useTicketHandleTimeTrend,
         fetchTrend: fetchTicketHandleTimeTrend,
+        showMetric: true,
+        domain: Domain.Ticket,
+        drillDownQuery: ticketHandleTimePerTicketDrillDownQueryFactory,
     },
 }
 

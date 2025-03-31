@@ -7,13 +7,13 @@ import TableBodyRow from 'pages/common/components/table/TableBodyRow'
 import TableHead from 'pages/common/components/table/TableHead'
 import DatetimeLabel from 'pages/common/utils/DatetimeLabel'
 import { DrillDownTableContentSkeleton } from 'pages/stats/common/components/Table/DrillDownTableContentSkeleton'
+import { formatConvertCampaignSalesDrillDownRowData } from 'pages/stats/common/drill-down/DrillDownFormatters'
 import {
     formatCurrency,
     NOT_AVAILABLE_PLACEHOLDER,
 } from 'pages/stats/common/utils'
 import { useCampaignStatsFilters } from 'pages/stats/convert/hooks/useCampaignStatsFilters'
 import { useGetCampaignSalesDrillDownData } from 'pages/stats/convert/hooks/useGetCampaignSalesDrillDownData'
-import { formatConvertCampaignSalesDrillDownRowData } from 'pages/stats/DrillDownFormatters'
 import { DrillDownMetric } from 'state/ui/stats/drillDownSlice'
 
 import css from './CampaignSalesDrillDownTableContent.less'

@@ -7,11 +7,11 @@ import {
     TicketDimension,
     TicketMeasure,
 } from 'models/reporting/cubes/TicketCube'
+import { DrillDownModalTrigger } from 'pages/stats/common/drill-down/DrillDownModalTrigger'
 import {
     formatMetricValue,
     NOT_AVAILABLE_PLACEHOLDER,
 } from 'pages/stats/common/utils'
-import { DrillDownModalTrigger } from 'pages/stats/DrillDownModalTrigger'
 import { AgentsCellContent } from 'pages/stats/support-performance/agents/AgentsCellContent'
 import { defaultStatsFilters } from 'state/stats/statsSlice'
 import { RootState } from 'state/types'
@@ -29,7 +29,7 @@ jest.mock(
         }) as typeof import('@gorgias/merchant-ui-kit'),
 )
 
-jest.mock('pages/stats/DrillDownModalTrigger.tsx')
+jest.mock('pages/stats/common/drill-down/DrillDownModalTrigger.tsx')
 const DrillDownModalTriggerMock = assumeMock(DrillDownModalTrigger)
 
 const MOCK_SKELETON_TEST_ID = 'skeleton'

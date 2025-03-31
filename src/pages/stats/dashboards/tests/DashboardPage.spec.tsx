@@ -19,6 +19,7 @@ import { useDashboardNameValidation } from 'hooks/reporting/dashboards/useDashbo
 import { useReportRestrictions } from 'hooks/reporting/dashboards/useReportRestrictions'
 import { useUpdateDashboardCache } from 'hooks/reporting/dashboards/useUpdateDashboardCache'
 import useAppDispatch from 'hooks/useAppDispatch'
+import { DrillDownModal } from 'pages/stats/common/drill-down/DrillDownModal'
 import { FiltersPanelWrapper } from 'pages/stats/common/filters/FiltersPanelWrapper/FiltersPanelWrapper'
 import { CREATE_REPORT_DESCRIPTION } from 'pages/stats/dashboards/CreateDashboard/CreateDashboard'
 import { Dashboard } from 'pages/stats/dashboards/Dashboard'
@@ -32,7 +33,6 @@ import {
     DashboardChildType,
     DashboardSchema,
 } from 'pages/stats/dashboards/types'
-import { DrillDownModal } from 'pages/stats/DrillDownModal'
 import { assumeMock, renderWithStore } from 'utils/testing'
 
 jest.mock('react-router-dom', () => ({
@@ -53,7 +53,7 @@ const useGetAnalyticsCustomReportMock = assumeMock(useGetAnalyticsCustomReport)
 jest.mock('pages/stats/common/filters/FiltersPanelWrapper/FiltersPanelWrapper')
 const FiltersPanelWrapperMock = assumeMock(FiltersPanelWrapper)
 
-jest.mock('pages/stats/DrillDownModal')
+jest.mock('pages/stats/common/drill-down/DrillDownModal')
 const DrillDownModalMock = assumeMock(DrillDownModal)
 
 jest.mock('pages/stats/dashboards/Dashboard')

@@ -4,7 +4,7 @@ import { render, screen } from '@testing-library/react'
 
 import HelpCenterStatsLoading from '../HelpCenterStatsLoading'
 
-jest.mock('pages/stats/DrillDownModal.tsx', () => ({
+jest.mock('pages/stats/common/drill-down/DrillDownModal.tsx', () => ({
     DrillDownModal: () => null,
 }))
 

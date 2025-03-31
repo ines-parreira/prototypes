@@ -33,9 +33,9 @@ import TrendBadge, {
     DEFAULT_BADGE_TEXT,
 } from 'pages/stats/common/components/TrendBadge'
 import { TrendCard } from 'pages/stats/common/components/TrendCard'
+import { DrillDownModalTrigger } from 'pages/stats/common/drill-down/DrillDownModalTrigger'
 import { NOT_AVAILABLE_PLACEHOLDER } from 'pages/stats/common/utils'
 import { DEFAULT_TIMEZONE } from 'pages/stats/convert/constants/components'
-import { DrillDownModalTrigger } from 'pages/stats/DrillDownModalTrigger'
 import {
     OverviewMetric,
     OverviewMetricConfig,
@@ -45,11 +45,11 @@ import { RootState, StoreDispatch } from 'state/types'
 import { initialState as uiStatsInitialState } from 'state/ui/stats/filtersSlice'
 import { assumeMock } from 'utils/testing'
 
-jest.mock('pages/stats/DrillDownModal.tsx', () => ({
+jest.mock('pages/stats/common/drill-down/DrillDownModal.tsx', () => ({
     DrillDownModal: () => null,
 }))
 
-jest.mock('pages/stats/DrillDownModalTrigger.tsx', () => ({
+jest.mock('pages/stats/common/drill-down/DrillDownModalTrigger.tsx', () => ({
     DrillDownModalTrigger: ({
         children,
     }: ComponentProps<typeof DrillDownModalTrigger>) => children,

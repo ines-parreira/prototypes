@@ -16,8 +16,8 @@ import { useGetCustomTicketsFieldsDefinitionData } from 'pages/aiAgent/insights/
 import {
     BaseDrillDownRowData,
     DrillDownFormatterProps,
-} from 'pages/stats/DrillDownFormatters'
-import { getDrillDownQuery } from 'pages/stats/DrillDownTableConfig'
+} from 'pages/stats/common/drill-down/DrillDownFormatters'
+import { getDrillDownQuery } from 'pages/stats/common/drill-down/helpers'
 import { AutoQAAgentsTableColumn } from 'pages/stats/support-performance/auto-qa/AutoQAAgentsTableConfig'
 import { OverviewMetric } from 'pages/stats/support-performance/overview/SupportPerformanceOverviewConfig'
 import { getHumanAndAutomationBotAgentsJS } from 'state/agents/selectors'

@@ -3,7 +3,8 @@ import React from 'react'
 import { render, screen } from '@testing-library/react'
 
 import { DRILL_DOWN_PER_PAGE } from 'hooks/reporting/useDrillDownData'
-import { DrillDownInfoBar } from 'pages/stats/DrillDownInfoBar'
+import { DrillDownDownloadButton } from 'pages/stats/common/drill-down/DrillDownDownloadButton'
+import { DrillDownInfoBar } from 'pages/stats/common/drill-down/DrillDownInfoBar'
 import { OverviewMetric } from 'pages/stats/support-performance/overview/SupportPerformanceOverviewConfig'
 import { DrillDownMetric } from 'state/ui/stats/drillDownSlice'
 import {
@@ -14,9 +15,7 @@ import {
 import { DRILLDOWN_QUERY_LIMIT } from 'utils/reporting'
 import { assumeMock } from 'utils/testing'
 
-import { DrillDownDownloadButton } from '../DrillDownDownloadButton'
-
-jest.mock('pages/stats/DrillDownDownloadButton')
+jest.mock('pages/stats/common/drill-down/DrillDownDownloadButton')
 const DrillDownDownloadButtonMock = assumeMock(DrillDownDownloadButton)
 
 describe('<DrillDownInfobar />', () => {
@@ -161,9 +160,10 @@ describe('<DrillDownInfobar />', () => {
         [VoiceAgentsMetric.AgentInboundMissedCalls, 'voice calls'],
         [VoiceAgentsMetric.AgentOutboundCalls, 'voice calls'],
         [VoiceAgentsMetric.AgentTotalCalls, 'voice calls'],
-        ['test-metric', 'tickets'],
     ])('should render the correct object type for %s', (metric, objectType) => {
-        const metricData = { metricName: metric } as DrillDownMetric
+        const metricData = {
+            metricName: metric,
+        } as any
         useDrillDownDataMock.mockReturnValue({
             perPage: DRILL_DOWN_PER_PAGE,
             totalResults,

@@ -34,6 +34,16 @@ import {
     MetricTrendFetch,
     MetricTrendHook,
 } from 'hooks/reporting/useMetricTrend'
+import { accuracyDrillDownQueryFactory } from 'models/reporting/queryFactories/auto-qa/accuracyQueryFactory'
+import { brandVoiceDrillDownQueryFactory } from 'models/reporting/queryFactories/auto-qa/brandVoiceQueryFactory'
+import { communicationSkillsDrillDownQueryFactory } from 'models/reporting/queryFactories/auto-qa/communicationSkillsQueryFactory'
+import { efficiencyDrillDownQueryFactory } from 'models/reporting/queryFactories/auto-qa/efficiencyQueryFactory'
+import { internalComplianceDrillDownQueryFactory } from 'models/reporting/queryFactories/auto-qa/internalComplianceQueryFactory'
+import { languageProficiencyDrillDownQueryFactory } from 'models/reporting/queryFactories/auto-qa/languageProficiencyQueryFactory'
+import { resolutionCompletenessDrillDownQueryFactory } from 'models/reporting/queryFactories/auto-qa/resolutionCompletenessQueryFactory'
+import { reviewedClosedTicketsDrillDownQueryFactory } from 'models/reporting/queryFactories/auto-qa/reviewedClosedTicketsQueryFactory'
+import { DrillDownQueryFactory } from 'pages/stats/common/drill-down/DrillDownTableConfig'
+import { Domain } from 'pages/stats/common/drill-down/types'
 import { MetricTrendFormat } from 'pages/stats/common/utils'
 import { TooltipData } from 'pages/stats/types'
 import { AutoQAMetric } from 'state/ui/stats/types'
@@ -61,6 +71,9 @@ export const TrendCardConfig: Record<
         interpretAs: 'more-is-better' | 'less-is-better' | 'neutral'
         metricFormat: MetricTrendFormat
         drillDownMetric: AutoQAMetric
+        drillDownQuery: DrillDownQueryFactory
+        showMetric: boolean
+        domain: Domain.Ticket
     }
 > = {
     [AutoQAMetric.ReviewedClosedTickets]: {
@@ -73,6 +86,9 @@ export const TrendCardConfig: Record<
         useTrend: useReviewedClosedTicketsTrend,
         fetchTrend: fetchReviewedClosedTicketsTrend,
         drillDownMetric: AutoQAMetric.ReviewedClosedTickets,
+        showMetric: false,
+        domain: Domain.Ticket,
+        drillDownQuery: reviewedClosedTicketsDrillDownQueryFactory,
     },
     [AutoQAMetric.ResolutionCompleteness]: {
         title: RESOLUTION_COMPLETENESS_LABEL,
@@ -86,6 +102,9 @@ export const TrendCardConfig: Record<
         useTrend: useResolutionCompletenessTrend,
         fetchTrend: fetchResolutionCompletenessTrend,
         drillDownMetric: AutoQAMetric.ResolutionCompleteness,
+        showMetric: false,
+        domain: Domain.Ticket,
+        drillDownQuery: resolutionCompletenessDrillDownQueryFactory,
     },
     [AutoQAMetric.Accuracy]: {
         title: ACCURACY_LABEL,
@@ -98,6 +117,9 @@ export const TrendCardConfig: Record<
         useTrend: useAccuracyTrend,
         fetchTrend: fetchAccuracyTrend,
         drillDownMetric: AutoQAMetric.Accuracy,
+        showMetric: true,
+        domain: Domain.Ticket,
+        drillDownQuery: accuracyDrillDownQueryFactory,
     },
     [AutoQAMetric.InternalCompliance]: {
         title: INTERNAL_COMPLIANCE_LABEL,
@@ -110,6 +132,9 @@ export const TrendCardConfig: Record<
         useTrend: useInternalComplianceTrend,
         fetchTrend: fetchInternalComplianceTrend,
         drillDownMetric: AutoQAMetric.InternalCompliance,
+        showMetric: true,
+        domain: Domain.Ticket,
+        drillDownQuery: internalComplianceDrillDownQueryFactory,
     },
     [AutoQAMetric.Efficiency]: {
         title: EFFICIENCY_LABEL,
@@ -122,6 +147,9 @@ export const TrendCardConfig: Record<
         useTrend: useEfficiencyTrend,
         fetchTrend: fetchEfficiencyTrend,
         drillDownMetric: AutoQAMetric.Efficiency,
+        showMetric: true,
+        domain: Domain.Ticket,
+        drillDownQuery: efficiencyDrillDownQueryFactory,
     },
     [AutoQAMetric.CommunicationSkills]: {
         title: COMMUNICATION_SKILLS_LABEL,
@@ -135,6 +163,9 @@ export const TrendCardConfig: Record<
         useTrend: useCommunicationSkillsTrend,
         fetchTrend: fetchCommunicationSkillsTrend,
         drillDownMetric: AutoQAMetric.CommunicationSkills,
+        showMetric: true,
+        domain: Domain.Ticket,
+        drillDownQuery: communicationSkillsDrillDownQueryFactory,
     },
     [AutoQAMetric.LanguageProficiency]: {
         title: LANGUAGE_PROFICIENCY_SKILLS_LABEL,
@@ -148,6 +179,9 @@ export const TrendCardConfig: Record<
         useTrend: useLanguageProficiencyTrend,
         fetchTrend: fetchLanguageProficiencyTrend,
         drillDownMetric: AutoQAMetric.LanguageProficiency,
+        showMetric: true,
+        domain: Domain.Ticket,
+        drillDownQuery: languageProficiencyDrillDownQueryFactory,
     },
     [AutoQAMetric.BrandVoice]: {
         title: BRAND_VOICE_LABEL,
@@ -160,5 +194,8 @@ export const TrendCardConfig: Record<
         useTrend: useBrandVoiceTrend,
         fetchTrend: fetchBrandVoiceTrend,
         drillDownMetric: AutoQAMetric.BrandVoice,
+        showMetric: true,
+        domain: Domain.Ticket,
+        drillDownQuery: brandVoiceDrillDownQueryFactory,
     },
 }

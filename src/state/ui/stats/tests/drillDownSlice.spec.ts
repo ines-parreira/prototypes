@@ -7,54 +7,24 @@ import { User } from 'config/types/user'
 import { createJob } from 'models/job/resources'
 import { Job, JobType } from 'models/job/types'
 import { closedTicketsQueryFactory } from 'models/reporting/queryFactories/support-performance/closedTickets'
-import { CSAT_DRILL_DOWN_LABEL } from 'pages/aiAgent/insights/IntentTableWidget/IntentTableConfig'
 import { LogicalOperatorEnum } from 'pages/stats/common/components/Filter/constants'
-import {
-    CSAT_SCORE,
-    SatisfactionMetricConfig as SatisfactionTrendCardConfig,
-} from 'pages/stats/quality-management/satisfaction/SatisfactionMetricsConfig'
-import { SLA_STATUS_COLUMN_LABEL } from 'pages/stats/sla/SlaConfig'
 import {
     buildAgentMetric,
     TableLabels,
 } from 'pages/stats/support-performance/agents/AgentsTableConfig'
-import {
-    AutoQAAgentsColumnConfig,
-    AutoQAAgentsTableColumn,
-    TableLabels as autoQATableLabels,
-} from 'pages/stats/support-performance/auto-qa/AutoQAAgentsTableConfig'
-import { TrendCardConfig } from 'pages/stats/support-performance/auto-qa/AutoQAMetricsConfig'
-import {
-    ChannelColumnConfig,
-    ChannelsTableLabels,
-} from 'pages/stats/support-performance/channels/ChannelsTableConfig'
 import { OverviewMetric } from 'pages/stats/support-performance/overview/SupportPerformanceOverviewConfig'
-import { MEDIAN_RESOLUTION_TIME_LABEL } from 'services/reporting/constants'
 import { RootState, StoreDispatch } from 'state/types'
 import {
     closeDrillDownModal,
     createExportDrillDownJob,
     drillDownSlice,
     getDrillDownCurrentPage,
-    getDrillDownMetric,
-    getDrillDownMetricColumn,
     getDrillDownModalState,
     initialState,
     setCurrentPage,
     setMetricData,
-    SLA_FORMAT,
 } from 'state/ui/stats/drillDownSlice'
-import {
-    AgentsTableColumn,
-    AIInsightsMetric,
-    AutoQAMetric,
-    ChannelsTableColumns,
-    ConvertMetric,
-    SatisfactionMetric,
-    SlaMetric,
-    TicketFieldsMetric,
-    VoiceAgentsMetric,
-} from 'state/ui/stats/types'
+import { AgentsTableColumn, ConvertMetric } from 'state/ui/stats/types'
 import { assumeMock } from 'utils/testing'
 
 jest.mock('models/job/resources')
@@ -162,234 +132,6 @@ describe('drillDownSlice', () => {
                 },
             },
         } as RootState
-
-        const voiceAgentsMetricsWithExpectedValues = Object.values(
-            VoiceAgentsMetric,
-        ).map((name) => ({
-            metricData: { metricName: name, perAgentId: 123 },
-            expectedValues: {
-                metricTitle: '',
-                showMetric: false,
-                metricValueFormat: 'decimal',
-            },
-        }))
-
-        it('getDrillDownMetric', () => {
-            expect(getDrillDownMetric(state)).toEqual(metricData)
-        })
-
-        it.each([
-            {
-                metricData: {
-                    metricName: AgentsTableColumn.OneTouchTickets,
-                    perAgentId: 1,
-                },
-                expectedValues: {
-                    metricTitle: TableLabels[AgentsTableColumn.OneTouchTickets],
-                    showMetric: false,
-                    metricValueFormat: 'percent',
-                },
-            },
-            {
-                metricData: {
-                    metricName: AgentsTableColumn.ClosedTickets,
-                    perAgentId: 1,
-                },
-                expectedValues: {
-                    metricTitle: TableLabels[AgentsTableColumn.ClosedTickets],
-                    showMetric: false,
-                    metricValueFormat: 'integer',
-                },
-            },
-            {
-                metricData: {
-                    metricName: OverviewMetric.MedianResolutionTime,
-                },
-                expectedValues: {
-                    metricTitle: MEDIAN_RESOLUTION_TIME_LABEL,
-                    showMetric: true,
-                    metricValueFormat: 'duration',
-                },
-            },
-            {
-                metricData: null,
-                expectedValues: {
-                    metricTitle: '',
-                    showMetric: false,
-                    metricValueFormat: 'decimal',
-                },
-            },
-            {
-                metricData: {
-                    metricName:
-                        TicketFieldsMetric.TicketCustomFieldsTicketCount,
-                    customFieldValue: 'customFieldValue',
-                },
-                expectedValues: {
-                    metricTitle: '',
-                    showMetric: false,
-                    metricValueFormat: 'decimal',
-                },
-            },
-            {
-                metricData: {
-                    metricName: SlaMetric.AchievementRate,
-                },
-                expectedValues: {
-                    metricTitle: SLA_STATUS_COLUMN_LABEL,
-                    showMetric: true,
-                    metricValueFormat: SLA_FORMAT,
-                },
-            },
-            {
-                metricData: {
-                    metricName: ChannelsTableColumns.TicketHandleTime,
-                    perChannel: 'some-channel',
-                },
-                expectedValues: {
-                    metricTitle:
-                        ChannelsTableLabels[
-                            ChannelsTableColumns.TicketHandleTime
-                        ],
-                    showMetric: true,
-                    metricValueFormat:
-                        ChannelColumnConfig[
-                            ChannelsTableColumns.TicketHandleTime
-                        ].format,
-                },
-            },
-            {
-                metricData: {
-                    metricName: AutoQAAgentsTableColumn.ResolutionCompleteness,
-                    perAgentId: 'some-id',
-                },
-                expectedValues: {
-                    metricTitle:
-                        autoQATableLabels[
-                            AutoQAAgentsTableColumn.ResolutionCompleteness
-                        ],
-                    showMetric: false,
-                    metricValueFormat:
-                        AutoQAAgentsColumnConfig[
-                            AutoQAAgentsTableColumn.ResolutionCompleteness
-                        ].format,
-                },
-            },
-            {
-                metricData: {
-                    metricName: AutoQAMetric.ResolutionCompleteness,
-                },
-                expectedValues: {
-                    metricTitle:
-                        TrendCardConfig[AutoQAMetric.ResolutionCompleteness]
-                            .title,
-                    showMetric: false,
-                    metricValueFormat:
-                        TrendCardConfig[AutoQAMetric.ResolutionCompleteness]
-                            .metricFormat,
-                },
-            },
-            {
-                metricData: {
-                    metricName: AutoQAMetric.ReviewedClosedTickets,
-                },
-                expectedValues: {
-                    metricTitle:
-                        TrendCardConfig[AutoQAMetric.ReviewedClosedTickets]
-                            .title,
-                    showMetric: false,
-                    metricValueFormat:
-                        TrendCardConfig[AutoQAMetric.ReviewedClosedTickets]
-                            .metricFormat,
-                },
-            },
-            {
-                metricData: {
-                    metricName: SatisfactionMetric.SatisfactionScore,
-                },
-                expectedValues: {
-                    metricTitle:
-                        SatisfactionTrendCardConfig[
-                            SatisfactionMetric.SatisfactionScore
-                        ].title,
-                    showMetric: false,
-                    metricValueFormat:
-                        SatisfactionTrendCardConfig[
-                            SatisfactionMetric.SatisfactionScore
-                        ].metricFormat,
-                },
-            },
-            {
-                metricData: {
-                    metricName: SatisfactionMetric.ResponseRate,
-                },
-                expectedValues: {
-                    metricTitle:
-                        SatisfactionTrendCardConfig[
-                            SatisfactionMetric.ResponseRate
-                        ].title,
-                    showMetric: false,
-                    metricValueFormat:
-                        SatisfactionTrendCardConfig[
-                            SatisfactionMetric.ResponseRate
-                        ].metricFormat,
-                },
-            },
-            {
-                metricData: {
-                    metricName: SatisfactionMetric.SurveysSent,
-                },
-                expectedValues: {
-                    metricTitle:
-                        SatisfactionTrendCardConfig[
-                            SatisfactionMetric.SurveysSent
-                        ].title,
-                    showMetric: false,
-                    metricValueFormat:
-                        SatisfactionTrendCardConfig[
-                            SatisfactionMetric.SurveysSent
-                        ].metricFormat,
-                },
-            },
-            {
-                metricData: {
-                    metricName: SatisfactionMetric.AverageSurveyScore,
-                },
-                expectedValues: {
-                    metricTitle: CSAT_SCORE,
-                    showMetric: true,
-                    metricValueFormat:
-                        SatisfactionTrendCardConfig[
-                            SatisfactionMetric.AverageSurveyScore
-                        ].metricFormat,
-                },
-            },
-            {
-                metricData: {
-                    metricName:
-                        AIInsightsMetric.TicketDrillDownPerCustomerSatisfaction,
-                },
-                expectedValues: {
-                    metricTitle: CSAT_DRILL_DOWN_LABEL,
-                    showMetric: true,
-                    metricValueFormat: 'decimal',
-                },
-            },
-            ...voiceAgentsMetricsWithExpectedValues,
-        ])('getDrillDownMetricColumn', ({ metricData, expectedValues }) => {
-            expect(
-                getDrillDownMetricColumn({
-                    ...state,
-                    ui: {
-                        stats: {
-                            [drillDownSlice.name]: {
-                                metricData,
-                            },
-                        },
-                    },
-                } as RootState),
-            ).toEqual(expectedValues)
-        })
 
         it('getDrillDownModalState', () => {
             expect(getDrillDownModalState(state)).toEqual(isOpen)

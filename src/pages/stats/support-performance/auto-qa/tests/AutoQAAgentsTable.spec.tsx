@@ -9,7 +9,7 @@ import thunk from 'redux-thunk'
 import { agents } from 'fixtures/agents'
 import { useStatsFilters } from 'hooks/reporting/support-performance/useStatsFilters'
 import { ReportingGranularity } from 'models/reporting/types'
-import { DrillDownModalTrigger } from 'pages/stats/DrillDownModalTrigger'
+import { DrillDownModalTrigger } from 'pages/stats/common/drill-down/DrillDownModalTrigger'
 import { AgentsCellContent } from 'pages/stats/support-performance/agents/AgentsCellContent'
 import { AgentsHeaderCellContent } from 'pages/stats/support-performance/agents/AgentsHeaderCellContent'
 import { AgentsTableSummaryCell } from 'pages/stats/support-performance/agents/AgentsTableSummaryCell'
@@ -52,7 +52,7 @@ jest.mock(
             getPageStatsFilters: jest.fn(),
         }) as Record<string, any>,
 )
-jest.mock('pages/stats/DrillDownModalTrigger.tsx', () => ({
+jest.mock('pages/stats/common/drill-down/DrillDownModalTrigger.tsx', () => ({
     DrillDownModalTrigger: ({
         children,
     }: ComponentProps<typeof DrillDownModalTrigger>) => children,

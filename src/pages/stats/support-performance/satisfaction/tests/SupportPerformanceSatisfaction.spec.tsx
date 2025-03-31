@@ -34,7 +34,7 @@ jest.mock(
             <div>TagsStatsFilterMock, value: {JSON.stringify(value)}</div>
         ),
 )
-jest.mock('pages/stats/DrillDownModal.tsx', () => ({
+jest.mock('pages/stats/common/drill-down/DrillDownModal.tsx', () => ({
     DrillDownModal: () => null,
 }))
 jest.mock(

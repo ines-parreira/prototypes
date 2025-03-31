@@ -5,52 +5,28 @@ import useAppSelector from 'hooks/useAppSelector'
 import Modal from 'pages/common/components/modal/Modal'
 import ModalBody from 'pages/common/components/modal/ModalBody'
 import ModalHeader from 'pages/common/components/modal/ModalHeader'
-import { CampaignSalesDrillDownTableContent } from 'pages/stats/convert/components/CampaignSalesDrillDownTableContent'
-import { getDrillDownHook } from 'pages/stats/DrillDownHookConfig'
-import { DrillDownInfoBar } from 'pages/stats/DrillDownInfoBar'
-import { DrillDownTable } from 'pages/stats/DrillDownTable'
-import { TicketDrillDownTableContent } from 'pages/stats/TicketDrillDownTableContent'
-import VoiceCallDrillDownTableContent from 'pages/stats/voice/components/VoiceCallTable/VoiceCallDrillDownTableContent'
+import { DrillDownInfoBar } from 'pages/stats/common/drill-down/DrillDownInfoBar'
+import { DrillDownTable } from 'pages/stats/common/drill-down/DrillDownTable'
+import {
+    DomainsConfig,
+    DrillDownHook,
+    MetricsConfig,
+} from 'pages/stats/common/drill-down/DrillDownTableConfig'
 import {
     closeDrillDownModal,
     DrillDownMetric,
     getDrillDownMetric,
     getDrillDownModalState,
 } from 'state/ui/stats/drillDownSlice'
-import {
-    ConvertMetric,
-    VoiceAgentsMetric,
-    VoiceMetric,
-} from 'state/ui/stats/types'
 
 const getTableContent = (
     metricData: DrillDownMetric,
 ): FunctionComponent<{
     metricData: DrillDownMetric
-}> => {
-    switch (metricData.metricName) {
-        case ConvertMetric.CampaignSalesCount:
-            return CampaignSalesDrillDownTableContent
-        case VoiceMetric.AverageWaitTime:
-        case VoiceMetric.AverageTalkTime:
-        case VoiceMetric.QueueAverageWaitTime:
-        case VoiceMetric.QueueAverageTalkTime:
-        case VoiceMetric.QueueInboundCalls:
-        case VoiceMetric.DEPRECATED_QueueMissedInboundCalls:
-        case VoiceMetric.QueueInboundUnansweredCalls:
-        case VoiceMetric.QueueInboundMissedCalls:
-        case VoiceMetric.QueueInboundAbandonedCalls:
-        case VoiceMetric.QueueOutboundCalls:
-        case VoiceAgentsMetric.AgentTotalCalls:
-        case VoiceAgentsMetric.AgentInboundAnsweredCalls:
-        case VoiceAgentsMetric.AgentInboundMissedCalls:
-        case VoiceAgentsMetric.AgentOutboundCalls:
-        case VoiceAgentsMetric.AgentAverageTalkTime:
-            return VoiceCallDrillDownTableContent
-        default:
-            return TicketDrillDownTableContent
-    }
-}
+}> => DomainsConfig[MetricsConfig[metricData.metricName].domain].tableComponent
+
+export const getDrillDownHook = (metricData: DrillDownMetric): DrillDownHook =>
+    DomainsConfig[MetricsConfig[metricData.metricName].domain].drillDownHook
 
 export const DrillDownModal = () => {
     const isOpen = useAppSelector(getDrillDownModalState)

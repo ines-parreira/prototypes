@@ -11,31 +11,9 @@ import {
     JobContext,
     JobType,
 } from 'models/job/types'
-import { CSAT_DRILL_DOWN_LABEL } from 'pages/aiAgent/insights/IntentTableWidget/IntentTableConfig'
 import { LogicalOperatorEnum } from 'pages/stats/common/components/Filter/constants'
-import { MetricValueFormat } from 'pages/stats/common/utils'
-import {
-    CSAT_SCORE,
-    SatisfactionMetricConfig as SatisfactionTrendCardConfig,
-} from 'pages/stats/quality-management/satisfaction/SatisfactionMetricsConfig'
-import { SLA_STATUS_COLUMN_LABEL } from 'pages/stats/sla/SlaConfig'
-import {
-    AgentsColumnConfig,
-    TableLabels,
-} from 'pages/stats/support-performance/agents/AgentsTableConfig'
-import {
-    AutoQAAgentsColumnConfig,
-    AutoQAAgentsTableColumn,
-} from 'pages/stats/support-performance/auto-qa/AutoQAAgentsTableConfig'
-import { TrendCardConfig } from 'pages/stats/support-performance/auto-qa/AutoQAMetricsConfig'
-import {
-    ChannelColumnConfig,
-    ChannelsTableLabels,
-} from 'pages/stats/support-performance/channels/ChannelsTableConfig'
-import {
-    OverviewMetric,
-    OverviewMetricConfig,
-} from 'pages/stats/support-performance/overview/SupportPerformanceOverviewConfig'
+import { AutoQAAgentsTableColumn } from 'pages/stats/support-performance/auto-qa/AutoQAAgentsTableConfig'
+import { OverviewMetric } from 'pages/stats/support-performance/overview/SupportPerformanceOverviewConfig'
 import { getCurrentUser } from 'state/currentUser/selectors'
 import { notify } from 'state/notifications/actions'
 import { NotificationStatus } from 'state/notifications/types'
@@ -54,8 +32,6 @@ import {
     VoiceAgentsMetric,
     VoiceMetric,
 } from 'state/ui/stats/types'
-
-export const SLA_FORMAT = 'sla'
 
 type CommonMetrics = {
     title?: string
@@ -228,56 +204,6 @@ export type DrillDownState = {
     }
 }
 
-const hiddenMetrics: DrillDownMetric['metricName'][] = [
-    OverviewMetric.OpenTickets,
-    OverviewMetric.TicketsClosed,
-    OverviewMetric.TicketsCreated,
-    OverviewMetric.TicketsReplied,
-    OverviewMetric.MessagesSent,
-    OverviewMetric.MessagesReceived,
-    OverviewMetric.OneTouchTickets,
-    OverviewMetric.ZeroTouchTickets,
-    TicketFieldsMetric.TicketCustomFieldsTicketCount,
-    TagsMetric.TicketCount,
-    AgentsTableColumn.ClosedTickets,
-    AgentsTableColumn.PercentageOfClosedTickets,
-    AgentsTableColumn.RepliedTickets,
-    AgentsTableColumn.MessagesSent,
-    AgentsTableColumn.OneTouchTickets,
-    AgentsTableColumn.ZeroTouchTickets,
-    AgentsTableColumn.RepliedTicketsPerHour,
-    AgentsTableColumn.ClosedTicketsPerHour,
-    AutoQAMetric.ReviewedClosedTickets,
-    AutoQAMetric.ResolutionCompleteness,
-    AIInsightsMetric.TicketCustomFieldsTicketCount,
-    AIInsightsMetric.TicketDrillDownPerCoverageRate,
-    SatisfactionMetric.SatisfactionScore,
-    SatisfactionMetric.ResponseRate,
-    SatisfactionMetric.SurveysSent,
-    AutoQAAgentsTableColumn.ReviewedClosedTickets,
-    AutoQAAgentsTableColumn.ResolutionCompleteness,
-    ChannelsTableColumns.TicketsCreated,
-    ChannelsTableColumns.CreatedTicketsPercentage,
-    ChannelsTableColumns.ClosedTickets,
-    ChannelsTableColumns.TicketsReplied,
-    ConvertMetric.CampaignSalesCount,
-    VoiceMetric.AverageWaitTime,
-    VoiceMetric.AverageTalkTime,
-    VoiceMetric.QueueAverageWaitTime,
-    VoiceMetric.QueueAverageTalkTime,
-    VoiceMetric.QueueInboundCalls,
-    VoiceMetric.DEPRECATED_QueueMissedInboundCalls,
-    VoiceMetric.QueueInboundUnansweredCalls,
-    VoiceMetric.QueueInboundMissedCalls,
-    VoiceMetric.QueueInboundAbandonedCalls,
-    VoiceMetric.QueueOutboundCalls,
-    VoiceAgentsMetric.AgentTotalCalls,
-    VoiceAgentsMetric.AgentInboundAnsweredCalls,
-    VoiceAgentsMetric.AgentInboundMissedCalls,
-    VoiceAgentsMetric.AgentOutboundCalls,
-    VoiceAgentsMetric.AgentAverageTalkTime,
-]
-
 export const initialState: DrillDownState = {
     isOpen: false,
     currentPage: 1,
@@ -375,145 +301,6 @@ export const getDrillDownExport = (state: RootState) =>
 
 export const getDrillDownMetric = (state: RootState) =>
     state.ui.stats[drillDownSlice.name].metricData
-
-export const getDrillDownMetricColumn = (
-    state: RootState,
-): {
-    metricTitle: string
-    showMetric: boolean
-    metricValueFormat: MetricValueFormat | typeof SLA_FORMAT
-} => {
-    const metricData = state.ui.stats[drillDownSlice.name].metricData
-    let metricTitle = ''
-    let metricValueFormat: MetricValueFormat | typeof SLA_FORMAT = 'decimal'
-
-    if (!metricData) {
-        return {
-            metricTitle,
-            showMetric: false,
-            metricValueFormat: 'decimal',
-        }
-    }
-
-    if (
-        metricData.metricName === VoiceAgentsMetric.AgentTotalCalls ||
-        metricData.metricName === VoiceAgentsMetric.AgentInboundAnsweredCalls ||
-        metricData.metricName === VoiceAgentsMetric.AgentInboundMissedCalls ||
-        metricData.metricName === VoiceAgentsMetric.AgentOutboundCalls ||
-        metricData.metricName === VoiceAgentsMetric.AgentAverageTalkTime ||
-        metricData.metricName === VoiceMetric.QueueAverageTalkTime ||
-        metricData.metricName === VoiceMetric.QueueAverageWaitTime ||
-        metricData.metricName === VoiceMetric.QueueInboundCalls ||
-        metricData.metricName ===
-            VoiceMetric.DEPRECATED_QueueMissedInboundCalls ||
-        metricData.metricName === VoiceMetric.QueueInboundUnansweredCalls ||
-        metricData.metricName === VoiceMetric.QueueInboundMissedCalls ||
-        metricData.metricName === VoiceMetric.QueueInboundAbandonedCalls ||
-        metricData.metricName === VoiceMetric.QueueOutboundCalls
-    ) {
-        metricTitle = ''
-    } else if (
-        metricData.metricName === SlaMetric.AchievementRate ||
-        metricData.metricName === SlaMetric.BreachedTicketsRate
-    ) {
-        metricTitle = SLA_STATUS_COLUMN_LABEL
-        metricValueFormat = SLA_FORMAT
-    } else if (
-        metricData.metricName === SatisfactionMetric.SatisfactionScore ||
-        metricData.metricName === SatisfactionMetric.ResponseRate ||
-        metricData.metricName === SatisfactionMetric.SurveysSent ||
-        metricData.metricName === SatisfactionMetric.AverageCSATPerAssignee ||
-        metricData.metricName === SatisfactionMetric.AverageCSATPerChannel ||
-        metricData.metricName === SatisfactionMetric.AverageCSATPerIntegration
-    ) {
-        metricTitle = SatisfactionTrendCardConfig[metricData.metricName].title
-        metricValueFormat =
-            SatisfactionTrendCardConfig[metricData.metricName].metricFormat
-    } else if (
-        metricData.metricName === SatisfactionMetric.AverageSurveyScore ||
-        metricData.metricName ===
-            SatisfactionAverageSurveyScoreMetric.AverageSurveyScoreOne ||
-        metricData.metricName ===
-            SatisfactionAverageSurveyScoreMetric.AverageSurveyScoreTwo ||
-        metricData.metricName ===
-            SatisfactionAverageSurveyScoreMetric.AverageSurveyScoreThree ||
-        metricData.metricName ===
-            SatisfactionAverageSurveyScoreMetric.AverageSurveyScoreFour ||
-        metricData.metricName ===
-            SatisfactionAverageSurveyScoreMetric.AverageSurveyScoreFive
-    ) {
-        metricTitle = CSAT_SCORE
-        metricValueFormat =
-            SatisfactionTrendCardConfig[SatisfactionMetric.AverageSurveyScore]
-                .metricFormat
-    } else if (
-        metricData.metricName === AutoQAMetric.ReviewedClosedTickets ||
-        metricData.metricName === AutoQAMetric.CommunicationSkills ||
-        metricData.metricName === AutoQAMetric.ResolutionCompleteness ||
-        metricData.metricName === AutoQAMetric.LanguageProficiency ||
-        metricData.metricName === AutoQAMetric.Accuracy ||
-        metricData.metricName === AutoQAMetric.Efficiency ||
-        metricData.metricName === AutoQAMetric.InternalCompliance ||
-        metricData.metricName === AutoQAMetric.BrandVoice
-    ) {
-        metricTitle = TrendCardConfig[metricData.metricName].title
-        metricValueFormat = TrendCardConfig[metricData.metricName].metricFormat
-    } else if (
-        metricData.metricName === AutoQAAgentsTableColumn.CommunicationSkills ||
-        metricData.metricName ===
-            AutoQAAgentsTableColumn.ResolutionCompleteness ||
-        metricData.metricName ===
-            AutoQAAgentsTableColumn.ReviewedClosedTickets ||
-        metricData.metricName === AutoQAAgentsTableColumn.LanguageProficiency ||
-        metricData.metricName === AutoQAAgentsTableColumn.Accuracy ||
-        metricData.metricName === AutoQAAgentsTableColumn.Efficiency ||
-        metricData.metricName === AutoQAAgentsTableColumn.InternalCompliance ||
-        metricData.metricName === AutoQAAgentsTableColumn.BrandVoice
-    ) {
-        metricTitle = AutoQAAgentsColumnConfig[metricData.metricName].title
-        metricValueFormat =
-            AutoQAAgentsColumnConfig[metricData.metricName].format
-    } else if (
-        metricData.metricName === ConvertMetric.CampaignSalesCount ||
-        metricData.metricName === VoiceMetric.AverageWaitTime ||
-        metricData.metricName === VoiceMetric.AverageTalkTime ||
-        metricData.metricName === TagsMetric.TicketCount
-    ) {
-        metricTitle = ''
-    } else if (
-        metricData.metricName ===
-            AIInsightsMetric.TicketCustomFieldsTicketCount ||
-        metricData.metricName ===
-            AIInsightsMetric.TicketDrillDownPerCoverageRate
-    ) {
-        metricTitle = metricData.title || ''
-    } else if (
-        metricData.metricName ===
-        AIInsightsMetric.TicketDrillDownPerCustomerSatisfaction
-    ) {
-        metricTitle = CSAT_DRILL_DOWN_LABEL
-        metricValueFormat = 'decimal'
-    } else if ('customFieldValue' in metricData) {
-        metricTitle = ''
-        metricValueFormat = 'decimal'
-    } else if ('perAgentId' in metricData) {
-        metricTitle = TableLabels[metricData.metricName]
-        metricValueFormat = AgentsColumnConfig[metricData.metricName].format
-    } else if ('perChannel' in metricData) {
-        metricTitle = ChannelsTableLabels[metricData.metricName]
-        metricValueFormat = ChannelColumnConfig[metricData.metricName].format
-    } else {
-        metricTitle = OverviewMetricConfig[metricData.metricName].title
-        metricValueFormat =
-            OverviewMetricConfig[metricData.metricName].metricFormat
-    }
-
-    return {
-        metricTitle,
-        metricValueFormat,
-        showMetric: !hiddenMetrics.includes(metricData.metricName),
-    }
-}
 
 const getConfirmationText = (jobType: JobType) => {
     switch (jobType) {

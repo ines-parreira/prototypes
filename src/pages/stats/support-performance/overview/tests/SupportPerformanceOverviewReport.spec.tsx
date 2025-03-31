@@ -19,9 +19,9 @@ import {
 import { useCleanStatsFilters } from 'hooks/reporting/useCleanStatsFilters'
 import { FilterKey } from 'models/stat/types'
 import { TrendCard } from 'pages/stats/common/components/TrendCard'
+import { DrillDownModalTrigger } from 'pages/stats/common/drill-down/DrillDownModalTrigger'
 import { AUTO_QA_FILTER_KEYS } from 'pages/stats/common/filters/constants'
 import FiltersPanelWrapper from 'pages/stats/common/filters/FiltersPanelWrapper/FiltersPanelWrapper'
-import { DrillDownModalTrigger } from 'pages/stats/DrillDownModalTrigger'
 import { useReportChartRestrictions } from 'pages/stats/report-chart-restrictions/useReportChartRestrictions'
 import { OverviewChartCard } from 'pages/stats/support-performance/components/OverviewChartCard'
 import { MedianResponseTimeTrendCard } from 'pages/stats/support-performance/overview/charts/MedianResponseTimeTrendCard'
@@ -43,10 +43,10 @@ const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
 
 const TIP_PLACEHOLDER = 'Tip:'
 
-jest.mock('pages/stats/DrillDownModal.tsx', () => ({
+jest.mock('pages/stats/common/drill-down/DrillDownModal.tsx', () => ({
     DrillDownModal: () => null,
 }))
-jest.mock('pages/stats/DrillDownModalTrigger.tsx', () => ({
+jest.mock('pages/stats/common/drill-down/DrillDownModalTrigger.tsx', () => ({
     DrillDownModalTrigger: ({
         children,
     }: ComponentProps<typeof DrillDownModalTrigger>) => children,

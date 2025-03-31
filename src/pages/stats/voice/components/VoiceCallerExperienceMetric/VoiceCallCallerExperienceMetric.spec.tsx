@@ -5,18 +5,17 @@ import { Provider } from 'react-redux'
 
 import { MetricTrend } from 'hooks/reporting/useMetricTrend'
 import { StatsFilters } from 'models/stat/types'
+import * as DrillDownModalTrigger from 'pages/stats/common/drill-down/DrillDownModalTrigger'
 import { formatMetricValue } from 'pages/stats/common/utils'
-import * as DrillDownModalTrigger from 'pages/stats/DrillDownModalTrigger'
+import VoiceCallCallerExperienceMetric from 'pages/stats/voice/components/VoiceCallerExperienceMetric/VoiceCallCallerExperienceMetric'
+import {
+    AVERAGE_TALK_TIME_METRIC_TITLE,
+    AVERAGE_WAIT_TIME_METRIC_TITLE,
+} from 'pages/stats/voice/constants/voiceOverview'
 import { useVoiceCallAverageTimeTrend } from 'pages/stats/voice/hooks/useVoiceCallAverageTimeTrend'
 import { VoiceMetrics } from 'state/ui/stats/drillDownSlice'
 import { VoiceMetric } from 'state/ui/stats/types'
 import { assumeMock, mockStore } from 'utils/testing'
-
-import {
-    AVERAGE_TALK_TIME_METRIC_TITLE,
-    AVERAGE_WAIT_TIME_METRIC_TITLE,
-} from '../../constants/voiceOverview'
-import VoiceCallCallerExperienceMetric from './VoiceCallCallerExperienceMetric'
 
 jest.mock('pages/stats/voice/hooks/useVoiceCallAverageTimeTrend')
 const mockUseVoiceCallAverageTimeTrend = assumeMock(

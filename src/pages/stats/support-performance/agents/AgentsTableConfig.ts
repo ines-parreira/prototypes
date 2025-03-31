@@ -51,11 +51,24 @@ import { HelpdeskMessageMember } from 'models/reporting/cubes/HelpdeskMessageCub
 import { TicketMember } from 'models/reporting/cubes/TicketCube'
 import { TicketMessagesMember } from 'models/reporting/cubes/TicketMessagesCube'
 import { TicketMessagesEnrichedResponseTimesDimension } from 'models/reporting/cubes/TicketMessagesEnrichedResponseTimesCube'
+import { ticketHandleTimePerTicketDrillDownQueryFactory } from 'models/reporting/queryFactories/agentxp/ticketHandleTime'
+import { closedTicketsPerTicketDrillDownQueryFactory } from 'models/reporting/queryFactories/support-performance/closedTickets'
+import { customerSatisfactionMetricDrillDownQueryFactory } from 'models/reporting/queryFactories/support-performance/customerSatisfaction'
+import { firstResponseTimeMetricPerTicketDrillDownQueryFactory } from 'models/reporting/queryFactories/support-performance/medianFirstResponseTime'
+import { resolutionTimeMetricPerTicketDrillDownQueryFactory } from 'models/reporting/queryFactories/support-performance/medianResolutionTime'
+import { medianResponseTimeMetricPerTicketDrillDownQueryFactory } from 'models/reporting/queryFactories/support-performance/medianResponseTime'
+import { messagesReceivedMetricPerTicketDrillDownQueryFactory } from 'models/reporting/queryFactories/support-performance/messagesReceived'
+import { messagesSentMetricPerTicketDrillDownQueryFactory } from 'models/reporting/queryFactories/support-performance/messagesSent'
+import { oneTouchTicketsPerTicketQueryFactory } from 'models/reporting/queryFactories/support-performance/oneTouchTickets'
+import { ticketsRepliedMetricPerTicketDrillDownQueryFactory } from 'models/reporting/queryFactories/support-performance/ticketsReplied'
+import { zeroTouchTicketsPerTicketQueryFactory } from 'models/reporting/queryFactories/support-performance/zeroTouchTickets'
 import { StatsFilters } from 'models/stat/types'
 import {
     isExtraLargeScreen,
     isMediumOrSmallScreen,
 } from 'pages/common/utils/mobile'
+import { DrillDownQueryFactory } from 'pages/stats/common/drill-down/DrillDownTableConfig'
+import { Domain } from 'pages/stats/common/drill-down/types'
 import { MetricValueFormat } from 'pages/stats/common/utils'
 import { TooltipData } from 'pages/stats/types'
 import {
@@ -189,12 +202,18 @@ export const AgentsColumnConfig: Record<
         format: MetricValueFormat
         hint: TooltipData | null
         perAgent: boolean
+        showMetric: boolean
+        domain: Domain.Ticket
+        drillDownQuery: DrillDownQueryFactory
     }
 > = {
     [AgentsTableColumn.AgentName]: {
         format: 'integer',
         hint: null,
         perAgent: false,
+        showMetric: false,
+        domain: Domain.Ticket,
+        drillDownQuery: (() => {}) as any, // TODO cleanup
     },
     [AgentsTableColumn.CustomerSatisfaction]: {
         format: 'decimal',
@@ -203,6 +222,9 @@ export const AgentsColumnConfig: Record<
             link: 'https://link.gorgias.com/9a6',
         },
         perAgent: false,
+        showMetric: true,
+        domain: Domain.Ticket,
+        drillDownQuery: customerSatisfactionMetricDrillDownQueryFactory,
     },
     [AgentsTableColumn.MedianFirstResponseTime]: {
         format: 'duration',
@@ -211,6 +233,9 @@ export const AgentsColumnConfig: Record<
             link: 'https://link.gorgias.com/gs6',
         },
         perAgent: false,
+        showMetric: true,
+        domain: Domain.Ticket,
+        drillDownQuery: firstResponseTimeMetricPerTicketDrillDownQueryFactory,
     },
     [AgentsTableColumn.MedianResponseTime]: {
         format: 'duration',
@@ -218,6 +243,9 @@ export const AgentsColumnConfig: Record<
             title: 'Average response time between message sent by customer and response from the ticket agent response',
         },
         perAgent: false,
+        showMetric: true,
+        domain: Domain.Ticket,
+        drillDownQuery: medianResponseTimeMetricPerTicketDrillDownQueryFactory,
     },
     [AgentsTableColumn.MedianResolutionTime]: {
         format: 'duration',
@@ -226,6 +254,9 @@ export const AgentsColumnConfig: Record<
             link: 'https://link.gorgias.com/a9m',
         },
         perAgent: false,
+        showMetric: true,
+        domain: Domain.Ticket,
+        drillDownQuery: resolutionTimeMetricPerTicketDrillDownQueryFactory,
     },
     [AgentsTableColumn.MessagesSent]: {
         format: 'integer',
@@ -234,6 +265,9 @@ export const AgentsColumnConfig: Record<
             link: 'https://link.gorgias.com/114',
         },
         perAgent: true,
+        showMetric: false,
+        domain: Domain.Ticket,
+        drillDownQuery: messagesSentMetricPerTicketDrillDownQueryFactory,
     },
     [AgentsTableColumn.MessagesReceived]: {
         format: 'integer',
@@ -241,6 +275,9 @@ export const AgentsColumnConfig: Record<
             title: 'Number of messages received within the selected timeframe.',
         },
         perAgent: true,
+        showMetric: true,
+        domain: Domain.Ticket,
+        drillDownQuery: messagesReceivedMetricPerTicketDrillDownQueryFactory,
     },
     [AgentsTableColumn.PercentageOfClosedTickets]: {
         format: 'percent',
@@ -249,6 +286,9 @@ export const AgentsColumnConfig: Record<
             link: 'https://link.gorgias.com/jd4',
         },
         perAgent: true,
+        showMetric: false,
+        domain: Domain.Ticket,
+        drillDownQuery: closedTicketsPerTicketDrillDownQueryFactory,
     },
     [AgentsTableColumn.ClosedTickets]: {
         format: 'integer',
@@ -257,6 +297,9 @@ export const AgentsColumnConfig: Record<
             link: 'https://link.gorgias.com/m9b',
         },
         perAgent: true,
+        showMetric: false,
+        domain: Domain.Ticket,
+        drillDownQuery: closedTicketsPerTicketDrillDownQueryFactory,
     },
     [AgentsTableColumn.RepliedTickets]: {
         format: 'integer',
@@ -265,6 +308,9 @@ export const AgentsColumnConfig: Record<
             link: 'https://link.gorgias.com/jhv',
         },
         perAgent: true,
+        showMetric: false,
+        domain: Domain.Ticket,
+        drillDownQuery: ticketsRepliedMetricPerTicketDrillDownQueryFactory,
     },
     [AgentsTableColumn.OneTouchTickets]: {
         format: 'percent',
@@ -273,6 +319,9 @@ export const AgentsColumnConfig: Record<
             link: 'https://link.gorgias.com/t13',
         },
         perAgent: false,
+        showMetric: false,
+        domain: Domain.Ticket,
+        drillDownQuery: oneTouchTicketsPerTicketQueryFactory,
     },
     [AgentsTableColumn.ZeroTouchTickets]: {
         format: 'decimal',
@@ -281,6 +330,9 @@ export const AgentsColumnConfig: Record<
             link: '', // TODO: add link
         },
         perAgent: false,
+        showMetric: false,
+        domain: Domain.Ticket,
+        drillDownQuery: zeroTouchTicketsPerTicketQueryFactory,
     },
     [AgentsTableColumn.OnlineTime]: {
         format: 'duration',
@@ -289,6 +341,9 @@ export const AgentsColumnConfig: Record<
             link: 'https://link.gorgias.com/qdx',
         },
         perAgent: true,
+        showMetric: true,
+        domain: Domain.Ticket,
+        drillDownQuery: (() => {}) as any, // TODO cleanup
     },
     [AgentsTableColumn.MessagesSentPerHour]: {
         format: 'decimal',
@@ -297,6 +352,9 @@ export const AgentsColumnConfig: Record<
             link: 'https://link.gorgias.com/5p9',
         },
         perAgent: false,
+        showMetric: true,
+        domain: Domain.Ticket,
+        drillDownQuery: messagesSentMetricPerTicketDrillDownQueryFactory,
     },
     [AgentsTableColumn.RepliedTicketsPerHour]: {
         format: 'decimal',
@@ -305,6 +363,9 @@ export const AgentsColumnConfig: Record<
             link: 'https://link.gorgias.com/zn8',
         },
         perAgent: false,
+        showMetric: false,
+        domain: Domain.Ticket,
+        drillDownQuery: ticketsRepliedMetricPerTicketDrillDownQueryFactory,
     },
     [AgentsTableColumn.ClosedTicketsPerHour]: {
         format: 'decimal',
@@ -313,6 +374,9 @@ export const AgentsColumnConfig: Record<
             link: 'https://link.gorgias.com/pcu',
         },
         perAgent: false,
+        showMetric: false,
+        domain: Domain.Ticket,
+        drillDownQuery: closedTicketsPerTicketDrillDownQueryFactory,
     },
     [AgentsTableColumn.TicketHandleTime]: {
         format: 'duration',
@@ -321,6 +385,9 @@ export const AgentsColumnConfig: Record<
             link: 'https://link.gorgias.com/611',
         },
         perAgent: false,
+        showMetric: true,
+        domain: Domain.Ticket,
+        drillDownQuery: ticketHandleTimePerTicketDrillDownQueryFactory,
     },
 }
 

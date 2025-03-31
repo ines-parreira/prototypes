@@ -3,7 +3,7 @@ import React from 'react'
 import { render } from '@testing-library/react'
 
 import { useDrillDownData } from 'hooks/reporting/useDrillDownData'
-import { formatVoiceDrillDownRowData } from 'pages/stats/DrillDownFormatters'
+import { formatVoiceDrillDownRowData } from 'pages/stats/common/drill-down/DrillDownFormatters'
 import { VoiceMetric } from 'state/ui/stats/types'
 import { assumeMock } from 'utils/testing'
 

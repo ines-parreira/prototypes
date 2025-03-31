@@ -22,6 +22,7 @@ import TableHead from 'pages/common/components/table/TableHead'
 import TableWrapper from 'pages/common/components/table/TableWrapper'
 import ChartCard from 'pages/stats/ChartCard'
 import { AgentsHeaderCellContent } from 'pages/stats/support-performance/agents/AgentsHeaderCellContent'
+import { AIInsightsMetrics } from 'state/ui/stats/drillDownSlice'
 import {
     getPaginatedIntents,
     isSortingMetricLoading,
@@ -119,7 +120,7 @@ export const IntentTable = ({
     }: {
         column: IntentTableColumn
         intent: Intent
-    }) => {
+    }): AIInsightsMetrics | null => {
         const intentName = intent[IntentTableColumn.IntentName]
         switch (column) {
             case IntentTableColumn.Tickets:

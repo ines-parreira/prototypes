@@ -5,12 +5,18 @@ import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
+import { DrillDownInfoBar } from 'pages/stats/common/drill-down/DrillDownInfoBar'
+import { DrillDownModal } from 'pages/stats/common/drill-down/DrillDownModal'
+import { DrillDownTable } from 'pages/stats/common/drill-down/DrillDownTable'
+import { TicketDrillDownTableContent } from 'pages/stats/common/drill-down/TicketDrillDownTableContent'
 import { CampaignSalesDrillDownTableContent } from 'pages/stats/convert/components/CampaignSalesDrillDownTableContent'
-import { DrillDownInfoBar } from 'pages/stats/DrillDownInfoBar'
-import { DrillDownTable } from 'pages/stats/DrillDownTable'
-import { TicketDrillDownTableContent } from 'pages/stats/TicketDrillDownTableContent'
+import { OverviewMetric } from 'pages/stats/support-performance/overview/SupportPerformanceOverviewConfig'
+import VoiceCallDrillDownTableContent from 'pages/stats/voice/components/VoiceCallTable/VoiceCallDrillDownTableContent'
 import { RootState, StoreDispatch } from 'state/types'
-import { closeDrillDownModal } from 'state/ui/stats/drillDownSlice'
+import {
+    closeDrillDownModal,
+    DrillDownMetric,
+} from 'state/ui/stats/drillDownSlice'
 import {
     ConvertMetric,
     TicketFieldsMetric,
@@ -19,20 +25,18 @@ import {
 } from 'state/ui/stats/types'
 import { assumeMock } from 'utils/testing'
 
-import { DrillDownModal } from '../DrillDownModal'
-import VoiceCallDrillDownTableContent from '../voice/components/VoiceCallTable/VoiceCallDrillDownTableContent'
-
-jest.mock('pages/stats/DrillDownTable')
+jest.mock('pages/stats/common/drill-down/DrillDownTable')
 const DrillDownTableMock = assumeMock(DrillDownTable)
-jest.mock('pages/stats/DrillDownInfoBar')
+jest.mock('pages/stats/common/drill-down/DrillDownInfoBar')
 const DrillDownInfobarMock = assumeMock(DrillDownInfoBar)
 
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
 
 describe('<DrillDownModal />', () => {
     const title = 'drill down'
-    const metricData = {
+    const metricData: DrillDownMetric = {
         title,
+        metricName: OverviewMetric.MessagesReceived,
     }
     const defaultState = {
         ui: {

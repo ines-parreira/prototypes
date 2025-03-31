@@ -1,4 +1,7 @@
+import { Domain } from 'pages/stats/common/drill-down/types'
+import { MetricValueFormat } from 'pages/stats/common/utils'
 import { TooltipData } from 'pages/stats/types'
+import { TicketFieldsMetric } from 'state/ui/stats/types'
 
 export enum TicketInsightsFieldsMetric {
     TicketDistribution = 'ticket-distribution',
@@ -32,5 +35,22 @@ export const TicketInsightsFieldsMetricConfig: Record<
         hint: {
             title: 'Number of tickets labeled with each value within the selected timeframe for the selected Ticket Field. Only values that have been used at least once are shown.',
         },
+    },
+}
+
+export const TicketFieldsMetricConfig: Record<
+    TicketFieldsMetric,
+    {
+        showMetric: boolean
+        domain: Domain.Ticket
+        title: string
+        metricFormat: MetricValueFormat
+    }
+> = {
+    [TicketFieldsMetric.TicketCustomFieldsTicketCount]: {
+        showMetric: false,
+        domain: Domain.Ticket,
+        title: '',
+        metricFormat: 'decimal',
     },
 }

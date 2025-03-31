@@ -3,8 +3,8 @@ import React from 'react'
 import { render, screen } from '@testing-library/react'
 
 import { TicketChannel, TicketStatus } from 'business/types/ticket'
+import { DrillDownTicketDetailsCell } from 'pages/stats/common/drill-down/DrillDownTicketDetailsCell'
 import { NOT_AVAILABLE_PLACEHOLDER } from 'pages/stats/common/utils'
-import { DrillDownTicketDetailsCell } from 'pages/stats/DrillDownTicketDetailsCell'
 
 describe('<DrillDownTicketDetailsCell />', () => {
     const subject = 'Ticket subject'

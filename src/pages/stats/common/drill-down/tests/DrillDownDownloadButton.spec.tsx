@@ -16,7 +16,7 @@ import {
     DOWNLOAD_REQUESTED_LABEL,
     DrillDownDownloadButton,
     TOTAL_OBJECTS_COUNT_PLACEHOLDER,
-} from 'pages/stats/DrillDownDownloadButton'
+} from 'pages/stats/common/drill-down/DrillDownDownloadButton'
 import { RootState } from 'state/types'
 import {
     AgentsMetrics,

@@ -8,7 +8,7 @@ import { useAiAgentNavigation } from 'pages/aiAgent/hooks/useAiAgentNavigation'
 import { IntentTableWidget } from 'pages/aiAgent/insights/IntentTableWidget/IntentTableWidget'
 import { INTENT_LEVEL } from 'pages/aiAgent/insights/OptimizeContainer/OptimizeContainer'
 import BackLink from 'pages/common/components/BackLink'
-import { DrillDownModal } from 'pages/stats/DrillDownModal'
+import { DrillDownModal } from 'pages/stats/common/drill-down/DrillDownModal'
 
 import { Level2IntentsPerformance } from '../Level2IntentsPerformance/Level2IntentsPerformance'
 import { AdjustedPeriodFilter } from '../widgets/AdjustedPeriodFilter/AdjustedPeriodFilter'

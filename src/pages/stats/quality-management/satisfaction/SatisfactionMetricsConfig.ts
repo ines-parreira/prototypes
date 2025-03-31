@@ -22,7 +22,24 @@ import {
     fetchSurveysSentTrend,
     useSurveysSentTrend,
 } from 'hooks/reporting/quality-management/satisfaction/useSurveysSentTrend'
-import { SatisfactionMetric } from 'state/ui/stats/types'
+import { TicketDimension } from 'models/reporting/cubes/TicketCube'
+import { TicketMessagesDimension } from 'models/reporting/cubes/TicketMessagesCube'
+import { averageCSATScorePerDimensionDrillDownQueryFactory } from 'models/reporting/queryFactories/satisfaction/averageCSATScorePerDimensionQueryFactory'
+import {
+    averageScoreDrillDownQueryFactory,
+    averageScoreDrillDownWithScoreQueryBuilder,
+    SatisfactionSurveyScore,
+} from 'models/reporting/queryFactories/satisfaction/averageScoreQueryFactory'
+import { responseRateDrillDownQueryFactory } from 'models/reporting/queryFactories/satisfaction/responseRateQueryFactory'
+import { satisfactionScoreDrillDownQueryFactory } from 'models/reporting/queryFactories/satisfaction/satisfactionScoreQueryFactory'
+import { surveysSentDrillDownQueryFactory } from 'models/reporting/queryFactories/satisfaction/surveysSentQueryFactory'
+import { DrillDownQueryFactory } from 'pages/stats/common/drill-down/DrillDownTableConfig'
+import { Domain } from 'pages/stats/common/drill-down/types'
+import { MetricValueFormat } from 'pages/stats/common/utils'
+import {
+    SatisfactionAverageSurveyScoreMetric,
+    SatisfactionMetric,
+} from 'state/ui/stats/types'
 
 export const SATISFACTION_SCORE_LABEL = 'Satisfaction score'
 export const RESPONSE_RATE_LABEL = 'Response rate'
@@ -44,6 +61,9 @@ export const SatisfactionMetricConfig = {
         useTrend: useSatisfactionScoreTrend,
         fetchTrend: fetchSatisfactionScoreTrend,
         drillDownMetric: SatisfactionMetric.SatisfactionScore,
+        showMetric: false,
+        domain: Domain.Ticket,
+        drillDownQuery: satisfactionScoreDrillDownQueryFactory,
     },
     [SatisfactionMetric.ResponseRate]: {
         title: RESPONSE_RATE_LABEL,
@@ -56,6 +76,9 @@ export const SatisfactionMetricConfig = {
         useTrend: useResponseRateTrend,
         fetchTrend: fetchResponseRateTrend,
         drillDownMetric: SatisfactionMetric.ResponseRate,
+        showMetric: false,
+        domain: Domain.Ticket,
+        drillDownQuery: responseRateDrillDownQueryFactory,
     },
     [SatisfactionMetric.SurveysSent]: {
         title: SURVEYS_SENT_LABEL,
@@ -68,6 +91,9 @@ export const SatisfactionMetricConfig = {
         useTrend: useSurveysSentTrend,
         fetchTrend: fetchSurveysSentTrend,
         drillDownMetric: SatisfactionMetric.SurveysSent,
+        showMetric: false,
+        domain: Domain.Ticket,
+        drillDownQuery: surveysSentDrillDownQueryFactory,
     },
     [SatisfactionMetric.AverageSurveyScore]: {
         title: AVERAGE_SURVEY_SCORE,
@@ -79,6 +105,10 @@ export const SatisfactionMetricConfig = {
         useTrend: useAverageScoreTrend,
         fetchTrend: fetchAverageScoreTrend,
         drillDownMetric: SatisfactionMetric.AverageSurveyScore,
+        showMetric: true,
+        domain: Domain.Ticket,
+        drillDownQuery: averageScoreDrillDownQueryFactory,
+        drillDownTitle: CSAT_SCORE,
     },
     [SatisfactionMetric.AverageCSATPerChannel]: {
         title: 'Average CSAT per Channel',
@@ -89,10 +119,15 @@ export const SatisfactionMetricConfig = {
             ),
         },
         interpretAs: 'more-is-better',
-        drillDownMetric: SatisfactionMetric.AverageCSATPerChannel,
         metricFormat: 'decimal',
         useTrend: useAverageCSATPerChannelTimeseries,
         fetchTable: fetchAverageCSATPerChannelTable,
+        drillDownMetric: SatisfactionMetric.AverageCSATPerChannel,
+        showMetric: true,
+        domain: Domain.Ticket,
+        drillDownQuery: averageCSATScorePerDimensionDrillDownQueryFactory(
+            TicketDimension.Channel,
+        ),
     },
     [SatisfactionMetric.AverageCSATPerAssignee]: {
         title: 'Average CSAT per Assignee',
@@ -103,10 +138,15 @@ export const SatisfactionMetricConfig = {
             ),
         },
         interpretAs: 'more-is-better',
-        drillDownMetric: SatisfactionMetric.AverageCSATPerAssignee,
         metricFormat: 'decimal',
         useTrend: useAverageCSATPerAssigneeTimeseries,
         fetchTable: fetchAverageCSATPerAssigneeTable,
+        drillDownMetric: SatisfactionMetric.AverageCSATPerAssignee,
+        showMetric: true,
+        domain: Domain.Ticket,
+        drillDownQuery: averageCSATScorePerDimensionDrillDownQueryFactory(
+            TicketDimension.AssigneeUserId,
+        ),
     },
     [SatisfactionMetric.AverageCSATPerIntegration]: {
         title: 'Average CSAT per Integration',
@@ -117,9 +157,71 @@ export const SatisfactionMetricConfig = {
             ),
         },
         interpretAs: 'more-is-better',
-        drillDownMetric: SatisfactionMetric.AverageCSATPerIntegration,
         metricFormat: 'decimal',
         useTrend: useAverageCSATPerIntegrationTimeseries,
         fetchTable: fetchAverageCSATPerIntegrationTable,
+        drillDownMetric: SatisfactionMetric.AverageCSATPerIntegration,
+        showMetric: true,
+        domain: Domain.Ticket,
+        drillDownQuery: averageCSATScorePerDimensionDrillDownQueryFactory(
+            TicketMessagesDimension.Integration,
+        ),
     },
 } as const
+
+export const SatisfactionAverageSurveyScoreMetricConfig: Record<
+    SatisfactionAverageSurveyScoreMetric,
+    {
+        showMetric: boolean
+        domain: Domain.Ticket
+        drillDownQuery: DrillDownQueryFactory
+        title: string
+        metricFormat: MetricValueFormat
+    }
+> = {
+    [SatisfactionAverageSurveyScoreMetric.AverageSurveyScoreOne]: {
+        showMetric: true,
+        domain: Domain.Ticket,
+        drillDownQuery: averageScoreDrillDownWithScoreQueryBuilder(
+            SatisfactionSurveyScore.One,
+        ),
+        title: CSAT_SCORE,
+        metricFormat: 'decimal',
+    },
+    [SatisfactionAverageSurveyScoreMetric.AverageSurveyScoreTwo]: {
+        showMetric: true,
+        domain: Domain.Ticket,
+        drillDownQuery: averageScoreDrillDownWithScoreQueryBuilder(
+            SatisfactionSurveyScore.Two,
+        ),
+        title: CSAT_SCORE,
+        metricFormat: 'decimal',
+    },
+    [SatisfactionAverageSurveyScoreMetric.AverageSurveyScoreThree]: {
+        showMetric: true,
+        domain: Domain.Ticket,
+        drillDownQuery: averageScoreDrillDownWithScoreQueryBuilder(
+            SatisfactionSurveyScore.Three,
+        ),
+        title: CSAT_SCORE,
+        metricFormat: 'decimal',
+    },
+    [SatisfactionAverageSurveyScoreMetric.AverageSurveyScoreFour]: {
+        showMetric: true,
+        domain: Domain.Ticket,
+        drillDownQuery: averageScoreDrillDownWithScoreQueryBuilder(
+            SatisfactionSurveyScore.Four,
+        ),
+        title: CSAT_SCORE,
+        metricFormat: 'decimal',
+    },
+    [SatisfactionAverageSurveyScoreMetric.AverageSurveyScoreFive]: {
+        showMetric: true,
+        domain: Domain.Ticket,
+        drillDownQuery: averageScoreDrillDownWithScoreQueryBuilder(
+            SatisfactionSurveyScore.Four,
+        ),
+        title: CSAT_SCORE,
+        metricFormat: 'decimal',
+    },
+}

@@ -6,9 +6,9 @@ import BodyCell, {
     Props as BodyCellProps,
 } from 'pages/common/components/table/cells/BodyCell'
 import TicketIcon, { NullTicketIcon } from 'pages/common/components/TicketIcon'
+import { TicketDetails } from 'pages/stats/common/drill-down/DrillDownFormatters'
+import css from 'pages/stats/common/drill-down/DrillDownTicketDetailsCell.less'
 import { NOT_AVAILABLE_PLACEHOLDER } from 'pages/stats/common/utils'
-import { TicketDetails } from 'pages/stats/DrillDownFormatters'
-import css from 'pages/stats/DrillDownTicketDetailsCell.less'
 
 const TICKET_DELETED_OR_MERGED = 'Ticket has been deleted or merged'
 const TICKET_LABEL = 'Ticket'

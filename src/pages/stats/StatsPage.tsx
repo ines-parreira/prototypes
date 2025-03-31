@@ -5,7 +5,7 @@ import classNames from 'classnames'
 import useInjectStyleToCandu from 'hooks/candu/useInjectStyleToCandu'
 import HeaderTitle from 'pages/common/components/HeaderTitle'
 import PageHeader from 'pages/common/components/PageHeader'
-import { DrillDownModal } from 'pages/stats/DrillDownModal'
+import { DrillDownModal } from 'pages/stats/common/drill-down/DrillDownModal'
 
 import css from './StatsPage.less'
 

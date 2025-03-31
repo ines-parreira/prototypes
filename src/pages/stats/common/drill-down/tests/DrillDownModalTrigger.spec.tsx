@@ -7,7 +7,7 @@ import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
 import { logEvent, SegmentEvent } from 'common/segment'
-import { DrillDownModalTrigger } from 'pages/stats/DrillDownModalTrigger'
+import { DrillDownModalTrigger } from 'pages/stats/common/drill-down/DrillDownModalTrigger'
 import { OverviewMetric } from 'pages/stats/support-performance/overview/SupportPerformanceOverviewConfig'
 import { RootState, StoreDispatch } from 'state/types'
 import { DrillDownMetric, setMetricData } from 'state/ui/stats/drillDownSlice'
@@ -72,25 +72,6 @@ describe('<DrillDownModalTrigger />', () => {
         await waitFor(() => {
             expect(store.getActions()).toContainEqual(setMetricData(metricData))
         })
-    })
-
-    it('should not trigger drill down with enabled prop', () => {
-        const store = mockStore(defaultState)
-        const metricData = {
-            metricName: 'someMetric',
-        } as any
-
-        render(
-            <Provider store={store}>
-                <DrillDownModalTrigger enabled={false} metricData={metricData}>
-                    {trigger}
-                </DrillDownModalTrigger>
-            </Provider>,
-        )
-
-        fireEvent.click(screen.getByText(trigger))
-
-        expect(store.getActions()).toEqual([])
     })
 
     it.each([

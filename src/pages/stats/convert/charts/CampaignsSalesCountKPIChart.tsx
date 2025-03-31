@@ -1,8 +1,8 @@
 import BigNumberMetric from 'pages/stats/BigNumberMetric'
+import { DrillDownModalTrigger } from 'pages/stats/common/drill-down/DrillDownModalTrigger'
 import { METRICS } from 'pages/stats/convert/constants/ConvertPerformanceOverviewConfig'
 import { useCampaignTotalStats } from 'pages/stats/convert/hooks/useCampaignTotalStats'
 import { DashboardChartProps } from 'pages/stats/dashboards/types'
-import { DrillDownModalTrigger } from 'pages/stats/DrillDownModalTrigger'
 import MetricCard from 'pages/stats/MetricCard'
 import { ConvertMetric } from 'state/ui/stats/types'
 

@@ -7,8 +7,8 @@ import {
     ConvertDrillDownRowData,
     TicketDrillDownRowData,
     VoiceCallDrillDownRowData,
-} from 'pages/stats/DrillDownFormatters'
-import css from 'pages/stats/DrillDownTable.less'
+} from 'pages/stats/common/drill-down/DrillDownFormatters'
+import css from 'pages/stats/common/drill-down/DrillDownTable.less'
 import { DrillDownMetric } from 'state/ui/stats/drillDownSlice'
 
 export const DrillDownTable = ({
