@@ -47,6 +47,11 @@ on:
         description: Release version
         type: string
         required: true
+      force-deploy-commit:
+        description: Force deploy commit
+        type: string
+        required: false
+        default: ''
 
 jobs:
   deploy:
@@ -61,7 +66,7 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
         with:
-          sparse-checkout: deployment
+          ref: ${{ inputs.force-deploy-commit != '' && inputs.force-deploy-commit || github.sha }}
 
       - name: Download the artifacts
         uses: actions/download-artifact@v4
