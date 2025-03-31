@@ -17,9 +17,6 @@ export const useAgentsTableConfigSetting = () => {
     const isReportingAgentsTableAverageAndTotalEnabled = useFlag(
         FeatureFlagKey.ReportingAgentsTableAverageAndTotal,
     )
-    const isReportingMessagesReceivedMetricEnabled = useFlag(
-        FeatureFlagKey.ReportingMessagesReceivedMetric,
-    )
     const isReportingAverageResponseTimeEnabled = useFlag(
         FeatureFlagKey.ReportingAverageResponseTime,
     )
@@ -27,17 +24,11 @@ export const useAgentsTableConfigSetting = () => {
     const columnsOrder = useMemo(
         () => [
             ...TableColumnsOrder,
-            ...(isReportingMessagesReceivedMetricEnabled
-                ? [AgentsTableColumn.MessagesReceived]
-                : []),
             ...(isReportingAverageResponseTimeEnabled
                 ? [AgentsTableColumn.MedianResponseTime]
                 : []),
         ],
-        [
-            isReportingMessagesReceivedMetricEnabled,
-            isReportingAverageResponseTimeEnabled,
-        ],
+        [isReportingAverageResponseTimeEnabled],
     )
 
     return useTableConfigSetting<AgentsTableColumn, AgentsTableRow>(

@@ -66,6 +66,7 @@ export const columnsOrder: ChannelsTableColumns[] = [
     ChannelsTableColumns.TicketsReplied,
     ChannelsTableColumns.MessagesSent,
     ChannelsTableColumns.CustomerSatisfaction,
+    ChannelsTableColumns.MessagesReceived,
 ]
 
 export const ChannelsTableLabels: Record<ChannelsTableColumns, string> = {

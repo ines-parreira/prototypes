@@ -100,6 +100,7 @@ export const TableColumnsOrder: AgentsTableColumn[] = [
     AgentsTableColumn.RepliedTicketsPerHour,
     AgentsTableColumn.ClosedTicketsPerHour,
     AgentsTableColumn.TicketHandleTime,
+    AgentsTableColumn.MessagesReceived,
 ]
 
 export const TableRowsOrder: AgentsTableRow[] = [AgentsTableRow.Average]

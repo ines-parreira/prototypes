@@ -211,6 +211,13 @@ describe('useTrendReport', () => {
                 zeroTouchTicketMetricTrend.data.prevValue,
             ),
         },
+        {
+            label: MESSAGES_RECEIVED_LABEL,
+            value: formatMetricValue(messagesReceivedMetricTrend.data.value),
+            prevValue: formatMetricValue(
+                messagesReceivedMetricTrend.data.prevValue,
+            ),
+        },
     ]
 
     beforeEach(() => {
@@ -242,7 +249,7 @@ describe('useTrendReport', () => {
             useTrendReportData(
                 defaultStatsFilters,
                 'UTC',
-                getWorkloadReportSource(true, true),
+                getWorkloadReportSource(true),
             ),
         )
 
@@ -251,15 +258,6 @@ describe('useTrendReport', () => {
                 isFetching: false,
                 data: [
                     ...resultData,
-                    {
-                        label: MESSAGES_RECEIVED_LABEL,
-                        value: formatMetricValue(
-                            messagesReceivedMetricTrend.data.value,
-                        ),
-                        prevValue: formatMetricValue(
-                            messagesReceivedMetricTrend.data.prevValue,
-                        ),
-                    },
                     {
                         label: AVERAGE_RESPONSE_TIME_LABEL,
                         value: formatMetricValue(
@@ -285,7 +283,7 @@ describe('useTrendReport', () => {
             useTrendReportData(
                 defaultStatsFilters,
                 'UTC',
-                getWorkloadReportSource(false, false),
+                getWorkloadReportSource(false),
             ),
         )
 
@@ -302,7 +300,7 @@ describe('useTrendReport', () => {
             useTrendReportData(
                 defaultStatsFilters,
                 'UTC',
-                getWorkloadReportSource(false, false),
+                getWorkloadReportSource(false),
             ),
         )
 
@@ -321,7 +319,7 @@ describe('useTrendReport', () => {
             useTrendReportData(
                 defaultStatsFilters,
                 'UTC',
-                getWorkloadReportSource(true, true),
+                getWorkloadReportSource(true),
             ),
         )
 

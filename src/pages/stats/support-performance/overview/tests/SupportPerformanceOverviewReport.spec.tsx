@@ -137,7 +137,6 @@ describe('<SupportPerformanceOverview />', () => {
         MessagesReceivedTrendCardMock.mockImplementation(() => <div />)
         MedianResponseTimeTrendCardMock.mockImplementation(() => <div />)
         mockFlags({
-            [FeatureFlagKey.ReportingMessagesReceivedMetric]: true,
             [FeatureFlagKey.ReportingAgentsTableAverageAndTotal]: true,
         })
     })
@@ -206,10 +205,6 @@ describe('<SupportPerformanceOverview />', () => {
     })
 
     it('should render Messages Received TrendCard', () => {
-        mockFlags({
-            [FeatureFlagKey.ReportingMessagesReceivedMetric]: true,
-        })
-
         render(
             <Provider store={mockStore(defaultState)}>
                 <SupportPerformanceOverviewReport />

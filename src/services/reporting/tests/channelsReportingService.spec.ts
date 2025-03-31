@@ -111,7 +111,19 @@ describe('channelsReportingService', () => {
 
         expect(createCsvSpy).toHaveBeenCalledWith([
             [...columnsOrder.map((column) => ChannelsTableLabels[column])],
-            [channelA.slug, '5', '5%', '5', '5s', '5s', '5s', '-', '5', '5'],
+            [
+                channelA.slug,
+                '5',
+                '5%',
+                '5',
+                '5s',
+                '5s',
+                '5s',
+                '-',
+                '5',
+                '5',
+                '5',
+            ],
         ])
     })
 

@@ -354,10 +354,6 @@ export const metrics = [
     BusiestTimeOfDaysMetrics.TicketsReplied,
     BusiestTimeOfDaysMetrics.TicketsClosed,
     BusiestTimeOfDaysMetrics.MessagesSent,
-]
-
-export const metricsWithMessagesReceived = [
-    ...metrics,
     BusiestTimeOfDaysMetrics.MessagesReceived,
 ]
 

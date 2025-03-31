@@ -48,7 +48,6 @@ describe('useAgentsTableConfigSetting', () => {
         expect(result.current).toEqual({
             columnsOrder: [
                 ...TableColumnsOrder,
-                AgentsTableColumn.MessagesReceived,
                 AgentsTableColumn.MedianResponseTime,
             ],
             rowsOrder: TableRowsOrder,
@@ -56,10 +55,6 @@ describe('useAgentsTableConfigSetting', () => {
                 ...agentPerformanceTableActiveView,
                 metrics: [
                     ...agentPerformanceTableActiveView.metrics,
-                    {
-                        id: AgentsTableColumn.MessagesReceived,
-                        visibility: null,
-                    },
                     {
                         id: AgentsTableColumn.MedianResponseTime,
                         visibility: null,

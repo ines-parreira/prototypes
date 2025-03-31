@@ -2,8 +2,6 @@ import React, { useMemo } from 'react'
 
 import _noop from 'lodash/noop'
 
-import { FeatureFlagKey } from 'config/featureFlags'
-import { useFlag } from 'core/flags'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import { FilterComponentKey } from 'models/stat/types'
@@ -13,7 +11,6 @@ import { logSegmentEvent } from 'pages/stats/common/filters/helpers'
 import {
     metricLabels,
     metrics,
-    metricsWithMessagesReceived,
 } from 'pages/stats/support-performance/busiest-times-of-days/utils'
 import { DropdownOption } from 'pages/stats/types'
 import {
@@ -22,15 +19,10 @@ import {
 } from 'state/ui/stats/busiestTimesSlice'
 
 export const BusiestTimesMetricSelectFilter = () => {
-    const isReportingMessagesReceivedMetricEnabled = useFlag(
-        FeatureFlagKey.ReportingMessagesReceivedMetric,
-    )
     const dispatch = useAppDispatch()
     const selectedMetric = useAppSelector(getSelectedMetric)
 
-    const availableMetrics = isReportingMessagesReceivedMetricEnabled
-        ? metricsWithMessagesReceived
-        : metrics
+    const availableMetrics = metrics
 
     const options = useMemo(
         () =>

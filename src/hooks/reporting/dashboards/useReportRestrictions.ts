@@ -28,8 +28,6 @@ export const useReportRestrictions = () => {
         useFlags()[FeatureFlagKey.AIAgentStatsPage]
     const isStandaloneSalesOverviewEnabled =
         useFlags()[FeatureFlagKey.StandaloneAiSalesAnalyticsPage]
-    const isReportingMessagesReceivedMetricEnabled =
-        useFlags()[FeatureFlagKey.ReportingMessagesReceivedMetric]
     const isReportingAverageResponseTimeEnabled =
         !!useFlags()[FeatureFlagKey.ReportingAverageResponseTime]
     const shouldShowNewUnansweredStatuses =
@@ -63,8 +61,6 @@ export const useReportRestrictions = () => {
 
     const chartRestrictionsMap: RestrictionsMap = useMemo(
         () => ({
-            [OverviewChart.MessagesReceivedTrendCard]:
-                !isReportingMessagesReceivedMetricEnabled,
             [OverviewChart.MedianResponseTimeTrendCard]:
                 !isReportingAverageResponseTimeEnabled,
             [VoiceOverviewChart.DEPRECATED_VoiceCallVolumeMetricMissedCallsCountTrendChart]:
@@ -80,7 +76,6 @@ export const useReportRestrictions = () => {
         }),
         [
             isReportingAverageResponseTimeEnabled,
-            isReportingMessagesReceivedMetricEnabled,
             shouldShowNewUnansweredStatuses,
         ],
     )

@@ -46,19 +46,4 @@ describe('useChannelsTableConfigSetting.ts', () => {
             submitChannelsTableConfigView,
         )
     })
-
-    it('should add MessagesReceived column when the feature flag is on', () => {
-        mockUseFlag.mockImplementation(
-            (flag) => flag === FeatureFlagKey.ReportingMessagesReceivedMetric,
-        )
-        renderHook(() => useChannelsTableSetting())
-
-        expect(useTableConfigSettingMock).toHaveBeenCalledWith(
-            getChannelsTableConfigSettingsJS,
-            channelsReportTableActiveView,
-            [...columnsOrder, ChannelsTableColumns.MessagesReceived],
-            [],
-            submitChannelsTableConfigView,
-        )
-    })
 })

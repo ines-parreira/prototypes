@@ -37,9 +37,9 @@ const getProductivitySectionKPIWidths = (
     return { firstRowWidth, secondRowWidth }
 }
 
+const WORKLOAD_SECTION_KPI_GRID_CELL_SIZE = 3
+
 export default function SupportPerformanceOverviewReport() {
-    const isReportingMessagesReceivedMetricEnabled =
-        !!useFlags()[FeatureFlagKey.ReportingMessagesReceivedMetric]
     const isReportingAverageResponseTimeEnabled =
         !!useFlags()[FeatureFlagKey.ReportingAverageResponseTime]
 
@@ -49,8 +49,6 @@ export default function SupportPerformanceOverviewReport() {
     )
     const getGridCellSize = useGridSize()
     useCleanStatsFilters()
-    const workloadSectionKPIGridCellSize =
-        isReportingMessagesReceivedMetricEnabled ? 3 : 4
 
     const { firstRowWidth, secondRowWidth } = useMemo(
         () =>
@@ -134,7 +132,7 @@ export default function SupportPerformanceOverviewReport() {
                     <>
                         <DashboardGridCell
                             size={getGridCellSize(
-                                workloadSectionKPIGridCellSize,
+                                WORKLOAD_SECTION_KPI_GRID_CELL_SIZE,
                             )}
                         >
                             <DashboardComponent
@@ -144,7 +142,7 @@ export default function SupportPerformanceOverviewReport() {
                         </DashboardGridCell>
                         <DashboardGridCell
                             size={getGridCellSize(
-                                workloadSectionKPIGridCellSize,
+                                WORKLOAD_SECTION_KPI_GRID_CELL_SIZE,
                             )}
                         >
                             <DashboardComponent
@@ -154,7 +152,7 @@ export default function SupportPerformanceOverviewReport() {
                         </DashboardGridCell>
                         <DashboardGridCell
                             size={getGridCellSize(
-                                workloadSectionKPIGridCellSize,
+                                WORKLOAD_SECTION_KPI_GRID_CELL_SIZE,
                             )}
                         >
                             <DashboardComponent
@@ -164,7 +162,7 @@ export default function SupportPerformanceOverviewReport() {
                         </DashboardGridCell>
                         <DashboardGridCell
                             size={getGridCellSize(
-                                workloadSectionKPIGridCellSize,
+                                WORKLOAD_SECTION_KPI_GRID_CELL_SIZE,
                             )}
                         >
                             <DashboardComponent

@@ -12,9 +12,6 @@ import { getChannelsTableConfigSettingsJS } from 'state/currentAccount/selectors
 import { ChannelsTableColumns } from 'state/ui/stats/types'
 
 export const useChannelsTableSetting = () => {
-    const isReportingMessagesReceivedMetricEnabled = useFlag(
-        FeatureFlagKey.ReportingMessagesReceivedMetric,
-    )
     const isReportingAverageResponseTimeEnabled = useFlag(
         FeatureFlagKey.ReportingAverageResponseTime,
     )
@@ -25,14 +22,8 @@ export const useChannelsTableSetting = () => {
             ...(isReportingAverageResponseTimeEnabled
                 ? [ChannelsTableColumns.MedianResponseTime]
                 : []),
-            ...(isReportingMessagesReceivedMetricEnabled
-                ? [ChannelsTableColumns.MessagesReceived]
-                : []),
         ],
-        [
-            isReportingMessagesReceivedMetricEnabled,
-            isReportingAverageResponseTimeEnabled,
-        ],
+        [isReportingAverageResponseTimeEnabled],
     )
 
     return useTableConfigSetting<ChannelsTableColumns, never>(

@@ -1,7 +1,7 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 
 import { BusiestTimeOfDaysMetrics } from 'pages/stats/support-performance/busiest-times-of-days/types'
-import { metricsWithMessagesReceived } from 'pages/stats/support-performance/busiest-times-of-days/utils'
+import { metrics } from 'pages/stats/support-performance/busiest-times-of-days/utils'
 import { RootState } from 'state/types'
 
 export type BusiestTimesState = {
@@ -17,7 +17,7 @@ export const busiestTimesSlice = createSlice({
     initialState,
     reducers: {
         setSelectedMetric(state, action: PayloadAction<string>) {
-            const metric = metricsWithMessagesReceived.find(
+            const metric = metrics.find(
                 (metric) => String(metric) === action.payload,
             )
             if (metric) {

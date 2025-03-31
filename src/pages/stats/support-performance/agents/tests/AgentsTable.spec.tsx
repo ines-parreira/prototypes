@@ -2,13 +2,10 @@ import React, { ComponentProps } from 'react'
 
 import { act, fireEvent, render, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import { mockFlags } from 'jest-launchdarkly-mock'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import { FeatureFlagKey } from 'config/featureFlags'
-import { useFlag } from 'core/flags'
 import { agents } from 'fixtures/agents'
 import { useStatsFilters } from 'hooks/reporting/support-performance/useStatsFilters'
 import { ReportingGranularity } from 'models/reporting/types'
@@ -80,9 +77,6 @@ const AgentsHeaderCellContentMock = assumeMock(AgentsHeaderCellContent)
 jest.mock('pages/stats/support-performance/agents/AgentsTableSummaryCell.tsx')
 const AgentsTableSummaryCellMock = assumeMock(AgentsTableSummaryCell)
 
-jest.mock('core/flags')
-const useFlagMock = assumeMock(useFlag)
-
 jest.mock('pages/stats/support-performance/agents/AgentsSummaryRow')
 const AgentsAverageSummaryRowMock = assumeMock(AgentsSummaryRow)
 
@@ -118,11 +112,6 @@ describe('<AgentsTable>', () => {
 
     describe('AgentsTable component', () => {
         it('should render the table title, table header and rows', () => {
-            useFlagMock.mockReturnValue(true)
-            mockFlags({
-                [FeatureFlagKey.ReportingMessagesReceivedMetric]: true,
-            })
-
             render(
                 <Provider store={mockStore({})}>
                     <AgentsTable
@@ -145,29 +134,6 @@ describe('<AgentsTable>', () => {
             expect(AgentsCellContentMock).toHaveBeenCalledWith(
                 expect.objectContaining({
                     agent: filteredAgents[0],
-                }),
-                {},
-            )
-        })
-
-        it('should not render messages received column if feature flag is disabled', () => {
-            useFlagMock.mockImplementation(
-                (flag) =>
-                    !(flag === FeatureFlagKey.ReportingMessagesReceivedMetric),
-            )
-
-            render(
-                <Provider store={mockStore({})}>
-                    <AgentsTable
-                        paginatedAgents={paginatedAgents}
-                        statsFilters={statsFiltersWithTimeZone}
-                    />
-                </Provider>,
-            )
-
-            expect(AgentsHeaderCellContentMock).not.toHaveBeenCalledWith(
-                expect.objectContaining({
-                    title: TableLabels.agent_messages_received,
                 }),
                 {},
             )

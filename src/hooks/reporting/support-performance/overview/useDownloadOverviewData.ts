@@ -50,7 +50,6 @@ export const timeSeriesReportSource = timeSeriesMetrics.map(
 )
 
 export const getWorkloadReportSource = (
-    isReportingMessagesReceivedMetricEnabled: boolean,
     isReportingAverageResponseTimeEnabled: boolean,
 ) => {
     const workloadReportSource = [
@@ -61,11 +60,9 @@ export const getWorkloadReportSource = (
         OverviewMetric.MessagesSent,
         OverviewMetric.OneTouchTickets,
         OverviewMetric.ZeroTouchTickets,
+        OverviewMetric.MessagesReceived,
     ]
 
-    if (isReportingMessagesReceivedMetricEnabled) {
-        workloadReportSource.push(OverviewMetric.MessagesReceived)
-    }
     if (isReportingAverageResponseTimeEnabled) {
         workloadReportSource.push(OverviewMetric.MedianResponseTime)
     }
@@ -74,23 +71,14 @@ export const getWorkloadReportSource = (
 }
 
 export const useDownloadOverViewData = (fetchingEnabled = true) => {
-    const isReportingMessagesReceivedMetricEnabled =
-        useFlags()[FeatureFlagKey.ReportingMessagesReceivedMetric]
     const isReportingAverageResponseTimeEnabled =
         !!useFlags()[FeatureFlagKey.ReportingAverageResponseTime]
 
     const { cleanStatsFilters, userTimezone, granularity } = useStatsFilters()
 
     const workloadReportSource = useMemo(
-        () =>
-            getWorkloadReportSource(
-                isReportingMessagesReceivedMetricEnabled,
-                isReportingAverageResponseTimeEnabled,
-            ),
-        [
-            isReportingMessagesReceivedMetricEnabled,
-            isReportingAverageResponseTimeEnabled,
-        ],
+        () => getWorkloadReportSource(isReportingAverageResponseTimeEnabled),
+        [isReportingAverageResponseTimeEnabled],
     )
 
     const workloadTrendData = useTrendReportData(
