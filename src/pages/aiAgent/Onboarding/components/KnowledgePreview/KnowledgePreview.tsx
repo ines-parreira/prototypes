@@ -2,6 +2,7 @@ import React, { useEffect, useRef } from 'react'
 
 import { Skeleton } from '@gorgias/merchant-ui-kit'
 
+import { gorgiasColors } from 'gorgias-design-system/styles'
 import { getRGB } from 'gorgias-design-system/utils'
 import useAppSelector from 'hooks/useAppSelector'
 import { ShopifyIntegration } from 'models/integration/types'
@@ -93,7 +94,7 @@ const KnowledgePreview: React.FC<Props> = ({ shopName }) => {
                     <TrackerCircle
                         radius={54}
                         percentage={100}
-                        color="#FD9B5A"
+                        color={gorgiasColors.secondaryOrange}
                         label={compactInteger(averageOrderValue)}
                         strokeWidth={9}
                     />
@@ -123,13 +124,17 @@ const KnowledgePreview: React.FC<Props> = ({ shopName }) => {
                 <CardTitle>Average discount given</CardTitle>
             </CardHeader>
             <CardContent>
-                <TrackerCircle
-                    radius={54}
-                    percentage={data?.averageDiscount ?? 0}
-                    color="#FD9B5A"
-                    label={data?.averageDiscount.toString() + '%'}
-                    strokeWidth={9}
-                />
+                {data?.averageDiscount !== undefined ? (
+                    <TrackerCircle
+                        radius={54}
+                        percentage={data.averageDiscount ?? 0}
+                        color={gorgiasColors.secondaryOrange}
+                        label={data?.averageDiscount.toString() + '%'}
+                        strokeWidth={9}
+                    />
+                ) : (
+                    <Skeleton height="150px" width="175px" />
+                )}
             </CardContent>
         </Card>
     )
@@ -143,7 +148,7 @@ const KnowledgePreview: React.FC<Props> = ({ shopName }) => {
                 <TrackerCircle
                     radius={54}
                     percentage={repeatRate ?? 0}
-                    color="#FD9B5A"
+                    color={gorgiasColors.secondaryOrange}
                     label={`${repeatRate}%`}
                     strokeWidth={9}
                 />

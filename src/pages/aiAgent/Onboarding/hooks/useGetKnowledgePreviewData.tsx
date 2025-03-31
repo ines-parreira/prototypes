@@ -1,5 +1,7 @@
 import { useMemo } from 'react'
 
+import moment from 'moment/moment'
+
 import useAppSelector from 'hooks/useAppSelector'
 import { ReportingGranularity } from 'models/reporting/types'
 import { StatsFilters } from 'models/stat/types'
@@ -10,25 +12,25 @@ import {
 } from 'pages/aiAgent/Onboarding/components/KnowledgePreview/constants'
 import { TopElement } from 'pages/aiAgent/Onboarding/components/TopElementsCard/types'
 import { Product } from 'pages/aiAgent/Onboarding/components/TopProductsCard/types'
+import { useAverageDiscountPercentage } from 'pages/stats/automate/aiSalesAgent/useAverageDiscountPercentage'
 import { useAverageOrdersPerDayTrend } from 'pages/stats/automate/aiSalesAgent/useAverageOrdersPerDayTrend'
 import { TwoDimensionalDataItem } from 'pages/stats/types'
 import { getTimezone } from 'state/currentUser/selectors'
 
 type KnowledgePreviewData = {
-    locations: TopElement[]
-    products: Product[]
-    averageOrders: TwoDimensionalDataItem[]
-    experienceScore: number
-    categories: TopElement[]
-    averageDiscount: number
-    repeatRate: number
+    locations?: TopElement[]
+    products?: Product[]
+    averageOrders?: TwoDimensionalDataItem[]
+    experienceScore?: number
+    categories?: TopElement[]
+    averageDiscount?: number
+    repeatRate?: number
 }
 
-const useProcessedAvarageOrdersPerDayTrend = (
+const useProcessedAverageOrdersPerDayTrend = (
     filters: StatsFilters,
+    timezone: string,
 ): TwoDimensionalDataItem[] | undefined => {
-    const timezone = useAppSelector(getTimezone) ?? 'UTC'
-
     const { data: averageOrdersPerDay } = useAverageOrdersPerDayTrend(
         filters,
         timezone,
@@ -54,21 +56,25 @@ const useProcessedAvarageOrdersPerDayTrend = (
 }
 
 export const useGetKnowledgePreviewData = () => {
-    const getFormattedDateTime = (date: Date) => {
-        date.setHours(0, 0, 0, 0)
-        return date.toISOString()
-    }
-
+    const timezone = useAppSelector(getTimezone) ?? 'UTC'
     const filters: StatsFilters = {
         period: {
-            start_datetime: getFormattedDateTime(
-                new Date(Date.now() - 30 * 24 * 60 * 60 * 1000),
-            ), // 30 days ago
-            end_datetime: getFormattedDateTime(new Date()), // Today
+            start_datetime: moment()
+                .subtract(1, 'month')
+                .startOf('day')
+                .format(),
+            end_datetime: moment().endOf('day').format(),
         },
     }
 
-    const averageOrders = useProcessedAvarageOrdersPerDayTrend(filters)
+    const averageOrders = useProcessedAverageOrdersPerDayTrend(
+        filters,
+        timezone,
+    )
+    const averageDiscountPercentage = useAverageDiscountPercentage(
+        filters,
+        timezone,
+    )
 
     return {
         data: {
@@ -76,9 +82,11 @@ export const useGetKnowledgePreviewData = () => {
             products: mockedProducts,
             experienceScore: 50,
             categories: mockedCategories,
-            averageDiscount: 10,
+            averageDiscount: averageDiscountPercentage.isFetching
+                ? undefined
+                : (averageDiscountPercentage.data?.value ?? 0),
             repeatRate: 2,
             averageOrders: averageOrders,
-        } as KnowledgePreviewData,
+        } satisfies KnowledgePreviewData,
     }
 }

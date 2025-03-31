@@ -494,3 +494,23 @@ export const repeatRateQueryFactory = (
         },
     ],
 })
+
+export const averageDiscountPercentageQueryFactory = (
+    filters: StatsFilters,
+    timezone: string,
+): ReportingQuery<AiSalesAgentOrdersCube> => ({
+    measures: [AiSalesAgentOrdersMeasure.AverageDiscountPercentage],
+    dimensions: [],
+    filters: [
+        {
+            member: AiSalesAgentOrdersDimension.TotalDiscount,
+            operator: ReportingFilterOperator.Gt,
+            values: ['0'],
+        },
+        ...statsFiltersToReportingFilters(
+            aiSalesAgentOrdersDefaultFiltersMembers,
+            filters,
+        ),
+    ],
+    timezone,
+})
