@@ -64,7 +64,7 @@ describe('KnowledgePreview', () => {
         expect(screen.getAllByText('Average order per day').length).toBe(4)
         expect(screen.getAllByText('Top Locations').length).toBe(4)
         expect(screen.getAllByText('Top Products').length).toBe(4)
-        expect(screen.getAllByText('Experience score').length).toBe(4)
+        expect(screen.getAllByText('Average order value').length).toBe(4)
         expect(screen.getAllByText('Average discount given').length).toBe(4)
         expect(screen.getAllByText('Repeat Rate').length).toBe(4)
     })

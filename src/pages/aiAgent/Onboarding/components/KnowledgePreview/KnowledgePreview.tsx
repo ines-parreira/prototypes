@@ -17,6 +17,9 @@ import { useGetKnowledgePreviewData } from 'pages/aiAgent/Onboarding/hooks/useGe
 import TrackerCircle from 'pages/common/components/ProgressTracker/TrackerCircle'
 import { LineChart } from 'pages/stats/common/components/charts/LineChart/LineChart'
 import { getShopifyIntegrationByShopName } from 'state/integrations/selectors'
+import { compactInteger } from 'utils'
+
+import { useAverageOrderValueLastMonth } from './hooks'
 
 import css from './KnowledgePreview.less'
 
@@ -32,6 +35,11 @@ const KnowledgePreview: React.FC<Props> = ({ shopName }) => {
     ).toJS()
 
     const { data } = useGetKnowledgePreviewData()
+
+    const { data: averageOrderValue, isLoading: isAverageOrderValueLoading } =
+        useAverageOrderValueLastMonth({
+            shopIntegrationId: shopifyIntegration.id,
+        })
 
     const graphOptions = {
         elements: {
@@ -64,19 +72,29 @@ const KnowledgePreview: React.FC<Props> = ({ shopName }) => {
         </Card>
     )
 
-    const scoreCard = (
+    const averageOrderValueCard = (
         <Card className={css.score}>
             <CardHeader>
-                <CardTitle>Experience score</CardTitle>
+                {isAverageOrderValueLoading && (
+                    <Skeleton width={180} height={20} />
+                )}
+                {!isAverageOrderValueLoading && (
+                    <CardTitle>Average order value</CardTitle>
+                )}
             </CardHeader>
             <CardContent>
-                <TrackerCircle
-                    radius={54}
-                    percentage={data?.experienceScore ?? 0}
-                    color="#FD9B5A"
-                    label={data?.experienceScore.toString()}
-                    strokeWidth={9}
-                />
+                {isAverageOrderValueLoading && (
+                    <Skeleton width={180} height={180} />
+                )}
+                {!isAverageOrderValueLoading && (
+                    <TrackerCircle
+                        radius={54}
+                        percentage={100}
+                        color="#FD9B5A"
+                        label={compactInteger(averageOrderValue)}
+                        strokeWidth={9}
+                    />
+                )}
             </CardContent>
         </Card>
     )
@@ -132,7 +150,7 @@ const KnowledgePreview: React.FC<Props> = ({ shopName }) => {
 
     const topRow = [
         topLocationsCard,
-        scoreCard,
+        averageOrderValueCard,
         topProductsCard,
         repeatRateCard,
         averageOrdersCard,
@@ -145,7 +163,7 @@ const KnowledgePreview: React.FC<Props> = ({ shopName }) => {
         averageOrdersCard,
         averageDiscountCard,
         topLocationsCard,
-        scoreCard,
+        averageOrderValueCard,
     ]
 
     const topRowElement = useRef<HTMLDivElement>(null)

@@ -50,6 +50,39 @@ export const averageOrderValueQueryFactory = (
     }
 }
 
+export const averageOrderValueLastMonthQueryFactory = (
+    storeIntegrationId: number,
+): ReportingQuery<AiSalesAgentOrdersCube> => {
+    return {
+        measures: [
+            AiSalesAgentOrdersMeasure.GmvUsd,
+            AiSalesAgentOrdersMeasure.Count,
+        ],
+        dimensions: [],
+        filters: [
+            {
+                member: AiSalesAgentOrdersFilterMember.PeriodStart,
+                operator: ReportingFilterOperator.AfterDate,
+                values: [
+                    new Date(
+                        new Date().setMonth(new Date().getMonth() - 1),
+                    ).toUTCString(),
+                ],
+            },
+            {
+                member: AiSalesAgentOrdersFilterMember.PeriodEnd,
+                operator: ReportingFilterOperator.BeforeDate,
+                values: [new Date().toUTCString()],
+            },
+            {
+                member: AiSalesAgentOrdersFilterMember.IntegrationId,
+                operator: ReportingFilterOperator.Equals,
+                values: [storeIntegrationId.toString()],
+            },
+        ],
+    }
+}
+
 export const gmvQueryFactory = (
     filters: StatsFilters,
     timezone: string,
