@@ -1,12 +1,21 @@
 import React, { useCallback, useEffect, useState } from 'react'
 
-import { WaitMusicType } from '@gorgias/api-queries'
+import _get from 'lodash/get'
 
+import {
+    useUploadCustomVoiceRecording,
+    WaitMusicType,
+} from '@gorgias/api-queries'
+import { CustomRecordingType } from '@gorgias/api-types'
+
+import { useNotify } from 'hooks/useNotify'
+import { GorgiasApiResponseDataError } from 'models/api/types'
 import { MAX_WAIT_MUSIC_CUSTOM_RECORDING_FILE_SIZE_MB } from 'models/integration/constants'
 import { LocalWaitMusicPreferences } from 'models/integration/types'
 import { PhoneCountry } from 'models/phoneNumber/types'
 import RadioButton from 'pages/common/components/RadioButton'
 
+import DEPRECATED_WaitMusicLibrarySelect from './DEPRECATED_WaitMusicLibrarySelect'
 import useVoiceMessageValidation from './hooks/useVoiceMessageValidation'
 import VoiceRecordingInput from './VoiceRecordingInput'
 import WaitMusicLibrarySelect from './WaitMusicLibrarySelect'
@@ -14,32 +23,56 @@ import WaitMusicLibrarySelect from './WaitMusicLibrarySelect'
 import css from './WaitMusicField.less'
 
 type Props = {
-    preferences: LocalWaitMusicPreferences
+    value: LocalWaitMusicPreferences
+    shouldUpload?: boolean
     onChange: (value: LocalWaitMusicPreferences) => void
-    integrationCountry: PhoneCountry
+    integrationCountry?: PhoneCountry
 }
 
 const WaitMusicField = ({
-    preferences,
+    value,
     onChange,
     integrationCountry,
+    shouldUpload = false,
 }: Props) => {
     const { validateVoiceRecordingUpload } = useVoiceMessageValidation()
     const [customRecordingPath, setCustomRecordingPath] = useState<
         string | undefined
     >()
+    const notify = useNotify()
+
+    const { mutate: uploadFile, isLoading } = useUploadCustomVoiceRecording({
+        mutation: {
+            onSuccess: (response) => {
+                const newValue: LocalWaitMusicPreferences = {
+                    type: WaitMusicType.CustomRecording,
+                    custom_recording: {
+                        audio_file_path: response.data.url,
+                        audio_file_name: response.data.name,
+                        audio_file_type: response.data.content_type,
+                    },
+                }
+                setCustomRecordingPath(response.data.url)
+                onChange(newValue)
+            },
+            onError: (err) => {
+                const error = _get(err, 'response.data.error', '') as
+                    | GorgiasApiResponseDataError
+                    | undefined
+                notify.error(error?.msg || 'Failed to upload custom recording')
+            },
+        },
+    })
 
     useEffect(() => {
         if (
             !customRecordingPath &&
-            preferences?.type === WaitMusicType.CustomRecording &&
-            preferences?.custom_recording?.audio_file_path
+            value?.type === WaitMusicType.CustomRecording &&
+            value?.custom_recording?.audio_file_path
         ) {
-            setCustomRecordingPath(
-                preferences?.custom_recording?.audio_file_path,
-            )
+            setCustomRecordingPath(value?.custom_recording?.audio_file_path)
         }
-    }, [preferences, customRecordingPath, setCustomRecordingPath])
+    }, [value, customRecordingPath, setCustomRecordingPath])
 
     const handleCustomRecordingUpload = useCallback(
         async (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -50,23 +83,46 @@ const WaitMusicField = ({
                 true,
             )
             if (voiceRecordingUpload) {
-                const { url, newVoiceFields } = voiceRecordingUpload
-                setCustomRecordingPath(url)
+                if (
+                    shouldUpload &&
+                    value.type === WaitMusicType.CustomRecording
+                ) {
+                    const { uploadedFile } = voiceRecordingUpload
+                    const params = {
+                        type: CustomRecordingType.WaitMusic,
+                        ...(value.custom_recording?.audio_file_path
+                            ? {
+                                  replaces:
+                                      value.custom_recording.audio_file_path,
+                              }
+                            : {}),
+                    }
+                    uploadFile({ data: { file: uploadedFile }, params })
+                } else {
+                    const { url, newVoiceFields } = voiceRecordingUpload
+                    setCustomRecordingPath(url)
 
-                const newValue: LocalWaitMusicPreferences = {
-                    ...preferences,
-                    custom_recording: {
-                        audio_file: newVoiceFields.new_voice_recording_file,
-                        audio_file_name:
-                            newVoiceFields.new_voice_recording_file_name,
-                        audio_file_type:
-                            newVoiceFields.new_voice_recording_file_type,
-                    },
+                    const newValue: LocalWaitMusicPreferences = {
+                        ...value,
+                        custom_recording: {
+                            audio_file: newVoiceFields.new_voice_recording_file,
+                            audio_file_name:
+                                newVoiceFields.new_voice_recording_file_name,
+                            audio_file_type:
+                                newVoiceFields.new_voice_recording_file_type,
+                        },
+                    }
+                    onChange(newValue)
                 }
-                onChange(newValue)
             }
         },
-        [preferences, onChange, validateVoiceRecordingUpload],
+        [
+            value,
+            onChange,
+            validateVoiceRecordingUpload,
+            shouldUpload,
+            uploadFile,
+        ],
     )
 
     return (
@@ -74,22 +130,22 @@ const WaitMusicField = ({
             <div className={css.horizontalRadioButtons}>
                 <WaitMusicRadioButton
                     waitMusicType={WaitMusicType.Library}
-                    selectedWaitMusicType={preferences.type}
+                    selectedWaitMusicType={value.type}
                     label="Choose from library"
                     onChange={(waitMusicType) => {
-                        onChange({ ...preferences, type: waitMusicType })
+                        onChange({ ...value, type: waitMusicType })
                     }}
                 />
                 <WaitMusicRadioButton
                     waitMusicType={WaitMusicType.CustomRecording}
-                    selectedWaitMusicType={preferences.type}
+                    selectedWaitMusicType={value.type}
                     label="Custom recording"
                     onChange={(waitMusicType) => {
-                        onChange({ ...preferences, type: waitMusicType })
+                        onChange({ ...value, type: waitMusicType })
                     }}
                 />
             </div>
-            {preferences.type === WaitMusicType.CustomRecording && (
+            {value.type === WaitMusicType.CustomRecording && (
                 <VoiceRecordingInput
                     voiceRecordingPath={customRecordingPath}
                     onVoiceRecordingUpload={handleCustomRecordingUpload}
@@ -97,19 +153,32 @@ const WaitMusicField = ({
                     replaceLabel={'Replace File'}
                     uploadLabel={'Upload File'}
                     maxSizeInMB={MAX_WAIT_MUSIC_CUSTOM_RECORDING_FILE_SIZE_MB}
+                    isLoading={isLoading}
                 />
             )}
-            {preferences.type === WaitMusicType.Library && (
-                <WaitMusicLibrarySelect
-                    library={preferences.library}
+            {value.type === WaitMusicType.Library && integrationCountry && (
+                <DEPRECATED_WaitMusicLibrarySelect
+                    library={value.library}
                     onChange={(selectedLibrary) =>
                         onChange({
-                            ...preferences,
+                            ...value,
                             type: WaitMusicType.Library,
                             library: selectedLibrary,
                         })
                     }
                     integrationCountry={integrationCountry}
+                />
+            )}
+            {value.type === WaitMusicType.Library && !integrationCountry && (
+                <WaitMusicLibrarySelect
+                    library={value.library}
+                    onChange={(selectedLibrary) =>
+                        onChange({
+                            ...value,
+                            type: WaitMusicType.Library,
+                            library: selectedLibrary,
+                        })
+                    }
                 />
             )}
         </>

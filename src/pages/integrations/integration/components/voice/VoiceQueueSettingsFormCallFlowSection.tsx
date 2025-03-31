@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import { useEffect } from 'react'
 
 import {
     PhoneRingingBehaviour,
@@ -12,13 +12,17 @@ import Alert, { AlertType } from 'pages/common/components/Alert/Alert'
 import RadioButtonField from 'pages/common/forms/RadioButtonField'
 import { HintTooltip } from 'pages/stats/common/HintTooltip'
 
+import {
+    RING_TIME_MAX_VALUE,
+    RING_TIME_MIN_VALUE,
+    WAIT_TIME_MAX_VALUE,
+    WAIT_TIME_MIN_VALUE,
+} from './constants'
 import VoiceIntegrationPreferencesTeamSelect from './VoiceIntegrationPreferencesTeamSelect'
 import VoiceSettingAccordionItem from './VoiceSettingAccordionItem'
+import WaitMusicField from './WaitMusicField'
 
 import css from './VoiceQueueSettingsFormCallFlowSection.less'
-
-const RING_TIME_MIN_VALUE = 10
-const RING_TIME_MAX_VALUE = 600
 
 export default function VoiceQueueSettingsFormCallFlowSection() {
     const { watch, setValue } = useFormContext()
@@ -86,7 +90,7 @@ export default function VoiceQueueSettingsFormCallFlowSection() {
                             ]}
                         />
                         <div>
-                            <Label htmlFor="">
+                            <Label htmlFor="ring_time">
                                 <>
                                     <span>Ring time per agent</span>
                                     <HintTooltip title="The time in seconds we ring each individual agent before moving to the next one." />
@@ -126,7 +130,38 @@ export default function VoiceQueueSettingsFormCallFlowSection() {
                     subtitle="Caller experience"
                     description="Customize your callers' waiting experience"
                 >
-                    Caller experience content
+                    <div className={css.accordionContent}>
+                        <div>
+                            <Label htmlFor="wait_time">
+                                <span>Wait time</span>
+                                <HintTooltip title="The maximum time in seconds we wait before sending the call to voicemail." />
+                            </Label>
+                            <FormField
+                                field={TextField}
+                                name="wait_time"
+                                label=""
+                                type="number"
+                                min={WAIT_TIME_MIN_VALUE}
+                                max={WAIT_TIME_MAX_VALUE}
+                                outputTransform={(value) =>
+                                    value === '' ? value : Number(value)
+                                }
+                                caption="Set a time between 10 and 3600 seconds (1 hour)."
+                            />
+                        </div>
+                        <div>
+                            <Label htmlFor="wait_music">Wait music</Label>
+                            <p>
+                                The music callers will hear while they are
+                                waiting.
+                            </p>
+                            <FormField
+                                field={WaitMusicField}
+                                name="wait_music"
+                                shouldUpload
+                            />
+                        </div>
+                    </div>
                 </VoiceSettingAccordionItem>
             </Accordion>
         </div>

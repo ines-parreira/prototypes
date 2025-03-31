@@ -51,6 +51,34 @@ const EUROPEAN_COUNTRY_CODES = [
 ]
 export const RINGTONE_AUDIO_FILE_PATHS = [
     {
+        key: 'US_ringing_tone',
+        name: 'Ringing Tone - US',
+        audio_file_path: 'https://assets.gorgias.io/phone/US_ringing_tone.wav',
+    },
+    {
+        key: 'AU_ringing_tone',
+        name: 'Ringing Tone - AU',
+        audio_file_path: 'https://assets.gorgias.io/phone/AU_ringing_tone.wav',
+    },
+    {
+        key: 'EU_ringing_tone',
+        name: 'Ringing Tone - EU',
+        audio_file_path: 'https://assets.gorgias.io/phone/EU_ringing_tone.wav',
+    },
+    {
+        key: 'FR_ringing_tone',
+        name: 'Ringing Tone - FR',
+        audio_file_path: 'https://assets.gorgias.io/phone/FR_ringing_tone.wav',
+    },
+    {
+        key: 'UK_ringing_tone',
+        name: 'Ringing Tone - UK',
+        audio_file_path: 'https://assets.gorgias.io/phone/UK_ringing_tone.wav',
+    },
+]
+
+export const DEPRECATED_RINGTONE_AUDIO_FILE_PATHS = [
+    {
         countries: ['US', 'CA'],
         audioFilePath: 'https://assets.gorgias.io/phone/US_ringing_tone.wav',
     },
@@ -99,6 +127,11 @@ export const STATIC_WAIT_MUSIC_LIBRARY: UpdateWaitMusicLibrary[] = [
     },
 ]
 export const DEFAULT_STATIC_WAIT_MUSIC_LIBRARY_INDEX = 3
+
+export const WAIT_MUSIC_LIBRARY: UpdateWaitMusicLibrary[] = [
+    ...RINGTONE_AUDIO_FILE_PATHS,
+    ...STATIC_WAIT_MUSIC_LIBRARY,
+]
 
 export const DEFAULT_WAIT_MUSIC_PREFERENCES = {
     type: WaitMusicType.Library,

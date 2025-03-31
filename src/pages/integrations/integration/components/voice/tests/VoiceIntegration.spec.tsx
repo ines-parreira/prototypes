@@ -29,6 +29,10 @@ jest.mock('pages/integrations/integration/utils/defaultRoutes', () => ({
     })),
 }))
 jest.mock(
+    'pages/integrations/integration/components/phone/PhoneIntegrationBreadcrumbs',
+    () => () => <div>PhoneIntegrationBreadcrumbs</div>,
+)
+jest.mock(
     'pages/integrations/integration/components/voice/VoiceIntegrationDetails',
     () => () => <div>VoiceIntegrationDetails</div>,
 )
@@ -83,6 +87,12 @@ describe('VoiceIntegration', () => {
         renderComponent()
 
         expect(screen.getByText('QueueRoutes')).toBeInTheDocument()
+    })
+
+    it('should not render secondary navigation when on specific queue page', () => {
+        renderComponent(`${PHONE_INTEGRATION_BASE_URL}/queues/123`)
+
+        expect(screen.queryByText('About')).toBeNull()
     })
 
     it('should render integration settings', () => {

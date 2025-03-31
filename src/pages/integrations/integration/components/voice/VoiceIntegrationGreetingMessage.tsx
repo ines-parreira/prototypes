@@ -81,7 +81,7 @@ export default function VoiceIntegrationGreetingMessage({
                             Music callers will hear while they are waiting.
                         </p>
                         <WaitMusicField
-                            preferences={
+                            value={
                                 waitMusicPayload ??
                                 DEFAULT_WAIT_MUSIC_PREFERENCES
                             }

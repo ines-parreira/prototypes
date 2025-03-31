@@ -66,6 +66,18 @@ describe('<VoiceQueueSettingsFormCallFlowSection />', () => {
             }),
             {},
         )
+        expect(FormFieldMock).toHaveBeenCalledWith(
+            expect.objectContaining({
+                name: 'wait_time',
+            }),
+            {},
+        )
+        expect(FormFieldMock).toHaveBeenCalledWith(
+            expect.objectContaining({
+                name: 'wait_music',
+            }),
+            {},
+        )
     })
 
     it.each`
@@ -129,6 +141,17 @@ describe('<VoiceQueueSettingsFormCallFlowSection />', () => {
             expect(ringTimeField?.[0]?.outputTransform?.('5')).toBe(5)
 
             expect(ringTimeField?.[0]?.outputTransform?.('')).toBe('')
+        })
+    })
+
+    describe('Wait time field', () => {
+        it('should transform output correctly', () => {
+            renderComponent()
+
+            const waitTimeField = getFormFieldCallByName('wait_time')
+            expect(waitTimeField?.[0]?.outputTransform?.('12')).toBe(12)
+
+            expect(waitTimeField?.[0]?.outputTransform?.('')).toBe('')
         })
     })
 })

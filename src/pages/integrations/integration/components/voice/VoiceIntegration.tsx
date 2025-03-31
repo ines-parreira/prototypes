@@ -1,4 +1,11 @@
-import { Route, Switch, useParams } from 'react-router-dom'
+import { LocationState } from 'history'
+import {
+    matchPath,
+    Route,
+    Switch,
+    useLocation,
+    useParams,
+} from 'react-router-dom'
 
 import { Button } from '@gorgias/merchant-ui-kit'
 
@@ -40,6 +47,12 @@ export default function VoiceIntegration() {
     const { phoneNumberId } = useSearch<{
         phoneNumberId: string
     }>()
+    const { pathname: path } = useLocation<LocationState>()
+    const queuePathMatch = matchPath<{ queueId?: string }>(path, {
+        path: `${baseURL}/queues/:queueId`,
+        exact: false,
+        strict: false,
+    })
 
     const exposeQueues = useFlag(FeatureFlagKey.ExposeVoiceQueues)
 
@@ -56,6 +69,7 @@ export default function VoiceIntegration() {
     const phoneIntegrations = useAppSelector(getPhoneIntegrations)
     const isStandardIntegration = isStandardPhoneIntegration(currentIntegration)
     const showNewSettingsPage = exposeQueues && isStandardIntegration
+    const isQueuePage = !!queuePathMatch?.params.queueId
 
     const routes = getDefaultRoutes(baseURL, phoneIntegrations)
 
@@ -89,7 +103,7 @@ export default function VoiceIntegration() {
                 )}
             </PageHeader>
 
-            {!showNewSettingsPage && (
+            {!showNewSettingsPage && !isQueuePage && (
                 <VoiceIntegrationSecondaryNavigation
                     integration={currentIntegration}
                 />

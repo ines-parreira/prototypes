@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react'
+import React, { useRef, useState } from 'react'
 
 import { UpdateWaitMusicLibrary } from '@gorgias/api-queries'
 
@@ -10,16 +10,26 @@ import SelectInputBox, {
 } from 'pages/common/forms/input/SelectInputBox'
 
 import CircularAudioPlayer from './CircularAudioPlayer'
-import { WAIT_MUSIC_LIBRARY } from './waitMusicLibraryConstants'
+import {
+    DEFAULT_RINGTONE_AUDIO_FILE_PATHS_INDEX,
+    DEFAULT_STATIC_WAIT_MUSIC_LIBRARY_INDEX,
+    DEPRECATED_RINGTONE_AUDIO_FILE_PATHS,
+    STATIC_WAIT_MUSIC_LIBRARY,
+} from './waitMusicLibraryConstants'
 
 import css from './WaitMusicLibrarySelect.less'
 
 type Props = {
     library?: UpdateWaitMusicLibrary
     onChange: (selectedLibrary: UpdateWaitMusicLibrary) => void
+    integrationCountry: string
 }
 
-const WaitMusicLibrarySelect = ({ library, onChange }: Props) => {
+const DEPRECATED_WaitMusicLibrarySelect = ({
+    library,
+    onChange,
+    integrationCountry,
+}: Props) => {
     const [isDropdownOpen, setIsDropdownOpen] = useState(false)
     const [activeAudioPlayer, setActiveAudioPlayer] = useState<string | null>(
         null,
@@ -28,12 +38,25 @@ const WaitMusicLibrarySelect = ({ library, onChange }: Props) => {
     const targetRef = useRef<HTMLDivElement>(null)
     const floatingRef = useRef<HTMLDivElement>(null)
 
-    const selectedLibraryWaitMusic = library ?? WAIT_MUSIC_LIBRARY[0]
-
-    const selectedLabel = WAIT_MUSIC_LIBRARY.find(
-        (option) =>
-            option.audio_file_path === selectedLibraryWaitMusic.audio_file_path,
-    )?.name
+    const waitMusicLibrary: UpdateWaitMusicLibrary[] = [
+        {
+            key: 'ringtone',
+            name: 'Ringing Tone',
+            audio_file_path:
+                DEPRECATED_RINGTONE_AUDIO_FILE_PATHS.find(
+                    (DEPRECATED_RINGTONE_AUDIO_FILE_PATHS) =>
+                        DEPRECATED_RINGTONE_AUDIO_FILE_PATHS.countries.includes(
+                            integrationCountry,
+                        ),
+                )?.audioFilePath ??
+                DEPRECATED_RINGTONE_AUDIO_FILE_PATHS[
+                    DEFAULT_RINGTONE_AUDIO_FILE_PATHS_INDEX
+                ].audioFilePath,
+        },
+        ...STATIC_WAIT_MUSIC_LIBRARY,
+    ]
+    const selectedLibraryWaitMusic =
+        library ?? waitMusicLibrary[DEFAULT_STATIC_WAIT_MUSIC_LIBRARY_INDEX + 1]
 
     return (
         <SelectInputBox
@@ -41,7 +64,7 @@ const WaitMusicLibrarySelect = ({ library, onChange }: Props) => {
             floating={floatingRef}
             ref={targetRef}
             placeholder="Select wait music"
-            label={selectedLabel}
+            label={selectedLibraryWaitMusic.name}
         >
             <SelectInputBoxContext.Consumer>
                 {(context) => (
@@ -50,15 +73,15 @@ const WaitMusicLibrarySelect = ({ library, onChange }: Props) => {
                         onToggle={() => context!.onBlur()}
                         ref={floatingRef}
                         target={targetRef}
-                        value={selectedLibraryWaitMusic.audio_file_path}
+                        value={selectedLibraryWaitMusic.key}
                     >
                         <DropdownBody>
-                            {WAIT_MUSIC_LIBRARY.map((option) => (
+                            {waitMusicLibrary.map((option) => (
                                 <DropdownItem
-                                    key={option.audio_file_path}
+                                    key={option.key}
                                     option={{
                                         label: option.name,
-                                        value: option.audio_file_path,
+                                        value: option.key,
                                     }}
                                     onClick={() => onChange(option)}
                                     shouldCloseOnSelect
@@ -86,4 +109,4 @@ const WaitMusicLibrarySelect = ({ library, onChange }: Props) => {
     )
 }
 
-export default WaitMusicLibrarySelect
+export default DEPRECATED_WaitMusicLibrarySelect

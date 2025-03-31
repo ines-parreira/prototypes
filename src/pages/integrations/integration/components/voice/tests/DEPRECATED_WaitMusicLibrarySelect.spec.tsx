@@ -2,12 +2,12 @@ import { fireEvent, render } from '@testing-library/react'
 
 import { UpdateWaitMusicLibrary } from '@gorgias/api-queries'
 
+import DEPRECATED_WaitMusicLibrarySelect from '../DEPRECATED_WaitMusicLibrarySelect'
 import {
     DEFAULT_RINGTONE_AUDIO_FILE_PATHS_INDEX,
     DEPRECATED_RINGTONE_AUDIO_FILE_PATHS,
     STATIC_WAIT_MUSIC_LIBRARY,
 } from '../waitMusicLibraryConstants'
-import WaitMusicLibrarySelect from '../WaitMusicLibrarySelect'
 
 jest.mock(
     '../CircularAudioPlayer',
@@ -22,57 +22,47 @@ jest.mock(
     },
 )
 
-describe('<WaitMusicLibrarySelect />', () => {
+describe('<DEPRECATED_WaitMusicLibrarySelect />', () => {
     const onChangeMock = jest.fn()
-    const renderComponent = (selectedLibrary?: UpdateWaitMusicLibrary) => {
+    const renderComponent = (
+        selectedLibrary?: UpdateWaitMusicLibrary,
+        integrationCountry: string = 'US',
+    ) => {
         return render(
-            <WaitMusicLibrarySelect
+            <DEPRECATED_WaitMusicLibrarySelect
                 library={selectedLibrary}
                 onChange={onChangeMock}
+                integrationCountry={integrationCountry}
             />,
         )
     }
 
     it('should render', () => {
-        const { getByText, getAllByTestId, getAllByText } = renderComponent()
+        const { getByText, getAllByTestId } = renderComponent()
+
+        expect(getByText('Clockwork Waltz')).toBeInTheDocument()
 
         fireEvent.click(getByText('arrow_drop_down'))
-        expect(getAllByText('Ringing Tone - US')).toHaveLength(2)
-        expect(getByText('Ringing Tone - UK')).toBeInTheDocument()
-        expect(getByText('Ringing Tone - AU')).toBeInTheDocument()
-        expect(getByText('Ringing Tone - EU')).toBeInTheDocument()
-        expect(getByText('Ringing Tone - FR')).toBeInTheDocument()
+        expect(getByText('Ringing Tone')).toBeInTheDocument()
         expect(getByText('Chill While Waiting')).toBeInTheDocument()
         expect(getByText('Soothe')).toBeInTheDocument()
         expect(getByText('Bright Lights')).toBeInTheDocument()
 
         const circularAudioPlayers = getAllByTestId('circular-audio-player')
-        expect(circularAudioPlayers.length).toBe(9)
+        expect(circularAudioPlayers.length).toBe(5)
         expect(circularAudioPlayers[0]).toHaveTextContent(
             'https://assets.gorgias.io/phone/US_ringing_tone.wav',
         )
         expect(circularAudioPlayers[1]).toHaveTextContent(
-            'https://assets.gorgias.io/phone/AU_ringing_tone.wav',
-        )
-        expect(circularAudioPlayers[2]).toHaveTextContent(
-            'https://assets.gorgias.io/phone/EU_ringing_tone.wav',
-        )
-        expect(circularAudioPlayers[3]).toHaveTextContent(
-            'https://assets.gorgias.io/phone/FR_ringing_tone.wav',
-        )
-        expect(circularAudioPlayers[4]).toHaveTextContent(
-            'https://assets.gorgias.io/phone/UK_ringing_tone.wav',
-        )
-        expect(circularAudioPlayers[5]).toHaveTextContent(
             'https://assets.gorgias.io/phone/waiting_music_chill.mp3',
         )
-        expect(circularAudioPlayers[6]).toHaveTextContent(
+        expect(circularAudioPlayers[2]).toHaveTextContent(
             'https://assets.gorgias.io/phone/waiting_music_soothe.mp3',
         )
-        expect(circularAudioPlayers[7]).toHaveTextContent(
+        expect(circularAudioPlayers[3]).toHaveTextContent(
             'https://assets.gorgias.io/phone/waiting_music_bright_lights.mp3',
         )
-        expect(circularAudioPlayers[8]).toHaveTextContent(
+        expect(circularAudioPlayers[4]).toHaveTextContent(
             'https://assets.gorgias.io/phone/ClockworkWaltz.mp3',
         )
     })
@@ -102,32 +92,65 @@ describe('<WaitMusicLibrarySelect />', () => {
 
     it.each([
         {
-            fileLabel: 'Ringing Tone - US',
+            integrationCountry: 'US',
             expectedAudioFilePath:
                 'https://assets.gorgias.io/phone/US_ringing_tone.wav',
         },
         {
-            fileLabel: 'Ringing Tone - AU',
+            integrationCountry: 'CA',
+            expectedAudioFilePath:
+                'https://assets.gorgias.io/phone/US_ringing_tone.wav',
+        },
+        {
+            integrationCountry: 'AU',
             expectedAudioFilePath:
                 'https://assets.gorgias.io/phone/AU_ringing_tone.wav',
         },
         {
-            fileLabel: 'Ringing Tone - EU',
+            integrationCountry: 'IT',
             expectedAudioFilePath:
                 'https://assets.gorgias.io/phone/EU_ringing_tone.wav',
         },
+        {
+            integrationCountry: 'RO',
+            expectedAudioFilePath:
+                'https://assets.gorgias.io/phone/EU_ringing_tone.wav',
+        },
+        {
+            integrationCountry: 'FR',
+            expectedAudioFilePath:
+                'https://assets.gorgias.io/phone/FR_ringing_tone.wav',
+        },
+        {
+            integrationCountry: 'GB',
+            expectedAudioFilePath:
+                'https://assets.gorgias.io/phone/UK_ringing_tone.wav',
+        },
+        {
+            integrationCountry: 'NZ',
+            expectedAudioFilePath:
+                'https://assets.gorgias.io/phone/UK_ringing_tone.wav',
+        },
+        {
+            integrationCountry: 'JP',
+            expectedAudioFilePath:
+                'https://assets.gorgias.io/phone/US_ringing_tone.wav',
+        },
     ])(
-        'should select correct ringtone',
-        ({ fileLabel, expectedAudioFilePath }) => {
-            const { getByText } = renderComponent(STATIC_WAIT_MUSIC_LIBRARY[0])
+        'should select correct ringtone for country $integrationCountry',
+        ({ integrationCountry, expectedAudioFilePath }) => {
+            const { getByText } = renderComponent(
+                STATIC_WAIT_MUSIC_LIBRARY[0],
+                integrationCountry,
+            )
 
             fireEvent.click(getByText('arrow_drop_down'))
-            fireEvent.click(getByText(fileLabel))
-            expect(onChangeMock).toHaveBeenCalledWith(
-                expect.objectContaining({
-                    audio_file_path: expectedAudioFilePath,
-                }),
-            )
+            fireEvent.click(getByText('Ringing Tone'))
+            expect(onChangeMock).toHaveBeenCalledWith({
+                key: 'ringtone',
+                name: 'Ringing Tone',
+                audio_file_path: expectedAudioFilePath,
+            })
         },
     )
 
@@ -136,7 +159,7 @@ describe('<WaitMusicLibrarySelect />', () => {
 
         fireEvent.click(getByText('arrow_drop_down'))
         const circularAudioPlayers = getAllByTestId('circular-audio-player')
-        expect(circularAudioPlayers.length).toBe(9)
+        expect(circularAudioPlayers.length).toBe(5)
 
         fireEvent.click(
             circularAudioPlayers[2].querySelector('button') as Element,

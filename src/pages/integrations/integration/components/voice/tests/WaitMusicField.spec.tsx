@@ -1,16 +1,19 @@
-import React from 'react'
+import { fireEvent, waitFor } from '@testing-library/react'
 
-import { fireEvent, render, waitFor } from '@testing-library/react'
-
-import { WaitMusicType } from '@gorgias/api-queries'
+import { uploadCustomVoiceRecording } from '@gorgias/api-client'
+import { CustomRecordingType, WaitMusicType } from '@gorgias/api-queries'
 
 import { MAX_WAIT_MUSIC_CUSTOM_RECORDING_FILE_SIZE_MB } from 'models/integration/constants'
 import { LocalWaitMusicPreferences } from 'models/integration/types/phone'
-import { PhoneCountry } from 'models/phoneNumber/types'
+import { renderWithQueryClientProvider } from 'tests/reactQueryTestingUtils'
 import { assumeMock } from 'utils/testing'
 
 import useVoiceMessageValidation from '../hooks/useVoiceMessageValidation'
 import WaitMusicField from '../WaitMusicField'
+
+jest.mock('@gorgias/api-client')
+
+const uploadCustomVoiceRecordingMock = assumeMock(uploadCustomVoiceRecording)
 
 jest.mock(
     'pages/integrations/integration/components/voice/hooks/useVoiceMessageValidation',
@@ -26,6 +29,14 @@ assumeMock(useVoiceMessageValidation).mockReturnValue({
     areWaitMusicPreferencesTheSame: jest.fn(),
 })
 
+const mockNotify = {
+    success: jest.fn(),
+    error: jest.fn(),
+}
+jest.mock('hooks/useNotify', () => ({
+    useNotify: () => mockNotify,
+}))
+
 describe('<WaitMusicField />', () => {
     const onChange: jest.MockedFunction<
         (value: LocalWaitMusicPreferences) => void
@@ -38,11 +49,10 @@ describe('<WaitMusicField />', () => {
     })
 
     it('should render', () => {
-        const { queryByText } = render(
+        const { queryByText } = renderWithQueryClientProvider(
             <WaitMusicField
-                preferences={{ type: WaitMusicType.Library }}
+                value={{ type: WaitMusicType.Library }}
                 onChange={onChange}
-                integrationCountry={PhoneCountry.US}
             />,
         )
 
@@ -51,11 +61,10 @@ describe('<WaitMusicField />', () => {
     })
 
     it('should change wait music type to custom recording', () => {
-        const { getByText } = render(
+        const { getByText } = renderWithQueryClientProvider(
             <WaitMusicField
-                preferences={{ type: WaitMusicType.Library }}
+                value={{ type: WaitMusicType.Library }}
                 onChange={onChange}
-                integrationCountry={PhoneCountry.US}
             />,
         )
 
@@ -67,11 +76,10 @@ describe('<WaitMusicField />', () => {
     })
 
     it('should change wait music type to library', () => {
-        const { getByText } = render(
+        const { getByText } = renderWithQueryClientProvider(
             <WaitMusicField
-                preferences={{ type: WaitMusicType.CustomRecording }}
+                value={{ type: WaitMusicType.CustomRecording }}
                 onChange={onChange}
-                integrationCountry={PhoneCountry.US}
             />,
         )
 
@@ -83,11 +91,10 @@ describe('<WaitMusicField />', () => {
     })
 
     it('should change library audio on select', async () => {
-        const { getByText } = render(
+        const { getByText } = renderWithQueryClientProvider(
             <WaitMusicField
-                preferences={{ type: WaitMusicType.Library }}
+                value={{ type: WaitMusicType.Library }}
                 onChange={onChange}
-                integrationCountry={PhoneCountry.US}
             />,
         )
 
@@ -108,6 +115,90 @@ describe('<WaitMusicField />', () => {
     })
 
     it('should allow uploading a custom recording', async () => {
+        const file = new File(['audio data'], 'example.mp3', {
+            type: 'audio/mpeg',
+        })
+        validateVoiceRecordingUploadMock.mockResolvedValue({
+            uploadedFile: file,
+        })
+        uploadCustomVoiceRecordingMock.mockResolvedValue({
+            data: {
+                url: '123',
+                name: 'example1.mp3',
+                content_type: 'audio/mpeg',
+                size: 100,
+            },
+        } as any)
+
+        const { container } = renderWithQueryClientProvider(
+            <WaitMusicField
+                value={{ type: WaitMusicType.CustomRecording }}
+                onChange={onChange}
+                shouldUpload
+            />,
+        )
+
+        const input = container.querySelector('input[type="file"]')
+        expect(input).toBeInTheDocument()
+        if (input) {
+            fireEvent.change(input, { target: { files: [file] } })
+        }
+
+        await waitFor(() => {
+            expect(uploadCustomVoiceRecordingMock).toHaveBeenCalledWith(
+                { file },
+                {
+                    type: CustomRecordingType.WaitMusic,
+                },
+                undefined,
+            )
+        })
+
+        await waitFor(() => {
+            expect(onChange).toHaveBeenCalledWith({
+                type: WaitMusicType.CustomRecording,
+                custom_recording: {
+                    audio_file_path: '123',
+                    audio_file_name: 'example1.mp3',
+                    audio_file_type: 'audio/mpeg',
+                },
+            })
+        })
+    })
+
+    it('should display error notification when uploading a custom recording fails', async () => {
+        uploadCustomVoiceRecordingMock.mockRejectedValue(
+            new Error('Failed to upload'),
+        )
+        const file = new File(['audio data'], 'example.mp3', {
+            type: 'audio/mpeg',
+        })
+        validateVoiceRecordingUploadMock.mockResolvedValue({
+            uploadedFile: file,
+        })
+
+        const { container } = renderWithQueryClientProvider(
+            <WaitMusicField
+                value={{ type: WaitMusicType.CustomRecording }}
+                onChange={onChange}
+                shouldUpload
+            />,
+        )
+
+        const input = container.querySelector('input[type="file"]')
+        expect(input).toBeInTheDocument()
+        if (input) {
+            fireEvent.change(input, { target: { files: [file] } })
+        }
+
+        await waitFor(() => {
+            expect(mockNotify.error).toHaveBeenCalledWith(
+                'Failed to upload custom recording',
+            )
+        })
+    })
+
+    it('should allow uploading a custom recording - DEPRECATED', async () => {
         validateVoiceRecordingUploadMock.mockResolvedValue({
             url: 'd658ab4b-e36a-4b09-b6fe-d6e1ded91952',
             newVoiceFields: {
@@ -122,11 +213,10 @@ describe('<WaitMusicField />', () => {
             type: 'audio/mpeg',
         })
 
-        const { container } = render(
+        const { container } = renderWithQueryClientProvider(
             <WaitMusicField
-                preferences={{ type: WaitMusicType.CustomRecording }}
+                value={{ type: WaitMusicType.CustomRecording }}
                 onChange={onChange}
-                integrationCountry={PhoneCountry.US}
             />,
         )
 
