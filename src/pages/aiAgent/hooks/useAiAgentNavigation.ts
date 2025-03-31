@@ -128,6 +128,9 @@ const useNavigationItems = (
 
     const isAiAgentOptimizeTabEnabled = flags[FeatureFlagKey.AiAgentOptimizeTab]
 
+    const isAiAgentScrapeStoreDomainEnabled =
+        flags[FeatureFlagKey.AiAgentScrapeStoreDomain]
+
     const isStandaloneMenuEnabled =
         useFlags()[FeatureFlagKey.ConvAiStandaloneMenu]
 
@@ -152,7 +155,9 @@ const useNavigationItems = (
                     items: [
                         isAiAgentKnowledgeTabEnabled && {
                             route: routes.knowledge,
-                            title: SOURCES,
+                            title: isAiAgentScrapeStoreDomainEnabled
+                                ? SOURCES
+                                : GENERAL,
                             exact: true,
                         },
                         {
@@ -261,6 +266,7 @@ const useNavigationItems = (
         isAiAgentKnowledgeTabEnabled,
         isAiAgentOptimizeTabEnabled,
         isConversationStartersEnabled,
+        isAiAgentScrapeStoreDomainEnabled,
         isGorgiasUser,
         isStandaloneMenuEnabled,
         routes,

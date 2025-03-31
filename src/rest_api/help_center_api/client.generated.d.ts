@@ -157,6 +157,7 @@ declare namespace Components {
                 | 'allRecommendationsPage'
                 | 'helpCenterWizard'
                 | 'topQuestionsSection'
+            ingested_resource_id: number | null
             id: number
         }
         export interface ArticleIngestionLogDto {
@@ -164,6 +165,7 @@ declare namespace Components {
             article_ids: number[]
             raw_text?: string | null
             dataset_id: string
+            scraping_id?: string | null
             latest_sync: string // date-time
             id: number
             url: string | null
@@ -186,6 +188,7 @@ declare namespace Components {
                 | 'allRecommendationsPage'
                 | 'helpCenterWizard'
                 | 'topQuestionsSection'
+            ingested_resource_id: number | null
             available_locales: (
                 | 'cs-CZ'
                 | 'da-DK'
@@ -411,6 +414,7 @@ declare namespace Components {
                 | 'allRecommendationsPage'
                 | 'helpCenterWizard'
                 | 'topQuestionsSection'
+            ingested_resource_id: number | null
             id: number
             translation: LocalArticleTranslation
         }
@@ -569,6 +573,7 @@ declare namespace Components {
                 | 'allRecommendationsPage'
                 | 'helpCenterWizard'
                 | 'topQuestionsSection'
+            ingested_resource_id: number | null
             available_locales: (
                 | 'cs-CZ'
                 | 'da-DK'
@@ -1088,6 +1093,7 @@ declare namespace Components {
                 | 'allRecommendationsPage'
                 | 'helpCenterWizard'
                 | 'topQuestionsSection'
+            ingested_resource_id?: number | null
         }
         export interface CreateArticleTranslationDto {
             /**
@@ -2188,6 +2194,7 @@ declare namespace Components {
             article_ids: number[]
             raw_text?: string | null
             dataset_id: string
+            scraping_id?: string | null
             latest_sync: string // date-time
             id: number
             url: string | null
@@ -2505,6 +2512,14 @@ declare namespace Components {
              */
             status: 'SUCCESS'
             num_imported_csv_rows: number
+        }
+        export interface ProductPageIngestedDto {
+            accountId: number
+            sourceId: string
+            externalId: string
+            url: string
+            title: string
+            content: string
         }
         export interface PurgeCacheContactFormDto {
             shop_name: string
@@ -4069,6 +4084,9 @@ declare namespace Paths {
         namespace Responses {
             export type $201 = Components.Schemas.ProcessCsvResponseDto
         }
+    }
+    namespace IngestEvent {
+        export type RequestBody = Components.Schemas.ProductPageIngestedDto
     }
     namespace ListAIArticleTemplates {
         namespace Responses {
@@ -5816,6 +5834,14 @@ export interface OperationMethods {
         config?: AxiosRequestConfig,
     ): OperationResponse<any>
     /**
+     * ingestEvent - Submit product page ingested event
+     */
+    'ingestEvent'(
+        parameters?: Parameters<UnknownParamsObject> | null,
+        data?: Paths.IngestEvent.RequestBody,
+        config?: AxiosRequestConfig,
+    ): OperationResponse<any>
+    /**
      * getContactFormMailtoReplacementConfig - Get a Contact Form Mailto Replacement Config
      */
     'getContactFormMailtoReplacementConfig'(
@@ -7051,6 +7077,16 @@ export interface PathsDictionary {
         'post'(
             parameters?: Parameters<Paths.StartIngestion.PathParameters> | null,
             data?: Paths.StartIngestion.RequestBody,
+            config?: AxiosRequestConfig,
+        ): OperationResponse<any>
+    }
+    ['/api/help-center/ingestions/product-page-ingested']: {
+        /**
+         * ingestEvent - Submit product page ingested event
+         */
+        'post'(
+            parameters?: Parameters<UnknownParamsObject> | null,
+            data?: Paths.IngestEvent.RequestBody,
             config?: AxiosRequestConfig,
         ): OperationResponse<any>
     }

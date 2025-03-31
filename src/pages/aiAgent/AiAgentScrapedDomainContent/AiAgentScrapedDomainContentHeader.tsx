@@ -1,13 +1,17 @@
-import { Tooltip } from '@gorgias/merchant-ui-kit'
+import React from 'react'
+
+import { Button } from '@gorgias/merchant-ui-kit'
 
 import useId from 'hooks/useId'
-import Button from 'pages/common/components/button/Button'
+import ItemWithTooltip from 'pages/common/components/ItemWithTooltip/ItemWithTooltip'
+
+import { getFormattedSyncDate, getFormattedSyncDatetime } from './utils'
 
 import css from './AiAgentScrapedDomainContentHeader.less'
 
 type Props = {
     storeDomain: string
-    lastSyncDate?: Date
+    lastSyncDate?: string
     onSync: () => void
 }
 
@@ -19,26 +23,8 @@ const AiAgentScrapedDomainContentHeader = ({
     const id = useId()
     const syncDateId = `syncDate-${id}`
 
-    const dateOptions: Intl.DateTimeFormatOptions = {
-        year: '2-digit',
-        month: '2-digit',
-        day: '2-digit',
-    }
-
-    const dateTimeOptions: Intl.DateTimeFormatOptions = {
-        ...dateOptions,
-        hour: '2-digit',
-        minute: '2-digit',
-        hour12: true,
-    }
-    const syncDateString = lastSyncDate?.toLocaleDateString(
-        'en-US',
-        dateOptions,
-    )
-    const syncDateTimeString = lastSyncDate?.toLocaleDateString(
-        'en-US',
-        dateTimeOptions,
-    )
+    const syncDateString = getFormattedSyncDate(lastSyncDate)
+    const syncDateTimeString = getFormattedSyncDatetime(lastSyncDate)
 
     return (
         <div className={css.wrapper}>
@@ -58,9 +44,12 @@ const AiAgentScrapedDomainContentHeader = ({
             </div>
             <div className={css.actions}>
                 {lastSyncDate && (
-                    <div id={syncDateId}>Last synced {syncDateString}</div>
+                    <ItemWithTooltip
+                        id={syncDateId}
+                        item={`Last synced ${syncDateString}`}
+                        tooltip={syncDateTimeString}
+                    />
                 )}
-                <Tooltip target={syncDateId}>{syncDateTimeString}</Tooltip>
                 <Button intent="secondary" onClick={onSync} leadingIcon="sync">
                     Sync
                 </Button>

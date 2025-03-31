@@ -23,12 +23,25 @@
     }
 
     .label {
-        margin-bottom: @layout-spacing-xs;
+        display: flex;
+        flex-direction: column;
+        gap: @layout-spacing-xxs;
+        margin-bottom: @layout-spacing-s;
     }
 
     .buttons {
         margin-top: 48px;
         display: flex;
         gap: @layout-spacing-xs;
+    }
+
+    .cardsContainer {
+        display: flex;
+        flex-direction: column;
+        gap: @layout-spacing-s;
+    }
+
+    .cardSection {
+        padding: @layout-spacing-s;
     }
 }

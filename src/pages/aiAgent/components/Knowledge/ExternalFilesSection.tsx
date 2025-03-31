@@ -1,7 +1,10 @@
 import React, { createRef, useEffect, useState } from 'react'
 
+import { useFlags } from 'launchdarkly-react-client-sdk'
+
 import { Label, Tooltip } from '@gorgias/merchant-ui-kit'
 
+import { FeatureFlagKey } from 'config/featureFlags'
 import useAppDispatch from 'hooks/useAppDispatch'
 import { useFileIngestion } from 'pages/aiAgent/hooks/useFileIngestion'
 import Button from 'pages/common/components/button/Button'
@@ -50,6 +53,9 @@ export const ExternalFilesSection = ({
     const [isLoading, setIsLoading] = useState(false)
     const inputRef = createRef<HTMLInputElement>()
     const dispatch = useAppDispatch()
+
+    const isAiAgentScrapeStoreDomainEnabled =
+        useFlags()[FeatureFlagKey.AiAgentScrapeStoreDomain]
 
     const { ingestFile, ingestedFiles, deleteIngestedFile, isIngesting } =
         useFileIngestion({
@@ -175,10 +181,9 @@ export const ExternalFilesSection = ({
                     <Label className={css.title}>External documents</Label>
 
                     <div>
-                        Upload knowledge and process documents for AI Agent to
-                        reference. Do not upload files that may contain any
-                        sensitive or personal information. Images will be
-                        ignored.
+                        {isAiAgentScrapeStoreDomainEnabled
+                            ? 'Allow AI Agent to use up to 10 external documents. Do not upload files that may contain sensitive or personal information. Images will be ignored.'
+                            : 'Upload knowledge and process documents for AI Agent to reference. Do not upload files that may contain any sensitive or personal information. Images will be ignored.'}
                     </div>
                 </div>
 

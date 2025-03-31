@@ -80,6 +80,7 @@ describe('<PreviewArticle />', () => {
                                     id: 1,
                                     updated_datetime: '',
                                     unlisted_id: '1',
+                                    ingested_resource_id: null,
                                 }}
                                 helpCenter={getSingleHelpCenterResponseFixture}
                             />

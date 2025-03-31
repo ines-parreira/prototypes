@@ -204,6 +204,27 @@ export const deleteArticleIngestionLog = async (
     return response
 }
 
+export const getIngestionLogs = async (
+    client: HelpCenterClient | undefined,
+    pathParams: Paths.GetIngestionLogs.PathParameters &
+        Paths.GetIngestionLogs.QueryParameters,
+) => {
+    if (!client) return null
+    const response = await client.getIngestionLogs(pathParams)
+    return response.data
+}
+
+export const startIngestion = async (
+    client: HelpCenterClient | undefined,
+    pathParams: Paths.StartIngestion.PathParameters,
+    data: Paths.StartIngestion.RequestBody,
+) => {
+    if (!client) return null
+    const response = await client.startIngestion(pathParams, data)
+
+    return response
+}
+
 export const createFileIngestion = async (
     client: HelpCenterClient | undefined,
     pathParams: Paths.CreateFileIngestion.PathParameters,

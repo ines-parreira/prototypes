@@ -103,6 +103,7 @@ export const ArticlesListFixture: ArticleWithLocalTranslationAndRating[] = [
                 down: 0,
             },
         },
+        ingested_resource_id: null,
     },
     {
         id: 2,
@@ -141,6 +142,7 @@ export const ArticlesListFixture: ArticleWithLocalTranslationAndRating[] = [
                 down: 0,
             },
         },
+        ingested_resource_id: null,
     },
 ]
 

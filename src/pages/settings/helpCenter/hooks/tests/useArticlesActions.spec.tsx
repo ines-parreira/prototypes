@@ -372,6 +372,7 @@ describe('useArticlesActions()', () => {
                         up: 0,
                         down: 0,
                     },
+                    ingested_resource_id: null,
                 },
             )
 
@@ -426,6 +427,7 @@ describe('useArticlesActions()', () => {
                         up: 0,
                         down: 0,
                     },
+                    ingested_resource_id: null,
                 },
             )
 

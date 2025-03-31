@@ -23,7 +23,9 @@ import {
     useGetHelpCenterArticleList,
     useGetHelpCenterCategoryTree,
     useGetHelpCenterList,
+    useGetIngestionLogs,
     useStartArticleIngestion,
+    useStartIngestion,
 } from '../queries'
 import * as resources from '../resources'
 
@@ -38,6 +40,8 @@ const getCategoryTree = jest.spyOn(resources, 'getCategoryTree')
 const getHelpCenterList = jest.spyOn(resources, 'getHelpCenterList')
 const getArticleIngestionLogs = jest.spyOn(resources, 'getArticleIngestionLogs')
 const startArticleIngestion = jest.spyOn(resources, 'startArticleIngestion')
+const getIngestionLogs = jest.spyOn(resources, 'getIngestionLogs')
+const startIngestion = jest.spyOn(resources, 'startIngestion')
 const createFileIngestion = jest.spyOn(resources, 'createFileIngestion')
 const getFileIngestion = jest.spyOn(resources, 'getFileIngestion')
 const deleteFileIngestion = jest.spyOn(resources, 'deleteFileIngestion')
@@ -366,6 +370,61 @@ describe('queries', () => {
                 undefined,
                 { help_center_id: helpCenterId },
                 { links: [] },
+            ])
+
+            await waitFor(() => expect(result.current.isSuccess).toBe(true))
+
+            expect(result.current.data).toStrictEqual(null)
+        })
+    })
+
+    describe('useGetIngestionLogs', () => {
+        it('should return correct data on success', async () => {
+            getIngestionLogs.mockReturnValue(Promise.resolve(null))
+            mockUseHelpCenterApi.mockReturnValue({
+                client: {} as HelpCenterClient,
+                isReady: true,
+            })
+            const { result, waitFor } = renderHook(
+                () => useGetIngestionLogs({ help_center_id: helpCenterId }, {}),
+                {
+                    wrapper,
+                },
+            )
+            await waitFor(() => expect(result.current.isSuccess).toBe(true))
+            expect(result.current.data).toStrictEqual(null)
+        })
+
+        it('should not call the api function when enabled false', () => {
+            getIngestionLogs.mockReturnValue(Promise.resolve(null))
+            renderHook(
+                () =>
+                    useGetIngestionLogs(
+                        { help_center_id: helpCenterId },
+                        { enabled: false },
+                    ),
+                {
+                    wrapper,
+                },
+            )
+            expect(getIngestionLogs).toHaveBeenCalledTimes(0)
+        })
+    })
+
+    describe('useStartIngestion', () => {
+        it('should return correct data on success', async () => {
+            startIngestion.mockReturnValue(Promise.resolve(null))
+            const { result, waitFor } = renderHook(() => useStartIngestion(), {
+                wrapper,
+            })
+
+            await result.current.mutateAsync([
+                undefined,
+                { help_center_id: helpCenterId },
+                {
+                    url: 'https://www.test.com',
+                    type: 'domain',
+                },
             ])
 
             await waitFor(() => expect(result.current.isSuccess).toBe(true))

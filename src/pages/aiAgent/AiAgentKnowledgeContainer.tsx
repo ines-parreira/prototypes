@@ -3,6 +3,7 @@ import React, { useCallback, useEffect, useMemo, useState } from 'react'
 import { useFlags } from 'launchdarkly-react-client-sdk'
 import { useParams } from 'react-router-dom'
 
+import { Card } from '@gorgias/analytics-ui-kit'
 import { Label } from '@gorgias/merchant-ui-kit'
 
 import { AI_AGENT_SENTRY_TEAM } from 'common/const/sentryTeamNames'
@@ -28,6 +29,7 @@ import { NotificationStatus } from 'state/notifications/types'
 import { reportError } from 'utils/errors'
 
 import { ConfigurationSection } from './components/ConfigurationSection/ConfigurationSection'
+import { ScrapeStoreDomainSection } from './components/Knowledge/ScrapeStoreDomainSection'
 import { CreatePublicSourcesSection } from './components/StoreConfigForm/StoreConfigForm'
 import { AI_AGENT, INITIAL_FORM_VALUES, KNOWLEDGE } from './constants'
 import { useGetOrCreateSnippetHelpCenter } from './hooks/useGetOrCreateSnippetHelpCenter'
@@ -40,6 +42,8 @@ export const AiAgentKnowledgeContainer = () => {
         useFlags()[FeatureFlagKey.AiAgentSnippetsFromExternalFiles]
     const isStandaloneMenuEnabled =
         useFlags()[FeatureFlagKey.ConvAiStandaloneMenu]
+    const isAiAgentScrapeStoreDomainEnabled =
+        useFlags()[FeatureFlagKey.AiAgentScrapeStoreDomain]
 
     const currentAccount = useAppSelector(getCurrentAccountState)
     const accountDomain = currentAccount.get('domain')
@@ -204,50 +208,122 @@ export const AiAgentKnowledgeContainer = () => {
             />
 
             <form onSubmit={onSubmit} className={css.container}>
-                <ConfigurationSection
-                    title="Knowledge"
-                    isRequired
-                    subtitle="Connect at least one of the knowledge sources below to enable AI Agent."
-                    data-candu-id="ai-agent-configuration-knowledge-copy"
-                >
-                    <div className={css.sectionContainer}>
-                        <div>
-                            <Label className={css.label}>Help Center</Label>
-                            <HelpCenterSelect
-                                helpCenter={selectedHelpCenter}
-                                setHelpCenterId={setHelpCenterId}
-                                helpCenters={faqHelpCenters}
-                                withEmptyItemSelection
-                                className={css.helpCenterSelect}
-                            />
-                            <div className={css.formInputFooterInfo}>
-                                Select a Help Center to connect to AI Agent.
-                            </div>
-                        </div>
-
-                        {snippetHelpCenter ? (
-                            <CreatePublicSourcesSection
-                                helpCenterId={snippetHelpCenter.id}
-                                selectedHelpCenterId={selectedHelpCenter?.id}
-                                onPublicURLsChanged={handlePublicURLsChange}
-                                shopName={shopName}
-                            />
-                        ) : null}
-
-                        {isAiAgentSnippetsFromExternalFilesEnabled &&
-                            snippetHelpCenter && (
-                                <ExternalFilesSection
-                                    helpCenterId={snippetHelpCenter.id}
-                                    onLoadingStateChange={(isLoading) =>
-                                        setExternalFilesIsLoading(isLoading)
-                                    }
-                                    onEmptyStateChange={(isEmpty) =>
-                                        setHasExternalFiles(!isEmpty)
-                                    }
-                                />
+                {isAiAgentScrapeStoreDomainEnabled ? (
+                    <ConfigurationSection
+                        subtitle="AI Agent uses your knowledge answer customer questions and resolve requests."
+                        data-candu-id="ai-agent-configuration-knowledge-copy"
+                    >
+                        <div className={css.cardsContainer}>
+                            {snippetHelpCenter && (
+                                <Card className={css.cardSection}>
+                                    <ScrapeStoreDomainSection
+                                        shopName={shopName}
+                                        helpCenterId={snippetHelpCenter.id}
+                                    />
+                                </Card>
                             )}
-                    </div>
-                </ConfigurationSection>
+
+                            <Card className={css.cardSection}>
+                                <div className={css.label}>
+                                    <Label>Help Center</Label>
+                                    <span>
+                                        Allow AI Agent to use articles from your
+                                        Help Center.
+                                    </span>
+                                </div>
+                                <HelpCenterSelect
+                                    helpCenter={selectedHelpCenter}
+                                    setHelpCenterId={setHelpCenterId}
+                                    helpCenters={faqHelpCenters}
+                                    withEmptyItemSelection
+                                    className={css.helpCenterSelect}
+                                />
+                                <div className={css.formInputFooterInfo}>
+                                    Select a Help Center to connect to AI Agent.
+                                </div>
+                            </Card>
+
+                            {snippetHelpCenter ? (
+                                <Card className={css.cardSection}>
+                                    <CreatePublicSourcesSection
+                                        helpCenterId={snippetHelpCenter.id}
+                                        selectedHelpCenterId={
+                                            selectedHelpCenter?.id
+                                        }
+                                        onPublicURLsChanged={
+                                            handlePublicURLsChange
+                                        }
+                                        shopName={shopName}
+                                    />
+                                </Card>
+                            ) : null}
+
+                            {isAiAgentSnippetsFromExternalFilesEnabled &&
+                                snippetHelpCenter && (
+                                    <Card className={css.cardSection}>
+                                        <ExternalFilesSection
+                                            helpCenterId={snippetHelpCenter.id}
+                                            onLoadingStateChange={(isLoading) =>
+                                                setExternalFilesIsLoading(
+                                                    isLoading,
+                                                )
+                                            }
+                                            onEmptyStateChange={(isEmpty) =>
+                                                setHasExternalFiles(!isEmpty)
+                                            }
+                                        />
+                                    </Card>
+                                )}
+                        </div>
+                    </ConfigurationSection>
+                ) : (
+                    <ConfigurationSection
+                        title="Knowledge"
+                        isRequired
+                        subtitle="Connect at least one of the knowledge sources below to enable AI Agent."
+                        data-candu-id="ai-agent-configuration-knowledge-copy"
+                    >
+                        <div className={css.sectionContainer}>
+                            <div>
+                                <Label className={css.label}>Help Center</Label>
+                                <HelpCenterSelect
+                                    helpCenter={selectedHelpCenter}
+                                    setHelpCenterId={setHelpCenterId}
+                                    helpCenters={faqHelpCenters}
+                                    withEmptyItemSelection
+                                    className={css.helpCenterSelect}
+                                />
+                                <div className={css.formInputFooterInfo}>
+                                    Select a Help Center to connect to AI Agent.
+                                </div>
+                            </div>
+
+                            {snippetHelpCenter ? (
+                                <CreatePublicSourcesSection
+                                    helpCenterId={snippetHelpCenter.id}
+                                    selectedHelpCenterId={
+                                        selectedHelpCenter?.id
+                                    }
+                                    onPublicURLsChanged={handlePublicURLsChange}
+                                    shopName={shopName}
+                                />
+                            ) : null}
+
+                            {isAiAgentSnippetsFromExternalFilesEnabled &&
+                                snippetHelpCenter && (
+                                    <ExternalFilesSection
+                                        helpCenterId={snippetHelpCenter.id}
+                                        onLoadingStateChange={(isLoading) =>
+                                            setExternalFilesIsLoading(isLoading)
+                                        }
+                                        onEmptyStateChange={(isEmpty) =>
+                                            setHasExternalFiles(!isEmpty)
+                                        }
+                                    />
+                                )}
+                        </div>
+                    </ConfigurationSection>
+                )}
 
                 <div className={css.buttons}>
                     <Button

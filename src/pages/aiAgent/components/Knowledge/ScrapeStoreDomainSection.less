@@ -1,0 +1,41 @@
+@import (reference) '~@gorgias/design-tokens/dist/css/layout';
+@import (reference) '~css/typography';
+
+:local {
+    .label {
+        display: flex;
+        flex-direction: column;
+        gap: @layout-spacing-xxs;
+        margin-bottom: @layout-spacing-s;
+    }
+
+    .domain {
+        .body-regular();
+        display: flex;
+        align-items: center;
+    }
+
+    .icon {
+        font-size: 20px;
+        color: var(--neutral-grey-5);
+        margin-right: @layout-spacing-xs;
+    }
+
+    .storeDomain {
+        background-color: var(--neutral-grey-1);
+        border-radius: @layout-spacing-xxs;
+        padding: @layout-spacing-xs;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-top: @layout-spacing-m;
+    }
+
+    .actions {
+        .caption-regular();
+        color: var(--neutral-grey-5);
+        display: flex;
+        align-items: center;
+        gap: @layout-spacing-xs;
+    }
+}

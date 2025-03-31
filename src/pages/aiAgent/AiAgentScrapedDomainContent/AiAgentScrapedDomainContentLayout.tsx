@@ -19,7 +19,7 @@ type Props = {
 const AiAgentScrapedDomainContentLayout = ({ shopName, children }: Props) => {
     const { routes } = useAiAgentNavigation({ shopName })
     const mockedStoreDomain = 'loopearplugs.com'
-    const mockedLastSyncDate = new Date()
+    const mockedLastSyncDate = new Date().toDateString()
     const onSync = () => {}
 
     const headerNavbarItems = [

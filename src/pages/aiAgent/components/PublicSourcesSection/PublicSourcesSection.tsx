@@ -1,7 +1,10 @@
 import React, { useEffect, useState } from 'react'
 
+import { useFlags } from 'launchdarkly-react-client-sdk'
+
 import { Label, Tooltip } from '@gorgias/merchant-ui-kit'
 
+import { FeatureFlagKey } from 'config/featureFlags'
 import useAppDispatch from 'hooks/useAppDispatch'
 import { useSearchParam } from 'hooks/useSearchParam'
 import Button from 'pages/common/components/button/Button'
@@ -56,6 +59,8 @@ export const PublicSourcesSection = ({
 }: Props) => {
     const dispatch = useAppDispatch()
     const [wizardQueryParam] = useSearchParam(WIZARD_POST_COMPLETION_QUERY_KEY)
+    const isAiAgentScrapeStoreDomainEnabled =
+        useFlags()[FeatureFlagKey.AiAgentScrapeStoreDomain]
 
     const { articleIngestionLogsStatus } = usePublicResourcesPooling({
         helpCenterId,
@@ -208,9 +213,9 @@ export const PublicSourcesSection = ({
                     </IconTooltip>
                 </Label>
                 <div>
-                    Add external URLs for AI Agent to reference. Links to your
-                    Gorgias Help Center or main domain are not accepted, as AI
-                    Agent needs specific pages to provide accurate answers.
+                    {isAiAgentScrapeStoreDomainEnabled
+                        ? 'Allow AI Agent to use up to 10 external URLs sources. Links to your Gorgias Help Center or store domain are not accepted.'
+                        : 'Add external URLs for AI Agent to reference. Links to your Gorgias Help Center or main domain are not accepted, as AI Agent needs specific pages to provide accurate answers.'}
                 </div>
             </div>
 

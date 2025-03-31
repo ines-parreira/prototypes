@@ -39,6 +39,7 @@ export const getArticlesResponseFixture: ArticlesListPage = {
                     down: 0,
                 },
             },
+            ingested_resource_id: null,
         },
         {
             id: 11,
@@ -76,6 +77,7 @@ export const getArticlesResponseFixture: ArticlesListPage = {
                     down: 0,
                 },
             },
+            ingested_resource_id: null,
         },
         {
             id: 12,
@@ -113,6 +115,7 @@ export const getArticlesResponseFixture: ArticlesListPage = {
                     down: 0,
                 },
             },
+            ingested_resource_id: null,
         },
         {
             id: 13,
@@ -150,6 +153,7 @@ export const getArticlesResponseFixture: ArticlesListPage = {
                     down: 0,
                 },
             },
+            ingested_resource_id: null,
         },
         {
             id: 14,
@@ -187,6 +191,7 @@ export const getArticlesResponseFixture: ArticlesListPage = {
                     down: 0,
                 },
             },
+            ingested_resource_id: null,
         },
         {
             id: 15,
@@ -224,6 +229,7 @@ export const getArticlesResponseFixture: ArticlesListPage = {
                     down: 0,
                 },
             },
+            ingested_resource_id: null,
         },
         {
             id: 16,
@@ -261,6 +267,7 @@ export const getArticlesResponseFixture: ArticlesListPage = {
                     down: 0,
                 },
             },
+            ingested_resource_id: null,
         },
         {
             id: 17,
@@ -298,6 +305,7 @@ export const getArticlesResponseFixture: ArticlesListPage = {
                     down: 0,
                 },
             },
+            ingested_resource_id: null,
         },
         {
             id: 18,
@@ -332,6 +340,7 @@ export const getArticlesResponseFixture: ArticlesListPage = {
                     down: 0,
                 },
             },
+            ingested_resource_id: null,
         },
     ],
     meta: {
@@ -378,4 +387,5 @@ export const getSingleArticleEnglish: Article = {
             down: 0,
         },
     },
+    ingested_resource_id: null,
 }

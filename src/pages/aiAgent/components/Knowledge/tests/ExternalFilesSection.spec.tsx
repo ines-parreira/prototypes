@@ -10,7 +10,7 @@ import { notify } from 'state/notifications/actions'
 import { NotificationStatus } from 'state/notifications/types'
 import { assumeMock, renderWithRouter } from 'utils/testing'
 
-import { ExternalFilesSection } from './ExternalFilesSection'
+import { ExternalFilesSection } from '../ExternalFilesSection'
 
 jest.mock('state/notifications/actions')
 jest.mock('hooks/useAppDispatch')

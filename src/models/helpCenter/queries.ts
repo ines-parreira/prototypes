@@ -23,7 +23,9 @@ import {
     getHelpCenterArticle,
     getHelpCenterArticles,
     getHelpCenterList,
+    getIngestionLogs,
     startArticleIngestion,
+    startIngestion,
     updateArticleTranslation,
     updateHelpCenter,
 } from './resources'
@@ -66,6 +68,15 @@ export const helpCenterKeys = {
         [
             ...helpCenterKeys.detail(helpCenterId),
             'article-ingestion-logs',
+            queryParams,
+        ].filter(Boolean),
+    ingestionLogs: (
+        helpCenterId: number,
+        queryParams?: Paths.GetIngestionLogs.QueryParameters,
+    ) =>
+        [
+            ...helpCenterKeys.detail(helpCenterId),
+            'ingestion-logs',
             queryParams,
         ].filter(Boolean),
     fileIngestions: (
@@ -369,6 +380,34 @@ export const useDeleteArticleIngestionLog = (
     return useMutation({
         mutationFn: ([client = helpCenterClient, pathParams]) =>
             deleteArticleIngestionLog(client, pathParams),
+        ...overrides,
+    })
+}
+
+export const useGetIngestionLogs = (
+    pathParams: Paths.GetIngestionLogs.PathParameters &
+        Paths.GetIngestionLogs.QueryParameters,
+    overrides?: UseQueryOptions<Awaited<ReturnType<typeof getIngestionLogs>>>,
+) => {
+    const { client: helpCenterClient } = useHelpCenterApi()
+    return useQuery({
+        queryFn: async () => getIngestionLogs(helpCenterClient, pathParams),
+        queryKey: helpCenterKeys.ingestionLogs(pathParams.help_center_id),
+        ...overrides,
+        enabled:
+            Boolean(helpCenterClient) &&
+            (overrides === undefined || overrides.enabled),
+    })
+}
+
+export const useStartIngestion = (
+    overrides?: MutationOverrides<typeof startIngestion>,
+) => {
+    const { client: helpCenterClient } = useHelpCenterApi()
+
+    return useMutation({
+        mutationFn: ([client = helpCenterClient, pathParams, data]) =>
+            startIngestion(client, pathParams, data),
         ...overrides,
     })
 }

@@ -3950,6 +3950,25 @@
                 "tags": ["ingestion"]
             }
         },
+        "/api/help-center/ingestions/product-page-ingested": {
+            "post": {
+                "operationId": "ingestEvent",
+                "summary": "Submit product page ingested event",
+                "parameters": [],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/ProductPageIngestedDto"
+                            }
+                        }
+                    }
+                },
+                "responses": { "201": { "description": "" } },
+                "tags": ["ingestion"]
+            }
+        },
         "/api/help-center/contact-forms/{contact_form_id}/mailto-replacement-config": {
             "get": {
                 "operationId": "getContactFormMailtoReplacementConfig",
@@ -4423,6 +4442,7 @@
                     },
                     "raw_text": { "type": "string", "nullable": true },
                     "dataset_id": { "type": "string" },
+                    "scraping_id": { "type": "string", "nullable": true },
                     "latest_sync": { "format": "date-time", "type": "string" },
                     "id": { "type": "number" },
                     "url": { "type": "string", "nullable": true },
@@ -4710,6 +4730,10 @@
                             "topQuestionsSection"
                         ]
                     },
+                    "ingested_resource_id": {
+                        "type": "number",
+                        "nullable": true
+                    },
                     "available_locales": {
                         "type": "array",
                         "items": {
@@ -4745,6 +4769,7 @@
                     "updated_datetime",
                     "category_id",
                     "help_center_id",
+                    "ingested_resource_id",
                     "available_locales",
                     "rating",
                     "translation"
@@ -4899,6 +4924,10 @@
                             "topQuestionsSection"
                         ]
                     },
+                    "ingested_resource_id": {
+                        "type": "number",
+                        "nullable": true
+                    },
                     "id": { "type": "number" },
                     "translation": {
                         "$ref": "#/components/schemas/LocalArticleTranslation"
@@ -4911,6 +4940,7 @@
                     "available_locales",
                     "category_id",
                     "help_center_id",
+                    "ingested_resource_id",
                     "id",
                     "translation"
                 ]
@@ -4981,6 +5011,10 @@
                             "topQuestionsSection"
                         ]
                     },
+                    "ingested_resource_id": {
+                        "type": "number",
+                        "nullable": true
+                    },
                     "id": { "type": "number" }
                 },
                 "required": [
@@ -4989,6 +5023,7 @@
                     "category_id",
                     "available_locales",
                     "help_center_id",
+                    "ingested_resource_id",
                     "id"
                 ]
             },
@@ -5123,6 +5158,11 @@
                             "helpCenterWizard",
                             "topQuestionsSection"
                         ]
+                    },
+                    "ingested_resource_id": {
+                        "type": "number",
+                        "nullable": true,
+                        "default": null
                     }
                 },
                 "required": ["translation"]
@@ -7229,6 +7269,10 @@
                             "topQuestionsSection"
                         ]
                     },
+                    "ingested_resource_id": {
+                        "type": "number",
+                        "nullable": true
+                    },
                     "available_locales": {
                         "type": "array",
                         "items": {
@@ -7263,6 +7307,7 @@
                     "unlisted_id",
                     "category_id",
                     "help_center_id",
+                    "ingested_resource_id",
                     "available_locales",
                     "translation_versions",
                     "id"
@@ -8492,6 +8537,7 @@
                     },
                     "raw_text": { "type": "string", "nullable": true },
                     "dataset_id": { "type": "string" },
+                    "scraping_id": { "type": "string", "nullable": true },
                     "latest_sync": { "format": "date-time", "type": "string" },
                     "id": { "type": "number" },
                     "url": { "type": "string", "nullable": true },
@@ -8526,6 +8572,25 @@
                     "type": { "type": "string", "enum": ["url", "domain"] }
                 },
                 "required": ["url", "type"]
+            },
+            "ProductPageIngestedDto": {
+                "type": "object",
+                "properties": {
+                    "accountId": { "type": "number" },
+                    "sourceId": { "type": "string" },
+                    "externalId": { "type": "string" },
+                    "url": { "type": "string" },
+                    "title": { "type": "string" },
+                    "content": { "type": "string" }
+                },
+                "required": [
+                    "accountId",
+                    "sourceId",
+                    "externalId",
+                    "url",
+                    "title",
+                    "content"
+                ]
             },
             "MailtoReplacementConfigGetDto": {
                 "type": "object",
