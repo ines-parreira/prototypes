@@ -60,6 +60,8 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
+        with:
+          sparse-checkout: deployment
 
       - name: Download the artifacts
         uses: actions/download-artifact@v4

@@ -1,0 +1,94 @@
+name: Force Deploy Production
+
+on:
+  workflow_dispatch:
+    inputs:
+      force-deploy-commit:
+        description: Specify the commit to force deploy to production, defaults to latest commit on branch selected (force-deploy-commit) if empty. This job only runs on main or staging branches.
+        required: false
+        type: string
+
+permissions:
+  contents: read
+
+jobs:
+  workspace-vars:
+    name: Workspace vars
+    if: github.ref == 'refs/heads/main'
+    runs-on: gh-actions-small-runner-set
+    outputs:
+      assets-dir: src/assets
+      build-dir: build
+      bucket-path: web-app
+      node-version: 18
+    steps:
+      - name: Workspace vars
+        run: echo "empty step"
+
+  install-dependencies:
+    name: Install dependencies
+    if: github.ref == 'refs/heads/main'
+    needs: workspace-vars
+    runs-on: gh-actions-large-runner-set
+    outputs:
+      cache-key: ${{ env.CACHE_KEY }}
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ inputs.force-deploy-commit != '' && inputs.force-deploy-commit || github.sha }}
+
+      - name: Install dependencies
+        uses: ./.github/actions/install-dependencies
+        id: install-dependencies
+        with:
+          node-version: ${{ needs.workspace-vars.outputs.node-version }}
+          npm-token: ${{ secrets.GH_READ_PACKAGES_TOKEN }}
+
+  build-production:
+    name: Build production
+    if: github.ref == 'refs/heads/main'
+    needs:
+      - workspace-vars
+      - install-dependencies
+    uses: ./.github/workflows/build.yml
+    with:
+      cache-key: ${{ needs.install-dependencies.outputs.cache-key }}
+      node-version: ${{ needs.workspace-vars.outputs.node-version }}
+      assets-url: https://gorgias-assets.gorgias.io/${{ needs.workspace-vars.outputs.bucket-path }}
+      build-dir: ${{ needs.workspace-vars.outputs.build-dir }}
+      artifact: production-build
+      release: production-${{ inputs.force-deploy-commit != '' && inputs.force-deploy-commit || github.sha }}
+
+  deploy-production:
+    name: Deploy production
+    if: github.ref == 'refs/heads/main'
+    needs:
+      - workspace-vars
+      - install-dependencies
+      - build-production
+    uses: ./.github/workflows/deploy.yml
+    secrets: inherit
+    with:
+      cache-key: ${{ needs.install-dependencies.outputs.cache-key}}
+      node-version: ${{ needs.workspace-vars.outputs.node-version }}
+      bucket: gs://gorgias-assets-production
+      gcloud-project: gorgias-helpdesk-production
+      clusters: >-
+        gorgias-helpdesk-production-aus-southeast1-fcb9
+        gorgias-helpdesk-production-europe-west1-c511
+        gorgias-helpdesk-production-europe-west3-86c1
+        gorgias-helpdesk-production-us-central1-c433
+        gorgias-helpdesk-production-us-central1-d8ff
+        gorgias-helpdesk-production-us-east1-2607
+        gorgias-helpdesk-production-us-east1-c94b
+        gorgias-helpdesk-production-us-east4-5f09
+        gorgias-helpdesk-production-us-east4-65cd
+        gorgias-helpdesk-production-europe-west4-e7f4
+        gorgias-main-us-east1-635c
+      bucket-path: ${{ needs.workspace-vars.outputs.bucket-path }}
+      assets-dir: ${{ needs.workspace-vars.outputs.assets-dir }}
+      build-dir: ${{ needs.workspace-vars.outputs.build-dir }}
+      artifact: production-build
+      sentry-project: helpdesk-web-app
+      release: production-${{ inputs.force-deploy-commit != '' && inputs.force-deploy-commit || github.sha }}
