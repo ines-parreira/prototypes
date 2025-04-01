@@ -145,6 +145,54 @@ describe('<VoiceQueueSelectField />', () => {
         expect(getAllByText('Skeleton')).toHaveLength(4)
     })
 
+    it('should display empty state for no queues', () => {
+        ;(useListVoiceQueues as jest.Mock).mockReturnValue({
+            data: { data: { data: [] } },
+            isLoading: false,
+            error: null,
+        })
+
+        const { getByText } = render(
+            <VoiceQueueSelectField value={2} onChange={handleChange} />,
+        )
+
+        expect(getByText('No call queues yet?')).toBeInTheDocument()
+        expect(getByText('Create New Call Queue')).toBeInTheDocument()
+    })
+
+    it('should open the create new queue modal with no queues', async () => {
+        ;(useListVoiceQueues as jest.Mock).mockReturnValue({
+            data: { data: { data: [] } },
+            isLoading: false,
+            error: null,
+            refetch: jest.fn(),
+        })
+
+        renderComponent()
+
+        fireEvent.click(screen.getByText('Create New Call Queue'))
+        expect(CreateNewQueueModalMock).toHaveBeenLastCalledWith(
+            expect.objectContaining({
+                isOpen: true,
+            }),
+            {},
+        )
+
+        const lastCall = getLastMockCall(CreateNewQueueModalMock)
+        lastCall[0].onCreateSuccess(1)
+        expect(handleChange).toHaveBeenCalledWith(1)
+
+        lastCall[0].onClose()
+        await waitFor(() => {
+            expect(CreateNewQueueModalMock).toHaveBeenLastCalledWith(
+                expect.objectContaining({
+                    isOpen: false,
+                }),
+                {},
+            )
+        })
+    })
+
     it('should open the create new queue modal when the button is clicked', async () => {
         renderComponent()
 

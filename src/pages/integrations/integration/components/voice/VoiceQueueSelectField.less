@@ -47,4 +47,25 @@
             }
         }
     }
+
+    .noQueues {
+        display: flex;
+        flex-direction: column;
+        gap: @layout-spacing-xs;
+
+        .description {
+            display: flex;
+            flex-direction: column;
+            gap: @layout-spacing-xxs;
+
+            .title {
+                .body-semibold();
+            }
+        }
+
+        .button {
+            width: fit-content;
+            padding: 0;
+        }
+    }
 }

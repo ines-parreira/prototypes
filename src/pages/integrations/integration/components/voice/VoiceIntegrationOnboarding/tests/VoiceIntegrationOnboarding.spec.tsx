@@ -7,8 +7,8 @@ import VoiceIntegrationOnboarding from '../VoiceIntegrationOnboarding'
 jest.mock('../AddPhoneNumberStep', () =>
     jest.fn(() => <div>AddPhoneNumberStep</div>),
 )
-jest.mock('../ConfigureCallFlowStep', () =>
-    jest.fn(() => <div>ConfigureCallFlowStep</div>),
+jest.mock('../ConfigureRoutingBehaviorStep', () =>
+    jest.fn(() => <div>ConfigureRoutingBehaviorStep</div>),
 )
 
 describe('VoiceIntegrationOnboarding', () => {
@@ -18,7 +18,9 @@ describe('VoiceIntegrationOnboarding', () => {
         renderComponent()
 
         expect(screen.getByText('Add phone number')).toBeInTheDocument()
-        expect(screen.getByText('Configure call flow')).toBeInTheDocument()
+        expect(
+            screen.getByText('Configure routing behavior'),
+        ).toBeInTheDocument()
     })
 
     it('should display first step by default', () => {
@@ -26,7 +28,7 @@ describe('VoiceIntegrationOnboarding', () => {
 
         expect(screen.getByText('AddPhoneNumberStep')).toBeInTheDocument()
         expect(
-            screen.queryByText('ConfigureCallFlowStep'),
+            screen.queryByText('ConfigureRoutingBehaviorStep'),
         ).not.toBeInTheDocument()
     })
 })

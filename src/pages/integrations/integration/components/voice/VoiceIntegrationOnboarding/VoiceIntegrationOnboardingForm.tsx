@@ -1,6 +1,11 @@
+import { PhoneIntegration } from '@gorgias/api-client'
+
 import { Form } from 'core/forms'
 
-import { getDefaultValues } from './useVoiceOnboardingForm'
+import {
+    getDefaultValues,
+    validateOnboardingForm,
+} from './useVoiceOnboardingForm'
 
 import css from './VoiceIntegrationOnboardingForm.less'
 
@@ -10,10 +15,12 @@ type VoiceIntegrationOnboardingFormProps = {
 const VoiceIntegrationOnboardingForm = ({
     children,
 }: VoiceIntegrationOnboardingFormProps) => {
-    const values = getDefaultValues()
-
     return (
-        <Form values={values} onValidSubmit={() => {}}>
+        <Form<PhoneIntegration>
+            defaultValues={getDefaultValues()}
+            validator={validateOnboardingForm}
+            onValidSubmit={() => {}}
+        >
             <div className={css.formContainer}>{children}</div>
         </Form>
     )

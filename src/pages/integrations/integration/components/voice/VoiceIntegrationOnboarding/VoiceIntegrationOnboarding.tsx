@@ -5,7 +5,7 @@ import SettingsContent from 'pages/settings/SettingsContent'
 import SettingsPageContainer from 'pages/settings/SettingsPageContainer'
 
 import AddPhoneNumberStep from './AddPhoneNumberStep'
-import ConfigureCallFlowStep from './ConfigureCallFlowStep'
+import ConfigureRoutingBehaviorStep from './ConfigureRoutingBehaviorStep'
 import {
     onboardingStepsLabels,
     VoiceIntegrationOnboardingStep,
@@ -29,10 +29,10 @@ export default function VoiceIntegrationOnboarding() {
                         </WizardStep>
                         <WizardStep
                             name={
-                                VoiceIntegrationOnboardingStep.ConfigureCallFlow
+                                VoiceIntegrationOnboardingStep.ConfigureRoutingBehavior
                             }
                         >
-                            <ConfigureCallFlowStep />
+                            <ConfigureRoutingBehaviorStep />
                         </WizardStep>
                     </VoiceIntegrationOnboardingForm>
                 </Wizard>

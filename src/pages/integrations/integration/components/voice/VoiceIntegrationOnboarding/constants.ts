@@ -1,6 +1,6 @@
 export enum VoiceIntegrationOnboardingStep {
     AddPhoneNumber = 'add-phone-number',
-    ConfigureCallFlow = 'configure-call-flow',
+    ConfigureRoutingBehavior = 'configure-routing-behavior',
 }
 
 export const onboardingStepsLabels: Record<
@@ -8,5 +8,6 @@ export const onboardingStepsLabels: Record<
     string
 > = {
     [VoiceIntegrationOnboardingStep.AddPhoneNumber]: 'Add phone number',
-    [VoiceIntegrationOnboardingStep.ConfigureCallFlow]: 'Configure call flow',
+    [VoiceIntegrationOnboardingStep.ConfigureRoutingBehavior]:
+        'Configure routing behavior',
 }

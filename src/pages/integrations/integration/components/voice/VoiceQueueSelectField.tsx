@@ -76,7 +76,43 @@ function VoiceQueueSelectField({
                     There was an error while trying to fetch the queues. Please
                     try again later.
                 </p>
-                <Button onClick={() => refetch()}>Retry</Button>
+                <Button intent={'secondary'} onClick={() => refetch()}>
+                    Retry
+                </Button>
+            </div>
+        )
+    }
+
+    if (options?.length === 0) {
+        return (
+            <div className={css.noQueues}>
+                <div className={css.description}>
+                    <div className={css.title}>No call queues yet?</div>
+                    <div>
+                        Queues route calls to the right team for faster
+                        responses. We apply default settings to get you started,
+                        which you can customize anytime.
+                    </div>
+                </div>
+                <Button
+                    leadingIcon="add"
+                    fillStyle={'ghost'}
+                    className={css.button}
+                    onClick={() => {
+                        setIsDropdownOpen(false)
+                        setIsCreateNewModalOpen(true)
+                    }}
+                >
+                    Create New Call Queue
+                </Button>
+                <CreateNewQueueModal
+                    isOpen={isCreateNewModalOpen}
+                    onClose={() => setIsCreateNewModalOpen(false)}
+                    onCreateSuccess={(id) => {
+                        refetch()
+                        onChange(id)
+                    }}
+                />
             </div>
         )
     }
@@ -108,6 +144,7 @@ function VoiceQueueSelectField({
                             ref={floatingRef}
                             target={targetRef}
                             value={value}
+                            placement="bottom"
                         >
                             <DropdownSearch autoFocus />
                             <DropdownBody>
@@ -137,6 +174,7 @@ function VoiceQueueSelectField({
                                             Create queue
                                         </Button>
                                     ),
+                                    value: 'create-new',
                                 }}
                                 onClick={() => {
                                     setIsDropdownOpen(false)

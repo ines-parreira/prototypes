@@ -2,11 +2,7 @@ import { useEffect } from 'react'
 
 import { useFormContext, useFormState } from 'react-hook-form'
 
-import {
-    PhoneFunction,
-    PhoneIntegration,
-    UpdateAllPhoneIntegrationSettings,
-} from '@gorgias/api-queries'
+import { PhoneFunction, PhoneIntegration } from '@gorgias/api-queries'
 import { Button, Label, SelectField } from '@gorgias/merchant-ui-kit'
 import { RawOption } from '@gorgias/merchant-ui-kit/dist/SelectField'
 
@@ -30,10 +26,7 @@ const AddPhoneNumberStep = () => {
     const phoneNumbers = useAppSelector(getNewPhoneNumbers)
 
     const { goToNextStep } = useNavigateWizardSteps()
-    const methods = useFormContext<
-        UpdateAllPhoneIntegrationSettings | PhoneIntegration
-    >()
-    const { setValue, watch } = methods
+    const { setValue, watch } = useFormContext<PhoneIntegration>()
     const { isValid } = useFormState()
 
     const emoji = watch('meta.emoji')
