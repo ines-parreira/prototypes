@@ -1,6 +1,7 @@
 export enum VoiceCallTableColumnName {
     Activity = 'Activity',
     Integration = 'Integration',
+    Queue = 'Queue',
     Date = 'Date',
     State = 'State',
     Recording = 'Recording',
@@ -15,6 +16,7 @@ export enum VoiceCallTableColumnName {
 export const skeletonColumnsWidth: Record<string, number> = {
     [VoiceCallTableColumnName.Activity]: 364,
     [VoiceCallTableColumnName.Integration]: 174,
+    [VoiceCallTableColumnName.Queue]: 174,
     [VoiceCallTableColumnName.Date]: 154,
     [VoiceCallTableColumnName.OngoingTime]: 120,
     [VoiceCallTableColumnName.State]: 74,

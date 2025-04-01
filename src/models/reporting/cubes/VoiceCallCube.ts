@@ -30,6 +30,8 @@ export enum VoiceCallDimension {
     CallRecordingAvailable = 'VoiceCall.callRecordingAvailable',
     CallRecordingUrl = 'VoiceCall.callRecordingUrl',
     DisplayStatus = 'VoiceCall.displayStatus',
+    QueueId = 'VoiceCall.queueId',
+    QueueName = 'VoiceCall.queueName',
 }
 
 export enum VoiceCallMember {

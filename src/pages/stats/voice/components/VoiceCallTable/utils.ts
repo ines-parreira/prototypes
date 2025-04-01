@@ -62,6 +62,7 @@ export const getVoiceDrillDownColumns = (
             return [
                 VoiceCallTableColumnName.Activity,
                 VoiceCallTableColumnName.Integration,
+                VoiceCallTableColumnName.Queue,
                 VoiceCallTableColumnName.Date,
                 VoiceCallTableColumnName.State,
                 VoiceCallTableColumnName.Recording,

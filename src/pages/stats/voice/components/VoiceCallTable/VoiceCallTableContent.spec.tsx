@@ -51,6 +51,14 @@ jest.mock('utils', () => {
     } as Record<string, unknown>
 })
 
+jest.mock('pages/stats/voice/hooks/useVoiceQueueContext', () => ({
+    useVoiceQueueContext: () => {
+        return {
+            getQueueFromId: jest.fn(),
+        }
+    },
+}))
+
 jest.mock('core/flags')
 const useFlagMock = assumeMock(useFlag)
 
@@ -75,6 +83,7 @@ const data = [
         callRecordingAvailable: true,
         callRecordingUrl: 'callRecordingUrl',
         displayStatus: VoiceCallDisplayStatus.Answered,
+        queueId: 1,
     },
     {
         agentId: 2,
@@ -94,6 +103,7 @@ const data = [
         callRecordingAvailable: null,
         callRecordingUrl: null,
         displayStatus: VoiceCallDisplayStatus.Unanswered,
+        queueId: 2,
     },
     {
         agentId: 3,
@@ -113,6 +123,7 @@ const data = [
         callRecordingAvailable: true,
         callRecordingUrl: 'callRecordingUrl',
         displayStatus: VoiceCallDisplayStatus.Abandoned,
+        queueId: null,
     },
 ]
 

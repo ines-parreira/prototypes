@@ -73,5 +73,7 @@ export const selectVoiceCallData = (
         callRecordingAvailable: row[VoiceCallDimension.CallRecordingAvailable],
         callRecordingUrl: row[VoiceCallDimension.CallRecordingUrl],
         displayStatus: row[VoiceCallDimension.DisplayStatus],
+        queueId: parseNullableInteger(row[VoiceCallDimension.QueueId]),
+        queueName: row[VoiceCallDimension.QueueName],
     }))
 }

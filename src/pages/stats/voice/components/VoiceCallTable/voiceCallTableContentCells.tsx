@@ -10,6 +10,7 @@ import DEPRECATED_VoiceCallStatusLabel from 'pages/common/components/VoiceCallSt
 import VoiceCallStatusLabel from 'pages/common/components/VoiceCallStatusLabel/VoiceCallStatusLabel'
 import VoiceCallTimerBadge from 'pages/common/components/VoiceCallTimerBadge/VoiceCallTimerBadge'
 import VoiceIntegrationBasicLabel from 'pages/common/components/VoiceIntegrationBasicLabel/VoiceIntegrationBasicLabel'
+import VoiceQueueLabel from 'pages/common/components/VoiceQueueLabel/VoiceQueueLabel'
 import DatetimeLabel from 'pages/common/utils/DatetimeLabel'
 import { TruncateCellContent } from 'pages/stats/TruncateCellContent'
 import VoiceCallActivity from 'pages/stats/voice/components/VoiceCallActivity/VoiceCallActivity'
@@ -49,6 +50,12 @@ export const getOrderedHeaderCells = ({
         [VoiceCallTableColumnName.Integration]: {
             props: {
                 title: VoiceCallTableColumnName.Integration,
+                className: css.integrationCell,
+            },
+        },
+        [VoiceCallTableColumnName.Queue]: {
+            props: {
+                title: VoiceCallTableColumnName.Queue,
                 className: css.integrationCell,
             },
         },
@@ -176,6 +183,27 @@ export const getOrderedCells = ({
                                             ? item.phoneNumberDestination
                                             : item.phoneNumberSource
                                     }
+                                />
+                            ) : (
+                                '-'
+                            )
+                        }
+                        className={css.truncateContent}
+                        left
+                    />
+                ),
+            },
+        },
+        [VoiceCallTableColumnName.Queue]: {
+            props: {
+                className: css.integrationCell,
+                children: (
+                    <TruncateCellContent
+                        content={
+                            item.queueId ? (
+                                <VoiceQueueLabel
+                                    queueId={item.queueId}
+                                    queueName={item.queueName}
                                 />
                             ) : (
                                 '-'

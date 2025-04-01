@@ -139,6 +139,8 @@ const voiceCallListDimensions = [
     VoiceCallDimension.CallRecordingAvailable,
     VoiceCallDimension.CallRecordingUrl,
     VoiceCallDimension.DisplayStatus,
+    VoiceCallDimension.QueueId,
+    VoiceCallDimension.QueueName,
 ]
 
 export const connectedCallsFilter = {

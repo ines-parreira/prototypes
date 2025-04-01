@@ -25,6 +25,8 @@ export type VoiceCallStatListItem = {
     [VoiceCallDimension.CallRecordingAvailable]: boolean | null
     [VoiceCallDimension.CallRecordingUrl]: string | null
     [VoiceCallDimension.DisplayStatus]: VoiceCallDisplayStatus
+    [VoiceCallDimension.QueueId]: string | null
+    [VoiceCallDimension.QueueName]: string | null
 }
 
 export type VoiceCallSummary = {
@@ -46,6 +48,8 @@ export type VoiceCallSummary = {
     callRecordingAvailable?: boolean | null
     callRecordingUrl: string | null
     displayStatus: VoiceCallDisplayStatus
+    queueId: number | null
+    queueName?: string | null
 }
 
 export enum VoiceCallFilterDirection {

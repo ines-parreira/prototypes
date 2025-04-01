@@ -12,7 +12,7 @@ import {
 } from 'models/reporting/queries'
 import { voiceCallListQueryFactory } from 'models/reporting/queryFactories/voice/voiceCall'
 import { StatsFilters } from 'models/stat/types'
-import { VoiceCallStatus } from 'models/voiceCall/types'
+import { VoiceCallDisplayStatus, VoiceCallStatus } from 'models/voiceCall/types'
 import { formatReportingQueryDate } from 'utils/reporting'
 import { assumeMock } from 'utils/testing'
 
@@ -115,6 +115,10 @@ describe('useVoiceCallList', () => {
                         [VoiceCallDimension.VoicemailUrl]: 'test-voicemail',
                         [VoiceCallDimension.CallRecordingAvailable]: true,
                         [VoiceCallDimension.CallRecordingUrl]: 'test-recording',
+                        [VoiceCallDimension.DisplayStatus]:
+                            VoiceCallDisplayStatus.Answered,
+                        [VoiceCallDimension.QueueId]: '23',
+                        [VoiceCallDimension.QueueName]: 'Test Queue',
                     },
                 ],
             },
@@ -139,6 +143,9 @@ describe('useVoiceCallList', () => {
                 voicemailUrl: 'test-voicemail',
                 callRecordingAvailable: true,
                 callRecordingUrl: 'test-recording',
+                displayStatus: VoiceCallDisplayStatus.Answered,
+                queueId: 23,
+                queueName: 'Test Queue',
             },
         ])
     })
@@ -165,6 +172,10 @@ describe('useVoiceCallList', () => {
                         [VoiceCallDimension.VoicemailUrl]: null,
                         [VoiceCallDimension.CallRecordingAvailable]: null,
                         [VoiceCallDimension.CallRecordingUrl]: null,
+                        [VoiceCallDimension.DisplayStatus]:
+                            VoiceCallDisplayStatus.Answered,
+                        [VoiceCallDimension.QueueId]: null,
+                        [VoiceCallDimension.QueueName]: null,
                     },
                 ],
             },
@@ -189,6 +200,9 @@ describe('useVoiceCallList', () => {
                 voicemailUrl: null,
                 callRecordingAvailable: null,
                 callRecordingUrl: null,
+                displayStatus: VoiceCallDisplayStatus.Answered,
+                queueId: null,
+                queueName: null,
             },
         ])
     })

@@ -41,6 +41,7 @@ describe('voiceCallTableContentCells', () => {
             const columns = [
                 VoiceCallTableColumnName.Activity,
                 VoiceCallTableColumnName.Integration,
+                VoiceCallTableColumnName.Queue,
                 VoiceCallTableColumnName.Date,
                 VoiceCallTableColumnName.OngoingTime,
                 VoiceCallTableColumnName.State,
@@ -62,6 +63,7 @@ describe('voiceCallTableContentCells', () => {
             expect(result.map((cell) => cell.key)).toEqual([
                 VoiceCallTableColumnName.Activity,
                 VoiceCallTableColumnName.Integration,
+                VoiceCallTableColumnName.Queue,
                 VoiceCallTableColumnName.Date,
                 VoiceCallTableColumnName.OngoingTime,
                 VoiceCallTableColumnName.State,
@@ -99,6 +101,7 @@ describe('voiceCallTableContentCells', () => {
             const columns = [
                 VoiceCallTableColumnName.Activity,
                 VoiceCallTableColumnName.Integration,
+                VoiceCallTableColumnName.Queue,
                 VoiceCallTableColumnName.Date,
                 VoiceCallTableColumnName.OngoingTime,
                 VoiceCallTableColumnName.State,
@@ -121,6 +124,7 @@ describe('voiceCallTableContentCells', () => {
             expect(result.map((cell) => cell.key)).toEqual([
                 VoiceCallTableColumnName.Activity,
                 VoiceCallTableColumnName.Integration,
+                VoiceCallTableColumnName.Queue,
                 VoiceCallTableColumnName.Date,
                 VoiceCallTableColumnName.OngoingTime,
                 VoiceCallTableColumnName.State,

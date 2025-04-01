@@ -118,6 +118,8 @@ export const formatVoiceCallsData = (
             callRecordingAvailable: voiceCall.has_call_recording,
             callRecordingUrl: null,
             displayStatus: VoiceCallDisplayStatus.Answered, // TODO: placeholder, set real display status when we have termination_status
+            queueId: null, // TODO: placeholder, set real queue id when we have queue info
+            queueName: null,
         }
     })
 

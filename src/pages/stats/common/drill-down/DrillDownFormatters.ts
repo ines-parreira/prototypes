@@ -198,6 +198,8 @@ export const formatVoiceDrillDownRowData = ({
     callRecordingAvailable: row[VoiceCallDimension.CallRecordingAvailable],
     callRecordingUrl: row[VoiceCallDimension.CallRecordingUrl],
     displayStatus: row[VoiceCallDimension.DisplayStatus],
+    queueId: row[VoiceCallDimension.QueueId],
+    queueName: row[VoiceCallDimension.QueueName],
     metricValue: row[metricField],
     rowData: row,
 })

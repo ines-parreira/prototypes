@@ -310,6 +310,8 @@ describe('utils', () => {
                     callRecordingAvailable: true,
                     callRecordingUrl: null,
                     displayStatus: VoiceCallDisplayStatus.Answered,
+                    queueId: null,
+                    queueName: null,
                 },
             ])
         })
@@ -353,6 +355,8 @@ describe('utils', () => {
                     callRecordingAvailable: true,
                     callRecordingUrl: null,
                     displayStatus: VoiceCallDisplayStatus.Answered,
+                    queueId: null,
+                    queueName: null,
                 },
             ])
         })

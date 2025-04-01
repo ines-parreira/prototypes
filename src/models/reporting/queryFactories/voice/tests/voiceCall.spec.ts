@@ -55,6 +55,8 @@ const voiceCallListDimensions = [
     VoiceCallDimension.CallRecordingAvailable,
     VoiceCallDimension.CallRecordingUrl,
     VoiceCallDimension.DisplayStatus,
+    VoiceCallDimension.QueueId,
+    VoiceCallDimension.QueueName,
 ]
 
 describe('voice queries factories', () => {

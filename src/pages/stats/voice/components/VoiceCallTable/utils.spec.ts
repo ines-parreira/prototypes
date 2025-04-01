@@ -109,6 +109,7 @@ describe('utils', () => {
             expect(result).toEqual([
                 VoiceCallTableColumnName.Activity,
                 VoiceCallTableColumnName.Integration,
+                VoiceCallTableColumnName.Queue,
                 VoiceCallTableColumnName.Date,
                 VoiceCallTableColumnName.State,
                 VoiceCallTableColumnName.Recording,
