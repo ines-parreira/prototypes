@@ -15,7 +15,8 @@ export const useThankYouModal = () => {
     // Extract query parameters
     const queryParams = new URLSearchParams(location.search)
     const shopName = queryParams.get('shopName')
-    const isThankYouModalOpen = queryParams.get('from') === 'onboarding'
+    const isThankYouModalOpen =
+        queryParams.get('from') === 'onboarding' && !!shopName
 
     useEffect(() => {
         setIsOpen(isThankYouModalOpen)
@@ -27,12 +28,11 @@ export const useThankYouModal = () => {
     const { isLoading, isDisabled } = useIsGoLiveDisabled(shopName)
     const accountDomain = useAppSelector(getCurrentDomain)
 
-    // Ensure we only call the update hook if shopName is valid
-    const storeConfigData = shopName
-        ? useUpdateAIAgentStoreConfigurationData(accountDomain, shopName)
-        : { storeConfig: null, updateStoreConfig: () => {}, isUpdating: false }
-
-    const { updateStoreConfig } = storeConfigData
+    const { updateStoreConfig } = useUpdateAIAgentStoreConfigurationData(
+        accountDomain,
+        shopName ?? '',
+        !!shopName,
+    )
 
     const clearFromQueryParam = () => {
         const newQueryParams = new URLSearchParams(location.search)

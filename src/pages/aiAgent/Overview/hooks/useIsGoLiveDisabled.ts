@@ -22,10 +22,10 @@ const checkEmailVerification = (
 export const useIsGoLiveDisabled = (
     shopName?: string | null,
 ): { isLoading: boolean; isDisabled: boolean } => {
-    if (!shopName) {
-        return { isLoading: false, isDisabled: false }
-    }
-    const { data, isLoading } = useGetOnboardingDataByShopName(shopName)
+    const { data, isLoading } = useGetOnboardingDataByShopName({
+        shopName: shopName ?? '',
+        enabled: !!shopName,
+    })
 
     const chatIds = data?.chatIntegrationIds ?? []
     const emailIds = data?.emailIntegrationIds ?? []

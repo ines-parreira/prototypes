@@ -128,4 +128,15 @@ describe('useThankYouModal', () => {
         expect(mockReplaceState).toHaveBeenCalledWith({}, '', '/test-path')
         expect(result.current.isOpen).toBe(false)
     })
+
+    it('should not call open the ThankYouModal when shopName if missing', () => {
+        mockUseLocation.mockReturnValue({
+            search: '?from=onboarding',
+            pathname: '/test-path',
+        })
+
+        const { result } = renderHook(() => useThankYouModal())
+
+        expect(result.current.isOpen).toBe(false)
+    })
 })

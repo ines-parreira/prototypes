@@ -3,7 +3,13 @@ import { useQuery } from '@tanstack/react-query'
 import { getOnboardingDataByShopName } from 'models/aiAgent/resources/configuration'
 import { OnboardingData } from 'models/aiAgent/types'
 
-export const useGetOnboardingDataByShopName = (shopName: string) => {
+export const useGetOnboardingDataByShopName = ({
+    shopName,
+    enabled = true,
+}: {
+    shopName: string
+    enabled?: boolean
+}) => {
     return useQuery({
         queryKey: ['onboardingData', 'shopName', shopName],
         queryFn: async () => {
@@ -17,5 +23,6 @@ export const useGetOnboardingDataByShopName = (shopName: string) => {
             return null
         },
         staleTime: Infinity,
+        enabled,
     })
 }

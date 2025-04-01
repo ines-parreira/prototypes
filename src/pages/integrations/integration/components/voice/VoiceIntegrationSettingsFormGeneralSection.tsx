@@ -28,10 +28,8 @@ function VoiceIntegrationSettingsFormGeneralSection({
     const { setValue, watch } = methods
 
     const emoji = watch('meta.emoji')
-    const phoneNumberId = watch('meta.phone_number_id')
-    const phoneNumber = phoneNumberId
-        ? useAppSelector(getNewPhoneNumber(phoneNumberId))
-        : ''
+    const phoneNumberId = watch('meta.phone_number_id') ?? 0
+    const phoneNumber = useAppSelector(getNewPhoneNumber(phoneNumberId))
 
     return (
         <>

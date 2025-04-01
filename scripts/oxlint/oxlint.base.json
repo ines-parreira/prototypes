@@ -7,7 +7,7 @@
         "jsx-a11y/click-events-have-key-events": "off",
         "jsx-a11y/anchor-is-valid": "off",
         "jsx-a11y/no-noninteractive-tabindex": "off",
-        "react-hooks/rules-of-hooks": "warn",
+        "react-hooks/rules-of-hooks": "error",
         "react-hooks/exhaustive-deps": "error",
         "react/no-unescaped-entities": "error",
         "react/no-find-dom-node": "off",

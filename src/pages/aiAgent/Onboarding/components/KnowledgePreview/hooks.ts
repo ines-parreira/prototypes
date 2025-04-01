@@ -10,33 +10,25 @@ export const useGetAverageOrderValueLastMonth = ({
 }: {
     shopIntegrationId: number
 }): { data: number; isLoading: boolean } => {
-    try {
-        const { data, isFetching, isError } = useMetricPerDimension(
-            averageOrderValueLastMonthQueryFactory(shopIntegrationId),
+    const { data, isFetching, isError } = useMetricPerDimension(
+        averageOrderValueLastMonthQueryFactory(shopIntegrationId),
+    )
+
+    const formattedData = useMemo(() => {
+        if (!data || isFetching || isError) {
+            return 0
+        }
+
+        const value = safeDivide(
+            Number(data.allData[0][AiSalesAgentOrdersMeasure.GmvUsd]),
+            Number(data.allData[0][AiSalesAgentOrdersMeasure.Count]),
         )
 
-        const formattedData = useMemo(() => {
-            if (!data || isFetching || isError) {
-                return 0
-            }
+        return value
+    }, [data, isFetching, isError])
 
-            const value = safeDivide(
-                Number(data.allData[0][AiSalesAgentOrdersMeasure.GmvUsd]),
-                Number(data.allData[0][AiSalesAgentOrdersMeasure.Count]),
-            )
-
-            return value
-        }, [data?.allData, isFetching])
-
-        return {
-            data: formattedData,
-            isLoading: isFetching,
-        }
-    } catch (error) {
-        console.error(error)
-        return {
-            data: 0,
-            isLoading: false,
-        }
+    return {
+        data: formattedData,
+        isLoading: isFetching,
     }
 }

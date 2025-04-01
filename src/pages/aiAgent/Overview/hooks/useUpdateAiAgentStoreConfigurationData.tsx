@@ -8,17 +8,18 @@ import { useFetchAiAgentStoreConfigurationData } from 'pages/aiAgent/Overview/ho
 export const useUpdateAIAgentStoreConfigurationData = (
     accountDomain: string,
     storeName: string,
+    enabled = true,
 ) => {
     const queryClient = useQueryClient()
 
     const { data, isLoading: isFetchingOnboardingData } =
-        useGetOnboardingDataByShopName(storeName)
+        useGetOnboardingDataByShopName({ shopName: storeName, enabled })
 
     const { data: storeConfig, isLoading: isFetchingStoreConfiguration } =
         useFetchAiAgentStoreConfigurationData({
             accountDomain,
             storeName,
-            enabled: true,
+            enabled,
         })
 
     const isLoading = isFetchingOnboardingData || isFetchingStoreConfiguration

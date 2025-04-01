@@ -24,6 +24,14 @@ export const useGetStoreDomainIngestionLog = ({
         },
     )
 
+    const storeDomainIngestionLog = useMemo(
+        () =>
+            ingestionLogs?.find(
+                (log) => log.source === 'domain' && log.url === storeUrl,
+            ),
+        [ingestionLogs, storeUrl],
+    )
+
     useEffect(() => {
         if (error) {
             reportError(error, {
@@ -38,14 +46,6 @@ export const useGetStoreDomainIngestionLog = ({
     if (!storeUrl) {
         return { storeDomainIngestionLog: null, isIngestionLogsLoading }
     }
-
-    const storeDomainIngestionLog = useMemo(
-        () =>
-            ingestionLogs?.find(
-                (log) => log.source === 'domain' && log.url === storeUrl,
-            ),
-        [ingestionLogs, storeUrl],
-    )
 
     return { storeDomainIngestionLog, isIngestionLogsLoading }
 }
