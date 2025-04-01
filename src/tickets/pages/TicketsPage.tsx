@@ -1,5 +1,6 @@
 import { Route, Switch, useRouteMatch } from 'react-router-dom'
 
+import { Handle } from 'core/layout/panels'
 import { ContentPanels } from 'core/ui'
 import { useSplitTicketView } from 'split-ticket-view-toggle'
 import { TicketsNavbarPanel } from 'tickets/navigation'
@@ -16,7 +17,8 @@ export function TicketsPage() {
     return (
         <>
             <TicketsNavbarPanel />
-            <ContentPanels subtractSize={18}>
+            <Handle />
+            <ContentPanels subtractSize={10}>
                 <Switch>
                     <Route exact path={`${path}/new/:visibility?`}>
                         <ViewPanel key="view-panel" />
@@ -26,15 +28,20 @@ export function TicketsPage() {
                     </Route>
                     <Route path={`${path}/:viewId/:ticketId`}>
                         {isEnabled && (
-                            <TicketsListPanel key="ticket-list-panel" />
+                            <>
+                                <TicketsListPanel key="ticket-list-panel" />
+                                <Handle />
+                            </>
                         )}
                         <TicketDetailPanel key="ticket-detail-panel" />
+                        <Handle />
                         <TicketInfobarPanel key="infobar-panel" />
                     </Route>
                     <Route path={`${path}/:viewId?`}>
                         {isEnabled ? (
                             <>
                                 <TicketsListPanel key="ticket-list-panel" />
+                                <Handle />
                                 <TicketEmptyPanel />
                             </>
                         ) : (

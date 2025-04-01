@@ -1,16 +1,15 @@
-import { useParams } from 'react-router-dom'
-
 import { useDesktopOnlyShowGlobalNavFeatureFlag } from 'common/navigation/hooks/useShowGlobalNavFeatureFlag'
-import Toggle from 'split-ticket-view-toggle/components/Toggle'
+import {
+    SplitTicketViewToggle,
+    useSplitTicketView,
+} from 'split-ticket-view-toggle'
 
 export function TicketHeaderToggle() {
+    const { isEnabled } = useSplitTicketView()
     const showGlobalNav = useDesktopOnlyShowGlobalNavFeatureFlag()
-    const params = useParams<{ viewId?: string }>()
 
-    const isSplitView = params.viewId !== undefined
-
-    if (showGlobalNav && !isSplitView) {
-        return <Toggle />
+    if (showGlobalNav && !isEnabled) {
+        return <SplitTicketViewToggle />
     }
 
     return null

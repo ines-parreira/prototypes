@@ -52,7 +52,9 @@ export default function PanelRoutes() {
                     </Route>
                     <Route exact path="/app/ticket/:ticketId">
                         <TicketsNavbarPanel key="navbar" />
+                        <Handle />
                         <TicketDetailPanel key="ticket-detail-panel" />
+                        <Handle />
                         <TicketInfobarPanel key="infobar-panel" />
                     </Route>
                 </Switch>
