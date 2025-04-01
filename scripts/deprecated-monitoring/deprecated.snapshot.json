@@ -1,8 +1,8 @@
 {
   "summary": {
     "totalEntries": 33,
-    "totalUsages": 1170,
-    "reportGeneratedAt": "2025-03-28T11:02:05.713Z"
+    "totalUsages": 1166,
+    "reportGeneratedAt": "2025-04-01T13:12:03.435Z"
   },
   "entries": [
     {
@@ -252,7 +252,7 @@
       "type": "feature-flag cleanup initiative",
       "entries": [
         {
-          "usageCount": 194,
+          "usageCount": 191,
           "name": "launchdarkly-react-client-sdk.useFlags",
           "nodeType": "Identifier",
           "deprecationDate": "2025-02-10",
@@ -264,7 +264,6 @@
               "src/Widgets/modules/Shopify/components/tests/OrderNotesField.spec.tsx",
               "src/Widgets/modules/Shopify/modules/DraftOrderModal/components/InventoryScopeMissingBanner.tsx",
               "src/Widgets/modules/Shopify/modules/DraftOrderModal/components/tests/InventoryScopeMissingBanner.spec.tsx",
-              "src/common/state/actions/triggerTicketFieldsRefreshAndInvalidation.ts",
               "src/hooks/reporting/automate/useAutomationRateTimeSeriesData.ts",
               "src/hooks/reporting/automate/useAutomationRateTrend.ts",
               "src/hooks/reporting/common/useTableReportData.ts",
@@ -311,7 +310,9 @@
               "src/pages/aiAgent/components/AiAgentNavbar/AiAgentNavbarSectionBlock.tsx",
               "src/pages/aiAgent/components/AiAgentNavbar/tests/AiAgentNavbar.spec.tsx",
               "src/pages/aiAgent/components/GuidanceBreadcrumbs/GuidanceBreadcrumbs.tsx",
+              "src/pages/aiAgent/components/Knowledge/ExternalFilesSection.tsx",
               "src/pages/aiAgent/components/PlaygroundPrerequisites/PlaygroundPrerequisitesAlerts.tsx",
+              "src/pages/aiAgent/components/PublicSourcesSection/PublicSourcesSection.tsx",
               "src/pages/aiAgent/components/StoreConfigForm/FormComponents/ChannelsFormComponent.tsx",
               "src/pages/aiAgent/components/StoreConfigForm/FormComponents/EmailFormComponent.tsx",
               "src/pages/aiAgent/components/StoreConfigForm/FormComponents/tests/ChannelsFormComponent.spec.tsx",
@@ -406,7 +407,6 @@
               "src/pages/settings/contactForm/views/ContactFormCreateView/ContactFormCreateView.tsx",
               "src/pages/settings/contactForm/views/ContactFormSettingsView/ContactFormCustomization/ContactFormCustomization.tsx",
               "src/pages/settings/contactForm/views/ContactFormSettingsView/ContactFormSettingsView.tsx",
-              "src/pages/settings/customFields/components/FieldForm.tsx",
               "src/pages/settings/helpCenter/components/CategoriesView/CategoriesView.tsx",
               "src/pages/settings/helpCenter/components/HelpCenterAppearanceView/HelpCenterAppearanceView.tsx",
               "src/pages/settings/helpCenter/components/HelpCenterAutoEmbedPublishSection/HelpCenterAutoEmbedPublishSection.tsx",
@@ -427,12 +427,10 @@
               "src/pages/settings/new_billing/components/SummaryTotal/SummaryTotal.tsx",
               "src/pages/settings/new_billing/hooks/tests/useAutomatedHelpdeskCancellationFlowAvailable.spec.ts",
               "src/pages/stats/automate/aiSalesAgent/AiSalesAgentSalesOverview.tsx",
-              "src/pages/stats/automate/aiSalesAgent/components/RenderChart.tsx",
               "src/pages/stats/automate/overview/AutomateOverviewContent.tsx",
               "src/pages/stats/common/components/StatsNavbarView.tsx",
               "src/pages/stats/convert/pages/CampaignsStats/CampaignsStats.tsx",
               "src/pages/stats/convert/pages/CampaignsStats/__tests__/CampaignsStats.spec.tsx",
-              "src/pages/stats/dashboards/DashboardComponent.tsx",
               "src/pages/stats/self-service/AutomateStatsNavbar.tsx",
               "src/pages/stats/support-performance/agents/AgentsPerformanceCardExtra.tsx",
               "src/pages/stats/support-performance/agents/tests/AgentsPerformanceCardExtra.spec.tsx",
@@ -452,8 +450,7 @@
               "src/pages/tickets/detail/components/TicketHeaderWrapper/tests/TicketHeaderWrapper.spec.tsx",
               "src/pages/tickets/detail/components/TicketMessages/TicketMessages.tsx",
               "src/pages/tickets/detail/hooks/useRuleSuggestionForDemos.ts",
-              "src/routes/Routes.tsx",
-              "src/routes/StatsRoutes.tsx"
+              "src/routes/Routes.tsx"
             ],
             "default": []
           }
@@ -742,7 +739,7 @@
       "type": "ui-kit-migration",
       "entries": [
         {
-          "usageCount": 593,
+          "usageCount": 592,
           "name": "Button",
           "nodeType": "VariableDeclaration",
           "deprecationDate": "2024-03-04",
@@ -771,7 +768,6 @@
               "src/pages/aiAgent/AiAgentKnowledgeContainer.tsx",
               "src/pages/aiAgent/AiAgentOnboardingWizard/TicketPreview.tsx",
               "src/pages/aiAgent/AiAgentPreviewModeSettings/AiAgentPreviewModeSettingsView.tsx",
-              "src/pages/aiAgent/AiAgentScrapedDomainContent/AiAgentScrapedDomainContentHeader.tsx",
               "src/pages/aiAgent/Onboarding/components/IntegrationCard/IntegrationCard.tsx",
               "src/pages/aiAgent/Onboarding/components/common/OnboardingProgressTracker/OnboardingProgressTracker.tsx",
               "src/pages/aiAgent/actions/CreateActionView.tsx",
@@ -1277,12 +1273,12 @@
               "src/pages/settings/yourProfile/twoFactorAuthentication/TwoFactorAuthenticationModal/TwoFactorAuthenticationModal.tsx",
               "src/pages/settings/yourProfile/twoFactorAuthentication/TwoFactorAuthenticationSection.tsx",
               "src/pages/stats/ActivateCustomerSatisfactionSurveyTip.tsx",
-              "src/pages/stats/DrillDownDownloadButton.tsx",
               "src/pages/stats/TipsToggle.tsx",
               "src/pages/stats/automate/ai-agent/AiAgentStatsEmptyState.tsx",
               "src/pages/stats/automate/aiSalesAgent/AiSalesAgentOverviewDownloadButton.tsx",
               "src/pages/stats/common/PeriodPicker.tsx",
               "src/pages/stats/common/components/Table/EditTableColumns.tsx",
+              "src/pages/stats/common/drill-down/DrillDownDownloadButton.tsx",
               "src/pages/stats/common/filters/AddFilterButton.tsx",
               "src/pages/stats/common/filters/SavedFilterMenu.tsx",
               "src/pages/stats/common/filters/SavedFiltersActions/ApplySavedFilters/ApplySavedFilters.tsx",

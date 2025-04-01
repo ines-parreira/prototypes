@@ -18,4 +18,10 @@ function CheckBoxField(
     )
 }
 
+/**
+ * @deprecated This component is deprecated and will be removed in future versions.
+ * Please use `<CheckboxField />` from @gorgias/merchant-ui-kit instead.
+ * @date 2025-04-01
+ * @type ui-kit-migration
+ */
 export default forwardRef(CheckBoxField)
