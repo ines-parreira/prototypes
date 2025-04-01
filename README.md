@@ -32,8 +32,6 @@ It's built using ReactJS + Redux + many other smaller tools.
     -   [FAQ / Troubleshooting](#faq--troubleshooting)
         -   [yarn dependencies installation error](#yarn-dependencies-installation-error)
             -   [Possible solution](#possible-solution)
-        -   [ERR_OSSL_EVP_UNSUPPORTED](#err_ossl_evp_unsupported)
-            -   [Possible solution](#possible-solution-1)
         -   [Revert PR was blocked by Codecov](#revert-pr-was-blocked-by-codecov)
 
 ## Setup NPM to access private packages
@@ -331,49 +329,6 @@ This is because there is no registry configured with access to the package @gorg
     ```
 
     -   `npmAuthToken` can be found in your ~/.npmrc
-
-### ERR_OSSL_EVP_UNSUPPORTED
-
-When running `yarn install` or any of the `yarn dev` commands on node 18.12.1 following error might occur:
-
-```bash
-  this[kHandle] = new _Hash(algorithm, xofLen);
-                  ^
-
-Error: error:0308010C:digital envelope routines::unsupported
-    at new Hash (node:internal/crypto/hash:71:19)
-    at Object.createHash (node:crypto:133:10)
-    at module.exports (/Users/winicjuszszyszka/Projects/Gorgias/helpdesk-web-app/node_modules/webpack/lib/util/createHash.js:135:53)
-    at NormalModule._initBuildHash (/Users/winicjuszszyszka/Projects/Gorgias/helpdesk-web-app/node_modules/webpack/lib/NormalModule.js:417:16)
-    at handleParseError (/Users/winicjuszszyszka/Projects/Gorgias/helpdesk-web-app/node_modules/webpack/lib/NormalModule.js:471:10)
-    at /Users/winicjuszszyszka/Projects/Gorgias/helpdesk-web-app/node_modules/webpack/lib/NormalModule.js:503:5
-    at /Users/winicjuszszyszka/Projects/Gorgias/helpdesk-web-app/node_modules/webpack/lib/NormalModule.js:358:12
-    at /Users/winicjuszszyszka/Projects/Gorgias/helpdesk-web-app/node_modules/loader-runner/lib/LoaderRunner.js:373:3
-    at iterateNormalLoaders (/Users/winicjuszszyszka/Projects/Gorgias/helpdesk-web-app/node_modules/loader-runner/lib/LoaderRunner.js:214:10)
-    at Array.<anonymous> (/Users/winicjuszszyszka/Projects/Gorgias/helpdesk-web-app/node_modules/loader-runner/lib/LoaderRunner.js:205:4)
-    at Storage.finished (/Users/winicjuszszyszka/Projects/Gorgias/helpdesk-web-app/node_modules/enhanced-resolve/lib/CachedInputFileSystem.js:55:16)
-    at /Users/winicjuszszyszka/Projects/Gorgias/helpdesk-web-app/node_modules/enhanced-resolve/lib/CachedInputFileSystem.js:91:9
-    at /Users/winicjuszszyszka/Projects/Gorgias/helpdesk-web-app/node_modules/graceful-fs/graceful-fs.js:123:16
-    at FSReqCallback.readFileAfterClose [as oncomplete] (node:internal/fs/read_file_context:68:3) {
-  opensslErrorStack: [ 'error:03000086:digital envelope routines::initialization error' ],
-  library: 'digital envelope routines',
-  reason: 'unsupported',
-  code: 'ERR_OSSL_EVP_UNSUPPORTED'
-}
-
-Node.js v18.12.1
-error Command failed with exit code 1.
-```
-
-#### Possible solution
-
-Run
-
-```bash
-export NODE_OPTIONS=--openssl-legacy-provider
-```
-
-before running `yarn install` or any of the `yarn dev` commands. Should work without errors.
 
 ### Revert PR was blocked by Codecov
 
