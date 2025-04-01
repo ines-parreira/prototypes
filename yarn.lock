@@ -3639,6 +3639,11 @@
     ajv-formats "^3.0.1"
     immer "^10.1"
 
+"@gorgias/branding-assets@^0.2.1":
+  version "0.2.1"
+  resolved "https://npm.pkg.github.com/download/@gorgias/branding-assets/0.2.1/78d49790593f16706d120f57cb71e8362e9080a3#78d49790593f16706d120f57cb71e8362e9080a3"
+  integrity sha512-NxxSjkJ5xguwXqYpQwEuxoz1eEnJLMlfzRbTTk+cbQxucGyazUsterz0mdTXru2d/yd6iUnPAvZ1Q45s/mjJWg==
+
 "@gorgias/config@^0.2.4":
   version "0.2.4"
   resolved "https://npm.pkg.github.com/download/@gorgias/config/0.2.4/f8a6a319760a41ea924c5cb7e1b34e8d9aaed7f7#f8a6a319760a41ea924c5cb7e1b34e8d9aaed7f7"

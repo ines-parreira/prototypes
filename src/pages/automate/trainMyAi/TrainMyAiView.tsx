@@ -21,7 +21,6 @@ import Paywall from 'pages/common/components/Paywall/Paywall'
 import ProgressBar from 'pages/common/components/ProgressBar/ProgressBar'
 import { useIsAutomateSettings } from 'settings/automate/hooks/useIsAutomateSettings'
 
-import gorgiasLogo from '../../../assets/img/gorgias-logo.svg'
 import { assetsUrl } from '../../../utils'
 import { ARTICLE_RECOMMENDATION } from '../common/components/constants'
 import useApplicationsAutomationSettings from '../common/hooks/useApplicationsAutomationSettings'
@@ -548,7 +547,10 @@ const TrainMyAiView = () => {
                                         🎉
                                     </span>
                                 ) : (
-                                    <img src={gorgiasLogo} alt="Gorgias" />
+                                    <div
+                                        title="Gorgias logo"
+                                        className={css.logo}
+                                    />
                                 )}
 
                                 {hasArticleRecommendations &&

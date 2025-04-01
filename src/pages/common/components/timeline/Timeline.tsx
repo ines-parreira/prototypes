@@ -5,7 +5,6 @@ import { Link } from 'react-router-dom'
 import { CustomField, ObjectType } from '@gorgias/api-queries'
 import { LoadingSpinner } from '@gorgias/merchant-ui-kit'
 
-import GorgiasLogo from 'assets/img/gorgias-logo.svg'
 import { logEvent, SegmentEvent } from 'common/segment'
 import { FeatureFlagKey } from 'config/featureFlags'
 import { useFlag } from 'core/flags'
@@ -65,7 +64,7 @@ export function Timeline({ ticketId = 0, onLoaded }: Props) {
     if (customerHistory.triedLoading && customerHistory.tickets.length === 0) {
         return (
             <div className={`${css.centeringContainer} ${css.noResults}`}>
-                <img src={GorgiasLogo} alt="Gorgias Logo" />
+                <div title="Gorgias Logo" className={css.logo} />
                 <p>This customer doesn’t have any tickets yet.</p>
             </div>
         )

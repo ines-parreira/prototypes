@@ -1,10 +1,8 @@
-import gorgiasLogo from '../../../../../../../assets/img/gorgias-logo.svg'
-
 import css from './AIArticlesLibraryPreviewEmptyState.less'
 
 const AIArticlesLibraryPreviewEmptyState: React.FC = () => (
     <div className={css.container}>
-        <img src={gorgiasLogo} alt="Gorgias" />
+        <div title="Gorgias Logo" className={css.logo} />
     </div>
 )
 
