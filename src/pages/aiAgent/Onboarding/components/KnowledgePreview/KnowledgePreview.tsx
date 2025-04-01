@@ -35,7 +35,9 @@ const KnowledgePreview: React.FC<Props> = ({ shopName }) => {
         getShopifyIntegrationByShopName(shopName || ''),
     ).toJS()
 
-    const { data } = useGetKnowledgePreviewData()
+    const { data } = useGetKnowledgePreviewData({
+        shopIntegrationId: shopifyIntegration.id,
+    })
     const { data: repeatRate } = useGetRepeatRateLastMonth({
         shopIntegrationId: shopifyIntegration.id,
     })

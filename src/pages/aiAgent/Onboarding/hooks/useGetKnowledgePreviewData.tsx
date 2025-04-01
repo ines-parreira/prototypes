@@ -14,6 +14,7 @@ import { TopElement } from 'pages/aiAgent/Onboarding/components/TopElementsCard/
 import { Product } from 'pages/aiAgent/Onboarding/components/TopProductsCard/types'
 import { useAverageDiscountPercentage } from 'pages/stats/automate/aiSalesAgent/useAverageDiscountPercentage'
 import { useAverageOrdersPerDayTrend } from 'pages/stats/automate/aiSalesAgent/useAverageOrdersPerDayTrend'
+import { LogicalOperatorEnum } from 'pages/stats/common/components/Filter/constants'
 import { TwoDimensionalDataItem } from 'pages/stats/types'
 import { getTimezone } from 'state/currentUser/selectors'
 
@@ -55,7 +56,11 @@ const useProcessedAverageOrdersPerDayTrend = (
     return useMemo(getFormattedValues, [averageOrdersPerDay])
 }
 
-export const useGetKnowledgePreviewData = () => {
+export const useGetKnowledgePreviewData = ({
+    shopIntegrationId,
+}: {
+    shopIntegrationId: number
+}) => {
     const timezone = useAppSelector(getTimezone) ?? 'UTC'
     const filters: StatsFilters = {
         period: {
@@ -64,6 +69,10 @@ export const useGetKnowledgePreviewData = () => {
                 .startOf('day')
                 .format(),
             end_datetime: moment().endOf('day').format(),
+        },
+        storeIntegrations: {
+            operator: LogicalOperatorEnum.ONE_OF,
+            values: [shopIntegrationId],
         },
     }
 

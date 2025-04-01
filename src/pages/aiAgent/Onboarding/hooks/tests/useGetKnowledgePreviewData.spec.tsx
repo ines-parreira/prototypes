@@ -47,7 +47,9 @@ describe('useGetKnowledgePreviewData', () => {
     })
 
     it('should return averageOrders values if correctly returned by query', () => {
-        const { result } = renderHook(() => useGetKnowledgePreviewData())
+        const { result } = renderHook(() =>
+            useGetKnowledgePreviewData({ shopIntegrationId: 1 }),
+        )
 
         expect(result.current.data.averageOrders).toEqual(mockedAverageOrders)
     })
@@ -57,7 +59,9 @@ describe('useGetKnowledgePreviewData', () => {
             data: undefined,
         } as any)
 
-        const { result } = renderHook(() => useGetKnowledgePreviewData())
+        const { result } = renderHook(() =>
+            useGetKnowledgePreviewData({ shopIntegrationId: 1 }),
+        )
 
         expect(result.current.data.averageOrders).toBeUndefined()
     })
@@ -69,7 +73,9 @@ describe('useGetKnowledgePreviewData', () => {
             isError: false,
         })
 
-        const { result } = renderHook(() => useGetKnowledgePreviewData())
+        const { result } = renderHook(() =>
+            useGetKnowledgePreviewData({ shopIntegrationId: 1 }),
+        )
 
         expect(result.current.data.averageDiscount).toBeUndefined()
     })
@@ -84,7 +90,9 @@ describe('useGetKnowledgePreviewData', () => {
             },
         })
 
-        const { result } = renderHook(() => useGetKnowledgePreviewData())
+        const { result } = renderHook(() =>
+            useGetKnowledgePreviewData({ shopIntegrationId: 1 }),
+        )
 
         expect(result.current.data.averageDiscount).toBe(0)
     })
@@ -99,7 +107,9 @@ describe('useGetKnowledgePreviewData', () => {
             },
         })
 
-        const { result } = renderHook(() => useGetKnowledgePreviewData())
+        const { result } = renderHook(() =>
+            useGetKnowledgePreviewData({ shopIntegrationId: 1 }),
+        )
 
         expect(result.current.data.averageDiscount).toBe(10)
     })
