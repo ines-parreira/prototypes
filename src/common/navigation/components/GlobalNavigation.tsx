@@ -12,6 +12,7 @@ import { FeatureFlagKey } from 'config/featureFlags'
 import { UserRole } from 'config/types/user'
 import { useFlag } from 'core/flags'
 import useAppSelector from 'hooks/useAppSelector'
+import { useHasShopifyIntegration } from 'hooks/useHasShopifyIntegration'
 import { useReportChartRestrictions } from 'pages/stats/report-chart-restrictions/useReportChartRestrictions'
 import { BASE_STATS_PATH } from 'routes/constants'
 import { getCurrentUser } from 'state/currentUser/selectors'
@@ -29,6 +30,7 @@ export default function GlobalNavigation() {
     const { isModuleRestrictedToCurrentUser } = useReportChartRestrictions()
     const isAccessRestrictedToStatistics =
         isModuleRestrictedToCurrentUser(BASE_STATS_PATH)
+    const hasShopifyIntegration = useHasShopifyIntegration()
 
     useNavBarShortcuts()
 
@@ -80,16 +82,17 @@ export default function GlobalNavigation() {
                                 data-candu-id="global-navigation-menu-automation-page"
                             />
                         )}
-                    {hasRole(currentUser, UserRole.Agent) && (
-                        <GlobalNavigationItem
-                            icon="auto_awesome"
-                            label="AI Agent"
-                            isActive={activeItem === 'ai-agent'}
-                            tooltip={<span>AI Agent</span>}
-                            url="/app/ai-agent"
-                            data-candu-id="global-navigation-menu-ai-agent-page"
-                        />
-                    )}
+                    {hasShopifyIntegration &&
+                        hasRole(currentUser, UserRole.Agent) && (
+                            <GlobalNavigationItem
+                                icon="auto_awesome"
+                                label="AI Agent"
+                                isActive={activeItem === 'ai-agent'}
+                                tooltip={<span>AI Agent</span>}
+                                url="/app/ai-agent"
+                                data-candu-id="global-navigation-menu-ai-agent-page"
+                            />
+                        )}
                     {hasRole(currentUser, UserRole.Admin) && (
                         <GlobalNavigationItem
                             icon="monetization_on"

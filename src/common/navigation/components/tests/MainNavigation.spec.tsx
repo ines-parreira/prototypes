@@ -8,6 +8,7 @@ import { StaticRouter } from 'react-router-dom'
 import { logEvent, SegmentEvent } from 'common/segment'
 import { UserRole } from 'config/types/user'
 import useAppDispatch from 'hooks/useAppDispatch'
+import { useHasShopifyIntegration } from 'hooks/useHasShopifyIntegration'
 import { getHasAutomate } from 'state/billing/selectors'
 import { getCurrentUser } from 'state/currentUser/selectors'
 import { closePanels } from 'state/layout/actions'
@@ -36,6 +37,11 @@ const getHasAutomateMock = assumeMock(getHasAutomate)
 
 jest.mock('state/layout/actions', () => ({ closePanels: jest.fn() }))
 
+jest.mock('hooks/useHasShopifyIntegration', () => ({
+    useHasShopifyIntegration: jest.fn(),
+}))
+const useHasShopifyIntegrationMock = assumeMock(useHasShopifyIntegration)
+
 const wrapper = ({ children }: { children: ReactNode }) => (
     <StaticRouter location="/app">{children}</StaticRouter>
 )
@@ -50,6 +56,7 @@ describe('MainNavigation', () => {
         dispatch = jest.fn()
         useAppDispatchMock.mockReturnValue(dispatch)
         getHasAutomateMock.mockReturnValue(true)
+        useHasShopifyIntegrationMock.mockReturnValue(true)
     })
 
     it('should log an event and close panels when a menu item is clicked', () => {
