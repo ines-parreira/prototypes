@@ -5,11 +5,13 @@ import { Dropdown, DropdownMenu, DropdownToggle } from 'reactstrap'
 import { Selector } from 'reselect'
 import { v4 as uuidv4 } from 'uuid'
 
+import { Button } from '@gorgias/merchant-ui-kit'
+
+import { logEvent, SegmentEvent } from 'common/segment'
 import { FeatureFlagKey } from 'config/featureFlags'
 import { useFlag } from 'core/flags'
 import useAppSelector from 'hooks/useAppSelector'
 import useDeepEffect from 'hooks/useDeepEffect'
-import Button from 'pages/common/components/button/Button'
 import IconTooltip from 'pages/common/forms/IconTooltip/IconTooltip'
 import css from 'pages/stats/common/components/Table/EditColumns.less'
 import { EditColumnsItem } from 'pages/stats/common/components/Table/EditColumnsItem'
@@ -28,6 +30,21 @@ export const TOGGLE_LABEL = 'Edit table'
 export const SAVE_TOOLTIP =
     'Clicking "Save" will update the table for all users.'
 export const SAVE_BUTTON_TEXT = 'Save'
+const EDIT_COLUMNS_LABEL = 'Edit columns'
+const EDIT_ROWS_LABEL = 'Edit rows'
+
+const logMetricSelection = (metric: string) => {
+    logEvent(SegmentEvent.StatTableMetricVisibilityEnabled, {
+        metric,
+    })
+}
+
+const logRowSelection = (row: string, tableLeadColumn: string) => {
+    logEvent(SegmentEvent.StatTableRowVisibilityEnabled, {
+        row,
+        tableLeadColumn,
+    })
+}
 
 const dragToPosition = <T extends TableColumnSet | TableRowSet>(
     columnsList: TableViewItem<T>[],
@@ -188,6 +205,9 @@ const EditTableDropdownContents = <
                 }),
             )
             setHasChanges(true)
+            if (visibility) {
+                logMetricSelection(columnId)
+            }
         }
 
     const handleChangeRowVisibility = (rowId: R) => (visibility: boolean) => {
@@ -203,6 +223,9 @@ const EditTableDropdownContents = <
             }),
         )
         setHasChanges(true)
+        if (visibility) {
+            logRowSelection(rowId, leadColumn)
+        }
     }
 
     const dropBeforeColumn = (item: { id: string }, from: { id: string }) => {
@@ -249,7 +272,7 @@ const EditTableDropdownContents = <
             <div className={css.dropdownMenuContainer}>
                 {hasRows && (
                     <>
-                        <SectionTitle title="Edit rows" />
+                        <SectionTitle title={EDIT_ROWS_LABEL} />
                         {rowsVisibility.map(({ id, visibility }) => (
                             <EditColumnsItem
                                 key={id}
@@ -267,7 +290,7 @@ const EditTableDropdownContents = <
                 {hasRows && (
                     <>
                         <div className={css.separator} />
-                        <SectionTitle title="Edit columns" />
+                        <SectionTitle title={EDIT_COLUMNS_LABEL} />
                     </>
                 )}
                 {columnsVisibility.map(({ id, visibility }) => {

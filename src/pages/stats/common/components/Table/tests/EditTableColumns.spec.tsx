@@ -9,6 +9,7 @@ import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
+import { logEvent, SegmentEvent } from 'common/segment'
 import { FeatureFlagKey } from 'config/featureFlags'
 import { useFlag } from 'core/flags'
 import { useAgentsTableConfigSetting } from 'hooks/reporting/useAgentsTableConfigSetting'
@@ -59,11 +60,16 @@ const submitChannelsSettingSpy = jest.spyOn(
 )
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
 
+jest.mock('common/segment')
+const logEventMock = assumeMock(logEvent)
+
 jest.mock('core/flags')
 const useFlagMock = assumeMock(useFlag)
 
 describe('<AgentsEditColumns>', () => {
+    const column = AgentsTableColumn.ClosedTickets
     const columnTitle = TableLabels[AgentsTableColumn.ClosedTickets]
+    const row = AgentsTableRow.Total
     const rowTitle = TableRowLabels[AgentsTableRow.Total]
     const settingsSelector = getAgentsTableConfigSettingsJS
     const fallbackViews = AgentsTableViews
@@ -141,6 +147,10 @@ describe('<AgentsEditColumns>', () => {
 
         fireEvent.click(element)
         expect(input).toBeChecked()
+        expect(logEventMock).toHaveBeenCalledWith(
+            SegmentEvent.StatTableMetricVisibilityEnabled,
+            { metric: column },
+        )
     })
 
     it('should change row visibility', () => {
@@ -161,6 +171,10 @@ describe('<AgentsEditColumns>', () => {
 
         fireEvent.click(element)
         expect(input).not.toBeChecked()
+        expect(logEventMock).toHaveBeenCalledWith(
+            SegmentEvent.StatTableRowVisibilityEnabled,
+            { row: row, tableLeadColumn: leadColumn },
+        )
     })
 
     it('should dispatch submit new setting on save', async () => {

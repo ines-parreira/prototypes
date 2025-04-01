@@ -342,6 +342,8 @@ export enum SegmentEvent {
     StatDownloadClicked = 'stat-download-clicked',
     StatDrillDownTicketClicked = 'stat-drill-down-ticket-clicked',
     StatFilterSelected = 'stat-filter-selected',
+    StatTableMetricVisibilityEnabled = 'stat-table-metric-visibility-enabled',
+    StatTableRowVisibilityEnabled = 'stat-table-row-visibility-enabled',
     StatSavedFilterSelected = 'stat-saved-filter-selected',
     StatViewLinkClicked = 'stat-view-link-clicked',
     StatTagsIncludeRelatedClicked = 'stat-tags-include-related-clicked',
