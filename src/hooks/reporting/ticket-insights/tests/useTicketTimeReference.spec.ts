@@ -1,5 +1,6 @@
-import { renderHook } from '@testing-library/react-hooks'
+import { act, renderHook } from '@testing-library/react-hooks'
 
+import { logEvent, SegmentEvent } from 'common/segment'
 import { useFlag } from 'core/flags'
 import {
     Entity,
@@ -8,6 +9,9 @@ import {
 import useLocalStorage from 'hooks/useLocalStorage'
 import { TicketTimeReference } from 'models/stat/types'
 import { assumeMock } from 'utils/testing'
+
+jest.mock('common/segment')
+const logEventMock = assumeMock(logEvent)
 
 jest.mock('core/flags')
 const useFlagMock = assumeMock(useFlag)
@@ -77,16 +81,26 @@ describe('useTicketTimeReference', () => {
     })
 
     it('should return setter function', () => {
-        const mockSetter = jest.fn()
-        useLocalStorageMock.mockReturnValue([
-            TicketTimeReference.TaggedAt,
-            mockSetter,
-            () => void 0,
-        ])
-
         const { result } = renderHook(() => useTicketTimeReference(Entity.Tag))
         const [, setter] = result.current
 
-        expect(setter).toBe(mockSetter)
+        expect(typeof setter).toBe('function')
+    })
+
+    it('should log event when time reference changes', () => {
+        const { result } = renderHook(() => useTicketTimeReference(Entity.Tag))
+        const [, setter] = result.current
+
+        act(() => {
+            setter(TicketTimeReference.CreatedAt)
+        })
+
+        expect(logEventMock).toHaveBeenCalledWith(
+            SegmentEvent.StatTimeframePreferenceSelection,
+            {
+                value: TicketTimeReference.CreatedAt,
+                report: Entity.Tag,
+            },
+        )
     })
 })

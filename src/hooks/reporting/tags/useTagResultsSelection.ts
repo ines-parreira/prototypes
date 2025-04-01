@@ -1,3 +1,6 @@
+import { useCallback } from 'react'
+
+import { logEvent, SegmentEvent } from 'common/segment'
 import useLocalStorage from 'hooks/useLocalStorage'
 
 export enum TagSelection {
@@ -7,10 +10,12 @@ export enum TagSelection {
 
 export const TAGS_RESULTS_SELECTION_KEY = 'tag-results-selection'
 
-export const useTagResultsSelection = (): [
-    TagSelection,
-    (value: TagSelection) => void,
-] => {
+const tagSelectionToEvent: Record<TagSelection, SegmentEvent> = {
+    [TagSelection.includeTags]: SegmentEvent.StatTagsIncludeRelatedClicked,
+    [TagSelection.excludeTags]: SegmentEvent.StatTagsExcludeRelatedClicked,
+}
+
+export const useTagResultsSelection = () => {
     const defaultSelection = TagSelection.includeTags
     const [selection, setSelection] = useLocalStorage(
         TAGS_RESULTS_SELECTION_KEY,
@@ -23,5 +28,13 @@ export const useTagResultsSelection = (): [
             ? selection
             : defaultSelection
 
-    return [value, setSelection]
+    const handleSelectionChange = useCallback(
+        (value: TagSelection) => {
+            setSelection(value)
+            logEvent(tagSelectionToEvent[value])
+        },
+        [setSelection],
+    )
+
+    return [value, handleSelectionChange] as const
 }

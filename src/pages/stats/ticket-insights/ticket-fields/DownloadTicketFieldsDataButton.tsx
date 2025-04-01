@@ -9,7 +9,7 @@ export const DownloadTicketFieldsDataButton = ({
     selectedCustomFieldId: number
 }) => {
     const { download, isLoading } = useCustomFieldsReportData(
-        String(selectedCustomFieldId),
+        selectedCustomFieldId,
     )
 
     return (

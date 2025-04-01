@@ -12,11 +12,11 @@ import {
     basicYearlyHelpdeskPlan,
     HELPDESK_PRODUCT_ID,
 } from 'fixtures/productPrices'
-import { SharedActionsMenu } from 'pages/stats/common/components/SharedActionsMenu/SharedActionsMenu'
 import { AUTO_QA_FILTER_KEYS } from 'pages/stats/common/filters/constants'
 import FiltersPanelWrapper from 'pages/stats/common/filters/FiltersPanelWrapper/FiltersPanelWrapper'
 import { AllUsedTagsTableChart } from 'pages/stats/ticket-insights/tags/AllUsedTagsTableChart'
 import { Tags } from 'pages/stats/ticket-insights/tags/Tags'
+import { TagsActionMenu } from 'pages/stats/ticket-insights/tags/TagsActionMenu'
 import {
     TAGS_OPTIONAL_FILTERS,
     TAGS_TITLE,
@@ -53,8 +53,8 @@ jest.mock('pages/stats/ticket-insights/tags/TagsReportDownloadDataButton')
 const TagsReportDownloadDataButtonMock = assumeMock(
     TagsReportDownloadDataButton,
 )
-jest.mock('pages/stats/common/components/SharedActionsMenu/SharedActionsMenu')
-const TagActionsMenuMock = assumeMock(SharedActionsMenu)
+jest.mock('pages/stats/ticket-insights/tags/TagsActionMenu')
+const TagsActionMenuMock = assumeMock(TagsActionMenu)
 jest.mock('services/reporting/tagsReportingService')
 const useDownloadTagsReportDataMock = assumeMock(useDownloadTagsReportData)
 
@@ -79,7 +79,7 @@ describe('<Tags>', () => {
         TagsTrendChartMock.mockImplementation(componentMock)
         TopUsedTagsChartMock.mockImplementation(componentMock)
         TagsReportDownloadDataButtonMock.mockImplementation(componentMock)
-        TagActionsMenuMock.mockImplementation(componentMock)
+        TagsActionMenuMock.mockImplementation(componentMock)
         useFlagsMock.mockReturnValue({
             [FeatureFlagKey.ReportingFilteringAndCalculationsTagsReport]: false,
             [FeatureFlagKey.ReportingExtendFieldAndTag]: false,
@@ -158,7 +158,7 @@ describe('<Tags>', () => {
 
         renderWithStore(<Tags />, defaultState)
 
-        expect(TagActionsMenuMock).toHaveBeenCalled()
+        expect(TagsActionMenuMock).toHaveBeenCalled()
         expect(TagsReportDownloadDataButtonMock).not.toHaveBeenCalled()
     })
 
@@ -169,7 +169,7 @@ describe('<Tags>', () => {
 
         renderWithStore(<Tags />, defaultState)
 
-        expect(TagActionsMenuMock).not.toHaveBeenCalled()
+        expect(TagsActionMenuMock).not.toHaveBeenCalled()
         expect(TagsReportDownloadDataButtonMock).toHaveBeenCalled()
     })
 })

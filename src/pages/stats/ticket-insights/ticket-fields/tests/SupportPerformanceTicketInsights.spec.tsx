@@ -1,4 +1,4 @@
-import React, { ComponentProps } from 'react'
+import { ComponentProps } from 'react'
 
 import { UseQueryResult } from '@tanstack/react-query'
 import { render } from '@testing-library/react'
@@ -12,7 +12,6 @@ import { useCustomFieldDefinitions } from 'custom-fields/hooks/queries/useCustom
 import { CustomField } from 'custom-fields/types'
 import useAppSelector from 'hooks/useAppSelector'
 import { ApiListResponseCursorPagination } from 'models/api/types'
-import { SharedActionsMenu } from 'pages/stats/common/components/SharedActionsMenu/SharedActionsMenu'
 import { DrillDownModal } from 'pages/stats/common/drill-down/DrillDownModal'
 import { AUTO_QA_FILTER_KEYS } from 'pages/stats/common/filters/constants'
 import FiltersPanelWrapper from 'pages/stats/common/filters/FiltersPanelWrapper/FiltersPanelWrapper'
@@ -21,6 +20,7 @@ import { CustomFieldsTicketCountBreakdownTableChart } from 'pages/stats/ticket-i
 import { DownloadTicketFieldsDataButton } from 'pages/stats/ticket-insights/ticket-fields/DownloadTicketFieldsDataButton'
 import { SupportPerformanceTicketInsights } from 'pages/stats/ticket-insights/ticket-fields/SupportPerformanceTicketInsights'
 import { TicketDistributionChart } from 'pages/stats/ticket-insights/ticket-fields/TicketDistributionTable'
+import { TicketFieldsActionMenu } from 'pages/stats/ticket-insights/ticket-fields/TicketFieldsActionMenu'
 import { TicketFieldsBlankState } from 'pages/stats/ticket-insights/ticket-fields/TicketFieldsBlankState'
 import {
     TICKET_INSIGHTS_OPTIONAL_FILTERS,
@@ -82,8 +82,8 @@ jest.mock('launchdarkly-react-client-sdk')
 const useFlagsMock = assumeMock(useFlags)
 jest.mock('services/reporting/ticketFieldsReportingService')
 const useCustomFieldsReportDataMock = assumeMock(useCustomFieldsReportData)
-jest.mock('pages/stats/common/components/SharedActionsMenu/SharedActionsMenu')
-const TagActionsMenuMock = assumeMock(SharedActionsMenu)
+jest.mock('pages/stats/ticket-insights/ticket-fields/TicketFieldsActionMenu')
+const TicketFieldsActionMenuMock = assumeMock(TicketFieldsActionMenu)
 const downloadActionMock = jest.fn()
 
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
@@ -120,7 +120,7 @@ describe('<SupportPerformanceTicketInsights />', () => {
         TicketFieldsBlankStateMock.mockImplementation(componentMock)
         DownloadTicketFieldsDataButtonMock.mockImplementation(componentMock)
         DrillDownModalMock.mockImplementation(componentMock)
-        TagActionsMenuMock.mockImplementation(componentMock)
+        TicketFieldsActionMenuMock.mockImplementation(componentMock)
         useFlagsMock.mockReturnValue({
             [FeatureFlagKey.ReportingExtendFieldAndTag]: false,
         })
@@ -160,7 +160,7 @@ describe('<SupportPerformanceTicketInsights />', () => {
             </Provider>,
         )
 
-        expect(TagActionsMenuMock).not.toHaveBeenCalled()
+        expect(TicketFieldsActionMenuMock).not.toHaveBeenCalled()
         expect(DownloadTicketFieldsDataButtonMock).toHaveBeenCalled()
     })
 
@@ -175,7 +175,7 @@ describe('<SupportPerformanceTicketInsights />', () => {
             </Provider>,
         )
 
-        expect(TagActionsMenuMock).toHaveBeenCalled()
+        expect(TicketFieldsActionMenuMock).toHaveBeenCalled()
         expect(DownloadTicketFieldsDataButtonMock).not.toHaveBeenCalled()
     })
 

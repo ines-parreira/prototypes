@@ -6,22 +6,18 @@ import useAppSelector from 'hooks/useAppSelector'
 import { useGridSize } from 'hooks/useGridSize'
 import { FilterKey } from 'models/stat/types'
 import { AnalyticsFooter } from 'pages/stats/AnalyticsFooter'
-import {
-    ReportName,
-    SharedActionsMenu,
-} from 'pages/stats/common/components/SharedActionsMenu/SharedActionsMenu'
 import FiltersPanelWrapper from 'pages/stats/common/filters/FiltersPanelWrapper'
 import DashboardGridCell from 'pages/stats/DashboardGridCell'
 import { DashboardComponent } from 'pages/stats/dashboards/DashboardComponent'
 import DashboardSection from 'pages/stats/DashboardSection'
 import StatsPage from 'pages/stats/StatsPage'
 import { DownloadTicketFieldsDataButton } from 'pages/stats/ticket-insights/ticket-fields/DownloadTicketFieldsDataButton'
+import { TicketFieldsActionMenu } from 'pages/stats/ticket-insights/ticket-fields/TicketFieldsActionMenu'
 import { TicketFieldsBlankState } from 'pages/stats/ticket-insights/ticket-fields/TicketFieldsBlankState'
 import {
     TicketFieldsChart,
     TicketFieldsReportConfig,
 } from 'pages/stats/ticket-insights/ticket-fields/TicketInsightsFieldsReportConfig'
-import { useCustomFieldsReportData } from 'services/reporting/ticketFieldsReportingService'
 import { getSelectedCustomField } from 'state/ui/stats/ticketInsightsSlice'
 
 export function SupportPerformanceTicketInsights() {
@@ -31,10 +27,6 @@ export function SupportPerformanceTicketInsights() {
     const selectedCustomField = useAppSelector(getSelectedCustomField)
     const isReportingExtendFieldAndTagEnabled =
         !!featureFlags[FeatureFlagKey.ReportingExtendFieldAndTag]
-
-    const { download, isLoading } = useCustomFieldsReportData(
-        String(selectedCustomField.id),
-    )
 
     if (!selectedCustomField.isLoading && selectedCustomField.id === null) {
         return (
@@ -53,10 +45,8 @@ export function SupportPerformanceTicketInsights() {
             titleExtra={
                 selectedCustomField.id ? (
                     isReportingExtendFieldAndTagEnabled ? (
-                        <SharedActionsMenu
-                            downloadAction={download}
-                            isDownloadLoading={isLoading}
-                            reportName={ReportName.TicketFields}
+                        <TicketFieldsActionMenu
+                            ticketFieldId={selectedCustomField.id}
                         />
                     ) : (
                         <DownloadTicketFieldsDataButton

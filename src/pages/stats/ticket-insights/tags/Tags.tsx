@@ -5,25 +5,21 @@ import { useCleanStatsFilters } from 'hooks/reporting/useCleanStatsFilters'
 import { useGridSize } from 'hooks/useGridSize'
 import { FilterKey } from 'models/stat/types'
 import { AnalyticsFooter } from 'pages/stats/AnalyticsFooter'
-import {
-    ReportName,
-    SharedActionsMenu,
-} from 'pages/stats/common/components/SharedActionsMenu/SharedActionsMenu'
 import FiltersPanelWrapper from 'pages/stats/common/filters/FiltersPanelWrapper'
 import DashboardGridCell from 'pages/stats/DashboardGridCell'
 import { DashboardComponent } from 'pages/stats/dashboards/DashboardComponent'
 import DashboardSection from 'pages/stats/DashboardSection'
 import StatsPage from 'pages/stats/StatsPage'
+import { TagsActionMenu } from 'pages/stats/ticket-insights/tags/TagsActionMenu'
 import {
     TicketInsightsTagsChart,
     TicketInsightsTagsReportConfig,
 } from 'pages/stats/ticket-insights/tags/TagsReportConfig'
 import { TagsReportDownloadDataButton } from 'pages/stats/ticket-insights/tags/TagsReportDownloadDataButton'
-import { useDownloadTagsReportData } from 'services/reporting/tagsReportingService'
 
 export function Tags() {
     const featureFlags = useFlags()
-    const { download, isLoading } = useDownloadTagsReportData()
+
     const getGridCellSize = useGridSize()
     useCleanStatsFilters()
 
@@ -41,11 +37,7 @@ export function Tags() {
                 titleExtra={
                     isReportingFilteringAndCalculationsTagsReportEnabled ||
                     isReportingExtendFieldAndTagEnabled ? (
-                        <SharedActionsMenu
-                            downloadAction={download}
-                            isDownloadLoading={isLoading}
-                            reportName={ReportName.Tags}
-                        />
+                        <TagsActionMenu />
                     ) : (
                         <TagsReportDownloadDataButton />
                     )

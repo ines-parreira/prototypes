@@ -70,7 +70,7 @@ export const formatData = (
     ),
 ]
 
-export const useCustomFieldsReportData = (selectedCustomFieldId: string) => {
+export const useCustomFieldsReportData = (selectedCustomFieldId: number) => {
     const {
         cleanStatsFilters: statsFilters,
         userTimezone,
@@ -87,7 +87,7 @@ export const useCustomFieldsReportData = (selectedCustomFieldId: string) => {
             statsFilters,
             userTimezone,
             granularity,
-            selectedCustomFieldId,
+            String(selectedCustomFieldId),
             undefined,
             true,
             ticketFieldsTicketTimeReference,

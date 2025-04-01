@@ -128,7 +128,7 @@ describe('ticketFieldsReportingService', () => {
             const createCsvSpy = jest.spyOn(files, 'createCsv')
 
             const { result } = renderHook(() =>
-                useCustomFieldsReportData(String(selectedCustomFieldId)),
+                useCustomFieldsReportData(selectedCustomFieldId),
             )
 
             expect(createCsvSpy).toHaveBeenCalledWith(formattedReport)
@@ -140,7 +140,7 @@ describe('ticketFieldsReportingService', () => {
 
         it('should return a download action that triggers a logEvent & saveZippedFiles', async () => {
             const { result } = renderHook(() =>
-                useCustomFieldsReportData(String(selectedCustomFieldId)),
+                useCustomFieldsReportData(selectedCustomFieldId),
             )
 
             await result.current.download()

@@ -1,3 +1,6 @@
+import { useCallback } from 'react'
+
+import { logEvent, SegmentEvent } from 'common/segment'
 import { FeatureFlagKey } from 'config/featureFlags'
 import { useFlag } from 'core/flags'
 import useLocalStorage from 'hooks/useLocalStorage'
@@ -36,5 +39,17 @@ export const useTicketTimeReference = (entity: Entity) => {
             ? selectedTicketTimeReference
             : DEFAULT_TICKET_TIME_REFERENCE
 
-    return [value, setSelectedTicketTimeReference] as const
+    const handleTicketTimeReferenceChange = useCallback(
+        (value: TicketTimeReference) => {
+            setSelectedTicketTimeReference(value)
+
+            logEvent(SegmentEvent.StatTimeframePreferenceSelection, {
+                value,
+                report: entity,
+            })
+        },
+        [setSelectedTicketTimeReference, entity],
+    )
+
+    return [value, handleTicketTimeReferenceChange] as const
 }
