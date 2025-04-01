@@ -79,6 +79,14 @@ type MetricConfig = {
     domain: Domain
 }
 
+const useTicketDrillDownHook = (metricData: DrillDownMetric) =>
+    useEnrichedDrillDownData(
+        metricData,
+        defaultEnrichmentFields,
+        formatTicketDrillDownRowData,
+        EnrichmentFields.TicketId,
+    )
+
 const TicketDrillDownConfig: DomainConfig<
     | OverviewMetric
     | AgentsTableColumn
@@ -93,13 +101,7 @@ const TicketDrillDownConfig: DomainConfig<
     | TicketFieldsMetric
     | AIInsightsMetric
 > = {
-    drillDownHook: (metricData: DrillDownMetric) =>
-        useEnrichedDrillDownData(
-            metricData,
-            defaultEnrichmentFields,
-            formatTicketDrillDownRowData,
-            EnrichmentFields.TicketId,
-        ),
+    drillDownHook: useTicketDrillDownHook,
     tableComponent: TicketDrillDownTableContent,
     infoBarObjectType: 'tickets',
     isMetricDataDownloadable: true,

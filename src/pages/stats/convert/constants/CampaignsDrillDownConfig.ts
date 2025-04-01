@@ -14,14 +14,16 @@ export const ConvertMetricsConfig = {
     },
 }
 
+export const useConvertDrillDownHook = (metricData: DrillDownMetric) =>
+    useEnrichedDrillDownData(
+        metricData,
+        [EnrichmentFields.CustomerIntegrationDataByExternalId],
+        formatConvertCampaignSalesDrillDownRowData,
+        EnrichmentFields.OrderCustomerId,
+    )
+
 export const ConvertDrillDownConfig: DomainConfig<ConvertMetric> = {
-    drillDownHook: (metricData: DrillDownMetric) =>
-        useEnrichedDrillDownData(
-            metricData,
-            [EnrichmentFields.CustomerIntegrationDataByExternalId],
-            formatConvertCampaignSalesDrillDownRowData,
-            EnrichmentFields.OrderCustomerId,
-        ),
+    drillDownHook: useConvertDrillDownHook,
     tableComponent: CampaignSalesDrillDownTableContent,
     infoBarObjectType: 'orders',
     isMetricDataDownloadable: true,

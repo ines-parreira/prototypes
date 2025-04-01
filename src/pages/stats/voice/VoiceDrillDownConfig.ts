@@ -183,11 +183,13 @@ export const VoiceAgentsMetricsConfig: Record<
     },
 }
 
+export const useVoiceDrillDownHook = (metricData: DrillDownMetric) =>
+    useDrillDownData(metricData, formatVoiceDrillDownRowData)
+
 export const VoiceDrillDownConfig: DomainConfig<
     VoiceMetric | VoiceAgentsMetric
 > = {
-    drillDownHook: (metricData: DrillDownMetric) =>
-        useDrillDownData(metricData, formatVoiceDrillDownRowData),
+    drillDownHook: useVoiceDrillDownHook,
     tableComponent: VoiceCallDrillDownTableContent,
     infoBarObjectType: 'voice calls',
     isMetricDataDownloadable: false,
