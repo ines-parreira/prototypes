@@ -1,13 +1,14 @@
-import React, { Component, ComponentType, ContextType, ReactNode } from 'react'
+import { Component, ComponentType, ContextType, ReactNode } from 'react'
 
 import classnames from 'classnames'
 import { fromJS, List, Map } from 'immutable'
-import { withLDConsumer } from 'launchdarkly-react-client-sdk'
+import { LDFlagSet, withLDConsumer } from 'launchdarkly-react-client-sdk'
 import _isArray from 'lodash/isArray'
 import { parse, stringify } from 'qs'
 import { connect, ConnectedProps } from 'react-redux'
 import { RouteComponentProps } from 'react-router-dom'
 
+import { FeatureFlagKey } from 'config/featureFlags'
 import { getConfigByName } from 'config/views'
 import { EntityType, ViewType, ViewVisibility } from 'models/view/types'
 import Loader from 'pages/common/components/Loader/Loader'
@@ -69,7 +70,7 @@ type Props = OwnProps &
         'fetchViewItemsCancellable',
         'cancelFetchViewItemsCancellable',
         typeof fetchViewItems
-    >
+    > & { flags?: LDFlagSet }
 
 export class ViewTableContainer extends Component<Props> {
     static defaultProps: Pick<Props, 'items' | 'type'> = {
@@ -312,9 +313,19 @@ export class ViewTableContainer extends Component<Props> {
     }
 
     _getItemUrl = (item: Map<any, any>): string => {
-        const { config } = this.props
+        const { activeView, config, flags } = this.props
         if (!config) {
             return ''
+        }
+
+        if (
+            flags?.[FeatureFlagKey.RedirectDeprecatedTicketRoutes] &&
+            config.get('routeItem') === 'ticket'
+        ) {
+            const activeViewId = activeView.get('id') as number | undefined
+            const viewId = activeViewId || 0
+            const ticketId = item.get('id') as number
+            return `/app/tickets/${viewId}/${ticketId}`
         }
 
         return `/app/${config.get('routeItem') as string}/${

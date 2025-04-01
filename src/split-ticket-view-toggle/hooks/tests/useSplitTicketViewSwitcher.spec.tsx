@@ -1,14 +1,16 @@
-import React from 'react'
-
 import { renderHook } from '@testing-library/react-hooks'
 import { createMemoryHistory, MemoryHistory } from 'history'
 import { Provider } from 'react-redux'
 import { Route, Router } from 'react-router-dom'
 
+import { useFlag } from 'core/flags'
 import { SplitTicketViewProvider } from 'split-ticket-view-toggle'
-import { mockStore } from 'utils/testing'
+import { assumeMock, mockStore } from 'utils/testing'
 
 import useSplitTicketViewSwitcher from '../useSplitTicketViewSwitcher'
+
+jest.mock('core/flags', () => ({ useFlag: jest.fn() }))
+const useFlagMock = assumeMock(useFlag)
 
 function renderSwitcherHook(route: string, path: string = '/'): MemoryHistory {
     const history = createMemoryHistory({ initialEntries: [route] })
@@ -29,8 +31,18 @@ function renderSwitcherHook(route: string, path: string = '/'): MemoryHistory {
 }
 
 describe('useSplitTicketViewSwitcher', () => {
+    beforeEach(() => {
+        useFlagMock.mockReturnValue(false)
+    })
+
     afterAll(() => {
         localStorage.removeItem('split-ticket-view-enabled')
+    })
+
+    it('should do nothing is the deprecated ticket routes flag is active', () => {
+        useFlagMock.mockReturnValue(true)
+        const history = renderSwitcherHook('/app')
+        expect(history.location.pathname).toBe('/app')
     })
 
     describe('Split view enabled', () => {

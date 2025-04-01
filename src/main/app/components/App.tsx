@@ -23,6 +23,7 @@ import SessionChangeDetection from 'pages/common/components/SessionChangeDetecti
 import Spotlight from 'pages/common/components/Spotlight/Spotlight'
 import OutOfRecoveryCodesModal from 'pages/settings/yourProfile/twoFactorAuthentication/OutOfRecoveryCodesModal'
 import { useAutomateRedirects } from 'settings/automate'
+import { useRedirectDeprecatedTicketRoutes } from 'tickets/core/hooks'
 
 import ImpersonationBanner from '../../../AlertBanners/components/ImpersonationBanner'
 import useActivityTracker from '../hooks/useActivityTracker'
@@ -61,6 +62,7 @@ export default function App({ children }: Props) {
     useActivityTracker()
 
     useAutomateRedirects()
+    useRedirectDeprecatedTicketRoutes()
 
     const isOnboarding = isAiAgentOnboarding(history.location.pathname)
 

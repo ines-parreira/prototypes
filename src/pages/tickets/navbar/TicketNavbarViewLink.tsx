@@ -1,4 +1,4 @@
-import React, {
+import {
     ForwardedRef,
     forwardRef,
     useImperativeHandle,
@@ -10,6 +10,8 @@ import classnames from 'classnames'
 import { Link, useLocation } from 'react-router-dom'
 
 import navbarCss from 'assets/css/navbar.less'
+import { FeatureFlagKey } from 'config/featureFlags'
+import { useFlag } from 'core/flags'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useScrollActiveItemIntoView from 'hooks/useScrollActiveItemIntoView/useScrollActiveItemIntoView'
 import useViewId from 'hooks/useViewId'
@@ -32,6 +34,11 @@ const TicketNavbarViewLink = (
     { className, icon, view, viewCount }: Props,
     forwardedRef: ForwardedRef<HTMLDivElement>,
 ) => {
+    const shouldRedirectDeprecatedTicketRoutes = useFlag<boolean>(
+        FeatureFlagKey.RedirectDeprecatedTicketRoutes,
+        false,
+    )
+
     const { isEnabled: splitTicketViewEnabled } = useSplitTicketView()
     const { pathname: path } = useLocation()
 
@@ -68,11 +75,13 @@ const TicketNavbarViewLink = (
                     className,
                 )}
                 to={
-                    splitTicketViewEnabled
-                        ? `/app/views/${view.id}`
-                        : `/app/tickets/${view.id}/${encodeURIComponent(
-                              view.slug,
-                          )}`
+                    shouldRedirectDeprecatedTicketRoutes
+                        ? `/app/tickets/${view.id}`
+                        : splitTicketViewEnabled
+                          ? `/app/views/${view.id}`
+                          : `/app/tickets/${view.id}/${encodeURIComponent(
+                                view.slug,
+                            )}`
                 }
                 onClick={() => dispatch(activeViewIdSet(view.id))}
             >

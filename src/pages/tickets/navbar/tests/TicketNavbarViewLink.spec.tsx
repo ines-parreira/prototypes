@@ -1,25 +1,82 @@
-import React from 'react'
+import { render, screen } from '@testing-library/react'
+import { StaticRouter } from 'react-router-dom'
 
-import { render } from '@testing-library/react'
-import { MemoryRouter } from 'react-router-dom'
-
-import { View } from 'models/view/types'
+import { useFlag } from 'core/flags'
+import useAppDispatch from 'hooks/useAppDispatch'
+import useViewId from 'hooks/useViewId'
+import type { View } from 'models/view/types'
+import { useSplitTicketView } from 'split-ticket-view-toggle'
+import { assumeMock } from 'utils/testing'
 
 import TicketNavbarViewLink from '../TicketNavbarViewLink'
 
-// Minimal mocks for hooks that are not needed for testing the candu link
-jest.mock('split-ticket-view-toggle', () => ({
-    useSplitTicketView: () => ({ isEnabled: false }),
-}))
+jest.mock('core/flags', () => ({ useFlag: jest.fn() }))
+const useFlagMock = assumeMock(useFlag)
 
-jest.mock('hooks/useViewId', () => () => 'view1')
-jest.mock(
-    'hooks/useScrollActiveItemIntoView/useScrollActiveItemIntoView',
-    () => () => {},
-)
-jest.mock('hooks/useAppDispatch', () => () => jest.fn())
+jest.mock('hooks/useAppDispatch', () => jest.fn())
+const useAppDispatchMock = assumeMock(useAppDispatch)
 
-describe('<TicketNavbarViewLink /> - candu link part', () => {
+jest.mock('hooks/useViewId', () => jest.fn())
+const useViewIdMock = assumeMock(useViewId)
+
+jest.mock('split-ticket-view-toggle', () => ({ useSplitTicketView: jest.fn() }))
+const useSplitTicketViewMock = assumeMock(useSplitTicketView)
+type SplitTicketViewContext = ReturnType<typeof useSplitTicketView>
+
+describe('TicketNavbarViewLink', () => {
+    let dispatch: jest.Mock
+
+    const defaultView = {
+        id: 123,
+        name: 'Inbox',
+        section_id: 321,
+        slug: 'inbox',
+    } as View
+
+    beforeEach(() => {
+        dispatch = jest.fn()
+        useAppDispatchMock.mockReturnValue(dispatch)
+        useFlagMock.mockReturnValue(false)
+        useSplitTicketViewMock.mockReturnValue({
+            isEnabled: false,
+        } as SplitTicketViewContext)
+        useViewIdMock.mockReturnValue(123)
+    })
+
+    it('should render a default link', () => {
+        render(
+            <StaticRouter location="/app">
+                <TicketNavbarViewLink view={defaultView} />
+            </StaticRouter>,
+        )
+        const el = screen.getByText('Inbox').closest('a')
+        expect(el).toHaveAttribute('to', '/app/tickets/123/inbox')
+    })
+
+    it('should render a split ticket view link', () => {
+        useSplitTicketViewMock.mockReturnValue({
+            isEnabled: true,
+        } as SplitTicketViewContext)
+        render(
+            <StaticRouter location="/app">
+                <TicketNavbarViewLink view={defaultView} />
+            </StaticRouter>,
+        )
+        const el = screen.getByText('Inbox').closest('a')
+        expect(el).toHaveAttribute('to', '/app/views/123')
+    })
+
+    it('should render the new ticket link format with the feature flag', () => {
+        useFlagMock.mockReturnValue(true)
+        render(
+            <StaticRouter location="/app">
+                <TicketNavbarViewLink view={defaultView} />
+            </StaticRouter>,
+        )
+        const el = screen.getByText('Inbox').closest('a')
+        expect(el).toHaveAttribute('to', '/app/tickets/123')
+    })
+
     it('renders the candu link with the correct data-candu-id attribute', () => {
         // Create a minimal view object for testing
         const view = {
@@ -32,9 +89,9 @@ describe('<TicketNavbarViewLink /> - candu link part', () => {
         } as unknown as View
 
         const { container } = render(
-            <MemoryRouter>
+            <StaticRouter location="/app">
                 <TicketNavbarViewLink view={view} viewCount={5} />
-            </MemoryRouter>,
+            </StaticRouter>,
         )
 
         const expectedDataCanduId = 'ticket-navbar-ai-agent-view-link-handover'

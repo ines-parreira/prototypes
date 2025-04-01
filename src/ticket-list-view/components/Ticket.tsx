@@ -13,6 +13,8 @@ import { Components } from 'react-virtuoso'
 
 import { Tooltip } from '@gorgias/merchant-ui-kit'
 
+import { FeatureFlagKey } from 'config/featureFlags'
+import { useFlag } from 'core/flags'
 import RelativeTime from 'pages/common/components/RelativeTime'
 import SourceIcon from 'pages/common/components/SourceIcon'
 import ViewingIndicator from 'pages/common/components/ViewingIndicator/ViewingIndicator'
@@ -60,6 +62,11 @@ export default function Ticket({
     ['data-known-size']: dataKnownSize,
     ...transitionProps
 }: MergedProps) {
+    const shouldRedirectDeprecatedTicketRoutes = useFlag<boolean>(
+        FeatureFlagKey.RedirectDeprecatedTicketRoutes,
+        false,
+    )
+
     const { isTicketViewed, agentViewingMessage } = useIsTicketViewed(ticket.id)
     const datetime = useMemo(
         () =>
@@ -112,7 +119,11 @@ export default function Ticket({
                     className={cn(css.inner, {
                         [css.active]: isActive,
                     })}
-                    to={`/app/views/${viewId}/${ticket.id}`}
+                    to={
+                        shouldRedirectDeprecatedTicketRoutes
+                            ? `/app/tickets/${viewId}/${ticket.id}`
+                            : `/app/views/${viewId}/${ticket.id}`
+                    }
                     onClick={handleClickLink}
                 >
                     {!('channel' in ticket) ? (

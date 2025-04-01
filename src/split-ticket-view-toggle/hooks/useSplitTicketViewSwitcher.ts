@@ -2,6 +2,8 @@ import { useEffect, useMemo, useRef } from 'react'
 
 import { matchPath, useHistory, useLocation } from 'react-router-dom'
 
+import { FeatureFlagKey } from 'config/featureFlags'
+import { useFlag } from 'core/flags'
 import useAppSelector from 'hooks/useAppSelector'
 import useIsMobileResolution from 'hooks/useIsMobileResolution/useIsMobileResolution'
 import usePrevious from 'hooks/usePrevious'
@@ -16,6 +18,11 @@ interface LocationState {
 }
 
 export default function useSplitTicketViewSwitcher() {
+    const shouldRedirectDeprecatedTicketRoutes = useFlag<boolean>(
+        FeatureFlagKey.RedirectDeprecatedTicketRoutes,
+        false,
+    )
+
     const history = useHistory()
     const {
         pathname: path,
@@ -68,6 +75,8 @@ export default function useSplitTicketViewSwitcher() {
     }, [path])
 
     useEffect(() => {
+        if (shouldRedirectDeprecatedTicketRoutes) return
+
         if (
             isSplitTicketViewEnabled ===
                 previousIsSplitTicketViewEnabled.current &&
@@ -88,7 +97,12 @@ export default function useSplitTicketViewSwitcher() {
                 return
             }
 
-            if (viewId && viewId !== 'new' && viewId !== 'search') {
+            if (
+                viewId &&
+                path.match(/^\/app\/views/) &&
+                viewId !== 'new' &&
+                viewId !== 'search'
+            ) {
                 history.replace(`/app/tickets/${viewId}`)
                 return
             }
@@ -136,6 +150,7 @@ export default function useSplitTicketViewSwitcher() {
         ticketId,
         viewId,
         previousPath,
+        shouldRedirectDeprecatedTicketRoutes,
         shouldRedirectToSplitView,
         params,
         shouldSkipRedirect,

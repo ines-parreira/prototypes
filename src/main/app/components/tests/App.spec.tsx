@@ -1,9 +1,8 @@
-import React from 'react'
-
 import { screen } from '@testing-library/react'
 import { createMemoryHistory } from 'history'
 
 import { useFlag } from 'core/flags'
+import { useRedirectDeprecatedTicketRoutes } from 'tickets/core/hooks'
 import { assumeMock, renderWithRouter } from 'utils/testing'
 
 import { useSetBanners } from '../../hooks/useSetBanners'
@@ -58,6 +57,9 @@ jest.mock(
     'pages/settings/yourProfile/twoFactorAuthentication/OutOfRecoveryCodesModal',
     () => jest.fn(() => <div>OutOfRecoveryCodesModal</div>),
 )
+jest.mock('tickets/core/hooks', () => ({
+    useRedirectDeprecatedTicketRoutes: jest.fn(),
+}))
 
 jest.mock('AlertBanners', () => jest.fn(() => <div>AlertBanners</div>))
 jest.mock('../../../../AlertBanners/components/ImpersonationBanner', () =>
@@ -167,5 +169,10 @@ describe('App component', () => {
         expect(
             screen.queryByText('EmailMigrationBanner'),
         ).not.toBeInTheDocument()
+    })
+
+    it('should call the `useRedirectDeprecatedTicketRoutes` hook', () => {
+        renderWithRouter(<App>boop</App>)
+        expect(useRedirectDeprecatedTicketRoutes).toHaveBeenCalledWith()
     })
 })

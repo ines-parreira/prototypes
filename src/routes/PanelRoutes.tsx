@@ -1,12 +1,16 @@
 import { Route, Switch, useRouteMatch } from 'react-router-dom'
 
 import { OnboardingPanel } from 'common/onboarding'
-import { Handle, PanelGroup, Panels } from 'core/layout/panels'
+import { FeatureFlagKey } from 'config/featureFlags'
+import { useFlag } from 'core/flags'
+import { Handle, Panels } from 'core/layout/panels'
 import { GlobalNavigationPanel } from 'core/navigation'
+import { ContentPanels } from 'core/ui'
 import { useIsMobileResolution } from 'hooks/useIsMobileResolution'
 import useWindowSize from 'hooks/useWindowSize'
 import { useOnToggleUnread } from 'tickets/dtp'
 import { TicketsNavbarPanel } from 'tickets/navigation'
+import { TicketsPage } from 'tickets/pages'
 import { TicketDetailPanel } from 'tickets/ticket-detail'
 import { TicketEmptyPanel } from 'tickets/ticket-empty'
 import { TicketInfobarPanel } from 'tickets/ticket-infobar'
@@ -14,8 +18,6 @@ import { TicketsListPanel } from 'tickets/tickets-list'
 import { ViewPanel } from 'tickets/view'
 
 import { MobileRoutes } from './MobileRoutes'
-
-import css from './PanelRoutes.less'
 
 export const panelRoutesRegexps = [
     /^\/app\/?$/,
@@ -25,6 +27,10 @@ export const panelRoutesRegexps = [
 ]
 
 export default function PanelRoutes() {
+    const hasRedirectDeprecatedTicketRoutes = useFlag<boolean>(
+        FeatureFlagKey.RedirectDeprecatedTicketRoutes,
+        false,
+    )
     const { width } = useWindowSize()
     const { onToggleUnread, registerOnToggleUnread } = useOnToggleUnread()
     const isMobileResolution = useIsMobileResolution()
@@ -34,6 +40,24 @@ export default function PanelRoutes() {
 
     if (isMobileResolution) {
         return <MobileRoutes />
+    }
+
+    if (hasRedirectDeprecatedTicketRoutes) {
+        return (
+            <Panels size={width}>
+                <GlobalNavigationPanel />
+                <Switch>
+                    <Route path="/app/tickets">
+                        <TicketsPage />
+                    </Route>
+                    <Route exact path="/app/ticket/:ticketId">
+                        <TicketsNavbarPanel key="navbar" />
+                        <TicketDetailPanel key="ticket-detail-panel" />
+                        <TicketInfobarPanel key="infobar-panel" />
+                    </Route>
+                </Switch>
+            </Panels>
+        )
     }
 
     // The `key` props below are not really needed in most cases, but they are
@@ -46,7 +70,7 @@ export default function PanelRoutes() {
             <GlobalNavigationPanel key="global-navigation" />
             <TicketsNavbarPanel key="navbar" />
             <Handle />
-            <PanelGroup className={css.contentGroup} subtractSize={10}>
+            <ContentPanels subtractSize={10}>
                 <Switch>
                     <Route exact path="/app">
                         <ViewPanel key="view-panel" />
@@ -92,7 +116,7 @@ export default function PanelRoutes() {
                         <TicketInfobarPanel key="infobar-panel" />
                     </Route>
                 </Switch>
-            </PanelGroup>
+            </ContentPanels>
         </Panels>
     )
 }
