@@ -24,6 +24,7 @@ export default function VoiceQueueListPage() {
         },
         {
             query: {
+                refetchOnWindowFocus: false,
                 keepPreviousData: true,
             },
         },

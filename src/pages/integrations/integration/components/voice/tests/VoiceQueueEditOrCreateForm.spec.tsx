@@ -2,6 +2,10 @@ import React from 'react'
 
 import { render, screen } from '@testing-library/react'
 
+import { VoiceQueue } from '@gorgias/api-queries'
+
+import { voiceQueue } from 'fixtures/voiceQueue'
+
 import VoiceQueueEditOrCreateForm from '../VoiceQueueEditOrCreateForm'
 
 jest.mock('../VoiceQueueSettingsFormGeneralSection', () => () => (
@@ -10,9 +14,13 @@ jest.mock('../VoiceQueueSettingsFormGeneralSection', () => () => (
 jest.mock('../VoiceQueueSettingsFormCallFlowSection', () => () => (
     <div>VoiceQueueSettingsFormCallFlowSection</div>
 ))
+jest.mock('../VoiceQueueSettingsLinkedIntegrations', () => () => (
+    <div>VoiceQueueSettingsLinkedIntegrations</div>
+))
 
 describe('VoiceQueueEditOrCreateForm', () => {
-    const renderComponent = () => render(<VoiceQueueEditOrCreateForm />)
+    const renderComponent = (queue?: VoiceQueue) =>
+        render(<VoiceQueueEditOrCreateForm queue={queue} />)
 
     it('should render the general and call flow sections with section headers', () => {
         renderComponent()
@@ -25,6 +33,20 @@ describe('VoiceQueueEditOrCreateForm', () => {
         expect(screen.getByText('Call flow')).toBeInTheDocument()
         expect(
             screen.getByText('VoiceQueueSettingsFormCallFlowSection'),
+        ).toBeInTheDocument()
+        expect(
+            screen.queryByText('VoiceQueueSettingsLinkedIntegrations'),
+        ).not.toBeInTheDocument()
+    })
+
+    it('should render the linked integrations section with the correct title and description', () => {
+        renderComponent({
+            ...voiceQueue,
+            integrations: [{ id: 1 } as any],
+        })
+
+        expect(
+            screen.getByText('VoiceQueueSettingsLinkedIntegrations'),
         ).toBeInTheDocument()
     })
 })

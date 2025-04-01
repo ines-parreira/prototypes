@@ -33,9 +33,15 @@ export default function VoiceQueueEditPage() {
         data: queue,
         isFetching,
         isError,
-    } = useGetVoiceQueue(id, undefined, {
-        query: { refetchOnWindowFocus: false },
-    })
+    } = useGetVoiceQueue(
+        id,
+        {
+            with_integrations: true,
+        },
+        {
+            query: { refetchOnWindowFocus: false },
+        },
+    )
 
     const { mutate: updateQueue } = useUpdateVoiceQueue({
         mutation: {
@@ -77,7 +83,7 @@ export default function VoiceQueueEditPage() {
                     onSubmit={handleSubmit}
                     initialValues={getVoiceQueueEditableFields(queue.data)}
                 >
-                    <VoiceQueueEditOrCreateForm />
+                    <VoiceQueueEditOrCreateForm queue={queue.data} />
                     <div className={css.buttons}>
                         <div className={css.leftButtons}>
                             <VoiceFormSubmitButton>

@@ -16,12 +16,18 @@ export default function VoiceQueueBreadcrumbs({
 }) {
     const isIdNumber = !isNaN(Number(queueId))
 
-    const { data: queue } = useGetVoiceQueue(Number(queueId), undefined, {
-        query: {
-            refetchOnWindowFocus: false,
-            enabled: isIdNumber,
+    const { data: queue } = useGetVoiceQueue(
+        Number(queueId),
+        {
+            with_integrations: true,
         },
-    })
+        {
+            query: {
+                refetchOnWindowFocus: false,
+                enabled: isIdNumber,
+            },
+        },
+    )
 
     return (
         <div className={css.container}>
