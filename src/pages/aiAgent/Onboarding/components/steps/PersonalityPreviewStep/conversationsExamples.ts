@@ -1,5 +1,8 @@
 import { ConversationMessage } from 'pages/aiAgent/Onboarding/components/AiAgentChatConversation/AiAgentChatConversation'
-import { PreviewId } from 'pages/aiAgent/Onboarding/components/PersonalityPreviewGroup/constants'
+import {
+    PreviewId,
+    PRODUCT_RECOMMENDATION_MESSAGE_ID,
+} from 'pages/aiAgent/Onboarding/components/PersonalityPreviewGroup/constants'
 
 export type ConversationExamples = Record<
     PreviewId,
@@ -192,6 +195,7 @@ export const conversationExamples: ConversationExamples = {
                 attachments: [],
             },
             {
+                id: PRODUCT_RECOMMENDATION_MESSAGE_ID,
                 content:
                     'Our top pick is the <strong>Ultra Hydration Cream</strong>. It’s packed with natural ingredients to combat dryness. Check it out here: <a href="https://example.com/moisturizer" target="_blank">View Product</a>.',
                 isHtml: true,

@@ -117,6 +117,8 @@ export const supportPreviews = [
     previews.orderCancelation,
 ]
 
+export const PRODUCT_RECOMMENDATION_MESSAGE_ID = 'productRecommendationCard'
+
 export const getPreviewsForPreviewType = (
     previewType: 'mixed' | 'sales' | 'support',
 ) => {

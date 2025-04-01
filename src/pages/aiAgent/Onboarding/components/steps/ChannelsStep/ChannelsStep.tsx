@@ -122,20 +122,20 @@ export const ChannelsStep: React.FC<StepProps> = ({
     const { redirectToIntegration, integrationId, integrationType } =
         useOnboardingIntegrationRedirection()
 
+    const storeIntegration: ShopifyIntegration = useAppSelector(
+        getShopifyIntegrationByShopName(shopName),
+    ).toJS()
+
     const {
         preview,
         conversations,
         isLoading: isPreviewLoading,
-    } = useTransformToneOfVoiceConversations(shopName)
+    } = useTransformToneOfVoiceConversations(storeIntegration.id, shopName)
 
     const {
         mutate: doUpdateOnboardingMutation,
         isLoading: isUpdatingOnboarding,
     } = useUpdateOnboarding()
-
-    const storeIntegration: ShopifyIntegration = useAppSelector(
-        getShopifyIntegrationByShopName(shopName),
-    ).toJS()
 
     const stores = useAppSelector(getShopifyIntegrationsSortedByName)
     const accountDomain = useAppSelector(getCurrentDomain)

@@ -3,19 +3,46 @@ import { useCallback, useEffect, useState } from 'react'
 import { useMutation } from '@tanstack/react-query'
 import _isEqual from 'lodash/isEqual'
 
+import { AttachmentEnum } from 'common/types'
 import useAppSelector from 'hooks/useAppSelector'
 import { transformToneOfVoice } from 'models/aiAgent/resources/transform-tone-of-voice'
 import { TransformToneOfVoiceConversation } from 'models/aiAgent/types'
-import { PreviewId } from 'pages/aiAgent/Onboarding/components/PersonalityPreviewGroup/constants'
+import {
+    PreviewId,
+    PRODUCT_RECOMMENDATION_MESSAGE_ID,
+} from 'pages/aiAgent/Onboarding/components/PersonalityPreviewGroup/constants'
 import {
     ConversationExamples,
     conversationExamples,
 } from 'pages/aiAgent/Onboarding/components/steps/PersonalityPreviewStep/conversationsExamples'
+import useTopProducts from 'pages/aiAgent/Onboarding/components/TopProductsCard/hooks'
+import { Product } from 'pages/aiAgent/Onboarding/components/TopProductsCard/types'
+import { ProductCardAttachment } from 'pages/common/draftjs/plugins/toolbar/components/AddProductLink'
 import { getCurrentAccountState } from 'state/currentAccount/selectors'
 
 import { useGetOnboardingData } from './useGetOnboardingData'
 
-export const useTransformToneOfVoiceConversations = (shopName: string) => {
+const transformProductToAttachment = (
+    product: Product,
+): ProductCardAttachment => ({
+    content_type: AttachmentEnum.Product,
+    size: 1,
+    url: product.featuredImage,
+    name: product.title,
+    extra: {
+        product_id: product.id,
+        variant_id: product.id,
+        variant_name: product.title,
+        product_link: product.featuredImage,
+        featured_image: product.featuredImage,
+        price: product.price.toString(),
+    },
+})
+
+export const useTransformToneOfVoiceConversations = (
+    shopIntegrationId: number,
+    shopName: string,
+) => {
     const currentAccount = useAppSelector(getCurrentAccountState)
     const gorgiasDomain = currentAccount.get('domain')
 
@@ -26,16 +53,28 @@ export const useTransformToneOfVoiceConversations = (shopName: string) => {
     const { data, isLoading: isLoadingOnboardingData } =
         useGetOnboardingData(shopName)
 
+    const { data: products, isLoading: isProductDataLoading } = useTopProducts({
+        shopIntegrationId: shopIntegrationId,
+    })
+
     const { mutateAsync: transformConversation, isLoading } = useMutation(
         ({
             gorgiasDomain,
             toneOfVoice,
             conversations,
+            product,
         }: {
             gorgiasDomain: string
             toneOfVoice: string
             conversations: TransformToneOfVoiceConversation[]
-        }) => transformToneOfVoice(gorgiasDomain, toneOfVoice, conversations),
+            product?: { title: string; description: string }
+        }) =>
+            transformToneOfVoice(
+                gorgiasDomain,
+                toneOfVoice,
+                conversations,
+                product,
+            ),
     )
 
     const inputConversations: TransformToneOfVoiceConversation[] =
@@ -43,7 +82,7 @@ export const useTransformToneOfVoiceConversations = (shopName: string) => {
             ([conversationId, conversations]) => ({
                 id: conversationId,
                 messages: conversations.messages.map((message, index) => ({
-                    id: index.toString(),
+                    id: message.id || index.toString(),
                     message: message.content,
                     from_agent: message.fromAgent,
                 })),
@@ -70,12 +109,15 @@ export const useTransformToneOfVoiceConversations = (shopName: string) => {
             }
         }
 
+        const product = products.length > 0 ? products[0] : undefined
+
         if (gorgiasDomain && data?.customToneOfVoiceGuidance) {
             try {
                 const response = await transformConversation({
                     gorgiasDomain,
                     toneOfVoice: data.customToneOfVoiceGuidance,
                     conversations: inputConversations,
+                    product: product,
                 })
 
                 const responseConversations =
@@ -84,12 +126,28 @@ export const useTransformToneOfVoiceConversations = (shopName: string) => {
                             ...acc,
                             [conversation.id as PreviewId]: {
                                 messages: conversation.messages.map(
-                                    (message) => ({
-                                        content: message.message,
-                                        isHtml: true,
-                                        fromAgent: message.from_agent,
-                                        attachments: [],
-                                    }),
+                                    (message) => {
+                                        let attachments: ProductCardAttachment[] =
+                                            []
+                                        if (
+                                            product &&
+                                            message.id ===
+                                                PRODUCT_RECOMMENDATION_MESSAGE_ID
+                                        ) {
+                                            attachments = [
+                                                transformProductToAttachment(
+                                                    product,
+                                                ),
+                                            ]
+                                        }
+
+                                        return {
+                                            content: message.message,
+                                            isHtml: true,
+                                            fromAgent: message.from_agent,
+                                            attachments: attachments,
+                                        }
+                                    },
                                 ),
                             },
                         }),
@@ -105,16 +163,24 @@ export const useTransformToneOfVoiceConversations = (shopName: string) => {
         }
 
         setOutputConversations(conversationExamples)
-    }, [gorgiasDomain, transformConversation, inputConversations, data])
+    }, [
+        gorgiasDomain,
+        transformConversation,
+        inputConversations,
+        data,
+        products,
+    ])
 
     useEffect(() => {
-        if (!isLoadingOnboardingData) {
+        if (!isLoadingOnboardingData && !isProductDataLoading) {
             void transformConversations()
         }
-    }, [isLoadingOnboardingData])
+    }, [isLoadingOnboardingData, isProductDataLoading])
 
     return {
-        isLoading: isLoading || isLoadingOnboardingData,
+        isLoading:
+            (isLoading || isLoadingOnboardingData || isProductDataLoading) &&
+            outputConversations === undefined,
         conversations: outputConversations,
         preview: cacheResult ? JSON.stringify(outputConversations) : undefined,
     }

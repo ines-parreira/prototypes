@@ -8,6 +8,7 @@ import { z } from 'zod'
 import { Label } from '@gorgias/merchant-ui-kit'
 
 import { logEvent, SegmentEvent } from 'common/segment'
+import useAppSelector from 'hooks/useAppSelector'
 import { OnboardingData, SalesSettingsData } from 'models/aiAgent/types'
 import AiAgentChatConversation from 'pages/aiAgent/Onboarding/components/AiAgentChatConversation/AiAgentChatConversation'
 import Card from 'pages/aiAgent/Onboarding/components/Card/Card'
@@ -51,6 +52,7 @@ import IconTooltip from 'pages/common/forms/IconTooltip/IconTooltip'
 import IconInput from 'pages/common/forms/input/IconInput'
 import InputField from 'pages/common/forms/input/InputField'
 import ChatIntegrationPreview from 'pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationPreview/ChatIntegrationPreview'
+import { getShopifyIntegrationByShopName } from 'state/integrations/selectors'
 
 const personalitySchema = z
     .object({
@@ -101,8 +103,12 @@ export const PersonalityStep: FC<StepProps> = ({
         chatIntegrationIds: data?.chatIntegrationIds,
     })
 
+    const storeIntegration = useAppSelector(
+        getShopifyIntegrationByShopName(shopName),
+    ).toJS()
+
     const { conversations, isLoading: isPreviewLoading } =
-        useTransformToneOfVoiceConversations(shopName)
+        useTransformToneOfVoiceConversations(storeIntegration.id, shopName)
 
     const isLoading = isLoadingOnboardingData || isUpdatingOnboarding
 

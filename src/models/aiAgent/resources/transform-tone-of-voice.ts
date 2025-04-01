@@ -11,12 +11,14 @@ export const transformToneOfVoice = async (
     gorgiasDomain: string,
     toneOfVoice: string,
     conversations: TransformToneOfVoiceConversation[],
+    product?: { title: string; description: string },
 ) => {
     return await apiClient.post<TransformToneOfVoiceResponse>(
         `/api/tov/transform-conversations`,
         {
             tone_of_voice: toneOfVoice,
             conversations,
+            product,
         },
         {
             headers: {

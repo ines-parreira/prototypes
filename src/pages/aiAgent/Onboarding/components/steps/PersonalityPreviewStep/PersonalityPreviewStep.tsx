@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
 
 import { logEvent, SegmentEvent } from 'common/segment'
+import useAppSelector from 'hooks/useAppSelector'
 import AiAgentChatConversation from 'pages/aiAgent/Onboarding/components/AiAgentChatConversation/AiAgentChatConversation'
 import MainTitle from 'pages/aiAgent/Onboarding/components/MainTitle/MainTitle'
 import {
@@ -32,6 +33,7 @@ import {
 } from 'pages/aiAgent/Onboarding/settings'
 import AIBanner from 'pages/common/components/AIBanner/AIBanner'
 import ChatIntegrationPreview from 'pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationPreview/ChatIntegrationPreview'
+import { getShopifyIntegrationByShopName } from 'state/integrations/selectors'
 
 export const PersonalityPreviewStep: React.FC<StepProps> = ({
     currentStep,
@@ -57,8 +59,12 @@ export const PersonalityPreviewStep: React.FC<StepProps> = ({
         id: PreviewId
     }>()
 
+    const storeIntegration = useAppSelector(
+        getShopifyIntegrationByShopName(shopName),
+    ).toJS()
+
     const { conversations, isLoading: isPreviewLoading } =
-        useTransformToneOfVoiceConversations(shopName)
+        useTransformToneOfVoiceConversations(storeIntegration.id, shopName)
 
     // Select first preview automatically when loaded
     useEffect(() => {
