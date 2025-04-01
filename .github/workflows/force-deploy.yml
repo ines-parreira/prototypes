@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
     inputs:
       force-deploy-commit:
-        description: Specify the commit to force deploy to production, defaults to latest commit on branch selected (force-deploy-commit) if empty. This job only runs on main or staging branches.
+        description: Specify the commit to force deploy to production, defaults to latest commit on branch selected (force-deploy-commit) if empty. This job only runs on main branch.
         required: false
         type: string
 
@@ -92,3 +92,4 @@ jobs:
       artifact: production-build
       sentry-project: helpdesk-web-app
       release: production-${{ inputs.force-deploy-commit != '' && inputs.force-deploy-commit || github.sha }}
+      force-deploy-commit: ${{ inputs.force-deploy-commit != '' && inputs.force-deploy-commit || github.sha }}
