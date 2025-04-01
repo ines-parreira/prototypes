@@ -82,6 +82,35 @@ describe('mergeAutomateDataByEventType', () => {
         ).toEqual(expectedResult)
     })
 
+    it('should return base values when no corresponding value to merge', () => {
+        const interactionsDataByEventType = {
+            eventType1: [
+                [
+                    { dateTime: '2024-03-20T12:00:00', value: 10 },
+                    { dateTime: '2024-03-20T12:15:00', value: 15 },
+                ],
+            ],
+            eventType2: [[]],
+        }
+        const eventTypesToMerge = ['eventType1', 'eventType2']
+
+        const expectedResult = {
+            eventType1: [
+                [
+                    { dateTime: '2024-03-20T12:00:00', value: 10 },
+                    { dateTime: '2024-03-20T12:15:00', value: 15 },
+                ],
+            ],
+        }
+
+        expect(
+            mergeAutomateDataByEventType(
+                interactionsDataByEventType,
+                eventTypesToMerge,
+            ),
+        ).toEqual(expectedResult)
+    })
+
     it('should return unchanged data if no event types to merge', () => {
         const interactionsDataByEventType = {
             eventType1: [

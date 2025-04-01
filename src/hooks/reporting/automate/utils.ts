@@ -178,7 +178,9 @@ export function mergeAutomateDataByEventType(
             continue
         }
         mergedData[toEventType][0].forEach((data, index) => {
-            data.value += interactionsDataByEventType[eventType][0][index].value
+            const valueToAdd =
+                interactionsDataByEventType[eventType][0][index]?.value
+            data.value += valueToAdd ?? 0
         })
         delete interactionsDataByEventType[eventType]
     }
