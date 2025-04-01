@@ -54,15 +54,18 @@ describe('<Timeline />', () => {
     const ticket1 = {
         id: 1,
         created_datetime: '2024-01-02T03:04:05.123456+00:00',
+        status: 'open',
         channel: 'email',
     } as TicketSummary
     const ticket2 = {
         id: 2,
+        status: 'closed',
         created_datetime: '2023-01-02T03:04:05.123456+00:00',
     } as TicketSummary
     const ticket3 = {
         id: 3,
         created_datetime: '2022-01-02T03:04:05.123456+00:00',
+        status: 'closed',
         channel: 'email',
     } as TicketSummary
     beforeEach(() => {
@@ -187,8 +190,36 @@ describe('<Timeline />', () => {
         expect(link).toHaveAttribute('to', '/app/ticket/1')
     })
 
+    describe('Status filtering', () => {
+        it('should not render status filter when feature flag is off', () => {
+            render(<Timeline />)
+
+            expect(screen.queryByText('status')).toBeNull()
+        })
+
+        it('should should correctly filter tickets by status', () => {
+            useFlagMock.mockReturnValue(true)
+            render(<Timeline />)
+
+            TicketCardMock.mockClear()
+
+            fireEvent.click(screen.getByText('All'))
+            fireEvent.click(screen.getByText('Closed'))
+
+            expect(TicketCardMock).toHaveBeenCalledTimes(1)
+            expect(TicketCardMock.mock.calls[0][0].ticket).toEqual(ticket1)
+
+            TicketCardMock.mockClear()
+
+            fireEvent.click(screen.getByText('Closed'))
+            expect(TicketCardMock).toHaveBeenCalledTimes(2)
+            expect(TicketCardMock.mock.calls[0][0].ticket).toEqual(ticket1)
+            expect(TicketCardMock.mock.calls[1][0].ticket).toEqual(ticket3)
+        })
+    })
+
     describe('Sorting', () => {
-        it('should not render SelectField when feature flag is off', () => {
+        it('should not render the sort trigger when feature flag is off', () => {
             render(<Timeline />)
 
             expect(screen.queryByRole('combobox')).toBeNull()

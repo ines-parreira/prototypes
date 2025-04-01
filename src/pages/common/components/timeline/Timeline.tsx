@@ -14,7 +14,9 @@ import { getCustomerHistory, getLoading } from 'state/customers/selectors'
 
 import DisplayedDate from './DisplayedDate'
 import { useSort } from './hooks/useSort'
+import { useStatusFilter } from './hooks/useStatusFilter'
 import { Sort } from './Sort'
+import { StatusFilter } from './StatusFilter'
 import TicketCard from './TicketCard'
 import { ReduxCustomerHistory } from './types'
 
@@ -44,8 +46,10 @@ export function Timeline({ ticketId = 0, onLoaded }: Props) {
         getCustomerHistory,
     ).toJS() as ReduxCustomerHistory
 
+    const { selectedStatus, statusFilteredTickets, toggleSelectedStatus } =
+        useStatusFilter(customerHistory.tickets)
     const { sortedTickets, sortOption, setSortOption } = useSort(
-        customerHistory.tickets,
+        statusFilteredTickets,
     )
 
     if (customersLoading.history) {
@@ -74,7 +78,12 @@ export function Timeline({ ticketId = 0, onLoaded }: Props) {
         <div>
             {hasNewTimeline && (
                 <div className={css.filtersContainer}>
-                    <div></div>
+                    <div>
+                        <StatusFilter
+                            selectedStatus={selectedStatus}
+                            toggleSelectedStatus={toggleSelectedStatus}
+                        />
+                    </div>
                     <Sort value={sortOption} onChange={setSortOption} />
                 </div>
             )}

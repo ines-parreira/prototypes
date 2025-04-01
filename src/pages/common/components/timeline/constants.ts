@@ -2,7 +2,16 @@ import { TicketSummary } from '@gorgias/api-types'
 
 import { KeysMatching } from 'types'
 
-import { SortableKey, SortOption } from './types'
+import { FilterKey, SortableKey, SortOption } from './types'
+
+export const STATUS_FILTERS: {
+    value: FilterKey
+    label: string
+}[] = [
+    { value: 'open', label: 'Open' },
+    { value: 'closed', label: 'Closed' },
+    { value: 'snooze', label: 'Snoozed' },
+]
 
 export const FALLBACK_SORT_KEY: KeysMatching<TicketSummary, string> =
     'created_datetime'
