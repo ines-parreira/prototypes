@@ -224,7 +224,7 @@ export const AiAgentKnowledgeContainer = () => {
                             )}
 
                             <Card className={css.cardSection}>
-                                <div className={css.label}>
+                                <div className={css.labelSection}>
                                     <Label>Help Center</Label>
                                     <span>
                                         Allow AI Agent to use articles from your
@@ -282,6 +282,7 @@ export const AiAgentKnowledgeContainer = () => {
                         isRequired
                         subtitle="Connect at least one of the knowledge sources below to enable AI Agent."
                         data-candu-id="ai-agent-configuration-knowledge-copy"
+                        className={css.configurationSection}
                     >
                         <div className={css.sectionContainer}>
                             <div>

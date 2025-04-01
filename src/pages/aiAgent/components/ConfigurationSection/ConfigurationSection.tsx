@@ -1,3 +1,5 @@
+import classnames from 'classnames'
+
 import { Badge } from '@gorgias/merchant-ui-kit'
 
 import css from './ConfigurationSection.less'
@@ -9,6 +11,7 @@ type Props = {
     children: React.ReactNode
     isBeta?: boolean
     sectionRef?: React.RefObject<HTMLDivElement>
+    className?: string
 }
 
 export const ConfigurationSection = ({
@@ -18,6 +21,7 @@ export const ConfigurationSection = ({
     isRequired,
     isBeta = false,
     sectionRef,
+    className,
 }: Props) => {
     return (
         <section ref={sectionRef}>
@@ -46,7 +50,7 @@ export const ConfigurationSection = ({
                 )}
             </div>
             {subtitle && <span className={css.subtitle}>{subtitle}</span>}
-            <div className={css.content}>{children}</div>
+            <div className={classnames(css.content, className)}>{children}</div>
         </section>
     )
 }
