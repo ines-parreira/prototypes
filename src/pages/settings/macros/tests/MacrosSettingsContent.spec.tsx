@@ -1,6 +1,6 @@
 import React from 'react'
 
-import { fireEvent, render, screen, waitFor } from '@testing-library/react'
+import { act, fireEvent, render, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { fromJS } from 'immutable'
 import { Provider } from 'react-redux'
@@ -38,10 +38,14 @@ jest.mock('../MacrosCreateDropdown', () => ({
     MacrosCreateDropdown: () => <div />,
 }))
 
-jest.mock(
-    'pages/common/components/MacroFilters/MacroFilters',
-    () => () => 'MacroFilters',
-)
+jest.mock('pages/common/components/MacroFilters/MacroFilters', () => ({
+    __esModule: true,
+    default: ({ onChange }: { onChange: (params: any) => void }) => {
+        // Expose the onChange handler to the test
+        ;(global as any).mockMacroFiltersOnChange = onChange
+        return 'MacroFilters'
+    },
+}))
 
 jest.mock('state/notifications/actions')
 const mockNotify = notify as jest.Mock
@@ -329,7 +333,7 @@ describe('<MacrosSettingsContent/>', () => {
 
         screen.getByText('keyboard_arrow_right').click()
         screen.getByText('more_vert').click()
-        screen.getByText('delete').click()
+        screen.getByText(/Delete/).click()
         screen.getByText('Confirm').click()
         ;(
             mockMutateDelete.mock.calls[0] as { onSettled: () => void }[]
@@ -451,6 +455,7 @@ describe('<MacrosSettingsContent/>', () => {
         const checkboxAll = screen.getByLabelText('Select all')
         const checkboxFirstMacro = screen.getByLabelText(macrosFixtures[0].id!)
         const checkboxSecondMacro = screen.getByLabelText(macrosFixtures[1].id!)
+
         checkboxAll.click()
         screen.getByText('Active').click()
 
@@ -493,5 +498,111 @@ describe('<MacrosSettingsContent/>', () => {
                 },
             },
         )
+    })
+
+    it('should reset cursor when searching', async () => {
+        // Set initial state with a cursor
+        mockUseListMacros.mockReturnValue({
+            data: {
+                data: {
+                    data: macrosFixtures,
+                    meta: {
+                        next_cursor: 'next_cursor',
+                        prev_cursor: 'prev_cursor',
+                    },
+                },
+            },
+            isError: false,
+        } as ReturnType<typeof useListMacros>)
+
+        render(
+            <Provider
+                store={mockStore({
+                    currentUser: fromJS(user),
+                })}
+            >
+                <MacrosSettingsContent />
+            </Provider>,
+        )
+
+        // Navigate to next page to set a cursor
+        act(() => {
+            screen.getByText('keyboard_arrow_right').click()
+        })
+
+        const searchTerm = 'foobar'
+        act(() => {
+            fireEvent.change(screen.getByPlaceholderText('Search macros...'), {
+                target: { value: searchTerm },
+            })
+        })
+
+        await waitFor(() =>
+            expect(mockUseListMacros).toHaveBeenCalledWith(
+                {
+                    order_by: 'created_datetime:asc',
+                    search: searchTerm,
+                    cursor: undefined,
+                },
+                {
+                    query: {
+                        staleTime: expect.any(Number),
+                    },
+                },
+            ),
+        )
+    })
+
+    it('should reset cursor when changing filters', async () => {
+        // Set initial state with a cursor
+        mockUseListMacros.mockReturnValue({
+            data: {
+                data: {
+                    data: macrosFixtures,
+                    meta: {
+                        next_cursor: 'next_cursor',
+                        prev_cursor: 'prev_cursor',
+                    },
+                },
+            },
+            isError: false,
+        } as ReturnType<typeof useListMacros>)
+
+        render(
+            <Provider
+                store={mockStore({
+                    currentUser: fromJS(user),
+                })}
+            >
+                <MacrosSettingsContent />
+            </Provider>,
+        )
+
+        // Navigate to next page to set a cursor
+        act(() => {
+            screen.getByText('keyboard_arrow_right').click()
+        })
+
+        // Simulate filter change
+        const mockFilterParams = {
+            languages: ['en'],
+            tags: ['support'],
+        }
+
+        // Trigger the filter change through the exposed onChange handler
+        ;(global as any).mockMacroFiltersOnChange(mockFilterParams)
+
+        // Wait for and verify the last call to useListMacros
+        await waitFor(() => {
+            const lastCall =
+                mockUseListMacros.mock.calls[
+                    mockUseListMacros.mock.calls.length - 1
+                ]
+            expect(lastCall[0]).toMatchObject({
+                order_by: expect.any(String),
+                cursor: undefined,
+                ...mockFilterParams,
+            })
+        })
     })
 })

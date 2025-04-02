@@ -140,6 +140,30 @@ export function MacrosSettingsContent() {
         setSelectedMacrosIds([])
     }, [data?.data.meta.prev_cursor, listMacrosParams])
 
+    const onMacroSearchChange = useCallback(
+        (search: string) => {
+            setListMacrosParams({
+                ...listMacrosParams,
+                search,
+                // Any changes to the search terms should reset the cursor
+                cursor: undefined,
+            })
+        },
+        [listMacrosParams],
+    )
+
+    const onMacroFilterChange = useCallback(
+        (params: Partial<ListMacrosParams>) => {
+            setListMacrosParams({
+                ...listMacrosParams,
+                ...params,
+                // Any changes to the search filters should reset the cursor
+                cursor: undefined,
+            })
+        },
+        [listMacrosParams],
+    )
+
     return (
         <div className={classnames('full-width', css.wrapper)}>
             <PageHeader title="Macros">
@@ -147,13 +171,7 @@ export function MacrosSettingsContent() {
                     <Search
                         className="mr-2"
                         value={listMacrosParams.search || ''}
-                        onChange={(search: string) => {
-                            setListMacrosParams({
-                                ...listMacrosParams,
-                                order_by: 'created_datetime:asc',
-                                search,
-                            })
-                        }}
+                        onChange={onMacroSearchChange}
                         placeholder="Search macros..."
                         searchDebounceTime={300}
                     />
@@ -162,12 +180,7 @@ export function MacrosSettingsContent() {
                             languages: listMacrosParams.languages,
                             tags: listMacrosParams.tags,
                         }}
-                        onChange={(values) =>
-                            setListMacrosParams({
-                                ...listMacrosParams,
-                                ...values,
-                            })
-                        }
+                        onChange={onMacroFilterChange}
                     />
                     <MacrosCreateDropdown />
                 </div>
