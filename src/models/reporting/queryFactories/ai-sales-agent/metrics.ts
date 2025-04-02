@@ -185,6 +185,11 @@ export const totalNumberOfAgentConversationsQueryFactory = (
     measures: [AiSalesAgentConversationsMeasure.Count],
     dimensions: [],
     filters: [
+        {
+            member: AiSalesAgentConversationsDimension.IsSalesOpportunity,
+            operator: ReportingFilterOperator.Equals,
+            values: ['1'],
+        },
         ...statsFiltersToReportingFilters(
             aiSalesAgentConversationsDefaultFiltersMembers,
             filters,
