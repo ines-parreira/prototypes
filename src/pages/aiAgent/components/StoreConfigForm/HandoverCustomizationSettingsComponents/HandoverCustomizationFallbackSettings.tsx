@@ -134,7 +134,12 @@ const HandoverCustomizationFallbackSettings = ({ integration }: Props) => {
     return (
         <>
             <div className={cn(css.fallbackSettingsContainer, 'mb-5')}>
-                <div className="d-flex flex-row justify-content-between align-items-center mb-2">
+                <div
+                    className={cn(
+                        'd-flex flex-row justify-content-between align-items-center mb-2',
+                        css.fallbackSettingsLanguageContainer,
+                    )}
+                >
                     <Label
                         htmlFor="handover-customization-fallback-message"
                         label={'Error message'}
@@ -143,13 +148,15 @@ const HandoverCustomizationFallbackSettings = ({ integration }: Props) => {
                         Error Message
                     </Label>
 
-                    <SelectField
-                        fixedWidth
-                        aria-label="Select language"
-                        options={availableLanguageItems}
-                        value={selectedLanguageCode}
-                        onChange={onSelectedLanguageChange}
-                    />
+                    {availableLanguageItems.length > 1 && (
+                        <SelectField
+                            fixedWidth
+                            aria-label="Select language"
+                            options={availableLanguageItems}
+                            value={selectedLanguageCode}
+                            onChange={onSelectedLanguageChange}
+                        />
+                    )}
                 </div>
 
                 <TextArea

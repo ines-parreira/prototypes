@@ -101,12 +101,33 @@ describe('HandoverCustomizationFallbackSettings', () => {
             /AI Agent will send the exact text if it encounters an unexpected error handing over/i,
         )
 
-        // Check the language selector is rendered
-        screen.getByLabelText('Select language')
-
         // Check Save and Cancel buttons are rendered
         screen.getByText('Save Changes')
         screen.getByText('Cancel')
+    })
+
+    it('renders the language selector when there are multiple languages', () => {
+        render(
+            <HandoverCustomizationFallbackSettings
+                integration={mockIntegration}
+            />,
+        )
+
+        // Check the language selector is rendered
+        screen.getByLabelText('Select language')
+    })
+
+    it('does not render the language selector when there is only one language', () => {
+        ;(getLanguagesFromChatConfig as jest.Mock).mockReturnValue(['en-US'])
+
+        render(
+            <HandoverCustomizationFallbackSettings
+                integration={mockIntegration}
+            />,
+        )
+
+        // Check the language selector is not rendered
+        expect(screen.queryByLabelText('Select language')).toBeNull()
     })
 
     it('renders the loading state when the language context is loading', () => {
