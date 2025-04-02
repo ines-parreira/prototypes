@@ -3,7 +3,7 @@ import React, { ComponentProps } from 'react'
 import { Meta, StoryFn } from '@storybook/react'
 import { Button } from 'reactstrap'
 
-import gorgiasLogo from 'assets/img/gorgias-light-icon-48.png'
+import gorgiasLogo from '@gorgias/branding-assets/favicons/favicon-white.png'
 
 import Alert from './Alert'
 

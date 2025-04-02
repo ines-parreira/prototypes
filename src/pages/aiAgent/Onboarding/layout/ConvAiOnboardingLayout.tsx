@@ -9,7 +9,6 @@ import {
     getAiAgentNavigationRoutes,
 } from 'pages/aiAgent/hooks/useAiAgentNavigation'
 import OnboardingProgressTracker from 'pages/aiAgent/Onboarding/components/common/OnboardingProgressTracker/OnboardingProgressTracker'
-import GorgiasLogoExtendedIcon from 'pages/aiAgent/Onboarding/layout/GorgiasLogoExtended'
 import IconButton from 'pages/common/components/button/IconButton'
 import history from 'pages/history'
 import { getLDClient } from 'utils/launchDarkly'
@@ -141,7 +140,7 @@ export const OnboardingContentContainer: React.FC<{
     return (
         <div className={css.onboardingContentContainer}>
             <div className={css.onboardingHeader}>
-                <GorgiasLogoExtendedIcon />
+                <div title="Gorgias logo" className={css.logo} />
                 <div className={css.onboardingHeaderClose}>
                     <CloseButton onClose={onCloseAction} />
                 </div>
