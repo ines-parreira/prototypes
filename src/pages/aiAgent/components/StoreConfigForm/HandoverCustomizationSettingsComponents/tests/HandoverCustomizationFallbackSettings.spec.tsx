@@ -109,7 +109,7 @@ describe('HandoverCustomizationFallbackSettings', () => {
     it('renders the language selector when there are multiple languages', () => {
         render(
             <HandoverCustomizationFallbackSettings
-                integration={mockIntegration}
+                integration={mockedIntegration}
             />,
         )
 
@@ -122,7 +122,7 @@ describe('HandoverCustomizationFallbackSettings', () => {
 
         render(
             <HandoverCustomizationFallbackSettings
-                integration={mockIntegration}
+                integration={mockedIntegration}
             />,
         )
 
