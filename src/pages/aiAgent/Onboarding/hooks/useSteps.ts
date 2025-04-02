@@ -38,10 +38,6 @@ export const useSteps = ({
                 condition: true,
             },
             {
-                step: WizardStepEnum.PERSONALITY_PREVIEW,
-                condition: true,
-            },
-            {
                 step: WizardStepEnum.SALES_PERSONALITY,
                 condition:
                     isLoading ||
@@ -49,6 +45,10 @@ export const useSteps = ({
                         (selectedScope?.includes(AiAgentScopes.SALES) ||
                             selectedScope.length === 0)) ||
                     selectedScope?.includes(AiAgentScopes.SALES),
+            },
+            {
+                step: WizardStepEnum.PERSONALITY_PREVIEW,
+                condition: true,
             },
             {
                 step: WizardStepEnum.HANDOVER,

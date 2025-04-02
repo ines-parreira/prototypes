@@ -377,7 +377,7 @@ describe('PersonalityStep - Empty state', () => {
 
         await waitFor(() => {
             expect(goToStep).toHaveBeenCalledWith(
-                WizardStepEnum.PERSONALITY_PREVIEW,
+                WizardStepEnum.SALES_PERSONALITY,
             )
         })
     })

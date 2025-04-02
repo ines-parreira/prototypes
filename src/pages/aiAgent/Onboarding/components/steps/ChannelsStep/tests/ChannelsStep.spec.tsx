@@ -294,7 +294,7 @@ describe('ChannelsStep', () => {
                     expect.anything(),
                 )
                 expect(defaultProps.goToStep).toHaveBeenCalledWith(
-                    WizardStepEnum.PERSONALITY_PREVIEW,
+                    WizardStepEnum.SALES_PERSONALITY,
                 )
             })
         })
@@ -344,7 +344,7 @@ describe('ChannelsStep', () => {
 
             await waitFor(() => {
                 expect(defaultProps.goToStep).toHaveBeenCalledWith(
-                    WizardStepEnum.PERSONALITY_PREVIEW,
+                    WizardStepEnum.SALES_PERSONALITY,
                 )
             })
         })
@@ -369,7 +369,7 @@ describe('ChannelsStep', () => {
 
             await waitFor(() => {
                 expect(defaultProps.goToStep).toHaveBeenCalledWith(
-                    WizardStepEnum.PERSONALITY_PREVIEW,
+                    WizardStepEnum.SALES_PERSONALITY,
                 )
             })
         })
@@ -582,7 +582,7 @@ describe('ChannelsStep', () => {
 
                 expect(mutateUpdateOnboardingMock).toHaveBeenCalled()
                 expect(defaultProps.goToStep).toHaveBeenCalledWith(
-                    WizardStepEnum.PERSONALITY_PREVIEW,
+                    WizardStepEnum.SALES_PERSONALITY,
                 )
             })
         })

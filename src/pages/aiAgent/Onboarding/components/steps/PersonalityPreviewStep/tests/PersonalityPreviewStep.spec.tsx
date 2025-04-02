@@ -1,7 +1,6 @@
-import React from 'react'
-
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { act, fireEvent } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
 import { createMemoryHistory } from 'history'
 import { fromJS, Map } from 'immutable'
 import { Provider } from 'react-redux'
@@ -75,12 +74,12 @@ const renderComponent = (state?: RootState) => {
 
 describe('<PersonalityPreviewStep />', () => {
     describe.each([
-        ['sales', [AiAgentScopes.SALES], WizardStepEnum.SALES_PERSONALITY],
+        ['sales', [AiAgentScopes.SALES], WizardStepEnum.PERSONALITY_PREVIEW],
         ['support', [AiAgentScopes.SUPPORT], WizardStepEnum.KNOWLEDGE],
         [
             'mixed',
             [AiAgentScopes.SALES, AiAgentScopes.SUPPORT],
-            WizardStepEnum.SALES_PERSONALITY,
+            WizardStepEnum.PERSONALITY_PREVIEW,
         ],
     ])('with scope defined as %s', (scopeName, scopes, nextStep) => {
         beforeEach(() => {
@@ -160,20 +159,18 @@ describe('<PersonalityPreviewStep />', () => {
             )
         })
 
-        it('navigates to the previous step when Back is clicked', () => {
+        it('navigates to the previous step when Back is clicked', async () => {
             const screen = renderComponent()
 
-            const backButtons = screen.getAllByText(/Back/i)
-
-            fireEvent.click(backButtons[1] || backButtons[0])
+            await userEvent.click(screen.getByRole('button', { name: 'Back' }))
 
             expect(goToStep).toHaveBeenCalledWith(WizardStepEnum.CHANNELS)
         })
 
-        it('navigates to the next step when Next is clicked', () => {
+        it('navigates to the next step when Next is clicked', async () => {
             const screen = renderComponent()
 
-            fireEvent.click(screen.getByText(/Next/i))
+            await userEvent.click(screen.getByRole('button', { name: 'Next' }))
 
             expect(goToStep).toHaveBeenCalledWith(nextStep)
         })

@@ -45,8 +45,8 @@ describe('useSteps', () => {
             { step: WizardStepEnum.SHOPIFY_INTEGRATION, condition: true },
             { step: WizardStepEnum.EMAIL_INTEGRATION, condition: true },
             { step: WizardStepEnum.CHANNELS, condition: true },
-            { step: WizardStepEnum.PERSONALITY_PREVIEW, condition: true },
             { step: WizardStepEnum.SALES_PERSONALITY, condition: true },
+            { step: WizardStepEnum.PERSONALITY_PREVIEW, condition: true },
             { step: WizardStepEnum.KNOWLEDGE, condition: true },
         ])
         expect(result.current.totalSteps).toBe(7)
