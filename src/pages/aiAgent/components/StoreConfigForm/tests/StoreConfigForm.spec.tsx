@@ -35,15 +35,10 @@ import { FormValues } from 'pages/aiAgent/types'
 import useSelfServiceChatChannels from 'pages/automate/common/hooks/useSelfServiceChatChannels'
 import history from 'pages/history'
 import { ContactFormFixture } from 'pages/settings/contactForm/fixtures/contacForm'
-import {
-    getHelpCentersResponseFixture,
-    getSingleHelpCenterResponseFixture,
-} from 'pages/settings/helpCenter/fixtures/getHelpCentersResponse.fixture'
+import { getSingleHelpCenterResponseFixture } from 'pages/settings/helpCenter/fixtures/getHelpCentersResponse.fixture'
 import { getHasAutomate } from 'state/billing/selectors'
 import { initialState as articlesState } from 'state/entities/helpCenter/articles'
 import { initialState as categoriesState } from 'state/entities/helpCenter/categories'
-import { notify } from 'state/notifications/actions'
-import { NotificationStatus } from 'state/notifications/types'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 import { reportError } from 'utils/errors'
 import { renderWithRouter } from 'utils/testing'
@@ -441,54 +436,6 @@ describe('<StoreConfigForm />', () => {
                 })
             })
         } catch {}
-    })
-
-    it('should call deactivateAiAgent and dispatch notification when no knowledge base', async () => {
-        const mockStoreIntegration = {
-            ...storeConfiguration,
-            helpCenterId: null,
-        }
-        mockedUseAiAgentStoreConfigurationContext.mockReturnValue({
-            storeConfiguration: mockStoreIntegration,
-            isLoading: false,
-            updateStoreConfiguration: mockUpdateStoreConfiguration,
-            createStoreConfiguration: mockCreateStoreConfiguration,
-            isPendingCreateOrUpdate: false,
-        })
-
-        const helpCenter = getHelpCentersResponseFixture.data[0]
-        mockedUseGetOrCreateSnippetHelpCenter.mockReturnValue({
-            isLoading: false,
-            helpCenter,
-        })
-
-        mockedUsePublicResources.mockReturnValue({
-            sourceItems: [
-                { id: 1, url: 'https://test1.com', status: 'error' },
-                { id: 2, url: 'https://test2.com', status: 'error' },
-            ],
-            isSourceItemsListLoading: false,
-        } as unknown as ReturnType<typeof usePublicResources>)
-
-        renderComponent()
-
-        await waitFor(() => {
-            expect(mockUpdateStoreConfiguration).toHaveBeenCalledWith({
-                ...mockStoreIntegration,
-                chatChannelDeactivatedDatetime: expect.any(String),
-                emailChannelDeactivatedDatetime: expect.any(String),
-                trialModeActivatedDatetime: null,
-                previewModeActivatedDatetime: null,
-                previewModeValidUntilDatetime: null,
-            })
-
-            expect(mockDispatch).toHaveBeenCalled()
-            expect(notify).toHaveBeenCalledWith({
-                message:
-                    'AI Agent has been disabled, because no Knowledge source is connected.',
-                status: NotificationStatus.Warning,
-            })
-        })
     })
 
     describe('AI Agent chat configuration', () => {

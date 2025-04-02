@@ -1,7 +1,5 @@
-import { useFlags } from 'launchdarkly-react-client-sdk'
 import { Link } from 'react-router-dom'
 
-import { FeatureFlagKey } from 'config/featureFlags'
 import Alert from 'pages/common/components/Alert/Alert'
 
 import { useAiAgentNavigation } from '../../hooks/useAiAgentNavigation'
@@ -14,8 +12,6 @@ export const MissingKnowledgeSourceAlert = ({
     shopName: string
 }) => {
     const { routes } = useAiAgentNavigation({ shopName })
-    const isAiAgentKnowledgeTabEnabled =
-        useFlags()[FeatureFlagKey.AiAgentKnowledgeTab]
 
     return (
         <div role="alert">
@@ -24,13 +20,7 @@ export const MissingKnowledgeSourceAlert = ({
                 className={css.alert}
                 icon
                 customActions={
-                    <Link
-                        to={
-                            isAiAgentKnowledgeTabEnabled
-                                ? routes.knowledge
-                                : routes.configuration('knowledge')
-                        }
-                    >
+                    <Link to={routes.configuration('knowledge')}>
                         Add Knowledge
                     </Link>
                 }

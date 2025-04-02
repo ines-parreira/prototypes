@@ -1,10 +1,8 @@
 import { useCallback, useMemo, useState } from 'react'
 
-import { useFlags } from 'launchdarkly-react-client-sdk'
 import { useParams } from 'react-router-dom'
 
 import { logEvent, SegmentEvent } from 'common/segment'
-import { FeatureFlagKey } from 'config/featureFlags'
 import useAppSelector from 'hooks/useAppSelector'
 import useEffectOnce from 'hooks/useEffectOnce'
 import { useSearchParam } from 'hooks/useSearchParam'
@@ -131,9 +129,6 @@ export const useAiAgentOnboardingWizard = ({
         shopName,
     })
 
-    const isAiAgentKnowledgeTabEnabled =
-        useFlags()[FeatureFlagKey.AiAgentKnowledgeTab]
-
     const {
         isPendingCreateOrUpdate,
         handleOnSave,
@@ -215,9 +210,7 @@ export const useAiAgentOnboardingWizard = ({
                 })
 
                 history.replace({
-                    pathname: isAiAgentKnowledgeTabEnabled
-                        ? routes.knowledge
-                        : routes.configuration(),
+                    pathname: routes.configuration(),
                     search: getPostCompletionSearchParams(
                         WIZARD_POST_COMPLETION_STATE.configuration,
                     ),

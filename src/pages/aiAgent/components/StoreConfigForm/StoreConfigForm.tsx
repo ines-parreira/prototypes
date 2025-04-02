@@ -28,9 +28,6 @@ import { useStoreConfigurationForm } from 'pages/aiAgent/hooks/useStoreConfigura
 import { getFormValuesFromStoreConfiguration } from 'pages/aiAgent/hooks/utils/configurationForm.utils'
 import { useAiAgentFormChangesContext } from 'pages/aiAgent/providers/AiAgentFormChangesContext'
 import { FormValues } from 'pages/aiAgent/types'
-import HelpCenterSelect, {
-    EMPTY_HELP_CENTER_ID,
-} from 'pages/automate/common/components/HelpCenterSelect'
 import IconTooltip from 'pages/common/forms/IconTooltip/IconTooltip'
 import history from 'pages/history'
 import { getIntegrationsByTypes } from 'state/integrations/selectors'
@@ -60,7 +57,6 @@ import { useAiAgentStoreConfigurationContext } from '../../providers/AiAgentStor
 import { isHandoffEnabled } from '../../util'
 import { AIAgentIntroduction } from '../AIAgentIntroduction/AIAgentIntroduction'
 import { AiAgentPreviewModeSection } from '../AIAgentPreviewModeSection/AiAgentPreviewModeSection'
-import { ConfigurationSection } from '../ConfigurationSection/ConfigurationSection'
 import { HandoverTopicsModal } from '../HandoverTopicsModel/HandoverTopicsModal'
 import { PublicSourcesSection } from '../PublicSourcesSection/PublicSourcesSection'
 import TagList from '../TicketTag/TagList'
@@ -93,8 +89,6 @@ export const StoreConfigForm = ({
         flags[FeatureFlagKey.AiAgentOnboardingWizard]
     const isFollowUpAiAgentPreviewModeEnabled =
         flags[FeatureFlagKey.FollowUpAiAgentPreviewMode]
-    const isAiAgentKnowledgeTabEnabled =
-        flags[FeatureFlagKey.AiAgentKnowledgeTab]
     const isStandaloneMenuEnabled = flags[FeatureFlagKey.ConvAiStandaloneMenu]
 
     // Because this component is heavy and difficult to rework
@@ -113,17 +107,12 @@ export const StoreConfigForm = ({
 
     const dispatch = useAppDispatch()
 
-    const [isUrlSyncSuccess, setIsUrlSyncSuccess] = useState(false)
-    const [isUrlSyncFail, setIsUrlSyncFail] = useState(false)
-
     const [sectionQueryParam, setSectionQueryParam] = useSearchParam('section')
 
     const [isHandoverTopicsModalOpen, setIsHandoverTopicsModalOpen] =
         useState(false)
 
-    const [wizardQueryParam, setWizardQueryParam] = useSearchParam(
-        WIZARD_POST_COMPLETION_QUERY_KEY,
-    )
+    const [wizardQueryParam] = useSearchParam(WIZARD_POST_COMPLETION_QUERY_KEY)
 
     const { aiAgentTicketViewId, aiAgentPreviewTicketViewId } =
         useAccountStoreConfiguration({
@@ -163,39 +152,6 @@ export const StoreConfigForm = ({
         knowledgeSectionRef,
         emailSectionRef,
         setSectionQueryParam,
-        wizardQueryParam,
-    ])
-
-    useEffect(() => {
-        if (
-            wizardQueryParam === WIZARD_POST_COMPLETION_STATE.knowledge &&
-            (isUrlSyncSuccess || isUrlSyncFail)
-        ) {
-            if (isUrlSyncSuccess) {
-                void dispatch(
-                    notify({
-                        status: NotificationStatus.Success,
-                        message: 'URL sources have successfully synced.',
-                        showDismissButton: true,
-                    }),
-                )
-            } else {
-                void dispatch(
-                    notify({
-                        status: NotificationStatus.Error,
-                        message:
-                            'One or more URL sources for AI Agent failed to sync. Review URLs and try again.',
-                        showDismissButton: true,
-                    }),
-                )
-            }
-            setWizardQueryParam(null)
-        }
-    }, [
-        dispatch,
-        isUrlSyncFail,
-        isUrlSyncSuccess,
-        setWizardQueryParam,
         wizardQueryParam,
     ])
 
@@ -347,19 +303,6 @@ export const StoreConfigForm = ({
         ],
     )
 
-    const selectedHelpCenter = faqHelpCenters.find((helpCenter) => {
-        return helpCenter.id === formValues.helpCenterId
-    })
-
-    const setHelpCenterId = (id: number) => {
-        if (id === EMPTY_HELP_CENTER_ID) {
-            updateValue('helpCenterId', null)
-            return
-        }
-
-        updateValue('helpCenterId', id)
-    }
-
     const isHandoffToggled = isHandoffEnabled(
         formValues.silentHandover !== null
             ? formValues.silentHandover
@@ -391,21 +334,6 @@ export const StoreConfigForm = ({
                 ) ?? false,
         }),
         [sourceItems, ingestedFiles],
-    )
-
-    const handlePublicURLsChange = useCallback(
-        (publicURLs: string[]) => {
-            // Because it's possible to delete public URLs without saving the form, we should deactivate AI Agent when no knowledge base
-            if (
-                publicURLs.length === 0 &&
-                storeConfiguration?.helpCenterId === null &&
-                (storeConfiguration?.emailChannelDeactivatedDatetime === null ||
-                    storeConfiguration?.chatChannelDeactivatedDatetime === null)
-            ) {
-                void deactivateAiAgent()
-            }
-        },
-        [deactivateAiAgent, storeConfiguration],
     )
 
     const shouldDisplayAiAgentConfigurationModal = useMemo(() => {
@@ -694,54 +622,6 @@ export const StoreConfigForm = ({
 
                     {shouldDisplayGeneralSections && (
                         <>
-                            {!isAiAgentKnowledgeTabEnabled && (
-                                <ConfigurationSection
-                                    title="Knowledge"
-                                    isRequired
-                                    subtitle="Select a Help Center or add at least one URL in order to enable AI Agent."
-                                    sectionRef={knowledgeSectionRef}
-                                    data-candu-id="ai-agent-configuration-knowledge-copy"
-                                >
-                                    <div className={css.formGroup}>
-                                        <Label className={css.label}>
-                                            Help Center
-                                        </Label>
-                                        <HelpCenterSelect
-                                            helpCenter={selectedHelpCenter}
-                                            setHelpCenterId={setHelpCenterId}
-                                            helpCenters={faqHelpCenters}
-                                            withEmptyItemSelection
-                                            className={css.helpCenterSelect}
-                                        />
-                                        <div
-                                            className={css.formInputFooterInfo}
-                                        >
-                                            Select a Help Center to connect to
-                                            AI Agent.
-                                        </div>
-                                    </div>
-
-                                    {snippetHelpCenter ? (
-                                        <CreatePublicSourcesSection
-                                            helpCenterId={snippetHelpCenter.id}
-                                            selectedHelpCenterId={
-                                                selectedHelpCenter?.id
-                                            }
-                                            onPublicURLsChanged={
-                                                handlePublicURLsChange
-                                            }
-                                            shopName={shopName}
-                                            setIsFailedResources={
-                                                setIsUrlSyncFail
-                                            }
-                                            setIsSuccessResources={
-                                                setIsUrlSyncSuccess
-                                            }
-                                        />
-                                    ) : null}
-                                </ConfigurationSection>
-                            )}
-
                             <section>
                                 <h2
                                     className={css.sectionHeader}

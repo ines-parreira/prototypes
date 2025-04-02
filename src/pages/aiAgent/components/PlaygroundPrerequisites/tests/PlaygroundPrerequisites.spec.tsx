@@ -1,9 +1,7 @@
 import React, { ComponentProps } from 'react'
 
 import { render, screen } from '@testing-library/react'
-import { mockFlags } from 'jest-launchdarkly-mock'
 
-import { FeatureFlagKey } from 'config/featureFlags'
 import { getStoreConfigurationFixture } from 'pages/aiAgent/fixtures/storeConfiguration.fixtures'
 import { useFileIngestion } from 'pages/aiAgent/hooks/useFileIngestion'
 import { usePublicResources } from 'pages/aiAgent/hooks/usePublicResources'
@@ -55,19 +53,6 @@ describe('CheckPlaygroundPrerequisites', () => {
         expect(screen.getByText('Add Knowledge')).toHaveAttribute(
             'to',
             '/app/automation/shopify/it-shop/ai-agent/settings?section=knowledge',
-        )
-    })
-
-    it('renders MissingKnowledgeSourceAlert with the correct link when the feature flag is on', () => {
-        mockFlags({
-            [FeatureFlagKey.AiAgentKnowledgeTab]: true,
-        })
-
-        renderComponent()
-
-        expect(screen.getByText('Add Knowledge')).toHaveAttribute(
-            'to',
-            '/app/automation/shopify/it-shop/ai-agent/knowledge',
         )
     })
 
