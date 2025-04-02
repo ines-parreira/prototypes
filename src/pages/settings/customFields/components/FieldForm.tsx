@@ -1,6 +1,5 @@
-import React, { useCallback, useEffect, useRef, useState } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 
-import { Location } from 'history'
 import { cloneDeep, pick, set } from 'lodash'
 
 import { Badge, Button, Label, Tooltip } from '@gorgias/merchant-ui-kit'
@@ -18,7 +17,6 @@ import UnsavedChangesPrompt from 'pages/common/components/UnsavedChangesPrompt'
 import Caption from 'pages/common/forms/Caption/Caption'
 import InputField from 'pages/common/forms/input/InputField'
 import TextArea from 'pages/common/forms/TextArea'
-import history from 'pages/history'
 import ArchiveConfirmationModal from 'pages/settings/customFields/components/ArchiveConfirmationModal'
 import DropdownInput from 'pages/settings/customFields/components/DropdownInput'
 import css from 'pages/settings/customFields/components/FieldForm.less'
@@ -118,10 +116,10 @@ export default function FieldForm(props: FieldFormProps) {
     }
 
     // When navigating away, save the data then navigate to the target location
-    const handleSaveOnLeave = async (location?: Location) => {
+    const handleSaveOnLeave = async () => {
         const ok = await save()
-        if (ok && location) {
-            history.push(location)
+        if (!ok) {
+            throw new Error('Error saving custom field')
         }
     }
 
@@ -336,6 +334,7 @@ export default function FieldForm(props: FieldFormProps) {
                 <UnsavedChangesPrompt
                     onSave={handleSaveOnLeave}
                     when={isFormDirty}
+                    shouldRedirectAfterSave
                 />
             )}
         </form>

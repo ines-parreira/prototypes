@@ -1,12 +1,4 @@
-import React from 'react'
-
-import {
-    createEvent,
-    fireEvent,
-    render,
-    screen,
-    waitFor,
-} from '@testing-library/react'
+import { createEvent, fireEvent, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { omit } from 'lodash'
 
@@ -19,7 +11,6 @@ import {
     ticketDropdownFieldDefinition,
     ticketInputFieldDefinition,
 } from 'fixtures/customField'
-import UnsavedChangesPrompt from 'pages/common/components/UnsavedChangesPrompt'
 import ArchiveConfirmationModal from 'pages/settings/customFields/components/ArchiveConfirmationModal'
 import DropdownInput from 'pages/settings/customFields/components/DropdownInput'
 import FieldForm from 'pages/settings/customFields/components/FieldForm'
@@ -33,22 +24,18 @@ jest.mock(
     'pages/settings/customFields/components/ArchiveConfirmationModal',
     () => jest.fn(() => null),
 )
-jest.mock('pages/common/components/UnsavedChangesPrompt', () =>
-    jest.fn(() => null),
-)
 
 const DropdownInputMock = assumeMock(DropdownInput)
 const useUpdateCustomFieldArchiveStatusMock = assumeMock(
     useUpdateCustomFieldArchiveStatus,
 )
 const ArchiveConfirmationModalMock = assumeMock(ArchiveConfirmationModal)
-const mockedUnsavedChangesPrompt = assumeMock(UnsavedChangesPrompt)
 
 const updateMutateMock = jest.fn()
 
 const defaultProps = {
     field: ticketInputFieldDefinition,
-    onSubmit: jest.fn(),
+    onSubmit: jest.fn().mockResolvedValue({}),
     onClose: jest.fn(),
     objectType: OBJECT_TYPES.TICKET,
 }
@@ -63,13 +50,13 @@ describe('<FieldForm/>', () => {
     })
 
     it('should show archiving status and disable type change on edit', () => {
-        render(<FieldForm {...defaultProps} />)
+        renderWithRouter(<FieldForm {...defaultProps} />)
         expect(screen.getByText('ACTIVE'))
         expect(screen.getByText(/Field type can’t be changed/))
     })
 
     it('should show a tooltip on hover save after doing a change on placeholder', async () => {
-        render(<FieldForm {...defaultProps} />)
+        renderWithRouter(<FieldForm {...defaultProps} />)
 
         await userEvent.type(screen.getByLabelText(/Placeholder/), 'a')
         userEvent.hover(screen.getByText(/Save changes/))
@@ -79,7 +66,7 @@ describe('<FieldForm/>', () => {
     })
 
     it('should show a tooltip on hover save after doing a change on description', async () => {
-        render(<FieldForm {...defaultProps} />)
+        renderWithRouter(<FieldForm {...defaultProps} />)
 
         await userEvent.type(screen.getByLabelText(/Description/), 'a')
         userEvent.hover(screen.getByText(/Save changes/))
@@ -89,7 +76,7 @@ describe('<FieldForm/>', () => {
     })
 
     it('should show a tooltip on hover save after doing a change on placeholder with saved filters text added', async () => {
-        render(<FieldForm {...defaultProps} />)
+        renderWithRouter(<FieldForm {...defaultProps} />)
 
         await userEvent.type(screen.getByLabelText(/Placeholder/), 'a')
         userEvent.hover(screen.getByText(/Save changes/))
@@ -105,7 +92,7 @@ describe('<FieldForm/>', () => {
             field: { ...customFieldInputDefinition, label: '' },
         }
 
-        render(<FieldForm {...props} />)
+        renderWithRouter(<FieldForm {...props} />)
 
         fireEvent.click(screen.getByText(/Save changes/))
 
@@ -129,7 +116,7 @@ describe('<FieldForm/>', () => {
             field: ticketDropdownFieldDefinition,
         }
 
-        render(<FieldForm {...props} />)
+        renderWithRouter(<FieldForm {...props} />)
 
         const inputEl: HTMLInputElement = screen.getByDisplayValue(text)
         inputEl.setCustomValidity('error')
@@ -143,7 +130,7 @@ describe('<FieldForm/>', () => {
     })
 
     it('should call onSubmit if the form is valid and the save button is clicked', () => {
-        render(
+        renderWithRouter(
             <FieldForm
                 {...{ ...defaultProps, field: customFieldInputDefinition }}
             />,
@@ -163,7 +150,7 @@ describe('<FieldForm/>', () => {
             field: customFieldInputDefinition,
         }
 
-        render(<FieldForm {...props} />)
+        renderWithRouter(<FieldForm {...props} />)
 
         const cancelButton = screen.getByText(/Cancel/)
         cancelButton.click()
@@ -172,7 +159,7 @@ describe('<FieldForm/>', () => {
     })
 
     it('should show three options', () => {
-        render(<FieldForm {...defaultProps} />)
+        renderWithRouter(<FieldForm {...defaultProps} />)
 
         // All three options should be visible
         for (const label of [
@@ -204,18 +191,38 @@ describe('<FieldForm/>', () => {
         )
     })
 
-    it('should prompt for confirmation when closing the page with unsaved changes', () => {
-        const props = {
-            ...defaultProps,
-            field: customFieldInputDefinition,
-        }
+    it.each([true, false])(
+        'should prompt for confirmation when closing the page with unsaved changes (%s)',
+        (error) => {
+            const onSubmit = error
+                ? jest.fn().mockRejectedValue('Error')
+                : jest.fn().mockResolvedValue({})
+            const props = {
+                ...defaultProps,
+                onSubmit,
+                field: customFieldInputDefinition,
+            }
 
-        renderWithRouter(<FieldForm {...props} />)
+            const { history } = renderWithRouter(<FieldForm {...props} />)
 
-        const nameInput = screen.getByLabelText(/Name/)
-        fireEvent.change(nameInput, { target: { value: 'New name' } })
-        expect(mockedUnsavedChangesPrompt).toHaveBeenCalledTimes(1)
-    })
+            const nameInput = screen.getByLabelText(/Name/)
+            fireEvent.change(nameInput, { target: { value: 'New name' } })
+
+            history.push('/test')
+            expect(history.location.pathname).toBe('/')
+
+            expect(props.onSubmit).not.toHaveBeenCalled()
+            expect(props.onClose).not.toHaveBeenCalled()
+
+            expect(screen.getByText('Save changes?'))
+            userEvent.click(
+                screen.getByRole('button', { name: 'Save Changes' }),
+            )
+
+            expect(props.onSubmit).toHaveBeenCalledTimes(1)
+            expect(history.location.pathname).toBe('/')
+        },
+    )
 
     it('should not trigger a submit when pressing enter in a field', () => {
         const props = {
@@ -249,7 +256,7 @@ describe('<FieldForm/>', () => {
     })
 
     it('should have an archive button calling ArchiveConfirmationModal with the right props', () => {
-        render(<FieldForm {...defaultProps} />)
+        renderWithRouter(<FieldForm {...defaultProps} />)
 
         fireEvent.click(screen.getByText(/Archive/))
         expect(ArchiveConfirmationModalMock).toHaveBeenLastCalledWith(
@@ -265,7 +272,7 @@ describe('<FieldForm/>', () => {
     })
 
     it('should not show the archive button opening a modal that closes itself when calling onClose', () => {
-        render(<FieldForm {...defaultProps} />)
+        renderWithRouter(<FieldForm {...defaultProps} />)
 
         fireEvent.click(screen.getByText(/Archive/))
         expect(ArchiveConfirmationModalMock).toHaveBeenLastCalledWith(
@@ -289,7 +296,7 @@ describe('<FieldForm/>', () => {
     it.each(Object.values(OBJECT_TYPES))(
         'should show the correct placeholders when object_type=%s',
         (objectType) => {
-            render(
+            renderWithRouter(
                 <FieldForm
                     {...{
                         ...defaultProps,
@@ -325,7 +332,7 @@ describe('<FieldForm/>', () => {
                 field: archivedTicketInputFieldDefinition,
             }
 
-            render(<FieldForm {...props} />)
+            renderWithRouter(<FieldForm {...props} />)
 
             fireEvent.click(screen.getByText(/Unarchive/))
             expect(updateMutateMock).toHaveBeenCalledWith(false)
@@ -339,7 +346,7 @@ describe('<FieldForm/>', () => {
                 field: aiManagedTicketInputFieldDefinition,
             }
 
-            render(<FieldForm {...props} />)
+            renderWithRouter(<FieldForm {...props} />)
 
             fireEvent.click(screen.getByText(/Return to/))
             expect(defaultProps.onClose).toHaveBeenCalledTimes(1)
@@ -351,7 +358,7 @@ describe('<FieldForm/>', () => {
                 field: aiManagedTicketInputFieldDefinition,
             }
 
-            render(<FieldForm {...props} />)
+            renderWithRouter(<FieldForm {...props} />)
 
             expect(screen.getByLabelText(/Name/)).toBeDisabled()
             expect(screen.getByLabelText(/Description/)).toBeDisabled()
@@ -366,7 +373,7 @@ describe('<FieldForm/>', () => {
                 },
             }
 
-            render(<FieldForm {...props} />)
+            renderWithRouter(<FieldForm {...props} />)
             expect(DropdownInputMock).toHaveBeenCalledWith(
                 expect.objectContaining({
                     isDisabled: true,
