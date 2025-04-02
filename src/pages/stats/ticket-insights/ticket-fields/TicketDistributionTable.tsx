@@ -2,6 +2,10 @@ import colors from '@gorgias/design-tokens/dist/tokens/colors.json'
 import { Skeleton } from '@gorgias/merchant-ui-kit'
 
 import { useTicketsDistribution } from 'hooks/reporting/ticket-insights/useTicketsDistribution'
+import {
+    Entity,
+    useTicketTimeReference,
+} from 'hooks/reporting/ticket-insights/useTicketTimeReference'
 import useAppSelector from 'hooks/useAppSelector'
 import { useWidthBasedOnScreen } from 'hooks/useWidthBasedOnScreen'
 import BodyCell from 'pages/common/components/table/cells/BodyCell'
@@ -87,6 +91,10 @@ const TicketDistributionTable = ({
         outsideTopTotalGaugePercentage,
     } = useTicketsDistribution()
 
+    const [ticketFieldsTicketTimeReference] = useTicketTimeReference(
+        Entity.TicketField,
+    )
+
     const getWidth = useWidthBasedOnScreen()
 
     if (isFetching) {
@@ -116,6 +124,8 @@ const TicketDistributionTable = ({
                                             TicketFieldsMetric.TicketCustomFieldsTicketCount,
                                         customFieldId: selectedCustomField.id,
                                         customFieldValue: [item.category],
+                                        ticketTimeReference:
+                                            ticketFieldsTicketTimeReference,
                                     }}
                                 >
                                     {formatMetricValue(
@@ -178,6 +188,8 @@ const TicketDistributionTable = ({
                                         TicketFieldsMetric.TicketCustomFieldsTicketCount,
                                     customFieldId: selectedCustomField.id,
                                     customFieldValue: null,
+                                    ticketTimeReference:
+                                        ticketFieldsTicketTimeReference,
                                 }}
                             >
                                 {formatMetricValue(ticketsCountTotal)}

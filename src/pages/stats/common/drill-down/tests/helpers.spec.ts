@@ -2,8 +2,11 @@ import moment from 'moment'
 
 import { VoiceCallSegment } from 'models/reporting/cubes/VoiceCallCube'
 import { customerSatisfactionMetricDrillDownQueryFactory } from 'models/reporting/queryFactories/support-performance/customerSatisfaction'
-import { customFieldsTicketCountPerTicketDrillDownQueryFactory } from 'models/reporting/queryFactories/ticket-insights/customFieldsTicketCount'
-import { tagsTicketCountDrillDownQueryFactory } from 'models/reporting/queryFactories/ticket-insights/tagsTicketCount'
+import {
+    customFieldsTicketCountOnCreatedDatetimePerTicketDrillDownQueryFactory,
+    customFieldsTicketCountPerTicketDrillDownQueryFactory,
+} from 'models/reporting/queryFactories/ticket-insights/customFieldsTicketCount'
+import { tagsTicketCountDrillDownByReferenceQueryFactory } from 'models/reporting/queryFactories/ticket-insights/tagsTicketCount'
 import { withDefaultLogicalOperator } from 'models/reporting/queryFactories/utils'
 import {
     connectedCallsListQueryFactory,
@@ -13,7 +16,7 @@ import {
     voiceCallListQueryFactory,
     waitingTimeCallsListQueryFactory,
 } from 'models/reporting/queryFactories/voice/voiceCall'
-import { StatsFilters } from 'models/stat/types'
+import { StatsFilters, TicketTimeReference } from 'models/stat/types'
 import { CSAT_DRILL_DOWN_LABEL } from 'pages/aiAgent/insights/IntentTableWidget/IntentTableConfig'
 import { LogicalOperatorEnum } from 'pages/stats/common/components/Filter/constants'
 import {
@@ -83,8 +86,8 @@ const customerSatisfactionQueryFactoryMock = assumeMock(
     customerSatisfactionMetricDrillDownQueryFactory,
 )
 jest.mock('models/reporting/queryFactories/ticket-insights/tagsTicketCount')
-const tagsTicketCountDrillDownQueryFactoryMock = assumeMock(
-    tagsTicketCountDrillDownQueryFactory,
+const tagsTicketCountDrillDownByReferenceQueryFactoryMock = assumeMock(
+    tagsTicketCountDrillDownByReferenceQueryFactory,
 )
 const connectedCallsListQueryFactoryMock = assumeMock(
     connectedCallsListQueryFactory,
@@ -99,12 +102,13 @@ const liveDashboardVoiceCallListQueryFactoryMock = assumeMock(
 const campaignSalesDrillDownQueryFactoryMock = assumeMock(
     campaignSalesDrillDownQueryFactory,
 )
-const tagsTicketCountPerTicketDrillDownQueryFactoryMock = assumeMock(
-    tagsTicketCountDrillDownQueryFactory,
-)
 const customFieldsTicketCountPerTicketDrillDownQueryFactoryMock = assumeMock(
     customFieldsTicketCountPerTicketDrillDownQueryFactory,
 )
+const customFieldsTicketCountOnCreatedDatetimePerTicketDrillDownQueryFactoryMock =
+    assumeMock(
+        customFieldsTicketCountOnCreatedDatetimePerTicketDrillDownQueryFactory,
+    )
 const liveDashboardWaitingTimeCallsListQueryFactoryMock = assumeMock(
     liveDashboardWaitingTimeCallsListQueryFactory,
 )
@@ -240,6 +244,7 @@ describe('getDrillDownQuery', () => {
             metricName: TicketFieldsMetric.TicketCustomFieldsTicketCount,
             customFieldId: 123,
             customFieldValue: ['some::customField'],
+            ticketTimeReference: TicketTimeReference.TaggedAt,
         },
         { metricName: OverviewMetric.OpenTickets },
         { metricName: OverviewMetric.TicketsClosed },
@@ -256,7 +261,11 @@ describe('getDrillDownQuery', () => {
         { metricName: OverviewMetric.ZeroTouchTickets },
         { metricName: OverviewMetric.TicketHandleTime },
         { metricName: OverviewMetric.TicketHandleTime },
-        { metricName: TagsMetric.TicketCount, tagId: 'TAG_ID' },
+        {
+            metricName: TagsMetric.TicketCount,
+            tagId: 'TAG_ID',
+            ticketTimeReference: TicketTimeReference.TaggedAt,
+        },
     ]
     const slaMetrics: SlaMetrics[] = [
         {
@@ -280,6 +289,7 @@ describe('getDrillDownQuery', () => {
     const tagsMetrics: TagsFieldsMetrics[] = [
         {
             metricName: TagsMetric.TicketCount,
+            ticketTimeReference: TicketTimeReference.TaggedAt,
             tagId: '123',
         },
     ]
@@ -457,16 +467,20 @@ describe('getDrillDownQuery', () => {
         const drillDownMetric: DrillDownMetric = {
             metricName: TagsMetric.TicketCount,
             tagId: '123',
+            ticketTimeReference: TicketTimeReference.TaggedAt,
         }
 
         getDrillDownQuery(drillDownMetric)(statsFilters, timezone)
 
-        expect(tagsTicketCountDrillDownQueryFactoryMock).toHaveBeenCalledWith(
+        expect(
+            tagsTicketCountDrillDownByReferenceQueryFactoryMock,
+        ).toHaveBeenCalledWith(
             statsFilters,
             timezone,
             drillDownMetric.tagId,
             statsFilters.period,
             undefined,
+            TicketTimeReference.TaggedAt,
         )
     })
 
@@ -486,18 +500,22 @@ describe('getDrillDownQuery', () => {
         const timezone = 'someTimeZone'
         const drillDownMetric: DrillDownMetric = {
             metricName: TagsMetric.TicketCount,
+            ticketTimeReference: TicketTimeReference.TaggedAt,
             tagId: '123',
             dateRange: dateRange,
         }
 
         getDrillDownQuery(drillDownMetric)(statsFilters, timezone)
 
-        expect(tagsTicketCountDrillDownQueryFactoryMock).toHaveBeenCalledWith(
+        expect(
+            tagsTicketCountDrillDownByReferenceQueryFactoryMock,
+        ).toHaveBeenCalledWith(
             statsFilters,
             timezone,
             drillDownMetric.tagId,
             dateRange,
             undefined,
+            TicketTimeReference.TaggedAt,
         )
     })
 
@@ -717,17 +735,19 @@ describe('getDrillDownQuery', () => {
         }
         getDrillDownQuery({
             metricName: TagsMetric.TicketCount,
+            ticketTimeReference: TicketTimeReference.TaggedAt,
             tagId: 'TAG_ID',
         })(statsFilters, timezone)
 
         expect(
-            tagsTicketCountPerTicketDrillDownQueryFactoryMock,
+            tagsTicketCountDrillDownByReferenceQueryFactoryMock,
         ).toHaveBeenCalledWith(
             statsFilters,
             timezone,
             tagsMetric.tagId,
             statsFilters.period,
             undefined,
+            TicketTimeReference.TaggedAt,
         )
     })
 
@@ -746,12 +766,45 @@ describe('getDrillDownQuery', () => {
             metricName: TicketFieldsMetric.TicketCustomFieldsTicketCount,
             customFieldId: 123,
             customFieldValue: ['customFieldValue'],
+            ticketTimeReference: TicketTimeReference.TaggedAt,
         }
 
         getDrillDownQuery(customFieldMetric)(statsFilters, timezone)
 
         expect(
             customFieldsTicketCountPerTicketDrillDownQueryFactoryMock,
+        ).toHaveBeenCalledWith(
+            statsFilters,
+            timezone,
+            String(customFieldMetric?.customFieldId),
+            customFieldMetric.customFieldValue,
+            statsFilters.period,
+            undefined,
+        )
+    })
+
+    it('should be populated with ticketTimeReference', () => {
+        const periodStart = moment()
+        const periodEnd = periodStart.add(7, 'days')
+        const statsFilters: StatsFilters = {
+            period: {
+                end_datetime: periodEnd.toISOString(),
+                start_datetime: periodStart.toISOString(),
+            },
+        }
+        const timezone = 'someTimeZone'
+
+        const customFieldMetric: TicketFieldsMetrics = {
+            metricName: TicketFieldsMetric.TicketCustomFieldsTicketCount,
+            customFieldId: 123,
+            customFieldValue: ['customFieldValue'],
+            ticketTimeReference: TicketTimeReference.CreatedAt,
+        }
+
+        getDrillDownQuery(customFieldMetric)(statsFilters, timezone)
+
+        expect(
+            customFieldsTicketCountOnCreatedDatetimePerTicketDrillDownQueryFactoryMock,
         ).toHaveBeenCalledWith(
             statsFilters,
             timezone,
@@ -825,6 +878,7 @@ describe('getDrillDownMetric', () => {
                 metricName: TicketFieldsMetric.TicketCustomFieldsTicketCount,
                 customFieldId: 123,
                 customFieldValue: ['customFieldValue'],
+                ticketTimeReference: TicketTimeReference.TaggedAt,
             },
             expectedValues: {
                 metricTitle: '',

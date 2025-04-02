@@ -1,6 +1,7 @@
 import { OrderDirection } from 'models/api/types'
 import {
     TicketDimension,
+    TicketMeasure,
     TicketMember,
 } from 'models/reporting/cubes/TicketCube'
 import {
@@ -10,6 +11,7 @@ import {
 } from 'models/reporting/cubes/TicketCustomFieldsCube'
 import {
     aiInsightsCustomerSatisfactionMetricDrillDownQueryFactory,
+    customFieldsTicketCountOnCreatedDatetimePerTicketDrillDownQueryFactory,
     customFieldsTicketCountOnCreatedDatetimeQueryFactory,
     customFieldsTicketCountOnCreatedDatetimeTimeSeriesQueryFactory,
     customFieldsTicketCountPerIntentLevelPerTicketDrillDownQueryFactory,
@@ -502,6 +504,72 @@ describe('customFieldsTicketCountQueryFactory', () => {
                     values: expect.arrayContaining(excludedCustomFields),
                 }),
             )
+        })
+    })
+
+    describe('customFieldsTicketCountOnCreatedDatetimePerTicketDrillDownQueryFactory', () => {
+        it('should build expected query', () => {
+            const actual =
+                customFieldsTicketCountOnCreatedDatetimePerTicketDrillDownQueryFactory(
+                    statsFilters,
+                    timezone,
+                    customFieldId,
+                    null,
+                    statsFilters.period,
+                )
+
+            const expected = {
+                measures: [],
+                dimensions: [TicketDimension.TicketId],
+                timezone,
+                segments: [],
+                limit: DRILLDOWN_QUERY_LIMIT,
+                order: [[TicketDimension.TicketId, OrderDirection.Asc]],
+                filters: [
+                    {
+                        member: TicketMember.IsTrashed,
+                        operator: ReportingFilterOperator.Equals,
+                        values: ['0'],
+                    },
+                    {
+                        member: TicketMember.IsSpam,
+                        operator: ReportingFilterOperator.Equals,
+                        values: ['0'],
+                    },
+                    {
+                        member: TicketMember.PeriodStart,
+                        operator: ReportingFilterOperator.AfterDate,
+                        values: [periodStart],
+                    },
+                    {
+                        member: TicketMember.PeriodEnd,
+                        operator: ReportingFilterOperator.BeforeDate,
+                        values: [periodEnd],
+                    },
+                    {
+                        member: TicketCustomFieldsMember.TicketCustomFieldsCustomFieldId,
+                        operator: ReportingFilterOperator.Equals,
+                        values: [customFieldId],
+                    },
+                    {
+                        member: TicketCustomFieldsMember.TicketCustomFieldsCustomFieldUpdatedDatetime,
+                        operator: ReportingFilterOperator.InDateRange,
+                        values: [periodStart, periodEnd],
+                    },
+                    {
+                        member: TicketMeasure.TicketCount,
+                        operator: ReportingFilterOperator.MeasureFilter,
+                        values: [],
+                    },
+                    {
+                        member: TicketMember.CreatedDatetime,
+                        operator: ReportingFilterOperator.InDateRange,
+                        values: [periodStart, periodEnd],
+                    },
+                ],
+            }
+
+            expect(actual).toEqual(expected)
         })
     })
 

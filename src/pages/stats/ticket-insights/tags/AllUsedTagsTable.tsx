@@ -1,4 +1,4 @@
-import React, { UIEventHandler, useEffect, useMemo, useState } from 'react'
+import { UIEventHandler, useEffect, useMemo, useState } from 'react'
 
 import classNames from 'classnames'
 import { fromJS } from 'immutable'
@@ -8,10 +8,14 @@ import { Tag } from '@gorgias/api-queries'
 import { useStatsFilters } from 'hooks/reporting/support-performance/useStatsFilters'
 import { calculateDecile } from 'hooks/reporting/ticket-insights/useCustomFieldsTicketCountPerCustomFields'
 import { useTicketCountPerTag } from 'hooks/reporting/ticket-insights/useTicketCountPerTag'
+import {
+    Entity,
+    useTicketTimeReference,
+} from 'hooks/reporting/ticket-insights/useTicketTimeReference'
 import { TimeSeriesDataItem } from 'hooks/reporting/useTimeSeries'
 import useMeasure from 'hooks/useMeasure'
 import { opposite, OrderDirection } from 'models/api/types'
-import { AggregationWindow } from 'models/stat/types'
+import { AggregationWindow, TicketTimeReference } from 'models/stat/types'
 import { NumberedPagination } from 'pages/common/components/Paginations'
 import BodyCell from 'pages/common/components/table/cells/BodyCell'
 import HeaderCellProperty from 'pages/common/components/table/cells/HeaderCellProperty'
@@ -67,6 +71,8 @@ export const AllUsedTagsTable = ({
         order,
         setOrdering,
     } = useTicketCountPerTag()
+
+    const [tagTicketTimeReference] = useTicketTimeReference(Entity.Tag)
 
     useEffect(() => {
         setCurrentPage(1)
@@ -151,6 +157,9 @@ export const AllUsedTagsTable = ({
                                       valueMode={valueMode}
                                       grandTotal={grandTotal}
                                       columnTotals={columnTotals}
+                                      ticketTimeReference={
+                                          tagTicketTimeReference
+                                      }
                                   />
                               ))}
                     </TableBody>
@@ -188,6 +197,7 @@ const TableRow = ({
     valueMode,
     grandTotal,
     columnTotals,
+    ticketTimeReference,
 }: {
     tagId: string
     tag?: Tag
@@ -199,6 +209,7 @@ const TableRow = ({
     valueMode: ValueMode
     grandTotal: number
     columnTotals: number[]
+    ticketTimeReference: TicketTimeReference
 }) => {
     return (
         <TableBodyRow>
@@ -232,6 +243,7 @@ const TableRow = ({
                         title: getTagName({ name: tag?.name, id: tagId }),
                         tagId: tagId,
                         metricName: TagsMetric.TicketCount,
+                        ticketTimeReference,
                     }}
                 >
                     {format(valueMode)(
@@ -271,6 +283,7 @@ const TableRow = ({
                                 data.dateTime,
                                 granularity,
                             ),
+                            ticketTimeReference,
                         }}
                     >
                         {format(valueMode)(

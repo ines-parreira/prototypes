@@ -2,6 +2,10 @@ import classNames from 'classnames'
 
 import { useStatsFilters } from 'hooks/reporting/support-performance/useStatsFilters'
 import {
+    Entity,
+    useTicketTimeReference,
+} from 'hooks/reporting/ticket-insights/useTicketTimeReference'
+import {
     BREAKDOWN_FIELD,
     TicketCustomFieldsTicketCountTimeSeriesDataWithPercentageAndDecile,
     VALUE_FIELD,
@@ -73,6 +77,10 @@ export const CustomFieldsTicketCountDataRowContent = (props: DataRowProps) => {
     const label = props[breakdownField]
     const value = props[valueField] ?? 0
 
+    const [ticketFieldsTicketTimeReference] = useTicketTimeReference(
+        Entity.TicketField,
+    )
+
     const valueMode = useAppSelector(getValueMode)
     const isHeatmapMode = useAppSelector(getHeatmapMode) && level === 0
     const hasChildren = Array.isArray(children) && children.length > 0
@@ -136,6 +144,7 @@ export const CustomFieldsTicketCountDataRowContent = (props: DataRowProps) => {
                             TicketFieldsMetric.TicketCustomFieldsTicketCount,
                         customFieldId: selectedCustomField?.id || null,
                         customFieldValue: initialCustomFieldValue,
+                        ticketTimeReference: ticketFieldsTicketTimeReference,
                     }}
                 >
                     {formatAccordingToValueMode(valueMode)({
@@ -186,6 +195,8 @@ export const CustomFieldsTicketCountDataRowContent = (props: DataRowProps) => {
                                 data.dateTime,
                                 granularity,
                             ),
+                            ticketTimeReference:
+                                ticketFieldsTicketTimeReference,
                         }}
                     >
                         {formatAccordingToValueMode(valueMode)(data)}

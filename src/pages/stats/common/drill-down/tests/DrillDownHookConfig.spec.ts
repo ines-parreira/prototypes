@@ -4,6 +4,7 @@ import {
     useEnrichedDrillDownData,
 } from 'hooks/reporting/useDrillDownData'
 import { EnrichmentFields } from 'models/reporting/types'
+import { TicketTimeReference } from 'models/stat/types'
 import { LogicalOperatorEnum } from 'pages/stats/common/components/Filter/constants'
 import {
     formatConvertCampaignSalesDrillDownRowData,
@@ -93,6 +94,7 @@ describe('getDrillDownHook', () => {
             metricName: TicketFieldsMetric.TicketCustomFieldsTicketCount,
             customFieldId: 123,
             customFieldValue: ['some::customField'],
+            ticketTimeReference: TicketTimeReference.TaggedAt,
         },
         { metricName: OverviewMetric.OpenTickets },
         { metricName: OverviewMetric.TicketsClosed },

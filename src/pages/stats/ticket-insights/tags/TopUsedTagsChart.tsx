@@ -1,6 +1,10 @@
 import { Skeleton } from '@gorgias/merchant-ui-kit'
 
 import { useTagsDistribution } from 'hooks/reporting/support-performance/useTagsDistribution'
+import {
+    Entity,
+    useTicketTimeReference,
+} from 'hooks/reporting/ticket-insights/useTicketTimeReference'
 import { useWidthBasedOnScreen } from 'hooks/useWidthBasedOnScreen'
 import BodyCell from 'pages/common/components/table/cells/BodyCell'
 import TableBody from 'pages/common/components/table/TableBody'
@@ -33,6 +37,8 @@ export const TopUsedTagsChart = ({
     dashboard,
 }: DashboardChartProps) => {
     const { isFetching, data } = useTagsDistribution()
+
+    const [tagTicketTimeReference] = useTicketTimeReference(Entity.Tag)
 
     const getWidth = useWidthBasedOnScreen()
 
@@ -134,6 +140,8 @@ export const TopUsedTagsChart = ({
                                                     metricName:
                                                         TagsMetric.TicketCount,
                                                     tagId: item.category,
+                                                    ticketTimeReference:
+                                                        tagTicketTimeReference,
                                                 }}
                                             >
                                                 {formatMetricValue(

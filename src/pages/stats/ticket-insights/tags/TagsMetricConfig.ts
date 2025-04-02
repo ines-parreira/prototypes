@@ -1,4 +1,4 @@
-import { tagsTicketCountDrillDownQueryFactory } from 'models/reporting/queryFactories/ticket-insights/tagsTicketCount'
+import { tagsTicketCountDrillDownByReferenceQueryFactory } from 'models/reporting/queryFactories/ticket-insights/tagsTicketCount'
 import { Domain } from 'pages/stats/common/drill-down/types'
 import { TooltipData } from 'pages/stats/types'
 import { TagsMetric } from 'state/ui/stats/types'
@@ -43,12 +43,12 @@ export const TagsMetricConfig: Record<
     {
         showMetric: boolean
         domain: Domain.Ticket
-        drillDownQuery: typeof tagsTicketCountDrillDownQueryFactory
+        drillDownQuery: typeof tagsTicketCountDrillDownByReferenceQueryFactory
     }
 > = {
     [TagsMetric.TicketCount]: {
         showMetric: false,
         domain: Domain.Ticket,
-        drillDownQuery: tagsTicketCountDrillDownQueryFactory, // TODO
+        drillDownQuery: tagsTicketCountDrillDownByReferenceQueryFactory, // TODO
     },
 }

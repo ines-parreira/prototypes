@@ -2,11 +2,12 @@ import { OrderDirection } from 'models/api/types'
 import {
     aiInsightsCustomerSatisfactionMetricDrillDownQueryFactory,
     coverageRateTicketDrillDownQueryFactory,
+    customFieldsTicketCountOnCreatedDatetimePerTicketDrillDownQueryFactory,
     customFieldsTicketCountPerIntentLevelPerTicketDrillDownQueryFactory,
     customFieldsTicketCountPerTicketDrillDownQueryFactory,
 } from 'models/reporting/queryFactories/ticket-insights/customFieldsTicketCount'
 import { withDefaultLogicalOperator } from 'models/reporting/queryFactories/utils'
-import { FilterKey, StatsFilters } from 'models/stat/types'
+import { FilterKey, StatsFilters, TicketTimeReference } from 'models/stat/types'
 import { AiInsightsMetricConfig } from 'pages/stats/automate/AiInsightsMetricConfig'
 import {
     DomainsConfig,
@@ -165,14 +166,20 @@ export const getDrillDownQuery = (
                     metricName.tagId,
                     metricName.dateRange || statsFilters.period,
                     sorting,
+                    metricName.ticketTimeReference,
                 )
-        case TicketFieldsMetric.TicketCustomFieldsTicketCount:
+        case TicketFieldsMetric.TicketCustomFieldsTicketCount: {
+            const queryFactory =
+                metricName.ticketTimeReference === TicketTimeReference.TaggedAt
+                    ? customFieldsTicketCountPerTicketDrillDownQueryFactory
+                    : customFieldsTicketCountOnCreatedDatetimePerTicketDrillDownQueryFactory
+
             return (
                 statsFilters: StatsFilters,
                 timezone: string,
                 sorting?: OrderDirection,
             ) =>
-                customFieldsTicketCountPerTicketDrillDownQueryFactory(
+                queryFactory(
                     statsFilters,
                     timezone,
                     String(metricName.customFieldId),
@@ -180,6 +187,7 @@ export const getDrillDownQuery = (
                     metricName.dateRange || statsFilters.period,
                     sorting,
                 )
+        }
         case AIInsightsMetric.TicketCustomFieldsTicketCount:
             return (
                 statsFilters: StatsFilters,

@@ -9,7 +9,9 @@ import {
 } from 'models/reporting/cubes/TicketTagsEnrichedCube'
 import { coverageRateTicketDrillDownQueryFactory } from 'models/reporting/queryFactories/ticket-insights/customFieldsTicketCount'
 import {
+    tagsTicketCountDrillDownByReferenceQueryFactory,
     tagsTicketCountDrillDownQueryFactory,
+    tagsTicketCountOnCreatedDatetimeDrillDownQueryFactory,
     tagsTicketCountOnCreatedDatetimeQueryFactory,
     tagsTicketCountQueryFactory,
     tagsTicketCountTimeSeriesFactory,
@@ -21,7 +23,11 @@ import {
     ReportingFilterOperator,
     ReportingGranularity,
 } from 'models/reporting/types'
-import { StatsFilters, TagFilterInstanceId } from 'models/stat/types'
+import {
+    StatsFilters,
+    TagFilterInstanceId,
+    TicketTimeReference,
+} from 'models/stat/types'
 import { LogicalOperatorEnum } from 'pages/stats/common/components/Filter/constants'
 import {
     DRILLDOWN_QUERY_LIMIT,
@@ -321,6 +327,195 @@ describe('tagsTicketCount query factories', () => {
                 ],
                 limit: DRILLDOWN_QUERY_LIMIT,
             })
+        })
+    })
+
+    describe('tagsTicketCountOnCreatedDatetimeDrillDownQueryFactory', () => {
+        it('should build a query', () => {
+            const actual =
+                tagsTicketCountOnCreatedDatetimeDrillDownQueryFactory(
+                    statsFilters,
+                    timezone,
+                    tagId,
+                    statsFilters.period,
+                    sorting,
+                )
+
+            const expected = {
+                measures: [TicketTagsEnrichedMeasure.TicketCount],
+                dimensions: [TicketDimension.TicketId],
+                timezone,
+                segments: [],
+                order: [[TicketTagsEnrichedMeasure.TicketCount, sorting]],
+                limit: DRILLDOWN_QUERY_LIMIT,
+                filters: [
+                    {
+                        member: TicketMember.IsTrashed,
+                        operator: ReportingFilterOperator.Equals,
+                        values: ['0'],
+                    },
+                    {
+                        member: TicketMember.IsSpam,
+                        operator: ReportingFilterOperator.Equals,
+                        values: ['0'],
+                    },
+                    {
+                        member: TicketMember.PeriodStart,
+                        operator: ReportingFilterOperator.AfterDate,
+                        values: [periodStart],
+                    },
+                    {
+                        member: TicketMember.PeriodEnd,
+                        operator: ReportingFilterOperator.BeforeDate,
+                        values: [periodEnd],
+                    },
+                    {
+                        member: TicketTagsEnrichedDimension.TagId,
+                        operator: ReportingFilterOperator.Equals,
+                        values: [tagId],
+                    },
+                    {
+                        member: TicketTagsEnrichedDimension.Timestamp,
+                        operator: ReportingFilterOperator.InDateRange,
+                        values: [periodStart, periodEnd],
+                    },
+                    {
+                        member: TicketMember.CreatedDatetime,
+                        operator: ReportingFilterOperator.InDateRange,
+                        values: [periodStart, periodEnd],
+                    },
+                ],
+            }
+
+            expect(actual).toEqual(expected)
+        })
+    })
+
+    describe('tagsTicketCountDrillDownByReferenceQueryFactory', () => {
+        it('should build a query when ticketTimeReference is TicketTimeReference.TaggedAt', () => {
+            const actual = tagsTicketCountDrillDownByReferenceQueryFactory(
+                statsFilters,
+                timezone,
+                tagId,
+                statsFilters.period,
+                sorting,
+                TicketTimeReference.TaggedAt,
+            )
+
+            const withoutTicketTimeReference =
+                tagsTicketCountDrillDownByReferenceQueryFactory(
+                    statsFilters,
+                    timezone,
+                    tagId,
+                    statsFilters.period,
+                    sorting,
+                )
+
+            const expected = {
+                measures: [TicketTagsEnrichedMeasure.TicketCount],
+                dimensions: [TicketDimension.TicketId],
+                timezone,
+                segments: [],
+                order: [[TicketTagsEnrichedMeasure.TicketCount, sorting]],
+                filters: [
+                    {
+                        member: TicketMember.IsTrashed,
+                        operator: ReportingFilterOperator.Equals,
+                        values: ['0'],
+                    },
+                    {
+                        member: TicketMember.IsSpam,
+                        operator: ReportingFilterOperator.Equals,
+                        values: ['0'],
+                    },
+                    {
+                        member: TicketMember.PeriodStart,
+                        operator: ReportingFilterOperator.AfterDate,
+                        values: [periodStart],
+                    },
+                    {
+                        member: TicketMember.PeriodEnd,
+                        operator: ReportingFilterOperator.BeforeDate,
+                        values: [periodEnd],
+                    },
+                    {
+                        member: TicketTagsEnrichedDimension.TagId,
+                        operator: ReportingFilterOperator.Equals,
+                        values: [tagId],
+                    },
+                    {
+                        member: TicketTagsEnrichedDimension.Timestamp,
+                        operator: ReportingFilterOperator.InDateRange,
+                        values: [
+                            statsFilters.period.start_datetime,
+                            statsFilters.period.end_datetime,
+                        ],
+                    },
+                ],
+                limit: DRILLDOWN_QUERY_LIMIT,
+            }
+
+            expect(withoutTicketTimeReference).toEqual(actual)
+            expect(actual).toEqual(expected)
+        })
+
+        it('should build a query when ticketTimeReference is TicketTimeReference.CreatedAt', () => {
+            const actual = tagsTicketCountDrillDownByReferenceQueryFactory(
+                statsFilters,
+                timezone,
+                tagId,
+                statsFilters.period,
+                sorting,
+                TicketTimeReference.CreatedAt,
+            )
+
+            const expected = {
+                measures: [TicketTagsEnrichedMeasure.TicketCount],
+                dimensions: [TicketDimension.TicketId],
+                timezone,
+                segments: [],
+                order: [[TicketTagsEnrichedMeasure.TicketCount, sorting]],
+                limit: DRILLDOWN_QUERY_LIMIT,
+                filters: [
+                    {
+                        member: TicketMember.IsTrashed,
+                        operator: ReportingFilterOperator.Equals,
+                        values: ['0'],
+                    },
+                    {
+                        member: TicketMember.IsSpam,
+                        operator: ReportingFilterOperator.Equals,
+                        values: ['0'],
+                    },
+                    {
+                        member: TicketMember.PeriodStart,
+                        operator: ReportingFilterOperator.AfterDate,
+                        values: [periodStart],
+                    },
+                    {
+                        member: TicketMember.PeriodEnd,
+                        operator: ReportingFilterOperator.BeforeDate,
+                        values: [periodEnd],
+                    },
+                    {
+                        member: TicketTagsEnrichedDimension.TagId,
+                        operator: ReportingFilterOperator.Equals,
+                        values: [tagId],
+                    },
+                    {
+                        member: TicketTagsEnrichedDimension.Timestamp,
+                        operator: ReportingFilterOperator.InDateRange,
+                        values: [periodStart, periodEnd],
+                    },
+                    {
+                        member: TicketMember.CreatedDatetime,
+                        operator: ReportingFilterOperator.InDateRange,
+                        values: [periodStart, periodEnd],
+                    },
+                ],
+            }
+
+            expect(actual).toEqual(expected)
         })
     })
 

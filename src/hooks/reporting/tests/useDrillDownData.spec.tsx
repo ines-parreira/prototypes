@@ -35,6 +35,7 @@ import {
     ReportingFilterOperator,
     ReportingGranularity,
 } from 'models/reporting/types'
+import { TicketTimeReference } from 'models/stat/types'
 import { LogicalOperatorEnum } from 'pages/stats/common/components/Filter/constants'
 import {
     formatConvertCampaignSalesDrillDownRowData,
@@ -278,6 +279,7 @@ describe('DrillDownData hooks', () => {
                     start_datetime,
                     end_datetime,
                 },
+                ticketTimeReference: TicketTimeReference.TaggedAt,
             }
             const enrichmentIdField = EnrichmentFields.TicketId
 
@@ -320,6 +322,7 @@ describe('DrillDownData hooks', () => {
                 metricName: TicketFieldsMetric.TicketCustomFieldsTicketCount,
                 customFieldId: 123,
                 customFieldValue: [],
+                ticketTimeReference: TicketTimeReference.TaggedAt,
             }
             const enrichmentIdField = EnrichmentFields.TicketId
 

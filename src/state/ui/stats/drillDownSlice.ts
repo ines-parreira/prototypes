@@ -11,6 +11,7 @@ import {
     JobContext,
     JobType,
 } from 'models/job/types'
+import { TicketTimeReference } from 'models/stat/types'
 import { LogicalOperatorEnum } from 'pages/stats/common/components/Filter/constants'
 import { AutoQAAgentsTableColumn } from 'pages/stats/support-performance/auto-qa/AutoQAAgentsTableConfig'
 import { OverviewMetric } from 'pages/stats/support-performance/overview/SupportPerformanceOverviewConfig'
@@ -115,6 +116,7 @@ export type ChannelsMetrics = {
 
 export type TicketFieldsMetrics = {
     metricName: TicketFieldsMetric.TicketCustomFieldsTicketCount
+    ticketTimeReference: TicketTimeReference
     customFieldId: number | null
     customFieldValue: string[] | null
     dateRange?: {
@@ -140,6 +142,7 @@ export type AIInsightsMetrics = {
 
 export type TagsFieldsMetrics = {
     metricName: TagsMetric.TicketCount
+    ticketTimeReference: TicketTimeReference
     tagId: string
     dateRange?: {
         end_datetime: string

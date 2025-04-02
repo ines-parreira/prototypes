@@ -15,7 +15,7 @@ import {
     ReportingQuery,
     TimeSeriesQuery,
 } from 'models/reporting/types'
-import { StatsFilters } from 'models/stat/types'
+import { StatsFilters, TicketTimeReference } from 'models/stat/types'
 import {
     DRILLDOWN_QUERY_LIMIT,
     formatReportingQueryDate,
@@ -183,3 +183,41 @@ export const tagsTicketCountDrillDownQueryFactory = (
     ],
     limit: DRILLDOWN_QUERY_LIMIT,
 })
+
+export const tagsTicketCountOnCreatedDatetimeDrillDownQueryFactory = (
+    filters: StatsFilters,
+    timezone: string,
+    tagId: string,
+    dateRange: StatsFilters['period'],
+    sorting?: OrderDirection,
+): ReportingQuery<TicketCubeWithJoins> => {
+    const { filters: baseQueryFilters, ...baseQuery } =
+        tagsTicketCountDrillDownQueryFactory(
+            filters,
+            timezone,
+            tagId,
+            dateRange,
+            sorting,
+        )
+
+    return {
+        ...baseQuery,
+        filters: [...baseQueryFilters, createdTicketFilter(filters)],
+    }
+}
+
+export const tagsTicketCountDrillDownByReferenceQueryFactory = (
+    filters: StatsFilters,
+    timezone: string,
+    tagId: string,
+    dateRange: StatsFilters['period'],
+    sorting?: OrderDirection,
+    ticketTimeReference: TicketTimeReference = TicketTimeReference.TaggedAt,
+) => {
+    const queryFactory =
+        ticketTimeReference === TicketTimeReference.TaggedAt
+            ? tagsTicketCountDrillDownQueryFactory
+            : tagsTicketCountOnCreatedDatetimeDrillDownQueryFactory
+
+    return queryFactory(filters, timezone, tagId, dateRange, sorting)
+}

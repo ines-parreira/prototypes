@@ -217,6 +217,31 @@ export const customFieldsTicketCountPerTicketDrillDownQueryFactory = (
     }
 }
 
+export const customFieldsTicketCountOnCreatedDatetimePerTicketDrillDownQueryFactory =
+    (
+        filters: StatsFilters,
+        timezone: string,
+        customFieldId: string,
+        customFieldsValueStrings: string[] | null,
+        customFieldPeriod: StatsFilters['period'],
+        sorting?: OrderDirection,
+    ): ReportingQuery<HelpdeskMessageCubeWithJoins> => {
+        const { filters: baseQueryFilters, ...baseQuery } =
+            customFieldsTicketCountPerTicketDrillDownQueryFactory(
+                filters,
+                timezone,
+                customFieldId,
+                customFieldsValueStrings,
+                customFieldPeriod,
+                sorting,
+            )
+
+        return {
+            ...baseQuery,
+            filters: [...baseQueryFilters, createdTicketFilter(filters)],
+        }
+    }
+
 export const customFieldsTicketCountPerIntentLevelPerTicketDrillDownQueryFactory =
     (
         filters: StatsFilters,
