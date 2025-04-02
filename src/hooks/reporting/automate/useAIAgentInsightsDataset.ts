@@ -1,5 +1,6 @@
 import { useMemo } from 'react'
 
+import { useGetTicketChannelsStoreIntegrations } from 'hooks/integrations/useGetTicketChannelsStoreIntegrations'
 import {
     calculateAiAgentKnowledgeResourcePerIntent,
     enrichWithAutomationOpportunity,
@@ -10,7 +11,7 @@ import {
 import { MetricTrend } from 'hooks/reporting/useMetricTrend'
 import { useMultipleMetricsTrends } from 'hooks/reporting/useMultipleMetricsTrend'
 import { OrderDirection } from 'models/api/types'
-import { AutomationDatasetMeasure } from 'models/reporting/cubes/automate_v2/AutomationDatasetCube'
+import { AutomatedTicketsMeasure } from 'models/reporting/cubes/automate_v2/AutomatedTicketsCube'
 import {
     TicketDimension,
     TicketMeasure,
@@ -28,7 +29,6 @@ import {
     aiAgentTouchedTicketTotalCountQueryFactory,
     allTicketsForAiAgentTotalCountQueryFactory,
 } from 'models/reporting/queryFactories/ai-agent-insights/metrics'
-import { aiAgentAutomatedInteractionsQueryFactory } from 'models/reporting/queryFactories/automate_v2/metrics'
 import { customerSatisfactionForAIAgentTicketsQueryFactory } from 'models/reporting/queryFactories/support-performance/customerSatisfaction'
 import { ReportingFilterOperator } from 'models/reporting/types'
 import { FilterKey, StatsFilters } from 'models/stat/types'
@@ -41,6 +41,7 @@ import { LogicalOperatorEnum } from 'pages/stats/common/components/Filter/consta
 import { getPreviousPeriod } from 'utils/reporting'
 
 import {
+    useAiAgentAutomatedTicketsCountTrends,
     useAIAgentResourcePerTicket,
     useAiAgentTicketCountPerIntent,
     useAiAgentTickets,
@@ -59,11 +60,14 @@ import { useAIAgentUserId } from './useAIAgentUserId'
 export const useAIAgentMetrics = (
     filters: StatsFilters,
     timezone: string,
+    shopName: string,
 ): Record<any, MetricTrend> => {
     const { intentCustomFieldId, outcomeCustomFieldId } =
         useGetCustomTicketsFieldsDefinitionData()
 
     const aiAgentUserId = useAIAgentUserId()
+
+    const integrationIds = useGetTicketChannelsStoreIntegrations(shopName)
 
     const statsFiltersWithAiAgent = useMemo(
         () => ({
@@ -80,19 +84,14 @@ export const useAIAgentMetrics = (
         [aiAgentUserId, filters],
     )
 
-    const aiAgentAutomatedInteractionsData = useMultipleMetricsTrends(
-        aiAgentAutomatedInteractionsQueryFactory(
-            statsFiltersWithAiAgent,
+    const aiAgentAutomatedInteractionsData =
+        useAiAgentAutomatedTicketsCountTrends({
+            filters,
             timezone,
-        ),
-        aiAgentAutomatedInteractionsQueryFactory(
-            {
-                ...statsFiltersWithAiAgent,
-                period: getPreviousPeriod(filters.period),
-            },
-            timezone,
-        ),
-    )
+            outcomeFieldId: outcomeCustomFieldId,
+            intentFieldId: intentCustomFieldId,
+            integrationIds,
+        })
 
     const aiAgentTicketsData = useMultipleMetricsTrends(
         aiAgentTouchedTicketTotalCountQueryFactory({
@@ -100,12 +99,14 @@ export const useAIAgentMetrics = (
             timezone,
             outcomeFieldId: outcomeCustomFieldId,
             intentFieldId: intentCustomFieldId,
+            integrationIds,
         }),
         aiAgentTouchedTicketTotalCountQueryFactory({
             filters: { ...filters, period: getPreviousPeriod(filters.period) },
             timezone,
             outcomeFieldId: outcomeCustomFieldId,
             intentFieldId: intentCustomFieldId,
+            integrationIds,
         }),
     )
 
@@ -115,12 +116,14 @@ export const useAIAgentMetrics = (
             timezone,
             intentFieldId: intentCustomFieldId,
             outcomeFieldId: outcomeCustomFieldId,
+            integrationIds,
         }),
         allTicketsForAiAgentTotalCountQueryFactory({
             filters: { ...filters, period: getPreviousPeriod(filters.period) },
             timezone,
             intentFieldId: intentCustomFieldId,
             outcomeFieldId: outcomeCustomFieldId,
+            integrationIds,
         }),
     )
 
@@ -131,6 +134,7 @@ export const useAIAgentMetrics = (
             outcomeFieldId: outcomeCustomFieldId,
             intentFieldId: intentCustomFieldId,
             aiAgentUserId: aiAgentUserId,
+            integrationIds,
         }),
         customerSatisfactionForAIAgentTicketsQueryFactory({
             filters: {
@@ -141,6 +145,7 @@ export const useAIAgentMetrics = (
             outcomeFieldId: outcomeCustomFieldId,
             intentFieldId: intentCustomFieldId,
             aiAgentUserId: aiAgentUserId,
+            integrationIds,
         }),
     )
 
@@ -148,7 +153,7 @@ export const useAIAgentMetrics = (
 
     const aiAgentAutomatedInteractions =
         aiAgentAutomatedInteractionsData.data?.[
-            AutomationDatasetMeasure.AutomatedInteractions
+            AutomatedTicketsMeasure.NumAutomatedTickets
         ]
 
     const aiAgentCustomerSatisfaction =
@@ -197,12 +202,19 @@ export const useAIAgentMetrics = (
 }
 
 // AUTOMATION OPPORTUNITY: #tickets not automated by AI AGENT per intent / #AI Agent Tickets
-export const useAutomationOpportunityPerIntent = (
-    filters: StatsFilters,
-    timezone: string,
-    sorting?: OrderDirection,
-    intentId?: string,
-) => {
+export const useAutomationOpportunityPerIntent = ({
+    filters,
+    timezone,
+    sorting,
+    intentId,
+    integrationIds,
+}: {
+    filters: StatsFilters
+    timezone: string
+    sorting?: OrderDirection
+    intentId?: string
+    integrationIds?: string[]
+}) => {
     const { intentCustomFieldId, outcomeCustomFieldId } =
         useGetCustomTicketsFieldsDefinitionData()
 
@@ -212,17 +224,19 @@ export const useAutomationOpportunityPerIntent = (
         intentCustomFieldId,
         outcomeCustomFieldId,
         sorting,
+        integrationIds,
     )
 
-    const aiAgentNotAutomatedTicketsData = useAiAgentTickets(
+    const aiAgentNotAutomatedTicketsData = useAiAgentTickets({
         filters,
         timezone,
-        outcomeCustomFieldId,
-        intentCustomFieldId,
-        ReportingFilterOperator.Contains,
-        CUSTOM_FIELD_AI_AGENT_HANDOVER,
+        outcomeFieldId: outcomeCustomFieldId,
+        intentFieldId: intentCustomFieldId,
+        operator: ReportingFilterOperator.Contains,
+        customFieldFilter: CUSTOM_FIELD_AI_AGENT_HANDOVER,
         sorting,
-    )
+        integrationIds,
+    })
 
     const ticketIds = aiAgentNotAutomatedTicketsData.data?.allData
         .map((item) => item[TicketDimension.TicketId])
@@ -280,16 +294,18 @@ export const useAIAgentTicketsPerIntent = (
     timezone: string,
     sorting?: OrderDirection,
     intentId?: string,
+    integrationIds?: string[],
 ) => {
     const { intentCustomFieldId, outcomeCustomFieldId } =
         useGetCustomTicketsFieldsDefinitionData()
 
-    const aiAgentTicketsData = useAiAgentTickets(
+    const aiAgentTicketsData = useAiAgentTickets({
         filters,
         timezone,
-        outcomeCustomFieldId,
-        intentCustomFieldId,
-    )
+        outcomeFieldId: outcomeCustomFieldId,
+        intentFieldId: intentCustomFieldId,
+        integrationIds,
+    })
 
     const ticketIds = aiAgentTicketsData.data?.allData
         .map((item) => item[TicketDimension.TicketId])
@@ -299,7 +315,7 @@ export const useAIAgentTicketsPerIntent = (
         filters,
         timezone,
         intentFieldId: intentCustomFieldId,
-        ticketIds,
+        ticketIds: ticketIds,
         sorting,
         intentId,
     })
@@ -313,25 +329,28 @@ export const useSuccessRatePerIntent = (
     timezone: string,
     sorting?: OrderDirection,
     intentId?: string,
+    integrationIds?: string[],
 ) => {
     const { intentCustomFieldId, outcomeCustomFieldId } =
         useGetCustomTicketsFieldsDefinitionData()
 
-    const aiAgentAutomatedTicketsData = useAiAgentTickets(
+    const aiAgentAutomatedTicketsData = useAiAgentTickets({
         filters,
         timezone,
-        outcomeCustomFieldId,
-        intentCustomFieldId,
-        ReportingFilterOperator.NotContains,
-        CUSTOM_FIELD_AI_AGENT_HANDOVER,
+        outcomeFieldId: outcomeCustomFieldId,
+        intentFieldId: intentCustomFieldId,
+        operator: ReportingFilterOperator.NotContains,
+        customFieldFilter: CUSTOM_FIELD_AI_AGENT_HANDOVER,
         sorting,
-    )
+        integrationIds,
+    })
 
     const ticketsPerIntent = useAIAgentTicketsPerIntent(
         filters,
         timezone,
         sorting,
         intentId,
+        integrationIds,
     )
 
     const automatedTicketIds = useMemo(() => {
@@ -392,16 +411,18 @@ export const useAiAgentKnowledgeResourcePerIntent = (
     timezone: string,
     sorting?: OrderDirection,
     intentId?: string,
+    integrationIds?: string[],
 ) => {
     const { intentCustomFieldId, outcomeCustomFieldId } =
         useGetCustomTicketsFieldsDefinitionData()
 
-    const aiAgentNotAutomatedTicketsData = useAiAgentTickets(
+    const aiAgentNotAutomatedTicketsData = useAiAgentTickets({
         filters,
         timezone,
-        outcomeCustomFieldId,
-        intentCustomFieldId,
-    )
+        outcomeFieldId: outcomeCustomFieldId,
+        intentFieldId: intentCustomFieldId,
+        integrationIds,
+    })
 
     const aiAgentTicketIds = aiAgentNotAutomatedTicketsData.data?.allData
         .map((item) => item[TicketDimension.TicketId])
@@ -466,6 +487,7 @@ export const useCustomerSatisfactionPerIntent = (
     timezone: string,
     sorting?: OrderDirection,
     intentId?: string,
+    integrationIds?: string[],
 ) => {
     const { intentCustomFieldId, outcomeCustomFieldId } =
         useGetCustomTicketsFieldsDefinitionData()
@@ -479,6 +501,7 @@ export const useCustomerSatisfactionPerIntent = (
         aiAgentUserId,
         intentCustomFieldId,
         outcomeCustomFieldId,
+        integrationIds,
     )
 
     let ticketIds = null
@@ -570,15 +593,17 @@ const useFetchAllIntentsMetrics = (
     sorting?: OrderDirection,
     intentId?: string,
     intentLevel?: number,
+    integrationIds?: string[],
 ) => {
     const INTENT_LEVEL = intentLevel || 2
     // Fetch all metrics for all intents
-    const automationOpportunityPerIntent = useAutomationOpportunityPerIntent(
+    const automationOpportunityPerIntent = useAutomationOpportunityPerIntent({
         filters,
         timezone,
         sorting,
         intentId,
-    )
+        integrationIds,
+    })
 
     const automationOpportunityPerIntentLevel = filterMetricDataByIntentLevel({
         metricData: automationOpportunityPerIntent.data,
@@ -595,6 +620,7 @@ const useFetchAllIntentsMetrics = (
         timezone,
         sorting,
         intentId,
+        integrationIds,
     )
     const ticketsPerIntentLevel = filterMetricDataByIntentLevel({
         metricData: ticketsPerIntent?.data?.allData || [],
@@ -610,6 +636,7 @@ const useFetchAllIntentsMetrics = (
         timezone,
         sorting,
         intentId,
+        integrationIds,
     )
     const successRatePerIntentLevel = filterMetricDataByIntentLevel({
         metricData: successRatePerIntent.data,
@@ -626,6 +653,7 @@ const useFetchAllIntentsMetrics = (
         timezone,
         sorting,
         intentId,
+        integrationIds,
     )
 
     const customerSatisfactionPerIntentLevel = filterMetricDataByIntentLevel({
@@ -644,6 +672,7 @@ const useFetchAllIntentsMetrics = (
             timezone,
             sorting,
             intentId,
+            integrationIds,
         )
 
     const aiAgentKnowledgeResourcePerIntentPerIntentLevel =
@@ -697,10 +726,12 @@ export const convertResultToTableArrayFormat = (
 export const useAIAgentInsightsDataset = (
     filters: StatsFilters,
     timezone: string,
+    shopName: string,
     sorting?: OrderDirection,
     intentId?: string,
     intentLevel?: number,
 ) => {
+    const integrationIds = useGetTicketChannelsStoreIntegrations(shopName)
     const {
         automationOpportunityPerIntent,
         ticketsPerIntent,
@@ -713,6 +744,7 @@ export const useAIAgentInsightsDataset = (
         sorting,
         intentId,
         intentLevel,
+        integrationIds,
     )
     const results: Record<string, IntentMetrics> = {}
     const metrics = [

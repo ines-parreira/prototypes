@@ -1,5 +1,10 @@
 import { OrderDirection } from 'models/api/types'
 import {
+    AutomatedTicketsCube,
+    AutomatedTicketsFilterMember,
+    AutomatedTicketsMeasure,
+} from 'models/reporting/cubes/automate_v2/AutomatedTicketsCube'
+import {
     RecommendedResourcesCube,
     RecommendedResourcesDimension,
     RecommendedResourcesFilterMember,
@@ -50,6 +55,7 @@ export const customerSatisfactionPerIntentLevelQueryFactory = ({
     assigneeUserId,
     intentFieldId,
     outcomeFieldId,
+    integrationIds,
 }: {
     filters: StatsFilters
     timezone: string
@@ -57,6 +63,7 @@ export const customerSatisfactionPerIntentLevelQueryFactory = ({
     assigneeUserId?: string
     intentFieldId?: number
     outcomeFieldId?: number
+    integrationIds?: string[]
 }): ReportingQuery<HelpdeskMessageCubeWithJoins> => {
     const customFiledFilters = []
     if (assigneeUserId) {
@@ -94,6 +101,7 @@ export const customerSatisfactionPerIntentLevelQueryFactory = ({
                 filters,
                 intentFieldId: intentFieldId,
                 outcomeFieldId: outcomeFieldId,
+                integrationIds,
             }),
         ],
         ...(sorting
@@ -194,6 +202,7 @@ export const aiAgentTouchedTicketTotalCountQueryFactory = ({
     intentFieldId,
     customFieldFilter = '',
     sorting,
+    integrationIds,
 }: {
     filters: StatsFilters
     timezone: string
@@ -201,6 +210,7 @@ export const aiAgentTouchedTicketTotalCountQueryFactory = ({
     intentFieldId: number
     customFieldFilter?: string
     sorting?: OrderDirection
+    integrationIds?: string[]
 }): ReportingQuery<TicketCubeWithJoins> => {
     const customFieldsValuesToMatch = [
         ...addFieldIdToCustomFieldValues(outcomeFieldId, [customFieldFilter]),
@@ -233,6 +243,7 @@ export const aiAgentTouchedTicketTotalCountQueryFactory = ({
                 filters,
                 intentFieldId,
                 outcomeFieldId,
+                integrationIds,
             }),
         ],
         ...(sorting
@@ -249,12 +260,14 @@ export const allTicketsForAiAgentTotalCountQueryFactory = ({
     intentFieldId,
     outcomeFieldId,
     sorting,
+    integrationIds,
 }: {
     filters: StatsFilters
     timezone: string
     intentFieldId: number
     outcomeFieldId: number
     sorting?: OrderDirection
+    integrationIds?: string[]
 }): ReportingQuery<HelpdeskMessageCubeWithJoins> => {
     return {
         measures: [TicketMeasure.TicketCount],
@@ -276,6 +289,7 @@ export const allTicketsForAiAgentTotalCountQueryFactory = ({
                 filters,
                 intentFieldId,
                 outcomeFieldId,
+                integrationIds,
             }),
         ],
         ...(sorting
@@ -294,6 +308,7 @@ export const aiAgentTouchedTicketQueryFactory = ({
     operator = ReportingFilterOperator.Contains,
     customFieldFilter = '',
     sorting,
+    integrationIds,
 }: {
     filters: StatsFilters
     timezone: string
@@ -302,6 +317,7 @@ export const aiAgentTouchedTicketQueryFactory = ({
     operator?: ReportingFilterOperator
     customFieldFilter?: string
     sorting?: OrderDirection
+    integrationIds?: string[]
 }): ReportingQuery<TicketCubeWithJoins> => {
     const outcomeValuesToInclude =
         operator === ReportingFilterOperator.Contains
@@ -345,6 +361,7 @@ export const aiAgentTouchedTicketQueryFactory = ({
                 intentFieldId,
                 outcomeFieldId,
                 outcomeValuesToExclude,
+                integrationIds,
             }),
         ],
         ...(sorting
@@ -354,3 +371,86 @@ export const aiAgentTouchedTicketQueryFactory = ({
             : {}),
     }
 }
+
+export const AiAgentAutomatedInteractionsTicketsQueryFactory = ({
+    filters,
+    timezone,
+    outcomeFieldId,
+    intentFieldId,
+
+    sorting,
+    integrationIds,
+}: {
+    filters: StatsFilters
+    timezone: string
+    outcomeFieldId?: number
+    intentFieldId?: number
+    sorting?: OrderDirection
+    integrationIds?: string[]
+}): ReportingQuery<TicketCubeWithJoins> => {
+    const customFieldsValuesToMatch = [`${outcomeFieldId}::`]
+
+    return {
+        measures: [],
+        dimensions: [TicketDimension.TicketId],
+        timezone,
+        segments: [],
+        filters: [
+            ...NotSpamNorTrashedTicketsFilter,
+            ...statsFiltersToReportingFilters(
+                TicketStatsFiltersMembers,
+                filters,
+            ),
+            {
+                member: TicketMember.TotalCustomFieldIdsToMatch,
+                operator: ReportingFilterOperator.Equals,
+                values: [
+                    String(countUniquePrefixes(customFieldsValuesToMatch)),
+                ],
+            },
+            {
+                member: TicketMember.CustomField,
+                operator: ReportingFilterOperator.StartsWith,
+                values: customFieldsValuesToMatch,
+            },
+            ...aiAgentTicketsDefaultFilters({
+                filters,
+                intentFieldId,
+                outcomeFieldId,
+                integrationIds,
+                ignoreOutcomeFieldId: true,
+            }),
+        ],
+        ...(sorting
+            ? {
+                  order: [[TicketMeasure.TicketCount, sorting]],
+              }
+            : {}),
+    }
+}
+
+export const aiAgentAutomatedTicketCountQueryFactory = ({
+    timezone,
+    ticketIds,
+    sorting,
+}: {
+    timezone: string
+    ticketIds?: string[]
+    sorting?: OrderDirection
+}): ReportingQuery<AutomatedTicketsCube> => ({
+    measures: [AutomatedTicketsMeasure.NumAutomatedTickets],
+    dimensions: [],
+    timezone,
+    filters: [
+        {
+            member: AutomatedTicketsFilterMember.TicketId,
+            operator: ReportingFilterOperator.Equals,
+            values: ticketIds && ticketIds.length > 0 ? ticketIds : ['0'],
+        },
+    ],
+    ...(sorting
+        ? {
+              order: [[AutomatedTicketsMeasure.NumAutomatedTickets, sorting]],
+          }
+        : {}),
+})

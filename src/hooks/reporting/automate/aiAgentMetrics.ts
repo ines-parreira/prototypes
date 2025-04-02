@@ -5,6 +5,8 @@ import {
     TicketCustomFieldsMember,
 } from 'models/reporting/cubes/TicketCustomFieldsCube'
 import {
+    AiAgentAutomatedInteractionsTicketsQueryFactory,
+    aiAgentAutomatedTicketCountQueryFactory,
     aiAgentTicketsWithIntentQueryFactory,
     aiAgentTouchedTicketQueryFactory,
     aiAgentTouchedTicketTotalCountQueryFactory,
@@ -14,10 +16,14 @@ import {
 import { aiAgentTicketsPerIntentCountQueryFactory } from 'models/reporting/queryFactories/ticket-insights/customFieldsTicketCount'
 import { ReportingFilterOperator } from 'models/reporting/types'
 import { StatsFilters } from 'models/stat/types'
-import { NotSpamNorTrashedTicketsFilter } from 'utils/reporting'
+import {
+    getPreviousPeriod,
+    NotSpamNorTrashedTicketsFilter,
+} from 'utils/reporting'
 
 import { useMetric } from '../useMetric'
 import { useMetricPerDimension } from '../useMetricPerDimension'
+import { useMultipleMetricsTrends } from '../useMultipleMetricsTrend'
 import {
     CUSTOM_FIELD_AI_AGENT_CLOSE,
     CUSTOM_FIELD_AI_AGENT_HANDOVER,
@@ -29,6 +35,7 @@ export const useTotalAiAgentTicketsByCustomField = (
     intentFieldId: number,
     outcomeFieldId: number,
     sorting?: OrderDirection,
+    integrationIds?: string[],
 ) =>
     useMetric(
         aiAgentTouchedTicketTotalCountQueryFactory({
@@ -37,20 +44,31 @@ export const useTotalAiAgentTicketsByCustomField = (
             intentFieldId,
             outcomeFieldId,
             sorting,
+            integrationIds,
         }),
     )
 
-export const useAiAgentTickets = (
-    filters: StatsFilters,
-    timezone: string,
-    outcomeFieldId: number,
-    intentFieldId?: number,
-    operator: ReportingFilterOperator = ReportingFilterOperator.Contains,
+export const useAiAgentTickets = ({
+    filters,
+    timezone,
+    outcomeFieldId,
+    intentFieldId,
+    operator = ReportingFilterOperator.Contains,
+    customFieldFilter,
+    sorting,
+    integrationIds,
+}: {
+    filters: StatsFilters
+    timezone: string
+    outcomeFieldId: number
+    intentFieldId?: number
+    operator?: ReportingFilterOperator
     customFieldFilter?:
         | typeof CUSTOM_FIELD_AI_AGENT_HANDOVER
-        | typeof CUSTOM_FIELD_AI_AGENT_CLOSE,
-    sorting?: OrderDirection,
-) =>
+        | typeof CUSTOM_FIELD_AI_AGENT_CLOSE
+    sorting?: OrderDirection
+    integrationIds?: string[]
+}) =>
     useMetricPerDimension(
         aiAgentTouchedTicketQueryFactory({
             filters,
@@ -60,6 +78,33 @@ export const useAiAgentTickets = (
             operator,
             customFieldFilter,
             sorting,
+            integrationIds,
+        }),
+    )
+
+export const useAiAgentAutomatedInteractionsTickets = ({
+    filters,
+    timezone,
+    outcomeFieldId,
+    intentFieldId,
+    sorting,
+    integrationIds,
+}: {
+    filters: StatsFilters
+    timezone: string
+    outcomeFieldId: number
+    intentFieldId?: number
+    sorting?: OrderDirection
+    integrationIds?: string[]
+}) =>
+    useMetricPerDimension(
+        AiAgentAutomatedInteractionsTicketsQueryFactory({
+            filters,
+            timezone,
+            outcomeFieldId,
+            intentFieldId,
+            sorting,
+            integrationIds,
         }),
     )
 
@@ -97,6 +142,7 @@ export const useCustomerSatisfactionMetricPerIntentLevel = (
     assigneeUserId?: string,
     intentCustomFieldId?: number,
     outcomeCustomFieldId?: number,
+    integrationIds?: string[],
 ) => {
     return useMetricPerDimension(
         customerSatisfactionPerIntentLevelQueryFactory({
@@ -106,6 +152,7 @@ export const useCustomerSatisfactionMetricPerIntentLevel = (
             assigneeUserId,
             intentFieldId: intentCustomFieldId,
             outcomeFieldId: outcomeCustomFieldId,
+            integrationIds,
         }),
     )
 }
@@ -188,5 +235,60 @@ export const useAIAgentResourcePerTicket = (
         recommendedResourceQueryFactory(filters, timezone, ticketIds, sorting),
         undefined,
         enabled,
+    )
+}
+
+export const useAiAgentAutomatedTicketsCountTrends = ({
+    filters,
+    timezone,
+    outcomeFieldId,
+    intentFieldId,
+    integrationIds,
+    sorting,
+}: {
+    filters: StatsFilters
+    timezone: string
+    outcomeFieldId: number
+    intentFieldId?: number
+    integrationIds?: string[]
+    sorting?: OrderDirection
+}) => {
+    const aiAgentTicketsData = useAiAgentAutomatedInteractionsTickets({
+        filters,
+        timezone,
+        outcomeFieldId: outcomeFieldId,
+        intentFieldId: intentFieldId,
+        integrationIds,
+    })
+    const prevAiAgentTicketsData = useAiAgentAutomatedInteractionsTickets({
+        filters: {
+            ...filters,
+            period: getPreviousPeriod(filters.period),
+        },
+        timezone,
+        outcomeFieldId: outcomeFieldId,
+        intentFieldId: intentFieldId,
+        integrationIds,
+    })
+
+    const ticketIds = aiAgentTicketsData.data?.allData
+        .map((item) => item[TicketDimension.TicketId])
+        .filter((id): id is string => typeof id === 'string')
+
+    const prevTicketIds = prevAiAgentTicketsData.data?.allData
+        .map((item) => item[TicketDimension.TicketId])
+        .filter((id): id is string => typeof id === 'string')
+
+    return useMultipleMetricsTrends(
+        aiAgentAutomatedTicketCountQueryFactory({
+            timezone,
+            ticketIds,
+            sorting,
+        }),
+        aiAgentAutomatedTicketCountQueryFactory({
+            timezone,
+            ticketIds: prevTicketIds,
+            sorting,
+        }),
     )
 }

@@ -1,3 +1,4 @@
+import { useGetTicketChannelsStoreIntegrations } from 'hooks/integrations/useGetTicketChannelsStoreIntegrations'
 import {
     useAIAgentTicketsPerIntent,
     useAutomationOpportunityPerIntent,
@@ -26,19 +27,22 @@ export const useAutomatedOpportunityForIntentTrendMetric = ({
     sorting,
     intentId,
     intentLevel,
+    integrationIds,
 }: {
     filters: StatsFilters
     timezone: string
     sorting?: OrderDirection
     intentId: string
     intentLevel: number
+    integrationIds?: string[]
 }) => {
-    const automationOpportunityPerIntent = useAutomationOpportunityPerIntent(
+    const automationOpportunityPerIntent = useAutomationOpportunityPerIntent({
         filters,
         timezone,
         sorting,
         intentId,
-    )
+        integrationIds,
+    })
     const automationOpportunityPerIntentLevelData =
         filterMetricDataByIntentLevel({
             metricData: automationOpportunityPerIntent.data,
@@ -51,15 +55,16 @@ export const useAutomatedOpportunityForIntentTrendMetric = ({
         })
 
     const prevAutomationOpportunityPerIntent =
-        useAutomationOpportunityPerIntent(
-            {
+        useAutomationOpportunityPerIntent({
+            filters: {
                 ...filters,
                 period: getPreviousPeriod(filters.period),
             },
             timezone,
             sorting,
             intentId,
-        )
+            integrationIds,
+        })
     const prevAutomationOpportunityPerIntentLevelData =
         filterMetricDataByIntentLevel({
             metricData: automationOpportunityPerIntent.data || [],
@@ -98,18 +103,21 @@ export const useAIAgentTicketsForIntentTrendMetric = ({
     sorting,
     intentId,
     intentLevel,
+    integrationIds,
 }: {
     filters: StatsFilters
     timezone: string
     sorting?: OrderDirection
     intentId?: string
     intentLevel: number
+    integrationIds?: string[]
 }) => {
     const ticketsPerIntent = useAIAgentTicketsPerIntent(
         filters,
         timezone,
         sorting,
         intentId,
+        integrationIds,
     )
     const ticketsByLevelData = filterMetricDataByIntentLevel({
         metricData: ticketsPerIntent.data?.allData || [],
@@ -128,6 +136,7 @@ export const useAIAgentTicketsForIntentTrendMetric = ({
         timezone,
         sorting,
         intentId,
+        integrationIds,
     )
 
     const prevTicketsByLevelData = filterMetricDataByIntentLevel({
@@ -156,18 +165,21 @@ export const useSuccessRateForIntentTrendMetric = ({
     sorting,
     intentId,
     intentLevel,
+    integrationIds,
 }: {
     filters: StatsFilters
     timezone: string
     sorting?: OrderDirection
     intentId: string
     intentLevel: number
+    integrationIds?: string[]
 }) => {
     const successRatePerIntent = useSuccessRatePerIntent(
         filters,
         timezone,
         sorting,
         intentId,
+        integrationIds,
     )
     const successRatePerIntentPerIntentLevelData =
         filterMetricDataByIntentLevel({
@@ -188,6 +200,7 @@ export const useSuccessRateForIntentTrendMetric = ({
         timezone,
         sorting,
         intentId,
+        integrationIds,
     )
     const prevSuccessRatePerIntentPerIntentLevelData =
         filterMetricDataByIntentLevel({
@@ -225,18 +238,21 @@ export const useCustomerSatisfactionForIntentTrendMetric = ({
     sorting,
     intentId,
     intentLevel,
+    integrationIds,
 }: {
     filters: StatsFilters
     timezone: string
     sorting?: OrderDirection
     intentId: string
     intentLevel: number
+    integrationIds?: string[]
 }) => {
     const customerSatisfactionPerIntent = useCustomerSatisfactionPerIntent(
         filters,
         timezone,
         sorting,
         intentId,
+        integrationIds,
     )
     let customerSatisfactionPerIntentPerIntentLevel
     if (customerSatisfactionPerIntent.data) {
@@ -261,6 +277,7 @@ export const useCustomerSatisfactionForIntentTrendMetric = ({
         timezone,
         sorting,
         intentId,
+        integrationIds,
     )
     let prevCustomerSatisfactionPerIntentPerIntentLevel
     if (prevCustomerSatisfactionPerIntent.data) {
@@ -304,13 +321,17 @@ export const useInsightPerformanceMetrics = ({
     sorting,
     intentId,
     intentLevel,
+    shopName,
 }: {
     filters: StatsFilters
     timezone: string
     sorting?: OrderDirection
     intentId: string
     intentLevel: number
+    shopName: string
 }) => {
+    const integrationIds = useGetTicketChannelsStoreIntegrations(shopName)
+
     // Automation Opportunity
     const automationOpportunityPerIntent =
         useAutomatedOpportunityForIntentTrendMetric({
@@ -319,6 +340,7 @@ export const useInsightPerformanceMetrics = ({
             sorting,
             intentId,
             intentLevel,
+            integrationIds,
         })
 
     // Tickets
@@ -328,6 +350,7 @@ export const useInsightPerformanceMetrics = ({
         sorting,
         intentId,
         intentLevel,
+        integrationIds,
     })
 
     // Success Rate
@@ -337,6 +360,7 @@ export const useInsightPerformanceMetrics = ({
         sorting,
         intentId,
         intentLevel,
+        integrationIds,
     })
 
     // Customer Satisfaction
@@ -347,6 +371,7 @@ export const useInsightPerformanceMetrics = ({
             sorting,
             intentId,
             intentLevel,
+            integrationIds,
         })
 
     return {

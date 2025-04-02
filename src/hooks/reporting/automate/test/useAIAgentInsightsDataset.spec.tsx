@@ -11,6 +11,7 @@ import {
     totalTicketsMetric,
 } from 'fixtures/aiAgentInsights'
 import { ticketFieldDefinitions } from 'fixtures/customField'
+import { useGetTicketChannelsStoreIntegrations } from 'hooks/integrations/useGetTicketChannelsStoreIntegrations'
 import {
     BREAKDOWN_FIELD,
     CUSTOM_FIELD_COUNT,
@@ -54,12 +55,16 @@ jest.mock('hooks/reporting/useMultipleMetricsTrend')
 
 jest.mock('hooks/reporting/automate/useAIAgentUserId')
 jest.mock('custom-fields/hooks/queries/useCustomFieldDefinitions')
+jest.mock('hooks/integrations/useGetTicketChannelsStoreIntegrations')
 
 const useCustomFieldDefinitionsMock = assumeMock(useCustomFieldDefinitions)
 const useAIAgentUserIdMock = assumeMock(useAIAgentUserId)
 const useMultipleMetricsTrendsMock = assumeMock(useMultipleMetricsTrends)
 const useMetricMock = assumeMock(useMetric)
 const useMetricPerDimensionMock = assumeMock(useMetricPerDimension)
+const getTicketChannelsStoreIntegrationsMock = assumeMock(
+    useGetTicketChannelsStoreIntegrations,
+)
 
 const statsFilters: StatsFilters = {
     period: {
@@ -72,6 +77,8 @@ const statsFilters: StatsFilters = {
     },
 }
 
+const shopName = 'test-shop'
+
 describe('useAiAgentInsightsDataset', () => {
     beforeEach(() => {
         useCustomFieldDefinitionsMock.mockReturnValue({
@@ -80,23 +87,32 @@ describe('useAiAgentInsightsDataset', () => {
         } as any)
 
         useAIAgentUserIdMock.mockReturnValue('2')
+        getTicketChannelsStoreIntegrationsMock.mockReturnValue(['1'])
     })
 
     describe('useAiAgentMetrics', () => {
         it('should calculate ai agent insights correctly', () => {
+            useMetricPerDimensionMock.mockReturnValue({
+                // aiAgentTickets
+                data: {
+                    value: 5,
+                    allData: [
+                        { [TicketDimension.TicketId]: '1' },
+                        { [TicketDimension.TicketId]: '2' },
+                        { [TicketDimension.TicketId]: '3' },
+                    ],
+                },
+                isFetching: false,
+                isError: false,
+            } as any)
             useMultipleMetricsTrendsMock
                 .mockReturnValueOnce({
                     // aiAgentAutomatedInteractionsData
                     data: {
-                        'AutomationDataset.automatedInteractions': {
+                        'AutomatedTickets.count': {
                             value: 1000,
                             prevValue: 0,
                         },
-                        'AutomationDataset.automatedInteractionsByAutoResponders':
-                            {
-                                value: 1000,
-                                prevValue: 0,
-                            },
                     },
                     isFetched: true,
                 } as any)
@@ -133,7 +149,7 @@ describe('useAiAgentInsightsDataset', () => {
 
             jest.spyOn(queryClient, 'invalidateQueries')
             const { result } = renderHook(
-                () => useAIAgentMetrics(statsFilters, timezone),
+                () => useAIAgentMetrics(statsFilters, timezone, shopName),
                 {
                     wrapper: ({ children }) => (
                         <QueryClientProvider client={queryClient}>
@@ -188,7 +204,11 @@ describe('useAiAgentInsightsDataset', () => {
 
             jest.spyOn(queryClient, 'invalidateQueries')
             const { result } = renderHook(
-                () => useAutomationOpportunityPerIntent(statsFilters, timezone),
+                () =>
+                    useAutomationOpportunityPerIntent({
+                        filters: statsFilters,
+                        timezone,
+                    }),
                 {
                     wrapper: ({ children }) => (
                         <QueryClientProvider client={queryClient}>
@@ -251,7 +271,11 @@ describe('useAiAgentInsightsDataset', () => {
 
             jest.spyOn(queryClient, 'invalidateQueries')
             const { result } = renderHook(
-                () => useAutomationOpportunityPerIntent(statsFilters, timezone),
+                () =>
+                    useAutomationOpportunityPerIntent({
+                        filters: statsFilters,
+                        timezone,
+                    }),
                 {
                     wrapper: ({ children }) => (
                         <QueryClientProvider client={queryClient}>

@@ -128,6 +128,7 @@ export function useIntentSortingQuery(
     useQuery: (
         filters: StatsFilters,
         timezone: string,
+        shopName: string,
         sorting?: OrderDirection,
         intentId?: string,
         intentLevel?: number,
@@ -135,6 +136,7 @@ export function useIntentSortingQuery(
         data: any
         isFetching: boolean
     },
+    shopName: string,
     intentId?: string,
     intentLevel?: number,
 ) {
@@ -146,6 +148,7 @@ export function useIntentSortingQuery(
     const queryData = useQuery(
         cleanStatsFilters,
         userTimezone,
+        shopName,
         sorting?.direction,
         intentId,
         intentLevel,
@@ -155,6 +158,7 @@ export function useIntentSortingQuery(
 
     const prevIntentId = usePrevious(intentId)
     const prevIntentLevel = usePrevious(intentLevel)
+    const prevShopName = usePrevious(shopName)
 
     const prevStartDatetime = usePrevious(
         cleanStatsFilters?.period?.start_datetime,
@@ -184,7 +188,8 @@ export function useIntentSortingQuery(
             prevIntentId !== intentId ||
             prevIntentLevel !== intentLevel ||
             prevStartDatetime !== cleanStatsFilters?.period?.start_datetime ||
-            prevEndDatetime !== cleanStatsFilters?.period?.end_datetime
+            prevEndDatetime !== cleanStatsFilters?.period?.end_datetime ||
+            prevShopName !== shopName
         ) {
             !isFetching && dispatch(sortingLoaded(data))
         }
@@ -200,6 +205,8 @@ export function useIntentSortingQuery(
         cleanStatsFilters?.period?.start_datetime,
         cleanStatsFilters?.period?.end_datetime,
         prevEndDatetime,
+        prevShopName,
+        shopName,
     ])
 
     return {

@@ -1,8 +1,10 @@
 import { renderHook } from '@testing-library/react-hooks'
 import moment from 'moment'
+import { useParams } from 'react-router-dom'
 
 import { useCustomFieldDefinitions } from 'custom-fields/hooks/queries/useCustomFieldDefinitions'
 import { ticketFieldDefinitions } from 'fixtures/customField'
+import { useGetTicketChannelsStoreIntegrations } from 'hooks/integrations/useGetTicketChannelsStoreIntegrations'
 import {
     EnrichedTicketCustomFieldsWithAutomationOpportunity,
     EnrichedTicketCustomFieldsWithSuccessRate,
@@ -40,6 +42,7 @@ jest.mock('custom-fields/hooks/queries/useCustomFieldDefinitions')
 jest.mock('hooks/reporting/automate/useAIAgentInsightsDataset')
 
 jest.mock('hooks/reporting/automate/utils')
+jest.mock('hooks/integrations/useGetTicketChannelsStoreIntegrations')
 
 const useCustomFieldDefinitionsMock = assumeMock(useCustomFieldDefinitions)
 const useAIAgentUserIdMock = assumeMock(useAIAgentUserId)
@@ -56,7 +59,14 @@ const useCustomerSatisfactionPerIntentMock = assumeMock(
 )
 
 const useSuccessRatePerIntentMock = assumeMock(useSuccessRatePerIntent)
+const getTicketChannelsStoreIntegrationsMock = assumeMock(
+    useGetTicketChannelsStoreIntegrations,
+)
 
+jest.mock('react-router-dom', () => ({
+    useParams: jest.fn(),
+}))
+const mockUseParams = assumeMock(useParams)
 const statsFilters: StatsFilters = {
     period: {
         start_datetime: moment()
@@ -88,6 +98,7 @@ const data = [
 const intentId = 'intentA::subIntentA'
 const sorting = OrderDirection.Desc
 const intentLevel = 2
+const shopName = 'test-shop'
 
 describe('useAiAgentInsightsL2Dataset', () => {
     beforeEach(() => {
@@ -97,6 +108,12 @@ describe('useAiAgentInsightsL2Dataset', () => {
         } as any)
 
         useAIAgentUserIdMock.mockReturnValue('2')
+        mockUseParams.mockReturnValue({
+            shopType: 'shopify',
+            shopName: shopName,
+        })
+
+        getTicketChannelsStoreIntegrationsMock.mockReturnValue(['1'])
     })
 
     it('should return automated opportunity trend metric for intent', () => {
@@ -339,6 +356,7 @@ describe('useAiAgentInsightsL2Dataset', () => {
                 sorting,
                 intentId,
                 intentLevel,
+                shopName,
             }),
         )
 

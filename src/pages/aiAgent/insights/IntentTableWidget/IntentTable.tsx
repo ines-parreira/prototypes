@@ -30,6 +30,7 @@ import {
 } from 'state/ui/stats/insightsSlice'
 import { AIInsightsMetric } from 'state/ui/stats/types'
 
+import { useGetTicketChannelsStoreIntegrations } from '../../../../hooks/integrations/useGetTicketChannelsStoreIntegrations'
 import { useGetCustomTicketsFieldsDefinitionData } from './hooks/useGetCustomTicketsFieldsDefinitionData'
 import {
     IntentAutomationOpportunitiesCellContent,
@@ -52,6 +53,7 @@ import intentTableCss from './IntentTable.less'
 
 const getSortingQuery = (
     column: IntentTableColumn,
+    shopName: string,
     intentId?: string,
     intentLevel?: number,
 ) => {
@@ -59,6 +61,7 @@ const getSortingQuery = (
         useIntentSortingQuery(
             column,
             useAIAgentInsightsDataset,
+            shopName,
             intentId,
             intentLevel,
         )
@@ -83,10 +86,13 @@ export const IntentTable = ({
     const { intentCustomFieldId, outcomeCustomFieldId } =
         useGetCustomTicketsFieldsDefinitionData()
 
-    const { intentId } = useParams<{
+    const { intentId, shopName } = useParams<{
         shopName: string
         intentId: string
     }>()
+
+    const integrationIds = useGetTicketChannelsStoreIntegrations(shopName)
+
     const onPageChangeCallback = (page: number) => {
         dispatch(pageSet(page))
     }
@@ -130,6 +136,7 @@ export const IntentTable = ({
                     intentFieldValues: [intent.id],
                     intentFieldId: intentCustomFieldId ?? null,
                     outcomeFieldId: outcomeCustomFieldId ?? null,
+                    integrationIds: integrationIds,
                     customFieldId: null,
                     customFieldValue: null,
                 }
@@ -142,6 +149,7 @@ export const IntentTable = ({
                     intentFieldId: intentCustomFieldId ?? null,
                     outcomeFieldId: outcomeCustomFieldId ?? null,
                     intentFieldValues: [intent.id],
+                    integrationIds: integrationIds,
                     customFieldId: null,
                     customFieldValue: null,
                 }
@@ -170,6 +178,7 @@ export const IntentTable = ({
                                 }
                                 useSortingQuery={getSortingQuery(
                                     column,
+                                    shopName,
                                     intentId,
                                     intentLevel,
                                 )}
@@ -265,7 +274,7 @@ export const IntentTableWithDefaultState = ({
     }
     intentLevel?: number
 }) => {
-    const { intentId } = useParams<{
+    const { intentId, shopName } = useParams<{
         shopName: string
         intentId: string
     }>()
@@ -273,6 +282,7 @@ export const IntentTableWithDefaultState = ({
     useIntentSortingQuery(
         IntentTableColumn.AutomationOpportunities,
         useAIAgentInsightsDataset,
+        shopName,
         intentId,
         intentLevel,
     )

@@ -250,6 +250,7 @@ export const customFieldsTicketCountPerIntentLevelPerTicketDrillDownQueryFactory
         intentFieldValues?: string[] | null,
         outcomeFieldId?: number,
         sorting?: OrderDirection,
+        integrationIds?: string[],
     ): ReportingQuery<HelpdeskMessageCubeWithJoins> => {
         const customFieldsValuesToMatch =
             intentFieldId && intentFieldValues
@@ -296,6 +297,7 @@ export const customFieldsTicketCountPerIntentLevelPerTicketDrillDownQueryFactory
                     filters,
                     intentFieldId,
                     outcomeFieldId,
+                    integrationIds,
                 }),
                 TicketDrillDownFilter,
             ],
@@ -311,6 +313,7 @@ export const coverageRateTicketDrillDownQueryFactory = (
     customFieldId: number,
     intentFieldId: number,
     sorting?: OrderDirection,
+    integrationIds?: string[],
 ): ReportingQuery<HelpdeskMessageCubeWithJoins> => {
     const baseQuery = aiAgentTouchedTicketTotalCountQueryFactory({
         filters,
@@ -318,6 +321,7 @@ export const coverageRateTicketDrillDownQueryFactory = (
         outcomeFieldId: customFieldId,
         intentFieldId: intentFieldId,
         sorting,
+        integrationIds,
     })
 
     const queryFilters = [
@@ -345,6 +349,7 @@ export const aiInsightsCustomerSatisfactionMetricDrillDownQueryFactory = (
     intentFieldId?: number,
     outcomeFieldId?: number,
     sorting?: OrderDirection,
+    integrationIds?: string[],
 ): ReportingQuery<HelpdeskMessageCubeWithJoins> => {
     const baseQuery = customerSatisfactionForAIAgentTicketsQueryFactory({
         filters,
@@ -353,6 +358,7 @@ export const aiInsightsCustomerSatisfactionMetricDrillDownQueryFactory = (
         intentFieldId: intentFieldId,
         outcomeFieldId: outcomeFieldId,
         aiAgentUserId: String(perAgentId),
+        integrationIds,
     })
 
     return {

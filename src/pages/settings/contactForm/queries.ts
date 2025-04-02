@@ -94,13 +94,14 @@ export const useGetContactFormList = <
         unknown,
         TData
     >,
+    perPage?: number,
 ) => {
     const { client } = useHelpCenterApi()
 
     return useInfiniteQuery({
         queryKey: contactFormKeys.lists(),
         queryFn: async ({ pageParam = 1 }) =>
-            getContactForms(client, { page: pageParam }),
+            getContactForms(client, { page: pageParam, per_page: perPage }),
         getNextPageParam: (lastPage) => {
             if (!lastPage) return 1
             if (lastPage.meta.page < lastPage.meta.nb_pages) {

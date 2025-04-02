@@ -1,5 +1,9 @@
 import { OrderDirection } from 'models/api/types'
 import {
+    AutomatedTicketsFilterMember,
+    AutomatedTicketsMeasure,
+} from 'models/reporting/cubes/automate_v2/AutomatedTicketsCube'
+import {
     RecommendedResourcesDimension,
     RecommendedResourcesFilterMember,
     RecommendedResourcesMeasure,
@@ -9,6 +13,7 @@ import {
     TicketMeasure,
     TicketMember,
 } from 'models/reporting/cubes/TicketCube'
+import { TicketMessagesMember } from 'models/reporting/cubes/TicketMessagesCube'
 import {
     TicketSatisfactionSurveyDimension,
     TicketSatisfactionSurveyMeasure,
@@ -16,6 +21,8 @@ import {
 } from 'models/reporting/cubes/TicketSatisfactionSurveyCube'
 import {
     AI_AGENT_TICKETS_CHANNELS,
+    AiAgentAutomatedInteractionsTicketsQueryFactory,
+    aiAgentAutomatedTicketCountQueryFactory,
     aiAgentTicketsWithIntentQueryFactory,
     aiAgentTouchedTicketTotalCountQueryFactory,
     allTicketsForAiAgentTotalCountQueryFactory,
@@ -26,6 +33,8 @@ import { ReportingFilterOperator } from 'models/reporting/types'
 import {
     formatReportingQueryDate,
     NotSpamNorTrashedTicketsFilter,
+    statsFiltersToReportingFilters,
+    TicketStatsFiltersMembers,
 } from 'utils/reporting'
 
 describe('AI Agent metrics', () => {
@@ -92,6 +101,11 @@ describe('AI Agent metrics', () => {
                     member: TicketMember.CustomField,
                     operator: ReportingFilterOperator.NotStartsWith,
                     values: ['2::Close::Without message'],
+                },
+                {
+                    member: TicketMessagesMember.IntegrationChannelPair,
+                    operator: ReportingFilterOperator.Equals,
+                    values: ['0'],
                 },
             ],
             measures: [
@@ -162,6 +176,11 @@ describe('AI Agent metrics', () => {
                     member: TicketMember.CustomField,
                     operator: ReportingFilterOperator.NotStartsWith,
                     values: ['2::Close::Without message'],
+                },
+                {
+                    member: TicketMessagesMember.IntegrationChannelPair,
+                    operator: ReportingFilterOperator.Equals,
+                    values: ['0'],
                 },
             ],
             order: [['TicketSatisfactionSurveyEnriched.avgSurveyScore', 'asc']],
@@ -336,6 +355,11 @@ describe('AI Agent metrics', () => {
                     operator: ReportingFilterOperator.NotStartsWith,
                     values: ['1::Close::Without message'],
                 },
+                {
+                    member: TicketMessagesMember.IntegrationChannelPair,
+                    operator: ReportingFilterOperator.Equals,
+                    values: ['0'],
+                },
             ],
             order: [[TicketMeasure.TicketCount, 'asc']],
         })
@@ -398,6 +422,138 @@ describe('AI Agent metrics', () => {
                     member: TicketMember.CustomField,
                     operator: ReportingFilterOperator.NotStartsWith,
                     values: ['1::Close::Without message'],
+                },
+                {
+                    member: TicketMessagesMember.IntegrationChannelPair,
+                    operator: ReportingFilterOperator.Equals,
+                    values: ['0'],
+                },
+            ],
+            order: [[TicketMeasure.TicketCount, 'asc']],
+        })
+    })
+
+    it('aiAgentAutomatedTicketCountQueryFactory without ticketIds', () => {
+        const result = aiAgentAutomatedTicketCountQueryFactory({
+            timezone: 'UTC',
+            ticketIds: [],
+            sorting: OrderDirection.Asc,
+        })
+        expect(result).toEqual({
+            measures: [AutomatedTicketsMeasure.NumAutomatedTickets],
+            dimensions: [],
+            timezone: 'UTC',
+            filters: [
+                {
+                    member: AutomatedTicketsFilterMember.TicketId,
+                    operator: ReportingFilterOperator.Equals,
+                    values: ['0'],
+                },
+            ],
+            order: [[AutomatedTicketsMeasure.NumAutomatedTickets, 'asc']],
+        })
+    })
+
+    it('aiAgentAutomatedTicketCountQueryFactory with ticketIds', () => {
+        const result = aiAgentAutomatedTicketCountQueryFactory({
+            timezone: 'UTC',
+            ticketIds: ['1', '2'],
+            sorting: OrderDirection.Desc,
+        })
+        expect(result).toEqual({
+            measures: [AutomatedTicketsMeasure.NumAutomatedTickets],
+            dimensions: [],
+            timezone: 'UTC',
+            filters: [
+                {
+                    member: AutomatedTicketsFilterMember.TicketId,
+                    operator: ReportingFilterOperator.Equals,
+                    values: ['1', '2'],
+                },
+            ],
+            order: [[AutomatedTicketsMeasure.NumAutomatedTickets, 'desc']],
+        })
+    })
+
+    it('aiAgentAutomatedTicketCountQueryFactory without sorting', () => {
+        const result = aiAgentAutomatedTicketCountQueryFactory({
+            timezone: 'UTC',
+            ticketIds: ['1', '2'],
+        })
+        expect(result).toEqual({
+            measures: [AutomatedTicketsMeasure.NumAutomatedTickets],
+            dimensions: [],
+            timezone: 'UTC',
+            filters: [
+                {
+                    member: AutomatedTicketsFilterMember.TicketId,
+                    operator: ReportingFilterOperator.Equals,
+                    values: ['1', '2'],
+                },
+            ],
+        })
+    })
+
+    it(' AiAgentAutomatedInteractionsTicketsQueryFactory query with the given filters, timezone, and sorting', () => {
+        const filters = {
+            period: {
+                start_datetime: '2021-01-01T00:00:00.000',
+                end_datetime: '2021-01-02T00:00:00.000',
+            },
+        }
+        const timezone = 'UTC'
+        const outcomeFieldId = 1
+        const intentFieldId = 2
+        const sorting = OrderDirection.Asc
+        const integrationIds = ['integration1', 'integration2']
+
+        const result = AiAgentAutomatedInteractionsTicketsQueryFactory({
+            filters,
+            timezone,
+            outcomeFieldId,
+            intentFieldId,
+            sorting,
+            integrationIds,
+        })
+
+        expect(result).toEqual({
+            measures: [],
+            dimensions: [TicketDimension.TicketId],
+            timezone: 'UTC',
+            segments: [],
+            filters: [
+                ...NotSpamNorTrashedTicketsFilter,
+                ...statsFiltersToReportingFilters(
+                    TicketStatsFiltersMembers,
+                    filters,
+                ),
+                {
+                    member: TicketMember.TotalCustomFieldIdsToMatch,
+                    operator: ReportingFilterOperator.Equals,
+                    values: ['1'],
+                },
+                {
+                    member: TicketMember.CustomField,
+                    operator: ReportingFilterOperator.StartsWith,
+                    values: ['1::'],
+                },
+                {
+                    member: TicketMember.CreatedDatetime,
+                    operator: ReportingFilterOperator.InDateRange,
+                    values: [
+                        '2021-01-01T00:00:00.000',
+                        '2021-01-02T00:00:00.000',
+                    ],
+                },
+                {
+                    member: TicketMember.CustomFieldToExclude,
+                    operator: ReportingFilterOperator.NotStartsWith,
+                    values: ['2::Other::No Reply'],
+                },
+                {
+                    member: TicketMessagesMember.IntegrationChannelPair,
+                    operator: ReportingFilterOperator.Equals,
+                    values: ['integration1', 'integration2'],
                 },
             ],
             order: [[TicketMeasure.TicketCount, 'asc']],

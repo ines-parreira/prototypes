@@ -16,6 +16,7 @@ export enum TicketMessagesDimension {
     MessagesCount = 'TicketMessagesEnriched.messagesCount',
     FirstResponseTime = 'TicketMessagesEnriched.firstResponseTime',
     ResolutionTime = 'TicketMessagesEnriched.resolutionTime',
+    IntegrationChannelPair = 'TicketMessagesEnriched.integrationChannelPair',
 }
 
 export enum TicketMessagesSegment {
@@ -31,6 +32,7 @@ export enum TicketMessagesMember {
     SentDatetime = 'TicketMessagesEnriched.sentDatetime',
     FirstHelpdeskMessageUserId = 'TicketMessagesEnriched.firstHelpdeskMessageUserId',
     SenderId = 'TicketMessagesEnriched.senderId',
+    IntegrationChannelPair = 'TicketMessagesEnriched.integrationChannelPair',
 }
 
 export type TicketMessagesCube = Cube<

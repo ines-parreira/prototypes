@@ -1,6 +1,7 @@
 import { renderHook } from '@testing-library/react-hooks'
 import { useParams } from 'react-router-dom'
 
+import { useGetTicketChannelsStoreIntegrations } from 'hooks/integrations/useGetTicketChannelsStoreIntegrations'
 import { useInsightPerformanceMetrics } from 'hooks/reporting/automate/useAIAgentInsightsL2Dataset'
 import { useAutomateFilters } from 'hooks/reporting/automate/useAutomateFilters'
 import useAppSelector from 'hooks/useAppSelector'
@@ -24,6 +25,10 @@ jest.mock(
 )
 jest.mock('state/stats/selectors')
 jest.mock('hooks/reporting/automate/useAIAgentUserId')
+jest.mock('hooks/integrations/useGetTicketChannelsStoreIntegrations')
+const useGetTicketChannelsStoreIntegrationsMock = assumeMock(
+    useGetTicketChannelsStoreIntegrations,
+)
 
 describe('Level2IntentsPerformance', () => {
     const mockUseParams = assumeMock(useParams)
@@ -87,6 +92,8 @@ describe('Level2IntentsPerformance', () => {
                 end_datetime: '2021-01-31',
             },
         })
+
+        useGetTicketChannelsStoreIntegrationsMock.mockReturnValue(['1'])
     })
 
     it('renders correctly with valid data', () => {

@@ -1,5 +1,6 @@
 import { useParams } from 'react-router-dom'
 
+import { useGetTicketChannelsStoreIntegrations } from 'hooks/integrations/useGetTicketChannelsStoreIntegrations'
 import { useAIAgentMetrics } from 'hooks/reporting/automate/useAIAgentInsightsDataset'
 import { useAIAgentUserId } from 'hooks/reporting/automate/useAIAgentUserId'
 import { useAutomateFilters } from 'hooks/reporting/automate/useAutomateFilters'
@@ -33,7 +34,13 @@ export const Level1IntentsPerformance = () => {
     }>()
 
     const { userTimezone } = useAutomateFilters()
-    const aiAgentMetrics = useAIAgentMetrics(pageStatsFilters, userTimezone)
+    const aiAgentMetrics = useAIAgentMetrics(
+        pageStatsFilters,
+        userTimezone,
+        shopName,
+    )
+
+    const integrationIds = useGetTicketChannelsStoreIntegrations(shopName)
 
     const aiAgentUserId = useAIAgentUserId()
     const { intentCustomFieldId, outcomeCustomFieldId } =
@@ -72,6 +79,7 @@ export const Level1IntentsPerformance = () => {
                     drillDownMetricAdditionalData: {
                         intentFieldId: intentCustomFieldId,
                         outcomeFieldId: outcomeCustomFieldId,
+                        integrationIds: integrationIds,
                     },
                 },
                 {
@@ -155,6 +163,7 @@ export const Level1IntentsPerformance = () => {
                         perAgentId: aiAgentUserId,
                         intentFieldId: intentCustomFieldId,
                         outcomeFieldId: outcomeCustomFieldId,
+                        integrationIds: integrationIds,
                         customFieldId: null,
                         customFieldValue: null,
                     },

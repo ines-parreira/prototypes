@@ -2,6 +2,7 @@ import { AutomationDatasetFilterMember } from 'models/reporting/cubes/automate_v
 import { BillableTicketDatasetFilterMember } from 'models/reporting/cubes/automate_v2/BillableTicketDatasetCube'
 import { RecommendedResourcesFilterMember } from 'models/reporting/cubes/automate_v2/RecommendedResourcesCube'
 import { TicketMember } from 'models/reporting/cubes/TicketCube'
+import { TicketMessagesMember } from 'models/reporting/cubes/TicketMessagesCube'
 import {
     AI_INTENT_TO_EXCLUDE,
     AI_OUTCOME_TO_EXCLUDE,
@@ -64,15 +65,19 @@ export const aiAgentTicketsDefaultFilters = ({
     outcomeFieldId,
     intentFieldId,
     outcomeValuesToExclude,
+    integrationIds,
+    ignoreOutcomeFieldId,
 }: {
     filters: StatsFilters
     outcomeFieldId?: number
     intentFieldId?: number
     outcomeValuesToExclude?: string[]
+    integrationIds?: string[]
+    ignoreOutcomeFieldId?: boolean
 }) => {
-    const allOutcomeValuesToExclude = [
-        `${outcomeFieldId}::${AI_OUTCOME_TO_EXCLUDE}`,
-    ]
+    const allOutcomeValuesToExclude = ignoreOutcomeFieldId
+        ? []
+        : [`${outcomeFieldId}::${AI_OUTCOME_TO_EXCLUDE}`]
     if (outcomeValuesToExclude && outcomeValuesToExclude.length > 0) {
         allOutcomeValuesToExclude.push(...outcomeValuesToExclude)
     }
@@ -100,6 +105,21 @@ export const aiAgentTicketsDefaultFilters = ({
                   },
               ]
             : []),
+        ...(integrationIds && integrationIds.length > 0
+            ? [
+                  {
+                      member: TicketMessagesMember.IntegrationChannelPair,
+                      operator: ReportingFilterOperator.Equals,
+                      values: integrationIds,
+                  },
+              ]
+            : [
+                  {
+                      member: TicketMessagesMember.IntegrationChannelPair,
+                      operator: ReportingFilterOperator.Equals,
+                      values: ['0'],
+                  },
+              ]),
     ]
 }
 

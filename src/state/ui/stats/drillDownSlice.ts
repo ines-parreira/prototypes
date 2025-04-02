@@ -138,6 +138,7 @@ export type AIInsightsMetrics = {
     outcomeFieldId?: number
     intentFieldValues?: string[]
     intentFieldId?: number
+    integrationIds?: string[]
 } & CommonMetrics
 
 export type TagsFieldsMetrics = {

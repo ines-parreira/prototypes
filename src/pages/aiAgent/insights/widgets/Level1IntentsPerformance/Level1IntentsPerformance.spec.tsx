@@ -2,9 +2,11 @@ import React from 'react'
 
 import { render } from '@testing-library/react'
 
+import { useGetTicketChannelsStoreIntegrations } from 'hooks/integrations/useGetTicketChannelsStoreIntegrations'
 import { useAIAgentMetrics } from 'hooks/reporting/automate/useAIAgentInsightsDataset'
 import { useAutomateFilters } from 'hooks/reporting/automate/useAutomateFilters'
 import useAppSelector from 'hooks/useAppSelector'
+import { assumeMock } from 'utils/testing'
 
 import { IntentsPerformance } from '../IntentsPerformance/IntentsPerformance'
 import { Level1IntentsPerformance } from './Level1IntentsPerformance'
@@ -37,7 +39,10 @@ jest.mock(
 jest.mock('react-router-dom', () => ({
     useParams: jest.fn(() => ({ shopName: 'shopName' })),
 }))
-
+jest.mock('hooks/integrations/useGetTicketChannelsStoreIntegrations')
+const useGetTicketChannelsStoreIntegrationsMock = assumeMock(
+    useGetTicketChannelsStoreIntegrations,
+)
 const aiAgentAutomatedInteractionTrend = {
     data: {
         isFetching: false,
@@ -80,6 +85,7 @@ describe('OptimizeContainer', () => {
                 end_datetime: '2024-12-20T00:00:00.000',
             },
         })
+        useGetTicketChannelsStoreIntegrationsMock.mockReturnValue(['1'])
     })
 
     it('renders the component correctly', () => {

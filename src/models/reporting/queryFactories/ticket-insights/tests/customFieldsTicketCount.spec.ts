@@ -9,6 +9,7 @@ import {
     TicketCustomFieldsMeasure,
     TicketCustomFieldsMember,
 } from 'models/reporting/cubes/TicketCustomFieldsCube'
+import { TicketMessagesMember } from 'models/reporting/cubes/TicketMessagesCube'
 import {
     aiInsightsCustomerSatisfactionMetricDrillDownQueryFactory,
     customFieldsTicketCountOnCreatedDatetimePerTicketDrillDownQueryFactory,
@@ -745,7 +746,11 @@ describe('customFieldsTicketCountQueryFactory', () => {
                         operator: ReportingFilterOperator.NotStartsWith,
                         values: ['456::Close::Without message'],
                     },
-
+                    {
+                        member: TicketMessagesMember.IntegrationChannelPair,
+                        operator: ReportingFilterOperator.Equals,
+                        values: ['0'],
+                    },
                     {
                         member: 'TicketEnriched.ticketCount',
                         operator: 'measureFilter',
@@ -855,6 +860,11 @@ describe('customFieldsTicketCountQueryFactory', () => {
                     member: TicketMember.CustomField,
                     operator: ReportingFilterOperator.NotStartsWith,
                     values: ['456::Close::Without message'],
+                },
+                {
+                    member: TicketMessagesMember.IntegrationChannelPair,
+                    operator: ReportingFilterOperator.Equals,
+                    values: ['0'],
                 },
                 {
                     member: 'TicketEnriched.ticketCount',

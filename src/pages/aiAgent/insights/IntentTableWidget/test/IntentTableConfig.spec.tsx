@@ -40,6 +40,7 @@ const defaultState = {
         perPage: 2,
     },
 }
+const shopName = 'test-shop'
 const mockStore = configureMockStore([thunk])
 
 describe('TableConfig Utilities and Hooks', () => {
@@ -77,7 +78,7 @@ describe('TableConfig Utilities and Hooks', () => {
             useAppSelectorMock.mockReturnValue(mockSorting)
 
             const { result } = renderHook(
-                () => useIntentSortingQuery(column, query),
+                () => useIntentSortingQuery(column, query, shopName),
                 {
                     wrapper: ({ children }) => (
                         <Provider store={mockStore(defaultState)}>

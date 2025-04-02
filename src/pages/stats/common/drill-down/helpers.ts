@@ -201,6 +201,7 @@ export const getDrillDownQuery = (
                     metricName.intentFieldValues,
                     metricName.outcomeFieldId,
                     sorting,
+                    metricName.integrationIds,
                 )
         case AIInsightsMetric.TicketDrillDownPerCoverageRate:
             return (
@@ -214,6 +215,7 @@ export const getDrillDownQuery = (
                     metricName.outcomeFieldId || -1,
                     metricName.intentFieldId || -1,
                     sorting,
+                    metricName.integrationIds,
                 )
 
         case AIInsightsMetric.TicketDrillDownPerCustomerSatisfaction:
@@ -229,6 +231,7 @@ export const getDrillDownQuery = (
                     metricName.intentFieldId,
                     metricName.outcomeFieldId,
                     sorting,
+                    metricName.integrationIds,
                 )
 
         case ConvertMetric.CampaignSalesCount:

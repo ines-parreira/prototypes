@@ -5,6 +5,7 @@ import { AiSalesAgentOrdersCube } from 'models/reporting/cubes/ai-sales-agent/Ai
 import { AiSalesAgentOrderCustomersCube } from 'models/reporting/cubes/ai-sales-agent/AiSalesAgentOrdersCustomers'
 import { TicketQAScoreCubeWithJoins } from 'models/reporting/cubes/auto-qa/TicketQAScoreCube'
 import { AutomationBillingEventCubeWithJoins } from 'models/reporting/cubes/automate/AutomationBillingEventCube'
+import { AutomatedTicketsCube } from 'models/reporting/cubes/automate_v2/AutomatedTicketsCube'
 import { AutomationDatasetCube } from 'models/reporting/cubes/automate_v2/AutomationDatasetCube'
 import { BillableTicketDatasetCube } from 'models/reporting/cubes/automate_v2/BillableTicketDatasetCube'
 import { RecommendedResourcesCube } from 'models/reporting/cubes/automate_v2/RecommendedResourcesCube'
@@ -25,6 +26,7 @@ export type Cubes =
     | AgentTimeTrackingCube
     | AutomationBillingEventCubeWithJoins
     | AutomationDatasetCube
+    | AutomatedTicketsCube
     | BillableTicketDatasetCube
     | ConvertOrderEventsCube
     | ConvertOrderConversionCube

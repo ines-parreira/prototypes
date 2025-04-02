@@ -7,6 +7,7 @@ import { MemoryRouter } from 'react-router-dom'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
+import { useGetTicketChannelsStoreIntegrations } from 'hooks/integrations/useGetTicketChannelsStoreIntegrations'
 import { useStatsFilters } from 'hooks/reporting/support-performance/useStatsFilters'
 import useAppSelector from 'hooks/useAppSelector'
 import {
@@ -40,6 +41,10 @@ jest.mock('react-router-dom', () => ({
         shopName: 'shopName',
     })),
 }))
+jest.mock('hooks/integrations/useGetTicketChannelsStoreIntegrations')
+const getTicketChannelsStoreIntegrationsMock = assumeMock(
+    useGetTicketChannelsStoreIntegrations,
+)
 
 const mockStore = configureMockStore([thunk])
 const defaultPaginatedIntents = {
@@ -116,6 +121,8 @@ describe('Intent Table components', () => {
                 cleanStatsFilters: filters,
                 userTimezone,
             } as unknown as ReturnType<typeof useStatsFilters>)
+
+            getTicketChannelsStoreIntegrationsMock.mockReturnValue(['1'])
         })
         it('renders table with data', () => {
             const store = mockStore(initialState)

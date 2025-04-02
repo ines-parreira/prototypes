@@ -3,6 +3,7 @@ import {
     TicketDimension,
     TicketMember,
 } from 'models/reporting/cubes/TicketCube'
+import { TicketMessagesMember } from 'models/reporting/cubes/TicketMessagesCube'
 import {
     TicketTagsEnrichedDimension,
     TicketTagsEnrichedMeasure,
@@ -577,6 +578,11 @@ describe('tagsTicketCount query factories', () => {
                     member: TicketMember.CustomField,
                     operator: ReportingFilterOperator.NotStartsWith,
                     values: ['1::Close::Without message'],
+                },
+                {
+                    member: TicketMessagesMember.IntegrationChannelPair,
+                    operator: ReportingFilterOperator.Equals,
+                    values: ['0'],
                 },
                 {
                     member: 'TicketEnriched.ticketCount',

@@ -1,5 +1,6 @@
 import { useParams } from 'react-router-dom'
 
+import { useGetTicketChannelsStoreIntegrations } from 'hooks/integrations/useGetTicketChannelsStoreIntegrations'
 import { useInsightPerformanceMetrics } from 'hooks/reporting/automate/useAIAgentInsightsL2Dataset'
 import { useAIAgentUserId } from 'hooks/reporting/automate/useAIAgentUserId'
 import { useAutomateFilters } from 'hooks/reporting/automate/useAutomateFilters'
@@ -17,7 +18,7 @@ export const Level2IntentsPerformance = () => {
         getPageStatsFiltersWithLogicalOperators,
     )
 
-    const { intentId } = useParams<{
+    const { intentId, shopName } = useParams<{
         shopName: string
         intentId: string
     }>()
@@ -28,7 +29,10 @@ export const Level2IntentsPerformance = () => {
         timezone: userTimezone,
         intentId: intentId,
         intentLevel: INTENT_LEVEL,
+        shopName,
     })
+
+    const integrationIds = useGetTicketChannelsStoreIntegrations(shopName)
 
     const aiAgentUserId = useAIAgentUserId()
     const { intentCustomFieldId, outcomeCustomFieldId } =
@@ -62,6 +66,7 @@ export const Level2IntentsPerformance = () => {
                         intentFieldValues: [intentId],
                         intentFieldId: intentCustomFieldId,
                         outcomeFieldId: outcomeCustomFieldId,
+                        integrationIds: integrationIds,
                     },
                 },
                 {
@@ -82,6 +87,7 @@ export const Level2IntentsPerformance = () => {
                         intentFieldId: intentCustomFieldId,
                         outcomeFieldId: outcomeCustomFieldId,
                         intentFieldValues: [intentId],
+                        integrationIds: integrationIds,
                     },
                 },
             ]}

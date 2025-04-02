@@ -29,6 +29,7 @@ import {
 
 jest.mock('hooks/reporting/useMetric')
 jest.mock('hooks/reporting/useMetricPerDimension')
+jest.mock('hooks/reporting/useMultipleMetricsTrend')
 
 const useMetricMock = assumeMock(useMetric)
 const useMetricPerDimensionMock = assumeMock(useMetricPerDimension)
@@ -76,12 +77,12 @@ describe('aiAgentMetrics', () => {
         it('should pass the query to useMetricPerDimension hook', () => {
             renderHook(
                 () =>
-                    useAiAgentTickets(
+                    useAiAgentTickets({
                         filters,
                         timezone,
                         outcomeFieldId,
                         intentFieldId,
-                    ),
+                    }),
                 {},
             )
 
@@ -98,15 +99,15 @@ describe('aiAgentMetrics', () => {
         it('should pass additional filters to useMetricPerDimension hook', () => {
             renderHook(
                 () =>
-                    useAiAgentTickets(
+                    useAiAgentTickets({
                         filters,
                         timezone,
                         outcomeFieldId,
                         intentFieldId,
-                        ReportingFilterOperator.Contains,
-                        CUSTOM_FIELD_AI_AGENT_HANDOVER,
+                        operator: ReportingFilterOperator.Contains,
+                        customFieldFilter: CUSTOM_FIELD_AI_AGENT_HANDOVER,
                         sorting,
-                    ),
+                    }),
                 {},
             )
 

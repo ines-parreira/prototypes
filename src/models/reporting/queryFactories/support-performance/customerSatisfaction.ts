@@ -54,6 +54,7 @@ export const customerSatisfactionForAIAgentTicketsQueryFactory = ({
     intentFieldId,
     outcomeFieldId,
     aiAgentUserId,
+    integrationIds,
 }: {
     filters: StatsFilters
     timezone: string
@@ -61,6 +62,7 @@ export const customerSatisfactionForAIAgentTicketsQueryFactory = ({
     intentFieldId?: number
     outcomeFieldId?: number
     aiAgentUserId?: string
+    integrationIds?: string[]
 }): ReportingQuery<HelpdeskMessageCubeWithJoins> => ({
     measures: [TicketSatisfactionSurveyMeasure.AvgSurveyScore],
     dimensions: [],
@@ -87,6 +89,7 @@ export const customerSatisfactionForAIAgentTicketsQueryFactory = ({
             filters,
             intentFieldId,
             outcomeFieldId,
+            integrationIds,
         }),
     ],
     ...(sorting

@@ -11,6 +11,8 @@ import { withDefaultLogicalOperator } from 'models/reporting/queryFactories/util
 import { ReportingFilterOperator } from 'models/reporting/types'
 import { StatsFilters } from 'models/stat/types'
 
+import { TicketMessagesMember } from '../../../cubes/TicketMessagesCube'
+
 describe('billableTicketDatasetAdditionalFilters', () => {
     const statsFiltersWithLogicalOperator: StatsFilters = {
         period: {
@@ -154,6 +156,11 @@ describe('aiAgentTicketsDefaultFilters', () => {
                 operator: ReportingFilterOperator.NotStartsWith,
                 values: ['1::Close::Without message', '1::handover'],
             },
+            {
+                member: TicketMessagesMember.IntegrationChannelPair,
+                operator: ReportingFilterOperator.Equals,
+                values: ['0'],
+            },
         ])
     })
 
@@ -178,6 +185,42 @@ describe('aiAgentTicketsDefaultFilters', () => {
                 member: TicketMember.CustomField,
                 operator: ReportingFilterOperator.NotStartsWith,
                 values: ['1::Close::Without message'],
+            },
+            {
+                member: TicketMessagesMember.IntegrationChannelPair,
+                operator: ReportingFilterOperator.Equals,
+                values: ['0'],
+            },
+        ])
+    })
+
+    it('should return default filters with integration ids', () => {
+        const result = aiAgentTicketsDefaultFilters({
+            filters,
+            outcomeFieldId: 1,
+            intentFieldId: 2,
+            integrationIds: ['chat::1', 'email::2'],
+        })
+        expect(result).toEqual([
+            {
+                member: TicketMember.CreatedDatetime,
+                operator: ReportingFilterOperator.InDateRange,
+                values: ['2021-01-01T00:00:00.000', '2021-01-02T00:00:00.000'],
+            },
+            {
+                member: TicketMember.CustomFieldToExclude,
+                operator: ReportingFilterOperator.NotStartsWith,
+                values: ['2::Other::No Reply'],
+            },
+            {
+                member: TicketMember.CustomField,
+                operator: ReportingFilterOperator.NotStartsWith,
+                values: ['1::Close::Without message'],
+            },
+            {
+                member: TicketMessagesMember.IntegrationChannelPair,
+                operator: ReportingFilterOperator.Equals,
+                values: ['chat::1', 'email::2'],
             },
         ])
     })
