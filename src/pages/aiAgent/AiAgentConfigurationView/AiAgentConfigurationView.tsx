@@ -19,6 +19,7 @@ import { NotificationStatus } from 'state/notifications/types'
 
 import { AiAgentLayout } from '../components/AiAgentLayout/AiAgentLayout'
 import { StoreConfigForm } from '../components/StoreConfigForm/StoreConfigForm'
+import AiAgentFormChangesProvider from '../providers/AiAgentFormChangesProvider'
 
 import css from './AiAgentConfigurationView.less'
 
@@ -103,12 +104,14 @@ export const AiAgentConfigurationView = ({
                     </div>
                 )}
 
-                <StoreConfigForm
-                    shopName={shopName}
-                    shopType={shopType}
-                    accountDomain={accountDomain}
-                    faqHelpCenters={helpCenters}
-                />
+                <AiAgentFormChangesProvider>
+                    <StoreConfigForm
+                        shopName={shopName}
+                        shopType={shopType}
+                        accountDomain={accountDomain}
+                        faqHelpCenters={helpCenters}
+                    />
+                </AiAgentFormChangesProvider>
             </div>
         </AiAgentLayout>
     )

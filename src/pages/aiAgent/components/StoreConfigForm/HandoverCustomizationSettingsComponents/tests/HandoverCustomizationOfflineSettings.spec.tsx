@@ -1,10 +1,10 @@
-import React from 'react'
-
 import { fireEvent, render, screen } from '@testing-library/react'
 import { Provider } from 'react-redux'
 
 import { GorgiasChatIntegration } from 'models/integration/types'
+import { StoreConfigFormSection } from 'pages/aiAgent/constants'
 import { useHandoverCustomizationOfflineSettingsForm } from 'pages/aiAgent/hooks/useHandoverCustomizationOfflineSettingsForm'
+import { useAiAgentFormChangesContext } from 'pages/aiAgent/providers/AiAgentFormChangesContext'
 import { mockQueryClientProvider } from 'tests/reactQueryTestingUtils'
 import { mockStore } from 'utils/testing'
 
@@ -13,11 +13,26 @@ import HandoverCustomizationOfflineSettings from '../HandoverCustomizationOfflin
 // Mock dependencies
 jest.mock('pages/aiAgent/hooks/useHandoverCustomizationOfflineSettingsForm')
 
+jest.mock('pages/aiAgent/providers/AiAgentFormChangesContext')
+
 const QueryClientProvider = mockQueryClientProvider()
 
 const defaultState = {}
 
-const renderComponent = (integration: GorgiasChatIntegration) => {
+const mockedIntegration = {
+    type: 'gorgias_chat',
+    id: '1',
+    meta: {
+        shop_name: 'test-store',
+        shop_type: 'shopify',
+        shop_id: '123',
+        shop_domain: 'test-store.myshopify.com',
+    },
+} as unknown as GorgiasChatIntegration
+
+const renderComponent = (
+    integration: GorgiasChatIntegration = mockedIntegration,
+) => {
     render(
         <Provider store={mockStore(defaultState)}>
             <QueryClientProvider>
@@ -34,16 +49,7 @@ describe('HandoverCustomizationOfflineSettings', () => {
     const mockHandleOnSave = jest.fn()
     const mockHandleOnCancel = jest.fn()
 
-    const integration = {
-        type: 'gorgias_chat',
-        id: '1',
-        meta: {
-            shop_name: 'test-store',
-            shop_type: 'shopify',
-            shop_id: '123',
-            shop_domain: 'test-store.myshopify.com',
-        },
-    } as unknown as GorgiasChatIntegration
+    const mockSetIsFormDirty = jest.fn()
 
     const mockOfflineValuesForm = {
         formValues: {
@@ -63,6 +69,9 @@ describe('HandoverCustomizationOfflineSettings', () => {
         ;(
             useHandoverCustomizationOfflineSettingsForm as jest.Mock
         ).mockReturnValue(mockOfflineValuesForm)
+        ;(useAiAgentFormChangesContext as jest.Mock).mockReturnValue({
+            setIsFormDirty: mockSetIsFormDirty,
+        })
     })
 
     it('should render the loading state when the form data is loading', () => {
@@ -73,7 +82,7 @@ describe('HandoverCustomizationOfflineSettings', () => {
             isLoading: true,
         })
 
-        renderComponent(integration)
+        renderComponent()
 
         // Check the loading spinner is rendered
         screen.getByText(/loading/i)
@@ -82,7 +91,7 @@ describe('HandoverCustomizationOfflineSettings', () => {
     })
 
     it('renders correctly with all UI elements', () => {
-        renderComponent(integration)
+        renderComponent()
 
         screen.getByText('Offline instructions')
         // text area
@@ -127,7 +136,7 @@ describe('HandoverCustomizationOfflineSettings', () => {
             useHandoverCustomizationOfflineSettingsForm as jest.Mock
         ).mockReturnValue(mockedForm)
 
-        renderComponent(integration)
+        renderComponent()
 
         screen.getByText('Initial instructions')
 
@@ -151,7 +160,7 @@ describe('HandoverCustomizationOfflineSettings', () => {
                 useHandoverCustomizationOfflineSettingsForm as jest.Mock
             ).mockReturnValue(mockedForm)
 
-            renderComponent(integration)
+            renderComponent()
 
             expect(
                 screen.getByPlaceholderText(
@@ -160,7 +169,7 @@ describe('HandoverCustomizationOfflineSettings', () => {
             ).toHaveValue('')
         })
         it('should change the offline instructions when the user types in the text area', () => {
-            renderComponent(integration)
+            renderComponent()
 
             const textArea = screen.getByRole('textbox')
             fireEvent.change(textArea, {
@@ -188,7 +197,7 @@ describe('HandoverCustomizationOfflineSettings', () => {
                 useHandoverCustomizationOfflineSettingsForm as jest.Mock
             ).mockReturnValue(mockedForm)
 
-            renderComponent(integration)
+            renderComponent()
 
             const checkbox = screen.getByRole('checkbox', {
                 name: /Share business hours in handover message/i,
@@ -203,7 +212,7 @@ describe('HandoverCustomizationOfflineSettings', () => {
         })
 
         it('should trigger save when the user clicks the save button with no changes', () => {
-            renderComponent(integration)
+            renderComponent()
 
             const saveButton = screen.getByText('Save Changes')
             fireEvent.click(saveButton)
@@ -213,7 +222,7 @@ describe('HandoverCustomizationOfflineSettings', () => {
 
         describe('form handlers', () => {
             it('calls handleOnCancel when Cancel button is clicked', () => {
-                renderComponent(integration)
+                renderComponent()
 
                 const cancelButton = screen.getByText('Cancel')
                 fireEvent.click(cancelButton)
@@ -222,7 +231,7 @@ describe('HandoverCustomizationOfflineSettings', () => {
             })
 
             it('calls handleOnSave when Save Changes button is clicked', () => {
-                renderComponent(integration)
+                renderComponent()
 
                 const saveButton = screen.getByText('Save Changes')
                 fireEvent.click(saveButton)
@@ -238,7 +247,7 @@ describe('HandoverCustomizationOfflineSettings', () => {
                     isSaving: true,
                 })
 
-                renderComponent(integration)
+                renderComponent()
 
                 const saveButton = screen.getByRole('button', {
                     name: 'Save Changes',
@@ -248,4 +257,22 @@ describe('HandoverCustomizationOfflineSettings', () => {
             })
         })
     })
+
+    test.each([true, false])(
+        'should set isFormDirty to %s when there are changes coming from the form hook',
+        (hasChanges) => {
+            ;(
+                useHandoverCustomizationOfflineSettingsForm as jest.Mock
+            ).mockReturnValue({
+                ...mockOfflineValuesForm,
+                hasChanges,
+            })
+            renderComponent()
+
+            expect(mockSetIsFormDirty).toHaveBeenCalledWith(
+                StoreConfigFormSection.handoverCustomizationOfflineSettings,
+                hasChanges,
+            )
+        },
+    )
 })

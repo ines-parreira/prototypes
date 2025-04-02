@@ -9,7 +9,9 @@ import {
     GorgiasChatEmailCaptureType,
     GorgiasChatIntegration,
 } from 'models/integration/types'
+import { StoreConfigFormSection } from 'pages/aiAgent/constants'
 import { useHandoverCustomizationOnlineSettingsForm } from 'pages/aiAgent/hooks/useHandoverCustomizationOnlineSettingsForm'
+import { useAiAgentFormChangesContext } from 'pages/aiAgent/providers/AiAgentFormChangesContext'
 import { mockQueryClientProvider } from 'tests/reactQueryTestingUtils'
 import { mockStore } from 'utils/testing'
 
@@ -17,6 +19,8 @@ import HandoverCustomizationOnlineSettings from '../HandoverCustomizationOnlineS
 
 // Mock dependencies
 jest.mock('pages/aiAgent/hooks/useHandoverCustomizationOnlineSettingsForm')
+
+jest.mock('pages/aiAgent/providers/AiAgentFormChangesContext')
 
 const mockedIntegration = {
     type: 'gorgias_chat',
@@ -57,6 +61,8 @@ describe('HandoverCustomizationOnlineSettings', () => {
     const mockHandleOnSave = jest.fn()
     const mockHandleOnCancel = jest.fn()
 
+    const mockSetIsFormDirty = jest.fn()
+
     const mockOnlineValuesForm = {
         formValues: {
             onlineInstructions: 'Default instructions',
@@ -70,6 +76,7 @@ describe('HandoverCustomizationOnlineSettings', () => {
         handleOnCancel: mockHandleOnCancel,
         isLoading: false,
         isSaving: false,
+        hasChanges: false,
     }
     beforeEach(() => {
         jest.clearAllMocks()
@@ -77,6 +84,9 @@ describe('HandoverCustomizationOnlineSettings', () => {
         ;(
             useHandoverCustomizationOnlineSettingsForm as jest.Mock
         ).mockReturnValue(mockOnlineValuesForm)
+        ;(useAiAgentFormChangesContext as jest.Mock).mockReturnValue({
+            setIsFormDirty: mockSetIsFormDirty,
+        })
     })
 
     it('renders component with all required elements', () => {
@@ -206,6 +216,24 @@ describe('HandoverCustomizationOnlineSettings', () => {
                 GorgiasChatAutoResponderReply.ReplyInMinutes,
             )
         })
+
+        test.each([true, false])(
+            'should set isFormDirty to %s when there are changes coming from the form hook',
+            (hasChanges) => {
+                ;(
+                    useHandoverCustomizationOnlineSettingsForm as jest.Mock
+                ).mockReturnValue({
+                    ...mockOnlineValuesForm,
+                    hasChanges,
+                })
+                renderComponent()
+
+                expect(mockSetIsFormDirty).toHaveBeenCalledWith(
+                    StoreConfigFormSection.handoverCustomizationOnlineSettings,
+                    hasChanges,
+                )
+            },
+        )
     })
 
     describe('Save and Cancel Actions', () => {

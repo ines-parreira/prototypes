@@ -1,0 +1,61 @@
+import { useCallback, useMemo, useRef, useState } from 'react'
+
+import { ActionCallback } from '../providers/AiAgentFormChangesContext'
+
+export const useAiAgentFormChanges = () => {
+    const [dirtyFormSections, setDirtyFormSections] = useState<
+        Record<string, boolean>
+    >({})
+
+    const actionCallbackMap = useRef<Record<string, ActionCallback>>({})
+
+    const isFormDirty = useMemo(() => {
+        return Object.values(dirtyFormSections).some((isDirty) => isDirty)
+    }, [dirtyFormSections])
+
+    const dirtySections = useMemo(() => {
+        return Object.entries(dirtyFormSections)
+            .filter(([, isDirty]) => isDirty)
+            .map(([type]) => type)
+    }, [dirtyFormSections])
+
+    const setIsFormDirty = useCallback(
+        (type: string, isDirty: boolean) =>
+            setDirtyFormSections((prev) => ({
+                ...prev,
+                [type]: isDirty,
+            })),
+        [setDirtyFormSections],
+    )
+
+    const setActionCallback = useCallback(
+        (section: string, callback: ActionCallback) => {
+            actionCallbackMap.current = {
+                ...actionCallbackMap.current,
+                [section]: callback,
+            }
+        },
+        [actionCallbackMap],
+    )
+
+    const onModalSave = useCallback(() => {
+        dirtySections.forEach((type) => {
+            actionCallbackMap.current[type]?.onSave?.()
+        })
+    }, [dirtySections, actionCallbackMap])
+
+    const onModalDiscard = useCallback(() => {
+        dirtySections.forEach((type) => {
+            actionCallbackMap.current[type]?.onDiscard?.()
+        })
+    }, [dirtySections, actionCallbackMap])
+
+    return {
+        isFormDirty,
+        dirtySections,
+        setIsFormDirty,
+        setActionCallback,
+        onModalSave,
+        onModalDiscard,
+    }
+}

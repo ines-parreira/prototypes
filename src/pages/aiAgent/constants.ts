@@ -208,3 +208,11 @@ export const AI_AGENT_NAVBAR_COLLAPSED_SECTIONS_KEY =
 export const AI_AGENT_MAX_EXPANDED_SECTIONS_BY_DEFAULT = 3
 
 export const CHANGES_SAVED_SUCCESS = 'Changes saved successfully'
+
+export enum StoreConfigFormSection {
+    generalSettings = 'generalSettings',
+    channelSettings = 'channelSettings',
+    handoverCustomizationOfflineSettings = 'handoverCustomizationOfflineSettings',
+    handoverCustomizationOnlineSettings = 'handoverCustomizationOnlineSettings',
+    handoverCustomizationFallbackSettings = 'handoverCustomizationFallbackSettings',
+}

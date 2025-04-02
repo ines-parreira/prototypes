@@ -28,6 +28,8 @@ import { useAiAgentOnboardingNotification } from 'pages/aiAgent/hooks/useAiAgent
 import { useConfigurationForm } from 'pages/aiAgent/hooks/useConfigurationForm'
 import { useGetOrCreateSnippetHelpCenter } from 'pages/aiAgent/hooks/useGetOrCreateSnippetHelpCenter'
 import { usePublicResources } from 'pages/aiAgent/hooks/usePublicResources'
+import { useAiAgentFormChangesContext } from 'pages/aiAgent/providers/AiAgentFormChangesContext'
+import AiAgentFormChangesProvider from 'pages/aiAgent/providers/AiAgentFormChangesProvider'
 import { useAiAgentStoreConfigurationContext } from 'pages/aiAgent/providers/AiAgentStoreConfigurationContext'
 import { FormValues } from 'pages/aiAgent/types'
 import useSelfServiceChatChannels from 'pages/automate/common/hooks/useSelfServiceChatChannels'
@@ -63,6 +65,10 @@ jest.mock('state/notifications/actions')
 jest.mock('pages/aiAgent/providers/AiAgentStoreConfigurationContext', () => ({
     useAiAgentStoreConfigurationContext: jest.fn(),
 }))
+jest.mock('pages/aiAgent/providers/AiAgentFormChangesContext', () => ({
+    ...jest.requireActual('pages/aiAgent/providers/AiAgentFormChangesContext'),
+    useAiAgentFormChangesContext: jest.fn(),
+}))
 jest.mock('pages/aiAgent/hooks/useAccountStoreConfiguration')
 jest.mock('pages/aiAgent/hooks/useGetOrCreateSnippetHelpCenter', () => ({
     useGetOrCreateSnippetHelpCenter: jest.fn(),
@@ -87,6 +93,14 @@ jest.mock(
         ),
     }),
 )
+
+// mocking the prompt modal
+jest.mock('../FormComponents/StoreConfigUnsavedChangesPrompt', () => ({
+    StoreConfigUnsavedChangesPrompt: () => (
+        <div data-testid="mocked-unsaved-changes-prompt"></div>
+    ),
+}))
+
 jest.mock('pages/aiAgent/hooks/useAiAgentOnboardingNotification', () => ({
     useAiAgentOnboardingNotification: jest.fn(),
 }))
@@ -95,6 +109,8 @@ jest.mock('state/billing/selectors', () => ({
     getHasAutomate: jest.fn(),
 }))
 jest.mock('pages/automate/common/hooks/useSelfServiceChatChannels')
+
+jest.mock('pages/aiAgent/providers/AiAgentStoreConfigurationContext')
 
 jest.mock('hooks/useSearchParam', () => ({
     useSearchParam: jest.fn(),
@@ -107,6 +123,10 @@ const spyIsAiAgentEnabled = jest.spyOn(util, 'isAiAgentEnabled')
 
 const mockedUseAiAgentStoreConfigurationContext = jest.mocked(
     useAiAgentStoreConfigurationContext,
+)
+
+const mockedUseAiAgentFormChangesContext = jest.mocked(
+    useAiAgentFormChangesContext,
 )
 
 const mockedUseAccountStoreConfiguration = jest.mocked(
@@ -217,18 +237,20 @@ const renderComponent = (
     renderWithRouter(
         <Provider store={mockedStore}>
             <QueryClientProvider client={queryClient}>
-                <StoreConfigForm
-                    shopName="test-shop"
-                    accountDomain="test-domain"
-                    shopType="shopify"
-                    faqHelpCenters={
-                        [
-                            { id: 1, name: 'help center 1', type: 'faq' },
-                            { id: 2, name: 'help center 2', type: 'faq' },
-                        ] as unknown as HelpCenter[]
-                    }
-                    {...props}
-                />
+                <AiAgentFormChangesProvider>
+                    <StoreConfigForm
+                        shopName="test-shop"
+                        accountDomain="test-domain"
+                        shopType="shopify"
+                        faqHelpCenters={
+                            [
+                                { id: 1, name: 'help center 1', type: 'faq' },
+                                { id: 2, name: 'help center 2', type: 'faq' },
+                            ] as unknown as HelpCenter[]
+                        }
+                        {...props}
+                    />
+                </AiAgentFormChangesProvider>
             </QueryClientProvider>
         </Provider>,
     )
@@ -321,6 +343,7 @@ describe('<StoreConfigForm />', () => {
         updateValueMocked.mockReset()
         mockLogEvent.mockClear()
         mockedUseAiAgentStoreConfigurationContext.mockReset()
+        mockedUseAiAgentFormChangesContext.mockReset()
         mockedUseSelfServiceChatChannels.mockReturnValue(mockChatChannels)
         mockGetHasAutomate.mockReturnValue(true)
         mockedUseAiAgentStoreConfigurationContext.mockReturnValue({
@@ -329,6 +352,14 @@ describe('<StoreConfigForm />', () => {
             updateStoreConfiguration: mockUpdateStoreConfiguration,
             createStoreConfiguration: mockCreateStoreConfiguration,
             isPendingCreateOrUpdate: false,
+        })
+        mockedUseAiAgentFormChangesContext.mockReturnValue({
+            isFormDirty: false,
+            setIsFormDirty: jest.fn(),
+            setActionCallback: jest.fn(),
+            dirtySections: [],
+            onModalSave: jest.fn(),
+            onModalDiscard: jest.fn(),
         })
         mockedUseGetOrCreateSnippetHelpCenter.mockReturnValue({
             isLoading: false,

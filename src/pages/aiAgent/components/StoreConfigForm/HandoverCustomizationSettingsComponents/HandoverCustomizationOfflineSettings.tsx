@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react'
+import React, { useCallback, useEffect } from 'react'
 
 import cn from 'classnames'
 
@@ -6,7 +6,9 @@ import { Button, LoadingSpinner, ToggleField } from '@gorgias/merchant-ui-kit'
 
 import { Label } from 'gorgias-design-system/Input/Label'
 import { GorgiasChatIntegration } from 'models/integration/types'
+import { StoreConfigFormSection } from 'pages/aiAgent/constants'
 import { useHandoverCustomizationOfflineSettingsForm } from 'pages/aiAgent/hooks/useHandoverCustomizationOfflineSettingsForm'
+import { useAiAgentFormChangesContext } from 'pages/aiAgent/providers/AiAgentFormChangesContext'
 import { formFieldsConfiguration } from 'pages/aiAgent/utils/handoverCustomizationOfflineSettingsForm.utils'
 import Caption from 'pages/common/forms/Caption/Caption'
 import TextArea from 'pages/common/forms/TextArea'
@@ -20,6 +22,7 @@ type Props = {
 const HandoverCustomizationOfflineSettings = ({ integration }: Props) => {
     const {
         isLoading,
+        hasChanges,
         formValues,
         updateValue,
         handleOnSave,
@@ -28,6 +31,8 @@ const HandoverCustomizationOfflineSettings = ({ integration }: Props) => {
     } = useHandoverCustomizationOfflineSettingsForm({
         integration,
     })
+
+    const { setIsFormDirty } = useAiAgentFormChangesContext()
 
     const onOfflineInstructionsChange = useCallback(
         (value: string) => {
@@ -59,6 +64,13 @@ const HandoverCustomizationOfflineSettings = ({ integration }: Props) => {
         },
         [handleOnCancel],
     )
+
+    useEffect(() => {
+        setIsFormDirty(
+            StoreConfigFormSection.handoverCustomizationOfflineSettings,
+            hasChanges,
+        )
+    }, [hasChanges, setIsFormDirty])
 
     if (isLoading) {
         return (

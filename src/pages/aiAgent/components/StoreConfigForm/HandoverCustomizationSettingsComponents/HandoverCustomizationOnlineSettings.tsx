@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo } from 'react'
+import React, { useCallback, useEffect, useMemo } from 'react'
 
 import cn from 'classnames'
 
@@ -6,7 +6,9 @@ import { Button, LoadingSpinner } from '@gorgias/merchant-ui-kit'
 
 import { Label } from 'gorgias-design-system/Input/Label'
 import { GorgiasChatIntegration } from 'models/integration/types'
+import { StoreConfigFormSection } from 'pages/aiAgent/constants'
 import { useHandoverCustomizationOnlineSettingsForm } from 'pages/aiAgent/hooks/useHandoverCustomizationOnlineSettingsForm'
+import { useAiAgentFormChangesContext } from 'pages/aiAgent/providers/AiAgentFormChangesContext'
 import { formFieldsConfiguration } from 'pages/aiAgent/utils/handoverCustomizationOnlineSettingsForm.utils'
 import Alert, { AlertType } from 'pages/common/components/Alert/Alert'
 import Caption from 'pages/common/forms/Caption/Caption'
@@ -25,6 +27,7 @@ const HandoverCustomizationOnlineSettings = ({ integration }: Props) => {
     const {
         isLoading,
         isSaving,
+        hasChanges,
         formValues,
         updateValue,
         handleOnSave,
@@ -32,6 +35,8 @@ const HandoverCustomizationOnlineSettings = ({ integration }: Props) => {
     } = useHandoverCustomizationOnlineSettingsForm({
         integration,
     })
+
+    const { setIsFormDirty } = useAiAgentFormChangesContext()
 
     const chatPreferencesLink = useMemo(
         () =>
@@ -89,6 +94,13 @@ const HandoverCustomizationOnlineSettings = ({ integration }: Props) => {
         },
         [handleOnCancel],
     )
+
+    useEffect(() => {
+        setIsFormDirty(
+            StoreConfigFormSection.handoverCustomizationOnlineSettings,
+            hasChanges,
+        )
+    }, [hasChanges, setIsFormDirty])
 
     if (isLoading) {
         return (

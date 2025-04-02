@@ -9,42 +9,60 @@ import {
 } from 'config/integrations/gorgias_chat'
 import { Language } from 'constants/languages'
 import { GorgiasChatIntegration } from 'models/integration/types'
+import { StoreConfigFormSection } from 'pages/aiAgent/constants'
+import { useAiAgentFormChangesContext } from 'pages/aiAgent/providers/AiAgentFormChangesContext'
 
 import { useHandoverCustomizationFallbackSettingsForm } from '../../../../hooks/useHandoverCustomizationFallbackSettingsForm'
 import HandoverCustomizationFallbackSettings from '../HandoverCustomizationFallbackSettings'
 
 // Mock dependencies
-
 jest.mock('pages/aiAgent/hooks/useHandoverCustomizationFallbackSettingsForm')
+jest.mock('pages/aiAgent/providers/AiAgentFormChangesContext')
 jest.mock('config/integrations/gorgias_chat')
 jest.mock('constants/languages')
 
+// Mock data
+const mockedIntegration = {
+    meta: {
+        app_id: 'test-app-id',
+        languages: [
+            { language: Language.EnglishUs },
+            { language: Language.FrenchFr },
+        ],
+    },
+} as unknown as GorgiasChatIntegration
+
+const mockFormValues = {
+    'en-US': { fallbackMessage: 'English error message' },
+    'fr-FR': { fallbackMessage: 'French error message' },
+}
+
+const mockLanguages = [
+    { value: 'en-US', label: 'English' },
+    { value: 'fr-FR', label: 'French' },
+    { value: 'es-ES', label: 'Spanish' },
+]
+
+const renderComponent = (
+    integration: GorgiasChatIntegration = mockedIntegration,
+) => render(<HandoverCustomizationFallbackSettings integration={integration} />)
+
 describe('HandoverCustomizationFallbackSettings', () => {
-    // Mock data
-    const mockIntegration = {
-        meta: {
-            app_id: 'test-app-id',
-            languages: [
-                { language: Language.EnglishUs },
-                { language: Language.FrenchFr },
-            ],
-        },
-    } as unknown as GorgiasChatIntegration
-
-    const mockFormValues = {
-        'en-US': { fallbackMessage: 'English error message' },
-        'fr-FR': { fallbackMessage: 'French error message' },
-    }
-
-    const mockLanguages = [
-        { value: 'en-US', label: 'English' },
-        { value: 'fr-FR', label: 'French' },
-        { value: 'es-ES', label: 'Spanish' },
-    ]
-
     const mockUpdateValue = jest.fn()
     const mockHandleOnSave = jest.fn()
     const mockHandleOnCancel = jest.fn()
+
+    const mockSetIsFormDirty = jest.fn()
+
+    const mockHookValues = {
+        isLoading: false,
+        isSaving: false,
+        formValues: mockFormValues,
+        updateValue: mockUpdateValue,
+        handleOnSave: mockHandleOnSave,
+        handleOnCancel: mockHandleOnCancel,
+        hasChanges: false,
+    }
 
     beforeEach(() => {
         jest.clearAllMocks()
@@ -52,15 +70,7 @@ describe('HandoverCustomizationFallbackSettings', () => {
         // Mock form hook
         ;(
             useHandoverCustomizationFallbackSettingsForm as jest.Mock
-        ).mockReturnValue({
-            isLoading: false,
-            isSaving: false,
-            formValues: mockFormValues,
-            updateValue: mockUpdateValue,
-            handleOnSave: mockHandleOnSave,
-            handleOnCancel: mockHandleOnCancel,
-            hasChanges: false,
-        })
+        ).mockReturnValue(mockHookValues)
 
         // Mock language functions
         ;(getPrimaryLanguageFromChatConfig as jest.Mock).mockReturnValue(
@@ -75,14 +85,13 @@ describe('HandoverCustomizationFallbackSettings', () => {
                 return mockLanguages.find((lang) => lang.value === code)
             },
         )
+        ;(useAiAgentFormChangesContext as jest.Mock).mockReturnValue({
+            setIsFormDirty: mockSetIsFormDirty,
+        })
     })
 
     it('renders correctly with all UI elements', () => {
-        render(
-            <HandoverCustomizationFallbackSettings
-                integration={mockIntegration}
-            />,
-        )
+        renderComponent()
 
         // Check the textarea is rendered
         screen.getByRole('textbox', { name: 'Error message' })
@@ -112,22 +121,14 @@ describe('HandoverCustomizationFallbackSettings', () => {
             hasChanges: false,
         })
 
-        render(
-            <HandoverCustomizationFallbackSettings
-                integration={mockIntegration}
-            />,
-        )
+        renderComponent()
 
         // Check the loading spinner is rendered
         screen.getByText(/loading/i)
     })
 
     it('should update the language options when the integration is updated', () => {
-        const { rerender } = render(
-            <HandoverCustomizationFallbackSettings
-                integration={mockIntegration}
-            />,
-        )
+        const { rerender } = renderComponent()
 
         // New integration with different languages
         const newIntegration = {
@@ -184,11 +185,7 @@ describe('HandoverCustomizationFallbackSettings', () => {
         ).toHaveTextContent('Spanish error message')
     })
     it('renders correctly with initial language selected', () => {
-        render(
-            <HandoverCustomizationFallbackSettings
-                integration={mockIntegration}
-            />,
-        )
+        renderComponent()
 
         // Check if English is selected initially
         screen.getByText('English')
@@ -200,11 +197,7 @@ describe('HandoverCustomizationFallbackSettings', () => {
     })
 
     it('changes language and displays corresponding error message', async () => {
-        render(
-            <HandoverCustomizationFallbackSettings
-                integration={mockIntegration}
-            />,
-        )
+        renderComponent()
 
         // Open the language dropdown
         const languageSelect = screen.getByLabelText('Select language')
@@ -222,11 +215,7 @@ describe('HandoverCustomizationFallbackSettings', () => {
 
     describe('handover customization fallback error text', () => {
         it('renders the fallback initial error text from the context', () => {
-            render(
-                <HandoverCustomizationFallbackSettings
-                    integration={mockIntegration}
-                />,
-            )
+            renderComponent()
 
             // Check if textarea is rendered with correct value
             expect(
@@ -237,11 +226,7 @@ describe('HandoverCustomizationFallbackSettings', () => {
         it('renders the placeholder text when the textarea is empty', () => {
             mockFormValues['en-US'].fallbackMessage = ''
 
-            render(
-                <HandoverCustomizationFallbackSettings
-                    integration={mockIntegration}
-                />,
-            )
+            renderComponent()
 
             // Check if textarea is rendered with correct value
             expect(
@@ -250,11 +235,7 @@ describe('HandoverCustomizationFallbackSettings', () => {
         })
 
         it('should trigger the updateValue function when the textarea is changed', () => {
-            render(
-                <HandoverCustomizationFallbackSettings
-                    integration={mockIntegration}
-                />,
-            )
+            renderComponent()
 
             // Change the textarea value
             fireEvent.change(
@@ -273,11 +254,7 @@ describe('HandoverCustomizationFallbackSettings', () => {
 
     describe('form handlers', () => {
         it('calls handleOnCancel when Cancel button is clicked', () => {
-            render(
-                <HandoverCustomizationFallbackSettings
-                    integration={mockIntegration}
-                />,
-            )
+            renderComponent()
 
             const cancelButton = screen.getByText('Cancel')
             fireEvent.click(cancelButton)
@@ -286,11 +263,7 @@ describe('HandoverCustomizationFallbackSettings', () => {
         })
 
         it('calls handleOnSave when Save Changes button is clicked', () => {
-            render(
-                <HandoverCustomizationFallbackSettings
-                    integration={mockIntegration as any}
-                />,
-            )
+            renderComponent()
 
             const saveButton = screen.getByText('Save Changes')
             fireEvent.click(saveButton)
@@ -310,11 +283,7 @@ describe('HandoverCustomizationFallbackSettings', () => {
                 hasChanges: true,
             })
 
-            render(
-                <HandoverCustomizationFallbackSettings
-                    integration={mockIntegration as any}
-                />,
-            )
+            renderComponent()
 
             const saveButton = screen.getByRole('button', {
                 name: 'Save Changes',
@@ -323,4 +292,21 @@ describe('HandoverCustomizationFallbackSettings', () => {
             expect(saveButton).toHaveAttribute('aria-disabled', 'true')
         })
     })
+    test.each([true, false])(
+        'should set isFormDirty to %s when there are changes coming from the form hook',
+        (hasChanges) => {
+            ;(
+                useHandoverCustomizationFallbackSettingsForm as jest.Mock
+            ).mockReturnValue({
+                ...mockHookValues,
+                hasChanges,
+            })
+            renderComponent()
+
+            expect(mockSetIsFormDirty).toHaveBeenCalledWith(
+                StoreConfigFormSection.handoverCustomizationFallbackSettings,
+                hasChanges,
+            )
+        },
+    )
 })

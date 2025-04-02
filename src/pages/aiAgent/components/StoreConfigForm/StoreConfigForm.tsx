@@ -26,11 +26,11 @@ import { Tag } from 'models/aiAgent/types'
 import { HelpCenter } from 'models/helpCenter/types'
 import { useStoreConfigurationForm } from 'pages/aiAgent/hooks/useStoreConfigurationForm'
 import { getFormValuesFromStoreConfiguration } from 'pages/aiAgent/hooks/utils/configurationForm.utils'
+import { useAiAgentFormChangesContext } from 'pages/aiAgent/providers/AiAgentFormChangesContext'
 import { FormValues } from 'pages/aiAgent/types'
 import HelpCenterSelect, {
     EMPTY_HELP_CENTER_ID,
 } from 'pages/automate/common/components/HelpCenterSelect'
-import UnsavedChangesPrompt from 'pages/common/components/UnsavedChangesPrompt'
 import IconTooltip from 'pages/common/forms/IconTooltip/IconTooltip'
 import history from 'pages/history'
 import { getIntegrationsByTypes } from 'state/integrations/selectors'
@@ -45,6 +45,7 @@ import PostCompletionWizardModal from '../../AiAgentOnboardingWizard/PostComplet
 import { TicketPreview } from '../../AiAgentOnboardingWizard/TicketPreview'
 import {
     INITIAL_FORM_VALUES,
+    StoreConfigFormSection,
     WIZARD_POST_COMPLETION_QUERY_KEY,
     WIZARD_POST_COMPLETION_STATE,
 } from '../../constants'
@@ -64,6 +65,7 @@ import { HandoverTopicsModal } from '../HandoverTopicsModel/HandoverTopicsModal'
 import { PublicSourcesSection } from '../PublicSourcesSection/PublicSourcesSection'
 import TagList from '../TicketTag/TagList'
 import { ChannelsFormComponent } from './FormComponents/ChannelsFormComponent'
+import { StoreConfigUnsavedChangesPrompt } from './FormComponents/StoreConfigUnsavedChangesPrompt'
 import { ToneOfVoiceFormComponent } from './FormComponents/ToneOfVoiceFormComponent'
 import { isPreviewModeActivated } from './StoreConfigForm.utils'
 
@@ -199,6 +201,9 @@ export const StoreConfigForm = ({
 
     const { storeConfiguration, updateStoreConfiguration } =
         useAiAgentStoreConfigurationContext()
+
+    const { setIsFormDirty, setActionCallback } = useAiAgentFormChangesContext()
+
     const isCreate = storeConfiguration === undefined
 
     // because this selector is a function which return function we need to memoized it before send to reselect
@@ -445,14 +450,27 @@ export const StoreConfigForm = ({
         handleOnCancelActivateAiAgentNotification,
     } = useAiAgentOnboardingNotification({ shopName })
 
-    const onSubmit = () => {
-        const isAiAgentWasEnabledForChat =
+    const isAiAgentWasEnabledForChat = useMemo(
+        () =>
             storeConfiguration?.chatChannelDeactivatedDatetime !== null &&
-            formValues.chatChannelDeactivatedDatetime === null
-        const isAiAgentWasEnabledForEmail =
-            storeConfiguration?.emailChannelDeactivatedDatetime !== null &&
-            formValues.emailChannelDeactivatedDatetime === null
+            formValues.chatChannelDeactivatedDatetime === null,
+        [
+            storeConfiguration?.chatChannelDeactivatedDatetime,
+            formValues.chatChannelDeactivatedDatetime,
+        ],
+    )
 
+    const isAiAgentWasEnabledForEmail = useMemo(
+        () =>
+            storeConfiguration?.emailChannelDeactivatedDatetime !== null &&
+            formValues.emailChannelDeactivatedDatetime === null,
+        [
+            storeConfiguration?.emailChannelDeactivatedDatetime,
+            formValues.emailChannelDeactivatedDatetime,
+        ],
+    )
+
+    const onSubmit = useCallback(() => {
         const shouldCancelActivateNotification =
             isAiAgentWasEnabledForChat || isAiAgentWasEnabledForEmail
 
@@ -489,7 +507,22 @@ export const StoreConfigForm = ({
                 }
             },
         })
-    }
+    }, [
+        isAiAgentWasEnabledForChat,
+        isAiAgentWasEnabledForEmail,
+        handleOnCancelActivateAiAgentNotification,
+        isAiAgentOnboardingWizardEnabled,
+        externalKnowledgeSources,
+        shopName,
+        aiAgentMode,
+        shouldDisplayAiAgentConfigurationModal,
+        handleOnSave,
+        updateSettingsAfterAiAgentEnabled,
+        aiAgentTicketViewId,
+        setIsAiAgentConfigurationModalOpen,
+        setTicketModalViewed,
+        ticketModalViewed,
+    ])
 
     useEffect(() => {
         // Used as protection for the case when we disable AI agent feature flag Can be removed after the feature flag is removed
@@ -557,15 +590,30 @@ export const StoreConfigForm = ({
         }
     }
 
+    useEffect(() => {
+        setIsFormDirty(
+            tab === 'general'
+                ? StoreConfigFormSection.generalSettings
+                : StoreConfigFormSection.channelSettings,
+            isFormDirty,
+        )
+    }, [isFormDirty, setIsFormDirty, tab])
+
+    useEffect(() => {
+        setActionCallback(
+            tab === 'general'
+                ? StoreConfigFormSection.generalSettings
+                : StoreConfigFormSection.channelSettings,
+            {
+                onSave: onSubmit,
+                onDiscard: resetForm,
+            },
+        )
+    }, [setActionCallback, onSubmit, resetForm, tab])
+
     return (
         <>
-            <UnsavedChangesPrompt
-                onSave={onSubmit}
-                when={isFormDirty}
-                onDiscard={resetForm}
-                shouldRedirectAfterSave={true}
-            />
-
+            <StoreConfigUnsavedChangesPrompt />
             <div className={css.storeConfigSettings}>
                 <form onSubmit={onSubmit} className={css.automateView}>
                     {shouldDisplayGeneralSections && (

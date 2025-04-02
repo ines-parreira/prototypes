@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo, useState } from 'react'
+import React, { useCallback, useEffect, useMemo, useState } from 'react'
 
 import cn from 'classnames'
 
@@ -13,7 +13,9 @@ import { Language } from 'constants/languages'
 import { Label } from 'gorgias-design-system/Input/Label'
 import useUpdateEffect from 'hooks/useUpdateEffect'
 import { GorgiasChatIntegration } from 'models/integration/types'
+import { StoreConfigFormSection } from 'pages/aiAgent/constants'
 import { useHandoverCustomizationFallbackSettingsForm } from 'pages/aiAgent/hooks/useHandoverCustomizationFallbackSettingsForm'
+import { useAiAgentFormChangesContext } from 'pages/aiAgent/providers/AiAgentFormChangesContext'
 import { formFieldsConfiguration } from 'pages/aiAgent/utils/handoverCustomizationFallbackSettingsForm.utils'
 import { FlagLanguageItem } from 'pages/common/components/LanguageBulletList'
 import Caption from 'pages/common/forms/Caption/Caption'
@@ -55,6 +57,7 @@ const HandoverCustomizationFallbackSettings = ({ integration }: Props) => {
     const {
         formValues,
         updateValue,
+        hasChanges,
         handleOnSave,
         handleOnCancel,
         isLoading,
@@ -62,6 +65,8 @@ const HandoverCustomizationFallbackSettings = ({ integration }: Props) => {
     } = useHandoverCustomizationFallbackSettingsForm({
         integration,
     })
+
+    const { setIsFormDirty } = useAiAgentFormChangesContext()
 
     const availableLanguageItems = useMemo(
         () =>
@@ -106,6 +111,13 @@ const HandoverCustomizationFallbackSettings = ({ integration }: Props) => {
             getPrimaryLanguageFromChatConfig(integration.meta),
         )
     }, [integration])
+
+    useEffect(() => {
+        setIsFormDirty(
+            StoreConfigFormSection.handoverCustomizationFallbackSettings,
+            hasChanges,
+        )
+    }, [hasChanges, setIsFormDirty])
 
     if (isLoading) {
         return (

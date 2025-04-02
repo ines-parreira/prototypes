@@ -77,7 +77,11 @@ export const useConfigurationForm = ({
         setFormValues(defaultValues)
     }, [defaultValues])
 
-    const isFormDirty = !_isEqual(formValues, defaultValues)
+    const isFormDirty = useMemo(
+        () => !_isEqual(formValues, defaultValues),
+        [formValues, defaultValues],
+    )
+
     const isFieldDirty = useCallback(
         (key: keyof FormValues) => {
             return !_isEqual(formValues[key], DEFAULT_FORM_VALUES[key])
