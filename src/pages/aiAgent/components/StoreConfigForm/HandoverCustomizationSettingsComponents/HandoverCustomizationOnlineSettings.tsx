@@ -139,14 +139,9 @@ const HandoverCustomizationOnlineSettings = ({ integration }: Props) => {
                     error={undefined}
                 />
                 <Caption className="caption-regular mt-1">
-                    Write optional instructions for AI Agent to follow during
-                    handover. AI Agent will match your tone of voice. By
-                    default, it sends a fixed message based on your settings:
-                    ie.{' '}
-                    <i>
-                        “Thanks for reaching out! We will be with you in 5
-                        minutes.”
-                    </i>
+                    {`Write optional instructions for AI Agent to follow during
+                    handover. By default, AI Agent generates a message using
+                    your tone of voice.`}
                 </Caption>
             </div>
             <Alert type={AlertType.Info} icon="info" className="mb-4">

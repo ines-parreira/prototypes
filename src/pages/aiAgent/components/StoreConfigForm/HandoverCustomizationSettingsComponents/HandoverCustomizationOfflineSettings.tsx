@@ -109,10 +109,8 @@ const HandoverCustomizationOfflineSettings = ({ integration }: Props) => {
                     error={undefined}
                 />
                 <Caption className="caption-regular mt-1">
-                    {`Write optional instructions for AI Agent to follow during
-                    handover. AI Agent will match your tone of voice. By
-                    default, it sends a fixed message: ie. “Leave a message and
-                    we'll email you once we're online.”`}
+                    {`Write optional instructions for AI Agent to follow during handover. 
+                    By default, AI Agent generates a message using your tone of voice.`}
                 </Caption>
             </div>
 
