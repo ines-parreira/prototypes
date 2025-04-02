@@ -2,10 +2,9 @@ import React, { useCallback, useRef, useState } from 'react'
 
 import cn from 'classnames'
 
-import { Tooltip } from '@gorgias/merchant-ui-kit'
+import { Button, Tooltip } from '@gorgias/merchant-ui-kit'
 
 import useAppSelector from 'hooks/useAppSelector'
-import Button from 'pages/common/components/button/Button'
 import Dropdown from 'pages/common/components/dropdown/Dropdown'
 import DropdownBody from 'pages/common/components/dropdown/DropdownBody'
 import DropdownItem from 'pages/common/components/dropdown/DropdownItem'

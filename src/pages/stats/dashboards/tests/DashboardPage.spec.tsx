@@ -25,7 +25,6 @@ import { CREATE_REPORT_DESCRIPTION } from 'pages/stats/dashboards/CreateDashboar
 import { Dashboard } from 'pages/stats/dashboards/Dashboard'
 import { DashboardActionButton } from 'pages/stats/dashboards/DashboardActionButton'
 import {
-    DASHBOARD_ID_CTA,
     DASHBOARD_SCHEMA_ERROR,
     DashboardPage,
 } from 'pages/stats/dashboards/DashboardPage'
@@ -76,6 +75,8 @@ const useDashboardActionsMock = assumeMock(useDashboardActions)
 
 jest.mock('common/segment')
 const logEventMock = assumeMock(logEvent)
+
+const MOCKED_BUTTON_LABEL = 'some button name'
 
 describe('DashboardPage', () => {
     const defaultState = {
@@ -128,7 +129,7 @@ describe('DashboardPage', () => {
 
         DashboardActionButtonMock.mockImplementation(({ setOpenModal }) => (
             <button onClick={() => setOpenModal(true)}>
-                {DASHBOARD_ID_CTA}
+                {MOCKED_BUTTON_LABEL}
             </button>
         ))
 
@@ -199,7 +200,7 @@ describe('DashboardPage', () => {
 
         renderWithStore(<DashboardPage />, defaultState)
 
-        expect(screen.getByText(DASHBOARD_ID_CTA)).toBeInTheDocument()
+        expect(screen.getByText(MOCKED_BUTTON_LABEL)).toBeInTheDocument()
     })
 
     it('should not render actions button when user is not admin', () => {
@@ -212,7 +213,7 @@ describe('DashboardPage', () => {
         }
         renderWithStore(<DashboardPage />, state)
 
-        expect(screen.queryByText(DASHBOARD_ID_CTA)).not.toBeInTheDocument()
+        expect(screen.queryByText(MOCKED_BUTTON_LABEL)).not.toBeInTheDocument()
     })
 
     it('should render the loading spinner', () => {
@@ -257,7 +258,7 @@ describe('DashboardPage', () => {
     it('should report Event when Actions menu clicked', () => {
         renderWithStore(<DashboardPage />, defaultState)
 
-        const actionButton = screen.getByText(DASHBOARD_ID_CTA)
+        const actionButton = screen.getByText(MOCKED_BUTTON_LABEL)
 
         fireEvent.click(actionButton)
 
@@ -269,7 +270,7 @@ describe('DashboardPage', () => {
     it('should update charts when modal is saved', async () => {
         renderWithStore(<DashboardPage />, defaultState)
 
-        const actionButton = screen.getByText(DASHBOARD_ID_CTA)
+        const actionButton = screen.getByText(MOCKED_BUTTON_LABEL)
 
         fireEvent.click(actionButton)
 
@@ -294,7 +295,7 @@ describe('DashboardPage', () => {
     it('should notify on success and close modal', async () => {
         renderWithStore(<DashboardPage />, defaultState)
 
-        const actionButton = screen.getByText(DASHBOARD_ID_CTA)
+        const actionButton = screen.getByText(MOCKED_BUTTON_LABEL)
 
         fireEvent.click(actionButton)
 
@@ -323,7 +324,7 @@ describe('DashboardPage', () => {
     it('should show correct notification message when charts are updated', async () => {
         renderWithStore(<DashboardPage />, defaultState)
 
-        const actionButton = screen.getByText(DASHBOARD_ID_CTA)
+        const actionButton = screen.getByText(MOCKED_BUTTON_LABEL)
 
         fireEvent.click(actionButton)
 

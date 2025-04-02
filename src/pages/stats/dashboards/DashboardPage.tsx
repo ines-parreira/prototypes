@@ -26,7 +26,6 @@ import { getCurrentUser } from 'state/currentUser/selectors'
 import { isTeamLead } from 'utils'
 
 export const DASHBOARD_SCHEMA_ERROR = 'Dashboard schema error'
-export const DASHBOARD_ID_CTA = 'Actions'
 
 export const DashboardPage = () => {
     const { id } = useParams<{ id: string }>()

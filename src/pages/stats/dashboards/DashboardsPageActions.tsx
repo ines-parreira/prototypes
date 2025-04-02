@@ -103,7 +103,7 @@ export const DashboardsPageActions = ({
                             <DropdownItem
                                 key={label}
                                 onClick={callback}
-                                isDisabled={!!disabled}
+                                isDisabled={disabled}
                                 option={{ label, value: '' }}
                                 shouldCloseOnSelect
                             >

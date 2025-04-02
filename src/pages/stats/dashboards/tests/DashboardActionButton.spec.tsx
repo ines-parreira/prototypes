@@ -4,10 +4,7 @@ import { render, screen, waitFor, within } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 
 import { useDownloadDashboardData } from 'hooks/reporting/dashboards/useDownloadDashboardData'
-import {
-    DASHBOARD_ID_CTA,
-    DashboardActionButton,
-} from 'pages/stats/dashboards/DashboardActionButton'
+import { DashboardActionButton } from 'pages/stats/dashboards/DashboardActionButton'
 import {
     ADD_OR_REMOVE_REPORT_LABEL,
     CANCEL_CONFIRMATION_BUTTON_LABEL,
@@ -78,7 +75,7 @@ describe('DashboardActionButton', () => {
             />,
         )
 
-        userEvent.click(screen.getByRole('button', { name: DASHBOARD_ID_CTA }))
+        userEvent.click(screen.getByRole('button'))
 
         await waitFor(() => {
             expect(screen.getByText(DOWNLOAD_REPORT_LABEL)).toBeInTheDocument()
@@ -100,7 +97,7 @@ describe('DashboardActionButton', () => {
             />,
         )
 
-        userEvent.click(screen.getByRole('button', { name: DASHBOARD_ID_CTA }))
+        userEvent.click(screen.getByRole('button'))
 
         await waitFor(() => {
             userEvent.click(screen.getByText(DELETE_REPORT_LABEL))
@@ -130,7 +127,7 @@ describe('DashboardActionButton', () => {
             />,
         )
 
-        userEvent.click(screen.getByRole('button', { name: DASHBOARD_ID_CTA }))
+        userEvent.click(screen.getByRole('button'))
 
         await waitFor(() => {
             userEvent.click(screen.getByText(DELETE_REPORT_LABEL))
@@ -147,7 +144,7 @@ describe('DashboardActionButton', () => {
             />,
         )
 
-        userEvent.click(screen.getByRole('button', { name: DASHBOARD_ID_CTA }))
+        userEvent.click(screen.getByRole('button'))
 
         await waitFor(() => {
             userEvent.click(screen.getByText(DELETE_REPORT_LABEL))
