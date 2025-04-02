@@ -7,7 +7,6 @@ import { ReportingGranularity } from 'models/reporting/types'
 import { StatsFilters } from 'models/stat/types'
 import {
     mockedCategories,
-    mockedLocations,
     mockedProducts,
 } from 'pages/aiAgent/Onboarding/components/KnowledgePreview/constants'
 import { TopElement } from 'pages/aiAgent/Onboarding/components/TopElementsCard/types'
@@ -19,7 +18,6 @@ import { TwoDimensionalDataItem } from 'pages/stats/types'
 import { getTimezone } from 'state/currentUser/selectors'
 
 type KnowledgePreviewData = {
-    locations?: TopElement[]
     products?: Product[]
     averageOrders?: TwoDimensionalDataItem[]
     experienceScore?: number
@@ -87,7 +85,6 @@ export const useGetKnowledgePreviewData = ({
 
     return {
         data: {
-            locations: mockedLocations,
             products: mockedProducts,
             experienceScore: 50,
             categories: mockedCategories,

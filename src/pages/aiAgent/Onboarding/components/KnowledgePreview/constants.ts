@@ -1,29 +1,6 @@
 import { TopElement } from 'pages/aiAgent/Onboarding/components/TopElementsCard/types'
 import { Product } from 'pages/aiAgent/Onboarding/components/TopProductsCard/types'
 
-export const mockedLocations: TopElement[] = [
-    {
-        id: 'product-1',
-        title: 'New York',
-        percentage: 100,
-    },
-    {
-        id: 'product-2',
-        title: 'Paris',
-        percentage: 75,
-    },
-    {
-        id: 'product-3',
-        title: 'Los Angeles',
-        percentage: 40,
-    },
-    {
-        id: 'product-4',
-        title: 'Tokyo',
-        percentage: 5,
-    },
-]
-
 export const mockedCategories: TopElement[] = [
     {
         id: 'category-1',

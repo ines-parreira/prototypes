@@ -17,6 +17,7 @@ import { StepProps } from 'pages/aiAgent/Onboarding/components/steps/types'
 import { useGetHelpCentersByShopName } from 'pages/aiAgent/Onboarding/hooks/useGetHelpCentersByShopName'
 import { useGetKnowledgeStatusByShopName } from 'pages/aiAgent/Onboarding/hooks/useGetKnowledgeStatusByShopName'
 import { useGetOnboardingData } from 'pages/aiAgent/Onboarding/hooks/useGetOnboardingData'
+import { useTopLocations } from 'pages/aiAgent/Onboarding/hooks/useTopLocations'
 import { useUpdateOnboarding } from 'pages/aiAgent/Onboarding/hooks/useUpdateOnboarding'
 import { AiAgentScopes, WizardStepEnum } from 'pages/aiAgent/Onboarding/types'
 import { useEmailIntegrations } from 'pages/settings/contactForm/hooks/useEmailIntegrations'
@@ -55,6 +56,9 @@ jest.mock(
         useGetKnowledgeStatusByShopName: jest.fn(),
     }),
 )
+jest.mock('pages/aiAgent/Onboarding/hooks/useTopLocations')
+
+const mockUseTopLocations = assumeMock(useTopLocations)
 
 const mockUseGetOnboardingData = useGetOnboardingData as jest.Mock
 const mockUseUpdateOnboarding = useUpdateOnboarding as jest.Mock
@@ -116,6 +120,11 @@ describe('KnowledgeStep', () => {
         mockUseEmailIntegrations.mockReturnValue({
             emailIntegrations: true,
             defaultIntegration: true,
+        })
+
+        mockUseTopLocations.mockReturnValue({
+            data: [],
+            isLoading: false,
         })
     })
 

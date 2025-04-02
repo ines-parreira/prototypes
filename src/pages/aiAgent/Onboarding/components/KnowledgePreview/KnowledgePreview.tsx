@@ -17,6 +17,7 @@ import TopProductsCard from 'pages/aiAgent/Onboarding/components/TopProductsCard
 import { useGetAverageOrderValueLastMonth } from 'pages/aiAgent/Onboarding/hooks/useGetAverageOrderValueLastMonth'
 import { useGetKnowledgePreviewData } from 'pages/aiAgent/Onboarding/hooks/useGetKnowledgePreviewData'
 import { useGetRepeatRateLastMonth } from 'pages/aiAgent/Onboarding/hooks/useGetRepeatRateLastMonth'
+import { useTopLocations } from 'pages/aiAgent/Onboarding/hooks/useTopLocations'
 import TrackerCircle from 'pages/common/components/ProgressTracker/TrackerCircle'
 import { LineChart } from 'pages/stats/common/components/charts/LineChart/LineChart'
 import { getShopifyIntegrationByShopName } from 'state/integrations/selectors'
@@ -46,6 +47,9 @@ const KnowledgePreview: React.FC<Props> = ({ shopName }) => {
         useGetAverageOrderValueLastMonth({
             shopIntegrationId: shopifyIntegration.id,
         })
+
+    const { data: topLocationsData, isLoading: isLoadingTopLocations } =
+        useTopLocations({ shopName })
 
     const graphOptions = {
         elements: {
@@ -116,7 +120,8 @@ const KnowledgePreview: React.FC<Props> = ({ shopName }) => {
     const topLocationsCard = (
         <TopElementsCard
             title="Top Locations"
-            topElements={data?.locations ?? []}
+            topElements={topLocationsData ?? []}
+            isLoading={isLoadingTopLocations}
         />
     )
 

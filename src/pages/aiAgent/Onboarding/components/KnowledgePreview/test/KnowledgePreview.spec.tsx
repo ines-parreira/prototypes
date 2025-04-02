@@ -5,27 +5,22 @@ import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
 import { appQueryClient } from 'api/queryClient'
-import useTopProducts from 'pages/aiAgent/Onboarding/components/TopProductsCard/hooks'
-import { useGetKnowledgePreviewData } from 'pages/aiAgent/Onboarding/hooks/useGetKnowledgePreviewData'
-import { assumeMock } from 'utils/testing'
-
-import { useGetAverageOrderValueLastMonth } from '../../../hooks/useGetAverageOrderValueLastMonth'
-import { useGetRepeatRateLastMonth } from '../../../hooks/useGetRepeatRateLastMonth'
 import {
     mockedAverageOrders,
     mockedCategories,
-    mockedLocations,
     mockedProducts,
-} from '../constants'
-import KnowledgePreview from '../KnowledgePreview'
-
-jest.mock('pages/aiAgent/Onboarding/components/TopProductsCard/hooks')
-const useTopProductsMock = assumeMock(useTopProducts)
+} from 'pages/aiAgent/Onboarding/components/KnowledgePreview/constants'
+import KnowledgePreview from 'pages/aiAgent/Onboarding/components/KnowledgePreview/KnowledgePreview'
+import useTopProducts from 'pages/aiAgent/Onboarding/components/TopProductsCard/hooks'
+import { useGetAverageOrderValueLastMonth } from 'pages/aiAgent/Onboarding/hooks/useGetAverageOrderValueLastMonth'
+import { useGetKnowledgePreviewData } from 'pages/aiAgent/Onboarding/hooks/useGetKnowledgePreviewData'
+import { useGetRepeatRateLastMonth } from 'pages/aiAgent/Onboarding/hooks/useGetRepeatRateLastMonth'
+import { useTopLocations } from 'pages/aiAgent/Onboarding/hooks/useTopLocations'
+import { assumeMock } from 'utils/testing'
 
 const mockStore = configureMockStore([thunk])()
 
 const defaultPreviewData = {
-    locations: mockedLocations,
     products: mockedProducts,
     experienceScore: 50,
     categories: mockedCategories,
@@ -44,6 +39,12 @@ const mockUseGetAverageOrderValueLastMonth = assumeMock(
 
 jest.mock('pages/aiAgent/Onboarding/hooks/useGetRepeatRateLastMonth')
 const mockUseGetRepeatRateLastMonth = assumeMock(useGetRepeatRateLastMonth)
+
+jest.mock('pages/aiAgent/Onboarding/components/TopProductsCard/hooks')
+const useTopProductsMock = assumeMock(useTopProducts)
+
+jest.mock('pages/aiAgent/Onboarding/hooks/useTopLocations')
+const mockUseTopLocations = assumeMock(useTopLocations)
 
 const renderComponent = () => {
     return render(
@@ -73,6 +74,10 @@ describe('KnowledgePreview', () => {
         mockUseGetRepeatRateLastMonth.mockReturnValue({
             isLoading: false,
             data: 2,
+        })
+        mockUseTopLocations.mockReturnValue({
+            data: [],
+            isLoading: false,
         })
     })
 

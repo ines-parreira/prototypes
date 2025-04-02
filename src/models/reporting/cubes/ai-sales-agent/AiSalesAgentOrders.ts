@@ -23,6 +23,7 @@ export enum AiSalesAgentOrdersDimension {
     DiscountCode = 'AiSalesAgentOrders.discountCode',
     PeriodEnd = 'AiSalesAgentOrders.periodEnd',
     PeriodStart = 'AiSalesAgentOrders.periodStart',
+    ShippingCity = 'AiSalesAgentOrders.shippingCity',
 }
 
 export enum AiSalesAgentOrdersFilterMember {

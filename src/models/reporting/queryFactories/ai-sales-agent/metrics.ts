@@ -127,22 +127,30 @@ export const gmvInfluencedQueryFactory = (
 export const totalNumberOfOrderQueryFactory = (
     filters: StatsFilters,
     timezone: string,
-): ReportingQuery<AiSalesAgentOrdersCube> => ({
-    measures: [AiSalesAgentOrdersMeasure.Count],
-    dimensions: [],
-    filters: [
-        {
-            member: AiSalesAgentOrdersDimension.IsInfluenced,
-            operator: ReportingFilterOperator.Equals,
-            values: ['1'],
-        },
-        ...statsFiltersToReportingFilters(
-            aiSalesAgentOrdersDefaultFiltersMembers,
-            filters,
-        ),
-    ],
-    timezone,
-})
+    onlyInfluenced = false,
+): ReportingQuery<AiSalesAgentOrdersCube> => {
+    const baseFilters = statsFiltersToReportingFilters(
+        aiSalesAgentOrdersDefaultFiltersMembers,
+        filters,
+    )
+
+    const influencedFilter = onlyInfluenced
+        ? [
+              {
+                  member: AiSalesAgentOrdersDimension.IsInfluenced,
+                  operator: ReportingFilterOperator.Equals,
+                  values: ['1'],
+              },
+          ]
+        : []
+
+    return {
+        measures: [AiSalesAgentOrdersMeasure.Count],
+        dimensions: [],
+        filters: [...influencedFilter, ...baseFilters],
+        timezone,
+    }
+}
 
 export const totalNumberofSalesOpportunityConvFromAIAgentQueryFactory = (
     filters: StatsFilters,
@@ -373,6 +381,23 @@ export const topProductRecommendationsQueryFactory = (
     order: [[AiSalesAgentOrdersMeasure.Count, OrderDirection.Desc]],
     limit: 10, // fetch more just in case
 })
+
+export const topLocationsRecommendationsQueryFactory = (
+    filters: StatsFilters,
+): ReportingQuery<AiSalesAgentOrdersCube> => {
+    return {
+        measures: [AiSalesAgentOrdersMeasure.Count],
+        dimensions: [AiSalesAgentOrdersDimension.ShippingCity],
+        filters: [
+            ...statsFiltersToReportingFilters(
+                aiSalesAgentOrdersDefaultFiltersMembers,
+                filters,
+            ),
+        ],
+        order: [[AiSalesAgentOrdersMeasure.Count, OrderDirection.Desc]],
+        limit: 4,
+    }
+}
 
 export const discountCodesOfferedQueryFactory = (
     filters: StatsFilters,
