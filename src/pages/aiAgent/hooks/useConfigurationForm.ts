@@ -53,14 +53,20 @@ export const useConfigurationForm = ({
     // could have used a useReducer instead, but keeping it simple for now
     const [formValues, setFormValues] = useState<FormValues>(defaultValues)
 
-    const { storeConfiguration } = useAiAgentStoreConfigurationContext()
+    const { storeConfiguration, isLoading: isStoreConfigurationLoading } =
+        useAiAgentStoreConfigurationContext()
 
     // Only update form values if the form hasn't been initialized yet
     // This is used to prevent the form from being updated when the store configuration is updated
     const isInitializedRef = useRef(false)
 
+    // This is used to reset the form values when the shop name changes
     useEffect(() => {
-        if (!isInitializedRef.current) {
+        isInitializedRef.current = false
+    }, [shopName])
+
+    useEffect(() => {
+        if (!isInitializedRef.current && !isStoreConfigurationLoading) {
             if (storeConfiguration) {
                 setFormValues(
                     getFormValuesFromStoreConfiguration(storeConfiguration),
@@ -71,7 +77,7 @@ export const useConfigurationForm = ({
 
             isInitializedRef.current = true
         }
-    }, [defaultValues, storeConfiguration])
+    }, [defaultValues, storeConfiguration, isStoreConfigurationLoading])
 
     const resetForm = useCallback(() => {
         setFormValues(defaultValues)
