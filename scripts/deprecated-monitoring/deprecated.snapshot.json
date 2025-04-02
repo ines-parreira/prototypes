@@ -1,8 +1,8 @@
 {
   "summary": {
-    "totalEntries": 33,
-    "totalUsages": 1166,
-    "reportGeneratedAt": "2025-04-01T13:12:03.435Z"
+    "totalEntries": 34,
+    "totalUsages": 1174,
+    "reportGeneratedAt": "2025-04-02T12:09:42.359Z"
   },
   "entries": [
     {
@@ -739,7 +739,7 @@
       "type": "ui-kit-migration",
       "entries": [
         {
-          "usageCount": 592,
+          "usageCount": 589,
           "name": "Button",
           "nodeType": "VariableDeclaration",
           "deprecationDate": "2024-03-04",
@@ -1277,10 +1277,8 @@
               "src/pages/stats/automate/ai-agent/AiAgentStatsEmptyState.tsx",
               "src/pages/stats/automate/aiSalesAgent/AiSalesAgentOverviewDownloadButton.tsx",
               "src/pages/stats/common/PeriodPicker.tsx",
-              "src/pages/stats/common/components/Table/EditTableColumns.tsx",
               "src/pages/stats/common/drill-down/DrillDownDownloadButton.tsx",
               "src/pages/stats/common/filters/AddFilterButton.tsx",
-              "src/pages/stats/common/filters/SavedFilterMenu.tsx",
               "src/pages/stats/common/filters/SavedFiltersActions/ApplySavedFilters/ApplySavedFilters.tsx",
               "src/pages/stats/common/filters/SavedFiltersActions/SaveFilters/SaveFilters.tsx",
               "src/pages/stats/common/filters/SavedFiltersPanel.tsx",
@@ -1288,7 +1286,6 @@
               "src/pages/stats/convert/components/RequestABTestModal/RequestABTestModal.tsx",
               "src/pages/stats/convert/components/ViewABTestModal/ViewABTestModal.tsx",
               "src/pages/stats/dashboards/ChartsActionMenu/AddChartToDashboardModal.tsx",
-              "src/pages/stats/dashboards/DashboardActionButton.tsx",
               "src/pages/stats/dashboards/Dashboards.tsx",
               "src/pages/stats/dashboards/DashboardsModal/DashboardsModal.tsx",
               "src/pages/stats/help-center/components/AIBanner/AIBanner.tsx",
@@ -1655,6 +1652,33 @@
           },
           "defaultImportNames": [
             "ToggleInput"
+          ]
+        },
+        {
+          "usageCount": 11,
+          "name": "ShortcutIcon",
+          "nodeType": "VariableDeclaration",
+          "deprecationDate": "2025-04-02",
+          "deprecationType": "ui-kit-migration",
+          "declarationFile": "src/pages/common/components/ShortcutIcon/ShortcutIcon.tsx",
+          "usageUrls": {
+            "named": [],
+            "default": [
+              "src/common/navigation/components/GlobalNavigationSpotlight.tsx",
+              "src/common/navigation/components/NavBarButtonTooltip.tsx",
+              "src/pages/aiAgent/actions/components/ActionEventSidePanel.tsx",
+              "src/pages/automate/workflows/editor/visualBuilder/EditorDrawerHeader.tsx",
+              "src/pages/common/components/PlaceCallNavbarButton.tsx",
+              "src/pages/common/components/ShortcutIcon/ShortcutIcon.stories.tsx",
+              "src/pages/common/components/ShortcutIcon/tests/ShortcutIcon.spec.tsx",
+              "src/pages/common/components/Spotlight/SpotlightButton.tsx",
+              "src/pages/common/components/Spotlight/SpotlightModal.tsx",
+              "src/pages/common/components/Spotlight/SpotlightRow.tsx",
+              "src/pages/tickets/detail/components/TicketNavigation/TicketNavigationArrowPagination.tsx"
+            ]
+          },
+          "defaultImportNames": [
+            "ShortcutIcon"
           ]
         },
         {
