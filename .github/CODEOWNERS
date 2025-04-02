@@ -36,23 +36,23 @@ src/state/entities/selfServiceConfigurations @gorgias/conv-ai-actions
 src/state/ui/selfServiceConfigurations @gorgias/conv-ai-actions
 src/models/workflows @gorgias/conv-ai-actions
 
-# Help center scope @gorgias/conv-ai-orchestration
+# Help center scope @gorgias/conv-ai-actions
 
-src/rest_api/help_center_api @gorgias/conv-ai-orchestration
-src/config/helpCenter.ts @gorgias/conv-ai-orchestration
-src/config/help_center_texts.json @gorgias/conv-ai-orchestration
-src/pages/settings/helpCenter @gorgias/conv-ai-orchestration
-src/models/helpCenter @gorgias/conv-ai-orchestration
-src/hooks/helpCenter @gorgias/conv-ai-orchestration
-src/state/entities/helpCenter @gorgias/conv-ai-orchestration
+src/rest_api/help_center_api @gorgias/conv-ai-actions
+src/config/helpCenter.ts @gorgias/conv-ai-actions
+src/config/help_center_texts.json @gorgias/conv-ai-actions
+src/pages/settings/helpCenter @gorgias/conv-ai-actions
+src/models/helpCenter @gorgias/conv-ai-actions
+src/hooks/helpCenter @gorgias/conv-ai-actions
+src/state/entities/helpCenter @gorgias/conv-ai-actions
 
-# Contact Form scope @gorgias/conv-ai-orchestration
+# Contact Form scope @gorgias/conv-ai-actions
 
-src/state/contactForm @gorgias/conv-ai-orchestration
-src/pages/settings/contactForm @gorgias/conv-ai-orchestration
-src/state/ui/contactForm @gorgias/conv-ai-orchestration
-src/state/entities/contactForm @gorgias/conv-ai-orchestration
-src/models/contactForm @gorgias/conv-ai-orchestration
+src/state/contactForm @gorgias/conv-ai-actions
+src/pages/settings/contactForm @gorgias/conv-ai-actions
+src/state/ui/contactForm @gorgias/conv-ai-actions
+src/state/entities/contactForm @gorgias/conv-ai-actions
+src/models/contactForm @gorgias/conv-ai-actions
 
 # Marketing suite scope @gorgias/marketing-suite
 
@@ -63,15 +63,15 @@ src/pages/stats/automate/aiSalesAgent @gorgias/marketing-suite
 src/pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationCampaigns @gorgias/marketing-suite
 src/pages/aiAgent/Onboarding/ @gorgias/marketing-suite
 
-# Chat widget scope @gorgias/conv-ai-knowledge-insights
+# Chat widget scope @gorgias/conv-ai-actions
 
-src/pages/integrations/integration/components/gorgias_chat @gorgias/conv-ai-knowledge-insights
-src/config/integrations/gorgias_chat.ts @gorgias/conv-ai-knowledge-insights
-src/config/integrations/tests/gorgias_chat.spec.ts @gorgias/conv-ai-knowledge-insights
-src/models/integration/types/gorgiasChat.ts @gorgias/conv-ai-knowledge-insights
-src/state/integrations/actions/gorgias-chat.actions.ts @gorgias/conv-ai-knowledge-insights
-src/state/integrations/tests/gorgias-chat.actions.spec.ts @gorgias/conv-ai-knowledge-insights
-src/rest_api/gorgias_chat_protected_api @gorgias/conv-ai-knowledge-insights
+src/pages/integrations/integration/components/gorgias_chat @gorgias/conv-ai-actions
+src/config/integrations/gorgias_chat.ts @gorgias/conv-ai-actions
+src/config/integrations/tests/gorgias_chat.spec.ts @gorgias/conv-ai-actions
+src/models/integration/types/gorgiasChat.ts @gorgias/conv-ai-actions
+src/state/integrations/actions/gorgias-chat.actions.ts @gorgias/conv-ai-actions
+src/state/integrations/tests/gorgias-chat.actions.spec.ts @gorgias/conv-ai-actions
+src/rest_api/gorgias_chat_protected_api @gorgias/conv-ai-actions
 
 # Support AgentXP scope @gorgias/support-agent-xp
 
