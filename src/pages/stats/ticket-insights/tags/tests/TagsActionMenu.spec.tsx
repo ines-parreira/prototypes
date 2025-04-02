@@ -1,5 +1,6 @@
 import { fireEvent, render, screen, waitFor } from '@testing-library/react'
 
+import { useFlag } from 'core/flags'
 import {
     ReportName,
     useNotifyOnTimeReferenceChange,
@@ -20,6 +21,9 @@ import {
 import { useDownloadTagsReportData } from 'services/reporting/tagsReportingService'
 import { assumeMock } from 'utils/testing'
 
+jest.mock('core/flags')
+const useFlagMock = assumeMock(useFlag)
+
 jest.mock('hooks/reporting/ticket-insights/useTicketTimeReference')
 const useTicketTimeReferenceMock = assumeMock(useTicketTimeReference)
 
@@ -36,6 +40,8 @@ describe('<TagsActionMenu />', () => {
     const mockDownload = jest.fn()
 
     beforeEach(() => {
+        useFlagMock.mockReturnValue(true)
+
         useTicketTimeReferenceMock.mockReturnValue([
             TicketTimeReference.TaggedAt,
             mockSetTimeReference,
