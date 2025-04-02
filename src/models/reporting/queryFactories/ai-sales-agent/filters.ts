@@ -1,5 +1,6 @@
 import { AiSalesAgentConversationsFilterMember } from 'models/reporting/cubes/ai-sales-agent/AiSalesAgentConversations'
 import { AiSalesAgentOrdersFilterMember } from 'models/reporting/cubes/ai-sales-agent/AiSalesAgentOrders'
+import { AiSalesAgentOrderCustomersFilterMember } from 'models/reporting/cubes/ai-sales-agent/AiSalesAgentOrdersCustomers'
 import { ConvertTrackingEventsDimension } from 'models/reporting/cubes/convert/ConvertTrackingEventsCube'
 import {
     ReportingFilter,
@@ -13,6 +14,13 @@ export const aiSalesAgentOrdersDefaultFiltersMembers: StatsFiltersMembers = {
     periodEnd: AiSalesAgentOrdersFilterMember.PeriodEnd,
     storeIntegrations: AiSalesAgentOrdersFilterMember.IntegrationId,
 }
+
+export const aiSalesAgentOrderCustomersDefaultFiltersMembers: StatsFiltersMembers =
+    {
+        periodStart: AiSalesAgentOrderCustomersFilterMember.PeriodStart,
+        periodEnd: AiSalesAgentOrderCustomersFilterMember.PeriodEnd,
+        storeIntegrations: AiSalesAgentOrderCustomersFilterMember.IntegrationId,
+    }
 
 export const aiSalesAgentConversationsDefaultFiltersMembers: StatsFiltersMembers =
     {

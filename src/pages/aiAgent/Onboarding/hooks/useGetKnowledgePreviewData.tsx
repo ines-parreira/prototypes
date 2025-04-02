@@ -1,6 +1,6 @@
 import { useMemo } from 'react'
 
-import moment from 'moment/moment'
+import moment from 'moment'
 
 import useAppSelector from 'hooks/useAppSelector'
 import { ReportingGranularity } from 'models/reporting/types'
@@ -17,6 +17,9 @@ import { LogicalOperatorEnum } from 'pages/stats/common/components/Filter/consta
 import { TwoDimensionalDataItem } from 'pages/stats/types'
 import { getTimezone } from 'state/currentUser/selectors'
 
+import { useGetAverageOrderValue } from './useGetAverageOrderValue'
+import { useGetRepeatRate } from './useGetRepeatRate'
+
 type KnowledgePreviewData = {
     products?: Product[]
     averageOrders?: TwoDimensionalDataItem[]
@@ -24,6 +27,9 @@ type KnowledgePreviewData = {
     categories?: TopElement[]
     averageDiscount?: number
     repeatRate?: number
+    averageOrderValue?: number
+    isAverageOrderValueLoading?: boolean
+    isRepeatRateLoading?: boolean
 }
 
 const useProcessedAverageOrdersPerDayTrend = (
@@ -82,6 +88,11 @@ export const useGetKnowledgePreviewData = ({
         filters,
         timezone,
     )
+    const { data: repeatRate, isLoading: isRepeatRateLoading } =
+        useGetRepeatRate(filters, timezone)
+
+    const { data: averageOrderValue, isLoading: isAverageOrderValueLoading } =
+        useGetAverageOrderValue(filters, timezone)
 
     return {
         data: {
@@ -91,8 +102,11 @@ export const useGetKnowledgePreviewData = ({
             averageDiscount: averageDiscountPercentage.isFetching
                 ? undefined
                 : (averageDiscountPercentage.data?.value ?? 0),
-            repeatRate: 2,
+            repeatRate,
+            isRepeatRateLoading,
             averageOrders: averageOrders,
+            averageOrderValue,
+            isAverageOrderValueLoading,
         } satisfies KnowledgePreviewData,
     }
 }

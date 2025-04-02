@@ -3,17 +3,30 @@ import { Provider } from 'react-redux'
 
 import { useMetricPerDimension } from 'hooks/reporting/useMetricPerDimension'
 import { AiSalesAgentOrdersMeasure } from 'models/reporting/cubes/ai-sales-agent/AiSalesAgentOrders'
+import { StatsFilters } from 'models/stat/types'
+import { LogicalOperatorEnum } from 'pages/stats/common/components/Filter/constants'
 import { assumeMock, mockStore } from 'utils/testing'
 
-import { useGetAverageOrderValueLastMonth } from '../useGetAverageOrderValueLastMonth'
+import { useGetAverageOrderValue } from '../useGetAverageOrderValue'
 
 const store = mockStore({})
+
+const filters: StatsFilters = {
+    period: {
+        start_datetime: '2021-01-01T00:00:00Z',
+        end_datetime: '2021-01-02T00:00:00Z',
+    },
+    storeIntegrations: {
+        operator: LogicalOperatorEnum.ONE_OF,
+        values: [12345],
+    },
+}
 
 jest.mock('hooks/reporting/useMetricPerDimension')
 const mockUseMetricPerDimension = assumeMock(useMetricPerDimension)
 
-const renderHook = (hook: typeof useGetAverageOrderValueLastMonth) => {
-    return reactRenderHook(hook, {
+const renderHook = (hook: typeof useGetAverageOrderValue) => {
+    return reactRenderHook(() => hook(filters, 'UTC'), {
         wrapper: ({ children }) => (
             <Provider store={store}>{children}</Provider>
         ),
@@ -29,7 +42,7 @@ describe('useGetAverageOrderValue', () => {
         } as any)
 
         const { result } = renderHook(() =>
-            useGetAverageOrderValueLastMonth({ shopIntegrationId: 12345 }),
+            useGetAverageOrderValue(filters, 'UTC'),
         )
 
         expect(result.current.data).toEqual(0)
@@ -43,7 +56,7 @@ describe('useGetAverageOrderValue', () => {
         } as any)
 
         const { result } = renderHook(() =>
-            useGetAverageOrderValueLastMonth({ shopIntegrationId: 12345 }),
+            useGetAverageOrderValue(filters, 'UTC'),
         )
 
         expect(result.current.data).toEqual(0)
@@ -57,7 +70,7 @@ describe('useGetAverageOrderValue', () => {
         } as any)
 
         const { result } = renderHook(() =>
-            useGetAverageOrderValueLastMonth({ shopIntegrationId: 12345 }),
+            useGetAverageOrderValue(filters, 'UTC'),
         )
 
         expect(result.current.data).toEqual(0)
@@ -73,7 +86,7 @@ describe('useGetAverageOrderValue', () => {
         } as any)
 
         const { result } = renderHook(() =>
-            useGetAverageOrderValueLastMonth({ shopIntegrationId: 12345 }),
+            useGetAverageOrderValue(filters, 'UTC'),
         )
 
         expect(result.current.data).toEqual(0)
@@ -94,7 +107,7 @@ describe('useGetAverageOrderValue', () => {
         } as any)
 
         const { result } = renderHook(() =>
-            useGetAverageOrderValueLastMonth({ shopIntegrationId: 12345 }),
+            useGetAverageOrderValue(filters, 'UTC'),
         )
 
         expect(result.current.data).toEqual(10)

@@ -1,6 +1,8 @@
 import { renderHook as reactRenderHook } from '@testing-library/react-hooks'
 import { Provider } from 'react-redux'
 
+import { useGetAverageOrderValue } from 'pages/aiAgent/Onboarding/hooks/useGetAverageOrderValue'
+import { useGetRepeatRate } from 'pages/aiAgent/Onboarding/hooks/useGetRepeatRate'
 import { useAverageDiscountPercentage } from 'pages/stats/automate/aiSalesAgent/useAverageDiscountPercentage'
 import { useAverageOrdersPerDayTrend } from 'pages/stats/automate/aiSalesAgent/useAverageOrdersPerDayTrend'
 import { assumeMock, mockStore } from 'utils/testing'
@@ -17,6 +19,12 @@ jest.mock('pages/stats/automate/aiSalesAgent/useAverageDiscountPercentage')
 const useAverageDiscountPercentageMock = assumeMock(
     useAverageDiscountPercentage,
 )
+
+jest.mock('pages/aiAgent/Onboarding/hooks/useGetAverageOrderValue')
+const mockUseGetAverageOrderValue = assumeMock(useGetAverageOrderValue)
+
+jest.mock('pages/aiAgent/Onboarding/hooks/useGetRepeatRate')
+const mockUseGetRepeatRate = assumeMock(useGetRepeatRate)
 
 const mockAverageOrdersPerDayRawData = () =>
     mockedAverageOrders[0].values.map((item) => ({
@@ -39,6 +47,15 @@ describe('useGetKnowledgePreviewData', () => {
         mockUseAverageOrdersPerDayTrend.mockReturnValue({
             data: [mockAverageOrdersPerDayRawData()] as any,
         } as any)
+
+        mockUseGetAverageOrderValue.mockReturnValue({
+            isLoading: false,
+            data: 950,
+        })
+        mockUseGetRepeatRate.mockReturnValue({
+            isLoading: false,
+            data: 2,
+        })
 
         useAverageDiscountPercentageMock.mockReturnValue({
             isFetching: true,

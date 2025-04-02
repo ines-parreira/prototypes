@@ -12,9 +12,9 @@ import {
 } from 'pages/aiAgent/Onboarding/components/KnowledgePreview/constants'
 import KnowledgePreview from 'pages/aiAgent/Onboarding/components/KnowledgePreview/KnowledgePreview'
 import useTopProducts from 'pages/aiAgent/Onboarding/components/TopProductsCard/hooks'
-import { useGetAverageOrderValueLastMonth } from 'pages/aiAgent/Onboarding/hooks/useGetAverageOrderValueLastMonth'
+import { useGetAverageOrderValue } from 'pages/aiAgent/Onboarding/hooks/useGetAverageOrderValue'
 import { useGetKnowledgePreviewData } from 'pages/aiAgent/Onboarding/hooks/useGetKnowledgePreviewData'
-import { useGetRepeatRateLastMonth } from 'pages/aiAgent/Onboarding/hooks/useGetRepeatRateLastMonth'
+import { useGetRepeatRate } from 'pages/aiAgent/Onboarding/hooks/useGetRepeatRate'
 import { useTopLocations } from 'pages/aiAgent/Onboarding/hooks/useTopLocations'
 import { assumeMock } from 'utils/testing'
 
@@ -27,18 +27,19 @@ const defaultPreviewData = {
     averageDiscount: 10,
     averageOrders: mockedAverageOrders,
     repeatRate: 2,
+    averageOrderValue: 950,
+    isAverageOrderValueLoading: false,
+    isRepeatRateLoading: false,
 }
 
 jest.mock('pages/aiAgent/Onboarding/hooks/useGetKnowledgePreviewData')
 const mockUseGetKnowledgePreviewData = assumeMock(useGetKnowledgePreviewData)
 
-jest.mock('pages/aiAgent/Onboarding/hooks/useGetAverageOrderValueLastMonth')
-const mockUseGetAverageOrderValueLastMonth = assumeMock(
-    useGetAverageOrderValueLastMonth,
-)
+jest.mock('pages/aiAgent/Onboarding/hooks/useGetAverageOrderValue')
+const mockUseGetAverageOrderValue = assumeMock(useGetAverageOrderValue)
 
-jest.mock('pages/aiAgent/Onboarding/hooks/useGetRepeatRateLastMonth')
-const mockUseGetRepeatRateLastMonth = assumeMock(useGetRepeatRateLastMonth)
+jest.mock('pages/aiAgent/Onboarding/hooks/useGetRepeatRate')
+const mockUseGetRepeatRate = assumeMock(useGetRepeatRate)
 
 jest.mock('pages/aiAgent/Onboarding/components/TopProductsCard/hooks')
 const useTopProductsMock = assumeMock(useTopProducts)
@@ -67,11 +68,11 @@ describe('KnowledgePreview', () => {
             isLoading: false,
             data: [],
         })
-        mockUseGetAverageOrderValueLastMonth.mockReturnValue({
+        mockUseGetAverageOrderValue.mockReturnValue({
             isLoading: false,
             data: 950,
         })
-        mockUseGetRepeatRateLastMonth.mockReturnValue({
+        mockUseGetRepeatRate.mockReturnValue({
             isLoading: false,
             data: 2,
         })

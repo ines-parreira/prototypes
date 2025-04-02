@@ -3,15 +3,15 @@ import { useMemo } from 'react'
 import { useMetricPerDimension } from 'hooks/reporting/useMetricPerDimension'
 import { AiSalesAgentOrderCustomersMeasure } from 'models/reporting/cubes/ai-sales-agent/AiSalesAgentOrdersCustomers'
 import { repeatRateQueryFactory } from 'models/reporting/queryFactories/ai-sales-agent/metrics'
+import { StatsFilters } from 'models/stat/types'
 import safeDivide from 'pages/stats/automate/aiSalesAgent/util/safeDivide'
 
-export const useGetRepeatRateLastMonth = ({
-    shopIntegrationId,
-}: {
-    shopIntegrationId: number
-}): { data: number; isLoading: boolean } => {
+export const useGetRepeatRate = (
+    filters: StatsFilters,
+    timezone: string,
+): { data: number; isLoading: boolean } => {
     const { data, isFetching, isError } = useMetricPerDimension(
-        repeatRateQueryFactory(shopIntegrationId),
+        repeatRateQueryFactory(filters, timezone),
     )
 
     const formattedData = useMemo(() => {

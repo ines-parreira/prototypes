@@ -2,20 +2,20 @@ import { useMemo } from 'react'
 
 import { useMetricPerDimension } from 'hooks/reporting/useMetricPerDimension'
 import { AiSalesAgentOrdersMeasure } from 'models/reporting/cubes/ai-sales-agent/AiSalesAgentOrders'
-import { averageOrderValueLastMonthQueryFactory } from 'models/reporting/queryFactories/ai-sales-agent/metrics'
+import { averageOrderValuePreviewQueryFactory } from 'models/reporting/queryFactories/ai-sales-agent/metrics'
+import { StatsFilters } from 'models/stat/types'
 import safeDivide from 'pages/stats/automate/aiSalesAgent/util/safeDivide'
 
-export const useGetAverageOrderValueLastMonth = ({
-    shopIntegrationId,
-}: {
-    shopIntegrationId: number
-}): { data: number; isLoading: boolean } => {
+export const useGetAverageOrderValue = (
+    filters: StatsFilters,
+    timezone: string,
+): { data: number; isLoading: boolean } => {
     const { data, isFetching, isError } = useMetricPerDimension(
-        averageOrderValueLastMonthQueryFactory(shopIntegrationId),
+        averageOrderValuePreviewQueryFactory(filters, timezone),
     )
 
     const formattedData = useMemo(() => {
-        if (!data || isFetching || isError) {
+        if (!data || data.allData.length === 0 || isFetching || isError) {
             return 0
         }
 

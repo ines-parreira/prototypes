@@ -3,24 +3,37 @@ import { Provider } from 'react-redux'
 
 import { useMetricPerDimension } from 'hooks/reporting/useMetricPerDimension'
 import { AiSalesAgentOrderCustomersMeasure } from 'models/reporting/cubes/ai-sales-agent/AiSalesAgentOrdersCustomers'
+import { StatsFilters } from 'models/stat/types'
+import { LogicalOperatorEnum } from 'pages/stats/common/components/Filter/constants'
 import { assumeMock, mockStore } from 'utils/testing'
 
-import { useGetRepeatRateLastMonth } from '../useGetRepeatRateLastMonth'
+import { useGetRepeatRate } from '../useGetRepeatRate'
 
 const store = mockStore({})
 
 jest.mock('hooks/reporting/useMetricPerDimension')
 const mockUseMetricPerDimension = assumeMock(useMetricPerDimension)
 
-const renderHook = (hook: typeof useGetRepeatRateLastMonth) => {
-    return reactRenderHook(hook, {
+const filters: StatsFilters = {
+    period: {
+        start_datetime: '2021-01-01T00:00:00Z',
+        end_datetime: '2021-01-02T00:00:00Z',
+    },
+    storeIntegrations: {
+        operator: LogicalOperatorEnum.ONE_OF,
+        values: [12345],
+    },
+}
+
+const renderHook = (hook: typeof useGetRepeatRate) => {
+    return reactRenderHook(() => hook(filters, 'UTC'), {
         wrapper: ({ children }) => (
             <Provider store={store}>{children}</Provider>
         ),
     })
 }
 
-describe('useGetRepeatRateLastMonth', () => {
+describe('useGetRepeatRate', () => {
     it('should return 0 if it is fetching', () => {
         mockUseMetricPerDimension.mockReturnValue({
             data: undefined,
@@ -28,9 +41,7 @@ describe('useGetRepeatRateLastMonth', () => {
             isError: false,
         } as any)
 
-        const { result } = renderHook(() =>
-            useGetRepeatRateLastMonth({ shopIntegrationId: 12345 }),
-        )
+        const { result } = renderHook(() => useGetRepeatRate(filters, 'UTC'))
 
         expect(result.current.data).toEqual(0)
     })
@@ -42,9 +53,7 @@ describe('useGetRepeatRateLastMonth', () => {
             isError: true,
         } as any)
 
-        const { result } = renderHook(() =>
-            useGetRepeatRateLastMonth({ shopIntegrationId: 12345 }),
-        )
+        const { result } = renderHook(() => useGetRepeatRate(filters, 'UTC'))
 
         expect(result.current.data).toEqual(0)
     })
@@ -56,9 +65,7 @@ describe('useGetRepeatRateLastMonth', () => {
             isError: false,
         } as any)
 
-        const { result } = renderHook(() =>
-            useGetRepeatRateLastMonth({ shopIntegrationId: 12345 }),
-        )
+        const { result } = renderHook(() => useGetRepeatRate(filters, 'UTC'))
 
         expect(result.current.data).toEqual(0)
     })
@@ -72,9 +79,7 @@ describe('useGetRepeatRateLastMonth', () => {
             isError: false,
         } as any)
 
-        const { result } = renderHook(() =>
-            useGetRepeatRateLastMonth({ shopIntegrationId: 12345 }),
-        )
+        const { result } = renderHook(() => useGetRepeatRate(filters, 'UTC'))
 
         expect(result.current.data).toEqual(0)
     })
@@ -93,9 +98,7 @@ describe('useGetRepeatRateLastMonth', () => {
             isError: false,
         } as any)
 
-        const { result } = renderHook(() =>
-            useGetRepeatRateLastMonth({ shopIntegrationId: 12345 }),
-        )
+        const { result } = renderHook(() => useGetRepeatRate(filters, 'UTC'))
 
         expect(result.current.data).toEqual(10)
     })

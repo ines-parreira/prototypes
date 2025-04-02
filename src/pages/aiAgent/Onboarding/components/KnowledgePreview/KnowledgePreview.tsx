@@ -2,7 +2,6 @@ import React, { useEffect, useRef } from 'react'
 
 import { Skeleton } from '@gorgias/merchant-ui-kit'
 
-import { gorgiasColors } from 'gorgias-design-system/styles'
 import { getRGB } from 'gorgias-design-system/utils'
 import useAppSelector from 'hooks/useAppSelector'
 import { ShopifyIntegration } from 'models/integration/types'
@@ -14,11 +13,9 @@ import {
 } from 'pages/aiAgent/Onboarding/components/Card'
 import TopElementsCard from 'pages/aiAgent/Onboarding/components/TopElementsCard'
 import TopProductsCard from 'pages/aiAgent/Onboarding/components/TopProductsCard'
-import { useGetAverageOrderValueLastMonth } from 'pages/aiAgent/Onboarding/hooks/useGetAverageOrderValueLastMonth'
+import TrackerCircleCard from 'pages/aiAgent/Onboarding/components/TrackerCircleCard/TrackerCircleCard'
 import { useGetKnowledgePreviewData } from 'pages/aiAgent/Onboarding/hooks/useGetKnowledgePreviewData'
-import { useGetRepeatRateLastMonth } from 'pages/aiAgent/Onboarding/hooks/useGetRepeatRateLastMonth'
 import { useTopLocations } from 'pages/aiAgent/Onboarding/hooks/useTopLocations'
-import TrackerCircle from 'pages/common/components/ProgressTracker/TrackerCircle'
 import { LineChart } from 'pages/stats/common/components/charts/LineChart/LineChart'
 import { getShopifyIntegrationByShopName } from 'state/integrations/selectors'
 import { compactInteger } from 'utils'
@@ -39,14 +36,6 @@ const KnowledgePreview: React.FC<Props> = ({ shopName }) => {
     const { data } = useGetKnowledgePreviewData({
         shopIntegrationId: shopifyIntegration.id,
     })
-    const { data: repeatRate } = useGetRepeatRateLastMonth({
-        shopIntegrationId: shopifyIntegration.id,
-    })
-
-    const { data: averageOrderValue, isLoading: isAverageOrderValueLoading } =
-        useGetAverageOrderValueLastMonth({
-            shopIntegrationId: shopifyIntegration.id,
-        })
 
     const { data: topLocationsData, isLoading: isLoadingTopLocations } =
         useTopLocations({ shopName })
@@ -83,30 +72,12 @@ const KnowledgePreview: React.FC<Props> = ({ shopName }) => {
     )
 
     const averageOrderValueCard = (
-        <Card className={css.score}>
-            <CardHeader>
-                {isAverageOrderValueLoading && (
-                    <Skeleton width={180} height={20} />
-                )}
-                {!isAverageOrderValueLoading && (
-                    <CardTitle>Average order value</CardTitle>
-                )}
-            </CardHeader>
-            <CardContent>
-                {isAverageOrderValueLoading && (
-                    <Skeleton width={180} height={180} />
-                )}
-                {!isAverageOrderValueLoading && (
-                    <TrackerCircle
-                        radius={54}
-                        percentage={100}
-                        color={gorgiasColors.secondaryOrange}
-                        label={compactInteger(averageOrderValue)}
-                        strokeWidth={9}
-                    />
-                )}
-            </CardContent>
-        </Card>
+        <TrackerCircleCard
+            isLoading={data.isAverageOrderValueLoading}
+            percentage={100}
+            label={compactInteger(data.averageOrderValue)}
+            title="Average order value"
+        />
     )
 
     const topProductsCard = (
@@ -126,41 +97,21 @@ const KnowledgePreview: React.FC<Props> = ({ shopName }) => {
     )
 
     const averageDiscountCard = (
-        <Card className={css.score}>
-            <CardHeader>
-                <CardTitle>Average discount given</CardTitle>
-            </CardHeader>
-            <CardContent>
-                {data?.averageDiscount !== undefined ? (
-                    <TrackerCircle
-                        radius={54}
-                        percentage={data.averageDiscount ?? 0}
-                        color={gorgiasColors.secondaryOrange}
-                        label={data?.averageDiscount.toString() + '%'}
-                        strokeWidth={9}
-                    />
-                ) : (
-                    <Skeleton height="150px" width="175px" />
-                )}
-            </CardContent>
-        </Card>
+        <TrackerCircleCard
+            isLoading={data?.averageDiscount === undefined}
+            percentage={data.averageDiscount ?? 0}
+            label={`${data?.averageDiscount}%`}
+            title="Average discount given"
+        />
     )
 
     const repeatRateCard = (
-        <Card className={css.score}>
-            <CardHeader>
-                <CardTitle>Repeat Rate</CardTitle>
-            </CardHeader>
-            <CardContent>
-                <TrackerCircle
-                    radius={54}
-                    percentage={repeatRate ?? 0}
-                    color={gorgiasColors.secondaryOrange}
-                    label={`${repeatRate}%`}
-                    strokeWidth={9}
-                />
-            </CardContent>
-        </Card>
+        <TrackerCircleCard
+            isLoading={data.isRepeatRateLoading}
+            percentage={data.repeatRate ?? 0}
+            label={`${data.repeatRate}%`}
+            title="Repeat Rate"
+        />
     )
 
     const topRow = [
