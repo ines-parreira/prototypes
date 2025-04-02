@@ -10,6 +10,9 @@ jest.mock('../AddPhoneNumberStep', () =>
 jest.mock('../ConfigureRoutingBehaviorStep', () =>
     jest.fn(() => <div>ConfigureRoutingBehaviorStep</div>),
 )
+jest.mock('../VoiceIntegrationOnboardingForm', () =>
+    jest.fn(({ children }) => <div>{children}</div>),
+)
 
 describe('VoiceIntegrationOnboarding', () => {
     const renderComponent = () => render(<VoiceIntegrationOnboarding />)

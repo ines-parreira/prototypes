@@ -1,7 +1,7 @@
 import React from 'react'
 
 import { fireEvent, render, screen } from '@testing-library/react'
-import { useFormContext, useFormState } from 'react-hook-form'
+import { useFormContext } from 'react-hook-form'
 
 import { PhoneFunction } from '@gorgias/api-queries'
 
@@ -29,11 +29,13 @@ const setValueMock = jest.fn()
 const mockUseFormContextReturnValue = {
     watch: watchMock,
     setValue: setValueMock,
+    formState: {
+        isValid: true,
+    },
 } as unknown as ReturnType<typeof useFormContext>
 
 jest.mock('react-hook-form')
 const useFormContextMock = assumeMock(useFormContext)
-const useFormStateMock = assumeMock(useFormState)
 
 describe('AddPhoneNumberStep', () => {
     const mockGoToNextStep = jest.fn()
@@ -49,7 +51,6 @@ describe('AddPhoneNumberStep', () => {
         FormFieldMock.mockImplementation(({ label }: any) => <div>{label}</div>)
         watchMock.mockReturnValue([null, PhoneFunction.Standard] as any)
         useFormContextMock.mockReturnValue(mockUseFormContextReturnValue)
-        useFormStateMock.mockReturnValue({ isValid: true } as any)
         useSearchMock.mockReturnValue({ phoneNumberId: undefined })
     })
 

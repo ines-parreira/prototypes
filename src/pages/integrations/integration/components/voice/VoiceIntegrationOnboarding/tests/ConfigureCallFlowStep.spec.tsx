@@ -4,12 +4,7 @@ import { fireEvent, render, screen } from '@testing-library/react'
 
 import { PhoneFunction } from '@gorgias/api-queries'
 
-import {
-    FormField,
-    FormSubmitButton,
-    useFormContext,
-    useFormState,
-} from 'core/forms'
+import { FormField, FormSubmitButton, useFormContext } from 'core/forms'
 import useAppSelector from 'hooks/useAppSelector'
 import useNavigateWizardSteps from 'pages/common/components/wizard/hooks/useNavigateWizardSteps'
 import { assumeMock } from 'utils/testing'
@@ -24,11 +19,13 @@ const setValueMock = jest.fn()
 const mockUseFormContextReturnValue = {
     watch: watchMock,
     setValue: setValueMock,
+    formState: {
+        isValid: true,
+    },
 } as unknown as ReturnType<typeof useFormContext>
 
 jest.mock('core/forms')
 const useFormContextMock = assumeMock(useFormContext)
-const useFormStateMock = assumeMock(useFormState)
 const FormFieldMock = assumeMock(FormField)
 const FormSubmitButtonMock = assumeMock(FormSubmitButton)
 
@@ -52,7 +49,6 @@ describe('ConfigureRoutingBehaviorStep', () => {
             false,
         ] as any)
         useFormContextMock.mockReturnValue(mockUseFormContextReturnValue)
-        useFormStateMock.mockReturnValue({ isValid: true } as any)
         useAppSelectorMock.mockReturnValue({})
         FormFieldMock.mockImplementation(({ label }: any) => <div>{label}</div>)
         FormSubmitButtonMock.mockImplementation(
@@ -94,7 +90,10 @@ describe('ConfigureRoutingBehaviorStep', () => {
     })
 
     it('should disable submit button when form is invalid', () => {
-        useFormStateMock.mockReturnValue({ isValid: false } as any)
+        useFormContextMock.mockReturnValue({
+            ...mockUseFormContextReturnValue,
+            formState: { isValid: false },
+        } as any)
 
         renderComponent()
 

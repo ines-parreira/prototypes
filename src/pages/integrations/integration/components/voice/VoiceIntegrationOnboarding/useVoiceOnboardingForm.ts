@@ -1,18 +1,18 @@
-import { PhoneFunction, PhoneIntegration } from '@gorgias/api-queries'
+import { useHistory } from 'react-router-dom'
+
+import {
+    CreateIntegrationBody,
+    PhoneFunction,
+    PhoneIntegration,
+    useCreateIntegration,
+} from '@gorgias/api-queries'
 import { validatePhoneIntegrationMeta } from '@gorgias/api-validators'
 
 import { toFormErrors } from 'core/forms'
+import { useNotify } from 'hooks/useNotify'
+import { DEFAULT_IVR_SETTINGS } from 'models/integration/constants'
 
-export const getDefaultValues = () => {
-    return {
-        name: '',
-        meta: {
-            emoji: null,
-            function: PhoneFunction.Standard,
-            send_calls_to_voicemail: false,
-        },
-    }
-}
+import { PHONE_INTEGRATION_BASE_URL } from '../constants'
 
 export const validateOnboardingForm = (values: PhoneIntegration) => {
     let nameErrors = {}
@@ -28,4 +28,47 @@ export const validateOnboardingForm = (values: PhoneIntegration) => {
         ...nameErrors,
         ...(Object.keys(metaErrors).length > 0 ? { meta: metaErrors } : {}),
     }
+}
+
+function getSubmittableValues(values: PhoneIntegration) {
+    const { meta } = values
+
+    if (meta.function === PhoneFunction.Ivr) {
+        return {
+            ...values,
+            meta: {
+                ...meta,
+                ivr: DEFAULT_IVR_SETTINGS,
+            },
+        }
+    }
+
+    return values
+}
+
+export const useOnboardingForm = () => {
+    const notify = useNotify()
+    const history = useHistory()
+    const { mutate: createIntegration } = useCreateIntegration({
+        mutation: {
+            onSuccess: (response) => {
+                notify.success(`${response.data.name} successfully created.`)
+
+                history.push(PHONE_INTEGRATION_BASE_URL)
+            },
+            onError: () => {
+                notify.error(
+                    "We couldn't save your preferences. Please try again.",
+                )
+            },
+        },
+    })
+
+    const onSubmit = (data: PhoneIntegration) => {
+        createIntegration({
+            data: getSubmittableValues(data) as CreateIntegrationBody,
+        })
+    }
+
+    return { onSubmit }
 }

@@ -3,7 +3,7 @@ import React from 'react'
 import { PhoneFunction, PhoneIntegration } from '@gorgias/api-queries'
 import { Button } from '@gorgias/merchant-ui-kit'
 
-import { FormSubmitButton, useFormContext, useFormState } from 'core/forms'
+import { FormSubmitButton, useFormContext } from 'core/forms'
 import useAppSelector from 'hooks/useAppSelector'
 import useNavigateWizardSteps from 'pages/common/components/wizard/hooks/useNavigateWizardSteps'
 import { getNewPhoneNumbers } from 'state/entities/phoneNumbers/selectors'
@@ -16,8 +16,10 @@ import css from './VoiceIntegrationOnboardingStep.less'
 export default function ConfigureRoutingBehaviorStep() {
     const { goToPreviousStep } = useNavigateWizardSteps()
     const phoneNumbers = useAppSelector(getNewPhoneNumbers)
-    const { watch } = useFormContext<PhoneIntegration>()
-    const { isValid } = useFormState()
+    const {
+        watch,
+        formState: { isValid },
+    } = useFormContext<PhoneIntegration>()
 
     const [phoneFunction, phoneNumberId, queue_id, send_calls_to_voicemail] =
         watch([
