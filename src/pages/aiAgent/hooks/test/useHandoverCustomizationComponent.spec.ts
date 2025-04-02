@@ -1,6 +1,11 @@
 import { waitFor } from '@testing-library/react'
 import { act, renderHook } from '@testing-library/react-hooks'
 
+import {
+    GORGIAS_CHAT_LIVE_CHAT_ALWAYS_LIVE_DURING_BUSINESS_HOURS,
+    GORGIAS_CHAT_LIVE_CHAT_AUTO_BASED_ON_AGENT_AVAILABILITY,
+    GORGIAS_CHAT_LIVE_CHAT_OFFLINE,
+} from 'config/integrations/gorgias_chat'
 import useSelfServiceChatChannels, {
     SelfServiceChatChannel,
 } from 'pages/automate/common/hooks/useSelfServiceChatChannels'
@@ -127,6 +132,7 @@ describe('useHandoverCustomizationComponent', () => {
             )
 
             expect(result.current.isHandoverSectionDisabled).toBeTruthy()
+            expect(result.current.isSelectedChatAvailabilityOffline).toBeFalsy()
         })
         it('should initialize with all settings sections closed but not disabled', () => {
             const { result } = renderHook(() =>
@@ -278,5 +284,66 @@ describe('useHandoverCustomizationComponent', () => {
             // Should select the first available chat from new list
             expect(result.current.selectedChat).toBe(mockChatChannels[0])
         })
+    })
+
+    describe('offline chat', () => {
+        it('should return isSelectedChatAvailabilityOffline true when the chat is previously set as offline', () => {
+            const offlineChat = {
+                ...mockChatChannels[0],
+                value: {
+                    ...mockChatChannels[0].value,
+                    meta: {
+                        ...mockChatChannels[0].value.meta,
+                        preferences: {
+                            live_chat_availability:
+                                GORGIAS_CHAT_LIVE_CHAT_OFFLINE,
+                        },
+                    },
+                },
+            }
+            ;(useSelfServiceChatChannels as jest.Mock).mockReturnValue([
+                offlineChat,
+            ])
+
+            const { result } = renderHook(() =>
+                useHandoverCustomizationComponent(defaultProps),
+            )
+
+            expect(
+                result.current.isSelectedChatAvailabilityOffline,
+            ).toBeTruthy()
+        })
+
+        test.each([
+            GORGIAS_CHAT_LIVE_CHAT_ALWAYS_LIVE_DURING_BUSINESS_HOURS,
+            GORGIAS_CHAT_LIVE_CHAT_AUTO_BASED_ON_AGENT_AVAILABILITY,
+        ])(
+            'should return isSelectedChatAvailabilityOffline false when the chat is previously set as %s',
+            (availability) => {
+                const chat = {
+                    ...mockChatChannels[0],
+                    value: {
+                        ...mockChatChannels[0].value,
+                        meta: {
+                            ...mockChatChannels[0].value.meta,
+                            preferences: {
+                                live_chat_availability: availability,
+                            },
+                        },
+                    },
+                }
+                ;(useSelfServiceChatChannels as jest.Mock).mockReturnValue([
+                    chat,
+                ])
+
+                const { result } = renderHook(() =>
+                    useHandoverCustomizationComponent(defaultProps),
+                )
+
+                expect(
+                    result.current.isSelectedChatAvailabilityOffline,
+                ).toBeFalsy()
+            },
+        )
     })
 })

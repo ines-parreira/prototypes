@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useMemo, useState } from 'react'
 
+import { GORGIAS_CHAT_LIVE_CHAT_OFFLINE } from 'config/integrations/gorgias_chat'
 import useUpdateEffect from 'hooks/useUpdateEffect'
 import useSelfServiceChatChannels from 'pages/automate/common/hooks/useSelfServiceChatChannels'
 import { Value } from 'pages/common/forms/SelectField/types'
@@ -45,6 +46,13 @@ export const useHandoverCustomizationComponent = ({
     const selectedChat = useMemo(() => {
         return chatChannels.find((chat) => chat.value.id === selectedChatId)
     }, [chatChannels, selectedChatId])
+
+    const isSelectedChatAvailabilityOffline = useMemo(() => {
+        return (
+            selectedChat?.value?.meta?.preferences?.live_chat_availability ===
+            GORGIAS_CHAT_LIVE_CHAT_OFFLINE
+        )
+    }, [selectedChat])
 
     // accordion settings logic
     const isHandoverSectionDisabled = useMemo(() => {
@@ -108,5 +116,6 @@ export const useHandoverCustomizationComponent = ({
         onActiveSettingsSectionChange,
         onSelectedChatChange,
         isHandoverSectionDisabled,
+        isSelectedChatAvailabilityOffline,
     }
 }

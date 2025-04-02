@@ -43,6 +43,7 @@ export type GorgiasChatIntegrationMeta = {
     language?: string
     languages?: LanguageItem[]
     preferences?: {
+        live_chat_availability?: string
         email_capture_enabled?: boolean
         email_capture_enforcement: GorgiasChatEmailCaptureType
         auto_responder?: {
