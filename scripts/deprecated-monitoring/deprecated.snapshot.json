@@ -1,8 +1,8 @@
 {
   "summary": {
-    "totalEntries": 34,
+    "totalEntries": 35,
     "totalUsages": 1174,
-    "reportGeneratedAt": "2025-04-02T12:09:42.359Z"
+    "reportGeneratedAt": "2025-04-02T15:44:51.495Z"
   },
   "entries": [
     {
@@ -252,7 +252,7 @@
       "type": "feature-flag cleanup initiative",
       "entries": [
         {
-          "usageCount": 191,
+          "usageCount": 188,
           "name": "launchdarkly-react-client-sdk.useFlags",
           "nodeType": "Identifier",
           "deprecationDate": "2025-02-10",
@@ -282,7 +282,6 @@
               "src/pages/aiAgent/AiAgentMainViewContainer.tsx",
               "src/pages/aiAgent/AiAgentOnboardingWizard/AiAgentOnboardingWizardKnowledge.tsx",
               "src/pages/aiAgent/AiAgentOnboardingWizard/AiAgentOnboardingWizardPersonalize.tsx",
-              "src/pages/aiAgent/AiAgentOnboardingWizard/hooks/useAiAgentOnboardingWizard.tsx",
               "src/pages/aiAgent/AiAgentPaywallView.tsx",
               "src/pages/aiAgent/AiAgentPlaygroundContainer.tsx",
               "src/pages/aiAgent/AiAgentPreviewModeSettings/AiAgentPreviewModeSettingsView.tsx",
@@ -305,13 +304,11 @@
               "src/pages/aiAgent/actions/hooks/useThreeplIntegrations.ts",
               "src/pages/aiAgent/actions/tests/ActionsList.spec.tsx",
               "src/pages/aiAgent/components/AIAgentPreviewModeSection/AiAgentPreviewModeSection.tsx",
-              "src/pages/aiAgent/components/AiAgentLayout/AiAgentLayout.tsx",
               "src/pages/aiAgent/components/AiAgentNavbar/AiAgentNavbar.tsx",
               "src/pages/aiAgent/components/AiAgentNavbar/AiAgentNavbarSectionBlock.tsx",
               "src/pages/aiAgent/components/AiAgentNavbar/tests/AiAgentNavbar.spec.tsx",
               "src/pages/aiAgent/components/GuidanceBreadcrumbs/GuidanceBreadcrumbs.tsx",
               "src/pages/aiAgent/components/Knowledge/ExternalFilesSection.tsx",
-              "src/pages/aiAgent/components/PlaygroundPrerequisites/PlaygroundPrerequisitesAlerts.tsx",
               "src/pages/aiAgent/components/PublicSourcesSection/PublicSourcesSection.tsx",
               "src/pages/aiAgent/components/StoreConfigForm/FormComponents/ChannelsFormComponent.tsx",
               "src/pages/aiAgent/components/StoreConfigForm/FormComponents/EmailFormComponent.tsx",
@@ -1699,6 +1696,25 @@
           },
           "defaultImportNames": [
             "ToggleInputField"
+          ]
+        },
+        {
+          "usageCount": 3,
+          "name": "ProgressBar",
+          "nodeType": "VariableDeclaration",
+          "deprecationDate": "2025-04-02",
+          "deprecationType": "ui-kit-migration",
+          "declarationFile": "src/pages/common/components/ProgressBar/ProgressBar.tsx",
+          "usageUrls": {
+            "named": [],
+            "default": [
+              "src/pages/automate/trainMyAi/TrainMyAiView.tsx",
+              "src/pages/common/components/ProgressBar/ProgressBar.stories.tsx",
+              "src/pages/common/components/ProgressBar/tests/ProgressBar.spec.tsx"
+            ]
+          },
+          "defaultImportNames": [
+            "ProgressBar"
           ]
         }
       ]
