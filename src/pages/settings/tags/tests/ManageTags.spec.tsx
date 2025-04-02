@@ -205,6 +205,7 @@ describe('ManageTags component', () => {
             const confirmButton = await screen.findByText(/Confirm/i)
             fireEvent.click(confirmButton)
 
+            expect(tagActions.bulkDelete).toHaveBeenCalledTimes(1)
             expect(tagActions.selectAll).toHaveBeenCalledTimes(1)
         })
     })

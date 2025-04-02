@@ -17,8 +17,6 @@ import CheckBox from 'pages/common/forms/CheckBox'
 import TextInput from 'pages/common/forms/input/TextInput'
 import css from 'pages/settings/tags/Row.less'
 import { cancel, edit, remove, save, select } from 'state/tags/actions'
-import { REMOVE_TAG_ERROR } from 'state/tags/constants'
-import { ServerErrorAction } from 'store/middlewares/serverErrorHandler'
 
 type Props = {
     row: Tag
@@ -75,11 +73,8 @@ export default function Row({ meta, refresh, row }: Props) {
     const onRemove = async () => {
         try {
             await dispatch(remove(row.id.toString()))
-        } catch (error) {
-            if ((error as ServerErrorAction)?.type !== REMOVE_TAG_ERROR) {
-                refresh()
-            }
-        }
+            refresh()
+        } catch {}
     }
 
     const onSelect = () => {

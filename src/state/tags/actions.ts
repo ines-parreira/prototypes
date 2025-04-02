@@ -150,30 +150,33 @@ export const create = (tag: TagDraft) => {
 
 export const remove = (id: string) => {
     return (dispatch: StoreDispatch): Promise<ReturnType<StoreDispatch>> => {
-        return client.delete(`/api/tags/${id}/`).then(
-            () => {
+        return client
+            .delete(`/api/tags/${id}/`)
+            .then(() => {
                 void dispatch(
                     notify({
                         status: NotificationStatus.Success,
                         message: 'Tag deleted successfully',
                     }),
                 )
-            },
-            (error: AxiosError) => {
-                return dispatch({
+            })
+            .catch((error: AxiosError) => {
+                dispatch({
                     type: constants.REMOVE_TAG_ERROR,
                     verbose: true,
                     error,
                 })
-            },
-        )
+
+                throw error
+            })
     }
 }
 
 export const bulkDelete = (ids: Array<string>) => {
     return (dispatch: StoreDispatch): Promise<ReturnType<StoreDispatch>> => {
-        return client.delete('/api/tags/', { data: { ids } }).then(
-            () => {
+        return client
+            .delete('/api/tags/', { data: { ids } })
+            .then(() => {
                 void dispatch(
                     notify({
                         status: NotificationStatus.Success,
@@ -182,15 +185,16 @@ export const bulkDelete = (ids: Array<string>) => {
                         } deleted successfully`,
                     }),
                 )
-            },
-            (error: AxiosError) => {
-                return dispatch({
+            })
+            .catch((error: AxiosError) => {
+                dispatch({
                     type: constants.REMOVE_TAG_ERROR,
                     verbose: true,
                     error,
                 })
-            },
-        )
+
+                throw error
+            })
     }
 }
 

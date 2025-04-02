@@ -41,9 +41,7 @@ import settingsCss from 'pages/settings/settings.less'
 import { notify } from 'state/notifications/actions'
 import { NotificationStatus } from 'state/notifications/types'
 import { bulkDelete, create, merge, selectAll } from 'state/tags/actions'
-import { REMOVE_TAG_ERROR } from 'state/tags/constants'
 import { getIsCreating, getMeta, getSelectAll } from 'state/tags/selectors'
-import { ServerErrorAction } from 'store/middlewares/serverErrorHandler'
 
 import Table from './Table'
 
@@ -158,17 +156,15 @@ const ManageTags = () => {
     }
 
     const handleBulkDelete = async () => {
-        const res = await dispatch(bulkDelete(selectedTagsIds.toJS()))
+        try {
+            await dispatch(bulkDelete(selectedTagsIds.toJS()))
+            if (!!meta?.prev_cursor && !meta?.next_cursor) {
+                await fetchPage({ refreshPreviousPage: true })
+            } else {
+                await fetchPage()
+            }
+        } catch {}
 
-        if (
-            !!meta?.prev_cursor &&
-            !meta?.next_cursor &&
-            (res as ServerErrorAction)?.type !== REMOVE_TAG_ERROR
-        ) {
-            await fetchPage({ refreshPreviousPage: true })
-        } else {
-            await fetchPage()
-        }
         handleSelectAll(false)
     }
 

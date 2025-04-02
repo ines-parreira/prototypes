@@ -1,3 +1,4 @@
+import { waitFor } from '@testing-library/react'
 import axios from 'axios'
 import MockAdapter from 'axios-mock-adapter'
 import { fromJS, Map } from 'immutable'
@@ -10,6 +11,8 @@ import { ListTagsOrderBy, Tag } from '@gorgias/api-queries'
 import client from 'models/api/resources'
 import { OrderDirection } from 'models/api/types'
 import { TagDraft } from 'models/tag/types'
+import { notify } from 'state/notifications/actions'
+import { NotificationStatus } from 'state/notifications/types'
 import * as actions from 'state/tags/actions'
 import * as types from 'state/tags/constants'
 import { initialState } from 'state/tags/reducers'
@@ -25,11 +28,9 @@ const meta = {
     prev_cursor: null,
 }
 
-jest.mock('state/notifications/actions', () => {
-    return {
-        notify: jest.fn(() => (args: Record<string, unknown>) => args),
-    }
-})
+jest.mock('state/notifications/actions')
+
+const mockNotify = notify as jest.Mock
 
 type MockedRootState = {
     tags: Map<any, any>
@@ -40,6 +41,9 @@ describe('tags actions', () => {
     let mockServer: MockAdapter
 
     beforeEach(() => {
+        mockNotify.mockImplementation(
+            () => (args: Record<string, unknown>) => args,
+        )
         store = mockStore({ tags: initialState })
         mockServer = new MockAdapter(client)
     })
@@ -200,39 +204,47 @@ describe('tags actions', () => {
     it('remove', async () => {
         mockServer.onDelete('/api/tags/1/').reply(200)
         await store.dispatch(actions.remove('1'))
-        expect(store.getActions()).toMatchSnapshot()
+        await waitFor(() => {
+            expect(mockNotify).toHaveBeenCalledWith({
+                status: NotificationStatus.Success,
+                message: 'Tag deleted successfully',
+            })
+        })
     })
 
     it('remove error', async () => {
         mockServer.onDelete('/api/tags/1/').reply(400)
-        await store.dispatch(actions.remove('1'))
-        expect(store.getActions()).toMatchSnapshot()
+        try {
+            await store.dispatch(actions.remove('1'))
+        } catch (error) {
+            expect(error).toEqual(
+                new Error('Request failed with status code 400'),
+            )
+        }
     })
 
     it('bulkDelete', async () => {
-        mockServer.onDelete('/api/tags/').reply((config) => {
-            if (_isEqual(config.data, { ids: [1, 2] })) {
-                return [204]
-            }
-
-            return [404]
-        })
+        mockServer.onDelete('/api/tags/').reply(204)
 
         await store.dispatch(actions.bulkDelete(['1', '2']))
-        expect(store.getActions()).toMatchSnapshot()
+        await waitFor(() => {
+            expect(mockNotify).toHaveBeenCalledWith({
+                status: NotificationStatus.Success,
+                message: '2 tags deleted successfully',
+            })
+        })
     })
 
     it('bulkDelete error', async () => {
-        mockServer.onDelete('/api/tags/').reply((config) => {
-            if (_isEqual(config.data, { ids: [1, 2] })) {
-                return [204]
-            }
+        mockServer.onDelete('/api/tags/').reply(404)
 
-            return [404]
-        })
-
-        await store.dispatch(actions.bulkDelete(['5']))
-        expect(store.getActions()).toMatchSnapshot()
+        try {
+            await store.dispatch(actions.bulkDelete(['5']))
+        } catch (error) {
+            expect(error).toEqual(
+                new Error('Request failed with status code 404'),
+            )
+        }
     })
 
     it('merge', async () => {

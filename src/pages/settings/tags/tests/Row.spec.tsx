@@ -180,10 +180,11 @@ describe('<Row />', () => {
         expect(selectMock).toHaveBeenCalled()
     })
 
-    it('should delete tag', () => {
+    it('should delete tag and refetch tags', async () => {
+        const mockRefetchTags = jest.fn()
         render(
             <Provider store={mockStore({})}>
-                <Row {...defaultProps} />
+                <Row {...defaultProps} refresh={mockRefetchTags} />
             </Provider>,
             {
                 wrapper: ({ children }) => (
@@ -198,6 +199,7 @@ describe('<Row />', () => {
         fireEvent.click(screen.getByText('Confirm'))
 
         expect(removeMock).toHaveBeenCalledWith(defaultProps.row.id.toString())
+        await waitFor(() => expect(mockRefetchTags).toHaveBeenCalled())
     })
 
     it('should check if delete notification contains "saved filters" text', () => {
@@ -217,29 +219,6 @@ describe('<Row />', () => {
         fireEvent.click(screen.getByText('delete'))
 
         expect(screen.getByText(/Saved filters/i)).toBeInTheDocument()
-    })
-
-    it('should handle failed tag deletion', async () => {
-        useAppDispatchMock.mockReturnValue(() => Promise.reject())
-
-        render(
-            <Provider store={mockStore({})}>
-                <Row {...defaultProps} />
-            </Provider>,
-            {
-                wrapper: ({ children }) => (
-                    <table>
-                        <tbody>{children}</tbody>
-                    </table>
-                ),
-            },
-        )
-
-        fireEvent.click(screen.getByText('delete'))
-        fireEvent.click(screen.getByText('Confirm'))
-
-        expect(removeMock).toHaveBeenCalledWith(defaultProps.row.id.toString())
-        await waitFor(() => expect(defaultProps.refresh).toHaveBeenCalled())
     })
 
     it('should not update state on props change when props row are the same', () => {
