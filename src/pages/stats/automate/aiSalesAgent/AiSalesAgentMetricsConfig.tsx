@@ -138,7 +138,7 @@ export const AiSalesAgentMetricConfig: Record<
     [AiSalesAgentChart.AiSalesAgentGmv]: {
         title: 'GMV influenced $',
         hint: {
-            title: 'The revenue generated from orders placed during or after a conversation with the AI Agent for Sales, without human intervention.',
+            title: 'The revenue generated from orders placed during or within 7 days after a conversation with the AI Agent for Sales, without human intervention.',
         },
         useTrend: useGmvInfluencedTrend,
         fetchTrend: fetchGmvInfluencedTrend,
@@ -168,7 +168,7 @@ export const AiSalesAgentMetricConfig: Record<
     [AiSalesAgentChart.AiSalesAgentTotalNumberOfOrders]: {
         title: 'Number of orders influenced',
         hint: {
-            title: 'The number of orders influenced by a conversation with the AI Agent for Sales, without human intervention.',
+            title: 'The number of orders influenced within 7 days of a conversation with the AI Agent for Sales, without human intervention.',
         },
         useTrend: useTotalNumberOfOrdersTrend,
         fetchTrend: fetchTotalNumberOfOrdersTrend,
