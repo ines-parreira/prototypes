@@ -128,7 +128,7 @@ describe('StoreConfigUnsavedChangesPrompt', () => {
 
             // Should use custom message
             screen.getByText(
-                `Your updates in [${sectionText}] will be lost unless saved individually.`,
+                `Your updates in ${sectionText} will be lost unless saved individually.`,
             )
             screen.getByText('Unsaved changes')
             expect(screen.queryByRole('button', { name: /save/i })).toBeNull()
@@ -147,7 +147,7 @@ describe('StoreConfigUnsavedChangesPrompt', () => {
         })
         renderComponentWithContext()
 
-        const sectionTexts = `[General settings], [Channel settings] and [Chat online handover]`
+        const sectionTexts = `General settings, Channel settings and Chat online handover`
 
         screen.getByText('Unsaved changes')
         screen.getByText(
@@ -172,7 +172,7 @@ describe('StoreConfigUnsavedChangesPrompt', () => {
             })
             renderComponentWithContext()
 
-            const sectionTexts = `[${sectionText}] and [Chat online handover]`
+            const sectionTexts = `${sectionText} and Chat online handover`
 
             screen.getByText('Unsaved changes')
             screen.getByText(

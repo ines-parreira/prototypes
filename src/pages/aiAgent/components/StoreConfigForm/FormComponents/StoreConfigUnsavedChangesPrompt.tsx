@@ -42,21 +42,17 @@ const generateMessageBody = (dirtySections: StoreConfigFormSection[]) => {
 
     // first section will always be the general tab section
     if (dirtySections.includes(StoreConfigFormSection.generalSettings)) {
-        sectionTexts.push(
-            `[${sectionNames[StoreConfigFormSection.generalSettings]}]`,
-        )
+        sectionTexts.push(sectionNames[StoreConfigFormSection.generalSettings])
     }
 
     // second section will always be the channel tab section
     if (dirtySections.includes(StoreConfigFormSection.channelSettings)) {
-        sectionTexts.push(
-            `[${sectionNames[StoreConfigFormSection.channelSettings]}]`,
-        )
+        sectionTexts.push(sectionNames[StoreConfigFormSection.channelSettings])
     }
 
     dirtySections
         .filter((section) => !MAIN_CONTENT_SECTIONS.includes(section))
-        .forEach((section) => sectionTexts.push(`[${sectionNames[section]}]`))
+        .forEach((section) => sectionTexts.push(sectionNames[section]))
 
     return `Your updates in ${concatSectionTexts(sectionTexts)} will be lost unless saved individually.`
 }
