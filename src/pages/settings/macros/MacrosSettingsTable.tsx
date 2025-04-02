@@ -134,138 +134,129 @@ export function MacrosSettingsTable({
     )
 
     return (
-        <>
-            <TableWrapper>
-                <thead className={css.tableHead}>
-                    <tr>
-                        <HeaderCellProperty
-                            titleClassName={css.headerCellProperty}
-                            direction={orderDirValue}
-                            isOrderedBy={
-                                orderByValue === MacroSortableProperties.Name
+        <TableWrapper>
+            <thead className={css.tableHead}>
+                <tr>
+                    <HeaderCellProperty
+                        titleClassName={css.headerCellProperty}
+                        direction={orderDirValue}
+                        isOrderedBy={
+                            orderByValue === MacroSortableProperties.Name
+                        }
+                        onClick={() =>
+                            handleSortChange(MacroSortableProperties.Name)
+                        }
+                        title="Macro"
+                    />
+                    <HeaderCellProperty
+                        titleClassName={css.headerCellProperty}
+                        title="Tags"
+                    />
+                    <HeaderCellProperty
+                        titleClassName={css.headerCellProperty}
+                        direction={orderDirValue}
+                        isOrderedBy={
+                            orderByValue === MacroSortableProperties.Language
+                        }
+                        onClick={() =>
+                            handleSortChange(MacroSortableProperties.Language)
+                        }
+                        title="Language"
+                    />
+                    <HeaderCellProperty
+                        titleClassName={css.headerCellProperty}
+                        direction={orderDirValue}
+                        isOrderedBy={
+                            orderByValue === MacroSortableProperties.Usage
+                        }
+                        onClick={() =>
+                            handleSortChange(MacroSortableProperties.Usage)
+                        }
+                        title="Usage count"
+                    />
+                    <HeaderCellProperty
+                        titleClassName={css.headerCellProperty}
+                        direction={orderDirValue}
+                        isOrderedBy={
+                            orderByValue ===
+                            MacroSortableProperties.UpdatedDatetime
+                        }
+                        onClick={() =>
+                            handleSortChange(
+                                MacroSortableProperties.UpdatedDatetime,
+                            )
+                        }
+                        title="Last updated"
+                    />
+                    <HeaderCell />
+                </tr>
+                <tr>
+                    <HeaderCell className={css.actionsHeader}>
+                        <CheckBoxField
+                            className={css.checkboxAll}
+                            inputClassName={css.checkboxAllInput}
+                            label={checkboxAllLabel}
+                            name="Select all"
+                            aria-label="Select all"
+                            value={isAllSelected}
+                            isIndeterminate={
+                                !!selectedMacrosLength &&
+                                !!macros?.length &&
+                                selectedMacrosLength < macros?.length
                             }
-                            onClick={() =>
-                                handleSortChange(MacroSortableProperties.Name)
-                            }
-                            title="Macro"
+                            onChange={onChange}
                         />
-                        <HeaderCellProperty
-                            titleClassName={css.headerCellProperty}
-                            title="Tags"
-                        />
-                        <HeaderCellProperty
-                            titleClassName={css.headerCellProperty}
-                            direction={orderDirValue}
-                            isOrderedBy={
-                                orderByValue ===
-                                MacroSortableProperties.Language
-                            }
-                            onClick={() =>
-                                handleSortChange(
-                                    MacroSortableProperties.Language,
-                                )
-                            }
-                            title="Language"
-                        />
-                        <HeaderCellProperty
-                            titleClassName={css.headerCellProperty}
-                            direction={orderDirValue}
-                            isOrderedBy={
-                                orderByValue === MacroSortableProperties.Usage
-                            }
-                            onClick={() =>
-                                handleSortChange(MacroSortableProperties.Usage)
-                            }
-                            title="Usage count"
-                        />
-                        <HeaderCellProperty
-                            titleClassName={css.headerCellProperty}
-                            direction={orderDirValue}
-                            isOrderedBy={
-                                orderByValue ===
-                                MacroSortableProperties.UpdatedDatetime
-                            }
-                            onClick={() =>
-                                handleSortChange(
-                                    MacroSortableProperties.UpdatedDatetime,
-                                )
-                            }
-                            title="Last updated"
-                        />
-                        <HeaderCell />
-                    </tr>
-                    <tr>
-                        <HeaderCell className={css.actionsHeader}>
-                            <CheckBoxField
-                                className={css.checkboxAll}
-                                inputClassName={css.checkboxAllInput}
-                                label={checkboxAllLabel}
-                                name="Select all"
-                                aria-label="Select all"
-                                value={isAllSelected}
-                                isIndeterminate={
-                                    !!selectedMacrosLength &&
-                                    !!macros?.length &&
-                                    selectedMacrosLength < macros?.length
-                                }
-                                onChange={onChange}
-                            />
-                            <Button
-                                aria-label={
-                                    isArchiveTab ? 'Unarchive' : 'Archive'
-                                }
-                                intent="secondary"
-                                fillStyle="ghost"
-                                isDisabled={isDisabled}
-                                onClick={onBulkArchiveOrUnarchive}
-                                size="small"
+                        <Button
+                            aria-label={isArchiveTab ? 'Unarchive' : 'Archive'}
+                            intent="secondary"
+                            fillStyle="ghost"
+                            isDisabled={isDisabled}
+                            onClick={onBulkArchiveOrUnarchive}
+                            size="small"
+                        >
+                            <ButtonIconLabel
+                                icon={isArchiveTab ? 'unarchive' : 'archive'}
                             >
-                                <ButtonIconLabel
-                                    icon={
-                                        isArchiveTab ? 'unarchive' : 'archive'
-                                    }
-                                >
-                                    {isArchiveTab ? 'Unarchive' : 'Archive'}
-                                </ButtonIconLabel>
-                            </Button>
-                        </HeaderCell>
-                        <HeaderCell />
-                        <HeaderCell />
-                        <HeaderCell />
-                        <HeaderCell />
-                        <HeaderCell />
-                    </tr>
-                </thead>
-                <TableBody>
-                    {isLoading ? (
-                        <TableBodyRow>
-                            <BodyCell innerClassName={css.spinner} colSpan={6}>
-                                <LoadingSpinner size="medium" />
-                            </BodyCell>
-                        </TableBodyRow>
-                    ) : !macros ? null : (
-                        <>
-                            {macros.map((macro) => (
-                                <MacrosSettingsItem
-                                    key={macro.id}
-                                    datetimeFormat={datetimeFormat}
-                                    hasAgentPrivileges={hasAgentPrivileges}
-                                    macro={macro}
-                                    onMacroDelete={onMacroDelete}
-                                    onMacroDuplicate={onMacroDuplicate}
-                                    onMacroArchiveOrUnarchived={
-                                        onMacroArchiveOrUnarchived
-                                    }
-                                    firstTagFilter={options.tags?.[0]}
-                                    selectedMacrosIds={selectedMacrosIds}
-                                    setSelectedMacrosIds={setSelectedMacrosIds}
-                                />
-                            ))}
-                        </>
-                    )}
-                </TableBody>
-            </TableWrapper>
-        </>
+                                {isArchiveTab ? 'Unarchive' : 'Archive'}
+                            </ButtonIconLabel>
+                        </Button>
+                    </HeaderCell>
+                    <HeaderCell />
+                    <HeaderCell />
+                    <HeaderCell />
+                    <HeaderCell />
+                    <HeaderCell />
+                </tr>
+            </thead>
+            <TableBody>
+                {isLoading ? (
+                    <TableBodyRow>
+                        <BodyCell innerClassName={css.spinner} colSpan={6}>
+                            <LoadingSpinner size="medium" />
+                        </BodyCell>
+                    </TableBodyRow>
+                ) : !macros ? null : (
+                    <>
+                        {macros.map((macro) => (
+                            <MacrosSettingsItem
+                                key={macro.id}
+                                datetimeFormat={datetimeFormat}
+                                hasAgentPrivileges={hasAgentPrivileges}
+                                macro={macro}
+                                onMacroDelete={onMacroDelete}
+                                onMacroDuplicate={onMacroDuplicate}
+                                onMacroArchiveOrUnarchived={
+                                    onMacroArchiveOrUnarchived
+                                }
+                                firstTagFilter={options.tags?.[0]}
+                                selectedMacrosIds={selectedMacrosIds}
+                                setSelectedMacrosIds={setSelectedMacrosIds}
+                            />
+                        ))}
+                    </>
+                )}
+            </TableBody>
+        </TableWrapper>
     )
 }
 

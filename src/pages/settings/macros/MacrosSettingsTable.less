@@ -2,22 +2,12 @@
 
 :local {
     .tableHead {
-        position: sticky;
         background-color: var(--neutral-grey-0);
         top: 0;
         z-index: 1;
 
-        &::after {
-            content: '';
-            position: absolute;
-            display: block;
-            width: 100%;
-            height: 1px;
-            background-color: var(--neutral-grey-3);
-        }
-
-        tr {
-            border-bottom: 0;
+        tr:nth-child(2) {
+            border-bottom: 1px solid var(--neutral-grey-3);
         }
 
         .headerCellProperty {
