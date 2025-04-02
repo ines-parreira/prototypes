@@ -3,16 +3,18 @@ import { fromJS } from 'immutable'
 
 import { useMainNavigationItems } from 'common/navigation/hooks/useMainNavigationItems'
 import { UserRole } from 'config/types/user'
-import { useHasShopifyIntegration } from 'hooks/useHasShopifyIntegration'
+import { useHasMagentoOrBigCommerceIntegration } from 'hooks/useHasMagentoOrBigCommerceIntegration'
 import { BASE_STATS_PATH } from 'routes/constants'
 import { assumeMock } from 'utils/testing'
 
 jest.mock('hooks/useAppSelector', () => (fn: () => void) => fn())
 
-jest.mock('hooks/useHasShopifyIntegration', () => ({
-    useHasShopifyIntegration: jest.fn(),
+jest.mock('hooks/useHasMagentoOrBigCommerceIntegration', () => ({
+    useHasMagentoOrBigCommerceIntegration: jest.fn(),
 }))
-const useHasShopifyIntegrationMock = assumeMock(useHasShopifyIntegration)
+const useHasMagentoOrBigCommerceIntegrationMock = assumeMock(
+    useHasMagentoOrBigCommerceIntegration,
+)
 
 describe('MainNavigation', () => {
     const basicUser = fromJS({ role: { name: UserRole.BasicAgent } })
@@ -71,24 +73,24 @@ describe('MainNavigation', () => {
         )
     })
 
-    it('should not render the AI Agent menu item for non-agent users and account has no Shopify integration', () => {
-        useHasShopifyIntegrationMock.mockReturnValue(false)
+    it('should not render the AI Agent menu item for non-agent users and account has a Magento/BigCommerce integration', () => {
+        useHasMagentoOrBigCommerceIntegrationMock.mockReturnValue(true)
         const { result } = renderHook(() => useMainNavigationItems(basicUser))
         expect(result.current.map((item) => item.url)).not.toContain(
             '/app/ai-agent',
         )
     })
 
-    it('should not render the AI Agent menu item if agent user and there is no Shopify integration', () => {
-        useHasShopifyIntegrationMock.mockReturnValue(false)
+    it('should not render the AI Agent menu item if agent user and there is a Magento/BigCommerce integration', () => {
+        useHasMagentoOrBigCommerceIntegrationMock.mockReturnValue(true)
         const { result } = renderHook(() => useMainNavigationItems(agentUser))
         expect(result.current.map((item) => item.url)).not.toContain(
             '/app/ai-agent',
         )
     })
 
-    it('should render the AI Agent menu item if agent user and the there is Shopify integration', () => {
-        useHasShopifyIntegrationMock.mockReturnValue(true)
+    it('should render the AI Agent menu item if agent user and there is no Magento/BigCommerce integration', () => {
+        useHasMagentoOrBigCommerceIntegrationMock.mockReturnValue(false)
         const { result } = renderHook(() => useMainNavigationItems(agentUser))
         expect(result.current.map((item) => item.url)).toContain(
             '/app/ai-agent',

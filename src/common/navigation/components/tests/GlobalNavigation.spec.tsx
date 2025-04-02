@@ -11,7 +11,7 @@ import {
 import { FeatureFlagKey } from 'config/featureFlags'
 import { UserRole } from 'config/types/user'
 import { useFlag } from 'core/flags'
-import { useHasShopifyIntegration } from 'hooks/useHasShopifyIntegration'
+import { useHasMagentoOrBigCommerceIntegration } from 'hooks/useHasMagentoOrBigCommerceIntegration'
 import { useReportChartRestrictions } from 'pages/stats/report-chart-restrictions/useReportChartRestrictions'
 import { getHasAutomate } from 'state/billing/selectors'
 import { getCurrentUser } from 'state/currentUser/selectors'
@@ -37,10 +37,12 @@ jest.mock('../UserItem', () => () => <div>UserItem</div>)
 jest.mock('core/flags')
 const mockUseFlag = useFlag as jest.Mock
 
-jest.mock('hooks/useHasShopifyIntegration', () => ({
-    useHasShopifyIntegration: jest.fn(),
+jest.mock('hooks/useHasMagentoOrBigCommerceIntegration', () => ({
+    useHasMagentoOrBigCommerceIntegration: jest.fn(),
 }))
-const useHasShopifyIntegrationMock = assumeMock(useHasShopifyIntegration)
+const useHasMagentoOrBigCommerceIntegrationMock = assumeMock(
+    useHasMagentoOrBigCommerceIntegration,
+)
 
 jest.mock(
     'pages/stats/report-chart-restrictions/useReportChartRestrictions',
@@ -172,24 +174,24 @@ describe('GlobalNavigation', () => {
         expect(getByText('UserItem')).toBeInTheDocument()
     })
 
-    it('should not render the ai agent icon if user is not a lead agent and account has no Shopify store', () => {
-        useHasShopifyIntegrationMock.mockReturnValue(false)
+    it('should not render the ai agent icon if user is not a lead agent and account has a Magento/BigCommerce store', () => {
+        useHasMagentoOrBigCommerceIntegrationMock.mockReturnValue(true)
         const { queryByText } = renderWithContext()
         expect(queryByText('auto_awesome')).not.toBeInTheDocument()
     })
 
-    it('should not render the ai agent icon if the user is a lead agent and account has no Shopify store', () => {
-        useHasShopifyIntegrationMock.mockReturnValue(false)
+    it('should render the ai agent icon if the user is a lead agent and account has no Magento/BigCommerce store', () => {
+        useHasMagentoOrBigCommerceIntegrationMock.mockReturnValue(false)
         getCurrentUserMock.mockReturnValue(
             fromJS({ role: { name: UserRole.Agent } }),
         )
         getHasAutomateMock.mockReturnValue(true)
         const { queryByText } = renderWithContext()
-        expect(queryByText('auto_awesome')).not.toBeInTheDocument()
+        expect(queryByText('auto_awesome')).toBeInTheDocument()
     })
 
     it('should render the ai agent icon if the user is a lead agent', () => {
-        useHasShopifyIntegrationMock.mockReturnValue(true)
+        useHasMagentoOrBigCommerceIntegrationMock.mockReturnValue(false)
         getCurrentUserMock.mockReturnValue(
             fromJS({ role: { name: UserRole.Agent } }),
         )
