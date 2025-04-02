@@ -96,21 +96,6 @@ describe('<Timeline />', () => {
         expect(screen.getByRole('status')).toBeInTheDocument()
     })
 
-    it('should render no results', () => {
-        getCustomerHistoryMock.mockReturnValue(
-            fromJS({
-                triedLoading: true,
-                tickets: [],
-            }),
-        )
-
-        render(<Timeline />)
-
-        expect(
-            screen.getByText('This customer doesn’t have any tickets yet.'),
-        ).toBeInTheDocument()
-    })
-
     it('should call onLoaded when triedLoading is true and hasCalledOnLoaded is false', () => {
         const onLoaded = jest.fn()
         const { rerender } = render(<Timeline onLoaded={onLoaded} />)
@@ -188,6 +173,35 @@ describe('<Timeline />', () => {
             SegmentEvent.CustomerTimelineTicketClicked,
         )
         expect(link).toHaveAttribute('to', '/app/ticket/1')
+    })
+
+    describe('Empty state', () => {
+        it('should say that they are no tickets yet', () => {
+            getCustomerHistoryMock.mockReturnValue(
+                fromJS({
+                    triedLoading: true,
+                    tickets: [],
+                }),
+            )
+
+            render(<Timeline />)
+
+            expect(
+                screen.getByText('This customer doesn’t have any tickets yet.'),
+            ).toBeInTheDocument()
+        })
+
+        it('should say that there are no matching tickets', () => {
+            useFlagMock.mockReturnValue(true)
+
+            render(<Timeline />)
+
+            fireEvent.click(screen.getByText('All'))
+            fireEvent.click(screen.getByText('Closed'))
+            fireEvent.click(screen.getByText('Open'))
+
+            expect(screen.getByText('No matching tickets')).toBeInTheDocument()
+        })
     })
 
     describe('Status filtering', () => {

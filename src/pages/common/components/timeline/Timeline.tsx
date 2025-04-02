@@ -15,6 +15,7 @@ import { getCustomerHistory, getLoading } from 'state/customers/selectors'
 import DisplayedDate from './DisplayedDate'
 import { useSort } from './hooks/useSort'
 import { useStatusFilter } from './hooks/useStatusFilter'
+import { NoResults } from './NoResults'
 import { Sort } from './Sort'
 import { StatusFilter } from './StatusFilter'
 import TicketCard from './TicketCard'
@@ -67,10 +68,7 @@ export function Timeline({ ticketId = 0, onLoaded }: Props) {
 
     if (customerHistory.triedLoading && customerHistory.tickets.length === 0) {
         return (
-            <div className={`${css.centeringContainer} ${css.noResults}`}>
-                <div title="Gorgias Logo" className={css.logo} />
-                <p>This customer doesn’t have any tickets yet.</p>
-            </div>
+            <NoResults>This customer doesn’t have any tickets yet.</NoResults>
         )
     }
 
@@ -87,42 +85,50 @@ export function Timeline({ ticketId = 0, onLoaded }: Props) {
                     <Sort value={sortOption} onChange={setSortOption} />
                 </div>
             )}
-            <ol className={css.list}>
-                {sortedTickets
-                    .filter((ticket) => ticket.channel)
-                    .map((ticket) => {
-                        const isCurrentTicket = ticketId === ticket.id
-                        return (
-                            <li key={ticket.id}>
-                                <Link
-                                    to={`/app/ticket/${ticket.id}`}
-                                    onClick={() => {
-                                        logEvent(
-                                            SegmentEvent.CustomerTimelineTicketClicked,
-                                        )
-                                    }}
-                                >
-                                    <TicketCard
-                                        className={css.card}
-                                        ticket={ticket}
-                                        isHighlighted={isCurrentTicket}
-                                        isLoadingCFDefinitions={
-                                            isLoadingCFDefinitions
-                                        }
-                                        customFieldDefinitions={
-                                            (customFieldDefinitions ||
-                                                []) as CustomField[]
-                                        }
-                                        displayedDate={DisplayedDate(
-                                            sortOption,
-                                            ticket,
-                                        )}
-                                    />
-                                </Link>
-                            </li>
-                        )
-                    })}
-            </ol>
+            {customerHistory.tickets.length && sortedTickets.length === 0 ? (
+                <NoResults>
+                    <b>No matching tickets</b>
+                    <br />
+                    Try adjusting filters to get results
+                </NoResults>
+            ) : (
+                <ol className={css.list}>
+                    {sortedTickets
+                        .filter((ticket) => ticket.channel)
+                        .map((ticket) => {
+                            const isCurrentTicket = ticketId === ticket.id
+                            return (
+                                <li key={ticket.id}>
+                                    <Link
+                                        to={`/app/ticket/${ticket.id}`}
+                                        onClick={() => {
+                                            logEvent(
+                                                SegmentEvent.CustomerTimelineTicketClicked,
+                                            )
+                                        }}
+                                    >
+                                        <TicketCard
+                                            className={css.card}
+                                            ticket={ticket}
+                                            isHighlighted={isCurrentTicket}
+                                            isLoadingCFDefinitions={
+                                                isLoadingCFDefinitions
+                                            }
+                                            customFieldDefinitions={
+                                                (customFieldDefinitions ||
+                                                    []) as CustomField[]
+                                            }
+                                            displayedDate={DisplayedDate(
+                                                sortOption,
+                                                ticket,
+                                            )}
+                                        />
+                                    </Link>
+                                </li>
+                            )
+                        })}
+                </ol>
+            )}
         </div>
     )
 }

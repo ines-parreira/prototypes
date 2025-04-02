@@ -100,19 +100,13 @@ export const TicketView = ({
         >
             {isHistoryDisplayed && (
                 <div className={classnames(css.timeline)}>
-                    <div className={css.timelineHeader}>
-                        <div
-                            className={classnames(
-                                css.closeTrigger,
-                                'd-flex',
-                                'align-items-center',
-                            )}
-                            {...handleButtonLikeClick(handleHistoryToggle)}
-                            id={TIMELINE_CLOSE_BUTTON_ID}
-                        >
-                            <i className="material-icons md-3 mr-3">close</i>
-                            <span>Customer Timeline</span>
-                        </div>
+                    <div
+                        className={classnames(css.closeTrigger)}
+                        {...handleButtonLikeClick(handleHistoryToggle)}
+                        id={TIMELINE_CLOSE_BUTTON_ID}
+                    >
+                        <i className="material-icons md-3 mr-3">close</i>
+                        <span>Customer Timeline</span>
                     </div>
 
                     <div className={classnames(css.timelineContainer, 'pb-4')}>
