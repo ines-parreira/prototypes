@@ -40,6 +40,7 @@ import css from './Dropdown.less'
 type Props = {
     children?: ReactNode
     className?: string
+    overlayClassName?: string
     isDisabled?: boolean
     isMultiple?: boolean
     isOpen: boolean
@@ -67,6 +68,7 @@ const Dropdown = forwardRef(
         {
             children,
             className,
+            overlayClassName,
             isDisabled,
             isMultiple,
             isOpen,
@@ -235,7 +237,10 @@ const Dropdown = forwardRef(
                 <FloatingPortal root={floatingPortalRoot}>
                     {isOpen && !isDisabled && (
                         <FloatingOverlay
-                            className={css.overlay}
+                            className={classnames(
+                                css.overlay,
+                                overlayClassName,
+                            )}
                             onClick={handleToggle}
                             data-testid="floating-overlay"
                         >

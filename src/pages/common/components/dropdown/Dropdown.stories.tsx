@@ -195,6 +195,7 @@ export const Default = DefaultTemplate.bind({})
 Default.args = {
     children: 'foo',
     className: '',
+    overlayClassName: '',
     isDisabled: false,
     isOpen: false,
     onToggle: (isVisible: boolean) =>
