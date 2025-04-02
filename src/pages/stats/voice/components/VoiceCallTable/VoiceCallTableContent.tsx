@@ -18,8 +18,9 @@ import { NoDataAvailable } from 'pages/stats/NoDataAvailable'
 import { CALL_LIST_PAGE_SIZE } from 'pages/stats/voice/constants/voiceOverview'
 import { VoiceCallSummary } from 'pages/stats/voice/models/types'
 
+import VoiceQueueProvider from '../VoiceQueue/VoiceQueueProvider'
 import { skeletonColumnsWidth, VoiceCallTableColumnName } from './constants'
-import { Cell, getVoiceDrillDownColumns } from './utils'
+import { Cell } from './utils'
 import {
     getOrderedCells,
     getOrderedHeaderCells,
@@ -30,7 +31,7 @@ import css from './VoiceCallTable.less'
 type VoiceCallTableContentProps = {
     data?: VoiceCallSummary[]
     isFetching: boolean
-    columns?: VoiceCallTableColumnName[]
+    columns: VoiceCallTableColumnName[]
     onRowClick?: (voiceCall: VoiceCallSummary) => void
     isRecordingDownloadable?: boolean
     useMeasuredWidth?: boolean
@@ -59,6 +60,11 @@ export default function VoiceCallTableContent({
     const shouldShowNewUnansweredStatuses = useFlag(
         FeatureFlagKey.ShowNewUnansweredStatuses,
     )
+    const shouldExposeVoiceQueues = useFlag(FeatureFlagKey.ExposeVoiceQueues)
+
+    columns = shouldExposeVoiceQueues
+        ? columns
+        : columns.filter((col) => col !== VoiceCallTableColumnName.Queue)
 
     const [ref, { width: measuredWidth }] = useMeasure<HTMLDivElement>()
     const [isTableScrolled, setIsTableScrolled] = useState(false)
@@ -74,7 +80,7 @@ export default function VoiceCallTableContent({
     }
 
     const skeletons = useMemo(() => {
-        const skeletonColumns = columns ?? getVoiceDrillDownColumns()
+        const skeletonColumns = columns
         const orderedSkeletonColumns = skeletonColumns.map((columnName) => [
             columnName,
             skeletonColumnsWidth[columnName],
@@ -113,54 +119,69 @@ export default function VoiceCallTableContent({
         )
     }
 
+    const queueIds = data
+        ? (Array.from(
+              new Set(
+                  data
+                      .map((voiceCall) => voiceCall.queueId)
+                      .filter((id) => id !== null),
+              ),
+          ) as number[])
+        : []
+
+    const tableContent = (
+        <div ref={ref} className={css.container} onScroll={handleScroll}>
+            <TableWrapper className={css.table} style={{ width }}>
+                <TableHead className={classNames(css.tableHead, css.tableRow)}>
+                    {getOrderedHeaderCells({
+                        columns,
+                        isTableScrolled,
+                        ongoingTimeColumnTitle,
+                    }).map((cell) => (
+                        <HeaderCellProperty
+                            key={`${cell.key}-header-cell`}
+                            isOrderedBy={cell.key === orderBy}
+                            direction={orderDirection}
+                            onClick={() => onColumnClick?.(cell.key)}
+                            {...cell.props}
+                        />
+                    ))}
+                </TableHead>
+                <TableBody>
+                    {isFetching
+                        ? skeletons
+                        : data?.map((item, index) => (
+                              <TableBodyRow
+                                  key={`row-${index}`}
+                                  className={css.tableRow}
+                                  onClick={() => onRowClick?.(item)}
+                              >
+                                  {getOrderedCells({
+                                      item,
+                                      columns,
+                                      isTableScrolled,
+                                      isRecordingDownloadable,
+                                      showDisplayStatus:
+                                          shouldShowNewUnansweredStatuses,
+                                  }).map((cell: Cell<typeof BodyCell>) => (
+                                      <BodyCell
+                                          key={`${cell.key}-cell`}
+                                          {...cell.props}
+                                      />
+                                  ))}
+                              </TableBodyRow>
+                          ))}
+                </TableBody>
+            </TableWrapper>
+        </div>
+    )
+
+    if (!shouldExposeVoiceQueues) {
+        return tableContent
+    }
     return (
-        <>
-            <div ref={ref} className={css.container} onScroll={handleScroll}>
-                <TableWrapper className={css.table} style={{ width }}>
-                    <TableHead
-                        className={classNames(css.tableHead, css.tableRow)}
-                    >
-                        {getOrderedHeaderCells({
-                            columns,
-                            isTableScrolled,
-                            ongoingTimeColumnTitle,
-                        }).map((cell) => (
-                            <HeaderCellProperty
-                                key={`${cell.key}-header-cell`}
-                                isOrderedBy={cell.key === orderBy}
-                                direction={orderDirection}
-                                onClick={() => onColumnClick?.(cell.key)}
-                                {...cell.props}
-                            />
-                        ))}
-                    </TableHead>
-                    <TableBody>
-                        {isFetching
-                            ? skeletons
-                            : data?.map((item, index) => (
-                                  <TableBodyRow
-                                      key={`row-${index}`}
-                                      className={css.tableRow}
-                                      onClick={() => onRowClick?.(item)}
-                                  >
-                                      {getOrderedCells({
-                                          item,
-                                          columns,
-                                          isTableScrolled,
-                                          isRecordingDownloadable,
-                                          showDisplayStatus:
-                                              shouldShowNewUnansweredStatuses,
-                                      }).map((cell: Cell<typeof BodyCell>) => (
-                                          <BodyCell
-                                              key={`${cell.key}-cell`}
-                                              {...cell.props}
-                                          />
-                                      ))}
-                                  </TableBodyRow>
-                              ))}
-                    </TableBody>
-                </TableWrapper>
-            </div>
-        </>
+        <VoiceQueueProvider queueIds={queueIds}>
+            {tableContent}
+        </VoiceQueueProvider>
     )
 }

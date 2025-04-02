@@ -8,8 +8,9 @@ import {
 
 import { OrderDirection } from 'models/api/types'
 import {
+    getInboundDisplayStatus,
+    getOutboundDisplayStatus,
     VoiceCallStatus as LegacyVoiceCallStatus,
-    VoiceCallDisplayStatus,
 } from 'models/voiceCall/types'
 import { getMoment } from 'utils/date'
 import { formatReportingQueryDate } from 'utils/reporting'
@@ -29,6 +30,7 @@ export const liveVoiceCallTableColumns: VoiceCallTableColumnName[] = [
     VoiceCallTableColumnName.LiveStatus,
     VoiceCallTableColumnName.OngoingTime,
     VoiceCallTableColumnName.Integration,
+    VoiceCallTableColumnName.Queue,
     VoiceCallTableColumnName.Ticket,
 ]
 
@@ -98,6 +100,11 @@ export const formatVoiceCallsData = (
         const agentId =
             voiceCall.last_answered_by_agent_id ??
             voiceCall.initiated_by_agent_id
+        const status = voiceCall.status as LegacyVoiceCallStatus
+        const displayStatus =
+            voiceCall.direction === VoiceCallDirection.Inbound
+                ? getInboundDisplayStatus(status, voiceCall.termination_status)
+                : getOutboundDisplayStatus(status)
 
         return {
             agentId: isNaN(Number(agentId)) ? null : Number(agentId),
@@ -106,7 +113,7 @@ export const formatVoiceCallsData = (
             direction: voiceCall.direction,
             integrationId: voiceCall.integration_id,
             createdAt: voiceCall.created_datetime,
-            status: voiceCall.status as LegacyVoiceCallStatus,
+            status: status,
             duration: voiceCall.duration,
             ticketId: voiceCall.ticket_id,
             phoneNumberDestination: voiceCall.phone_number_destination ?? '',
@@ -117,8 +124,8 @@ export const formatVoiceCallsData = (
             voicemailUrl: null,
             callRecordingAvailable: voiceCall.has_call_recording,
             callRecordingUrl: null,
-            displayStatus: VoiceCallDisplayStatus.Answered, // TODO: placeholder, set real display status when we have termination_status
-            queueId: null, // TODO: placeholder, set real queue id when we have queue info
+            displayStatus: displayStatus,
+            queueId: voiceCall.queue_id ?? null,
             queueName: null,
         }
     })

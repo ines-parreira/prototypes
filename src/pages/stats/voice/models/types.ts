@@ -47,7 +47,7 @@ export type VoiceCallSummary = {
     voicemailUrl: string | null
     callRecordingAvailable?: boolean | null
     callRecordingUrl: string | null
-    displayStatus: VoiceCallDisplayStatus
+    displayStatus: VoiceCallDisplayStatus | null
     queueId: number | null
     queueName?: string | null
 }

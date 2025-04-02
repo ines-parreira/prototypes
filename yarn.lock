@@ -3588,21 +3588,21 @@
     "@gorgias/api-types" "^0.6.1"
     axios "^1.7.7"
 
-"@gorgias/api-client@^0.6.20":
-  version "0.6.20"
-  resolved "https://npm.pkg.github.com/download/@gorgias/api-client/0.6.20/2942a7aeb1a018be8a117191123abcf6fe8b0c3e#2942a7aeb1a018be8a117191123abcf6fe8b0c3e"
-  integrity sha512-VPaqNvHZ0kBrX2v71lmLdbGw3BoYLfhoFmHPYe90PvccWLa3MydIqPjcfm5wE2tFVfZKjfvo6TV/ys48PtrVZw==
+"@gorgias/api-client@^0.6.21":
+  version "0.6.21"
+  resolved "https://npm.pkg.github.com/download/@gorgias/api-client/0.6.21/b2b39c4c54861b82f56139dd1930425e6a18ab2c#b2b39c4c54861b82f56139dd1930425e6a18ab2c"
+  integrity sha512-ovqewkJDAzB4tmf13mh7UvoJ19yFpZEGAcd79IncUaFa9X+tCC9mGDFut3Zk0GbNRaZKIpnwplQdd8YR2LnBaw==
   dependencies:
-    "@gorgias/api-types" "^0.6.20"
+    "@gorgias/api-types" "^0.6.21"
     axios "^1.7.7"
 
-"@gorgias/api-queries@0.6.20":
-  version "0.6.20"
-  resolved "https://npm.pkg.github.com/download/@gorgias/api-queries/0.6.20/2c96ecdc9e5f4cb26d9563dbdc30c6c7aaa325fa#2c96ecdc9e5f4cb26d9563dbdc30c6c7aaa325fa"
-  integrity sha512-oRmI9CPGsqD7G/Hvu9Uo89gTFeOTtNfRgkuJALWJumZUrQ7nQY3Stf9umzkdnNvrsgDHimZ4FgYizQkmBDvIGg==
+"@gorgias/api-queries@0.6.21":
+  version "0.6.21"
+  resolved "https://npm.pkg.github.com/download/@gorgias/api-queries/0.6.21/fc1a7cb78a042c169e6fbd1d9a13ecf029909a64#fc1a7cb78a042c169e6fbd1d9a13ecf029909a64"
+  integrity sha512-DNeI2LMhYUvLGXltbGSu+qln6MT1w1wFAUkbONsWTTdDtsTNYvFAo5F2kVDbhjAG+d9hhykbrN1omIz0Jztk7A==
   dependencies:
-    "@gorgias/api-client" "^0.6.20"
-    "@gorgias/api-types" "^0.6.20"
+    "@gorgias/api-client" "^0.6.21"
+    "@gorgias/api-types" "^0.6.21"
 
 "@gorgias/api-queries@^0.6.1":
   version "0.6.1"
@@ -3612,29 +3612,29 @@
     "@gorgias/api-client" "^0.6.1"
     "@gorgias/api-types" "^0.6.1"
 
-"@gorgias/api-spec@^0.6.20":
-  version "0.6.20"
-  resolved "https://npm.pkg.github.com/download/@gorgias/api-spec/0.6.20/8166b92dbcda3f7c02cea1f417698dac1d193a96#8166b92dbcda3f7c02cea1f417698dac1d193a96"
-  integrity sha512-IWSfUGHdaHO8BtXU0ugujkWAvHz72Cit0BKqQSBQ6Aodgm/Y5v1ceaH4sQ2OgWz3y9s9q1LuUQCGs/7f6+6O+A==
+"@gorgias/api-spec@^0.6.21":
+  version "0.6.21"
+  resolved "https://npm.pkg.github.com/download/@gorgias/api-spec/0.6.21/085fc36d2c1b0255baba9e3788903e220606d1b9#085fc36d2c1b0255baba9e3788903e220606d1b9"
+  integrity sha512-WPH+UgkPNR4pq85UJT6bXStMuIE0YCx1gT80YDewHK22la5ydNLdBOmofJeYS4unFXVxjtEcyZnZxRONtSgHdw==
 
 "@gorgias/api-types@^0.6.1":
   version "0.6.1"
   resolved "https://npm.pkg.github.com/download/@gorgias/api-types/0.6.1/d4a2c9fce87c683619bd9a881e1c4a395044dc6d#d4a2c9fce87c683619bd9a881e1c4a395044dc6d"
   integrity sha512-aNfeZCmkpsWCnYQq5x3wWc+O6R0viJvwppKoe8ngpmlW4fF5vynfUVQL5Rhn7VTpdNESR8UMTgSs5g47N9SgPQ==
 
-"@gorgias/api-types@^0.6.20":
-  version "0.6.20"
-  resolved "https://npm.pkg.github.com/download/@gorgias/api-types/0.6.20/a8ab0e1b342d789a0abb2c2c02b041dfc475c747#a8ab0e1b342d789a0abb2c2c02b041dfc475c747"
-  integrity sha512-3tWDKc9lm/S3Jth2rIpUAG5X7ZeKS6gAT00lYi9AS3n+VEvOeQ1Cdoh2kPuAKBhHorW5Weyiyo5nXVoBIwi9gw==
+"@gorgias/api-types@^0.6.21":
+  version "0.6.21"
+  resolved "https://npm.pkg.github.com/download/@gorgias/api-types/0.6.21/111a88ab60c4f268027f478845aa1e9c1b81aef6#111a88ab60c4f268027f478845aa1e9c1b81aef6"
+  integrity sha512-hxAuqV6gDRq2wbar4vm3V18Peh+wRfSqS0TMg7fYZOXjEvcLy7uEhDwEk6dv1mw1UY/suNHxNpdTlKZ7Zz5VdQ==
 
-"@gorgias/api-validators@0.6.20":
-  version "0.6.20"
-  resolved "https://npm.pkg.github.com/download/@gorgias/api-validators/0.6.20/9c9562555af9eda5ac23bdf44b38cc78742806d4#9c9562555af9eda5ac23bdf44b38cc78742806d4"
-  integrity sha512-csVzy9qv9W0tSqYjO8YnmRGH7Fsa8LFABPxspns4krsOa27tMCTl7zjxBhYgg5R2aGe7jV8rlbvDgJQrx0nAwA==
+"@gorgias/api-validators@0.6.21":
+  version "0.6.21"
+  resolved "https://npm.pkg.github.com/download/@gorgias/api-validators/0.6.21/6448010ad4509421f22f4d6714fef5e8a0cff7aa#6448010ad4509421f22f4d6714fef5e8a0cff7aa"
+  integrity sha512-DyiEwb9Tx1KBErVJ8tAUTIWplSqBu4GseYumor2rjdcMcpDWmsdGskhrYGKTWUaO2QgmWw/W7CkYq66Fvtzrjw==
   dependencies:
     "@apideck/better-ajv-errors" "^0.3.6"
-    "@gorgias/api-spec" "^0.6.20"
-    "@gorgias/api-types" "^0.6.20"
+    "@gorgias/api-spec" "^0.6.21"
+    "@gorgias/api-types" "^0.6.21"
     ajv "^8.12.0"
     ajv-formats "^3.0.1"
     immer "^10.1"

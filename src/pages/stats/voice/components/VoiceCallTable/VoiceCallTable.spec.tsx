@@ -1,5 +1,3 @@
-import React from 'react'
-
 import { UseQueryResult } from '@tanstack/react-query'
 import { fireEvent, render } from '@testing-library/react'
 import moment from 'moment/moment'
@@ -7,8 +5,6 @@ import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import { FeatureFlagKey } from 'config/featureFlags'
-import { useFlag } from 'core/flags'
 import { VoiceCallSegment } from 'models/reporting/cubes/VoiceCallCube'
 import { StatsFilters } from 'models/stat/types'
 import { VoiceCallDisplayStatus } from 'models/voiceCall/types'
@@ -22,8 +18,6 @@ import { RootState, StoreDispatch } from 'state/types'
 import { formatReportingQueryDate } from 'utils/reporting'
 import { assumeMock } from 'utils/testing'
 
-import VoiceQueueProvider from '../VoiceQueue/VoiceQueueProvider'
-import { VoiceCallTableColumnName } from './constants'
 import { VoiceCallTable } from './VoiceCallTable'
 import VoiceCallTableContent from './VoiceCallTableContent'
 
@@ -37,14 +31,7 @@ jest.mock('pages/stats/voice/components/VoiceCallTable/VoiceCallTableContent')
 const VoiceCallTableContentMock = assumeMock(VoiceCallTableContent)
 VoiceCallTableContentMock.mockImplementation(() => <div>VoiceCallTable</div>)
 
-jest.mock('pages/stats/voice/components/VoiceQueue/VoiceQueueProvider')
-const VoiceQueueProviderMock = assumeMock(VoiceQueueProvider)
-VoiceQueueProviderMock.mockImplementation(({ children }) => <>{children}</>)
-
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
-
-jest.mock('core/flags')
-const useFlagMock = assumeMock(useFlag)
 
 describe('VoiceCallTable', () => {
     const statsFilters: StatsFilters = {
@@ -67,14 +54,6 @@ describe('VoiceCallTable', () => {
             </Provider>,
         )
     }
-
-    beforeEach(() => {
-        useFlagMock.mockImplementation((flag) => {
-            if (flag === FeatureFlagKey.ExposeVoiceQueues) {
-                return true
-            }
-        })
-    })
 
     it('should render pagination', () => {
         useVoiceCallListMock.mockReturnValue({
@@ -230,102 +209,5 @@ describe('VoiceCallTable', () => {
         expect(
             getByLabelText('Page 2 is your current page'),
         ).toBeInTheDocument()
-    })
-
-    it('should get queue ids from data and pass it to the voice queue provider', () => {
-        useVoiceCallListMock.mockReturnValue({
-            data: [
-                { queueId: 1 },
-                { queueId: 2 },
-                { queueId: 1 },
-                { queueId: null },
-            ] as VoiceCallSummary[],
-            isFetching: false,
-        } as UseQueryResult<VoiceCallSummary[], unknown>)
-        useVoiceCallCountMock.mockReturnValue({
-            total: 4,
-            totalPages: 1,
-        })
-
-        renderComponent()
-
-        expect(VoiceQueueProviderMock).toHaveBeenCalledWith(
-            expect.objectContaining({
-                queueIds: [1, 2],
-            }),
-            {},
-        )
-    })
-
-    it('should return empty queue ids if none are found', () => {
-        useVoiceCallListMock.mockReturnValue({
-            data: [{ queueId: null }, { queueId: null }] as VoiceCallSummary[],
-            isFetching: false,
-        } as UseQueryResult<VoiceCallSummary[], unknown>)
-        useVoiceCallCountMock.mockReturnValue({
-            total: 2,
-            totalPages: 1,
-        })
-
-        renderComponent()
-
-        expect(VoiceQueueProviderMock).toHaveBeenCalledWith(
-            expect.objectContaining({
-                queueIds: [],
-            }),
-            {},
-        )
-    })
-
-    describe('old non queue behavior', () => {
-        beforeEach(() => {
-            useFlagMock.mockImplementation((flag) => {
-                if (flag === FeatureFlagKey.ExposeVoiceQueues) {
-                    return false
-                }
-            })
-        })
-
-        it('should discard queue ids data', () => {
-            useVoiceCallListMock.mockReturnValue({
-                data: [
-                    { queueId: 1 },
-                    { queueId: 2 },
-                    { queueId: 1 },
-                    { queueId: null },
-                ] as VoiceCallSummary[],
-                isFetching: false,
-            } as UseQueryResult<VoiceCallSummary[], unknown>)
-            useVoiceCallCountMock.mockReturnValue({
-                total: 4,
-                totalPages: 1,
-            })
-
-            renderComponent()
-
-            expect(VoiceQueueProviderMock).not.toHaveBeenCalled()
-        })
-
-        it('should not display queue column', () => {
-            useVoiceCallListMock.mockReturnValue({
-                data: [{}],
-                isFetching: false,
-            } as UseQueryResult<VoiceCallSummary[], unknown>)
-            useVoiceCallCountMock.mockReturnValue({
-                total: 100,
-                totalPages: 10,
-            })
-
-            renderComponent()
-
-            expect(VoiceCallTableContentMock).toHaveBeenCalledWith(
-                expect.objectContaining({
-                    columns: expect.not.arrayContaining([
-                        VoiceCallTableColumnName.Queue,
-                    ]),
-                }),
-                {},
-            )
-        })
     })
 })

@@ -287,6 +287,7 @@ describe('utils', () => {
                 ticket_id: 4,
                 has_voicemail: true,
                 has_call_recording: true,
+                queue_id: 1,
             } as LiveCallQueueVoiceCall
 
             const result = formatVoiceCallsData([voiceCall])
@@ -309,8 +310,8 @@ describe('utils', () => {
                     voicemailUrl: null,
                     callRecordingAvailable: true,
                     callRecordingUrl: null,
-                    displayStatus: VoiceCallDisplayStatus.Answered,
-                    queueId: null,
+                    displayStatus: VoiceCallDisplayStatus.InProgress,
+                    queueId: 1,
                     queueName: null,
                 },
             ])
@@ -354,7 +355,7 @@ describe('utils', () => {
                     voicemailUrl: null,
                     callRecordingAvailable: true,
                     callRecordingUrl: null,
-                    displayStatus: VoiceCallDisplayStatus.Answered,
+                    displayStatus: VoiceCallDisplayStatus.InProgress,
                     queueId: null,
                     queueName: null,
                 },

@@ -15,6 +15,9 @@ import { useVoiceCallCount } from 'pages/stats/voice/hooks/useVoiceCallCount'
 import { RootState, StoreDispatch } from 'state/types'
 import { assumeMock } from 'utils/testing'
 
+import { VoiceCallSummary } from '../../models/types'
+import VoiceQueueProvider from '../VoiceQueue/VoiceQueueProvider'
+import { VoiceCallTableColumnName } from './constants'
 import VoiceCallTableContent from './VoiceCallTableContent'
 
 jest.mock('pages/stats/voice/hooks/useVoiceCallList')
@@ -58,6 +61,10 @@ jest.mock('pages/stats/voice/hooks/useVoiceQueueContext', () => ({
         }
     },
 }))
+
+jest.mock('pages/stats/voice/components/VoiceQueue/VoiceQueueProvider')
+const VoiceQueueProviderMock = assumeMock(VoiceQueueProvider)
+VoiceQueueProviderMock.mockImplementation(({ children }) => <>{children}</>)
 
 jest.mock('core/flags')
 const useFlagMock = assumeMock(useFlag)
@@ -127,11 +134,24 @@ const data = [
     },
 ]
 
+const columns = [
+    VoiceCallTableColumnName.Activity,
+    VoiceCallTableColumnName.Integration,
+    VoiceCallTableColumnName.Queue,
+    VoiceCallTableColumnName.Date,
+    VoiceCallTableColumnName.State,
+    VoiceCallTableColumnName.Recording,
+    VoiceCallTableColumnName.Duration,
+    VoiceCallTableColumnName.WaitTime,
+    VoiceCallTableColumnName.Ticket,
+]
+
 describe('VoiceCallTableContent', () => {
     const renderComponent = (
         props: ComponentProps<typeof VoiceCallTableContent> = {
             data,
             isFetching: false,
+            columns: columns,
         },
     ) => {
         return render(
@@ -147,6 +167,7 @@ describe('VoiceCallTableContent', () => {
             const { getByText } = renderComponent({
                 data: emptyData,
                 isFetching: false,
+                columns: columns,
             })
             expect(getByText('No voice calls')).toBeInTheDocument()
         },
@@ -158,6 +179,7 @@ describe('VoiceCallTableContent', () => {
             isFetching: false,
             noDataTitle: 'Custom no data title',
             noDataDescription: 'Custom no data description',
+            columns: columns,
         })
         expect(getByText('Custom no data title')).toBeInTheDocument()
         expect(getByText('Custom no data description')).toBeInTheDocument()
@@ -216,6 +238,7 @@ describe('VoiceCallTableContent', () => {
         const { getAllByRole } = renderComponent({
             data: [],
             isFetching: true,
+            columns: columns,
         })
 
         expect(getAllByRole('row')).toHaveLength(CALL_LIST_PAGE_SIZE + 1)
@@ -314,10 +337,112 @@ describe('VoiceCallTableContent', () => {
 
     it('should call onColumnClick when clicking on a header cell', () => {
         const onColumnClick = jest.fn()
-        const { getByText } = renderComponent({ data, onColumnClick } as any)
+        const { getByText } = renderComponent({
+            data,
+            isFetching: false,
+            columns: [VoiceCallTableColumnName.Activity],
+            onColumnClick,
+        })
 
         fireEvent.click(getByText('Activity'))
 
         expect(onColumnClick).toHaveBeenCalledWith('Activity')
+    })
+
+    describe('retrieve queue data', () => {
+        beforeEach(() => {
+            useFlagMock.mockImplementation((flag) => {
+                if (flag === FeatureFlagKey.ExposeVoiceQueues) {
+                    return true
+                }
+            })
+        })
+
+        it('should get queue ids from data and pass it to the voice queue provider', () => {
+            renderComponent({
+                data: [
+                    { queueId: 1 },
+                    { queueId: 2 },
+                    { queueId: 1 },
+                    { queueId: null },
+                ] as VoiceCallSummary[],
+                isFetching: false,
+                columns: columns,
+            })
+
+            expect(VoiceQueueProviderMock).toHaveBeenCalledWith(
+                expect.objectContaining({
+                    queueIds: [1, 2],
+                }),
+                {},
+            )
+        })
+
+        it('should return empty queue ids if none are found', () => {
+            renderComponent({
+                data: [
+                    { queueId: null },
+                    { queueId: null },
+                ] as VoiceCallSummary[],
+                isFetching: false,
+                columns: columns,
+            })
+
+            expect(VoiceQueueProviderMock).toHaveBeenCalledWith(
+                expect.objectContaining({
+                    queueIds: [],
+                }),
+                {},
+            )
+        })
+
+        it('should display queue column', () => {
+            const { queryByText } = renderComponent({
+                data: [{}] as VoiceCallSummary[],
+                isFetching: false,
+                columns: [VoiceCallTableColumnName.Queue],
+            })
+
+            expect(
+                queryByText(VoiceCallTableColumnName.Queue),
+            ).toBeInTheDocument()
+        })
+    })
+
+    describe('old non queue behavior', () => {
+        beforeEach(() => {
+            useFlagMock.mockImplementation((flag) => {
+                if (flag === FeatureFlagKey.ExposeVoiceQueues) {
+                    return false
+                }
+            })
+        })
+
+        it('should discard queue ids data', () => {
+            renderComponent({
+                data: [
+                    { queueId: 1 },
+                    { queueId: 2 },
+                    { queueId: 1 },
+                    { queueId: null },
+                ] as VoiceCallSummary[],
+                isFetching: false,
+                columns: columns,
+            })
+
+            expect(VoiceQueueProviderMock).not.toHaveBeenCalled()
+        })
+
+        it('should not display queue column', () => {
+            const { queryByText } = renderComponent({
+                data: [{}] as VoiceCallSummary[],
+                isFetching: false,
+                columns: [VoiceCallTableColumnName.Queue],
+            })
+
+            expect(
+                queryByText(VoiceCallTableColumnName.Queue),
+            ).not.toBeInTheDocument()
+        })
     })
 })

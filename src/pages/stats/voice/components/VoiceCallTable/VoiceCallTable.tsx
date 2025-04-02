@@ -1,7 +1,5 @@
 import { useEffect, useState } from 'react'
 
-import { FeatureFlagKey } from 'config/featureFlags'
-import { useFlag } from 'core/flags'
 import { VoiceCallSegment } from 'models/reporting/cubes/VoiceCallCube'
 import { StatsFilters } from 'models/stat/types'
 import Pagination from 'pages/common/components/Pagination'
@@ -16,7 +14,6 @@ import {
     VoiceCallFilterOptions,
 } from 'pages/stats/voice/models/types'
 
-import VoiceQueueProvider from '../VoiceQueue/VoiceQueueProvider'
 import { VoiceCallTableColumnName } from './constants'
 import useVoiceCallTableOrdering from './useVoiceCallTableOrdering'
 import VoiceCallTableContent from './VoiceCallTableContent'
@@ -34,8 +31,6 @@ export const VoiceCallTable = ({
     userTimezone,
     filterOption,
 }: VoiceCallTableProps) => {
-    const shouldExposeVoiceQueues = useFlag(FeatureFlagKey.ExposeVoiceQueues)
-
     const [currentPage, setCurrentPage] = useState(1)
 
     const {
@@ -67,16 +62,6 @@ export const VoiceCallTable = ({
         setCurrentPage(nextPage)
     }
 
-    const queueIds = data
-        ? (Array.from(
-              new Set(
-                  data
-                      .map((voiceCall) => voiceCall.queueId)
-                      .filter((id) => id !== null),
-              ),
-          ) as number[])
-        : []
-
     useEffect(() => {
         if (!isFetching && currentPage > totalPages) {
             handlePageChange(totalPages === 0 ? 1 : totalPages)
@@ -85,35 +70,24 @@ export const VoiceCallTable = ({
 
     return (
         <>
-            {shouldExposeVoiceQueues ? (
-                <VoiceQueueProvider queueIds={queueIds}>
-                    <VoiceCallTableContent
-                        data={data}
-                        isFetching={isFetching}
-                        orderBy={orderByColumnName}
-                        orderDirection={orderDirection}
-                        onColumnClick={onOrderChange}
-                    />
-                </VoiceQueueProvider>
-            ) : (
-                <VoiceCallTableContent
-                    data={data}
-                    isFetching={isFetching}
-                    orderBy={orderByColumnName}
-                    orderDirection={orderDirection}
-                    onColumnClick={onOrderChange}
-                    columns={[
-                        VoiceCallTableColumnName.Activity,
-                        VoiceCallTableColumnName.Integration,
-                        VoiceCallTableColumnName.Date,
-                        VoiceCallTableColumnName.State,
-                        VoiceCallTableColumnName.Recording,
-                        VoiceCallTableColumnName.Duration,
-                        VoiceCallTableColumnName.WaitTime,
-                        VoiceCallTableColumnName.Ticket,
-                    ]}
-                />
-            )}
+            <VoiceCallTableContent
+                data={data}
+                isFetching={isFetching}
+                orderBy={orderByColumnName}
+                orderDirection={orderDirection}
+                onColumnClick={onOrderChange}
+                columns={[
+                    VoiceCallTableColumnName.Activity,
+                    VoiceCallTableColumnName.Integration,
+                    VoiceCallTableColumnName.Queue,
+                    VoiceCallTableColumnName.Date,
+                    VoiceCallTableColumnName.State,
+                    VoiceCallTableColumnName.Recording,
+                    VoiceCallTableColumnName.Duration,
+                    VoiceCallTableColumnName.WaitTime,
+                    VoiceCallTableColumnName.Ticket,
+                ]}
+            />
             {totalPages > 1 && (
                 <Pagination
                     currentPage={currentPage}
