@@ -34,9 +34,8 @@ export const useHandoverCustomizationComponent = ({
             ?.value.id,
     )
 
-    const [activeSettingsSection, setActiveSettingsSection] = useState<
-        HandoverCustomizationFormType | undefined
-    >(undefined)
+    const [activeSettingsSection, setActiveSettingsSection] =
+        useState<HandoverCustomizationFormType | null>(null)
 
     const availableChats = useMemo(
         () => getAvailableChats({ chatChannels, monitoredChatIntegrationIds }),
@@ -60,10 +59,8 @@ export const useHandoverCustomizationComponent = ({
     }, [selectedChatId])
 
     const onActiveSettingsSectionChange = useCallback(
-        (sectionId?: string) =>
-            setActiveSettingsSection(
-                sectionId as HandoverCustomizationFormType,
-            ),
+        (section: HandoverCustomizationFormType | null) =>
+            setActiveSettingsSection(section),
         [setActiveSettingsSection],
     )
 
@@ -105,7 +102,7 @@ export const useHandoverCustomizationComponent = ({
     // reset active settings section when the selected chat is changed to undefined
     useEffect(() => {
         if (!selectedChatId) {
-            setActiveSettingsSection(undefined)
+            setActiveSettingsSection(null)
         }
     }, [selectedChatId])
 

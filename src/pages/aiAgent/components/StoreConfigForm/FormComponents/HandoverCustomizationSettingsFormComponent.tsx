@@ -1,5 +1,3 @@
-import { useMemo } from 'react'
-
 import cn from 'classnames'
 
 import { Tooltip } from '@gorgias/merchant-ui-kit'
@@ -39,19 +37,11 @@ export const HandoverCustomizationSettingsFormComponent = ({
         onActiveSettingsSectionChange,
         onSelectedChatChange,
         isHandoverSectionDisabled,
-        isSelectedChatAvailabilityOffline,
     } = useHandoverCustomizationComponent({
         shopName,
         shopType,
         monitoredChatIntegrationIds,
     })
-
-    const chatSettingsHref = useMemo(() => {
-        if (selectedChat) {
-            return `/app/settings/channels/gorgias_chat/${selectedChat.value.id}/preferences`
-        }
-        return ''
-    }, [selectedChat])
 
     return (
         <div>
@@ -80,51 +70,45 @@ export const HandoverCustomizationSettingsFormComponent = ({
                     />
                 )}
             </div>
-            <Accordion
-                onChange={onActiveSettingsSectionChange}
-                expandedItem={activeSettingsSection}
+            <div
+                id="handover-customization-accordion"
+                className={cn({
+                    [css.accordionWrapperDisabled]: isHandoverSectionDisabled,
+                })}
             >
-                <AccordionItem
-                    id={HandoverCustomizationFormType.OFFLINE_SETTINGS}
-                    isDisabled={isHandoverSectionDisabled}
+                <Tooltip
+                    target="handover-customization-accordion"
+                    placement="top"
+                    disabled={!isHandoverSectionDisabled}
                 >
-                    <AccordionHeader>
-                        <span className="body-semibold">
-                            When offline or outside business hours
-                        </span>
-                    </AccordionHeader>
-                    <AccordionBody>
-                        {selectedChat && (
-                            <HandoverCustomizationOfflineSettings
-                                integration={selectedChat.value}
-                            />
-                        )}
-                    </AccordionBody>
-                </AccordionItem>
+                    {`One or more chats must be selected
+                in order to view handover settings.`}
+                </Tooltip>
 
-                <div
-                    id={`${HandoverCustomizationFormType.ONLINE_SETTINGS}-wrapper`}
+                <Accordion
+                    onChange={onActiveSettingsSectionChange}
+                    expandedItem={activeSettingsSection}
                 >
-                    <Tooltip
-                        target={`${HandoverCustomizationFormType.ONLINE_SETTINGS}-wrapper`}
-                        disabled={!isSelectedChatAvailabilityOffline}
-                        autohide={false}
+                    <AccordionItem
+                        id={HandoverCustomizationFormType.OFFLINE_SETTINGS}
+                        isDisabled={isHandoverSectionDisabled}
                     >
-                        <a
-                            href={chatSettingsHref}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                        >
-                            Set your Chat live
-                        </a>
-                        {` in order to configure online handover settings`}
-                    </Tooltip>
+                        <AccordionHeader>
+                            <span className="body-semibold">
+                                When offline or outside business hours
+                            </span>
+                        </AccordionHeader>
+                        <AccordionBody>
+                            {selectedChat && (
+                                <HandoverCustomizationOfflineSettings
+                                    integration={selectedChat.value}
+                                />
+                            )}
+                        </AccordionBody>
+                    </AccordionItem>
                     <AccordionItem
                         id={HandoverCustomizationFormType.ONLINE_SETTINGS}
-                        isDisabled={
-                            isHandoverSectionDisabled ||
-                            isSelectedChatAvailabilityOffline
-                        }
+                        isDisabled={isHandoverSectionDisabled}
                     >
                         <AccordionHeader>
                             <div
@@ -138,8 +122,7 @@ export const HandoverCustomizationSettingsFormComponent = ({
                                 </span>
                                 <IconTooltip className={css.icon}>
                                     If agents are not available when Chat is
-                                    online, offline Chat settings will be used
-                                    and business hours won’t be shared
+                                    online, offline Chat settings will be used.
                                 </IconTooltip>
                             </div>
                         </AccordionHeader>
@@ -151,25 +134,25 @@ export const HandoverCustomizationSettingsFormComponent = ({
                             )}
                         </AccordionBody>
                     </AccordionItem>
-                </div>
-                <AccordionItem
-                    id={HandoverCustomizationFormType.FALLBACK_SETTINGS}
-                    isDisabled={isHandoverSectionDisabled}
-                >
-                    <AccordionHeader>
-                        <span className="body-semibold">
-                            When an error occurs
-                        </span>
-                    </AccordionHeader>
-                    <AccordionBody>
-                        {selectedChat && (
-                            <HandoverCustomizationFallbackSettings
-                                integration={selectedChat.value}
-                            />
-                        )}
-                    </AccordionBody>
-                </AccordionItem>
-            </Accordion>
+                    <AccordionItem
+                        id={HandoverCustomizationFormType.FALLBACK_SETTINGS}
+                        isDisabled={isHandoverSectionDisabled}
+                    >
+                        <AccordionHeader>
+                            <span className="body-semibold">
+                                When an error occurs
+                            </span>
+                        </AccordionHeader>
+                        <AccordionBody>
+                            {selectedChat && (
+                                <HandoverCustomizationFallbackSettings
+                                    integration={selectedChat.value}
+                                />
+                            )}
+                        </AccordionBody>
+                    </AccordionItem>
+                </Accordion>
+            </div>
         </div>
     )
 }

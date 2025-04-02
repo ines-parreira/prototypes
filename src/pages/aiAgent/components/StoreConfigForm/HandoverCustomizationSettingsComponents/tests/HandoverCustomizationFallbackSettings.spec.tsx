@@ -107,11 +107,7 @@ describe('HandoverCustomizationFallbackSettings', () => {
     })
 
     it('renders the language selector when there are multiple languages', () => {
-        render(
-            <HandoverCustomizationFallbackSettings
-                integration={mockedIntegration}
-            />,
-        )
+        renderComponent()
 
         // Check the language selector is rendered
         screen.getByLabelText('Select language')
@@ -120,11 +116,7 @@ describe('HandoverCustomizationFallbackSettings', () => {
     it('does not render the language selector when there is only one language', () => {
         ;(getLanguagesFromChatConfig as jest.Mock).mockReturnValue(['en-US'])
 
-        render(
-            <HandoverCustomizationFallbackSettings
-                integration={mockedIntegration}
-            />,
-        )
+        renderComponent()
 
         // Check the language selector is not rendered
         expect(screen.queryByLabelText('Select language')).toBeNull()

@@ -139,7 +139,7 @@ describe('useHandoverCustomizationComponent', () => {
                 useHandoverCustomizationComponent(defaultProps),
             )
 
-            expect(result.current.activeSettingsSection).toBeUndefined()
+            expect(result.current.activeSettingsSection).toBeNull()
             expect(result.current.isHandoverSectionDisabled).toBeFalsy()
         })
 
@@ -185,7 +185,7 @@ describe('useHandoverCustomizationComponent', () => {
             rerender()
 
             await waitFor(() => {
-                expect(result.current.activeSettingsSection).toBeUndefined()
+                expect(result.current.activeSettingsSection).toBeNull()
                 expect(result.current.isHandoverSectionDisabled).toBeTruthy()
             })
         })
@@ -206,10 +206,10 @@ describe('useHandoverCustomizationComponent', () => {
             )
 
             act(() => {
-                result.current.onActiveSettingsSectionChange(undefined)
+                result.current.onActiveSettingsSectionChange(null)
             })
 
-            expect(result.current.activeSettingsSection).toBeUndefined()
+            expect(result.current.activeSettingsSection).toBeNull()
             expect(result.current.isHandoverSectionDisabled).toBeFalsy()
         })
 
@@ -223,7 +223,7 @@ describe('useHandoverCustomizationComponent', () => {
             })
 
             await waitFor(() => {
-                expect(result.current.activeSettingsSection).toBeUndefined()
+                expect(result.current.activeSettingsSection).toBeNull()
             })
         })
     })
