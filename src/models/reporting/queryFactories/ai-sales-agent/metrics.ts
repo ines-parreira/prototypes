@@ -127,7 +127,7 @@ export const gmvInfluencedQueryFactory = (
 export const totalNumberOfOrderQueryFactory = (
     filters: StatsFilters,
     timezone: string,
-    onlyInfluenced = false,
+    onlyInfluenced = true,
 ): ReportingQuery<AiSalesAgentOrdersCube> => {
     const baseFilters = statsFiltersToReportingFilters(
         aiSalesAgentOrdersDefaultFiltersMembers,
