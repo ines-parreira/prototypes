@@ -4,7 +4,11 @@ import cn from 'classnames'
 
 import { Badge, Button, Skeleton } from '@gorgias/merchant-ui-kit'
 
-import { AutomateEarlyAccessPlan, AutomatePlan } from 'models/billing/types'
+import {
+    AutomateEarlyAccessPlan,
+    AutomatePlan,
+    HelpdeskPlan,
+} from 'models/billing/types'
 import {
     getAutomateEarlyAccessPricesFormatted,
     getPlanPriceFormatted,
@@ -31,8 +35,9 @@ type Props = {
     onStayClick: () => void
     onClose: () => void
     isOpen: boolean
-    earlyAccessPlan?: AutomateEarlyAccessPlan | null
     currentPlan?: AutomatePlan | null
+    helpdeskPlan?: HelpdeskPlan | null
+    earlyAccessPlan?: AutomateEarlyAccessPlan | null
     userIsAdmin: boolean
     isUpgrading: boolean
 }
@@ -42,10 +47,11 @@ export const EarlyAccessModal = ({
     onStayClick,
     onClose,
     isOpen,
+    currentPlan,
+    // helpdeskPlan,
     earlyAccessPlan,
     userIsAdmin,
     isUpgrading,
-    currentPlan,
 }: Props) => {
     const { amountAfterDiscount, discount, amount } =
         getAutomateEarlyAccessPricesFormatted(earlyAccessPlan)
@@ -61,16 +67,16 @@ export const EarlyAccessModal = ({
         currency,
     )
 
+    // const helpdeskPlanExtraTicketCost = formatAmount(
+    //     helpdeskPlan?.extra_ticket_cost ?? 0,
+    //     currency,
+    // )
+
     const earlyAccessPlanCostPerAutomatedConversation = formatAmount(
-        (earlyAccessPlan?.amount_after_discount ?? 0) /
-            (earlyAccessPlan?.num_quota_tickets ?? 1) /
-            100,
+        1,
         currency,
     )
-    const earlyAccessPlanExtraTicketCost = formatAmount(
-        earlyAccessPlan?.extra_ticket_cost ?? 0,
-        currency,
-    )
+    const earlyAccessPlanExtraTicketCost = formatAmount(1.5, currency)
 
     const [isTipsOpen, setIsTipsOpen] = useState(false)
     const toggleTips = () => setIsTipsOpen(!isTipsOpen)
@@ -168,14 +174,16 @@ export const EarlyAccessModal = ({
                                     </span>{' '}
                                     per automated conversation
                                 </div>
-                                <div className={css.costItem}>
+                                {/* Temporary hidden while waiting for Finance decision */}
+                                {/* <div className={css.costItem}>
                                     <span className={css.skillStatus}>
                                         <i className="material-icons">
                                             arrow_right
                                         </i>
                                     </span>
-                                    <span>$0.20</span> per Helpdesk ticket
-                                </div>
+                                    <span>{helpdeskPlanExtraTicketCost}</span>{' '}
+                                    per Helpdesk ticket
+                                </div> */}
                                 <div className={css.costItem}>
                                     <span className={css.skillStatus}>
                                         <i className="material-icons">
@@ -252,14 +260,16 @@ export const EarlyAccessModal = ({
                                     </span>{' '}
                                     per automated conversation
                                 </div>
-                                <div className={css.costItem}>
+                                {/* Temporary hidden while waiting for Finance decision */}
+                                {/* <div className={css.costItem}>
                                     <span className={css.skillStatus}>
                                         <i className="material-icons">
                                             arrow_right
                                         </i>
                                     </span>
-                                    <span>$0.20</span> per Helpdesk ticket
-                                </div>
+                                    <span>{helpdeskPlanExtraTicketCost}</span>{' '}
+                                    per Helpdesk ticket
+                                </div> */}
                                 <div className={css.costItem}>
                                     <span className={css.skillStatus}>
                                         <i className="material-icons">

@@ -53,6 +53,7 @@ export const useEarlyAccessModalState = ({
     const currentUser = useAppSelector(getCurrentUser)
     const isCurrentUserAdmin = isAdmin(currentUser)
     const currentPlan = billingState?.data?.current_plans?.automate
+    const helpdeskPlan = billingState?.data?.current_plans?.helpdesk
 
     useAutoDisplaySalesEarlyAccessModal(
         !autoDisplayDisabled &&
@@ -90,6 +91,7 @@ export const useEarlyAccessModalState = ({
         () => ({
             earlyAccessPlan: earlyAccessAutomatePlanQuery.data,
             currentPlan,
+            helpdeskPlan,
             isPreviewModalVisible,
             setIsPreviewModalVisible,
             isOnNewPlan,
@@ -104,6 +106,7 @@ export const useEarlyAccessModalState = ({
         [
             earlyAccessAutomatePlanQuery.data,
             currentPlan,
+            helpdeskPlan,
             isPreviewModalVisible,
             isOnNewPlan,
             isLoading,

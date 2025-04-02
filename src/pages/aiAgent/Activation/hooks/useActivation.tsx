@@ -68,11 +68,12 @@ export const useActivation = (
         setIsPreviewModalVisible,
         isPreviewModalVisible,
         isCurrentUserAdmin,
+        currentPlan,
+        helpdeskPlan,
         earlyAccessPlan,
         isLoading,
         handleSubscriptionUpdate,
         isSubscriptionUpdating,
-        currentPlan,
     } = useEarlyAccessModalState({
         hasActivationEnabled,
         autoDisplayDisabled: options.autoDisplayEarlyAccessDisabled,
@@ -191,8 +192,9 @@ export const useActivation = (
                             setIsPreviewModalVisible(false)
                         })
                 }}
-                earlyAccessPlan={earlyAccessPlan}
                 currentPlan={currentPlan}
+                helpdeskPlan={helpdeskPlan}
+                earlyAccessPlan={earlyAccessPlan}
                 userIsAdmin={isCurrentUserAdmin}
             />
         ),
@@ -202,8 +204,9 @@ export const useActivation = (
             isPreviewModalVisible,
             setIsPreviewModalVisible,
             handleSubscriptionUpdate,
-            earlyAccessPlan,
             currentPlan,
+            helpdeskPlan,
+            earlyAccessPlan,
             isCurrentUserAdmin,
             pageName,
         ],

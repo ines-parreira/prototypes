@@ -126,7 +126,7 @@ describe('<EarlyAccessModal />', () => {
         expect(currentPlan.textContent).toContain(
             '$2 per automated conversation',
         )
-        expect(newPlan.textContent).toContain('$2 per automated conversation')
+        expect(newPlan.textContent).toContain('$1 per automated conversation')
 
         const [currentPlanExtraCost, newPlanExtraCost] =
             getAllByText('Overage:')
@@ -136,7 +136,7 @@ describe('<EarlyAccessModal />', () => {
             'Overage: $2.50',
         )
         expect(newPlanExtraCost.parentElement?.textContent).toContain(
-            'Overage: $2.20',
+            'Overage: $1.50',
         )
     })
 
