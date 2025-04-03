@@ -125,4 +125,16 @@ describe('VoiceQueueStatusToggle', () => {
             )
         })
     })
+
+    it('should update queue status when isEnabled prop changes', async () => {
+        const { rerender } = renderComponent(false)
+
+        rerender(
+            <VoiceQueueStatusToggle queueId={mockQueueId} isEnabled={true} />,
+        )
+
+        await waitFor(() => {
+            expect(screen.getByRole('switch')).toBeChecked()
+        })
+    })
 })

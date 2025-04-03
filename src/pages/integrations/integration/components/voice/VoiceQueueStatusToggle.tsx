@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 
 import classNames from 'classnames'
 
@@ -38,6 +38,13 @@ export default function VoiceQueueStatusToggle({ queueId, isEnabled }: Props) {
             },
         },
     })
+
+    useEffect(() => {
+        if (isEnabled !== localEnabled) {
+            setLocalEnabled(isEnabled)
+        }
+        // eslint-disable-next-line exhaustive-deps
+    }, [isEnabled])
 
     const handleToggle = () => {
         if (localEnabled) {
