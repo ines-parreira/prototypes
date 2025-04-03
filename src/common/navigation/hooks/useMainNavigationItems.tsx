@@ -5,7 +5,7 @@ import { Map } from 'immutable'
 import { Badge } from '@gorgias/merchant-ui-kit'
 
 import { UserRole } from 'config/types/user'
-import { useHasMagentoOrBigCommerceIntegration } from 'hooks/useHasMagentoOrBigCommerceIntegration'
+import { useHasAiAgentMenu } from 'pages/aiAgent/hooks/useHasAiAgentMenu'
 import { hasRole } from 'utils'
 
 import mainNavigationCSS from '../components/MainNavigation.less'
@@ -34,8 +34,7 @@ export type MenuItem = {
 export const useMainNavigationItems = (
     currentUser: Map<any, any>,
 ): MenuItem[] => {
-    const hasMagentoOrBigCommerceIntegration =
-        useHasMagentoOrBigCommerceIntegration()
+    const hasAiAgentMenu = useHasAiAgentMenu()
 
     return useMemo(() => {
         const menuItems: Array<MenuItem & { onlyIf?: boolean }> = [
@@ -66,7 +65,7 @@ export const useMainNavigationItems = (
                 ),
                 segmentProp: { link: 'ai-agent' },
                 requiredRole: UserRole.Agent,
-                onlyIf: !hasMagentoOrBigCommerceIntegration,
+                onlyIf: hasAiAgentMenu,
             },
             {
                 url: '/app/convert',
@@ -107,5 +106,5 @@ export const useMainNavigationItems = (
                     hasRole(currentUser, item.requiredRole),
             )
             .filter((item) => item.onlyIf !== false)
-    }, [currentUser, hasMagentoOrBigCommerceIntegration])
+    }, [currentUser, hasAiAgentMenu])
 }

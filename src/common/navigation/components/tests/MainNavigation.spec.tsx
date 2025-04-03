@@ -8,7 +8,7 @@ import { StaticRouter } from 'react-router-dom'
 import { logEvent, SegmentEvent } from 'common/segment'
 import { UserRole } from 'config/types/user'
 import useAppDispatch from 'hooks/useAppDispatch'
-import { useHasMagentoOrBigCommerceIntegration } from 'hooks/useHasMagentoOrBigCommerceIntegration'
+import { useHasAiAgentMenu } from 'pages/aiAgent/hooks/useHasAiAgentMenu'
 import { getHasAutomate } from 'state/billing/selectors'
 import { getCurrentUser } from 'state/currentUser/selectors'
 import { closePanels } from 'state/layout/actions'
@@ -37,12 +37,10 @@ const getHasAutomateMock = assumeMock(getHasAutomate)
 
 jest.mock('state/layout/actions', () => ({ closePanels: jest.fn() }))
 
-jest.mock('hooks/useHasMagentoOrBigCommerceIntegration', () => ({
-    useHasMagentoOrBigCommerceIntegration: jest.fn(),
+jest.mock('pages/aiAgent/hooks/useHasAiAgentMenu', () => ({
+    useHasAiAgentMenu: jest.fn(),
 }))
-const useHasMagentoOrBigCommerceIntegrationMock = assumeMock(
-    useHasMagentoOrBigCommerceIntegration,
-)
+const useHasAiAgentMenuMock = assumeMock(useHasAiAgentMenu)
 
 const wrapper = ({ children }: { children: ReactNode }) => (
     <StaticRouter location="/app">{children}</StaticRouter>
@@ -58,7 +56,7 @@ describe('MainNavigation', () => {
         dispatch = jest.fn()
         useAppDispatchMock.mockReturnValue(dispatch)
         getHasAutomateMock.mockReturnValue(true)
-        useHasMagentoOrBigCommerceIntegrationMock.mockReturnValue(true)
+        useHasAiAgentMenuMock.mockReturnValue(true)
     })
 
     it('should log an event and close panels when a menu item is clicked', () => {
