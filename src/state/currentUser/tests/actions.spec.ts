@@ -272,4 +272,42 @@ describe('current user actions', () => {
             mockDate.reset()
         })
     })
+
+    describe('handle2FAEnforcedGorgiasAgent()', () => {
+        it('should not redirect to the 2fa page for the Gorgias Support Agent', () => {
+            mockDate.set(new Date('2025-03-31'))
+
+            store = mockStore({
+                currentUser: fromJS({
+                    has_2fa_enabled: false,
+                    role: { name: 'internal-agent' },
+                }),
+                currentAccount: fromJS({
+                    settings: [
+                        {
+                            type: 'access',
+                            data: {
+                                two_fa_enforced_datetime: moment()
+                                    .subtract(
+                                        TWO_FA_REQUIRED_AFTER_DAYS,
+                                        'days',
+                                    )
+                                    .toString(),
+                            },
+                        },
+                    ],
+                }),
+                notifications: [],
+            })
+
+            store.dispatch(actions.handle2FAEnforced())
+
+            expect(store.getActions().length).toEqual(0)
+
+            jest.spyOn(history, 'push')
+            expect(history.push).toHaveBeenCalledTimes(0)
+
+            mockDate.reset()
+        })
+    })
 })

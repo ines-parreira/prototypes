@@ -129,6 +129,11 @@ export const getTimezone = createSelector(
     (state) => (state.get('timezone') as Maybe<string>) || null,
 )
 
+export const getRoleName = createSelector(
+    getCurrentUserState,
+    (state) => (state.getIn(['role', 'name']) as Maybe<string>) || null,
+)
+
 const createUserSettingSelector = (type: UserSettingType) =>
     createSelector(getCurrentUserState, (state) =>
         ((state.get('settings') as List<any>).toJS() as UserSetting[]).find(

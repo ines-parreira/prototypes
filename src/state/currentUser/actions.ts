@@ -9,6 +9,7 @@ import {
     EditableUserProfile,
     User,
     UserPreferences,
+    UserRole,
     UserSetting,
     UserSettingType,
 } from 'config/types/user'
@@ -256,9 +257,10 @@ export const handle2FAEnforced =
             twoFAEnforcedDatetime,
             has2FAEnabled,
         )
+        const roleName = currentUserSelectors.getRoleName(state)
 
         // If 2FA is required redirect to the 2FA page and open the setup modal as not dismissible
-        if (is2FARequired) {
+        if (is2FARequired && roleName !== UserRole.GorgiasAgent) {
             history.push(OPEN_TWO_FA_MODAL_URL)
             return
         }
