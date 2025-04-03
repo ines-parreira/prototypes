@@ -29,7 +29,7 @@ const TagList = ({ tags, onTagsUpdate }: Props) => {
     }
 
     return (
-        <div>
+        <div data-testid="store-configuration-taglist">
             {tags.length > 0 && (
                 <div className={css.header}>
                     <div className={css.tagHeader}>

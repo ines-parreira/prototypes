@@ -9,6 +9,7 @@ import {
 } from 'react'
 
 import { useId } from '@floating-ui/react'
+import classNames from 'classnames'
 import { useFlags } from 'launchdarkly-react-client-sdk'
 import { Link, useParams } from 'react-router-dom'
 
@@ -90,6 +91,8 @@ export const StoreConfigForm = ({
     const isFollowUpAiAgentPreviewModeEnabled =
         flags[FeatureFlagKey.FollowUpAiAgentPreviewMode]
     const isStandaloneMenuEnabled = flags[FeatureFlagKey.ConvAiStandaloneMenu]
+    const isAiAutofillSectionEnabled =
+        flags[FeatureFlagKey.AiAgentUsesStoreConfigurationCustomFields]
 
     // Because this component is heavy and difficult to rework
     // Standalone team decided to add the capability to show/hide some sections based on the current route (tab param)
@@ -622,16 +625,89 @@ export const StoreConfigForm = ({
 
                     {shouldDisplayGeneralSections && (
                         <>
+                            {isAiAutofillSectionEnabled && (
+                                <section>
+                                    <h2
+                                        className={classNames(
+                                            'mb-2',
+                                            css.sectionHeader,
+                                        )}
+                                    >
+                                        AI Autofill: Tags & Ticket Fields
+                                    </h2>
+                                    <div className={css.sectionDescription}>
+                                        Tags and Ticket Fields selected will be
+                                        filled out automatically by AI agent,
+                                        helping categorize and prioritize
+                                        tickets with less manual work.
+                                    </div>
+                                    <div className={css.formGroup}>
+                                        <Label className={css.subsectionHeader}>
+                                            Tags
+                                        </Label>
+                                        <div
+                                            className={css.formGroupDescription}
+                                        >
+                                            Choose which tags AI Agent should
+                                            apply to tickets.{' '}
+                                            <Link
+                                                to={'/app/settings/manage-tags'}
+                                            >
+                                                Manage tags
+                                            </Link>
+                                            .
+                                        </div>
+                                        <TagList
+                                            tags={formValues.tags ?? []}
+                                            onTagsUpdate={(tags: Tag[]) => {
+                                                updateValue('tags', tags)
+                                            }}
+                                        />
+                                    </div>
+                                    <div className={css.formGroup}>
+                                        <Label className={css.subsectionHeader}>
+                                            Ticket Fields
+                                        </Label>
+                                        <div
+                                            className={css.formGroupDescription}
+                                        >
+                                            Choose which ticket fields AI Agent
+                                            should autofill. It will follow the
+                                            rules set in{' '}
+                                            <Link
+                                                to={
+                                                    '/app/settings/ticket-field-conditions'
+                                                }
+                                            >
+                                                Field Conditions
+                                            </Link>
+                                            . Manage fields in{' '}
+                                            <Link
+                                                to={
+                                                    '/app/settings/ticket-fields/active'
+                                                }
+                                            >
+                                                Ticket Field settings
+                                            </Link>
+                                            .
+                                        </div>
+                                    </div>
+                                </section>
+                            )}
                             <section>
                                 <h2
-                                    className={css.sectionHeader}
-                                    style={{ marginBottom: '4px' }}
+                                    className={classNames(
+                                        'mb-2',
+                                        css.sectionHeader,
+                                    )}
                                 >
                                     Handover and exclusion
                                 </h2>
                                 <div
-                                    className={css.sectionDescription}
-                                    style={{ marginBottom: '24px' }}
+                                    className={classNames(
+                                        'mb-4',
+                                        css.sectionDescription,
+                                    )}
                                 >
                                     When AI Agent is not confident in an answer,
                                     it automatically hands tickets over to your
@@ -711,36 +787,41 @@ export const StoreConfigForm = ({
                                 </div>
                             </section>
 
-                            <section>
-                                <h2
-                                    className={css.sectionHeader}
-                                    style={{ marginBottom: '4px' }}
-                                >
-                                    AI ticket tagging
-                                    <IconTooltip
-                                        className={css.taggingTooltip}
-                                        tooltipProps={{
-                                            placement: 'top-start',
-                                        }}
+                            {!isAiAutofillSectionEnabled && (
+                                <section>
+                                    <h2
+                                        className={classNames(
+                                            css.sectionHeader,
+                                            'mb-2',
+                                        )}
                                     >
-                                        Provide quick instructions in everyday
-                                        speech, and let AI Agent handle the
-                                        rest, saving you time and ensuring
-                                        consistent categorization.
-                                    </IconTooltip>
-                                </h2>
-                                <div className={css.sectionDescription}>
-                                    Use AI tagging to let AI Agent automatically
-                                    label tickets based on their content.
-                                </div>
+                                        AI ticket tagging
+                                        <IconTooltip
+                                            className={css.taggingTooltip}
+                                            tooltipProps={{
+                                                placement: 'top-start',
+                                            }}
+                                        >
+                                            Provide quick instructions in
+                                            everyday speech, and let AI Agent
+                                            handle the rest, saving you time and
+                                            ensuring consistent categorization.
+                                        </IconTooltip>
+                                    </h2>
+                                    <div className={css.sectionDescription}>
+                                        Use AI tagging to let AI Agent
+                                        automatically label tickets based on
+                                        their content.
+                                    </div>
 
-                                <TagList
-                                    tags={formValues.tags ?? []}
-                                    onTagsUpdate={(tags: Tag[]) => {
-                                        updateValue('tags', tags)
-                                    }}
-                                />
-                            </section>
+                                    <TagList
+                                        tags={formValues.tags ?? []}
+                                        onTagsUpdate={(tags: Tag[]) => {
+                                            updateValue('tags', tags)
+                                        }}
+                                    />
+                                </section>
+                            )}
                         </>
                     )}
 
