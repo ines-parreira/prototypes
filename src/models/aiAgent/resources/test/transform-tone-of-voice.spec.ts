@@ -1,9 +1,21 @@
 import MockAdapter from 'axios-mock-adapter'
 
 import authClient from 'models/api/resources'
+import { PRODUCT_RECOMMENDATION_MESSAGE_ID } from 'pages/aiAgent/Onboarding/components/PersonalityPreviewGroup/constants'
 
 import { apiClient } from '../message-processing'
 import { transformToneOfVoice } from '../transform-tone-of-voice'
+
+const CONVERSATION = {
+    id: 'test',
+    messages: [
+        {
+            id: PRODUCT_RECOMMENDATION_MESSAGE_ID,
+            message: 'Test message',
+            from_agent: true,
+        },
+    ],
+}
 
 describe('transform-tone-of-voice', () => {
     let authServer: MockAdapter
@@ -25,11 +37,18 @@ describe('transform-tone-of-voice', () => {
 
     describe('transformToneOfVoice', () => {
         it('should call transformToneOfVoice with the correct body', async () => {
-            apiServer.onPost('/api/tov/transform-conversations').reply(200)
+            apiServer.onPost('/api/tov/transform-conversations').reply(200, {
+                conversations: [CONVERSATION],
+            })
 
             await expect(
-                transformToneOfVoice('test-gorgias', 'Be smart', []),
-            ).resolves.toEqual(expect.objectContaining({ status: 200 }))
+                transformToneOfVoice('test-gorgias', 'Be smart', [
+                    CONVERSATION,
+                    CONVERSATION,
+                    CONVERSATION,
+                    CONVERSATION,
+                ]),
+            ).resolves.toEqual([CONVERSATION, CONVERSATION])
         })
     })
 })

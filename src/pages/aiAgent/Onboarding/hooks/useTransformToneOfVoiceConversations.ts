@@ -120,39 +120,33 @@ export const useTransformToneOfVoiceConversations = (
                     product: product,
                 })
 
-                const responseConversations =
-                    response.data.conversations.reduce(
-                        (acc, conversation) => ({
-                            ...acc,
-                            [conversation.id as PreviewId]: {
-                                messages: conversation.messages.map(
-                                    (message) => {
-                                        let attachments: ProductCardAttachment[] =
-                                            []
-                                        if (
-                                            product &&
-                                            message.id ===
-                                                PRODUCT_RECOMMENDATION_MESSAGE_ID
-                                        ) {
-                                            attachments = [
-                                                transformProductToAttachment(
-                                                    product,
-                                                ),
-                                            ]
-                                        }
+                const responseConversations = response.reduce(
+                    (acc, conversation) => ({
+                        ...acc,
+                        [conversation.id as PreviewId]: {
+                            messages: conversation.messages.map((message) => {
+                                let attachments: ProductCardAttachment[] = []
+                                if (
+                                    product &&
+                                    message.id ===
+                                        PRODUCT_RECOMMENDATION_MESSAGE_ID
+                                ) {
+                                    attachments = [
+                                        transformProductToAttachment(product),
+                                    ]
+                                }
 
-                                        return {
-                                            content: message.message,
-                                            isHtml: true,
-                                            fromAgent: message.from_agent,
-                                            attachments: attachments,
-                                        }
-                                    },
-                                ),
-                            },
-                        }),
-                        {} as ConversationExamples,
-                    )
+                                return {
+                                    content: message.message,
+                                    isHtml: true,
+                                    fromAgent: message.from_agent,
+                                    attachments: attachments,
+                                }
+                            }),
+                        },
+                    }),
+                    {} as ConversationExamples,
+                )
 
                 setCacheResult(true)
                 setOutputConversations(responseConversations)

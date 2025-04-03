@@ -2,7 +2,6 @@ import { waitFor } from '@testing-library/react'
 import { fromJS } from 'immutable'
 
 import { account } from 'fixtures/account'
-import { axiosSuccessResponse } from 'fixtures/axiosResponse'
 import { transformToneOfVoice } from 'models/aiAgent/resources/transform-tone-of-voice'
 import { OnboardingData } from 'models/aiAgent/types'
 import { PRODUCT_RECOMMENDATION_MESSAGE_ID } from 'pages/aiAgent/Onboarding/components/PersonalityPreviewGroup/constants'
@@ -25,22 +24,18 @@ const useTopProductsMock = assumeMock(useTopProducts)
 
 describe('useTransformToneOfVoiceConversations', () => {
     beforeEach(() => {
-        transformToneOfVoiceMock.mockResolvedValue(
-            axiosSuccessResponse({
-                conversations: [
+        transformToneOfVoiceMock.mockResolvedValue([
+            {
+                id: 'test',
+                messages: [
                     {
-                        id: 'test',
-                        messages: [
-                            {
-                                id: PRODUCT_RECOMMENDATION_MESSAGE_ID,
-                                message: 'Test message',
-                                from_agent: true,
-                            },
-                        ],
+                        id: PRODUCT_RECOMMENDATION_MESSAGE_ID,
+                        message: 'Test message',
+                        from_agent: true,
                     },
                 ],
-            }),
-        )
+            },
+        ])
         useGetOnboardingDataMock.mockReturnValue({
             data: {
                 preview: '',
