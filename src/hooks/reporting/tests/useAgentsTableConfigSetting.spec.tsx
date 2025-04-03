@@ -46,20 +46,11 @@ describe('useAgentsTableConfigSetting', () => {
         })
 
         expect(result.current).toEqual({
-            columnsOrder: [
-                ...TableColumnsOrder,
-                AgentsTableColumn.MedianResponseTime,
-            ],
+            columnsOrder: [...TableColumnsOrder],
             rowsOrder: TableRowsOrder,
             currentView: {
                 ...agentPerformanceTableActiveView,
-                metrics: [
-                    ...agentPerformanceTableActiveView.metrics,
-                    {
-                        id: AgentsTableColumn.MedianResponseTime,
-                        visibility: null,
-                    },
-                ],
+                metrics: [...agentPerformanceTableActiveView.metrics],
                 rows: [
                     ...agentPerformanceRows,
                     {

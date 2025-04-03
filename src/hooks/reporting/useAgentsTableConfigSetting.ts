@@ -1,5 +1,3 @@
-import { useMemo } from 'react'
-
 import { FeatureFlagKey } from 'config/featureFlags'
 import { useFlag } from 'core/flags'
 import { useTableConfigSetting } from 'hooks/reporting/useTableConfigSetting'
@@ -17,24 +15,11 @@ export const useAgentsTableConfigSetting = () => {
     const isReportingAgentsTableAverageAndTotalEnabled = useFlag(
         FeatureFlagKey.ReportingAgentsTableAverageAndTotal,
     )
-    const isReportingAverageResponseTimeEnabled = useFlag(
-        FeatureFlagKey.ReportingAverageResponseTime,
-    )
-
-    const columnsOrder = useMemo(
-        () => [
-            ...TableColumnsOrder,
-            ...(isReportingAverageResponseTimeEnabled
-                ? [AgentsTableColumn.MedianResponseTime]
-                : []),
-        ],
-        [isReportingAverageResponseTimeEnabled],
-    )
 
     return useTableConfigSetting<AgentsTableColumn, AgentsTableRow>(
         getAgentsTableConfigSettingsJS,
         agentPerformanceTableActiveView,
-        columnsOrder,
+        TableColumnsOrder,
         isReportingAgentsTableAverageAndTotalEnabled
             ? TableRowsOrderWithTotal
             : TableRowsOrder,

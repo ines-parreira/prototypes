@@ -6,6 +6,7 @@ import { HelpdeskCustomerMessagesReceivedEnrichedMeasure } from 'models/reportin
 import { HelpdeskMessageMeasure } from 'models/reporting/cubes/HelpdeskMessageCube'
 import { TicketMeasure } from 'models/reporting/cubes/TicketCube'
 import { TicketMessagesMeasure } from 'models/reporting/cubes/TicketMessagesCube'
+import { TicketMessagesEnrichedResponseTimesMeasure } from 'models/reporting/cubes/TicketMessagesEnrichedResponseTimesCube'
 import { TicketSatisfactionSurveyMeasure } from 'models/reporting/cubes/TicketSatisfactionSurveyCube'
 import { CHANNEL_DIMENSION } from 'models/reporting/queryFactories/support-performance/constants'
 import {
@@ -54,22 +55,22 @@ describe('channelsReportingService', () => {
             createdTicketsMetricPerChannel: exampleData(
                 channelA.slug,
                 TicketMeasure.TicketCount,
-                '5',
+                '1',
             ),
             percentageOfCreatedTicketsMetricPerChannel: exampleData(
                 channelA.slug,
                 TicketMeasure.TicketCount,
-                '5',
+                '2',
             ),
             closedTicketsMetricPerChannel: exampleData(
                 channelA.slug,
                 TicketMeasure.TicketCount,
-                '5',
+                '3',
             ),
             ticketAverageHandleTimePerChannel: exampleData(
                 channelA.slug,
                 HandleTimeMeasure.AverageHandleTime,
-                '5',
+                '4',
             ),
             medianFirstResponseTimeMetricPerChannel: exampleData(
                 channelA.slug,
@@ -78,33 +79,33 @@ describe('channelsReportingService', () => {
             ),
             medianResponseTimeMetricPerChannel: exampleData(
                 channelA.slug,
-                TicketMessagesMeasure.MedianFirstResponseTime,
-                '5',
+                TicketMessagesEnrichedResponseTimesMeasure.MedianResponseTime,
+                '6',
             ),
             medianResolutionTimeMetricPerChannel: exampleData(
                 channelA.slug,
                 TicketMessagesMeasure.MedianResolutionTime,
-                '5',
+                '7',
             ),
             ticketsRepliedMetricPerChannel: exampleData(
                 channelA.slug,
-                TicketMeasure.TicketCount,
-                '5',
+                HelpdeskMessageMeasure.TicketCount,
+                '8',
             ),
             messagesSentMetricPerChannel: exampleData(
                 channelA.slug,
                 HelpdeskMessageMeasure.MessageCount,
-                '5',
+                '9',
             ),
             messagesReceivedMetricPerChannel: exampleData(
                 channelA.slug,
                 HelpdeskCustomerMessagesReceivedEnrichedMeasure.MessageCount,
-                '5',
+                '10',
             ),
             customerSatisfactionMetricPerChannel: exampleData(
                 channelA.slug,
                 TicketSatisfactionSurveyMeasure.AvgSurveyScore,
-                '5',
+                '11',
             ),
         }
         saveReport(reportChannels, data, columnsOrder, fileName)
@@ -113,16 +114,17 @@ describe('channelsReportingService', () => {
             [...columnsOrder.map((column) => ChannelsTableLabels[column])],
             [
                 channelA.slug,
-                '5',
-                '5%',
-                '5',
+                '1',
+                '2%',
+                '3',
+                '4s',
                 '5s',
-                '5s',
-                '5s',
-                '-',
-                '5',
-                '5',
-                '5',
+                '6s',
+                '7s',
+                '8',
+                '9',
+                '11',
+                '10',
             ],
         ])
     })

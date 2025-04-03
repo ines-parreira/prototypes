@@ -63,6 +63,7 @@ export const columnsOrder: ChannelsTableColumns[] = [
     ChannelsTableColumns.ClosedTickets,
     ChannelsTableColumns.TicketHandleTime,
     ChannelsTableColumns.FirstResponseTime,
+    ChannelsTableColumns.MedianResponseTime,
     ChannelsTableColumns.MedianResolutionTime,
     ChannelsTableColumns.TicketsReplied,
     ChannelsTableColumns.MessagesSent,

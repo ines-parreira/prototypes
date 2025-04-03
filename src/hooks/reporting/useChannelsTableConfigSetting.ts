@@ -1,7 +1,3 @@
-import { useMemo } from 'react'
-
-import { FeatureFlagKey } from 'config/featureFlags'
-import { useFlag } from 'core/flags'
 import { useTableConfigSetting } from 'hooks/reporting/useTableConfigSetting'
 import {
     channelsReportTableActiveView,
@@ -12,24 +8,10 @@ import { getChannelsTableConfigSettingsJS } from 'state/currentAccount/selectors
 import { ChannelsTableColumns } from 'state/ui/stats/types'
 
 export const useChannelsTableSetting = () => {
-    const isReportingAverageResponseTimeEnabled = useFlag(
-        FeatureFlagKey.ReportingAverageResponseTime,
-    )
-
-    const channelsColumnsOrder: ChannelsTableColumns[] = useMemo(
-        () => [
-            ...columnsOrder,
-            ...(isReportingAverageResponseTimeEnabled
-                ? [ChannelsTableColumns.MedianResponseTime]
-                : []),
-        ],
-        [isReportingAverageResponseTimeEnabled],
-    )
-
     return useTableConfigSetting<ChannelsTableColumns, never>(
         getChannelsTableConfigSettingsJS,
         channelsReportTableActiveView,
-        channelsColumnsOrder,
+        columnsOrder,
         [],
         submitChannelsTableConfigView,
     )

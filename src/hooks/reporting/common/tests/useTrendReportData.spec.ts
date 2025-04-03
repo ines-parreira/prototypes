@@ -16,7 +16,7 @@ import {
     fetchTicketsCreatedTrend,
     fetchTicketsRepliedTrend,
 } from 'hooks/reporting/metricTrends'
-import { getWorkloadReportSource } from 'hooks/reporting/support-performance/overview/useDownloadOverviewData'
+import { workloadReportSources } from 'hooks/reporting/support-performance/overview/useDownloadOverviewData'
 import { fetchOneTouchTicketsPercentageMetricTrend } from 'hooks/reporting/support-performance/overview/useOneTouchTicketsPercentageMetricTrend'
 import { fetchZeroTouchTicketsMetricTrend } from 'hooks/reporting/support-performance/overview/useZeroTouchTicketsMetricTrend'
 import { MetricTrend } from 'hooks/reporting/useMetricTrend'
@@ -218,6 +218,19 @@ describe('useTrendReport', () => {
                 messagesReceivedMetricTrend.data.prevValue,
             ),
         },
+        {
+            label: AVERAGE_RESPONSE_TIME_LABEL,
+            value: formatMetricValue(
+                medianResponseTimeMetricTrend.data.value,
+                OverviewMetricConfig[OverviewMetric.MedianResponseTime]
+                    .metricFormat,
+            ),
+            prevValue: formatMetricValue(
+                medianResponseTimeMetricTrend.data.prevValue,
+                OverviewMetricConfig[OverviewMetric.MedianResponseTime]
+                    .metricFormat,
+            ),
+        },
     ]
 
     beforeEach(() => {
@@ -249,31 +262,14 @@ describe('useTrendReport', () => {
             useTrendReportData(
                 defaultStatsFilters,
                 'UTC',
-                getWorkloadReportSource(true),
+                workloadReportSources,
             ),
         )
 
         await waitFor(() => {
             expect(result.current).toEqual({
                 isFetching: false,
-                data: [
-                    ...resultData,
-                    {
-                        label: AVERAGE_RESPONSE_TIME_LABEL,
-                        value: formatMetricValue(
-                            medianResponseTimeMetricTrend.data.value,
-                            OverviewMetricConfig[
-                                OverviewMetric.MedianResponseTime
-                            ].metricFormat,
-                        ),
-                        prevValue: formatMetricValue(
-                            medianResponseTimeMetricTrend.data.prevValue,
-                            OverviewMetricConfig[
-                                OverviewMetric.MedianResponseTime
-                            ].metricFormat,
-                        ),
-                    },
-                ],
+                data: [...resultData],
             })
         })
     })
@@ -283,24 +279,7 @@ describe('useTrendReport', () => {
             useTrendReportData(
                 defaultStatsFilters,
                 'UTC',
-                getWorkloadReportSource(false),
-            ),
-        )
-
-        await waitFor(() => {
-            expect(result.current).toEqual({
-                isFetching: false,
-                data: resultData,
-            })
-        })
-    })
-
-    it('should return the labeled data without average response time', async () => {
-        const { result } = renderHook(() =>
-            useTrendReportData(
-                defaultStatsFilters,
-                'UTC',
-                getWorkloadReportSource(false),
+                workloadReportSources,
             ),
         )
 
@@ -319,7 +298,7 @@ describe('useTrendReport', () => {
             useTrendReportData(
                 defaultStatsFilters,
                 'UTC',
-                getWorkloadReportSource(true),
+                workloadReportSources,
             ),
         )
 

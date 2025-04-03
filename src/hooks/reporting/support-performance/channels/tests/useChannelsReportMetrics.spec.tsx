@@ -4,8 +4,6 @@ import { renderHook } from '@testing-library/react-hooks'
 import moment from 'moment'
 import { Provider } from 'react-redux'
 
-import { FeatureFlagKey } from 'config/featureFlags'
-import { useFlag } from 'core/flags'
 import { channels } from 'fixtures/channels'
 import {
     fetchTableReportData,
@@ -34,9 +32,6 @@ jest.mock('hooks/reporting/common/useTableReportData')
 const useTableReportDataMock = assumeMock(useTableReportData)
 const useSortedChannelsMock = assumeMock(useSortedChannels)
 const fetchTableReportDataMock = assumeMock(fetchTableReportData)
-
-jest.mock('core/flags')
-const mockUseFlag = assumeMock(useFlag)
 
 describe('useChannelsReportMetrics', () => {
     const periodStart = moment()
@@ -128,10 +123,6 @@ describe('useChannelsReportMetrics', () => {
     })
 
     it('should return channels metrics with MedianResponseTime', () => {
-        mockUseFlag.mockImplementation(
-            (flag) => flag === FeatureFlagKey.ReportingAverageResponseTime,
-        )
-
         const { result } = renderHook(() => useChannelsReportMetrics(), {
             wrapper: ({ children }) => (
                 <Provider store={mockStore(state)}> {children} </Provider>

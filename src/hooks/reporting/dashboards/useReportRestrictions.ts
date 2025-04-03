@@ -10,7 +10,6 @@ import { getComponentConfig } from 'pages/stats/dashboards/config'
 import { HelpCenterReportConfig } from 'pages/stats/help-center/components/HelpCenterReport/HelpCenterReportConfig'
 import { SatisfactionReportConfig } from 'pages/stats/quality-management/satisfaction/SatisfactionReportConfig'
 import { AutoQAReportConfig } from 'pages/stats/support-performance/auto-qa/AutoQAReportConfig'
-import { OverviewChart } from 'pages/stats/support-performance/overview/SupportPerformanceOverviewReportConfig'
 import { SupportPerformanceSatisfactionReportConfig } from 'pages/stats/support-performance/satisfaction/SupportPerformanceSatisfactionReportConfig'
 import { VoiceOverviewChart } from 'pages/stats/voice/pages/VoiceOverviewReportConfig'
 import { getHasAutomate } from 'state/billing/selectors'
@@ -28,8 +27,6 @@ export const useReportRestrictions = () => {
         useFlags()[FeatureFlagKey.AIAgentStatsPage]
     const isStandaloneSalesOverviewEnabled =
         useFlags()[FeatureFlagKey.StandaloneAiSalesAnalyticsPage]
-    const isReportingAverageResponseTimeEnabled =
-        !!useFlags()[FeatureFlagKey.ReportingAverageResponseTime]
     const shouldShowNewUnansweredStatuses =
         useFlags()[FeatureFlagKey.ShowNewUnansweredStatuses]
 
@@ -61,8 +58,6 @@ export const useReportRestrictions = () => {
 
     const chartRestrictionsMap: RestrictionsMap = useMemo(
         () => ({
-            [OverviewChart.MedianResponseTimeTrendCard]:
-                !isReportingAverageResponseTimeEnabled,
             [VoiceOverviewChart.DEPRECATED_VoiceCallVolumeMetricMissedCallsCountTrendChart]:
                 shouldShowNewUnansweredStatuses,
             [VoiceOverviewChart.VoiceCallVolumeMetricUnansweredCallsCountTrendChart]:
@@ -74,10 +69,7 @@ export const useReportRestrictions = () => {
             [VoiceOverviewChart.VoiceCallVolumeMetricCancelledCallsCountTrendChart]:
                 !shouldShowNewUnansweredStatuses,
         }),
-        [
-            isReportingAverageResponseTimeEnabled,
-            shouldShowNewUnansweredStatuses,
-        ],
+        [shouldShowNewUnansweredStatuses],
     )
 
     return {

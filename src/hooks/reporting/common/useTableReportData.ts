@@ -57,9 +57,6 @@ export const useTables = (
         useFlags()[
             FeatureFlagKey.AutomateNonFilteredDenominatorInAutomationRate
         ]
-    const isReportingAverageResponseTimeEnabled = useFlag(
-        FeatureFlagKey.ReportingAverageResponseTime,
-    )
     const isReportingFilteringAndCalculationsTagsReportEnabled = useFlag(
         FeatureFlagKey.ReportingFilteringAndCalculationsTagsReport,
     )
@@ -129,7 +126,6 @@ export const useTables = (
             rowsOrder,
             channels: sortedChannels,
             channelColumnsOrder,
-            isReportingAverageResponseTimeEnabled,
             customFieldsOrder,
             selectedCustomFieldId:
                 selectedCustomField.id !== null
@@ -157,7 +153,6 @@ export const useTables = (
             rowsOrder,
             sortedChannels,
             channelColumnsOrder,
-            isReportingAverageResponseTimeEnabled,
             customFieldsOrder,
             selectedCustomField.id,
             selectedBTODMetric,

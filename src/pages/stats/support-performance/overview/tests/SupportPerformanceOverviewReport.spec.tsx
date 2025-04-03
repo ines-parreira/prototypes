@@ -191,10 +191,6 @@ describe('<SupportPerformanceOverview />', () => {
     })
 
     it('should render MedianResponseTimeTrendCard TrendCard', () => {
-        mockFlags({
-            [FeatureFlagKey.ReportingAverageResponseTime]: true,
-        })
-
         render(
             <Provider store={mockStore(defaultState)}>
                 <SupportPerformanceOverviewReport />

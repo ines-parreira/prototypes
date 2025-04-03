@@ -1,8 +1,5 @@
-import React, { useMemo } from 'react'
+import React from 'react'
 
-import { useFlags } from 'launchdarkly-react-client-sdk'
-
-import { FeatureFlagKey } from 'config/featureFlags'
 import { useCleanStatsFilters } from 'hooks/reporting/useCleanStatsFilters'
 import { useGridSize } from 'hooks/useGridSize'
 import useLocalStorage from 'hooks/useLocalStorage'
@@ -24,39 +21,16 @@ import {
 } from 'pages/stats/support-performance/overview/SupportPerformanceOverviewReportConfig'
 import TipsToggle from 'pages/stats/TipsToggle'
 
-const getProductivitySectionKPIWidths = (
-    isReportingAverageResponseTimeEnabled: boolean,
-) => {
-    let firstRowWidth = 6
-    let secondRowWidth = 4
-
-    if (isReportingAverageResponseTimeEnabled) {
-        firstRowWidth = 4
-    }
-
-    return { firstRowWidth, secondRowWidth }
-}
-
 const WORKLOAD_SECTION_KPI_GRID_CELL_SIZE = 3
+const PRODUCTIVITY_SECTION_KPI_GRID_CELL_SIZE = 4
 
 export default function SupportPerformanceOverviewReport() {
-    const isReportingAverageResponseTimeEnabled =
-        !!useFlags()[FeatureFlagKey.ReportingAverageResponseTime]
-
     const [areTipsVisible, setAreTipsVisible] = useLocalStorage(
         STATS_TIPS_VISIBILITY_KEY,
         true,
     )
     const getGridCellSize = useGridSize()
     useCleanStatsFilters()
-
-    const { firstRowWidth, secondRowWidth } = useMemo(
-        () =>
-            getProductivitySectionKPIWidths(
-                isReportingAverageResponseTimeEnabled,
-            ),
-        [isReportingAverageResponseTimeEnabled],
-    )
 
     return (
         <div className="full-width">
@@ -188,43 +162,61 @@ export default function SupportPerformanceOverviewReport() {
                 </DashboardSection>
 
                 <DashboardSection title="Productivity">
-                    <DashboardGridCell size={getGridCellSize(firstRowWidth)}>
+                    <DashboardGridCell
+                        size={getGridCellSize(
+                            PRODUCTIVITY_SECTION_KPI_GRID_CELL_SIZE,
+                        )}
+                    >
                         <DashboardComponent
                             chart={OverviewChart.TicketsRepliedTrendCard}
                             config={SupportPerformanceOverviewReportConfig}
                         />
                     </DashboardGridCell>
-                    <DashboardGridCell size={getGridCellSize(firstRowWidth)}>
+                    <DashboardGridCell
+                        size={getGridCellSize(
+                            PRODUCTIVITY_SECTION_KPI_GRID_CELL_SIZE,
+                        )}
+                    >
                         <DashboardComponent
                             chart={OverviewChart.MessagesSentTrendCard}
                             config={SupportPerformanceOverviewReportConfig}
                         />
                     </DashboardGridCell>
-                    {isReportingAverageResponseTimeEnabled && (
-                        <DashboardGridCell
-                            size={getGridCellSize(firstRowWidth)}
-                        >
-                            <DashboardComponent
-                                chart={
-                                    OverviewChart.MedianResponseTimeTrendCard
-                                }
-                                config={SupportPerformanceOverviewReportConfig}
-                            />
-                        </DashboardGridCell>
-                    )}
-                    <DashboardGridCell size={getGridCellSize(secondRowWidth)}>
+                    <DashboardGridCell
+                        size={getGridCellSize(
+                            PRODUCTIVITY_SECTION_KPI_GRID_CELL_SIZE,
+                        )}
+                    >
+                        <DashboardComponent
+                            chart={OverviewChart.MedianResponseTimeTrendCard}
+                            config={SupportPerformanceOverviewReportConfig}
+                        />
+                    </DashboardGridCell>
+                    <DashboardGridCell
+                        size={getGridCellSize(
+                            PRODUCTIVITY_SECTION_KPI_GRID_CELL_SIZE,
+                        )}
+                    >
                         <DashboardComponent
                             chart={OverviewChart.TicketHandleTimeTrendCard}
                             config={SupportPerformanceOverviewReportConfig}
                         />
                     </DashboardGridCell>
-                    <DashboardGridCell size={getGridCellSize(secondRowWidth)}>
+                    <DashboardGridCell
+                        size={getGridCellSize(
+                            PRODUCTIVITY_SECTION_KPI_GRID_CELL_SIZE,
+                        )}
+                    >
                         <DashboardComponent
                             chart={OverviewChart.OneTouchTicketsTrendCard}
                             config={SupportPerformanceOverviewReportConfig}
                         />
                     </DashboardGridCell>
-                    <DashboardGridCell size={getGridCellSize(secondRowWidth)}>
+                    <DashboardGridCell
+                        size={getGridCellSize(
+                            PRODUCTIVITY_SECTION_KPI_GRID_CELL_SIZE,
+                        )}
+                    >
                         <DashboardComponent
                             chart={OverviewChart.ZeroTouchTicketsTrendCard}
                             config={SupportPerformanceOverviewReportConfig}

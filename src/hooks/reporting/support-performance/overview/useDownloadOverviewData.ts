@@ -1,8 +1,5 @@
 import { useMemo } from 'react'
 
-import { useFlags } from 'launchdarkly-react-client-sdk'
-
-import { FeatureFlagKey } from 'config/featureFlags'
 import { useDistributionTrendReportData } from 'hooks/reporting/common/useDistributionTrendReportData'
 import { useTimeSeriesReportData } from 'hooks/reporting/common/useTimeSeriesReportData'
 import { useTrendReportData } from 'hooks/reporting/common/useTrendReportData'
@@ -49,42 +46,29 @@ export const timeSeriesReportSource = timeSeriesMetrics.map(
     (metric: TimeSeriesMetric) => OverviewChartConfig[metric],
 )
 
-export const getWorkloadReportSource = (
-    isReportingAverageResponseTimeEnabled: boolean,
-) => {
-    const workloadReportSource = [
-        OverviewMetric.OpenTickets,
-        OverviewMetric.TicketsCreated,
-        OverviewMetric.TicketsReplied,
-        OverviewMetric.TicketsClosed,
-        OverviewMetric.MessagesSent,
-        OverviewMetric.OneTouchTickets,
-        OverviewMetric.ZeroTouchTickets,
-        OverviewMetric.MessagesReceived,
-    ]
+const workloadReportMetrics = [
+    OverviewMetric.OpenTickets,
+    OverviewMetric.TicketsCreated,
+    OverviewMetric.TicketsReplied,
+    OverviewMetric.TicketsClosed,
+    OverviewMetric.MessagesSent,
+    OverviewMetric.OneTouchTickets,
+    OverviewMetric.ZeroTouchTickets,
+    OverviewMetric.MessagesReceived,
+    OverviewMetric.MedianResponseTime,
+]
 
-    if (isReportingAverageResponseTimeEnabled) {
-        workloadReportSource.push(OverviewMetric.MedianResponseTime)
-    }
-
-    return workloadReportSource.map((metric) => OverviewMetricConfig[metric])
-}
+export const workloadReportSources = workloadReportMetrics.map(
+    (metric) => OverviewMetricConfig[metric],
+)
 
 export const useDownloadOverViewData = (fetchingEnabled = true) => {
-    const isReportingAverageResponseTimeEnabled =
-        !!useFlags()[FeatureFlagKey.ReportingAverageResponseTime]
-
     const { cleanStatsFilters, userTimezone, granularity } = useStatsFilters()
-
-    const workloadReportSource = useMemo(
-        () => getWorkloadReportSource(isReportingAverageResponseTimeEnabled),
-        [isReportingAverageResponseTimeEnabled],
-    )
 
     const workloadTrendData = useTrendReportData(
         cleanStatsFilters,
         userTimezone,
-        workloadReportSource,
+        workloadReportSources,
     )
 
     const customerExperienceData = useTrendReportData(
