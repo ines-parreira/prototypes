@@ -61,8 +61,6 @@ const AiAgentOnboardingWizardStepKnowledge = ({ shopName }: Props) => {
     const [externalFileIsLoading, setExternalFileIsLoading] = useState(false)
     const [isFinishingWizard, setIsFinishingWizard] = useState(false)
 
-    const isAiAgentSnippetsFromExternalFilesEnabled =
-        useFlags()[FeatureFlagKey.AiAgentSnippetsFromExternalFiles]
     const isAiAgentOnboardingWizardKnowledgeRedirectEnabled =
         useFlags()[FeatureFlagKey.AiAgentOnboardingWizardKnowledgeRedirect]
 
@@ -330,23 +328,20 @@ const AiAgentOnboardingWizardStepKnowledge = ({ shopName }: Props) => {
                 </div>
 
                 {snippetHelpCenter ? (
-                    <div className={css.section}>
-                        <CreatePublicSourcesSection
-                            helpCenterId={snippetHelpCenter.id}
-                            selectedHelpCenterId={selectedHelpCenter?.id}
-                            onPublicURLsChanged={handlePublicURLsChange}
-                            shopName={shopName}
-                            logConnectedPublicUrl={logConnectedPublicUrl}
-                            setPendingResourcesCount={setPendingUrlCount}
-                            setIsPristine={setIsPublicUrlsPristine}
-                            syncUrlOnCommand={synchingPublicUrls}
-                            setSyncUrlOnCommand={setSynchingPublicUrls}
-                        />
-                    </div>
-                ) : null}
-
-                {isAiAgentSnippetsFromExternalFilesEnabled &&
-                    snippetHelpCenter && (
+                    <>
+                        <div className={css.section}>
+                            <CreatePublicSourcesSection
+                                helpCenterId={snippetHelpCenter.id}
+                                selectedHelpCenterId={selectedHelpCenter?.id}
+                                onPublicURLsChanged={handlePublicURLsChange}
+                                shopName={shopName}
+                                logConnectedPublicUrl={logConnectedPublicUrl}
+                                setPendingResourcesCount={setPendingUrlCount}
+                                setIsPristine={setIsPublicUrlsPristine}
+                                syncUrlOnCommand={synchingPublicUrls}
+                                setSyncUrlOnCommand={setSynchingPublicUrls}
+                            />
+                        </div>
                         <div className={css.section}>
                             <ExternalFilesSection
                                 helpCenterId={snippetHelpCenter.id}
@@ -359,7 +354,8 @@ const AiAgentOnboardingWizardStepKnowledge = ({ shopName }: Props) => {
                                 disableNavigationPrompt={isFinishingWizard}
                             />
                         </div>
-                    )}
+                    </>
+                ) : null}
             </WizardStepSkeleton>
         </>
     )

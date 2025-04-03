@@ -140,9 +140,6 @@ describe('<AiAgentOnboardingWizardKnowledge />', () => {
         mockUseAiAgentOnboardingWizard.mockReturnValue(
             mockedUseAiAgentOnboardingWizard,
         )
-        mockFlags({
-            [FeatureFlagKey.AiAgentSnippetsFromExternalFiles]: true,
-        })
         mockUseFileIngestion.mockReturnValue({
             ingestedFiles: [],
             ingestFile: jest.fn(),

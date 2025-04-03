@@ -7,13 +7,11 @@ import { QueryClientProvider } from '@tanstack/react-query'
 import { act, fireEvent, screen } from '@testing-library/react'
 import { createMemoryHistory } from 'history'
 import { fromJS } from 'immutable'
-import { mockFlags } from 'jest-launchdarkly-mock'
 import { keyBy } from 'lodash'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import { FeatureFlagKey } from 'config/featureFlags'
 import { account } from 'fixtures/account'
 import { axiosSuccessResponse } from 'fixtures/axiosResponse'
 import { billingState } from 'fixtures/billing'
@@ -221,26 +219,12 @@ describe('AiAgentKnowledgeContainer', () => {
         ).toBeInTheDocument()
 
         expect(
-            screen.queryByText(
-                'Upload knowledge and process documents for AI Agent to reference. Do not upload files that may contain any sensitive or personal information. Images will be ignored.',
-            ),
-        ).not.toBeInTheDocument()
-
-        expect(screen.queryByTestId('loader')).not.toBeInTheDocument()
-    })
-
-    it('should render the external files section when feature flag is enabled', () => {
-        mockFlags({
-            [FeatureFlagKey.AiAgentSnippetsFromExternalFiles]: true,
-        })
-
-        renderComponent()
-
-        expect(
             screen.getByText(
                 'Upload knowledge and process documents for AI Agent to reference. Do not upload files that may contain any sensitive or personal information. Images will be ignored.',
             ),
         ).toBeInTheDocument()
+
+        expect(screen.queryByTestId('loader')).not.toBeInTheDocument()
     })
 
     it('should show a loader if store config is still loading', () => {

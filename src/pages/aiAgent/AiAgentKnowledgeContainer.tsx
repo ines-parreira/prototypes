@@ -38,8 +38,6 @@ import { getFormValuesFromStoreConfiguration } from './hooks/utils/configuration
 import css from './AiAgentKnowledgeContainer.less'
 
 export const AiAgentKnowledgeContainer = () => {
-    const isAiAgentSnippetsFromExternalFilesEnabled =
-        useFlags()[FeatureFlagKey.AiAgentSnippetsFromExternalFiles]
     const isStandaloneMenuEnabled =
         useFlags()[FeatureFlagKey.ConvAiStandaloneMenu]
     const isAiAgentScrapeStoreDomainEnabled =
@@ -244,22 +242,19 @@ export const AiAgentKnowledgeContainer = () => {
                             </Card>
 
                             {snippetHelpCenter ? (
-                                <Card className={css.cardSection}>
-                                    <CreatePublicSourcesSection
-                                        helpCenterId={snippetHelpCenter.id}
-                                        selectedHelpCenterId={
-                                            selectedHelpCenter?.id
-                                        }
-                                        onPublicURLsChanged={
-                                            handlePublicURLsChange
-                                        }
-                                        shopName={shopName}
-                                    />
-                                </Card>
-                            ) : null}
-
-                            {isAiAgentSnippetsFromExternalFilesEnabled &&
-                                snippetHelpCenter && (
+                                <>
+                                    <Card className={css.cardSection}>
+                                        <CreatePublicSourcesSection
+                                            helpCenterId={snippetHelpCenter.id}
+                                            selectedHelpCenterId={
+                                                selectedHelpCenter?.id
+                                            }
+                                            onPublicURLsChanged={
+                                                handlePublicURLsChange
+                                            }
+                                            shopName={shopName}
+                                        />
+                                    </Card>
                                     <Card className={css.cardSection}>
                                         <ExternalFilesSection
                                             helpCenterId={snippetHelpCenter.id}
@@ -273,7 +268,8 @@ export const AiAgentKnowledgeContainer = () => {
                                             }
                                         />
                                     </Card>
-                                )}
+                                </>
+                            ) : null}
                         </div>
                     </ConfigurationSection>
                 ) : (
@@ -300,18 +296,17 @@ export const AiAgentKnowledgeContainer = () => {
                             </div>
 
                             {snippetHelpCenter ? (
-                                <CreatePublicSourcesSection
-                                    helpCenterId={snippetHelpCenter.id}
-                                    selectedHelpCenterId={
-                                        selectedHelpCenter?.id
-                                    }
-                                    onPublicURLsChanged={handlePublicURLsChange}
-                                    shopName={shopName}
-                                />
-                            ) : null}
-
-                            {isAiAgentSnippetsFromExternalFilesEnabled &&
-                                snippetHelpCenter && (
+                                <>
+                                    <CreatePublicSourcesSection
+                                        helpCenterId={snippetHelpCenter.id}
+                                        selectedHelpCenterId={
+                                            selectedHelpCenter?.id
+                                        }
+                                        onPublicURLsChanged={
+                                            handlePublicURLsChange
+                                        }
+                                        shopName={shopName}
+                                    />
                                     <ExternalFilesSection
                                         helpCenterId={snippetHelpCenter.id}
                                         onLoadingStateChange={(isLoading) =>
@@ -321,7 +316,8 @@ export const AiAgentKnowledgeContainer = () => {
                                             setHasExternalFiles(!isEmpty)
                                         }
                                     />
-                                )}
+                                </>
+                            ) : null}
                         </div>
                     </ConfigurationSection>
                 )}
