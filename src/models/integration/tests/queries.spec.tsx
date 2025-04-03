@@ -57,6 +57,10 @@ describe('queries', () => {
     describe('useListProducts', () => {
         const productsResponse = [integrationDataItemProductFixture()]
 
+        beforeEach(() => {
+            queryClient.clear()
+        })
+
         it('fetch data', async () => {
             fetchIntegrationProductsMock.mockResolvedValueOnce(
                 axiosSuccessResponse(
@@ -103,6 +107,10 @@ describe('queries', () => {
     })
 
     describe('useGetProductsByIdsFromIntegration', () => {
+        beforeEach(() => {
+            queryClient.clear()
+        })
+
         const productsResponse = [shopifyProductFixture()]
 
         it('fetch data', async () => {
@@ -155,6 +163,10 @@ describe('queries', () => {
                 },
             ],
         } as ShopifyCollectionResponse
+
+        beforeEach(() => {
+            queryClient.clear()
+        })
 
         it('fetch data', async () => {
             fetchShopifyCollectionsMock.mockResolvedValueOnce({

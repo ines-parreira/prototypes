@@ -1,9 +1,5 @@
 import { render, screen } from '@testing-library/react'
 
-import { shopifyIntegration } from 'fixtures/integrations'
-import useTopProducts from 'pages/aiAgent/Onboarding/components/TopProductsCard/hooks'
-import { assumeMock } from 'utils/testing'
-
 import TopProductsCard from '../TopProductsCard'
 
 const products = [
@@ -33,20 +29,13 @@ const products = [
     },
 ]
 
-jest.mock('pages/aiAgent/Onboarding/components/TopProductsCard/hooks')
-const useTopProductsMock = assumeMock(useTopProducts)
-
 describe('TopProductsCard', () => {
     it('renders', () => {
-        useTopProductsMock.mockReturnValueOnce({
-            isLoading: false,
-            data: products,
-        })
-
         render(
             <TopProductsCard
                 title="Top products"
-                integration={shopifyIntegration}
+                isLoading={false}
+                products={products}
             />,
         )
 
@@ -56,18 +45,14 @@ describe('TopProductsCard', () => {
     })
 
     it('renders with different currency', () => {
-        useTopProductsMock.mockReturnValueOnce({
-            isLoading: false,
-            data: products.map((product) => ({
-                ...product,
-                currency: 'JPY',
-            })),
-        })
-
         render(
             <TopProductsCard
                 title="Top products"
-                integration={shopifyIntegration}
+                isLoading={false}
+                products={products.map((product) => ({
+                    ...product,
+                    currency: 'JPY',
+                }))}
             />,
         )
 
@@ -77,15 +62,11 @@ describe('TopProductsCard', () => {
     })
 
     it('renders skeleton when loading', () => {
-        useTopProductsMock.mockReturnValueOnce({
-            isLoading: false,
-            data: products,
-        })
-
         render(
             <TopProductsCard
                 title="Top products"
-                integration={shopifyIntegration}
+                isLoading={false}
+                products={products}
             />,
         )
 

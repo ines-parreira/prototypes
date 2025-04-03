@@ -60,6 +60,8 @@ src/models/convert @gorgias/marketing-suite
 src/pages/convert @gorgias/marketing-suite
 src/pages/stats/convert @gorgias/marketing-suite
 src/pages/stats/automate/aiSalesAgent @gorgias/marketing-suite
+src/models/reporting/cubes/ai-sales-agent @gorgias/marketing-suite
+src/models/reporting/queryFactories/ai-sales-agent @gorgias/marketing-suite
 src/pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationCampaigns @gorgias/marketing-suite
 src/pages/aiAgent/Onboarding/ @gorgias/marketing-suite
 

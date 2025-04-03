@@ -8,7 +8,6 @@ import {
 import {
     AiSalesAgentOrdersCube,
     AiSalesAgentOrdersDimension,
-    AiSalesAgentOrdersFilterMember,
     AiSalesAgentOrdersMeasure,
 } from 'models/reporting/cubes/ai-sales-agent/AiSalesAgentOrders'
 import {
@@ -358,19 +357,20 @@ export const productRecommendationsQueryFactory = (
 })
 
 export const topProductRecommendationsQueryFactory = (
-    storeIntegrationId: number,
+    filters: StatsFilters,
+    timezone: string,
 ): ReportingQuery<AiSalesAgentOrdersCube> => ({
     measures: [AiSalesAgentOrdersMeasure.Count],
     dimensions: [AiSalesAgentOrdersDimension.ProductId],
     filters: [
-        {
-            member: AiSalesAgentOrdersFilterMember.IntegrationId,
-            operator: ReportingFilterOperator.Equals,
-            values: [storeIntegrationId.toString()],
-        },
+        ...statsFiltersToReportingFilters(
+            aiSalesAgentOrdersDefaultFiltersMembers,
+            filters,
+        ),
     ],
     order: [[AiSalesAgentOrdersMeasure.Count, OrderDirection.Desc]],
     limit: 10, // fetch more just in case
+    timezone,
 })
 
 export const topLocationsRecommendationsQueryFactory = (

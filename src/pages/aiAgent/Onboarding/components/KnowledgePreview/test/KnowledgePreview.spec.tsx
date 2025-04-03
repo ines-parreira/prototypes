@@ -21,7 +21,8 @@ import { assumeMock } from 'utils/testing'
 const mockStore = configureMockStore([thunk])()
 
 const defaultPreviewData = {
-    products: mockedProducts,
+    topProducts: mockedProducts,
+    isTopProductsLoading: false,
     experienceScore: 50,
     categories: mockedCategories,
     averageDiscount: 10,
@@ -46,6 +47,9 @@ const useTopProductsMock = assumeMock(useTopProducts)
 
 jest.mock('pages/aiAgent/Onboarding/hooks/useTopLocations')
 const mockUseTopLocations = assumeMock(useTopLocations)
+
+jest.mock('pages/aiAgent/Onboarding/components/TopProductsCard/hooks')
+const mockUseTopProducts = assumeMock(useTopProducts)
 
 const renderComponent = () => {
     return render(
@@ -77,6 +81,10 @@ describe('KnowledgePreview', () => {
             data: 2,
         })
         mockUseTopLocations.mockReturnValue({
+            data: [],
+            isLoading: false,
+        })
+        mockUseTopProducts.mockReturnValue({
             data: [],
             isLoading: false,
         })

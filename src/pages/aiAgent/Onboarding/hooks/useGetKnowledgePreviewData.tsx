@@ -5,10 +5,7 @@ import moment from 'moment'
 import useAppSelector from 'hooks/useAppSelector'
 import { ReportingGranularity } from 'models/reporting/types'
 import { StatsFilters } from 'models/stat/types'
-import {
-    mockedCategories,
-    mockedProducts,
-} from 'pages/aiAgent/Onboarding/components/KnowledgePreview/constants'
+import { mockedCategories } from 'pages/aiAgent/Onboarding/components/KnowledgePreview/constants'
 import { TopElement } from 'pages/aiAgent/Onboarding/components/TopElementsCard/types'
 import { Product } from 'pages/aiAgent/Onboarding/components/TopProductsCard/types'
 import { useAverageDiscountPercentage } from 'pages/stats/automate/aiSalesAgent/useAverageDiscountPercentage'
@@ -17,11 +14,13 @@ import { LogicalOperatorEnum } from 'pages/stats/common/components/Filter/consta
 import { TwoDimensionalDataItem } from 'pages/stats/types'
 import { getTimezone } from 'state/currentUser/selectors'
 
+import useTopProducts from '../components/TopProductsCard/hooks'
 import { useGetAverageOrderValue } from './useGetAverageOrderValue'
 import { useGetRepeatRate } from './useGetRepeatRate'
 
 type KnowledgePreviewData = {
-    products?: Product[]
+    topProducts?: Product[]
+    isTopProductsLoading?: boolean
     averageOrders?: TwoDimensionalDataItem[]
     experienceScore?: number
     categories?: TopElement[]
@@ -62,8 +61,10 @@ const useProcessedAverageOrdersPerDayTrend = (
 
 export const useGetKnowledgePreviewData = ({
     shopIntegrationId,
+    currency,
 }: {
     shopIntegrationId: number
+    currency?: string
 }) => {
     const timezone = useAppSelector(getTimezone) ?? 'UTC'
     const filters: StatsFilters = {
@@ -94,9 +95,15 @@ export const useGetKnowledgePreviewData = ({
     const { data: averageOrderValue, isLoading: isAverageOrderValueLoading } =
         useGetAverageOrderValue(filters, timezone)
 
+    const { data: topProducts, isLoading: isTopProductsLoading } =
+        useTopProducts({
+            filters,
+            timezone,
+            currency: currency,
+        })
+
     return {
         data: {
-            products: mockedProducts,
             experienceScore: 50,
             categories: mockedCategories,
             averageDiscount: averageDiscountPercentage.isFetching
@@ -107,6 +114,8 @@ export const useGetKnowledgePreviewData = ({
             averageOrders: averageOrders,
             averageOrderValue,
             isAverageOrderValueLoading,
+            topProducts,
+            isTopProductsLoading,
         } satisfies KnowledgePreviewData,
     }
 }

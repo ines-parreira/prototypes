@@ -35,6 +35,7 @@ const KnowledgePreview: React.FC<Props> = ({ shopName }) => {
 
     const { data } = useGetKnowledgePreviewData({
         shopIntegrationId: shopifyIntegration.id,
+        currency: shopifyIntegration?.meta?.currency,
     })
 
     const { data: topLocationsData, isLoading: isLoadingTopLocations } =
@@ -75,7 +76,7 @@ const KnowledgePreview: React.FC<Props> = ({ shopName }) => {
         <TrackerCircleCard
             isLoading={data.isAverageOrderValueLoading}
             percentage={100}
-            label={compactInteger(data.averageOrderValue)}
+            label={compactInteger(data.averageOrderValue).toString() + '$'}
             title="Average order value"
         />
     )
@@ -83,8 +84,9 @@ const KnowledgePreview: React.FC<Props> = ({ shopName }) => {
     const topProductsCard = (
         <TopProductsCard
             className={css.topProducts}
-            integration={shopifyIntegration}
             title="Top Products"
+            isLoading={data.isTopProductsLoading}
+            products={data.topProducts}
         />
     )
 

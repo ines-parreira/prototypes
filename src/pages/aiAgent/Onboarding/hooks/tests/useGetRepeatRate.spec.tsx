@@ -89,7 +89,7 @@ describe('useGetRepeatRate', () => {
             data: {
                 allData: [
                     {
-                        [AiSalesAgentOrderCustomersMeasure.RecurringCount]: 100,
+                        [AiSalesAgentOrderCustomersMeasure.RecurringCount]: 2,
                         [AiSalesAgentOrderCustomersMeasure.Count]: 10,
                     },
                 ],
@@ -100,6 +100,6 @@ describe('useGetRepeatRate', () => {
 
         const { result } = renderHook(() => useGetRepeatRate(filters, 'UTC'))
 
-        expect(result.current.data).toEqual(10)
+        expect(result.current.data).toEqual(20)
     })
 })

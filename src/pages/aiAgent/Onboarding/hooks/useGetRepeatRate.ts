@@ -19,14 +19,17 @@ export const useGetRepeatRate = (
             return 0
         }
 
-        const value = safeDivide(
-            Number(
-                data.allData[0][
-                    AiSalesAgentOrderCustomersMeasure.RecurringCount
-                ],
-            ),
-            Number(data.allData[0][AiSalesAgentOrderCustomersMeasure.Count]),
-        )
+        const value =
+            safeDivide(
+                Number(
+                    data.allData[0][
+                        AiSalesAgentOrderCustomersMeasure.RecurringCount
+                    ],
+                ),
+                Number(
+                    data.allData[0][AiSalesAgentOrderCustomersMeasure.Count],
+                ),
+            ) * 100
 
         return +value.toFixed(2)
     }, [data, isFetching, isError])

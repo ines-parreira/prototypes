@@ -1,6 +1,7 @@
 import { QueryClientProvider, UseQueryResult } from '@tanstack/react-query'
 import { waitFor } from '@testing-library/react'
 import { renderHook } from '@testing-library/react-hooks'
+import moment from 'moment'
 
 import { Product } from 'constants/integrations/types/shopify'
 import { useMetricPerDimension } from 'hooks/reporting/useMetricPerDimension'
@@ -9,6 +10,8 @@ import {
     AiSalesAgentOrdersDimension,
     AiSalesAgentOrdersMeasure,
 } from 'models/reporting/cubes/ai-sales-agent/AiSalesAgentOrders'
+import { StatsFilters } from 'models/stat/types'
+import { LogicalOperatorEnum } from 'pages/stats/common/components/Filter/constants'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 import { assumeMock } from 'utils/testing'
 
@@ -32,6 +35,17 @@ const product = {
     variants: [],
     images: [],
     options: [],
+}
+
+const filters: StatsFilters = {
+    period: {
+        start_datetime: moment().subtract(1, 'month').startOf('day').format(),
+        end_datetime: moment().endOf('day').format(),
+    },
+    storeIntegrations: {
+        operator: LogicalOperatorEnum.ONE_OF,
+        values: [1],
+    },
 }
 
 describe('useTopProducts', () => {
@@ -86,7 +100,7 @@ describe('useTopProducts', () => {
         } as unknown as UseQueryResult<Product[]>)
 
         const { result } = renderHook(
-            () => useTopProducts({ shopIntegrationId: 1, currency: 'USD' }),
+            () => useTopProducts({ filters, timezone: 'UTC', currency: 'USD' }),
             {
                 wrapper: hookWrapper,
             },

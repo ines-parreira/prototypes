@@ -1,13 +1,14 @@
 import { renderHook as reactRenderHook } from '@testing-library/react-hooks'
 import { Provider } from 'react-redux'
 
+import { mockedAverageOrders } from 'pages/aiAgent/Onboarding/components/KnowledgePreview/constants'
+import useTopProducts from 'pages/aiAgent/Onboarding/components/TopProductsCard/hooks'
 import { useGetAverageOrderValue } from 'pages/aiAgent/Onboarding/hooks/useGetAverageOrderValue'
 import { useGetRepeatRate } from 'pages/aiAgent/Onboarding/hooks/useGetRepeatRate'
 import { useAverageDiscountPercentage } from 'pages/stats/automate/aiSalesAgent/useAverageDiscountPercentage'
 import { useAverageOrdersPerDayTrend } from 'pages/stats/automate/aiSalesAgent/useAverageOrdersPerDayTrend'
 import { assumeMock, mockStore } from 'utils/testing'
 
-import { mockedAverageOrders } from '../../components/KnowledgePreview/constants'
 import { useGetKnowledgePreviewData } from '../useGetKnowledgePreviewData'
 
 const store = mockStore({})
@@ -25,6 +26,9 @@ const mockUseGetAverageOrderValue = assumeMock(useGetAverageOrderValue)
 
 jest.mock('pages/aiAgent/Onboarding/hooks/useGetRepeatRate')
 const mockUseGetRepeatRate = assumeMock(useGetRepeatRate)
+
+jest.mock('pages/aiAgent/Onboarding/components/TopProductsCard/hooks')
+const mockUseTopProducts = assumeMock(useTopProducts)
 
 const mockAverageOrdersPerDayRawData = () =>
     mockedAverageOrders[0].values.map((item) => ({
@@ -60,6 +64,11 @@ describe('useGetKnowledgePreviewData', () => {
         useAverageDiscountPercentageMock.mockReturnValue({
             isFetching: true,
             isError: false,
+        })
+
+        mockUseTopProducts.mockReturnValue({
+            data: [],
+            isLoading: false,
         })
     })
 

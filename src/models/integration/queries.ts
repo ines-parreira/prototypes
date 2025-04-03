@@ -117,6 +117,7 @@ export const useGetProductsByIdsFromIntegration = (
             return results.map((r) => r.toJS()) as Product[]
         },
         keepPreviousData: true,
+        staleTime: Infinity,
         onError: () => {
             reportError(
                 new Error(

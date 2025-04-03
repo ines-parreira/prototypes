@@ -2,11 +2,13 @@ import { useCallback, useEffect, useState } from 'react'
 
 import { useMutation } from '@tanstack/react-query'
 import _isEqual from 'lodash/isEqual'
+import moment from 'moment/moment'
 
 import { AttachmentEnum } from 'common/types'
 import useAppSelector from 'hooks/useAppSelector'
 import { transformToneOfVoice } from 'models/aiAgent/resources/transform-tone-of-voice'
 import { TransformToneOfVoiceConversation } from 'models/aiAgent/types'
+import { StatsFilters } from 'models/stat/types'
 import {
     PreviewId,
     PRODUCT_RECOMMENDATION_MESSAGE_ID,
@@ -18,7 +20,9 @@ import {
 import useTopProducts from 'pages/aiAgent/Onboarding/components/TopProductsCard/hooks'
 import { Product } from 'pages/aiAgent/Onboarding/components/TopProductsCard/types'
 import { ProductCardAttachment } from 'pages/common/draftjs/plugins/toolbar/components/AddProductLink'
+import { LogicalOperatorEnum } from 'pages/stats/common/components/Filter/constants'
 import { getCurrentAccountState } from 'state/currentAccount/selectors'
+import { getTimezone } from 'state/currentUser/selectors'
 
 import { useGetOnboardingData } from './useGetOnboardingData'
 
@@ -44,6 +48,7 @@ export const useTransformToneOfVoiceConversations = (
     shopName: string,
 ) => {
     const currentAccount = useAppSelector(getCurrentAccountState)
+    const timezone = useAppSelector(getTimezone) ?? 'UTC'
     const gorgiasDomain = currentAccount.get('domain')
 
     const [cacheResult, setCacheResult] = useState(false)
@@ -53,8 +58,22 @@ export const useTransformToneOfVoiceConversations = (
     const { data, isLoading: isLoadingOnboardingData } =
         useGetOnboardingData(shopName)
 
+    const filters: StatsFilters = {
+        period: {
+            start_datetime: moment()
+                .subtract(1, 'month')
+                .startOf('day')
+                .format(),
+            end_datetime: moment().endOf('day').format(),
+        },
+        storeIntegrations: {
+            operator: LogicalOperatorEnum.ONE_OF,
+            values: [shopIntegrationId],
+        },
+    }
     const { data: products, isLoading: isProductDataLoading } = useTopProducts({
-        shopIntegrationId: shopIntegrationId,
+        filters,
+        timezone,
     })
 
     const { mutateAsync: transformConversation, isLoading } = useMutation(

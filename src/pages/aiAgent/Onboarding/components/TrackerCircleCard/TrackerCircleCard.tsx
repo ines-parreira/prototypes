@@ -24,21 +24,23 @@ const TrackerCircleCard = ({
     title,
     isLoading,
 }: TrackerCircleCardProps) => {
-    return isLoading ? (
-        <Skeleton height="150px" width="175px" />
-    ) : (
+    return (
         <Card className={css.score}>
             <CardHeader>
                 <CardTitle>{title}</CardTitle>
             </CardHeader>
             <CardContent>
-                <TrackerCircle
-                    radius={54}
-                    percentage={percentage}
-                    color={gorgiasColors.secondaryOrange}
-                    label={label}
-                    strokeWidth={9}
-                />
+                {isLoading ? (
+                    <Skeleton height="150px" width="175px" />
+                ) : (
+                    <TrackerCircle
+                        radius={54}
+                        percentage={percentage}
+                        color={gorgiasColors.secondaryOrange}
+                        label={label}
+                        strokeWidth={9}
+                    />
+                )}
             </CardContent>
         </Card>
     )

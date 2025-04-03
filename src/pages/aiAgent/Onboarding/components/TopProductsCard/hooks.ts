@@ -7,20 +7,30 @@ import {
     AiSalesAgentOrdersMeasure,
 } from 'models/reporting/cubes/ai-sales-agent/AiSalesAgentOrders'
 import { topProductRecommendationsQueryFactory } from 'models/reporting/queryFactories/ai-sales-agent/metrics'
+import { isFilterWithLogicalOperator } from 'models/reporting/queryFactories/utils'
+import { StatsFilters } from 'models/stat/types'
 import { mockedProducts } from 'pages/aiAgent/Onboarding/components/KnowledgePreview/constants'
 import { Product } from 'pages/aiAgent/Onboarding/components/TopProductsCard/types'
 import { mapMetrics } from 'utils/reporting'
 
 let useTopProductsImplementation = ({
-    shopIntegrationId,
+    filters,
+    timezone,
     currency,
 }: {
-    shopIntegrationId: number
+    filters: StatsFilters
+    timezone: string
     currency?: string
 }): { data: Product[]; isLoading: boolean } => {
+    const shopIntegrationId = isFilterWithLogicalOperator(
+        filters.storeIntegrations,
+    )
+        ? filters.storeIntegrations.values[0]
+        : 0
+
     let productIds = []
     const recommendationsTotalData = useMetricPerDimension(
-        topProductRecommendationsQueryFactory(shopIntegrationId),
+        topProductRecommendationsQueryFactory(filters, timezone),
         undefined,
         productIds.length === 0, // if there are productIds, we don't need to refresh data
     )
@@ -70,7 +80,8 @@ let useTopProductsImplementation = ({
 
 // Workaround for Storybook
 export const useTopProducts = (args: {
-    shopIntegrationId: number
+    filters: StatsFilters
+    timezone: string
     currency?: string
 }) => useTopProductsImplementation(args)
 
