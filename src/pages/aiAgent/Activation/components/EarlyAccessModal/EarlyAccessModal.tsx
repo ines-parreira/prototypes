@@ -196,12 +196,14 @@ export const EarlyAccessModal = ({
                                                                 css.compareAtPrice
                                                             }
                                                         >
-                                                            {amount}
+                                                            {
+                                                                amountAfterDiscount
+                                                            }
                                                         </span>{' '}
                                                     </>
                                                 )}
                                             <span>
-                                                {amountAfterDiscount}/
+                                                {amount}/
                                                 {earlyAccessPlan?.cadence}
                                             </span>
                                         </>
