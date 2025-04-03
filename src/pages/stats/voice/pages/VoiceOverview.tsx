@@ -28,6 +28,7 @@ function VoiceOverview() {
     const shouldShowNewUnansweredStatuses = useFlag(
         FeatureFlagKey.ShowNewUnansweredStatuses,
     )
+    const exposeQueues = useFlag(FeatureFlagKey.ExposeVoiceQueues)
     useCleanStatsFilters()
 
     const reportComponents = [
@@ -85,7 +86,13 @@ function VoiceOverview() {
                             VoiceOverviewReportConfig.reportFilters.persistent
                         }
                         optionalFilters={
-                            VoiceOverviewReportConfig.reportFilters.optional
+                            exposeQueues
+                                ? VoiceOverviewReportConfig.reportFilters
+                                      .optional
+                                : VoiceOverviewReportConfig.reportFilters.optional.filter(
+                                      (filter) =>
+                                          filter !== FilterKey.VoiceQueues,
+                                  )
                         }
                         filterSettingsOverrides={{
                             [FilterKey.Period]: {

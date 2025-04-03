@@ -22,7 +22,12 @@ import { tags } from 'fixtures/tag'
 import { user } from 'fixtures/users'
 import { useReportRestrictions } from 'hooks/reporting/dashboards/useReportRestrictions'
 import { withDefaultLogicalOperator } from 'models/reporting/queryFactories/utils'
-import { StatsFilters, TagFilterInstanceId } from 'models/stat/types'
+import {
+    FilterComponentKey,
+    FilterKey,
+    StatsFilters,
+    TagFilterInstanceId,
+} from 'models/stat/types'
 import FiltersPanelWrapper from 'pages/stats/common/filters/FiltersPanelWrapper'
 import * as VoiceCallCallerExperienceMetric from 'pages/stats/voice/components/VoiceCallerExperienceMetric/VoiceCallCallerExperienceMetric'
 import { VoiceOverviewDownloadDataButton } from 'pages/stats/voice/components/VoiceOverviewDownloadDataButton/VoiceOverviewDownloadDataButton'
@@ -289,5 +294,39 @@ describe('VoiceOverview', () => {
             }),
             {},
         )
+    })
+
+    it('should render optional filters', () => {
+        useFlagMock.mockImplementation((flag) => {
+            if (flag === FeatureFlagKey.ExposeVoiceQueues) {
+                return true
+            }
+        })
+
+        const { getByText } = renderVoiceOverview()
+
+        expect(getByText(FilterKey.Agents)).toBeInTheDocument()
+        expect(
+            getByText(FilterComponentKey.PhoneIntegrations),
+        ).toBeInTheDocument()
+        expect(getByText(FilterKey.Tags)).toBeInTheDocument()
+        expect(getByText(FilterKey.VoiceQueues)).toBeInTheDocument()
+    })
+
+    it('should render old optional filters', () => {
+        useFlagMock.mockImplementation((flag) => {
+            if (flag === FeatureFlagKey.ExposeVoiceQueues) {
+                return false
+            }
+        })
+
+        const { queryByText } = renderVoiceOverview()
+
+        expect(queryByText(FilterKey.Agents)).toBeInTheDocument()
+        expect(
+            queryByText(FilterComponentKey.PhoneIntegrations),
+        ).toBeInTheDocument()
+        expect(queryByText(FilterKey.Tags)).toBeInTheDocument()
+        expect(queryByText(FilterKey.VoiceQueues)).not.toBeInTheDocument()
     })
 })
