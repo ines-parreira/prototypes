@@ -25,7 +25,7 @@ export default function VoiceIntegrationDetails(): JSX.Element | null {
                             connectUrl={'/app/settings/channels/phone/new'}
                             integrationTitle={IntegrationType.Phone}
                         >
-                            <Button>Add Voice</Button>
+                            <Button>Add Voice Integration</Button>
                         </ConnectLink>
                         <div data-candu-id="voice-settings-product-tour" />
                     </>

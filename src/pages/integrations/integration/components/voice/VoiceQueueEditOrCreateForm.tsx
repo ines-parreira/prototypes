@@ -28,7 +28,7 @@ export default function VoiceQueueEditOrCreateForm({
             )}
             <div className={css.section}>
                 <div>
-                    <h2>Call flow</h2>
+                    <h2>Routing options</h2>
                     <p className={css.sectionDescription}>
                         Configure the incoming call flow
                     </p>

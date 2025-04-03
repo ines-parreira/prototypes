@@ -88,7 +88,7 @@ export default function VoiceIntegration() {
                         connectUrl={'/app/settings/channels/phone/new'}
                         integrationTitle={IntegrationType.Phone}
                     >
-                        <Button>Add Voice</Button>
+                        <Button>Add Voice Integration</Button>
                     </ConnectLink>
                 </Route>
                 {exposeQueues && (

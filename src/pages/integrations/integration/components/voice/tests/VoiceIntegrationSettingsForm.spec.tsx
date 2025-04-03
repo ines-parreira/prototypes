@@ -111,7 +111,7 @@ describe('<VoiceIntegrationSettingsForm />', () => {
         expect(screen.getByText('Integration name')).toBeInTheDocument()
         expect(screen.getByText('Phone number')).toBeInTheDocument()
         expect(screen.getByText('Manage Phone Number')).toBeInTheDocument()
-        expect(screen.getByText('Call flow')).toBeInTheDocument()
+        expect(screen.getByText('Call settings')).toBeInTheDocument()
         expect(
             screen.getByText('Configure how incoming calls are handled'),
         ).toBeInTheDocument()

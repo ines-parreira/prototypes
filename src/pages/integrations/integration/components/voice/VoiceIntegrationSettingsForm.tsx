@@ -37,7 +37,7 @@ function VoiceIntegrationSettingsForm({ integration }: Props): JSX.Element {
                 </div>
                 <div className={css.section}>
                     <div>
-                        <h2>Call flow</h2>
+                        <h2>Call settings</h2>
                         <p className={css.sectionDescription}>
                             Configure how incoming calls are handled
                         </p>

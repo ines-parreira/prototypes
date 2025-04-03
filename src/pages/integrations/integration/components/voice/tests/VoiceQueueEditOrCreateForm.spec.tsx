@@ -30,7 +30,7 @@ describe('VoiceQueueEditOrCreateForm', () => {
             screen.getByText('VoiceQueueSettingsFormGeneralSection'),
         ).toBeInTheDocument()
 
-        expect(screen.getByText('Call flow')).toBeInTheDocument()
+        expect(screen.getByText('Routing options')).toBeInTheDocument()
         expect(
             screen.getByText('VoiceQueueSettingsFormCallFlowSection'),
         ).toBeInTheDocument()

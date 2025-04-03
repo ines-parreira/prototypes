@@ -31,7 +31,7 @@ describe('VoiceIntegrationSettingsFormCallFlowSection', () => {
         const { getByText } = renderComponent()
 
         expect(getByText('Greeting message')).toBeInTheDocument()
-        expect(getByText('Distribution behavior')).toBeInTheDocument()
+        expect(getByText('Routing behavior')).toBeInTheDocument()
         expect(getByText('Voicemail')).toBeInTheDocument()
         expect(getByText('Call recording')).toBeInTheDocument()
         expect(getByText('Call transcription')).toBeInTheDocument()

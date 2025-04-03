@@ -34,7 +34,7 @@ function VoiceIntegrationSettingsFormCallFlowSection(): JSX.Element {
                     />
                 </VoiceSettingAccordionItem>
                 <VoiceSettingAccordionItem
-                    subtitle={'Distribution behavior'}
+                    subtitle={'Routing behavior'}
                     description={'Customize where to route your callers'}
                 >
                     <VoiceIntegrationSettingDistributionBehavior />
