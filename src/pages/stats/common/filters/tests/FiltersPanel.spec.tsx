@@ -14,6 +14,7 @@ import { billingState } from 'fixtures/billing'
 import { customFieldsMockResponse } from 'fixtures/customField'
 import { tags } from 'fixtures/tag'
 import { useTagSearch } from 'hooks/reporting/common/useTagSearch'
+import { useVoiceQueueSearch } from 'hooks/reporting/common/useVoiceQueueSearch'
 import { HelpCenter } from 'models/helpCenter/types'
 import { IntegrationType } from 'models/integration/constants'
 import { withDefaultLogicalOperator } from 'models/reporting/queryFactories/utils'
@@ -84,6 +85,9 @@ const useTagSearchMock = assumeMock(useTagSearch)
 
 jest.mock('state/billing/selectors', () => ({ getHasAutomate: jest.fn() }))
 const getHasAutomateMock = assumeMock(getHasAutomate)
+
+jest.mock('hooks/reporting/common/useVoiceQueueSearch')
+const useVoiceQueueSearchMock = assumeMock(useVoiceQueueSearch)
 
 jest.mock(
     'pages/stats/common/filters/PeriodFilter',
@@ -185,6 +189,7 @@ describe('FiltersPanel', () => {
         FilterKey.Campaigns,
         FilterKey.CampaignStatuses,
         FilterKey.Score,
+        FilterKey.VoiceQueues,
     ]
     const unSupportedSaveFilters: StaticFilter[] = [
         FilterKey.AggregationWindow,
@@ -196,6 +201,7 @@ describe('FiltersPanel', () => {
         FilterComponentKey.CustomField,
         FilterComponentKey.PhoneIntegrations,
         FilterKey.StoreIntegrations,
+        FilterKey.VoiceQueues,
     ]
 
     const someTags = tags
@@ -217,10 +223,16 @@ describe('FiltersPanel', () => {
             tagsState: tagState,
         })
         getHasAutomateMock.mockReturnValue(true)
+        useVoiceQueueSearchMock.mockReturnValue({
+            handleVoiceQueueSearch: jest.fn() as any,
+            onLoad: jest.fn(),
+            voiceQueues: [],
+            shouldLoadMore: false,
+        })
     })
 
     it.each(supportedFilters)(
-        'should render all supported filters',
+        'should render all supported filters (%s)',
         (filter) => {
             renderWithStore(
                 <FiltersPanel
@@ -237,7 +249,7 @@ describe('FiltersPanel', () => {
     )
 
     it.each(unSupportedSaveFilters)(
-        'should not render unsupported filters',
+        'should not render unsupported filters (%s)',
         (filter) => {
             renderWithStore(
                 <FiltersPanelComponent

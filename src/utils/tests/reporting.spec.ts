@@ -11,6 +11,10 @@ import {
     TicketMember,
 } from 'models/reporting/cubes/TicketCube'
 import { TicketMessagesMember } from 'models/reporting/cubes/TicketMessagesCube'
+import {
+    VoiceCallFiltersMembers,
+    VoiceCallMember,
+} from 'models/reporting/cubes/VoiceCallCube'
 import { messagesSentQueryFactory } from 'models/reporting/queryFactories/support-performance/messagesSent'
 import {
     withDefaultLogicalOperator,
@@ -254,6 +258,29 @@ describe('reporting utils', () => {
                     values: ['1'],
                 },
             ])
+        })
+
+        it('should convert StatsFilters to an array of ReportingFilter with voice queues with logical operator', () => {
+            expect(
+                statsFiltersToReportingFilters(VoiceCallFiltersMembers, {
+                    period: {
+                        start_datetime: '2021-05-29T00:00:00.000+02:00',
+                        end_datetime: '2021-06-04T23:59:59.000+02:00',
+                    },
+                    voiceQueues: withLogicalOperator(
+                        [1, 2],
+                        LogicalOperatorEnum.ONE_OF,
+                    ),
+                }),
+            ).toEqual(
+                expect.arrayContaining([
+                    {
+                        member: VoiceCallMember.QueueId,
+                        operator: ReportingFilterOperator.Equals,
+                        values: ['1', '2'],
+                    },
+                ]),
+            )
         })
     })
 

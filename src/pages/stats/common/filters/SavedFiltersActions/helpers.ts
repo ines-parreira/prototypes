@@ -32,6 +32,7 @@ export const isFilterFilled = (
         case FilterKey.InternalCompliance:
         case FilterKey.BrandVoice:
         case FilterKey.ResolutionCompleteness:
+        case FilterKey.VoiceQueues:
             return !_isEmpty(filters?.[filterKey]?.values)
         case FilterKey.Tags:
         case FilterKey.CustomFields:

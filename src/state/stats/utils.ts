@@ -73,6 +73,7 @@ export const fromPartialLegacyStatsFilters = (
                 case FilterKey.StoreIntegrations:
                 case FilterKey.Agents:
                 case FilterKey.HelpCenters:
+                case FilterKey.VoiceQueues:
                     if (statsFilters[key] !== undefined) {
                         acc[key] = withDefaultLogicalOperator(statsFilters[key])
                     }
@@ -127,6 +128,7 @@ export const fromLegacyStatsFilters = (
                 case FilterKey.StoreIntegrations:
                 case FilterKey.Agents:
                 case FilterKey.HelpCenters:
+                case FilterKey.VoiceQueues:
                     if (
                         statsFilters[key] !== undefined &&
                         statsFilters[key]?.values !== undefined
@@ -187,6 +189,7 @@ export const fromFiltersWithLogicalOperators = (
                     case FilterKey.Integrations:
                     case FilterKey.Agents:
                     case FilterKey.HelpCenters:
+                    case FilterKey.VoiceQueues:
                         if (statsFilters[filter]?.values !== undefined) {
                             acc[filter] = statsFilters[filter]?.values
                         }
@@ -239,6 +242,7 @@ export const excludeFromFiltersWithLogicalOperators = (
                     case FilterKey.StoreIntegrations:
                     case FilterKey.Agents:
                     case FilterKey.HelpCenters:
+                    case FilterKey.VoiceQueues:
                         acc[key] = statsFilters[key]
                         break
                     case FilterKey.CustomFields:
@@ -266,6 +270,7 @@ export const savedFilterDraftFiltersFromFiltersWithLogicalOperators = (
                 case FilterKey.Period:
                 case FilterKey.AggregationWindow:
                 case FilterKey.StoreIntegrations:
+                case FilterKey.VoiceQueues:
                     break
                 case FilterKey.Tags: {
                     const currentFilter = statsFilters[filter]

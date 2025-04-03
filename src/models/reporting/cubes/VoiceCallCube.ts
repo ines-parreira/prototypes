@@ -43,6 +43,7 @@ export enum VoiceCallMember {
     TalkTime = 'VoiceCall.talkTimeSeconds',
     WaitTime = 'VoiceCall.waitTimeSeconds',
     DisplayStatus = 'VoiceCall.displayStatus',
+    QueueId = 'VoiceCall.queueId',
 }
 
 export enum VoiceCallSegment {
@@ -69,6 +70,7 @@ export const VoiceCallFiltersMembers: StatsFiltersMembers = {
     resolutionCompleteness: TicketMember.ResolutionCompletenessScore,
     communicationSkills: TicketMember.CommunicationSkillsScore,
     languageProficiency: TicketMember.LanguageProficiencyScore,
+    voiceQueues: VoiceCallMember.QueueId,
 }
 
 export type VoiceCallCube = Cube<

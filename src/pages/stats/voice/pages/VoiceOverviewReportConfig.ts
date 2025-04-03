@@ -59,6 +59,7 @@ export const VOICE_OVERVIEW_OPTIONAL_FILTERS: OptionalFilter[] = [
     FilterComponentKey.PhoneIntegrations,
     FilterKey.Tags,
     FilterKey.Agents,
+    FilterKey.VoiceQueues,
 ]
 
 export enum VoiceOverviewChart {

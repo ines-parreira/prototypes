@@ -43,6 +43,7 @@ export const getValidator = (
         case FilterKey.ResolutionCompleteness:
         case FilterKey.Score:
         case FilterKey.SlaPolicies:
+        case FilterKey.VoiceQueues:
             return isFilterWithLogicalOperator
     }
 }

@@ -199,6 +199,7 @@ export const statsFiltersToReportingFilters = (
         internalCompliance,
         brandVoice,
         storeIntegrations,
+        voiceQueues,
     } = statsFilters
     let filters: ReportingFilter[] = [
         {
@@ -311,6 +312,12 @@ export const statsFiltersToReportingFilters = (
     if (hasFilter(brandVoice) && members.brandVoice) {
         filters = addOptionalFilter(filters, brandVoice, {
             member: members.brandVoice,
+            operator: ReportingFilterOperator.Equals,
+        })
+    }
+    if (hasFilter(voiceQueues) && members.voiceQueues) {
+        filters = addOptionalFilter(filters, voiceQueues, {
+            member: members.voiceQueues,
             operator: ReportingFilterOperator.Equals,
         })
     }

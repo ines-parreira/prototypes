@@ -26,6 +26,7 @@ export enum FilterKey {
     SlaPolicies = 'slaPolicies',
     Tags = 'tags',
     StoreIntegrations = 'storeIntegrations',
+    VoiceQueues = 'voiceQueues',
 }
 
 export type StateOnlyFilterKeys = Exclude<
@@ -64,6 +65,7 @@ export type StaticFilter =
     | FilterKey.BrandVoice
     | FilterKey.ResolutionCompleteness
     | FilterKey.StoreIntegrations
+    | FilterKey.VoiceQueues
     | FilterComponentKey.BusiestTimesMetricSelectFilter
     | FilterComponentKey.CustomField
     | FilterComponentKey.PhoneIntegrations
@@ -118,6 +120,7 @@ export type LegacyStatsFilters = {
     [FilterKey.SlaPolicies]?: string[]
     [FilterKey.Tags]?: number[]
     [FilterKey.StoreIntegrations]?: number[]
+    [FilterKey.VoiceQueues]?: number[]
 }
 
 export type AgentOnlyFilters<T> = T extends any
@@ -224,6 +227,7 @@ export type StatsFiltersWithLogicalOperator = {
     [FilterKey.SlaPolicies]?: WithLogicalOperator<string>
     [FilterKey.Tags]?: TagFilter[]
     [FilterKey.StoreIntegrations]?: WithLogicalOperator<number>
+    [FilterKey.VoiceQueues]?: WithLogicalOperator<number>
 }
 
 export type StatsFilters = StatsFiltersWithLogicalOperator
