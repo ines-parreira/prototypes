@@ -59,8 +59,12 @@
 
     .channelsList {
         margin-top: @layout-spacing-s;
-        display: grid;
-        grid-template-columns: 1fr 1fr;
+        display: flex;
+        gap: @layout-spacing-s;
+
+        & > div {
+            flex: 1;
+        }
     }
 
     .channelField {
@@ -120,8 +124,13 @@
 
     .labelContainer {
         .icon {
-            margin: 0 2px;
             display: inline;
+            vertical-align: text-bottom;
+            line-height: normal;
+
+            & > i {
+                font-size: 1lh;
+            }
         }
     }
 }

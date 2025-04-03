@@ -24,7 +24,7 @@ export type StoreActivation = {
     name: string
     title: string
     alerts: {
-        kind: Symbol
+        kind: symbol
         type: AlertType
         message: string
         cta: {
@@ -209,36 +209,36 @@ export const AiAgentActivationStoreCard = ({
                                         <span>
                                             Activate Support for integrated
                                             chats.
-                                            {chatChannels.length > 0 && (
-                                                <IconTooltip
-                                                    className={css.icon}
-                                                    tooltipProps={{
-                                                        placement: 'top-start',
-                                                    }}
-                                                >
-                                                    integrated chats:
-                                                    <div>
-                                                        {chatChannels.map(
-                                                            (channel) => (
-                                                                <div
-                                                                    key={
-                                                                        channel
-                                                                            .value
-                                                                            .id
-                                                                    }
-                                                                >
-                                                                    {
-                                                                        channel
-                                                                            .value
-                                                                            .name
-                                                                    }
-                                                                </div>
-                                                            ),
-                                                        )}
-                                                    </div>
-                                                </IconTooltip>
-                                            )}
                                         </span>
+                                        {chatChannels.length > 0 && (
+                                            <IconTooltip
+                                                className={css.icon}
+                                                tooltipProps={{
+                                                    placement: 'top-start',
+                                                }}
+                                            >
+                                                integrated chats:
+                                                <div>
+                                                    {chatChannels.map(
+                                                        (channel) => (
+                                                            <div
+                                                                key={
+                                                                    channel
+                                                                        .value
+                                                                        .id
+                                                                }
+                                                            >
+                                                                {
+                                                                    channel
+                                                                        .value
+                                                                        .name
+                                                                }
+                                                            </div>
+                                                        ),
+                                                    )}
+                                                </div>
+                                            </IconTooltip>
+                                        )}
                                     </div>
                                 )}
                             </div>
@@ -286,32 +286,28 @@ export const AiAgentActivationStoreCard = ({
                                         <span>
                                             Activate Support for integrated
                                             emails.
-                                            {emailItems.length > 0 && (
-                                                <IconTooltip
-                                                    className={css.icon}
-                                                    tooltipProps={{
-                                                        placement: 'top-start',
-                                                    }}
-                                                >
-                                                    integrated emails:
-                                                    <div>
-                                                        {emailItems.map(
-                                                            (channel) => (
-                                                                <div
-                                                                    key={
-                                                                        channel.id
-                                                                    }
-                                                                >
-                                                                    {
-                                                                        channel.email
-                                                                    }
-                                                                </div>
-                                                            ),
-                                                        )}
-                                                    </div>
-                                                </IconTooltip>
-                                            )}
                                         </span>
+                                        {emailItems.length > 0 && (
+                                            <IconTooltip
+                                                className={css.icon}
+                                                tooltipProps={{
+                                                    placement: 'top-start',
+                                                }}
+                                            >
+                                                integrated emails:
+                                                <div>
+                                                    {emailItems.map(
+                                                        (channel) => (
+                                                            <div
+                                                                key={channel.id}
+                                                            >
+                                                                {channel.email}
+                                                            </div>
+                                                        ),
+                                                    )}
+                                                </div>
+                                            </IconTooltip>
+                                        )}
                                     </div>
                                 )}
                             </div>
