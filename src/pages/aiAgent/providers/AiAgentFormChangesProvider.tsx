@@ -15,6 +15,8 @@ const AiAgentFormChangesProvider = ({ children }: Props) => {
         dirtySections,
         onModalSave,
         onModalDiscard,
+        promptTriggerRef,
+        onLeaveContext,
     } = useAiAgentFormChanges()
 
     return (
@@ -26,6 +28,8 @@ const AiAgentFormChangesProvider = ({ children }: Props) => {
                 dirtySections,
                 onModalSave,
                 onModalDiscard,
+                promptTriggerRef,
+                onLeaveContext,
             }}
         >
             {children}

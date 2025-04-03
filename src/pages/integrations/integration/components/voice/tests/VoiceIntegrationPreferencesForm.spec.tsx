@@ -8,7 +8,6 @@ import { FormField, FormSubmitButton } from 'core/forms'
 import { integrationsState } from 'fixtures/integrations'
 import { IntegrationType } from 'models/integration/constants'
 import { PhoneIntegration } from 'models/integration/types'
-import UnsavedChangesPrompt from 'pages/common/components/UnsavedChangesPrompt'
 import { INTEGRATION_REMOVAL_CONFIGURATION_TEXT } from 'pages/integrations/integration/constants'
 import { getNewPhoneNumber } from 'state/entities/phoneNumbers/selectors'
 import { assumeMock } from 'utils/testing'
@@ -62,8 +61,22 @@ const useDeleteVoiceIntegrationMock = assumeMock(useDeleteVoiceIntegration)
 jest.mock('core/forms')
 const FormSubmitButtonMock = assumeMock(FormSubmitButton)
 
-jest.mock('pages/common/components/UnsavedChangesPrompt')
-const UnsavedChangesPromptMock = assumeMock(UnsavedChangesPrompt)
+// eslint-disable-next-line no-unused-vars
+const mockUnsavedChangesPrompt = jest.fn((_args: any) => (
+    <div>UnsavedChangesPrompt</div>
+))
+
+// Mock the module
+jest.mock('pages/common/components/UnsavedChangesPrompt', () => {
+    const { forwardRef } = jest.requireActual('react')
+
+    return {
+        __esModule: true,
+        default: forwardRef((props: any) =>
+            mockUnsavedChangesPrompt(props as any),
+        ),
+    }
+})
 
 describe('<VoiceIntegrationPreferencesForm />', () => {
     const props = {
@@ -108,9 +121,6 @@ describe('<VoiceIntegrationPreferencesForm />', () => {
         )
         useFormSubmitMock.mockReturnValue({ onSubmit })
         FormFieldMock.mockReturnValue(<div>FormField</div>)
-        UnsavedChangesPromptMock.mockReturnValue(
-            <div>UnsavedChangesPrompt</div>,
-        )
         FormSubmitButtonMock.mockReturnValue(<div>FormSubmitButton</div>)
         VoiceIntegrationPreferencesInboundCallsMock.mockReturnValue(
             <div>InboundCallsPreferences</div>,
@@ -197,9 +207,8 @@ describe('<VoiceIntegrationPreferencesForm />', () => {
 
         renderComponent(props)
 
-        expect(UnsavedChangesPromptMock).toHaveBeenLastCalledWith(
+        expect(mockUnsavedChangesPrompt).toHaveBeenLastCalledWith(
             expect.objectContaining({ when: false }),
-            {},
         )
     })
 
@@ -208,9 +217,8 @@ describe('<VoiceIntegrationPreferencesForm />', () => {
 
         renderComponent(props)
 
-        expect(UnsavedChangesPromptMock).toHaveBeenLastCalledWith(
+        expect(mockUnsavedChangesPrompt).toHaveBeenLastCalledWith(
             expect.objectContaining({ when: true }),
-            {},
         )
     })
 })

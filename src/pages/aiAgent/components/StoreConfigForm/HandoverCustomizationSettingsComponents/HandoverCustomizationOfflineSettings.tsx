@@ -32,7 +32,7 @@ const HandoverCustomizationOfflineSettings = ({ integration }: Props) => {
         integration,
     })
 
-    const { setIsFormDirty } = useAiAgentFormChangesContext()
+    const { setIsFormDirty, setActionCallback } = useAiAgentFormChangesContext()
 
     const onOfflineInstructionsChange = useCallback(
         (value: string) => {
@@ -71,6 +71,15 @@ const HandoverCustomizationOfflineSettings = ({ integration }: Props) => {
             hasChanges,
         )
     }, [hasChanges, setIsFormDirty])
+
+    useEffect(() => {
+        setActionCallback(
+            StoreConfigFormSection.handoverCustomizationOfflineSettings,
+            {
+                onDiscard: handleOnCancel,
+            },
+        )
+    }, [setActionCallback, handleOnCancel])
 
     if (isLoading) {
         return (

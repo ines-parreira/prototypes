@@ -15,7 +15,6 @@ import * as validators from '@gorgias/api-validators'
 import { FormField } from 'core/forms/components/FormField'
 import { voiceQueue } from 'fixtures/voiceQueue'
 import useAppDispatch from 'hooks/useAppDispatch'
-import UnsavedChangesPrompt from 'pages/common/components/UnsavedChangesPrompt'
 import { notify } from 'state/notifications/actions'
 import { NotificationStatus } from 'state/notifications/types'
 import { assumeMock, getLastMockCall, renderWithRouter } from 'utils/testing'
@@ -28,8 +27,22 @@ jest.mock('@gorgias/api-validators', () => ({
     validateUpdateVoiceQueue: jest.fn(),
 }))
 
-jest.mock('pages/common/components/UnsavedChangesPrompt')
-const UnsavedChangesPromptMock = assumeMock(UnsavedChangesPrompt)
+// eslint-disable-next-line no-unused-vars
+const mockUnsavedChangesPrompt = jest.fn((_args: any) => (
+    <div>UnsavedChangesPrompt</div>
+))
+
+// Mock the module
+jest.mock('pages/common/components/UnsavedChangesPrompt', () => {
+    const { forwardRef } = jest.requireActual('react')
+
+    return {
+        __esModule: true,
+        default: forwardRef((props: any) =>
+            mockUnsavedChangesPrompt(props as any),
+        ),
+    }
+})
 
 jest.mock('state/notifications/actions', () => ({
     notify: jest.fn(),
@@ -77,9 +90,7 @@ describe('VoiceQueueSettingsForm', () => {
     beforeEach(() => {
         mockValidateCreateVoiceQueue.mockReturnValue({})
         mockValidateUpdateVoiceQueue.mockReturnValue({})
-        UnsavedChangesPromptMock.mockReturnValue(
-            <div>Unsaved Changes Prompt</div>,
-        )
+
         useAppDispatchMock.mockReturnValue(jest.fn)
     })
 
@@ -188,15 +199,14 @@ describe('VoiceQueueSettingsForm', () => {
         })
 
         await waitFor(() => {
-            expect(UnsavedChangesPromptMock).toHaveBeenLastCalledWith(
+            expect(mockUnsavedChangesPrompt).toHaveBeenLastCalledWith(
                 expect.objectContaining({
                     when: true,
                 }),
-                {},
             )
         })
 
-        getLastMockCall(UnsavedChangesPromptMock)[0].onSave()
+        getLastMockCall(mockUnsavedChangesPrompt)[0].onSave()
         expect(notify).toHaveBeenCalledWith({
             message:
                 'Please make sure all fields are filled out correctly before saving',

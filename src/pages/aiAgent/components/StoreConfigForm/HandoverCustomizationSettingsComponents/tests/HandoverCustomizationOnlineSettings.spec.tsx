@@ -63,6 +63,8 @@ describe('HandoverCustomizationOnlineSettings', () => {
 
     const mockSetIsFormDirty = jest.fn()
 
+    const mockSetActionCallback = jest.fn()
+
     const mockOnlineValuesForm = {
         formValues: {
             onlineInstructions: 'Default instructions',
@@ -86,6 +88,7 @@ describe('HandoverCustomizationOnlineSettings', () => {
         ).mockReturnValue(mockOnlineValuesForm)
         ;(useAiAgentFormChangesContext as jest.Mock).mockReturnValue({
             setIsFormDirty: mockSetIsFormDirty,
+            setActionCallback: mockSetActionCallback,
         })
     })
 
@@ -129,20 +132,29 @@ describe('HandoverCustomizationOnlineSettings', () => {
         screen.getByText('Cancel')
     })
 
-    describe('Loading State', () => {
-        it('should show loading spinner when isLoading is true', () => {
-            ;(
-                useHandoverCustomizationOnlineSettingsForm as jest.Mock
-            ).mockReturnValue({
-                isLoading: true,
-            })
-
-            renderComponent(mockedIntegration)
-
-            screen.getByLabelText('Loading')
-
-            expect(screen.queryByText('Instructions')).toBeNull()
+    it('should show loading spinner when isLoading is true', () => {
+        ;(
+            useHandoverCustomizationOnlineSettingsForm as jest.Mock
+        ).mockReturnValue({
+            isLoading: true,
         })
+
+        renderComponent(mockedIntegration)
+
+        screen.getByLabelText('Loading')
+
+        expect(screen.queryByText('Instructions')).toBeNull()
+    })
+
+    it('should build the correct action callback when the component is mounted', () => {
+        renderComponent()
+
+        expect(mockSetActionCallback).toHaveBeenCalledWith(
+            StoreConfigFormSection.handoverCustomizationOnlineSettings,
+            expect.objectContaining({
+                onDiscard: mockHandleOnCancel,
+            }),
+        )
     })
 
     describe('Form Interactions', () => {

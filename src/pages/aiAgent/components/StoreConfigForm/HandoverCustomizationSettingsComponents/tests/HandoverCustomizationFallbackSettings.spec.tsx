@@ -53,6 +53,7 @@ describe('HandoverCustomizationFallbackSettings', () => {
     const mockHandleOnCancel = jest.fn()
 
     const mockSetIsFormDirty = jest.fn()
+    const mockSetActionCallback = jest.fn()
 
     const mockHookValues = {
         isLoading: false,
@@ -87,6 +88,7 @@ describe('HandoverCustomizationFallbackSettings', () => {
         )
         ;(useAiAgentFormChangesContext as jest.Mock).mockReturnValue({
             setIsFormDirty: mockSetIsFormDirty,
+            setActionCallback: mockSetActionCallback,
         })
     })
 
@@ -138,6 +140,17 @@ describe('HandoverCustomizationFallbackSettings', () => {
 
         // Check the loading spinner is rendered
         screen.getByText(/loading/i)
+    })
+
+    it('should build the correct action callback when the component is mounted', () => {
+        renderComponent()
+
+        expect(mockSetActionCallback).toHaveBeenCalledWith(
+            StoreConfigFormSection.handoverCustomizationFallbackSettings,
+            expect.objectContaining({
+                onDiscard: mockHandleOnCancel,
+            }),
+        )
     })
 
     it('should update the language options when the integration is updated', () => {

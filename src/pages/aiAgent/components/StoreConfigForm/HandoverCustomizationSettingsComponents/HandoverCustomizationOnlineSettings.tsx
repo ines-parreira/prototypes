@@ -36,7 +36,7 @@ const HandoverCustomizationOnlineSettings = ({ integration }: Props) => {
         integration,
     })
 
-    const { setIsFormDirty } = useAiAgentFormChangesContext()
+    const { setIsFormDirty, setActionCallback } = useAiAgentFormChangesContext()
 
     const chatPreferencesLink = useMemo(
         () =>
@@ -101,6 +101,15 @@ const HandoverCustomizationOnlineSettings = ({ integration }: Props) => {
             hasChanges,
         )
     }, [hasChanges, setIsFormDirty])
+
+    useEffect(() => {
+        setActionCallback(
+            StoreConfigFormSection.handoverCustomizationOnlineSettings,
+            {
+                onDiscard: handleOnCancel,
+            },
+        )
+    }, [setActionCallback, handleOnCancel])
 
     if (isLoading) {
         return (

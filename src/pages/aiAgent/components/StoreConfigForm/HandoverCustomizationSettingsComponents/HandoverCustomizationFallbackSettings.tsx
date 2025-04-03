@@ -66,7 +66,7 @@ const HandoverCustomizationFallbackSettings = ({ integration }: Props) => {
         integration,
     })
 
-    const { setIsFormDirty } = useAiAgentFormChangesContext()
+    const { setIsFormDirty, setActionCallback } = useAiAgentFormChangesContext()
 
     const availableLanguageItems = useMemo(
         () =>
@@ -118,6 +118,15 @@ const HandoverCustomizationFallbackSettings = ({ integration }: Props) => {
             hasChanges,
         )
     }, [hasChanges, setIsFormDirty])
+
+    useEffect(() => {
+        setActionCallback(
+            StoreConfigFormSection.handoverCustomizationFallbackSettings,
+            {
+                onDiscard: handleOnCancel,
+            },
+        )
+    }, [setActionCallback, handleOnCancel])
 
     if (isLoading) {
         return (

@@ -65,8 +65,13 @@ const generateMessageTitle = (dirtySections: StoreConfigFormSection[]) => {
 }
 
 export const StoreConfigUnsavedChangesPrompt = () => {
-    const { dirtySections, isFormDirty, onModalDiscard, onModalSave } =
-        useAiAgentFormChangesContext()
+    const {
+        dirtySections,
+        isFormDirty,
+        onModalDiscard,
+        onModalSave,
+        promptTriggerRef,
+    } = useAiAgentFormChangesContext()
 
     const shouldShowSaveButton = useMemo(
         () =>
@@ -88,6 +93,7 @@ export const StoreConfigUnsavedChangesPrompt = () => {
 
     return (
         <UnsavedChangesPrompt
+            ref={promptTriggerRef}
             when={isFormDirty}
             onSave={onModalSave}
             onDiscard={onModalDiscard}

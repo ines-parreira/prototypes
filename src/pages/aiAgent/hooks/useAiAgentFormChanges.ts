@@ -9,6 +9,10 @@ export const useAiAgentFormChanges = () => {
 
     const actionCallbackMap = useRef<Record<string, ActionCallback>>({})
 
+    const promptTriggerRef = useRef<{
+        onLeaveContext: (callback?: ActionCallback) => void
+    } | null>(null)
+
     const isFormDirty = useMemo(() => {
         return Object.values(dirtyFormSections).some((isDirty) => isDirty)
     }, [dirtyFormSections])
@@ -50,12 +54,21 @@ export const useAiAgentFormChanges = () => {
         })
     }, [dirtySections, actionCallbackMap])
 
+    const onLeaveContext = useCallback(
+        (callback?: ActionCallback) => {
+            promptTriggerRef.current?.onLeaveContext(callback)
+        },
+        [promptTriggerRef],
+    )
+
     return {
         isFormDirty,
         dirtySections,
+        promptTriggerRef,
         setIsFormDirty,
         setActionCallback,
         onModalSave,
         onModalDiscard,
+        onLeaveContext,
     }
 }

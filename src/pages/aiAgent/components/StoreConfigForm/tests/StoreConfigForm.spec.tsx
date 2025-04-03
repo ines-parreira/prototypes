@@ -1,4 +1,4 @@
-import React, { ComponentProps } from 'react'
+import { ComponentProps } from 'react'
 
 import { QueryClientProvider } from '@tanstack/react-query'
 import { fireEvent, screen, waitFor, within } from '@testing-library/react'
@@ -355,6 +355,8 @@ describe('<StoreConfigForm />', () => {
             dirtySections: [],
             onModalSave: jest.fn(),
             onModalDiscard: jest.fn(),
+            promptTriggerRef: null,
+            onLeaveContext: jest.fn(),
         })
         mockedUseGetOrCreateSnippetHelpCenter.mockReturnValue({
             isLoading: false,

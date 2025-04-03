@@ -8,10 +8,15 @@ export type ActionCallback = {
 export type AiAgentFormChangesContextType = {
     isFormDirty: boolean
     dirtySections: string[]
+    promptTriggerRef: React.RefObject<{
+        onLeaveContext: () => void
+    }> | null
     setIsFormDirty: (section: string, isDirty: boolean) => void
     setActionCallback: (section: string, callback: ActionCallback) => void
+
     onModalSave: () => void
     onModalDiscard: () => void
+    onLeaveContext: (callback?: ActionCallback) => void
 }
 
 const AiAgentFormChangesContext = createContext<AiAgentFormChangesContextType>({
@@ -19,8 +24,10 @@ const AiAgentFormChangesContext = createContext<AiAgentFormChangesContextType>({
     dirtySections: [],
     setIsFormDirty: () => {},
     setActionCallback: () => {},
+    promptTriggerRef: null,
     onModalSave: () => {},
     onModalDiscard: () => {},
+    onLeaveContext: () => {},
 })
 
 export const useAiAgentFormChangesContext = () =>

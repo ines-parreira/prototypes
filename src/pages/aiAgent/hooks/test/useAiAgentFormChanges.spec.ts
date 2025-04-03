@@ -184,4 +184,45 @@ describe('useAiAgentFormChanges', () => {
         expect(mockCallbackOnlySave.onSave).toHaveBeenCalled()
         expect(mockCallbackOnlyDiscard.onDiscard).toHaveBeenCalled()
     })
+
+    it('should call onLeaveContext with provided callback when it is set', () => {
+        const { result } = renderHook(() => useAiAgentFormChanges())
+        const mockCallback = {
+            onSave: jest.fn(),
+            onDiscard: jest.fn(),
+        }
+        const mockOnLeaveContext = jest.fn()
+
+        // Set up the promptTriggerRef
+        act(() => {
+            result.current.promptTriggerRef.current = {
+                onLeaveContext: mockOnLeaveContext,
+            }
+        })
+
+        // Call onLeaveContext with the callback
+        act(() => {
+            result.current.onLeaveContext(mockCallback)
+        })
+
+        expect(mockOnLeaveContext).toHaveBeenCalledWith(mockCallback)
+    })
+
+    it('should handle onLeaveContext when it is not set without throwing an error', () => {
+        const { result } = renderHook(() => useAiAgentFormChanges())
+        const mockCallback = {
+            onSave: jest.fn(),
+            onDiscard: jest.fn(),
+        }
+
+        // Ensure promptTriggerRef is null
+        expect(result.current.promptTriggerRef.current).toBeNull()
+
+        // Should not throw when called with null promptTriggerRef
+        expect(() => {
+            act(() => {
+                result.current.onLeaveContext(mockCallback)
+            })
+        }).not.toThrow()
+    })
 })

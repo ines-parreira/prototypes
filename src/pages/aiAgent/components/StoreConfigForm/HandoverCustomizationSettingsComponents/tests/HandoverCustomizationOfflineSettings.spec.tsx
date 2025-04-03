@@ -50,6 +50,7 @@ describe('HandoverCustomizationOfflineSettings', () => {
     const mockHandleOnCancel = jest.fn()
 
     const mockSetIsFormDirty = jest.fn()
+    const mockSetActionCallback = jest.fn()
 
     const mockOfflineValuesForm = {
         formValues: {
@@ -71,6 +72,7 @@ describe('HandoverCustomizationOfflineSettings', () => {
         ).mockReturnValue(mockOfflineValuesForm)
         ;(useAiAgentFormChangesContext as jest.Mock).mockReturnValue({
             setIsFormDirty: mockSetIsFormDirty,
+            setActionCallback: mockSetActionCallback,
         })
     })
 
@@ -145,6 +147,17 @@ describe('HandoverCustomizationOfflineSettings', () => {
                 name: /Share business hours in handover message/i,
             }),
         ).toBeChecked()
+    })
+
+    it('should build the correct action callback when the component is mounted', () => {
+        renderComponent()
+
+        expect(mockSetActionCallback).toHaveBeenCalledWith(
+            StoreConfigFormSection.handoverCustomizationOfflineSettings,
+            expect.objectContaining({
+                onDiscard: mockHandleOnCancel,
+            }),
+        )
     })
 
     describe('offline instructions', () => {

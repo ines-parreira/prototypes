@@ -101,6 +101,7 @@ export const ChatIntegrationListSelection = ({
             <SelectInputBoxContext.Consumer>
                 {(context) => (
                     <Dropdown
+                        overlayClassName={css.dropdownOverlay}
                         id="chat-integrations-list"
                         isMultiple
                         isOpen={isDropdownOpened}

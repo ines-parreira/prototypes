@@ -5,6 +5,8 @@ import useUpdateEffect from 'hooks/useUpdateEffect'
 import useSelfServiceChatChannels from 'pages/automate/common/hooks/useSelfServiceChatChannels'
 import { Value } from 'pages/common/forms/SelectField/types'
 
+import { StoreConfigFormSection } from '../constants'
+import { useAiAgentFormChangesContext } from '../providers/AiAgentFormChangesContext'
 import {
     getAvailableChats,
     getFirstAvailableChat,
@@ -28,6 +30,8 @@ export const useHandoverCustomizationComponent = ({
     monitoredChatIntegrationIds,
 }: Props) => {
     const chatChannels = useSelfServiceChatChannels(shopType, shopName)
+
+    const { onLeaveContext, dirtySections } = useAiAgentFormChangesContext()
 
     const [selectedChatId, setSelectedChatId] = useState(
         getFirstAvailableChat({ chatChannels, monitoredChatIntegrationIds })
@@ -58,6 +62,18 @@ export const useHandoverCustomizationComponent = ({
         return !selectedChatId
     }, [selectedChatId])
 
+    const isHandoverSectionDirty = useMemo(() => {
+        return dirtySections.some(
+            (section) =>
+                section ===
+                    StoreConfigFormSection.handoverCustomizationOfflineSettings ||
+                section ===
+                    StoreConfigFormSection.handoverCustomizationOnlineSettings ||
+                section ===
+                    StoreConfigFormSection.handoverCustomizationFallbackSettings,
+        )
+    }, [dirtySections])
+
     const onActiveSettingsSectionChange = useCallback(
         (section: HandoverCustomizationFormType | null) =>
             setActiveSettingsSection(section),
@@ -66,9 +82,23 @@ export const useHandoverCustomizationComponent = ({
 
     const onSelectedChatChange = useCallback(
         (chatId?: Value) => {
-            setSelectedChatId(chatId ? (chatId as number) : undefined)
+            const updateSelectedChat = () => {
+                const chatIdValue = chatId ? (chatId as number) : undefined
+                setSelectedChatId(chatIdValue)
+            }
+
+            if (!isHandoverSectionDirty) {
+                updateSelectedChat()
+                return
+            }
+
+            onLeaveContext({
+                onDiscard: () => {
+                    updateSelectedChat()
+                },
+            })
         },
-        [setSelectedChatId],
+        [isHandoverSectionDirty, setSelectedChatId, onLeaveContext],
     )
 
     // this effect is used to handle the case where the the chat list is changed outside handover customization component scope
