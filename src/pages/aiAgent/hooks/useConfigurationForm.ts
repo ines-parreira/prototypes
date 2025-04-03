@@ -60,10 +60,10 @@ export const useConfigurationForm = ({
     // This is used to prevent the form from being updated when the store configuration is updated
     const isInitializedRef = useRef(false)
 
-    // This is used to reset the form values when the shop name changes
+    // This is used to reset the form values when the props change
     useEffect(() => {
         isInitializedRef.current = false
-    }, [shopName])
+    }, [shopName, initValues])
 
     useEffect(() => {
         if (!isInitializedRef.current && !isStoreConfigurationLoading) {

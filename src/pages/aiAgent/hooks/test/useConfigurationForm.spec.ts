@@ -292,8 +292,13 @@ describe('useConfigurationForm', () => {
             storeConfiguration: initialStoreConfig,
         })
 
-        const { result, rerender } = renderHook(() =>
-            useConfigurationForm({ shopName }),
+        const { result, rerender } = renderHook(
+            (props) => useConfigurationForm(props),
+            {
+                initialProps: {
+                    shopName,
+                },
+            },
         )
 
         // User makes changes to the form
@@ -337,13 +342,16 @@ describe('useConfigurationForm', () => {
             storeConfiguration: initialStoreConfig,
         })
 
-        const { result, rerender } = renderHook(() =>
-            useConfigurationForm({
-                shopName,
-                initValues: {
-                    signature: 'initial signature',
+        const { result, rerender } = renderHook(
+            (props) => useConfigurationForm(props),
+            {
+                initialProps: {
+                    shopName,
+                    initValues: {
+                        signature: 'initial signature',
+                    },
                 },
-            }),
+            },
         )
 
         // Make changes
@@ -389,8 +397,13 @@ describe('useConfigurationForm', () => {
             storeConfiguration: initialStoreConfig,
         })
 
-        const { result, rerender } = renderHook(() =>
-            useConfigurationForm({ shopName }),
+        const { result, rerender } = renderHook(
+            (props) => useConfigurationForm(props),
+            {
+                initialProps: {
+                    shopName,
+                },
+            },
         )
 
         // User makes a change to a field
@@ -410,5 +423,33 @@ describe('useConfigurationForm', () => {
         rerender()
 
         expect(result.current.formValues.signature).toBe('new user signature')
+    })
+
+    it('should not mark form is dirty when initial props changed', () => {
+        const { result, rerender } = renderHook(
+            (props) => useConfigurationForm(props),
+            {
+                initialProps: {
+                    initValues: {
+                        signature: 'test signature',
+                    },
+                    shopName,
+                },
+            },
+        )
+
+        expect(result.current.formValues.signature).toBe('test signature')
+        expect(result.current.isFormDirty).toBe(false)
+
+        rerender({
+            initValues: {
+                signature: 'another test signature',
+            },
+            shopName,
+        })
+        expect(result.current.formValues.signature).toBe(
+            'another test signature',
+        )
+        expect(result.current.isFormDirty).toBe(false)
     })
 })
