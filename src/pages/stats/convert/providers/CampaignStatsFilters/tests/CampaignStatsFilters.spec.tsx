@@ -71,7 +71,7 @@ describe('CampaignStatsFilters', () => {
         useShopifyIntegrationsMock.mockReturnValue([{ id: 1 } as any])
         useFirstStoreWithAiSalesDataMock.mockReturnValue({
             storeId: 1,
-            isLoading: false,
+            isLoading: true,
         })
     })
 
@@ -323,6 +323,57 @@ describe('CampaignStatsFilters without storeIntegrationId', () => {
         })
     })
 
+    it('should dispatch first storeIntegration if none is selected and fallbackStoreId is not available', async () => {
+        useFirstStoreWithAiSalesDataMock.mockReturnValue({
+            storeId: null,
+            isLoading: false,
+        })
+
+        useGetCampaignsForStoreMock.mockReturnValue(campaignsForStore as any)
+
+        const stateWithEmptyStoreIntegrations = {
+            ...state,
+            stats: {
+                ...state.stats,
+                filters: {
+                    ...state.stats.filters,
+                    [FilterKey.StoreIntegrations]: withDefaultLogicalOperator(
+                        [],
+                    ),
+                },
+            },
+        } as RootState
+
+        const TestComponent = () => (
+            <FiltersContext.Consumer>
+                {({ selectedIntegrations }) => (
+                    <div>{selectedIntegrations.join(',')}</div>
+                )}
+            </FiltersContext.Consumer>
+        )
+
+        const { store } = renderWithStore(
+            <CampaignStatsFilters isSelectStoreWithData>
+                <TestComponent />
+            </CampaignStatsFilters>,
+            stateWithEmptyStoreIntegrations,
+        )
+
+        await waitFor(() => {
+            expect(store.getActions()).toContainEqual(
+                mergeStatsFiltersWithLogicalOperator({
+                    [FilterKey.StoreIntegrations]: withDefaultLogicalOperator([
+                        1,
+                    ]),
+                    [FilterKey.Campaigns]: withDefaultLogicalOperator([]),
+                    [FilterKey.CampaignStatuses]: withDefaultLogicalOperator(
+                        [],
+                    ),
+                }),
+            )
+        })
+    })
+
     it('should use storeIntegration from filters if storeIntegrationId is missing', () => {
         const integrationFromFilters = 456
 
@@ -369,5 +420,57 @@ describe('CampaignStatsFilters without storeIntegrationId', () => {
         )
 
         expect(getByText(`${integrationFromFilters}`)).toBeInTheDocument()
+    })
+
+    it('should not fallback to any default integration in case no', () => {
+        useShopifyIntegrationsMock.mockReturnValue([])
+        useFirstStoreWithAiSalesDataMock.mockReturnValue({
+            storeId: null,
+            isLoading: false,
+        })
+
+        useGetCampaignsForStoreMock.mockReturnValue(campaignsForStore as any)
+
+        const customState = {
+            ...state,
+            integrations: fromJS([]),
+            stats: {
+                ...state.stats,
+                filters: {
+                    ...state.stats.filters,
+                    [FilterKey.StoreIntegrations]: withDefaultLogicalOperator(
+                        [],
+                    ),
+                },
+            },
+        } as RootState
+
+        // simulate missing shop_integration_id to force fallback logic
+        jest.mock('react-router-dom', () => ({
+            useParams: () => ({
+                CONVERT_ROUTE_PARAM_NAME: '',
+            }),
+        }))
+
+        const TestComponent = () => (
+            <FiltersContext.Consumer>
+                {({ selectedIntegrations }) => (
+                    <div>
+                        {selectedIntegrations.length > 0
+                            ? 'have-filters'
+                            : 'no-filters'}
+                    </div>
+                )}
+            </FiltersContext.Consumer>
+        )
+
+        const { getByText } = renderWithStore(
+            <CampaignStatsFilters isSelectStoreWithData>
+                <TestComponent />
+            </CampaignStatsFilters>,
+            customState,
+        )
+
+        expect(getByText(`no-filters`)).toBeInTheDocument()
     })
 })

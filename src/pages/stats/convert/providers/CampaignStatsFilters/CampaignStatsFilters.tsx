@@ -64,8 +64,16 @@ export const CampaignStatsFilters = ({
         if (fromFilters) return [fromFilters]
 
         if (fallbackStoreId) return [fallbackStoreId]
+
+        if (storeIntegrations.length > 0) return [storeIntegrations[0].id]
+
         return []
-    }, [storeIntegrationId, statsFilters.storeIntegrations, fallbackStoreId])
+    }, [
+        storeIntegrationId,
+        statsFilters.storeIntegrations,
+        storeIntegrations,
+        fallbackStoreId,
+    ])
 
     const { campaigns, channelConnectionExternalIds } = useGetCampaignsForStore(
         selectedIntegrations,
@@ -159,21 +167,21 @@ export const CampaignStatsFilters = ({
 
     useEffect(() => {
         if (isLoading) return
+        if (hasDispatchedFallback) return
 
         const currentStoreIds = statsFilters.storeIntegrations?.values ?? []
 
         const needsFallbackSet =
-            fallbackStoreId &&
+            selectedIntegrations.length > 0 &&
             (!currentStoreIds.length ||
-                !currentStoreIds.includes(fallbackStoreId)) &&
-            !hasDispatchedFallback
+                !currentStoreIds.includes(selectedIntegrations[0]))
 
         if (needsFallbackSet) {
-            handleChangeIntegration([fallbackStoreId])
             setHasDispatchedFallback(true)
+            handleChangeIntegration(selectedIntegrations)
         }
     }, [
-        fallbackStoreId,
+        selectedIntegrations,
         statsFilters.storeIntegrations,
         hasDispatchedFallback,
         handleChangeIntegration,
