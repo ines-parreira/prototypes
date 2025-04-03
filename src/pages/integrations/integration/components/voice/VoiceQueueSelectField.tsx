@@ -1,7 +1,5 @@
 import { useRef, useState } from 'react'
 
-import { Link } from 'react-router-dom'
-
 import {
     ListVoiceQueuesOrderBy,
     useListVoiceQueues,
@@ -188,7 +186,14 @@ function VoiceQueueSelectField({
             <div className={css.caption}>
                 Assigning a queue applies its settings automatically. Adjust
                 settings in{' '}
-                <Link to={`${PHONE_INTEGRATION_BASE_URL}/queues`}>Queues</Link>.
+                <a
+                    href={`${PHONE_INTEGRATION_BASE_URL}/queues`}
+                    rel="noopener noreferrer"
+                    target="_blank"
+                >
+                    Queues
+                </a>
+                .
             </div>
             <CreateNewQueueModal
                 isOpen={isCreateNewModalOpen}

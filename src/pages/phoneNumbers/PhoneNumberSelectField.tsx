@@ -48,6 +48,11 @@ function PhoneNumberSelectField({
         [phoneNumbers, onChange],
     )
 
+    const handleCreate = (phoneNumber: NewPhoneNumber) => {
+        onCreate?.(phoneNumber)
+        onChange(phoneNumber)
+    }
+
     const availableNumbers = Object.values(phoneNumbers)
         .filter((phoneNumber) => {
             return isNewPhoneNumber(phoneNumber)
@@ -112,7 +117,7 @@ function PhoneNumberSelectField({
             <PhoneNumberCreateModalForm
                 isOpen={isCreateFormVisible}
                 onClose={() => setIsCreateFormVisible(false)}
-                onCreate={onCreate ?? onChange}
+                onCreate={handleCreate}
             />
         </>
     )

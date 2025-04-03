@@ -4,13 +4,20 @@ import { FieldValues, useFormContext } from 'react-hook-form'
 
 import { Form } from 'core/forms'
 import { useNotify } from 'hooks/useNotify'
+import { UnsavedChangesModalProps } from 'pages/common/components/UnsavedChangesModal'
 import UnsavedChangesPrompt from 'pages/common/components/UnsavedChangesPrompt'
+
+type Props<T extends FieldValues> = {
+    onSave: ComponentProps<typeof Form<T>>['onValidSubmit']
+} & Pick<
+    UnsavedChangesModalProps,
+    'shouldShowDiscardButton' | 'shouldShowSaveButton' | 'body' | 'title'
+>
 
 function VoiceFormUnsavedChangesPrompt<T extends FieldValues>({
     onSave,
-}: {
-    onSave: ComponentProps<typeof Form<T>>['onValidSubmit']
-}) {
+    ...modalProps
+}: Props<T>) {
     const { formState, handleSubmit } = useFormContext<T>()
     const notify = useNotify()
 
@@ -25,7 +32,11 @@ function VoiceFormUnsavedChangesPrompt<T extends FieldValues>({
     }
 
     return (
-        <UnsavedChangesPrompt when={formState.isDirty} onSave={handleOnSave} />
+        <UnsavedChangesPrompt
+            when={formState.isDirty}
+            onSave={handleOnSave}
+            {...modalProps}
+        />
     )
 }
 

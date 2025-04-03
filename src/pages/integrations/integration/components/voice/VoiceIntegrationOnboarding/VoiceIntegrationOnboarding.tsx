@@ -1,3 +1,5 @@
+import { useState } from 'react'
+
 import Wizard from 'pages/common/components/wizard/Wizard'
 import WizardProgressHeader from 'pages/common/components/wizard/WizardProgressHeader'
 import WizardStep from 'pages/common/components/wizard/WizardStep'
@@ -11,8 +13,11 @@ import {
     VoiceIntegrationOnboardingStep,
 } from './constants'
 import VoiceIntegrationOnboardingForm from './VoiceIntegrationOnboardingForm'
+import VoiceIntegrationOnboardingUnsavedChangesPrompt from './VoiceIntegrationOnboardingUnsavedChangesPrompt'
 
 export default function VoiceIntegrationOnboarding() {
+    const [hasNewPhoneNumber, setHasNewPhoneNumber] = useState(false)
+
     return (
         <SettingsPageContainer>
             <SettingsContent>
@@ -25,7 +30,11 @@ export default function VoiceIntegrationOnboarding() {
                         <WizardStep
                             name={VoiceIntegrationOnboardingStep.AddPhoneNumber}
                         >
-                            <AddPhoneNumberStep />
+                            <AddPhoneNumberStep
+                                onCreateNewNumber={() =>
+                                    setHasNewPhoneNumber(true)
+                                }
+                            />
                         </WizardStep>
                         <WizardStep
                             name={
@@ -34,6 +43,9 @@ export default function VoiceIntegrationOnboarding() {
                         >
                             <ConfigureRoutingBehaviorStep />
                         </WizardStep>
+                        <VoiceIntegrationOnboardingUnsavedChangesPrompt
+                            hasNewPhoneNumber={hasNewPhoneNumber}
+                        />
                     </VoiceIntegrationOnboardingForm>
                 </Wizard>
             </SettingsContent>

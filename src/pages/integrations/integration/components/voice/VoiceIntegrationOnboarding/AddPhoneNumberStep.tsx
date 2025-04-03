@@ -10,6 +10,7 @@ import { FormField } from 'core/forms'
 import useAppSelector from 'hooks/useAppSelector'
 import useSearch from 'hooks/useSearch'
 import { IntegrationType } from 'models/integration/constants'
+import { NewPhoneNumber } from 'models/phoneNumber/types'
 import useNavigateWizardSteps from 'pages/common/components/wizard/hooks/useNavigateWizardSteps'
 import EmojiTextInput from 'pages/common/forms/EmojiTextInput/EmojiTextInput'
 import PhoneNumberSelectField from 'pages/phoneNumbers/PhoneNumberSelectField'
@@ -19,7 +20,11 @@ import VoiceIntegrationOnboardingCancelButton from './VoiceIntegrationOnboarding
 
 import css from './VoiceIntegrationOnboardingStep.less'
 
-const AddPhoneNumberStep = () => {
+type Props = {
+    onCreateNewNumber: (phoneNumber: NewPhoneNumber) => void
+}
+
+const AddPhoneNumberStep = ({ onCreateNewNumber }: Props) => {
     const { phoneNumberId } = useSearch<{
         phoneNumberId: string
     }>()
@@ -72,6 +77,7 @@ const AddPhoneNumberStep = () => {
                         }
                         outputTransform={(phoneNumber) => phoneNumber?.id}
                         isRequired
+                        onCreate={onCreateNewNumber}
                     />
                 </div>
                 <div>

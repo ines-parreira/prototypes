@@ -1,5 +1,3 @@
-import React from 'react'
-
 import { fireEvent, render, screen } from '@testing-library/react'
 import { useFormContext } from 'react-hook-form'
 
@@ -40,6 +38,7 @@ const useFormContextMock = assumeMock(useFormContext)
 describe('AddPhoneNumberStep', () => {
     const mockGoToNextStep = jest.fn()
     const mockGoToPreviousStep = jest.fn()
+    const onCreateNewNumberMock = jest.fn()
     const useNavigateWizardStepsMock = assumeMock(useNavigateWizardSteps)
     const useSearchMock = assumeMock(useSearch)
 
@@ -54,7 +53,8 @@ describe('AddPhoneNumberStep', () => {
         useSearchMock.mockReturnValue({ phoneNumberId: undefined })
     })
 
-    const renderComponent = () => render(<AddPhoneNumberStep />)
+    const renderComponent = () =>
+        render(<AddPhoneNumberStep onCreateNewNumber={onCreateNewNumberMock} />)
 
     it('should render', () => {
         watchMock.mockReturnValue(['☎️', PhoneFunction.Standard] as any)
@@ -165,5 +165,23 @@ describe('AddPhoneNumberStep', () => {
         renderComponent()
 
         expect(screen.getByText(label)).toBeInTheDocument()
+    })
+
+    it('should call onCreateNewNumber when a new phone number is created', () => {
+        FormFieldMock.mockImplementation(({ onCreate, name }: any) => {
+            if (!!onCreate) {
+                return (
+                    <button onClick={() => onCreate({ id: '123' })}>
+                        CREATE_BUTTON
+                    </button>
+                )
+            }
+            return <>{name}</>
+        })
+
+        renderComponent()
+
+        fireEvent.click(screen.getByText('CREATE_BUTTON'))
+        expect(onCreateNewNumberMock).toHaveBeenCalledWith({ id: '123' })
     })
 })

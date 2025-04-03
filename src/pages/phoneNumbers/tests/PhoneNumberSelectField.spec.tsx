@@ -1,6 +1,6 @@
 import React from 'react'
 
-import { render } from '@testing-library/react'
+import { render, screen } from '@testing-library/react'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 
@@ -29,7 +29,7 @@ describe('<PhoneNumberSelectField/>', () => {
 
     describe('render()', () => {
         it('should render', () => {
-            const { container } = render(
+            render(
                 <Provider store={store}>
                     <PhoneNumberSelectField
                         value={phoneNumbers[0]}
@@ -38,16 +38,18 @@ describe('<PhoneNumberSelectField/>', () => {
                     />
                 </Provider>,
             )
-            expect(container.firstChild).toMatchSnapshot()
+            expect(screen.getByText('Select number')).toBeInTheDocument()
         })
 
         it('should open a modal form when selecting the create option', () => {
-            const { baseElement } = render(
+            render(
                 <Provider store={store}>
                     <PhoneNumberSelectField value="_new" onChange={onChange} />
                 </Provider>,
             )
-            expect(baseElement).toMatchSnapshot()
+
+            const modal = screen.getByRole('dialog')
+            expect(modal).toHaveTextContent('Create phone number')
         })
 
         it('should hide phone numbers that have attached integrations', () => {
@@ -71,7 +73,7 @@ describe('<PhoneNumberSelectField/>', () => {
                 },
             } as RootState)
 
-            const { container, queryByText } = render(
+            const { queryByText } = render(
                 <Provider store={store}>
                     <PhoneNumberSelectField
                         value={phoneNumbers[0]}
@@ -83,7 +85,6 @@ describe('<PhoneNumberSelectField/>', () => {
             )
             expect(queryByText(/\+1 213 373 4253/)).toBeTruthy()
             expect(queryByText(/\+1 415 111 2223/)).toBeFalsy()
-            expect(container).toMatchSnapshot()
         })
 
         it("should hide phone numbers that have don't have the matching capability", () => {
@@ -99,7 +100,7 @@ describe('<PhoneNumberSelectField/>', () => {
                 },
             } as RootState)
 
-            const { container, queryByText } = render(
+            const { queryByText } = render(
                 <Provider store={store}>
                     <PhoneNumberSelectField
                         value={phoneNumbers[0]}
@@ -111,7 +112,6 @@ describe('<PhoneNumberSelectField/>', () => {
             )
             expect(queryByText(/\+1 213 373 4253/)).toBeTruthy()
             expect(queryByText(/\+1 415 111 2223/)).toBeFalsy()
-            expect(container).toMatchSnapshot()
         })
     })
 })
