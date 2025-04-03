@@ -1,4 +1,4 @@
-import { OBS_ADOPT_SENTRY_TEAM } from 'common/const/sentryTeamNames'
+import { SentryTeam } from 'common/const/sentryTeamNames'
 import useAppSelector from 'hooks/useAppSelector'
 import useLocalStorage from 'hooks/useLocalStorage'
 import { useGenerateCustomToneOfVoicePreview } from 'models/aiAgent/queries'
@@ -52,7 +52,7 @@ const useCustomToneOfVoicePreview = ({
             }))
         } catch (error) {
             reportError(error, {
-                tags: { team: OBS_ADOPT_SENTRY_TEAM },
+                tags: { team: SentryTeam.AI_AGENT },
                 extra: {
                     context:
                         'Error during generation of custom tone of voice preview',

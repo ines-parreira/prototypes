@@ -4,6 +4,7 @@ import classnames from 'classnames'
 import { Link } from 'react-router-dom'
 import { Breadcrumb, BreadcrumbItem } from 'reactstrap'
 
+import { SentryTeam } from 'common/const/sentryTeamNames'
 import { logEvent, SegmentEvent } from 'common/segment'
 import {
     HelpCenter,
@@ -148,7 +149,7 @@ const HelpCenterCreationWizard = (props: Props) => (
     <ErrorBoundary
         sentryTags={{
             section: 'help-center-wizard',
-            team: 'automate-obs',
+            team: SentryTeam.ACTIONS_AND_CHANNELS,
         }}
     >
         <HelpCenterCreationWizardComponent {...props} />

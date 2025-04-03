@@ -3,7 +3,7 @@ import React from 'react'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { renderHook } from '@testing-library/react-hooks'
 
-import { AI_AGENT_SENTRY_TEAM } from 'common/const/sentryTeamNames'
+import { SentryTeam } from 'common/const/sentryTeamNames'
 import {
     useGetArticleIngestionLogs,
     useGetIngestionLogs,
@@ -101,7 +101,7 @@ describe('useGetStoreDomainIngestionLog', () => {
         )
 
         expect(reportError).toHaveBeenCalledWith(mockedError, {
-            tags: { team: AI_AGENT_SENTRY_TEAM },
+            tags: { team: SentryTeam.CONVAI_KNOWLEDGE },
             extra: {
                 context: 'Error during ingestion logs fetching',
             },

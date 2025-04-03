@@ -1,3 +1,4 @@
+import { SentryTeam } from 'common/const/sentryTeamNames'
 import useAppSelector from 'hooks/useAppSelector'
 import { AiAgentPaywallView } from 'pages/aiAgent/AiAgentPaywallView'
 import { AIAgentPaywallFeatures } from 'pages/aiAgent/types'
@@ -21,7 +22,7 @@ const AutomateAllRecommendationsContainer = () => {
         <ErrorBoundary
             sentryTags={{
                 section: 'automate-all-recommendation',
-                team: 'automate-obs',
+                team: SentryTeam.CONVAI_KNOWLEDGE,
             }}
         >
             <AutomateAllRecommendationsPage />

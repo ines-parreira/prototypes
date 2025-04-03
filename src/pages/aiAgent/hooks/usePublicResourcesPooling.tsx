@@ -2,7 +2,7 @@ import { useEffect, useMemo } from 'react'
 
 import { useQueryClient } from '@tanstack/react-query'
 
-import { AI_AGENT_SENTRY_TEAM } from 'common/const/sentryTeamNames'
+import { SentryTeam } from 'common/const/sentryTeamNames'
 import useAppDispatch from 'hooks/useAppDispatch'
 import { useSearchParam } from 'hooks/useSearchParam'
 import {
@@ -78,7 +78,7 @@ export const usePublicResourcesPooling = ({
     useEffect(() => {
         if (processingArticleIngestionError) {
             reportError(processingArticleIngestionError, {
-                tags: { team: AI_AGENT_SENTRY_TEAM },
+                tags: { team: SentryTeam.CONVAI_KNOWLEDGE },
                 extra: {
                     context: 'Error during article ingestion logs pooling',
                 },

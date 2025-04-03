@@ -3,7 +3,7 @@ import { useEffect, useMemo } from 'react'
 import { useFlags } from 'launchdarkly-react-client-sdk'
 import { Link, useParams } from 'react-router-dom'
 
-import { AI_AGENT_SENTRY_TEAM } from 'common/const/sentryTeamNames'
+import { SentryTeam } from 'common/const/sentryTeamNames'
 import { FeatureFlagKey } from 'config/featureFlags'
 import { useGetHelpCenterList } from 'models/helpCenter/queries'
 import { useAiAgentStoreConfigurationContext } from 'pages/aiAgent/providers/AiAgentStoreConfigurationContext'
@@ -64,7 +64,7 @@ export const AiAgentGuidanceContainer = () => {
                     `Can't find help center with id ${storeConfiguration.guidanceHelpCenterId} and store ${shopName}`,
                 ),
                 {
-                    tags: { team: AI_AGENT_SENTRY_TEAM },
+                    tags: { team: SentryTeam.CONVAI_KNOWLEDGE },
                     level: 'error',
                 },
             )

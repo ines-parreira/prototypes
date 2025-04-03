@@ -1,6 +1,6 @@
 import { useEffect, useMemo } from 'react'
 
-import { AI_AGENT_SENTRY_TEAM } from 'common/const/sentryTeamNames'
+import { SentryTeam } from 'common/const/sentryTeamNames'
 import { useGetArticleIngestionLogs } from 'models/helpCenter/queries'
 import { reportError } from 'utils/errors'
 
@@ -33,7 +33,7 @@ export const usePublicResources = ({
     useEffect(() => {
         if (error) {
             reportError(error, {
-                tags: { team: AI_AGENT_SENTRY_TEAM },
+                tags: { team: SentryTeam.CONVAI_KNOWLEDGE },
                 extra: {
                     context: 'Error during article ingestion logs fetching',
                 },

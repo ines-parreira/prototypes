@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 
-import { AI_AGENT_SENTRY_TEAM } from 'common/const/sentryTeamNames'
+import { SentryTeam } from 'common/const/sentryTeamNames'
 import useAppDispatch from 'hooks/useAppDispatch'
 import { notify } from 'state/notifications/actions'
 import { NotificationStatus } from 'state/notifications/types'
@@ -82,7 +82,7 @@ export const useHandoverTopics = ({
             onClose()
         } catch (error) {
             reportError(error, {
-                tags: { team: AI_AGENT_SENTRY_TEAM },
+                tags: { team: SentryTeam.AI_AGENT },
                 extra: {
                     shopName,
                     accountDomain,

@@ -15,7 +15,7 @@ import { Link, useParams } from 'react-router-dom'
 import { Button, Label, ToggleField } from '@gorgias/merchant-ui-kit'
 
 // Absolute Imports
-import { AI_AGENT_SENTRY_TEAM } from 'common/const/sentryTeamNames'
+import { SentryTeam } from 'common/const/sentryTeamNames'
 import { FeatureFlagKey } from 'config/featureFlags'
 import { EMAIL_INTEGRATION_TYPES } from 'constants/integration'
 import useAppDispatch from 'hooks/useAppDispatch'
@@ -287,7 +287,7 @@ export const StoreConfigForm = ({
             } catch (error) {
                 // nothing to notify here for the user as we do silent disable AI Agent
                 reportError(error, {
-                    tags: { team: AI_AGENT_SENTRY_TEAM },
+                    tags: { team: SentryTeam.AI_AGENT },
                     extra: {
                         context: 'Error during disabling AI Agent',
                     },

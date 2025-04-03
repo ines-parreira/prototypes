@@ -5,7 +5,7 @@ import { Redirect } from 'react-router-dom'
 
 import { LoadingSpinner } from '@gorgias/merchant-ui-kit'
 
-import { AI_AGENT_SENTRY_TEAM } from 'common/const/sentryTeamNames'
+import { SentryTeam } from 'common/const/sentryTeamNames'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import {
@@ -92,7 +92,7 @@ export const AiAgentPlaygroundView = ({ shopName }: Props) => {
                     }),
                 )
                 reportError(storeFetchError, {
-                    tags: { team: AI_AGENT_SENTRY_TEAM },
+                    tags: { team: SentryTeam.AI_AGENT },
                     extra: {
                         context:
                             'Error fetching store configuration for AI Agent Playground',
@@ -120,7 +120,7 @@ export const AiAgentPlaygroundView = ({ shopName }: Props) => {
             accountFetchError.response?.status !== 404)
     ) {
         reportError(accountFetchError, {
-            tags: { team: AI_AGENT_SENTRY_TEAM },
+            tags: { team: SentryTeam.AI_AGENT },
             extra: {
                 context:
                     'Error fetching account configuration for AI Agent Playground',
@@ -141,7 +141,7 @@ export const AiAgentPlaygroundView = ({ shopName }: Props) => {
         const error = `Missing http integration for account ${accountData.data.accountConfiguration.gorgiasDomain}`
 
         reportError(new Error(error), {
-            tags: { team: AI_AGENT_SENTRY_TEAM },
+            tags: { team: SentryTeam.AI_AGENT },
             extra: {
                 context: error,
             },

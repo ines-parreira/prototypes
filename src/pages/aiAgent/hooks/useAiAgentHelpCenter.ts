@@ -1,4 +1,4 @@
-import { AI_AGENT_SENTRY_TEAM } from 'common/const/sentryTeamNames'
+import { SentryTeam } from 'common/const/sentryTeamNames'
 import { useGetHelpCenterList } from 'models/helpCenter/queries'
 import { HelpCenter } from 'models/helpCenter/types'
 import { reportError } from 'utils/errors'
@@ -27,7 +27,7 @@ export const useAiAgentHelpCenter = ({
                             `${helpCenterType} Help Center not found for shop: ${shopName}`,
                         ),
                         {
-                            tags: { team: AI_AGENT_SENTRY_TEAM },
+                            tags: { team: SentryTeam.AI_AGENT },
                             extra: {
                                 context: `Error during fetching of ${helpCenterType} help center`,
                             },

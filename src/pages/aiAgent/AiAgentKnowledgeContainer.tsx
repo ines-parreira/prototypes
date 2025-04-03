@@ -6,7 +6,7 @@ import { useParams } from 'react-router-dom'
 import { Card } from '@gorgias/analytics-ui-kit'
 import { Label } from '@gorgias/merchant-ui-kit'
 
-import { AI_AGENT_SENTRY_TEAM } from 'common/const/sentryTeamNames'
+import { SentryTeam } from 'common/const/sentryTeamNames'
 import { FeatureFlagKey } from 'config/featureFlags'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
@@ -153,7 +153,7 @@ export const AiAgentKnowledgeContainer = () => {
         } catch (error) {
             // nothing to notify here for the user as we do silent disable AI Agent
             reportError(error, {
-                tags: { team: AI_AGENT_SENTRY_TEAM },
+                tags: { team: SentryTeam.CONVAI_KNOWLEDGE },
                 extra: {
                     context: 'Error during disabling AI Agent',
                 },

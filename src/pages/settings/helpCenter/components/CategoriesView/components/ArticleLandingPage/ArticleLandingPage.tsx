@@ -5,6 +5,7 @@ import { Container } from 'reactstrap'
 
 import { Skeleton } from '@gorgias/merchant-ui-kit'
 
+import { SentryTeam } from 'common/const/sentryTeamNames'
 import { logEvent, SegmentEvent } from 'common/segment'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
@@ -203,7 +204,7 @@ const ArticleLandingPage = (props: ArticleLandingPageProps) => (
     <ErrorBoundary
         sentryTags={{
             section: 'article-template',
-            team: 'automate-obs',
+            team: SentryTeam.CONVAI_KNOWLEDGE,
         }}
     >
         <ArticleLandingPageComponent {...props} />

@@ -3,7 +3,7 @@ import React from 'react'
 import { QueryClientProvider } from '@tanstack/react-query'
 import { renderHook } from '@testing-library/react-hooks'
 
-import { AI_AGENT_SENTRY_TEAM } from 'common/const/sentryTeamNames'
+import { SentryTeam } from 'common/const/sentryTeamNames'
 import { useSearchParam } from 'hooks/useSearchParam'
 import { useGetArticleIngestionLogs } from 'models/helpCenter/queries'
 import { notify } from 'state/notifications/actions'
@@ -82,7 +82,7 @@ describe('usePublicResourcesPooling', () => {
         setupHook(shopName, helpCenterId)
 
         expect(reportError).toHaveBeenCalledWith(mockedError, {
-            tags: { team: AI_AGENT_SENTRY_TEAM },
+            tags: { team: SentryTeam.CONVAI_KNOWLEDGE },
             extra: { context: 'Error during article ingestion logs pooling' },
         })
     })

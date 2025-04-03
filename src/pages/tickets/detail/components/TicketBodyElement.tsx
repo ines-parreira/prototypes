@@ -1,6 +1,7 @@
 import { fromJS, Map } from 'immutable'
 import { Moment } from 'moment'
 
+import { SentryTeam } from 'common/const/sentryTeamNames'
 import { PHONE_EVENTS } from 'constants/event'
 import useAppSelector from 'hooks/useAppSelector'
 import {
@@ -124,7 +125,7 @@ const TicketBodyElement = ({
             <ErrorBoundary
                 sentryTags={{
                     section: 'rule-suggestion',
-                    team: 'automate-obs',
+                    team: SentryTeam.CONVAI_KNOWLEDGE,
                 }}
             >
                 <RuleSuggestion isCollapsed={!isLast} ticket={ticket.toJS()} />

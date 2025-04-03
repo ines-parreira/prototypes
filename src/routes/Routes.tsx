@@ -13,7 +13,7 @@ import {
 } from 'react-router-dom'
 import { CompatRoute } from 'react-router-dom-v5-compat'
 
-import { OBS_ADOPT_SENTRY_TEAM } from 'common/const/sentryTeamNames'
+import { SentryTeam } from 'common/const/sentryTeamNames'
 import { logPageChange } from 'common/segment'
 import { FeatureFlagKey } from 'config/featureFlags'
 import { PageSection } from 'config/pages'
@@ -491,7 +491,7 @@ function AiAgentRoutes({ match: { path }, location }: RouteComponentProps) {
                     {isGorgiasUser && (
                         <AiAgentErrorBoundary
                             section="ai-agent-preview-mode"
-                            team={OBS_ADOPT_SENTRY_TEAM}
+                            team={SentryTeam.CONVAI_KNOWLEDGE}
                         >
                             <Route
                                 path={`${path}/settings/preview`}
@@ -593,7 +593,7 @@ function AiAgentRoutes({ match: { path }, location }: RouteComponentProps) {
                     {isGorgiasUser && (
                         <AiAgentErrorBoundary
                             section="ai-agent-preview-mode"
-                            team={OBS_ADOPT_SENTRY_TEAM}
+                            team={SentryTeam.CONVAI_KNOWLEDGE}
                         >
                             <Route
                                 path={`${path}/preview-mode`}
@@ -605,7 +605,7 @@ function AiAgentRoutes({ match: { path }, location }: RouteComponentProps) {
                     {isAiAgentOnboardingWizardEnabled && (
                         <AiAgentErrorBoundary
                             section="ai-agent-onboarding-wizard"
-                            team={OBS_ADOPT_SENTRY_TEAM}
+                            team={SentryTeam.MARKETING}
                         >
                             <Route
                                 path={`${path}/new`}
@@ -617,7 +617,7 @@ function AiAgentRoutes({ match: { path }, location }: RouteComponentProps) {
                     {isAiAgentKnowledgeTabEnabled && (
                         <AiAgentErrorBoundary
                             section="ai-agent-knowledge"
-                            team={OBS_ADOPT_SENTRY_TEAM}
+                            team={SentryTeam.CONVAI_KNOWLEDGE}
                         >
                             <Route
                                 path={`${path}/knowledge`}
@@ -690,7 +690,7 @@ function AiAgentRoutes({ match: { path }, location }: RouteComponentProps) {
                     </AiAgentErrorBoundary>
                     <AiAgentErrorBoundary
                         section="ai-agent-sales"
-                        team={OBS_ADOPT_SENTRY_TEAM}
+                        team={SentryTeam.MARKETING}
                     >
                         <Route
                             path={`${path}/sales`}
@@ -700,7 +700,7 @@ function AiAgentRoutes({ match: { path }, location }: RouteComponentProps) {
                     </AiAgentErrorBoundary>
                     <AiAgentErrorBoundary
                         section="ai-agent-volume"
-                        team={OBS_ADOPT_SENTRY_TEAM}
+                        team={SentryTeam.MARKETING}
                     >
                         <Route
                             path={`${path}/sales/volume`}

@@ -8,6 +8,7 @@ import { useParams } from 'react-router-dom'
 import { Container } from 'reactstrap'
 import { bindActionCreators } from 'redux'
 
+import { SentryTeam } from 'common/const/sentryTeamNames'
 import { FeatureFlagKey } from 'config/featureFlags'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
@@ -359,7 +360,7 @@ export const IntegrationDetail = ({
                         <ErrorBoundary
                             sentryTags={{
                                 section: 'chat-wizard',
-                                team: 'automate-obs',
+                                team: SentryTeam.ACTIONS_AND_CHANNELS,
                             }}
                         >
                             <GorgiasChatCreationWizard

@@ -3,6 +3,8 @@ import React, { PureComponent, ReactNode } from 'react'
 import { Emoji } from 'emoji-mart'
 import { Card, CardBody, Collapse } from 'reactstrap'
 
+import { SentryTeam } from 'common/const/sentryTeamNames'
+
 import { reportError } from '../utils/errors'
 import Button from './common/components/button/Button'
 
@@ -14,7 +16,7 @@ export const SHOW_DETAILS_BUTTON_TEXT = 'Show details'
 
 type Props = {
     children: ReactNode
-    sentryTags?: Record<string, string>
+    sentryTags?: Record<string, string> & { team?: SentryTeam }
 }
 
 type State = {

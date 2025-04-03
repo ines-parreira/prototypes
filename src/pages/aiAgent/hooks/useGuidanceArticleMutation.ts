@@ -2,7 +2,7 @@ import { useCallback } from 'react'
 
 import { useQueryClient } from '@tanstack/react-query'
 
-import { AI_AGENT_SENTRY_TEAM } from 'common/const/sentryTeamNames'
+import { SentryTeam } from 'common/const/sentryTeamNames'
 import {
     helpCenterKeys,
     useCreateArticle,
@@ -69,7 +69,7 @@ export const useGuidanceArticleMutation = ({
                 ])
             } catch (error) {
                 reportError(error, {
-                    tags: { team: AI_AGENT_SENTRY_TEAM },
+                    tags: { team: SentryTeam.CONVAI_KNOWLEDGE },
                     extra: {
                         context: 'Error during guidance article creation',
                     },
@@ -102,7 +102,7 @@ export const useGuidanceArticleMutation = ({
                 ])
             } catch (error) {
                 reportError(error, {
-                    tags: { team: AI_AGENT_SENTRY_TEAM },
+                    tags: { team: SentryTeam.CONVAI_KNOWLEDGE },
                     extra: {
                         context: 'Error during guidance article updating',
                     },
@@ -123,7 +123,7 @@ export const useGuidanceArticleMutation = ({
                 ])
             } catch (error) {
                 reportError(error, {
-                    tags: { team: AI_AGENT_SENTRY_TEAM },
+                    tags: { team: SentryTeam.CONVAI_KNOWLEDGE },
                     extra: {
                         context: 'Error during guidance article deletion',
                     },

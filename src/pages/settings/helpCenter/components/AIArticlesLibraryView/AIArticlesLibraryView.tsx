@@ -1,5 +1,6 @@
 import { useHistory } from 'react-router-dom'
 
+import { SentryTeam } from 'common/const/sentryTeamNames'
 import { logEvent, SegmentEvent } from 'common/segment'
 import useAppSelector from 'hooks/useAppSelector'
 import useEffectOnce from 'hooks/useEffectOnce'
@@ -123,7 +124,7 @@ const AIArticlesLibraryViewWithErrorBoundary = () => (
     <ErrorBoundary
         sentryTags={{
             section: 'help-center-ai-library',
-            team: 'automate-obs',
+            team: SentryTeam.CONVAI_KNOWLEDGE,
         }}
     >
         <AIArticlesLibraryView />

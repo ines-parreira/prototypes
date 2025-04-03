@@ -1,3 +1,4 @@
+import { SentryTeam } from 'common/const/sentryTeamNames'
 import useAppSelector from 'hooks/useAppSelector'
 import { AiAgentPaywallView } from 'pages/aiAgent/AiAgentPaywallView'
 import { AIAgentPaywallFeatures } from 'pages/aiAgent/types'
@@ -29,7 +30,7 @@ const AutomateLandingPageContainer = () => {
         <ErrorBoundary
             sentryTags={{
                 section: 'automate-landing-page',
-                team: 'automate-obs',
+                team: SentryTeam.ACTIONS_AND_CHANNELS,
             }}
         >
             <AutomateLandingPage />

@@ -1,6 +1,6 @@
 import { act, renderHook } from '@testing-library/react-hooks'
 
-import { OBS_ADOPT_SENTRY_TEAM } from 'common/const/sentryTeamNames'
+import { SentryTeam } from 'common/const/sentryTeamNames'
 import useAppSelector from 'hooks/useAppSelector'
 import useLocalStorage from 'hooks/useLocalStorage'
 import { useGenerateCustomToneOfVoicePreview } from 'models/aiAgent/queries'
@@ -87,7 +87,7 @@ describe('useCustomToneOfVoicePreview', () => {
         })
 
         expect(reportError).toHaveBeenCalledWith(error, {
-            tags: { team: OBS_ADOPT_SENTRY_TEAM },
+            tags: { team: SentryTeam.AI_AGENT },
             extra: {
                 context:
                     'Error during generation of custom tone of voice preview',

@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from 'react'
 
-import { AI_AGENT_SENTRY_TEAM } from 'common/const/sentryTeamNames'
+import { SentryTeam } from 'common/const/sentryTeamNames'
 import { useCreateStoreSnippetHelpCenter } from 'models/aiAgent/queries'
 import { useGetHelpCenterList } from 'models/helpCenter/queries'
 import { HelpCenter } from 'models/helpCenter/types'
@@ -36,7 +36,7 @@ export const useGetOrCreateSnippetHelpCenter = ({
     } = useCreateStoreSnippetHelpCenter({
         onError: (error) => {
             reportError(error, {
-                tags: { team: AI_AGENT_SENTRY_TEAM },
+                tags: { team: SentryTeam.AI_AGENT },
                 extra: {
                     context: `Failed to fetch or create help center for ${accountDomain} ${shopName}`,
                 },

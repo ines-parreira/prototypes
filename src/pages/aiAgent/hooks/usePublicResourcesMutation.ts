@@ -1,6 +1,6 @@
 import { useQueryClient } from '@tanstack/react-query'
 
-import { AI_AGENT_SENTRY_TEAM } from 'common/const/sentryTeamNames'
+import { SentryTeam } from 'common/const/sentryTeamNames'
 import {
     helpCenterKeys,
     useDeleteArticleIngestionLog,
@@ -34,7 +34,7 @@ export const usePublicResourceMutation = ({
             ])
         } catch (error) {
             reportError(error, {
-                tags: { team: AI_AGENT_SENTRY_TEAM },
+                tags: { team: SentryTeam.CONVAI_KNOWLEDGE },
                 extra: {
                     context: 'Error during article ingestion start',
                     links,
@@ -64,7 +64,7 @@ export const usePublicResourceMutation = ({
             ])
         } catch (error) {
             reportError(error, {
-                tags: { team: AI_AGENT_SENTRY_TEAM },
+                tags: { team: SentryTeam.CONVAI_KNOWLEDGE },
                 extra: {
                     context: 'Error during article ingestion log deleting',
                 },

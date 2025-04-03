@@ -4,7 +4,7 @@ import MockAdapter from 'axios-mock-adapter'
 
 import { confirmBillingPaymentMethodSetup } from '@gorgias/api-client'
 
-import { CRM_GROWTH_SENTRY_TEAM } from 'common/const/sentryTeamNames'
+import { SentryTeam } from 'common/const/sentryTeamNames'
 import client from 'models/api/resources'
 import { renderHookWithStoreAndQueryClientProvider } from 'tests/renderHookWithStoreAndQueryClientProvider'
 import { reportError } from 'utils/errors'
@@ -76,7 +76,7 @@ describe('useSubmitPaymentMethodWithBillingContact hook', () => {
         })
 
         expect(reportError).toHaveBeenLastCalledWith(error, {
-            tags: { team: CRM_GROWTH_SENTRY_TEAM },
+            tags: { team: SentryTeam.CRM_GROWTH },
             extra: { context: 'Failed to update billing contact' },
         })
     })

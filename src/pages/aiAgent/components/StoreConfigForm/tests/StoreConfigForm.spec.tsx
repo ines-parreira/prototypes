@@ -11,7 +11,7 @@ import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import { AI_AGENT_SENTRY_TEAM } from 'common/const/sentryTeamNames'
+import { SentryTeam } from 'common/const/sentryTeamNames'
 import { logEvent } from 'common/segment'
 import { FeatureFlagKey } from 'config/featureFlags'
 import { billingState } from 'fixtures/billing'
@@ -429,7 +429,7 @@ describe('<StoreConfigForm />', () => {
 
             await waitFor(() => {
                 expect(reportError).toHaveBeenCalledWith(expect.any(Error), {
-                    tags: { team: AI_AGENT_SENTRY_TEAM },
+                    tags: { team: SentryTeam.AI_AGENT },
                     extra: {
                         context: 'Error during disabling AI Agent',
                     },

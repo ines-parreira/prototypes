@@ -5,6 +5,7 @@ import { useHistory, useLocation, useParams } from 'react-router-dom'
 
 import { Skeleton } from '@gorgias/merchant-ui-kit'
 
+import { SentryTeam } from 'common/const/sentryTeamNames'
 import { logEvent, SegmentEvent } from 'common/segment'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
@@ -76,7 +77,7 @@ export default function WorkflowAnalyticsContainer() {
         <ErrorBoundary
             sentryTags={{
                 section: 'workflow-analytics',
-                team: 'automate-obs',
+                team: SentryTeam.CRM_REPORTING,
             }}
         >
             <WorkflowAnalyticsFilters

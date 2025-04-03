@@ -3,7 +3,7 @@ import { act } from '@testing-library/react-hooks'
 
 import { confirmBillingPaymentMethodSetup } from '@gorgias/api-client'
 
-import { CRM_GROWTH_SENTRY_TEAM } from 'common/const/sentryTeamNames'
+import { SentryTeam } from 'common/const/sentryTeamNames'
 import { renderHookWithStoreAndQueryClientProvider } from 'tests/renderHookWithStoreAndQueryClientProvider'
 import { reportError } from 'utils/errors'
 import { assumeMock } from 'utils/testing'
@@ -68,7 +68,7 @@ describe('useSubmitPaymentMethod hook', () => {
         )
 
         expect(reportError).toHaveBeenLastCalledWith(error, {
-            tags: { team: CRM_GROWTH_SENTRY_TEAM },
+            tags: { team: SentryTeam.CRM_GROWTH },
             extra: { context: 'Failed to confirm stripe setup intent' },
         })
     })
@@ -87,7 +87,7 @@ describe('useSubmitPaymentMethod hook', () => {
         )
 
         expect(reportError).toHaveBeenLastCalledWith(error, {
-            tags: { team: CRM_GROWTH_SENTRY_TEAM },
+            tags: { team: SentryTeam.CRM_GROWTH },
             extra: { context: 'Failed to confirm stripe setup intent' },
         })
     })

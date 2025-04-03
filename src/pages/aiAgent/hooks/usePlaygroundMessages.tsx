@@ -2,7 +2,7 @@ import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 
 import axios from 'axios'
 
-import { AI_AGENT_SENTRY_TEAM } from 'common/const/sentryTeamNames'
+import { SentryTeam } from 'common/const/sentryTeamNames'
 import { useSubmitPlaygroundTicket } from 'models/aiAgent/queries'
 import { StoreConfiguration } from 'models/aiAgent/types'
 import {
@@ -115,7 +115,7 @@ export const usePlaygroundMessages = ({
                 })
             } catch (error) {
                 reportError(error, {
-                    tags: { team: AI_AGENT_SENTRY_TEAM },
+                    tags: { team: SentryTeam.AI_AGENT },
                     extra: {
                         context: 'Error during get customer for playground',
                         customer,
@@ -191,7 +191,7 @@ export const usePlaygroundMessages = ({
                 }
 
                 reportError(error, {
-                    tags: { team: AI_AGENT_SENTRY_TEAM },
+                    tags: { team: SentryTeam.AI_AGENT },
                     extra: {
                         context:
                             'Error during message submission from playground',

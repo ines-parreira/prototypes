@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useState } from 'react'
 
-import { AI_AGENT_SENTRY_TEAM } from 'common/const/sentryTeamNames'
+import { SentryTeam } from 'common/const/sentryTeamNames'
 import { useSearchCustomer } from 'models/aiAgent/queries'
 import { Value } from 'pages/common/forms/SelectField/types'
 import { reportError } from 'utils/errors'
@@ -97,7 +97,7 @@ export const CustomerSearchDropdownSelectView = ({
     useEffect(() => {
         if (error || isRefetchError) {
             reportError(error || isRefetchError, {
-                tags: { team: AI_AGENT_SENTRY_TEAM },
+                tags: { team: SentryTeam.AI_AGENT },
             })
         }
     }, [error, isRefetchError])

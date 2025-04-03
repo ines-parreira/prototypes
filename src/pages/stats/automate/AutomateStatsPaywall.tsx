@@ -1,3 +1,4 @@
+import { SentryTeam } from 'common/const/sentryTeamNames'
 import useAppSelector from 'hooks/useAppSelector'
 import { AiAgentPaywallView } from 'pages/aiAgent/AiAgentPaywallView'
 import { AIAgentPaywallFeatures } from 'pages/aiAgent/types'
@@ -12,7 +13,7 @@ const AutomateStatsPaywall: React.FC = () => {
         <ErrorBoundary
             sentryTags={{
                 section: 'automate-stats',
-                team: 'automate-obs',
+                team: SentryTeam.CRM_REPORTING,
             }}
         >
             {!hasAutomate ? (
