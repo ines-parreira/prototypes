@@ -1,7 +1,7 @@
 import React, { ComponentProps, ContextType } from 'react'
 
 import { QueryClientProvider, QueryKey } from '@tanstack/react-query'
-import { fireEvent, render, waitFor } from '@testing-library/react'
+import { fireEvent, render, screen, waitFor } from '@testing-library/react'
 import { fromJS } from 'immutable'
 import { act } from 'react-dom/test-utils'
 import { Provider } from 'react-redux'
@@ -46,6 +46,8 @@ describe('<TagDropdownMenu />', () => {
     const props = {
         onClick: jest.fn(),
     }
+    const mockCustomColor = '#456123'
+
     const renderWithWrappers = (
         props: ComponentProps<typeof TagDropdownMenu>,
         state = defaultState,
@@ -69,7 +71,11 @@ describe('<TagDropdownMenu />', () => {
                         data: {
                             data: [
                                 { id: 1, name: 'exchange' },
-                                { id: 2, name: 'refund' },
+                                {
+                                    id: 2,
+                                    name: 'refund',
+                                    decoration: { color: mockCustomColor },
+                                },
                             ],
                         },
                     },
@@ -87,16 +93,16 @@ describe('<TagDropdownMenu />', () => {
             isFetching: true,
         })
 
-        const { getByText } = renderWithWrappers(props)
+        renderWithWrappers(props)
 
-        expect(getByText('SpinnerMock')).toBeInTheDocument()
+        expect(screen.getByText('SpinnerMock')).toBeInTheDocument()
     })
 
     it('should display tags', () => {
-        const { getByText } = renderWithWrappers(props)
+        renderWithWrappers(props)
 
-        expect(getByText('exchange')).toBeInTheDocument()
-        expect(getByText('refund')).toBeInTheDocument()
+        expect(screen.getByText('exchange')).toBeInTheDocument()
+        expect(screen.getByText('refund')).toBeInTheDocument()
     })
 
     it('should filter tags', () => {
@@ -107,9 +113,9 @@ describe('<TagDropdownMenu />', () => {
     })
 
     it('should trigger tag request for searched term', async () => {
-        const { getByPlaceholderText } = renderWithWrappers(props)
+        renderWithWrappers(props)
 
-        fireEvent.change(getByPlaceholderText(/Search/), {
+        fireEvent.change(screen.getByPlaceholderText(/Search/), {
             target: { value: 'Foo' },
         })
 
@@ -126,15 +132,14 @@ describe('<TagDropdownMenu />', () => {
     })
 
     it('should loop through items via keyboard events', () => {
-        const { getAllByRole, getByPlaceholderText, getByText } =
-            renderWithWrappers(props)
+        renderWithWrappers(props)
 
-        const searchInput = getByPlaceholderText(/Search/)
+        const searchInput = screen.getByPlaceholderText(/Search/)
         fireEvent.change(searchInput, {
             target: { value: 'x' },
         })
         act(() => jest.runAllTimers())
-        const items = getAllByRole('listitem')
+        const items = screen.getAllByRole('listitem')
 
         expect(searchInput).toEqual(items[0])
         expect(searchInput).toHaveFocus()
@@ -142,21 +147,21 @@ describe('<TagDropdownMenu />', () => {
         fireEvent.keyDown(items[0], {
             key: 'ArrowDown',
         })
-        expect(getByText(/exchange/)).toEqual(items[1])
+        expect(screen.getByText(/exchange/)).toEqual(items[1].firstChild)
         expect(items[1]).toHaveFocus()
 
         fireEvent.keyDown(items[1], {
             key: 'ArrowDown',
         })
-        expect(getByText(/refund/)).toEqual(items[2])
+        expect(screen.getByText(/refund/)).toEqual(items[2].firstChild)
         expect(items[2]).toHaveFocus()
 
         fireEvent.keyDown(items[2], {
             key: 'ArrowDown',
         })
         expect(items[3]).toHaveFocus()
-        expect(getByText(/Create/).parentElement).toEqual(items[3])
-        fireEvent.keyDown(getByText(/Create/), {
+        expect(screen.getByText(/Create/).parentElement).toEqual(items[3])
+        fireEvent.keyDown(screen.getByText(/Create/), {
             key: 'ArrowDown',
         })
         expect(searchInput).toHaveFocus()
@@ -183,15 +188,15 @@ describe('<TagDropdownMenu />', () => {
     })
 
     it('should remove matching queries after tag creation', () => {
-        const { getByPlaceholderText, getByText } = renderWithWrappers(props)
+        renderWithWrappers(props)
         const queryKeysTags = queryKeys.tags.listTags()
 
-        fireEvent.change(getByPlaceholderText(/Search/), {
+        fireEvent.change(screen.getByPlaceholderText(/Search/), {
             target: { value: 'Foo' },
         })
         act(() => jest.runAllTimers())
 
-        getByText(/Create/i).click()
+        screen.getByText(/Create/i).click()
         const removeQuery = removeQueriesMock.mock.calls[0][0] as unknown as {
             predicate: ({ queryKey }: { queryKey: QueryKey }) => boolean
         }
@@ -220,43 +225,40 @@ describe('<TagDropdownMenu />', () => {
     })
 
     it('should trigger tag creation through keyboard shortcut', () => {
-        const { getByPlaceholderText, getByText } = renderWithWrappers(props)
-        fireEvent.change(getByPlaceholderText(/Search/), {
+        renderWithWrappers(props)
+        fireEvent.change(screen.getByPlaceholderText(/Search/), {
             target: { value: 'Foo' },
         })
         act(() => jest.runAllTimers())
 
-        fireEvent.keyDown(getByText(/Create/i), { key: 'Enter' })
+        fireEvent.keyDown(screen.getByText(/Create/i), { key: 'Enter' })
         expect(props.onClick).toHaveBeenCalledWith({ name: 'Foo' })
     })
 
     it('should enable tag creation for lead agent', () => {
-        const { getByPlaceholderText, getByText } = renderWithWrappers(props)
+        renderWithWrappers(props)
 
-        fireEvent.change(getByPlaceholderText(/Search/), {
+        fireEvent.change(screen.getByPlaceholderText(/Search/), {
             target: { value: 'Foo' },
         })
         act(() => jest.runAllTimers())
 
-        expect(getByText(/Create/i)).toBeInTheDocument()
+        expect(screen.getByText(/Create/i)).toBeInTheDocument()
     })
 
     it('should disable tag creation for basic agent and below', () => {
-        const { getByPlaceholderText, queryByText } = renderWithWrappers(
-            props,
-            {
-                currentUser: fromJS({
-                    ...user,
-                    role: { name: UserRole.BasicAgent },
-                }),
-            },
-        )
+        renderWithWrappers(props, {
+            currentUser: fromJS({
+                ...user,
+                role: { name: UserRole.BasicAgent },
+            }),
+        })
 
-        fireEvent.change(getByPlaceholderText(/Search/), {
+        fireEvent.change(screen.getByPlaceholderText(/Search/), {
             target: { value: 'Foo' },
         })
         act(() => jest.runAllTimers())
 
-        expect(queryByText(/Create/i)).not.toBeInTheDocument()
+        expect(screen.queryByText(/Create/i)).not.toBeInTheDocument()
     })
 })

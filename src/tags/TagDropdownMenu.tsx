@@ -25,6 +25,8 @@ import { getCurrentUserState } from 'state/currentUser/selectors'
 import useListTags from 'tags/useListTags'
 import { hasRole } from 'utils'
 
+import TagDropdownItem from './TagDropdownItem'
+
 import css from './TagDropdownMenu.less'
 
 type Props = {
@@ -168,7 +170,11 @@ const TagDropdownMenu = ({ className, filterBy, onClick }: Props) => {
     return (
         <Context.Provider value={contextValue}>
             <div className={className} ref={wrapperRef}>
-                <Body />
+                <Body
+                    onRenderItem={(item) => (
+                        <TagDropdownItem item={item as Tag} />
+                    )}
+                />
                 {isLoading || !canCreateTag ? null : (
                     <div
                         className={cn(dropdownItemCss.item, css.createTag)}

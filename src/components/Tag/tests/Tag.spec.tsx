@@ -16,8 +16,6 @@ const mockFlagSet = {
     [FeatureFlagKey.TagNewDesign]: false,
 }
 
-jest.mock('utils/launchDarkly')
-
 describe('<Tag />', () => {
     beforeEach(() => {
         mockUseFlag.mockImplementation(
