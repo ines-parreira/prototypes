@@ -7,12 +7,12 @@ import useLocalStorage from 'hooks/useLocalStorage'
 import { TicketTimeReference } from 'models/stat/types'
 
 export enum Entity {
-    Tag = 'Tag',
-    TicketField = 'TicketField',
+    Tag = 'tags',
+    TicketField = 'ticket-fields',
 }
 
-const getStorageKey = (entity: Entity) => {
-    return [entity, 'time-reference'].join(':')
+export const getStorageKey = (entity: Entity) => {
+    return [entity, 'time-reference'].join('/')
 }
 
 const isValidTicketTimeReference = (
@@ -23,7 +23,19 @@ const isValidTicketTimeReference = (
     )
 }
 
-const DEFAULT_TICKET_TIME_REFERENCE = TicketTimeReference.TaggedAt
+const LEGACY_TICKET_TIME_REFERENCE = TicketTimeReference.TaggedAt
+const DEFAULT_TICKET_TIME_REFERENCE = TicketTimeReference.CreatedAt
+
+const getEffectiveTicketTimeReference = (
+    value: TicketTimeReference,
+    isSupported = false,
+) => {
+    if (!isSupported) return LEGACY_TICKET_TIME_REFERENCE
+
+    return isValidTicketTimeReference(value)
+        ? value
+        : DEFAULT_TICKET_TIME_REFERENCE
+}
 
 export const useTicketTimeReference = (entity: Entity) => {
     const isReportingExtendFieldAndTagEnabled = useFlag(
@@ -33,11 +45,10 @@ export const useTicketTimeReference = (entity: Entity) => {
     const [selectedTicketTimeReference, setSelectedTicketTimeReference] =
         useLocalStorage(getStorageKey(entity), DEFAULT_TICKET_TIME_REFERENCE)
 
-    const value =
-        isReportingExtendFieldAndTagEnabled &&
-        isValidTicketTimeReference(selectedTicketTimeReference)
-            ? selectedTicketTimeReference
-            : DEFAULT_TICKET_TIME_REFERENCE
+    const value = getEffectiveTicketTimeReference(
+        selectedTicketTimeReference,
+        isReportingExtendFieldAndTagEnabled,
+    )
 
     const handleTicketTimeReferenceChange = useCallback(
         (value: TicketTimeReference) => {

@@ -4,6 +4,7 @@ import { logEvent, SegmentEvent } from 'common/segment'
 import { useFlag } from 'core/flags'
 import {
     Entity,
+    getStorageKey,
     useTicketTimeReference,
 } from 'hooks/reporting/ticket-insights/useTicketTimeReference'
 import useLocalStorage from 'hooks/useLocalStorage'
@@ -66,7 +67,7 @@ describe('useTicketTimeReference', () => {
         const { result } = renderHook(() => useTicketTimeReference(Entity.Tag))
 
         const [actual] = result.current
-        const expected = TicketTimeReference.TaggedAt
+        const expected = TicketTimeReference.CreatedAt
 
         expect(actual).toBe(expected)
     })
@@ -75,8 +76,8 @@ describe('useTicketTimeReference', () => {
         renderHook(() => useTicketTimeReference(Entity.TicketField))
 
         expect(useLocalStorageMock).toHaveBeenCalledWith(
-            'TicketField:time-reference',
-            TicketTimeReference.TaggedAt,
+            getStorageKey(Entity.TicketField),
+            TicketTimeReference.CreatedAt,
         )
     })
 
