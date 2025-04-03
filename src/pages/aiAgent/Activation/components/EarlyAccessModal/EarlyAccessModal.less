@@ -71,7 +71,6 @@
     }
 
     .earlyAccessPlanCard {
-        margin-top: @layout-spacing-m;
         border: solid 1px var(--accessory-magenta-25);
         box-shadow: 4px 4px 12px 0px rgba(195, 77, 237, 0.16);
     }
@@ -106,16 +105,22 @@
             gap: @layout-spacing-xs;
         }
 
+        .badge {
+            margin-left: @layout-spacing-xs;
+        }
+
+        .skill {
+            display: flex;
+            align-items: center;
+        }
+
         .skillStatus {
+            margin-right: @layout-spacing-xs;
             color: var(--local-green);
 
             &.skillStatusDisabled {
                 color: var(--neutral-grey-4);
             }
-        }
-
-        .skillStatus {
-            margin-right: @layout-spacing-xs;
         }
 
         .price {

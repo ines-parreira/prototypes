@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import { useState } from 'react'
 
 import cn from 'classnames'
 
@@ -9,10 +9,7 @@ import {
     AutomatePlan,
     HelpdeskPlan,
 } from 'models/billing/types'
-import {
-    getAutomateEarlyAccessPricesFormatted,
-    getPlanPriceFormatted,
-} from 'models/billing/utils'
+import { getAutomateEarlyAccessPricesFormatted } from 'models/billing/utils'
 import {
     Card,
     CardCaption,
@@ -44,33 +41,24 @@ type Props = {
 export const EarlyAccessModal = ({
     isLoading,
     onUpgradeClick,
-    onStayClick,
     onClose,
     isOpen,
     currentPlan,
-    // helpdeskPlan,
+    helpdeskPlan,
     earlyAccessPlan,
     userIsAdmin,
     isUpgrading,
 }: Props) => {
-    const { amountAfterDiscount, discount, amount } =
+    const { amountAfterDiscount, amount } =
         getAutomateEarlyAccessPricesFormatted(earlyAccessPlan)
     const currency = currentPlan?.currency ?? 'USD'
-    const currentPlanCostPerAutomatedConversation = formatAmount(
-        (currentPlan?.amount ?? 0) /
-            (currentPlan?.num_quota_tickets ?? 1) /
+
+    const helpdeskPlanTicketCost = formatAmount(
+        (helpdeskPlan?.amount ?? 0) /
+            (helpdeskPlan?.num_quota_tickets ?? 1) /
             100,
         currency,
     )
-    const currentPlanExtraTicketCost = formatAmount(
-        currentPlan?.extra_ticket_cost ?? 0,
-        currency,
-    )
-
-    // const helpdeskPlanExtraTicketCost = formatAmount(
-    //     helpdeskPlan?.extra_ticket_cost ?? 0,
-    //     currency,
-    // )
 
     const earlyAccessPlanCostPerAutomatedConversation = formatAmount(
         1,
@@ -91,22 +79,22 @@ export const EarlyAccessModal = ({
             size="large"
         >
             <ModalHeader
-                title={<h1>Upgrade & Get Early Access Pricing</h1>}
+                title={
+                    <h1>
+                        Upgrade your AI Agent with new skills to drive more
+                        sales
+                    </h1>
+                }
                 subtitle={
                     <div>
-                        <h3>
-                            Sign up before May 2025 to secure your current
-                            pricing tier before rates increase.
-                        </h3>
-                        {/* To uncomment on April 1st, 2025
                         <a
+                            href="https://docs.gorgias.com/en-US/intro-to-ai-agent-for-sales-(beta)-1216108"
                             target="_blank"
                             rel="noopener noreferrer"
-                            href="https://calendly.com/d/cnsp-8pz-3z5/ai-sales-agent-implementation-kick-off?utm_source=pmm&utm_medium=product&utm_campaign=billing"
                         >
-                            Contact Our Team To Learn More{' '}
-                            <i className="material-icons">open_in_new</i>
-                        </a> */}
+                            <i className="material-icons">menu_book</i> Learn
+                            more about AI Agent for Sales
+                        </a>
                     </div>
                 }
                 className={css.header}
@@ -118,108 +106,18 @@ export const EarlyAccessModal = ({
                         upgrade.
                     </Alert>
                 )}
-                <Card className={cn(css.card, css.currentPlanCard)}>
-                    <CardHeader className={css.header}>
-                        <CardTitle className={css.cardTitle}>
-                            Current Plan
-                            <Badge type="light-warning" corner="square">
-                                Prices will increase after May 2025
-                            </Badge>
-                        </CardTitle>
-                        <CardCaption
-                            className={css.caption}
-                            title="With Support Only"
-                        >
-                            with Support only
-                        </CardCaption>
-                    </CardHeader>
-                    <CardContent className={css.content}>
-                        <div className={css.contentGrid}>
-                            <div className={css.innerContent}>
-                                <h3>AI Agent Skills</h3>
-                                <div className={css.skill}>
-                                    <span className={css.skillStatus}>
-                                        <i className="material-icons">
-                                            check_circle
-                                        </i>
-                                    </span>
-                                    <span className={css.skillName}>
-                                        Support
-                                    </span>
-                                </div>
-                                <div className={css.skill}>
-                                    <span
-                                        className={cn(
-                                            css.skillStatus,
-                                            css.skillStatusDisabled,
-                                        )}
-                                    >
-                                        <i className="material-icons">cancel</i>
-                                    </span>
-                                    <span className={css.skillName}>Sales</span>
-                                </div>
-                            </div>
-                            <div className={css.innerContent}>
-                                <h3>Cost Structure</h3>
-                                <div className={css.costItem}>
-                                    <span className={css.skillStatus}>
-                                        <i className="material-icons">
-                                            arrow_right
-                                        </i>
-                                    </span>
-                                    <span>
-                                        {
-                                            currentPlanCostPerAutomatedConversation
-                                        }
-                                    </span>{' '}
-                                    per automated conversation
-                                </div>
-                                {/* Temporary hidden while waiting for Finance decision */}
-                                {/* <div className={css.costItem}>
-                                    <span className={css.skillStatus}>
-                                        <i className="material-icons">
-                                            arrow_right
-                                        </i>
-                                    </span>
-                                    <span>{helpdeskPlanExtraTicketCost}</span>{' '}
-                                    per Helpdesk ticket
-                                </div> */}
-                                <div className={css.costItem}>
-                                    <span className={css.skillStatus}>
-                                        <i className="material-icons">
-                                            arrow_right
-                                        </i>
-                                    </span>
-                                    <span>Overage:</span>{' '}
-                                    {currentPlanExtraTicketCost}
-                                </div>
-                            </div>
-                            <div className={css.innerContent}>
-                                <h3>Current Pricing</h3>
-                                <span className={css.price}>
-                                    {isLoading ? (
-                                        <Skeleton width={140} />
-                                    ) : (
-                                        `${getPlanPriceFormatted(currentPlan)}/${currentPlan?.cadence}`
-                                    )}
-                                </span>
-                            </div>
-                        </div>
-                    </CardContent>
-                </Card>
                 <Card className={cn(css.card, css.earlyAccessPlanCard)}>
                     <CardHeader className={css.header}>
                         <CardTitle className={css.cardTitle}>
-                            Early Access Plan
-                            <Badge type="blue" corner="square">
-                                Current price locked for next 12 months
-                            </Badge>
+                            AI Agent with Support & Sales Skills
                         </CardTitle>
                         <CardCaption
                             className={css.caption}
                             title="With Support Only"
                         >
-                            Upgrade with Support and Sales
+                            Upon upgrading your AI Agent, a $1.00 fee applies
+                            for each AI-driven automated interaction, plus a{' '}
+                            {helpdeskPlanTicketCost} helpdesk fee.
                         </CardCaption>
                     </CardHeader>
                     <CardContent className={css.content}>
@@ -243,6 +141,9 @@ export const EarlyAccessModal = ({
                                         </i>
                                     </span>
                                     <span className={css.skillName}>Sales</span>
+                                    <Badge className={css.badge} type="magenta">
+                                        new
+                                    </Badge>
                                 </div>
                             </div>
                             <div className={css.innerContent}>
@@ -260,16 +161,15 @@ export const EarlyAccessModal = ({
                                     </span>{' '}
                                     per automated conversation
                                 </div>
-                                {/* Temporary hidden while waiting for Finance decision */}
-                                {/* <div className={css.costItem}>
+                                <div className={css.costItem}>
                                     <span className={css.skillStatus}>
                                         <i className="material-icons">
                                             arrow_right
                                         </i>
                                     </span>
-                                    <span>{helpdeskPlanExtraTicketCost}</span>{' '}
-                                    per Helpdesk ticket
-                                </div> */}
+                                    <span>{helpdeskPlanTicketCost}</span> per
+                                    Helpdesk ticket
+                                </div>
                                 <div className={css.costItem}>
                                     <span className={css.skillStatus}>
                                         <i className="material-icons">
@@ -281,7 +181,7 @@ export const EarlyAccessModal = ({
                                 </div>
                             </div>
                             <div className={cn(css.innerContent, css.newPrice)}>
-                                <h3>Early Access Pricing</h3>
+                                <h3>New monthly pricing</h3>
                                 <span className={css.price}>
                                     {isLoading ? (
                                         <Skeleton width={140} height={22} />
@@ -307,15 +207,13 @@ export const EarlyAccessModal = ({
                                         </>
                                     )}
                                 </span>
-                                {discount && (
-                                    <span className={css.subPrice}>
-                                        {isLoading ? (
-                                            <Skeleton width={210} height={12} />
-                                        ) : (
-                                            `Save ${discount}/${earlyAccessPlan?.cadence} for 12 months`
-                                        )}
-                                    </span>
-                                )}
+                                <span className={css.subPrice}>
+                                    {isLoading ? (
+                                        <Skeleton width={210} height={12} />
+                                    ) : (
+                                        `${earlyAccessPlan?.num_quota_tickets} automated tickets/months`
+                                    )}
+                                </span>
                             </div>
                         </div>
                         <div className={css.tips}>
@@ -325,8 +223,8 @@ export const EarlyAccessModal = ({
                                         auto_awesome
                                     </i>
                                     <span>
-                                        Grow GMV with Sales Skills for your AI
-                                        Agent
+                                        Increase your chat conversion rate and
+                                        maximize revenue opportunities
                                     </span>
                                 </h3>
                                 <i
@@ -345,24 +243,25 @@ export const EarlyAccessModal = ({
                                     <li>
                                         <i className="material-icons">flare</i>
                                         <span>
-                                            Meet the first AI Agent that sells
-                                            via playbook
+                                            Acts as a 24/7 virtual shopping
+                                            assistant, instantly answering
+                                            pre-sales questions
                                         </span>
                                     </li>
                                     <li>
                                         <i className="material-icons">flare</i>
                                         <span>
-                                            Delivers tailored recommendations
-                                            driven by customer behavior
+                                            Delivers personalized product
+                                            recommendations to drive upsells and
+                                            cross-sells
                                         </span>
                                     </li>
                                     <li>
                                         <i className="material-icons">flare</i>
                                         <span>
-                                            AI predicts intent, adjusts
-                                            discounts, adapts engagement, and
-                                            provides smart incentives to drive
-                                            sales
+                                            Uses dynamic discounts based on
+                                            purchase intent without sacrificing
+                                            margins
                                         </span>
                                     </li>
                                 </ul>
@@ -381,18 +280,9 @@ export const EarlyAccessModal = ({
                     isDisabled={!userIsAdmin}
                     isLoading={isUpgrading}
                 >
-                    Upgrade AI Agent With Early Access Plan
+                    Upgrade AI Agent
                 </Button>
-                <Button
-                    fillStyle="ghost"
-                    intent="primary"
-                    size="medium"
-                    className={css.secondaryButton}
-                    onClick={onStayClick}
-                    isDisabled={!userIsAdmin}
-                >
-                    Stay On Current Plan
-                </Button>
+                <div data-candu-id="ai-sales-agent-access-modal-sub-cta" />
             </ModalFooter>
         </Modal>
     )

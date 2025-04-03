@@ -1,6 +1,6 @@
 import React from 'react'
 
-import { fireEvent, render, screen } from '@testing-library/react'
+import { fireEvent, render, screen, within } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 
 import '@testing-library/jest-dom/extend-expect'
@@ -27,16 +27,9 @@ describe('<EarlyAccessModal />', () => {
             />,
         )
 
-        const upgradeButton = getByText(
-            'Upgrade AI Agent With Early Access Plan',
-            { exact: true },
-        )
+        const upgradeButton = getByText('Upgrade AI Agent', { exact: true })
         expect(upgradeButton).toBeInTheDocument()
         userEvent.click(upgradeButton)
-
-        const staybutton = getByText('Stay On Current Plan', { exact: true })
-        expect(staybutton).toBeInTheDocument()
-        userEvent.click(staybutton)
     })
 
     it('should render the modal in loading state without crashing', () => {
@@ -68,24 +61,24 @@ describe('<EarlyAccessModal />', () => {
 
         expect(
             screen.queryByText(
-                'Meet the first AI Agent that sells via playbook',
+                'Acts as a 24/7 virtual shopping assistant, instantly answering pre-sales questions',
             ),
         ).not.toBeInTheDocument()
 
         const tipsTitle = screen.getByText(
-            'Grow GMV with Sales Skills for your AI Agent',
+            'Increase your chat conversion rate and maximize revenue opportunities',
         )
         fireEvent.click(tipsTitle)
 
         expect(
             screen.queryByText(
-                'Meet the first AI Agent that sells via playbook',
+                'Acts as a 24/7 virtual shopping assistant, instantly answering pre-sales questions',
             ),
         ).toBeInTheDocument()
     })
 
     it('should render good pricing values', () => {
-        const { getAllByText } = render(
+        render(
             <EarlyAccessModal
                 isOpen
                 isLoading={false}
@@ -117,27 +110,14 @@ describe('<EarlyAccessModal />', () => {
             />,
         )
 
-        const [currentPlan, newPlan] = getAllByText(
-            'per automated conversation',
-        )
-
-        expect(currentPlan).toBeInTheDocument()
-        expect(newPlan).toBeInTheDocument()
-        expect(currentPlan.textContent).toContain(
-            '$2 per automated conversation',
-        )
-        expect(newPlan.textContent).toContain('$1 per automated conversation')
-
-        const [currentPlanExtraCost, newPlanExtraCost] =
-            getAllByText('Overage:')
-        expect(currentPlanExtraCost).toBeInTheDocument()
-        expect(newPlanExtraCost).toBeInTheDocument()
-        expect(currentPlanExtraCost.parentElement?.textContent).toContain(
-            'Overage: $2.50',
-        )
-        expect(newPlanExtraCost.parentElement?.textContent).toContain(
-            'Overage: $1.50',
-        )
+        const overageElement = screen.getByText('Overage:', {
+            selector: 'span',
+        })
+        expect(
+            within(overageElement.parentElement as HTMLElement).getByText(
+                '$1.50',
+            ),
+        ).toBeInTheDocument()
     })
 
     it('should display discount information when available', () => {
@@ -164,7 +144,7 @@ describe('<EarlyAccessModal />', () => {
             />,
         )
 
-        expect(getByText('Save $180/month for 12 months')).toBeInTheDocument()
+        expect(getByText('450 automated tickets/months')).toBeInTheDocument()
     })
 
     it.each([
@@ -191,22 +171,17 @@ describe('<EarlyAccessModal />', () => {
             />,
         )
 
-        const upgradeCta = queryByText(
-            'Upgrade AI Agent With Early Access Plan',
-        )?.parentElement
-        // I wanted to check the disabled attribute, but the Button component does not have a disabled attribute 😅
-        const stayCta = queryByText('Stay On Current Plan')
+        const upgradeCta = queryByText('Upgrade AI Agent')?.parentElement
+
         const warningBanner = queryByText(
             'You do not have admin access. Contact your admin to upgrade.',
         )
 
         if (userIsAdmin) {
             expect(upgradeCta).toBeAriaEnabled()
-            expect(stayCta).toBeAriaEnabled()
             expect(warningBanner).not.toBeInTheDocument()
         } else {
             expect(upgradeCta).toBeAriaDisabled()
-            expect(stayCta).toBeAriaDisabled()
             expect(warningBanner).toBeInTheDocument()
         }
     })
