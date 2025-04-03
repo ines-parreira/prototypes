@@ -88,7 +88,7 @@ describe('useCsat', () => {
 
         expect(result.current).toEqual({
             'data-candu-id': 'ai-agent-overview-kpi-csat',
-            title: 'CSAT (Customer Satisfaction Score)',
+            title: 'CSAT',
             hint: {
                 title: 'The average satisfaction rating for AI Agent interactions, based on surveys sent after ticket resolution',
             },
@@ -217,7 +217,7 @@ describe('useCsat', () => {
 
             expect(result.current).toEqual({
                 'data-candu-id': 'ai-agent-overview-kpi-csat',
-                title: 'CSAT (Customer Satisfaction Score)',
+                title: 'CSAT',
                 hint: {
                     title: 'The average satisfaction rating for AI Agent interactions, based on surveys sent after ticket resolution',
                 },

@@ -63,7 +63,7 @@ export const useCsat = (filters: StatsFilters, timezone: string): KpiMetric => {
 
     return {
         hidden: !hasEmailAgentEnabled,
-        title: 'CSAT (Customer Satisfaction Score)',
+        title: 'CSAT',
         hint: {
             title: 'The average satisfaction rating for AI Agent interactions, based on surveys sent after ticket resolution',
         },

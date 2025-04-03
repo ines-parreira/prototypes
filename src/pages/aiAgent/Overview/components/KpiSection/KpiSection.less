@@ -8,6 +8,20 @@
         justify-content: space-between;
         display: grid;
         grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+
+        [class*='MetricCard--title--'] {
+            width: 100%;
+            gap: @layout-spacing-xxs;
+
+            :first-child {
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
+            }
+            :last-child {
+                margin: 0;
+            }
+        }
     }
 
     .titleWrapper {

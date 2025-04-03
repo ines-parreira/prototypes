@@ -48,7 +48,7 @@ export const Kpi = ({
             return <Skeleton width={150} />
         }
 
-        return <div>{title}</div>
+        return <div title={title}>{title}</div>
     }, [title])
 
     return (
