@@ -28,6 +28,7 @@ describe('LiveVoiceAgentsSection', () => {
             cleanStatsFilters: {
                 [FilterKey.Agents]: { values: [1, 2] },
                 [FilterKey.Integrations]: { values: [3, 4] },
+                [FilterKey.VoiceQueues]: { values: [5, 6] },
             } as StatsFiltersWithLogicalOperator,
         },
     ) => render(<LiveVoiceAgentsSection {...props} />)
@@ -80,6 +81,7 @@ describe('LiveVoiceAgentsSection', () => {
             {
                 agent_ids: [1, 2],
                 integration_ids: [3, 4],
+                voice_queue_ids: [5, 6],
             },
             expect.any(Object),
         )

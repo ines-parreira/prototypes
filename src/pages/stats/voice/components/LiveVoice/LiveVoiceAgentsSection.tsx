@@ -27,6 +27,7 @@ export default function LiveVoiceAgentsSection({ cleanStatsFilters }: Props) {
             agent_ids: cleanStatsFilters?.[FilterKey.Agents]?.values,
             integration_ids:
                 cleanStatsFilters?.[FilterKey.Integrations]?.values,
+            voice_queue_ids: cleanStatsFilters?.[FilterKey.VoiceQueues]?.values,
         },
         {
             http: {
