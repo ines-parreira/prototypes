@@ -7,3 +7,4 @@ export type PlaygroundFormValues = {
 }
 
 export type PlaygroundChannels = 'chat' | 'email'
+export type PlaygroundChannelAvailability = 'online' | 'offline'

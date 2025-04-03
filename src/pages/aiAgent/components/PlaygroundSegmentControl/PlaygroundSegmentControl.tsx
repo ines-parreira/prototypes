@@ -1,13 +1,17 @@
 import Button from 'pages/common/components/button/Button'
 
-import { PlaygroundChannels } from '../PlaygroundChat/PlaygroundChat.types'
-
 import css from './PlaygroundSegmentControl.less'
 
+type Segment = {
+    value: string
+    label: string
+}
+
 type Props = {
-    selectedChannel: PlaygroundChannels
-    onChannelChange: (channel: PlaygroundChannels) => void
+    selectedValue: string
+    onValueChange: (value: string) => void
     isDisabled?: boolean
+    segments: Segment[]
 }
 
 const SegmentButton = ({
@@ -37,24 +41,22 @@ const SegmentButton = ({
 }
 
 export const PlaygroundSegmentControl = ({
-    selectedChannel,
-    onChannelChange,
+    selectedValue,
+    onValueChange,
     isDisabled,
+    segments,
 }: Props) => {
     return (
         <div className={css.container}>
-            <SegmentButton
-                isActive={selectedChannel === 'email'}
-                label="Email"
-                onClick={() => onChannelChange('email')}
-                isDisabled={isDisabled}
-            />
-            <SegmentButton
-                isActive={selectedChannel === 'chat'}
-                label="Chat"
-                onClick={() => onChannelChange('chat')}
-                isDisabled={isDisabled}
-            />
+            {segments.map((segment) => (
+                <SegmentButton
+                    key={segment.value}
+                    isActive={selectedValue === segment.value}
+                    label={segment.label}
+                    onClick={() => onValueChange(segment.value)}
+                    isDisabled={isDisabled}
+                />
+            ))}
         </div>
     )
 }

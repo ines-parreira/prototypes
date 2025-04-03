@@ -21,7 +21,10 @@ import { PlaygroundInputSection } from '../PlaygroundInputSection/PlaygroundInpu
 import PlaygroundMessageComponent, {
     AI_AGENT_SENDER,
 } from '../PlaygroundMessage/PlaygroundMessage'
-import { PlaygroundChannels } from './PlaygroundChat.types'
+import {
+    PlaygroundChannelAvailability,
+    PlaygroundChannels,
+} from './PlaygroundChat.types'
 
 import css from './PlaygroundChat.less'
 
@@ -38,6 +41,8 @@ export const PlaygroundChat = ({
 }: Props) => {
     const messageContainerRef = useRef<HTMLDivElement>(null)
     const [channel, setChannel] = useState<PlaygroundChannels>('email')
+    const [channelAvailability, setChannelAvailability] =
+        useState<PlaygroundChannelAvailability>('online')
 
     const {
         messages,
@@ -52,6 +57,11 @@ export const PlaygroundChat = ({
         accountId: accountData.accountId,
         currentUserFirstName,
         channel,
+        channelIntegrationId:
+            channel === 'chat'
+                ? storeData.monitoredChatIntegrations[0]
+                : undefined,
+        channelAvailability,
     })
 
     const {
@@ -212,6 +222,8 @@ export const PlaygroundChat = ({
                     channel={channel}
                     isWaitingResponse={isWaitingResponse}
                     onPromptMessage={onPromptMessage}
+                    channelAvailability={channelAvailability}
+                    onChannelAvailabilityChange={setChannelAvailability}
                 />
             </div>
         </div>

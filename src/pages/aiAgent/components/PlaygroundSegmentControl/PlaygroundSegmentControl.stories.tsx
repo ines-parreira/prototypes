@@ -6,7 +6,7 @@ const meta: Meta<typeof PlaygroundSegmentControl> = {
     title: 'AI Agent/Playground/SegmentControl',
     component: PlaygroundSegmentControl,
     argTypes: {
-        selectedChannel: {
+        selectedValue: {
             control: {
                 type: 'select',
                 options: ['email', 'chat'],
@@ -22,6 +22,6 @@ type Story = StoryObj<typeof PlaygroundSegmentControl>
 export const Default: Story = {
     render: (args) => <PlaygroundSegmentControl {...args} />,
     args: {
-        selectedChannel: 'email',
+        selectedValue: 'email',
     },
 }

@@ -13,6 +13,7 @@ import {
 } from 'models/aiAgentPlayground/types'
 
 import {
+    PlaygroundChannelAvailability,
     PlaygroundChannels,
     PlaygroundFormValues,
 } from '../components/PlaygroundChat/PlaygroundChat.types'
@@ -25,13 +26,26 @@ import {
     PLAYGROUND_PROMPT_CONTENT,
 } from '../constants'
 
-export const getPlaygroundMessageMeta = (
-    message: PlaygroundMessage,
+type PlaygroundMessageMeta = {
+    ai_agent_message_type: string
+    chat_availability?: string
+}
+
+type GetPlaygroundMessageMetaInput = {
+    message: PlaygroundMessage
+    firstShopperMessage?: boolean
+    channelAvailability?: PlaygroundChannelAvailability
+}
+
+export const getPlaygroundMessageMeta = ({
+    message,
     firstShopperMessage = false,
-) => {
+    channelAvailability,
+}: GetPlaygroundMessageMetaInput): PlaygroundMessageMeta | undefined => {
     if (firstShopperMessage) {
         return {
             ai_agent_message_type: AiAgentMessageType.ENTRY_CUSTOMER_MESSAGE,
+            chat_availability: channelAvailability,
         }
     }
     if (message.type === MessageType.PROMPT) {
@@ -66,10 +80,10 @@ export const mapPlaygroundMessagesToServerMessages = (
                 fromAgent: m.sender === AI_AGENT_SENDER,
                 createdDatetime: m.createdDatetime,
                 // We should annotate the first message as an entry message
-                meta: getPlaygroundMessageMeta(
-                    m,
-                    channel === 'chat' && index === 0,
-                ),
+                meta: getPlaygroundMessageMeta({
+                    message: m,
+                    firstShopperMessage: channel === 'chat' && index === 0,
+                }),
             }
         })
 }

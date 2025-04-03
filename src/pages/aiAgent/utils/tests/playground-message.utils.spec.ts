@@ -149,7 +149,10 @@ describe('playground-message utils', () => {
                 createdDatetime: '2021-07-29T09:00:00Z',
             }
 
-            const result = getPlaygroundMessageMeta(message, true)
+            const result = getPlaygroundMessageMeta({
+                message,
+                firstShopperMessage: true,
+            })
 
             expect(result).toEqual({
                 ai_agent_message_type:
@@ -166,7 +169,7 @@ describe('playground-message utils', () => {
                 createdDatetime: '2021-07-29T09:00:00Z',
             }
 
-            const result = getPlaygroundMessageMeta(message)
+            const result = getPlaygroundMessageMeta({ message })
 
             expect(result).toEqual({
                 ai_agent_message_type: 'ai_agent_response_relevant_true',
@@ -182,7 +185,7 @@ describe('playground-message utils', () => {
                 createdDatetime: '2021-07-29T09:00:00Z',
             }
 
-            const result = getPlaygroundMessageMeta(message)
+            const result = getPlaygroundMessageMeta({ message })
 
             expect(result).toEqual({
                 ai_agent_message_type: 'ai_agent_response_relevant_false',
@@ -197,7 +200,7 @@ describe('playground-message utils', () => {
                 createdDatetime: '2021-07-29T09:00:00Z',
             }
 
-            const result = getPlaygroundMessageMeta(message)
+            const result = getPlaygroundMessageMeta({ message })
 
             expect(result).toEqual({
                 ai_agent_message_type: AiAgentMessageType.GREETING,
@@ -212,9 +215,30 @@ describe('playground-message utils', () => {
                 createdDatetime: '2021-07-29T09:00:00Z',
             }
 
-            const result = getPlaygroundMessageMeta(message)
+            const result = getPlaygroundMessageMeta({ message })
 
             expect(result).toBeUndefined()
+        })
+
+        it('should set the given channel availability', () => {
+            const message: PlaygroundMessage = {
+                type: MessageType.MESSAGE,
+                content: 'Test message',
+                sender: 'User',
+                createdDatetime: '2021-07-29T09:00:00Z',
+            }
+
+            const result = getPlaygroundMessageMeta({
+                message,
+                firstShopperMessage: true,
+                channelAvailability: 'online',
+            })
+
+            expect(result).toEqual({
+                ai_agent_message_type:
+                    AiAgentMessageType.ENTRY_CUSTOMER_MESSAGE,
+                chat_availability: 'online',
+            })
         })
     })
 })

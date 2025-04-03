@@ -14,7 +14,10 @@ import {
 } from 'models/aiAgentPlayground/types'
 import { reportError } from 'utils/errors'
 
-import { PlaygroundChannels } from '../components/PlaygroundChat/PlaygroundChat.types'
+import {
+    PlaygroundChannelAvailability,
+    PlaygroundChannels,
+} from '../components/PlaygroundChat/PlaygroundChat.types'
 import {
     AI_AGENT_SENDER,
     GREETING_MESSAGE,
@@ -39,6 +42,8 @@ export const usePlaygroundMessages = ({
     httpIntegrationId,
     currentUserFirstName,
     channel,
+    channelIntegrationId,
+    channelAvailability,
 }: {
     storeData: StoreConfiguration
     gorgiasDomain: string
@@ -46,6 +51,8 @@ export const usePlaygroundMessages = ({
     httpIntegrationId: number
     currentUserFirstName?: string
     channel: PlaygroundChannels
+    channelIntegrationId?: number
+    channelAvailability?: PlaygroundChannelAvailability
 }) => {
     const initialMessages: PlaygroundMessage[] = useMemo(
         () => [
@@ -141,14 +148,19 @@ export const usePlaygroundMessages = ({
                             filteredMessages,
                             channel,
                         ),
-                        meta: getPlaygroundMessageMeta(
-                            lastMessage,
+                        meta: getPlaygroundMessageMeta({
+                            message: lastMessage,
                             // If the only message is coming from the user, it's the first message and we should mark it as such
-                            channel === 'chat' &&
+                            firstShopperMessage:
+                                channel === 'chat' &&
                                 filteredMessages.filter(
                                     (m) => m.sender !== AI_AGENT_SENDER,
                                 ).length === 1,
-                        ),
+                            channelAvailability:
+                                channel === 'chat'
+                                    ? channelAvailability
+                                    : undefined,
+                        }),
                         subject: subject ?? '',
                         http_integration_id: httpIntegrationId,
                         account_id: accountId,
@@ -157,6 +169,7 @@ export const usePlaygroundMessages = ({
                         _playground_options: {
                             shopName: storeData.storeName,
                         },
+                        channel_integration_id: channelIntegrationId,
                     },
                     abortController,
                 ])
@@ -227,6 +240,8 @@ export const usePlaygroundMessages = ({
             onNewConversation,
             storeData,
             submitPlaygroundTicket,
+            channelIntegrationId,
+            channelAvailability,
         ],
     )
 

@@ -29,6 +29,7 @@ export type CreatePlaygroundBody = {
     _playground_options: CreatePlaygroundOptions
     // Property for AI Agent to identify actions
     _action_serialized_state?: unknown
+    channel_integration_id?: number
 }
 
 export type MockTicketMessage = {

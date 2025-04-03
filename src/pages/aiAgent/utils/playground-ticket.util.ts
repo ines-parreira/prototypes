@@ -34,6 +34,7 @@ export type NewCustomerData = {
     created_datetime: string
     channel: PlaygroundChannels
     meta?: Record<string, string>
+    channel_integration_id?: number
 }
 
 const createMockTicketMessage = ({
@@ -43,6 +44,7 @@ const createMockTicketMessage = ({
     from_agent,
     channel,
     meta = {},
+    channel_integration_id,
 }: {
     body_text: string
     subject: string
@@ -50,6 +52,7 @@ const createMockTicketMessage = ({
     from_agent: boolean
     channel: PlaygroundChannels
     meta?: Record<string, string>
+    channel_integration_id?: number
 }): MockTicketMessage => ({
     attachments: [],
     body_html: '',
@@ -59,7 +62,7 @@ const createMockTicketMessage = ({
     intents: [],
     from_agent,
     id: 233881,
-    integration_id: PLAYGROUND_INTEGRATION_ID,
+    integration_id: channel_integration_id ?? PLAYGROUND_INTEGRATION_ID,
     sender: from_agent
         ? {
               email: 'bot',
@@ -111,6 +114,7 @@ export const createMockHttpIntegrationPayload = ({
     channel,
     customer,
     from_agent,
+    channel_integration_id,
 }: NewCustomerData): AiAgentInput => ({
     message: createMockTicketMessage({
         body_text: body_text,
@@ -119,6 +123,7 @@ export const createMockHttpIntegrationPayload = ({
         from_agent,
         channel,
         meta,
+        channel_integration_id,
     }),
     ticket: {
         account: {
@@ -137,6 +142,7 @@ export const createMockHttpIntegrationPayload = ({
                     from_agent: message.fromAgent,
                     channel,
                     meta: message.meta,
+                    channel_integration_id,
                 }),
             ),
         ),

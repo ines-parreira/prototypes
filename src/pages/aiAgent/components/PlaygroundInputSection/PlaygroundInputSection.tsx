@@ -1,9 +1,11 @@
 import React, { ReactNode, useCallback, useEffect, useRef } from 'react'
 
 import classnames from 'classnames'
+import { useFlags } from 'launchdarkly-react-client-sdk'
 
 import { Tooltip } from '@gorgias/merchant-ui-kit'
 
+import { FeatureFlagKey } from 'config/featureFlags'
 import { useSearchParam } from 'hooks/useSearchParam'
 import { PlaygroundPromptType } from 'models/aiAgentPlayground/types'
 import Button from 'pages/common/components/button/Button'
@@ -17,6 +19,7 @@ import {
 import { PlaygroundCustomer } from '../../types'
 import { PlaygroundAction } from '../PlaygroundActions/types'
 import {
+    PlaygroundChannelAvailability,
     PlaygroundChannels,
     PlaygroundFormValues,
 } from '../PlaygroundChat/PlaygroundChat.types'
@@ -25,6 +28,28 @@ import { PlaygroundEditor } from '../PlaygroundEditor/PlaygroundEditor'
 import { PlaygroundSegmentControl } from '../PlaygroundSegmentControl/PlaygroundSegmentControl'
 
 import css from './PlaygroundInputSection.less'
+
+const CHANNEL_SEGMENTS = [
+    {
+        label: 'Email',
+        value: 'email',
+    },
+    {
+        label: 'Chat',
+        value: 'chat',
+    },
+]
+
+const CHAT_AVAILABILITY_SEGMENTS = [
+    {
+        label: 'Online',
+        value: 'online',
+    },
+    {
+        label: 'Offline',
+        value: 'offline',
+    },
+]
 
 type Props = {
     formValues: PlaygroundFormValues
@@ -42,6 +67,8 @@ type Props = {
     channel: PlaygroundChannels
     isWaitingResponse: boolean
     onPromptMessage: (action: PlaygroundPromptType) => void
+    channelAvailability: PlaygroundChannelAvailability
+    onChannelAvailabilityChange: (value: PlaygroundChannelAvailability) => void
 }
 export const PlaygroundInputSection = ({
     formValues,
@@ -56,7 +83,14 @@ export const PlaygroundInputSection = ({
     channel,
     isWaitingResponse,
     onPromptMessage,
+    channelAvailability,
+    onChannelAvailabilityChange,
 }: Props) => {
+    const handoverCustomizationSettingsConfigurationEnabled:
+        | boolean
+        | undefined =
+        useFlags()[FeatureFlagKey.AiAgentHandoverCustomizationConfiguration]
+
     const handleMessageChange = (message: string) => {
         onFormValuesChange('message', message)
     }
@@ -112,6 +146,20 @@ export const PlaygroundInputSection = ({
         [onFormValuesChange],
     )
 
+    const handleChannelChange = useCallback(
+        (value: string) => {
+            onChannelChange(value as PlaygroundChannels)
+        },
+        [onChannelChange],
+    )
+
+    const handleChannelAvailabilityChange = useCallback(
+        (value: string) => {
+            onChannelAvailabilityChange(value as PlaygroundChannelAvailability)
+        },
+        [onChannelAvailabilityChange],
+    )
+
     return (
         <div className={css.container}>
             <div
@@ -121,10 +169,20 @@ export const PlaygroundInputSection = ({
             >
                 <div className={css.topSection}>
                     <PlaygroundSegmentControl
-                        selectedChannel={channel}
-                        onChannelChange={onChannelChange}
+                        selectedValue={channel}
+                        onValueChange={handleChannelChange}
                         isDisabled={!isInitialMessage}
+                        segments={CHANNEL_SEGMENTS}
                     />
+                    {handoverCustomizationSettingsConfigurationEnabled &&
+                        channel === 'chat' && (
+                            <PlaygroundSegmentControl
+                                selectedValue={channelAvailability}
+                                onValueChange={handleChannelAvailabilityChange}
+                                isDisabled={!isInitialMessage}
+                                segments={CHAT_AVAILABILITY_SEGMENTS}
+                            />
+                        )}
                     {channel === 'email' && (
                         <PlaygroundCustomerSelection
                             customer={formValues.customer}

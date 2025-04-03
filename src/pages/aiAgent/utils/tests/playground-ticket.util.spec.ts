@@ -93,6 +93,22 @@ describe('playground-ticket util', () => {
         `)
     })
 
+    it('should create mock http payload with given channel integration id', () => {
+        const result = createMockHttpIntegrationPayload({
+            body_text: 'test',
+            subject: '',
+            domain: 'test-gorgias',
+            from_agent: false,
+            messages: [],
+            created_datetime: '123',
+            channel: 'email',
+            customer: PLAYGROUND_CUSTOMER_MOCK,
+            channel_integration_id: 300,
+        })
+
+        expect(result.message.integration_id).toBe(300)
+    })
+
     describe('getTicketCustomer', () => {
         it('should return mock customer', async () => {
             const expected = {

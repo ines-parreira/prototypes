@@ -51,6 +51,7 @@ const mockTicket = (body: CreatePlaygroundBody) => {
             meta: body.meta,
             customer: body.customer,
             from_agent: body.from_agent,
+            channel_integration_id: body.channel_integration_id,
         }),
         _action_serialized_state: body._action_serialized_state,
         _playground_options: body._playground_options,
