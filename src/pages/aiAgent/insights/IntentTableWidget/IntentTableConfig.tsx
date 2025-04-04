@@ -64,7 +64,7 @@ export const IntentsColumnsConfig: Partial<
     [IntentTableColumn.AutomationOpportunities]: {
         format: 'decimal-percent-to-integer-percent',
         hint: {
-            title: 'Estimated potential to improve your automation rate, base on the potential uplift between your current success rate and the ticket volume of the intent.',
+            title: 'Estimated potential to improve your success rate, base on the potential uplift between your current success rate and the ticket volume of the intent.',
         },
         perAgent: true,
         notAvailableText: '-',

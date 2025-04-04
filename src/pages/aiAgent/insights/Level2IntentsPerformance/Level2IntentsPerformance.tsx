@@ -50,7 +50,7 @@ export const Level2IntentsPerformance = () => {
                 {
                     title: 'Automation opportunity',
                     hint: {
-                        title: 'Estimated potential to improve your automation rate, based on the potential uplift between your current automation rate and the ticket volume of the intent.',
+                        title: 'Estimated potential to improve your success rate, based on the potential uplift between your current success rate and the ticket volume of the intent.',
                     },
                     trend: aiAgentMetrics.automationOpportunityPerIntent,
                     interpretAs: 'more-is-better',
@@ -70,7 +70,7 @@ export const Level2IntentsPerformance = () => {
                     },
                 },
                 {
-                    title: 'Automation rate',
+                    title: 'Success rate',
                     trend: aiAgentMetrics.successRatePerIntent,
                     interpretAs: 'more-is-better',
                     metricFormat: 'decimal-to-percent',

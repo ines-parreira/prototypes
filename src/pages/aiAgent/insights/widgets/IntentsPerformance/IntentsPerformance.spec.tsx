@@ -65,9 +65,9 @@ const metric2 = {
 }
 
 const metric3 = {
-    title: 'Automation rate',
+    title: 'Success rate',
     hint: {
-        title: 'Automation rate hint',
+        title: 'Success rate hint',
     },
     trend: {
         isFetching: false,
@@ -76,7 +76,7 @@ const metric3 = {
     },
     interpretAs,
     metricFormat: 'decimal-to-percent' as MetricTrendFormat,
-    tip: <div>Automation rate tip</div>,
+    tip: <div>Success rate tip</div>,
 }
 
 const metric4 = {
@@ -120,7 +120,7 @@ describe('IntentsPerformance', () => {
         expect(screen.getByText('Automated interactions')).toBeInTheDocument()
         expect(screen.getByText('420')).toBeInTheDocument()
 
-        expect(screen.getByText('Automation rate')).toBeInTheDocument()
+        expect(screen.getByText('Success rate')).toBeInTheDocument()
         expect(screen.getByText('16%')).toBeInTheDocument()
 
         expect(screen.getByText('Customer satisfaction')).toBeInTheDocument()
@@ -160,7 +160,7 @@ describe('IntentsPerformance', () => {
         expect(
             screen.getByText('Automated interactions tip'),
         ).toBeInTheDocument()
-        expect(screen.getByText('Automation rate tip')).toBeInTheDocument()
+        expect(screen.getByText('Success rate tip')).toBeInTheDocument()
         expect(
             screen.getByText('Customer satisfaction tip'),
         ).toBeInTheDocument()
@@ -183,9 +183,7 @@ describe('IntentsPerformance', () => {
         expect(
             screen.queryByText('Automated interactions tip'),
         ).not.toBeInTheDocument()
-        expect(
-            screen.queryByText('Automation rate tip'),
-        ).not.toBeInTheDocument()
+        expect(screen.queryByText('Success rate tip')).not.toBeInTheDocument()
         expect(
             screen.queryByText('Customer satisfaction tip'),
         ).not.toBeInTheDocument()

@@ -110,7 +110,7 @@ describe('Level2IntentsPerformance', () => {
         expect(metrics[1].trend.data?.value).toBe(20)
         expect(metrics[1]?.trend.data?.prevValue).toBe(15)
 
-        expect(metrics[2].title).toBe('Automation rate')
+        expect(metrics[2].title).toBe('Success rate')
         expect(metrics[2].trend.data?.value).toBe(0.8)
         expect(metrics[2].trend.data?.prevValue).toBe(0.75)
 
