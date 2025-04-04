@@ -1,6 +1,10 @@
-import React, { forwardRef } from 'react'
+import { forwardRef } from 'react'
 
-import { GroupedVirtuosoProps, VirtuosoProps } from 'react-virtuoso'
+import {
+    GroupedVirtuosoProps,
+    TableVirtuosoProps,
+    VirtuosoProps,
+} from 'react-virtuoso'
 
 //eslint-disable-next-line @typescript-eslint/no-unused-vars
 function Virtuoso(props: VirtuosoProps<unknown, unknown>, _ref: any) {
@@ -67,9 +71,46 @@ const getRowsFromGroupCounts = (groupCounts: number[]) => {
     >((itemIndex) => [0, itemIndex])
 }
 
+//eslint-disable-next-line @typescript-eslint/no-unused-vars
+function TableVirtuoso(props: TableVirtuosoProps<unknown, unknown>, _ref: any) {
+    const TableHead = props.components?.TableHead
+    const fixedHeaderContent = props.fixedHeaderContent
+    const TableRow = props.components?.TableRow
+    const EmptyPlaceholder = props.components?.EmptyPlaceholder
+
+    return (
+        <table style={props.style} ref={_ref}>
+            {props.data?.length === 0 && !!EmptyPlaceholder && (
+                <EmptyPlaceholder />
+            )}
+            {!!fixedHeaderContent && !!TableHead && (
+                <TableHead>{fixedHeaderContent()}</TableHead>
+            )}
+            {props.data?.map((value, index) => {
+                return !!TableRow ? (
+                    <TableRow
+                        data-index={index}
+                        data-item-index={index}
+                        key={index}
+                        data-known-size={0}
+                    >
+                        {props.itemContent?.(index, value, undefined)}
+                    </TableRow>
+                ) : (
+                    <tr data-index={index} data-item-index={index} key={index}>
+                        {props.itemContent?.(index, value, undefined)}
+                    </tr>
+                )
+            })}
+            <div onClick={props.endReached as any}>end area</div>
+        </table>
+    )
+}
+
 const mockedVirtuoso = {
     Virtuoso: forwardRef(Virtuoso),
     GroupedVirtuoso: forwardRef(GroupedVirtuoso),
+    TableVirtuoso: forwardRef(TableVirtuoso),
 }
 
 export default mockedVirtuoso

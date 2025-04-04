@@ -1,44 +1,37 @@
-import { ReactNode, useState } from 'react'
+import { ReactNode } from 'react'
 
-import {
-    ListVoiceQueuesOrderBy,
-    useListVoiceQueues,
-} from '@gorgias/api-queries'
+import { VoiceQueue } from '@gorgias/api-queries'
 import { Button } from '@gorgias/merchant-ui-kit'
 
-import { NumberedPagination } from 'pages/common/components/Paginations/NumberedPagination'
+import { useInfiniteListVoiceQueues } from 'hooks/reporting/common/useInfiniteListVoiceQueues'
 import SettingsContent from 'pages/settings/SettingsContent'
 import SettingsPageContainer from 'pages/settings/SettingsPageContainer'
 
-import { PHONE_INTEGRATION_BASE_URL, QUEUE_LIST_PAGE_SIZE } from './constants'
+import { PHONE_INTEGRATION_BASE_URL } from './constants'
 import VoiceQueueList from './VoiceQueueList'
 
 export default function VoiceQueueListPage() {
-    const [currentPage, setCurrentPage] = useState(1)
-    const [cursor, setCursor] = useState<string | undefined>()
-    const { data, isError, isFetching, refetch } = useListVoiceQueues(
-        {
-            order_by: ListVoiceQueuesOrderBy.CreatedDatetimeDesc,
-            cursor,
-            limit: QUEUE_LIST_PAGE_SIZE,
-        },
-        {
-            query: {
-                refetchOnWindowFocus: false,
-                keepPreviousData: true,
-            },
-        },
-    )
+    const {
+        data,
+        isFetching,
+        isFetchingNextPage,
+        isFetchedAfterMount,
+        refetch,
+        hasNextPage,
+        fetchNextPage,
+        isError,
+    } = useInfiniteListVoiceQueues()
 
-    const totalResources = data?.data?.meta?.total_resources
+    const queues =
+        data?.pages?.reduce(
+            (acc, page) => [...acc, ...(page.data?.data || [])],
+            [] as VoiceQueue[],
+        ) ?? []
 
-    const handlePageChange = (page: number) => {
-        if (page < currentPage) {
-            setCursor(data?.data?.meta?.prev_cursor ?? undefined)
-        } else {
-            setCursor(data?.data?.meta?.next_cursor ?? undefined)
+    const handleLoadMore = async () => {
+        if (hasNextPage && !isFetching && !isFetchingNextPage) {
+            await fetchNextPage()
         }
-        setCurrentPage(page)
     }
 
     if (isError) {
@@ -55,7 +48,7 @@ export default function VoiceQueueListPage() {
         )
     }
 
-    if (data?.data?.data.length === 0) {
+    if (isFetchedAfterMount && queues.length === 0) {
         return (
             <Wrapper>
                 <p>You have no queues at the moment.</p>
@@ -71,17 +64,7 @@ export default function VoiceQueueListPage() {
 
     return (
         <div>
-            <VoiceQueueList queues={data?.data?.data} isFetching={isFetching} />
-            <NumberedPagination
-                onChange={handlePageChange}
-                count={
-                    totalResources
-                        ? Math.ceil(totalResources / QUEUE_LIST_PAGE_SIZE)
-                        : 0
-                }
-                page={currentPage}
-                hideOnSinglePage
-            />
+            <VoiceQueueList queues={queues} onScroll={handleLoadMore} />
         </div>
     )
 }

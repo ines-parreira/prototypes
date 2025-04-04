@@ -1,9 +1,11 @@
 import { fireEvent, render, screen, waitFor } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
 
 import { VoiceQueue, VoiceQueueStatus } from '@gorgias/api-queries'
 
 import { voiceQueue } from 'fixtures/voiceQueue'
 import history from 'pages/history'
+import mockedVirtuoso from 'tests/mockedVirtuoso'
 
 import { PHONE_INTEGRATION_BASE_URL } from '../constants'
 import VoiceQueueList from '../VoiceQueueList'
@@ -14,6 +16,8 @@ jest.mock('@gorgias/merchant-ui-kit', () => ({
     ...jest.requireActual('@gorgias/merchant-ui-kit'),
     Skeleton: () => <div>Skeleton</div>,
 }))
+
+jest.mock('react-virtuoso', () => mockedVirtuoso)
 
 describe('VoiceQueueList', () => {
     const mockQueues: VoiceQueue[] = [
@@ -30,9 +34,10 @@ describe('VoiceQueueList', () => {
             status: VoiceQueueStatus.Disabled,
         },
     ]
+    const mockOnScroll = jest.fn()
 
     const renderComponent = (
-        props = { queues: mockQueues, isFetching: false },
+        props = { queues: mockQueues, onScroll: mockOnScroll },
     ) => {
         return render(<VoiceQueueList {...props} />)
     }
@@ -40,14 +45,15 @@ describe('VoiceQueueList', () => {
     it('should render the list of queues when not fetching', () => {
         renderComponent()
 
+        expect(screen.getByText('Name')).toBeInTheDocument()
         expect(screen.getByText('Queue 1')).toBeInTheDocument()
         expect(screen.getByText('Queue 2')).toBeInTheDocument()
         expect(screen.getByText('enabled')).toBeInTheDocument()
         expect(screen.getByText('disabled')).toBeInTheDocument()
     })
 
-    it('should render skeleton loading state when fetching', () => {
-        renderComponent({ queues: [], isFetching: true })
+    it('should render skeleton loading state with no queues', () => {
+        renderComponent({ queues: [], onScroll: mockOnScroll })
 
         const skeletons = screen.getAllByText('Skeleton')
         expect(skeletons.length).toBeGreaterThan(0)
@@ -66,5 +72,14 @@ describe('VoiceQueueList', () => {
                 `${PHONE_INTEGRATION_BASE_URL}/queues/1`,
             )
         })
+    })
+
+    it('should call loadMore when end area is reached', () => {
+        const { getByText } = renderComponent()
+
+        const endTrigger = getByText('end area')
+        userEvent.click(endTrigger)
+
+        expect(mockOnScroll).toHaveBeenCalled()
     })
 })
