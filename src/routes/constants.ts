@@ -8,6 +8,7 @@ export const CUSTOM_FIELD_ROUTES = {
 export const CUSTOM_FIELD_CONDITIONS_ROUTE = 'ticket-field-conditions'
 
 export const BASE_STATS_PATH = '/app/stats'
+export const BASE_VOICE_OF_CUSTOMER_PATH = '/app/voice-of-customer'
 
 export const STATS_ROUTES = {
     AI_SALES_AGENT_OVERVIEW: 'ai-sales-agent/overview',
@@ -35,4 +36,9 @@ export const STATS_ROUTES = {
     TICKET_INSIGHTS_TICKET_FIELDS: 'ticket-fields',
     VOICE_AGENTS: 'voice-agents',
     VOICE_OVERVIEW: 'voice-overview',
+}
+
+export const VOICE_OF_CUSTOMER_ROUTES = {
+    OVERVIEW: 'overview',
+    PRODUCT_INSIGHTS: 'product-insights',
 }

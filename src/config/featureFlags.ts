@@ -111,6 +111,7 @@ export enum FeatureFlagKey {
     ReportingAgentsTableAverageAndTotal = 'reporting-agents-table-average-and-total',
     ReportingFilteringAndCalculationsTagsReport = 'reporting-filtering-and-calculations-tags-report',
     ReportingExtendFieldAndTag = 'reporting-extend-field-and-tag-reporting',
+    ReportingVoiceOfCustomer = 'reporting-voice-of-customer',
     RevenueBetaShopifyHeadless = 'revenue-beta-shopify-headless',
     RevenueBetaTesters = 'revenue-beta-testers',
     RevenueDisableUtmParams = 'revenue-disable-utm-params',

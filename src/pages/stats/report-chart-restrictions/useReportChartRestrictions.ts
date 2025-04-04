@@ -71,8 +71,11 @@ export const getUserChartsRestrictions = (
 export const useReportChartRestrictions = () => {
     const currentAccountId = useAppSelector(getCurrentAccountId)
     const currentUser = useAppSelector(getCurrentUser)
-    const { reportRestrictionsMap, chartRestrictionsMap } =
-        useReportRestrictions()
+    const {
+        reportRestrictionsMap,
+        chartRestrictionsMap,
+        moduleRestrictionsMap,
+    } = useReportRestrictions()
 
     const accountRestrictions = useMemo(
         () => getAccountRestrictions(currentAccountId),
@@ -96,18 +99,21 @@ export const useReportChartRestrictions = () => {
 
     const isModuleRestrictedToCurrentUser = useCallback(
         (url: string): boolean => {
-            return !!moduleRestrictions.find((restriction) =>
-                restriction.ids.find(
-                    (restrictionUrl) => restrictionUrl === url,
-                ),
+            const globallyRestricted = !!moduleRestrictionsMap[url]
+            return (
+                globallyRestricted ||
+                !!moduleRestrictions.find((restriction) =>
+                    restriction.ids.find(
+                        (restrictionUrl) => restrictionUrl === url,
+                    ),
+                )
             )
         },
-        [moduleRestrictions],
+        [moduleRestrictions, moduleRestrictionsMap],
     )
 
     const isRouteRestrictedToCurrentUser = useCallback(
         (url: string): boolean => {
-            //TODO
             const config = getReportConfigFromPath(url)
             if (!config) {
                 return false

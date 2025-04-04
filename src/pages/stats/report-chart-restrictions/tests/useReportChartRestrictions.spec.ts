@@ -210,6 +210,7 @@ describe('useReportChartRestrictions', () => {
         useReportRestrictionsMock.mockReturnValue({
             reportRestrictionsMap: {},
             chartRestrictionsMap: {},
+            moduleRestrictionsMap: {},
         })
     })
 
@@ -372,6 +373,7 @@ describe('useReportChartRestrictions', () => {
                     [HelpCenterReportConfig.id]: true,
                 },
                 chartRestrictionsMap: {},
+                moduleRestrictionsMap: {},
             })
 
             mockUseAppSelector

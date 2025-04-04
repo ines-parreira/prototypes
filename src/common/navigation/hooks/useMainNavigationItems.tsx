@@ -18,6 +18,7 @@ export enum MenuItemName {
     Settings = 'settings',
     Statistics = 'statistics',
     Tickets = 'tickets',
+    VoiceOfCustomer = 'voice-of-customer',
 }
 
 export type MenuItem = {

@@ -137,6 +137,7 @@ import TicketSourceContainer from 'pages/tickets/detail/TicketSourceContainer'
 import TicketNavbar from 'pages/tickets/navbar/TicketNavbar'
 import SettingsRoutes from 'routes/settings'
 import { StatsRoutes } from 'routes/StatsRoutes'
+import { VoiceOfCustomerRoutes } from 'routes/VoiceOfCustomerRoutes'
 
 export default function Routes() {
     return (
@@ -169,6 +170,11 @@ export function AppRoutes() {
             {!isModuleRestrictedToCurrentUser(`${path}/stats`) && (
                 <Route path={`${path}/stats`}>
                     <StatsRoutes />
+                </Route>
+            )}
+            {!isModuleRestrictedToCurrentUser(`${path}/voice-of-customer`) && (
+                <Route path={`${path}/voice-of-customer`}>
+                    <VoiceOfCustomerRoutes />
                 </Route>
             )}
             <Route path={`${path}/automation`} render={AutomationRoutes} />

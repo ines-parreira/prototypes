@@ -106,6 +106,7 @@ const useReportRestrictionsMock = assumeMock(useReportRestrictions)
 useReportRestrictionsMock.mockReturnValue({
     reportRestrictionsMap: {},
     chartRestrictionsMap: {},
+    moduleRestrictionsMap: {},
 })
 
 describe('VoiceOverview', () => {

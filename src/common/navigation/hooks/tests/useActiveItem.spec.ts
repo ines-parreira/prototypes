@@ -22,6 +22,7 @@ describe('useActiveItem', () => {
         ['/app/tickets', 'tickets'],
         ['/app/views', 'tickets'],
         ['/app/whatever', 'tickets'],
+        ['/app/voice-of-customer', 'voice-of-customer'],
     ])('should return the corrent item for %s', (path, item) => {
         useLocationMock.mockReturnValue({ pathname: path } as Location)
 

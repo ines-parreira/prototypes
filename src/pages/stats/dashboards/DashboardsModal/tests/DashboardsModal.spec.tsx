@@ -111,6 +111,7 @@ describe('AddChartsModal', () => {
         useReportRestrictionsMock.mockReturnValue({
             reportRestrictionsMap: {},
             chartRestrictionsMap: {},
+            moduleRestrictionsMap: {},
         })
     })
 

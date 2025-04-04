@@ -21,6 +21,7 @@ describe('useRestrictedReportsConfig', () => {
                 [restrictedReport.id]: true,
             },
             chartRestrictionsMap: {},
+            moduleRestrictionsMap: {},
         })
 
         const { result } = renderHook(() => useRestrictedReportsConfig())
@@ -48,6 +49,7 @@ describe('useRestrictedReportsConfig', () => {
             chartRestrictionsMap: {
                 [restrictedChart]: true,
             },
+            moduleRestrictionsMap: {},
         })
 
         const { result } = renderHook(() => useRestrictedReportsConfig())

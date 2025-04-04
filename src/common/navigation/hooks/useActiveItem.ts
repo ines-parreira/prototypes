@@ -14,6 +14,7 @@ const pathItemMap: Record<string, string> = {
     '/app/ticket': 'tickets',
     '/app/tickets': 'tickets',
     '/app/views': 'tickets',
+    '/app/voice-of-customer': 'voice-of-customer',
 }
 
 export default function useActiveItem() {

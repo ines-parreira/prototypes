@@ -5,6 +5,7 @@ import { NavBarButtonTooltip } from 'common/navigation/components/NavBarButtonTo
 import NotificationsItem from 'common/navigation/components/NotificationsItem'
 import UserItem from 'common/navigation/components/UserItem'
 import useActiveItem from 'common/navigation/hooks/useActiveItem'
+import { MenuItemName } from 'common/navigation/hooks/useMainNavigationItems'
 import { useNavBar } from 'common/navigation/hooks/useNavBar/useNavBar'
 import { useNavBarMenuIcon } from 'common/navigation/hooks/useNavBarMenuIcon'
 import { useNavBarShortcuts } from 'common/navigation/hooks/useNavBarShortcuts'
@@ -14,7 +15,7 @@ import { useFlag } from 'core/flags'
 import useAppSelector from 'hooks/useAppSelector'
 import { useHasAiAgentMenu } from 'pages/aiAgent/hooks/useHasAiAgentMenu'
 import { useReportChartRestrictions } from 'pages/stats/report-chart-restrictions/useReportChartRestrictions'
-import { BASE_STATS_PATH } from 'routes/constants'
+import { BASE_STATS_PATH, BASE_VOICE_OF_CUSTOMER_PATH } from 'routes/constants'
 import { getCurrentUser } from 'state/currentUser/selectors'
 import { hasRole } from 'utils'
 
@@ -30,6 +31,9 @@ export default function GlobalNavigation() {
     const { isModuleRestrictedToCurrentUser } = useReportChartRestrictions()
     const isAccessRestrictedToStatistics =
         isModuleRestrictedToCurrentUser(BASE_STATS_PATH)
+    const isVoiceOfCustomerRestricted = isModuleRestrictedToCurrentUser(
+        BASE_VOICE_OF_CUSTOMER_PATH,
+    )
     const hasAiAgentMenu = useHasAiAgentMenu()
 
     useNavBarShortcuts()
@@ -114,10 +118,22 @@ export default function GlobalNavigation() {
                         <GlobalNavigationItem
                             icon="bar_chart"
                             label="Statistics"
-                            isActive={activeItem === 'statistics'}
+                            isActive={activeItem === MenuItemName.Statistics}
                             tooltip={<span>Statistics</span>}
                             url={BASE_STATS_PATH}
                             data-candu-id="global-navigation-menu-statistics-page"
+                        />
+                    )}
+                    {!isVoiceOfCustomerRestricted && (
+                        <GlobalNavigationItem
+                            icon="psychology"
+                            label="Statistics"
+                            isActive={
+                                activeItem === MenuItemName.VoiceOfCustomer
+                            }
+                            tooltip={<span>Voice of Customer</span>}
+                            url={BASE_VOICE_OF_CUSTOMER_PATH}
+                            data-candu-id="global-navigation-menu-voice-of-customer-page"
                         />
                     )}
                 </div>
