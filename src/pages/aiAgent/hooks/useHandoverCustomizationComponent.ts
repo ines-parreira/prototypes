@@ -2,15 +2,15 @@ import { useCallback, useEffect, useMemo, useState } from 'react'
 
 import { GORGIAS_CHAT_LIVE_CHAT_OFFLINE } from 'config/integrations/gorgias_chat'
 import useUpdateEffect from 'hooks/useUpdateEffect'
+import {
+    getAvailableChats,
+    getFirstAvailableChat,
+} from 'pages/aiAgent/utils/handoverCustomization/handoverCustomizationChatSettingsComponent.utils'
 import useSelfServiceChatChannels from 'pages/automate/common/hooks/useSelfServiceChatChannels'
 import { Value } from 'pages/common/forms/SelectField/types'
 
 import { StoreConfigFormSection } from '../constants'
 import { useAiAgentFormChangesContext } from '../providers/AiAgentFormChangesContext'
-import {
-    getAvailableChats,
-    getFirstAvailableChat,
-} from '../utils/handoverCustomizationSettingsFormComponent.utils'
 
 export enum HandoverCustomizationFormType {
     OFFLINE_SETTINGS = 'offlineSettings',

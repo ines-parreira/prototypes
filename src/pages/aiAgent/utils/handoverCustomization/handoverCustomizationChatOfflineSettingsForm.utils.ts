@@ -1,4 +1,4 @@
-import { HandoverCustomizationOfflineSettingsFormValues } from '../types'
+import { HandoverCustomizationOfflineSettingsFormValues } from 'pages/aiAgent/types'
 
 export const initialFormFieldValues: HandoverCustomizationOfflineSettingsFormValues =
     {

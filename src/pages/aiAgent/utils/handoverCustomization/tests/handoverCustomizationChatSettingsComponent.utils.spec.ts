@@ -3,9 +3,9 @@ import { SelfServiceChatChannel } from 'pages/automate/common/hooks/useSelfServi
 import {
     getAvailableChats,
     getFirstAvailableChat,
-} from '../handoverCustomizationSettingsFormComponent.utils'
+} from '../handoverCustomizationChatSettingsComponent.utils'
 
-describe('handoverCustomizationSettingsFormComponent.utils', () => {
+describe('handoverCustomizationChatSettingsComponent.utils', () => {
     const mockChatChannels = [
         {
             value: { id: 1, name: 'Chat 1' },

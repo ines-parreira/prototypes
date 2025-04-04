@@ -1,11 +1,11 @@
 import { HandoverConfigurationData } from 'models/aiAgent/types'
 import { IntegrationType } from 'models/integration/constants'
 
-import { AiAgentChannel } from '../constants'
+import { AiAgentChannel } from '../../constants'
 import {
     HandoverCustomizationOfflineSettingsFormValues,
     HandoverCustomizationOnlineSettingsFormValues,
-} from '../types'
+} from '../../types'
 
 const mapIntegrationTypeToAiAgentChannel = (type: IntegrationType) => {
     switch (type) {

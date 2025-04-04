@@ -13,7 +13,7 @@ import {
 import {
     createHandoverConfigurationData,
     mapFormValuesToHandoverConfigurationData,
-} from '../handoverCustomizationConfiguration.utils'
+} from '../handoverCustomizationConfigurationData.utils'
 
 const allIntegrationTypes = Object.values(IntegrationType)
 
@@ -26,7 +26,7 @@ const unsupportedTypes = allIntegrationTypes.filter(
 // Add an invalid type for edge case testing
 unsupportedTypes.push('unsupported' as IntegrationType)
 
-describe('handoverCustomizationConfiguration.utils', () => {
+describe('handoverCustomizationConfigurationData.utils', () => {
     const mockAccountId = 123
     const mockStoreName = 'Test Store'
     const mockShopType = 'shopify'

@@ -10,9 +10,9 @@ import {
     mapFromFormValuesToMultiLanguageText,
     mapFromMultiLanguageTextToFormValues,
     parseToFriendlyErrorMessage,
-} from '../handoverCustomizationFallbackSettingsForm.utils'
+} from '../handoverCustomizationChatFallbackSettingsForm.utils'
 
-describe('handoverCustomizationFallbackSettingsForm utils', () => {
+describe('handoverCustomizationChatFallbackSettingsForm utils', () => {
     describe('mapFromMultiLanguageTextToFormValues', () => {
         const mockInitialFormValues = {
             fallbackMessage: '',

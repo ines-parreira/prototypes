@@ -12,11 +12,9 @@ import {
     hasAnyChangeInFormValues,
     initialFormFieldValues,
     mapFromFormValuesToIntegrationPreferences,
-} from '../handoverCustomizationOnlineSettingsForm.utils'
+} from '../handoverCustomizationChatOnlineSettingsForm.utils'
 
-jest.mock('../handoverCustomizationConfiguration.utils')
-
-describe('handoverCustomizationOnlineSettingsForm.utils', () => {
+describe('handoverCustomizationChatOnlineSettingsForm utils', () => {
     describe('initialFormFieldValues', () => {
         it('should have the correct default values', () => {
             expect(initialFormFieldValues).toEqual({

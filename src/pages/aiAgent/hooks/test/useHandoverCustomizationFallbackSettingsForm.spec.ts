@@ -8,7 +8,7 @@ import {
     getInitialFormValues,
     mapFromFormValuesToMultiLanguageText,
     mapFromMultiLanguageTextToFormValues,
-} from 'pages/aiAgent/utils/handoverCustomizationFallbackSettingsForm.utils'
+} from 'pages/aiAgent/utils/handoverCustomization/handoverCustomizationChatFallbackSettingsForm.utils'
 import { assumeMock } from 'utils/testing'
 
 import { useHandoverCustomizationChatLanguageTextsConfiguration } from '../useHandoverCustomizationChatLanguageTextsConfiguration'
@@ -23,7 +23,7 @@ jest.mock('../useHandoverCustomizationChatLanguageTextsConfiguration', () => ({
 }))
 
 jest.mock(
-    '../../utils/handoverCustomizationFallbackSettingsForm.utils',
+    'pages/aiAgent/utils/handoverCustomization/handoverCustomizationChatFallbackSettingsForm.utils',
     () => ({
         formFieldsConfiguration: {
             fallbackMessage: {

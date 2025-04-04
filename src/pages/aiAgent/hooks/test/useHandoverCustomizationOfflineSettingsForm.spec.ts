@@ -7,9 +7,9 @@ import {
     IntegrationType,
 } from 'models/integration/types'
 import { CHANGES_SAVED_SUCCESS } from 'pages/aiAgent/constants'
-import { mapFormValuesToHandoverConfigurationData } from 'pages/aiAgent/utils/handoverCustomizationConfiguration.utils'
+import { initialFormFieldValues } from 'pages/aiAgent/utils/handoverCustomization/handoverCustomizationChatOfflineSettingsForm.utils'
+import { mapFormValuesToHandoverConfigurationData } from 'pages/aiAgent/utils/handoverCustomization/handoverCustomizationConfigurationData.utils'
 
-import { initialFormFieldValues } from '../../utils/handoverCustomizationOfflineSettingsForm.utils'
 import { useAiAgentHandoverConfigurationMutation } from '../useAiAgentHandoverConfigurationMutation'
 import { useFetchAiAgentStoreHandoverConfiguration } from '../useFetchAiAgentHandoverConfiguration'
 import { useHandoverCustomizationOfflineSettingsForm } from '../useHandoverCustomizationOfflineSettingsForm'
@@ -26,26 +26,32 @@ jest.mock('../useAiAgentHandoverConfigurationMutation', () => ({
     useAiAgentHandoverConfigurationMutation: jest.fn(),
 }))
 
-jest.mock('../../utils/handoverCustomizationOfflineSettingsForm.utils', () => ({
-    ...jest.requireActual(
-        '../../utils/handoverCustomizationOfflineSettingsForm.utils',
-    ),
-    formFieldsConfiguration: {
-        offlineInstructions: {
-            friendlyName: 'Offline instructions',
-            required: false,
-            maxLength: 30,
+jest.mock(
+    'pages/aiAgent/utils/handoverCustomization/handoverCustomizationChatOfflineSettingsForm.utils',
+    () => ({
+        ...jest.requireActual(
+            'pages/aiAgent/utils/handoverCustomization/handoverCustomizationChatOfflineSettingsForm.utils',
+        ),
+        formFieldsConfiguration: {
+            offlineInstructions: {
+                friendlyName: 'Offline instructions',
+                required: false,
+                maxLength: 30,
+            },
+            shareBusinessHours: {
+                friendlyName: 'Share business hours',
+                required: false,
+            },
         },
-        shareBusinessHours: {
-            friendlyName: 'Share business hours',
-            required: false,
-        },
-    },
-}))
+    }),
+)
 
-jest.mock('../../utils/handoverCustomizationConfiguration.utils', () => ({
-    mapFormValuesToHandoverConfigurationData: jest.fn(),
-}))
+jest.mock(
+    'pages/aiAgent/utils/handoverCustomization/handoverCustomizationConfigurationData.utils',
+    () => ({
+        mapFormValuesToHandoverConfigurationData: jest.fn(),
+    }),
+)
 
 describe('useHandoverCustomizationOfflineSettingsForm', () => {
     // Mock data

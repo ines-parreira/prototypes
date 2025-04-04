@@ -7,6 +7,7 @@ import {
     isTextsMultiLanguage,
 } from 'config/integrations/gorgias_chat'
 import { GorgiasChatIntegration } from 'models/integration/types'
+import { parseToFriendlyErrorMessage } from 'pages/aiAgent/utils/handoverCustomization/handoverCustomizationChatFallbackSettingsForm.utils'
 import { multiLanguageInitialTextsEmptyData } from 'pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationAppearance/GorgiasTranslateText/GorgiasTranslateText'
 import {
     Texts,
@@ -14,8 +15,6 @@ import {
     TextsPerLanguage,
 } from 'rest_api/gorgias_chat_protected_api/types'
 import * as integrationsActions from 'state/integrations/actions'
-
-import { parseToFriendlyErrorMessage } from '../utils/handoverCustomizationFallbackSettingsForm.utils'
 
 const parseToTextsMultiLanguage = (data: Texts, defaultLanguage: string) => {
     if (isTextsMultiLanguage(data)) {

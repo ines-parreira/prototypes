@@ -4,12 +4,6 @@ import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import { useNotify } from 'hooks/useNotify'
 import { GorgiasChatIntegration } from 'models/integration/types'
-import { getCurrentAccountState } from 'state/currentAccount/selectors'
-import { updateOrCreateIntegrationRequest } from 'state/integrations/actions'
-
-import { CHANGES_SAVED_SUCCESS } from '../constants'
-import { HandoverCustomizationOnlineSettingsFormValues } from '../types'
-import { mapFormValuesToHandoverConfigurationData } from '../utils/handoverCustomizationConfiguration.utils'
 import {
     formFieldsConfiguration,
     getHandoverConfigurationFormDataFragment,
@@ -17,7 +11,13 @@ import {
     hasAnyChangeInFormValues,
     initialFormFieldValues,
     mapFromFormValuesToIntegrationPreferences,
-} from '../utils/handoverCustomizationOnlineSettingsForm.utils'
+} from 'pages/aiAgent/utils/handoverCustomization/handoverCustomizationChatOnlineSettingsForm.utils'
+import { getCurrentAccountState } from 'state/currentAccount/selectors'
+import { updateOrCreateIntegrationRequest } from 'state/integrations/actions'
+
+import { CHANGES_SAVED_SUCCESS } from '../constants'
+import { HandoverCustomizationOnlineSettingsFormValues } from '../types'
+import { mapFormValuesToHandoverConfigurationData } from '../utils/handoverCustomization/handoverCustomizationConfigurationData.utils'
 import { useAiAgentHandoverConfigurationMutation } from './useAiAgentHandoverConfigurationMutation'
 import { useFetchAiAgentStoreHandoverConfiguration } from './useFetchAiAgentHandoverConfiguration'
 

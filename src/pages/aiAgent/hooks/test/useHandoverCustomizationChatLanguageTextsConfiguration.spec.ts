@@ -8,7 +8,7 @@ import {
 } from 'config/integrations/gorgias_chat'
 import { LanguageChat } from 'constants/languages'
 import { GorgiasChatIntegration } from 'models/integration/types'
-import { parseToFriendlyErrorMessage } from 'pages/aiAgent/utils/handoverCustomizationFallbackSettingsForm.utils'
+import { parseToFriendlyErrorMessage } from 'pages/aiAgent/utils/handoverCustomization/handoverCustomizationChatFallbackSettingsForm.utils'
 import { multiLanguageInitialTextsEmptyData } from 'pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationAppearance/GorgiasTranslateText/GorgiasTranslateText'
 import {
     TextsMultiLanguage,
@@ -30,7 +30,7 @@ jest.mock('state/integrations/actions', () => ({
 }))
 
 jest.mock(
-    'pages/aiAgent/utils/handoverCustomizationFallbackSettingsForm.utils',
+    'pages/aiAgent/utils/handoverCustomization/handoverCustomizationChatFallbackSettingsForm.utils',
     () => ({
         parseToFriendlyErrorMessage: jest.fn(),
     }),

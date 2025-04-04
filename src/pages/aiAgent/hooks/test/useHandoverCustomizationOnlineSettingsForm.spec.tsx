@@ -14,17 +14,17 @@ import {
     IntegrationType,
 } from 'models/integration/types'
 import { AiAgentChannel } from 'pages/aiAgent/constants'
-import { mapFormValuesToHandoverConfigurationData } from 'pages/aiAgent/utils/handoverCustomizationConfiguration.utils'
+import {
+    getHandoverConfigurationFormDataFragment,
+    getIntegrationPreferencesFormDataFragment,
+    mapFromFormValuesToIntegrationPreferences,
+} from 'pages/aiAgent/utils/handoverCustomization/handoverCustomizationChatOnlineSettingsForm.utils'
+import { mapFormValuesToHandoverConfigurationData } from 'pages/aiAgent/utils/handoverCustomization/handoverCustomizationConfigurationData.utils'
 import { updateOrCreateIntegrationRequest } from 'state/integrations/actions'
 import { mockQueryClientProvider } from 'tests/reactQueryTestingUtils'
 import { mockStore } from 'utils/testing'
 
 import { HandoverCustomizationOnlineSettingsFormValues } from '../../types'
-import {
-    getHandoverConfigurationFormDataFragment,
-    getIntegrationPreferencesFormDataFragment,
-    mapFromFormValuesToIntegrationPreferences,
-} from '../../utils/handoverCustomizationOnlineSettingsForm.utils'
 import { useAiAgentHandoverConfigurationMutation } from '../useAiAgentHandoverConfigurationMutation'
 import { useFetchAiAgentStoreHandoverConfiguration } from '../useFetchAiAgentHandoverConfiguration'
 import { useHandoverCustomizationOnlineSettingsForm } from '../useHandoverCustomizationOnlineSettingsForm'
@@ -44,29 +44,35 @@ jest.mock('../useAiAgentHandoverConfigurationMutation', () => ({
     useAiAgentHandoverConfigurationMutation: jest.fn(),
 }))
 
-jest.mock('../../utils/handoverCustomizationOnlineSettingsForm.utils', () => ({
-    ...jest.requireActual(
-        '../../utils/handoverCustomizationOnlineSettingsForm.utils',
-    ),
-    formFieldsConfiguration: {
-        onlineInstructions: {
-            friendlyName: 'Online instructions',
-            required: false,
-            maxLength: 30,
+jest.mock(
+    'pages/aiAgent/utils/handoverCustomization/handoverCustomizationChatOnlineSettingsForm.utils',
+    () => ({
+        ...jest.requireActual(
+            'pages/aiAgent/utils/handoverCustomization/handoverCustomizationChatOnlineSettingsForm.utils',
+        ),
+        formFieldsConfiguration: {
+            onlineInstructions: {
+                friendlyName: 'Online instructions',
+                required: false,
+                maxLength: 30,
+            },
+            shareBusinessHours: {
+                friendlyName: 'Share business hours',
+                required: false,
+            },
         },
-        shareBusinessHours: {
-            friendlyName: 'Share business hours',
-            required: false,
-        },
-    },
-    getIntegrationPreferencesFormDataFragment: jest.fn(),
-    getHandoverConfigurationFormDataFragment: jest.fn(),
-    mapFromFormValuesToIntegrationPreferences: jest.fn(),
-}))
+        getIntegrationPreferencesFormDataFragment: jest.fn(),
+        getHandoverConfigurationFormDataFragment: jest.fn(),
+        mapFromFormValuesToIntegrationPreferences: jest.fn(),
+    }),
+)
 
-jest.mock('../../utils/handoverCustomizationConfiguration.utils', () => ({
-    mapFormValuesToHandoverConfigurationData: jest.fn(),
-}))
+jest.mock(
+    'pages/aiAgent/utils/handoverCustomization/handoverCustomizationConfigurationData.utils',
+    () => ({
+        mapFormValuesToHandoverConfigurationData: jest.fn(),
+    }),
+)
 
 const QueryClientProvider = mockQueryClientProvider()
 

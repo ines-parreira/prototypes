@@ -8,14 +8,14 @@ import {
 } from 'config/integrations/gorgias_chat'
 import { StoreConfigFormSection } from 'pages/aiAgent/constants'
 import { useAiAgentFormChangesContext } from 'pages/aiAgent/providers/AiAgentFormChangesContext'
+import {
+    getAvailableChats,
+    getFirstAvailableChat,
+} from 'pages/aiAgent/utils/handoverCustomization/handoverCustomizationChatSettingsComponent.utils'
 import useSelfServiceChatChannels, {
     SelfServiceChatChannel,
 } from 'pages/automate/common/hooks/useSelfServiceChatChannels'
 
-import {
-    getAvailableChats,
-    getFirstAvailableChat,
-} from '../../utils/handoverCustomizationSettingsFormComponent.utils'
 import {
     HandoverCustomizationFormType,
     useHandoverCustomizationComponent,
@@ -24,7 +24,9 @@ import {
 // Mock the useSelfServiceChatChannels hook
 jest.mock('pages/automate/common/hooks/useSelfServiceChatChannels')
 
-jest.mock('../../utils/handoverCustomizationSettingsFormComponent.utils')
+jest.mock(
+    'pages/aiAgent/utils/handoverCustomization/handoverCustomizationChatSettingsComponent.utils',
+)
 
 jest.mock('pages/aiAgent/providers/AiAgentFormChangesContext')
 

@@ -5,15 +5,15 @@ import isEqual from 'lodash/isEqual'
 import { useNotify } from 'hooks/useNotify'
 import useUpdateEffect from 'hooks/useUpdateEffect'
 import { GorgiasChatIntegration } from 'models/integration/types'
-
-import { CHANGES_SAVED_SUCCESS } from '../constants'
-import { HandoverCustomizationFallbackSettingsFormMultiLanguageValues } from '../types'
 import {
     formFieldsConfiguration,
     getInitialFormValues,
     mapFromFormValuesToMultiLanguageText,
     mapFromMultiLanguageTextToFormValues,
-} from '../utils/handoverCustomizationFallbackSettingsForm.utils'
+} from 'pages/aiAgent/utils/handoverCustomization/handoverCustomizationChatFallbackSettingsForm.utils'
+
+import { CHANGES_SAVED_SUCCESS } from '../constants'
+import { HandoverCustomizationFallbackSettingsFormMultiLanguageValues } from '../types'
 import { useHandoverCustomizationChatLanguageTextsConfiguration } from './useHandoverCustomizationChatLanguageTextsConfiguration'
 
 type Props = {

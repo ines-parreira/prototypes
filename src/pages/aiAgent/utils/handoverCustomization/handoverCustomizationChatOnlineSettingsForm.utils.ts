@@ -12,8 +12,7 @@ import {
     GorgiasChatIntegration,
     GorgiasChatIntegrationMeta,
 } from 'models/integration/types'
-
-import { HandoverCustomizationOnlineSettingsFormValues } from '../types'
+import { HandoverCustomizationOnlineSettingsFormValues } from 'pages/aiAgent/types'
 
 export const initialFormFieldValues: HandoverCustomizationOnlineSettingsFormValues =
     {
