@@ -1,27 +1,32 @@
 :local {
     .table {
         .header {
-            height: 56px;
+            height: unset;
+            .headerCell {
+                color: var(--neutral-grey-4);
+            }
         }
 
-        tr {
-            height: 68px;
-            td {
-                width: auto;
+        tbody {
+            tr {
+                height: 68px;
+                td {
+                    width: auto;
 
-                &:last-child {
-                    width: 70px !important;
-                    max-width: 70px !important;
+                    &:last-child {
+                        width: 70px !important;
+                        max-width: 70px !important;
 
-                    a {
-                        color: var(--neutral-grey-4);
+                        a {
+                            color: var(--neutral-grey-4);
+                        }
                     }
                 }
-            }
 
-            &:hover {
-                a {
-                    color: var(--main-primary) !important;
+                &:hover {
+                    a {
+                        color: var(--main-primary) !important;
+                    }
                 }
             }
         }

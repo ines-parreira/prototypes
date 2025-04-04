@@ -129,6 +129,7 @@ export default function PhoneIntegrationsList({
                         direction={orderDirection}
                         isOrderedBy={orderBy === 'integration.name'}
                         onClick={() => setSortOptions('integration.name')}
+                        titleClassName={css.headerCell}
                     />
                     <HeaderCellProperty
                         title="Phone Number"
@@ -139,6 +140,7 @@ export default function PhoneIntegrationsList({
                         onClick={() =>
                             setSortOptions('phoneNumber.phone_number_friendly')
                         }
+                        titleClassName={css.headerCell}
                     />
                     <HeaderCell />
                 </TableHead>
