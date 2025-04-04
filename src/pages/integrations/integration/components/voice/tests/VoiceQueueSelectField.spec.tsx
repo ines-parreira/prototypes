@@ -4,6 +4,7 @@ import { useListVoiceQueues } from '@gorgias/api-queries'
 
 import { assumeMock, getLastMockCall } from 'utils/testing'
 
+import { PHONE_INTEGRATION_BASE_URL } from '../constants'
 import CreateNewQueueModal from '../CreateNewQueueModal'
 import VoiceQueueSelectField from '../VoiceQueueSelectField'
 
@@ -62,6 +63,30 @@ describe('<VoiceQueueSelectField />', () => {
         expect(
             getByText(/Assigning a queue applies its settings automatically/),
         ).toBeInTheDocument()
+    })
+
+    it('Queues link should redirect to Edit queue page when a queue is selected', () => {
+        renderComponent(2)
+
+        const anchorEl = screen
+            .getByRole('link', { name: 'Queues' })
+            .closest('a')
+        expect(anchorEl).toHaveAttribute(
+            'href',
+            `${PHONE_INTEGRATION_BASE_URL}/queues/2`,
+        )
+    })
+
+    it('Queues link should redirect to Queues page when no queue is selected', () => {
+        renderComponent()
+
+        const anchorEl = screen
+            .getByRole('link', { name: 'Queues' })
+            .closest('a')
+        expect(anchorEl).toHaveAttribute(
+            'href',
+            `${PHONE_INTEGRATION_BASE_URL}/queues`,
+        )
     })
 
     it('should open the dropdown when clicked', () => {

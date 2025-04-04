@@ -187,7 +187,10 @@ function VoiceQueueSelectField({
                 Assigning a queue applies its settings automatically. Adjust
                 settings in{' '}
                 <a
-                    href={`${PHONE_INTEGRATION_BASE_URL}/queues`}
+                    href={
+                        `${PHONE_INTEGRATION_BASE_URL}/queues` +
+                        (selectedQueue ? `/${selectedQueue.id}` : '')
+                    }
                     rel="noopener noreferrer"
                     target="_blank"
                 >
