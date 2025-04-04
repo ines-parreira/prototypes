@@ -4,8 +4,6 @@
 :local {
     .container {
         border-radius: @layout-spacing-xxs;
-        border: 1px solid var(--neutral-grey-2);
-        background: var(--neutral-grey-1);
         display: flex;
         padding: @layout-spacing-s;
         flex-direction: column;
@@ -22,6 +20,11 @@
 
         .detail {
             font-weight: 600;
+        }
+
+        &:not(.transparent) {
+            background: var(--neutral-grey-1);
+            border: 1px solid var(--neutral-grey-2);
         }
     }
 }

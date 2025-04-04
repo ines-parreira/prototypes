@@ -1,15 +1,11 @@
-import {
-    PhoneRingingBehaviour,
-    useGetTeam,
-    useGetVoiceQueue,
-    VoiceQueueTargetScope,
-} from '@gorgias/api-queries'
+import { useGetTeam, useGetVoiceQueue } from '@gorgias/api-queries'
 import { Button } from '@gorgias/merchant-ui-kit'
 
 import CollapsibleDetails from 'pages/tickets/detail/components/TicketVoiceCall/CollapsibleDetails'
 
 import { PHONE_INTEGRATION_BASE_URL } from './constants'
 import SummaryBlock from './SummaryBlock'
+import { getVoiceQueueSummaryData } from './utils'
 
 import css from './VoiceQueueSummary.less'
 
@@ -34,20 +30,7 @@ function VoiceQueueSummary({ queue_id }: VoiceQueueSummaryProps) {
         return <></>
     }
 
-    const summaryData = {
-        'Ring to':
-            queue.target_scope === VoiceQueueTargetScope.Specific
-                ? specificTeamName
-                : 'All available agents',
-        'Number of agents': queue.agent_ids ? queue.agent_ids.length : 0,
-        'Distribution mode':
-            queue.distribution_mode === PhoneRingingBehaviour.RoundRobin
-                ? 'Round-robin'
-                : 'Broadcast',
-        'Ring time per agent': `${queue.ring_time} seconds`,
-        'Wait time': `${queue.wait_time} seconds`,
-        'Queue capacity': queue.capacity ?? 0,
-    }
+    const summaryData = getVoiceQueueSummaryData(queue, specificTeamName)
 
     return (
         <div>

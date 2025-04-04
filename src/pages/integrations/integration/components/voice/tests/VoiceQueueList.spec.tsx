@@ -52,6 +52,34 @@ describe('VoiceQueueList', () => {
         expect(screen.getByText('disabled')).toBeInTheDocument()
     })
 
+    it('should display the summary block when hovering over the info icon', async () => {
+        renderComponent()
+
+        const infoIcon = screen.getAllByText('info')[0]
+        userEvent.hover(infoIcon)
+
+        await waitFor(() => {
+            expect(
+                screen.getByText('Ring to', { exact: false }),
+            ).toBeInTheDocument()
+            expect(
+                screen.getByText('Number of agents', { exact: false }),
+            ).toBeInTheDocument()
+            expect(
+                screen.getByText('Distribution mode', { exact: false }),
+            ).toBeInTheDocument()
+            expect(
+                screen.getByText('Ring time per agent', { exact: false }),
+            ).toBeInTheDocument()
+            expect(
+                screen.getByText('Wait time', { exact: false }),
+            ).toBeInTheDocument()
+            expect(
+                screen.getByText('Queue capacity', { exact: false }),
+            ).toBeInTheDocument()
+        })
+    })
+
     it('should render skeleton loading state with no queues', () => {
         renderComponent({ queues: [], onScroll: mockOnScroll })
 

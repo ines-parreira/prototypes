@@ -1,8 +1,10 @@
 import {
+    PhoneRingingBehaviour,
     UpdatePhoneIntegrationSettingsRecordingNotification,
     UpdateVoiceQueue,
     VoiceMessageType,
     VoiceQueue,
+    VoiceQueueTargetScope,
 } from '@gorgias/api-queries'
 
 import { VoiceMessage } from 'models/integration/types'
@@ -79,5 +81,25 @@ export const getVoiceQueueEditableFields = (
         wait_time: queue.wait_time,
         wait_music: queue.wait_music,
         status: queue.status,
+    }
+}
+
+export const getVoiceQueueSummaryData = (
+    queue: VoiceQueue,
+    teamName: string = 'Specific team',
+) => {
+    return {
+        'Ring to':
+            queue.target_scope === VoiceQueueTargetScope.Specific
+                ? teamName
+                : 'All available agents',
+        'Number of agents': queue.agent_ids ? queue.agent_ids.length : 0,
+        'Distribution mode':
+            queue.distribution_mode === PhoneRingingBehaviour.RoundRobin
+                ? 'Round-robin'
+                : 'Broadcast',
+        'Ring time per agent': `${queue.ring_time} seconds`,
+        'Wait time': `${queue.wait_time} seconds`,
+        'Queue capacity': queue.capacity ?? 0,
     }
 }

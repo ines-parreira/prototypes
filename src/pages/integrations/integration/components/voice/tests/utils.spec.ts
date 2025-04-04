@@ -1,9 +1,15 @@
+import {
+    PhoneRingingBehaviour,
+    VoiceQueueTargetScope,
+} from '@gorgias/api-queries'
+
 import { voiceQueue } from 'fixtures/voiceQueue'
 import { VoiceMessageType } from 'models/integration/constants'
 
 import {
     getVoiceMessagePayload,
     getVoiceQueueEditableFields,
+    getVoiceQueueSummaryData,
     isValueInRange,
 } from '../utils'
 
@@ -92,6 +98,60 @@ describe('getVoiceQueueEditableFields', () => {
             target_scope: voiceQueue.target_scope,
             wait_time: voiceQueue.wait_time,
             wait_music: voiceQueue.wait_music,
+        })
+    })
+})
+
+describe('getVoiceQueueSummaryData', () => {
+    it('should return the correct summary data', () => {
+        const result = getVoiceQueueSummaryData(
+            {
+                ...voiceQueue,
+                linked_targets: [
+                    {
+                        ...voiceQueue.linked_targets[0],
+                        team_id: 1,
+                    },
+                ],
+                agent_ids: [1, 2],
+                ring_time: 30,
+                wait_time: 60,
+                capacity: 0,
+                distribution_mode: PhoneRingingBehaviour.RoundRobin,
+                target_scope: VoiceQueueTargetScope.Specific,
+            },
+            'Support Team',
+        )
+
+        expect(result).toEqual({
+            'Ring to': 'Support Team',
+            'Number of agents': 2,
+            'Distribution mode': 'Round-robin',
+            'Ring time per agent': '30 seconds',
+            'Wait time': '60 seconds',
+            'Queue capacity': 0,
+        })
+    })
+
+    it('should return the correct summary data when the queue has no linked targets', () => {
+        const result = getVoiceQueueSummaryData({
+            ...voiceQueue,
+            linked_targets: [],
+            target_scope: VoiceQueueTargetScope.AllAgents,
+            agent_ids: [1, 2],
+            ring_time: 10,
+            wait_time: 11,
+            capacity: 0,
+            distribution_mode: PhoneRingingBehaviour.RoundRobin,
+        })
+
+        expect(result).toEqual({
+            'Ring to': 'All available agents',
+            'Number of agents': 2,
+            'Distribution mode': 'Round-robin',
+            'Ring time per agent': '10 seconds',
+            'Wait time': '11 seconds',
+            'Queue capacity': 0,
         })
     })
 })

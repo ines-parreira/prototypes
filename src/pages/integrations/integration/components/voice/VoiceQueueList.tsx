@@ -3,7 +3,13 @@ import { useRef } from 'react'
 import { TableVirtuoso, VirtuosoHandle } from 'react-virtuoso'
 
 import { VoiceQueue, VoiceQueueStatus } from '@gorgias/api-queries'
-import { Badge, Label, Skeleton } from '@gorgias/merchant-ui-kit'
+import {
+    Badge,
+    IconButton,
+    Label,
+    Skeleton,
+    Tooltip,
+} from '@gorgias/merchant-ui-kit'
 
 import BodyCell from 'pages/common/components/table/cells/BodyCell'
 import HeaderCellProperty from 'pages/common/components/table/cells/HeaderCellProperty'
@@ -13,6 +19,8 @@ import history from 'pages/history'
 import ForwardIcon from 'pages/integrations/common/components/ForwardIcon'
 
 import { PHONE_INTEGRATION_BASE_URL, QUEUE_LIST_PAGE_SIZE } from './constants'
+import SummaryBlock from './SummaryBlock'
+import { getVoiceQueueSummaryData } from './utils'
 
 import css from './VoiceQueueList.less'
 
@@ -85,10 +93,25 @@ export default function VoiceQueueList({
 
 const VoiceQueueListItem = ({ queue }: { queue: VoiceQueue }) => {
     const redirectURL = `${PHONE_INTEGRATION_BASE_URL}/queues/${queue.id}`
+
+    const summaryData = getVoiceQueueSummaryData(queue)
+
     return (
         <>
-            <BodyCell width={'90%'}>
+            <BodyCell width={'85%'}>
                 <Label>{queue.name}</Label>
+            </BodyCell>
+            <BodyCell width={'5%'}>
+                <IconButton
+                    icon="info"
+                    id={`info-${queue.id}`}
+                    fillStyle="ghost"
+                    intent="secondary"
+                    iconClassName="material-icons-outlined"
+                />
+                <Tooltip placement="top" target={`info-${queue.id}`}>
+                    <SummaryBlock summaryData={summaryData} isTransparent />
+                </Tooltip>
             </BodyCell>
             <BodyCell width={'5%'}>
                 <Badge
