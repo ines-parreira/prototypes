@@ -125,7 +125,13 @@ export const ActionMenuSelectItem = <T extends string>({
 
 export const ActionMenuSeparator = () => <div className={css.separator} />
 
-export const ActionMenu = ({ children }: { children: React.ReactNode }) => {
+export const ActionMenu = ({
+    children,
+    canduId,
+}: {
+    children: React.ReactNode
+    canduId?: string
+}) => {
     const triggerRef = useRef<HTMLButtonElement>(null)
 
     const [isOpen, setIsOpen] = useState(false)
@@ -140,6 +146,7 @@ export const ActionMenu = ({ children }: { children: React.ReactNode }) => {
                 icon="more_vert"
                 onClick={() => setIsOpen(true)}
                 aria-label={ACTION_MENU_LABEL}
+                data-candu-id={canduId}
             />
             <Dropdown
                 target={triggerRef}

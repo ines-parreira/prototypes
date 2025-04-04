@@ -43,6 +43,8 @@ export const TAGS_CREATION_DATE_SUBTITLE =
 
 export const TAG_ACTIONS_DOWNLOAD_OPTION_LABEL = 'Download Data'
 
+const CANDU_ID = 'tags-report-action-menu'
+
 export const TagsActionMenu = () => {
     const isReportingExtendFieldAndTagEnabled = useFlag(
         FeatureFlagKey.ReportingExtendFieldAndTag,
@@ -59,7 +61,7 @@ export const TagsActionMenu = () => {
     useNotifyOnTimeReferenceChange(ReportName.Tags, ticketTimeReference)
 
     return (
-        <ActionMenu>
+        <ActionMenu canduId={CANDU_ID}>
             <ActionMenuLabel>{TAGS_LABEL}</ActionMenuLabel>
             <ActionMenuSelectGroup
                 value={tagResultsSelection}

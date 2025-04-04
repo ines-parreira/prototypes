@@ -29,6 +29,8 @@ export const TICKET_FIELDS_CREATION_DATE_SUBTITLE =
     'Only display ticket fields from created tickets within selected date range'
 export const TICKET_FIELDS_DOWNLOAD_OPTION_LABEL = 'Download Data'
 
+const CANDU_ID = 'ticket-fields-report-action-menu'
+
 export const TicketFieldsActionMenu = ({
     ticketFieldId,
 }: {
@@ -42,7 +44,7 @@ export const TicketFieldsActionMenu = ({
     useNotifyOnTimeReferenceChange(ReportName.TicketFields, ticketTimeReference)
 
     return (
-        <ActionMenu>
+        <ActionMenu canduId={CANDU_ID}>
             <ActionMenuLabel>{TICKET_FIELDS_LABEL}</ActionMenuLabel>
             <ActionMenuSelectGroup
                 value={ticketTimeReference}
