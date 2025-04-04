@@ -28,7 +28,7 @@
         "test:update": "yarn jest -u",
         "test:watch": "yarn jest --watch",
         "test:ci": "run-s quality test:ci:cover",
-        "test:ci:cover": "TZ=UTC LC_ALL=\"en_US.UTF-8\" node --no-compilation-cache ./node_modules/.bin/jest --coverage --ci --maxWorkers=2",
+        "test:ci:cover": "TZ=UTC LC_ALL=\"en_US.UTF-8\" node --no-compilation-cache ./node_modules/.bin/jest --coverage --ci --maxWorkers=50%",
         "chromatic": "chromatic",
         "build-storybook": "storybook build",
         "storybook-docs": "storybook build --docs",
