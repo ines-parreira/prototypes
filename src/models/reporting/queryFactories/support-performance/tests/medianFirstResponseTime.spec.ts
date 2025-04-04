@@ -122,11 +122,6 @@ describe('medianFirstResponseTimeMetricPerAgent', () => {
                     ],
                 },
                 {
-                    member: TicketMessagesMember.FirstHelpdeskMessageUserId,
-                    operator: ReportingFilterOperator.Equals,
-                    values: agents?.map(String),
-                },
-                {
                     member: TicketMember.PeriodStart,
                     operator: ReportingFilterOperator.AfterDate,
                     values: [formatReportingQueryDate(periodStart)],
@@ -145,6 +140,11 @@ describe('medianFirstResponseTimeMetricPerAgent', () => {
                     member: TicketMember.Channel,
                     operator: ReportingFilterOperator.Equals,
                     values: statsFilters.channels?.values,
+                },
+                {
+                    member: TicketMessagesMember.FirstHelpdeskMessageUserId,
+                    operator: ReportingFilterOperator.Equals,
+                    values: agents?.map(String),
                 },
                 {
                     member: TicketMember.Tags,

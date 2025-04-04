@@ -15,6 +15,7 @@ import {
     fetchTicketsCreatedMetric,
     fetchTicketsRepliedMetric,
     fetchZeroTouchTicketsMetric,
+    ignoreNotAssignedFirstResponseMessageAssigneeFilter,
     ignoreNotAssignedTicketsFilter,
     useClosedTicketsMetric,
     useCustomerSatisfactionMetric,
@@ -85,11 +86,6 @@ describe('metrics', () => {
             customerSatisfactionQueryFactory,
         ],
         [
-            'useMedianFirstResponseTimeMetric',
-            useMedianFirstResponseTimeMetric,
-            medianFirstResponseTimeQueryFactory,
-        ],
-        [
             'useMedianResponseTimeMetric',
             useMedianResponseTimeMetric,
             medianResponseTimeQueryFactory,
@@ -139,6 +135,20 @@ describe('metrics', () => {
             })
         },
     )
+
+    it('should create reporting metric with tickets that have firstResponseAssignee only', () => {
+        const { result } = renderHook(() =>
+            useMedianFirstResponseTimeMetric(statsFilters, timezone),
+        )
+
+        expect(useMetricMock).toHaveBeenCalledWith(
+            withFilter(
+                medianFirstResponseTimeQueryFactory(statsFilters, timezone),
+                ignoreNotAssignedFirstResponseMessageAssigneeFilter,
+            ),
+        )
+        expect(result.current).toBe(defaultMetricValue)
+    })
 
     describe.each([
         [

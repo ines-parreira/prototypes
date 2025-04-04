@@ -76,6 +76,11 @@ export const TicketStatsFiltersMembers: StatsFiltersMembers = {
     ...AutoQAFiltersMembers,
 }
 
+export const TicketMessagesEnrichedFirstResponseTimesMembers = {
+    ...TicketStatsFiltersMembers,
+    agents: TicketMessagesMember.FirstHelpdeskMessageUserId,
+}
+
 export const TicketMessagesEnrichedResponseTimesMembers: StatsFiltersMembers = {
     ...TicketStatsFiltersMembers,
     agents: TicketMessagesEnrichedResponseTimesMember.TicketMessageUserId,

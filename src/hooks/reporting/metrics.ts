@@ -1,6 +1,7 @@
 import { fetchMetric, useMetric } from 'hooks/reporting/useMetric'
 import { OrderDirection } from 'models/api/types'
 import { TicketMember } from 'models/reporting/cubes/TicketCube'
+import { TicketMessagesMember } from 'models/reporting/cubes/TicketMessagesCube'
 import { onlineTimeQueryFactory } from 'models/reporting/queryFactories/agentxp/onlineTime'
 import { ticketAverageHandleTimeQueryFactory } from 'models/reporting/queryFactories/agentxp/ticketHandleTime'
 import { closedTicketsQueryFactory } from 'models/reporting/queryFactories/support-performance/closedTickets'
@@ -34,6 +35,13 @@ export const ignoreNotAssignedTicketsFilter: ReportingFilter = {
     operator: ReportingFilterOperator.Set,
     values: [],
 }
+
+export const ignoreNotAssignedFirstResponseMessageAssigneeFilter: ReportingFilter =
+    {
+        member: TicketMessagesMember.FirstHelpdeskMessageUserId,
+        operator: ReportingFilterOperator.Set,
+        values: [],
+    }
 
 export const useTicketsCreatedMetric = (
     statsFilters: StatsFilters,
@@ -97,7 +105,7 @@ export const useMedianFirstResponseTimeMetric = (
     useMetric(
         withFilter(
             medianFirstResponseTimeQueryFactory(statsFilters, timezone),
-            ignoreNotAssignedTicketsFilter,
+            ignoreNotAssignedFirstResponseMessageAssigneeFilter,
         ),
     )
 

@@ -10,12 +10,7 @@ import {
     TicketMessagesSegment,
 } from 'models/reporting/cubes/TicketMessagesCube'
 import { CHANNEL_DIMENSION } from 'models/reporting/queryFactories/support-performance/constants'
-import { addOptionalFilter } from 'models/reporting/queryFactories/utils'
-import {
-    ReportingFilter,
-    ReportingFilterOperator,
-    ReportingQuery,
-} from 'models/reporting/types'
+import { ReportingFilterOperator, ReportingQuery } from 'models/reporting/types'
 import { StatsFilters } from 'models/stat/types'
 import {
     DRILLDOWN_QUERY_LIMIT,
@@ -23,49 +18,36 @@ import {
     NotSpamNorTrashedTicketsFilter,
     statsFiltersToReportingFilters,
     TicketDrillDownFilter,
-    TicketStatsFiltersMembers,
+    TicketMessagesEnrichedFirstResponseTimesMembers,
 } from 'utils/reporting'
 
 export const medianFirstResponseTimeQueryFactory = (
     statsFilters: StatsFilters,
     timezone: string,
     sorting?: OrderDirection,
-): ReportingQuery<TicketCubeWithJoins> => {
-    const { agents, ...statFiltersWithoutAgents } = statsFilters
-    let commonFilters: ReportingFilter[] = [
+): ReportingQuery<TicketCubeWithJoins> => ({
+    measures: [TicketMessagesMeasure.MedianFirstResponseTime],
+    dimensions: [],
+    timezone,
+    segments: [TicketMessagesSegment.ConversationStarted],
+    filters: [
         ...NotSpamNorTrashedTicketsFilter,
         {
             member: TicketMessagesMember.FirstHelpdeskMessageDatetime,
             operator: ReportingFilterOperator.InDateRange,
             values: getFilterDateRange(statsFilters.period),
         },
-    ]
-    commonFilters = addOptionalFilter(commonFilters, agents, {
-        member: TicketMessagesMember.FirstHelpdeskMessageUserId,
-        operator: ReportingFilterOperator.Equals,
-    })
-
-    return {
-        measures: [TicketMessagesMeasure.MedianFirstResponseTime],
-        dimensions: [],
-        timezone,
-        segments: [TicketMessagesSegment.ConversationStarted],
-        filters: [
-            ...commonFilters,
-            ...statsFiltersToReportingFilters(
-                TicketStatsFiltersMembers,
-                statFiltersWithoutAgents,
-            ),
-        ],
-        ...(sorting
-            ? {
-                  order: [
-                      [TicketMessagesMeasure.MedianFirstResponseTime, sorting],
-                  ],
-              }
-            : {}),
-    }
-}
+        ...statsFiltersToReportingFilters(
+            TicketMessagesEnrichedFirstResponseTimesMembers,
+            statsFilters,
+        ),
+    ],
+    ...(sorting
+        ? {
+              order: [[TicketMessagesMeasure.MedianFirstResponseTime, sorting]],
+          }
+        : {}),
+})
 
 export const medianFirstResponseTimeMetricPerAgentQueryFactory = (
     filters: StatsFilters,
