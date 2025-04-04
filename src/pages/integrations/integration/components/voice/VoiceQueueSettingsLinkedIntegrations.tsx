@@ -24,9 +24,9 @@ export default function VoiceQueueSettingsLinkedIntegrations({
 
     return (
         <div>
-            <Label>Connected phone integrations</Label>
+            <Label>Connected voice integrations</Label>
             <p>
-                View and manage the phone integrations connected to this queue.
+                View and manage the voice integrations connected to this queue.
             </p>
 
             {showIntegrations && (

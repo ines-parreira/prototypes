@@ -72,11 +72,11 @@ describe('VoiceQueueSettingsLinkedIntegrations', () => {
         renderComponent({ integrations: mockIntegrations })
 
         expect(
-            screen.getByText('Connected phone integrations'),
+            screen.getByText('Connected voice integrations'),
         ).toBeInTheDocument()
         expect(
             screen.getByText(
-                'View and manage the phone integrations connected to this queue.',
+                'View and manage the voice integrations connected to this queue.',
             ),
         ).toBeInTheDocument()
         expect(screen.getByText('show integrations')).toBeInTheDocument()
