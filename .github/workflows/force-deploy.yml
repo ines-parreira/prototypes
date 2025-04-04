@@ -20,7 +20,7 @@ jobs:
       assets-dir: src/assets
       build-dir: build
       bucket-path: web-app
-      node-version: 18
+      node-version: 22
     steps:
       - name: Workspace vars
         run: echo "empty step"

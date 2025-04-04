@@ -19,8 +19,10 @@ It's built using ReactJS + Redux + many other smaller tools.
         -   [Running Linting](#running-linting)
         -   [Adding Linting rules](#adding-linting-rules)
     -   [Debugging tools](#debugging-tools)
-        -   [ReactScan](#react-scan)
-        -   [whyDidYouRender](#why-did-you-render)
+        -   [ReactScan](#reactscan)
+        -   [WhyDidYouRender](#whydidyourender)
+            -   [How it’s imported](#how-its-imported)
+            -   [How to use it](#how-to-use-it)
     -   [Formatting](#formatting)
     -   [Platform](#platform)
         -   [Deprecated entries](#deprecated-entries)
@@ -29,6 +31,7 @@ It's built using ReactJS + Redux + many other smaller tools.
             -   [Add new deprecated entries](#add-new-deprecated-entries)
         -   [Dependencies NodeJS Engine check](#dependencies-nodejs-engine-check)
     -   [Contributing](#contributing)
+    -   [Update gorgias-chat client](#update-gorgias-chat-client)
     -   [FAQ / Troubleshooting](#faq--troubleshooting)
         -   [yarn dependencies installation error](#yarn-dependencies-installation-error)
             -   [Possible solution](#possible-solution)
@@ -44,7 +47,7 @@ Please `cat ~/.npmrc` and ensure that `@gorgias:registry=https://npm.pkg.github.
 
 ## Prerequisites
 
--   [Node.js (v18, uses nvm to install)](https://nodejs.org/en/download/package-manager)
+-   [Node.js (v22, uses nvm to install)](https://nodejs.org/en/download/package-manager)
 -   [Yarn](https://classic.yarnpkg.com/en/docs/install)
 -   [nvm (Node Version Manager)](https://github.com/nvm-sh/nvm)
 
@@ -292,6 +295,16 @@ yarn platform:check-node-engines
 -   [ADR](https://github.com/gorgias/architectural-decision-records/tree/main/project/helpdesk)
 -   [Storybook](./docs/GetStarted.stories.mdx)
 -   [FE Chapter](https://www.notion.so/gorgias/Front-End-Chapter-5045e25b1a1f4ab7a42dad4a0187f541)
+
+## Update gorgias-chat client
+
+To run the `gorgiaschat:update-client` script, you first need to install [postman-to-openapi](https://github.com/joolfe/postman-to-openapi#readme).
+Since this tool is not maintained and its package.json configuration make not compatible with recent NodeJS version you will need to install it globally and not into this project. For that run the following command:
+
+```bash
+yarn global add postman-to-openapi
+yarn gorgiaschat:update-client
+```
 
 ## FAQ / Troubleshooting
 

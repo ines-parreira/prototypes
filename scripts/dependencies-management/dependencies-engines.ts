@@ -41,7 +41,12 @@ for (const dir of packageDirs) {
     }
 }
 
-// eslint-disable-next-line no-console
-console.log('Potentially incompatible packages:')
-// eslint-disable-next-line no-console
-console.table(incompatiblePackages)
+if (incompatiblePackages.length > 0) {
+    // eslint-disable-next-line no-console
+    console.log('Potentially incompatible packages:')
+    // eslint-disable-next-line no-console
+    console.table(incompatiblePackages)
+} else {
+    // eslint-disable-next-line no-console
+    console.log('No potentially incompatible packages found')
+}
