@@ -32,7 +32,10 @@ import { AlertType } from 'pages/common/components/Alert/Alert'
 import ProductCard from 'pages/settings/new_billing/components/ProductCard'
 import { ProductCardProps } from 'pages/settings/new_billing/components/ProductCard/ProductCard'
 import { PRODUCT_DISABLED_FOR_TRIALING_USERS_TOOLTIP } from 'pages/settings/new_billing/constants'
-import { storeWithCanceledSubscription } from 'pages/settings/new_billing/fixtures'
+import {
+    storeWithCanceledSubscription,
+    storeWithTrialingSubscription,
+} from 'pages/settings/new_billing/fixtures'
 import UsageAndPlansView from 'pages/settings/new_billing/views/UsageAndPlansView/UsageAndPlansView'
 import { renderWithStoreAndQueryClientAndRouter } from 'tests/renderWithStoreAndQueryClientAndRouter'
 import { assumeMock } from 'utils/testing'
@@ -117,6 +120,21 @@ const store = {
 describe('UsageAndPlansView', () => {
     const MockTooltip = jest.spyOn(uiKit, 'Tooltip')
 
+    const helpdeskBanner = {
+        description: 'Helpdesk banner',
+        type: AlertType.Info,
+    }
+
+    const convertBanner = {
+        description: 'Convert banner',
+        type: AlertType.Info,
+    }
+
+    const smsBanner = {
+        description: 'SMS banner',
+        type: AlertType.Info,
+    }
+
     beforeEach(() => {
         mockUseGetOrCreateAccountConfiguration.mockReturnValue({
             status: 'success',
@@ -132,14 +150,6 @@ describe('UsageAndPlansView', () => {
     })
 
     it('should render with active subscription containing Helpdesk and Convert products', () => {
-        const helpdeskBanner = {
-            description: 'Helpdesk banner',
-            type: AlertType.Info,
-        }
-        const convertBanner = {
-            description: 'Convert banner',
-            type: AlertType.Info,
-        }
         renderWithStoreAndQueryClientAndRouter(
             <UsageAndPlansView
                 contactBilling={jest.fn()}
@@ -295,14 +305,6 @@ describe('UsageAndPlansView', () => {
     })
 
     it('should render with active subscription containing Helpdesk and SMS products', () => {
-        const helpdeskBanner = {
-            description: 'Helpdesk banner',
-            type: AlertType.Info,
-        }
-        const smsBanner = {
-            description: 'SMS banner',
-            type: AlertType.Info,
-        }
         const alteredBilling = {
             ...mockedBilling,
             currentProductsUsage: {
@@ -570,15 +572,6 @@ describe('UsageAndPlansView', () => {
     })
 
     it('should render with the Subscribe button disabled for trialing users', () => {
-        const helpdeskBanner = {
-            description: 'Helpdesk banner',
-            type: AlertType.Info,
-        }
-        const convertBanner = {
-            description: 'Convert banner',
-            type: AlertType.Info,
-        }
-
         const alteredBilling = {
             ...mockedBilling,
             currentProductsUsage: {
@@ -672,6 +665,26 @@ describe('UsageAndPlansView', () => {
                 autoUpgradeEnabled: false,
             },
             {},
+        )
+    })
+
+    it('should render with trialing subscription having a credit card', () => {
+        renderWithStoreAndQueryClientAndRouter(
+            <UsageAndPlansView
+                contactBilling={jest.fn()}
+                periodEnd="2021-01-01"
+                currentUsage={mockedUsage}
+                helpdeskBanner={helpdeskBanner}
+                convertBanner={convertBanner}
+            />,
+            storeWithTrialingSubscription,
+        )
+        expect(ProductCardMock).toHaveBeenCalledTimes(5)
+
+        // and the merchant can update its plan cadence from monthly to yearly
+        expect(screen.getByText('Update')).toHaveAttribute(
+            'to',
+            '/app/settings/billing/payment/frequency',
         )
     })
 

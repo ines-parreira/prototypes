@@ -13,7 +13,7 @@ import {
     ProductType,
     SMSOrVoicePlan,
 } from 'models/billing/types'
-import { ENTERPRISE_PRICE_ID } from 'pages/settings/new_billing/constants'
+import { ENTERPRISE_PLAN_ID } from 'pages/settings/new_billing/constants'
 
 import {
     formatAmount,
@@ -76,7 +76,7 @@ export function isLegacyAutomate(plan: Plan | undefined) {
 export function isEnterprise(plan: Plan | undefined) {
     if (!plan) return false
 
-    return plan.custom || plan.price_id === ENTERPRISE_PRICE_ID
+    return plan.custom || plan.plan_id === ENTERPRISE_PLAN_ID
 }
 
 export function getFormattedAmount(amountInCents: number) {

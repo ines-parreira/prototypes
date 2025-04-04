@@ -17,7 +17,7 @@ import { CurrentProductsUsages } from 'state/billing/types'
 import { getCurrentAccountState } from 'state/currentAccount/selectors'
 
 import {
-    ENTERPRISE_PRICE_ID,
+    ENTERPRISE_PLAN_ID,
     PRODUCT_DISABLED_FOR_TRIALING_USERS_TOOLTIP,
     PRODUCT_INFO,
 } from '../../constants'
@@ -115,14 +115,14 @@ const ProductPlanSelection = ({
                     return true
                 })
                 .map((plan) => ({
-                    value: plan.price_id ?? '',
+                    value: plan.plan_id ?? '',
                     label: getLabel(plan),
                     isDisabled: isStarterHelpdeskPlanDisabled(plan).isDisabled,
                     tooltipText:
                         isStarterHelpdeskPlanDisabled(plan).tooltipText,
                 })),
             {
-                value: ENTERPRISE_PRICE_ID,
+                value: ENTERPRISE_PLAN_ID,
                 label: `${formatNumTickets(
                     availablePlans[availablePlans.length - 1]
                         ?.num_quota_tickets ?? 0,
@@ -188,11 +188,11 @@ const ProductPlanSelection = ({
         }))
     }, [availablePlans, setSelectedPlans, type, initialIndex])
 
-    const handleSelectProductPlan = (price_id: Value) => {
-        const plan = availablePlans.find((plan) => plan.price_id === price_id)
+    const handleSelectProductPlan = (plan_id: Value) => {
+        const plan = availablePlans.find((plan) => plan.plan_id === plan_id)
         const enterprisePlan = {
             ...availablePlans[availablePlans.length - 1],
-            price_id: ENTERPRISE_PRICE_ID,
+            plan_id: ENTERPRISE_PLAN_ID,
             name: 'Enterprise',
         }
 
@@ -340,7 +340,7 @@ const ProductPlanSelection = ({
                             id="priceSelect"
                             aria-label="Price value"
                             placeholder="Select a plan"
-                            value={selectedPlan?.price_id}
+                            value={selectedPlan?.plan_id}
                             fullWidth
                             onChange={handleSelectProductPlan}
                             showSelectedOption
@@ -385,7 +385,7 @@ const ProductPlanSelection = ({
                     </div>
                     &nbsp;
                     {isActive &&
-                        currentPlan?.price_id !== selectedPlan?.price_id && (
+                        currentPlan?.plan_id !== selectedPlan?.plan_id && (
                             <div className={css.oldPrice}>
                                 {`${currentPlan?.num_quota_tickets || 0} ${
                                     PRODUCT_INFO[type].counter

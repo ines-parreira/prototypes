@@ -74,8 +74,8 @@ export const PRODUCT_INFO = {
     },
 }
 
-// a fake price_id is needed because custom/enterprise plans are not sent to the FE as available plans.
-export const ENTERPRISE_PRICE_ID = '0'
+// a fake plan_id is needed because custom/enterprise plans are not sent to the FE as available plans.
+export const ENTERPRISE_PLAN_ID = '0'
 export const ZAPIER_BILLING_HOOK =
     'https://hooks.zapier.com/hooks/catch/9639651/3hsj6pb/'
 export const ZAPIER_REMOVE_AAO_HOOK =

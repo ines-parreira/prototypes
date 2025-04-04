@@ -126,7 +126,7 @@ const UsageAndPlansView = ({
         : undefined
 
     const isVettedForPhone = Boolean(
-        currentSmsPlan?.price_id || currentVoicePlan?.price_id,
+        currentSmsPlan?.plan_id || currentVoicePlan?.plan_id,
     )
 
     useEffect(() => {

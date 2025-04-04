@@ -79,25 +79,28 @@ describe('ProductPlanSelection', () => {
         },
     }
 
+    const currentPlan = basicMonthlyHelpdeskPlan
+    const availablePlans = [
+        basicMonthlyHelpdeskPlan,
+        {
+            ...basicMonthlyHelpdeskPlan,
+            price_id: 'price_123',
+            name: 'Product 1',
+            num_quota_tickets: 100,
+        },
+        {
+            ...basicMonthlyHelpdeskPlan,
+            price_id: 'price_456',
+            name: 'Product 2',
+            num_quota_tickets: 200,
+        },
+    ]
+
     const props: ProductPlanSelectionProps = {
         type: ProductType.Helpdesk,
         cadence: Cadence.Month,
-        currentPlan: basicMonthlyHelpdeskPlan,
-        availablePlans: [
-            basicMonthlyHelpdeskPlan,
-            {
-                ...basicMonthlyHelpdeskPlan,
-                price_id: 'price_123',
-                name: 'Product 1',
-                num_quota_tickets: 100,
-            },
-            {
-                ...basicMonthlyHelpdeskPlan,
-                price_id: 'price_456',
-                name: 'Product 2',
-                num_quota_tickets: 200,
-            },
-        ],
+        currentPlan,
+        availablePlans,
         selectedPlans,
         setSelectedPlans: mockSetSelectedPlans,
         periodEnd: 'February 14, 2024',
@@ -216,6 +219,37 @@ describe('ProductPlanSelection', () => {
         expect(screen.getByText('Helpdesk')).toBeInTheDocument()
     })
 
+    it('is possible to change plans', () => {
+        render(
+            <Provider store={store}>
+                <ProductPlanSelection {...props} />
+            </Provider>,
+        )
+
+        const selectedPlan = screen.getByLabelText('Price value')
+        expect(selectedPlan).toHaveTextContent(
+            currentPlan.num_quota_tickets.toString(),
+        )
+
+        selectedPlan.click()
+
+        const items = screen.getAllByRole('menuitem')
+
+        expect(items[0]).toHaveTextContent(
+            availablePlans[0].num_quota_tickets.toString(),
+        )
+        expect(items[1]).toHaveTextContent(
+            availablePlans[1].num_quota_tickets.toString(),
+        )
+        expect(items[2]).toHaveTextContent(
+            availablePlans[2].num_quota_tickets.toString(),
+        )
+
+        items[1].click()
+
+        expect(mockSetSelectedPlans).toHaveBeenCalledTimes(1)
+    })
+
     it('displays the active badge when product is active', () => {
         render(
             <Provider store={store}>
@@ -291,34 +325,6 @@ describe('ProductPlanSelection', () => {
         expect(
             screen.getByText('Click allowance auto-upgrade'),
         ).toBeInTheDocument()
-    })
-
-    it('should keep add product button disabled if editing is not available', () => {
-        render(
-            <Provider store={store}>
-                <ProductPlanSelection
-                    {...props}
-                    currentPlan={convertPlan1}
-                    selectedPlans={{
-                        ...selectedPlans,
-                        [ProductType.Convert]: {
-                            isSelected: false,
-                            autoUpgrade: false,
-                            plan: convertPlan1,
-                        },
-                    }}
-                    type={ProductType.Convert}
-                    editingAvailable={false}
-                />
-            </Provider>,
-        )
-
-        expect(
-            screen.getByRole('button', { name: /Add Product/ }),
-        ).toBeAriaDisabled()
-        expect(
-            screen.queryByText('Click allowance auto-upgrade'),
-        ).not.toBeInTheDocument()
     })
 
     it('should keep add product button disabled if editing is not available', () => {

@@ -13,7 +13,7 @@ import css from 'pages/settings/new_billing/components/SubscriptionModal/PlanSub
 import SummaryFooter from 'pages/settings/new_billing/components/SummaryFooter/SummaryFooter'
 import { NewSummaryPaymentSection } from 'pages/settings/new_billing/components/SummaryPaymentSection/NewSummaryPaymentSection'
 import {
-    ENTERPRISE_PRICE_ID,
+    ENTERPRISE_PLAN_ID,
     PRODUCT_INFO,
     PRODUCT_SUBSCRIPTION_DESCRIPTION,
 } from 'pages/settings/new_billing/constants'
@@ -70,11 +70,11 @@ const PlanSubscriptionDescription = ({
     const options = useMemo(() => {
         return [
             ...filteredPlans.map((plan) => ({
-                value: plan.price_id ?? '',
+                value: plan.plan_id ?? '',
                 label: formatOptionLabel(plan),
             })),
             {
-                value: ENTERPRISE_PRICE_ID,
+                value: ENTERPRISE_PLAN_ID,
                 label: `${formatNumTickets(
                     filteredPlans[filteredPlans.length - 1]
                         ?.num_quota_tickets ?? 0,
@@ -83,14 +83,14 @@ const PlanSubscriptionDescription = ({
         ]
     }, [filteredPlans, formatOptionLabel])
 
-    const handleSelectProductPlan = (price_id: Value) => {
+    const handleSelectProductPlan = (plan_id: Value) => {
         const selectedPlan = filteredPlans.find(
-            (plan) => plan.price_id === price_id,
+            (plan) => plan.plan_id === plan_id,
         )
 
         const enterprisePlan = {
             ...filteredPlans[filteredPlans.length - 1],
-            price_id: ENTERPRISE_PRICE_ID,
+            plan_id: ENTERPRISE_PLAN_ID,
             name: 'Enterprise',
         }
         setSelectedPlan(selectedPlan ?? enterprisePlan)
@@ -152,7 +152,7 @@ const PlanSubscriptionDescription = ({
                             id="priceSelect"
                             aria-label="Plan"
                             placeholder="Select a plan"
-                            value={selectedPlan?.price_id}
+                            value={selectedPlan?.plan_id}
                             fullWidth
                             onChange={handleSelectProductPlan}
                             showSelectedOption

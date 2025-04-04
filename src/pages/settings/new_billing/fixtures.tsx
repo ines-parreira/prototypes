@@ -25,6 +25,22 @@ import {
     UpcomingInvoiceSummary,
 } from 'models/billing/types'
 
+export const storeWithTrialingSubscription = {
+    currentAccount: fromJS({
+        ...account,
+        meta: { hasCreditCard: true },
+        current_subscription: {
+            ...account.current_subscription,
+            products: {
+                [HELPDESK_PRODUCT_ID]: legacyBasicHelpdeskPlan.price_id,
+            },
+            status: 'trialing',
+        },
+    }),
+    billing: fromJS({ invoices: [], products, currentProductsUsage: {} }),
+    integrations: fromJS({ integrations: [shopifyIntegration] }),
+}
+
 export const storeWithCanceledSubscription = {
     currentAccount: fromJS({
         ...account,
