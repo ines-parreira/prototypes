@@ -1,4 +1,5 @@
 import { AiAgentScope } from 'models/aiAgent/types'
+import { DiscountStrategy } from 'pages/aiAgent/Onboarding/components/steps/PersonalityStep/DiscountStrategy'
 
 import { AiAgentStoreConfigurationData } from '../useFetchAiAgentStoreConfigurationData'
 
@@ -28,6 +29,8 @@ export class AiAgentStoreConfigurationFixture {
             | 'withConnectedEmailIntegrations'
             | 'withoutConnectedEmailIntegrations'
             | 'withCreatedDatetime'
+            | 'withDiscountLevelStrategy'
+            | 'withoutDiscountLevelStrategy'
         >
     }
 
@@ -119,6 +122,19 @@ export class AiAgentStoreConfigurationFixture {
 
     withHandoverTopics(...topics: string[]) {
         this.aiAgentStoreConfigurationData.excludedTopics = topics
+
+        return this as AiAgentStoreConfigurationFixtureFullyConfigured
+    }
+
+    withoutDiscountLevelStrategy() {
+        this.aiAgentStoreConfigurationData.salesDiscountStrategyLevel =
+            DiscountStrategy.NoDiscount
+        return this as AiAgentStoreConfigurationFixtureFullyConfigured
+    }
+
+    withDiscountLevelStrategy() {
+        this.aiAgentStoreConfigurationData.salesDiscountStrategyLevel =
+            DiscountStrategy.Balanced
 
         return this as AiAgentStoreConfigurationFixtureFullyConfigured
     }

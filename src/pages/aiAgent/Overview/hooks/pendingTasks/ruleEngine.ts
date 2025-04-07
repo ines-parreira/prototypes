@@ -21,6 +21,7 @@ import { ReviewAIGeneratedGuidancesTask } from './tasks/ReviewAIGeneratedGuidanc
 import { SetYourActionsLiveTask } from './tasks/SetYourActionsLive.task'
 import { TestAIAgentTask } from './tasks/TestAIAgent.task'
 import { UpdateYourChatInstallationTask } from './tasks/UpdateYourChatInstallation.task'
+import { UpdateYourDiscountStrategyTask } from './tasks/UpdateYourDiscountStrategy.task'
 import { UploadAnExternalDocTask } from './tasks/UploadAnExternalDoc.task'
 import { VerifyYourEmailDomainTask } from './tasks/VerifyYourEmailDomain.task'
 import { type ActionsData } from './useFetchActionsData'
@@ -77,6 +78,7 @@ const tasksPerAiAgentType: Record<
         new CreateAnActionTask(data, routes),
         new SetYourActionsLiveTask(data, routes),
         new GiveFeedbackAIAgentTask(data, routes),
+        new UpdateYourDiscountStrategyTask(data, routes),
     ],
     sales: (data: RuleEngineData, routes: RuleEngineRoutes) => [
         new InstallYourChatTask(data, routes),
@@ -91,6 +93,7 @@ const tasksPerAiAgentType: Record<
         new UploadAnExternalDocTask(data, routes),
         new TestAIAgentTask(data, routes),
         new GiveFeedbackAIAgentTask(data, routes),
+        new UpdateYourDiscountStrategyTask(data, routes),
     ],
     support: (data: RuleEngineData, routes: RuleEngineRoutes) => [
         new SetUpYourEmailTask(data, routes),
