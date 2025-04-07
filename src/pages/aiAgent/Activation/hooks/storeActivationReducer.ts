@@ -347,7 +347,7 @@ export const storeConfigurationToState = (
     )
 }
 
-const reducer = (state: State, action: ACTION_TYPE): State => {
+export const reducer = (state: State, action: ACTION_TYPE): State => {
     switch (action.type) {
         case 'CHANGE_SUPPORT':
             return toggleSupport(state, action)
