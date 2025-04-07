@@ -15,6 +15,7 @@ import { CreateAnActionTask } from './tasks/CreateAnAction.task'
 import { CreateYourFirstGuidanceTask } from './tasks/CreateYourFirstGuidance.task'
 import { EnableAIAgentOnChatTask } from './tasks/EnableAIAgentOnChat.task'
 import { EnableAIAgentOnEmailTask } from './tasks/EnableAIAgentOnEmail.task'
+import { EnableSalesSkill } from './tasks/EnableSalesSkill'
 import { InstallYourChatTask } from './tasks/InstallYourChat.task'
 import { PublishYourFirstGuidanceTask } from './tasks/PublishYourFirstGuidance.task'
 import { ReviewAIGeneratedGuidancesTask } from './tasks/ReviewAIGeneratedGuidances.task'
@@ -105,6 +106,7 @@ const tasksPerAiAgentType: Record<
         new UploadAnExternalDocTask(data, routes),
         new EnableAIAgentOnChatTask(data, routes),
         new EnableAIAgentOnEmailTask(data, routes),
+        new EnableSalesSkill(data, routes),
         new ReviewAIGeneratedGuidancesTask(data, routes),
         new CreateYourFirstGuidanceTask(data, routes),
         new PublishYourFirstGuidanceTask(data, routes),

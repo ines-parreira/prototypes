@@ -1,4 +1,7 @@
-import { FocusActivationModal } from 'pages/aiAgent/Activation/utils'
+import {
+    FocusActivationModal,
+    getAiSalesAgentEmailEnabledFlag,
+} from 'pages/aiAgent/Activation/utils'
 
 import { RuleEngineData, RuleEngineRoutes } from '../ruleEngine'
 import { Task } from './Task'
@@ -7,7 +10,9 @@ export class EnableAIAgentOnEmailTask extends Task {
     constructor(data: RuleEngineData, routes: RuleEngineRoutes) {
         super(
             'Enable AI Agent on Email',
-            'Automates up to 60% of support tickets',
+            getAiSalesAgentEmailEnabledFlag()
+                ? 'Automates up to 60% of email support tickets'
+                : 'Automates up to 60% of support tickets',
             'BASIC',
             data,
             routes,

@@ -1,3 +1,4 @@
+import { AiAgentScope } from 'models/aiAgent/types'
 import {
     FocusActivationModal,
     getAiSalesAgentEmailEnabledFlag,
@@ -6,25 +7,25 @@ import {
 import { RuleEngineData, RuleEngineRoutes } from '../ruleEngine'
 import { Task } from './Task'
 
-export class EnableAIAgentOnChatTask extends Task {
+export class EnableSalesSkill extends Task {
     constructor(data: RuleEngineData, routes: RuleEngineRoutes) {
         super(
-            'Enable AI Agent on Chat',
-            getAiSalesAgentEmailEnabledFlag()
-                ? 'Automates up to 60% of chat support tickets'
-                : 'Boost GMV through automated sales',
+            'Enable AI Agent for Sales',
+            'Boost GMV through automated sales',
             'BASIC',
             data,
             routes,
         )
     }
 
-    // Email channel should be deactivated in ai agent store configuration
     protected shouldBeDisplayed(data: RuleEngineData): boolean {
-        return (
-            data.aiAgentStoreConfiguration.chatChannelDeactivatedDatetime !==
-            null
-        )
+        const conf = data.aiAgentStoreConfiguration
+        const emailSet = conf.emailChannelDeactivatedDatetime === null
+        const chatSet = conf.chatChannelDeactivatedDatetime === null
+        const salesNotEnabled = !conf.scopes.includes(AiAgentScope.Sales)
+        const atLeastOneSalesChannelEnabled = chatSet || emailSet
+        const ffEnabled = getAiSalesAgentEmailEnabledFlag()
+        return salesNotEnabled && atLeastOneSalesChannelEnabled && ffEnabled
     }
 
     protected getFeatureUrl({
