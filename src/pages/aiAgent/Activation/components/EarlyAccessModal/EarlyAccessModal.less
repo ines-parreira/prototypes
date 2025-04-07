@@ -53,6 +53,28 @@
         background: none;
         display: flex;
         flex-direction: column;
+        gap: @layout-spacing-m;
+
+        .legalCard {
+            background-color: var(--neutral-grey-1);
+            border: solid 1px var(--neutral-grey-2);
+            border-radius: 4px;
+            box-shadow: none;
+            color: var(--neutral-grey-6);
+            cursor: initial;
+            font-size: 12px;
+            padding: 12px @layout-spacing-s;
+
+            .checkboxLabel {
+                font-size: 12px;
+                font-weight: normal;
+
+                a {
+                    color: var(--neutral-grey-6);
+                    text-decoration: underline !important;
+                }
+            }
+        }
 
         button {
             width: 100%;
@@ -196,6 +218,10 @@
             rgba(203, 85, 239, 0.79) -12.67%,
             rgba(111, 12, 134, 0.79) 119.65%
         );
+    }
+
+    .disabledButton {
+        background: inherit;
     }
 
     .alert {

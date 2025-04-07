@@ -2,7 +2,12 @@ import { useState } from 'react'
 
 import cn from 'classnames'
 
-import { Badge, Button, Skeleton } from '@gorgias/merchant-ui-kit'
+import {
+    Badge,
+    Button,
+    CheckBoxField,
+    Skeleton,
+} from '@gorgias/merchant-ui-kit'
 
 import {
     AutomateEarlyAccessPlan,
@@ -66,6 +71,8 @@ export const EarlyAccessModal = ({
     const earlyAccessPlanExtraTicketCost = formatAmount(1.5, currency)
 
     const [isTipsOpen, setIsTipsOpen] = useState(false)
+    const [isTermsChecked, setIsTermsChecked] = useState(false)
+
     const toggleTips = () => setIsTipsOpen(!isTipsOpen)
 
     return (
@@ -272,13 +279,40 @@ export const EarlyAccessModal = ({
                 </Card>
             </ModalBody>
             <ModalFooter className={css.footer}>
+                <Card className={cn(css.legalCard)}>
+                    <CardContent>
+                        <CheckBoxField
+                            isDisabled={!userIsAdmin}
+                            value={isTermsChecked}
+                            onChange={setIsTermsChecked}
+                            label={
+                                <span className={css.checkboxLabel}>
+                                    I agree to the updated pricing and terms
+                                    associated with this upgrade, as outlined in{' '}
+                                    <a
+                                        href="https://www.gorgias.com/legal/terms-of-service"
+                                        target="_blank"
+                                        rel="noreferrer"
+                                    >
+                                        Gorgias terms
+                                    </a>
+                                    .
+                                </span>
+                            }
+                        />
+                    </CardContent>
+                </Card>
+
                 <Button
                     fillStyle="fill"
                     intent="primary"
                     size="medium"
-                    className={cn({ [css.principalButton]: userIsAdmin })}
+                    className={cn({
+                        [css.principalButton]: userIsAdmin,
+                        [css.disabledButton]: !isTermsChecked,
+                    })}
                     onClick={onUpgradeClick}
-                    isDisabled={!userIsAdmin}
+                    isDisabled={!userIsAdmin || !isTermsChecked}
                     isLoading={isUpgrading}
                 >
                     Upgrade AI Agent

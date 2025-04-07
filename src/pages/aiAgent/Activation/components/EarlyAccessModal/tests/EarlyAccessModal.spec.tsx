@@ -10,6 +10,11 @@ import { Cadence } from 'models/billing/types'
 import { EarlyAccessModal } from '../EarlyAccessModal'
 
 describe('<EarlyAccessModal />', () => {
+    const acceptTermsAndConditions = () => {
+        const checkbox = screen.getByRole('checkbox')
+        fireEvent.click(checkbox)
+    }
+
     it('should render the modal and handler should be called when clicked', () => {
         const onCloseMock = jest.fn()
         const onUpgradeClickMock = jest.fn()
@@ -141,6 +146,44 @@ describe('<EarlyAccessModal />', () => {
         expect(getByText('450 automated tickets/months')).toBeInTheDocument()
     })
 
+    it('should disable upgrade button when terms are not accepted', () => {
+        const { queryByText } = render(
+            <EarlyAccessModal
+                isOpen
+                isLoading={true}
+                onClose={() => {}}
+                onStayClick={() => {}}
+                onUpgradeClick={() => {}}
+                userIsAdmin={true}
+                isUpgrading={false}
+            />,
+        )
+
+        const upgradeCta = queryByText('Upgrade AI Agent')?.parentElement
+
+        expect(upgradeCta).toBeAriaDisabled()
+    })
+
+    it('should enable upgrade button when terms are accepted', () => {
+        const { queryByText } = render(
+            <EarlyAccessModal
+                isOpen
+                isLoading={true}
+                onClose={() => {}}
+                onStayClick={() => {}}
+                onUpgradeClick={() => {}}
+                userIsAdmin={true}
+                isUpgrading={false}
+            />,
+        )
+
+        acceptTermsAndConditions()
+
+        const upgradeCta = queryByText('Upgrade AI Agent')?.parentElement
+
+        expect(upgradeCta).toBeAriaEnabled()
+    })
+
     it.each([
         {
             userIsAdmin: true,
@@ -153,7 +196,7 @@ describe('<EarlyAccessModal />', () => {
                 'should render the modal with warning and disabled CTAs if user is not admin',
         },
     ])('$testName', ({ userIsAdmin }) => {
-        const { queryByText } = render(
+        const { queryByRole, queryByText } = render(
             <EarlyAccessModal
                 isOpen
                 isLoading={true}
@@ -165,15 +208,20 @@ describe('<EarlyAccessModal />', () => {
         )
 
         const upgradeCta = queryByText('Upgrade AI Agent')?.parentElement
+        const termsCheckbox = queryByRole('checkbox')
 
         const warningBanner = queryByText(
             'You do not have admin access. Contact your admin to upgrade.',
         )
 
+        acceptTermsAndConditions()
+
         if (userIsAdmin) {
+            expect(termsCheckbox).toBeEnabled()
             expect(upgradeCta).toBeAriaEnabled()
             expect(warningBanner).not.toBeInTheDocument()
         } else {
+            expect(termsCheckbox).toBeDisabled()
             expect(upgradeCta).toBeAriaDisabled()
             expect(warningBanner).toBeInTheDocument()
         }
