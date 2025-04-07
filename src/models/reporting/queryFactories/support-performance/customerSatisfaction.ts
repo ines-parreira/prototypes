@@ -11,6 +11,7 @@ import {
 } from 'models/reporting/cubes/TicketSatisfactionSurveyCube'
 import { aiAgentTicketsDefaultFilters } from 'models/reporting/queryFactories/automate_v2/filters'
 import { CHANNEL_DIMENSION } from 'models/reporting/queryFactories/support-performance/constants'
+import { addFieldIdToCustomFieldValues } from 'models/reporting/queryFactories/utils'
 import { ReportingFilterOperator, ReportingQuery } from 'models/reporting/types'
 import { StatsFilters } from 'models/stat/types'
 import {
@@ -55,6 +56,7 @@ export const customerSatisfactionForAIAgentTicketsQueryFactory = ({
     outcomeFieldId,
     aiAgentUserId,
     integrationIds,
+    intentIds,
 }: {
     filters: StatsFilters
     timezone: string
@@ -63,6 +65,7 @@ export const customerSatisfactionForAIAgentTicketsQueryFactory = ({
     outcomeFieldId?: number
     aiAgentUserId?: string
     integrationIds?: string[]
+    intentIds?: string[] | null
 }): ReportingQuery<HelpdeskMessageCubeWithJoins> => ({
     measures: [TicketSatisfactionSurveyMeasure.AvgSurveyScore],
     dimensions: [],
@@ -80,11 +83,24 @@ export const customerSatisfactionForAIAgentTicketsQueryFactory = ({
                   },
               ]
             : []),
-        {
-            member: TicketMember.CustomField,
-            operator: ReportingFilterOperator.StartsWith,
-            values: [`${outcomeFieldId}::`],
-        },
+        ...(intentFieldId && intentIds && intentIds.length > 0
+            ? [
+                  {
+                      member: TicketMember.CustomField,
+                      operator: ReportingFilterOperator.StartsWith,
+                      values: addFieldIdToCustomFieldValues(
+                          intentFieldId,
+                          intentIds,
+                      ),
+                  },
+              ]
+            : [
+                  {
+                      member: TicketMember.CustomField,
+                      operator: ReportingFilterOperator.StartsWith,
+                      values: [`${intentFieldId}::`],
+                  },
+              ]),
         ...aiAgentTicketsDefaultFilters({
             filters,
             intentFieldId,

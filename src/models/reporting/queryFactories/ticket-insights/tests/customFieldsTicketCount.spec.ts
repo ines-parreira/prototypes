@@ -52,6 +52,8 @@ describe('customFieldsTicketCountQueryFactory', () => {
     const mockIntentFieldId = 123
     const mockOutcomeFieldId = 456
     const granularity = ReportingGranularity.Day
+    const mockIntegrationIds = ['chat::1']
+    const mockIntentIds = ['order::other']
 
     describe('customFieldsTicketCountQueryFactory', () => {
         it('should build expected query', () => {
@@ -841,7 +843,7 @@ describe('customFieldsTicketCountQueryFactory', () => {
                 {
                     member: TicketMember.CustomField,
                     operator: ReportingFilterOperator.StartsWith,
-                    values: ['456::'],
+                    values: ['123::'],
                 },
                 {
                     member: TicketMember.CreatedDatetime,
@@ -865,6 +867,80 @@ describe('customFieldsTicketCountQueryFactory', () => {
                     member: TicketMessagesMember.IntegrationChannelPair,
                     operator: ReportingFilterOperator.Equals,
                     values: ['0'],
+                },
+                {
+                    member: 'TicketEnriched.ticketCount',
+                    operator: 'measureFilter',
+                    values: [],
+                },
+            ])
+        })
+
+        it('should return a query with the correct base query structure for aiInsightsCustomerSatisfactionMetricDrillDownQueryFactory for single intent', () => {
+            const query =
+                aiInsightsCustomerSatisfactionMetricDrillDownQueryFactory(
+                    statsFilters,
+                    timezone,
+                    perAgentId,
+                    mockIntentFieldId,
+                    mockOutcomeFieldId,
+                    sorting,
+                    mockIntegrationIds,
+                    mockIntentIds,
+                )
+            expect(query.filters).toEqual([
+                {
+                    member: TicketMember.IsTrashed,
+                    operator: ReportingFilterOperator.Equals,
+                    values: ['0'],
+                },
+                {
+                    member: TicketMember.IsSpam,
+                    operator: ReportingFilterOperator.Equals,
+                    values: ['0'],
+                },
+                {
+                    member: TicketMember.PeriodStart,
+                    operator: ReportingFilterOperator.AfterDate,
+                    values: ['2021-05-29T00:00:00.000'],
+                },
+                {
+                    member: TicketMember.PeriodEnd,
+                    operator: ReportingFilterOperator.BeforeDate,
+                    values: ['2021-06-04T23:59:59.000'],
+                },
+                {
+                    member: TicketMember.AssigneeUserId,
+                    operator: ReportingFilterOperator.Equals,
+                    values: ['1'],
+                },
+                {
+                    member: TicketMember.CustomField,
+                    operator: ReportingFilterOperator.StartsWith,
+                    values: [`${mockIntentFieldId}::${mockIntentIds[0]}`],
+                },
+                {
+                    member: TicketMember.CreatedDatetime,
+                    operator: ReportingFilterOperator.InDateRange,
+                    values: [
+                        '2021-05-29T00:00:00.000',
+                        '2021-06-04T23:59:59.000',
+                    ],
+                },
+                {
+                    member: TicketMember.CustomFieldToExclude,
+                    operator: ReportingFilterOperator.NotStartsWith,
+                    values: ['123::Other::No Reply'],
+                },
+                {
+                    member: TicketMember.CustomField,
+                    operator: ReportingFilterOperator.NotStartsWith,
+                    values: ['456::Close::Without message'],
+                },
+                {
+                    member: TicketMessagesMember.IntegrationChannelPair,
+                    operator: ReportingFilterOperator.Equals,
+                    values: mockIntegrationIds,
                 },
                 {
                     member: 'TicketEnriched.ticketCount',

@@ -232,6 +232,7 @@ export const getDrillDownQuery = (
                     metricName.outcomeFieldId,
                     sorting,
                     metricName.integrationIds,
+                    metricName.intentFieldValues,
                 )
 
         case ConvertMetric.CampaignSalesCount:

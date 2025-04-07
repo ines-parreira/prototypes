@@ -350,6 +350,7 @@ export const aiInsightsCustomerSatisfactionMetricDrillDownQueryFactory = (
     outcomeFieldId?: number,
     sorting?: OrderDirection,
     integrationIds?: string[],
+    intentIds?: string[] | null,
 ): ReportingQuery<HelpdeskMessageCubeWithJoins> => {
     const baseQuery = customerSatisfactionForAIAgentTicketsQueryFactory({
         filters,
@@ -359,6 +360,7 @@ export const aiInsightsCustomerSatisfactionMetricDrillDownQueryFactory = (
         outcomeFieldId: outcomeFieldId,
         aiAgentUserId: String(perAgentId),
         integrationIds,
+        intentIds,
     })
 
     return {
