@@ -4,9 +4,12 @@ import { AUTOMATE_ICON } from 'pages/common/components/SourceIcon'
 import { getLDClient } from 'utils/launchDarkly'
 
 import AiAgentNotification from './components/AiAgentNotification'
+import WorkflowConfigurationUpdatedNotification from './components/WorkflowConfigurationUpdatedNotification'
 import {
     AI_AGENT_SET_AND_OPTIMIZED_TYPE,
     AI_AGENT_SET_AND_OPTIMIZED_WORKFLOW,
+    WORKFLOWS_CONFIGURATION_UPDATED_TYPE,
+    WORKFLOWS_CONFIGURATION_UPDATED_WORKFLOW,
 } from './constants'
 
 const getIsAiAgentOnboardingNotificationEnabled = () => {
@@ -35,4 +38,12 @@ registerNotification({
         label: 'AI Agent set up and optimization tips',
     },
     isEnabled: getIsAiAgentOnboardingNotificationEnabled,
+})
+
+// System notification cannot be disabled
+registerNotification({
+    type: WORKFLOWS_CONFIGURATION_UPDATED_TYPE,
+    component: WorkflowConfigurationUpdatedNotification,
+    workflow: WORKFLOWS_CONFIGURATION_UPDATED_WORKFLOW,
+    isEnabled: () => true,
 })

@@ -1,13 +1,16 @@
 import React from 'react'
 
 import { QueryClientProvider } from '@tanstack/react-query'
-import { act, fireEvent, screen } from '@testing-library/react'
+import { act, fireEvent, screen, waitFor } from '@testing-library/react'
 import { createMemoryHistory } from 'history'
 import { ulid } from 'ulidx'
 
 import useGetDateAndTimeFormat from 'hooks/useGetDateAndTimeFormat'
 import { IntegrationType } from 'models/integration/constants'
-import { useGetWorkflowConfigurationTemplates } from 'models/workflows/queries'
+import {
+    useGetWorkflowConfigurationTemplates,
+    useListTrackstarConnections,
+} from 'models/workflows/queries'
 import useDeleteAction from 'pages/aiAgent/actions/hooks/useDeleteAction'
 import useUpsertAction from 'pages/aiAgent/actions/hooks/useUpsertAction'
 import { StoreWorkflowsConfiguration } from 'pages/aiAgent/actions/types'
@@ -16,6 +19,7 @@ import { WorkflowConfigurationBuilder } from 'pages/automate/workflows/models/wo
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 import { renderWithRouter } from 'utils/testing'
 
+import StoreTrackstarProvider from '../../providers/StoreTrackstarProvider'
 import ActionsRow from '../ActionsRow'
 
 jest.mock('pages/automate/actionsPlatform/hooks/useApps')
@@ -33,6 +37,7 @@ const mockUseGetDateAndTimeFormat = jest.mocked(useGetDateAndTimeFormat)
 const mockUseGetWorkflowConfigurationTemplates = jest.mocked(
     useGetWorkflowConfigurationTemplates,
 )
+const mockUseListTrackstarConnections = jest.mocked(useListTrackstarConnections)
 
 const b = new WorkflowConfigurationBuilder({
     id: ulid(),
@@ -82,6 +87,10 @@ const b = new WorkflowConfigurationBuilder({
             type: 'app',
             app_id: 'someid',
         },
+        {
+            type: 'app',
+            app_id: 'sandbox',
+        },
     ],
     available_languages: [],
 })
@@ -125,9 +134,23 @@ describe('<ActionsRow />', () => {
                     name: 'Shopify',
                     type: IntegrationType.Shopify,
                 },
+                {
+                    icon: '/assets/img/integrations/sandbox.png',
+                    id: 'sandbox',
+                    name: 'Sandbox',
+                    type: IntegrationType.App,
+                },
             ],
             isLoading: false,
-            actionsApps: [],
+            actionsApps: [
+                {
+                    id: 'sandbox',
+                    auth_type: 'trackstar',
+                    auth_settings: {
+                        integration_name: 'sandbox',
+                    },
+                },
+            ],
         })
         mockUseDeleteAction.mockReturnValue({
             mutate: jest.fn(),
@@ -169,8 +192,25 @@ describe('<ActionsRow />', () => {
                         },
                     ],
                 },
+                {
+                    id: 'uuid4',
+                    apps: [
+                        {
+                            app_id: 'sandbox',
+                            type: IntegrationType.App,
+                            auth_type: 'trackstar',
+                            auth_settings: {
+                                integration_name: 'sandbox',
+                            },
+                        },
+                    ],
+                },
             ],
         } as unknown as ReturnType<typeof useGetWorkflowConfigurationTemplates>)
+        mockUseListTrackstarConnections.mockReturnValue({
+            data: { sandbox: { integration_name: 'sandbox', error: true } },
+            isLoading: false,
+        } as unknown as ReturnType<typeof useListTrackstarConnections>)
     })
 
     it('should render component', () => {
@@ -277,5 +317,36 @@ describe('<ActionsRow />', () => {
         })
 
         expect(mockDeleteAction).toHaveBeenCalled()
+    })
+
+    it('should display error icon when connection is lost', async () => {
+        renderWithRouter(
+            <QueryClientProvider client={queryClient}>
+                <StoreTrackstarProvider
+                    storeName="shopify-store"
+                    storeType="shopify"
+                >
+                    <ActionsRow
+                        action={{
+                            ...configuration,
+                            apps: configuration.apps!.filter(
+                                (app) => app.type === 'app',
+                            ),
+                        }}
+                    />
+                </StoreTrackstarProvider>
+            </QueryClientProvider>,
+        )
+
+        act(() => {
+            fireEvent.mouseEnter(screen.getByText('error'))
+        })
+        await waitFor(() => {
+            expect(
+                screen.getByText(
+                    'We lost connection with Sandbox. Reconnect to avoid disruptions with Action performance.',
+                ),
+            ).toBeInTheDocument()
+        })
     })
 })

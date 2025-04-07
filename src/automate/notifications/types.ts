@@ -12,3 +12,10 @@ export type AiAgentNotificationPayload = {
     shop_type: string
     ticket_id?: string
 }
+
+export type WorkflowConfigurationUpdatedNotificationPayload = {
+    store_name: string
+    store_type: string
+    type: 'trackstar-disconnected'
+    integration_name: string
+}

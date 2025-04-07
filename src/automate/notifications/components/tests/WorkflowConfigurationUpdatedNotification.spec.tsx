@@ -1,0 +1,42 @@
+import { render } from '@testing-library/react'
+import { ldClientMock } from 'jest-launchdarkly-mock'
+
+import type { Notification } from 'common/notifications'
+
+import { WorkflowConfigurationUpdatedNotificationPayload } from '../../types'
+import WorkflowConfigurationUpdatedNotification from '../WorkflowConfigurationUpdatedNotification'
+
+describe('WorkflowConfigurationUpdatedNotification', () => {
+    const STORE_NAME = 'store_1'
+    const INTEGRATION_NAME = 'Shopify'
+
+    beforeEach(() => {
+        ldClientMock.allFlags.mockReturnValue({})
+    })
+
+    it('should have correct URL in the content component', () => {
+        const notification: Notification<WorkflowConfigurationUpdatedNotificationPayload> =
+            {
+                id: '1',
+                inserted_datetime: '2024-11-04T13:07:00',
+                read_datetime: null,
+                seen_datetime: null,
+                type: 'workflow-configuration.updated',
+                payload: {
+                    store_type: 'shopify',
+                    type: 'trackstar-disconnected',
+                    store_name: STORE_NAME,
+                    integration_name: INTEGRATION_NAME,
+                },
+            }
+
+        const { container } = render(
+            <WorkflowConfigurationUpdatedNotification
+                notification={notification}
+            />,
+        )
+
+        const linkElement = container.querySelector('a')
+        expect(linkElement).toBeInTheDocument()
+    })
+})

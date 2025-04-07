@@ -14,6 +14,7 @@ import { IntegrationType } from 'models/integration/constants'
 import {
     useGetStoreWorkflowsConfigurations,
     useGetWorkflowConfigurationTemplates,
+    useListTrackstarConnections,
 } from 'models/workflows/queries'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 import { renderWithRouter } from 'utils/testing'
@@ -27,6 +28,7 @@ jest.mock('../components/ActionsList', () => () => <div>ActionsList</div>)
 jest.mock('models/workflows/queries', () => ({
     useGetStoreWorkflowsConfigurations: jest.fn(),
     useGetWorkflowConfigurationTemplates: jest.fn(),
+    useListTrackstarConnections: jest.fn(),
 }))
 
 const mockUseGetStoreWorkflowsConfigurations = jest.mocked(
@@ -35,6 +37,8 @@ const mockUseGetStoreWorkflowsConfigurations = jest.mocked(
 const mockUseGetWorkflowConfigurationTemplates = jest.mocked(
     useGetWorkflowConfigurationTemplates,
 )
+
+const mockUseListTrackstarConnections = jest.mocked(useListTrackstarConnections)
 
 const mockStore = configureMockStore([thunk])
 
@@ -89,6 +93,10 @@ describe('ActionsViewContainer', () => {
             data: [],
             isInitialLoading: false,
         } as unknown as ReturnType<typeof useGetWorkflowConfigurationTemplates>)
+        mockUseListTrackstarConnections.mockReturnValue({
+            data: [],
+            isLoading: false,
+        } as unknown as ReturnType<typeof useListTrackstarConnections>)
     })
 
     it('renders without error', () => {

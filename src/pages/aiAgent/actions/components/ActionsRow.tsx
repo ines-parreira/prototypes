@@ -21,6 +21,8 @@ import TableBodyRow from 'pages/common/components/table/TableBodyRow'
 import IconTooltip from 'pages/common/forms/IconTooltip/IconTooltip'
 import { formatDatetime } from 'utils'
 
+import { getActionsAppFromTemplateApp } from '../../../automate/actionsPlatform/utils'
+import { useStoreTrackstarContext } from '../providers/StoreTrackstarContext'
 import DeleteActionConfirmation from './DeleteActionConfirmation'
 
 import css from './ActionsRow.less'
@@ -50,6 +52,8 @@ export default function ActionsRow({ action }: Props) {
 
     const { mutate: updateAction, isLoading: isEditActionLoading } =
         useUpsertAction('update', shopName, shopType)
+
+    const { connections } = useStoreTrackstarContext()
 
     const datetimeFormat = useGetDateAndTimeFormat(
         DateAndTimeFormatting.CompactDate,
@@ -83,7 +87,7 @@ export default function ActionsRow({ action }: Props) {
         [action, shopName, shopType, updateAction],
     )
 
-    const { apps } = useApps()
+    const { apps, actionsApps } = useApps()
     const getAppFromTemplateApp = useGetAppFromTemplateApp({ apps })
 
     const { recharge: rechargeIntegration } = useStoreAppsContext()
@@ -161,7 +165,10 @@ export default function ActionsRow({ action }: Props) {
                     />
                     {action.apps?.map((templateApp) => {
                         const app = getAppFromTemplateApp(templateApp)
-
+                        const actionsApp = getActionsAppFromTemplateApp(
+                            actionsApps,
+                            templateApp,
+                        )
                         if (app?.type === 'recharge' && !rechargeIntegration) {
                             return (
                                 <IconTooltip
@@ -184,6 +191,30 @@ export default function ActionsRow({ action }: Props) {
                                     >
                                         the App Store.
                                     </Link>
+                                </IconTooltip>
+                            )
+                        }
+
+                        if (
+                            actionsApp?.auth_type === 'trackstar' &&
+                            connections[
+                                actionsApp.auth_settings.integration_name
+                            ]?.error &&
+                            app
+                        ) {
+                            return (
+                                <IconTooltip
+                                    key={actionsApp.id}
+                                    tooltipProps={{
+                                        placement: 'top-end',
+                                        autohide: false,
+                                    }}
+                                    icon="error"
+                                    className={css.icon}
+                                >
+                                    We lost connection with {app.name}.
+                                    Reconnect to avoid disruptions with Action
+                                    performance.
                                 </IconTooltip>
                             )
                         }

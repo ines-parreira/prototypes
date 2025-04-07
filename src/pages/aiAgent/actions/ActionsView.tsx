@@ -25,6 +25,7 @@ import {
     EMPTY_STATE_BANNER_ACTIONS_DESCRIPTION,
 } from './constants'
 import { handleError } from './hooks/errorHandler'
+import StoreTrackstarProvider from './providers/StoreTrackstarProvider'
 
 import css from './ActionsView.less'
 
@@ -80,21 +81,26 @@ const ActionsView = () => {
             title={isStandaloneMenuEnabled ? SUPPORT_ACTIONS : AI_AGENT}
         >
             {showFakeActions || storeWfConfigurations.length > 0 ? (
-                <div className={css.actionsListContainer}>
-                    <div className={css.actionListDescription}>
-                        <div data-candu-id="custom-action-view-header">
-                            {ACTIONS_DESCRIPTION_INTRO}
-                            When enabled, you can preview Actions in the{' '}
-                            <Link to={routes.test}>test area</Link>.{' '}
-                            {ACTIONS_DESCRIPTION_CURRENT_STATE_DISCLAIMER}
+                <StoreTrackstarProvider
+                    storeName={shopName}
+                    storeType={shopType as 'shopify'}
+                >
+                    <div className={css.actionsListContainer}>
+                        <div className={css.actionListDescription}>
+                            <div data-candu-id="custom-action-view-header">
+                                {ACTIONS_DESCRIPTION_INTRO}
+                                When enabled, you can preview Actions in the{' '}
+                                <Link to={routes.test}>test area</Link>.{' '}
+                                {ACTIONS_DESCRIPTION_CURRENT_STATE_DISCLAIMER}
+                            </div>
+                            <div className={css.actionButtons}>
+                                <CreateCustomActionButton />
+                                <BrowseAllActionsButton />
+                            </div>
                         </div>
-                        <div className={css.actionButtons}>
-                            <CreateCustomActionButton />
-                            <BrowseAllActionsButton />
-                        </div>
+                        <ActionsList actions={storeWfConfigurations} />
                     </div>
-                    <ActionsList actions={storeWfConfigurations} />
-                </div>
+                </StoreTrackstarProvider>
             ) : (
                 <>
                     <AutomateViewEmptyStateBanner
