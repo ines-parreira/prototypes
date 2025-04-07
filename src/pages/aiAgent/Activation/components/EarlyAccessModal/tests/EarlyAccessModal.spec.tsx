@@ -13,14 +13,12 @@ describe('<EarlyAccessModal />', () => {
     it('should render the modal and handler should be called when clicked', () => {
         const onCloseMock = jest.fn()
         const onUpgradeClickMock = jest.fn()
-        const onStayClickMock = jest.fn()
 
         const { getByText } = render(
             <EarlyAccessModal
                 isOpen
                 isLoading={false}
                 onClose={onCloseMock}
-                onStayClick={onStayClickMock}
                 onUpgradeClick={onUpgradeClickMock}
                 userIsAdmin={true}
                 isUpgrading={false}
@@ -38,7 +36,6 @@ describe('<EarlyAccessModal />', () => {
                 isOpen
                 isLoading={true}
                 onClose={() => {}}
-                onStayClick={() => {}}
                 onUpgradeClick={() => {}}
                 userIsAdmin={true}
                 isUpgrading={false}
@@ -52,7 +49,6 @@ describe('<EarlyAccessModal />', () => {
                 isOpen
                 isLoading={true}
                 onClose={() => {}}
-                onStayClick={() => {}}
                 onUpgradeClick={() => {}}
                 userIsAdmin={true}
                 isUpgrading={false}
@@ -83,7 +79,6 @@ describe('<EarlyAccessModal />', () => {
                 isOpen
                 isLoading={false}
                 onClose={() => {}}
-                onStayClick={() => {}}
                 onUpgradeClick={() => {}}
                 userIsAdmin={true}
                 isUpgrading={false}
@@ -126,7 +121,6 @@ describe('<EarlyAccessModal />', () => {
                 isOpen
                 isLoading={false}
                 onClose={() => {}}
-                onStayClick={() => {}}
                 onUpgradeClick={() => {}}
                 userIsAdmin={true}
                 isUpgrading={false}
@@ -164,7 +158,6 @@ describe('<EarlyAccessModal />', () => {
                 isOpen
                 isLoading={true}
                 onClose={() => {}}
-                onStayClick={() => {}}
                 onUpgradeClick={() => {}}
                 userIsAdmin={userIsAdmin}
                 isUpgrading={false}

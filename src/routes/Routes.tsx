@@ -1045,6 +1045,9 @@ function AiAgentContent() {
         FeatureFlagKey.ActionsInternalPlatform,
     )
 
+    const isLoading = hasStandaloneConvAiOverviewPage === null
+
+    if (isLoading) return null
     return (
         <Switch>
             <Route path={`${path}/actions-platform`} exact>

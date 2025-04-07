@@ -21,7 +21,6 @@ export const useUpdateSubscription = ({
             try {
                 await dispatch(updateSubscription({ prices }))
                 onSuccess?.()
-                return Promise.resolve()
             } catch (error) {
                 void dispatch(
                     notify({
@@ -29,7 +28,7 @@ export const useUpdateSubscription = ({
                         message: String(error),
                     }),
                 )
-                return Promise.reject(error)
+                throw error
             }
         },
         [],

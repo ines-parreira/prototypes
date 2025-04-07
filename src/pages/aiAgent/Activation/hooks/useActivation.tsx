@@ -1,68 +1,39 @@
-import { useCallback, useEffect, useMemo } from 'react'
+import { useEffect, useRef, useState } from 'react'
 
 import { logEvent, SegmentEvent } from 'common/segment'
 import { FeatureFlagKey } from 'config/featureFlags'
 import { useFlag } from 'core/flags'
-import useAppSelector from 'hooks/useAppSelector'
-import { StoreConfiguration } from 'models/aiAgent/types'
+import { useNotify } from 'hooks/useNotify'
 import { ActivationManageButton } from 'pages/aiAgent/Activation/components/ActivationManageButton/ActivationManageButton'
 import { AiAgentActivationModal } from 'pages/aiAgent/Activation/components/AiAgentActivationModal/AiAgentActivationModal'
 import { EarlyAccessModal } from 'pages/aiAgent/Activation/components/EarlyAccessModal/EarlyAccessModal'
-import { useStoreConfigurationForAccount } from 'pages/aiAgent/hooks/useStoreConfigurationForAccount'
-import { getCurrentAccountState } from 'state/currentAccount/selectors'
-import { getShopifyIntegrationsSortedByName } from 'state/integrations/selectors'
 
 import { useActivationModalDisclosure } from './useActivationModalDisclosure'
 import { useEarlyAccessModalState } from './useEarlyAccessModalState'
 import { useStoreActivations } from './useStoreActivations'
 
 export const useActivation = (
+    // TODO: Remove pageName to use window.location.pathname instead
     pageName: string,
     options: {
         autoDisplayEarlyAccessDisabled?: boolean
     } = {},
 ) => {
-    const { isModalVisible, setIsModalVisible, closeModal, shopName } =
+    const { isModalVisible, setIsModalVisible, closeModal } =
         useActivationModalDisclosure()
 
+    const {
+        storeActivations,
+        progressPercentage,
+        changeSales,
+        changeSupport,
+        changeSupportChat,
+        changeSupportEmail,
+        saveStoreConfigurations,
+        isLoading: isSaveLoading,
+    } = useStoreActivations({ pageName })
+
     const hasActivationEnabled = useFlag(FeatureFlagKey.AiAgentActivation)
-    const currentAccount = useAppSelector(getCurrentAccountState)
-    const accountDomain = currentAccount.get('domain')
-    const stores = useAppSelector(getShopifyIntegrationsSortedByName)
-
-    const filteredStoresName = useMemo(() => {
-        const storeNames = stores.map((store) => store.name)
-        if (shopName) {
-            return storeNames.filter((store) => store === shopName)
-        }
-
-        return storeNames
-    }, [stores, shopName])
-
-    const { storeConfigurations } = useStoreConfigurationForAccount({
-        accountDomain,
-        storesName: filteredStoresName,
-    })
-
-    const filteredStoreConfigurations: StoreConfiguration[] = useMemo(() => {
-        if (shopName) {
-            return (
-                storeConfigurations?.filter(
-                    (storeConfiguration) =>
-                        storeConfiguration.storeName === shopName,
-                ) ?? []
-            )
-        }
-
-        return storeConfigurations ?? []
-    }, [storeConfigurations, shopName])
-
-    const { progressPercentage } = useStoreActivations({
-        accountDomain,
-        storeConfigurations: filteredStoreConfigurations,
-        pageName,
-    })
-
     const {
         isOnNewPlan,
         setIsPreviewModalVisible,
@@ -79,6 +50,16 @@ export const useActivation = (
         autoDisplayDisabled: options.autoDisplayEarlyAccessDisabled,
     })
 
+    const closeEarlyAccessModal = (reason: string) => {
+        setIsPreviewModalVisible(false)
+        logEvent(SegmentEvent.AiAgentActivatePreviewPricingModalClosed, {
+            page: pageName,
+            reason,
+        })
+    }
+
+    const notify = useNotify()
+
     useEffect(() => {
         if (isPreviewModalVisible) {
             logEvent(SegmentEvent.AiAgentActivateEarlyAccessModalViewed, {
@@ -87,10 +68,27 @@ export const useActivation = (
         }
     }, [isPreviewModalVisible, pageName])
 
-    const ConnectedActivationModal = useCallback(
-        () => (
+    const [
+        storeNameToSaveOnSubscriptionUpdate,
+        setStoreNameToSaveOnSubscriptionUpdate,
+    ] = useState<string | undefined>(undefined)
+
+    const shouldSaveAfterUpgrade = useRef(false)
+    useEffect(() => {
+        if (shouldSaveAfterUpgrade.current) {
+            const saveConfigurations = async () => {
+                shouldSaveAfterUpgrade.current = false
+                await saveStoreConfigurations()
+            }
+            saveConfigurations()
+        }
+    }, [saveStoreConfigurations])
+
+    return {
+        activationModal: (
             <AiAgentActivationModal
                 isOpen={isModalVisible}
+                isLoading={isSaveLoading}
                 onClose={() => {
                     closeModal()
                     logEvent(SegmentEvent.AiAgentActivateCloseActivationModal, {
@@ -98,99 +96,69 @@ export const useActivation = (
                         reason: 'clicked-on-cancel-or-clicked-outside',
                     })
                 }}
-                accountDomain={accountDomain}
-                storeConfigs={filteredStoreConfigurations}
-                onSalesEnabled={() => {
-                    if (isOnNewPlan) {
-                        return true
+                progressPercentage={progressPercentage}
+                storeActivations={storeActivations}
+                onSalesChange={(storeName: string, newValue: boolean) => {
+                    if (newValue && !isOnNewPlan) {
+                        setStoreNameToSaveOnSubscriptionUpdate(storeName)
+                        setIsPreviewModalVisible(true)
+                    } else {
+                        changeSales(storeName, newValue)
                     }
-
-                    setIsPreviewModalVisible(true)
-                    return false
                 }}
-                pageName={pageName}
+                onSupportChange={changeSupport}
+                onSupportChatChange={changeSupportChat}
+                onSupportEmailChange={changeSupportEmail}
+                onSaveClick={async () => {
+                    try {
+                        await saveStoreConfigurations()
+                        await notify.success(
+                            'Successfully updated activation status for AI Agent',
+                        )
+                    } catch {
+                        await notify.error(
+                            'Changes to AI Agent activation status could not be successfully saved. Please try again.',
+                        )
+                    }
+                    closeModal()
+                }}
             />
         ),
-        [
-            isModalVisible,
-            closeModal,
-            accountDomain,
-            filteredStoreConfigurations,
-            isOnNewPlan,
-            setIsPreviewModalVisible,
-            pageName,
-        ],
-    )
-
-    const ConnectedActivationButton = useCallback(
-        () =>
-            hasActivationEnabled ? (
-                <ActivationManageButton
-                    onClick={() => {
-                        setIsModalVisible(true)
-                        logEvent(
-                            SegmentEvent.AiAgentActivateMainButtonClicked,
-                            {
-                                page: pageName,
-                            },
-                        )
-                    }}
-                    progress={progressPercentage}
-                    variant={pageName === 'overview' ? 'bordered' : 'flat'}
-                />
-            ) : null,
-        [hasActivationEnabled, setIsModalVisible, progressPercentage, pageName],
-    )
-
-    const ConnectedEarlyAccessModal = useCallback(
-        () => (
+        activationButton: hasActivationEnabled ? (
+            <ActivationManageButton
+                onClick={() => {
+                    setIsModalVisible(true)
+                    logEvent(SegmentEvent.AiAgentActivateMainButtonClicked, {
+                        page: pageName,
+                    })
+                }}
+                progress={progressPercentage}
+                variant={pageName === 'overview' ? 'bordered' : 'flat'}
+            />
+        ) : null,
+        earlyAccessModal: (
             <EarlyAccessModal
                 isLoading={isLoading}
                 isUpgrading={isSubscriptionUpdating}
                 isOpen={isPreviewModalVisible}
                 onClose={() => {
-                    setIsPreviewModalVisible(false)
-                    logEvent(
-                        SegmentEvent.AiAgentActivatePreviewPricingModalClosed,
-                        {
-                            page: pageName,
-                            reason: 'clicked-on-cross-or-outside',
-                        },
-                    )
+                    closeEarlyAccessModal('clicked-on-cross-or-outside')
                 }}
-                onStayClick={() => {
-                    setIsPreviewModalVisible(false)
-                    logEvent(
-                        SegmentEvent.AiAgentActivatePreviewPricingModalClosed,
-                        {
-                            page: pageName,
-                            reason: 'clicked-on-stay-button',
-                        },
-                    )
-                }}
-                onUpgradeClick={() => {
-                    handleSubscriptionUpdate()
-                        .then(() => {
-                            logEvent(
-                                SegmentEvent.AiAgentActivatePreviewPricingModalClosed,
-                                {
-                                    page: pageName,
-                                    reason: 'upgraded',
-                                },
+                onUpgradeClick={async () => {
+                    try {
+                        await handleSubscriptionUpdate()
+                        closeEarlyAccessModal('upgraded')
+
+                        if (storeNameToSaveOnSubscriptionUpdate) {
+                            changeSales(
+                                storeNameToSaveOnSubscriptionUpdate,
+                                true,
                             )
-                        })
-                        .catch(() => {
-                            logEvent(
-                                SegmentEvent.AiAgentActivatePreviewPricingModalClosed,
-                                {
-                                    page: pageName,
-                                    reason: 'upgrade-failed',
-                                },
-                            )
-                        })
-                        .finally(() => {
-                            setIsPreviewModalVisible(false)
-                        })
+                            shouldSaveAfterUpgrade.current = true
+                        }
+                    } catch {
+                        closeEarlyAccessModal('upgrade-failed')
+                    }
                 }}
                 currentPlan={currentPlan}
                 helpdeskPlan={helpdeskPlan}
@@ -198,23 +166,5 @@ export const useActivation = (
                 userIsAdmin={isCurrentUserAdmin}
             />
         ),
-        [
-            isLoading,
-            isSubscriptionUpdating,
-            isPreviewModalVisible,
-            setIsPreviewModalVisible,
-            handleSubscriptionUpdate,
-            currentPlan,
-            helpdeskPlan,
-            earlyAccessPlan,
-            isCurrentUserAdmin,
-            pageName,
-        ],
-    )
-
-    return {
-        ActivationModal: ConnectedActivationModal,
-        ActivationButton: ConnectedActivationButton,
-        EarlyAccessModal: ConnectedEarlyAccessModal,
     }
 }

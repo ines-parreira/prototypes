@@ -1,10 +1,10 @@
 import { Button } from '@gorgias/merchant-ui-kit'
 
-import { useNotify } from 'hooks/useNotify'
-import { StoreConfiguration } from 'models/aiAgent/types'
 import { ActivationProgress } from 'pages/aiAgent/Activation/components/ActivationProgress/ActivationProgress'
-import { AiAgentActivationStoreCard as StoreCard } from 'pages/aiAgent/Activation/components/AiAgentActivationStoreCard/AiAgentActivationStoreCard'
-import { useStoreActivations } from 'pages/aiAgent/Activation/hooks/useStoreActivations'
+import {
+    StoreActivation,
+    AiAgentActivationStoreCard as StoreCard,
+} from 'pages/aiAgent/Activation/components/AiAgentActivationStoreCard/AiAgentActivationStoreCard'
 import Modal from 'pages/common/components/modal/Modal'
 import ModalBody from 'pages/common/components/modal/ModalBody'
 
@@ -12,113 +12,75 @@ import css from './AiAgentActivationModal.less'
 
 type Props = {
     isOpen: boolean
+    isLoading?: boolean
     onClose: () => void
-    accountDomain: string
-    storeConfigs: StoreConfiguration[]
-    // This function is used to notify the parent component if we try to enable sales
-    // if the callback returns false, we will cancel the action
-    onSalesEnabled: () => boolean
-    pageName: string
+    progressPercentage: number
+    storeActivations: Record<string, StoreActivation>
+    onSalesChange: (storeName: string, value: boolean) => void
+    onSupportChange: (storeName: string, value: boolean) => void
+    onSupportChatChange: (storeName: string, value: boolean) => void
+    onSupportEmailChange: (storeName: string, value: boolean) => void
+    onSaveClick: () => void
 }
 export const AiAgentActivationModal = ({
     isOpen,
+    isLoading,
     onClose,
-    accountDomain,
-    storeConfigs,
-    onSalesEnabled,
-    pageName,
-}: Props) => {
-    const {
-        storeActivations,
-        progressPercentage,
-        onSalesChange,
-        onSupportChange,
-        onSupportChatChange,
-        onSupportEmailChange,
-        onSave,
-        isLoading,
-    } = useStoreActivations({
-        accountDomain,
-        storeConfigurations: storeConfigs,
-        pageName,
-    })
-    const notify = useNotify()
-
-    const onSaveClick = async () => {
-        try {
-            await onSave()
-            await notify.success(
-                'Successfully updated activation status for AI Agent',
-            )
-        } catch {
-            await notify.error(
-                'Changes to AI Agent activation status could not be successfully saved. Please try again.',
-            )
-        }
-        onClose()
-    }
-
-    return (
-        <Modal
-            preventCloseClickOutside
-            className={css.modal}
-            classNameContent={css.modalContent}
-            classNameDialog={css.modalDialog}
-            isOpen={isOpen}
-            onClose={onClose}
-        >
-            <div className={css.modalHeader}>
-                <div className={css.modalTitle}>Manage AI Agent Activation</div>
-                <div className={css.activationStatus}>
-                    <ActivationProgress percentage={progressPercentage} />
-                </div>
+    progressPercentage,
+    storeActivations,
+    onSalesChange,
+    onSupportChange,
+    onSupportChatChange,
+    onSupportEmailChange,
+    onSaveClick,
+}: Props) => (
+    <Modal
+        preventCloseClickOutside
+        className={css.modal}
+        classNameContent={css.modalContent}
+        classNameDialog={css.modalDialog}
+        isOpen={isOpen}
+        onClose={onClose}
+    >
+        <div className={css.modalHeader}>
+            <div className={css.modalTitle}>Manage AI Agent Activation</div>
+            <div className={css.activationStatus}>
+                <ActivationProgress percentage={progressPercentage} />
             </div>
+        </div>
 
-            <ModalBody className={css.modalBody}>
-                <div className={css.storeCardsList}>
-                    {Object.entries(storeActivations).map(
-                        ([storeName, store]) => (
-                            <StoreCard
-                                key={storeName}
-                                isDisabled={isLoading}
-                                store={store}
-                                onSalesChange={(value) => {
-                                    // If we try to activate sales, we need to check if the user is on a new plan
-                                    if (value) {
-                                        const shouldContinueTheAction =
-                                            onSalesEnabled()
-
-                                        if (!shouldContinueTheAction) {
-                                            return
-                                        }
-                                    }
-
-                                    onSalesChange(storeName, value)
-                                }}
-                                onSupportChange={(value) =>
-                                    onSupportChange(storeName, value)
-                                }
-                                onSupportChatChange={(value) =>
-                                    onSupportChatChange(storeName, value)
-                                }
-                                onSupportEmailChange={(value) =>
-                                    onSupportEmailChange(storeName, value)
-                                }
-                                closeModal={onClose}
-                            />
-                        ),
-                    )}
-                </div>
-            </ModalBody>
-
-            <div className={css.footer}>
-                <Button intent="secondary" onClick={onClose}>
-                    Cancel
-                </Button>
-                <Button onClick={onSaveClick} isLoading={isLoading}>
-                    Save
-                </Button>
+        <ModalBody className={css.modalBody}>
+            <div className={css.storeCardsList}>
+                {Object.entries(storeActivations).map(([storeName, store]) => (
+                    <StoreCard
+                        key={storeName}
+                        isDisabled={isLoading}
+                        store={store}
+                        onSalesChange={(value) =>
+                            onSalesChange(storeName, value)
+                        }
+                        onSupportChange={(value) =>
+                            onSupportChange(storeName, value)
+                        }
+                        onSupportChatChange={(value) =>
+                            onSupportChatChange(storeName, value)
+                        }
+                        onSupportEmailChange={(value) =>
+                            onSupportEmailChange(storeName, value)
+                        }
+                        closeModal={onClose}
+                    />
+                ))}
             </div>
-        </Modal>
-    )
-}
+        </ModalBody>
+
+        <div className={css.footer}>
+            <Button intent="secondary" onClick={onClose}>
+                Cancel
+            </Button>
+            <Button onClick={onSaveClick} isLoading={isLoading}>
+                Save
+            </Button>
+        </div>
+    </Modal>
+)

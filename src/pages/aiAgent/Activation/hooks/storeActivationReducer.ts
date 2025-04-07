@@ -1,3 +1,5 @@
+import { useReducer } from 'react'
+
 import { LDFlagSet } from 'launchdarkly-react-client-sdk'
 
 import { AiAgentScope, StoreConfiguration } from 'models/aiAgent/types'
@@ -345,7 +347,7 @@ export const storeConfigurationToState = (
     )
 }
 
-export const reducer = (state: State, action: ACTION_TYPE): State => {
+const reducer = (state: State, action: ACTION_TYPE): State => {
     switch (action.type) {
         case 'CHANGE_SUPPORT':
             return toggleSupport(state, action)
@@ -360,4 +362,9 @@ export const reducer = (state: State, action: ACTION_TYPE): State => {
         case 'UPDATE_STORE_CONFIGURATION':
             return storeConfigurationToState(state, action)
     }
+}
+
+export const useStoreActivationReducer = () => {
+    const [state, dispatch] = useReducer(reducer, {})
+    return { state, dispatch }
 }

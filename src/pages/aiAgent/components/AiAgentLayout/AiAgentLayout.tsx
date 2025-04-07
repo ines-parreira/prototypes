@@ -1,4 +1,4 @@
-import React, { ReactNode, useMemo } from 'react'
+import { ReactNode, useMemo } from 'react'
 
 import classnames from 'classnames'
 import { useFlags } from 'launchdarkly-react-client-sdk'
@@ -44,7 +44,7 @@ export const AiAgentLayout = ({
     const basePath = getAiAgentBasePath(shopName, flags)
     const currentPagePath = useLocation().pathname.replace(`${basePath}/`, '')
 
-    const { ActivationModal, EarlyAccessModal, ActivationButton } =
+    const { activationModal, earlyAccessModal, activationButton } =
         useActivation(currentPagePath)
 
     const AiAgentTitle = useMemo(() => {
@@ -70,16 +70,14 @@ export const AiAgentLayout = ({
                         </Button>
                     )}
                 </div>
-                <div>
-                    <ActivationButton />
-                </div>
+                <div>{activationButton}</div>
             </div>
         )
     }, [
         hideViewAiAgentTicketsButton,
         aiAgentTicketViewId,
         title,
-        ActivationButton,
+        activationButton,
     ])
 
     return (
@@ -90,8 +88,8 @@ export const AiAgentLayout = ({
             className={classnames(css.container, className)}
         >
             {children}
-            <ActivationModal />
-            <EarlyAccessModal />
+            {activationModal}
+            {earlyAccessModal}
         </AiAgentView>
     )
 }

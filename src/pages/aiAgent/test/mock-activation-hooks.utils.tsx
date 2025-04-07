@@ -7,9 +7,9 @@ jest.mock('pages/aiAgent/Activation/hooks/useActivation')
 export const applyMockActivationHook = () => {
     const mockUseActivation = assumeMock(useActivation)
     mockUseActivation.mockReturnValue({
-        ActivationButton: () => <div>ActivationButton</div>,
-        ActivationModal: () => <div>ActivationModal</div>,
-        EarlyAccessModal: () => <div>EarlyAccessModal</div>,
+        activationButton: <div>ActivationButton</div>,
+        activationModal: <div>ActivationModal</div>,
+        earlyAccessModal: <div>EarlyAccessModal</div>,
     })
 }
 

@@ -1,22 +1,29 @@
-import { useEffect, useMemo, useReducer, useRef } from 'react'
+import { useCallback, useEffect, useMemo, useRef } from 'react'
 
 import { useFlags } from 'launchdarkly-react-client-sdk'
+import { useLocation, useParams } from 'react-router-dom'
 
 import { logEvent, SegmentEvent } from 'common/segment'
 import { SHOPIFY_INTEGRATION_TYPE } from 'constants/integration'
+import useAppSelector from 'hooks/useAppSelector'
 import { AiAgentScope, StoreConfiguration } from 'models/aiAgent/types'
 import { useGetHelpCenterList } from 'models/helpCenter/queries'
 import { StoreActivation } from 'pages/aiAgent/Activation/components/AiAgentActivationStoreCard/AiAgentActivationStoreCard'
 import {
-    reducer,
     State,
+    useStoreActivationReducer,
 } from 'pages/aiAgent/Activation/hooks/storeActivationReducer'
+import { useStoreConfigurationForAccount } from 'pages/aiAgent/hooks/useStoreConfigurationForAccount'
 import { useStoresConfigurationMutation } from 'pages/aiAgent/hooks/useStoresConfigurationMutation'
 import { useSelfServiceChatChannelsMultiStore } from 'pages/automate/common/hooks/useSelfServiceChatChannels'
 import { HELP_CENTER_MAX_CREATION } from 'pages/settings/helpCenter/constants'
 import safeDivide from 'pages/stats/automate/aiSalesAgent/util/safeDivide'
+import { getCurrentAccountState } from 'state/currentAccount/selectors'
+import { getShopifyIntegrationsSortedByName } from 'state/integrations/selectors'
 
-const computeActivationPercentage = (state: State): number => {
+import { FocusActivationModal } from '../utils'
+
+export const computeActivationPercentage = (state: State): number => {
     const totalStores = Object.values(state).length
     const totalScore = totalStores * 3
 
@@ -42,75 +49,118 @@ const computeActivationPercentage = (state: State): number => {
     return Math.round(safeDivide(currentScore, totalScore) * 100)
 }
 
+const useStoreConfigurations = (
+    accountDomain: string,
+    singleStoreName?: string,
+) => {
+    const stores = useAppSelector(getShopifyIntegrationsSortedByName)
+
+    const filteredStoresName = useMemo(() => {
+        const storeNames = stores.map((store) => store.name)
+        if (singleStoreName) {
+            return storeNames.filter((store) => store === singleStoreName)
+        }
+
+        return storeNames
+    }, [stores, singleStoreName])
+
+    const { storeConfigurations: allStoreConfigurations } =
+        useStoreConfigurationForAccount({
+            accountDomain,
+            storesName: filteredStoresName,
+        })
+
+    const storeConfigurations: StoreConfiguration[] = useMemo(() => {
+        if (singleStoreName) {
+            return (
+                allStoreConfigurations?.filter(
+                    (storeConfiguration) =>
+                        storeConfiguration.storeName === singleStoreName,
+                ) ?? []
+            )
+        }
+
+        return allStoreConfigurations ?? []
+    }, [allStoreConfigurations, singleStoreName])
+
+    const storeNames = useMemo(() => {
+        return storeConfigurations.map((it) => it.storeName)
+    }, [storeConfigurations])
+
+    return { storeConfigurations, storeNames }
+}
+
 export const useStoreActivations = ({
-    accountDomain,
-    storeConfigurations,
+    // TODO: Remove pageName to use window.location.pathname instead
     pageName,
 }: {
-    accountDomain: string
-    storeConfigurations: StoreConfiguration[]
     pageName: string
 }): {
     storeActivations: Record<string, StoreActivation>
     progressPercentage: number
-    onSalesChange: (storeName: string, newValue: boolean) => void
-    onSupportChange: (storeName: string, newValue: boolean) => void
-    onSupportChatChange: (storeName: string, newValue: boolean) => void
-    onSupportEmailChange: (storeName: string, newValue: boolean) => void
-    onSave: () => Promise<void>
+    changeSales: (storeName: string, newValue: boolean) => void
+    changeSupport: (storeName: string, newValue: boolean) => void
+    changeSupportChat: (storeName: string, newValue: boolean) => void
+    changeSupportEmail: (storeName: string, newValue: boolean) => void
+    saveStoreConfigurations: () => Promise<void>
     isLoading: boolean
 } => {
     const flags = useFlags()
     const flagsRef = useRef(flags)
     flagsRef.current = flags
 
-    const [state, dispatch] = useReducer(reducer, {})
+    const location = useLocation()
+    const params = useParams<{ shopName?: string }>()
+    const singleStoreName =
+        FocusActivationModal.extractStoreName(location) ?? params.shopName
 
-    const storeNames = useMemo(() => {
-        return storeConfigurations.map((it) => it.storeName)
-    }, [storeConfigurations])
+    const { state, dispatch } = useStoreActivationReducer()
+
+    const currentAccount = useAppSelector(getCurrentAccountState)
+    const accountDomain = currentAccount.get('domain')
+
+    const { storeConfigurations, storeNames } = useStoreConfigurations(
+        accountDomain,
+        singleStoreName,
+    )
 
     const selfServiceChatChannels = useSelfServiceChatChannelsMultiStore(
         SHOPIFY_INTEGRATION_TYPE,
         storeNames,
+        false,
     )
-
     useEffect(() => {
         dispatch({
             type: 'UPDATE_STORE_CONFIGURATION',
             storeConfigurations,
             selfServiceChatChannels,
         })
-    }, [storeConfigurations, selfServiceChatChannels])
+    }, [selfServiceChatChannels, storeConfigurations, dispatch])
 
-    const { data: helpCenterListData, status: getHelpCenterListStatus } =
-        useGetHelpCenterList(
-            { type: 'faq', per_page: HELP_CENTER_MAX_CREATION },
-            {
-                staleTime: 1000 * 60 * 5,
-                refetchOnWindowFocus: false,
+    useGetHelpCenterList(
+        { type: 'faq', per_page: HELP_CENTER_MAX_CREATION },
+        {
+            staleTime: 1000 * 60 * 5,
+            refetchOnWindowFocus: false,
+            onSuccess: (helpCenters) => {
+                dispatch({
+                    type: 'UPDATE_HELP_CENTER_FAQ',
+                    helpCenters: helpCenters?.data.data,
+                    flags: flagsRef.current,
+                })
             },
-        )
-
-    useEffect(() => {
-        if (getHelpCenterListStatus !== 'success') {
-            return
-        }
-        dispatch({
-            type: 'UPDATE_HELP_CENTER_FAQ',
-            helpCenters: helpCenterListData?.data.data,
-            flags: flagsRef.current,
-        })
-    }, [getHelpCenterListStatus, helpCenterListData])
+        },
+    )
 
     const { isLoading, upsertStoresConfiguration } =
         useStoresConfigurationMutation({ accountDomain })
 
-    const onSave = async () => {
+    const saveStoreConfigurations = useCallback(async () => {
         logEvent(SegmentEvent.AiAgentActivateCloseActivationModal, {
             page: pageName,
             reason: 'clicked-on-save-button',
         })
+
         const updatedConfigurations: StoreConfiguration[] = Object.values(
             state,
         ).map((store) => {
@@ -130,12 +180,13 @@ export const useStoreActivations = ({
         })
 
         await upsertStoresConfiguration(updatedConfigurations)
-    }
+    }, [state, upsertStoresConfiguration, pageName])
 
     return {
         storeActivations: state,
         progressPercentage: computeActivationPercentage(state),
-        onSalesChange: (storeName: string, newValue: boolean) => {
+        isLoading,
+        changeSales: (storeName: string, newValue: boolean) => {
             dispatch({ type: 'CHANGE_SALES', storeName, newValue })
             logEvent(
                 newValue
@@ -148,7 +199,7 @@ export const useStoreActivations = ({
                 },
             )
         },
-        onSupportChange: (storeName: string, newValue: boolean) => {
+        changeSupport: (storeName: string, newValue: boolean) => {
             dispatch({
                 type: 'CHANGE_SUPPORT',
                 storeName,
@@ -165,7 +216,7 @@ export const useStoreActivations = ({
                 },
             )
         },
-        onSupportChatChange: (storeName: string, newValue: boolean) => {
+        changeSupportChat: (storeName: string, newValue: boolean) => {
             dispatch({
                 type: 'CHANGE_SUPPORT_CHAT',
                 storeName,
@@ -183,7 +234,7 @@ export const useStoreActivations = ({
                 },
             )
         },
-        onSupportEmailChange: (storeName: string, newValue: boolean) => {
+        changeSupportEmail: (storeName: string, newValue: boolean) => {
             dispatch({
                 type: 'CHANGE_SUPPORT_EMAIL',
                 storeName,
@@ -201,7 +252,6 @@ export const useStoreActivations = ({
                 },
             )
         },
-        onSave,
-        isLoading,
+        saveStoreConfigurations,
     }
 }

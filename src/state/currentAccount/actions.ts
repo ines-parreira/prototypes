@@ -2,6 +2,8 @@ import { AxiosError } from 'axios'
 import { Map } from 'immutable'
 import _capitalize from 'lodash/capitalize'
 
+// import { HELPDESK_PRODUCT_ID } from 'fixtures/productPrices'
+// import useAppSelector from 'hooks/useAppSelector'
 import { getAccountSettings } from 'models/account/resources'
 import client from 'models/api/resources'
 import { GorgiasApiError, isGorgiasApiError } from 'models/api/types'
@@ -13,6 +15,7 @@ import * as constants from 'state/currentAccount/constants'
 import {
     getAgentsTableConfigSettingsJS,
     getChannelsTableConfigSettingsJS,
+    // getCurrentSubscription,
 } from 'state/currentAccount/selectors'
 import {
     Account,

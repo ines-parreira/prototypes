@@ -29,7 +29,6 @@ import css from './EarlyAccessModal.less'
 type Props = {
     isLoading: boolean
     onUpgradeClick: () => void
-    onStayClick: () => void
     onClose: () => void
     isOpen: boolean
     currentPlan?: AutomatePlan | null

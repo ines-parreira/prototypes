@@ -27,7 +27,6 @@ export const EarlyAccessModalDefault: Story = {
         isLoading: false,
         isOpen: true,
         onClose: action('onClose'),
-        onStayClick: action('onStayClick'),
         onUpgradeClick: action('onUpgradeClick'),
     },
 }
@@ -38,7 +37,6 @@ export const EarlyAccessModalNonAdmin: Story = {
         isLoading: false,
         isOpen: true,
         onClose: action('onClose'),
-        onStayClick: action('onStayClick'),
         onUpgradeClick: action('onUpgradeClick'),
         userIsAdmin: false,
     },

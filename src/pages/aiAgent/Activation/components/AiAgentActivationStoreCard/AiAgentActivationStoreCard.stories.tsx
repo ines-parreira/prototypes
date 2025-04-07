@@ -1,13 +1,15 @@
 import { action } from '@storybook/addon-actions'
 import { Meta, StoryObj } from '@storybook/react'
+import { Map } from 'immutable'
+import { Provider } from 'react-redux'
 import { MemoryRouter } from 'react-router-dom'
+import configureMockStore from 'redux-mock-store'
 
+import { user } from 'fixtures/users'
+import { AiAgentScope, StoreConfiguration } from 'models/aiAgent/types'
 import { AlertType } from 'pages/common/components/Alert/Alert'
 
-import {
-    AiAgentActivationStoreCard,
-    StoreActivation,
-} from './AiAgentActivationStoreCard'
+import { AiAgentActivationStoreCard } from './AiAgentActivationStoreCard'
 
 const meta: Meta<typeof AiAgentActivationStoreCard> = {
     title: 'AI Agent/Activation/ActivationStoreCard',
@@ -15,9 +17,11 @@ const meta: Meta<typeof AiAgentActivationStoreCard> = {
     args: {},
     decorators: [
         (Story) => (
-            <MemoryRouter initialEntries={['/']}>
-                <Story />
-            </MemoryRouter>
+            <Provider store={configureMockStore()({ currentUser: Map(user) })}>
+                <MemoryRouter initialEntries={['/']}>
+                    <Story />
+                </MemoryRouter>
+            </Provider>
         ),
     ],
 }
@@ -25,6 +29,12 @@ const meta: Meta<typeof AiAgentActivationStoreCard> = {
 export default meta
 
 type Story = StoryObj<typeof AiAgentActivationStoreCard>
+
+const defaultStoreConfiguration: StoreConfiguration = {
+    storeName: 'steve-madden',
+    shopType: 'shopify',
+    scopes: [AiAgentScope.Sales, AiAgentScope.Support],
+} as StoreConfiguration
 
 export const AllDisabled: Story = {
     render: (args) => <AiAgentActivationStoreCard {...args} />,
@@ -47,7 +57,9 @@ export const AllDisabled: Story = {
                     isIntegrationMissing: false,
                 },
             },
-        } as any as StoreActivation,
+            alerts: [],
+            configuration: defaultStoreConfiguration,
+        },
         onSalesChange: action('onToggle > Sales'),
         onSupportChange: action('onToggle > Support'),
         onSupportChatChange: action('onToggle > Support > Chat'),
@@ -76,7 +88,9 @@ export const AllDisabledMissingIntegration: Story = {
                     isIntegrationMissing: true,
                 },
             },
-        } as any as StoreActivation,
+            alerts: [],
+            configuration: defaultStoreConfiguration,
+        },
         onSalesChange: action('onToggle > Sales'),
         onSupportChange: action('onToggle > Support'),
         onSupportChatChange: action('onToggle > Support > Chat'),
@@ -93,6 +107,7 @@ export const AllDisabledWithAlert: Story = {
             alerts: [
                 {
                     type: AlertType.Warning,
+                    kind: Symbol('dummy'),
                     message:
                         'At least one knowledge source required. Update your knowledge tab to be able to activate AI Agent.',
                     cta: { label: 'Visit Knowledge', to: '/' },
@@ -113,7 +128,8 @@ export const AllDisabledWithAlert: Story = {
                     isIntegrationMissing: false,
                 },
             },
-        } as any as StoreActivation,
+            configuration: defaultStoreConfiguration,
+        },
         onSalesChange: action('onToggle > Sales'),
         onSupportChange: action('onToggle > Support'),
         onSupportChatChange: action('onToggle > Support > Chat'),
@@ -142,7 +158,9 @@ export const SupportEmail: Story = {
                     isIntegrationMissing: false,
                 },
             },
-        } as any as StoreActivation,
+            alerts: [],
+            configuration: defaultStoreConfiguration,
+        },
         onSalesChange: action('onToggle > Sales'),
         onSupportChange: action('onToggle > Support'),
         onSupportChatChange: action('onToggle > Support > Chat'),
@@ -171,7 +189,9 @@ export const SupportEmailChat: Story = {
                     isIntegrationMissing: false,
                 },
             },
-        } as any as StoreActivation,
+            alerts: [],
+            configuration: defaultStoreConfiguration,
+        },
         onSalesChange: action('onToggle > Sales'),
         onSupportChange: action('onToggle > Support'),
         onSupportChatChange: action('onToggle > Support > Chat'),
@@ -200,7 +220,9 @@ export const AllActivated: Story = {
                     isIntegrationMissing: false,
                 },
             },
-        } as any as StoreActivation,
+            alerts: [],
+            configuration: defaultStoreConfiguration,
+        },
         onSalesChange: action('onToggle > Sales'),
         onSupportChange: action('onToggle > Support'),
         onSupportChatChange: action('onToggle > Support > Chat'),
