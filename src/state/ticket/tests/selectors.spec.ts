@@ -5,6 +5,7 @@ import { ACTION_TEMPLATES } from 'config'
 import { EventType } from 'models/event/types'
 import { MacroActionName } from 'models/macroAction/types'
 import { shouldMessagesBeGrouped } from 'models/ticket/predicates'
+import { ViewType } from 'models/view/types'
 import { AUTOMATION_BOT_EMAIL_ACROSS_ALL_ACCOUNTS } from 'state/agents/constants'
 import { TopRankMacroState } from 'state/newMessage/ticketReplyCache'
 import { RootState } from 'state/types'
@@ -763,5 +764,118 @@ describe('ticket selectors', () => {
                 ).toJS(),
             )
         })
+    })
+
+    describe('isTicketNavigationAvailable', () => {
+        it.each([
+            // ticket is being created, ticketId = 'new' -> isTicketNavigationAvailable = false
+            ['new', {}, false],
+            // no active view -> isTicketNavigationAvailable = false
+            [123, { views: fromJS({ active: {} }) }, false],
+            // is customer view -> isTicketNavigationAvailable = false
+            [
+                123,
+                {
+                    views: fromJS({
+                        active: {
+                            id: 123,
+                            search: 'test',
+                            filters: 'test',
+                            order_by: 'created_datetime',
+                            type: ViewType.CustomerList,
+                        },
+                    }),
+                },
+                false,
+            ],
+            // view has `id' key -> isTicketNavigationAvailable = true
+            [
+                123,
+                {
+                    views: fromJS({
+                        active: {
+                            id: 123,
+                            search: null,
+                            filters: null,
+                            order_by: 'created_datetime',
+                            type: null,
+                        },
+                    }),
+                },
+                true,
+            ],
+            // view has `search` key -> isTicketNavigationAvailable = true
+            [
+                123,
+                {
+                    views: fromJS({
+                        active: {
+                            id: null,
+                            search: 'test',
+                            filters: null,
+                            order_by: 'created_datetime',
+                            type: null,
+                        },
+                    }),
+                },
+                true,
+            ],
+            // view has `filters` key -> isTicketNavigationAvailable = true
+            [
+                123,
+                {
+                    views: fromJS({
+                        active: {
+                            id: null,
+                            search: null,
+                            filters: 'test',
+                            order_by: 'created_datetime',
+                            type: null,
+                        },
+                    }),
+                },
+                true,
+            ],
+            // view has multiple required keys -> isTicketNavigationAvailable = true
+            [
+                123,
+                {
+                    views: fromJS({
+                        active: {
+                            id: 123,
+                            search: 'test',
+                            filters: 'test',
+                            order_by: 'created_datetime',
+                            type: 'testType',
+                        },
+                    }),
+                },
+                true,
+            ],
+            // view has multiple required keys, but no ordering -> isTicketNavigationAvailable = false
+            [
+                123,
+                {
+                    views: fromJS({
+                        active: {
+                            id: 123,
+                            search: 'test',
+                            filters: 'test',
+                            order_by: undefined,
+                            type: 'testType',
+                        },
+                    }),
+                },
+                false,
+            ],
+        ])(
+            'should test if ticket navigation is available for ticketId and state',
+            (ticketId, state, expectedResult) => {
+                const result = selectors.isTicketNavigationAvailable(ticketId)(
+                    state as RootState,
+                )
+                expect(result).toBe(expectedResult)
+            },
+        )
     })
 })

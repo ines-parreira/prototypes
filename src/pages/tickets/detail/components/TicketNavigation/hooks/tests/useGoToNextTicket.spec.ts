@@ -2,12 +2,12 @@ import { renderHook } from '@testing-library/react-hooks'
 import { fromJS } from 'immutable'
 import { useParams } from 'react-router-dom'
 
-import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import history from 'pages/history'
 import { useSplitTicketView } from 'split-ticket-view-toggle'
 
 import useGoToNextTicket from '../useGoToNextTicket'
+import useIsTicketNavigationAvailable from '../useIsTicketNavigationAvailable'
 import usePrevNextTicketNavigation from '../usePrevNextTicketNavigation'
 
 jest.mock('split-ticket-view-toggle/hooks/useSplitTicketView')
@@ -22,8 +22,9 @@ const useParamsMock = useParams as jest.Mock
 jest.mock('hooks/useAppSelector', () => jest.fn())
 const useAppSelectorMock = useAppSelector as jest.Mock
 
-jest.mock('hooks/useAppDispatch', () => jest.fn())
-const useAppDispatchMock = useAppDispatch as jest.Mock
+jest.mock('../useIsTicketNavigationAvailable')
+const mockUseIsTicketNavigationAvailable =
+    useIsTicketNavigationAvailable as jest.Mock
 
 jest.mock('../usePrevNextTicketNavigation')
 const mockUsePrevNextTicketNavigation = usePrevNextTicketNavigation as jest.Mock
@@ -35,7 +36,7 @@ jest.mock('pages/history')
 describe('useGoToNextTicket', () => {
     beforeEach(() => {
         useAppSelectorMock.mockReturnValue(fromJS({}))
-        useAppDispatchMock.mockReturnValue(jest.fn().mockReturnValue(true))
+        mockUseIsTicketNavigationAvailable.mockReturnValue(true)
         mockUseSplitTicketViewMock.mockReturnValue({ isEnabled: false })
         useParamsMock.mockReturnValue({})
         mockUsePrevNextTicketNavigation.mockReturnValue(jest.fn())
@@ -58,7 +59,7 @@ describe('useGoToNextTicket', () => {
         mockUsePrevNextTicketNavigation.mockReturnValue(
             mockUsePrevNextTicketNavigationFn,
         )
-        useAppDispatchMock.mockReturnValue(jest.fn().mockReturnValue(false))
+        mockUseIsTicketNavigationAvailable.mockReturnValue(false)
 
         const { result } = renderHook(() => useGoToNextTicket('123'))
         expect(result.current.goToTicket).toBeDefined()

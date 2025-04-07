@@ -29,7 +29,6 @@ mockUseFlags.mockReturnValue({
     [FeatureFlagKey.ShopifyOrderNotes]: true,
 })
 
-jest.mock('state/currentAccount/selectors', () => jest.fn())
 jest.mock('hooks/useAppSelector', () => () => customerId)
 jest.mock('hooks/useAppDispatch', () => () => mockedDispatch)
 jest.mock('state/infobar/actions', () => ({

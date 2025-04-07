@@ -24,6 +24,7 @@ import { makeExecuteKeyboardAction } from 'utils/testing'
 
 import Snooze from '../Snooze'
 import TicketHeader from '../TicketHeader'
+import useIsTicketNavigationAvailable from '../TicketNavigation/hooks/useIsTicketNavigationAvailable'
 
 jest.mock('hooks/useElementSize', () => jest.fn())
 
@@ -110,6 +111,10 @@ jest.mock('../TicketHeaderToggle', () => ({
     TicketHeaderToggle: () => null,
 }))
 
+jest.mock('../TicketNavigation/hooks/useIsTicketNavigationAvailable')
+const mockUseIsTicketNavigationAvailable =
+    useIsTicketNavigationAvailable as jest.Mock
+
 const useParamsMock = useParams as jest.Mock
 
 describe('<TicketHeader />', () => {
@@ -131,6 +136,7 @@ describe('<TicketHeader />', () => {
     beforeEach(() => {
         dispatch = jest.fn()
         useAppDispatchMock.mockReturnValue(dispatch)
+        mockUseIsTicketNavigationAvailable.mockReturnValue(false)
         useParamsMock.mockReturnValue({})
     })
 
@@ -144,7 +150,7 @@ describe('<TicketHeader />', () => {
     })
 
     it('should render existing ticket', () => {
-        useAppDispatchMock.mockReturnValue(jest.fn(() => true))
+        mockUseIsTicketNavigationAvailable.mockReturnValue(true)
         const { container, getByText } = render(
             <Provider
                 store={mockStore({ ...defaultStore, ticket: fromJS(ticket) })}

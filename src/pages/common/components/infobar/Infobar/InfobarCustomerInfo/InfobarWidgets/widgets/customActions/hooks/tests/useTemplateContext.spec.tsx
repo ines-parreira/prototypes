@@ -44,6 +44,7 @@ jest.mock('state/currentUser/selectors', () => ({
     getCurrentUserState: () => ({
         toJS: () => defaultCurrentUser,
     }),
+    getTimezone: jest.fn(),
 }))
 
 const defaultSource = {

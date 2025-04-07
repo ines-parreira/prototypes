@@ -44,7 +44,7 @@ import {
     TicketMessage,
     TicketMessageIntent,
 } from 'models/ticket/types'
-import { View, ViewType } from 'models/view/types'
+import { View } from 'models/view/types'
 import history from 'pages/history'
 import GorgiasApi from 'services/gorgiasApi'
 import socketManager from 'services/socketManager/socketManager'
@@ -75,6 +75,7 @@ import { isCurrentlyOnTicket } from 'utils'
 import { getLDClient } from 'utils/launchDarkly'
 
 import * as types from './constants'
+import { isTicketViewActive } from './selectors'
 import {
     buildPartialUpdateFromAction,
     getSourceTypeOfResponse,
@@ -933,39 +934,6 @@ export const fetchTicket =
     }
 
 /**
- * Check whether the current View is active or not.
- */
-const isViewActive = () => {
-    return (dispatch: StoreDispatch, getState: () => RootState) => {
-        const view = (
-            viewsSelectors.getActiveView as (state: RootState) => Map<any, any>
-        )(getState())
-
-        const viewId = view.get('id') as number
-        const viewSearch = view.get('search') as string
-        const viewFilters = view.get('filters') as string
-        const viewOrderByEnabled = !!view.get('order_by')
-
-        const isCustomerView = view.get('type') === ViewType.CustomerList
-
-        return (
-            !!((viewId || viewSearch || viewFilters) && viewOrderByEnabled) &&
-            !isCustomerView
-        )
-    }
-}
-
-/**
- * Check whether Ticket navigation is available or not.
- * Ticket navigation is not available when we are on the ticket page via direct URL, or we are creating a new ticket
- * */
-export const isTicketNavigationAvailable = (ticketId: number | string) => {
-    return (dispatch: StoreDispatch) => {
-        return !!parseFloat(ticketId as string) && dispatch(isViewActive())
-    }
-}
-
-/**
  * Fetch the next or the previous ticket immediately
  * but wait for the Promise (`promise` argument) to be resolved to display it
  */
@@ -985,7 +953,7 @@ export const _goToNextOrPrevTicket = (
         const returnedPromise: Promise<Maybe<ReturnType<StoreDispatch>>> =
             promise || Promise.resolve()
 
-        if (!dispatch(isViewActive())) {
+        if (!isTicketViewActive(getState())) {
             return returnedPromise.then(() => {
                 // there is no active view so we go to the first view
                 history.push('/app')

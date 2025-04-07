@@ -2,13 +2,12 @@ import { useMemo } from 'react'
 
 import { useParams } from 'react-router-dom'
 
-import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import history from 'pages/history'
 import { useSplitTicketView } from 'split-ticket-view-toggle'
-import { isTicketNavigationAvailable } from 'state/ticket/actions'
 import { getActiveView } from 'state/views/selectors'
 
+import useIsTicketNavigationAvailable from './useIsTicketNavigationAvailable'
 import usePrevNextTicketNavigation from './usePrevNextTicketNavigation'
 
 export default function useGoToPreviousTicket(ticketId: string) {
@@ -17,7 +16,7 @@ export default function useGoToPreviousTicket(ticketId: string) {
 
     const { viewId } = useParams<{ viewId?: string }>()
     const activeView = useAppSelector(getActiveView)
-    const dispatch = useAppDispatch()
+    const isNavigationAvailable = useIsTicketNavigationAvailable(ticketId)
     const isSearchView = useMemo(
         () => activeView.get('search') != null,
         [activeView],
@@ -40,6 +39,6 @@ export default function useGoToPreviousTicket(ticketId: string) {
         isEnabled:
             isSplitTicketViewEnabled && !isSearchView
                 ? Boolean(previousTicketId)
-                : dispatch(isTicketNavigationAvailable(ticketId)),
+                : isNavigationAvailable,
     }
 }

@@ -14,6 +14,7 @@ import {
     TicketMessage,
     TicketSatisfactionSurvey,
 } from 'models/ticket/types'
+import { ViewType } from 'models/view/types'
 import { UseListVoiceCalls, voiceCallsKeys } from 'models/voiceCall/queries'
 import { VoiceCall } from 'models/voiceCall/types'
 import { AUTOMATION_BOT_EMAIL_ACROSS_ALL_ACCOUNTS } from 'state/agents/constants'
@@ -21,6 +22,7 @@ import { InTicketSuggestionState } from 'state/entities/rules/types'
 import { TopRankMacroState } from 'state/newMessage/ticketReplyCache'
 import { getQueryData } from 'state/queries/selectors'
 import { RootState } from 'state/types'
+import { getActiveView } from 'state/views/selectors'
 import { createImmutableSelector } from 'utils'
 
 import { TicketState, TicketStateWithoutImmutable } from './types'
@@ -440,3 +442,21 @@ export const getHasAttemptedToCloseTicket = createImmutableSelector(
     (state) =>
         state.getIn(['state', 'hasAttemptedToCloseTicket'], false) as boolean,
 )
+
+export const isTicketViewActive = createSelector(getActiveView, (view) => {
+    const viewId = view.get('id') as number
+    const viewSearch = view.get('search') as string
+    const viewFilters = view.get('filters') as string
+    const viewOrderByEnabled = !!view.get('order_by')
+    const isCustomerView = view.get('type') === ViewType.CustomerList
+
+    return (
+        !!((viewId || viewSearch || viewFilters) && viewOrderByEnabled) &&
+        !isCustomerView
+    )
+})
+
+export const isTicketNavigationAvailable = (ticketId: number | string) =>
+    createSelector(isTicketViewActive, (isActive) => {
+        return !!parseFloat(ticketId as string) && isActive
+    })
