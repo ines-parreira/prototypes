@@ -1,10 +1,12 @@
 import { useCallback, useEffect, useState } from 'react'
 
 import { useMutation } from '@tanstack/react-query'
+import { useFlags } from 'launchdarkly-react-client-sdk'
 import _isEqual from 'lodash/isEqual'
 import moment from 'moment/moment'
 
 import { AttachmentEnum } from 'common/types'
+import { FeatureFlagKey } from 'config/featureFlags'
 import useAppSelector from 'hooks/useAppSelector'
 import { transformToneOfVoice } from 'models/aiAgent/resources/transform-tone-of-voice'
 import { TransformToneOfVoiceConversation } from 'models/aiAgent/types'
@@ -50,6 +52,9 @@ export const useTransformToneOfVoiceConversations = (
     const currentAccount = useAppSelector(getCurrentAccountState)
     const timezone = useAppSelector(getTimezone) ?? 'UTC'
     const gorgiasDomain = currentAccount.get('domain')
+
+    const isMlPreviewEnabled =
+        useFlags()[FeatureFlagKey.AiAgentOnboardingMLPreview]
 
     const [cacheResult, setCacheResult] = useState(false)
     const [outputConversations, setOutputConversations] =
@@ -128,6 +133,11 @@ export const useTransformToneOfVoiceConversations = (
             }
         }
 
+        if (!isMlPreviewEnabled) {
+            setOutputConversations(conversationExamples)
+            return
+        }
+
         const product = products.length > 0 ? products[0] : undefined
 
         if (gorgiasDomain && data?.customToneOfVoiceGuidance) {
@@ -182,6 +192,7 @@ export const useTransformToneOfVoiceConversations = (
         inputConversations,
         data,
         products,
+        isMlPreviewEnabled,
     ])
 
     useEffect(() => {

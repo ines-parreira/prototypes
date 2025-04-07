@@ -1,6 +1,8 @@
 import { waitFor } from '@testing-library/react'
 import { fromJS } from 'immutable'
+import { useFlags } from 'launchdarkly-react-client-sdk'
 
+import { FeatureFlagKey } from 'config/featureFlags'
 import { account } from 'fixtures/account'
 import { transformToneOfVoice } from 'models/aiAgent/resources/transform-tone-of-voice'
 import { OnboardingData } from 'models/aiAgent/types'
@@ -21,6 +23,9 @@ const useGetOnboardingDataMock = assumeMock(useGetOnboardingData)
 
 jest.mock('pages/aiAgent/Onboarding/components/TopProductsCard/hooks')
 const useTopProductsMock = assumeMock(useTopProducts)
+
+jest.mock('launchdarkly-react-client-sdk')
+const useFlagsMock = assumeMock(useFlags)
 
 describe('useTransformToneOfVoiceConversations', () => {
     beforeEach(() => {
@@ -55,6 +60,9 @@ describe('useTransformToneOfVoiceConversations', () => {
             ],
             isLoading: false,
         })
+        useFlagsMock.mockReturnValue({
+            [FeatureFlagKey.AiAgentOnboardingMLPreview]: true,
+        } as any)
     })
 
     it('should call transformToneOfVoice with correct params', async () => {
@@ -170,6 +178,27 @@ describe('useTransformToneOfVoiceConversations', () => {
             } as OnboardingData,
             isLoading: false,
         })
+
+        const { result } = renderHookWithStoreAndQueryClientProvider(
+            () => useTransformToneOfVoiceConversations(1, 'test-store'),
+            {
+                currentAccount: fromJS(account),
+            },
+        )
+
+        await waitFor(() => {
+            expect(result.current.isLoading).toStrictEqual(false)
+            expect(result.current.preview).toBe(undefined)
+            expect(result.current.conversations).toBe(conversationExamples)
+        })
+
+        expect(transformToneOfVoiceMock).not.toHaveBeenCalled()
+    })
+
+    it('should return hardcoded when FF is deactivated', async () => {
+        useFlagsMock.mockReturnValue({
+            [FeatureFlagKey.AiAgentOnboardingMLPreview]: false,
+        } as any)
 
         const { result } = renderHookWithStoreAndQueryClientProvider(
             () => useTransformToneOfVoiceConversations(1, 'test-store'),

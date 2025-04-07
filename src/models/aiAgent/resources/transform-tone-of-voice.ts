@@ -14,7 +14,7 @@ export const transformToneOfVoice = async (
     product?: { title: string; description: string },
 ) => {
     const promises = []
-    const chunkSize = 3
+    const chunkSize = 2
     for (let i = 0; i < conversations.length; i += chunkSize) {
         const chunk = conversations.slice(i, i + chunkSize)
         promises.push(
