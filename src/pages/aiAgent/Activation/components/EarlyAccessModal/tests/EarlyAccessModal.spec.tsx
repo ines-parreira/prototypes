@@ -152,7 +152,6 @@ describe('<EarlyAccessModal />', () => {
                 isOpen
                 isLoading={true}
                 onClose={() => {}}
-                onStayClick={() => {}}
                 onUpgradeClick={() => {}}
                 userIsAdmin={true}
                 isUpgrading={false}
@@ -170,7 +169,6 @@ describe('<EarlyAccessModal />', () => {
                 isOpen
                 isLoading={true}
                 onClose={() => {}}
-                onStayClick={() => {}}
                 onUpgradeClick={() => {}}
                 userIsAdmin={true}
                 isUpgrading={false}
