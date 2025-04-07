@@ -951,6 +951,10 @@ export function isReceiver(receiver: unknown): receiver is Receiver {
     )
 }
 
+export function humanizeCSATScore(score: number): string {
+    return `${score} ★`
+}
+
 export function humanizeAddress(
     address: string,
     channel?: Maybe<ChannelLike>,

@@ -136,4 +136,5 @@ export enum FeatureFlagKey {
     WhatsAppMigrationsDebug = 'whatsapp-migration-debug',
     AiAgentHandoverCustomizationConfiguration = 'helpdesk-ai-agent-handover-customization-enabled',
     ConversationStarters = 'conversation-starters',
+    EnableCustomerSatisfactionQaFiltersInViews = 'linear.project_csat-qa-filters-in-views.enable_filters',
 }

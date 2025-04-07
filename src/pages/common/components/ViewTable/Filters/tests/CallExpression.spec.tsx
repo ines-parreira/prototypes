@@ -6,11 +6,14 @@ import { fromJS } from 'immutable'
 
 import { CustomField } from 'custom-fields/types'
 import { view as viewFixture } from 'fixtures/views'
+import useQAScoreFilters from 'pages/common/components/ViewTable/Filters/hooks/useQAScoreFilters'
+import Left from 'pages/common/components/ViewTable/Filters/Left'
 import Right from 'pages/common/components/ViewTable/Filters/Right'
 import { assumeMock } from 'utils/testing'
 
 import { CallExpression } from '../CallExpression'
 import useCustomFieldsFilters from '../hooks/useCustomFieldsFilters'
+import { QaScoreDimensions } from '../utils/qaScoreDimensions'
 
 jest.mock('state/views/actions')
 
@@ -20,6 +23,12 @@ const updateFieldFilterMock = jest.fn()
 
 jest.mock('../hooks/useCustomFieldsFilters')
 const useCustomFieldsFiltersMock = assumeMock(useCustomFieldsFilters)
+
+jest.mock('pages/common/components/ViewTable/Filters/Left')
+const LeftMock = assumeMock(Left)
+
+jest.mock('pages/common/components/ViewTable/Filters/hooks/useQAScoreFilters')
+const useQAScoreFiltersMock = assumeMock(useQAScoreFilters)
 
 jest.mock(
     '../Right',
@@ -119,10 +128,15 @@ const minProps: ComponentProps<typeof CallExpression> = {
 
 describe('<CallExpression />', () => {
     beforeEach(() => {
+        LeftMock.mockImplementation(() => <div>Left</div>)
         useCustomFieldsFiltersMock.mockReturnValue({
             customField: {} as CustomField,
             activeCustomFields: [],
             onCustomFieldChange: jest.fn(),
+        })
+        useQAScoreFiltersMock.mockReturnValue({
+            qaScoreDimension: QaScoreDimensions.ACCURACY,
+            onQAScoreDimensionFieldChange: jest.fn(),
         })
     })
 

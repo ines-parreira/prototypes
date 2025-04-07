@@ -2,6 +2,7 @@ import { List, Map } from 'immutable'
 import { DropdownItem } from 'reactstrap'
 
 import { isImmutable } from 'common/utils'
+import { ViewField } from 'models/view/types'
 import { RenderLabel } from 'pages/common/utils/labels'
 import { getDisplayName } from 'state/customers/helpers'
 import { humanizeChannel } from 'state/ticket/utils'
@@ -45,26 +46,26 @@ export default function FilterDropdownItems({
         )
     }
 
+    const fieldName = field.get('name')
+
     let options = items.map((value, key) => {
         let renderValue = value
 
         // special displays for some columns in the dropdown
-        if (field.get('name') === 'tags') {
+        if (fieldName === ViewField.Tags) {
             // display tags as tags
-            renderValue = (value as Map<any, any>).get('name')
-        } else if (field.get('name') === 'customer') {
-            renderValue = getDisplayName(value as Map<any, any>)
-        } else if (field.get('name') === 'language') {
-            renderValue = getLanguageDisplayName(value as string)
-        } else if (typeof value === 'object' || field.get('name') === 'role') {
+            renderValue = value.get('name')
+        } else if (fieldName === ViewField.Customer) {
+            renderValue = getDisplayName(value)
+        } else if (fieldName === ViewField.Language) {
+            renderValue = getLanguageDisplayName(value)
+        } else if (typeof value === 'object' || fieldName === 'role') {
             renderValue = <RenderLabel field={field} value={value} />
-        } else if (field.get('name') === 'channel') {
+        } else if (fieldName === ViewField.Channel) {
             renderValue = humanizeChannel(value)
         }
 
-        const passedValue = isImmutable(value)
-            ? (value as Map<any, any>).toJS()
-            : value
+        const passedValue = isImmutable(value) ? value.toJS() : value
 
         return (
             <DropdownItem
@@ -79,7 +80,7 @@ export default function FilterDropdownItems({
     }) as List<any>
 
     // special option added for some columns in the dropdown
-    if (field.get('name') === 'assignee') {
+    if (fieldName === ViewField.Assignee) {
         options = options.unshift(
             <DropdownItem
                 key="me"

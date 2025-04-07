@@ -92,7 +92,6 @@ describe('reducers', () => {
                 }),
             ).toMatchSnapshot()
         })
-
         it('should update the custom field id', () => {
             const state = fromJS({
                 active: {
@@ -297,6 +296,84 @@ describe('reducers', () => {
             ).toMatchSnapshot()
         })
 
+        describe('UPDATE_VIEW_QA_SCORE_FILTER_DIMENSION', () => {
+            const state = fromJS({
+                active: {
+                    dirty: false,
+                    filters: "containsAny(ticket.qa_score_dimensions, '')",
+                    filters_ast: {
+                        type: 'Program',
+                        body: [
+                            {
+                                type: 'ExpressionStatement',
+                                expression: {
+                                    type: 'CallExpression',
+                                    callee: {
+                                        type: 'Identifier',
+                                        name: 'containsAny',
+                                    },
+                                    arguments: [
+                                        {
+                                            type: 'MemberExpression',
+                                            computed: false,
+                                            object: {
+                                                type: 'Identifier',
+                                                name: 'ticket',
+                                            },
+                                            property: {
+                                                type: 'Identifier',
+                                                name: 'qa_score_dimensions',
+                                            },
+                                        },
+                                        {
+                                            type: 'Literal',
+                                            value: '',
+                                            raw: "''",
+                                        },
+                                    ],
+                                },
+                            },
+                        ],
+                        sourceType: 'script',
+                    },
+                },
+            })
+
+            const actions = [
+                {
+                    index: undefined,
+                    qaScoreDimensions: 'language_proficiency',
+                },
+                { index: 0, qaScoreDimensions: undefined },
+            ]
+
+            it.each(actions)(
+                'should return state when index or qaScore is not provided',
+                (action) =>
+                    expect(
+                        reducers(state, {
+                            type: types.UPDATE_VIEW_QA_SCORE_FILTER_DIMENSION,
+                            ...action,
+                        }).toJS(),
+                    ).toStrictEqual(state.toJS()),
+            )
+
+            it('should update state correctly', () => {
+                expect(
+                    reducers(state, {
+                        type: types.UPDATE_VIEW_QA_SCORE_FILTER_DIMENSION,
+                        index: 0,
+                        qaScoreDimension: 'language_proficiency',
+                    }).toJS(),
+                ).toStrictEqual({
+                    active: expect.objectContaining({
+                        dirty: true,
+                        filters:
+                            "containsAny(ticket.qa_score_dimensions['language_proficiency'].prediction, '')",
+                    }),
+                })
+            })
+        })
         describe('UPDATE_PAGE_SELECTION', () => {
             it('should update the selected ids of the view', () => {
                 expect(

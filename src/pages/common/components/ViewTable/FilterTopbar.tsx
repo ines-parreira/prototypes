@@ -41,6 +41,7 @@ import {
     EntityType,
     View,
     ViewCategory,
+    ViewField,
     ViewType,
     ViewVisibility,
 } from 'models/view/types'
@@ -299,6 +300,7 @@ export const FilterTopbar = ({
             const operator = isCustomFieldsFilter
                 ? getDefaultCustomFieldOperator(schemas, firstCustomField)
                 : (getDefaultOperator(left, schemas) as string)
+
             const filter = {
                 left,
                 operator,
@@ -373,18 +375,33 @@ export const FilterTopbar = ({
         FeatureFlagKey.FilterViewsByTicketFields,
     )
 
+    const areCustomerSatisfactionQaFiltersInViewsEnabled = useFlag(
+        FeatureFlagKey.EnableCustomerSatisfactionQaFiltersInViews,
+    )
+
     const filterableFields = (config.get('fields') as List<any>)
-        .filter((field: Map<any, any>) => {
-            return (
-                !!field.get('filter') &&
-                (field.get('path', '') === 'custom_fields'
-                    ? isSearch
-                        ? true
-                        : isTicketFieldsViewFilterEnabled
-                    : true)
-            )
+        .filter((field) => {
+            const filterConfig = field.get('filter')
+            if (!filterConfig) {
+                return false
+            }
+
+            const fieldName: string = field.get('name')
+            if (
+                !areCustomerSatisfactionQaFiltersInViewsEnabled &&
+                (fieldName === ViewField.CSATScore ||
+                    fieldName === ViewField.QAScore)
+            ) {
+                return false
+            }
+
+            if (field.get('path', '') === 'custom_fields') {
+                return isSearch ? true : isTicketFieldsViewFilterEnabled
+            }
+
+            return true
         })
-        .sortBy((field: Map<any, any>) => field.get('title') as string)
+        .sortBy((field) => field.get('title'))
 
     const totalSearchResources = useMemo(() => {
         return navigationMeta.get('total_resources') as number | undefined

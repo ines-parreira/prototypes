@@ -21,6 +21,7 @@ import {
     updateCustomFieldFilter,
     updateFilterOperator,
     updateFilterValue,
+    updateQAScoreFilter,
 } from './utils'
 
 export const initialState: ViewsState = fromJS({
@@ -213,6 +214,28 @@ export default function reducer(
             )
 
             code = getCode(nextAst.toJS())
+            activeView = activeView
+                .set('filters_ast', nextAst)
+                .set('filters', code)
+
+            return state.set('active', activeView.set('dirty', true))
+        }
+
+        case constants.UPDATE_VIEW_QA_SCORE_FILTER_DIMENSION: {
+            const ast = activeView.get('filters_ast')
+
+            if (action.index == null || action.qaScoreDimension == null) {
+                return state
+            }
+
+            const nextAst = updateQAScoreFilter(
+                ast,
+                action.index,
+                action.qaScoreDimension,
+            )
+
+            code = getCode(nextAst.toJS())
+
             activeView = activeView
                 .set('filters_ast', nextAst)
                 .set('filters', code)

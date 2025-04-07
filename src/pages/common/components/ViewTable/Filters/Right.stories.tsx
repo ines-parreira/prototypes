@@ -37,6 +37,7 @@ const defaultProps: ComponentProps<typeof RightContainer> = {
     agents: fromJS([]),
     config: fromJS({}),
     empty: false,
+
     field: fromJS({
         name: 'created',
         title: 'Created',

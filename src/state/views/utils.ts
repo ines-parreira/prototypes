@@ -11,6 +11,7 @@ import moment from 'moment'
 import { User } from '@gorgias/api-queries'
 
 import { fromAST } from 'common/utils'
+import { QaScoreDimensions } from 'pages/common/components/ViewTable/Filters/utils/qaScoreDimensions'
 
 import { TIMEDELTA_OPERATOR_DEFAULT_VALUE, UNARY_OPERATORS } from '../../config'
 import { UserRole } from '../../config/types/user'
@@ -293,6 +294,49 @@ export function updateCustomFieldFilter(
     const clearArg = getFirstExpressionOfAST(getAST(rightRaw || "''"))
     newAst = setIn(newAst, index, ['arguments', 1], clearArg)
     newAst = updateFilterOperator(newAst, index, customFieldOperator)
+
+    return updateAstLoc(newAst)
+}
+
+export function updateQAScoreFilter(
+    ast: Map<any, any>,
+    index: number,
+    qaScoreDimension: string,
+) {
+    const operator = getIn(ast, index, ['callee', 'name'])
+    const previousDimension = getIn(ast, index, [
+        'arguments',
+        0,
+        'object',
+        'property',
+        'value',
+    ])
+
+    const isInitialAstWithoutLiteral =
+        getIn(ast, index, ['arguments', 0, 'property', 'name']) !== 'prediction'
+
+    const path = isInitialAstWithoutLiteral
+        ? ['arguments', 0, 'property', 'name']
+        : ['arguments', 0, 'object', 'property', 'value']
+
+    const value = isInitialAstWithoutLiteral
+        ? `qa_score_dimensions["${qaScoreDimension}"].prediction`
+        : qaScoreDimension
+
+    let newAst = setIn(ast, index, path, value)
+
+    if (
+        typeof operator === 'string' &&
+        operator &&
+        [previousDimension, qaScoreDimension].includes(
+            QaScoreDimensions.RESOLUTION_COMPLETENESS,
+        )
+    ) {
+        const rightRaw = resolveSecondArg(operator, null)
+        const clearArg = getFirstExpressionOfAST(getAST(rightRaw || "''"))
+        newAst = setIn(newAst, index, ['arguments', 1], clearArg)
+        newAst = updateFilterOperator(newAst, index, operator)
+    }
 
     return updateAstLoc(newAst)
 }

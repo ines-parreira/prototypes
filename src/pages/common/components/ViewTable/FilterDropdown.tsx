@@ -3,6 +3,7 @@ import React, { ComponentType, useCallback, useMemo, useState } from 'react'
 import { fromJS, List, Map } from 'immutable'
 import { Dropdown, DropdownMenu, DropdownToggle } from 'reactstrap'
 
+import { ViewField } from 'models/view/types'
 import FilterDropdownSearch from 'pages/common/components/ViewTable/FilterDropdownSearch'
 import { fieldPath, resolveLiteral } from 'utils'
 
@@ -73,7 +74,7 @@ export default function FilterDropdown({
         width: canSearch && width,
     }
 
-    if (field.get('name') === 'language') {
+    if (field.get('name') === ViewField.Language) {
         Object.assign(style, { height: '230px', overflow: 'scroll' })
     }
 

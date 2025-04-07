@@ -45,6 +45,8 @@ export enum ViewField {
     Closed = 'closed',
     Snooze = 'snooze',
     TicketField = 'ticket_field',
+    CSATScore = 'csat_score',
+    QAScore = 'qa_score',
 }
 
 export enum ViewVisibility {

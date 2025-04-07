@@ -339,6 +339,24 @@ export const defaultTicketView = {
             filter: {},
             show: false,
         },
+        {
+            name: ViewField.CSATScore,
+            title: 'CSAT Score',
+            path: 'satisfaction_survey.score',
+            filter: {
+                enum: [1, 2, 3, 4, 5],
+            },
+            show: false,
+        },
+        {
+            name: ViewField.QAScore,
+            title: 'QA Score',
+            path: 'qa_score_dimensions',
+            filter: {
+                enum: [1, 2, 3, 4, 5],
+            },
+            show: false,
+        },
     ],
     cell: (fieldName: ViewField, item: Map<any, any>) => {
         switch (fieldName) {

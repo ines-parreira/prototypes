@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo } from 'react'
+import { useCallback, useMemo } from 'react'
 
 import {
     CallExpression as ESCallExpression,
@@ -21,6 +21,7 @@ import * as viewsSelectors from 'state/views/selectors'
 import { fieldPath, findProperty } from 'utils'
 
 import useCustomFieldsFilters from './hooks/useCustomFieldsFilters'
+import useQAScoreFilters from './hooks/useQAScoreFilters'
 import Left from './Left'
 import { Operator } from './Operator'
 import { OperatorLabel } from './OperatorLabel'
@@ -105,12 +106,13 @@ export const CallExpression = ({
     const objectPath = resolveObjectPath(left)
 
     const isCustomFieldPath = objectPath.includes('custom_fields')
-    const fields = config.get('fields', fromJS([])) as List<any>
+    const isQaScoreFieldPath = objectPath.includes('qa_score_dimensions')
+    const fields: List<any> = config.get('fields', fromJS([]))
     const field = fields.find(
         (field: Map<any, any>) =>
-            objectPath ===
-                `${config.get('singular') as string}.${fieldPath(field)}` ||
-            (isCustomFieldPath && fieldPath(field) === 'custom_fields'),
+            objectPath === `${config.get('singular')}.${fieldPath(field)}` ||
+            (isCustomFieldPath && fieldPath(field) === 'custom_fields') ||
+            (isQaScoreFieldPath && fieldPath(field) === 'qa_score_dimensions'),
     )
 
     const { customField, onCustomFieldChange } = useCustomFieldsFilters({
@@ -119,13 +121,27 @@ export const CallExpression = ({
         schemas,
     })
 
-    const operators = useMemo(
-        () =>
-            isCustomFieldPath
-                ? getCustomFieldOperators(schemas, customField)
-                : getOperators(objectPath),
-        [customField, getOperators, isCustomFieldPath, objectPath, schemas],
-    )
+    const { onQAScoreDimensionFieldChange } = useQAScoreFilters({
+        index,
+        objectPath,
+    })
+
+    const operators = useMemo(() => {
+        if (isCustomFieldPath) {
+            return getCustomFieldOperators(schemas, customField)
+        }
+
+        if (isQaScoreFieldPath) {
+            return getOperators('ticket.qa_score_dimensions')
+        }
+        return getOperators(objectPath)
+    }, [
+        objectPath,
+        schemas,
+        customField,
+        isCustomFieldPath,
+        isQaScoreFieldPath,
+    ])
 
     return (
         <div className={css.component}>
@@ -140,6 +156,7 @@ export const CallExpression = ({
                 objectPath={objectPath}
                 view={view}
                 onCustomFieldChange={onCustomFieldChange}
+                onQAScoreDimensionFieldChange={onQAScoreDimensionFieldChange}
             />
             <Operator
                 operators={operators}

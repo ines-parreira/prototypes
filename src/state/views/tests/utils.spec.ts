@@ -5,7 +5,7 @@ import { fromAST } from 'common/utils'
 import { ViewType } from 'models/view/types'
 import { CollectionOperator, EqualityOperator } from 'state/rules/types'
 import * as utils from 'state/views/utils'
-import { updateCustomFieldFilter } from 'state/views/utils'
+import { updateCustomFieldFilter, updateQAScoreFilter } from 'state/views/utils'
 import { getAST } from 'utils'
 
 describe('utils', () => {
@@ -166,6 +166,32 @@ describe('utils', () => {
             const res = utils.updateFilterValue(fromAST(ast), 0, null)
             expect(res.toJS()).toEqual(
                 getAST("gte(ticket.created_datetime, '')"),
+            )
+        })
+    })
+
+    describe('updateQAScoreFilter', () => {
+        it('should update the initial AST without dimension', () => {
+            const ast = getAST('containsAny(ticket.qa_score_dimensions, [])')
+            const res = updateQAScoreFilter(fromAST(ast), 0, 'accuracy')
+
+            expect(res.toJS()).toEqual(
+                getAST(
+                    'containsAny(ticket.qa_score_dimensions["accuracy"].prediction, [])',
+                ),
+            )
+        })
+
+        it('should update existing formatted AST', () => {
+            const ast = getAST(
+                "containsAny(ticket.qa_score_dimensions['accuracy'].prediction, [])",
+            )
+            const res = updateQAScoreFilter(fromAST(ast), 0, 'brand_voice')
+
+            expect(res.toJS()).toEqual(
+                getAST(
+                    "containsAny(ticket.qa_score_dimensions['brand_voice'].prediction, [])",
+                ),
             )
         })
     })

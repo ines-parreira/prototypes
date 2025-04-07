@@ -143,6 +143,17 @@ export const updateCustomFieldFilterId = (
     customFieldOperator,
 })
 
+export const updateQAScoreFilterDimension = (
+    index: number,
+    qaScoreDimension: string,
+) => {
+    return {
+        type: types.UPDATE_VIEW_QA_SCORE_FILTER_DIMENSION,
+        index,
+        qaScoreDimension,
+    }
+}
+
 // update a filter operator based on index
 export const updateFieldFilterOperator = (index: number, operator: string) => ({
     type: types.UPDATE_VIEW_FIELD_FILTER_OPERATOR,

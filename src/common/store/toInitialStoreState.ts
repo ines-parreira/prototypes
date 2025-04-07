@@ -7,9 +7,36 @@ import { View } from 'models/view/types'
 import { recentViewsStorage } from 'state/views/utils'
 import { GorgiasInitialState, InitialRootState } from 'types'
 
+export const TICKET_QA_SCORE_DIMENSIONS_FILTER_SCHEMA_DEFINITION = {
+    meta: {
+        operators: {
+            containsAny: {
+                label: 'contains one of',
+            },
+            isEmpty: {
+                label: 'is empty',
+            },
+            isNotEmpty: {
+                label: 'is not empty',
+            },
+        },
+        defaultOperator: 'containsAny',
+    },
+}
+
 export default function toInitialStoreState(initialState: GorgiasInitialState) {
     const nextState: Record<string, any> = {
         ...initialState,
+    }
+
+    /*
+        Add QA score dimensions filter schema definition to the ticket schema as it's not provided from the backend
+        This is a temporary solution until the backend finds way to provide the schema definition
+    */
+
+    if (nextState?.schemas?.definitions?.Ticket?.properties) {
+        nextState.schemas.definitions.Ticket.properties.qa_score_dimensions =
+            TICKET_QA_SCORE_DIMENSIONS_FILTER_SCHEMA_DEFINITION
     }
     const sections = initialState.viewSections
     delete nextState.viewSections

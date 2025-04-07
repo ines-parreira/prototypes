@@ -14,9 +14,11 @@ import { DateAndTimeFormatting, TimeFormatType } from 'constants/datetime'
 import CustomFieldByIdInput from 'custom-fields/components/CustomFieldByIdInput/CustomFieldByIdInput'
 import { isMultiValue } from 'custom-fields/components/MultiLevelSelect/helpers/isMultiValue'
 import { CustomFieldValue } from 'custom-fields/types'
+import { ViewField } from 'models/view/types'
 import TagDropdownMenu from 'pages/common/components/TagDropdownMenu/TagDropdownMenu'
 import FilterDropdown from 'pages/common/components/ViewTable/FilterDropdown'
 import FilterMultiSelectField from 'pages/common/components/ViewTable/FilterMultiSelectField'
+import { getQaScoreDimensionFromObjectPath } from 'pages/common/components/ViewTable/Filters/utils/qaScoreDimensions'
 import DatePicker from 'pages/common/forms/DatePicker'
 import MultiSelectField from 'pages/common/forms/MultiSelectField'
 import { Option } from 'pages/common/forms/MultiSelectOptionsField/types'
@@ -28,7 +30,7 @@ import {
 } from 'state/currentUser/selectors'
 import { getMessagingAndAppIntegrations } from 'state/integrations/selectors'
 import { getTags } from 'state/tags/selectors'
-import { humanizeChannel } from 'state/ticket/utils'
+import { humanizeChannel, humanizeCSATScore } from 'state/ticket/utils'
 import { RootState } from 'state/types'
 import { updateFieldFilter } from 'state/views/actions'
 import * as viewsSelectors from 'state/views/selectors'
@@ -37,6 +39,10 @@ import { formatDatetime, getLanguageDisplayName } from 'utils'
 import { stringToDatetime } from 'utils/date'
 
 import { getCustomFieldIdFromObjectPath, getMultiSelectLabel } from './utils'
+import {
+    QaScoreDimensions,
+    RESOLUTION_COMPLETENESS_OPTIONS,
+} from './utils/qaScoreDimensions'
 
 import css from './Right.less'
 
@@ -184,6 +190,7 @@ export class RightContainer extends Component<Props, State> {
             updateFieldFilter,
             index,
             empty,
+            objectPath,
         } = this.props
 
         if (empty) {
@@ -207,11 +214,11 @@ export class RightContainer extends Component<Props, State> {
 
         let displayedValue: Literal['value'] | ReactNode = (node as Literal)
             .value
-
+        const fieldName = field.get('name')
         if (displayedValue === '{{current_user.id}}') {
             // display current user variable
             displayedValue = 'Me (current user)'
-        } else if (field.get('name') === 'integrations') {
+        } else if (fieldName === ViewField.Integrations) {
             // display integration
             if (node.type === 'ArrayExpression') {
                 const selectedOptions = node.elements.map((opt) => {
@@ -252,7 +259,7 @@ export class RightContainer extends Component<Props, State> {
                     <IntegrationsDetailLabel integration={integration} />
                 )
             }
-        } else if (field.get('name') === 'assignee_team') {
+        } else if (fieldName === ViewField.AssigneeTeam) {
             // display assignee team
             const assignee = this.props.teams.find(
                 (team) =>
@@ -263,7 +270,7 @@ export class RightContainer extends Component<Props, State> {
             if (assignee) {
                 displayedValue = <span>{assignee.get('name')}</span>
             }
-        } else if (field.get('name') === 'assignee') {
+        } else if (fieldName === ViewField.Assignee) {
             // display assignee user
             const assignee = this.props.agents.find(
                 (agent) =>
@@ -273,10 +280,10 @@ export class RightContainer extends Component<Props, State> {
             if (assignee) {
                 displayedValue = <span>{assignee.get('name')}</span>
             }
-        } else if (field.get('name') === 'customer') {
+        } else if (fieldName === ViewField.Customer) {
             // display customer
             displayedValue = `Customer #${displayedValue as string}`
-        } else if (field.get('name') === 'language') {
+        } else if (fieldName === ViewField.Language) {
             // show the display name
             displayedValue = getLanguageDisplayName(
                 displayedValue as Maybe<string>,
@@ -326,7 +333,7 @@ export class RightContainer extends Component<Props, State> {
                     </div>
                 </DatePicker>
             )
-        } else if (field.get('name') === 'tags') {
+        } else if (fieldName === ViewField.Tags) {
             if (node.type === 'ArrayExpression') {
                 const selectedOptions: Option[] = node.elements.map((opt) => ({
                     label: (opt as Literal).value as string,
@@ -352,7 +359,7 @@ export class RightContainer extends Component<Props, State> {
                     />
                 )
             }
-        } else if (field.get('name') === 'channel') {
+        } else if (fieldName === ViewField.Channel) {
             if (typeof displayedValue === 'string') {
                 displayedValue = humanizeChannel(displayedValue)
             }
@@ -376,6 +383,40 @@ export class RightContainer extends Component<Props, State> {
                         options={options}
                         singular="channel"
                         plural="channels"
+                        onChange={(value: Option[]) =>
+                            updateFieldFilter(index, value)
+                        }
+                    />
+                )
+            }
+        } else if (
+            [ViewField.CSATScore, ViewField.QAScore].includes(fieldName)
+        ) {
+            if (node.type === 'ArrayExpression') {
+                const selectedOptions = node.elements.map(
+                    (opt) => (opt as Literal).value,
+                )
+
+                const isResolutionCompleteness =
+                    getQaScoreDimensionFromObjectPath(objectPath) ===
+                    QaScoreDimensions.RESOLUTION_COMPLETENESS
+
+                const options = isResolutionCompleteness
+                    ? RESOLUTION_COMPLETENESS_OPTIONS
+                    : (
+                          field
+                              .getIn(['filter', 'enum'])
+                              .map((val: number) => ({
+                                  label: humanizeCSATScore(val),
+                                  value: val,
+                              })) as unknown as List<Map<any, any>>
+                      ).toJS()
+                return (
+                    <MultiSelectField
+                        values={selectedOptions}
+                        options={options}
+                        singular={isResolutionCompleteness ? 'value' : 'score'}
+                        plural={isResolutionCompleteness ? 'values' : 'scores'}
                         onChange={(value: Option[]) =>
                             updateFieldFilter(index, value)
                         }
@@ -440,7 +481,7 @@ export class RightContainer extends Component<Props, State> {
                         }
                         toggleDropdown={this._toggleDropdown}
                         menu={
-                            field.get('name') === 'tags'
+                            fieldName === ViewField.Tags
                                 ? TagDropdownMenu
                                 : undefined
                         }

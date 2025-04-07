@@ -11,6 +11,7 @@ import { UserRole } from 'config/types/user'
 import { EMAIL_INTEGRATION_TYPES } from 'constants/integration'
 import useAppSelector from 'hooks/useAppSelector'
 import { SourceType } from 'models/ticket/types'
+import { ViewField } from 'models/view/types'
 import Avatar from 'pages/common/components/Avatar/Avatar'
 import SourceIcon from 'pages/common/components/SourceIcon'
 import TicketTag from 'pages/common/components/TicketTag'
@@ -379,28 +380,28 @@ export const RenderLabel = ({
     }
 
     switch (field.get('name')) {
-        case 'tags':
+        case ViewField.Tags:
             return <TicketTag text={value} />
-        case 'created':
-        case 'updated':
-        case 'last_message':
-        case 'last_received_message':
-        case 'snooze':
-        case 'closed':
+        case ViewField.Created:
+        case ViewField.Updated:
+        case ViewField.LastMessage:
+        case ViewField.LastReceivedMessage:
+        case ViewField.Snooze:
+        case ViewField.Closed:
             return <DatetimeLabel dateTime={value} />
-        case 'status':
+        case ViewField.Status:
             return <StatusLabel status={value} />
-        case 'assignee':
+        case ViewField.Assignee:
             return <UserAssigneeLabel assigneeUser={value} />
-        case 'assignee_team':
+        case ViewField.AssigneeTeam:
             return <TeamAssigneeLabel assigneeTeam={value} />
-        case 'integrations':
+        case ViewField.Integrations:
             return typeof value === 'string' ? (
                 <span>{value}</span>
             ) : (
                 <IntegrationsDetailLabel integration={value} />
             )
-        case 'customer':
+        case ViewField.Customer:
             return <CustomerLabel customer={value} />
         case 'role':
             return (
@@ -413,7 +414,7 @@ export const RenderLabel = ({
                 />
             )
         case 'via':
-        case 'channel':
+        case ViewField.Channel:
             return <ChannelLabel channel={value} />
         default:
             return <span>{value}</span>

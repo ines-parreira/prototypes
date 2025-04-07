@@ -211,6 +211,7 @@ export type GorgiasAction = {
     accountSettings?: AccountSetting[]
     customFieldId?: number
     customFieldOperator?: string
+    qaScoreDimension?: string
 }
 
 export type CurrentUser = Map<any, any>
