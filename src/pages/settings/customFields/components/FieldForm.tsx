@@ -85,7 +85,15 @@ export default function FieldForm(props: FieldFormProps) {
 
     // Use an effect since useRef() does not notify when the value is set
     useEffect(() => {
-        setIsFormValid(formRef.current!.checkValidity() || false)
+        let isValid = formRef.current!.checkValidity() || false
+        if (
+            form.definition.data_type === 'text' &&
+            form.definition.input_settings.input_type === 'dropdown'
+        ) {
+            isValid =
+                isValid && form.definition.input_settings.choices?.length > 0
+        }
+        setIsFormValid(isValid)
     }, [form])
 
     const setValue = useCallback((key: string, value: any) => {

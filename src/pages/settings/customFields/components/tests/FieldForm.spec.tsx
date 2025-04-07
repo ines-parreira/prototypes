@@ -86,10 +86,34 @@ describe('<FieldForm/>', () => {
         })
     })
 
-    it('should disable the save button if the form is not valid', () => {
+    it('should disable the save button if the label is empty', () => {
         const props = {
             ...defaultProps,
             field: { ...customFieldInputDefinition, label: '' },
+        }
+
+        renderWithRouter(<FieldForm {...props} />)
+
+        fireEvent.click(screen.getByText(/Save changes/))
+
+        expect(props.onSubmit).not.toHaveBeenCalled()
+    })
+
+    it('should disable the save button if the form has dropdown field and no choices are selected', () => {
+        const props = {
+            ...defaultProps,
+            field: {
+                ...ticketDropdownFieldDefinition,
+                label: 'test',
+                definition: {
+                    ...ticketDropdownFieldDefinition.definition,
+                    input_settings: {
+                        ...ticketDropdownFieldDefinition.definition
+                            .input_settings,
+                        choices: [],
+                    },
+                },
+            },
         }
 
         renderWithRouter(<FieldForm {...props} />)
