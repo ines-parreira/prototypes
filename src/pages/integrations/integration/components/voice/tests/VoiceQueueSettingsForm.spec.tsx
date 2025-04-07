@@ -19,6 +19,11 @@ import { notify } from 'state/notifications/actions'
 import { NotificationStatus } from 'state/notifications/types'
 import { assumeMock, getLastMockCall, renderWithRouter } from 'utils/testing'
 
+import {
+    CAPACITY_VALIDATION_ERROR,
+    RING_TIME_VALIDATION_ERROR,
+    WAIT_TIME_VALIDATION_ERROR,
+} from '../constants'
 import VoiceQueueSettingsForm from '../VoiceQueueSettingsForm'
 import { QUEUE_DEFAULT_WAIT_MUSIC_PREFERENCES } from '../waitMusicLibraryConstants'
 
@@ -67,6 +72,9 @@ const wrapper = (props: {
         {props.children}
         <div>Form Content</div>
         <FormField label="Name" name="name" />
+        <FormField label="Ring Time" name="ring_time" />
+        <FormField label="Wait Time" name="wait_time" />
+        <FormField label="Capacity" name="capacity" />
         <button type="submit">Submit</button>
     </VoiceQueueSettingsForm>
 )
@@ -174,6 +182,29 @@ describe('VoiceQueueSettingsForm', () => {
 
         await waitFor(() => {
             expect(screen.getByText('Name is required')).toBeInTheDocument()
+        })
+    })
+
+    it('should validate custom min/max', async () => {
+        renderComponent({
+            ...voiceQueue,
+            wait_time: 5,
+            ring_time: 5,
+            capacity: 0,
+        })
+
+        fireEvent.click(screen.getByRole('button', { name: /submit/i }))
+
+        await waitFor(() => {
+            expect(
+                screen.getByText(RING_TIME_VALIDATION_ERROR),
+            ).toBeInTheDocument()
+            expect(
+                screen.getByText(WAIT_TIME_VALIDATION_ERROR),
+            ).toBeInTheDocument()
+            expect(
+                screen.getByText(CAPACITY_VALIDATION_ERROR),
+            ).toBeInTheDocument()
         })
     })
 

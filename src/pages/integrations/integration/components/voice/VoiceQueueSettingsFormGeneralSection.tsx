@@ -19,6 +19,7 @@ export default function VoiceQueueSettingsFormGeneralSection() {
                 outputTransform={(value) =>
                     value === '' ? null : Number(value)
                 }
+                min={1}
             />
             <FormField
                 name="priority_weight"

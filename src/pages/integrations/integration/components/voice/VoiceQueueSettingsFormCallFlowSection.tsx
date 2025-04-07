@@ -112,18 +112,22 @@ export default function VoiceQueueSettingsFormCallFlowSection() {
                                 }
                             />
                         </div>
-                        {!!ring_time && !!wait_time && (
-                            <Alert type={AlertType.Info} icon>
-                                If each agent is rung for{' '}
-                                <strong>{ring_time} seconds</strong> and the
-                                maximum waiting time is{' '}
-                                <strong>{wait_time} seconds</strong>, up to{' '}
-                                <strong>
-                                    {Math.ceil(wait_time / ring_time)} agents
-                                </strong>{' '}
-                                will be rung.
-                            </Alert>
-                        )}
+                        {!!ring_time &&
+                            !!wait_time &&
+                            ring_time > 0 &&
+                            wait_time > 0 && (
+                                <Alert type={AlertType.Info} icon>
+                                    If each agent is rung for{' '}
+                                    <strong>{ring_time} seconds</strong> and the
+                                    maximum waiting time is{' '}
+                                    <strong>{wait_time} seconds</strong>, up to{' '}
+                                    <strong>
+                                        {Math.ceil(wait_time / ring_time)}{' '}
+                                        agents
+                                    </strong>{' '}
+                                    will be rung.
+                                </Alert>
+                            )}
                     </div>
                 </VoiceSettingAccordionItem>
                 <VoiceSettingAccordionItem

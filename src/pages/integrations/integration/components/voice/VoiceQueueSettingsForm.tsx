@@ -15,6 +15,15 @@ import {
 
 import { Form, toFormErrors } from 'core/forms'
 
+import {
+    CAPACITY_VALIDATION_ERROR,
+    RING_TIME_MAX_VALUE,
+    RING_TIME_MIN_VALUE,
+    RING_TIME_VALIDATION_ERROR,
+    WAIT_TIME_MAX_VALUE,
+    WAIT_TIME_MIN_VALUE,
+    WAIT_TIME_VALIDATION_ERROR,
+} from './constants'
 import VoiceFormUnsavedChangesPrompt from './VoiceFormUnsavedChangesPrompt'
 import { QUEUE_DEFAULT_WAIT_MUSIC_PREFERENCES } from './waitMusicLibraryConstants'
 
@@ -33,9 +42,25 @@ export default function VoiceQueueSettingsForm<
         const validator = !!initialValues
             ? validateUpdateVoiceQueue
             : validateCreateVoiceQueue
-        return toFormErrors(validator(values)) as Partial<
-            Record<keyof T, unknown>
-        >
+        let errors = toFormErrors(validator(values))
+        if (
+            values.ring_time !== undefined &&
+            (values.ring_time < RING_TIME_MIN_VALUE ||
+                values.ring_time > RING_TIME_MAX_VALUE)
+        ) {
+            errors['ring_time'] = RING_TIME_VALIDATION_ERROR
+        }
+        if (
+            values.wait_time !== undefined &&
+            (values.wait_time < WAIT_TIME_MIN_VALUE ||
+                values.wait_time > WAIT_TIME_MAX_VALUE)
+        ) {
+            errors['wait_time'] = WAIT_TIME_VALIDATION_ERROR
+        }
+        if (values.capacity !== undefined && values.capacity < 1) {
+            errors['capacity'] = CAPACITY_VALIDATION_ERROR
+        }
+        return errors as Partial<Record<keyof T, unknown>>
     }
 
     return (
