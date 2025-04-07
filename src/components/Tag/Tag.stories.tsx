@@ -2,7 +2,7 @@ import React, { ComponentProps } from 'react'
 
 import { Meta, StoryFn } from '@storybook/react'
 
-import Tag, { TagColor } from './Tag'
+import { Tag, TagColor } from './Tag'
 
 const colors: TagColor[] = [
     'black',

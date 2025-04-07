@@ -3,7 +3,7 @@ import React, { ComponentProps, useMemo } from 'react'
 import { parseToHsla } from 'color2k'
 import { fromJS, Map } from 'immutable'
 
-import Tag from 'components/Tag'
+import { Tag } from 'components/Tag/Tag'
 import { FeatureFlagKey } from 'config/featureFlags'
 import { useFlag } from 'core/flags'
 import { THEME_NAME, useTheme } from 'core/theme'

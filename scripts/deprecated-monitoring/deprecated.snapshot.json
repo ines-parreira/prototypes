@@ -1,8 +1,8 @@
 {
   "summary": {
-    "totalEntries": 35,
-    "totalUsages": 1174,
-    "reportGeneratedAt": "2025-04-02T15:44:51.495Z"
+    "totalEntries": 36,
+    "totalUsages": 1178,
+    "reportGeneratedAt": "2025-04-07T12:48:23.765Z"
   },
   "entries": [
     {
@@ -252,7 +252,7 @@
       "type": "feature-flag cleanup initiative",
       "entries": [
         {
-          "usageCount": 188,
+          "usageCount": 189,
           "name": "launchdarkly-react-client-sdk.useFlags",
           "nodeType": "Identifier",
           "deprecationDate": "2025-02-10",
@@ -269,7 +269,6 @@
               "src/hooks/reporting/common/useTableReportData.ts",
               "src/hooks/reporting/common/useTrendReportData.ts",
               "src/hooks/reporting/dashboards/useReportRestrictions.ts",
-              "src/hooks/reporting/support-performance/overview/useDownloadOverviewData.ts",
               "src/hooks/reporting/ticket-insights/tests/useTicketCountPerTag.spec.tsx",
               "src/hooks/reporting/ticket-insights/useTicketCountPerTag.ts",
               "src/models/aiAgent/queries.ts",
@@ -304,11 +303,14 @@
               "src/pages/aiAgent/actions/hooks/useThreeplIntegrations.ts",
               "src/pages/aiAgent/actions/tests/ActionsList.spec.tsx",
               "src/pages/aiAgent/components/AIAgentPreviewModeSection/AiAgentPreviewModeSection.tsx",
+              "src/pages/aiAgent/components/AiAgentLayout/AiAgentLayout.tsx",
               "src/pages/aiAgent/components/AiAgentNavbar/AiAgentNavbar.tsx",
               "src/pages/aiAgent/components/AiAgentNavbar/AiAgentNavbarSectionBlock.tsx",
               "src/pages/aiAgent/components/AiAgentNavbar/tests/AiAgentNavbar.spec.tsx",
               "src/pages/aiAgent/components/GuidanceBreadcrumbs/GuidanceBreadcrumbs.tsx",
               "src/pages/aiAgent/components/Knowledge/ExternalFilesSection.tsx",
+              "src/pages/aiAgent/components/PlaygroundChat/PlaygroundChat.spec.tsx",
+              "src/pages/aiAgent/components/PlaygroundInputSection/PlaygroundInputSection.tsx",
               "src/pages/aiAgent/components/PublicSourcesSection/PublicSourcesSection.tsx",
               "src/pages/aiAgent/components/StoreConfigForm/FormComponents/ChannelsFormComponent.tsx",
               "src/pages/aiAgent/components/StoreConfigForm/FormComponents/EmailFormComponent.tsx",
@@ -432,7 +434,6 @@
               "src/pages/stats/support-performance/agents/AgentsPerformanceCardExtra.tsx",
               "src/pages/stats/support-performance/agents/tests/AgentsPerformanceCardExtra.spec.tsx",
               "src/pages/stats/support-performance/overview/DownloadOverviewData.tsx",
-              "src/pages/stats/support-performance/overview/SupportPerformanceOverviewReport.tsx",
               "src/pages/stats/support-performance/overview/charts/WorkloadPerChannelChart.tsx",
               "src/pages/stats/ticket-insights/tags/Tags.tsx",
               "src/pages/stats/ticket-insights/tags/tests/Tags.spec.tsx",
@@ -1697,6 +1698,22 @@
           "defaultImportNames": [
             "ToggleInputField"
           ]
+        },
+        {
+          "usageCount": 3,
+          "name": "Tag",
+          "nodeType": "VariableDeclaration",
+          "deprecationDate": "2025-04-07",
+          "deprecationType": "ui-kit-migration",
+          "declarationFile": "src/components/Tag/Tag.tsx",
+          "usageUrls": {
+            "named": [
+              "src/components/Tag/Tag.stories.tsx",
+              "src/components/Tag/tests/Tag.spec.tsx",
+              "src/pages/common/components/TicketTag.tsx"
+            ],
+            "default": []
+          }
         },
         {
           "usageCount": 3,

@@ -1,10 +1,11 @@
-import { forwardRef, useImperativeHandle, useRef } from 'react'
-import type {
+import {
     CSSProperties,
-    FC,
     ForwardedRef,
+    forwardRef,
     HTMLAttributes,
     ReactNode,
+    useImperativeHandle,
+    useRef,
 } from 'react'
 
 import classNames from 'classnames'
@@ -34,9 +35,15 @@ type Props = {
     text?: string
     textClassName?: string
     trailIcon?: ReactNode
-}
+} & HTMLAttributes<HTMLDivElement>
 
-const Tag: FC<Props & HTMLAttributes<HTMLDivElement>> = (
+/**
+ * @deprecated This component is deprecated and will be removed in future versions.
+ * Please use `<Tag />` from @gorgias/merchant-ui-kit instead.
+ * @date 2025-04-07
+ * @type ui-kit-migration
+ */
+export const Tag = forwardRef(function Tag(
     {
         className,
         color = 'black',
@@ -46,11 +53,12 @@ const Tag: FC<Props & HTMLAttributes<HTMLDivElement>> = (
         textClassName,
         trailIcon,
         ...props
-    },
+    }: Props,
     forwardedRef: ForwardedRef<HTMLDivElement>,
-) => {
+) {
     const ref = useRef<HTMLInputElement>(null)
     useImperativeHandle(forwardedRef, () => ref.current!)
+
     const hasNewTag = useFlag(FeatureFlagKey.TagNewDesign)
 
     return (
@@ -91,6 +99,4 @@ const Tag: FC<Props & HTMLAttributes<HTMLDivElement>> = (
             )}
         </div>
     )
-}
-
-export default forwardRef(Tag)
+})
