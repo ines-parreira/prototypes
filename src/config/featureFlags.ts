@@ -25,6 +25,7 @@ export enum FeatureFlagKey {
     AIAgentWelcomePage = 'ai-agent-welcome-page',
     AIAgentGuidanceTaggingSystem = 'ai-agent-guidance-tagging-system',
     AiAgentUsesStoreConfigurationCustomFields = 'ai-agent-uses-store-configuration-custom-fields',
+    AiSalesAgentActivationEmailSettings = 'linear.project_ai-sales-agent-email-settings',
     AnalyticsDeferredLoadingExperiment = 'analytics-deferred-loading-experiment',
     AutomateNonFilteredDenominatorInAutomationRate = 'use-non-filtered-automated-interactions-in-automation-rate-denominator',
     AutomateOverviewChannelsFilter = 'automate-overview-channels-filter',

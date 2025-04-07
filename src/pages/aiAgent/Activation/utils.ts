@@ -1,5 +1,15 @@
 import { Location } from 'history'
 
+import { FeatureFlagKey } from 'config/featureFlags'
+import { getLDClient } from 'utils/launchDarkly'
+
+export const getAiSalesAgentEmailEnabledFlag = () => {
+    const launchDarklyClient = getLDClient()
+    return !!launchDarklyClient?.variation(
+        FeatureFlagKey.AiSalesAgentActivationEmailSettings,
+    )
+}
+
 export const SalesEarlyAccessUtils = (accountId: number) => ({
     get modalDisplayedAtKey() {
         return `account-${accountId}.aiSalesAgentEarlyAccessModalDisplayedAt`

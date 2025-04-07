@@ -3,6 +3,7 @@ import { ComponentProps } from 'react'
 import { fireEvent, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 
+import { FeatureFlagKey } from 'config/featureFlags'
 import { AlertType } from 'pages/common/components/Alert/Alert'
 import { renderWithRouter } from 'utils/testing'
 
@@ -273,5 +274,32 @@ describe('<AiAgentActivationStoreCard />', () => {
             expect(getByRole('tooltip')).toHaveTextContent('integrated chats:')
             expect(getByRole('tooltip')).toHaveTextContent('Chat Channel 1')
         })
+    })
+
+    it('should display the correct sales block copy when the AiSalesAgentActivationEmailSettings flag is enabled', () => {
+        const useFlagsSpy = jest.spyOn(
+            require('launchdarkly-react-client-sdk'),
+            'useFlags',
+        )
+        useFlagsSpy.mockReturnValue({
+            [FeatureFlagKey.AiSalesAgentActivationEmailSettings]: true,
+        })
+
+        const { getByText } = renderComponent({
+            store: storeWithoutAlert,
+            onSalesChange,
+            onSupportChange,
+            onSupportChatChange,
+            onSupportEmailChange,
+            closeModal,
+        })
+
+        expect(
+            getByText(
+                'Sales can only be activated on the channel where Support is activated.',
+            ),
+        ).toBeInTheDocument()
+
+        useFlagsSpy.mockRestore()
     })
 })

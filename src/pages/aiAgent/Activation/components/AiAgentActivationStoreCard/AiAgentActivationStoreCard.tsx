@@ -1,11 +1,13 @@
 import { useMemo } from 'react'
 
 import cn from 'classnames'
+import { useFlags } from 'launchdarkly-react-client-sdk'
 import { Link } from 'react-router-dom'
 
 import { Tooltip } from '@gorgias/merchant-ui-kit'
 
 import warningIcon from 'assets/img/icons/warning.svg'
+import { FeatureFlagKey } from 'config/featureFlags'
 import { EMAIL_INTEGRATION_TYPES } from 'constants/integration'
 import useAppSelector from 'hooks/useAppSelector'
 import { StoreConfiguration } from 'models/aiAgent/types'
@@ -77,6 +79,7 @@ export const AiAgentActivationStoreCard = ({
         current: enablementList.filter(Boolean).length,
         total: enablementList.length,
     }
+    const flags = useFlags()
 
     const chatChannels = useSelfServiceChatChannels(
         configuration.shopType,
@@ -104,6 +107,13 @@ export const AiAgentActivationStoreCard = ({
     const { routes } = useAiAgentNavigation({ shopName: name })
 
     const isDisabledCore = isDisabled || (alerts ?? []).length > 0
+
+    const aiSalesEmailEnabled =
+        !!flags[FeatureFlagKey.AiSalesAgentActivationEmailSettings]
+
+    const salesBlockCopy = aiSalesEmailEnabled
+        ? 'Sales can only be activated on the channel where Support is activated.'
+        : 'Sales can only be activated when Support for Chat is activated.'
 
     return (
         <div className={css.storeCard}>
@@ -328,10 +338,7 @@ export const AiAgentActivationStoreCard = ({
                             onChange={onSalesChange}
                         />
                     </div>
-                    <div className={css.description}>
-                        Sales can only be activated when Support for Chat is
-                        activated.
-                    </div>
+                    <div className={css.description}>{salesBlockCopy}</div>
                 </div>
             </div>
         </div>
