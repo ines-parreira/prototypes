@@ -21,6 +21,7 @@ import { assumeMock, renderWithStore } from 'utils/testing'
 
 import {
     VoiceQueuesFilter,
+    VoiceQueuesFilterWithSavedState,
     VoiceQueuesFilterWithState,
 } from '../VoiceQueuesFilter'
 
@@ -53,6 +54,15 @@ describe('<VoiceQueuesFilter />', () => {
         dispatchStatFiltersClean: dispatchStatFiltersClean,
         onRemove: onRemove,
     }
+
+    const defaultState = {
+        stats: statsSlice.initialState,
+        ui: {
+            stats: {
+                filters: filtersSlice.initialState,
+            },
+        },
+    } as RootState
 
     beforeEach(() => {
         useVoiceQueueSearchMock.mockReturnValue({
@@ -239,15 +249,6 @@ describe('<VoiceQueuesFilter />', () => {
 
     describe('VoiceQueuesFilterWithState', () => {
         it('should pass dispatch action', () => {
-            const defaultState = {
-                stats: statsSlice.initialState,
-                ui: {
-                    stats: {
-                        filters: filtersSlice.initialState,
-                    },
-                },
-            } as RootState
-
             const spy = jest.spyOn(
                 statsSlice,
                 'mergeStatsFiltersWithLogicalOperator',
@@ -272,6 +273,34 @@ describe('<VoiceQueuesFilter />', () => {
                     values: [1, 2, 3],
                     operator: LogicalOperatorEnum.ONE_OF,
                 },
+            })
+        })
+    })
+
+    describe('VoiceQueuesFilterWithSavedState', () => {
+        it('should pass dispatch action', () => {
+            const spy = jest.spyOn(filtersSlice, 'upsertSavedFilterFilter')
+            const removeSpy = jest.spyOn(
+                filtersSlice,
+                'removeFilterFromSavedFilterDraft',
+            )
+
+            renderWithStore(<VoiceQueuesFilterWithSavedState />, defaultState)
+            userEvent.click(screen.getByText(FILTER_VALUE_PLACEHOLDER))
+            userEvent.click(screen.getByText(FILTER_SELECT_ALL_LABEL))
+
+            expect(
+                screen.getByText(FilterLabels[FilterKey.VoiceQueues]),
+            ).toBeInTheDocument()
+            expect(spy).toHaveBeenCalledWith({
+                member: FilterKey.VoiceQueues,
+                operator: LogicalOperatorEnum.ONE_OF,
+                values: ['1', '2', '3'],
+            })
+
+            userEvent.click(screen.getByText(new RegExp('close', 'i')))
+            expect(removeSpy).toHaveBeenCalledWith({
+                filterKey: FilterKey.VoiceQueues,
             })
         })
     })

@@ -23,10 +23,17 @@ import {
     RemovableFilter,
 } from 'pages/stats/common/filters/types'
 import { DropdownOption } from 'pages/stats/types'
-import { getPageStatsFiltersWithLogicalOperators } from 'state/stats/selectors'
+import {
+    getPageStatsFiltersWithLogicalOperators,
+    getSavedFiltersWithLogicalOperators,
+} from 'state/stats/selectors'
 import { mergeStatsFiltersWithLogicalOperator } from 'state/stats/statsSlice'
 import { RootState } from 'state/types'
 import { statFiltersClean, statFiltersDirty } from 'state/ui/stats/actions'
+import {
+    removeFilterFromSavedFilterDraft,
+    upsertSavedFilterFilter,
+} from 'state/ui/stats/filtersSlice'
 
 type Props = {
     value: StatsFiltersWithLogicalOperator[FilterKey.Integrations]
@@ -173,5 +180,25 @@ export const VoiceQueuesFilterWithState = connect(
             }),
         dispatchStatFiltersDirty: statFiltersDirty,
         dispatchStatFiltersClean: statFiltersClean,
+    },
+)(VoiceQueuesFilter)
+
+export const VoiceQueuesFilterWithSavedState = connect(
+    (state: RootState) => ({
+        value: getSavedFiltersWithLogicalOperators(state)[
+            FilterKey.VoiceQueues
+        ],
+    }),
+    {
+        dispatchUpdate: (filter: Exclude<Props['value'], undefined>) =>
+            upsertSavedFilterFilter({
+                member: FilterKey.VoiceQueues,
+                operator: filter.operator,
+                values: filter.values.map(String),
+            }),
+        dispatchRemove: () =>
+            removeFilterFromSavedFilterDraft({
+                filterKey: FilterKey.VoiceQueues,
+            }),
     },
 )(VoiceQueuesFilter)

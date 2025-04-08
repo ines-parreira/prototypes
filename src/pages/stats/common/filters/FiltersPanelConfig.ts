@@ -67,11 +67,13 @@ import {
     TagsFilterWithState,
 } from 'pages/stats/common/filters/TagsFilter'
 import {
+    VoiceQueuesFilterWithSavedState,
+    VoiceQueuesFilterWithState,
+} from 'pages/stats/common/filters/VoiceQueuesFilter'
+import {
     CampaignStatusesFilterFromContext,
     CampaignStatusesFilterFromSavedContext,
 } from 'pages/stats/convert/components/CampaignStatusesFilter/CampaignStatusesFilter'
-
-import { VoiceQueuesFilterWithState } from './VoiceQueuesFilter'
 
 export const FilterComponentMap: Record<
     FilterKey | FilterComponentKey,
@@ -131,7 +133,7 @@ export const SavedFilterComponentMap: Record<
     [FilterKey.Period]: () => null,
     [FilterKey.SlaPolicies]: () => null,
     [FilterKey.StoreIntegrations]: () => null,
-    [FilterKey.VoiceQueues]: () => null,
+    [FilterKey.VoiceQueues]: VoiceQueuesFilterWithSavedState,
     [FilterComponentKey.BusiestTimesMetricSelectFilter]: () => null,
     [FilterComponentKey.CustomField]: () => null,
     [FilterComponentKey.PhoneIntegrations]: () => null,

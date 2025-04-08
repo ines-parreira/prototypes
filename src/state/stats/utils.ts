@@ -270,7 +270,6 @@ export const savedFilterDraftFiltersFromFiltersWithLogicalOperators = (
                 case FilterKey.Period:
                 case FilterKey.AggregationWindow:
                 case FilterKey.StoreIntegrations:
-                case FilterKey.VoiceQueues:
                     break
                 case FilterKey.Tags: {
                     const currentFilter = statsFilters[filter]
@@ -352,7 +351,8 @@ export const statsFiltersWithLogicalOperatorsFromSavedFilters = (
                   } else if (
                       savedFilter.member === FilterKey.HelpCenters ||
                       savedFilter.member === FilterKey.Integrations ||
-                      savedFilter.member === FilterKey.Agents
+                      savedFilter.member === FilterKey.Agents ||
+                      savedFilter.member === FilterKey.VoiceQueues
                   ) {
                       statsFilters[savedFilter.member] = {
                           operator: savedFilter.operator,

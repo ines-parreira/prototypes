@@ -201,7 +201,6 @@ describe('FiltersPanel', () => {
         FilterComponentKey.CustomField,
         FilterComponentKey.PhoneIntegrations,
         FilterKey.StoreIntegrations,
-        FilterKey.VoiceQueues,
     ]
 
     const someTags = tags

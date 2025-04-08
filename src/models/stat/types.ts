@@ -159,6 +159,7 @@ export type SavedFilterWithLogicalOperator = {
         | FilterKey.ResolutionCompleteness
         | FilterKey.Score
         | FilterKey.SlaPolicies
+        | FilterKey.VoiceQueues
     operator: LogicalOperatorEnum
     values: string[]
 }
