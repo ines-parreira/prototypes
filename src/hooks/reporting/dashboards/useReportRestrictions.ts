@@ -18,6 +18,8 @@ import { isTeamLead } from 'utils'
 
 export type RestrictionsMap = Record<string, boolean | undefined>
 
+const chartRestrictionsMap: RestrictionsMap = {}
+
 export const useReportRestrictions = () => {
     const isNewSatisfactionReportEnabled =
         useFlags()[FeatureFlagKey.NewSatisfactionReport]
@@ -55,8 +57,6 @@ export const useReportRestrictions = () => {
             isStandaloneSalesOverviewEnabled,
         ],
     )
-
-    const chartRestrictionsMap: RestrictionsMap = {}
 
     const moduleRestrictionsMap: RestrictionsMap = useMemo(
         () => ({
