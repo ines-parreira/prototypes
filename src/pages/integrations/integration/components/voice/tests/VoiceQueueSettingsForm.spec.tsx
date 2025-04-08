@@ -20,7 +20,7 @@ import { NotificationStatus } from 'state/notifications/types'
 import { assumeMock, getLastMockCall, renderWithRouter } from 'utils/testing'
 
 import {
-    CAPACITY_VALIDATION_ERROR,
+    QUEUE_CAPACITY_VALIDATION_ERROR,
     RING_TIME_VALIDATION_ERROR,
     WAIT_TIME_VALIDATION_ERROR,
 } from '../constants'
@@ -203,7 +203,7 @@ describe('VoiceQueueSettingsForm', () => {
                 screen.getByText(WAIT_TIME_VALIDATION_ERROR),
             ).toBeInTheDocument()
             expect(
-                screen.getByText(CAPACITY_VALIDATION_ERROR),
+                screen.getByText(QUEUE_CAPACITY_VALIDATION_ERROR),
             ).toBeInTheDocument()
         })
     })

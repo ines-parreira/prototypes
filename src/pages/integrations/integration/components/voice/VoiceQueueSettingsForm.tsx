@@ -16,7 +16,9 @@ import {
 import { Form, toFormErrors } from 'core/forms'
 
 import {
-    CAPACITY_VALIDATION_ERROR,
+    QUEUE_CAPACITY_MAX_VALUE,
+    QUEUE_CAPACITY_MIN_VALUE,
+    QUEUE_CAPACITY_VALIDATION_ERROR,
     RING_TIME_MAX_VALUE,
     RING_TIME_MIN_VALUE,
     RING_TIME_VALIDATION_ERROR,
@@ -57,8 +59,12 @@ export default function VoiceQueueSettingsForm<
         ) {
             errors['wait_time'] = WAIT_TIME_VALIDATION_ERROR
         }
-        if (values.capacity !== undefined && values.capacity < 1) {
-            errors['capacity'] = CAPACITY_VALIDATION_ERROR
+        if (
+            values.capacity !== undefined &&
+            (values.capacity < QUEUE_CAPACITY_MIN_VALUE ||
+                values.capacity > QUEUE_CAPACITY_MAX_VALUE)
+        ) {
+            errors['capacity'] = QUEUE_CAPACITY_VALIDATION_ERROR
         }
         return errors as Partial<Record<keyof T, unknown>>
     }

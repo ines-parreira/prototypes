@@ -12,7 +12,10 @@ export const WAIT_TIME_MAX_VALUE = 3600
 export const WAIT_TIME_DEFAULT_ENABLED = true
 export const WAIT_TIME_VALIDATION_ERROR =
     'Wait time must be between 10 and 3600 seconds (1 hour).'
-export const CAPACITY_VALIDATION_ERROR = 'Capacity must be greater than 0.'
+export const QUEUE_CAPACITY_MIN_VALUE = 1
+export const QUEUE_CAPACITY_MAX_VALUE = 100
+export const QUEUE_CAPACITY_VALIDATION_ERROR =
+    'Capacity must be between 1 and 100.'
 
 export const DEFAULT_WAIT_TIME_PREFERENCES = {
     enabled: WAIT_TIME_DEFAULT_ENABLED,
