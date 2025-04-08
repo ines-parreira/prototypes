@@ -1,7 +1,6 @@
-import React, { Component, CSSProperties } from 'react'
+import React, { CSSProperties, useCallback, useEffect, useState } from 'react'
 
 import classnames from 'classnames'
-import _isEqual from 'lodash/isEqual'
 
 import { Tooltip } from '@gorgias/merchant-ui-kit'
 
@@ -10,24 +9,20 @@ import { getAvatar, getAvatarFromCache, getInitials } from './utils'
 import css from './Avatar.less'
 
 type Props = {
-    email: string
-    name: string | null
-    size: number
-    url?: string | null
-    className?: string
-    style: CSSProperties
+    badgeBorderColor?: string
     badgeClassName?: string
     badgeColor?: string
-    badgeBorderColor?: string
-    withTooltip?: boolean
-    tooltipText?: string
-    showFirstInitialOnly?: boolean
-    shape?: 'square' | 'round'
+    className?: string
+    email?: string
     isAIAgent?: boolean
-}
-
-type State = {
-    imageUrl: Maybe<string>
+    name?: string | null
+    shape?: 'square' | 'round'
+    showFirstInitialOnly?: boolean
+    size?: number
+    style?: CSSProperties
+    tooltipText?: string
+    url?: string | null
+    withTooltip?: boolean
 }
 
 /**
@@ -36,194 +31,129 @@ type State = {
  * @date 2025-04-08
  * @type ui-kit-migration
  */
-export default class Avatar extends Component<Props, State> {
-    component: Maybe<HTMLDivElement>
-    isMounted: boolean
+export default function Avatar({
+    badgeBorderColor,
+    badgeClassName,
+    badgeColor,
+    className,
+    email = '',
+    isAIAgent = false,
+    name = '',
+    shape = 'square',
+    showFirstInitialOnly = false,
+    size = 50,
+    style = {},
+    tooltipText,
+    url,
+    withTooltip = false,
+}: Props) {
+    const getImageUrl = useCallback(
+        () => url || getAvatarFromCache(email, size),
+        [email, size, url],
+    )
 
-    static defaultProps: Pick<
-        Props,
-        'email' | 'name' | 'size' | 'style' | 'shape'
-    > = {
-        email: '',
-        name: '',
-        size: 50,
-        style: {},
-        shape: 'square',
-    }
+    const [imageUrl, setImageUrl] = useState(getImageUrl())
 
-    constructor(props: Props) {
-        super(props)
-
-        this.state = this._getDefaultState(props)
-
-        this.isMounted = false
-    }
-
-    componentDidMount() {
-        this.isMounted = true
-        this._setImageUrl()
-    }
-
-    componentDidUpdate(prevProps: Props) {
-        if (!_isEqual(prevProps, this.props)) {
-            this._setImageUrl()
-        }
-    }
-
-    componentWillUnmount() {
-        this.isMounted = false
-    }
-
-    _container = (ref: Maybe<HTMLDivElement>) => {
-        this.component = ref
-    }
-
-    _getDefaultState = (props: Props) => {
-        const imageUrl =
-            props.url || getAvatarFromCache(props.email, props.size)
-
-        return { imageUrl }
-    }
-
-    _setImageUrl = () => {
-        // don't update image if hidden
-        if (
-            !this.component ||
-            !this.component.offsetParent ||
-            !this.isMounted
-        ) {
+    useEffect(() => {
+        if (typeof url !== 'undefined') {
+            setImageUrl(getImageUrl())
             return
         }
 
-        if (typeof this.props.url !== 'undefined') {
-            this.setState(this._getDefaultState(this.props))
-            return
-        }
-
-        if (this.props.email) {
+        if (email) {
             void getAvatar({
-                email: this.props.email,
-                size: this.props.size,
+                email,
+                size,
             }).then((imageUrl: Maybe<string>) => {
-                // Still need to do it here in case the component is unmounted while the promise is pending
-                if (this.isMounted) {
-                    this.setState({ imageUrl })
-                }
+                setImageUrl(imageUrl)
             })
         }
-    }
+    }, [email, getImageUrl, size, url])
 
-    render() {
-        const {
-            name,
-            size,
-            className,
-            style,
-            badgeClassName,
-            badgeColor,
-            badgeBorderColor,
-            withTooltip = false,
-            tooltipText = '',
-            showFirstInitialOnly = false,
-            shape = 'square',
-            isAIAgent = false,
-        } = this.props
-
-        if (isAIAgent) {
-            return (
-                <div
-                    className={classnames(
-                        css.component,
-                        css.aiAgent,
-                        css[shape],
-                        className,
-                    )}
-                    style={{
-                        width: `${size}px`,
-                        height: `${size}px`,
-                        ...style,
-                    }}
-                >
-                    <i
-                        className={classnames(
-                            'material-icons',
-                            css.aiAgentIcon,
-                        )}
-                    >
-                        auto_awesome
-                    </i>
-                </div>
-            )
-        }
-
-        return (
+    return isAIAgent ? (
+        <div
+            className={classnames(
+                css.component,
+                css.aiAgent,
+                css[shape],
+                className,
+            )}
+            style={{
+                width: `${size}px`,
+                height: `${size}px`,
+                ...style,
+            }}
+        >
+            <i className={classnames('material-icons', css.aiAgentIcon)}>
+                auto_awesome
+            </i>
+        </div>
+    ) : (
+        <div
+            className={classnames(
+                css.component,
+                {
+                    [css.hasImage]: !!imageUrl,
+                },
+                css[shape],
+                className,
+            )}
+            style={{
+                width: `${size}px`,
+                height: `${size}px`,
+                ...style,
+            }}
+        >
             <div
-                className={classnames(
-                    css.component,
-                    {
-                        [css.hasImage]: !!this.state.imageUrl,
-                    },
-                    css[shape],
-                    className,
-                )}
+                className={css.initials}
                 style={{
                     width: `${size}px`,
                     height: `${size}px`,
-                    ...style,
+                    fontSize: `${size / 2.4}px`,
                 }}
-                ref={this._container}
             >
-                <div
-                    className={css.initials}
-                    style={{
-                        width: `${size}px`,
-                        height: `${size}px`,
-                        fontSize: `${size / 2.4}px`,
-                    }}
-                >
-                    <span style={{ lineHeight: `${+size + 2}px` }}>
-                        {getInitials(name, showFirstInitialOnly)}
-                    </span>
-                </div>
-
-                {this.state.imageUrl && (
-                    <img
-                        loading="lazy"
-                        alt="avatar"
-                        src={this.state.imageUrl}
-                        className={css.gravatar}
-                        {...(size && {
-                            style: {
-                                width: `${size}px`,
-                                height: `${size}px`,
-                            },
-                        })}
-                    />
-                )}
-                {badgeColor && (
-                    <>
-                        <div
-                            {...(withTooltip && { id: 'tooltip' })}
-                            className={classnames(css.badge, badgeClassName)}
-                            style={{
-                                backgroundColor: badgeColor,
-                                ...(badgeBorderColor && {
-                                    borderColor: badgeBorderColor,
-                                }),
-                            }}
-                        ></div>
-                        {withTooltip && (
-                            <Tooltip
-                                target={'tooltip'}
-                                placement="bottom"
-                                autohide={false}
-                            >
-                                {tooltipText}
-                            </Tooltip>
-                        )}
-                    </>
-                )}
+                <span style={{ lineHeight: `${+size + 2}px` }}>
+                    {getInitials(name, showFirstInitialOnly)}
+                </span>
             </div>
-        )
-    }
+
+            {imageUrl && (
+                <img
+                    loading="lazy"
+                    alt="avatar"
+                    src={imageUrl}
+                    className={css.gravatar}
+                    {...(size && {
+                        style: {
+                            width: `${size}px`,
+                            height: `${size}px`,
+                        },
+                    })}
+                />
+            )}
+            {badgeColor && (
+                <>
+                    <div
+                        {...(withTooltip && { id: 'tooltip' })}
+                        className={classnames(css.badge, badgeClassName)}
+                        style={{
+                            backgroundColor: badgeColor,
+                            ...(badgeBorderColor && {
+                                borderColor: badgeBorderColor,
+                            }),
+                        }}
+                    />
+                    {withTooltip && (
+                        <Tooltip
+                            target={'tooltip'}
+                            placement="bottom"
+                            autohide={false}
+                        >
+                            {tooltipText}
+                        </Tooltip>
+                    )}
+                </>
+            )}
+        </div>
+    )
 }

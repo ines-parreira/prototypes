@@ -6,7 +6,10 @@ import Avatar from 'pages/common/components/Avatar/Avatar'
 
 import AgentCard from './AgentCard'
 
-jest.mock('pages/common/components/Avatar/Avatar')
+jest.mock('pages/common/components/Avatar/Avatar', () => ({
+    __esModule: true,
+    default: jest.fn(() => <div>AvatarMock</div>),
+}))
 
 const AvatarMock = Avatar as unknown as jest.Mock
 
