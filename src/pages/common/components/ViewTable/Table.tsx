@@ -93,7 +93,7 @@ const TableContainer = ({
     const hasPrevItems =
         !!navigation.get('prev_items') || !!navigation.get('prev_cursor')
     const prevItems = usePrevious(items)
-    const [rowCursor, setRowCursor] = useState(0)
+    const [rowCursor, setRowCursor] = useState(-1)
     const showGlobalNav = useDesktopOnlyShowGlobalNavFeatureFlag()
     const searchRank = useContext(SearchRankScenarioContext)
     const orderBy = view.get('order_by') as string
@@ -205,7 +205,26 @@ const TableContainer = ({
 
     useEffect(() => {
         if (prevItems && !prevItems.equals(items)) {
-            setRowCursor(0)
+            /* istanbul ignore next if */
+            if (rowCursor > -1) {
+                const prevId = prevItems.get(rowCursor).get('id')
+                const nextRowCursor = items.findIndex(
+                    (item) => item.get('id') === prevId,
+                )
+                // if the item the cursor was on still exists, set the index
+                if (nextRowCursor > -1) {
+                    setRowCursor(nextRowCursor)
+                } else {
+                    // if it does not exist, see if an item still exists at
+                    // that cursor position. If so, do nothing, the cursor
+                    // will remain there. If not, we set it back to -1.
+                    const itemAtRowCursor = items.get(rowCursor)
+                    if (!itemAtRowCursor) {
+                        setRowCursor(-1)
+                    }
+                }
+            }
+
             if (viewSelected) {
                 updatePageSelection(
                     items.map(

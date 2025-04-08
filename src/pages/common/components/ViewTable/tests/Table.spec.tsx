@@ -259,7 +259,7 @@ describe('<Table />', () => {
         boundShortcuts!['OPEN_ITEM'].action!(createEvent.keyDown(container))
 
         expect(mockSearchRank.registerResultSelection).toHaveBeenLastCalledWith(
-            { id: minProps.items.getIn(['0', 'id']), index: 0 },
+            { id: minProps.items.getIn(['0', 'id']), index: -1 },
         )
     })
 
