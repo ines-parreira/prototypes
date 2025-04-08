@@ -11,7 +11,7 @@ import { assumeMock } from 'utils/testing'
 
 import { END_OF_TODAY_DATE, MIN_RANGE_DATE } from '../constants'
 import { getRangeLabel } from '../helpers/rangeFilter'
-import { RangeFilter } from '../RangeFilter'
+import { RangeFilter, ranges } from '../RangeFilter'
 
 jest.mock('../helpers/rangeFilter', () => ({
     getRangeLabel: jest.fn(),
@@ -73,6 +73,7 @@ describe('RangeFilter', () => {
                     endDate: new Date(range.end),
                     minDate: expect.any(Date),
                     maxDate: expect.any(Date),
+                    ranges: ranges,
                 }),
                 userTimezone: timezoneMock,
                 onSubmit: expect.any(Function),

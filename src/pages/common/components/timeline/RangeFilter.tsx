@@ -19,8 +19,31 @@ type Props = {
     setRangeFilter: (range: Range) => void
 }
 
-const startOfTodayMoment = moment().startOf('day')
-const endOfTodayMoment = moment(END_OF_TODAY_DATE)
+// beware as moment mutates dates in place
+const getStartOfTodayMoment = () => moment().startOf('day')
+const getEndOfTodayMoment = () => moment(END_OF_TODAY_DATE)
+
+export const ranges: Record<string, [Date, Date]> = {
+    'All time': [MIN_RANGE_DATE, END_OF_TODAY_DATE],
+    Today: [getStartOfTodayMoment().toDate(), END_OF_TODAY_DATE],
+    Yesterday: [
+        getStartOfTodayMoment().subtract(1, 'days').toDate(),
+        getEndOfTodayMoment().subtract(1, 'days').toDate(),
+    ],
+    'Past 7 days': [
+        getStartOfTodayMoment().subtract(7, 'days').toDate(),
+        END_OF_TODAY_DATE,
+    ],
+    'Past 30 days': [
+        getStartOfTodayMoment().subtract(30, 'days').toDate(),
+        END_OF_TODAY_DATE,
+    ],
+    'This year': [moment().startOf('year').toDate(), END_OF_TODAY_DATE],
+    'Last 365 days': [
+        getStartOfTodayMoment().subtract(365, 'days').toDate(),
+        END_OF_TODAY_DATE,
+    ],
+}
 
 export function RangeFilter({ range, setRangeFilter }: Props) {
     const timezone = useAppSelector(getTimezone)
@@ -58,30 +81,7 @@ export function RangeFilter({ range, setRangeFilter }: Props) {
                     minDate: MIN_RANGE_DATE,
                     maxDate: END_OF_TODAY_DATE,
                     opens: 'right',
-                    ranges: {
-                        'All time': [MIN_RANGE_DATE, END_OF_TODAY_DATE],
-                        Today: [startOfTodayMoment.toDate(), END_OF_TODAY_DATE],
-                        Yesterday: [
-                            startOfTodayMoment.subtract(1, 'days').toDate(),
-                            endOfTodayMoment.subtract(1, 'days').toDate(),
-                        ],
-                        'Past 7 days': [
-                            startOfTodayMoment.subtract(6, 'days').toDate(),
-                            END_OF_TODAY_DATE,
-                        ],
-                        'Past 30 days': [
-                            startOfTodayMoment.subtract(29, 'days').toDate(),
-                            END_OF_TODAY_DATE,
-                        ],
-                        'This year': [
-                            moment().startOf('year').toDate(),
-                            END_OF_TODAY_DATE,
-                        ],
-                        'Last 365 days': [
-                            startOfTodayMoment.subtract(364, 'days').toDate(),
-                            END_OF_TODAY_DATE,
-                        ],
-                    },
+                    ranges: ranges,
                     linkedCalendars: false,
                     timePicker: false,
                     singleDatePicker: false,
