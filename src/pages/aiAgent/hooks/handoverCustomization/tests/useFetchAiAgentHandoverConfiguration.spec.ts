@@ -7,7 +7,7 @@ import {
 } from 'models/aiAgent/types'
 import { AiAgentChannel } from 'pages/aiAgent/constants'
 
-import { getHandoverConfigurationsFixture } from '../../fixtures/handoverConfiguration.fixture'
+import { getHandoverConfigurationsFixture } from '../../../fixtures/handoverConfiguration.fixture'
 import {
     useFetchAiAgentStoreHandoverConfiguration,
     useFetchAiAgentStoreHandoverConfigurations,

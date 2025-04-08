@@ -7,7 +7,7 @@ import { Button, LoadingSpinner } from '@gorgias/merchant-ui-kit'
 import { Label } from 'gorgias-design-system/Input/Label'
 import { GorgiasChatIntegration } from 'models/integration/types'
 import { StoreConfigFormSection } from 'pages/aiAgent/constants'
-import { useHandoverCustomizationOnlineSettingsForm } from 'pages/aiAgent/hooks/useHandoverCustomizationOnlineSettingsForm'
+import { useHandoverCustomizationChatOnlineSettingsForm } from 'pages/aiAgent/hooks/handoverCustomization/useHandoverCustomizationChatOnlineSettingsForm'
 import { useAiAgentFormChangesContext } from 'pages/aiAgent/providers/AiAgentFormChangesContext'
 import { formFieldsConfiguration } from 'pages/aiAgent/utils/handoverCustomization/handoverCustomizationChatOnlineSettingsForm.utils'
 import Alert, { AlertType } from 'pages/common/components/Alert/Alert'
@@ -32,7 +32,7 @@ const HandoverCustomizationOnlineSettings = ({ integration }: Props) => {
         updateValue,
         handleOnSave,
         handleOnCancel,
-    } = useHandoverCustomizationOnlineSettingsForm({
+    } = useHandoverCustomizationChatOnlineSettingsForm({
         integration,
     })
 

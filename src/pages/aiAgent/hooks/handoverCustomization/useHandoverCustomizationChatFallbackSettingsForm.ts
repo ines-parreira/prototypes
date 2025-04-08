@@ -12,15 +12,15 @@ import {
     mapFromMultiLanguageTextToFormValues,
 } from 'pages/aiAgent/utils/handoverCustomization/handoverCustomizationChatFallbackSettingsForm.utils'
 
-import { CHANGES_SAVED_SUCCESS } from '../constants'
-import { HandoverCustomizationFallbackSettingsFormMultiLanguageValues } from '../types'
+import { CHANGES_SAVED_SUCCESS } from '../../constants'
+import { HandoverCustomizationFallbackSettingsFormMultiLanguageValues } from '../../types'
 import { useHandoverCustomizationChatLanguageTextsConfiguration } from './useHandoverCustomizationChatLanguageTextsConfiguration'
 
 type Props = {
     integration: GorgiasChatIntegration
 }
 
-export const useHandoverCustomizationFallbackSettingsForm = ({
+export const useHandoverCustomizationChatFallbackSettingsForm = ({
     integration,
 }: Props) => {
     const notify = useNotify()

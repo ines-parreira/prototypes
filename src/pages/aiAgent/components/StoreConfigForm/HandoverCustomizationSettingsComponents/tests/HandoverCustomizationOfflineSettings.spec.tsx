@@ -3,7 +3,7 @@ import { Provider } from 'react-redux'
 
 import { GorgiasChatIntegration } from 'models/integration/types'
 import { StoreConfigFormSection } from 'pages/aiAgent/constants'
-import { useHandoverCustomizationOfflineSettingsForm } from 'pages/aiAgent/hooks/useHandoverCustomizationOfflineSettingsForm'
+import { useHandoverCustomizationChatOfflineSettingsForm } from 'pages/aiAgent/hooks/handoverCustomization/useHandoverCustomizationChatOfflineSettingsForm'
 import { useAiAgentFormChangesContext } from 'pages/aiAgent/providers/AiAgentFormChangesContext'
 import { mockQueryClientProvider } from 'tests/reactQueryTestingUtils'
 import { mockStore } from 'utils/testing'
@@ -11,7 +11,9 @@ import { mockStore } from 'utils/testing'
 import HandoverCustomizationOfflineSettings from '../HandoverCustomizationOfflineSettings'
 
 // Mock dependencies
-jest.mock('pages/aiAgent/hooks/useHandoverCustomizationOfflineSettingsForm')
+jest.mock(
+    'pages/aiAgent/hooks/handoverCustomization/useHandoverCustomizationChatOfflineSettingsForm',
+)
 
 jest.mock('pages/aiAgent/providers/AiAgentFormChangesContext')
 
@@ -68,7 +70,7 @@ describe('HandoverCustomizationOfflineSettings', () => {
         jest.clearAllMocks()
         // Default mock implementation
         ;(
-            useHandoverCustomizationOfflineSettingsForm as jest.Mock
+            useHandoverCustomizationChatOfflineSettingsForm as jest.Mock
         ).mockReturnValue(mockOfflineValuesForm)
         ;(useAiAgentFormChangesContext as jest.Mock).mockReturnValue({
             setIsFormDirty: mockSetIsFormDirty,
@@ -78,7 +80,7 @@ describe('HandoverCustomizationOfflineSettings', () => {
 
     it('should render the loading state when the form data is loading', () => {
         ;(
-            useHandoverCustomizationOfflineSettingsForm as jest.Mock
+            useHandoverCustomizationChatOfflineSettingsForm as jest.Mock
         ).mockReturnValue({
             ...mockOfflineValuesForm,
             isLoading: true,
@@ -135,7 +137,7 @@ describe('HandoverCustomizationOfflineSettings', () => {
         }
 
         ;(
-            useHandoverCustomizationOfflineSettingsForm as jest.Mock
+            useHandoverCustomizationChatOfflineSettingsForm as jest.Mock
         ).mockReturnValue(mockedForm)
 
         renderComponent()
@@ -170,7 +172,7 @@ describe('HandoverCustomizationOfflineSettings', () => {
                 },
             }
             ;(
-                useHandoverCustomizationOfflineSettingsForm as jest.Mock
+                useHandoverCustomizationChatOfflineSettingsForm as jest.Mock
             ).mockReturnValue(mockedForm)
 
             renderComponent()
@@ -207,7 +209,7 @@ describe('HandoverCustomizationOfflineSettings', () => {
             }
 
             ;(
-                useHandoverCustomizationOfflineSettingsForm as jest.Mock
+                useHandoverCustomizationChatOfflineSettingsForm as jest.Mock
             ).mockReturnValue(mockedForm)
 
             renderComponent()
@@ -254,7 +256,7 @@ describe('HandoverCustomizationOfflineSettings', () => {
 
             it('should disable the save button when the form is saving', () => {
                 ;(
-                    useHandoverCustomizationOfflineSettingsForm as jest.Mock
+                    useHandoverCustomizationChatOfflineSettingsForm as jest.Mock
                 ).mockReturnValue({
                     ...mockOfflineValuesForm,
                     isSaving: true,
@@ -275,7 +277,7 @@ describe('HandoverCustomizationOfflineSettings', () => {
         'should set isFormDirty to %s when there are changes coming from the form hook',
         (hasChanges) => {
             ;(
-                useHandoverCustomizationOfflineSettingsForm as jest.Mock
+                useHandoverCustomizationChatOfflineSettingsForm as jest.Mock
             ).mockReturnValue({
                 ...mockOfflineValuesForm,
                 hasChanges,

@@ -12,12 +12,12 @@ import {
     initialFormFieldValues,
     mapFromFormValuesToIntegrationPreferences,
 } from 'pages/aiAgent/utils/handoverCustomization/handoverCustomizationChatOnlineSettingsForm.utils'
+import { mapFormValuesToHandoverConfigurationData } from 'pages/aiAgent/utils/handoverCustomization/handoverCustomizationConfigurationData.utils'
 import { getCurrentAccountState } from 'state/currentAccount/selectors'
 import { updateOrCreateIntegrationRequest } from 'state/integrations/actions'
 
-import { CHANGES_SAVED_SUCCESS } from '../constants'
-import { HandoverCustomizationOnlineSettingsFormValues } from '../types'
-import { mapFormValuesToHandoverConfigurationData } from '../utils/handoverCustomization/handoverCustomizationConfigurationData.utils'
+import { CHANGES_SAVED_SUCCESS } from '../../constants'
+import { HandoverCustomizationOnlineSettingsFormValues } from '../../types'
 import { useAiAgentHandoverConfigurationMutation } from './useAiAgentHandoverConfigurationMutation'
 import { useFetchAiAgentStoreHandoverConfiguration } from './useFetchAiAgentHandoverConfiguration'
 
@@ -25,7 +25,7 @@ type Props = {
     integration: GorgiasChatIntegration
 }
 
-export const useHandoverCustomizationOnlineSettingsForm = ({
+export const useHandoverCustomizationChatOnlineSettingsForm = ({
     integration,
 }: Props) => {
     const notify = useNotify()

@@ -10,13 +10,15 @@ import {
 import { Language } from 'constants/languages'
 import { GorgiasChatIntegration } from 'models/integration/types'
 import { StoreConfigFormSection } from 'pages/aiAgent/constants'
+import { useHandoverCustomizationChatFallbackSettingsForm } from 'pages/aiAgent/hooks/handoverCustomization/useHandoverCustomizationChatFallbackSettingsForm'
 import { useAiAgentFormChangesContext } from 'pages/aiAgent/providers/AiAgentFormChangesContext'
 
-import { useHandoverCustomizationFallbackSettingsForm } from '../../../../hooks/useHandoverCustomizationFallbackSettingsForm'
 import HandoverCustomizationFallbackSettings from '../HandoverCustomizationFallbackSettings'
 
 // Mock dependencies
-jest.mock('pages/aiAgent/hooks/useHandoverCustomizationFallbackSettingsForm')
+jest.mock(
+    'pages/aiAgent/hooks/handoverCustomization/useHandoverCustomizationChatFallbackSettingsForm',
+)
 jest.mock('pages/aiAgent/providers/AiAgentFormChangesContext')
 jest.mock('config/integrations/gorgias_chat')
 jest.mock('constants/languages')
@@ -70,7 +72,7 @@ describe('HandoverCustomizationFallbackSettings', () => {
 
         // Mock form hook
         ;(
-            useHandoverCustomizationFallbackSettingsForm as jest.Mock
+            useHandoverCustomizationChatFallbackSettingsForm as jest.Mock
         ).mockReturnValue(mockHookValues)
 
         // Mock language functions
@@ -126,7 +128,7 @@ describe('HandoverCustomizationFallbackSettings', () => {
 
     it('renders the loading state when the language context is loading', () => {
         ;(
-            useHandoverCustomizationFallbackSettingsForm as jest.Mock
+            useHandoverCustomizationChatFallbackSettingsForm as jest.Mock
         ).mockReturnValue({
             isLoading: true,
             formValues: mockFormValues,
@@ -181,7 +183,7 @@ describe('HandoverCustomizationFallbackSettings', () => {
             'es-ES',
         ])
         ;(
-            useHandoverCustomizationFallbackSettingsForm as jest.Mock
+            useHandoverCustomizationChatFallbackSettingsForm as jest.Mock
         ).mockReturnValue({
             isLoading: false,
             formValues: newMockFormValues,
@@ -299,7 +301,7 @@ describe('HandoverCustomizationFallbackSettings', () => {
 
         it('should disable the save button when the form is saving', () => {
             ;(
-                useHandoverCustomizationFallbackSettingsForm as jest.Mock
+                useHandoverCustomizationChatFallbackSettingsForm as jest.Mock
             ).mockReturnValue({
                 isSaving: true,
                 formValues: mockFormValues,
@@ -322,7 +324,7 @@ describe('HandoverCustomizationFallbackSettings', () => {
         'should set isFormDirty to %s when there are changes coming from the form hook',
         (hasChanges) => {
             ;(
-                useHandoverCustomizationFallbackSettingsForm as jest.Mock
+                useHandoverCustomizationChatFallbackSettingsForm as jest.Mock
             ).mockReturnValue({
                 ...mockHookValues,
                 hasChanges,

@@ -9,11 +9,11 @@ import {
     formFieldsConfiguration,
     initialFormFieldValues,
 } from 'pages/aiAgent/utils/handoverCustomization/handoverCustomizationChatOfflineSettingsForm.utils'
+import { mapFormValuesToHandoverConfigurationData } from 'pages/aiAgent/utils/handoverCustomization/handoverCustomizationConfigurationData.utils'
 import { getCurrentAccountState } from 'state/currentAccount/selectors'
 
-import { CHANGES_SAVED_SUCCESS } from '../constants'
-import { HandoverCustomizationOfflineSettingsFormValues } from '../types'
-import { mapFormValuesToHandoverConfigurationData } from '../utils/handoverCustomization/handoverCustomizationConfigurationData.utils'
+import { CHANGES_SAVED_SUCCESS } from '../../constants'
+import { HandoverCustomizationOfflineSettingsFormValues } from '../../types'
 import { useAiAgentHandoverConfigurationMutation } from './useAiAgentHandoverConfigurationMutation'
 import { useFetchAiAgentStoreHandoverConfiguration } from './useFetchAiAgentHandoverConfiguration'
 
@@ -21,7 +21,7 @@ type Props = {
     integration: GorgiasChatIntegration
 }
 
-export const useHandoverCustomizationOfflineSettingsForm = ({
+export const useHandoverCustomizationChatOfflineSettingsForm = ({
     integration,
 }: Props) => {
     const notify = useNotify()

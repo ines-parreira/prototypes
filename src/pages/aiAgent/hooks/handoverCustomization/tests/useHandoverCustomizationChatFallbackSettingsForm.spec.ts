@@ -11,8 +11,8 @@ import {
 } from 'pages/aiAgent/utils/handoverCustomization/handoverCustomizationChatFallbackSettingsForm.utils'
 import { assumeMock } from 'utils/testing'
 
+import { useHandoverCustomizationChatFallbackSettingsForm } from '../useHandoverCustomizationChatFallbackSettingsForm'
 import { useHandoverCustomizationChatLanguageTextsConfiguration } from '../useHandoverCustomizationChatLanguageTextsConfiguration'
-import { useHandoverCustomizationFallbackSettingsForm } from '../useHandoverCustomizationFallbackSettingsForm'
 
 jest.mock('hooks/useNotify')
 
@@ -38,7 +38,7 @@ jest.mock(
     }),
 )
 
-describe('useHandoverCustomizationFallbackSettingsForm', () => {
+describe('useHandoverCustomizationChatFallbackSettingsForm', () => {
     const mockNotify = {
         success: jest.fn(),
         error: jest.fn(),
@@ -115,7 +115,7 @@ describe('useHandoverCustomizationFallbackSettingsForm', () => {
 
     it('should initialize with correct form values', () => {
         const { result } = renderHook(() =>
-            useHandoverCustomizationFallbackSettingsForm({
+            useHandoverCustomizationChatFallbackSettingsForm({
                 integration: mockIntegration,
             }),
         )
@@ -128,7 +128,7 @@ describe('useHandoverCustomizationFallbackSettingsForm', () => {
 
     it('should update form values when context texts change', () => {
         const { result, rerender } = renderHook(
-            (props) => useHandoverCustomizationFallbackSettingsForm(props),
+            (props) => useHandoverCustomizationChatFallbackSettingsForm(props),
             {
                 initialProps: {
                     integration: mockIntegration,
@@ -163,7 +163,7 @@ describe('useHandoverCustomizationFallbackSettingsForm', () => {
 
     it('should update value for specific language', () => {
         const { result } = renderHook(() =>
-            useHandoverCustomizationFallbackSettingsForm({
+            useHandoverCustomizationChatFallbackSettingsForm({
                 integration: mockIntegration,
             }),
         )
@@ -184,7 +184,7 @@ describe('useHandoverCustomizationFallbackSettingsForm', () => {
 
     it('should detect changes when form values differ from initial values', () => {
         const { result } = renderHook(() =>
-            useHandoverCustomizationFallbackSettingsForm({
+            useHandoverCustomizationChatFallbackSettingsForm({
                 integration: mockIntegration,
             }),
         )
@@ -211,7 +211,7 @@ describe('useHandoverCustomizationFallbackSettingsForm', () => {
 
     it('should handle form errors when the field is bigger than the max length', async () => {
         const { result } = renderHook(() =>
-            useHandoverCustomizationFallbackSettingsForm({
+            useHandoverCustomizationChatFallbackSettingsForm({
                 integration: mockIntegration,
             }),
         )
@@ -249,7 +249,7 @@ describe('useHandoverCustomizationFallbackSettingsForm', () => {
         )
 
         const { result } = renderHook(() =>
-            useHandoverCustomizationFallbackSettingsForm({
+            useHandoverCustomizationChatFallbackSettingsForm({
                 integration: mockIntegration,
             }),
         )
@@ -295,7 +295,7 @@ describe('useHandoverCustomizationFallbackSettingsForm', () => {
         )
 
         const { result } = renderHook(() =>
-            useHandoverCustomizationFallbackSettingsForm({
+            useHandoverCustomizationChatFallbackSettingsForm({
                 integration: mockIntegration,
             }),
         )
@@ -330,7 +330,7 @@ describe('useHandoverCustomizationFallbackSettingsForm', () => {
     })
     it('should reset form values on cancel', () => {
         const { result } = renderHook(() =>
-            useHandoverCustomizationFallbackSettingsForm({
+            useHandoverCustomizationChatFallbackSettingsForm({
                 integration: mockIntegration,
             }),
         )

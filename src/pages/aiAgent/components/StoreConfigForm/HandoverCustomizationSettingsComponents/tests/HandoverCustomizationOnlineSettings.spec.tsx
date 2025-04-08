@@ -10,7 +10,7 @@ import {
     GorgiasChatIntegration,
 } from 'models/integration/types'
 import { StoreConfigFormSection } from 'pages/aiAgent/constants'
-import { useHandoverCustomizationOnlineSettingsForm } from 'pages/aiAgent/hooks/useHandoverCustomizationOnlineSettingsForm'
+import { useHandoverCustomizationChatOnlineSettingsForm } from 'pages/aiAgent/hooks/handoverCustomization/useHandoverCustomizationChatOnlineSettingsForm'
 import { useAiAgentFormChangesContext } from 'pages/aiAgent/providers/AiAgentFormChangesContext'
 import { mockQueryClientProvider } from 'tests/reactQueryTestingUtils'
 import { mockStore } from 'utils/testing'
@@ -18,7 +18,9 @@ import { mockStore } from 'utils/testing'
 import HandoverCustomizationOnlineSettings from '../HandoverCustomizationOnlineSettings'
 
 // Mock dependencies
-jest.mock('pages/aiAgent/hooks/useHandoverCustomizationOnlineSettingsForm')
+jest.mock(
+    'pages/aiAgent/hooks/handoverCustomization/useHandoverCustomizationChatOnlineSettingsForm',
+)
 
 jest.mock('pages/aiAgent/providers/AiAgentFormChangesContext')
 
@@ -84,7 +86,7 @@ describe('HandoverCustomizationOnlineSettings', () => {
         jest.clearAllMocks()
         // Default mock implementation
         ;(
-            useHandoverCustomizationOnlineSettingsForm as jest.Mock
+            useHandoverCustomizationChatOnlineSettingsForm as jest.Mock
         ).mockReturnValue(mockOnlineValuesForm)
         ;(useAiAgentFormChangesContext as jest.Mock).mockReturnValue({
             setIsFormDirty: mockSetIsFormDirty,
@@ -134,7 +136,7 @@ describe('HandoverCustomizationOnlineSettings', () => {
 
     it('should show loading spinner when isLoading is true', () => {
         ;(
-            useHandoverCustomizationOnlineSettingsForm as jest.Mock
+            useHandoverCustomizationChatOnlineSettingsForm as jest.Mock
         ).mockReturnValue({
             isLoading: true,
         })
@@ -233,7 +235,7 @@ describe('HandoverCustomizationOnlineSettings', () => {
             'should set isFormDirty to %s when there are changes coming from the form hook',
             (hasChanges) => {
                 ;(
-                    useHandoverCustomizationOnlineSettingsForm as jest.Mock
+                    useHandoverCustomizationChatOnlineSettingsForm as jest.Mock
                 ).mockReturnValue({
                     ...mockOnlineValuesForm,
                     hasChanges,
@@ -251,7 +253,7 @@ describe('HandoverCustomizationOnlineSettings', () => {
     describe('Save and Cancel Actions', () => {
         it('should disable save button when isSaving is true', () => {
             ;(
-                useHandoverCustomizationOnlineSettingsForm as jest.Mock
+                useHandoverCustomizationChatOnlineSettingsForm as jest.Mock
             ).mockReturnValue({
                 ...mockOnlineValuesForm,
                 isLoading: false,

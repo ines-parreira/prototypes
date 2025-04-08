@@ -1,11 +1,13 @@
 import { render, screen } from '@testing-library/react'
 
 import { mockChatChannels } from 'pages/aiAgent/fixtures/chatChannels.fixture'
+import { useHandoverCustomizationChatSettings } from 'pages/aiAgent/hooks/handoverCustomization/useHandoverCustomizationChatSettings'
 
-import { useHandoverCustomizationComponent } from '../../../../hooks/useHandoverCustomizationComponent'
 import { HandoverCustomizationSettingsFormComponent } from '../HandoverCustomizationSettingsFormComponent'
 
-jest.mock('../../../../hooks/useHandoverCustomizationComponent')
+jest.mock(
+    'pages/aiAgent/hooks/handoverCustomization/useHandoverCustomizationChatSettings',
+)
 
 // Mock the imported components
 jest.mock(
@@ -45,7 +47,7 @@ describe('HandoverCustomizationSettingsFormComponent', () => {
     const mockedOnSelectedChatChange = jest.fn()
     const mockedOnActiveSettingsSectionChange = jest.fn()
 
-    const mockedUseHandoverCustomizationComponentProps = {
+    const mockeduseHandoverCustomizationChatSettingsProps = {
         availableChats: mockChatChannels,
         selectedChat: mockChatChannels[0],
         onSelectedChatChange: mockedOnSelectedChatChange,
@@ -56,15 +58,15 @@ describe('HandoverCustomizationSettingsFormComponent', () => {
 
     beforeEach(() => {
         jest.clearAllMocks()
-        ;(useHandoverCustomizationComponent as jest.Mock).mockReturnValue(
-            mockedUseHandoverCustomizationComponentProps,
+        ;(useHandoverCustomizationChatSettings as jest.Mock).mockReturnValue(
+            mockeduseHandoverCustomizationChatSettingsProps,
         )
     })
 
     it('renders the component correctly', () => {
         render(<HandoverCustomizationSettingsFormComponent {...mockProps} />)
 
-        expect(useHandoverCustomizationComponent).toHaveBeenCalledWith(
+        expect(useHandoverCustomizationChatSettings).toHaveBeenCalledWith(
             mockProps,
         )
 
@@ -78,8 +80,8 @@ describe('HandoverCustomizationSettingsFormComponent', () => {
     })
 
     it('should not render any section content when there is no integration selected to configure', () => {
-        ;(useHandoverCustomizationComponent as jest.Mock).mockReturnValue({
-            ...mockedUseHandoverCustomizationComponentProps,
+        ;(useHandoverCustomizationChatSettings as jest.Mock).mockReturnValue({
+            ...mockeduseHandoverCustomizationChatSettingsProps,
             selectedChat: undefined,
         })
 
@@ -90,7 +92,7 @@ describe('HandoverCustomizationSettingsFormComponent', () => {
 
         render(<HandoverCustomizationSettingsFormComponent {...props} />)
 
-        expect(useHandoverCustomizationComponent).toHaveBeenCalledWith(props)
+        expect(useHandoverCustomizationChatSettings).toHaveBeenCalledWith(props)
 
         screen.queryByText(/Handover instructions/i)
 
@@ -107,8 +109,10 @@ describe('HandoverCustomizationSettingsFormComponent', () => {
 
     describe('Chat selection', () => {
         it('should not render the chat selection if there is one chat channel', () => {
-            ;(useHandoverCustomizationComponent as jest.Mock).mockReturnValue({
-                ...mockedUseHandoverCustomizationComponentProps,
+            ;(
+                useHandoverCustomizationChatSettings as jest.Mock
+            ).mockReturnValue({
+                ...mockeduseHandoverCustomizationChatSettingsProps,
                 availableChats: [mockChatChannels[0]],
                 selectedChat: mockChatChannels[0],
             })
@@ -120,7 +124,7 @@ describe('HandoverCustomizationSettingsFormComponent', () => {
 
             render(<HandoverCustomizationSettingsFormComponent {...props} />)
 
-            expect(useHandoverCustomizationComponent).toHaveBeenCalledWith(
+            expect(useHandoverCustomizationChatSettings).toHaveBeenCalledWith(
                 props,
             )
 
@@ -143,8 +147,10 @@ describe('HandoverCustomizationSettingsFormComponent', () => {
 
     describe('Handover customization settings', () => {
         it('should render the handover customization settings when there is one chat channel', () => {
-            ;(useHandoverCustomizationComponent as jest.Mock).mockReturnValue({
-                ...mockedUseHandoverCustomizationComponentProps,
+            ;(
+                useHandoverCustomizationChatSettings as jest.Mock
+            ).mockReturnValue({
+                ...mockeduseHandoverCustomizationChatSettingsProps,
                 availableChats: [mockChatChannels[0]],
                 selectedChat: mockChatChannels[0],
             })
@@ -156,7 +162,7 @@ describe('HandoverCustomizationSettingsFormComponent', () => {
 
             render(<HandoverCustomizationSettingsFormComponent {...props} />)
 
-            expect(useHandoverCustomizationComponent).toHaveBeenCalledWith(
+            expect(useHandoverCustomizationChatSettings).toHaveBeenCalledWith(
                 props,
             )
 
@@ -174,7 +180,7 @@ describe('HandoverCustomizationSettingsFormComponent', () => {
 
             render(<HandoverCustomizationSettingsFormComponent {...props} />)
 
-            expect(useHandoverCustomizationComponent).toHaveBeenCalledWith(
+            expect(useHandoverCustomizationChatSettings).toHaveBeenCalledWith(
                 props,
             )
 

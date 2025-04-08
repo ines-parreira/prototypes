@@ -18,8 +18,8 @@ import useSelfServiceChatChannels, {
 
 import {
     HandoverCustomizationFormType,
-    useHandoverCustomizationComponent,
-} from '../useHandoverCustomizationComponent'
+    useHandoverCustomizationChatSettings,
+} from '../useHandoverCustomizationChatSettings'
 
 // Mock the useSelfServiceChatChannels hook
 jest.mock('pages/automate/common/hooks/useSelfServiceChatChannels')
@@ -30,7 +30,7 @@ jest.mock(
 
 jest.mock('pages/aiAgent/providers/AiAgentFormChangesContext')
 
-describe('useHandoverCustomizationComponent', () => {
+describe('useHandoverCustomizationChatSettings', () => {
     const mockChatChannels = [
         {
             value: { id: 1, name: 'Chat 1' },
@@ -87,7 +87,7 @@ describe('useHandoverCustomizationComponent', () => {
             ;(getFirstAvailableChat as jest.Mock).mockReturnValue(undefined)
 
             const { result } = renderHook(() =>
-                useHandoverCustomizationComponent(defaultProps),
+                useHandoverCustomizationChatSettings(defaultProps),
             )
 
             expect(result.current.availableChats).toEqual([])
@@ -101,7 +101,7 @@ describe('useHandoverCustomizationComponent', () => {
             )
 
             const { result } = renderHook(() =>
-                useHandoverCustomizationComponent(defaultProps),
+                useHandoverCustomizationChatSettings(defaultProps),
             )
 
             expect(result.current.availableChats).toEqual(mockChatChannels)
@@ -110,7 +110,7 @@ describe('useHandoverCustomizationComponent', () => {
 
         it('should handle chat selection change correctly when the chat is changed with none handover section dirty', () => {
             const { result } = renderHook(() =>
-                useHandoverCustomizationComponent(defaultProps),
+                useHandoverCustomizationChatSettings(defaultProps),
             )
 
             act(() => {
@@ -129,7 +129,7 @@ describe('useHandoverCustomizationComponent', () => {
             ;(getFirstAvailableChat as jest.Mock).mockReturnValue(undefined)
 
             const { result } = renderHook(() =>
-                useHandoverCustomizationComponent(defaultProps),
+                useHandoverCustomizationChatSettings(defaultProps),
             )
 
             expect(result.current.isHandoverSectionDisabled).toBeTruthy()
@@ -139,7 +139,7 @@ describe('useHandoverCustomizationComponent', () => {
             ;(getFirstAvailableChat as jest.Mock).mockReturnValue(undefined)
 
             const { result } = renderHook(() =>
-                useHandoverCustomizationComponent({
+                useHandoverCustomizationChatSettings({
                     ...defaultProps,
                     monitoredChatIntegrationIds: [],
                 }),
@@ -150,7 +150,7 @@ describe('useHandoverCustomizationComponent', () => {
         })
         it('should initialize with all settings sections closed but not disabled', () => {
             const { result } = renderHook(() =>
-                useHandoverCustomizationComponent(defaultProps),
+                useHandoverCustomizationChatSettings(defaultProps),
             )
 
             expect(result.current.activeSettingsSection).toBeNull()
@@ -163,7 +163,7 @@ describe('useHandoverCustomizationComponent', () => {
             HandoverCustomizationFormType.FALLBACK_SETTINGS,
         ])('should handle settings section change to %s', (section) => {
             const { result } = renderHook(() =>
-                useHandoverCustomizationComponent(defaultProps),
+                useHandoverCustomizationChatSettings(defaultProps),
             )
 
             act(() => {
@@ -176,7 +176,7 @@ describe('useHandoverCustomizationComponent', () => {
             const props = { ...defaultProps }
 
             const { result, rerender } = renderHook(() =>
-                useHandoverCustomizationComponent(props),
+                useHandoverCustomizationChatSettings(props),
             )
 
             act(() => {
@@ -229,7 +229,7 @@ describe('useHandoverCustomizationComponent', () => {
                 })
 
                 const { result } = renderHook(() =>
-                    useHandoverCustomizationComponent(defaultProps),
+                    useHandoverCustomizationChatSettings(defaultProps),
                 )
 
                 act(() => {
@@ -256,7 +256,7 @@ describe('useHandoverCustomizationComponent', () => {
         it('should update to first available chat when available chats change and remove the previous selected chat from the list', () => {
             const props = { ...defaultProps }
             const { result, rerender } = renderHook(() =>
-                useHandoverCustomizationComponent(props),
+                useHandoverCustomizationChatSettings(props),
             )
 
             // Initial state check
@@ -283,7 +283,7 @@ describe('useHandoverCustomizationComponent', () => {
         it('should keep the selected chat when the list changes but contains the previous selected chat', () => {
             const props = { ...defaultProps }
             const { result, rerender } = renderHook(() =>
-                useHandoverCustomizationComponent(props),
+                useHandoverCustomizationChatSettings(props),
             )
 
             // Initial state check
@@ -329,7 +329,7 @@ describe('useHandoverCustomizationComponent', () => {
             ])
 
             const { result } = renderHook(() =>
-                useHandoverCustomizationComponent(defaultProps),
+                useHandoverCustomizationChatSettings(defaultProps),
             )
 
             expect(
@@ -360,7 +360,7 @@ describe('useHandoverCustomizationComponent', () => {
                 ])
 
                 const { result } = renderHook(() =>
-                    useHandoverCustomizationComponent(defaultProps),
+                    useHandoverCustomizationChatSettings(defaultProps),
                 )
 
                 expect(

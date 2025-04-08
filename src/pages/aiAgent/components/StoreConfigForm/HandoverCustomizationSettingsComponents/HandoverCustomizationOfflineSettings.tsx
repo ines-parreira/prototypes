@@ -7,7 +7,7 @@ import { Button, LoadingSpinner, ToggleField } from '@gorgias/merchant-ui-kit'
 import { Label } from 'gorgias-design-system/Input/Label'
 import { GorgiasChatIntegration } from 'models/integration/types'
 import { StoreConfigFormSection } from 'pages/aiAgent/constants'
-import { useHandoverCustomizationOfflineSettingsForm } from 'pages/aiAgent/hooks/useHandoverCustomizationOfflineSettingsForm'
+import { useHandoverCustomizationChatOfflineSettingsForm } from 'pages/aiAgent/hooks/handoverCustomization/useHandoverCustomizationChatOfflineSettingsForm'
 import { useAiAgentFormChangesContext } from 'pages/aiAgent/providers/AiAgentFormChangesContext'
 import { formFieldsConfiguration } from 'pages/aiAgent/utils/handoverCustomization/handoverCustomizationChatOfflineSettingsForm.utils'
 import Caption from 'pages/common/forms/Caption/Caption'
@@ -28,7 +28,7 @@ const HandoverCustomizationOfflineSettings = ({ integration }: Props) => {
         handleOnSave,
         handleOnCancel,
         isSaving,
-    } = useHandoverCustomizationOfflineSettingsForm({
+    } = useHandoverCustomizationChatOfflineSettingsForm({
         integration,
     })
 

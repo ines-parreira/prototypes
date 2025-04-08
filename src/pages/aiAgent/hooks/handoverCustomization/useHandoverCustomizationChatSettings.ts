@@ -9,8 +9,8 @@ import {
 import useSelfServiceChatChannels from 'pages/automate/common/hooks/useSelfServiceChatChannels'
 import { Value } from 'pages/common/forms/SelectField/types'
 
-import { StoreConfigFormSection } from '../constants'
-import { useAiAgentFormChangesContext } from '../providers/AiAgentFormChangesContext'
+import { StoreConfigFormSection } from '../../constants'
+import { useAiAgentFormChangesContext } from '../../providers/AiAgentFormChangesContext'
 
 export enum HandoverCustomizationFormType {
     OFFLINE_SETTINGS = 'offlineSettings',
@@ -24,7 +24,7 @@ type Props = {
     monitoredChatIntegrationIds: number[] | null
 }
 
-export const useHandoverCustomizationComponent = ({
+export const useHandoverCustomizationChatSettings = ({
     shopName,
     shopType,
     monitoredChatIntegrationIds,

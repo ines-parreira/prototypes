@@ -3,7 +3,7 @@ import { useMemo } from 'react'
 import { useGetStoreHandoverConfigurations } from 'models/aiAgent/queries'
 import { HandoverConfigurationData } from 'models/aiAgent/types'
 
-import { AiAgentChannel } from '../constants'
+import { AiAgentChannel } from '../../constants'
 
 type ConfigurationsArgs = {
     accountDomain: string

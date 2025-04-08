@@ -4,8 +4,8 @@ import { Tooltip } from '@gorgias/merchant-ui-kit'
 
 import {
     HandoverCustomizationFormType,
-    useHandoverCustomizationComponent,
-} from 'pages/aiAgent/hooks/useHandoverCustomizationComponent'
+    useHandoverCustomizationChatSettings,
+} from 'pages/aiAgent/hooks/handoverCustomization/useHandoverCustomizationChatSettings'
 import Accordion from 'pages/common/components/accordion/Accordion'
 import AccordionBody from 'pages/common/components/accordion/AccordionBody'
 import AccordionHeader from 'pages/common/components/accordion/AccordionHeader'
@@ -37,7 +37,7 @@ export const HandoverCustomizationSettingsFormComponent = ({
         onActiveSettingsSectionChange,
         onSelectedChatChange,
         isHandoverSectionDisabled,
-    } = useHandoverCustomizationComponent({
+    } = useHandoverCustomizationChatSettings({
         shopName,
         shopType,
         monitoredChatIntegrationIds,

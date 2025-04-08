@@ -14,7 +14,7 @@ import { Label } from 'gorgias-design-system/Input/Label'
 import useUpdateEffect from 'hooks/useUpdateEffect'
 import { GorgiasChatIntegration } from 'models/integration/types'
 import { StoreConfigFormSection } from 'pages/aiAgent/constants'
-import { useHandoverCustomizationFallbackSettingsForm } from 'pages/aiAgent/hooks/useHandoverCustomizationFallbackSettingsForm'
+import { useHandoverCustomizationChatFallbackSettingsForm } from 'pages/aiAgent/hooks/handoverCustomization/useHandoverCustomizationChatFallbackSettingsForm'
 import { useAiAgentFormChangesContext } from 'pages/aiAgent/providers/AiAgentFormChangesContext'
 import { formFieldsConfiguration } from 'pages/aiAgent/utils/handoverCustomization/handoverCustomizationChatFallbackSettingsForm.utils'
 import { FlagLanguageItem } from 'pages/common/components/LanguageBulletList'
@@ -62,7 +62,7 @@ const HandoverCustomizationFallbackSettings = ({ integration }: Props) => {
         handleOnCancel,
         isLoading,
         isSaving,
-    } = useHandoverCustomizationFallbackSettingsForm({
+    } = useHandoverCustomizationChatFallbackSettingsForm({
         integration,
     })
 

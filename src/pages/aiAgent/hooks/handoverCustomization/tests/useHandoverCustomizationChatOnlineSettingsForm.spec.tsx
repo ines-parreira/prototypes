@@ -24,10 +24,10 @@ import { updateOrCreateIntegrationRequest } from 'state/integrations/actions'
 import { mockQueryClientProvider } from 'tests/reactQueryTestingUtils'
 import { mockStore } from 'utils/testing'
 
-import { HandoverCustomizationOnlineSettingsFormValues } from '../../types'
+import { HandoverCustomizationOnlineSettingsFormValues } from '../../../types'
 import { useAiAgentHandoverConfigurationMutation } from '../useAiAgentHandoverConfigurationMutation'
 import { useFetchAiAgentStoreHandoverConfiguration } from '../useFetchAiAgentHandoverConfiguration'
-import { useHandoverCustomizationOnlineSettingsForm } from '../useHandoverCustomizationOnlineSettingsForm'
+import { useHandoverCustomizationChatOnlineSettingsForm } from '../useHandoverCustomizationChatOnlineSettingsForm'
 
 // Mock dependencies
 jest.mock('hooks/useAppSelector')
@@ -87,7 +87,7 @@ const mockUseAppSelector = useAppSelector as jest.Mock
 
 const renderHookWithProviders = (integration: GorgiasChatIntegration) => {
     return renderHook(
-        () => useHandoverCustomizationOnlineSettingsForm({ integration }),
+        () => useHandoverCustomizationChatOnlineSettingsForm({ integration }),
         {
             wrapper: ({ children }) => (
                 <QueryClientProvider>
@@ -118,7 +118,7 @@ const mockInitialFormValues: HandoverCustomizationOnlineSettingsFormValues = {
     autoResponderReply: GorgiasChatAutoResponderReply.ReplyDynamic,
 }
 
-describe('useHandoverCustomizationOnlineSettingsForm', () => {
+describe('useHandoverCustomizationChatOnlineSettingsForm', () => {
     let dispatch: jest.Mock
     const useAppDispatchMock = useAppDispatch as jest.Mock
 

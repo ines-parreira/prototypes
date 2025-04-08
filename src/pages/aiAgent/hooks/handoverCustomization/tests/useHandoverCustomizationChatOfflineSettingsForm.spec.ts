@@ -12,7 +12,7 @@ import { mapFormValuesToHandoverConfigurationData } from 'pages/aiAgent/utils/ha
 
 import { useAiAgentHandoverConfigurationMutation } from '../useAiAgentHandoverConfigurationMutation'
 import { useFetchAiAgentStoreHandoverConfiguration } from '../useFetchAiAgentHandoverConfiguration'
-import { useHandoverCustomizationOfflineSettingsForm } from '../useHandoverCustomizationOfflineSettingsForm'
+import { useHandoverCustomizationChatOfflineSettingsForm } from '../useHandoverCustomizationChatOfflineSettingsForm'
 
 // Mock dependencies
 jest.mock('hooks/useAppSelector')
@@ -53,7 +53,7 @@ jest.mock(
     }),
 )
 
-describe('useHandoverCustomizationOfflineSettingsForm', () => {
+describe('useHandoverCustomizationChatOfflineSettingsForm', () => {
     // Mock data
     const mockIntegration: GorgiasChatIntegration = {
         id: 456,
@@ -117,7 +117,7 @@ describe('useHandoverCustomizationOfflineSettingsForm', () => {
 
     it('should initialize with default form values', () => {
         const { result } = renderHook(() =>
-            useHandoverCustomizationOfflineSettingsForm({
+            useHandoverCustomizationChatOfflineSettingsForm({
                 integration: mockIntegration,
             }),
         )
@@ -138,7 +138,7 @@ describe('useHandoverCustomizationOfflineSettingsForm', () => {
         })
 
         const { result, rerender } = renderHook(() =>
-            useHandoverCustomizationOfflineSettingsForm({
+            useHandoverCustomizationChatOfflineSettingsForm({
                 integration: mockIntegration,
             }),
         )
@@ -160,7 +160,7 @@ describe('useHandoverCustomizationOfflineSettingsForm', () => {
 
     it('should update form values when updateValue is called', async () => {
         const { result } = renderHook(() =>
-            useHandoverCustomizationOfflineSettingsForm({
+            useHandoverCustomizationChatOfflineSettingsForm({
                 integration: mockIntegration,
             }),
         )
@@ -181,7 +181,7 @@ describe('useHandoverCustomizationOfflineSettingsForm', () => {
 
     it('should reset form values when cancel is called', async () => {
         const { result } = renderHook(() =>
-            useHandoverCustomizationOfflineSettingsForm({
+            useHandoverCustomizationChatOfflineSettingsForm({
                 integration: mockIntegration,
             }),
         )
@@ -208,7 +208,7 @@ describe('useHandoverCustomizationOfflineSettingsForm', () => {
 
     it('should not trigger upsertHandoverConfiguration mutation if there are no changes when handleOnSave is called', async () => {
         const { result } = renderHook(() =>
-            useHandoverCustomizationOfflineSettingsForm({
+            useHandoverCustomizationChatOfflineSettingsForm({
                 integration: mockIntegration,
             }),
         )
@@ -222,7 +222,7 @@ describe('useHandoverCustomizationOfflineSettingsForm', () => {
 
     it('should save form values successfully when handleOnSave is called', async () => {
         const { result } = renderHook(() =>
-            useHandoverCustomizationOfflineSettingsForm({
+            useHandoverCustomizationChatOfflineSettingsForm({
                 integration: mockIntegration,
             }),
         )
@@ -254,7 +254,7 @@ describe('useHandoverCustomizationOfflineSettingsForm', () => {
         mockUpsertHandoverConfiguration.mockRejectedValueOnce(mockError)
 
         const { result } = renderHook(() =>
-            useHandoverCustomizationOfflineSettingsForm({
+            useHandoverCustomizationChatOfflineSettingsForm({
                 integration: mockIntegration,
             }),
         )
@@ -282,7 +282,7 @@ describe('useHandoverCustomizationOfflineSettingsForm', () => {
         mockUpsertHandoverConfiguration.mockRejectedValueOnce(mockError)
 
         const { result } = renderHook(() =>
-            useHandoverCustomizationOfflineSettingsForm({
+            useHandoverCustomizationChatOfflineSettingsForm({
                 integration: mockIntegration,
             }),
         )
@@ -310,7 +310,7 @@ describe('useHandoverCustomizationOfflineSettingsForm', () => {
         mockUpsertHandoverConfiguration.mockRejectedValueOnce(mockError)
 
         const { result } = renderHook(() =>
-            useHandoverCustomizationOfflineSettingsForm({
+            useHandoverCustomizationChatOfflineSettingsForm({
                 integration: mockIntegration,
             }),
         )
@@ -337,7 +337,7 @@ describe('useHandoverCustomizationOfflineSettingsForm', () => {
 
     it('should not save form values if the offline instructions are longer than 30 characters', async () => {
         const { result } = renderHook(() =>
-            useHandoverCustomizationOfflineSettingsForm({
+            useHandoverCustomizationChatOfflineSettingsForm({
                 integration: mockIntegration,
             }),
         )
