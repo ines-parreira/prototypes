@@ -30,6 +30,12 @@ type State = {
     imageUrl: Maybe<string>
 }
 
+/**
+ * @deprecated This component is deprecated and will be removed in future versions.
+ * Please use `<Avatar />` from @gorgias/merchant-ui-kit instead.
+ * @date 2025-04-08
+ * @type ui-kit-migration
+ */
 export default class Avatar extends Component<Props, State> {
     component: Maybe<HTMLDivElement>
     isMounted: boolean

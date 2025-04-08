@@ -1,8 +1,8 @@
 {
   "summary": {
-    "totalEntries": 37,
-    "totalUsages": 1189,
-    "reportGeneratedAt": "2025-04-08T07:38:45.668Z"
+    "totalEntries": 38,
+    "totalUsages": 1219,
+    "reportGeneratedAt": "2025-04-08T10:24:50.356Z"
   },
   "entries": [
     {
@@ -286,8 +286,8 @@
               "src/pages/aiAgent/AiAgentPlaygroundContainer.tsx",
               "src/pages/aiAgent/AiAgentPreviewModeSettings/AiAgentPreviewModeSettingsView.tsx",
               "src/pages/aiAgent/AiAgentSales.tsx",
-              "src/pages/aiAgent/AiAgentScrapedDomainContent/AiAgentScrapedDomainPagesContainer.tsx",
               "src/pages/aiAgent/AiAgentScrapedDomainContent/AiAgentScrapedDomainProductsContainer.tsx",
+              "src/pages/aiAgent/AiAgentScrapedDomainContent/AiAgentScrapedDomainQuestionsContainer.tsx",
               "src/pages/aiAgent/Onboarding/components/AiAgentOnboarding/AiAgentOnboarding.tsx",
               "src/pages/aiAgent/Onboarding/hooks/__tests__/useTransformToneOfVoiceConversations.spec.tsx",
               "src/pages/aiAgent/Onboarding/hooks/useTransformToneOfVoiceConversations.ts",
@@ -740,7 +740,7 @@
       "type": "ui-kit-migration",
       "entries": [
         {
-          "usageCount": 589,
+          "usageCount": 586,
           "name": "Button",
           "nodeType": "VariableDeclaration",
           "deprecationDate": "2024-03-04",
@@ -802,13 +802,10 @@
               "src/pages/aiAgent/components/TicketTag/TagList.tsx",
               "src/pages/automate/actionsPlatform/ActionsPlatformAppsView.tsx",
               "src/pages/automate/actionsPlatform/ActionsPlatformCreateStepView.tsx",
-              "src/pages/automate/actionsPlatform/ActionsPlatformCreateTemplateView.tsx",
               "src/pages/automate/actionsPlatform/ActionsPlatformCreateUseCaseTemplateView.tsx",
               "src/pages/automate/actionsPlatform/ActionsPlatformEditStepView.tsx",
-              "src/pages/automate/actionsPlatform/ActionsPlatformEditTemplateView.tsx",
               "src/pages/automate/actionsPlatform/ActionsPlatformEditUseCaseTemplateView.tsx",
               "src/pages/automate/actionsPlatform/ActionsPlatformStepsView.tsx",
-              "src/pages/automate/actionsPlatform/ActionsPlatformTemplatesView.tsx",
               "src/pages/automate/actionsPlatform/ActionsPlatformUseCaseTemplatesView.tsx",
               "src/pages/automate/actionsPlatform/components/ActionsPlatformAppForm.tsx",
               "src/pages/automate/actionsPlatform/components/ActionsPlatformTemplateSteps.tsx",
@@ -1613,6 +1610,55 @@
           },
           "defaultImportNames": [
             "Alert"
+          ]
+        },
+        {
+          "usageCount": 33,
+          "name": "Avatar",
+          "nodeType": "ClassDeclaration",
+          "deprecationDate": "2025-04-08",
+          "deprecationType": "ui-kit-migration",
+          "declarationFile": "src/pages/common/components/Avatar/Avatar.tsx",
+          "usageUrls": {
+            "named": [],
+            "default": [
+              "src/auto_qa/components/DimensionUser.tsx",
+              "src/common/navigation/components/UserItem.tsx",
+              "src/common/navigation/components/UserMenuWithToggle.tsx",
+              "src/pages/aiAgent/AiAgentOnboardingWizard/TicketPreview.tsx",
+              "src/pages/aiAgent/components/PlaygroundMessage/PlaygroundMessage.tsx",
+              "src/pages/common/components/AgentCard/AgentCard.spec.tsx",
+              "src/pages/common/components/AgentCard/AgentCard.tsx",
+              "src/pages/common/components/Avatar/Avatar.stories.tsx",
+              "src/pages/common/components/Avatar/tests/Avatar.spec.tsx",
+              "src/pages/common/components/MergeTickets/BuildFinalTicket.tsx",
+              "src/pages/common/components/TicketMessageEmbeddedCard/TicketMessageEmbeddedCard.tsx",
+              "src/pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarCustomerInfo.tsx",
+              "src/pages/common/utils/labels.tsx",
+              "src/pages/integrations/integration/components/phone/PhoneDeviceDialerBodyResultsList.tsx",
+              "src/pages/settings/audit/UserAuditRow.tsx",
+              "src/pages/settings/rules/accountRules/components/RuleTicketList.tsx",
+              "src/pages/settings/rules/ruleLibrary/components/installationModals/AutoReplyFAQModal.tsx",
+              "src/pages/settings/rules/ruleLibrary/components/installationModals/AutoReplyReturnModal.tsx",
+              "src/pages/settings/rules/ruleLibrary/components/installationModals/AutoReplyWismoModal.tsx",
+              "src/pages/settings/teams/List.tsx",
+              "src/pages/settings/teams/TeamCreationModal.tsx",
+              "src/pages/settings/teams/members/Row.tsx",
+              "src/pages/settings/users/List/Row.tsx",
+              "src/pages/settings/yourProfile/components/YourProfileView.tsx",
+              "src/pages/stats/common/AgentAvatar.tsx",
+              "src/pages/stats/common/components/Shoutout/Shoutout.tsx",
+              "src/pages/stats/quality-management/satisfaction/CommentHighlightsChart/CommentHighlightsCarousel.tsx",
+              "src/pages/tickets/detail/components/RuleSuggestion/InTicketSuggestionContainer.tsx",
+              "src/pages/tickets/detail/components/TicketMessages/Container.tsx",
+              "src/pages/tickets/detail/components/TicketMessages/tests/Container.spec.tsx",
+              "src/pages/tickets/detail/components/TicketVoiceCall/TicketVoiceCallContainer.tsx",
+              "src/ticket-list-view/components/bulk-actions/TeamDropdownItem.tsx",
+              "src/ticket-list-view/components/bulk-actions/UserDropdownItem.tsx"
+            ]
+          },
+          "defaultImportNames": [
+            "Avatar"
           ]
         },
         {
