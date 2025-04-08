@@ -1,4 +1,5 @@
 import { FilterKey, StaticFilter } from 'models/stat/types'
+import { getAiSalesAgentEmailEnabledFlag } from 'pages/aiAgent/Activation/utils'
 import {
     AiSalesAgentChart,
     AiSalesAgentChartConfig,
@@ -21,7 +22,9 @@ export const AI_SALES_AGENTS_PERSISTENT_FILTERS: StaticFilter[] = [
     FilterKey.AggregationWindow,
     FilterKey.StoreIntegrations,
 ]
-export const AI_SALES_AGENTS_OPTIONAL_FILTERS = []
+export const AI_SALES_AGENTS_OPTIONAL_FILTERS = [
+    ...(getAiSalesAgentEmailEnabledFlag() ? [FilterKey.Channels] : []),
+]
 
 export const AiSalesAgentReportConfig: ReportConfig<AiSalesAgentChart> = {
     id: ReportsIDs.AiSalesAgentReportConfig,

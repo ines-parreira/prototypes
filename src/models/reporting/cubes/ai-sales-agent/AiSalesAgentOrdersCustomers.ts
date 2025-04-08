@@ -19,6 +19,7 @@ export enum AiSalesAgentOrderCustomersFilterMember {
     IntegrationId = 'AiSalesAgentOrderCustomers.integrationId',
     PeriodEnd = 'AiSalesAgentOrderCustomers.periodEnd',
     PeriodStart = 'AiSalesAgentOrderCustomers.periodStart',
+    Channel = 'AiSalesAgentOrderCustomers.channel',
 }
 
 export type AiSalesAgentOrderCustomersTimeDimension =

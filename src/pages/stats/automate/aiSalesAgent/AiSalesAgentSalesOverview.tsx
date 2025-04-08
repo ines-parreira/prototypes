@@ -73,6 +73,9 @@ const AiSalesAgentSalesOverview = () => {
                                 AiSalesAgentReportConfig.reportFilters
                                     .persistent
                             }
+                            optionalFilters={
+                                AiSalesAgentReportConfig.reportFilters.optional
+                            }
                             filterSettingsOverrides={{
                                 [FilterKey.Period]: {
                                     initialSettings: {
