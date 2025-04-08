@@ -90,7 +90,7 @@
         "@gorgias/event-tracker-api": "1.1.0",
         "@gorgias/event-tracker-browser": "2.0.3",
         "@gorgias/merchant-ui-kit": "^0.29.0",
-        "@gorgias/realtime": "^0.6.6",
+        "@gorgias/realtime": "^0.7.0",
         "@hookform/resolvers": "^3.10.0",
         "@knocklabs/react": "^0.6.0",
         "@reduxjs/toolkit": "^1.9.7",
