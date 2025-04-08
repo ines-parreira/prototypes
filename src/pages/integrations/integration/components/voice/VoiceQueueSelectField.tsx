@@ -45,6 +45,7 @@ function VoiceQueueSelectField({
     const { data, isFetching, error, refetch } = useListVoiceQueues(
         {
             order_by: ListVoiceQueuesOrderBy.CreatedDatetimeDesc,
+            limit: 100,
         },
         {
             query: {
@@ -142,7 +143,7 @@ function VoiceQueueSelectField({
                             ref={floatingRef}
                             target={targetRef}
                             value={value}
-                            placement="bottom"
+                            placement="bottom-start"
                         >
                             <DropdownSearch autoFocus />
                             <DropdownBody>
@@ -159,26 +160,17 @@ function VoiceQueueSelectField({
                                     />
                                 ))}
                             </DropdownBody>
-                            <DropdownItem
-                                className={css.createNew}
-                                option={{
-                                    // @ts-expect-error
-                                    label: (
-                                        <Button
-                                            intent="secondary"
-                                            className={css.createNewButton}
-                                            leadingIcon="add"
-                                        >
-                                            Create queue
-                                        </Button>
-                                    ),
-                                    value: 'create-new',
-                                }}
+                            <Button
+                                intent="secondary"
+                                className={css.createNewButton}
+                                leadingIcon="add"
                                 onClick={() => {
                                     setIsDropdownOpen(false)
                                     setIsCreateNewModalOpen(true)
                                 }}
-                            />
+                            >
+                                Create queue
+                            </Button>
                         </Dropdown>
                     )}
                 </SelectInputBoxContext.Consumer>
