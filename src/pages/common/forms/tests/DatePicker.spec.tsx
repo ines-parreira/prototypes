@@ -1,6 +1,6 @@
-import React, { ComponentProps } from 'react'
+import { ComponentProps } from 'react'
 
-import { fireEvent, render, waitFor } from '@testing-library/react'
+import { fireEvent, render, screen, waitFor } from '@testing-library/react'
 import { Options } from 'daterangepicker'
 import moment from 'moment-timezone'
 
@@ -297,7 +297,7 @@ describe('DatePicker', () => {
         expect(rangesListElement?.getAttribute('label')).toBe(null)
     })
 
-    it('shoud respect user timezone', () => {
+    it('should respect user timezone', () => {
         const mockDate = new Date('2024-09-09T23:59:59.000Z')
         global.Date.now = jest.fn(() => mockDate.getTime())
         const { getByText } = render(
@@ -313,5 +313,18 @@ describe('DatePicker', () => {
 
         expect(getByText('Sep 2024')).toBeTruthy()
         expect(getByText('Oct 2024')).toBeTruthy()
+    })
+
+    it('should call onClear when the clear button is clicked', () => {
+        const onClear = jest.fn()
+        render(
+            <DatePicker {...minProps} onClear={onClear}>
+                <button>Select a date</button>
+            </DatePicker>,
+        )
+        fireEvent.click(screen.getByText('Select a date'))
+        fireEvent.click(document.querySelector('.cancelBtn') as Element)
+
+        expect(onClear).toHaveBeenCalled()
     })
 })

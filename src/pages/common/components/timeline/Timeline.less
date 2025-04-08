@@ -1,12 +1,18 @@
 @import '~@gorgias/design-tokens/dist/css/layout.less';
 
 :local {
-    .filtersContainer {
+    .toolbar {
         display: flex;
         justify-content: space-between;
         align-items: center;
         gap: @layout-spacing-s;
         margin-bottom: @layout-spacing-s;
+    }
+
+    .filters {
+        display: flex;
+        align-items: center;
+        gap: @layout-spacing-s;
     }
 
     .list {

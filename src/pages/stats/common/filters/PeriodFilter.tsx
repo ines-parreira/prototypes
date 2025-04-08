@@ -146,7 +146,6 @@ export function PeriodFilter({
                 }}
                 {...pickerV2Props}
                 labelDateFormat={shortDateBasedOnUserPreferences}
-                isV2Filter
                 tooltipMessageForPreviousPeriod={
                     tooltipMessageForPreviousPeriod
                 }

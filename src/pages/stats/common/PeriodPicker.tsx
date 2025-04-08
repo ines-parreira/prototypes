@@ -50,7 +50,6 @@ export type Props = {
     changeButtonColorsToV2?: boolean
     rangeDatesInFooter?: boolean
     shouldShowMonthAndYearDropdowns?: boolean
-    isV2Filter?: boolean
     children?: React.ReactNode
     tooltipMessageForPreviousPeriod?: string
 }
@@ -78,7 +77,6 @@ export const PeriodPickerContainer = ({
     changeButtonColorsToV2 = true,
     rangeDatesInFooter = true,
     shouldShowMonthAndYearDropdowns = true,
-    isV2Filter = false,
     children,
     tooltipMessageForPreviousPeriod,
 }: Props & Partial<DateRangeProps>) => {
@@ -291,12 +289,6 @@ export const PeriodPickerContainer = ({
                                         'range-dates-in-footer',
                                     )
                                 }
-                            }
-
-                            if (isV2Filter) {
-                                dateRangerPickerElement.current.classList.add(
-                                    'v2-filter',
-                                )
                             }
 
                             const cancelBtn = target.container

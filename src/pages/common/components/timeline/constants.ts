@@ -1,8 +1,16 @@
+import moment from 'moment'
+
 import { TicketSummary } from '@gorgias/api-types'
 
 import { KeysMatching } from 'types'
 
 import { FilterKey, SortableKey, SortOption } from './types'
+
+export const MIN_RANGE_DATE = moment(new Date('2015-01-01'))
+    .startOf('day')
+    .toDate()
+
+export const END_OF_TODAY_DATE = moment().endOf('day').toDate()
 
 export const STATUS_FILTERS: {
     value: FilterKey

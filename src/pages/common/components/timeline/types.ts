@@ -10,6 +10,11 @@ export type ReduxCustomerHistory = {
     tickets: TicketSummary[]
 }
 
+export type Range = {
+    start: number | null
+    end: number | null
+}
+
 export type FilterKey = TicketStatus | 'snooze'
 
 export type SortType = 'asc' | 'desc'

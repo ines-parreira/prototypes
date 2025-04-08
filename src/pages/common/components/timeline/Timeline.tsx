@@ -13,9 +13,11 @@ import useAppSelector from 'hooks/useAppSelector'
 import { getCustomerHistory, getLoading } from 'state/customers/selectors'
 
 import DisplayedDate from './DisplayedDate'
+import { useRangeFilter } from './hooks/useRangeFilter'
 import { useSort } from './hooks/useSort'
 import { useStatusFilter } from './hooks/useStatusFilter'
 import { NoResults } from './NoResults'
+import { RangeFilter } from './RangeFilter'
 import { Sort } from './Sort'
 import { StatusFilter } from './StatusFilter'
 import TicketCard from './TicketCard'
@@ -47,8 +49,10 @@ export function Timeline({ ticketId = 0, onLoaded }: Props) {
         getCustomerHistory,
     ).toJS() as ReduxCustomerHistory
 
+    const { rangeFilter, rangeFilteredTickets, setRangeFilter } =
+        useRangeFilter(customerHistory.tickets)
     const { selectedStatus, statusFilteredTickets, toggleSelectedStatus } =
-        useStatusFilter(customerHistory.tickets)
+        useStatusFilter(rangeFilteredTickets)
     const { sortedTickets, sortOption, setSortOption } = useSort(
         statusFilteredTickets,
     )
@@ -75,8 +79,12 @@ export function Timeline({ ticketId = 0, onLoaded }: Props) {
     return (
         <div>
             {hasNewTimeline && (
-                <div className={css.filtersContainer}>
-                    <div>
+                <div className={css.toolbar}>
+                    <div className={css.filters}>
+                        <RangeFilter
+                            range={rangeFilter}
+                            setRangeFilter={setRangeFilter}
+                        />
                         <StatusFilter
                             selectedStatus={selectedStatus}
                             toggleSelectedStatus={toggleSelectedStatus}

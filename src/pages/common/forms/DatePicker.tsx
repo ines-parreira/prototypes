@@ -36,6 +36,7 @@ type Props = {
     additionalPickerClassName?: string
     userTimezone?: string | null
     onHide?: () => void
+    onClear?: () => void
 }
 
 export type DatePickerProps = Props & Partial<DateRangeProps>
@@ -44,6 +45,7 @@ export const DatePicker = ({
     children,
     onSubmit,
     onHide,
+    onClear,
     initialSettings: {
         alwaysShowCalendars = true,
         applyButtonClasses = 'btn-primary',
@@ -298,6 +300,16 @@ export const DatePicker = ({
                         'displayed',
                     )
                     onHide?.()
+                }}
+                onCancel={(event, picker) => {
+                    onClear?.()
+                    picker.setStartDate(
+                        otherInitialSettings.minDate || new Date(),
+                    )
+                    picker.setEndDate(
+                        otherInitialSettings.endDate || new Date(),
+                    )
+                    triggerDateRangePickerClick()
                 }}
             >
                 {children || <span />}

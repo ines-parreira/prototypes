@@ -1,4 +1,4 @@
-import { fireEvent, render, screen } from '@testing-library/react'
+import { act, fireEvent, render, screen } from '@testing-library/react'
 import { fromJS } from 'immutable'
 
 import { ObjectType, TicketSummary } from '@gorgias/api-queries'
@@ -9,8 +9,9 @@ import { useCustomFieldDefinitions } from 'custom-fields/hooks/queries/useCustom
 import { apiListCursorPaginationResponse } from 'fixtures/axiosResponse'
 import { ticketInputFieldDefinition } from 'fixtures/customField'
 import { getCustomerHistory, getLoading } from 'state/customers/selectors'
-import { assumeMock } from 'utils/testing'
+import { assumeMock, getLastMockCall } from 'utils/testing'
 
+import { RangeFilter } from '../RangeFilter'
 import TicketCard from '../TicketCard'
 import Timeline from '../Timeline'
 
@@ -38,12 +39,16 @@ jest.mock('state/customers/selectors', () => {
 })
 jest.mock('../TicketCard', () => jest.fn(() => <div>TicketCard</div>))
 jest.mock('../DisplayedDate', () => jest.fn(() => 'Mocked DatetimeLabel'))
+jest.mock('../RangeFilter', () => ({
+    RangeFilter: jest.fn(() => <div>RangeFilter</div>),
+}))
 
 const useCustomFieldDefinitionsMock = assumeMock(useCustomFieldDefinitions)
 const getCustomerHistoryMock = assumeMock(getCustomerHistory)
 const getLoadingMock = assumeMock(getLoading)
 const TicketCardMock = assumeMock(TicketCard)
 const useFlagMock = assumeMock(useFlag)
+const rangeFilterMock = assumeMock(RangeFilter)
 
 const defaultFieldDefinitions = {
     data: apiListCursorPaginationResponse([ticketInputFieldDefinition]),
@@ -201,6 +206,30 @@ describe('<Timeline />', () => {
             fireEvent.click(screen.getByText('Open'))
 
             expect(screen.getByText('No matching tickets')).toBeInTheDocument()
+        })
+    })
+
+    describe('Range filtering', () => {
+        it('should not render range filter when feature flag is off', () => {
+            render(<Timeline />)
+
+            expect(screen.queryByText('RangeFilter')).toBeNull()
+        })
+
+        it('should should correctly filter tickets by range', () => {
+            useFlagMock.mockReturnValue(true)
+            render(<Timeline />)
+
+            TicketCardMock.mockClear()
+
+            act(() => {
+                getLastMockCall(rangeFilterMock)[0].setRangeFilter({
+                    start: new Date('2025-01-01').getTime(),
+                    end: new Date('2025-01-02').getTime(),
+                })
+            })
+
+            expect(TicketCardMock).toHaveBeenCalledTimes(0)
         })
     })
 

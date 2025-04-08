@@ -363,6 +363,12 @@
     }
 
     &.picker-v2 {
+        margin-top: @layout-spacing-xxs;
+
+        &::before,
+        &::after {
+            display: none;
+        }
         &.apply-v2-styles {
             &.show-ranges.ltr .drp-calendar.right {
                 padding: @layout-spacing-s @layout-spacing-s @layout-spacing-s
@@ -419,6 +425,7 @@
                                 content: '\e876';
                                 font-size: 20px;
                                 color: var(--neutral-grey-4);
+                                margin-left: @layout-spacing-xs;
                                 font-variation-settings:
                                     'FILL' 0,
                                     'wght' 400,
@@ -523,15 +530,6 @@
 
         .calendar-time {
             margin: 0 0 4px 0;
-        }
-    }
-
-    &.v2-filter {
-        margin-top: 0;
-
-        &::before,
-        &::after {
-            display: none;
         }
     }
 }
