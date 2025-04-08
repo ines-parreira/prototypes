@@ -1,8 +1,8 @@
 {
   "summary": {
-    "totalEntries": 36,
-    "totalUsages": 1178,
-    "reportGeneratedAt": "2025-04-07T12:48:23.765Z"
+    "totalEntries": 37,
+    "totalUsages": 1189,
+    "reportGeneratedAt": "2025-04-08T07:38:45.668Z"
   },
   "entries": [
     {
@@ -252,7 +252,7 @@
       "type": "feature-flag cleanup initiative",
       "entries": [
         {
-          "usageCount": 189,
+          "usageCount": 192,
           "name": "launchdarkly-react-client-sdk.useFlags",
           "nodeType": "Identifier",
           "deprecationDate": "2025-02-10",
@@ -272,6 +272,7 @@
               "src/hooks/reporting/ticket-insights/tests/useTicketCountPerTag.spec.tsx",
               "src/hooks/reporting/ticket-insights/useTicketCountPerTag.ts",
               "src/models/aiAgent/queries.ts",
+              "src/pages/aiAgent/Activation/components/AiAgentActivationStoreCard/AiAgentActivationStoreCard.tsx",
               "src/pages/aiAgent/Activation/hooks/useStoreActivations.ts",
               "src/pages/aiAgent/AiAgentConfigurationView/AiAgentConfigurationView.tsx",
               "src/pages/aiAgent/AiAgentGuidanceContainer.tsx",
@@ -288,6 +289,8 @@
               "src/pages/aiAgent/AiAgentScrapedDomainContent/AiAgentScrapedDomainPagesContainer.tsx",
               "src/pages/aiAgent/AiAgentScrapedDomainContent/AiAgentScrapedDomainProductsContainer.tsx",
               "src/pages/aiAgent/Onboarding/components/AiAgentOnboarding/AiAgentOnboarding.tsx",
+              "src/pages/aiAgent/Onboarding/hooks/__tests__/useTransformToneOfVoiceConversations.spec.tsx",
+              "src/pages/aiAgent/Onboarding/hooks/useTransformToneOfVoiceConversations.ts",
               "src/pages/aiAgent/Overview/AiAgentOverview.tsx",
               "src/pages/aiAgent/Overview/components/KpiSection/KpiSection.tsx",
               "src/pages/aiAgent/Overview/hooks/kpis/useGmvInfluenced.ts",
@@ -1677,6 +1680,30 @@
           },
           "defaultImportNames": [
             "ShortcutIcon"
+          ]
+        },
+        {
+          "usageCount": 8,
+          "name": "TabNavigator",
+          "nodeType": "VariableDeclaration",
+          "deprecationDate": "2025-04-08",
+          "deprecationType": "ui-kit-migration",
+          "declarationFile": "src/pages/common/components/TabNavigator/TabNavigator.tsx",
+          "usageUrls": {
+            "named": [],
+            "default": [
+              "src/pages/common/components/DiscountCodeResultsWrapper/DiscountCodeResultsWrapper.tsx",
+              "src/pages/common/components/Spotlight/SpotlightModal.tsx",
+              "src/pages/common/components/TabNavigator/TabNavigator.stories.tsx",
+              "src/pages/common/components/TabNavigator/tests/TabNavigator.spec.tsx",
+              "src/pages/common/draftjs/plugins/toolbar/components/AddLink.tsx",
+              "src/pages/convert/settings/ConvertSettingsView.tsx",
+              "src/pages/convert/settings/components/TermsAndConditionsSetting.tsx",
+              "src/pages/settings/helpCenter/components/HelpCenterPublishAndTrackView.tsx"
+            ]
+          },
+          "defaultImportNames": [
+            "TabNavigator"
           ]
         },
         {

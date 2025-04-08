@@ -21,6 +21,12 @@ type TabDimension = {
     width: number
 }
 
+/**
+ * @deprecated This component is deprecated and will be removed in future versions.
+ * Please use `<TabNavigation />` from @gorgias/merchant-ui-kit instead.
+ * @date 2025-04-08
+ * @type ui-kit-migration
+ */
 const TabNavigator = ({
     tabs,
     activeTab,
