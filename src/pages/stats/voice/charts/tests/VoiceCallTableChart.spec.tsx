@@ -1,5 +1,3 @@
-import React from 'react'
-
 import { screen } from '@testing-library/react'
 
 import { useStatsFilters } from 'hooks/reporting/support-performance/useStatsFilters'
@@ -9,28 +7,19 @@ import '@testing-library/jest-dom/extend-expect'
 import { act } from 'react-dom/test-utils'
 import { Provider } from 'react-redux'
 
-import { FeatureFlagKey } from 'config/featureFlags'
-import { useFlag } from 'core/flags'
 import { ReportingGranularity } from 'models/reporting/types'
 import { DashboardChartProps } from 'pages/stats/dashboards/types'
 import { renderWithQueryClientProvider } from 'tests/reactQueryTestingUtils'
 import { assumeMock, mockStore } from 'utils/testing'
 
-import VoiceCallDirectionFilter from '../../components/VoiceCallDirectionFilter/VoiceCallDirectionFilter'
 import VoiceCallFilter from '../../components/VoiceCallFilter/VoiceCallFilter'
 import { VoiceCallTable } from '../../components/VoiceCallTable/VoiceCallTable'
 import { VoiceCallFilterDirection } from '../../models/types'
 import { VoiceCallTableChart } from '../VoiceCallTableChart'
 
-jest.mock('core/flags')
-jest.mock(
-    'pages/stats/voice/components/VoiceCallDirectionFilter/VoiceCallDirectionFilter',
-)
 jest.mock('pages/stats/voice/components/VoiceCallFilter/VoiceCallFilter')
 jest.mock('pages/stats/voice/components/VoiceCallTable/VoiceCallTable')
 
-const useFlagMock = assumeMock(useFlag)
-const VoiceCallDirectionFilterMock = assumeMock(VoiceCallDirectionFilter)
 const VoiceCallFilterMock = assumeMock(VoiceCallFilter)
 const VoiceCallTableMock = assumeMock(VoiceCallTable)
 jest.mock('hooks/reporting/support-performance/useStatsFilters')
@@ -58,9 +47,6 @@ const userTimezone = 'UTC'
 
 describe('VoiceCallTableChart', () => {
     beforeEach(() => {
-        VoiceCallDirectionFilterMock.mockReturnValue(
-            <div data-testid="voice-call-direction-filter" />,
-        )
         VoiceCallFilterMock.mockReturnValue(
             <div data-testid="voice-call-filter" />,
         )
@@ -74,49 +60,10 @@ describe('VoiceCallTableChart', () => {
         })
     })
 
-    it('renders VoiceCallTableChart with VoiceCallDirectionFilter when FF is off', () => {
+    it('renders VoiceCallTableChart with VoiceCallFilter', () => {
         const selectedFilter = {
             direction: VoiceCallFilterDirection.Inbound,
         }
-
-        useFlagMock.mockImplementation((flag) => {
-            if (flag === FeatureFlagKey.ShowNewUnansweredStatuses) {
-                return false
-            }
-        })
-
-        renderComponent()
-
-        expect(screen.getByTestId('voice-call-table')).toBeInTheDocument()
-        expect(
-            screen.getByTestId('voice-call-direction-filter'),
-        ).toBeInTheDocument()
-
-        act(() =>
-            VoiceCallDirectionFilterMock.mock.calls[0][0].onFilterSelect(
-                selectedFilter,
-            ),
-        )
-        expect(VoiceCallTableMock).toHaveBeenCalledWith(
-            {
-                statsFilters: filters,
-                userTimezone: userTimezone,
-                filterOption: selectedFilter,
-            },
-            {},
-        )
-    })
-
-    it('renders VoiceCallTableChart with VoiceCallFilter when FF is on', () => {
-        const selectedFilter = {
-            direction: VoiceCallFilterDirection.Inbound,
-        }
-
-        useFlagMock.mockImplementation((flag) => {
-            if (flag === FeatureFlagKey.ShowNewUnansweredStatuses) {
-                return true
-            }
-        })
 
         renderComponent()
 

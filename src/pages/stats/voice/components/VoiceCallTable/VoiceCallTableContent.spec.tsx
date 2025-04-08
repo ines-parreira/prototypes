@@ -244,41 +244,7 @@ describe('VoiceCallTableContent', () => {
         expect(getAllByRole('row')).toHaveLength(CALL_LIST_PAGE_SIZE + 1)
     })
 
-    it('should render rows old', () => {
-        useFlagMock.mockImplementation((flag) => {
-            if (flag === FeatureFlagKey.ShowNewUnansweredStatuses) {
-                return false
-            }
-        })
-
-        const { getByText, getAllByText } = renderComponent()
-
-        // first call
-        expect(getByText('VoiceCallCustomerLabel 1')).toBeInTheDocument()
-        expect(getByText('VoiceCallAgentLabel 1')).toBeInTheDocument()
-        expect(getByText('VoiceIntegrationBasicLabel 1')).toBeInTheDocument()
-        expect(getByText('Answered')).toBeInTheDocument()
-        expect(getByText('1m 40s')).toBeInTheDocument()
-        expect(getByText('12s')).toBeInTheDocument()
-        expect(getByText('View ticket')).toBeInTheDocument()
-
-        // second call
-        expect(getByText('VoiceCallCustomerLabel 2')).toBeInTheDocument()
-        expect(getByText('VoiceCallAgentLabel 2')).toBeInTheDocument()
-        expect(getByText('VoiceIntegrationBasicLabel 2')).toBeInTheDocument()
-        expect(getAllByText('Missed').length).toBeGreaterThan(0)
-        expect(getByText('1m 41s')).toBeInTheDocument()
-        expect(getByText('13s')).toBeInTheDocument()
-        expect(getAllByText('-').length).toBeGreaterThan(0)
-    })
-
     it('should render rows', () => {
-        useFlagMock.mockImplementation((flag) => {
-            if (flag === FeatureFlagKey.ShowNewUnansweredStatuses) {
-                return true
-            }
-        })
-
         const { getByText, getAllByText } = renderComponent()
 
         // first call

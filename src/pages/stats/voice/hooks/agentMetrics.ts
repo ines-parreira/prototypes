@@ -66,7 +66,7 @@ export const useAnsweredCallsMetric = (
             voiceCallCountQueryFactory(
                 statsFilters,
                 timezone,
-                VoiceCallSegment.answeredCallsByAgent,
+                VoiceCallSegment.inboundAnsweredCallsByAgent,
             ),
             ignoreCallsWithNoAgentsFilter,
         ),
@@ -81,7 +81,7 @@ export const fetchAnsweredCallsMetric = (
             voiceCallCountQueryFactory(
                 statsFilters,
                 timezone,
-                VoiceCallSegment.answeredCallsByAgent,
+                VoiceCallSegment.inboundAnsweredCallsByAgent,
             ),
             ignoreCallsWithNoAgentsFilter,
         ),
@@ -96,7 +96,7 @@ export const useMissedCallsMetric = (
             voiceCallCountQueryFactory(
                 statsFilters,
                 timezone,
-                VoiceCallSegment.missedCallsByAgent,
+                VoiceCallSegment.inboundUnansweredCallsByAgent,
             ),
             ignoreCallsWithNoAgentsFilter,
         ),
@@ -111,7 +111,7 @@ export const fetchMissedCallsMetric = (
             voiceCallCountQueryFactory(
                 statsFilters,
                 timezone,
-                VoiceCallSegment.missedCallsByAgent,
+                VoiceCallSegment.inboundUnansweredCallsByAgent,
             ),
             ignoreCallsWithNoAgentsFilter,
         ),

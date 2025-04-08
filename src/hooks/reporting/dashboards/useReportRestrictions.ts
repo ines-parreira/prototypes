@@ -11,7 +11,6 @@ import { HelpCenterReportConfig } from 'pages/stats/help-center/components/HelpC
 import { SatisfactionReportConfig } from 'pages/stats/quality-management/satisfaction/SatisfactionReportConfig'
 import { AutoQAReportConfig } from 'pages/stats/support-performance/auto-qa/AutoQAReportConfig'
 import { SupportPerformanceSatisfactionReportConfig } from 'pages/stats/support-performance/satisfaction/SupportPerformanceSatisfactionReportConfig'
-import { VoiceOverviewChart } from 'pages/stats/voice/pages/VoiceOverviewReportConfig'
 import { BASE_VOICE_OF_CUSTOMER_PATH } from 'routes/constants'
 import { getHasAutomate } from 'state/billing/selectors'
 import { getCurrentUser } from 'state/currentUser/selectors'
@@ -28,8 +27,6 @@ export const useReportRestrictions = () => {
         useFlags()[FeatureFlagKey.AIAgentStatsPage]
     const isStandaloneSalesOverviewEnabled =
         useFlags()[FeatureFlagKey.StandaloneAiSalesAnalyticsPage]
-    const shouldShowNewUnansweredStatuses =
-        useFlags()[FeatureFlagKey.ShowNewUnansweredStatuses]
     const isReportingVoiceOfCustomerEnabled =
         !!useFlags()[FeatureFlagKey.ReportingVoiceOfCustomer]
 
@@ -59,21 +56,7 @@ export const useReportRestrictions = () => {
         ],
     )
 
-    const chartRestrictionsMap: RestrictionsMap = useMemo(
-        () => ({
-            [VoiceOverviewChart.DEPRECATED_VoiceCallVolumeMetricMissedCallsCountTrendChart]:
-                shouldShowNewUnansweredStatuses,
-            [VoiceOverviewChart.VoiceCallVolumeMetricUnansweredCallsCountTrendChart]:
-                !shouldShowNewUnansweredStatuses,
-            [VoiceOverviewChart.VoiceCallVolumeMetricMissedCallsCountTrendChart]:
-                !shouldShowNewUnansweredStatuses,
-            [VoiceOverviewChart.VoiceCallVolumeMetricAbandonedCallsCountTrendChart]:
-                !shouldShowNewUnansweredStatuses,
-            [VoiceOverviewChart.VoiceCallVolumeMetricCancelledCallsCountTrendChart]:
-                !shouldShowNewUnansweredStatuses,
-        }),
-        [shouldShowNewUnansweredStatuses],
-    )
+    const chartRestrictionsMap: RestrictionsMap = {}
 
     const moduleRestrictionsMap: RestrictionsMap = useMemo(
         () => ({

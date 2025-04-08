@@ -49,13 +49,12 @@ export enum VoiceCallMember {
 export enum VoiceCallSegment {
     inboundCalls = 'VoiceCall.inboundCalls',
     outboundCalls = 'VoiceCall.outboundCalls',
-    missedCalls = 'VoiceCall.missedCalls',
     inboundUnansweredCalls = 'VoiceCall.inboundUnansweredCalls',
     inboundMissedCalls = 'VoiceCall.inboundMissedCalls',
     inboundAbandonedCalls = 'VoiceCall.inboundAbandonedCalls',
     inboundCancelledCalls = 'VoiceCall.inboundCancelledCalls',
-    missedCallsByAgent = 'VoiceCall.missedCallsByAgent',
-    answeredCallsByAgent = 'VoiceCall.answeredCallsByAgent',
+    inboundUnansweredCallsByAgent = 'VoiceCall.inboundUnansweredCallsByAgent',
+    inboundAnsweredCallsByAgent = 'VoiceCall.inboundAnsweredCallsByAgent',
     callsInFinalStatus = 'VoiceCall.callsInFinalStatus',
 }
 

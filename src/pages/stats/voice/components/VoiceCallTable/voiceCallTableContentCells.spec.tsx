@@ -1,11 +1,8 @@
-import React from 'react'
-
 import { render, screen } from '@testing-library/react'
 
-import { VoiceCallDirection, VoiceCallStatus } from '@gorgias/api-queries'
+import { VoiceCallStatus } from '@gorgias/api-queries'
 
 import { VoiceCallDisplayStatus } from 'models/voiceCall/types'
-import DEPRECATED_VoiceCallStatusLabel from 'pages/common/components/VoiceCallStatusLabel/DEPRECATED_VoiceCallStatusLabel'
 import VoiceCallStatusLabel from 'pages/common/components/VoiceCallStatusLabel/VoiceCallStatusLabel'
 import VoiceCallTimerBadge from 'pages/common/components/VoiceCallTimerBadge/VoiceCallTimerBadge'
 import { assumeMock } from 'utils/testing'
@@ -22,17 +19,11 @@ import {
 jest.mock('pages/stats/voice/components/LiveVoice/LiveVoiceCallStatusLabel')
 jest.mock('pages/common/components/VoiceCallTimerBadge/VoiceCallTimerBadge')
 jest.mock('pages/stats/voice/components/VoiceCallRecording/VoiceCallRecording')
-jest.mock(
-    'pages/common/components/VoiceCallStatusLabel/DEPRECATED_VoiceCallStatusLabel',
-)
 jest.mock('pages/common/components/VoiceCallStatusLabel/VoiceCallStatusLabel')
 
 const LiveVoiceCallStatusLabelMock = assumeMock(LiveVoiceCallStatusLabel)
 const VoiceCallTimerBadgeMock = assumeMock(VoiceCallTimerBadge)
 const VoiceCallRecordingMock = assumeMock(VoiceCallRecording)
-const DEPRECATED_VoiceCallStatusLabelMock = assumeMock(
-    DEPRECATED_VoiceCallStatusLabel,
-)
 const VoiceCallStatusLabelMock = assumeMock(VoiceCallStatusLabel)
 
 describe('voiceCallTableContentCells', () => {
@@ -241,36 +232,7 @@ describe('voiceCallTableContentCells', () => {
             })
         })
 
-        it('should return correct props for the state cell old way', () => {
-            DEPRECATED_VoiceCallStatusLabelMock.mockReturnValue(
-                <div>Status</div>,
-            )
-
-            const columns = [VoiceCallTableColumnName.State]
-
-            const result = getOrderedCells({
-                item: {
-                    direction: VoiceCallDirection.Inbound,
-                    status: VoiceCallStatus.Answered,
-                    agentId: 123,
-                } as VoiceCallSummary,
-                columns,
-                isTableScrolled: false,
-            })
-
-            render(result[0].props.children as any)
-            expect(DEPRECATED_VoiceCallStatusLabel).toHaveBeenCalledWith(
-                {
-                    voiceCallStatus: VoiceCallStatus.Answered,
-                    direction: VoiceCallDirection.Inbound,
-                    lastAnsweredByAgentId: 123,
-                },
-                {},
-            )
-            expect(screen.getByText('Status')).toBeInTheDocument()
-        })
-
-        it('should return correct props for the state cell new way', () => {
+        it('should return correct props for the state cell', () => {
             VoiceCallStatusLabelMock.mockReturnValue(<div>Status</div>)
 
             const columns = [VoiceCallTableColumnName.State]
@@ -281,7 +243,6 @@ describe('voiceCallTableContentCells', () => {
                 } as VoiceCallSummary,
                 columns,
                 isTableScrolled: false,
-                showDisplayStatus: true,
             })
 
             render(result[0].props.children as any)

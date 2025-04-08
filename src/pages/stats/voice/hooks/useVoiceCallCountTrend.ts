@@ -67,20 +67,3 @@ export const fetchVoiceCallCountInboundTrend = (
             VoiceCallSegment.inboundCalls,
         ),
     )
-
-export const fetchVoiceCallCountMissedTrend = (
-    filters: StatsFilters,
-    timezone: string,
-) =>
-    fetchMetricTrend(
-        voiceCallCountQueryFactory(
-            filters,
-            timezone,
-            VoiceCallSegment.missedCalls,
-        ),
-        voiceCallCountQueryFactory(
-            { ...filters, period: getPreviousPeriod(filters.period) },
-            timezone,
-            VoiceCallSegment.missedCalls,
-        ),
-    )

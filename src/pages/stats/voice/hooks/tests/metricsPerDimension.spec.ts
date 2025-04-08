@@ -76,7 +76,7 @@ describe('metricsPerDimension', () => {
                 voiceCallCountPerFilteringAgentQueryFactory(
                     statsFilters,
                     userTimezone,
-                    VoiceCallSegment.answeredCallsByAgent,
+                    VoiceCallSegment.inboundAnsweredCallsByAgent,
                 ),
                 agentId,
             ])
@@ -95,7 +95,7 @@ describe('metricsPerDimension', () => {
                 voiceCallCountPerFilteringAgentQueryFactory(
                     statsFilters,
                     userTimezone,
-                    VoiceCallSegment.missedCallsByAgent,
+                    VoiceCallSegment.inboundUnansweredCallsByAgent,
                 ),
                 agentId,
             ])
@@ -169,7 +169,7 @@ describe('metricsPerDimension', () => {
                     voiceCallCountPerFilteringAgentQueryFactory(
                         statsFilters,
                         timezone,
-                        VoiceCallSegment.answeredCallsByAgent,
+                        VoiceCallSegment.inboundAnsweredCallsByAgent,
                     ),
             },
             {
@@ -178,7 +178,7 @@ describe('metricsPerDimension', () => {
                     voiceCallCountPerFilteringAgentQueryFactory(
                         statsFilters,
                         timezone,
-                        VoiceCallSegment.missedCallsByAgent,
+                        VoiceCallSegment.inboundUnansweredCallsByAgent,
                     ),
             },
             {

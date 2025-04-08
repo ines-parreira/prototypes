@@ -32,7 +32,6 @@ export const getVoiceDrillDownColumns = (
                 VoiceCallTableColumnName.Recording,
             ]
         case VoiceMetric.QueueInboundCalls:
-        case VoiceMetric.DEPRECATED_QueueMissedInboundCalls:
         case VoiceMetric.QueueInboundUnansweredCalls:
         case VoiceMetric.QueueInboundMissedCalls:
         case VoiceMetric.QueueInboundAbandonedCalls:
@@ -124,16 +123,14 @@ export const voiceCallTableColumnNameToDimension = (
 
 export const isVoiceCallTableColumnSortable = (
     columnName: VoiceCallTableColumnName,
-    canOrderByState: boolean = false,
 ): boolean => {
     switch (columnName) {
         case VoiceCallTableColumnName.Activity:
         case VoiceCallTableColumnName.Integration:
         case VoiceCallTableColumnName.Ticket:
         case VoiceCallTableColumnName.Recording:
+        case VoiceCallTableColumnName.Queue:
             return false
-        case VoiceCallTableColumnName.State:
-            return canOrderByState
         default:
             return true
     }

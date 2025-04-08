@@ -14,7 +14,6 @@ import { useIsChartRestricted } from 'hooks/reporting/dashboards/useReportRestri
 import { HelpCenterReportConfig } from 'pages/stats/help-center/components/HelpCenterReport/HelpCenterReportConfig'
 import { SatisfactionReportConfig } from 'pages/stats/quality-management/satisfaction/SatisfactionReportConfig'
 import { AutoQAChart } from 'pages/stats/support-performance/auto-qa/AutoQAReportConfig'
-import { VoiceOverviewChart } from 'pages/stats/voice/pages/VoiceOverviewReportConfig'
 import { initialState } from 'state/billing/reducers'
 import { RootState } from 'state/types'
 
@@ -180,57 +179,6 @@ describe('useReportRestrictions', () => {
                 )
 
                 expect(result.current).toEqual(false)
-            },
-        )
-    })
-
-    describe('VoiceOverview', () => {
-        it.each([
-            VoiceOverviewChart.VoiceCallVolumeMetricUnansweredCallsCountTrendChart,
-            VoiceOverviewChart.VoiceCallVolumeMetricMissedCallsCountTrendChart,
-            VoiceOverviewChart.VoiceCallVolumeMetricAbandonedCallsCountTrendChart,
-            VoiceOverviewChart.VoiceCallVolumeMetricCancelledCallsCountTrendChart,
-        ])(
-            'should restrict new VoiceOverview charts when the flag is off',
-            (chartId: string) => {
-                mockFlags({
-                    [FeatureFlagKey.ShowNewUnansweredStatuses]: false,
-                })
-                const { result } = renderHook(
-                    () => useIsChartRestricted(chartId),
-                    {
-                        wrapper: ({ children }) => (
-                            <Provider store={mockStore(defaultState)}>
-                                {children}
-                            </Provider>
-                        ),
-                    },
-                )
-
-                expect(result.current).toEqual(true)
-            },
-        )
-
-        it.each([
-            VoiceOverviewChart.DEPRECATED_VoiceCallVolumeMetricMissedCallsCountTrendChart,
-        ])(
-            'should restrict old VoiceOverview charts when the flag is on',
-            (chartId: string) => {
-                mockFlags({
-                    [FeatureFlagKey.ShowNewUnansweredStatuses]: true,
-                })
-                const { result } = renderHook(
-                    () => useIsChartRestricted(chartId),
-                    {
-                        wrapper: ({ children }) => (
-                            <Provider store={mockStore(defaultState)}>
-                                {children}
-                            </Provider>
-                        ),
-                    },
-                )
-
-                expect(result.current).toEqual(true)
             },
         )
     })

@@ -57,9 +57,6 @@ export default function VoiceCallTableContent({
     orderDirection,
     onColumnClick,
 }: VoiceCallTableContentProps) {
-    const shouldShowNewUnansweredStatuses = useFlag(
-        FeatureFlagKey.ShowNewUnansweredStatuses,
-    )
     const shouldExposeVoiceQueues = useFlag(FeatureFlagKey.ExposeVoiceQueues)
 
     columns = shouldExposeVoiceQueues
@@ -161,8 +158,6 @@ export default function VoiceCallTableContent({
                                       columns,
                                       isTableScrolled,
                                       isRecordingDownloadable,
-                                      showDisplayStatus:
-                                          shouldShowNewUnansweredStatuses,
                                   }).map((cell: Cell<typeof BodyCell>) => (
                                       <BodyCell
                                           key={`${cell.key}-cell`}

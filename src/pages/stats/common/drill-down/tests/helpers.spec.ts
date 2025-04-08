@@ -322,9 +322,6 @@ describe('getDrillDownQuery', () => {
         {
             metricName: VoiceMetric.QueueInboundCalls,
         },
-        {
-            metricName: VoiceMetric.DEPRECATED_QueueMissedInboundCalls,
-        },
         { metricName: VoiceMetric.QueueInboundUnansweredCalls },
         { metricName: VoiceMetric.QueueInboundMissedCalls },
         { metricName: VoiceMetric.QueueInboundAbandonedCalls },
@@ -632,10 +629,6 @@ describe('getDrillDownQuery', () => {
         {
             metricName: VoiceMetric.QueueInboundCalls,
             segment: VoiceCallSegment.inboundCalls,
-        },
-        {
-            metricName: VoiceMetric.DEPRECATED_QueueMissedInboundCalls,
-            segment: VoiceCallSegment.missedCalls,
         },
         {
             metricName: VoiceMetric.QueueOutboundCalls,

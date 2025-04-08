@@ -6,7 +6,6 @@ import { voiceCallCountQueryFactory } from 'models/reporting/queryFactories/voic
 import { StatsFilters } from 'models/stat/types'
 import {
     fetchVoiceCallCountInboundTrend,
-    fetchVoiceCallCountMissedTrend,
     fetchVoiceCallCountOutboundTrend,
     fetchVoiceCallCountTrend,
 } from 'pages/stats/voice/hooks/useVoiceCallCountTrend'
@@ -39,10 +38,6 @@ describe('VoiceCallCountTrend', () => {
         {
             fetch: fetchVoiceCallCountInboundTrend,
             segment: VoiceCallSegment.inboundCalls,
-        },
-        {
-            fetch: fetchVoiceCallCountMissedTrend,
-            segment: VoiceCallSegment.missedCalls,
         },
     ])(
         'should use voiceCallCountQueryFactory with specific segment ($segment)',

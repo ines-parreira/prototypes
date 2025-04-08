@@ -1,7 +1,7 @@
-import React, { ComponentProps } from 'react'
+import { ComponentProps } from 'react'
 
 import { QueryClientProvider } from '@tanstack/react-query'
-import { fireEvent, render } from '@testing-library/react'
+import { render } from '@testing-library/react'
 import { fromJS, Map } from 'immutable'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
@@ -33,15 +33,10 @@ import * as VoiceCallCallerExperienceMetric from 'pages/stats/voice/components/V
 import { VoiceOverviewDownloadDataButton } from 'pages/stats/voice/components/VoiceOverviewDownloadDataButton/VoiceOverviewDownloadDataButton'
 import {
     ABANDONED_CALLS_METRIC_TITLE,
-    ALL_CALLS_FILTER_LABEL,
     AVERAGE_TALK_TIME_METRIC_TITLE,
     AVERAGE_WAIT_TIME_METRIC_TITLE,
     CALL_LIST_TITLE,
-    CALL_VOLUME_METRICS_TITLE,
-    CALLER_EXPERIENCE_METRICS_TITLE,
     CANCELLED_CALLS_METRIC_TITLE,
-    DEPRECATED_MISSED_CALLS_METRIC_TITLE,
-    INBOUND_CALLS_FILTER_LABEL,
     INBOUND_CALLS_METRIC_TITLE,
     MISSED_CALLS_METRIC_TITLE,
     OUTBOUND_CALLS_METRIC_TITLE,
@@ -172,60 +167,7 @@ describe('VoiceOverview', () => {
         )
     }
 
-    it('should render page old way', () => {
-        useFlagMock.mockImplementation((flag) => {
-            if (flag === FeatureFlagKey.ShowNewUnansweredStatuses) {
-                return false
-            }
-        })
-
-        const { queryByText, queryAllByText, getAllByText } =
-            renderVoiceOverview()
-
-        // header elements
-        expect(queryByText(VOICE_OVERVIEW_PAGE_TITLE)).toBeInTheDocument()
-        expect(queryByText('Voice add-on features')).toBeNull()
-        expect(VoiceOverviewDownloadDataButtonMock).toHaveBeenCalled()
-
-        // caller experience cards
-        expect(queryByText(CALLER_EXPERIENCE_METRICS_TITLE)).toBeInTheDocument()
-        expect(queryByText(AVERAGE_TALK_TIME_METRIC_TITLE)).toBeInTheDocument()
-        expect(queryByText(AVERAGE_WAIT_TIME_METRIC_TITLE)).toBeInTheDocument()
-
-        // metric cards
-        expect(queryByText(CALL_VOLUME_METRICS_TITLE)).toBeInTheDocument()
-        expect(queryByText(TOTAL_CALLS_METRIC_TITLE)).toBeInTheDocument()
-        expect(queryAllByText(OUTBOUND_CALLS_METRIC_TITLE)).toHaveLength(2) // also as filter
-        expect(queryAllByText(INBOUND_CALLS_METRIC_TITLE)).toHaveLength(2) // also as filter
-        expect(
-            queryAllByText(DEPRECATED_MISSED_CALLS_METRIC_TITLE),
-        ).toHaveLength(2) // also as filter
-
-        // list of calls section
-        expect(queryByText(CALL_LIST_TITLE)).toBeInTheDocument()
-
-        expect(queryAllByText(ALL_CALLS_FILTER_LABEL)).toHaveLength(2)
-        fireEvent.click(queryAllByText(ALL_CALLS_FILTER_LABEL)[0])
-        expect(queryAllByText(INBOUND_CALLS_FILTER_LABEL)).toHaveLength(2)
-        expect(queryAllByText(OUTBOUND_CALLS_METRIC_TITLE)).toHaveLength(2)
-
-        fireEvent.click(getAllByText(INBOUND_CALLS_FILTER_LABEL)[1])
-        expect(queryAllByText(ALL_CALLS_FILTER_LABEL)).toHaveLength(1)
-        expect(queryAllByText(INBOUND_CALLS_FILTER_LABEL)).toHaveLength(3)
-
-        // footer
-        expect(
-            queryByText('Analytics are using EST timezone'),
-        ).toBeInTheDocument()
-    })
-
     it('should render page', () => {
-        useFlagMock.mockImplementation((flag) => {
-            if (flag === FeatureFlagKey.ShowNewUnansweredStatuses) {
-                return true
-            }
-        })
-
         const { queryByText } = renderVoiceOverview()
 
         // header elements

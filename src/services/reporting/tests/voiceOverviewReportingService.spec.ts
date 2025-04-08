@@ -1,27 +1,17 @@
 import { renderHook } from '@testing-library/react-hooks'
 
 import { agents } from 'fixtures/agents'
-import { tags } from 'fixtures/tag'
 import { getCsvFileNameWithDates } from 'hooks/reporting/common/utils'
 import { useStatsFilters } from 'hooks/reporting/support-performance/useStatsFilters'
 import { VoiceCallSegment } from 'models/reporting/cubes/VoiceCallCube'
-import { withDefaultLogicalOperator } from 'models/reporting/queryFactories/utils'
 import { ReportingGranularity } from 'models/reporting/types'
-import { StatsFilters, TagFilterInstanceId } from 'models/stat/types'
+import { StatsFilters } from 'models/stat/types'
 import { LogicalOperatorEnum } from 'pages/stats/common/components/Filter/constants'
-import {
-    VOICE_OVERVIEW_CALL_EXPERIENCE_REPORT_FILE_NAME,
-    VOICE_OVERVIEW_CALL_VOLUME_REPORT_FILE_NAME,
-    VOICE_OVERVIEW_REPORT_FILE_NAME,
-} from 'pages/stats/voice/constants/voiceOverview'
+import { VOICE_OVERVIEW_REPORT_FILE_NAME } from 'pages/stats/voice/constants/voiceOverview'
 import { useVoiceCallAverageTimeTrend } from 'pages/stats/voice/hooks/useVoiceCallAverageTimeTrend'
 import { useVoiceCallCountTrend } from 'pages/stats/voice/hooks/useVoiceCallCountTrend'
 import { VoiceCallAverageTimeMetric } from 'pages/stats/voice/models/types'
-import {
-    DEPRECATED_saveReport,
-    DEPRECATED_useVoiceOverviewReportData,
-    useVoiceOverviewReportData,
-} from 'services/reporting/voiceOverviewReportingService'
+import { useVoiceOverviewReportData } from 'services/reporting/voiceOverviewReportingService'
 import * as files from 'utils/file'
 import { assumeMock } from 'utils/testing'
 
@@ -33,144 +23,6 @@ const useVoiceCallAverageTimeTrendMock = assumeMock(
 )
 jest.mock('hooks/reporting/support-performance/useStatsFilters')
 const useStatsFiltersMock = assumeMock(useStatsFilters)
-
-describe('DEPRECATED_useVoiceOverviewReportData', () => {
-    const period = {
-        start_datetime: '2023-12-11T00:00:00.000Z',
-        end_datetime: '2023-12-11T23:59:59.999Z',
-    }
-    const statsFilters: StatsFilters = {
-        period,
-        agents: withDefaultLogicalOperator([agents[0].id]),
-        tags: [
-            {
-                ...withDefaultLogicalOperator([tags[0].id]),
-                filterInstanceId: TagFilterInstanceId.First,
-            },
-        ],
-    }
-    const dateSeries: Parameters<typeof DEPRECATED_saveReport>[1] = period
-    const data: Parameters<typeof DEPRECATED_saveReport>[0] = {
-        averageWaitTimeTrend: {
-            isFetching: false,
-            isError: false,
-            data: {
-                value: null,
-                prevValue: 3.727272727272727,
-            },
-        },
-        averageTalkTimeTrend: {
-            isFetching: false,
-            isError: false,
-            data: {
-                value: null,
-                prevValue: 6.142857142857143,
-            },
-        },
-        totalCallsCountTrend: {
-            isFetching: false,
-            isError: false,
-            data: {
-                value: 0,
-                prevValue: 13,
-            },
-        },
-        outboundCallsCountTrend: {
-            isFetching: false,
-            isError: false,
-            data: {
-                value: 0,
-                prevValue: 2,
-            },
-        },
-        inboundCallsCountTrend: {
-            isFetching: false,
-            isError: false,
-            data: {
-                value: 0,
-                prevValue: 11,
-            },
-        },
-        missedCallsCountTrend: {
-            isFetching: false,
-            isError: false,
-            data: {
-                value: 0,
-                prevValue: 6,
-            },
-        },
-    }
-
-    const fakeReport = 'someValue'
-
-    it('should call saveReport with a report', () => {
-        jest.spyOn(files, 'createCsv').mockReturnValue(fakeReport)
-
-        const result = DEPRECATED_saveReport(data, dateSeries)
-
-        expect(result).toEqual({
-            files: {
-                [getCsvFileNameWithDates(
-                    period,
-                    VOICE_OVERVIEW_CALL_EXPERIENCE_REPORT_FILE_NAME,
-                )]: fakeReport,
-                [getCsvFileNameWithDates(
-                    period,
-                    VOICE_OVERVIEW_CALL_VOLUME_REPORT_FILE_NAME,
-                )]: fakeReport,
-            },
-            fileName: getCsvFileNameWithDates(
-                period,
-                VOICE_OVERVIEW_REPORT_FILE_NAME,
-            ),
-        })
-    })
-
-    describe('useVoiceOverviewReportData', () => {
-        beforeEach(() => {
-            useVoiceCallCountTrendMock.mockReturnValue({
-                data: { prevValue: 10, value: 15 },
-                isFetching: false,
-                isError: false,
-            })
-            useVoiceCallAverageTimeTrendMock.mockReturnValue({
-                data: { prevValue: 1, value: 2 },
-                isFetching: false,
-                isError: false,
-            })
-            useStatsFiltersMock.mockReturnValue({
-                cleanStatsFilters: statsFilters,
-                granularity: ReportingGranularity.Day,
-                userTimezone: 'UTC',
-            })
-        })
-
-        it('should fetch and format data', () => {
-            const fileName = getCsvFileNameWithDates(
-                period,
-                VOICE_OVERVIEW_REPORT_FILE_NAME,
-            )
-            const { result } = renderHook(() =>
-                DEPRECATED_useVoiceOverviewReportData(),
-            )
-
-            expect(result.current).toEqual({
-                files: {
-                    [getCsvFileNameWithDates(
-                        period,
-                        VOICE_OVERVIEW_CALL_EXPERIENCE_REPORT_FILE_NAME,
-                    )]: fakeReport,
-                    [getCsvFileNameWithDates(
-                        period,
-                        VOICE_OVERVIEW_CALL_VOLUME_REPORT_FILE_NAME,
-                    )]: fakeReport,
-                },
-                fileName,
-                isLoading: false,
-            })
-        })
-    })
-})
 
 describe('voiceOverviewReportingService', () => {
     const period = {

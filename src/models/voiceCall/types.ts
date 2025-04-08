@@ -157,63 +157,6 @@ export const isOutboundVoiceCall = (
 ): input is OutboundVoiceCall =>
     isVoiceCall(input) && typeof input.initiated_by_agent_id === 'number'
 
-export const DEPRECATED_getDisplayOutboundVoiceCallStatus = (
-    status: VoiceCallStatus,
-) => {
-    switch (status) {
-        case VoiceCallStatus.Ringing:
-        case VoiceCallStatus.InProgress:
-        case VoiceCallStatus.Queued:
-        case VoiceCallStatus.Initiated:
-            return DEPRECATED_VoiceCallDisplayStatus.Ringing
-        case VoiceCallStatus.Failed:
-            return DEPRECATED_VoiceCallDisplayStatus.Failed
-        case VoiceCallStatus.Canceled:
-        case VoiceCallStatus.Busy:
-        case VoiceCallStatus.NoAnswer:
-        case VoiceCallStatus.Missed:
-            return DEPRECATED_VoiceCallDisplayStatus.Missed
-        case VoiceCallStatus.Answered:
-        case VoiceCallStatus.Connected:
-            return DEPRECATED_VoiceCallDisplayStatus.InProgress
-        case VoiceCallStatus.Completed:
-            return DEPRECATED_VoiceCallDisplayStatus.Answered
-        default:
-            return null
-    }
-}
-
-export const DEPRECATED_getDisplayInboundVoiceCallStatus = (
-    status: VoiceCallStatus,
-    lastAnsweredByAgentId?: number | null,
-) => {
-    switch (status) {
-        case VoiceCallStatus.Ringing:
-        case VoiceCallStatus.Initiated:
-        case VoiceCallStatus.Queued:
-        case VoiceCallStatus.InProgress:
-            return DEPRECATED_VoiceCallDisplayStatus.Ringing
-        case VoiceCallStatus.Failed:
-        case VoiceCallStatus.NoAnswer:
-            return DEPRECATED_VoiceCallDisplayStatus.Failed
-        case VoiceCallStatus.Canceled:
-        case VoiceCallStatus.Busy:
-        case VoiceCallStatus.Missed:
-        case VoiceCallStatus.Ending:
-            return DEPRECATED_VoiceCallDisplayStatus.Missed
-        case VoiceCallStatus.Answered:
-        case VoiceCallStatus.Connected:
-            return DEPRECATED_VoiceCallDisplayStatus.InProgress
-        case VoiceCallStatus.Completed:
-            if (lastAnsweredByAgentId === null) {
-                return DEPRECATED_VoiceCallDisplayStatus.Missed
-            }
-            return DEPRECATED_VoiceCallDisplayStatus.Answered
-        default:
-            return null
-    }
-}
-
 const getFinalDisplayStatus = (
     terminationStatus: VoiceCallTerminationStatus,
 ) => {

@@ -11,7 +11,6 @@ import { VoiceCallCallerExperienceAverageTalkTime } from 'pages/stats/voice/char
 import { VoiceCallCallerExperienceAverageWaitTimeChart } from 'pages/stats/voice/charts/VoiceCallCallerExperienceAverageWaitTimeChart'
 import { VoiceCallTableChart } from 'pages/stats/voice/charts/VoiceCallTableChart'
 import { VoiceCallVolumeMetricInboundCallsCountTrend } from 'pages/stats/voice/charts/VoiceCallVolumeMetricInboundCallsCountTrendChart'
-import { VoiceCallVolumeMetricMissedCallsCountTrendChart } from 'pages/stats/voice/charts/VoiceCallVolumeMetricMissedCallsCountTrendChart'
 import { VoiceCallVolumeMetricOutboundCallsCountTrend } from 'pages/stats/voice/charts/VoiceCallVolumeMetricOutboundCallsCountTrend'
 import { VoiceCallVolumeTotalCallCountTrendChart } from 'pages/stats/voice/charts/VoiceCallVolumeTotalCallCountTrendChart'
 import {
@@ -25,8 +24,6 @@ import {
     CALL_LIST_TITLE,
     CANCELLED_CALLS_METRIC_HINT,
     CANCELLED_CALLS_METRIC_TITLE,
-    DEPRECATED_MISSED_CALLS_METRIC_HINT,
-    DEPRECATED_MISSED_CALLS_METRIC_TITLE,
     INBOUND_CALLS_METRIC_HINT,
     INBOUND_CALLS_METRIC_TITLE,
     MISSED_CALLS_METRIC_HINT,
@@ -44,7 +41,6 @@ import {
 } from 'pages/stats/voice/hooks/useVoiceCallAverageTimeTrend'
 import {
     fetchVoiceCallCountInboundTrend,
-    fetchVoiceCallCountMissedTrend,
     fetchVoiceCallCountOutboundTrend,
     fetchVoiceCallCountTrend,
 } from 'pages/stats/voice/hooks/useVoiceCallCountTrend'
@@ -68,7 +64,6 @@ export enum VoiceOverviewChart {
     VoiceCallVolumeTotalCallCountTrendChart = 'VoiceCallVolumeTotalCallCountTrendChart',
     VoiceCallVolumeMetricOutboundCallsCountTrend = 'VoiceCallVolumeMetricOutboundCallsCountTrend',
     VoiceCallVolumeMetricInboundCallsCountTrend = 'VoiceCallVolumeMetricInboundCallsCountTrend',
-    DEPRECATED_VoiceCallVolumeMetricMissedCallsCountTrendChart = 'DEPRECATED_VoiceCallVolumeMetricMissedCallsCountTrendChart',
     VoiceCallVolumeMetricUnansweredCallsCountTrendChart = 'VoiceCallVolumeMetricUnansweredCallsCountTrendChart',
     VoiceCallVolumeMetricMissedCallsCountTrendChart = 'VoiceCallVolumeMetricMissedCallsCountTrendChart',
     VoiceCallVolumeMetricAbandonedCallsCountTrendChart = 'VoiceCallVolumeMetricAbandonedCallsCountTrendChart',
@@ -147,20 +142,6 @@ export const VoiceOverviewReportConfig: ReportConfig<VoiceOverviewChart> = {
                 },
             ],
         },
-        [VoiceOverviewChart.DEPRECATED_VoiceCallVolumeMetricMissedCallsCountTrendChart]:
-            {
-                chartComponent: VoiceCallVolumeMetricMissedCallsCountTrendChart,
-                label: DEPRECATED_MISSED_CALLS_METRIC_TITLE,
-                description: DEPRECATED_MISSED_CALLS_METRIC_HINT,
-                chartType: ChartType.Card,
-                csvProducer: [
-                    {
-                        type: DataExportFormat.Trend,
-                        fetch: fetchVoiceCallCountMissedTrend,
-                        metricFormat: 'integer',
-                    },
-                ],
-            },
         [VoiceOverviewChart.VoiceCallVolumeMetricUnansweredCallsCountTrendChart]:
             {
                 chartComponent: ({ chartId, dashboard }) =>

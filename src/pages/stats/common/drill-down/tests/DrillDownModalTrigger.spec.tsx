@@ -80,7 +80,6 @@ describe('<DrillDownModalTrigger />', () => {
         VoiceMetric.QueueAverageWaitTime,
         VoiceMetric.QueueAverageTalkTime,
         VoiceMetric.QueueInboundCalls,
-        VoiceMetric.DEPRECATED_QueueMissedInboundCalls,
         VoiceMetric.QueueInboundUnansweredCalls,
         VoiceMetric.QueueInboundMissedCalls,
         VoiceMetric.QueueInboundAbandonedCalls,

@@ -93,7 +93,6 @@ export enum VoiceMetric {
     QueueAverageTalkTime = 'queue_average_talk_time',
     QueueInboundCalls = 'queue_inbound_calls',
     QueueOutboundCalls = 'queue_outbound_calls',
-    DEPRECATED_QueueMissedInboundCalls = 'queue_missed_inbound_calls',
     QueueInboundUnansweredCalls = 'queue_inbound_unanswered_calls',
     QueueInboundMissedCalls = 'queue_inbound_missed_calls',
     QueueInboundAbandonedCalls = 'queue_inbound_abandoned_calls',

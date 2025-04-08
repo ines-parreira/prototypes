@@ -1,9 +1,7 @@
-import React, { useMemo } from 'react'
+import { useMemo } from 'react'
 
 import { LiveCallQueueVoiceCall } from '@gorgias/api-queries'
 
-import { FeatureFlagKey } from 'config/featureFlags'
-import { useFlag } from 'core/flags'
 import useAppSelector from 'hooks/useAppSelector'
 import { StatsFiltersWithLogicalOperator } from 'models/stat/types'
 import DashboardGridCell from 'pages/stats/DashboardGridCell'
@@ -11,10 +9,7 @@ import DashboardSection from 'pages/stats/DashboardSection'
 import { getBusinessHoursSettings } from 'state/currentAccount/selectors'
 
 import { LiveVoiceMetricCard } from './LiveVoiceMetricCard'
-import {
-    getLiveVoiceMetricCards,
-    getOldLiveVoiceMetricCards,
-} from './LiveVoiceMetricsConfig'
+import { getLiveVoiceMetricCards } from './LiveVoiceMetricsConfig'
 import { getLiveVoicePeriodFilter } from './utils'
 
 type Props = {
@@ -28,10 +23,6 @@ export default function LiveVoiceMetrics({
     isLoadingVoiceCalls,
     cleanStatsFilters,
 }: Props) {
-    const shouldShowNewUnansweredStatuses = useFlag(
-        FeatureFlagKey.ShowNewUnansweredStatuses,
-    )
-
     const {
         data: { timezone },
     } = useAppSelector(getBusinessHoursSettings) ?? {
@@ -47,27 +38,16 @@ export default function LiveVoiceMetrics({
         }
     }, [cleanStatsFilters, timezone])
 
-    const metricCards = useMemo(() => {
-        return shouldShowNewUnansweredStatuses
-            ? getLiveVoiceMetricCards(
-                  liveVoiceCalls,
-                  isLoadingVoiceCalls,
-                  filters,
-                  timezone,
-              )
-            : getOldLiveVoiceMetricCards(
-                  liveVoiceCalls,
-                  isLoadingVoiceCalls,
-                  filters,
-                  timezone,
-              )
-    }, [
-        liveVoiceCalls,
-        isLoadingVoiceCalls,
-        filters,
-        timezone,
-        shouldShowNewUnansweredStatuses,
-    ])
+    const metricCards = useMemo(
+        () =>
+            getLiveVoiceMetricCards(
+                liveVoiceCalls,
+                isLoadingVoiceCalls,
+                filters,
+                timezone,
+            ),
+        [liveVoiceCalls, isLoadingVoiceCalls, filters, timezone],
+    )
 
     return (
         <DashboardSection>

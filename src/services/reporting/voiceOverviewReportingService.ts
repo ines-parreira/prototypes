@@ -11,14 +11,11 @@ import {
     AVERAGE_TALK_TIME_METRIC_TITLE,
     AVERAGE_WAIT_TIME_METRIC_TITLE,
     CANCELLED_CALLS_METRIC_TITLE,
-    DEPRECATED_MISSED_CALLS_METRIC_TITLE,
     INBOUND_CALLS_METRIC_TITLE,
     MISSED_CALLS_METRIC_TITLE,
     OUTBOUND_CALLS_METRIC_TITLE,
     TOTAL_CALLS_METRIC_TITLE,
     UNANSWERED_CALLS_METRIC_TITLE,
-    VOICE_OVERVIEW_CALL_EXPERIENCE_REPORT_FILE_NAME,
-    VOICE_OVERVIEW_CALL_VOLUME_REPORT_FILE_NAME,
     VOICE_OVERVIEW_REPORT_FILE_NAME,
 } from 'pages/stats/voice/constants/voiceOverview'
 import { useVoiceCallAverageTimeTrend } from 'pages/stats/voice/hooks/useVoiceCallAverageTimeTrend'
@@ -31,149 +28,6 @@ import {
     PREVIOUS_PERIOD_LABEL,
 } from 'services/reporting/constants'
 import { createCsv } from 'utils/file'
-
-interface DEPRECATED_VoiceReportData {
-    averageWaitTimeTrend: MetricTrend
-    averageTalkTimeTrend: MetricTrend
-    totalCallsCountTrend: MetricTrend
-    outboundCallsCountTrend: MetricTrend
-    inboundCallsCountTrend: MetricTrend
-    missedCallsCountTrend: MetricTrend
-}
-
-export const DEPRECATED_saveReport = (
-    data: DEPRECATED_VoiceReportData,
-    period: Period,
-) => {
-    const {
-        averageWaitTimeTrend,
-        averageTalkTimeTrend,
-        totalCallsCountTrend,
-        outboundCallsCountTrend,
-        inboundCallsCountTrend,
-        missedCallsCountTrend,
-    } = data
-
-    const formatValue = (value?: number | null) =>
-        value ? formatMetricValue(value) : NOT_AVAILABLE_LABEL
-
-    const callerExperienceData = [
-        [EMPTY_LABEL, CURRENT_PERIOD_LABEL, PREVIOUS_PERIOD_LABEL],
-        [
-            AVERAGE_WAIT_TIME_METRIC_TITLE,
-            formatValue(averageWaitTimeTrend.data?.value),
-            formatValue(averageWaitTimeTrend.data?.prevValue),
-        ],
-        [
-            AVERAGE_TALK_TIME_METRIC_TITLE,
-            formatValue(averageTalkTimeTrend.data?.value),
-            formatValue(averageTalkTimeTrend.data?.prevValue),
-        ],
-    ]
-    const callVolumeData = [
-        [EMPTY_LABEL, CURRENT_PERIOD_LABEL, PREVIOUS_PERIOD_LABEL],
-        [
-            TOTAL_CALLS_METRIC_TITLE,
-            totalCallsCountTrend.data?.value,
-            totalCallsCountTrend.data?.prevValue,
-        ],
-        [
-            OUTBOUND_CALLS_METRIC_TITLE,
-            outboundCallsCountTrend.data?.value,
-            outboundCallsCountTrend.data?.prevValue,
-        ],
-        [
-            INBOUND_CALLS_METRIC_TITLE,
-            inboundCallsCountTrend.data?.value,
-            inboundCallsCountTrend.data?.prevValue,
-        ],
-        [
-            DEPRECATED_MISSED_CALLS_METRIC_TITLE,
-            missedCallsCountTrend.data?.value,
-            missedCallsCountTrend.data?.prevValue,
-        ],
-    ]
-
-    const downloadFileName = getCsvFileNameWithDates(
-        period,
-        VOICE_OVERVIEW_REPORT_FILE_NAME,
-    )
-
-    return {
-        files: {
-            [getCsvFileNameWithDates(
-                period,
-                VOICE_OVERVIEW_CALL_EXPERIENCE_REPORT_FILE_NAME,
-            )]: createCsv(callerExperienceData),
-            [getCsvFileNameWithDates(
-                period,
-                VOICE_OVERVIEW_CALL_VOLUME_REPORT_FILE_NAME,
-            )]: createCsv(callVolumeData),
-        },
-        fileName: downloadFileName,
-    }
-}
-
-export const DEPRECATED_useVoiceOverviewReportData = () => {
-    const { cleanStatsFilters, userTimezone } = useStatsFilters()
-
-    const averageWaitTimeTrend = useVoiceCallAverageTimeTrend(
-        VoiceCallAverageTimeMetric.WaitTime,
-        cleanStatsFilters,
-        userTimezone,
-    )
-    const averageTalkTimeTrend = useVoiceCallAverageTimeTrend(
-        VoiceCallAverageTimeMetric.TalkTime,
-        cleanStatsFilters,
-        userTimezone,
-    )
-    const totalCallsCountTrend = useVoiceCallCountTrend(
-        cleanStatsFilters,
-        userTimezone,
-    )
-    const outboundCallsCountTrend = useVoiceCallCountTrend(
-        cleanStatsFilters,
-        userTimezone,
-        VoiceCallSegment.outboundCalls,
-    )
-    const inboundCallsCountTrend = useVoiceCallCountTrend(
-        cleanStatsFilters,
-        userTimezone,
-        VoiceCallSegment.inboundCalls,
-    )
-    const missedCallsCountTrend = useVoiceCallCountTrend(
-        cleanStatsFilters,
-        userTimezone,
-        VoiceCallSegment.missedCalls,
-    )
-
-    const exportableData = useMemo(() => {
-        return {
-            averageWaitTimeTrend,
-            averageTalkTimeTrend,
-            totalCallsCountTrend,
-            outboundCallsCountTrend,
-            inboundCallsCountTrend,
-            missedCallsCountTrend,
-        }
-    }, [
-        averageWaitTimeTrend,
-        averageTalkTimeTrend,
-        totalCallsCountTrend,
-        outboundCallsCountTrend,
-        inboundCallsCountTrend,
-        missedCallsCountTrend,
-    ])
-
-    const isLoading = useMemo(() => {
-        return Object.values(exportableData).some((metric) => metric.isFetching)
-    }, [exportableData])
-
-    return {
-        ...DEPRECATED_saveReport(exportableData, cleanStatsFilters.period),
-        isLoading,
-    }
-}
 
 interface VoiceReportData {
     totalCallsCountTrend: MetricTrend

@@ -14,10 +14,7 @@ import { assumeMock } from 'utils/testing'
 
 import { useAverageTalkTimeMetric } from '../../hooks/agentMetrics'
 import { useVoiceCallCountMetric } from '../../hooks/useVoiceCallCountMetric'
-import {
-    getLiveVoiceMetricCards,
-    getOldLiveVoiceMetricCards,
-} from './LiveVoiceMetricsConfig'
+import { getLiveVoiceMetricCards } from './LiveVoiceMetricsConfig'
 import { filterLiveCallsByStatus } from './utils'
 
 jest.mock('pages/stats/voice/components/LiveVoice/utils')
@@ -65,129 +62,6 @@ const timezone = 'UTC'
 describe('LiveVoiceMetricsConfig', () => {
     beforeEach(() => {
         jest.clearAllMocks()
-    })
-
-    it.each([
-        {
-            liveVoiceCalls: sampleLiveVoiceCalls,
-            isLoadingVoiceCalls: true,
-            callsInQueueCount: 2,
-        },
-        {
-            liveVoiceCalls: [],
-            isLoadingVoiceCalls: false,
-            callsInQueueCount: 0,
-        },
-    ])(
-        'should return correct calls in queue count (old way)',
-        ({ liveVoiceCalls, isLoadingVoiceCalls, callsInQueueCount }) => {
-            filterLiveCallsByStatusMock.mockReturnValue(liveVoiceCalls)
-
-            const { result } = renderHook(() =>
-                getOldLiveVoiceMetricCards(
-                    liveVoiceCalls,
-                    isLoadingVoiceCalls,
-                    filters,
-                    timezone,
-                ),
-            )
-
-            expect(result.current[0]).toMatchObject({
-                title: constants.CALLS_IN_QUEUE_METRIC_TITLE,
-                hint: constants.CALLS_IN_QUEUE_METRIC_HINT,
-                size: 4,
-            })
-            expect(result.current[0].fetchData()).toEqual({
-                data: { value: callsInQueueCount },
-                isFetching: isLoadingVoiceCalls,
-                isError: false,
-            })
-        },
-    )
-
-    it('should return correct average wait time (old way)', () => {
-        const { result } = renderHook(() =>
-            getOldLiveVoiceMetricCards([], true, filters, timezone),
-        )
-
-        expect(result.current[1]).toMatchObject({
-            title: constants.AVERAGE_WAIT_TIME_METRIC_TITLE,
-            hint: constants.AVERAGE_WAIT_TIME_METRIC_HINT,
-            metricValueFormat: 'duration',
-            metricName: VoiceMetric.QueueAverageWaitTime,
-            size: 4,
-        })
-        result.current[1].fetchData()
-        expect(useMetricMock).toHaveBeenCalledWith(
-            expect(
-                voiceCallAverageWaitTimeQueryFactoryMock,
-            ).toHaveBeenCalledWith(filters, timezone, true),
-        )
-    })
-
-    it.each([
-        {
-            index: 2,
-            title: constants.DEPRECATED_MISSED_INBOUND_CALLS_METRIC_TITLE,
-            hint: constants.DEPRECATED_MISSED_INBOUND_CALLS_METRIC_HINT,
-            metricName: VoiceMetric.DEPRECATED_QueueMissedInboundCalls,
-            filteringSegment: VoiceCallSegment.missedCalls,
-        },
-        {
-            index: 3,
-            title: constants.INBOUND_CALLS_METRIC_TITLE,
-            hint: constants.INBOUND_CALLS_METRIC_HINT,
-            metricName: VoiceMetric.QueueInboundCalls,
-            filteringSegment: VoiceCallSegment.inboundCalls,
-        },
-        {
-            index: 4,
-            title: constants.OUTBOUND_CALLS_METRIC_TITLE,
-            hint: constants.OUTBOUND_CALLS_METRIC_HINT,
-            metricName: VoiceMetric.QueueOutboundCalls,
-            filteringSegment: VoiceCallSegment.outboundCalls,
-        },
-    ])(
-        'should return correct voice call count metric (old way)',
-        ({ index, title, hint, metricName, filteringSegment }) => {
-            const { result } = renderHook(() =>
-                getOldLiveVoiceMetricCards([], true, filters, timezone),
-            )
-
-            expect(result.current[index]).toMatchObject({
-                title: title,
-                hint: hint,
-                metricName: metricName,
-                size: 4,
-            })
-            result.current[index].fetchData()
-            expect(useVoiceCallCountMetricMock).toHaveBeenCalledWith(
-                filters,
-                timezone,
-                filteringSegment,
-                true,
-            )
-        },
-    )
-
-    it('should return correct average talk time (old way)', () => {
-        const { result } = renderHook(() =>
-            getOldLiveVoiceMetricCards([], true, filters, timezone),
-        )
-
-        expect(result.current[5]).toMatchObject({
-            title: constants.AVERAGE_TALK_TIME_METRIC_TITLE,
-            hint: constants.AVERAGE_TALK_TIME_METRIC_HINT,
-            metricValueFormat: 'duration',
-            metricName: VoiceMetric.QueueAverageTalkTime,
-            size: 4,
-        })
-        result.current[5].fetchData()
-        expect(useAverageTalkTimeMetricMock).toHaveBeenCalledWith(
-            filters,
-            timezone,
-            true,
-        )
     })
 
     it.each([

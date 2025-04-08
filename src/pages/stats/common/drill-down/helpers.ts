@@ -255,7 +255,6 @@ export const getDrillDownQuery = (
         case VoiceMetric.QueueAverageTalkTime:
         case VoiceMetric.QueueAverageWaitTime:
         case VoiceMetric.QueueInboundCalls:
-        case VoiceMetric.DEPRECATED_QueueMissedInboundCalls:
         case VoiceMetric.QueueInboundUnansweredCalls:
         case VoiceMetric.QueueInboundMissedCalls:
         case VoiceMetric.QueueInboundAbandonedCalls:
@@ -353,8 +352,6 @@ export const getDrillDownMetricColumn = (
         metricData.metricName === VoiceMetric.QueueAverageTalkTime ||
         metricData.metricName === VoiceMetric.QueueAverageWaitTime ||
         metricData.metricName === VoiceMetric.QueueInboundCalls ||
-        metricData.metricName ===
-            VoiceMetric.DEPRECATED_QueueMissedInboundCalls ||
         metricData.metricName === VoiceMetric.QueueInboundUnansweredCalls ||
         metricData.metricName === VoiceMetric.QueueInboundMissedCalls ||
         metricData.metricName === VoiceMetric.QueueInboundAbandonedCalls ||

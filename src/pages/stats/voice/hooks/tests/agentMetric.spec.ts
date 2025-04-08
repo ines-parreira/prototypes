@@ -108,7 +108,7 @@ describe('metricsPerDimension', () => {
                     ],
                     measures: [VoiceCallMeasure.VoiceCallCount],
                     segments: [
-                        VoiceCallSegment.answeredCallsByAgent,
+                        VoiceCallSegment.inboundAnsweredCallsByAgent,
                         VoiceCallSegment.callsInFinalStatus,
                     ],
                     timezone: userTimezone,
@@ -141,7 +141,7 @@ describe('metricsPerDimension', () => {
                     ],
                     measures: [VoiceCallMeasure.VoiceCallCount],
                     segments: [
-                        VoiceCallSegment.missedCallsByAgent,
+                        VoiceCallSegment.inboundUnansweredCallsByAgent,
                         VoiceCallSegment.callsInFinalStatus,
                     ],
                     timezone: userTimezone,
@@ -272,13 +272,13 @@ describe('metricsPerDimension', () => {
             {
                 fetch: fetchAnsweredCallsMetric,
                 queryFactory: voiceCallCountQueryFactory,
-                segment: VoiceCallSegment.answeredCallsByAgent,
+                segment: VoiceCallSegment.inboundAnsweredCallsByAgent,
                 filter: ignoreCallsWithNoAgentsFilter,
             },
             {
                 fetch: fetchMissedCallsMetric,
                 queryFactory: voiceCallCountQueryFactory,
-                segment: VoiceCallSegment.missedCallsByAgent,
+                segment: VoiceCallSegment.inboundUnansweredCallsByAgent,
                 filter: ignoreCallsWithNoAgentsFilter,
             },
             {

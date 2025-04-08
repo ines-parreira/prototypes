@@ -48,7 +48,7 @@ export const useAnsweredCallsMetricPerAgent = (
         voiceCallCountPerFilteringAgentQueryFactory(
             statsFilters,
             timezone,
-            VoiceCallSegment.answeredCallsByAgent,
+            VoiceCallSegment.inboundAnsweredCallsByAgent,
         ),
         agentAssigneeId,
     )
@@ -58,7 +58,7 @@ export const fetchAnsweredCallsMetricPerAgent = createFetchMetricPerDimension(
         voiceCallCountPerFilteringAgentQueryFactory(
             statsFilters,
             timezone,
-            VoiceCallSegment.answeredCallsByAgent,
+            VoiceCallSegment.inboundAnsweredCallsByAgent,
         ),
 )
 
@@ -71,7 +71,7 @@ export const useMissedCallsMetricPerAgent = (
         voiceCallCountPerFilteringAgentQueryFactory(
             statsFilters,
             timezone,
-            VoiceCallSegment.missedCallsByAgent,
+            VoiceCallSegment.inboundUnansweredCallsByAgent,
         ),
         agentAssigneeId,
     )
@@ -81,7 +81,7 @@ export const fetchMissedCallsMetricPerAgent = createFetchMetricPerDimension(
         voiceCallCountPerFilteringAgentQueryFactory(
             statsFilters,
             timezone,
-            VoiceCallSegment.missedCallsByAgent,
+            VoiceCallSegment.inboundUnansweredCallsByAgent,
         ),
 )
 

@@ -83,16 +83,6 @@ export const VoiceMetricsConfig: Record<
             ),
         title: '',
     },
-    [VoiceMetric.DEPRECATED_QueueMissedInboundCalls]: {
-        showMetric: false,
-        domain: Domain.Voice,
-        drillDownQuery: (statsFilters: StatsFilters) =>
-            liveDashBoardVoiceCallListQueryFactory(
-                statsFilters,
-                VoiceCallSegment.missedCalls,
-            ),
-        title: '',
-    },
     [VoiceMetric.QueueInboundUnansweredCalls]: {
         showMetric: false,
         domain: Domain.Voice,
@@ -148,7 +138,7 @@ export const VoiceAgentsMetricsConfig: Record<
             voiceCallListQueryFactory(
                 statsFilters,
                 timezone,
-                VoiceCallSegment.missedCallsByAgent,
+                VoiceCallSegment.inboundUnansweredCallsByAgent,
             ),
         title: '',
     },
@@ -159,7 +149,7 @@ export const VoiceAgentsMetricsConfig: Record<
             voiceCallListQueryFactory(
                 statsFilters,
                 timezone,
-                VoiceCallSegment.answeredCallsByAgent,
+                VoiceCallSegment.inboundAnsweredCallsByAgent,
             ),
         title: '',
     },

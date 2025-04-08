@@ -135,7 +135,6 @@ describe('getDrillDownHook', () => {
         { metricName: VoiceMetric.QueueAverageWaitTime },
         { metricName: VoiceMetric.QueueAverageTalkTime },
         { metricName: VoiceMetric.QueueInboundCalls },
-        { metricName: VoiceMetric.DEPRECATED_QueueMissedInboundCalls },
         { metricName: VoiceMetric.QueueInboundUnansweredCalls },
         { metricName: VoiceMetric.QueueInboundMissedCalls },
         { metricName: VoiceMetric.QueueInboundAbandonedCalls },

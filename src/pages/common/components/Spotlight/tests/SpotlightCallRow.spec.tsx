@@ -1,12 +1,8 @@
-import React from 'react'
-
 import {
     VoiceCallDirection,
     VoiceCallTerminationStatus,
 } from '@gorgias/api-queries'
 
-import { FeatureFlagKey } from 'config/featureFlags'
-import { useFlag } from 'core/flags'
 import { voiceCall } from 'fixtures/voiceCalls'
 import {
     getInboundDisplayStatus,
@@ -24,9 +20,6 @@ jest.mock(
             <div>VoiceCallCustomerLabel {customerId}</div>
         ),
 )
-
-jest.mock('core/flags', () => ({ useFlag: jest.fn() }))
-const useFlagMock = assumeMock(useFlag)
 
 jest.mock('models/voiceCall/types', () => {
     const originalModule = jest.requireActual('models/voiceCall/types')
@@ -50,6 +43,10 @@ describe('<SpotlightCallRow/>', () => {
     }
 
     it('should render', () => {
+        getInboundDisplayStatusMock.mockReturnValue(
+            VoiceCallDisplayStatus.Answered,
+        )
+
         const { getByText } = renderWithStore(
             <SpotlightCallRow {...defaultProps} />,
             {},
@@ -68,6 +65,10 @@ describe('<SpotlightCallRow/>', () => {
     })
 
     it('should render highlights', () => {
+        getInboundDisplayStatusMock.mockReturnValue(
+            VoiceCallDisplayStatus.Answered,
+        )
+
         const { getByText } = renderWithStore(
             <SpotlightCallRow
                 {...defaultProps}
@@ -122,12 +123,6 @@ describe('<SpotlightCallRow/>', () => {
     })
 
     it('should render voice call display status for inbound calls', () => {
-        useFlagMock.mockImplementation((flag) => {
-            if (flag === FeatureFlagKey.ShowNewUnansweredStatuses) {
-                return true
-            }
-        })
-
         getInboundDisplayStatusMock.mockReturnValue(
             VoiceCallDisplayStatus.Abandoned,
         )
@@ -152,12 +147,6 @@ describe('<SpotlightCallRow/>', () => {
     })
 
     it('should render voice call display status for outbound calls', () => {
-        useFlagMock.mockImplementation((flag) => {
-            if (flag === FeatureFlagKey.ShowNewUnansweredStatuses) {
-                return true
-            }
-        })
-
         getOutboundDisplayStatusMock.mockReturnValue(
             VoiceCallDisplayStatus.Unanswered,
         )

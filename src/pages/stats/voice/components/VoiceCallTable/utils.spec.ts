@@ -70,7 +70,6 @@ describe('utils', () => {
             VoiceAgentsMetric.AgentInboundMissedCalls,
             VoiceAgentsMetric.AgentOutboundCalls,
             VoiceMetric.QueueInboundCalls,
-            VoiceMetric.DEPRECATED_QueueMissedInboundCalls,
             VoiceMetric.QueueInboundUnansweredCalls,
             VoiceMetric.QueueInboundMissedCalls,
             VoiceMetric.QueueInboundAbandonedCalls,
@@ -151,7 +150,7 @@ describe('utils', () => {
             VoiceCallTableColumnName.Recording,
             VoiceCallTableColumnName.Ticket,
         ])('should return false for %s', (columnName) => {
-            const result = isVoiceCallTableColumnSortable(columnName, true)
+            const result = isVoiceCallTableColumnSortable(columnName)
 
             expect(result).toBe(false)
         })
@@ -164,18 +163,9 @@ describe('utils', () => {
             VoiceCallTableColumnName.OngoingTime,
             VoiceCallTableColumnName.State,
         ])('should return true for %s', (columnName) => {
-            const result = isVoiceCallTableColumnSortable(columnName, true)
+            const result = isVoiceCallTableColumnSortable(columnName)
 
             expect(result).toBe(true)
-        })
-
-        it('should return false for state if cannot order by state', () => {
-            const result = isVoiceCallTableColumnSortable(
-                VoiceCallTableColumnName.State,
-                false,
-            )
-
-            expect(result).toBe(false)
         })
     })
 })

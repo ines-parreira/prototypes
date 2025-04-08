@@ -124,7 +124,6 @@ export enum FeatureFlagKey {
     ShopifyIntegrationScopeScriptTag = 'shopify-integration-scope-script-tag',
     ShopifyInventoryItemScopeBanner = 'shopify-inventory-item-scope-banner',
     ShopifyOrderNotes = 'shopify-order-notes',
-    ShowNewUnansweredStatuses = 'show-new-unanswered-statuses',
     SimplifiedStepBuilder = 'simplified-step-builder',
     StandaloneAIAgentSalesPage = 'standalone-ai-agent-sales-page',
     StandaloneAiSalesAnalyticsPage = 'standalone-ai-sales-analytics-page',

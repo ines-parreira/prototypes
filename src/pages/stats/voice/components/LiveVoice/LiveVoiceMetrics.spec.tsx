@@ -1,22 +1,17 @@
-import React, { ComponentProps } from 'react'
+import { ComponentProps } from 'react'
 
 import { render } from '@testing-library/react'
 import { Moment } from 'moment'
 
 import { VoiceCallDirection, VoiceCallStatus } from '@gorgias/api-queries'
 
-import { FeatureFlagKey } from 'config/featureFlags'
-import { useFlag } from 'core/flags'
 import { getBusinessHoursSettings } from 'state/currentAccount/selectors'
 import { formatReportingQueryDate } from 'utils/reporting'
 import { assumeMock } from 'utils/testing'
 
 import { LiveVoiceMetricCard } from './LiveVoiceMetricCard'
 import LiveVoiceMetrics from './LiveVoiceMetrics'
-import {
-    getLiveVoiceMetricCards,
-    getOldLiveVoiceMetricCards,
-} from './LiveVoiceMetricsConfig'
+import { getLiveVoiceMetricCards } from './LiveVoiceMetricsConfig'
 import { getLiveVoicePeriodFilter } from './utils'
 
 const renderComponent = (
@@ -51,11 +46,7 @@ const LiveVoiceMetricCardMock = assumeMock(LiveVoiceMetricCard)
 const formatReportingQueryDateMock = assumeMock(formatReportingQueryDate)
 const getBusinessHoursSettingsMock = assumeMock(getBusinessHoursSettings)
 const getLiveVoicePeriodFilterMock = assumeMock(getLiveVoicePeriodFilter)
-const getOldLiveVoiceMetricCardsMock = assumeMock(getOldLiveVoiceMetricCards)
 const getLiveVoiceMetricCardsMock = assumeMock(getLiveVoiceMetricCards)
-
-jest.mock('core/flags', () => ({ useFlag: jest.fn() }))
-const useFlagMock = assumeMock(useFlag)
 
 const defaultPeriodFilter = {
     start_datetime: '2024-01-01T00:00:00+01:00',
@@ -115,79 +106,6 @@ describe('LiveVoiceMetrics', () => {
             expectedTimezone: 'UTC',
         },
     ])(
-        'should call old config function with correct timezone',
-        ({
-            liveVoiceCalls,
-            isLoadingVoiceCalls,
-            businessHours,
-            expectedTimezone,
-        }) => {
-            useFlagMock.mockImplementation((flag) => {
-                if (flag === FeatureFlagKey.ShowNewUnansweredStatuses) {
-                    return false
-                }
-            })
-
-            getBusinessHoursSettingsMock.mockReturnValue(businessHours as any)
-            getOldLiveVoiceMetricCardsMock.mockReturnValue([
-                {
-                    title: 'Metric title',
-                    hint: 'Metric hint',
-                    fetchData: () => ({
-                        data: { value: 1 },
-                        isFetching: false,
-                        isError: false,
-                    }),
-                    size: 4,
-                },
-            ])
-
-            const filters = {
-                period: defaultPeriodFilter,
-            }
-
-            renderComponent({
-                liveVoiceCalls: liveVoiceCalls,
-                isLoadingVoiceCalls: isLoadingVoiceCalls,
-            })
-
-            expect(getOldLiveVoiceMetricCardsMock).toHaveBeenCalledWith(
-                liveVoiceCalls,
-                isLoadingVoiceCalls,
-                filters,
-                expectedTimezone,
-            )
-
-            expect(LiveVoiceMetricCardMock).toHaveBeenCalledWith(
-                expect.objectContaining({
-                    title: 'Metric title',
-                    hint: 'Metric hint',
-                    fetchData: expect.any(Function),
-                    size: 4,
-                }),
-                {},
-            )
-        },
-    )
-
-    it.each([
-        {
-            liveVoiceCalls: [],
-            isLoadingVoiceCalls: true,
-            businessHours: {
-                data: {
-                    timezone: 'Europe/Paris',
-                },
-            },
-            expectedTimezone: 'Europe/Paris',
-        },
-        {
-            liveVoiceCalls: liveVoiceCalls,
-            isLoadingVoiceCalls: false,
-            businessHours: undefined,
-            expectedTimezone: 'UTC',
-        },
-    ])(
         'should call config function with correct timezone',
         ({
             liveVoiceCalls,
@@ -195,12 +113,6 @@ describe('LiveVoiceMetrics', () => {
             businessHours,
             expectedTimezone,
         }) => {
-            useFlagMock.mockImplementation((flag) => {
-                if (flag === FeatureFlagKey.ShowNewUnansweredStatuses) {
-                    return true
-                }
-            })
-
             getBusinessHoursSettingsMock.mockReturnValue(businessHours as any)
             getLiveVoiceMetricCardsMock.mockReturnValue([
                 {
