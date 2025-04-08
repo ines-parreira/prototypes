@@ -25,7 +25,7 @@ const AiAgentScrapedDomainContentLayout = ({ shopName, children }: Props) => {
     const headerNavbarItems = [
         {
             route: routes.pagesContent,
-            title: SCRAPPING_CONTENT.PAGES,
+            title: SCRAPPING_CONTENT.QUESTIONS,
         },
         {
             route: routes.productsContent,

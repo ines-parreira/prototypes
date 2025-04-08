@@ -1,0 +1,51 @@
+@import '~@gorgias/design-tokens/dist/css/layout';
+@import (reference) '~css/typography.less';
+
+:local {
+    .emptyState {
+        .body-semibold();
+        color: var(--neutral-grey-5);
+        display: flex;
+        padding: @layout-spacing-m;
+        justify-content: center;
+        align-items: center;
+        align-self: stretch;
+        height: 426px;
+    }
+
+    .loader {
+        width: 100%;
+        height: 100%;
+    }
+
+    .tableWrapper {
+        margin-bottom: 0;
+    }
+
+    .tableBodyRow {
+        &:last-of-type {
+            border-bottom: none;
+        }
+    }
+
+    .toggleInput {
+        margin-right: @layout-spacing-xs;
+    }
+
+    .productImage {
+        width: @layout-spacing-l;
+        height: @layout-spacing-l;
+        margin-right: @layout-spacing-s;
+    }
+
+    .chevronRight {
+        color: var(--neutral-grey-4) !important;
+        font-size: 24px !important;
+    }
+
+    .navigation {
+        display: flex;
+        padding: @layout-spacing-s @layout-spacing-m;
+        border-top: 1px solid var(--neutral-grey-3);
+    }
+}

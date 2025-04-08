@@ -1,0 +1,32 @@
+@import '~@gorgias/design-tokens/dist/css/layout';
+@import (reference) '~css/typography.less';
+
+:local {
+    .header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: @layout-spacing-s;
+    }
+
+    .headerTitle {
+        .heading-section-semibold();
+    }
+
+    .headerAction {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 6px;
+        cursor: pointer;
+
+        &:hover {
+            background-color: var(--neutral-grey-2);
+            border-radius: @layout-spacing-xxs;
+        }
+    }
+
+    .contentContainer {
+        padding: @layout-spacing-s;
+    }
+}

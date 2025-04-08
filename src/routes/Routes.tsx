@@ -42,8 +42,8 @@ import AiAgentOnboardingWizard from 'pages/aiAgent/AiAgentOnboardingWizard/AiAge
 import { AiAgentPlaygroundContainer } from 'pages/aiAgent/AiAgentPlaygroundContainer'
 import { AiAgentPreviewModeSettingsContainer } from 'pages/aiAgent/AiAgentPreviewModeSettings/AiAgentPreviewModeSettingsContainer'
 import { AiAgentSales } from 'pages/aiAgent/AiAgentSales'
-import AiAgentScrapedDomainPagesContainer from 'pages/aiAgent/AiAgentScrapedDomainContent/AiAgentScrapedDomainPagesContainer'
 import AiAgentScrapedDomainProductsContainer from 'pages/aiAgent/AiAgentScrapedDomainContent/AiAgentScrapedDomainProductsContainer'
+import AiAgentScrapedDomainQuestionsContainer from 'pages/aiAgent/AiAgentScrapedDomainContent/AiAgentScrapedDomainQuestionsContainer'
 import { AiAgentVolume } from 'pages/aiAgent/AiAgentVolume'
 import { AiAgentNavbar } from 'pages/aiAgent/components/AiAgentNavbar/AiAgentNavbar'
 import { AiAgentRedirect } from 'pages/aiAgent/components/AiAgentRedirect/AiAgentRedirect'
@@ -633,13 +633,18 @@ function AiAgentRoutes({ match: { path }, location }: RouteComponentProps) {
                             {isAiAgentScrapeStoreDomainEnabled && (
                                 <Switch>
                                     <Route
-                                        path={`${path}/knowledge/pages-content`}
+                                        path={`${path}/knowledge/sources`}
+                                        exact
+                                        component={AiAgentKnowledgeContainer}
+                                    />
+                                    <Route
+                                        path={`${path}/knowledge/sources/pages-content`}
                                         component={
-                                            AiAgentScrapedDomainPagesContainer
+                                            AiAgentScrapedDomainQuestionsContainer
                                         }
                                     />
                                     <Route
-                                        path={`${path}/knowledge/products-content`}
+                                        path={`${path}/knowledge/sources/products-content`}
                                         component={
                                             AiAgentScrapedDomainProductsContainer
                                         }

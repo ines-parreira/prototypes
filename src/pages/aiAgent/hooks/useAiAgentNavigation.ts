@@ -42,6 +42,8 @@ export const getAiAgentNavigationRoutes = (
     const automationBasePath = '/app/automation'
     const isStandaloneMenuEnabled = flags[FeatureFlagKey.ConvAiStandaloneMenu]
     const isStandaloneOnboardingEnabled = flags[FeatureFlagKey.ConvAiOnboarding]
+    const isAiAgentScrapeStoreDomainEnabled =
+        flags[FeatureFlagKey.AiAgentScrapeStoreDomain]
 
     const guidancePath = isStandaloneMenuEnabled
         ? 'knowledge/guidance'
@@ -69,11 +71,13 @@ export const getAiAgentNavigationRoutes = (
         main: basePath,
         settings: `${basePath}/settings`,
         test: `${basePath}/test`,
-        knowledge: `${basePath}/knowledge`,
+        knowledge: isAiAgentScrapeStoreDomainEnabled
+            ? `${basePath}/knowledge/sources`
+            : `${basePath}/knowledge`,
         sales: `${basePath}/sales`,
         volume: `${basePath}/sales/volume`,
-        pagesContent: `${basePath}/knowledge/pages-content`,
-        productsContent: `${basePath}/knowledge/products-content`,
+        pagesContent: `${basePath}/knowledge/sources/pages-content`,
+        productsContent: `${basePath}/knowledge/sources/products-content`,
         guidance: `${basePath}/${guidancePath}`,
         newGuidanceArticle: `${basePath}/${guidancePath}/new`,
         guidanceArticleEdit: (articleId: number) =>
@@ -158,7 +162,9 @@ const useNavigationItems = (
                             title: isAiAgentScrapeStoreDomainEnabled
                                 ? SOURCES
                                 : GENERAL,
-                            exact: true,
+                            exact: isAiAgentScrapeStoreDomainEnabled
+                                ? false
+                                : true,
                         },
                         {
                             route: routes.guidance,

@@ -11,7 +11,7 @@ const ScrapedDomainHeader = ({ description }: Props) => {
         <div className={css.container}>
             <span>{description}</span>
             <div>
-                <Search placeholder="Search" />
+                <Search className={css.searchInput} placeholder="Search" />
             </div>
         </div>
     )

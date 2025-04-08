@@ -14,9 +14,9 @@ import ScrapedDomainContentView from './ScrapedDomainContentView'
 import ScrapedDomainSelectedContent from './ScrapedDomainSelectedContent'
 import { ScrapedContent } from './types'
 
-import css from './AiAgentScrapedDomainProductsContainer.less'
+import css from './AiAgentScrapedDomainQuestionsContainer.less'
 
-const AiAgentScrapedDomainProductsContainer = () => {
+const AiAgentScrapedDomainQuestionsContainer = () => {
     const isStandaloneMenuEnabled =
         useFlags()[FeatureFlagKey.ConvAiStandaloneMenu]
 
@@ -25,16 +25,16 @@ const AiAgentScrapedDomainProductsContainer = () => {
     }>()
 
     const [isOpened, setIsOpened] = useState(false)
-    const [selectedProduct, setSelectedProduct] =
+    const [selectedQuestion, setSelectedQuestion] =
         useState<ScrapedContent | null>(null)
 
     const handleOnSelect = (content: ScrapedContent) => {
-        setSelectedProduct(content)
+        setSelectedQuestion(content)
         setIsOpened(true)
     }
 
     const handleOnClose = () => {
-        setSelectedProduct(null)
+        setSelectedQuestion(null)
         setIsOpened(false)
     }
 
@@ -48,77 +48,77 @@ const AiAgentScrapedDomainProductsContainer = () => {
     }
 
     // Mocked data to replace by actual data in the next iteration
-    // https://linear.app/gorgias/issue/AIKNL-89/implement-functionality-for-product-content-tab
-    const mockedProducts = [
+    // https://linear.app/gorgias/issue/AIKNL-88/implement-functionality-for-pages-content-tab
+    const mockedQuestions = [
         {
             id: 1,
-            name: 'Duo Baguette Birthstone Ring',
+            name: 'What should I do if I received a defective item?',
         },
         {
             id: 2,
-            name: 'Lovely heart necklace',
+            name: 'What’s your return policy?',
         },
         {
             id: 3,
-            name: 'Chain bracelet',
+            name: 'How do exchanges work?',
         },
         {
             id: 4,
-            name: 'Elegant pearl earrings',
+            name: 'What’s your shipping policy?',
         },
         {
             id: 5,
-            name: 'Stylish cuff bangle',
+            name: 'Do you offer product warranties?',
         },
         {
             id: 6,
-            name: 'Classic hoop earrings',
+            name: 'Do you offer refunds?',
         },
         {
             id: 7,
-            name: 'Minimalist pendant necklace',
+            name: 'How can I access my account?',
         },
         {
             id: 8,
-            name: 'Chic statement earrings',
+            name: 'Where are your products made?',
         },
         {
             id: 9,
-            name: 'Vintage-inspired brooch',
+            name: 'Do you have physical locations?',
         },
         {
             id: 10,
-            name: 'Bohemian layered necklace',
+            name: 'Do you offer customization?',
         },
         {
             id: 11,
-            name: 'Modern geometric ring',
+            name: 'How can I report an issue with my order?',
         },
         {
             id: 12,
-            name: 'Retro charm bracelet',
+            name: 'Do you offer discounts?',
         },
         {
             id: 13,
-            name: 'Sleek leather watch',
+            name: 'How does your sizing work?',
         },
         {
             id: 14,
-            name: 'Delicate anklet',
+            name: 'Do you ship to all 50 states?',
         },
         {
             id: 15,
-            name: 'Engraved initial bracelet',
+            name: 'Do you have a loyality program?',
         },
         {
             id: 16,
-            name: 'Engraved initial bracelet',
+            name: 'Do you have a loyality program?',
         },
     ]
 
     const startIndex = (currentPage - 1) * PAGINATED_ITEMS_PER_PAGE
     const endIndex = startIndex + PAGINATED_ITEMS_PER_PAGE
-    const paginatedProducts = mockedProducts.slice(startIndex, endIndex)
+    const paginatedQuestions = mockedQuestions.slice(startIndex, endIndex)
 
     return (
         <AiAgentLayout
@@ -129,17 +129,17 @@ const AiAgentScrapedDomainProductsContainer = () => {
             <AiAgentScrapedDomainContentLayout shopName={shopName}>
                 <ScrapedDomainContentView
                     isLoading={false}
-                    content={paginatedProducts}
-                    pageType={CONTENT_TYPE.PRODUCT}
+                    content={paginatedQuestions}
                     onSelect={handleOnSelect}
-                    hasNextItems={endIndex < mockedProducts.length}
+                    pageType={CONTENT_TYPE.QUESTION}
+                    hasNextItems={endIndex < mockedQuestions.length}
                     hasPrevItems={startIndex > 0}
                     fetchNextItems={() => onPageChange(currentPage + 1)}
                     fetchPrevItems={() => onPageChange(currentPage - 1)}
                 />
                 <ScrapedDomainSelectedContent
-                    selectedContent={selectedProduct}
-                    contentType={CONTENT_TYPE.PRODUCT}
+                    selectedContent={selectedQuestion}
+                    contentType={CONTENT_TYPE.QUESTION}
                     isOpened={isOpened}
                     isLoading={false}
                     onClose={handleOnClose}
@@ -149,4 +149,4 @@ const AiAgentScrapedDomainProductsContainer = () => {
     )
 }
 
-export default AiAgentScrapedDomainProductsContainer
+export default AiAgentScrapedDomainQuestionsContainer

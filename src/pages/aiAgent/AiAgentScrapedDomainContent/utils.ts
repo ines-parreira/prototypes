@@ -24,8 +24,12 @@ export const getFormattedSyncDatetime = (latestSync: string | undefined) => {
     if (!latestSync) return null
 
     const latestSyncDate = new Date(latestSync)
-    return latestSyncDate?.toLocaleDateString(
+    const formatted = latestSyncDate.toLocaleString(
         Intl.DateTimeFormat().resolvedOptions().locale,
         dateTimeOptions,
     )
+
+    return formatted
+        .replace(',', '')
+        .replace(/\s(am|pm)/i, (match) => match.toUpperCase())
 }

@@ -4,7 +4,7 @@ import 'pages/aiAgent/test/mock-activation-hooks.utils'
 import React from 'react'
 
 import { QueryClientProvider } from '@tanstack/react-query'
-import { screen } from '@testing-library/react'
+import { fireEvent, screen } from '@testing-library/react'
 import { mockFlags } from 'jest-launchdarkly-mock'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
@@ -63,10 +63,11 @@ describe('<AiAgentScrapedDomainProductsContainer />', () => {
     it('should render the component', () => {
         renderComponent()
 
+        expect(screen.getAllByText('Knowledge')[0]).toBeInTheDocument()
         expect(screen.getByText('Back to Sources')).toBeInTheDocument()
         expect(screen.getByText('Your store domain')).toBeInTheDocument()
         expect(screen.getByText('Sync')).toBeInTheDocument()
-        expect(screen.getByText('Pages')).toBeInTheDocument()
+        expect(screen.getByText('Questions')).toBeInTheDocument()
         expect(screen.getByText('Products')).toBeInTheDocument()
         expect(
             screen.getByText(
@@ -74,6 +75,28 @@ describe('<AiAgentScrapedDomainProductsContainer />', () => {
             ),
         ).toBeInTheDocument()
         expect(screen.getByText('Product')).toBeInTheDocument()
-        expect(screen.getByText('No products available')).toBeInTheDocument()
+    })
+
+    it('should render correct header title for the page based on feature flag', () => {
+        mockFlags({
+            [FeatureFlagKey.ConvAiStandaloneMenu]: false,
+        })
+
+        renderComponent()
+        expect(screen.getByText('AI Agent')).toBeInTheDocument()
+    })
+
+    it('should open side panel on row click (handleOnSelect)', async () => {
+        renderComponent()
+        const questionRow = screen.getByText(
+            // to be replaced by actual mock data in the next iteration
+            // https://linear.app/gorgias/issue/AIKNL-89/implement-functionality-for-product-content-tab
+            'Duo Baguette Birthstone Ring',
+        )
+        fireEvent.click(questionRow)
+
+        expect(screen.getByText('Product details')).toBeInTheDocument()
+        const hideIcon = screen.getByAltText('hide-view-icon')
+        expect(hideIcon).toBeInTheDocument()
     })
 })
