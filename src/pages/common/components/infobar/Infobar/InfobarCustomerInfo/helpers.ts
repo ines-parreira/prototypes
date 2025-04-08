@@ -9,28 +9,31 @@ import { makeHasIntegrationOfTypes } from 'state/integrations/selectors'
 export function useShouldShowProfileSync(
     shopifyCustomerProfileCreationFeatureEnabled: boolean,
     isEditing: boolean,
-    customerIntegrationsData: Map<any, any>,
+    customerIntegrationsData: Map<string, Map<string, string>>,
 ) {
     const hasIntegrationsOfTypes = useAppSelector(makeHasIntegrationOfTypes)
     const hasShopifyIntegration = hasIntegrationsOfTypes(
         IntegrationType.Shopify,
     )
 
-    return useMemo(() => {
-        if (
-            !shopifyCustomerProfileCreationFeatureEnabled ||
-            !hasShopifyIntegration ||
-            isEditing
-        ) {
-            return false
-        }
+    const hasShopifyIntegrationData = useMemo(() => {
+        return customerIntegrationsData?.some(
+            (value) => value?.get('__integration_type__') === 'shopify',
+        )
+    }, [customerIntegrationsData])
 
-        return customerIntegrationsData?.size === 0
+    return useMemo(() => {
+        return (
+            shopifyCustomerProfileCreationFeatureEnabled &&
+            hasShopifyIntegration &&
+            !hasShopifyIntegrationData &&
+            !isEditing
+        )
     }, [
         shopifyCustomerProfileCreationFeatureEnabled,
         isEditing,
-        customerIntegrationsData,
         hasShopifyIntegration,
+        hasShopifyIntegrationData,
     ])
 }
 

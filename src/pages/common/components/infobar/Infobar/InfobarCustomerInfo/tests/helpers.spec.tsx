@@ -62,23 +62,6 @@ describe('useShouldShowProfileSync', () => {
         expect(result.current).toBe(false)
     })
 
-    it('should return false if customerIntegrationsData is not empty', () => {
-        const { result } = renderHook(
-            () =>
-                useShouldShowProfileSync(
-                    true,
-                    false,
-                    Map({ integration: 'data' }),
-                ),
-            {
-                wrapper: ({ children }) => (
-                    <Provider store={store}>{children}</Provider>
-                ),
-            },
-        )
-        expect(result.current).toBe(false)
-    })
-
     it('should return true if there is a shopify integration, flag is on, editing is false and customerIntegrationsData is  empty', () => {
         const { result } = renderHook(
             () => useShouldShowProfileSync(true, false, Map()),

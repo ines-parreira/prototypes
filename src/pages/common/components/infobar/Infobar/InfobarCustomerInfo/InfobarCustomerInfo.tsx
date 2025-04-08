@@ -190,10 +190,6 @@ const InfobarCustomerInfo = ({
             return <GenerateWidgetsButton widgets={widgets} sources={sources} />
         }
 
-        if (shouldSuggestCustomerProfileShopifySync) {
-            return <ShopifyCustomerProfileSync activeCustomer={customer} />
-        }
-
         const allWidgetsTemplatesAreEmpty =
             !renderedContextWidgets ||
             renderedContextWidgets.every((widget: Map<any, any>) =>
@@ -300,6 +296,11 @@ const InfobarCustomerInfo = ({
                 <Separator className={css.separator} />
                 <CustomerTimelineWidget isEditing={isEditing} />
             </div>
+
+            {shouldSuggestCustomerProfileShopifySync && (
+                <ShopifyCustomerProfileSync activeCustomer={customer} />
+            )}
+
             {areSourcesReady(sources, widgets.get('currentContext', ''))
                 ? renderWidgets()
                 : renderSuggestion()}
