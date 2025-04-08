@@ -60,14 +60,11 @@ import App from 'pages/App'
 import ActionsPlatformAppsView from 'pages/automate/actionsPlatform/ActionsPlatformAppsView'
 import ActionsPlatformCreateAppFormView from 'pages/automate/actionsPlatform/ActionsPlatformCreateAppFormView'
 import ActionsPlatformCreateStepView from 'pages/automate/actionsPlatform/ActionsPlatformCreateStepView'
-import ActionsPlatformCreateTemplateView from 'pages/automate/actionsPlatform/ActionsPlatformCreateTemplateView'
 import ActionsPlatformCreateUseCaseTemplateView from 'pages/automate/actionsPlatform/ActionsPlatformCreateUseCaseTemplateView'
 import ActionsPlatformEditAppFormView from 'pages/automate/actionsPlatform/ActionsPlatformEditAppFormView'
 import ActionsPlatformEditStepViewContainer from 'pages/automate/actionsPlatform/ActionsPlatformEditStepViewContainer'
-import ActionsPlatformEditTemplateViewContainer from 'pages/automate/actionsPlatform/ActionsPlatformEditTemplateViewContainer'
 import ActionsPlatformEditUseCaseTemplateViewContainer from 'pages/automate/actionsPlatform/ActionsPlatformEditUseCaseTemplateViewContainer'
 import ActionsPlatformStepsView from 'pages/automate/actionsPlatform/ActionsPlatformStepsView'
-import ActionsPlatformTemplatesView from 'pages/automate/actionsPlatform/ActionsPlatformTemplatesView'
 import ActionsPlatformUseCaseTemplatesView from 'pages/automate/actionsPlatform/ActionsPlatformUseCaseTemplatesView'
 import ArticleRecommendationViewContainer from 'pages/automate/articleRecommendation/ArticleRecommendationViewContainer'
 import AutomateAllRecommendationsContainer from 'pages/automate/common/components/AutomateAllRecommendationsContainer'
@@ -1055,17 +1052,18 @@ function AiAgentContent() {
     if (isLoading) return null
     return (
         <Switch>
-            <Route path={`${path}/actions-platform`} exact>
-                {isActionsInternalPlatformEnabled && (
-                    <ActionsPlatformTemplatesView />
-                )}
-            </Route>
             <Route path={`${path}/actions-platform/use-cases`} exact>
                 {isActionsInternalPlatformEnabled && (
                     <ActionsPlatformUseCaseTemplatesView />
                 )}
             </Route>
-            <Route path={`${path}/actions-platform/steps`} exact>
+            <Route
+                path={[
+                    `${path}/actions-platform/steps`,
+                    `${path}/actions-platform`,
+                ]}
+                exact
+            >
                 {isActionsInternalPlatformEnabled && (
                     <ActionsPlatformStepsView />
                 )}
@@ -1083,16 +1081,6 @@ function AiAgentContent() {
             <Route path={`${path}/actions-platform/apps/edit/:id`} exact>
                 {isActionsInternalPlatformEnabled && (
                     <ActionsPlatformEditAppFormView />
-                )}
-            </Route>
-            <Route path={`${path}/actions-platform/new`} exact>
-                {isActionsInternalPlatformEnabled && (
-                    <ActionsPlatformCreateTemplateView />
-                )}
-            </Route>
-            <Route path={`${path}/actions-platform/edit/:id`} exact>
-                {isActionsInternalPlatformEnabled && (
-                    <ActionsPlatformEditTemplateViewContainer />
                 )}
             </Route>
             <Route path={`${path}/actions-platform/use-cases/new`} exact>

@@ -54,8 +54,8 @@ jest.mock(
     () => () => <div>ActionsPlatformAppsView</div>,
 )
 jest.mock(
-    'pages/automate/actionsPlatform/ActionsPlatformTemplatesView',
-    () => () => <div>ActionsPlatformTemplatesView</div>,
+    'pages/automate/actionsPlatform/ActionsPlatformStepsView',
+    () => () => <div>ActionsPlatformStepsView</div>,
 )
 jest.mock(
     'pages/automate/common/components/AutomateLandingPageContainer',
@@ -291,7 +291,7 @@ describe('<Routes/>', () => {
     })
 
     describe('actions platform', () => {
-        it('should render actions platform templates page if feature flag is toggled on', () => {
+        it('should render actions platform steps page if feature flag is toggled on', () => {
             mockUseFlag.mockReturnValue(true)
 
             renderWithRouter(
@@ -304,11 +304,11 @@ describe('<Routes/>', () => {
             )
 
             act(() => {
-                mockHistory.push('/app/ai-agent/actions-platform')
+                mockHistory.push('/app/ai-agent/actions-platform/steps')
             })
 
             expect(
-                screen.getByText('ActionsPlatformTemplatesView'),
+                screen.getByText('ActionsPlatformStepsView'),
             ).toBeInTheDocument()
         })
 
@@ -333,7 +333,7 @@ describe('<Routes/>', () => {
             ).toBeInTheDocument()
         })
 
-        it('should not render actions platform templates page if feature flag is toggled off', () => {
+        it('should not render actions platform steps page if feature flag is toggled off', () => {
             mockUseFlag.mockReturnValue(false)
 
             renderWithRouter(
@@ -344,11 +344,11 @@ describe('<Routes/>', () => {
             )
 
             act(() => {
-                mockHistory.push('/app/ai-agent/actions-platform')
+                mockHistory.push('/app/ai-agent/actions-platform/steps')
             })
 
             expect(
-                screen.queryByText('ActionsPlatformTemplatesView'),
+                screen.queryByText('ActionsPlatformStepsView'),
             ).not.toBeInTheDocument()
         })
 

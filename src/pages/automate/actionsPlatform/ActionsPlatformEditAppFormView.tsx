@@ -34,11 +34,6 @@ const ActionsPlatformEditAppFormView = () => {
             title="Actions platform"
             headerNavbarItems={[
                 {
-                    route: '/app/ai-agent/actions-platform',
-                    title: 'Templates',
-                    exact: true,
-                },
-                {
                     route: '/app/ai-agent/actions-platform/use-cases',
                     title: 'Use case templates',
                     exact: true,
