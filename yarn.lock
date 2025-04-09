@@ -3580,61 +3580,40 @@
   resolved "https://npm.pkg.github.com/download/@gorgias/analytics-ui-kit/0.1.0/9a906d573ac77701f1dced97a32f6e43aaf70c8a#9a906d573ac77701f1dced97a32f6e43aaf70c8a"
   integrity sha512-KuYrCkyo/3dZVM4GGopjGs6fQkU8WgFtb70+OgUZmadIVlszl2BQxSaGBweuTQ+nTXaKulP3cPYmhiP9gGFj/A==
 
-"@gorgias/api-client@^0.6.1":
-  version "0.6.1"
-  resolved "https://npm.pkg.github.com/download/@gorgias/api-client/0.6.1/bf4ef4176c2794837b76d374873cde5b5e9acc34#bf4ef4176c2794837b76d374873cde5b5e9acc34"
-  integrity sha512-wRoye4MZxqAYRSSETg/fVF3NmG3xH/CViHCGp+rVV50tKmlhFMQwbDONtyr0Af6Mg0TOFNrFUqP7Uc6Tf+mMJg==
+"@gorgias/api-client@^0.6.26":
+  version "0.6.26"
+  resolved "https://npm.pkg.github.com/download/@gorgias/api-client/0.6.26/c45b92f5f7db1238d73cdbe4c8126fb0cbfa4857#c45b92f5f7db1238d73cdbe4c8126fb0cbfa4857"
+  integrity sha512-atMIYdue1I/U6Wf7KLqKk4JAAn35RRim+NdaHOceIt/vXjIegVak1UJq57oKkdSWFIrYjUmnwaJHWQkPFeazQg==
   dependencies:
-    "@gorgias/api-types" "^0.6.1"
+    "@gorgias/api-types" "^0.6.26"
     axios "^1.7.7"
 
-"@gorgias/api-client@^0.6.25":
-  version "0.6.25"
-  resolved "https://npm.pkg.github.com/download/@gorgias/api-client/0.6.25/134049a152db2b149685081ac29de39ef40585dc#134049a152db2b149685081ac29de39ef40585dc"
-  integrity sha512-Ab2VSxBZ3InW0T2gj9A3ksb6qU/g5do4/OIGEq9NxHVSse6ZUFGd73HPa/L8KojMPN8/nEQSJo8EsxGK9BRolQ==
+"@gorgias/api-queries@^0.6.1", "@gorgias/api-queries@^0.6.26":
+  version "0.6.26"
+  resolved "https://npm.pkg.github.com/download/@gorgias/api-queries/0.6.26/429b9a9f2120b1786884b14399a0357db875fdf9#429b9a9f2120b1786884b14399a0357db875fdf9"
+  integrity sha512-JVzC0sStIpz39XQZLtBQutsaHyDYjlKta5R1i7iqb6M8wLP+NdCntyrvkkeF1/baWNzZTaesblphbCvIm3aivQ==
   dependencies:
-    "@gorgias/api-types" "^0.6.25"
-    axios "^1.7.7"
+    "@gorgias/api-client" "^0.6.26"
+    "@gorgias/api-types" "^0.6.26"
 
-"@gorgias/api-queries@0.6.25":
-  version "0.6.25"
-  resolved "https://npm.pkg.github.com/download/@gorgias/api-queries/0.6.25/49cd552768500aa717d6e18a2beb98d535db9373#49cd552768500aa717d6e18a2beb98d535db9373"
-  integrity sha512-of329kS3AmISdzFuq2x5T+1DCYHyACJcHPwv5n2QmFGHhMZf8dvJRJYn217LOO+T1uFgbE9Tz3hLmkY+QgtToA==
-  dependencies:
-    "@gorgias/api-client" "^0.6.25"
-    "@gorgias/api-types" "^0.6.25"
+"@gorgias/api-spec@^0.6.26":
+  version "0.6.26"
+  resolved "https://npm.pkg.github.com/download/@gorgias/api-spec/0.6.26/f9e792999aa53599ac73a9e5b1f5db8e1452c960#f9e792999aa53599ac73a9e5b1f5db8e1452c960"
+  integrity sha512-Vo/HYEnX/pmNVp428C4c+1jwhoOAG/gb1JtzXTVu3cdjRlmcqC8SmjF6dzl+E9jNBj9D+T94+PQh6eNkbiVmWQ==
 
-"@gorgias/api-queries@^0.6.1":
-  version "0.6.1"
-  resolved "https://npm.pkg.github.com/download/@gorgias/api-queries/0.6.1/0f57f6f89d3a5951f917cdcdd0beba10b2697936#0f57f6f89d3a5951f917cdcdd0beba10b2697936"
-  integrity sha512-ifAyLjEJCKyljIzd++RHyrHCVV6gTnlIVAQeDJK0YSphgVQb6ZQh43o7rWy0ua5pyuhOJrGPWPOMGLCLlHcaww==
-  dependencies:
-    "@gorgias/api-client" "^0.6.1"
-    "@gorgias/api-types" "^0.6.1"
+"@gorgias/api-types@^0.6.26":
+  version "0.6.26"
+  resolved "https://npm.pkg.github.com/download/@gorgias/api-types/0.6.26/cc2103e28bd2c53d509bfd183f85b14fbacba988#cc2103e28bd2c53d509bfd183f85b14fbacba988"
+  integrity sha512-JQniitxvIL2cxb6SjKypJl08jDXrtEK3QR51fhdxsOEDtiMhimY1PMKXlqbK/5egkxEgnc6/92ZJbYmrIjjh7Q==
 
-"@gorgias/api-spec@^0.6.25":
-  version "0.6.25"
-  resolved "https://npm.pkg.github.com/download/@gorgias/api-spec/0.6.25/175360b28ad4d418bddd679d932de48b3a0cb709#175360b28ad4d418bddd679d932de48b3a0cb709"
-  integrity sha512-vn13kz+rPlWL9RRZVUrsYWrF2t3VpYVQXNpi3r5eMY41xNx7P3d2//CHqQ1Djz1eP/J3YY2ydhZni4n6OIVK0Q==
-
-"@gorgias/api-types@^0.6.1":
-  version "0.6.1"
-  resolved "https://npm.pkg.github.com/download/@gorgias/api-types/0.6.1/d4a2c9fce87c683619bd9a881e1c4a395044dc6d#d4a2c9fce87c683619bd9a881e1c4a395044dc6d"
-  integrity sha512-aNfeZCmkpsWCnYQq5x3wWc+O6R0viJvwppKoe8ngpmlW4fF5vynfUVQL5Rhn7VTpdNESR8UMTgSs5g47N9SgPQ==
-
-"@gorgias/api-types@^0.6.25":
-  version "0.6.25"
-  resolved "https://npm.pkg.github.com/download/@gorgias/api-types/0.6.25/90d28d191e29544857d2e4687986eab20e2e761d#90d28d191e29544857d2e4687986eab20e2e761d"
-  integrity sha512-iDNfw7OCqAThkhZrYMtK1Yywk/PEVji1yNWOvgaR1o40AYZDiNHv+r8k5ZJFDYljOnaTeUaoNNcRbhtNr1Hs6A==
-
-"@gorgias/api-validators@0.6.25":
-  version "0.6.25"
-  resolved "https://npm.pkg.github.com/download/@gorgias/api-validators/0.6.25/2f60b3c203459f9d58a0e0ece3402ab6fbf3e21c#2f60b3c203459f9d58a0e0ece3402ab6fbf3e21c"
-  integrity sha512-GxkqadyXL0hIBvclYxQ0nxZrPaNQbG6AYlNNCOEjT9MYISOXs0aRYHkwsFn1eVfe2iJ7E9lYsEYOxorwbIzYBA==
+"@gorgias/api-validators@^0.6.26":
+  version "0.6.26"
+  resolved "https://npm.pkg.github.com/download/@gorgias/api-validators/0.6.26/2d3848cb117f1bbe1fe941fb2954f4e61840dc69#2d3848cb117f1bbe1fe941fb2954f4e61840dc69"
+  integrity sha512-Cvu/Z6koYa3ru96qNJ42yLWe4woEkgjoCvc19F3ewFuIKQ8o7l5EGMb+qoIPitPkP7cpeM0xLjSpUY1SVYJwcg==
   dependencies:
     "@apideck/better-ajv-errors" "^0.3.6"
-    "@gorgias/api-spec" "^0.6.25"
-    "@gorgias/api-types" "^0.6.25"
+    "@gorgias/api-spec" "^0.6.26"
+    "@gorgias/api-types" "^0.6.26"
     ajv "^8.12.0"
     ajv-formats "^3.0.1"
     immer "^10.1"
@@ -17593,7 +17572,7 @@ string-length@^4.0.1:
     char-regex "^1.0.2"
     strip-ansi "^6.0.0"
 
-"string-width-cjs@npm:string-width@^4.2.0", string-width@^4.1.0, string-width@^4.2.0, string-width@^4.2.3:
+"string-width-cjs@npm:string-width@^4.2.0":
   version "4.2.3"
   resolved "https://registry.yarnpkg.com/string-width/-/string-width-4.2.3.tgz#269c7117d27b05ad2e536830a8ec895ef9c6d010"
   integrity sha512-wKyQRQpjJ0sIp62ErSZdGsjMJWsap5oRNihHhu6G7JVO/9jIB6UyevL+tXuOqrng8j/cxKTWyWUwvSTriiZz/g==
@@ -17610,6 +17589,15 @@ string-width@^3.0.0, string-width@^3.1.0:
     emoji-regex "^7.0.1"
     is-fullwidth-code-point "^2.0.0"
     strip-ansi "^5.1.0"
+
+string-width@^4.1.0, string-width@^4.2.0, string-width@^4.2.3:
+  version "4.2.3"
+  resolved "https://registry.yarnpkg.com/string-width/-/string-width-4.2.3.tgz#269c7117d27b05ad2e536830a8ec895ef9c6d010"
+  integrity sha512-wKyQRQpjJ0sIp62ErSZdGsjMJWsap5oRNihHhu6G7JVO/9jIB6UyevL+tXuOqrng8j/cxKTWyWUwvSTriiZz/g==
+  dependencies:
+    emoji-regex "^8.0.0"
+    is-fullwidth-code-point "^3.0.0"
+    strip-ansi "^6.0.1"
 
 string-width@^5.0.1, string-width@^5.1.2:
   version "5.1.2"
@@ -17659,7 +17647,7 @@ string_decoder@~1.1.1:
   dependencies:
     safe-buffer "~5.1.0"
 
-"strip-ansi-cjs@npm:strip-ansi@^6.0.1", strip-ansi@^6.0.0, strip-ansi@^6.0.1:
+"strip-ansi-cjs@npm:strip-ansi@^6.0.1":
   version "6.0.1"
   resolved "https://registry.yarnpkg.com/strip-ansi/-/strip-ansi-6.0.1.tgz#9e26c63d30f53443e9489495b2105d37b67a85d9"
   integrity sha512-Y38VPSHcqkFrCpFnQ9vuSXmquuv5oXOKpGeT6aGrr3o3Gc9AlVa6JBfUSOCnbxGGZF+/0ooI7KrPuUSztUdU5A==
@@ -17672,6 +17660,13 @@ strip-ansi@^5.0.0, strip-ansi@^5.1.0, strip-ansi@^5.2.0:
   integrity sha512-DuRs1gKbBqsMKIZlrffwlug8MHkcnpjs5VPmL1PAh+mA30U0DTotfDZ0d2UUsXpPmPmMMJ6W773MaA3J+lbiWA==
   dependencies:
     ansi-regex "^4.1.0"
+
+strip-ansi@^6.0.0, strip-ansi@^6.0.1:
+  version "6.0.1"
+  resolved "https://registry.yarnpkg.com/strip-ansi/-/strip-ansi-6.0.1.tgz#9e26c63d30f53443e9489495b2105d37b67a85d9"
+  integrity sha512-Y38VPSHcqkFrCpFnQ9vuSXmquuv5oXOKpGeT6aGrr3o3Gc9AlVa6JBfUSOCnbxGGZF+/0ooI7KrPuUSztUdU5A==
+  dependencies:
+    ansi-regex "^5.0.1"
 
 strip-ansi@^7.0.1, strip-ansi@^7.1.0:
   version "7.1.0"
@@ -18950,7 +18945,7 @@ wordwrap@^1.0.0:
   resolved "https://registry.yarnpkg.com/wordwrap/-/wordwrap-1.0.0.tgz#27584810891456a4171c8d0226441ade90cbcaeb"
   integrity sha512-gvVzJFlPycKc5dZN4yPkP8w7Dc37BtP1yczEneOb4uq34pXZcvrtRTmWV8W+Ume+XCxKgbjM+nevkyFPMybd4Q==
 
-"wrap-ansi-cjs@npm:wrap-ansi@^7.0.0", wrap-ansi@^7.0.0:
+"wrap-ansi-cjs@npm:wrap-ansi@^7.0.0":
   version "7.0.0"
   resolved "https://registry.yarnpkg.com/wrap-ansi/-/wrap-ansi-7.0.0.tgz#67e145cff510a6a6984bdf1152911d69d2eb9e43"
   integrity sha512-YVGIj2kamLSTxw6NsZjoBxfSwsn0ycdesmc4p+Q21c5zPuZ1pl+NfxVdxPtdHvmNVOQ6XSYG4AUtyt/Fi7D16Q==
@@ -18972,6 +18967,15 @@ wrap-ansi@^6.0.1, wrap-ansi@^6.2.0:
   version "6.2.0"
   resolved "https://registry.yarnpkg.com/wrap-ansi/-/wrap-ansi-6.2.0.tgz#e9393ba07102e6c91a3b221478f0257cd2856e53"
   integrity sha512-r6lPcBGxZXlIcymEu7InxDMhdW0KDxpLgoFLcguasxCaJ/SOIZwINatK9KY/tf+ZrlywOKU0UDj3ATXUBfxJXA==
+  dependencies:
+    ansi-styles "^4.0.0"
+    string-width "^4.1.0"
+    strip-ansi "^6.0.0"
+
+wrap-ansi@^7.0.0:
+  version "7.0.0"
+  resolved "https://registry.yarnpkg.com/wrap-ansi/-/wrap-ansi-7.0.0.tgz#67e145cff510a6a6984bdf1152911d69d2eb9e43"
+  integrity sha512-YVGIj2kamLSTxw6NsZjoBxfSwsn0ycdesmc4p+Q21c5zPuZ1pl+NfxVdxPtdHvmNVOQ6XSYG4AUtyt/Fi7D16Q==
   dependencies:
     ansi-styles "^4.0.0"
     string-width "^4.1.0"

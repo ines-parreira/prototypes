@@ -1,7 +1,7 @@
-import React, { Dispatch, SetStateAction, useCallback, useMemo } from 'react'
+import { Dispatch, SetStateAction, useCallback, useMemo } from 'react'
 
 import classnames from 'classnames'
-import { Link, useRouteMatch } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 
 import { ListMacrosTagsItem, Macro } from '@gorgias/api-queries'
 
@@ -43,15 +43,7 @@ export function MacrosSettingsItem({
     setSelectedMacrosIds,
 }: Props) {
     const { actions, language, name, updated_datetime, usage } = macro
-    const isArchiveTab = !!useRouteMatch('/app/settings/macros/archived')
-    const to = isArchiveTab
-        ? {
-              pathname: `/app/settings/macros/${macro.id}`,
-              state: {
-                  isArchived: true,
-              },
-          }
-        : `/app/settings/macros/${macro.id}`
+    const to = `/app/settings/macros/${macro.id}`
 
     const tags = useMemo(() => {
         const tags = actions

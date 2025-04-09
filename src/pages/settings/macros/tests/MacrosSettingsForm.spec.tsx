@@ -1,9 +1,8 @@
-import React, { ComponentProps } from 'react'
+import { ComponentProps } from 'react'
 
 import { render, screen, waitFor } from '@testing-library/react'
-import { Location } from 'history'
 import { fromJS, Map } from 'immutable'
-import { useLocation, useParams } from 'react-router-dom'
+import { useParams } from 'react-router-dom'
 
 import { Macro } from '@gorgias/api-queries'
 
@@ -90,7 +89,6 @@ jest.mock('react-router-dom', () => ({
     useLocation: jest.fn(),
     useParams: jest.fn(),
 }))
-const mockedUseLocation = assumeMock(useLocation)
 const mockedUseParams = assumeMock(useParams)
 
 describe('<MacrosSettingsForm/>', () => {
@@ -149,9 +147,6 @@ describe('<MacrosSettingsForm/>', () => {
 
     beforeEach(() => {
         mockedUseParams.mockReturnValue({ macroId: '1' })
-        mockedUseLocation.mockReturnValue({
-            state: {},
-        } as Location<unknown>)
     })
 
     it('should render an empty form when no macro id', () => {
@@ -528,16 +523,14 @@ describe('<MacrosSettingsForm/>', () => {
     })
 
     it('should unarchive macro', async () => {
-        mockedUseLocation.mockReturnValue({
-            state: {
-                isArchived: true,
-            },
-        } as Location<unknown>)
         render(
             <MacrosSettingsFormContainer
                 {...minProps}
                 macros={{
-                    '1': macrosFixtures[0],
+                    '1': {
+                        ...macrosFixtures[0],
+                        archived_datetime: '2025-04-09T4:14:27',
+                    },
                 }}
             />,
         )

@@ -1,10 +1,10 @@
-import React, { MouseEvent, SyntheticEvent, useEffect, useState } from 'react'
+import { MouseEvent, SyntheticEvent, useEffect, useState } from 'react'
 
 import classnames from 'classnames'
 import { fromJS, List, Map } from 'immutable'
 import _uniqWith from 'lodash/uniqWith'
 import { connect, ConnectedProps } from 'react-redux'
-import { Link, useLocation, useParams } from 'react-router-dom'
+import { Link, useParams } from 'react-router-dom'
 import { Breadcrumb, BreadcrumbItem, Form } from 'reactstrap'
 
 import type { Language, Macro } from '@gorgias/api-queries'
@@ -57,10 +57,7 @@ export function MacrosSettingsFormContainer({
     const appNode = useAppNode()
     const hasAgentPrivileges = useHasAgentPrivileges()
     const { macroId } = useParams<{ macroId?: string }>()
-    const location = useLocation<{
-        isArchived?: boolean
-    }>()
-    const { isArchived } = location.state ?? {}
+    const isArchived = !!macroId && !!macros[macroId]?.archived_datetime
 
     const { mutate: bulkArchiveMacros, isLoading: isArchivingPending } =
         useBulkArchiveMacros()
