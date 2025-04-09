@@ -17,6 +17,7 @@ import TextArea from 'pages/common/forms/TextArea'
 import ChatPreferencesAutoReplyWaitTimeSettings from './ChatPreferencesAutoReplyWaitTimeSettings'
 import ChatPreferencesEmailCaptureSettings from './ChatPreferencesEmailCaptureSettings'
 
+import commonCss from './HandoverCommonSettings.less'
 import css from './HandoverCustomizationChatOnlineSettings.less'
 
 type Props = {
@@ -125,61 +126,75 @@ const HandoverCustomizationChatOnlineSettings = ({ integration }: Props) => {
 
     return (
         <div>
-            <div className={css.onlineInstructionsContainer}>
-                <Label
-                    htmlFor="handover-customization-online-instructions"
-                    label={'Online instructions'}
-                    className={`${css.onlineInstructionsTitle} mb-2`}
+            <div
+                className={cn(commonCss.formContainer, css.onlineFormContainer)}
+            >
+                <div
+                    className={cn(
+                        commonCss.sectionContainer,
+                        css.onlineInstructionsContainer,
+                    )}
                 >
-                    Instructions
-                </Label>
-                <TextArea
-                    id="handover-customization-online-instructions"
-                    rows={5}
-                    name="handover-customization-online-instructions"
-                    placeholder={`Apologize and acknowledge the issue. Tell the customer that you’re connecting them with someone.`}
-                    role="textbox"
-                    aria-label="Online instructions"
-                    value={formValues.onlineInstructions}
-                    maxLength={
-                        formFieldsConfiguration.onlineInstructions.maxLength
-                    }
-                    onChange={onOnlineInstructionsChange}
-                    error={undefined}
-                />
-                <Caption className="caption-regular mt-1">
-                    {`Write optional instructions for AI Agent to follow during
+                    <Label
+                        htmlFor="handover-customization-online-instructions"
+                        label={'Online instructions'}
+                        className={`${css.onlineInstructionsTitle} mb-2`}
+                    >
+                        Instructions
+                    </Label>
+                    <TextArea
+                        id="handover-customization-online-instructions"
+                        rows={5}
+                        name="handover-customization-online-instructions"
+                        placeholder={`Apologize and acknowledge the issue. Tell the customer that you’re connecting them with someone.`}
+                        role="textbox"
+                        aria-label="Online instructions"
+                        value={formValues.onlineInstructions}
+                        maxLength={
+                            formFieldsConfiguration.onlineInstructions.maxLength
+                        }
+                        onChange={onOnlineInstructionsChange}
+                        error={undefined}
+                    />
+                    <Caption className="caption-regular mt-1">
+                        {`Write optional instructions for AI Agent to follow during
                     handover. By default, AI Agent generates a message using
                     your tone of voice.`}
-                </Caption>
-            </div>
-            <Alert type={AlertType.Info} icon="info" className="mb-4">
-                Changes to the settings below will be reflected in your{' '}
-                <a
-                    href={chatPreferencesLink}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                >
-                    Chat preferences.
-                </a>
-            </Alert>
-            <div className={css.emailCaptureSettingContainer}>
-                <ChatPreferencesEmailCaptureSettings
-                    isEnabled={formValues.emailCaptureEnabled}
-                    emailCaptureEnforcement={formValues.emailCaptureEnforcement}
-                    onToggleEnablement={onEmailCaptureEnabledChange}
-                    onEmailCaptureEnforcementChange={
-                        onEmailCaptureEnforcementChange
-                    }
-                />
-            </div>
-            <div className={css.autoReplyWaitTimeSettingsContainer}>
-                <ChatPreferencesAutoReplyWaitTimeSettings
-                    isEnabled={formValues.autoResponderEnabled}
-                    autoResponderReply={formValues.autoResponderReply}
-                    onToggleEnablement={onAutoResponderEnabledChange}
-                    onAutoResponderReplyChange={onAutoResponderReplyChange}
-                />
+                    </Caption>
+                </div>
+
+                <Alert type={AlertType.Info} icon="info">
+                    Changes to the settings below will be reflected in your{' '}
+                    <a
+                        href={chatPreferencesLink}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                    >
+                        Chat preferences.
+                    </a>
+                </Alert>
+
+                <div className={commonCss.sectionContainer}>
+                    <ChatPreferencesEmailCaptureSettings
+                        isEnabled={formValues.emailCaptureEnabled}
+                        emailCaptureEnforcement={
+                            formValues.emailCaptureEnforcement
+                        }
+                        onToggleEnablement={onEmailCaptureEnabledChange}
+                        onEmailCaptureEnforcementChange={
+                            onEmailCaptureEnforcementChange
+                        }
+                    />
+                </div>
+
+                <div className={commonCss.sectionContainer}>
+                    <ChatPreferencesAutoReplyWaitTimeSettings
+                        isEnabled={formValues.autoResponderEnabled}
+                        autoResponderReply={formValues.autoResponderReply}
+                        onToggleEnablement={onAutoResponderEnabledChange}
+                        onAutoResponderReplyChange={onAutoResponderReplyChange}
+                    />
+                </div>
             </div>
 
             <section className="mb-0">

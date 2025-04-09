@@ -23,6 +23,7 @@ import SelectField from 'pages/common/forms/SelectField/SelectField'
 import { Value } from 'pages/common/forms/SelectField/types'
 import TextArea from 'pages/common/forms/TextArea'
 
+import commonCss from './HandoverCommonSettings.less'
 import css from './HandoverCustomizationChatFallbackSettings.less'
 
 type Props = {
@@ -142,7 +143,12 @@ const HandoverCustomizationChatFallbackSettings = ({ integration }: Props) => {
 
     return (
         <>
-            <div className={cn(css.fallbackSettingsContainer, 'mb-5')}>
+            <div
+                className={cn(
+                    commonCss.sectionContainer,
+                    commonCss.formContainer,
+                )}
+            >
                 <div
                     className={cn(
                         'd-flex flex-row justify-content-between align-items-center mb-2',

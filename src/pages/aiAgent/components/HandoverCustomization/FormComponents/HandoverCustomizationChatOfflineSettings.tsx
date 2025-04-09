@@ -13,6 +13,7 @@ import { formFieldsConfiguration } from 'pages/aiAgent/utils/handoverCustomizati
 import Caption from 'pages/common/forms/Caption/Caption'
 import TextArea from 'pages/common/forms/TextArea'
 
+import commonCss from './HandoverCommonSettings.less'
 import css from './HandoverCustomizationChatOfflineSettings.less'
 
 type Props = {
@@ -95,54 +96,62 @@ const HandoverCustomizationChatOfflineSettings = ({ integration }: Props) => {
 
     return (
         <div>
-            <div className={css.offlineInstructionsContainer}>
-                <Label
-                    htmlFor="handover-customization-offline-instructions"
-                    label={'Offline instructions'}
-                    className={`${css.offlineInstructionsTitle} mb-2`}
+            <div className={commonCss.formContainer}>
+                <div
+                    className={cn(
+                        commonCss.sectionContainer,
+                        css.offlineInstructionsContainer,
+                    )}
                 >
-                    Instructions
-                </Label>
-                <TextArea
-                    id="handover-customization-offline-instructions"
-                    rows={5}
-                    name="handover-customization-offline-instructions"
-                    aria-label="Offline instructions"
-                    role="textbox"
-                    maxLength={
-                        formFieldsConfiguration.offlineInstructions.maxLength
-                    }
-                    placeholder={`Apologize and acknowledge the issue. Request the customers’ email address for our team to reach back.`}
-                    onChange={onOfflineInstructionsChange}
-                    value={formValues.offlineInstructions}
-                    error={undefined}
-                />
-                <Caption className="caption-regular mt-1">
-                    {`Write optional instructions for AI Agent to follow during handover. 
+                    <Label
+                        htmlFor="handover-customization-offline-instructions"
+                        label={'Offline instructions'}
+                        className={`${css.offlineInstructionsTitle} mb-2`}
+                    >
+                        Instructions
+                    </Label>
+                    <TextArea
+                        id="handover-customization-offline-instructions"
+                        rows={5}
+                        name="handover-customization-offline-instructions"
+                        aria-label="Offline instructions"
+                        role="textbox"
+                        maxLength={
+                            formFieldsConfiguration.offlineInstructions
+                                .maxLength
+                        }
+                        placeholder={`Apologize and acknowledge the issue. Request the customers’ email address for our team to reach back.`}
+                        onChange={onOfflineInstructionsChange}
+                        value={formValues.offlineInstructions}
+                        error={undefined}
+                    />
+                    <Caption className="caption-regular mt-1">
+                        {`Write optional instructions for AI Agent to follow during handover. 
                     By default, AI Agent generates a message using your tone of voice.`}
-                </Caption>
-            </div>
+                    </Caption>
+                </div>
 
-            <div className="mb-5 d-flex align-items-center">
-                <ToggleField
-                    value={formValues.shareBusinessHours}
-                    name="share-business-hours-toggle"
-                    id="share-business-hours-toggle"
-                    aria-label="Share business hours in handover message"
-                    onChange={onBusinessHoursToggle}
-                />
+                <div className="d-flex align-items-center">
+                    <ToggleField
+                        value={formValues.shareBusinessHours}
+                        name="share-business-hours-toggle"
+                        id="share-business-hours-toggle"
+                        aria-label="Share business hours in handover message"
+                        onChange={onBusinessHoursToggle}
+                    />
 
-                <span className="body-semibold">
-                    Share business hours in handover message
-                </span>
-                <a
-                    href="/app/settings/business-hours"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className={cn(css.link, css.businessHoursLink)}
-                >
-                    View Business Hours
-                </a>
+                    <span className="body-semibold">
+                        Share business hours in handover message
+                    </span>
+                    <a
+                        href="/app/settings/business-hours"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className={cn(css.link, css.businessHoursLink)}
+                    >
+                        View Business Hours
+                    </a>
+                </div>
             </div>
 
             <section className="mb-0">
