@@ -89,7 +89,7 @@ describe('TicketFields', () => {
                 ]}
             />,
         )
-        expect(screen.getByText('+ 1 more')).toBeInTheDocument()
+        expect(screen.getByText('+1 more')).toBeInTheDocument()
     })
 
     it('should call useElementSize', () => {
@@ -116,7 +116,7 @@ describe('TicketFields', () => {
             screen.getAllByText(ticketInputFieldDefinition.id.toString()),
         ).toHaveLength(1)
 
-        const showMore = screen.getByText('+ 1 more')
+        const showMore = screen.getByText('+1 more')
         fireEvent.focus(showMore)
 
         expect(
