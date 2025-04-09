@@ -95,8 +95,17 @@ export const HandoverCustomizationChatSettingsComponent = ({
                     >
                         <AccordionHeader>
                             <span className="body-semibold">
-                                When offline or outside business hours
+                                When Chat is offline
                             </span>
+                            <IconTooltip
+                                className={css.icon}
+                                tooltipProps={{
+                                    disabled: isHandoverSectionDisabled,
+                                }}
+                            >
+                                When you have set your Chat to be always offline
+                                or when Chat is outside of business hours
+                            </IconTooltip>
                         </AccordionHeader>
                         <AccordionBody>
                             {selectedChat && (
@@ -118,11 +127,17 @@ export const HandoverCustomizationChatSettingsComponent = ({
                                 )}
                             >
                                 <span className="body-semibold">
-                                    When online
+                                    When Chat is online
                                 </span>
-                                <IconTooltip className={css.icon}>
-                                    If agents are not available when Chat is
-                                    online, offline Chat settings will be used.
+                                <IconTooltip
+                                    className={css.icon}
+                                    tooltipProps={{
+                                        disabled: isHandoverSectionDisabled,
+                                    }}
+                                >
+                                    When you have set your Chat to be live
+                                    during business hours or live when agents
+                                    are available
                                 </IconTooltip>
                             </div>
                         </AccordionHeader>

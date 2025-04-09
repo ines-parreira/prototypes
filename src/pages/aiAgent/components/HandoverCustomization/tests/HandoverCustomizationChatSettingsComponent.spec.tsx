@@ -37,7 +37,7 @@ describe('HandoverCustomizationChatSettingsComponent', () => {
     const mockedOnSelectedChatChange = jest.fn()
     const mockedOnActiveSettingsSectionChange = jest.fn()
 
-    const mockeduseHandoverCustomizationChatSettingsProps = {
+    const mockedUseHandoverCustomizationChatSettingsProps = {
         availableChats: mockChatChannels,
         selectedChat: mockChatChannels[0],
         onSelectedChatChange: mockedOnSelectedChatChange,
@@ -49,7 +49,7 @@ describe('HandoverCustomizationChatSettingsComponent', () => {
     beforeEach(() => {
         jest.clearAllMocks()
         ;(useHandoverCustomizationChatSettings as jest.Mock).mockReturnValue(
-            mockeduseHandoverCustomizationChatSettingsProps,
+            mockedUseHandoverCustomizationChatSettingsProps,
         )
     })
 
@@ -61,9 +61,9 @@ describe('HandoverCustomizationChatSettingsComponent', () => {
         )
 
         screen.getByText('Handover instructions')
-        screen.getByText('When offline or outside business hours')
+        screen.getByText('When Chat is offline')
         screen.getByText('mocked offline settings')
-        screen.getByText('When online')
+        screen.getByText('When Chat is online')
         screen.getByText('mocked online settings')
         screen.getByText('When an error occurs')
         screen.getByText('mocked fallback settings')
@@ -71,7 +71,7 @@ describe('HandoverCustomizationChatSettingsComponent', () => {
 
     it('should not render any section content when there is no integration selected to configure', () => {
         ;(useHandoverCustomizationChatSettings as jest.Mock).mockReturnValue({
-            ...mockeduseHandoverCustomizationChatSettingsProps,
+            ...mockedUseHandoverCustomizationChatSettingsProps,
             selectedChat: undefined,
         })
 
@@ -87,8 +87,8 @@ describe('HandoverCustomizationChatSettingsComponent', () => {
         screen.queryByText(/Handover instructions/i)
 
         // titles should be present
-        screen.getByText('When offline or outside business hours')
-        screen.getByText('When online')
+        screen.getByText('When Chat is offline')
+        screen.getByText('When Chat is online')
         screen.getByText('When an error occurs')
 
         // sections should not be rendered
@@ -102,7 +102,7 @@ describe('HandoverCustomizationChatSettingsComponent', () => {
             ;(
                 useHandoverCustomizationChatSettings as jest.Mock
             ).mockReturnValue({
-                ...mockeduseHandoverCustomizationChatSettingsProps,
+                ...mockedUseHandoverCustomizationChatSettingsProps,
                 availableChats: [mockChatChannels[0]],
                 selectedChat: mockChatChannels[0],
             })
@@ -140,7 +140,7 @@ describe('HandoverCustomizationChatSettingsComponent', () => {
             ;(
                 useHandoverCustomizationChatSettings as jest.Mock
             ).mockReturnValue({
-                ...mockeduseHandoverCustomizationChatSettingsProps,
+                ...mockedUseHandoverCustomizationChatSettingsProps,
                 availableChats: [mockChatChannels[0]],
                 selectedChat: mockChatChannels[0],
             })

@@ -155,3 +155,4 @@ src/pages/aiAgent/components/VolumeSettings @gorgias/conv-ai-expansion
 src/pages/aiAgent/test/AiAgentVolume.spec.tsx @gorgias/conv-ai-expansion
 src/pages/aiAgent/utils/handoverCustomization* @gorgias/conv-ai-expansion
 src/pages/aiAgent/hooks/handoverCustomization* @gorgias/conv-ai-expansion
+src/pages/aiAgent/components/HandoverCustomization* @gorgias/conv-ai-expansion
