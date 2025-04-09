@@ -1039,17 +1039,10 @@ export function AiAgentBaseRoutes({ match: { path } }: RouteComponentProps) {
 
 function AiAgentContent() {
     const { path } = useRouteMatch()
-    const hasStandaloneConvAiOverviewPage = useFlag(
-        FeatureFlagKey.StandaloneConvAiOverviewPage,
-        null, // null means FF is not set yet
-    )
     const isActionsInternalPlatformEnabled = useFlag(
         FeatureFlagKey.ActionsInternalPlatform,
     )
 
-    const isLoading = hasStandaloneConvAiOverviewPage === null
-
-    if (isLoading) return null
     return (
         <Switch>
             <Route path={`${path}/actions-platform/use-cases`} exact>
@@ -1104,15 +1097,10 @@ function AiAgentContent() {
                 )}
             </Route>
 
-            {hasStandaloneConvAiOverviewPage && (
-                <Route
-                    path={aiAgentRoutes.overview}
-                    component={withUserRoleRequired(
-                        AiAgentOverview,
-                        AGENT_ROLE,
-                    )}
-                />
-            )}
+            <Route
+                path={aiAgentRoutes.overview}
+                component={withUserRoleRequired(AiAgentOverview, AGENT_ROLE)}
+            />
             <Route
                 path={`${path}/:shopType/:shopName`}
                 component={withUserRoleRequired(AiAgentRoutes, AGENT_ROLE)}

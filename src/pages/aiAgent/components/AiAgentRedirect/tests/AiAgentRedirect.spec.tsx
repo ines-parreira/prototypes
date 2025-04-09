@@ -4,8 +4,6 @@ import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import { FeatureFlagKey } from 'config/featureFlags'
-import { useFlag } from 'core/flags'
 import { account } from 'fixtures/account'
 import { billingState } from 'fixtures/billing'
 import { chatIntegrationFixtures } from 'fixtures/chat'
@@ -20,9 +18,6 @@ import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 import { renderWithRouter } from 'utils/testing'
 
 import { AiAgentRedirect } from '../AiAgentRedirect'
-
-jest.mock('core/flags')
-const mockUseFlag = jest.mocked(useFlag)
 
 jest.mock('hooks/useAppSelector', () => ({
     __esModule: true,
@@ -75,19 +70,16 @@ describe('RedirectToAiAgentStore', () => {
         }))
     })
 
-    test('redirects to the main route for the first store', () => {
+    test('redirects to overview page when user has Automate and a store', () => {
         mockUseAppSelector.mockImplementation((selector) => {
             if (selector === getHasAutomate) return true
             if (selector === getShopifyIntegrationsSortedByName)
                 return [{ name: 'Test Store' }, { name: 'Test Store 2' }]
             return []
         })
-        const { history } = renderWithProvider()
 
-        expect(mockUseAiAgentNavigation).toHaveBeenCalledWith({
-            shopName: 'Test Store',
-        })
-        expect(history.location.pathname).toBe('/app/ai-agent/Test Store')
+        const { history } = renderWithProvider()
+        expect(history.location.pathname).toBe('/app/ai-agent/overview')
     })
 
     test('renders the store integration view if no store is found', () => {
@@ -107,27 +99,6 @@ describe('RedirectToAiAgentStore', () => {
         ).toBeInTheDocument()
     })
 
-    test('redirects to overview page when StandaloneConvAiOverviewPage flag is enabled', () => {
-        mockUseFlag.mockImplementation((flag) => {
-            switch (flag) {
-                case FeatureFlagKey.StandaloneConvAiOverviewPage:
-                    return true
-                default:
-                    return undefined
-            }
-        })
-
-        mockUseAppSelector.mockImplementation((selector) => {
-            if (selector === getHasAutomate) return true
-            if (selector === getShopifyIntegrationsSortedByName)
-                return [{ name: 'Test Store' }, { name: 'Test Store 2' }]
-            return []
-        })
-
-        const { history } = renderWithProvider()
-        expect(history.location.pathname).toBe('/app/ai-agent/overview')
-    })
-
     describe('when user does not have Automate', () => {
         beforeEach(() => {
             mockUseAppSelector.mockImplementation((selector) => {
@@ -139,27 +110,12 @@ describe('RedirectToAiAgentStore', () => {
         })
 
         describe('when the automate paywall flag is enabled', () => {
-            test.each([
-                { overviewPageFlag: false },
-                { overviewPageFlag: true },
-            ])(
-                'renders the paywall view if overview feature flag is $overviewPageFlag',
-                ({ overviewPageFlag }) => {
-                    mockUseFlag.mockImplementation((flag) => {
-                        switch (flag) {
-                            case FeatureFlagKey.StandaloneConvAiOverviewPage:
-                                return overviewPageFlag
-                            default:
-                                return undefined
-                        }
-                    })
+            test('renders the paywall view', () => {
+                const { getByText, history } = renderWithProvider()
 
-                    const { getByText, history } = renderWithProvider()
-
-                    expect(getByText(/Paywall/)).toBeInTheDocument()
-                    expect(history.location.pathname).toBe('/app/ai-agent')
-                },
-            )
+                expect(getByText(/Paywall/)).toBeInTheDocument()
+                expect(history.location.pathname).toBe('/app/ai-agent')
+            })
         })
     })
 })

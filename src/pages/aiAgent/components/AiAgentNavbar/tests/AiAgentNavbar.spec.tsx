@@ -239,11 +239,7 @@ describe('<AiAgentNavbar />', () => {
             expect(queryByText('teststore1')).not.toBeInTheDocument()
         })
 
-        it('should render Overview menu item when flag StandaloneConvAiOverviewPage true', () => {
-            mockUseFlags.mockReturnValue({
-                [FeatureFlagKey.StandaloneConvAiOverviewPage]: true,
-            })
-
+        it('should always render Overview menu item when flag', () => {
             const { queryByText } = render(
                 <Provider
                     store={mockStore({
@@ -265,26 +261,6 @@ describe('<AiAgentNavbar />', () => {
             )
 
             expect(queryByText('Overview')).toBeInTheDocument()
-        })
-
-        it('should not render Overview menu item when flag StandaloneConvAiOverviewPage false', () => {
-            mockUseFlags.mockReturnValue({
-                [FeatureFlagKey.StandaloneConvAiOverviewPage]: false,
-            })
-
-            const { queryByText } = renderNavbar({
-                store: {
-                    currentAccount: fromJS({
-                        ...account,
-                        current_subscription: {
-                            ...account.current_subscription,
-                            products: automationSubscriptionProductPrices,
-                        },
-                    }),
-                },
-            })
-
-            expect(queryByText('Overview')).not.toBeInTheDocument()
         })
 
         it('should not render Overview menu item when there is no store connected', () => {

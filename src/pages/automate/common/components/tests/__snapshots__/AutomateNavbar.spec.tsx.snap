@@ -36,6 +36,19 @@ exports[`<AutomateNavbar /> render() should render automate navbar for admin wit
           </a>
         </div>
         <div
+          class="link-wrapper navbarItem"
+        >
+          <a
+            class="link"
+            data-active-class-name="active"
+            href="/app/automation/ai-agent-overview"
+          >
+            <span>
+              AI Agent Overview
+            </span>
+          </a>
+        </div>
+        <div
           class="category"
         >
           <div
@@ -308,6 +321,19 @@ exports[`<AutomateNavbar /> render() should render automate navbar for agent wit
           >
             <span>
               Overview
+            </span>
+          </a>
+        </div>
+        <div
+          class="link-wrapper navbarItem"
+        >
+          <a
+            class="link"
+            data-active-class-name="active"
+            href="/app/automation/ai-agent-overview"
+          >
+            <span>
+              AI Agent Overview
             </span>
           </a>
         </div>

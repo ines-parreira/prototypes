@@ -18,8 +18,6 @@ export const AiAgentNavbar = () => {
     const hasAutomate = useAppSelector(getHasAutomate)
     const hasAiAgentPreview =
         useFlags()[FeatureFlagKey.AIAgentPreviewModeAllowed]
-    const hasStandaloneConvAiOverviewPage =
-        useFlags()[FeatureFlagKey.StandaloneConvAiOverviewPage]
     const storeIntegrations = useAppSelector(getShopifyIntegrationsSortedByName)
 
     const isActionsInternalPlatformEnabled = useFlag(
@@ -35,19 +33,17 @@ export const AiAgentNavbar = () => {
 
     return (
         <Navbar activeContent={ActiveContent.AiAgent} title="AI Agent">
-            {hasStandaloneConvAiOverviewPage && (
-                <div
-                    className={classNames(
-                        navbarCss['link-wrapper'],
-                        css.navbarItem,
-                    )}
-                    data-candu-id="ai-agent-navbar-overview"
-                >
-                    <NavbarLink to={aiAgentRoutes.overview} exact>
-                        <span>Overview</span>
-                    </NavbarLink>
-                </div>
-            )}
+            <div
+                className={classNames(
+                    navbarCss['link-wrapper'],
+                    css.navbarItem,
+                )}
+                data-candu-id="ai-agent-navbar-overview"
+            >
+                <NavbarLink to={aiAgentRoutes.overview} exact>
+                    <span>Overview</span>
+                </NavbarLink>
+            </div>
 
             {isActionsInternalPlatformEnabled && (
                 <div className={navbarCss['link-wrapper']}>

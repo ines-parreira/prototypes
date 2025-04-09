@@ -11,7 +11,6 @@ import { StaticRouter } from 'react-router-dom'
 import configureMockStore from 'redux-mock-store'
 
 import { NavBarProvider } from 'common/navigation/components/NavBarProvider'
-import { FeatureFlagKey } from 'config/featureFlags'
 import { AGENT_ROLE } from 'config/user'
 import { useFlag } from 'core/flags'
 import { ThemeProvider } from 'core/theme'
@@ -223,11 +222,7 @@ describe('<AutomateNavbar />', () => {
             expect(queryByText('Actions platform')).toBeInTheDocument()
         })
 
-        it('should render AI Agent overview menu item when flag StandaloneConvAiOverviewPage is ON', () => {
-            allFlagsMock.mockReturnValue({
-                [FeatureFlagKey.StandaloneConvAiOverviewPage]: true,
-            })
-
+        it('should always render AI Agent overview menu item', () => {
             render(
                 <Provider
                     store={mockStore({
@@ -252,37 +247,6 @@ describe('<AutomateNavbar />', () => {
             )
 
             expect(screen.getByText('AI Agent Overview')).toBeInTheDocument()
-        })
-
-        it('should not render AI Agent overview menu item when flag StandaloneConvAiOverviewPage is OFF', () => {
-            allFlagsMock.mockReturnValue({
-                [FeatureFlagKey.StandaloneConvAiOverviewPage]: false,
-            })
-
-            const { queryByText } = render(
-                <Provider
-                    store={mockStore({
-                        ...defaultState,
-                        integrations,
-                        currentAccount: fromJS({
-                            ...account,
-                            current_subscription: {
-                                ...account.current_subscription,
-                                products: automationSubscriptionProductPrices,
-                            },
-                        }),
-                    })}
-                >
-                    <DndProvider backend={HTML5Backend}>
-                        <ThemeProvider>
-                            <AutomateNavbar />
-                        </ThemeProvider>
-                    </DndProvider>
-                </Provider>,
-                { wrapper },
-            )
-
-            expect(queryByText('AI Agent Overview')).not.toBeInTheDocument()
         })
     })
 })

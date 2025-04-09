@@ -20,8 +20,6 @@ const AutomateNavbar = () => {
     const isActionsInternalPlatformEnabled = useFlag(
         FeatureFlagKey.ActionsInternalPlatform,
     )
-    const hasStandaloneConvAiOverviewPage =
-        useFlags()[FeatureFlagKey.StandaloneConvAiOverviewPage]
 
     return (
         <Navbar activeContent={ActiveContent.Automate} title="Automate">
@@ -38,21 +36,19 @@ const AutomateNavbar = () => {
                             <span>Overview</span>
                         </NavbarLink>
                     </div>
-                    {hasStandaloneConvAiOverviewPage && (
-                        <div
-                            className={classNames(
-                                navbarCss['link-wrapper'],
-                                css.navbarItem,
-                            )}
+                    <div
+                        className={classNames(
+                            navbarCss['link-wrapper'],
+                            css.navbarItem,
+                        )}
+                    >
+                        <NavbarLink
+                            to="/app/automation/ai-agent-overview"
+                            exact
                         >
-                            <NavbarLink
-                                to="/app/automation/ai-agent-overview"
-                                exact
-                            >
-                                <span>AI Agent Overview</span>
-                            </NavbarLink>
-                        </div>
-                    )}
+                            <span>AI Agent Overview</span>
+                        </NavbarLink>
+                    </div>
                     {isActionsInternalPlatformEnabled && (
                         <div className={navbarCss['link-wrapper']}>
                             <NavbarLink to="/app/ai-agent/actions-platform">
