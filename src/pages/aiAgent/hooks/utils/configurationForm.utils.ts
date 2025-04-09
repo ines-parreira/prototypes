@@ -39,4 +39,5 @@ export const getFormValuesFromStoreConfiguration = (
             storeConfig.wizard.stepData.isAutoresponderTurnedOff,
         onCompletePathway: storeConfig.wizard.stepData.onCompletePathway,
     },
+    customFieldIds: storeConfig.customFieldIds,
 })

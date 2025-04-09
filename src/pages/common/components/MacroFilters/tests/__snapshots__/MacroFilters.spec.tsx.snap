@@ -11,6 +11,7 @@ exports[`<MacroFilters /> should render MacroFilters 1`] = `
       aria-expanded="false"
       aria-haspopup="true"
       class="mr-2 dropdownToggle dropdown-toggle btn btn-secondary"
+      id="select-filter-dropdown-toggle-button"
       type="button"
     >
       <span>
@@ -92,6 +93,7 @@ exports[`<MacroFilters /> should render MacroFilters 1`] = `
       aria-expanded="false"
       aria-haspopup="true"
       class="mr-2 dropdownToggle dropdown-toggle btn btn-secondary"
+      id="select-filter-dropdown-toggle-button"
       type="button"
     >
       <span>

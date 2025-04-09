@@ -39,6 +39,7 @@ export type FormValues = {
     monitoredChatIntegrations: number[] | null
     wizard: WizardFormValues | null | undefined
     previewModeValidUntilDatetime?: string | null
+    customFieldIds: number[] | null
 }
 
 export type UpdateValue<FormValues> = <Key extends keyof FormValues>(

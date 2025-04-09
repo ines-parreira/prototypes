@@ -39,6 +39,7 @@ describe('getStoreConfigurationFromFormValues', () => {
         excludedTopics: ['topic1', 'topic2'],
         ticketSampleRate: 0.5,
         wizard: undefined,
+        customFieldIds: [],
     }
 
     const formValues: ValidFormValues = {

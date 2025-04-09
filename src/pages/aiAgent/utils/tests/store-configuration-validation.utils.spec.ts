@@ -28,6 +28,7 @@ const VALID_FORM_VALUES: ValidFormValues = {
     helpCenterId: 1,
     monitoredChatIntegrations: [],
     wizard: undefined,
+    customFieldIds: [],
 }
 
 const DEFAULT_OPTIONS = {

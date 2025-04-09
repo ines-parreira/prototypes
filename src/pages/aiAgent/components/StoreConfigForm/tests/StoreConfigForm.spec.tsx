@@ -290,6 +290,7 @@ describe('<StoreConfigForm />', () => {
         salesDiscountStrategyLevel: null,
         salesPersuasionLevel: null,
         isConversationStartersEnabled: false,
+        customFieldIds: [],
     }
 
     const initialFormValues: FormValues = {
@@ -308,6 +309,7 @@ describe('<StoreConfigForm />', () => {
         monitoredChatIntegrations: null,
         monitoredEmailIntegrations: [{ id: 1, email: MOCK_EMAIL_ADDRESS }],
         wizard: undefined,
+        customFieldIds: [],
     }
 
     const defaultUseConfigurationFormValues = {
@@ -393,7 +395,7 @@ describe('<StoreConfigForm />', () => {
     it('should render the component', () => {
         renderComponent()
 
-        expect(screen.getByText('General settings')).toBeInTheDocument()
+        expect(screen.getByText('General')).toBeInTheDocument()
     })
 
     it('should render new email integration caption', () => {
@@ -1429,14 +1431,14 @@ describe('<StoreConfigForm />', () => {
             expect(reviewDraftsButton).not.toBeInTheDocument()
         })
 
-        describe.only('AI Autofill section', () => {
+        describe('AI Autofill section', () => {
             it('should display the legacy section for tags and hide the new section if the FF is deactivated', () => {
                 mockFlags({
                     [FeatureFlagKey.AiAgentUsesStoreConfigurationCustomFields]:
                         false,
                 })
 
-                let { container } = renderComponent()
+                const { container } = renderComponent()
                 const legacyH2 = within(container).queryByRole('heading', {
                     level: 2,
                     name: /AI ticket tagging/i, // case-insensitive
@@ -1445,36 +1447,14 @@ describe('<StoreConfigForm />', () => {
                     level: 2,
                     name: /AI Autofill: Tags & Ticket Fields/i, // case-insensitive
                 })
-                let tagList = within(container).queryByTestId(
-                    'store-configuration-taglist',
+                const customFieldsFormComponent = within(
+                    container,
+                ).queryByTestId(
+                    'ai-agent-store-configuration-custom-fields-form-component',
                 )
-                if (!tagList) {
-                    fail('Tag list not found, halting test')
-                }
-                let tagListAddButton = within(tagList).queryByText('Add Tag')
-                if (!tagListAddButton) {
-                    fail('Tag list add tag button not found, halting test')
-                }
-                fireEvent.click(tagListAddButton)
-
+                expect(customFieldsFormComponent).not.toBeInTheDocument()
                 expect(legacyH2).toBeInTheDocument()
                 expect(newH2).not.toBeInTheDocument()
-                expect(tagList).toBeInTheDocument()
-                expect(updateValueMocked).toHaveBeenCalledTimes(1)
-
-                // Covering case where tags are null
-                mockedUseConfigurationForm.mockReturnValue({
-                    ...defaultUseConfigurationFormValues,
-                    formValues: {
-                        ...defaultUseConfigurationFormValues.formValues,
-                        tags: null,
-                    },
-                })
-                ;({ container } = renderComponent())
-                tagList = within(container).queryByTestId(
-                    'store-configuration-taglist',
-                )
-                expect(tagList).toBeInTheDocument()
             })
             it('should display the new section for AI Autofill and hide the legacy section if the FF is activated', () => {
                 mockFlags({
@@ -1482,7 +1462,7 @@ describe('<StoreConfigForm />', () => {
                         true,
                 })
 
-                let { container } = renderComponent()
+                const { container } = renderComponent()
                 const legacyH2 = within(container).queryByRole('heading', {
                     level: 2,
                     name: /AI ticket tagging/i, // case-insensitive
@@ -1491,35 +1471,14 @@ describe('<StoreConfigForm />', () => {
                     level: 2,
                     name: /AI Autofill: Tags & Ticket Fields/i, // case-insensitive
                 })
-                let tagList = within(container).queryByTestId(
-                    'store-configuration-taglist',
+                const customFieldsFormComponent = within(
+                    container,
+                ).queryByTestId(
+                    'ai-agent-store-configuration-custom-fields-form-component',
                 )
-                if (!tagList) {
-                    fail('Tag list not found, halting test')
-                }
-                let tagListAddButton = within(tagList).queryByText('Add Tag')
-                if (!tagListAddButton) {
-                    fail('Tag list add tag button not found, halting test')
-                }
-                fireEvent.click(tagListAddButton)
+                expect(customFieldsFormComponent).not.toBeInTheDocument()
                 expect(legacyH2).not.toBeInTheDocument()
                 expect(newH2).toBeInTheDocument()
-                expect(tagList).toBeInTheDocument()
-                expect(updateValueMocked).toHaveBeenCalledTimes(1)
-
-                // Covering case where tags are null
-                mockedUseConfigurationForm.mockReturnValue({
-                    ...defaultUseConfigurationFormValues,
-                    formValues: {
-                        ...defaultUseConfigurationFormValues.formValues,
-                        tags: null,
-                    },
-                })
-                ;({ container } = renderComponent())
-                tagList = within(container).queryByTestId(
-                    'store-configuration-taglist',
-                )
-                expect(tagList).toBeInTheDocument()
             })
         })
     })

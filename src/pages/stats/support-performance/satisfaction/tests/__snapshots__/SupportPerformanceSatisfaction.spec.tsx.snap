@@ -46,6 +46,7 @@ exports[`SupportPerformanceSatisfaction should render the filters and stats when
               aria-expanded="false"
               aria-haspopup="true"
               class="mr-2 dropdownToggle dropdown-toggle btn btn-secondary"
+              id="select-filter-dropdown-toggle-button"
               type="button"
             >
               <span>
@@ -115,6 +116,7 @@ exports[`SupportPerformanceSatisfaction should render the filters and stats when
               aria-expanded="false"
               aria-haspopup="true"
               class="mr-2 dropdownToggle dropdown-toggle btn btn-secondary"
+              id="select-filter-dropdown-toggle-button"
               type="button"
             >
               <span>
@@ -284,6 +286,7 @@ exports[`SupportPerformanceSatisfaction should render the filters and stats when
               aria-expanded="false"
               aria-haspopup="true"
               class="mr-2 dropdownToggle dropdown-toggle btn btn-secondary"
+              id="select-filter-dropdown-toggle-button"
               type="button"
             >
               <span>

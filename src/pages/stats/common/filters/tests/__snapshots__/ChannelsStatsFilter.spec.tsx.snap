@@ -8,6 +8,7 @@ exports[`DEPRECATED_ChannelsStatsFilter should render channels stats filter 1`] 
     aria-expanded="false"
     aria-haspopup="true"
     class="mr-2 dropdownToggle dropdown-toggle btn btn-secondary"
+    id="select-filter-dropdown-toggle-button"
     type="button"
   >
     <span>

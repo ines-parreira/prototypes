@@ -264,7 +264,7 @@ describe('AiAgentConfigurationContainer', () => {
         })
         renderComponent()
 
-        expect(screen.queryByText('General settings')).toBeInTheDocument()
+        expect(screen.queryByText('General')).toBeInTheDocument()
         expect(screen.queryByText('Chat settings')).toBeInTheDocument()
         expect(screen.queryByText('Email settings')).toBeInTheDocument()
         expect(screen.queryByText('Handover and exclusion')).toBeInTheDocument()
@@ -279,7 +279,7 @@ describe('AiAgentConfigurationContainer', () => {
             [FeatureFlagKey.AiAgentChat]: true,
         })
         renderComponent()
-        expect(screen.queryByText('General settings')).toBeInTheDocument()
+        expect(screen.queryByText('General')).toBeInTheDocument()
         expect(screen.queryByText('Chat settings')).not.toBeInTheDocument()
         expect(screen.queryByText('Email settings')).not.toBeInTheDocument()
         expect(screen.queryByText('Handover and exclusion')).toBeInTheDocument()
@@ -295,7 +295,7 @@ describe('AiAgentConfigurationContainer', () => {
         })
 
         renderComponent({ tab: 'channels' })
-        expect(screen.queryByText('General settings')).not.toBeInTheDocument()
+        expect(screen.queryByText('General')).not.toBeInTheDocument()
         expect(screen.queryByText('Chat settings')).toBeInTheDocument()
         expect(screen.queryByText('Email settings')).toBeInTheDocument()
         expect(

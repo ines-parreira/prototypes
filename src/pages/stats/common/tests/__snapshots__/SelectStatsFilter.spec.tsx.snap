@@ -8,6 +8,7 @@ exports[`<SelectStatsFilter /> should render a filter with items 1`] = `
     aria-expanded="false"
     aria-haspopup="true"
     class="mr-2 toggle dropdownToggle dropdown-toggle btn btn-secondary"
+    id="select-filter-dropdown-toggle-button"
     type="button"
   >
     <span>

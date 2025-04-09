@@ -44,6 +44,7 @@ export const getStoreConfigurationFixture = (
     salesDiscountStrategyLevel: null,
     salesPersuasionLevel: null,
     isConversationStartersEnabled: false,
+    customFieldIds: [],
     ...props,
 })
 

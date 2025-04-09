@@ -147,6 +147,7 @@ describe('AiAgentStoreConfigurationProvider', () => {
             monitoredEmailIntegrations: [],
             monitoredChatIntegrations: [],
             excludedTopics: [],
+            customFieldIds: [],
         }
 
         await act(

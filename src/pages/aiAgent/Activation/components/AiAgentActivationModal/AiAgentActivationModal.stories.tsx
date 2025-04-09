@@ -63,6 +63,7 @@ const dummyStoreActivation: StoreActivation = {
         salesDiscountStrategyLevel: null,
         salesPersuasionLevel: null,
         isConversationStartersEnabled: false,
+        customFieldIds: [],
     },
 }
 const dummyStoreActivation2: StoreActivation = {

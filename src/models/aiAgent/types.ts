@@ -86,6 +86,7 @@ export type StoreConfiguration = {
     salesPersuasionLevel: PersuasionLevel | null
 
     isConversationStartersEnabled: boolean
+    customFieldIds: number[]
 }
 
 export type CreateStoreConfigurationPayload = Pick<
@@ -102,6 +103,7 @@ export type CreateStoreConfigurationPayload = Pick<
     | 'chatChannelDeactivatedDatetime'
     | 'emailChannelDeactivatedDatetime'
     | 'excludedTopics'
+    | 'customFieldIds'
 > &
     WizardProps
 

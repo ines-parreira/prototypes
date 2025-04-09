@@ -62,6 +62,7 @@ import { HandoverTopicsModal } from '../HandoverTopicsModel/HandoverTopicsModal'
 import { PublicSourcesSection } from '../PublicSourcesSection/PublicSourcesSection'
 import TagList from '../TicketTag/TagList'
 import { ChannelsFormComponent } from './FormComponents/ChannelsFormComponent'
+import { CustomFieldsFormComponent } from './FormComponents/CustomFieldsFormComponent'
 import { StoreConfigUnsavedChangesPrompt } from './FormComponents/StoreConfigUnsavedChangesPrompt'
 import { ToneOfVoiceFormComponent } from './FormComponents/ToneOfVoiceFormComponent'
 import { isPreviewModeActivated } from './StoreConfigForm.utils'
@@ -546,14 +547,17 @@ export const StoreConfigForm = ({
         <>
             <StoreConfigUnsavedChangesPrompt />
             <div className={css.storeConfigSettings}>
-                <form onSubmit={onSubmit} className={css.automateView}>
+                <form
+                    onSubmit={(e) => e.preventDefault()}
+                    className={css.automateView}
+                >
                     {shouldDisplayGeneralSections && (
                         <>
                             <AIAgentIntroduction />
                             <section>
                                 <div className={css.generalSettingsWrapper}>
                                     <h2 className={css.generalSettingsTitle}>
-                                        General settings
+                                        General
                                     </h2>
                                     <span>
                                         How should AI Agent send responses?
@@ -637,7 +641,7 @@ export const StoreConfigForm = ({
                                     </h2>
                                     <div className={css.sectionDescription}>
                                         Tags and Ticket Fields selected will be
-                                        filled out automatically by AI agent,
+                                        filled out automatically by AI Agent,
                                         helping categorize and prioritize
                                         tickets with less manual work.
                                     </div>
@@ -664,34 +668,14 @@ export const StoreConfigForm = ({
                                             }}
                                         />
                                     </div>
-                                    <div className={css.formGroup}>
-                                        <Label className={css.subsectionHeader}>
-                                            Ticket Fields
-                                        </Label>
-                                        <div
-                                            className={css.formGroupDescription}
-                                        >
-                                            Choose which ticket fields AI Agent
-                                            should autofill. It will follow the
-                                            rules set in{' '}
-                                            <Link
-                                                to={
-                                                    '/app/settings/ticket-field-conditions'
-                                                }
-                                            >
-                                                Field Conditions
-                                            </Link>
-                                            . Manage fields in{' '}
-                                            <Link
-                                                to={
-                                                    '/app/settings/ticket-fields/active'
-                                                }
-                                            >
-                                                Ticket Field settings
-                                            </Link>
-                                            .
-                                        </div>
-                                    </div>
+                                    <CustomFieldsFormComponent
+                                        data-testid="ai-agent-store-configuration-custom-fields-form-component"
+                                        updateValue={updateValue}
+                                        customFieldIds={
+                                            formValues.customFieldIds
+                                        }
+                                        isStoreCreated={!isCreate}
+                                    />
                                 </section>
                             )}
                             <section>

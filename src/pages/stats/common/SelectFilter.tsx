@@ -29,6 +29,8 @@ import {
     UncontrolledDropdown,
 } from 'reactstrap'
 
+import { Tooltip } from '@gorgias/merchant-ui-kit'
+
 import useAppDispatch from 'hooks/useAppDispatch'
 import { LabelWithTooltip } from 'pages/common/components/LabelWithTooltip/LabelWithTooltip'
 import CheckBox from 'pages/common/forms/CheckBox'
@@ -169,11 +171,17 @@ type Props = {
     isPartial?: boolean
     isRequired?: boolean
     onChange: (value: Value[]) => void
+    onClose?: () => void
     onSearch?: (query: string) => void
     plural?: string
     singular?: string
     value: Value[]
     size?: 'sm' | 'lg'
+    // Override the generic singular/plural button label
+    label?: string
+    // Override the search placeholder
+    searchPlaceholder?: string
+    disabledTooltipText?: string
 }
 
 const DefaultDropdownMenu = ({
@@ -193,12 +201,16 @@ const SelectFilter = ({
     isMultiple = true,
     isPartial = false,
     onChange,
+    onClose,
     onSearch,
     plural = 'items',
     singular = 'item',
     value,
     toggleClassName = 'mr-2',
     size,
+    label,
+    searchPlaceholder,
+    disabledTooltipText,
 }: Props) => {
     const dispatch = useAppDispatch()
     const [search, setSearch] = useState('')
@@ -238,6 +250,9 @@ const SelectFilter = ({
     )
 
     const toggleLabel = useMemo(() => {
+        if (label) {
+            return label
+        }
         if (isMultiple) {
             return hasSelection
                 ? `${value.length} ${value.length > 1 ? plural : singular}`
@@ -247,7 +262,7 @@ const SelectFilter = ({
         const selectedItem = items.find((item) => item.props.value === value[0])
 
         return selectedItem ? selectedItem.props.label : _capitalize(singular)
-    }, [hasSelection, isMultiple, items, plural, singular, value])
+    }, [hasSelection, isMultiple, items, plural, singular, value, label])
 
     const groups = useMemo(
         () =>
@@ -317,9 +332,10 @@ const SelectFilter = ({
                 dispatch(statFiltersDirty())
             } else {
                 dispatch(statFiltersClean())
+                onClose?.()
             }
         },
-        [dispatch],
+        [dispatch, onClose],
     )
 
     const handleGroupChange = useCallback(
@@ -398,7 +414,16 @@ const SelectFilter = ({
                     onToggle={handleToggle}
                     size={size}
                 >
+                    {isDisabled && disabledTooltipText && (
+                        <Tooltip
+                            target={'select-filter-dropdown-toggle-button'}
+                            placement="top"
+                        >
+                            {disabledTooltipText}
+                        </Tooltip>
+                    )}
                     <DropdownToggle
+                        id="select-filter-dropdown-toggle-button"
                         caret
                         className={classnames(
                             toggleClassName,
@@ -422,7 +447,7 @@ const SelectFilter = ({
                             <Input
                                 autoFocus
                                 onChange={(e) => setSearch(e.target.value)}
-                                placeholder={`Search ${plural}...`}
+                                placeholder={`Search ${searchPlaceholder ?? plural}...`}
                                 value={search}
                             />
                         </DropdownItem>

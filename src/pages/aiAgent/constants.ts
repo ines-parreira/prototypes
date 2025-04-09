@@ -57,6 +57,7 @@ export const DEFAULT_FORM_VALUES: FormValues = {
     customToneOfVoiceGuidance: null,
     helpCenterId: null,
     wizard: undefined,
+    customFieldIds: null,
 }
 
 export const DEFAULT_WIZARD_FORM_VALUES: WizardFormValues = {
@@ -147,6 +148,7 @@ export const INITIAL_FORM_VALUES = {
     customToneOfVoiceGuidance: CUSTOM_TONE_OF_VOICE_GUIDANCE_DEFAULT_VALUE,
     helpCenter: null,
     monitoredChatIntegrations: [],
+    customFieldIds: [],
 }
 
 export const PLAYGROUND_PROMPT_CONTENT: Record<PlaygroundPromptType, string> = {

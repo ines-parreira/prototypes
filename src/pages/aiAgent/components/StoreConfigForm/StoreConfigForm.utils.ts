@@ -62,6 +62,7 @@ export const getStoreConfigurationFromFormValues = (
         helpCenterId,
         monitoredChatIntegrations: formValues.monitoredChatIntegrations,
         wizard: formValues.wizard ? wizard : undefined,
+        customFieldIds: formValues.customFieldIds ?? [],
     }
 }
 

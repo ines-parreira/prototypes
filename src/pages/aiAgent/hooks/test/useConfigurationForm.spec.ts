@@ -35,6 +35,7 @@ const INITIAL_FORM_VALUES: FormValues = {
     ticketSampleRate: null,
     monitoredChatIntegrations: null,
     wizard: undefined,
+    customFieldIds: null,
 }
 
 jest.mock('models/helpCenter/queries')

@@ -22,6 +22,7 @@ exports[`DEPRECATED_IntegrationsStatsFilter should not render missing integratio
     aria-expanded="false"
     aria-haspopup="true"
     class="mr-2 dropdownToggle dropdown-toggle btn btn-secondary"
+    id="select-filter-dropdown-toggle-button"
     type="button"
   >
     <span>

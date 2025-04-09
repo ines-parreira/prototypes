@@ -47,6 +47,7 @@ exports[`<SelfServiceStatsPage /> should display the loader on loading 1`] = `
                 aria-expanded="false"
                 aria-haspopup="true"
                 class="mr-2 dropdownToggle dropdown-toggle btn btn-secondary"
+                id="select-filter-dropdown-toggle-button"
                 type="button"
               >
                 <span>
@@ -315,6 +316,7 @@ exports[`<SelfServiceStatsPage /> should render the filters and stats when stats
               aria-expanded="false"
               aria-haspopup="true"
               class="mr-2 dropdownToggle dropdown-toggle btn btn-secondary"
+              id="select-filter-dropdown-toggle-button"
               type="button"
             >
               <span>
@@ -1242,6 +1244,7 @@ exports[`<SelfServiceStatsPage /> should render the stats with the feature previ
               aria-expanded="false"
               aria-haspopup="true"
               class="mr-2 dropdownToggle dropdown-toggle btn btn-secondary"
+              id="select-filter-dropdown-toggle-button"
               type="button"
             >
               <span>

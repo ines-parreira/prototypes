@@ -28,5 +28,6 @@ export const getStoreConfigurationFormValuesFixture = (
         isAutoresponderTurnedOff: false,
         onCompletePathway: null,
     },
+    customFieldIds: [],
     ...props,
 })
