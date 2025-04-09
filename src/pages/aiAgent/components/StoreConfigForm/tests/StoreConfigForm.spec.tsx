@@ -79,9 +79,9 @@ jest.mock('../../PublicSourcesSection/PublicSourcesSection', () => ({
 // This mocked component is a child of one of the components rendered in the StoreConfigForm (ChatConfigurationFormComponent).
 // By implementing this mock, we’re isolating the StoreConfigForm for more focused testing, avoiding not relevant rendering and mocking of components and dependencies that are tested elsewhere.
 jest.mock(
-    '../FormComponents/HandoverCustomizationSettingsFormComponent',
+    '../../HandoverCustomization/HandoverCustomizationChatSettingsComponent',
     () => ({
-        HandoverCustomizationSettingsFormComponent: () => (
+        HandoverCustomizationChatSettingsComponent: () => (
             <div data-testid="mocked-handover-settings">
                 Mocked Handover Settings
             </div>

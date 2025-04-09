@@ -79,17 +79,23 @@ jest.mock('../ChatSettingsFormComponent', () => ({
     ),
 }))
 
-jest.mock('../HandoverCustomizationSettingsFormComponent', () => ({
-    HandoverCustomizationSettingsFormComponent: ({
-        shopName,
-    }: {
-        shopName: string
-    }) => (
-        <div data-testid="handover-customization-settings" data-shop={shopName}>
-            handover customization settings
-        </div>
-    ),
-}))
+jest.mock(
+    '../../../HandoverCustomization/HandoverCustomizationChatSettingsComponent',
+    () => ({
+        HandoverCustomizationChatSettingsComponent: ({
+            shopName,
+        }: {
+            shopName: string
+        }) => (
+            <div
+                data-testid="handover-customization-settings"
+                data-shop={shopName}
+            >
+                handover customization settings
+            </div>
+        ),
+    }),
+)
 
 jest.mock('../EmailFormComponent', () => ({
     EmailFormComponent: ({ isRequired }: { isRequired: boolean }) => (

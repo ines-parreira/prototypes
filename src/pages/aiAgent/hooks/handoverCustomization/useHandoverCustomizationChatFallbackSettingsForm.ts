@@ -13,7 +13,7 @@ import {
 } from 'pages/aiAgent/utils/handoverCustomization/handoverCustomizationChatFallbackSettingsForm.utils'
 
 import { CHANGES_SAVED_SUCCESS } from '../../constants'
-import { HandoverCustomizationFallbackSettingsFormMultiLanguageValues } from '../../types'
+import { HandoverCustomizationChatFallbackSettingsFormMultiLanguageValues } from '../../types'
 import { useHandoverCustomizationChatLanguageTextsConfiguration } from './useHandoverCustomizationChatLanguageTextsConfiguration'
 
 type Props = {
@@ -29,7 +29,7 @@ export const useHandoverCustomizationChatFallbackSettingsForm = ({
         useHandoverCustomizationChatLanguageTextsConfiguration(integration)
 
     const [formValues, setFormValues] =
-        useState<HandoverCustomizationFallbackSettingsFormMultiLanguageValues>(
+        useState<HandoverCustomizationChatFallbackSettingsFormMultiLanguageValues>(
             getInitialFormValues(integration),
         )
 

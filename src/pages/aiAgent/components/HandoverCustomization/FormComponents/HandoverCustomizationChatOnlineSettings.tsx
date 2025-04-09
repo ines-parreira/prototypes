@@ -17,13 +17,13 @@ import TextArea from 'pages/common/forms/TextArea'
 import ChatPreferencesAutoReplyWaitTimeSettings from './ChatPreferencesAutoReplyWaitTimeSettings'
 import ChatPreferencesEmailCaptureSettings from './ChatPreferencesEmailCaptureSettings'
 
-import css from './HandoverCustomizationOnlineSettings.less'
+import css from './HandoverCustomizationChatOnlineSettings.less'
 
 type Props = {
     integration: GorgiasChatIntegration
 }
 
-const HandoverCustomizationOnlineSettings = ({ integration }: Props) => {
+const HandoverCustomizationChatOnlineSettings = ({ integration }: Props) => {
     const {
         isLoading,
         isSaving,
@@ -207,4 +207,4 @@ const HandoverCustomizationOnlineSettings = ({ integration }: Props) => {
     )
 }
 
-export default HandoverCustomizationOnlineSettings
+export default HandoverCustomizationChatOnlineSettings

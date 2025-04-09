@@ -12,9 +12,9 @@ import {
     GorgiasChatIntegration,
     GorgiasChatIntegrationMeta,
 } from 'models/integration/types'
-import { HandoverCustomizationOnlineSettingsFormValues } from 'pages/aiAgent/types'
+import { HandoverCustomizationChatOnlineSettingsFormValues } from 'pages/aiAgent/types'
 
-export const initialFormFieldValues: HandoverCustomizationOnlineSettingsFormValues =
+export const initialFormFieldValues: HandoverCustomizationChatOnlineSettingsFormValues =
     {
         onlineInstructions: '',
         emailCaptureEnabled: GORGIAS_CHAT_WIDGET_EMAIL_CAPTURE_ENABLED_DEFAULT,
@@ -28,7 +28,7 @@ export const initialFormFieldValues: HandoverCustomizationOnlineSettingsFormValu
  * it contains the friendly name of the field and validation constraints
  */
 export const formFieldsConfiguration: Record<
-    keyof HandoverCustomizationOnlineSettingsFormValues,
+    keyof HandoverCustomizationChatOnlineSettingsFormValues,
     {
         required: boolean
         friendlyName: string
@@ -61,7 +61,7 @@ export const formFieldsConfiguration: Record<
 export const getIntegrationPreferencesFormDataFragment = (
     integration: GorgiasChatIntegration,
 ): Pick<
-    HandoverCustomizationOnlineSettingsFormValues,
+    HandoverCustomizationChatOnlineSettingsFormValues,
     | 'emailCaptureEnabled'
     | 'emailCaptureEnforcement'
     | 'autoResponderEnabled'
@@ -96,7 +96,7 @@ export const getIntegrationPreferencesFormDataFragment = (
 export const getHandoverConfigurationFormDataFragment = (
     currentHandoverConfiguration?: HandoverConfigurationData,
 ): Pick<
-    HandoverCustomizationOnlineSettingsFormValues,
+    HandoverCustomizationChatOnlineSettingsFormValues,
     'onlineInstructions'
 > => {
     const onlineInstructions =
@@ -123,7 +123,7 @@ export const hasAnyChangeInFormValues = <T extends Object>(
 }
 
 export const mapFromFormValuesToIntegrationPreferences = (
-    formValues: HandoverCustomizationOnlineSettingsFormValues,
+    formValues: HandoverCustomizationChatOnlineSettingsFormValues,
     integration: GorgiasChatIntegration,
 ) => {
     const { meta } = integration

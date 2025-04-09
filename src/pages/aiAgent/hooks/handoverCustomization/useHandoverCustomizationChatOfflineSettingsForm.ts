@@ -13,7 +13,7 @@ import { mapFormValuesToHandoverConfigurationData } from 'pages/aiAgent/utils/ha
 import { getCurrentAccountState } from 'state/currentAccount/selectors'
 
 import { CHANGES_SAVED_SUCCESS } from '../../constants'
-import { HandoverCustomizationOfflineSettingsFormValues } from '../../types'
+import { HandoverCustomizationChatOfflineSettingsFormValues } from '../../types'
 import { useAiAgentHandoverConfigurationMutation } from './useAiAgentHandoverConfigurationMutation'
 import { useFetchAiAgentStoreHandoverConfiguration } from './useFetchAiAgentHandoverConfiguration'
 
@@ -57,7 +57,7 @@ export const useHandoverCustomizationChatOfflineSettingsForm = ({
         })
 
     const [formValues, setFormValues] =
-        useState<HandoverCustomizationOfflineSettingsFormValues>(
+        useState<HandoverCustomizationChatOfflineSettingsFormValues>(
             initialFormFieldValues,
         )
 
@@ -88,7 +88,7 @@ export const useHandoverCustomizationChatOfflineSettingsForm = ({
 
     const updateValue = useCallback(
         (
-            key: keyof HandoverCustomizationOfflineSettingsFormValues,
+            key: keyof HandoverCustomizationChatOfflineSettingsFormValues,
             value: string | boolean,
         ) => {
             const newFormValues = {

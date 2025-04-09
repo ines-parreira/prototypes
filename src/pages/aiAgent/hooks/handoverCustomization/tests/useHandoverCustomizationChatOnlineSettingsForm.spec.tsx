@@ -24,7 +24,7 @@ import { updateOrCreateIntegrationRequest } from 'state/integrations/actions'
 import { mockQueryClientProvider } from 'tests/reactQueryTestingUtils'
 import { mockStore } from 'utils/testing'
 
-import { HandoverCustomizationOnlineSettingsFormValues } from '../../../types'
+import { HandoverCustomizationChatOnlineSettingsFormValues } from '../../../types'
 import { useAiAgentHandoverConfigurationMutation } from '../useAiAgentHandoverConfigurationMutation'
 import { useFetchAiAgentStoreHandoverConfiguration } from '../useFetchAiAgentHandoverConfiguration'
 import { useHandoverCustomizationChatOnlineSettingsForm } from '../useHandoverCustomizationChatOnlineSettingsForm'
@@ -110,13 +110,14 @@ const mockIntegration: GorgiasChatIntegration = {
     },
 } as unknown as GorgiasChatIntegration
 
-const mockInitialFormValues: HandoverCustomizationOnlineSettingsFormValues = {
-    onlineInstructions: '',
-    emailCaptureEnabled: false,
-    emailCaptureEnforcement: GorgiasChatEmailCaptureType.Optional,
-    autoResponderEnabled: false,
-    autoResponderReply: GorgiasChatAutoResponderReply.ReplyDynamic,
-}
+const mockInitialFormValues: HandoverCustomizationChatOnlineSettingsFormValues =
+    {
+        onlineInstructions: '',
+        emailCaptureEnabled: false,
+        emailCaptureEnforcement: GorgiasChatEmailCaptureType.Optional,
+        autoResponderEnabled: false,
+        autoResponderReply: GorgiasChatAutoResponderReply.ReplyDynamic,
+    }
 
 describe('useHandoverCustomizationChatOnlineSettingsForm', () => {
     let dispatch: jest.Mock
@@ -205,7 +206,7 @@ describe('useHandoverCustomizationChatOnlineSettingsForm', () => {
 
         act(() => {
             result.current.updateValue(
-                field as keyof HandoverCustomizationOnlineSettingsFormValues,
+                field as keyof HandoverCustomizationChatOnlineSettingsFormValues,
                 value,
             )
         })

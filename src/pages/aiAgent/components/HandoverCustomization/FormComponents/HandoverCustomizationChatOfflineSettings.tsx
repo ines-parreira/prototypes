@@ -13,13 +13,13 @@ import { formFieldsConfiguration } from 'pages/aiAgent/utils/handoverCustomizati
 import Caption from 'pages/common/forms/Caption/Caption'
 import TextArea from 'pages/common/forms/TextArea'
 
-import css from './HandoverCustomizationOfflineSettings.less'
+import css from './HandoverCustomizationChatOfflineSettings.less'
 
 type Props = {
     integration: GorgiasChatIntegration
 }
 
-const HandoverCustomizationOfflineSettings = ({ integration }: Props) => {
+const HandoverCustomizationChatOfflineSettings = ({ integration }: Props) => {
     const {
         isLoading,
         hasChanges,
@@ -170,4 +170,4 @@ const HandoverCustomizationOfflineSettings = ({ integration }: Props) => {
     )
 }
 
-export default HandoverCustomizationOfflineSettings
+export default HandoverCustomizationChatOfflineSettings

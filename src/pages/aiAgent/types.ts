@@ -101,15 +101,15 @@ export type PlaygroundCustomer = {
     id: number
 }
 
-export type HandoverCustomizationFallbackSettingsFormMultiLanguageValues = {
-    [key: string]: HandoverCustomizationFallbackSettingsFormValues
+export type HandoverCustomizationChatFallbackSettingsFormMultiLanguageValues = {
+    [key: string]: HandoverCustomizationChatFallbackSettingsFormValues
 }
 
-export type HandoverCustomizationFallbackSettingsFormValues = {
+export type HandoverCustomizationChatFallbackSettingsFormValues = {
     fallbackMessage?: string
 }
 
-export type HandoverCustomizationOfflineSettingsFormValues = {
+export type HandoverCustomizationChatOfflineSettingsFormValues = {
     offlineInstructions: string
     shareBusinessHours: boolean
 }
@@ -120,7 +120,7 @@ export enum AIAgentPaywallFeatures {
     SalesSetup = 'SalesSetup',
 }
 
-export type HandoverCustomizationOnlineSettingsFormValues = {
+export type HandoverCustomizationChatOnlineSettingsFormValues = {
     onlineInstructions: string
     emailCaptureEnabled: boolean
     emailCaptureEnforcement: GorgiasChatEmailCaptureType

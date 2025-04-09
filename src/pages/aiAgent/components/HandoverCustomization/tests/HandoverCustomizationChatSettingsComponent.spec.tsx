@@ -3,41 +3,31 @@ import { render, screen } from '@testing-library/react'
 import { mockChatChannels } from 'pages/aiAgent/fixtures/chatChannels.fixture'
 import { useHandoverCustomizationChatSettings } from 'pages/aiAgent/hooks/handoverCustomization/useHandoverCustomizationChatSettings'
 
-import { HandoverCustomizationSettingsFormComponent } from '../HandoverCustomizationSettingsFormComponent'
+import { HandoverCustomizationChatSettingsComponent } from '../HandoverCustomizationChatSettingsComponent'
 
 jest.mock(
     'pages/aiAgent/hooks/handoverCustomization/useHandoverCustomizationChatSettings',
 )
 
 // Mock the imported components
-jest.mock(
-    '../../HandoverCustomizationSettingsComponents/HandoverCustomizationOfflineSettings',
-    () =>
-        jest.fn(() => (
-            <div data-testid="mock-offline-settings">
-                mocked offline settings
-            </div>
-        )),
+jest.mock('../FormComponents/HandoverCustomizationChatOfflineSettings', () =>
+    jest.fn(() => (
+        <div data-testid="mock-offline-settings">mocked offline settings</div>
+    )),
 )
 
-jest.mock(
-    '../../HandoverCustomizationSettingsComponents/HandoverCustomizationOnlineSettings',
-    () =>
-        jest.fn(() => (
-            <div data-testid="mock-online-settings">mocked online settings</div>
-        )),
+jest.mock('../FormComponents/HandoverCustomizationChatOnlineSettings', () =>
+    jest.fn(() => (
+        <div data-testid="mock-online-settings">mocked online settings</div>
+    )),
 )
-jest.mock(
-    '../../HandoverCustomizationSettingsComponents/HandoverCustomizationFallbackSettings',
-    () =>
-        jest.fn(() => (
-            <div data-testid="mock-fallback-settings">
-                mocked fallback settings
-            </div>
-        )),
+jest.mock('../FormComponents/HandoverCustomizationChatFallbackSettings', () =>
+    jest.fn(() => (
+        <div data-testid="mock-fallback-settings">mocked fallback settings</div>
+    )),
 )
 
-describe('HandoverCustomizationSettingsFormComponent', () => {
+describe('HandoverCustomizationChatSettingsComponent', () => {
     const mockProps = {
         shopName: 'test-shop',
         shopType: 'shopify',
@@ -64,7 +54,7 @@ describe('HandoverCustomizationSettingsFormComponent', () => {
     })
 
     it('renders the component correctly', () => {
-        render(<HandoverCustomizationSettingsFormComponent {...mockProps} />)
+        render(<HandoverCustomizationChatSettingsComponent {...mockProps} />)
 
         expect(useHandoverCustomizationChatSettings).toHaveBeenCalledWith(
             mockProps,
@@ -90,7 +80,7 @@ describe('HandoverCustomizationSettingsFormComponent', () => {
             monitoredChatIntegrationIds: [],
         }
 
-        render(<HandoverCustomizationSettingsFormComponent {...props} />)
+        render(<HandoverCustomizationChatSettingsComponent {...props} />)
 
         expect(useHandoverCustomizationChatSettings).toHaveBeenCalledWith(props)
 
@@ -122,7 +112,7 @@ describe('HandoverCustomizationSettingsFormComponent', () => {
                 monitoredChatIntegrationIds: [14],
             }
 
-            render(<HandoverCustomizationSettingsFormComponent {...props} />)
+            render(<HandoverCustomizationChatSettingsComponent {...props} />)
 
             expect(useHandoverCustomizationChatSettings).toHaveBeenCalledWith(
                 props,
@@ -134,7 +124,7 @@ describe('HandoverCustomizationSettingsFormComponent', () => {
 
         it('should render the chat selection if there is more than one chat channel', () => {
             render(
-                <HandoverCustomizationSettingsFormComponent
+                <HandoverCustomizationChatSettingsComponent
                     {...mockProps}
                     monitoredChatIntegrationIds={[14, 15]}
                 />,
@@ -160,7 +150,7 @@ describe('HandoverCustomizationSettingsFormComponent', () => {
                 monitoredChatIntegrationIds: [14],
             }
 
-            render(<HandoverCustomizationSettingsFormComponent {...props} />)
+            render(<HandoverCustomizationChatSettingsComponent {...props} />)
 
             expect(useHandoverCustomizationChatSettings).toHaveBeenCalledWith(
                 props,
@@ -178,7 +168,7 @@ describe('HandoverCustomizationSettingsFormComponent', () => {
                 monitoredChatIntegrationIds: [14, 15],
             }
 
-            render(<HandoverCustomizationSettingsFormComponent {...props} />)
+            render(<HandoverCustomizationChatSettingsComponent {...props} />)
 
             expect(useHandoverCustomizationChatSettings).toHaveBeenCalledWith(
                 props,

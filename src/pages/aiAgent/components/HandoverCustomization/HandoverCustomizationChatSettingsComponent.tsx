@@ -13,11 +13,11 @@ import AccordionItem from 'pages/common/components/accordion/AccordionItem'
 import IconTooltip from 'pages/common/forms/IconTooltip/IconTooltip'
 import SelectField from 'pages/common/forms/SelectField/SelectField'
 
-import HandoverCustomizationFallbackSettings from '../HandoverCustomizationSettingsComponents/HandoverCustomizationFallbackSettings'
-import HandoverCustomizationOfflineSettings from '../HandoverCustomizationSettingsComponents/HandoverCustomizationOfflineSettings'
-import HandoverCustomizationOnlineSettings from '../HandoverCustomizationSettingsComponents/HandoverCustomizationOnlineSettings'
+import HandoverCustomizationChatFallbackSettings from './FormComponents/HandoverCustomizationChatFallbackSettings'
+import HandoverCustomizationChatOfflineSettings from './FormComponents/HandoverCustomizationChatOfflineSettings'
+import HandoverCustomizationChatOnlineSettings from './FormComponents/HandoverCustomizationChatOnlineSettings'
 
-import css from './HandoverCustomizationSettingsFormComponent.less'
+import css from './HandoverCustomizationChatSettingsComponent.less'
 
 type Props = {
     shopName: string
@@ -25,7 +25,7 @@ type Props = {
     monitoredChatIntegrationIds: number[] | null
 }
 
-export const HandoverCustomizationSettingsFormComponent = ({
+export const HandoverCustomizationChatSettingsComponent = ({
     shopName,
     shopType,
     monitoredChatIntegrationIds,
@@ -100,7 +100,7 @@ export const HandoverCustomizationSettingsFormComponent = ({
                         </AccordionHeader>
                         <AccordionBody>
                             {selectedChat && (
-                                <HandoverCustomizationOfflineSettings
+                                <HandoverCustomizationChatOfflineSettings
                                     integration={selectedChat.value}
                                 />
                             )}
@@ -128,7 +128,7 @@ export const HandoverCustomizationSettingsFormComponent = ({
                         </AccordionHeader>
                         <AccordionBody>
                             {selectedChat && (
-                                <HandoverCustomizationOnlineSettings
+                                <HandoverCustomizationChatOnlineSettings
                                     integration={selectedChat.value}
                                 />
                             )}
@@ -145,7 +145,7 @@ export const HandoverCustomizationSettingsFormComponent = ({
                         </AccordionHeader>
                         <AccordionBody>
                             {selectedChat && (
-                                <HandoverCustomizationFallbackSettings
+                                <HandoverCustomizationChatFallbackSettings
                                     integration={selectedChat.value}
                                 />
                             )}

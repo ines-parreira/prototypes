@@ -17,7 +17,7 @@ import { getCurrentAccountState } from 'state/currentAccount/selectors'
 import { updateOrCreateIntegrationRequest } from 'state/integrations/actions'
 
 import { CHANGES_SAVED_SUCCESS } from '../../constants'
-import { HandoverCustomizationOnlineSettingsFormValues } from '../../types'
+import { HandoverCustomizationChatOnlineSettingsFormValues } from '../../types'
 import { useAiAgentHandoverConfigurationMutation } from './useAiAgentHandoverConfigurationMutation'
 import { useFetchAiAgentStoreHandoverConfiguration } from './useFetchAiAgentHandoverConfiguration'
 
@@ -38,7 +38,7 @@ export const useHandoverCustomizationChatOnlineSettingsForm = ({
     const accountId = currentAccount.get('id')
 
     const [formValues, setFormValues] =
-        useState<HandoverCustomizationOnlineSettingsFormValues>(
+        useState<HandoverCustomizationChatOnlineSettingsFormValues>(
             initialFormFieldValues,
         )
 
@@ -101,7 +101,7 @@ export const useHandoverCustomizationChatOnlineSettingsForm = ({
 
     const hasIntegrationPreferencesChanges = useMemo(
         () =>
-            hasAnyChangeInFormValues<HandoverCustomizationOnlineSettingsFormValues>(
+            hasAnyChangeInFormValues<HandoverCustomizationChatOnlineSettingsFormValues>(
                 formValues,
                 initialIntegrationPreferencesFormValues,
             ),
@@ -110,7 +110,7 @@ export const useHandoverCustomizationChatOnlineSettingsForm = ({
 
     const hasHandoverConfigurationChanges = useMemo(
         () =>
-            hasAnyChangeInFormValues<HandoverCustomizationOnlineSettingsFormValues>(
+            hasAnyChangeInFormValues<HandoverCustomizationChatOnlineSettingsFormValues>(
                 formValues,
                 initialHandoverConfigurationFormValues,
             ),
@@ -125,7 +125,7 @@ export const useHandoverCustomizationChatOnlineSettingsForm = ({
 
     const updateValue = useCallback(
         (
-            key: keyof HandoverCustomizationOnlineSettingsFormValues,
+            key: keyof HandoverCustomizationChatOnlineSettingsFormValues,
             value: any,
         ) => {
             const newFormValues = {

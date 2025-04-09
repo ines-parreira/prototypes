@@ -1,6 +1,6 @@
-import { HandoverCustomizationOfflineSettingsFormValues } from 'pages/aiAgent/types'
+import { HandoverCustomizationChatOfflineSettingsFormValues } from 'pages/aiAgent/types'
 
-export const initialFormFieldValues: HandoverCustomizationOfflineSettingsFormValues =
+export const initialFormFieldValues: HandoverCustomizationChatOfflineSettingsFormValues =
     {
         offlineInstructions: '',
         shareBusinessHours: false,
@@ -11,7 +11,7 @@ export const initialFormFieldValues: HandoverCustomizationOfflineSettingsFormVal
  * it contains the friendly name of the field and validation constraints
  */
 export const formFieldsConfiguration: Record<
-    keyof HandoverCustomizationOfflineSettingsFormValues,
+    keyof HandoverCustomizationChatOfflineSettingsFormValues,
     {
         required: boolean
         friendlyName: string

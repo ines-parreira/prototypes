@@ -4,15 +4,15 @@ import { getLanguagesFromChatConfig } from 'config/integrations/gorgias_chat'
 import { LanguageChat } from 'constants/languages'
 import { GorgiasChatIntegration } from 'models/integration/types'
 import {
-    HandoverCustomizationFallbackSettingsFormMultiLanguageValues,
-    HandoverCustomizationFallbackSettingsFormValues,
+    HandoverCustomizationChatFallbackSettingsFormMultiLanguageValues,
+    HandoverCustomizationChatFallbackSettingsFormValues,
 } from 'pages/aiAgent/types'
 import {
     TextsMultiLanguage,
     TextsPerLanguage,
 } from 'rest_api/gorgias_chat_protected_api/types'
 
-const initialFormFieldValues: HandoverCustomizationFallbackSettingsFormValues =
+const initialFormFieldValues: HandoverCustomizationChatFallbackSettingsFormValues =
     {
         fallbackMessage: '',
     }
@@ -22,7 +22,7 @@ const initialFormFieldValues: HandoverCustomizationFallbackSettingsFormValues =
  * it contains the friendly name of the field and validation constraints
  */
 export const formFieldsConfiguration: Record<
-    keyof HandoverCustomizationFallbackSettingsFormValues,
+    keyof HandoverCustomizationChatFallbackSettingsFormValues,
     {
         required: boolean
         friendlyName: string
@@ -41,7 +41,7 @@ export const formFieldsConfiguration: Record<
  *
  * */
 export const formFieldsLanguageReference: Record<
-    keyof HandoverCustomizationFallbackSettingsFormValues,
+    keyof HandoverCustomizationChatFallbackSettingsFormValues,
     {
         type: keyof TextsPerLanguage
         fieldName: string
@@ -72,7 +72,7 @@ export const parseToFriendlyErrorMessage = (err: AxiosError) => {
 
     for (const key of Object.keys(formFieldsLanguageReference)) {
         const formFieldName =
-            key as keyof HandoverCustomizationFallbackSettingsFormValues
+            key as keyof HandoverCustomizationChatFallbackSettingsFormValues
         const fieldName = formFieldsLanguageReference[formFieldName].fieldName
 
         if (axiosErrorMessage.includes(fieldName)) {
@@ -99,7 +99,7 @@ export const getInitialFormValues = (integration: GorgiasChatIntegration) => {
             acc[language] = { ...initialFormFieldValues }
             return acc
         },
-        {} as HandoverCustomizationFallbackSettingsFormMultiLanguageValues,
+        {} as HandoverCustomizationChatFallbackSettingsFormMultiLanguageValues,
     )
 }
 
@@ -110,7 +110,7 @@ export const getInitialFormValues = (integration: GorgiasChatIntegration) => {
  * @returns The multilanguage texts
  */
 export const mapFromFormValuesToMultiLanguageText = (
-    multiLanguageFormValues: HandoverCustomizationFallbackSettingsFormMultiLanguageValues,
+    multiLanguageFormValues: HandoverCustomizationChatFallbackSettingsFormMultiLanguageValues,
     currentMultiLanguageTexts: TextsMultiLanguage,
 ): TextsMultiLanguage => {
     const availableLanguagesInForm = Object.keys(multiLanguageFormValues)
@@ -141,7 +141,7 @@ export const mapFromFormValuesToMultiLanguageText = (
 
         for (const key in langFormValues) {
             const fieldName =
-                key as keyof HandoverCustomizationFallbackSettingsFormValues
+                key as keyof HandoverCustomizationChatFallbackSettingsFormValues
 
             const formValue = langFormValues[fieldName]
 
@@ -188,8 +188,8 @@ export const mapFromFormValuesToMultiLanguageText = (
 export const mapFromMultiLanguageTextToFormValues = (
     integration: GorgiasChatIntegration,
     multiLanguageTexts: TextsMultiLanguage,
-): HandoverCustomizationFallbackSettingsFormMultiLanguageValues => {
-    let formValues: HandoverCustomizationFallbackSettingsFormMultiLanguageValues =
+): HandoverCustomizationChatFallbackSettingsFormMultiLanguageValues => {
+    let formValues: HandoverCustomizationChatFallbackSettingsFormMultiLanguageValues =
         getInitialFormValues(integration)
 
     const availableLanguages = Object.keys(multiLanguageTexts)
@@ -201,7 +201,7 @@ export const mapFromMultiLanguageTextToFormValues = (
 
         for (const key of availableFields) {
             const fieldName =
-                key as keyof HandoverCustomizationFallbackSettingsFormValues
+                key as keyof HandoverCustomizationChatFallbackSettingsFormValues
             const fieldReference = formFieldsLanguageReference[fieldName]
 
             const textValue =

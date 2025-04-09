@@ -13,7 +13,7 @@ import { StoreConfigFormSection } from 'pages/aiAgent/constants'
 import { useHandoverCustomizationChatFallbackSettingsForm } from 'pages/aiAgent/hooks/handoverCustomization/useHandoverCustomizationChatFallbackSettingsForm'
 import { useAiAgentFormChangesContext } from 'pages/aiAgent/providers/AiAgentFormChangesContext'
 
-import HandoverCustomizationFallbackSettings from '../HandoverCustomizationFallbackSettings'
+import HandoverCustomizationChatFallbackSettings from '../HandoverCustomizationChatFallbackSettings'
 
 // Mock dependencies
 jest.mock(
@@ -47,9 +47,12 @@ const mockLanguages = [
 
 const renderComponent = (
     integration: GorgiasChatIntegration = mockedIntegration,
-) => render(<HandoverCustomizationFallbackSettings integration={integration} />)
+) =>
+    render(
+        <HandoverCustomizationChatFallbackSettings integration={integration} />,
+    )
 
-describe('HandoverCustomizationFallbackSettings', () => {
+describe('HandoverCustomizationChatFallbackSettings', () => {
     const mockUpdateValue = jest.fn()
     const mockHandleOnSave = jest.fn()
     const mockHandleOnCancel = jest.fn()
@@ -194,7 +197,7 @@ describe('HandoverCustomizationFallbackSettings', () => {
         })
 
         rerender(
-            <HandoverCustomizationFallbackSettings
+            <HandoverCustomizationChatFallbackSettings
                 integration={newIntegration}
             />,
         )

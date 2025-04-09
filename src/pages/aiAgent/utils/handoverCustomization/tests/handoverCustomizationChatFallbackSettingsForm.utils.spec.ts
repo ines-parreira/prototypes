@@ -2,7 +2,7 @@ import { AxiosError } from 'axios'
 
 import { Language, LanguageChat } from 'constants/languages'
 import { GorgiasChatIntegration } from 'models/integration/types'
-import { HandoverCustomizationFallbackSettingsFormMultiLanguageValues } from 'pages/aiAgent/types'
+import { HandoverCustomizationChatFallbackSettingsFormMultiLanguageValues } from 'pages/aiAgent/types'
 import { TextsMultiLanguage } from 'rest_api/gorgias_chat_protected_api/types'
 
 import {
@@ -323,7 +323,7 @@ describe('handoverCustomizationChatFallbackSettingsForm utils', () => {
                 [LanguageChat.EnglishUs]: {
                     unknownField: 'Some value',
                 },
-            } as unknown as HandoverCustomizationFallbackSettingsFormMultiLanguageValues
+            } as unknown as HandoverCustomizationChatFallbackSettingsFormMultiLanguageValues
 
             const mockTexts: TextsMultiLanguage = {
                 [LanguageChat.EnglishUs]: {
@@ -396,7 +396,7 @@ describe('handoverCustomizationChatFallbackSettingsForm utils', () => {
                 [LanguageChat.EnglishUs]: {
                     fallbackMessage: '',
                 },
-            } as HandoverCustomizationFallbackSettingsFormMultiLanguageValues
+            } as HandoverCustomizationChatFallbackSettingsFormMultiLanguageValues
 
             const mockTexts: TextsMultiLanguage = {
                 [LanguageChat.EnglishUs]: {

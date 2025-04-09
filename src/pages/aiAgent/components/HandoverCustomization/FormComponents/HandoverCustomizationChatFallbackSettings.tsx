@@ -23,7 +23,7 @@ import SelectField from 'pages/common/forms/SelectField/SelectField'
 import { Value } from 'pages/common/forms/SelectField/types'
 import TextArea from 'pages/common/forms/TextArea'
 
-import css from './HandoverCustomizationFallbackSettings.less'
+import css from './HandoverCustomizationChatFallbackSettings.less'
 
 type Props = {
     integration: GorgiasChatIntegration
@@ -49,7 +49,7 @@ const mapLocaleToSelectOption = (
     }
 }
 
-const HandoverCustomizationFallbackSettings = ({ integration }: Props) => {
+const HandoverCustomizationChatFallbackSettings = ({ integration }: Props) => {
     const [selectedLanguageCode, setSelectedLanguageCode] = useState(
         getPrimaryLanguageFromChatConfig(integration.meta),
     )
@@ -217,4 +217,4 @@ const HandoverCustomizationFallbackSettings = ({ integration }: Props) => {
     )
 }
 
-export default HandoverCustomizationFallbackSettings
+export default HandoverCustomizationChatFallbackSettings

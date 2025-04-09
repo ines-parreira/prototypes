@@ -15,7 +15,7 @@ import { useAiAgentFormChangesContext } from 'pages/aiAgent/providers/AiAgentFor
 import { mockQueryClientProvider } from 'tests/reactQueryTestingUtils'
 import { mockStore } from 'utils/testing'
 
-import HandoverCustomizationOnlineSettings from '../HandoverCustomizationOnlineSettings'
+import HandoverCustomizationChatOnlineSettings from '../HandoverCustomizationChatOnlineSettings'
 
 // Mock dependencies
 jest.mock(
@@ -50,7 +50,7 @@ const renderComponent = (
     render(
         <Provider store={mockStore(defaultState)}>
             <QueryClientProvider>
-                <HandoverCustomizationOnlineSettings
+                <HandoverCustomizationChatOnlineSettings
                     integration={integration}
                 />
             </QueryClientProvider>
@@ -58,7 +58,7 @@ const renderComponent = (
     )
 }
 
-describe('HandoverCustomizationOnlineSettings', () => {
+describe('HandoverCustomizationChatOnlineSettings', () => {
     const mockUpdateValue = jest.fn()
     const mockHandleOnSave = jest.fn()
     const mockHandleOnCancel = jest.fn()

@@ -6,8 +6,8 @@ import {
 } from 'models/integration/types'
 import { AiAgentChannel } from 'pages/aiAgent/constants'
 import {
-    HandoverCustomizationOfflineSettingsFormValues,
-    HandoverCustomizationOnlineSettingsFormValues,
+    HandoverCustomizationChatOfflineSettingsFormValues,
+    HandoverCustomizationChatOnlineSettingsFormValues,
 } from 'pages/aiAgent/types'
 
 import {
@@ -136,13 +136,13 @@ describe('handoverCustomizationConfigurationData.utils', () => {
         const mockShopType = 'shopify'
         const mockIntegrationId = 456
 
-        const mockOfflineInstructionsFormValues: HandoverCustomizationOfflineSettingsFormValues =
+        const mockOfflineInstructionsFormValues: HandoverCustomizationChatOfflineSettingsFormValues =
             {
                 offlineInstructions: 'Offline instructions',
                 shareBusinessHours: true,
             }
 
-        const mockOnlineInstructionsFormValues: HandoverCustomizationOnlineSettingsFormValues =
+        const mockOnlineInstructionsFormValues: HandoverCustomizationChatOnlineSettingsFormValues =
             {
                 onlineInstructions: 'Online instructions',
                 emailCaptureEnabled: true,

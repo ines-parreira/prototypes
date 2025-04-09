@@ -3,8 +3,8 @@ import { IntegrationType } from 'models/integration/constants'
 
 import { AiAgentChannel } from '../../constants'
 import {
-    HandoverCustomizationOfflineSettingsFormValues,
-    HandoverCustomizationOnlineSettingsFormValues,
+    HandoverCustomizationChatOfflineSettingsFormValues,
+    HandoverCustomizationChatOnlineSettingsFormValues,
 } from '../../types'
 
 const mapIntegrationTypeToAiAgentChannel = (type: IntegrationType) => {
@@ -26,9 +26,9 @@ type CreateHandoverConfigurationDataProps = {
     integrationType: IntegrationType
 }
 
-type HandoverCustomizationFormFormValues =
-    | HandoverCustomizationOfflineSettingsFormValues
-    | HandoverCustomizationOnlineSettingsFormValues
+type HandoverCustomizationChatFormValues =
+    | HandoverCustomizationChatOfflineSettingsFormValues
+    | HandoverCustomizationChatOnlineSettingsFormValues
 
 type MapFormValuesToHandoverConfigurationDataProps = {
     accountId: number
@@ -36,7 +36,7 @@ type MapFormValuesToHandoverConfigurationDataProps = {
     shopType: string
     integrationId: number
     integrationType: IntegrationType
-    formValues: HandoverCustomizationFormFormValues
+    formValues: HandoverCustomizationChatFormValues
     configuration?: HandoverConfigurationData
 }
 

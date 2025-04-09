@@ -12,11 +12,11 @@ import { getHasAutomate } from 'state/billing/selectors'
 
 import { FormValues, UpdateValue } from '../../../types'
 import { ConfigurationSection } from '../../ConfigurationSection/ConfigurationSection'
+import { HandoverCustomizationChatSettingsComponent } from '../../HandoverCustomization/HandoverCustomizationChatSettingsComponent'
 import { SettingsBannerType } from '../constants'
 import { ChannelToggleInput } from './ChannelToggleInput'
 import { ChatSettingsFormComponent } from './ChatSettingsFormComponent'
 import { EmailFormComponent } from './EmailFormComponent'
-import { HandoverCustomizationSettingsFormComponent } from './HandoverCustomizationSettingsFormComponent'
 import { SettingsBanner } from './SettingsBanner'
 import { SignatureFormComponent } from './SignatureFormComponent'
 
@@ -116,7 +116,7 @@ export const ChannelsFormComponent = ({
                     </div>
 
                     {handoverCustomizationSettingsConfigurationEnabled && (
-                        <HandoverCustomizationSettingsFormComponent
+                        <HandoverCustomizationChatSettingsComponent
                             shopName={shopName}
                             shopType={shopType}
                             monitoredChatIntegrationIds={
