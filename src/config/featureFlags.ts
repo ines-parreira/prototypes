@@ -99,7 +99,6 @@ export enum FeatureFlagKey {
     NewDomainVerification = 'new-domain-verification',
     NewSatisfactionReport = 'new-satisfaction-report',
     NewSenderSelect = 'new-sender-select',
-    NotificationsTicketAssigned = 'notifications-ticket-assigned',
     ObservabilityAIArticles = 'observability-ai-articles',
     ObservabilityArticleTemplates = 'observability-article-templates',
     ObservabilityROICalculator = 'roi-calculator-for-automate',
