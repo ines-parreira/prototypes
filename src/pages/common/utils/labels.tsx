@@ -311,10 +311,12 @@ export const UserAssigneeLabel = ({
     const avatarUrl =
         assigneeUser.getIn(['meta', 'profile_picture_url']) ||
         (agent && agent.getIn(['meta', 'profile_picture_url']))
+
     return assigneeUser.isEmpty() ? null : (
         <div className={css.assigneeLabelContainer}>
             <Avatar
                 name={assigneeUser.get('name')}
+                email={assigneeUser.get('email')}
                 url={avatarUrl}
                 size={size || 26}
                 className={css.assigneeLabelAvatar}
@@ -392,7 +394,12 @@ export const RenderLabel = ({
         case ViewField.Status:
             return <StatusLabel status={value} />
         case ViewField.Assignee:
-            return <UserAssigneeLabel assigneeUser={value} />
+            return (
+                <UserAssigneeLabel
+                    assigneeUser={value}
+                    key={(value as Map<any, any>).get('name')}
+                />
+            )
         case ViewField.AssigneeTeam:
             return <TeamAssigneeLabel assigneeTeam={value} />
         case ViewField.Integrations:
