@@ -2,6 +2,8 @@ import { useState } from 'react'
 
 import { TicketSummary } from '@gorgias/api-queries'
 
+import { logEvent, SegmentEvent } from 'common/segment'
+
 import { DEFAULT_SORT_OPTION } from '../constants'
 import { sortTickets } from '../helpers/sortTickets'
 import { SortOption } from '../types'
@@ -15,6 +17,12 @@ export function useSort(tickets: TicketSummary[]) {
     return {
         sortedTickets,
         sortOption,
-        setSortOption,
+        setSortOption: (option: SortOption) => {
+            setSortOption(option)
+            logEvent(SegmentEvent.CustomerTimelineSort, {
+                account_id: window.GORGIAS_STATE.currentAccount.id,
+                option: `${option.key}_${option.order}`,
+            })
+        },
     }
 }

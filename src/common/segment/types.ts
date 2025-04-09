@@ -150,6 +150,8 @@ export enum SegmentEvent {
     CustomerMergeClicked = 'customer-merge-clicked',
     CustomerNoteEdited = 'customer-note-edited',
     CustomerTimelineTicketClicked = 'customer/timeline/ticket-clicked',
+    CustomerTimelineFilter = 'customer/timeline/filter',
+    CustomerTimelineSort = 'customer/timeline/sort',
     CustomFieldArchivedFieldClicked = 'custom-fields/archived-field-clicked',
     CustomFieldCreateConditionClicked = 'custom-fields/create-condition-clicked',
     CustomFieldCreateFieldClicked = 'custom-fields/create-field-clicked',
