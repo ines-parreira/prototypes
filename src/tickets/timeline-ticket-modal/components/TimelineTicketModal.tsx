@@ -3,6 +3,7 @@ import { Button } from '@gorgias/merchant-ui-kit'
 import Modal from 'pages/common/components/modal/Modal'
 import ModalBody from 'pages/common/components/modal/ModalBody'
 import ModalFooter from 'pages/common/components/modal/ModalFooter'
+import { TicketDetail } from 'tickets/ticket-detail'
 
 import css from './TimelineTicketModal.less'
 
@@ -26,7 +27,9 @@ export function TimelineTicketModal({
             isOpen
             onClose={onClose}
         >
-            <ModalBody className={css.body}>render ticket {ticketId}</ModalBody>
+            <ModalBody className={css.body}>
+                <TicketDetail ticketId={ticketId} />
+            </ModalBody>
             <ModalFooter className={css.footer}>
                 <Button
                     as="a"

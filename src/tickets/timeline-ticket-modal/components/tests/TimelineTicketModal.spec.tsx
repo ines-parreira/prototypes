@@ -3,10 +3,14 @@ import userEvent from '@testing-library/user-event'
 
 import { TimelineTicketModal } from '../TimelineTicketModal'
 
+jest.mock('tickets/ticket-detail', () => ({
+    TicketDetail: () => <div>TicketDetail</div>,
+}))
+
 describe('TimelineTicketModal', () => {
-    it('should render the modal', () => {
+    it('should render the ticket detail in the modal', () => {
         render(<TimelineTicketModal ticketId={1} onClose={jest.fn()} />)
-        expect(screen.getByText('render ticket 1')).toBeInTheDocument()
+        expect(screen.getByText('TicketDetail')).toBeInTheDocument()
     })
 
     it('should render a link to the full ticket', () => {
