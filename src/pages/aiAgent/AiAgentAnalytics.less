@@ -1,0 +1,15 @@
+@import (reference) '~@gorgias/design-tokens/dist/css/layout';
+@import (reference) '~css/typography';
+
+:local {
+    // Needed to override AiAgentLayout, so we can do dual color backgrounds
+    :global(.container-fluid).container {
+        padding: 0;
+        gap: 0;
+    }
+
+    .container {
+        display: flex;
+        flex-direction: column;
+    }
+}

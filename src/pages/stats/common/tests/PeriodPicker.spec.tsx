@@ -38,6 +38,7 @@ jest.mock(
             return (
                 <div
                     data-testid={mockDateRangePickerTestId}
+                    data-initial-settings={JSON.stringify(initialSettings)}
                     onClick={(e) => {
                         onShow?.(e as any, mockedEventTarget as any)
                     }}
@@ -112,10 +113,14 @@ describe('PeriodPicker', () => {
             />,
         )
 
-        expect(onChange).toBeCalledWith({
-            startDatetime: moment.tz(startDate.format(), userTimezone).format(),
-            endDatetime: moment.tz(endDate.format(), userTimezone).format(),
-        })
+        expect(onChange).toHaveBeenCalledWith(
+            expect.objectContaining({
+                startDatetime: moment
+                    .tz(startDate.format(), userTimezone)
+                    .format(),
+                endDatetime: moment.tz(endDate.format(), userTimezone).format(),
+            }),
+        )
     })
 
     it("it should select dates without user's timezone", () => {
@@ -137,7 +142,7 @@ describe('PeriodPicker', () => {
             />,
         )
 
-        expect(onChange).toBeCalledWith({
+        expect(onChange).toHaveBeenCalledWith({
             startDatetime: moment.tz(startDate.format(), 'UTC').format(),
             endDatetime: moment.tz(endDate.format(), 'UTC').format(),
         })
@@ -208,6 +213,38 @@ describe('PeriodPicker', () => {
             'picker-v2',
             'ranges-on-left',
         )
+    })
+
+    it('should synchronize dates between React state and DateRangePicker', () => {
+        const onChange = jest.fn()
+        const startDate = moment.tz('2020-05-02', 'Europe/Paris')
+        const endDate = moment.tz('2020-05-07', 'Europe/Paris')
+
+        const { getByTestId } = render(
+            <PeriodPickerContainer
+                startDatetime={startDate}
+                endDatetime={endDate}
+                onChange={onChange}
+            />,
+        )
+
+        const daterangepicker = getByTestId(mockDateRangePickerTestId)
+        expect(daterangepicker).toBeInTheDocument()
+
+        const initialSettings = JSON.parse(
+            daterangepicker.getAttribute('data-initial-settings') || '{}',
+        )
+        expect(moment.tz(initialSettings.startDate, 'UTC').format()).toBe(
+            moment.tz(startDate.format(), 'UTC').format(),
+        )
+        expect(moment.tz(initialSettings.endDate, 'UTC').format()).toBe(
+            moment.tz(endDate.format(), 'UTC').format(),
+        )
+
+        expect(onChange).toHaveBeenCalledWith({
+            startDatetime: moment.tz(startDate.format(), 'UTC').format(),
+            endDatetime: moment.tz(endDate.format(), 'UTC').format(),
+        })
     })
 
     it('should render ranges without label', () => {

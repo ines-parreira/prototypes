@@ -28,6 +28,7 @@ import ActionsTemplatesViewContainer from 'pages/aiAgent/actions/ActionsTemplate
 import ActionsViewContainer from 'pages/aiAgent/actions/ActionsViewContainer'
 import CreateActionView from 'pages/aiAgent/actions/CreateActionView'
 import EditActionViewContainer from 'pages/aiAgent/actions/EditActionViewContainer'
+import { AiAgentAnalytics } from 'pages/aiAgent/AiAgentAnalytics'
 import AiAgentConfigurationContainer from 'pages/aiAgent/AiAgentConfigurationContainer'
 import { AiAgentGuidanceAiSuggestionNewContainer } from 'pages/aiAgent/AiAgentGuidanceAiSuggestionNewContainer'
 import { AiAgentGuidanceContainer } from 'pages/aiAgent/AiAgentGuidanceContainer'
@@ -714,6 +715,16 @@ function AiAgentRoutes({ match: { path }, location }: RouteComponentProps) {
                             path={`${path}/sales/volume`}
                             exact
                             component={AiAgentVolume}
+                        />
+                    </AiAgentErrorBoundary>
+                    <AiAgentErrorBoundary
+                        section="ai-agent-analytics"
+                        team={SentryTeam.MARKETING}
+                    >
+                        <Route
+                            path={`${path}/sales/analytics`}
+                            exact
+                            component={AiAgentAnalytics}
                         />
                     </AiAgentErrorBoundary>
                 </AiAgentStoreConfigurationProvider>

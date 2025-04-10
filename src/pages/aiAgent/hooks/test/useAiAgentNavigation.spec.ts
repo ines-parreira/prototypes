@@ -287,6 +287,7 @@ describe('useAiAgentNavigation', () => {
                 [FeatureFlagKey.ConvAiStandaloneMenu]: true,
                 [FeatureFlagKey.FollowUpAiAgentPreviewMode]: true,
                 [FeatureFlagKey.StandaloneAIAgentSalesPage]: true,
+                [FeatureFlagKey.StandaloneAIAgentSalesMetrics]: true,
             })
         })
 
@@ -320,6 +321,16 @@ describe('useAiAgentNavigation', () => {
 
             expect(result.current.routes.sales).toEqual(
                 '/app/ai-agent/shopify/test/sales',
+            )
+        })
+
+        it('should return /sales/analytics path when the StandaloneAiAgentSalesMetrics feature-flag is enabled', () => {
+            const { result } = renderHook(() =>
+                useAiAgentNavigation({ shopName: 'test' }),
+            )
+
+            expect(result.current.routes.analytics).toEqual(
+                '/app/ai-agent/shopify/test/sales/analytics',
             )
         })
 

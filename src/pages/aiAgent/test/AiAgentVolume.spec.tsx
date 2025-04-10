@@ -25,6 +25,8 @@ const renderComponent = () =>
 describe('<AiAgentVolume />', () => {
     it('should render the volume settings', () => {
         renderComponent()
-        screen.getByRole('heading', { level: 1, name: SALES })
+        expect(
+            screen.getByRole('heading', { level: 1, name: SALES }),
+        ).toBeInTheDocument()
     })
 })

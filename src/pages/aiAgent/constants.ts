@@ -20,6 +20,7 @@ export const PREVIEW = 'Preview'
 export const SALES = 'Sales Skills'
 export const STRATEGY = 'Strategy'
 export const VOLUME = 'Volume'
+export const ANALYTICS = 'Analytics'
 
 export const SIGNATURE_MAX_LENGTH = 250
 export const CUSTOM_TONE_OF_VOICE_MAX_LENGTH = 1500

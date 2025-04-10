@@ -118,6 +118,11 @@ jest.mock('pages/aiAgent/components/AiAgentRedirect/AiAgentRedirect', () => ({
 jest.mock('pages/aiAgent/AiAgentVolume', () => ({
     AiAgentVolume: () => <div>AiAgentVolume</div>,
 }))
+
+jest.mock('pages/aiAgent/AiAgentAnalytics', () => ({
+    AiAgentAnalytics: () => <div>AiAgentAnalytics</div>,
+}))
+
 jest.mock(
     'pages/stats/report-chart-restrictions/useReportChartRestrictions',
     () => ({
@@ -569,6 +574,26 @@ describe('<Routes/>', () => {
             )
 
             expect(screen.getByText('AiAgentVolume')).toBeInTheDocument()
+        })
+
+        it('should render analytics page under sales', () => {
+            mockFlags({
+                [FeatureFlagKey.StandaloneAIAgentSalesPage]: true,
+            })
+
+            render(
+                <Provider store={mockStore(defaultState)}>
+                    <MemoryRouter
+                        initialEntries={[
+                            '/app/ai-agent/shopify/test-shop/sales/analytics',
+                        ]}
+                    >
+                        <Routes />
+                    </MemoryRouter>
+                </Provider>,
+            )
+
+            expect(screen.getByText('AiAgentAnalytics')).toBeInTheDocument()
         })
     })
 

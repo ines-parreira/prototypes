@@ -6,6 +6,7 @@ import { useFlags } from 'launchdarkly-react-client-sdk'
 import { FeatureFlagKey } from 'config/featureFlags'
 import {
     ACTIONS,
+    ANALYTICS,
     CHANNELS,
     GENERAL,
     GUIDANCE,
@@ -76,8 +77,9 @@ export const getAiAgentNavigationRoutes = (
             : `${basePath}/knowledge`,
         sales: `${basePath}/sales`,
         volume: `${basePath}/sales/volume`,
-        pagesContent: `${basePath}/knowledge/sources/pages-content`,
-        productsContent: `${basePath}/knowledge/sources/products-content`,
+        analytics: `${basePath}/sales/analytics`,
+        pagesContent: `${basePath}/knowledge/pages-content`,
+        productsContent: `${basePath}/knowledge/products-content`,
         guidance: `${basePath}/${guidancePath}`,
         newGuidanceArticle: `${basePath}/${guidancePath}/new`,
         guidanceArticleEdit: (articleId: number) =>
@@ -141,6 +143,9 @@ const useNavigationItems = (
     const isConversationStartersEnabled =
         !!flags[FeatureFlagKey.ConversationStarters]
 
+    const isSalesMetricsEnabled =
+        !!flags[FeatureFlagKey.StandaloneAIAgentSalesMetrics]
+
     return useMemo<NavigationItem[]>(() => {
         if (isStandaloneMenuEnabled) {
             return [
@@ -201,19 +206,25 @@ const useNavigationItems = (
                     route: routes.sales,
                     title: SALES,
                     dataCanduId: 'ai-agent-navbar-sales',
-                    items: isConversationStartersEnabled
-                        ? ([
-                              {
-                                  route: routes.sales,
-                                  title: STRATEGY,
-                                  exact: true,
-                              },
-                              {
-                                  route: routes.volume,
-                                  title: VOLUME,
-                              },
-                          ].filter((x) => !!x) as NavigationItem[])
-                        : undefined,
+                    items:
+                        isSalesMetricsEnabled || isConversationStartersEnabled
+                            ? ([
+                                  (isSalesMetricsEnabled ||
+                                      isConversationStartersEnabled) && {
+                                      route: routes.sales,
+                                      title: STRATEGY,
+                                      exact: true,
+                                  },
+                                  isConversationStartersEnabled && {
+                                      route: routes.volume,
+                                      title: VOLUME,
+                                  },
+                                  isSalesMetricsEnabled && {
+                                      route: routes.analytics,
+                                      title: ANALYTICS,
+                                  },
+                              ].filter((x) => !!x) as NavigationItem[])
+                            : undefined,
                 },
                 {
                     route: routes.test,
@@ -273,6 +284,7 @@ const useNavigationItems = (
         isAiAgentOptimizeTabEnabled,
         isConversationStartersEnabled,
         isAiAgentScrapeStoreDomainEnabled,
+        isSalesMetricsEnabled,
         isGorgiasUser,
         isStandaloneMenuEnabled,
         routes,

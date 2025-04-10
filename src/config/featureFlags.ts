@@ -127,6 +127,7 @@ export enum FeatureFlagKey {
     SimplifiedStepBuilder = 'simplified-step-builder',
     SimplifyAiAgentFeedbackCollection = 'linear.project_simplify-ai-agent-feedback-collection.enable_feedback_collection',
     StandaloneAIAgentSalesPage = 'standalone-ai-agent-sales-page',
+    StandaloneAIAgentSalesMetrics = 'standalone-ai-agent-sales-analytics',
     StandaloneAiSalesAnalyticsPage = 'standalone-ai-sales-analytics-page',
     StandaloneAiSalesDiscountSection = 'standalone-ai-sales-discount-section',
     StandaloneConvAiOverviewPageResourceSection = 'standalone-conv-ai_overview-page-resource-section',
