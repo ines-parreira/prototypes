@@ -96,6 +96,11 @@ src/pages/settings/macros @gorgias/support-agent-xp
 src/state/entities/macros @gorgias/support-agent-xp
 src/state/macro @gorgias/support-agent-xp
 src/pages/tickets/detail/components/ReplyArea/MacrosQuickReply @gorgias/support-agent-xp
+src/pages/settings/rules @gorgias/support-agent-xp
+src/state/entities/ruleRecipes @gorgias/support-agent-xp
+src/state/entities/rules @gorgias/support-agent-xp
+src/state/rules @gorgias/support-agent-xp
+src/pages/tickets/detail/components/RuleSuggestion @gorgias/support-agent-xp
 
 # Phone scope @gorgias/support-phone
 
@@ -141,13 +146,6 @@ src/models/reporting/cubes/automate/ @gorgias/conv-ai-knowledge-insights
 src/models/reporting/cubes/automate_v2/ @gorgias/conv-ai-knowledge-insights
 src/pages/stats/Automate* @gorgias/conv-ai-knowledge-insights
 src/pages/aiAgent/AiAgentOnboardingWizard @gorgias/conv-ai-knowledge-insights
-
-# Platform Streaming Infrastructure scope @gorgias/platform-streaming-infrastructure
-src/pages/settings/rules @gorgias/platform-streaming-infrastructure
-src/state/entities/ruleRecipes @gorgias/platform-streaming-infrastructure
-src/state/entities/rules @gorgias/platform-streaming-infrastructure
-src/state/rules @gorgias/platform-streaming-infrastructure
-src/pages/tickets/detail/components/RuleSuggestion @gorgias/platform-streaming-infrastructure
 
 # Conv AI: Expansion
 src/pages/aiAgent/AiAgentVolume* @gorgias/conv-ai-expansion
