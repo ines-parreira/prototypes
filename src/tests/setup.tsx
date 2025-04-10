@@ -65,9 +65,7 @@ history.replace = jest.fn()
 
 // Mock of the PushJS API (browser notification)
 class mockPushJS {
-    Permission = {
-        get: () => 'granted',
-    }
+    Permission = { get: () => 'granted' }
 
     notifications: Record<string, unknown>[]
 
@@ -84,19 +82,13 @@ class mockPushJS {
     }
 
     create(title: string, data: Record<string, unknown>) {
-        this.notifications.push({
-            title,
-            ...data,
-        })
+        this.notifications.push({ title, ...data })
     }
 }
 
 class MockSharedWorker {
     constructorSpy = jest.fn()
-    port = {
-        start: jest.fn(),
-        postMessage: jest.fn(),
-    }
+    port = { start: jest.fn(), postMessage: jest.fn() }
     constructor(...args: unknown[]) {
         this.constructorSpy(...args)
     }
@@ -130,9 +122,7 @@ window.GORGIAS_RELEASE = '1'
 
 // Required until we have some dispatch in
 // react query callbacks
-jest.mock('api/queryClient', () => ({
-    appQueryClient: mockQueryClient(),
-}))
+jest.mock('api/queryClient', () => ({ appQueryClient: mockQueryClient() }))
 
 jest.mock(
     '../utils/date.ts',
@@ -163,12 +153,15 @@ jest.mock(
                 exact,
                 ...rest
             }: NavLinkProps) => (
-                <a
-                    href={to.toString()}
-                    data-active-class-name={activeClassName}
-                    data-exact={exact}
-                    {...rest}
-                />
+                <>
+                    {/* @ts-ignore */}
+                    <a
+                        href={to.toString()}
+                        data-active-class-name={activeClassName}
+                        data-exact={exact}
+                        {...rest}
+                    />
+                </>
             ),
             /* eslint-enable */
         }) as Record<string, unknown>,
@@ -176,24 +169,15 @@ jest.mock(
 
 jest.mock('chart.js')
 
-Object.defineProperty(window, 'requestAnimationFrame', {
-    value: jest.fn(),
-})
+Object.defineProperty(window, 'requestAnimationFrame', { value: jest.fn() })
 
-Object.defineProperty(window, 'cancelAnimationFrame', {
-    value: jest.fn(),
-})
+Object.defineProperty(window, 'cancelAnimationFrame', { value: jest.fn() })
 
-Object.defineProperty(window, 'open', {
-    value: jest.fn(),
-})
+Object.defineProperty(window, 'open', { value: jest.fn() })
 
 // Needed to test self.close() in shared worker test
 Object.defineProperty(window, 'self', {
-    value: {
-        ...window.self,
-        close: jest.fn(),
-    },
+    value: { ...window.self, close: jest.fn() },
 })
 
 // failed expect in timeouts require try/catch and done.fail
@@ -271,9 +255,7 @@ window.GORGIAS_STATE = {
     currentUser: user,
     integrations: {
         authentication: {
-            email: {
-                forwarding_email_address: 'emails.gorgias.com',
-            },
+            email: { forwarding_email_address: 'emails.gorgias.com' },
         },
     },
 } as any

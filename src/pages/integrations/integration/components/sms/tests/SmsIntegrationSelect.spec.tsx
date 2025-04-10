@@ -1,6 +1,6 @@
 import React from 'react'
 
-import { render } from '@testing-library/react'
+import { act, render } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 
 import { SmsIntegration } from 'models/integration/types'
@@ -49,12 +49,17 @@ describe('<SmsIntegrationSelect />', () => {
             },
         ] as SmsIntegration[])
 
-        userEvent.click(getByText('arrow_drop_down'))
+        act(() => {
+            userEvent.click(getByText('arrow_drop_down'))
+        })
 
         expect(getAllByText('test 1')).toHaveLength(2) // 1 for the label and 1 for the dropdown
         expect(getByText('test 2')).toBeInTheDocument()
 
-        userEvent.click(getByText('test 2'))
+        act(() => {
+            userEvent.click(getByText('test 2'))
+        })
+
         expect(mockOnChange).toHaveBeenCalledWith(2)
     })
 })

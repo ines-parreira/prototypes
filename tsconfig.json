@@ -18,9 +18,7 @@
         "baseUrl": "./src",
         "typeRoots": ["./src/types", "./node_modules/@types"],
         "resolveJsonModule": true,
-        "paths": {
-            "react-chartjs-2": ["./types/react-chartjs-2.d.ts"]
-        },
+        "paths": { "react-chartjs-2": ["./types/react-chartjs-2.d.ts"] },
         "types": ["facebook-js-sdk", "stripe-v2", "webpack-env"]
     },
     "include": [
@@ -29,9 +27,6 @@
         "**/*.tsx",
         "sa.config.ts",
         "scripts/deprecated-monitoring/deprecated.monitoring.ts",
-        "rspack.app.config.ts",
-        "rspack.vendors.config.ts",
-        "rspack.sharedWorker.config.ts",
         ".storybook/launchdarkly-js-client-sdk.tsx"
     ],
     "exclude": ["node_modules", "build", "storybook-static"]

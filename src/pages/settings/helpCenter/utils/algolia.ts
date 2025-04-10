@@ -1,14 +1,14 @@
 import { createNullCache } from '@algolia/cache-common'
-import { SearchOptions } from '@algolia/client-search'
 import algoliasearch from 'algoliasearch'
+import type { SearchIndex } from 'algoliasearch'
 
 import { HelpCenter } from 'models/helpCenter/types'
 import { AlgoliaSearchResult } from 'pages/settings/helpCenter/types/algolia'
 
 export interface AlgoliaSearchClient<T> {
     search: (
-        query: string,
-        requestOptions?: SearchOptions,
+        query: Parameters<SearchIndex['search']>[0],
+        requestOptions?: Parameters<SearchIndex['search']>[1],
     ) => Promise<AlgoliaSearchResult<T>>
 }
 
@@ -40,14 +40,21 @@ export const initSearchClient = async <T>({
         }
 
         return Promise.resolve({
-            search: async (query: string, requestOptions?: SearchOptions) => {
+            search: async (
+                query: Parameters<SearchIndex['search']>[0],
+                requestOptions?: Parameters<SearchIndex['search']>[1],
+            ) => {
                 const {
                     hits: results,
                     nbHits: resultsCount,
                     nbPages,
                 } = await searchIndex.search<T>(query, requestOptions)
 
-                return { results, resultsCount, nbPages }
+                return {
+                    results,
+                    resultsCount,
+                    nbPages,
+                } as AlgoliaSearchResult<T>
             },
         })
     } catch (error) {

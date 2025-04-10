@@ -1,10 +1,16 @@
+import fs from 'node:fs'
+import path from 'node:path'
+import { fileURLToPath } from 'node:url'
+
 import { codecovWebpackPlugin } from '@codecov/webpack-plugin'
-import { rspack, Configuration as RspackConfiguration } from '@rspack/core'
+import { rspack } from '@rspack/core'
 import ReactRefreshPlugin from '@rspack/plugin-react-refresh'
 import NodePolyfillPlugin from 'node-polyfill-webpack-plugin'
-import path from 'path'
 import { RspackManifestPlugin } from 'rspack-manifest-plugin'
 import { TsCheckerRspackPlugin } from 'ts-checker-rspack-plugin'
+
+const __filename = fileURLToPath(import.meta.url)
+const __dirname = path.dirname(__filename)
 
 const {
     NODE_ENV,
@@ -23,6 +29,7 @@ const BUNDLE_PUBLIC_PATH =
 
 const srcDir = path.join(__dirname, 'src')
 const buildDir = path.join(__dirname, 'build')
+const manifestPath = path.join(buildDir, 'manifest.json')
 const jsBundleFile = isProd
     ? `helpdesk.app.[contenthash].js`
     : 'helpdesk.app.js'
@@ -34,7 +41,8 @@ const fontsBundleFile = 'font.css'
 const mode = isProd ? 'production' : 'development'
 const devtool = isProd ? 'source-map' : 'cheap-module-source-map'
 
-const devServer: RspackConfiguration['devServer'] = {
+/** @type {import('@rspack/cli').Configuration['devServer']} */
+const devServer = {
     static: [
         { directory: buildDir },
         {
@@ -100,7 +108,8 @@ const urlLoader = {
 const imageExtRegex = /\.(jpe?g|png|gif)$/i
 const fontExtRegex = /\.(ttf|eot|svg|woff(2)?)$/i
 
-export default {
+/** @type {import('@rspack/cli').Configuration} */
+const config = {
     mode,
     devServer,
     devtool,
@@ -143,7 +152,7 @@ export default {
         }),
         isProd &&
             new RspackManifestPlugin({
-                seed: require(`${buildDir}/manifest.json`),
+                seed: JSON.parse(fs.readFileSync(manifestPath, 'utf8')),
             }),
         isDev && new ReactRefreshPlugin(),
         isDev && new rspack.HotModuleReplacementPlugin(),
@@ -235,4 +244,6 @@ export default {
             },
         ],
     },
-} satisfies RspackConfiguration
+}
+
+export default config

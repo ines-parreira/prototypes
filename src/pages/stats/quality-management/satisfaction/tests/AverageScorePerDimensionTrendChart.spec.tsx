@@ -5,7 +5,7 @@ import {
     QueryClientProvider,
     UseQueryResult,
 } from '@tanstack/react-query'
-import { render, screen } from '@testing-library/react'
+import { act, render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { fromJS } from 'immutable'
 import { Provider } from 'react-redux'
@@ -384,9 +384,15 @@ describe('<AverageScorePerDimensionTrendChart>', () => {
     it('should close dimension selector dropdown when option is selected', () => {
         renderComponent(mockStoreState)
         const selectBox = screen.getByRole('combobox')
-        userEvent.click(selectBox)
+
+        act(() => {
+            userEvent.click(selectBox)
+        })
+
         const assigneeOption = screen.getByText('Per assignee')
-        userEvent.click(assigneeOption)
+        act(() => {
+            userEvent.click(assigneeOption)
+        })
 
         expect(screen.queryByText('Per integration')).not.toBeInTheDocument()
     })

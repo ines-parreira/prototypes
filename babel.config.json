@@ -3,35 +3,17 @@
         [
             "@babel/env",
             {
-                "targets": {
-                    "browsers": ["last 2 versions", "safari >= 7"]
-                },
+                "targets": { "browsers": ["last 2 versions", "safari >= 7"] },
                 "useBuiltIns": "usage",
                 "corejs": "3.36.0",
                 "loose": true
             }
         ],
-        [
-            "@babel/preset-react",
-            {
-                "runtime": "automatic"
-            }
-        ],
-        [
-            "@babel/typescript",
-            {
-                "allExtensions": true,
-                "isTSX": true
-            }
-        ]
+        ["@babel/preset-react", { "runtime": "automatic" }],
+        ["@babel/typescript", { "allExtensions": true, "isTSX": true }]
     ],
     "plugins": [
-        [
-            "@babel/plugin-proposal-decorators",
-            {
-                "legacy": true
-            }
-        ],
+        ["@babel/plugin-proposal-decorators", { "legacy": true }],
         "@babel/plugin-proposal-optional-chaining",
         "@babel/plugin-proposal-class-properties",
         "@babel/plugin-proposal-export-default-from"

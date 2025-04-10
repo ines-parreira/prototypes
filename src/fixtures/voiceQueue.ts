@@ -33,4 +33,5 @@ export const voiceQueue: VoiceQueue = {
     updated_datetime: '2024-01-01T00:00:00.000000+00:00',
     integrations: [],
     wrap_up_time: 30,
+    is_wrap_up_time_enabled: false,
 }

@@ -173,9 +173,9 @@ jobs:
           path: node_modules
 
       - name: Install node
-        uses: ./.github/actions/setup-node
+        uses: gorgias/reusable-actions/.github/actions/setup-node@main
         with:
           node-version: ${{ needs.workspace-vars.outputs.node-version }}
 
       - name: Upload Chromatic
-        run: yarn chromatic --zip --exit-once-uploaded --project-token=${{ secrets.CHROMATIC_PROJECT_TOKEN }}
+        run: pnpm chromatic --zip --exit-once-uploaded --project-token=${{ secrets.CHROMATIC_PROJECT_TOKEN }}

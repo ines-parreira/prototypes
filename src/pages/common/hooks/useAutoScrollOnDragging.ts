@@ -7,7 +7,7 @@ const useAutoScrollOnDragging = (speedRatio = 30) => {
     const [isDragging, setIsDragging] = useState<boolean>(false)
     const dragDropManager = useDragDropManager()
     const monitor = dragDropManager.getMonitor()
-    const timerRef = useRef<NodeJS.Timer>()
+    const timerRef = useRef<NodeJS.Timeout>()
     const unsubscribeRef = useRef<Unsubscribe>()
     const scrollableAreaRef = useRef<HTMLDivElement>(null)
 

@@ -1,6 +1,6 @@
 import React from 'react'
 
-import { render } from '@testing-library/react'
+import { act, render } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 
 import {
@@ -50,7 +50,10 @@ describe('<IvrMenuActionSelect />', () => {
 
         expect(getByText('Send call to SMS')).toBeInTheDocument()
 
-        userEvent.click(getByText('arrow_drop_down'))
+        act(() => {
+            userEvent.click(getByText('arrow_drop_down'))
+        })
+
         expect(getByText('Forward call to external number')).toBeInTheDocument()
         expect(getByText('Forward call to Gorgias number')).toBeInTheDocument()
         expect(getByText('Play message')).toBeInTheDocument()
@@ -61,23 +64,38 @@ describe('<IvrMenuActionSelect />', () => {
 
         expect(getByText('Forward call to external number')).toBeInTheDocument()
 
-        userEvent.click(getByText('arrow_drop_down'))
+        act(() => {
+            userEvent.click(getByText('arrow_drop_down'))
+        })
+
         expect(getByText('Send call to SMS')).toHaveClass('disabled')
     })
 
     it('should select option forward options', () => {
         const { getByText } = renderComponent(sendToSMSAction)
 
-        userEvent.click(getByText('arrow_drop_down'))
-        userEvent.click(getByText('Forward call to external number'))
+        act(() => {
+            userEvent.click(getByText('arrow_drop_down'))
+        })
+
+        act(() => {
+            userEvent.click(getByText('Forward call to external number'))
+        })
+
         expect(mockOnChange).toHaveBeenCalledWith({
             ...sendToSMSAction,
             action: 'forward_to_external_number',
             forward_call: { phone_number: '' },
         })
 
-        userEvent.click(getByText('arrow_drop_down'))
-        userEvent.click(getByText('Forward call to Gorgias number'))
+        act(() => {
+            userEvent.click(getByText('arrow_drop_down'))
+        })
+
+        act(() => {
+            userEvent.click(getByText('Forward call to Gorgias number'))
+        })
+
         expect(mockOnChange).toHaveBeenCalledWith({
             ...sendToSMSAction,
             action: 'forward_to_gorgias_number',
@@ -88,8 +106,13 @@ describe('<IvrMenuActionSelect />', () => {
     it('should select option play message option', () => {
         const { getByText } = renderComponent(sendToSMSAction)
 
-        userEvent.click(getByText('arrow_drop_down'))
-        userEvent.click(getByText('Play message'))
+        act(() => {
+            userEvent.click(getByText('arrow_drop_down'))
+        })
+
+        act(() => {
+            userEvent.click(getByText('Play message'))
+        })
         expect(mockOnChange).toHaveBeenCalledWith({
             ...sendToSMSAction,
             action: 'play_message',
@@ -99,8 +122,14 @@ describe('<IvrMenuActionSelect />', () => {
     it('should select option send to sms option', () => {
         const { getByText } = renderComponent(forwardCallAction)
 
-        userEvent.click(getByText('arrow_drop_down'))
-        userEvent.click(getByText('Send call to SMS'))
+        act(() => {
+            userEvent.click(getByText('arrow_drop_down'))
+        })
+
+        act(() => {
+            userEvent.click(getByText('Send call to SMS'))
+        })
+
         expect(mockOnChange).toHaveBeenCalledWith({
             ...forwardCallAction,
             action: 'deflect_to_sms',

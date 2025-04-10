@@ -120,7 +120,7 @@ jobs:
           path: node_modules
 
       - name: Install node
-        uses: ./.github/actions/setup-node
+        uses: gorgias/reusable-actions/.github/actions/setup-node@main
         with:
           node-version: ${{ inputs.node-version }}
 
@@ -137,7 +137,7 @@ jobs:
           SENTRY_PROJECT: ${{ inputs.sentry-project }}
         shell: bash
         run: |
-          yarn sentry-cli releases new "${{ inputs.release }}"
-          yarn sentry-cli releases set-commits "${{ inputs.release }}" --auto --ignore-missing
-          yarn sentry-cli releases files "${{ inputs.release }}" upload-sourcemaps "${{ inputs.build-dir }}"
-          yarn sentry-cli releases finalize "${{ inputs.release }}"
+          pnpm exec sentry-cli releases new "${{ inputs.release }}"
+          pnpm exec sentry-cli releases set-commits "${{ inputs.release }}" --auto --ignore-missing
+          pnpm exec sentry-cli releases files "${{ inputs.release }}" upload-sourcemaps "${{ inputs.build-dir }}"
+          pnpm exec sentry-cli releases finalize "${{ inputs.release }}"

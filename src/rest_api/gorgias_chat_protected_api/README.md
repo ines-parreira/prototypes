@@ -4,13 +4,13 @@ The Gorgias Chat API, doesn't have an OpenAPI spec at the moment, so we are usin
 
 ### How to use
 
--   Update the content of `gorgias-chat-protected-api.postman_collection.json` with the definitions from https://github.com/gorgias/gorgias-chat/blob/main/packages/api/postman/gorgias-chat-api.postman_collection.json
-    -   IMPORTANT: Add/Update only the Postman definitions for the endpoints you need, discard the rest so we avoid having dead code/types
--   Run `yarn gorgiaschat:update-client`
+- Update the content of `gorgias-chat-protected-api.postman_collection.json` with the definitions from https://github.com/gorgias/gorgias-chat/blob/main/packages/api/postman/gorgias-chat-api.postman_collection.json
+    - IMPORTANT: Add/Update only the Postman definitions for the endpoints you need, discard the rest so we avoid having dead code/types
+- Run `pnpm gorgiaschat:update-client`
 
 This will update the types and definitions in `client.generated.d.ts`, so the API client will be updated
 
 ### Resources
 
--   https://www.npmjs.com/package/openapi-client-axios
--   https://joolfe.github.io/postman-to-openapi/
+- https://www.npmjs.com/package/openapi-client-axios
+- https://joolfe.github.io/postman-to-openapi/

@@ -761,7 +761,8 @@ export const StoreConfigForm = ({
                                     >
                                         Configure the{' '}
                                         <Link to="/app/settings/rules/library?auto-tag-ai-ignore">
-                                            Prevent AI Agent from answering rule{' '}
+                                            Prevent AI Agent from answering
+                                            rule{' '}
                                         </Link>
                                         to prevent AI Agent from reviewing
                                         specific tickets altogether. (e.g.

@@ -1,4 +1,4 @@
-import { matchPath } from 'react-router'
+import { matchPath } from 'react-router-dom'
 
 import history from 'pages/history'
 

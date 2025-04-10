@@ -1,6 +1,6 @@
 import React from 'react'
 
-import { render } from '@testing-library/react'
+import { act, render } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { fromJS } from 'immutable'
 import { Provider } from 'react-redux'
@@ -58,7 +58,7 @@ describe('<IvrPhoneNumberSelectField />', () => {
         expect(getByText('Phone Integration 1')).toBeInTheDocument()
     })
 
-    it('renders component', () => {
+    it('renders component', async () => {
         const { getByText } = render(
             <Provider store={mockStore(state)}>
                 <IvrPhoneNumberSelectField
@@ -71,8 +71,15 @@ describe('<IvrPhoneNumberSelectField />', () => {
         )
 
         expect(getByText('Select phone number')).toBeInTheDocument()
-        userEvent.click(getByText('arrow_drop_down'))
-        userEvent.click(getByText('Phone Integration 1'))
+
+        await act(async () => {
+            userEvent.click(getByText('arrow_drop_down'))
+        })
+
+        await act(async () => {
+            userEvent.click(getByText('Phone Integration 1'))
+        })
+
         expect(mockOnChange).toHaveBeenCalledWith({
             phone_number: '123',
             integration_id: 1,

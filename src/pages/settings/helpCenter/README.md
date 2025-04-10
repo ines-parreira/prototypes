@@ -4,15 +4,17 @@ This folder contains the help center CMS, used to manage help centers and articl
 
 ## Table of Contents
 
--   [OpenAPI](#openAPI)
--   [Development](#development)
+- [Help center](#help-center)
+    - [Table of Contents](#table-of-contents)
+    - [OpenAPI](#openapi)
+    - [Development](#development)
 
 ## OpenAPI
 
 To communicate with the help center's API, we use an OpenAPI generated client. Here is the script to update the client :
 
 ```sh
-yarn helpcenter:update-client
+pnpm helpcenter:update-client
 ```
 
 ## Development

@@ -1,20 +1,27 @@
+import fs from 'node:fs'
+import path from 'node:path'
+import { fileURLToPath } from 'node:url'
+
 import { codecovWebpackPlugin } from '@codecov/webpack-plugin'
-import { rspack, Configuration as RspackConfiguration } from '@rspack/core'
+import { rspack } from '@rspack/core'
 import NodePolyfillPlugin from 'node-polyfill-webpack-plugin'
-import path from 'path'
 import { RspackManifestPlugin } from 'rspack-manifest-plugin'
 
 const isProd = process.env.NODE_ENV === 'production'
 const HASH = process.env.RELEASE ? process.env.RELEASE : '[contenthash]'
 
+const __filename = fileURLToPath(import.meta.url)
+const __dirname = path.dirname(__filename)
+
 const srcDir = path.join(__dirname, 'src')
 const buildDir = path.join(__dirname, 'build')
-
+const manifestPath = path.join(buildDir, 'manifest.json')
 const optimization = {
     minimizer: [new rspack.SwcJsMinimizerRspackPlugin()],
 }
 
-export default {
+/** @type {import('@rspack/cli').Configuration} */
+const config = {
     mode: isProd ? 'production' : 'development',
     optimization,
     devtool: 'source-map',
@@ -61,7 +68,7 @@ export default {
         new NodePolyfillPlugin(),
         isProd &&
             new RspackManifestPlugin({
-                seed: require(`${buildDir}/manifest.json`),
+                seed: JSON.parse(fs.readFileSync(manifestPath, 'utf8')),
             }),
         codecovWebpackPlugin({
             enableBundleAnalysis: process.env.CODECOV_TOKEN !== undefined,
@@ -69,4 +76,6 @@ export default {
             uploadToken: process.env.CODECOV_TOKEN,
         }),
     ],
-} satisfies RspackConfiguration
+}
+
+export default config

@@ -1,11 +1,14 @@
 import { codecovWebpackPlugin } from '@codecov/webpack-plugin'
-import { rspack, Configuration as RspackConfiguration } from '@rspack/core'
+import { rspack } from '@rspack/core'
 import path from 'path'
 import { RspackManifestPlugin } from 'rspack-manifest-plugin'
+import { fileURLToPath } from 'url'
 
 const { NODE_ENV } = process.env
 
 const isProd = NODE_ENV === 'production'
+const __filename = fileURLToPath(import.meta.url)
+const __dirname = path.dirname(__filename)
 
 const buildDir = path.join(__dirname, 'build')
 
@@ -19,7 +22,8 @@ const vendorsBundleFile = isProd
     ? `helpdesk.vendors.[contenthash].js`
     : 'helpdesk.vendors.js'
 
-export default {
+/** @type {import('@rspack/cli').Configuration} */
+const config = {
     mode,
     devtool,
     entry: {
@@ -44,4 +48,6 @@ export default {
             uploadToken: process.env.CODECOV_TOKEN,
         }),
     ],
-} satisfies RspackConfiguration
+}
+
+export default config

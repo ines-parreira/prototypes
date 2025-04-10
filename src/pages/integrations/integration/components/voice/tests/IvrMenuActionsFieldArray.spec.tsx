@@ -1,6 +1,6 @@
 import React from 'react'
 
-import { fireEvent } from '@testing-library/react'
+import { act, fireEvent } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { fromJS } from 'immutable'
 import { times } from 'lodash'
@@ -59,7 +59,9 @@ describe('<IvrMenuActionsFieldArray />', () => {
         expect(getByText('Forward call to external number')).toBeInTheDocument()
         expect(getByText('Add option')).toBeInTheDocument()
 
-        userEvent.click(getByText('arrow_drop_down'))
+        act(() => {
+            userEvent.click(getByText('arrow_drop_down'))
+        })
 
         expect(getByText('Send call to SMS')).toBeInTheDocument()
         expect(getByText('Play message')).toBeInTheDocument()

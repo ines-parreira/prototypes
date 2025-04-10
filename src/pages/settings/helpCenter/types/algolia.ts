@@ -1,8 +1,19 @@
-import { Hit } from '@algolia/client-search'
+import type { HighlightResult, Hit } from '@algolia/client-search'
 
 import { LocaleCode, VisibilityStatus } from 'models/helpCenter/types'
 
-export type AlgoliaHit<T> = Hit<T>
+export type AlgoliaHit<T> = Hit<T> & {
+    _highlightResult?: {
+        title?: HighlightResult & {
+            matchLevel: 'full' | 'partial'
+            value: string
+        }
+        title_draft?: HighlightResult & {
+            matchLevel: 'full' | 'partial'
+            value: string
+        }
+    }
+}
 
 /*
  * This file is basically a copy of help-center file https://github.com/gorgias/help-center/blob/main/apps/api/src/modules/algolia/types/entities-index.type.ts

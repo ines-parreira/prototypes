@@ -1,6 +1,6 @@
 import React from 'react'
 
-import { fireEvent, render, screen } from '@testing-library/react'
+import { act, fireEvent, render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 
 import { ShopifyPagesListFixture } from 'pages/settings/contactForm/fixtures/shopifyPage'
@@ -83,7 +83,9 @@ describe('<PageEmbedmentForm />', () => {
         // navigate to existing page mode
         const ctaMode = screen.getByText(/Embed to existing page/i)
 
-        userEvent.click(ctaMode)
+        act(() => {
+            userEvent.click(ctaMode)
+        })
         expect(dispatch).toHaveBeenCalledTimes(1)
 
         expect(dispatch.mock.lastCall).toMatchInlineSnapshot(`
@@ -102,10 +104,17 @@ describe('<PageEmbedmentForm />', () => {
 
         // select the first page
         const selectPage = screen.getByText('arrow_drop_down')
-        userEvent.click(selectPage)
+
+        act(() => {
+            userEvent.click(selectPage)
+        })
 
         const firstPage = screen.getByText(ShopifyPagesListFixture[0].title)
-        fireEvent.click(firstPage)
+
+        act(() => {
+            fireEvent.click(firstPage)
+        })
+
         expect(dispatch.mock.lastCall).toMatchInlineSnapshot(`
             [
               {
@@ -121,7 +130,10 @@ describe('<PageEmbedmentForm />', () => {
         `)
 
         const ctaPosition = screen.getByText(/bottom/i)
-        userEvent.click(ctaPosition)
+
+        act(() => {
+            userEvent.click(ctaPosition)
+        })
 
         expect(dispatch.mock.lastCall).toMatchInlineSnapshot(`
             [

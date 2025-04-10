@@ -1,6 +1,6 @@
 import React from 'react'
 
-import { fireEvent, render, screen, waitFor } from '@testing-library/react'
+import { act, fireEvent, render, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 
 import CurrentHelpCenterContext from '../../../../../contexts/CurrentHelpCenterContext'
@@ -104,7 +104,9 @@ describe('<CategoryImageEdit />', () => {
             dummyFile.name,
         )
 
-        userEvent.click(screen.getByText('Remove image'))
+        act(() => {
+            userEvent.click(screen.getByText('Remove image'))
+        })
 
         expect(screen.getByText('Upload image')).toBeInTheDocument()
         expect(

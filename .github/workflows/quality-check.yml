@@ -27,12 +27,12 @@ jobs:
           path: node_modules
 
       - name: Install node
-        uses: ./.github/actions/setup-node
+        uses: gorgias/reusable-actions/.github/actions/setup-node@main
         with:
           node-version: ${{ inputs.node-version }}
 
       - name: Lint
-        run: yarn lint
+        run: pnpm lint
 
   format:
     name: Format
@@ -48,12 +48,12 @@ jobs:
           path: node_modules
 
       - name: Install node
-        uses: ./.github/actions/setup-node
+        uses: gorgias/reusable-actions/.github/actions/setup-node@main
         with:
           node-version: ${{ inputs.node-version }}
 
       - name: Format
-        run: yarn format:check
+        run: pnpm format:check
 
   typecheck:
     name: Typecheck
@@ -69,12 +69,12 @@ jobs:
           path: node_modules
 
       - name: Install node
-        uses: ./.github/actions/setup-node
+        uses: gorgias/reusable-actions/.github/actions/setup-node@main
         with:
           node-version: ${{ inputs.node-version }}
 
       - name: Typecheck
-        run: yarn typecheck
+        run: pnpm typecheck
 
   tests:
     name: Tests
@@ -96,12 +96,12 @@ jobs:
           path: node_modules
 
       - name: Install node
-        uses: ./.github/actions/setup-node
+        uses: gorgias/reusable-actions/.github/actions/setup-node@main
         with:
           node-version: ${{ inputs.node-version }}
 
       - name: Tests
-        run: yarn test:ci:cover --shard "${{ matrix.job-index }}/8"
+        run: pnpm test:ci:cover --shard "${{ matrix.job-index }}/8"
 
       - name: Upload coverage to Codecov
         if: ${{ !cancelled() }}

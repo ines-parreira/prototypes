@@ -43,16 +43,16 @@ jobs:
       - name: Restore cache
         uses: actions/cache@v4
         with:
-          key: node-modules-${{ runner.os }}-${{ hashFiles('yarn.lock') }}
+          key: node-modules-${{ runner.os }}-${{ hashFiles('pnpm-lock.yaml') }}
           path: 'node_modules'
 
       - name: Install node
-        uses: ./.github/actions/setup-node
+        uses: gorgias/reusable-actions/.github/actions/setup-node@main
         with:
           node-version: ${{ env.NODE_VERSION }}
 
       - name: Build preview
-        run: yarn build
+        run: pnpm build
 
       - name: Upload build artifacts
         uses: actions/upload-artifact@v4

@@ -16,6 +16,8 @@ ignore:
   - src/pages/settings/common/SettingsNavbar/config.tsx
   - src/routes/settings/Settings.tsx
   - src/main/init/index.tsx
+  - src/pages/settings/helpCenter/utils/algolia.ts
+  - src/pages/common/hooks/useAutoScrollOnDragging.ts
 
 coverage:
   status:

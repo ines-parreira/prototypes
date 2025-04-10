@@ -43,7 +43,7 @@ jobs:
           path: node_modules
 
       - name: Install node
-        uses: ./.github/actions/setup-node
+        uses: gorgias/reusable-actions/.github/actions/setup-node@main
         with:
           node-version: ${{ inputs.node-version }}
 
@@ -51,7 +51,7 @@ jobs:
         env:
           GORGIAS_ASSETS_URL: ${{ inputs.assets-url }}
           WEB_APP_RELEASE: ${{ inputs.release }}
-        run: yarn build
+        run: pnpm build
 
       - name: Upload artifacts
         uses: actions/upload-artifact@v4

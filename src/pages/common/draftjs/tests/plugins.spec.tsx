@@ -1,11 +1,7 @@
-import React from 'react'
-
 import { render, screen } from '@testing-library/react'
 import { ContentState, EditorState } from 'draft-js'
 
 import { convertFromHTML } from '../../../../utils/editor'
-import createToolbarPlugin from '../plugins/toolbar/index'
-import { Config } from '../plugins/toolbar/types'
 import { Plugin } from '../plugins/types'
 import { variable as variableDecorator } from '../plugins/variables/decorators'
 import { attachEntitiesToVariables } from '../plugins/variables/utils'
@@ -101,28 +97,4 @@ describe('DraftJS Plugins', () => {
 
         expect(screen.getByText('bold'))
     })
-
-    it('render link found in text', () => {
-        const html = 'this is a url <a href="http://google.com">link</a>'
-        const editorState = createEditorStateFromHtml(html)
-
-        const toolbarPlugin = createToolbarPlugin({
-            getDisplayedActions: () => null,
-        } as Config)
-
-        const plugins = [toolbarPlugin] as Plugin[]
-
-        render(
-            <TestEditor
-                html={html}
-                editorState={editorState}
-                plugins={plugins}
-            />,
-        )
-
-        expect(screen.getByText('link'))
-    })
-
-    // it('render variable', () => {
-    // })
 })

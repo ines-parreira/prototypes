@@ -5,37 +5,35 @@ It's built using ReactJS + Redux + many other smaller tools.
 
 ## Table of Contents
 
--   [Gorgias JavaScript Application](#gorgias-javascript-application)
-    -   [Table of Contents](#table-of-contents)
-    -   [Setup NPM to access private packages](#setup-npm-to-access-private-packages)
-    -   [Prerequisites](#prerequisites)
-    -   [Installation](#installation)
-    -   [Development](#development)
-        -   [Storybook](#storybook)
-        -   [Design tokens](#design-tokens)
-    -   [Testing](#testing)
-        -   [General testing](#general-testing)
-    -   [Linting](#linting)
-        -   [Running Linting](#running-linting)
-        -   [Adding Linting rules](#adding-linting-rules)
-    -   [Debugging tools](#debugging-tools)
-        -   [ReactScan](#reactscan)
-        -   [WhyDidYouRender](#whydidyourender)
-            -   [How it’s imported](#how-its-imported)
-            -   [How to use it](#how-to-use-it)
-    -   [Formatting](#formatting)
-    -   [Platform](#platform)
-        -   [Deprecated entries](#deprecated-entries)
-            -   [Generate new snapshot](#generate-new-snapshot)
-            -   [Deprecated entries lint check](#deprecated-entries-lint-check)
-            -   [Add new deprecated entries](#add-new-deprecated-entries)
-        -   [Dependencies NodeJS Engine check](#dependencies-nodejs-engine-check)
-    -   [Contributing](#contributing)
-    -   [Update gorgias-chat client](#update-gorgias-chat-client)
-    -   [FAQ / Troubleshooting](#faq--troubleshooting)
-        -   [yarn dependencies installation error](#yarn-dependencies-installation-error)
-            -   [Possible solution](#possible-solution)
-        -   [Revert PR was blocked by Codecov](#revert-pr-was-blocked-by-codecov)
+- [Gorgias JavaScript Application](#gorgias-javascript-application)
+    - [Table of Contents](#table-of-contents)
+    - [Setup NPM to access private packages](#setup-npm-to-access-private-packages)
+    - [Prerequisites](#prerequisites)
+    - [Installation](#installation)
+    - [Development](#development)
+        - [Storybook](#storybook)
+        - [Design tokens](#design-tokens)
+    - [Testing](#testing)
+        - [General testing](#general-testing)
+    - [Linting](#linting)
+        - [Running Linting](#running-linting)
+        - [Adding Linting rules](#adding-linting-rules)
+    - [Debugging tools](#debugging-tools)
+        - [ReactScan](#reactscan)
+        - [WhyDidYouRender](#whydidyourender)
+            - [How it’s imported](#how-its-imported)
+            - [How to use it](#how-to-use-it)
+    - [Formatting](#formatting)
+    - [Platform](#platform)
+        - [Deprecated entries](#deprecated-entries)
+            - [Generate new snapshot](#generate-new-snapshot)
+            - [Deprecated entries lint check](#deprecated-entries-lint-check)
+            - [Add new deprecated entries](#add-new-deprecated-entries)
+        - [Dependencies NodeJS Engine check](#dependencies-nodejs-engine-check)
+    - [Contributing](#contributing)
+    - [Update gorgias-chat client](#update-gorgias-chat-client)
+    - [FAQ / Troubleshooting](#faq--troubleshooting)
+        - [Revert PR was blocked by Codecov](#revert-pr-was-blocked-by-codecov)
 
 ## Setup NPM to access private packages
 
@@ -47,9 +45,9 @@ Please `cat ~/.npmrc` and ensure that `@gorgias:registry=https://npm.pkg.github.
 
 ## Prerequisites
 
--   [Node.js (v22, uses nvm to install)](https://nodejs.org/en/download/package-manager)
--   [Yarn](https://classic.yarnpkg.com/en/docs/install)
--   [nvm (Node Version Manager)](https://github.com/nvm-sh/nvm)
+- [Node.js (v22, uses nvm to install)](https://nodejs.org/en/download/package-manager)
+- [pnpm](https://pnpm.io/installation)
+- [nvm (Node Version Manager)](https://github.com/nvm-sh/nvm)
 
 ## Installation
 
@@ -57,7 +55,7 @@ Please `cat ~/.npmrc` and ensure that `@gorgias:registry=https://npm.pkg.github.
 git clone git@github.com:gorgias/helpdesk-web-app.git
 cd helpdesk-web-app
 nvm install && nvm use # (This uses the node version specified in the .nvmrc file)
-yarn install
+pnpm install
 ```
 
 ## Development
@@ -65,7 +63,7 @@ yarn install
 1. If you don't want run the backend on your machine, start the development server with:
 
 ```bash
-yarn dev:proxy
+pnpm dev:proxy
 ```
 
 You also need to have your proxy setup correctly. Follow the instructions [here](https://www.notion.so/gorgias/Using-local-dev-server-on-production-5c7d9cfd3bcb4c118e3f49e59c3e1d40#1efa9466a2724c95885c4219994d3fe7).
@@ -73,7 +71,7 @@ You also need to have your proxy setup correctly. Follow the instructions [here]
 2. If you have the backend running on your machine, start the development server with:
 
 ```bash
-yarn dev:local
+pnpm dev:local
 ```
 
 The [HMR](https://webpack.js.org/concepts/hot-module-replacement) should work out of the box for both proxy and local development.
@@ -83,7 +81,7 @@ The [HMR](https://webpack.js.org/concepts/hot-module-replacement) should work ou
 Start the Storybook with:
 
 ```bash
-yarn storybook
+pnpm storybook
 ```
 
 ### Design tokens
@@ -95,31 +93,31 @@ Tokens are provided by the `@gorgias/design-tokens` package.
 ### General testing
 
 ```bash
-yarn test
-yarn typecheck  # Only type-check
-yarn jest   # Only unit tests
+pnpm test
+pnpm typecheck  # Only type-check
+pnpm jest   # Only unit tests
 ```
 
 ## Linting
 
 Due to performance concerns, we use [Oxlint](https://oxc.rs/docs/guide/usage/linter/rules.html) to lint our code. This will require you to install the extension relevant to your IDE:
 
--   [VSCode based IDE](https://oxc.rs/docs/guide/usage/linter.html#vscode-extension)
--   [ZED](https://oxc.rs/docs/guide/usage/linter.html#zed-extension)
+- [VSCode based IDE](https://oxc.rs/docs/guide/usage/linter.html#vscode-extension)
+- [ZED](https://oxc.rs/docs/guide/usage/linter.html#zed-extension)
 
 For Neovim users, Oxlint should work [out of the box](https://github.com/neovim/nvim-lspconfig/pull/3586).
 
-If you't editor doesn't support Oxc yet, please use the `yarn oxlint:watch` command to run it in watch mode while developping. It will run Oxlint with the --fix flag on the files you've changed.
+If you't editor doesn't support Oxc yet, please use the `pnpm oxlint:watch` command to run it in watch mode while developping. It will run Oxlint with the --fix flag on the files you've changed.
 
 ### Running Linting
 
 ```bash
-yarn lint
+pnpm lint
 ```
 
 ### Adding Linting rules
 
-New linting [rules](https://oxc.rs/docs/guide/usage/linter/rules.html) can be added to the [oxlint.base.json](./scripts/oxlint/oxlint.base.json) file. The changes will be applied automatically when you run `yarn lint` via the `prelint` script.
+New linting [rules](https://oxc.rs/docs/guide/usage/linter/rules.html) can be added to the [oxlint.base.json](./scripts/oxlint/oxlint.base.json) file. The changes will be applied automatically when you run `pnpm lint` via the `prelint` script.
 
 ## Debugging tools
 
@@ -133,9 +131,9 @@ We use ReactScan in development to help detect unnecessary re-renders and perfor
 
 In our setup, ReactScan is:
 
--   Imported **before React** to ensure accurate tracking
--   Initialized only in development mode
--   Disabled by default to avoid flashing or distraction on page load
+- Imported **before React** to ensure accurate tracking
+- Initialized only in development mode
+- Disabled by default to avoid flashing or distraction on page load
 
 You can find its integration in [`src/main/init/index.tsx`](src/main/init/index.tsx). Here's a simplified view of how it's used:
 
@@ -246,7 +244,7 @@ Formatting is done on save, via Prettier. Make sure to have the [Prettier extens
 This script will generate a new snapshot of the deprecated code according to the `sa.config.ts` file.
 
 ```bash
-yarn platform:deprecated-analysis
+pnpm platform:deprecated-analysis
 ```
 
 #### Deprecated entries lint check
@@ -254,7 +252,7 @@ yarn platform:deprecated-analysis
 This script will check if there are any new deprecated entries in the codebase based on the current snapshot.
 
 ```bash
-yarn lint:deprecated
+pnpm lint:deprecated
 ```
 
 #### Add new deprecated entries
@@ -272,7 +270,7 @@ const Component = () => {
 }
 ```
 
-Once you add the `@deprecated` comment, you can run `yarn platform:deprecated-analysis` to generate a new snapshot.
+Once you add the `@deprecated` comment, you can run `pnpm platform:deprecated-analysis` to generate a new snapshot.
 
 ### Dependencies NodeJS Engine check
 
@@ -287,14 +285,14 @@ const TARGET_VERSION = '22.0.0'
 And run:
 
 ```bash
-yarn platform:check-node-engines
+pnpm platform:check-node-engines
 ```
 
 ## Contributing
 
--   [ADR](https://github.com/gorgias/architectural-decision-records/tree/main/project/helpdesk)
--   [Storybook](./docs/GetStarted.stories.mdx)
--   [FE Chapter](https://www.notion.so/gorgias/Front-End-Chapter-5045e25b1a1f4ab7a42dad4a0187f541)
+- [ADR](https://github.com/gorgias/architectural-decision-records/tree/main/project/helpdesk)
+- [Storybook](./docs/GetStarted.stories.mdx)
+- [FE Chapter](https://www.notion.so/gorgias/Front-End-Chapter-5045e25b1a1f4ab7a42dad4a0187f541)
 
 ## Update gorgias-chat client
 
@@ -302,46 +300,11 @@ To run the `gorgiaschat:update-client` script, you first need to install [postma
 Since this tool is not maintained and its package.json configuration make not compatible with recent NodeJS version you will need to install it globally and not into this project. For that run the following command:
 
 ```bash
-yarn global add postman-to-openapi
-yarn gorgiaschat:update-client
+pnpm add -g postman-to-openapi
+pnpm gorgiaschat:update-client
 ```
 
 ## FAQ / Troubleshooting
-
-### yarn dependencies installation error
-
-Running `yarn install` leads to error
-
-```bash
-➤ YN0035: │ @gorgias/config@npm:0.1.0: The remote server failed to provide the requested resource
-➤ YN0035: │   Response Code: 404 (Not Found)
-➤ YN0035: │   Request Method: GET
-➤ YN0035: │   Request URL: https://registry.yarnpkg.com/@gorgias%2fconfig
-➤ YN0000: └ Completed in 11s 814ms
-➤ YN0000: Failed with errors in 11s 817ms
-```
-
-This is because there is no registry configured with access to the package @gorgias/config.
-
-#### Possible solution
-
--   Ensure you have yarn installed, if not [Yarn installation](https://yarnpkg.com/getting-started/install)
--   Configure registry for gorgias packages. For this:
-
-    -   follow https://github.com/gorgias/gorgias/blob/main/README.md#setup-npm-to-access-private-packages to configure npm access to GitHub registry
-    -   create your ~/.yarnrc.yml file
-
-    ```bash
-    npmRegistryServer: "https://registry.yarnpkg.com"
-    npmScopes:
-      gorgias:
-        npmPublishRegistry: https://npm.pkg.github.com/
-        npmRegistryServer: https://npm.pkg.github.com/
-        npmAlwaysAuth: true
-        npmAuthToken: _YOUR_TOKEN_
-    ```
-
-    -   `npmAuthToken` can be found in your ~/.npmrc
 
 ### Revert PR was blocked by Codecov
 

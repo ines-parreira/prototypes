@@ -1,5 +1,6 @@
 import React from 'react'
 
+import { act } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
@@ -92,7 +93,7 @@ describe('<IvrMenuActionSendToSMSField />', () => {
     })
 
     it('should save values', async () => {
-        const { getByText } = renderComponent(
+        const { getByText, getAllByRole } = renderComponent(
             {
                 confirmation_message: {
                     voice_message_type: VoiceMessageType.TextToSpeech,
@@ -114,11 +115,31 @@ describe('<IvrMenuActionSendToSMSField />', () => {
             true,
         )
 
-        await userEvent.type(getByText('confirmation message'), ' test')
-        await userEvent.type(getByText('sms content'), ' test')
-        userEvent.click(getByText('arrow_drop_down'))
-        userEvent.click(getByText('Another integration'))
-        userEvent.click(getByText('Save Changes'))
+        const [confirmationMessageInput, smsContentInput] =
+            getAllByRole('textbox')
+
+        await act(async () => {
+            await userEvent.clear(confirmationMessageInput)
+            await userEvent.type(
+                confirmationMessageInput,
+                'confirmation message test',
+            )
+
+            await userEvent.clear(smsContentInput)
+            await userEvent.type(smsContentInput, 'sms content test')
+        })
+
+        act(() => {
+            userEvent.click(getByText('arrow_drop_down'))
+        })
+
+        act(() => {
+            userEvent.click(getByText('Another integration'))
+        })
+
+        act(() => {
+            userEvent.click(getByText('Save Changes'))
+        })
 
         expect(mockOnChange).toHaveBeenCalledWith({
             confirmation_message: {
