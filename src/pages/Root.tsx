@@ -1,6 +1,7 @@
-import React, { useLayoutEffect, useMemo, useState } from 'react'
+import { useLayoutEffect, useMemo, useState } from 'react'
 
 import { QueryClientProvider } from '@tanstack/react-query'
+import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
 import { createDragDropManager } from 'dnd-core'
 import Immutable from 'immutable'
 import installDevTools from 'immutable-devtools'
@@ -26,9 +27,7 @@ import { getLDClient, LDContext } from 'utils/launchDarkly'
 
 import history from './history'
 
-type Props = {
-    store: Store<RootState>
-}
+type Props = { store: Store<RootState> }
 
 if (envVars.NODE_ENV !== NodeEnv.Production) {
     installDevTools(Immutable)
@@ -85,9 +84,7 @@ const Root = ({ store }: Props) => {
                     <LDProvider
                         clientSideID={window.GORGIAS_LAUNCHDARKLY_CLIENT_ID}
                         ldClient={LDClient}
-                        reactOptions={{
-                            useCamelCaseFlagKeys: false,
-                        }}
+                        reactOptions={{ useCamelCaseFlagKeys: false }}
                         context={LDContext}
                     >
                         <RealtimeProvider
@@ -113,6 +110,14 @@ const Root = ({ store }: Props) => {
                     </LDProvider>
                 </DndProvider>
             </Provider>
+            {envVars.NODE_ENV !== NodeEnv.Production && (
+                <ReactQueryDevtools
+                    initialIsOpen={false}
+                    position="bottom-left"
+                    panelPosition="bottom"
+                    toggleButtonProps={{ style: { marginLeft: '40px' } }}
+                />
+            )}
         </QueryClientProvider>
     )
 }
