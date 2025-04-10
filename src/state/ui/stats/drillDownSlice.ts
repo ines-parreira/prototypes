@@ -12,6 +12,7 @@ import {
     JobType,
 } from 'models/job/types'
 import { TicketTimeReference } from 'models/stat/types'
+import { AiSalesAgentDrillDownMetrics } from 'pages/stats/automate/aiSalesAgent/AiSalesAgentDrillDownConfig'
 import { LogicalOperatorEnum } from 'pages/stats/common/components/Filter/constants'
 import { AutoQAAgentsTableColumn } from 'pages/stats/support-performance/auto-qa/AutoQAAgentsTableConfig'
 import { OverviewMetric } from 'pages/stats/support-performance/overview/SupportPerformanceOverviewConfig'
@@ -75,6 +76,10 @@ export type AgentMetricColumn =
 export type AgentsMetrics = {
     metricName: AgentMetricColumn
     perAgentId: number
+} & CommonMetrics
+
+export type AiSalesAgentMetrics = {
+    metricName: AiSalesAgentDrillDownMetrics
 } & CommonMetrics
 
 export type AutoQAMetrics = {
@@ -196,6 +201,7 @@ export type DrillDownMetric =
     | VoiceMetrics
     | VoiceAgentsMetrics
     | TagsFieldsMetrics
+    | AiSalesAgentMetrics
 
 export type DrillDownState = {
     isOpen: boolean

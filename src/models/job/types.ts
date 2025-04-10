@@ -1,4 +1,5 @@
 import { HandleTimeCubeWithJoins } from 'models/reporting/cubes/agentxp/HandleTimeCube'
+import { AiSalesAgentConversationsCube } from 'models/reporting/cubes/ai-sales-agent/AiSalesAgentConversations'
 import { TicketQAScoreCubeWithJoins } from 'models/reporting/cubes/auto-qa/TicketQAScoreCube'
 import { ConvertOrderConversionCube } from 'models/reporting/cubes/ConvertOrderConversionCube'
 import { HelpdeskCustomerMessagesReceivedEnrichedCubeWithJoins } from 'models/reporting/cubes/HelpdeskCustomerMessagesReceivedEnrichedCube'
@@ -68,6 +69,7 @@ export type DrillDownReportingQuery = ReportingQuery<
     | VoiceCallCube
     | TicketTagsEnrichedCube
     | TicketMessagesEnrichedResponseTimes
+    | AiSalesAgentConversationsCube
 >
 
 export type ReportingQueryJobParams = {

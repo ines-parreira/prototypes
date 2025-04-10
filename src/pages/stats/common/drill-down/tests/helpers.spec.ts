@@ -1,6 +1,7 @@
 import moment from 'moment'
 
 import { VoiceCallSegment } from 'models/reporting/cubes/VoiceCallCube'
+import { totalNumberofSalesOpportunityConvFromAIAgentDrillDownQueryFactory } from 'models/reporting/queryFactories/ai-sales-agent/metrics'
 import { customerSatisfactionMetricDrillDownQueryFactory } from 'models/reporting/queryFactories/support-performance/customerSatisfaction'
 import {
     customFieldsTicketCountOnCreatedDatetimePerTicketDrillDownQueryFactory,
@@ -18,6 +19,7 @@ import {
 } from 'models/reporting/queryFactories/voice/voiceCall'
 import { StatsFilters, TicketTimeReference } from 'models/stat/types'
 import { CSAT_DRILL_DOWN_LABEL } from 'pages/aiAgent/insights/IntentTableWidget/IntentTableConfig'
+import { AiSalesAgentChart } from 'pages/stats/automate/aiSalesAgent/AiSalesAgentMetricsConfig'
 import { LogicalOperatorEnum } from 'pages/stats/common/components/Filter/constants'
 import {
     getDrillDownMetricColumn,
@@ -45,6 +47,7 @@ import { OverviewMetric } from 'pages/stats/support-performance/overview/Support
 import { MEDIAN_RESOLUTION_TIME_LABEL } from 'services/reporting/constants'
 import {
     AgentsMetrics,
+    AiSalesAgentMetrics,
     ChannelsMetrics,
     ConvertMetrics,
     DrillDownMetric,
@@ -78,6 +81,7 @@ jest.mock(
     'models/reporting/queryFactories/ticket-insights/customFieldsTicketCount',
 )
 jest.mock('models/reporting/queryFactories/ticket-insights/tagsTicketCount')
+jest.mock('models/reporting/queryFactories/ai-sales-agent/metrics')
 
 jest.mock(
     'models/reporting/queryFactories/support-performance/customerSatisfaction',
@@ -114,6 +118,10 @@ const liveDashboardWaitingTimeCallsListQueryFactoryMock = assumeMock(
 )
 const liveDashboardConnectedCallsListQueryFactoryMock = assumeMock(
     liveDashboardConnectedCallsListQueryFactory,
+)
+
+const aiSalesAgentTotalSalesConvDrillDownQueryFactoryMock = assumeMock(
+    totalNumberofSalesOpportunityConvFromAIAgentDrillDownQueryFactory,
 )
 
 describe('getDrillDownQuery', () => {
@@ -807,6 +815,27 @@ describe('getDrillDownQuery', () => {
             undefined,
         )
     })
+
+    it('should be populated with AiSalesAgentTotalSalesConv', () => {
+        const periodStart = moment()
+        const periodEnd = periodStart.add(7, 'days')
+        const statsFilters: StatsFilters = {
+            period: {
+                end_datetime: periodEnd.toISOString(),
+                start_datetime: periodStart.toISOString(),
+            },
+        }
+        const timezone = 'someTimeZone'
+        const drillDownMetric: AiSalesAgentMetrics = {
+            metricName: AiSalesAgentChart.AiSalesAgentTotalSalesConv,
+        }
+
+        getDrillDownQuery(drillDownMetric)(statsFilters, timezone)
+
+        expect(
+            aiSalesAgentTotalSalesConvDrillDownQueryFactoryMock,
+        ).toHaveBeenCalledWith(statsFilters, timezone)
+    })
 })
 
 describe('getDrillDownMetric', () => {
@@ -1017,6 +1046,16 @@ describe('getDrillDownMetric', () => {
             },
         },
         ...voiceAgentsMetricsWithExpectedValues,
+        {
+            metricData: {
+                metricName: AiSalesAgentChart.AiSalesAgentTotalSalesConv,
+            },
+            expectedValues: {
+                metricTitle: 'Conversations',
+                showMetric: true,
+                metricValueFormat: 'decimal',
+            },
+        },
     ]
 
     it.each(testCases)(

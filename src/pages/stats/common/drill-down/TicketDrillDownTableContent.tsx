@@ -13,6 +13,7 @@ import TableBody from 'pages/common/components/table/TableBody'
 import TableBodyRow from 'pages/common/components/table/TableBodyRow'
 import TableHead from 'pages/common/components/table/TableHead'
 import DatetimeLabel from 'pages/common/utils/DatetimeLabel'
+import { AiSalesAgentChart } from 'pages/stats/automate/aiSalesAgent/AiSalesAgentMetricsConfig'
 import { AgentAvatar } from 'pages/stats/common/AgentAvatar'
 import { DrillDownTableContentSkeleton } from 'pages/stats/common/components/Table/DrillDownTableContentSkeleton'
 import { TruncateCellContent } from 'pages/stats/common/components/TruncateCellContent'
@@ -141,6 +142,9 @@ export const TicketDrillDownTableContent = ({
     const isAiPerformanceMetric =
         metricData.metricName ===
         AIInsightsMetric.TicketDrillDownPerCoverageRate
+
+    const isAiSalesAgentConversationsMetric =
+        metricData.metricName === AiSalesAgentChart.AiSalesAgentTotalSalesConv
 
     const { data, isFetching } = useEnrichedDrillDownData(
         metricData,
@@ -330,7 +334,8 @@ export const TicketDrillDownTableContent = ({
                 {!(
                     isAiInsightsMetric ||
                     isAiPerformanceMetric ||
-                    isAiInsightsCsatMetric
+                    isAiInsightsCsatMetric ||
+                    isAiSalesAgentConversationsMetric
                 ) && (
                     <HeaderCellProperty
                         title="Contact Reason"

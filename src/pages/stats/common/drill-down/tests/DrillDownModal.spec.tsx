@@ -5,6 +5,7 @@ import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
+import { AiSalesAgentChart } from 'pages/stats/automate/aiSalesAgent/AiSalesAgentMetricsConfig'
 import { DrillDownInfoBar } from 'pages/stats/common/drill-down/DrillDownInfoBar'
 import { DrillDownModal } from 'pages/stats/common/drill-down/DrillDownModal'
 import { DrillDownTable } from 'pages/stats/common/drill-down/DrillDownTable'
@@ -99,6 +100,10 @@ describe('<DrillDownModal />', () => {
         [
             VoiceAgentsMetric.AgentAverageTalkTime,
             VoiceCallDrillDownTableContent,
+        ],
+        [
+            AiSalesAgentChart.AiSalesAgentTotalSalesConv,
+            TicketDrillDownTableContent,
         ],
     ])(
         'should render correct drill down table content for metric %s',

@@ -10,6 +10,7 @@ import { DrillDownReportingQuery } from 'models/job/types'
 import { EnrichmentFields } from 'models/reporting/types'
 import { StatsFilters } from 'models/stat/types'
 import { AiInsightsMetricConfig } from 'pages/stats/automate/AiInsightsMetricConfig'
+import { AiSalesAgentDrillDownConfig } from 'pages/stats/automate/aiSalesAgent/AiSalesAgentDrillDownConfig'
 import {
     ConvertDrillDownRowData,
     formatTicketDrillDownRowData,
@@ -125,6 +126,7 @@ export const DomainsConfig = {
     [Domain.Convert]: ConvertDrillDownConfig,
     [Domain.Ticket]: TicketDrillDownConfig,
     [Domain.Voice]: VoiceDrillDownConfig,
+    [Domain.AiSalesAgent]: AiSalesAgentDrillDownConfig,
 }
 
 export const MetricsConfig: Record<
@@ -134,4 +136,5 @@ export const MetricsConfig: Record<
     ...TicketDrillDownConfig.metricsConfig,
     ...ConvertDrillDownConfig.metricsConfig,
     ...VoiceDrillDownConfig.metricsConfig,
+    ...AiSalesAgentDrillDownConfig.metricsConfig,
 }

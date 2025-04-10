@@ -2,6 +2,7 @@ import React, { ReactNode } from 'react'
 
 import { useStatsFilters } from 'hooks/reporting/support-performance/useStatsFilters'
 import { MetricTrendHook } from 'hooks/reporting/useMetricTrend'
+import { TrendMetric } from 'pages/stats/automate/aiSalesAgent/AiSalesAgentMetricsConfig'
 import BigNumberMetric from 'pages/stats/common/components/BigNumberMetric'
 import MetricCard from 'pages/stats/common/components/MetricCard'
 import TrendBadge from 'pages/stats/common/components/TrendBadge'
@@ -41,6 +42,7 @@ export const TrendCard = ({
         | SlaMetric
         | AutoQAMetric
         | SatisfactionMetric
+        | TrendMetric
     tip?: ReactNode
     interpretAs: 'more-is-better' | 'less-is-better' | 'neutral'
     metricFormat?: MetricTrendFormat

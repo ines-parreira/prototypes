@@ -10,6 +10,10 @@ import { withDefaultLogicalOperator } from 'models/reporting/queryFactories/util
 import { FilterKey, StatsFilters, TicketTimeReference } from 'models/stat/types'
 import { AiInsightsMetricConfig } from 'pages/stats/automate/AiInsightsMetricConfig'
 import {
+    AiSalesAgentChart,
+    AiSalesAgentMetricConfig,
+} from 'pages/stats/automate/aiSalesAgent/AiSalesAgentMetricsConfig'
+import {
     DomainsConfig,
     DrillDownQueryFactory,
     MetricsConfig,
@@ -269,6 +273,10 @@ export const getDrillDownQuery = (
                 metricName.perAgentId,
                 VoiceAgentsMetricsConfig[metricName.metricName].drillDownQuery,
             )
+        case AiSalesAgentChart.AiSalesAgentTotalSalesConv:
+            return AiSalesAgentMetricConfig[
+                AiSalesAgentChart.AiSalesAgentTotalSalesConv
+            ].drillDownQuery!
     }
 }
 const queryBuilderWithAgentFilter =
@@ -460,6 +468,12 @@ export const getDrillDownMetricColumn = (
         metricTitle = TicketFieldsMetricConfig[metricData.metricName].title
         metricValueFormat =
             TicketFieldsMetricConfig[metricData.metricName].metricFormat
+    } else if (
+        metricData.metricName === AiSalesAgentChart.AiSalesAgentTotalSalesConv
+    ) {
+        metricTitle = AiSalesAgentMetricConfig[metricData.metricName].title
+        metricValueFormat =
+            AiSalesAgentMetricConfig[metricData.metricName].metricFormat
     } else if ('perAgentId' in metricData) {
         metricTitle = TableLabels[metricData.metricName]
         metricValueFormat = AgentsColumnConfig[metricData.metricName].format

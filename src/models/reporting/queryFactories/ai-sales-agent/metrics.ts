@@ -27,7 +27,10 @@ import {
 } from 'models/reporting/queryFactories/ai-sales-agent/filters'
 import { ReportingFilterOperator, ReportingQuery } from 'models/reporting/types'
 import { StatsFilters } from 'models/stat/types'
-import { statsFiltersToReportingFilters } from 'utils/reporting'
+import {
+    DRILLDOWN_QUERY_LIMIT,
+    statsFiltersToReportingFilters,
+} from 'utils/reporting'
 
 export const averageOrderValueQueryFactory = (
     filters: StatsFilters,
@@ -156,6 +159,33 @@ export const totalNumberofSalesOpportunityConvFromAIAgentQueryFactory = (
     ],
     timezone,
 })
+
+export const totalNumberofSalesOpportunityConvFromAIAgentDrillDownQueryFactory =
+    (
+        filters: StatsFilters,
+        timezone: string,
+        sorting?: OrderDirection,
+    ): ReportingQuery<AiSalesAgentConversationsCube> => ({
+        ...totalNumberofSalesOpportunityConvFromAIAgentQueryFactory(
+            filters,
+            timezone,
+        ),
+        dimensions: [
+            AiSalesAgentConversationsDimension.TicketId,
+            AiSalesAgentConversationsDimension.Outcome,
+        ],
+        measures: [],
+        limit: DRILLDOWN_QUERY_LIMIT,
+        ...(sorting
+            ? {
+                  order: [
+                      [AiSalesAgentConversationsDimension.TicketId, sorting],
+                  ],
+              }
+            : {
+                  order: [],
+              }),
+    })
 
 export const totalNumberOfAutomatedConversationQueryFactory = (
     filters: StatsFilters,

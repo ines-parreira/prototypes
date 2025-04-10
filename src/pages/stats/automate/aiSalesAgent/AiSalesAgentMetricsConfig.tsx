@@ -3,6 +3,7 @@ import {
     MetricTrendHook,
 } from 'hooks/reporting/useMetricTrend'
 import { TimeSeriesFetch, TimeSeriesHook } from 'hooks/reporting/useTimeSeries'
+import { totalNumberofSalesOpportunityConvFromAIAgentDrillDownQueryFactory } from 'models/reporting/queryFactories/ai-sales-agent/metrics'
 import {
     fetchAverageOrderValueTrend,
     useAverageOrderValueTrend,
@@ -59,6 +60,8 @@ import {
     fetchTotalSalesOpportunityAIConvTrend,
     useTotalSalesOpportunityAIConvTrend,
 } from 'pages/stats/automate/aiSalesAgent/metrics/useTotalSalesOpportunityAIConvTrend'
+import { DrillDownQueryFactory } from 'pages/stats/common/drill-down/DrillDownTableConfig'
+import { Domain } from 'pages/stats/common/drill-down/types'
 import { MetricTrendFormat } from 'pages/stats/common/utils'
 import { TooltipData } from 'pages/stats/types'
 
@@ -123,6 +126,10 @@ export const AiSalesAgentMetricConfig: Record<
         fetchTrend: MetricTrendFetch
         interpretAs: 'more-is-better' | 'less-is-better' | 'neutral'
         metricFormat: MetricTrendFormat
+        drillDownMetric?: TrendMetric
+        drillDownQuery?: DrillDownQueryFactory
+        showMetric: boolean
+        domain: Domain
     }
 > = {
     [AiSalesAgentChart.AiSalesAgentTotalSalesConv]: {
@@ -134,6 +141,11 @@ export const AiSalesAgentMetricConfig: Record<
         fetchTrend: fetchTotalSalesOpportunityAIConvTrend,
         interpretAs: 'more-is-better',
         metricFormat: 'decimal',
+        drillDownMetric: AiSalesAgentChart.AiSalesAgentTotalSalesConv,
+        drillDownQuery:
+            totalNumberofSalesOpportunityConvFromAIAgentDrillDownQueryFactory,
+        showMetric: true,
+        domain: Domain.AiSalesAgent,
     },
     [AiSalesAgentChart.AiSalesAgentGmv]: {
         title: 'GMV influenced $',
@@ -144,6 +156,8 @@ export const AiSalesAgentMetricConfig: Record<
         fetchTrend: fetchGmvInfluencedTrend,
         interpretAs: 'more-is-better',
         metricFormat: 'currency',
+        showMetric: false,
+        domain: Domain.AiSalesAgent,
     },
     [AiSalesAgentChart.AiSalesAgentGmvInfluenced]: {
         title: 'GMV influenced %',
@@ -154,6 +168,8 @@ export const AiSalesAgentMetricConfig: Record<
         fetchTrend: fetchGmvInfluencedRateTrend,
         interpretAs: 'more-is-better',
         metricFormat: 'decimal-to-percent',
+        showMetric: false,
+        domain: Domain.AiSalesAgent,
     },
     [AiSalesAgentChart.AiSalesAgentRoiRate]: {
         title: 'ROI rate',
@@ -164,6 +180,8 @@ export const AiSalesAgentMetricConfig: Record<
         fetchTrend: fetchRoiRateTrend,
         interpretAs: 'more-is-better',
         metricFormat: 'ratio',
+        showMetric: false,
+        domain: Domain.AiSalesAgent,
     },
     [AiSalesAgentChart.AiSalesAgentTotalNumberOfOrders]: {
         title: 'Number of orders influenced',
@@ -174,6 +192,8 @@ export const AiSalesAgentMetricConfig: Record<
         fetchTrend: fetchTotalNumberOfOrdersTrend,
         interpretAs: 'more-is-better',
         metricFormat: 'decimal',
+        showMetric: false,
+        domain: Domain.AiSalesAgent,
     },
     [AiSalesAgentChart.AiSalesAgentAverageOrderValue]: {
         title: 'Average order value',
@@ -184,6 +204,8 @@ export const AiSalesAgentMetricConfig: Record<
         fetchTrend: fetchAverageOrderValueTrend,
         interpretAs: 'more-is-better',
         metricFormat: 'currency',
+        showMetric: false,
+        domain: Domain.AiSalesAgent,
     },
     [AiSalesAgentChart.AiSalesAgentTotalProductRecommendations]: {
         title: 'Product recommendations',
@@ -194,6 +216,8 @@ export const AiSalesAgentMetricConfig: Record<
         fetchTrend: fetchTotalProductRecommendations,
         interpretAs: 'more-is-better',
         metricFormat: 'decimal',
+        showMetric: false,
+        domain: Domain.AiSalesAgent,
     },
     [AiSalesAgentChart.AiSalesAgentProductClickRate]: {
         title: 'Click rate',
@@ -204,6 +228,8 @@ export const AiSalesAgentMetricConfig: Record<
         fetchTrend: fetchProductClickRateTrend,
         interpretAs: 'more-is-better',
         metricFormat: 'percent',
+        showMetric: false,
+        domain: Domain.AiSalesAgent,
     },
     [AiSalesAgentChart.AiSalesAgentProductBuyRate]: {
         title: 'Buy rate',
@@ -214,6 +240,8 @@ export const AiSalesAgentMetricConfig: Record<
         fetchTrend: fetchProductBuyRateTrend,
         interpretAs: 'more-is-better',
         metricFormat: 'percent',
+        showMetric: false,
+        domain: Domain.AiSalesAgent,
     },
     [AiSalesAgentChart.AiSalesAgentSuccessRate]: {
         title: 'Success rate',
@@ -224,6 +252,8 @@ export const AiSalesAgentMetricConfig: Record<
         fetchTrend: fetchSuccessRateTrend,
         interpretAs: 'more-is-better',
         metricFormat: 'decimal-to-percent',
+        showMetric: false,
+        domain: Domain.AiSalesAgent,
     },
     [AiSalesAgentChart.AiSalesAgentConversionRate]: {
         title: 'Conversion rate',
@@ -234,6 +264,8 @@ export const AiSalesAgentMetricConfig: Record<
         fetchTrend: fetchConversionRateTrend,
         interpretAs: 'more-is-better',
         metricFormat: 'decimal-to-percent',
+        showMetric: false,
+        domain: Domain.AiSalesAgent,
     },
     [AiSalesAgentChart.AiSalesTimeSavedByAgent]: {
         title: 'Time saved by agents',
@@ -244,6 +276,8 @@ export const AiSalesAgentMetricConfig: Record<
         fetchTrend: fetchTimeSavedByAgentTrend,
         interpretAs: 'more-is-better',
         metricFormat: 'duration',
+        showMetric: false,
+        domain: Domain.AiSalesAgent,
     },
     [AiSalesAgentChart.AiSalesDiscountOffered]: {
         title: 'Discount codes offered',
@@ -254,6 +288,8 @@ export const AiSalesAgentMetricConfig: Record<
         fetchTrend: fetchDiscountCodesOfferedTrend,
         interpretAs: 'more-is-better',
         metricFormat: 'decimal',
+        showMetric: false,
+        domain: Domain.AiSalesAgent,
     },
     [AiSalesAgentChart.AiSalesDiscountApplied]: {
         title: 'Discount codes applied',
@@ -264,6 +300,8 @@ export const AiSalesAgentMetricConfig: Record<
         fetchTrend: fetchDiscountCodesAppliedTrend,
         interpretAs: 'more-is-better',
         metricFormat: 'decimal',
+        showMetric: false,
+        domain: Domain.AiSalesAgent,
     },
     [AiSalesAgentChart.AiSalesDiscountRateApplied]: {
         title: '% discount applied',
@@ -274,6 +312,8 @@ export const AiSalesAgentMetricConfig: Record<
         fetchTrend: fetchDiscountCodesRateAppliedTrend,
         interpretAs: 'more-is-better',
         metricFormat: 'decimal-to-percent',
+        showMetric: false,
+        domain: Domain.AiSalesAgent,
     },
     [AiSalesAgentChart.AiSalesAverageDiscount]: {
         title: 'Average discount used',
@@ -284,6 +324,8 @@ export const AiSalesAgentMetricConfig: Record<
         fetchTrend: fetchDiscountCodesAverageValueTrend,
         interpretAs: 'more-is-better',
         metricFormat: 'currency',
+        showMetric: false,
+        domain: Domain.AiSalesAgent,
     },
 }
 
