@@ -1,8 +1,11 @@
 import { AutomationDatasetFilterMember } from 'models/reporting/cubes/automate_v2/AutomationDatasetCube'
 import { BillableTicketDatasetFilterMember } from 'models/reporting/cubes/automate_v2/BillableTicketDatasetCube'
 import { TicketMember } from 'models/reporting/cubes/TicketCube'
+import { TicketCustomFieldsMember } from 'models/reporting/cubes/TicketCustomFieldsCube'
+import { TicketMessagesMember } from 'models/reporting/cubes/TicketMessagesCube'
 import {
     aiAgentTicketsDefaultFilters,
+    aiAgentTicketsFromTicketCustomFieldsDefaultFilters,
     automationDatasetAdditionalFilters,
     billableTicketDatasetAdditionalFilters,
     mapTicketChannelsToAutomateChannels,
@@ -10,8 +13,6 @@ import {
 import { withDefaultLogicalOperator } from 'models/reporting/queryFactories/utils'
 import { ReportingFilterOperator } from 'models/reporting/types'
 import { StatsFilters } from 'models/stat/types'
-
-import { TicketMessagesMember } from '../../../cubes/TicketMessagesCube'
 
 describe('billableTicketDatasetAdditionalFilters', () => {
     const statsFiltersWithLogicalOperator: StatsFilters = {
@@ -223,5 +224,165 @@ describe('aiAgentTicketsDefaultFilters', () => {
                 values: ['chat::1', 'email::2'],
             },
         ])
+    })
+})
+
+describe('aiAgentTicketsFromTicketCustomFieldsDefaultFilters', () => {
+    const filters = {
+        period: {
+            start_datetime: '2023-01-01T00:00:00.000',
+            end_datetime: '2023-01-31T23:59:59.999',
+        },
+    }
+
+    it('should return filters with outcome and integration IDs', () => {
+        const result = aiAgentTicketsFromTicketCustomFieldsDefaultFilters({
+            filters,
+            outcomeFieldId: 1,
+            integrationIds: ['chat::1', 'email::2'],
+            outcomeValuesToExclude: ['handover'],
+            outcomeValueToInclude: 'success',
+        })
+
+        expect(result).toEqual([
+            {
+                member: TicketMember.CreatedDatetime,
+                operator: ReportingFilterOperator.InDateRange,
+                values: ['2023-01-01T00:00:00.000', '2023-01-31T23:59:59.999'],
+            },
+            {
+                member: TicketMember.CustomFieldToExclude,
+                operator: ReportingFilterOperator.NotStartsWith,
+                values: ['1::Close::Without message'],
+            },
+            {
+                member: TicketMember.CustomField,
+                operator: ReportingFilterOperator.StartsWith,
+                values: ['1::success'],
+            },
+            {
+                member: TicketMember.CustomField,
+                operator: ReportingFilterOperator.NotStartsWith,
+                values: ['1::handover'],
+            },
+            {
+                member: TicketCustomFieldsMember.TicketCustomFieldsValueString,
+                operator: ReportingFilterOperator.NotStartsWith,
+                values: ['Other::No Reply'],
+            },
+            {
+                member: TicketMessagesMember.IntegrationChannelPair,
+                operator: ReportingFilterOperator.Equals,
+                values: ['chat::1', 'email::2'],
+            },
+        ])
+    })
+
+    it('should return default filters when optional parameters are not provided', () => {
+        const result = aiAgentTicketsFromTicketCustomFieldsDefaultFilters({
+            filters,
+            outcomeFieldId: 1,
+        })
+
+        expect(result).toEqual([
+            {
+                member: TicketMember.CreatedDatetime,
+                operator: ReportingFilterOperator.InDateRange,
+                values: ['2023-01-01T00:00:00.000', '2023-01-31T23:59:59.999'],
+            },
+            {
+                member: TicketMember.CustomFieldToExclude,
+                operator: ReportingFilterOperator.NotStartsWith,
+                values: ['1::Close::Without message'],
+            },
+            {
+                member: TicketMember.CustomField,
+                operator: ReportingFilterOperator.StartsWith,
+                values: ['1::'],
+            },
+            {
+                member: TicketCustomFieldsMember.TicketCustomFieldsValueString,
+                operator: ReportingFilterOperator.NotStartsWith,
+                values: ['Other::No Reply'],
+            },
+            {
+                member: TicketMessagesMember.IntegrationChannelPair,
+                operator: ReportingFilterOperator.Equals,
+                values: ['0'],
+            },
+        ])
+    })
+
+    it('should handle empty outcomeValuesToExclude gracefully', () => {
+        const result = aiAgentTicketsFromTicketCustomFieldsDefaultFilters({
+            filters,
+            outcomeFieldId: 1,
+            outcomeValuesToExclude: [],
+        })
+
+        expect(result).toEqual([
+            {
+                member: TicketMember.CreatedDatetime,
+                operator: ReportingFilterOperator.InDateRange,
+                values: ['2023-01-01T00:00:00.000', '2023-01-31T23:59:59.999'],
+            },
+            {
+                member: TicketMember.CustomFieldToExclude,
+                operator: ReportingFilterOperator.NotStartsWith,
+                values: ['1::Close::Without message'],
+            },
+            {
+                member: TicketMember.CustomField,
+                operator: ReportingFilterOperator.StartsWith,
+                values: ['1::'],
+            },
+            {
+                member: TicketCustomFieldsMember.TicketCustomFieldsValueString,
+                operator: ReportingFilterOperator.NotStartsWith,
+                values: ['Other::No Reply'],
+            },
+            {
+                member: TicketMessagesMember.IntegrationChannelPair,
+                operator: ReportingFilterOperator.Equals,
+                values: ['0'],
+            },
+        ])
+    })
+
+    it('should handle outcomeValuesToExclude with a valid outcomeFieldId', () => {
+        const result = aiAgentTicketsFromTicketCustomFieldsDefaultFilters({
+            filters: {
+                period: {
+                    start_datetime: '2023-01-01T00:00:00.000',
+                    end_datetime: '2023-01-31T23:59:59.999',
+                },
+            },
+            outcomeFieldId: 1,
+            outcomeValuesToExclude: ['handover', 'failure'],
+        })
+
+        expect(result).toContainEqual({
+            member: TicketMember.CustomField,
+            operator: ReportingFilterOperator.NotStartsWith,
+            values: ['1::handover', '1::failure'],
+        })
+    })
+
+    it('should handle outcomeValuesToExclude without outcomeFieldId', () => {
+        const result = aiAgentTicketsFromTicketCustomFieldsDefaultFilters({
+            filters: {
+                period: {
+                    start_datetime: '2023-01-01T00:00:00.000',
+                    end_datetime: '2023-01-31T23:59:59.999',
+                },
+            },
+            outcomeValuesToExclude: ['handover', 'failure'],
+        })
+
+        expect(result).toContainEqual({
+            member: TicketMember.CustomField,
+            operator: ReportingFilterOperator.NotStartsWith,
+            values: ['-1::handover', '-1::failure'],
+        })
     })
 })

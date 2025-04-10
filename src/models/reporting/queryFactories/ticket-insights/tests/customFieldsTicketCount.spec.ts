@@ -11,6 +11,7 @@ import {
 } from 'models/reporting/cubes/TicketCustomFieldsCube'
 import { TicketMessagesMember } from 'models/reporting/cubes/TicketMessagesCube'
 import {
+    aiAgentTicketsFromTicketCustomFieldsPerIntentCountQueryFactory,
     aiInsightsCustomerSatisfactionMetricDrillDownQueryFactory,
     customFieldsTicketCountOnCreatedDatetimePerTicketDrillDownQueryFactory,
     customFieldsTicketCountOnCreatedDatetimeQueryFactory,
@@ -35,6 +36,8 @@ import {
     TicketDrillDownFilter,
     TicketStatsFiltersMembers,
 } from 'utils/reporting'
+
+import { aiAgentTicketsFromTicketCustomFieldsDefaultFilters } from '../../automate_v2/filters'
 
 describe('customFieldsTicketCountQueryFactory', () => {
     const periodStart = '2021-05-29T00:00:00.000'
@@ -948,6 +951,135 @@ describe('customFieldsTicketCountQueryFactory', () => {
                     values: [],
                 },
             ])
+        })
+    })
+
+    describe('aiAgentTicketsFromTicketCustomFieldsPerIntentCountQueryFactory', () => {
+        const filters = {
+            period: {
+                start_datetime: '2023-01-01T00:00:00Z',
+                end_datetime: '2023-01-31T23:59:59Z',
+            },
+        }
+        const timezone = 'UTC'
+        const intentFieldId = 123
+        const outcomeFieldId = 456
+        const sorting = OrderDirection.Asc
+        const intentId = 'intent123'
+        const integrationIds = ['integration1', 'integration2']
+        const outcomeValuesToExclude = ['value1', 'value2']
+        const outcomeValueToInclude = 'value3'
+
+        it('should build the query with all parameters', () => {
+            const query =
+                aiAgentTicketsFromTicketCustomFieldsPerIntentCountQueryFactory({
+                    filters,
+                    timezone,
+                    intentFieldId,
+                    outcomeFieldId,
+                    sorting,
+                    intentId,
+                    integrationIds,
+                    outcomeValuesToExclude,
+                    outcomeValueToInclude,
+                })
+
+            expect(query).toEqual({
+                measures: [
+                    TicketCustomFieldsMeasure.TicketCustomFieldsTicketCount,
+                ],
+                dimensions: [
+                    TicketCustomFieldsDimension.TicketCustomFieldsValueString,
+                ],
+                timezone,
+                segments: [],
+                filters: [
+                    ...NotSpamNorTrashedTicketsFilter,
+                    ...statsFiltersToReportingFilters(
+                        TicketStatsFiltersMembers,
+                        filters,
+                    ),
+                    ...aiAgentTicketsFromTicketCustomFieldsDefaultFilters({
+                        filters,
+                        integrationIds,
+                        outcomeFieldId,
+                        outcomeValuesToExclude,
+                        outcomeValueToInclude,
+                    }),
+                    {
+                        member: TicketCustomFieldsMember.TicketCustomFieldsCustomFieldId,
+                        operator: ReportingFilterOperator.Equals,
+                        values: [String(intentFieldId)],
+                    },
+                    {
+                        member: TicketCustomFieldsMember.TicketCustomFieldsValueString,
+                        operator: ReportingFilterOperator.StartsWith,
+                        values: [intentId],
+                    },
+                ],
+                order: [
+                    [
+                        TicketCustomFieldsMeasure.TicketCustomFieldsTicketCount,
+                        sorting,
+                    ],
+                ],
+            })
+        })
+
+        it('should handle missing optional parameters', () => {
+            const query =
+                aiAgentTicketsFromTicketCustomFieldsPerIntentCountQueryFactory({
+                    filters,
+                    timezone,
+                    intentFieldId,
+                    outcomeFieldId,
+                })
+
+            expect(query).toEqual({
+                measures: [
+                    TicketCustomFieldsMeasure.TicketCustomFieldsTicketCount,
+                ],
+                dimensions: [
+                    TicketCustomFieldsDimension.TicketCustomFieldsValueString,
+                ],
+                timezone,
+                segments: [],
+                filters: [
+                    ...NotSpamNorTrashedTicketsFilter,
+                    ...statsFiltersToReportingFilters(
+                        TicketStatsFiltersMembers,
+                        filters,
+                    ),
+                    ...aiAgentTicketsFromTicketCustomFieldsDefaultFilters({
+                        filters,
+                        outcomeFieldId,
+                    }),
+                    {
+                        member: TicketCustomFieldsMember.TicketCustomFieldsCustomFieldId,
+                        operator: ReportingFilterOperator.Equals,
+                        values: [String(intentFieldId)],
+                    },
+                ],
+            })
+        })
+
+        it('should handle empty integrationIds and outcomeValuesToExclude', () => {
+            const query =
+                aiAgentTicketsFromTicketCustomFieldsPerIntentCountQueryFactory({
+                    filters,
+                    timezone,
+                    intentFieldId,
+                    outcomeFieldId,
+                    integrationIds: [],
+                    outcomeValuesToExclude: [],
+                })
+
+            expect(query.filters).not.toContainEqual(
+                expect.objectContaining({
+                    member: TicketCustomFieldsMember.TicketCustomFieldsValueString,
+                    operator: ReportingFilterOperator.StartsWith,
+                }),
+            )
         })
     })
 })

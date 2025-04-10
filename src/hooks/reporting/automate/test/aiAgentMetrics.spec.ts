@@ -14,13 +14,17 @@ import {
     aiAgentTouchedTicketTotalCountQueryFactory,
     customerSatisfactionPerIntentLevelQueryFactory,
 } from 'models/reporting/queryFactories/ai-agent-insights/metrics'
-import { aiAgentTicketsPerIntentCountQueryFactory } from 'models/reporting/queryFactories/ticket-insights/customFieldsTicketCount'
+import {
+    aiAgentTicketsFromTicketCustomFieldsPerIntentCountQueryFactory,
+    aiAgentTicketsPerIntentCountQueryFactory,
+} from 'models/reporting/queryFactories/ticket-insights/customFieldsTicketCount'
 import { ReportingFilterOperator } from 'models/reporting/types'
 import { formatReportingQueryDate } from 'utils/reporting'
 import { assumeMock } from 'utils/testing'
 
 import {
     useAIAgentResourcePerTicket,
+    useAiAgentTicketCountFromTicketCustomFieldsPerIntent,
     useAiAgentTicketCountPerIntent,
     useAiAgentTickets,
     useCustomerSatisfactionMetricPerIntentLevel,
@@ -387,6 +391,53 @@ describe('aiAgentMetrics', () => {
                     filters,
                     timezone,
                     sorting,
+                }),
+            )
+        })
+    })
+
+    describe('useAiAgentTicketCountFromTicketCustomFieldsPerIntent', () => {
+        it('should pass the correct query to useMetricPerDimension hook', () => {
+            const filters = {
+                period: {
+                    start_datetime: '2021-01-01T00:00:00Z',
+                    end_datetime: '2021-01-02T00:00:00Z',
+                },
+            }
+            const timezone = 'UTC'
+            const intentFieldId = 123
+            const outcomeFieldId = 456
+            const integrationIds = ['integration1', 'integration2']
+            const sorting = OrderDirection.Asc
+            const intentId = 'intent123'
+            const outcomeValuesToExclude = ['value1', 'value2']
+            const outcomeValueToInclude = 'value3'
+
+            renderHook(() =>
+                useAiAgentTicketCountFromTicketCustomFieldsPerIntent({
+                    filters,
+                    timezone,
+                    intentFieldId,
+                    outcomeFieldId,
+                    integrationIds,
+                    sorting,
+                    intentId,
+                    outcomeValuesToExclude,
+                    outcomeValueToInclude,
+                }),
+            )
+
+            expect(useMetricPerDimensionMock).toHaveBeenCalledWith(
+                aiAgentTicketsFromTicketCustomFieldsPerIntentCountQueryFactory({
+                    filters,
+                    timezone,
+                    intentFieldId,
+                    outcomeFieldId,
+                    integrationIds,
+                    sorting,
+                    intentId,
+                    outcomeValuesToExclude,
+                    outcomeValueToInclude,
                 }),
             )
         })

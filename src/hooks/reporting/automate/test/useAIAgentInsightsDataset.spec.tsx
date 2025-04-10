@@ -187,18 +187,6 @@ describe('useAiAgentInsightsDataset', () => {
                 isError: false,
             } as any)
             useMetricPerDimensionMock
-                .mockReturnValueOnce({
-                    // aiAgentNotAutomatedTicketsData
-                    data: {
-                        allData: [
-                            { [TicketDimension.TicketId]: '1' },
-                            { [TicketDimension.TicketId]: '2' },
-                            { [TicketDimension.TicketId]: '3' },
-                        ],
-                    },
-                    isFetching: false,
-                    isError: false,
-                } as any)
                 // useAiAgentTicketCountPerIntent
                 .mockReturnValueOnce(customFieldsMetric)
 
@@ -254,18 +242,6 @@ describe('useAiAgentInsightsDataset', () => {
                 isError: false,
             } as any)
             useMetricPerDimensionMock
-                .mockReturnValueOnce({
-                    // aiAgentNotAutomatedTicketsData
-                    data: {
-                        allData: [
-                            { [TicketDimension.TicketId]: '1' },
-                            { [TicketDimension.TicketId]: '2' },
-                            { [TicketDimension.TicketId]: '3' },
-                        ],
-                    },
-                    isFetching: false,
-                    isError: false,
-                } as any)
                 // useAiAgentTicketCountPerIntent
                 .mockReturnValueOnce(customFieldsMetric)
 
@@ -313,18 +289,6 @@ describe('useAiAgentInsightsDataset', () => {
     describe('useAIAgentTicketsPerIntent', () => {
         it('should return ai agent tickets correctly', () => {
             useMetricPerDimensionMock
-                .mockReturnValueOnce({
-                    // aiAgentTicketsData
-                    data: {
-                        allData: [
-                            { [TicketDimension.TicketId]: '1' },
-                            { [TicketDimension.TicketId]: '2' },
-                            { [TicketDimension.TicketId]: '3' },
-                        ],
-                    },
-                    isFetching: false,
-                    isError: false,
-                } as any)
                 // aiAgentTicketsGroupedByIntent
                 .mockReturnValueOnce(totalTicketsMetric)
 
@@ -346,34 +310,6 @@ describe('useAiAgentInsightsDataset', () => {
     describe('useSuccessRatePerIntent', () => {
         it('should enrich success rate per intent correctly', () => {
             useMetricPerDimensionMock
-                .mockReturnValueOnce({
-                    // aiAgentAutomatedTicketsData
-                    data: {
-                        decile: null,
-                        value: null,
-                        allData: [
-                            { [TicketDimension.TicketId]: '1' },
-                            { [TicketDimension.TicketId]: '2' },
-                            { [TicketDimension.TicketId]: '3' },
-                        ],
-                    },
-                    isFetching: false,
-                    isError: false,
-                })
-                .mockReturnValueOnce({
-                    // aiAgentTicketsData
-                    data: {
-                        decile: null,
-                        value: null,
-                        allData: [
-                            { [TicketDimension.TicketId]: '1' },
-                            { [TicketDimension.TicketId]: '2' },
-                            { [TicketDimension.TicketId]: '3' },
-                        ],
-                    },
-                    isFetching: false,
-                    isError: false,
-                })
                 // aiAgentTicketsGroupedByIntent
                 .mockReturnValueOnce(totalTicketsMetric)
                 //useAiAgentTicketCountPerIntent

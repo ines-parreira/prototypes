@@ -30,7 +30,6 @@ import {
     allTicketsForAiAgentTotalCountQueryFactory,
 } from 'models/reporting/queryFactories/ai-agent-insights/metrics'
 import { customerSatisfactionForAIAgentTicketsQueryFactory } from 'models/reporting/queryFactories/support-performance/customerSatisfaction'
-import { ReportingFilterOperator } from 'models/reporting/types'
 import { FilterKey, StatsFilters } from 'models/stat/types'
 import { useGetCustomTicketsFieldsDefinitionData } from 'pages/aiAgent/insights/IntentTableWidget/hooks/useGetCustomTicketsFieldsDefinitionData'
 import {
@@ -43,7 +42,7 @@ import { getPreviousPeriod } from 'utils/reporting'
 import {
     useAiAgentAutomatedTicketsCountTrends,
     useAIAgentResourcePerTicket,
-    useAiAgentTicketCountPerIntent,
+    useAiAgentTicketCountFromTicketCustomFieldsPerIntent,
     useAiAgentTickets,
     useAIAgentTicketsWithIntent,
     useCustomerSatisfactionMetricPerIntentLevel,
@@ -227,38 +226,20 @@ export const useAutomationOpportunityPerIntent = ({
         integrationIds,
     )
 
-    const aiAgentNotAutomatedTicketsData = useAiAgentTickets({
-        filters,
-        timezone,
-        outcomeFieldId: outcomeCustomFieldId,
-        intentFieldId: intentCustomFieldId,
-        operator: ReportingFilterOperator.Contains,
-        customFieldFilter: CUSTOM_FIELD_AI_AGENT_HANDOVER,
-        sorting,
-        integrationIds,
-    })
-
-    const ticketIds = aiAgentNotAutomatedTicketsData.data?.allData
-        .map((item) => item[TicketDimension.TicketId])
-        .filter((id): id is string => typeof id === 'string')
-
     const aiAgentTicketsNotAutomatedGroupedByIntent =
-        useAiAgentTicketCountPerIntent({
+        useAiAgentTicketCountFromTicketCustomFieldsPerIntent({
             filters,
             timezone,
             intentFieldId: intentCustomFieldId,
-            ticketIds,
+            outcomeFieldId: outcomeCustomFieldId,
+            integrationIds: integrationIds,
             sorting,
             intentId,
+            outcomeValueToInclude: CUSTOM_FIELD_AI_AGENT_HANDOVER,
         })
 
     const enrichedTickets = useMemo(() => {
-        if (
-            !aiAgentTicketsNotAutomatedGroupedByIntent ||
-            !aiAgentTickets ||
-            !ticketIds ||
-            ticketIds?.length === 0
-        ) {
+        if (!aiAgentTicketsNotAutomatedGroupedByIntent || !aiAgentTickets) {
             return []
         }
 
@@ -270,12 +251,7 @@ export const useAutomationOpportunityPerIntent = ({
             TicketCustomFieldsMeasure.TicketCustomFieldsTicketCount,
             sorting,
         )
-    }, [
-        aiAgentTickets,
-        aiAgentTicketsNotAutomatedGroupedByIntent,
-        sorting,
-        ticketIds,
-    ])
+    }, [aiAgentTickets, aiAgentTicketsNotAutomatedGroupedByIntent, sorting])
 
     return {
         isError:
@@ -299,28 +275,18 @@ export const useAIAgentTicketsPerIntent = (
     const { intentCustomFieldId, outcomeCustomFieldId } =
         useGetCustomTicketsFieldsDefinitionData()
 
-    const aiAgentTicketsData = useAiAgentTickets({
-        filters,
-        timezone,
-        outcomeFieldId: outcomeCustomFieldId,
-        intentFieldId: intentCustomFieldId,
-        integrationIds,
-    })
+    const aiAgentTicketsGroupedByIntent =
+        useAiAgentTicketCountFromTicketCustomFieldsPerIntent({
+            filters,
+            timezone,
+            intentFieldId: intentCustomFieldId,
+            outcomeFieldId: outcomeCustomFieldId,
+            integrationIds: integrationIds,
+            sorting,
+            intentId,
+        })
 
-    const ticketIds = aiAgentTicketsData.data?.allData
-        .map((item) => item[TicketDimension.TicketId])
-        .filter((id): id is string => typeof id === 'string')
-
-    const aiAgentTicketsGroupedByIntent1 = useAiAgentTicketCountPerIntent({
-        filters,
-        timezone,
-        intentFieldId: intentCustomFieldId,
-        ticketIds: ticketIds,
-        sorting,
-        intentId,
-    })
-
-    return aiAgentTicketsGroupedByIntent1
+    return aiAgentTicketsGroupedByIntent
 }
 
 // SUCCESS RATE: # of Automated AI Agent tickets per intent / AI Agent Tickets per intent
@@ -334,17 +300,6 @@ export const useSuccessRatePerIntent = (
     const { intentCustomFieldId, outcomeCustomFieldId } =
         useGetCustomTicketsFieldsDefinitionData()
 
-    const aiAgentAutomatedTicketsData = useAiAgentTickets({
-        filters,
-        timezone,
-        outcomeFieldId: outcomeCustomFieldId,
-        intentFieldId: intentCustomFieldId,
-        operator: ReportingFilterOperator.NotContains,
-        customFieldFilter: CUSTOM_FIELD_AI_AGENT_HANDOVER,
-        sorting,
-        integrationIds,
-    })
-
     const ticketsPerIntent = useAIAgentTicketsPerIntent(
         filters,
         timezone,
@@ -353,31 +308,20 @@ export const useSuccessRatePerIntent = (
         integrationIds,
     )
 
-    const automatedTicketIds = useMemo(() => {
-        return (
-            aiAgentAutomatedTicketsData.data?.allData
-                .map((item) => item[TicketDimension.TicketId])
-                .filter((id): id is string => typeof id === 'string') || []
-        )
-    }, [aiAgentAutomatedTicketsData])
-
     const aiAgentAutomatedTicketsGroupedByIntent =
-        useAiAgentTicketCountPerIntent({
+        useAiAgentTicketCountFromTicketCustomFieldsPerIntent({
             filters,
             timezone,
             intentFieldId: intentCustomFieldId,
-            ticketIds: automatedTicketIds,
+            outcomeFieldId: outcomeCustomFieldId,
+            integrationIds: integrationIds,
             sorting,
             intentId,
+            outcomeValuesToExclude: [CUSTOM_FIELD_AI_AGENT_HANDOVER],
         })
 
     const enrichedTickets = useMemo(() => {
-        if (
-            !aiAgentAutomatedTicketsGroupedByIntent ||
-            !ticketsPerIntent ||
-            !automatedTicketIds ||
-            automatedTicketIds.length === 0
-        ) {
+        if (!aiAgentAutomatedTicketsGroupedByIntent || !ticketsPerIntent) {
             return []
         }
 
@@ -387,12 +331,7 @@ export const useSuccessRatePerIntent = (
             TicketCustomFieldsMeasure.TicketCustomFieldsTicketCount,
             sorting,
         )
-    }, [
-        ticketsPerIntent,
-        aiAgentAutomatedTicketsGroupedByIntent,
-        sorting,
-        automatedTicketIds,
-    ])
+    }, [ticketsPerIntent, aiAgentAutomatedTicketsGroupedByIntent, sorting])
 
     return {
         isError:

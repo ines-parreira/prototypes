@@ -13,7 +13,10 @@ import {
     customerSatisfactionPerIntentLevelQueryFactory,
     recommendedResourceQueryFactory,
 } from 'models/reporting/queryFactories/ai-agent-insights/metrics'
-import { aiAgentTicketsPerIntentCountQueryFactory } from 'models/reporting/queryFactories/ticket-insights/customFieldsTicketCount'
+import {
+    aiAgentTicketsFromTicketCustomFieldsPerIntentCountQueryFactory,
+    aiAgentTicketsPerIntentCountQueryFactory,
+} from 'models/reporting/queryFactories/ticket-insights/customFieldsTicketCount'
 import { ReportingFilterOperator } from 'models/reporting/types'
 import { StatsFilters } from 'models/stat/types'
 import {
@@ -131,6 +134,42 @@ export const useAiAgentTicketCountPerIntent = ({
             sorting,
             ticketIds: ticketIds,
             intentId: intentId,
+        }),
+    )
+}
+
+export const useAiAgentTicketCountFromTicketCustomFieldsPerIntent = ({
+    filters,
+    timezone,
+    intentFieldId,
+    outcomeFieldId,
+    integrationIds,
+    sorting,
+    intentId,
+    outcomeValuesToExclude,
+    outcomeValueToInclude,
+}: {
+    filters: StatsFilters
+    timezone: string
+    intentFieldId: number
+    outcomeFieldId: number
+    integrationIds?: string[]
+    sorting?: OrderDirection
+    intentId?: string
+    outcomeValuesToExclude?: string[]
+    outcomeValueToInclude?: string
+}) => {
+    return useMetricPerDimension(
+        aiAgentTicketsFromTicketCustomFieldsPerIntentCountQueryFactory({
+            filters,
+            timezone,
+            intentFieldId: intentFieldId,
+            outcomeFieldId,
+            sorting,
+            integrationIds: integrationIds,
+            intentId: intentId,
+            outcomeValuesToExclude,
+            outcomeValueToInclude,
         }),
     )
 }

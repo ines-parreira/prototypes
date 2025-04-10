@@ -12,7 +12,10 @@ import {
 } from 'models/reporting/cubes/TicketCustomFieldsCube'
 import { TicketSatisfactionSurveyDimension } from 'models/reporting/cubes/TicketSatisfactionSurveyCube'
 import { aiAgentTouchedTicketTotalCountQueryFactory } from 'models/reporting/queryFactories/ai-agent-insights/metrics'
-import { aiAgentTicketsDefaultFilters } from 'models/reporting/queryFactories/automate_v2/filters'
+import {
+    aiAgentTicketsDefaultFilters,
+    aiAgentTicketsFromTicketCustomFieldsDefaultFilters,
+} from 'models/reporting/queryFactories/automate_v2/filters'
 import { customerSatisfactionForAIAgentTicketsQueryFactory } from 'models/reporting/queryFactories/support-performance/customerSatisfaction'
 import {
     addFieldIdToCustomFieldValues,
@@ -150,6 +153,72 @@ export const aiAgentTicketsPerIntentCountQueryFactory = ({
                       },
                   ]
                 : []),
+            ...(intentId
+                ? [
+                      {
+                          member: TicketCustomFieldsMember.TicketCustomFieldsValueString,
+                          operator: ReportingFilterOperator.StartsWith,
+                          values: [intentId],
+                      },
+                  ]
+                : []),
+        ],
+        ...(sorting
+            ? {
+                  order: [
+                      [
+                          TicketCustomFieldsMeasure.TicketCustomFieldsTicketCount,
+                          sorting,
+                      ],
+                  ],
+              }
+            : {}),
+    }
+}
+export const aiAgentTicketsFromTicketCustomFieldsPerIntentCountQueryFactory = ({
+    filters,
+    timezone,
+    intentFieldId,
+    outcomeFieldId,
+    sorting,
+    intentId,
+    integrationIds,
+    outcomeValuesToExclude,
+    outcomeValueToInclude,
+}: {
+    filters: StatsFilters
+    timezone: string
+    intentFieldId: number
+    outcomeFieldId: number
+    sorting?: OrderDirection
+    intentId?: string | null
+    integrationIds?: string[]
+    outcomeValuesToExclude?: string[]
+    outcomeValueToInclude?: string
+}): ReportingQuery<TicketCustomFieldsCube> => {
+    return {
+        measures: [TicketCustomFieldsMeasure.TicketCustomFieldsTicketCount],
+        dimensions: [TicketCustomFieldsDimension.TicketCustomFieldsValueString],
+        timezone,
+        segments: [],
+        filters: [
+            ...NotSpamNorTrashedTicketsFilter,
+            ...statsFiltersToReportingFilters(
+                TicketStatsFiltersMembers,
+                filters,
+            ),
+            ...aiAgentTicketsFromTicketCustomFieldsDefaultFilters({
+                filters,
+                integrationIds,
+                outcomeFieldId,
+                outcomeValuesToExclude,
+                outcomeValueToInclude,
+            }),
+            {
+                member: TicketCustomFieldsMember.TicketCustomFieldsCustomFieldId,
+                operator: ReportingFilterOperator.Equals,
+                values: [String(intentFieldId || -1)],
+            },
             ...(intentId
                 ? [
                       {

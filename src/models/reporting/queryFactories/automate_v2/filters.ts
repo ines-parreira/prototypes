@@ -8,6 +8,7 @@ import {
     AI_OUTCOME_TO_EXCLUDE,
 } from 'models/reporting/queryFactories/ai-agent-insights/metrics'
 import {
+    addFieldIdToCustomFieldValues,
     addOptionalFilter,
     isFilterWithLogicalOperator,
 } from 'models/reporting/queryFactories/utils'
@@ -17,6 +18,8 @@ import {
 } from 'models/reporting/types'
 import { StatsFilters, WithLogicalOperator } from 'models/stat/types'
 import { formatReportingQueryDate } from 'utils/reporting'
+
+import { TicketCustomFieldsMember } from '../../cubes/TicketCustomFieldsCube'
 
 export const automationDatasetDefaultFilters = (
     filters: StatsFilters,
@@ -105,6 +108,77 @@ export const aiAgentTicketsDefaultFilters = ({
                   },
               ]
             : []),
+        ...(integrationIds && integrationIds.length > 0
+            ? [
+                  {
+                      member: TicketMessagesMember.IntegrationChannelPair,
+                      operator: ReportingFilterOperator.Equals,
+                      values: integrationIds,
+                  },
+              ]
+            : [
+                  {
+                      member: TicketMessagesMember.IntegrationChannelPair,
+                      operator: ReportingFilterOperator.Equals,
+                      values: ['0'],
+                  },
+              ]),
+    ]
+}
+
+export const aiAgentTicketsFromTicketCustomFieldsDefaultFilters = ({
+    filters,
+    outcomeFieldId,
+    integrationIds,
+    outcomeValuesToExclude,
+    outcomeValueToInclude,
+}: {
+    filters: StatsFilters
+    outcomeFieldId?: number
+    integrationIds?: string[]
+    outcomeValuesToExclude?: string[]
+    outcomeValueToInclude?: string
+}) => {
+    const outcomeValuesToInclude = outcomeValueToInclude
+        ? [`${outcomeFieldId}::${outcomeValueToInclude}`]
+        : [`${outcomeFieldId}::`]
+
+    return [
+        {
+            member: TicketMember.CreatedDatetime,
+            operator: ReportingFilterOperator.InDateRange,
+            values: [
+                formatReportingQueryDate(filters.period.start_datetime),
+                formatReportingQueryDate(filters.period.end_datetime),
+            ],
+        },
+        {
+            member: TicketMember.CustomFieldToExclude,
+            operator: ReportingFilterOperator.NotStartsWith,
+            values: [`${outcomeFieldId}::${AI_OUTCOME_TO_EXCLUDE}`],
+        },
+        {
+            member: TicketMember.CustomField,
+            operator: ReportingFilterOperator.StartsWith,
+            values: outcomeValuesToInclude,
+        },
+        ...(outcomeValuesToExclude && outcomeValuesToExclude.length > 0
+            ? [
+                  {
+                      member: TicketMember.CustomField,
+                      operator: ReportingFilterOperator.NotStartsWith,
+                      values: addFieldIdToCustomFieldValues(
+                          outcomeFieldId || -1,
+                          outcomeValuesToExclude,
+                      ),
+                  },
+              ]
+            : []),
+        {
+            member: TicketCustomFieldsMember.TicketCustomFieldsValueString,
+            operator: ReportingFilterOperator.NotStartsWith,
+            values: [AI_INTENT_TO_EXCLUDE],
+        },
         ...(integrationIds && integrationIds.length > 0
             ? [
                   {
