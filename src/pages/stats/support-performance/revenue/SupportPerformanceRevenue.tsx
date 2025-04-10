@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react'
+import { useMemo } from 'react'
 
 import { fromJS, Map } from 'immutable'
 
@@ -20,10 +20,10 @@ import ConvertLimitBanner from 'pages/convert/campaigns/components/ConvertLimitB
 import { BarStat } from 'pages/stats/common/components/charts/BarStat'
 import KeyMetricStat from 'pages/stats/common/components/charts/KeyMetricStat/KeyMetricStat'
 import TableStat from 'pages/stats/common/components/charts/TableStat/TableStat'
-import KeyMetricStatWrapper from 'pages/stats/KeyMetricStatWrapper'
-import RevenueStatsRestrictedFeature from 'pages/stats/RevenueStatsRestrictedFeature'
-import StatsPage from 'pages/stats/StatsPage'
-import StatWrapper from 'pages/stats/StatWrapper'
+import KeyMetricStatWrapper from 'pages/stats/common/components/KeyMetricStatWrapper'
+import StatsPage from 'pages/stats/common/layout/StatsPage'
+import StatWrapper from 'pages/stats/common/layout/StatWrapper'
+import RevenueStatsRestrictedFeature from 'pages/stats/support-performance/components/RevenueStatsRestrictedFeature'
 import { SupportPerformanceRevenueFilters } from 'pages/stats/support-performance/revenue/SupportPerformanceRevenueFilters'
 import { AccountFeature } from 'state/currentAccount/types'
 import { getStatsStoreIntegrations } from 'state/stats/selectors'

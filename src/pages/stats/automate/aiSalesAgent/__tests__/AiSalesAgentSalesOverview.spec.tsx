@@ -33,7 +33,7 @@ jest.mock('pages/stats/common/filters/FiltersPanelWrapper', () => () => (
     <div>filters-panel</div>
 ))
 
-jest.mock('pages/stats/AnalyticsFooter', () => ({
+jest.mock('pages/stats/common/AnalyticsFooter', () => ({
     AnalyticsFooter: () => <div>analytics-footer</div>,
 }))
 

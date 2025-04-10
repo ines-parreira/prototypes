@@ -2,7 +2,8 @@ import moment from 'moment'
 
 import { MetricTrend } from 'hooks/reporting/useMetricTrend'
 import { StatsFilters } from 'models/stat/types'
-import BigNumberMetric from 'pages/stats/BigNumberMetric'
+import BigNumberMetric from 'pages/stats/common/components/BigNumberMetric'
+import MetricCard from 'pages/stats/common/components/MetricCard'
 import TrendBadge from 'pages/stats/common/components/TrendBadge'
 import {
     comparedPeriodString,
@@ -10,7 +11,6 @@ import {
     MetricTrendFormat,
 } from 'pages/stats/common/utils'
 import { DashboardChartProps } from 'pages/stats/dashboards/types'
-import MetricCard from 'pages/stats/MetricCard'
 import { getPreviousPeriod } from 'utils/reporting'
 
 type VoiceCallVolumeMetricProps = {

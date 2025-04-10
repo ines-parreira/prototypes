@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from 'react'
+import { useCallback, useState } from 'react'
 
 import { useParams } from 'react-router-dom'
 
@@ -10,6 +10,11 @@ import { useDashboardActions } from 'hooks/reporting/dashboards/useDashboardActi
 import { useDashboardNameValidation } from 'hooks/reporting/dashboards/useDashboardNameValidation'
 import { useUpdateDashboardCache } from 'hooks/reporting/dashboards/useUpdateDashboardCache'
 import useAppSelector from 'hooks/useAppSelector'
+import StatsPage, {
+    StatsPageContent,
+    StatsPageHeader,
+    StatsPageWrapper,
+} from 'pages/stats/common/layout/StatsPage'
 import { CreateDashboard } from 'pages/stats/dashboards/CreateDashboard/CreateDashboard'
 import { Dashboard } from 'pages/stats/dashboards/Dashboard'
 import { DashboardActionButton } from 'pages/stats/dashboards/DashboardActionButton'
@@ -17,11 +22,6 @@ import { DashboardName } from 'pages/stats/dashboards/DashboardName'
 import { DashboardsModal } from 'pages/stats/dashboards/DashboardsModal/DashboardsModal'
 import { DashboardSchema } from 'pages/stats/dashboards/types'
 import { dashboardFromApi } from 'pages/stats/dashboards/utils'
-import StatsPage, {
-    StatsPageContent,
-    StatsPageHeader,
-    StatsPageWrapper,
-} from 'pages/stats/StatsPage'
 import { getCurrentUser } from 'state/currentUser/selectors'
 import { isTeamLead } from 'utils'
 

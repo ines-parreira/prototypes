@@ -24,6 +24,7 @@ import { AUTO_QA_FILTER_KEYS } from 'pages/stats/common/filters/constants'
 import FiltersPanelWrapper from 'pages/stats/common/filters/FiltersPanelWrapper/FiltersPanelWrapper'
 import { useReportChartRestrictions } from 'pages/stats/report-chart-restrictions/useReportChartRestrictions'
 import { OverviewChartCard } from 'pages/stats/support-performance/components/OverviewChartCard'
+import { SupportPerformanceTip } from 'pages/stats/support-performance/components/SupportPerformanceTip'
 import { MedianResponseTimeTrendCard } from 'pages/stats/support-performance/overview/charts/MedianResponseTimeTrendCard'
 import { MessagesReceivedTrendCard } from 'pages/stats/support-performance/overview/charts/MessagesReceivedTrendCard'
 import { TicketsCreatedVsClosedChart } from 'pages/stats/support-performance/overview/charts/TicketsCreatedVsClosedChart'
@@ -35,7 +36,6 @@ import {
     STATS_TIPS_VISIBILITY_KEY,
 } from 'pages/stats/support-performance/overview/SupportPerformanceOverviewConfig'
 import SupportPerformanceOverviewReport from 'pages/stats/support-performance/overview/SupportPerformanceOverviewReport'
-import { SupportPerformanceTip } from 'pages/stats/SupportPerformanceTip'
 import { RootState, StoreDispatch } from 'state/types'
 import { assumeMock } from 'utils/testing'
 
@@ -61,7 +61,7 @@ jest.mock(
 jest.mock('pages/stats/common/components/TrendCard')
 const trendCardMock = assumeMock(TrendCard)
 
-jest.mock('pages/stats/SupportPerformanceTip')
+jest.mock('pages/stats/support-performance/components/SupportPerformanceTip')
 const supportPerformanceTipMock = assumeMock(SupportPerformanceTip)
 
 jest.mock('pages/stats/support-performance/components/OverviewChartCard')

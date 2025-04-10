@@ -11,7 +11,7 @@ import VoiceCallTimerBadge from 'pages/common/components/VoiceCallTimerBadge/Voi
 import VoiceIntegrationBasicLabel from 'pages/common/components/VoiceIntegrationBasicLabel/VoiceIntegrationBasicLabel'
 import VoiceQueueLabel from 'pages/common/components/VoiceQueueLabel/VoiceQueueLabel'
 import DatetimeLabel from 'pages/common/utils/DatetimeLabel'
-import { TruncateCellContent } from 'pages/stats/TruncateCellContent'
+import { TruncateCellContent } from 'pages/stats/common/components/TruncateCellContent'
 import VoiceCallActivity from 'pages/stats/voice/components/VoiceCallActivity/VoiceCallActivity'
 import VoiceCallRecording from 'pages/stats/voice/components/VoiceCallRecording/VoiceCallRecording'
 import {

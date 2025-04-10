@@ -18,8 +18,8 @@ import TableBodyRow from 'pages/common/components/table/TableBodyRow'
 import { TableBodyRowExpandable } from 'pages/common/components/table/TableBodyRowExpandable'
 import TableHead from 'pages/common/components/table/TableHead'
 import TableWrapper from 'pages/common/components/table/TableWrapper'
-import css from 'pages/stats/BreakdownTable.less'
-import { NoDataAvailable } from 'pages/stats/NoDataAvailable'
+import { NoDataAvailable } from 'pages/stats/common/components/NoDataAvailable'
+import css from 'pages/stats/common/components/Table/BreakdownTable.less'
 import {
     CustomFieldsTicketCountDataRowContent,
     DataRowProps,

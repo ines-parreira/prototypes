@@ -13,7 +13,7 @@ import {
     formatAutomationRateTimeSeriesData,
     getGreyAreaHint,
 } from 'pages/stats/automate/overview/utils'
-import ChartCard from 'pages/stats/ChartCard'
+import ChartCard from 'pages/stats/common/components/ChartCard'
 import { LineChart } from 'pages/stats/common/components/charts/LineChart/LineChart'
 import { DashboardChartProps } from 'pages/stats/dashboards/types'
 import { AUTOMATION_RATE_LABEL } from 'pages/stats/self-service/constants'

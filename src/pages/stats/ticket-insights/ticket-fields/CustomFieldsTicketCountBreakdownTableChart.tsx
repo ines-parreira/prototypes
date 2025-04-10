@@ -1,10 +1,10 @@
 import classNames from 'classnames'
 
 import useAppSelector from 'hooks/useAppSelector'
-import css from 'pages/stats/BreakdownTable.less'
-import ChartCard from 'pages/stats/ChartCard'
+import ChartCard from 'pages/stats/common/components/ChartCard'
+import { NoDataAvailable } from 'pages/stats/common/components/NoDataAvailable'
+import css from 'pages/stats/common/components/Table/BreakdownTable.less'
 import { DashboardChartProps } from 'pages/stats/dashboards/types'
-import { NoDataAvailable } from 'pages/stats/NoDataAvailable'
 import { CustomFieldsTableHeatmapSwitch } from 'pages/stats/ticket-insights/ticket-fields/CustomFieldsTableHeatmapSwitch'
 import { CustomFieldsTicketCountBreakdownTable } from 'pages/stats/ticket-insights/ticket-fields/CustomFieldsTicketCountBreakdownTable'
 import {

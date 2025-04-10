@@ -2,10 +2,10 @@ import React from 'react'
 
 import { render } from '@testing-library/react'
 
+import { NoDataAvailable } from 'pages/stats/common/components/NoDataAvailable'
 import { PerformanceByArticle } from 'pages/stats/help-center/components/PerformanceByArticle/PerformanceByArticle'
 import { PerformanceByArticleChart } from 'pages/stats/help-center/components/PerformanceByArticle/PerformanceByArticleChart'
 import { useSelectedHelpCenter } from 'pages/stats/help-center/hooks/useSelectedHelpCenter'
-import { NoDataAvailable } from 'pages/stats/NoDataAvailable'
 import { assumeMock } from 'utils/testing'
 
 jest.mock('pages/stats/help-center/hooks/useSelectedHelpCenter')
@@ -14,7 +14,7 @@ jest.mock(
     'pages/stats/help-center/components/PerformanceByArticle/PerformanceByArticle',
 )
 const PerformanceByArticleMock = assumeMock(PerformanceByArticle)
-jest.mock('pages/stats/NoDataAvailable')
+jest.mock('pages/stats/common/components/NoDataAvailable')
 const NoDataAvailableMock = assumeMock(NoDataAvailable)
 
 describe('PerformanceByArticleChart', () => {

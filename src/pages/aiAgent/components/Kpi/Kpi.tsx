@@ -2,14 +2,14 @@ import React, { useMemo } from 'react'
 
 import { Skeleton } from '@gorgias/merchant-ui-kit'
 
-import BigNumberMetric from 'pages/stats/BigNumberMetric'
+import BigNumberMetric from 'pages/stats/common/components/BigNumberMetric'
+import MetricCard from 'pages/stats/common/components/MetricCard'
 import TrendBadge from 'pages/stats/common/components/TrendBadge'
 import {
     formatMetricValue,
     MetricTrendFormat,
     NOT_AVAILABLE_PLACEHOLDER,
 } from 'pages/stats/common/utils'
-import MetricCard from 'pages/stats/MetricCard'
 import { TooltipData } from 'pages/stats/types'
 
 import css from './Kpi.less'

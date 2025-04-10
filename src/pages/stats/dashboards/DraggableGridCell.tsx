@@ -14,8 +14,8 @@ import { Tooltip } from '@gorgias/merchant-ui-kit'
 
 import useId from 'hooks/useId'
 import IconInput from 'pages/common/forms/input/IconInput'
-import DashboardGrid from 'pages/stats/DashboardGrid'
-import DashboardGridCell from 'pages/stats/DashboardGridCell'
+import DashboardGrid from 'pages/stats/common/layout/DashboardGrid'
+import DashboardGridCell from 'pages/stats/common/layout/DashboardGridCell'
 import css from 'pages/stats/dashboards/DraggableGridCell.less'
 import {
     ChartType,

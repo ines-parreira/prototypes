@@ -9,20 +9,20 @@ import { useGridSize } from 'hooks/useGridSize'
 import { FilterKey } from 'models/stat/types'
 import { isAiAgentCustomField } from 'pages/aiAgent/util'
 import Alert, { AlertType } from 'pages/common/components/Alert/Alert'
-import { AnalyticsFooter } from 'pages/stats/AnalyticsFooter'
 import { AiAgentStatsDownloadButton } from 'pages/stats/automate/ai-agent/AiAgentStatsDownloadButton'
 import AiAgentStatsFilters from 'pages/stats/automate/ai-agent/AiAgentStatsFilters'
 import {
     AutomateAiAgentsChart,
     AutomateAiAgentsReportConfig,
 } from 'pages/stats/automate/ai-agent/AutomateAiAgentsReportConfig'
+import { AnalyticsFooter } from 'pages/stats/common/AnalyticsFooter'
 import { LogicalOperatorEnum } from 'pages/stats/common/components/Filter/constants'
 import FiltersPanelWrapper from 'pages/stats/common/filters/FiltersPanelWrapper'
-import DashboardGridCell from 'pages/stats/DashboardGridCell'
+import DashboardGridCell from 'pages/stats/common/layout/DashboardGridCell'
+import DashboardSection from 'pages/stats/common/layout/DashboardSection'
+import StatsPage from 'pages/stats/common/layout/StatsPage'
 import { DashboardComponent } from 'pages/stats/dashboards/DashboardComponent'
-import DashboardSection from 'pages/stats/DashboardSection'
 import { PAGE_TITLE_AI_AGENT } from 'pages/stats/self-service/constants'
-import StatsPage from 'pages/stats/StatsPage'
 import {
     activeParams,
     CustomFieldSelect,

@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from 'react'
+import { useCallback, useState } from 'react'
 
 import { useHistory } from 'react-router-dom'
 
@@ -6,6 +6,11 @@ import { useDashboardActions } from 'hooks/reporting/dashboards/useDashboardActi
 import { useDashboardNameValidation } from 'hooks/reporting/dashboards/useDashboardNameValidation'
 import { useNotify } from 'hooks/useNotify'
 import Button from 'pages/common/components/button/Button'
+import {
+    StatsPageContent,
+    StatsPageHeader,
+    StatsPageWrapper,
+} from 'pages/stats/common/layout/StatsPage'
 import { CreateDashboard } from 'pages/stats/dashboards/CreateDashboard/CreateDashboard'
 import {
     DashboardName,
@@ -13,11 +18,6 @@ import {
 } from 'pages/stats/dashboards/DashboardName'
 import { DashboardsModal } from 'pages/stats/dashboards/DashboardsModal/DashboardsModal'
 import { getDashboardPath } from 'pages/stats/dashboards/utils'
-import {
-    StatsPageContent,
-    StatsPageHeader,
-    StatsPageWrapper,
-} from 'pages/stats/StatsPage'
 
 export const DASHBOARD_CTA = 'Add Charts'
 

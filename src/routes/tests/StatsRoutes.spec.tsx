@@ -23,8 +23,6 @@ import { SupportedLocalesProvider } from 'pages/settings/helpCenter/providers/Su
 import AutomateAiAgentStatsReport from 'pages/stats/automate/ai-agent/AutomateAiAgentStatsReport'
 import AiSalesAgentSalesOverview from 'pages/stats/automate/aiSalesAgent/AiSalesAgentSalesOverview'
 import AutomateStatsPaywall from 'pages/stats/automate/AutomateStatsPaywall'
-import AutomateIntents from 'pages/stats/AutomateIntents'
-import AutomateMacros from 'pages/stats/AutomateMacros'
 import { STATS_ROUTE_PREFIX } from 'pages/stats/common/components/constants'
 import StatsNavbarContainer from 'pages/stats/common/StatsNavbarContainer'
 import RevenueCampaignsStats from 'pages/stats/convert/pages/CampaignsStats'
@@ -33,8 +31,8 @@ import { CampaignStatsFilters } from 'pages/stats/convert/providers/CampaignStat
 import { DashboardPage } from 'pages/stats/dashboards/DashboardPage'
 import { Dashboards } from 'pages/stats/dashboards/Dashboards'
 import HelpCenterStats from 'pages/stats/help-center/pages/HelpCenterStats'
-import LiveAgents from 'pages/stats/LiveAgents'
-import LiveOverview from 'pages/stats/LiveOverview'
+import LiveAgents from 'pages/stats/live/agents/LiveAgents'
+import LiveOverview from 'pages/stats/live/overview/LiveOverview'
 import SatisfactionReport from 'pages/stats/quality-management/satisfaction/SatisfactionReport'
 import { ProtectedRoute } from 'pages/stats/report-chart-restrictions/ProtectedRoute'
 import SelfServiceStatsPage from 'pages/stats/self-service/SelfServiceStatsPage'
@@ -46,6 +44,8 @@ import { ChannelsReport } from 'pages/stats/support-performance/channels/Channel
 import SupportPerformanceOverviewReport from 'pages/stats/support-performance/overview/SupportPerformanceOverviewReport'
 import SupportPerformanceRevenue from 'pages/stats/support-performance/revenue/SupportPerformanceRevenue'
 import SupportPerformanceSatisfaction from 'pages/stats/support-performance/satisfaction/SupportPerformanceSatisfaction'
+import AutomateIntents from 'pages/stats/ticket-insights/intents/AutomateIntents'
+import AutomateMacros from 'pages/stats/ticket-insights/macros/AutomateMacros'
 import { Tags } from 'pages/stats/ticket-insights/tags/Tags'
 import { SupportPerformanceTicketInsights } from 'pages/stats/ticket-insights/ticket-fields/SupportPerformanceTicketInsights'
 import LiveVoice from 'pages/stats/voice/pages/LiveVoice'
@@ -131,9 +131,9 @@ jest.mock('pages/stats/common/StatsNavbarContainer')
 const StatsNavbarContainerMock = assumeMock(StatsNavbarContainer)
 jest.mock('pages/stats/report-chart-restrictions/ProtectedRoute')
 const ProtectedRouteMock = assumeMock(ProtectedRoute)
-jest.mock('pages/stats/LiveOverview')
+jest.mock('pages/stats/live/overview/LiveOverview')
 const LiveOverviewMock = assumeMock(LiveOverview)
-jest.mock('pages/stats/LiveAgents')
+jest.mock('pages/stats/live/agents/LiveAgents')
 const LiveAgentsMock = assumeMock(LiveAgents)
 jest.mock('pages/stats/voice/pages/LiveVoice')
 const LiveVoiceMock = assumeMock(LiveVoice)
@@ -185,9 +185,9 @@ jest.mock('pages/stats/convert/pages/CampaignsStats/CampaignStatsPaywallView')
 const CampaignStatsPaywallViewMock = assumeMock(CampaignStatsPaywallView)
 jest.mock('pages/stats/convert/providers/CampaignStatsFilters')
 const CampaignStatsFiltersMock = assumeMock(CampaignStatsFilters)
-jest.mock('pages/stats/AutomateMacros')
+jest.mock('pages/stats/ticket-insights/macros/AutomateMacros')
 const AutomateMacrosMock = assumeMock(AutomateMacros)
-jest.mock('pages/stats/AutomateIntents')
+jest.mock('pages/stats/ticket-insights/intents/AutomateIntents')
 const AutomateIntentsMock = assumeMock(AutomateIntents)
 jest.mock('pages/stats/automate/AutomateStatsPaywall')
 const AutomateStatsPaywallMock = assumeMock(AutomateStatsPaywall)

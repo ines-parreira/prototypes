@@ -1,15 +1,14 @@
-import React from 'react'
-
 import { useCleanStatsFilters } from 'hooks/reporting/useCleanStatsFilters'
 import { useGridSize } from 'hooks/useGridSize'
 import useLocalStorage from 'hooks/useLocalStorage'
 import { FilterKey } from 'models/stat/types'
-import { AnalyticsFooter } from 'pages/stats/AnalyticsFooter'
+import TipsToggle from 'pages/common/components/TipsToggle/TipsToggle'
+import { AnalyticsFooter } from 'pages/stats/common/AnalyticsFooter'
 import FiltersPanelWrapper from 'pages/stats/common/filters/FiltersPanelWrapper'
-import DashboardGridCell from 'pages/stats/DashboardGridCell'
+import DashboardGridCell from 'pages/stats/common/layout/DashboardGridCell'
+import DashboardSection from 'pages/stats/common/layout/DashboardSection'
+import StatsPage from 'pages/stats/common/layout/StatsPage'
 import { DashboardComponent } from 'pages/stats/dashboards/DashboardComponent'
-import DashboardSection from 'pages/stats/DashboardSection'
-import StatsPage from 'pages/stats/StatsPage'
 import { DownloadOverviewData } from 'pages/stats/support-performance/overview/DownloadOverviewData'
 import {
     PERFORMANCE_OVERVIEW_OPTIONAL_FILTERS,
@@ -19,7 +18,6 @@ import {
     OverviewChart,
     SupportPerformanceOverviewReportConfig,
 } from 'pages/stats/support-performance/overview/SupportPerformanceOverviewReportConfig'
-import TipsToggle from 'pages/stats/TipsToggle'
 
 const WORKLOAD_SECTION_KPI_GRID_CELL_SIZE = 3
 const PRODUCTIVITY_SECTION_KPI_GRID_CELL_SIZE = 4

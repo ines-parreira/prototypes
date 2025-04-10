@@ -1,10 +1,10 @@
 import React, { useMemo } from 'react'
 
-import BigNumberMetric from 'pages/stats/BigNumberMetric'
+import BigNumberMetric from 'pages/stats/common/components/BigNumberMetric'
+import MetricCard from 'pages/stats/common/components/MetricCard'
+import PerformanceTip from 'pages/stats/common/components/PerformanceTip'
 import TrendBadge from 'pages/stats/common/components/TrendBadge'
 import { formatMetricValue } from 'pages/stats/common/utils'
-import MetricCard from 'pages/stats/MetricCard'
-import PerformanceTip from 'pages/stats/PerformanceTip'
 import { TooltipData } from 'pages/stats/types'
 
 import { AUTOMATION_RATE_FIXED_STATS, AUTOMATION_RATE_LABEL } from './constants'

@@ -11,10 +11,10 @@ import {
     TicketSatisfactionSurveyMeasure,
 } from 'models/reporting/cubes/TicketSatisfactionSurveyCube'
 import { SatisfactionSurveyScore } from 'models/reporting/queryFactories/satisfaction/averageScoreQueryFactory'
-import ChartCard from 'pages/stats/ChartCard'
+import ChartCard from 'pages/stats/common/components/ChartCard'
 import DonutChart from 'pages/stats/common/components/charts/DonutChart/DonutChart'
+import { NoDataAvailable } from 'pages/stats/common/components/NoDataAvailable'
 import { DashboardChartProps } from 'pages/stats/dashboards/types'
-import { NoDataAvailable } from 'pages/stats/NoDataAvailable'
 import { AverageScoreTrend } from 'pages/stats/quality-management/satisfaction/AverageSurveyScoreDonutChart/AverageScoreTrend'
 import css from 'pages/stats/quality-management/satisfaction/AverageSurveyScoreDonutChart/AverageSurveyScoreDonutChart.less'
 import { SatisfactionMetricConfig } from 'pages/stats/quality-management/satisfaction/SatisfactionMetricsConfig'

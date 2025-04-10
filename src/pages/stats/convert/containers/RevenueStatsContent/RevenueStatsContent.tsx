@@ -1,4 +1,6 @@
 import { useIsConvertPerformanceViewEnabled } from 'pages/convert/common/hooks/useIsConvertPerformanceViewEnabled'
+import DashboardGridCell from 'pages/stats/common/layout/DashboardGridCell'
+import DashboardSection from 'pages/stats/common/layout/DashboardSection'
 import {
     CampaignsLegacyChart,
     CampaignsLegacyReportConfig,
@@ -9,9 +11,7 @@ import {
 } from 'pages/stats/convert/campaigns/CampaignsPerformanceReportConfig'
 import CampaignPerformanceCharts from 'pages/stats/convert/components/CampaignPerformanceCharts'
 import { CampaignTotalsStat } from 'pages/stats/convert/components/CampaignTotalsStat'
-import DashboardGridCell from 'pages/stats/DashboardGridCell'
 import { DashboardComponent } from 'pages/stats/dashboards/DashboardComponent'
-import DashboardSection from 'pages/stats/DashboardSection'
 
 export const RevenueStatsContent = () => {
     const isConvertPerformanceViewEnabled = useIsConvertPerformanceViewEnabled()

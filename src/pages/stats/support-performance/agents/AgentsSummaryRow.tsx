@@ -4,7 +4,7 @@ import { User } from 'config/types/user'
 import { StatsFilters } from 'models/stat/types'
 import BodyCell from 'pages/common/components/table/cells/BodyCell'
 import TableBodyRow from 'pages/common/components/table/TableBodyRow'
-import css from 'pages/stats/AnalyticsTable.less'
+import css from 'pages/stats/common/components/Table/AnalyticsTable.less'
 import {
     getColumnAlignment,
     getColumnWidth,

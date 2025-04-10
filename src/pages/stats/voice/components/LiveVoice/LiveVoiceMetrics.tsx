@@ -4,8 +4,8 @@ import { LiveCallQueueVoiceCall } from '@gorgias/api-queries'
 
 import useAppSelector from 'hooks/useAppSelector'
 import { StatsFiltersWithLogicalOperator } from 'models/stat/types'
-import DashboardGridCell from 'pages/stats/DashboardGridCell'
-import DashboardSection from 'pages/stats/DashboardSection'
+import DashboardGridCell from 'pages/stats/common/layout/DashboardGridCell'
+import DashboardSection from 'pages/stats/common/layout/DashboardSection'
 import { getBusinessHoursSettings } from 'state/currentAccount/selectors'
 
 import { LiveVoiceMetricCard } from './LiveVoiceMetricCard'

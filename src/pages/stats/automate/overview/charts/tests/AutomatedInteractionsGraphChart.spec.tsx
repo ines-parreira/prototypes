@@ -10,7 +10,7 @@ import {
 } from 'hooks/reporting/automate/useAutomationDataset'
 import { ReportingGranularity } from 'models/reporting/types'
 import { AutomatedInteractionsGraphChart } from 'pages/stats/automate/overview/charts/AutomatedInteractionsGraphChart'
-import * as ChartCard from 'pages/stats/ChartCard'
+import * as ChartCard from 'pages/stats/common/components/ChartCard'
 import { LineChart } from 'pages/stats/common/components/charts/LineChart/LineChart'
 import { assumeMock } from 'utils/testing'
 

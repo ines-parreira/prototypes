@@ -17,7 +17,7 @@ import {
     getGreyAreaHint,
     getTimeSeriesFormattedData,
 } from 'pages/stats/automate/overview/utils'
-import ChartCard from 'pages/stats/ChartCard'
+import ChartCard from 'pages/stats/common/components/ChartCard'
 import { LineChart } from 'pages/stats/common/components/charts/LineChart/LineChart'
 import { DashboardChartProps } from 'pages/stats/dashboards/types'
 import { AUTOMATED_INTERACTIONS_BY_FEATURE_LABEL } from 'pages/stats/self-service/constants'

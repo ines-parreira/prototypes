@@ -15,10 +15,10 @@ import { Line } from 'react-chartjs-2'
 
 import { Skeleton } from '@gorgias/merchant-ui-kit'
 
-import { GreyArea } from 'pages/stats/ChartPluginGreyArea'
-import { ChartTooltip } from 'pages/stats/ChartTooltip'
 import css from 'pages/stats/common/components/charts/Chart.less'
 import { ChartLegend } from 'pages/stats/common/components/charts/ChartLegend'
+import { GreyArea } from 'pages/stats/common/components/charts/ChartPluginGreyArea'
+import { ChartTooltip } from 'pages/stats/common/components/charts/ChartTooltip'
 import { ChartTooltipContent } from 'pages/stats/common/components/charts/ChartTooltipContent'
 import {
     chartColorsFallbackTokens,

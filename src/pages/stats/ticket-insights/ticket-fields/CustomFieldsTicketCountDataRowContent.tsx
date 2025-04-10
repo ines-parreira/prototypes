@@ -13,13 +13,13 @@ import {
 import useAppSelector from 'hooks/useAppSelector'
 import { SCREEN_SIZE, useScreenSize } from 'hooks/useScreenSize'
 import BodyCell from 'pages/common/components/table/cells/BodyCell'
-import css from 'pages/stats/BreakdownTable.less'
+import css from 'pages/stats/common/components/Table/BreakdownTable.less'
+import heatmapCss from 'pages/stats/common/components/Table/heatmap.less'
 import { DrillDownModalTrigger } from 'pages/stats/common/drill-down/DrillDownModalTrigger'
 import {
     formatMetricValue,
     NOT_AVAILABLE_PLACEHOLDER,
 } from 'pages/stats/common/utils'
-import heatmapCss from 'pages/stats/heatmap.less'
 import {
     formatDates,
     getUtcPeriodFromDateAndGranularity,

@@ -1,5 +1,5 @@
 import { ReportingGranularity } from 'models/reporting/types'
-import ChartCard from 'pages/stats/ChartCard'
+import ChartCard from 'pages/stats/common/components/ChartCard'
 import LineChart from 'pages/stats/common/components/charts/LineChart/LineChart'
 import { formatTimeSeriesData } from 'pages/stats/common/utils'
 import { OverviewMetricConfig } from 'pages/stats/convert/constants/ConvertPerformanceOverviewConfig'

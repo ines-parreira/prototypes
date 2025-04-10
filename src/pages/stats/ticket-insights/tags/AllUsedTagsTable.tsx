@@ -24,13 +24,13 @@ import TableBodyRow from 'pages/common/components/table/TableBodyRow'
 import TableHead from 'pages/common/components/table/TableHead'
 import TableWrapper from 'pages/common/components/table/TableWrapper'
 import TicketTag from 'pages/common/components/TicketTag'
-import css from 'pages/stats/BreakdownTable.less'
+import css from 'pages/stats/common/components/Table/BreakdownTable.less'
+import heatmapCss from 'pages/stats/common/components/Table/heatmap.less'
 import { DrillDownModalTrigger } from 'pages/stats/common/drill-down/DrillDownModalTrigger'
 import {
     formatMetricValue,
     NOT_AVAILABLE_PLACEHOLDER,
 } from 'pages/stats/common/utils'
-import heatmapCss from 'pages/stats/heatmap.less'
 import { getTagName } from 'pages/stats/ticket-insights/tags/helpers'
 import { LoadingRow } from 'pages/stats/ticket-insights/ticket-fields/CustomFieldsTicketCountBreakdownTable'
 import {

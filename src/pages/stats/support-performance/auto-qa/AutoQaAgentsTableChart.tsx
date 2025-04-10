@@ -1,4 +1,4 @@
-import ChartCard from 'pages/stats/ChartCard'
+import ChartCard from 'pages/stats/common/components/ChartCard'
 import { DashboardChartProps } from 'pages/stats/dashboards/types'
 import { AGENT_PERFORMANCE_SECTION_TITLE } from 'pages/stats/support-performance/agents/AgentsTableChart'
 import { AutoQAAgentsCardExtra } from 'pages/stats/support-performance/auto-qa/AutoQAAgentsCardExtra'

@@ -3,7 +3,8 @@ import moment from 'moment'
 import { MetricTrend } from 'hooks/reporting/useMetricTrend'
 import { getAdvancedVoicePeriodFilters } from 'models/reporting/queryFactories/voice/voiceCall'
 import { StatsFilters } from 'models/stat/types'
-import BigNumberMetric from 'pages/stats/BigNumberMetric'
+import BigNumberMetric from 'pages/stats/common/components/BigNumberMetric'
+import MetricCard from 'pages/stats/common/components/MetricCard'
 import TrendBadge from 'pages/stats/common/components/TrendBadge'
 import { DrillDownModalTrigger } from 'pages/stats/common/drill-down/DrillDownModalTrigger'
 import {
@@ -12,7 +13,6 @@ import {
     NOT_AVAILABLE_PLACEHOLDER,
 } from 'pages/stats/common/utils'
 import { DashboardChartProps } from 'pages/stats/dashboards/types'
-import MetricCard from 'pages/stats/MetricCard'
 import { VoiceMetrics } from 'state/ui/stats/drillDownSlice'
 import { getPreviousPeriod } from 'utils/reporting'
 

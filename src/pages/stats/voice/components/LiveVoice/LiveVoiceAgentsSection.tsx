@@ -7,7 +7,7 @@ import BodyCell from 'pages/common/components/table/cells/BodyCell'
 import TableBody from 'pages/common/components/table/TableBody'
 import TableBodyRow from 'pages/common/components/table/TableBodyRow'
 import TableWrapper from 'pages/common/components/table/TableWrapper'
-import { NoDataAvailable } from 'pages/stats/NoDataAvailable'
+import { NoDataAvailable } from 'pages/stats/common/components/NoDataAvailable'
 
 import LiveVoiceAgentsList from './LiveVoiceAgentsList'
 

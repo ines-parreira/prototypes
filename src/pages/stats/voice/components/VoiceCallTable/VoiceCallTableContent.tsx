@@ -14,7 +14,7 @@ import TableBody from 'pages/common/components/table/TableBody'
 import TableBodyRow from 'pages/common/components/table/TableBodyRow'
 import TableHead from 'pages/common/components/table/TableHead'
 import TableWrapper from 'pages/common/components/table/TableWrapper'
-import { NoDataAvailable } from 'pages/stats/NoDataAvailable'
+import { NoDataAvailable } from 'pages/stats/common/components/NoDataAvailable'
 import { CALL_LIST_PAGE_SIZE } from 'pages/stats/voice/constants/voiceOverview'
 import { VoiceCallSummary } from 'pages/stats/voice/models/types'
 

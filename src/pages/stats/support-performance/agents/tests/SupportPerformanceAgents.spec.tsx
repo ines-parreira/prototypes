@@ -16,7 +16,7 @@ import { useAgentsMetrics } from 'hooks/reporting/support-performance/agents/use
 import { useAgentsSummaryMetrics } from 'hooks/reporting/support-performance/agents/useAgentsSummaryMetrics'
 import { useAgentsTableConfigSetting } from 'hooks/reporting/useAgentsTableConfigSetting'
 import { useCleanStatsFilters } from 'hooks/reporting/useCleanStatsFilters'
-import { AnalyticsFooter } from 'pages/stats/AnalyticsFooter'
+import { AnalyticsFooter } from 'pages/stats/common/AnalyticsFooter'
 import { AUTO_QA_FILTER_KEYS } from 'pages/stats/common/filters/constants'
 import FiltersPanelWrapper from 'pages/stats/common/filters/FiltersPanelWrapper'
 import { ChartsActionMenu } from 'pages/stats/dashboards/ChartsActionMenu/ChartsActionMenu'
@@ -72,7 +72,7 @@ jest.mock('pages/stats/support-performance/agents/TopResponseTimePerformers')
 const TopResponseTimePerformersMock = assumeMock(TopResponseTimePerformers)
 jest.mock('pages/stats/support-performance/agents/TopClosedTicketsPerformers')
 const TopClosedTicketsPerformersMock = assumeMock(TopClosedTicketsPerformers)
-jest.mock('pages/stats/AnalyticsFooter.tsx')
+jest.mock('pages/stats/common/AnalyticsFooter.tsx')
 const AnalyticsFooterMock = assumeMock(AnalyticsFooter)
 jest.mock('hooks/reporting/support-performance/agents/useAgentsMetrics')
 const useAgentsMetricsMock = assumeMock(useAgentsMetrics)

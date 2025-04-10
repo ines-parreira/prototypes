@@ -9,7 +9,7 @@ import TableBody from 'pages/common/components/table/TableBody'
 import TableBodyRow from 'pages/common/components/table/TableBodyRow'
 import TableHead from 'pages/common/components/table/TableHead'
 import TableWrapper from 'pages/common/components/table/TableWrapper'
-import css from 'pages/stats/AnalyticsTable.less'
+import css from 'pages/stats/common/components/Table/AnalyticsTable.less'
 import { ChannelsCellContent } from 'pages/stats/support-performance/channels/ChannelsCellContent'
 import { ChannelsHeaderCellContent } from 'pages/stats/support-performance/channels/ChannelsHeaderCellContent'
 import {

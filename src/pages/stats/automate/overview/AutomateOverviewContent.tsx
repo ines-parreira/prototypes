@@ -11,7 +11,7 @@ import { useLast28daysForAutomateRedirect } from 'hooks/reporting/automate/useLa
 import useLocalStorage from 'hooks/useLocalStorage'
 import { FilterKey } from 'models/stat/types'
 import Alert, { AlertType } from 'pages/common/components/Alert/Alert'
-import { AnalyticsFooter } from 'pages/stats/AnalyticsFooter'
+import TipsToggle from 'pages/common/components/TipsToggle/TipsToggle'
 import css from 'pages/stats/automate/overview/AutomateOverview.less'
 import { AutomateOverviewDownloadDataButton } from 'pages/stats/automate/overview/AutomateOverviewDownloadDataButton'
 import {
@@ -19,13 +19,13 @@ import {
     AutomateOverviewReportConfig,
 } from 'pages/stats/automate/overview/AutomateOverviewReportConfig'
 import { AAO_TIPS_VISIBILITY_KEY } from 'pages/stats/automate/overview/constants'
+import { AnalyticsFooter } from 'pages/stats/common/AnalyticsFooter'
 import { FiltersPanelWrapper } from 'pages/stats/common/filters/FiltersPanelWrapper/FiltersPanelWrapper'
-import DashboardGridCell from 'pages/stats/DashboardGridCell'
+import DashboardGridCell from 'pages/stats/common/layout/DashboardGridCell'
+import DashboardSection from 'pages/stats/common/layout/DashboardSection'
+import StatsPage from 'pages/stats/common/layout/StatsPage'
 import { DashboardComponent } from 'pages/stats/dashboards/DashboardComponent'
-import DashboardSection from 'pages/stats/DashboardSection'
 import { PAGE_TITLE_AUTOMATE_PAYWALL } from 'pages/stats/self-service/constants'
-import StatsPage from 'pages/stats/StatsPage'
-import TipsToggle from 'pages/stats/TipsToggle'
 
 const BILLING_PIPE_LINE_DATE = 'June 20, 2023'
 

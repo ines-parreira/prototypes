@@ -10,7 +10,8 @@ import BodyCell from 'pages/common/components/table/cells/BodyCell'
 import TableBody from 'pages/common/components/table/TableBody'
 import TableBodyRow from 'pages/common/components/table/TableBodyRow'
 import TableWrapper from 'pages/common/components/table/TableWrapper'
-import ChartCard from 'pages/stats/ChartCard'
+import ChartCard from 'pages/stats/common/components/ChartCard'
+import { NoDataAvailable } from 'pages/stats/common/components/NoDataAvailable'
 import {
     DEFAULT_BADGE_TEXT,
     TREND_BADGE_FORMAT,
@@ -23,8 +24,7 @@ import {
     NOT_AVAILABLE_PLACEHOLDER,
 } from 'pages/stats/common/utils'
 import { DashboardChartProps } from 'pages/stats/dashboards/types'
-import { DistributionCategoryCell } from 'pages/stats/DistributionCategoryCell'
-import { NoDataAvailable } from 'pages/stats/NoDataAvailable'
+import { DistributionCategoryCell } from 'pages/stats/ticket-insights/components/DistributionCategoryCell'
 import {
     TicketInsightsTagsMetric,
     TicketInsightsTagsMetricConfig,

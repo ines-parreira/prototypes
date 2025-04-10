@@ -1,8 +1,8 @@
 import { MetricTrend } from 'hooks/reporting/useMetricTrend'
-import BigNumberMetric from 'pages/stats/BigNumberMetric'
+import BigNumberMetric from 'pages/stats/common/components/BigNumberMetric'
+import MetricCard from 'pages/stats/common/components/MetricCard'
 import TrendBadge from 'pages/stats/common/components/TrendBadge'
 import { DashboardChartProps } from 'pages/stats/dashboards/types'
-import MetricCard from 'pages/stats/MetricCard'
 
 import { TIME_SAVED_BY_AGENTS } from './constants'
 import { getTrendProps, toDuration } from './utils'

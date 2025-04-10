@@ -1,13 +1,13 @@
 import { useState } from 'react'
 
 import { useStatsFilters } from 'hooks/reporting/support-performance/useStatsFilters'
-import ChartCard from 'pages/stats/ChartCard'
+import ChartCard from 'pages/stats/common/components/ChartCard'
+import { NoDataAvailable } from 'pages/stats/common/components/NoDataAvailable'
 import { DashboardChartProps } from 'pages/stats/dashboards/types'
 import HelpCenterStatsTable, {
     TableCellType,
 } from 'pages/stats/help-center/components/HelpCenterStatsTable/HelpCenterStatsTable'
 import { useNoSearchResultsMetrics } from 'pages/stats/help-center/hooks/useNoSearchResultsMetrics'
-import { NoDataAvailable } from 'pages/stats/NoDataAvailable'
 
 const ITEMS_PER_PAGE = 20
 

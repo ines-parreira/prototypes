@@ -1,8 +1,7 @@
 import { TooltipLabelStyle, TooltipModel } from 'chart.js'
 
+import css from 'pages/stats/common/components/charts/ChartTooltipContent.less'
 import { NOT_AVAILABLE_TEXT } from 'pages/stats/common/utils'
-
-import css from './ChartTooltip.less'
 
 type Props = {
     tooltip: TooltipModel

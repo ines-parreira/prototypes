@@ -15,6 +15,7 @@ import TableHead from 'pages/common/components/table/TableHead'
 import DatetimeLabel from 'pages/common/utils/DatetimeLabel'
 import { AgentAvatar } from 'pages/stats/common/AgentAvatar'
 import { DrillDownTableContentSkeleton } from 'pages/stats/common/components/Table/DrillDownTableContentSkeleton'
+import { TruncateCellContent } from 'pages/stats/common/components/TruncateCellContent'
 import { formatTicketDrillDownRowData } from 'pages/stats/common/drill-down/DrillDownFormatters'
 import css from 'pages/stats/common/drill-down/DrillDownTable.less'
 import { DrillDownTicketDetailsCell } from 'pages/stats/common/drill-down/DrillDownTicketDetailsCell'
@@ -39,7 +40,6 @@ import {
     RESOLUTION_COMPLETENESS_SHORT_LABEL,
     TrendCardConfig,
 } from 'pages/stats/support-performance/auto-qa/AutoQAMetricsConfig'
-import { TruncateCellContent } from 'pages/stats/TruncateCellContent'
 import {
     AutoQAAgentMetric,
     DrillDownMetric,

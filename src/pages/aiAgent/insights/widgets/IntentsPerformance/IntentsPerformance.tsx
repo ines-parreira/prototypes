@@ -5,22 +5,22 @@ import { MetricTrend } from 'hooks/reporting/useMetricTrend'
 import { useGridSize } from 'hooks/useGridSize'
 import useLocalStorage from 'hooks/useLocalStorage'
 import type { Period } from 'models/stat/types'
-import BigNumberMetric from 'pages/stats/BigNumberMetric'
+import TipsToggle from 'pages/common/components/TipsToggle/TipsToggle'
+import BigNumberMetric from 'pages/stats/common/components/BigNumberMetric'
+import MetricCard from 'pages/stats/common/components/MetricCard'
 import TrendBadge from 'pages/stats/common/components/TrendBadge'
 import { DrillDownModalTrigger } from 'pages/stats/common/drill-down/DrillDownModalTrigger'
+import DashboardGridCell from 'pages/stats/common/layout/DashboardGridCell'
+import DashboardSection from 'pages/stats/common/layout/DashboardSection'
 import {
     formatMetricValue,
     MetricTrendFormat,
     NOT_AVAILABLE_PLACEHOLDER,
 } from 'pages/stats/common/utils'
-import DashboardGridCell from 'pages/stats/DashboardGridCell'
-import DashboardSection from 'pages/stats/DashboardSection'
-import MetricCard from 'pages/stats/MetricCard'
 import {
     OverviewMetric,
     STATS_TIPS_VISIBILITY_KEY,
 } from 'pages/stats/support-performance/overview/SupportPerformanceOverviewConfig'
-import TipsToggle from 'pages/stats/TipsToggle'
 import { TooltipData } from 'pages/stats/types'
 import { getBadgeTooltipForPreviousPeriod } from 'pages/stats/utils'
 import {

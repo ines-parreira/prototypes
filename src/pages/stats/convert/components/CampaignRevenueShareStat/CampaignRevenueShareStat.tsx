@@ -1,5 +1,5 @@
 import useAppSelector from 'hooks/useAppSelector'
-import ChartCard from 'pages/stats/ChartCard'
+import ChartCard from 'pages/stats/common/components/ChartCard'
 import LineChart from 'pages/stats/common/components/charts/LineChart/LineChart'
 import { DEFAULT_TIMEZONE } from 'pages/stats/convert/constants/components'
 import { useGetRevenueShareChart } from 'pages/stats/convert/hooks/stats/useGetRevenueShareChart'

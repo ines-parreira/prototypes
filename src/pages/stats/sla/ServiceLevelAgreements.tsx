@@ -1,18 +1,18 @@
 import { useCleanStatsFilters } from 'hooks/reporting/useCleanStatsFilters'
 import { useGridSize } from 'hooks/useGridSize'
 import { FilterKey } from 'models/stat/types'
-import { AnalyticsFooter } from 'pages/stats/AnalyticsFooter'
+import { AnalyticsFooter } from 'pages/stats/common/AnalyticsFooter'
 import FiltersPanelWrapper from 'pages/stats/common/filters/FiltersPanelWrapper'
-import DashboardGridCell from 'pages/stats/DashboardGridCell'
+import DashboardGridCell from 'pages/stats/common/layout/DashboardGridCell'
+import DashboardSection from 'pages/stats/common/layout/DashboardSection'
+import StatsPage from 'pages/stats/common/layout/StatsPage'
 import { DashboardComponent } from 'pages/stats/dashboards/DashboardComponent'
-import DashboardSection from 'pages/stats/DashboardSection'
 import { DownloadSLAsData } from 'pages/stats/sla/components/DownloadSLAsData'
 import { WithSlaEmptyState } from 'pages/stats/sla/components/WithSlaEmptyState'
 import {
     ServiceLevelAgreementsChart,
     ServiceLevelAgreementsReportConfig,
 } from 'pages/stats/sla/ServiceLevelAgreementsReportConfig'
-import StatsPage from 'pages/stats/StatsPage'
 
 const OVERVIEW_SECTION_LABEL = 'Overview'
 

@@ -19,14 +19,14 @@ import { useStatsFilters } from 'hooks/reporting/support-performance/useStatsFil
 import { withDefaultLogicalOperator } from 'models/reporting/queryFactories/utils'
 import { ReportingGranularity } from 'models/reporting/types'
 import { StatsFilters, TagFilterInstanceId } from 'models/stat/types'
+import GaugeChart from 'pages/stats/common/components/charts/GaugeChart'
 import { DEFAULT_TIMEZONE } from 'pages/stats/convert/constants/components'
-import GaugeChart from 'pages/stats/GaugeChart'
 import { WorkloadPerChannelChart } from 'pages/stats/support-performance/overview/charts/WorkloadPerChannelChart'
 import { RootState, StoreDispatch } from 'state/types'
 import { initialState as uiStatsInitialState } from 'state/ui/stats/filtersSlice'
 import { assumeMock } from 'utils/testing'
 
-jest.mock('pages/stats/GaugeChart')
+jest.mock('pages/stats/common/components/charts/GaugeChart')
 const gaugeChartMock = assumeMock(GaugeChart)
 
 jest.mock('hooks/reporting/distributions')

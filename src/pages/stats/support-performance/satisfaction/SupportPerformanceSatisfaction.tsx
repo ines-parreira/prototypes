@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react'
+import { useMemo } from 'react'
 
 import { fromJS, Map } from 'immutable'
 
@@ -17,9 +17,9 @@ import {
 import withFeaturePaywall from 'pages/common/utils/withFeaturePaywall'
 import KeyMetricStat from 'pages/stats/common/components/charts/KeyMetricStat/KeyMetricStat'
 import TableStat from 'pages/stats/common/components/charts/TableStat/TableStat'
-import KeyMetricStatWrapper from 'pages/stats/KeyMetricStatWrapper'
-import StatsPage from 'pages/stats/StatsPage'
-import StatWrapper from 'pages/stats/StatWrapper'
+import KeyMetricStatWrapper from 'pages/stats/common/components/KeyMetricStatWrapper'
+import StatsPage from 'pages/stats/common/layout/StatsPage'
+import StatWrapper from 'pages/stats/common/layout/StatWrapper'
 import { SupportPerformanceSatisfactionFilters } from 'pages/stats/support-performance/satisfaction/SupportPerformanceSatisfactionFilters'
 import { AccountFeature } from 'state/currentAccount/types'
 import { getMessagingAndAppIntegrationsStatsFilter } from 'state/stats/selectors'

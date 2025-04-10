@@ -13,7 +13,7 @@ import {
     getGreyAreaHint,
     getTimeSeriesFormattedData,
 } from 'pages/stats/automate/overview/utils'
-import ChartCard from 'pages/stats/ChartCard'
+import ChartCard from 'pages/stats/common/components/ChartCard'
 import { default as LineChart } from 'pages/stats/common/components/charts/LineChart/LineChart'
 import { LogicalOperatorEnum } from 'pages/stats/common/components/Filter/constants'
 import { SHORT_FORMAT } from 'pages/stats/common/utils'

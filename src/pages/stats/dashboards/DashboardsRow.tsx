@@ -1,11 +1,11 @@
 import React, { ReactNode } from 'react'
 
+import { DashboardSectionWrapper } from 'pages/stats/common/layout/DashboardSection'
 import {
     DroppableGridRow,
     MoveHandler,
 } from 'pages/stats/dashboards/DraggableGridCell'
 import { DashboardChartSchema } from 'pages/stats/dashboards/types'
-import { DashboardSectionWrapper } from 'pages/stats/DashboardSection'
 
 export type DashboardsRowProps = {
     children: ReactNode

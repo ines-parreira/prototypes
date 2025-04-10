@@ -12,7 +12,9 @@ import BodyCell from 'pages/common/components/table/cells/BodyCell'
 import TableBody from 'pages/common/components/table/TableBody'
 import TableBodyRow from 'pages/common/components/table/TableBodyRow'
 import TableWrapper from 'pages/common/components/table/TableWrapper'
-import ChartCard from 'pages/stats/ChartCard'
+import ChartCard from 'pages/stats/common/components/ChartCard'
+import GaugeAddon from 'pages/stats/common/components/charts/GaugeAddon'
+import { NoDataAvailable } from 'pages/stats/common/components/NoDataAvailable'
 import { DrillDownModalTrigger } from 'pages/stats/common/drill-down/DrillDownModalTrigger'
 import {
     formatMetricValue,
@@ -22,9 +24,7 @@ import { DashboardChartProps } from 'pages/stats/dashboards/types'
 import {
     DistributionCategoryCell,
     formatCategory,
-} from 'pages/stats/DistributionCategoryCell'
-import GaugeAddon from 'pages/stats/GaugeAddon'
-import { NoDataAvailable } from 'pages/stats/NoDataAvailable'
+} from 'pages/stats/ticket-insights/components/DistributionCategoryCell'
 import css from 'pages/stats/ticket-insights/ticket-fields/TicketDistributionTable.less'
 import {
     TicketInsightsFieldsMetric,

@@ -1,12 +1,12 @@
-import DashboardGridCell from 'pages/stats/DashboardGridCell'
+import DashboardGridCell from 'pages/stats/common/layout/DashboardGridCell'
+import DashboardSection from 'pages/stats/common/layout/DashboardSection'
 import { DashboardComponent } from 'pages/stats/dashboards/DashboardComponent'
-import DashboardSection from 'pages/stats/DashboardSection'
 import {
     HelpCenterChart,
     HelpCenterReportConfig,
 } from 'pages/stats/help-center/components/HelpCenterReport/HelpCenterReportConfig'
 
-// import TipsToggle from 'pages/stats/TipsToggle'
+// import TipsToggle from 'pages/common/components/TipsToggle/TipsToggle'
 
 const HelpCenterOverviewSection = () => {
     // FIXME: uncomment it as soon as the documentation article links are ready

@@ -2,7 +2,8 @@ import { useCleanStatsFilters } from 'hooks/reporting/useCleanStatsFilters'
 import { useGridSize } from 'hooks/useGridSize'
 import { FilterKey } from 'models/stat/types'
 import FiltersPanelWrapper from 'pages/stats/common/filters/FiltersPanelWrapper'
-import DashboardGridCell from 'pages/stats/DashboardGridCell'
+import DashboardGridCell from 'pages/stats/common/layout/DashboardGridCell'
+import DashboardSection from 'pages/stats/common/layout/DashboardSection'
 import {
     DashboardChart,
     DashboardChartProps,
@@ -20,7 +21,6 @@ import {
 } from 'pages/stats/dashboards/types'
 import { useFiltersFromDashboard } from 'pages/stats/dashboards/useFiltersFromDashboard'
 import { updateChartPosition } from 'pages/stats/dashboards/utils'
-import DashboardSection from 'pages/stats/DashboardSection'
 
 type Props = {
     dashboard: DashboardSchema

@@ -3,7 +3,7 @@ import React, { useState } from 'react'
 import { useStatsFilters } from 'hooks/reporting/support-performance/useStatsFilters'
 import { TopProductRecommendationTableStats } from 'pages/stats/automate/aiSalesAgent/components/TopProductRecommendationTableStats'
 import { useProductRecommendations } from 'pages/stats/automate/aiSalesAgent/metrics/useProductRecommendations'
-import ChartCard from 'pages/stats/ChartCard'
+import ChartCard from 'pages/stats/common/components/ChartCard'
 import { DashboardChartProps } from 'pages/stats/dashboards/types'
 
 const ITEMS_PER_PAGE = 10

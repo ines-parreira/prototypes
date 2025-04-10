@@ -22,7 +22,7 @@ import { logEvent, SegmentEvent } from 'common/segment'
 import { store } from 'common/store'
 import { EditableUserProfile } from 'config/types/user'
 import { initializeNewReleaseHandler } from 'models/api/resources'
-import GreyArea from 'pages/stats/ChartPluginGreyArea'
+import GreyArea from 'pages/stats/common/components/charts/ChartPluginGreyArea'
 import {
     getCurrentAutomatePlan,
     getCurrentHelpdeskPlan,

@@ -5,7 +5,7 @@ import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import { NoDataAvailable } from 'pages/stats/NoDataAvailable'
+import { NoDataAvailable } from 'pages/stats/common/components/NoDataAvailable'
 import { CustomFieldsTicketCountBreakdownTable } from 'pages/stats/ticket-insights/ticket-fields/CustomFieldsTicketCountBreakdownTable'
 import { CustomFieldsTicketCountBreakdownTableChart } from 'pages/stats/ticket-insights/ticket-fields/CustomFieldsTicketCountBreakdownTableChart'
 import { initialState } from 'state/stats/statsSlice'
@@ -24,7 +24,7 @@ jest.mock(
 const CustomFieldsTicketCountBreakdownTableMock = assumeMock(
     CustomFieldsTicketCountBreakdownTable,
 )
-jest.mock('pages/stats/NoDataAvailable')
+jest.mock('pages/stats/common/components/NoDataAvailable')
 const NoDataAvailableMock = assumeMock(NoDataAvailable)
 const componentMock = () => <div />
 

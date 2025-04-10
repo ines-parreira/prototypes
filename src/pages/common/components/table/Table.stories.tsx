@@ -3,8 +3,8 @@ import React, { ComponentProps } from 'react'
 import { Meta, Story } from '@storybook/react'
 
 import { OrderDirection } from 'models/api/types'
-import { DistributionCategoryCell } from 'pages/stats/DistributionCategoryCell'
-import GaugeAddon from 'pages/stats/GaugeAddon'
+import GaugeAddon from 'pages/stats/common/components/charts/GaugeAddon'
+import { DistributionCategoryCell } from 'pages/stats/ticket-insights/components/DistributionCategoryCell'
 
 import BodyCell from './cells/BodyCell'
 import HeaderCell from './cells/HeaderCell'

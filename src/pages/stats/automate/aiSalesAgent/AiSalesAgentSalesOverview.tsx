@@ -7,7 +7,6 @@ import { FeatureFlagKey } from 'config/featureFlags'
 import { useCleanStatsFilters } from 'hooks/reporting/useCleanStatsFilters'
 import { useGridSize } from 'hooks/useGridSize'
 import { FilterKey } from 'models/stat/types'
-import { AnalyticsFooter } from 'pages/stats/AnalyticsFooter'
 import { AiSalesAgentChart } from 'pages/stats/automate/aiSalesAgent/AiSalesAgentMetricsConfig'
 import AiSalesAgentOverviewDownloadButton from 'pages/stats/automate/aiSalesAgent/AiSalesAgentOverviewDownloadButton'
 import { AiSalesAgentReportConfig } from 'pages/stats/automate/aiSalesAgent/AiSalesAgentReportConfig'
@@ -16,13 +15,14 @@ import {
     MIN_DATE_FOR_SALES_AGENT_STATS,
     PAGE_TITLE_AI_SALES_AGENT_SALES_OVERVIEW,
 } from 'pages/stats/automate/aiSalesAgent/constants'
+import { AnalyticsFooter } from 'pages/stats/common/AnalyticsFooter'
 import FiltersPanelWrapper from 'pages/stats/common/filters/FiltersPanelWrapper'
+import DashboardGridCell from 'pages/stats/common/layout/DashboardGridCell'
+import DashboardSection from 'pages/stats/common/layout/DashboardSection'
+import StatsPage from 'pages/stats/common/layout/StatsPage'
 import { useFirstStoreWithAiSalesData } from 'pages/stats/convert/hooks/useFirstStoreWithAiSalesData'
 import { CampaignStatsFilters } from 'pages/stats/convert/providers/CampaignStatsFilters'
-import DashboardGridCell from 'pages/stats/DashboardGridCell'
 import { DashboardComponent } from 'pages/stats/dashboards/DashboardComponent'
-import DashboardSection from 'pages/stats/DashboardSection'
-import StatsPage from 'pages/stats/StatsPage'
 
 const AiSalesAgentSalesOverview = () => {
     useCleanStatsFilters()

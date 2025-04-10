@@ -1,7 +1,7 @@
 import { Chart } from 'chart.js'
 import classNames from 'classnames'
 
-import Legend from 'pages/stats/Legend'
+import Legend from 'pages/stats/common/components/charts/Legend'
 import { TwoDimensionalDataItem } from 'pages/stats/types'
 
 import css from './ChartLegend.less'

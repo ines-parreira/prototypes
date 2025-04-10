@@ -1,7 +1,7 @@
+import { NoDataAvailable } from 'pages/stats/common/components/NoDataAvailable'
 import { DashboardChartProps } from 'pages/stats/dashboards/types'
 import { PerformanceByArticle } from 'pages/stats/help-center/components/PerformanceByArticle/PerformanceByArticle'
 import { useSelectedHelpCenter } from 'pages/stats/help-center/hooks/useSelectedHelpCenter'
-import { NoDataAvailable } from 'pages/stats/NoDataAvailable'
 
 export const PerformanceByArticleChart = ({
     chartId,

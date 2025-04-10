@@ -7,7 +7,7 @@ import { ChartLegend } from 'pages/stats/common/components/charts/ChartLegend'
 
 jest.mock('chart.js')
 jest.mock(
-    'pages/stats/Legend',
+    'pages/stats/common/components/charts/Legend',
     () =>
         ({
             items,

@@ -1,7 +1,7 @@
 import { useState } from 'react'
 
 import { useStatsFilters } from 'hooks/reporting/support-performance/useStatsFilters'
-import ChartCard from 'pages/stats/ChartCard'
+import ChartCard from 'pages/stats/common/components/ChartCard'
 import { DashboardChartProps } from 'pages/stats/dashboards/types'
 import { VoiceCallTable } from 'pages/stats/voice/components/VoiceCallTable/VoiceCallTable'
 import { CALL_LIST_TITLE } from 'pages/stats/voice/constants/voiceOverview'

@@ -1,6 +1,7 @@
 import { useStatsFilters } from 'hooks/reporting/support-performance/useStatsFilters'
-import ChartCard from 'pages/stats/ChartCard'
+import ChartCard from 'pages/stats/common/components/ChartCard'
 import DonutChart from 'pages/stats/common/components/charts/DonutChart/DonutChart'
+import { NoDataAvailable } from 'pages/stats/common/components/NoDataAvailable'
 import { DashboardChartProps } from 'pages/stats/dashboards/types'
 import css from 'pages/stats/help-center/components/SearchResultDonut/SearchResultDonut.less'
 import {
@@ -8,7 +9,6 @@ import {
     SEARCH_RESULTS_DONUT_TOOLTIP,
 } from 'pages/stats/help-center/HelpCenterMetricsConfig'
 import { useSearchResultRange } from 'pages/stats/help-center/hooks/useSearchResultRange'
-import { NoDataAvailable } from 'pages/stats/NoDataAvailable'
 
 const SearchResultDonut = ({ chartId, dashboard }: DashboardChartProps) => {
     const { cleanStatsFilters, userTimezone } = useStatsFilters()

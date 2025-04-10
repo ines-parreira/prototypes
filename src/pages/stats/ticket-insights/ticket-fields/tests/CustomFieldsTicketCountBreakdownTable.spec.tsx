@@ -16,7 +16,7 @@ import {
     TicketCustomFieldsMeasure,
 } from 'models/reporting/cubes/TicketCustomFieldsCube'
 import { ReportingGranularity } from 'models/reporting/types'
-import { NoDataAvailable } from 'pages/stats/NoDataAvailable'
+import { NoDataAvailable } from 'pages/stats/common/components/NoDataAvailable'
 import {
     CUSTOM_FIELD_COLUMN_LABEL,
     CUSTOM_FIELDS_PER_PAGE,
@@ -43,7 +43,7 @@ const useCustomFieldsTicketCountPerCustomFieldsMock = assumeMock(
 )
 jest.mock('hooks/reporting/support-performance/useStatsFilters')
 const useStatsFiltersMock = assumeMock(useStatsFilters)
-jest.mock('pages/stats/NoDataAvailable')
+jest.mock('pages/stats/common/components/NoDataAvailable')
 const NoDataAvailableMock = assumeMock(NoDataAvailable)
 
 jest.mock(

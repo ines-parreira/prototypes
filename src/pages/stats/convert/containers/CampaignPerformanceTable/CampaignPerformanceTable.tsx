@@ -11,7 +11,7 @@ import {
 import { CONVERT_ROUTE_PARAM_NAME } from 'pages/convert/common/constants'
 import { useIsConvertPerformanceViewEnabled } from 'pages/convert/common/hooks/useIsConvertPerformanceViewEnabled'
 import { ConvertRouteParams } from 'pages/convert/common/types'
-import ChartCard from 'pages/stats/ChartCard'
+import ChartCard from 'pages/stats/common/components/ChartCard'
 import { SharedDimension } from 'pages/stats/convert/clients/constants'
 import { CampaignPerformanceEditColumns } from 'pages/stats/convert/components/CampaignPerformanceEditColumns'
 import { CampaignTableStats } from 'pages/stats/convert/components/CampaignTableStats'

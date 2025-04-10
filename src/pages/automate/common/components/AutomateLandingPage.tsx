@@ -5,7 +5,7 @@ import useCallbackRef from 'hooks/useCallbackRef'
 import { StatsFilters } from 'models/stat/types'
 import AutomateLandingPageDashboardV2 from 'pages/automate/common/components/AutomateLandingPageDashboardV2'
 import { last28DaysStatsFilters } from 'pages/automate/common/utils/last28DaysStatsFilters'
-import StatsPage from 'pages/stats/StatsPage'
+import StatsPage from 'pages/stats/common/layout/StatsPage'
 
 import { useDisplayAiAgentMovedBanner } from '../hooks/useDisplayAiAgentMovedBanner'
 import { AiAgentMovedBanner } from './AiAgentMovedBanner'

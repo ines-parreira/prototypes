@@ -1,12 +1,12 @@
 import { useCleanStatsFilters } from 'hooks/reporting/useCleanStatsFilters'
 import { useGridSize } from 'hooks/useGridSize'
 import { FilterKey } from 'models/stat/types'
-import { AnalyticsFooter } from 'pages/stats/AnalyticsFooter'
+import { AnalyticsFooter } from 'pages/stats/common/AnalyticsFooter'
 import FiltersPanelWrapper from 'pages/stats/common/filters/FiltersPanelWrapper'
-import DashboardGridCell from 'pages/stats/DashboardGridCell'
+import DashboardGridCell from 'pages/stats/common/layout/DashboardGridCell'
+import DashboardSection from 'pages/stats/common/layout/DashboardSection'
+import StatsPage from 'pages/stats/common/layout/StatsPage'
 import { DashboardComponent } from 'pages/stats/dashboards/DashboardComponent'
-import DashboardSection from 'pages/stats/DashboardSection'
-import StatsPage from 'pages/stats/StatsPage'
 import { ChannelsDownloadDataButton } from 'pages/stats/support-performance/channels/ChannelsDownloadDataButton'
 import {
     CHANNEL_REPORT_OPTIONAL_FILTERS,

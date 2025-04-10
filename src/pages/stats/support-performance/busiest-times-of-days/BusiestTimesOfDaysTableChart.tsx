@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 
 import useAppSelector from 'hooks/useAppSelector'
-import ChartCard from 'pages/stats/ChartCard'
+import ChartCard from 'pages/stats/common/components/ChartCard'
 import Legend from 'pages/stats/common/components/Legend'
 import { TableHeatmapSwitch } from 'pages/stats/common/components/Table/TableHeatmapSwitch'
 import { DashboardChartProps } from 'pages/stats/dashboards/types'

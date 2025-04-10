@@ -3,11 +3,11 @@ import classnames from 'classnames'
 import { Skeleton } from '@gorgias/merchant-ui-kit'
 
 import BodyCell from 'pages/common/components/table/cells/BodyCell'
+import heatmapCss from 'pages/stats/common/components/Table/heatmap.less'
 import {
     formatMetricValue,
     NOT_AVAILABLE_PLACEHOLDER,
 } from 'pages/stats/common/utils'
-import heatmapCss from 'pages/stats/heatmap.less'
 import { METRIC_COLUMN_WIDTH } from 'pages/stats/support-performance/agents/AgentsTableConfig'
 import css from 'pages/stats/support-performance/busiest-times-of-days/BusiestTimesOfDays.less'
 import {

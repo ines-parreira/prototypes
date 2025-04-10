@@ -1,7 +1,7 @@
 import React, { PropsWithChildren } from 'react'
 
+import DashboardSection from 'pages/stats/common/layout/DashboardSection'
 import { DashboardSectionSchema } from 'pages/stats/dashboards/types'
-import DashboardSection from 'pages/stats/DashboardSection'
 
 type Props = {
     schema: DashboardSectionSchema

@@ -13,7 +13,7 @@ import {
 } from 'fixtures/productPrices'
 import { useCleanStatsFilters } from 'hooks/reporting/useCleanStatsFilters'
 import { FilterKey } from 'models/stat/types'
-import { AnalyticsFooter } from 'pages/stats/AnalyticsFooter'
+import { AnalyticsFooter } from 'pages/stats/common/AnalyticsFooter'
 import { AUTO_QA_FILTER_KEYS } from 'pages/stats/common/filters/constants'
 import FiltersPanelWrapper from 'pages/stats/common/filters/FiltersPanelWrapper/FiltersPanelWrapper'
 import { ChartsActionMenu } from 'pages/stats/dashboards/ChartsActionMenu/ChartsActionMenu'
@@ -44,7 +44,7 @@ jest.mock(
 jest.mock('pages/stats/common/drill-down/DrillDownModal.tsx', () => ({
     DrillDownModal: () => null,
 }))
-jest.mock('pages/stats/AnalyticsFooter.tsx')
+jest.mock('pages/stats/common/AnalyticsFooter.tsx')
 const AnalyticsFooterMock = assumeMock(AnalyticsFooter)
 jest.mock(
     'pages/stats/support-performance/busiest-times-of-days/BusiestTimesOfDaysTable',

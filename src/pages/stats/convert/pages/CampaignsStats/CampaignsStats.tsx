@@ -14,6 +14,9 @@ import { CONVERT_ROUTE_PARAM_NAME } from 'pages/convert/common/constants'
 import { useIsConvertPerformanceViewEnabled } from 'pages/convert/common/hooks/useIsConvertPerformanceViewEnabled'
 import { ConvertRouteParams } from 'pages/convert/common/types'
 import FiltersPanelWrapper from 'pages/stats/common/filters/FiltersPanelWrapper'
+import DashboardGridCell from 'pages/stats/common/layout/DashboardGridCell'
+import DashboardSection from 'pages/stats/common/layout/DashboardSection'
+import StatsPage from 'pages/stats/common/layout/StatsPage'
 import { CampaignsLegacyReportConfig } from 'pages/stats/convert/campaigns/CampaignsLegacyReportConfig'
 import { CAMPAIGNS_REPORT_TITLE } from 'pages/stats/convert/campaigns/CampaignsPerformanceReportConfig'
 import DownloadOverviewData from 'pages/stats/convert/components/DownloadOverviewData'
@@ -22,9 +25,6 @@ import { RevenueStatsContent } from 'pages/stats/convert/containers/RevenueStats
 import { useShopifyIntegrations } from 'pages/stats/convert/hooks/useShopifyIntegrations'
 import css from 'pages/stats/convert/pages/CampaignsStats/CampaignsStats.less'
 import { CampaignStatsFilters } from 'pages/stats/convert/providers/CampaignStatsFilters'
-import DashboardGridCell from 'pages/stats/DashboardGridCell'
-import DashboardSection from 'pages/stats/DashboardSection'
-import StatsPage from 'pages/stats/StatsPage'
 
 type CampaignsStatsProps = {
     isConvertSubscriber: boolean

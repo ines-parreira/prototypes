@@ -21,8 +21,8 @@ import {
     ProductTableColumn,
     ProductTableContentCell,
 } from 'pages/stats/automate/aiSalesAgent/types/productTable'
+import { NoDataAvailable } from 'pages/stats/common/components/NoDataAvailable'
 import { formatNumber } from 'pages/stats/common/utils'
-import { NoDataAvailable } from 'pages/stats/NoDataAvailable'
 
 import css from './TopProductRecommendationTableStats.less'
 

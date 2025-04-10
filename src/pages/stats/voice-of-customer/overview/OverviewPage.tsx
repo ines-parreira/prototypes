@@ -1,6 +1,4 @@
-import React from 'react'
-
-import StatsPage from 'pages/stats/StatsPage'
+import StatsPage from 'pages/stats/common/layout/StatsPage'
 
 export const OVERVIEW_PAGE_TITLE = 'Overview'
 

@@ -3,20 +3,22 @@ import React, { ComponentProps } from 'react'
 import { fromJS } from 'immutable'
 
 import { account } from 'fixtures/account'
-import { ActivateCustomerSatisfactionSurveyTip } from 'pages/stats/ActivateCustomerSatisfactionSurveyTip'
 import { TrendCard } from 'pages/stats/common/components/TrendCard'
+import { ActivateCustomerSatisfactionSurveyTip } from 'pages/stats/support-performance/components/ActivateCustomerSatisfactionSurveyTip'
+import { SupportPerformanceTip } from 'pages/stats/support-performance/components/SupportPerformanceTip'
 import { CustomerSatisfactionTrendCard } from 'pages/stats/support-performance/overview/charts/CustomerSatisfactionTrendCard'
 import { STATS_TIPS_VISIBILITY_KEY } from 'pages/stats/support-performance/overview/SupportPerformanceOverviewConfig'
-import { SupportPerformanceTip } from 'pages/stats/SupportPerformanceTip'
 import { AccountSettingType } from 'state/currentAccount/types'
 import { RootState } from 'state/types'
 import { assumeMock, renderWithStore } from 'utils/testing'
 
-jest.mock('pages/stats/ActivateCustomerSatisfactionSurveyTip')
+jest.mock(
+    'pages/stats/support-performance/components/ActivateCustomerSatisfactionSurveyTip',
+)
 const ActivateCustomerSatisfactionSurveyTipMock = assumeMock(
     ActivateCustomerSatisfactionSurveyTip,
 )
-jest.mock('pages/stats/SupportPerformanceTip')
+jest.mock('pages/stats/support-performance/components/SupportPerformanceTip')
 const SupportPerformanceTipMock = assumeMock(SupportPerformanceTip)
 jest.mock('pages/stats/common/components/TrendCard')
 const TrendCardMock = assumeMock(TrendCard)

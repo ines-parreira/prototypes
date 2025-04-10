@@ -31,6 +31,8 @@ import Loader from 'pages/common/components/Loader/Loader'
 import PageHeader from 'pages/common/components/PageHeader'
 import withFeaturePaywall from 'pages/common/utils/withFeaturePaywall'
 import { useGetAIArticles } from 'pages/settings/helpCenter/queries'
+import StatsPage from 'pages/stats/common/layout/StatsPage'
+import StatWrapper from 'pages/stats/common/layout/StatWrapper'
 import { DEPRECATED_SelfServiceStatsPageFilters } from 'pages/stats/self-service/DEPRECATED_SelfServiceStatsPageFilters'
 import { AccountFeature } from 'state/currentAccount/types'
 import { getIntegrations } from 'state/integrations/selectors'
@@ -42,8 +44,6 @@ import { assetsUrl } from 'utils'
 import TableStat from '../common/components/charts/TableStat/TableStat'
 import { DEFAULT_LOCALE } from '../common/utils'
 import AIBanner from '../help-center/components/AIBanner'
-import StatsPage from '../StatsPage'
-import StatWrapper from '../StatWrapper'
 import {
     AUTOMATION_SELF_SERVICE_STAT_NAME,
     HELP_URL,

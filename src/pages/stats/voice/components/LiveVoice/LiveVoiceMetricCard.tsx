@@ -1,12 +1,12 @@
 import { Metric } from 'hooks/reporting/metrics'
-import BigNumberMetric from 'pages/stats/BigNumberMetric'
+import BigNumberMetric from 'pages/stats/common/components/BigNumberMetric'
+import MetricCard from 'pages/stats/common/components/MetricCard'
 import { DrillDownModalTrigger } from 'pages/stats/common/drill-down/DrillDownModalTrigger'
 import {
     formatMetricValue,
     MetricValueFormat,
     NOT_AVAILABLE_PLACEHOLDER,
 } from 'pages/stats/common/utils'
-import MetricCard from 'pages/stats/MetricCard'
 import { VoiceMetric } from 'state/ui/stats/types'
 
 type FullProps = {

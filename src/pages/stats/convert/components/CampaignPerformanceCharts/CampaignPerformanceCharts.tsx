@@ -1,11 +1,11 @@
 import { useGridSize } from 'hooks/useGridSize'
+import DashboardGridCell from 'pages/stats/common/layout/DashboardGridCell'
+import DashboardSection from 'pages/stats/common/layout/DashboardSection'
 import {
     CampaignsChart,
     CampaignsPerformanceReportConfig,
 } from 'pages/stats/convert/campaigns/CampaignsPerformanceReportConfig'
-import DashboardGridCell from 'pages/stats/DashboardGridCell'
 import { DashboardComponent } from 'pages/stats/dashboards/DashboardComponent'
-import DashboardSection from 'pages/stats/DashboardSection'
 
 const CampaignPerformanceCharts = () => {
     const getGridCellSize = useGridSize()

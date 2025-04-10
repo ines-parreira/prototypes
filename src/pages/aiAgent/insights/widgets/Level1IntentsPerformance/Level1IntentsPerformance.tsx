@@ -8,7 +8,7 @@ import useAppSelector from 'hooks/useAppSelector'
 import { useAiAgentNavigation } from 'pages/aiAgent/hooks/useAiAgentNavigation'
 import { useGetCustomTicketsFieldsDefinitionData } from 'pages/aiAgent/insights/IntentTableWidget/hooks/useGetCustomTicketsFieldsDefinitionData'
 import { IntentsPerformance } from 'pages/aiAgent/insights/widgets/IntentsPerformance/IntentsPerformance'
-import PerformanceTip from 'pages/stats/PerformanceTip'
+import PerformanceTip from 'pages/stats/common/components/PerformanceTip'
 import { getPageStatsFiltersWithLogicalOperators } from 'state/stats/selectors'
 import { AIInsightsMetric } from 'state/ui/stats/types'
 

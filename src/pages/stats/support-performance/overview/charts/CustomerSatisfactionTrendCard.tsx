@@ -1,14 +1,14 @@
 import useAppSelector from 'hooks/useAppSelector'
 import useLocalStorage from 'hooks/useLocalStorage'
-import { ActivateCustomerSatisfactionSurveyTip } from 'pages/stats/ActivateCustomerSatisfactionSurveyTip'
 import { TrendCard } from 'pages/stats/common/components/TrendCard'
 import { DashboardChartProps } from 'pages/stats/dashboards/types'
+import { ActivateCustomerSatisfactionSurveyTip } from 'pages/stats/support-performance/components/ActivateCustomerSatisfactionSurveyTip'
+import { SupportPerformanceTip } from 'pages/stats/support-performance/components/SupportPerformanceTip'
 import {
     OverviewMetric,
     OverviewMetricConfig,
     STATS_TIPS_VISIBILITY_KEY,
 } from 'pages/stats/support-performance/overview/SupportPerformanceOverviewConfig'
-import { SupportPerformanceTip } from 'pages/stats/SupportPerformanceTip'
 import { MetricName } from 'services/reporting/constants'
 import {
     currentAccountHasFeature,

@@ -26,7 +26,7 @@ jest.mock('pages/stats/voice/components/LiveVoice/LiveVoiceMetrics')
 jest.mock('pages/stats/voice/components/LiveVoice/LiveVoiceAgentsSection')
 jest.mock('pages/stats/voice/components/LiveVoice/LiveVoiceCallTable')
 jest.mock(
-    'pages/stats/StatsPage',
+    'pages/stats/common/layout/StatsPage',
     () =>
         ({ children }: { children: React.ReactNode }) => <div>{children}</div>,
 )

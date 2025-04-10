@@ -4,7 +4,7 @@ import { render, screen } from '@testing-library/react'
 import { fromJS } from 'immutable'
 
 import { agents } from 'fixtures/agents'
-import css from 'pages/stats/AnalyticsTable.less'
+import css from 'pages/stats/common/components/Table/AnalyticsTable.less'
 import { AgentsSummaryRow } from 'pages/stats/support-performance/agents/AgentsSummaryRow'
 import {
     getSummaryQuery,

@@ -7,19 +7,19 @@ import { useStatsFilters } from 'hooks/reporting/support-performance/useStatsFil
 import useAppSelector from 'hooks/useAppSelector'
 import { Channel } from 'models/channel/types'
 import BodyCell from 'pages/common/components/table/cells/BodyCell'
-import css from 'pages/stats/AnalyticsTable.less'
+import css from 'pages/stats/common/components/Table/AnalyticsTable.less'
+import heatmapCss from 'pages/stats/common/components/Table/heatmap.less'
+import { TruncateCellContent } from 'pages/stats/common/components/TruncateCellContent'
 import { DrillDownModalTrigger } from 'pages/stats/common/drill-down/DrillDownModalTrigger'
 import {
     formatMetricValue,
     NOT_AVAILABLE_PLACEHOLDER,
 } from 'pages/stats/common/utils'
-import heatmapCss from 'pages/stats/heatmap.less'
 import { METRIC_COLUMN_WIDTH } from 'pages/stats/support-performance/agents/AgentsTableConfig'
 import {
     ChannelColumnConfig,
     LeadColumn,
 } from 'pages/stats/support-performance/channels/ChannelsTableConfig'
-import { TruncateCellContent } from 'pages/stats/TruncateCellContent'
 import { getHeatmapMode } from 'state/ui/stats/channelsSlice'
 import { ChannelsTableColumns } from 'state/ui/stats/types'
 

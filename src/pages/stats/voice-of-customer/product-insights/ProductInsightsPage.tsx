@@ -1,4 +1,4 @@
-import StatsPage from 'pages/stats/StatsPage'
+import StatsPage from 'pages/stats/common/layout/StatsPage'
 
 export const PRODUCT_INSIGHTS_PAGE_TITLE = 'Product insights'
 

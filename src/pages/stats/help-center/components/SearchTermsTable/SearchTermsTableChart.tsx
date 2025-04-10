@@ -1,8 +1,8 @@
-import ChartCard from 'pages/stats/ChartCard'
+import ChartCard from 'pages/stats/common/components/ChartCard'
+import { NoDataAvailable } from 'pages/stats/common/components/NoDataAvailable'
 import { DashboardChartProps } from 'pages/stats/dashboards/types'
 import { SearchTermsTable } from 'pages/stats/help-center/components/SearchTermsTable/SearchTermsTable'
 import { useSelectedHelpCenter } from 'pages/stats/help-center/hooks/useSelectedHelpCenter'
-import { NoDataAvailable } from 'pages/stats/NoDataAvailable'
 
 export const SearchTermsTableChart = ({
     chartId,

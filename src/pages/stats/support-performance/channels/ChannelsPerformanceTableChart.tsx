@@ -1,4 +1,4 @@
-import ChartCard from 'pages/stats/ChartCard'
+import ChartCard from 'pages/stats/common/components/ChartCard'
 import { DashboardChartProps } from 'pages/stats/dashboards/types'
 import { ChannelsCardExtra } from 'pages/stats/support-performance/channels/ChannelsCardExtra'
 import { ChannelsTable } from 'pages/stats/support-performance/channels/ChannelsTable'

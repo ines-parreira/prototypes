@@ -2,7 +2,7 @@ import { Card } from '@gorgias/analytics-ui-kit'
 import { Badge } from '@gorgias/merchant-ui-kit'
 
 import SelectField from 'pages/common/forms/SelectField/SelectField'
-import { NoDataAvailable } from 'pages/stats/NoDataAvailable'
+import { NoDataAvailable } from 'pages/stats/common/components/NoDataAvailable'
 import { TooltipData } from 'pages/stats/types'
 
 import {

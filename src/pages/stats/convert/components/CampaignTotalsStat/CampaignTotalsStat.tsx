@@ -1,8 +1,8 @@
+import DashboardGridCell from 'pages/stats/common/layout/DashboardGridCell'
 import {
     CampaignsLegacyChart,
     CampaignsLegacyReportConfig,
 } from 'pages/stats/convert/campaigns/CampaignsLegacyReportConfig'
-import DashboardGridCell from 'pages/stats/DashboardGridCell'
 import { DashboardComponent } from 'pages/stats/dashboards/DashboardComponent'
 
 const FIRST_ROW_SIZE = 6

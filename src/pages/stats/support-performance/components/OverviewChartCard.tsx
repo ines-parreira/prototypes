@@ -1,6 +1,6 @@
 import { useStatsFilters } from 'hooks/reporting/support-performance/useStatsFilters'
 import { TimeSeriesHook } from 'hooks/reporting/useTimeSeries'
-import ChartCard from 'pages/stats/ChartCard'
+import ChartCard from 'pages/stats/common/components/ChartCard'
 import BarChart from 'pages/stats/common/components/charts/BarChart/BarChart'
 import LineChart from 'pages/stats/common/components/charts/LineChart/LineChart'
 import { formatTimeSeriesData } from 'pages/stats/common/utils'

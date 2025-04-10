@@ -1,5 +1,5 @@
 import { useTicketsFieldTrend } from 'hooks/reporting/useTicketsFieldTrend'
-import ChartCard from 'pages/stats/ChartCard'
+import ChartCard from 'pages/stats/common/components/ChartCard'
 import LineChart from 'pages/stats/common/components/charts/LineChart/LineChart'
 import { formatLabeledTooltipTimeSeriesData } from 'pages/stats/common/utils'
 import { LINES_COLORS } from 'pages/stats/constants'

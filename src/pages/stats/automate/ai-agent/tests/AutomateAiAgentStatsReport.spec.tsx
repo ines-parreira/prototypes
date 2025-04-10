@@ -70,7 +70,7 @@ jest.mock('pages/stats/report-chart-restrictions/useReportChartRestrictions')
 const useReportChartRestrictionsMock = assumeMock(useReportChartRestrictions)
 
 jest.mock(
-    'pages/stats/StatsPage',
+    'pages/stats/common/layout/StatsPage',
     () =>
         ({ children }: PropsWithChildren<any>) => (
             <>
@@ -138,7 +138,7 @@ const AutomatedInteractionsMetricMock = assumeMock(AutomatedInteractionsMetric)
 jest.mock('pages/stats/common/components/charts/LineChart/LineChart')
 const LineChartMock = assumeMock(LineChart)
 
-jest.mock('pages/stats/AnalyticsFooter', () => ({
+jest.mock('pages/stats/common/AnalyticsFooter', () => ({
     AnalyticsFooter: () => <div>analytics-footer</div>,
 }))
 

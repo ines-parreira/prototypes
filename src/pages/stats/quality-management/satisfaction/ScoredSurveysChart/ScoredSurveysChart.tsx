@@ -7,9 +7,9 @@ import {
 import { useStatsFilters } from 'hooks/reporting/support-performance/useStatsFilters'
 import { opposite, OrderDirection } from 'models/api/types'
 import { NumberedPagination } from 'pages/common/components/Paginations'
-import ChartCard from 'pages/stats/ChartCard'
+import ChartCard from 'pages/stats/common/components/ChartCard'
+import { NoDataAvailable } from 'pages/stats/common/components/NoDataAvailable'
 import { DashboardChartProps } from 'pages/stats/dashboards/types'
-import { NoDataAvailable } from 'pages/stats/NoDataAvailable'
 import ScoredSurveysTable, {
     TableState,
 } from 'pages/stats/quality-management/satisfaction/ScoredSurveysChart/ScoredSurveysTable'

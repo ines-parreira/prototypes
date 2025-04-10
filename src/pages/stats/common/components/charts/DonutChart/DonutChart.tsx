@@ -16,10 +16,10 @@ import typography from '@gorgias/design-tokens/dist/tokens/typography.json'
 import { Skeleton } from '@gorgias/merchant-ui-kit'
 
 import { useTheme } from 'core/theme'
-import { ChartTooltip } from 'pages/stats/ChartTooltip'
 import css from 'pages/stats/common/components/charts/Chart.less'
+import { ChartTooltip } from 'pages/stats/common/components/charts/ChartTooltip'
+import Legend from 'pages/stats/common/components/charts/Legend'
 import { useCustomTooltip } from 'pages/stats/common/useCustomTooltip'
-import Legend from 'pages/stats/Legend'
 import { OneDimensionalDataItem } from 'pages/stats/types'
 import { renderTickLabelAsNumber } from 'pages/stats/utils'
 
