@@ -13,6 +13,7 @@ import {
     isCustomField,
     isCustomFieldAIManagedType,
 } from 'custom-fields/types'
+import useAppDispatch from 'hooks/useAppDispatch'
 import UnsavedChangesPrompt from 'pages/common/components/UnsavedChangesPrompt'
 import Caption from 'pages/common/forms/Caption/Caption'
 import InputField from 'pages/common/forms/input/InputField'
@@ -22,6 +23,8 @@ import DropdownInput from 'pages/settings/customFields/components/DropdownInput'
 import css from 'pages/settings/customFields/components/FieldForm.less'
 import RequirementTypeInput from 'pages/settings/customFields/components/RequirementTypeInput'
 import TypeSelectInput from 'pages/settings/customFields/components/TypeSelectInput'
+import { notify } from 'state/notifications/actions'
+import { NotificationStatus } from 'state/notifications/types'
 
 const SAVE_BUTTON_ID = 'custom-fields-form-save-button'
 const TOOLTIP_MESSAGE =
@@ -52,6 +55,8 @@ function sanitizeInput(input: CustomFieldInput): CustomFieldInput {
 }
 
 export default function FieldForm(props: FieldFormProps) {
+    const dispatch = useAppDispatch()
+
     const objectTypeSettings = OBJECT_TYPE_SETTINGS[props.field.object_type]
     const customFieldTitleLabel = objectTypeSettings.TITLE_LABEL
     const isAIManaged = isCustomFieldAIManagedType(props.field.managed_type)
@@ -125,6 +130,15 @@ export default function FieldForm(props: FieldFormProps) {
 
     // When navigating away, save the data then navigate to the target location
     const handleSaveOnLeave = async () => {
+        if (!isFormValid) {
+            dispatch(
+                notify({
+                    title: 'Unable to save, please complete all required fields',
+                    status: NotificationStatus.Error,
+                }),
+            )
+            throw new Error('Error saving custom field')
+        }
         const ok = await save()
         if (!ok) {
             throw new Error('Error saving custom field')

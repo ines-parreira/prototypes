@@ -11,10 +11,18 @@ import {
     ticketDropdownFieldDefinition,
     ticketInputFieldDefinition,
 } from 'fixtures/customField'
+import useAppDispatch from 'hooks/useAppDispatch'
 import ArchiveConfirmationModal from 'pages/settings/customFields/components/ArchiveConfirmationModal'
 import DropdownInput from 'pages/settings/customFields/components/DropdownInput'
 import FieldForm from 'pages/settings/customFields/components/FieldForm'
+import { notify } from 'state/notifications/actions'
+import { NotificationStatus } from 'state/notifications/types'
 import { assumeMock, getLastMockCall, renderWithRouter } from 'utils/testing'
+
+jest.mock('hooks/useAppDispatch', () => jest.fn())
+const useAppDispatchMock = assumeMock(useAppDispatch)
+jest.mock('state/notifications/actions')
+const notifyMock = assumeMock(notify)
 
 jest.mock('pages/settings/customFields/components/DropdownInput', () =>
     jest.fn(() => <div>Dropdown</div>),
@@ -47,6 +55,9 @@ describe('<FieldForm/>', () => {
                 mutateAsync: updateMutateMock,
             } as unknown as ReturnType<typeof useUpdateCustomFieldArchiveStatus>
         })
+        useAppDispatchMock.mockClear()
+        useAppDispatchMock.mockReturnValue(jest.fn())
+        notifyMock.mockClear()
     })
 
     it('should show archiving status and disable type change on edit', () => {
@@ -247,6 +258,25 @@ describe('<FieldForm/>', () => {
             expect(history.location.pathname).toBe('/')
         },
     )
+
+    it('should show an error notification if the form is invalid from saving in unsaved modal', async () => {
+        const { history } = renderWithRouter(<FieldForm {...defaultProps} />)
+
+        const nameInput = screen.getByLabelText(/Name/)
+        await userEvent.clear(nameInput)
+
+        history.push('/test')
+
+        await userEvent.click(
+            screen.getByRole('button', { name: 'Save Changes' }),
+        )
+
+        expect(notifyMock).toHaveBeenCalledWith({
+            title: 'Unable to save, please complete all required fields',
+            status: NotificationStatus.Error,
+        })
+        expect(defaultProps.onSubmit).not.toHaveBeenCalled()
+    })
 
     it('should not trigger a submit when pressing enter in a field', () => {
         const props = {
