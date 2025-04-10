@@ -27,6 +27,11 @@ on:
         description: Build artifact name
         required: true
         type: string
+      force-deploy-commit:
+        description: Force deploy commit
+        type: string
+        required: false
+        default: ''
 
 jobs:
   build:
@@ -35,6 +40,8 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
+        with:
+          ref: ${{ inputs.force-deploy-commit != '' && inputs.force-deploy-commit || github.sha }}
 
       - name: Restore cache
         uses: actions/cache@v4
