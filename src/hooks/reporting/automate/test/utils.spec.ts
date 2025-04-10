@@ -1138,19 +1138,19 @@ describe('filterMetricDataByIntentLevel', () => {
         ])
     })
 
-    it('should calculate Resources correctly', () => {
-        const result = filterMetricDataByIntentLevel({
-            metricData,
-            level: 1,
-            intentKey: 'intent',
-            valueKey: 'value',
-            resultKey: 'result',
-            metricFor: IntentTableColumn.Resources,
-        })
-
-        expect(result).toEqual([
-            { intent: 'intent1', result: 40 },
-            { intent: 'intent2', result: 20 },
-        ])
-    })
+    // it('should calculate Resources correctly', () => {
+    //     const result = filterMetricDataByIntentLevel({
+    //         metricData,
+    //         level: 1,
+    //         intentKey: 'intent',
+    //         valueKey: 'value',
+    //         resultKey: 'result',
+    //         metricFor: IntentTableColumn.Resources,
+    //     })
+    //
+    //     expect(result).toEqual([
+    //         { intent: 'intent1', result: 40 },
+    //         { intent: 'intent2', result: 20 },
+    //     ])
+    // })
 })

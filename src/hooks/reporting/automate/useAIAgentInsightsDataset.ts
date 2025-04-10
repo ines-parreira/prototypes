@@ -605,24 +605,25 @@ const useFetchAllIntentsMetrics = (
         metricFor: IntentTableColumn.AvgCustomerSatisfaction,
     })
 
-    const aiAgentKnowledgeResourcePerIntent =
-        useAiAgentKnowledgeResourcePerIntent(
-            filters,
-            timezone,
-            sorting,
-            intentId,
-            integrationIds,
-        )
-
-    const aiAgentKnowledgeResourcePerIntentPerIntentLevel =
-        filterMetricDataByIntentLevel({
-            metricData: aiAgentKnowledgeResourcePerIntent.data,
-            level: INTENT_LEVEL,
-            intentKey: 'TicketEnriched.customField',
-            valueKey: 'resources',
-            resultKey: 'resources',
-            metricFor: IntentTableColumn.Resources,
-        })
+    // TODO uncomment when AI Agent Knowledge Resource per intent events are available with all needed data
+    // const aiAgentKnowledgeResourcePerIntent =
+    //     useAiAgentKnowledgeResourcePerIntent(
+    //         filters,
+    //         timezone,
+    //         sorting,
+    //         intentId,
+    //         integrationIds,
+    //     )
+    //
+    // const aiAgentKnowledgeResourcePerIntentPerIntentLevel =
+    //     filterMetricDataByIntentLevel({
+    //         metricData: aiAgentKnowledgeResourcePerIntent.data,
+    //         level: INTENT_LEVEL,
+    //         intentKey: 'TicketEnriched.customField',
+    //         valueKey: 'resources',
+    //         resultKey: 'resources',
+    //         metricFor: IntentTableColumn.Resources,
+    //     })
 
     return {
         automationOpportunityPerIntent: {
@@ -642,8 +643,8 @@ const useFetchAllIntentsMetrics = (
             data: customerSatisfactionPerIntentLevel,
         },
         aiAgentKnowledgeResourcePerIntent: {
-            ...aiAgentKnowledgeResourcePerIntent,
-            data: aiAgentKnowledgeResourcePerIntentPerIntentLevel,
+            // ...aiAgentKnowledgeResourcePerIntent,
+            // data: aiAgentKnowledgeResourcePerIntentPerIntentLevel,
         },
     }
 }
@@ -676,7 +677,7 @@ export const useAIAgentInsightsDataset = (
         ticketsPerIntent,
         successRatePerIntent,
         customerSatisfactionPerIntent,
-        aiAgentKnowledgeResourcePerIntent,
+        // aiAgentKnowledgeResourcePerIntent,
     } = useFetchAllIntentsMetrics(
         filters,
         timezone,
@@ -706,16 +707,16 @@ export const useAIAgentInsightsDataset = (
             metricKey: 'avgCustomerSatisfaction',
             resultKey: 'avgCustomerSatisfaction',
         },
-        {
-            data: aiAgentKnowledgeResourcePerIntent.data || [],
-            metricKey: 'resources',
-            resultKey: 'resources',
-            itemKey: 'TicketEnriched.customField',
-        },
+        // {
+        //     data: aiAgentKnowledgeResourcePerIntent.data || [],
+        //     metricKey: 'resources',
+        //     resultKey: 'resources',
+        //     itemKey: 'TicketEnriched.customField',
+        // },
     ]
 
-    metrics.forEach(({ data, metricKey, resultKey, itemKey }) =>
-        addMetricDataToResults(results, data, metricKey, resultKey, itemKey),
+    metrics.forEach(({ data, metricKey, resultKey }) =>
+        addMetricDataToResults(results, data, metricKey, resultKey),
     )
 
     // Convert object to array of objects
@@ -725,8 +726,8 @@ export const useAIAgentInsightsDataset = (
         automationOpportunityPerIntent.isFetching ||
         ticketsPerIntent.isFetching ||
         successRatePerIntent.isFetching ||
-        customerSatisfactionPerIntent.isFetching ||
-        aiAgentKnowledgeResourcePerIntent.isFetching
+        customerSatisfactionPerIntent.isFetching
+    // aiAgentKnowledgeResourcePerIntent.isFetching
 
     return {
         data: convertedArray,

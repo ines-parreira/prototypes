@@ -37,7 +37,6 @@ import {
     IntentAvgCsatCellContent,
     IntentDefaultCellContent,
     IntentNameCellContent,
-    IntentResourcesCellContent,
     LoadingIntentCellContent,
 } from './IntentTableCells'
 import {
@@ -105,8 +104,8 @@ export const IntentTable = ({
                 return IntentAutomationOpportunitiesCellContent
             case IntentTableColumn.AvgCustomerSatisfaction:
                 return IntentAvgCsatCellContent
-            case IntentTableColumn.Resources:
-                return IntentResourcesCellContent
+            // case IntentTableColumn.Resources:
+            //     return IntentResourcesCellContent
             default:
                 return IntentDefaultCellContent
         }

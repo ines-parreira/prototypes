@@ -770,9 +770,9 @@ export const filterMetricDataByIntentLevel = ({
                 adjustedData[intent].sum += value
                 break
             case IntentTableColumn.Tickets:
-            case IntentTableColumn.Resources:
-                adjustedData[intent].sum += value
-                break
+            // case IntentTableColumn.Resources:
+            //     adjustedData[intent].sum += value
+            //     break
             case IntentTableColumn.SuccessRate:
                 adjustedData[intent].length += total
                 adjustedData[intent].sum += value
@@ -800,7 +800,7 @@ export const filterMetricDataByIntentLevel = ({
                                 : null,
                     }
                 case IntentTableColumn.Tickets:
-                case IntentTableColumn.Resources:
+                    // case IntentTableColumn.Resources:
                     return {
                         [intentKey]: intent,
                         [resultKey]: adjustedData[intent].sum,
