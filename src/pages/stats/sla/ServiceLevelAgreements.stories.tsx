@@ -25,24 +25,23 @@ const slaPoliciesResponse = {
     uri: '/api/sla-policies?',
     data: [
         {
-            uuid: '1dab6138-33c8-4b88-bb52-71bebc930996',
-            version: 1,
+            uuid: 'c489f8ec-0ca8-404b-8c4b-153cb578e212',
+            version: 4,
             metrics: [
                 {
-                    name: 'FRT',
-                    threshold: 2,
-                    unit: 'hour',
-                },
-                {
                     name: 'RT',
-                    threshold: 20,
-                    unit: 'hour',
+                    threshold: 10,
+                    unit: 'minute',
                 },
             ],
-            name: 'All Email',
-            priority: '0.75',
-            target_channels: ['email'],
-            created_datetime: '2024-06-05T13:35:37.880220+00:00',
+            name: 'Resolution Time Policy',
+            priority: '0.263671875',
+            target_channels: ['chat'],
+            business_hours_only: true,
+            created_datetime: '2025-03-26T09:14:58.137932+00:00',
+            updated_datetime: null,
+            archived_datetime: null,
+            deactivated_datetime: null,
         },
     ],
 }
@@ -151,12 +150,9 @@ const Template: StoryFn<ComponentProps<typeof ServiceLevelAgreements>> = () => {
             defaultState as any,
         )
 
-    appQueryClient.setQueryData(
-        ['slaPolicies', 'listSlaPolicies', { queryParams: undefined }],
-        {
-            data: slaPoliciesResponse,
-        },
-    )
+    appQueryClient.setQueryData(['slaPolicies', 'listSlaPolicies'], {
+        data: slaPoliciesResponse,
+    })
 
     appQueryClient.setQueryData(
         reportingKeys.post([
