@@ -109,6 +109,23 @@ describe('getNotificationParams', () => {
         })
     })
 
+    it('should return correct params for DomainScrapingFinished', () => {
+        const payload = {
+            ...basePayload,
+            ai_agent_notification_type:
+                AiAgentNotificationType.DomainScrapingFinished,
+        }
+
+        const result = getNotificationParams(payload, null)
+
+        expect(result).toEqual({
+            title: 'Your AI Agent knowledge is ready!',
+            subtitle:
+                'We’ve finished syncing your website so AI Agent can use it to answer tickets.',
+            redirectTo: '/app/ai-agent/overview',
+        })
+    })
+
     it('should return null for unsupported notification series', () => {
         const payload = {
             ...basePayload,
@@ -163,6 +180,15 @@ describe('getNotificationReceivedDatetimePayload', () => {
         )
         expect(result).toHaveProperty(
             'firstAiAgentTicketNotificationReceivedDatetime',
+        )
+    })
+
+    it('should return correct received datetime payload for DomainScrapingFinished', () => {
+        const result = getNotificationReceivedDatetimePayload(
+            AiAgentNotificationType.DomainScrapingFinished,
+        )
+        expect(result).toHaveProperty(
+            'domainScrapingFinishedNotificationReceivedDatetime',
         )
     })
 
@@ -257,6 +283,19 @@ describe('isNotificationAlreadyReceived', () => {
         expect(result).toBe(true)
     })
 
+    it('should return true if DomainScrapingFinished notification has been received', () => {
+        const state = {
+            ...baseState,
+            domainScrapingFinishedNotificationReceivedDatetime:
+                '2024-12-01T12:00:00Z',
+        }
+        const result = isNotificationAlreadyReceived(
+            AiAgentNotificationType.DomainScrapingFinished,
+            state,
+        )
+        expect(result).toBe(true)
+    })
+
     it('should return false for unsupported notification types', () => {
         const result = isNotificationAlreadyReceived(
             'unsupported-series' as AiAgentNotificationType,
@@ -331,6 +370,18 @@ describe('getNotificationReceivedDatetime', () => {
             {
                 ...baseState,
                 firstAiAgentTicketNotificationReceivedDatetime:
+                    '2024-12-01T12:00:00Z',
+            },
+        )
+        expect(result).toBe('2024-12-01T12:00:00Z')
+    })
+
+    it('should return correct received datetime for DomainScrapingFinished', () => {
+        const result = getNotificationReceivedDatetime(
+            AiAgentNotificationType.DomainScrapingFinished,
+            {
+                ...baseState,
+                domainScrapingFinishedNotificationReceivedDatetime:
                     '2024-12-01T12:00:00Z',
             },
         )

@@ -178,6 +178,7 @@ export type OnboardingNotificationState = {
     finishAiAgentSetupNotificationReceivedDatetime: string | null
     activateAiAgentNotificationReceivedDatetime: string | null
     meetAiAgentNotificationReceivedDatetime: string | null
+    domainScrapingFinishedNotificationReceivedDatetime: string | null
     firstAiAgentTicketNotificationReceivedDatetime: string | null
     onboardingState: AiAgentOnboardingState | null
 }

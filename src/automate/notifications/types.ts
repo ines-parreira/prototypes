@@ -4,6 +4,7 @@ export enum AiAgentNotificationType {
     ActivateAiAgent = 'activate-ai-agent',
     MeetAiAgent = 'meet-ai-agent',
     FirstAiAgentTicket = 'first-ai-agent-ticket',
+    DomainScrapingFinished = 'domain-scraping-finished',
 }
 
 export type AiAgentNotificationPayload = {
