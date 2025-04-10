@@ -1,3 +1,4 @@
+import { AiSalesAgentChart } from 'pages/stats/automate/aiSalesAgent/AiSalesAgentMetricsConfig'
 import { MetricsConfig } from 'pages/stats/common/drill-down/DrillDownTableConfig'
 import { AutoQAAgentsTableColumn } from 'pages/stats/support-performance/auto-qa/AutoQAAgentsTableConfig'
 import { OverviewMetric } from 'pages/stats/support-performance/overview/SupportPerformanceOverviewConfig'
@@ -62,6 +63,7 @@ export const hiddenMetrics: DrillDownMetric['metricName'][] = [
     VoiceAgentsMetric.AgentInboundMissedCalls,
     VoiceAgentsMetric.AgentOutboundCalls,
     VoiceAgentsMetric.AgentAverageTalkTime,
+    AiSalesAgentChart.AiSalesAgentSuccessRate,
 ]
 
 describe('MetricsConfig', () => {

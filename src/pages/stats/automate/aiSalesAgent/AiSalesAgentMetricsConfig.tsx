@@ -3,7 +3,10 @@ import {
     MetricTrendHook,
 } from 'hooks/reporting/useMetricTrend'
 import { TimeSeriesFetch, TimeSeriesHook } from 'hooks/reporting/useTimeSeries'
-import { totalNumberofSalesOpportunityConvFromAIAgentDrillDownQueryFactory } from 'models/reporting/queryFactories/ai-sales-agent/metrics'
+import {
+    totalNumberOfAutomatedSalesDrillDownQueryFactory,
+    totalNumberofSalesOpportunityConvFromAIAgentDrillDownQueryFactory,
+} from 'models/reporting/queryFactories/ai-sales-agent/metrics'
 import {
     fetchAverageOrderValueTrend,
     useAverageOrderValueTrend,
@@ -250,6 +253,8 @@ export const AiSalesAgentMetricConfig: Record<
         },
         useTrend: useSuccessRateTrend,
         fetchTrend: fetchSuccessRateTrend,
+        drillDownMetric: AiSalesAgentChart.AiSalesAgentSuccessRate,
+        drillDownQuery: totalNumberOfAutomatedSalesDrillDownQueryFactory,
         interpretAs: 'more-is-better',
         metricFormat: 'decimal-to-percent',
         showMetric: false,

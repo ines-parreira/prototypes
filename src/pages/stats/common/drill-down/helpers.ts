@@ -49,7 +49,10 @@ import {
     VoiceAgentsMetricsConfig,
     VoiceMetricsConfig,
 } from 'pages/stats/voice/VoiceDrillDownConfig'
-import { DrillDownMetric } from 'state/ui/stats/drillDownSlice'
+import {
+    AiSalesAgentMetrics,
+    DrillDownMetric,
+} from 'state/ui/stats/drillDownSlice'
 import {
     AgentsTableColumn,
     AIInsightsMetric,
@@ -277,6 +280,10 @@ export const getDrillDownQuery = (
             return AiSalesAgentMetricConfig[
                 AiSalesAgentChart.AiSalesAgentTotalSalesConv
             ].drillDownQuery!
+        case AiSalesAgentChart.AiSalesAgentSuccessRate:
+            return AiSalesAgentMetricConfig[
+                AiSalesAgentChart.AiSalesAgentSuccessRate
+            ].drillDownQuery!
     }
 }
 const queryBuilderWithAgentFilter =
@@ -320,6 +327,14 @@ const queryBuilderWithChannelFilter =
             sorting,
         )
     }
+
+const isAiSalesAgentMetric = (
+    metricData: DrillDownMetric,
+): metricData is AiSalesAgentMetrics => {
+    return Object.values(AiSalesAgentChart).includes(
+        metricData.metricName as AiSalesAgentChart,
+    )
+}
 
 export const getObjectType = (metricData: DrillDownMetric) =>
     DomainsConfig[MetricsConfig[metricData.metricName].domain].infoBarObjectType
@@ -468,9 +483,7 @@ export const getDrillDownMetricColumn = (
         metricTitle = TicketFieldsMetricConfig[metricData.metricName].title
         metricValueFormat =
             TicketFieldsMetricConfig[metricData.metricName].metricFormat
-    } else if (
-        metricData.metricName === AiSalesAgentChart.AiSalesAgentTotalSalesConv
-    ) {
+    } else if (isAiSalesAgentMetric(metricData)) {
         metricTitle = AiSalesAgentMetricConfig[metricData.metricName].title
         metricValueFormat =
             AiSalesAgentMetricConfig[metricData.metricName].metricFormat

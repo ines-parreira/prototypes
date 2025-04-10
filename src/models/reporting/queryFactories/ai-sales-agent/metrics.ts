@@ -252,6 +252,24 @@ export const totalNumberOfAutomatedSalesQueryFactory = (
     timezone,
 })
 
+export const totalNumberOfAutomatedSalesDrillDownQueryFactory = (
+    filters: StatsFilters,
+    timezone: string,
+    sorting?: OrderDirection,
+): ReportingQuery<AiSalesAgentConversationsCube> => ({
+    ...totalNumberOfAutomatedSalesQueryFactory(filters, timezone),
+    measures: [],
+    dimensions: [AiSalesAgentConversationsDimension.TicketId],
+    limit: DRILLDOWN_QUERY_LIMIT,
+    ...(sorting
+        ? {
+              order: [[AiSalesAgentConversationsDimension.TicketId, sorting]],
+          }
+        : {
+              order: [],
+          }),
+})
+
 export const totalNumberProductRecommendationsQueryFactory = (
     filters: StatsFilters,
     timezone: string,

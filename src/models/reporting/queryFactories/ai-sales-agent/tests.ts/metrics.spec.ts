@@ -1,7 +1,10 @@
 import { OrderDirection } from 'models/api/types'
 import { AiSalesAgentConversationsDimension } from 'models/reporting/cubes/ai-sales-agent/AiSalesAgentConversations'
 import { aiSalesAgentConversationsDefaultFiltersMembers } from 'models/reporting/queryFactories/ai-sales-agent/filters'
-import { totalNumberofSalesOpportunityConvFromAIAgentDrillDownQueryFactory } from 'models/reporting/queryFactories/ai-sales-agent/metrics'
+import {
+    totalNumberOfAutomatedSalesDrillDownQueryFactory,
+    totalNumberofSalesOpportunityConvFromAIAgentDrillDownQueryFactory,
+} from 'models/reporting/queryFactories/ai-sales-agent/metrics'
 import { ReportingFilterOperator } from 'models/reporting/types'
 import {
     DRILLDOWN_QUERY_LIMIT,
@@ -87,6 +90,96 @@ describe('totalNumberofSalesOpportunityConvFromAIAgentDrillDownQueryFactory', ()
                 [
                     AiSalesAgentConversationsDimension.TicketId,
                     OrderDirection.Asc,
+                ],
+            ],
+            timezone: 'UTC',
+        })
+    })
+})
+
+describe('totalNumberOfAutomatedSalesDrillDownQueryFactory', () => {
+    it('should build a query', () => {
+        expect(
+            totalNumberOfAutomatedSalesDrillDownQueryFactory(
+                {
+                    period: {
+                        start_datetime: '2021-01-01T00:00:00Z',
+                        end_datetime: '2021-01-02T00:00:00Z',
+                    },
+                },
+                'UTC',
+            ),
+        ).toEqual({
+            measures: [],
+            dimensions: [AiSalesAgentConversationsDimension.TicketId],
+            filters: [
+                {
+                    member: AiSalesAgentConversationsDimension.IsSalesOpportunity,
+                    operator: ReportingFilterOperator.Equals,
+                    values: ['1'],
+                },
+                {
+                    member: AiSalesAgentConversationsDimension.Outcome,
+                    operator: ReportingFilterOperator.NotEquals,
+                    values: ['handover'],
+                },
+                ...statsFiltersToReportingFilters(
+                    aiSalesAgentConversationsDefaultFiltersMembers,
+                    {
+                        period: {
+                            start_datetime: '2021-01-01T00:00:00Z',
+                            end_datetime: '2021-01-02T00:00:00Z',
+                        },
+                    },
+                ),
+            ],
+            limit: DRILLDOWN_QUERY_LIMIT,
+            order: [],
+            timezone: 'UTC',
+        })
+    })
+
+    it('should build a query with sorting', () => {
+        expect(
+            totalNumberOfAutomatedSalesDrillDownQueryFactory(
+                {
+                    period: {
+                        start_datetime: '2021-01-01T00:00:00Z',
+                        end_datetime: '2021-01-02T00:00:00Z',
+                    },
+                },
+                'UTC',
+                OrderDirection.Desc,
+            ),
+        ).toEqual({
+            measures: [],
+            dimensions: [AiSalesAgentConversationsDimension.TicketId],
+            filters: [
+                {
+                    member: AiSalesAgentConversationsDimension.IsSalesOpportunity,
+                    operator: ReportingFilterOperator.Equals,
+                    values: ['1'],
+                },
+                {
+                    member: AiSalesAgentConversationsDimension.Outcome,
+                    operator: ReportingFilterOperator.NotEquals,
+                    values: ['handover'],
+                },
+                ...statsFiltersToReportingFilters(
+                    aiSalesAgentConversationsDefaultFiltersMembers,
+                    {
+                        period: {
+                            start_datetime: '2021-01-01T00:00:00Z',
+                            end_datetime: '2021-01-02T00:00:00Z',
+                        },
+                    },
+                ),
+            ],
+            limit: DRILLDOWN_QUERY_LIMIT,
+            order: [
+                [
+                    AiSalesAgentConversationsDimension.TicketId,
+                    OrderDirection.Desc,
                 ],
             ],
             timezone: 'UTC',

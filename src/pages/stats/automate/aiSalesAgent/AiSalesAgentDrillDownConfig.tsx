@@ -21,7 +21,9 @@ const useTicketDrillDownHook = (metricData: DrillDownMetric) =>
         EnrichmentFields.TicketId,
     )
 export type AiSalesAgentDrillDownMetrics =
-    AiSalesAgentChart.AiSalesAgentTotalSalesConv
+    | AiSalesAgentChart.AiSalesAgentTotalSalesConv
+    | AiSalesAgentChart.AiSalesAgentSuccessRate
+
 export const AiSalesAgentDrillDownConfig: DomainConfig<AiSalesAgentDrillDownMetrics> =
     {
         drillDownHook: useTicketDrillDownHook,
@@ -33,6 +35,10 @@ export const AiSalesAgentDrillDownConfig: DomainConfig<AiSalesAgentDrillDownMetr
             [AiSalesAgentChart.AiSalesAgentTotalSalesConv]:
                 AiSalesAgentMetricConfig[
                     AiSalesAgentChart.AiSalesAgentTotalSalesConv
+                ],
+            [AiSalesAgentChart.AiSalesAgentSuccessRate]:
+                AiSalesAgentMetricConfig[
+                    AiSalesAgentChart.AiSalesAgentSuccessRate
                 ],
         },
     }

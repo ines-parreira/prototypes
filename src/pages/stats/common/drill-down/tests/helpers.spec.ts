@@ -1,7 +1,10 @@
 import moment from 'moment'
 
 import { VoiceCallSegment } from 'models/reporting/cubes/VoiceCallCube'
-import { totalNumberofSalesOpportunityConvFromAIAgentDrillDownQueryFactory } from 'models/reporting/queryFactories/ai-sales-agent/metrics'
+import {
+    totalNumberOfAutomatedSalesDrillDownQueryFactory,
+    totalNumberofSalesOpportunityConvFromAIAgentDrillDownQueryFactory,
+} from 'models/reporting/queryFactories/ai-sales-agent/metrics'
 import { customerSatisfactionMetricDrillDownQueryFactory } from 'models/reporting/queryFactories/support-performance/customerSatisfaction'
 import {
     customFieldsTicketCountOnCreatedDatetimePerTicketDrillDownQueryFactory,
@@ -122,6 +125,9 @@ const liveDashboardConnectedCallsListQueryFactoryMock = assumeMock(
 
 const aiSalesAgentTotalSalesConvDrillDownQueryFactoryMock = assumeMock(
     totalNumberofSalesOpportunityConvFromAIAgentDrillDownQueryFactory,
+)
+const totalNumberOfAutomatedSalesDrillDownQueryFactoryMock = assumeMock(
+    totalNumberOfAutomatedSalesDrillDownQueryFactory,
 )
 
 describe('getDrillDownQuery', () => {
@@ -834,6 +840,27 @@ describe('getDrillDownQuery', () => {
 
         expect(
             aiSalesAgentTotalSalesConvDrillDownQueryFactoryMock,
+        ).toHaveBeenCalledWith(statsFilters, timezone)
+    })
+
+    it('should be populated with AiSalesAgentSuccessRate', () => {
+        const periodStart = moment()
+        const periodEnd = periodStart.add(7, 'days')
+        const statsFilters: StatsFilters = {
+            period: {
+                end_datetime: periodEnd.toISOString(),
+                start_datetime: periodStart.toISOString(),
+            },
+        }
+        const timezone = 'someTimeZone'
+        const drillDownMetric: AiSalesAgentMetrics = {
+            metricName: AiSalesAgentChart.AiSalesAgentSuccessRate,
+        }
+
+        getDrillDownQuery(drillDownMetric)(statsFilters, timezone)
+
+        expect(
+            totalNumberOfAutomatedSalesDrillDownQueryFactoryMock,
         ).toHaveBeenCalledWith(statsFilters, timezone)
     })
 })
