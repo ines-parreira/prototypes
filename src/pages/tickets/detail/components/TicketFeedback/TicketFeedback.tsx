@@ -1,6 +1,9 @@
-import React, { useCallback } from 'react'
+import { useCallback } from 'react'
+
+import { useFlags } from 'launchdarkly-react-client-sdk'
 
 import { AutoQA } from 'auto_qa'
+import { FeatureFlagKey } from 'config/featureFlags'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useHasAgentPrivileges from 'hooks/useHasAgentPrivileges'
 import Button from 'pages/common/components/button/Button'
@@ -19,19 +22,34 @@ export default function TicketFeedback() {
     const hasAIAgent = useHasAIAgent()
     const hasAgentPrivileges = useHasAgentPrivileges()
     const messageFeedback = useAiAgentMessageFeedback()
+    const isSimplifiedFeedbackCollectionEnabled =
+        useFlags()[FeatureFlagKey.SimplifyAiAgentFeedbackCollection]
 
     const handleClickBack = useCallback(() => {
         dispatch(changeTicketMessage({ message: undefined }))
     }, [dispatch])
 
-    return (
-        <div className={css.container}>
-            {!hasAgentPrivileges && !hasAIAgent && (
+    if (!hasAgentPrivileges && !hasAIAgent) {
+        return (
+            <div className={css.container}>
                 <TicketListInfo
                     text="Unauthorized"
                     subText="You do not have permission to view ticket feedback."
                 />
-            )}
+            </div>
+        )
+    }
+
+    if (isSimplifiedFeedbackCollectionEnabled) {
+        return (
+            <div className={css.container}>
+                <AIAgentFeedbackBar />
+            </div>
+        )
+    }
+
+    return (
+        <div className={css.container}>
             {hasAgentPrivileges &&
                 (messageFeedback ? (
                     <div className={css.back}>

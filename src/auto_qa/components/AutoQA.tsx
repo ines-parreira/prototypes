@@ -1,14 +1,18 @@
 import React, { useMemo } from 'react'
 
 import cn from 'classnames'
+import { useFlags } from 'launchdarkly-react-client-sdk'
 import moment from 'moment'
 import { Link } from 'react-router-dom'
 
 import { Badge, Tooltip } from '@gorgias/merchant-ui-kit'
 
 import { TicketStatus } from 'business/types/ticket'
+import { FeatureFlagKey } from 'config/featureFlags'
 import useAppSelector from 'hooks/useAppSelector'
+import useHasAgentPrivileges from 'hooks/useHasAgentPrivileges'
 import { getTicket } from 'state/ticket/selectors'
+import TicketListInfo from 'ticket-list-view/components/TicketListInfo'
 
 import { dimensionConfig } from '../config'
 import useAutoQA from '../hooks/useAutoQA'
@@ -20,13 +24,27 @@ import css from './AutoQA.less'
 
 export default function AutoQA() {
     const ticket = useAppSelector(getTicket)
+    const hasAgentPrivileges = useHasAgentPrivileges()
     const { changeHandlers, dimensions, isLoading, lastUpdated, saveState } =
         useAutoQA(ticket.id)
+    const isSimplifiedFeedbackCollectionEnabled =
+        useFlags()[FeatureFlagKey.SimplifyAiAgentFeedbackCollection]
 
     const lastUpdatedString = useMemo(
         () => moment(lastUpdated).calendar(),
         [lastUpdated],
     )
+
+    if (!hasAgentPrivileges && isSimplifiedFeedbackCollectionEnabled) {
+        return (
+            <div className={css.container}>
+                <TicketListInfo
+                    text="Unauthorized"
+                    subText="You do not have permission to view ticket feedback."
+                />
+            </div>
+        )
+    }
 
     return (
         <div className={css.container}>

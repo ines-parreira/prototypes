@@ -1,19 +1,21 @@
-import React, { ComponentProps } from 'react'
+import { ComponentProps } from 'react'
 
 import { screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { fromJS } from 'immutable'
+import { mockFlags } from 'jest-launchdarkly-mock'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
 import { TicketStatus } from 'business/types/ticket'
+import { FeatureFlagKey } from 'config/featureFlags'
 import { UserRole } from 'config/types/user'
 import { useFlag } from 'core/flags'
 import { ticket } from 'fixtures/ticket'
 import { user } from 'fixtures/users'
 import { Infobar } from 'pages/common/components/infobar/Infobar/Infobar'
-import { useHasAIAgent } from 'pages/tickets/detail/components/TicketFeedback'
+import useHasAIAgent from 'pages/tickets/detail/components/TicketFeedback/hooks/useHasAIAgent'
 import { getHasAutomate } from 'state/billing/selectors'
 import { getCurrentUser } from 'state/currentUser/selectors'
 import { getAIAgentMessages } from 'state/ticket/selectors'
@@ -29,15 +31,22 @@ import { assumeMock, renderWithRouter } from 'utils/testing'
 
 import {
     AI_FEEDBACK_TAB,
+    AI_FEEDBACK_TAB_OLD_LABEL,
+    AUTO_QA_TAB,
     CUSTOMER_DETAILS_TAB,
+    CUSTOMER_DETAILS_TAB_OLD_LABEL,
     TicketInfobarContainer,
 } from '../TicketInfobarContainer'
 
 jest.mock('pages/tickets/detail/components/TicketFeedback', () => ({
+    __esModule: true,
     default: () => <div>TicketFeedback</div>,
     useHasAIAgent: jest.fn(),
 }))
-const useHasAIAgentMock = useHasAIAgent as jest.Mock
+
+jest.mock('auto_qa', () => ({
+    AutoQA: () => <div>AutoQA Component</div>,
+}))
 
 jest.mock('core/flags', () => ({ useFlag: jest.fn() }))
 const useFlagMock = useFlag as jest.Mock
@@ -46,6 +55,9 @@ jest.mock('state/currentUser/selectors')
 const getCurrentUserMock = assumeMock(getCurrentUser)
 jest.mock('state/billing/selectors', () => ({ getHasAutomate: jest.fn() }))
 const getHasAutomateMock = assumeMock(getHasAutomate)
+
+jest.mock('pages/tickets/detail/components/TicketFeedback/hooks/useHasAIAgent')
+const useHasAIAgentMock = assumeMock(useHasAIAgent)
 
 jest.mock('state/widgets/actions')
 
@@ -107,8 +119,7 @@ jest.mock('state/ticket/actions', () => ({
     addTags: jest.fn(),
     removeTag: jest.fn(),
 }))
-const store = mockStore(state)
-store.dispatch = jest.fn()
+let store = mockStore(state)
 const dateAfterFeatureAvailable = '2025-01-01T00:00:00Z'
 
 describe('<TicketInfobarContainer />', () => {
@@ -124,6 +135,14 @@ describe('<TicketInfobarContainer />', () => {
     } as unknown as ComponentProps<typeof TicketInfobarContainer>
 
     beforeEach(() => {
+        jest.clearAllMocks()
+        store = mockStore(state)
+        store.dispatch = jest.fn()
+
+        useHasAIAgentMock.mockReturnValue(true)
+        mockFlags({
+            [FeatureFlagKey.SimplifyAiAgentFeedbackCollection]: false,
+        })
         getCurrentUserMock.mockReturnValue(
             fromJS({
                 id: 2,
@@ -155,8 +174,9 @@ describe('<TicketInfobarContainer />', () => {
 
         expect(mockedSelectContext).toHaveBeenCalledWith()
         expect(mockedFetchWidgets).toHaveBeenCalled()
-        expect(container.firstChild).toHaveTextContent(CUSTOMER_DETAILS_TAB)
-        expect(container.firstChild).toHaveTextContent('sources: {')
+        expect(container.firstChild).toHaveTextContent(
+            CUSTOMER_DETAILS_TAB.LABEL,
+        )
     })
 
     it('should not show the AI Feedback tab when Automate feature not enabled', () => {
@@ -171,7 +191,8 @@ describe('<TicketInfobarContainer />', () => {
                 route: '/foo/new',
             },
         )
-        const aiAgentTab = screen.queryByText(AI_FEEDBACK_TAB)
+
+        const aiAgentTab = screen.queryByText(AI_FEEDBACK_TAB.LABEL)
 
         expect(aiAgentTab).not.toBeInTheDocument()
     })
@@ -187,14 +208,14 @@ describe('<TicketInfobarContainer />', () => {
             },
         )
 
-        const aiAgentTab = screen.getByText(AI_FEEDBACK_TAB)
+        const aiAgentTab = screen.getByText(AI_FEEDBACK_TAB_OLD_LABEL)
         userEvent.click(aiAgentTab)
 
         expect(mockedChangeActiveTab).toHaveBeenCalledWith({
             activeTab: TicketAIAgentFeedbackTab.AIAgent,
         })
 
-        const customerTab = screen.getByText(CUSTOMER_DETAILS_TAB)
+        const customerTab = screen.getByText(CUSTOMER_DETAILS_TAB_OLD_LABEL)
         userEvent.click(customerTab)
 
         expect(mockedChangeActiveTab).toHaveBeenCalledWith({
@@ -221,13 +242,12 @@ describe('<TicketInfobarContainer />', () => {
             },
         )
 
-        const aiAgentTab = screen.getByText(AI_FEEDBACK_TAB)
+        const aiAgentTab = screen.getByText(AI_FEEDBACK_TAB_OLD_LABEL)
         userEvent.click(aiAgentTab)
 
         expect(mockedChangeActiveTab).toHaveBeenCalledWith({
             activeTab: TicketAIAgentFeedbackTab.AIAgent,
         })
-
         expect(mockedChangeTicketMessage).toHaveBeenCalledWith({
             message: {
                 id: '1',
@@ -261,24 +281,23 @@ describe('<TicketInfobarContainer />', () => {
             },
         )
 
-        const aiAgentTab = screen.getByText(AI_FEEDBACK_TAB)
+        const aiAgentTab = screen.getByText(AI_FEEDBACK_TAB_OLD_LABEL)
         userEvent.click(aiAgentTab)
 
         expect(mockedChangeActiveTab).toHaveBeenCalledWith({
             activeTab: TicketAIAgentFeedbackTab.AIAgent,
         })
-
         expect(mockedChangeTicketMessage).toHaveBeenCalledWith({
             message: undefined,
         })
     })
 
-    it('should switch to the Ticket Feedback tab if the user is a team lead and is coming with AI tab search param', () => {
-        const store = mockStore({
+    it('should switch to the Ticket Feedback tab if the user is a team lead and is coming with AI tab search param', async () => {
+        const customStore = mockStore({
             ...state,
             ticket: fromJS({ ...ticket, status: TicketStatus.Closed }),
         })
-        store.dispatch = jest.fn()
+        customStore.dispatch = jest.fn()
         getCurrentUserMock.mockReturnValue(
             fromJS({
                 id: 2,
@@ -288,8 +307,9 @@ describe('<TicketInfobarContainer />', () => {
         mockedGetActiveTab.mockReturnValue(
             TicketAIAgentFeedbackTab.CustomerInformation,
         )
+
         renderWithRouter(
-            <Provider store={store}>
+            <Provider store={customStore}>
                 <TicketInfobarContainer {...minProps} />
             </Provider>,
             {
@@ -298,7 +318,10 @@ describe('<TicketInfobarContainer />', () => {
             },
         )
 
-        const customerInformationTab = screen.getByText(AI_FEEDBACK_TAB)
+        const customerInformationTab = screen.getByText(
+            AI_FEEDBACK_TAB_OLD_LABEL,
+        )
+
         expect(mockedChangeActiveTab).toHaveBeenCalledWith({
             activeTab: TicketAIAgentFeedbackTab.AIAgent,
         })
@@ -319,9 +342,139 @@ describe('<TicketInfobarContainer />', () => {
             },
         )
 
-        const customerInformationTab = screen.getByText(CUSTOMER_DETAILS_TAB)
+        const customerInformationTab = screen.getByText(
+            CUSTOMER_DETAILS_TAB_OLD_LABEL,
+        )
+
         userEvent.click(customerInformationTab)
 
         expect(mockedChangeActiveTab).not.toHaveBeenCalled()
+    })
+
+    it('should not render AUTO_QA tab when SimplifyAiAgentFeedbackCollection is disabled', () => {
+        mockFlags({ [FeatureFlagKey.SimplifyAiAgentFeedbackCollection]: false })
+
+        renderWithRouter(
+            <Provider store={store}>
+                <TicketInfobarContainer {...minProps} />
+            </Provider>,
+            {
+                path: '/foo/:ticketId?',
+                route: '/foo/new',
+            },
+        )
+
+        const autoQATab = screen.queryByText(AUTO_QA_TAB.LABEL)
+
+        expect(autoQATab).not.toBeInTheDocument()
+    })
+
+    it('should render AUTO_QA tab when SimplifyAiAgentFeedbackCollection is enabled', () => {
+        mockFlags({ [FeatureFlagKey.SimplifyAiAgentFeedbackCollection]: true })
+
+        renderWithRouter(
+            <Provider store={store}>
+                <TicketInfobarContainer {...minProps} />
+            </Provider>,
+            {
+                path: '/foo/:ticketId?',
+                route: '/foo/new',
+            },
+        )
+
+        const autoQATab = screen.getByText(AUTO_QA_TAB.LABEL)
+
+        expect(autoQATab).toBeInTheDocument()
+    })
+
+    it('should call changeActive tab and render AUTO_QA content when AUTO_QA tab is clicked', () => {
+        mockFlags({ [FeatureFlagKey.SimplifyAiAgentFeedbackCollection]: true })
+
+        renderWithRouter(
+            <Provider store={store}>
+                <TicketInfobarContainer {...minProps} />
+            </Provider>,
+            {
+                path: '/foo/:ticketId?',
+                route: '/foo/new',
+            },
+        )
+
+        const autoQATab = screen.getByText(AUTO_QA_TAB.LABEL)
+
+        userEvent.click(autoQATab)
+
+        expect(mockedChangeActiveTab).toHaveBeenCalledWith({
+            activeTab: TicketAIAgentFeedbackTab.AutoQA,
+        })
+        expect(mockedChangeTicketMessage).toHaveBeenCalled()
+    })
+
+    it('should render TicketFeedback when activeTab is AIAgent', () => {
+        mockedGetActiveTab.mockReturnValue(TicketAIAgentFeedbackTab.AIAgent)
+
+        renderWithRouter(
+            <Provider store={store}>
+                <TicketInfobarContainer {...minProps} />
+            </Provider>,
+            {
+                path: '/foo/:ticketId?',
+                route: '/foo/new',
+            },
+        )
+
+        expect(screen.getByText('TicketFeedback')).toBeInTheDocument()
+    })
+
+    it('should render AUTO_QA content when activeTab is AutoQA and feature flag is enabled', () => {
+        mockFlags({ [FeatureFlagKey.SimplifyAiAgentFeedbackCollection]: true })
+        mockedGetActiveTab.mockReturnValue(TicketAIAgentFeedbackTab.AutoQA)
+
+        renderWithRouter(
+            <Provider store={store}>
+                <TicketInfobarContainer {...minProps} />
+            </Provider>,
+            {
+                path: '/foo/:ticketId?',
+                route: '/foo/new',
+            },
+        )
+
+        expect(screen.getByText('AutoQA Component')).toBeInTheDocument()
+    })
+
+    it('should not render AUTO_QA content when activeTab is AutoQA but feature flag is disabled', () => {
+        mockFlags({ [FeatureFlagKey.SimplifyAiAgentFeedbackCollection]: false })
+
+        mockedGetActiveTab.mockReturnValue(TicketAIAgentFeedbackTab.AutoQA)
+
+        renderWithRouter(
+            <Provider store={store}>
+                <TicketInfobarContainer {...minProps} />
+            </Provider>,
+            {
+                path: '/foo/:ticketId?',
+                route: '/foo/new',
+            },
+        )
+        expect(screen.queryByText('AutoQA Component')).not.toBeInTheDocument()
+    })
+
+    it('should render Infobar when activeTab is CustomerInformation', () => {
+        mockedGetActiveTab.mockReturnValue(
+            TicketAIAgentFeedbackTab.CustomerInformation,
+        )
+
+        renderWithRouter(
+            <Provider store={store}>
+                <TicketInfobarContainer {...minProps} />
+            </Provider>,
+            {
+                path: '/foo/:ticketId?',
+                route: '/foo/new',
+            },
+        )
+
+        expect(screen.getByText('Infobar')).toBeInTheDocument()
     })
 })

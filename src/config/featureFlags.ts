@@ -125,6 +125,7 @@ export enum FeatureFlagKey {
     ShopifyInventoryItemScopeBanner = 'shopify-inventory-item-scope-banner',
     ShopifyOrderNotes = 'shopify-order-notes',
     SimplifiedStepBuilder = 'simplified-step-builder',
+    SimplifyAiAgentFeedbackCollection = 'linear.project_simplify-ai-agent-feedback-collection.enable_feedback_collection',
     StandaloneAIAgentSalesPage = 'standalone-ai-agent-sales-page',
     StandaloneAiSalesAnalyticsPage = 'standalone-ai-sales-analytics-page',
     StandaloneAiSalesDiscountSection = 'standalone-ai-sales-discount-section',

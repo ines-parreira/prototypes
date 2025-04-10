@@ -1,9 +1,12 @@
 import React from 'react'
 
 import { render } from '@testing-library/react'
+import { mockFlags } from 'jest-launchdarkly-mock'
 
 import { TicketStatus } from 'business/types/ticket'
+import { FeatureFlagKey } from 'config/featureFlags'
 import useAppSelector from 'hooks/useAppSelector'
+import useHasAgentPrivileges from 'hooks/useHasAgentPrivileges'
 
 import useAutoQA from '../../hooks/useAutoQA'
 import AutoQA from '../AutoQA'
@@ -14,11 +17,18 @@ const useAppSelectorMock = useAppSelector as jest.Mock
 jest.mock('../../hooks/useAutoQA', () => jest.fn())
 const useAutoQAMock = useAutoQA as jest.Mock
 
+jest.mock('hooks/useHasAgentPrivileges', () => jest.fn())
+const useHasAgentPrivilegesMock = useHasAgentPrivileges as jest.Mock
+
 jest.mock('../AutoQASkeleton', () => () => <div>Loading...</div>)
 jest.mock('../Dimension', () => () => <p>Dimension</p>)
 
 describe('AutoQA', () => {
     beforeEach(() => {
+        mockFlags({
+            [FeatureFlagKey.SimplifyAiAgentFeedbackCollection]: false,
+        })
+        useHasAgentPrivilegesMock.mockReturnValue(true)
         useAppSelectorMock.mockReturnValue({ id: 1, status: TicketStatus.Open })
         useAutoQAMock.mockReturnValue({
             changeHandlers: [],
@@ -120,5 +130,18 @@ describe('AutoQA', () => {
         })
         const { getByText } = render(<AutoQA />)
         expect(getByText('Last updated: Today at 9:00 PM')).toBeInTheDocument()
+    })
+
+    it('should render Unauthorized when SimplifyAiAgentFeedbackCollection is enabled and has no agent privileges', () => {
+        mockFlags({
+            [FeatureFlagKey.SimplifyAiAgentFeedbackCollection]: true,
+        })
+        useHasAgentPrivilegesMock.mockReturnValue(false)
+
+        const { getByText } = render(<AutoQA />)
+        expect(getByText('Unauthorized')).toBeInTheDocument()
+        expect(
+            getByText('You do not have permission to view ticket feedback.'),
+        ).toBeInTheDocument()
     })
 })

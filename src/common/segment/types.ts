@@ -61,6 +61,8 @@ export enum SegmentEvent {
     AiAgentWelcomePageCtaClicked = 'ai-agent-welcome-page-cta-clicked',
     AiAgentWelcomePageViewed = 'ai-agent-welcome-page-viewed',
     AnalyticsStatsDatepickerOpen = 'analytics/stats/datepicker-open',
+    AutoQASidePanelViewed = 'auto-qa-side-panel-viewed',
+    AutoQATabClicked = 'auto-qa-tab-clicked',
     AutomateActionsAppAuthenticationModalOpened = 'automate/actions/app-authentication-modal-opened',
     AutomateActionsCreateCustomActionVisited = 'automate/actions/create-custom-action-visited',
     AutomateActionsCreateTemplateActionVisited = 'automate/actions/create-template-action-visited',
