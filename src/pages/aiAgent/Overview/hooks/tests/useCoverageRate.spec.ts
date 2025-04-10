@@ -125,18 +125,18 @@ describe('useCoverageRate', () => {
             } as any)
         })
 
-        it('should return AI Agent Coverage Rate when global automation rate lower than AI agent automation rate', () => {
+        it('should return AI Agent Coverage Rate when global automation rate equal AI agent automation rate (compare 4 digits)', () => {
             useAutomationRateTrendMock.mockReturnValue({
                 isFetching: false,
                 data: {
-                    value: 0.2,
+                    value: 0.1234,
                     prevValue: 0,
                 },
             } as any)
 
             useAiAgentAutomationRateMock.mockReturnValue({
                 isLoading: false,
-                value: 0.5,
+                value: 0.1234,
                 prevValue: 0,
             } as any)
 
@@ -157,38 +157,44 @@ describe('useCoverageRate', () => {
             })
         })
 
-        it('should return Global Coverage Rate when global automation rate bigger than AI agent automation rate', () => {
-            useAutomationRateTrendMock.mockReturnValue({
-                isFetching: false,
-                data: {
-                    value: 0.5,
+        it.each([
+            { aiAgentAutomationRateValue: 0.1235 },
+            { aiAgentAutomationRateValue: undefined },
+        ])(
+            'should return Global Coverage Rate when global automation rate different than AI agent automation rate (compare 4 digits)',
+            ({ aiAgentAutomationRateValue }) => {
+                useAutomationRateTrendMock.mockReturnValue({
+                    isFetching: false,
+                    data: {
+                        value: 0.1234,
+                        prevValue: 0,
+                    },
+                } as any)
+
+                useAiAgentAutomationRateMock.mockReturnValue({
+                    isLoading: false,
+                    value: aiAgentAutomationRateValue,
                     prevValue: 0,
-                },
-            } as any)
+                } as any)
 
-            useAiAgentAutomationRateMock.mockReturnValue({
-                isLoading: false,
-                value: 0.2,
-                prevValue: 0,
-            } as any)
+                const { result } = renderHook(() =>
+                    useCoverageRate(filters, timezone),
+                )
 
-            const { result } = renderHook(() =>
-                useCoverageRate(filters, timezone),
-            )
-
-            expect(result.current).toEqual({
-                'data-candu-id': 'ai-agent-overview-kpi-coverage-rate',
-                title: 'Automation Rate',
-                hint: {
-                    link: 'https://link.gorgias.com/mnp',
-                    linkText: 'How is it calculated?',
-                    title: 'Automated interactions as a percent of all customer interactions.',
-                },
-                metricFormat: 'decimal-to-percent',
-                value: 0.5,
-                prevValue: 0,
-                isLoading: false,
-            })
-        })
+                expect(result.current).toEqual({
+                    'data-candu-id': 'ai-agent-overview-kpi-coverage-rate',
+                    title: 'Automation Rate',
+                    hint: {
+                        link: 'https://link.gorgias.com/mnp',
+                        linkText: 'How is it calculated?',
+                        title: 'Automated interactions as a percent of all customer interactions.',
+                    },
+                    metricFormat: 'decimal-to-percent',
+                    value: 0.1234,
+                    prevValue: 0,
+                    isLoading: false,
+                })
+            },
+        )
     })
 })
