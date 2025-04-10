@@ -132,6 +132,7 @@ export enum FeatureFlagKey {
     SwitchToShopifyThemeAppExtension = 'switch-to-shopify-theme-app-extension',
     TagNewDesign = 'tag-new-design',
     TicketDemoSuggestion = 'ticket-demo-suggestion',
+    TimelineTicketModal = 'timeline-ticket-modal',
     ExposeVoiceQueues = 'expose-voice-queues-to-users',
     WhatsAppMigrationsDebug = 'whatsapp-migration-debug',
     AiAgentHandoverCustomizationConfiguration = 'helpdesk-ai-agent-handover-customization-enabled',

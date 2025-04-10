@@ -1,4 +1,4 @@
-import { memo, useState } from 'react'
+import { memo, useMemo, useState } from 'react'
 
 import { Link } from 'react-router-dom'
 
@@ -11,6 +11,10 @@ import { useFlag } from 'core/flags'
 import { useCustomFieldDefinitions } from 'custom-fields/hooks/queries/useCustomFieldDefinitions'
 import useAppSelector from 'hooks/useAppSelector'
 import { getCustomerHistory, getLoading } from 'state/customers/selectors'
+import {
+    TimelineTicketModal,
+    useTimelineTicketModal,
+} from 'tickets/timeline-ticket-modal'
 
 import DisplayedDate from './DisplayedDate'
 import { useRangeFilter } from './hooks/useRangeFilter'
@@ -32,6 +36,7 @@ type Props = {
 
 export function Timeline({ ticketId = 0, onLoaded }: Props) {
     const hasNewTimeline = useFlag(FeatureFlagKey.CustomerTimeline)
+    const hasTicketModal = useFlag(FeatureFlagKey.TimelineTicketModal)
     const [hasCalledOnLoaded, setHasCalledOnLoaded] = useState(false)
 
     const {
@@ -57,6 +62,17 @@ export function Timeline({ ticketId = 0, onLoaded }: Props) {
         statusFilteredTickets,
     )
 
+    const ticketIds = useMemo(
+        () => sortedTickets.map((ticket) => ticket.id),
+        [sortedTickets],
+    )
+
+    const {
+        onOpen,
+        ticketId: modalTicketId,
+        ...modalProps
+    } = useTimelineTicketModal(ticketIds)
+
     if (customersLoading.history) {
         return (
             <div className={css.centeringContainer}>
@@ -77,67 +93,91 @@ export function Timeline({ ticketId = 0, onLoaded }: Props) {
     }
 
     return (
-        <div>
-            {hasNewTimeline && (
-                <div className={css.toolbar}>
-                    <div className={css.filters}>
-                        <RangeFilter
-                            range={rangeFilter}
-                            setRangeFilter={setRangeFilter}
-                        />
-                        <StatusFilter
-                            selectedStatus={selectedStatus}
-                            toggleSelectedStatus={toggleSelectedStatus}
-                        />
+        <>
+            <div>
+                {hasNewTimeline && (
+                    <div className={css.toolbar}>
+                        <div className={css.filters}>
+                            <RangeFilter
+                                range={rangeFilter}
+                                setRangeFilter={setRangeFilter}
+                            />
+                            <StatusFilter
+                                selectedStatus={selectedStatus}
+                                toggleSelectedStatus={toggleSelectedStatus}
+                            />
+                        </div>
+                        <Sort value={sortOption} onChange={setSortOption} />
                     </div>
-                    <Sort value={sortOption} onChange={setSortOption} />
-                </div>
+                )}
+                {customerHistory.tickets.length &&
+                sortedTickets.length === 0 ? (
+                    <NoResults>
+                        <b>No matching tickets</b>
+                        <br />
+                        Try adjusting filters to get results
+                    </NoResults>
+                ) : (
+                    <ol className={css.list}>
+                        {sortedTickets
+                            .filter((ticket) => ticket.channel)
+                            .map((ticket) => {
+                                const isCurrentTicket = ticketId === ticket.id
+                                const card = (
+                                    <TicketCard
+                                        className={css.card}
+                                        ticket={ticket}
+                                        isHighlighted={isCurrentTicket}
+                                        isLoadingCFDefinitions={
+                                            isLoadingCFDefinitions
+                                        }
+                                        customFieldDefinitions={
+                                            (customFieldDefinitions ||
+                                                []) as CustomField[]
+                                        }
+                                        displayedDate={DisplayedDate(
+                                            sortOption,
+                                            ticket,
+                                        )}
+                                    />
+                                )
+                                return (
+                                    <li key={ticket.id}>
+                                        {hasTicketModal ? (
+                                            <button
+                                                className={css.cardContainer}
+                                                onClick={(e) => {
+                                                    e.preventDefault()
+                                                    onOpen(ticket.id)
+                                                    logEvent(
+                                                        SegmentEvent.CustomerTimelineTicketClicked,
+                                                    )
+                                                }}
+                                            >
+                                                {card}
+                                            </button>
+                                        ) : (
+                                            <Link
+                                                to={`/app/ticket/${ticket.id}`}
+                                                onClick={() => {
+                                                    logEvent(
+                                                        SegmentEvent.CustomerTimelineTicketClicked,
+                                                    )
+                                                }}
+                                            >
+                                                {card}
+                                            </Link>
+                                        )}
+                                    </li>
+                                )
+                            })}
+                    </ol>
+                )}
+            </div>
+            {!!modalTicketId && (
+                <TimelineTicketModal ticketId={modalTicketId} {...modalProps} />
             )}
-            {customerHistory.tickets.length && sortedTickets.length === 0 ? (
-                <NoResults>
-                    <b>No matching tickets</b>
-                    <br />
-                    Try adjusting filters to get results
-                </NoResults>
-            ) : (
-                <ol className={css.list}>
-                    {sortedTickets
-                        .filter((ticket) => ticket.channel)
-                        .map((ticket) => {
-                            const isCurrentTicket = ticketId === ticket.id
-                            return (
-                                <li key={ticket.id}>
-                                    <Link
-                                        to={`/app/ticket/${ticket.id}`}
-                                        onClick={() => {
-                                            logEvent(
-                                                SegmentEvent.CustomerTimelineTicketClicked,
-                                            )
-                                        }}
-                                    >
-                                        <TicketCard
-                                            className={css.card}
-                                            ticket={ticket}
-                                            isHighlighted={isCurrentTicket}
-                                            isLoadingCFDefinitions={
-                                                isLoadingCFDefinitions
-                                            }
-                                            customFieldDefinitions={
-                                                (customFieldDefinitions ||
-                                                    []) as CustomField[]
-                                            }
-                                            displayedDate={DisplayedDate(
-                                                sortOption,
-                                                ticket,
-                                            )}
-                                        />
-                                    </Link>
-                                </li>
-                            )
-                        })}
-                </ol>
-            )}
-        </div>
+        </>
     )
 }
 
