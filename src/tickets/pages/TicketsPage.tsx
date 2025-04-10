@@ -3,6 +3,7 @@ import { Route, Switch, useRouteMatch } from 'react-router-dom'
 import { Handle } from 'core/layout/panels'
 import { ContentPanels } from 'core/ui'
 import { useSplitTicketView } from 'split-ticket-view-toggle'
+import { useOnToggleUnread } from 'tickets/dtp'
 import { TicketsNavbarPanel } from 'tickets/navigation'
 import { TicketDetailPanel } from 'tickets/ticket-detail'
 import { TicketEmptyPanel } from 'tickets/ticket-empty'
@@ -13,6 +14,10 @@ import { ViewPanel } from 'tickets/view'
 export function TicketsPage() {
     const { path } = useRouteMatch()
     const { isEnabled } = useSplitTicketView()
+    const { onToggleUnread, registerOnToggleUnread } = useOnToggleUnread()
+
+    const match = useRouteMatch<{ viewId?: string }>('/app/tickets/:viewId?')
+    const viewId = match?.params.viewId || 'default'
 
     return (
         <>
@@ -26,27 +31,36 @@ export function TicketsPage() {
                     <Route exact path={`${path}/search`}>
                         <ViewPanel key="view-panel" />
                     </Route>
-                    <Route path={`${path}/:viewId/:ticketId`}>
+
+                    <Route path={`${path}/:viewId?`}>
                         {isEnabled && (
                             <>
-                                <TicketsListPanel key="ticket-list-panel" />
+                                <TicketsListPanel
+                                    key={`ticket-list-panel-${viewId}`}
+                                    registerOnToggleUnread={
+                                        registerOnToggleUnread
+                                    }
+                                />
                                 <Handle />
                             </>
                         )}
-                        <TicketDetailPanel key="ticket-detail-panel" />
-                        <Handle />
-                        <TicketInfobarPanel key="infobar-panel" />
-                    </Route>
-                    <Route path={`${path}/:viewId?`}>
-                        {isEnabled ? (
-                            <>
-                                <TicketsListPanel key="ticket-list-panel" />
+                        <Switch>
+                            <Route path={`${path}/:viewId/:ticketId`}>
+                                <TicketDetailPanel
+                                    key="ticket-detail-panel"
+                                    onToggleUnread={onToggleUnread}
+                                />
                                 <Handle />
-                                <TicketEmptyPanel />
-                            </>
-                        ) : (
-                            <ViewPanel />
-                        )}
+                                <TicketInfobarPanel key="infobar-panel" />
+                            </Route>
+                            <Route>
+                                {isEnabled ? (
+                                    <TicketEmptyPanel />
+                                ) : (
+                                    <ViewPanel />
+                                )}
+                            </Route>
+                        </Switch>
                     </Route>
                 </Switch>
             </ContentPanels>
