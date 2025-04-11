@@ -56,10 +56,6 @@ const getCalendarRangeFilters = (): {
     [p: string]: [moment.Moment, moment.Moment]
 } => {
     const adjustments = {
-        [MONTH_TO_DATE]: {
-            start: [adjustPeriodToStartOfL3IntentsGeneration],
-            end: [subtractsPeriodWithoutData],
-        },
         [LAST_WEEK_SUN]: {
             start: [],
             end: [subtractsPeriodWithoutDataIfNeeded],
@@ -68,39 +64,7 @@ const getCalendarRangeFilters = (): {
             start: [],
             end: [subtractsPeriodWithoutDataIfNeeded],
         },
-        [LAST_MONTH]: {
-            start: [adjustPeriodToStartOfL3IntentsGeneration],
-            end: [subtractsPeriodWithoutDataIfNeeded],
-        },
         [PAST_7_DAYS]: {
-            start: [
-                adjustPeriodToStartOfL3IntentsGeneration,
-                subtractsPeriodWithoutData,
-            ],
-            end: [subtractsPeriodWithoutData],
-        },
-        [PAST_30_DAYS]: {
-            start: [
-                adjustPeriodToStartOfL3IntentsGeneration,
-                subtractsPeriodWithoutData,
-            ],
-            end: [subtractsPeriodWithoutData],
-        },
-        [PAST_60_DAYS]: {
-            start: [
-                adjustPeriodToStartOfL3IntentsGeneration,
-                subtractsPeriodWithoutData,
-            ],
-            end: [subtractsPeriodWithoutData],
-        },
-        [PAST_90_DAYS]: {
-            start: [
-                adjustPeriodToStartOfL3IntentsGeneration,
-                subtractsPeriodWithoutData,
-            ],
-            end: [subtractsPeriodWithoutData],
-        },
-        [PAST_YEAR]: {
             start: [
                 adjustPeriodToStartOfL3IntentsGeneration,
                 subtractsPeriodWithoutData,
@@ -111,11 +75,21 @@ const getCalendarRangeFilters = (): {
 
     return getNewSetOfRanges({
         adjustments,
-        excludeOptions: [TODAY, YESTERDAY],
+        excludeOptions: [
+            TODAY,
+            YESTERDAY,
+            MONTH_TO_DATE,
+            LAST_MONTH,
+            PAST_30_DAYS,
+            PAST_60_DAYS,
+            PAST_90_DAYS,
+            PAST_90_DAYS,
+            PAST_YEAR,
+        ],
     })
 }
 
-const DEFAULT_DAYS_TO_SHOW = 28
+const DEFAULT_DAYS_TO_SHOW = 7
 
 export const AdjustedPeriodFilter = () => {
     const dispatch = useAppDispatch()
