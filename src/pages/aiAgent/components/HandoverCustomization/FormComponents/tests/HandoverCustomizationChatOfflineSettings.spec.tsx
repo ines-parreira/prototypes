@@ -179,7 +179,7 @@ describe('HandoverCustomizationOfflineSettings', () => {
 
             expect(
                 screen.getByPlaceholderText(
-                    'Apologize and acknowledge the issue. Request the customers’ email address for our team to reach back.',
+                    /Apologize and acknowledge the issue./i,
                 ),
             ).toHaveValue('')
         })

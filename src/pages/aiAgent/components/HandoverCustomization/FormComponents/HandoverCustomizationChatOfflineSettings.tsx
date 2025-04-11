@@ -120,7 +120,7 @@ const HandoverCustomizationChatOfflineSettings = ({ integration }: Props) => {
                             formFieldsConfiguration.offlineInstructions
                                 .maxLength
                         }
-                        placeholder={`Apologize and acknowledge the issue. Request the customers’ email address for our team to reach back.`}
+                        placeholder={`Apologize and acknowledge the issue.`}
                         onChange={onOfflineInstructionsChange}
                         value={formValues.offlineInstructions}
                         error={undefined}
