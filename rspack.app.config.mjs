@@ -154,6 +154,11 @@ const config = {
             new RspackManifestPlugin({
                 seed: JSON.parse(fs.readFileSync(manifestPath, 'utf8')),
             }),
+        isProd &&
+            new rspack.CircularDependencyRspackPlugin({
+                exclude: /node_modules/,
+                allowAsyncCycles: true,
+            }),
         isDev && new ReactRefreshPlugin(),
         isDev && new rspack.HotModuleReplacementPlugin(),
         codecovWebpackPlugin({
