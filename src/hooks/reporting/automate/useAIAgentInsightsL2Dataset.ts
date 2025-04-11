@@ -1,9 +1,9 @@
 import { useGetTicketChannelsStoreIntegrations } from 'hooks/integrations/useGetTicketChannelsStoreIntegrations'
 import {
     useAIAgentTicketsPerIntent,
-    useAutomationOpportunityPerIntent,
     useCustomerSatisfactionPerIntent,
     useSuccessRatePerIntent,
+    useSuccessRateUpliftOpportunityPerIntent,
 } from 'hooks/reporting/automate/useAIAgentInsightsDataset'
 import { filterMetricDataByIntentLevel } from 'hooks/reporting/automate/utils'
 import { OrderDirection } from 'models/api/types'
@@ -36,26 +36,27 @@ export const useAutomatedOpportunityForIntentTrendMetric = ({
     intentLevel: number
     integrationIds?: string[]
 }) => {
-    const automationOpportunityPerIntent = useAutomationOpportunityPerIntent({
-        filters,
-        timezone,
-        sorting,
-        intentId,
-        integrationIds,
-    })
-    const automationOpportunityPerIntentLevelData =
+    const successRateUpliftOpportunityPerIntent =
+        useSuccessRateUpliftOpportunityPerIntent({
+            filters,
+            timezone,
+            sorting,
+            intentId,
+            integrationIds,
+        })
+    const successRateUpliftOpportunityPerIntentLevelData =
         filterMetricDataByIntentLevel({
-            metricData: automationOpportunityPerIntent.data,
+            metricData: successRateUpliftOpportunityPerIntent.data,
             level: intentLevel,
             intentKey: 'TicketCustomFieldsEnriched.valueString',
             valueKey: 'TicketCustomFieldsEnriched.ticketCount',
             totalKey: 'TicketEnriched.ticketCount',
-            resultKey: 'automationOpportunity',
-            metricFor: IntentTableColumn.AutomationOpportunities,
+            resultKey: 'successRateUpliftOpportunity',
+            metricFor: IntentTableColumn.SuccessRateUpliftOpportunity,
         })
 
-    const prevAutomationOpportunityPerIntent =
-        useAutomationOpportunityPerIntent({
+    const prevSuccessRateUpliftOpportunityPerIntent =
+        useSuccessRateUpliftOpportunityPerIntent({
             filters: {
                 ...filters,
                 period: getPreviousPeriod(filters.period),
@@ -65,35 +66,35 @@ export const useAutomatedOpportunityForIntentTrendMetric = ({
             intentId,
             integrationIds,
         })
-    const prevAutomationOpportunityPerIntentLevelData =
+    const prevSuccessRateUpliftOpportunityPerIntentLevelData =
         filterMetricDataByIntentLevel({
-            metricData: automationOpportunityPerIntent.data || [],
+            metricData: successRateUpliftOpportunityPerIntent.data || [],
             level: intentLevel,
             intentKey: 'TicketCustomFieldsEnriched.valueString',
             valueKey: 'TicketCustomFieldsEnriched.ticketCount',
             totalKey: 'TicketEnriched.ticketCount',
-            resultKey: 'automationOpportunity',
-            metricFor: IntentTableColumn.AutomationOpportunities,
+            resultKey: 'successRateUpliftOpportunity',
+            metricFor: IntentTableColumn.SuccessRateUpliftOpportunity,
         })
 
     return {
         data: {
             value: getIntentMetric(
-                'automationOpportunity',
-                automationOpportunityPerIntentLevelData,
+                'successRateUpliftOpportunity',
+                successRateUpliftOpportunityPerIntentLevelData,
             ),
 
             prevValue: getIntentMetric(
-                'automationOpportunity',
-                prevAutomationOpportunityPerIntentLevelData,
+                'successRateUpliftOpportunity',
+                prevSuccessRateUpliftOpportunityPerIntentLevelData,
             ),
         },
         isFetching:
-            automationOpportunityPerIntent.isFetching ||
-            prevAutomationOpportunityPerIntent.isFetching,
+            successRateUpliftOpportunityPerIntent.isFetching ||
+            prevSuccessRateUpliftOpportunityPerIntent.isFetching,
         isError:
-            automationOpportunityPerIntent.isError ||
-            prevAutomationOpportunityPerIntent.isError,
+            successRateUpliftOpportunityPerIntent.isError ||
+            prevSuccessRateUpliftOpportunityPerIntent.isError,
     }
 }
 
@@ -332,8 +333,8 @@ export const useInsightPerformanceMetrics = ({
 }) => {
     const integrationIds = useGetTicketChannelsStoreIntegrations(shopName)
 
-    // Automation Opportunity
-    const automationOpportunityPerIntent =
+    // success rate uplift opportunity
+    const successRateUpliftOpportunityPerIntent =
         useAutomatedOpportunityForIntentTrendMetric({
             filters,
             timezone,
@@ -375,7 +376,7 @@ export const useInsightPerformanceMetrics = ({
         })
 
     return {
-        automationOpportunityPerIntent,
+        successRateUpliftOpportunityPerIntent,
         ticketsPerIntent: ticketsForIntent,
         successRatePerIntent: successRateForIntent,
         customerSatisfactionPerIntent: customerSatisfactionForIntent,

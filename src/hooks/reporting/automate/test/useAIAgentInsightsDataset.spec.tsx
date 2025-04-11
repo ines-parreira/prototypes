@@ -23,9 +23,9 @@ import {
     useAiAgentKnowledgeResourcePerIntent,
     useAIAgentMetrics,
     useAIAgentTicketsPerIntent,
-    useAutomationOpportunityPerIntent,
     useCustomerSatisfactionPerIntent,
     useSuccessRatePerIntent,
+    useSuccessRateUpliftOpportunityPerIntent,
 } from 'hooks/reporting/automate/useAIAgentInsightsDataset'
 import { useAIAgentUserId } from 'hooks/reporting/automate/useAIAgentUserId'
 import { useMetric } from 'hooks/reporting/useMetric'
@@ -176,7 +176,7 @@ describe('useAiAgentInsightsDataset', () => {
         })
     })
 
-    describe('useAutomationOpportunityPerIntent', () => {
+    describe('useSuccessRateUpliftOpportunityPerIntent', () => {
         it('should calculate ai agent insights correctly', () => {
             useMetricMock.mockReturnValueOnce({
                 // aiAgentTickets
@@ -193,7 +193,7 @@ describe('useAiAgentInsightsDataset', () => {
             jest.spyOn(queryClient, 'invalidateQueries')
             const { result } = renderHook(
                 () =>
-                    useAutomationOpportunityPerIntent({
+                    useSuccessRateUpliftOpportunityPerIntent({
                         filters: statsFilters,
                         timezone,
                     }),
@@ -213,26 +213,26 @@ describe('useAiAgentInsightsDataset', () => {
                     [BREAKDOWN_FIELD]: 'Other::Platform',
                     [TICKET_COUNT]: '5',
                     [CUSTOM_FIELD_COUNT]: '3',
-                    automationOpportunity: 0.6,
+                    successRateUpliftOpportunity: 0.6,
                 },
                 {
                     [BREAKDOWN_FIELD]: 'Other::Other',
                     [TICKET_COUNT]: '5',
                     [CUSTOM_FIELD_COUNT]: '1',
-                    automationOpportunity: 0.2,
+                    successRateUpliftOpportunity: 0.2,
                 },
                 {
                     [BREAKDOWN_FIELD]: 'Other::App',
                     [TICKET_COUNT]: '5',
                     [CUSTOM_FIELD_COUNT]: '1',
-                    automationOpportunity: 0.2,
+                    successRateUpliftOpportunity: 0.2,
                 },
             ])
         })
     })
 
-    describe('useAutomationOpportunityPerIntent', () => {
-        it('should enrich automation opportunity per intent correctly', () => {
+    describe('useSuccessRateUpliftOpportunityPerIntent', () => {
+        it('should enrich success rate uplift opportunity per intent correctly', () => {
             useMetricMock.mockReturnValueOnce({
                 // aiAgentTickets
                 data: {
@@ -248,7 +248,7 @@ describe('useAiAgentInsightsDataset', () => {
             jest.spyOn(queryClient, 'invalidateQueries')
             const { result } = renderHook(
                 () =>
-                    useAutomationOpportunityPerIntent({
+                    useSuccessRateUpliftOpportunityPerIntent({
                         filters: statsFilters,
                         timezone,
                     }),
@@ -268,19 +268,19 @@ describe('useAiAgentInsightsDataset', () => {
                     [BREAKDOWN_FIELD]: 'Other::Platform',
                     [TICKET_COUNT]: '5',
                     [CUSTOM_FIELD_COUNT]: '3',
-                    automationOpportunity: 0.6,
+                    successRateUpliftOpportunity: 0.6,
                 },
                 {
                     [BREAKDOWN_FIELD]: 'Other::Other',
                     [TICKET_COUNT]: '5',
                     [CUSTOM_FIELD_COUNT]: '1',
-                    automationOpportunity: 0.2,
+                    successRateUpliftOpportunity: 0.2,
                 },
                 {
                     [BREAKDOWN_FIELD]: 'Other::App',
                     [TICKET_COUNT]: '5',
                     [CUSTOM_FIELD_COUNT]: '1',
-                    automationOpportunity: 0.2,
+                    successRateUpliftOpportunity: 0.2,
                 },
             ])
         })
@@ -744,11 +744,11 @@ describe('useAiAgentInsightsDataset', () => {
         it('converts results object to array format with transformed names', () => {
             const results = {
                 [intentFixture.IntentAL1L2]: {
-                    [IntentTableColumn.AutomationOpportunities]: 10,
+                    [IntentTableColumn.SuccessRateUpliftOpportunity]: 10,
                     [IntentTableColumn.Tickets]: 20,
                 },
                 [intentFixture.IntentBL1L2]: {
-                    [IntentTableColumn.AutomationOpportunities]: 15,
+                    [IntentTableColumn.SuccessRateUpliftOpportunity]: 15,
                     [IntentTableColumn.Tickets]: 25,
                 },
             } as unknown as Record<string, IntentMetrics>
@@ -757,13 +757,13 @@ describe('useAiAgentInsightsDataset', () => {
 
             expect(result).toEqual([
                 {
-                    [IntentTableColumn.AutomationOpportunities]: 10,
+                    [IntentTableColumn.SuccessRateUpliftOpportunity]: 10,
                     [IntentTableColumn.Tickets]: 20,
                     [IntentTableColumn.IntentName]: `${intentFixture.IntentAL1}/${intentFixture.IntentAL2}`,
                     id: intentFixture.IntentAL1L2,
                 },
                 {
-                    [IntentTableColumn.AutomationOpportunities]: 15,
+                    [IntentTableColumn.SuccessRateUpliftOpportunity]: 15,
                     [IntentTableColumn.Tickets]: 25,
                     [IntentTableColumn.IntentName]: `${intentFixture.IntentBL1}/${intentFixture.IntentBL2}`,
                     id: intentFixture.IntentBL1L2,
@@ -782,7 +782,7 @@ describe('useAiAgentInsightsDataset', () => {
         it('preserves all metric fields in the converted array', () => {
             const results = {
                 intentA: {
-                    [IntentTableColumn.AutomationOpportunities]: 5,
+                    [IntentTableColumn.SuccessRateUpliftOpportunity]: 5,
                     [IntentTableColumn.Tickets]: 10,
                     [IntentTableColumn.SuccessRate]: 15,
                     id: intentFixture.IntentAL1,
@@ -793,7 +793,7 @@ describe('useAiAgentInsightsDataset', () => {
 
             expect(result).toEqual([
                 {
-                    [IntentTableColumn.AutomationOpportunities]: 5,
+                    [IntentTableColumn.SuccessRateUpliftOpportunity]: 5,
                     [IntentTableColumn.Tickets]: 10,
                     [IntentTableColumn.SuccessRate]: 15,
                     [IntentTableColumn.IntentName]: intentFixture.IntentAL1,

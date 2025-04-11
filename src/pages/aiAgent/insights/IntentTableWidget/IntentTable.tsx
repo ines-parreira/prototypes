@@ -5,10 +5,12 @@ import classNames from 'classnames'
 import { useDispatch } from 'react-redux'
 import { useParams } from 'react-router-dom'
 
+import { useGetTicketChannelsStoreIntegrations } from 'hooks/integrations/useGetTicketChannelsStoreIntegrations'
 import { useAIAgentInsightsDataset } from 'hooks/reporting/automate/useAIAgentInsightsDataset'
 import { useAIAgentUserId } from 'hooks/reporting/automate/useAIAgentUserId'
 import useAppSelector from 'hooks/useAppSelector'
 import useMeasure from 'hooks/useMeasure'
+import { useGetCustomTicketsFieldsDefinitionData } from 'pages/aiAgent/insights/IntentTableWidget/hooks/useGetCustomTicketsFieldsDefinitionData'
 import {
     Intent,
     IntentTableColumn,
@@ -30,13 +32,11 @@ import {
 } from 'state/ui/stats/insightsSlice'
 import { AIInsightsMetric } from 'state/ui/stats/types'
 
-import { useGetTicketChannelsStoreIntegrations } from '../../../../hooks/integrations/useGetTicketChannelsStoreIntegrations'
-import { useGetCustomTicketsFieldsDefinitionData } from './hooks/useGetCustomTicketsFieldsDefinitionData'
 import {
-    IntentAutomationOpportunitiesCellContent,
     IntentAvgCsatCellContent,
     IntentDefaultCellContent,
     IntentNameCellContent,
+    IntentSuccessRateUpliftOpportunitiesCellContent,
     LoadingIntentCellContent,
 } from './IntentTableCells'
 import {
@@ -100,8 +100,8 @@ export const IntentTable = ({
         switch (column) {
             case IntentTableColumn.IntentName:
                 return IntentNameCellContent
-            case IntentTableColumn.AutomationOpportunities:
-                return IntentAutomationOpportunitiesCellContent
+            case IntentTableColumn.SuccessRateUpliftOpportunity:
+                return IntentSuccessRateUpliftOpportunitiesCellContent
             case IntentTableColumn.AvgCustomerSatisfaction:
                 return IntentAvgCsatCellContent
             // case IntentTableColumn.Resources:
@@ -279,7 +279,7 @@ export const IntentTableWithDefaultState = ({
     }>()
 
     useIntentSortingQuery(
-        IntentTableColumn.AutomationOpportunities,
+        IntentTableColumn.SuccessRateUpliftOpportunity,
         useAIAgentInsightsDataset,
         shopName,
         intentId,

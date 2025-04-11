@@ -13,7 +13,11 @@ import {
     getColumnContentAlignment,
     getColumnWidth,
     INTENT_NAME_COLUMN_WIDTH,
+    METRIC_COLUMN_WIDTH,
     MOBILE_INTENT_NAME_COLUMN_WIDTH,
+    MOBILE_METRIC_COLUMN_WIDTH,
+    MOBILE_SUCCESS_RATE_UPLIFT_OPPORTUNITY_COLUMN_WIDTH,
+    SUCCESS_RATE_UPLIFT_OPPORTUNITY_COLUMN_WIDTH,
     TableLabels,
     useIntentSortingQuery,
 } from '../IntentTableConfig'
@@ -30,7 +34,7 @@ const useAppSelectorMock = jest.mocked(useAppSelector)
 
 const defaultState = {
     sorting: {
-        field: IntentTableColumn.AutomationOpportunities,
+        field: IntentTableColumn.SuccessRateUpliftOpportunity,
         direction: OrderDirection.Desc,
         isLoading: true,
         lastSortingMetric: null,
@@ -53,18 +57,77 @@ describe('TableConfig Utilities and Hooks', () => {
 
         it('returns correct width for IntentName column on small screens', () => {
             mockedIsMediumOrSmallScreen.mockReturnValue(true)
-
             const columnWidth = getColumnWidth(IntentTableColumn.IntentName)
             expect(columnWidth).toBe(MOBILE_INTENT_NAME_COLUMN_WIDTH)
+        })
+
+        it('returns correct width for SuccessRateUpliftOpportunity column on large screens', () => {
+            mockedIsMediumOrSmallScreen.mockReturnValue(false)
+            const columnWidth = getColumnWidth(
+                IntentTableColumn.SuccessRateUpliftOpportunity,
+            )
+            expect(columnWidth).toBe(
+                SUCCESS_RATE_UPLIFT_OPPORTUNITY_COLUMN_WIDTH,
+            )
+        })
+
+        it('returns correct width for SuccessRateUpliftOpportunity column on small screens', () => {
+            mockedIsMediumOrSmallScreen.mockReturnValue(true)
+            const columnWidth = getColumnWidth(
+                IntentTableColumn.SuccessRateUpliftOpportunity,
+            )
+            expect(columnWidth).toBe(
+                MOBILE_SUCCESS_RATE_UPLIFT_OPPORTUNITY_COLUMN_WIDTH,
+            )
+        })
+
+        it('returns correct width for metric columns (Tickets) on large screens', () => {
+            mockedIsMediumOrSmallScreen.mockReturnValue(false)
+            const columnWidth = getColumnWidth(IntentTableColumn.Tickets)
+            expect(columnWidth).toBe(METRIC_COLUMN_WIDTH)
+        })
+
+        it('returns correct width for metric columns (SuccessRate) on large screens', () => {
+            mockedIsMediumOrSmallScreen.mockReturnValue(false)
+            const columnWidth = getColumnWidth(IntentTableColumn.SuccessRate)
+            expect(columnWidth).toBe(METRIC_COLUMN_WIDTH)
+        })
+
+        it('returns correct width for metric columns (AvgCustomerSatisfaction) on large screens', () => {
+            mockedIsMediumOrSmallScreen.mockReturnValue(false)
+            const columnWidth = getColumnWidth(
+                IntentTableColumn.AvgCustomerSatisfaction,
+            )
+            expect(columnWidth).toBe(METRIC_COLUMN_WIDTH)
+        })
+
+        it('returns correct width for metric columns (Tickets) on small screens', () => {
+            mockedIsMediumOrSmallScreen.mockReturnValue(true)
+            const columnWidth = getColumnWidth(IntentTableColumn.Tickets)
+            expect(columnWidth).toBe(MOBILE_METRIC_COLUMN_WIDTH)
+        })
+
+        it('returns correct width for metric columns (SuccessRate) on small screens', () => {
+            mockedIsMediumOrSmallScreen.mockReturnValue(true)
+            const columnWidth = getColumnWidth(IntentTableColumn.SuccessRate)
+            expect(columnWidth).toBe(MOBILE_METRIC_COLUMN_WIDTH)
+        })
+
+        it('returns correct width for metric columns (AvgCustomerSatisfaction) on small screens', () => {
+            mockedIsMediumOrSmallScreen.mockReturnValue(true)
+            const columnWidth = getColumnWidth(
+                IntentTableColumn.AvgCustomerSatisfaction,
+            )
+            expect(columnWidth).toBe(MOBILE_METRIC_COLUMN_WIDTH)
         })
     })
 
     describe('TableLabels', () => {
         it('contains correct label for each column', () => {
             expect(TableLabels[IntentTableColumn.IntentName]).toBe('Intent')
-            expect(TableLabels[IntentTableColumn.AutomationOpportunities]).toBe(
-                'Automation opportunity',
-            )
+            expect(
+                TableLabels[IntentTableColumn.SuccessRateUpliftOpportunity],
+            ).toBe('Success rate uplift opportunity')
             expect(TableLabels[IntentTableColumn.Tickets]).toBe('Tickets')
         })
     })
@@ -104,7 +167,7 @@ describe('TableConfig Utilities and Hooks', () => {
 
         it('returns correct alignment for other columns', () => {
             const columnAlignment = getColumnContentAlignment(
-                IntentTableColumn.AutomationOpportunities,
+                IntentTableColumn.SuccessRateUpliftOpportunity,
             )
             expect(columnAlignment).toBe('right')
         })

@@ -1,6 +1,6 @@
 export enum IntentTableColumn {
     IntentName = 'name',
-    AutomationOpportunities = 'automationOpportunity',
+    SuccessRateUpliftOpportunity = 'successRateUpliftOpportunity',
     Tickets = 'tickets',
     SuccessRate = 'automationRate',
     AvgCustomerSatisfaction = 'avgCustomerSatisfaction',
@@ -10,7 +10,7 @@ export enum IntentTableColumn {
 export type Intent = {
     id: string
     [IntentTableColumn.IntentName]: string
-    [IntentTableColumn.AutomationOpportunities]: number
+    [IntentTableColumn.SuccessRateUpliftOpportunity]: number
     [IntentTableColumn.Tickets]: number
     [IntentTableColumn.SuccessRate]: number
     [IntentTableColumn.AvgCustomerSatisfaction]: number
@@ -27,7 +27,7 @@ export type PaginatedIntents = {
 export type IntentMetrics = {
     id?: string | null
     [IntentTableColumn.IntentName]: string
-    [IntentTableColumn.AutomationOpportunities]: number | null
+    [IntentTableColumn.SuccessRateUpliftOpportunity]: number | null
     [IntentTableColumn.Tickets]: number | null
     [IntentTableColumn.SuccessRate]: number | null
     [IntentTableColumn.AvgCustomerSatisfaction]: number | null

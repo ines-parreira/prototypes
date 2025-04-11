@@ -17,10 +17,10 @@ import { assumeMock } from 'utils/testing'
 
 import {
     BodyCellWrapper,
-    IntentAutomationOpportunitiesCellContent,
     IntentAvgCsatCellContent,
     IntentDefaultCellContent,
     IntentNameCellContent,
+    IntentSuccessRateUpliftOpportunitiesCellContent,
     LoadingIntentCellContent,
 } from '../IntentTableCells'
 
@@ -55,15 +55,15 @@ describe('IntentTableCells', () => {
     const mockIntent = {
         id: '1::2',
         [IntentTableColumn.IntentName]: 'Mock Intent Name',
-        [IntentTableColumn.AutomationOpportunities]: 0.5,
+        [IntentTableColumn.SuccessRateUpliftOpportunity]: 0.5,
         // [IntentTableColumn.Resources]: 0,
         [IntentTableColumn.Tickets]: 200,
     } as unknown as Intent
 
     const mockAllIntents = [
-        { id: '1', [IntentTableColumn.AutomationOpportunities]: 0.5 },
-        { id: '2', [IntentTableColumn.AutomationOpportunities]: 0.7 },
-        { id: '3', [IntentTableColumn.AutomationOpportunities]: 0.3 },
+        { id: '1', [IntentTableColumn.SuccessRateUpliftOpportunity]: 0.5 },
+        { id: '2', [IntentTableColumn.SuccessRateUpliftOpportunity]: 0.7 },
+        { id: '3', [IntentTableColumn.SuccessRateUpliftOpportunity]: 0.3 },
     ] as unknown as Intent[]
 
     describe('IntentNameCellContent', () => {
@@ -181,12 +181,12 @@ describe('IntentTableCells', () => {
     //     })
     // })
 
-    describe('IntentAutomationOpportunitiesCellContent', () => {
+    describe('IntentSuccessRateUpliftOpportunitiesCellContent', () => {
         it('renders BadgeWithTiers with correct props', () => {
             renderTableCell(
-                <IntentAutomationOpportunitiesCellContent
+                <IntentSuccessRateUpliftOpportunitiesCellContent
                     intent={mockIntent}
-                    column={IntentTableColumn.AutomationOpportunities}
+                    column={IntentTableColumn.SuccessRateUpliftOpportunity}
                     allIntents={mockAllIntents}
                 />,
             )

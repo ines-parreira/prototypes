@@ -3,8 +3,8 @@ import { useMemo } from 'react'
 import { useGetTicketChannelsStoreIntegrations } from 'hooks/integrations/useGetTicketChannelsStoreIntegrations'
 import {
     calculateAiAgentKnowledgeResourcePerIntent,
-    enrichWithAutomationOpportunity,
     enrichWithSuccessRate,
+    enrichWithSuccessRateUpliftOpportunity,
     filterMetricDataByIntentLevel,
     transformIntentName,
 } from 'hooks/reporting/automate/utils'
@@ -200,8 +200,8 @@ export const useAIAgentMetrics = (
     }
 }
 
-// AUTOMATION OPPORTUNITY: #tickets not automated by AI AGENT per intent / #AI Agent Tickets
-export const useAutomationOpportunityPerIntent = ({
+// success rate uplift opportunity: #tickets not automated by AI AGENT per intent / #AI Agent Tickets
+export const useSuccessRateUpliftOpportunityPerIntent = ({
     filters,
     timezone,
     sorting,
@@ -245,7 +245,7 @@ export const useAutomationOpportunityPerIntent = ({
 
         const totalTicketCount = String(aiAgentTickets.data?.value)
 
-        return enrichWithAutomationOpportunity(
+        return enrichWithSuccessRateUpliftOpportunity(
             aiAgentTicketsNotAutomatedGroupedByIntent,
             totalTicketCount,
             TicketCustomFieldsMeasure.TicketCustomFieldsTicketCount,
@@ -536,23 +536,25 @@ const useFetchAllIntentsMetrics = (
 ) => {
     const INTENT_LEVEL = intentLevel || 2
     // Fetch all metrics for all intents
-    const automationOpportunityPerIntent = useAutomationOpportunityPerIntent({
-        filters,
-        timezone,
-        sorting,
-        intentId,
-        integrationIds,
-    })
+    const successRateUpliftOpportunityPerIntent =
+        useSuccessRateUpliftOpportunityPerIntent({
+            filters,
+            timezone,
+            sorting,
+            intentId,
+            integrationIds,
+        })
 
-    const automationOpportunityPerIntentLevel = filterMetricDataByIntentLevel({
-        metricData: automationOpportunityPerIntent.data,
-        level: INTENT_LEVEL,
-        intentKey: 'TicketCustomFieldsEnriched.valueString',
-        valueKey: 'TicketCustomFieldsEnriched.ticketCount',
-        totalKey: 'TicketEnriched.ticketCount',
-        resultKey: 'automationOpportunity',
-        metricFor: IntentTableColumn.AutomationOpportunities,
-    })
+    const successRateUpliftOpportunityPerIntentLevel =
+        filterMetricDataByIntentLevel({
+            metricData: successRateUpliftOpportunityPerIntent.data,
+            level: INTENT_LEVEL,
+            intentKey: 'TicketCustomFieldsEnriched.valueString',
+            valueKey: 'TicketCustomFieldsEnriched.ticketCount',
+            totalKey: 'TicketEnriched.ticketCount',
+            resultKey: 'successRateUpliftOpportunity',
+            metricFor: IntentTableColumn.SuccessRateUpliftOpportunity,
+        })
 
     const ticketsPerIntent = useAIAgentTicketsPerIntent(
         filters,
@@ -626,9 +628,9 @@ const useFetchAllIntentsMetrics = (
     //     })
 
     return {
-        automationOpportunityPerIntent: {
-            ...automationOpportunityPerIntent,
-            data: automationOpportunityPerIntentLevel,
+        successRateUpliftOpportunityPerIntent: {
+            ...successRateUpliftOpportunityPerIntent,
+            data: successRateUpliftOpportunityPerIntentLevel,
         },
         ticketsPerIntent: {
             ...ticketsPerIntent,
@@ -673,7 +675,7 @@ export const useAIAgentInsightsDataset = (
 ) => {
     const integrationIds = useGetTicketChannelsStoreIntegrations(shopName)
     const {
-        automationOpportunityPerIntent,
+        successRateUpliftOpportunityPerIntent,
         ticketsPerIntent,
         successRatePerIntent,
         customerSatisfactionPerIntent,
@@ -689,8 +691,8 @@ export const useAIAgentInsightsDataset = (
     const results: Record<string, IntentMetrics> = {}
     const metrics = [
         {
-            data: automationOpportunityPerIntent.data || [],
-            metricKey: 'automationOpportunity',
+            data: successRateUpliftOpportunityPerIntent.data || [],
+            metricKey: 'successRateUpliftOpportunity',
         },
         {
             data: ticketsPerIntent.data || [],
@@ -723,7 +725,7 @@ export const useAIAgentInsightsDataset = (
     const convertedArray = convertResultToTableArrayFormat(results, intentLevel)
 
     const isFetching =
-        automationOpportunityPerIntent.isFetching ||
+        successRateUpliftOpportunityPerIntent.isFetching ||
         ticketsPerIntent.isFetching ||
         successRatePerIntent.isFetching ||
         customerSatisfactionPerIntent.isFetching

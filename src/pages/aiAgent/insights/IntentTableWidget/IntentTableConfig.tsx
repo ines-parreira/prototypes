@@ -25,7 +25,7 @@ import {
 
 export const TableColumnsOrder: IntentTableColumn[] = [
     IntentTableColumn.IntentName,
-    IntentTableColumn.AutomationOpportunities,
+    IntentTableColumn.SuccessRateUpliftOpportunity,
     IntentTableColumn.Tickets,
     IntentTableColumn.SuccessRate,
     IntentTableColumn.AvgCustomerSatisfaction,
@@ -34,7 +34,8 @@ export const TableColumnsOrder: IntentTableColumn[] = [
 
 export const TableLabels: Record<IntentTableColumn, string> = {
     [IntentTableColumn.IntentName]: 'Intent',
-    [IntentTableColumn.AutomationOpportunities]: 'Automation opportunity',
+    [IntentTableColumn.SuccessRateUpliftOpportunity]:
+        'Success rate uplift opportunity',
     [IntentTableColumn.Tickets]: 'Tickets',
     [IntentTableColumn.SuccessRate]: 'Success Rate',
     [IntentTableColumn.AvgCustomerSatisfaction]: 'AVG CSAT',
@@ -61,7 +62,7 @@ export const IntentsColumnsConfig: Partial<
         },
         perAgent: false,
     },
-    [IntentTableColumn.AutomationOpportunities]: {
+    [IntentTableColumn.SuccessRateUpliftOpportunity]: {
         format: 'decimal-percent-to-integer-percent',
         hint: {
             title: 'Estimated potential to improve your success rate, base on the potential uplift between your current success rate and the ticket volume of the intent.',
@@ -100,16 +101,29 @@ export const INTENT_NAME_COLUMN_WIDTH = isExtraLargeScreen() ? 160 : 300
 export const MOBILE_INTENT_NAME_COLUMN_WIDTH = 140
 export const METRIC_COLUMN_WIDTH = 140
 export const MOBILE_METRIC_COLUMN_WIDTH = 120
+export const SUCCESS_RATE_UPLIFT_OPPORTUNITY_COLUMN_WIDTH = 160
+export const MOBILE_SUCCESS_RATE_UPLIFT_OPPORTUNITY_COLUMN_WIDTH = 140
 
 export const getColumnWidth = (column: IntentTableColumn) => {
     if (isMediumOrSmallScreen()) {
-        return column === IntentTableColumn.IntentName
-            ? MOBILE_INTENT_NAME_COLUMN_WIDTH
-            : MOBILE_METRIC_COLUMN_WIDTH
+        switch (column) {
+            case IntentTableColumn.SuccessRateUpliftOpportunity:
+                return MOBILE_SUCCESS_RATE_UPLIFT_OPPORTUNITY_COLUMN_WIDTH
+            case IntentTableColumn.IntentName:
+                return MOBILE_INTENT_NAME_COLUMN_WIDTH
+            default:
+                return MOBILE_METRIC_COLUMN_WIDTH
+        }
     }
-    return column === IntentTableColumn.IntentName
-        ? INTENT_NAME_COLUMN_WIDTH
-        : METRIC_COLUMN_WIDTH
+
+    switch (column) {
+        case IntentTableColumn.SuccessRateUpliftOpportunity:
+            return SUCCESS_RATE_UPLIFT_OPPORTUNITY_COLUMN_WIDTH
+        case IntentTableColumn.IntentName:
+            return INTENT_NAME_COLUMN_WIDTH
+        default:
+            return METRIC_COLUMN_WIDTH
+    }
 }
 
 export const getColumnContentAlignment = (column: IntentTableColumn) => {

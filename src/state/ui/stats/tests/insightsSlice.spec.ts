@@ -57,8 +57,8 @@ describe('Intent Slice', () => {
 
         it('should handle sortingLoaded action', () => {
             const lastSortingMetricMock = [
-                { name: 'order/cancel', automationOpportunity: 5 },
-                { name: 'order/return', automationOpportunity: 3 },
+                { name: 'order/cancel', successRateUpliftOpportunity: 5 },
+                { name: 'order/return', successRateUpliftOpportunity: 3 },
             ] as unknown as Intent[]
 
             store.dispatch(sortingLoaded(lastSortingMetricMock))
@@ -114,17 +114,17 @@ describe('Intent Slice', () => {
                 {
                     id: 1,
                     [IntentTableColumn.IntentName]: 'intent1',
-                    [IntentTableColumn.AutomationOpportunities]: 10,
+                    [IntentTableColumn.SuccessRateUpliftOpportunity]: 10,
                 },
                 {
                     id: 2,
                     [IntentTableColumn.IntentName]: 'intent2',
-                    [IntentTableColumn.AutomationOpportunities]: 20,
+                    [IntentTableColumn.SuccessRateUpliftOpportunity]: 20,
                 },
                 {
                     id: 3,
                     [IntentTableColumn.IntentName]: 'intent3',
-                    [IntentTableColumn.AutomationOpportunities]: 30,
+                    [IntentTableColumn.SuccessRateUpliftOpportunity]: 30,
                 },
             ] as unknown as Intent[]
 
@@ -148,56 +148,56 @@ describe('Intent Slice', () => {
             {
                 id: 1,
                 [IntentTableColumn.IntentName]: 'order/cancel',
-                [IntentTableColumn.AutomationOpportunities]: 26,
+                [IntentTableColumn.SuccessRateUpliftOpportunity]: 26,
                 [IntentTableColumn.AvgCustomerSatisfaction]: 5,
             },
             {
                 id: 2,
                 [IntentTableColumn.IntentName]: 'order/track',
-                [IntentTableColumn.AutomationOpportunities]: 10,
+                [IntentTableColumn.SuccessRateUpliftOpportunity]: 10,
                 [IntentTableColumn.AvgCustomerSatisfaction]: 4.3,
             },
             {
                 id: 3,
                 [IntentTableColumn.IntentName]: 'order/return',
-                [IntentTableColumn.AutomationOpportunities]: 15,
+                [IntentTableColumn.SuccessRateUpliftOpportunity]: 15,
                 [IntentTableColumn.AvgCustomerSatisfaction]: '-',
             },
         ] as unknown as Intent[]
 
         const mockSorting = {
-            field: IntentTableColumn.AutomationOpportunities,
+            field: IntentTableColumn.SuccessRateUpliftOpportunity,
             direction: OrderDirection.Desc,
             isLoading: false,
             lastSortingMetric: null,
         }
 
-        it('should sort intents in descending order by automationOpportunity', () => {
+        it('should sort intents in descending order by successRateUpliftOpportunity', () => {
             const result = getSortedIntents.resultFunc(mockIntents, mockSorting)
 
             expect(result).toEqual([
                 {
                     id: 1,
                     [IntentTableColumn.IntentName]: 'order/cancel',
-                    [IntentTableColumn.AutomationOpportunities]: 26,
+                    [IntentTableColumn.SuccessRateUpliftOpportunity]: 26,
                     [IntentTableColumn.AvgCustomerSatisfaction]: 5,
                 },
                 {
                     id: 3,
                     [IntentTableColumn.IntentName]: 'order/return',
-                    [IntentTableColumn.AutomationOpportunities]: 15,
+                    [IntentTableColumn.SuccessRateUpliftOpportunity]: 15,
                     [IntentTableColumn.AvgCustomerSatisfaction]: '-',
                 },
                 {
                     id: 2,
                     [IntentTableColumn.IntentName]: 'order/track',
-                    [IntentTableColumn.AutomationOpportunities]: 10,
+                    [IntentTableColumn.SuccessRateUpliftOpportunity]: 10,
                     [IntentTableColumn.AvgCustomerSatisfaction]: 4.3,
                 },
             ])
         })
 
-        it('should sort intents in ascending order by automationOpportunity', () => {
+        it('should sort intents in ascending order by successRateUpliftOpportunity', () => {
             const ascendingSorting = {
                 ...mockSorting,
                 direction: OrderDirection.Asc,
@@ -212,19 +212,19 @@ describe('Intent Slice', () => {
                 {
                     id: 2,
                     [IntentTableColumn.IntentName]: 'order/track',
-                    [IntentTableColumn.AutomationOpportunities]: 10,
+                    [IntentTableColumn.SuccessRateUpliftOpportunity]: 10,
                     [IntentTableColumn.AvgCustomerSatisfaction]: 4.3,
                 },
                 {
                     id: 3,
                     [IntentTableColumn.IntentName]: 'order/return',
-                    [IntentTableColumn.AutomationOpportunities]: 15,
+                    [IntentTableColumn.SuccessRateUpliftOpportunity]: 15,
                     [IntentTableColumn.AvgCustomerSatisfaction]: '-',
                 },
                 {
                     id: 1,
                     [IntentTableColumn.IntentName]: 'order/cancel',
-                    [IntentTableColumn.AutomationOpportunities]: 26,
+                    [IntentTableColumn.SuccessRateUpliftOpportunity]: 26,
                     [IntentTableColumn.AvgCustomerSatisfaction]: 5,
                 },
             ])
@@ -259,19 +259,19 @@ describe('Intent Slice', () => {
                 {
                     id: 1,
                     [IntentTableColumn.IntentName]: 'order/cancel',
-                    [IntentTableColumn.AutomationOpportunities]: 26,
+                    [IntentTableColumn.SuccessRateUpliftOpportunity]: 26,
                     [IntentTableColumn.AvgCustomerSatisfaction]: 5,
                 },
                 {
                     id: 3,
                     [IntentTableColumn.IntentName]: 'order/return',
-                    [IntentTableColumn.AutomationOpportunities]: 15,
+                    [IntentTableColumn.SuccessRateUpliftOpportunity]: 15,
                     [IntentTableColumn.AvgCustomerSatisfaction]: '-',
                 },
                 {
                     id: 2,
                     [IntentTableColumn.IntentName]: 'order/track',
-                    [IntentTableColumn.AutomationOpportunities]: 10,
+                    [IntentTableColumn.SuccessRateUpliftOpportunity]: 10,
                     [IntentTableColumn.AvgCustomerSatisfaction]: 4.3,
                 },
             ])
@@ -292,19 +292,19 @@ describe('Intent Slice', () => {
                 {
                     id: 1,
                     [IntentTableColumn.IntentName]: 'order/cancel',
-                    [IntentTableColumn.AutomationOpportunities]: 26,
+                    [IntentTableColumn.SuccessRateUpliftOpportunity]: 26,
                     [IntentTableColumn.AvgCustomerSatisfaction]: 5,
                 },
                 {
                     id: 2,
                     [IntentTableColumn.IntentName]: 'order/track',
-                    [IntentTableColumn.AutomationOpportunities]: 10,
+                    [IntentTableColumn.SuccessRateUpliftOpportunity]: 10,
                     [IntentTableColumn.AvgCustomerSatisfaction]: 4.3,
                 },
                 {
                     id: 3,
                     [IntentTableColumn.IntentName]: 'order/return',
-                    [IntentTableColumn.AutomationOpportunities]: 15,
+                    [IntentTableColumn.SuccessRateUpliftOpportunity]: 15,
                     [IntentTableColumn.AvgCustomerSatisfaction]: '-',
                 },
             ])

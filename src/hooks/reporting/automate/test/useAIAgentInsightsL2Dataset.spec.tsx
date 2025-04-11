@@ -6,14 +6,14 @@ import { useCustomFieldDefinitions } from 'custom-fields/hooks/queries/useCustom
 import { ticketFieldDefinitions } from 'fixtures/customField'
 import { useGetTicketChannelsStoreIntegrations } from 'hooks/integrations/useGetTicketChannelsStoreIntegrations'
 import {
-    EnrichedTicketCustomFieldsWithAutomationOpportunity,
     EnrichedTicketCustomFieldsWithSuccessRate,
+    EnrichedTicketCustomFieldsWithSuccessRateUpliftOpportunity,
 } from 'hooks/reporting/automate/types'
 import {
     useAIAgentTicketsPerIntent,
-    useAutomationOpportunityPerIntent,
     useCustomerSatisfactionPerIntent,
     useSuccessRatePerIntent,
+    useSuccessRateUpliftOpportunityPerIntent,
 } from 'hooks/reporting/automate/useAIAgentInsightsDataset'
 import {
     useAIAgentTicketsForIntentTrendMetric,
@@ -47,8 +47,8 @@ jest.mock('hooks/integrations/useGetTicketChannelsStoreIntegrations')
 const useCustomFieldDefinitionsMock = assumeMock(useCustomFieldDefinitions)
 const useAIAgentUserIdMock = assumeMock(useAIAgentUserId)
 const useAIAgentTicketsPerIntentMock = assumeMock(useAIAgentTicketsPerIntent)
-const useAutomationOpportunityPerIntentMock = assumeMock(
-    useAutomationOpportunityPerIntent,
+const useSuccessRateUpliftOpportunityPerIntentMock = assumeMock(
+    useSuccessRateUpliftOpportunityPerIntent,
 )
 
 const filterMetricDataByIntentLevelMock = assumeMock(
@@ -81,18 +81,18 @@ const statsFilters: StatsFilters = {
 const data = [
     {
         'TicketCustomFieldsEnriched.valueString': 'intentA::subIntentA',
-        automationOpportunity: 10,
+        successRateUpliftOpportunity: 10,
         'TicketCustomFieldsEnriched.ticketCount': 5,
         successRate: 50,
         'TicketSatisfactionSurveyEnriched.avgSurveyScore': 3,
-    } as unknown as EnrichedTicketCustomFieldsWithAutomationOpportunity,
+    } as unknown as EnrichedTicketCustomFieldsWithSuccessRateUpliftOpportunity,
     {
         'TicketCustomFieldsEnriched.valueString': 'intentB::subIntentB',
-        automationOpportunity: 20,
+        successRateUpliftOpportunity: 20,
         'TicketCustomFieldsEnriched.ticketCount': 4,
         successRate: 75,
         'TicketSatisfactionSurveyEnriched.avgSurveyScore': 4,
-    } as unknown as EnrichedTicketCustomFieldsWithAutomationOpportunity,
+    } as unknown as EnrichedTicketCustomFieldsWithSuccessRateUpliftOpportunity,
 ]
 
 const intentId = 'intentA::subIntentA'
@@ -117,7 +117,7 @@ describe('useAiAgentInsightsL2Dataset', () => {
     })
 
     it('should return automated opportunity trend metric for intent', () => {
-        useAutomationOpportunityPerIntentMock
+        useSuccessRateUpliftOpportunityPerIntentMock
             .mockReturnValueOnce({
                 data: [data[0]],
                 isFetching: false,
@@ -129,8 +129,8 @@ describe('useAiAgentInsightsL2Dataset', () => {
                 isError: false,
             })
         filterMetricDataByIntentLevelMock
-            .mockReturnValueOnce([{ automationOpportunity: 10 }])
-            .mockReturnValueOnce([{ automationOpportunity: 5 }])
+            .mockReturnValueOnce([{ successRateUpliftOpportunity: 10 }])
+            .mockReturnValueOnce([{ successRateUpliftOpportunity: 5 }])
 
         const { result } = renderHook(() =>
             useAutomatedOpportunityForIntentTrendMetric({
@@ -269,15 +269,15 @@ describe('useAiAgentInsightsL2Dataset', () => {
     })
 
     it('should return all performance metrics for intent', () => {
-        // automationOpportunityPerIntent
-        useAutomationOpportunityPerIntentMock.mockReturnValue({
+        // successRateUpliftOpportunityPerIntent
+        useSuccessRateUpliftOpportunityPerIntentMock.mockReturnValue({
             data: [data[0]],
             isFetching: false,
             isError: false,
         })
         filterMetricDataByIntentLevelMock
-            .mockReturnValueOnce([{ automationOpportunity: 10 }])
-            .mockReturnValueOnce([{ automationOpportunity: 5 }])
+            .mockReturnValueOnce([{ successRateUpliftOpportunity: 10 }])
+            .mockReturnValueOnce([{ successRateUpliftOpportunity: 5 }])
         // ticketsPerIntent
         useAIAgentTicketsPerIntentMock
             .mockReturnValueOnce({
@@ -360,11 +360,11 @@ describe('useAiAgentInsightsL2Dataset', () => {
             }),
         )
 
-        expect(result.current.automationOpportunityPerIntent.data.value).toBe(
-            10,
-        )
         expect(
-            result.current.automationOpportunityPerIntent.data.prevValue,
+            result.current.successRateUpliftOpportunityPerIntent.data.value,
+        ).toBe(10)
+        expect(
+            result.current.successRateUpliftOpportunityPerIntent.data.prevValue,
         ).toBe(5)
         expect(result.current.ticketsPerIntent.data.value).toBe(5)
         expect(result.current.ticketsPerIntent.data.prevValue).toBe(4)
@@ -374,12 +374,12 @@ describe('useAiAgentInsightsL2Dataset', () => {
         expect(
             result.current.customerSatisfactionPerIntent.data.prevValue,
         ).toBe(4)
-        expect(result.current.automationOpportunityPerIntent.isFetching).toBe(
-            false,
-        )
-        expect(result.current.automationOpportunityPerIntent.isError).toBe(
-            false,
-        )
+        expect(
+            result.current.successRateUpliftOpportunityPerIntent.isFetching,
+        ).toBe(false)
+        expect(
+            result.current.successRateUpliftOpportunityPerIntent.isError,
+        ).toBe(false)
         expect(result.current.ticketsPerIntent.isFetching).toBe(false)
         expect(result.current.ticketsPerIntent.isError).toBe(false)
         expect(result.current.successRatePerIntent.isFetching).toBe(false)

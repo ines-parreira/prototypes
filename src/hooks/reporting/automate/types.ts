@@ -72,9 +72,9 @@ export type EnrichedTicketCustomFields = {
     [CUSTOM_FIELD_COUNT]: string | null
 }
 
-export type EnrichedTicketCustomFieldsWithAutomationOpportunity =
+export type EnrichedTicketCustomFieldsWithSuccessRateUpliftOpportunity =
     EnrichedTicketCustomFields & {
-        automationOpportunity: number
+        successRateUpliftOpportunity: number
     }
 
 export type EnrichedTicketCustomFieldsWithSuccessRate =
@@ -83,7 +83,7 @@ export type EnrichedTicketCustomFieldsWithSuccessRate =
     }
 
 export type SortingField =
-    | keyof EnrichedTicketCustomFieldsWithAutomationOpportunity
+    | keyof EnrichedTicketCustomFieldsWithSuccessRateUpliftOpportunity
     | keyof EnrichedTicketCustomFieldsWithSuccessRate
 
 export const CUSTOM_FIELD_AI_AGENT_HANDOVER = 'Handover'

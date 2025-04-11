@@ -21,8 +21,8 @@ import {
     BREAKDOWN_FIELD,
     CUSTOM_FIELD_COUNT,
     DEFAULT_WORKFLOW_ANALYTICS_DATA,
-    EnrichedTicketCustomFieldsWithAutomationOpportunity,
     EnrichedTicketCustomFieldsWithSuccessRate,
+    EnrichedTicketCustomFieldsWithSuccessRateUpliftOpportunity,
     FLOW_ENDED_WITH_TICKET_HANDOVER,
     FLOW_HANDOVER_TICKET_CREATED,
     FLOW_PROMPT_NOT_HELPFUL,
@@ -539,7 +539,7 @@ export function computeWorkflowStepsMetrics(
 
 export const sortAllData = <
     T extends
-        | EnrichedTicketCustomFieldsWithAutomationOpportunity
+        | EnrichedTicketCustomFieldsWithSuccessRateUpliftOpportunity
         | EnrichedTicketCustomFieldsWithSuccessRate,
 >(
     allData: T[],
@@ -555,30 +555,30 @@ export const sortAllData = <
     return sortedArray.concat(difference(allData, nonNullValues))
 }
 
-export const enrichWithAutomationOpportunity = (
+export const enrichWithSuccessRateUpliftOpportunity = (
     metric: MetricWithDecile<TicketCustomFieldsCube>,
     totalTicketCount: string,
     valueField: TicketCustomFieldsMeasure.TicketCustomFieldsTicketCount,
     sorting: OrderDirection = OrderDirection.Desc,
-): EnrichedTicketCustomFieldsWithAutomationOpportunity[] => {
+): EnrichedTicketCustomFieldsWithSuccessRateUpliftOpportunity[] => {
     const allData = metric?.data?.allData
 
     if (!allData || !totalTicketCount) {
         return []
     }
 
-    const enrichedData: EnrichedTicketCustomFieldsWithAutomationOpportunity[] =
+    const enrichedData: EnrichedTicketCustomFieldsWithSuccessRateUpliftOpportunity[] =
         allData.map((item) => ({
             [BREAKDOWN_FIELD]: item[BREAKDOWN_FIELD],
             [TICKET_COUNT]: totalTicketCount,
             [CUSTOM_FIELD_COUNT]: item[valueField],
-            automationOpportunity: calculateRate(
+            successRateUpliftOpportunity: calculateRate(
                 Number(item[valueField]),
                 Number(totalTicketCount),
             ),
         }))
 
-    return sortAllData(enrichedData, 'automationOpportunity', sorting)
+    return sortAllData(enrichedData, 'successRateUpliftOpportunity', sorting)
 }
 
 export const enrichWithSuccessRate = (
@@ -765,7 +765,7 @@ export const filterMetricDataByIntentLevel = ({
         const value = (valueKey && Number(item[valueKey])) || 0
 
         switch (metricFor) {
-            case IntentTableColumn.AutomationOpportunities:
+            case IntentTableColumn.SuccessRateUpliftOpportunity:
                 adjustedData[intent].length = total
                 adjustedData[intent].sum += value
                 break
@@ -788,7 +788,7 @@ export const filterMetricDataByIntentLevel = ({
     return Object.keys(adjustedData)
         .map((intent) => {
             switch (metricFor) {
-                case IntentTableColumn.AutomationOpportunities:
+                case IntentTableColumn.SuccessRateUpliftOpportunity:
                 case IntentTableColumn.SuccessRate:
                 case IntentTableColumn.AvgCustomerSatisfaction:
                     return {

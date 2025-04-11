@@ -45,7 +45,7 @@ describe('Level2IntentsPerformance', () => {
     beforeEach(() => {
         mockUseParams.mockReturnValue({ intentId: 'intentA' })
         mockUseInsightPerformanceMetrics.mockReturnValue({
-            automationOpportunityPerIntent: {
+            successRateUpliftOpportunityPerIntent: {
                 data: { value: 10, prevValue: 5 },
                 isFetching: false,
                 isError: false,
@@ -102,7 +102,7 @@ describe('Level2IntentsPerformance', () => {
             .props as unknown as IntentsPerformanceProps
         const metrics = componentProps.metrics
 
-        expect(metrics[0].title).toBe('Automation opportunity')
+        expect(metrics[0].title).toBe('Success rate uplift opportunity')
         expect(metrics[0].trend.data?.value).toBe(10)
         expect(metrics[0]?.trend.data?.prevValue).toBe(5)
 
@@ -131,7 +131,7 @@ describe('Level2IntentsPerformance', () => {
 
     it('handles fetching state', () => {
         mockUseInsightPerformanceMetrics.mockReturnValue({
-            automationOpportunityPerIntent: {
+            successRateUpliftOpportunityPerIntent: {
                 data: { value: 10, prevValue: 5 },
                 isFetching: true,
                 isError: false,
@@ -165,7 +165,7 @@ describe('Level2IntentsPerformance', () => {
 
     it('handles error state', () => {
         mockUseInsightPerformanceMetrics.mockReturnValue({
-            automationOpportunityPerIntent: {
+            successRateUpliftOpportunityPerIntent: {
                 data: { value: 10, prevValue: 5 },
                 isFetching: false,
                 isError: true,

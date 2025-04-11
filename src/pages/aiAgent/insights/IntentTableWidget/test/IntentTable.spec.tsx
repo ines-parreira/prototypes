@@ -52,24 +52,24 @@ const defaultPaginatedIntents = {
         {
             id: 'order::track',
             [IntentTableColumn.IntentName]: 'order/track',
-            [IntentTableColumn.AutomationOpportunities]: 10,
+            [IntentTableColumn.SuccessRateUpliftOpportunity]: 10,
         },
         {
             id: 'order::cancel',
             [IntentTableColumn.IntentName]: 'order/cancel',
-            [IntentTableColumn.AutomationOpportunities]: 20,
+            [IntentTableColumn.SuccessRateUpliftOpportunity]: 20,
         },
     ],
     allIntents: [
         {
             id: 'order::track',
             [IntentTableColumn.IntentName]: 'order/track',
-            [IntentTableColumn.AutomationOpportunities]: 10,
+            [IntentTableColumn.SuccessRateUpliftOpportunity]: 10,
         },
         {
             id: 'order::cancel',
             [IntentTableColumn.IntentName]: 'order/cancel',
-            [IntentTableColumn.AutomationOpportunities]: 20,
+            [IntentTableColumn.SuccessRateUpliftOpportunity]: 20,
         },
     ],
     currentPage: 1,
@@ -82,7 +82,7 @@ const initialState = {
                 paginatedIntents: defaultPaginatedIntents,
                 isSortingLoading: false,
                 sorting: {
-                    field: IntentTableColumn.AutomationOpportunities,
+                    field: IntentTableColumn.SuccessRateUpliftOpportunity,
                     direction: 'desc',
                     isLoading: false,
                 },
@@ -136,7 +136,7 @@ describe('Intent Table components', () => {
             ).toBeInTheDocument()
             expect(
                 screen.getByText(
-                    TableLabels[IntentTableColumn.AutomationOpportunities],
+                    TableLabels[IntentTableColumn.SuccessRateUpliftOpportunity],
                 ),
             ).toBeInTheDocument()
 
@@ -222,7 +222,7 @@ describe('Intent Table components', () => {
                                 perPage: 10,
                             },
                             sorting: {
-                                field: IntentTableColumn.AutomationOpportunities,
+                                field: IntentTableColumn.SuccessRateUpliftOpportunity,
                                 direction: 'desc',
                                 isLoading: false,
                             },
@@ -266,7 +266,7 @@ describe('Intent Table components', () => {
                             paginatedIntents: paginatedIntents,
                             isSortingLoading: false,
                             sorting: {
-                                field: IntentTableColumn.AutomationOpportunities,
+                                field: IntentTableColumn.SuccessRateUpliftOpportunity,
                                 direction: 'desc',
                                 isLoading: false,
                             },

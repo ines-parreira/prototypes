@@ -19,8 +19,8 @@ import {
     automatePercentLabel,
     calculateAiAgentKnowledgeResourcePerIntent,
     calculateGreyArea,
-    enrichWithAutomationOpportunity,
     enrichWithSuccessRate,
+    enrichWithSuccessRateUpliftOpportunity,
     filterMetricDataByIntentLevel,
     getGreyAreaAndChartParam,
     getIntentByLevel,
@@ -668,47 +668,47 @@ describe('automateInteractionsByEventTypeToTimeSeries', () => {
 })
 
 describe('sortAllData', () => {
-    const mockDataWithAutomationOpportunity = [
+    const mockDataWithSuccessRateUpliftOpportunity = [
         {
-            automationOpportunity: 0.5,
+            successRateUpliftOpportunity: 0.5,
             [BREAKDOWN_FIELD]: 'A',
             [TICKET_COUNT]: '2',
             [CUSTOM_FIELD_COUNT]: '1',
         },
         {
-            automationOpportunity: 0.2,
+            successRateUpliftOpportunity: 0.2,
             [BREAKDOWN_FIELD]: 'B',
             [TICKET_COUNT]: '5',
             [CUSTOM_FIELD_COUNT]: '1',
         },
         {
-            automationOpportunity: 0.8,
+            successRateUpliftOpportunity: 0.8,
             [BREAKDOWN_FIELD]: 'C',
             [TICKET_COUNT]: '4',
             [CUSTOM_FIELD_COUNT]: '3',
         },
     ]
-    it('should sort data with automationOpportunity in ascending order', () => {
+    it('should sort data with successRateUpliftOpportunity in ascending order', () => {
         const result = sortAllData(
-            mockDataWithAutomationOpportunity,
-            'automationOpportunity',
+            mockDataWithSuccessRateUpliftOpportunity,
+            'successRateUpliftOpportunity',
             OrderDirection.Asc,
         )
         expect(result).toEqual([
             {
-                automationOpportunity: 0.2,
+                successRateUpliftOpportunity: 0.2,
                 [BREAKDOWN_FIELD]: 'B',
                 [TICKET_COUNT]: '5',
                 [CUSTOM_FIELD_COUNT]: '1',
             },
             {
-                automationOpportunity: 0.5,
+                successRateUpliftOpportunity: 0.5,
                 [BREAKDOWN_FIELD]: 'A',
                 [TICKET_COUNT]: '2',
                 [CUSTOM_FIELD_COUNT]: '1',
             },
             {
-                automationOpportunity: 0.8,
+                successRateUpliftOpportunity: 0.8,
                 [BREAKDOWN_FIELD]: 'C',
                 [TICKET_COUNT]: '4',
                 [CUSTOM_FIELD_COUNT]: '3',
@@ -716,28 +716,28 @@ describe('sortAllData', () => {
         ])
     })
 
-    it('should sort data with automationOpportunity in descending order', () => {
+    it('should sort data with successRateUpliftOpportunity in descending order', () => {
         const result = sortAllData(
-            mockDataWithAutomationOpportunity,
-            'automationOpportunity',
+            mockDataWithSuccessRateUpliftOpportunity,
+            'successRateUpliftOpportunity',
             OrderDirection.Desc,
         )
         expect(result).toEqual([
             {
-                automationOpportunity: 0.8,
+                successRateUpliftOpportunity: 0.8,
                 [BREAKDOWN_FIELD]: 'C',
                 [TICKET_COUNT]: '4',
                 [CUSTOM_FIELD_COUNT]: '3',
             },
 
             {
-                automationOpportunity: 0.5,
+                successRateUpliftOpportunity: 0.5,
                 [BREAKDOWN_FIELD]: 'A',
                 [TICKET_COUNT]: '2',
                 [CUSTOM_FIELD_COUNT]: '1',
             },
             {
-                automationOpportunity: 0.2,
+                successRateUpliftOpportunity: 0.2,
                 [BREAKDOWN_FIELD]: 'B',
                 [TICKET_COUNT]: '5',
                 [CUSTOM_FIELD_COUNT]: '1',
@@ -748,16 +748,16 @@ describe('sortAllData', () => {
     it('should handle empty array', () => {
         const result = sortAllData(
             [],
-            'automationOpportunity',
+            'successRateUpliftOpportunity',
             OrderDirection.Asc,
         )
         expect(result).toEqual([])
     })
 })
 
-describe('enrichWithAutomationOpportunity', () => {
+describe('enrichWithSuccessRateUpliftOpportunity', () => {
     it('should return enriched data sorted in descending order by default', () => {
-        const result = enrichWithAutomationOpportunity(
+        const result = enrichWithSuccessRateUpliftOpportunity(
             customFieldsMetric,
             '5',
             TicketCustomFieldsMeasure.TicketCustomFieldsTicketCount,
@@ -767,25 +767,25 @@ describe('enrichWithAutomationOpportunity', () => {
                 [BREAKDOWN_FIELD]: 'Other::Platform',
                 [TICKET_COUNT]: '5',
                 [CUSTOM_FIELD_COUNT]: '3',
-                automationOpportunity: 0.6,
+                successRateUpliftOpportunity: 0.6,
             },
             {
                 [BREAKDOWN_FIELD]: 'Other::Other',
                 [TICKET_COUNT]: '5',
                 [CUSTOM_FIELD_COUNT]: '1',
-                automationOpportunity: 0.2,
+                successRateUpliftOpportunity: 0.2,
             },
             {
                 [BREAKDOWN_FIELD]: 'Other::App',
                 [TICKET_COUNT]: '5',
                 [CUSTOM_FIELD_COUNT]: '1',
-                automationOpportunity: 0.2,
+                successRateUpliftOpportunity: 0.2,
             },
         ])
     })
 
     it('should return enriched data sorted in ascending order', () => {
-        const result = enrichWithAutomationOpportunity(
+        const result = enrichWithSuccessRateUpliftOpportunity(
             customFieldsMetric,
             '5',
             TicketCustomFieldsMeasure.TicketCustomFieldsTicketCount,
@@ -796,25 +796,25 @@ describe('enrichWithAutomationOpportunity', () => {
                 [BREAKDOWN_FIELD]: 'Other::Other',
                 [TICKET_COUNT]: '5',
                 [CUSTOM_FIELD_COUNT]: '1',
-                automationOpportunity: 0.2,
+                successRateUpliftOpportunity: 0.2,
             },
             {
                 [BREAKDOWN_FIELD]: 'Other::App',
                 [TICKET_COUNT]: '5',
                 [CUSTOM_FIELD_COUNT]: '1',
-                automationOpportunity: 0.2,
+                successRateUpliftOpportunity: 0.2,
             },
             {
                 [BREAKDOWN_FIELD]: 'Other::Platform',
                 [TICKET_COUNT]: '5',
                 [CUSTOM_FIELD_COUNT]: '3',
-                automationOpportunity: 0.6,
+                successRateUpliftOpportunity: 0.6,
             },
         ])
     })
 
     it('should return an empty array if allData is empty', () => {
-        const result = enrichWithAutomationOpportunity(
+        const result = enrichWithSuccessRateUpliftOpportunity(
             emptyMetric,
             '5',
             TicketCustomFieldsMeasure.TicketCustomFieldsTicketCount,
@@ -1079,7 +1079,7 @@ describe('filterMetricDataByIntentLevel', () => {
             valueKey: 'value',
             totalKey: 'total',
             resultKey: 'result',
-            metricFor: IntentTableColumn.AutomationOpportunities,
+            metricFor: IntentTableColumn.SuccessRateUpliftOpportunity,
         })
 
         expect(result).toEqual([

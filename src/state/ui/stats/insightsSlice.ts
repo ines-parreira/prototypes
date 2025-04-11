@@ -30,7 +30,7 @@ export const INTENTS_PER_PAGE = 15
 
 export const initialState: IntentState<IntentTableColumn> = {
     sorting: {
-        field: IntentTableColumn.AutomationOpportunities,
+        field: IntentTableColumn.SuccessRateUpliftOpportunity,
         direction: OrderDirection.Desc,
         isLoading: true,
     },

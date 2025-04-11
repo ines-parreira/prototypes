@@ -168,7 +168,7 @@ export const IntentResourcesCellContent = ({
     )
 }
 
-export const IntentAutomationOpportunitiesCellContent = ({
+export const IntentSuccessRateUpliftOpportunitiesCellContent = ({
     intent,
     column,
     allIntents,

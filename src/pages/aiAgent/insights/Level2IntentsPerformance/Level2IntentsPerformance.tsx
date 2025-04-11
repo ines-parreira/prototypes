@@ -48,11 +48,11 @@ export const Level2IntentsPerformance = () => {
             period={pageStatsFilters.period}
             metrics={[
                 {
-                    title: 'Automation opportunity',
+                    title: 'Success rate uplift opportunity',
                     hint: {
                         title: 'Estimated potential to improve your success rate, based on the potential uplift between your current success rate and the ticket volume of the intent.',
                     },
-                    trend: aiAgentMetrics.automationOpportunityPerIntent,
+                    trend: aiAgentMetrics.successRateUpliftOpportunityPerIntent,
                     interpretAs: 'more-is-better',
                     metricFormat: 'decimal-to-percent',
                 },
