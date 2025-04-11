@@ -1,7 +1,10 @@
+import { useQueryClient } from '@tanstack/react-query'
+
 import { Content, Subtitle } from 'common/notifications'
 import type { ContentProps, Notification } from 'common/notifications'
 import { WARNING_ICON } from 'pages/common/components/SourceIcon'
 
+import { trackstarDefinitionKeys } from '../../../models/workflows/queries'
 import { getAiAgentNavigationRoutes } from '../../../pages/aiAgent/hooks/useAiAgentNavigation'
 import { getLDClient } from '../../../utils/launchDarkly'
 import { WorkflowConfigurationUpdatedNotificationPayload } from '../types'
@@ -17,12 +20,18 @@ export default function WorkflowConfigurationUpdatedNotification({
     const payload = notification.payload
     const flags = getLDClient().allFlags()
     const routes = getAiAgentNavigationRoutes(payload.store_name, flags)
+    const queryClient = useQueryClient()
     return (
         <Content
             {...props}
+            url={routes.actions}
             icon={{ type: WARNING_ICON }}
             title={`Reconnect ${payload.integration_name}`}
-            url={routes.actions}
+            onClick={() => {
+                queryClient.invalidateQueries({
+                    queryKey: trackstarDefinitionKeys.all(),
+                })
+            }}
         >
             <Subtitle>
                 Your connection with {payload.integration_name} has been

@@ -8,6 +8,19 @@ import {
 
 declare namespace Components {
     namespace Schemas {
+        export interface ConnectionErrorWebhookBodyDto {
+            connection_id: string
+            data: {
+                created_date: string // date-time
+                error_message: string
+                failed_url: string
+                integration_name: string
+                last_seen: string // date-time
+                updated_date: string // date-time
+            }
+            event_type: 'connection-error.created'
+            integration_name: 'sandbox' | 'shiphero' | 'shipstation'
+        }
         export interface CreateTokenBodyDto {
             auth_code: string
             store_name: string
@@ -392,7 +405,6 @@ declare namespace Components {
                       id: string
                       kind: 'create-discount-code'
                       settings: {
-                          customer_id: string
                           integration_id: string
                           type: string
                           amount: string
@@ -943,6 +955,7 @@ declare namespace Components {
         export type GetAppResponseDto =
             | {
                   id: string
+                  name?: string | null
                   auth_type: 'api-key'
                   auth_settings: {
                       input_label?: string | null
@@ -952,6 +965,7 @@ declare namespace Components {
               }
             | {
                   id: string
+                  name?: string | null
                   auth_type: 'oauth2-token'
                   auth_settings: {
                       refresh_token_url: string
@@ -962,6 +976,7 @@ declare namespace Components {
               }
             | {
                   id: string
+                  name?: string | null
                   auth_type: 'trackstar'
                   auth_settings: {
                       integration_name: 'sandbox' | 'shiphero' | 'shipstation'
@@ -1313,9 +1328,6 @@ declare namespace Components {
                           kind: 'edit-order'
                       }
                     | {
-                          kind: 'create-discount-code'
-                      }
-                    | {
                           kind: 'refund-shipping-costs'
                       }
                     | {
@@ -1474,14 +1486,6 @@ declare namespace Components {
                               message: string
                           }[]
                           kind: 'edit-order'
-                      }
-                    | {
-                          success: boolean
-                          errors: {
-                              message: string
-                          }[]
-                          kind: 'create-discount-code'
-                          discount_code?: string | null
                       }
                     | {
                           success: boolean
@@ -1884,7 +1888,6 @@ declare namespace Components {
                       id: string
                       kind: 'create-discount-code'
                       settings: {
-                          customer_id: string
                           integration_id: string
                           type: string
                           amount: string
@@ -2555,7 +2558,6 @@ declare namespace Components {
                       id: string
                       kind: 'create-discount-code'
                       settings: {
-                          customer_id: string
                           integration_id: string
                           type: string
                           amount: string
@@ -3421,9 +3423,6 @@ declare namespace Components {
                       kind: 'edit-order'
                   }
                 | {
-                      kind: 'create-discount-code'
-                  }
-                | {
                       kind: 'refund-shipping-costs'
                   }
                 | {
@@ -3582,14 +3581,6 @@ declare namespace Components {
                           message: string
                       }[]
                       kind: 'edit-order'
-                  }
-                | {
-                      success: boolean
-                      errors: {
-                          message: string
-                      }[]
-                      kind: 'create-discount-code'
-                      discount_code?: string | null
                   }
                 | {
                       success: boolean
@@ -5658,6 +5649,7 @@ declare namespace Components {
         export type ListAppResponseDto = (
             | {
                   id: string
+                  name?: string | null
                   auth_type: 'api-key'
                   auth_settings: {
                       input_label?: string | null
@@ -5667,6 +5659,7 @@ declare namespace Components {
               }
             | {
                   id: string
+                  name?: string | null
                   auth_type: 'oauth2-token'
                   auth_settings: {
                       refresh_token_url: string
@@ -5677,6 +5670,7 @@ declare namespace Components {
               }
             | {
                   id: string
+                  name?: string | null
                   auth_type: 'trackstar'
                   auth_settings: {
                       integration_name: 'sandbox' | 'shiphero' | 'shipstation'
@@ -6062,7 +6056,6 @@ declare namespace Components {
                       id: string
                       kind: 'create-discount-code'
                       settings: {
-                          customer_id: string
                           integration_id: string
                           type: string
                           amount: string
@@ -6799,7 +6792,6 @@ declare namespace Components {
                       id: string
                       kind: 'create-discount-code'
                       settings: {
-                          customer_id: string
                           integration_id: string
                           type: string
                           amount: string
@@ -7703,7 +7695,6 @@ declare namespace Components {
                       id: string
                       kind: 'create-discount-code'
                       settings: {
-                          customer_id: string
                           integration_id: string
                           type: string
                           amount: string
@@ -10952,7 +10943,6 @@ declare namespace Components {
                   shop_name: string
                   shop_type?: string
                   user_journey_id: string
-                  trigger_type?: 'recommendation'
                   time_zone?: string | null
               }
             | {
@@ -15876,6 +15866,7 @@ declare namespace Components {
         }
         export type UpsertAppRequestBodyDto =
             | {
+                  name?: string | null
                   auth_type: 'api-key'
                   auth_settings: {
                       input_label?: string | null
@@ -15884,6 +15875,7 @@ declare namespace Components {
                   }
               }
             | {
+                  name?: string | null
                   auth_type: 'oauth2-token'
                   auth_settings: {
                       refresh_token_url: string
@@ -15893,6 +15885,7 @@ declare namespace Components {
                   }
               }
             | {
+                  name?: string | null
                   auth_type: 'trackstar'
                   auth_settings: {
                       integration_name: 'sandbox' | 'shiphero' | 'shipstation'
@@ -15901,6 +15894,7 @@ declare namespace Components {
         export type UpsertAppRequestResponseDto =
             | {
                   id: string
+                  name?: string | null
                   auth_type: 'api-key'
                   auth_settings: {
                       input_label?: string | null
@@ -15910,6 +15904,7 @@ declare namespace Components {
               }
             | {
                   id: string
+                  name?: string | null
                   auth_type: 'oauth2-token'
                   auth_settings: {
                       refresh_token_url: string
@@ -15920,6 +15915,7 @@ declare namespace Components {
               }
             | {
                   id: string
+                  name?: string | null
                   auth_type: 'trackstar'
                   auth_settings: {
                       integration_name: 'sandbox' | 'shiphero' | 'shipstation'
@@ -16305,7 +16301,6 @@ declare namespace Components {
                       id: string
                       kind: 'create-discount-code'
                       settings: {
-                          customer_id: string
                           integration_id: string
                           type: string
                           amount: string
@@ -17218,7 +17213,6 @@ declare namespace Components {
                       id: string
                       kind: 'create-discount-code'
                       settings: {
-                          customer_id: string
                           integration_id: string
                           type: string
                           amount: string
@@ -18132,7 +18126,6 @@ declare namespace Components {
                       id: string
                       kind: 'create-discount-code'
                       settings: {
-                          customer_id: string
                           integration_id: string
                           type: string
                           amount: string
@@ -19049,7 +19042,6 @@ declare namespace Components {
                       id: string
                       kind: 'create-discount-code'
                       settings: {
-                          customer_id: string
                           integration_id: string
                           type: string
                           amount: string
@@ -19723,7 +19715,6 @@ declare namespace Components {
                       id: string
                       kind: 'create-discount-code'
                       settings: {
-                          customer_id: string
                           integration_id: string
                           type: string
                           amount: string
@@ -20403,7 +20394,6 @@ declare namespace Components {
                       id: string
                       kind: 'create-discount-code'
                       settings: {
-                          customer_id: string
                           integration_id: string
                           type: string
                           amount: string
@@ -21256,6 +21246,10 @@ declare namespace Paths {
             export type $201 = Components.Schemas.CreateTokenResponseDto
         }
     }
+    namespace TrackstarControllerWebhook {
+        export type RequestBody =
+            Components.Schemas.ConnectionErrorWebhookBodyDto
+    }
     namespace WfConfigurationControllerDelete {
         namespace Parameters {
             export type InternalId = string
@@ -21879,6 +21873,14 @@ export interface OperationMethods {
         config?: AxiosRequestConfig,
     ): OperationResponse<Paths.TrackstarControllerList.Responses.$200>
     /**
+     * TrackstarController_webhook
+     */
+    'TrackstarController_webhook'(
+        parameters?: Parameters<UnknownParamsObject> | null,
+        data?: Paths.TrackstarControllerWebhook.RequestBody,
+        config?: AxiosRequestConfig,
+    ): OperationResponse<any>
+    /**
      * HealthController_check
      */
     'HealthController_check'(
@@ -22243,6 +22245,16 @@ export interface PathsDictionary {
             data?: any,
             config?: AxiosRequestConfig,
         ): OperationResponse<Paths.TrackstarControllerList.Responses.$200>
+    }
+    ['/trackstar/webhook']: {
+        /**
+         * TrackstarController_webhook
+         */
+        'post'(
+            parameters?: Parameters<UnknownParamsObject> | null,
+            data?: Paths.TrackstarControllerWebhook.RequestBody,
+            config?: AxiosRequestConfig,
+        ): OperationResponse<any>
     }
     ['/health']: {
         /**

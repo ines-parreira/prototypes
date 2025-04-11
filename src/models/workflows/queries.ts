@@ -1,4 +1,9 @@
-import { useMutation, useQuery, UseQueryOptions } from '@tanstack/react-query'
+import {
+    useMutation,
+    useQuery,
+    useQueryClient,
+    UseQueryOptions,
+} from '@tanstack/react-query'
 import { isAxiosError } from 'axios'
 import _mapValues from 'lodash/mapValues'
 
@@ -514,10 +519,16 @@ export const useListActionsApps = () => {
 export const useUpsertActionsApp = (
     overrides?: MutationOverrides<OperationMethods['AppController_upsert']>,
 ) => {
+    const queryClient = useQueryClient()
     return useMutation({
         mutationFn: async (params) => {
             const client = await getGorgiasWfApiClient()
             return await client.AppController_upsert(...params)
+        },
+        onSettled: () => {
+            queryClient.invalidateQueries({
+                queryKey: actionsAppDefinitionKeys.all(),
+            })
         },
         ...overrides,
     })

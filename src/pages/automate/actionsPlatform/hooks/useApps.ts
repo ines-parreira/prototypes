@@ -39,7 +39,10 @@ const useApps = <T extends App['type'] = App['type']>(
         data: actionsApps = [],
         isInitialLoading: isActionsAppsInitialLoading,
     } = useListActionsApps()
-
+    const actionsAppsById = useMemo(
+        () => _keyBy(actionsApps, 'id'),
+        [actionsApps],
+    )
     const { data: appsList = [], isInitialLoading } = useGetApps()
 
     const missingApps = useMemo(() => {
@@ -63,7 +66,7 @@ const useApps = <T extends App['type'] = App['type']>(
                 ...appsList.map((item) => ({
                     id: item.id,
                     type: IntegrationType.App as const,
-                    name: item.name,
+                    name: actionsAppsById[item.id]?.name || item.name,
                     icon: item.app_icon,
                 })),
                 ...appQueries
@@ -74,13 +77,13 @@ const useApps = <T extends App['type'] = App['type']>(
                     .map(({ data }) => ({
                         id: data.id,
                         type: IntegrationType.App as const,
-                        name: data.name,
+                        name: actionsAppsById[data.id]?.name || data.name,
                         icon: data.app_icon,
                     })),
             ].filter((app): app is Extract<App, { type: T }> =>
                 types.includes(app.type as T),
             ),
-        [appsList, appQueries, types],
+        [appsList, actionsAppsById, appQueries, types],
     )
 
     const isLoading =

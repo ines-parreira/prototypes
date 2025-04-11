@@ -1,8 +1,9 @@
 import { Controller, useForm } from 'react-hook-form'
 import { useHistory } from 'react-router-dom'
 
+import { Button } from '@gorgias/merchant-ui-kit'
+
 import { IntegrationType } from 'models/integration/constants'
-import Button from 'pages/common/components/button/Button'
 import UnsavedChangesPrompt from 'pages/common/components/UnsavedChangesPrompt'
 import InputField from 'pages/common/forms/input/InputField'
 import { validateWebhookURL } from 'utils'
@@ -54,6 +55,8 @@ const ActionsPlatformAppForm = ({
 
     const isNewActionsApp = !value
 
+    const defaultAppName = apps.find((app) => app.id === value?.id)?.name
+
     return (
         <>
             <Button
@@ -83,6 +86,20 @@ const ActionsPlatformAppForm = ({
                         />
                     )}
                 />
+                {defaultAppName && (
+                    <Controller
+                        control={control}
+                        name="name"
+                        render={({ field: { value, onChange } }) => (
+                            <InputField
+                                label="Name"
+                                value={value ?? ''}
+                                onChange={onChange}
+                                placeholder={defaultAppName}
+                            />
+                        )}
+                    />
+                )}
                 <Controller
                     control={control}
                     name="auth_type"

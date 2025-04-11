@@ -1,17 +1,30 @@
-import { render } from '@testing-library/react'
+import { QueryClient, useQueryClient } from '@tanstack/react-query'
+import { act, render } from '@testing-library/react'
 import { ldClientMock } from 'jest-launchdarkly-mock'
 
 import type { Notification } from 'common/notifications'
+import { assumeMock } from 'utils/testing'
 
+import { trackstarDefinitionKeys } from '../../../../models/workflows/queries'
 import { WorkflowConfigurationUpdatedNotificationPayload } from '../../types'
 import WorkflowConfigurationUpdatedNotification from '../WorkflowConfigurationUpdatedNotification'
+
+jest.mock('@tanstack/react-query')
+const useQueryClientMock = assumeMock(useQueryClient)
 
 describe('WorkflowConfigurationUpdatedNotification', () => {
     const STORE_NAME = 'store_1'
     const INTEGRATION_NAME = 'Shopify'
+    const invalidateQueriesMock = jest.fn()
 
     beforeEach(() => {
         ldClientMock.allFlags.mockReturnValue({})
+        useQueryClientMock.mockImplementation(
+            () =>
+                ({
+                    invalidateQueries: invalidateQueriesMock,
+                }) as unknown as QueryClient,
+        )
     })
 
     it('should have correct URL in the content component', () => {
@@ -38,5 +51,12 @@ describe('WorkflowConfigurationUpdatedNotification', () => {
 
         const linkElement = container.querySelector('a')
         expect(linkElement).toBeInTheDocument()
+
+        act(() => {
+            linkElement?.click()
+        })
+        expect(invalidateQueriesMock).toHaveBeenCalledWith({
+            queryKey: trackstarDefinitionKeys.all(),
+        })
     })
 })
