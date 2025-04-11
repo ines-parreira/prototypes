@@ -4,11 +4,18 @@ import {
     PhoneRingingBehaviour,
     VoiceQueueTargetScope,
 } from '@gorgias/api-queries'
-import { Button, Label, TextField } from '@gorgias/merchant-ui-kit'
+import {
+    Banner,
+    Button,
+    Label,
+    TextField,
+    ToggleField,
+} from '@gorgias/merchant-ui-kit'
 
+import { FeatureFlagKey } from 'config/featureFlags'
+import { useFlag } from 'core/flags'
 import { FormField, useFormContext } from 'core/forms'
 import Accordion from 'pages/common/components/accordion/Accordion'
-import Alert, { AlertType } from 'pages/common/components/Alert/Alert'
 import RadioButtonField from 'pages/common/forms/RadioButtonField'
 import { HintTooltip } from 'pages/stats/common/HintTooltip'
 
@@ -17,6 +24,8 @@ import {
     RING_TIME_MIN_VALUE,
     WAIT_TIME_MAX_VALUE,
     WAIT_TIME_MIN_VALUE,
+    WRAP_UP_TIME_MAX_VALUE,
+    WRAP_UP_TIME_MIN_VALUE,
 } from './constants'
 import VoiceIntegrationPreferencesTeamSelect from './VoiceIntegrationPreferencesTeamSelect'
 import VoiceSettingAccordionItem from './VoiceSettingAccordionItem'
@@ -26,12 +35,15 @@ import css from './VoiceQueueSettingsFormCallFlowSection.less'
 
 export default function VoiceQueueSettingsFormCallFlowSection() {
     const { watch, setValue } = useFormContext()
+    const showWrapUpTime = useFlag(FeatureFlagKey.UseWrapUpTime)
 
-    const [linkedTargets, ring_time, wait_time] = watch([
-        'linked_targets',
-        'ring_time',
-        'wait_time',
-    ])
+    const [linkedTargets, ring_time, wait_time, is_wrap_up_time_enabled] =
+        watch([
+            'linked_targets',
+            'ring_time',
+            'wait_time',
+            'is_wrap_up_time_enabled',
+        ])
 
     useEffect(() => {
         setValue(
@@ -112,11 +124,36 @@ export default function VoiceQueueSettingsFormCallFlowSection() {
                                 }
                             />
                         </div>
+                        {showWrapUpTime && (
+                            <div className={css.wrapUpFields}>
+                                <FormField
+                                    field={ToggleField}
+                                    name="is_wrap_up_time_enabled"
+                                    label="Enable wrap-up time"
+                                    caption="Wrap-up time gives agents a short period to finish their tasks before receiving their next incoming call."
+                                />
+                                {is_wrap_up_time_enabled && (
+                                    <FormField
+                                        field={TextField}
+                                        name="wrap_up_time"
+                                        label="Wrap-up time"
+                                        type="number"
+                                        isDisabled={!is_wrap_up_time_enabled}
+                                        caption="Set a time between 10 and 600 seconds (10 minutes)."
+                                        min={WRAP_UP_TIME_MIN_VALUE}
+                                        max={WRAP_UP_TIME_MAX_VALUE}
+                                        outputTransform={(value) =>
+                                            value === '' ? null : Number(value)
+                                        }
+                                    />
+                                )}
+                            </div>
+                        )}
                         {!!ring_time &&
                             !!wait_time &&
                             ring_time > 0 &&
                             wait_time > 0 && (
-                                <Alert type={AlertType.Info} icon>
+                                <Banner variant="inline" type="info" icon>
                                     If each agent is rung for{' '}
                                     <strong>{ring_time} seconds</strong> and the
                                     maximum waiting time is{' '}
@@ -126,7 +163,7 @@ export default function VoiceQueueSettingsFormCallFlowSection() {
                                         agents
                                     </strong>{' '}
                                     will be rung.
-                                </Alert>
+                                </Banner>
                             )}
                     </div>
                 </VoiceSettingAccordionItem>

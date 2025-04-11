@@ -24,6 +24,7 @@ import {
     RING_TIME_VALIDATION_ERROR,
     WAIT_TIME_VALIDATION_ERROR,
 } from '../constants'
+import { getVoiceQueueEditableFields } from '../utils'
 import VoiceQueueSettingsForm from '../VoiceQueueSettingsForm'
 import { QUEUE_DEFAULT_WAIT_MUSIC_PREFERENCES } from '../waitMusicLibraryConstants'
 
@@ -37,7 +38,6 @@ const mockUnsavedChangesPrompt = jest.fn((_args: any) => (
     <div>UnsavedChangesPrompt</div>
 ))
 
-// Mock the module
 jest.mock('pages/common/components/UnsavedChangesPrompt', () => {
     const { forwardRef } = jest.requireActual('react')
 
@@ -75,6 +75,16 @@ const wrapper = (props: {
         <FormField label="Ring Time" name="ring_time" />
         <FormField label="Wait Time" name="wait_time" />
         <FormField label="Capacity" name="capacity" />
+        <FormField label="Wrap Up Time" name="wrap_up_time" />
+        <FormField
+            label="Is Wrap Up Time Enabled"
+            name="is_wrap_up_time_enabled"
+        />
+        <FormField label="Wait Music" name="wait_music" />
+        <FormField label="Distribution Mode" name="distribution_mode" />
+        <FormField label="Linked Targets" name="linked_targets" />
+        <FormField label="Priority Weight" name="priority_weight" />
+        <FormField label="Target Scope" name="target_scope" />
         <button type="submit">Submit</button>
     </VoiceQueueSettingsForm>
 )
@@ -89,6 +99,8 @@ const defaultValues: CreateVoiceQueue = {
     target_scope: VoiceQueueTargetScope.AllAgents,
     wait_time: 120,
     wait_music: QUEUE_DEFAULT_WAIT_MUSIC_PREFERENCES,
+    is_wrap_up_time_enabled: false,
+    wrap_up_time: 30,
 }
 
 describe('VoiceQueueSettingsForm', () => {
@@ -136,7 +148,9 @@ describe('VoiceQueueSettingsForm', () => {
             },
         )
 
-        expect(result.current.getValues()).toEqual(voiceQueue)
+        expect(result.current.getValues()).toEqual(
+            getVoiceQueueEditableFields(voiceQueue),
+        )
     })
 
     it('should show validation errors when create form is invalid', async () => {
@@ -191,6 +205,8 @@ describe('VoiceQueueSettingsForm', () => {
             wait_time: 5,
             ring_time: 5,
             capacity: 0,
+            wrap_up_time: 5,
+            is_wrap_up_time_enabled: true,
         })
 
         fireEvent.click(screen.getByRole('button', { name: /submit/i }))

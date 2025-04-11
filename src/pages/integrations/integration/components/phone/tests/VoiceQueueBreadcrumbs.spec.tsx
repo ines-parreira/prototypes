@@ -13,6 +13,7 @@ jest.mock('@gorgias/api-client', () => ({
 }))
 
 jest.mock('@gorgias/api-queries', () => ({
+    ...jest.requireActual('@gorgias/api-queries'),
     useUpdateVoiceQueue: jest.fn(),
     useGetVoiceQueue: jest.fn(),
 }))

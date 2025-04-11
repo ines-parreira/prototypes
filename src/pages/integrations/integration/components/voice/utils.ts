@@ -1,4 +1,5 @@
 import {
+    CreateVoiceQueue,
     PhoneRingingBehaviour,
     UpdatePhoneIntegrationSettingsRecordingNotification,
     UpdateVoiceQueue,
@@ -8,6 +9,22 @@ import {
 } from '@gorgias/api-queries'
 
 import { VoiceMessage } from 'models/integration/types'
+
+import {
+    DEFAULT_QUEUE_VALUES,
+    QUEUE_CAPACITY_MAX_VALUE,
+    QUEUE_CAPACITY_MIN_VALUE,
+    QUEUE_CAPACITY_VALIDATION_ERROR,
+    RING_TIME_MAX_VALUE,
+    RING_TIME_MIN_VALUE,
+    RING_TIME_VALIDATION_ERROR,
+    WAIT_TIME_MAX_VALUE,
+    WAIT_TIME_MIN_VALUE,
+    WAIT_TIME_VALIDATION_ERROR,
+    WRAP_UP_TIME_MAX_VALUE,
+    WRAP_UP_TIME_MIN_VALUE,
+    WRAP_UP_TIME_VALIDATION_ERROR,
+} from './constants'
 
 export function getAudioFileDuration(url: string): Promise<number> {
     return new Promise((resolve, reject) => {
@@ -75,13 +92,59 @@ export const getVoiceQueueEditableFields = (
         capacity: queue.capacity,
         priority_weight: queue.priority_weight,
         distribution_mode: queue.distribution_mode,
+        is_wrap_up_time_enabled: queue.is_wrap_up_time_enabled,
         linked_targets: queue.linked_targets,
         ring_time: queue.ring_time,
         target_scope: queue.target_scope,
         wait_time: queue.wait_time,
         wait_music: queue.wait_music,
+        wrap_up_time: queue.wrap_up_time,
         status: queue.status,
     }
+}
+
+export const queueSettingsCustomValidation = (
+    values: UpdateVoiceQueue | CreateVoiceQueue,
+) => {
+    const errors: Partial<
+        Record<keyof UpdateVoiceQueue | keyof CreateVoiceQueue, string>
+    > = {}
+
+    if (
+        values.ring_time !== undefined &&
+        (values.ring_time < RING_TIME_MIN_VALUE ||
+            values.ring_time > RING_TIME_MAX_VALUE)
+    ) {
+        errors['ring_time'] = RING_TIME_VALIDATION_ERROR
+    }
+    if (
+        values.wait_time !== undefined &&
+        (values.wait_time < WAIT_TIME_MIN_VALUE ||
+            values.wait_time > WAIT_TIME_MAX_VALUE)
+    ) {
+        errors['wait_time'] = WAIT_TIME_VALIDATION_ERROR
+    }
+    if (
+        values.capacity !== undefined &&
+        (values.capacity < QUEUE_CAPACITY_MIN_VALUE ||
+            values.capacity > QUEUE_CAPACITY_MAX_VALUE)
+    ) {
+        errors['capacity'] = QUEUE_CAPACITY_VALIDATION_ERROR
+    }
+    if (values.is_wrap_up_time_enabled && values.wrap_up_time === null) {
+        errors['wrap_up_time'] = WRAP_UP_TIME_VALIDATION_ERROR
+    }
+
+    const isWrapUpTimeValid =
+        typeof values.wrap_up_time === 'number' &&
+        values.wrap_up_time >= WRAP_UP_TIME_MIN_VALUE &&
+        values.wrap_up_time <= WRAP_UP_TIME_MAX_VALUE
+
+    if (values.is_wrap_up_time_enabled && !isWrapUpTimeValid) {
+        errors['wrap_up_time'] = WRAP_UP_TIME_VALIDATION_ERROR
+    }
+
+    return errors
 }
 
 export const getVoiceQueueSummaryData = (
@@ -101,5 +164,18 @@ export const getVoiceQueueSummaryData = (
         'Ring time per agent': `${queue.ring_time} seconds`,
         'Wait time': `${queue.wait_time} seconds`,
         'Queue capacity': queue.capacity ?? 0,
+    }
+}
+
+export const mergeInitialValuesWithDefaultValues = (
+    queue: UpdateVoiceQueue,
+): UpdateVoiceQueue => {
+    return {
+        ...queue,
+        // cannot use merge here because wrap_up_time is nullable
+        wrap_up_time:
+            queue.wrap_up_time === null
+                ? DEFAULT_QUEUE_VALUES.wrap_up_time
+                : queue.wrap_up_time,
     }
 }

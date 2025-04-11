@@ -136,6 +136,7 @@ export enum FeatureFlagKey {
     TicketDemoSuggestion = 'ticket-demo-suggestion',
     TimelineTicketModal = 'timeline-ticket-modal',
     ExposeVoiceQueues = 'expose-voice-queues-to-users',
+    UseWrapUpTime = 'use-wrap-up-time',
     WhatsAppMigrationsDebug = 'whatsapp-migration-debug',
     AiAgentHandoverCustomizationConfiguration = 'helpdesk-ai-agent-handover-customization-enabled',
     ConversationStarters = 'conversation-starters',

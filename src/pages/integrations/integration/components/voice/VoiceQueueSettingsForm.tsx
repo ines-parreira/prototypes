@@ -2,12 +2,7 @@ import { ComponentProps, ReactNode } from 'react'
 
 import { DefaultValues } from 'react-hook-form'
 
-import {
-    CreateVoiceQueue,
-    PhoneRingingBehaviour,
-    UpdateVoiceQueue,
-    VoiceQueueTargetScope,
-} from '@gorgias/api-queries'
+import { CreateVoiceQueue, UpdateVoiceQueue } from '@gorgias/api-queries'
 import {
     validateCreateVoiceQueue,
     validateUpdateVoiceQueue,
@@ -15,19 +10,12 @@ import {
 
 import { Form, toFormErrors } from 'core/forms'
 
+import { DEFAULT_QUEUE_VALUES } from './constants'
 import {
-    QUEUE_CAPACITY_MAX_VALUE,
-    QUEUE_CAPACITY_MIN_VALUE,
-    QUEUE_CAPACITY_VALIDATION_ERROR,
-    RING_TIME_MAX_VALUE,
-    RING_TIME_MIN_VALUE,
-    RING_TIME_VALIDATION_ERROR,
-    WAIT_TIME_MAX_VALUE,
-    WAIT_TIME_MIN_VALUE,
-    WAIT_TIME_VALIDATION_ERROR,
-} from './constants'
+    mergeInitialValuesWithDefaultValues,
+    queueSettingsCustomValidation,
+} from './utils'
 import VoiceFormUnsavedChangesPrompt from './VoiceFormUnsavedChangesPrompt'
-import { QUEUE_DEFAULT_WAIT_MUSIC_PREFERENCES } from './waitMusicLibraryConstants'
 
 export default function VoiceQueueSettingsForm<
     T extends UpdateVoiceQueue | CreateVoiceQueue,
@@ -38,34 +26,17 @@ export default function VoiceQueueSettingsForm<
 }: {
     children: ReactNode
     onSubmit: ComponentProps<typeof Form<T>>['onValidSubmit']
-    initialValues?: T
+    initialValues?: UpdateVoiceQueue
 }): JSX.Element {
     const validator = (values: T) => {
         const validator = !!initialValues
             ? validateUpdateVoiceQueue
             : validateCreateVoiceQueue
         let errors = toFormErrors(validator(values))
-        if (
-            values.ring_time !== undefined &&
-            (values.ring_time < RING_TIME_MIN_VALUE ||
-                values.ring_time > RING_TIME_MAX_VALUE)
-        ) {
-            errors['ring_time'] = RING_TIME_VALIDATION_ERROR
-        }
-        if (
-            values.wait_time !== undefined &&
-            (values.wait_time < WAIT_TIME_MIN_VALUE ||
-                values.wait_time > WAIT_TIME_MAX_VALUE)
-        ) {
-            errors['wait_time'] = WAIT_TIME_VALIDATION_ERROR
-        }
-        if (
-            values.capacity !== undefined &&
-            (values.capacity < QUEUE_CAPACITY_MIN_VALUE ||
-                values.capacity > QUEUE_CAPACITY_MAX_VALUE)
-        ) {
-            errors['capacity'] = QUEUE_CAPACITY_VALIDATION_ERROR
-        }
+
+        const customErrors = queueSettingsCustomValidation(values)
+        errors = { ...errors, ...customErrors }
+
         return errors as Partial<Record<keyof T, unknown>>
     }
 
@@ -74,7 +45,9 @@ export default function VoiceQueueSettingsForm<
             <Form<T>
                 onValidSubmit={onSubmit}
                 defaultValues={
-                    (initialValues ?? DEFAULT_VALUES) as DefaultValues<T>
+                    (initialValues
+                        ? mergeInitialValuesWithDefaultValues(initialValues)
+                        : DEFAULT_QUEUE_VALUES) as DefaultValues<T>
                 }
                 mode="onChange"
                 resetOptions={{
@@ -82,6 +55,7 @@ export default function VoiceQueueSettingsForm<
                     keepDefaultValues: false,
                     keepDirtyValues: false,
                 }}
+                shouldUnregister
                 validator={validator}
             >
                 {children}
@@ -89,16 +63,4 @@ export default function VoiceQueueSettingsForm<
             </Form>
         </>
     )
-}
-
-const DEFAULT_VALUES: UpdateVoiceQueue | CreateVoiceQueue = {
-    name: '',
-    capacity: 100,
-    priority_weight: 100,
-    distribution_mode: PhoneRingingBehaviour.RoundRobin,
-    linked_targets: [],
-    ring_time: 30,
-    target_scope: VoiceQueueTargetScope.AllAgents,
-    wait_time: 120,
-    wait_music: QUEUE_DEFAULT_WAIT_MUSIC_PREFERENCES,
 }

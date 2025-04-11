@@ -57,16 +57,16 @@ importers:
         specifier: ^0.1.0
         version: 0.1.0(@gorgias/design-tokens@0.4.0)(classnames@2.2.6)(core-js@3.36.1)(react@17.0.2)
       '@gorgias/api-client':
-        specifier: ^0.6.26
+        specifier: ^0.6.27
         version: 0.6.27
       '@gorgias/api-queries':
-        specifier: ^0.6.26
+        specifier: ^0.6.27
         version: 0.6.27
       '@gorgias/api-types':
-        specifier: ^0.6.26
+        specifier: ^0.6.27
         version: 0.6.27
       '@gorgias/api-validators':
-        specifier: ^0.6.26
+        specifier: ^0.6.27
         version: 0.6.27
       '@gorgias/branding-assets':
         specifier: ^0.2.1

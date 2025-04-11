@@ -1,9 +1,8 @@
-import React from 'react'
-
 import { render, RenderResult, screen } from '@testing-library/react'
 
 import { VoiceQueueTargetScope } from '@gorgias/api-queries'
 
+import { useFlag } from 'core/flags'
 import { FormField, useFormContext } from 'core/forms'
 import * as forms from 'core/forms'
 import { assumeMock } from 'utils/testing'
@@ -21,13 +20,18 @@ jest.mock('models/team/queries', () => ({
 
 const watchMock = jest.fn()
 const setValueMock = jest.fn()
+const unregisterMock = jest.fn()
 const mockUseFormContextReturnValue = {
     watch: watchMock,
     setValue: setValueMock,
+    unregister: unregisterMock,
 } as unknown as ReturnType<typeof useFormContext>
 
 jest.mock('react-hook-form')
 const useFormContextMock = assumeMock(useFormContext)
+
+jest.mock('core/flags')
+const useFlagMock = assumeMock(useFlag)
 
 describe('<VoiceQueueSettingsFormCallFlowSection />', () => {
     const renderComponent = (props: any = {}): RenderResult => {
@@ -36,11 +40,13 @@ describe('<VoiceQueueSettingsFormCallFlowSection />', () => {
 
     beforeEach(() => {
         FormFieldMock.mockImplementation(({ label }: any) => <div>{label}</div>)
-        watchMock.mockReturnValue([[], 5, 5] as any)
+        watchMock.mockReturnValue([[], 5, 5, false] as any)
         useFormContextMock.mockReturnValue(mockUseFormContextReturnValue)
+        useFlagMock.mockReturnValue(true)
     })
 
-    it('should display team select, ringing behavior, and ring time per agent', () => {
+    it('should display all fields', () => {
+        watchMock.mockReturnValue([[], 5, 5, true] as any)
         renderComponent()
 
         expect(screen.getByText('Distribution mode')).toBeInTheDocument()
@@ -78,6 +84,18 @@ describe('<VoiceQueueSettingsFormCallFlowSection />', () => {
             }),
             {},
         )
+        expect(FormFieldMock).toHaveBeenCalledWith(
+            expect.objectContaining({
+                name: 'is_wrap_up_time_enabled',
+            }),
+            {},
+        )
+        expect(FormFieldMock).toHaveBeenCalledWith(
+            expect.objectContaining({
+                name: 'wrap_up_time',
+            }),
+            {},
+        )
     })
 
     it.each`
@@ -87,7 +105,7 @@ describe('<VoiceQueueSettingsFormCallFlowSection />', () => {
     `(
         'should set target_scope to $expectedTargetScope when linked_targets is $linked_targets',
         ({ linked_targets, expectedTargetScope }) => {
-            watchMock.mockReturnValue([linked_targets, 5, 5] as any)
+            watchMock.mockReturnValue([linked_targets, 5, 5, false] as any)
             renderComponent()
 
             expect(setValueMock).toHaveBeenCalledWith(
@@ -105,7 +123,7 @@ describe('<VoiceQueueSettingsFormCallFlowSection />', () => {
     `(
         'should display maximum number of agents as $expectedAgents when ring_time is $ring_time and wait_time is $wait_time',
         ({ ring_time, wait_time, expectedAgents }) => {
-            watchMock.mockReturnValue([[], ring_time, wait_time] as any)
+            watchMock.mockReturnValue([[], ring_time, wait_time, false] as any)
             renderComponent()
 
             expect(screen.getByText(expectedAgents)).toBeInTheDocument()
@@ -152,6 +170,59 @@ describe('<VoiceQueueSettingsFormCallFlowSection />', () => {
             expect(waitTimeField?.[0]?.outputTransform?.('12')).toBe(12)
 
             expect(waitTimeField?.[0]?.outputTransform?.('')).toBe('')
+        })
+    })
+
+    describe('Wrap up time feature', () => {
+        beforeEach(() => {
+            useFlagMock.mockReturnValue(true)
+        })
+
+        it('should not display wrap-up time toggle when feature flag is disabled', () => {
+            useFlagMock.mockReturnValue(false)
+            renderComponent()
+
+            expect(FormFieldMock).not.toHaveBeenCalledWith(
+                expect.objectContaining({
+                    name: 'is_wrap_up_time_enabled',
+                }),
+            )
+            expect(FormFieldMock).not.toHaveBeenCalledWith(
+                expect.objectContaining({
+                    name: 'wrap_up_time',
+                }),
+            )
+        })
+
+        it('should not display wrap-up time field when is_wrap_up_time_enabled is false', () => {
+            watchMock.mockReturnValue([[], 5, 5, false] as any)
+            renderComponent()
+
+            expect(FormFieldMock).not.toHaveBeenCalledWith(
+                expect.objectContaining({
+                    name: 'wrap_up_time',
+                }),
+            )
+        })
+
+        it('should display wrap-up time fields with correct properties', () => {
+            watchMock.mockReturnValue([[], 5, 5, true] as any)
+            renderComponent()
+
+            const wrapUpTimeField = getFormFieldCallByName('wrap_up_time')
+            expect(wrapUpTimeField).toBeDefined()
+            expect(wrapUpTimeField?.[0]).toEqual(
+                expect.objectContaining({
+                    name: 'wrap_up_time',
+                    label: 'Wrap-up time',
+                    type: 'number',
+                    caption:
+                        'Set a time between 10 and 600 seconds (10 minutes).',
+                }),
+            )
+
+            expect(wrapUpTimeField?.[0]?.outputTransform?.('')).toBe(null)
+            expect(wrapUpTimeField?.[0]?.outputTransform?.('30')).toBe(30)
         })
     })
 })

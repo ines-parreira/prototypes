@@ -1,5 +1,6 @@
 import {
     PhoneRingingBehaviour,
+    UpdateVoiceQueue,
     VoiceQueueTargetScope,
 } from '@gorgias/api-queries'
 
@@ -7,10 +8,19 @@ import { voiceQueue } from 'fixtures/voiceQueue'
 import { VoiceMessageType } from 'models/integration/constants'
 
 import {
+    DEFAULT_QUEUE_VALUES,
+    QUEUE_CAPACITY_VALIDATION_ERROR,
+    RING_TIME_VALIDATION_ERROR,
+    WAIT_TIME_VALIDATION_ERROR,
+    WRAP_UP_TIME_VALIDATION_ERROR,
+} from '../constants'
+import {
     getVoiceMessagePayload,
     getVoiceQueueEditableFields,
     getVoiceQueueSummaryData,
     isValueInRange,
+    mergeInitialValuesWithDefaultValues,
+    queueSettingsCustomValidation,
 } from '../utils'
 
 describe('isValueInRange', () => {
@@ -98,6 +108,8 @@ describe('getVoiceQueueEditableFields', () => {
             target_scope: voiceQueue.target_scope,
             wait_time: voiceQueue.wait_time,
             wait_music: voiceQueue.wait_music,
+            is_wrap_up_time_enabled: false,
+            wrap_up_time: 30,
         })
     })
 })
@@ -152,6 +164,102 @@ describe('getVoiceQueueSummaryData', () => {
             'Ring time per agent': '10 seconds',
             'Wait time': '11 seconds',
             'Queue capacity': 0,
+        })
+    })
+})
+
+describe('queueSettingsCustomValidation', () => {
+    it('should return the correct validation errors when values are higher than the max values', () => {
+        const result = queueSettingsCustomValidation({
+            ...voiceQueue,
+            ring_time: 1000,
+            wait_time: 10000,
+            capacity: 1000,
+            is_wrap_up_time_enabled: true,
+            wrap_up_time: 1000,
+        })
+
+        expect(result).toEqual({
+            ring_time: RING_TIME_VALIDATION_ERROR,
+            wait_time: WAIT_TIME_VALIDATION_ERROR,
+            capacity: QUEUE_CAPACITY_VALIDATION_ERROR,
+            wrap_up_time: WRAP_UP_TIME_VALIDATION_ERROR,
+        })
+    })
+
+    it('should return the correct validation errors when values are lower than the min values', () => {
+        const result = queueSettingsCustomValidation({
+            ...voiceQueue,
+            ring_time: 0,
+            wait_time: 0,
+            capacity: 0,
+            is_wrap_up_time_enabled: true,
+            wrap_up_time: 0,
+        })
+
+        expect(result).toEqual({
+            ring_time: RING_TIME_VALIDATION_ERROR,
+            wait_time: WAIT_TIME_VALIDATION_ERROR,
+            capacity: QUEUE_CAPACITY_VALIDATION_ERROR,
+            wrap_up_time: WRAP_UP_TIME_VALIDATION_ERROR,
+        })
+    })
+
+    it('should return the correct validation errors when the wrap-up time is not enabled', () => {
+        const result = queueSettingsCustomValidation({
+            ...voiceQueue,
+            is_wrap_up_time_enabled: false,
+            wrap_up_time: 1000,
+        })
+
+        expect(result).toEqual({})
+    })
+})
+
+describe('mergeInitialValuesWithDefaultValues', () => {
+    it('should use default wrap_up_time when null is provided', () => {
+        const queueWithNullWrapUpTime: UpdateVoiceQueue = {
+            name: 'Test Queue',
+            wrap_up_time: null,
+        } as UpdateVoiceQueue
+
+        const result = mergeInitialValuesWithDefaultValues(
+            queueWithNullWrapUpTime,
+        )
+
+        expect(result.wrap_up_time).toBe(DEFAULT_QUEUE_VALUES.wrap_up_time)
+        expect(result.name).toBe('Test Queue')
+    })
+
+    it('should keep existing wrap_up_time value when not null', () => {
+        const customWrapUpTime = 45
+        const queueWithCustomWrapUpTime: UpdateVoiceQueue = {
+            name: 'Test Queue',
+            wrap_up_time: customWrapUpTime,
+        } as UpdateVoiceQueue
+
+        const result = mergeInitialValuesWithDefaultValues(
+            queueWithCustomWrapUpTime,
+        )
+
+        expect(result.wrap_up_time).toBe(customWrapUpTime)
+        expect(result.name).toBe('Test Queue')
+    })
+
+    it('should preserve all other properties from the input queue', () => {
+        const inputQueue: UpdateVoiceQueue = {
+            name: 'Custom Queue',
+            capacity: 50,
+            ring_time: 45,
+            wait_time: 180,
+            wrap_up_time: null,
+        } as UpdateVoiceQueue
+
+        const result = mergeInitialValuesWithDefaultValues(inputQueue)
+
+        expect(result).toEqual({
+            ...inputQueue,
+            wrap_up_time: DEFAULT_QUEUE_VALUES.wrap_up_time,
         })
     })
 })
