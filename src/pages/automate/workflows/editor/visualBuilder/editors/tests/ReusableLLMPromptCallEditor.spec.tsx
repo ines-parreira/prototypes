@@ -1,5 +1,3 @@
-import React from 'react'
-
 import { act, fireEvent, screen } from '@testing-library/react'
 
 import { useGetWorkflowConfigurationTemplate } from 'models/workflows/queries'
@@ -210,14 +208,14 @@ describe('<ReusableLLMPromptCallEditor />', () => {
         expect(screen.getByText('Action step in some app')).toBeInTheDocument()
         expect(
             screen.getByText(
-                'This step requires an active some app account. Enter the API key from your some app account.',
+                /This step requires an active\s*some app\s*account\.\s*Enter the\s*API key\s*from your\s*some app\s*account\./i,
             ),
         ).toBeInTheDocument()
         expect(
             screen.getByText('This step requires additional values.'),
         ).toBeInTheDocument()
         expect(
-            screen.getByText('Find your API key in some app'),
+            screen.getByText('Find your API key in some app.'),
         ).toBeInTheDocument()
 
         act(() => {
@@ -229,6 +227,7 @@ describe('<ReusableLLMPromptCallEditor />', () => {
             appId: 'someid',
             touched: {
                 api_key: true,
+                refresh_token: false,
             },
         })
 
@@ -417,11 +416,11 @@ describe('<ReusableLLMPromptCallEditor />', () => {
         expect(screen.getByText('Action step in some app')).toBeInTheDocument()
         expect(
             screen.getByText(
-                'This step requires an active some app account. Enter the refresh token from your some app account.',
+                /This step requires an active\s*some app\s*account\.\s*Enter the\s*Refresh token\s*from your\s*some app\s*account\./i,
             ),
         ).toBeInTheDocument()
         expect(
-            screen.getByText('Find your refresh token in some app'),
+            screen.getByText('Find your Refresh token in some app.'),
         ).toBeInTheDocument()
 
         act(() => {
@@ -433,6 +432,7 @@ describe('<ReusableLLMPromptCallEditor />', () => {
             appId: 'someid2',
             touched: {
                 refresh_token: true,
+                api_key: false,
             },
         })
 

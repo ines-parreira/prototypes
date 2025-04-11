@@ -57,7 +57,89 @@ export default function ReusableLLMPromptCallEditor({
             (app): app is VisualBuilderGraphAppApp =>
                 app.type === 'app' && app.app_id === actionsApp.id,
         )
-
+    const getInputProps = () => {
+        switch (actionsApp?.auth_type) {
+            case 'api-key':
+                return {
+                    dispatchEvent: (value: string) =>
+                        dispatch({
+                            type: 'SET_APP_API_KEY',
+                            appId: actionsApp.id,
+                            apiKey: value,
+                        }),
+                    value: graphApp?.api_key || '',
+                    error: graphApp?.errors?.api_key,
+                    touched: {
+                        api_key: true,
+                        refresh_token: false,
+                    },
+                    inputLabel:
+                        actionsApp.auth_settings.input_label ?? 'API key',
+                }
+            case 'oauth2-token':
+                return {
+                    dispatchEvent: (value: string) =>
+                        dispatch({
+                            type: 'SET_APP_REFRESH_TOKEN',
+                            appId: actionsApp.id,
+                            refreshToken: value,
+                        }),
+                    value: graphApp?.refresh_token || '',
+                    error: graphApp?.errors?.refresh_token,
+                    touched: {
+                        refresh_token: true,
+                        api_key: false,
+                    },
+                    inputLabel:
+                        actionsApp.auth_settings.input_label ?? 'Refresh token',
+                }
+        }
+    }
+    const renderInput = () => {
+        const inputProps = getInputProps()
+        if (!inputProps) return
+        return (
+            (actionsApp?.auth_type === 'api-key' ||
+                actionsApp?.auth_type === 'oauth2-token') && (
+                <>
+                    <div>
+                        This step requires an active {app.name} account. Enter
+                        the {inputProps.inputLabel} from your {app.name}
+                        account.
+                        {actionsApp.auth_settings?.url && (
+                            <a
+                                href={actionsApp.auth_settings.url}
+                                target="_blank"
+                                rel="noreferrer noopener"
+                            >
+                                {actionsApp.auth_settings
+                                    .instruction_url_text ??
+                                    `Find your ${inputProps.inputLabel} in ${app.name}.`}
+                            </a>
+                        )}
+                    </div>
+                    <InputField
+                        label={inputProps.inputLabel}
+                        autoFocus={true}
+                        isRequired
+                        type="text"
+                        value={inputProps.value}
+                        onChange={(nextValue) => {
+                            inputProps.dispatchEvent(nextValue)
+                        }}
+                        error={inputProps.error}
+                        onBlur={() => {
+                            dispatch({
+                                type: 'SET_TOUCHED',
+                                appId: app.id,
+                                touched: inputProps.touched,
+                            })
+                        }}
+                    />
+                </>
+            )
+        )
+    }
     return (
         <>
             <NodeEditorDrawerHeader label={`${step.name} in ${app.name}`} />
@@ -65,105 +147,7 @@ export default function ReusableLLMPromptCallEditor({
                 <div className={css.container}>
                     {hasAuthentication && (
                         <div className={css.reusableLLMPromptCallStepSection}>
-                            {actionsApp.auth_type === 'api-key' && (
-                                <>
-                                    <div>
-                                        This step requires an active {app.name}{' '}
-                                        account. Enter the API key from your{' '}
-                                        {app.name} account.
-                                    </div>
-                                    <InputField
-                                        label={
-                                            actionsApp.auth_settings
-                                                .input_label ?? 'API key'
-                                        }
-                                        isRequired
-                                        type="text"
-                                        value={graphApp?.api_key ?? ''}
-                                        onChange={(nextValue) => {
-                                            dispatch({
-                                                type: 'SET_APP_API_KEY',
-                                                appId: actionsApp.id,
-                                                apiKey: nextValue,
-                                            })
-                                        }}
-                                        error={graphApp?.errors?.api_key}
-                                        caption={
-                                            actionsApp.auth_settings.url && (
-                                                <a
-                                                    href={
-                                                        actionsApp.auth_settings
-                                                            .url
-                                                    }
-                                                    target="_blank"
-                                                    rel="noreferrer noopener"
-                                                >
-                                                    {actionsApp.auth_settings
-                                                        .instruction_url_text ??
-                                                        `Find your API key in ${app.name}`}
-                                                </a>
-                                            )
-                                        }
-                                        onBlur={() => {
-                                            dispatch({
-                                                type: 'SET_TOUCHED',
-                                                appId: app.id,
-                                                touched: {
-                                                    api_key: true,
-                                                },
-                                            })
-                                        }}
-                                    />
-                                </>
-                            )}
-                            {actionsApp.auth_type === 'oauth2-token' && (
-                                <>
-                                    <div>
-                                        This step requires an active {app.name}{' '}
-                                        account. Enter the refresh token from
-                                        your {app.name} account.
-                                    </div>
-                                    <InputField
-                                        label="Refresh token"
-                                        isRequired
-                                        type="text"
-                                        value={graphApp?.refresh_token ?? ''}
-                                        onChange={(nextValue) => {
-                                            dispatch({
-                                                type: 'SET_APP_REFRESH_TOKEN',
-                                                appId: actionsApp.id,
-                                                refreshToken: nextValue,
-                                            })
-                                        }}
-                                        error={graphApp?.errors?.refresh_token}
-                                        caption={
-                                            actionsApp.auth_settings.url && (
-                                                <a
-                                                    href={
-                                                        actionsApp.auth_settings
-                                                            .url
-                                                    }
-                                                    target="_blank"
-                                                    rel="noreferrer noopener"
-                                                >
-                                                    {actionsApp.auth_settings
-                                                        .instruction_url_text ??
-                                                        `Find your refresh token in ${app.name}`}
-                                                </a>
-                                            )
-                                        }
-                                        onBlur={() => {
-                                            dispatch({
-                                                type: 'SET_TOUCHED',
-                                                appId: app.id,
-                                                touched: {
-                                                    refresh_token: true,
-                                                },
-                                            })
-                                        }}
-                                    />
-                                </>
-                            )}
+                            {renderInput()}
                             {actionsApp.auth_type === 'trackstar' && (
                                 <ConnectTrackstarButton
                                     app={app}
