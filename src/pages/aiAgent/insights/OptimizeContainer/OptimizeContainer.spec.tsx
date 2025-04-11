@@ -102,6 +102,7 @@ describe('OptimizeContainer', () => {
                 },
                 initialSettings: {
                     maxDate: expect.any(Object),
+                    minDate: expect.any(Object),
                 },
                 tooltipMessageForPreviousPeriod:
                     'There is no data available on this date yet.',

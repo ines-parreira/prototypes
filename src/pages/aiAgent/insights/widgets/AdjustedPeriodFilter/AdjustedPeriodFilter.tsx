@@ -28,14 +28,25 @@ import { getPageStatsFilters } from 'state/stats/selectors'
 import { defaultStatsFilters, setStatsFilters } from 'state/stats/statsSlice'
 
 const HOURS_TO_REMOVE = 72
-
+const L3_INTENTS_START_DATE = '2025-04-02'
+export const adjustPeriodToStartOfL3IntentsGeneration = (
+    momentDate: Moment,
+) => {
+    return momentDate.isBefore(L3_INTENTS_START_DATE)
+        ? moment(L3_INTENTS_START_DATE)
+        : momentDate
+}
 export const subtractsPeriodWithoutData = (momentDate: Moment) => {
     return momentDate.subtract(HOURS_TO_REMOVE, 'hours')
 }
 
 export const subtractsPeriodWithoutDataIfNeeded = (momentDate: Moment) => {
-    if (momentDate.isAfter(moment().subtract(HOURS_TO_REMOVE, 'hours'))) {
-        return momentDate.subtract(HOURS_TO_REMOVE, 'hours')
+    const adjustedDate = moment().subtract(HOURS_TO_REMOVE, 'hours')
+    if (momentDate.isAfter(adjustedDate)) {
+        return momentDate.subtract(
+            momentDate.diff(adjustedDate, 'hours'),
+            'hours',
+        )
     }
 
     return momentDate
@@ -46,7 +57,7 @@ const getCalendarRangeFilters = (): {
 } => {
     const adjustments = {
         [MONTH_TO_DATE]: {
-            start: [],
+            start: [adjustPeriodToStartOfL3IntentsGeneration],
             end: [subtractsPeriodWithoutData],
         },
         [LAST_WEEK_SUN]: {
@@ -58,27 +69,42 @@ const getCalendarRangeFilters = (): {
             end: [subtractsPeriodWithoutDataIfNeeded],
         },
         [LAST_MONTH]: {
-            start: [],
+            start: [adjustPeriodToStartOfL3IntentsGeneration],
             end: [subtractsPeriodWithoutDataIfNeeded],
         },
         [PAST_7_DAYS]: {
-            start: [subtractsPeriodWithoutData],
+            start: [
+                adjustPeriodToStartOfL3IntentsGeneration,
+                subtractsPeriodWithoutData,
+            ],
             end: [subtractsPeriodWithoutData],
         },
         [PAST_30_DAYS]: {
-            start: [subtractsPeriodWithoutData],
+            start: [
+                adjustPeriodToStartOfL3IntentsGeneration,
+                subtractsPeriodWithoutData,
+            ],
             end: [subtractsPeriodWithoutData],
         },
         [PAST_60_DAYS]: {
-            start: [subtractsPeriodWithoutData],
+            start: [
+                adjustPeriodToStartOfL3IntentsGeneration,
+                subtractsPeriodWithoutData,
+            ],
             end: [subtractsPeriodWithoutData],
         },
         [PAST_90_DAYS]: {
-            start: [subtractsPeriodWithoutData],
+            start: [
+                adjustPeriodToStartOfL3IntentsGeneration,
+                subtractsPeriodWithoutData,
+            ],
             end: [subtractsPeriodWithoutData],
         },
         [PAST_YEAR]: {
-            start: [subtractsPeriodWithoutData],
+            start: [
+                adjustPeriodToStartOfL3IntentsGeneration,
+                subtractsPeriodWithoutData,
+            ],
             end: [subtractsPeriodWithoutData],
         },
     }
@@ -109,9 +135,11 @@ export const AdjustedPeriodFilter = () => {
                 setStatsFilters({
                     period: {
                         start_datetime: moment(
-                            subtractsPeriodWithoutData(
-                                dateInPastFromStartOfToday(
-                                    DEFAULT_DAYS_TO_SHOW,
+                            adjustPeriodToStartOfL3IntentsGeneration(
+                                subtractsPeriodWithoutData(
+                                    dateInPastFromStartOfToday(
+                                        DEFAULT_DAYS_TO_SHOW,
+                                    ),
                                 ),
                             ),
                         ).format(),
@@ -136,6 +164,7 @@ export const AdjustedPeriodFilter = () => {
                     }}
                     initialSettings={{
                         maxDate: moment().subtract(HOURS_TO_REMOVE, 'hours'),
+                        minDate: moment(L3_INTENTS_START_DATE),
                     }}
                     tooltipMessageForPreviousPeriod="There is no data available on this date yet."
                     initialV2Props={{

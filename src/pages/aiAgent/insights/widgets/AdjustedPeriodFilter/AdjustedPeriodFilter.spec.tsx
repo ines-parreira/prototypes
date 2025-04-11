@@ -78,11 +78,11 @@ describe('subtractsPeriodWithoutData', () => {
 })
 
 describe('subtractsPeriodWithoutDataIfNeeded', () => {
-    it('should subtract 72 hours if the date is within the last 72 hours', () => {
+    it('should subtract appropriate number of hours if the date is within the last 72 hours', () => {
         const recentDate = moment().subtract(48, 'hours')
         const result = subtractsPeriodWithoutDataIfNeeded(recentDate.clone())
         expect(result.toISOString()).toBe(
-            recentDate.subtract(72, 'hours').toISOString(),
+            recentDate.subtract(24, 'hours').toISOString(),
         )
     })
 
