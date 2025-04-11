@@ -84,7 +84,7 @@ importers:
         specifier: ^0.29.0
         version: 0.29.0(react-dom@17.0.2(react@17.0.2))(react@17.0.2)(reactstrap@8.9.0(react-dom@17.0.2(react@17.0.2))(react@17.0.2))
       '@gorgias/realtime':
-        specifier: ^0.7.0
+        specifier: ^0.7.1
         version: 0.7.1(@types/pubnub@7.4.2)(encoding@0.1.13)(react-dom@17.0.2(react@17.0.2))(react-native@0.78.0(@babel/core@7.23.9)(@babel/preset-env@7.10.2(@babel/core@7.23.9))(@types/react@17.0.83)(react@17.0.2))(react@17.0.2)
       '@hookform/resolvers':
         specifier: ^3.10.0
