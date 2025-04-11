@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useRef, useState } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 
 import { Call } from '@twilio/voice-sdk'
 import { AxiosError } from 'axios'
@@ -6,6 +6,7 @@ import classNames from 'classnames'
 import { connect, ConnectedProps } from 'react-redux'
 
 import { usePutCallParticipantOnHold } from '@gorgias/api-queries'
+import { IconButton } from '@gorgias/merchant-ui-kit'
 
 import { TwilioSocketEventType } from 'business/twilio'
 import {
@@ -15,7 +16,6 @@ import {
 } from 'hooks/integrations/phone/utils'
 import client from 'models/api/resources'
 import ConfirmButton from 'pages/common/components/button/ConfirmButton'
-import IconButton from 'pages/common/components/button/IconButton'
 import {
     CallRecordingStatus,
     TWILIO_CURRENT_ITEM,
@@ -36,6 +36,8 @@ import { Notification, NotificationStatus } from 'state/notifications/types'
 import { RootState } from 'state/types'
 
 import VoiceCallAgentLabel from '../../VoiceCallAgentLabel/VoiceCallAgentLabel'
+import PhoneBarContainer from '../PhoneBarContainer/PhoneBarContainer'
+import PhoneBarInnerContent from '../PhoneBarInnerContent/PhoneBarInnerContent'
 import CallTransferDropdown from './CallTransferDropdown'
 import IconButtonTooltip from './IconButtonTooltip'
 import InCallDialPad from './InCallDialPad/InCallDialPad'
@@ -157,20 +159,22 @@ export function OngoingPhoneCall({
     }, [])
 
     return (
-        <div className={css.container}>
-            <div className={css.inner}>
-                <PhoneIntegrationName integrationId={integrationId} />
-                {transferringTo ? (
-                    <div className={css.callerDetails}>
-                        Transferring call to
-                        <VoiceCallAgentLabel agentId={transferringTo} />
-                    </div>
-                ) : (
-                    <PhoneCustomerName
-                        name={customerName}
-                        phoneNumber={customerPhoneNumber}
-                    />
-                )}
+        <PhoneBarContainer>
+            <PhoneBarInnerContent>
+                <div className={css.callerDetailsContainer}>
+                    <PhoneIntegrationName integrationId={integrationId} />
+                    {transferringTo ? (
+                        <div className={css.callerDetails}>
+                            Transferring call to
+                            <VoiceCallAgentLabel agentId={transferringTo} />
+                        </div>
+                    ) : (
+                        <PhoneCustomerName
+                            name={customerName}
+                            phoneNumber={customerPhoneNumber}
+                        />
+                    )}
+                </div>
                 <InCallDialPad className={css.dialPad} call={call} />
                 <IconButtonTooltip
                     intent="secondary"
@@ -255,15 +259,14 @@ export function OngoingPhoneCall({
                         aria-label="End phone call"
                         intent="destructive"
                         onClick={handleDisconnect}
-                    >
-                        call_end
-                    </IconButton>
+                        icon="call_end"
+                    />
                 )}
-            </div>
+            </PhoneBarInnerContent>
             <PhoneInfobarWrapper>
                 <span>{isTransferring ? 'Transferring...' : 'Connected'}</span>
             </PhoneInfobarWrapper>
-        </div>
+        </PhoneBarContainer>
     )
 }
 

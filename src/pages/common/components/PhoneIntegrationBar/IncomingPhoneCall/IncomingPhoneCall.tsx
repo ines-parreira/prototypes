@@ -1,19 +1,21 @@
 import React, { SyntheticEvent, useCallback, useRef } from 'react'
 
 import { Call } from '@twilio/voice-sdk'
-import classNames from 'classnames'
 import moment from 'moment'
 import { useHistory, useLocation } from 'react-router-dom'
+
+import { Button } from '@gorgias/merchant-ui-kit'
 
 import { AlertBanner, AlertBannerTypes } from 'AlertBanners'
 import { declineCall } from 'hooks/integrations/phone/api'
 import { useNow } from 'hooks/useNow'
-import Button from 'pages/common/components/button/Button'
 import useMicrophonePermissions from 'pages/integrations/integration/components/voice/useMicrophonePermissions'
 
 import VoiceCallAgentLabel from '../../VoiceCallAgentLabel/VoiceCallAgentLabel'
 import { MICROPHONE_PERMISSION_REQUIRED_MESSAGE } from '../constants'
 import { useConnectionParameters } from '../hooks'
+import PhoneBarContainer from '../PhoneBarContainer/PhoneBarContainer'
+import PhoneBarInnerContent from '../PhoneBarInnerContent/PhoneBarInnerContent'
 import PhoneCustomerName from '../PhoneCustomerName/PhoneCustomerName'
 import PhoneInfobarWrapper from '../PhoneInfobarWrapper/PhoneInfobarWrapper'
 import PhoneIntegrationName from '../PhoneIntegrationName/PhoneIntegrationName'
@@ -22,13 +24,9 @@ import css from './IncomingPhoneCall.less'
 
 type Props = {
     call: Call
-    className?: string
 }
 
-export default function IncomingPhoneCall({
-    call,
-    className,
-}: Props): JSX.Element {
+export default function IncomingPhoneCall({ call }: Props): JSX.Element {
     const history = useHistory()
     const location = useLocation()
     const { permissionDenied } = useMicrophonePermissions(1000)
@@ -65,56 +63,59 @@ export default function IncomingPhoneCall({
                     type={AlertBannerTypes.Critical}
                 />
             )}
-            <div
-                className={classNames(css.container, className)}
-                onClick={openTicket}
-            >
-                <div className={css.inner}>
-                    <PhoneIntegrationName
-                        integrationId={integrationId}
-                        primary
-                    />
-                    <div className={css.callerDetails}>
-                        {transferFromAgentId && (
-                            <>
-                                <VoiceCallAgentLabel
-                                    agentId={transferFromAgentId}
-                                    className={css.agentLabel}
-                                    semibold
-                                />
-                                <span>transferring</span>
-                            </>
-                        )}
-                        <PhoneCustomerName
-                            name={customerName}
-                            phoneNumber={customerPhoneNumber}
+            <PhoneBarContainer onClick={openTicket} isHighlighted>
+                <PhoneBarInnerContent>
+                    <div className={css.callerDetailsContainer}>
+                        <PhoneIntegrationName
+                            integrationId={integrationId}
+                            primary
                         />
+                        <div className={css.callerDetails}>
+                            {transferFromAgentId && (
+                                <>
+                                    <VoiceCallAgentLabel
+                                        agentId={transferFromAgentId}
+                                        className={css.agentLabel}
+                                        semibold
+                                    />
+                                    <span>transferring</span>
+                                </>
+                            )}
+                            <PhoneCustomerName
+                                name={customerName}
+                                phoneNumber={customerPhoneNumber}
+                            />
+                        </div>
                     </div>
-                    <Button
-                        aria-label="Accept phone call"
-                        intent="secondary"
-                        className={css.accept}
-                        onClick={() => call.accept()}
-                    >
-                        <i className="material-icons mr-2">phone</i>
-                        Accept
-                    </Button>
-                    <Button
-                        intent="secondary"
-                        aria-label="Decline phone call"
-                        className={css.decline}
-                        onClick={(event: SyntheticEvent<HTMLButtonElement>) => {
-                            event.stopPropagation()
+                    <div>
+                        <Button
+                            aria-label="Accept phone call"
+                            intent="secondary"
+                            className={css.accept}
+                            onClick={() => call.accept()}
+                        >
+                            <i className="material-icons mr-2">phone</i>
+                            Accept
+                        </Button>
+                        <Button
+                            intent="secondary"
+                            aria-label="Decline phone call"
+                            className={css.decline}
+                            onClick={(
+                                event: SyntheticEvent<HTMLButtonElement>,
+                            ) => {
+                                event.stopPropagation()
 
-                            call.reject()
-                            call.emit('cancel')
-                            void declineCall(call)
-                        }}
-                    >
-                        <i className="material-icons mr-2">call_end</i>
-                        Decline
-                    </Button>
-                </div>
+                                call.reject()
+                                call.emit('cancel')
+                                void declineCall(call)
+                            }}
+                        >
+                            <i className="material-icons mr-2">call_end</i>
+                            Decline
+                        </Button>
+                    </div>
+                </PhoneBarInnerContent>
                 <PhoneInfobarWrapper primary>
                     <span>
                         {transferFromAgentId
@@ -123,7 +124,7 @@ export default function IncomingPhoneCall({
                     </span>
                     <span>Waiting for {formattedWaitTime}</span>
                 </PhoneInfobarWrapper>
-            </div>
+            </PhoneBarContainer>
         </>
     )
 }

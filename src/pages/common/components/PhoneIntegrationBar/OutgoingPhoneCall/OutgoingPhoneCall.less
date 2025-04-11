@@ -1,34 +1,15 @@
 :local {
-    .container {
+    .callerDetailsContainer {
         display: flex;
-        position: relative;
+        align-items: center;
+        flex-wrap: wrap;
+    }
 
-        &::before {
-            content: '';
-            background: linear-gradient(
-                180deg,
-                rgba(21, 32, 101, 0) 36.1%,
-                rgba(21, 32, 101, 0.1) 133.33%
-            );
-            height: 6px;
-            width: 100%;
-            position: absolute;
-            top: -6px;
-        }
-
-        .inner {
-            padding: 0.875rem 1.25rem;
-            flex: 1;
-            display: flex;
-            align-items: center;
-
-            .end {
-                margin-left: auto;
-                color: var(--feedback-error) !important;
-                font-size: 14px;
-                line-height: 17px;
-                padding: 7px 12px;
-            }
-        }
+    .end {
+        margin-left: auto;
+        color: var(--feedback-error) !important;
+        font-size: 14px;
+        line-height: 17px;
+        padding: 7px 12px;
     }
 }

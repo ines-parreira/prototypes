@@ -1,47 +1,25 @@
 @import (reference) '~@gorgias/design-tokens/dist/css/layout.less';
 
 :local {
-    .container {
-        background-color: var(--neutral-grey-0);
-        color: var(--neutral-grey-6);
+    .callerDetailsContainer {
         display: flex;
-        position: relative;
+        align-items: center;
+        flex-wrap: wrap;
+    }
 
-        &::before {
-            content: '';
-            background: linear-gradient(
-                180deg,
-                rgba(21, 32, 101, 0) 36.1%,
-                rgba(21, 32, 101, 0.1) 133.33%
-            );
-            height: 6px;
-            width: 100%;
-            position: absolute;
-            top: -6px;
-        }
+    .dialPad {
+        margin-left: auto;
+    }
 
-        .inner {
-            padding: 0.875rem 1.25rem;
-            flex: 1;
-            display: flex;
-            align-items: center;
-            gap: 1rem;
+    .callerDetails {
+        display: flex;
+        align-items: center;
+        gap: @layout-spacing-xxs;
+        flex-wrap: wrap;
+    }
 
-            .dialPad {
-                margin-left: auto;
-            }
-        }
-
-        .callerDetails {
-            display: flex;
-            align-items: center;
-            gap: @layout-spacing-xxs;
-            flex-wrap: wrap;
-        }
-
-        .endCallConfirmationButton {
-            font-size: 18px;
-            padding: 0 6px;
-        }
+    .endCallConfirmationButton {
+        font-size: 18px;
+        padding: 0 6px;
     }
 }

@@ -1,61 +1,41 @@
 @import (reference) '~@gorgias/design-tokens/dist/css/layout.less';
 
 :local {
-    .container {
+    .callerDetailsContainer {
         display: flex;
-        position: relative;
-        cursor: pointer;
+        align-items: center;
+        flex-wrap: wrap;
+    }
 
-        &::before {
-            content: '';
-            background: linear-gradient(
-                180deg,
-                rgba(21, 32, 101, 0) 36.1%,
-                rgba(21, 32, 101, 0.1) 133.33%
-            );
-            height: 6px;
-            width: 100%;
-            position: absolute;
-            top: -6px;
+    .accept {
+        margin-left: auto;
+        margin-right: 1rem;
+
+        font-size: 14px;
+        line-height: 17px;
+        padding: 7px 12px;
+
+        &:not([aria-disabled='true']) {
+            color: var(--feedback-success-4) !important;
         }
+    }
 
-        .inner {
-            padding: 0.875rem 1.25rem;
-            flex: 1;
-            display: flex;
-            align-items: center;
+    .decline {
+        color: var(--feedback-error) !important;
+        font-size: 14px;
+        line-height: 17px;
+        padding: 7px 12px;
+    }
 
-            .accept {
-                margin-left: auto;
-                margin-right: 1rem;
+    .agentLabel {
+        color: inherit;
+        margin-top: 2px;
+    }
 
-                font-size: 14px;
-                line-height: 17px;
-                padding: 7px 12px;
-
-                &:not([aria-disabled='true']) {
-                    color: var(--feedback-success-4) !important;
-                }
-            }
-
-            .decline {
-                color: var(--feedback-error) !important;
-                font-size: 14px;
-                line-height: 17px;
-                padding: 7px 12px;
-            }
-        }
-
-        .agentLabel {
-            color: inherit;
-            margin-top: 2px;
-        }
-
-        .callerDetails {
-            display: flex;
-            align-items: center;
-            gap: @layout-spacing-xs;
-            flex-wrap: wrap;
-        }
+    .callerDetails {
+        display: flex;
+        align-items: center;
+        gap: @layout-spacing-xs;
+        flex-wrap: wrap;
     }
 }
