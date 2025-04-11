@@ -441,6 +441,7 @@ exports[`integration resource fetchIntegrations should return the integrations 1
           "area_code": 510,
           "country": "US",
           "emoji": "🤠",
+          "function": "standard",
           "phone_number_id": 1,
           "preferences": {
             "record_inbound_calls": false,
@@ -448,7 +449,6 @@ exports[`integration resource fetchIntegrations should return the integrations 1
             "voicemail_outside_business_hours": true,
           },
           "state": "CA",
-          "type": "Local",
           "voicemail": {
             "allow_to_leave_voicemail": true,
             "text_to_speech_content": "We are not available, please leave a message.",

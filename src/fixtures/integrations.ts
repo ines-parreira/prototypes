@@ -471,7 +471,7 @@ export const integrationsState = {
                 },
                 state: 'CA',
                 phone_number_id: 1,
-                type: 'Local',
+                function: 'standard',
                 voicemail: {
                     allow_to_leave_voicemail: true,
                     text_to_speech_content:

@@ -1,14 +1,13 @@
 import { useParams } from 'react-router-dom'
 
 import {
+    IntegrationType,
+    PhoneFunction,
     PhoneIntegration,
     UpdateAllPhoneIntegrationSettings,
     useGetIntegration,
 } from '@gorgias/api-queries'
-import {
-    isPhoneIntegration,
-    validateUpdateAllPhoneIntegrationSettings,
-} from '@gorgias/api-validators'
+import { validateUpdateAllPhoneIntegrationSettings } from '@gorgias/api-validators'
 
 import { Form, toFormErrors } from 'core/forms'
 import Loader from 'pages/common/components/Loader/Loader'
@@ -32,7 +31,10 @@ function VoiceIntegrationSettingsPage() {
         return <Loader />
     }
 
-    if (!isPhoneIntegration(integration)) {
+    if (
+        integration.type !== IntegrationType.Phone ||
+        integration.meta.function !== PhoneFunction.Standard
+    ) {
         return <div />
     }
 
