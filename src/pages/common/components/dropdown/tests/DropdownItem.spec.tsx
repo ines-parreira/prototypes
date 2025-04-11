@@ -259,27 +259,4 @@ describe('<DropdownItem />', () => {
 
         expect(queryByText('done')).not.toBeInTheDocument()
     })
-
-    it('should add a title attribute when overflowing from container', () => {
-        ;(useRef as jest.Mock).mockImplementation(() => ({
-            get current() {
-                return { offsetWidth: 100, scrollWidth: 120 }
-            },
-
-            set current(_value) {},
-        }))
-
-        const label = 'A very long item overflowing'
-        const { container } = render(
-            MockedComponent(
-                {
-                    ...minProps,
-                    option: { value: 'x', label },
-                },
-                mockContext,
-            ),
-        )
-
-        expect(container.firstChild).toHaveAttribute('title', label)
-    })
 })

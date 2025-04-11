@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { ReactNode } from 'react'
 
 import { render, screen } from '@testing-library/react'
 
@@ -8,6 +8,12 @@ import UserDropdownItem from '../UserDropdownItem'
 
 jest.mock('hooks/useAppSelector')
 const useAppSelectorMock = useAppSelector as jest.Mock
+
+jest.mock('@gorgias/merchant-ui-kit', () => ({
+    Tooltip: ({ children }: { children: ReactNode }) => (
+        <div>Tooltip{children}</div>
+    ),
+}))
 
 describe('<UserDropdownItem />', () => {
     const props = {
@@ -54,5 +60,25 @@ describe('<UserDropdownItem />', () => {
         render(<UserDropdownItem item={item} />)
 
         expect(screen.getByText(item.email)).toBeInTheDocument()
+    })
+
+    it('should display tooltip when text is overflowing', () => {
+        jest.spyOn(
+            HTMLElement.prototype,
+            'offsetWidth',
+            'get',
+        ).mockImplementation(() => 0)
+        jest.spyOn(
+            HTMLElement.prototype,
+            'scrollWidth',
+            'get',
+        ).mockImplementation(() => 1)
+
+        render(<UserDropdownItem {...props} />)
+
+        expect(screen.getByText(/Tooltip/)).toBeInTheDocument()
+        expect(
+            screen.getAllByText(new RegExp(props.item.name, 'i')),
+        ).toHaveLength(2)
     })
 })

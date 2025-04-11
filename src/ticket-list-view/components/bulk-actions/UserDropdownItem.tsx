@@ -1,6 +1,7 @@
-import React, { useMemo } from 'react'
+import React, { useCallback, useMemo, useState } from 'react'
 
 import { User } from '@gorgias/api-queries'
+import { Tooltip } from '@gorgias/merchant-ui-kit'
 
 import { Item } from 'components/Dropdown'
 import useAppSelector from 'hooks/useAppSelector'
@@ -11,6 +12,8 @@ import css from './style.less'
 
 export default function UserDropdownItem({ item }: { item: Item }) {
     const users = useAppSelector(getHumanAgentsJS)
+    const [isItemOverflowing, setIsItemOverflowing] = useState(false)
+    const [itemRef, setItemRef] = useState<HTMLDivElement | null>(null)
 
     const url = useMemo(
         () =>
@@ -20,10 +23,26 @@ export default function UserDropdownItem({ item }: { item: Item }) {
         [item.id, item.meta, users],
     )
 
+    const itemCallbackRef = useCallback((node: HTMLDivElement | null) => {
+        if (node) {
+            setItemRef(node)
+            setIsItemOverflowing(node.scrollWidth > node.offsetWidth)
+        }
+    }, [])
+
     return (
-        <div className={css.item}>
-            <Avatar name={item.name} url={url} shape="round" size={20} />
-            <div className={css.name}>{item.name || item.email}</div>
-        </div>
+        <>
+            <div className={css.item}>
+                <Avatar name={item.name} url={url} shape="round" size={20} />
+                <div className={css.name} ref={itemCallbackRef}>
+                    {item.name || item.email}
+                </div>
+            </div>
+            {isItemOverflowing && !!itemRef && (
+                <Tooltip placement="top" target={itemRef}>
+                    {item.name || item.email}
+                </Tooltip>
+            )}
+        </>
     )
 }

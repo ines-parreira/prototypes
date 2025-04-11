@@ -67,6 +67,7 @@ const TagDropdown = ({
                 Add tags
             </Button>
             <Dropdown
+                className={css.dropdown}
                 isOpen={isDropdownOpen}
                 onToggle={onToggle}
                 target={targetRef}

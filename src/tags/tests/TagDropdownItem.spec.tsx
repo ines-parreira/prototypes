@@ -1,10 +1,16 @@
-import React from 'react'
+import React, { ReactNode } from 'react'
 
 import { render, screen } from '@testing-library/react'
 
 import { tags } from 'fixtures/tag'
 
 import TagDropdownItem from '../TagDropdownItem'
+
+jest.mock('@gorgias/merchant-ui-kit', () => ({
+    Tooltip: ({ children }: { children: ReactNode }) => (
+        <div>Tooltip{children}</div>
+    ),
+}))
 
 describe('<TagDropdownItem />', () => {
     const props = {
@@ -33,8 +39,28 @@ describe('<TagDropdownItem />', () => {
             />,
         )
 
-        expect(screen.getByText(props.item.name)).toHaveStyle(
+        expect(screen.getByText(props.item.name).parentElement).toHaveStyle(
             `--tag-dot-color: ${customColor}`,
         )
+    })
+
+    it('should display tooltip when text is overflowing', () => {
+        jest.spyOn(
+            HTMLElement.prototype,
+            'offsetWidth',
+            'get',
+        ).mockImplementation(() => 0)
+        jest.spyOn(
+            HTMLElement.prototype,
+            'scrollWidth',
+            'get',
+        ).mockImplementation(() => 1)
+
+        render(<TagDropdownItem {...props} />)
+
+        expect(screen.getByText(/Tooltip/)).toBeInTheDocument()
+        expect(
+            screen.getAllByText(new RegExp(props.item.name, 'i')),
+        ).toHaveLength(2)
     })
 })

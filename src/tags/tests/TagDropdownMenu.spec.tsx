@@ -147,13 +147,17 @@ describe('<TagDropdownMenu />', () => {
         fireEvent.keyDown(items[0], {
             key: 'ArrowDown',
         })
-        expect(screen.getByText(/exchange/)).toEqual(items[1].firstChild)
+        expect(
+            screen.getByText(/exchange/).parentElement?.parentElement,
+        ).toEqual(items[1])
         expect(items[1]).toHaveFocus()
 
         fireEvent.keyDown(items[1], {
             key: 'ArrowDown',
         })
-        expect(screen.getByText(/refund/)).toEqual(items[2].firstChild)
+        expect(screen.getByText(/refund/).parentElement?.parentElement).toEqual(
+            items[2],
+        )
         expect(items[2]).toHaveFocus()
 
         fireEvent.keyDown(items[2], {
