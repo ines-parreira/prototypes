@@ -45,6 +45,11 @@ export const Level2IntentsContainer = () => {
                     description="Explore intent topics to view related tickets and resources used by AI Agent to find opportunities to improve it’s performance."
                     tableTitle="All topics"
                     intentLevel={INTENT_LEVEL + 1}
+                    tableHint={{
+                        title: 'List of all intents detected in tickets that involved AI Agent.',
+                        link: 'https://docs.gorgias.com/en-US/customer-intents-81924',
+                        linkText: 'Learn about intents',
+                    }}
                 />
             </div>
             <DrillDownModal />
