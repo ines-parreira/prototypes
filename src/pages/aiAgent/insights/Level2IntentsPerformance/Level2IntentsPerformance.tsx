@@ -50,7 +50,7 @@ export const Level2IntentsPerformance = () => {
                 {
                     title: 'Success rate uplift opportunity',
                     hint: {
-                        title: 'Estimated potential to improve your success rate, based on the potential uplift between your current success rate and the ticket volume of the intent.',
+                        title: `Estimated potential to improve your success rate, based on the number of tickets that haven't been automated. \nExample: If there are 100 total AI agent tickets and a given intent / topic has 15 tickets that have not been automated, the uplift opportunity is 15%.`,
                     },
                     trend: aiAgentMetrics.successRateUpliftOpportunityPerIntent,
                     interpretAs: 'more-is-better',
