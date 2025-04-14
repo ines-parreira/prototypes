@@ -1,6 +1,7 @@
 import React, { ComponentProps } from 'react'
 
-import { AlertBanner, AlertBannerTypes } from 'AlertBanners'
+import { AlertBannerTypes } from 'AlertBanners'
+import { AlertBanner } from 'AlertBanners/components/AlertBanner'
 import { EmailMigrationBannerStatus } from 'models/integration/types'
 import { getMoment, stringToDatetime } from 'utils/date'
 

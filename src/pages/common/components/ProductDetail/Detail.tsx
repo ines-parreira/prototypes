@@ -1,4 +1,4 @@
-import { AlertBanner } from 'AlertBanners'
+import { AlertBanner } from 'AlertBanners/components/AlertBanner'
 
 import Header from './Header'
 import InfoCard from './InfoCard'

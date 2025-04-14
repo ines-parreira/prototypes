@@ -1,6 +1,6 @@
 import { useHistory, useLocation } from 'react-router-dom'
 
-import { AlertBanner } from 'AlertBanners'
+import { AlertBanner } from 'AlertBanners/components/AlertBanner'
 import useAppSelector from 'hooks/useAppSelector'
 import useEffectOnce from 'hooks/useEffectOnce'
 import { EmailMigrationStatus } from 'models/integration/types'

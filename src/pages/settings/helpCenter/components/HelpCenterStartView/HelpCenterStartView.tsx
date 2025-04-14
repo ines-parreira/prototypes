@@ -4,7 +4,8 @@ import { Link, NavLink, Route, Switch, useHistory } from 'react-router-dom'
 
 import { Tooltip } from '@gorgias/merchant-ui-kit'
 
-import { AlertBanner, AlertBannerTypes } from 'AlertBanners'
+import { AlertBannerTypes } from 'AlertBanners'
+import { AlertBanner } from 'AlertBanners/components/AlertBanner'
 import useAppDispatch from 'hooks/useAppDispatch'
 import { PRODUCT_BANNER_KEY } from 'hooks/useProductBannerStorage'
 import Button from 'pages/common/components/button/Button'

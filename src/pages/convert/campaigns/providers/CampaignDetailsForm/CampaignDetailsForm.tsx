@@ -10,7 +10,8 @@ import _trim from 'lodash/trim'
 
 import { Skeleton } from '@gorgias/merchant-ui-kit'
 
-import { AlertBanner, AlertBannerTypes } from 'AlertBanners'
+import { AlertBannerTypes } from 'AlertBanners'
+import { AlertBanner } from 'AlertBanners/components/AlertBanner'
 import { TicketChannel, TicketMessageSourceType } from 'business/types/ticket'
 import { FeatureFlagKey } from 'config/featureFlags'
 import {

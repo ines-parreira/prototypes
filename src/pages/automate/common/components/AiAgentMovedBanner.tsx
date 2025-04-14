@@ -1,6 +1,7 @@
 import React, { useCallback } from 'react'
 
-import { AlertBanner, BannerCategory } from 'AlertBanners'
+import type { BannerCategory } from 'AlertBanners'
+import { AlertBanner } from 'AlertBanners/components/AlertBanner'
 import {
     BannerActionTypes,
     useBannersDispatchContext,

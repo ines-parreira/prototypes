@@ -1,7 +1,8 @@
 import { List } from 'immutable'
 import { useHistory, useLocation } from 'react-router-dom'
 
-import { AlertBanner, AlertBannerTypes } from 'AlertBanners'
+import { AlertBannerTypes } from 'AlertBanners'
+import { AlertBanner } from 'AlertBanners/components/AlertBanner'
 import useAppSelector from 'hooks/useAppSelector'
 import { getInactiveEmailChannels } from 'state/integrations/selectors'
 

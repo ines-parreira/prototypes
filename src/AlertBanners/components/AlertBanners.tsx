@@ -2,7 +2,8 @@ import { memo } from 'react'
 
 import { noop } from 'lodash'
 
-import { AlertBanner, AlertBannerTypes } from 'AlertBanners'
+import { AlertBannerTypes } from 'AlertBanners'
+import { AlertBanner } from 'AlertBanners/components/AlertBanner'
 import { MergedBanner } from 'AlertBanners/Context/types'
 import { logEvent, SegmentEvent } from 'common/segment'
 import { FeatureFlagKey } from 'config/featureFlags'

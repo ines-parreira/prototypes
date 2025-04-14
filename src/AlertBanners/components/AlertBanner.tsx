@@ -24,6 +24,11 @@ export type AlertBannerProps = {
     fillStyle?: BannerFillStyle
 } & Pick<HTMLAttributes<HTMLDivElement>, 'aria-label'>
 
+/**
+ * @deprecated This component is being phased out. Please use `<Banner variant="full" />` from `@gorgias/merchant-ui-kit` instead.
+ * @date 2024-03-05
+ * @type ui-kit-migration
+ */
 export function AlertBanner({
     'aria-label': ariaLabel,
     message,

@@ -6,7 +6,8 @@ import { Breadcrumb, BreadcrumbItem } from 'reactstrap'
 
 import { Tooltip } from '@gorgias/merchant-ui-kit'
 
-import { AlertBanner, AlertBannerTypes } from 'AlertBanners'
+import { AlertBannerTypes } from 'AlertBanners'
+import { AlertBanner } from 'AlertBanners/components/AlertBanner'
 import { logEvent, SegmentEvent } from 'common/segment'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'

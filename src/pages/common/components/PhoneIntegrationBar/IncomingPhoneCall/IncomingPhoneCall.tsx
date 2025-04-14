@@ -6,7 +6,8 @@ import { useHistory, useLocation } from 'react-router-dom'
 
 import { Button } from '@gorgias/merchant-ui-kit'
 
-import { AlertBanner, AlertBannerTypes } from 'AlertBanners'
+import { AlertBannerTypes } from 'AlertBanners'
+import { AlertBanner } from 'AlertBanners/components/AlertBanner'
 import { declineCall } from 'hooks/integrations/phone/api'
 import { useNow } from 'hooks/useNow'
 import useMicrophonePermissions from 'pages/integrations/integration/components/voice/useMicrophonePermissions'

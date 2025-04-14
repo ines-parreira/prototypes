@@ -1,4 +1,5 @@
-import { AlertBanner, AlertBannerTypes } from 'AlertBanners'
+import { AlertBannerTypes } from 'AlertBanners'
+import { AlertBanner } from 'AlertBanners/components/AlertBanner'
 
 import useAppSelector from '../../hooks/useAppSelector'
 import { getCurrentAccountState } from '../../state/currentAccount/selectors'

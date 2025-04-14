@@ -1,6 +1,7 @@
 import { Map } from 'immutable'
 
-import { AlertBanner, AlertBannerTypes } from 'AlertBanners'
+import { AlertBannerTypes } from 'AlertBanners'
+import { AlertBanner } from 'AlertBanners/components/AlertBanner'
 import { IntegrationType } from 'models/integration/types'
 import { Tab } from 'pages/integrations/integration/types'
 
