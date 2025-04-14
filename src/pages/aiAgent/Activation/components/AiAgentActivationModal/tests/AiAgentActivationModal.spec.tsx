@@ -1,3 +1,5 @@
+import { ComponentProps } from 'react'
+
 import { fireEvent, render, screen } from '@testing-library/react'
 
 import { getStoreConfigurationFixture } from '../../../hooks/tests/fixtures/store-configurations.fixture'
@@ -90,9 +92,10 @@ describe('AiAgentActivationModal', () => {
         },
     }
 
-    const defaultProps = {
+    const defaultProps: ComponentProps<typeof AiAgentActivationModal> = {
         isOpen: true,
-        isLoading: false,
+        isFetchLoading: false,
+        isSaveLoading: false,
         onClose: jest.fn(),
         progressPercentage: 50,
         storeActivations: mockStoreActivations,
@@ -190,8 +193,18 @@ describe('AiAgentActivationModal', () => {
         expect(defaultProps.onClose).toHaveBeenCalled()
     })
 
-    it('shows loading state on save button when isLoading is true', () => {
-        render(<AiAgentActivationModal {...defaultProps} isLoading={true} />)
+    it('shows loading state in the modal when isFetchLoading is true', () => {
+        render(
+            <AiAgentActivationModal {...defaultProps} isFetchLoading={true} />,
+        )
+
+        expect(screen.getAllByText('Loading...')).toHaveLength(2)
+    })
+
+    it('shows disabled state on save button when isSaveLoading is true', () => {
+        render(
+            <AiAgentActivationModal {...defaultProps} isSaveLoading={true} />,
+        )
 
         const saveButton = screen.getByText('Save')
         expect(saveButton.parentElement).toHaveAttribute(

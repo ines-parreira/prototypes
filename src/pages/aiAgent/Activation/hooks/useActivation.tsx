@@ -30,7 +30,8 @@ export const useActivation = (
         changeSupportChat,
         changeSupportEmail,
         saveStoreConfigurations,
-        isLoading: isSaveLoading,
+        isSaveLoading,
+        isFetchLoading,
     } = useStoreActivations({ pageName })
 
     const hasActivationEnabled = useFlag(FeatureFlagKey.AiAgentActivation)
@@ -91,7 +92,8 @@ export const useActivation = (
         activationModal: (
             <AiAgentActivationModal
                 isOpen={isModalVisible}
-                isLoading={isSaveLoading}
+                isSaveLoading={isSaveLoading}
+                isFetchLoading={isFetchLoading}
                 onClose={() => {
                     closeModal()
                     logEvent(SegmentEvent.AiAgentActivateCloseActivationModal, {

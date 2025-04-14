@@ -98,7 +98,8 @@ const meta: Meta<typeof AiAgentActivationModal> = {
     component: AiAgentActivationModal,
     args: {
         isOpen: true,
-        isLoading: false,
+        isFetchLoading: false,
+        isSaveLoading: false,
         storeActivations: {
             'steve-madden': dummyStoreActivation,
             'betsey-johnson': dummyStoreActivation2,

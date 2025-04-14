@@ -1,4 +1,4 @@
-import { Button } from '@gorgias/merchant-ui-kit'
+import { Button, LoadingSpinner } from '@gorgias/merchant-ui-kit'
 
 import { ActivationProgress } from 'pages/aiAgent/Activation/components/ActivationProgress/ActivationProgress'
 import {
@@ -12,7 +12,8 @@ import css from './AiAgentActivationModal.less'
 
 type Props = {
     isOpen: boolean
-    isLoading?: boolean
+    isFetchLoading: boolean
+    isSaveLoading: boolean
     onClose: () => void
     progressPercentage: number
     storeActivations: Record<string, StoreActivation>
@@ -24,7 +25,8 @@ type Props = {
 }
 export const AiAgentActivationModal = ({
     isOpen,
-    isLoading,
+    isFetchLoading,
+    isSaveLoading,
     onClose,
     progressPercentage,
     storeActivations,
@@ -33,54 +35,66 @@ export const AiAgentActivationModal = ({
     onSupportChatChange,
     onSupportEmailChange,
     onSaveClick,
-}: Props) => (
-    <Modal
-        preventCloseClickOutside
-        className={css.modal}
-        classNameContent={css.modalContent}
-        classNameDialog={css.modalDialog}
-        isOpen={isOpen}
-        onClose={onClose}
-    >
-        <div className={css.modalHeader}>
-            <div className={css.modalTitle}>Manage AI Agent Activation</div>
-            <div className={css.activationStatus}>
-                <ActivationProgress percentage={progressPercentage} />
+}: Props) => {
+    const storeActivationList = Object.entries(storeActivations)
+    return (
+        <Modal
+            preventCloseClickOutside
+            className={css.modal}
+            classNameContent={css.modalContent}
+            classNameDialog={css.modalDialog}
+            isOpen={isOpen}
+            onClose={onClose}
+        >
+            <div className={css.modalHeader}>
+                <div className={css.modalTitle}>Manage AI Agent Activation</div>
+                <div className={css.activationStatus}>
+                    <ActivationProgress percentage={progressPercentage} />
+                </div>
             </div>
-        </div>
 
-        <ModalBody className={css.modalBody}>
-            <div className={css.storeCardsList}>
-                {Object.entries(storeActivations).map(([storeName, store]) => (
-                    <StoreCard
-                        key={storeName}
-                        isDisabled={isLoading}
-                        store={store}
-                        onSalesChange={(value) =>
-                            onSalesChange(storeName, value)
-                        }
-                        onSupportChange={(value) =>
-                            onSupportChange(storeName, value)
-                        }
-                        onSupportChatChange={(value) =>
-                            onSupportChatChange(storeName, value)
-                        }
-                        onSupportEmailChange={(value) =>
-                            onSupportEmailChange(storeName, value)
-                        }
-                        closeModal={onClose}
-                    />
-                ))}
+            <ModalBody className={css.modalBody}>
+                {isFetchLoading ? (
+                    <div className={css.loadingContainer}>
+                        <LoadingSpinner size="big" />
+                    </div>
+                ) : (
+                    <div className={css.storeCardsList}>
+                        {storeActivationList.map(([storeName, store]) => (
+                            <StoreCard
+                                key={storeName}
+                                isDisabled={isSaveLoading}
+                                store={store}
+                                onSalesChange={(value) =>
+                                    onSalesChange(storeName, value)
+                                }
+                                onSupportChange={(value) =>
+                                    onSupportChange(storeName, value)
+                                }
+                                onSupportChatChange={(value) =>
+                                    onSupportChatChange(storeName, value)
+                                }
+                                onSupportEmailChange={(value) =>
+                                    onSupportEmailChange(storeName, value)
+                                }
+                                closeModal={onClose}
+                            />
+                        ))}
+                    </div>
+                )}
+            </ModalBody>
+
+            <div className={css.footer}>
+                <Button intent="secondary" onClick={onClose}>
+                    Cancel
+                </Button>
+                <Button
+                    onClick={onSaveClick}
+                    isLoading={isFetchLoading || isSaveLoading}
+                >
+                    Save
+                </Button>
             </div>
-        </ModalBody>
-
-        <div className={css.footer}>
-            <Button intent="secondary" onClick={onClose}>
-                Cancel
-            </Button>
-            <Button onClick={onSaveClick} isLoading={isLoading}>
-                Save
-            </Button>
-        </div>
-    </Modal>
-)
+        </Modal>
+    )
+}

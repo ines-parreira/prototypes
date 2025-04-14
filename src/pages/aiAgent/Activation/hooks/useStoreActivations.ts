@@ -64,7 +64,7 @@ const useStoreConfigurations = (
         return storeNames
     }, [stores, singleStoreName])
 
-    const { storeConfigurations: allStoreConfigurations } =
+    const { storeConfigurations: allStoreConfigurations, isLoading } =
         useStoreConfigurationForAccount({
             accountDomain,
             storesName: filteredStoresName,
@@ -87,7 +87,7 @@ const useStoreConfigurations = (
         return storeConfigurations.map((it) => it.storeName)
     }, [storeConfigurations])
 
-    return { storeConfigurations, storeNames }
+    return { storeConfigurations, storeNames, isLoading }
 }
 
 export const useStoreActivations = ({
@@ -98,12 +98,13 @@ export const useStoreActivations = ({
 }): {
     storeActivations: Record<string, StoreActivation>
     progressPercentage: number
+    isFetchLoading: boolean
+    isSaveLoading: boolean
     changeSales: (storeName: string, newValue: boolean) => void
     changeSupport: (storeName: string, newValue: boolean) => void
     changeSupportChat: (storeName: string, newValue: boolean) => void
     changeSupportEmail: (storeName: string, newValue: boolean) => void
     saveStoreConfigurations: () => Promise<void>
-    isLoading: boolean
 } => {
     const flags = useFlags()
     const flagsRef = useRef(flags)
@@ -119,10 +120,11 @@ export const useStoreActivations = ({
     const currentAccount = useAppSelector(getCurrentAccountState)
     const accountDomain = currentAccount.get('domain')
 
-    const { storeConfigurations, storeNames } = useStoreConfigurations(
-        accountDomain,
-        singleStoreName,
-    )
+    const {
+        storeConfigurations,
+        storeNames,
+        isLoading: isFetchLoading,
+    } = useStoreConfigurations(accountDomain, singleStoreName)
 
     const selfServiceChatChannels = useSelfServiceChatChannelsMultiStore(
         SHOPIFY_INTEGRATION_TYPE,
@@ -152,7 +154,7 @@ export const useStoreActivations = ({
         },
     )
 
-    const { isLoading, upsertStoresConfiguration } =
+    const { isLoading: isSaveLoading, upsertStoresConfiguration } =
         useStoresConfigurationMutation({ accountDomain })
 
     const saveStoreConfigurations = useCallback(async () => {
@@ -185,7 +187,8 @@ export const useStoreActivations = ({
     return {
         storeActivations: state,
         progressPercentage: computeActivationPercentage(state),
-        isLoading,
+        isFetchLoading,
+        isSaveLoading,
         changeSales: (storeName: string, newValue: boolean) => {
             dispatch({ type: 'CHANGE_SALES', storeName, newValue })
             logEvent(
