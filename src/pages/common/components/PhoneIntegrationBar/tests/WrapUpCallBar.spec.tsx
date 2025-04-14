@@ -40,6 +40,7 @@ describe('WrapUpCallBar', () => {
                 mutate: jest.fn(),
                 isLoading: false,
             } as any,
+            clearWrapUpTime: jest.fn(),
         })
         useVoiceDeviceMock.mockReturnValue({
             call: null,
@@ -60,6 +61,7 @@ describe('WrapUpCallBar', () => {
                 mutate: jest.fn(),
                 isLoading: false,
             } as any,
+            clearWrapUpTime: jest.fn(),
         })
 
         const { container } = renderComponent()
@@ -84,6 +86,7 @@ describe('WrapUpCallBar', () => {
                 mutate: jest.fn(),
                 isLoading: false,
             } as any,
+            clearWrapUpTime: jest.fn(),
         })
 
         renderComponent()
@@ -105,6 +108,7 @@ describe('WrapUpCallBar', () => {
                 mutate: mutateMock,
                 isLoading: false,
             } as any,
+            clearWrapUpTime: jest.fn(),
         })
 
         renderComponent()
@@ -127,6 +131,7 @@ describe('WrapUpCallBar', () => {
                 mutate: jest.fn(),
                 isLoading: true,
             } as any,
+            clearWrapUpTime: jest.fn(),
         })
 
         renderComponent()

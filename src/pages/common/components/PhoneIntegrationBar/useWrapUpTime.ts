@@ -76,6 +76,7 @@ export default function useWrapUpTime() {
         return () => {
             socketManager.unregisterReceivedEvents([wrapUpTimeStartedEvent])
         }
+        // eslint-disable-next-line exhaustive-deps
     }, [])
 
     return {
@@ -83,5 +84,6 @@ export default function useWrapUpTime() {
         timeLeft,
         voiceCall,
         endWrapUpTimeMutation,
+        clearWrapUpTime,
     }
 }

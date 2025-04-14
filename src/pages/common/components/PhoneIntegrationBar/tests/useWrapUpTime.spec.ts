@@ -98,6 +98,7 @@ describe('useWrapUpTime', () => {
             timeLeft: null,
             voiceCall: null,
             endWrapUpTimeMutation: expect.any(Object),
+            clearWrapUpTime: expect.any(Function),
         })
     })
 

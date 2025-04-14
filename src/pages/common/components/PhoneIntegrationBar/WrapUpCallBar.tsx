@@ -3,22 +3,30 @@ import { Button } from '@gorgias/merchant-ui-kit'
 import useVoiceDevice from 'hooks/integrations/phone/useVoiceDevice'
 import useWrapUpTime from 'pages/common/components/PhoneIntegrationBar/useWrapUpTime'
 
-import PhoneBarContainer from './PhoneBarContainer/PhoneBarContainer'
+import ActiveWrapUpCallBar from './ActiveWrapUpCallBar'
 import PhoneBarInnerContent from './PhoneBarInnerContent/PhoneBarInnerContent'
 import PhoneInfobarWrapper from './PhoneInfobarWrapper/PhoneInfobarWrapper'
 import PhoneIntegrationName from './PhoneIntegrationName/PhoneIntegrationName'
 
 export default function WrapUpCallBar() {
     const { call } = useVoiceDevice()
-    const { isWrappingUp, timeLeft, voiceCall, endWrapUpTimeMutation } =
-        useWrapUpTime()
+    const {
+        isWrappingUp,
+        timeLeft,
+        voiceCall,
+        endWrapUpTimeMutation,
+        clearWrapUpTime,
+    } = useWrapUpTime()
 
     if (call || !isWrappingUp || !voiceCall) {
         return null
     }
 
     return (
-        <PhoneBarContainer>
+        <ActiveWrapUpCallBar
+            clearWrapUpTime={clearWrapUpTime}
+            callId={voiceCall.id}
+        >
             <PhoneBarInnerContent>
                 {voiceCall && (
                     <PhoneIntegrationName
@@ -43,6 +51,6 @@ export default function WrapUpCallBar() {
                 <strong>Post call wrap-up</strong>
                 <div>{timeLeft}</div>
             </PhoneInfobarWrapper>
-        </PhoneBarContainer>
+        </ActiveWrapUpCallBar>
     )
 }

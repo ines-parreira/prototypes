@@ -90,6 +90,7 @@ export enum SocketEventType {
     VoiceCallTransferFailed = 'voice-call-transfer-failed',
     VoiceCallRecordingUpdated = 'voice-call-recording-updated',
     VoiceCallWrapUpTimeStarted = 'voice-call-wrap-up-time-started',
+    VoiceCallWrapUpTimeEnded = 'voice-call-wrap-up-time-ended',
     WhatsAppOnboardingSucceeded = 'whatsapp-onboarding-succeeded',
     WhatsAppOnboardingFailed = 'whatsapp-onboarding-failed',
     ShopperCreated = 'shopper-created',
@@ -370,6 +371,13 @@ export type VoiceCallTransferFailedEvent = {
         data: {
             error: { message: string }
         }
+    }
+}
+
+export type VoiceCallWrapUpTimeEndedEvent = {
+    event: {
+        type: SocketEventType.VoiceCallWrapUpTimeEnded
+        voice_call_id: number
     }
 }
 
