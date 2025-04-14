@@ -13,15 +13,14 @@ export const conversationExamples: ConversationExamples = {
     default: {
         messages: [
             {
-                content:
-                    'Hi, I’m after a long dress for everyday wear, something comfortable and cute.',
+                content: 'Hi, I’m after a moisturizer for dry skin.',
                 isHtml: false,
                 fromAgent: false,
                 attachments: [],
             },
             {
                 content:
-                    'Hi 👋  Our sizes are made for all shapes and body types. Check out this standard size chart for a measurement guide and international conversion.',
+                    'Hi 👋 Our top pick is the <strong>Ultra Hydration Cream</strong>. It’s packed with natural ingredients to combat dryness.',
                 isHtml: true,
                 fromAgent: true,
                 attachments: [],

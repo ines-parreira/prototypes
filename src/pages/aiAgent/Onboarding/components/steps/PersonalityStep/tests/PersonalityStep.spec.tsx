@@ -116,7 +116,8 @@ describe('PersonalityStep - With prepopulated data', () => {
         } as any)
 
         useTransformToneOfVoiceConversationsMock.mockReturnValue({
-            conversations: conversationExamples,
+            previewConversation: conversationExamples.default,
+            isPreviewLoading: false,
             isLoading: false,
             preview: undefined,
         })
@@ -169,7 +170,8 @@ describe('PersonalityStep - Empty state', () => {
         } as any)
 
         useTransformToneOfVoiceConversationsMock.mockReturnValue({
-            conversations: conversationExamples,
+            previewConversation: conversationExamples.default,
+            isPreviewLoading: false,
             isLoading: false,
             preview: undefined,
         })
@@ -430,15 +432,16 @@ describe('PersonalityStep - Preview information', () => {
             mutate: jest.fn(),
             isLoading: false,
         } as any)
-
-        useTransformToneOfVoiceConversationsMock.mockReturnValue({
-            conversations: conversationExamples,
-            isLoading: false,
-            preview: undefined,
-        })
     })
 
     it('renders the correct preview for no discount educational', async () => {
+        useTransformToneOfVoiceConversationsMock.mockReturnValue({
+            previewConversation: conversationExamples.noDiscountEducational,
+            isLoading: false,
+            isPreviewLoading: false,
+            preview: undefined,
+        })
+
         const mockData = {
             ...defaultMockData,
             salesDiscountStrategyLevel: DiscountStrategy.NoDiscount,
@@ -462,6 +465,13 @@ describe('PersonalityStep - Preview information', () => {
     })
 
     it('renders the correct preview for no discount moderate', async () => {
+        useTransformToneOfVoiceConversationsMock.mockReturnValue({
+            previewConversation: conversationExamples.noDiscountBalanced,
+            isLoading: false,
+            isPreviewLoading: false,
+            preview: undefined,
+        })
+
         const mockData = {
             ...defaultMockData,
             salesDiscountStrategyLevel: DiscountStrategy.NoDiscount,
@@ -485,6 +495,13 @@ describe('PersonalityStep - Preview information', () => {
     })
 
     it('renders the correct preview for no discount aggressive', async () => {
+        useTransformToneOfVoiceConversationsMock.mockReturnValue({
+            previewConversation: conversationExamples.noDiscountAggressive,
+            isLoading: false,
+            isPreviewLoading: false,
+            preview: undefined,
+        })
+
         const mockData = {
             ...defaultMockData,
             salesDiscountStrategyLevel: DiscountStrategy.NoDiscount,
@@ -508,6 +525,13 @@ describe('PersonalityStep - Preview information', () => {
     })
 
     it('renders the correct preview for with discount educational', async () => {
+        useTransformToneOfVoiceConversationsMock.mockReturnValue({
+            previewConversation: conversationExamples.withDiscountEducational,
+            isLoading: false,
+            isPreviewLoading: false,
+            preview: undefined,
+        })
+
         const mockData = {
             ...defaultMockData,
             salesDiscountStrategyLevel: DiscountStrategy.Maximized,
@@ -531,6 +555,13 @@ describe('PersonalityStep - Preview information', () => {
     })
 
     it('renders the correct preview for with discount balanced', async () => {
+        useTransformToneOfVoiceConversationsMock.mockReturnValue({
+            previewConversation: conversationExamples.withDiscountBalanced,
+            isLoading: false,
+            isPreviewLoading: false,
+            preview: undefined,
+        })
+
         const salesDiscountMax = 15
         const mockData = {
             ...defaultMockData,
@@ -556,6 +587,13 @@ describe('PersonalityStep - Preview information', () => {
     })
 
     it('renders the correct preview for with discount aggressive', async () => {
+        useTransformToneOfVoiceConversationsMock.mockReturnValue({
+            previewConversation: conversationExamples.withDiscountAggressive,
+            isLoading: false,
+            isPreviewLoading: false,
+            preview: undefined,
+        })
+
         const mockData = {
             ...defaultMockData,
             salesDiscountStrategyLevel: DiscountStrategy.Maximized,

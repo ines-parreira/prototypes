@@ -208,8 +208,9 @@ describe('ChannelsStep', () => {
             )
 
             useTransformToneOfVoiceConversationsMock.mockReturnValue({
-                conversations: conversationExamples,
+                previewConversation: conversationExamples.default,
                 isLoading: false,
+                isPreviewLoading: false,
                 preview: undefined,
             })
         })
@@ -665,9 +666,7 @@ describe('ChannelsStep', () => {
             renderWithProvider()
 
             expect(
-                screen.getByText(
-                    'Hi, I’m after a long dress for everyday wear, something comfortable and cute.',
-                ),
+                screen.getByText('Hi, I’m after a moisturizer for dry skin.'),
             ).toBeInTheDocument()
         })
 
@@ -730,8 +729,9 @@ describe('ChannelsStep', () => {
             } as any)
 
             useTransformToneOfVoiceConversationsMock.mockReturnValue({
-                conversations: conversationExamples,
+                previewConversation: conversationExamples.default,
                 isLoading: false,
+                isPreviewLoading: false,
                 preview: undefined,
             })
         })

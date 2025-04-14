@@ -31,7 +31,7 @@ describe('useTransformToneOfVoiceConversations', () => {
     beforeEach(() => {
         transformToneOfVoiceMock.mockResolvedValue([
             {
-                id: 'test',
+                id: 'productRecommendations',
                 messages: [
                     {
                         id: PRODUCT_RECOMMENDATION_MESSAGE_ID,
@@ -67,7 +67,12 @@ describe('useTransformToneOfVoiceConversations', () => {
 
     it('should call transformToneOfVoice with correct params', async () => {
         const { result } = renderHookWithStoreAndQueryClientProvider(
-            () => useTransformToneOfVoiceConversations(1, 'test-store'),
+            () =>
+                useTransformToneOfVoiceConversations(
+                    1,
+                    'test-store',
+                    'productRecommendations',
+                ),
             {
                 currentAccount: fromJS(account),
             },
@@ -75,37 +80,35 @@ describe('useTransformToneOfVoiceConversations', () => {
 
         await waitFor(() => {
             expect(result.current.isLoading).toStrictEqual(false)
+            expect(result.current.isPreviewLoading).toStrictEqual(false)
             expect(result.current.preview).toBe(
-                '{"test":{"messages":[{"content":"Test message","isHtml":true,"fromAgent":true,"attachments":[{"content_type":"application/productCard","size":1,"url":"https://test.com/image.jpg","name":"Test product","extra":{"product_id":1,"variant_id":1,"variant_name":"Test product","product_link":"https://test.com/image.jpg","featured_image":"https://test.com/image.jpg","price":"12"}}]}]}}',
+                '{"productRecommendations":{"messages":[{"content":"Test message","isHtml":true,"fromAgent":true,"attachments":[{"content_type":"application/productCard","size":1,"url":"https://test.com/image.jpg","name":"Test product","extra":{"product_id":1,"variant_id":1,"variant_name":"Test product","product_link":"https://test.com/image.jpg","featured_image":"https://test.com/image.jpg","price":"12"}}]}]}}',
             )
-            expect(result.current.conversations).toStrictEqual({
-                test: {
-                    messages: [
-                        {
-                            attachments: [
-                                {
-                                    content_type: 'application/productCard',
-                                    extra: {
-                                        featured_image:
-                                            'https://test.com/image.jpg',
-                                        product_id: 1,
-                                        product_link:
-                                            'https://test.com/image.jpg',
-                                        variant_id: 1,
-                                        variant_name: 'Test product',
-                                        price: '12',
-                                    },
-                                    name: 'Test product',
-                                    size: 1,
-                                    url: 'https://test.com/image.jpg',
+            expect(result.current.previewConversation).toStrictEqual({
+                messages: [
+                    {
+                        attachments: [
+                            {
+                                content_type: 'application/productCard',
+                                extra: {
+                                    featured_image:
+                                        'https://test.com/image.jpg',
+                                    product_id: 1,
+                                    product_link: 'https://test.com/image.jpg',
+                                    variant_id: 1,
+                                    variant_name: 'Test product',
+                                    price: '12',
                                 },
-                            ],
-                            content: 'Test message',
-                            fromAgent: true,
-                            isHtml: true,
-                        },
-                    ],
-                },
+                                name: 'Test product',
+                                size: 1,
+                                url: 'https://test.com/image.jpg',
+                            },
+                        ],
+                        content: 'Test message',
+                        fromAgent: true,
+                        isHtml: true,
+                    },
+                ],
             })
         })
 
@@ -142,7 +145,12 @@ describe('useTransformToneOfVoiceConversations', () => {
         })
 
         const { result } = renderHookWithStoreAndQueryClientProvider(
-            () => useTransformToneOfVoiceConversations(1, 'test-store'),
+            () =>
+                useTransformToneOfVoiceConversations(
+                    1,
+                    'test-store',
+                    'default',
+                ),
             {
                 currentAccount: fromJS(account),
             },
@@ -150,19 +158,18 @@ describe('useTransformToneOfVoiceConversations', () => {
 
         await waitFor(() => {
             expect(result.current.isLoading).toStrictEqual(false)
+            expect(result.current.isPreviewLoading).toStrictEqual(false)
             expect(result.current.preview).toBe(undefined)
-            expect(result.current.conversations).toEqual(
+            expect(result.current.previewConversation).toEqual(
                 expect.objectContaining({
-                    default: {
-                        messages: [
-                            {
-                                attachments: [],
-                                content: 'Test cache message',
-                                fromAgent: true,
-                                isHtml: true,
-                            },
-                        ],
-                    },
+                    messages: [
+                        {
+                            attachments: [],
+                            content: 'Test cache message',
+                            fromAgent: true,
+                            isHtml: true,
+                        },
+                    ],
                 }),
             )
         })
@@ -180,7 +187,12 @@ describe('useTransformToneOfVoiceConversations', () => {
         })
 
         const { result } = renderHookWithStoreAndQueryClientProvider(
-            () => useTransformToneOfVoiceConversations(1, 'test-store'),
+            () =>
+                useTransformToneOfVoiceConversations(
+                    1,
+                    'test-store',
+                    'default',
+                ),
             {
                 currentAccount: fromJS(account),
             },
@@ -188,8 +200,11 @@ describe('useTransformToneOfVoiceConversations', () => {
 
         await waitFor(() => {
             expect(result.current.isLoading).toStrictEqual(false)
+            expect(result.current.isPreviewLoading).toStrictEqual(false)
             expect(result.current.preview).toBe(undefined)
-            expect(result.current.conversations).toBe(conversationExamples)
+            expect(result.current.previewConversation).toBe(
+                conversationExamples.default,
+            )
         })
 
         expect(transformToneOfVoiceMock).not.toHaveBeenCalled()
@@ -201,7 +216,12 @@ describe('useTransformToneOfVoiceConversations', () => {
         } as any)
 
         const { result } = renderHookWithStoreAndQueryClientProvider(
-            () => useTransformToneOfVoiceConversations(1, 'test-store'),
+            () =>
+                useTransformToneOfVoiceConversations(
+                    1,
+                    'test-store',
+                    'default',
+                ),
             {
                 currentAccount: fromJS(account),
             },
@@ -210,7 +230,9 @@ describe('useTransformToneOfVoiceConversations', () => {
         await waitFor(() => {
             expect(result.current.isLoading).toStrictEqual(false)
             expect(result.current.preview).toBe(undefined)
-            expect(result.current.conversations).toBe(conversationExamples)
+            expect(result.current.previewConversation).toBe(
+                conversationExamples.default,
+            )
         })
 
         expect(transformToneOfVoiceMock).not.toHaveBeenCalled()

@@ -63,17 +63,19 @@ export const PersonalityPreviewStep: React.FC<StepProps> = ({
         getShopifyIntegrationByShopName(shopName),
     ).toJS()
 
-    const { conversations, isLoading: isPreviewLoading } =
-        useTransformToneOfVoiceConversations(storeIntegration.id, shopName)
+    const { previewConversation, isPreviewLoading } =
+        useTransformToneOfVoiceConversations(
+            storeIntegration.id,
+            shopName,
+            selectedPreview?.id,
+        )
 
     // Select first preview automatically when loaded
     useEffect(() => {
-        if (selectedPreview) {
-            return
+        if (data?.scopes) {
+            setSelectedPreview(getFirstPreviewForPreviewType(previewType))
         }
-
-        setSelectedPreview(getFirstPreviewForPreviewType(previewType))
-    }, [previewType, selectedPreview])
+    }, [previewType, data])
 
     const { mainColor, conversationColor } = useGetChatIntegrationColor({
         shopName,
@@ -150,9 +152,8 @@ export const PersonalityPreviewStep: React.FC<StepProps> = ({
                                         agentChatConversationSettings.conversationColor,
                                 }}
                                 messages={
-                                    conversations && selectedPreview?.id
-                                        ? conversations[selectedPreview?.id]
-                                              .messages
+                                    previewConversation
+                                        ? previewConversation.messages
                                         : []
                                 }
                                 removeLinksFromMessages

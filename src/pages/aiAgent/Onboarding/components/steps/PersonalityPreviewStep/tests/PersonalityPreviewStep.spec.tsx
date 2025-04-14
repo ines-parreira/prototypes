@@ -102,7 +102,8 @@ describe('<PersonalityPreviewStep />', () => {
             } as any)
 
             useTransformToneOfVoiceConversationsMock.mockReturnValue({
-                conversations: conversationExamples,
+                previewConversation: conversationExamples.default,
+                isPreviewLoading: false,
                 isLoading: false,
                 preview: undefined,
             })

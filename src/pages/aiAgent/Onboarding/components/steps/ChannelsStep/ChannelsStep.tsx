@@ -36,7 +36,6 @@ import {
 import { usePreselectedChat } from 'pages/aiAgent/Onboarding/components/steps/ChannelsStep/hooks/usePreselectedChat'
 import { usePreselectedEmails } from 'pages/aiAgent/Onboarding/components/steps/ChannelsStep/hooks/usePreselectedEmails'
 import { createChatConfiguration } from 'pages/aiAgent/Onboarding/components/steps/ChannelsStep/utils/createGorgiasConfiguration'
-import { conversationExamples } from 'pages/aiAgent/Onboarding/components/steps/PersonalityPreviewStep/conversationsExamples'
 import { StepProps } from 'pages/aiAgent/Onboarding/components/steps/types'
 import useCheckOnboardingCompleted from 'pages/aiAgent/Onboarding/hooks/useCheckOnboardingCompleted'
 import { useCheckStoreAlreadyConfigured } from 'pages/aiAgent/Onboarding/hooks/useCheckStoreAlreadyConfigured'
@@ -126,11 +125,12 @@ export const ChannelsStep: React.FC<StepProps> = ({
         getShopifyIntegrationByShopName(shopName),
     ).toJS()
 
-    const {
-        preview,
-        conversations,
-        isLoading: isPreviewLoading,
-    } = useTransformToneOfVoiceConversations(storeIntegration.id, shopName)
+    const { preview, previewConversation, isPreviewLoading } =
+        useTransformToneOfVoiceConversations(
+            storeIntegration.id,
+            shopName,
+            'default',
+        )
 
     const {
         mutate: doUpdateOnboardingMutation,
@@ -571,8 +571,9 @@ export const ChannelsStep: React.FC<StepProps> = ({
                                         removeLinksFromMessages: true,
                                     }}
                                     messages={
-                                        conversations?.default?.messages ??
-                                        conversationExamples.default.messages
+                                        previewConversation
+                                            ? previewConversation.messages
+                                            : []
                                     }
                                 />
                             </ChatIntegrationPreview>

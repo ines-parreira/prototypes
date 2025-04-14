@@ -38,13 +38,11 @@ describe('transform-tone-of-voice', () => {
     describe('transformToneOfVoice', () => {
         it('should call transformToneOfVoice with the correct body', async () => {
             apiServer.onPost('/api/tov/transform-conversations').reply(200, {
-                conversations: [CONVERSATION],
+                conversations: [CONVERSATION, CONVERSATION],
             })
 
             await expect(
                 transformToneOfVoice('test-gorgias', 'Be smart', [
-                    CONVERSATION,
-                    CONVERSATION,
                     CONVERSATION,
                     CONVERSATION,
                 ]),

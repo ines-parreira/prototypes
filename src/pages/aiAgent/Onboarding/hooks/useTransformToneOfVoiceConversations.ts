@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from 'react'
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 
 import { useMutation } from '@tanstack/react-query'
 import { useFlags } from 'launchdarkly-react-client-sdk'
@@ -48,6 +48,7 @@ const transformProductToAttachment = (
 export const useTransformToneOfVoiceConversations = (
     shopIntegrationId: number,
     shopName: string,
+    previewId?: PreviewId,
 ) => {
     const currentAccount = useAppSelector(getCurrentAccountState)
     const timezone = useAppSelector(getTimezone) ?? 'UTC'
@@ -58,7 +59,11 @@ export const useTransformToneOfVoiceConversations = (
 
     const [cacheResult, setCacheResult] = useState(false)
     const [outputConversations, setOutputConversations] =
-        useState<ConversationExamples>()
+        useState<Partial<ConversationExamples>>()
+    const outputConversationRef = useRef(outputConversations)
+    const [isPreviewLoading, setIsPreviewLoading] = useState(false)
+    const [isAllConversationsLoading, setIsAllConversationsLoading] =
+        useState(false)
 
     const { data, isLoading: isLoadingOnboardingData } =
         useGetOnboardingData(shopName)
@@ -81,7 +86,7 @@ export const useTransformToneOfVoiceConversations = (
         timezone,
     })
 
-    const { mutateAsync: transformConversation, isLoading } = useMutation(
+    const { mutateAsync: transformConversation } = useMutation(
         ({
             gorgiasDomain,
             toneOfVoice,
@@ -113,99 +118,207 @@ export const useTransformToneOfVoiceConversations = (
             }),
         )
 
-    const transformConversations = useCallback(async () => {
-        if (data?.preview) {
-            let cachedConversations = {} as ConversationExamples
-            try {
-                cachedConversations = JSON.parse(data.preview) || {}
-            } catch (e) {
-                console.error('Failed to parse cached conversations', e)
+    const transformConversations = useCallback(
+        async (
+            conversations: TransformToneOfVoiceConversation[],
+            onSuccess: (conversations: ConversationExamples) => void,
+        ) => {
+            if (data?.preview) {
+                let cachedConversations = {} as ConversationExamples
+                try {
+                    cachedConversations = JSON.parse(data.preview) || {}
+                } catch (e) {
+                    console.error('Failed to parse cached conversations', e)
+                }
+
+                if (
+                    _isEqual(
+                        Object.keys(cachedConversations),
+                        Object.keys(conversationExamples),
+                    )
+                ) {
+                    onSuccess(cachedConversations)
+                    return
+                }
             }
 
-            if (
+            if (!isMlPreviewEnabled) {
+                onSuccess(conversationExamples)
+                return
+            }
+
+            if (gorgiasDomain && data?.customToneOfVoiceGuidance) {
+                try {
+                    const response = await transformConversation({
+                        gorgiasDomain,
+                        toneOfVoice: data.customToneOfVoiceGuidance,
+                        conversations,
+                        product: products.length > 0 ? products[0] : undefined,
+                    })
+
+                    const responseConversations = response.reduce(
+                        (acc, conversation) => ({
+                            ...acc,
+                            [conversation.id as PreviewId]: {
+                                messages: conversation.messages.map(
+                                    (message) => {
+                                        let attachments: ProductCardAttachment[] =
+                                            []
+                                        if (
+                                            products.length > 0 &&
+                                            message.id ===
+                                                PRODUCT_RECOMMENDATION_MESSAGE_ID
+                                        ) {
+                                            attachments = [
+                                                transformProductToAttachment(
+                                                    products[0],
+                                                ),
+                                            ]
+                                        }
+
+                                        return {
+                                            content: message.message,
+                                            isHtml: true,
+                                            fromAgent: message.from_agent,
+                                            attachments: attachments,
+                                        }
+                                    },
+                                ),
+                            },
+                        }),
+                        {} as ConversationExamples,
+                    )
+
+                    setCacheResult(true)
+                    onSuccess(responseConversations)
+                } catch {
+                    // Failed to transform conversations, fallback to examples
+                    onSuccess(conversationExamples)
+                }
+            } else {
+                onSuccess(conversationExamples)
+            }
+        },
+        [
+            gorgiasDomain,
+            transformConversation,
+            data,
+            products,
+            isMlPreviewEnabled,
+        ],
+    )
+
+    const updateResult = useCallback(
+        (transformedConversations: Partial<ConversationExamples>) => {
+            // Merge the transformed conversations with the existing ones
+            const finalConversations = outputConversationRef.current
+                ? {
+                      ...outputConversationRef.current,
+                      ...transformedConversations,
+                  }
+                : transformedConversations
+
+            setOutputConversations(finalConversations)
+            outputConversationRef.current = finalConversations
+            setIsAllConversationsLoading(
                 _isEqual(
-                    Object.keys(cachedConversations),
+                    Object.keys(finalConversations),
                     Object.keys(conversationExamples),
+                ),
+            )
+        },
+        [],
+    )
+
+    // Effect for handling preview conversation
+    useEffect(() => {
+        if (
+            !isLoadingOnboardingData &&
+            !isProductDataLoading &&
+            !isPreviewLoading &&
+            previewId &&
+            !outputConversations?.[previewId]
+        ) {
+            setIsPreviewLoading(true)
+            const singleConversation = inputConversations.find(
+                (c) => c.id === previewId,
+            )
+            if (singleConversation) {
+                void transformConversations(
+                    [singleConversation],
+                    (conversations) => updateResult(conversations),
                 )
-            ) {
-                setOutputConversations(cachedConversations)
-                return
             }
         }
-
-        if (!isMlPreviewEnabled) {
-            setOutputConversations(conversationExamples)
-            return
-        }
-
-        const product = products.length > 0 ? products[0] : undefined
-
-        if (gorgiasDomain && data?.customToneOfVoiceGuidance) {
-            try {
-                const response = await transformConversation({
-                    gorgiasDomain,
-                    toneOfVoice: data.customToneOfVoiceGuidance,
-                    conversations: inputConversations,
-                    product: product,
-                })
-
-                const responseConversations = response.reduce(
-                    (acc, conversation) => ({
-                        ...acc,
-                        [conversation.id as PreviewId]: {
-                            messages: conversation.messages.map((message) => {
-                                let attachments: ProductCardAttachment[] = []
-                                if (
-                                    product &&
-                                    message.id ===
-                                        PRODUCT_RECOMMENDATION_MESSAGE_ID
-                                ) {
-                                    attachments = [
-                                        transformProductToAttachment(product),
-                                    ]
-                                }
-
-                                return {
-                                    content: message.message,
-                                    isHtml: true,
-                                    fromAgent: message.from_agent,
-                                    attachments: attachments,
-                                }
-                            }),
-                        },
-                    }),
-                    {} as ConversationExamples,
-                )
-
-                setCacheResult(true)
-                setOutputConversations(responseConversations)
-                return
-            } catch (error) {
-                console.error('Failed to transform conversations', error)
-            }
-        }
-
-        setOutputConversations(conversationExamples)
     }, [
-        gorgiasDomain,
-        transformConversation,
+        isLoadingOnboardingData,
+        isProductDataLoading,
+        isPreviewLoading,
+        previewId,
+        transformConversations,
+        outputConversations,
         inputConversations,
-        data,
-        products,
-        isMlPreviewEnabled,
+    ])
+
+    // Effect for transforming all conversations
+    useEffect(() => {
+        if (
+            !isLoadingOnboardingData &&
+            !isProductDataLoading &&
+            !outputConversations &&
+            !isAllConversationsLoading
+        ) {
+            setIsAllConversationsLoading(true)
+            const conversationsToTransform = previewId
+                ? inputConversations.filter((conv) => conv.id !== previewId)
+                : inputConversations
+
+            const chunkSize = 4
+            for (
+                let i = 0;
+                i < conversationsToTransform.length;
+                i += chunkSize
+            ) {
+                const chunk = conversationsToTransform.slice(i, i + chunkSize)
+                void transformConversations(chunk, (conversations) =>
+                    updateResult(conversations),
+                )
+            }
+        }
+    }, [
+        isLoadingOnboardingData,
+        isProductDataLoading,
+        transformConversations,
+        previewId,
+        inputConversations,
+        isAllConversationsLoading,
+        outputConversations,
     ])
 
     useEffect(() => {
-        if (!isLoadingOnboardingData && !isProductDataLoading) {
-            void transformConversations()
+        if (isPreviewLoading) {
+            setIsPreviewLoading(
+                !!previewId &&
+                    (!outputConversations || !outputConversations[previewId]),
+            )
         }
-    }, [isLoadingOnboardingData, isProductDataLoading])
+    }, [outputConversations, previewId, isPreviewLoading])
+
+    const previewConversation = useMemo(
+        () =>
+            !isPreviewLoading && outputConversations && previewId
+                ? outputConversations[previewId]
+                : undefined,
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+        [isPreviewLoading, previewId],
+    )
 
     return {
-        isLoading:
-            (isLoading || isLoadingOnboardingData || isProductDataLoading) &&
-            outputConversations === undefined,
-        conversations: outputConversations,
+        isLoading: previewId
+            ? isPreviewLoading && isAllConversationsLoading
+            : isAllConversationsLoading,
+        isPreviewLoading: isPreviewLoading,
+        previewConversation: previewConversation,
         preview: cacheResult ? JSON.stringify(outputConversations) : undefined,
     }
 }

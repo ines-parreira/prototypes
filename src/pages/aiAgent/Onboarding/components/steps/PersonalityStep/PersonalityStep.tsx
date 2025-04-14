@@ -15,7 +15,6 @@ import Card from 'pages/aiAgent/Onboarding/components/Card/Card'
 import MainTitle from 'pages/aiAgent/Onboarding/components/MainTitle/MainTitle'
 import { OnboardingSteppedSlider } from 'pages/aiAgent/Onboarding/components/OnboardingSteppedSlider/OnboardingSteppedSlider'
 import { PreviewId } from 'pages/aiAgent/Onboarding/components/PersonalityPreviewGroup/constants'
-import { conversationExamples } from 'pages/aiAgent/Onboarding/components/steps/PersonalityPreviewStep/conversationsExamples'
 import {
     DiscountStrategy,
     DiscountStrategyLabels,
@@ -81,6 +80,19 @@ const personalitySchema = z
         },
     )
 
+const getPreviewId = (
+    salesPersuasionLevel: PersuasionLevel,
+    salesDiscountStrategyLevel: DiscountStrategy,
+) => {
+    const capitalizedPersuasionLevel =
+        String(salesPersuasionLevel).charAt(0).toUpperCase() +
+        String(salesPersuasionLevel).slice(1)
+    if (salesDiscountStrategyLevel === DiscountStrategy.NoDiscount) {
+        return `noDiscount${capitalizedPersuasionLevel}` as PreviewId
+    }
+    return `withDiscount${capitalizedPersuasionLevel}` as PreviewId
+}
+
 export const PersonalityStep: FC<StepProps> = ({
     currentStep,
     totalSteps,
@@ -106,9 +118,6 @@ export const PersonalityStep: FC<StepProps> = ({
     const storeIntegration = useAppSelector(
         getShopifyIntegrationByShopName(shopName),
     ).toJS()
-
-    const { conversations, isLoading: isPreviewLoading } =
-        useTransformToneOfVoiceConversations(storeIntegration.id, shopName)
 
     const isLoading = isLoadingOnboardingData || isUpdatingOnboarding
 
@@ -145,6 +154,13 @@ export const PersonalityStep: FC<StepProps> = ({
     const salesPersuasionLevel = watch('salesPersuasionLevel')
     const salesDiscountStrategyLevel = watch('salesDiscountStrategyLevel')
     const salesDiscountMax = watch('salesDiscountMax')
+
+    const { previewConversation, isPreviewLoading } =
+        useTransformToneOfVoiceConversations(
+            storeIntegration.id,
+            shopName,
+            getPreviewId(salesPersuasionLevel, salesDiscountStrategyLevel),
+        )
 
     const logViewEvent = (
         persuasion: PersuasionLevel,
@@ -286,32 +302,15 @@ export const PersonalityStep: FC<StepProps> = ({
     }
 
     const preview = useMemo(() => {
-        const previewConversations = conversations ?? conversationExamples
-
-        const capitalizedPersuasionLevel =
-            String(salesPersuasionLevel).charAt(0).toUpperCase() +
-            String(salesPersuasionLevel).slice(1)
-        if (salesDiscountStrategyLevel === DiscountStrategy.NoDiscount) {
-            const previewName = `noDiscount${capitalizedPersuasionLevel}`
-            return previewConversations[previewName as PreviewId].messages
-        }
-        const previewName = `withDiscount${capitalizedPersuasionLevel}`
-        return previewConversations[previewName as PreviewId].messages.map(
-            (message) => {
-                const newMessage = { ...message }
-                newMessage.content = message.content.replace(
-                    '[DISCOUNT-PERCENTAGE]',
-                    salesDiscountMax.toString(),
-                )
-                return newMessage
-            },
-        )
-    }, [
-        salesDiscountStrategyLevel,
-        salesPersuasionLevel,
-        salesDiscountMax,
-        conversations,
-    ])
+        return (previewConversation?.messages || []).map((message) => {
+            const newMessage = { ...message }
+            newMessage.content = message.content.replace(
+                '[DISCOUNT-PERCENTAGE]',
+                salesDiscountMax.toString(),
+            )
+            return newMessage
+        })
+    }, [salesDiscountMax, previewConversation])
 
     return (
         <FormProvider {...methods}>
