@@ -1,28 +1,21 @@
 import React, { useCallback, useEffect, useMemo, useRef } from 'react'
 
 import classnames from 'classnames'
-import { List } from 'immutable'
 
-import { logEvent, SegmentEvent } from 'common/segment'
-import useAppDispatch from 'hooks/useAppDispatch'
+import { IconButton } from '@gorgias/merchant-ui-kit'
+
 import useAppSelector from 'hooks/useAppSelector'
+import { useTimeline } from 'pages/common/components/timeline/hooks/useTimeline'
 import Timeline from 'pages/common/components/timeline/Timeline'
 import TicketBody from 'pages/tickets/detail/components/TicketBody'
-import { getCustomersState } from 'state/customers/selectors'
-import { toggleHistory } from 'state/ticket/actions'
-import {
-    getBody,
-    getDisplayHistory,
-    getTicketState,
-} from 'state/ticket/selectors'
+import { getBody, getTicketState } from 'state/ticket/selectors'
 import type { OnToggleUnreadFn } from 'tickets/dtp'
-import { handleButtonLikeClick } from 'utils/accessibility'
 
 import { SubmitArgs } from '../TicketDetailContainer'
 
 import css from './TicketView.less'
 
-const TIMELINE_CLOSE_BUTTON_ID = 'timelineCloseButton'
+export const TIMELINE_CLOSE_BUTTON_ID = 'timelineCloseButton'
 
 type Props = {
     hideTicket: () => Promise<void>
@@ -41,48 +34,28 @@ export const TicketView = ({
     onGoToNextTicket,
     onToggleUnread,
 }: Props) => {
-    const dispatch = useAppDispatch()
     const pageRef = useRef<HTMLDivElement>(null)
     const ticketContentRef = useRef<HTMLDivElement>(null)
 
-    const customers = useAppSelector(getCustomersState)
-    const isHistoryDisplayed = useAppSelector(getDisplayHistory)
     const ticket = useAppSelector(getTicketState)
     const ticketBody = useAppSelector(getBody)
 
-    useEffect(() => {
-        const ticketContent = ticketContentRef.current
-        if (isHistoryDisplayed) {
-            document.getElementById(TIMELINE_CLOSE_BUTTON_ID)?.focus()
-        }
-        return () => {
-            if (!isHistoryDisplayed) ticketContent?.focus()
-        }
-    }, [isHistoryDisplayed])
-
-    const handleHistoryToggle = () => {
-        const shouldOpenHistory =
-            ticket.get('id') &&
-            customers.getIn(['customerHistory', 'hasHistory']) &&
-            !isHistoryDisplayed
-
-        dispatch(toggleHistory(shouldOpenHistory))
-
-        // TODO(customers-migration): ask confirmation to update this event
-        logEvent(SegmentEvent.UserHistoryToggled, {
-            open: shouldOpenHistory,
-            nbOfTicketsInTimeline: (
-                customers.getIn(['customerHistory', 'tickets']) as List<any>
-            ).size,
-            channel: ticket.get('channel'),
-            nbOfMessagesInTicket: (ticket.get('messages') as List<any>).size,
-        })
-    }
+    const { isOpen: isTimelineOpen, closeTimeline } = useTimeline()
 
     const isShopperTyping = useMemo(
         () => ticket.getIn(['_internal', 'isShopperTyping']) as boolean,
         [ticket],
     )
+
+    useEffect(() => {
+        const ticketContent = ticketContentRef.current
+        if (isTimelineOpen) {
+            document.getElementById(TIMELINE_CLOSE_BUTTON_ID)?.focus()
+        }
+        return () => {
+            if (!isTimelineOpen) ticketContent?.focus()
+        }
+    }, [isTimelineOpen])
 
     const onTimelineLoaded = useCallback(() => {
         // Make sure react has the time to render the list before scrolling
@@ -98,15 +71,19 @@ export const TicketView = ({
             })}
             ref={pageRef}
         >
-            {isHistoryDisplayed && (
+            {isTimelineOpen && (
                 <div className={classnames(css.timeline)}>
-                    <div
-                        className={classnames(css.closeTrigger)}
-                        {...handleButtonLikeClick(handleHistoryToggle)}
-                        id={TIMELINE_CLOSE_BUTTON_ID}
-                    >
-                        <i className="material-icons md-3 mr-3">close</i>
+                    <div className={classnames(css.timelineHeader)}>
                         <span>Customer Timeline</span>
+                        <IconButton
+                            className={classnames(css.closeTrigger)}
+                            onClick={closeTimeline}
+                            id={TIMELINE_CLOSE_BUTTON_ID}
+                            icon="close"
+                            intent="secondary"
+                            fillStyle="ghost"
+                            title="Close timeline"
+                        />
                     </div>
 
                     <div className={classnames(css.timelineContainer, 'pb-4')}>
@@ -120,7 +97,7 @@ export const TicketView = ({
 
             <div
                 className={classnames(css.ticketContent, {
-                    [css.historyDisplayed]: isHistoryDisplayed,
+                    [css.historyDisplayed]: isTimelineOpen,
                 })}
                 ref={ticketContentRef}
                 tabIndex={1}

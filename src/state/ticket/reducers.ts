@@ -41,7 +41,6 @@ export const initialState: TicketState = fromJS({
         hasAttemptedToCloseTicket: false,
     },
     _internal: {
-        displayHistory: false,
         shouldDisplayAuditLogEvents: false,
         loading: {
             fetchTicket: false,
@@ -437,15 +436,6 @@ export default function reducer(
 
                 return messages.delete(index)
             })
-
-        case types.TOGGLE_HISTORY: {
-            const displayHistory =
-                action.state !== undefined
-                    ? action.state
-                    : !state.getIn(['_internal', 'displayHistory'])
-
-            return state.setIn(['_internal', 'displayHistory'], displayHistory)
-        }
 
         case customerTypes.MERGE_CUSTOMERS_SUCCESS: {
             if (

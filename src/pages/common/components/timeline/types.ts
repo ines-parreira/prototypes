@@ -5,7 +5,6 @@ import { SORTABLE_KEY_TO_LABEL, SORTABLE_KEYS } from './constants'
 
 export type ReduxCustomerHistory = {
     triedLoading: boolean
-    hasHistory: boolean
     // It’s not exactly that type yet but it’s a start
     tickets: TicketSummary[]
 }

@@ -83,7 +83,6 @@ exports[`ticket actions applyMacro() dispatches actions 1`] = `
       "assignee_user": null,
       "id": 1,
       "_internal": Immutable.Map {
-        "displayHistory": false,
         "shouldDisplayAuditLogEvents": false,
         "loading": Immutable.Map {
           "fetchTicket": false,
@@ -172,7 +171,6 @@ exports[`ticket actions applyMacroAction() 1`] = `
     "assignee_user": null,
     "id": 1,
     "_internal": Immutable.Map {
-      "displayHistory": false,
       "shouldDisplayAuditLogEvents": false,
       "loading": Immutable.Map {
         "fetchTicket": false,
@@ -477,7 +475,6 @@ exports[`ticket actions fetchTicket() existing instagram ticket 1`] = `
       "assignee_user": null,
       "id": 1,
       "_internal": Immutable.Map {
-        "displayHistory": false,
         "shouldDisplayAuditLogEvents": false,
         "loading": Immutable.Map {
           "fetchTicket": false,
@@ -604,7 +601,6 @@ exports[`ticket actions fetchTicket() existing ticket 1`] = `
       "assignee_user": null,
       "id": 1,
       "_internal": Immutable.Map {
-        "displayHistory": false,
         "shouldDisplayAuditLogEvents": false,
         "loading": Immutable.Map {
           "fetchTicket": false,
@@ -680,7 +676,6 @@ exports[`ticket actions fetchTicket() new ticket 1`] = `
       "events": Immutable.List [],
       "assignee_user": null,
       "_internal": Immutable.Map {
-        "displayHistory": false,
         "shouldDisplayAuditLogEvents": false,
         "loading": Immutable.Map {
           "fetchTicket": false,
@@ -770,7 +765,6 @@ exports[`ticket actions fetchTicket() should send ticket-viewed event when ticke
       "assignee_user": null,
       "id": 1,
       "_internal": Immutable.Map {
-        "displayHistory": false,
         "shouldDisplayAuditLogEvents": false,
         "loading": Immutable.Map {
           "fetchTicket": false,
@@ -905,7 +899,6 @@ exports[`ticket actions goToNextTicket() should fetch next ticket and go to this
       "events": Immutable.List [],
       "assignee_user": null,
       "_internal": Immutable.Map {
-        "displayHistory": false,
         "shouldDisplayAuditLogEvents": false,
         "loading": Immutable.Map {
           "fetchTicket": false,
@@ -1015,7 +1008,6 @@ exports[`ticket actions goToNextTicket() should fetch next ticket and go to this
       "events": Immutable.List [],
       "assignee_user": null,
       "_internal": Immutable.Map {
-        "displayHistory": false,
         "shouldDisplayAuditLogEvents": false,
         "loading": Immutable.Map {
           "fetchTicket": false,
@@ -1136,7 +1128,6 @@ exports[`ticket actions goToNextTicket() should fetch next ticket and wait for p
       "events": Immutable.List [],
       "assignee_user": null,
       "_internal": Immutable.Map {
-        "displayHistory": false,
         "shouldDisplayAuditLogEvents": false,
         "loading": Immutable.Map {
           "fetchTicket": false,
@@ -1266,7 +1257,6 @@ exports[`ticket actions goToPrevTicket() should fetch previous ticket and go to 
       "events": Immutable.List [],
       "assignee_user": null,
       "_internal": Immutable.Map {
-        "displayHistory": false,
         "shouldDisplayAuditLogEvents": false,
         "loading": Immutable.Map {
           "fetchTicket": false,
@@ -1376,7 +1366,6 @@ exports[`ticket actions goToPrevTicket() should fetch previous ticket and go to 
       "events": Immutable.List [],
       "assignee_user": null,
       "_internal": Immutable.Map {
-        "displayHistory": false,
         "shouldDisplayAuditLogEvents": false,
         "loading": Immutable.Map {
           "fetchTicket": false,
@@ -1497,7 +1486,6 @@ exports[`ticket actions goToPrevTicket() should fetch previous ticket and wait f
       "events": Immutable.List [],
       "assignee_user": null,
       "_internal": Immutable.Map {
-        "displayHistory": false,
         "shouldDisplayAuditLogEvents": false,
         "loading": Immutable.Map {
           "fetchTicket": false,
@@ -1598,7 +1586,6 @@ exports[`ticket actions handleMessageActionError() should fetch the ticket becau
       "events": Immutable.List [],
       "assignee_user": null,
       "_internal": Immutable.Map {
-        "displayHistory": false,
         "shouldDisplayAuditLogEvents": false,
         "loading": Immutable.Map {
           "fetchTicket": false,
@@ -1699,7 +1686,6 @@ exports[`ticket actions handleMessageError() should fetch the ticket because the
       "events": Immutable.List [],
       "assignee_user": null,
       "_internal": Immutable.Map {
-        "displayHistory": false,
         "shouldDisplayAuditLogEvents": false,
         "loading": Immutable.Map {
           "fetchTicket": false,
@@ -2188,20 +2174,6 @@ exports[`ticket actions ticketPartialUpdate() success 1`] = `
     "type": "TICKET_PARTIAL_UPDATE_SUCCESS",
   },
 ]
-`;
-
-exports[`ticket actions toggleHistory() 1`] = `
-{
-  "state": true,
-  "type": "TOGGLE_HISTORY",
-}
-`;
-
-exports[`ticket actions toggleHistory() 2`] = `
-{
-  "state": false,
-  "type": "TOGGLE_HISTORY",
-}
 `;
 
 exports[`ticket actions triggerTicketFieldsErrors() should dispatch SET_INVALID_CUSTOM_FIELDS_TO_ERRORED and notify action 1`] = `

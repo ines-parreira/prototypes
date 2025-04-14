@@ -294,7 +294,10 @@ const InfobarCustomerInfo = ({
                     <CustomerNote customer={customer} />
                 </CustomerChannels>
                 <Separator className={css.separator} />
-                <CustomerTimelineWidget isEditing={isEditing} />
+                <CustomerTimelineWidget
+                    isEditing={isEditing}
+                    customerId={Number(customer.get('id'))}
+                />
             </div>
 
             {shouldSuggestCustomerProfileShopifySync && (

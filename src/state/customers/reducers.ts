@@ -17,9 +17,7 @@ export const initialState: CustomersState = fromJS({
     items: [],
     customerHistory: {
         triedLoading: false,
-        hasHistory: false,
         tickets: [],
-        events: [],
     },
     _internal: {
         loading: {
@@ -112,18 +110,12 @@ export default function reducer(
                     | { item_count: number; total_resources: undefined }
                 data: unknown[]
             }
-            const totalTickets =
-                (resp.meta.total_resources === undefined
-                    ? resp.meta.item_count
-                    : resp.meta.total_resources) || 0
-            const hasHistory = totalTickets > 1
             const tickets: unknown[] = resp.data
             const sortedTickets = _sortBy(tickets, ['created_datetime'])
 
             return state
                 .setIn(['customerHistory', 'tickets'], fromJS(sortedTickets))
                 .setIn(['_internal', 'loading', 'history'], false)
-                .setIn(['customerHistory', 'hasHistory'], hasHistory)
         }
 
         case ticketConstants.CLEAR_TICKET: {

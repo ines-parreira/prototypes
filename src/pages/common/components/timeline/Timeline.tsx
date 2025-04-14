@@ -9,8 +9,6 @@ import { logEvent, SegmentEvent } from 'common/segment'
 import { FeatureFlagKey } from 'config/featureFlags'
 import { useFlag } from 'core/flags'
 import { useCustomFieldDefinitions } from 'custom-fields/hooks/queries/useCustomFieldDefinitions'
-import useAppSelector from 'hooks/useAppSelector'
-import { getCustomerHistory, getLoading } from 'state/customers/selectors'
 import {
     TimelineTicketModal,
     useTimelineTicketModal,
@@ -20,12 +18,12 @@ import DisplayedDate from './DisplayedDate'
 import { useRangeFilter } from './hooks/useRangeFilter'
 import { useSort } from './hooks/useSort'
 import { useStatusFilter } from './hooks/useStatusFilter'
+import { useTimeline } from './hooks/useTimeline'
 import { NoResults } from './NoResults'
 import { RangeFilter } from './RangeFilter'
 import { Sort } from './Sort'
 import { StatusFilter } from './StatusFilter'
 import TicketCard from './TicketCard'
-import { ReduxCustomerHistory } from './types'
 
 import css from './Timeline.less'
 
@@ -47,15 +45,10 @@ export function Timeline({ ticketId = 0, onLoaded }: Props) {
         object_type: ObjectType.Ticket,
     })
 
-    const customersLoading = useAppSelector(getLoading).toJS() as {
-        history: boolean
-    }
-    const customerHistory = useAppSelector(
-        getCustomerHistory,
-    ).toJS() as ReduxCustomerHistory
+    const { tickets, isLoading, hasTriedLoading } = useTimeline()
 
     const { rangeFilter, rangeFilteredTickets, setRangeFilter } =
-        useRangeFilter(customerHistory.tickets)
+        useRangeFilter(tickets)
     const { selectedStatus, statusFilteredTickets, toggleSelectedStatus } =
         useStatusFilter(rangeFilteredTickets)
     const { sortedTickets, sortOption, setSortOption } = useSort(
@@ -73,7 +66,7 @@ export function Timeline({ ticketId = 0, onLoaded }: Props) {
         ...modalProps
     } = useTimelineTicketModal(ticketIds)
 
-    if (customersLoading.history) {
+    if (isLoading) {
         return (
             <div className={css.centeringContainer}>
                 <LoadingSpinner size="big" />
@@ -81,12 +74,12 @@ export function Timeline({ ticketId = 0, onLoaded }: Props) {
         )
     }
 
-    if (customerHistory.triedLoading && !hasCalledOnLoaded) {
+    if (hasTriedLoading && !hasCalledOnLoaded) {
         setHasCalledOnLoaded(true)
         onLoaded?.()
     }
 
-    if (customerHistory.triedLoading && customerHistory.tickets.length === 0) {
+    if (hasTriedLoading && tickets.length === 0) {
         return (
             <NoResults>This customer doesn’t have any tickets yet.</NoResults>
         )
@@ -110,8 +103,7 @@ export function Timeline({ ticketId = 0, onLoaded }: Props) {
                         <Sort value={sortOption} onChange={setSortOption} />
                     </div>
                 )}
-                {customerHistory.tickets.length &&
-                sortedTickets.length === 0 ? (
+                {tickets.length && sortedTickets.length === 0 ? (
                     <NoResults>
                         <b>No matching tickets</b>
                         <br />

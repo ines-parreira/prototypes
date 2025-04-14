@@ -1,41 +1,32 @@
-import React, { ComponentProps } from 'react'
+import { ComponentProps } from 'react'
 
-import { render, waitFor } from '@testing-library/react'
+import { fireEvent, render, waitFor } from '@testing-library/react'
 import { fromJS } from 'immutable'
 
+import { useTimeline } from 'pages/common/components/timeline/hooks/useTimeline'
 import Timeline from 'pages/common/components/timeline/Timeline'
-import { getCustomersState } from 'state/customers/selectors'
-import {
-    getBody,
-    getDisplayHistory,
-    getTicketState,
-} from 'state/ticket/selectors'
+import { getBody, getTicketState } from 'state/ticket/selectors'
 import { assumeMock, getLastMockCall } from 'utils/testing'
 
-import TicketView from '../TicketView'
+import TicketView, { TIMELINE_CLOSE_BUTTON_ID } from '../TicketView'
 
 jest.mock('hooks/useAppSelector', () => jest.fn((fn: () => unknown) => fn()))
-jest.mock('state/customers/selectors', () => {
-    const original = jest.requireActual('state/customers/selectors')
-
-    return {
-        ...original,
-        getCustomersState: jest.fn(),
-    }
-})
 jest.mock('state/ticket/selectors', () => {
     const original = jest.requireActual('state/ticket/selectors')
 
     return {
         ...original,
         getBody: jest.fn(),
-        getDisplayHistory: jest.fn(),
         getTicketState: jest.fn(),
     }
 })
 jest.mock('pages/common/components/timeline/Timeline', () =>
     jest.fn(() => <div>Timeline</div>),
 )
+jest.mock('pages/common/components/timeline/hooks/useTimeline', () => ({
+    useTimeline: jest.fn(),
+}))
+
 jest.mock('../TicketBody', () => () => <div>TicketBody</div>)
 jest.mock('../TicketBodyNonVirtualized', () => () => (
     <div>TicketBodyNonVirtualized</div>
@@ -46,10 +37,9 @@ jest.mock('../TicketHeaderWrapper/TicketHeaderWrapper', () => () => (
 jest.mock('../ReplyForm', () => () => <div>ReplyForm</div>)
 
 const TimelineMock = assumeMock(Timeline)
-const getCustomersStateMock = assumeMock(getCustomersState)
-const getDisplayHistoryMock = assumeMock(getDisplayHistory)
 const getTicketStateMock = assumeMock(getTicketState)
 const getBodyMock = assumeMock(getBody)
+const useTimelineMock = assumeMock(useTimeline)
 
 const mockedDispatch = jest.fn()
 jest.mock('hooks/useAppDispatch', () => () => mockedDispatch)
@@ -63,14 +53,9 @@ describe('<TicketView />', () => {
         submit: jest.fn(),
     } as unknown as ComponentProps<typeof TicketView>
 
+    const closeTimelineMock = jest.fn(() => {})
     beforeEach(() => {
         HTMLElement.prototype.scrollTo = jest.fn(scrollToMock)
-        getCustomersStateMock.mockReturnValue(
-            fromJS({}) as ReturnType<typeof getCustomersState>,
-        )
-        getDisplayHistoryMock.mockReturnValue(
-            false as ReturnType<typeof getDisplayHistory>,
-        )
         getTicketStateMock.mockReturnValue(
             fromJS({
                 id: 0,
@@ -80,6 +65,10 @@ describe('<TicketView />', () => {
             }) as ReturnType<typeof getTicketState>,
         )
         getBodyMock.mockReturnValue(fromJS({}) as ReturnType<typeof getBody>)
+        useTimelineMock.mockReturnValue({
+            isOpen: false as boolean,
+            closeTimeline: closeTimelineMock,
+        } as unknown as ReturnType<typeof useTimeline>)
     })
 
     it('should not have the hidden classes', () => {
@@ -96,10 +85,24 @@ describe('<TicketView />', () => {
         expect(container.firstChild).toMatchSnapshot()
     })
 
-    it('should call the `Timeline` with correct props', async () => {
-        getDisplayHistoryMock.mockReturnValue(
-            (() => true) as unknown as ReturnType<typeof getDisplayHistory>,
-        )
+    it('should call `closeTimeline` when the timeline close button is clicked', () => {
+        useTimelineMock.mockReturnValue({
+            isOpen: true,
+            closeTimeline: closeTimelineMock,
+        } as unknown as ReturnType<typeof useTimeline>)
+
+        render(<TicketView {...minProps} />)
+
+        fireEvent.click(document.getElementById(TIMELINE_CLOSE_BUTTON_ID)!)
+
+        expect(closeTimelineMock).toHaveBeenCalled()
+    })
+
+    it('should call the `Timeline` with correct props and scroll to the top on load', async () => {
+        useTimelineMock.mockReturnValue({
+            isOpen: true,
+            closeTimeline: closeTimelineMock,
+        } as unknown as ReturnType<typeof useTimeline>)
 
         render(<TicketView {...minProps} />)
 

@@ -1,5 +1,4 @@
 import { act, fireEvent, render, screen } from '@testing-library/react'
-import { fromJS } from 'immutable'
 
 import { ObjectType, TicketSummary } from '@gorgias/api-queries'
 
@@ -8,9 +7,9 @@ import { useFlag } from 'core/flags'
 import { useCustomFieldDefinitions } from 'custom-fields/hooks/queries/useCustomFieldDefinitions'
 import { apiListCursorPaginationResponse } from 'fixtures/axiosResponse'
 import { ticketInputFieldDefinition } from 'fixtures/customField'
-import { getCustomerHistory, getLoading } from 'state/customers/selectors'
 import { assumeMock, getLastMockCall } from 'utils/testing'
 
+import { useTimeline } from '../hooks/useTimeline'
 import { RangeFilter } from '../RangeFilter'
 import TicketCard from '../TicketCard'
 import Timeline from '../Timeline'
@@ -37,6 +36,9 @@ jest.mock('state/customers/selectors', () => {
         getLoading: jest.fn(),
     }
 })
+jest.mock('../hooks/useTimeline', () => ({
+    useTimeline: jest.fn(),
+}))
 jest.mock('../TicketCard', () => jest.fn(() => <div>TicketCard</div>))
 jest.mock('../DisplayedDate', () => jest.fn(() => 'Mocked DatetimeLabel'))
 jest.mock('../RangeFilter', () => ({
@@ -44,12 +46,10 @@ jest.mock('../RangeFilter', () => ({
 }))
 
 const useCustomFieldDefinitionsMock = assumeMock(useCustomFieldDefinitions)
-const getCustomerHistoryMock = assumeMock(getCustomerHistory)
-const getLoadingMock = assumeMock(getLoading)
 const TicketCardMock = assumeMock(TicketCard)
 const useFlagMock = assumeMock(useFlag)
 const rangeFilterMock = assumeMock(RangeFilter)
-
+const useTimelineMock = assumeMock(useTimeline)
 const defaultFieldDefinitions = {
     data: apiListCursorPaginationResponse([ticketInputFieldDefinition]),
     isLoading: false,
@@ -73,28 +73,26 @@ describe('<Timeline />', () => {
         status: 'closed',
         channel: 'email',
     } as TicketSummary
+    const defaultTimelineReturnValue = {
+        isLoading: false,
+        hasTriedLoading: true,
+        isOpen: false,
+        timelineShopperId: null,
+        tickets: [ticket1, ticket2, ticket3],
+        openTimeline: jest.fn(),
+        closeTimeline: jest.fn(),
+    }
     beforeEach(() => {
         useCustomFieldDefinitionsMock.mockReturnValue(defaultFieldDefinitions)
-        getCustomerHistoryMock.mockReturnValue(
-            fromJS({
-                triedLoading: true,
-                tickets: [ticket1, ticket2, ticket3],
-            }),
-        )
-        getLoadingMock.mockReturnValue(
-            fromJS({
-                history: false,
-            }),
-        )
         useFlagMock.mockReturnValue(false)
+        useTimelineMock.mockReturnValue(defaultTimelineReturnValue)
     })
 
     it('should render loading spinner', () => {
-        getLoadingMock.mockReturnValue(
-            fromJS({
-                history: true,
-            }),
-        )
+        useTimelineMock.mockReturnValue({
+            ...defaultTimelineReturnValue,
+            isLoading: true,
+        })
 
         render(<Timeline />)
 
@@ -182,12 +180,10 @@ describe('<Timeline />', () => {
 
     describe('Empty state', () => {
         it('should say that they are no tickets yet', () => {
-            getCustomerHistoryMock.mockReturnValue(
-                fromJS({
-                    triedLoading: true,
-                    tickets: [],
-                }),
-            )
+            useTimelineMock.mockReturnValue({
+                ...defaultTimelineReturnValue,
+                tickets: [],
+            })
 
             render(<Timeline />)
 

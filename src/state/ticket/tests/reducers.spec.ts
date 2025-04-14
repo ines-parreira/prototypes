@@ -803,44 +803,6 @@ describe('ticket reducers', () => {
         ).toMatchSnapshot()
     })
 
-    it('should handle TOGGLE_HISTORY', () => {
-        expect(
-            reducer(initialState, {
-                type: types.TOGGLE_HISTORY,
-                state: true,
-            } as unknown as GorgiasAction).toJS(),
-        ).toMatchSnapshot()
-
-        // set false
-        expect(
-            reducer(
-                initialState.mergeDeep({
-                    _internal: {
-                        displayHistory: true,
-                    },
-                }),
-                {
-                    type: types.TOGGLE_HISTORY,
-                    state: false,
-                } as unknown as GorgiasAction,
-            ).toJS(),
-        ).toMatchSnapshot()
-
-        // invert previous value if no passed state
-        expect(
-            reducer(
-                initialState.mergeDeep({
-                    _internal: {
-                        displayHistory: false,
-                    },
-                }),
-                {
-                    type: types.TOGGLE_HISTORY,
-                },
-            ).toJS(),
-        ).toMatchSnapshot()
-    })
-
     it('should handle MERGE_CUSTOMERS_SUCCESS', () => {
         // success
         // should do nothing since there is no customer in state for now

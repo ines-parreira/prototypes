@@ -88,11 +88,6 @@ export const getLoading = createImmutableSelector(
         (state.getIn(['_internal', 'loading']) || fromJS({})) as Map<any, any>,
 )
 
-export const getDisplayHistory = createImmutableSelector(
-    getTicketState,
-    (state) => state.getIn(['_internal', 'displayHistory']) as boolean,
-)
-
 export const shouldDisplayAuditLogEvents = createImmutableSelector(
     getTicketState,
     (state) =>

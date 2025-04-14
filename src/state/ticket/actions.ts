@@ -1324,13 +1324,6 @@ export function clearTicket() {
     }
 }
 
-export function toggleHistory(state?: boolean) {
-    return {
-        type: types.TOGGLE_HISTORY,
-        state,
-    }
-}
-
 export function deleteTicket(id: number) {
     return (dispatch: StoreDispatch): Promise<ReturnType<StoreDispatch>> => {
         return client.delete(`/api/tickets/${id}/`).then(

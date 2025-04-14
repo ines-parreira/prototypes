@@ -901,11 +901,6 @@ describe('ticket actions', () => {
         return expect(store.getActions()).toMatchSnapshot()
     })
 
-    it('toggleHistory()', () => {
-        expect(actions.toggleHistory(true)).toMatchSnapshot()
-        expect(actions.toggleHistory(false)).toMatchSnapshot()
-    })
-
     it('deleteTicket()', () => {
         mockServer.onDelete('/api/tickets/13/').reply(200)
         return store

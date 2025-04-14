@@ -11,8 +11,6 @@ exports[`customers reducers clear ticket 1`] = `
   },
   "active": {},
   "customerHistory": {
-    "events": [],
-    "hasHistory": false,
     "tickets": [],
     "triedLoading": false,
   },
@@ -30,9 +28,7 @@ Immutable.Map {
   ],
   "customerHistory": Immutable.Map {
     "triedLoading": false,
-    "hasHistory": false,
     "tickets": Immutable.List [],
-    "events": Immutable.List [],
   },
   "_internal": Immutable.Map {
     "loading": Immutable.Map {
@@ -55,8 +51,6 @@ exports[`customers reducers fetch customer 1`] = `
   },
   "active": {},
   "customerHistory": {
-    "events": [],
-    "hasHistory": false,
     "tickets": [],
     "triedLoading": false,
   },
@@ -77,8 +71,6 @@ exports[`customers reducers fetch customer 2`] = `
     "id": 1,
   },
   "customerHistory": {
-    "events": [],
-    "hasHistory": false,
     "tickets": [],
     "triedLoading": false,
   },
@@ -97,8 +89,6 @@ exports[`customers reducers fetch customer 3`] = `
   },
   "active": {},
   "customerHistory": {
-    "events": [],
-    "hasHistory": false,
     "tickets": [],
     "triedLoading": false,
   },
@@ -117,8 +107,6 @@ exports[`customers reducers fetch customer history 1`] = `
   },
   "active": {},
   "customerHistory": {
-    "events": [],
-    "hasHistory": false,
     "tickets": [],
     "triedLoading": true,
   },
@@ -137,8 +125,6 @@ exports[`customers reducers fetch customer history 2`] = `
   },
   "active": {},
   "customerHistory": {
-    "events": [],
-    "hasHistory": true,
     "tickets": [
       {
         "created_datetime": "2018-01-01",
@@ -178,8 +164,6 @@ exports[`customers reducers fetch customer history 3`] = `
   },
   "active": {},
   "customerHistory": {
-    "events": [],
-    "hasHistory": false,
     "tickets": [
       {
         "id": 1,
@@ -202,8 +186,6 @@ exports[`customers reducers fetch customer history 4`] = `
   },
   "active": {},
   "customerHistory": {
-    "events": [],
-    "hasHistory": false,
     "tickets": [],
     "triedLoading": true,
   },
@@ -222,8 +204,6 @@ exports[`customers reducers merge customers 1`] = `
   },
   "active": {},
   "customerHistory": {
-    "events": [],
-    "hasHistory": false,
     "tickets": [],
     "triedLoading": false,
   },
@@ -245,8 +225,6 @@ exports[`customers reducers merge customers 2`] = `
     "name": "Alex",
   },
   "customerHistory": {
-    "events": [],
-    "hasHistory": false,
     "tickets": [],
     "triedLoading": false,
   },
@@ -268,8 +246,6 @@ exports[`customers reducers merge customers 3`] = `
     "name": "Romain",
   },
   "customerHistory": {
-    "events": [],
-    "hasHistory": false,
     "tickets": [],
     "triedLoading": false,
   },
@@ -288,8 +264,6 @@ exports[`customers reducers should update history on new message 1`] = `
   },
   "active": {},
   "customerHistory": {
-    "events": [],
-    "hasHistory": false,
     "tickets": [
       {
         "excerpt": "OK",
@@ -321,8 +295,6 @@ exports[`customers reducers should update history ticket on partial update 1`] =
   },
   "active": {},
   "customerHistory": {
-    "events": [],
-    "hasHistory": false,
     "tickets": [
       {
         "assignee_user": {
@@ -356,8 +328,6 @@ exports[`customers reducers submit customer 1`] = `
   },
   "active": {},
   "customerHistory": {
-    "events": [],
-    "hasHistory": false,
     "tickets": [],
     "triedLoading": false,
   },
@@ -379,8 +349,6 @@ exports[`customers reducers submit customer 2`] = `
     "name": "Romain",
   },
   "customerHistory": {
-    "events": [],
-    "hasHistory": false,
     "tickets": [],
     "triedLoading": false,
   },
@@ -407,8 +375,6 @@ exports[`customers reducers submit customer 3`] = `
     "name": "Romain",
   },
   "customerHistory": {
-    "events": [],
-    "hasHistory": false,
     "tickets": [],
     "triedLoading": false,
   },
@@ -432,8 +398,6 @@ exports[`customers reducers submit customer 4`] = `
   },
   "active": {},
   "customerHistory": {
-    "events": [],
-    "hasHistory": false,
     "tickets": [],
     "triedLoading": false,
   },

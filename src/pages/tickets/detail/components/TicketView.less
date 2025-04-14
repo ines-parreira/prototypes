@@ -1,4 +1,5 @@
 @import '~css/new/mixins';
+@import '~css/typography';
 @import '~@gorgias/design-tokens/dist/css/layout';
 
 :local .page {
@@ -43,10 +44,8 @@
             flex-shrink: 0;
         }
     }
-
     .timeline {
         background: var(--neutral-grey-1);
-
         box-shadow: inset 0 -2px 2px
             hsla(
                 var(--neutral-grey-6-h),
@@ -54,21 +53,21 @@
                 var(--neutral-grey-6-l),
                 0.1
             );
+    }
 
-        .closeTrigger {
-            display: flex;
-            align-items: center;
-            padding: 0 @layout-spacing-s;
-            height: 52px;
-            font-size: 20px;
-            font-weight: 600;
-            cursor: pointer;
-            color: var(--neutral-grey-6);
-            border-bottom: 1px solid var(--neutral-grey-3);
-        }
+    .timelineHeader {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: @layout-spacing-s;
+        padding: 0 @layout-spacing-s;
+        height: 52px;
+        .heading-subsection-semibold();
+        background: var(--neutral-grey-1);
+        border-bottom: 1px solid var(--neutral-grey-3);
+    }
 
-        .timelineContainer {
-            padding: @layout-spacing-s;
-        }
+    .timelineContainer {
+        padding: @layout-spacing-s;
     }
 }

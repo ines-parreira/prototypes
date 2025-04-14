@@ -6,6 +6,8 @@ import { KeysMatching } from 'types'
 
 import { FilterKey, SortableKey, SortOption } from './types'
 
+export const TIMELINE_SEARCH_PARAM = 'timelineShopperId'
+
 export const MIN_RANGE_DATE = moment(new Date('2015-01-01'))
     .startOf('day')
     .toDate()

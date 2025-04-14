@@ -3,7 +3,6 @@
 exports[`ticket reducers action ADD_TICKET_AUDIT_LOG_EVENTS should add new received event, and update existing one 1`] = `
 {
   "_internal": {
-    "displayHistory": false,
     "isPartialUpdating": false,
     "isShopperTyping": false,
     "isShopperTypingTimeoutId": undefined,
@@ -76,7 +75,6 @@ exports[`ticket reducers action ADD_TICKET_AUDIT_LOG_EVENTS should add new recei
 exports[`ticket reducers action ADD_TICKET_AUDIT_LOG_EVENTS should add received event when it is not in the store yet 1`] = `
 {
   "_internal": {
-    "displayHistory": false,
     "isPartialUpdating": false,
     "isShopperTyping": false,
     "isShopperTypingTimeoutId": undefined,
@@ -136,7 +134,6 @@ exports[`ticket reducers action ADD_TICKET_AUDIT_LOG_EVENTS should add received 
 exports[`ticket reducers action ADD_TICKET_AUDIT_LOG_EVENTS should not add received event when it is a phone event 1`] = `
 {
   "_internal": {
-    "displayHistory": false,
     "isPartialUpdating": false,
     "isShopperTyping": false,
     "isShopperTypingTimeoutId": undefined,
@@ -184,7 +181,6 @@ exports[`ticket reducers action ADD_TICKET_AUDIT_LOG_EVENTS should not add recei
 exports[`ticket reducers action ADD_TICKET_AUDIT_LOG_EVENTS should update stored event when received event already exists in the store 1`] = `
 {
   "_internal": {
-    "displayHistory": false,
     "isPartialUpdating": false,
     "isShopperTyping": false,
     "isShopperTypingTimeoutId": undefined,
@@ -246,7 +242,6 @@ exports[`ticket reducers action ADD_TICKET_AUDIT_LOG_EVENTS should update stored
 exports[`ticket reducers action REMOVE_TICKET_AUDIT_LOG_EVENTS should remove audit log events 1`] = `
 {
   "_internal": {
-    "displayHistory": false,
     "isPartialUpdating": false,
     "isShopperTyping": false,
     "isShopperTypingTimeoutId": undefined,
@@ -306,7 +301,6 @@ exports[`ticket reducers action REMOVE_TICKET_AUDIT_LOG_EVENTS should remove aud
 exports[`ticket reducers action RESTORE_TICKET_DRAFT should hydrate the state with ticket draft data 1`] = `
 {
   "_internal": {
-    "displayHistory": false,
     "isPartialUpdating": false,
     "isShopperTyping": false,
     "isShopperTypingTimeoutId": undefined,
@@ -358,7 +352,6 @@ exports[`ticket reducers action RESTORE_TICKET_DRAFT should hydrate the state wi
 exports[`ticket reducers action SEND_INTENT_FEEDBACK_SUCCESS should update the intents with the new ones 1`] = `
 {
   "_internal": {
-    "displayHistory": false,
     "isPartialUpdating": false,
     "isShopperTyping": false,
     "isShopperTypingTimeoutId": undefined,
@@ -427,7 +420,6 @@ exports[`ticket reducers action SEND_INTENT_FEEDBACK_SUCCESS should update the i
 exports[`ticket reducers action TICKET_MESSAGE_DELETED should remove message 1`] = `
 {
   "_internal": {
-    "displayHistory": false,
     "isPartialUpdating": false,
     "isShopperTyping": false,
     "isShopperTypingTimeoutId": undefined,
@@ -475,7 +467,6 @@ exports[`ticket reducers action TICKET_MESSAGE_DELETED should remove message 1`]
 exports[`ticket reducers handle MERGE_CUSTOMER should do nothing since there is no customer in state for now 1`] = `
 {
   "_internal": {
-    "displayHistory": false,
     "isPartialUpdating": false,
     "isShopperTyping": false,
     "isShopperTypingTimeoutId": undefined,
@@ -523,7 +514,6 @@ exports[`ticket reducers handle MERGE_CUSTOMER should do nothing since there is 
 exports[`ticket reducers handle MERGE_TICKET should keep audit log events 1`] = `
 {
   "_internal": {
-    "displayHistory": false,
     "isPartialUpdating": false,
     "isShopperTyping": false,
     "isShopperTypingTimeoutId": undefined,
@@ -605,7 +595,6 @@ exports[`ticket reducers handle MERGE_TICKET should keep audit log events 1`] = 
 exports[`ticket reducers handle MERGE_TICKET should merge ticket and order messages 1`] = `
 {
   "_internal": {
-    "displayHistory": false,
     "isPartialUpdating": false,
     "isShopperTyping": false,
     "isShopperTypingTimeoutId": undefined,
@@ -674,7 +663,6 @@ exports[`ticket reducers handle MERGE_TICKET should merge ticket and order messa
 exports[`ticket reducers handle MERGE_TICKET should remove pending message 1`] = `
 {
   "_internal": {
-    "displayHistory": false,
     "isPartialUpdating": false,
     "isShopperTyping": false,
     "isShopperTypingTimeoutId": undefined,
@@ -743,7 +731,6 @@ exports[`ticket reducers handle MERGE_TICKET should remove pending message 1`] =
 exports[`ticket reducers should handle ADD_TICKET_TAGS 1`] = `
 {
   "_internal": {
-    "displayHistory": false,
     "isPartialUpdating": false,
     "isShopperTyping": false,
     "isShopperTypingTimeoutId": undefined,
@@ -798,7 +785,6 @@ exports[`ticket reducers should handle ADD_TICKET_TAGS 1`] = `
 exports[`ticket reducers should handle ADD_TICKET_TAGS 2`] = `
 {
   "_internal": {
-    "displayHistory": false,
     "isPartialUpdating": false,
     "isShopperTyping": false,
     "isShopperTypingTimeoutId": undefined,
@@ -853,7 +839,6 @@ exports[`ticket reducers should handle ADD_TICKET_TAGS 2`] = `
 exports[`ticket reducers should handle ADD_TICKET_TAGS 3`] = `
 {
   "_internal": {
-    "displayHistory": false,
     "isPartialUpdating": false,
     "isShopperTyping": false,
     "isShopperTypingTimeoutId": undefined,
@@ -905,7 +890,6 @@ exports[`ticket reducers should handle ADD_TICKET_TAGS 3`] = `
 exports[`ticket reducers should handle APPLY_MACRO 1`] = `
 {
   "_internal": {
-    "displayHistory": false,
     "isPartialUpdating": false,
     "isShopperTyping": false,
     "isShopperTypingTimeoutId": undefined,
@@ -955,7 +939,6 @@ exports[`ticket reducers should handle APPLY_MACRO 1`] = `
 exports[`ticket reducers should handle APPLY_MACRO 2`] = `
 {
   "_internal": {
-    "displayHistory": false,
     "isPartialUpdating": false,
     "isShopperTyping": false,
     "isShopperTypingTimeoutId": undefined,
@@ -1005,7 +988,6 @@ exports[`ticket reducers should handle APPLY_MACRO 2`] = `
 exports[`ticket reducers should handle CLEAR_APPLIED_MACRO 1`] = `
 {
   "_internal": {
-    "displayHistory": false,
     "isPartialUpdating": false,
     "isShopperTyping": false,
     "isShopperTypingTimeoutId": undefined,
@@ -1053,7 +1035,6 @@ exports[`ticket reducers should handle CLEAR_APPLIED_MACRO 1`] = `
 exports[`ticket reducers should handle CLEAR_TICKET 1`] = `
 {
   "_internal": {
-    "displayHistory": false,
     "isPartialUpdating": false,
     "isShopperTyping": false,
     "isShopperTypingTimeoutId": undefined,
@@ -1101,7 +1082,6 @@ exports[`ticket reducers should handle CLEAR_TICKET 1`] = `
 exports[`ticket reducers should handle DELETE_ACTION_ON_APPLIED 1`] = `
 {
   "_internal": {
-    "displayHistory": false,
     "isPartialUpdating": false,
     "isShopperTyping": false,
     "isShopperTypingTimeoutId": undefined,
@@ -1158,7 +1138,6 @@ exports[`ticket reducers should handle DELETE_ACTION_ON_APPLIED 1`] = `
 exports[`ticket reducers should handle DELETE_TICKET_MESSAGE_SUCCESS 1`] = `
 {
   "_internal": {
-    "displayHistory": false,
     "isPartialUpdating": false,
     "isShopperTyping": false,
     "isShopperTypingTimeoutId": undefined,
@@ -1210,7 +1189,6 @@ exports[`ticket reducers should handle DELETE_TICKET_MESSAGE_SUCCESS 1`] = `
 exports[`ticket reducers should handle DELETE_TICKET_PENDING_MESSAGE 1`] = `
 {
   "_internal": {
-    "displayHistory": false,
     "isPartialUpdating": false,
     "isShopperTyping": false,
     "isShopperTypingTimeoutId": undefined,
@@ -1267,7 +1245,6 @@ exports[`ticket reducers should handle DELETE_TICKET_PENDING_MESSAGE 1`] = `
 exports[`ticket reducers should handle FETCH_TICKET_START 1`] = `
 {
   "_internal": {
-    "displayHistory": false,
     "isPartialUpdating": false,
     "isShopperTyping": false,
     "isShopperTypingTimeoutId": undefined,
@@ -1315,7 +1292,6 @@ exports[`ticket reducers should handle FETCH_TICKET_START 1`] = `
 exports[`ticket reducers should handle FETCH_TICKET_START 2`] = `
 {
   "_internal": {
-    "displayHistory": false,
     "isPartialUpdating": false,
     "isShopperTyping": false,
     "isShopperTypingTimeoutId": undefined,
@@ -1376,7 +1352,6 @@ exports[`ticket reducers should handle FETCH_TICKET_START 2`] = `
 exports[`ticket reducers should handle FETCH_TICKET_START 3`] = `
 {
   "_internal": {
-    "displayHistory": false,
     "isPartialUpdating": false,
     "isShopperTyping": false,
     "isShopperTypingTimeoutId": undefined,
@@ -1424,7 +1399,6 @@ exports[`ticket reducers should handle FETCH_TICKET_START 3`] = `
 exports[`ticket reducers should handle MARK_TICKET_DIRTY 1`] = `
 {
   "_internal": {
-    "displayHistory": false,
     "isPartialUpdating": false,
     "isShopperTyping": false,
     "isShopperTypingTimeoutId": undefined,
@@ -1472,7 +1446,6 @@ exports[`ticket reducers should handle MARK_TICKET_DIRTY 1`] = `
 exports[`ticket reducers should handle MARK_TICKET_DIRTY 2`] = `
 {
   "_internal": {
-    "displayHistory": false,
     "isPartialUpdating": false,
     "isShopperTyping": false,
     "isShopperTypingTimeoutId": undefined,
@@ -1520,7 +1493,6 @@ exports[`ticket reducers should handle MARK_TICKET_DIRTY 2`] = `
 exports[`ticket reducers should handle MERGE_CUSTOMERS_SUCCESS 1`] = `
 {
   "_internal": {
-    "displayHistory": false,
     "isPartialUpdating": false,
     "isShopperTyping": false,
     "isShopperTypingTimeoutId": undefined,
@@ -1568,7 +1540,6 @@ exports[`ticket reducers should handle MERGE_CUSTOMERS_SUCCESS 1`] = `
 exports[`ticket reducers should handle MERGE_CUSTOMERS_SUCCESS 2`] = `
 {
   "_internal": {
-    "displayHistory": false,
     "isPartialUpdating": false,
     "isShopperTyping": false,
     "isShopperTypingTimeoutId": undefined,
@@ -1619,7 +1590,6 @@ exports[`ticket reducers should handle MERGE_CUSTOMERS_SUCCESS 2`] = `
 exports[`ticket reducers should handle NEW_MESSAGE_SUBMIT_TICKET_MESSAGE_START and NEW_MESSAGE_SUBMIT_TICKET_MESSAGE_ERROR 1`] = `
 {
   "_internal": {
-    "displayHistory": false,
     "isPartialUpdating": false,
     "isShopperTyping": false,
     "isShopperTypingTimeoutId": undefined,
@@ -1705,7 +1675,6 @@ exports[`ticket reducers should handle NEW_MESSAGE_SUBMIT_TICKET_MESSAGE_START a
 exports[`ticket reducers should handle NEW_MESSAGE_SUBMIT_TICKET_MESSAGE_START and NEW_MESSAGE_SUBMIT_TICKET_MESSAGE_ERROR 2`] = `
 {
   "_internal": {
-    "displayHistory": false,
     "isPartialUpdating": false,
     "isShopperTyping": false,
     "isShopperTypingTimeoutId": undefined,
@@ -1792,7 +1761,6 @@ exports[`ticket reducers should handle NEW_MESSAGE_SUBMIT_TICKET_MESSAGE_START a
 exports[`ticket reducers should handle NEW_MESSAGE_SUBMIT_TICKET_MESSAGE_START and NEW_MESSAGE_SUBMIT_TICKET_MESSAGE_ERROR 3`] = `
 {
   "_internal": {
-    "displayHistory": false,
     "isPartialUpdating": false,
     "isShopperTyping": false,
     "isShopperTypingTimeoutId": undefined,
@@ -1878,7 +1846,6 @@ exports[`ticket reducers should handle NEW_MESSAGE_SUBMIT_TICKET_MESSAGE_START a
 exports[`ticket reducers should handle NEW_MESSAGE_SUBMIT_TICKET_SUCCESS 1`] = `
 {
   "_internal": {
-    "displayHistory": false,
     "isPartialUpdating": false,
     "isShopperTyping": false,
     "isShopperTypingTimeoutId": undefined,
@@ -1927,7 +1894,6 @@ exports[`ticket reducers should handle NEW_MESSAGE_SUBMIT_TICKET_SUCCESS 1`] = `
 exports[`ticket reducers should handle REMOVE_TICKET_MESSAGE_REQUEST 1`] = `
 {
   "_internal": {
-    "displayHistory": false,
     "isPartialUpdating": false,
     "isShopperTyping": false,
     "isShopperTypingTimeoutId": undefined,
@@ -1980,7 +1946,6 @@ exports[`ticket reducers should handle REMOVE_TICKET_MESSAGE_REQUEST 1`] = `
 exports[`ticket reducers should handle REMOVE_TICKET_TAG 1`] = `
 {
   "_internal": {
-    "displayHistory": false,
     "isPartialUpdating": false,
     "isShopperTyping": false,
     "isShopperTypingTimeoutId": undefined,
@@ -2032,7 +1997,6 @@ exports[`ticket reducers should handle REMOVE_TICKET_TAG 1`] = `
 exports[`ticket reducers should handle REMOVE_TICKET_TAG 2`] = `
 {
   "_internal": {
-    "displayHistory": false,
     "isPartialUpdating": false,
     "isShopperTyping": false,
     "isShopperTypingTimeoutId": undefined,
@@ -2084,7 +2048,6 @@ exports[`ticket reducers should handle REMOVE_TICKET_TAG 2`] = `
 exports[`ticket reducers should handle SET_AGENT 1`] = `
 {
   "_internal": {
-    "displayHistory": false,
     "isPartialUpdating": false,
     "isShopperTyping": false,
     "isShopperTypingTimeoutId": undefined,
@@ -2134,7 +2097,6 @@ exports[`ticket reducers should handle SET_AGENT 1`] = `
 exports[`ticket reducers should handle SET_AGENT 2`] = `
 {
   "_internal": {
-    "displayHistory": false,
     "isPartialUpdating": false,
     "isShopperTyping": false,
     "isShopperTypingTimeoutId": undefined,
@@ -2182,7 +2144,6 @@ exports[`ticket reducers should handle SET_AGENT 2`] = `
 exports[`ticket reducers should handle SET_CUSTOMER 1`] = `
 {
   "_internal": {
-    "displayHistory": false,
     "isPartialUpdating": false,
     "isShopperTyping": false,
     "isShopperTypingTimeoutId": undefined,
@@ -2235,7 +2196,6 @@ exports[`ticket reducers should handle SET_CUSTOMER 1`] = `
 exports[`ticket reducers should handle SET_SPAM_START 1`] = `
 {
   "_internal": {
-    "displayHistory": false,
     "isPartialUpdating": false,
     "isShopperTyping": false,
     "isShopperTypingTimeoutId": undefined,
@@ -2283,7 +2243,6 @@ exports[`ticket reducers should handle SET_SPAM_START 1`] = `
 exports[`ticket reducers should handle SET_SPAM_START 2`] = `
 {
   "_internal": {
-    "displayHistory": false,
     "isPartialUpdating": false,
     "isShopperTyping": false,
     "isShopperTypingTimeoutId": undefined,
@@ -2331,7 +2290,6 @@ exports[`ticket reducers should handle SET_SPAM_START 2`] = `
 exports[`ticket reducers should handle SET_SPAM_SUCCESS 1`] = `
 {
   "_internal": {
-    "displayHistory": false,
     "isPartialUpdating": false,
     "isShopperTyping": false,
     "isShopperTypingTimeoutId": undefined,
@@ -2379,7 +2337,6 @@ exports[`ticket reducers should handle SET_SPAM_SUCCESS 1`] = `
 exports[`ticket reducers should handle SET_STATUS 1`] = `
 {
   "_internal": {
-    "displayHistory": false,
     "isPartialUpdating": false,
     "isShopperTyping": false,
     "isShopperTypingTimeoutId": undefined,
@@ -2427,7 +2384,6 @@ exports[`ticket reducers should handle SET_STATUS 1`] = `
 exports[`ticket reducers should handle SET_SUBJECT 1`] = `
 {
   "_internal": {
-    "displayHistory": false,
     "isPartialUpdating": false,
     "isShopperTyping": false,
     "isShopperTypingTimeoutId": undefined,
@@ -2475,7 +2431,6 @@ exports[`ticket reducers should handle SET_SUBJECT 1`] = `
 exports[`ticket reducers should handle SET_TEAM 1`] = `
 {
   "_internal": {
-    "displayHistory": false,
     "isPartialUpdating": false,
     "isShopperTyping": false,
     "isShopperTypingTimeoutId": undefined,
@@ -2525,7 +2480,6 @@ exports[`ticket reducers should handle SET_TEAM 1`] = `
 exports[`ticket reducers should handle SET_TEAM 2`] = `
 {
   "_internal": {
-    "displayHistory": false,
     "isPartialUpdating": false,
     "isShopperTyping": false,
     "isShopperTypingTimeoutId": undefined,
@@ -2573,7 +2527,6 @@ exports[`ticket reducers should handle SET_TEAM 2`] = `
 exports[`ticket reducers should handle SET_TICKET_MESSAGE_REQUEST 1`] = `
 {
   "_internal": {
-    "displayHistory": false,
     "isPartialUpdating": false,
     "isShopperTyping": false,
     "isShopperTypingTimeoutId": undefined,
@@ -2626,7 +2579,6 @@ exports[`ticket reducers should handle SET_TICKET_MESSAGE_REQUEST 1`] = `
 exports[`ticket reducers should handle SET_TYPING_ACTIVITY_SHOPPER 1`] = `
 {
   "_internal": {
-    "displayHistory": false,
     "isPartialUpdating": false,
     "isShopperTyping": false,
     "isShopperTypingTimeoutId": undefined,
@@ -2674,7 +2626,6 @@ exports[`ticket reducers should handle SET_TYPING_ACTIVITY_SHOPPER 1`] = `
 exports[`ticket reducers should handle SET_TYPING_ACTIVITY_SHOPPER 2`] = `
 {
   "_internal": {
-    "displayHistory": false,
     "isPartialUpdating": false,
     "isShopperTyping": true,
     "isShopperTypingTimeoutId": 100,
@@ -2722,151 +2673,6 @@ exports[`ticket reducers should handle SET_TYPING_ACTIVITY_SHOPPER 2`] = `
 exports[`ticket reducers should handle SET_TYPING_ACTIVITY_SHOPPER 3`] = `
 {
   "_internal": {
-    "displayHistory": false,
-    "isPartialUpdating": false,
-    "isShopperTyping": false,
-    "isShopperTypingTimeoutId": undefined,
-    "loading": {
-      "deleteMessage": false,
-      "fetchTicket": false,
-      "setSpam": false,
-      "setTrash": false,
-    },
-    "pendingMessages": [],
-    "shouldDisplayAuditLogEvents": false,
-  },
-  "assignee_team": null,
-  "assignee_user": null,
-  "channel": "email",
-  "custom_fields": {},
-  "customer": null,
-  "events": [],
-  "is_unread": false,
-  "messages": [],
-  "priority": "normal",
-  "reply_options": {
-    "email": {
-      "answerable": true,
-    },
-    "internal-note": {
-      "answerable": true,
-    },
-  },
-  "spam": false,
-  "state": {
-    "appliedMacro": null,
-    "dirty": false,
-    "hasAttemptedToCloseTicket": false,
-    "latestEventDatetime": null,
-  },
-  "status": "open",
-  "subject": "",
-  "tags": [],
-  "trashed_datetime": null,
-  "via": "helpdesk",
-}
-`;
-
-exports[`ticket reducers should handle TOGGLE_HISTORY 1`] = `
-{
-  "_internal": {
-    "displayHistory": true,
-    "isPartialUpdating": false,
-    "isShopperTyping": false,
-    "isShopperTypingTimeoutId": undefined,
-    "loading": {
-      "deleteMessage": false,
-      "fetchTicket": false,
-      "setSpam": false,
-      "setTrash": false,
-    },
-    "pendingMessages": [],
-    "shouldDisplayAuditLogEvents": false,
-  },
-  "assignee_team": null,
-  "assignee_user": null,
-  "channel": "email",
-  "custom_fields": {},
-  "customer": null,
-  "events": [],
-  "is_unread": false,
-  "messages": [],
-  "priority": "normal",
-  "reply_options": {
-    "email": {
-      "answerable": true,
-    },
-    "internal-note": {
-      "answerable": true,
-    },
-  },
-  "spam": false,
-  "state": {
-    "appliedMacro": null,
-    "dirty": false,
-    "hasAttemptedToCloseTicket": false,
-    "latestEventDatetime": null,
-  },
-  "status": "open",
-  "subject": "",
-  "tags": [],
-  "trashed_datetime": null,
-  "via": "helpdesk",
-}
-`;
-
-exports[`ticket reducers should handle TOGGLE_HISTORY 2`] = `
-{
-  "_internal": {
-    "displayHistory": false,
-    "isPartialUpdating": false,
-    "isShopperTyping": false,
-    "isShopperTypingTimeoutId": undefined,
-    "loading": {
-      "deleteMessage": false,
-      "fetchTicket": false,
-      "setSpam": false,
-      "setTrash": false,
-    },
-    "pendingMessages": [],
-    "shouldDisplayAuditLogEvents": false,
-  },
-  "assignee_team": null,
-  "assignee_user": null,
-  "channel": "email",
-  "custom_fields": {},
-  "customer": null,
-  "events": [],
-  "is_unread": false,
-  "messages": [],
-  "priority": "normal",
-  "reply_options": {
-    "email": {
-      "answerable": true,
-    },
-    "internal-note": {
-      "answerable": true,
-    },
-  },
-  "spam": false,
-  "state": {
-    "appliedMacro": null,
-    "dirty": false,
-    "hasAttemptedToCloseTicket": false,
-    "latestEventDatetime": null,
-  },
-  "status": "open",
-  "subject": "",
-  "tags": [],
-  "trashed_datetime": null,
-  "via": "helpdesk",
-}
-`;
-
-exports[`ticket reducers should handle TOGGLE_HISTORY 3`] = `
-{
-  "_internal": {
-    "displayHistory": true,
     "isPartialUpdating": false,
     "isShopperTyping": false,
     "isShopperTypingTimeoutId": undefined,
@@ -2914,7 +2720,6 @@ exports[`ticket reducers should handle TOGGLE_HISTORY 3`] = `
 exports[`ticket reducers should handle UPDATE_TICKET_MESSAGE_START 1`] = `
 {
   "_internal": {
-    "displayHistory": false,
     "isPartialUpdating": false,
     "isShopperTyping": false,
     "isShopperTypingTimeoutId": undefined,

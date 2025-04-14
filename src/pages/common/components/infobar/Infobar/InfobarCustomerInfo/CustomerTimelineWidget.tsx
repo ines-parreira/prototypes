@@ -1,15 +1,8 @@
-import { List } from 'immutable'
-
 import { TicketSummary } from '@gorgias/api-queries'
 import { Button, LoadingSpinner } from '@gorgias/merchant-ui-kit'
 
-import { logEvent, SegmentEvent } from 'common/segment'
-import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
-import { ReduxCustomerHistory } from 'pages/common/components/timeline/types'
-import { getCustomerHistory, getLoading } from 'state/customers/selectors'
-import { toggleHistory } from 'state/ticket/actions'
-import { getDisplayHistory, getTicketState } from 'state/ticket/selectors'
+import { useTimeline } from 'pages/common/components/timeline/hooks/useTimeline'
 import { getContext } from 'state/widgets/selectors'
 import { WidgetEnvironment } from 'state/widgets/types'
 
@@ -17,47 +10,34 @@ import css from './CustomerTimelineWidget.less'
 
 type Props = {
     isEditing: boolean
+    customerId: number
 }
 
 const ForumIcon = () => (
     <span className={`material-icons ${css.mr} ${css.forumIcon}`}>forum</span>
 )
 
-export function CustomerTimelineWidget({ isEditing }: Props) {
-    const dispatch = useAppDispatch()
-
-    const isHistoryDisplayed = useAppSelector(getDisplayHistory)
+export function CustomerTimelineWidget({ isEditing, customerId }: Props) {
+    const {
+        tickets,
+        isOpen,
+        hasTriedLoading,
+        isLoading,
+        openTimeline,
+        closeTimeline,
+    } = useTimeline()
     const widgetContext = useAppSelector(getContext)
-    const ticket = useAppSelector(getTicketState)
 
-    // get history info
-    const isHistoryLoading = !!useAppSelector(getLoading).toJS().history
-    const customerHistory = useAppSelector(
-        getCustomerHistory,
-    ).toJS() as ReduxCustomerHistory
-
-    const ticketCount = customerHistory.tickets.length
-    const hasNoTickets = customerHistory.triedLoading && ticketCount === 0
-    const hasNoHistory = customerHistory.triedLoading && ticketCount < 2
-    const { openTicketCount, snoozedTicketCount } = getTicketsCount(
-        customerHistory.tickets,
-    )
+    const ticketCount = tickets.length
+    const hasNoTickets = hasTriedLoading && ticketCount === 0
+    const hasNoHistory = hasTriedLoading && ticketCount < 2
+    const { openTicketCount, snoozedTicketCount } = getTicketsCount(tickets)
 
     const showToggle = !(
         isEditing || widgetContext === WidgetEnvironment.Customer
     )
-    const handleToggleClick = () => {
-        dispatch(toggleHistory(!isHistoryDisplayed))
 
-        logEvent(SegmentEvent.UserHistoryToggled, {
-            open: !isHistoryDisplayed,
-            nbOfTicketsInTimeline: customerHistory.tickets.length,
-            nbOfMessagesInTicket:
-                (ticket.get('messages') as List<any>)?.size ?? 0,
-        })
-    }
-
-    if (isHistoryLoading) {
+    if (isLoading) {
         return (
             <div className={css.timelineWidget}>
                 <LoadingSpinner size="small" className={css.mr} />
@@ -84,12 +64,14 @@ export function CustomerTimelineWidget({ isEditing }: Props) {
                 <Button
                     className={css.mr}
                     intent={openTicketCount ? 'primary' : 'secondary'}
-                    onClick={handleToggleClick}
+                    onClick={() =>
+                        isOpen ? closeTimeline() : openTimeline(customerId)
+                    }
                     size="small"
-                    leadingIcon={isHistoryDisplayed ? 'close' : 'forum'}
+                    leadingIcon={isOpen ? 'close' : 'forum'}
                     isDisabled={hasNoHistory}
                 >
-                    {isHistoryDisplayed ? 'Close' : 'Open'} Timeline
+                    {isOpen ? 'Close' : 'Open'} Timeline
                 </Button>
             ) : (
                 <ForumIcon />
