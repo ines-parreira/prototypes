@@ -25,7 +25,7 @@ export const HelpCenterEditModal = ({
     onBackdropClick,
     isLoading,
     transitionDurationMs = 300,
-    containerZIndices = [5, -1],
+    containerZIndices = [205, -1],
 }: Props): JSX.Element => {
     const ref = useRef<HTMLDivElement>(null)
     const { isFullscreenEditModal, editModal } = useEditionManager()

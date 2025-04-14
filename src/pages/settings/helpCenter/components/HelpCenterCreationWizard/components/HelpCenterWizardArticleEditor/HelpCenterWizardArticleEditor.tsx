@@ -99,7 +99,6 @@ const ArticleEditor: React.FC<Props> = ({
             portalRootId="app-root"
             onBackdropClick={handleEditorClose}
             transitionDurationMs={DRAWER_TRANSITION_DURATION_MS}
-            containerZIndices={[100, -1]}
         >
             {article && (
                 <div className={css.modalForm} id={EDITOR_MODAL_CONTAINER_ID}>

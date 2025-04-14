@@ -4,7 +4,7 @@ exports[`<HelpCenterEditModal/> should display the component correctly 1`] = `
 <div>
   <div
     class="modal-container"
-    style="z-index: 5; transition-delay: 0ms;"
+    style="z-index: 205; transition-delay: 0ms;"
   >
     <div
       class="backdrop opened"
@@ -24,7 +24,7 @@ exports[`<HelpCenterEditModal/> should display the component in fullscreen mode 
 <div>
   <div
     class="modal-container"
-    style="z-index: 5; transition-delay: 0ms;"
+    style="z-index: 205; transition-delay: 0ms;"
   >
     <div
       class="backdrop opened"
