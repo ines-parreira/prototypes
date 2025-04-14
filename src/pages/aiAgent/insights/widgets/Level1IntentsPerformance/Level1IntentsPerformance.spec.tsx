@@ -1,6 +1,6 @@
 import React from 'react'
 
-import { render } from '@testing-library/react'
+import { render, screen } from '@testing-library/react'
 
 import { useGetTicketChannelsStoreIntegrations } from 'hooks/integrations/useGetTicketChannelsStoreIntegrations'
 import { useAIAgentMetrics } from 'hooks/reporting/automate/useAIAgentInsightsDataset'
@@ -196,5 +196,76 @@ describe('OptimizeContainer', () => {
             }),
             {},
         )
+    })
+
+    describe('hasAiAgentTicket and AIBanner', () => {
+        it('should not render AIBanner when hasAiAgentTicket is true', () => {
+            useAIAgentMetricsMock.mockReturnValueOnce({
+                aiAgentAutomatedInteractionTrend,
+                aiAgentCSAT,
+                aiAgentSuccessRate,
+                coverageTrend: {
+                    data: {
+                        value: 1,
+                        prevValue: 0,
+                    },
+                    isError: false,
+                    isFetching: false,
+                },
+            })
+
+            render(<Level1IntentsPerformance />)
+            expect(
+                screen.queryByText(
+                    'There are no AI Agent interactions for the selected date range.',
+                ),
+            ).not.toBeInTheDocument()
+        })
+
+        it('should render AIBanner when hasAiAgentTicket is false', () => {
+            useAIAgentMetricsMock.mockReturnValueOnce({
+                aiAgentAutomatedInteractionTrend,
+                aiAgentCSAT,
+                aiAgentSuccessRate,
+                coverageTrend: {
+                    data: {
+                        value: 0,
+                        prevValue: 0,
+                    },
+                    isError: false,
+                    isFetching: false,
+                },
+            })
+
+            render(<Level1IntentsPerformance />)
+            expect(
+                screen.getByText(
+                    'There are no AI Agent interactions for the selected date range.',
+                ),
+            ).toBeInTheDocument()
+        })
+
+        it('should render AIBanner when coverageTrend data is null', () => {
+            useAIAgentMetricsMock.mockReturnValueOnce({
+                aiAgentAutomatedInteractionTrend,
+                aiAgentCSAT,
+                aiAgentSuccessRate,
+                coverageTrend: {
+                    data: {
+                        value: null,
+                        prevValue: null,
+                    },
+                    isError: false,
+                    isFetching: false,
+                },
+            })
+
+            render(<Level1IntentsPerformance />)
+            expect(
+                screen.getByText(
+                    'There are no AI Agent interactions for the selected date range.',
+                ),
+            ).toBeInTheDocument()
+        })
     })
 })
