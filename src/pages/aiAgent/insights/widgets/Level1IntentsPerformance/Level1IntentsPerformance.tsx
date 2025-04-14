@@ -50,8 +50,9 @@ export const Level1IntentsPerformance = () => {
     const aiAgentNavigation = useAiAgentNavigation({ shopName })
 
     const hasAiAgentTicket =
-        aiAgentMetrics?.coverageTrend?.data?.value &&
-        aiAgentMetrics.coverageTrend.data.value > 0
+        aiAgentMetrics.coverageTrend.isFetching ||
+        (aiAgentMetrics.coverageTrend?.data?.value &&
+            aiAgentMetrics.coverageTrend.data.value > 0)
 
     return (
         <>
