@@ -16,12 +16,18 @@ const useCurrencyMock = assumeMock(useCurrency)
 
 jest.useFakeTimers()
 
-const timezone = 'UTC'
-const filters: StatsFilters = {
-    period: {
-        start_datetime: '2025-02-06T16:55:37.914Z',
-        end_datetime: '2025-01-09T16:56:07.727Z',
-    },
+const useGmvInfluencedInput = {
+    timezone: 'UTC',
+    filters: {
+        period: {
+            start_datetime: '2025-02-06T16:55:37.914Z',
+            end_datetime: '2025-01-09T16:56:07.727Z',
+        },
+    } satisfies StatsFilters,
+    aiAgentType: 'sales' as const,
+    isOnNewPlan: true,
+    showEarlyAccessModal: () => {},
+    showActivationModal: () => {},
 }
 
 describe('useGmvInfluenced', () => {
@@ -44,7 +50,9 @@ describe('useGmvInfluenced', () => {
             isFetching: false,
         } as any)
 
-        const { result } = renderHook(() => useGmvInfluenced(filters, timezone))
+        const { result } = renderHook(() =>
+            useGmvInfluenced(useGmvInfluencedInput),
+        )
 
         expect(result.current).toEqual({
             title: 'GMV Influenced',
@@ -58,6 +66,8 @@ describe('useGmvInfluenced', () => {
             isLoading: false,
             currency: 'USD',
             hidden: false,
+            action: undefined,
+            hideTrend: false,
         })
     })
 
@@ -74,7 +84,9 @@ describe('useGmvInfluenced', () => {
             isFetching: false,
         } as any)
 
-        const { result } = renderHook(() => useGmvInfluenced(filters, timezone))
+        const { result } = renderHook(() =>
+            useGmvInfluenced(useGmvInfluencedInput),
+        )
 
         expect(result.current).toEqual({
             title: 'GMV Influenced',
@@ -88,6 +100,8 @@ describe('useGmvInfluenced', () => {
             isLoading: false,
             currency: 'EUR',
             hidden: false,
+            action: undefined,
+            hideTrend: false,
         })
     })
 
@@ -100,7 +114,9 @@ describe('useGmvInfluenced', () => {
             isFetching: true,
         } as any)
 
-        const { result } = renderHook(() => useGmvInfluenced(filters, timezone))
+        const { result } = renderHook(() =>
+            useGmvInfluenced(useGmvInfluencedInput),
+        )
 
         expect(result.current).toEqual({
             title: 'GMV Influenced',
@@ -112,6 +128,8 @@ describe('useGmvInfluenced', () => {
             isLoading: true,
             currency: 'USD',
             hidden: false,
+            action: undefined,
+            hideTrend: false,
         })
     })
 
@@ -127,7 +145,9 @@ describe('useGmvInfluenced', () => {
             isFetching: true,
         } as any)
 
-        const { result } = renderHook(() => useGmvInfluenced(filters, timezone))
+        const { result } = renderHook(() =>
+            useGmvInfluenced(useGmvInfluencedInput),
+        )
 
         expect(result.current.hidden).toBe(true)
     })
@@ -144,7 +164,9 @@ describe('useGmvInfluenced', () => {
             isFetching: true,
         } as any)
 
-        const { result } = renderHook(() => useGmvInfluenced(filters, timezone))
+        const { result } = renderHook(() =>
+            useGmvInfluenced(useGmvInfluencedInput),
+        )
 
         expect(result.current.hidden).toBe(false)
     })

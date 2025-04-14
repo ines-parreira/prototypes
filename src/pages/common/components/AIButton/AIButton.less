@@ -1,0 +1,25 @@
+@import (reference) '~@gorgias/design-tokens/dist/css/layout.less';
+@import (reference) '~css/typography';
+@import (reference) '~css/new/mixins';
+@import '~@gorgias/design-tokens/dist/css/layout.less';
+@import '~@gorgias/design-tokens/dist/css/typographyMixins.less';
+
+:root {
+    --local-green: #1a9970;
+}
+
+:local {
+    .button {
+        border: none;
+        border-radius: @layout-spacing-xxs;
+        background: linear-gradient(
+            90deg,
+            rgba(203, 85, 239, 0.79) -12.67%,
+            rgba(111, 12, 134, 0.79) 119.65%
+        ) !important;
+
+        &[aria-disabled='true'] {
+            background: var(--neutral-grey-1) !important;
+        }
+    }
+}

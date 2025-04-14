@@ -2,12 +2,7 @@ import { useState } from 'react'
 
 import cn from 'classnames'
 
-import {
-    Badge,
-    Button,
-    CheckBoxField,
-    Skeleton,
-} from '@gorgias/merchant-ui-kit'
+import { Badge, CheckBoxField, Skeleton } from '@gorgias/merchant-ui-kit'
 
 import {
     AutomateEarlyAccessPlan,
@@ -22,6 +17,7 @@ import {
     CardHeader,
     CardTitle,
 } from 'pages/aiAgent/Onboarding/components/Card'
+import { AIButton } from 'pages/common/components/AIButton/AIButton'
 import Alert, { AlertType } from 'pages/common/components/Alert/Alert'
 import Modal from 'pages/common/components/modal/Modal'
 import ModalBody from 'pages/common/components/modal/ModalBody'
@@ -303,20 +299,13 @@ export const EarlyAccessModal = ({
                     </CardContent>
                 </Card>
 
-                <Button
-                    fillStyle="fill"
-                    intent="primary"
-                    size="medium"
-                    className={cn({
-                        [css.principalButton]: userIsAdmin,
-                        [css.disabledButton]: !isTermsChecked,
-                    })}
+                <AIButton
                     onClick={onUpgradeClick}
                     isDisabled={!userIsAdmin || !isTermsChecked}
                     isLoading={isUpgrading}
                 >
                     Upgrade AI Agent
-                </Button>
+                </AIButton>
                 <div data-candu-id="ai-sales-agent-access-modal-sub-cta" />
             </ModalFooter>
         </Modal>

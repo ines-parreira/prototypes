@@ -23,8 +23,14 @@ export const AiAgentOverview = () => {
     const hasResourceSection =
         useFlags()[FeatureFlagKey.StandaloneConvAiOverviewPageResourceSection]
 
-    const { activationButton, activationModal, earlyAccessModal } =
-        useActivation('overview', { autoDisplayEarlyAccessDisabled: true })
+    const {
+        activationButton,
+        activationModal,
+        earlyAccessModal,
+        isOnNewPlan,
+        showEarlyAccessModal,
+        showActivationModal,
+    } = useActivation('overview', { autoDisplayEarlyAccessDisabled: true })
 
     useEffectOnce(() => {
         logEvent(SegmentEvent.AiAgentOverviewPageView)
@@ -42,7 +48,11 @@ export const AiAgentOverview = () => {
                 firstName={currentUser.get('firstname')}
                 activationButton={activationButton}
             />
-            <KpiSection />
+            <KpiSection
+                isOnNewPlan={isOnNewPlan}
+                showActivationModal={showActivationModal}
+                showEarlyAccessModal={showEarlyAccessModal}
+            />
             <PendingTasksSectionConnected />
             {hasResourceSection && (
                 <>

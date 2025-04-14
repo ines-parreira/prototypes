@@ -16,19 +16,12 @@ import {
     AiAgentType,
     useAiAgentTypeForAccount,
 } from 'pages/aiAgent/Overview/hooks/useAiAgentType'
-import { useMixedKpis } from 'pages/aiAgent/Overview/hooks/useMixedKpis'
-import { useSalesKpis } from 'pages/aiAgent/Overview/hooks/useSalesKpis'
-import { useSupportKpis } from 'pages/aiAgent/Overview/hooks/useSupportKpis'
+import { useKpis } from 'pages/aiAgent/Overview/hooks/useKpis'
 import { KpiMetric } from 'pages/aiAgent/Overview/types'
 import { STATS_ROUTES } from 'routes/constants'
 import { getCleanStatsFiltersWithTimezone } from 'state/ui/stats/selectors'
 
 import css from './KpiSection.less'
-
-type KpiProps = {
-    filters: StatsFilters
-    timezone: string
-}
 
 const KpiContainer = ({
     isLoading = false,
@@ -64,6 +57,8 @@ const KpiContainer = ({
                             metricFormat={metric.metricFormat}
                             currency={metric.currency}
                             data-candu-id={metric['data-candu-id']}
+                            action={metric.action}
+                            hideTrend={metric.hideTrend}
                         />
                     )
                 })}
@@ -71,25 +66,18 @@ const KpiContainer = ({
     )
 }
 
-const SalesKpi = ({ filters, timezone }: KpiProps) => {
-    const { metrics } = useSalesKpis(filters, timezone)
-    return <KpiContainer metrics={metrics} />
-}
-const SupportKpi = ({ filters, timezone }: KpiProps) => {
-    const { metrics } = useSupportKpis(filters, timezone)
-    return <KpiContainer metrics={metrics} />
-}
-const MixedKpi = ({ filters, timezone }: KpiProps) => {
-    const { metrics } = useMixedKpis(filters, timezone)
-    return <KpiContainer metrics={metrics} />
-}
-
-const KpiForAiAgentType = ({
+const Kpis = ({
     isLoading,
     aiAgentType,
+    isOnNewPlan,
+    showEarlyAccessModal,
+    showActivationModal,
 }: {
     isLoading: boolean
     aiAgentType?: AiAgentType
+    isOnNewPlan: boolean
+    showEarlyAccessModal: () => void
+    showActivationModal: () => void
 }) => {
     const filters: StatsFilters = useMemo(
         () => ({
@@ -98,28 +86,38 @@ const KpiForAiAgentType = ({
                     .subtract(28, 'days')
                     .startOf('day')
                     .format(),
-                end_datetime: moment().format(),
+                end_datetime: moment().endOf('day').format(),
             },
         }),
         [],
     )
     const { userTimezone } = useAppSelector(getCleanStatsFiltersWithTimezone)
+    const { metrics } = useKpis({
+        filters,
+        timezone: userTimezone,
+        aiAgentType,
+        isOnNewPlan,
+        showEarlyAccessModal,
+        showActivationModal,
+    })
 
     if (isLoading || !aiAgentType) {
         return <KpiContainer isLoading />
     }
 
-    switch (aiAgentType) {
-        case 'sales':
-            return <SalesKpi filters={filters} timezone={userTimezone} />
-        case 'support':
-            return <SupportKpi filters={filters} timezone={userTimezone} />
-        case 'mixed':
-            return <MixedKpi filters={filters} timezone={userTimezone} />
-    }
+    return <KpiContainer metrics={metrics} />
 }
 
-export const KpiSection = () => {
+type Props = {
+    isOnNewPlan: boolean
+    showEarlyAccessModal: () => void
+    showActivationModal: () => void
+}
+export const KpiSection = ({
+    isOnNewPlan,
+    showEarlyAccessModal,
+    showActivationModal,
+}: Props) => {
     const { isLoading, aiAgentType } = useAiAgentTypeForAccount()
     const hasAnalytics =
         useFlags()[FeatureFlagKey.StandaloneAiSalesAnalyticsPage]
@@ -157,9 +155,12 @@ export const KpiSection = () => {
                 <div className={css.subtitle}>Data from last 28 days</div>
             </div>
 
-            <KpiForAiAgentType
+            <Kpis
                 aiAgentType={aiAgentType}
                 isLoading={isLoading}
+                showActivationModal={showActivationModal}
+                showEarlyAccessModal={showEarlyAccessModal}
+                isOnNewPlan={isOnNewPlan}
             />
         </OverviewCard>
     )

@@ -9,13 +9,8 @@ import { Router } from 'react-router-dom'
 import configureMockStore from 'redux-mock-store'
 
 import { FeatureFlagKey } from 'config/featureFlags'
-import {
-    AiAgentType,
-    useAiAgentTypeForAccount,
-} from 'pages/aiAgent/Overview/hooks/useAiAgentType'
-import { useMixedKpis } from 'pages/aiAgent/Overview/hooks/useMixedKpis'
-import { useSalesKpis } from 'pages/aiAgent/Overview/hooks/useSalesKpis'
-import { useSupportKpis } from 'pages/aiAgent/Overview/hooks/useSupportKpis'
+import { useAiAgentTypeForAccount } from 'pages/aiAgent/Overview/hooks/useAiAgentType'
+import { useKpis } from 'pages/aiAgent/Overview/hooks/useKpis'
 import { initialState as initialStatsFiltersState } from 'state/stats/statsSlice'
 import { RootState, StoreDispatch, StoreState } from 'state/types'
 import { initialState } from 'state/ui/stats/filtersSlice'
@@ -26,12 +21,8 @@ import { KpiSection } from '../KpiSection'
 jest.mock('pages/aiAgent/Overview/hooks/useAiAgentType')
 const useAiAgentTypeMock = assumeMock(useAiAgentTypeForAccount)
 
-jest.mock('pages/aiAgent/Overview/hooks/useMixedKpis')
-const useMixedKpisMock = assumeMock(useMixedKpis)
-jest.mock('pages/aiAgent/Overview/hooks/useSalesKpis')
-const useSalesKpisMock = assumeMock(useSalesKpis)
-jest.mock('pages/aiAgent/Overview/hooks/useSupportKpis')
-const useSupportKpisMock = assumeMock(useSupportKpis)
+jest.mock('pages/aiAgent/Overview/hooks/useKpis')
+const useMixedKpisMock = assumeMock(useKpis)
 
 jest.mock(
     '@gorgias/merchant-ui-kit',
@@ -55,7 +46,11 @@ const renderComponent = (history: History = createMemoryHistory()) => {
     return render(
         <Router history={history}>
             <Provider store={mockStore(defaultStore)}>
-                <KpiSection />
+                <KpiSection
+                    isOnNewPlan
+                    showEarlyAccessModal={() => {}}
+                    showActivationModal={() => {}}
+                />
             </Provider>
         </Router>,
     )
@@ -63,10 +58,10 @@ const renderComponent = (history: History = createMemoryHistory()) => {
 
 describe('KpiSection', () => {
     describe.each([
-        ['sales' as AiAgentType, useSalesKpisMock],
-        ['support' as AiAgentType, useSupportKpisMock],
-        ['mixed' as AiAgentType, useMixedKpisMock],
-    ])('when AI Agent type is %s', (aiAgentType, mockFn) => {
+        { aiAgentType: 'sales' as const },
+        { aiAgentType: 'support' as const },
+        { aiAgentType: 'mixed' as const },
+    ])('when AI Agent type is %s', ({ aiAgentType }) => {
         beforeEach(() => {
             useAiAgentTypeMock.mockReturnValue({
                 isLoading: false,
@@ -75,7 +70,7 @@ describe('KpiSection', () => {
         })
 
         it('renders sales KPIs correctly when not loading', () => {
-            mockFn.mockReturnValue({
+            useMixedKpisMock.mockReturnValue({
                 metrics: [
                     {
                         isLoading: true,
@@ -93,7 +88,7 @@ describe('KpiSection', () => {
         })
 
         it('renders sales KPIs correctly when not loading', () => {
-            mockFn.mockReturnValue({
+            useMixedKpisMock.mockReturnValue({
                 metrics: [
                     {
                         isLoading: false,
@@ -137,12 +132,6 @@ describe('KpiSection', () => {
 
     describe('View Full Report button', () => {
         beforeEach(() => {
-            useSalesKpisMock.mockReturnValue({
-                metrics: [],
-            })
-            useSupportKpisMock.mockReturnValue({
-                metrics: [],
-            })
             useMixedKpisMock.mockReturnValue({
                 metrics: [],
             })

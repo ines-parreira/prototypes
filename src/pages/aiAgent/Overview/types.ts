@@ -1,3 +1,5 @@
+import React from 'react'
+
 import { MetricTrendFormat } from 'pages/stats/common/utils'
 import { TooltipData } from 'pages/stats/types'
 
@@ -11,4 +13,6 @@ export type KpiMetric = {
     currency?: string
     metricFormat?: MetricTrendFormat
     'data-candu-id'?: string
+    action?: React.ReactNode
+    hideTrend?: boolean
 }

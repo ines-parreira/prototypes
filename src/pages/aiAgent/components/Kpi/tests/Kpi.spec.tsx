@@ -70,4 +70,50 @@ describe('Kpi', () => {
         expect(screen.getByText('Rate KPI')).toBeInTheDocument()
         expect(screen.getByText('87.56%')).toBeInTheDocument()
     })
+
+    it('should show the trend by default', () => {
+        render(
+            <Kpi
+                title="Some KPI"
+                value={100}
+                prevValue={20}
+                metricFormat="decimal"
+                isLoading={false}
+                hideTrend={false}
+            />,
+        )
+
+        expect(screen.getByText('400%')).toBeInTheDocument()
+    })
+
+    it('should hide the trend by default', () => {
+        render(
+            <Kpi
+                title="Some KPI"
+                value={100}
+                prevValue={20}
+                metricFormat="decimal"
+                isLoading={false}
+                hideTrend
+            />,
+        )
+
+        expect(screen.queryByText('400%')).not.toBeInTheDocument()
+    })
+
+    it('should render the action', () => {
+        render(
+            <Kpi
+                title="Some KPI"
+                value={100}
+                prevValue={20}
+                metricFormat="decimal"
+                isLoading={false}
+                hideTrend
+                action={<div>Action</div>}
+            />,
+        )
+
+        expect(screen.getByText('Action')).toBeInTheDocument()
+    })
 })

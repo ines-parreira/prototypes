@@ -1,5 +1,7 @@
 import React, { useMemo } from 'react'
 
+import cn from 'classnames'
+
 import { Skeleton } from '@gorgias/merchant-ui-kit'
 
 import BigNumberMetric from 'pages/stats/common/components/BigNumberMetric'
@@ -23,6 +25,8 @@ type Props = {
     currency?: string
     hint?: TooltipData
     'data-candu-id'?: string
+    action?: React.ReactNode
+    hideTrend?: boolean
 }
 
 export const Kpi = ({
@@ -33,7 +37,9 @@ export const Kpi = ({
     currency,
     hint,
     isLoading,
-    ...props
+    action,
+    hideTrend,
+    'data-candu-id': canduId,
 }: Props) => {
     const formattedValue = useMemo(() => {
         if (value === undefined) {
@@ -59,23 +65,28 @@ export const Kpi = ({
                 hint: hint,
                 title: cardTitle,
             }}
-            data-candu-id={props['data-candu-id']}
+            data-candu-id={canduId}
         >
-            <BigNumberMetric
-                isLoading={isLoading}
-                className={css.metric}
-                trendBadge={
-                    <TrendBadge
-                        value={value}
-                        prevValue={prevValue}
-                        metricFormat={metricFormat}
-                        currency={currency}
-                        interpretAs="more-is-better"
-                    />
-                }
-            >
-                {formattedValue}
-            </BigNumberMetric>
+            <div className={cn({ [css.metricWrapper]: !isLoading })}>
+                <BigNumberMetric
+                    isLoading={isLoading}
+                    className={css.metric}
+                    trendBadge={
+                        hideTrend ? undefined : (
+                            <TrendBadge
+                                value={value}
+                                prevValue={prevValue}
+                                metricFormat={metricFormat}
+                                currency={currency}
+                                interpretAs="more-is-better"
+                            />
+                        )
+                    }
+                >
+                    {formattedValue}
+                </BigNumberMetric>
+                {action}
+            </div>
         </MetricCard>
     )
 }
