@@ -95,6 +95,8 @@ export const SUPPORTED_UI_DATA_TYPE_VALUES: Record<
 export const AI_MANAGED_TYPES = {
     AI_INTENT: 'ai_intent',
     AI_OUTCOME: 'ai_outcome',
+    AI_SALES: 'ai_sales',
+    AI_DISCOUNT: 'ai_discount',
 }
 
 export const MANAGED_TYPES = {
