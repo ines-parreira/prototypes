@@ -266,7 +266,11 @@ export const handle2FAEnforced =
         }
 
         // Show a global banner if the 2fa is not required yet (see check2FARequired util function to see the condition on that)
-        if (!!twoFAEnforcedDatetime && !has2FAEnabled) {
+        if (
+            !!twoFAEnforcedDatetime &&
+            !has2FAEnabled &&
+            roleName !== UserRole.GorgiasAgent
+        ) {
             const twoFASetupDueDate = formatDatetime(
                 moment.utc(twoFAEnforcedDatetime),
                 datetimeFormat,
