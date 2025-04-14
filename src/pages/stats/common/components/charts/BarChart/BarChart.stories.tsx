@@ -5,10 +5,9 @@ import moment from 'moment'
 
 import analyticsColorsModern from 'assets/css/new/stats/modern.json'
 import { ticketsCreatedDataItem } from 'fixtures/chart'
+import { BarChart } from 'pages/stats/common/components/charts/BarChart/BarChart'
+import { ChartColors } from 'pages/stats/common/components/charts/types'
 import type { AnalyticsTheme } from 'pages/stats/common/theme'
-
-import { ChartColors } from '../types'
-import { BarChart } from './BarChart'
 
 const storyConfig: Meta = {
     title: 'Stats/BarChart',
@@ -46,7 +45,32 @@ MultipleLinesWithColorsFromDesign.args = {
 }
 
 export const MultipleLinesWithColorsFromDesignStacked = Template.bind({})
-const stackedColors = {
+
+const stackedColors: ChartColors & AnalyticsTheme = {
+    Main: {
+        Primary: {
+            value: analyticsColorsModern.analytics.data['dark-brown'].value,
+        },
+    },
+    Feedback: {
+        Error: {
+            value: analyticsColorsModern.analytics.data.indigo.value,
+        },
+        Success: {
+            value: analyticsColorsModern.analytics.data.turquoise.value,
+        },
+        Warning: {
+            value: analyticsColorsModern.analytics.data.pink.value,
+        },
+    },
+    Neutral: {
+        Grey_2: {
+            value: analyticsColorsModern.analytics.data.grey.value,
+        },
+        Grey_5: {
+            value: analyticsColorsModern.analytics.data.yellow.value,
+        },
+    },
     analytics: {
         data: {
             ...analyticsColorsModern.analytics.data,
@@ -62,7 +86,8 @@ const stackedColors = {
         },
         heatmap: analyticsColorsModern.analytics.heatmap,
     },
-} as ChartColors & AnalyticsTheme
+}
+
 MultipleLinesWithColorsFromDesignStacked.args = {
     ...defaultProps,
     data: new Array(3).fill(null).map((_, index) => ({

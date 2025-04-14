@@ -1,9 +1,11 @@
 import { fetchFilteredAutomatedInteractions } from 'hooks/reporting/automate/automationTrends'
+import { fetchAIAgentInteractionsDatasetBySkillTimeSeries } from 'hooks/reporting/automate/useAIAgentInteractionsBySkillTimeSeries'
 import { fetchAutomationCostSavedTrend } from 'hooks/reporting/automate/useAutomationCostSavedTrend'
 import { fetchAutomationRateTrend } from 'hooks/reporting/automate/useAutomationRateTrend'
 import { fetchDecreaseInFirstResponseTimeTrend } from 'hooks/reporting/automate/useDecreaseInFirstResponseTimeTrend'
 import { fetchDecreaseInResolutionTimeTrend } from 'hooks/reporting/automate/useDecreaseInResolutionTimeTrend'
 import { fetchTimeSavedByAgentsTrend } from 'hooks/reporting/automate/useTimeSavedByAgentsTrend'
+import { AIAgentSkills } from 'models/reporting/cubes/automate_v2/AIAgentIntercationsBySkillDatasetCube'
 import { FilterKey } from 'models/stat/types'
 import { AUTOMATION_RATE_TOOLTIP } from 'pages/automate/automate-metrics/AutomationRateMetric'
 import {
@@ -19,6 +21,11 @@ import { COST_SAVED_TOOLTIP } from 'pages/automate/automate-metrics/CostSavedMet
 import { DECREASE_IN_FIRST_RESPONSE_TOOLTIP } from 'pages/automate/automate-metrics/DecreaseInFirstResponseTimeMetric'
 import { DECREASE_IN_RESOLUTION_TIME_TOOLTIP } from 'pages/automate/automate-metrics/DecreaseInResolutionTimeMetric'
 import { TIME_SAVED_BY_AGENTS_TOOLTIP } from 'pages/automate/automate-metrics/TimeSavedByAgentsMetric'
+import {
+    AI_AGENT_AUTOMATED_INTERACTIONS_LABEL,
+    AI_AGENT_AUTOMATED_INTERACTIONS_TOOLTIP,
+    AIAgentAutomatedInteractionsGraphBar,
+} from 'pages/stats/automate/overview/charts/AIAgentAutomatedInteractionsGraphBar'
 import { AutomatedInteractionsGraphChart } from 'pages/stats/automate/overview/charts/AutomatedInteractionsGraphChart'
 import { AutomatedInteractionsKPIChart } from 'pages/stats/automate/overview/charts/AutomatedInteractionsKPIChart'
 import { AutomatedInteractionsPerFeatureGraphChart } from 'pages/stats/automate/overview/charts/AutomatedInteractionsPerFeatureGraphChart'
@@ -28,6 +35,12 @@ import { AutomationRateGraphChart } from 'pages/stats/automate/overview/charts/A
 import { AutomationRateKPIChart } from 'pages/stats/automate/overview/charts/AutomationRateKPIChart'
 import { DecreaseInResolutionTimeKPIChart } from 'pages/stats/automate/overview/charts/DecreaseInResolutionTimeKPIChart'
 import { TimeSavedByAgentsKPIChart } from 'pages/stats/automate/overview/charts/TimeSavedByAgentsKPIChart'
+import {
+    AUTOMATE_AI_AGENT_INTERACTIONS_FILENAME,
+    AUTOMATE_AI_AGENT_SALES_LABEL,
+    AUTOMATE_AI_AGENT_SUPPORT_LABEL,
+    DATES_WITHIN_PERIOD_LABEL,
+} from 'pages/stats/automate/overview/constants'
 import { ReportsIDs } from 'pages/stats/dashboards/constants'
 import {
     ChartType,
@@ -54,6 +67,7 @@ export enum AutomateOverviewChart {
     AutomationRateGraphChart = 'automation_rate_graph_chart',
     AutomatedInteractionsGraphChart = 'automated_interactions_graph_chart',
     AutomatedInteractionsPerFeatureGraphChart = 'automated_interactions_per_feature_graph_chart',
+    AIAgentAutomatedInteractionsGraphBar = 'ai_agent_automated_interactions_graph_bar',
 }
 
 export const AutomateOverviewReportConfig: ReportConfig<AutomateOverviewChart> =
@@ -87,6 +101,28 @@ export const AutomateOverviewReportConfig: ReportConfig<AutomateOverviewChart> =
                 ],
                 description: AUTOMATED_INTERACTION_TOOLTIP.title,
                 chartType: ChartType.Card,
+            },
+            [AutomateOverviewChart.AIAgentAutomatedInteractionsGraphBar]: {
+                chartComponent: AIAgentAutomatedInteractionsGraphBar,
+                label: AI_AGENT_AUTOMATED_INTERACTIONS_LABEL,
+                csvProducer: [
+                    {
+                        type: DataExportFormat.TimeSeriesPerDimension,
+                        fetch: fetchAIAgentInteractionsDatasetBySkillTimeSeries,
+                        title: AUTOMATE_AI_AGENT_INTERACTIONS_FILENAME,
+                        headers: [
+                            DATES_WITHIN_PERIOD_LABEL,
+                            AUTOMATE_AI_AGENT_SUPPORT_LABEL,
+                            AUTOMATE_AI_AGENT_SALES_LABEL,
+                        ],
+                        dimensions: [
+                            AIAgentSkills.AIAgentSupport,
+                            AIAgentSkills.AIAgentSales,
+                        ],
+                    },
+                ],
+                description: AI_AGENT_AUTOMATED_INTERACTIONS_TOOLTIP.title,
+                chartType: ChartType.Graph,
             },
             [AutomateOverviewChart.AutomationCostSavedKPIChart]: {
                 chartComponent: AutomationCostSavedKPIChart,

@@ -43,6 +43,8 @@ export default function AutomateOverviewContent() {
         useFlags()[FeatureFlagKey.AutomateOverviewChannelsFilter]
     const isTicketTimeToHandleEnabled: boolean | undefined =
         useFlags()[FeatureFlagKey.ObservabilityTicketTimeToHandle]
+    const isAutomateAIAgentInteractionsEnabled: boolean | undefined =
+        useFlags()[FeatureFlagKey.AutomateAIAgentInteractions]
 
     const [areTipsVisible, setAreTipsVisible] = useLocalStorage(
         AAO_TIPS_VISIBILITY_KEY,
@@ -161,6 +163,16 @@ export default function AutomateOverviewContent() {
                     </DashboardGridCell>
                 </DashboardSection>
                 <DashboardSection title="Impact">
+                    {isAutomateAIAgentInteractionsEnabled && (
+                        <DashboardGridCell size={12}>
+                            <DashboardComponent
+                                chart={
+                                    AutomateOverviewChart.AIAgentAutomatedInteractionsGraphBar
+                                }
+                                config={AutomateOverviewReportConfig}
+                            />
+                        </DashboardGridCell>
+                    )}
                     <DashboardGridCell size={6}>
                         <DashboardComponent
                             chart={

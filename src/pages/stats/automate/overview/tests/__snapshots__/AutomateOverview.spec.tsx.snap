@@ -447,6 +447,42 @@ exports[`<AutomateOverview /> Autoresponder deprecation should return false when
         >
           <div
             class="cell"
+            style="grid-column: span 12 / span 12;"
+          >
+            <div
+              class="Card--wrapper--3AkmE card"
+            >
+              <div
+                class="titleWrapper"
+              >
+                <div
+                  class="title"
+                >
+                  <span>
+                    AI Agent automated interactions
+                  </span>
+                  <div
+                    class="wrapper tooltip tooltipIcon"
+                  >
+                    <i
+                      class="material-icons-outlined icon"
+                      id="tooltip-abc"
+                    >
+                      info
+                    </i>
+                  </div>
+                </div>
+                <div
+                  class="chartsActionMenu"
+                />
+              </div>
+              <div>
+                BarChart
+              </div>
+            </div>
+          </div>
+          <div
+            class="cell"
             style="grid-column: span 6 / span 6;"
           >
             <div>
@@ -1177,6 +1213,42 @@ exports[`<AutomateOverview /> Performance Tips light-error should show tips with
               <div
                 class="wrapper"
               >
+                <div
+                  class="cell"
+                  style="grid-column: span 12 / span 12;"
+                >
+                  <div
+                    class="Card--wrapper--3AkmE card"
+                  >
+                    <div
+                      class="titleWrapper"
+                    >
+                      <div
+                        class="title"
+                      >
+                        <span>
+                          AI Agent automated interactions
+                        </span>
+                        <div
+                          class="wrapper tooltip tooltipIcon"
+                        >
+                          <i
+                            class="material-icons-outlined icon"
+                            id="tooltip-abc"
+                          >
+                            info
+                          </i>
+                        </div>
+                      </div>
+                      <div
+                        class="chartsActionMenu"
+                      />
+                    </div>
+                    <div>
+                      BarChart
+                    </div>
+                  </div>
+                </div>
                 <div
                   class="cell"
                   style="grid-column: span 6 / span 6;"
@@ -2027,6 +2099,42 @@ exports[`<AutomateOverview /> Performance Tips light-error should show tips with
             >
               <div
                 class="cell"
+                style="grid-column: span 12 / span 12;"
+              >
+                <div
+                  class="Card--wrapper--3AkmE card"
+                >
+                  <div
+                    class="titleWrapper"
+                  >
+                    <div
+                      class="title"
+                    >
+                      <span>
+                        AI Agent automated interactions
+                      </span>
+                      <div
+                        class="wrapper tooltip tooltipIcon"
+                      >
+                        <i
+                          class="material-icons-outlined icon"
+                          id="tooltip-abc"
+                        >
+                          info
+                        </i>
+                      </div>
+                    </div>
+                    <div
+                      class="chartsActionMenu"
+                    />
+                  </div>
+                  <div>
+                    BarChart
+                  </div>
+                </div>
+              </div>
+              <div
+                class="cell"
                 style="grid-column: span 6 / span 6;"
               >
                 <div>
@@ -2810,6 +2918,42 @@ exports[`<AutomateOverview /> Performance Tips light-success should show tips wi
               <div
                 class="wrapper"
               >
+                <div
+                  class="cell"
+                  style="grid-column: span 12 / span 12;"
+                >
+                  <div
+                    class="Card--wrapper--3AkmE card"
+                  >
+                    <div
+                      class="titleWrapper"
+                    >
+                      <div
+                        class="title"
+                      >
+                        <span>
+                          AI Agent automated interactions
+                        </span>
+                        <div
+                          class="wrapper tooltip tooltipIcon"
+                        >
+                          <i
+                            class="material-icons-outlined icon"
+                            id="tooltip-abc"
+                          >
+                            info
+                          </i>
+                        </div>
+                      </div>
+                      <div
+                        class="chartsActionMenu"
+                      />
+                    </div>
+                    <div>
+                      BarChart
+                    </div>
+                  </div>
+                </div>
                 <div
                   class="cell"
                   style="grid-column: span 6 / span 6;"
@@ -3660,6 +3804,42 @@ exports[`<AutomateOverview /> Performance Tips light-success should show tips wi
             >
               <div
                 class="cell"
+                style="grid-column: span 12 / span 12;"
+              >
+                <div
+                  class="Card--wrapper--3AkmE card"
+                >
+                  <div
+                    class="titleWrapper"
+                  >
+                    <div
+                      class="title"
+                    >
+                      <span>
+                        AI Agent automated interactions
+                      </span>
+                      <div
+                        class="wrapper tooltip tooltipIcon"
+                      >
+                        <i
+                          class="material-icons-outlined icon"
+                          id="tooltip-abc"
+                        >
+                          info
+                        </i>
+                      </div>
+                    </div>
+                    <div
+                      class="chartsActionMenu"
+                    />
+                  </div>
+                  <div>
+                    BarChart
+                  </div>
+                </div>
+              </div>
+              <div
+                class="cell"
                 style="grid-column: span 6 / span 6;"
               >
                 <div>
@@ -4443,6 +4623,42 @@ exports[`<AutomateOverview /> Performance Tips success should show tips with sen
               <div
                 class="wrapper"
               >
+                <div
+                  class="cell"
+                  style="grid-column: span 12 / span 12;"
+                >
+                  <div
+                    class="Card--wrapper--3AkmE card"
+                  >
+                    <div
+                      class="titleWrapper"
+                    >
+                      <div
+                        class="title"
+                      >
+                        <span>
+                          AI Agent automated interactions
+                        </span>
+                        <div
+                          class="wrapper tooltip tooltipIcon"
+                        >
+                          <i
+                            class="material-icons-outlined icon"
+                            id="tooltip-abc"
+                          >
+                            info
+                          </i>
+                        </div>
+                      </div>
+                      <div
+                        class="chartsActionMenu"
+                      />
+                    </div>
+                    <div>
+                      BarChart
+                    </div>
+                  </div>
+                </div>
                 <div
                   class="cell"
                   style="grid-column: span 6 / span 6;"
@@ -5293,6 +5509,42 @@ exports[`<AutomateOverview /> Performance Tips success should show tips with sen
             >
               <div
                 class="cell"
+                style="grid-column: span 12 / span 12;"
+              >
+                <div
+                  class="Card--wrapper--3AkmE card"
+                >
+                  <div
+                    class="titleWrapper"
+                  >
+                    <div
+                      class="title"
+                    >
+                      <span>
+                        AI Agent automated interactions
+                      </span>
+                      <div
+                        class="wrapper tooltip tooltipIcon"
+                      >
+                        <i
+                          class="material-icons-outlined icon"
+                          id="tooltip-abc"
+                        >
+                          info
+                        </i>
+                      </div>
+                    </div>
+                    <div
+                      class="chartsActionMenu"
+                    />
+                  </div>
+                  <div>
+                    BarChart
+                  </div>
+                </div>
+              </div>
+              <div
+                class="cell"
                 style="grid-column: span 6 / span 6;"
               >
                 <div>
@@ -6074,6 +6326,42 @@ exports[`<AutomateOverview /> Quickresponse deprecation should return false when
         >
           <div
             class="cell"
+            style="grid-column: span 12 / span 12;"
+          >
+            <div
+              class="Card--wrapper--3AkmE card"
+            >
+              <div
+                class="titleWrapper"
+              >
+                <div
+                  class="title"
+                >
+                  <span>
+                    AI Agent automated interactions
+                  </span>
+                  <div
+                    class="wrapper tooltip tooltipIcon"
+                  >
+                    <i
+                      class="material-icons-outlined icon"
+                      id="tooltip-abc"
+                    >
+                      info
+                    </i>
+                  </div>
+                </div>
+                <div
+                  class="chartsActionMenu"
+                />
+              </div>
+              <div>
+                BarChart
+              </div>
+            </div>
+          </div>
+          <div
+            class="cell"
             style="grid-column: span 6 / span 6;"
           >
             <div>
@@ -6783,6 +7071,42 @@ exports[`<AutomateOverview /> Quickresponse deprecation should return false when
         <div
           class="wrapper"
         >
+          <div
+            class="cell"
+            style="grid-column: span 12 / span 12;"
+          >
+            <div
+              class="Card--wrapper--3AkmE card"
+            >
+              <div
+                class="titleWrapper"
+              >
+                <div
+                  class="title"
+                >
+                  <span>
+                    AI Agent automated interactions
+                  </span>
+                  <div
+                    class="wrapper tooltip tooltipIcon"
+                  >
+                    <i
+                      class="material-icons-outlined icon"
+                      id="tooltip-abc"
+                    >
+                      info
+                    </i>
+                  </div>
+                </div>
+                <div
+                  class="chartsActionMenu"
+                />
+              </div>
+              <div>
+                BarChart
+              </div>
+            </div>
+          </div>
           <div
             class="cell"
             style="grid-column: span 6 / span 6;"
@@ -7513,6 +7837,42 @@ exports[`<AutomateOverview /> should display AAO 1`] = `
         >
           <div
             class="cell"
+            style="grid-column: span 12 / span 12;"
+          >
+            <div
+              class="Card--wrapper--3AkmE card"
+            >
+              <div
+                class="titleWrapper"
+              >
+                <div
+                  class="title"
+                >
+                  <span>
+                    AI Agent automated interactions
+                  </span>
+                  <div
+                    class="wrapper tooltip tooltipIcon"
+                  >
+                    <i
+                      class="material-icons-outlined icon"
+                      id="tooltip-abc"
+                    >
+                      info
+                    </i>
+                  </div>
+                </div>
+                <div
+                  class="chartsActionMenu"
+                />
+              </div>
+              <div>
+                BarChart
+              </div>
+            </div>
+          </div>
+          <div
+            class="cell"
             style="grid-column: span 6 / span 6;"
           >
             <div>
@@ -8239,6 +8599,42 @@ exports[`<AutomateOverview /> should display paywall 1`] = `
         <div
           class="wrapper"
         >
+          <div
+            class="cell"
+            style="grid-column: span 12 / span 12;"
+          >
+            <div
+              class="Card--wrapper--3AkmE card"
+            >
+              <div
+                class="titleWrapper"
+              >
+                <div
+                  class="title"
+                >
+                  <span>
+                    AI Agent automated interactions
+                  </span>
+                  <div
+                    class="wrapper tooltip tooltipIcon"
+                  >
+                    <i
+                      class="material-icons-outlined icon"
+                      id="tooltip-abc"
+                    >
+                      info
+                    </i>
+                  </div>
+                </div>
+                <div
+                  class="chartsActionMenu"
+                />
+              </div>
+              <div>
+                BarChart
+              </div>
+            </div>
+          </div>
           <div
             class="cell"
             style="grid-column: span 6 / span 6;"

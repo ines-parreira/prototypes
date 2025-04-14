@@ -1,1 +1,5 @@
 export const AAO_TIPS_VISIBILITY_KEY = 'gorgias-aao-stats-tips-visibility'
+export const DATES_WITHIN_PERIOD_LABEL = 'Dates within period'
+export const AUTOMATE_AI_AGENT_SUPPORT_LABEL = 'AI Agent Support'
+export const AUTOMATE_AI_AGENT_SALES_LABEL = 'AI Agent Sales'
+export const AUTOMATE_AI_AGENT_INTERACTIONS_FILENAME = 'AI Agent Interactions'

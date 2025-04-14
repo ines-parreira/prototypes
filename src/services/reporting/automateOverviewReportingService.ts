@@ -3,6 +3,7 @@ import { useMemo } from 'react'
 import moment from 'moment/moment'
 
 import { AutomateStatsMeasureLabelMap } from 'hooks/reporting/automate/automateStatsMeasureLabelMap'
+import { fetchAIAgentInteractionsDatasetBySkillTimeSeries } from 'hooks/reporting/automate/useAIAgentInteractionsBySkillTimeSeries'
 import { useAutomateFilters } from 'hooks/reporting/automate/useAutomateFilters'
 import {
     fetchAutomateMetricsTimeSeries,
@@ -10,15 +11,23 @@ import {
     useAutomateMetricsTrend,
 } from 'hooks/reporting/automate/useAutomationDataset'
 import { calculateGreyArea } from 'hooks/reporting/automate/utils'
+import { useTimeSeriesPerDimensionReportData } from 'hooks/reporting/common/useTimeSeriesReportData'
 import { getCsvFileNameWithDates } from 'hooks/reporting/common/utils'
 import { MetricTrend } from 'hooks/reporting/useMetricTrend'
 import { TimeSeriesDataItem } from 'hooks/reporting/useTimeSeries'
+import { AIAgentSkills } from 'models/reporting/cubes/automate_v2/AIAgentIntercationsBySkillDatasetCube'
 import { ReportingGranularity } from 'models/reporting/types'
 import { StatsFilters } from 'models/stat/types'
 import {
     DECREASE_IN_FIRST_RESPONSE,
     DECREASE_IN_RESOLUTION_TIME,
 } from 'pages/automate/automate-metrics/constants'
+import {
+    AUTOMATE_AI_AGENT_INTERACTIONS_FILENAME,
+    AUTOMATE_AI_AGENT_SALES_LABEL,
+    AUTOMATE_AI_AGENT_SUPPORT_LABEL,
+    DATES_WITHIN_PERIOD_LABEL,
+} from 'pages/stats/automate/overview/constants'
 import { getTimeSeriesFormattedData } from 'pages/stats/automate/overview/utils'
 import {
     AUTOMATED_INTERACTIONS_LABEL,
@@ -31,6 +40,8 @@ import {
     PREVIOUS_PERIOD_LABEL,
 } from 'services/reporting/constants'
 import { createCsv } from 'utils/file'
+
+import { createTimeSeriesPerDimensionReport } from './SLAsReportingService'
 
 export const AUTOMATE_IMPACT_FILENAME = 'automate-impact'
 export const AUTOMATE_PERFORMANCE_FILENAME = 'automate-performance'
@@ -337,6 +348,19 @@ const useImpactReport = (statsFilters: StatsFilters, userTimezone: string) => {
     }
 }
 
+export const automateTrendSource = [
+    {
+        fetchTimeSeries: fetchAIAgentInteractionsDatasetBySkillTimeSeries,
+        title: AUTOMATE_AI_AGENT_INTERACTIONS_FILENAME,
+        headers: [
+            DATES_WITHIN_PERIOD_LABEL,
+            AUTOMATE_AI_AGENT_SUPPORT_LABEL,
+            AUTOMATE_AI_AGENT_SALES_LABEL,
+        ],
+        dimensions: [AIAgentSkills.AIAgentSupport, AIAgentSkills.AIAgentSales],
+    },
+]
+
 export const useAutomateOverviewReportData = () => {
     const { statsFilters, userTimezone, granularity } = useAutomateFilters()
     const impactReport = useImpactReport(statsFilters, userTimezone)
@@ -350,6 +374,17 @@ export const useAutomateOverviewReportData = () => {
         userTimezone,
         granularity,
     )
+    const aiAgentInteractionsTimeSeries = useTimeSeriesPerDimensionReportData(
+        statsFilters,
+        userTimezone,
+        granularity,
+        automateTrendSource,
+    )
+
+    const timeSeriesTrend = createTimeSeriesPerDimensionReport(
+        aiAgentInteractionsTimeSeries.data,
+        statsFilters.period,
+    )
 
     const fileName = getCsvFileNameWithDates(
         statsFilters.period,
@@ -357,6 +392,7 @@ export const useAutomateOverviewReportData = () => {
     )
     return {
         files: {
+            ...timeSeriesTrend.files,
             ...impactReport.files,
             ...performanceReport.files,
             ...performanceByFeatureReport.files,

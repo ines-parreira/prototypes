@@ -36,6 +36,7 @@ import {
 } from 'pages/stats/automate/overview/AutomateOverview'
 import { AutomateOverviewDownloadDataButton } from 'pages/stats/automate/overview/AutomateOverviewDownloadDataButton'
 import { TimeSavedByAgentsKPIChart } from 'pages/stats/automate/overview/charts/TimeSavedByAgentsKPIChart'
+import { BarChart } from 'pages/stats/common/components/charts/BarChart/BarChart'
 import TrendBadge from 'pages/stats/common/components/TrendBadge'
 import { ADD_FILTER_BUTTON_LABEL } from 'pages/stats/common/filters/AddFilterButton'
 import { FilterLabels } from 'pages/stats/common/filters/constants'
@@ -126,6 +127,9 @@ const useAutomationRateTimeSeriesDataMock = assumeMock(
 
 jest.mock('pages/stats/automate/overview/charts/TimeSavedByAgentsKPIChart')
 const TimeSavedByAgentsKPIChartMock = assumeMock(TimeSavedByAgentsKPIChart)
+
+jest.mock('pages/stats/common/components/charts/BarChart/BarChart')
+const BarChartMock = assumeMock(BarChart)
 
 describe('<AutomateOverview />', () => {
     function getIntegration(id: number, type: IntegrationType) {
@@ -257,7 +261,10 @@ describe('<AutomateOverview />', () => {
 
     beforeEach(() => {
         jest.resetAllMocks()
-        mockFlags({ [FeatureFlagKey.AutomateOverviewChannelsFilter]: true })
+        mockFlags({
+            [FeatureFlagKey.AutomateOverviewChannelsFilter]: true,
+            [FeatureFlagKey.AutomateAIAgentInteractions]: true,
+        })
 
         useFilteredAutomatedInteractionsMock.mockReturnValue(
             automatedInteractionTrend,
@@ -290,6 +297,8 @@ describe('<AutomateOverview />', () => {
         AutomateOverviewDownloadDataButtonMock.mockImplementation(() => <div />)
 
         mockedUseSearchParam.mockReturnValue([null, jest.fn()])
+
+        BarChartMock.mockReturnValue(<div>BarChart</div>)
     })
 
     it('should display paywall', () => {

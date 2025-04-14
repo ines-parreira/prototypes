@@ -29,6 +29,7 @@ export enum FeatureFlagKey {
     AnalyticsDeferredLoadingExperiment = 'analytics-deferred-loading-experiment',
     AutomateNonFilteredDenominatorInAutomationRate = 'use-non-filtered-automated-interactions-in-automation-rate-denominator',
     AutomateOverviewChannelsFilter = 'automate-overview-channels-filter',
+    AutomateAIAgentInteractions = 'automate-ai-agent-interactions',
     AutomateSettingsRevamp = 'linear.project_automate-settings-revamp.access',
     BannerCarousel = 'banner-carousel',
     BigCommerceCreateOrder = 'bigcommerce-create-order',

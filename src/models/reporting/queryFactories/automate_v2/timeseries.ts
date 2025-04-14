@@ -1,4 +1,10 @@
 import {
+    AIAgentAutomatedInteractionsCube,
+    AIAgentInteractionsBySkillDatasetDimension,
+    AIAgentInteractionsBySkillFilterMember,
+    AIAgentInteractionsBySkillMeasure,
+} from 'models/reporting/cubes/automate_v2/AIAgentIntercationsBySkillDatasetCube'
+import {
     AutomationDatasetCube,
     AutomationDatasetDimension,
     AutomationDatasetMeasure,
@@ -19,7 +25,10 @@ import {
     TimeSeriesQuery,
 } from 'models/reporting/types'
 import { StatsFilters } from 'models/stat/types'
-import { getFilterDateRange } from 'utils/reporting'
+import {
+    getFilterDateRange,
+    statsFiltersToReportingFilters,
+} from 'utils/reporting'
 
 export const interactionsTimeSeriesQueryFactory = (
     filters: StatsFilters,
@@ -97,3 +106,34 @@ export const billableTicketDatasetExcludingAIAgentTimeSeriesQueryFactory = (
             : []),
     ],
 })
+
+export const AIAgentInteractionsFiltersMembers = {
+    periodStart: AIAgentInteractionsBySkillFilterMember.PeriodStart,
+    periodEnd: AIAgentInteractionsBySkillFilterMember.PeriodEnd,
+}
+
+export const AIAgentInteractionsBySkillTimeSeriesQueryFactory = (
+    filters: StatsFilters,
+    timezone: string,
+    granularity: ReportingGranularity,
+): TimeSeriesQuery<AIAgentAutomatedInteractionsCube> => {
+    return {
+        measures: [AIAgentInteractionsBySkillMeasure.Count],
+        dimensions: [AIAgentInteractionsBySkillDatasetDimension.BillableType],
+        timezone,
+        timeDimensions: [
+            {
+                dimension:
+                    AIAgentInteractionsBySkillDatasetDimension.AutomationEventCreatedDatetime,
+                granularity,
+                dateRange: getFilterDateRange(filters.period),
+            },
+        ],
+        filters: [
+            ...statsFiltersToReportingFilters(
+                AIAgentInteractionsFiltersMembers,
+                filters,
+            ),
+        ],
+    }
+}

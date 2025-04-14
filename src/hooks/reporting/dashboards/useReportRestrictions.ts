@@ -6,6 +6,7 @@ import { FeatureFlagKey } from 'config/featureFlags'
 import useAppSelector from 'hooks/useAppSelector'
 import { AutomateAiAgentsReportConfig } from 'pages/stats/automate/ai-agent/AutomateAiAgentsReportConfig'
 import { AiSalesAgentReportConfig } from 'pages/stats/automate/aiSalesAgent/AiSalesAgentReportConfig'
+import { AutomateOverviewChart } from 'pages/stats/automate/overview/AutomateOverviewReportConfig'
 import { getComponentConfig } from 'pages/stats/dashboards/config'
 import { HelpCenterReportConfig } from 'pages/stats/help-center/components/HelpCenterReport/HelpCenterReportConfig'
 import { SatisfactionReportConfig } from 'pages/stats/quality-management/satisfaction/SatisfactionReportConfig'
@@ -18,8 +19,6 @@ import { isTeamLead } from 'utils'
 
 export type RestrictionsMap = Record<string, boolean | undefined>
 
-const chartRestrictionsMap: RestrictionsMap = {}
-
 export const useReportRestrictions = () => {
     const isNewSatisfactionReportEnabled =
         useFlags()[FeatureFlagKey.NewSatisfactionReport]
@@ -31,6 +30,8 @@ export const useReportRestrictions = () => {
         useFlags()[FeatureFlagKey.StandaloneAiSalesAnalyticsPage]
     const isReportingVoiceOfCustomerEnabled =
         !!useFlags()[FeatureFlagKey.ReportingVoiceOfCustomer]
+    const isAutomateAIAgentInteractionsEnabled: boolean | undefined =
+        useFlags()[FeatureFlagKey.AutomateAIAgentInteractions]
 
     const user = useAppSelector(getCurrentUser)
     const hasAutomate = useAppSelector(getHasAutomate)
@@ -56,6 +57,14 @@ export const useReportRestrictions = () => {
             isNewSatisfactionReportEnabled,
             isStandaloneSalesOverviewEnabled,
         ],
+    )
+
+    const chartRestrictionsMap: RestrictionsMap = useMemo(
+        () => ({
+            [AutomateOverviewChart.AIAgentAutomatedInteractionsGraphBar]:
+                !isAutomateAIAgentInteractionsEnabled,
+        }),
+        [isAutomateAIAgentInteractionsEnabled],
     )
 
     const moduleRestrictionsMap: RestrictionsMap = useMemo(
