@@ -77,7 +77,7 @@ describe('Body', () => {
         }
         const { container } = render(
             <Provider store={store}>
-                <Body message={facebookCarouselMessage} />
+                <Body message={facebookCarouselMessage} messagePosition={1} />
             </Provider>,
         )
         expect(container.firstChild).toMatchSnapshot()
@@ -90,6 +90,7 @@ describe('Body', () => {
             ...defaultMessage,
             sent_datetime: '2021-09-07T01:51:41+00:00',
             channel: TicketChannel.Twitter,
+            messagePosition: 1,
             meta: {
                 quoted_tweet: {
                     id: '1435008444520615940',
@@ -203,7 +204,7 @@ describe('Body', () => {
         }
         const { container } = render(
             <Provider store={store}>
-                <Body message={quotedTweetTicketMessage} />
+                <Body message={quotedTweetTicketMessage} messagePosition={1} />
             </Provider>,
         )
         expect(container.firstChild).toMatchSnapshot()
@@ -311,7 +312,7 @@ describe('Body', () => {
         }
         const { container } = render(
             <Provider store={store}>
-                <Body message={productCardTicketMessage} />
+                <Body message={productCardTicketMessage} messagePosition={1} />
             </Provider>,
         )
         expect(container.firstChild).toMatchSnapshot()

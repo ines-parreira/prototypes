@@ -42,6 +42,7 @@ type Props = {
     customer: Map<any, any>
     lastCustomerMessage: Map<any, any>
     ticketMeta: Map<any, any> | null
+    messagePosition: number
 }
 
 export default function TicketMessages({
@@ -56,6 +57,7 @@ export default function TicketMessages({
     lastCustomerMessage,
     customer = fromJS({}),
     ticketMeta,
+    messagePosition,
 }: Props) {
     const isFeedbackToAiAgentEnabled =
         useFlags()[FeatureFlagKey.FeedbackToAIAgentInTicketViews]
@@ -198,18 +200,21 @@ export default function TicketMessages({
                 'sent_datetime',
             )}
         >
-            {messages.map((message: TicketMessage, index: number) => (
-                <Message
-                    key={message.id || `${id}-${index}`}
-                    message={message}
-                    ticketId={ticketId}
-                    setStatus={setStatus}
-                    showSourceDetails={!!index}
-                    timezone={timezone}
-                    showMessageStatusIndicator={showMessageStatusIndicator}
-                    isAIAgentMessage={isAIAgentMessage}
-                />
-            ))}
+            {messages?.map((message: TicketMessage, index: number) => {
+                return (
+                    <Message
+                        key={message.id || `${id}-${index}`}
+                        message={message}
+                        ticketId={ticketId}
+                        setStatus={setStatus}
+                        showSourceDetails={!!index}
+                        timezone={timezone}
+                        showMessageStatusIndicator={showMessageStatusIndicator}
+                        isAIAgentMessage={isAIAgentMessage}
+                        messagePosition={messagePosition}
+                    />
+                )
+            })}
         </Container>
     )
 }

@@ -47,6 +47,7 @@ jest.mock(
 const sharedProps: ComponentProps<typeof Content> = {
     messageId: 1,
     meta: null,
+    messagePosition: 1,
 }
 
 describe('Content', () => {
@@ -297,10 +298,29 @@ describe('Content', () => {
                 html="long html"
                 strippedHtml="stripped html"
                 strippedText="stripped text"
+                messagePosition={2}
             />,
         )
 
         userEvent.click(getByText('…'))
         expect(logEvent).toHaveBeenCalledWith(SegmentEvent.MessageThreadClicked)
+    })
+
+    it('should not track when showing full content', () => {
+        const { getByText } = render(
+            <Content
+                {...sharedProps}
+                text="text"
+                html="long html"
+                strippedHtml="stripped html"
+                strippedText="stripped text"
+                messagePosition={1}
+            />,
+        )
+
+        userEvent.click(getByText('…'))
+        expect(logEvent).not.toHaveBeenCalledWith(
+            SegmentEvent.MessageThreadClicked,
+        )
     })
 })

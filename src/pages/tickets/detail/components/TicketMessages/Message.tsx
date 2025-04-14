@@ -22,6 +22,7 @@ type Props = {
     ticketId: number
     timezone: string
     isAIAgentMessage: boolean
+    messagePosition: number
 }
 
 export default function Message({
@@ -32,6 +33,7 @@ export default function Message({
     ticketId,
     timezone,
     isAIAgentMessage,
+    messagePosition,
 }: Props) {
     const hasError = isFailed(message)
     const [isOver, setIsOver] = useState(false)
@@ -60,7 +62,11 @@ export default function Message({
             {!!message?.meta?.replied_to && (
                 <ReplyDetailsCard reply={message.meta.replied_to} />
             )}
-            <Body message={message} hasError={hasError} />
+            <Body
+                message={message}
+                hasError={hasError}
+                messagePosition={messagePosition}
+            />
             <Attachments message={message} />
             {!isAIAgentMessage && <Actions message={message} />}
             <Errors

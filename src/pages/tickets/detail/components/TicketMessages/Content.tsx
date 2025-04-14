@@ -24,6 +24,7 @@ type Props = {
     text?: string
     strippedHtml?: string | null
     strippedText?: string | null
+    messagePosition: number
 }
 
 const Content = ({
@@ -33,6 +34,7 @@ const Content = ({
     text,
     strippedHtml,
     strippedText,
+    messagePosition,
 }: Props) => {
     const { toggleQuote, expandedQuotes } = useContext(MessageQuoteContext)
 
@@ -98,7 +100,9 @@ const Content = ({
     )
 
     const handleShowFullContent = () => {
-        logEvent(SegmentEvent.MessageThreadClicked)
+        if (messagePosition > 1) {
+            logEvent(SegmentEvent.MessageThreadClicked)
+        }
         toggleQuote(messageId)
     }
 

@@ -17,10 +17,11 @@ type Props = {
     message: TicketMessage
     className?: string
     hasError?: boolean
+    messagePosition?: number
 }
 
 const Body = (props: Props) => {
-    const { message, className } = props
+    const { message, className, messagePosition = 1 } = props
 
     return (
         <div
@@ -35,6 +36,7 @@ const Body = (props: Props) => {
                 strippedHtml={message.stripped_html}
                 strippedText={message.stripped_text}
                 meta={message.meta}
+                messagePosition={messagePosition}
             />
 
             {message.meta && message.meta.facebook_carousel && (

@@ -99,6 +99,7 @@ const TicketBodyElement = ({
                 ticketId={ticket.get('id')}
                 timezone={currentUser.get('timezone')}
                 ticketMeta={ticket.get('meta')}
+                messagePosition={index}
             />
         )
     }

@@ -28,6 +28,7 @@ describe('Message', () => {
         ticketId: 1,
         timezone: 'UTC',
         isAIAgentMessage: false,
+        messagePosition: 1,
     }
 
     it('should render a message with all required sections', () => {
