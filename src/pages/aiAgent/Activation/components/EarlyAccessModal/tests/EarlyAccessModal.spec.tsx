@@ -48,36 +48,6 @@ describe('<EarlyAccessModal />', () => {
         )
     })
 
-    it('should open the tips list when clicking on tips title', () => {
-        render(
-            <EarlyAccessModal
-                isOpen
-                isLoading={true}
-                onClose={() => {}}
-                onUpgradeClick={() => {}}
-                userIsAdmin={true}
-                isUpgrading={false}
-            />,
-        )
-
-        expect(
-            screen.queryByText(
-                'Acts as a 24/7 virtual shopping assistant, instantly answering pre-sales questions',
-            ),
-        ).not.toBeInTheDocument()
-
-        const tipsTitle = screen.getByText(
-            'Increase your chat conversion rate and maximize revenue opportunities',
-        )
-        fireEvent.click(tipsTitle)
-
-        expect(
-            screen.queryByText(
-                'Acts as a 24/7 virtual shopping assistant, instantly answering pre-sales questions',
-            ),
-        ).toBeInTheDocument()
-    })
-
     it('should render good pricing values', () => {
         render(
             <EarlyAccessModal

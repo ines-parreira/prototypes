@@ -49,8 +49,7 @@ export const EarlyAccessModal = ({
     userIsAdmin,
     isUpgrading,
 }: Props) => {
-    const { amountAfterDiscount, amount } =
-        getAutomateEarlyAccessPricesFormatted(earlyAccessPlan)
+    const { amount } = getAutomateEarlyAccessPricesFormatted(earlyAccessPlan)
     const currency = currentPlan?.currency ?? 'USD'
 
     const helpdeskPlanTicketCost = formatAmount(
@@ -65,11 +64,12 @@ export const EarlyAccessModal = ({
         currency,
     )
     const earlyAccessPlanExtraTicketCost = formatAmount(1.5, currency)
+    const currentPlanPrice = formatAmount(
+        (currentPlan?.amount ?? 0) / 100,
+        currency,
+    )
 
-    const [isTipsOpen, setIsTipsOpen] = useState(false)
     const [isTermsChecked, setIsTermsChecked] = useState(false)
-
-    const toggleTips = () => setIsTipsOpen(!isTipsOpen)
 
     return (
         <Modal
@@ -120,9 +120,51 @@ export const EarlyAccessModal = ({
                             Upon upgrading your AI Agent, a $1.00 fee applies
                             for each AI-driven automated interaction, plus a{' '}
                             {helpdeskPlanTicketCost} helpdesk fee.
+                            <br />
+                            Your current plan is {currentPlanPrice}/
+                            {currentPlan?.cadence}.
                         </CardCaption>
                     </CardHeader>
                     <CardContent className={css.content}>
+                        <div className={css.tips}>
+                            <div className={css.tipTitle}>
+                                <h3>
+                                    <i className="material-icons">
+                                        auto_awesome
+                                    </i>
+                                    <span>
+                                        Increase your chat conversion rate and
+                                        maximize revenue opportunities
+                                    </span>
+                                </h3>
+                            </div>
+                            <ul className={css.tipList}>
+                                <li>
+                                    <i className="material-icons">flare</i>
+                                    <span>
+                                        Acts as a 24/7 virtual shopping
+                                        assistant, instantly answering pre-sales
+                                        questions
+                                    </span>
+                                </li>
+                                <li>
+                                    <i className="material-icons">flare</i>
+                                    <span>
+                                        Delivers personalized product
+                                        recommendations to drive upsells and
+                                        cross-sells
+                                    </span>
+                                </li>
+                                <li>
+                                    <i className="material-icons">flare</i>
+                                    <span>
+                                        Uses dynamic discounts based on purchase
+                                        intent without sacrificing margins
+                                    </span>
+                                </li>
+                            </ul>
+                        </div>
+
                         <div className={css.contentGrid}>
                             <div className={css.innerContent}>
                                 <h3>AI Agent Skills</h3>
@@ -188,27 +230,9 @@ export const EarlyAccessModal = ({
                                     {isLoading ? (
                                         <Skeleton width={140} height={22} />
                                     ) : (
-                                        <>
-                                            {amount &&
-                                                amount !==
-                                                    amountAfterDiscount && (
-                                                    <>
-                                                        <span
-                                                            className={
-                                                                css.compareAtPrice
-                                                            }
-                                                        >
-                                                            {
-                                                                amountAfterDiscount
-                                                            }
-                                                        </span>{' '}
-                                                    </>
-                                                )}
-                                            <span>
-                                                {amount}/
-                                                {earlyAccessPlan?.cadence}
-                                            </span>
-                                        </>
+                                        <span>
+                                            {amount}/{earlyAccessPlan?.cadence}
+                                        </span>
                                     )}
                                 </span>
                                 <span className={css.subPrice}>
@@ -219,57 +243,6 @@ export const EarlyAccessModal = ({
                                     )}
                                 </span>
                             </div>
-                        </div>
-                        <div className={css.tips}>
-                            <div className={css.tipTitle} onClick={toggleTips}>
-                                <h3>
-                                    <i className="material-icons">
-                                        auto_awesome
-                                    </i>
-                                    <span>
-                                        Increase your chat conversion rate and
-                                        maximize revenue opportunities
-                                    </span>
-                                </h3>
-                                <i
-                                    className={cn(
-                                        'material-icons',
-                                        css.toggleTipsIcon,
-                                    )}
-                                >
-                                    {isTipsOpen
-                                        ? 'keyboard_arrow_up'
-                                        : 'keyboard_arrow_down'}
-                                </i>
-                            </div>
-                            {isTipsOpen && (
-                                <ul className={css.tipList}>
-                                    <li>
-                                        <i className="material-icons">flare</i>
-                                        <span>
-                                            Acts as a 24/7 virtual shopping
-                                            assistant, instantly answering
-                                            pre-sales questions
-                                        </span>
-                                    </li>
-                                    <li>
-                                        <i className="material-icons">flare</i>
-                                        <span>
-                                            Delivers personalized product
-                                            recommendations to drive upsells and
-                                            cross-sells
-                                        </span>
-                                    </li>
-                                    <li>
-                                        <i className="material-icons">flare</i>
-                                        <span>
-                                            Uses dynamic discounts based on
-                                            purchase intent without sacrificing
-                                            margins
-                                        </span>
-                                    </li>
-                                </ul>
-                            )}
                         </div>
                     </CardContent>
                 </Card>

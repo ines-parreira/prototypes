@@ -105,6 +105,7 @@
 
     .content {
         margin: 0;
+        gap: @layout-spacing-xl;
 
         h3 {
             .heading-subsection-semibold();
@@ -166,7 +167,6 @@
         }
 
         .tips {
-            margin-top: @layout-spacing-m;
             background: var(--accessory-magenta-1, #faeaff);
             border: solid 1px var(--accessory-magenta-2, #f5d4ff);
             padding: @layout-spacing-s;
@@ -183,11 +183,6 @@
                 justify-content: space-between;
                 align-items: center;
                 cursor: pointer;
-            }
-
-            .toggleTipsIcon {
-                font-size: 24px;
-                color: var(--accessory-magenta-25);
             }
 
             ul {
