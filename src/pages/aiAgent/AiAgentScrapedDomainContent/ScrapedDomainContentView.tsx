@@ -109,7 +109,7 @@ const ScrapedDomainContentView = ({
                                                   />
                                               )}
 
-                                              {content.name}
+                                              {content.title}
                                           </BodyCell>
                                           <BodyCell>
                                               <i

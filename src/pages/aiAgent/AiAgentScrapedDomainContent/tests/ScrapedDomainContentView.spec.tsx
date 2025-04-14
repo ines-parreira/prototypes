@@ -13,7 +13,7 @@ const mockOnFetchPrevItems = jest.fn()
 const mockContent: ScrapedContent[] = [
     {
         id: 1,
-        name: 'Sample Question or Product',
+        title: 'Sample Question or Product',
         imageUrl: 'https://example.com/image.jpg',
     },
 ]
@@ -60,7 +60,7 @@ describe('ScrapedDomainContentView', () => {
 
     it('calls onSelect when row is clicked', () => {
         setup()
-        const row = screen.getByText(mockContent[0].name)
+        const row = screen.getByText(mockContent[0].title)
         fireEvent.click(row)
         expect(mockOnSelect).toHaveBeenCalledWith(mockContent[0])
     })

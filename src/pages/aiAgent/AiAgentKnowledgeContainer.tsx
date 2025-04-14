@@ -4,7 +4,7 @@ import { useFlags } from 'launchdarkly-react-client-sdk'
 import { useParams } from 'react-router-dom'
 
 import { Card } from '@gorgias/analytics-ui-kit'
-import { Label } from '@gorgias/merchant-ui-kit'
+import { Banner, Button, Label } from '@gorgias/merchant-ui-kit'
 
 import { SentryTeam } from 'common/const/sentryTeamNames'
 import { FeatureFlagKey } from 'config/featureFlags'
@@ -19,19 +19,21 @@ import { FormValues } from 'pages/aiAgent/types'
 import HelpCenterSelect, {
     EMPTY_HELP_CENTER_ID,
 } from 'pages/automate/common/components/HelpCenterSelect'
-import Button from 'pages/common/components/button/Button'
 import Loader from 'pages/common/components/Loader/Loader'
 import UnsavedChangesPrompt from 'pages/common/components/UnsavedChangesPrompt'
+import history from 'pages/history'
 import { HELP_CENTER_MAX_CREATION } from 'pages/settings/helpCenter/constants'
 import { getCurrentAccountState } from 'state/currentAccount/selectors'
 import { notify } from 'state/notifications/actions'
 import { NotificationStatus } from 'state/notifications/types'
 import { reportError } from 'utils/errors'
 
+import { IngestionLogStatus } from './AiAgentScrapedDomainContent/constant'
 import { ConfigurationSection } from './components/ConfigurationSection/ConfigurationSection'
 import { ScrapeStoreDomainSection } from './components/Knowledge/ScrapeStoreDomainSection'
 import { CreatePublicSourcesSection } from './components/StoreConfigForm/StoreConfigForm'
 import { AI_AGENT, INITIAL_FORM_VALUES, KNOWLEDGE } from './constants'
+import { useAiAgentNavigation } from './hooks/useAiAgentNavigation'
 import { useGetOrCreateSnippetHelpCenter } from './hooks/useGetOrCreateSnippetHelpCenter'
 import { getFormValuesFromStoreConfiguration } from './hooks/utils/configurationForm.utils'
 
@@ -51,9 +53,15 @@ export const AiAgentKnowledgeContainer = () => {
         boolean | undefined
     >()
 
+    const [syncStoreDomainStatus, setSyncStoreDomainStatus] = useState<
+        string | null
+    >(null)
+
     const { shopName } = useParams<{
         shopName: string
     }>()
+
+    const { routes } = useAiAgentNavigation({ shopName })
 
     const {
         isLoading: isStoreConfigLoading,
@@ -193,6 +201,57 @@ export const AiAgentKnowledgeContainer = () => {
         return <Loader data-testid="loader" />
     }
 
+    const onReview = () => {
+        history.push(routes.pagesContent)
+    }
+
+    const reviewButton = (
+        <Button fillStyle="ghost" onClick={onReview}>
+            Review
+        </Button>
+    )
+
+    const pendingBanner = () => (
+        <Banner
+            variant="inline"
+            icon
+            type="loading"
+            fillStyle="fill"
+            onClose={() => setSyncStoreDomainStatus(null)}
+            className={css.banner}
+        >
+            Your store domain is currently being synced. You will be notified
+            once complete. In the meantime, AI Agent may not have your latest
+            content.
+        </Banner>
+    )
+
+    const successBanner = () => (
+        <Banner
+            variant="inline"
+            icon
+            type="success"
+            fillStyle="fill"
+            onClose={() => setSyncStoreDomainStatus(null)}
+            className={css.banner}
+            action={reviewButton}
+        >
+            Your store domain has been synced successfully and is in use by AI
+            Agent. Review newly generated content for accuracy.
+        </Banner>
+    )
+
+    const renderBanner = () => {
+        switch (syncStoreDomainStatus) {
+            case IngestionLogStatus.Pending:
+                return pendingBanner()
+            case IngestionLogStatus.Successful:
+                return successBanner()
+            default:
+                return null
+        }
+    }
+
     return (
         <AiAgentLayout
             shopName={shopName}
@@ -207,71 +266,91 @@ export const AiAgentKnowledgeContainer = () => {
 
             <form onSubmit={onSubmit} className={css.container}>
                 {isAiAgentScrapeStoreDomainEnabled ? (
-                    <ConfigurationSection
-                        subtitle="AI Agent uses your knowledge answer customer questions and resolve requests."
-                        data-candu-id="ai-agent-configuration-knowledge-copy"
-                    >
-                        <div className={css.cardsContainer}>
-                            {snippetHelpCenter && (
-                                <Card className={css.cardSection}>
-                                    <ScrapeStoreDomainSection
-                                        shopName={shopName}
-                                        helpCenterId={snippetHelpCenter.id}
-                                    />
-                                </Card>
-                            )}
-
-                            <Card className={css.cardSection}>
-                                <div className={css.labelSection}>
-                                    <Label>Help Center</Label>
-                                    <span>
-                                        Allow AI Agent to use articles from your
-                                        Help Center.
-                                    </span>
-                                </div>
-                                <HelpCenterSelect
-                                    helpCenter={selectedHelpCenter}
-                                    setHelpCenterId={setHelpCenterId}
-                                    helpCenters={faqHelpCenters}
-                                    withEmptyItemSelection
-                                    className={css.helpCenterSelect}
-                                />
-                                <div className={css.formInputFooterInfo}>
-                                    Select a Help Center to connect to AI Agent.
-                                </div>
-                            </Card>
-
-                            {snippetHelpCenter ? (
-                                <>
+                    <>
+                        {syncStoreDomainStatus &&
+                            (syncStoreDomainStatus ===
+                                IngestionLogStatus.Pending ||
+                                syncStoreDomainStatus ===
+                                    IngestionLogStatus.Successful) &&
+                            renderBanner()}
+                        <ConfigurationSection
+                            subtitle="AI Agent uses your knowledge answer customer questions and resolve requests."
+                            data-candu-id="ai-agent-configuration-knowledge-copy"
+                        >
+                            <div className={css.cardsContainer}>
+                                {snippetHelpCenter && (
                                     <Card className={css.cardSection}>
-                                        <CreatePublicSourcesSection
-                                            helpCenterId={snippetHelpCenter.id}
-                                            selectedHelpCenterId={
-                                                selectedHelpCenter?.id
-                                            }
-                                            onPublicURLsChanged={
-                                                handlePublicURLsChange
-                                            }
+                                        <ScrapeStoreDomainSection
                                             shopName={shopName}
-                                        />
-                                    </Card>
-                                    <Card className={css.cardSection}>
-                                        <ExternalFilesSection
                                             helpCenterId={snippetHelpCenter.id}
-                                            onLoadingStateChange={(isLoading) =>
-                                                setExternalFilesIsLoading(
-                                                    isLoading,
-                                                )
-                                            }
-                                            onEmptyStateChange={(isEmpty) =>
-                                                setHasExternalFiles(!isEmpty)
+                                            onStatusChange={
+                                                setSyncStoreDomainStatus
                                             }
                                         />
                                     </Card>
-                                </>
-                            ) : null}
-                        </div>
-                    </ConfigurationSection>
+                                )}
+
+                                <Card className={css.cardSection}>
+                                    <div className={css.labelSection}>
+                                        <Label>Help Center</Label>
+                                        <span>
+                                            Allow AI Agent to use articles from
+                                            your Help Center.
+                                        </span>
+                                    </div>
+                                    <HelpCenterSelect
+                                        helpCenter={selectedHelpCenter}
+                                        setHelpCenterId={setHelpCenterId}
+                                        helpCenters={faqHelpCenters}
+                                        withEmptyItemSelection
+                                        className={css.helpCenterSelect}
+                                    />
+                                    <div className={css.formInputFooterInfo}>
+                                        Select a Help Center to connect to AI
+                                        Agent.
+                                    </div>
+                                </Card>
+
+                                {snippetHelpCenter ? (
+                                    <>
+                                        <Card className={css.cardSection}>
+                                            <CreatePublicSourcesSection
+                                                helpCenterId={
+                                                    snippetHelpCenter.id
+                                                }
+                                                selectedHelpCenterId={
+                                                    selectedHelpCenter?.id
+                                                }
+                                                onPublicURLsChanged={
+                                                    handlePublicURLsChange
+                                                }
+                                                shopName={shopName}
+                                            />
+                                        </Card>
+                                        <Card className={css.cardSection}>
+                                            <ExternalFilesSection
+                                                helpCenterId={
+                                                    snippetHelpCenter.id
+                                                }
+                                                onLoadingStateChange={(
+                                                    isLoading,
+                                                ) =>
+                                                    setExternalFilesIsLoading(
+                                                        isLoading,
+                                                    )
+                                                }
+                                                onEmptyStateChange={(isEmpty) =>
+                                                    setHasExternalFiles(
+                                                        !isEmpty,
+                                                    )
+                                                }
+                                            />
+                                        </Card>
+                                    </>
+                                ) : null}
+                            </div>
+                        </ConfigurationSection>
+                    </>
                 ) : (
                     <ConfigurationSection
                         title="Knowledge"

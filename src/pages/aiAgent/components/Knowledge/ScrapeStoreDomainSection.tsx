@@ -1,32 +1,30 @@
-import React from 'react'
-
 import { Button, Label } from '@gorgias/merchant-ui-kit'
 
-import useAppSelector from 'hooks/useAppSelector'
 import useId from 'hooks/useId'
-import { ShopifyIntegration } from 'models/integration/types'
-import {
-    getShopDomainFromStoreIntegration,
-    getShopUrlFromStoreIntegration,
-} from 'models/selfServiceConfiguration/utils'
+import SyncDomainConfirmationModal from 'pages/aiAgent/AiAgentScrapedDomainContent/SyncDomainConfirmationModal'
 import {
     getFormattedSyncDate,
     getFormattedSyncDatetime,
 } from 'pages/aiAgent/AiAgentScrapedDomainContent/utils'
 import { useAiAgentNavigation } from 'pages/aiAgent/hooks/useAiAgentNavigation'
-import { useGetStoreDomainIngestionLog } from 'pages/aiAgent/hooks/useGetStoreDomainIngestionLog'
+import { usePollStoreDomainIngestionLog } from 'pages/aiAgent/hooks/usePollStoreDomainIngestionLog'
+import { useSyncStoreDomain } from 'pages/aiAgent/hooks/useSyncStoreDomain'
 import ItemWithTooltip from 'pages/common/components/ItemWithTooltip/ItemWithTooltip'
 import history from 'pages/history'
-import { getShopifyIntegrationByShopName } from 'state/integrations/selectors'
 
 import css from './ScrapeStoreDomainSection.less'
 
 type Props = {
     shopName: string
     helpCenterId: number
+    onStatusChange: (status: string | null) => void
 }
 
-export const ScrapeStoreDomainSection = ({ shopName, helpCenterId }: Props) => {
+export const ScrapeStoreDomainSection = ({
+    shopName,
+    helpCenterId,
+    onStatusChange,
+}: Props) => {
     const id = useId()
     const syncDateId = `syncDate-${id}`
 
@@ -34,27 +32,35 @@ export const ScrapeStoreDomainSection = ({ shopName, helpCenterId }: Props) => {
     const onManage = () => {
         history.push(routes.pagesContent)
     }
-    const storeIntegration: ShopifyIntegration = useAppSelector(
-        getShopifyIntegrationByShopName(shopName),
-    ).toJS()
-    const storeDomain = getShopDomainFromStoreIntegration(storeIntegration)
-    const storeUrl = getShopUrlFromStoreIntegration(storeIntegration)
 
-    const { storeDomainIngestionLog } = useGetStoreDomainIngestionLog({
+    const {
+        storeDomain,
+        storeUrl,
+        storeDomainIngestionLog,
+        isFetchLoading,
+        syncTriggered,
+        handleTriggerSync,
+        handleOnSync,
+        handleOnCancel,
+    } = useSyncStoreDomain({ helpCenterId, shopName })
+
+    const { syncIsPending } = usePollStoreDomainIngestionLog({
         helpCenterId,
         storeUrl,
+        onStatusChange,
     })
 
     const latestSync = storeDomainIngestionLog?.latest_sync
     const syncDateString = getFormattedSyncDate(latestSync)
     const syncDateTimeString = getFormattedSyncDatetime(latestSync)
 
-    // this functionality will be implemented in the next iteration
-    // https://linear.app/gorgias/issue/AIKNL-99/implement-sync-mechanism-and-its-loading-state-for-knowledge-and
-    const onSync = () => {}
-
     return (
         <>
+            <SyncDomainConfirmationModal
+                isOpen={syncTriggered}
+                onCancel={handleOnCancel}
+                onSync={handleOnSync}
+            />
             <div className={css.label}>
                 <Label>Your store domain</Label>
                 <span>AI Agent uses content from your store website.</span>
@@ -62,7 +68,7 @@ export const ScrapeStoreDomainSection = ({ shopName, helpCenterId }: Props) => {
             <div className={css.storeDomain}>
                 <a
                     className={css.domain}
-                    href={`https://${storeDomain}`}
+                    href={storeUrl ?? undefined}
                     target="_blank"
                     rel="noopener noreferrer"
                 >
@@ -83,8 +89,10 @@ export const ScrapeStoreDomainSection = ({ shopName, helpCenterId }: Props) => {
                         <Button
                             intent="secondary"
                             fillStyle="ghost"
-                            onClick={onSync}
+                            onClick={handleTriggerSync}
                             leadingIcon="sync"
+                            isLoading={syncIsPending}
+                            isDisabled={!storeDomain || isFetchLoading}
                         >
                             Sync
                         </Button>

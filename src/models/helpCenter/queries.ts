@@ -393,6 +393,7 @@ export const useGetIngestionLogs = (
     return useQuery({
         queryFn: async () => getIngestionLogs(helpCenterClient, pathParams),
         queryKey: helpCenterKeys.ingestionLogs(pathParams.help_center_id),
+        staleTime: STALE_TIME,
         ...overrides,
         enabled:
             Boolean(helpCenterClient) &&

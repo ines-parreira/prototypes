@@ -1,18 +1,14 @@
-import { useState } from 'react'
-
 import { useFlags } from 'launchdarkly-react-client-sdk'
 import { useParams } from 'react-router-dom'
 
 import { FeatureFlagKey } from 'config/featureFlags'
-import { useSearchParam } from 'hooks/useSearchParam'
+import useAppSelector from 'hooks/useAppSelector'
+import { getCurrentAccountState } from 'state/currentAccount/selectors'
 
 import { AiAgentLayout } from '../components/AiAgentLayout/AiAgentLayout'
 import { AI_AGENT, KNOWLEDGE } from '../constants'
-import AiAgentScrapedDomainContentLayout from './AiAgentScrapedDomainContentLayout'
-import { CONTENT_TYPE, PAGINATED_ITEMS_PER_PAGE } from './constant'
-import ScrapedDomainContentView from './ScrapedDomainContentView'
-import ScrapedDomainSelectedContent from './ScrapedDomainSelectedContent'
-import { ScrapedContent } from './types'
+import { useGetOrCreateSnippetHelpCenter } from '../hooks/useGetOrCreateSnippetHelpCenter'
+import AiAgentScrapedDomainProductsView from './AiAgentScrapedDomainProductsView'
 
 import css from './AiAgentScrapedDomainProductsContainer.less'
 
@@ -24,101 +20,13 @@ const AiAgentScrapedDomainProductsContainer = () => {
         shopName: string
     }>()
 
-    const [isOpened, setIsOpened] = useState(false)
-    const [selectedProduct, setSelectedProduct] =
-        useState<ScrapedContent | null>(null)
+    const currentAccount = useAppSelector(getCurrentAccountState)
+    const accountDomain = currentAccount.get('domain')
 
-    const handleOnSelect = (content: ScrapedContent) => {
-        setSelectedProduct(content)
-        setIsOpened(true)
-    }
-
-    const handleOnClose = () => {
-        setSelectedProduct(null)
-        setIsOpened(false)
-    }
-
-    const [value, setSearchParam] = useSearchParam('page')
-    const currentPage = Number(value) || 1
-
-    const onPageChange = (page: number) => {
-        if (currentPage !== page) {
-            setSearchParam(page.toString())
-        }
-    }
-
-    // Mocked data to replace by actual data in the next iteration
-    // https://linear.app/gorgias/issue/AIKNL-89/implement-functionality-for-product-content-tab
-    const mockedProducts = [
-        {
-            id: 1,
-            name: 'Duo Baguette Birthstone Ring',
-        },
-        {
-            id: 2,
-            name: 'Lovely heart necklace',
-        },
-        {
-            id: 3,
-            name: 'Chain bracelet',
-        },
-        {
-            id: 4,
-            name: 'Elegant pearl earrings',
-        },
-        {
-            id: 5,
-            name: 'Stylish cuff bangle',
-        },
-        {
-            id: 6,
-            name: 'Classic hoop earrings',
-        },
-        {
-            id: 7,
-            name: 'Minimalist pendant necklace',
-        },
-        {
-            id: 8,
-            name: 'Chic statement earrings',
-        },
-        {
-            id: 9,
-            name: 'Vintage-inspired brooch',
-        },
-        {
-            id: 10,
-            name: 'Bohemian layered necklace',
-        },
-        {
-            id: 11,
-            name: 'Modern geometric ring',
-        },
-        {
-            id: 12,
-            name: 'Retro charm bracelet',
-        },
-        {
-            id: 13,
-            name: 'Sleek leather watch',
-        },
-        {
-            id: 14,
-            name: 'Delicate anklet',
-        },
-        {
-            id: 15,
-            name: 'Engraved initial bracelet',
-        },
-        {
-            id: 16,
-            name: 'Engraved initial bracelet',
-        },
-    ]
-
-    const startIndex = (currentPage - 1) * PAGINATED_ITEMS_PER_PAGE
-    const endIndex = startIndex + PAGINATED_ITEMS_PER_PAGE
-    const paginatedProducts = mockedProducts.slice(startIndex, endIndex)
+    const { helpCenter } = useGetOrCreateSnippetHelpCenter({
+        accountDomain,
+        shopName,
+    })
 
     return (
         <AiAgentLayout
@@ -126,25 +34,12 @@ const AiAgentScrapedDomainProductsContainer = () => {
             shopName={shopName}
             title={isStandaloneMenuEnabled ? KNOWLEDGE : AI_AGENT}
         >
-            <AiAgentScrapedDomainContentLayout shopName={shopName}>
-                <ScrapedDomainContentView
-                    isLoading={false}
-                    content={paginatedProducts}
-                    pageType={CONTENT_TYPE.PRODUCT}
-                    onSelect={handleOnSelect}
-                    hasNextItems={endIndex < mockedProducts.length}
-                    hasPrevItems={startIndex > 0}
-                    fetchNextItems={() => onPageChange(currentPage + 1)}
-                    fetchPrevItems={() => onPageChange(currentPage - 1)}
+            {helpCenter && (
+                <AiAgentScrapedDomainProductsView
+                    helpCenterId={helpCenter.id}
+                    shopName={shopName}
                 />
-                <ScrapedDomainSelectedContent
-                    selectedContent={selectedProduct}
-                    contentType={CONTENT_TYPE.PRODUCT}
-                    isOpened={isOpened}
-                    isLoading={false}
-                    onClose={handleOnClose}
-                />
-            </AiAgentScrapedDomainContentLayout>
+            )}
         </AiAgentLayout>
     )
 }

@@ -11,12 +11,18 @@ import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
 import { FeatureFlagKey } from 'config/featureFlags'
+import { getIngestionLogFixture } from 'pages/aiAgent/fixtures/ingestionLog.fixture'
 import { getStoreConfigurationFixture } from 'pages/aiAgent/fixtures/storeConfiguration.fixtures'
+import { useGetOrCreateSnippetHelpCenter } from 'pages/aiAgent/hooks/useGetOrCreateSnippetHelpCenter'
+import { usePollStoreDomainIngestionLog } from 'pages/aiAgent/hooks/usePollStoreDomainIngestionLog'
+import { useSyncStoreDomain } from 'pages/aiAgent/hooks/useSyncStoreDomain'
 import { useAiAgentStoreConfigurationContext } from 'pages/aiAgent/providers/AiAgentStoreConfigurationContext'
+import { getSingleHelpCenterResponseFixture } from 'pages/settings/helpCenter/fixtures/getHelpCentersResponse.fixture'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 import { assumeMock, renderWithRouter } from 'utils/testing'
 
 import AiAgentScrapedDomainQuestionsContainer from '../AiAgentScrapedDomainQuestionsContainer'
+import { IngestionLogStatus } from '../constant'
 
 jest.mock('../../providers/AiAgentStoreConfigurationContext', () => ({
     useAiAgentStoreConfigurationContext: jest.fn(),
@@ -24,6 +30,19 @@ jest.mock('../../providers/AiAgentStoreConfigurationContext', () => ({
 
 const mockedUseAiAgentStoreConfigurationContext = assumeMock(
     useAiAgentStoreConfigurationContext,
+)
+
+jest.mock('pages/aiAgent/hooks/useGetOrCreateSnippetHelpCenter')
+const mockedUseGetOrCreateSnippetHelpCenter = assumeMock(
+    useGetOrCreateSnippetHelpCenter,
+)
+
+jest.mock('pages/aiAgent/hooks/useSyncStoreDomain')
+const mockUseSyncStoreDomain = assumeMock(useSyncStoreDomain)
+
+jest.mock('pages/aiAgent/hooks/usePollStoreDomainIngestionLog')
+const mockUsePollStoreDomainIngestionLog = assumeMock(
+    usePollStoreDomainIngestionLog,
 )
 
 const queryClient = mockQueryClient()
@@ -46,6 +65,13 @@ const renderComponent = () => {
 }
 
 describe('<AiAgentScrapedDomainQuestionsContainer />', () => {
+    const mockedStoreName = 'test-shop'
+    const mockedStoreDomain = `${mockedStoreName}.myshopify.com`
+    const mockedStoreUrl = `https://${mockedStoreName}.myshopify.com`
+    const mockedStoreDomainIngestionLog = getIngestionLogFixture({
+        domain: mockedStoreDomain,
+        url: mockedStoreUrl,
+    })
     beforeEach(() => {
         mockedUseAiAgentStoreConfigurationContext.mockReturnValue({
             storeConfiguration: getStoreConfigurationFixture(),
@@ -53,6 +79,30 @@ describe('<AiAgentScrapedDomainQuestionsContainer />', () => {
             updateStoreConfiguration: jest.fn(),
             createStoreConfiguration: jest.fn(),
             isPendingCreateOrUpdate: false,
+        })
+        mockedUseGetOrCreateSnippetHelpCenter.mockReturnValue({
+            isLoading: false,
+            helpCenter: {
+                ...getSingleHelpCenterResponseFixture,
+                type: 'snippet',
+            },
+        })
+        mockUseSyncStoreDomain.mockReturnValue({
+            storeDomain: mockedStoreDomain,
+            storeUrl: mockedStoreUrl,
+            storeDomainIngestionLog: {
+                ...mockedStoreDomainIngestionLog,
+                status: IngestionLogStatus.Successful,
+            },
+            isFetchLoading: false,
+            syncTriggered: false,
+            handleTriggerSync: jest.fn(),
+            handleOnSync: jest.fn(),
+            handleOnCancel: jest.fn(),
+        })
+        mockUsePollStoreDomainIngestionLog.mockReturnValue({
+            ingestionLogStatus: IngestionLogStatus.Successful,
+            syncIsPending: false,
         })
         mockFlags({
             [FeatureFlagKey.AiAgentScrapeStoreDomain]: true,
@@ -86,8 +136,64 @@ describe('<AiAgentScrapedDomainQuestionsContainer />', () => {
         expect(screen.getByText('AI Agent')).toBeInTheDocument()
     })
 
+    it('should render the component with loading banner when sync is pending', () => {
+        mockUsePollStoreDomainIngestionLog.mockReturnValue({
+            ingestionLogStatus: IngestionLogStatus.Pending,
+            syncIsPending: true,
+        })
+
+        renderComponent()
+        expect(
+            screen.getByText(
+                'Your store domain is currently being synced. You will be notified once complete. In the meantime, AI Agent may not have your latest content.',
+            ),
+        ).toBeInTheDocument()
+    })
+
+    it('should close the banner when close button is clicked', () => {
+        mockUsePollStoreDomainIngestionLog.mockReturnValue({
+            ingestionLogStatus: IngestionLogStatus.Pending,
+            syncIsPending: true,
+        })
+
+        renderComponent()
+
+        expect(
+            screen.getByText(
+                'Your store domain is currently being synced. You will be notified once complete. In the meantime, AI Agent may not have your latest content.',
+            ),
+        ).toBeInTheDocument()
+
+        const closeButton = screen.getByRole('button', { name: /close/i })
+        fireEvent.click(closeButton)
+
+        expect(
+            screen.queryByText(
+                'Your store domain is currently being synced. You will be notified once complete. In the meantime, AI Agent may not have your latest content.',
+            ),
+        ).not.toBeInTheDocument()
+    })
+
+    it('should render empty state when storeDomainIngestionLog is undefined', () => {
+        mockUseSyncStoreDomain.mockReturnValue({
+            storeDomain: undefined,
+            storeUrl: null,
+            storeDomainIngestionLog: undefined,
+            isFetchLoading: false,
+            syncTriggered: false,
+            handleTriggerSync: jest.fn(),
+            handleOnSync: jest.fn(),
+            handleOnCancel: jest.fn(),
+        })
+
+        renderComponent()
+
+        expect(screen.getByText('No questions generated')).toBeInTheDocument()
+    })
+
     it('should open side panel on row click (handleOnSelect)', async () => {
         renderComponent()
+
         const questionRow = screen.getByText(
             // to be replaced by actual mock data in the next iteration
             // https://linear.app/gorgias/issue/AIKNL-88/implement-functionality-for-pages-content-tab

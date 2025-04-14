@@ -8,12 +8,19 @@ export const CONTENT_TYPE = {
     PRODUCT: 'Product',
 }
 
-export const INGESTION_LOG_STATUS = {
-    DISABLED: 'DISABLED',
-    PENDING: 'PENDING',
-    SUCCESSFUL: 'SUCCESSFUL',
-    FAILED: 'FAILED',
-}
-
 export const PAGINATED_ITEMS_PER_PAGE = 15
 export const MODAL_TRANSITION_DURATION_MS = 300
+
+export enum IngestionLogStatus {
+    Disabled = 'DISABLED',
+    Pending = 'PENDING',
+    Successful = 'SUCCESSFUL',
+    Failed = 'FAILED',
+}
+
+export enum IngestionType {
+    Url = 'url',
+    Domain = 'domain',
+}
+
+export const POLLING_INTERVAL = 60000

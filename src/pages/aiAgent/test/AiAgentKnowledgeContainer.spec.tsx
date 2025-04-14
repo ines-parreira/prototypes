@@ -7,11 +7,13 @@ import { QueryClientProvider } from '@tanstack/react-query'
 import { act, fireEvent, screen } from '@testing-library/react'
 import { createMemoryHistory } from 'history'
 import { fromJS } from 'immutable'
+import { mockFlags } from 'jest-launchdarkly-mock'
 import { keyBy } from 'lodash'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
+import { FeatureFlagKey } from 'config/featureFlags'
 import { account } from 'fixtures/account'
 import { axiosSuccessResponse } from 'fixtures/axiosResponse'
 import { billingState } from 'fixtures/billing'
@@ -33,9 +35,14 @@ import { RootState } from 'state/types'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 import { assumeMock, renderWithRouter } from 'utils/testing'
 
+import { IngestionLogStatus } from '../AiAgentScrapedDomainContent/constant'
 import { INITIAL_FORM_VALUES } from '../constants'
 import { applicationsAutomationSettingsAiAgentEnabledFixture } from '../fixtures/applicationAutomationSettings.fixture'
+import { getIngestionLogFixture } from '../fixtures/ingestionLog.fixture'
 import { getStoreConfigurationFixture } from '../fixtures/storeConfiguration.fixtures'
+import { useAiAgentNavigation } from '../hooks/useAiAgentNavigation'
+import { usePollStoreDomainIngestionLog } from '../hooks/usePollStoreDomainIngestionLog'
+import { useSyncStoreDomain } from '../hooks/useSyncStoreDomain'
 
 jest.mock('pages/aiAgent/providers/AiAgentStoreConfigurationContext', () => ({
     useAiAgentStoreConfigurationContext: jest.fn(),
@@ -55,6 +62,17 @@ jest.mock('pages/aiAgent/hooks/usePublicResourcesMutation', () => ({
         deletePublicResource: jest.fn(),
     })),
 }))
+
+jest.mock('pages/aiAgent/hooks/useAiAgentNavigation')
+const mockUseAiAgentNavigation = assumeMock(useAiAgentNavigation)
+
+jest.mock('pages/aiAgent/hooks/useSyncStoreDomain')
+const mockUseSyncStoreDomain = assumeMock(useSyncStoreDomain)
+
+jest.mock('pages/aiAgent/hooks/usePollStoreDomainIngestionLog')
+const mockUsePollStoreDomainIngestionLog = assumeMock(
+    usePollStoreDomainIngestionLog,
+)
 
 jest.mock('models/helpCenter/queries')
 const mockUseGetHelpCenterList = assumeMock(useGetHelpCenterList)
@@ -124,11 +142,13 @@ const renderComponent = ({
     isStoreConfigLoading = false,
     isLoadingHelpCenters = false,
     noStoreConfiguration = false,
+    isAiAgentScrapeStoreDomainEnabled = false,
     helpCenterId = 1,
 }: {
     isStoreConfigLoading?: boolean
     isLoadingHelpCenters?: boolean
     noStoreConfiguration?: boolean
+    isAiAgentScrapeStoreDomainEnabled?: boolean
     helpCenterId?: number | null
 } = {}) => {
     mockedUseAiAgentStoreConfigurationContext.mockReturnValue({
@@ -186,6 +206,35 @@ const renderComponent = ({
 
     mockedUsePublicResourcesPooling.mockReturnValue({
         articleIngestionLogsStatus: ['SUCCESSFUL', 'SUCCESSFUL'],
+    })
+
+    mockUseAiAgentNavigation.mockReturnValue({
+        routes: {
+            main: '/main',
+            pagesContent: '/knowledge/sources/pages-content',
+        },
+        navigationItems: [],
+    } as unknown as ReturnType<typeof useAiAgentNavigation>)
+
+    mockUseSyncStoreDomain.mockReturnValue({
+        storeDomain: 'test-store',
+        storeUrl: 'test-store.myshopify.com',
+        storeDomainIngestionLog: getIngestionLogFixture(),
+        isFetchLoading: false,
+        syncTriggered: false,
+        handleTriggerSync: jest.fn(),
+        handleOnSync: jest.fn(),
+        handleOnCancel: jest.fn(),
+    })
+
+    mockUsePollStoreDomainIngestionLog.mockReturnValue({
+        ingestionLogStatus: IngestionLogStatus.Successful,
+        syncIsPending: false,
+    })
+
+    mockFlags({
+        [FeatureFlagKey.AiAgentScrapeStoreDomain]:
+            isAiAgentScrapeStoreDomainEnabled,
     })
 
     return renderWithRouter(
@@ -339,5 +388,16 @@ describe('AiAgentKnowledgeContainer', () => {
         })
 
         jest.useRealTimers()
+    })
+
+    it('should show scrape store domain section if feature flag is enabled', () => {
+        renderComponent({ isAiAgentScrapeStoreDomainEnabled: true })
+
+        expect(screen.getByText('Your store domain')).toBeInTheDocument()
+        expect(
+            screen.getByText('AI Agent uses content from your store website.'),
+        ).toBeInTheDocument()
+        expect(screen.getByText('Sync')).toBeInTheDocument()
+        expect(screen.getByText('Manage')).toBeInTheDocument()
     })
 })

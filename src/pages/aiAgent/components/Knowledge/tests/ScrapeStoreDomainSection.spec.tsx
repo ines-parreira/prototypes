@@ -7,6 +7,7 @@ import { Provider } from 'react-redux'
 import { billingState } from 'fixtures/billing'
 import { useAiAgentNavigation } from 'pages/aiAgent/hooks/useAiAgentNavigation'
 import { useGetStoreDomainIngestionLog } from 'pages/aiAgent/hooks/useGetStoreDomainIngestionLog'
+import { useIngestionLogMutation } from 'pages/aiAgent/hooks/useIngestionLogMutation'
 import history from 'pages/history'
 import { assumeMock, mockStore, renderWithRouter } from 'utils/testing'
 
@@ -14,10 +15,12 @@ import { ScrapeStoreDomainSection } from '../ScrapeStoreDomainSection'
 
 jest.mock('pages/aiAgent/hooks/useGetStoreDomainIngestionLog')
 jest.mock('pages/aiAgent/hooks/useAiAgentNavigation')
+jest.mock('pages/aiAgent/hooks/useIngestionLogMutation')
 
 const mockUseGetStoreDomainIngestionLog = assumeMock(
     useGetStoreDomainIngestionLog,
 )
+const mockUseIngestionLogMutation = assumeMock(useIngestionLogMutation)
 const mockUseAiAgentNavigation = assumeMock(useAiAgentNavigation)
 
 const mockedShopName = 'test-shop'
@@ -37,6 +40,8 @@ const defaultState = {
     }),
     billing: fromJS(billingState),
 }
+
+const mockedOnStatusChange = jest.fn()
 const mockedStore = mockStore(defaultState)
 const renderComponent = () => {
     return renderWithRouter(
@@ -44,6 +49,7 @@ const renderComponent = () => {
             <ScrapeStoreDomainSection
                 shopName={mockedShopName}
                 helpCenterId={mockedHelpCenterId}
+                onStatusChange={mockedOnStatusChange}
             />
         </Provider>,
     )
@@ -64,6 +70,9 @@ describe('ScrapeStoreDomainSection', () => {
                 pagesContent: '/pages-content',
             },
         } as unknown as ReturnType<typeof useAiAgentNavigation>)
+        mockUseIngestionLogMutation.mockReturnValue({
+            startIngestion: jest.fn(),
+        })
     })
 
     it('should render the component correctly', () => {

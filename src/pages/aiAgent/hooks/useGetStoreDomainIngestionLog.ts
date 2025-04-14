@@ -4,23 +4,40 @@ import { SentryTeam } from 'common/const/sentryTeamNames'
 import { useGetIngestionLogs } from 'models/helpCenter/queries'
 import { reportError } from 'utils/errors'
 
+import {
+    IngestionLogStatus,
+    POLLING_INTERVAL,
+} from '../AiAgentScrapedDomainContent/constant'
+
 export const useGetStoreDomainIngestionLog = ({
     helpCenterId,
     storeUrl,
+    shouldPoll = false,
 }: {
     helpCenterId: number
     storeUrl: string | null
+    shouldPoll?: boolean
 }) => {
     const {
         data: ingestionLogs,
         error,
-        isLoading: isIngestionLogsLoading,
+        isLoading: isGetIngestionLogsLoading,
     } = useGetIngestionLogs(
         {
             help_center_id: helpCenterId,
         },
         {
+            queryKey: ['store-domain-ingestion-logs', helpCenterId, storeUrl],
+            enabled: !!storeUrl,
             refetchOnWindowFocus: false,
+            refetchInterval: (data) => {
+                const log = data?.find(
+                    (log) => log.source === 'domain' && log.url === storeUrl,
+                )
+                return shouldPoll && log?.status === IngestionLogStatus.Pending
+                    ? POLLING_INTERVAL
+                    : false
+            },
         },
     )
 
@@ -43,9 +60,9 @@ export const useGetStoreDomainIngestionLog = ({
         }
     }, [error])
 
-    if (!storeUrl) {
-        return { storeDomainIngestionLog: null, isIngestionLogsLoading }
+    return {
+        storeDomainIngestionLog,
+        status: storeDomainIngestionLog?.status,
+        isGetIngestionLogsLoading,
     }
-
-    return { storeDomainIngestionLog, isIngestionLogsLoading }
 }

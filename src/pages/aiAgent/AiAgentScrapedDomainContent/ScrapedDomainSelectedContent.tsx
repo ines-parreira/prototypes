@@ -26,7 +26,7 @@ const SelectedQuestionView = ({
     return (
         <div className={css.contentContainer}>
             <h3>Selected Question View</h3>
-            {question && <p>{question.name}</p>}
+            {question && <p>{question.title}</p>}
         </div>
     )
 }
@@ -41,7 +41,7 @@ const SelectedProductView = ({
     return (
         <div className={css.contentContainer}>
             <h3>Selected Product View</h3>
-            {product && <p>{product.name}</p>}
+            {product && <p>{product.title}</p>}
         </div>
     )
 }

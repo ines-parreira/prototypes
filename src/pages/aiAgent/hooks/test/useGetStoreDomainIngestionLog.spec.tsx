@@ -8,6 +8,7 @@ import {
     useGetArticleIngestionLogs,
     useGetIngestionLogs,
 } from 'models/helpCenter/queries'
+import { POLLING_INTERVAL } from 'pages/aiAgent/AiAgentScrapedDomainContent/constant'
 import { reportError } from 'utils/errors'
 import { assumeMock } from 'utils/testing'
 
@@ -33,7 +34,7 @@ describe('useGetStoreDomainIngestionLog', () => {
         jest.resetAllMocks()
     })
 
-    it('returns null log when storeUrl is null', () => {
+    it('returns undefined log when storeUrl is null', () => {
         mockUseGetIngestionLogs.mockReturnValue({
             data: [],
             error: null,
@@ -49,8 +50,8 @@ describe('useGetStoreDomainIngestionLog', () => {
             { wrapper },
         )
 
-        expect(result.current.storeDomainIngestionLog).toBeNull()
-        expect(result.current.isIngestionLogsLoading).toBe(false)
+        expect(result.current.storeDomainIngestionLog).toBeUndefined()
+        expect(result.current.isGetIngestionLogsLoading).toBe(false)
     })
 
     it('returns matching log when storeUrl exists', () => {
@@ -82,7 +83,7 @@ describe('useGetStoreDomainIngestionLog', () => {
         )
 
         expect(result.current.storeDomainIngestionLog).toEqual(mockedLogs[0])
-        expect(result.current.isIngestionLogsLoading).toBe(false)
+        expect(result.current.isGetIngestionLogsLoading).toBe(false)
     })
 
     it('reports error if ingestion logs query fails', () => {
@@ -106,5 +107,83 @@ describe('useGetStoreDomainIngestionLog', () => {
                 context: 'Error during ingestion logs fetching',
             },
         })
+    })
+
+    it('sets refetchInterval only when shouldPoll is true and status is Pending', () => {
+        let capturedQueryOptions: any
+
+        const mockedLogs = [
+            {
+                source: 'domain',
+                url: 'https://store.example.com',
+                status: 'PENDING',
+            },
+        ]
+
+        mockUseGetIngestionLogs.mockImplementation(
+            (_variables, queryOptions) => {
+                capturedQueryOptions = queryOptions
+
+                return {
+                    data: mockedLogs,
+                    error: null,
+                    isLoading: false,
+                } as unknown as ReturnType<typeof useGetArticleIngestionLogs>
+            },
+        )
+
+        renderHook(
+            () =>
+                useGetStoreDomainIngestionLog({
+                    helpCenterId: 1,
+                    storeUrl: 'https://store.example.com',
+                    shouldPoll: true,
+                }),
+            { wrapper },
+        )
+
+        const interval = capturedQueryOptions?.refetchInterval(mockedLogs)
+        expect(interval).toBe(POLLING_INTERVAL)
+    })
+    it('should not set refetchInterval when the matching storeUrl is not Pending', () => {
+        let capturedQueryOptions: any
+
+        const mockedLogs = [
+            {
+                source: 'domain',
+                url: 'https://store.example.com',
+                status: 'SUCCESSFUL',
+            },
+            {
+                source: 'domain',
+                url: 'https://other-store.example.com',
+                status: 'PENDING',
+            },
+        ]
+
+        mockUseGetIngestionLogs.mockImplementation(
+            (_variables, queryOptions) => {
+                capturedQueryOptions = queryOptions
+
+                return {
+                    data: mockedLogs,
+                    error: null,
+                    isLoading: false,
+                } as unknown as ReturnType<typeof useGetArticleIngestionLogs>
+            },
+        )
+
+        renderHook(
+            () =>
+                useGetStoreDomainIngestionLog({
+                    helpCenterId: 1,
+                    storeUrl: 'https://store.example.com',
+                    shouldPoll: true,
+                }),
+            { wrapper },
+        )
+
+        const interval = capturedQueryOptions?.refetchInterval(mockedLogs)
+        expect(interval).toBe(false)
     })
 })
