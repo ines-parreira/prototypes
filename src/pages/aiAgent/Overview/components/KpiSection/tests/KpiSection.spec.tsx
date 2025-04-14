@@ -22,7 +22,7 @@ jest.mock('pages/aiAgent/Overview/hooks/useAiAgentType')
 const useAiAgentTypeMock = assumeMock(useAiAgentTypeForAccount)
 
 jest.mock('pages/aiAgent/Overview/hooks/useKpis')
-const useMixedKpisMock = assumeMock(useKpis)
+const useKpisMock = assumeMock(useKpis)
 
 jest.mock(
     '@gorgias/merchant-ui-kit',
@@ -70,7 +70,7 @@ describe('KpiSection', () => {
         })
 
         it('renders sales KPIs correctly when not loading', () => {
-            useMixedKpisMock.mockReturnValue({
+            useKpisMock.mockReturnValue({
                 metrics: [
                     {
                         isLoading: true,
@@ -88,7 +88,7 @@ describe('KpiSection', () => {
         })
 
         it('renders sales KPIs correctly when not loading', () => {
-            useMixedKpisMock.mockReturnValue({
+            useKpisMock.mockReturnValue({
                 metrics: [
                     {
                         isLoading: false,
@@ -119,20 +119,9 @@ describe('KpiSection', () => {
         })
     })
 
-    it('when AI Agent type is loading', () => {
-        useAiAgentTypeMock.mockReturnValue({
-            isLoading: true,
-        })
-
-        renderComponent()
-
-        // 8 because 2 skeletons by KPIs (title + metric)
-        expect(screen.queryAllByTestId('skeleton')).toHaveLength(8)
-    })
-
     describe('View Full Report button', () => {
         beforeEach(() => {
-            useMixedKpisMock.mockReturnValue({
+            useKpisMock.mockReturnValue({
                 metrics: [],
             })
         })

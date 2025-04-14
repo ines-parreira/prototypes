@@ -67,13 +67,11 @@ const KpiContainer = ({
 }
 
 const Kpis = ({
-    isLoading,
     aiAgentType,
     isOnNewPlan,
     showEarlyAccessModal,
     showActivationModal,
 }: {
-    isLoading: boolean
     aiAgentType?: AiAgentType
     isOnNewPlan: boolean
     showEarlyAccessModal: () => void
@@ -100,10 +98,6 @@ const Kpis = ({
         showEarlyAccessModal,
         showActivationModal,
     })
-
-    if (isLoading || !aiAgentType) {
-        return <KpiContainer isLoading />
-    }
 
     return <KpiContainer metrics={metrics} />
 }
@@ -157,7 +151,6 @@ export const KpiSection = ({
 
             <Kpis
                 aiAgentType={aiAgentType}
-                isLoading={isLoading}
                 showActivationModal={showActivationModal}
                 showEarlyAccessModal={showEarlyAccessModal}
                 isOnNewPlan={isOnNewPlan}
