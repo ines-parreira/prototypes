@@ -1,11 +1,13 @@
 import StatsPage from 'pages/stats/common/layout/StatsPage'
-
-export const OVERVIEW_PAGE_TITLE = 'Overview'
+import { ProductInsightsPlaceholderReport } from 'pages/stats/voice-of-customer/product-insights/placeholder/ProducInsightsPlaceholderReport'
+import { VOICE_OF_CUSTOMER_SECTION_NAME } from 'pages/stats/voice-of-customer/VoiceOfCustomerNavbarContainer'
 
 export const OverviewPage = () => {
     return (
         <div className="full-width">
-            <StatsPage title={OVERVIEW_PAGE_TITLE}>{'some content'}</StatsPage>
+            <StatsPage title={VOICE_OF_CUSTOMER_SECTION_NAME}>
+                <ProductInsightsPlaceholderReport />
+            </StatsPage>
         </div>
     )
 }

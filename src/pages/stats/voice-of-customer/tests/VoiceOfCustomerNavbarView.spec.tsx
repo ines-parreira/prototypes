@@ -4,8 +4,7 @@ import { screen } from '@testing-library/react'
 
 import { DrillDownModal } from 'pages/stats/common/drill-down/DrillDownModal'
 import { useReportChartRestrictions } from 'pages/stats/report-chart-restrictions/useReportChartRestrictions'
-import { OVERVIEW_PAGE_TITLE } from 'pages/stats/voice-of-customer/overview/OverviewPage'
-import { PRODUCT_INSIGHTS_PAGE_TITLE } from 'pages/stats/voice-of-customer/product-insights/ProductInsightsPage'
+import { VOICE_OF_CUSTOMER_SECTION_NAME } from 'pages/stats/voice-of-customer/VoiceOfCustomerNavbarContainer'
 import { VoiceOfCustomerNavbarView } from 'pages/stats/voice-of-customer/VoiceOfCustomerNavbarView'
 import { assumeMock, renderWithRouterAndDnD } from 'utils/testing'
 
@@ -27,9 +26,8 @@ describe('VoiceOfCustomerNavbarView', () => {
     it('should render without crashing', () => {
         renderWithRouterAndDnD(<VoiceOfCustomerNavbarView />)
 
-        expect(screen.getByText(OVERVIEW_PAGE_TITLE)).toBeInTheDocument()
         expect(
-            screen.getByText(PRODUCT_INSIGHTS_PAGE_TITLE),
+            screen.getByText(VOICE_OF_CUSTOMER_SECTION_NAME),
         ).toBeInTheDocument()
     })
 })

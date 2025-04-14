@@ -11,6 +11,7 @@ import {
     AccountSettingChannelsTableConfig,
     AccountSettingDefaultIntegration,
     AccountSettingInTicketSuggestion,
+    AccountSettingProductInsightsTableConfig,
     AccountSettingSatisfactionSurvey,
     AccountSettingType,
     AccountSettingViewsVisibility,
@@ -163,6 +164,17 @@ export const getChannelsTableConfigSettingsJS = createSelector(
         setting.isEmpty()
             ? undefined
             : (setting.toJS() as AccountSettingChannelsTableConfig),
+)
+
+export const getProductInsightsTableConfigSettings =
+    createSettingByTypeSelector(AccountSettingType.ProductInsightsTableConfig)
+
+export const getProductInsightsTableConfigSettingsJS = createSelector(
+    getProductInsightsTableConfigSettings,
+    (setting) =>
+        setting.isEmpty()
+            ? undefined
+            : (setting.toJS() as AccountSettingProductInsightsTableConfig),
 )
 
 export const getSurveysSettings = createSettingByTypeSelector(

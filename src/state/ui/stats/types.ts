@@ -114,6 +114,10 @@ export enum ChannelsTableViewIdentifier {
     ChannelsReport = 'channelsReport',
 }
 
+export enum ProductInsightsTableViewIdentifier {
+    ProductInsights = 'productInsights',
+}
+
 export type TableViewItem<T> = {
     id: T
     visibility: boolean | null
@@ -146,11 +150,23 @@ export enum ChannelsTableColumns {
     MedianResponseTime = 'channels_median_response_time',
 }
 
+export enum ProductInsightsTableColumns {
+    Product = 'product_insights_product',
+    Feedback = 'product_insights_feedback',
+    NegativeSentiment = 'product_insights_negative_sentiment',
+    NegativeSentimentDelta = 'product_insights_negative_sentiment_delta',
+    PositiveSentiment = 'product_insights_positive_sentiment',
+    PositiveSentimentDelta = 'product_insights_positive_sentiment_delta',
+    ReturnMentions = 'product_insights_return_mentions',
+    TicketsVolume = 'product_insights_tickets_volume',
+}
+
 export type TableColumnSet =
     | AgentsTableColumn
     | ChannelsTableColumns
     | CampaignTableKeys
     | IntentTableColumn
+    | ProductInsightsTableColumns
 
 export type TableRowSet = AgentsTableRow
 

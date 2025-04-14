@@ -13,7 +13,6 @@ import App from 'pages/App'
 import DefaultStatsFilters from 'pages/stats/DefaultStatsFilters'
 import { ProtectedRoute } from 'pages/stats/report-chart-restrictions/ProtectedRoute'
 import { OverviewPage } from 'pages/stats/voice-of-customer/overview/OverviewPage'
-import { ProductInsightsPage } from 'pages/stats/voice-of-customer/product-insights/ProductInsightsPage'
 import { VoiceOfCustomerNavbarContainer } from 'pages/stats/voice-of-customer/VoiceOfCustomerNavbarContainer'
 import { VOICE_OF_CUSTOMER_ROUTES } from 'routes/constants'
 
@@ -51,20 +50,6 @@ export const VoiceOfCustomerRoutes = () => {
                         render={() => (
                             <App
                                 content={OverviewPage}
-                                navbar={VoiceOfCustomerNavbarContainer}
-                            />
-                        )}
-                    />
-                </ProtectedRoute>
-                <ProtectedRoute
-                    path={`${path}/${VOICE_OF_CUSTOMER_ROUTES.PRODUCT_INSIGHTS}`}
-                >
-                    <Route
-                        exact
-                        path={`${path}/${VOICE_OF_CUSTOMER_ROUTES.PRODUCT_INSIGHTS}`}
-                        render={() => (
-                            <App
-                                content={ProductInsightsPage}
                                 navbar={VoiceOfCustomerNavbarContainer}
                             />
                         )}

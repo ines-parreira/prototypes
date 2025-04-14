@@ -6,6 +6,7 @@ import {
     AgentsTableColumn,
     AgentsTableRow,
     ChannelsTableColumns,
+    ProductInsightsTableColumns,
     TableColumnSet,
     TableRowSet,
     TableSetting,
@@ -22,6 +23,7 @@ export enum AccountSettingType {
     AgentCosts = 'agent-costs',
     AgentsTableConfig = 'agents-table-config',
     ChannelsTableConfig = 'channels-table-config',
+    ProductInsightsTableConfig = 'product-insights-table-config',
     BusinessHours = 'business-hours',
     SatisfactionSurveys = 'satisfaction-surveys',
     TicketAssignment = 'ticket-assignment',
@@ -77,6 +79,7 @@ export type AccountSetting =
     | AccountSettingAgentCosts
     | AccountSettingAgentsTableConfig
     | AccountSettingChannelsTableConfig
+    | AccountSettingProductInsightsTableConfig
     | AccountSettingInTicketSuggestion
     | AccountSettingDefaultIntegration
 
@@ -142,6 +145,12 @@ export type AccountSettingChannelsTableConfig = {
     data: TableSetting<ChannelsTableColumns, never>
 }
 
+export type AccountSettingProductInsightsTableConfig = {
+    id: number
+    type: AccountSettingType.ProductInsightsTableConfig
+    data: TableSetting<ProductInsightsTableColumns, never>
+}
+
 export type AccountSettingTableConfig<
     T extends TableColumnSet,
     R extends TableRowSet,
@@ -150,6 +159,7 @@ export type AccountSettingTableConfig<
     type:
         | AccountSettingType.AgentsTableConfig
         | AccountSettingType.ChannelsTableConfig
+        | AccountSettingType.ProductInsightsTableConfig
     data: TableSetting<T, R>
 }
 

@@ -2,20 +2,19 @@ import { AxiosError } from 'axios'
 import { Map } from 'immutable'
 import _capitalize from 'lodash/capitalize'
 
-// import { HELPDESK_PRODUCT_ID } from 'fixtures/productPrices'
-// import useAppSelector from 'hooks/useAppSelector'
 import { getAccountSettings } from 'models/account/resources'
 import client from 'models/api/resources'
 import { GorgiasApiError, isGorgiasApiError } from 'models/api/types'
 import { AgentsTableViews } from 'pages/stats/support-performance/agents/AgentsTableConfig'
 import { ChannelsTableViews } from 'pages/stats/support-performance/channels/ChannelsTableConfig'
+import { ProductInsightsTableViews } from 'pages/stats/voice-of-customer/product-insights/placeholder/ProductInsightsTableConfig'
 import GorgiasApi from 'services/gorgiasApi'
 import { ProductData, Subscription } from 'state/billing/types'
 import * as constants from 'state/currentAccount/constants'
 import {
     getAgentsTableConfigSettingsJS,
     getChannelsTableConfigSettingsJS,
-    // getCurrentSubscription,
+    getProductInsightsTableConfigSettingsJS,
 } from 'state/currentAccount/selectors'
 import {
     Account,
@@ -29,6 +28,7 @@ import {
     AgentsTableColumn,
     AgentsTableRow,
     ChannelsTableColumns,
+    ProductInsightsTableColumns,
     TableView,
 } from 'state/ui/stats/types'
 
@@ -164,6 +164,36 @@ export function submitChannelsTableConfigView(
             submitSetting({
                 id: settings?.id,
                 type: AccountSettingType.ChannelsTableConfig,
+                data: {
+                    active_view: activeView.id,
+                    views: currentSettings.views.find(
+                        (view) => view.id === activeView.id,
+                    )
+                        ? currentSettings.views.map((view) =>
+                              view.id === activeView.id ? activeView : view,
+                          )
+                        : [...currentSettings.views, activeView],
+                },
+            }),
+        )
+    }
+}
+
+export function submitProductInsightsTableConfigView(
+    activeView: TableView<ProductInsightsTableColumns, never>,
+) {
+    return (
+        dispatch: StoreDispatch,
+        getState: () => RootState,
+    ): Promise<ReturnType<StoreDispatch>> => {
+        const settings = getProductInsightsTableConfigSettingsJS(getState())
+        const currentSettings = settings
+            ? settings.data
+            : ProductInsightsTableViews
+        return dispatch(
+            submitSetting({
+                id: settings?.id,
+                type: AccountSettingType.ProductInsightsTableConfig,
                 data: {
                     active_view: activeView.id,
                     views: currentSettings.views.find(

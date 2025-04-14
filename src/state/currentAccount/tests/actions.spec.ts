@@ -14,6 +14,7 @@ import client from 'models/api/resources'
 import {
     submitAgentTableConfigView,
     submitChannelsTableConfigView,
+    submitProductInsightsTableConfigView,
 } from 'state/currentAccount/actions'
 import * as actions from 'state/currentAccount/actions'
 import * as constants from 'state/currentAccount/constants'
@@ -22,7 +23,11 @@ import { AccountSetting, AccountSettingType } from 'state/currentAccount/types'
 import { notify } from 'state/notifications/actions'
 import { NotificationStatus } from 'state/notifications/types'
 import { StoreDispatch } from 'state/types'
-import { AgentsTableColumn, ChannelsTableColumns } from 'state/ui/stats/types'
+import {
+    AgentsTableColumn,
+    ChannelsTableColumns,
+    ProductInsightsTableColumns,
+} from 'state/ui/stats/types'
 import { assumeMock } from 'utils/testing'
 
 type MockedRootState = {
@@ -312,6 +317,11 @@ describe('current account actions', () => {
                 submitChannelsTableConfigView,
                 ChannelsTableColumns.ClosedTickets,
             ],
+            [
+                AccountSettingType.ProductInsightsTableConfig,
+                submitProductInsightsTableConfigView,
+                ProductInsightsTableColumns.PositiveSentiment,
+            ],
         ])(
             'should submit new TableConfig if none present in the state ',
             async (tableConfigType, submitAction, metric) => {
@@ -359,6 +369,12 @@ describe('current account actions', () => {
                 submitChannelsTableConfigView,
                 ChannelsTableColumns.ClosedTickets,
                 ChannelsTableColumns.TicketHandleTime,
+            ],
+            [
+                AccountSettingType.ProductInsightsTableConfig,
+                submitProductInsightsTableConfigView,
+                ProductInsightsTableColumns.PositiveSentiment,
+                ProductInsightsTableColumns.NegativeSentiment,
             ],
         ])(
             'should submit updated TableConfig from state ',
