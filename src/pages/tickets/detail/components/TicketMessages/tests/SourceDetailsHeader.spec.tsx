@@ -1,4 +1,4 @@
-import React, { ComponentProps } from 'react'
+import { ComponentProps } from 'react'
 
 import { render } from '@testing-library/react'
 import { fromJS } from 'immutable'
@@ -9,6 +9,7 @@ import thunk from 'redux-thunk'
 import {
     duplicatedHiddenFacebookMessage,
     facebookMessageNoMeta,
+    message,
 } from 'models/ticket/tests/mocks'
 
 import SourceDetailsHeader from '../SourceDetailsHeader'
@@ -31,7 +32,6 @@ const store = mockStore({
 describe('<SourceDetailsHeader/>', () => {
     const minProps: ComponentProps<typeof SourceDetailsHeader> = {
         message: facebookMessageNoMeta,
-        timezone: 'UTC',
         isMessageDeleted: false,
     }
     it(`should render a DatetimeLabel and the SourceActionsHeader because the message is not duplicated
@@ -85,5 +85,37 @@ describe('<SourceDetailsHeader/>', () => {
         expect(getByText('ticket').getAttribute('href')).toEqual(
             duplicatedHiddenFacebookMessage.meta!.private_reply!.original_ticket_id!.toString(),
         )
+    })
+
+    it(`should allow to disable the message status indicator`, () => {
+        const props = {
+            ...minProps,
+            message: {
+                ...message,
+                from_agent: true,
+                sent_datetime: new Date().toISOString(),
+            },
+        }
+        const { container, rerender } = render(
+            <Provider store={store}>
+                <SourceDetailsHeader {...props} />
+            </Provider>,
+        )
+        expect(
+            container.querySelector('#message-status-indicator-id-1'),
+        ).toBeInTheDocument()
+
+        rerender(
+            <Provider store={store}>
+                <SourceDetailsHeader
+                    {...props}
+                    showMessageStatusIndicator={false}
+                />
+            </Provider>,
+        )
+
+        expect(
+            container.querySelector('#message-status-indicator-id-1'),
+        ).not.toBeInTheDocument()
     })
 })

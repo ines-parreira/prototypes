@@ -1,8 +1,8 @@
-import React, { useEffect, useMemo } from 'react'
+import { useEffect } from 'react'
 
 import { fromJS, Map } from 'immutable'
 import { useFlags } from 'launchdarkly-react-client-sdk'
-import moment, { Moment } from 'moment'
+import { Moment } from 'moment'
 
 import { SegmentEvent } from 'common/segment'
 import { logEventWithSampling } from 'common/segment/segment'
@@ -12,7 +12,7 @@ import {
     isTicketMessageDeleted,
     isTicketMessageHidden,
 } from 'models/ticket/predicates'
-import { MessageMetadataType, TicketMessage } from 'models/ticket/types'
+import { TicketMessage } from 'models/ticket/types'
 import { HighlightedElements } from 'pages/tickets/detail/components/AuditLogEvent'
 import { AUTOMATION_BOT_EMAIL_ACROSS_ALL_ACCOUNTS } from 'state/agents/constants'
 import { getCurrentAccountId } from 'state/currentAccount/selectors'
@@ -29,6 +29,7 @@ import {
 import { isTrialMessageFromAIAgent } from '../AIAgentFeedbackBar/utils'
 import Container from './Container'
 import Message from './Message'
+import { getMessageStatus } from './MessageStatusIndicator'
 
 type Props = {
     id: string
@@ -82,11 +83,6 @@ export default function TicketMessages({
         message?.body_html.indexOf(DRAFT_MESSAGE_TAG) !== -1
     )
 
-    // Used to transfer metadata from chat without displaying a message
-    const isSignal = useMemo(() => {
-        return message?.meta?.type === MessageMetadataType.Signal
-    }, [message])
-
     const isAIAgentTrialMessage = isTrialMessageFromAIAgent(message)
 
     useEffect(() => {
@@ -124,13 +120,14 @@ export default function TicketMessages({
         return null
     }
 
-    const groupAfterLastCustomerMessage = moment(message.sent_datetime).isAfter(
-        lastCustomerMessage.get('sent_datetime'),
-    )
-
-    const showMessageStatusIndicator =
-        !!message.opened_datetime &&
-        messages.some((message) => message.opened_datetime === null)
+    // if all messages have the same status, we want to display it only on the first
+    // message of the group
+    const showMessageStatusIndicator = messages
+        .map(getMessageStatus)
+        .some(
+            (messageStatus, _, messageStatuses) =>
+                messageStatus !== messageStatuses[0],
+        )
 
     const containerContainsHighlightedMessages =
         messages
@@ -178,14 +175,12 @@ export default function TicketMessages({
     return (
         <Container
             id={id}
-            isSignal={isSignal}
             message={message}
             messages={messages}
             hasCursor={hasCursor}
             lastMessageDatetimeAfterMount={lastMessageDatetimeAfterMount}
             timezone={timezone}
             containsLastCustomerMessage={containsLastCustomerMessage}
-            displayMessageStatusIndicator={groupAfterLastCustomerMessage}
             isMessageHidden={isTicketMessageHidden(message)}
             isMessageDeleted={isTicketMessageDeleted(message)}
             isBodyHighlighted={containerContainsHighlightedMessages}
@@ -208,7 +203,6 @@ export default function TicketMessages({
                         ticketId={ticketId}
                         setStatus={setStatus}
                         showSourceDetails={!!index}
-                        timezone={timezone}
                         showMessageStatusIndicator={showMessageStatusIndicator}
                         isAIAgentMessage={isAIAgentMessage}
                         messagePosition={messagePosition}

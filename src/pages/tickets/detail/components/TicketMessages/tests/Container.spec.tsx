@@ -1,4 +1,4 @@
-import React, { ComponentProps } from 'react'
+import { ComponentProps } from 'react'
 
 import { render } from '@testing-library/react'
 import { fromJS } from 'immutable'
@@ -9,6 +9,7 @@ import {
     duplicatedHiddenFacebookMessage,
     message,
 } from 'models/ticket/tests/mocks'
+import { MessageMetadataType, TicketMessage } from 'models/ticket/types'
 import Avatar from 'pages/common/components/Avatar/Avatar'
 
 import Container from '../Container'
@@ -46,7 +47,6 @@ jest.mock('pages/tickets/detail/components/TicketMessages/Header', () => () => (
 describe('Container', () => {
     const props = {
         id: 'some-header',
-        isSignal: false,
         hasCursor: false,
         message,
         messages: [message],
@@ -72,8 +72,20 @@ describe('Container', () => {
         expect(queryByText('Avatar')).not.toBeInTheDocument()
     })
     it('should not render container if message type is signal', () => {
+        const signalMessage: TicketMessage = {
+            ...message,
+            meta: {
+                type: MessageMetadataType.Signal,
+            },
+        }
+        const propsWithSignalMessage = {
+            ...props,
+            message: signalMessage,
+            messages: [signalMessage],
+        }
+
         const { queryByTestId } = render(
-            <Container {...props} isSignal={true} />,
+            <Container {...propsWithSignalMessage} />,
         )
 
         expect(

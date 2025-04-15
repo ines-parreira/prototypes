@@ -17,23 +17,19 @@ const classNames = classNamesBind.bind(css)
 type Props = {
     id: string
     message: TicketMessage
-    timezone: string
     hasError?: boolean
     isMessageHidden?: boolean
     isMessageDeleted?: boolean
     isMessageFromAIAgent?: boolean
-    displayMessageStatusIndicator?: boolean
 }
 
 export default function Header({
     id,
     message,
-    timezone,
     hasError,
     isMessageHidden,
     isMessageDeleted,
     isMessageFromAIAgent = false,
-    displayMessageStatusIndicator = false,
 }: Props) {
     const sender = fromJS(message.sender || {}) as Map<any, any>
     const isForwarded = isForwardedMessage(message)
@@ -110,8 +106,6 @@ export default function Header({
             <SourceDetailsHeader
                 className={css.sourceDetails}
                 message={message}
-                displayMessageStatusIndicator={displayMessageStatusIndicator}
-                timezone={timezone}
                 isMessageDeleted={isMessageDeleted}
             />
         </div>

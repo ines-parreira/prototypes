@@ -1,6 +1,7 @@
-import React, { ComponentProps } from 'react'
+import { ComponentProps } from 'react'
 
 import { render, screen, waitFor } from '@testing-library/react'
+import { fromJS } from 'immutable'
 import { mockFlags } from 'jest-launchdarkly-mock'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
@@ -9,7 +10,6 @@ import thunk from 'redux-thunk'
 import { SegmentEvent } from 'common/segment'
 import { logEventWithSampling } from 'common/segment/segment'
 import { FeatureFlagKey } from 'config/featureFlags'
-import { MessageMetadataType } from 'models/ticket/types'
 import { AUTOMATION_BOT_EMAIL_ACROSS_ALL_ACCOUNTS } from 'state/agents/constants'
 import { getCurrentAccountId } from 'state/currentAccount/selectors'
 import { shouldDisplayAuditLogEvents as getShouldDisplayAuditLogEvents } from 'state/ticket/selectors'
@@ -24,6 +24,7 @@ import {
     TRIAL_MESSAGE_TAG,
 } from '../../AIAgentFeedbackBar/constants'
 import { messageFeedback } from '../../AIAgentFeedbackBar/tests/fixtures'
+import Message from '../Message'
 import TicketMessages from '../TicketMessages'
 
 jest.mock('state/ui/ticketAIAgentFeedback')
@@ -38,14 +39,18 @@ const getShouldDisplayAuditLogEventsMock = assumeMock(
 )
 const logEventMock = assumeMock(logEventWithSampling)
 
-jest.mock(
-    'pages/tickets/detail/components/TicketMessages/Message',
-    () => () => <p>Message</p>,
+jest.mock('pages/tickets/detail/components/TicketMessages/Message', () =>
+    jest.fn(() => <p>Message</p>),
 )
 
 jest.mock(
-    'pages/tickets/detail/components/TicketMessages/Container',
-    () => () => <p>Container</p>,
+    'pages/tickets/detail/components/TicketMessages/Header',
+    () => () => () => <p>Header</p>,
+)
+
+jest.mock(
+    'pages/tickets/detail/components/TicketMessages/AIAgentBanner',
+    () => () => () => <p>AIAgentBanner</p>,
 )
 
 jest.mock(
@@ -76,7 +81,7 @@ describe('TicketMessages', () => {
         lastMessageDatetimeAfterMount: null,
         setStatus: jest.fn(),
         highlightedElements: null,
-        customer: new Map<any, any>(),
+        customer: fromJS({}),
         lastCustomerMessage: new Map<any, any>(),
         ticketMeta: null,
     } as unknown as ComponentProps<typeof TicketMessages>
@@ -88,7 +93,6 @@ describe('TicketMessages', () => {
         } as unknown as ReturnType<typeof getSelectedAIMessage>)
         getCurrentAccountIdMock.mockReturnValue(1)
         getShouldDisplayAuditLogEventsMock.mockReturnValue(true)
-
         mockFlags({
             [FeatureFlagKey.FeedbackToAIAgentInTicketViews]: false,
         })
@@ -320,25 +324,66 @@ describe('TicketMessages', () => {
         expect(container).toBeEmptyDOMElement()
     })
 
-    it('should still display a signal ticket message', () => {
-        const signalMessageProps = {
+    it('should render the status indicators on all messages as they differ', () => {
+        const props = {
             ...defaultProps,
             messages: [
                 {
                     ...defaultProps.messages[0],
-                    body_html: undefined,
-                    meta: {
-                        type: MessageMetadataType.Signal,
-                    },
+                    id: 42,
+                    body_html: '<p> some text </p>',
+                },
+                {
+                    ...defaultProps.messages[0],
+                    id: 43,
+                    failed_datetime: '2021-01-01T00:00:00Z',
                 },
             ],
         }
 
-        const { container } = render(
+        render(
             <Provider store={mockStore(defaultState)}>
-                <TicketMessages {...signalMessageProps} />
+                <TicketMessages {...props} />
             </Provider>,
         )
-        expect(container).not.toBeEmptyDOMElement()
+
+        expect(Message).toHaveBeenCalledWith(
+            expect.objectContaining({
+                showMessageStatusIndicator: true,
+            }),
+            expect.anything(),
+        )
+    })
+
+    it("should not render the message status indicators since they're all the same", () => {
+        const props = {
+            ...defaultProps,
+            messages: [
+                {
+                    ...defaultProps.messages[0],
+                    id: 42,
+                    body_html: '<p> some text </p>',
+                    sent_datetime: '2021-01-01T00:00:00Z',
+                },
+                {
+                    ...defaultProps.messages[0],
+                    id: 43,
+                    sent_datetime: '2021-01-01T03:00:00Z',
+                },
+            ],
+        }
+
+        render(
+            <Provider store={mockStore(defaultState)}>
+                <TicketMessages {...props} />
+            </Provider>,
+        )
+
+        expect(Message).toHaveBeenCalledWith(
+            expect.objectContaining({
+                showMessageStatusIndicator: false,
+            }),
+            expect.anything(),
+        )
     })
 })

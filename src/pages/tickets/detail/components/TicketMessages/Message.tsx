@@ -20,7 +20,6 @@ type Props = {
     showMessageStatusIndicator?: boolean
     showSourceDetails: boolean
     ticketId: number
-    timezone: string
     isAIAgentMessage: boolean
     messagePosition: number
 }
@@ -31,7 +30,6 @@ export default function Message({
     showMessageStatusIndicator,
     showSourceDetails,
     ticketId,
-    timezone,
     isAIAgentMessage,
     messagePosition,
 }: Props) {
@@ -51,8 +49,7 @@ export default function Message({
                     className={css.sourceDetails}
                     contentClassName={css.sourceDetailsContent}
                     message={message}
-                    timezone={timezone}
-                    displayMessageStatusIndicator={
+                    showMessageStatusIndicator={
                         isOver || showMessageStatusIndicator
                     }
                     hideTimestamp={!isOver}

@@ -1,4 +1,4 @@
-import React, { Component, ReactNode } from 'react'
+import { Component, ReactNode } from 'react'
 
 import classNamesBind from 'classnames/bind'
 import { fromJS, Map } from 'immutable'
@@ -8,7 +8,7 @@ import moment, { Moment } from 'moment'
 import { TicketVia } from 'business/types/ticket'
 import { IntegrationType } from 'models/integration/constants'
 import { isFailed, isPending } from 'models/ticket/predicates'
-import { TicketMessage } from 'models/ticket/types'
+import { MessageMetadataType, TicketMessage } from 'models/ticket/types'
 import Avatar from 'pages/common/components/Avatar/Avatar'
 import { getDisplayCustomerLastSeenOnChat } from 'pages/common/components/infobar/utils'
 import { scrollToReactNode } from 'pages/common/utils/keyboard'
@@ -25,7 +25,6 @@ const classNames = classNamesBind.bind(css)
 
 type Props = {
     id: string
-    isSignal?: boolean
     className?: string
     message: TicketMessage
     // Ideally we only want to pass the messages but as this is a hotfix I'll only add those and not deprecate the sole message object
@@ -36,7 +35,6 @@ type Props = {
     children?: ReactNode
     timezone: string
     containsLastCustomerMessage: boolean
-    displayMessageStatusIndicator?: boolean
     isMessageHidden: boolean
     isMessageDeleted: boolean
     isBodyHighlighted: boolean
@@ -74,9 +72,7 @@ export default class Container extends Component<Props> {
             customer,
             timezone,
             containsLastCustomerMessage,
-            displayMessageStatusIndicator = false,
             shouldDisplayAuditLogEvents = false,
-            isSignal,
         } = this.props
 
         const sender = fromJS(message.sender || {}) as Map<any, any>
@@ -183,6 +179,9 @@ export default class Container extends Component<Props> {
                     ),
             )
 
+        // Used to transfer metadata from chat without displaying a message
+        const isSignal = message.meta?.type === MessageMetadataType.Signal
+
         return (
             <>
                 {!isSignal && (
@@ -215,10 +214,6 @@ export default class Container extends Component<Props> {
                             <Header
                                 id={this.props.id}
                                 message={message}
-                                displayMessageStatusIndicator={
-                                    displayMessageStatusIndicator
-                                }
-                                timezone={this.props.timezone}
                                 hasError={isFailed(message)}
                                 isMessageHidden={isMessageHidden}
                                 isMessageDeleted={isMessageDeleted}

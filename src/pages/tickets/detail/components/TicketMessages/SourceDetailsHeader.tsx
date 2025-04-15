@@ -7,7 +7,7 @@ import useMeasure from 'hooks/useMeasure'
 import { TicketMessage } from 'models/ticket/types'
 import DatetimeLabel from 'pages/common/utils/DatetimeLabel'
 
-import SeenIndicator from './SeenIndicator'
+import MessageStatusIndicator from './MessageStatusIndicator'
 import SourceActionsHeader from './SourceActionsHeader'
 import SourceDetailsContext from './SourceDetailsContext'
 
@@ -16,12 +16,11 @@ import css from './SourceDetails.less'
 type Props = {
     className?: string
     contentClassName?: string
-    displayMessageStatusIndicator?: boolean
+    showMessageStatusIndicator?: boolean
     hideTimestamp?: boolean
     isMessageDeleted?: boolean
     message: TicketMessage
     showIntents?: boolean
-    timezone: string
 }
 
 const From = ({ label, children }: { label: string; children?: ReactNode }) => (
@@ -34,12 +33,11 @@ const From = ({ label, children }: { label: string; children?: ReactNode }) => (
 export default function SourceDetailsHeader({
     className,
     contentClassName,
-    displayMessageStatusIndicator = false,
+    showMessageStatusIndicator = true,
     hideTimestamp = false,
     isMessageDeleted,
     message,
     showIntents = true,
-    timezone,
 }: Props) {
     const [focus, setFocus] = useState(false)
 
@@ -96,15 +94,8 @@ export default function SourceDetailsHeader({
         >
             <div className={classnames(css.content, contentClassName)}>
                 {actionHeader}
-                {message.from_agent && message.id && (
-                    <SeenIndicator
-                        displayMessageStatusIndicator={
-                            displayMessageStatusIndicator
-                        }
-                        iconElementId={message.id}
-                        openedDatetime={message.opened_datetime}
-                        timezone={timezone}
-                    />
+                {showMessageStatusIndicator && (
+                    <MessageStatusIndicator message={message} />
                 )}
                 {infoWidget}
             </div>

@@ -1,5 +1,3 @@
-import React from 'react'
-
 import { render } from '@testing-library/react'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
@@ -41,7 +39,6 @@ describe('Header', () => {
                 <Header
                     id="some-header"
                     message={message}
-                    timezone="America/Los_Angeles"
                     isMessageHidden={false}
                     isMessageDeleted={false}
                 />
@@ -57,7 +54,6 @@ describe('Header', () => {
                 <Header
                     id="some-header"
                     message={message}
-                    timezone="America/Los_Angeles"
                     isMessageHidden={true}
                     isMessageDeleted={false}
                 />
@@ -73,7 +69,6 @@ describe('Header', () => {
                 <Header
                     id="some-header"
                     message={duplicatedHiddenFacebookMessage}
-                    timezone="America/Los_Angeles"
                     isMessageHidden={true}
                     isMessageDeleted={false}
                 />
@@ -89,7 +84,6 @@ describe('Header', () => {
                 <Header
                     id="some-header"
                     message={message}
-                    timezone="America/Los_Angeles"
                     isMessageHidden={false}
                     isMessageDeleted={true}
                 />
@@ -104,7 +98,6 @@ describe('Header', () => {
                 <Header
                     id="some-header"
                     message={message}
-                    timezone="America/Los_Angeles"
                     isMessageHidden={false}
                     isMessageDeleted={false}
                 />
@@ -123,7 +116,6 @@ describe('Header', () => {
                 <Header
                     id="some-header"
                     message={message}
-                    timezone="America/Los_Angeles"
                     isMessageHidden={false}
                     isMessageDeleted={false}
                 />
