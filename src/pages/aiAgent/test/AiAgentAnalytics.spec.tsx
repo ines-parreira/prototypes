@@ -33,6 +33,9 @@ const renderComponent = () =>
                 },
                 ui: {
                     stats: {
+                        drillDown: {
+                            isOpen: false,
+                        },
                         filters: filtersInitialState,
                     },
                 },
