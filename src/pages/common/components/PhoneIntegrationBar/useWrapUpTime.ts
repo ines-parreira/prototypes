@@ -2,7 +2,10 @@ import { useCallback, useEffect, useState } from 'react'
 
 import moment from 'moment'
 
-import { useEndWrapUpTime } from '@gorgias/api-queries'
+import {
+    useEndWrapUpTime,
+    useGetAgentWrapUpCallStatus,
+} from '@gorgias/api-queries'
 
 import useInterval from 'hooks/useInterval'
 import { useNotify } from 'hooks/useNotify'
@@ -15,17 +18,31 @@ import {
 } from 'services/socketManager/types'
 
 export default function useWrapUpTime() {
-    const [wrapUpEndTimestamp, setWrapUpEndTimestamp] = useState<string | null>(
-        null,
-    )
-    const [voiceCall, setVoiceCall] = useState<VoiceCall | null>(null)
+    const [wrapUpState, setWrapUpState] = useState<{
+        wrapUpEndTimestamp: string | null
+        voiceCall: Pick<
+            VoiceCall,
+            'id' | 'integration_id' | 'external_id'
+        > | null
+    }>({
+        wrapUpEndTimestamp: null,
+        voiceCall: null,
+    })
     const [timeLeft, setTimeLeft] = useState<string | null>(null)
     const notify = useNotify()
 
+    const { data: agentCallStatus } = useGetAgentWrapUpCallStatus({
+        query: {
+            refetchOnWindowFocus: false,
+        },
+    })
+
     const clearWrapUpTime = () => {
-        setWrapUpEndTimestamp(null)
+        setWrapUpState({
+            wrapUpEndTimestamp: null,
+            voiceCall: null,
+        })
         setTimeLeft(null)
-        setVoiceCall(null)
     }
 
     const endWrapUpTimeMutation = useEndWrapUpTime({
@@ -42,18 +59,20 @@ export default function useWrapUpTime() {
     const handleWrapUpTimeStarted = useCallback(
         (json: ServerMessage) => {
             const eventData = json as unknown as VoiceCallWrapUpTimeStartedEvent
-            setWrapUpEndTimestamp(eventData.event.expiration_datetime)
-            setVoiceCall(eventData.voice_call)
+            setWrapUpState({
+                wrapUpEndTimestamp: eventData.event.expiration_datetime,
+                voiceCall: eventData.voice_call,
+            })
         },
-        [setWrapUpEndTimestamp],
+        [setWrapUpState],
     )
 
     useInterval(() => {
-        if (!wrapUpEndTimestamp) {
+        if (!wrapUpState.wrapUpEndTimestamp) {
             return
         }
 
-        const wrapUpMoment = moment.utc(wrapUpEndTimestamp)
+        const wrapUpMoment = moment.utc(wrapUpState.wrapUpEndTimestamp)
         const now = moment.utc()
 
         if (now?.isAfter(wrapUpMoment)) {
@@ -79,10 +98,32 @@ export default function useWrapUpTime() {
         // eslint-disable-next-line exhaustive-deps
     }, [])
 
+    useEffect(() => {
+        if (agentCallStatus?.data?.status === 'wrapping-up') {
+            setWrapUpState({
+                wrapUpEndTimestamp: agentCallStatus.data.expiration_datetime,
+                voiceCall:
+                    agentCallStatus.data.call_id &&
+                    agentCallStatus.data.integration_id &&
+                    agentCallStatus.data.call_sid
+                        ? {
+                              id: Number(agentCallStatus.data.call_id),
+                              integration_id: Number(
+                                  agentCallStatus.data.integration_id,
+                              ),
+                              external_id: String(
+                                  agentCallStatus.data.call_sid,
+                              ),
+                          }
+                        : null,
+            })
+        }
+    }, [agentCallStatus])
+
     return {
-        isWrappingUp: !!wrapUpEndTimestamp,
+        isWrappingUp: !!wrapUpState.wrapUpEndTimestamp,
         timeLeft,
-        voiceCall,
+        voiceCall: wrapUpState.voiceCall,
         endWrapUpTimeMutation,
         clearWrapUpTime,
     }

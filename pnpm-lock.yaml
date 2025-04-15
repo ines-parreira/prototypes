@@ -57,17 +57,17 @@ importers:
         specifier: ^0.1.0
         version: 0.1.0(@gorgias/design-tokens@0.4.0)(classnames@2.2.6)(core-js@3.36.1)(react@17.0.2)
       '@gorgias/api-client':
-        specifier: ^0.6.27
-        version: 0.6.27
+        specifier: ^0.6.28
+        version: 0.6.28
       '@gorgias/api-queries':
-        specifier: ^0.6.27
-        version: 0.6.27
+        specifier: ^0.6.28
+        version: 0.6.28
       '@gorgias/api-types':
-        specifier: ^0.6.27
-        version: 0.6.27
+        specifier: ^0.6.28
+        version: 0.6.28
       '@gorgias/api-validators':
-        specifier: ^0.6.27
-        version: 0.6.27
+        specifier: ^0.6.28
+        version: 0.6.28
       '@gorgias/branding-assets':
         specifier: ^0.2.1
         version: 0.2.1
@@ -2790,20 +2790,20 @@ packages:
       core-js: ^2.6.5
       react: ^16.14
 
-  '@gorgias/api-client@0.6.27':
-    resolution: {integrity: sha512-+wdVkbNvhjv8ridtNbhV0izlk+GiFTf1H9wue9nUZkxzz49m/LtA1CZrDJU7R9UKXTI+zuTtIT61X2tdFXthFQ==, tarball: https://npm.pkg.github.com/download/@gorgias/api-client/0.6.27/d0349c323b54d9e3c5052df09d7a8a64297a302e}
+  '@gorgias/api-client@0.6.28':
+    resolution: {integrity: sha512-cwdsreXiSgnZjZFGXsGOcatBiff7gatWPIr7Fipf/T+iumJM0BNwsqFMIEHbpId4MTL8lEmXDi9OCbDlPLRktg==, tarball: https://npm.pkg.github.com/download/@gorgias/api-client/0.6.28/b548e30a1c483f5ae61e3d273c17310b70ad2a27}
 
-  '@gorgias/api-queries@0.6.27':
-    resolution: {integrity: sha512-+rS54ECMYTKN1z+vPhUixu7Bo2VguPHJPRkkRi78IHY0RklnUvawUeVfv9WxN4+tQ7Nwv1uLOR337rE13zUubg==, tarball: https://npm.pkg.github.com/download/@gorgias/api-queries/0.6.27/d7c546f09ce7f7115fb5479e02e22487a10ee690}
+  '@gorgias/api-queries@0.6.28':
+    resolution: {integrity: sha512-tmsLZjxfNaKX3OAihEO2JK6w8Aly2TeJS4Je32uMm1PcABlbem/jaFE23WPNXzlPlQAmmrHNUfsxOHJsdEOE0A==, tarball: https://npm.pkg.github.com/download/@gorgias/api-queries/0.6.28/4953f0a94a95e62eb3da8d279159b8c57db009a9}
 
-  '@gorgias/api-spec@0.6.27':
-    resolution: {integrity: sha512-Rbj2o/ENKXjldeILA+evL/6dOOZXrMwPstUiT0vzVFDvJyk9Zwp9beK5zDyUrV50xBGA79FFiwIrl1SQVaZQTg==, tarball: https://npm.pkg.github.com/download/@gorgias/api-spec/0.6.27/b2c17fc5f67571111506264dd82b10c17c00f1b0}
+  '@gorgias/api-spec@0.6.28':
+    resolution: {integrity: sha512-ICW5K6BVjW81q9R0o8MQQMGuh8TpGGDT7Wf/mSpheYLfQjau9nFq77WYnIThhbaDG/++vz1uIYc0zhdXcOqA+w==, tarball: https://npm.pkg.github.com/download/@gorgias/api-spec/0.6.28/f7187979819e48fb2841e144bf2d04cc40a16a24}
 
-  '@gorgias/api-types@0.6.27':
-    resolution: {integrity: sha512-J1NgL5Crzgv4rcscONLZ7pjflnQYnGHHUp5aHK48VwcANQzSSP6BZ4DoWMVsbh6NdXJWxqBz4Ft1ob45MN+zZQ==, tarball: https://npm.pkg.github.com/download/@gorgias/api-types/0.6.27/5b2622d213976aba94587108b8d82277f228c020}
+  '@gorgias/api-types@0.6.28':
+    resolution: {integrity: sha512-ZPjQvEpyukKjruexAfCr4yGaSVPCN93CZbBn8a10miCzEq5EILdn8NJaNov/FNCYrQvQR1K4XQUcT2/er6R+rA==, tarball: https://npm.pkg.github.com/download/@gorgias/api-types/0.6.28/f6c4dd4cdc586ff4553a7daf32df0d952eaae3cb}
 
-  '@gorgias/api-validators@0.6.27':
-    resolution: {integrity: sha512-8ApW4qVPyS7OC+scnx6IbyC+Ey0Qi3sKDOCUL3ApqoJVf3gO0lKsAq7d6NEdAuksrUjl/xljjS70NDXmk9RznA==, tarball: https://npm.pkg.github.com/download/@gorgias/api-validators/0.6.27/40bcbf869b39e4fa2dd64fee5067ee746d57f6bc}
+  '@gorgias/api-validators@0.6.28':
+    resolution: {integrity: sha512-lspaFBj6pDmue/xm7xUmPD/7ulwTJHAjuV8AxhUbot5+7uIRwdKj1Cej4tzkycUd4r2tMYqQMZOd0+uQySoZsQ==, tarball: https://npm.pkg.github.com/download/@gorgias/api-validators/0.6.28/afac00afbc54936b07e504667d287f49d470f1ac}
 
   '@gorgias/branding-assets@0.2.1':
     resolution: {integrity: sha512-NxxSjkJ5xguwXqYpQwEuxoz1eEnJLMlfzRbTTk+cbQxucGyazUsterz0mdTXru2d/yd6iUnPAvZ1Q45s/mjJWg==, tarball: https://npm.pkg.github.com/download/@gorgias/branding-assets/0.2.1/78d49790593f16706d120f57cb71e8362e9080a3}
@@ -13957,29 +13957,29 @@ snapshots:
       core-js: 3.36.1
       react: 17.0.2
 
-  '@gorgias/api-client@0.6.27':
+  '@gorgias/api-client@0.6.28':
     dependencies:
-      '@gorgias/api-types': 0.6.27
+      '@gorgias/api-types': 0.6.28
       axios: 1.8.4
     transitivePeerDependencies:
       - debug
 
-  '@gorgias/api-queries@0.6.27':
+  '@gorgias/api-queries@0.6.28':
     dependencies:
-      '@gorgias/api-client': 0.6.27
-      '@gorgias/api-types': 0.6.27
+      '@gorgias/api-client': 0.6.28
+      '@gorgias/api-types': 0.6.28
     transitivePeerDependencies:
       - debug
 
-  '@gorgias/api-spec@0.6.27': {}
+  '@gorgias/api-spec@0.6.28': {}
 
-  '@gorgias/api-types@0.6.27': {}
+  '@gorgias/api-types@0.6.28': {}
 
-  '@gorgias/api-validators@0.6.27':
+  '@gorgias/api-validators@0.6.28':
     dependencies:
       '@apideck/better-ajv-errors': 0.3.6(ajv@8.17.1)
-      '@gorgias/api-spec': 0.6.27
-      '@gorgias/api-types': 0.6.27
+      '@gorgias/api-spec': 0.6.28
+      '@gorgias/api-types': 0.6.28
       ajv: 8.17.1
       ajv-formats: 3.0.1(ajv@8.17.1)
       immer: 10.1.1
@@ -14034,7 +14034,7 @@ snapshots:
 
   '@gorgias/realtime@0.7.2(@types/pubnub@7.4.2)(encoding@0.1.13)(react-dom@17.0.2(react@17.0.2))(react-native@0.78.0(@babel/core@7.23.9)(@babel/preset-env@7.10.2(@babel/core@7.23.9))(@types/react@17.0.83)(react@17.0.2))(react@17.0.2)':
     dependencies:
-      '@gorgias/api-queries': 0.6.27
+      '@gorgias/api-queries': 0.6.28
       '@tanstack/react-query': 4.36.1(react-dom@17.0.2(react@17.0.2))(react-native@0.78.0(@babel/core@7.23.9)(@babel/preset-env@7.10.2(@babel/core@7.23.9))(@types/react@17.0.83)(react@17.0.2))(react@17.0.2)
       immer: 10.1.1
       lodash-es: 4.17.21

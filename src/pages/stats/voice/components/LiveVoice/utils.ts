@@ -1,7 +1,6 @@
 import {
     LiveCallQueueAgent,
     LiveCallQueueAgentCallStatusesItem,
-    LiveCallQueueAgentCallStatusesItemStatus,
     LiveCallQueueVoiceCall,
     VoiceCallDirection,
     VoiceCallStatus,
@@ -193,11 +192,7 @@ export const getOldestInProgressCall = (
     }
 
     return agent.call_statuses
-        ?.filter(
-            (call) =>
-                call.status ===
-                LiveCallQueueAgentCallStatusesItemStatus.InProgress,
-        )
+        ?.filter((call) => call.status === 'in-progress')
         .sort((a, b) =>
             a.created_datetime!.localeCompare(b.created_datetime!),
         )[0]
@@ -233,9 +228,7 @@ export const mapBusyAgentStatus = (
         }
     }
 
-    if (
-        lastCall.status === LiveCallQueueAgentCallStatusesItemStatus.WrappingUp
-    ) {
+    if (lastCall?.status === 'wrapping-up') {
         return {
             description: 'Wrapping up',
             isDescriptionTimestamp: false,

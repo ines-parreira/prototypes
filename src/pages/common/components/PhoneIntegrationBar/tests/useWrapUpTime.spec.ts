@@ -1,7 +1,7 @@
 import { waitFor } from '@testing-library/react'
 import { act } from 'react-dom/test-utils'
 
-import { endWrapUpTime } from '@gorgias/api-client'
+import { endWrapUpTime, getAgentWrapUpCallStatus } from '@gorgias/api-client'
 
 import useInterval from 'hooks/useInterval'
 import { useNotify } from 'hooks/useNotify'
@@ -40,6 +40,7 @@ jest.mock('moment-timezone', () => {
 })
 
 const endWrapUpTimeMock = assumeMock(endWrapUpTime)
+const getAgentWrapUpCallStatusMock = assumeMock(getAgentWrapUpCallStatus)
 const useNotifyMock = assumeMock(useNotify)
 const useIntervalMock = assumeMock(useInterval)
 
@@ -264,6 +265,30 @@ describe('useWrapUpTime', () => {
             expect(mockErrorNotify).toHaveBeenCalledWith(
                 'Failed to end wrap-up time',
             )
+        })
+    })
+
+    it('should initialize the wrap up state on mount', async () => {
+        getAgentWrapUpCallStatusMock.mockResolvedValue({
+            data: {
+                status: 'wrapping-up',
+                expiration_datetime: '2023-01-01T12:05:00Z',
+                call_id: '123',
+                integration_id: 1,
+                call_sid: 'test-call-sid',
+            },
+        } as any)
+
+        const { result, waitForValueToChange } =
+            renderHookWithQueryClientProvider(() => useWrapUpTime())
+
+        await waitForValueToChange(() => result.current.isWrappingUp)
+
+        expect(result.current.isWrappingUp).toBe(true)
+        expect(result.current.voiceCall).toEqual({
+            id: 123,
+            integration_id: 1,
+            external_id: 'test-call-sid',
         })
     })
 })

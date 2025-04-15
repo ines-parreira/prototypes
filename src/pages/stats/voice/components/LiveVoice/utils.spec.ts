@@ -2,7 +2,6 @@ import moment from 'moment'
 
 import {
     LiveCallQueueAgent,
-    LiveCallQueueAgentCallStatusesItemStatus,
     LiveCallQueueVoiceCall,
     VoiceCallDirection,
     VoiceCallStatus,
@@ -45,7 +44,7 @@ describe('utils', () => {
                 call_statuses: [
                     {
                         created_datetime: '',
-                        status: LiveCallQueueAgentCallStatusesItemStatus.InProgress,
+                        status: 'in-progress',
                     },
                 ],
                 is_available_for_call: false,
@@ -107,7 +106,7 @@ describe('utils', () => {
                     call_statuses: [
                         {
                             created_datetime: '',
-                            status: LiveCallQueueAgentCallStatusesItemStatus.InProgress,
+                            status: 'in-progress',
                         },
                     ],
                     is_available_for_call: false,
@@ -124,7 +123,7 @@ describe('utils', () => {
                     call_statuses: [
                         {
                             created_datetime: '',
-                            status: LiveCallQueueAgentCallStatusesItemStatus.InProgress,
+                            status: 'in-progress',
                         },
                     ],
                     is_available_for_call: true,
@@ -146,7 +145,7 @@ describe('utils', () => {
                     call_statuses: [
                         {
                             created_datetime: '',
-                            status: LiveCallQueueAgentCallStatusesItemStatus.InProgress,
+                            status: 'in-progress',
                         },
                     ],
                     is_available_for_call: false,
@@ -157,7 +156,7 @@ describe('utils', () => {
                     call_statuses: [
                         {
                             created_datetime: '',
-                            status: LiveCallQueueAgentCallStatusesItemStatus.InProgress,
+                            status: 'in-progress',
                         },
                     ],
                     is_available_for_call: true,
@@ -509,7 +508,7 @@ describe('utils', () => {
                 name: 'Agent 1',
                 call_statuses: [
                     {
-                        status: LiveCallQueueAgentCallStatusesItemStatus.InProgress,
+                        status: 'in-progress',
                         created_datetime: createdDateTime,
                     },
                 ],
@@ -530,7 +529,7 @@ describe('utils', () => {
                 name: 'Agent 1',
                 call_statuses: [
                     {
-                        status: LiveCallQueueAgentCallStatusesItemStatus.WrappingUp,
+                        status: 'wrapping-up',
                         created_datetime: '2021-08-01T09:59:00Z',
                     },
                 ],
@@ -551,7 +550,7 @@ describe('utils', () => {
                 name: 'Agent 1',
                 call_statuses: [
                     {
-                        status: LiveCallQueueAgentCallStatusesItemStatus.Ringing,
+                        status: 'ringing',
                         created_datetime: '2021-08-01T09:59:00Z',
                     },
                 ],
@@ -572,7 +571,7 @@ describe('utils', () => {
                 name: 'Agent 1',
                 call_statuses: [
                     {
-                        status: 'SomeOtherStatus' as LiveCallQueueAgentCallStatusesItemStatus,
+                        status: 'SomeOtherStatus' as any,
                         created_datetime: '2021-08-01T09:59:00Z',
                     },
                 ],
@@ -593,19 +592,19 @@ describe('utils', () => {
                 name: 'Agent 1',
                 call_statuses: [
                     {
-                        status: LiveCallQueueAgentCallStatusesItemStatus.WrappingUp,
+                        status: 'wrapping-up',
                         created_datetime: '2021-08-01T09:58:00Z',
                     },
                     {
-                        status: LiveCallQueueAgentCallStatusesItemStatus.InProgress,
+                        status: 'in-progress',
                         created_datetime: '2021-08-01T09:59:00Z',
                     },
                     {
-                        status: LiveCallQueueAgentCallStatusesItemStatus.InProgress,
+                        status: 'in-progress',
                         created_datetime: '2021-08-01T10:00:00Z',
                     },
                     {
-                        status: LiveCallQueueAgentCallStatusesItemStatus.WrappingUp,
+                        status: 'wrapping-up',
                         created_datetime: '2021-08-01T10:01:00Z',
                     },
                 ],
