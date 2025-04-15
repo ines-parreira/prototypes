@@ -4,14 +4,21 @@ import css from './ScrapedDomainHeader.less'
 
 type Props = {
     description: string
+    searchValue: string
+    onSearch: (value: string) => void
 }
 
-const ScrapedDomainHeader = ({ description }: Props) => {
+const ScrapedDomainHeader = ({ description, searchValue, onSearch }: Props) => {
     return (
         <div className={css.container}>
             <span>{description}</span>
             <div>
-                <Search className={css.searchInput} placeholder="Search" />
+                <Search
+                    value={searchValue}
+                    onChange={onSearch}
+                    className={css.searchInput}
+                    placeholder="Search"
+                />
             </div>
         </div>
     )

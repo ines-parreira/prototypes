@@ -64,20 +64,17 @@ export type ApiPaginationParams = {
     orderDir?: OrderDirection
 }
 
+export type ApiPaginationParamsWithFilter = ApiPaginationParams & {
+    filter?: string
+}
+
 export type GorgiasApiError<T = unknown> = Omit<AxiosError, 'response'> &
     Pick<
-        Required<
-            AxiosError<{
-                error: GorgiasApiResponseDataError<T>
-            }>
-        >,
+        Required<AxiosError<{ error: GorgiasApiResponseDataError<T> }>>,
         'response'
     >
 
-export type GorgiasApiResponseDataError<T = unknown> = {
-    msg: string
-    data: T
-}
+export type GorgiasApiResponseDataError<T = unknown> = { msg: string; data: T }
 
 const isGorgiasApiResponseDataError = (
     data: Record<string, unknown> | undefined,

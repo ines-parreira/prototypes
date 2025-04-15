@@ -9,12 +9,13 @@ import type { ScrapedContent } from '../types'
 const mockOnSelect = jest.fn()
 const mockOnFetchNextItems = jest.fn()
 const mockOnFetchPrevItems = jest.fn()
+const mockOnSearch = jest.fn()
 
 const mockContent: ScrapedContent[] = [
     {
         id: 1,
         title: 'Sample Question or Product',
-        imageUrl: 'https://example.com/image.jpg',
+        image: { src: 'https://example.com/image.jpg' },
     },
 ]
 
@@ -28,6 +29,8 @@ const setup = (propsOverride = {}) => {
         hasPrevItems: false,
         fetchNextItems: mockOnFetchNextItems,
         fetchPrevItems: mockOnFetchPrevItems,
+        searchValue: '',
+        onSearch: mockOnSearch,
     }
 
     return render(

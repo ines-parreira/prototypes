@@ -16,9 +16,7 @@ const AiAgentScrapedDomainProductsContainer = () => {
     const isStandaloneMenuEnabled =
         useFlags()[FeatureFlagKey.ConvAiStandaloneMenu]
 
-    const { shopName } = useParams<{
-        shopName: string
-    }>()
+    const { shopName } = useParams<{ shopName: string }>()
 
     const currentAccount = useAppSelector(getCurrentAccountState)
     const accountDomain = currentAccount.get('domain')

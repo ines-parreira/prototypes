@@ -162,6 +162,8 @@ const AiAgentScrapedDomainQuestionsView = ({
             onBannerClose={() => setSyncStoreDomainStatus(null)}
         >
             <ScrapedDomainContentView
+                searchValue={''}
+                onSearch={null as any}
                 isLoading={isFetchLoading || syncIsPending}
                 content={paginatedQuestions}
                 onSelect={handleOnSelect}

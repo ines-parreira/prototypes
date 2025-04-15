@@ -4,6 +4,7 @@ import {
     ApiListResponse,
     ApiListResponseCursorPagination,
     ApiPaginationParams,
+    ApiPaginationParamsWithFilter,
 } from 'models/api/types'
 
 import {
@@ -106,9 +107,7 @@ export const fetchAppErrorLogs = async (
 export const fetchIntegrations = async (params: ApiPaginationParams = {}) =>
     await client.get<ApiListResponseCursorPagination<Integration[]>>(
         '/api/integrations',
-        {
-            params,
-        },
+        { params },
     )
 
 export const requestNewIntegration = async (payload: IntegrationRequest) => {
@@ -121,7 +120,7 @@ export const requestNewIntegration = async (payload: IntegrationRequest) => {
 
 export const fetchIntegrationProducts = async (
     integrationId: number,
-    params: ApiPaginationParams = {},
+    params: ApiPaginationParamsWithFilter = {},
 ) =>
     await client.get<
         ApiListResponseCursorPagination<IntegrationDataItem<Product>[]>

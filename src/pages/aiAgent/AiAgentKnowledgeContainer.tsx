@@ -211,7 +211,7 @@ export const AiAgentKnowledgeContainer = () => {
         </Button>
     )
 
-    const pendingBanner = () => (
+    const PendingBanner = () => (
         <Banner
             variant="inline"
             icon
@@ -226,7 +226,7 @@ export const AiAgentKnowledgeContainer = () => {
         </Banner>
     )
 
-    const successBanner = () => (
+    const SuccessBanner = () => (
         <Banner
             variant="inline"
             icon
@@ -241,12 +241,12 @@ export const AiAgentKnowledgeContainer = () => {
         </Banner>
     )
 
-    const renderBanner = () => {
+    const IngestionDomainBanner = () => {
         switch (syncStoreDomainStatus) {
             case IngestionLogStatus.Pending:
-                return pendingBanner()
+                return <PendingBanner />
             case IngestionLogStatus.Successful:
-                return successBanner()
+                return <SuccessBanner />
             default:
                 return null
         }
@@ -267,12 +267,7 @@ export const AiAgentKnowledgeContainer = () => {
             <form onSubmit={onSubmit} className={css.container}>
                 {isAiAgentScrapeStoreDomainEnabled ? (
                     <>
-                        {syncStoreDomainStatus &&
-                            (syncStoreDomainStatus ===
-                                IngestionLogStatus.Pending ||
-                                syncStoreDomainStatus ===
-                                    IngestionLogStatus.Successful) &&
-                            renderBanner()}
+                        <IngestionDomainBanner />
                         <ConfigurationSection
                             subtitle="AI Agent uses your knowledge answer customer questions and resolve requests."
                             data-candu-id="ai-agent-configuration-knowledge-copy"

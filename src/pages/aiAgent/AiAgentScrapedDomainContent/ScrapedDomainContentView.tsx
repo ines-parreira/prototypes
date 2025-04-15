@@ -28,6 +28,8 @@ type Props = {
     hasPrevItems: boolean
     fetchNextItems: () => void
     fetchPrevItems: () => void
+    searchValue: string
+    onSearch: (value: string) => void
 }
 
 const EmptyStateView = ({ pageType }: { pageType: string }) => {
@@ -49,6 +51,8 @@ const ScrapedDomainContentView = ({
     hasPrevItems,
     fetchNextItems,
     fetchPrevItems,
+    searchValue,
+    onSearch,
 }: Props) => {
     const description =
         pageType === CONTENT_TYPE.QUESTION
@@ -58,7 +62,11 @@ const ScrapedDomainContentView = ({
     return (
         <>
             <div>
-                <ScrapedDomainHeader description={description} />
+                <ScrapedDomainHeader
+                    description={description}
+                    searchValue={searchValue}
+                    onSearch={onSearch}
+                />
                 <TableWrapper className={css.tableWrapper}>
                     <TableHead>
                         <HeaderCellProperty title={pageType} />
@@ -101,7 +109,7 @@ const ScrapedDomainContentView = ({
                                                   />
                                               ) : (
                                                   <img
-                                                      src={content.imageUrl}
+                                                      src={content.image?.src}
                                                       alt="product-image"
                                                       className={
                                                           css.productImage

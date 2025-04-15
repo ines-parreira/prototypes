@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 
-import { useSearchParam } from 'hooks/useSearchParam'
+import { useShopifyIntegrationAndScope } from 'pages/common/hooks/useShopifyIntegrationAndScope'
 
 import { usePollStoreDomainIngestionLog } from '../hooks/usePollStoreDomainIngestionLog'
 import { useSyncStoreDomain } from '../hooks/useSyncStoreDomain'
@@ -10,6 +10,7 @@ import {
     IngestionLogStatus,
     PAGINATED_ITEMS_PER_PAGE,
 } from './constant'
+import { usePaginatedProductIntegration } from './hooks/usePaginatedProductIntegration'
 import ScrapedDomainContentView from './ScrapedDomainContentView'
 import ScrapedDomainSelectedContent from './ScrapedDomainSelectedContent'
 import { ScrapedContent } from './types'
@@ -63,89 +64,24 @@ const AiAgentScrapedDomainProductsView = ({
         setIsOpened(false)
     }
 
-    const [value, setSearchParam] = useSearchParam('page')
-    const currentPage = Number(value) || 1
+    const { integrationId } = useShopifyIntegrationAndScope(shopName)
 
-    const onPageChange = (page: number) => {
-        if (currentPage !== page) {
-            setSearchParam(page.toString())
-        }
-    }
+    const {
+        itemsData: paginatedProducts,
+        isLoading,
+        searchTerm,
+        setSearchTerm,
+        fetchNext,
+        fetchPrev,
+        hasNextPage,
+        hasPrevPage,
+    } = usePaginatedProductIntegration({
+        integrationId: integrationId || 0,
+        initialParams: { limit: PAGINATED_ITEMS_PER_PAGE },
+        enabled: !!integrationId,
+    })
 
-    // Mocked data to replace by actual data in the next iteration
-    // https://linear.app/gorgias/issue/AIKNL-89/implement-functionality-for-product-content-tab
-    const mockedProducts = storeDomainIngestionLog
-        ? [
-              {
-                  id: 1,
-                  title: 'Duo Baguette Birthstone Ring',
-              },
-              {
-                  id: 2,
-                  title: 'Lovely heart necklace',
-              },
-              {
-                  id: 3,
-                  title: 'Chain bracelet',
-              },
-              {
-                  id: 4,
-                  title: 'Elegant pearl earrings',
-              },
-              {
-                  id: 5,
-                  title: 'Stylish cuff bangle',
-              },
-              {
-                  id: 6,
-                  title: 'Classic hoop earrings',
-              },
-              {
-                  id: 7,
-                  title: 'Minimalist pendant necklace',
-              },
-              {
-                  id: 8,
-                  title: 'Chic statement earrings',
-              },
-              {
-                  id: 9,
-                  title: 'Vintage-inspired brooch',
-              },
-              {
-                  id: 10,
-                  title: 'Bohemian layered necklace',
-              },
-              {
-                  id: 11,
-                  title: 'Modern geometric ring',
-              },
-              {
-                  id: 12,
-                  title: 'Retro charm bracelet',
-              },
-              {
-                  id: 13,
-                  title: 'Sleek leather watch',
-              },
-              {
-                  id: 14,
-                  title: 'Delicate anklet',
-              },
-              {
-                  id: 15,
-                  title: 'Engraved initial ring',
-              },
-              {
-                  id: 16,
-                  title: 'Engraved initial bracelet',
-              },
-          ]
-        : []
-
-    const startIndex = (currentPage - 1) * PAGINATED_ITEMS_PER_PAGE
-    const endIndex = startIndex + PAGINATED_ITEMS_PER_PAGE
-    const paginatedProducts = mockedProducts.slice(startIndex, endIndex)
+    const isDataLoading = isFetchLoading || isLoading
 
     return (
         <AiAgentScrapedDomainContentLayout
@@ -153,7 +89,7 @@ const AiAgentScrapedDomainProductsView = ({
             storeDomainIngestionLog={storeDomainIngestionLog}
             storeDomain={storeDomain ?? null}
             storeUrl={storeUrl ?? null}
-            isFetchLoading={isFetchLoading}
+            isFetchLoading={isDataLoading}
             syncTriggered={syncTriggered}
             handleOnSync={handleOnSync}
             handleOnCancel={handleOnCancel}
@@ -162,20 +98,22 @@ const AiAgentScrapedDomainProductsView = ({
             onBannerClose={() => setSyncStoreDomainStatus(null)}
         >
             <ScrapedDomainContentView
-                isLoading={isFetchLoading || syncIsPending}
+                searchValue={searchTerm}
+                onSearch={setSearchTerm}
+                isLoading={isDataLoading || syncIsPending}
                 content={paginatedProducts}
                 pageType={CONTENT_TYPE.PRODUCT}
                 onSelect={handleOnSelect}
-                hasNextItems={endIndex < mockedProducts.length}
-                hasPrevItems={startIndex > 0}
-                fetchNextItems={() => onPageChange(currentPage + 1)}
-                fetchPrevItems={() => onPageChange(currentPage - 1)}
+                hasNextItems={hasNextPage}
+                hasPrevItems={hasPrevPage}
+                fetchNextItems={fetchNext}
+                fetchPrevItems={fetchPrev}
             />
             <ScrapedDomainSelectedContent
                 selectedContent={selectedProduct}
                 contentType={CONTENT_TYPE.PRODUCT}
                 isOpened={isOpened}
-                isLoading={isFetchLoading || syncIsPending}
+                isLoading={isDataLoading || syncIsPending}
                 onClose={handleOnClose}
             />
         </AiAgentScrapedDomainContentLayout>

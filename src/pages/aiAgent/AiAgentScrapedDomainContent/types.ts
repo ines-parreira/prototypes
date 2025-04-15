@@ -6,7 +6,9 @@ export type ScrapedContent = {
     // https://linear.app/gorgias/issue/AIKNL-89/implement-functionality-for-product-content-tab
     id: number
     title: string
-    imageUrl?: string
+    image?: {
+        src: string
+    } | null
 }
 
 export type IngestionLog = Components.Schemas.IngestionLogDto

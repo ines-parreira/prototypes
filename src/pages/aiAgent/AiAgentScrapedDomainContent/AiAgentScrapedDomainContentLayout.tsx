@@ -55,7 +55,7 @@ const AiAgentScrapedDomainContentLayout = ({
         },
     ]
 
-    const pendingBanner = () => (
+    const PendingBanner = () => (
         <Banner
             variant="inline"
             icon
@@ -70,7 +70,7 @@ const AiAgentScrapedDomainContentLayout = ({
         </Banner>
     )
 
-    const successBanner = () => (
+    const SuccessBanner = () => (
         <Banner
             variant="inline"
             icon
@@ -84,12 +84,12 @@ const AiAgentScrapedDomainContentLayout = ({
         </Banner>
     )
 
-    const renderBanner = () => {
+    const IngestionDomainBanner = () => {
         switch (syncStoreDomainStatus) {
             case IngestionLogStatus.Pending:
-                return pendingBanner()
+                return <PendingBanner />
             case IngestionLogStatus.Successful:
-                return successBanner()
+                return <SuccessBanner />
             default:
                 return null
         }
@@ -99,10 +99,7 @@ const AiAgentScrapedDomainContentLayout = ({
         <div className={css.container}>
             <BackLink path={routes.knowledge} label="Back to Sources" />
 
-            {syncStoreDomainStatus &&
-                (syncStoreDomainStatus === IngestionLogStatus.Pending ||
-                    syncStoreDomainStatus === IngestionLogStatus.Successful) &&
-                renderBanner()}
+            <IngestionDomainBanner />
 
             <Card className={css.wrapper}>
                 <AiAgentScrapedDomainContentHeader
