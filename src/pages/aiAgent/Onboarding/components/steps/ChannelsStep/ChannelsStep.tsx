@@ -365,7 +365,7 @@ export const ChannelsStep: React.FC<StepProps> = ({
             const updatedData = {
                 ...data,
                 preview: preview,
-                currentStepName: WizardStepEnum.PERSONALITY_PREVIEW,
+                currentStepName: validSteps[currentStep]?.step,
                 emailIntegrationIds: emailChannelEnabled
                     ? emailIntegrationIds
                     : [],

@@ -44,7 +44,6 @@ import {
     agentChatConversationSettings,
     chatPreviewSettings,
 } from 'pages/aiAgent/Onboarding/settings'
-import { WizardStepEnum } from 'pages/aiAgent/Onboarding/types'
 import { formatDiscountMax } from 'pages/aiAgent/utils/sales-discount.utils'
 import AIBanner from 'pages/common/components/AIBanner/AIBanner'
 import IconTooltip from 'pages/common/forms/IconTooltip/IconTooltip'
@@ -262,7 +261,7 @@ export const PersonalityStep: FC<StepProps> = ({
                 ...data,
                 id: data.id as string,
                 shopName,
-                currentStepName: WizardStepEnum.HANDOVER,
+                currentStepName: validSteps[currentStep]?.step,
                 salesPersuasionLevel,
                 salesDiscountStrategyLevel,
                 salesDiscountMax: salesDiscountMax

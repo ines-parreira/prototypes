@@ -32,7 +32,7 @@ import {
     agentChatConversationSettings,
     chatPreviewSettings,
 } from 'pages/aiAgent/Onboarding/settings'
-import { AiAgentScopes, WizardStepEnum } from 'pages/aiAgent/Onboarding/types'
+import { AiAgentScopes } from 'pages/aiAgent/Onboarding/types'
 import ChatIntegrationPreview from 'pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationPreview/ChatIntegrationPreview'
 import { getCurrentAccountState } from 'state/currentAccount/selectors'
 
@@ -142,7 +142,7 @@ export const SkillsetStep: FC<SkillsetStepProps> = ({
         }
 
         const onboardingPayload: CreateOnboardingData = {
-            currentStepName: WizardStepEnum.SKILLSET,
+            currentStepName: validSteps[currentStep]?.step,
             scopes: selectedScope,
             gorgiasDomain: accountDomain,
         }
@@ -192,6 +192,8 @@ export const SkillsetStep: FC<SkillsetStepProps> = ({
         shopName,
         generateToneOfVoice,
         currentIntegration,
+        validSteps,
+        currentStep,
     ])
 
     const renderContent = useMemo(() => {
