@@ -26,12 +26,6 @@ export const conversationExamples: ConversationExamples = {
                 attachments: [],
             },
             {
-                content: 'Was this helpful?',
-                isHtml: true,
-                fromAgent: true,
-                attachments: [],
-            },
-            {
                 content: 'Yes!',
                 isHtml: false,
                 fromAgent: false,

@@ -61,7 +61,7 @@ export const useTransformToneOfVoiceConversations = (
     const [outputConversations, setOutputConversations] =
         useState<Partial<ConversationExamples>>()
     const outputConversationRef = useRef(outputConversations)
-    const [isPreviewLoading, setIsPreviewLoading] = useState(false)
+    const [isPreviewLoading, setIsPreviewLoading] = useState<boolean>()
     const [isAllConversationsLoading, setIsAllConversationsLoading] =
         useState(false)
 
@@ -236,6 +236,7 @@ export const useTransformToneOfVoiceConversations = (
             !isLoadingOnboardingData &&
             !isProductDataLoading &&
             !isPreviewLoading &&
+            isMlPreviewEnabled !== undefined &&
             previewId &&
             !outputConversations?.[previewId]
         ) {
@@ -258,6 +259,7 @@ export const useTransformToneOfVoiceConversations = (
         transformConversations,
         outputConversations,
         inputConversations,
+        isMlPreviewEnabled,
     ])
 
     // Effect for transforming all conversations
@@ -265,6 +267,7 @@ export const useTransformToneOfVoiceConversations = (
         if (
             !isLoadingOnboardingData &&
             !isProductDataLoading &&
+            isMlPreviewEnabled !== undefined &&
             !outputConversations &&
             !isAllConversationsLoading
         ) {
@@ -293,6 +296,7 @@ export const useTransformToneOfVoiceConversations = (
         inputConversations,
         isAllConversationsLoading,
         outputConversations,
+        isMlPreviewEnabled,
     ])
 
     useEffect(() => {
@@ -317,7 +321,7 @@ export const useTransformToneOfVoiceConversations = (
         isLoading: previewId
             ? isPreviewLoading && isAllConversationsLoading
             : isAllConversationsLoading,
-        isPreviewLoading: isPreviewLoading,
+        isPreviewLoading: isPreviewLoading ?? true,
         previewConversation: previewConversation,
         preview: cacheResult ? JSON.stringify(outputConversations) : undefined,
     }
