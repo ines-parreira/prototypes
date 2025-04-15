@@ -30,7 +30,7 @@ describe('<Left />', () => {
 
     beforeEach(() => {
         QAScoreDimensionSelectMock.mockImplementation(() => (
-            <div>QA Score Dimension Select</div>
+            <div>Auto QA Score Dimension Select</div>
         ))
         CustomFieldSelectMock.mockImplementation(() => (
             <div>Custom Field Select</div>
@@ -43,7 +43,7 @@ describe('<Left />', () => {
             objectPath: 'ticket.qa_score_dimensions',
         })
 
-        expect(getByText('QA Score')).toBeInTheDocument()
+        expect(getByText('Auto QA Score')).toBeInTheDocument()
     })
 
     it('should render the correct title for a Custom Field', () => {
@@ -70,7 +70,7 @@ describe('<Left />', () => {
             objectPath: `ticket.qa_score_dimensions[${QaScoreDimensions.ACCURACY}]`,
         })
 
-        expect(getByText('QA Score Dimension Select')).toBeInTheDocument()
+        expect(getByText('Auto QA Score Dimension Select')).toBeInTheDocument()
         expect(QAScoreDimensionSelectMock).toHaveBeenCalledWith(
             expect.objectContaining({ value: 'accuracy' }),
             {},

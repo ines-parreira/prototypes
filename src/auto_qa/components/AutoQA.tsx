@@ -50,7 +50,7 @@ export default function AutoQA() {
         <div className={css.container}>
             <header className={css.header}>
                 <div className={css.titleWrapper}>
-                    <h2 className={css.title}>QA Score</h2>
+                    <h2 className={css.title}>Auto QA Score</h2>
                     <i
                         id="auto-qa-score"
                         className={cn('material-icons-outlined', css.icon)}

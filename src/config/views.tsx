@@ -350,7 +350,7 @@ export const defaultTicketView = {
         },
         {
             name: ViewField.QAScore,
-            title: 'QA Score',
+            title: 'Auto QA Score',
             path: 'qa_score_dimensions',
             filter: {
                 enum: [1, 2, 3, 4, 5],

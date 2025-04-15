@@ -40,7 +40,7 @@ describe('AutoQA', () => {
 
     it('should render the component', () => {
         const { getByText } = render(<AutoQA />)
-        expect(getByText('QA Score')).toBeInTheDocument()
+        expect(getByText('Auto QA Score')).toBeInTheDocument()
     })
 
     it('should render a skeleton while data is loading', () => {
