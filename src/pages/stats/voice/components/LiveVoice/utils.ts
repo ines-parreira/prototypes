@@ -1,6 +1,7 @@
 import {
     LiveCallQueueAgent,
     LiveCallQueueAgentCallStatusesItem,
+    LiveCallQueueAgentCallStatusesItemStatus,
     LiveCallQueueVoiceCall,
     VoiceCallDirection,
     VoiceCallStatus,
@@ -71,26 +72,6 @@ export const groupAgentsByStatus = (
         [AgentStatusCategory.Unavailable]:
             sortOnlineAgentsFirst(unavailableAgents),
     }
-}
-
-export const getOldestCall = (
-    agent: LiveCallQueueAgent,
-): LiveCallQueueAgentCallStatusesItem | null => {
-    if (!agent.call_statuses?.length) {
-        return null
-    }
-
-    return agent.call_statuses?.reduce((oldestCall, call) => {
-        if (!oldestCall) {
-            return call
-        }
-
-        return call.created_datetime &&
-            oldestCall.created_datetime &&
-            call.created_datetime < oldestCall.created_datetime
-            ? call
-            : oldestCall
-    })
 }
 
 export const formatVoiceCallsData = (
@@ -201,5 +182,68 @@ export const getLiveVoicePeriodFilter = (
     return {
         start_datetime: formatReportingQueryDate(now.clone().startOf('day')),
         end_datetime: formatReportingQueryDate(now.clone().endOf('day')),
+    }
+}
+
+export const getOldestInProgressCall = (
+    agent: LiveCallQueueAgent,
+): LiveCallQueueAgentCallStatusesItem | null => {
+    if (!agent.call_statuses?.length) {
+        return null
+    }
+
+    return agent.call_statuses
+        ?.filter(
+            (call) =>
+                call.status ===
+                LiveCallQueueAgentCallStatusesItemStatus.InProgress,
+        )
+        .sort((a, b) =>
+            a.created_datetime!.localeCompare(b.created_datetime!),
+        )[0]
+}
+
+const getLastCall = (
+    agent: LiveCallQueueAgent,
+): LiveCallQueueAgentCallStatusesItem | undefined => {
+    return agent.call_statuses?.[agent.call_statuses.length - 1]
+}
+
+export const mapBusyAgentStatus = (
+    agent: LiveCallQueueAgent,
+): {
+    description: string
+    isDescriptionTimestamp: boolean
+} => {
+    const lastCall = getLastCall(agent)
+
+    if (!lastCall) {
+        return {
+            description: '',
+            isDescriptionTimestamp: false,
+        }
+    }
+
+    const oldestInProgressCall = getOldestInProgressCall(agent)
+
+    if (oldestInProgressCall) {
+        return {
+            description: oldestInProgressCall.created_datetime!,
+            isDescriptionTimestamp: true,
+        }
+    }
+
+    if (
+        lastCall.status === LiveCallQueueAgentCallStatusesItemStatus.WrappingUp
+    ) {
+        return {
+            description: 'Wrapping up',
+            isDescriptionTimestamp: false,
+        }
+    }
+
+    return {
+        description: 'Ringing',
+        isDescriptionTimestamp: false,
     }
 }

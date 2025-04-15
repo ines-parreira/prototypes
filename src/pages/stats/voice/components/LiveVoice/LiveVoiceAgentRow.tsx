@@ -1,11 +1,8 @@
-import React, { useState } from 'react'
+import { useState } from 'react'
 
 import classNames from 'classnames'
 
-import {
-    LiveCallQueueAgent,
-    LiveCallQueueAgentCallStatusesItemStatus,
-} from '@gorgias/api-queries'
+import { LiveCallQueueAgent } from '@gorgias/api-queries'
 import { Tooltip } from '@gorgias/merchant-ui-kit'
 
 import useInterval from 'hooks/useInterval'
@@ -13,7 +10,7 @@ import { getFormattedDurationOngoingCall } from 'models/voiceCall/utils'
 import AgentCard from 'pages/common/components/AgentCard/AgentCard'
 import BodyCell from 'pages/common/components/table/cells/BodyCell'
 
-import { getOldestCall, isAgentAvailable, isAgentBusy } from './utils'
+import { isAgentAvailable, isAgentBusy, mapBusyAgentStatus } from './utils'
 
 import css from './LiveVoiceAgentsList.less'
 
@@ -70,17 +67,12 @@ export default function LiveVoiceAgentRow({ agent }: Props) {
 
 const getCardProps = (agent: LiveCallQueueAgent) => {
     if (isAgentBusy(agent)) {
-        const oldestCall = getOldestCall(agent)
-        const isCallInProgress =
-            oldestCall?.status ===
-            LiveCallQueueAgentCallStatusesItemStatus.InProgress
-        const description = isCallInProgress
-            ? oldestCall.created_datetime
-            : 'Ringing'
+        const mappedStatus = mapBusyAgentStatus(agent)
+
         return {
             badgeColor: 'var(--feedback-warning)',
-            description,
-            isDescriptionTimestamp: isCallInProgress,
+            description: mappedStatus.description,
+            isDescriptionTimestamp: mappedStatus.isDescriptionTimestamp,
         }
     }
 

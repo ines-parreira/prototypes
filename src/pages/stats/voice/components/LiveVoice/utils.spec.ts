@@ -19,12 +19,12 @@ import {
     filterLiveCallsByStatus,
     formatVoiceCallsData,
     getLiveVoicePeriodFilter,
-    getOldestCall,
     groupAgentsByStatus,
     isAgentAvailable,
     isAgentBusy,
     isLiveCallRinging,
     isLiveInboundVoiceCallAnswered,
+    mapBusyAgentStatus,
     orderLiveVoiceCallsByOngoingTime,
 } from './utils'
 
@@ -224,50 +224,6 @@ describe('utils', () => {
                 ).toEqual([onlineAgent, offlineAgent1, offlineAgent2])
             },
         )
-    })
-
-    describe('getOldestCall', () => {
-        it('should return the oldest call correctly', () => {
-            const agent: LiveCallQueueAgent = {
-                id: 1,
-                name: 'Agent 1',
-                call_statuses: [
-                    {
-                        status: LiveCallQueueAgentCallStatusesItemStatus.InProgress,
-                        created_datetime: '2021-08-01T10:00:00Z',
-                    },
-                    {
-                        status: LiveCallQueueAgentCallStatusesItemStatus.InProgress,
-                        created_datetime: '2021-08-01T10:01:00Z',
-                    },
-                    {
-                        status: LiveCallQueueAgentCallStatusesItemStatus.InProgress,
-                        created_datetime: '2021-08-01T09:59:00Z',
-                    },
-                ],
-                is_available_for_call: false,
-            }
-
-            const result = getOldestCall(agent)
-
-            expect(result).toEqual({
-                status: LiveCallQueueAgentCallStatusesItemStatus.InProgress,
-                created_datetime: '2021-08-01T09:59:00Z',
-            })
-        })
-
-        it('should return undefined if there are no calls', () => {
-            const agent: LiveCallQueueAgent = {
-                id: 1,
-                name: 'Agent 1',
-                call_statuses: [],
-                is_available_for_call: false,
-            }
-
-            const result = getOldestCall(agent)
-
-            expect(result).toBe(null)
-        })
     })
 
     describe('formatVoiceCallsData', () => {
@@ -527,5 +483,141 @@ describe('utils', () => {
                 expect(result).toEqual(expectedResult)
             },
         )
+    })
+
+    describe('mapBusyAgentStatus', () => {
+        it('should return empty description when there are no call statuses', () => {
+            const agent: LiveCallQueueAgent = {
+                id: 1,
+                name: 'Agent 1',
+                call_statuses: [],
+                is_available_for_call: false,
+            }
+
+            const result = mapBusyAgentStatus(agent)
+
+            expect(result).toEqual({
+                description: '',
+                isDescriptionTimestamp: false,
+            })
+        })
+
+        it('should return created_datetime and isDescriptionTimestamp true for InProgress status', () => {
+            const createdDateTime = '2021-08-01T09:59:00Z'
+            const agent: LiveCallQueueAgent = {
+                id: 1,
+                name: 'Agent 1',
+                call_statuses: [
+                    {
+                        status: LiveCallQueueAgentCallStatusesItemStatus.InProgress,
+                        created_datetime: createdDateTime,
+                    },
+                ],
+                is_available_for_call: false,
+            }
+
+            const result = mapBusyAgentStatus(agent)
+
+            expect(result).toEqual({
+                description: createdDateTime,
+                isDescriptionTimestamp: true,
+            })
+        })
+
+        it('should return "Wrapping up" description for WrappingUp status', () => {
+            const agent: LiveCallQueueAgent = {
+                id: 1,
+                name: 'Agent 1',
+                call_statuses: [
+                    {
+                        status: LiveCallQueueAgentCallStatusesItemStatus.WrappingUp,
+                        created_datetime: '2021-08-01T09:59:00Z',
+                    },
+                ],
+                is_available_for_call: false,
+            }
+
+            const result = mapBusyAgentStatus(agent)
+
+            expect(result).toEqual({
+                description: 'Wrapping up',
+                isDescriptionTimestamp: false,
+            })
+        })
+
+        it('should return "Ringing" description for Ringing status', () => {
+            const agent: LiveCallQueueAgent = {
+                id: 1,
+                name: 'Agent 1',
+                call_statuses: [
+                    {
+                        status: LiveCallQueueAgentCallStatusesItemStatus.Ringing,
+                        created_datetime: '2021-08-01T09:59:00Z',
+                    },
+                ],
+                is_available_for_call: false,
+            }
+
+            const result = mapBusyAgentStatus(agent)
+
+            expect(result).toEqual({
+                description: 'Ringing',
+                isDescriptionTimestamp: false,
+            })
+        })
+
+        it('should return "Ringing" description for any other status', () => {
+            const agent: LiveCallQueueAgent = {
+                id: 1,
+                name: 'Agent 1',
+                call_statuses: [
+                    {
+                        status: 'SomeOtherStatus' as LiveCallQueueAgentCallStatusesItemStatus,
+                        created_datetime: '2021-08-01T09:59:00Z',
+                    },
+                ],
+                is_available_for_call: false,
+            }
+
+            const result = mapBusyAgentStatus(agent)
+
+            expect(result).toEqual({
+                description: 'Ringing',
+                isDescriptionTimestamp: false,
+            })
+        })
+
+        it('should use the oldest in progress call when multiple calls exist', () => {
+            const agent: LiveCallQueueAgent = {
+                id: 1,
+                name: 'Agent 1',
+                call_statuses: [
+                    {
+                        status: LiveCallQueueAgentCallStatusesItemStatus.WrappingUp,
+                        created_datetime: '2021-08-01T09:58:00Z',
+                    },
+                    {
+                        status: LiveCallQueueAgentCallStatusesItemStatus.InProgress,
+                        created_datetime: '2021-08-01T09:59:00Z',
+                    },
+                    {
+                        status: LiveCallQueueAgentCallStatusesItemStatus.InProgress,
+                        created_datetime: '2021-08-01T10:00:00Z',
+                    },
+                    {
+                        status: LiveCallQueueAgentCallStatusesItemStatus.WrappingUp,
+                        created_datetime: '2021-08-01T10:01:00Z',
+                    },
+                ],
+                is_available_for_call: false,
+            }
+
+            const result = mapBusyAgentStatus(agent)
+
+            expect(result).toEqual({
+                description: '2021-08-01T09:59:00Z',
+                isDescriptionTimestamp: true,
+            })
+        })
     })
 })

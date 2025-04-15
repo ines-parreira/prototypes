@@ -1,11 +1,6 @@
-import React from 'react'
-
 import { act, render, waitFor } from '@testing-library/react'
 
-import {
-    LiveCallQueueAgent,
-    LiveCallQueueAgentCallStatusesItemStatus,
-} from '@gorgias/api-queries'
+import { LiveCallQueueAgent } from '@gorgias/api-queries'
 
 import useInterval from 'hooks/useInterval'
 import { getFormattedDurationOngoingCall } from 'models/voiceCall/utils'
@@ -13,7 +8,7 @@ import AgentCard from 'pages/common/components/AgentCard/AgentCard'
 import { assumeMock } from 'utils/testing'
 
 import LiveVoiceAgentRow from './LiveVoiceAgentRow'
-import { getOldestCall, isAgentAvailable, isAgentBusy } from './utils'
+import { isAgentAvailable, isAgentBusy, mapBusyAgentStatus } from './utils'
 
 jest.mock('hooks/useInterval')
 jest.mock('pages/common/components/AgentCard/AgentCard')
@@ -27,13 +22,12 @@ const defaultAgent = {
 
 const useIntervalMock = assumeMock(useInterval)
 const AgentCardMock = assumeMock(AgentCard)
-const getOldestCallMock = assumeMock(getOldestCall)
 const isAgentBusyMock = assumeMock(isAgentBusy)
 const getFormattedDurationOngoingCallMock = assumeMock(
     getFormattedDurationOngoingCall,
 )
 const isAgentAvailableMock = assumeMock(isAgentAvailable)
-
+const mapBusyAgentStatusMock = assumeMock(mapBusyAgentStatus)
 const successColor = 'var(--feedback-success)'
 const errorColor = 'var(--feedback-error)'
 const warningColor = 'var(--feedback-warning)'
@@ -45,31 +39,24 @@ describe('LiveVoiceAgentRow', () => {
 
     beforeEach(() => {
         AgentCardMock.mockReturnValue(<div>AgentCardMock</div>)
+        mapBusyAgentStatusMock.mockReturnValue({
+            description: '2021-08-01T09:58:00Z',
+            isDescriptionTimestamp: true,
+        })
     })
 
     describe('busy agent', () => {
         it('should render correct description when agent is in call', async () => {
-            const oldestCall = {
-                status: LiveCallQueueAgentCallStatusesItemStatus.InProgress,
-                created_datetime: '2021-01-01T00:00:00Z',
-            }
-            const recentCall = {
-                status: LiveCallQueueAgentCallStatusesItemStatus.Ringing,
-                created_datetime: '2021-01-01T00:00:01Z',
-            }
-
-            getOldestCallMock.mockReturnValue(oldestCall)
             getFormattedDurationOngoingCallMock.mockImplementation(
                 (description) => description,
             )
             isAgentBusyMock.mockReturnValue(true)
+            mapBusyAgentStatusMock.mockReturnValue({
+                description: '2021-08-01T09:58:00Z',
+                isDescriptionTimestamp: true,
+            })
 
-            const agent = {
-                ...defaultAgent,
-                call_statuses: [recentCall, oldestCall],
-            }
-
-            renderComponent(agent)
+            renderComponent(defaultAgent)
 
             act(() => {
                 useIntervalMock.mock.lastCall?.[0]()
@@ -78,45 +65,12 @@ describe('LiveVoiceAgentRow', () => {
             await waitFor(() => {
                 expect(AgentCardMock).toHaveBeenLastCalledWith(
                     expect.objectContaining({
-                        description: oldestCall.created_datetime,
+                        description: '2021-08-01T09:58:00Z',
                         badgeColor: warningColor,
                     }),
                     {},
                 )
             })
-        })
-
-        it('should render correct description when agent is ringing', () => {
-            const oldestCall = {
-                status: LiveCallQueueAgentCallStatusesItemStatus.Ringing,
-                created_datetime: '2021-01-01T00:00:00Z',
-            }
-            const recentCall = {
-                status: LiveCallQueueAgentCallStatusesItemStatus.InProgress,
-                created_datetime: '2021-01-01T00:00:01Z',
-            }
-
-            getOldestCallMock.mockReturnValue(oldestCall)
-            isAgentBusyMock.mockReturnValue(true)
-
-            const agent = {
-                ...defaultAgent,
-                call_statuses: [oldestCall, recentCall],
-            }
-
-            renderComponent(agent)
-
-            act(() => {
-                useIntervalMock.mock.lastCall?.[0]()
-            })
-
-            expect(AgentCardMock).toHaveBeenLastCalledWith(
-                expect.objectContaining({
-                    description: 'Ringing',
-                    badgeColor: warningColor,
-                }),
-                {},
-            )
         })
     })
 
