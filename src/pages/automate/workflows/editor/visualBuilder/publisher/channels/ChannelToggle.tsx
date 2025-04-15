@@ -117,7 +117,7 @@ const ChannelToggle = ({
                 name={channel.value.name}
                 value={isWorkflowEnabled}
                 isLoading={isLoading}
-                onClick={handleUpdate}
+                onChange={handleUpdate}
                 isDisabled={
                     (!!onlySupportedChannels.length ||
                         isLanguageMismatchError ||
