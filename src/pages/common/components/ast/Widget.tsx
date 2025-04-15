@@ -18,7 +18,7 @@ import {
 import DEPRECATED_InputField from 'pages/common/forms/DEPRECATED_InputField'
 import { getDateAndTimeFormatter } from 'state/currentUser/selectors'
 import { humanizeChannel } from 'state/ticket/utils'
-import { formatDatetime, humanizeString } from 'utils'
+import { formatDatetime, getLanguageDisplayName, humanizeString } from 'utils'
 
 import { BASIC_OPERATORS } from '../../../../config'
 import {
@@ -513,13 +513,25 @@ export class Widget extends Component<Props, State> {
                     right.getIn(['meta', 'enum'], List([])) as List<string>
                 ).toJS()
 
-                widget.options =
-                    left.last() === 'channel'
-                        ? options.map((option: string) => ({
-                              value: option,
-                              label: humanizeChannel(option),
-                          }))
-                        : options
+                widget.options = options
+
+                // Handle special cases for ticket channel and language.
+                switch (left.last()) {
+                    case 'channel':
+                        widget.options = options.map((option: string) => ({
+                            value: option,
+                            label: humanizeChannel(option),
+                        }))
+                        break
+                    case 'language':
+                        widget.options = options.map((option: string) => ({
+                            value: option,
+                            label: getLanguageDisplayName(option) || option,
+                        }))
+                        break
+                    default:
+                        break
+                }
 
                 widget.hiddenOptions = (
                     right.getIn(

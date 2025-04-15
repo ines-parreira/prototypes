@@ -8,6 +8,7 @@ import thunk from 'redux-thunk'
 
 import _schemas from 'fixtures/openapi.json'
 import { humanizeChannel } from 'state/ticket/utils'
+import { getLanguageDisplayName } from 'utils'
 
 import Widget from '../Widget'
 import _astCodeContains from './fixtures/astCodeContains.json'
@@ -395,6 +396,37 @@ describe('<Widget />', () => {
         channels.forEach((channel) => {
             expect(
                 screen.getByText(humanizeChannel(channel)),
+            ).toBeInTheDocument()
+        })
+    })
+
+    it('should render display names for ticket language selection', () => {
+        const path = ['definitions', 'Ticket', 'properties', 'language']
+        const leftsiblings = fromJS(path)
+        const value = 'fr'
+        const rule = fromJS({
+            code_ast: astCodeEq,
+        })
+        render(
+            <Provider store={mockStore(defaultState)}>
+                <Widget
+                    {...commonProps}
+                    value={value}
+                    leftsiblings={leftsiblings}
+                    rule={rule}
+                />
+            </Provider>,
+        )
+
+        const languages = commonProps.schemas.getIn([
+            ...path,
+            'meta',
+            'enum',
+        ]) as List<any>
+
+        languages.forEach((language) => {
+            expect(
+                screen.getByText(getLanguageDisplayName(language) as string),
             ).toBeInTheDocument()
         })
     })
