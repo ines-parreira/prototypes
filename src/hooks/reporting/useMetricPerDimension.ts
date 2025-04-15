@@ -282,6 +282,94 @@ export function useMetricPerDimensionWithEnrichment(
     }
 }
 
+export function useMetricPerDimensionWithEnrichmentOnTwoDimensions(
+    query: DrillDownReportingQuery,
+    enrichmentFields: EnrichmentFields[],
+    enrichmentMapping: Record<string, EnrichmentFields>,
+): MetricWithEnrichment<
+    (typeof query)['measures'][0],
+    (typeof query)['dimensions'][0]
+> {
+    const metricData = useEnrichedPostReporting<
+        {
+            data: (MergedRecord<
+                (typeof query)['measures'][0],
+                EnrichmentFields
+            > &
+                IDRecord<(typeof query)['dimensions'][0]>)[]
+        },
+        (MergedRecord<(typeof query)['measures'][0], EnrichmentFields> &
+            IDRecord<(typeof query)['dimensions'][0]>)[]
+    >(
+        { query, enrichment_fields: enrichmentFields },
+        {
+            select: (
+                data: UseEnrichedPostReportingQueryData<{
+                    data: (MergedRecord<
+                        (typeof query)['measures'][0],
+                        EnrichmentFields
+                    > &
+                        IDRecord<(typeof query)['dimensions'][0]>)[]
+                }>,
+            ): UseEnrichedPostReportingQueryData<{
+                data: (MergedRecord<
+                    (typeof query)['measures'][0],
+                    EnrichmentFields
+                > &
+                    IDRecord<(typeof query)['dimensions'][0]>)[]
+            }>['data']['data'] => {
+                return data.data.data
+            },
+            queryFn: () => {
+                return postEnrichedReporting<{
+                    data: (KeyedRecord<(typeof query)['measures'][0]> &
+                        IDRecord<(typeof query)['dimensions'][0]>)[]
+                    enrichment: (KeyedRecord<EnrichmentFields> &
+                        IDRecord<(typeof query)['dimensions'][0]>)[]
+                }>(query, enrichmentFields).then((data) => {
+                    const idFields = Object.keys(
+                        enrichmentMapping,
+                    ) as (typeof query)['dimensions'][0][]
+                    const responseWithFirstDimension = withEnrichment(
+                        data,
+                        idFields[0],
+                        enrichmentFields,
+                        enrichmentMapping[idFields[0]],
+                    )
+                    const responseWithSecondDimension = withEnrichment<
+                        (typeof query)['measures'][0],
+                        EnrichmentFields,
+                        (typeof query)['dimensions'][0]
+                    >(
+                        {
+                            ...responseWithFirstDimension,
+                            data: {
+                                data: responseWithFirstDimension.data.data,
+                                enrichment: data.data.enrichment,
+                            },
+                        },
+                        idFields[1],
+                        enrichmentFields,
+                        enrichmentMapping[idFields[1]],
+                    )
+                    return responseWithSecondDimension
+                })
+            },
+        },
+    )
+
+    return {
+        isFetching: metricData.isFetching,
+        isError: metricData.isError,
+        data:
+            metricData.data !== undefined
+                ? {
+                      allData: metricData?.data,
+                  }
+                : null,
+    }
+}
+
 export const fetchMetricPerDimensionWithEnrichment = (
     query: DrillDownReportingQuery,
     enrichmentFields: EnrichmentFields[],

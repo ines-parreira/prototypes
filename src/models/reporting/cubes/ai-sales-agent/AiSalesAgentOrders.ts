@@ -24,6 +24,8 @@ export enum AiSalesAgentOrdersDimension {
     PeriodEnd = 'AiSalesAgentOrders.periodEnd',
     PeriodStart = 'AiSalesAgentOrders.periodStart',
     ShippingCity = 'AiSalesAgentOrders.shippingCity',
+    TicketId = 'AiSalesAgentOrders.ticketId',
+    CustomerId = 'AiSalesAgentOrders.customerId',
 }
 
 export enum AiSalesAgentOrdersFilterMember {

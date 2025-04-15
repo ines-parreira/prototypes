@@ -76,7 +76,10 @@ const merge = <T extends string, K extends string, ID extends string>(
 ): MergedRecord<T, K | EnrichmentFields> & IDRecord<ID> => {
     return fields.reduce(
         (obj, field) => {
-            return { ...obj, [field]: enrichment?.[field] || null }
+            return {
+                ...obj,
+                [field]: enrichment?.[field] || obj[field] || null,
+            }
         },
         result as MergedRecord<T, K | EnrichmentFields> & IDRecord<ID>,
     )
