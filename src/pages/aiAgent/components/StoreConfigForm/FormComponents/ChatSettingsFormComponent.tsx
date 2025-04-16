@@ -134,7 +134,7 @@ export const ChatSettingsFormComponent = ({
                 <div>
                     See how{' '}
                     <a
-                        href="https://docs.gorgias.com/en-US/set-up-and-use-ai-agent-on-chat-(beta)-828220#the-handover-experience-on-chat"
+                        href="https://link.gorgias.com/57d391"
                         target="_blank"
                         rel="noreferrer"
                     >
