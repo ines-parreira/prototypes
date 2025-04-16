@@ -5,6 +5,26 @@
         width: 100%;
     }
 
+    .customerTag {
+        min-height: 32px;
+        border: 1px solid var(--neutral-grey-3);
+        border-radius: 0.25rem;
+        width: 100%;
+
+        [class^='MultiSelectOptionsField--container'] {
+            min-height: 32px;
+            height: 100%;
+            display: flex;
+            align-items: center;
+        }
+
+        [class^='Dropdown--inputContainer'] {
+            height: 100%;
+            display: flex;
+            align-items: center;
+        }
+    }
+
     .timeSpentOnPageInput {
         input {
             min-width: 35px;

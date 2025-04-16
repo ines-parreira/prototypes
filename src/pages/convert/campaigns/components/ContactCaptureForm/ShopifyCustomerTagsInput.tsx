@@ -16,12 +16,18 @@ type Props = {
     onChange: (value: SelectedValues[]) => void
     shopifyIntegration?: ShopifyIntegration
     className?: string
+    shouldFetchOnFocus?: boolean
+    singularText?: string
+    pluralText?: string
 }
 
 export function ShopifyCustomerTagsInput({
     value,
     onChange,
     className,
+    shouldFetchOnFocus = true,
+    singularText = 'tag',
+    pluralText = 'tags',
 }: Props) {
     const [options, setOptions] = useState<Option[]>([])
     const { shopifyIntegration } = useIntegrationContext()
@@ -44,10 +50,10 @@ export function ShopifyCustomerTagsInput({
     return (
         <MultiSelectOptionsField
             selectedOptions={value}
-            plural="tags"
-            singular="tag"
+            plural={pluralText}
+            singular={singularText}
             onChange={onChange}
-            onFocus={onFocus}
+            onFocus={shouldFetchOnFocus ? onFocus : () => {}}
             options={options}
             className={className}
             allowCustomOptions

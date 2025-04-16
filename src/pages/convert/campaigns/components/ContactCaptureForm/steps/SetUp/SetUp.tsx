@@ -119,6 +119,7 @@ export const SetUp = (props: StepProps) => {
                             className={classnames({
                                 [css.fieldOnError]: onError,
                             })}
+                            shouldFetchOnFocus={false}
                         />
                         {onError && <ErrorMessage>{errorMessage}</ErrorMessage>}
                     </div>

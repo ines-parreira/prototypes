@@ -1,14 +1,12 @@
-import React, { useEffect, useMemo, useState } from 'react'
+import { useEffect, useState } from 'react'
 
-import { useShopifyTags } from 'models/integration/queries'
-import { ShopifyTags } from 'models/integration/types'
-import Button from 'pages/common/components/button/Button'
-import MultiSelectOptionsField from 'pages/common/forms/MultiSelectOptionsField/MultiSelectOptionsField'
+import { Button } from '@gorgias/merchant-ui-kit'
+
 import { Option } from 'pages/common/forms/MultiSelectOptionsField/types'
 import SelectField from 'pages/common/forms/SelectField/SelectField'
 import { Value } from 'pages/common/forms/SelectField/types'
+import { ShopifyCustomerTagsInput } from 'pages/convert/campaigns/components/ContactCaptureForm/ShopifyCustomerTagsInput'
 
-import { useIntegrationContext } from '../../containers/IntegrationProvider'
 import { AdvancedTriggerBaseProps } from '../../types/AdvancedTriggerBaseProps'
 import { CampaignTriggerOperator } from '../../types/enums/CampaignTriggerOperator.enum'
 import { convertTriggerOperatorsToSelectOptions } from '../../utils/convertTriggerOperatorsToSelectOptions'
@@ -23,16 +21,6 @@ export const ShopifyTagsTrigger = ({ id, trigger, onUpdateTrigger }: Props) => {
         trigger.operator,
     )
     const [innerValue, setInnerValue] = useState<Option[]>([])
-
-    const { shopifyIntegration } = useIntegrationContext()
-    const { data } = useShopifyTags(
-        shopifyIntegration?.id ?? -1,
-        ShopifyTags.customers,
-    )
-
-    const shopifyCustomerTags = useMemo(() => {
-        return data?.map((tag) => ({ label: tag, value: tag })) ?? []
-    }, [data])
 
     const handleChangeOperator = (operator: Value) =>
         handleTriggerOperatorChange(
@@ -67,7 +55,6 @@ export const ShopifyTagsTrigger = ({ id, trigger, onUpdateTrigger }: Props) => {
             <div>
                 <Button
                     intent="secondary"
-                    role="button"
                     aria-label="Customer shopify tags"
                     className="btn-frozen"
                 >
@@ -79,14 +66,13 @@ export const ShopifyTagsTrigger = ({ id, trigger, onUpdateTrigger }: Props) => {
                 onChange={handleChangeOperator}
                 options={convertTriggerOperatorsToSelectOptions(trigger.type)}
             />
-            <MultiSelectOptionsField
-                matchInput
-                className={css.fullWidth}
-                plural="customer tags"
-                singular="customer tag"
-                options={shopifyCustomerTags}
-                selectedOptions={innerValue}
+            <ShopifyCustomerTagsInput
+                value={innerValue}
+                className={css.customerTag}
+                shouldFetchOnFocus={false}
                 onChange={handleChangeValue}
+                pluralText="customer tags"
+                singularText="customer tag"
             />
         </>
     )
