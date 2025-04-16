@@ -17,10 +17,12 @@ const {
     GORGIAS_ASSETS_URL,
     WEB_APP_RELEASE,
     DEV_ENV = 'local',
+    NO_CONTENT_HASH = false,
 } = process.env
 
 const isProd = NODE_ENV === 'production'
 const isDev = !isProd
+const noContentHash = NO_CONTENT_HASH || isDev
 
 const BUNDLE_PUBLIC_PATH =
     DEV_ENV === 'proxy'
@@ -30,13 +32,12 @@ const BUNDLE_PUBLIC_PATH =
 const srcDir = path.join(__dirname, 'src')
 const buildDir = path.join(__dirname, 'build')
 const manifestPath = path.join(buildDir, 'manifest.json')
-const jsBundleFile = isProd
-    ? `helpdesk.app.[contenthash].js`
-    : 'helpdesk.app.js'
-const styleBundleFile = isProd
-    ? `helpdesk.app.[contenthash].css`
-    : 'helpdesk.app.css'
-const fontsBundleFile = 'font.css'
+const jsBundleFile = noContentHash
+    ? 'helpdesk.app.js'
+    : `helpdesk.app.[contenthash].js`
+const styleBundleFile = noContentHash
+    ? 'helpdesk.app.css'
+    : `helpdesk.app.[contenthash].css`
 
 const mode = isProd ? 'production' : 'development'
 const devtool = isProd ? 'source-map' : 'cheap-module-source-map'
@@ -115,8 +116,10 @@ const config = {
     devtool,
     optimization,
     entry: {
-        build: `${srcDir}/main/init`,
-        ...(isProd && { font: `${srcDir}/assets/css/font.less` }),
+        build: {
+            import: `${srcDir}/main/init`,
+            filename: jsBundleFile,
+        },
     },
     output: {
         publicPath: isProd ? '' : BUNDLE_PUBLIC_PATH,
@@ -138,11 +141,7 @@ const config = {
         }),
         new NodePolyfillPlugin(),
         new rspack.CssExtractRspackPlugin({
-            filename: ({ chunk }) => {
-                return chunk?.name === 'font'
-                    ? fontsBundleFile
-                    : styleBundleFile
-            },
+            filename: styleBundleFile,
         }),
         new rspack.DefinePlugin({
             'process.env.GORGIAS_ASSETS_URL': JSON.stringify(

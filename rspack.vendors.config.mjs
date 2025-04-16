@@ -4,9 +4,12 @@ import path from 'path'
 import { RspackManifestPlugin } from 'rspack-manifest-plugin'
 import { fileURLToPath } from 'url'
 
-const { NODE_ENV } = process.env
+const { NODE_ENV, NO_CONTENT_HASH } = process.env
 
 const isProd = NODE_ENV === 'production'
+const isDev = !isProd
+const noContentHash = NO_CONTENT_HASH || isDev
+
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
 
@@ -18,9 +21,9 @@ const devtool = isProd ? 'source-map' : 'cheap-module-source-map'
 // Only bundle one dependency for now since it's a dummy file output
 const vendors = ['classnames']
 
-const vendorsBundleFile = isProd
-    ? `helpdesk.vendors.[contenthash].js`
-    : 'helpdesk.vendors.js'
+const vendorsBundleFile = noContentHash
+    ? 'helpdesk.vendors.js'
+    : `helpdesk.vendors.[contenthash].js`
 
 /** @type {import('@rspack/cli').Configuration} */
 const config = {

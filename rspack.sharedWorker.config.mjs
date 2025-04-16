@@ -7,8 +7,12 @@ import { rspack } from '@rspack/core'
 import NodePolyfillPlugin from 'node-polyfill-webpack-plugin'
 import { RspackManifestPlugin } from 'rspack-manifest-plugin'
 
-const isProd = process.env.NODE_ENV === 'production'
-const HASH = process.env.RELEASE ? process.env.RELEASE : '[contenthash]'
+const { NODE_ENV, NO_CONTENT_HASH, RELEASE } = process.env
+
+const isProd = NODE_ENV === 'production'
+const isDev = !isProd
+const noContentHash = NO_CONTENT_HASH || isDev
+const HASH = RELEASE ? RELEASE : noContentHash ? null : '[contenthash]'
 
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
@@ -32,7 +36,7 @@ const config = {
         path: buildDir,
         publicPath: '',
         filename: isProd
-            ? `helpdesk.shared-worker.${HASH}.js`
+            ? ['helpdesk.shared-worker', HASH, 'js'].filter(Boolean).join('.')
             : 'helpdesk.shared-worker.js',
     },
     module: {

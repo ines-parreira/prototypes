@@ -38,19 +38,19 @@ const copy = () => {
         // Copy the file to the destination directory
         const srcFile = files[0]
         const pubnubWorkerFile = path.basename(srcFile)
-        const destFileName =
-            NODE_ENV === 'production' ? pubnubWorkerFile : 'pubnub.worker.js'
-        const destFile = path.join(DEST_DIR, destFileName)
-        fs.copyFileSync(srcFile, destFile)
+
+        fs.copyFileSync(srcFile, path.join(DEST_DIR, 'pubnub.worker.js'))
         console.log(`Copied ${srcFile} to ${DEST_DIR}`)
 
         // Update the manifest file
         if (NODE_ENV === 'production') {
+            fs.copyFileSync(srcFile, path.join(DEST_DIR, pubnubWorkerFile))
+
             try {
                 const manifest = JSON.parse(
                     fs.readFileSync(MANIFEST_FILE, 'utf8'),
                 )
-                manifest['pubnubWorker.js'] = destFileName
+                manifest['pubnubWorker.js'] = pubnubWorkerFile
                 fs.writeFileSync(
                     MANIFEST_FILE,
                     JSON.stringify(manifest, null, 2),
