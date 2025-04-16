@@ -1,15 +1,19 @@
 import MockAdapter from 'axios-mock-adapter'
 
 import client from 'models/api/resources'
-
 import {
     postReporting,
     QUERY_ACCEPTED_BUT_RESPONSE_NOT_READY_STATUS,
     REPORTING_ENDPOINT,
-} from '../resources'
-import { ReportingQuery, ReportingResponse } from '../types'
+} from 'models/reporting/resources'
+import { ReportingQuery, ReportingResponse } from 'models/reporting/types'
+import { reportError } from 'utils/errors'
+import { assumeMock } from 'utils/testing'
 
-const mockedServer = new MockAdapter(client)
+jest.mock('utils/errors')
+const reportErrorMock = assumeMock(reportError)
+
+const mockedAPIClient = new MockAdapter(client)
 
 describe('Reporting resources', () => {
     const query: ReportingQuery = {
@@ -28,8 +32,8 @@ describe('Reporting resources', () => {
     }
 
     beforeEach(() => {
-        mockedServer.reset()
-        mockedServer.onPost(REPORTING_ENDPOINT).reply(200, resFixture)
+        mockedAPIClient.reset()
+        mockedAPIClient.onPost(REPORTING_ENDPOINT).reply(200, resFixture)
     })
 
     describe('postReporting', () => {
@@ -41,38 +45,55 @@ describe('Reporting resources', () => {
 
         it('should reject with an error on success', async () => {
             const statusCode = 503
+            mockedAPIClient.onPost(REPORTING_ENDPOINT).reply(statusCode)
 
-            mockedServer.onPost(REPORTING_ENDPOINT).reply(statusCode)
+            const request = postReporting<[number]>([query])
 
-            return expect(postReporting<[number]>([query])).rejects.toEqual(
+            await expect(request).rejects.toEqual(
                 new Error(`Request failed with status code ${statusCode}`),
             )
         })
 
-        it('should throw and error to trigger retry on result not yet ready status (202)', () => {
-            mockedServer
+        it('should throw and error to trigger retry on result not yet ready status (202)', async () => {
+            mockedAPIClient
                 .onPost(REPORTING_ENDPOINT)
                 .reply(QUERY_ACCEPTED_BUT_RESPONSE_NOT_READY_STATUS)
 
-            return expect(postReporting<[number]>([query])).rejects.toEqual(
+            const request = postReporting<[number]>([query])
+
+            await expect(request).rejects.toEqual(
                 new Error(
                     `Request failed with status code ${QUERY_ACCEPTED_BUT_RESPONSE_NOT_READY_STATUS}`,
                 ),
             )
         })
 
-        it('should throw and error to trigger retry on result not yet ready status (202) even if it is a string', () => {
-            mockedServer
+        it('should throw and error to trigger retry on result not yet ready status (202) even if it is a string', async () => {
+            mockedAPIClient
                 .onPost(REPORTING_ENDPOINT)
                 .reply(
                     String(QUERY_ACCEPTED_BUT_RESPONSE_NOT_READY_STATUS) as any,
                 )
 
-            return expect(postReporting<[number]>([query])).rejects.toEqual(
+            const request = postReporting<[number]>([query])
+
+            await expect(request).rejects.toEqual(
                 new Error(
                     `Request failed with status code ${QUERY_ACCEPTED_BUT_RESPONSE_NOT_READY_STATUS}`,
                 ),
             )
+        })
+
+        it('should report 4xx errors with query details', async () => {
+            mockedAPIClient.onPost(REPORTING_ENDPOINT).reply(400)
+
+            const error = new Error('Request failed with status code 400')
+            const request = postReporting<[number]>([query])
+
+            await expect(request).rejects.toEqual(error)
+            expect(reportErrorMock).toHaveBeenCalledWith(error, {
+                extra: { context: { query: JSON.stringify([query]) } },
+            })
         })
     })
 })

@@ -1,4 +1,7 @@
+import { isAxiosError } from 'axios'
+
 import client from 'models/api/resources'
+import { reportError } from 'utils/errors'
 
 import {
     Cube,
@@ -21,6 +24,24 @@ const validateStatus = (status: number) => {
     return status >= 200 && status < 300
 }
 
+const isErrorStatusToReport = (status: number | undefined) => {
+    if (status === undefined) {
+        return false
+    }
+    return status >= 400 && status < 500 && status !== 401
+}
+
+const getReportQueryErrorHandler =
+    (context: Record<string, unknown>) => (error: unknown) => {
+        if (
+            isAxiosError(error) &&
+            isErrorStatusToReport(error.response?.status)
+        ) {
+            reportError(error, { extra: { context } })
+        }
+        throw error
+    }
+
 export const post =
     (path: string) =>
     async <TData>(payload: unknown) => {
@@ -42,7 +63,7 @@ export const postReporting = <TData, TCube extends Cube = Cube>(
 ) =>
     post(REPORTING_ENDPOINT)<TData>({
         query: queries,
-    })
+    }).catch(getReportQueryErrorHandler({ query: JSON.stringify(queries) }))
 
 export const postEnrichedReporting = <TData, TCube extends Cube = Cube>(
     query: ReportingQuery<TCube>,
@@ -51,4 +72,9 @@ export const postEnrichedReporting = <TData, TCube extends Cube = Cube>(
     enrichedPost(REPORTING_ENRICHED_ENDPOINT)<TData>({
         query,
         enrichment_fields: enrichmentFields,
-    })
+    }).catch(
+        getReportQueryErrorHandler({
+            query: JSON.stringify(query),
+            enrichmentFields: JSON.stringify(enrichmentFields),
+        }),
+    )
