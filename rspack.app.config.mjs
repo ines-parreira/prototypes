@@ -1,4 +1,3 @@
-import fs from 'node:fs'
 import path from 'node:path'
 import { fileURLToPath } from 'node:url'
 
@@ -31,7 +30,6 @@ const BUNDLE_PUBLIC_PATH =
 
 const srcDir = path.join(__dirname, 'src')
 const buildDir = path.join(__dirname, 'build')
-const manifestPath = path.join(buildDir, 'manifest.json')
 const jsBundleFile = noContentHash
     ? 'helpdesk.app.js'
     : `helpdesk.app.[contenthash].js`
@@ -149,10 +147,7 @@ const config = {
             ),
             'process.env.WEB_APP_RELEASE': JSON.stringify(WEB_APP_RELEASE),
         }),
-        isProd &&
-            new RspackManifestPlugin({
-                seed: JSON.parse(fs.readFileSync(manifestPath, 'utf8')),
-            }),
+        isProd && new RspackManifestPlugin({}),
         isProd &&
             new rspack.CircularDependencyRspackPlugin({
                 exclude: /node_modules/,
