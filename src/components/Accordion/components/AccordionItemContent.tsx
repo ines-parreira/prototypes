@@ -2,7 +2,7 @@ import { forwardRef } from 'react'
 import type { ComponentProps } from 'react'
 
 import classNames from 'classnames'
-import { motion } from 'framer-motion'
+import { AnimatePresence, motion } from 'framer-motion'
 
 import { useAccordion } from '../hooks/useAccordion'
 import { useAccordionItem } from '../hooks/useAccordionItem'
@@ -29,21 +29,30 @@ export const AccordionItemContent = forwardRef<
     const { isOpen, value } = useAccordionItem()
 
     return (
-        <motion.div
-            ref={ref}
-            {...props}
-            id={AccordionIds.content(id, value)}
-            aria-labelledby={AccordionIds.trigger(id, value)}
-            role="region"
-            data-state={isOpen ? AccordionState.Open : AccordionState.Closed}
-            className={classNames(css.content, className)}
-            variants={variants}
-            initial={AccordionState.Closed}
-            animate={isOpen ? AccordionState.Open : AccordionState.Closed}
-            exit={AccordionState.Closed}
-            transition={{ duration: 0.3 }}
-        >
-            {children}
-        </motion.div>
+        <AnimatePresence>
+            {isOpen && (
+                <motion.div
+                    ref={ref}
+                    {...props}
+                    id={AccordionIds.content(id, value)}
+                    aria-labelledby={AccordionIds.trigger(id, value)}
+                    aria-hidden={!isOpen}
+                    role="region"
+                    data-state={
+                        isOpen ? AccordionState.Open : AccordionState.Closed
+                    }
+                    className={classNames(css.content, className)}
+                    variants={variants}
+                    initial={AccordionState.Closed}
+                    animate={
+                        isOpen ? AccordionState.Open : AccordionState.Closed
+                    }
+                    exit={AccordionState.Closed}
+                    transition={{ duration: 0.3 }}
+                >
+                    {children}
+                </motion.div>
+            )}
+        </AnimatePresence>
     )
 })

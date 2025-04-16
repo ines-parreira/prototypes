@@ -1,0 +1,30 @@
+@import (reference) '~css/typography';
+
+:local {
+    .item {
+        .body-regular();
+        width: 100%;
+        padding: 4px var(--layout-spacing-s);
+        color: var(--navigation-text-item);
+        border-radius: 8px;
+
+        &:hover {
+            background: var(--navigation-background--accent);
+        }
+
+        &:focus {
+            outline: var(--navigation-border) 1px solid;
+        }
+
+        &[data-selected='true'] {
+            background: var(--navigation-border);
+            border: 1px solid var(--navigation-selected);
+            outline: var(--navigation-border) 1px solid;
+        }
+
+        &[data-display-type='indent'] {
+            padding-right: var(--layout-spacing-s);
+            padding-left: var(--layout-spacing-m);
+        }
+    }
+}

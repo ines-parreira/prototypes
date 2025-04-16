@@ -55,7 +55,7 @@ importers:
         version: 3.4.7
       '@gorgias/analytics-ui-kit':
         specifier: ^0.1.0
-        version: 0.1.0(@gorgias/design-tokens@0.4.0)(classnames@2.2.6)(core-js@3.36.1)(react@17.0.2)
+        version: 0.1.0(@gorgias/design-tokens@0.5.0)(classnames@2.2.6)(core-js@3.36.1)(react@17.0.2)
       '@gorgias/api-client':
         specifier: ^0.6.28
         version: 0.6.28
@@ -72,8 +72,8 @@ importers:
         specifier: ^0.2.1
         version: 0.2.1
       '@gorgias/design-tokens':
-        specifier: ^0.4.0
-        version: 0.4.0
+        specifier: ^0.5.0
+        version: 0.5.0
       '@gorgias/event-tracker-api':
         specifier: 1.1.0
         version: 1.1.0
@@ -2820,11 +2820,11 @@ packages:
       eslint-plugin-react: ^7.34.3
       eslint-plugin-react-hooks: ^4.6.2
 
-  '@gorgias/design-tokens@0.4.0':
-    resolution: {integrity: sha512-XGuTxKvgvr9/IfQxvhh1F9cjsWlZlpOjLEWBT/8f8hT2zPAQwUVKJ97Q5r0d8DUb8alBhC3rF0PYCIxPewo2MA==, tarball: https://npm.pkg.github.com/download/@gorgias/design-tokens/0.4.0/07df81961cf78ee2e549aba4234546df0c60d4e7}
-
   '@gorgias/design-tokens@0.4.3':
     resolution: {integrity: sha512-MtYHrnfo9FbNCvb5CnZnY48jkd/J7nb1sfpMo4uwwQNGT36DrVd/0f9Mi+YSRYB2cIMlLboTD8YTvDb87gdB2Q==, tarball: https://npm.pkg.github.com/download/@gorgias/design-tokens/0.4.3/c61325fda15ec3c728f54cd3468b49f42ae0574a}
+
+  '@gorgias/design-tokens@0.5.0':
+    resolution: {integrity: sha512-e/B9Ypnto2z5mhLU2gYxLdl/bvlUmETS0az/+h78tGPCsHxLGWVGcDphRC/BLdBzmef30UGhCVi9i/Rlb8T8Fg==, tarball: https://npm.pkg.github.com/download/@gorgias/design-tokens/0.5.0/562a88cc0d8b7585a09ea1348f0eabdd83b27ece}
 
   '@gorgias/event-tracker-api@1.1.0':
     resolution: {integrity: sha512-a8GgwT7PtdbbayjpPKBUBl8gGCzGA1n64/X3qYzXSQQ3zboCNFaJ0L2nKhcuu7E6cbANCeFyf/kRqD+Wa5wrkQ==, tarball: https://npm.pkg.github.com/download/@gorgias/event-tracker-api/1.1.0/d9b9487ff2eba9161dfa48efa5a927397ded692d}
@@ -13950,9 +13950,9 @@ snapshots:
     dependencies:
       emojis-list: 3.0.0
 
-  '@gorgias/analytics-ui-kit@0.1.0(@gorgias/design-tokens@0.4.0)(classnames@2.2.6)(core-js@3.36.1)(react@17.0.2)':
+  '@gorgias/analytics-ui-kit@0.1.0(@gorgias/design-tokens@0.5.0)(classnames@2.2.6)(core-js@3.36.1)(react@17.0.2)':
     dependencies:
-      '@gorgias/design-tokens': 0.4.0
+      '@gorgias/design-tokens': 0.5.0
       classnames: 2.2.6
       core-js: 3.36.1
       react: 17.0.2
@@ -13997,9 +13997,9 @@ snapshots:
       eslint-plugin-react: 7.26.1(eslint@8.1.0)
       eslint-plugin-react-hooks: 4.3.0(eslint@8.1.0)
 
-  '@gorgias/design-tokens@0.4.0': {}
-
   '@gorgias/design-tokens@0.4.3': {}
+
+  '@gorgias/design-tokens@0.5.0': {}
 
   '@gorgias/event-tracker-api@1.1.0':
     dependencies:

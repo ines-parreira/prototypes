@@ -6,6 +6,7 @@ import { AccordionRoot } from './components/AccordionRoot'
 
 export type { AccordionProps } from './utils/types'
 export type { AccordionItemProps } from './components/AccordionItem'
+export type { AccordionItemTriggerProps } from './components/AccordionItemTrigger'
 
 export const Accordion = {
     Root: AccordionRoot,

@@ -1,46 +1,16 @@
 import { render, screen } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
 
 import { AccordionItem } from '../components/AccordionItem'
 import { AccordionItemContent } from '../components/AccordionItemContent'
+import { AccordionItemTrigger } from '../components/AccordionItemTrigger'
 import { AccordionRoot } from '../components/AccordionRoot'
 import { AccordionIds } from '../utils/accessibility-ids'
-import { AccordionState } from '../utils/accordion-state'
-
-jest.mock('../hooks/useAccordion', () => ({
-    useAccordion: jest.fn(),
-}))
-
-jest.mock('../hooks/useAccordionItem', () => ({
-    useAccordionItem: jest.fn(),
-}))
-
-const mockUseAccordion = require('../hooks/useAccordion').useAccordion
-const mockUseAccordionItem =
-    require('../hooks/useAccordionItem').useAccordionItem
 
 describe('AccordionItemContent', () => {
-    const defaultAccordionProps = {
-        id: 'test-accordion',
-        value: ['item1'],
-    }
-
-    const defaultItemProps = {
-        isOpen: false,
-        value: 'item1',
-    }
-
-    beforeEach(() => {
-        mockUseAccordion.mockReturnValue(defaultAccordionProps)
-        mockUseAccordionItem.mockReturnValue(defaultItemProps)
-    })
-
-    afterEach(() => {
-        jest.clearAllMocks()
-    })
-
     it('renders with default props', () => {
         render(
-            <AccordionRoot>
+            <AccordionRoot value={['item1']} id="test-accordion">
                 <AccordionItem value="item1">
                     <AccordionItemContent>Content</AccordionItemContent>
                 </AccordionItem>
@@ -50,7 +20,7 @@ describe('AccordionItemContent', () => {
         const content = screen.getByRole('region')
         expect(content).toBeInTheDocument()
         expect(content).toHaveTextContent('Content')
-        expect(content).toHaveAttribute('data-state', AccordionState.Closed)
+        expect(content).toHaveAttribute('aria-hidden', 'false')
         expect(content).toHaveAttribute(
             'id',
             AccordionIds.content('test-accordion', 'item1'),
@@ -61,27 +31,27 @@ describe('AccordionItemContent', () => {
         )
     })
 
-    it('applies open state', () => {
-        mockUseAccordionItem.mockReturnValue({
-            ...defaultItemProps,
-            isOpen: true,
-        })
-
+    it('applies open state', async () => {
         render(
-            <AccordionRoot>
+            <AccordionRoot id="test-accordion">
                 <AccordionItem value="item1">
+                    <AccordionItemTrigger>Trigger</AccordionItemTrigger>
                     <AccordionItemContent>Content</AccordionItemContent>
                 </AccordionItem>
             </AccordionRoot>,
         )
 
+        const trigger = screen.getByRole('button', { name: 'Trigger' })
+
+        await userEvent.click(trigger)
+
         const content = screen.getByRole('region')
-        expect(content).toHaveAttribute('data-state', AccordionState.Open)
+        expect(content).toHaveAttribute('aria-hidden', 'false')
     })
 
     it('applies custom className', () => {
         render(
-            <AccordionRoot>
+            <AccordionRoot value={['item1']}>
                 <AccordionItem value="item1">
                     <AccordionItemContent className="custom-class">
                         Content

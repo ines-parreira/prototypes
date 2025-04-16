@@ -1,0 +1,24 @@
+@import (reference) '~css/typography';
+
+:local {
+    .trigger {
+        .body-semibold();
+        padding: 2px var(--layout-spacing-xs);
+        color: var(--navigation-text-item);
+        border-radius: 8px;
+        outline: none;
+
+        &:hover {
+            background: var(--navigation-background--accent);
+        }
+
+        &:active {
+            background: var(--navigation-border);
+            outline: var(--navigation-selected) 1px solid;
+        }
+
+        &:focus {
+            outline: var(--navigation-selected) 1px solid;
+        }
+    }
+}
