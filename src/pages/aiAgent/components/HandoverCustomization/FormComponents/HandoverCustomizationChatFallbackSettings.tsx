@@ -183,7 +183,7 @@ const HandoverCustomizationChatFallbackSettings = ({ integration }: Props) => {
                     name="handover-customization-fallback-message"
                     aria-label="Error message"
                     role="textbox"
-                    placeholder="We're experiencing a temporary issue. Please leave your email for assistance."
+                    placeholder="Please leave your email address and we’ll get back to you."
                     onChange={onFallbackMessageChange}
                     value={formValues[selectedLanguageCode]?.fallbackMessage}
                 />
@@ -192,8 +192,8 @@ const HandoverCustomizationChatFallbackSettings = ({ integration }: Props) => {
                     unexpected error handing over. By default, it sends the
                     following message:{' '}
                     <i>
-                        “We’re experiencing a temporary issue. Please leave your
-                        email for assistance.”
+                        “Please leave your email address and we’ll get back to
+                        you.”
                     </i>
                 </Caption>
             </div>
