@@ -67,7 +67,7 @@ describe('<CustomFieldSelect/>', () => {
         expect(container.firstChild).toMatchSnapshot()
     })
 
-    it('should filter out AI managed fields from the list of custom fields', () => {
+    it('should filter out AI managed fields from the list of custom fields by default', () => {
         useCustomFieldDefinitionsMock.mockReturnValue({
             data: {
                 data: [
@@ -85,5 +85,31 @@ describe('<CustomFieldSelect/>', () => {
         expect(
             screen.queryByText(aiManagedTicketInputFieldDefinition.label),
         ).not.toBeInTheDocument()
+    })
+
+    it('should show AI managed fields when showManagedFields is true', () => {
+        useCustomFieldDefinitionsMock.mockReturnValue({
+            data: {
+                data: [
+                    ticketInputFieldDefinition,
+                    aiManagedTicketInputFieldDefinition,
+                ],
+            },
+            isLoading: false,
+        } as any)
+
+        render(
+            <CustomFieldSelect
+                onChange={jest.fn()}
+                value={null}
+                showManagedFields={true}
+            />,
+        )
+        expect(
+            screen.queryByText(ticketInputFieldDefinition.label),
+        ).toBeInTheDocument()
+        expect(
+            screen.queryByText(aiManagedTicketInputFieldDefinition.label),
+        ).toBeInTheDocument()
     })
 })

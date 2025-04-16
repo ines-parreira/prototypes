@@ -14,12 +14,18 @@ type Props = Pick<
     required?: boolean // Override because SelectField['required'] is not optional
     idsAlreadySet?: number[]
     viewMode?: boolean
+    showManagedFields?: boolean
 }
 
 /**
  * Small wrapper around <SelectField/> to inject the possible custom fields as options.
  */
-const CustomFieldSelect = ({ onChange, viewMode, ...props }: Props) => {
+const CustomFieldSelect = ({
+    onChange,
+    viewMode,
+    showManagedFields = false,
+    ...props
+}: Props) => {
     const customFields = useCustomFieldDefinitions({
         archived: false,
         object_type: 'Ticket',
@@ -39,6 +45,7 @@ const CustomFieldSelect = ({ onChange, viewMode, ...props }: Props) => {
             activeCustomFields
                 .filter(
                     ({ managed_type }) =>
+                        showManagedFields ||
                         !isCustomFieldAIManagedType(managed_type),
                 )
                 .map(({ id, label }) => ({
@@ -51,7 +58,12 @@ const CustomFieldSelect = ({ onChange, viewMode, ...props }: Props) => {
                         !props.idsAlreadySet?.includes(value),
                 ) || []
         )
-    }, [activeCustomFields, props.idsAlreadySet, props.value])
+    }, [
+        activeCustomFields,
+        showManagedFields,
+        props.idsAlreadySet,
+        props.value,
+    ])
 
     useEffect(() => {
         if (!props.value && customFieldOptions.length) {

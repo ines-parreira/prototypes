@@ -71,6 +71,7 @@ export default function Left({
                 <CustomFieldSelect
                     value={customFieldId}
                     onChange={onCustomFieldChange}
+                    showManagedFields={true}
                 />
             )}
         </>
