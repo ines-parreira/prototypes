@@ -15,7 +15,7 @@ describe('UpdateYourDiscountStrategy', () => {
             }),
             buildRuleEngineRoutes(),
         )
-        expect(task.display).toBe(true)
+        expect(task.display).toBe(false)
     })
 
     it('should not display the task if the discount strategy is set to none', () => {
@@ -30,6 +30,6 @@ describe('UpdateYourDiscountStrategy', () => {
             }),
             buildRuleEngineRoutes(),
         )
-        expect(task.display).toBe(false)
+        expect(task.display).toBe(true)
     })
 })

@@ -1,3 +1,5 @@
+import { DiscountStrategy } from 'pages/aiAgent/Onboarding/components/steps/PersonalityStep/DiscountStrategy'
+
 import { RuleEngineData, RuleEngineRoutes } from '../ruleEngine'
 import { Task } from './Task'
 
@@ -12,10 +14,13 @@ export class UpdateYourDiscountStrategyTask extends Task {
         )
     }
 
-    // Has a discount strategy level activated
+    // Has no discount strategy level activated
     protected shouldBeDisplayed(data: RuleEngineData): boolean {
         return (
-            data.aiAgentStoreConfiguration.salesDiscountStrategyLevel !== 'none'
+            data.aiAgentStoreConfiguration.salesDiscountStrategyLevel ===
+                DiscountStrategy.NoDiscount ||
+            data.aiAgentStoreConfiguration.salesDiscountStrategyLevel ===
+                undefined
         )
     }
 
