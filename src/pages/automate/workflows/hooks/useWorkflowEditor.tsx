@@ -128,7 +128,6 @@ export function useWorkflowEditor(
 ): WorkflowEditorContext {
     const queryClient = useQueryClient()
     const storeIntegration = useSelfServiceStoreIntegrationContext()
-
     const { mutateAsync: upsertWorkflowConfiguration } =
         useUpsertWorkflowConfiguration()
 
@@ -169,6 +168,9 @@ export function useWorkflowEditor(
             ),
         ),
     )
+
+    const bypassValidation = visualBuilderGraphDirty.nodes.length > 300
+
     const {
         areTranslationsDirty,
         translateWithSavedTranslations,
@@ -252,11 +254,13 @@ export function useWorkflowEditor(
 
     const isVisualBuilderGraphDirty = useMemo(
         () =>
+            bypassValidation ||
             !areGraphsEqual(
                 translateWithSavedTranslations(visualBuilderGraph),
                 visualBuilderGraphDirty,
             ),
         [
+            bypassValidation,
             visualBuilderGraph,
             visualBuilderGraphDirty,
             translateWithSavedTranslations,
@@ -305,6 +309,7 @@ export function useWorkflowEditor(
         graph: visualBuilderGraphDirty,
         handleValidate: handleValidateGraph,
         dispatch,
+        bypassValidation,
     })
 
     const handleValidate = useCallback(

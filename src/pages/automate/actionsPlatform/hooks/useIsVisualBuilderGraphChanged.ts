@@ -4,12 +4,18 @@ import usePrevious from 'hooks/usePrevious'
 import { areGraphsEqual } from 'pages/automate/workflows/models/visualBuilderGraph.model'
 import { VisualBuilderGraph } from 'pages/automate/workflows/models/visualBuilderGraph.types'
 
-const useIsVisualBuilderGraphChanged = (graph: VisualBuilderGraph) => {
+const useIsVisualBuilderGraphChanged = (
+    graph: VisualBuilderGraph,
+    bypassValidation = false,
+) => {
     const prevGraph = usePrevious(graph)
 
     return useMemo(
-        () => (prevGraph ? !areGraphsEqual(prevGraph, graph, false) : false),
-        [prevGraph, graph],
+        () =>
+            prevGraph && !bypassValidation
+                ? !areGraphsEqual(prevGraph, graph, false)
+                : false,
+        [prevGraph, graph, bypassValidation],
     )
 }
 
