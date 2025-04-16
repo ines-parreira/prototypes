@@ -363,10 +363,7 @@ export async function disconnectDevice(
     actions: VoiceDeviceActions,
 ) {
     try {
-        if (
-            device.state === Device.State.Registered ||
-            device.state === Device.State.Registering
-        ) {
+        if (device.state === Device.State.Registered) {
             device.disconnectAll()
             await device.unregister()
         }
