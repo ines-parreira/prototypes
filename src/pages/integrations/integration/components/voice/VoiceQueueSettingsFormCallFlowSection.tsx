@@ -191,10 +191,12 @@ export default function VoiceQueueSettingsFormCallFlowSection() {
                             />
                         </div>
                         <div>
-                            <Label htmlFor="wait_music">Wait music</Label>
+                            <Label htmlFor="wait_music">
+                                Wait and hold music
+                            </Label>
                             <p>
                                 The music callers will hear while they are
-                                waiting.
+                                waiting or on hold.
                             </p>
                             <FormField
                                 field={WaitMusicField}
