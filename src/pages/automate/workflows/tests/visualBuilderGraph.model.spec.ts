@@ -1460,7 +1460,7 @@ describe('visualBuilderGraph is transformed into workflowConfiguration', () => {
                         type: 'http_request',
                         data: {
                             name: '',
-                            url: 'https://example.com',
+                            url: 'https://example.com?orderId={{objects.order.external_id}}',
                             method: 'GET',
                             headers: [],
                             variables: [
@@ -1516,7 +1516,7 @@ describe('visualBuilderGraph is transformed into workflowConfiguration', () => {
                                 and: [
                                     {
                                         equals: [
-                                            { var: 'objects.order.name' },
+                                            { var: 'objects.customer.name' },
                                             'test',
                                         ],
                                     },

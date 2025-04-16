@@ -904,19 +904,25 @@ export function transformVisualBuilderGraphIntoWfConfiguration(
                         `steps_state.${step.id}.content.${variable.id}`,
                 )
 
-                if (trigger?.kind === 'llm-prompt' && node.data.outputs) {
-                    trigger.settings.outputs.push(
-                        ...node.data.outputs.filter(
-                            (output) => output.path in variablesByOutputPath,
-                        ),
-                    )
-
+                if (trigger?.kind === 'llm-prompt') {
                     setLLMPromptObjectInputs(
                         g,
                         node,
                         trigger,
                         availableIntegrations,
                     )
+                }
+
+                if (trigger?.kind === 'llm-prompt' && node.data.outputs) {
+                    trigger.settings.outputs.push(
+                        ...node.data.outputs.filter(
+                            (output) => output.path in variablesByOutputPath,
+                        ),
+                    )
+                }
+
+                if (trigger?.kind === 'reusable-llm-prompt') {
+                    setReusableLLMPromptObjectInputs(g, node, trigger)
                 }
 
                 if (
@@ -937,8 +943,6 @@ export function transformVisualBuilderGraphIntoWfConfiguration(
                                         .data_type,
                             })),
                     )
-
-                    setReusableLLMPromptObjectInputs(g, node, trigger)
                 }
             } else if (node.type === 'shopper_authentication') {
                 const step: WorkflowStepShopperAuthentication = {
