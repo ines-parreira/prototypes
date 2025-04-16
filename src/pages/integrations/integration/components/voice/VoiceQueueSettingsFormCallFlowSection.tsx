@@ -130,7 +130,7 @@ export default function VoiceQueueSettingsFormCallFlowSection() {
                                     field={ToggleField}
                                     name="is_wrap_up_time_enabled"
                                     label="Enable wrap-up time"
-                                    caption="Wrap-up time gives agents a short period to finish their tasks before receiving their next incoming call."
+                                    caption="Wrap-up time gives agents a short period to finish their tasks before receiving their next incoming call. Applies only to calls longer than 20 seconds."
                                 />
                                 {is_wrap_up_time_enabled && (
                                     <FormField
