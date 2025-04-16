@@ -463,6 +463,23 @@ export const discountCodesOfferedQueryFactory = (
     timezone,
 })
 
+export const discountCodesOfferedDrillDownQueryFactory = (
+    filters: StatsFilters,
+    timezone: string,
+    sorting?: OrderDirection,
+): ReportingQuery<AiSalesAgentConversationsCube> => ({
+    ...discountCodesOfferedQueryFactory(filters, timezone),
+    dimensions: [AiSalesAgentConversationsDimension.TicketId],
+    limit: DRILLDOWN_QUERY_LIMIT,
+    ...(sorting
+        ? {
+              order: [[AiSalesAgentConversationsDimension.TicketId, sorting]],
+          }
+        : {
+              order: [],
+          }),
+})
+
 export const discountCodesAppliedQueryFactory = (
     filters: StatsFilters,
     timezone: string,

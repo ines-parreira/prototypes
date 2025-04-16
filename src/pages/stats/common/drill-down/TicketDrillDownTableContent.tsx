@@ -149,6 +149,9 @@ export const TicketDrillDownTableContent = ({
     const isAiSalesAgentSuccessRateMetric =
         metricData.metricName === AiSalesAgentChart.AiSalesAgentSuccessRate
 
+    const isAiSalesAgentDiscountOfferedMetric =
+        metricData.metricName === AiSalesAgentChart.AiSalesDiscountOffered
+
     const { data, isFetching } = useEnrichedDrillDownData(
         metricData,
         defaultEnrichmentFields,
@@ -203,7 +206,8 @@ export const TicketDrillDownTableContent = ({
                 />
                 {(isAiInsightsMetric ||
                     isAiPerformanceMetric ||
-                    isAiSalesAgentSuccessRateMetric) && (
+                    isAiSalesAgentSuccessRateMetric ||
+                    isAiSalesAgentDiscountOfferedMetric) && (
                     <HeaderCellProperty
                         title="Outcome"
                         width={columnWidths.outcome}
@@ -341,7 +345,8 @@ export const TicketDrillDownTableContent = ({
                     isAiPerformanceMetric ||
                     isAiInsightsCsatMetric ||
                     isAiSalesAgentConversationsMetric ||
-                    isAiSalesAgentSuccessRateMetric
+                    isAiSalesAgentSuccessRateMetric ||
+                    isAiSalesAgentDiscountOfferedMetric
                 ) && (
                     <HeaderCellProperty
                         title="Contact Reason"
@@ -385,7 +390,8 @@ export const TicketDrillDownTableContent = ({
                             />
                             {(isAiInsightsMetric ||
                                 isAiPerformanceMetric ||
-                                isAiSalesAgentSuccessRateMetric) && (
+                                isAiSalesAgentSuccessRateMetric ||
+                                isAiSalesAgentDiscountOfferedMetric) && (
                                 <BodyCell width={columnWidths.outcome}>
                                     {item.outcome ? (
                                         <TruncateCellContent
@@ -519,7 +525,8 @@ export const TicketDrillDownTableContent = ({
                                 isAiInsightsMetric ||
                                 isAiPerformanceMetric ||
                                 isAiInsightsCsatMetric ||
-                                isAiSalesAgentSuccessRateMetric
+                                isAiSalesAgentSuccessRateMetric ||
+                                isAiSalesAgentDiscountOfferedMetric
                             ) && (
                                 <BodyCell width={columnWidths.contactReason}>
                                     {item.ticket.contactReason ? (

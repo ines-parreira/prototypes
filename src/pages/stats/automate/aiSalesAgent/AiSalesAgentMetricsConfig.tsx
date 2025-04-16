@@ -4,6 +4,7 @@ import {
 } from 'hooks/reporting/useMetricTrend'
 import { TimeSeriesFetch, TimeSeriesHook } from 'hooks/reporting/useTimeSeries'
 import {
+    discountCodesOfferedDrillDownQueryFactory,
     totalNumberOfAutomatedSalesDrillDownQueryFactory,
     totalNumberofSalesOpportunityConvFromAIAgentDrillDownQueryFactory,
 } from 'models/reporting/queryFactories/ai-sales-agent/metrics'
@@ -293,8 +294,10 @@ export const AiSalesAgentMetricConfig: Record<
         fetchTrend: fetchDiscountCodesOfferedTrend,
         interpretAs: 'more-is-better',
         metricFormat: 'decimal',
-        showMetric: false,
+        showMetric: true,
         domain: Domain.AiSalesAgent,
+        drillDownQuery: discountCodesOfferedDrillDownQueryFactory,
+        drillDownMetric: AiSalesAgentChart.AiSalesDiscountOffered,
     },
     [AiSalesAgentChart.AiSalesDiscountApplied]: {
         title: 'Discount codes applied',

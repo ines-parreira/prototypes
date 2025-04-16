@@ -284,6 +284,10 @@ export const getDrillDownQuery = (
             return AiSalesAgentMetricConfig[
                 AiSalesAgentChart.AiSalesAgentSuccessRate
             ].drillDownQuery!
+        case AiSalesAgentChart.AiSalesDiscountOffered:
+            return AiSalesAgentMetricConfig[
+                AiSalesAgentChart.AiSalesDiscountOffered
+            ].drillDownQuery!
     }
 }
 const queryBuilderWithAgentFilter =
