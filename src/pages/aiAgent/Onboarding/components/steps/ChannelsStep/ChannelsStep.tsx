@@ -311,6 +311,7 @@ export const ChannelsStep: React.FC<StepProps> = ({
         if (channel) {
             logEvent(SegmentEvent.AiAgentNewOnboardingWizardChannelSelected, {
                 channel,
+                shopName,
             })
         }
     }

@@ -78,8 +78,9 @@ export const AiAgentOnboarding = () => {
     useEffect(() => {
         logEvent(SegmentEvent.AiAgentNewOnboardingWizardStepViewed, {
             step,
+            shopName,
         })
-    }, [step])
+    }, [step, shopName])
 
     if (isConvAiOnboardingEnabled === false) {
         return <Redirect to={routes.main} />

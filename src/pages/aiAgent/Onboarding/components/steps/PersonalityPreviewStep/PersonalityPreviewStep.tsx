@@ -102,6 +102,7 @@ export const PersonalityPreviewStep: React.FC<StepProps> = ({
         setSelectedPreview(preview)
         logEvent(SegmentEvent.AiAgentNewOnboardingWizardTovClicked, {
             title: preview.title,
+            shopName,
         })
     }
 

@@ -2,6 +2,7 @@ import { useHistory, useParams } from 'react-router-dom'
 
 import { Skeleton } from '@gorgias/merchant-ui-kit'
 
+import { logEvent, SegmentEvent } from 'common/segment'
 import useAppSelector from 'hooks/useAppSelector'
 import { ShopifyIntegration } from 'models/integration/types'
 import { useAiAgentNavigation } from 'pages/aiAgent/hooks/useAiAgentNavigation'
@@ -100,6 +101,12 @@ export const KnowledgeStep: React.FC<StepProps> = ({
 
                 {
                     onSuccess: () => {
+                        logEvent(
+                            SegmentEvent.AiAgentNewOnboardingWizardFinished,
+                            {
+                                shopName,
+                            },
+                        )
                         history.push({
                             pathname: routes.overview,
                             search: `?shopName=${encodeURIComponent(shopName)}&from=onboarding`,

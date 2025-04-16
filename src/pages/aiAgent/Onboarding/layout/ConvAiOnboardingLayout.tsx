@@ -69,6 +69,7 @@ export const OnboardingPreviewContainer: React.FC<{
     const onCloseAction = () => {
         logEvent(SegmentEvent.AiAgentNewOnboardingWizardButtonClicked, {
             step,
+            shopName,
             type: 'close',
         })
         onClose(shopName)
@@ -116,6 +117,7 @@ export const OnboardingContentContainer: React.FC<{
     const onCloseAction = () => {
         logEvent(SegmentEvent.AiAgentNewOnboardingWizardButtonClicked, {
             Step: step,
+            shopName,
             type: 'close',
         })
         onClose(shopName)
@@ -124,6 +126,7 @@ export const OnboardingContentContainer: React.FC<{
     const onNextAction = () => {
         logEvent(SegmentEvent.AiAgentNewOnboardingWizardButtonClicked, {
             Step: step,
+            shopName,
             type: 'next',
         })
         onNextClick()
@@ -132,6 +135,7 @@ export const OnboardingContentContainer: React.FC<{
     const onBackAction = () => {
         logEvent(SegmentEvent.AiAgentNewOnboardingWizardButtonClicked, {
             Step: step,
+            shopName,
             type: 'back',
         })
         onBackClick()

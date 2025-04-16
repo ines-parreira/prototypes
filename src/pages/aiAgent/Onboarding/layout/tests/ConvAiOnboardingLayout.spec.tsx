@@ -141,6 +141,7 @@ describe('OnboardingPreviewContainer', () => {
             {
                 step: WizardStepEnum.CHANNELS,
                 type: 'close',
+                shopName: undefined,
             },
         )
         expect(historyPushMock).toHaveBeenCalledWith('/app/ai-agent/overview')

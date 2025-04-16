@@ -123,10 +123,11 @@ export const SkillsetStep: FC<SkillsetStepProps> = ({
         (newSkillset: AiAgentScopes[]) => {
             logEvent(SegmentEvent.AiAgentNewOnboardingWizardSkillSelected, {
                 skill: newSkillset,
+                shopName,
             })
             setValue('scopes', newSkillset)
         },
-        [setValue],
+        [setValue, shopName],
     )
 
     const onNextStep = useCallback(() => {

@@ -2,6 +2,8 @@ export enum SegmentEvent {
     AiAgentOnboardingThankYouModalViewed = 'ai-agent-onboarding-thank-you-modal-viewed',
     AiAgentOnboardingThankYouModalClosed = 'ai-agent-onboarding-thank-you-modal-closed',
     AiAgentActionPerformedPostReceivedOnboardingNotification = 'ai-agent-action-performed-post-received-onboarding-notification',
+    AiAgentNewOnboardingWizardPaywallPageViewed = 'ai-agent-new-onboarding-wizard-paywall-page-viewed',
+    AiAgentNewOnboardingWizardFinished = 'ai-agent-new-onboarding-wizard-finished',
     AiAgentNewOnboardingWizardStepViewed = 'ai-agent-new-onboarding-wizard-step-viewed',
     AiAgentNewOnboardingWizardButtonClicked = 'ai-agent-new-onboarding-wizard-button-clicked',
     AiAgentNewOnboardingWizardSkillSelected = 'ai-agent-new-onboarding-wizard-skill-selected',

@@ -168,6 +168,7 @@ export const PersonalityStep: FC<StepProps> = ({
         logEvent(SegmentEvent.AiAgentNewOnboardingWizardSalesGaugesUsed, {
             persuasion,
             discount,
+            shopName,
         })
     }
 
@@ -235,6 +236,7 @@ export const PersonalityStep: FC<StepProps> = ({
 
         logEvent(SegmentEvent.AiAgentNewOnboardingWizardDiscountChanged, {
             value: safeValue,
+            shopName,
         })
 
         if (parsedValue === 0) {
@@ -278,6 +280,7 @@ export const PersonalityStep: FC<StepProps> = ({
                             {
                                 persuasion: salesPersuasionLevel,
                                 discount: salesDiscountStrategyLevel,
+                                shopName,
                             },
                         )
 

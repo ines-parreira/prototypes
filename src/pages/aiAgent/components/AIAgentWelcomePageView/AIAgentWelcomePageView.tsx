@@ -6,6 +6,7 @@ import { Button } from '@gorgias/merchant-ui-kit'
 
 import { AiAgentNotificationType } from 'automate/notifications/types'
 import { logEvent, SegmentEvent } from 'common/segment'
+import useEffectOnce from 'hooks/useEffectOnce'
 import {
     AiAgentOnboardingState,
     OnboardingNotificationState,
@@ -84,6 +85,12 @@ export const AIAgentWelcomePageView = (props: AiAgentWelcomePageProps) => {
         isOnUpdateOnboardingWizard,
         onboardingNotificationState?.finishAiAgentSetupNotificationReceivedDatetime,
     ])
+
+    useEffectOnce(() => {
+        logEvent(SegmentEvent.AiAgentNewOnboardingWizardPaywallPageViewed, {
+            shopName: props.shopName,
+        })
+    })
 
     const onOnboardingWizardClick = useCallback(() => {
         if (isAdmin) {
