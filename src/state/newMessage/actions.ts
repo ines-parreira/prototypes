@@ -737,6 +737,7 @@ export function prepareTicketDataToSend(
     status: Maybe<string>,
     actionsForMacro: Maybe<MacroActions>,
     currentUser: CurrentUser,
+    emailThreadSizeFF?: boolean,
 ): Maybe<{
     ticket: FullTicketStateWithoutImmutable
     newMessage: NewMessage
@@ -814,6 +815,7 @@ export function prepareTicketDataToSend(
             newMessage = updateNewMessageWithContentState(
                 newMessage,
                 newContentState,
+                emailThreadSizeFF,
             )
             replyAreaState.emailExtraAdded = true
             replyAreaState.contentState = newContentState
@@ -1053,11 +1055,13 @@ export function prepareTicketMessage({
     macroActions,
     resetMessage = true,
     retryMessage,
+    emailThreadSizeFF,
 }: {
     status?: TicketStatus
     macroActions?: MacroActions
     resetMessage?: boolean
     retryMessage?: Map<any, any>
+    emailThreadSizeFF?: boolean
 } = {}) {
     return (
         dispatch: StoreDispatch,
@@ -1088,6 +1092,7 @@ export function prepareTicketMessage({
                     status,
                     macroActions,
                     currentUser,
+                    emailThreadSizeFF,
                 )
 
                 if (!dataToSend || _isNull(dataToSend)) {
@@ -1099,10 +1104,30 @@ export function prepareTicketMessage({
                     return reject(new TicketMessageInvalidSendDataError())
                 }
 
-                messageToSend = {
-                    ...dataToSend.newMessage,
-                    ticket_id: ticket?.get('id'),
+                if (dataToSend.newMessage.channel === TicketChannel.Email) {
+                    messageToSend = {
+                        ...dataToSend.newMessage,
+                        ticket_id: ticket?.get('id'),
+                        source: {
+                            ...dataToSend.newMessage.source,
+                            extra: emailThreadSizeFF
+                                ? {
+                                      ...dataToSend.newMessage.source.extra,
+                                      include_thread: true,
+                                  }
+                                : {
+                                      ...dataToSend.newMessage.source.extra,
+                                      include_thread: false,
+                                  },
+                        },
+                    }
+                } else {
+                    messageToSend = {
+                        ...dataToSend.newMessage,
+                        ticket_id: ticket?.get('id'),
+                    }
                 }
+
                 replyAreaState = dataToSend.replyAreaState
             }
 

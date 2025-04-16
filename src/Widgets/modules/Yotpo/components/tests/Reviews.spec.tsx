@@ -30,8 +30,10 @@ describe('<TitleWrapper/>', () => {
     })
 })
 
+jest.useFakeTimers()
+
 describe('<AfterTitle/>', () => {
-    const created_at = new Date(2020, 12, 31, 12, 12)
+    const created_at = jest.setSystemTime(new Date('2020-12-31T00:00:00Z'))
     describe('render()', () => {
         it.each([
             { source: { created_at: created_at, score: 1.5 } },

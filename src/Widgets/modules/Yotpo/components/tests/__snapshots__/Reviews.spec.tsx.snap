@@ -15,15 +15,7 @@ exports[`<AfterTitle/> render() should render with different score values 1`] = 
     </span>
     <span
       class="fieldValue"
-    >
-      <span>
-        <span
-          id="datetime-tooltip-1"
-        >
-          04/06/53055
-        </span>
-      </span>
-    </span>
+    />
   </div>
   <div
     class="fieldContainer staticField"
@@ -50,15 +42,7 @@ exports[`<AfterTitle/> render() should render with different score values 2`] = 
     </span>
     <span
       class="fieldValue"
-    >
-      <span>
-        <span
-          id="datetime-tooltip-2"
-        >
-          04/06/53055
-        </span>
-      </span>
-    </span>
+    />
   </div>
   <div
     class="fieldContainer staticField"
@@ -85,15 +69,7 @@ exports[`<AfterTitle/> render() should render with different score values 3`] = 
     </span>
     <span
       class="fieldValue"
-    >
-      <span>
-        <span
-          id="datetime-tooltip-3"
-        >
-          04/06/53055
-        </span>
-      </span>
-    </span>
+    />
   </div>
   <div
     class="fieldContainer staticField"

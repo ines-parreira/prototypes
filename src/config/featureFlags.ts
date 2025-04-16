@@ -74,6 +74,7 @@ export enum FeatureFlagKey {
     DontTriggerLoginsOnInactiveTabs = 'dont-trigger-logins-on-inactive-tabs',
     EnableEmailToStoreMapping = 'enable-email-to-store-mapping',
     EnableNewLanguages = 'enable-new-languages',
+    EmailReducedThreadSize = 'linear.email-size-reduction-to-ensure-deliverability.reducing-body-html-payload',
     FakeActionPlaceholder = 'fake-action-placeholder',
     FeedbackToAIAgentInTicketViews = 'feedback-to-ai-agent-in-ticket-views',
     FeedbackToAIAgentInTicketViewsV3 = 'feedback-to-ai-agent-in-ticket-views-v3',

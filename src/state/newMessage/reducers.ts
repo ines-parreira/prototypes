@@ -57,7 +57,7 @@ export const makeNewMessage = (
             to: [],
             cc: [],
             bcc: [],
-            extra: defaultSourceExtra,
+            extra: { ...defaultSourceExtra },
         },
         subject: '',
         body_text: '',

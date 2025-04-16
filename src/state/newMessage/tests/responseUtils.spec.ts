@@ -43,7 +43,6 @@ jest.mock('draft-js/lib/generateRandomKey', () =>
 
 describe('responseUtils', () => {
     let defaultMessageContext: MessageContext
-
     beforeEach(() => {
         // Context is mutable, some util functions will modify it directly
         defaultMessageContext = {
@@ -459,63 +458,104 @@ describe('responseUtils', () => {
     })
 
     describe('updateNewMessageWithContentState', () => {
-        it('should update body_html and body_text', () => {
-            const newMessage = updateNewMessageWithContentState(
-                (initialState.get('newMessage') as Map<any, any>).toJS(),
-                ContentState.createFromText('Foo bar baz'),
-            )
-            expect(newMessage).toMatchSnapshot()
+        describe('when FF is ON', () => {
+            it('should update body_html and body_text', () => {
+                const newMessage = updateNewMessageWithContentState(
+                    (initialState.get('newMessage') as Map<any, any>).toJS(),
+                    ContentState.createFromText('Foo bar baz'),
+                    true,
+                )
+
+                expect(newMessage).toEqual({
+                    channel: 'email',
+                    mention_ids: [],
+                    macros: [],
+                    body_html: '<div>Foo bar baz</div>',
+                    public: true,
+                    body_text: 'Foo bar baz',
+                    subject: '',
+                    via: 'helpdesk',
+                    from_agent: true,
+                    attachments: [],
+                    sender: null,
+                    source: {
+                        type: 'email',
+                        from: {},
+                        to: [],
+                        cc: [],
+                        bcc: [],
+                        extra: { include_thread: false },
+                    },
+                })
+            })
         })
 
-        it('should set stripped_text and stripped_body when contentState contains email extras', () => {
-            const contentState = addEmailExtraContent(
-                ContentState.createFromText('Foo bar'),
-                {
-                    ticket,
-                    replyThreadMessages: [],
-                    isForwarded: false,
-                    signature: fromJS({ text: 'Signature' }),
-                },
-            )
-            const newMessage = updateNewMessageWithContentState(
-                (initialState.get('newMessage') as Map<any, any>).toJS(),
-                contentState,
-            )
-            expect(newMessage).toMatchSnapshot()
-        })
+        describe('when FF is OFF', () => {
+            it('should update body_html and body_text', () => {
+                const newMessage = updateNewMessageWithContentState(
+                    (initialState.get('newMessage') as Map<any, any>).toJS(),
+                    ContentState.createFromText('Foo bar baz'),
+                )
 
-        it('should unset emailExtraAdded, stripped_text and stripped_body when contentState does not contain email extras', () => {
-            const contentStateWithExtras = addEmailExtraContent(
-                ContentState.createFromText('Foo bar'),
-                {
-                    ticket,
-                    replyThreadMessages: [],
-                    isForwarded: false,
-                    signature: fromJS({ text: 'Signature' }),
-                },
-            )
-            const prevNewMessage = updateNewMessageWithContentState(
-                (initialState.get('newMessage') as Map<any, any>).toJS(),
-                contentStateWithExtras,
-            )
-            const newMessage = updateNewMessageWithContentState(
-                prevNewMessage,
-                ContentState.createFromText('No extras'),
-            )
-            expect(newMessage).toMatchSnapshot()
-        })
+                expect(newMessage?.body_html).toBe('<div>Foo bar baz</div>')
+                expect(newMessage?.body_text).toBe('Foo bar baz')
+            })
 
-        it('should not mutate the arguments', () => {
-            const prevNewMessage = (
-                initialState.get('newMessage') as Map<any, any>
-            ).toJS()
+            it('should set stripped_text and stripped_body when contentState contains email extras', () => {
+                const contentState = addEmailExtraContent(
+                    ContentState.createFromText('Foo bar'),
+                    {
+                        ticket,
+                        replyThreadMessages: [],
+                        isForwarded: false,
+                        signature: fromJS({ text: 'Signature' }),
+                    },
+                )
+                const newMessage = updateNewMessageWithContentState(
+                    (initialState.get('newMessage') as Map<any, any>).toJS(),
+                    contentState,
+                )
+                expect(newMessage?.stripped_html).toBe('<div>Foo bar</div>')
+                expect(newMessage?.stripped_text).toBe('Foo bar')
+            })
 
-            updateNewMessageWithContentState(
-                prevNewMessage,
-                ContentState.createFromText('Foo bar baz'),
-            )
+            it('should unset emailExtraAdded, stripped_text and stripped_body when contentState does not contain email extras', () => {
+                const contentStateWithExtras = addEmailExtraContent(
+                    ContentState.createFromText('Foo bar'),
+                    {
+                        ticket,
+                        replyThreadMessages: [],
+                        isForwarded: false,
+                        signature: fromJS({ text: 'Signature' }),
+                    },
+                )
+                const prevNewMessage = updateNewMessageWithContentState(
+                    (initialState.get('newMessage') as Map<any, any>).toJS(),
+                    contentStateWithExtras,
+                )
+                const newMessage = updateNewMessageWithContentState(
+                    prevNewMessage,
+                    ContentState.createFromText('No extras'),
+                )
+                expect(newMessage?.stripped_text).not.toBeDefined()
+                expect(newMessage?.stripped_html).not.toBeDefined()
+            })
 
-            expect(prevNewMessage).toMatchSnapshot()
+            it('should not mutate the arguments', () => {
+                const prevNewMessage = (
+                    initialState.get('newMessage') as Map<any, any>
+                ).toJS()
+
+                const newMessage = updateNewMessageWithContentState(
+                    prevNewMessage,
+                    ContentState.createFromText('Foo bar baz'),
+                    false,
+                )
+
+                expect(prevNewMessage?.channel).toEqual(newMessage?.channel)
+                expect(prevNewMessage?.meta).toEqual(newMessage?.meta)
+                expect(prevNewMessage?.source).toEqual(newMessage?.source)
+            })
         })
     })
 

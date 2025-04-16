@@ -14,10 +14,8 @@ describe('useArticleViewsTrend', () => {
     beforeEach(() => {
         mockUseMetricTrend.mockClear()
 
-        const mockedDate = new Date(2023, 10, 13)
-
         jest.useFakeTimers()
-        jest.setSystemTime(mockedDate)
+        jest.setSystemTime(new Date('2023-11-13T00:00:00Z'))
     })
 
     it('should call metric trend hook with correct params', () => {

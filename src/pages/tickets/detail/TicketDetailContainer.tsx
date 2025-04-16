@@ -13,6 +13,8 @@ import {
     TicketStatus,
 } from 'business/types/ticket'
 import { logEvent, SegmentEvent } from 'common/segment'
+import { FeatureFlagKey } from 'config/featureFlags'
+import { useFlag } from 'core/flags'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAsyncFn from 'hooks/useAsyncFn'
 import useEffectOnce from 'hooks/useEffectOnce'
@@ -238,6 +240,8 @@ export const TicketDetailContainer = ({
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 
+    const emailThreadSizeFF = useFlag(FeatureFlagKey.EmailReducedThreadSize)
+
     const { goToTicket: goToPrevious, isEnabled: isPrevEnabled } =
         useGoToPreviousTicket(ticketIdParam)
 
@@ -300,6 +304,11 @@ export const TicketDetailContainer = ({
         )
     }
 
+    /**
+     * If the FF is ON we will avoid appending entire thread to body_html and body_text
+     * For consistency and less chance of breaking existing implementation we will only remap values
+     * using "userInput" that represents what user has entered in the text area
+     */
     const submitNewMessage = async ({
         status,
         action,
@@ -315,6 +324,7 @@ export const TicketDetailContainer = ({
                         'actions',
                     ]),
                     resetMessage,
+                    emailThreadSizeFF,
                 })
             if (messageToSend.source.type === 'email') {
                 pendingMessageManager.sendMessage({

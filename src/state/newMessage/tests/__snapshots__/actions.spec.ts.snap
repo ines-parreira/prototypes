@@ -2300,6 +2300,7 @@ exports[`actions new message prepareTicketMessage should prepare next new messag
   },
   "source": {
     "extra": {
+      "include_thread": false,
       "media_id": "519388858269125_626477354226941",
     },
     "to": [

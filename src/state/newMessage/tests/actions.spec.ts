@@ -69,8 +69,11 @@ import { getLastSenderChannel, getPreferredChannel } from 'state/ticket/utils'
 import { RootState, StoreDispatch } from 'state/types'
 import * as utils from 'utils'
 import { convertFromHTML } from 'utils/editor'
+import * as LDUtils from 'utils/launchDarkly'
 
 import { getReplyAreaStateSnapshot } from './testUtils'
+
+const getLDClientSpy = jest.spyOn(LDUtils, 'getLDClient')
 
 type MockedRootState = {
     agents?: Map<any, any>
@@ -1535,6 +1538,34 @@ describe('actions', () => {
                 )
             })
 
+            it('should not add include_thread to source.extra when emailThreadSizeFF is false', async () => {
+                getLDClientSpy.mockReturnValueOnce({
+                    variation: () => false,
+                } as any)
+
+                store = mockStore({
+                    ...defaultState,
+                    ticket: emailTicket.set('id', 12),
+                    newMessage: initialState
+                        .setIn(['newMessage', 'channel'], TicketChannel.Email)
+                        .setIn(
+                            ['newMessage', 'source', 'type'],
+                            TicketMessageSourceType.Email,
+                        )
+                        .setIn(['newMessage', 'body_text'], 'text email'),
+                })
+
+                const { messageToSend } = await store.dispatch(
+                    actions.prepareTicketMessage(),
+                )
+
+                // The source.extra should be an empty object or just contain original properties
+                // but must not have include_thread property
+                expect(messageToSend.source.extra).not.toEqual({
+                    include_thread: true,
+                })
+            })
+
             it('should reject with TicketMessageActionValidationError on action validation error', async () => {
                 store = mockStore({
                     ...defaultState,
@@ -1661,6 +1692,7 @@ describe('actions', () => {
             describe('should build the correct payload when using new channels as source', () => {
                 it('should remove source.type', async () => {
                     const source = {
+                        extra: {},
                         type: 'tiktok-shop',
                         from: {
                             address: 'theshop',

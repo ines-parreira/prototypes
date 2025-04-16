@@ -346,12 +346,20 @@ export const toReplyAreaState = (
 export const updateNewMessageWithContentState = (
     prevNewMessage: NewMessage,
     contentState: ContentState,
+    emailThreadSizeFF = false,
 ): NewMessage => {
     const newMessage = { ...prevNewMessage }
     delete newMessage.stripped_html
     delete newMessage.stripped_text
-    newMessage.body_html = convertToHTML(contentState)
-    newMessage.body_text = contentState.getPlainText()
+
+    if (emailThreadSizeFF) {
+        const userInput = deleteEmailExtraContent(contentState)
+        newMessage.body_html = convertToHTML(userInput)
+        newMessage.body_text = userInput.getPlainText()
+    } else {
+        newMessage.body_html = convertToHTML(contentState)
+        newMessage.body_text = contentState.getPlainText()
+    }
 
     if (hasEmailExtraContent(contentState)) {
         const userInput = deleteEmailExtraContent(contentState)
