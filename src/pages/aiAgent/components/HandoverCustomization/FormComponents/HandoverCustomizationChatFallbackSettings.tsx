@@ -19,9 +19,10 @@ import { useAiAgentFormChangesContext } from 'pages/aiAgent/providers/AiAgentFor
 import { formFieldsConfiguration } from 'pages/aiAgent/utils/handoverCustomization/handoverCustomizationChatFallbackSettingsForm.utils'
 import { FlagLanguageItem } from 'pages/common/components/LanguageBulletList'
 import Caption from 'pages/common/forms/Caption/Caption'
+import IconTooltip from 'pages/common/forms/IconTooltip/IconTooltip'
+import InputField from 'pages/common/forms/input/InputField'
 import SelectField from 'pages/common/forms/SelectField/SelectField'
 import { Value } from 'pages/common/forms/SelectField/types'
-import TextArea from 'pages/common/forms/TextArea'
 
 import commonCss from './HandoverCommonSettings.less'
 import css from './HandoverCustomizationChatFallbackSettings.less'
@@ -155,13 +156,20 @@ const HandoverCustomizationChatFallbackSettings = ({ integration }: Props) => {
                         css.fallbackSettingsLanguageContainer,
                     )}
                 >
-                    <Label
-                        htmlFor="handover-customization-fallback-message"
-                        label={'Error message'}
-                        className={css.fallbackMessageTitle}
-                    >
-                        Error Message
-                    </Label>
+                    <div className="d-flex flex-row align-items-center">
+                        <Label
+                            htmlFor="handover-customization-fallback-message"
+                            label={'Error message'}
+                            className={css.fallbackMessageTitle}
+                        >
+                            Error Message
+                        </Label>
+
+                        <IconTooltip className={css.icon} icon="info">
+                            During an error, a predefined message will be sent
+                            to the customer.
+                        </IconTooltip>
+                    </div>
 
                     {availableLanguageItems.length > 1 && (
                         <SelectField
@@ -174,9 +182,8 @@ const HandoverCustomizationChatFallbackSettings = ({ integration }: Props) => {
                     )}
                 </div>
 
-                <TextArea
+                <InputField
                     id="handover-customization-fallback-message"
-                    rows={5}
                     maxLength={
                         formFieldsConfiguration.fallbackMessage.maxLength
                     }

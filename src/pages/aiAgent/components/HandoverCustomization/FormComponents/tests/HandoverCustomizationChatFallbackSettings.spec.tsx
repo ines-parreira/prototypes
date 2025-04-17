@@ -213,7 +213,7 @@ describe('HandoverCustomizationChatFallbackSettings', () => {
         // Check if textarea is rendered with correct value
         expect(
             screen.getByRole('textbox', { name: 'Error message' }),
-        ).toHaveTextContent('Spanish error message')
+        ).toHaveValue('Spanish error message')
     })
     it('renders correctly with initial language selected', () => {
         renderComponent()
@@ -224,7 +224,7 @@ describe('HandoverCustomizationChatFallbackSettings', () => {
         // Check if textarea is rendered with correct value
         expect(
             screen.getByRole('textbox', { name: 'Error message' }),
-        ).toHaveTextContent('English error message')
+        ).toHaveValue('English error message')
     })
 
     it('changes language and displays corresponding error message', async () => {
@@ -241,7 +241,7 @@ describe('HandoverCustomizationChatFallbackSettings', () => {
         // Should display French error message
         expect(
             screen.getByRole('textbox', { name: 'Error message' }),
-        ).toHaveTextContent('French error message')
+        ).toHaveValue('French error message')
     })
 
     describe('handover customization fallback error text', () => {
@@ -251,7 +251,7 @@ describe('HandoverCustomizationChatFallbackSettings', () => {
             // Check if textarea is rendered with correct value
             expect(
                 screen.getByRole('textbox', { name: 'Error message' }),
-            ).toHaveTextContent('English error message')
+            ).toHaveValue('English error message')
         })
 
         it('renders the placeholder text when the textarea is empty', () => {
@@ -262,7 +262,7 @@ describe('HandoverCustomizationChatFallbackSettings', () => {
             // Check if textarea is rendered with correct value
             expect(
                 screen.getByRole('textbox', { name: 'Error message' }),
-            ).toHaveTextContent('')
+            ).toHaveValue('')
         })
 
         it('should trigger the updateValue function when the textarea is changed', () => {
