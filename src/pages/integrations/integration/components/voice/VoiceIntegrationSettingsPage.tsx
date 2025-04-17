@@ -1,8 +1,8 @@
+import { useEffect } from 'react'
+
 import { useParams } from 'react-router-dom'
 
 import {
-    IntegrationType,
-    PhoneFunction,
     PhoneIntegration,
     UpdateAllPhoneIntegrationSettings,
     useGetIntegration,
@@ -10,33 +10,45 @@ import {
 import { validateUpdateAllPhoneIntegrationSettings } from '@gorgias/api-validators'
 
 import { Form, toFormErrors } from 'core/forms'
+import { useNotify } from 'hooks/useNotify'
+import { isPhoneIntegration } from 'models/integration/types'
 import Loader from 'pages/common/components/Loader/Loader'
+import history from 'pages/history'
 import SettingsContent from 'pages/settings/SettingsContent'
 import SettingsPageContainer from 'pages/settings/SettingsPageContainer'
 
+import { PHONE_INTEGRATION_BASE_URL } from './constants'
 import { getDefaultValues, useFormSubmit } from './useVoiceSettingsForm'
 import VoiceIntegrationSettingsForm from './VoiceIntegrationSettingsForm'
 
 function VoiceIntegrationSettingsPage() {
     const { integrationId: idParam } = useParams<{ integrationId: string }>()
     const id = Number(idParam)
-    const { isFetching, data } = useGetIntegration(id, {
+    const { isFetching, data, isError } = useGetIntegration(id, {
         query: { refetchOnWindowFocus: false },
     })
+    const notify = useNotify()
 
-    const integration = data?.data as PhoneIntegration
-    const { onSubmit } = useFormSubmit(integration)
+    useEffect(() => {
+        if (isError) {
+            notify.error('Failed to fetch integration')
+            history.push(PHONE_INTEGRATION_BASE_URL)
+        }
+    }, [isError, notify])
 
     if (isFetching) {
         return <Loader />
     }
 
-    if (
-        integration.type !== IntegrationType.Phone ||
-        integration.meta.function !== PhoneFunction.Standard
-    ) {
+    if (isError || !isPhoneIntegration(data?.data)) {
         return <div />
     }
+
+    return <PageContent integration={data.data} />
+}
+
+const PageContent = ({ integration }: { integration: PhoneIntegration }) => {
+    const { onSubmit } = useFormSubmit(integration)
 
     return (
         <SettingsPageContainer>

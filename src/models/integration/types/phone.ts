@@ -1,5 +1,9 @@
 // g/integrations/phone/schemas.py
-import { UpdateWaitMusicLibrary, WaitMusicType } from '@gorgias/api-queries'
+import {
+    Integration as ApiIntegration,
+    UpdateWaitMusicLibrary,
+    WaitMusicType,
+} from '@gorgias/api-queries'
 
 import { PhoneFunction } from 'business/twilio'
 
@@ -137,7 +141,7 @@ export type IvrSmsDeflection = {
 }
 
 export const isPhoneIntegration = (
-    integration: Maybe<Integration>,
+    integration: Maybe<Integration | ApiIntegration>,
 ): integration is PhoneIntegration =>
     integration?.type === IntegrationType.Phone
 
