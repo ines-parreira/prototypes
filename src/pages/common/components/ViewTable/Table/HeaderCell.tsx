@@ -1,7 +1,7 @@
 import React, { ComponentType, useCallback, useMemo } from 'react'
 
 import classnames from 'classnames'
-import { fromJS, List, Map } from 'immutable'
+import { Map } from 'immutable'
 
 import { getConfigByName } from 'config/views'
 import useAppDispatch from 'hooks/useAppDispatch'
@@ -9,7 +9,6 @@ import useAppSelector from 'hooks/useAppSelector'
 import { OrderDirection } from 'models/api/types'
 import { TicketSearchSortableProperties } from 'models/search/types'
 import { EntityType } from 'models/view/types'
-import ShowMoreFieldsDropdown from 'pages/common/components/ViewTable/ShowMoreFieldsDropdown'
 import { fetchViewItems, setOrderDirection } from 'state/views/actions'
 import {
     getActiveView,
@@ -24,8 +23,6 @@ import css from './HeaderCell.less'
 type Props = {
     ActionsComponent: Maybe<ComponentType<any>>
     field: Map<any, any>
-    fields: List<any>
-    shouldRenderShowMoreDropdown: boolean
     isSearch: boolean
     type: EntityType
     isClickable?: boolean
@@ -34,8 +31,6 @@ type Props = {
 const HeaderCell = ({
     ActionsComponent,
     field,
-    fields,
-    shouldRenderShowMoreDropdown,
     isSearch,
     type,
     isClickable = true,
@@ -119,14 +114,6 @@ const HeaderCell = ({
 
     const isMainField = config.get('mainField') === field.get('name')
 
-    const selectableFields = useMemo(
-        () =>
-            (config.get('fields', fromJS([])) as List<any>).filter(
-                (field: Map<any, any>) => field.get('show', true) as boolean,
-            ) as List<any>,
-        [config],
-    )
-
     return (
         <td>
             <div>
@@ -153,15 +140,6 @@ const HeaderCell = ({
                         </div>
                     )}
                 </div>
-                {shouldRenderShowMoreDropdown &&
-                (isSearchSortingEnabled || !isSearch) ? (
-                    <ShowMoreFieldsDropdown
-                        config={config}
-                        fields={selectableFields}
-                        visibleFields={fields}
-                        shouldStoreFieldConfig={isSearchSortingEnabled}
-                    />
-                ) : null}
             </div>
         </td>
     )

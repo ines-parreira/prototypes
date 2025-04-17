@@ -25,6 +25,7 @@ type Props = {
     hasCursor: boolean
     selectable: boolean | null
     type: EntityType
+    shouldEnlargeLastCell?: boolean
 }
 
 export default function Row({
@@ -36,6 +37,7 @@ export default function Row({
     hasCursor,
     onItemClick,
     itemUrl,
+    shouldEnlargeLastCell,
 }: Props) {
     const showGlobalNav = useDesktopOnlyShowGlobalNavFeatureFlag()
     const dispatch = useAppDispatch()
@@ -89,7 +91,7 @@ export default function Row({
                     />
                 </td>
             ) : null}
-            {fields.map((field: Map<any, any>) => (
+            {fields.map((field: Map<any, any>, index) => (
                 <Cell
                     key={`${item.get('id') as number}-${field.get('name') as string}`}
                     item={item}
@@ -97,6 +99,12 @@ export default function Row({
                     type={type}
                     onClick={onItemClick}
                     itemUrl={itemUrl}
+                    colSpan={
+                        shouldEnlargeLastCell &&
+                        fields.size === (index as number) + 1
+                            ? 2
+                            : undefined
+                    }
                 />
             ))}
         </tr>

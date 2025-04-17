@@ -29,19 +29,22 @@ exports[`<Table /> should display a default view 1`] = `
           </div>
         </td>
         <td>
-          HeaderCell - shouldRenderShowMoreDropdown :
-           
-          false
+          HeaderCell
         </td>
         <td>
-          HeaderCell - shouldRenderShowMoreDropdown :
-           
-          false
+          HeaderCell
         </td>
         <td>
-          HeaderCell - shouldRenderShowMoreDropdown :
-           
-          true
+          HeaderCell
+        </td>
+        <td>
+          <div
+            class="justify-content-end"
+          >
+            <div>
+              ShowMoreFieldsDropdown
+            </div>
+          </div>
         </td>
       </tr>
     </thead>
@@ -89,19 +92,22 @@ exports[`<Table /> should display a default view with option selectable set to f
     >
       <tr>
         <td>
-          HeaderCell - shouldRenderShowMoreDropdown :
-           
-          false
+          HeaderCell
         </td>
         <td>
-          HeaderCell - shouldRenderShowMoreDropdown :
-           
-          false
+          HeaderCell
         </td>
         <td>
-          HeaderCell - shouldRenderShowMoreDropdown :
-           
-          true
+          HeaderCell
+        </td>
+        <td>
+          <div
+            class="justify-content-end"
+          >
+            <div>
+              ShowMoreFieldsDropdown
+            </div>
+          </div>
         </td>
       </tr>
     </thead>

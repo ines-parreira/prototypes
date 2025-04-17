@@ -49,20 +49,7 @@ jest.mock(
             </tr>
         ),
 )
-jest.mock(
-    '../Table/HeaderCell',
-    () =>
-        ({
-            shouldRenderShowMoreDropdown,
-        }: {
-            shouldRenderShowMoreDropdown: boolean
-        }) => (
-            <td>
-                HeaderCell - shouldRenderShowMoreDropdown :{' '}
-                {String(shouldRenderShowMoreDropdown)}
-            </td>
-        ),
-)
+jest.mock('../Table/HeaderCell', () => () => <td>HeaderCell</td>)
 jest.mock(
     '../../BlankState/BlankState',
     () =>
@@ -80,6 +67,10 @@ jest.mock('@gorgias/realtime', () => ({
         viewTickets: jest.fn(),
     }),
 }))
+
+jest.mock('../ShowMoreFieldsDropdown', () => () => (
+    <div>ShowMoreFieldsDropdown</div>
+))
 
 describe('<Table />', () => {
     const viewConfig = viewsConfig.views.first() as Map<any, any>
@@ -138,19 +129,6 @@ describe('<Table />', () => {
             </Provider>,
         )
         expect(container.firstChild).toMatchSnapshot()
-    })
-
-    it('should pass shouldRenderShowMoreDropdown to HeaderCell', () => {
-        const { getAllByText } = render(
-            <Provider store={mockStore(defaultState)}>
-                <Table {...minProps} shouldRenderShowMoreDropdown={false} />
-            </Provider>,
-        )
-        expect(
-            getAllByText('HeaderCell - shouldRenderShowMoreDropdown : false')[
-                minProps.fields.size - 1
-            ],
-        ).toBeInTheDocument()
     })
 
     it('should display a modified view with no items, should reset the view and fetch first items ', () => {
@@ -364,5 +342,36 @@ describe('<Table />', () => {
         )
 
         expect(container.getElementsByClassName('navigation')).toHaveLength(1)
+    })
+
+    it.each([
+        ['not in search mode', { isSearch: false, type: EntityType.Ticket }],
+        [
+            'in search mode for tickets',
+            { isSearch: true, type: EntityType.Ticket },
+        ],
+    ])('should show the ShowMoreFieldsDropdown when %s', (_, props) => {
+        const { getByText } = render(
+            <Provider store={mockStore(defaultState)}>
+                <Table {...minProps} shouldRenderShowMoreDropdown {...props} />
+            </Provider>,
+        )
+
+        expect(getByText('ShowMoreFieldsDropdown')).toBeInTheDocument()
+    })
+
+    it('should not show the ShowMoreFieldsDropdown when not on ticket search view', () => {
+        const { queryByText } = render(
+            <Provider store={mockStore(defaultState)}>
+                <Table
+                    {...minProps}
+                    shouldRenderShowMoreDropdown
+                    isSearch
+                    type={EntityType.Customer}
+                />
+            </Provider>,
+        )
+
+        expect(queryByText('ShowMoreFieldsDropdown')).not.toBeInTheDocument()
     })
 })

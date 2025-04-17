@@ -40,6 +40,8 @@ import {
     ViewNavDirection,
 } from 'state/views/types'
 
+import ShowMoreFieldsDropdown from './ShowMoreFieldsDropdown'
+
 type OwnProps = {
     headerRow?: ReactNode
     view: ViewImmutable
@@ -255,6 +257,19 @@ const TableContainer = ({
         }
     }
 
+    const selectableFields = useMemo(
+        () =>
+            (config.get('fields', fromJS([])) as List<any>).filter(
+                (field: Map<any, any>) => field.get('show', true) as boolean,
+            ) as List<any>,
+        [config],
+    )
+
+    const isSearchSortingEnabled = useMemo(
+        () => isSearch && type === EntityType.Ticket,
+        [isSearch, type],
+    )
+
     if (isLoading('fetchList')) {
         return <Loader />
     }
@@ -300,6 +315,9 @@ const TableContainer = ({
         )
     }
 
+    const shouldRenderDropdown =
+        shouldRenderShowMoreDropdown && (isSearchSortingEnabled || !isSearch)
+
     return (
         <div>
             <table
@@ -331,31 +349,38 @@ const TableContainer = ({
                                 />
                             </td>
                         ) : null}
-
-                        {fields.map((field: Map<any, any>, index) => {
-                            return (
-                                <HeaderCell
-                                    key={field.get('name')}
-                                    field={field}
-                                    fields={fields}
-                                    type={type}
-                                    shouldRenderShowMoreDropdown={
-                                        fields.size === (index as number) + 1 &&
-                                        shouldRenderShowMoreDropdown
-                                    }
-                                    isClickable={areHeaderCellsClickable}
-                                    isSearch={isSearch}
-                                    ActionsComponent={ActionsComponent}
-                                />
-                            )
-                        })}
+                        {fields.map((field: Map<any, any>) => (
+                            <HeaderCell
+                                key={field.get('name')}
+                                ActionsComponent={ActionsComponent}
+                                field={field}
+                                isSearch={isSearch}
+                                type={type}
+                                isClickable={areHeaderCellsClickable}
+                            />
+                        ))}
+                        {fields.size > 0 && shouldRenderDropdown && (
+                            <td>
+                                <div className="justify-content-end">
+                                    <ShowMoreFieldsDropdown
+                                        config={config}
+                                        fields={selectableFields}
+                                        visibleFields={fields}
+                                        shouldStoreFieldConfig={
+                                            isSearch &&
+                                            type === EntityType.Ticket
+                                        }
+                                    />
+                                </div>
+                            </td>
+                        )}
                     </tr>
                     {(!!navigation.get('next_items') ||
                         !!navigation.get('prev_items')) &&
                     areAllSelected &&
                     type === EntityType.Ticket ? (
                         <ViewSelection
-                            colSize={fields.size + 1}
+                            colSize={fields.size + 2}
                             selectedCount={items.size}
                             viewSelected={viewSelected}
                             onSelectViewClick={toggleViewSelection}
@@ -387,6 +412,7 @@ const TableContainer = ({
                                     onItemClick?.(item)
                                 }}
                                 itemUrl={getItemUrl ? getItemUrl(item) : null}
+                                shouldEnlargeLastCell={shouldRenderDropdown}
                             />
                         )
                     })}

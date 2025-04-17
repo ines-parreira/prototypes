@@ -22,8 +22,8 @@ jest.mock(
     },
 )
 
-jest.mock('../Cell', () => () => {
-    return <div>Cell</div>
+jest.mock('../Cell', () => ({ colSpan }: { colSpan?: number }) => {
+    return <div data-colspan={colSpan}>Cell</div>
 })
 
 jest.mock('hooks/useAppDispatch')
@@ -93,5 +93,15 @@ describe('ViewTable::Table::Row', () => {
             />,
         )
         expect(getByText('ViewingIndicator')).toBeInTheDocument()
+    })
+
+    it('should enlarge last cell when shouldEnlargeLastCell is true', () => {
+        const { getAllByText } = render(
+            <Row {...minProps} shouldEnlargeLastCell={true} />,
+        )
+        const cells = getAllByText('Cell')
+        const lastCell = cells[cells.length - 1]
+
+        expect(lastCell).toHaveAttribute('data-colspan', '2')
     })
 })

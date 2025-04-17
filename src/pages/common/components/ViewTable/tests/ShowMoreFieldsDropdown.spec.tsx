@@ -1,4 +1,4 @@
-import { fireEvent, render, screen } from '@testing-library/react'
+import { fireEvent, render, screen, waitFor } from '@testing-library/react'
 import { List, Map } from 'immutable'
 
 import * as Segment from 'common/segment'
@@ -28,6 +28,12 @@ describe('ShowMoreFieldsDropdown', () => {
     let defaultProps: any
 
     beforeEach(() => {
+        Object.defineProperty(window, 'innerWidth', {
+            writable: true,
+            configurable: true,
+            value: 1000,
+        })
+
         defaultProps = {
             config: Map({ mainField: 'field1' }),
             fields: List([
@@ -124,5 +130,60 @@ describe('ShowMoreFieldsDropdown', () => {
             false,
             false,
         )
+    })
+
+    describe('dropdown positioning', () => {
+        it('positions dropdown on the right when there is enough space', async () => {
+            renderComponent()
+
+            const dropdownToggle = screen.getByRole('button')
+            const toggleRect = {
+                right: 500,
+                bottom: 100,
+            }
+            dropdownToggle.getBoundingClientRect = jest
+                .fn()
+                .mockReturnValue(toggleRect)
+
+            fireEvent.click(dropdownToggle)
+
+            const dropdownMenu = document.querySelector('.dropdown-menu')
+
+            await waitFor(() => {
+                expect(dropdownMenu).toHaveStyle({ right: '0px' })
+            })
+        })
+
+        it('positions dropdown fixed when there is not enough space', async () => {
+            // Set window width to be smaller than the toggle position
+            Object.defineProperty(window, 'innerWidth', {
+                writable: true,
+                configurable: true,
+                value: 400,
+            })
+
+            renderComponent()
+
+            const dropdownToggle = screen.getByRole('button')
+            const toggleRect = {
+                right: 500,
+                bottom: 100,
+            }
+            dropdownToggle.getBoundingClientRect = jest
+                .fn()
+                .mockReturnValue(toggleRect)
+
+            fireEvent.click(dropdownToggle)
+
+            const dropdownMenu = document.querySelector('.dropdown-menu')
+
+            await waitFor(() => {
+                expect(dropdownMenu).toHaveStyle({
+                    position: 'fixed',
+                    top: '100px',
+                    right: '20px',
+                })
+            })
+        })
     })
 })

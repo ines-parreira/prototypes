@@ -7,7 +7,7 @@ import configureMockStore from 'redux-mock-store'
 
 import { views } from 'config/views'
 import { OrderDirection } from 'models/api/types'
-import { EntityType, ViewField } from 'models/view/types'
+import { ViewField } from 'models/view/types'
 import { RootState, StoreDispatch } from 'state/types'
 import { fetchViewItems, setOrderDirection } from 'state/views/actions'
 import { assumeMock } from 'utils/testing'
@@ -20,11 +20,6 @@ const setOrderDirectionMock = assumeMock(setOrderDirection)
 
 const mockedDispatch = jest.fn()
 jest.mock('hooks/useAppDispatch', () => () => mockedDispatch)
-
-jest.mock(
-    'pages/common/components/ViewTable/ShowMoreFieldsDropdown',
-    () => () => <div>ShowMoreFieldsDropdown</div>,
-)
 
 describe('ViewTable::Table::HeaderCell', () => {
     const viewConfig = views.first() as Map<any, any>
@@ -160,37 +155,5 @@ describe('ViewTable::Table::HeaderCell', () => {
         expect(field.parentNode).not.toHaveClass('clickable')
         expect(fetchViewItemsMock).not.toHaveBeenCalled()
         expect(setOrderDirectionMock).not.toHaveBeenCalled()
-    })
-
-    it.each([
-        ['when not in search mode', false],
-        ['when in search mode', true],
-    ])('should show the ShowMoreFieldsDropdown %s', (_, isSearch) => {
-        const { getByText } = render(
-            <Provider store={mockStore()}>
-                <HeaderCell
-                    {...minProps}
-                    shouldRenderShowMoreDropdown
-                    isSearch={isSearch}
-                />
-            </Provider>,
-        )
-
-        expect(getByText('ShowMoreFieldsDropdown')).toBeInTheDocument()
-    })
-
-    it('should hide the ShowMoreFieldsDropdown when not on ticket search view', () => {
-        const { queryByText } = render(
-            <Provider store={mockStore()}>
-                <HeaderCell
-                    {...minProps}
-                    shouldRenderShowMoreDropdown
-                    isSearch
-                    type={EntityType.Customer}
-                />
-            </Provider>,
-        )
-
-        expect(queryByText('ShowMoreFieldsDropdown')).not.toBeInTheDocument()
     })
 })

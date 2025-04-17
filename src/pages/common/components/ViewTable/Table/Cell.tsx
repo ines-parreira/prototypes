@@ -14,9 +14,17 @@ type Props = {
     itemUrl?: string | null
     onClick?: (item: Map<any, any>) => void
     type: EntityType
+    colSpan?: number
 }
 
-const Cell = ({ field, item = fromJS({}), itemUrl, onClick, type }: Props) => {
+const Cell = ({
+    field,
+    item = fromJS({}),
+    itemUrl,
+    onClick,
+    type,
+    colSpan,
+}: Props) => {
     const config = getConfigByName(type)
 
     const labelValue = useMemo(() => {
@@ -25,7 +33,7 @@ const Cell = ({ field, item = fromJS({}), itemUrl, onClick, type }: Props) => {
     }, [config, field, item])
 
     return (
-        <td className={css['limit-overflow']}>
+        <td colSpan={colSpan} className={css['limit-overflow']}>
             {itemUrl ? (
                 <Link to={itemUrl} onClick={() => onClick?.(item)}>
                     <div className="cell-wrapper">

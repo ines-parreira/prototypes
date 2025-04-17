@@ -55,4 +55,11 @@ describe('ViewTable::Table::Cell', () => {
         userEvent.click(screen.getByText(ticket.subject))
         expect(onClick).toHaveBeenLastCalledWith(minProps.item)
     })
+
+    it('should set colSpan when provided', () => {
+        const { container } = render(<Cell {...minProps} colSpan={2} />)
+        const td = container.querySelector('td')
+
+        expect(td).toHaveAttribute('colSpan', '2')
+    })
 })

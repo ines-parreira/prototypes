@@ -1,6 +1,7 @@
 import { useCallback, useMemo } from 'react'
 
 import { List, Map } from 'immutable'
+import _throttle from 'lodash/throttle'
 import {
     DropdownItem,
     DropdownMenu,
@@ -29,6 +30,25 @@ const ShowMoreFieldsDropdown = ({
     shouldStoreFieldConfig,
 }: Props) => {
     const dispatch = useAppDispatch()
+
+    const computePosition = _throttle((data: any) => {
+        const toggleRect = data.instance.reference.getBoundingClientRect()
+        const isOverflowing =
+            toggleRect && toggleRect.right + 20 > window.innerWidth
+
+        const styles = isOverflowing
+            ? {
+                  position: 'fixed',
+                  top: `${toggleRect?.bottom}px`,
+                  right: '20px',
+              }
+            : { right: '0px' }
+
+        return {
+            ...data,
+            styles: styles as CSSStyleDeclaration,
+        }
+    }, 300)
 
     const handleFieldVisibility = useCallback(
         (name: string, state: boolean) => {
@@ -71,7 +91,14 @@ const ShowMoreFieldsDropdown = ({
             >
                 <i className="icon material-icons md-2">view_column</i>
             </DropdownToggle>
-            <DropdownMenu right>
+            <DropdownMenu
+                right
+                modifiers={{
+                    computeStyle: {
+                        fn: computePosition,
+                    },
+                }}
+            >
                 <DropdownItem className="pb-2" header>
                     COLUMNS
                 </DropdownItem>
