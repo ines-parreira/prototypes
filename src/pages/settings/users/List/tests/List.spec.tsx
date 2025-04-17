@@ -3,15 +3,18 @@ import React from 'react'
 import { render, screen } from '@testing-library/react'
 import { Link } from 'react-router-dom'
 
+import { useListUsers } from '@gorgias/api-queries'
+
 import { agents } from 'fixtures/agents'
 import {
     basicMonthlyHelpdeskPlan as mockedBasicMonthlyHelpdeskPlan,
     starterHelpdeskPlan,
 } from 'fixtures/productPrices'
 import useAppDispatch from 'hooks/useAppDispatch'
-import { usePaginatedQuery } from 'hooks/usePaginatedQuery'
+import { OrderDirection } from 'models/api/types'
+import { UserSortableProperties } from 'models/user/types'
 import Navigation from 'pages/common/components/Navigation/Navigation'
-import Row from 'pages/settings/users/List/Row'
+import UsersSettingsTable from 'pages/settings/users/List/UsersSettingsTable'
 import { getCurrentHelpdeskPlan } from 'state/billing/selectors'
 import { getAccountOwnerId } from 'state/currentAccount/selectors'
 import { notify } from 'state/notifications/actions'
@@ -25,6 +28,9 @@ jest.mock('react-router-dom', () => ({
     Link: jest.fn(() => <div>Link Mock</div>),
 }))
 const mockedLink = assumeMock(Link)
+
+jest.mock('@gorgias/api-queries')
+const mockedUseListUsers = assumeMock(useListUsers)
 
 const mockedDispatch = jest.fn()
 jest.mock('hooks/useAppDispatch')
@@ -41,18 +47,20 @@ const mockedGetCurrentHelpdeskProduct = assumeMock(getCurrentHelpdeskPlan)
 jest.mock('pages/common/components/Navigation/Navigation', () =>
     jest.fn(() => null),
 )
-jest.mock('../Row', () => jest.fn(() => null))
-const mockedRow = assumeMock(Row)
-
-jest.mock('hooks/usePaginatedQuery/usePaginatedQuery')
-const mockedUsePaginatedQuery = assumeMock(usePaginatedQuery)
+jest.mock('../UsersSettingsTable', () => jest.fn(() => null))
+const mockedUsersSettingsTable = assumeMock(UsersSettingsTable)
 
 describe('<List />', () => {
     beforeEach(() => {
         mockedUseAppDispatch.mockImplementation(() => mockedDispatch)
         mockedGetAccountOwnerId.mockImplementation(() => agents[0].id)
-        mockedUsePaginatedQuery.mockImplementation(
-            () => ({}) as ReturnType<typeof usePaginatedQuery>,
+        mockedUseListUsers.mockImplementation(
+            () =>
+                ({
+                    data: undefined,
+                    isLoading: false,
+                    isError: false,
+                }) as ReturnType<typeof useListUsers>,
         )
     })
 
@@ -73,75 +81,136 @@ describe('<List />', () => {
     })
 
     it('should render a loader', () => {
-        mockedUsePaginatedQuery.mockImplementationOnce(
+        mockedUseListUsers.mockImplementationOnce(
             () =>
                 ({
+                    data: undefined,
                     isLoading: true,
-                }) as ReturnType<typeof usePaginatedQuery>,
+                    isError: false,
+                }) as ReturnType<typeof useListUsers>,
         )
         render(<UserList />)
-        expect(screen.getByText('Loading...')).toBeInTheDocument()
+        expect(mockedUsersSettingsTable).toHaveBeenCalledWith(
+            expect.objectContaining({
+                isLoading: true,
+            }),
+            {},
+        )
     })
 
     it('should dispatch an error', () => {
-        mockedUsePaginatedQuery.mockImplementationOnce(
+        mockedUseListUsers.mockImplementationOnce(
             () =>
                 ({
-                    error: {},
-                }) as ReturnType<typeof usePaginatedQuery>,
+                    data: undefined,
+                    isLoading: false,
+                    isError: true,
+                }) as ReturnType<typeof useListUsers>,
         )
         render(<UserList />)
         expect(mockedDispatch).toHaveBeenCalledTimes(1)
         expect(notify).toHaveBeenNthCalledWith(
             1,
             expect.objectContaining({
+                message: 'Failed to fetch users',
                 status: NotificationStatus.Error,
             }),
         )
     })
 
     it('should provide correct props to `Navigation`', () => {
-        const hasPreviousPage = () => undefined
-        const fetchPreviousPage = () => undefined
-        const hasNextPage = () => undefined
-        const fetchNextPage = () => undefined
-        mockedUsePaginatedQuery.mockImplementationOnce(
+        const mockData = {
+            data: {
+                meta: {
+                    prev_cursor: 'prev-cursor',
+                    next_cursor: 'next-cursor',
+                },
+                data: [],
+            },
+        }
+        mockedUseListUsers.mockImplementationOnce(
             () =>
                 ({
-                    hasPreviousPage,
-                    fetchPreviousPage,
-                    hasNextPage,
-                    fetchNextPage,
-                }) as unknown as ReturnType<typeof usePaginatedQuery>,
+                    data: mockData,
+                    isLoading: false,
+                    isError: false,
+                }) as ReturnType<typeof useListUsers>,
         )
         render(<UserList />)
         expect(Navigation).toHaveBeenNthCalledWith(
             1,
-            {
-                hasPrevItems: hasPreviousPage,
-                fetchPrevItems: fetchPreviousPage,
-                hasNextItems: hasNextPage,
-                fetchNextItems: fetchNextPage,
-            },
+            expect.objectContaining({
+                hasPrevItems: true,
+                hasNextItems: true,
+                fetchPrevItems: expect.any(Function),
+                fetchNextItems: expect.any(Function),
+            }),
             {},
         )
     })
 
-    it('should provide correct props to `Row`', () => {
-        mockedUsePaginatedQuery.mockImplementationOnce(
+    it('should provide correct props to `UsersSettingsTable`', () => {
+        const mockData = {
+            data: {
+                data: agents,
+                meta: {},
+            },
+        }
+        mockedUseListUsers.mockImplementationOnce(
             () =>
                 ({
-                    data: {
-                        data: {
-                            data: agents,
-                        },
-                    },
-                }) as unknown as ReturnType<typeof usePaginatedQuery>,
+                    data: mockData,
+                    isLoading: false,
+                    isError: false,
+                }) as ReturnType<typeof useListUsers>,
         )
         render(<UserList />)
-        expect(mockedRow.mock.calls).toEqual([
-            [{ agent: agents[0], isAccountOwner: true }, {}],
-            [{ agent: agents[1], isAccountOwner: false }, {}],
-        ])
+        expect(mockedUsersSettingsTable).toHaveBeenCalledWith(
+            expect.objectContaining({
+                isLoading: false,
+                users: agents,
+                onSortOptionsChange: expect.any(Function),
+                options: expect.objectContaining({
+                    order_by: expect.any(String),
+                }),
+            }),
+            {},
+        )
+    })
+
+    it('should reset cursor when sorting is changed', () => {
+        const mockData = {
+            data: {
+                data: agents,
+                meta: {
+                    next_cursor: 'next-cursor',
+                    prev_cursor: 'prev-cursor',
+                },
+            },
+        }
+
+        mockedUseListUsers.mockImplementationOnce(
+            () =>
+                ({
+                    data: mockData,
+                    isLoading: false,
+                    isError: false,
+                }) as ReturnType<typeof useListUsers>,
+        )
+
+        render(<UserList />)
+
+        const onSortOptionsChange =
+            mockedUsersSettingsTable.mock.calls[0][0].onSortOptionsChange
+        onSortOptionsChange(UserSortableProperties.Name, OrderDirection.Desc)
+
+        expect(mockedUsersSettingsTable).toHaveBeenCalledWith(
+            expect.objectContaining({
+                options: expect.objectContaining({
+                    cursor: undefined,
+                }),
+            }),
+            {},
+        )
     })
 })

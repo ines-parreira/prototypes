@@ -2,7 +2,7 @@
   "summary": {
     "totalEntries": 39,
     "totalUsages": 1235,
-    "reportGeneratedAt": "2025-04-14T09:57:55.840Z"
+    "reportGeneratedAt": "2025-04-16T21:16:10.819Z"
   },
   "entries": [
     {
@@ -744,7 +744,7 @@
       "type": "ui-kit-migration",
       "entries": [
         {
-          "usageCount": 580,
+          "usageCount": 579,
           "name": "Button",
           "nodeType": "VariableDeclaration",
           "deprecationDate": "2024-03-04",
@@ -770,7 +770,6 @@
               "src/pages/ErrorBoundary.tsx",
               "src/pages/aiAgent/AiAgentConfigurationView/AiAgentConfigurationModal.tsx",
               "src/pages/aiAgent/AiAgentGuidanceLibrary.tsx",
-              "src/pages/aiAgent/AiAgentKnowledgeContainer.tsx",
               "src/pages/aiAgent/AiAgentOnboardingWizard/TicketPreview.tsx",
               "src/pages/aiAgent/AiAgentPreviewModeSettings/AiAgentPreviewModeSettingsView.tsx",
               "src/pages/aiAgent/Onboarding/components/IntegrationCard/IntegrationCard.tsx",
@@ -1609,7 +1608,7 @@
           ]
         },
         {
-          "usageCount": 33,
+          "usageCount": 34,
           "name": "Avatar",
           "nodeType": "FunctionDeclaration",
           "deprecationDate": "2025-04-08",
@@ -1640,7 +1639,8 @@
               "src/pages/settings/teams/List.tsx",
               "src/pages/settings/teams/TeamCreationModal.tsx",
               "src/pages/settings/teams/members/Row.tsx",
-              "src/pages/settings/users/List/Row.tsx",
+              "src/pages/settings/users/List/UsersSettingsItem.tsx",
+              "src/pages/settings/users/List/tests/UsersSettingsItem.spec.tsx",
               "src/pages/settings/yourProfile/components/YourProfileView.tsx",
               "src/pages/stats/common/AgentAvatar.tsx",
               "src/pages/stats/common/components/Shoutout/Shoutout.tsx",

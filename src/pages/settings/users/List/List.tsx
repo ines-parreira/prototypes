@@ -1,61 +1,88 @@
-import React, { useEffect } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 
 import cs from 'classnames'
 import { Link } from 'react-router-dom'
 
-import { LoadingSpinner } from '@gorgias/merchant-ui-kit'
+import { ListUsersParams, useListUsers } from '@gorgias/api-queries'
+import {
+    ListUsersOrderBy,
+    ListUsersRelationshipsItem,
+} from '@gorgias/api-types'
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
-import { usePaginatedQuery } from 'hooks/usePaginatedQuery/usePaginatedQuery'
-import { useListAgent } from 'models/agents/queries'
-import { AgentsRelationshipsParam } from 'models/agents/types'
+import { OrderDirection } from 'models/api/types'
 import { isStarterTier } from 'models/billing/utils'
+import { UserSortableProperties } from 'models/user/types'
 import Button from 'pages/common/components/button/Button'
 import Navigation from 'pages/common/components/Navigation/Navigation'
 import PageHeader from 'pages/common/components/PageHeader'
 import settingsCss from 'pages/settings/settings.less'
 import { getCurrentHelpdeskPlan } from 'state/billing/selectors'
-import { getAccountOwnerId } from 'state/currentAccount/selectors'
 import { notify } from 'state/notifications/actions'
 import { NotificationStatus } from 'state/notifications/types'
 
-import Row from './Row'
+import UsersSettingsTable from './UsersSettingsTable'
 
 import css from './List.less'
 
-const STALE_TIME = 1000 * 60 * 5 // 5 minutes
+const STALE_TIME_MS = 5 * 60 * 1000 // 5 minutes (in ms)
 const AGENTS_PER_PAGE = 15
 
 const UserList = () => {
     const dispatch = useAppDispatch()
+    const currentHelpdeskPlan = useAppSelector(getCurrentHelpdeskPlan)
+    const isStarterPlan = isStarterTier(currentHelpdeskPlan)
 
-    const accountOwnerId = useAppSelector(getAccountOwnerId)
+    const [listUsersParams, setListUsersParams] = useState<ListUsersParams>({
+        order_by: ListUsersOrderBy.NameAsc,
+    })
 
-    const paginatedAgents = usePaginatedQuery(
-        useListAgent,
+    const { data, isLoading, isError } = useListUsers(
         {
+            ...listUsersParams,
+            relationships: [ListUsersRelationshipsItem.AvailabilityStatus],
             limit: AGENTS_PER_PAGE,
-            relationships: AgentsRelationshipsParam.AvailabilityStatus,
         },
-        { keepPreviousData: true, staleTime: STALE_TIME, retry: false },
+        {
+            query: { staleTime: STALE_TIME_MS, keepPreviousData: true },
+        },
     )
 
     useEffect(() => {
-        if (paginatedAgents.error) {
+        if (isError) {
             void dispatch(
                 notify({
+                    message: 'Failed to fetch users',
                     status: NotificationStatus.Error,
-                    message: "Couldn't load user list. Please try again.",
                 }),
             )
         }
-    }, [paginatedAgents.error, dispatch])
+    }, [dispatch, isError])
 
-    const { data: { data: agents = [] } = {} } = paginatedAgents.data ?? {}
+    const fetchPrevItems = useCallback(() => {
+        setListUsersParams({
+            ...listUsersParams,
+            cursor: data?.data.meta.prev_cursor ?? undefined,
+        })
+    }, [data?.data.meta.prev_cursor, listUsersParams])
 
-    const currentHelpdeskPlan = useAppSelector(getCurrentHelpdeskPlan)
-    const isStarterPlan = isStarterTier(currentHelpdeskPlan)
+    const fetchNextItems = useCallback(() => {
+        setListUsersParams({
+            ...listUsersParams,
+            cursor: data?.data.meta.next_cursor ?? undefined,
+        })
+    }, [data?.data.meta.next_cursor, listUsersParams])
+
+    const onSortOptionsChange = useCallback(
+        (order_by: UserSortableProperties, order_dir: OrderDirection) =>
+            setListUsersParams({
+                ...listUsersParams,
+                order_by: `${order_by}:${order_dir}` as ListUsersOrderBy,
+                cursor: undefined,
+            }),
+        [listUsersParams],
+    )
 
     return (
         <div className={cs('full-width')}>
@@ -75,42 +102,22 @@ const UserList = () => {
                     </strong>
                     , at no additional cost.
                 </p>
-                <div className={css.listWrapper}>
-                    <span className={css.listHeader}>
-                        <span className={cs(css.cell, css.avatar)}>User</span>
-                        <span className={cs(css.cell, css.email)}>Email</span>
-                        <span className={cs(css.cell, css.role)}>Role</span>
-                        <span className={cs(css.cell, css.twoFA)}>2FA</span>
-                    </span>
 
-                    {paginatedAgents.isError ? (
-                        <p>Something went wrong</p>
-                    ) : paginatedAgents.isLoading ? (
-                        <div className={css.spinnerWrapper}>
-                            <LoadingSpinner size="big" />
-                        </div>
-                    ) : (
-                        <ul className={css.list}>
-                            {agents.map((agent) => {
-                                return (
-                                    <Row
-                                        key={agent.id}
-                                        agent={agent}
-                                        isAccountOwner={
-                                            agent.id === accountOwnerId
-                                        }
-                                    />
-                                )
-                            })}
-                        </ul>
-                    )}
+                <div className={css.table}>
+                    <UsersSettingsTable
+                        isLoading={isLoading}
+                        users={data?.data.data}
+                        onSortOptionsChange={onSortOptionsChange}
+                        options={listUsersParams}
+                    />
+                    <Navigation
+                        className={css.navigation}
+                        hasNextItems={!!data?.data.meta.next_cursor}
+                        hasPrevItems={!!data?.data.meta.prev_cursor}
+                        fetchNextItems={fetchNextItems}
+                        fetchPrevItems={fetchPrevItems}
+                    />
                 </div>
-                <Navigation
-                    hasPrevItems={paginatedAgents.hasPreviousPage}
-                    fetchPrevItems={paginatedAgents.fetchPreviousPage}
-                    hasNextItems={paginatedAgents.hasNextPage}
-                    fetchNextItems={paginatedAgents.fetchNextPage}
-                />
             </div>
         </div>
     )
