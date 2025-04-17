@@ -121,20 +121,30 @@ export type TrendMetric =
     | AiSalesAgentChart.AiSalesDiscountRateApplied
     | AiSalesAgentChart.AiSalesAverageDiscount
 
-export const AiSalesAgentMetricConfig: Record<
-    TrendMetric,
-    {
-        title: string
-        hint: TooltipData
-        useTrend: MetricTrendHook
-        fetchTrend: MetricTrendFetch
-        interpretAs: 'more-is-better' | 'less-is-better' | 'neutral'
-        metricFormat: MetricTrendFormat
-        drillDownMetric?: TrendMetric
-        drillDownQuery?: DrillDownQueryFactory
-        showMetric: boolean
-        domain: Domain
-    }
+type AiSalesMetricConfig = {
+    title: string
+    hint: TooltipData
+    useTrend: MetricTrendHook
+    fetchTrend: MetricTrendFetch
+    interpretAs: 'more-is-better' | 'less-is-better' | 'neutral'
+    metricFormat: MetricTrendFormat
+    showMetric: boolean
+    domain: Domain
+}
+
+export type AiSalesAgentDrillDownMetrics =
+    | AiSalesAgentChart.AiSalesAgentTotalSalesConv
+    | AiSalesAgentChart.AiSalesAgentSuccessRate
+    | AiSalesAgentChart.AiSalesDiscountOffered
+
+type DrillDownConfig = {
+    drillDownMetric: AiSalesAgentDrillDownMetrics
+    drillDownQuery: DrillDownQueryFactory
+}
+
+export const AiSalesAgentMetricsWithDrillDownConfig: Record<
+    AiSalesAgentDrillDownMetrics,
+    AiSalesMetricConfig & DrillDownConfig
 > = {
     [AiSalesAgentChart.AiSalesAgentTotalSalesConv]: {
         title: 'Conversations',
@@ -151,6 +161,41 @@ export const AiSalesAgentMetricConfig: Record<
         showMetric: true,
         domain: Domain.AiSalesAgent,
     },
+    [AiSalesAgentChart.AiSalesAgentSuccessRate]: {
+        title: 'Success rate',
+        hint: {
+            title: 'The percentage of AI Agent for Sales interactions that were successfully automated without human escalation.',
+        },
+        useTrend: useSuccessRateTrend,
+        fetchTrend: fetchSuccessRateTrend,
+        drillDownMetric: AiSalesAgentChart.AiSalesAgentSuccessRate,
+        drillDownQuery: totalNumberOfAutomatedSalesDrillDownQueryFactory,
+        interpretAs: 'more-is-better',
+        metricFormat: 'decimal-to-percent',
+        showMetric: false,
+        domain: Domain.AiSalesAgent,
+    },
+    [AiSalesAgentChart.AiSalesDiscountOffered]: {
+        title: 'Discount codes offered',
+        hint: {
+            title: 'Number of discount codes that were sent by AI Agent for Sales. ',
+        },
+        useTrend: useDiscountCodesOfferedTrend,
+        fetchTrend: fetchDiscountCodesOfferedTrend,
+        interpretAs: 'more-is-better',
+        metricFormat: 'decimal',
+        showMetric: true,
+        domain: Domain.AiSalesAgent,
+        drillDownQuery: discountCodesOfferedDrillDownQueryFactory,
+        drillDownMetric: AiSalesAgentChart.AiSalesDiscountOffered,
+    },
+}
+
+export const AiSalesAgentMetricConfig: Record<
+    TrendMetric,
+    AiSalesMetricConfig
+> = {
+    ...AiSalesAgentMetricsWithDrillDownConfig,
     [AiSalesAgentChart.AiSalesAgentGmv]: {
         title: 'GMV influenced $',
         hint: {
@@ -247,20 +292,7 @@ export const AiSalesAgentMetricConfig: Record<
         showMetric: false,
         domain: Domain.AiSalesAgent,
     },
-    [AiSalesAgentChart.AiSalesAgentSuccessRate]: {
-        title: 'Success rate',
-        hint: {
-            title: 'The percentage of AI Agent for Sales interactions that were successfully automated without human escalation.',
-        },
-        useTrend: useSuccessRateTrend,
-        fetchTrend: fetchSuccessRateTrend,
-        drillDownMetric: AiSalesAgentChart.AiSalesAgentSuccessRate,
-        drillDownQuery: totalNumberOfAutomatedSalesDrillDownQueryFactory,
-        interpretAs: 'more-is-better',
-        metricFormat: 'decimal-to-percent',
-        showMetric: false,
-        domain: Domain.AiSalesAgent,
-    },
+
     [AiSalesAgentChart.AiSalesAgentConversionRate]: {
         title: 'Conversion rate',
         hint: {
@@ -285,20 +317,7 @@ export const AiSalesAgentMetricConfig: Record<
         showMetric: false,
         domain: Domain.AiSalesAgent,
     },
-    [AiSalesAgentChart.AiSalesDiscountOffered]: {
-        title: 'Discount codes offered',
-        hint: {
-            title: 'Number of discount codes that were sent by AI Agent for Sales. ',
-        },
-        useTrend: useDiscountCodesOfferedTrend,
-        fetchTrend: fetchDiscountCodesOfferedTrend,
-        interpretAs: 'more-is-better',
-        metricFormat: 'decimal',
-        showMetric: true,
-        domain: Domain.AiSalesAgent,
-        drillDownQuery: discountCodesOfferedDrillDownQueryFactory,
-        drillDownMetric: AiSalesAgentChart.AiSalesDiscountOffered,
-    },
+
     [AiSalesAgentChart.AiSalesDiscountApplied]: {
         title: 'Discount codes applied',
         hint: {

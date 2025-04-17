@@ -2,6 +2,7 @@ import moment from 'moment'
 
 import { VoiceCallSegment } from 'models/reporting/cubes/VoiceCallCube'
 import {
+    discountCodesOfferedDrillDownQueryFactory,
     totalNumberOfAutomatedSalesDrillDownQueryFactory,
     totalNumberofSalesOpportunityConvFromAIAgentDrillDownQueryFactory,
 } from 'models/reporting/queryFactories/ai-sales-agent/metrics'
@@ -128,6 +129,9 @@ const aiSalesAgentTotalSalesConvDrillDownQueryFactoryMock = assumeMock(
 )
 const totalNumberOfAutomatedSalesDrillDownQueryFactoryMock = assumeMock(
     totalNumberOfAutomatedSalesDrillDownQueryFactory,
+)
+const discountCodesOfferedDrillDownQueryFactoryMock = assumeMock(
+    discountCodesOfferedDrillDownQueryFactory,
 )
 
 describe('getDrillDownQuery', () => {
@@ -861,6 +865,27 @@ describe('getDrillDownQuery', () => {
 
         expect(
             totalNumberOfAutomatedSalesDrillDownQueryFactoryMock,
+        ).toHaveBeenCalledWith(statsFilters, timezone)
+    })
+
+    it('should be populated with AiSalesDiscountOffered', () => {
+        const periodStart = moment()
+        const periodEnd = periodStart.add(7, 'days')
+        const statsFilters: StatsFilters = {
+            period: {
+                end_datetime: periodEnd.toISOString(),
+                start_datetime: periodStart.toISOString(),
+            },
+        }
+        const timezone = 'someTimeZone'
+        const drillDownMetric: AiSalesAgentMetrics = {
+            metricName: AiSalesAgentChart.AiSalesDiscountOffered,
+        }
+
+        getDrillDownQuery(drillDownMetric)(statsFilters, timezone)
+
+        expect(
+            discountCodesOfferedDrillDownQueryFactoryMock,
         ).toHaveBeenCalledWith(statsFilters, timezone)
     })
 })

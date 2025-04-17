@@ -3,15 +3,15 @@ import {
     useEnrichedDrillDownData,
 } from 'hooks/reporting/useDrillDownData'
 import { EnrichmentFields } from 'models/reporting/types'
+import {
+    AiSalesAgentChart,
+    AiSalesAgentDrillDownMetrics,
+    AiSalesAgentMetricsWithDrillDownConfig,
+} from 'pages/stats/automate/aiSalesAgent/AiSalesAgentMetricsConfig'
 import { formatTicketDrillDownRowData } from 'pages/stats/common/drill-down/DrillDownFormatters'
 import { DomainConfig } from 'pages/stats/common/drill-down/DrillDownTableConfig'
 import { TicketDrillDownTableContent } from 'pages/stats/common/drill-down/TicketDrillDownTableContent'
 import { DrillDownMetric } from 'state/ui/stats/drillDownSlice'
-
-import {
-    AiSalesAgentChart,
-    AiSalesAgentMetricConfig,
-} from './AiSalesAgentMetricsConfig'
 
 const useTicketDrillDownHook = (metricData: DrillDownMetric) =>
     useEnrichedDrillDownData(
@@ -20,10 +20,6 @@ const useTicketDrillDownHook = (metricData: DrillDownMetric) =>
         formatTicketDrillDownRowData,
         EnrichmentFields.TicketId,
     )
-export type AiSalesAgentDrillDownMetrics =
-    | AiSalesAgentChart.AiSalesAgentTotalSalesConv
-    | AiSalesAgentChart.AiSalesAgentSuccessRate
-    | AiSalesAgentChart.AiSalesDiscountOffered
 
 export const AiSalesAgentDrillDownConfig: DomainConfig<AiSalesAgentDrillDownMetrics> =
     {
@@ -34,15 +30,15 @@ export const AiSalesAgentDrillDownConfig: DomainConfig<AiSalesAgentDrillDownMetr
         modalTriggerTooltipText: 'Click to view tickets',
         metricsConfig: {
             [AiSalesAgentChart.AiSalesAgentTotalSalesConv]:
-                AiSalesAgentMetricConfig[
+                AiSalesAgentMetricsWithDrillDownConfig[
                     AiSalesAgentChart.AiSalesAgentTotalSalesConv
                 ],
             [AiSalesAgentChart.AiSalesAgentSuccessRate]:
-                AiSalesAgentMetricConfig[
+                AiSalesAgentMetricsWithDrillDownConfig[
                     AiSalesAgentChart.AiSalesAgentSuccessRate
                 ],
             [AiSalesAgentChart.AiSalesDiscountOffered]:
-                AiSalesAgentMetricConfig[
+                AiSalesAgentMetricsWithDrillDownConfig[
                     AiSalesAgentChart.AiSalesDiscountOffered
                 ],
         },

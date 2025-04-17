@@ -11,7 +11,7 @@ import { FilterKey, StatsFilters, TicketTimeReference } from 'models/stat/types'
 import { AiInsightsMetricConfig } from 'pages/stats/automate/AiInsightsMetricConfig'
 import {
     AiSalesAgentChart,
-    AiSalesAgentMetricConfig,
+    AiSalesAgentMetricsWithDrillDownConfig,
 } from 'pages/stats/automate/aiSalesAgent/AiSalesAgentMetricsConfig'
 import {
     DomainsConfig,
@@ -277,17 +277,17 @@ export const getDrillDownQuery = (
                 VoiceAgentsMetricsConfig[metricName.metricName].drillDownQuery,
             )
         case AiSalesAgentChart.AiSalesAgentTotalSalesConv:
-            return AiSalesAgentMetricConfig[
+            return AiSalesAgentMetricsWithDrillDownConfig[
                 AiSalesAgentChart.AiSalesAgentTotalSalesConv
-            ].drillDownQuery!
+            ].drillDownQuery
         case AiSalesAgentChart.AiSalesAgentSuccessRate:
-            return AiSalesAgentMetricConfig[
+            return AiSalesAgentMetricsWithDrillDownConfig[
                 AiSalesAgentChart.AiSalesAgentSuccessRate
-            ].drillDownQuery!
+            ].drillDownQuery
         case AiSalesAgentChart.AiSalesDiscountOffered:
-            return AiSalesAgentMetricConfig[
+            return AiSalesAgentMetricsWithDrillDownConfig[
                 AiSalesAgentChart.AiSalesDiscountOffered
-            ].drillDownQuery!
+            ].drillDownQuery
     }
 }
 const queryBuilderWithAgentFilter =
@@ -488,9 +488,11 @@ export const getDrillDownMetricColumn = (
         metricValueFormat =
             TicketFieldsMetricConfig[metricData.metricName].metricFormat
     } else if (isAiSalesAgentMetric(metricData)) {
-        metricTitle = AiSalesAgentMetricConfig[metricData.metricName].title
+        metricTitle =
+            AiSalesAgentMetricsWithDrillDownConfig[metricData.metricName].title
         metricValueFormat =
-            AiSalesAgentMetricConfig[metricData.metricName].metricFormat
+            AiSalesAgentMetricsWithDrillDownConfig[metricData.metricName]
+                .metricFormat
     } else if ('perAgentId' in metricData) {
         metricTitle = TableLabels[metricData.metricName]
         metricValueFormat = AgentsColumnConfig[metricData.metricName].format

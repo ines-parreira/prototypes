@@ -12,7 +12,7 @@ import {
     JobType,
 } from 'models/job/types'
 import { TicketTimeReference } from 'models/stat/types'
-import { AiSalesAgentDrillDownMetrics } from 'pages/stats/automate/aiSalesAgent/AiSalesAgentDrillDownConfig'
+import { AiSalesAgentDrillDownMetrics } from 'pages/stats/automate/aiSalesAgent/AiSalesAgentMetricsConfig'
 import { LogicalOperatorEnum } from 'pages/stats/common/components/Filter/constants'
 import { AutoQAAgentsTableColumn } from 'pages/stats/support-performance/auto-qa/AutoQAAgentsTableConfig'
 import { OverviewMetric } from 'pages/stats/support-performance/overview/SupportPerformanceOverviewConfig'
