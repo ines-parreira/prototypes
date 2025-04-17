@@ -203,6 +203,9 @@ export const ConnectToShopSection = ({
                     )}
                     <SelectField
                         value={selectedShop}
+                        dropdownMenuClassName={
+                            css.ConnectToShopSectionDropdownMenu
+                        }
                         fullWidth
                         placeholder="Select a store"
                         onChange={(value) => {
