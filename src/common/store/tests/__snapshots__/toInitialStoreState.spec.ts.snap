@@ -868,6 +868,40 @@ exports[`toInitialStoreState should return the expected store state 1`] = `
               },
             },
           },
+          Immutable.Map {
+            "num_quota_tickets": 30,
+            "public": true,
+            "name": "Tier 1",
+            "product": "automation",
+            "currency": "usd",
+            "plan_id": "aut-01-monthly-usd-6",
+            "custom": false,
+            "extra_ticket_cost": 1.5,
+            "cadence": "month",
+            "price_id": "price_1Qs400I9qXomtXqSTWFHnorA",
+            "amount": 3000,
+            "generation": 6,
+            "features": Immutable.Map {
+              "automation_managed_rules": Immutable.Map {
+                "enabled": true,
+              },
+              "automation_track_order_flow": Immutable.Map {
+                "enabled": true,
+              },
+              "automation_report_issue_flow": Immutable.Map {
+                "enabled": true,
+              },
+              "automation_cancellations_flow": Immutable.Map {
+                "enabled": true,
+              },
+              "automation_return_flow": Immutable.Map {
+                "enabled": true,
+              },
+              "automation_self_service_statistics": Immutable.Map {
+                "enabled": true,
+              },
+            },
+          },
         ],
       },
       Immutable.Map {

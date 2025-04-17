@@ -220,6 +220,16 @@ exports[`<AutomateSubscriptionModal /> should render for customers already with 
                               type="button"
                             >
                               <span>
+                                30
+                              </span>
+                            </button>
+                            <button
+                              class="option dropdown-item"
+                              role="menuitem"
+                              tabindex="0"
+                              type="button"
+                            >
+                              <span>
                                 190
                               </span>
                             </button>
@@ -512,6 +522,16 @@ exports[`<AutomateSubscriptionModal /> should render the modal 1`] = `
                             
                             <button
                               class="option option--focused dropdown-item"
+                              role="menuitem"
+                              tabindex="0"
+                              type="button"
+                            >
+                              <span>
+                                30
+                              </span>
+                            </button>
+                            <button
+                              class="option dropdown-item"
                               role="menuitem"
                               tabindex="0"
                               type="button"

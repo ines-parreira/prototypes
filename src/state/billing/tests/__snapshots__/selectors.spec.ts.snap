@@ -36,6 +36,40 @@ exports[`billing selectors getAutomationPrices should return the Automate prices
     "public": true,
   },
   {
+    "amount": 3000,
+    "cadence": "month",
+    "currency": "usd",
+    "custom": false,
+    "extra_ticket_cost": 1.5,
+    "features": {
+      "automation_cancellations_flow": {
+        "enabled": true,
+      },
+      "automation_managed_rules": {
+        "enabled": true,
+      },
+      "automation_report_issue_flow": {
+        "enabled": true,
+      },
+      "automation_return_flow": {
+        "enabled": true,
+      },
+      "automation_self_service_statistics": {
+        "enabled": true,
+      },
+      "automation_track_order_flow": {
+        "enabled": true,
+      },
+    },
+    "generation": 6,
+    "name": "Tier 1",
+    "num_quota_tickets": 30,
+    "plan_id": "aut-01-monthly-usd-6",
+    "price_id": "price_1Qs400I9qXomtXqSTWFHnorA",
+    "product": "automation",
+    "public": true,
+  },
+  {
     "amount": 18000,
     "cadence": "month",
     "currency": "usd",
@@ -1214,6 +1248,40 @@ exports[`billing selectors getPrices should return the prices 1`] = `
     "num_quota_tickets": 30,
     "plan_id": "aut-addon-basic-full-price-monthly-usd-4",
     "price_id": "price_1LJBjXI9qXomtXqSSX34F3we",
+    "product": "automation",
+    "public": true,
+  },
+  {
+    "amount": 3000,
+    "cadence": "month",
+    "currency": "usd",
+    "custom": false,
+    "extra_ticket_cost": 1.5,
+    "features": {
+      "automation_cancellations_flow": {
+        "enabled": true,
+      },
+      "automation_managed_rules": {
+        "enabled": true,
+      },
+      "automation_report_issue_flow": {
+        "enabled": true,
+      },
+      "automation_return_flow": {
+        "enabled": true,
+      },
+      "automation_self_service_statistics": {
+        "enabled": true,
+      },
+      "automation_track_order_flow": {
+        "enabled": true,
+      },
+    },
+    "generation": 6,
+    "name": "Tier 1",
+    "num_quota_tickets": 30,
+    "plan_id": "aut-01-monthly-usd-6",
+    "price_id": "price_1Qs400I9qXomtXqSTWFHnorA",
     "product": "automation",
     "public": true,
   },
@@ -2925,6 +2993,40 @@ exports[`billing selectors getProducts should return products 1`] = `
         "num_quota_tickets": 6360,
         "plan_id": "aut-addon-advanced-full-price-yearly-usd-4",
         "price_id": "price_1LJBjgI9qXomtXqSBZoBcg7G",
+        "product": "automation",
+        "public": true,
+      },
+      {
+        "amount": 3000,
+        "cadence": "month",
+        "currency": "usd",
+        "custom": false,
+        "extra_ticket_cost": 1.5,
+        "features": {
+          "automation_cancellations_flow": {
+            "enabled": true,
+          },
+          "automation_managed_rules": {
+            "enabled": true,
+          },
+          "automation_report_issue_flow": {
+            "enabled": true,
+          },
+          "automation_return_flow": {
+            "enabled": true,
+          },
+          "automation_self_service_statistics": {
+            "enabled": true,
+          },
+          "automation_track_order_flow": {
+            "enabled": true,
+          },
+        },
+        "generation": 6,
+        "name": "Tier 1",
+        "num_quota_tickets": 30,
+        "plan_id": "aut-01-monthly-usd-6",
+        "price_id": "price_1Qs400I9qXomtXqSTWFHnorA",
         "product": "automation",
         "public": true,
       },

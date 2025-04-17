@@ -1,5 +1,3 @@
-import React from 'react'
-
 import { QueryClientProvider } from '@tanstack/react-query'
 import { fireEvent, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
@@ -13,6 +11,10 @@ import { account } from 'fixtures/account'
 import { billingState } from 'fixtures/billing'
 import { chatIntegrationFixtures } from 'fixtures/chat'
 import { integrationsState, shopifyIntegration } from 'fixtures/integrations'
+import {
+    AUTOMATION_PRODUCT_ID,
+    firstTierMonthlyAutomationPlan,
+} from 'fixtures/productPrices'
 import { StoreConfiguration } from 'models/aiAgent/types'
 import { EmailItem } from 'pages/aiAgent/components/EmailIntegrationListSelection/EmailIntegrationListSelection'
 import { useStoreConfigurationForAccount } from 'pages/aiAgent/hooks/useStoreConfigurationForAccount'
@@ -872,6 +874,136 @@ describe('ChannelsStep', () => {
                 expect(chatSortingCallback(a, b)).toBe(-1)
                 expect(chatSortingCallback(b, a)).toBe(1)
             })
+        })
+    })
+
+    describe('ChannelsStep - loading state', () => {
+        beforeEach(() => {
+            mockUseShopifyIntegrationAndScope.mockReturnValue({
+                integration: true,
+            })
+
+            usePreselectedEmailsMock.mockReturnValue([])
+            usePreselectedChatMock.mockReturnValue([])
+
+            useGetOnboardingsMock.mockReturnValue({
+                data: [defaultOnboardingData],
+                isLoading: false,
+            } as any)
+
+            useGetOnboardingDataMock.mockReturnValue({
+                data: {
+                    id: '1',
+                    salesPersuasionLevel: PersuasionLevel.Moderate,
+                    salesDiscountStrategyLevel: DiscountStrategy.Balanced,
+                    salesDiscountMax: 0.8,
+                    scopes: [AiAgentScopes.SUPPORT, AiAgentScopes.SALES],
+                    shopName: shopifyIntegration.meta.shop_name,
+                    currentStepName: WizardStepEnum.SKILLSET,
+                },
+                isLoading: false,
+            })
+
+            useUpdateOnboardingMock.mockReturnValue({
+                mutate: mutateUpdateOnboardingMock,
+                isLoading: false,
+            } as any)
+
+            useStoreConfigurationForAccountMock.mockReturnValue({
+                storeConfigurations: [
+                    {
+                        helpCenterId: 123,
+                        chatChannelDeactivatedDatetime: '2024-01-01',
+                        emailChannelDeactivatedDatetime: '2024-01-01',
+                        trialModeActivatedDatetime: '2024-02-01',
+                        previewModeActivatedDatetime: '2024-02-01',
+                        previewModeValidUntilDatetime: '2024-02-08',
+                        monitoredEmailIntegrations: [
+                            { id: 1, email: 'email1@example.com' },
+                            { id: 2, email: 'email2@example.com' },
+                        ],
+                        monitoredChatIntegrations: [1, 2],
+                        customToneOfVoiceGuidance: 'Be friendly',
+                        signature: 'Best regards, Store',
+                        silentHandover: true,
+                        tags: [],
+                        excludedTopics: ['topic1', 'topic2'],
+                        ticketSampleRate: 0.5,
+                        wizard: undefined,
+                    } as unknown as StoreConfiguration,
+                ],
+                isLoading: false,
+            })
+
+            mutateUpdateOnboardingMock.mockImplementation(
+                (data: any, { onSuccess }: { onSuccess: () => {} }) => {
+                    onSuccess()
+                },
+            )
+
+            useTransformToneOfVoiceConversationsMock.mockReturnValue({
+                previewConversation: conversationExamples.default,
+                isLoading: false,
+                isPreviewLoading: false,
+                preview: undefined,
+            })
+        })
+
+        it('should render loading state when the onboarding data is being fetched', () => {
+            useGetOnboardingDataMock.mockReturnValue({
+                data: undefined,
+                isLoading: true,
+            })
+
+            renderWithProvider()
+
+            expect(screen.getByText('Loading...')).toBeInTheDocument()
+        })
+
+        it('should render loading state when the onboarding is being created', () => {
+            useGetOnboardingDataMock.mockReturnValue({
+                data: undefined,
+                isLoading: false,
+            })
+
+            const state = {
+                ...defaultState,
+                currentAccount: fromJS({
+                    current_subscription: {
+                        products: {
+                            [AUTOMATION_PRODUCT_ID]:
+                                firstTierMonthlyAutomationPlan.plan_id,
+                        },
+                    },
+                    domain: 'test.com',
+                }),
+            }
+
+            renderWithProvider(state)
+
+            expect(screen.getByText('Loading...')).toBeInTheDocument()
+        })
+
+        it('should render loading state when the onboarding is being updated', () => {
+            useUpdateOnboardingMock.mockReturnValue({
+                mutate: mutateUpdateOnboardingMock,
+                isLoading: true,
+            } as any)
+
+            renderWithProvider()
+
+            expect(screen.getByText('Loading...')).toBeInTheDocument()
+        })
+
+        it('should render loading state when the store configurations is being fetched', () => {
+            useStoreConfigurationForAccountMock.mockReturnValue({
+                storeConfigurations: [],
+                isLoading: true,
+            })
+
+            renderWithProvider()
+
+            expect(screen.getByText('Loading...')).toBeInTheDocument()
         })
     })
 })

@@ -1,4 +1,4 @@
-import React, { useMemo, useRef, useState } from 'react'
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 
 import { zodResolver } from '@hookform/resolvers/zod'
 import { fromJS } from 'immutable'
@@ -40,6 +40,7 @@ import { StepProps } from 'pages/aiAgent/Onboarding/components/steps/types'
 import useCheckOnboardingCompleted from 'pages/aiAgent/Onboarding/hooks/useCheckOnboardingCompleted'
 import { useCheckStoreAlreadyConfigured } from 'pages/aiAgent/Onboarding/hooks/useCheckStoreAlreadyConfigured'
 import useCheckStoreIntegration from 'pages/aiAgent/Onboarding/hooks/useCheckStoreIntegration'
+import { useCreateOnboarding } from 'pages/aiAgent/Onboarding/hooks/useCreateOnboarding'
 import { useGetChatIntegrationColor } from 'pages/aiAgent/Onboarding/hooks/useGetChatIntegrationColor'
 import { useGetOnboardingData } from 'pages/aiAgent/Onboarding/hooks/useGetOnboardingData'
 import { useOnboardingIntegrationRedirection } from 'pages/aiAgent/Onboarding/hooks/useOnboardingIntegrationRedirection'
@@ -63,6 +64,7 @@ import useSelfServiceChatChannels, {
 import AIBanner from 'pages/common/components/AIBanner/AIBanner'
 import ColorField from 'pages/common/forms/ColorField'
 import ChatIntegrationPreview from 'pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationPreview/ChatIntegrationPreview'
+import { getCurrentAutomatePlan } from 'state/billing/selectors'
 import { getCurrentDomain } from 'state/currentAccount/selectors'
 import { createGorgiasChatIntegration } from 'state/integrations/actions'
 import {
@@ -111,6 +113,7 @@ export const ChannelsStep: React.FC<StepProps> = ({
     const chatDropdownRef = useRef<HTMLDivElement | null>(null)
     const chatColorPickerRef = useRef<HTMLDivElement | null>(null)
     const emailDropdownRef = useRef<HTMLDivElement | null>(null)
+    const [isOnboardingComplete, setIsOnboardingComplete] = useState(false)
 
     const { shopName } = useParams<{ shopName: string }>()
     const { validSteps } = useSteps({ shopName, isStoreSelected })
@@ -141,6 +144,8 @@ export const ChannelsStep: React.FC<StepProps> = ({
     const accountDomain = useAppSelector(getCurrentDomain)
     const [redirectionIntegrationId] = useState(integrationId)
     const [redirectionIntegrationType] = useState(integrationType)
+    const { mutate: doCreateOnboardingMutation } = useCreateOnboarding()
+    const automatePlanId = useAppSelector(getCurrentAutomatePlan)?.plan_id ?? ''
 
     const storesName = useMemo(
         () =>
@@ -159,7 +164,8 @@ export const ChannelsStep: React.FC<StepProps> = ({
     const isLoading =
         isLoadingOnboardingData ||
         isUpdatingOnboarding ||
-        isLoadingStoreConfigurations
+        isLoadingStoreConfigurations ||
+        !isOnboardingComplete
 
     const usedEmailIntegrations = useGetUsedEmailIntegrations()
     const usedChatChannels = useMemo(() => {
@@ -172,13 +178,70 @@ export const ChannelsStep: React.FC<StepProps> = ({
             : []
     }, [storeConfigurations])
 
-    useCheckStoreIntegration()
+    const dispatch = useAppDispatch()
+
+    const setOnboarding = useCallback(async () => {
+        if (
+            !isLoadingOnboardingData &&
+            automatePlanId.includes('usd-6') &&
+            !data?.shopName
+        ) {
+            await doCreateOnboardingMutation(
+                {
+                    shopName,
+                    currentStepName: WizardStepEnum.CHANNELS,
+                    scopes: [AiAgentScopes.SALES, AiAgentScopes.SUPPORT],
+                    gorgiasDomain: accountDomain,
+                },
+                {
+                    onSuccess: () => {
+                        setIsOnboardingComplete(true)
+                    },
+                    onError: () => {
+                        dispatch(
+                            notify({
+                                status: NotificationStatus.Error,
+                                message: 'Could not create onboarding',
+                            }),
+                        )
+                        setIsOnboardingComplete(true)
+                    },
+                },
+            )
+        }
+
+        if (
+            !isLoadingOnboardingData &&
+            !isOnboardingComplete &&
+            (!automatePlanId.includes('usd-6') ||
+                (automatePlanId.includes('usd-6') && !!data?.shopName))
+        ) {
+            setIsOnboardingComplete(true)
+        }
+    }, [
+        isLoadingOnboardingData,
+        isOnboardingComplete,
+        automatePlanId,
+        data?.shopName,
+        accountDomain,
+        shopName,
+        doCreateOnboardingMutation,
+        dispatch,
+    ])
+
+    useEffect(() => {
+        const runOnboardingCheck = async () => {
+            await setOnboarding()
+        }
+
+        runOnboardingCheck()
+    }, [setOnboarding])
+
+    useCheckStoreIntegration(isOnboardingComplete)
     useCheckOnboardingCompleted()
     useCheckStoreAlreadyConfigured()
 
     const emailIntegrationPath = '/app/settings/channels/email/new'
-
-    const dispatch = useAppDispatch()
 
     const chatIntegrations = useSelfServiceChatChannels(
         SHOPIFY_INTEGRATION_TYPE,

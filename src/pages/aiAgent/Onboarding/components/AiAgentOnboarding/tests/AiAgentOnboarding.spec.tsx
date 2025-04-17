@@ -22,6 +22,7 @@ import { DiscountStrategy } from 'pages/aiAgent/Onboarding/components/steps/Pers
 import { PersuasionLevel } from 'pages/aiAgent/Onboarding/components/steps/PersonalityStep/PersuasionLevel'
 import useTopProducts from 'pages/aiAgent/Onboarding/components/TopProductsCard/hooks'
 import { useGetOnboardingData } from 'pages/aiAgent/Onboarding/hooks/useGetOnboardingData'
+import { useGetSkillsetStep } from 'pages/aiAgent/Onboarding/hooks/useGetSkillsetStep'
 import { AiAgentScopes, WizardStepEnum } from 'pages/aiAgent/Onboarding/types'
 import { useShopifyIntegrationAndScope } from 'pages/common/hooks/useShopifyIntegrationAndScope'
 import { useEmailIntegrations } from 'pages/settings/contactForm/hooks/useEmailIntegrations'
@@ -72,6 +73,9 @@ jest.mock('pages/aiAgent/Onboarding/hooks/useGetOnboardingData', () => ({
 jest.mock('pages/aiAgent/Onboarding/components/TopProductsCard/hooks')
 const useTopProductsMock = assumeMock(useTopProducts)
 
+jest.mock('pages/aiAgent/Onboarding/hooks/useGetSkillsetStep')
+const useGetSkillsetStepMock = assumeMock(useGetSkillsetStep)
+
 const mockUseShopifyIntegrationAndScope =
     useShopifyIntegrationAndScope as jest.Mock
 const mockUseEmailIntegrations = useEmailIntegrations as jest.Mock
@@ -119,6 +123,10 @@ describe('AiAgentOnboarding', () => {
         useTopProductsMock.mockReturnValue({
             isLoading: false,
             data: [],
+        })
+
+        useGetSkillsetStepMock.mockReturnValue({
+            hasSkillsetStep: true,
         })
 
         jest.spyOn(LD, 'useFlags').mockImplementation(() => ({

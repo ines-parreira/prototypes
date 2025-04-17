@@ -9,7 +9,7 @@ import { getShopifyIntegrationByShopName } from 'state/integrations/selectors'
 import { notify } from 'state/notifications/actions'
 import { NotificationStatus } from 'state/notifications/types'
 
-const useCheckStoreIntegration = (): null => {
+const useCheckStoreIntegration = (shouldCheck: boolean = true): null => {
     const { shopName } = useParams<{ shopName: string }>()
     const { data, isLoading } = useGetOnboardingData(shopName)
     const history = useHistory()
@@ -20,7 +20,7 @@ const useCheckStoreIntegration = (): null => {
     ).toJS()
 
     // Return early if still loading
-    if (isLoading) {
+    if (isLoading || !shouldCheck) {
         return null
     }
 

@@ -313,6 +313,22 @@ export const basicMonthlyAutomationPlan: AutomatePlan = {
     price_id: 'price_1LJBjXI9qXomtXqSSX34F3we',
 }
 
+export const firstTierMonthlyAutomationPlan: AutomatePlan = {
+    custom: false,
+    public: true,
+    amount: 3000,
+    cadence: Cadence.Month,
+    extra_ticket_cost: 1.5,
+    num_quota_tickets: 30,
+    currency: 'usd',
+    generation: 6,
+    features: automatePlanFeatures,
+    plan_id: 'aut-01-monthly-usd-6',
+    name: 'Tier 1',
+    product: ProductType.Automation,
+    price_id: 'price_1Qs400I9qXomtXqSTWFHnorA',
+}
+
 export const basicYearlyAutomationPlan: AutomatePlan = {
     custom: false,
     public: true,
@@ -714,6 +730,7 @@ export const automationProduct: Product<ProductType.Automation> = {
         proYearlyAutomationPlan,
         advancedMonthlyAutomatePlan,
         advancedYearlyAutomatePlan,
+        firstTierMonthlyAutomationPlan,
     ],
 }
 

@@ -54,6 +54,22 @@ describe('useCheckStoreIntegration', () => {
         expect(result.current).toBeNull()
     })
 
+    it('should not redirect when shouldCheck is false', () => {
+        mockUseParams.mockReturnValue({ shopName: 'test-store' })
+        mockUseAppSelector.mockReturnValue(
+            fromJS({ id: '123', name: 'Valid Store' }),
+        )
+        mockUseGetOnboardingData.mockReturnValue({
+            data: null,
+            isLoading: true,
+        })
+
+        const { result } = renderHook(() => useCheckStoreIntegration(false))
+
+        expect(mockHistoryPush).not.toHaveBeenCalled()
+        expect(result.current).toBeNull()
+    })
+
     it('should not redirect when storeIntegration is valid', () => {
         mockUseParams.mockReturnValue({ shopName: 'valid-store' })
         mockUseAppSelector.mockReturnValue(
