@@ -1,3 +1,4 @@
+import { TicketSummary } from '@gorgias/api-queries'
 import { Button } from '@gorgias/merchant-ui-kit'
 
 import Modal from 'pages/common/components/modal/Modal'
@@ -8,6 +9,7 @@ import { TicketDetail } from 'tickets/ticket-detail'
 import css from './TimelineTicketModal.less'
 
 type Props = {
+    summary?: TicketSummary
     ticketId: number
     onClose: () => void
     onNext?: () => void
@@ -15,6 +17,7 @@ type Props = {
 }
 
 export function TimelineTicketModal({
+    summary,
     ticketId,
     onClose,
     onNext,
@@ -28,7 +31,11 @@ export function TimelineTicketModal({
             onClose={onClose}
         >
             <ModalBody className={css.body}>
-                <TicketDetail ticketId={ticketId} />
+                <TicketDetail
+                    summary={summary}
+                    ticketId={ticketId}
+                    onClose={onClose}
+                />
             </ModalBody>
             <ModalFooter className={css.footer}>
                 <Button

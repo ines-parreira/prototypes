@@ -1,0 +1,56 @@
+:local {
+    .container {
+        padding: var(--layout-spacing-s) var(--layout-spacing-s)
+            var(--layout-spacing-s) var(--layout-spacing-m);
+        border-bottom: 1px solid var(--neutral-grey-3);
+    }
+
+    .header {
+        display: flex;
+        align-items: center;
+        gap: var(--layout-spacing-s);
+    }
+
+    .channel {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 36px;
+        height: 36px;
+        border-radius: 4px;
+        background: var(--neutral-grey-3);
+    }
+
+    .channelIcon.channelIcon {
+        display: block;
+        color: var(--neutral-grey-6);
+        font-size: 26px;
+    }
+
+    .subjectWrapper {
+        flex-grow: 1;
+    }
+
+    .subjectInner {
+        display: flex;
+        align-items: center;
+        gap: var(--layout-spacing-xs);
+    }
+
+    .subject {
+        margin: 0;
+        font-size: 16px;
+        line-height: var(--layout-spacing-m);
+    }
+
+    .ticketId {
+        margin: 0;
+        color: var(--neutral-grey-5);
+        font-size: 12px;
+        line-height: var(--layout-spacing-s);
+    }
+
+    .actions {
+        align-self: stretch;
+    }
+}

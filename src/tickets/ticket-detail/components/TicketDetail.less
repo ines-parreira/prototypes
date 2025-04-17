@@ -1,0 +1,29 @@
+:local {
+    .container {
+        display: flex;
+        flex-direction: column;
+        height: 100%;
+    }
+
+    .content {
+        overflow: hidden;
+        display: flex;
+        flex-direction: column;
+        flex-grow: 1;
+    }
+
+    .loading {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 12px;
+        flex-grow: 1;
+        color: var(--neutral-grey-4);
+    }
+
+    .body {
+        overflow: auto;
+        flex-grow: 1;
+    }
+}

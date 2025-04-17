@@ -85,6 +85,10 @@ export function Timeline({ ticketId = 0, onLoaded }: Props) {
         )
     }
 
+    const ticketSummary = modalTicketId
+        ? sortedTickets.find((ticket) => ticket.id === modalTicketId)
+        : undefined
+
     return (
         <>
             <div>
@@ -167,7 +171,11 @@ export function Timeline({ ticketId = 0, onLoaded }: Props) {
                 )}
             </div>
             {!!modalTicketId && (
-                <TimelineTicketModal ticketId={modalTicketId} {...modalProps} />
+                <TimelineTicketModal
+                    summary={ticketSummary}
+                    ticketId={modalTicketId}
+                    {...modalProps}
+                />
             )}
         </>
     )
