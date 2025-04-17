@@ -1,112 +1,110 @@
-import { Component } from 'react'
+import { useCallback, useMemo } from 'react'
 
 import { List, Map } from 'immutable'
-import { connect, ConnectedProps } from 'react-redux'
 import {
     DropdownItem,
     DropdownMenu,
     DropdownToggle,
     UncontrolledDropdown,
 } from 'reactstrap'
-import { bindActionCreators } from 'redux'
 
 import { logEvent, SegmentEvent } from 'common/segment'
+import useAppDispatch from 'hooks/useAppDispatch'
 import CheckBox from 'pages/common/forms/CheckBox'
 import { notify } from 'state/notifications/actions'
 import { NotificationStatus } from 'state/notifications/types'
 import { setFieldVisibility } from 'state/views/actions'
-import { GorgiasThunkDispatch } from 'types/redux-thunk'
 
-type OwnProps = {
+type Props = {
     config: Map<any, any>
     fields: List<any>
     visibleFields: List<any>
     shouldStoreFieldConfig: boolean
 }
 
-type Props = OwnProps & ConnectedProps<typeof connector>
+const ShowMoreFieldsDropdown = ({
+    config,
+    fields,
+    visibleFields,
+    shouldStoreFieldConfig,
+}: Props) => {
+    const dispatch = useAppDispatch()
 
-class ShowMoreFieldsDropdown extends Component<Props> {
-    _setFieldVisibility = (name: string, state: boolean) => {
-        if (!state && this.props.visibleFields.size <= 1) {
-            return this.props.notify({
-                status: NotificationStatus.Error,
-                message: 'You can not remove all columns of a view',
-            })
-        }
+    const handleFieldVisibility = useCallback(
+        (name: string, state: boolean) => {
+            if (!state && visibleFields.size <= 1) {
+                return dispatch(
+                    notify({
+                        status: NotificationStatus.Error,
+                        message: 'You can not remove all columns of a view',
+                    }),
+                )
+            }
 
-        return this.props.setFieldVisibility(
-            name,
-            state,
-            this.props.shouldStoreFieldConfig,
-        )
-    }
+            return dispatch(
+                setFieldVisibility(name, state, shouldStoreFieldConfig),
+            )
+        },
+        [visibleFields.size, dispatch, shouldStoreFieldConfig],
+    )
 
-    render() {
-        const visibleFieldsNames = this.props.visibleFields.map(
-            (field: Map<any, any>) => field.get('name') as string,
-        )
+    const visibleFieldsNames = useMemo(
+        () =>
+            visibleFields.map(
+                (field: Map<any, any>) => field.get('name') as string,
+            ),
+        [visibleFields],
+    )
 
-        return (
-            <UncontrolledDropdown
-                className="d-flex"
-                onClick={() => {
-                    logEvent(SegmentEvent.ShowMoreFieldsClicked)
-                }}
+    return (
+        <UncontrolledDropdown
+            className="d-flex"
+            onClick={() => {
+                logEvent(SegmentEvent.ShowMoreFieldsClicked)
+            }}
+        >
+            <DropdownToggle
+                className="d-none d-md-inline-block text-secondary"
+                color="link"
+                type="button"
+                caret
             >
-                <DropdownToggle
-                    className="d-none d-md-inline-block text-secondary"
-                    color="link"
-                    type="button"
-                    caret
-                >
-                    <i className="icon material-icons md-2">view_column</i>
-                </DropdownToggle>
-                <DropdownMenu right>
-                    <DropdownItem className="pb-2" header>
-                        COLUMNS
-                    </DropdownItem>
-                    {this.props.fields.map((field: Map<any, any>) => {
-                        const isMandatory =
-                            this.props.config.get('mainField') ===
-                            field.get('name')
-                        const isChecked =
-                            visibleFieldsNames.includes(field.get('name')) ||
-                            isMandatory
-                        const setFieldVisibility = (value: boolean) =>
-                            this._setFieldVisibility(field.get('name'), value)
+                <i className="icon material-icons md-2">view_column</i>
+            </DropdownToggle>
+            <DropdownMenu right>
+                <DropdownItem className="pb-2" header>
+                    COLUMNS
+                </DropdownItem>
+                {fields.map((field: Map<any, any>) => {
+                    const isMandatory =
+                        config.get('mainField') === field.get('name')
+                    const isChecked =
+                        visibleFieldsNames.includes(field.get('name')) ||
+                        isMandatory
+                    const setVisibility = (value: boolean) =>
+                        handleFieldVisibility(field.get('name'), value)
 
-                        return (
-                            <DropdownItem
-                                key={field.get('name')}
-                                tag="label"
-                                className="pt-1 pb-1 mb-0"
-                                toggle={false}
-                                disabled={isMandatory}
+                    return (
+                        <DropdownItem
+                            key={field.get('name')}
+                            tag="label"
+                            className="pt-1 pb-1 mb-0"
+                            toggle={false}
+                            disabled={isMandatory}
+                        >
+                            <CheckBox
+                                isChecked={isChecked}
+                                onChange={setVisibility}
+                                isDisabled={isMandatory}
                             >
-                                <CheckBox
-                                    isChecked={isChecked}
-                                    onChange={setFieldVisibility}
-                                    isDisabled={isMandatory}
-                                >
-                                    {field.get('title')}
-                                </CheckBox>
-                            </DropdownItem>
-                        )
-                    })}
-                </DropdownMenu>
-            </UncontrolledDropdown>
-        )
-    }
+                                {field.get('title')}
+                            </CheckBox>
+                        </DropdownItem>
+                    )
+                })}
+            </DropdownMenu>
+        </UncontrolledDropdown>
+    )
 }
 
-function mapDispatchToProps(dispatch: GorgiasThunkDispatch<any, any, any>) {
-    return {
-        setFieldVisibility: bindActionCreators(setFieldVisibility, dispatch),
-        notify: bindActionCreators(notify, dispatch),
-    }
-}
-
-const connector = connect(null, mapDispatchToProps)
-
-export default connector(ShowMoreFieldsDropdown)
+export default ShowMoreFieldsDropdown
