@@ -1,11 +1,9 @@
 import React, { ReactNode, useCallback, useEffect, useRef } from 'react'
 
 import classnames from 'classnames'
-import { useFlags } from 'launchdarkly-react-client-sdk'
 
 import { Tooltip } from '@gorgias/merchant-ui-kit'
 
-import { FeatureFlagKey } from 'config/featureFlags'
 import { useSearchParam } from 'hooks/useSearchParam'
 import { PlaygroundPromptType } from 'models/aiAgentPlayground/types'
 import Button from 'pages/common/components/button/Button'
@@ -86,11 +84,6 @@ export const PlaygroundInputSection = ({
     channelAvailability,
     onChannelAvailabilityChange,
 }: Props) => {
-    const handoverCustomizationSettingsConfigurationEnabled:
-        | boolean
-        | undefined =
-        useFlags()[FeatureFlagKey.AiAgentHandoverCustomizationConfiguration]
-
     const handleMessageChange = (message: string) => {
         onFormValuesChange('message', message)
     }
@@ -174,15 +167,14 @@ export const PlaygroundInputSection = ({
                         isDisabled={!isInitialMessage}
                         segments={CHANNEL_SEGMENTS}
                     />
-                    {handoverCustomizationSettingsConfigurationEnabled &&
-                        channel === 'chat' && (
-                            <PlaygroundSegmentControl
-                                selectedValue={channelAvailability}
-                                onValueChange={handleChannelAvailabilityChange}
-                                isDisabled={!isInitialMessage}
-                                segments={CHAT_AVAILABILITY_SEGMENTS}
-                            />
-                        )}
+                    {channel === 'chat' && (
+                        <PlaygroundSegmentControl
+                            selectedValue={channelAvailability}
+                            onValueChange={handleChannelAvailabilityChange}
+                            isDisabled={!isInitialMessage}
+                            segments={CHAT_AVAILABILITY_SEGMENTS}
+                        />
+                    )}
                     {channel === 'email' && (
                         <PlaygroundCustomerSelection
                             customer={formValues.customer}

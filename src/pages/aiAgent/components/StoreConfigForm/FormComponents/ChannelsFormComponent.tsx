@@ -1,6 +1,5 @@
 import React, { Fragment } from 'react'
 
-import cn from 'classnames'
 import { useFlags } from 'launchdarkly-react-client-sdk'
 import { Link } from 'react-router-dom'
 
@@ -58,11 +57,6 @@ export const ChannelsFormComponent = ({
     const isAiAgentChatEnabled: boolean | undefined =
         useFlags()[FeatureFlagKey.AiAgentChat]
 
-    const handoverCustomizationSettingsConfigurationEnabled:
-        | boolean
-        | undefined =
-        useFlags()[FeatureFlagKey.AiAgentHandoverCustomizationConfiguration]
-
     const isAiAgentActivationEnabled =
         useFlags()[FeatureFlagKey.AiAgentActivation]
 
@@ -99,12 +93,7 @@ export const ChannelsFormComponent = ({
                             />
                         </div>
                     )}
-                    <div
-                        className={cn({
-                            [css.settingsSectionBlock]:
-                                handoverCustomizationSettingsConfigurationEnabled,
-                        })}
-                    >
+                    <div className={css.settingsSectionBlock}>
                         <ChatSettingsFormComponent
                             monitoredChatIntegrations={
                                 monitoredChatIntegrations
@@ -115,15 +104,11 @@ export const ChannelsFormComponent = ({
                         />
                     </div>
 
-                    {handoverCustomizationSettingsConfigurationEnabled && (
-                        <HandoverCustomizationChatSettingsComponent
-                            shopName={shopName}
-                            shopType={shopType}
-                            monitoredChatIntegrationIds={
-                                monitoredChatIntegrations
-                            }
-                        />
-                    )}
+                    <HandoverCustomizationChatSettingsComponent
+                        shopName={shopName}
+                        shopType={shopType}
+                        monitoredChatIntegrationIds={monitoredChatIntegrations}
+                    />
                 </ConfigurationSection>
             )}
             <ConfigurationSection

@@ -135,7 +135,6 @@ describe('ChannelsFormComponent', () => {
         // Mock the feature flags
         ;(useFlags as jest.Mock).mockReturnValue({
             [FeatureFlagKey.AiAgentChat]: true,
-            [FeatureFlagKey.AiAgentHandoverCustomizationConfiguration]: false,
         })
 
         // Mock the app selector (hasAutomate)
@@ -201,7 +200,6 @@ describe('ChannelsFormComponent', () => {
         // Disable the chat feature flag
         ;(useFlags as jest.Mock).mockReturnValue({
             [FeatureFlagKey.AiAgentChat]: false,
-            [FeatureFlagKey.AiAgentHandoverCustomizationConfiguration]: true,
             [FeatureFlagKey.AiAgentActivation]: false,
         })
 
@@ -222,11 +220,10 @@ describe('ChannelsFormComponent', () => {
         screen.getByText('signature form')
     })
 
-    it('should render handover customization when its feature flag is enabled', () => {
+    it('should render handover customization', () => {
         // Disable only the handover customization feature flag
         ;(useFlags as jest.Mock).mockReturnValue({
             [FeatureFlagKey.AiAgentChat]: true,
-            [FeatureFlagKey.AiAgentHandoverCustomizationConfiguration]: true,
             [FeatureFlagKey.AiAgentActivation]: false,
         })
 
@@ -244,33 +241,10 @@ describe('ChannelsFormComponent', () => {
         screen.getByText('chat settings form')
     })
 
-    it('does not render handover customization when its feature flag is disabled', () => {
-        // Disable only the handover customization feature flag
-        ;(useFlags as jest.Mock).mockReturnValue({
-            [FeatureFlagKey.AiAgentChat]: true,
-            [FeatureFlagKey.AiAgentHandoverCustomizationConfiguration]: false,
-            [FeatureFlagKey.AiAgentActivation]: false,
-        })
-
-        render(
-            <BrowserRouter>
-                <ChannelsFormComponent {...mockProps} />
-            </BrowserRouter>,
-        )
-
-        // Handover customization should not be present
-        expect(screen.queryByText('handover customization settings')).toBeNull()
-
-        // Other chat components should still be present
-        screen.getByText('channel toggle chat')
-        screen.getByText('chat settings form')
-    })
-
     it('disables channel toggles when hasAutomate is false', () => {
         ;(useAppSelector as jest.Mock).mockReturnValue(false)
         ;(useFlags as jest.Mock).mockReturnValue({
             [FeatureFlagKey.AiAgentChat]: true,
-            [FeatureFlagKey.AiAgentHandoverCustomizationConfiguration]: false,
             [FeatureFlagKey.AiAgentActivation]: false,
         })
         render(

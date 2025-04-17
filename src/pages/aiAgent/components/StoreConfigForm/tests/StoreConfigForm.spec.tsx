@@ -370,7 +370,6 @@ describe('<StoreConfigForm />', () => {
         mockFlags({
             [FeatureFlagKey.AiAgentTrialMode]: false,
             [FeatureFlagKey.AiAgentChat]: false,
-            [FeatureFlagKey.AiAgentHandoverCustomizationConfiguration]: false,
         })
         mockUseSearchParam.mockReturnValue([null, mockSetSearchParam])
         mockUseEnableAiAgent.mockReturnValue({

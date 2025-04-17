@@ -140,7 +140,6 @@ export enum FeatureFlagKey {
     ExposeVoiceQueues = 'expose-voice-queues-to-users',
     UseWrapUpTime = 'use-wrap-up-time',
     WhatsAppMigrationsDebug = 'whatsapp-migration-debug',
-    AiAgentHandoverCustomizationConfiguration = 'helpdesk-ai-agent-handover-customization-enabled',
     ConversationStarters = 'conversation-starters',
     EnableCustomerSatisfactionQaFiltersInViews = 'linear.project_csat-qa-filters-in-views.enable_filters',
     RevampNavBarUi = 'linear.project_revamp-navbar-ia-and-components-to-establish-modern-and-scalable-ui.ui-update',

@@ -2,10 +2,8 @@ import React from 'react'
 
 import { render, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import { useFlags } from 'launchdarkly-react-client-sdk'
 
 import { AiAgentNotificationType } from 'automate/notifications/types'
-import { FeatureFlagKey } from 'config/featureFlags'
 import { useSearchParam } from 'hooks/useSearchParam'
 import { useSearchCustomer } from 'models/aiAgent/queries'
 import {
@@ -136,43 +134,39 @@ describe('PlaygroundChat', () => {
 
     it('should change channel', () => {
         renderComponent()
-        expect(screen.getByRole('tab', { selected: true })).toHaveTextContent(
-            'Email',
-        )
+
+        expect(
+            screen.getAllByRole('tab', { selected: true })[0],
+        ).toHaveTextContent('Email')
+
         userEvent.click(screen.getByText('Chat'))
-        expect(screen.getByRole('tab', { selected: true })).toHaveTextContent(
-            'Chat',
-        )
+
+        expect(
+            screen.getAllByRole('tab', { selected: true })[0],
+        ).toHaveTextContent('Chat')
     })
 
-    it('should not render channel availability if handover customization is not enabled', () => {
-        ;(useFlags as jest.Mock).mockReturnValue({
-            [FeatureFlagKey.AiAgentHandoverCustomizationConfiguration]: false,
-        })
-
-        renderComponent()
-        expect(screen.getByRole('tab', { selected: true })).toHaveTextContent(
-            'Email',
-        )
-        userEvent.click(screen.getByText('Chat'))
-        expect(screen.getByRole('tab', { selected: true })).toHaveTextContent(
-            'Chat',
-        )
-
-        expect(screen.queryByText('Online')).toBeNull()
-        expect(screen.queryByText('Offline')).toBeNull()
-    })
-
-    it('should change channel availability', () => {
-        ;(useFlags as jest.Mock).mockReturnValue({
-            [FeatureFlagKey.AiAgentHandoverCustomizationConfiguration]: true,
-        })
-
+    it('should render channel availability', () => {
         renderComponent()
         expect(
             screen.getAllByRole('tab', { selected: true })[0],
         ).toHaveTextContent('Email')
+
         userEvent.click(screen.getByText('Chat'))
+
+        expect(
+            screen.getAllByRole('tab', { selected: true })[0],
+        ).toHaveTextContent('Chat')
+    })
+
+    it('should change channel availability', () => {
+        renderComponent()
+        expect(
+            screen.getAllByRole('tab', { selected: true })[0],
+        ).toHaveTextContent('Email')
+
+        userEvent.click(screen.getByText('Chat'))
+
         expect(
             screen.getAllByRole('tab', { selected: true })[0],
         ).toHaveTextContent('Chat')
@@ -180,7 +174,9 @@ describe('PlaygroundChat', () => {
         expect(
             screen.getAllByRole('tab', { selected: true })[1],
         ).toHaveTextContent('Online')
+
         userEvent.click(screen.getByText('Offline'))
+
         expect(
             screen.getAllByRole('tab', { selected: true })[1],
         ).toHaveTextContent('Offline')
