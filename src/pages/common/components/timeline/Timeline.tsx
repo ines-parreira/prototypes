@@ -9,10 +9,7 @@ import { logEvent, SegmentEvent } from 'common/segment'
 import { FeatureFlagKey } from 'config/featureFlags'
 import { useFlag } from 'core/flags'
 import { useCustomFieldDefinitions } from 'custom-fields/hooks/queries/useCustomFieldDefinitions'
-import {
-    TimelineTicketModal,
-    useTimelineTicketModal,
-} from 'tickets/timeline-ticket-modal'
+import { TicketModal, useTicketModal } from 'timeline/ticket-modal'
 
 import DisplayedDate from './DisplayedDate'
 import { useRangeFilter } from './hooks/useRangeFilter'
@@ -64,7 +61,7 @@ export function Timeline({ ticketId = 0, onLoaded }: Props) {
         onOpen,
         ticketId: modalTicketId,
         ...modalProps
-    } = useTimelineTicketModal(ticketIds)
+    } = useTicketModal(ticketIds)
 
     if (isLoading) {
         return (
@@ -171,7 +168,7 @@ export function Timeline({ ticketId = 0, onLoaded }: Props) {
                 )}
             </div>
             {!!modalTicketId && (
-                <TimelineTicketModal
+                <TicketModal
                     summary={ticketSummary}
                     ticketId={modalTicketId}
                     {...modalProps}

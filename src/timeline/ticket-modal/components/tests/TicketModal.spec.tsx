@@ -1,27 +1,27 @@
 import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 
-import { TimelineTicketModal } from '../TimelineTicketModal'
+import { TicketModal } from '../TicketModal'
 
 jest.mock('tickets/ticket-detail', () => ({
     TicketDetail: () => <div>TicketDetail</div>,
 }))
 
-describe('TimelineTicketModal', () => {
+describe('TicketModal', () => {
     it('should render the ticket detail in the modal', () => {
-        render(<TimelineTicketModal ticketId={1} onClose={jest.fn()} />)
+        render(<TicketModal ticketId={1} onClose={jest.fn()} />)
         expect(screen.getByText('TicketDetail')).toBeInTheDocument()
     })
 
     it('should render a link to the full ticket', () => {
-        render(<TimelineTicketModal ticketId={1} onClose={jest.fn()} />)
+        render(<TicketModal ticketId={1} onClose={jest.fn()} />)
         const el = screen.getByText('View Ticket')
         expect(el).toBeInTheDocument()
         expect(el.closest('a')).toHaveAttribute('href', '/app/ticket/1')
     })
 
     it('should disable the navigation if no onNext / onPrevious handlers are passed', () => {
-        render(<TimelineTicketModal ticketId={1} onClose={jest.fn()} />)
+        render(<TicketModal ticketId={1} onClose={jest.fn()} />)
         const previousEl = screen.getByText('Previous')
         const nextEl = screen.getByText('Next')
 
@@ -33,13 +33,7 @@ describe('TimelineTicketModal', () => {
 
     it('should call onNext when the next link is clicked', () => {
         const onNext = jest.fn()
-        render(
-            <TimelineTicketModal
-                ticketId={1}
-                onClose={jest.fn()}
-                onNext={onNext}
-            />,
-        )
+        render(<TicketModal ticketId={1} onClose={jest.fn()} onNext={onNext} />)
 
         const el = screen.getByText('Next')
         userEvent.click(el)
@@ -50,7 +44,7 @@ describe('TimelineTicketModal', () => {
     it('should call onPrevious when the previous link is clicked', () => {
         const onPrevious = jest.fn()
         render(
-            <TimelineTicketModal
+            <TicketModal
                 ticketId={1}
                 onClose={jest.fn()}
                 onPrevious={onPrevious}

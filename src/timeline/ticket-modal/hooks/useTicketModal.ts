@@ -1,6 +1,6 @@
 import { useCallback, useMemo, useState } from 'react'
 
-export function useTimelineTicketModal(ticketIds: number[]) {
+export function useTicketModal(ticketIds: number[]) {
     const [ticketId, setTicketId] = useState<number | null>(null)
 
     const currentTicketIndex = useMemo(

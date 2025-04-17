@@ -1,10 +1,10 @@
 import { act, renderHook } from '@testing-library/react-hooks'
 
-import { useTimelineTicketModal } from '../useTimelineTicketModal'
+import { useTicketModal } from '../useTicketModal'
 
-describe('useTimelineTicketModal', () => {
+describe('useTicketModal', () => {
     it('should return the default props', () => {
-        const { result } = renderHook(() => useTimelineTicketModal([1, 2, 3]))
+        const { result } = renderHook(() => useTicketModal([1, 2, 3]))
         expect(result.current).toEqual({
             ticketId: null,
             onClose: expect.any(Function),
@@ -15,7 +15,7 @@ describe('useTimelineTicketModal', () => {
     })
 
     it('should open the first ticket', () => {
-        const { result } = renderHook(() => useTimelineTicketModal([1, 2, 3]))
+        const { result } = renderHook(() => useTicketModal([1, 2, 3]))
 
         act(() => {
             result.current.onOpen(1)
@@ -31,7 +31,7 @@ describe('useTimelineTicketModal', () => {
     })
 
     it('should open the last ticket', () => {
-        const { result } = renderHook(() => useTimelineTicketModal([1, 2, 3]))
+        const { result } = renderHook(() => useTicketModal([1, 2, 3]))
 
         act(() => {
             result.current.onOpen(3)
@@ -47,7 +47,7 @@ describe('useTimelineTicketModal', () => {
     })
 
     it('should open the middle ticket', () => {
-        const { result } = renderHook(() => useTimelineTicketModal([1, 2, 3]))
+        const { result } = renderHook(() => useTicketModal([1, 2, 3]))
 
         act(() => {
             result.current.onOpen(2)
@@ -63,7 +63,7 @@ describe('useTimelineTicketModal', () => {
     })
 
     it('should navigate to the next ticket', () => {
-        const { result } = renderHook(() => useTimelineTicketModal([1, 2, 3]))
+        const { result } = renderHook(() => useTicketModal([1, 2, 3]))
 
         act(() => {
             result.current.onOpen(1)
@@ -77,7 +77,7 @@ describe('useTimelineTicketModal', () => {
     })
 
     it('should navigate to the previous ticket', () => {
-        const { result } = renderHook(() => useTimelineTicketModal([1, 2, 3]))
+        const { result } = renderHook(() => useTicketModal([1, 2, 3]))
 
         act(() => {
             result.current.onOpen(3)
@@ -91,7 +91,7 @@ describe('useTimelineTicketModal', () => {
     })
 
     it('should close', () => {
-        const { result } = renderHook(() => useTimelineTicketModal([1, 2, 3]))
+        const { result } = renderHook(() => useTicketModal([1, 2, 3]))
 
         act(() => {
             result.current.onOpen(3)

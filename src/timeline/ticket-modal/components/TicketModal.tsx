@@ -6,7 +6,7 @@ import ModalBody from 'pages/common/components/modal/ModalBody'
 import ModalFooter from 'pages/common/components/modal/ModalFooter'
 import { TicketDetail } from 'tickets/ticket-detail'
 
-import css from './TimelineTicketModal.less'
+import css from './TicketModal.less'
 
 type Props = {
     summary?: TicketSummary
@@ -16,7 +16,7 @@ type Props = {
     onPrevious?: () => void
 }
 
-export function TimelineTicketModal({
+export function TicketModal({
     summary,
     ticketId,
     onClose,
