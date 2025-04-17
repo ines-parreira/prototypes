@@ -134,6 +134,8 @@ export function useWorkflowEditor(
     const { data: remoteConfiguration, isInitialLoading: isFetchPending } =
         useGetWorkflowConfiguration(workflowId, {
             enabled: !isNew,
+            // Otherwise we reset user's changes when the query is refetched due to the staleTime
+            staleTime: Infinity,
             refetchOnMount: 'always',
         })
 
