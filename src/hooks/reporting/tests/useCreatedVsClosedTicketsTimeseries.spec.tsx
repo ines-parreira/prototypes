@@ -68,6 +68,7 @@ describe('useCreatedVsClosedTicketsTimeSeries', () => {
         {
             label: 'exampleLabel',
             values: [{ x: 'exampleX', y: 123 }],
+            isDisabled: false,
         },
     ]
 

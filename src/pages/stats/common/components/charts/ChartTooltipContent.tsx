@@ -1,4 +1,7 @@
+import { useMemo } from 'react'
+
 import { TooltipLabelStyle, TooltipModel } from 'chart.js'
+import classNames from 'classnames'
 
 import css from 'pages/stats/common/components/charts/ChartTooltipContent.less'
 import { NOT_AVAILABLE_TEXT } from 'pages/stats/common/utils'
@@ -6,12 +9,24 @@ import { NOT_AVAILABLE_TEXT } from 'pages/stats/common/utils'
 type Props = {
     tooltip: TooltipModel
     showZeroAsNA?: boolean
+    withTotal?: boolean
 }
+
+export const TOTAL_LABEL = 'Total'
 
 export const ChartTooltipContent = ({
     tooltip: { labelColors, dataPoints },
     showZeroAsNA,
+    withTotal,
 }: Props) => {
+    const total = useMemo(() => {
+        if (!withTotal) return null
+        return dataPoints.reduce(
+            (acc, item) => acc + Number(item.formattedValue),
+            0,
+        )
+    }, [dataPoints, withTotal])
+
     return (
         <>
             {dataPoints.map((item, index) => {
@@ -28,18 +43,35 @@ export const ChartTooltipContent = ({
                                 backgroundColor: currentLabel.backgroundColor,
                                 borderWidth: currentLabel.borderWidth,
                                 borderColor: currentLabel.borderColor,
-                                borderRadius: currentLabel.borderRadius,
+                                borderRadius:
+                                    Number(currentLabel.borderRadius) || 2,
                             }}
                         />
-                        <span>{item.dataset.label}:</span>
-                        <span className={css.tooltipItemValue}>
-                            {showZeroAsNA && item.formattedValue === '0'
-                                ? NOT_AVAILABLE_TEXT
-                                : item.formattedValue}
-                        </span>
+                        <div
+                            className={classNames(
+                                css.tooltipSpaceBetween,
+                                css.minusItemBox,
+                            )}
+                        >
+                            <span>{item.dataset.label}:</span>
+                            <span className={css.tooltipItemValue}>
+                                {showZeroAsNA && item.formattedValue === '0'
+                                    ? NOT_AVAILABLE_TEXT
+                                    : item.formattedValue}
+                            </span>
+                        </div>
                     </div>
                 )
             })}
+            {total && (
+                <div className={classNames(css.tooltipTotalWrapper)}>
+                    <div className={css.tooltipSeparator} />
+                    <div className={css.tooltipSpaceBetween}>
+                        <span>{TOTAL_LABEL}</span>
+                        <span className={css.tooltipItemValue}>{total}</span>
+                    </div>
+                </div>
+            )}
         </>
     )
 }

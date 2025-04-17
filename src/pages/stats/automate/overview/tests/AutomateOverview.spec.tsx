@@ -29,6 +29,7 @@ import { useSearchParam } from 'hooks/useSearchParam'
 import { IntegrationType } from 'models/integration/constants'
 import { AutomationBillingEventMeasure } from 'models/reporting/cubes/automate/AutomationBillingEventCube'
 import { FilterKey, LegacyStatsFilters } from 'models/stat/types'
+import { useAiAgentTypeForAccount } from 'pages/aiAgent/Overview/hooks/useAiAgentType'
 import { AUTOMATION_RATE_FIXED_STATS } from 'pages/automate/automate-metrics/constants'
 import {
     AAO_TIPS_VISIBILITY_KEY,
@@ -130,6 +131,9 @@ const TimeSavedByAgentsKPIChartMock = assumeMock(TimeSavedByAgentsKPIChart)
 
 jest.mock('pages/stats/common/components/charts/BarChart/BarChart')
 const BarChartMock = assumeMock(BarChart)
+
+jest.mock('pages/aiAgent/Overview/hooks/useAiAgentType')
+const useAiAgentTypeForAccountMock = assumeMock(useAiAgentTypeForAccount)
 
 describe('<AutomateOverview />', () => {
     function getIntegration(id: number, type: IntegrationType) {
@@ -299,6 +303,11 @@ describe('<AutomateOverview />', () => {
         mockedUseSearchParam.mockReturnValue([null, jest.fn()])
 
         BarChartMock.mockReturnValue(<div>BarChart</div>)
+
+        useAiAgentTypeForAccountMock.mockReturnValue({
+            aiAgentType: 'mixed',
+            isLoading: false,
+        })
     })
 
     it('should display paywall', () => {
@@ -320,6 +329,7 @@ describe('<AutomateOverview />', () => {
                 stats: { filters: initialState },
             },
         } as RootState
+
         const { container } = render(
             <Provider store={mockStore(defaultState)}>
                 <QueryClientProvider client={queryClient}>

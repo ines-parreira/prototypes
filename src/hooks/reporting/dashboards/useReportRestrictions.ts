@@ -29,7 +29,7 @@ export const useReportRestrictions = () => {
     const isStandaloneSalesOverviewEnabled =
         useFlags()[FeatureFlagKey.StandaloneAiSalesAnalyticsPage]
     const isReportingVoiceOfCustomerEnabled =
-        !!useFlags()[FeatureFlagKey.ReportingVoiceOfCustomer]
+        useFlags()[FeatureFlagKey.ReportingVoiceOfCustomer]
     const isAutomateAIAgentInteractionsEnabled: boolean | undefined =
         useFlags()[FeatureFlagKey.AutomateAIAgentInteractions]
 

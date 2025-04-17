@@ -23,10 +23,12 @@ describe('<TicketsCreatedVsClosedChartCard />', () => {
             {
                 label: 'MetricName',
                 values: [{ x: '2022-12-11', y: 123 }],
+                isDisabled: false,
             },
             {
                 label: 'SecondMetricName',
                 values: [{ x: '2022-12-11', y: 123 }],
+                isDisabled: false,
             },
         ],
         isLoading,

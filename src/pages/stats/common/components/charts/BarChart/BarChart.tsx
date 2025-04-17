@@ -59,6 +59,7 @@ type Props = {
     skeletonHeight?: number
     colorTokens?: ChartColors & AnalyticsTheme
     isStacked?: boolean
+    withTooltipTotal?: boolean
 }
 
 export const CHART_TOOLTIP_TARGET = 'barChartTooltip'
@@ -86,6 +87,7 @@ export function BarChart({
     skeletonHeight = 250,
     colorTokens = chartColorsFallbackTokens,
     isStacked = false,
+    withTooltipTotal = false,
 }: Props) {
     const [chart, setChart] = useState<Chart>()
     const { customTooltip, tooltipData, tooltipStyle } = useCustomTooltip()
@@ -251,7 +253,10 @@ export function BarChart({
                         title={tooltipData?.title}
                     >
                         {tooltipData && (
-                            <ChartTooltipContent tooltip={tooltipData} />
+                            <ChartTooltipContent
+                                tooltip={tooltipData}
+                                withTotal={withTooltipTotal}
+                            />
                         )}
                     </ChartTooltip>
                 )}

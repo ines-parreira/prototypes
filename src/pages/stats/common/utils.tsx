@@ -354,12 +354,14 @@ const formatTimeSeries = (
     label: string,
     items: TimeSeriesDataItem[],
     format: string,
+    shouldDisableItem?: (label: string, items: TimeSeriesDataItem[]) => boolean,
 ) => ({
     label: label,
     values: items.map((item) => ({
         x: moment(item.dateTime).format(format),
         y: item.value,
     })),
+    isDisabled: shouldDisableItem?.(label, items) || false,
 })
 
 export const formatTimeSeriesData = (
@@ -376,11 +378,12 @@ export const formatLabeledTimeSeriesData = (
     data: TimeSeriesDataItem[][] = [],
     labels: string[],
     granularity: ReportingGranularity,
+    shouldDisableItem?: (label: string, items: TimeSeriesDataItem[]) => boolean,
 ) => {
     const format = getFormat(granularity)
 
     return data.map((items, index) =>
-        formatTimeSeries(labels[index], items, format),
+        formatTimeSeries(labels[index], items, format, shouldDisableItem),
     )
 }
 

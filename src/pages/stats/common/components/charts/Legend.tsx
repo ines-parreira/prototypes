@@ -11,6 +11,7 @@ type LegendItem = {
     color: string
     tooltip?: string
     isChecked?: boolean
+    isDisabled?: boolean
     onChange?: (value: boolean) => void
 }
 
@@ -47,13 +48,21 @@ export default function Legend({
             {toggleLegend
                 ? items.map(
                       (
-                          { label, color, tooltip, isChecked, onChange },
+                          {
+                              label,
+                              color,
+                              tooltip,
+                              isChecked,
+                              onChange,
+                              isDisabled,
+                          },
                           index,
                       ) => (
                           <CheckBox
                               key={`${label}-${index}`}
                               className={css.legendCheckbox}
                               isChecked={isChecked}
+                              isDisabled={isDisabled}
                               onChange={onChange}
                               {...(isChecked && {
                                   style: {

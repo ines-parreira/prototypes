@@ -33,9 +33,10 @@ export const ChartLegend = ({
             className={classNames(css.legend, {
                 [css.legendOnLeft]: legendOnLeft,
             })}
-            items={data.map(({ label, tooltip }, index) => ({
+            items={data.map(({ label, tooltip, isDisabled }, index) => ({
                 label,
                 tooltip,
+                isDisabled,
                 color: chartColors(index),
                 ...(toggleLegend && {
                     isChecked:

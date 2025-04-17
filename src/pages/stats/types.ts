@@ -24,6 +24,7 @@ export type TwoDimensionalDataItem = {
         y: number
     }[]
     isDashed?: boolean
+    isDisabled?: boolean
 }
 
 export type TooltipData = {

@@ -8,10 +8,11 @@ import thunk from 'redux-thunk'
 import { useAIAgentInteractionsBySkillTimeSeries } from 'hooks/reporting/automate/useAIAgentInteractionsBySkillTimeSeries'
 import { TimeSeriesDataItem } from 'hooks/reporting/useTimeSeries'
 import { AIAgentSkills } from 'models/reporting/cubes/automate_v2/AIAgentIntercationsBySkillDatasetCube'
+import { useAiAgentTypeForAccount } from 'pages/aiAgent/Overview/hooks/useAiAgentType'
 import {
     AI_AGENT_AUTOMATED_INTERACTIONS_LABEL,
+    AI_AGENT_CHART_FIELDS,
     AIAgentAutomatedInteractionsGraphBar,
-    AUTOMATE_CHART_FIELDS,
     AutomateCustomColors,
 } from 'pages/stats/automate/overview/charts/AIAgentAutomatedInteractionsGraphBar'
 import { BarChart } from 'pages/stats/common/components/charts/BarChart/BarChart'
@@ -24,6 +25,8 @@ jest.mock('hooks/reporting/automate/useAIAgentInteractionsBySkillTimeSeries')
 const useAIAgentInteractionsBySkillTimeSeriesMock = assumeMock(
     useAIAgentInteractionsBySkillTimeSeries,
 )
+jest.mock('pages/aiAgent/Overview/hooks/useAiAgentType')
+const useAiAgentTypeForAccountMock = assumeMock(useAiAgentTypeForAccount)
 
 const mockStore = configureMockStore([thunk])
 
@@ -78,11 +81,15 @@ describe('AIAgentAutomatedInteractionsGraphBar', () => {
     }
 
     beforeEach(() => {
-        BarChartMock.mockReturnValue(<div>BarChart</div>)
+        BarChartMock.mockReturnValue(<div />)
         useAIAgentInteractionsBySkillTimeSeriesMock.mockReturnValue({
             data: exampleData,
             isLoading: false,
         } as any)
+        useAiAgentTypeForAccountMock.mockReturnValue({
+            aiAgentType: 'mixed',
+            isLoading: false,
+        })
     })
 
     it('should render the AIAgentAutomatedInteractionsGraphBar with the right data', () => {
@@ -98,20 +105,22 @@ describe('AIAgentAutomatedInteractionsGraphBar', () => {
             expect.objectContaining({
                 data: [
                     {
-                        label: AUTOMATE_CHART_FIELDS[0].label,
+                        label: AI_AGENT_CHART_FIELDS[0].label,
                         values: [
                             { x: 'Feb 3rd, 2021', y: 123 },
                             { x: 'Feb 4th, 2021', y: 456 },
                             { x: 'Feb 5th, 2021', y: 789 },
                         ],
+                        isDisabled: false,
                     },
                     {
-                        label: AUTOMATE_CHART_FIELDS[1].label,
+                        label: AI_AGENT_CHART_FIELDS[1].label,
                         values: [
                             { x: 'Feb 3rd, 2021', y: 654 },
                             { x: 'Feb 4th, 2021', y: 987 },
                             { x: 'Feb 5th, 2021', y: 321 },
                         ],
+                        isDisabled: false,
                     },
                 ],
             }),
@@ -139,12 +148,14 @@ describe('AIAgentAutomatedInteractionsGraphBar', () => {
                 customColors: AutomateCustomColors,
                 data: [
                     {
-                        label: AUTOMATE_CHART_FIELDS[0].label,
+                        label: AI_AGENT_CHART_FIELDS[0].label,
                         values: [],
+                        isDisabled: false,
                     },
                     {
-                        label: AUTOMATE_CHART_FIELDS[1].label,
+                        label: AI_AGENT_CHART_FIELDS[1].label,
                         values: [],
+                        isDisabled: false,
                     },
                 ],
                 displayLegend: true,
@@ -153,7 +164,130 @@ describe('AIAgentAutomatedInteractionsGraphBar', () => {
                 isStacked: true,
                 legendOnLeft: true,
                 toggleLegend: true,
+                withTooltipTotal: true,
+                defaultDatasetVisibility: {
+                    0: true,
+                    1: true,
+                },
             },
+            {},
+        )
+    })
+
+    it('should disable sales data when aiAgentType is support', () => {
+        useAiAgentTypeForAccountMock.mockReturnValue({
+            aiAgentType: 'support',
+            isLoading: false,
+        })
+
+        render(
+            <Provider store={mockStore(defaultState)}>
+                <AIAgentAutomatedInteractionsGraphBar />
+            </Provider>,
+        )
+
+        expect(BarChartMock).toHaveBeenCalledWith(
+            expect.objectContaining({
+                defaultDatasetVisibility: {
+                    0: true,
+                    1: false,
+                },
+            }),
+            {},
+        )
+    })
+
+    it('should show loading state correctly', () => {
+        useAIAgentInteractionsBySkillTimeSeriesMock.mockReturnValue({
+            data: undefined,
+            isLoading: true,
+        } as any)
+
+        render(
+            <Provider store={mockStore(defaultState)}>
+                <AIAgentAutomatedInteractionsGraphBar />
+            </Provider>,
+        )
+
+        expect(BarChartMock).toHaveBeenCalledWith(
+            expect.objectContaining({
+                isLoading: true,
+            }),
+            {},
+        )
+    })
+
+    it('should handle missing data gracefully', () => {
+        useAIAgentInteractionsBySkillTimeSeriesMock.mockReturnValue({
+            data: {
+                [AIAgentSkills.AIAgentSupport]: [
+                    [
+                        {
+                            dateTime: '2021-02-03T00:00:00.000Z',
+                            value: 123,
+                        },
+                    ],
+                ],
+            },
+            isLoading: false,
+        } as any)
+
+        render(
+            <Provider store={mockStore(defaultState)}>
+                <AIAgentAutomatedInteractionsGraphBar />
+            </Provider>,
+        )
+
+        expect(BarChartMock).toHaveBeenCalledWith(
+            expect.objectContaining({
+                data: [
+                    {
+                        label: AI_AGENT_CHART_FIELDS[0].label,
+                        values: [{ x: 'Feb 3rd, 2021', y: 123 }],
+                        isDisabled: false,
+                    },
+                    {
+                        label: AI_AGENT_CHART_FIELDS[1].label,
+                        values: [],
+                        isDisabled: false,
+                    },
+                ],
+            }),
+            {},
+        )
+    })
+
+    it('should include total in tooltip when withTooltipTotal is true', () => {
+        render(
+            <Provider store={mockStore(defaultState)}>
+                <AIAgentAutomatedInteractionsGraphBar />
+            </Provider>,
+        )
+
+        expect(BarChartMock).toHaveBeenCalledWith(
+            expect.objectContaining({
+                withTooltipTotal: true,
+                data: [
+                    {
+                        label: AI_AGENT_CHART_FIELDS[0].label,
+                        values: [
+                            { x: 'Feb 3rd, 2021', y: 123 },
+                            { x: 'Feb 4th, 2021', y: 456 },
+                            { x: 'Feb 5th, 2021', y: 789 },
+                        ],
+                        isDisabled: false,
+                    },
+                    {
+                        label: AI_AGENT_CHART_FIELDS[1].label,
+                        values: [
+                            { x: 'Feb 3rd, 2021', y: 654 },
+                            { x: 'Feb 4th, 2021', y: 987 },
+                            { x: 'Feb 5th, 2021', y: 321 },
+                        ],
+                        isDisabled: false,
+                    },
+                ],
+            }),
             {},
         )
     })

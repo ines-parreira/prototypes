@@ -6,6 +6,7 @@ import { useStatsFilters } from 'hooks/reporting/support-performance/useStatsFil
 import { TimeSeriesDataItem } from 'hooks/reporting/useTimeSeries'
 import { AIAgentSkills } from 'models/reporting/cubes/automate_v2/AIAgentIntercationsBySkillDatasetCube'
 import { ReportingGranularity } from 'models/reporting/types'
+import { useAiAgentTypeForAccount } from 'pages/aiAgent/Overview/hooks/useAiAgentType'
 import ChartCard from 'pages/stats/common/components/ChartCard'
 import { BarChart } from 'pages/stats/common/components/charts/BarChart/BarChart'
 import { formatLabeledTimeSeriesData } from 'pages/stats/common/utils'
@@ -23,7 +24,7 @@ export const AutomateCustomColors = [
     analyticsColorsModern.analytics.heatmap['heatmap-5'].value,
 ]
 
-export const AUTOMATE_CHART_FIELDS = [
+export const AI_AGENT_CHART_FIELDS = [
     {
         field: AIAgentSkills.AIAgentSupport,
         label: 'AI Agent Support',
@@ -37,19 +38,24 @@ export const AUTOMATE_CHART_FIELDS = [
 const getFormattedData = (
     data: Record<string, TimeSeriesDataItem[][]> | undefined,
     granularity: ReportingGranularity,
+    isAIAgentSalesDisabled: boolean,
 ) => {
     if (data === undefined) {
         return []
     }
 
-    const formattedData = AUTOMATE_CHART_FIELDS.map(
+    const formattedData = AI_AGENT_CHART_FIELDS.map(
         (metric) => metric.field,
     ).map((metric) => (data[metric] ? data[metric][0] : []))
 
+    const shouldDisableItem = (label: string) =>
+        label === AI_AGENT_CHART_FIELDS[1].label && isAIAgentSalesDisabled
+
     return formatLabeledTimeSeriesData(
         formattedData,
-        AUTOMATE_CHART_FIELDS.map((metric) => metric.label),
+        AI_AGENT_CHART_FIELDS.map((metric) => metric.label),
         granularity,
+        shouldDisableItem,
     )
 }
 
@@ -57,6 +63,7 @@ export const AIAgentAutomatedInteractionsGraphBar = ({
     dashboard,
     chartId,
 }: DashboardChartProps) => {
+    const { aiAgentType } = useAiAgentTypeForAccount()
     const { cleanStatsFilters, userTimezone, granularity } = useStatsFilters()
 
     const { data, isLoading } = useAIAgentInteractionsBySkillTimeSeries(
@@ -65,9 +72,11 @@ export const AIAgentAutomatedInteractionsGraphBar = ({
         granularity,
     )
 
+    const isAIAgentSalesDisabled = aiAgentType === 'support'
+
     const formattedData = useMemo(
-        () => getFormattedData(data, granularity),
-        [data, granularity],
+        () => getFormattedData(data, granularity, isAIAgentSalesDisabled),
+        [data, granularity, isAIAgentSalesDisabled],
     )
 
     return (
@@ -86,6 +95,11 @@ export const AIAgentAutomatedInteractionsGraphBar = ({
                 hasBackground
                 isStacked
                 legendOnLeft
+                withTooltipTotal
+                defaultDatasetVisibility={{
+                    0: true,
+                    1: !isAIAgentSalesDisabled,
+                }}
             />
         </ChartCard>
     )
