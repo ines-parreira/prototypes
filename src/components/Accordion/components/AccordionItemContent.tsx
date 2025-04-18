@@ -29,7 +29,7 @@ export const AccordionItemContent = forwardRef<
     const { isOpen, value } = useAccordionItem()
 
     return (
-        <AnimatePresence>
+        <AnimatePresence initial={!isOpen}>
             {isOpen && (
                 <motion.div
                     ref={ref}
