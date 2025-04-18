@@ -63,8 +63,8 @@ importers:
         specifier: ^0.6.28
         version: 0.6.28
       '@gorgias/api-types':
-        specifier: ^0.6.28
-        version: 0.6.28
+        specifier: ^0.6.29
+        version: 0.6.29
       '@gorgias/api-validators':
         specifier: ^0.6.28
         version: 0.6.28
@@ -2799,8 +2799,8 @@ packages:
   '@gorgias/api-spec@0.6.28':
     resolution: {integrity: sha512-ICW5K6BVjW81q9R0o8MQQMGuh8TpGGDT7Wf/mSpheYLfQjau9nFq77WYnIThhbaDG/++vz1uIYc0zhdXcOqA+w==, tarball: https://npm.pkg.github.com/download/@gorgias/api-spec/0.6.28/f7187979819e48fb2841e144bf2d04cc40a16a24}
 
-  '@gorgias/api-types@0.6.28':
-    resolution: {integrity: sha512-ZPjQvEpyukKjruexAfCr4yGaSVPCN93CZbBn8a10miCzEq5EILdn8NJaNov/FNCYrQvQR1K4XQUcT2/er6R+rA==, tarball: https://npm.pkg.github.com/download/@gorgias/api-types/0.6.28/f6c4dd4cdc586ff4553a7daf32df0d952eaae3cb}
+  '@gorgias/api-types@0.6.29':
+    resolution: {integrity: sha512-aqW6R770y1PTnP1r2Rc3zQDCsuyNBf5DeGgzFhiG8Hd0ONCkN2iG13FPWWFCshJaevrT9ZdDZflZff0y7cuwHg==, tarball: https://npm.pkg.github.com/download/@gorgias/api-types/0.6.29/365bdda0a9338d9b13c0d4a904bd87ed66bcef4c}
 
   '@gorgias/api-validators@0.6.28':
     resolution: {integrity: sha512-lspaFBj6pDmue/xm7xUmPD/7ulwTJHAjuV8AxhUbot5+7uIRwdKj1Cej4tzkycUd4r2tMYqQMZOd0+uQySoZsQ==, tarball: https://npm.pkg.github.com/download/@gorgias/api-validators/0.6.28/afac00afbc54936b07e504667d287f49d470f1ac}
@@ -13959,7 +13959,7 @@ snapshots:
 
   '@gorgias/api-client@0.6.28':
     dependencies:
-      '@gorgias/api-types': 0.6.28
+      '@gorgias/api-types': 0.6.29
       axios: 1.8.4
     transitivePeerDependencies:
       - debug
@@ -13967,19 +13967,19 @@ snapshots:
   '@gorgias/api-queries@0.6.28':
     dependencies:
       '@gorgias/api-client': 0.6.28
-      '@gorgias/api-types': 0.6.28
+      '@gorgias/api-types': 0.6.29
     transitivePeerDependencies:
       - debug
 
   '@gorgias/api-spec@0.6.28': {}
 
-  '@gorgias/api-types@0.6.28': {}
+  '@gorgias/api-types@0.6.29': {}
 
   '@gorgias/api-validators@0.6.28':
     dependencies:
       '@apideck/better-ajv-errors': 0.3.6(ajv@8.17.1)
       '@gorgias/api-spec': 0.6.28
-      '@gorgias/api-types': 0.6.28
+      '@gorgias/api-types': 0.6.29
       ajv: 8.17.1
       ajv-formats: 3.0.1(ajv@8.17.1)
       immer: 10.1.1

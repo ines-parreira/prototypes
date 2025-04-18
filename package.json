@@ -87,7 +87,7 @@
         "@gorgias/api-queries": "^0.6.28",
         "@gorgias/api-validators": "^0.6.28",
         "@gorgias/api-client": "^0.6.28",
-        "@gorgias/api-types": "^0.6.28",
+        "@gorgias/api-types": "^0.6.29",
         "@gorgias/branding-assets": "^0.2.1",
         "@gorgias/design-tokens": "^0.5.0",
         "@gorgias/event-tracker-api": "1.1.0",

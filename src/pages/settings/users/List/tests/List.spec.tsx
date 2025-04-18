@@ -1,6 +1,6 @@
 import React from 'react'
 
-import { render, screen } from '@testing-library/react'
+import { act, fireEvent, render, screen, waitFor } from '@testing-library/react'
 import { Link } from 'react-router-dom'
 
 import { useListUsers } from '@gorgias/api-queries'
@@ -14,6 +14,7 @@ import useAppDispatch from 'hooks/useAppDispatch'
 import { OrderDirection } from 'models/api/types'
 import { UserSortableProperties } from 'models/user/types'
 import Navigation from 'pages/common/components/Navigation/Navigation'
+import Search from 'pages/common/components/Search'
 import UsersSettingsTable from 'pages/settings/users/List/UsersSettingsTable'
 import { getCurrentHelpdeskPlan } from 'state/billing/selectors'
 import { getAccountOwnerId } from 'state/currentAccount/selectors'
@@ -49,6 +50,18 @@ jest.mock('pages/common/components/Navigation/Navigation', () =>
 )
 jest.mock('../UsersSettingsTable', () => jest.fn(() => null))
 const mockedUsersSettingsTable = assumeMock(UsersSettingsTable)
+
+jest.mock('pages/common/components/Search', () => {
+    return jest.fn(({ value, onChange, placeholder }) => (
+        <input
+            data-testid="search-input"
+            placeholder={placeholder}
+            value={value}
+            onChange={(e) => onChange?.(e.target.value)}
+        />
+    ))
+})
+const mockedSearch = assumeMock(Search)
 
 describe('<List />', () => {
     beforeEach(() => {
@@ -144,6 +157,7 @@ describe('<List />', () => {
                 hasNextItems: true,
                 fetchPrevItems: expect.any(Function),
                 fetchNextItems: expect.any(Function),
+                className: expect.any(String),
             }),
             {},
         )
@@ -212,5 +226,86 @@ describe('<List />', () => {
             }),
             {},
         )
+    })
+
+    it('should render search input with correct placeholder', () => {
+        render(<UserList />)
+
+        expect(mockedSearch).toHaveBeenCalledWith(
+            expect.objectContaining({
+                placeholder: 'Search users...',
+                value: '',
+            }),
+            {},
+        )
+    })
+
+    it('should fetch users when searching and reset cursor', async () => {
+        const mockData = {
+            data: {
+                data: agents,
+                meta: {
+                    next_cursor: 'next-cursor',
+                    prev_cursor: 'prev-cursor',
+                },
+            },
+        }
+
+        mockedUseListUsers.mockImplementation(
+            () =>
+                ({
+                    data: mockData,
+                    isLoading: false,
+                    isError: false,
+                }) as ReturnType<typeof useListUsers>,
+        )
+
+        render(<UserList />)
+
+        const searchTerm = 'foo'
+        const searchInput = screen.getByTestId('search-input')
+        act(() => {
+            fireEvent.change(searchInput, { target: { value: searchTerm } })
+        })
+
+        await waitFor(() => {
+            expect(mockedUsersSettingsTable).toHaveBeenCalledWith(
+                expect.objectContaining({
+                    options: expect.objectContaining({
+                        search: searchTerm,
+                        cursor: undefined,
+                    }),
+                }),
+                {},
+            )
+        })
+    })
+
+    it('should display "No results" message when search returns no users', () => {
+        mockedUseListUsers.mockImplementationOnce(
+            () =>
+                ({
+                    data: {
+                        data: {
+                            data: [],
+                            meta: {},
+                        },
+                    },
+                    isLoading: false,
+                    isError: false,
+                }) as ReturnType<typeof useListUsers>,
+        )
+
+        render(<UserList />)
+
+        const searchInput = screen.getByTestId('search-input')
+        act(() => {
+            fireEvent.change(searchInput, { target: { value: 'foo' } })
+        })
+
+        expect(screen.getByText('No results')).toBeInTheDocument()
+        expect(
+            screen.getByText(/You may want to try using a different name/),
+        ).toBeInTheDocument()
     })
 })

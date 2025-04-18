@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useState } from 'react'
 
-import cs from 'classnames'
+import classnames from 'classnames'
 import { Link } from 'react-router-dom'
 
 import { ListUsersParams, useListUsers } from '@gorgias/api-queries'
@@ -17,6 +17,7 @@ import { UserSortableProperties } from 'models/user/types'
 import Button from 'pages/common/components/button/Button'
 import Navigation from 'pages/common/components/Navigation/Navigation'
 import PageHeader from 'pages/common/components/PageHeader'
+import Search from 'pages/common/components/Search'
 import settingsCss from 'pages/settings/settings.less'
 import { getCurrentHelpdeskPlan } from 'state/billing/selectors'
 import { notify } from 'state/notifications/actions'
@@ -48,6 +49,8 @@ const UserList = () => {
             query: { staleTime: STALE_TIME_MS, keepPreviousData: true },
         },
     )
+    const users = data?.data.data
+    const hasNoResults = listUsersParams.search && !isLoading && !users?.length
 
     useEffect(() => {
         if (isError) {
@@ -84,40 +87,78 @@ const UserList = () => {
         [listUsersParams],
     )
 
+    const onSearchChange = useCallback(
+        (search: string) => {
+            setListUsersParams({
+                ...listUsersParams,
+                search,
+                cursor: undefined,
+            })
+        },
+        [listUsersParams],
+    )
+
     return (
-        <div className={cs('full-width')}>
+        <div className="full-width">
             <PageHeader title="Users">
-                <Link to="/app/settings/users/add/">
-                    <Button>Create user</Button>
-                </Link>
+                <div className="d-flex">
+                    <Search
+                        className="mr-2"
+                        value={listUsersParams.search || ''}
+                        onChange={onSearchChange}
+                        placeholder="Search users..."
+                        searchDebounceTime={300}
+                    />
+                    <Link to="/app/settings/users/add/">
+                        <Button>Create user</Button>
+                    </Link>
+                </div>
             </PageHeader>
 
-            <div className={settingsCss.pageContainer}>
-                <p>
-                    Create and manage Gorgias users. You can{' '}
-                    <strong>
-                        {isStarterPlan
-                            ? 'add up to 3 users'
-                            : 'add as many users as you need'}
-                    </strong>
-                    , at no additional cost.
-                </p>
-
-                <div className={css.table}>
-                    <UsersSettingsTable
-                        isLoading={isLoading}
-                        users={data?.data.data}
-                        onSortOptionsChange={onSortOptionsChange}
-                        options={listUsersParams}
-                    />
-                    <Navigation
-                        className={css.navigation}
-                        hasNextItems={!!data?.data.meta.next_cursor}
-                        hasPrevItems={!!data?.data.meta.prev_cursor}
-                        fetchNextItems={fetchNextItems}
-                        fetchPrevItems={fetchPrevItems}
-                    />
-                </div>
+            <div
+                className={classnames(settingsCss.pageContainer, css.container)}
+            >
+                {hasNoResults ? (
+                    <div
+                        className={classnames(
+                            css.empty,
+                            'd-flex flex-column text-center full-height justify-content-center',
+                        )}
+                    >
+                        <h3 className="font-weight-bold mb-2">No results</h3>
+                        <div>
+                            You may want to try using a different name, email or
+                            check for typos.
+                        </div>
+                    </div>
+                ) : (
+                    <>
+                        <p>
+                            Create and manage Gorgias users. You can{' '}
+                            <strong>
+                                {isStarterPlan
+                                    ? 'add up to 3 users'
+                                    : 'add as many users as you need'}
+                            </strong>
+                            , at no additional cost.
+                        </p>
+                        <div className={css.table}>
+                            <UsersSettingsTable
+                                isLoading={isLoading}
+                                users={users}
+                                onSortOptionsChange={onSortOptionsChange}
+                                options={listUsersParams}
+                            />
+                            <Navigation
+                                className={css.navigation}
+                                hasNextItems={!!data?.data.meta.next_cursor}
+                                hasPrevItems={!!data?.data.meta.prev_cursor}
+                                fetchNextItems={fetchNextItems}
+                                fetchPrevItems={fetchPrevItems}
+                            />
+                        </div>
+                    </>
+                )}
             </div>
         </div>
     )

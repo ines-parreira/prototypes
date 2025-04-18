@@ -120,17 +120,10 @@ export function UsersSettingsTable({
                             <LoadingSpinner size="medium" />
                         </BodyCell>
                     </TableBodyRow>
-                ) : !!users ? (
-                    users.map((user: User) => (
+                ) : (
+                    users?.map((user: User) => (
                         <UsersSettingsItem key={user.id} user={user} />
                     ))
-                ) : (
-                    <TableBodyRow>
-                        <BodyCell innerClassName={css.empty} colSpan={4}>
-                            You may want to try using a different name, email or
-                            check for typos.
-                        </BodyCell>
-                    </TableBodyRow>
                 )}
             </TableBody>
         </TableWrapper>
