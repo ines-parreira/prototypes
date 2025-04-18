@@ -253,7 +253,12 @@ export const PersonalityStep: FC<StepProps> = ({
     }
 
     const onNextClick = () => {
-        if (!isDirty) {
+        const hasExistingSalesSettings =
+            !!data?.salesPersuasionLevel &&
+            !!data?.salesDiscountStrategyLevel &&
+            data?.salesDiscountMax !== null
+
+        if (!isDirty && hasExistingSalesSettings) {
             onNextStep()
             return
         }
@@ -261,7 +266,7 @@ export const PersonalityStep: FC<StepProps> = ({
         if (data && 'id' in data) {
             const updatedData: OnboardingData = {
                 ...data,
-                id: data.id as string,
+                id: data.id,
                 shopName,
                 currentStepName: validSteps[currentStep]?.step,
                 salesPersuasionLevel,
@@ -272,7 +277,7 @@ export const PersonalityStep: FC<StepProps> = ({
             }
 
             doUpdateOnboardingMutation(
-                { id: data.id as string, data: updatedData },
+                { id: data.id, data: updatedData },
                 {
                     onSuccess: () => {
                         logEvent(

@@ -616,3 +616,149 @@ describe('PersonalityStep - Preview information', () => {
         ).toBeInTheDocument()
     })
 })
+
+describe('PersonalityStep - Onboarding mutation', () => {
+    let doUpdateOnboardingMutationMock: jest.Mock
+
+    beforeEach(() => {
+        doUpdateOnboardingMutationMock = jest.fn()
+        useUpdateOnboardingMock.mockReturnValue({
+            mutate: doUpdateOnboardingMutationMock,
+            isLoading: false,
+        } as any)
+
+        useTransformToneOfVoiceConversationsMock.mockReturnValue({
+            previewConversation: conversationExamples.default,
+            isPreviewLoading: false,
+            isLoading: false,
+            preview: undefined,
+        })
+    })
+
+    describe('when there is no sales settings', () => {
+        beforeEach(() => {
+            useGetOnboardingDataMock.mockReturnValue({
+                isLoading: false,
+                data: {
+                    id: '1',
+                    salesPersuasionLevel: null,
+                    salesDiscountStrategyLevel: null,
+                    salesDiscountMax: null,
+                    scopes: [AiAgentScopes.SALES, AiAgentScopes.SUPPORT],
+                    shopName: shopifyIntegration.meta.shop_name,
+                    currentStepName: WizardStepEnum.SALES_PERSONALITY,
+                },
+            })
+        })
+
+        it('should render with default values', () => {
+            renderComponent()
+
+            expect(
+                screen.getByText(
+                    'Strikes a balance between educating the customer and encouraging them to make a purchase.',
+                ),
+            ).toBeInTheDocument()
+
+            expect(
+                screen.getByText(
+                    'The Sales AI Agent offers discounts at a level optimized for both conversions and profit.',
+                ),
+            ).toBeInTheDocument()
+
+            const maxDiscountInput = screen.getByTestId('percentage-input')
+            expect(maxDiscountInput).toBeInTheDocument()
+            expect(maxDiscountInput.getAttribute('value')).toBe('8')
+        })
+
+        it('should call doUpdateOnboardingMutation with default values when clicking on next', async () => {
+            renderComponent()
+
+            const nextButton = screen.getByText(/Next/i)
+            userEvent.click(nextButton)
+
+            await waitFor(() => {
+                expect(doUpdateOnboardingMutationMock).toHaveBeenCalled()
+                expect(doUpdateOnboardingMutationMock.mock.calls[0][0]).toEqual(
+                    {
+                        data: {
+                            id: '1',
+                            scopes: [
+                                AiAgentScopes.SALES,
+                                AiAgentScopes.SUPPORT,
+                            ],
+                            shopName: shopifyIntegration.meta.shop_name,
+
+                            currentStepName: WizardStepEnum.KNOWLEDGE,
+                            salesDiscountMax: 0.08,
+                            salesDiscountStrategyLevel: 'balanced',
+                            salesPersuasionLevel: 'balanced',
+                        },
+                        id: '1',
+                    },
+                )
+            })
+        })
+    })
+
+    describe('when there are sales settings', () => {
+        beforeEach(() => {
+            useGetOnboardingDataMock.mockReturnValue({
+                isLoading: false,
+                data: {
+                    id: '1',
+                    salesPersuasionLevel: PersuasionLevel.Assertive,
+                    salesDiscountStrategyLevel: DiscountStrategy.Maximized,
+                    salesDiscountMax: 0.1,
+                    scopes: [AiAgentScopes.SALES, AiAgentScopes.SUPPORT],
+                    shopName: shopifyIntegration.meta.shop_name,
+                    currentStepName: WizardStepEnum.SALES_PERSONALITY,
+                },
+            })
+        })
+
+        it('should not call doUpdateOnboardingMutation when no values are changed', async () => {
+            renderComponent()
+
+            const nextButton = screen.getByText(/Next/i)
+            userEvent.click(nextButton)
+
+            expect(doUpdateOnboardingMutationMock).not.toHaveBeenCalled()
+        })
+
+        it('should call doUpdateOnboardingMutation when values are changed', async () => {
+            renderComponent()
+
+            const maxDiscountInput = screen.getByLabelText<HTMLInputElement>(
+                /Maximum Discount Percentage/,
+            )
+            fireEvent.change(maxDiscountInput, { target: { value: '0' } })
+            expect(maxDiscountInput.value).toBe('0')
+
+            const nextButton = screen.getByText(/Next/i)
+            userEvent.click(nextButton)
+
+            await waitFor(() => {
+                expect(doUpdateOnboardingMutationMock).toHaveBeenCalled()
+                expect(doUpdateOnboardingMutationMock.mock.calls[0][0]).toEqual(
+                    {
+                        data: {
+                            id: '1',
+                            scopes: [
+                                AiAgentScopes.SALES,
+                                AiAgentScopes.SUPPORT,
+                            ],
+                            shopName: shopifyIntegration.meta.shop_name,
+
+                            currentStepName: WizardStepEnum.KNOWLEDGE,
+                            salesDiscountMax: null,
+                            salesDiscountStrategyLevel: 'none',
+                            salesPersuasionLevel: 'aggressive',
+                        },
+                        id: '1',
+                    },
+                )
+            })
+        })
+    })
+})
