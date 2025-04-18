@@ -10,8 +10,6 @@ import VoiceIntegrationSettingVoicemail from './VoiceIntegrationSettingVoicemail
 import VoiceMessageField from './VoiceMessageField'
 import VoiceSettingAccordionItem from './VoiceSettingAccordionItem'
 
-const MAX_RECORDING_DURATION = 30
-
 function VoiceIntegrationSettingsFormCallFlowSection(): JSX.Element {
     return (
         <div>
@@ -23,7 +21,6 @@ function VoiceIntegrationSettingsFormCallFlowSection(): JSX.Element {
                     <FormField
                         field={VoiceMessageField}
                         name={'meta.greeting_message'}
-                        maxRecordingDuration={MAX_RECORDING_DURATION}
                         allowNone
                         horizontal={true}
                         shouldUpload={true}
