@@ -322,6 +322,7 @@ export enum RuleActionFailureCauses {
     NoSnoozePastDate = 'snooze-datetime-in-past',
     NoTeamAssignUserNotFound = 'team-not-found',
     TooManyRuleReplies = 'too-many-rule-replies',
+    TooManyRuleMessagesToRecipient = 'too-many-rule-messages-to-recipient',
 }
 
 export enum RuleActionFailureSeverity {
@@ -403,6 +404,11 @@ export const rulesActionsFailures: {
     },
     [RuleActionFailureCauses.TooManyRuleReplies]: {
         description: 'Too many auto-replies have been sent by this rule.',
+        severity: RuleActionFailureSeverity.Warning,
+    },
+    [RuleActionFailureCauses.TooManyRuleMessagesToRecipient]: {
+        description:
+            'Too many auto-replies have been sent to this recipient by this rule in the past hour.',
         severity: RuleActionFailureSeverity.Warning,
     },
 }
