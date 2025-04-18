@@ -1,4 +1,4 @@
-import React, { useMemo, useRef } from 'react'
+import { useMemo, useRef } from 'react'
 import type { ReactNode, RefObject } from 'react'
 
 import cn from 'classnames'
@@ -20,12 +20,13 @@ import css from './Navbar.less'
 
 type Props = {
     activeContent: ActiveContent
+    title: string
     children?: ReactNode
     disableResize?: boolean
     headerContent?: ReactNode
     navbarContentRef?: RefObject<HTMLDivElement>
     splitTicketViewToggle?: ReactNode
-    title: string
+    navbarRevampId?: string
 }
 
 export default function Navbar({
@@ -36,6 +37,7 @@ export default function Navbar({
     navbarContentRef,
     splitTicketViewToggle,
     title,
+    navbarRevampId,
 }: Props) {
     const isOpenedPanel = useAppSelector(getIsOpenedPanel('navbar'))
 
@@ -64,6 +66,7 @@ export default function Navbar({
             ref={navbarRef}
             className={cn(css.sidebar, { [css.isResizing]: isResizing })}
             {...(enableResize && { style: { width: `${width}px` } })}
+            data-revamp-id={navbarRevampId}
         >
             <div
                 className={cn(css['nav-primary'], {

@@ -132,7 +132,7 @@ import UpdatePaymentTerms from 'pages/tasks/detail/UpdatePaymentTerms'
 import TicketInfobarContainer from 'pages/tickets/detail/TicketInfobarContainer'
 import TicketPrintContainer from 'pages/tickets/detail/TicketPrintContainer'
 import TicketSourceContainer from 'pages/tickets/detail/TicketSourceContainer'
-import TicketNavbar from 'pages/tickets/navbar/TicketNavbar'
+import { TicketNavBarRevampWrapper } from 'pages/tickets/navbar/TicketNavBarRevampWrapper'
 import SettingsRoutes from 'routes/settings'
 import { StatsRoutes } from 'routes/StatsRoutes'
 import { VoiceOfCustomerRoutes } from 'routes/VoiceOfCustomerRoutes'
@@ -188,7 +188,10 @@ export function AppRoutes() {
                 path={`${path}/referral-program`}
                 exact
                 render={() => (
-                    <App content={ReferralContent} navbar={TicketNavbar} />
+                    <App
+                        content={ReferralContent}
+                        navbar={TicketNavBarRevampWrapper}
+                    />
                 )}
             />
             <Route>
@@ -387,7 +390,7 @@ export function TicketRoutes({
                             undefined,
                             location.pathname.replace('/edit-widgets', ''),
                         )}
-                        navbar={TicketNavbar}
+                        navbar={TicketNavBarRevampWrapper}
                         infobar={TicketInfobarContainer}
                         noContainerWidthLimit
                         isEditingWidgets
@@ -1418,7 +1421,7 @@ export function HomepageRoutes({ match: { path } }: RouteComponentProps) {
                 path={`${path}/`}
                 exact
                 render={() => (
-                    <App navbar={TicketNavbar}>
+                    <App navbar={TicketNavBarRevampWrapper}>
                         <CanduContent containerId="candu-home" title="Home" />
                     </App>
                 )}

@@ -94,11 +94,11 @@ const viewCategories = {
     private: 'Private views',
 }
 
-export type TicketNavbarOwnProps = {
+type OwnProps = {
     disableResize?: boolean
 }
 
-type Props = TicketNavbarOwnProps & ConnectedProps<typeof connector>
+type Props = OwnProps & ConnectedProps<typeof connector>
 
 export function TicketNavbarContainer({
     activeViewId,
@@ -468,7 +468,7 @@ export function TicketNavbarContainer({
                 ) : undefined
             }
             title="Tickets"
-            navbarRevampId="navbar-v1"
+            navbarRevampId="navbar-v2"
         >
             <RecentChats />
             {!!systemTopElements.length && (

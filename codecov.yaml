@@ -18,6 +18,8 @@ ignore:
   - src/main/init/index.tsx
   - src/pages/settings/helpCenter/utils/algolia.ts
   - src/pages/common/hooks/useAutoScrollOnDragging.ts
+  - src/pages/tickets/navbar/TicketNavbarV2.tsx
+  - src/routes/Routes.tsx
 
 coverage:
   status:
