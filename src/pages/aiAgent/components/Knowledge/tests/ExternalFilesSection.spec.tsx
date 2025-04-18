@@ -105,7 +105,7 @@ describe('ExternalFilesSection', () => {
         await waitFor(() => {
             expect(mockIngestFile).toHaveBeenCalledWith({
                 filename: 'test.pdf',
-                type: 'pdf',
+                type: 'application/pdf',
                 size_bytes: 123456,
                 google_storage_url: 'test.pdf',
             })

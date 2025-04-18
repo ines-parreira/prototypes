@@ -146,6 +146,7 @@ src/models/reporting/cubes/automate/ @gorgias/conv-ai-knowledge-insights
 src/models/reporting/cubes/automate_v2/ @gorgias/conv-ai-knowledge-insights
 src/pages/stats/Automate* @gorgias/conv-ai-knowledge-insights
 src/pages/aiAgent/AiAgentOnboardingWizard @gorgias/conv-ai-knowledge-insights
+src/pages/aiAgent/components/Knowledge/ @gorgias/conv-ai-knowledge-insights
 
 # Conv AI: Expansion
 src/pages/aiAgent/AiAgentVolume* @gorgias/conv-ai-expansion

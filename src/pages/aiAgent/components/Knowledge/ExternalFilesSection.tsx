@@ -137,7 +137,7 @@ export const ExternalFilesSection = ({
             }).then((response) => response[0])
             await ingestFile({
                 filename: uploadedFile.name,
-                type: uploadedFile.type,
+                type: uploadedFile.content_type,
                 size_bytes: uploadedFile.size,
                 google_storage_url: uploadedFile.google_storage_key,
             })
