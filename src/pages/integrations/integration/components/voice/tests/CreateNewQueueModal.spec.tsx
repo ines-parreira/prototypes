@@ -64,6 +64,9 @@ describe('CreateNewQueueModal', () => {
         expect(screen.getByText('Create queue')).toBeInTheDocument()
         expect(screen.getByText('Cancel')).toBeInTheDocument()
         expect(screen.getByText('Queues settings')).toBeInTheDocument()
+        expect(
+            screen.getByText('How to setup a call queue'),
+        ).toBeInTheDocument()
     })
 
     it('handles form submission success correctly', async () => {

@@ -2,6 +2,7 @@ import { CreateVoiceQueue, useCreateVoiceQueues } from '@gorgias/api-queries'
 import { Button } from '@gorgias/merchant-ui-kit'
 
 import { useNotify } from 'hooks/useNotify'
+import LearnMoreLink from 'pages/common/components/LearnMore/LearnMoreLink'
 import Modal from 'pages/common/components/modal/Modal'
 import ModalActionsFooter from 'pages/common/components/modal/ModalActionsFooter'
 import ModalBody from 'pages/common/components/modal/ModalBody'
@@ -65,10 +66,9 @@ export default function CreateNewQueueModal({
                             </a>
                             .
                         </div>
-                        {/* TODO: Add learn more link when available */}
-                        {/* <LearnMoreLink url="">
+                        <LearnMoreLink url="https://docs.gorgias.com/en-US/create-and-manage-call-queues-296974">
                             How to setup a call queue
-                        </LearnMoreLink> */}
+                        </LearnMoreLink>
                     </div>
                     <CreateEditQueueModalFormContent />
                 </ModalBody>
