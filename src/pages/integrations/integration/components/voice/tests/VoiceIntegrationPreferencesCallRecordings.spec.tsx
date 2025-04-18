@@ -1,12 +1,10 @@
 import React from 'react'
 
 import { render, RenderResult } from '@testing-library/react'
-import { mockFlags } from 'jest-launchdarkly-mock'
 import { useFormContext } from 'react-hook-form'
 
 import { VoiceMessageType } from '@gorgias/api-queries'
 
-import { FeatureFlagKey } from 'config/featureFlags'
 import { FormField } from 'core/forms'
 import { assumeMock } from 'utils/testing'
 
@@ -31,9 +29,6 @@ const useFormContextMock = assumeMock(useFormContext)
 
 describe('<VoiceIntegrationPreferencesCallRecordings />', () => {
     beforeEach(() => {
-        mockFlags({
-            [FeatureFlagKey.CustomRecordingNotification]: true,
-        })
         VoiceMessageFieldMock.mockReturnValue(<div>VoiceMessageField</div>)
         watchMock.mockReturnValue([false, false] as [boolean, boolean])
         useFormContextMock.mockReturnValue(mockUseFormContextReturnValue)
@@ -63,19 +58,6 @@ describe('<VoiceIntegrationPreferencesCallRecordings />', () => {
     })
 
     describe('recording notification settings', () => {
-        it('should not render recording notification settings when FF is off', () => {
-            mockFlags({
-                [FeatureFlagKey.CustomRecordingNotification]: false,
-            })
-
-            const { queryByText } = renderComponent()
-
-            expect(
-                queryByText('Call recording notifications'),
-            ).not.toBeInTheDocument()
-            expect(queryByText('VoiceMessageField')).not.toBeInTheDocument()
-        })
-
         it('should render recording notification settings', () => {
             const { getByText } = renderComponent()
 

@@ -69,7 +69,6 @@ export enum FeatureFlagKey {
     ConvertContactForm = 'convert-contact-form',
     ConvertPerformanceView = 'convert-performance-view',
     CustomerTimeline = 'customer-timeline',
-    CustomRecordingNotification = 'custom-recording-notification',
     DefaultEmailAddress = 'default-email-address',
     DontTriggerLoginsOnInactiveTabs = 'dont-trigger-logins-on-inactive-tabs',
     EnableEmailToStoreMapping = 'enable-email-to-store-mapping',
