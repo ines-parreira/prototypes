@@ -5,6 +5,7 @@ import { v4 as uuidv4 } from 'uuid'
 import { Tooltip } from '@gorgias/merchant-ui-kit'
 
 import { TicketMessage } from 'models/ticket/types'
+import { isInternalNote } from 'tickets/common/utils'
 
 import css from './MessageStatusIndicator.style.less'
 
@@ -64,12 +65,15 @@ function MessageStatusIndicator({ message }: Props) {
     const messageStatus = getMessageStatus(message)
     const { indicator, tooltipText } = messageStatusToIndicator[messageStatus]
 
-    if (!message.from_agent || messageStatus === MessageStatus.Pending) {
+    if (
+        !message.from_agent ||
+        messageStatus === MessageStatus.Pending ||
+        isInternalNote(message.source?.type)
+    ) {
         // for now we don't want to display anything for the `Pending` status
         // as there are many use cases for which messages could remain in this
-        // state indefinitely (e.g. internal notes or messages that were
-        // created by third party apps that never set the sent/opened/failed
-        // datetimes)
+        // state indefinitely (e.g. messages created by third party apps that
+        // never set the sent/opened/failed datetimes)
         return <></>
     }
 

@@ -14,7 +14,7 @@ import {
     whatsAppMessageTemplateToHtml,
 } from 'pages/integrations/integration/components/whatsapp/utils'
 import { EMPTY_SENDER } from 'state/ticket/constants'
-import { canLeaveInternalNote } from 'tickets/common/utils'
+import { isInternalNote } from 'tickets/common/utils'
 
 import { MacroActions, NewMessage } from './types'
 
@@ -58,9 +58,9 @@ export function getMentionIds(
     sourceType: TicketMessageSourceType,
 ) {
     let ids: List<any> = fromJS([])
-    const isInternalNote = canLeaveInternalNote(sourceType)
+    const isInternalNoteMessage = isInternalNote(sourceType)
 
-    if (contentState && isInternalNote) {
+    if (contentState && isInternalNoteMessage) {
         const entityMap = convertToRaw(contentState).entityMap
         _forOwn(entityMap, (entity) => {
             if (entity.type === 'mention') {

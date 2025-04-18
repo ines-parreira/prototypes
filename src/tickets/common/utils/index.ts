@@ -1,4 +1,3 @@
-export { default as canLeaveInternalNote } from './canLeaveInternalNote'
 export { default as getChannelFromSourceType } from './getChannelFromSourceType'
 export { default as getValuePropFromSourceType } from './getValuePropFromSourceType'
 export { default as getVariables } from './getVariables'
@@ -20,3 +19,4 @@ export { default as replaceIntegrationVariables } from './replaceIntegrationVari
 export { default as replaceVariables } from './replaceVariables'
 export { default as responseSourceType } from './responseSourceType'
 export { default as sourceTypeToChannel } from './sourceTypeToChannel'
+export { default as isInternalNote } from './isInternalNote'

@@ -1,5 +1,6 @@
 import { render } from '@testing-library/react'
 
+import { TicketMessageSourceType } from 'business/types/ticket'
 import { message } from 'models/ticket/tests/mocks'
 
 import MessageStatusIndicator, {
@@ -194,6 +195,25 @@ describe('MessageStatusIndicator', () => {
 
         const { container } = render(
             <MessageStatusIndicator message={pendingMessage} />,
+        )
+
+        expect(container).toBeEmptyDOMElement()
+    })
+
+    it('should not render the status indicator if the message is an internal note', () => {
+        const internalNoteMessage = {
+            ...message,
+            from_agent: true,
+            sent_datetime: new Date().toISOString(),
+            opened_datetime: null,
+            failed_datetime: null,
+            source: {
+                type: TicketMessageSourceType.InternalNote,
+            },
+        }
+
+        const { container } = render(
+            <MessageStatusIndicator message={internalNoteMessage} />,
         )
 
         expect(container).toBeEmptyDOMElement()

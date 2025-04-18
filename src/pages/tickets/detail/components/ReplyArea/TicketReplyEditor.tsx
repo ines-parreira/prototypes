@@ -34,7 +34,7 @@ import { notify } from 'state/notifications/actions'
 import { NotificationStatus } from 'state/notifications/types'
 import { getContext } from 'state/prediction/selectors'
 import { RootState } from 'state/types'
-import { canLeaveInternalNote, isRichType } from 'tickets/common/utils'
+import { isInternalNote, isRichType } from 'tickets/common/utils'
 import { getFileTooLargeError, getMaxAttachmentSize } from 'utils/file'
 
 import MacrosQuickReply from './MacrosQuickReply/MacrosQuickReply'
@@ -381,7 +381,7 @@ export class TicketReplyEditorContainer extends Component<Props, State> {
             newMessageType === TicketMessageSourceType.FacebookMessenger
         const isNewMessageSmsType =
             newMessageType === TicketMessageSourceType.Sms
-        const canAddMention = canLeaveInternalNote(newMessageType)
+        const canAddMention = isInternalNote(newMessageType)
         let attachmentsMask: string
 
         const mentionProps = {
