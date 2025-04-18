@@ -104,11 +104,9 @@ export const AIAgentWelcomePageView = (props: AiAgentWelcomePageProps) => {
             store: props.shopName,
         })
 
-        const newStep = hasSkillsetStep ? '' : `/${WizardStepEnum.CHANNELS}`
-        const path =
-            props.shopName && props.shopType
-                ? `/app/ai-agent/${props.shopType}/${props.shopName}/onboarding${newStep}`
-                : aiAgentNavigation.routes.onboardingWizard
+        const path = aiAgentNavigation.routes.onboardingWizardStep(
+            hasSkillsetStep ? undefined : WizardStepEnum.CHANNELS,
+        )
 
         history.push({
             pathname: path,
@@ -117,13 +115,12 @@ export const AIAgentWelcomePageView = (props: AiAgentWelcomePageProps) => {
                 : '',
         })
     }, [
-        aiAgentNavigation.routes.onboardingWizard,
+        aiAgentNavigation.routes,
         handleOnFinishSetupNotification,
         history,
         isAdmin,
         isOnUpdateOnboardingWizard,
         props.shopName,
-        props.shopType,
         hasSkillsetStep,
     ])
 

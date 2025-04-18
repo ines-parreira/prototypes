@@ -2,6 +2,7 @@ import { renderHook } from '@testing-library/react-hooks'
 import { useFlags } from 'launchdarkly-react-client-sdk'
 
 import { FeatureFlagKey } from 'config/featureFlags'
+import { WizardStepEnum } from 'pages/aiAgent/Onboarding/types'
 import { assumeMock } from 'utils/testing'
 
 import { useAiAgentNavigation } from '../useAiAgentNavigation'
@@ -342,6 +343,83 @@ describe('useAiAgentNavigation', () => {
             expect(result.current.routes.newAction('1')).toEqual(
                 '/app/ai-agent/shopify/test/actions/new?template_id=1',
             )
+        })
+    })
+
+    describe('useNavigationItems', () => {
+        describe('onboardingWizardStep', () => {
+            describe.each([
+                { convAiStandaloneMenu: false, convAiOnboarding: false },
+                { convAiStandaloneMenu: false, convAiOnboarding: true },
+            ])(
+                'when ConvAiStandaloneMenu=$convAiStandaloneMenu and ConvAiOnboarding=$convAiOnboarding',
+                ({ convAiStandaloneMenu, convAiOnboarding }) => {
+                    it('should return legacy automation route for ai-agent support set up', () => {
+                        useFlagsMock.mockReturnValue({
+                            [FeatureFlagKey.ConvAiStandaloneMenu]:
+                                convAiStandaloneMenu,
+                            [FeatureFlagKey.ConvAiOnboarding]: convAiOnboarding,
+                        })
+                        const { result } = renderHook(() =>
+                            useAiAgentNavigation({ shopName: 'my-shop' }),
+                        )
+
+                        expect(
+                            result.current.routes.onboardingWizardStep(),
+                        ).toEqual(
+                            '/app/automation/shopify/my-shop/ai-agent/new',
+                        )
+                    })
+                },
+            )
+        })
+
+        describe('when ConvAiStandaloneMenu=true and ConvAiOnboarding=false', () => {
+            it('should return ai-agent route for ai-agent support set up', () => {
+                useFlagsMock.mockReturnValue({
+                    [FeatureFlagKey.ConvAiStandaloneMenu]: true,
+                    [FeatureFlagKey.ConvAiOnboarding]: false,
+                })
+                const { result } = renderHook(() =>
+                    useAiAgentNavigation({ shopName: 'my-shop' }),
+                )
+
+                expect(result.current.routes.onboardingWizardStep()).toEqual(
+                    '/app/ai-agent/shopify/my-shop/new',
+                )
+            })
+        })
+
+        describe('when ConvAiStandaloneMenu=true and ConvAiOnboarding=true', () => {
+            it('should return ai-agent route for ai-agent sales set up when no step', () => {
+                useFlagsMock.mockReturnValue({
+                    [FeatureFlagKey.ConvAiStandaloneMenu]: true,
+                    [FeatureFlagKey.ConvAiOnboarding]: true,
+                })
+                const { result } = renderHook(() =>
+                    useAiAgentNavigation({ shopName: 'my-shop' }),
+                )
+
+                expect(result.current.routes.onboardingWizardStep()).toEqual(
+                    '/app/ai-agent/shopify/my-shop/onboarding',
+                )
+            })
+
+            it('should return ai-agent route for ai-agent sales set up when step', () => {
+                useFlagsMock.mockReturnValue({
+                    [FeatureFlagKey.ConvAiStandaloneMenu]: true,
+                    [FeatureFlagKey.ConvAiOnboarding]: true,
+                })
+                const { result } = renderHook(() =>
+                    useAiAgentNavigation({ shopName: 'my-shop' }),
+                )
+
+                expect(
+                    result.current.routes.onboardingWizardStep(
+                        WizardStepEnum.CHANNELS,
+                    ),
+                ).toEqual('/app/ai-agent/shopify/my-shop/onboarding/channels')
+            })
         })
     })
 })

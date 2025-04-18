@@ -105,6 +105,15 @@ export const getAiAgentNavigationRoutes = (
             isStandaloneMenuEnabled && isStandaloneOnboardingEnabled
                 ? `${basePath}/onboarding`
                 : `${basePath}/new`,
+        onboardingWizardStep: (step?: string) => {
+            if (isStandaloneMenuEnabled && isStandaloneOnboardingEnabled) {
+                return step
+                    ? `${basePath}/onboarding/${step}`
+                    : `${basePath}/onboarding`
+            }
+
+            return `${basePath}/new`
+        },
         previewMode: `${basePath}/${previewPath}`,
         optimize: `${basePath}/optimize`,
         optimizeIntent: (intentId: string) =>
