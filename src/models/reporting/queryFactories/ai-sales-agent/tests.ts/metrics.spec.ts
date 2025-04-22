@@ -1,9 +1,11 @@
 import { OrderDirection } from 'models/api/types'
 import { AiSalesAgentConversationsDimension } from 'models/reporting/cubes/ai-sales-agent/AiSalesAgentConversations'
+import { AiSalesAgentOrdersDimension } from 'models/reporting/cubes/ai-sales-agent/AiSalesAgentOrders'
 import { aiSalesAgentConversationsDefaultFiltersMembers } from 'models/reporting/queryFactories/ai-sales-agent/filters'
 import {
     discountCodesOfferedDrillDownQueryFactory,
     totalNumberOfAutomatedSalesDrillDownQueryFactory,
+    totalNumberOfOrderDrillDownQueryFactory,
     totalNumberofSalesOpportunityConvFromAIAgentDrillDownQueryFactory,
 } from 'models/reporting/queryFactories/ai-sales-agent/metrics'
 import { ReportingFilterOperator } from 'models/reporting/types'
@@ -272,6 +274,95 @@ describe('discountCodesOfferedDrillDownQueryFactory', () => {
                     AiSalesAgentConversationsDimension.TicketId,
                     OrderDirection.Desc,
                 ],
+            ],
+            timezone: 'UTC',
+        })
+    })
+})
+
+describe('totalNumberOfOrderDrillDownQueryFactory', () => {
+    it('should build a query', () => {
+        expect(
+            totalNumberOfOrderDrillDownQueryFactory(
+                {
+                    period: {
+                        start_datetime: '2021-01-01T00:00:00Z',
+                        end_datetime: '2021-01-02T00:00:00Z',
+                    },
+                },
+                'UTC',
+            ),
+        ).toEqual({
+            measures: ['AiSalesAgentOrders.count'],
+            dimensions: [
+                AiSalesAgentOrdersDimension.TicketId,
+                AiSalesAgentOrdersDimension.OrderId,
+                AiSalesAgentOrdersDimension.TotalAmount,
+                AiSalesAgentOrdersDimension.CustomerId,
+            ],
+            filters: [
+                {
+                    member: AiSalesAgentOrdersDimension.IsInfluenced,
+                    operator: ReportingFilterOperator.Equals,
+                    values: ['1'],
+                },
+                {
+                    member: AiSalesAgentOrdersDimension.PeriodStart,
+                    operator: ReportingFilterOperator.AfterDate,
+                    values: ['2021-01-01T00:00:00.000'],
+                },
+                {
+                    member: AiSalesAgentOrdersDimension.PeriodEnd,
+                    operator: ReportingFilterOperator.BeforeDate,
+                    values: ['2021-01-02T00:00:00.000'],
+                },
+            ],
+            limit: DRILLDOWN_QUERY_LIMIT,
+            order: [],
+            timezone: 'UTC',
+        })
+    })
+
+    it('should build a query with sorting', () => {
+        expect(
+            totalNumberOfOrderDrillDownQueryFactory(
+                {
+                    period: {
+                        start_datetime: '2021-01-01T00:00:00Z',
+                        end_datetime: '2021-01-02T00:00:00Z',
+                    },
+                },
+                'UTC',
+                OrderDirection.Desc,
+            ),
+        ).toEqual({
+            measures: ['AiSalesAgentOrders.count'],
+            dimensions: [
+                AiSalesAgentOrdersDimension.TicketId,
+                AiSalesAgentOrdersDimension.OrderId,
+                AiSalesAgentOrdersDimension.TotalAmount,
+                AiSalesAgentOrdersDimension.CustomerId,
+            ],
+            filters: [
+                {
+                    member: AiSalesAgentOrdersDimension.IsInfluenced,
+                    operator: ReportingFilterOperator.Equals,
+                    values: ['1'],
+                },
+                {
+                    member: AiSalesAgentOrdersDimension.PeriodStart,
+                    operator: ReportingFilterOperator.AfterDate,
+                    values: ['2021-01-01T00:00:00.000'],
+                },
+                {
+                    member: AiSalesAgentOrdersDimension.PeriodEnd,
+                    operator: ReportingFilterOperator.BeforeDate,
+                    values: ['2021-01-02T00:00:00.000'],
+                },
+            ],
+            limit: DRILLDOWN_QUERY_LIMIT,
+            order: [
+                [AiSalesAgentOrdersDimension.TicketId, OrderDirection.Desc],
             ],
             timezone: 'UTC',
         })

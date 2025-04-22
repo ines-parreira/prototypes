@@ -6,6 +6,7 @@ import {
 } from 'hooks/reporting/automate/types'
 import { transformIntentName } from 'hooks/reporting/automate/utils'
 import { MergedRecord } from 'hooks/reporting/withEnrichment'
+import { AiSalesAgentOrdersDimension } from 'models/reporting/cubes/ai-sales-agent/AiSalesAgentOrders'
 import { TicketSatisfactionSurveyDimension } from 'models/reporting/cubes/TicketSatisfactionSurveyCube'
 import { VoiceCallDimension } from 'models/reporting/cubes/VoiceCallCube'
 import { EnrichmentFields } from 'models/reporting/types'
@@ -40,6 +41,11 @@ export interface TicketDrillDownRowData extends BaseDrillDownRowData {
     surveyScore?: string | null
     outcome?: string | null
     intent?: string | null
+    order?: {
+        id: number
+        amount: number
+        customer: string
+    } | null
 }
 
 export interface CampaignSaleDetails {
@@ -157,6 +163,11 @@ export const formatTicketDrillDownRowData = ({
         slas: row?.['slas'] ? row['slas'] : {},
         outcome: outcome,
         intent: intent,
+        order: {
+            id: row[AiSalesAgentOrdersDimension.OrderId],
+            amount: row[AiSalesAgentOrdersDimension.TotalAmount],
+            customer: row[EnrichmentFields.CustomerIntegrationDataByExternalId],
+        },
     }
 }
 

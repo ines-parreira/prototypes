@@ -336,6 +336,9 @@ export function useMetricPerDimensionWithEnrichmentOnTwoDimensions(
                         enrichmentFields,
                         enrichmentMapping[idFields[0]],
                     )
+                    if (idFields.length === 1) {
+                        return responseWithFirstDimension
+                    }
                     const responseWithSecondDimension = withEnrichment<
                         (typeof query)['measures'][0],
                         EnrichmentFields,

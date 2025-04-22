@@ -19,79 +19,88 @@ const postEnrichedReportingMock = assumeMock(postEnrichedReporting)
 const withEnrichmentSpy = jest.spyOn(withEnrichment, 'withEnrichment')
 
 describe('useMetricPerDimensionWithEnrichmentOnTwoDimensions', () => {
+    const timezone = 'America'
+    const statsFilters = {
+        period: {
+            start_datetime: '2020-01-16T03:04:56.789-10:00',
+            end_datetime: '2020-01-02T03:04:56.789-10:00',
+        },
+    }
+    const query = totalNumberofSalesOpportunityConvFromAIAgentQueryFactory(
+        statsFilters,
+        timezone,
+    )
+    const results = [
+        {
+            [AiSalesAgentOrdersDimension.TicketId]: 1,
+            metric: 123,
+            [AiSalesAgentOrdersDimension.CustomerId]: 1,
+        },
+        {
+            [AiSalesAgentOrdersDimension.TicketId]: 2,
+            metric: 456,
+            [AiSalesAgentOrdersDimension.CustomerId]: 1,
+        },
+        {
+            [AiSalesAgentOrdersDimension.TicketId]: 3,
+            metric: 789,
+            [AiSalesAgentOrdersDimension.CustomerId]: 1,
+        },
+        {
+            [AiSalesAgentOrdersDimension.TicketId]: 4,
+            metric: 369,
+            [AiSalesAgentOrdersDimension.CustomerId]: 1,
+        },
+        {
+            [AiSalesAgentOrdersDimension.TicketId]: 5,
+            metric: 529,
+            [AiSalesAgentOrdersDimension.CustomerId]: 1,
+        },
+    ]
+
+    const ticketEnrichments = [
+        {
+            [EnrichmentFields.TicketId]: 1,
+            [EnrichmentFields.Status]: 'closed',
+            [EnrichmentFields.TicketName]: 'Ticket 1',
+        },
+        {
+            [EnrichmentFields.TicketId]: 2,
+            [EnrichmentFields.Status]: 'open',
+            [EnrichmentFields.TicketName]: 'Ticket 2',
+        },
+        {
+            [EnrichmentFields.TicketId]: 3,
+            [EnrichmentFields.Status]: 'closed',
+            [EnrichmentFields.TicketName]: 'Ticket 3',
+        },
+        {
+            [EnrichmentFields.TicketId]: 4,
+            [EnrichmentFields.Status]: 'open',
+            [EnrichmentFields.TicketName]: 'Ticket 4',
+        },
+        {
+            [EnrichmentFields.TicketId]: 5,
+            [EnrichmentFields.Status]: 'closed',
+            [EnrichmentFields.TicketName]: 'Ticket 5',
+        },
+    ]
+
+    const customerEnrichments = [
+        {
+            [EnrichmentFields.OrderCustomerId]: 1,
+            [EnrichmentFields.CustomerIntegrationDataByExternalId]:
+                'Marie Curie',
+        },
+    ]
+    const enrichments = [...ticketEnrichments, ...customerEnrichments]
+
     it('should send a query with custom queryFn', async () => {
-        const timezone = 'America'
-        const statsFilters = {
-            period: {
-                start_datetime: '2020-01-16T03:04:56.789-10:00',
-                end_datetime: '2020-01-02T03:04:56.789-10:00',
-            },
+        const enrichmentMapping = {
+            [AiSalesAgentOrdersDimension.TicketId]: EnrichmentFields.TicketId,
+            [AiSalesAgentOrdersDimension.CustomerId]:
+                EnrichmentFields.OrderCustomerId,
         }
-        const query = totalNumberofSalesOpportunityConvFromAIAgentQueryFactory(
-            statsFilters,
-            timezone,
-        )
-        const results = [
-            {
-                [AiSalesAgentOrdersDimension.TicketId]: 1,
-                metric: 123,
-                [AiSalesAgentOrdersDimension.CustomerId]: 1,
-            },
-            {
-                [AiSalesAgentOrdersDimension.TicketId]: 2,
-                metric: 456,
-                [AiSalesAgentOrdersDimension.CustomerId]: 1,
-            },
-            {
-                [AiSalesAgentOrdersDimension.TicketId]: 3,
-                metric: 789,
-                [AiSalesAgentOrdersDimension.CustomerId]: 1,
-            },
-            {
-                [AiSalesAgentOrdersDimension.TicketId]: 4,
-                metric: 369,
-                [AiSalesAgentOrdersDimension.CustomerId]: 1,
-            },
-            {
-                [AiSalesAgentOrdersDimension.TicketId]: 5,
-                metric: 529,
-                [AiSalesAgentOrdersDimension.CustomerId]: 1,
-            },
-        ]
-
-        const enrichments = [
-            {
-                [EnrichmentFields.TicketId]: 1,
-                [EnrichmentFields.Status]: 'closed',
-                [EnrichmentFields.TicketName]: 'Ticket 1',
-            },
-            {
-                [EnrichmentFields.TicketId]: 2,
-                [EnrichmentFields.Status]: 'open',
-                [EnrichmentFields.TicketName]: 'Ticket 2',
-            },
-            {
-                [EnrichmentFields.TicketId]: 3,
-                [EnrichmentFields.Status]: 'closed',
-                [EnrichmentFields.TicketName]: 'Ticket 3',
-            },
-            {
-                [EnrichmentFields.TicketId]: 4,
-                [EnrichmentFields.Status]: 'open',
-                [EnrichmentFields.TicketName]: 'Ticket 4',
-            },
-            {
-                [EnrichmentFields.TicketId]: 5,
-                [EnrichmentFields.Status]: 'closed',
-                [EnrichmentFields.TicketName]: 'Ticket 5',
-            },
-            {
-                [EnrichmentFields.OrderCustomerId]: 1,
-                [EnrichmentFields.CustomerIntegrationDataByExternalId]:
-                    'Marie Curie',
-            },
-        ]
-
         const mockedResponse = {
             isFetching: false,
             isError: false,
@@ -109,13 +118,6 @@ describe('useMetricPerDimensionWithEnrichmentOnTwoDimensions', () => {
             EnrichmentFields.OrderCustomerId,
             EnrichmentFields.CustomerIntegrationDataByExternalId,
         ]
-
-        const enrichmentMapping = {
-            [AiSalesAgentOrdersDimension.TicketId]: EnrichmentFields.TicketId,
-            [AiSalesAgentOrdersDimension.CustomerId]:
-                EnrichmentFields.OrderCustomerId,
-        }
-
         const { result } = renderHook(() =>
             useMetricPerDimensionWithEnrichmentOnTwoDimensions(
                 query,
@@ -341,6 +343,46 @@ describe('useMetricPerDimensionWithEnrichmentOnTwoDimensions', () => {
                 },
                 isError: false,
                 isFetching: false,
+            })
+        })
+    })
+
+    it('should send a query with custom queryFn on only one enrichment mapping', async () => {
+        const enrichmentMapping = {
+            [AiSalesAgentOrdersDimension.TicketId]: EnrichmentFields.TicketId,
+        }
+
+        const mockedResponse = {
+            isFetching: false,
+            isError: false,
+            data: {
+                data: results,
+                enrichment: enrichments,
+            },
+        }
+
+        useEnrichedPostReportingMock.mockReturnValue(mockedResponse as any)
+        postEnrichedReportingMock.mockResolvedValue(mockedResponse as any)
+        const { result } = renderHook(() =>
+            useMetricPerDimensionWithEnrichmentOnTwoDimensions(
+                query,
+                [EnrichmentFields.TicketId],
+                enrichmentMapping,
+            ),
+        )
+
+        const queryFunction =
+            useEnrichedPostReportingMock.mock.calls[0][1]?.queryFn
+
+        await queryFunction?.({} as any)
+
+        await waitFor(() => {
+            expect(result.current).toEqual({
+                isFetching: mockedResponse.isFetching,
+                isError: mockedResponse.isError,
+                data: {
+                    allData: mockedResponse.data,
+                },
             })
         })
     })

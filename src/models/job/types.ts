@@ -1,5 +1,6 @@
 import { HandleTimeCubeWithJoins } from 'models/reporting/cubes/agentxp/HandleTimeCube'
 import { AiSalesAgentConversationsCube } from 'models/reporting/cubes/ai-sales-agent/AiSalesAgentConversations'
+import { AiSalesAgentOrdersCube } from 'models/reporting/cubes/ai-sales-agent/AiSalesAgentOrders'
 import { TicketQAScoreCubeWithJoins } from 'models/reporting/cubes/auto-qa/TicketQAScoreCube'
 import { ConvertOrderConversionCube } from 'models/reporting/cubes/ConvertOrderConversionCube'
 import { HelpdeskCustomerMessagesReceivedEnrichedCubeWithJoins } from 'models/reporting/cubes/HelpdeskCustomerMessagesReceivedEnrichedCube'
@@ -70,6 +71,7 @@ export type DrillDownReportingQuery = ReportingQuery<
     | TicketTagsEnrichedCube
     | TicketMessagesEnrichedResponseTimes
     | AiSalesAgentConversationsCube
+    | AiSalesAgentOrdersCube
 >
 
 export type ReportingQueryJobParams = {

@@ -3,6 +3,8 @@ import classNames from 'classnames'
 import { logEvent, SegmentEvent } from 'common/segment'
 import {
     defaultEnrichmentFields,
+    enrichmentMappingPerMetric,
+    extraEnrichmentFieldsPerMetric,
     useEnrichedDrillDownData,
 } from 'hooks/reporting/useDrillDownData'
 import { TicketQAScoreMeasure } from 'models/reporting/cubes/auto-qa/TicketQAScoreCube'
@@ -148,15 +150,20 @@ export const TicketDrillDownTableContent = ({
 
     const isAiSalesAgentSuccessRateMetric =
         metricData.metricName === AiSalesAgentChart.AiSalesAgentSuccessRate
+    const isAiSalesAgentTotalNumberOfOrdersMetric =
+        metricData.metricName ===
+        AiSalesAgentChart.AiSalesAgentTotalNumberOfOrders
 
     const isAiSalesAgentDiscountOfferedMetric =
         metricData.metricName === AiSalesAgentChart.AiSalesDiscountOffered
 
     const { data, isFetching } = useEnrichedDrillDownData(
         metricData,
-        defaultEnrichmentFields,
+        extraEnrichmentFieldsPerMetric[metricData.metricName] ||
+            defaultEnrichmentFields,
         formatTicketDrillDownRowData,
         EnrichmentFields.TicketId,
+        enrichmentMappingPerMetric[metricData.metricName],
     )
 
     const getTicketColumnWidth = () => {
@@ -184,6 +191,7 @@ export const TicketDrillDownTableContent = ({
         contactReason: 200,
         outcome: 140,
         intent: 180,
+        order: 140,
     }
     const columnWidthsForSkeleton = [
         columnWidths.ticket,
@@ -194,6 +202,7 @@ export const TicketDrillDownTableContent = ({
         columnWidths.contactReason,
         columnWidths.outcome,
         columnWidths.intent,
+        columnWidths.order,
     ].map((width) => width - 40)
 
     return (
@@ -204,6 +213,25 @@ export const TicketDrillDownTableContent = ({
                     width={columnWidths.ticket}
                     className={css.headerCell}
                 />
+                {isAiSalesAgentTotalNumberOfOrdersMetric && (
+                    <>
+                        <HeaderCellProperty
+                            title="Order"
+                            width={columnWidths.order}
+                            className={css.headerCell}
+                        />
+                        <HeaderCellProperty
+                            title="Amount"
+                            width={columnWidths.order}
+                            className={css.headerCell}
+                        />
+                        <HeaderCellProperty
+                            title="Customer"
+                            width={columnWidths.order}
+                            className={css.headerCell}
+                        />
+                    </>
+                )}
                 {(isAiInsightsMetric ||
                     isAiPerformanceMetric ||
                     isAiSalesAgentSuccessRateMetric ||
@@ -244,12 +272,14 @@ export const TicketDrillDownTableContent = ({
                         }
                     />
                 )}
-                <HeaderCellProperty
-                    title="Assignee"
-                    width={columnWidths.assignee}
-                    className={css.headerCell}
-                    tooltip={tooltipHints.assignee}
-                />
+                {!isAiSalesAgentTotalNumberOfOrdersMetric && (
+                    <HeaderCellProperty
+                        title="Assignee"
+                        width={columnWidths.assignee}
+                        className={css.headerCell}
+                        tooltip={tooltipHints.assignee}
+                    />
+                )}
                 <HeaderCellProperty
                     title="Created"
                     width={columnWidths.created}
@@ -346,7 +376,8 @@ export const TicketDrillDownTableContent = ({
                     isAiInsightsCsatMetric ||
                     isAiSalesAgentConversationsMetric ||
                     isAiSalesAgentSuccessRateMetric ||
-                    isAiSalesAgentDiscountOfferedMetric
+                    isAiSalesAgentDiscountOfferedMetric ||
+                    isAiSalesAgentTotalNumberOfOrdersMetric
                 ) && (
                     <HeaderCellProperty
                         title="Contact Reason"
@@ -388,6 +419,19 @@ export const TicketDrillDownTableContent = ({
                                     width: columnWidths.ticket,
                                 }}
                             />
+                            {isAiSalesAgentTotalNumberOfOrdersMetric && (
+                                <>
+                                    <BodyCell width={columnWidths.order}>
+                                        {item.order?.id}
+                                    </BodyCell>
+                                    <BodyCell width={columnWidths.order}>
+                                        {item.order?.amount}
+                                    </BodyCell>
+                                    <BodyCell width={columnWidths.order}>
+                                        {item.order?.customer}
+                                    </BodyCell>
+                                </>
+                            )}
                             {(isAiInsightsMetric ||
                                 isAiPerformanceMetric ||
                                 isAiSalesAgentSuccessRateMetric ||
@@ -437,16 +481,17 @@ export const TicketDrillDownTableContent = ({
                                     }
                                 </BodyCell>
                             )}
-                            <BodyCell width={columnWidths.assignee}>
-                                {item.assignee && (
-                                    <AgentAvatar
-                                        agent={item.assignee}
-                                        avatarSize={24}
-                                        className={css.agent}
-                                    />
-                                )}
-                            </BodyCell>
-
+                            {!isAiSalesAgentTotalNumberOfOrdersMetric && (
+                                <BodyCell width={columnWidths.assignee}>
+                                    {item.assignee && (
+                                        <AgentAvatar
+                                            agent={item.assignee}
+                                            avatarSize={24}
+                                            className={css.agent}
+                                        />
+                                    )}
+                                </BodyCell>
+                            )}
                             <BodyCell width={columnWidths.created}>
                                 {item.ticket.created ? (
                                     <DatetimeLabel

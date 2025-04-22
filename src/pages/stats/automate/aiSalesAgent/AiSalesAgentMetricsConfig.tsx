@@ -6,6 +6,7 @@ import { TimeSeriesFetch, TimeSeriesHook } from 'hooks/reporting/useTimeSeries'
 import {
     discountCodesOfferedDrillDownQueryFactory,
     totalNumberOfAutomatedSalesDrillDownQueryFactory,
+    totalNumberOfOrderDrillDownQueryFactory,
     totalNumberofSalesOpportunityConvFromAIAgentDrillDownQueryFactory,
 } from 'models/reporting/queryFactories/ai-sales-agent/metrics'
 import {
@@ -136,6 +137,7 @@ export type AiSalesAgentDrillDownMetrics =
     | AiSalesAgentChart.AiSalesAgentTotalSalesConv
     | AiSalesAgentChart.AiSalesAgentSuccessRate
     | AiSalesAgentChart.AiSalesDiscountOffered
+    | AiSalesAgentChart.AiSalesAgentTotalNumberOfOrders
 
 type DrillDownConfig = {
     drillDownMetric: AiSalesAgentDrillDownMetrics
@@ -189,6 +191,20 @@ export const AiSalesAgentMetricsWithDrillDownConfig: Record<
         drillDownQuery: discountCodesOfferedDrillDownQueryFactory,
         drillDownMetric: AiSalesAgentChart.AiSalesDiscountOffered,
     },
+    [AiSalesAgentChart.AiSalesAgentTotalNumberOfOrders]: {
+        title: 'Number of orders influenced',
+        hint: {
+            title: 'The number of orders influenced within 7 days of a conversation with the AI Agent for Sales, without human intervention.',
+        },
+        useTrend: useTotalNumberOfOrdersTrend,
+        fetchTrend: fetchTotalNumberOfOrdersTrend,
+        interpretAs: 'more-is-better',
+        metricFormat: 'decimal',
+        drillDownMetric: AiSalesAgentChart.AiSalesAgentTotalNumberOfOrders,
+        showMetric: true,
+        domain: Domain.AiSalesAgent,
+        drillDownQuery: totalNumberOfOrderDrillDownQueryFactory,
+    },
 }
 
 export const AiSalesAgentMetricConfig: Record<
@@ -229,18 +245,6 @@ export const AiSalesAgentMetricConfig: Record<
         fetchTrend: fetchRoiRateTrend,
         interpretAs: 'more-is-better',
         metricFormat: 'ratio',
-        showMetric: false,
-        domain: Domain.AiSalesAgent,
-    },
-    [AiSalesAgentChart.AiSalesAgentTotalNumberOfOrders]: {
-        title: 'Number of orders influenced',
-        hint: {
-            title: 'The number of orders influenced within 7 days of a conversation with the AI Agent for Sales, without human intervention.',
-        },
-        useTrend: useTotalNumberOfOrdersTrend,
-        fetchTrend: fetchTotalNumberOfOrdersTrend,
-        interpretAs: 'more-is-better',
-        metricFormat: 'decimal',
         showMetric: false,
         domain: Domain.AiSalesAgent,
     },

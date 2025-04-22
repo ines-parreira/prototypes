@@ -140,6 +140,28 @@ export const totalNumberOfOrderQueryFactory = (
     }
 }
 
+export const totalNumberOfOrderDrillDownQueryFactory = (
+    filters: StatsFilters,
+    timezone: string,
+    sorting?: OrderDirection,
+): ReportingQuery<AiSalesAgentOrdersCube> => ({
+    ...totalNumberOfOrderQueryFactory(filters, timezone),
+    dimensions: [
+        AiSalesAgentOrdersDimension.TicketId,
+        AiSalesAgentOrdersDimension.OrderId,
+        AiSalesAgentOrdersDimension.TotalAmount,
+        AiSalesAgentOrdersDimension.CustomerId,
+    ],
+    limit: DRILLDOWN_QUERY_LIMIT,
+    ...(sorting
+        ? {
+              order: [[AiSalesAgentOrdersDimension.TicketId, sorting]],
+          }
+        : {
+              order: [],
+          }),
+})
+
 export const totalNumberofSalesOpportunityConvFromAIAgentQueryFactory = (
     filters: StatsFilters,
     timezone: string,

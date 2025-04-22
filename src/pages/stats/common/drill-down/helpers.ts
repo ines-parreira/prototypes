@@ -288,6 +288,10 @@ export const getDrillDownQuery = (
             return AiSalesAgentMetricsWithDrillDownConfig[
                 AiSalesAgentChart.AiSalesDiscountOffered
             ].drillDownQuery
+        case AiSalesAgentChart.AiSalesAgentTotalNumberOfOrders:
+            return AiSalesAgentMetricsWithDrillDownConfig[
+                AiSalesAgentChart.AiSalesAgentTotalNumberOfOrders
+            ].drillDownQuery
     }
 }
 const queryBuilderWithAgentFilter =

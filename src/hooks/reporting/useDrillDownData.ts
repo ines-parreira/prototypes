@@ -3,16 +3,18 @@ import { useMemo } from 'react'
 import { useStatsFilters } from 'hooks/reporting/support-performance/useStatsFilters'
 import {
     useMetricPerDimension,
-    useMetricPerDimensionWithEnrichment,
+    useMetricPerDimensionWithEnrichmentOnTwoDimensions,
 } from 'hooks/reporting/useMetricPerDimension'
 import { IDRecord, MergedRecord } from 'hooks/reporting/withEnrichment'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import { OrderDirection } from 'models/api/types'
 import { DrillDownReportingQuery } from 'models/job/types'
+import { AiSalesAgentOrdersDimension } from 'models/reporting/cubes/ai-sales-agent/AiSalesAgentOrders'
 import { TicketSLADimension } from 'models/reporting/cubes/sla/TicketSLACube'
 import { EnrichmentFields, ReportingQuery } from 'models/reporting/types'
 import { useGetCustomTicketsFieldsDefinitionData } from 'pages/aiAgent/insights/IntentTableWidget/hooks/useGetCustomTicketsFieldsDefinitionData'
+import { AiSalesAgentChart } from 'pages/stats/automate/aiSalesAgent/AiSalesAgentMetricsConfig'
 import {
     BaseDrillDownRowData,
     DrillDownFormatterProps,
@@ -58,6 +60,28 @@ export const defaultEnrichmentFields: EnrichmentFields[] = [
     EnrichmentFields.IsUnread,
     EnrichmentFields.CustomFields,
 ]
+
+export const enrichmentMappingPerMetric: Record<
+    string,
+    Record<string, EnrichmentFields> | undefined
+> = {
+    [AiSalesAgentChart.AiSalesAgentTotalNumberOfOrders]: {
+        [AiSalesAgentOrdersDimension.TicketId]: EnrichmentFields.TicketId,
+        [AiSalesAgentOrdersDimension.CustomerId]:
+            EnrichmentFields.OrderCustomerId,
+    },
+}
+
+export const extraEnrichmentFieldsPerMetric: Record<
+    string,
+    EnrichmentFields[]
+> = {
+    [AiSalesAgentChart.AiSalesAgentTotalNumberOfOrders]: [
+        ...defaultEnrichmentFields,
+        EnrichmentFields.CustomerName,
+        EnrichmentFields.CustomerIntegrationDataByExternalId,
+    ],
+}
 
 export const getDrillDownMetricOrder = (
     metricName: DrillDownMetric['metricName'],
@@ -163,16 +187,20 @@ export function useEnrichedDrillDownData<T>(
     enrichmentFields: EnrichmentFields[],
     getDrillDownFormatter: (props: DrillDownFormatterProps) => T,
     enrichmentIdField: EnrichmentFields,
+    enrichmentMapping?: Record<string, EnrichmentFields>,
 ): DrillDownData<T> {
     const dispatch = useAppDispatch()
     const currentPage = useAppSelector(getDrillDownCurrentPage)
     const query = useDrillDownQuery(metricData)
     const agents = useAppSelector(getHumanAndAutomationBotAgentsJS)
-    const { data: someData, isFetching } = useMetricPerDimensionWithEnrichment(
-        query,
-        enrichmentFields,
-        enrichmentIdField,
-    )
+    const { data: someData, isFetching } =
+        useMetricPerDimensionWithEnrichmentOnTwoDimensions(
+            query,
+            enrichmentFields,
+            enrichmentMapping ?? {
+                [query.dimensions[0]]: enrichmentIdField,
+            },
+        )
 
     const customFieldsIds = useGetCustomTicketsFieldsDefinitionData()
 

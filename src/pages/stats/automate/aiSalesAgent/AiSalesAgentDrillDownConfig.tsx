@@ -1,5 +1,7 @@
 import {
     defaultEnrichmentFields,
+    enrichmentMappingPerMetric,
+    extraEnrichmentFieldsPerMetric,
     useEnrichedDrillDownData,
 } from 'hooks/reporting/useDrillDownData'
 import { EnrichmentFields } from 'models/reporting/types'
@@ -16,9 +18,11 @@ import { DrillDownMetric } from 'state/ui/stats/drillDownSlice'
 const useTicketDrillDownHook = (metricData: DrillDownMetric) =>
     useEnrichedDrillDownData(
         metricData,
-        defaultEnrichmentFields,
+        extraEnrichmentFieldsPerMetric[metricData.metricName] ||
+            defaultEnrichmentFields,
         formatTicketDrillDownRowData,
         EnrichmentFields.TicketId,
+        enrichmentMappingPerMetric[metricData.metricName],
     )
 
 export const AiSalesAgentDrillDownConfig: DomainConfig<AiSalesAgentDrillDownMetrics> =
@@ -40,6 +44,10 @@ export const AiSalesAgentDrillDownConfig: DomainConfig<AiSalesAgentDrillDownMetr
             [AiSalesAgentChart.AiSalesDiscountOffered]:
                 AiSalesAgentMetricsWithDrillDownConfig[
                     AiSalesAgentChart.AiSalesDiscountOffered
+                ],
+            [AiSalesAgentChart.AiSalesAgentTotalNumberOfOrders]:
+                AiSalesAgentMetricsWithDrillDownConfig[
+                    AiSalesAgentChart.AiSalesAgentTotalNumberOfOrders
                 ],
         },
     }
