@@ -20,10 +20,10 @@ import { getOnboardingNotificationStateFixture } from 'pages/aiAgent/fixtures/on
 import {
     CustomerHttpIntegrationDataMock,
     DEFAULT_PLAYGROUND_CUSTOMER,
-} from '../../constants'
-import { getAccountConfigurationWithHttpIntegrationFixture } from '../../fixtures/accountConfiguration.fixture'
-import { getStoreConfigurationFixture } from '../../fixtures/storeConfiguration.fixtures'
-import { useAiAgentOnboardingNotification } from '../../hooks/useAiAgentOnboardingNotification'
+} from '../../../constants'
+import { getAccountConfigurationWithHttpIntegrationFixture } from '../../../fixtures/accountConfiguration.fixture'
+import { getStoreConfigurationFixture } from '../../../fixtures/storeConfiguration.fixtures'
+import { useAiAgentOnboardingNotification } from '../../../hooks/useAiAgentOnboardingNotification'
 import { usePlaygroundForm } from '../../hooks/usePlaygroundForm'
 import { usePlaygroundMessages } from '../../hooks/usePlaygroundMessages'
 import { PlaygroundChat } from './PlaygroundChat'
@@ -44,7 +44,7 @@ jest.mock('models/aiAgent/queries', () => ({
 }))
 const mockUseSearchCustomer = jest.mocked(useSearchCustomer)
 
-jest.mock('../../hooks/useAiAgentOnboardingNotification', () => ({
+jest.mock('../../../hooks/useAiAgentOnboardingNotification', () => ({
     useAiAgentOnboardingNotification: jest.fn(),
 }))
 

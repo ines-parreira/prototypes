@@ -13,7 +13,7 @@ import { AI_AGENT_SENDER } from '../components/PlaygroundMessage/PlaygroundMessa
 import {
     shouldAiAgentResponseDisplay,
     shouldDisplayActions,
-} from './playground-messages.utils'
+} from '../utils/playground-messages.utils'
 
 const AI_AGENT_MESSAGE_TYPE_TO_TICKET_OUTCOME: Record<string, TicketOutcome> = {
     [AiAgentMessageType.WAIT_FOR_CLOSE_TICKET_CONFIRMATION]: TicketOutcome.WAIT,

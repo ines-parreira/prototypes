@@ -1,4 +1,4 @@
-import { PlaygroundChannels } from '../components/PlaygroundChat/PlaygroundChat.types'
+import { PlaygroundChannels } from '../Playground/components/PlaygroundChat/PlaygroundChat.types'
 
 export const customToneOfVoicePreviewFixture = {
     domain: 'acme',

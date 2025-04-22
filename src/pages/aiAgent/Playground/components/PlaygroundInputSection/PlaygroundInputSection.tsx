@@ -13,7 +13,7 @@ import {
     PLAYGROUND_PROMPT_CONTENT,
     WIZARD_POST_COMPLETION_QUERY_KEY,
     WIZARD_POST_COMPLETION_STATE,
-} from '../../constants'
+} from '../../../constants'
 import { PlaygroundCustomer } from '../../types'
 import { PlaygroundAction } from '../PlaygroundActions/types'
 import {

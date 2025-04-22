@@ -5,9 +5,9 @@ import {
     TicketOutcome,
 } from 'models/aiAgentPlayground/types'
 
+import { getStoreConfigurationFixture } from '../../../fixtures/storeConfiguration.fixtures'
+import { getSubmitPlaygroundTicketResponseFixture } from '../../../fixtures/submitPlaygroundTicketResponse.fixture'
 import { AI_AGENT_SENDER } from '../../components/PlaygroundMessage/PlaygroundMessage'
-import { getStoreConfigurationFixture } from '../../fixtures/storeConfiguration.fixtures'
-import { getSubmitPlaygroundTicketResponseFixture } from '../../fixtures/submitPlaygroundTicketResponse.fixture'
 import { handleAiAgentResponse } from '../playground-handler.utils'
 
 const DATE = new Date('2020-01-01')

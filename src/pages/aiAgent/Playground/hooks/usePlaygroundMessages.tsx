@@ -14,6 +14,7 @@ import {
 } from 'models/aiAgentPlayground/types'
 import { reportError } from 'utils/errors'
 
+import { PLAYGROUND_CUSTOMER_MOCK } from '../../constants'
 import {
     PlaygroundChannelAvailability,
     PlaygroundChannels,
@@ -23,7 +24,6 @@ import {
     GREETING_MESSAGE,
     PlaygroundGenericErrorMessage,
 } from '../components/PlaygroundMessage/PlaygroundMessage'
-import { PLAYGROUND_CUSTOMER_MOCK } from '../constants'
 import { PlaygroundCustomer } from '../types'
 import { handleAiAgentResponse } from '../utils/playground-handler.utils'
 import {

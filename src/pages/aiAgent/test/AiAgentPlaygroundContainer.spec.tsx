@@ -22,13 +22,13 @@ import { notify } from 'state/notifications/actions'
 import { RootState } from 'state/types'
 import { assumeMock, renderWithRouter } from 'utils/testing'
 
-import { AiAgentPlaygroundContainer } from '../AiAgentPlaygroundContainer'
 import { AI_AGENT, TEST } from '../constants'
 import { getAccountConfigurationWithHttpIntegrationFixture } from '../fixtures/accountConfiguration.fixture'
 import { getStoreConfigurationFixture } from '../fixtures/storeConfiguration.fixtures'
 import { useGetOrCreateSnippetHelpCenter } from '../hooks/useGetOrCreateSnippetHelpCenter'
-import { usePlaygroundMessages } from '../hooks/usePlaygroundMessages'
 import { usePublicResources } from '../hooks/usePublicResources'
+import { AiAgentPlaygroundContainer } from '../Playground/AiAgentPlaygroundContainer'
+import { usePlaygroundMessages } from '../Playground/hooks/usePlaygroundMessages'
 
 const mockStore = configureMockStore()
 
@@ -42,7 +42,7 @@ jest.mock('utils/errors', () => ({
 }))
 
 // Test playground chat in the different file
-jest.mock('../components/PlaygroundChat/PlaygroundChat', () => ({
+jest.mock('../Playground/components/PlaygroundChat/PlaygroundChat', () => ({
     PlaygroundChat: jest.fn(() => <div>PlaygroundChat</div>),
 }))
 
@@ -61,7 +61,7 @@ const mockUseGetAccountConfiguration = assumeMock(useGetAccountConfiguration)
 jest.mock('../hooks/usePublicResources')
 const mockUsePublicResources = assumeMock(usePublicResources)
 
-jest.mock('../hooks/usePlaygroundMessages')
+jest.mock('../Playground/hooks/usePlaygroundMessages')
 const mockUsePlaygroundMessages = assumeMock(usePlaygroundMessages)
 
 jest.mock('../hooks/useGetOrCreateSnippetHelpCenter', () => ({

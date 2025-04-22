@@ -17,8 +17,8 @@ import { ProductCarousel } from 'pages/common/components/ProductCarousel'
 import { assertUnreachable } from 'utils'
 import { sanitizeHtmlDefault } from 'utils/html'
 
+import TicketEvent from '../../../components/TicketEvent/TicketEvent'
 import { PlaygroundChannels } from '../PlaygroundChat/PlaygroundChat.types'
-import TicketEvent from '../TicketEvent/TicketEvent'
 
 import css from './PlaygroundMessage.less'
 

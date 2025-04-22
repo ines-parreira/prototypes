@@ -10,7 +10,7 @@ import {
 import { PlaygroundPromptType } from 'models/aiAgentPlayground/types'
 import Alert, { AlertType } from 'pages/common/components/Alert/Alert'
 
-import { useAiAgentOnboardingNotification } from '../../hooks/useAiAgentOnboardingNotification'
+import { useAiAgentOnboardingNotification } from '../../../hooks/useAiAgentOnboardingNotification'
 import { usePlaygroundForm } from '../../hooks/usePlaygroundForm'
 import { usePlaygroundMessages } from '../../hooks/usePlaygroundMessages'
 import {

@@ -90,18 +90,6 @@ export type GuidanceFormFields = {
     isVisible: boolean
 }
 
-export type PlaygroundTemplateMessage = {
-    id: number
-    title: string
-    content: string
-}
-
-export type PlaygroundCustomer = {
-    email: string
-    name?: string
-    id: number
-}
-
 export type HandoverCustomizationChatFallbackSettingsFormMultiLanguageValues = {
     [key: string]: HandoverCustomizationChatFallbackSettingsFormValues
 }

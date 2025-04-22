@@ -11,7 +11,7 @@ import {
     TicketOutcome,
 } from 'models/aiAgentPlayground/types'
 
-import { AI_AGENT_SENDER } from '../components/PlaygroundMessage/PlaygroundMessage'
+import { AI_AGENT_SENDER } from '../Playground/components/PlaygroundMessage/PlaygroundMessage'
 
 export const playgroundMessageFixture: PlaygroundTextMessage = {
     type: MessageType.MESSAGE,

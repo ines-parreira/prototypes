@@ -3,10 +3,10 @@ import { useParams } from 'react-router-dom'
 
 import { FeatureFlagKey } from 'config/featureFlags'
 
-import PostCompletionWizardModal from './AiAgentOnboardingWizard/PostCompletionWizardModal'
+import PostCompletionWizardModal from '../AiAgentOnboardingWizard/PostCompletionWizardModal'
+import { AiAgentLayout } from '../components/AiAgentLayout/AiAgentLayout'
+import { AI_AGENT, TEST } from '../constants'
 import { AiAgentPlaygroundView } from './AiAgentPlaygroundView'
-import { AiAgentLayout } from './components/AiAgentLayout/AiAgentLayout'
-import { AI_AGENT, TEST } from './constants'
 
 import css from './AiAgentPlaygroundContainer.less'
 

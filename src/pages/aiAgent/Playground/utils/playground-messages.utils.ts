@@ -13,6 +13,10 @@ import {
 } from 'models/aiAgentPlayground/types'
 
 import {
+    CustomerHttpIntegrationDataMock,
+    PLAYGROUND_PROMPT_CONTENT,
+} from '../../constants'
+import {
     PlaygroundChannelAvailability,
     PlaygroundChannels,
     PlaygroundFormValues,
@@ -21,10 +25,6 @@ import {
     AI_AGENT_SENDER,
     GREETING_MESSAGE,
 } from '../components/PlaygroundMessage/PlaygroundMessage'
-import {
-    CustomerHttpIntegrationDataMock,
-    PLAYGROUND_PROMPT_CONTENT,
-} from '../constants'
 
 type PlaygroundMessageMeta = {
     ai_agent_message_type: string

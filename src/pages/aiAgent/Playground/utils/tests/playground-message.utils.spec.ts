@@ -8,9 +8,9 @@ import {
     PlaygroundPromptType,
 } from 'models/aiAgentPlayground/types'
 
+import { DEFAULT_PLAYGROUND_CUSTOMER } from '../../../constants'
+import { getSubmitPlaygroundTicketResponseFixture } from '../../../fixtures/submitPlaygroundTicketResponse.fixture'
 import { GREETING_MESSAGE } from '../../components/PlaygroundMessage/PlaygroundMessage'
-import { DEFAULT_PLAYGROUND_CUSTOMER } from '../../constants'
-import { getSubmitPlaygroundTicketResponseFixture } from '../../fixtures/submitPlaygroundTicketResponse.fixture'
 import {
     getPlaygroundMessageMeta,
     mapPlaygroundFormValuesToMessage,

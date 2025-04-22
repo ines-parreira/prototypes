@@ -4,8 +4,8 @@ import { LoadingSpinner } from '@gorgias/merchant-ui-kit'
 
 import { StoreConfiguration } from 'models/aiAgent/types'
 
-import { useFileIngestion } from '../../hooks/useFileIngestion'
-import { usePublicResources } from '../../hooks/usePublicResources'
+import { useFileIngestion } from '../../../hooks/useFileIngestion'
+import { usePublicResources } from '../../../hooks/usePublicResources'
 import { MissingKnowledgeSourceAlert } from './PlaygroundPrerequisitesAlerts'
 
 import css from './PlaygroundPrerequisites.less'

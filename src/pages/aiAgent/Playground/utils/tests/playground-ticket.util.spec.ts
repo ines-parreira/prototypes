@@ -7,7 +7,7 @@ import {
     CustomerHttpIntegrationDataMock,
     DEFAULT_PLAYGROUND_CUSTOMER,
     PLAYGROUND_CUSTOMER_MOCK,
-} from '../../constants'
+} from '../../../constants'
 import {
     createMockHttpIntegrationPayload,
     getTicketCustomer,

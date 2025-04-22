@@ -8,7 +8,7 @@ import { useSearchCustomer } from 'models/aiAgent/queries'
 import {
     CustomerHttpIntegrationDataMock,
     DEFAULT_PLAYGROUND_CUSTOMER,
-} from '../../constants'
+} from '../../../constants'
 import { PlaygroundCustomerSelection } from './PlaygroundCustomerSelection'
 
 jest.mock('models/aiAgent/queries', () => ({

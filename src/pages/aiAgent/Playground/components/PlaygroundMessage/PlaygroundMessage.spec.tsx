@@ -17,7 +17,7 @@ import {
     playgroundPlaceholderMessageFixture,
     playgroundPromptMessageFixture,
     playgroundTicketEventMessageFixture,
-} from '../../fixtures/playgroundMessages.fixture'
+} from '../../../fixtures/playgroundMessages.fixture'
 import PlaygroundMessage, {
     PlaygroundGenericErrorMessage,
 } from './PlaygroundMessage'

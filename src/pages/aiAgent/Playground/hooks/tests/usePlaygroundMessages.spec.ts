@@ -12,10 +12,10 @@ import {
     PLAYGROUND_CUSTOMER_MOCK,
 } from 'pages/aiAgent/constants'
 
+import { playgroundMessageFixture } from '../../../fixtures/playgroundMessages.fixture'
+import { getStoreConfigurationFixture } from '../../../fixtures/storeConfiguration.fixtures'
+import { getSubmitPlaygroundTicketResponseFixture } from '../../../fixtures/submitPlaygroundTicketResponse.fixture'
 import { PlaygroundChannels } from '../../components/PlaygroundChat/PlaygroundChat.types'
-import { playgroundMessageFixture } from '../../fixtures/playgroundMessages.fixture'
-import { getStoreConfigurationFixture } from '../../fixtures/storeConfiguration.fixtures'
-import { getSubmitPlaygroundTicketResponseFixture } from '../../fixtures/submitPlaygroundTicketResponse.fixture'
 import { getTicketCustomer } from '../../utils/playground-ticket.util'
 import { usePlaygroundMessages } from '../usePlaygroundMessages'
 

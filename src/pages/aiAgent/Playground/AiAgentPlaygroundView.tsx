@@ -20,13 +20,13 @@ import { notify } from 'state/notifications/actions'
 import { NotificationStatus } from 'state/notifications/types'
 import { reportError } from 'utils/errors'
 
+import { useAiAgentNavigation } from '../hooks/useAiAgentNavigation'
+import { useGetOrCreateSnippetHelpCenter } from '../hooks/useGetOrCreateSnippetHelpCenter'
 import { PlaygroundChat } from './components/PlaygroundChat/PlaygroundChat'
 import { CheckPlaygroundPrerequisites } from './components/PlaygroundPrerequisites/PlaygroundPrerequisites'
 import { MissingKnowledgeSourceAlert } from './components/PlaygroundPrerequisites/PlaygroundPrerequisitesAlerts'
-import { useAiAgentNavigation } from './hooks/useAiAgentNavigation'
-import { useGetOrCreateSnippetHelpCenter } from './hooks/useGetOrCreateSnippetHelpCenter'
 
-import css from './AiAgentMainViewContainer.less'
+import css from './AiAgentPlaygroundView.less'
 
 type Props = {
     shopName: string
