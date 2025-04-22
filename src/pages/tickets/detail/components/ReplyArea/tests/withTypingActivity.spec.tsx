@@ -1,6 +1,4 @@
-import React from 'react'
-
-import { render } from '@testing-library/react'
+import { act, render, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 
 import { useAgentActivity } from '@gorgias/realtime'
@@ -12,7 +10,9 @@ const mockUseAgentActivity = useAgentActivity as jest.Mock
 const mockStartTyping = jest.fn()
 const mockStopTyping = jest.fn()
 
-jest.useFakeTimers()
+const WrappedComponent = ({ handleTypingActivity }: TypingActivityProps) => {
+    return <div onClick={handleTypingActivity}>wrapped</div>
+}
 
 describe('withTypingActivity', () => {
     beforeEach(() => {
@@ -20,46 +20,67 @@ describe('withTypingActivity', () => {
             startTyping: mockStartTyping,
             stopTyping: mockStopTyping,
         })
-        jest.clearAllMocks()
     })
 
-    afterEach(() => {
-        jest.clearAllTimers()
-    })
-
-    const WrappedComponent = ({
-        handleTypingActivity,
-    }: TypingActivityProps) => {
-        return <div onClick={handleTypingActivity}>wrapped</div>
-    }
-
-    it('should handle typing start', () => {
+    it('should handle typing start', async () => {
         const Component = withTypingActivity(WrappedComponent)
         const { getByText } = render(<Component />)
 
-        userEvent.click(getByText('wrapped'))
-        expect(mockStartTyping).toHaveBeenCalled()
+        act(() => {
+            userEvent.click(getByText('wrapped'))
+        })
+
+        await waitFor(() => {
+            expect(mockStartTyping).toHaveBeenCalledTimes(1)
+        })
     })
 
-    it('should handle typing stop after delay', () => {
+    it('should only call start typing once', async () => {
         const Component = withTypingActivity(WrappedComponent)
         const { getByText } = render(<Component />)
 
-        userEvent.click(getByText('wrapped'))
-        jest.runAllTimers()
+        act(() => {
+            userEvent.click(getByText('wrapped'))
+            userEvent.click(getByText('wrapped'))
+            userEvent.click(getByText('wrapped'))
+        })
 
-        expect(mockStopTyping).toHaveBeenCalled()
+        await waitFor(() => {
+            expect(mockStartTyping).toHaveBeenCalledTimes(1)
+        })
     })
 
-    it('should cleanup throttled and debounced functions on unmount', () => {
+    it('should handle typing stop after delay', async () => {
+        jest.useFakeTimers()
+        const Component = withTypingActivity(WrappedComponent)
+        const { getByText } = render(<Component />)
+
+        act(() => {
+            userEvent.click(getByText('wrapped'))
+        })
+
+        jest.advanceTimersByTime(3000)
+        jest.useRealTimers()
+
+        await waitFor(() => {
+            expect(mockStartTyping).toHaveBeenCalledTimes(1)
+            expect(mockStopTyping).toHaveBeenCalledTimes(1)
+        })
+    })
+
+    it('should cleanup throttled and debounced functions on unmount', async () => {
         const Component = withTypingActivity(WrappedComponent)
         const { getByText, unmount } = render(<Component />)
 
-        userEvent.click(getByText('wrapped'))
-        unmount()
-        jest.runAllTimers()
+        act(() => {
+            userEvent.click(getByText('wrapped'))
+        })
 
-        expect(mockStartTyping).toHaveBeenCalledTimes(1)
-        expect(mockStopTyping).not.toHaveBeenCalled()
+        unmount()
+
+        await waitFor(() => {
+            expect(mockStartTyping).toHaveBeenCalledTimes(1)
+            expect(mockStopTyping).toHaveBeenCalledTimes(1)
+        })
     })
 })

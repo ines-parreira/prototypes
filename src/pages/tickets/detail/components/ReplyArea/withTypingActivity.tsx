@@ -1,7 +1,6 @@
-import React, { useCallback } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 
-import _debounce from 'lodash/debounce'
-import _throttle from 'lodash/throttle'
+import { debounce } from 'lodash'
 
 import { useAgentActivity } from '@gorgias/realtime'
 
@@ -15,33 +14,33 @@ export default function withTypingActivity<P>(
     WrappedComponent: React.ComponentType<P & TypingActivityProps>,
 ) {
     return function WithTypingActivityWrapper(props: P) {
+        const [isTyping, setIsTyping] = useState(false)
         const { startTyping, stopTyping } = useAgentActivity()
 
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-        const throttledStartTyping = useCallback(
-            _throttle(startTyping, TYPING_ACTIVITY_AGENT_TIMEOUT_MS, {
-                trailing: false,
-            }),
-            [startTyping],
+        // eslint-disable-next-line exhaustive-deps
+        const debouncedStopTyping = useCallback(
+            debounce(() => {
+                setIsTyping(false)
+            }, TYPING_ACTIVITY_AGENT_TIMEOUT_MS),
+            [],
         )
 
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-        const debouncedStopTyping = useCallback(
-            _debounce(stopTyping, TYPING_ACTIVITY_AGENT_TIMEOUT_MS),
-            [stopTyping],
-        )
+        useEffect(() => {
+            if (isTyping) {
+                startTyping()
+            }
+
+            return () => {
+                if (isTyping) {
+                    stopTyping()
+                }
+            }
+        }, [isTyping, startTyping, stopTyping])
 
         const handleTypingActivity = useCallback(() => {
-            throttledStartTyping()
+            setIsTyping(true)
             debouncedStopTyping()
-        }, [throttledStartTyping, debouncedStopTyping])
-
-        React.useEffect(() => {
-            return () => {
-                throttledStartTyping.cancel()
-                debouncedStopTyping.cancel()
-            }
-        }, [throttledStartTyping, debouncedStopTyping])
+        }, [])
 
         return (
             <WrappedComponent
