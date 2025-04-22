@@ -68,6 +68,7 @@ const useStoreConfigurations = (
         useStoreConfigurationForAccount({
             accountDomain,
             storesName: filteredStoresName,
+            withFloatingInput: true,
         })
 
     const storeConfigurations: StoreConfiguration[] = useMemo(() => {

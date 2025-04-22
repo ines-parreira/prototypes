@@ -7,11 +7,13 @@ export const useStoreConfigurationForAccount = ({
     accountDomain,
     storesName,
     withWizard,
+    withFloatingInput,
     enabled,
 }: {
     accountDomain: string
     storesName: string[]
     withWizard?: boolean
+    withFloatingInput?: boolean
     enabled?: boolean
 }) => {
     const {
@@ -22,6 +24,7 @@ export const useStoreConfigurationForAccount = ({
             accountDomain,
             storesName,
             withWizard,
+            withFloatingInput,
         },
         { retry: 1, refetchOnWindowFocus: false, enabled: enabled ?? true },
     )

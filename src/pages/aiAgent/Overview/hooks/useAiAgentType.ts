@@ -43,6 +43,7 @@ export const useAiAgentTypeForAccount = (): {
     const { isLoading, storeConfigurations } = useStoreConfigurationForAccount({
         accountDomain,
         storesName,
+        withFloatingInput: true,
     })
 
     // Get a deduplicated list of scopes

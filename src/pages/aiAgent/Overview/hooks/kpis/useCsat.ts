@@ -26,6 +26,7 @@ export const useCsat = (filters: StatsFilters, timezone: string): KpiMetric => {
         useStoreConfigurationForAccount({
             accountDomain,
             storesName,
+            withFloatingInput: true,
         })
 
     const hasEmailAgentEnabled = useMemo(

@@ -32,6 +32,7 @@ export type GetStoreConfigurationForAccountParams = {
     accountDomain: string
     storesName: string[]
     withWizard?: boolean
+    withFloatingInput?: boolean
 }
 
 export type GetStoreHandoverConfigurationParams = {

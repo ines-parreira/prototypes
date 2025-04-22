@@ -16,9 +16,11 @@ export const useFetchAiAgentStoreConfigurationData = ({
         {
             accountDomain,
             storeName,
+            withFloatingInput: true,
         },
         { enabled, refetchOnWindowFocus },
     )
+
     return {
         data: data?.data.storeConfiguration,
         isLoading,

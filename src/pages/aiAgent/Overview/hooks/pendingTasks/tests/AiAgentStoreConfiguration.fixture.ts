@@ -31,6 +31,8 @@ export class AiAgentStoreConfigurationFixture {
             | 'withCreatedDatetime'
             | 'withDiscountLevelStrategy'
             | 'withoutDiscountLevelStrategy'
+            | 'withFloatingChatInputConfiguration'
+            | 'withoutFloatingChatInputConfiguration'
         >
     }
 
@@ -137,6 +139,22 @@ export class AiAgentStoreConfigurationFixture {
             DiscountStrategy.Balanced
 
         return this as AiAgentStoreConfigurationFixtureFullyConfigured
+    }
+
+    withFloatingChatInputConfiguration(scopes: AiAgentScope[]) {
+        this.aiAgentStoreConfigurationData.scopes = scopes
+        this.aiAgentStoreConfigurationData.floatingChatInputConfiguration = {
+            isEnabled: true,
+        }
+        return this
+    }
+
+    withoutFloatingChatInputConfiguration(scopes: AiAgentScope[]) {
+        this.aiAgentStoreConfigurationData.scopes = scopes
+        this.aiAgentStoreConfigurationData.floatingChatInputConfiguration = {
+            isEnabled: false,
+        }
+        return this
     }
 
     withScopes(scopes: AiAgentScope[]) {

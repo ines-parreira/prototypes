@@ -1,4 +1,5 @@
 import { useAiAgentNavigation } from 'pages/aiAgent/hooks/useAiAgentNavigation'
+import { EnableInputLauncherOnChatTask } from 'pages/aiAgent/Overview/hooks/pendingTasks/tasks/EnableInputLauncherOnChat.task'
 import { GiveFeedbackAIAgentTask } from 'pages/aiAgent/Overview/hooks/pendingTasks/tasks/GiveFeedbackAIAgent.task'
 import { SetUpYourEmailTask } from 'pages/aiAgent/Overview/hooks/pendingTasks/tasks/SetUpYourEmail.task'
 import { Task } from 'pages/aiAgent/Overview/hooks/pendingTasks/tasks/Task'
@@ -80,6 +81,7 @@ const tasksPerAiAgentType: Record<
         new SetYourActionsLiveTask(data, routes),
         new GiveFeedbackAIAgentTask(data, routes),
         new UpdateYourDiscountStrategyTask(data, routes),
+        new EnableInputLauncherOnChatTask(data, routes),
     ],
     sales: (data: RuleEngineData, routes: RuleEngineRoutes) => [
         new InstallYourChatTask(data, routes),
@@ -95,6 +97,7 @@ const tasksPerAiAgentType: Record<
         new TestAIAgentTask(data, routes),
         new GiveFeedbackAIAgentTask(data, routes),
         new UpdateYourDiscountStrategyTask(data, routes),
+        new EnableAIAgentOnEmailTask(data, routes),
     ],
     support: (data: RuleEngineData, routes: RuleEngineRoutes) => [
         new SetUpYourEmailTask(data, routes),
