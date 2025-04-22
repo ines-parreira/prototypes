@@ -84,8 +84,8 @@ importers:
         specifier: ^0.29.0
         version: 0.29.0(react-dom@17.0.2(react@17.0.2))(react@17.0.2)(reactstrap@8.9.0(react-dom@17.0.2(react@17.0.2))(react@17.0.2))
       '@gorgias/realtime':
-        specifier: ^0.7.2
-        version: 0.7.2(@types/pubnub@7.4.2)(encoding@0.1.13)(react-dom@17.0.2(react@17.0.2))(react-native@0.78.0(@babel/core@7.23.9)(@babel/preset-env@7.10.2(@babel/core@7.23.9))(@types/react@17.0.83)(react@17.0.2))(react@17.0.2)
+        specifier: ^0.8.0
+        version: 0.8.0(@types/pubnub@7.4.2)(encoding@0.1.13)(react-dom@17.0.2(react@17.0.2))(react-native@0.78.0(@babel/core@7.23.9)(@babel/preset-env@7.10.2(@babel/core@7.23.9))(@types/react@17.0.83)(react@17.0.2))(react@17.0.2)
       '@hookform/resolvers':
         specifier: ^3.10.0
         version: 3.10.0(react-hook-form@7.52.1(react@17.0.2))
@@ -2842,8 +2842,8 @@ packages:
       react: '>=17'
       reactstrap: ^8.9.0
 
-  '@gorgias/realtime@0.7.2':
-    resolution: {integrity: sha512-A0ShOfNrqsJpJ9UhOLiUytG6QkmE87dwy378rMOecVJL5VtBUtMItK7hxiAE7j81173/ijcigXfjKtqckgd0jQ==, tarball: https://npm.pkg.github.com/download/@gorgias/realtime/0.7.2/e5be876b8bfb6d92148de12790d108e676ff71b0}
+  '@gorgias/realtime@0.8.0':
+    resolution: {integrity: sha512-yb6THB9n21OtyoCJDmUaRvnT3i1tAQcfLYdBKDt1dMj6r0xDsnh2QLGQ5snOCayh4ZafhGArFHt0+eFO5uUCjA==, tarball: https://npm.pkg.github.com/download/@gorgias/realtime/0.8.0/13dfebf39ede1c7a67dde761d2742669927b6e5e}
     engines: {node: '>=18'}
     peerDependencies:
       react: ^17
@@ -14032,7 +14032,7 @@ snapshots:
     transitivePeerDependencies:
       - react-dom
 
-  '@gorgias/realtime@0.7.2(@types/pubnub@7.4.2)(encoding@0.1.13)(react-dom@17.0.2(react@17.0.2))(react-native@0.78.0(@babel/core@7.23.9)(@babel/preset-env@7.10.2(@babel/core@7.23.9))(@types/react@17.0.83)(react@17.0.2))(react@17.0.2)':
+  '@gorgias/realtime@0.8.0(@types/pubnub@7.4.2)(encoding@0.1.13)(react-dom@17.0.2(react@17.0.2))(react-native@0.78.0(@babel/core@7.23.9)(@babel/preset-env@7.10.2(@babel/core@7.23.9))(@types/react@17.0.83)(react@17.0.2))(react@17.0.2)':
     dependencies:
       '@gorgias/api-queries': 0.6.28
       '@tanstack/react-query': 4.36.1(react-dom@17.0.2(react@17.0.2))(react-native@0.78.0(@babel/core@7.23.9)(@babel/preset-env@7.10.2(@babel/core@7.23.9))(@types/react@17.0.83)(react@17.0.2))(react@17.0.2)
