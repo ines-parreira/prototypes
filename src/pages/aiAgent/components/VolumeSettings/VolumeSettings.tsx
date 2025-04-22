@@ -8,27 +8,26 @@ import { z } from 'zod'
 import { Box, Button } from '@gorgias/merchant-ui-kit'
 
 import { FeatureFlagKey } from 'config/featureFlags'
-import Launcher from 'gorgias-design-system/Launcher/Launcher'
 import useAppDispatch from 'hooks/useAppDispatch'
-import { SalesVolumeData } from 'models/aiAgent/types'
+import { ConversationPreview } from 'pages/aiAgent/components/VolumeSettings/ConversationPreview'
 import { CHANGES_SAVED_SUCCESS } from 'pages/aiAgent/constants'
 import { useAiAgentStoreConfigurationContext } from 'pages/aiAgent/providers/AiAgentStoreConfigurationContext'
 import UnsavedChangesPrompt from 'pages/common/components/UnsavedChangesPrompt'
-import { NewToggleButton } from 'pages/common/forms/NewToggleButton'
 import { notify } from 'state/notifications/actions'
 import { NotificationStatus } from 'state/notifications/types'
+
+import { ConversationLauncherSettings } from './ConversationLauncherSettings'
+import { ConversationStartersSettings } from './ConversationStartersSettings'
 
 import css from './VolumeSettings.less'
 
 const volumeSchema = z.object({
     isConversationStartersEnabled: z.boolean(),
+    isFloatingInputEnabled: z.boolean(),
+    isFloatingInputDesktopOnly: z.boolean(),
 })
 
-const messages = [
-    'Can this product be used daily?',
-    'Is this suitable for sensitive skin?',
-    'Does this contain fragrances?',
-]
+type SalesVolumeData = z.infer<typeof volumeSchema>
 
 export const VolumeSettings = () => {
     const dispatch = useAppDispatch()
@@ -43,118 +42,79 @@ export const VolumeSettings = () => {
         values: {
             isConversationStartersEnabled:
                 storeConfiguration?.isConversationStartersEnabled ?? false,
+            isFloatingInputEnabled:
+                storeConfiguration?.floatingChatInputConfiguration?.isEnabled ??
+                false,
+            isFloatingInputDesktopOnly:
+                storeConfiguration?.floatingChatInputConfiguration
+                    ?.isDesktopOnly ?? false,
         },
         mode: 'onChange',
         resolver: zodResolver(volumeSchema),
     })
 
     const {
-        watch,
         handleSubmit,
-        setValue,
         reset,
         formState: { isSubmitting, isDirty },
     } = methods
 
-    const isConversationStartersEnabled = watch('isConversationStartersEnabled')
+    const onSave = useCallback(
+        async (data: SalesVolumeData) => {
+            if (storeConfiguration) {
+                try {
+                    await updateStoreConfiguration({
+                        ...storeConfiguration,
+                        isConversationStartersEnabled:
+                            data.isConversationStartersEnabled,
+                        floatingChatInputConfiguration: {
+                            ...storeConfiguration?.floatingChatInputConfiguration,
+                            isEnabled: data.isFloatingInputEnabled,
+                            isDesktopOnly: data.isFloatingInputDesktopOnly,
+                        },
+                    })
 
-    const toggle = useCallback(() => {
-        if (isConversationStartersFeatureEnabled) {
-            setValue(
-                'isConversationStartersEnabled',
-                !isConversationStartersEnabled,
-                {
-                    shouldDirty: true,
-                    shouldValidate: false,
-                },
-            )
-        }
-    }, [
-        isConversationStartersFeatureEnabled,
-        isConversationStartersEnabled,
-        setValue,
-    ])
-
-    const onSave = useCallback(async () => {
-        if (storeConfiguration) {
-            try {
-                await updateStoreConfiguration({
-                    ...storeConfiguration,
-                    isConversationStartersEnabled,
-                })
-
-                void dispatch(
-                    notify({
-                        message: CHANGES_SAVED_SUCCESS,
-                        status: NotificationStatus.Success,
-                    }),
-                )
-            } catch {
-                void dispatch(
-                    notify({
-                        status: NotificationStatus.Error,
-                        message: 'Failed to save volume configuration state',
-                    }),
-                )
+                    void dispatch(
+                        notify({
+                            message: CHANGES_SAVED_SUCCESS,
+                            status: NotificationStatus.Success,
+                        }),
+                    )
+                } catch {
+                    void dispatch(
+                        notify({
+                            status: NotificationStatus.Error,
+                            message:
+                                'Failed to save volume configuration state',
+                        }),
+                    )
+                }
             }
-        }
-    }, [
-        isConversationStartersEnabled,
-        updateStoreConfiguration,
-        dispatch,
-        storeConfiguration,
-    ])
-
-    const handleSave = useCallback(
-        () => handleSubmit(onSave)(),
-        [handleSubmit, onSave],
+        },
+        [updateStoreConfiguration, storeConfiguration, dispatch],
     )
 
     return (
         <>
             <UnsavedChangesPrompt
-                onSave={handleSave}
+                onSave={handleSubmit(onSave)}
                 when={isDirty}
                 onDiscard={reset}
-                shouldRedirectAfterSave={true}
+                shouldRedirectAfterSave
             />
 
             <FormProvider {...methods}>
                 <Box className={css.container} flexDirection="row">
-                    <Box className={css.leftParent} flexDirection="column">
-                        <Box className={css.left} flexDirection="column">
-                            <Box>
-                                <strong className={css.title}>
-                                    Conversation Starters
-                                </strong>
-                            </Box>
-                            <Box>
-                                <p className={css.body}>
-                                    Display up to 4 AI-generated conversation
-                                    starters on product pages. Starters are
-                                    high-quality, relevant, and easy to answer,
-                                    tailored using your existing knowledge.
-                                    Note: This overrides Convert campaigns.
-                                </p>
-                            </Box>
-                            <Box>
-                                <label className={css.label}>
-                                    <NewToggleButton
-                                        checked={isConversationStartersEnabled}
-                                        isDisabled={
-                                            !isConversationStartersFeatureEnabled
-                                        }
-                                        onChange={toggle}
-                                        stopPropagation
-                                    />
-                                    Enable conversation starters
-                                </label>
-                            </Box>
-                        </Box>
-                        <Box className={css.buttonParent}>
+                    <Box className={css.leftColumn} flexDirection="column">
+                        <p className={css.headTitle}>Chat Widget</p>
+                        <ConversationStartersSettings
+                            isEnabled={isConversationStartersFeatureEnabled}
+                        />
+                        <ConversationLauncherSettings />
+                        <Box className={css.saveButtonWrapper}>
                             <Button
                                 isDisabled={!isDirty || isSubmitting}
-                                onClick={handleSave}
+                                onClick={handleSubmit(onSave)}
                                 intent="primary"
                                 type="submit"
                             >
@@ -162,35 +122,8 @@ export const VolumeSettings = () => {
                             </Button>
                         </Box>
                     </Box>
-                    <Box className={css.right} flexDirection="column">
-                        <Box flexDirection="column">
-                            <Box
-                                className={css.preview}
-                                alignSelf="flex-end"
-                                flexDirection="column"
-                            >
-                                {messages.map((message) => (
-                                    <Box
-                                        alignSelf="flex-end"
-                                        flexDirection="column"
-                                        key={`message-${message}`}
-                                    >
-                                        <button className={css.starter}>
-                                            {message}
-                                        </button>
-                                    </Box>
-                                ))}
-                            </Box>
-                            <Box alignSelf="flex-end" flexDirection="column">
-                                <Launcher shouldHideLabel />
-                            </Box>
-                            <Box flexDirection="column">
-                                <small className={css.message}>
-                                    Conversation starters preview
-                                </small>
-                            </Box>
-                        </Box>
-                    </Box>
+
+                    <ConversationPreview />
                 </Box>
             </FormProvider>
         </>

@@ -85,9 +85,17 @@ export async function upsertAccountConfiguration(
 export const getStoreConfiguration = async (
     params: GetStoreConfigurationParams,
 ) => {
-    const { accountDomain, storeName, withWizard } = params
+    const {
+        accountDomain,
+        storeName,
+        withWizard,
+        withFloatingInput = false,
+    } = params
     const queryParams = new URLSearchParams({
         with_wizard: String(!!withWizard),
+        ...(withFloatingInput && {
+            with_floating_chat_input_configuration: 'true',
+        }),
     })
 
     return await apiClient.get<StoreConfigurationResponse>(

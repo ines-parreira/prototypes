@@ -251,7 +251,7 @@ const renderComponent = (
     )
 
 describe('<StoreConfigForm />', () => {
-    const storeConfiguration = {
+    const storeConfiguration: StoreConfiguration = {
         shopType: 'shopify',
         chatChannelDeactivatedDatetime: null,
         emailChannelDeactivatedDatetime: null,
@@ -284,6 +284,7 @@ describe('<StoreConfigForm />', () => {
         isDraft: false,
         monitoredChatIntegrations: [],
         wizardId: null,
+        floatingChatInputConfigurationId: null,
         scopes: [AiAgentScope.Support],
         createdDatetime: moment().toISOString(),
         salesDiscountMax: null,

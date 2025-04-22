@@ -1,0 +1,82 @@
+@import (reference) '~@gorgias/design-tokens/dist/css/layout';
+@import (reference) '~css/typography';
+
+:local {
+    .right {
+        flex: 0 0 40%;
+        max-width: 476px;
+        padding: @layout-spacing-m;
+        height: 860px;
+        gap: 16px;
+    }
+
+    .previewContainer {
+        justify-content: flex-end;
+        background-color: var(--neutral-grey-0);
+        padding: @layout-spacing-s;
+    }
+
+    .preview {
+        padding-bottom: @layout-spacing-xs;
+        gap: @layout-spacing-xs;
+    }
+
+    .starter {
+        display: flex;
+        padding: @layout-spacing-xs @layout-spacing-s;
+        justify-content: center;
+        align-items: center;
+        gap: @layout-spacing-xs;
+
+        border-radius: @layout-spacing-m;
+        border: 1.5px solid var(--main-primary);
+        color: var(--neutral-grey-6);
+        background: var(--neutral-grey-0);
+    }
+
+    .inputWrapper {
+        width: 100%;
+        display: flex;
+        justify-content: flex-end;
+        padding-bottom: @layout-spacing-xxs;
+    }
+
+    .inputContainer {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        width: 248px;
+
+        border-radius: 40px;
+        border: 1.5px solid var(--main-primary);
+        background: var(--neutral-grey-0);
+
+        transition: height 0.2s ease-in-out;
+        padding: 8px 16px;
+    }
+
+    .floatingText {
+        display: flex;
+        align-items: center;
+        flex-grow: 1;
+        margin: 0px;
+        height: 100%;
+        font-size: 12px;
+        line-height: 16px;
+        color: var(--neutral-grey-5);
+    }
+
+    .floatingIcon {
+        color: var(--main-primary);
+        font-size: 20px;
+    }
+
+    .launcherContainer {
+        padding-top: @layout-spacing-xxs;
+    }
+
+    .description {
+        justify-content: center;
+        color: var(--neutral-grey-5);
+    }
+}

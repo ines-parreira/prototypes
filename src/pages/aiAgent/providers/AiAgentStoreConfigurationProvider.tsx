@@ -34,6 +34,7 @@ const AiAgentStoreConfigurationProvider = ({ children }: Props) => {
             shopName,
             accountDomain,
             withWizard: !!isAiAgentOnboardingWizardEnabled,
+            withFloatingInput: true,
         })
 
     const {

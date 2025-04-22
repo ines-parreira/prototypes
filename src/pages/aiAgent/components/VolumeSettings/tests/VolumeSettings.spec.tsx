@@ -1,7 +1,7 @@
 import React from 'react'
 
 import { QueryClientProvider } from '@tanstack/react-query'
-import { fireEvent, waitFor } from '@testing-library/react'
+import { fireEvent, waitFor, within } from '@testing-library/react'
 import { createMemoryHistory } from 'history'
 import { useFlags } from 'launchdarkly-react-client-sdk'
 import { act } from 'react-dom/test-utils'
@@ -13,6 +13,7 @@ import { FeatureFlagKey } from 'config/featureFlags'
 import { StoreConfiguration } from 'models/aiAgent/types'
 import { CHANGES_SAVED_SUCCESS } from 'pages/aiAgent/constants'
 import { getStoreConfigurationFixture } from 'pages/aiAgent/fixtures/storeConfiguration.fixtures'
+import * as chatColorHook from 'pages/aiAgent/Onboarding/hooks/useGetChatIntegrationColor'
 import { useAiAgentStoreConfigurationContext } from 'pages/aiAgent/providers/AiAgentStoreConfigurationContext'
 import { NotificationStatus } from 'state/notifications/types'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
@@ -50,6 +51,11 @@ const newStoreConfig = {
 }
 
 jest.mock('pages/aiAgent/providers/AiAgentStoreConfigurationContext')
+jest.mock('pages/aiAgent/Onboarding/hooks/useGetChatIntegrationColor')
+
+const mockUseGetChatIntegrationColor = jest.mocked(
+    chatColorHook.useGetChatIntegrationColor,
+)
 const mockedUseAiAgentStoreConfigurationContext = jest.mocked(
     useAiAgentStoreConfigurationContext,
 )
@@ -62,10 +68,10 @@ const mockUpdateStoreConfiguration = jest
 jest.mock('launchdarkly-react-client-sdk')
 const mockedUseFlags = jest.mocked(useFlags)
 
-const getSwitch = (result: RenderComponentReturn) =>
-    result.getByRole('switch', {
-        name: 'check Enable conversation starters',
-    })
+const getConversationStartersSwitch = (container: HTMLElement) => {
+    const label = within(container).getByText('Enable conversation starters')
+    return within(label.closest('label')!).getByRole('switch')
+}
 
 const getSaveButton = (result: RenderComponentReturn) =>
     result.getByRole('button', { name: 'Save Changes' })
@@ -109,6 +115,11 @@ describe('VolumeSettings', () => {
             createStoreConfiguration: jest.fn(),
             isPendingCreateOrUpdate: false,
         })
+
+        mockUseGetChatIntegrationColor.mockReturnValue({
+            conversationColor: '#000000',
+            mainColor: '#000000',
+        })
     })
 
     it('renders conversation starters toggle correctly', () => {
@@ -119,6 +130,21 @@ describe('VolumeSettings', () => {
     })
 
     it('shows preview messages', () => {
+        mockedUseAiAgentStoreConfigurationContext.mockReturnValue({
+            storeConfiguration: {
+                ...storeConfiguration,
+                isConversationStartersEnabled: true,
+                floatingChatInputConfiguration: {
+                    isEnabled: true,
+                    isDesktopOnly: true,
+                },
+            },
+            isLoading: false,
+            updateStoreConfiguration: mockUpdateStoreConfiguration,
+            createStoreConfiguration: jest.fn(),
+            isPendingCreateOrUpdate: false,
+        })
+
         const result = renderComponent()
 
         result.getByText('Can this product be used daily?')
@@ -134,7 +160,7 @@ describe('VolumeSettings', () => {
 
     it('enables save button when toggle is clicked', async () => {
         const result = renderComponent()
-        const switchElement = getSwitch(result)
+        const switchElement = getConversationStartersSwitch(result.container)
         expect(switchElement).not.toBeChecked()
         click(switchElement)
         expect(getSaveButton(result)).not.toBeAriaDisabled()
@@ -144,7 +170,9 @@ describe('VolumeSettings', () => {
         it('should call updateStoreConfiguration', async () => {
             const result = renderComponent()
 
-            const switchElement = getSwitch(result)
+            const switchElement = getConversationStartersSwitch(
+                result.container,
+            )
             expect(switchElement).not.toBeChecked()
             click(switchElement)
 
@@ -156,6 +184,10 @@ describe('VolumeSettings', () => {
                 expect(mockUpdateStoreConfiguration).toHaveBeenCalledWith({
                     ...storeConfiguration,
                     isConversationStartersEnabled: true,
+                    floatingChatInputConfiguration: {
+                        isEnabled: false,
+                        isDesktopOnly: false,
+                    },
                 })
             })
         })
@@ -163,7 +195,9 @@ describe('VolumeSettings', () => {
         it('should dispatch a success message', async () => {
             const result = renderComponent()
 
-            const switchElement = getSwitch(result)
+            const switchElement = getConversationStartersSwitch(
+                result.container,
+            )
             expect(switchElement).not.toBeChecked()
             click(switchElement)
 
@@ -194,7 +228,11 @@ describe('VolumeSettings', () => {
 
             const result = renderComponent()
 
-            click(getSwitch(result))
+            const switchElement = getConversationStartersSwitch(
+                result.container,
+            )
+            expect(switchElement).not.toBeChecked()
+            click(switchElement)
 
             await waitFor(() => {
                 expect(getSaveButton(result)).not.toBeAriaDisabled()
@@ -213,7 +251,11 @@ describe('VolumeSettings', () => {
             mockUpdateStoreConfiguration.mockRejectedValue('ERROR')
             const result = renderComponent()
 
-            click(getSwitch(result))
+            const switchElement = getConversationStartersSwitch(
+                result.container,
+            )
+            expect(switchElement).not.toBeChecked()
+            click(switchElement)
 
             await waitFor(() => {
                 expect(getSaveButton(result)).not.toBeAriaDisabled()
@@ -238,7 +280,7 @@ describe('VolumeSettings', () => {
     it('should show a warning when navigating away without submitting the form', async () => {
         const result = renderComponent()
 
-        click(getSwitch(result))
+        click(getConversationStartersSwitch(result.container))
 
         await waitFor(() => {
             expect(getSaveButton(result)).not.toBeAriaDisabled()
@@ -254,25 +296,31 @@ describe('VolumeSettings', () => {
     })
 
     describe('feature flag behavior', () => {
-        it('should disable toggle when feature flag is disabled', async () => {
+        it('should still trigger Unsaved Changes modal even when toggle is visually disabled', async () => {
             mockedUseFlags.mockReturnValue({
                 [FeatureFlagKey.ConversationStarters]: false,
             })
 
             const result = renderComponent()
 
-            const switchElement = getSwitch(result)
-            expect(switchElement).not.toBeChecked()
-            click(switchElement)
+            const switchElement = getConversationStartersSwitch(
+                result.container,
+            )
 
-            // Will not trigger because the button was disabled
-            // Testing the switch disabled functionality wasn't consistent
+            // Check visual state
+            expect(switchElement).toHaveClass('disabled')
+
+            // Simulate user click anyway
+            fireEvent.click(switchElement)
+
+            // Simulate navigation
             act(() => {
                 history.push('/test')
             })
 
+            // Assert that the modal *does* appear due to dirty form state
             await waitFor(() => {
-                expect(queryModal(result)).not.toBeInTheDocument()
+                expect(queryModal(result)).toBeInTheDocument()
             })
         })
 
@@ -283,7 +331,9 @@ describe('VolumeSettings', () => {
 
             const result = renderComponent()
 
-            const switchElement = getSwitch(result)
+            const switchElement = getConversationStartersSwitch(
+                result.container,
+            )
             expect(switchElement).not.toBeChecked()
             click(switchElement)
 
@@ -302,7 +352,7 @@ describe('VolumeSettings', () => {
     it('should handle toggle click correctly', async () => {
         const result = renderComponent()
 
-        const switchElement = getSwitch(result)
+        const switchElement = getConversationStartersSwitch(result.container)
         expect(switchElement).not.toBeChecked()
         click(switchElement)
         expect(switchElement).toBeChecked()
@@ -313,7 +363,7 @@ describe('VolumeSettings', () => {
     it('should reset form state when onDiscard is called', async () => {
         const result = renderComponent()
 
-        click(getSwitch(result))
+        click(getConversationStartersSwitch(result.container))
 
         act(() => {
             history.push('/test')
@@ -331,6 +381,50 @@ describe('VolumeSettings', () => {
 
         await waitFor(() => {
             expect(getSaveButton(result)).toBeAriaDisabled()
+        })
+    })
+
+    describe('Conversation Launcher', () => {
+        const getFloatingInputSwitch = (container: HTMLElement) => {
+            const label = within(container).getByText('Enable Floating Input')
+            return within(label.closest('label')!).getByRole('switch')
+        }
+
+        it('renders floating input toggle correctly', () => {
+            const result = renderComponent()
+            result.getByText('Enable Floating Input')
+        })
+
+        it('enables save button when floating input toggle is clicked', () => {
+            const result = renderComponent()
+
+            const switchElement = getFloatingInputSwitch(result.container)
+            expect(switchElement).not.toBeChecked()
+
+            click(switchElement)
+
+            expect(getSaveButton(result)).not.toBeAriaDisabled()
+        })
+
+        it('opens advanced settings sidebar when toggle is on and label is clicked', () => {
+            const result = renderComponent()
+
+            const switchElement = getFloatingInputSwitch(result.container)
+            click(switchElement)
+
+            const advancedSettingsLabel = result.getByText('Advanced settings')
+            click(advancedSettingsLabel)
+
+            expect(
+                result.getByText('Floating Input: Advanced Settings'),
+            ).toBeInTheDocument()
+        })
+
+        it('should disable advanced settings label when floating input is off', () => {
+            const result = renderComponent()
+            const advancedLabel = result.getByText('Advanced settings')
+
+            expect(advancedLabel.closest('label')).toHaveClass('disabled')
         })
     })
 })

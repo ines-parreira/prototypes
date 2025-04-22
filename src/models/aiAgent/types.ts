@@ -25,6 +25,7 @@ export type GetStoreConfigurationParams = {
     accountDomain: string
     storeName: string
     withWizard?: boolean
+    withFloatingInput?: boolean
 }
 
 export type GetStoreConfigurationForAccountParams = {
@@ -71,6 +72,9 @@ export type StoreConfiguration = {
 
     wizardId: number | null
     wizard?: Wizard
+
+    floatingChatInputConfigurationId: number | null
+    floatingChatInputConfiguration?: FloatingChatInputConfiguration
 
     chatChannelDeactivatedDatetime: string | null
     emailChannelDeactivatedDatetime: string | null
@@ -153,6 +157,12 @@ export type Wizard = {
     stepName: AiAgentOnboardingWizardStep | null
     stepData: WizardStepData
     completedDatetime?: string | null
+}
+
+export type FloatingChatInputConfiguration = {
+    id?: number
+    isEnabled?: boolean
+    isDesktopOnly?: boolean
 }
 
 export type CreateWizardPayload = Pick<Wizard, 'stepName' | 'stepData'>
@@ -270,8 +280,4 @@ export type HandoverConfigurationData = {
 
 export type HandoverConfigurationResponse = {
     handoverConfigurations: HandoverConfigurationData[]
-}
-
-export type SalesVolumeData = {
-    isConversationStartersEnabled: boolean
 }

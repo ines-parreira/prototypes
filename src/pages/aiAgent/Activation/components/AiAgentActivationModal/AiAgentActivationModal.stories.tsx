@@ -58,6 +58,7 @@ const dummyStoreActivation: StoreActivation = {
         silentHandover: false,
         ticketSampleRate: 0.5,
         wizardId: null,
+        floatingChatInputConfigurationId: null,
         createdDatetime: '1970-01-01T00:00:00.000Z',
         salesDiscountMax: null,
         salesDiscountStrategyLevel: null,

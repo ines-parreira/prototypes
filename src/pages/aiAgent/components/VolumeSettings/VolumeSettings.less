@@ -2,86 +2,29 @@
 @import (reference) '~css/typography';
 
 :local {
-    .label {
-        cursor: pointer;
-        display: flex;
-        justify-content: space-between;
-        gap: @layout-spacing-xs;
-        color: var(--neutral-grey-6);
-    }
-
-    .title {
-        margin-bottom: @layout-spacing-xxs;
-        font-family: @heading-sub-section-semibold-font-family;
-        font-size: @heading-sub-section-semibold-font-size;
-        letter-spacing: @heading-sub-section-semibold-letter-spacing;
-        line-height: @heading-sub-section-semibold-line-height;
-        font-weight: @heading-sub-section-semibold-font-weight;
-        color: var(--neutral-grey-6);
-    }
-
-    .body {
-        font-family: @body-regular-font-family;
-        font-size: @body-regular-font-size;
-        letter-spacing: @body-regular-letter-spacing;
-        line-height: @body-regular-line-height;
-        font-weight: @body-regular-font-weight;
-        color: var(--neutral-grey-5);
-    }
-
-    .buttonParent {
-        margin-top: @layout-spacing-m;
-    }
-
-    .leftParent {
-        background-color: var(--neutral-grey-0);
-        flex: 1 0 0;
-        padding: @layout-spacing-m;
-    }
-
     .container {
         width: 100%;
         background-color: var(--neutral-grey-1);
+        height: 100%;
     }
 
-    .left {
+    .leftColumn {
         background-color: var(--neutral-grey-0);
-        border-radius: 12px;
-        border: 1px solid rgba(236, 236, 236, 1);
-        box-shadow: 0px 3px 20px 0px rgba(0, 0, 0, 0.04);
-        flex: 0 0 auto;
-        height: fit-content;
-        max-height: fit-content;
-        padding: @layout-spacing-s;
-    }
-
-    .right {
-        align-items: center;
-        flex: 0 0 40%;
-        max-width: 476px;
+        gap: @layout-spacing-s;
         padding: @layout-spacing-m;
     }
 
-    .preview {
-        margin-bottom: @layout-spacing-s;
+    .headTitle {
+        color: var(--neutral-grey-6);
+        margin: 0px;
+
+        font-size: 20px;
+        font-weight: 400;
+        line-height: 28px;
+        letter-spacing: -0.4px;
     }
 
-    .starter {
-        background-color: var(--neutral-grey-0);
-        border-radius: 4px;
-        border: 1px solid var(--neutral-grey-0);
-        box-shadow: 0px 2px 4px 0px rgba(22, 22, 22, 0.16);
-        cursor: pointer;
-        font-size: 12px;
-        margin: 0px 2px 8px 10px;
-        padding: @layout-spacing-xs @layout-spacing-s;
-        text-align: right;
-        width: fit-content;
-    }
-
-    .message {
+    .saveButtonWrapper {
         margin-top: @layout-spacing-s;
-        color: var(--neutral-grey-5);
-        text-align: right;
     }
 }
