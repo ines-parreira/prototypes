@@ -74,16 +74,33 @@ export const getIntegrationPreferencesFormDataFragment = (
         meta?.preferences?.email_capture_enabled ??
         initialFormFieldValues.emailCaptureEnabled
 
-    const emailCaptureEnforcement = (meta?.preferences
+    let emailCaptureEnforcement = (meta?.preferences
         ?.email_capture_enforcement ??
         initialFormFieldValues.emailCaptureEnforcement) as GorgiasChatEmailCaptureType
+
+    // special case for deprecated email capture enforcement option
+    if (
+        emailCaptureEnforcement ===
+        GorgiasChatEmailCaptureType.RequiredOutsideBusinessHours
+    ) {
+        emailCaptureEnforcement = GorgiasChatEmailCaptureType.Optional
+    }
 
     const autoResponderEnabled =
         meta?.preferences?.auto_responder?.enabled ??
         initialFormFieldValues.autoResponderEnabled
 
-    const autoResponderReply = (meta?.preferences?.auto_responder?.reply ??
+    let autoResponderReply = (meta?.preferences?.auto_responder?.reply ??
         initialFormFieldValues.autoResponderReply) as GorgiasChatAutoResponderReply
+
+    // special case for deprecated auto responder reply option
+    if (autoResponderReply === GorgiasChatAutoResponderReply.ReplyShortly) {
+        autoResponderReply = GorgiasChatAutoResponderReply.ReplyInMinutes
+    }
+
+    if (autoResponderReply === GorgiasChatAutoResponderReply.ReplyInDay) {
+        autoResponderReply = GorgiasChatAutoResponderReply.ReplyInHours
+    }
 
     return {
         emailCaptureEnabled,

@@ -59,7 +59,7 @@ describe('handoverCustomizationChatOnlineSettingsForm utils', () => {
                         GorgiasChatEmailCaptureType.Optional,
                     auto_responder: {
                         enabled: true,
-                        reply: GorgiasChatAutoResponderReply.ReplyInDay,
+                        reply: GorgiasChatAutoResponderReply.ReplyInHours,
                     },
                 },
             },
@@ -73,7 +73,7 @@ describe('handoverCustomizationChatOnlineSettingsForm utils', () => {
                 emailCaptureEnabled: true,
                 emailCaptureEnforcement: GorgiasChatEmailCaptureType.Optional,
                 autoResponderEnabled: true,
-                autoResponderReply: GorgiasChatAutoResponderReply.ReplyInDay,
+                autoResponderReply: GorgiasChatAutoResponderReply.ReplyInHours,
             })
         })
 
@@ -95,6 +95,81 @@ describe('handoverCustomizationChatOnlineSettingsForm utils', () => {
                     initialFormFieldValues.autoResponderEnabled,
                 autoResponderReply: initialFormFieldValues.autoResponderReply,
             })
+        })
+
+        it('should convert deprecated RequiredOutsideBusinessHours to Optional for email capture enforcement', () => {
+            const integrationWithDeprecatedEmailCapture = {
+                id: 1,
+                meta: {
+                    preferences: {
+                        email_capture_enabled: true,
+                        email_capture_enforcement:
+                            GorgiasChatEmailCaptureType.RequiredOutsideBusinessHours,
+                        auto_responder: {
+                            enabled: true,
+                            reply: GorgiasChatAutoResponderReply.ReplyInHours,
+                        },
+                    },
+                },
+            } as unknown as GorgiasChatIntegration
+
+            const result = getIntegrationPreferencesFormDataFragment(
+                integrationWithDeprecatedEmailCapture,
+            )
+
+            expect(result.emailCaptureEnforcement).toBe(
+                GorgiasChatEmailCaptureType.Optional,
+            )
+        })
+
+        it('should convert deprecated ReplyShortly to ReplyInMinutes for auto responder reply', () => {
+            const integrationWithDeprecatedReplyShortly = {
+                id: 1,
+                meta: {
+                    preferences: {
+                        email_capture_enabled: true,
+                        email_capture_enforcement:
+                            GorgiasChatEmailCaptureType.Optional,
+                        auto_responder: {
+                            enabled: true,
+                            reply: GorgiasChatAutoResponderReply.ReplyShortly,
+                        },
+                    },
+                },
+            } as unknown as GorgiasChatIntegration
+
+            const result = getIntegrationPreferencesFormDataFragment(
+                integrationWithDeprecatedReplyShortly,
+            )
+
+            expect(result.autoResponderReply).toBe(
+                GorgiasChatAutoResponderReply.ReplyInMinutes,
+            )
+        })
+
+        it('should convert deprecated ReplyInDay to ReplyInHours for auto responder reply', () => {
+            const integrationWithDeprecatedReplyInDay = {
+                id: 1,
+                meta: {
+                    preferences: {
+                        email_capture_enabled: true,
+                        email_capture_enforcement:
+                            GorgiasChatEmailCaptureType.Optional,
+                        auto_responder: {
+                            enabled: true,
+                            reply: GorgiasChatAutoResponderReply.ReplyInDay,
+                        },
+                    },
+                },
+            } as unknown as GorgiasChatIntegration
+
+            const result = getIntegrationPreferencesFormDataFragment(
+                integrationWithDeprecatedReplyInDay,
+            )
+
+            expect(result.autoResponderReply).toBe(
+                GorgiasChatAutoResponderReply.ReplyInHours,
+            )
         })
     })
 
