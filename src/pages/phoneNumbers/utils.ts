@@ -36,6 +36,7 @@ const CAPABILITY_KEY: Record<
 
 const AVAILABLE_STATES: Record<string, string[]> = {
     US: [
+        'AK',
         'AL',
         'AZ',
         'AR',
@@ -46,6 +47,7 @@ const AVAILABLE_STATES: Record<string, string[]> = {
         'DC',
         'FL',
         'GA',
+        'HI',
         'ID',
         'IL',
         'IN',
@@ -63,6 +65,7 @@ const AVAILABLE_STATES: Record<string, string[]> = {
         'MT',
         'NE',
         'NV',
+        'NH',
         'NJ',
         'NM',
         'NY',
@@ -83,6 +86,7 @@ const AVAILABLE_STATES: Record<string, string[]> = {
         'WA',
         'WV',
         'WI',
+        'WY',
     ],
 }
 

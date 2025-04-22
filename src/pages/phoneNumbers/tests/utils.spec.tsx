@@ -302,7 +302,7 @@ describe('getAvailableStates()', () => {
         ).toBeDefined()
         expect(
             getAvailableStates('US').find(
-                (state) => state.name === 'New Hampshire',
+                (state) => state.name === 'American Samoa',
             ),
         ).toBeUndefined()
     })

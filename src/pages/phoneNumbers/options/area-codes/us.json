@@ -1,4 +1,10 @@
 {
+    "AK": [
+        {
+            "value": "anchorage-907",
+            "label": "Anchorage (907)"
+        }
+    ],
     "AL": [
         {
             "value": "birmingham-205",
@@ -17,38 +23,30 @@
             "label": "Montegomery (334)"
         },
         {
+            "value": "birmingham-659",
+            "label": "Birmingham (659)"
+        },
+        {
             "value": "huntsville-938",
             "label": "Huntsville (938)"
         }
     ],
     "AR": [
         {
+            "value": "jonesboro-327",
+            "label": "Jonesboro (327)"
+        },
+        {
             "value": "fort-smith-479",
             "label": "Fort Smith (479)"
-        },
-        {
-            "value": "fayetteville-479",
-            "label": "Fayetteville (479)"
-        },
-        {
-            "value": "rogers-479",
-            "label": "Rogers (479)"
         },
         {
             "value": "little-rock-501",
             "label": "Little Rock (501)"
         },
         {
-            "value": "ashdown-870",
-            "label": "Ashdown (870)"
-        },
-        {
-            "value": "hope-870",
-            "label": "Hope (870)"
-        },
-        {
-            "value": "nashville-870",
-            "label": "Nashville (870)"
+            "value": "jonesboro-870",
+            "label": "Jonesboro (870)"
         }
     ],
     "AZ": [
@@ -69,26 +67,14 @@
             "label": "Phoenix (623)"
         },
         {
-            "value": "avondale-623",
-            "label": "Avondale (623)"
-        },
-        {
-            "value": "glendale-623",
-            "label": "Glendale (623)"
-        },
-        {
-            "value": "prescott-928",
-            "label": "Prescott (928)"
-        },
-        {
             "value": "yuma-928",
             "label": "Yuma (928)"
         }
     ],
     "CA": [
         {
-            "value": "sonora-209",
-            "label": "Sonora (209)"
+            "value": "stockton-209",
+            "label": "Stockton (209)"
         },
         {
             "value": "los-angeles-213",
@@ -107,40 +93,24 @@
             "label": "San Jose (408)"
         },
         {
-            "value": "campbell-408",
-            "label": "Campbell (408)"
-        },
-        {
-            "value": "gilroy-408",
-            "label": "Gilroy (408)"
-        },
-        {
             "value": "san-francisco-415",
             "label": "San Francisco (415)"
-        },
-        {
-            "value": "novato-415",
-            "label": "Novato (415)"
-        },
-        {
-            "value": "san-anselmo-415",
-            "label": "San Anselmo (415)"
         },
         {
             "value": "beverly-hills-424",
             "label": "Beverly Hills (424)"
         },
         {
-            "value": "fallbrook-442",
-            "label": "Fallbrook (442)"
+            "value": "oceanside-442",
+            "label": "Oceanside (442)"
         },
         {
             "value": "oakland-510",
             "label": "Oakland (510)"
         },
         {
-            "value": "alleghany-530",
-            "label": "Alleghany (530)"
+            "value": "redding-530",
+            "label": "Redding (530)"
         },
         {
             "value": "fresno-559",
@@ -155,16 +125,16 @@
             "label": "San Diego (619)"
         },
         {
-            "value": "alhambra-626",
-            "label": "Alhambra (626)"
+            "value": "pasadena-626",
+            "label": "Pasadena (626)"
         },
         {
             "value": "san-francisco-628",
             "label": "San Francisco (628)"
         },
         {
-            "value": "palo-alto-650",
-            "label": "Palo Alto (650)"
+            "value": "san-mateo-650",
+            "label": "San Mateo (650)"
         },
         {
             "value": "anaheim-657",
@@ -175,71 +145,63 @@
             "label": "Bakersfield (661)"
         },
         {
-            "value": "morgan-hill-669",
-            "label": "Morgan Hill (669)"
+            "value": "san-jose-669",
+            "label": "San Jose (669)"
         },
         {
-            "value": "petaluma-707",
-            "label": "Petaluma (707)"
+            "value": "santa-rosa-707",
+            "label": "Santa Rosa (707)"
         },
         {
             "value": "anaheim-714",
             "label": "Anaheim (714)"
         },
         {
-            "value": "brea-714",
-            "label": "Brea (714)"
+            "value": "oceanside-760",
+            "label": "Oceanside (760)"
         },
         {
-            "value": "buena-park-714",
-            "label": "Buena Park (714)"
+            "value": "oxnard-805",
+            "label": "Oxnard (805)"
         },
         {
-            "value": "glendale-747",
-            "label": "Glendale (747)"
+            "value": "los-angeles-818",
+            "label": "Los Angeles (818)"
         },
         {
-            "value": "palm-springs-760",
-            "label": "Palm Springs (760)"
+            "value": "salinas-831",
+            "label": "Salinas (831)"
         },
         {
-            "value": "arroyo-grande-805",
-            "label": "Arroyo Grande (805)"
+            "value": "san-diego-858",
+            "label": "San Diego (858)"
         },
         {
-            "value": "burbank-818",
-            "label": "Burbank (818)"
-        },
-        {
-            "value": "boulder-creek-831",
-            "label": "Boulder Creek (831)"
-        },
-        {
-            "value": "del-mar-858",
-            "label": "Del Mar (858)"
-        },
-        {
-            "value": "big-bear-city-909",
-            "label": "Big Bear City (909)"
+            "value": "san-bernardino-909",
+            "label": "San Bernardino (909)"
         },
         {
             "value": "sacramento-916",
             "label": "Sacramento (916)"
         },
         {
-            "value": "pittsburg-925",
-            "label": "Pittsburg (925)"
+            "value": "concord-925",
+            "label": "Concord (925)"
         },
         {
-            "value": "capistrano-valley-949",
-            "label": "Capistrano Valley (949)"
+            "value": "irvine-949",
+            "label": "Irvine (949)"
         },
         {
-            "value": "arlington-951",
-            "label": "Arlington (951)"
+            "value": "riverside-951",
+            "label": "Riverside (951)"
         }
     ],
     "CO": [
+        {
+            "value": "denver-303",
+            "label": "Denver (303)"
+        },
         {
             "value": "colorado-springs-719",
             "label": "Colorado Springs (719)"
@@ -251,6 +213,10 @@
         {
             "value": "fort-collins-970",
             "label": "Fort Collins (970)"
+        },
+        {
+            "value": "denver-983",
+            "label": "Denver (983)"
         }
     ],
     "CT": [
@@ -259,8 +225,8 @@
             "label": "Bridgeport (203)"
         },
         {
-            "value": "ansonia-derby-475",
-            "label": "Ansonia Derby (475)"
+            "value": "bridgeport-475",
+            "label": "Bridgeport (475)"
         },
         {
             "value": "hartford-860",
@@ -275,12 +241,16 @@
         {
             "value": "washington-202",
             "label": "Washington (202)"
+        },
+        {
+            "value": "washington-771",
+            "label": "Washington (771)"
         }
     ],
     "DE": [
         {
-            "value": "dover-302",
-            "label": "Dover (302)"
+            "value": "wilmington-302",
+            "label": "Wilmington (302)"
         }
     ],
     "FL": [
@@ -289,60 +259,64 @@
             "label": "Cape Coral (239)"
         },
         {
-            "value": "bonita-springs-239",
-            "label": "Bonita Springs (239)"
-        },
-        {
-            "value": "fort-myers-239",
-            "label": "Fort Myers (239)"
+            "value": "miami-305",
+            "label": "Miami (305)"
         },
         {
             "value": "orlando-321",
             "label": "Orlando (321)"
         },
         {
+            "value": "jacksonville-324",
+            "label": "Jacksonville (324)"
+        },
+        {
             "value": "gainesville-352",
             "label": "Gainesville (352)"
         },
         {
-            "value": "daytona-beach-386",
-            "label": "Daytona Beach (386)"
+            "value": "palm-coast-386",
+            "label": "Palm Coast (386)"
         },
         {
             "value": "orlando-407",
             "label": "Orlando (407)"
         },
         {
-            "value": "oviedo-407",
-            "label": "Oviedo (407)"
+            "value": "tallahassee-448",
+            "label": "Tallahassee (448)"
         },
         {
             "value": "west-palm-beach-561",
             "label": "West Palm Beach (561)"
         },
         {
+            "value": "miami-645",
+            "label": "Miami (645)"
+        },
+        {
+            "value": "tampa-656",
+            "label": "Tampa (656)"
+        },
+        {
             "value": "orlando-689",
             "label": "Orlando (689)"
         },
         {
-            "value": "altamonte-springs-689",
-            "label": "Altamonte Springs (689)"
+            "value": "st-petersburg-727",
+            "label": "St. Petersburg (727)"
         },
         {
-            "value": "apopka-689",
-            "label": "Apopka (689)"
+            "value": "west-palm-beach-728",
+            "label": "West Palm Beach (728)"
         },
         {
-            "value": "clearwater-727",
-            "label": "Clearwater (727)"
+            "value": "fort-lauderdale-754",
+            "label": "Fort Lauderdale (754)"
         },
         {
-            "value": "coral-springs-754",
-            "label": "Coral Springs (754)"
-        },
-        {
-            "value": "fort-pierce-772",
-            "label": "Fort Pierce (772)"
+            "value": "port-st-lucie-772",
+            "label": "Port St. Lucie (772)"
         },
         {
             "value": "miami-786",
@@ -353,12 +327,12 @@
             "label": "Tampa (813)"
         },
         {
-            "value": "cantonment-850",
-            "label": "Cantonment (850)"
+            "value": "tallahassee-850",
+            "label": "Tallahassee (850)"
         },
         {
-            "value": "barlow-863",
-            "label": "Barlow (863)"
+            "value": "lakeland-863",
+            "label": "Lakeland (863)"
         },
         {
             "value": "jacksonville-904",
@@ -367,10 +341,6 @@
         {
             "value": "sarasota-941",
             "label": "Sarasota (941)"
-        },
-        {
-            "value": "deefield-beach-954",
-            "label": "Deefield Beach (954)"
         },
         {
             "value": "fort-lauderdale-954",
@@ -383,20 +353,8 @@
             "label": "Albany (229)"
         },
         {
-            "value": "valdosta-229",
-            "label": "Valdosta (229)"
-        },
-        {
             "value": "atlanta-404",
             "label": "Atlanta (404)"
-        },
-        {
-            "value": "candler-mcafee-404",
-            "label": "Candler-mcafee (404)"
-        },
-        {
-            "value": "college-park-404",
-            "label": "College Park (404)"
         },
         {
             "value": "atlanta-470",
@@ -411,16 +369,8 @@
             "label": "Atlanta (678)"
         },
         {
-            "value": "alpharetta-678",
-            "label": "Alpharetta (678)"
-        },
-        {
-            "value": "college-park-678",
-            "label": "College Park (678)"
-        },
-        {
-            "value": "athens-706",
-            "label": "Athens (706)"
+            "value": "augusta-706",
+            "label": "Augusta (706)"
         },
         {
             "value": "augusta-762",
@@ -431,66 +381,60 @@
             "label": "Roswell (770)"
         },
         {
-            "value": "alpharetta-770",
-            "label": "Alpharetta (770)"
-        },
-        {
-            "value": "atlanta-770",
-            "label": "Atlanta (770)"
-        },
-        {
             "value": "savannah-912",
             "label": "Savannah (912)"
+        },
+        {
+            "value": "atlanta-943",
+            "label": "Atlanta (943)"
+        }
+    ],
+    "HI": [
+        {
+            "value": "honolulu-808",
+            "label": "Honolulu (808)"
         }
     ],
     "IA": [
         {
-            "value": "iowa-city-319",
-            "label": "Iowa City (319)"
-        },
-        {
-            "value": "waterloo-319",
-            "label": "Waterloo (319)"
+            "value": "cedar-rapids-319",
+            "label": "Cedar Rapids (319)"
         },
         {
             "value": "des-moines-515",
             "label": "Des Moines (515)"
         },
         {
-            "value": "polk-city-515",
-            "label": "Polk City (515)"
-        },
-        {
             "value": "davenport-563",
             "label": "Davenport (563)"
         },
         {
-            "value": "ackley-641",
-            "label": "Ackley (641)"
+            "value": "mason-city-641",
+            "label": "Mason City (641)"
         },
         {
-            "value": "underwood-712",
-            "label": "Underwood (712)"
+            "value": "sioux-city-712",
+            "label": "Sioux City (712)"
         }
     ],
     "ID": [
         {
-            "value": "idaho-falls-208",
-            "label": "Idaho Falls (208)"
+            "value": "boise-208",
+            "label": "Boise (208)"
+        },
+        {
+            "value": "boise-986",
+            "label": "Boise (986)"
         }
     ],
     "IL": [
         {
-            "value": "west-dana-217",
-            "label": "West Dana (217)"
+            "value": "springfield-217",
+            "label": "Springfield (217)"
         },
         {
-            "value": "barlett-224",
-            "label": "Barlett (224)"
-        },
-        {
-            "value": "chillicothe-309",
-            "label": "Chillicothe (309)"
+            "value": "elgin-224",
+            "label": "Elgin (224)"
         },
         {
             "value": "peoria-309",
@@ -505,40 +449,48 @@
             "label": "Aurora (331)"
         },
         {
+            "value": "springfield-447",
+            "label": "Springfield (447)"
+        },
+        {
+            "value": "cicero-464",
+            "label": "Cicero (464)"
+        },
+        {
             "value": "belleville-618",
             "label": "Belleville (618)"
-        },
-        {
-            "value": "alton-618",
-            "label": "Alton (618)"
-        },
-        {
-            "value": "carbondale-618",
-            "label": "Carbondale (618)"
         },
         {
             "value": "aurora-630",
             "label": "Aurora (630)"
         },
         {
-            "value": "oak-park-708",
-            "label": "Oak Park (708)"
+            "value": "cicero-708",
+            "label": "Cicero (708)"
+        },
+        {
+            "value": "belleville-730",
+            "label": "Belleville (730)"
         },
         {
             "value": "chicago-773",
             "label": "Chicago (773)"
         },
         {
-            "value": "joliet-779",
-            "label": "Joliet (779)"
+            "value": "rockford-779",
+            "label": "Rockford (779)"
         },
         {
-            "value": "crystal-lake-815",
-            "label": "Crystal lake (815)"
+            "value": "rockford-815",
+            "label": "Rockford (815)"
         },
         {
-            "value": "evanston-847",
-            "label": "Evanston (847)"
+            "value": "elgin-847",
+            "label": "Elgin (847)"
+        },
+        {
+            "value": "peoria-861",
+            "label": "Peoria (861)"
         },
         {
             "value": "chicago-872",
@@ -547,12 +499,12 @@
     ],
     "IN": [
         {
-            "value": "michigan-city-219",
-            "label": "Michigan City (219)"
+            "value": "gary-219",
+            "label": "Gary (219)"
         },
         {
-            "value": "huntertown-260",
-            "label": "Huntertown (260)"
+            "value": "fort-wayne-260",
+            "label": "Fort Wayne (260)"
         },
         {
             "value": "indianapolis-317",
@@ -563,24 +515,16 @@
             "label": "Indianapolis (463)"
         },
         {
-            "value": "culver-574",
-            "label": "Culver (574)"
-        },
-        {
-            "value": "osceola-574",
-            "label": "Osceola (574)"
-        },
-        {
             "value": "south-bend-574",
             "label": "South Bend (574)"
         },
         {
-            "value": "anderson-765",
-            "label": "Anderson (765)"
+            "value": "muncie-765",
+            "label": "Muncie (765)"
         },
         {
-            "value": "columbus-812",
-            "label": "Columbus (812)"
+            "value": "evansville-812",
+            "label": "Evansville (812)"
         },
         {
             "value": "evansville-930",
@@ -589,12 +533,12 @@
     ],
     "KS": [
         {
-            "value": "witchita-316",
-            "label": "Witchita (316)"
+            "value": "wichita-316",
+            "label": "Wichita (316)"
         },
         {
-            "value": "emporia-620",
-            "label": "Emporia (620)"
+            "value": "hutchinson-620",
+            "label": "Hutchinson (620)"
         },
         {
             "value": "topeka-785",
@@ -611,24 +555,20 @@
             "label": "Bowling Green (270)"
         },
         {
-            "value": "elizabethtown-270",
-            "label": "Elizabethtown (270)"
-        },
-        {
-            "value": "henderson-270",
-            "label": "Henderson (270)"
+            "value": "bowling-green-364",
+            "label": "Bowling Green (364)"
         },
         {
             "value": "louisville-502",
             "label": "Louisville (502)"
         },
         {
-            "value": "ashland-606",
-            "label": "Ashland (606)"
+            "value": "lexington-606",
+            "label": "Lexington (606)"
         },
         {
-            "value": "alexandria-859",
-            "label": "Alexandria (859)"
+            "value": "lexington-859",
+            "label": "Lexington (859)"
         }
     ],
     "LA": [
@@ -637,8 +577,8 @@
             "label": "Baton Rouge (225)"
         },
         {
-            "value": "monroe-318",
-            "label": "Monroe (318)"
+            "value": "shreveport-318",
+            "label": "Shreveport (318)"
         },
         {
             "value": "lafayette-337",
@@ -649,34 +589,26 @@
             "label": "New Orleans (504)"
         },
         {
-            "value": "morgan-city-985",
-            "label": "Morgan City (985)"
+            "value": "houma-985",
+            "label": "Houma (985)"
         }
     ],
     "MA": [
         {
-            "value": "arlington-339",
-            "label": "Arlington (339)"
+            "value": "boston-339",
+            "label": "Boston (339)"
         },
         {
             "value": "lowell-351",
             "label": "Lowell (351)"
         },
         {
-            "value": "beverly-351",
-            "label": "Beverly (351)"
-        },
-        {
-            "value": "chelmsford-351",
-            "label": "Chelmsford (351)"
-        },
-        {
             "value": "springfield-413",
             "label": "Springfield (413)"
         },
         {
-            "value": "franklin-508",
-            "label": "Franklin (508)"
+            "value": "worcester-508",
+            "label": "Worcester (508)"
         },
         {
             "value": "boston-617",
@@ -687,8 +619,8 @@
             "label": "Worcester (774)"
         },
         {
-            "value": "dedham-781",
-            "label": "Dedham (781)"
+            "value": "boston-781",
+            "label": "Boston (781)"
         },
         {
             "value": "boston-857",
@@ -701,40 +633,28 @@
     ],
     "MD": [
         {
-            "value": "washington-240",
-            "label": "Washington (240)"
+            "value": "germantown-227",
+            "label": "Germantown (227)"
+        },
+        {
+            "value": "germantown-240",
+            "label": "Germantown (240)"
         },
         {
             "value": "germantown-301",
             "label": "Germantown (301)"
         },
         {
-            "value": "aspen-hill-301",
-            "label": "Aspen Hill (301)"
-        },
-        {
-            "value": "bethesda-301",
-            "label": "Bethesda (301)"
-        },
-        {
             "value": "baltimore-410",
             "label": "Baltimore (410)"
-        },
-        {
-            "value": "annapolis-410",
-            "label": "Annapolis (410)"
-        },
-        {
-            "value": "arbutus-410",
-            "label": "Arbutus (410)"
         },
         {
             "value": "baltimore-443",
             "label": "Baltimore (443)"
         },
         {
-            "value": "solomons-667",
-            "label": "Solomons (667)"
+            "value": "baltimore-667",
+            "label": "Baltimore (667)"
         }
     ],
     "ME": [
@@ -745,32 +665,36 @@
     ],
     "MI": [
         {
-            "value": "big-rapids-231",
-            "label": "Big Rapids (231)"
+            "value": "muskegon-231",
+            "label": "Muskegon (231)"
         },
         {
-            "value": "pontiac-248",
-            "label": "Pontiac (248)"
+            "value": "troy-248",
+            "label": "Troy (248)"
         },
         {
-            "value": "battle-creek-269",
-            "label": "Battle Creek (269)"
+            "value": "kalamazoo-269",
+            "label": "Kalamazoo (269)"
         },
         {
             "value": "detroit-313",
             "label": "Detroit (313)"
         },
         {
-            "value": "howell-517",
-            "label": "Howell (517)"
+            "value": "lansing-517",
+            "label": "Lansing (517)"
         },
         {
-            "value": "roseville-586",
-            "label": "Roseville (586)"
+            "value": "warren-586",
+            "label": "Warren (586)"
         },
         {
             "value": "grand-rapids-616",
             "label": "Grand Rapids (616)"
+        },
+        {
+            "value": "detroit-679",
+            "label": "Detroit (679)"
         },
         {
             "value": "ann-arbor-734",
@@ -789,67 +713,51 @@
             "label": "Troy (947)"
         },
         {
-            "value": "bloomfield-947",
-            "label": "Bloomfield (947)"
-        },
-        {
-            "value": "farmington-hills-947",
-            "label": "Farmington Hills (947)"
-        },
-        {
-            "value": "midland-989",
-            "label": "Midland (989)"
+            "value": "saginaw-989",
+            "label": "Saginaw (989)"
         }
     ],
     "MN": [
         {
-            "value": "battle-lake-218",
-            "label": "Battle Lake (218)"
+            "value": "duluth-218",
+            "label": "Duluth (218)"
         },
         {
-            "value": "appleton-320",
-            "label": "Appleton (320)"
+            "value": "st-cloud-320",
+            "label": "St. Cloud (320)"
         },
         {
-            "value": "gaylord-507",
-            "label": "Gaylord (507)"
+            "value": "rochester-507",
+            "label": "Rochester (507)"
         },
         {
             "value": "minneapolis-612",
             "label": "Minneapolis (612)"
         },
         {
-            "value": "crystal-612",
-            "label": "Crystal (612)"
+            "value": "st-paul-651",
+            "label": "St. Paul (651)"
         },
         {
-            "value": "golden-valley-612",
-            "label": "Golden Valley (612)"
+            "value": "brooklyn-park-763",
+            "label": "Brooklyn Park (763)"
         },
         {
-            "value": "hastings-651",
-            "label": "Hastings (651)"
-        },
-        {
-            "value": "cambridge-763",
-            "label": "Cambridge (763)"
+            "value": "rochester-924",
+            "label": "Rochester (924)"
         },
         {
             "value": "bloomington-952",
             "label": "Bloomington (952)"
-        },
-        {
-            "value": "burnsville-952",
-            "label": "Burnsville (952)"
-        },
-        {
-            "value": "chanhassen-952",
-            "label": "Chanhassen (952)"
         }
     ],
     "MO": [
         {
-            "value": "st.-louis-314",
+            "value": "columbia-235",
+            "label": "Columbia (235)"
+        },
+        {
+            "value": "st-louis-314",
             "label": "St. Louis (314)"
         },
         {
@@ -857,34 +765,34 @@
             "label": "Springfield (417)"
         },
         {
-            "value": "gideon-573",
-            "label": "Gideon (573)"
+            "value": "st-louis-557",
+            "label": "St. Louis (557)"
         },
         {
-            "value": "sadelia-660",
-            "label": "Sadelia (660)"
+            "value": "columbia-573",
+            "label": "Columbia (573)"
         },
         {
-            "value": "slater-660",
-            "label": "Slater (660)"
+            "value": "st-charles-636",
+            "label": "St. Charles (636)"
+        },
+        {
+            "value": "sedalia-660",
+            "label": "Sedalia (660)"
         },
         {
             "value": "kansas-city-816",
             "label": "Kansas City (816)"
+        },
+        {
+            "value": "kansas-city-975",
+            "label": "Kansas City (975)"
         }
     ],
     "MS": [
         {
             "value": "gulfport-228",
             "label": "Gulfport (228)"
-        },
-        {
-            "value": "biloxi-228",
-            "label": "Biloxi (228)"
-        },
-        {
-            "value": "pascagoula-228",
-            "label": "Pascagoula (228)"
         },
         {
             "value": "jackson-601",
@@ -907,52 +815,44 @@
     ],
     "NC": [
         {
-            "value": "kinston-252",
-            "label": "Kinston (252)"
+            "value": "greenville-252",
+            "label": "Greenville (252)"
         },
         {
             "value": "greensboro-336",
             "label": "Greensboro (336)"
         },
         {
+            "value": "fayetteville-472",
+            "label": "Fayetteville (472)"
+        },
+        {
             "value": "charlotte-704",
             "label": "Charlotte (704)"
-        },
-        {
-            "value": "concord-704",
-            "label": "Concord (704)"
-        },
-        {
-            "value": "gastonia-704",
-            "label": "Gastonia (704)"
         },
         {
             "value": "greensboro-743",
             "label": "Greensboro (743)"
         },
         {
-            "value": "marion-828",
-            "label": "Marion (828)"
+            "value": "asheville-828",
+            "label": "Asheville (828)"
         },
         {
-            "value": "lumberton-910",
-            "label": "Lumberton (910)"
+            "value": "fayetteville-910",
+            "label": "Fayetteville (910)"
         },
         {
             "value": "raleigh-919",
             "label": "Raleigh (919)"
         },
         {
-            "value": "salisbury-980",
-            "label": "Salisbury (980)"
+            "value": "charlotte-980",
+            "label": "Charlotte (980)"
         },
         {
-            "value": "angier-984",
-            "label": "Angier (984)"
-        },
-        {
-            "value": "selma-984",
-            "label": "Selma (984)"
+            "value": "raleigh-984",
+            "label": "Raleigh (984)"
         }
     ],
     "ND": [
@@ -961,18 +861,16 @@
             "label": "Fargo (701)"
         }
     ],
+    "NH": [
+        {
+            "value": "manchester-603",
+            "label": "Manchester (603)"
+        }
+    ],
     "NE": [
         {
             "value": "grand-island-308",
             "label": "Grand Island (308)"
-        },
-        {
-            "value": "kearney-308",
-            "label": "Kearney (308)"
-        },
-        {
-            "value": "north-platte-308",
-            "label": "North Platte (308)"
         },
         {
             "value": "omaha-402",
@@ -985,36 +883,40 @@
     ],
     "NJ": [
         {
-            "value": "westwood-201",
-            "label": "Westwood (201)"
+            "value": "jersey-city-201",
+            "label": "Jersey City (201)"
         },
         {
-            "value": "hackensack-551",
-            "label": "Hackensack (551)"
+            "value": "jersey-city-551",
+            "label": "Jersey City (551)"
         },
         {
             "value": "trenton-609",
             "label": "Trenton (609)"
         },
         {
-            "value": "woodbridge-732",
-            "label": "Woodbridge (732)"
+            "value": "trenton-640",
+            "label": "Trenton (640)"
         },
         {
-            "value": "new-brunswick-848",
-            "label": "New Brunswick (848)"
+            "value": "toms-river-732",
+            "label": "Toms River (732)"
         },
         {
-            "value": "woodstown-856",
-            "label": "Woodstown (856)"
+            "value": "toms-river-848",
+            "label": "Toms River (848)"
         },
         {
-            "value": "patteron-862",
-            "label": "Patteron (862)"
+            "value": "camden-856",
+            "label": "Camden (856)"
         },
         {
-            "value": "westfield-908",
-            "label": "Westfield (908)"
+            "value": "newark-862",
+            "label": "Newark (862)"
+        },
+        {
+            "value": "elizabeth-908",
+            "label": "Elizabeth (908)"
         },
         {
             "value": "newark-973",
@@ -1022,10 +924,6 @@
         }
     ],
     "NM": [
-        {
-            "value": "santa-fe-505",
-            "label": "Santa Fe (505)"
-        },
         {
             "value": "albuquerque-505",
             "label": "Albuquerque (505)"
@@ -1041,70 +939,106 @@
             "label": "Las Vegas (702)"
         },
         {
-            "value": "reno-725",
-            "label": "Reno (725)"
+            "value": "las-vegas-725",
+            "label": "Las Vegas (725)"
         },
         {
-            "value": "las-vegas-775",
-            "label": "Las Vegas (775)"
+            "value": "reno-775",
+            "label": "Reno (775)"
         }
     ],
     "NY": [
         {
+            "value": "manhattan-212",
+            "label": "Manhattan (212)"
+        },
+        {
             "value": "syracuse-315",
             "label": "Syracuse (315)"
+        },
+        {
+            "value": "new-city-329",
+            "label": "New City (329)"
+        },
+        {
+            "value": "manhattan-332",
+            "label": "Manhattan (332)"
         },
         {
             "value": "new-york-347",
             "label": "New York (347)"
         },
         {
-            "value": "bronx-347",
-            "label": "Bronx (347)"
+            "value": "hempstead-363",
+            "label": "Hempstead (363)"
         },
         {
-            "value": "brooklyn-347",
-            "label": "Brooklyn (347)"
+            "value": "new-york-465",
+            "label": "New York (465)"
         },
         {
-            "value": "nassau-516",
-            "label": "Nassau (516)"
+            "value": "hempstead-516",
+            "label": "Hempstead (516)"
         },
         {
-            "value": "hudson-518",
-            "label": "Hudson (518)"
+            "value": "albany-518",
+            "label": "Albany (518)"
         },
         {
             "value": "rochester-585",
             "label": "Rochester (585)"
         },
         {
-            "value": "cortland-607",
-            "label": "Cortland (607)"
+            "value": "binghamton-607",
+            "label": "Binghamton (607)"
         },
         {
-            "value": "atlantic-631",
-            "label": "Atlantic (631)"
+            "value": "buffalo-624",
+            "label": "Buffalo (624)"
         },
         {
-            "value": "new-york-city-646",
-            "label": "New York City (646)"
+            "value": "brentwood-631",
+            "label": "Brentwood (631)"
         },
         {
-            "value": "niagara-falls-716",
-            "label": "Niagara Falls (716)"
+            "value": "manhattan-646",
+            "label": "Manhattan (646)"
+        },
+        {
+            "value": "syracuse-680",
+            "label": "Syracuse (680)"
+        },
+        {
+            "value": "buffalo-716",
+            "label": "Buffalo (716)"
+        },
+        {
+            "value": "new-york-718",
+            "label": "New York (718)"
+        },
+        {
+            "value": "albany-838",
+            "label": "Albany (838)"
         },
         {
             "value": "new-city-845",
             "label": "New City (845)"
         },
         {
-            "value": "westchester-914",
-            "label": "Westchester (914)"
+            "value": "yonkers-914",
+            "label": "Yonkers (914)"
         },
         {
-            "value": "new-york-city-929",
-            "label": "New York City (929)"
+            "value": "new-york-917",
+            "label": "New York (917)"
+        },
+        {
+            "value": "new-york-929",
+            "label": "New York (929)"
+        },
+        {
+            "value": "brentwood-934",
+            "label": "Brentwood (934)"
         }
     ],
     "OH": [
@@ -1113,52 +1047,48 @@
             "label": "Cleveland (216)"
         },
         {
-            "value": "louisville-234",
-            "label": "Louisville (234)"
+            "value": "newark-220",
+            "label": "Newark (220)"
+        },
+        {
+            "value": "akron-234",
+            "label": "Akron (234)"
+        },
+        {
+            "value": "cincinnati-283",
+            "label": "Cincinnati (283)"
         },
         {
             "value": "dayton-326",
             "label": "Dayton (326)"
         },
         {
-            "value": "beavercreek-326",
-            "label": "Beavercreek (326)"
-        },
-        {
-            "value": "centerville-326",
-            "label": "Centerville (326)"
-        },
-        {
             "value": "akron-330",
             "label": "Akron (330)"
-        },
-        {
-            "value": "alliance-330",
-            "label": "Alliance (330)"
-        },
-        {
-            "value": "austintown-330",
-            "label": "Austintown (330)"
         },
         {
             "value": "columbus-380",
             "label": "Columbus (380)"
         },
         {
-            "value": "arlington-419",
-            "label": "Arlington (419)"
+            "value": "toledo-419",
+            "label": "Toledo (419)"
         },
         {
-            "value": "bedford-440",
-            "label": "Bedford (440)"
+            "value": "parma-436",
+            "label": "Parma (436)"
+        },
+        {
+            "value": "parma-440",
+            "label": "Parma (440)"
         },
         {
             "value": "cincinnati-513",
             "label": "Cincinnati (513)"
         },
         {
-            "value": "findlay-567",
-            "label": "Findlay (567)"
+            "value": "toledo-567",
+            "label": "Toledo (567)"
         },
         {
             "value": "columbus-614",
@@ -1167,14 +1097,6 @@
         {
             "value": "newark-740",
             "label": "Newark (740)"
-        },
-        {
-            "value": "athens-740",
-            "label": "Athens (740)"
-        },
-        {
-            "value": "chillicothe-740",
-            "label": "Chillicothe (740)"
         },
         {
             "value": "dayton-937",
@@ -1191,12 +1113,16 @@
             "label": "Tulsa (539)"
         },
         {
-            "value": "blackwell-580",
-            "label": "Blackwell (580)"
+            "value": "oklahoma-city-572",
+            "label": "Oklahoma City (572)"
         },
         {
-            "value": "owasso-918",
-            "label": "Owasso (918)"
+            "value": "lawton-580",
+            "label": "Lawton (580)"
+        },
+        {
+            "value": "tulsa-918",
+            "label": "Tulsa (918)"
         }
     ],
     "OR": [
@@ -1219,6 +1145,14 @@
     ],
     "PA": [
         {
+            "value": "philadelphia-215",
+            "label": "Philadelphia (215)"
+        },
+        {
+            "value": "lancaster-223",
+            "label": "Lancaster (223)"
+        },
+        {
             "value": "philadelphia-267",
             "label": "Philadelphia (267)"
         },
@@ -1227,60 +1161,48 @@
             "label": "Scranton (272)"
         },
         {
-            "value": "back-mountain-272",
-            "label": "Back Mountain (272)"
+            "value": "pittsburgh-412",
+            "label": "Pittsburgh (412)"
         },
         {
-            "value": "hazelton-272",
-            "label": "Hazelton (272)"
+            "value": "philadelphia-445",
+            "label": "Philadelphia (445)"
         },
         {
-            "value": "philadelphia-412",
-            "label": "Philadelphia (412)"
-        },
-        {
-            "value": "northampton-484",
-            "label": "Northampton (484)"
+            "value": "allentown-484",
+            "label": "Allentown (484)"
         },
         {
             "value": "scranton-570",
             "label": "Scranton (570)"
         },
         {
+            "value": "erie-582",
+            "label": "Erie (582)"
+        },
+        {
             "value": "allentown-610",
             "label": "Allentown (610)"
         },
         {
-            "value": "bethlehem-610",
-            "label": "Bethlehem (610)"
+            "value": "lancaster-717",
+            "label": "Lancaster (717)"
         },
         {
-            "value": "chester-610",
-            "label": "Chester (610)"
+            "value": "new-castle-724",
+            "label": "New Castle (724)"
         },
         {
-            "value": "annville-717",
-            "label": "Annville (717)"
+            "value": "allentown-835",
+            "label": "Allentown (835)"
         },
         {
-            "value": "new-kensington-724",
-            "label": "New Kensington (724)"
+            "value": "erie-814",
+            "label": "Erie (814)"
         },
         {
-            "value": "edinboro-814",
-            "label": "Edinboro (814)"
-        },
-        {
-            "value": "piitsburgh-878",
-            "label": "Piitsburgh (878)"
-        },
-        {
-            "value": "bethel-park-878",
-            "label": "Bethel Park (878)"
-        },
-        {
-            "value": "mccandless-878",
-            "label": "Mccandless (878)"
+            "value": "pittsburgh-878",
+            "label": "Pittsburgh (878)"
         }
     ],
     "RI": [
@@ -1295,16 +1217,24 @@
             "label": "Columbia (803)"
         },
         {
-            "value": "st.-george-843",
-            "label": "St. George (843)"
+            "value": "greenville-821",
+            "label": "Greenville (821)"
+        },
+        {
+            "value": "charleston-843",
+            "label": "Charleston (843)"
+        },
+        {
+            "value": "columbia-839",
+            "label": "Columbia (839)"
         },
         {
             "value": "charleston-854",
             "label": "Charleston (854)"
         },
         {
-            "value": "anderson-864",
-            "label": "Anderson (864)"
+            "value": "greenville-864",
+            "label": "Greenville (864)"
         }
     ],
     "SD": [
@@ -1315,16 +1245,20 @@
     ],
     "TN": [
         {
-            "value": "johnson-city-423",
-            "label": "Johnson City (423)"
+            "value": "chattanooga-423",
+            "label": "Chattanooga (423)"
         },
         {
             "value": "nashville-615",
             "label": "Nashville (615)"
         },
         {
-            "value": "knoxville-629",
-            "label": "Knoxville (629)"
+            "value": "nashville-629",
+            "label": "Nashville (629)"
+        },
+        {
+            "value": "chattanooga-729",
+            "label": "Chattanooga (729)"
         },
         {
             "value": "jackson-731",
@@ -1353,14 +1287,6 @@
             "label": "Dallas (214)"
         },
         {
-            "value": "allen-214",
-            "label": "Allen (214)"
-        },
-        {
-            "value": "atascocita-214",
-            "label": "Atascocita (214)"
-        },
-        {
             "value": "waco-254",
             "label": "Waco (254)"
         },
@@ -1369,20 +1295,8 @@
             "label": "Houston (281)"
         },
         {
-            "value": "allen-281",
-            "label": "Allen (281)"
-        },
-        {
-            "value": "atascocita-281",
-            "label": "Atascocita (281)"
-        },
-        {
             "value": "abilene-325",
             "label": "Abilene (325)"
-        },
-        {
-            "value": "san-angelo-325",
-            "label": "San Angelo (325)"
         },
         {
             "value": "houston-346",
@@ -1393,24 +1307,28 @@
             "label": "Corpus Christi (361)"
         },
         {
-            "value": "jasper-409",
-            "label": "Jasper (409)"
+            "value": "beaumont-409",
+            "label": "Beaumont (409)"
         },
         {
-            "value": "atlanta-430",
-            "label": "Atlanta (430)"
+            "value": "tyler-430",
+            "label": "Tyler (430)"
         },
         {
-            "value": "crane-432",
-            "label": "Crane (432)"
+            "value": "midland-432",
+            "label": "Midland (432)"
         },
         {
             "value": "dallas-469",
             "label": "Dallas (469)"
         },
         {
-            "value": "georgetown-512",
-            "label": "Georgetown (512)"
+            "value": "austin-512",
+            "label": "Austin (512)"
+        },
+        {
+            "value": "fort-worth-621",
+            "label": "Fort Worth (621)"
         },
         {
             "value": "fort-worth-682",
@@ -1421,14 +1339,6 @@
             "label": "Houston (713)"
         },
         {
-            "value": "allen-713",
-            "label": "Allen (713)"
-        },
-        {
-            "value": "atascocita-713",
-            "label": "Atascocita (713)"
-        },
-        {
             "value": "san-antonio-726",
             "label": "San Antonio (726)"
         },
@@ -1437,16 +1347,16 @@
             "label": "Austin (737)"
         },
         {
-            "value": "slaton-806",
-            "label": "Slaton (806)"
+            "value": "amarillo-806",
+            "label": "Amarillo (806)"
         },
         {
-            "value": "euless-817",
-            "label": "Euless (817)"
+            "value": "fort-worth-817",
+            "label": "Fort Worth (817)"
         },
         {
-            "value": "floresville-830",
-            "label": "Floresville (830)"
+            "value": "san-antonio-830",
+            "label": "San Antonio (830)"
         },
         {
             "value": "houston-832",
@@ -1457,36 +1367,32 @@
             "label": "Tyler (903)"
         },
         {
-            "value": "corsicana-903",
-            "label": "Corsicana (903)"
-        },
-        {
-            "value": "denison-903",
-            "label": "Denison (903)"
-        },
-        {
             "value": "el-paso-915",
             "label": "El Paso (915)"
         },
         {
-            "value": "waller-936",
-            "label": "Waller (936)"
+            "value": "conroe-936",
+            "label": "Conroe (936)"
         },
         {
-            "value": "bartonville-940",
-            "label": "Bartonville (940)"
+            "value": "denton-940",
+            "label": "Denton (940)"
         },
         {
-            "value": "brownsville-956",
-            "label": "Brownsville (956)"
+            "value": "dallas-945",
+            "label": "Dallas (945)"
+        },
+        {
+            "value": "mcallen-956",
+            "label": "McAllen (956)"
         },
         {
             "value": "dallas-972",
             "label": "Dallas (972)"
         },
         {
-            "value": "clute-lake-jackson-979",
-            "label": "Clute Lake Jackson (979)"
+            "value": "bryan-979",
+            "label": "Bryan (979)"
         }
     ],
     "UT": [
@@ -1495,38 +1401,54 @@
             "label": "Salt Lake City (385)"
         },
         {
-            "value": "st.-george-435",
+            "value": "st-george-435",
             "label": "St. George (435)"
         },
         {
-            "value": "springville-801",
-            "label": "Springville (801)"
+            "value": "salt-lake-city-801",
+            "label": "Salt Lake City (801)"
         }
     ],
     "VA": [
         {
-            "value": "gelax-276",
-            "label": "Gelax (276)"
+            "value": "bristol-276",
+            "label": "Bristol (276)"
         },
         {
-            "value": "blackston-434",
-            "label": "Blackston (434)"
+            "value": "lynchburg-434",
+            "label": "Lynchburg (434)"
         },
         {
-            "value": "stafford-540",
-            "label": "Stafford (540)"
+            "value": "roanoke-540",
+            "label": "Roanoke (540)"
         },
         {
-            "value": "washington-571",
-            "label": "Washington (571)"
+            "value": "arlington-571",
+            "label": "Arlington (571)"
         },
         {
-            "value": "norfolk-757",
-            "label": "Norfolk (757)"
+            "value": "richmond-686",
+            "label": "Richmond (686)"
+        },
+        {
+            "value": "arlington-703",
+            "label": "Arlington (703)"
+        },
+        {
+            "value": "virginia-beach-757",
+            "label": "Virginia Beach (757)"
         },
         {
             "value": "richmond-804",
             "label": "Richmond (804)"
+        },
+        {
+            "value": "roanoke-826",
+            "label": "Roanoke (826)"
+        },
+        {
+            "value": "virginia-beach-948",
+            "label": "Virginia Beach (948)"
         }
     ],
     "VT": [
@@ -1537,18 +1459,42 @@
     ],
     "WA": [
         {
-            "value": "vancouver-206",
-            "label": "Vancouver (206)"
+            "value": "seattle-206",
+            "label": "Seattle (206)"
         },
         {
-            "value": "yakima-509",
-            "label": "Yakima (509)"
+            "value": "tacoma-253",
+            "label": "Tacoma (253)"
+        },
+        {
+            "value": "olympia-360",
+            "label": "Olympia (360)"
+        },
+        {
+            "value": "bellevue-425",
+            "label": "Bellevue (425)"
+        },
+        {
+            "value": "spokane-509",
+            "label": "Spokane (509)"
+        },
+        {
+            "value": "seattle-564",
+            "label": "Seattle (564)"
         }
     ],
     "WI": [
         {
-            "value": "menomonee-falls-262",
-            "label": "Menomonee Falls (262)"
+            "value": "milwaukee-262",
+            "label": "Milwaukee (262)"
+        },
+        {
+            "value": "green-bay-274",
+            "label": "Green Bay (274)"
+        },
+        {
+            "value": "madison-353",
+            "label": "Madison (353)"
         },
         {
             "value": "milwaukee-414",
@@ -1563,22 +1509,28 @@
             "label": "Madison (608)"
         },
         {
-            "value": "shawano-715",
-            "label": "Shawano (715)"
+            "value": "green-bay-715",
+            "label": "Green Bay (715)"
         },
         {
-            "value": "appleton-920",
-            "label": "Appleton (920)"
+            "value": "green-bay-920",
+            "label": "Green Bay (920)"
         }
     ],
     "WV": [
         {
-            "value": "beckley-304",
-            "label": "Beckley (304)"
+            "value": "charleston-304",
+            "label": "Charleston (304)"
         },
         {
-            "value": "fairmont-681",
-            "label": "Fairmont (681)"
+            "value": "morgantown-681",
+            "label": "Morgantown (681)"
+        }
+    ],
+    "WY": [
+        {
+            "value": "cheyenne-307",
+            "label": "Cheyenne (307)"
         }
     ]
 }
