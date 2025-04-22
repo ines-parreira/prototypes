@@ -27,19 +27,20 @@ import { useDownloadTagsReportData } from 'services/reporting/tagsReportingServi
 export const TAGS_LABEL = 'Set Tag Results'
 export const TAGS_REFERENCE_LABEL = 'Set Reference Timeframe'
 
-export const TAGS_INCLUDE_TAGS_LABEL = 'Include related tags in results'
+export const TAGS_INCLUDE_TAGS_LABEL = 'Include related Tags in results'
 export const TAGS_INCLUDE_TAGS_SUBTITLE =
-    'Show all related tags within filter results'
-export const TAGS_EXCLUDE_TAGS_LABEL = 'Exclude related tags in results'
-export const TAGS_EXCLUDE_TAGS_SUBTITLE = 'Do not show tags outside of selected'
+    'Show all related Tags within filter results'
+export const TAGS_EXCLUDE_TAGS_LABEL = 'Exclude related Tags in results'
+export const TAGS_EXCLUDE_TAGS_SUBTITLE =
+    'Do not show Tags outside of selected date range'
 export const TAGS_ALL_STATUSES_LABEL =
-    'Show results with tags based on all ticket statuses'
+    'Show results with Tags based on all ticket statuses'
 export const TAGS_ALL_STATUSES_SUBTITLE =
-    'Display tags from all tickets within selected date range'
+    'Display Tags from all tickets within selected date range'
 export const TAGS_CREATION_DATE_LABEL =
-    'Show results with tags based on ticket creation date'
+    'Show results with Tags based on when tag was applied'
 export const TAGS_CREATION_DATE_SUBTITLE =
-    'Only display tags from created tickets within selected date range'
+    'Only display Tags from created tickets within selected date range'
 
 export const TAG_ACTIONS_DOWNLOAD_OPTION_LABEL = 'Download Data'
 

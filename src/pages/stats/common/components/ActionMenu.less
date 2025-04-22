@@ -15,26 +15,18 @@
     .itemContent {
         display: flex;
         flex-direction: column;
-        max-width: 395px;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        white-space: nowrap;
+        width: fit-content;
+        max-width: calc(100vw - 64px);
     }
 
     .category {
         color: var(--main-primary);
         padding: @layout-spacing-xs;
         .caption-allcaps();
-        overflow: hidden;
-        text-overflow: ellipsis;
-        white-space: nowrap;
     }
 
     .label {
         color: var(--neutral-grey-6);
-        overflow: hidden;
-        text-overflow: ellipsis;
-        white-space: nowrap;
     }
 
     .description {

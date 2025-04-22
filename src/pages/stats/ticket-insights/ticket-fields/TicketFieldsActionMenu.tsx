@@ -20,13 +20,13 @@ import { useCustomFieldsReportData } from 'services/reporting/ticketFieldsReport
 
 export const TICKET_FIELDS_LABEL = 'Set Ticket Field Results'
 export const TICKET_FIELDS_ALL_STATUSES_LABEL =
-    'Show results with ticket fields based on all ticket statuses'
+    'Show results with Ticket Fields based on all ticket statuses'
 export const TICKET_FIELDS_ALL_STATUSES_SUBTITLE =
-    'Display ticket fields from all tickets within selected date range'
+    'Display Ticket Fields from all tickets within selected date range'
 export const TICKET_FIELDS_CREATION_DATE_LABEL =
-    'Show results with ticket fields based on ticket creation date'
+    'Show results with Ticket Fields based on when ticket field was applied'
 export const TICKET_FIELDS_CREATION_DATE_SUBTITLE =
-    'Only display ticket fields from created tickets within selected date range'
+    'Only display Ticket Fields from created tickets within selected date range'
 export const TICKET_FIELDS_DOWNLOAD_OPTION_LABEL = 'Download Data'
 
 const CANDU_ID = 'ticket-fields-report-action-menu'

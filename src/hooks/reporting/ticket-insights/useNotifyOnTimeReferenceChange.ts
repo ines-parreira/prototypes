@@ -2,30 +2,33 @@ import { useNotify } from 'hooks/useNotify'
 import useUpdateEffect from 'hooks/useUpdateEffect'
 import { TicketTimeReference } from 'models/stat/types'
 
-const RESULTS_BASED_ON_ALL_STATUSES_NOTIFICATION =
-    'results will now display based on all ticket statuses'
-const RESULTS_BASED_ON_CREATION_DATE_NOTIFICATION =
-    'results will now display based on ticket creation date'
-
-const timeReferenceToNotificationMap = {
-    [TicketTimeReference.TaggedAt]: RESULTS_BASED_ON_ALL_STATUSES_NOTIFICATION,
-    [TicketTimeReference.CreatedAt]:
-        RESULTS_BASED_ON_CREATION_DATE_NOTIFICATION,
-}
-
 export enum ReportName {
     Tags = 'tags',
     TicketFields = 'ticketFields',
 }
 
+const timeReferenceNotificationMessages: Record<
+    ReportName,
+    Record<TicketTimeReference, string>
+> = {
+    [ReportName.Tags]: {
+        [TicketTimeReference.TaggedAt]:
+            'Tag results will now display based on all ticket statuses.',
+        [TicketTimeReference.CreatedAt]:
+            'Tag results will now display based on when tag was applied.',
+    },
+    [ReportName.TicketFields]: {
+        [TicketTimeReference.TaggedAt]:
+            'Ticket Field results will now display based on all ticket statuses.',
+        [TicketTimeReference.CreatedAt]:
+            'Ticket Field results will now display based on when ticket field was applied.',
+    },
+}
+
 export const createNotificationMessage = (
     reportName: ReportName,
     selection: TicketTimeReference,
-) => {
-    const notification = timeReferenceToNotificationMap[selection]
-
-    return `${reportName} ${notification}`
-}
+) => timeReferenceNotificationMessages[reportName][selection]
 
 export const useNotifyOnTimeReferenceChange = (
     reportName: ReportName,
