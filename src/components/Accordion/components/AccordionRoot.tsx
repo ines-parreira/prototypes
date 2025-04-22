@@ -1,5 +1,5 @@
 import { forwardRef, useCallback, useMemo, useState } from 'react'
-import type { ComponentProps } from 'react'
+import type { ComponentPropsWithoutRef } from 'react'
 
 import classNames from 'classnames'
 
@@ -10,7 +10,8 @@ import { AccordionProps, AccordionValue } from '../utils/types'
 
 import css from './AccordionRoot.less'
 
-type AccordionRootProps = ComponentProps<'div'> & AccordionProps
+export type AccordionRootProps = ComponentPropsWithoutRef<'div'> &
+    AccordionProps
 
 export const AccordionRoot = forwardRef<HTMLDivElement, AccordionRootProps>(
     (

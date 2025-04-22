@@ -1,5 +1,5 @@
 import { forwardRef } from 'react'
-import type { ComponentProps } from 'react'
+import type { ComponentPropsWithoutRef } from 'react'
 
 import classNames from 'classnames'
 
@@ -10,7 +10,7 @@ import { AccordionState } from '../utils/accordion-state'
 
 import css from './AccordionItemTrigger.less'
 
-export type AccordionItemTriggerProps = ComponentProps<'button'>
+export type AccordionItemTriggerProps = ComponentPropsWithoutRef<'button'>
 
 export const AccordionItemTrigger = forwardRef<
     HTMLButtonElement,

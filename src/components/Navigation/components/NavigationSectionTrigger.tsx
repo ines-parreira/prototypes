@@ -1,23 +1,23 @@
+import { forwardRef } from 'react'
+
 import classNames from 'classnames'
 
-import {
-    Accordion,
-    AccordionItemTriggerProps,
-} from 'components/Accordion/Accordion'
+import { Accordion } from 'components/Accordion/Accordion'
+import type { AccordionItemTriggerProps } from 'components/Accordion/components/AccordionItemTrigger'
 
 import css from './NavigationSectionTrigger.less'
 
-export function NavigationSectionTrigger({
-    children,
-    className,
-    ...props
-}: Omit<AccordionItemTriggerProps, 'ref'>) {
+export const NavigationSectionTrigger = forwardRef<
+    HTMLButtonElement,
+    AccordionItemTriggerProps
+>(function NavigationSectionTrigger({ children, className, ...props }, ref) {
     return (
         <Accordion.ItemTrigger
+            ref={ref}
             {...props}
             className={classNames(css.trigger, className)}
         >
             {children}
         </Accordion.ItemTrigger>
     )
-}
+})

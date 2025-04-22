@@ -1,5 +1,5 @@
 import { forwardRef } from 'react'
-import type { ComponentProps } from 'react'
+import type { ComponentPropsWithoutRef } from 'react'
 
 import classNames from 'classnames'
 import { AnimatePresence, motion } from 'framer-motion'
@@ -17,8 +17,8 @@ const variants = {
 } as const
 
 export type AccordionItemContentProps = Omit<
-    ComponentProps<'div'>,
-    'onAnimationStart' | 'onDragStart' | 'onDragEnd' | 'onDrag' | 'ref'
+    ComponentPropsWithoutRef<'div'>,
+    'onAnimationStart' | 'onDragStart' | 'onDragEnd' | 'onDrag'
 >
 
 export const AccordionItemContent = forwardRef<

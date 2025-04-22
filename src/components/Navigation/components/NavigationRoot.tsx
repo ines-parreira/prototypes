@@ -1,5 +1,15 @@
-import { Accordion, AccordionProps } from '../../Accordion/Accordion'
+import { forwardRef } from 'react'
 
-export const NavigationRoot = ({ children, ...props }: AccordionProps) => {
-    return <Accordion.Root {...props}>{children}</Accordion.Root>
-}
+import type { AccordionRootProps } from 'components/Accordion/components/AccordionRoot'
+
+import { Accordion } from '../../Accordion/Accordion'
+
+export const NavigationRoot = forwardRef<HTMLDivElement, AccordionRootProps>(
+    ({ children, ...props }, ref) => {
+        return (
+            <Accordion.Root ref={ref} {...props}>
+                {children}
+            </Accordion.Root>
+        )
+    },
+)
