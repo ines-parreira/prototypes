@@ -34,6 +34,7 @@ import {
 import { ReportingFilterOperator, ReportingQuery } from 'models/reporting/types'
 import { StatsFilters } from 'models/stat/types'
 import {
+    formatReportingQueryDate,
     NotSpamNorTrashedTicketsFilter,
     statsFiltersToReportingFilters,
     TicketStatsFiltersMembers,
@@ -430,10 +431,12 @@ export const AiAgentAutomatedInteractionsTicketsQueryFactory = ({
 }
 
 export const aiAgentAutomatedTicketCountQueryFactory = ({
+    filters,
     timezone,
     ticketIds,
     sorting,
 }: {
+    filters: StatsFilters
     timezone: string
     ticketIds?: string[]
     sorting?: OrderDirection
@@ -442,6 +445,16 @@ export const aiAgentAutomatedTicketCountQueryFactory = ({
     dimensions: [],
     timezone,
     filters: [
+        {
+            member: AutomatedTicketsFilterMember.PeriodStart,
+            operator: ReportingFilterOperator.AfterDate,
+            values: [formatReportingQueryDate(filters.period.start_datetime)],
+        },
+        {
+            member: AutomatedTicketsFilterMember.PeriodEnd,
+            operator: ReportingFilterOperator.BeforeDate,
+            values: [formatReportingQueryDate(filters.period.end_datetime)],
+        },
         {
             member: AutomatedTicketsFilterMember.TicketId,
             operator: ReportingFilterOperator.Equals,

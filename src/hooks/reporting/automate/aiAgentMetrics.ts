@@ -31,6 +31,9 @@ import {
     CUSTOM_FIELD_AI_AGENT_CLOSE,
     CUSTOM_FIELD_AI_AGENT_HANDOVER,
 } from './types'
+import { adjustPeriodForAutomatedInteractions } from './utils'
+
+export const HOURS_FOR_AUTOMATED_INTERACTIONS = 72
 
 export const useTotalAiAgentTicketsByCustomField = (
     filters: StatsFilters,
@@ -318,13 +321,28 @@ export const useAiAgentAutomatedTicketsCountTrends = ({
         .map((item) => item[TicketDimension.TicketId])
         .filter((id): id is string => typeof id === 'string')
 
+    const adjustedPeriodFilters = adjustPeriodForAutomatedInteractions(
+        HOURS_FOR_AUTOMATED_INTERACTIONS,
+        filters.period,
+    )
+
+    const prevPeriod = getPreviousPeriod(filters.period)
+    const adjustedPrevPeriod = adjustPeriodForAutomatedInteractions(
+        HOURS_FOR_AUTOMATED_INTERACTIONS,
+        prevPeriod,
+    )
+
     return useMultipleMetricsTrends(
         aiAgentAutomatedTicketCountQueryFactory({
+            filters: { period: adjustedPeriodFilters },
             timezone,
             ticketIds,
             sorting,
         }),
         aiAgentAutomatedTicketCountQueryFactory({
+            filters: {
+                period: adjustedPrevPeriod,
+            },
             timezone,
             ticketIds: prevTicketIds,
             sorting,

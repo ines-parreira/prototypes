@@ -9,6 +9,8 @@ export enum AutomatedTicketsDimension {
 }
 
 export enum AutomatedTicketsFilterMember {
+    PeriodStart = 'AutomatedTickets.periodStart',
+    PeriodEnd = 'AutomatedTickets.periodEnd',
     TicketId = 'AutomatedTickets.ticketId',
 }
 export enum AutomatedTicketsSegment {}

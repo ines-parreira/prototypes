@@ -435,6 +435,7 @@ describe('AI Agent metrics', () => {
 
     it('aiAgentAutomatedTicketCountQueryFactory without ticketIds', () => {
         const result = aiAgentAutomatedTicketCountQueryFactory({
+            filters,
             timezone: 'UTC',
             ticketIds: [],
             sorting: OrderDirection.Asc,
@@ -444,6 +445,16 @@ describe('AI Agent metrics', () => {
             dimensions: [],
             timezone: 'UTC',
             filters: [
+                {
+                    member: AutomatedTicketsFilterMember.PeriodStart,
+                    operator: ReportingFilterOperator.AfterDate,
+                    values: ['2021-01-01T00:00:00.000'],
+                },
+                {
+                    member: AutomatedTicketsFilterMember.PeriodEnd,
+                    operator: ReportingFilterOperator.BeforeDate,
+                    values: ['2021-01-02T00:00:00.000'],
+                },
                 {
                     member: AutomatedTicketsFilterMember.TicketId,
                     operator: ReportingFilterOperator.Equals,
@@ -456,6 +467,7 @@ describe('AI Agent metrics', () => {
 
     it('aiAgentAutomatedTicketCountQueryFactory with ticketIds', () => {
         const result = aiAgentAutomatedTicketCountQueryFactory({
+            filters,
             timezone: 'UTC',
             ticketIds: ['1', '2'],
             sorting: OrderDirection.Desc,
@@ -465,6 +477,16 @@ describe('AI Agent metrics', () => {
             dimensions: [],
             timezone: 'UTC',
             filters: [
+                {
+                    member: AutomatedTicketsFilterMember.PeriodStart,
+                    operator: ReportingFilterOperator.AfterDate,
+                    values: ['2021-01-01T00:00:00.000'],
+                },
+                {
+                    member: AutomatedTicketsFilterMember.PeriodEnd,
+                    operator: ReportingFilterOperator.BeforeDate,
+                    values: ['2021-01-02T00:00:00.000'],
+                },
                 {
                     member: AutomatedTicketsFilterMember.TicketId,
                     operator: ReportingFilterOperator.Equals,
@@ -477,6 +499,7 @@ describe('AI Agent metrics', () => {
 
     it('aiAgentAutomatedTicketCountQueryFactory without sorting', () => {
         const result = aiAgentAutomatedTicketCountQueryFactory({
+            filters,
             timezone: 'UTC',
             ticketIds: ['1', '2'],
         })
@@ -485,6 +508,16 @@ describe('AI Agent metrics', () => {
             dimensions: [],
             timezone: 'UTC',
             filters: [
+                {
+                    member: AutomatedTicketsFilterMember.PeriodStart,
+                    operator: ReportingFilterOperator.AfterDate,
+                    values: ['2021-01-01T00:00:00.000'],
+                },
+                {
+                    member: AutomatedTicketsFilterMember.PeriodEnd,
+                    operator: ReportingFilterOperator.BeforeDate,
+                    values: ['2021-01-02T00:00:00.000'],
+                },
                 {
                     member: AutomatedTicketsFilterMember.TicketId,
                     operator: ReportingFilterOperator.Equals,

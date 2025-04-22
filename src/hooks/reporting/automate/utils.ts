@@ -812,3 +812,19 @@ export const filterMetricDataByIntentLevel = ({
                 item !== undefined,
         )
 }
+
+const addHoursToDate = (hours: number, date: string) => {
+    const momentDate = moment(date)
+    return momentDate.add(hours, 'hours').format()
+}
+
+export const adjustPeriodForAutomatedInteractions = (
+    hours: number,
+    period: Period,
+) => {
+    const adjustedPeriod = {
+        start_datetime: period.start_datetime,
+        end_datetime: addHoursToDate(hours, period.end_datetime),
+    }
+    return adjustedPeriod
+}

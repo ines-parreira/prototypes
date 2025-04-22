@@ -14,6 +14,7 @@ import {
 import {
     addNonExistingEventTypesForGraph,
     addZeroValueTimeSeriesForGreyArea,
+    adjustPeriodForAutomatedInteractions,
     AutomateEventType,
     automateInteractionsByEventTypeToTimeSeries,
     automatePercentLabel,
@@ -1153,4 +1154,50 @@ describe('filterMetricDataByIntentLevel', () => {
     //         { intent: 'intent2', result: 20 },
     //     ])
     // })
+})
+describe('adjustPeriodForAutomatedInteractions', () => {
+    it('should adjust end date by the specified hours', () => {
+        const period = {
+            start_datetime: '2024-03-20T12:00:00Z',
+            end_datetime: '2024-03-21T12:00:00Z',
+        }
+        const hours = 5
+        const expectedPeriod = {
+            start_datetime: '2024-03-20T12:00:00Z',
+            end_datetime: '2024-03-21T17:00:00Z',
+        }
+
+        const result = adjustPeriodForAutomatedInteractions(hours, period)
+        expect(result).toEqual(expectedPeriod)
+    })
+
+    it('should handle negative hours correctly', () => {
+        const period = {
+            start_datetime: '2024-03-20T12:00:00Z',
+            end_datetime: '2024-03-21T12:00:00Z',
+        }
+        const hours = -3
+        const expectedPeriod = {
+            start_datetime: '2024-03-20T12:00:00Z',
+            end_datetime: '2024-03-21T09:00:00Z',
+        }
+
+        const result = adjustPeriodForAutomatedInteractions(hours, period)
+        expect(result).toEqual(expectedPeriod)
+    })
+
+    it('should handle crossing day boundaries correctly', () => {
+        const period = {
+            start_datetime: '2024-03-20T23:00:00Z',
+            end_datetime: '2024-03-21T23:00:00Z',
+        }
+        const hours = 3
+        const expectedPeriod = {
+            start_datetime: '2024-03-20T23:00:00Z',
+            end_datetime: '2024-03-22T02:00:00Z',
+        }
+
+        const result = adjustPeriodForAutomatedInteractions(hours, period)
+        expect(result).toEqual(expectedPeriod)
+    })
 })
