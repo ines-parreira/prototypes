@@ -1,3 +1,5 @@
+import { useParams } from 'react-router-dom'
+
 import { TicketSummary } from '@gorgias/api-queries'
 import { Button, LoadingSpinner } from '@gorgias/merchant-ui-kit'
 
@@ -26,6 +28,7 @@ export function CustomerTimelineWidget({ isEditing, customerId }: Props) {
         openTimeline,
         closeTimeline,
     } = useTimeline()
+    const { ticketId: activeTicketId } = useParams<{ ticketId?: string }>()
     const widgetContext = useAppSelector(getContext)
 
     const ticketCount = tickets.length
@@ -63,7 +66,11 @@ export function CustomerTimelineWidget({ isEditing, customerId }: Props) {
             {showToggle ? (
                 <Button
                     className={css.mr}
-                    intent={openTicketCount ? 'primary' : 'secondary'}
+                    intent={
+                        showButtonAsPrimary(tickets, activeTicketId)
+                            ? 'primary'
+                            : 'secondary'
+                    }
                     onClick={() =>
                         isOpen ? closeTimeline() : openTimeline(customerId)
                     }
@@ -92,4 +99,14 @@ function getTicketsCount(tickets: TicketSummary[]) {
             (ticket) => ticket.status === 'closed' && ticket.snooze_datetime,
         ).length,
     }
+}
+
+function showButtonAsPrimary(
+    tickets: TicketSummary[],
+    activeTicketId: string | undefined,
+) {
+    return tickets.some(
+        (ticket) =>
+            ticket.status === 'open' && ticket.id.toString() !== activeTicketId,
+    )
 }

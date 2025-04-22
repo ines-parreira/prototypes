@@ -1,6 +1,8 @@
 import { fireEvent, render, screen } from '@testing-library/react'
+import { useParams } from 'react-router-dom'
 
 import { TicketSummary } from '@gorgias/api-types'
+import { Button } from '@gorgias/merchant-ui-kit'
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import { useTimeline } from 'pages/common/components/timeline/hooks/useTimeline'
@@ -10,6 +12,14 @@ import { assumeMock } from 'utils/testing'
 
 import { CustomerTimelineWidget } from '../CustomerTimelineWidget'
 
+jest.mock('@gorgias/merchant-ui-kit', () => ({
+    ...jest.requireActual('@gorgias/merchant-ui-kit'),
+    Button: jest.fn(({ onClick }) => <button onClick={onClick}>Button</button>),
+}))
+jest.mock('react-router-dom', () => ({
+    ...jest.requireActual('react-router-dom'),
+    useParams: jest.fn(),
+}))
 jest.mock('hooks/useAppDispatch')
 jest.mock('hooks/useAppSelector', () => jest.fn((selector) => selector()))
 jest.mock('state/widgets/selectors', () => ({
@@ -23,6 +33,7 @@ jest.mock('pages/common/components/timeline/hooks/useTimeline', () => ({
 const useAppDispatchMock = assumeMock(useAppDispatch)
 const getContextMock = assumeMock(getContext)
 const useTimelineMock = assumeMock(useTimeline)
+const useParamsMock = assumeMock(useParams)
 
 describe('CustomerTimelineButton', () => {
     const dispatchMock = jest.fn()
@@ -60,6 +71,9 @@ describe('CustomerTimelineButton', () => {
         useAppDispatchMock.mockReturnValue(dispatchMock)
         getContextMock.mockReturnValue(WidgetEnvironment.Ticket)
         useTimelineMock.mockReturnValue(defaultTimelineReturnValue)
+        useParamsMock.mockReturnValue({
+            ticketId: '1',
+        })
     })
 
     it('should display a loading spinner when history is loading', () => {
@@ -119,6 +133,25 @@ describe('CustomerTimelineButton', () => {
         expect(screen.getByText(/2 open/i)).toBeInTheDocument()
         expect(screen.getByText(/1 snoozed/i)).toBeInTheDocument()
         expect(screen.getByText(/5 tickets/i)).toBeInTheDocument()
+    })
+
+    it('should display a secondary button when there is only one open ticket which is the active ticket', () => {
+        useTimelineMock.mockReturnValue({
+            ...defaultTimelineReturnValue,
+            tickets: [openTickets[0]],
+        })
+        useParamsMock.mockReturnValue({
+            ticketId: openTickets[0].id.toString(),
+        })
+
+        render(<CustomerTimelineWidget {...defaultProps} />)
+
+        expect(Button).toHaveBeenCalledWith(
+            expect.objectContaining({
+                intent: 'secondary',
+            }),
+            {},
+        )
     })
 
     describe('Customer context or edit mode', () => {
