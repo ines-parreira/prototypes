@@ -1,13 +1,24 @@
 import React, { useCallback, useEffect, useState } from 'react'
 
-import { debounce } from 'lodash'
+import { debounce, isObject, toPlainObject } from 'lodash'
 
 import { useAgentActivity } from '@gorgias/realtime'
 
 import { TYPING_ACTIVITY_AGENT_TIMEOUT_MS } from 'state/newMessage/constants'
+import { reportError } from 'utils/errors'
 
 export type TypingActivityProps = {
     handleTypingActivity: () => void
+}
+
+const handlePubNubError = (error: unknown) => {
+    const status =
+        isObject(error) && 'status' in error
+            ? toPlainObject(error?.status)
+            : undefined
+    reportError(new Error('Realtime typing status error'), {
+        extra: { status },
+    })
 }
 
 export default function withTypingActivity<P>(
@@ -25,17 +36,33 @@ export default function withTypingActivity<P>(
             [],
         )
 
-        useEffect(() => {
+        const handleStartTyping = useCallback(async () => {
             if (isTyping) {
-                startTyping()
-            }
-
-            return () => {
-                if (isTyping) {
-                    stopTyping()
+                try {
+                    await startTyping()
+                } catch (error) {
+                    handlePubNubError(error)
                 }
             }
-        }, [isTyping, startTyping, stopTyping])
+        }, [isTyping, startTyping])
+
+        const handleStopTyping = useCallback(async () => {
+            if (isTyping) {
+                try {
+                    await stopTyping()
+                } catch (error) {
+                    handlePubNubError(error)
+                }
+            }
+        }, [isTyping, stopTyping])
+
+        useEffect(() => {
+            handleStartTyping()
+
+            return () => {
+                handleStopTyping()
+            }
+        }, [handleStartTyping, handleStopTyping])
 
         const handleTypingActivity = useCallback(() => {
             setIsTyping(true)
