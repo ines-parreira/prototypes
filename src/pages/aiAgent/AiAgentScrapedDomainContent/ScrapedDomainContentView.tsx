@@ -102,7 +102,6 @@ const ScrapedDomainContentView = ({
                                               CONTENT_TYPE.QUESTION ? (
                                                   <ToggleField
                                                       value={true}
-                                                      onClick={() => {}}
                                                       className={
                                                           css.toggleInput
                                                       }

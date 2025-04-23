@@ -37,6 +37,12 @@
                 'main'
                 'footer';
 
+            &.withoutFooter {
+                grid-template-rows: 64px auto 0;
+                grid-template-areas:
+                    'header'
+                    'main';
+            }
             /*
             Modal starts under the menu in responsive mode
             */

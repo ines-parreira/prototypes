@@ -29,5 +29,31 @@ describe('<Drawer/>', () => {
             </Drawer>,
         )
         expect(container).toMatchSnapshot()
+        const drawer = container.querySelector('.drawer')
+        expect(drawer).not.toHaveClass('withoutFooter')
+    })
+
+    it('should apply custom backdrop styles when provided', () => {
+        const backdropClassName = 'filter: blur(2px)'
+
+        const { container } = render(
+            <Drawer {...props} backdropClassName={backdropClassName}>
+                Modal content
+            </Drawer>,
+        )
+
+        const backdrop = container.querySelector('.backdrop')
+        expect(backdrop).toHaveClass(backdropClassName)
+    })
+
+    it('should render without footer when withFooter is false', () => {
+        const { container } = render(
+            <Drawer {...props} withFooter={false}>
+                Modal content
+            </Drawer>,
+        )
+
+        const drawer = container.querySelector('.drawer')
+        expect(drawer).toHaveClass('withoutFooter')
     })
 })

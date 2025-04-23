@@ -1,0 +1,24 @@
+@import (reference) '~css/new/mixins';
+@import (reference) '~css/backdrop';
+
+:local {
+    .drawer {
+        grid-template-areas: 'header' 'main';
+        grid-template-rows: 64px auto 0px;
+    }
+
+    .backdrop {
+        backdrop-filter: blur(2px);
+        height: 100%;
+    }
+
+    .header,
+    .tabNavigator {
+        background-color: var(--neutral-grey-1);
+        padding: 0 10px 0 0;
+    }
+
+    .content {
+        background-color: var(--neutral-grey-1);
+    }
+}
