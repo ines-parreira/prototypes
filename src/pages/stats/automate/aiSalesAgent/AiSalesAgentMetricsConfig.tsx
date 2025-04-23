@@ -201,7 +201,7 @@ export const AiSalesAgentMetricsWithDrillDownConfig: Record<
         interpretAs: 'more-is-better',
         metricFormat: 'decimal',
         drillDownMetric: AiSalesAgentChart.AiSalesAgentTotalNumberOfOrders,
-        showMetric: true,
+        showMetric: false,
         domain: Domain.AiSalesAgent,
         drillDownQuery: totalNumberOfOrderDrillDownQueryFactory,
     },
