@@ -34,6 +34,11 @@ const fakeVoiceQueues = [
     { id: 3, name: 'Queue 3' },
 ] as VoiceQueue[]
 
+const defaultQueryOptions = {
+    staleTime: 60_000,
+    refetchOnWindowFocus: false,
+}
+
 const useInfiniteListVoiceQueuesParams = {
     data: {
         pages: [
@@ -66,10 +71,13 @@ describe('useVoiceQueueSearch', () => {
 
         const { result } = renderHook(() => useVoiceQueueSearch())
 
-        expect(useInfiniteListVoiceQueuesMock).toHaveBeenCalledWith({
-            search: '',
-            limit: VOICE_QUEUES_LIMIT,
-        })
+        expect(useInfiniteListVoiceQueuesMock).toHaveBeenCalledWith(
+            {
+                search: '',
+                limit: VOICE_QUEUES_LIMIT,
+            },
+            defaultQueryOptions,
+        )
 
         expect(result.current.voiceQueues).toEqual([
             fakeVoiceQueues[0],
@@ -91,19 +99,25 @@ describe('useVoiceQueueSearch', () => {
             result.current.handleVoiceQueueSearch('test queue')
         })
 
-        expect(useInfiniteListVoiceQueuesMock).toHaveBeenCalledWith({
-            search: '',
-            limit: VOICE_QUEUES_LIMIT,
-        })
+        expect(useInfiniteListVoiceQueuesMock).toHaveBeenCalledWith(
+            {
+                search: '',
+                limit: VOICE_QUEUES_LIMIT,
+            },
+            defaultQueryOptions,
+        )
 
         act(() => {
             jest.advanceTimersByTime(VOICE_QUEUE_SEARCH_DEBOUNCE_TIME)
         })
 
-        expect(useInfiniteListVoiceQueuesMock).toHaveBeenCalledWith({
-            search: 'test queue',
-            limit: VOICE_QUEUES_LIMIT,
-        })
+        expect(useInfiniteListVoiceQueuesMock).toHaveBeenCalledWith(
+            {
+                search: 'test queue',
+                limit: VOICE_QUEUES_LIMIT,
+            },
+            defaultQueryOptions,
+        )
 
         jest.useRealTimers()
     })

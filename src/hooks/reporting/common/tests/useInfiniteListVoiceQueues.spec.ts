@@ -37,8 +37,6 @@ describe('useInfiniteListVoiceQueues', () => {
                     }),
                     'paginated',
                 ],
-                staleTime: 60_000,
-                refetchOnWindowFocus: false,
             }),
         )
 

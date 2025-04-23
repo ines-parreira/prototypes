@@ -19,10 +19,16 @@ export const useVoiceQueueSearch = () => {
     const [query, setQuery] = useState('')
 
     const { data, isFetchingNextPage, hasNextPage, fetchNextPage, isError } =
-        useInfiniteListVoiceQueues({
-            search: query,
-            limit: VOICE_QUEUES_LIMIT,
-        })
+        useInfiniteListVoiceQueues(
+            {
+                search: query,
+                limit: VOICE_QUEUES_LIMIT,
+            },
+            {
+                staleTime: 60_000,
+                refetchOnWindowFocus: false,
+            },
+        )
 
     // eslint-disable-next-line exhaustive-deps
     const handleVoiceQueueSearch = useCallback(
