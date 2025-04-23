@@ -87,7 +87,8 @@ export const getOtherAgents = createSelector(
         agents.filter(
             (agent: Map<any, any> = fromJS({})) =>
                 String(agent.get('id', '')) !==
-                String(currentUser.get('id', '')),
+                    String(currentUser.get('id', '')) &&
+                agent.getIn(['role', 'name'], '') !== UserRole.GorgiasAgent,
         ) as Agents,
 )
 

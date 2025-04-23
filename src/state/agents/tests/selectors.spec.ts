@@ -16,7 +16,17 @@ describe('agents selectors', () => {
         role: { name: UserRole.Bot },
         email: AUTOMATION_BOT_EMAIL_ACROSS_ALL_ACCOUNTS[0],
     }
-    const allAgents = [{ id: 1 }, { id: 2 }, automationBotAgent]
+    const gorgiasSupportAgent = {
+        id: 4,
+        role: { name: UserRole.GorgiasAgent },
+        email: 'support@gorgias.xyz',
+    }
+    const allAgents = [
+        { id: 1 },
+        { id: 2 },
+        automationBotAgent,
+        gorgiasSupportAgent,
+    ]
     let state: RootState
 
     beforeEach(() => {
@@ -300,6 +310,7 @@ describe('agents selectors', () => {
                 { id: allAgents[0].id, label: 'Customer #1' },
                 { id: allAgents[1].id, label: 'Customer #2' },
                 { id: allAgents[2].id, label: automationBotAgent.email },
+                { id: allAgents[3].id, label: gorgiasSupportAgent.email },
             ]),
         )
         expect(
@@ -323,6 +334,10 @@ describe('agents selectors', () => {
                 {
                     id: allAgents[2].id,
                     label: getDisplayName(Map(allAgents[2])),
+                },
+                {
+                    id: allAgents[3].id,
+                    label: getDisplayName(Map(allAgents[3])),
                 },
             ])
         })
