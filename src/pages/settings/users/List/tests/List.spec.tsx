@@ -3,7 +3,7 @@ import React from 'react'
 import { act, fireEvent, render, screen, waitFor } from '@testing-library/react'
 import { Link } from 'react-router-dom'
 
-import { useListUsers } from '@gorgias/api-queries'
+import { User } from '@gorgias/api-queries'
 
 import { agents } from 'fixtures/agents'
 import {
@@ -16,6 +16,7 @@ import { UserSortableProperties } from 'models/user/types'
 import Navigation from 'pages/common/components/Navigation/Navigation'
 import Search from 'pages/common/components/Search'
 import UsersSettingsTable from 'pages/settings/users/List/UsersSettingsTable'
+import { useUserList } from 'pages/settings/users/List/useUserList'
 import { getCurrentHelpdeskPlan } from 'state/billing/selectors'
 import { getAccountOwnerId } from 'state/currentAccount/selectors'
 import { notify } from 'state/notifications/actions'
@@ -30,8 +31,8 @@ jest.mock('react-router-dom', () => ({
 }))
 const mockedLink = assumeMock(Link)
 
-jest.mock('@gorgias/api-queries')
-const mockedUseListUsers = assumeMock(useListUsers)
+jest.mock('pages/settings/users/List/useUserList')
+const mockedUseUserList = assumeMock(useUserList)
 
 const mockedDispatch = jest.fn()
 jest.mock('hooks/useAppDispatch')
@@ -67,14 +68,18 @@ describe('<List />', () => {
     beforeEach(() => {
         mockedUseAppDispatch.mockImplementation(() => mockedDispatch)
         mockedGetAccountOwnerId.mockImplementation(() => agents[0].id)
-        mockedUseListUsers.mockImplementation(
-            () =>
-                ({
-                    data: undefined,
-                    isLoading: false,
-                    isError: false,
-                }) as ReturnType<typeof useListUsers>,
-        )
+        mockedUseUserList.mockImplementation(() => ({
+            params: { order_by: 'name:asc' },
+            isLoading: false,
+            isError: false,
+            users: [],
+            hasPrevItems: false,
+            hasNextItems: false,
+            fetchPrevItems: jest.fn(),
+            fetchNextItems: jest.fn(),
+            setOrderBy: jest.fn(),
+            setSearch: jest.fn(),
+        }))
     })
 
     it('should render a link with correct `to` prop', () => {
@@ -94,14 +99,18 @@ describe('<List />', () => {
     })
 
     it('should render a loader', () => {
-        mockedUseListUsers.mockImplementationOnce(
-            () =>
-                ({
-                    data: undefined,
-                    isLoading: true,
-                    isError: false,
-                }) as ReturnType<typeof useListUsers>,
-        )
+        mockedUseUserList.mockImplementationOnce(() => ({
+            params: { order_by: 'name:asc' },
+            isLoading: true,
+            isError: false,
+            users: [],
+            hasPrevItems: false,
+            hasNextItems: false,
+            fetchPrevItems: jest.fn(),
+            fetchNextItems: jest.fn(),
+            setOrderBy: jest.fn(),
+            setSearch: jest.fn(),
+        }))
         render(<UserList />)
         expect(mockedUsersSettingsTable).toHaveBeenCalledWith(
             expect.objectContaining({
@@ -112,14 +121,18 @@ describe('<List />', () => {
     })
 
     it('should dispatch an error', () => {
-        mockedUseListUsers.mockImplementationOnce(
-            () =>
-                ({
-                    data: undefined,
-                    isLoading: false,
-                    isError: true,
-                }) as ReturnType<typeof useListUsers>,
-        )
+        mockedUseUserList.mockImplementationOnce(() => ({
+            params: { order_by: 'name:asc' },
+            isLoading: false,
+            isError: true,
+            users: [],
+            hasPrevItems: false,
+            hasNextItems: false,
+            fetchPrevItems: jest.fn(),
+            fetchNextItems: jest.fn(),
+            setOrderBy: jest.fn(),
+            setSearch: jest.fn(),
+        }))
         render(<UserList />)
         expect(mockedDispatch).toHaveBeenCalledTimes(1)
         expect(notify).toHaveBeenNthCalledWith(
@@ -132,52 +145,46 @@ describe('<List />', () => {
     })
 
     it('should provide correct props to `Navigation`', () => {
-        const mockData = {
-            data: {
-                meta: {
-                    prev_cursor: 'prev-cursor',
-                    next_cursor: 'next-cursor',
-                },
-                data: [],
-            },
-        }
-        mockedUseListUsers.mockImplementationOnce(
-            () =>
-                ({
-                    data: mockData,
-                    isLoading: false,
-                    isError: false,
-                }) as ReturnType<typeof useListUsers>,
-        )
+        const fetchPrevItems = jest.fn()
+        const fetchNextItems = jest.fn()
+        mockedUseUserList.mockImplementationOnce(() => ({
+            params: { order_by: 'name:asc' },
+            isLoading: false,
+            isError: false,
+            users: [],
+            hasPrevItems: true,
+            hasNextItems: true,
+            fetchPrevItems,
+            fetchNextItems,
+            setOrderBy: jest.fn(),
+            setSearch: jest.fn(),
+        }))
         render(<UserList />)
         expect(Navigation).toHaveBeenNthCalledWith(
             1,
             expect.objectContaining({
                 hasPrevItems: true,
                 hasNextItems: true,
-                fetchPrevItems: expect.any(Function),
-                fetchNextItems: expect.any(Function),
-                className: expect.any(String),
+                fetchPrevItems,
+                fetchNextItems,
             }),
             {},
         )
     })
 
     it('should provide correct props to `UsersSettingsTable`', () => {
-        const mockData = {
-            data: {
-                data: agents,
-                meta: {},
-            },
-        }
-        mockedUseListUsers.mockImplementationOnce(
-            () =>
-                ({
-                    data: mockData,
-                    isLoading: false,
-                    isError: false,
-                }) as ReturnType<typeof useListUsers>,
-        )
+        mockedUseUserList.mockImplementationOnce(() => ({
+            params: { order_by: 'name:asc' },
+            isLoading: false,
+            isError: false,
+            users: agents as User[],
+            hasPrevItems: false,
+            hasNextItems: false,
+            fetchPrevItems: jest.fn(),
+            fetchNextItems: jest.fn(),
+            setOrderBy: jest.fn(),
+            setSearch: jest.fn(),
+        }))
         render(<UserList />)
         expect(mockedUsersSettingsTable).toHaveBeenCalledWith(
             expect.objectContaining({
@@ -185,7 +192,7 @@ describe('<List />', () => {
                 users: agents,
                 onSortOptionsChange: expect.any(Function),
                 options: expect.objectContaining({
-                    order_by: expect.any(String),
+                    order_by: 'name:asc',
                 }),
             }),
             {},
@@ -193,24 +200,20 @@ describe('<List />', () => {
     })
 
     it('should reset cursor when sorting is changed', () => {
-        const mockData = {
-            data: {
-                data: agents,
-                meta: {
-                    next_cursor: 'next-cursor',
-                    prev_cursor: 'prev-cursor',
-                },
-            },
-        }
+        const setOrderByMock = jest.fn()
 
-        mockedUseListUsers.mockImplementationOnce(
-            () =>
-                ({
-                    data: mockData,
-                    isLoading: false,
-                    isError: false,
-                }) as ReturnType<typeof useListUsers>,
-        )
+        mockedUseUserList.mockImplementationOnce(() => ({
+            params: { order_by: 'name:asc' },
+            isLoading: false,
+            isError: false,
+            users: agents as User[],
+            hasPrevItems: true,
+            hasNextItems: true,
+            fetchPrevItems: jest.fn(),
+            fetchNextItems: jest.fn(),
+            setOrderBy: setOrderByMock,
+            setSearch: jest.fn(),
+        }))
 
         render(<UserList />)
 
@@ -218,13 +221,9 @@ describe('<List />', () => {
             mockedUsersSettingsTable.mock.calls[0][0].onSortOptionsChange
         onSortOptionsChange(UserSortableProperties.Name, OrderDirection.Desc)
 
-        expect(mockedUsersSettingsTable).toHaveBeenCalledWith(
-            expect.objectContaining({
-                options: expect.objectContaining({
-                    cursor: undefined,
-                }),
-            }),
-            {},
+        expect(setOrderByMock).toHaveBeenCalledWith(
+            UserSortableProperties.Name,
+            OrderDirection.Desc,
         )
     })
 
@@ -240,25 +239,21 @@ describe('<List />', () => {
         )
     })
 
-    it('should fetch users when searching and reset cursor', async () => {
-        const mockData = {
-            data: {
-                data: agents,
-                meta: {
-                    next_cursor: 'next-cursor',
-                    prev_cursor: 'prev-cursor',
-                },
-            },
-        }
+    it('should fetch users when searching', async () => {
+        const setSearchMock = jest.fn()
 
-        mockedUseListUsers.mockImplementation(
-            () =>
-                ({
-                    data: mockData,
-                    isLoading: false,
-                    isError: false,
-                }) as ReturnType<typeof useListUsers>,
-        )
+        mockedUseUserList.mockImplementation(() => ({
+            params: { order_by: 'name:asc' },
+            isLoading: false,
+            isError: false,
+            users: agents as User[],
+            hasPrevItems: true,
+            hasNextItems: true,
+            fetchPrevItems: jest.fn(),
+            fetchNextItems: jest.fn(),
+            setOrderBy: jest.fn(),
+            setSearch: setSearchMock,
+        }))
 
         render(<UserList />)
 
@@ -269,39 +264,25 @@ describe('<List />', () => {
         })
 
         await waitFor(() => {
-            expect(mockedUsersSettingsTable).toHaveBeenCalledWith(
-                expect.objectContaining({
-                    options: expect.objectContaining({
-                        search: searchTerm,
-                        cursor: undefined,
-                    }),
-                }),
-                {},
-            )
+            expect(setSearchMock).toHaveBeenCalledWith(searchTerm)
         })
     })
 
     it('should display "No results" message when search returns no users', () => {
-        mockedUseListUsers.mockImplementationOnce(
-            () =>
-                ({
-                    data: {
-                        data: {
-                            data: [],
-                            meta: {},
-                        },
-                    },
-                    isLoading: false,
-                    isError: false,
-                }) as ReturnType<typeof useListUsers>,
-        )
+        mockedUseUserList.mockImplementationOnce(() => ({
+            params: { order_by: 'name:asc', search: 'foo' },
+            isLoading: false,
+            isError: false,
+            users: [],
+            hasPrevItems: false,
+            hasNextItems: false,
+            fetchPrevItems: jest.fn(),
+            fetchNextItems: jest.fn(),
+            setOrderBy: jest.fn(),
+            setSearch: jest.fn(),
+        }))
 
         render(<UserList />)
-
-        const searchInput = screen.getByTestId('search-input')
-        act(() => {
-            fireEvent.change(searchInput, { target: { value: 'foo' } })
-        })
 
         expect(screen.getByText('No results')).toBeInTheDocument()
         expect(

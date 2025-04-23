@@ -10,7 +10,6 @@ import bodyCellCss from 'pages/common/components/table/cells/BodyCell.less'
 import BodyCellContent from 'pages/common/components/table/cells/BodyCellContent'
 import TableBodyRow from 'pages/common/components/table/TableBodyRow'
 import { RoleLabel } from 'pages/common/utils/labels'
-import { AI_AGENT_CLIENT_ID } from 'state/agents/constants'
 import { getAccountOwnerId } from 'state/currentAccount/selectors'
 
 import css from './UsersSettingsItem.less'
@@ -22,15 +21,6 @@ type Props = {
 export function UsersSettingsItem({ user }: Props) {
     const accountOwnerId = useAppSelector(getAccountOwnerId)
     const isAccountOwner = user.id === accountOwnerId
-
-    // For now we only want to display bot user if it is the AI Agent.
-    const shouldHide =
-        user.role?.name === UserRole.Bot &&
-        user.client_id !== AI_AGENT_CLIENT_ID
-
-    if (shouldHide) {
-        return null
-    }
 
     const to = `/app/settings/users/${user.id}`
     const isBot = user.role?.name === UserRole.Bot

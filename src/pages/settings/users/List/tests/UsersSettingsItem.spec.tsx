@@ -177,17 +177,6 @@ describe('<UsersSettingsItem />', () => {
         )
     })
 
-    it('should not render bot users that are not AI Agent', () => {
-        const botUser = {
-            ...defaultUser,
-            role: { name: UserRole.Bot },
-            client_id: 'not-ai-agent',
-        }
-
-        const { container } = render(<UsersSettingsItem user={botUser} />)
-        expect(container.firstChild).toBeNull()
-    })
-
     it('should render AI Agent bot user', () => {
         const aiAgentUser = {
             ...defaultUser,

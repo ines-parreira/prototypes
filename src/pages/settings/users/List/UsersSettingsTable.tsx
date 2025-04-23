@@ -18,7 +18,7 @@ import css from './UsersSettingsTable.less'
 
 type Props = {
     isLoading: boolean
-    users?: User[]
+    users: User[]
     onSortOptionsChange: (
         orderBy: UserSortableProperties,
         orderDir: OrderDirection,
@@ -121,7 +121,7 @@ export function UsersSettingsTable({
                         </BodyCell>
                     </TableBodyRow>
                 ) : (
-                    users?.map((user: User) => (
+                    users.map((user: User) => (
                         <UsersSettingsItem key={user.id} user={user} />
                     ))
                 )}
