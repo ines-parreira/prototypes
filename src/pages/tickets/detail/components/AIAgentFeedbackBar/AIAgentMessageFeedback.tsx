@@ -265,18 +265,15 @@ const AIAgentMessageFeedback: React.FC<Props> = ({ messageFeedback }) => {
             <HelpCenterApiClientProvider>
                 <FeedbackOrders orders={messageFeedback?.orders} />
                 <div className={css.subsectionTitle}>
-                    Feedback
+                    Review Knowledge used by AI Agent
                     <InfoIconWithTooltip
                         id="tooltip-message-feedback"
                         tooltipProps={{ autohide: true, placement: 'bottom' }}
                     >
                         <>
-                            Provide feedback on the resources AI Agent used to
-                            improve future responses:
-                            <br /> 1. Use thumbs up/down to indicate if AI Agent
-                            used the right resource
-                            <br /> 2. Edit a resource if it didn’t work as
-                            expected
+                            Reviewing helps the Gorgias team monitor how well AI
+                            Agent is able to find the right knowledge to the
+                            question
                         </>
                     </InfoIconWithTooltip>
                 </div>

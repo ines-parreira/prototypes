@@ -84,7 +84,9 @@ describe('FeedbackResourceSection', () => {
     })
     it('does not call handleSubmitFeedback with thumbs_down when thumbs down button is clicked', () => {
         renderFeedbackResourceComponent('thumbs_down')
-        const thumbsButton = screen.getByTitle('Mark as Incorrect')
+        const thumbsButton = screen.getByTitle(
+            "Don't prioritize this knowledge source in requests like this",
+        )
         userEvent.click(thumbsButton)
 
         expect(mockHandleSubmitFeedback).not.toHaveBeenCalledWith()
@@ -93,7 +95,9 @@ describe('FeedbackResourceSection', () => {
 
     it('calls handleSubmitFeedback with thumbs_up when thumbs up button is clicked', () => {
         renderFeedbackResourceComponent('thumbs_down')
-        const thumbsButton = screen.getByTitle('Mark as Correct')
+        const thumbsButton = screen.getByTitle(
+            'Prioritize this knowledge source in requests like this',
+        )
         userEvent.click(thumbsButton)
 
         expect(mockHandleSubmitFeedback).toHaveBeenCalledWith(
@@ -122,17 +126,21 @@ describe('FeedbackResourceSection', () => {
             mockResetCookies,
         ])
         renderFeedbackResourceComponent('thumbs_up')
-        const thumbsButton = screen.getByTitle('Mark as Correct')
+        const thumbsButton = screen.getByTitle(
+            'Prioritize this knowledge source in requests like this',
+        )
         userEvent.click(thumbsButton)
-        const tooltip = screen.queryByAltText(
-            `thumbs down for ${guidanceResource.id}`,
+        const tooltip = screen.queryByText(
+            'Prioritize this knowledge source in requests like this',
         )
         expect(tooltip).toBeNull()
     })
 
     it('calls setCookie when handleBlur is triggered and cookie is not set', () => {
         renderFeedbackResourceComponent('thumbs_up')
-        const thumbsButton = screen.getByTitle('Mark as Correct')
+        const thumbsButton = screen.getByTitle(
+            'Prioritize this knowledge source in requests like this',
+        )
         userEvent.click(thumbsButton)
         userEvent.tab() // simulate blur event on button by tabbing
 
@@ -147,7 +155,9 @@ describe('FeedbackResourceSection', () => {
             mockResetCookies,
         ])
         renderFeedbackResourceComponent('thumbs_up')
-        const thumbsButton = screen.getByTitle('Mark as Correct')
+        const thumbsButton = screen.getByTitle(
+            'Prioritize this knowledge source in requests like this',
+        )
         userEvent.click(thumbsButton)
         userEvent.tab() // simulate blur event on button by tabbing
 

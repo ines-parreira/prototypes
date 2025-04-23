@@ -99,7 +99,7 @@ export const FeedbackResourceSection: React.FC<
                         handleClick(ev, 'thumbs_up')
                     }}
                     onBlur={handleBlur}
-                    title="Mark as Correct"
+                    title="Prioritize this knowledge source in requests like this"
                     id={`thumbs_up-${resourceId}-${resourceType}`}
                 >
                     thumb_up
@@ -136,7 +136,7 @@ export const FeedbackResourceSection: React.FC<
                         handleClick(ev, 'thumbs_down')
                     }}
                     onBlur={handleBlur}
-                    title="Mark as Incorrect"
+                    title="Don't prioritize this knowledge source in requests like this"
                     id={`thumbs-down-${resourceId}-${resourceType}`}
                 >
                     thumb_down
