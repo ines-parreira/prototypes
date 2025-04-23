@@ -147,6 +147,27 @@ describe('ticket message meta', () => {
         await screen.findByText('answer suggested from Gorgias AI')
     })
 
+    it('should display AI sales agent help on search', async () => {
+        render(
+            <Provider store={store}>
+                <Meta
+                    messageId="some-id"
+                    via={TicketVias.GORGIAS_CHAT}
+                    meta={{
+                        ai_campaign_id: '123',
+                        ai_campaign_trigger_key: 'manual',
+                        ai_campaign_trigger_operator:
+                            'aiSalesAgentHelpOnSearch',
+                        ai_campaign_trigger_value: 'backpacks',
+                    }}
+                />
+            </Provider>,
+        )
+
+        await screen.findByText('from search')
+        await screen.findByText('backpacks')
+    })
+
     it(
         'should add a -sent via campaign- label because the message was sent by a campaign on a ' +
             'gorgias-chat integration',

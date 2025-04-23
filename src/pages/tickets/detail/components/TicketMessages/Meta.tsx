@@ -381,6 +381,16 @@ export default function Meta(props: Props) {
                 </b>
             </MetaLabel>,
         )
+    } else if (
+        meta &&
+        meta.ai_campaign_id &&
+        meta.ai_campaign_trigger_operator === 'aiSalesAgentHelpOnSearch'
+    ) {
+        widgets.push(
+            <MetaLabel key="via-widget" label="from search">
+                <b>{meta.ai_campaign_trigger_value}</b>
+            </MetaLabel>,
+        )
     } else if (meta && meta.rule_suggestion_slug) {
         const slug = meta.rule_suggestion_slug
         const ruleName = recipes?.[slug]?.rule?.name ?? slug

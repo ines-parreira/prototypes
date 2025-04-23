@@ -230,6 +230,10 @@ export type SourceAddress = {
 export type Meta = {
     current_page?: string
     campaign_id?: string
+    ai_campaign_id?: string
+    ai_campaign_trigger_key?: 'manual'
+    ai_campaign_trigger_operator?: 'aiSalesAgentHelpOnSearch'
+    ai_campaign_trigger_value?: string
     facebook_carousel?: FacebookCarouselTemplate[]
     hidden_datetime?: string
     permalink_url?: string
