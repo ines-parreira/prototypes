@@ -1,16 +1,14 @@
 import React, { Component, SyntheticEvent } from 'react'
 
 import { fromJS } from 'immutable'
-import { LDFlagSet, withLDConsumer } from 'launchdarkly-react-client-sdk'
 import { isArray } from 'lodash'
 import _forIn from 'lodash/forIn'
 import _isEmpty from 'lodash/isEmpty'
 import { connect, ConnectedProps } from 'react-redux'
-import { Container, Form, FormGroup, FormText, Label } from 'reactstrap'
+import { Container, Form, FormGroup, FormText } from 'reactstrap'
 
-import { Button } from '@gorgias/merchant-ui-kit'
+import { Button, Label } from '@gorgias/merchant-ui-kit'
 
-import { FeatureFlagKey } from 'config/featureFlags'
 import { ContentType, HttpMethod } from 'models/api/types'
 import { EventType } from 'models/event/types'
 import {
@@ -46,7 +44,6 @@ import { validateWebhookURL, validateWebhookURLToPattern } from 'utils'
 type Props = {
     integration: HttpIntegration | undefined
     isUpdate: boolean
-    flags?: LDFlagSet
 } & ConnectedProps<typeof connector>
 
 type State = {
@@ -158,20 +155,6 @@ export class Integration extends Component<Props, State> {
     }
 
     _isDisabled = () => {
-        if (this.props.flags?.[FeatureFlagKey.HttpIntegrationsRevamp]) {
-            return (
-                !this.state.name ||
-                !this.state.url ||
-                (!this.state.ticketCreated &&
-                    !this.state.ticketUpdated &&
-                    !this.state.ticketSelfUnsnoozed &&
-                    !this.state.ticketMessageCreated &&
-                    !this.state.ticketMessageFailed &&
-                    !this.state.ticketAssignmentUpdated &&
-                    !this.state.ticketStatusUpdated)
-            )
-        }
-
         return (
             !this.state.name ||
             !this.state.url ||
@@ -179,7 +162,9 @@ export class Integration extends Component<Props, State> {
                 !this.state.ticketUpdated &&
                 !this.state.ticketSelfUnsnoozed &&
                 !this.state.ticketMessageCreated &&
-                !this.state.ticketMessageFailed)
+                !this.state.ticketMessageFailed &&
+                !this.state.ticketAssignmentUpdated &&
+                !this.state.ticketStatusUpdated)
         )
     }
 
@@ -351,9 +336,6 @@ export class Integration extends Component<Props, State> {
             ticketStatusUpdated,
         } = this.state
 
-        const HTTP_REVAMP_FF: boolean =
-            this.props.flags?.[FeatureFlagKey.HttpIntegrationsRevamp]
-
         const form = this.state.form
 
         const isSubmitting = this._isSubmitting()
@@ -433,9 +415,8 @@ export class Integration extends Component<Props, State> {
                                     </p>
                                     <CheckBox
                                         isDisabled={
-                                            HTTP_REVAMP_FF &&
-                                            (ticketAssignmentUpdated ||
-                                                ticketStatusUpdated)
+                                            ticketAssignmentUpdated ||
+                                            ticketStatusUpdated
                                         }
                                         className="mb-2"
                                         name="http.triggers.ticket-created"
@@ -450,9 +431,8 @@ export class Integration extends Component<Props, State> {
                                     </CheckBox>
                                     <CheckBox
                                         isDisabled={
-                                            HTTP_REVAMP_FF &&
-                                            (ticketAssignmentUpdated ||
-                                                ticketStatusUpdated)
+                                            ticketAssignmentUpdated ||
+                                            ticketStatusUpdated
                                         }
                                         className="mb-2"
                                         name="http.triggers.ticket-updated"
@@ -465,92 +445,73 @@ export class Integration extends Component<Props, State> {
                                     >
                                         Ticket updated
                                     </CheckBox>
-                                    {HTTP_REVAMP_FF && (
-                                        <>
-                                            <CheckBox
-                                                isDisabled={
-                                                    isOldTriggerSelected
-                                                }
-                                                className="mb-2"
-                                                name="http.triggers.ticket-assignment-updated"
-                                                isChecked={
-                                                    ticketAssignmentUpdated
-                                                }
-                                                onChange={(value: boolean) =>
-                                                    this.setState({
-                                                        ticketAssignmentUpdated:
-                                                            value,
-                                                    })
-                                                }
-                                            >
-                                                Ticket assignment updated
-                                                <InfoIconWithTooltip
-                                                    id="tooltip-ticket-assignment-updated"
-                                                    tooltipProps={{
-                                                        autohide: true,
-                                                        placement: 'bottom',
-                                                    }}
-                                                >
-                                                    <>
-                                                        This trigger and the
-                                                        &apos;Ticket created,
-                                                        Ticket updated, Ticket
-                                                        self unsnoozed, Ticket
-                                                        message created and
-                                                        Ticket message failed
-                                                        &apos; triggers are
-                                                        mutually exclusive.
-                                                        Selecting this trigger
-                                                        results in a shorter
-                                                        payload.
-                                                    </>
-                                                </InfoIconWithTooltip>
-                                            </CheckBox>
-                                            <CheckBox
-                                                isDisabled={
-                                                    isOldTriggerSelected
-                                                }
-                                                className="mb-2"
-                                                name="http.triggers.ticket-status-updated"
-                                                isChecked={ticketStatusUpdated}
-                                                onChange={(value: boolean) =>
-                                                    this.setState({
-                                                        ticketStatusUpdated:
-                                                            value,
-                                                    })
-                                                }
-                                            >
-                                                Ticket status updated
-                                                <InfoIconWithTooltip
-                                                    id="tooltip-ticket-status-updated"
-                                                    tooltipProps={{
-                                                        autohide: true,
-                                                        placement: 'bottom',
-                                                    }}
-                                                >
-                                                    <>
-                                                        This trigger and the
-                                                        &apos;Ticket created,
-                                                        Ticket updated, Ticket
-                                                        self unsnoozed, Ticket
-                                                        message created and
-                                                        Ticket message failed
-                                                        &apos; triggers are
-                                                        mutually exclusive.
-                                                        Selecting this trigger
-                                                        results in a shorter
-                                                        payload.
-                                                    </>
-                                                </InfoIconWithTooltip>
-                                            </CheckBox>
-                                        </>
-                                    )}
 
                                     <CheckBox
+                                        isDisabled={isOldTriggerSelected}
+                                        className="mb-2"
+                                        name="http.triggers.ticket-assignment-updated"
+                                        isChecked={ticketAssignmentUpdated}
+                                        onChange={(value: boolean) =>
+                                            this.setState({
+                                                ticketAssignmentUpdated: value,
+                                            })
+                                        }
+                                    >
+                                        Ticket assignment updated
+                                        <InfoIconWithTooltip
+                                            id="tooltip-ticket-assignment-updated"
+                                            tooltipProps={{
+                                                autohide: true,
+                                                placement: 'bottom',
+                                            }}
+                                        >
+                                            <>
+                                                This trigger and the
+                                                &apos;Ticket created, Ticket
+                                                updated, Ticket self unsnoozed,
+                                                Ticket message created and
+                                                Ticket message failed &apos;
+                                                triggers are mutually exclusive.
+                                                Selecting this trigger results
+                                                in a shorter payload.
+                                            </>
+                                        </InfoIconWithTooltip>
+                                    </CheckBox>
+                                    <CheckBox
+                                        isDisabled={isOldTriggerSelected}
+                                        className="mb-2"
+                                        name="http.triggers.ticket-status-updated"
+                                        isChecked={ticketStatusUpdated}
+                                        onChange={(value: boolean) =>
+                                            this.setState({
+                                                ticketStatusUpdated: value,
+                                            })
+                                        }
+                                    >
+                                        Ticket status updated
+                                        <InfoIconWithTooltip
+                                            id="tooltip-ticket-status-updated"
+                                            tooltipProps={{
+                                                autohide: true,
+                                                placement: 'bottom',
+                                            }}
+                                        >
+                                            <>
+                                                This trigger and the
+                                                &apos;Ticket created, Ticket
+                                                updated, Ticket self unsnoozed,
+                                                Ticket message created and
+                                                Ticket message failed &apos;
+                                                triggers are mutually exclusive.
+                                                Selecting this trigger results
+                                                in a shorter payload.
+                                            </>
+                                        </InfoIconWithTooltip>
+                                    </CheckBox>
+                                    <CheckBox
                                         isDisabled={
-                                            HTTP_REVAMP_FF &&
-                                            (ticketAssignmentUpdated ||
-                                                ticketStatusUpdated)
+                                            ticketAssignmentUpdated ||
+                                            ticketStatusUpdated
                                         }
                                         className="mb-2"
                                         name="http.triggers.ticket-self-unsnoozed"
@@ -565,9 +526,8 @@ export class Integration extends Component<Props, State> {
                                     </CheckBox>
                                     <CheckBox
                                         isDisabled={
-                                            HTTP_REVAMP_FF &&
-                                            (ticketAssignmentUpdated ||
-                                                ticketStatusUpdated)
+                                            ticketAssignmentUpdated ||
+                                            ticketStatusUpdated
                                         }
                                         className="mb-2"
                                         name="http.triggers.ticket-message-created"
@@ -582,9 +542,8 @@ export class Integration extends Component<Props, State> {
                                     </CheckBox>
                                     <CheckBox
                                         isDisabled={
-                                            HTTP_REVAMP_FF &&
-                                            (ticketAssignmentUpdated ||
-                                                ticketStatusUpdated)
+                                            ticketAssignmentUpdated ||
+                                            ticketStatusUpdated
                                         }
                                         className="mb-2"
                                         name="http.triggers.ticket-message-failed"
@@ -604,50 +563,29 @@ export class Integration extends Component<Props, State> {
                                     name="http.url"
                                     label="URL"
                                     title="Example: https://company.com/api"
-                                    placeholder={`https://company.com/api/customers?${HTTP_REVAMP_FF ? 'customer_id={{ticket.customer_id}}' : 'email={{ticket.customer.email}}'}`}
+                                    placeholder="https://company.com/api/customers?customer_id={{ticket.customer_id}}"
                                     required
                                     pattern={validateWebhookURLToPattern(
                                         url,
                                         true,
                                     )}
                                     help={
-                                        HTTP_REVAMP_FF ? (
-                                            <div>
-                                                You can use{' '}
-                                                <code>
-                                                    {'{{ticket.customer_id}}'}
-                                                </code>{' '}
-                                                to pass the id of the ticket
-                                                customer. See other{' '}
-                                                <a
-                                                    href="https://developers.gorgias.com/reference/the-tickethttpintegration-object"
-                                                    target="_blank"
-                                                    rel="noopener noreferrer"
-                                                >
-                                                    variables
-                                                </a>
-                                                .
-                                            </div>
-                                        ) : (
-                                            <div>
-                                                You can use{' '}
-                                                <code>
-                                                    {
-                                                        '{{ticket.customer.email}}'
-                                                    }
-                                                </code>{' '}
-                                                to pass the email of the ticket
-                                                customer. See other{' '}
-                                                <a
-                                                    href="https://docs.gorgias.com/macros/macro-variables"
-                                                    target="_blank"
-                                                    rel="noopener noreferrer"
-                                                >
-                                                    variables
-                                                </a>
-                                                .
-                                            </div>
-                                        )
+                                        <div>
+                                            You can use{' '}
+                                            <code>
+                                                {'{{ticket.customer_id}}'}
+                                            </code>{' '}
+                                            to pass the id of the ticket
+                                            customer. See other{' '}
+                                            <a
+                                                href="https://developers.gorgias.com/reference/the-tickethttpintegration-object"
+                                                target="_blank"
+                                                rel="noopener noreferrer"
+                                            >
+                                                variables
+                                            </a>
+                                            .
+                                        </div>
                                     }
                                     value={url}
                                     onChange={(value) =>
@@ -820,4 +758,4 @@ const connector = connect(
     },
 )
 
-export default connector(withLDConsumer()(Integration))
+export default connector(Integration)

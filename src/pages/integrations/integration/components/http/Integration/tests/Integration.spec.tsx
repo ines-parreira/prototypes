@@ -9,8 +9,6 @@ import { HTTPForm, IntegrationType } from 'models/integration/types'
 import { Integration } from 'pages/integrations/integration/components/http/Integration/Integration'
 import { INTEGRATION_REMOVAL_CONFIGURATION_TEXT } from 'pages/integrations/integration/constants'
 
-import { FeatureFlagKey } from '../../../../../../../config/featureFlags'
-
 describe('HTTP Integration', () => {
     const minProps = {
         integration: undefined,
@@ -20,9 +18,6 @@ describe('HTTP Integration', () => {
         activateIntegration: jest.fn(),
         deleteIntegration: jest.fn(),
         updateOrCreateIntegration: jest.fn(),
-        flags: {
-            [FeatureFlagKey.HttpIntegrationsRevamp]: true,
-        },
     }
 
     it('should render creation form with default values when no integration exists', () => {
@@ -451,43 +446,6 @@ describe('HTTP Integration', () => {
             })
             expect(submitButton).toHaveAttribute('aria-disabled', 'true')
         })
-
-        it('should disable submit button if form is invalid when FF is off', () => {
-            const mockUpdateOrCreate = jest.fn()
-
-            const ffOffMock = {
-                ...minProps,
-                flags: {
-                    [FeatureFlagKey.HttpIntegrationsRevamp]: true,
-                },
-            }
-            render(
-                <Integration
-                    {...ffOffMock}
-                    updateOrCreateIntegration={mockUpdateOrCreate}
-                />,
-            )
-
-            fireEvent.change(screen.getByLabelText('URL'), {
-                target: { value: 'https://test.com/webhook' },
-            })
-
-            const checkbox = screen
-                .getByText('Ticket message failed')
-                .closest('label')
-                ?.querySelector('input')
-
-            if (checkbox) {
-                fireEvent.click(checkbox)
-            }
-
-            fireEvent.click(screen.getByText('Add integration'))
-
-            const submitButton = screen.getByRole('button', {
-                name: /Add integration/i,
-            })
-            expect(submitButton).toHaveAttribute('aria-disabled', 'true')
-        })
     })
 
     describe('Reactivation', () => {
@@ -562,7 +520,7 @@ describe('HTTP Integration', () => {
             expect(submitButton).toHaveAttribute('aria-disabled', 'true')
         })
 
-        it('should disable submit button when no triggers are selected with feature flag on', () => {
+        it('should disable submit button when no triggers are selected', () => {
             render(<Integration {...minProps} />)
 
             const nameInput = screen.getByLabelText('Integration name')
@@ -580,64 +538,8 @@ describe('HTTP Integration', () => {
             expect(submitButton).toHaveAttribute('aria-disabled', 'true')
         })
 
-        it('should enable submit button when triggers are selected with feature flag on', () => {
+        it('should enable submit button when triggers are selected', () => {
             render(<Integration {...minProps} />)
-
-            const nameInput = screen.getByLabelText('Integration name')
-            const urlInput = screen.getByLabelText('URL')
-            fireEvent.change(nameInput, {
-                target: { value: 'Test Integration' },
-            })
-            fireEvent.change(urlInput, {
-                target: { value: 'https://test.com' },
-            })
-
-            const checkbox = screen
-                .getByText('Ticket created')
-                .closest('label')
-                ?.querySelector('input')
-            if (checkbox) {
-                fireEvent.click(checkbox)
-            }
-
-            const submitButton = screen.getByRole('button', {
-                name: /Add integration/i,
-            })
-            expect(submitButton).not.toHaveAttribute('aria-disabled', 'true')
-        })
-
-        it('should disable submit button when no triggers are selected with feature flag off', () => {
-            const ffOffProps = {
-                ...minProps,
-                flags: {
-                    [FeatureFlagKey.HttpIntegrationsRevamp]: false,
-                },
-            }
-            render(<Integration {...ffOffProps} />)
-
-            const nameInput = screen.getByLabelText('Integration name')
-            const urlInput = screen.getByLabelText('URL')
-            fireEvent.change(nameInput, {
-                target: { value: 'Test Integration' },
-            })
-            fireEvent.change(urlInput, {
-                target: { value: 'https://test.com' },
-            })
-
-            const submitButton = screen.getByRole('button', {
-                name: /Add integration/i,
-            })
-            expect(submitButton).toHaveAttribute('aria-disabled', 'true')
-        })
-
-        it('should enable submit button when triggers are selected with feature flag off', () => {
-            const ffOffProps = {
-                ...minProps,
-                flags: {
-                    [FeatureFlagKey.HttpIntegrationsRevamp]: false,
-                },
-            }
-            render(<Integration {...ffOffProps} />)
 
             const nameInput = screen.getByLabelText('Integration name')
             const urlInput = screen.getByLabelText('URL')
@@ -872,7 +774,7 @@ describe('HTTP Integration', () => {
             )
         })
 
-        it('should set state and isInitialized flag when initializing', () => {
+        it('should set state when initializing', () => {
             const component = React.createRef<Integration>()
             const setStateSpy = jest.spyOn(
                 React.Component.prototype,
