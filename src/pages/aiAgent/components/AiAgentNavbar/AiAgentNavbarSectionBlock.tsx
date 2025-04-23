@@ -1,3 +1,5 @@
+import { useMemo } from 'react'
+
 import classNames from 'classnames'
 import { useFlags } from 'launchdarkly-react-client-sdk'
 
@@ -38,7 +40,9 @@ export const AiAgentNavbarSectionBlock = ({
     shopType,
     shopName,
     index,
-    ...props
+    name,
+    onToggle,
+    isExpanded,
 }: Props) => {
     const { navigationItems, routes } = useAiAgentNavigation({ shopName })
     const onboardingState = useAiAgentOnboardingState(shopName)
@@ -70,9 +74,20 @@ export const AiAgentNavbarSectionBlock = ({
         !hasAiAgentTrialEnabled
     )
 
-    if (onboardingState === OnboardingState.Loading) {
-        return null
-    }
+    type OnboardingStatus = 'loading' | 'complete' | 'pending'
+    const onboardingStatus: OnboardingStatus = useMemo(() => {
+        switch (onboardingState) {
+            case OnboardingState.Loading:
+                return 'loading'
+            case OnboardingState.Onboarded:
+                return 'complete'
+            case OnboardingState.WelcomeStatic:
+            case OnboardingState.WelcomeDynamic:
+            case OnboardingState.OnboardingWizard:
+            default:
+                return 'pending'
+        }
+    }, [onboardingState])
 
     const itemName = (item: NavigationItem) => {
         switch (item.title) {
@@ -110,9 +125,11 @@ export const AiAgentNavbarSectionBlock = ({
                 />
             }
             className={css.section}
-            {...props}
+            onToggle={onToggle}
+            name={name}
+            isExpanded={onboardingStatus === 'loading' ? false : isExpanded}
         >
-            {onboardingState === OnboardingState.Onboarded ? (
+            {onboardingStatus === 'complete' &&
                 navigationItems?.map((item) => (
                     <div
                         key={item.route}
@@ -133,8 +150,8 @@ export const AiAgentNavbarSectionBlock = ({
                             </span>
                         </NavbarLink>
                     </div>
-                ))
-            ) : (
+                ))}
+            {onboardingStatus === 'pending' && (
                 <div
                     key={routes.main}
                     className={classNames(

@@ -126,14 +126,17 @@ describe('AiAgentNavbarSectionBlock', () => {
         expect(screen.queryByText('Sales')).not.toBeInTheDocument()
     })
 
-    test('does not render the component when loading', () => {
+    test('does not render the sub-menu when loading', () => {
         mockUseAiAgentOnboardingState.mockReturnValueOnce(
             OnboardingState.Loading,
         )
 
-        const { container } = renderComponent()
+        renderComponent()
 
-        expect(container.firstChild).toBeNull()
+        expect(screen.queryByText('Get Started')).not.toBeInTheDocument()
+        expect(screen.queryByText('Route 1')).not.toBeInTheDocument()
+        expect(screen.queryByText('Route 2')).not.toBeInTheDocument()
+        expect(screen.queryByText('Sales')).not.toBeInTheDocument()
     })
 
     test('does not render the BETA badge when there is no Sales route', () => {
