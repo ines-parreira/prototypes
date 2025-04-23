@@ -2,7 +2,7 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { FormProvider, useForm } from 'react-hook-form'
 import { z } from 'zod'
 
-import { Button, Label } from '@gorgias/merchant-ui-kit'
+import { Button, Label, Skeleton } from '@gorgias/merchant-ui-kit'
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import { SalesSettingsData } from 'models/aiAgent/types'
@@ -59,7 +59,7 @@ const salesSchema = z
 
 export const SalesSettings = () => {
     const dispatch = useAppDispatch()
-    const { storeConfiguration, updateStoreConfiguration } =
+    const { storeConfiguration, isLoading, updateStoreConfiguration } =
         useAiAgentStoreConfigurationContext()
 
     const methods = useForm<SalesSettingsData>({
@@ -190,6 +190,17 @@ export const SalesSettings = () => {
         storeConfiguration?.salesDiscountStrategyLevel !==
             salesDiscountStrategyLevel ||
         storeConfiguration?.salesPersuasionLevel !== salesPersuasionLevel
+
+    if (isLoading) {
+        return (
+            <div className={css.salesSettingsContent}>
+                <div className={css.settings}>
+                    <Skeleton width={730} height={200} />
+                    <Skeleton width={730} height={250} />
+                </div>
+            </div>
+        )
+    }
 
     return (
         <>

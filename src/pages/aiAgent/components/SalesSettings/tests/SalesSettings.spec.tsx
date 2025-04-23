@@ -197,6 +197,20 @@ describe('<SalesSettings />', () => {
         })
     })
 
+    it('should display skeleton when loading', () => {
+        mockedUseAiAgentStoreConfigurationContext.mockReturnValue({
+            storeConfiguration: undefined,
+            isLoading: true,
+            updateStoreConfiguration: mockUpdateStoreConfiguration,
+            createStoreConfiguration: jest.fn(),
+            isPendingCreateOrUpdate: false,
+        })
+        renderComponent()
+        expect(
+            screen.queryByText(/Set Persuasion Level/),
+        ).not.toBeInTheDocument()
+    })
+
     it('should update the max percentage discount when valid discount', async () => {
         mockedUseAiAgentStoreConfigurationContext.mockReturnValue({
             storeConfiguration: {
