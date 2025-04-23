@@ -191,7 +191,13 @@ describe('AiAgentPlayground', () => {
         } as unknown as ReturnType<typeof useGetOrCreateSnippetHelpCenter>)
 
         mockUsePublicResources.mockReturnValue({
-            sourceItems: [{ status: 'done', id: 60 }],
+            sourceItems: [
+                {
+                    status: 'done',
+                    id: 60,
+                    createdDatetime: '2021-01-01T00:00:00.000Z',
+                },
+            ],
             isSourceItemsListLoading: false,
         })
 
@@ -260,7 +266,13 @@ describe('AiAgentPlayground', () => {
             helpCenter: { id: 1 },
         } as unknown as ReturnType<typeof useGetOrCreateSnippetHelpCenter>)
         mockUsePublicResources.mockReturnValue({
-            sourceItems: [{ status: 'done', id: 60 }],
+            sourceItems: [
+                {
+                    status: 'done',
+                    id: 60,
+                    createdDatetime: '2021-01-01T00:00:00.000Z',
+                },
+            ],
             isSourceItemsListLoading: false,
         })
         mockUsePlaygroundMessages.mockReturnValue({

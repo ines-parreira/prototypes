@@ -65,7 +65,11 @@ describe('useGetOrCreateSnippetHelpCenter', () => {
     })
 
     it('creates a new help center if none exists', async () => {
-        const mockCreatedHelpCenter = { id: 2, name: 'Created Help Center' }
+        const mockCreatedHelpCenter = {
+            id: 2,
+            name: 'Created Help Center',
+            shop_name: shopName,
+        }
         const createHelpCenter = jest
             .fn()
             .mockResolvedValue({ data: mockCreatedHelpCenter })

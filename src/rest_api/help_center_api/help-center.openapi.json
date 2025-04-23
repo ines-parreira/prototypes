@@ -667,6 +667,40 @@
                 "tags": ["articles"]
             }
         },
+        "/api/help-center/help-centers/{help_center_id}/articles/{id}/copy": {
+            "post": {
+                "operationId": "copyArticle",
+                "summary": "Copy an article to another help center",
+                "description": "Copy an article from one help center to another.",
+                "parameters": [
+                    {
+                        "name": "help_center_id",
+                        "required": true,
+                        "in": "path",
+                        "schema": { "type": "number" }
+                    },
+                    {
+                        "name": "id",
+                        "required": true,
+                        "in": "path",
+                        "schema": { "type": "number" }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ArticleWithLocalTranslation"
+                                }
+                            }
+                        }
+                    }
+                },
+                "tags": ["articles"]
+            }
+        },
         "/api/help-center/help-centers/{help_center_id}/articles/{article_id}/translations": {
             "get": {
                 "operationId": "listArticleTranslations",
@@ -4444,6 +4478,10 @@
                     "dataset_id": { "type": "string" },
                     "scraping_id": { "type": "string", "nullable": true },
                     "latest_sync": { "format": "date-time", "type": "string" },
+                    "created_datetime": {
+                        "format": "date-time",
+                        "type": "string"
+                    },
                     "id": { "type": "number" },
                     "url": { "type": "string", "nullable": true },
                     "domain": { "type": "string", "nullable": true },
@@ -4462,6 +4500,7 @@
                     "article_ids",
                     "dataset_id",
                     "latest_sync",
+                    "created_datetime",
                     "id",
                     "url",
                     "domain",
@@ -8569,6 +8608,7 @@
                 "type": "object",
                 "properties": {
                     "url": { "type": "string" },
+                    "accountId": { "type": "number" },
                     "type": { "type": "string", "enum": ["url", "domain"] }
                 },
                 "required": ["url", "type"]

@@ -64,7 +64,12 @@ export const useGetOrCreateSnippetHelpCenter = ({
             }
         }
 
-        if (!helpCenter && !isLoadingHelpCenter && !isCreatingHelpCenter) {
+        if (
+            (!helpCenter || helpCenter.shop_name !== shopName) &&
+            !isLoadingHelpCenter &&
+            !isCreatingHelpCenter
+        ) {
+            setHelpCenter(null)
             void fetchOrCreateHelpCenter()
         }
     }, [
@@ -81,7 +86,8 @@ export const useGetOrCreateSnippetHelpCenter = ({
 
     const values = useMemo(
         () => ({
-            helpCenter,
+            helpCenter:
+                isLoadingHelpCenter || isCreatingHelpCenter ? null : helpCenter,
             isLoading: isLoadingHelpCenter || isCreatingHelpCenter,
         }),
         [helpCenter, isLoadingHelpCenter, isCreatingHelpCenter],

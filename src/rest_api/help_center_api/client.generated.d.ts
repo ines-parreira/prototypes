@@ -167,6 +167,7 @@ declare namespace Components {
             dataset_id: string
             scraping_id?: string | null
             latest_sync: string // date-time
+            created_datetime: string // date-time
             id: number
             url: string | null
             domain: string | null
@@ -2205,6 +2206,7 @@ declare namespace Components {
         }
         export interface IngestionRequestDto {
             url: string
+            accountId?: number
             type: 'url' | 'domain'
         }
         export interface LinkDto {
@@ -3181,6 +3183,19 @@ declare namespace Paths {
     }
     namespace ContactFormPurgeCache {
         export type RequestBody = Components.Schemas.PurgeCacheContactFormDto
+    }
+    namespace CopyArticle {
+        namespace Parameters {
+            export type HelpCenterId = number
+            export type Id = number
+        }
+        export interface PathParameters {
+            help_center_id: Parameters.HelpCenterId
+            id: Parameters.Id
+        }
+        namespace Responses {
+            export type $201 = Components.Schemas.ArticleWithLocalTranslation
+        }
     }
     namespace CreateAccessToken {
         namespace Responses {
@@ -4981,6 +4996,16 @@ export interface OperationMethods {
         config?: AxiosRequestConfig,
     ): OperationResponse<any>
     /**
+     * copyArticle - Copy an article to another help center
+     *
+     * Copy an article from one help center to another.
+     */
+    'copyArticle'(
+        parameters?: Parameters<Paths.CopyArticle.PathParameters> | null,
+        data?: any,
+        config?: AxiosRequestConfig,
+    ): OperationResponse<Paths.CopyArticle.Responses.$201>
+    /**
      * listArticleTranslations - List article's translations
      */
     'listArticleTranslations'(
@@ -6091,6 +6116,18 @@ export interface PathsDictionary {
             data?: any,
             config?: AxiosRequestConfig,
         ): OperationResponse<any>
+    }
+    ['/api/help-center/help-centers/{help_center_id}/articles/{id}/copy']: {
+        /**
+         * copyArticle - Copy an article to another help center
+         *
+         * Copy an article from one help center to another.
+         */
+        'post'(
+            parameters?: Parameters<Paths.CopyArticle.PathParameters> | null,
+            data?: any,
+            config?: AxiosRequestConfig,
+        ): OperationResponse<Paths.CopyArticle.Responses.$201>
     }
     ['/api/help-center/help-centers/{help_center_id}/articles/{article_id}/translations']: {
         /**

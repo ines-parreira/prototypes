@@ -26,8 +26,15 @@ export const usePublicResources = ({
     )
 
     const sourceItems = useMemo(
-        () => articleIngestionLogs?.map(mapArticleIngestionLogsToSourceItem),
-        [articleIngestionLogs],
+        () =>
+            isSourceItemsListLoading
+                ? []
+                : articleIngestionLogs
+                      ?.map(mapArticleIngestionLogsToSourceItem)
+                      .sort((a, b) =>
+                          a.createdDatetime < b.createdDatetime ? -1 : 1,
+                      ),
+        [articleIngestionLogs, isSourceItemsListLoading],
     )
 
     useEffect(() => {

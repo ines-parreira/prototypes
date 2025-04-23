@@ -24,23 +24,8 @@ export const mapArticleIngestionLogsToSourceItem = (
     id: articleIngestionLog.id,
     status: convertArticleIngestionStatus(articleIngestionLog.status),
     url: articleIngestionLog.url,
+    createdDatetime: articleIngestionLog.created_datetime,
 })
-
-export const mergeSources = (
-    prevSources: SourceItem[],
-    newSources: SourceItem[],
-) => {
-    const existingUrls = prevSources.map((s) => s.url)
-    const newElements: SourceItem[] = newSources.filter(
-        (s) => !existingUrls.includes(s.url),
-    )
-    return prevSources.reduce((acc, source) => {
-        const updatedSource = newSources.find((s) => s.url === source.url)
-        const newSource = updatedSource ?? source
-
-        return [...acc, newSource]
-    }, newElements)
-}
 
 export const updateArticleIngestionLogs = (
     prevLogs: ArticleIngestionLog[],

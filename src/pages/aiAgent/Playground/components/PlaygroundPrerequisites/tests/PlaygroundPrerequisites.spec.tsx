@@ -99,7 +99,13 @@ describe('CheckPlaygroundPrerequisites', () => {
 
     it('renders missing knowledge base alert when no source items and external files are present', () => {
         mockUsePublicResources.mockReturnValue({
-            sourceItems: [{ status: 'loading', id: 0 }],
+            sourceItems: [
+                {
+                    status: 'loading',
+                    id: 0,
+                    createdDatetime: '2021-01-01T00:00:00.000Z',
+                },
+            ],
             isSourceItemsListLoading: false,
         })
 
@@ -117,7 +123,13 @@ describe('CheckPlaygroundPrerequisites', () => {
 
     it('renders children when at least one source item is done', () => {
         mockUsePublicResources.mockReturnValue({
-            sourceItems: [{ status: 'done', id: 0 }],
+            sourceItems: [
+                {
+                    status: 'done',
+                    id: 0,
+                    createdDatetime: '2021-01-01T00:00:00.000Z',
+                },
+            ],
             isSourceItemsListLoading: false,
         })
         renderComponent({ snippetHelpCenterId: 123 })

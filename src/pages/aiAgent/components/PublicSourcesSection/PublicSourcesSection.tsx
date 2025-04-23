@@ -22,7 +22,6 @@ import { usePublicResourceMutation } from '../../hooks/usePublicResourcesMutatio
 import { usePublicResourcesPooling } from '../../hooks/usePublicResourcesPooling'
 import { PublicSourcesItem } from './PublicSourcesItem'
 import { SourceItem } from './types'
-import { mergeSources } from './utils'
 
 import css from './PublicSourcesSection.less'
 
@@ -103,12 +102,10 @@ export const PublicSourcesSection = ({
     const [sources, setSources] = useState<SourceItem[]>(sourceItems ?? [])
 
     useEffect(() => {
-        if (sourceItems) {
-            setSources((prevSources) => mergeSources(prevSources, sourceItems))
-        }
+        setSources(sourceItems ?? [])
     }, [sourceItems])
 
-    const handleAddPublicResource = (sources: SourceItem[]) => {
+    const handleChangePublicResource = (sources: SourceItem[]) => {
         const publicURLs = sources
             .map((source) => source.url)
             .filter((url): url is string => !!url)
@@ -120,6 +117,7 @@ export const PublicSourcesSection = ({
         const newResource: SourceItem = {
             id: Math.random(),
             status: 'idle',
+            createdDatetime: new Date().toISOString(),
         }
         const newSources = [...sources, newResource]
         setSources(newSources)
@@ -128,7 +126,7 @@ export const PublicSourcesSection = ({
     const onDeleteSource = async (source: SourceItem) => {
         const newSources = sources.filter((s) => s.id !== source.id)
         setSources(newSources)
-        handleAddPublicResource(newSources)
+        handleChangePublicResource(newSources)
 
         if (source.status === 'idle') return
 
@@ -162,7 +160,7 @@ export const PublicSourcesSection = ({
             )
 
             setSources(newSources)
-            handleAddPublicResource(newSources)
+            handleChangePublicResource(newSources)
             if (logConnectedPublicUrl) {
                 logConnectedPublicUrl(url)
             }
