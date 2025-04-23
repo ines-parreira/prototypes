@@ -45,6 +45,7 @@ const WaitMusicField = ({
         mutation: {
             onSuccess: (response) => {
                 const newValue: LocalWaitMusicPreferences = {
+                    ...value,
                     type: WaitMusicType.CustomRecording,
                     custom_recording: {
                         audio_file_path: response.data.url,
@@ -133,7 +134,10 @@ const WaitMusicField = ({
                     selectedWaitMusicType={value.type}
                     label="Choose from library"
                     onChange={(waitMusicType) => {
-                        onChange({ ...value, type: waitMusicType })
+                        onChange({
+                            ...value,
+                            type: waitMusicType,
+                        })
                     }}
                 />
                 <WaitMusicRadioButton
