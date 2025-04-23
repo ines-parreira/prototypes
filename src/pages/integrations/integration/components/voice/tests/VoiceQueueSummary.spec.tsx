@@ -11,6 +11,16 @@ jest.mock('@gorgias/api-queries')
 const useGetVoiceQueueMock = assumeMock(useGetVoiceQueue)
 const useGetTeamMock = assumeMock(useGetTeam)
 
+jest.mock('../EditQueueModal', () => ({ isOpen, onClose, queue }: any) => (
+    <div
+        data-testid="edit-queue-modal"
+        data-is-open={isOpen}
+        data-queue-id={queue?.id}
+    >
+        <button onClick={onClose}>Close Modal</button>
+    </div>
+))
+
 describe('VoiceQueueSummary', () => {
     const queue_id = 1
     const renderComponent = () =>
@@ -133,5 +143,81 @@ describe('VoiceQueueSummary', () => {
         expect(screen.getByText('2')).toBeInTheDocument()
         expect(screen.getByText('Distribution mode:')).toBeInTheDocument()
         expect(screen.getByText('Broadcast')).toBeInTheDocument()
+    })
+
+    it('should show edit settings button and open modal when clicked', () => {
+        const mockQueue = {
+            id: 1,
+            target_scope: 'specific',
+            agent_ids: [1, 2],
+            distribution_mode: 'round_robin',
+            ring_time: 30,
+            wait_time: 60,
+            capacity: 10,
+            linked_targets: [],
+        }
+
+        useGetVoiceQueueMock.mockReturnValue({
+            isLoading: false,
+            data: {
+                data: mockQueue,
+            },
+        } as any)
+
+        renderComponent()
+
+        // Open the collapsible details
+        fireEvent.click(screen.getByText('Show Queue Settings'))
+
+        // Check edit button exists
+        const editButton = screen.getByText('Edit settings')
+        expect(editButton).toBeInTheDocument()
+
+        // Click edit button and check modal is shown
+        fireEvent.click(editButton)
+
+        const modal = screen.getByTestId('edit-queue-modal')
+        expect(modal).toBeInTheDocument()
+        expect(modal.getAttribute('data-is-open')).toBe('true')
+        expect(modal.getAttribute('data-queue-id')).toBe('1')
+    })
+
+    it('should close the edit modal when onClose is triggered', () => {
+        const mockQueue = {
+            id: 1,
+            target_scope: 'specific',
+            agent_ids: [1, 2],
+            distribution_mode: 'round_robin',
+            ring_time: 30,
+            wait_time: 60,
+            capacity: 10,
+            linked_targets: [],
+        }
+
+        useGetVoiceQueueMock.mockReturnValue({
+            isLoading: false,
+            data: {
+                data: mockQueue,
+            },
+        } as any)
+
+        renderComponent()
+
+        // Open the collapsible details
+        fireEvent.click(screen.getByText('Show Queue Settings'))
+
+        // Click edit button to open modal
+        fireEvent.click(screen.getByText('Edit settings'))
+
+        // Check modal is shown
+        expect(screen.getByTestId('edit-queue-modal')).toBeInTheDocument()
+
+        // Click close button in modal
+        fireEvent.click(screen.getByText('Close Modal'))
+
+        // Check modal is no longer shown with isOpen=true
+        expect(
+            screen.getByTestId('edit-queue-modal').getAttribute('data-is-open'),
+        ).toBe('false')
     })
 })

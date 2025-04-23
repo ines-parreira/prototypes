@@ -1,9 +1,11 @@
+import { useState } from 'react'
+
 import { useGetTeam, useGetVoiceQueue } from '@gorgias/api-queries'
 import { Button } from '@gorgias/merchant-ui-kit'
 
 import CollapsibleDetails from 'pages/tickets/detail/components/TicketVoiceCall/CollapsibleDetails'
 
-import { PHONE_INTEGRATION_BASE_URL } from './constants'
+import EditQueueModal from './EditQueueModal'
 import SummaryBlock from './SummaryBlock'
 import { getVoiceQueueSummaryData } from './utils'
 
@@ -14,7 +16,14 @@ type VoiceQueueSummaryProps = {
 }
 
 function VoiceQueueSummary({ queue_id }: VoiceQueueSummaryProps) {
-    const { data: queueData, isLoading } = useGetVoiceQueue(queue_id)
+    const [isEditModalOpen, setIsEditModalOpen] = useState(false)
+    const {
+        data: queueData,
+        isLoading,
+        refetch,
+    } = useGetVoiceQueue(queue_id, {
+        with_integrations: true,
+    })
     const queue = queueData?.data
 
     const teamIds = queue?.linked_targets.filter(
@@ -32,6 +41,14 @@ function VoiceQueueSummary({ queue_id }: VoiceQueueSummaryProps) {
 
     const summaryData = getVoiceQueueSummaryData(queue, specificTeamName)
 
+    const handleOpenEditModal = () => {
+        setIsEditModalOpen(true)
+    }
+
+    const handleCloseEditModal = () => {
+        setIsEditModalOpen(false)
+    }
+
     return (
         <div>
             <CollapsibleDetails
@@ -43,13 +60,10 @@ function VoiceQueueSummary({ queue_id }: VoiceQueueSummaryProps) {
             >
                 <SummaryBlock summaryData={summaryData}>
                     <Button
-                        as="a"
-                        target="_blank"
-                        rel="noopener noreferrer"
                         fillStyle={'ghost'}
                         intent={'secondary'}
                         size={'small'}
-                        href={`${PHONE_INTEGRATION_BASE_URL}/queues/${queue_id}`}
+                        onClick={handleOpenEditModal}
                         className={css.linkButton}
                         trailingIcon={'open_in_new'}
                     >
@@ -57,6 +71,13 @@ function VoiceQueueSummary({ queue_id }: VoiceQueueSummaryProps) {
                     </Button>
                 </SummaryBlock>
             </CollapsibleDetails>
+
+            <EditQueueModal
+                isOpen={isEditModalOpen}
+                onClose={handleCloseEditModal}
+                queue={queue}
+                onUpdateSuccess={refetch}
+            />
         </div>
     )
 }
