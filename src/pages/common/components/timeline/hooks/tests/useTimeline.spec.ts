@@ -1,32 +1,22 @@
 import { renderHook } from '@testing-library/react-hooks'
-import { fromJS, List } from 'immutable'
+import { fromJS } from 'immutable'
 
-import { logEvent, SegmentEvent } from 'common/segment'
 import { useSearchParam } from 'hooks/useSearchParam'
 import { getCustomerHistory, getLoading } from 'state/customers/selectors'
-import { getTicketState } from 'state/ticket/selectors'
 import { assumeMock } from 'utils/testing'
 
 import { useTimeline } from '../useTimeline'
 
-jest.mock('common/segment')
 jest.mock('hooks/useAppSelector', () => jest.fn((selector) => selector()))
 jest.mock('hooks/useSearchParam')
 jest.mock('state/customers/selectors')
-jest.mock('state/ticket/selectors')
 
 const useSearchParamMock = assumeMock(useSearchParam)
 const getCustomerHistoryMock = assumeMock(getCustomerHistory)
-const getTicketStateMock = assumeMock(getTicketState)
-const logEventMock = assumeMock(logEvent)
 const getLoadingMock = assumeMock(getLoading)
 
 describe('useTimeline', () => {
     const mockSetTimelineShopperId = jest.fn()
-    const mockTicket = fromJS({
-        messages: List([1, 2, 3]),
-        channel: 'email',
-    })
     const mockCustomerHistory = {
         tickets: [{ id: 1 }, { id: 2 }],
     }
@@ -35,7 +25,6 @@ describe('useTimeline', () => {
     beforeEach(() => {
         getLoadingMock.mockReturnValue(mockLoading)
         useSearchParamMock.mockReturnValue([null, mockSetTimelineShopperId])
-        getTicketStateMock.mockReturnValue(mockTicket)
         getCustomerHistoryMock.mockReturnValue(fromJS(mockCustomerHistory))
     })
 
@@ -81,39 +70,21 @@ describe('useTimeline', () => {
     })
 
     describe('opening / closing Timeline', () => {
-        it('should set shopper ID and log event when opening timeline', () => {
+        it('should set shopper ID t when opening timeline', () => {
             useSearchParamMock.mockReturnValue(['ok', mockSetTimelineShopperId])
             const { result } = renderHook(() => useTimeline())
 
             result.current.openTimeline(123)
 
             expect(mockSetTimelineShopperId).toHaveBeenCalledWith('123')
-            expect(logEventMock).toHaveBeenCalledWith(
-                SegmentEvent.UserHistoryToggled,
-                {
-                    open: true,
-                    nbOfTicketsInTimeline: 2,
-                    nbOfMessagesInTicket: 3,
-                    channel: 'email',
-                },
-            )
         })
 
-        it('should clear shopper ID and log event when closing timeline', () => {
+        it('should clear shopper ID when closing timeline', () => {
             const { result } = renderHook(() => useTimeline())
 
             result.current.closeTimeline()
 
             expect(mockSetTimelineShopperId).toHaveBeenCalledWith(null)
-            expect(logEventMock).toHaveBeenCalledWith(
-                SegmentEvent.UserHistoryToggled,
-                {
-                    open: false,
-                    nbOfTicketsInTimeline: 2,
-                    nbOfMessagesInTicket: 3,
-                    channel: 'email',
-                },
-            )
         })
     })
 })

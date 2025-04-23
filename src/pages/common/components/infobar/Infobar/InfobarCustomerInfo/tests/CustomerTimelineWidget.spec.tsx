@@ -6,6 +6,7 @@ import { Button } from '@gorgias/merchant-ui-kit'
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import { useTimeline } from 'pages/common/components/timeline/hooks/useTimeline'
+import { useTrackTimelineToggle } from 'pages/common/components/timeline/hooks/useTrackTimelineToggle'
 import { getContext } from 'state/widgets/selectors'
 import { WidgetEnvironment } from 'state/widgets/types'
 import { assumeMock } from 'utils/testing'
@@ -29,6 +30,7 @@ jest.mock('state/widgets/selectors', () => ({
 jest.mock('pages/common/components/timeline/hooks/useTimeline', () => ({
     useTimeline: jest.fn(),
 }))
+jest.mock('pages/common/components/timeline/hooks/useTrackTimelineToggle')
 
 const useAppDispatchMock = assumeMock(useAppDispatch)
 const getContextMock = assumeMock(getContext)
@@ -85,6 +87,11 @@ describe('CustomerTimelineButton', () => {
         render(<CustomerTimelineWidget {...defaultProps} />)
 
         expect(screen.getByRole('status')).toBeInTheDocument()
+    })
+
+    it('should call the useTrackTimelineToggle hook', () => {
+        render(<CustomerTimelineWidget {...defaultProps} />)
+        expect(useTrackTimelineToggle).toHaveBeenCalled()
     })
 
     it('should toggle timeline with correct customerId when clicked', () => {

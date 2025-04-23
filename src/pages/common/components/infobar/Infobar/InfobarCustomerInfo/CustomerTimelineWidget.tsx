@@ -5,6 +5,7 @@ import { Button, LoadingSpinner } from '@gorgias/merchant-ui-kit'
 
 import useAppSelector from 'hooks/useAppSelector'
 import { useTimeline } from 'pages/common/components/timeline/hooks/useTimeline'
+import { useTrackTimelineToggle } from 'pages/common/components/timeline/hooks/useTrackTimelineToggle'
 import { getContext } from 'state/widgets/selectors'
 import { WidgetEnvironment } from 'state/widgets/types'
 
@@ -28,7 +29,11 @@ export function CustomerTimelineWidget({ isEditing, customerId }: Props) {
         openTimeline,
         closeTimeline,
     } = useTimeline()
+
+    useTrackTimelineToggle()
+
     const { ticketId: activeTicketId } = useParams<{ ticketId?: string }>()
+
     const widgetContext = useAppSelector(getContext)
 
     const ticketCount = tickets.length
