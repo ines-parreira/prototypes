@@ -1,0 +1,46 @@
+@import (reference) '~@gorgias/design-tokens/dist/css/layout.less';
+@import (reference) '~css/typography';
+
+:local {
+    .cardContainer {
+        display: flex;
+        flex-direction: column;
+        border: 1px solid #ececec;
+        border-radius: 8px;
+        background-color: var(--neutral-grey-0);
+        transition: ease-in-out 0.2s;
+        box-shadow: 0px 3px 20px 0px rgba(0, 0, 0, 0.04);
+    }
+
+    .cardHeader {
+        display: flex;
+        justify-content: space-between;
+        .body-regular();
+        color: var(--neutral-grey-5);
+        flex-direction: column;
+        background-color: var(--neutral-grey-1);
+        padding: @layout-spacing-m;
+        border-radius: var(--vorder-radius-xl, 12px)
+            var(--border-radius-xl, 12px) 0px 0px;
+
+        a {
+            text-decoration: underline !important;
+            color: var(--neutral-grey-5);
+        }
+
+        p {
+            margin: 0;
+        }
+    }
+
+    .cardContent {
+        display: flex;
+        flex-direction: column;
+        padding: @layout-spacing-m;
+    }
+
+    .cardTitle {
+        .heading-subsection-semibold();
+        color: var(--neutral-grey-6);
+    }
+}

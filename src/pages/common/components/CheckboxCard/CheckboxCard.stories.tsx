@@ -1,0 +1,53 @@
+import { ComponentProps } from 'react'
+
+import { Meta, StoryFn } from '@storybook/react'
+
+import CheckboxCard from './CheckboxCard'
+
+const storyConfig: Meta = {
+    title: 'General/CheckboxCard',
+    component: CheckboxCard,
+    argTypes: {
+        title: {
+            control: 'text',
+        },
+        description: {
+            control: 'text',
+        },
+        icon: {
+            control: 'text',
+        },
+        checked: {
+            control: 'boolean',
+        },
+        onChange: {
+            action: 'onChange',
+        },
+        onClick: {
+            action: 'onClick',
+        },
+        onKeyDown: {
+            action: 'onKeyDown',
+        },
+    },
+}
+
+const defaultArgs = {
+    title: 'Checkbox Card',
+    description: 'Checkbox Card Description',
+    icon: 'work',
+}
+const Template: StoryFn<ComponentProps<typeof CheckboxCard>> = (props: any) => (
+    <CheckboxCard {...props} />
+)
+
+export const Default = Template.bind({})
+Default.args = defaultArgs
+
+export const Checked = Template.bind({})
+Checked.args = {
+    ...defaultArgs,
+    checked: true,
+}
+
+export default storyConfig

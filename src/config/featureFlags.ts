@@ -20,6 +20,7 @@ export enum FeatureFlagKey {
     AiAgentOptimizeTabL2Drilldown = 'ai-agent-optimize-tab-l2-drilldown',
     AIAgentPreviewModeAllowed = 'ai-agent-preview-mode-allowed',
     AiAgentScrapeStoreDomain = 'ai-agent-scrape-store-domain',
+    AiAgentSettingsRevamp = 'linear.project_ai-agent-settings-revamp.ui-update',
     AIAgentStatsPage = 'ai-agent-stats-page',
     AiAgentTrialMode = 'ai-agent-trial-mode-allowed',
     AIAgentWelcomePage = 'ai-agent-welcome-page',

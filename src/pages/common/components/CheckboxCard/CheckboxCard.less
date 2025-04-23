@@ -1,0 +1,74 @@
+@import (reference) '~@gorgias/design-tokens/dist/css/layout';
+@import (reference) '~css/typography';
+
+:local {
+    .checkbox {
+        padding: @layout-spacing-s;
+        border: 1px solid var(--neutral-grey-3);
+        border-radius: 8px;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        user-select: none;
+        position: relative;
+        margin-bottom: 0;
+
+        &:hover {
+            border-color: var(--main-primary-1, #9ac8ff);
+            background: var(--main-primary-0, #f6faff);
+        }
+
+        &:focus-within {
+            outline: 2px solid var(--main-primary-1);
+            outline-offset: 2px;
+        }
+
+        &.checked {
+            border-color: var(--main-primary-1, #9ac8ff);
+            background: var(--main-primary-0, #f6faff);
+
+            .checkIcon {
+                opacity: 1;
+                font-size: 16px;
+                color: var(--feedback-success-4);
+            }
+        }
+
+        .content {
+            display: flex;
+            flex: 1;
+            gap: @layout-spacing-xs;
+
+            .title {
+                .body-medium();
+                color: var(--neutral-grey-6);
+                margin-bottom: 4px;
+            }
+
+            .description {
+                .body-regular();
+                color: var(--neutral-grey-5);
+                margin-bottom: 0;
+            }
+        }
+
+        .checkboxInput {
+            position: absolute;
+            opacity: 0;
+            cursor: pointer;
+            height: 100%;
+            width: 100%;
+            top: 0;
+            left: 0;
+            z-index: 1;
+        }
+
+        i {
+            font-size: 24px;
+        }
+
+        .textContent {
+            flex: 1;
+        }
+    }
+}

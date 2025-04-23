@@ -1,0 +1,16 @@
+@import (reference) '~@gorgias/design-tokens/dist/css/layout.less';
+@import (reference) '~css/typography';
+@import (reference) '~css/new/mixins';
+
+:local {
+    .checkboxGrid {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: @layout-spacing-s;
+        width: 100%;
+
+        @media @xlarge-desktops {
+            grid-template-columns: repeat(2, 1fr);
+        }
+    }
+}
