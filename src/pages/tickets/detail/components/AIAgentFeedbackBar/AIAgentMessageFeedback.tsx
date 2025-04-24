@@ -271,9 +271,9 @@ const AIAgentMessageFeedback: React.FC<Props> = ({ messageFeedback }) => {
                         tooltipProps={{ autohide: true, placement: 'bottom' }}
                     >
                         <>
-                            Reviewing helps the Gorgias team monitor how well AI
-                            Agent is able to find the right knowledge to the
-                            question
+                            Reviewing helps Gorgias monitor how well AI Agent is
+                            able to find the right knowledge sources for a
+                            customer request.
                         </>
                     </InfoIconWithTooltip>
                 </div>
