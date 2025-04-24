@@ -1,3 +1,5 @@
+import { forwardRef } from 'react'
+
 import classNames from 'classnames'
 
 import css from './NavigationSectionItem.less'
@@ -19,19 +21,25 @@ type NavigationSectionItemProps<E extends React.ElementType> =
         displayType?: (typeof DisplayType)[keyof typeof DisplayType]
     }
 
-export function NavigationSectionItem<E extends React.ElementType = 'div'>({
-    children,
-    isSelected,
-    displayType = DisplayType.Default,
-    className,
-    as,
-    ...props
-}: NavigationSectionItemProps<E>) {
+export const NavigationSectionItem = forwardRef(function NavigationSectionItem<
+    E extends React.ElementType = 'div',
+>(
+    {
+        children,
+        isSelected,
+        displayType = DisplayType.Default,
+        className,
+        as,
+        ...props
+    }: NavigationSectionItemProps<E>,
+    ref: React.ComponentPropsWithRef<E>['ref'],
+) {
     const Component = as || 'div'
 
     return (
         <Component
             {...props}
+            ref={ref}
             data-selected={isSelected}
             data-display-type={displayType}
             className={classNames(css.item, className)}
@@ -39,4 +47,4 @@ export function NavigationSectionItem<E extends React.ElementType = 'div'>({
             {children}
         </Component>
     )
-}
+})

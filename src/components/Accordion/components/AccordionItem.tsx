@@ -1,11 +1,12 @@
 import { AccordionItemContext } from '../contexts/accordion-item-context'
 import { useAccordion } from '../hooks/useAccordion'
+import { AccordionValue } from '../utils/types'
 
 export type AccordionItemProps = {
     /**
      * The unique identifier of the accordion item.
      */
-    value: string
+    value: AccordionValue
     /**
      * Use the disabled prop to disable the accordion item.
      * @default false
@@ -19,9 +20,9 @@ export const AccordionItem = ({
     disabled,
     children,
 }: AccordionItemProps) => {
-    const { value: rootValue } = useAccordion()
+    const { values: rootValues } = useAccordion()
 
-    const isOpen = rootValue.includes(value)
+    const isOpen = rootValues.includes(value)
 
     return (
         <AccordionItemContext.Provider value={{ isOpen, value, disabled }}>

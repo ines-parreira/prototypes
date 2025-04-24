@@ -24,7 +24,7 @@ describe('AccordionItemTrigger', () => {
         handleValueChange: jest.fn(),
         disabled: false,
         id: 'test-accordion',
-        value: ['item1'],
+        values: ['item1'],
     }
 
     const defaultItemProps = {

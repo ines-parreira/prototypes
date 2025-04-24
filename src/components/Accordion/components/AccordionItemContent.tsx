@@ -1,7 +1,6 @@
 import { forwardRef } from 'react'
 import type { ComponentPropsWithoutRef } from 'react'
 
-import classNames from 'classnames'
 import { AnimatePresence, motion } from 'framer-motion'
 
 import { useAccordion } from '../hooks/useAccordion'
@@ -9,11 +8,9 @@ import { useAccordionItem } from '../hooks/useAccordionItem'
 import { AccordionIds } from '../utils/accessibility-ids'
 import { AccordionState } from '../utils/accordion-state'
 
-import css from './AccordionItemContent.less'
-
 const variants = {
-    open: { height: 'auto', opacity: 1 },
-    closed: { height: 0, opacity: 0 },
+    open: { height: 'auto', opacity: 1, overflow: 'visible' },
+    closed: { height: 0, opacity: 0, overflow: 'hidden' },
 } as const
 
 export type AccordionItemContentProps = Omit<
@@ -41,7 +38,7 @@ export const AccordionItemContent = forwardRef<
                     data-state={
                         isOpen ? AccordionState.Open : AccordionState.Closed
                     }
-                    className={classNames(css.content, className)}
+                    className={className}
                     variants={variants}
                     initial={AccordionState.Closed}
                     animate={

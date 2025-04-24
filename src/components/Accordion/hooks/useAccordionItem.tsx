@@ -5,7 +5,7 @@ import { AccordionItemContext } from '../contexts/accordion-item-context'
 export const useAccordionItem = () => {
     const context = useContext(AccordionItemContext)
     if (!context) {
-        throw new Error('useAccordionItem must be used within a AccordionItem')
+        throw new Error('useAccordionItem must be used within a Accordion.Item')
     }
 
     return context

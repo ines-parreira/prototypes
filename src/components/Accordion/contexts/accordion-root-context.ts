@@ -1,12 +1,17 @@
 import { createContext } from 'react'
 
-import { AccordionProps } from '../utils/types'
+import type {
+    AccordionProps,
+    AccordionValue,
+    AccordionValues,
+} from '../utils/types'
 
 type AccordionRootContextType = Omit<
     Required<AccordionProps>,
-    'children' | 'onValueChange' | 'disabled'
+    'children' | 'onValueChange' | 'disabled' | 'value'
 > & {
-    handleValueChange: (accordionValue: string) => void
+    values: AccordionValues
+    handleValueChange: (accordionValue: AccordionValue) => void
     disabled?: boolean
 }
 

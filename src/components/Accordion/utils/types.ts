@@ -1,8 +1,9 @@
-export type AccordionValue = string[]
+export type AccordionValue = string | number
+export type AccordionValues = AccordionValue[]
 
 export type AccordionValueProps = {
-    value?: AccordionValue
-    onValueChange?: (value: AccordionValue) => void
+    value?: AccordionValues
+    onValueChange?: (value: AccordionValues) => void
 }
 
 export type AccordionProps = AccordionValueProps & {

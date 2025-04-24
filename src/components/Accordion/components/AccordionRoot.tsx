@@ -6,7 +6,11 @@ import classNames from 'classnames'
 import useId from 'hooks/useId'
 
 import { AccordionRootContext } from '../contexts/accordion-root-context'
-import { AccordionProps, AccordionValue } from '../utils/types'
+import type {
+    AccordionProps,
+    AccordionValue,
+    AccordionValues,
+} from '../utils/types'
 
 import css from './AccordionRoot.less'
 
@@ -27,39 +31,41 @@ export const AccordionRoot = forwardRef<HTMLDivElement, AccordionRootProps>(
         },
         ref,
     ) => {
-        const [value, setValue] = useState<AccordionValue>(initialValue ?? [])
+        const [values, setValues] = useState<AccordionValues>(
+            initialValue ?? [],
+        )
         const id = useId()
 
         const handleValueChange = useCallback(
-            (accordionValue: string) => {
+            (accordionValue: AccordionValue) => {
                 if (multiple) {
-                    const nextValue = value.includes(accordionValue)
-                        ? value.filter((v) => v !== accordionValue)
-                        : [...value, accordionValue]
+                    const nextValue = values.includes(accordionValue)
+                        ? values.filter((v) => v !== accordionValue)
+                        : [...values, accordionValue]
 
-                    setValue(nextValue)
+                    setValues(nextValue)
                     onValueChange?.(nextValue)
                 } else {
-                    setValue([accordionValue])
+                    setValues([accordionValue])
                     onValueChange?.([accordionValue])
                 }
             },
-            [multiple, onValueChange, value],
+            [multiple, onValueChange, values],
         )
 
-        const values = useMemo(
+        const memoizedValues = useMemo(
             () => ({
                 id: rootId ?? id,
-                value,
+                values,
                 handleValueChange,
                 multiple,
                 disabled,
             }),
-            [rootId, id, value, handleValueChange, multiple, disabled],
+            [rootId, id, values, handleValueChange, multiple, disabled],
         )
 
         return (
-            <AccordionRootContext.Provider value={values}>
+            <AccordionRootContext.Provider value={memoizedValues}>
                 <div
                     ref={ref}
                     {...props}

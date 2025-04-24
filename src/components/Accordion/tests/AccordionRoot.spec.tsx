@@ -28,7 +28,7 @@ describe('AccordionRoot', () => {
         const child = screen.getByTestId('child-test')
         const context = JSON.parse(child.textContent || '{}')
 
-        expect(context.value).toEqual([])
+        expect(context.values).toEqual([])
         expect(context.multiple).toBe(true)
         expect(context.disabled).toBe(false)
     })
@@ -71,7 +71,7 @@ describe('AccordionRoot', () => {
         const child = screen.getByTestId('child-test')
         const context = JSON.parse(child.textContent || '{}')
 
-        expect(context.value).toEqual(initialValue)
+        expect(context.values).toEqual(initialValue)
     })
 
     it('applies custom className', () => {

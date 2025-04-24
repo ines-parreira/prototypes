@@ -1,8 +1,10 @@
 import { createContext } from 'react'
 
+import type { AccordionValue } from '../utils/types'
+
 type AccordionItemContextType = {
     isOpen: boolean
-    value: string
+    value: AccordionValue
     disabled?: boolean
 }
 

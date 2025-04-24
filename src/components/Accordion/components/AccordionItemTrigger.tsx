@@ -1,5 +1,5 @@
 import { forwardRef } from 'react'
-import type { ComponentPropsWithoutRef } from 'react'
+import type { ComponentPropsWithoutRef, MouseEvent } from 'react'
 
 import classNames from 'classnames'
 
@@ -15,15 +15,23 @@ export type AccordionItemTriggerProps = ComponentPropsWithoutRef<'button'>
 export const AccordionItemTrigger = forwardRef<
     HTMLButtonElement,
     AccordionItemTriggerProps
->(function AccordionItemTrigger({ children, className, ...props }, ref) {
+>(function AccordionItemTrigger(
+    { children, className, onClick, ...props },
+    ref,
+) {
     const { handleValueChange, disabled: rootDisabled, id } = useAccordion()
     const { isOpen, value, disabled: itemDisabled } = useAccordionItem()
+
+    const handleClick = (event: MouseEvent<HTMLButtonElement>) => {
+        handleValueChange(value)
+        onClick?.(event)
+    }
 
     return (
         <button
             ref={ref}
             {...props}
-            onClick={() => handleValueChange(value)}
+            onClick={handleClick}
             data-state={isOpen ? AccordionState.Open : AccordionState.Closed}
             aria-expanded={isOpen}
             id={AccordionIds.trigger(id, value)}
