@@ -8,7 +8,7 @@ WORKDIR /app
 
 COPY src/ ./src/
 COPY tsconfig.json ./
-COPY package.json pnpm-lock.yaml ./
+COPY package.json pnpm-lock.yaml pnpm-workspace.yaml ./
 COPY rspack.app.config.mjs rspack.sharedWorker.config.mjs ./
 COPY sa.config.ts ./
 COPY scripts/ ./scripts/
