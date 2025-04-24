@@ -34,7 +34,7 @@ export function searchTickets(
             search: (view.get('search', '') as string) || '',
             filters: view.get('filters') as string,
             limit: LIMIT,
-            orderBy: `${TicketSearchSortableProperties.CreatedDatetime}:${OrderDirection.Desc}`,
+            orderBy: `${TicketSearchSortableProperties.LastMessageDatetime}:${OrderDirection.Desc}`,
         })
 
         try {
