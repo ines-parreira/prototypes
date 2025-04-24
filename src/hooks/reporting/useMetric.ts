@@ -8,6 +8,7 @@ export type MetricFetch = (...arg: any) => Promise<Metric>
 
 export function useMetric<TCube extends Cubes = Cubes>(
     query: ReportingQuery<TCube>,
+    enabled: boolean = true,
 ): Metric {
     const currentPeriodMetric = usePostReporting<
         QueryReturnType<TCube['measures']>,
@@ -15,6 +16,7 @@ export function useMetric<TCube extends Cubes = Cubes>(
         TCube
     >([query], {
         select: (data) => selectMeasure(query.measures[0], data),
+        enabled,
     })
 
     return {

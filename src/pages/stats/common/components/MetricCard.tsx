@@ -19,6 +19,7 @@ type Props = {
     title: ReactNode
     tip?: ReactNode
     'data-candu-id'?: string
+    titleExtra?: ReactNode
 } & DashboardChartProps
 
 export default function MetricCard({
@@ -30,6 +31,7 @@ export default function MetricCard({
     chartId,
     title,
     tip,
+    titleExtra,
     ...props
 }: Props) {
     return (
@@ -40,13 +42,16 @@ export default function MetricCard({
                         {title}
                         {hint && <HintTooltip {...hint} />}
                     </div>
-                    {chartId && (
-                        <ChartsActionMenu
-                            chartId={chartId}
-                            dashboard={dashboard}
-                            chartName={title}
-                        />
-                    )}
+                    <div className={css.chartsActionMenu}>
+                        {titleExtra}
+                        {chartId && (
+                            <ChartsActionMenu
+                                chartId={chartId}
+                                dashboard={dashboard}
+                                chartName={title}
+                            />
+                        )}
+                    </div>
                 </div>
 
                 {children}
