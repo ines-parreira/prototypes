@@ -65,12 +65,12 @@ const UserList = () => {
                 {hasNoResults ? (
                     <div
                         className={classnames(
-                            css.empty,
+                            css.emptyWrapper,
                             'd-flex flex-column text-center full-height justify-content-center',
                         )}
                     >
-                        <h3 className="font-weight-bold mb-2">No results</h3>
-                        <div>
+                        <div className={css.emptyTitle}>No results</div>
+                        <div className={css.emptyBody}>
                             You may want to try using a different name, email or
                             check for typos.
                         </div>

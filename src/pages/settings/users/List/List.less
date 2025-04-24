@@ -10,7 +10,22 @@
         padding-bottom: @layout-spacing-m;
     }
 
-    .empty {
-        color: var(--neutral-grey-4);
+    .emptyWrapper {
+        align-items: center;
+        color: var(--neutral-grey-5);
+        display: flex;
+        flex-direction: column;
+
+        .emptyTitle {
+            .body-semibold();
+            margin-bottom: 4px;
+        }
+
+        .emptyBody {
+            .body-regular();
+            align-items: center;
+            display: flex;
+            flex-direction: column;
+        }
     }
 }
