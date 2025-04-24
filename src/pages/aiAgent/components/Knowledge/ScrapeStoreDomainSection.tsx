@@ -46,6 +46,7 @@ export const ScrapeStoreDomainSection = ({
 
     const { syncIsPending } = usePollStoreDomainIngestionLog({
         helpCenterId,
+        shopName,
         storeUrl,
         onStatusChange,
     })
@@ -62,8 +63,11 @@ export const ScrapeStoreDomainSection = ({
                 onSync={handleOnSync}
             />
             <div className={css.label}>
-                <Label>Your store domain</Label>
-                <span>AI Agent uses content from your store website.</span>
+                <Label>Store website</Label>
+                <span>
+                    Allow AI Agent to use knowledge content and product
+                    information from your store website.
+                </span>
             </div>
             <div className={css.storeDomain}>
                 <a

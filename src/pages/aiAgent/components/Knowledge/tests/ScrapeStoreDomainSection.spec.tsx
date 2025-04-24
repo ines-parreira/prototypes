@@ -78,9 +78,11 @@ describe('ScrapeStoreDomainSection', () => {
     it('should render the component correctly', () => {
         renderComponent()
 
-        expect(screen.getByText('Your store domain')).toBeInTheDocument()
+        expect(screen.getByText('Store website')).toBeInTheDocument()
         expect(
-            screen.getByText('AI Agent uses content from your store website.'),
+            screen.getByText(
+                'Allow AI Agent to use knowledge content and product information from your store website.',
+            ),
         ).toBeInTheDocument()
         const domainLink = screen.getByText(mockedShopDomain)
         expect(domainLink).toBeInTheDocument()
@@ -101,9 +103,11 @@ describe('ScrapeStoreDomainSection', () => {
 
         renderComponent()
 
-        expect(screen.getByText('Your store domain')).toBeInTheDocument()
+        expect(screen.getByText('Store website')).toBeInTheDocument()
         expect(
-            screen.getByText('AI Agent uses content from your store website.'),
+            screen.getByText(
+                'Allow AI Agent to use knowledge content and product information from your store website.',
+            ),
         ).toBeInTheDocument()
         const domainLink = screen.getByText(mockedShopDomain)
         expect(domainLink).toBeInTheDocument()

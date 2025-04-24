@@ -1,14 +1,17 @@
 import { useEffect, useRef } from 'react'
 
 import { IngestionLogStatus } from '../AiAgentScrapedDomainContent/constant'
+import { useIngestionDomainBannerDismissed } from '../AiAgentScrapedDomainContent/hooks/useIngestionDomainBannerDismissed'
 import { useGetStoreDomainIngestionLog } from './useGetStoreDomainIngestionLog'
 
 export const usePollStoreDomainIngestionLog = ({
     helpCenterId,
+    shopName,
     storeUrl,
     onStatusChange,
 }: {
     helpCenterId: number
+    shopName: string
     storeUrl: string | null
     onStatusChange?: (status: string | null) => void
 }) => {
@@ -20,6 +23,8 @@ export const usePollStoreDomainIngestionLog = ({
         })
 
     const previousStatusRef = useRef<string | null>(null)
+
+    const { resetAllBanner } = useIngestionDomainBannerDismissed({ shopName })
 
     useEffect(() => {
         // reset the status when the storeUrl changes
@@ -45,9 +50,10 @@ export const usePollStoreDomainIngestionLog = ({
 
             if (status !== IngestionLogStatus.Pending) {
                 onStatusChange?.(status)
+                resetAllBanner()
             }
         }
-    }, [status, isFetchLoading, onStatusChange])
+    }, [status, isFetchLoading, onStatusChange, resetAllBanner])
 
     return {
         ingestionLogStatus: status,

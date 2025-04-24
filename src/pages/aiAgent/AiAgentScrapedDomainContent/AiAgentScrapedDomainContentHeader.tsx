@@ -49,7 +49,7 @@ const AiAgentScrapedDomainContentHeader = ({
             />
             <div className={css.wrapper}>
                 <div className={css.header}>
-                    <div className={css.title}>Your store domain</div>
+                    <div className={css.title}>Store website</div>
                     <a
                         className={css.domain}
                         href={storeUrl ?? undefined}

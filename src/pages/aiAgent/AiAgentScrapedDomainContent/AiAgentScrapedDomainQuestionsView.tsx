@@ -44,6 +44,7 @@ const AiAgentScrapedDomainQuestionsView = ({
 
     const { syncIsPending } = usePollStoreDomainIngestionLog({
         helpCenterId,
+        shopName,
         storeUrl,
         onStatusChange: setSyncStoreDomainStatus,
     })
@@ -106,7 +107,6 @@ const AiAgentScrapedDomainQuestionsView = ({
             handleOnCancel={handleOnCancel}
             handleTriggerSync={handleTriggerSync}
             syncStoreDomainStatus={syncStoreDomainStatus}
-            onBannerClose={() => setSyncStoreDomainStatus(null)}
         >
             <ScrapedDomainContentView<IngestedResourceWithArticleId>
                 searchValue={searchTerm}

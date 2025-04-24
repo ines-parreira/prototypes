@@ -21,13 +21,12 @@ type Props = {
 const SyncDomainConfirmationModal = ({ isOpen, onCancel, onSync }: Props) => {
     return (
         <Modal isOpen={isOpen} isClosable={false} onClose={_noop}>
-            <ModalHeader title="Sync store domain" />
+            <ModalHeader title="Sync store website" />
             <ModalBody className={css.body}>
                 <div>
-                    Syncing your store domain will replace all existing
-                    questions and answers, reset any disabled questions and
-                    answers, and update all product information from your
-                    website.
+                    Syncing will replace all existing questions and answers,
+                    reset any disabled questions and answers, and update all
+                    product information from your store website.
                 </div>
                 <Banner variant="inline" icon type={AlertType.Warning}>
                     This action cannot be undone. You will need to review newly

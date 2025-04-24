@@ -393,9 +393,11 @@ describe('AiAgentKnowledgeContainer', () => {
     it('should show scrape store domain section if feature flag is enabled', () => {
         renderComponent({ isAiAgentScrapeStoreDomainEnabled: true })
 
-        expect(screen.getByText('Your store domain')).toBeInTheDocument()
+        expect(screen.getByText('Store website')).toBeInTheDocument()
         expect(
-            screen.getByText('AI Agent uses content from your store website.'),
+            screen.getByText(
+                'Allow AI Agent to use knowledge content and product information from your store website.',
+            ),
         ).toBeInTheDocument()
         expect(screen.getByText('Sync')).toBeInTheDocument()
         expect(screen.getByText('Manage')).toBeInTheDocument()

@@ -73,8 +73,8 @@ function ScrapedDomainContentView<
 }: Props<T>) {
     const description =
         pageType === CONTENT_TYPE.QUESTION
-            ? 'AI Agent automatically generates questions and answers from your store’s website content to use as knowledge.'
-            : 'AI Agent uses product details from your store’s website content and your Shopify integration.'
+            ? 'AI Agent automatically generates questions and answers from your website content to use as knowledge.'
+            : 'AI Agent uses product details from your store website and your Shopify integration.'
 
     const handleToggleChange = ({
         id,

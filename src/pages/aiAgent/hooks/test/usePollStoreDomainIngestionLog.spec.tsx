@@ -36,6 +36,7 @@ describe('usePollStoreDomainIngestionLog', () => {
             usePollStoreDomainIngestionLog({
                 helpCenterId: 1,
                 storeUrl: mockedStoreUrl,
+                shopName: mockedStoreName,
             }),
         )
 
@@ -59,6 +60,7 @@ describe('usePollStoreDomainIngestionLog', () => {
             usePollStoreDomainIngestionLog({
                 helpCenterId: 1,
                 storeUrl: mockedStoreUrl,
+                shopName: mockedStoreName,
             }),
         )
 
@@ -82,6 +84,7 @@ describe('usePollStoreDomainIngestionLog', () => {
             usePollStoreDomainIngestionLog({
                 helpCenterId: 1,
                 storeUrl: mockedStoreUrl,
+                shopName: mockedStoreName,
                 onStatusChange: mockedOnStatusChange,
             }),
         )
@@ -96,6 +99,7 @@ describe('usePollStoreDomainIngestionLog', () => {
             usePollStoreDomainIngestionLog({
                 helpCenterId: 1,
                 storeUrl: mockedStoreUrl,
+                shopName: mockedStoreName,
                 onStatusChange: mockedOnStatusChange,
             }),
         )

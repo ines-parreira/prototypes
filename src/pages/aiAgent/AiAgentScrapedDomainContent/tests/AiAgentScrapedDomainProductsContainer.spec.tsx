@@ -144,13 +144,13 @@ describe('<AiAgentScrapedDomainProductsContainer />', () => {
 
         expect(screen.getAllByText('Knowledge')[0]).toBeInTheDocument()
         expect(screen.getByText('Back to Sources')).toBeInTheDocument()
-        expect(screen.getByText('Your store domain')).toBeInTheDocument()
+        expect(screen.getByText('Store website')).toBeInTheDocument()
         expect(screen.getByText('Sync')).toBeInTheDocument()
         expect(screen.getByText('Questions')).toBeInTheDocument()
         expect(screen.getByText('Products')).toBeInTheDocument()
         expect(
             screen.getByText(
-                'AI Agent uses product details from your store’s website content and your Shopify integration.',
+                'AI Agent uses product details from your store website and your Shopify integration.',
             ),
         ).toBeInTheDocument()
         expect(screen.getByText('Product')).toBeInTheDocument()
@@ -174,7 +174,7 @@ describe('<AiAgentScrapedDomainProductsContainer />', () => {
         renderComponent()
         expect(
             screen.getByText(
-                'Your store domain is currently being synced. You will be notified once complete. In the meantime, AI Agent may not have your latest content.',
+                'Your store website is currently being synced. You will be notified once complete. In the meantime, AI Agent may not have your latest content.',
             ),
         ).toBeInTheDocument()
     })
@@ -189,7 +189,7 @@ describe('<AiAgentScrapedDomainProductsContainer />', () => {
 
         expect(
             screen.getByText(
-                'Your store domain is currently being synced. You will be notified once complete. In the meantime, AI Agent may not have your latest content.',
+                'Your store website is currently being synced. You will be notified once complete. In the meantime, AI Agent may not have your latest content.',
             ),
         ).toBeInTheDocument()
 
@@ -198,7 +198,7 @@ describe('<AiAgentScrapedDomainProductsContainer />', () => {
 
         expect(
             screen.queryByText(
-                'Your store domain is currently being synced. You will be notified once complete. In the meantime, AI Agent may not have your latest content.',
+                'Your store website is currently being synced. You will be notified once complete. In the meantime, AI Agent may not have your latest content.',
             ),
         ).not.toBeInTheDocument()
     })

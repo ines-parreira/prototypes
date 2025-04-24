@@ -8,6 +8,11 @@ export const CONTENT_TYPE = {
     PRODUCT: 'Product',
 }
 
+export const PAGE_NAME = {
+    SOURCE: 'knowledge-source',
+    MANAGE: 'manage-content',
+}
+
 export const PAGINATED_ITEMS_PER_PAGE = 15
 export const MODAL_TRANSITION_DURATION_MS = 300
 

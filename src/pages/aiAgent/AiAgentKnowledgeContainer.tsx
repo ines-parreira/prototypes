@@ -29,6 +29,7 @@ import { NotificationStatus } from 'state/notifications/types'
 import { reportError } from 'utils/errors'
 
 import { IngestionLogStatus } from './AiAgentScrapedDomainContent/constant'
+import { useIngestionDomainBannerDismissed } from './AiAgentScrapedDomainContent/hooks/useIngestionDomainBannerDismissed'
 import { ConfigurationSection } from './components/ConfigurationSection/ConfigurationSection'
 import { ScrapeStoreDomainSection } from './components/Knowledge/ScrapeStoreDomainSection'
 import { CreatePublicSourcesSection } from './components/StoreConfigForm/StoreConfigForm'
@@ -197,6 +198,11 @@ export const AiAgentKnowledgeContainer = () => {
         storeConfiguration?.helpCenterId,
     ])
 
+    const { isDismissed, dismissBanner } = useIngestionDomainBannerDismissed({
+        shopName,
+        isSourcePage: true,
+    })
+
     if (isStoreConfigLoading || isLoadingHelpCenters) {
         return <Loader data-testid="loader" />
     }
@@ -217,10 +223,10 @@ export const AiAgentKnowledgeContainer = () => {
             icon
             type="loading"
             fillStyle="fill"
-            onClose={() => setSyncStoreDomainStatus(null)}
+            onClose={dismissBanner}
             className={css.banner}
         >
-            Your store domain is currently being synced. You will be notified
+            Your store website is currently being synced. You will be notified
             once complete. In the meantime, AI Agent may not have your latest
             content.
         </Banner>
@@ -232,21 +238,39 @@ export const AiAgentKnowledgeContainer = () => {
             icon
             type="success"
             fillStyle="fill"
-            onClose={() => setSyncStoreDomainStatus(null)}
+            onClose={dismissBanner}
             className={css.banner}
             action={reviewButton}
         >
-            Your store domain has been synced successfully and is in use by AI
+            Your store website has been synced successfully and is in use by AI
             Agent. Review newly generated content for accuracy.
         </Banner>
     )
 
+    const FailedBanner = () => (
+        <Banner
+            variant="inline"
+            icon
+            type="error"
+            fillStyle="fill"
+            onClose={dismissBanner}
+            className={css.banner}
+        >
+            We couldn’t sync your store website. AI Agent is using your previous
+            content. Please try again or contact support if the issue persists.
+        </Banner>
+    )
+
     const IngestionDomainBanner = () => {
+        if (isDismissed || !syncStoreDomainStatus) return null
+
         switch (syncStoreDomainStatus) {
             case IngestionLogStatus.Pending:
                 return <PendingBanner />
             case IngestionLogStatus.Successful:
                 return <SuccessBanner />
+            case IngestionLogStatus.Failed:
+                return <FailedBanner />
             default:
                 return null
         }
