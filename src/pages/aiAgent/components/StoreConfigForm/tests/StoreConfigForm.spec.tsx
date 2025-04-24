@@ -2010,11 +2010,13 @@ describe('<StoreConfigForm />', () => {
                         id: 1,
                         url: 'https://test.com',
                         status: 'done',
+                        createdDatetime: '2024-07-30T12:33:02.750Z',
                     },
                     {
                         id: 2,
                         url: 'https://testd.com',
                         status: 'error',
+                        createdDatetime: '2024-07-30T12:33:02.750Z',
                     },
                 ],
                 isSourceItemsListLoading: false,
