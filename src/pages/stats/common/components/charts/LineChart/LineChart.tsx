@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useMemo, useState } from 'react'
+import { useCallback, useEffect, useMemo, useState } from 'react'
 
 import {
     Chart,
@@ -9,7 +9,6 @@ import {
     ScriptableScaleContext,
     TooltipItem,
 } from 'chart.js'
-import classNames from 'classnames'
 import { fromJS, Map } from 'immutable'
 import { Line } from 'react-chartjs-2'
 
@@ -255,7 +254,7 @@ export function LineChart({
     }
 
     return (
-        <div className={classNames(css.wrapper, wrapperclassNames)}>
+        <div className={wrapperclassNames}>
             <div className={css.container}>
                 <Line
                     id={CHART_TOOLTIP_TARGET}

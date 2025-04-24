@@ -33,8 +33,8 @@ export default function MetricCard({
     ...props
 }: Props) {
     return (
-        <div data-candu-id={props['data-candu-id']}>
-            <Card className={classnames(css.card, className)}>
+        <Card className={classnames(css.card, className)}>
+            <div data-candu-id={props['data-candu-id']}>
                 <div className={css.wrapper}>
                     <div className={css.title}>
                         {title}
@@ -57,7 +57,7 @@ export default function MetricCard({
                     ) : (
                         <div className={css.tip}>{tip}</div>
                     ))}
-            </Card>
-        </div>
+            </div>
+        </Card>
     )
 }

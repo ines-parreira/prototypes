@@ -246,10 +246,10 @@ exports[`<AutomateOverview /> Autoresponder deprecation should return false when
             class="cell"
             style="grid-column: span 6 / span 6;"
           >
-            <div>
-              <div
-                class="Card--wrapper--3AkmE card"
-              >
+            <div
+              class="Card--wrapper--3AkmE card"
+            >
+              <div>
                 <div
                   class="wrapper"
                 >
@@ -350,10 +350,10 @@ exports[`<AutomateOverview /> Autoresponder deprecation should return false when
             class="cell"
             style="grid-column: span 6 / span 6;"
           >
-            <div>
-              <div
-                class="Card--wrapper--3AkmE card"
-              >
+            <div
+              class="Card--wrapper--3AkmE card"
+            >
+              <div>
                 <div
                   class="wrapper"
                 >
@@ -485,10 +485,10 @@ exports[`<AutomateOverview /> Autoresponder deprecation should return false when
             class="cell"
             style="grid-column: span 6 / span 6;"
           >
-            <div>
-              <div
-                class="Card--wrapper--3AkmE card"
-              >
+            <div
+              class="Card--wrapper--3AkmE card"
+            >
+              <div>
                 <div
                   class="wrapper"
                 >
@@ -523,10 +523,10 @@ exports[`<AutomateOverview /> Autoresponder deprecation should return false when
             class="cell"
             style="grid-column: span 6 / span 6;"
           >
-            <div>
-              <div
-                class="Card--wrapper--3AkmE card"
-              >
+            <div
+              class="Card--wrapper--3AkmE card"
+            >
+              <div>
                 <div
                   class="wrapper"
                 >
@@ -561,10 +561,10 @@ exports[`<AutomateOverview /> Autoresponder deprecation should return false when
             class="cell"
             style="grid-column: span 6 / span 6;"
           >
-            <div>
-              <div
-                class="Card--wrapper--3AkmE card"
-              >
+            <div
+              class="Card--wrapper--3AkmE card"
+            >
+              <div>
                 <div
                   class="wrapper"
                 >
@@ -643,9 +643,7 @@ exports[`<AutomateOverview /> Autoresponder deprecation should return false when
                   class="chartsActionMenu"
                 />
               </div>
-              <div
-                class="wrapper"
-              >
+              <div>
                 <div
                   class="container"
                 />
@@ -683,9 +681,7 @@ exports[`<AutomateOverview /> Autoresponder deprecation should return false when
                   class="chartsActionMenu"
                 />
               </div>
-              <div
-                class="wrapper"
-              >
+              <div>
                 <div
                   class="container"
                 />
@@ -724,7 +720,7 @@ exports[`<AutomateOverview /> Autoresponder deprecation should return false when
                 />
               </div>
               <div
-                class="wrapper chartWrapper"
+                class="chartWrapper"
               >
                 <div
                   class="container"
@@ -1014,10 +1010,10 @@ exports[`<AutomateOverview /> Performance Tips light-error should show tips with
                   class="cell"
                   style="grid-column: span 6 / span 6;"
                 >
-                  <div>
-                    <div
-                      class="Card--wrapper--3AkmE card"
-                    >
+                  <div
+                    class="Card--wrapper--3AkmE card"
+                  >
+                    <div>
                       <div
                         class="wrapper"
                       >
@@ -1118,10 +1114,10 @@ exports[`<AutomateOverview /> Performance Tips light-error should show tips with
                   class="cell"
                   style="grid-column: span 6 / span 6;"
                 >
-                  <div>
-                    <div
-                      class="Card--wrapper--3AkmE card"
-                    >
+                  <div
+                    class="Card--wrapper--3AkmE card"
+                  >
+                    <div>
                       <div
                         class="wrapper"
                       >
@@ -1253,10 +1249,10 @@ exports[`<AutomateOverview /> Performance Tips light-error should show tips with
                   class="cell"
                   style="grid-column: span 6 / span 6;"
                 >
-                  <div>
-                    <div
-                      class="Card--wrapper--3AkmE card"
-                    >
+                  <div
+                    class="Card--wrapper--3AkmE card"
+                  >
+                    <div>
                       <div
                         class="wrapper"
                       >
@@ -1291,10 +1287,10 @@ exports[`<AutomateOverview /> Performance Tips light-error should show tips with
                   class="cell"
                   style="grid-column: span 6 / span 6;"
                 >
-                  <div>
-                    <div
-                      class="Card--wrapper--3AkmE card"
-                    >
+                  <div
+                    class="Card--wrapper--3AkmE card"
+                  >
+                    <div>
                       <div
                         class="wrapper"
                       >
@@ -1329,10 +1325,10 @@ exports[`<AutomateOverview /> Performance Tips light-error should show tips with
                   class="cell"
                   style="grid-column: span 6 / span 6;"
                 >
-                  <div>
-                    <div
-                      class="Card--wrapper--3AkmE card"
-                    >
+                  <div
+                    class="Card--wrapper--3AkmE card"
+                  >
+                    <div>
                       <div
                         class="wrapper"
                       >
@@ -1411,9 +1407,7 @@ exports[`<AutomateOverview /> Performance Tips light-error should show tips with
                         class="chartsActionMenu"
                       />
                     </div>
-                    <div
-                      class="wrapper"
-                    >
+                    <div>
                       <div
                         class="container"
                       />
@@ -1451,9 +1445,7 @@ exports[`<AutomateOverview /> Performance Tips light-error should show tips with
                         class="chartsActionMenu"
                       />
                     </div>
-                    <div
-                      class="wrapper"
-                    >
+                    <div>
                       <div
                         class="container"
                       />
@@ -1492,7 +1484,7 @@ exports[`<AutomateOverview /> Performance Tips light-error should show tips with
                       />
                     </div>
                     <div
-                      class="wrapper chartWrapper"
+                      class="chartWrapper"
                     >
                       <div
                         class="container"
@@ -1898,10 +1890,10 @@ exports[`<AutomateOverview /> Performance Tips light-error should show tips with
                 class="cell"
                 style="grid-column: span 6 / span 6;"
               >
-                <div>
-                  <div
-                    class="Card--wrapper--3AkmE card"
-                  >
+                <div
+                  class="Card--wrapper--3AkmE card"
+                >
+                  <div>
                     <div
                       class="wrapper"
                     >
@@ -2002,10 +1994,10 @@ exports[`<AutomateOverview /> Performance Tips light-error should show tips with
                 class="cell"
                 style="grid-column: span 6 / span 6;"
               >
-                <div>
-                  <div
-                    class="Card--wrapper--3AkmE card"
-                  >
+                <div
+                  class="Card--wrapper--3AkmE card"
+                >
+                  <div>
                     <div
                       class="wrapper"
                     >
@@ -2137,10 +2129,10 @@ exports[`<AutomateOverview /> Performance Tips light-error should show tips with
                 class="cell"
                 style="grid-column: span 6 / span 6;"
               >
-                <div>
-                  <div
-                    class="Card--wrapper--3AkmE card"
-                  >
+                <div
+                  class="Card--wrapper--3AkmE card"
+                >
+                  <div>
                     <div
                       class="wrapper"
                     >
@@ -2175,10 +2167,10 @@ exports[`<AutomateOverview /> Performance Tips light-error should show tips with
                 class="cell"
                 style="grid-column: span 6 / span 6;"
               >
-                <div>
-                  <div
-                    class="Card--wrapper--3AkmE card"
-                  >
+                <div
+                  class="Card--wrapper--3AkmE card"
+                >
+                  <div>
                     <div
                       class="wrapper"
                     >
@@ -2213,10 +2205,10 @@ exports[`<AutomateOverview /> Performance Tips light-error should show tips with
                 class="cell"
                 style="grid-column: span 6 / span 6;"
               >
-                <div>
-                  <div
-                    class="Card--wrapper--3AkmE card"
-                  >
+                <div
+                  class="Card--wrapper--3AkmE card"
+                >
+                  <div>
                     <div
                       class="wrapper"
                     >
@@ -2295,9 +2287,7 @@ exports[`<AutomateOverview /> Performance Tips light-error should show tips with
                       class="chartsActionMenu"
                     />
                   </div>
-                  <div
-                    class="wrapper"
-                  >
+                  <div>
                     <div
                       class="container"
                     />
@@ -2335,9 +2325,7 @@ exports[`<AutomateOverview /> Performance Tips light-error should show tips with
                       class="chartsActionMenu"
                     />
                   </div>
-                  <div
-                    class="wrapper"
-                  >
+                  <div>
                     <div
                       class="container"
                     />
@@ -2376,7 +2364,7 @@ exports[`<AutomateOverview /> Performance Tips light-error should show tips with
                     />
                   </div>
                   <div
-                    class="wrapper chartWrapper"
+                    class="chartWrapper"
                   >
                     <div
                       class="container"
@@ -2719,10 +2707,10 @@ exports[`<AutomateOverview /> Performance Tips light-success should show tips wi
                   class="cell"
                   style="grid-column: span 6 / span 6;"
                 >
-                  <div>
-                    <div
-                      class="Card--wrapper--3AkmE card"
-                    >
+                  <div
+                    class="Card--wrapper--3AkmE card"
+                  >
+                    <div>
                       <div
                         class="wrapper"
                       >
@@ -2823,10 +2811,10 @@ exports[`<AutomateOverview /> Performance Tips light-success should show tips wi
                   class="cell"
                   style="grid-column: span 6 / span 6;"
                 >
-                  <div>
-                    <div
-                      class="Card--wrapper--3AkmE card"
-                    >
+                  <div
+                    class="Card--wrapper--3AkmE card"
+                  >
+                    <div>
                       <div
                         class="wrapper"
                       >
@@ -2958,10 +2946,10 @@ exports[`<AutomateOverview /> Performance Tips light-success should show tips wi
                   class="cell"
                   style="grid-column: span 6 / span 6;"
                 >
-                  <div>
-                    <div
-                      class="Card--wrapper--3AkmE card"
-                    >
+                  <div
+                    class="Card--wrapper--3AkmE card"
+                  >
+                    <div>
                       <div
                         class="wrapper"
                       >
@@ -2996,10 +2984,10 @@ exports[`<AutomateOverview /> Performance Tips light-success should show tips wi
                   class="cell"
                   style="grid-column: span 6 / span 6;"
                 >
-                  <div>
-                    <div
-                      class="Card--wrapper--3AkmE card"
-                    >
+                  <div
+                    class="Card--wrapper--3AkmE card"
+                  >
+                    <div>
                       <div
                         class="wrapper"
                       >
@@ -3034,10 +3022,10 @@ exports[`<AutomateOverview /> Performance Tips light-success should show tips wi
                   class="cell"
                   style="grid-column: span 6 / span 6;"
                 >
-                  <div>
-                    <div
-                      class="Card--wrapper--3AkmE card"
-                    >
+                  <div
+                    class="Card--wrapper--3AkmE card"
+                  >
+                    <div>
                       <div
                         class="wrapper"
                       >
@@ -3116,9 +3104,7 @@ exports[`<AutomateOverview /> Performance Tips light-success should show tips wi
                         class="chartsActionMenu"
                       />
                     </div>
-                    <div
-                      class="wrapper"
-                    >
+                    <div>
                       <div
                         class="container"
                       />
@@ -3156,9 +3142,7 @@ exports[`<AutomateOverview /> Performance Tips light-success should show tips wi
                         class="chartsActionMenu"
                       />
                     </div>
-                    <div
-                      class="wrapper"
-                    >
+                    <div>
                       <div
                         class="container"
                       />
@@ -3197,7 +3181,7 @@ exports[`<AutomateOverview /> Performance Tips light-success should show tips wi
                       />
                     </div>
                     <div
-                      class="wrapper chartWrapper"
+                      class="chartWrapper"
                     >
                       <div
                         class="container"
@@ -3603,10 +3587,10 @@ exports[`<AutomateOverview /> Performance Tips light-success should show tips wi
                 class="cell"
                 style="grid-column: span 6 / span 6;"
               >
-                <div>
-                  <div
-                    class="Card--wrapper--3AkmE card"
-                  >
+                <div
+                  class="Card--wrapper--3AkmE card"
+                >
+                  <div>
                     <div
                       class="wrapper"
                     >
@@ -3707,10 +3691,10 @@ exports[`<AutomateOverview /> Performance Tips light-success should show tips wi
                 class="cell"
                 style="grid-column: span 6 / span 6;"
               >
-                <div>
-                  <div
-                    class="Card--wrapper--3AkmE card"
-                  >
+                <div
+                  class="Card--wrapper--3AkmE card"
+                >
+                  <div>
                     <div
                       class="wrapper"
                     >
@@ -3842,10 +3826,10 @@ exports[`<AutomateOverview /> Performance Tips light-success should show tips wi
                 class="cell"
                 style="grid-column: span 6 / span 6;"
               >
-                <div>
-                  <div
-                    class="Card--wrapper--3AkmE card"
-                  >
+                <div
+                  class="Card--wrapper--3AkmE card"
+                >
+                  <div>
                     <div
                       class="wrapper"
                     >
@@ -3880,10 +3864,10 @@ exports[`<AutomateOverview /> Performance Tips light-success should show tips wi
                 class="cell"
                 style="grid-column: span 6 / span 6;"
               >
-                <div>
-                  <div
-                    class="Card--wrapper--3AkmE card"
-                  >
+                <div
+                  class="Card--wrapper--3AkmE card"
+                >
+                  <div>
                     <div
                       class="wrapper"
                     >
@@ -3918,10 +3902,10 @@ exports[`<AutomateOverview /> Performance Tips light-success should show tips wi
                 class="cell"
                 style="grid-column: span 6 / span 6;"
               >
-                <div>
-                  <div
-                    class="Card--wrapper--3AkmE card"
-                  >
+                <div
+                  class="Card--wrapper--3AkmE card"
+                >
+                  <div>
                     <div
                       class="wrapper"
                     >
@@ -4000,9 +3984,7 @@ exports[`<AutomateOverview /> Performance Tips light-success should show tips wi
                       class="chartsActionMenu"
                     />
                   </div>
-                  <div
-                    class="wrapper"
-                  >
+                  <div>
                     <div
                       class="container"
                     />
@@ -4040,9 +4022,7 @@ exports[`<AutomateOverview /> Performance Tips light-success should show tips wi
                       class="chartsActionMenu"
                     />
                   </div>
-                  <div
-                    class="wrapper"
-                  >
+                  <div>
                     <div
                       class="container"
                     />
@@ -4081,7 +4061,7 @@ exports[`<AutomateOverview /> Performance Tips light-success should show tips wi
                     />
                   </div>
                   <div
-                    class="wrapper chartWrapper"
+                    class="chartWrapper"
                   >
                     <div
                       class="container"
@@ -4424,10 +4404,10 @@ exports[`<AutomateOverview /> Performance Tips success should show tips with sen
                   class="cell"
                   style="grid-column: span 6 / span 6;"
                 >
-                  <div>
-                    <div
-                      class="Card--wrapper--3AkmE card"
-                    >
+                  <div
+                    class="Card--wrapper--3AkmE card"
+                  >
+                    <div>
                       <div
                         class="wrapper"
                       >
@@ -4528,10 +4508,10 @@ exports[`<AutomateOverview /> Performance Tips success should show tips with sen
                   class="cell"
                   style="grid-column: span 6 / span 6;"
                 >
-                  <div>
-                    <div
-                      class="Card--wrapper--3AkmE card"
-                    >
+                  <div
+                    class="Card--wrapper--3AkmE card"
+                  >
+                    <div>
                       <div
                         class="wrapper"
                       >
@@ -4663,10 +4643,10 @@ exports[`<AutomateOverview /> Performance Tips success should show tips with sen
                   class="cell"
                   style="grid-column: span 6 / span 6;"
                 >
-                  <div>
-                    <div
-                      class="Card--wrapper--3AkmE card"
-                    >
+                  <div
+                    class="Card--wrapper--3AkmE card"
+                  >
+                    <div>
                       <div
                         class="wrapper"
                       >
@@ -4701,10 +4681,10 @@ exports[`<AutomateOverview /> Performance Tips success should show tips with sen
                   class="cell"
                   style="grid-column: span 6 / span 6;"
                 >
-                  <div>
-                    <div
-                      class="Card--wrapper--3AkmE card"
-                    >
+                  <div
+                    class="Card--wrapper--3AkmE card"
+                  >
+                    <div>
                       <div
                         class="wrapper"
                       >
@@ -4739,10 +4719,10 @@ exports[`<AutomateOverview /> Performance Tips success should show tips with sen
                   class="cell"
                   style="grid-column: span 6 / span 6;"
                 >
-                  <div>
-                    <div
-                      class="Card--wrapper--3AkmE card"
-                    >
+                  <div
+                    class="Card--wrapper--3AkmE card"
+                  >
+                    <div>
                       <div
                         class="wrapper"
                       >
@@ -4821,9 +4801,7 @@ exports[`<AutomateOverview /> Performance Tips success should show tips with sen
                         class="chartsActionMenu"
                       />
                     </div>
-                    <div
-                      class="wrapper"
-                    >
+                    <div>
                       <div
                         class="container"
                       />
@@ -4861,9 +4839,7 @@ exports[`<AutomateOverview /> Performance Tips success should show tips with sen
                         class="chartsActionMenu"
                       />
                     </div>
-                    <div
-                      class="wrapper"
-                    >
+                    <div>
                       <div
                         class="container"
                       />
@@ -4902,7 +4878,7 @@ exports[`<AutomateOverview /> Performance Tips success should show tips with sen
                       />
                     </div>
                     <div
-                      class="wrapper chartWrapper"
+                      class="chartWrapper"
                     >
                       <div
                         class="container"
@@ -5308,10 +5284,10 @@ exports[`<AutomateOverview /> Performance Tips success should show tips with sen
                 class="cell"
                 style="grid-column: span 6 / span 6;"
               >
-                <div>
-                  <div
-                    class="Card--wrapper--3AkmE card"
-                  >
+                <div
+                  class="Card--wrapper--3AkmE card"
+                >
+                  <div>
                     <div
                       class="wrapper"
                     >
@@ -5412,10 +5388,10 @@ exports[`<AutomateOverview /> Performance Tips success should show tips with sen
                 class="cell"
                 style="grid-column: span 6 / span 6;"
               >
-                <div>
-                  <div
-                    class="Card--wrapper--3AkmE card"
-                  >
+                <div
+                  class="Card--wrapper--3AkmE card"
+                >
+                  <div>
                     <div
                       class="wrapper"
                     >
@@ -5547,10 +5523,10 @@ exports[`<AutomateOverview /> Performance Tips success should show tips with sen
                 class="cell"
                 style="grid-column: span 6 / span 6;"
               >
-                <div>
-                  <div
-                    class="Card--wrapper--3AkmE card"
-                  >
+                <div
+                  class="Card--wrapper--3AkmE card"
+                >
+                  <div>
                     <div
                       class="wrapper"
                     >
@@ -5585,10 +5561,10 @@ exports[`<AutomateOverview /> Performance Tips success should show tips with sen
                 class="cell"
                 style="grid-column: span 6 / span 6;"
               >
-                <div>
-                  <div
-                    class="Card--wrapper--3AkmE card"
-                  >
+                <div
+                  class="Card--wrapper--3AkmE card"
+                >
+                  <div>
                     <div
                       class="wrapper"
                     >
@@ -5623,10 +5599,10 @@ exports[`<AutomateOverview /> Performance Tips success should show tips with sen
                 class="cell"
                 style="grid-column: span 6 / span 6;"
               >
-                <div>
-                  <div
-                    class="Card--wrapper--3AkmE card"
-                  >
+                <div
+                  class="Card--wrapper--3AkmE card"
+                >
+                  <div>
                     <div
                       class="wrapper"
                     >
@@ -5705,9 +5681,7 @@ exports[`<AutomateOverview /> Performance Tips success should show tips with sen
                       class="chartsActionMenu"
                     />
                   </div>
-                  <div
-                    class="wrapper"
-                  >
+                  <div>
                     <div
                       class="container"
                     />
@@ -5745,9 +5719,7 @@ exports[`<AutomateOverview /> Performance Tips success should show tips with sen
                       class="chartsActionMenu"
                     />
                   </div>
-                  <div
-                    class="wrapper"
-                  >
+                  <div>
                     <div
                       class="container"
                     />
@@ -5786,7 +5758,7 @@ exports[`<AutomateOverview /> Performance Tips success should show tips with sen
                     />
                   </div>
                   <div
-                    class="wrapper chartWrapper"
+                    class="chartWrapper"
                   >
                     <div
                       class="container"
@@ -6125,10 +6097,10 @@ exports[`<AutomateOverview /> Quickresponse deprecation should return false when
             class="cell"
             style="grid-column: span 6 / span 6;"
           >
-            <div>
-              <div
-                class="Card--wrapper--3AkmE card"
-              >
+            <div
+              class="Card--wrapper--3AkmE card"
+            >
+              <div>
                 <div
                   class="wrapper"
                 >
@@ -6229,10 +6201,10 @@ exports[`<AutomateOverview /> Quickresponse deprecation should return false when
             class="cell"
             style="grid-column: span 6 / span 6;"
           >
-            <div>
-              <div
-                class="Card--wrapper--3AkmE card"
-              >
+            <div
+              class="Card--wrapper--3AkmE card"
+            >
+              <div>
                 <div
                   class="wrapper"
                 >
@@ -6364,10 +6336,10 @@ exports[`<AutomateOverview /> Quickresponse deprecation should return false when
             class="cell"
             style="grid-column: span 6 / span 6;"
           >
-            <div>
-              <div
-                class="Card--wrapper--3AkmE card"
-              >
+            <div
+              class="Card--wrapper--3AkmE card"
+            >
+              <div>
                 <div
                   class="wrapper"
                 >
@@ -6402,10 +6374,10 @@ exports[`<AutomateOverview /> Quickresponse deprecation should return false when
             class="cell"
             style="grid-column: span 6 / span 6;"
           >
-            <div>
-              <div
-                class="Card--wrapper--3AkmE card"
-              >
+            <div
+              class="Card--wrapper--3AkmE card"
+            >
+              <div>
                 <div
                   class="wrapper"
                 >
@@ -6440,10 +6412,10 @@ exports[`<AutomateOverview /> Quickresponse deprecation should return false when
             class="cell"
             style="grid-column: span 6 / span 6;"
           >
-            <div>
-              <div
-                class="Card--wrapper--3AkmE card"
-              >
+            <div
+              class="Card--wrapper--3AkmE card"
+            >
+              <div>
                 <div
                   class="wrapper"
                 >
@@ -6522,9 +6494,7 @@ exports[`<AutomateOverview /> Quickresponse deprecation should return false when
                   class="chartsActionMenu"
                 />
               </div>
-              <div
-                class="wrapper"
-              >
+              <div>
                 <div
                   class="container"
                 />
@@ -6562,9 +6532,7 @@ exports[`<AutomateOverview /> Quickresponse deprecation should return false when
                   class="chartsActionMenu"
                 />
               </div>
-              <div
-                class="wrapper"
-              >
+              <div>
                 <div
                   class="container"
                 />
@@ -6603,7 +6571,7 @@ exports[`<AutomateOverview /> Quickresponse deprecation should return false when
                 />
               </div>
               <div
-                class="wrapper chartWrapper"
+                class="chartWrapper"
               >
                 <div
                   class="container"
@@ -6872,10 +6840,10 @@ exports[`<AutomateOverview /> Quickresponse deprecation should return false when
             class="cell"
             style="grid-column: span 6 / span 6;"
           >
-            <div>
-              <div
-                class="Card--wrapper--3AkmE card"
-              >
+            <div
+              class="Card--wrapper--3AkmE card"
+            >
+              <div>
                 <div
                   class="wrapper"
                 >
@@ -6976,10 +6944,10 @@ exports[`<AutomateOverview /> Quickresponse deprecation should return false when
             class="cell"
             style="grid-column: span 6 / span 6;"
           >
-            <div>
-              <div
-                class="Card--wrapper--3AkmE card"
-              >
+            <div
+              class="Card--wrapper--3AkmE card"
+            >
+              <div>
                 <div
                   class="wrapper"
                 >
@@ -7111,10 +7079,10 @@ exports[`<AutomateOverview /> Quickresponse deprecation should return false when
             class="cell"
             style="grid-column: span 6 / span 6;"
           >
-            <div>
-              <div
-                class="Card--wrapper--3AkmE card"
-              >
+            <div
+              class="Card--wrapper--3AkmE card"
+            >
+              <div>
                 <div
                   class="wrapper"
                 >
@@ -7149,10 +7117,10 @@ exports[`<AutomateOverview /> Quickresponse deprecation should return false when
             class="cell"
             style="grid-column: span 6 / span 6;"
           >
-            <div>
-              <div
-                class="Card--wrapper--3AkmE card"
-              >
+            <div
+              class="Card--wrapper--3AkmE card"
+            >
+              <div>
                 <div
                   class="wrapper"
                 >
@@ -7187,10 +7155,10 @@ exports[`<AutomateOverview /> Quickresponse deprecation should return false when
             class="cell"
             style="grid-column: span 6 / span 6;"
           >
-            <div>
-              <div
-                class="Card--wrapper--3AkmE card"
-              >
+            <div
+              class="Card--wrapper--3AkmE card"
+            >
+              <div>
                 <div
                   class="wrapper"
                 >
@@ -7269,9 +7237,7 @@ exports[`<AutomateOverview /> Quickresponse deprecation should return false when
                   class="chartsActionMenu"
                 />
               </div>
-              <div
-                class="wrapper"
-              >
+              <div>
                 <div
                   class="container"
                 />
@@ -7309,9 +7275,7 @@ exports[`<AutomateOverview /> Quickresponse deprecation should return false when
                   class="chartsActionMenu"
                 />
               </div>
-              <div
-                class="wrapper"
-              >
+              <div>
                 <div
                   class="container"
                 />
@@ -7350,7 +7314,7 @@ exports[`<AutomateOverview /> Quickresponse deprecation should return false when
                 />
               </div>
               <div
-                class="wrapper chartWrapper"
+                class="chartWrapper"
               >
                 <div
                   class="container"
@@ -7636,10 +7600,10 @@ exports[`<AutomateOverview /> should display AAO 1`] = `
             class="cell"
             style="grid-column: span 6 / span 6;"
           >
-            <div>
-              <div
-                class="Card--wrapper--3AkmE card"
-              >
+            <div
+              class="Card--wrapper--3AkmE card"
+            >
+              <div>
                 <div
                   class="wrapper"
                 >
@@ -7740,10 +7704,10 @@ exports[`<AutomateOverview /> should display AAO 1`] = `
             class="cell"
             style="grid-column: span 6 / span 6;"
           >
-            <div>
-              <div
-                class="Card--wrapper--3AkmE card"
-              >
+            <div
+              class="Card--wrapper--3AkmE card"
+            >
+              <div>
                 <div
                   class="wrapper"
                 >
@@ -7875,10 +7839,10 @@ exports[`<AutomateOverview /> should display AAO 1`] = `
             class="cell"
             style="grid-column: span 6 / span 6;"
           >
-            <div>
-              <div
-                class="Card--wrapper--3AkmE card"
-              >
+            <div
+              class="Card--wrapper--3AkmE card"
+            >
+              <div>
                 <div
                   class="wrapper"
                 >
@@ -7913,10 +7877,10 @@ exports[`<AutomateOverview /> should display AAO 1`] = `
             class="cell"
             style="grid-column: span 6 / span 6;"
           >
-            <div>
-              <div
-                class="Card--wrapper--3AkmE card"
-              >
+            <div
+              class="Card--wrapper--3AkmE card"
+            >
+              <div>
                 <div
                   class="wrapper"
                 >
@@ -7951,10 +7915,10 @@ exports[`<AutomateOverview /> should display AAO 1`] = `
             class="cell"
             style="grid-column: span 6 / span 6;"
           >
-            <div>
-              <div
-                class="Card--wrapper--3AkmE card"
-              >
+            <div
+              class="Card--wrapper--3AkmE card"
+            >
+              <div>
                 <div
                   class="wrapper"
                 >
@@ -8033,9 +7997,7 @@ exports[`<AutomateOverview /> should display AAO 1`] = `
                   class="chartsActionMenu"
                 />
               </div>
-              <div
-                class="wrapper"
-              >
+              <div>
                 <div
                   class="container"
                 />
@@ -8073,9 +8035,7 @@ exports[`<AutomateOverview /> should display AAO 1`] = `
                   class="chartsActionMenu"
                 />
               </div>
-              <div
-                class="wrapper"
-              >
+              <div>
                 <div
                   class="container"
                 />
@@ -8114,7 +8074,7 @@ exports[`<AutomateOverview /> should display AAO 1`] = `
                 />
               </div>
               <div
-                class="wrapper chartWrapper"
+                class="chartWrapper"
               >
                 <div
                   class="container"
@@ -8400,10 +8360,10 @@ exports[`<AutomateOverview /> should display paywall 1`] = `
             class="cell"
             style="grid-column: span 6 / span 6;"
           >
-            <div>
-              <div
-                class="Card--wrapper--3AkmE card"
-              >
+            <div
+              class="Card--wrapper--3AkmE card"
+            >
+              <div>
                 <div
                   class="wrapper"
                 >
@@ -8504,10 +8464,10 @@ exports[`<AutomateOverview /> should display paywall 1`] = `
             class="cell"
             style="grid-column: span 6 / span 6;"
           >
-            <div>
-              <div
-                class="Card--wrapper--3AkmE card"
-              >
+            <div
+              class="Card--wrapper--3AkmE card"
+            >
+              <div>
                 <div
                   class="wrapper"
                 >
@@ -8639,10 +8599,10 @@ exports[`<AutomateOverview /> should display paywall 1`] = `
             class="cell"
             style="grid-column: span 6 / span 6;"
           >
-            <div>
-              <div
-                class="Card--wrapper--3AkmE card"
-              >
+            <div
+              class="Card--wrapper--3AkmE card"
+            >
+              <div>
                 <div
                   class="wrapper"
                 >
@@ -8677,10 +8637,10 @@ exports[`<AutomateOverview /> should display paywall 1`] = `
             class="cell"
             style="grid-column: span 6 / span 6;"
           >
-            <div>
-              <div
-                class="Card--wrapper--3AkmE card"
-              >
+            <div
+              class="Card--wrapper--3AkmE card"
+            >
+              <div>
                 <div
                   class="wrapper"
                 >
@@ -8715,10 +8675,10 @@ exports[`<AutomateOverview /> should display paywall 1`] = `
             class="cell"
             style="grid-column: span 6 / span 6;"
           >
-            <div>
-              <div
-                class="Card--wrapper--3AkmE card"
-              >
+            <div
+              class="Card--wrapper--3AkmE card"
+            >
+              <div>
                 <div
                   class="wrapper"
                 >
@@ -8797,9 +8757,7 @@ exports[`<AutomateOverview /> should display paywall 1`] = `
                   class="chartsActionMenu"
                 />
               </div>
-              <div
-                class="wrapper"
-              >
+              <div>
                 <div
                   class="container"
                 />
@@ -8837,9 +8795,7 @@ exports[`<AutomateOverview /> should display paywall 1`] = `
                   class="chartsActionMenu"
                 />
               </div>
-              <div
-                class="wrapper"
-              >
+              <div>
                 <div
                   class="container"
                 />
@@ -8878,7 +8834,7 @@ exports[`<AutomateOverview /> should display paywall 1`] = `
                 />
               </div>
               <div
-                class="wrapper chartWrapper"
+                class="chartWrapper"
               >
                 <div
                   class="container"

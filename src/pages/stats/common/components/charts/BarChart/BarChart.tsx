@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useMemo, useState } from 'react'
+import { useCallback, useEffect, useMemo, useState } from 'react'
 
 import {
     Chart,
@@ -7,7 +7,6 @@ import {
     ScriptableScaleContext,
     TooltipItem,
 } from 'chart.js'
-import classNames from 'classnames'
 import { fromJS, Map } from 'immutable'
 import { Bar } from 'react-chartjs-2'
 
@@ -236,7 +235,7 @@ export function BarChart({
     }
 
     return (
-        <div className={classNames(css.wrapper, wrapperclassNames)}>
+        <div className={wrapperclassNames}>
             <div className={css.container}>
                 <Bar
                     id={CHART_TOOLTIP_TARGET}

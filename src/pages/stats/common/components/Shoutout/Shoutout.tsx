@@ -60,90 +60,96 @@ export default function Shoutout({
 
     return (
         <Card className={css.card}>
-            <div className={css.avatar}>
-                {persons.length !== 1 ? (
-                    <div className={css.avatarPlaceholder}>
-                        {!persons.length ? (
-                            <span className={css.noValuePlaceholder}>
-                                {SHOUTOUT_NO_VALUE_PLACEHOLDER}
-                            </span>
-                        ) : (
-                            <i className="material-icons">people</i>
-                        )}
-                    </div>
-                ) : (
-                    <Avatar
-                        name={firstPerson?.name}
-                        size={48}
-                        url={firstPerson?.image}
-                        shape="round"
-                    />
-                )}
-            </div>
-            <div className={css.content}>
-                <div
-                    className={css.label}
-                    aria-label={`Agents' information for ${metricName}`}
-                >
-                    {getLabel()}{' '}
-                    {moreThanOnePerson && (
-                        <>
-                            <i
-                                ref={tooltipRef}
-                                className={classNames(
-                                    'material-icons',
-                                    css.infoIcon,
-                                )}
-                                aria-label="Hover to display more people"
-                            >
-                                info_outline
-                            </i>
-                            <Tooltip
-                                boundariesElement="window"
-                                target={tooltipRef}
-                                autohide={false}
-                                placement="top-start"
-                                delay={{ show: 0, hide: 500 }}
-                            >
-                                {tooltipPersons.map((person, idx, source) => (
-                                    <Fragment key={idx}>
-                                        {person.name}
-                                        {idx !== source.length - 1 && (
-                                            <>
-                                                ; <br />
-                                            </>
-                                        )}
-                                    </Fragment>
-                                ))}
-                                {personsLengthExceeded && (
-                                    <>
-                                        ; <br />
-                                        {persons.length -
-                                            maxTooltipPersons}{' '}
-                                        more...
-                                    </>
-                                )}
-                            </Tooltip>
-                        </>
+            <div className={css.wrapper}>
+                <div className={css.avatar}>
+                    {persons.length !== 1 ? (
+                        <div className={css.avatarPlaceholder}>
+                            {!persons.length ? (
+                                <span className={css.noValuePlaceholder}>
+                                    {SHOUTOUT_NO_VALUE_PLACEHOLDER}
+                                </span>
+                            ) : (
+                                <i className="material-icons">people</i>
+                            )}
+                        </div>
+                    ) : (
+                        <Avatar
+                            name={firstPerson?.name}
+                            size={48}
+                            url={firstPerson?.image}
+                            shape="round"
+                        />
                     )}
                 </div>
-                <div className={css.metricRow}>
-                    <div className={css.metricName}>{metricName}</div>
-                    <div className={css.metricDivider}></div>
-                    <div className={css.metricValue}>
-                        {isNil(value) ? SHOUTOUT_NO_VALUE_PLACEHOLDER : value}
+                <div className={css.content}>
+                    <div
+                        className={css.label}
+                        aria-label={`Agents' information for ${metricName}`}
+                    >
+                        {getLabel()}{' '}
+                        {moreThanOnePerson && (
+                            <>
+                                <i
+                                    ref={tooltipRef}
+                                    className={classNames(
+                                        'material-icons',
+                                        css.infoIcon,
+                                    )}
+                                    aria-label="Hover to display more people"
+                                >
+                                    info_outline
+                                </i>
+                                <Tooltip
+                                    boundariesElement="window"
+                                    target={tooltipRef}
+                                    autohide={false}
+                                    placement="top-start"
+                                    delay={{ show: 0, hide: 500 }}
+                                >
+                                    {tooltipPersons.map(
+                                        (person, idx, source) => (
+                                            <Fragment key={idx}>
+                                                {person.name}
+                                                {idx !== source.length - 1 && (
+                                                    <>
+                                                        ; <br />
+                                                    </>
+                                                )}
+                                            </Fragment>
+                                        ),
+                                    )}
+                                    {personsLengthExceeded && (
+                                        <>
+                                            ; <br />
+                                            {persons.length -
+                                                maxTooltipPersons}{' '}
+                                            more...
+                                        </>
+                                    )}
+                                </Tooltip>
+                            </>
+                        )}
+                    </div>
+                    <div className={css.metricRow}>
+                        <div className={css.metricName}>{metricName}</div>
+                        <div className={css.metricDivider}></div>
+                        <div className={css.metricValue}>
+                            {isNil(value)
+                                ? SHOUTOUT_NO_VALUE_PLACEHOLDER
+                                : value}
+                        </div>
                     </div>
                 </div>
+                {chartId && (
+                    <div className={css.actionMenu}>
+                        <ChartsActionMenu
+                            chartId={chartId}
+                            chartName={value}
+                            dashboard={dashboard}
+                        />
+                    </div>
+                )}
             </div>
-            {chartId && (
-                <div className={css.actionMenu}>
-                    <ChartsActionMenu
-                        chartId={chartId}
-                        chartName={value}
-                        dashboard={dashboard}
-                    />
-                </div>
-            )}
         </Card>
     )
 }
