@@ -8,6 +8,7 @@ import {
     totalNumberOfAutomatedSalesDrillDownQueryFactory,
     totalNumberOfOrderDrillDownQueryFactory,
     totalNumberofSalesOpportunityConvFromAIAgentDrillDownQueryFactory,
+    totalNumberProductRecommendationsDrillDownQueryFactory,
 } from 'models/reporting/queryFactories/ai-sales-agent/metrics'
 import {
     fetchAverageOrderValueTrend,
@@ -138,6 +139,7 @@ export type AiSalesAgentDrillDownMetrics =
     | AiSalesAgentChart.AiSalesAgentSuccessRate
     | AiSalesAgentChart.AiSalesDiscountOffered
     | AiSalesAgentChart.AiSalesAgentTotalNumberOfOrders
+    | AiSalesAgentChart.AiSalesAgentTotalProductRecommendations
 
 type DrillDownConfig = {
     drillDownMetric: AiSalesAgentDrillDownMetrics
@@ -205,6 +207,21 @@ export const AiSalesAgentMetricsWithDrillDownConfig: Record<
         domain: Domain.AiSalesAgent,
         drillDownQuery: totalNumberOfOrderDrillDownQueryFactory,
     },
+    [AiSalesAgentChart.AiSalesAgentTotalProductRecommendations]: {
+        title: 'Product recommendations',
+        hint: {
+            title: 'The number of product recommendations made by the AI Agent for Sales.',
+        },
+        useTrend: useTotalProductRecommendations,
+        fetchTrend: fetchTotalProductRecommendations,
+        interpretAs: 'more-is-better',
+        metricFormat: 'decimal',
+        showMetric: false,
+        domain: Domain.AiSalesAgent,
+        drillDownQuery: totalNumberProductRecommendationsDrillDownQueryFactory,
+        drillDownMetric:
+            AiSalesAgentChart.AiSalesAgentTotalProductRecommendations,
+    },
 }
 
 export const AiSalesAgentMetricConfig: Record<
@@ -257,18 +274,6 @@ export const AiSalesAgentMetricConfig: Record<
         fetchTrend: fetchAverageOrderValueTrend,
         interpretAs: 'more-is-better',
         metricFormat: 'currency',
-        showMetric: false,
-        domain: Domain.AiSalesAgent,
-    },
-    [AiSalesAgentChart.AiSalesAgentTotalProductRecommendations]: {
-        title: 'Product recommendations',
-        hint: {
-            title: 'The number of product recommendations made by the AI Agent for Sales.',
-        },
-        useTrend: useTotalProductRecommendations,
-        fetchTrend: fetchTotalProductRecommendations,
-        interpretAs: 'more-is-better',
-        metricFormat: 'decimal',
         showMetric: false,
         domain: Domain.AiSalesAgent,
     },

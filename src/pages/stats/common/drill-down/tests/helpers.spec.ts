@@ -6,6 +6,7 @@ import {
     totalNumberOfAutomatedSalesDrillDownQueryFactory,
     totalNumberOfOrderDrillDownQueryFactory,
     totalNumberofSalesOpportunityConvFromAIAgentDrillDownQueryFactory,
+    totalNumberProductRecommendationsDrillDownQueryFactory,
 } from 'models/reporting/queryFactories/ai-sales-agent/metrics'
 import { customerSatisfactionMetricDrillDownQueryFactory } from 'models/reporting/queryFactories/support-performance/customerSatisfaction'
 import {
@@ -136,6 +137,9 @@ const discountCodesOfferedDrillDownQueryFactoryMock = assumeMock(
 )
 const totalNumberOfOrderDrillDownQueryFactoryMock = assumeMock(
     totalNumberOfOrderDrillDownQueryFactory,
+)
+const totalNumberProductRecommendationsDrillDownQueryFactoryMock = assumeMock(
+    totalNumberProductRecommendationsDrillDownQueryFactory,
 )
 
 describe('getDrillDownQuery', () => {
@@ -911,6 +915,28 @@ describe('getDrillDownQuery', () => {
 
         expect(
             totalNumberOfOrderDrillDownQueryFactoryMock,
+        ).toHaveBeenCalledWith(statsFilters, timezone)
+    })
+
+    it('should be populated with AiSalesAgentTotalProductRecommendations', () => {
+        const periodStart = moment()
+        const periodEnd = periodStart.add(7, 'days')
+        const statsFilters: StatsFilters = {
+            period: {
+                end_datetime: periodEnd.toISOString(),
+                start_datetime: periodStart.toISOString(),
+            },
+        }
+        const timezone = 'someTimeZone'
+        const drillDownMetric: AiSalesAgentMetrics = {
+            metricName:
+                AiSalesAgentChart.AiSalesAgentTotalProductRecommendations,
+        }
+
+        getDrillDownQuery(drillDownMetric)(statsFilters, timezone)
+
+        expect(
+            totalNumberProductRecommendationsDrillDownQueryFactoryMock,
         ).toHaveBeenCalledWith(statsFilters, timezone)
     })
 })

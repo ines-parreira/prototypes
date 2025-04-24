@@ -46,6 +46,9 @@ export interface TicketDrillDownRowData extends BaseDrillDownRowData {
         amount: number
         customer: string
     } | null
+    product?: {
+        title: string
+    } | null
 }
 
 export interface CampaignSaleDetails {
@@ -167,6 +170,9 @@ export const formatTicketDrillDownRowData = ({
             id: row[AiSalesAgentOrdersDimension.OrderId],
             amount: row[AiSalesAgentOrdersDimension.TotalAmount],
             customer: row[EnrichmentFields.CustomerIntegrationDataByExternalId],
+        },
+        product: {
+            title: row[EnrichmentFields.ProductTitle],
         },
     }
 }

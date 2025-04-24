@@ -7,6 +7,7 @@ import {
     totalNumberOfAutomatedSalesDrillDownQueryFactory,
     totalNumberOfOrderDrillDownQueryFactory,
     totalNumberofSalesOpportunityConvFromAIAgentDrillDownQueryFactory,
+    totalNumberProductRecommendationsDrillDownQueryFactory,
 } from 'models/reporting/queryFactories/ai-sales-agent/metrics'
 import { ReportingFilterOperator } from 'models/reporting/types'
 import {
@@ -363,6 +364,102 @@ describe('totalNumberOfOrderDrillDownQueryFactory', () => {
             limit: DRILLDOWN_QUERY_LIMIT,
             order: [
                 [AiSalesAgentOrdersDimension.TicketId, OrderDirection.Desc],
+            ],
+            timezone: 'UTC',
+        })
+    })
+})
+
+describe('totalNumberProductRecommendationsDrillDownQueryFactory', () => {
+    it('should build a query', () => {
+        expect(
+            totalNumberProductRecommendationsDrillDownQueryFactory(
+                {
+                    period: {
+                        start_datetime: '2021-01-01T00:00:00Z',
+                        end_datetime: '2021-01-02T00:00:00Z',
+                    },
+                },
+                'UTC',
+            ),
+        ).toEqual({
+            measures: ['AiSalesAgentConversations.count'],
+            dimensions: [
+                AiSalesAgentConversationsDimension.TicketId,
+                AiSalesAgentConversationsDimension.ProductId,
+            ],
+            filters: [
+                {
+                    member: AiSalesAgentConversationsDimension.IsSalesOpportunity,
+                    operator: ReportingFilterOperator.Equals,
+                    values: ['1'],
+                },
+                {
+                    member: AiSalesAgentConversationsDimension.ProductId,
+                    operator: ReportingFilterOperator.Set,
+                    values: [],
+                },
+                ...statsFiltersToReportingFilters(
+                    aiSalesAgentConversationsDefaultFiltersMembers,
+                    {
+                        period: {
+                            start_datetime: '2021-01-01T00:00:00Z',
+                            end_datetime: '2021-01-02T00:00:00Z',
+                        },
+                    },
+                ),
+            ],
+            limit: DRILLDOWN_QUERY_LIMIT,
+            order: [],
+            timezone: 'UTC',
+        })
+    })
+
+    it('should build a query with sorting', () => {
+        expect(
+            totalNumberProductRecommendationsDrillDownQueryFactory(
+                {
+                    period: {
+                        start_datetime: '2021-01-01T00:00:00Z',
+                        end_datetime: '2021-01-02T00:00:00Z',
+                    },
+                },
+                'UTC',
+                OrderDirection.Desc,
+            ),
+        ).toEqual({
+            measures: ['AiSalesAgentConversations.count'],
+            dimensions: [
+                AiSalesAgentConversationsDimension.TicketId,
+                AiSalesAgentConversationsDimension.ProductId,
+            ],
+            filters: [
+                {
+                    member: AiSalesAgentConversationsDimension.IsSalesOpportunity,
+                    operator: ReportingFilterOperator.Equals,
+                    values: ['1'],
+                },
+                {
+                    member: AiSalesAgentConversationsDimension.ProductId,
+                    operator: ReportingFilterOperator.Set,
+                    values: [],
+                },
+                ...statsFiltersToReportingFilters(
+                    aiSalesAgentConversationsDefaultFiltersMembers,
+                    {
+                        period: {
+                            start_datetime: '2021-01-01T00:00:00Z',
+                            end_datetime: '2021-01-02T00:00:00Z',
+                        },
+                    },
+                ),
+            ],
+            limit: DRILLDOWN_QUERY_LIMIT,
+            order: [
+                [
+                    AiSalesAgentConversationsDimension.TicketId,
+                    OrderDirection.Desc,
+                ],
             ],
             timezone: 'UTC',
         })

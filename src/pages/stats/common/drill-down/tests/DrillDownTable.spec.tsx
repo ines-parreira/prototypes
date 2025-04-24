@@ -16,6 +16,7 @@ import {
     TicketSLAStatus,
 } from 'models/reporting/cubes/sla/TicketSLACube'
 import { NumberedPagination } from 'pages/common/components/Paginations'
+import { AiSalesAgentChart } from 'pages/stats/automate/aiSalesAgent/AiSalesAgentMetricsConfig'
 import { LogicalOperatorEnum } from 'pages/stats/common/components/Filter/constants'
 import {
     ConvertDrillDownRowData,
@@ -35,7 +36,10 @@ import {
 import { OverviewMetric } from 'pages/stats/support-performance/overview/SupportPerformanceOverviewConfig'
 import { SlaStatusLabel } from 'services/reporting/constants'
 import { RootState, StoreDispatch } from 'state/types'
-import { DrillDownMetric } from 'state/ui/stats/drillDownSlice'
+import {
+    AiSalesAgentMetrics,
+    DrillDownMetric,
+} from 'state/ui/stats/drillDownSlice'
 import {
     AutoQAMetric,
     ConvertMetric,
@@ -420,6 +424,33 @@ describe('<DrillDownTable />', () => {
                 },
                 {},
             )
+        })
+
+        it('should render product title', () => {
+            const metricData: AiSalesAgentMetrics = {
+                metricName:
+                    AiSalesAgentChart.AiSalesAgentTotalProductRecommendations,
+            }
+
+            const dataWithProduct = {
+                ...exampleRow,
+                product: {
+                    title: 'Product 1',
+                },
+            }
+
+            useEnrichedDrillDownDataMock.mockReturnValue({
+                data: [dataWithProduct],
+                isFetching: false,
+            } as any)
+            useDataHookMock.mockReturnValue({
+                currentPage,
+                perPage: 1,
+            } as any)
+
+            renderTableForTicket(metricData)
+
+            expect(screen.getByText('Product 1')).toBeInTheDocument()
         })
     })
 

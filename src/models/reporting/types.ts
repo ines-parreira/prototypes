@@ -127,5 +127,7 @@ export enum EnrichmentFields {
     OrderCustomerId = 'OrderConversion.customerId',
     CustomFields = 'Ticket.custom_fields',
     CustomerName = 'Ticket.customer_name',
-    AiSalesAgentConversationsTicketId = 'AiSalesAgentConversations.ticketId',
+    ProductId = 'Product.externalId',
+    ProductTitle = 'Product.title',
+    ProductHandle = 'Product.handle',
 }

@@ -10,6 +10,7 @@ import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import { OrderDirection } from 'models/api/types'
 import { DrillDownReportingQuery } from 'models/job/types'
+import { AiSalesAgentConversationsDimension } from 'models/reporting/cubes/ai-sales-agent/AiSalesAgentConversations'
 import { AiSalesAgentOrdersDimension } from 'models/reporting/cubes/ai-sales-agent/AiSalesAgentOrders'
 import { TicketSLADimension } from 'models/reporting/cubes/sla/TicketSLACube'
 import { EnrichmentFields, ReportingQuery } from 'models/reporting/types'
@@ -70,6 +71,12 @@ export const enrichmentMappingPerMetric: Record<
         [AiSalesAgentOrdersDimension.CustomerId]:
             EnrichmentFields.OrderCustomerId,
     },
+    [AiSalesAgentChart.AiSalesAgentTotalProductRecommendations]: {
+        [AiSalesAgentConversationsDimension.TicketId]:
+            EnrichmentFields.TicketId,
+        [AiSalesAgentConversationsDimension.ProductId]:
+            EnrichmentFields.ProductId,
+    },
 }
 
 export const extraEnrichmentFieldsPerMetric: Record<
@@ -80,6 +87,11 @@ export const extraEnrichmentFieldsPerMetric: Record<
         ...defaultEnrichmentFields,
         EnrichmentFields.CustomerName,
         EnrichmentFields.CustomerIntegrationDataByExternalId,
+    ],
+    [AiSalesAgentChart.AiSalesAgentTotalProductRecommendations]: [
+        ...defaultEnrichmentFields,
+        EnrichmentFields.ProductTitle,
+        EnrichmentFields.ProductHandle,
     ],
 }
 

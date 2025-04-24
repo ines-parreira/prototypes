@@ -49,5 +49,9 @@ export const AiSalesAgentDrillDownConfig: DomainConfig<AiSalesAgentDrillDownMetr
                 AiSalesAgentMetricsWithDrillDownConfig[
                     AiSalesAgentChart.AiSalesAgentTotalNumberOfOrders
                 ],
+            [AiSalesAgentChart.AiSalesAgentTotalProductRecommendations]:
+                AiSalesAgentMetricsWithDrillDownConfig[
+                    AiSalesAgentChart.AiSalesAgentTotalProductRecommendations
+                ],
         },
     }

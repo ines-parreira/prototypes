@@ -157,6 +157,10 @@ export const TicketDrillDownTableContent = ({
     const isAiSalesAgentDiscountOfferedMetric =
         metricData.metricName === AiSalesAgentChart.AiSalesDiscountOffered
 
+    const isAiSalesAgentTotalProductRecommendationsMetric =
+        metricData.metricName ===
+        AiSalesAgentChart.AiSalesAgentTotalProductRecommendations
+
     const { data, isFetching } = useEnrichedDrillDownData(
         metricData,
         extraEnrichmentFieldsPerMetric[metricData.metricName] ||
@@ -192,6 +196,7 @@ export const TicketDrillDownTableContent = ({
         outcome: 140,
         intent: 180,
         order: 140,
+        product: 140,
     }
     const columnWidthsForSkeleton = [
         columnWidths.ticket,
@@ -232,11 +237,21 @@ export const TicketDrillDownTableContent = ({
                         />
                     </>
                 )}
+                {isAiSalesAgentTotalProductRecommendationsMetric && (
+                    <>
+                        <HeaderCellProperty
+                            title="Product"
+                            width={columnWidths.product}
+                            className={css.headerCell}
+                        />
+                    </>
+                )}
                 {(isAiInsightsMetric ||
                     isAiPerformanceMetric ||
                     isAiSalesAgentConversationsMetric ||
                     isAiSalesAgentSuccessRateMetric ||
-                    isAiSalesAgentDiscountOfferedMetric) && (
+                    isAiSalesAgentDiscountOfferedMetric ||
+                    isAiSalesAgentTotalProductRecommendationsMetric) && (
                     <HeaderCellProperty
                         title="Outcome"
                         width={columnWidths.outcome}
@@ -378,6 +393,7 @@ export const TicketDrillDownTableContent = ({
                     isAiSalesAgentConversationsMetric ||
                     isAiSalesAgentSuccessRateMetric ||
                     isAiSalesAgentDiscountOfferedMetric ||
+                    isAiSalesAgentTotalProductRecommendationsMetric ||
                     isAiSalesAgentTotalNumberOfOrdersMetric
                 ) && (
                     <HeaderCellProperty
@@ -433,11 +449,17 @@ export const TicketDrillDownTableContent = ({
                                     </BodyCell>
                                 </>
                             )}
+                            {isAiSalesAgentTotalProductRecommendationsMetric && (
+                                <BodyCell width={columnWidths.product}>
+                                    {item.product?.title}
+                                </BodyCell>
+                            )}
                             {(isAiInsightsMetric ||
                                 isAiPerformanceMetric ||
                                 isAiSalesAgentConversationsMetric ||
                                 isAiSalesAgentSuccessRateMetric ||
-                                isAiSalesAgentDiscountOfferedMetric) && (
+                                isAiSalesAgentDiscountOfferedMetric ||
+                                isAiSalesAgentTotalProductRecommendationsMetric) && (
                                 <BodyCell width={columnWidths.outcome}>
                                     {item.outcome ? (
                                         <TruncateCellContent
@@ -573,7 +595,8 @@ export const TicketDrillDownTableContent = ({
                                 isAiPerformanceMetric ||
                                 isAiInsightsCsatMetric ||
                                 isAiSalesAgentSuccessRateMetric ||
-                                isAiSalesAgentDiscountOfferedMetric
+                                isAiSalesAgentDiscountOfferedMetric ||
+                                isAiSalesAgentTotalProductRecommendationsMetric
                             ) && (
                                 <BodyCell width={columnWidths.contactReason}>
                                     {item.ticket.contactReason ? (

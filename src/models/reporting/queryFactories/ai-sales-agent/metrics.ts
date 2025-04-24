@@ -317,6 +317,22 @@ export const totalNumberProductRecommendationsQueryFactory = (
     timezone,
 })
 
+export const totalNumberProductRecommendationsDrillDownQueryFactory = (
+    filters: StatsFilters,
+    timezone: string,
+    sorting?: OrderDirection,
+): ReportingQuery<AiSalesAgentConversationsCube> => ({
+    ...totalNumberProductRecommendationsQueryFactory(filters, timezone),
+    dimensions: [
+        AiSalesAgentConversationsDimension.TicketId,
+        AiSalesAgentConversationsDimension.ProductId,
+    ],
+    limit: DRILLDOWN_QUERY_LIMIT,
+    order: sorting
+        ? [[AiSalesAgentConversationsDimension.TicketId, sorting]]
+        : [],
+})
+
 export const totalProductClicksQueryFactory = (
     filters: StatsFilters,
     timezone: string,
