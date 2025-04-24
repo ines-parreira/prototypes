@@ -11,10 +11,10 @@ import {
     VALUE_FIELD,
 } from 'hooks/reporting/withBreakdown'
 import useAppSelector from 'hooks/useAppSelector'
-import { SCREEN_SIZE, useScreenSize } from 'hooks/useScreenSize'
 import BodyCell from 'pages/common/components/table/cells/BodyCell'
 import css from 'pages/stats/common/components/Table/BreakdownTable.less'
 import heatmapCss from 'pages/stats/common/components/Table/heatmap.less'
+import { TableWithNestedRowsCell } from 'pages/stats/common/components/Table/TableWithNestedRowsCell'
 import { DrillDownModalTrigger } from 'pages/stats/common/drill-down/DrillDownModalTrigger'
 import {
     formatMetricValue,
@@ -29,10 +29,6 @@ import {
     getValueMode,
 } from 'state/ui/stats/ticketInsightsSlice'
 import { TicketFieldsMetric, ValueMode } from 'state/ui/stats/types'
-
-export const EXPAND_COLUMN_WIDTH = 24
-export const MOBILE_EXPAND_COLUMN_WIDTH = 10
-export const DEFAULT_MARGIN = 8
 
 export type DataRowProps =
     TicketCustomFieldsTicketCountTimeSeriesDataWithPercentageAndDecile & {
@@ -85,32 +81,18 @@ export const CustomFieldsTicketCountDataRowContent = (props: DataRowProps) => {
     const isHeatmapMode = useAppSelector(getHeatmapMode) && level === 0
     const hasChildren = Array.isArray(children) && children.length > 0
     const { granularity } = useStatsFilters()
-    const isMobile = useScreenSize() === SCREEN_SIZE.SMALL
 
     return (
         <>
-            <BodyCell
-                className={classNames(
-                    { [css.withShadow]: isTableScrolled },
-                    css.sticky,
-                    css.categoryColumn,
-                )}
-                style={{ left: `${EXPAND_COLUMN_WIDTH}px` }}
-                innerStyle={{
-                    ...(!hasChildren && { paddingLeft: 0 }),
-                    marginLeft: `${
-                        level *
-                            (isMobile
-                                ? MOBILE_EXPAND_COLUMN_WIDTH
-                                : EXPAND_COLUMN_WIDTH) +
-                        (!hasChildren ? DEFAULT_MARGIN : DEFAULT_MARGIN * 2)
-                    }px`,
-                }}
+            <TableWithNestedRowsCell
+                isLeadColumn={true}
+                isTableScrolled={isTableScrolled}
+                hasChildren={hasChildren}
                 onClick={onClick}
-                innerClassName={css.small}
+                level={level}
             >
                 {label}
-            </BodyCell>
+            </TableWithNestedRowsCell>
             <BodyCell
                 isHighlighted={true}
                 className={classNames(

@@ -217,7 +217,7 @@ const TableRow = ({
                 className={classNames(
                     { [css.withShadow]: isTableScrolled },
                     css.sticky,
-                    css.categoryColumn,
+                    css.leadColumn,
                 )}
                 innerClassName={css.small}
             >

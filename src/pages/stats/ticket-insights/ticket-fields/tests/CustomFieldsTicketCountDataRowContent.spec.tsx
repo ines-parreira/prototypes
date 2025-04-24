@@ -7,13 +7,13 @@ import { Provider } from 'react-redux'
 import { useStatsFilters } from 'hooks/reporting/support-performance/useStatsFilters'
 import { BREAKDOWN_FIELD, VALUE_FIELD } from 'hooks/reporting/withBreakdown'
 import { ReportingGranularity } from 'models/reporting/types'
-import { NOT_AVAILABLE_PLACEHOLDER } from 'pages/stats/common/utils'
 import {
-    CustomFieldsTicketCountDataRowContent,
     DEFAULT_MARGIN,
     EXPAND_COLUMN_WIDTH,
     MOBILE_EXPAND_COLUMN_WIDTH,
-} from 'pages/stats/ticket-insights/ticket-fields/CustomFieldsTicketCountDataRowContent'
+} from 'pages/stats/common/components/Table/TableWithNestedRowsCell'
+import { NOT_AVAILABLE_PLACEHOLDER } from 'pages/stats/common/utils'
+import { CustomFieldsTicketCountDataRowContent } from 'pages/stats/ticket-insights/ticket-fields/CustomFieldsTicketCountDataRowContent'
 import {
     getHeatmapMode,
     getSelectedCustomField,

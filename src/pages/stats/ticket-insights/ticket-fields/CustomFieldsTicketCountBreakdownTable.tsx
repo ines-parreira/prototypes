@@ -9,7 +9,7 @@ import { useCustomFieldsTicketCountPerCustomFields } from 'hooks/reporting/ticke
 import { BREAKDOWN_FIELD } from 'hooks/reporting/withBreakdown'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useMeasure from 'hooks/useMeasure'
-import { OrderDirection } from 'models/api/types'
+import { opposite } from 'models/api/types'
 import { NumberedPagination } from 'pages/common/components/Paginations'
 import BodyCell from 'pages/common/components/table/cells/BodyCell'
 import HeaderCellProperty from 'pages/common/components/table/cells/HeaderCellProperty'
@@ -99,11 +99,7 @@ export const CustomFieldsTicketCountBreakdownTable = ({
                                 },
                                 css.categoryHeader,
                             )}
-                            direction={
-                                order.direction === OrderDirection.Asc
-                                    ? OrderDirection.Desc
-                                    : OrderDirection.Asc
-                            }
+                            direction={opposite(order.direction)}
                             isOrderedBy={order.column === 'label'}
                             onClick={() => setOrdering('label')}
                         />
@@ -112,11 +108,7 @@ export const CustomFieldsTicketCountBreakdownTable = ({
                             justifyContent={'right'}
                             className={classNames(css.BodyCell)}
                             wrapContent={true}
-                            direction={
-                                order.direction === OrderDirection.Asc
-                                    ? OrderDirection.Desc
-                                    : OrderDirection.Asc
-                            }
+                            direction={opposite(order.direction)}
                             isOrderedBy={order.column === 'total'}
                             onClick={() => setOrdering('total')}
                         />
@@ -127,11 +119,7 @@ export const CustomFieldsTicketCountBreakdownTable = ({
                                 justifyContent={'right'}
                                 wrapContent={true}
                                 className={classNames(css.dateTimeHeader)}
-                                direction={
-                                    order.direction === OrderDirection.Asc
-                                        ? OrderDirection.Desc
-                                        : OrderDirection.Asc
-                                }
+                                direction={opposite(order.direction)}
                                 isOrderedBy={order.column === index}
                                 onClick={() => setOrdering(index)}
                             />
@@ -196,7 +184,7 @@ export const LoadingRow = ({
                 className={classNames(
                     { [css.withShadow]: isTableScrolled },
                     css.sticky,
-                    css.categoryColumn,
+                    css.leadColumn,
                 )}
             >
                 <Skeleton inline width={CATEGORY_COLUMN_WIDTH} />
