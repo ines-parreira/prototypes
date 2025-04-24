@@ -4,14 +4,13 @@ import { fireEvent, render, screen } from '@testing-library/react'
 
 import { CONTENT_TYPE } from '../constant'
 import ScrapedDomainContentView from '../ScrapedDomainContentView'
-import type { ScrapedContent } from '../types'
 
 const mockOnSelect = jest.fn()
 const mockOnFetchNextItems = jest.fn()
 const mockOnFetchPrevItems = jest.fn()
 const mockOnSearch = jest.fn()
 
-const mockContent: ScrapedContent[] = [
+const mockContent = [
     {
         id: 1,
         title: 'Sample Question or Product',
@@ -22,7 +21,7 @@ const mockContent: ScrapedContent[] = [
 const setup = (propsOverride = {}) => {
     const defaultProps = {
         isLoading: false,
-        content: mockContent,
+        contents: mockContent,
         onSelect: mockOnSelect,
         pageType: CONTENT_TYPE.QUESTION,
         hasNextItems: false,
@@ -69,12 +68,12 @@ describe('ScrapedDomainContentView', () => {
     })
 
     it('renders empty state for Question page when there is no content', () => {
-        setup({ content: [], pageType: CONTENT_TYPE.QUESTION })
+        setup({ contents: [], pageType: CONTENT_TYPE.QUESTION })
         expect(screen.getByText(/No questions generated/i)).toBeInTheDocument()
     })
 
     it('renders empty state for Product page when there is no content', () => {
-        setup({ content: [], pageType: CONTENT_TYPE.PRODUCT })
+        setup({ contents: [], pageType: CONTENT_TYPE.PRODUCT })
         expect(screen.getByText(/No products available/i)).toBeInTheDocument()
     })
 })

@@ -1,47 +1,112 @@
 import React from 'react'
 
-import hideViewIcon from 'assets/img/icons/hide-view-right.svg'
+import { Banner } from '@gorgias/merchant-ui-kit'
 
-import { CONTENT_TYPE, MODAL_TRANSITION_DURATION_MS } from './constant'
+import hideViewIcon from 'assets/img/icons/hide-view-right.svg'
+import languageIcon from 'assets/img/icons/language.svg'
+import logoShopify from 'assets/img/integrations/shopify.svg'
+import { Product } from 'constants/integrations/types/shopify'
+import { ArticleWithLocalTranslation } from 'models/helpCenter/types'
+import Accordion from 'pages/common/components/accordion/Accordion'
+import AccordionBody from 'pages/common/components/accordion/AccordionBody'
+import AccordionHeader from 'pages/common/components/accordion/AccordionHeader'
+import AccordionItem from 'pages/common/components/accordion/AccordionItem'
+import { AlertType } from 'pages/common/components/Alert/Alert'
+
+import {
+    CONTENT_TYPE,
+    IngestedResourceStatus,
+    MODAL_TRANSITION_DURATION_MS,
+} from './constant'
+import IngestionProductView from './IngestionProductView'
+import IntegrationProductView from './IntegrationProductView'
+import ScrapedDomainQuestion from './ScrapedDomainQuestion'
 import ScrapedDomainSelectedModal from './ScrapedDomainSelectedModal'
-import { ScrapedContent } from './types'
+import { IngestedProduct, IngestedResourceWithArticleId } from './types'
 
 import css from './ScrapedDomainSelectedContent.less'
 
-type Props = {
-    selectedContent: ScrapedContent | null
-    contentType: string
+type QuestionProps = {
+    contentType: typeof CONTENT_TYPE.QUESTION
+    selectedContent: IngestedResourceWithArticleId | null
+    detail?: ArticleWithLocalTranslation | null
+}
+
+type ProductProps = {
+    contentType: typeof CONTENT_TYPE.PRODUCT
+    selectedContent: Product | null
+    detail?: IngestedProduct | null
+}
+
+type SharedProps = {
     isOpened: boolean
     isLoading: boolean
     onClose: () => void
+    onUpdateStatus?: (
+        id: number,
+        { status }: { status: IngestedResourceStatus },
+    ) => void
 }
 
-const SelectedQuestionView = ({
-    question,
-}: {
-    question: ScrapedContent | null
-}) => {
-    // Mocked view to replace by actual view in the next iteration
-    // https://linear.app/gorgias/issue/AIKNL-88/implement-functionality-for-pages-content-tab
-    return (
-        <div className={css.contentContainer}>
-            <h3>Selected Question View</h3>
-            {question && <p>{question.title}</p>}
-        </div>
-    )
-}
+type Props = (QuestionProps | ProductProps) & SharedProps
 
 const SelectedProductView = ({
     product,
+    detail,
 }: {
-    product: ScrapedContent | null
+    product: Product
+    detail: IngestedProduct
 }) => {
-    // Mocked view to replace by actual view in the next iteration
-    // https://linear.app/gorgias/issue/AIKNL-89/implement-functionality-for-product-content-tab
     return (
         <div className={css.contentContainer}>
-            <h3>Selected Product View</h3>
-            {product && <p>{product.title}</p>}
+            <Banner variant="inline" icon type={AlertType.Info}>
+                Inaccurate information? To edit product information, update it
+                directly in Shopify or on your store website and re-sync in
+                Gorgias.
+            </Banner>
+
+            <div className={css.productContainer}>
+                <Accordion defaultExpandedItem="store-integration">
+                    {product && (
+                        <AccordionItem id="store-integration">
+                            <AccordionHeader>
+                                <img
+                                    src={logoShopify}
+                                    alt="shopify logo"
+                                    className={css.icon}
+                                    width={20}
+                                    height={20}
+                                />
+                                <span className="body-semibold">
+                                    From your store integration
+                                </span>
+                            </AccordionHeader>
+                            <AccordionBody>
+                                <IntegrationProductView product={product} />
+                            </AccordionBody>
+                        </AccordionItem>
+                    )}
+                    {detail && (
+                        <AccordionItem id="store-domain">
+                            <AccordionHeader>
+                                <img
+                                    src={languageIcon}
+                                    alt="language icon"
+                                    className={css.icon}
+                                    width={20}
+                                    height={20}
+                                />
+                                <span className="body-semibold">
+                                    From your store website
+                                </span>
+                            </AccordionHeader>
+                            <AccordionBody>
+                                <IngestionProductView product={detail} />
+                            </AccordionBody>
+                        </AccordionItem>
+                    )}
+                </Accordion>
+            </div>
         </div>
     )
 }
@@ -52,14 +117,25 @@ const ScrapedDomainSelectedContent = ({
     isOpened,
     isLoading,
     onClose,
+    detail,
+    onUpdateStatus,
 }: Props) => {
     const titleForQuestion = 'Question details'
     const titleForProduct = 'Product details'
 
     const contentForQuestion = (
-        <SelectedQuestionView question={selectedContent} />
+        <ScrapedDomainQuestion
+            question={selectedContent as IngestedResourceWithArticleId}
+            detail={detail as ArticleWithLocalTranslation}
+            onUpdateStatus={onUpdateStatus}
+        />
     )
-    const contentForProduct = <SelectedProductView product={selectedContent} />
+    const contentForProduct = (
+        <SelectedProductView
+            product={selectedContent as Product}
+            detail={detail as IngestedProduct}
+        />
+    )
 
     const title =
         contentType === CONTENT_TYPE.QUESTION

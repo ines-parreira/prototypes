@@ -3922,6 +3922,97 @@
                 "tags": ["import-hotswap"]
             }
         },
+        "/api/help-center/help-centers/{help_center_id}/ingested-resources/{article_ingestion_log_id}": {
+            "get": {
+                "operationId": "listIngestedResources",
+                "summary": "List ingested resources by ingestion log id",
+                "parameters": [
+                    {
+                        "name": "help_center_id",
+                        "required": true,
+                        "in": "path",
+                        "schema": { "type": "number" }
+                    },
+                    {
+                        "name": "article_ingestion_log_id",
+                        "required": true,
+                        "in": "path",
+                        "schema": { "type": "number" }
+                    },
+                    {
+                        "name": "filter",
+                        "required": false,
+                        "in": "query",
+                        "description": "Filter for the ingested resource title",
+                        "schema": { "type": "string" }
+                    },
+                    {
+                        "name": "per_page",
+                        "required": false,
+                        "in": "query",
+                        "description": "The number of resources to retrieve per request. E.g: 20",
+                        "schema": {}
+                    },
+                    {
+                        "name": "page",
+                        "required": false,
+                        "in": "query",
+                        "description": "The index of the page to retrieve. E.g: 3",
+                        "schema": {}
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/IngestedResourceListPageDto"
+                                }
+                            }
+                        }
+                    }
+                },
+                "tags": ["ingested-resources"]
+            }
+        },
+        "/api/help-center/help-centers/{help_center_id}/ingested-resource/{ingested_resource_id}": {
+            "put": {
+                "operationId": "updateIngestedResource",
+                "summary": "Update ingested resource",
+                "parameters": [
+                    {
+                        "name": "ingested_resource_id",
+                        "required": true,
+                        "in": "path",
+                        "schema": { "type": "number" }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/UpdateIngestedResourceDto"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/IngestedResourceDto"
+                                }
+                            }
+                        }
+                    }
+                },
+                "tags": ["ingested-resources"]
+            }
+        },
         "/api/help-center/help-centers/{help_center_id}/ingestions": {
             "get": {
                 "operationId": "getIngestionLogs",
@@ -3981,6 +4072,55 @@
                     }
                 },
                 "responses": { "201": { "description": "" } },
+                "tags": ["ingestion"]
+            }
+        },
+        "/api/help-center/help-centers/{help_center_id}/ingestion/{ingestion_log_id}": {
+            "put": {
+                "operationId": "updateIngestionLog",
+                "summary": "Update ingestion log",
+                "parameters": [
+                    {
+                        "name": "help_center_id",
+                        "required": true,
+                        "in": "path",
+                        "schema": { "type": "number" }
+                    },
+                    {
+                        "name": "ingestion_log_id",
+                        "required": true,
+                        "in": "path",
+                        "schema": { "type": "number" }
+                    },
+                    {
+                        "name": "account_id",
+                        "required": false,
+                        "in": "query",
+                        "schema": { "type": "string" }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/UpdateIngestionLogDto"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ArticleIngestionLogDto"
+                                }
+                            }
+                        }
+                    }
+                },
                 "tags": ["ingestion"]
             }
         },
@@ -4485,11 +4625,11 @@
                     "id": { "type": "number" },
                     "url": { "type": "string", "nullable": true },
                     "domain": { "type": "string", "nullable": true },
-                    "source": { "type": "string", "enum": ["domain", "url"] },
+                    "source": { "enum": ["domain", "url"], "type": "string" },
                     "status": {
-                        "type": "string",
                         "nullable": true,
-                        "enum": ["DISABLED", "FAILED", "PENDING", "SUCCESSFUL"]
+                        "enum": ["DISABLED", "FAILED", "PENDING", "SUCCESSFUL"],
+                        "type": "string"
                     },
                     "meta": {
                         "$ref": "#/components/schemas/MLSnippetsIngestionMeta"
@@ -8566,6 +8706,93 @@
                 },
                 "required": ["progress"]
             },
+            "IngestedResourceListDataDto": {
+                "type": "object",
+                "properties": {
+                    "article_ingestion_log_id": { "type": "number" },
+                    "scraping_id": { "type": "string" },
+                    "snippet_id": { "type": "string" },
+                    "execution_id": { "type": "string" },
+                    "status": {
+                        "enum": ["disabled", "enabled"],
+                        "type": "string"
+                    },
+                    "web_pages": {
+                        "type": "array",
+                        "items": { "type": "string" }
+                    },
+                    "article_id": { "type": "number" },
+                    "id": { "type": "number" },
+                    "title": { "type": "string" }
+                },
+                "required": [
+                    "article_ingestion_log_id",
+                    "scraping_id",
+                    "snippet_id",
+                    "execution_id",
+                    "status",
+                    "web_pages",
+                    "article_id",
+                    "id",
+                    "title"
+                ]
+            },
+            "IngestedResourceListPageDto": {
+                "type": "object",
+                "properties": {
+                    "meta": { "$ref": "#/components/schemas/PageMetaDto" },
+                    "object": {
+                        "type": "string",
+                        "default": "list",
+                        "enum": ["list"]
+                    },
+                    "data": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/IngestedResourceListDataDto"
+                        }
+                    }
+                },
+                "required": ["meta", "object", "data"]
+            },
+            "UpdateIngestedResourceDto": {
+                "type": "object",
+                "properties": {
+                    "status": {
+                        "enum": ["disabled", "enabled"],
+                        "type": "string"
+                    }
+                }
+            },
+            "IngestedResourceDto": {
+                "type": "object",
+                "properties": {
+                    "article_ingestion_log_id": { "type": "number" },
+                    "scraping_id": { "type": "string" },
+                    "snippet_id": { "type": "string" },
+                    "execution_id": { "type": "string" },
+                    "status": {
+                        "enum": ["disabled", "enabled"],
+                        "type": "string"
+                    },
+                    "web_pages": {
+                        "type": "array",
+                        "items": { "type": "string" }
+                    },
+                    "id": { "type": "number" },
+                    "title": { "type": "string" }
+                },
+                "required": [
+                    "article_ingestion_log_id",
+                    "scraping_id",
+                    "snippet_id",
+                    "execution_id",
+                    "status",
+                    "web_pages",
+                    "id",
+                    "title"
+                ]
+            },
             "IngestionLogDto": {
                 "type": "object",
                 "properties": {
@@ -8578,6 +8805,10 @@
                     "dataset_id": { "type": "string" },
                     "scraping_id": { "type": "string", "nullable": true },
                     "latest_sync": { "format": "date-time", "type": "string" },
+                    "created_datetime": {
+                        "format": "date-time",
+                        "type": "string"
+                    },
                     "id": { "type": "number" },
                     "url": { "type": "string", "nullable": true },
                     "domain": { "type": "string", "nullable": true },
@@ -8596,6 +8827,7 @@
                     "article_ids",
                     "dataset_id",
                     "latest_sync",
+                    "created_datetime",
                     "id",
                     "url",
                     "domain",
@@ -8612,6 +8844,16 @@
                     "type": { "type": "string", "enum": ["url", "domain"] }
                 },
                 "required": ["url", "type"]
+            },
+            "UpdateIngestionLogDto": {
+                "type": "object",
+                "properties": {
+                    "status": {
+                        "type": "string",
+                        "nullable": true,
+                        "enum": ["DISABLED", "FAILED", "PENDING", "SUCCESSFUL"]
+                    }
+                }
             },
             "ProductPageIngestedDto": {
                 "type": "object",

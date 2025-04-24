@@ -1,34 +1,35 @@
 import { useEffect, useState } from 'react'
 
-import { useSearchParam } from 'hooks/useSearchParam'
+import { useGetHelpCenterArticle } from 'models/helpCenter/queries'
+import { LocaleCode } from 'models/helpCenter/types'
 
 import { usePollStoreDomainIngestionLog } from '../hooks/usePollStoreDomainIngestionLog'
 import { useSyncStoreDomain } from '../hooks/useSyncStoreDomain'
 import AiAgentScrapedDomainContentLayout from './AiAgentScrapedDomainContentLayout'
-import {
-    CONTENT_TYPE,
-    IngestionLogStatus,
-    PAGINATED_ITEMS_PER_PAGE,
-} from './constant'
+import { CONTENT_TYPE, IngestionLogStatus } from './constant'
+import { useIngestedResourceMutation } from './hooks/useIngestedResourceMutation'
+import { usePaginatedIngestedResources } from './hooks/usePaginatedIngestedResources'
 import ScrapedDomainContentView from './ScrapedDomainContentView'
 import ScrapedDomainSelectedContent from './ScrapedDomainSelectedContent'
-import { ScrapedContent } from './types'
+import { IngestedResourceWithArticleId } from './types'
 
 type Props = {
     shopName: string
     helpCenterId: number
+    defaultLocale: LocaleCode
 }
 
 const AiAgentScrapedDomainQuestionsView = ({
     shopName,
     helpCenterId,
+    defaultLocale,
 }: Props) => {
     const [syncStoreDomainStatus, setSyncStoreDomainStatus] = useState<
         string | null
     >(null)
     const [isOpened, setIsOpened] = useState(false)
     const [selectedQuestion, setSelectedQuestion] =
-        useState<ScrapedContent | null>(null)
+        useState<IngestedResourceWithArticleId | null>(null)
 
     const {
         storeDomain,
@@ -53,7 +54,7 @@ const AiAgentScrapedDomainQuestionsView = ({
         }
     }, [syncIsPending, setSyncStoreDomainStatus])
 
-    const handleOnSelect = (content: ScrapedContent) => {
+    const handleOnSelect = (content: IngestedResourceWithArticleId) => {
         setSelectedQuestion(content)
         setIsOpened(true)
     }
@@ -63,89 +64,35 @@ const AiAgentScrapedDomainQuestionsView = ({
         setIsOpened(false)
     }
 
-    const [value, setSearchParam] = useSearchParam('page')
-    const currentPage = Number(value) || 1
+    const {
+        contents: paginatedQuestions,
+        isLoading: isListIngestedResourceLoading,
+        searchTerm,
+        setSearchTerm,
+        fetchNext,
+        fetchPrev,
+        hasNextPage,
+        hasPrevPage,
+    } = usePaginatedIngestedResources({
+        helpCenterId,
+        ingestionLogId: storeDomainIngestionLog?.id ?? 0,
+        enabled: !!storeDomainIngestionLog?.id,
+    })
 
-    const onPageChange = (page: number) => {
-        if (currentPage !== page) {
-            setSearchParam(page.toString())
-        }
-    }
+    const { updateIngestedResource } = useIngestedResourceMutation({
+        helpCenterId,
+        ingestionLogId: storeDomainIngestionLog?.id ?? 0,
+    })
 
-    // Mocked data to replace by actual data in the next iteration
-    // https://linear.app/gorgias/issue/AIKNL-88/implement-functionality-for-pages-content-tab
-    const mockedQuestions = storeDomainIngestionLog
-        ? [
-              {
-                  id: 1,
-                  title: 'What should I do if I received a defective item?',
-              },
-              {
-                  id: 2,
-                  title: 'What’s your return policy?',
-              },
-              {
-                  id: 3,
-                  title: 'How do exchanges work?',
-              },
-              {
-                  id: 4,
-                  title: 'What’s your shipping policy?',
-              },
-              {
-                  id: 5,
-                  title: 'Do you offer product warranties?',
-              },
-              {
-                  id: 6,
-                  title: 'Do you offer refunds?',
-              },
-              {
-                  id: 7,
-                  title: 'How can I access my account?',
-              },
-              {
-                  id: 8,
-                  title: 'Where are your products made?',
-              },
-              {
-                  id: 9,
-                  title: 'Do you have physical locations?',
-              },
-              {
-                  id: 10,
-                  title: 'Do you offer customization?',
-              },
-              {
-                  id: 11,
-                  title: 'How can I report an issue with my order?',
-              },
-              {
-                  id: 12,
-                  title: 'Do you offer discounts?',
-              },
-              {
-                  id: 13,
-                  title: 'How does your sizing work?',
-              },
-              {
-                  id: 14,
-                  title: 'Do you ship to all 50 states?',
-              },
-              {
-                  id: 15,
-                  title: 'Do you have a loyalty program?',
-              },
-              {
-                  id: 16,
-                  title: 'Do you have a new loyalty program?',
-              },
-          ]
-        : []
+    const isDataLoading = isFetchLoading || isListIngestedResourceLoading
 
-    const startIndex = (currentPage - 1) * PAGINATED_ITEMS_PER_PAGE
-    const endIndex = startIndex + PAGINATED_ITEMS_PER_PAGE
-    const paginatedQuestions = mockedQuestions.slice(startIndex, endIndex)
+    const { data: articleData, isInitialLoading: isFetchingArticleLoading } =
+        useGetHelpCenterArticle(
+            selectedQuestion?.article_id ?? 0,
+            helpCenterId,
+            defaultLocale,
+            { enabled: !!selectedQuestion },
+        )
 
     return (
         <AiAgentScrapedDomainContentLayout
@@ -153,7 +100,7 @@ const AiAgentScrapedDomainQuestionsView = ({
             storeDomainIngestionLog={storeDomainIngestionLog}
             storeDomain={storeDomain ?? null}
             storeUrl={storeUrl ?? null}
-            isFetchLoading={isFetchLoading}
+            isFetchLoading={isDataLoading}
             syncTriggered={syncTriggered}
             handleOnSync={handleOnSync}
             handleOnCancel={handleOnCancel}
@@ -161,24 +108,29 @@ const AiAgentScrapedDomainQuestionsView = ({
             syncStoreDomainStatus={syncStoreDomainStatus}
             onBannerClose={() => setSyncStoreDomainStatus(null)}
         >
-            <ScrapedDomainContentView
-                searchValue={''}
-                onSearch={null as any}
-                isLoading={isFetchLoading || syncIsPending}
-                content={paginatedQuestions}
+            <ScrapedDomainContentView<IngestedResourceWithArticleId>
+                searchValue={searchTerm}
+                onSearch={setSearchTerm}
+                isLoading={isDataLoading || syncIsPending}
+                contents={paginatedQuestions}
                 onSelect={handleOnSelect}
                 pageType={CONTENT_TYPE.QUESTION}
-                hasNextItems={endIndex < mockedQuestions.length}
-                hasPrevItems={startIndex > 0}
-                fetchNextItems={() => onPageChange(currentPage + 1)}
-                fetchPrevItems={() => onPageChange(currentPage - 1)}
+                hasNextItems={hasNextPage}
+                hasPrevItems={hasPrevPage}
+                fetchNextItems={fetchNext}
+                fetchPrevItems={fetchPrev}
+                onUpdateStatus={updateIngestedResource}
             />
             <ScrapedDomainSelectedContent
                 selectedContent={selectedQuestion}
                 contentType={CONTENT_TYPE.QUESTION}
                 isOpened={isOpened}
-                isLoading={isFetchLoading || syncIsPending}
+                isLoading={
+                    isDataLoading || syncIsPending || isFetchingArticleLoading
+                }
                 onClose={handleOnClose}
+                detail={articleData}
+                onUpdateStatus={updateIngestedResource}
             />
         </AiAgentScrapedDomainContentLayout>
     )

@@ -11,18 +11,21 @@ import TableBodyRow from 'pages/common/components/table/TableBodyRow'
 import TableHead from 'pages/common/components/table/TableHead'
 import TableWrapper from 'pages/common/components/table/TableWrapper'
 
-import { CONTENT_TYPE, PAGINATED_ITEMS_PER_PAGE } from './constant'
+import {
+    CONTENT_TYPE,
+    IngestedResourceStatus,
+    PAGINATED_ITEMS_PER_PAGE,
+} from './constant'
 import ScrapedDomainHeader from './ScrapedDomainHeader'
-import { ScrapedContent } from './types'
 
 import css from './ScrapedDomainContentView.less'
 
 const DEFAULT_COLUMN_WIDTH = 188
 
-type Props = {
+type Props<T> = {
     isLoading: boolean
-    content: ScrapedContent[]
-    onSelect: (content: ScrapedContent) => void
+    contents: T[]
+    onSelect: (content: T) => void
     pageType: string
     hasNextItems: boolean
     hasPrevItems: boolean
@@ -30,6 +33,10 @@ type Props = {
     fetchPrevItems: () => void
     searchValue: string
     onSearch: (value: string) => void
+    onUpdateStatus?: (
+        id: number,
+        { status }: { status: IngestedResourceStatus },
+    ) => void
 }
 
 const EmptyStateView = ({ pageType }: { pageType: string }) => {
@@ -42,9 +49,18 @@ const EmptyStateView = ({ pageType }: { pageType: string }) => {
     )
 }
 
-const ScrapedDomainContentView = ({
+function ScrapedDomainContentView<
+    T extends {
+        id: number
+        title: string
+        image?: {
+            src: string
+        } | null
+        status?: string
+    },
+>({
     isLoading,
-    content,
+    contents,
     onSelect,
     pageType,
     hasNextItems,
@@ -53,11 +69,64 @@ const ScrapedDomainContentView = ({
     fetchPrevItems,
     searchValue,
     onSearch,
-}: Props) => {
+    onUpdateStatus,
+}: Props<T>) {
     const description =
         pageType === CONTENT_TYPE.QUESTION
             ? 'AI Agent automatically generates questions and answers from your store’s website content to use as knowledge.'
             : 'AI Agent uses product details from your store’s website content and your Shopify integration.'
+
+    const handleToggleChange = ({
+        id,
+        currentStatus,
+    }: {
+        id: number
+        currentStatus?: string
+    }) => {
+        if (onUpdateStatus) {
+            onUpdateStatus(id, {
+                status:
+                    currentStatus === IngestedResourceStatus.Disabled
+                        ? IngestedResourceStatus.Enabled
+                        : IngestedResourceStatus.Disabled,
+            })
+        }
+    }
+    const displayEmptyState = !isLoading && contents?.length === 0
+
+    const ProductImage = ({ image }: { image: string | undefined }) => {
+        if (image) {
+            return (
+                <img
+                    src={image}
+                    alt="product-image"
+                    className={css.productImage}
+                />
+            )
+        }
+        return <div className={classnames(css.productImage, css.color)} />
+    }
+
+    const QuestionToggle = ({ content }: { content: T }) => {
+        return (
+            <div
+                onClick={(e) => {
+                    e.stopPropagation()
+                }}
+            >
+                <ToggleField
+                    value={content.status === IngestedResourceStatus.Enabled}
+                    onChange={() =>
+                        handleToggleChange({
+                            id: content.id,
+                            currentStatus: content.status,
+                        })
+                    }
+                    className={css.toggleInput}
+                />
+            </div>
+        )
+    }
 
     return (
         <>
@@ -71,69 +140,65 @@ const ScrapedDomainContentView = ({
                     <TableHead>
                         <HeaderCellProperty title={pageType} />
                     </TableHead>
-                    {content.length ? (
-                        <TableBody>
-                            {isLoading
-                                ? Array(PAGINATED_ITEMS_PER_PAGE)
-                                      .fill(null)
-                                      .map((_, index) => (
-                                          <TableBodyRow
-                                              key={index}
-                                              className={css.tableBodyRow}
-                                          >
-                                              <BodyCell
-                                                  key={index}
-                                                  width={DEFAULT_COLUMN_WIDTH}
-                                              >
-                                                  <div className={css.loader}>
-                                                      <Skeleton height={24} />
-                                                  </div>
-                                              </BodyCell>
-                                          </TableBodyRow>
-                                      ))
-                                : content.map((content) => (
-                                      <TableBodyRow
-                                          key={content.id}
-                                          className={css.tableBodyRow}
-                                          onClick={() => onSelect(content)}
-                                      >
-                                          <BodyCell>
-                                              {pageType ===
-                                              CONTENT_TYPE.QUESTION ? (
-                                                  <ToggleField
-                                                      value={true}
-                                                      className={
-                                                          css.toggleInput
-                                                      }
-                                                  />
-                                              ) : (
-                                                  <img
-                                                      src={content.image?.src}
-                                                      alt="product-image"
-                                                      className={
-                                                          css.productImage
-                                                      }
-                                                  />
-                                              )}
 
-                                              {content.title}
-                                          </BodyCell>
-                                          <BodyCell>
-                                              <i
-                                                  className={classnames(
-                                                      'material-icons',
-                                                      css.chevronRight,
-                                                  )}
-                                              >
-                                                  chevron_right
-                                              </i>
-                                          </BodyCell>
-                                      </TableBodyRow>
-                                  ))}
-                        </TableBody>
-                    ) : (
-                        <EmptyStateView pageType={pageType} />
-                    )}
+                    <TableBody>
+                        {displayEmptyState && (
+                            <TableBodyRow>
+                                <BodyCell>
+                                    <EmptyStateView pageType={pageType} />
+                                </BodyCell>
+                            </TableBodyRow>
+                        )}
+
+                        {isLoading &&
+                            Array(PAGINATED_ITEMS_PER_PAGE)
+                                .fill(null)
+                                .map((_, index) => (
+                                    <TableBodyRow
+                                        key={index}
+                                        className={css.tableBodyRow}
+                                    >
+                                        <BodyCell
+                                            key={index}
+                                            width={DEFAULT_COLUMN_WIDTH}
+                                        >
+                                            <div className={css.loader}>
+                                                <Skeleton height={24} />
+                                            </div>
+                                        </BodyCell>
+                                    </TableBodyRow>
+                                ))}
+                        {contents.length > 0 &&
+                            contents.map((content) => (
+                                <TableBodyRow
+                                    key={content.id}
+                                    className={css.tableBodyRow}
+                                    onClick={() => onSelect(content)}
+                                >
+                                    <BodyCell>
+                                        {pageType === CONTENT_TYPE.QUESTION ? (
+                                            <QuestionToggle content={content} />
+                                        ) : (
+                                            <ProductImage
+                                                image={content.image?.src}
+                                            />
+                                        )}
+
+                                        {content.title}
+                                    </BodyCell>
+                                    <BodyCell>
+                                        <i
+                                            className={classnames(
+                                                'material-icons',
+                                                css.chevronRight,
+                                            )}
+                                        >
+                                            chevron_right
+                                        </i>
+                                    </BodyCell>
+                                </TableBodyRow>
+                            ))}
+                    </TableBody>
                 </TableWrapper>
             </div>
 

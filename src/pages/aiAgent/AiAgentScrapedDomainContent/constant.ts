@@ -23,4 +23,13 @@ export enum IngestionType {
     Domain = 'domain',
 }
 
+export enum IngestedResourceStatus {
+    Disabled = 'disabled',
+    Enabled = 'enabled',
+}
+
 export const POLLING_INTERVAL = 60000
+
+export const ECOMMERCE_TYPE = 'product'
+
+export const ECOMMERCE_SOURCE = 'shopify'

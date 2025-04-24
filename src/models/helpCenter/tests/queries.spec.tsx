@@ -24,8 +24,10 @@ import {
     useGetHelpCenterCategoryTree,
     useGetHelpCenterList,
     useGetIngestionLogs,
+    useListIngestedResources,
     useStartArticleIngestion,
     useStartIngestion,
+    useUpdateIngestedResource,
 } from '../queries'
 import * as resources from '../resources'
 
@@ -42,6 +44,8 @@ const getArticleIngestionLogs = jest.spyOn(resources, 'getArticleIngestionLogs')
 const startArticleIngestion = jest.spyOn(resources, 'startArticleIngestion')
 const getIngestionLogs = jest.spyOn(resources, 'getIngestionLogs')
 const startIngestion = jest.spyOn(resources, 'startIngestion')
+const listIngestedResources = jest.spyOn(resources, 'listIngestedResources')
+const updateIngestedResource = jest.spyOn(resources, 'updateIngestedResource')
 const createFileIngestion = jest.spyOn(resources, 'createFileIngestion')
 const getFileIngestion = jest.spyOn(resources, 'getFileIngestion')
 const deleteFileIngestion = jest.spyOn(resources, 'deleteFileIngestion')
@@ -425,6 +429,97 @@ describe('queries', () => {
                     url: 'https://www.test.com',
                     type: 'domain',
                 },
+            ])
+
+            await waitFor(() => expect(result.current.isSuccess).toBe(true))
+
+            expect(result.current.data).toStrictEqual(null)
+        })
+    })
+
+    describe('useListIngestedResources', () => {
+        it('should return correct data on success', async () => {
+            listIngestedResources.mockReturnValue(Promise.resolve(null))
+            mockUseHelpCenterApi.mockReturnValue({
+                client: {} as HelpCenterClient,
+                isReady: true,
+            })
+            const { result, waitFor } = renderHook(
+                () =>
+                    useListIngestedResources(
+                        {
+                            help_center_id: helpCenterId,
+                            article_ingestion_log_id: 1,
+                        },
+                        {},
+                        {},
+                    ),
+                {
+                    wrapper,
+                },
+            )
+            await waitFor(() => expect(result.current.isSuccess).toBe(true))
+            expect(result.current.data).toStrictEqual(null)
+        })
+
+        it('should not call the api function when enabled false', () => {
+            listIngestedResources.mockReturnValue(Promise.resolve(null))
+            renderHook(
+                () =>
+                    useListIngestedResources(
+                        {
+                            help_center_id: helpCenterId,
+                            article_ingestion_log_id: 1,
+                        },
+                        {},
+                        { enabled: false },
+                    ),
+                {
+                    wrapper,
+                },
+            )
+            expect(listIngestedResources).toHaveBeenCalledTimes(0)
+        })
+
+        it('should not call the api function when client is not set', () => {
+            listIngestedResources.mockReturnValue(Promise.resolve(null))
+            mockUseHelpCenterApi.mockReturnValue({
+                client: undefined,
+                isReady: false,
+            })
+            renderHook(
+                () =>
+                    useListIngestedResources(
+                        {
+                            help_center_id: helpCenterId,
+                            article_ingestion_log_id: 1,
+                        },
+                        {},
+                        {},
+                    ),
+                {
+                    wrapper,
+                },
+            )
+
+            expect(listIngestedResources).toHaveBeenCalledTimes(0)
+        })
+    })
+
+    describe('useUpdateIngestedResource', () => {
+        it('should return correct data on success', async () => {
+            updateIngestedResource.mockReturnValue(Promise.resolve(null))
+            const { result, waitFor } = renderHook(
+                () => useUpdateIngestedResource(),
+                { wrapper },
+            )
+
+            await result.current.mutateAsync([
+                undefined,
+                {
+                    ingested_resource_id: 34,
+                },
+                { status: 'enabled' },
             ])
 
             await waitFor(() => expect(result.current.isSuccess).toBe(true))

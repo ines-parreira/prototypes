@@ -1,0 +1,60 @@
+@import '~@gorgias/design-tokens/dist/css/layout';
+
+:local {
+    .productField {
+        margin-bottom: @layout-spacing-xs;
+    }
+
+    .imageGrid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, 95px);
+        gap: @layout-spacing-xs;
+        margin-top: @layout-spacing-xs;
+    }
+
+    .productImage {
+        width: 95px;
+        height: 95px;
+        object-fit: cover;
+        border-radius: 4px;
+        aspect-ratio: 1/1;
+    }
+
+    .imageCount {
+        font-weight: normal;
+    }
+
+    .description {
+        margin-top: @layout-spacing-xs;
+    }
+
+    .collapsibleVariantsTitle {
+        color: var(--main-primary);
+        font-weight: 500;
+    }
+
+    .variantsList {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .variantItem {
+        margin-top: @layout-spacing-xs;
+        border-bottom: 1px solid var(--neutral-grey-4);
+
+        &:last-child {
+            border-bottom: none;
+        }
+    }
+
+    .pricesContainer {
+        display: inline-flex;
+        gap: 4px;
+        align-items: center;
+    }
+
+    .strikethroughPrice {
+        text-decoration: line-through;
+        color: var(--neutral-grey-5);
+    }
+}

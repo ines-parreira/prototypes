@@ -13,7 +13,7 @@ import * as resources from 'models/integration/resources'
 import { IntegrationDataItem } from 'models/integration/types'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 
-import { usePaginatedProductIntegration } from './usePaginatedProductIntegration'
+import { usePaginatedProductIntegration } from '../hooks/usePaginatedProductIntegration'
 
 const fetchIntegrationProducts = jest.spyOn(
     resources,

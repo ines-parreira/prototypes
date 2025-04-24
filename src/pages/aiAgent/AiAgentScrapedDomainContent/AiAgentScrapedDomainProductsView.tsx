@@ -1,5 +1,7 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 
+import { Product } from 'constants/integrations/types/shopify'
+import { useGetEcommerceItemByExternalId } from 'models/ecommerce/queries'
 import { useShopifyIntegrationAndScope } from 'pages/common/hooks/useShopifyIntegrationAndScope'
 
 import { usePollStoreDomainIngestionLog } from '../hooks/usePollStoreDomainIngestionLog'
@@ -7,13 +9,14 @@ import { useSyncStoreDomain } from '../hooks/useSyncStoreDomain'
 import AiAgentScrapedDomainContentLayout from './AiAgentScrapedDomainContentLayout'
 import {
     CONTENT_TYPE,
+    ECOMMERCE_SOURCE,
+    ECOMMERCE_TYPE,
     IngestionLogStatus,
     PAGINATED_ITEMS_PER_PAGE,
 } from './constant'
 import { usePaginatedProductIntegration } from './hooks/usePaginatedProductIntegration'
 import ScrapedDomainContentView from './ScrapedDomainContentView'
 import ScrapedDomainSelectedContent from './ScrapedDomainSelectedContent'
-import { ScrapedContent } from './types'
 
 type Props = {
     shopName: string
@@ -28,8 +31,7 @@ const AiAgentScrapedDomainProductsView = ({
         string | null
     >(null)
     const [isOpened, setIsOpened] = useState(false)
-    const [selectedProduct, setSelectedProduct] =
-        useState<ScrapedContent | null>(null)
+    const [selectedProduct, setSelectedProduct] = useState<Product | null>(null)
 
     const {
         storeDomain,
@@ -54,7 +56,7 @@ const AiAgentScrapedDomainProductsView = ({
         }
     }, [syncIsPending, setSyncStoreDomainStatus])
 
-    const handleOnSelect = (content: ScrapedContent) => {
+    const handleOnSelect = (content: Product) => {
         setSelectedProduct(content)
         setIsOpened(true)
     }
@@ -83,6 +85,22 @@ const AiAgentScrapedDomainProductsView = ({
 
     const isDataLoading = isFetchLoading || isLoading
 
+    const { data: ecommerceProduct, isLoading: isLoadingEcommerceProduct } =
+        useGetEcommerceItemByExternalId(
+            ECOMMERCE_TYPE,
+            ECOMMERCE_SOURCE,
+            integrationId || 0,
+            String(selectedProduct?.id || 0),
+            { enabled: !!selectedProduct },
+        )
+
+    const ingestedProduct = useMemo(() => {
+        if (!ecommerceProduct?.additional_info?.scraped_data?.data) {
+            return null
+        }
+        return ecommerceProduct.additional_info.scraped_data.data
+    }, [ecommerceProduct])
+
     return (
         <AiAgentScrapedDomainContentLayout
             shopName={shopName}
@@ -97,11 +115,11 @@ const AiAgentScrapedDomainProductsView = ({
             syncStoreDomainStatus={syncStoreDomainStatus}
             onBannerClose={() => setSyncStoreDomainStatus(null)}
         >
-            <ScrapedDomainContentView
+            <ScrapedDomainContentView<Product>
                 searchValue={searchTerm}
                 onSearch={setSearchTerm}
                 isLoading={isDataLoading || syncIsPending}
-                content={paginatedProducts}
+                contents={paginatedProducts}
                 pageType={CONTENT_TYPE.PRODUCT}
                 onSelect={handleOnSelect}
                 hasNextItems={hasNextPage}
@@ -113,8 +131,9 @@ const AiAgentScrapedDomainProductsView = ({
                 selectedContent={selectedProduct}
                 contentType={CONTENT_TYPE.PRODUCT}
                 isOpened={isOpened}
-                isLoading={isDataLoading || syncIsPending}
+                isLoading={syncIsPending || isLoadingEcommerceProduct}
                 onClose={handleOnClose}
+                detail={ingestedProduct}
             />
         </AiAgentScrapedDomainContentLayout>
     )

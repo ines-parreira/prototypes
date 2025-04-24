@@ -225,6 +225,29 @@ export const startIngestion = async (
     return response
 }
 
+export const listIngestedResources = async (
+    client: HelpCenterClient | undefined,
+    pathParams: Paths.ListIngestedResources.PathParameters,
+    queryParams: Paths.ListIngestedResources.QueryParameters,
+) => {
+    if (!client) return null
+    const response = await client.listIngestedResources({
+        ...pathParams,
+        ...queryParams,
+    })
+    return response.data
+}
+
+export const updateIngestedResource = async (
+    client: HelpCenterClient | undefined,
+    pathParams: Paths.UpdateIngestedResource.PathParameters,
+    data: Paths.UpdateIngestedResource.RequestBody,
+) => {
+    if (!client) return null
+    const response = await client.updateIngestedResource(pathParams, data)
+    return response
+}
+
 export const createFileIngestion = async (
     client: HelpCenterClient | undefined,
     pathParams: Paths.CreateFileIngestion.PathParameters,

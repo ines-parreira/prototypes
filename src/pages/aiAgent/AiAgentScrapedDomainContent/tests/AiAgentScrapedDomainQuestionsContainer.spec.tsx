@@ -11,6 +11,7 @@ import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
 import { FeatureFlagKey } from 'config/featureFlags'
+import { getIngestedResourcesListResponse } from 'pages/aiAgent/fixtures/ingestedResource.fixture'
 import { getIngestionLogFixture } from 'pages/aiAgent/fixtures/ingestionLog.fixture'
 import { getStoreConfigurationFixture } from 'pages/aiAgent/fixtures/storeConfiguration.fixtures'
 import { useGetOrCreateSnippetHelpCenter } from 'pages/aiAgent/hooks/useGetOrCreateSnippetHelpCenter'
@@ -22,7 +23,9 @@ import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 import { assumeMock, renderWithRouter } from 'utils/testing'
 
 import AiAgentScrapedDomainQuestionsContainer from '../AiAgentScrapedDomainQuestionsContainer'
-import { IngestionLogStatus } from '../constant'
+import { IngestedResourceStatus, IngestionLogStatus } from '../constant'
+import { useIngestedResourceMutation } from '../hooks/useIngestedResourceMutation'
+import { usePaginatedIngestedResources } from '../hooks/usePaginatedIngestedResources'
 
 jest.mock('../../providers/AiAgentStoreConfigurationContext', () => ({
     useAiAgentStoreConfigurationContext: jest.fn(),
@@ -44,6 +47,14 @@ jest.mock('pages/aiAgent/hooks/usePollStoreDomainIngestionLog')
 const mockUsePollStoreDomainIngestionLog = assumeMock(
     usePollStoreDomainIngestionLog,
 )
+
+jest.mock('../hooks/usePaginatedIngestedResources')
+const mockUsePaginatedIngestedResources = assumeMock(
+    usePaginatedIngestedResources,
+)
+
+jest.mock('../hooks/useIngestedResourceMutation')
+const mockUseIngestedResourceMutation = assumeMock(useIngestedResourceMutation)
 
 const queryClient = mockQueryClient()
 const mockStore = configureMockStore([thunk])
@@ -72,6 +83,8 @@ describe('<AiAgentScrapedDomainQuestionsContainer />', () => {
         domain: mockedStoreDomain,
         url: mockedStoreUrl,
     })
+    const mockedUpdateIngestedResource = jest.fn()
+
     beforeEach(() => {
         mockedUseAiAgentStoreConfigurationContext.mockReturnValue({
             storeConfiguration: getStoreConfigurationFixture(),
@@ -104,6 +117,21 @@ describe('<AiAgentScrapedDomainQuestionsContainer />', () => {
             ingestionLogStatus: IngestionLogStatus.Successful,
             syncIsPending: false,
         })
+        mockUsePaginatedIngestedResources.mockReturnValue({
+            contents: [],
+            isLoading: false,
+            isError: false,
+            searchTerm: '',
+            setSearchTerm: jest.fn(),
+            fetchNext: jest.fn(),
+            fetchPrev: jest.fn(),
+            hasNextPage: false,
+            hasPrevPage: false,
+        })
+        mockUseIngestedResourceMutation.mockReturnValue({
+            isIngestedResourceUpdating: false,
+            updateIngestedResource: mockedUpdateIngestedResource,
+        })
         mockFlags({
             [FeatureFlagKey.AiAgentScrapeStoreDomain]: true,
             [FeatureFlagKey.ConvAiStandaloneMenu]: true,
@@ -124,7 +152,7 @@ describe('<AiAgentScrapedDomainQuestionsContainer />', () => {
                 'AI Agent automatically generates questions and answers from your store’s website content to use as knowledge.',
             ),
         ).toBeInTheDocument()
-        expect(screen.getByText('Question')).toBeInTheDocument()
+        expect(screen.getAllByText('Question')[0]).toBeInTheDocument()
     })
 
     it('should render correct header title for the page based on feature flag', () => {
@@ -192,17 +220,103 @@ describe('<AiAgentScrapedDomainQuestionsContainer />', () => {
     })
 
     it('should open side panel on row click (handleOnSelect)', async () => {
+        const mockedListIngestedResources = getIngestedResourcesListResponse({
+            page: 1,
+            itemCount: 5,
+        })
+        mockUsePaginatedIngestedResources.mockReturnValue({
+            contents: mockedListIngestedResources.data,
+            isLoading: false,
+            isError: false,
+            searchTerm: '',
+            setSearchTerm: jest.fn(),
+            fetchNext: jest.fn(),
+            fetchPrev: jest.fn(),
+            hasNextPage: false,
+            hasPrevPage: false,
+        })
+
         renderComponent()
 
         const questionRow = screen.getByText(
-            // to be replaced by actual mock data in the next iteration
-            // https://linear.app/gorgias/issue/AIKNL-88/implement-functionality-for-pages-content-tab
-            'What should I do if I received a defective item?',
+            mockedListIngestedResources.data[0].title,
         )
         fireEvent.click(questionRow)
 
         expect(screen.getByText('Question details')).toBeInTheDocument()
         const hideIcon = screen.getByAltText('hide-view-icon')
         expect(hideIcon).toBeInTheDocument()
+        expect(screen.getByText('Available for AI Agent')).toBeInTheDocument()
+        expect(screen.getByText('View source URLs')).toBeInTheDocument()
+    })
+
+    it('should call updateIngestedResource when enabled toggle button is clicked', () => {
+        const mockedListIngestedResources = getIngestedResourcesListResponse({
+            page: 1,
+            itemCount: 5,
+        })
+        mockUsePaginatedIngestedResources.mockReturnValue({
+            contents: mockedListIngestedResources.data,
+            isLoading: false,
+            isError: false,
+            searchTerm: '',
+            setSearchTerm: jest.fn(),
+            fetchNext: jest.fn(),
+            fetchPrev: jest.fn(),
+            hasNextPage: false,
+            hasPrevPage: false,
+        })
+
+        renderComponent()
+
+        const questionRow = screen.getByText(
+            mockedListIngestedResources.data[0].title,
+        )
+        fireEvent.click(questionRow)
+
+        const toggleButton = screen
+            .queryAllByLabelText('Available for AI Agent')
+            .find(
+                (toggle) =>
+                    toggle.getAttribute('name') === `toggle-question-details`,
+            )!
+        fireEvent.click(toggleButton)
+
+        expect(mockedUpdateIngestedResource).toHaveBeenCalledWith(
+            mockedListIngestedResources.data[0].id,
+            {
+                status: IngestedResourceStatus.Disabled,
+            },
+        )
+    })
+
+    it('should display source URLs when button is clicked', () => {
+        const mockedListIngestedResources = getIngestedResourcesListResponse({
+            page: 1,
+            itemCount: 5,
+        })
+        mockUsePaginatedIngestedResources.mockReturnValue({
+            contents: mockedListIngestedResources.data,
+            isLoading: false,
+            isError: false,
+            searchTerm: '',
+            setSearchTerm: jest.fn(),
+            fetchNext: jest.fn(),
+            fetchPrev: jest.fn(),
+            hasNextPage: false,
+            hasPrevPage: false,
+        })
+
+        renderComponent()
+
+        const questionRow = screen.getByText(
+            mockedListIngestedResources.data[0].title,
+        )
+        fireEvent.click(questionRow)
+
+        const viewSourceButton = screen.getByText('View source URLs')
+        fireEvent.click(viewSourceButton)
+
+        expect(screen.getByText('https://example.com')).toBeInTheDocument()
     })
 })

@@ -7,6 +7,7 @@ import { IngestionLog } from '../AiAgentScrapedDomainContent/types'
 export const getIngestionLogFixture = (
     props?: Partial<IngestionLog>,
 ): IngestionLog => ({
+    created_datetime: new Date().toISOString(),
     help_center_id: 1,
     article_ids: [],
     raw_text: null,

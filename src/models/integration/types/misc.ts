@@ -59,6 +59,7 @@ export type IntegrationDataItem<T> = {
     created_datetime: string
     updated_datetime: string
     deleted_datetime: Maybe<string>
+    additional_info?: Record<string, any>
 }
 
 export type ProductCardDetails = {

@@ -38,6 +38,7 @@ const AiAgentScrapedDomainQuestionsContainer = () => {
                 <AiAgentScrapedDomainQuestionsView
                     helpCenterId={helpCenter?.id}
                     shopName={shopName}
+                    defaultLocale={helpCenter?.default_locale}
                 />
             )}
         </AiAgentLayout>

@@ -1,4 +1,5 @@
 @import '~@gorgias/design-tokens/dist/css/layout';
+
 @import (reference) '~css/typography.less';
 
 :local {
@@ -11,6 +12,7 @@
         align-items: center;
         align-self: stretch;
         height: 426px;
+        width: 100%;
     }
 
     .loader {
@@ -36,6 +38,13 @@
         width: @layout-spacing-l;
         height: @layout-spacing-l;
         margin-right: @layout-spacing-s;
+        object-fit: cover;
+        border-radius: 4px;
+        aspect-ratio: 1/1;
+    }
+
+    .color {
+        background-color: var(--neutral-grey-4);
     }
 
     .chevronRight {

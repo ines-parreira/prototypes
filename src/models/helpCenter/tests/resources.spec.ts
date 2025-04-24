@@ -10,8 +10,10 @@ import {
     getHelpCenterArticles,
     getHelpCenterList,
     getIngestionLogs,
+    listIngestedResources,
     startArticleIngestion,
     startIngestion,
+    updateIngestedResource,
 } from '../resources'
 
 const help_center_id = 1
@@ -207,6 +209,68 @@ describe('resources', () => {
                 {
                     url: 'https://test.com',
                     type: 'domain',
+                },
+            )
+            expect(result).toEqual({ data: null })
+        })
+    })
+
+    describe('listIngestedResources', () => {
+        it('should return null when client is not set', async () => {
+            const result = await listIngestedResources(
+                undefined,
+                {
+                    help_center_id,
+                    article_ingestion_log_id: 1,
+                },
+                {},
+            )
+            expect(result).toBeNull()
+        })
+
+        it('should return correct result from API', async () => {
+            const client = {
+                listIngestedResources: jest
+                    .fn()
+                    .mockReturnValue(Promise.resolve({ data: [] })),
+            }
+            const result = await listIngestedResources(
+                client as unknown as HelpCenterClient,
+                {
+                    help_center_id,
+                    article_ingestion_log_id: 1,
+                },
+                { page: 1, per_page: 15 },
+            )
+
+            expect(result).toEqual([])
+        })
+    })
+
+    describe('updateIngestedResource', () => {
+        it('should return null when client is not set', async () => {
+            const result = await updateIngestedResource(
+                undefined,
+                {
+                    ingested_resource_id: 1,
+                },
+                {},
+            )
+            expect(result).toBeNull()
+        })
+        it('should return correct result from API', async () => {
+            const client = {
+                updateIngestedResource: jest
+                    .fn()
+                    .mockReturnValue(Promise.resolve({ data: null })),
+            }
+            const result = await updateIngestedResource(
+                client as unknown as HelpCenterClient,
+                {
+                    ingested_resource_id: 1,
+                },
+                {
+                    status: 'enabled',
                 },
             )
             expect(result).toEqual({ data: null })

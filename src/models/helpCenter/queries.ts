@@ -24,10 +24,12 @@ import {
     getHelpCenterArticles,
     getHelpCenterList,
     getIngestionLogs,
+    listIngestedResources,
     startArticleIngestion,
     startIngestion,
     updateArticleTranslation,
     updateHelpCenter,
+    updateIngestedResource,
 } from './resources'
 
 const STALE_TIME = 10 * 60 * 1000
@@ -86,6 +88,17 @@ export const helpCenterKeys = {
         [
             ...helpCenterKeys.detail(helpCenterId),
             'file-ingestions',
+            queryParams,
+        ].filter(Boolean),
+    ingestedResources: (
+        helpCenterId: number,
+        ingestionLogId: number,
+        queryParams?: Paths.ListIngestedResources.QueryParameters,
+    ) =>
+        [
+            ...helpCenterKeys.detail(helpCenterId),
+            'ingested-resources',
+            ingestionLogId,
             queryParams,
         ].filter(Boolean),
 }
@@ -409,6 +422,41 @@ export const useStartIngestion = (
     return useMutation({
         mutationFn: ([client = helpCenterClient, pathParams, data]) =>
             startIngestion(client, pathParams, data),
+        ...overrides,
+    })
+}
+
+export const useListIngestedResources = (
+    pathParams: Paths.ListIngestedResources.PathParameters,
+    queryParams: Paths.ListIngestedResources.QueryParameters,
+    overrides?: UseQueryOptions<
+        Awaited<ReturnType<typeof listIngestedResources>>
+    >,
+) => {
+    const { client: helpCenterClient } = useHelpCenterApi()
+
+    return useQuery({
+        queryKey: helpCenterKeys.ingestedResources(
+            pathParams.help_center_id,
+            pathParams.article_ingestion_log_id,
+            queryParams,
+        ),
+        queryFn: async () =>
+            listIngestedResources(helpCenterClient, pathParams, queryParams),
+        ...overrides,
+        enabled:
+            !!helpCenterClient &&
+            (overrides === undefined || overrides.enabled),
+    })
+}
+
+export const useUpdateIngestedResource = (
+    overrides?: MutationOverrides<typeof updateIngestedResource>,
+) => {
+    const { client: helpCenterClient } = useHelpCenterApi()
+    return useMutation({
+        mutationFn: ([client = helpCenterClient, pathParams, data]) =>
+            updateIngestedResource(client, pathParams, data),
         ...overrides,
     })
 }

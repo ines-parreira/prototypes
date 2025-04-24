@@ -11,6 +11,8 @@ import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
 import { FeatureFlagKey } from 'config/featureFlags'
+import { Product } from 'constants/integrations/types/shopify'
+import { useGetEcommerceItemByExternalId } from 'models/ecommerce/queries'
 import { getIngestionLogFixture } from 'pages/aiAgent/fixtures/ingestionLog.fixture'
 import { getStoreConfigurationFixture } from 'pages/aiAgent/fixtures/storeConfiguration.fixtures'
 import { useGetOrCreateSnippetHelpCenter } from 'pages/aiAgent/hooks/useGetOrCreateSnippetHelpCenter'
@@ -23,6 +25,7 @@ import { assumeMock, renderWithRouter } from 'utils/testing'
 
 import AiAgentScrapedDomainProductsContainer from '../AiAgentScrapedDomainProductsContainer'
 import { IngestionLogStatus } from '../constant'
+import { usePaginatedProductIntegration } from '../hooks/usePaginatedProductIntegration'
 
 jest.mock('../../providers/AiAgentStoreConfigurationContext', () => ({
     useAiAgentStoreConfigurationContext: jest.fn(),
@@ -43,6 +46,16 @@ const mockUseSyncStoreDomain = assumeMock(useSyncStoreDomain)
 jest.mock('pages/aiAgent/hooks/usePollStoreDomainIngestionLog')
 const mockUsePollStoreDomainIngestionLog = assumeMock(
     usePollStoreDomainIngestionLog,
+)
+
+jest.mock('../hooks/usePaginatedProductIntegration')
+const mockUsePaginatedProductIntegration = assumeMock(
+    usePaginatedProductIntegration,
+)
+
+jest.mock('models/ecommerce/queries')
+const mockUseGetEcommerceItemByExternalId = assumeMock(
+    useGetEcommerceItemByExternalId,
 )
 
 const queryClient = mockQueryClient()
@@ -104,6 +117,22 @@ describe('<AiAgentScrapedDomainProductsContainer />', () => {
             ingestionLogStatus: IngestionLogStatus.Successful,
             syncIsPending: false,
         })
+        mockUsePaginatedProductIntegration.mockReturnValue({
+            itemsData: [],
+            isLoading: false,
+            searchTerm: '',
+            setSearchTerm: jest.fn(),
+            fetchNext: jest.fn(),
+            hasNextPage: false,
+            hasPrevPage: false,
+            isError: false,
+            fetchPrev: jest.fn(),
+            items: [],
+        })
+        mockUseGetEcommerceItemByExternalId.mockReturnValue({
+            data: null,
+            isLoading: false,
+        } as any)
         mockFlags({
             [FeatureFlagKey.AiAgentScrapeStoreDomain]: true,
             [FeatureFlagKey.ConvAiStandaloneMenu]: true,
@@ -191,15 +220,29 @@ describe('<AiAgentScrapedDomainProductsContainer />', () => {
         expect(screen.getByText('No products available')).toBeInTheDocument()
     })
 
-    xit('should open side panel on row click (handleOnSelect)', async () => {
+    it('should open side panel on row click (handleOnSelect)', async () => {
+        mockUsePaginatedProductIntegration.mockReturnValue({
+            itemsData: [
+                {
+                    id: 1,
+                    title: 'Duo Baguette Birthstone Ring',
+                } as Product,
+            ],
+            isLoading: false,
+            searchTerm: '',
+            setSearchTerm: jest.fn(),
+            fetchNext: jest.fn(),
+            hasNextPage: false,
+            hasPrevPage: false,
+            isError: false,
+            fetchPrev: jest.fn(),
+            items: [],
+        })
+
         renderComponent()
 
-        const questionRow = screen.getByText(
-            // to be replaced by actual mock data in the next iteration
-            // https://linear.app/gorgias/issue/AIKNL-89/implement-functionality-for-product-content-tab
-            'Duo Baguette Birthstone Ring',
-        )
-        fireEvent.click(questionRow)
+        const productRow = screen.getByText('Duo Baguette Birthstone Ring')
+        fireEvent.click(productRow)
 
         expect(screen.getByText('Product details')).toBeInTheDocument()
         const hideIcon = screen.getByAltText('hide-view-icon')

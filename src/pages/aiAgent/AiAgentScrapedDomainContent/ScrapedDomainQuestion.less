@@ -1,0 +1,37 @@
+@import '~@gorgias/design-tokens/dist/css/layout';
+@import (reference) '~css/typography.less';
+
+:local {
+    .contentContainer {
+        padding: @layout-spacing-s;
+        display: flex;
+        flex-direction: column;
+        gap: @layout-spacing-s;
+    }
+
+    .bodySemibold {
+        .body-semibold();
+    }
+
+    .contentBody {
+        display: flex;
+        flex-direction: column;
+        gap: @layout-spacing-xxs;
+    }
+
+    .sourceHeader {
+        .component-button-medium();
+        color: var(--main-primary);
+        padding: 6px 0;
+    }
+
+    .sourceBody {
+        display: flex;
+        flex-direction: column;
+        gap: @layout-spacing-xs;
+    }
+
+    .toggleInput {
+        margin-right: @layout-spacing-xs;
+    }
+}

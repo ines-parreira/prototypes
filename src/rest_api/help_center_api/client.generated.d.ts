@@ -2190,6 +2190,32 @@ declare namespace Components {
              */
             progress: 'FAILURE' | 'IN_PROGRESS' | 'NOT_STARTED' | 'SUCCESS'
         }
+        export interface IngestedResourceDto {
+            article_ingestion_log_id: number
+            scraping_id: string
+            snippet_id: string
+            execution_id: string
+            status: 'disabled' | 'enabled'
+            web_pages: string[]
+            id: number
+            title: string
+        }
+        export interface IngestedResourceListDataDto {
+            article_ingestion_log_id: number
+            scraping_id: string
+            snippet_id: string
+            execution_id: string
+            status: 'disabled' | 'enabled'
+            web_pages: string[]
+            article_id: number
+            id: number
+            title: string
+        }
+        export interface IngestedResourceListPageDto {
+            meta: PageMetaDto
+            object: 'list'
+            data: IngestedResourceListDataDto[]
+        }
         export interface IngestionLogDto {
             help_center_id: number
             article_ids: number[]
@@ -2197,6 +2223,7 @@ declare namespace Components {
             dataset_id: string
             scraping_id?: string | null
             latest_sync: string // date-time
+            created_datetime: string // date-time
             id: number
             url: string | null
             domain: string | null
@@ -2995,6 +3022,12 @@ declare namespace Components {
             contact_info?: ContactInfoDto
             extra_html?: ExtraHTMLDto
             logo_hyperlink?: string | null
+        }
+        export interface UpdateIngestedResourceDto {
+            status?: 'disabled' | 'enabled'
+        }
+        export interface UpdateIngestionLogDto {
+            status?: 'DISABLED' | 'FAILED' | 'PENDING' | 'SUCCESSFUL'
         }
         export interface UpdateNavigationLinkDto {
             /**
@@ -4461,6 +4494,27 @@ declare namespace Paths {
             export type $200 = Components.Schemas.HelpCentersListPageDto
         }
     }
+    namespace ListIngestedResources {
+        namespace Parameters {
+            export type ArticleIngestionLogId = number
+            export type Filter = string
+            export type HelpCenterId = number
+            export type Page = any
+            export type PerPage = any
+        }
+        export interface PathParameters {
+            help_center_id: Parameters.HelpCenterId
+            article_ingestion_log_id: Parameters.ArticleIngestionLogId
+        }
+        export interface QueryParameters {
+            filter?: Parameters.Filter
+            per_page?: Parameters.PerPage
+            page?: Parameters.Page
+        }
+        namespace Responses {
+            export type $200 = Components.Schemas.IngestedResourceListPageDto
+        }
+    }
     namespace ListLocales {
         namespace Responses {
             export type $200 = Components.Schemas.LocaleDto[]
@@ -4787,6 +4841,36 @@ declare namespace Paths {
             Components.Schemas.UpdateHelpCenterTranslationDto
         namespace Responses {
             export type $200 = Components.Schemas.HelpCenterTranslationDto
+        }
+    }
+    namespace UpdateIngestedResource {
+        namespace Parameters {
+            export type IngestedResourceId = number
+        }
+        export interface PathParameters {
+            ingested_resource_id: Parameters.IngestedResourceId
+        }
+        export type RequestBody = Components.Schemas.UpdateIngestedResourceDto
+        namespace Responses {
+            export type $200 = Components.Schemas.IngestedResourceDto
+        }
+    }
+    namespace UpdateIngestionLog {
+        namespace Parameters {
+            export type AccountId = string
+            export type HelpCenterId = number
+            export type IngestionLogId = number
+        }
+        export interface PathParameters {
+            help_center_id: Parameters.HelpCenterId
+            ingestion_log_id: Parameters.IngestionLogId
+        }
+        export interface QueryParameters {
+            account_id?: Parameters.AccountId
+        }
+        export type RequestBody = Components.Schemas.UpdateIngestionLogDto
+        namespace Responses {
+            export type $200 = Components.Schemas.ArticleIngestionLogDto
         }
     }
     namespace UpdateNavigationLink {
@@ -5840,6 +5924,25 @@ export interface OperationMethods {
         config?: AxiosRequestConfig,
     ): OperationResponse<Paths.GetHotswapStatus.Responses.$200>
     /**
+     * listIngestedResources - List ingested resources by ingestion log id
+     */
+    'listIngestedResources'(
+        parameters?: Parameters<
+            Paths.ListIngestedResources.PathParameters &
+                Paths.ListIngestedResources.QueryParameters
+        > | null,
+        data?: any,
+        config?: AxiosRequestConfig,
+    ): OperationResponse<Paths.ListIngestedResources.Responses.$200>
+    /**
+     * updateIngestedResource - Update ingested resource
+     */
+    'updateIngestedResource'(
+        parameters?: Parameters<Paths.UpdateIngestedResource.PathParameters> | null,
+        data?: Paths.UpdateIngestedResource.RequestBody,
+        config?: AxiosRequestConfig,
+    ): OperationResponse<Paths.UpdateIngestedResource.Responses.$200>
+    /**
      * getIngestionLogs - Get ingestion logs
      */
     'getIngestionLogs'(
@@ -5858,6 +5961,17 @@ export interface OperationMethods {
         data?: Paths.StartIngestion.RequestBody,
         config?: AxiosRequestConfig,
     ): OperationResponse<any>
+    /**
+     * updateIngestionLog - Update ingestion log
+     */
+    'updateIngestionLog'(
+        parameters?: Parameters<
+            Paths.UpdateIngestionLog.PathParameters &
+                Paths.UpdateIngestionLog.QueryParameters
+        > | null,
+        data?: Paths.UpdateIngestionLog.RequestBody,
+        config?: AxiosRequestConfig,
+    ): OperationResponse<Paths.UpdateIngestionLog.Responses.$200>
     /**
      * ingestEvent - Submit product page ingested event
      */
@@ -7094,6 +7208,29 @@ export interface PathsDictionary {
             config?: AxiosRequestConfig,
         ): OperationResponse<Paths.GetHotswapStatus.Responses.$200>
     }
+    ['/api/help-center/help-centers/{help_center_id}/ingested-resources/{article_ingestion_log_id}']: {
+        /**
+         * listIngestedResources - List ingested resources by ingestion log id
+         */
+        'get'(
+            parameters?: Parameters<
+                Paths.ListIngestedResources.PathParameters &
+                    Paths.ListIngestedResources.QueryParameters
+            > | null,
+            data?: any,
+            config?: AxiosRequestConfig,
+        ): OperationResponse<Paths.ListIngestedResources.Responses.$200>
+    }
+    ['/api/help-center/help-centers/{help_center_id}/ingested-resource/{ingested_resource_id}']: {
+        /**
+         * updateIngestedResource - Update ingested resource
+         */
+        'put'(
+            parameters?: Parameters<Paths.UpdateIngestedResource.PathParameters> | null,
+            data?: Paths.UpdateIngestedResource.RequestBody,
+            config?: AxiosRequestConfig,
+        ): OperationResponse<Paths.UpdateIngestedResource.Responses.$200>
+    }
     ['/api/help-center/help-centers/{help_center_id}/ingestions']: {
         /**
          * getIngestionLogs - Get ingestion logs
@@ -7116,6 +7253,19 @@ export interface PathsDictionary {
             data?: Paths.StartIngestion.RequestBody,
             config?: AxiosRequestConfig,
         ): OperationResponse<any>
+    }
+    ['/api/help-center/help-centers/{help_center_id}/ingestion/{ingestion_log_id}']: {
+        /**
+         * updateIngestionLog - Update ingestion log
+         */
+        'put'(
+            parameters?: Parameters<
+                Paths.UpdateIngestionLog.PathParameters &
+                    Paths.UpdateIngestionLog.QueryParameters
+            > | null,
+            data?: Paths.UpdateIngestionLog.RequestBody,
+            config?: AxiosRequestConfig,
+        ): OperationResponse<Paths.UpdateIngestionLog.Responses.$200>
     }
     ['/api/help-center/ingestions/product-page-ingested']: {
         /**

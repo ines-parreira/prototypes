@@ -1,7 +1,8 @@
-import client from 'models/api/resources'
+import { createClient } from 'models/api/resources'
 import { IntegrationDataItem } from 'models/integration/types/misc'
 import gorgiasAppsAuthInterceptor from 'utils/gorgiasAppsAuth'
 
+const client = createClient()
 client.interceptors.request.use(gorgiasAppsAuthInterceptor)
 
 /**

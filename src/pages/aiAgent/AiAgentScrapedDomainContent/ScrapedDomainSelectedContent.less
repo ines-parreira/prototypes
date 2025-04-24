@@ -1,4 +1,5 @@
 @import '~@gorgias/design-tokens/dist/css/layout';
+
 @import (reference) '~css/typography.less';
 
 :local {
@@ -28,5 +29,12 @@
 
     .contentContainer {
         padding: @layout-spacing-s;
+        display: flex;
+        flex-direction: column;
+        gap: @layout-spacing-l;
+    }
+
+    .icon {
+        margin-right: @layout-spacing-xs;
     }
 }

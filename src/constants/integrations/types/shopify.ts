@@ -395,6 +395,8 @@ export type Product = {
     variants: Variant[]
     handle?: string
     status?: ProductStatus
+    vendor?: string
+    body_html?: string
 }
 
 export type DraftOrderInvoice = {
