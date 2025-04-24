@@ -43,8 +43,6 @@ export const getAiAgentNavigationRoutes = (
     const automationBasePath = '/app/automation'
     const isStandaloneMenuEnabled = flags[FeatureFlagKey.ConvAiStandaloneMenu]
     const isStandaloneOnboardingEnabled = flags[FeatureFlagKey.ConvAiOnboarding]
-    const isAiAgentScrapeStoreDomainEnabled =
-        flags[FeatureFlagKey.AiAgentScrapeStoreDomain]
 
     const guidancePath = isStandaloneMenuEnabled
         ? 'knowledge/guidance'
@@ -72,9 +70,8 @@ export const getAiAgentNavigationRoutes = (
         main: basePath,
         settings: `${basePath}/settings`,
         test: `${basePath}/test`,
-        knowledge: isAiAgentScrapeStoreDomainEnabled
-            ? `${basePath}/knowledge/sources`
-            : `${basePath}/knowledge`,
+        knowledge: `${basePath}/knowledge`,
+        knowledgeSources: `${basePath}/knowledge/sources`,
         sales: `${basePath}/sales`,
         volume: `${basePath}/sales/volume`,
         analytics: `${basePath}/sales/analytics`,
@@ -172,13 +169,13 @@ const useNavigationItems = (
                     dataCanduId: 'ai-agent-navbar-knowledge',
                     items: [
                         isAiAgentKnowledgeTabEnabled && {
-                            route: routes.knowledge,
+                            route: isAiAgentScrapeStoreDomainEnabled
+                                ? routes.knowledgeSources
+                                : routes.knowledge,
                             title: isAiAgentScrapeStoreDomainEnabled
                                 ? SOURCES
                                 : GENERAL,
-                            exact: isAiAgentScrapeStoreDomainEnabled
-                                ? false
-                                : true,
+                            exact: !isAiAgentScrapeStoreDomainEnabled,
                         },
                         {
                             route: routes.guidance,

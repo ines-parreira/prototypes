@@ -632,25 +632,39 @@ function AiAgentRoutes({ match: { path }, location }: RouteComponentProps) {
                                 component={AiAgentKnowledgeContainer}
                             />
                             {isAiAgentScrapeStoreDomainEnabled && (
-                                <Switch>
-                                    <Route
-                                        path={`${path}/knowledge/sources`}
-                                        exact
-                                        component={AiAgentKnowledgeContainer}
-                                    />
-                                    <Route
-                                        path={`${path}/knowledge/sources/pages-content`}
-                                        component={
-                                            AiAgentScrapedDomainQuestionsContainer
-                                        }
-                                    />
-                                    <Route
-                                        path={`${path}/knowledge/sources/products-content`}
-                                        component={
-                                            AiAgentScrapedDomainProductsContainer
-                                        }
-                                    />
-                                </Switch>
+                                <>
+                                    <Switch>
+                                        <Route
+                                            path={`${path}/knowledge/sources`}
+                                            exact
+                                            component={
+                                                AiAgentKnowledgeContainer
+                                            }
+                                        />
+                                        <Route
+                                            path={`${path}/knowledge/sources/pages-content`}
+                                            component={
+                                                AiAgentScrapedDomainQuestionsContainer
+                                            }
+                                        />
+                                        <Route
+                                            path={`${path}/knowledge/sources/products-content`}
+                                            component={
+                                                AiAgentScrapedDomainProductsContainer
+                                            }
+                                        />
+                                    </Switch>
+                                    {location.pathname.endsWith(
+                                        '/knowledge',
+                                    ) && (
+                                        <Redirect
+                                            to={location.pathname.replace(
+                                                '/knowledge',
+                                                '/knowledge/sources',
+                                            )}
+                                        />
+                                    )}
+                                </>
                             )}
                         </AiAgentErrorBoundary>
                     )}

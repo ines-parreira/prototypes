@@ -85,7 +85,9 @@ const AiAgentScrapedDomainQuestionsView = ({
         ingestionLogId: storeDomainIngestionLog?.id ?? 0,
     })
 
-    const isDataLoading = isFetchLoading || isListIngestedResourceLoading
+    const isDataLoading =
+        isFetchLoading ||
+        (!!storeDomainIngestionLog && isListIngestedResourceLoading)
 
     const { data: articleData, isInitialLoading: isFetchingArticleLoading } =
         useGetHelpCenterArticle(

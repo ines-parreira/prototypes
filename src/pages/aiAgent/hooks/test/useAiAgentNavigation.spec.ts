@@ -78,6 +78,70 @@ describe('useAiAgentNavigation', () => {
         )
     })
 
+    it('should get Knowledge General tab to navbar if AI agent scrape store domain feature flag is off', () => {
+        useFlagsMock.mockReturnValue({
+            [FeatureFlagKey.ConvAiStandaloneMenu]: true,
+            [FeatureFlagKey.AiAgentKnowledgeTab]: true,
+            [FeatureFlagKey.AiAgentScrapeStoreDomain]: false,
+        })
+
+        const { result } = renderHook(() =>
+            useAiAgentNavigation({ shopName: 'test' }),
+        )
+
+        const knowledgeItem = result.current.navigationItems.find(
+            (item) => item.dataCanduId === 'ai-agent-navbar-knowledge',
+        )
+        expect(knowledgeItem).toEqual({
+            route: '/app/ai-agent/shopify/test/knowledge',
+            title: 'Knowledge',
+            dataCanduId: 'ai-agent-navbar-knowledge',
+            items: [
+                {
+                    route: '/app/ai-agent/shopify/test/knowledge',
+                    title: 'General',
+                    exact: true,
+                },
+                {
+                    route: '/app/ai-agent/shopify/test/knowledge/guidance',
+                    title: 'Guidance',
+                },
+            ],
+        })
+    })
+
+    it('should get Knowledge Source tab to navbar if AI agent scrape store domain feature flag is on', () => {
+        useFlagsMock.mockReturnValue({
+            [FeatureFlagKey.ConvAiStandaloneMenu]: true,
+            [FeatureFlagKey.AiAgentKnowledgeTab]: true,
+            [FeatureFlagKey.AiAgentScrapeStoreDomain]: true,
+        })
+
+        const { result } = renderHook(() =>
+            useAiAgentNavigation({ shopName: 'test' }),
+        )
+
+        const knowledgeItem = result.current.navigationItems.find(
+            (item) => item.dataCanduId === 'ai-agent-navbar-knowledge',
+        )
+        expect(knowledgeItem).toEqual({
+            route: '/app/ai-agent/shopify/test/knowledge',
+            title: 'Knowledge',
+            dataCanduId: 'ai-agent-navbar-knowledge',
+            items: [
+                {
+                    route: '/app/ai-agent/shopify/test/knowledge/sources',
+                    title: 'Sources',
+                    exact: false,
+                },
+                {
+                    route: '/app/ai-agent/shopify/test/knowledge/guidance',
+                    title: 'Guidance',
+                },
+            ],
+        })
+    })
+
     it('should add Optimize to navbar if feature flag is on', () => {
         useFlagsMock.mockReturnValue({
             [FeatureFlagKey.AiAgentOptimizeTab]: true,
