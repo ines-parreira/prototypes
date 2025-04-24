@@ -160,7 +160,7 @@ export const AiSalesAgentMetricsWithDrillDownConfig: Record<
         drillDownMetric: AiSalesAgentChart.AiSalesAgentTotalSalesConv,
         drillDownQuery:
             totalNumberofSalesOpportunityConvFromAIAgentDrillDownQueryFactory,
-        showMetric: true,
+        showMetric: false,
         domain: Domain.AiSalesAgent,
     },
     [AiSalesAgentChart.AiSalesAgentSuccessRate]: {

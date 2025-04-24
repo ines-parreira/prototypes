@@ -234,6 +234,7 @@ export const TicketDrillDownTableContent = ({
                 )}
                 {(isAiInsightsMetric ||
                     isAiPerformanceMetric ||
+                    isAiSalesAgentConversationsMetric ||
                     isAiSalesAgentSuccessRateMetric ||
                     isAiSalesAgentDiscountOfferedMetric) && (
                     <HeaderCellProperty
@@ -434,6 +435,7 @@ export const TicketDrillDownTableContent = ({
                             )}
                             {(isAiInsightsMetric ||
                                 isAiPerformanceMetric ||
+                                isAiSalesAgentConversationsMetric ||
                                 isAiSalesAgentSuccessRateMetric ||
                                 isAiSalesAgentDiscountOfferedMetric) && (
                                 <BodyCell width={columnWidths.outcome}>

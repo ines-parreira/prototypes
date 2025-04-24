@@ -1129,7 +1129,7 @@ describe('getDrillDownMetric', () => {
             },
             expectedValues: {
                 metricTitle: 'Conversations',
-                showMetric: true,
+                showMetric: false,
                 metricValueFormat: 'decimal',
             },
         },

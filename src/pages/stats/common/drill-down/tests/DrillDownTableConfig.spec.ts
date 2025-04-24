@@ -65,6 +65,7 @@ export const hiddenMetrics: DrillDownMetric['metricName'][] = [
     VoiceAgentsMetric.AgentAverageTalkTime,
     AiSalesAgentChart.AiSalesAgentSuccessRate,
     AiSalesAgentChart.AiSalesAgentTotalNumberOfOrders,
+    AiSalesAgentChart.AiSalesAgentTotalSalesConv,
 ]
 
 describe('MetricsConfig', () => {
