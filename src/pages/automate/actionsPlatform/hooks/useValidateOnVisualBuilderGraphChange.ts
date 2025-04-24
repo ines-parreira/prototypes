@@ -9,18 +9,18 @@ type Props = {
     graph: VisualBuilderGraph
     handleValidate: (graph: VisualBuilderGraph) => VisualBuilderGraph
     dispatch: Dispatch<VisualBuilderGraphAction>
-    bypassValidation?: boolean
+    changeCheckDebounce?: number
 }
 
 const useValidateOnVisualBuilderGraphChange = ({
     graph,
     handleValidate,
     dispatch,
-    bypassValidation = false,
+    changeCheckDebounce = 0,
 }: Props) => {
     const isGraphChanged = useIsVisualBuilderGraphChanged(
         graph,
-        bypassValidation,
+        changeCheckDebounce,
     )
 
     useEffect(() => {

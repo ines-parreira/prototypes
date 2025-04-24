@@ -206,3 +206,5 @@ export const endNodeActionIconByAction: Record<
 export const MAX_CONFIGURATION_SIZE_IN_BYTES = 2 * 1024 * 1024 // 2MB
 export const MAX_TRANSLATIONS_SIZE_IN_BYTES = 2 * 1024 * 1024 // 2MB
 export const MAX_STORAGE_LIMIT_RATE_WARNING_THRESHOLD = 0.9
+
+export const MIN_DEBOUNCE_STEP_COUNT = 200

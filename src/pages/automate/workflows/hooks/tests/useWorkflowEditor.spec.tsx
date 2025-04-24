@@ -18,7 +18,10 @@ import { useWorkflowEditor } from '../useWorkflowEditor'
 
 jest.mock('pages/automate/common/hooks/useSelfServiceStoreIntegration')
 jest.mock('models/workflows/queries')
-
+jest.mock('pages/automate/workflows/constants', () => ({
+    ...jest.requireActual('pages/automate/workflows/constants'),
+    MIN_DEBOUNCE_STEP_COUNT: 3,
+}))
 const mockUseGetWorkflowConfiguration = jest.mocked(useGetWorkflowConfiguration)
 const mockUseUpsertWorkflowConfiguration = jest.mocked(
     useUpsertWorkflowConfiguration,
@@ -256,6 +259,7 @@ describe('useWorkflowEditor()', () => {
         )
 
         rerender()
+        await waitForNextUpdate()
 
         expect(result.current.visualBuilderGraph.name).toBe('local name')
         expect(result.current.isDirty).toBe(true)
@@ -279,11 +283,15 @@ describe('useWorkflowEditor()', () => {
             result.current.dispatch({ type: 'SET_NAME', name: 'updated' })
         })
 
+        await waitForNextUpdate()
+
         expect(result.current.isDirty).toBe(true)
 
         act(() => {
             result.current.handleDiscard()
         })
+
+        await waitForNextUpdate()
 
         expect(result.current.isDirty).toBe(false)
         expect(result.current.visualBuilderGraph.name).toBe('local name')
@@ -364,5 +372,140 @@ describe('useWorkflowEditor()', () => {
 
         await waitForNextUpdate()
         expect(result.current.currentLanguage).toBe('pt-BR')
+    })
+
+    it('should handle debounced validation with large workflow configuration', async () => {
+        jest.useFakeTimers()
+        let configuration: WorkflowConfiguration = {
+            id: 'test-flow',
+            internal_id: 'int-test-flow',
+            is_draft: true,
+            name: 'Test Flow',
+            initial_step_id: 'message1',
+            entrypoint: {
+                label: 'entrypoint',
+                label_tkey: 'entrypoint',
+            },
+            steps: [
+                {
+                    id: 'message1',
+                    kind: 'message',
+                    settings: {
+                        message: {
+                            content: {
+                                text: 'Message 1',
+                                html: '<p>Message 1</p>',
+                                text_tkey: 'Message 1',
+                                html_tkey: '<p>Message 1</p>',
+                            },
+                        },
+                    },
+                },
+                {
+                    id: 'message2',
+                    kind: 'message',
+                    settings: {
+                        message: {
+                            content: {
+                                text: 'Message 2',
+                                html: '<p>Message 2</p>',
+                                text_tkey: 'Message 2',
+                                html_tkey: '<p>Message 2</p>',
+                            },
+                        },
+                    },
+                },
+                {
+                    id: 'message3',
+                    kind: 'message',
+                    settings: {
+                        message: {
+                            content: {
+                                text: 'Message 3',
+                                html: '<p>Message 3</p>',
+                                text_tkey: 'Message 3',
+                                html_tkey: '<p>Message 3</p>',
+                            },
+                        },
+                    },
+                },
+                {
+                    id: 'message4',
+                    kind: 'message',
+                    settings: {
+                        message: {
+                            content: {
+                                text: 'Message 4',
+                                html: '<p>Message 4</p>',
+                                text_tkey: 'Message 4',
+                                html_tkey: '<p>Message 4</p>',
+                            },
+                        },
+                    },
+                },
+            ],
+            transitions: [
+                {
+                    id: 'message1-message2',
+                    from_step_id: 'message1',
+                    to_step_id: 'message2',
+                },
+                {
+                    id: 'message2-message3',
+                    from_step_id: 'message2',
+                    to_step_id: 'message3',
+                },
+                {
+                    id: 'message3-message4',
+                    from_step_id: 'message3',
+                    to_step_id: 'message4',
+                },
+            ],
+            available_languages: ['en-US'],
+        }
+
+        mockUseGetWorkflowConfiguration.mockReturnValue({
+            isInitialLoading: false,
+            data: configuration,
+        } as unknown as ReturnType<typeof useGetWorkflowConfiguration>)
+
+        mockUseUpsertWorkflowConfiguration.mockReturnValue({
+            mutateAsync: jest.fn().mockImplementation(([, { is_draft }]) => {
+                configuration = produce(configuration, (draft) => {
+                    draft.is_draft = is_draft
+                })
+                return { data: configuration }
+            }),
+        } as unknown as ReturnType<typeof useUpsertWorkflowConfiguration>)
+
+        const { result } = renderHookWithQueryClientProvider(() =>
+            useWorkflowEditor(configuration.id, false),
+        )
+
+        act(() => {
+            jest.advanceTimersByTime(2000)
+        })
+        expect(result.current.isDirty).toBe(false)
+
+        expect(result.current.isFetchPending).toBe(false)
+        expect(result.current.configuration.steps).toHaveLength(4)
+        expect(result.current.configuration.transitions).toHaveLength(3)
+
+        act(() => {
+            // Update the name
+            result.current.dispatch({
+                type: 'SET_NAME',
+                name: 'Updated Test Flow',
+            })
+        })
+
+        // flow updated immediately, dirty should be false
+        expect(result.current.isDirty).toBe(false)
+        expect(result.current.visualBuilderGraph.name).toBe('Updated Test Flow')
+
+        act(() => {
+            jest.advanceTimersByTime(2000)
+        })
+        expect(result.current.isDirty).toBe(true)
     })
 })

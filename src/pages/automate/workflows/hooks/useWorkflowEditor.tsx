@@ -12,6 +12,7 @@ import { useQueryClient } from '@tanstack/react-query'
 import { produce } from 'immer'
 
 import { WorkflowStepMetricsMap } from 'hooks/reporting/automate/utils'
+import useDebouncedValue from 'hooks/useDebouncedValue'
 import useThrottledValue from 'hooks/useThrottledValue'
 import { IntegrationType } from 'models/integration/constants'
 import {
@@ -22,7 +23,10 @@ import {
 import useValidateOnVisualBuilderGraphChange from 'pages/automate/actionsPlatform/hooks/useValidateOnVisualBuilderGraphChange'
 import { useSelfServiceStoreIntegrationContext } from 'pages/automate/common/hooks/useSelfServiceStoreIntegration'
 
-import { MAX_CONFIGURATION_SIZE_IN_BYTES } from '../constants'
+import {
+    MAX_CONFIGURATION_SIZE_IN_BYTES,
+    MIN_DEBOUNCE_STEP_COUNT,
+} from '../constants'
 import { getWorkflowVariableListForNode } from '../models/variables.model'
 import {
     areGraphsEqual,
@@ -171,7 +175,10 @@ export function useWorkflowEditor(
         ),
     )
 
-    const bypassValidation = visualBuilderGraphDirty.nodes.length > 300
+    const changeCheckDebounce =
+        visualBuilderGraphDirty.nodes.length > MIN_DEBOUNCE_STEP_COUNT
+            ? 1500
+            : 0
 
     const {
         areTranslationsDirty,
@@ -254,18 +261,21 @@ export function useWorkflowEditor(
         )
     }, [dispatch, remoteConfiguration, storeIntegration.type])
 
+    const debouncedDirtyGraph = useDebouncedValue(
+        visualBuilderGraphDirty,
+        changeCheckDebounce,
+    )
+
     const isVisualBuilderGraphDirty = useMemo(
         () =>
-            bypassValidation ||
             !areGraphsEqual(
                 translateWithSavedTranslations(visualBuilderGraph),
-                visualBuilderGraphDirty,
+                debouncedDirtyGraph,
             ),
         [
-            bypassValidation,
-            visualBuilderGraph,
-            visualBuilderGraphDirty,
+            debouncedDirtyGraph,
             translateWithSavedTranslations,
+            visualBuilderGraph,
         ],
     )
     const isDirty = isVisualBuilderGraphDirty || areTranslationsDirty
@@ -311,7 +321,7 @@ export function useWorkflowEditor(
         graph: visualBuilderGraphDirty,
         handleValidate: handleValidateGraph,
         dispatch,
-        bypassValidation,
+        changeCheckDebounce,
     })
 
     const handleValidate = useCallback(
