@@ -107,6 +107,7 @@ const Drawer = ({
                             : '0ms',
                         transitionDuration: `${transitionDurationMs / 2}ms`,
                     }}
+                    role="presentation"
                     onClick={onBackdropClick}
                 />
             )}
@@ -127,6 +128,9 @@ const Drawer = ({
                     className,
                 )}
                 {...(!open ? { inert: '' } : {})}
+                role="dialog"
+                aria-modal="true"
+                hidden={!open}
             >
                 {isLoading ? (
                     <Container fluid className="page-container">

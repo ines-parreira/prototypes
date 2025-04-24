@@ -25,10 +25,45 @@ import useLocalStorage from 'hooks/useLocalStorage'
 import { useSearchParam } from 'hooks/useSearchParam'
 import { Tag } from 'models/aiAgent/types'
 import { HelpCenter } from 'models/helpCenter/types'
+import { AiAgentConfigurationModal } from 'pages/aiAgent/AiAgentConfigurationView/AiAgentConfigurationModal'
+import PostCompletionWizardModal from 'pages/aiAgent/AiAgentOnboardingWizard/PostCompletionWizardModal'
+import { TicketPreview } from 'pages/aiAgent/AiAgentOnboardingWizard/TicketPreview'
+import { AIAgentIntroduction } from 'pages/aiAgent/components/AIAgentIntroduction/AIAgentIntroduction'
+import { AiAgentPreviewModeSection } from 'pages/aiAgent/components/AIAgentPreviewModeSection/AiAgentPreviewModeSection'
+import { HandoverTopicsModal } from 'pages/aiAgent/components/HandoverTopicsModel/HandoverTopicsModal'
+import { PublicSourcesSection } from 'pages/aiAgent/components/PublicSourcesSection/PublicSourcesSection'
+import { ChannelsFormComponent } from 'pages/aiAgent/components/StoreConfigForm/FormComponents/ChannelsFormComponent'
+import { CustomFieldsFormComponent } from 'pages/aiAgent/components/StoreConfigForm/FormComponents/CustomFieldsFormComponent'
+import { StoreConfigUnsavedChangesPrompt } from 'pages/aiAgent/components/StoreConfigForm/FormComponents/StoreConfigUnsavedChangesPrompt'
+import { ToneOfVoiceFormComponent } from 'pages/aiAgent/components/StoreConfigForm/FormComponents/ToneOfVoiceFormComponent'
+import css from 'pages/aiAgent/components/StoreConfigForm/StoreConfigForm.less'
+import { isPreviewModeActivated } from 'pages/aiAgent/components/StoreConfigForm/StoreConfigForm.utils'
+import TagList from 'pages/aiAgent/components/TicketTag/TagList'
+import {
+    INITIAL_FORM_VALUES,
+    StoreConfigFormSection,
+    WIZARD_POST_COMPLETION_QUERY_KEY,
+    WIZARD_POST_COMPLETION_STATE,
+} from 'pages/aiAgent/constants'
+import { useAccountStoreConfiguration } from 'pages/aiAgent/hooks/useAccountStoreConfiguration'
+import { useAiAgentEnabled } from 'pages/aiAgent/hooks/useAiAgentEnabled'
+import { useAiAgentOnboardingNotification } from 'pages/aiAgent/hooks/useAiAgentOnboardingNotification'
+import useCustomToneOfVoicePreview from 'pages/aiAgent/hooks/useCustomToneOfVoicePreview'
+import { useFileIngestion } from 'pages/aiAgent/hooks/useFileIngestion'
+import { useGetOrCreateSnippetHelpCenter } from 'pages/aiAgent/hooks/useGetOrCreateSnippetHelpCenter'
+import { usePublicResources } from 'pages/aiAgent/hooks/usePublicResources'
 import { useStoreConfigurationForm } from 'pages/aiAgent/hooks/useStoreConfigurationForm'
 import { getFormValuesFromStoreConfiguration } from 'pages/aiAgent/hooks/utils/configurationForm.utils'
 import { useAiAgentFormChangesContext } from 'pages/aiAgent/providers/AiAgentFormChangesContext'
+import { useAiAgentStoreConfigurationContext } from 'pages/aiAgent/providers/AiAgentStoreConfigurationContext'
 import { FormValues } from 'pages/aiAgent/types'
+import { isHandoffEnabled } from 'pages/aiAgent/util'
+import {
+    SettingsCard,
+    SettingsCardContent,
+    SettingsCardHeader,
+    SettingsCardTitle,
+} from 'pages/common/components/SettingsCard'
 import IconTooltip from 'pages/common/forms/IconTooltip/IconTooltip'
 import history from 'pages/history'
 import { getIntegrationsByTypes } from 'state/integrations/selectors'
@@ -36,38 +71,8 @@ import { notify } from 'state/notifications/actions'
 import { NotificationStatus } from 'state/notifications/types'
 import { reportError } from 'utils/errors'
 
-// Relative Imports
-
-import { AiAgentConfigurationModal } from '../../AiAgentConfigurationView/AiAgentConfigurationModal'
-import PostCompletionWizardModal from '../../AiAgentOnboardingWizard/PostCompletionWizardModal'
-import { TicketPreview } from '../../AiAgentOnboardingWizard/TicketPreview'
-import {
-    INITIAL_FORM_VALUES,
-    StoreConfigFormSection,
-    WIZARD_POST_COMPLETION_QUERY_KEY,
-    WIZARD_POST_COMPLETION_STATE,
-} from '../../constants'
-import { useAccountStoreConfiguration } from '../../hooks/useAccountStoreConfiguration'
-import { useAiAgentEnabled } from '../../hooks/useAiAgentEnabled'
-import { useAiAgentOnboardingNotification } from '../../hooks/useAiAgentOnboardingNotification'
-import useCustomToneOfVoicePreview from '../../hooks/useCustomToneOfVoicePreview'
-import { useFileIngestion } from '../../hooks/useFileIngestion'
-import { useGetOrCreateSnippetHelpCenter } from '../../hooks/useGetOrCreateSnippetHelpCenter'
-import { usePublicResources } from '../../hooks/usePublicResources'
-import { useAiAgentStoreConfigurationContext } from '../../providers/AiAgentStoreConfigurationContext'
-import { isHandoffEnabled } from '../../util'
-import { AIAgentIntroduction } from '../AIAgentIntroduction/AIAgentIntroduction'
-import { AiAgentPreviewModeSection } from '../AIAgentPreviewModeSection/AiAgentPreviewModeSection'
-import { HandoverTopicsModal } from '../HandoverTopicsModel/HandoverTopicsModal'
-import { PublicSourcesSection } from '../PublicSourcesSection/PublicSourcesSection'
-import TagList from '../TicketTag/TagList'
-import { ChannelsFormComponent } from './FormComponents/ChannelsFormComponent'
-import { CustomFieldsFormComponent } from './FormComponents/CustomFieldsFormComponent'
-import { StoreConfigUnsavedChangesPrompt } from './FormComponents/StoreConfigUnsavedChangesPrompt'
-import { ToneOfVoiceFormComponent } from './FormComponents/ToneOfVoiceFormComponent'
-import { isPreviewModeActivated } from './StoreConfigForm.utils'
-
-import css from './StoreConfigForm.less'
+import { SettingsFeatureRow } from './FormComponents/SettingsFeatureRow'
+import { StoreConfigDrawer } from './FormComponents/StoreConfigDrawer'
 
 const AI_SETTINGS_TICKET_VIEW_MODAL_VIEWED =
     'ai-settings-ticket-view-modal-viewed'
@@ -94,6 +99,7 @@ export const StoreConfigForm = ({
     const isStandaloneMenuEnabled = flags[FeatureFlagKey.ConvAiStandaloneMenu]
     const isAiAutofillSectionEnabled =
         flags[FeatureFlagKey.AiAgentUsesStoreConfigurationCustomFields]
+    const isSettingsRevampEnabled = flags[FeatureFlagKey.AiAgentSettingsRevamp]
 
     // Because this component is heavy and difficult to rework
     // Standalone team decided to add the capability to show/hide some sections based on the current route (tab param)
@@ -279,6 +285,7 @@ export const StoreConfigForm = ({
                     previewModeActivatedDatetime: null,
                     previewModeValidUntilDatetime: null,
                 })
+
                 if (!silentUpdate) {
                     void dispatch(
                         notify({
@@ -437,6 +444,8 @@ export const StoreConfigForm = ({
                         shopName,
                     ])
                 }
+
+                setIsDrawerOpen(false)
             },
         })
     }, [
@@ -543,6 +552,71 @@ export const StoreConfigForm = ({
         )
     }, [setActionCallback, onSubmit, resetForm, tab])
 
+    const [isDrawerOpen, setIsDrawerOpen] = useState(false)
+    const [activeDrawerContent, setActiveDrawerContent] = useState<
+        'tags' | 'customFieldIds'
+    >('tags')
+    const [activeDrawerValues, setActiveDrawerValues] = useState<{
+        tags: Tag[]
+        customFieldIds: number[]
+    }>({
+        tags: formValues.tags ?? [],
+        customFieldIds: formValues.customFieldIds ?? [],
+    })
+
+    const onSaveDrawer = async () => {
+        const updatedFormValues = {
+            ...formValues,
+            [activeDrawerContent]: activeDrawerValues[activeDrawerContent],
+        }
+        Object.assign(formValues, updatedFormValues)
+        updateValue(
+            activeDrawerContent,
+            activeDrawerValues[activeDrawerContent],
+        )
+        onSubmit()
+    }
+
+    const onCloseDrawer = () => {
+        setIsDrawerOpen(false)
+        setActiveDrawerValues({
+            tags: formValues.tags ?? [],
+            customFieldIds: formValues.customFieldIds ?? [],
+        })
+    }
+
+    const drawerContent = {
+        tags: {
+            content: (
+                <TagList
+                    tags={activeDrawerValues.tags ?? []}
+                    onTagsUpdate={(tags: Tag[]) => {
+                        setActiveDrawerValues({ ...activeDrawerValues, tags })
+                    }}
+                />
+            ),
+            title: 'Tags',
+            values: formValues.tags,
+        },
+        customFieldIds: {
+            content: (
+                <CustomFieldsFormComponent
+                    data-testid="ai-agent-store-configuration-custom-fields-form-component"
+                    updateValue={(key, value) =>
+                        setActiveDrawerValues({
+                            ...activeDrawerValues,
+                            [key]: value,
+                        })
+                    }
+                    customFieldIds={activeDrawerValues.customFieldIds}
+                    isStoreCreated={!isCreate}
+                />
+            ),
+            title: 'Ticket Fields',
+            values: formValues.customFieldIds,
+        },
+    }
+
     return (
         <>
             <StoreConfigUnsavedChangesPrompt />
@@ -629,55 +703,63 @@ export const StoreConfigForm = ({
 
                     {shouldDisplayGeneralSections && (
                         <>
-                            {isAiAutofillSectionEnabled && (
-                                <section>
-                                    <h2
-                                        className={classNames(
-                                            'mb-2',
-                                            css.sectionHeader,
-                                        )}
-                                    >
-                                        AI Autofill: Tags & Ticket Fields
-                                    </h2>
-                                    <div className={css.sectionDescription}>
-                                        Tags and Ticket Fields selected will be
-                                        filled out automatically by AI Agent,
-                                        helping categorize and prioritize
-                                        tickets with less manual work.
-                                    </div>
-                                    <div className={css.formGroup}>
-                                        <Label className={css.subsectionHeader}>
-                                            Tags
-                                        </Label>
-                                        <div
-                                            className={css.formGroupDescription}
+                            {isAiAutofillSectionEnabled &&
+                                !isSettingsRevampEnabled && (
+                                    <section>
+                                        <h2
+                                            className={classNames(
+                                                'mb-2',
+                                                css.sectionHeader,
+                                            )}
                                         >
-                                            Choose which tags AI Agent should
-                                            apply to tickets.{' '}
-                                            <Link
-                                                to={'/app/settings/manage-tags'}
-                                            >
-                                                Manage tags
-                                            </Link>
-                                            .
+                                            AI Autofill: Tags & Ticket Fields
+                                        </h2>
+                                        <div className={css.sectionDescription}>
+                                            Tags and Ticket Fields selected will
+                                            be filled out automatically by AI
+                                            Agent, helping categorize and
+                                            prioritize tickets with less manual
+                                            work.
                                         </div>
-                                        <TagList
-                                            tags={formValues.tags ?? []}
-                                            onTagsUpdate={(tags: Tag[]) => {
-                                                updateValue('tags', tags)
-                                            }}
+                                        <div className={css.formGroup}>
+                                            <Label
+                                                className={css.subsectionHeader}
+                                            >
+                                                Tags
+                                            </Label>
+                                            <div
+                                                className={
+                                                    css.formGroupDescription
+                                                }
+                                            >
+                                                Choose which tags AI Agent
+                                                should apply to tickets.{' '}
+                                                <Link
+                                                    to={
+                                                        '/app/settings/manage-tags'
+                                                    }
+                                                >
+                                                    Manage tags
+                                                </Link>
+                                                .
+                                            </div>
+                                            <TagList
+                                                tags={formValues.tags ?? []}
+                                                onTagsUpdate={(tags: Tag[]) => {
+                                                    updateValue('tags', tags)
+                                                }}
+                                            />
+                                        </div>
+                                        <CustomFieldsFormComponent
+                                            data-testid="ai-agent-store-configuration-custom-fields-form-component"
+                                            updateValue={updateValue}
+                                            customFieldIds={
+                                                formValues.customFieldIds
+                                            }
+                                            isStoreCreated={!isCreate}
                                         />
-                                    </div>
-                                    <CustomFieldsFormComponent
-                                        data-testid="ai-agent-store-configuration-custom-fields-form-component"
-                                        updateValue={updateValue}
-                                        customFieldIds={
-                                            formValues.customFieldIds
-                                        }
-                                        isStoreCreated={!isCreate}
-                                    />
-                                </section>
-                            )}
+                                    </section>
+                                )}
                             <section>
                                 <h2
                                     className={classNames(
@@ -772,43 +854,110 @@ export const StoreConfigForm = ({
                                 </div>
                             </section>
 
-                            {!isAiAutofillSectionEnabled && (
+                            {isSettingsRevampEnabled && (
                                 <section>
-                                    <h2
-                                        className={classNames(
-                                            css.sectionHeader,
-                                            'mb-2',
-                                        )}
-                                    >
-                                        AI ticket tagging
-                                        <IconTooltip
-                                            className={css.taggingTooltip}
-                                            tooltipProps={{
-                                                placement: 'top-start',
-                                            }}
-                                        >
-                                            Provide quick instructions in
-                                            everyday speech, and let AI Agent
-                                            handle the rest, saving you time and
-                                            ensuring consistent categorization.
-                                        </IconTooltip>
-                                    </h2>
-                                    <div className={css.sectionDescription}>
-                                        Use AI tagging to let AI Agent
-                                        automatically label tickets based on
-                                        their content.
-                                    </div>
-
-                                    <TagList
-                                        tags={formValues.tags ?? []}
-                                        onTagsUpdate={(tags: Tag[]) => {
-                                            updateValue('tags', tags)
-                                        }}
-                                    />
+                                    <SettingsCard>
+                                        <SettingsCardHeader>
+                                            <SettingsCardTitle>
+                                                AI ticket tagging
+                                            </SettingsCardTitle>
+                                            <p>
+                                                Tags and Ticket Fields selected
+                                                will be filled out automatically
+                                                by AI Agent, helping categorize
+                                                and prioritize tickets with less
+                                                manual work.
+                                            </p>
+                                        </SettingsCardHeader>
+                                        <SettingsCardContent>
+                                            <SettingsFeatureRow
+                                                title="Tags"
+                                                description="Provide quick instructions in
+                                                    everyday speech, and let AI Agent
+                                                    handle the rest, saving you time and
+                                                    ensuring consistent categorization."
+                                                nbFeatures={
+                                                    formValues.tags?.length ?? 0
+                                                }
+                                                badgeText={
+                                                    formValues.tags?.length ===
+                                                    0
+                                                        ? 'No tags'
+                                                        : `${formValues.tags?.length} tags`
+                                                }
+                                                onClick={() => {
+                                                    setIsDrawerOpen(true)
+                                                    setActiveDrawerContent(
+                                                        'tags',
+                                                    )
+                                                }}
+                                            />
+                                            <SettingsFeatureRow
+                                                title="Ticket Fields"
+                                                description=" Tags and Ticket Fields selected will be
+                                                        filled out automatically by AI Agent,
+                                                        helping categorize and prioritize
+                                                        tickets with less manual work."
+                                                nbFeatures={
+                                                    formValues.customFieldIds
+                                                        ?.length ?? 0
+                                                }
+                                                badgeText={
+                                                    formValues.customFieldIds
+                                                        ?.length === 0
+                                                        ? 'No ticket fields'
+                                                        : `${formValues.customFieldIds?.length} ticket fields`
+                                                }
+                                                onClick={() => {
+                                                    setIsDrawerOpen(true)
+                                                    setActiveDrawerContent(
+                                                        'customFieldIds',
+                                                    )
+                                                }}
+                                            />
+                                        </SettingsCardContent>
+                                    </SettingsCard>
                                 </section>
                             )}
                         </>
                     )}
+
+                    {!isAiAutofillSectionEnabled &&
+                        !isSettingsRevampEnabled &&
+                        shouldDisplayGeneralSections && (
+                            <section>
+                                <h2
+                                    className={classNames(
+                                        css.sectionHeader,
+                                        'mb-2',
+                                    )}
+                                >
+                                    AI ticket tagging
+                                    <IconTooltip
+                                        className={css.taggingTooltip}
+                                        tooltipProps={{
+                                            placement: 'top-start',
+                                        }}
+                                    >
+                                        Provide quick instructions in everyday
+                                        speech, and let AI Agent handle the
+                                        rest, saving you time and ensuring
+                                        consistent categorization.
+                                    </IconTooltip>
+                                </h2>
+                                <div className={css.sectionDescription}>
+                                    Use AI tagging to let AI Agent automatically
+                                    label tickets based on their content.
+                                </div>
+
+                                <TagList
+                                    tags={formValues.tags ?? []}
+                                    onTagsUpdate={(tags: Tag[]) => {
+                                        updateValue('tags', tags)
+                                    }}
+                                />
+                            </section>
+                        )}
 
                     <section>
                         <Button
@@ -848,6 +997,20 @@ export const StoreConfigForm = ({
                     isError={isError}
                 />
             </div>
+            {isSettingsRevampEnabled && (
+                <StoreConfigDrawer
+                    title={drawerContent[activeDrawerContent].title}
+                    open={isDrawerOpen}
+                    onClose={onCloseDrawer}
+                    onSave={onSaveDrawer}
+                    isLoading={
+                        isPendingCreateOrUpdate ||
+                        isLoadingOnboardingNotificationState
+                    }
+                >
+                    {drawerContent[activeDrawerContent].content}
+                </StoreConfigDrawer>
+            )}
             <PostCompletionWizardModal />
             <HandoverTopicsModal
                 isOpen={isHandoverTopicsModalOpen}

@@ -1,0 +1,17 @@
+@import (reference) '~@gorgias/design-tokens/dist/css/layout';
+@import (reference) '~css/typography';
+
+:local {
+    .drawerHeader {
+        .heading-section-semibold();
+        border-bottom: 1px solid var(--neutral-grey-3);
+    }
+
+    .drawerContent {
+        background-color: var(--neutral-grey-0);
+    }
+
+    .drawerFooter {
+        gap: @layout-spacing-xs;
+    }
+}

@@ -230,12 +230,16 @@ exports[`<HelpCenterArticlesView /> should render the component 1`] = `
     >
       <div
         class="backdrop"
+        role="presentation"
         style="transition-delay: 0ms; transition-duration: 150ms;"
       />
       <div
         aria-label="Category edit"
+        aria-modal="true"
         class="drawer drawer"
+        hidden=""
         inert=""
+        role="dialog"
         style="transition-duration: 300ms;"
       >
         <header

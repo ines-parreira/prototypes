@@ -8,10 +8,13 @@ exports[`<Drawer/> should display the component correctly 1`] = `
   >
     <div
       class="backdrop opened"
+      role="presentation"
       style="transition-delay: 150ms; transition-duration: 150ms;"
     />
     <div
+      aria-modal="true"
       class="drawer opened"
+      role="dialog"
       style="transition-duration: 300ms;"
     >
       Modal content
@@ -28,10 +31,13 @@ exports[`<Drawer/> should display the component in fullscreen mode correctly 1`]
   >
     <div
       class="backdrop opened"
+      role="presentation"
       style="transition-delay: 150ms; transition-duration: 150ms;"
     />
     <div
+      aria-modal="true"
       class="drawer fullscreen opened"
+      role="dialog"
       style="transition-duration: 300ms;"
     >
       Modal content

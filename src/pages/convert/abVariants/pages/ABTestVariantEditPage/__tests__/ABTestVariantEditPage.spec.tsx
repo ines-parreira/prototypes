@@ -1,5 +1,3 @@
-import React from 'react'
-
 import { QueryClientProvider } from '@tanstack/react-query'
 import { render } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
@@ -121,7 +119,7 @@ describe('<ABTestVariantEditPage />', () => {
             userEvent.click(getByRole('button', { name: 'Update Control' }))
 
             // Should get whole campaign data
-            expect(onUpdateMock).toBeCalledWith(fromJS(campaignData))
+            expect(onUpdateMock).toHaveBeenCalledWith(fromJS(campaignData))
         })
     })
 
@@ -141,7 +139,7 @@ describe('<ABTestVariantEditPage />', () => {
         })
 
         it('user discards changes', () => {
-            const { getByText, getByRole, getAllByRole } = renderComponent({
+            const { getByText, getByRole } = renderComponent({
                 isControlVersion: false,
                 onCreate: onCreateMock,
                 onDiscard: onDiscardMock,
@@ -149,10 +147,10 @@ describe('<ABTestVariantEditPage />', () => {
             expect(getByText('Set up the basics')).toBeInTheDocument()
             expect(getByRole('button', { name: 'Create' })).toBeInTheDocument()
 
-            userEvent.click(getAllByRole('button', { name: 'Cancel' })[1])
+            userEvent.click(getByRole('button', { name: 'Cancel' }))
 
-            expect(onCreateMock).not.toBeCalled()
-            expect(onDiscardMock).toBeCalled()
+            expect(onCreateMock).not.toHaveBeenCalled()
+            expect(onDiscardMock).toHaveBeenCalled()
         })
     })
 
@@ -192,7 +190,7 @@ describe('<ABTestVariantEditPage />', () => {
             userEvent.click(getByRole('button', { name: 'Update Variant' }))
 
             // Should get whole campaign data
-            expect(onUpdateMock).toBeCalledWith(
+            expect(onUpdateMock).toHaveBeenCalledWith(
                 fromJS(campaignData),
                 'variant-id',
             )
@@ -207,7 +205,7 @@ describe('<ABTestVariantEditPage />', () => {
 
             userEvent.click(getByRole('button', { name: 'Duplicate Variant' }))
 
-            expect(onDuplicateVariantMock).toBeCalledWith('variant-id')
+            expect(onDuplicateVariantMock).toHaveBeenCalledWith('variant-id')
         })
     })
 })

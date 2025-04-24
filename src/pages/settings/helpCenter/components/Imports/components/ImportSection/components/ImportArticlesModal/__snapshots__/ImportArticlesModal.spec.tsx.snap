@@ -30,11 +30,22 @@ exports[`<ImportArticlesModal /> snapshots file selected 1`] = `
               class="subtitle"
             />
           </div>
-          <i
-            class="material-icons icon"
+          <button
+            aria-disabled="false"
+            class="ui-button-wrapper-a432 material-icons icon ui-iconbutton-wrapper-7e5b ui-iconbutton-medium-7e5b ui-button-ghost-a432 ui-button-secondary-a432"
+            type="button"
           >
-            close
-          </i>
+            <span
+              class="ui-button-content-a432"
+            >
+              <i
+                aria-hidden="true"
+                class="material-icons ui-buttonicon-icon-74a9 ui-buttonicon-medium-74a9 material-icons"
+              >
+                close
+              </i>
+            </span>
+          </button>
         </div>
         <div
           class="wrapper"
@@ -149,11 +160,22 @@ exports[`<ImportArticlesModal /> snapshots import in progress 1`] = `
               class="subtitle"
             />
           </div>
-          <i
-            class="material-icons icon"
+          <button
+            aria-disabled="false"
+            class="ui-button-wrapper-a432 material-icons icon ui-iconbutton-wrapper-7e5b ui-iconbutton-medium-7e5b ui-button-ghost-a432 ui-button-secondary-a432"
+            type="button"
           >
-            close
-          </i>
+            <span
+              class="ui-button-content-a432"
+            >
+              <i
+                aria-hidden="true"
+                class="material-icons ui-buttonicon-icon-74a9 ui-buttonicon-medium-74a9 material-icons"
+              >
+                close
+              </i>
+            </span>
+          </button>
         </div>
         <div
           class="wrapper"
@@ -209,11 +231,22 @@ exports[`<ImportArticlesModal /> snapshots loading providers 1`] = `
               class="subtitle"
             />
           </div>
-          <i
-            class="material-icons icon"
+          <button
+            aria-disabled="false"
+            class="ui-button-wrapper-a432 material-icons icon ui-iconbutton-wrapper-7e5b ui-iconbutton-medium-7e5b ui-button-ghost-a432 ui-button-secondary-a432"
+            type="button"
           >
-            close
-          </i>
+            <span
+              class="ui-button-content-a432"
+            >
+              <i
+                aria-hidden="true"
+                class="material-icons ui-buttonicon-icon-74a9 ui-buttonicon-medium-74a9 material-icons"
+              >
+                close
+              </i>
+            </span>
+          </button>
         </div>
         <div
           class="wrapper"
@@ -348,11 +381,22 @@ exports[`<ImportArticlesModal /> snapshots migration feature disabled 1`] = `
               class="subtitle"
             />
           </div>
-          <i
-            class="material-icons icon"
+          <button
+            aria-disabled="false"
+            class="ui-button-wrapper-a432 material-icons icon ui-iconbutton-wrapper-7e5b ui-iconbutton-medium-7e5b ui-button-ghost-a432 ui-button-secondary-a432"
+            type="button"
           >
-            close
-          </i>
+            <span
+              class="ui-button-content-a432"
+            >
+              <i
+                aria-hidden="true"
+                class="material-icons ui-buttonicon-icon-74a9 ui-buttonicon-medium-74a9 material-icons"
+              >
+                close
+              </i>
+            </span>
+          </button>
         </div>
         <div
           class="wrapper"
@@ -441,11 +485,22 @@ exports[`<ImportArticlesModal /> snapshots no file selected 1`] = `
               class="subtitle"
             />
           </div>
-          <i
-            class="material-icons icon"
+          <button
+            aria-disabled="false"
+            class="ui-button-wrapper-a432 material-icons icon ui-iconbutton-wrapper-7e5b ui-iconbutton-medium-7e5b ui-button-ghost-a432 ui-button-secondary-a432"
+            type="button"
           >
-            close
-          </i>
+            <span
+              class="ui-button-content-a432"
+            >
+              <i
+                aria-hidden="true"
+                class="material-icons ui-buttonicon-icon-74a9 ui-buttonicon-medium-74a9 material-icons"
+              >
+                close
+              </i>
+            </span>
+          </button>
         </div>
         <div
           class="wrapper"
@@ -572,11 +627,22 @@ exports[`<ImportArticlesModal /> snapshots providers fetching error 1`] = `
               class="subtitle"
             />
           </div>
-          <i
-            class="material-icons icon"
+          <button
+            aria-disabled="false"
+            class="ui-button-wrapper-a432 material-icons icon ui-iconbutton-wrapper-7e5b ui-iconbutton-medium-7e5b ui-button-ghost-a432 ui-button-secondary-a432"
+            type="button"
           >
-            close
-          </i>
+            <span
+              class="ui-button-content-a432"
+            >
+              <i
+                aria-hidden="true"
+                class="material-icons ui-buttonicon-icon-74a9 ui-buttonicon-medium-74a9 material-icons"
+              >
+                close
+              </i>
+            </span>
+          </button>
         </div>
         <div
           class="wrapper"

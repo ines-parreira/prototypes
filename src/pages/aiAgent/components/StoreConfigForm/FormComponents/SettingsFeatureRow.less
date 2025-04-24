@@ -1,0 +1,24 @@
+@import (reference) '~@gorgias/design-tokens/dist/css/layout.less';
+
+:local {
+    .featureRow {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        cursor: pointer;
+    }
+
+    .featureRowContent,
+    .featureRowActions {
+        display: flex;
+        align-items: center;
+    }
+
+    .featureRowContent {
+        gap: @layout-spacing-xxs;
+    }
+
+    .featureRowActions {
+        gap: @layout-spacing-xs;
+    }
+}

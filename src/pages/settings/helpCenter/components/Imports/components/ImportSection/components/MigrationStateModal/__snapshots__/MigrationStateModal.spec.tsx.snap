@@ -30,11 +30,22 @@ exports[`<MigrationStateModal /> snapshots Completely failed 1`] = `
               class="subtitle"
             />
           </div>
-          <i
-            class="material-icons icon"
+          <button
+            aria-disabled="false"
+            class="ui-button-wrapper-a432 material-icons icon ui-iconbutton-wrapper-7e5b ui-iconbutton-medium-7e5b ui-button-ghost-a432 ui-button-secondary-a432"
+            type="button"
           >
-            close
-          </i>
+            <span
+              class="ui-button-content-a432"
+            >
+              <i
+                aria-hidden="true"
+                class="material-icons ui-buttonicon-icon-74a9 ui-buttonicon-medium-74a9 material-icons"
+              >
+                close
+              </i>
+            </span>
+          </button>
         </div>
         <div
           class="wrapper wrapper"
@@ -567,11 +578,22 @@ exports[`<MigrationStateModal /> snapshots Connected 1`] = `
               class="subtitle"
             />
           </div>
-          <i
-            class="material-icons icon"
+          <button
+            aria-disabled="false"
+            class="ui-button-wrapper-a432 material-icons icon ui-iconbutton-wrapper-7e5b ui-iconbutton-medium-7e5b ui-button-ghost-a432 ui-button-secondary-a432"
+            type="button"
           >
-            close
-          </i>
+            <span
+              class="ui-button-content-a432"
+            >
+              <i
+                aria-hidden="true"
+                class="material-icons ui-buttonicon-icon-74a9 ui-buttonicon-medium-74a9 material-icons"
+              >
+                close
+              </i>
+            </span>
+          </button>
         </div>
         <div
           class="wrapper wrapper"
@@ -680,11 +702,22 @@ exports[`<MigrationStateModal /> snapshots In progress with failures 1`] = `
               class="subtitle"
             />
           </div>
-          <i
-            class="material-icons icon"
+          <button
+            aria-disabled="false"
+            class="ui-button-wrapper-a432 material-icons icon ui-iconbutton-wrapper-7e5b ui-iconbutton-medium-7e5b ui-button-ghost-a432 ui-button-secondary-a432"
+            type="button"
           >
-            close
-          </i>
+            <span
+              class="ui-button-content-a432"
+            >
+              <i
+                aria-hidden="true"
+                class="material-icons ui-buttonicon-icon-74a9 ui-buttonicon-medium-74a9 material-icons"
+              >
+                close
+              </i>
+            </span>
+          </button>
         </div>
         <div
           class="wrapper wrapper"
@@ -1100,11 +1133,22 @@ exports[`<MigrationStateModal /> snapshots In progress without failures 1`] = `
               class="subtitle"
             />
           </div>
-          <i
-            class="material-icons icon"
+          <button
+            aria-disabled="false"
+            class="ui-button-wrapper-a432 material-icons icon ui-iconbutton-wrapper-7e5b ui-iconbutton-medium-7e5b ui-button-ghost-a432 ui-button-secondary-a432"
+            type="button"
           >
-            close
-          </i>
+            <span
+              class="ui-button-content-a432"
+            >
+              <i
+                aria-hidden="true"
+                class="material-icons ui-buttonicon-icon-74a9 ui-buttonicon-medium-74a9 material-icons"
+              >
+                close
+              </i>
+            </span>
+          </button>
         </div>
         <div
           class="wrapper wrapper"
@@ -1333,11 +1377,22 @@ exports[`<MigrationStateModal /> snapshots Migration start loading 1`] = `
               class="subtitle"
             />
           </div>
-          <i
-            class="material-icons icon"
+          <button
+            aria-disabled="false"
+            class="ui-button-wrapper-a432 material-icons icon ui-iconbutton-wrapper-7e5b ui-iconbutton-medium-7e5b ui-button-ghost-a432 ui-button-secondary-a432"
+            type="button"
           >
-            close
-          </i>
+            <span
+              class="ui-button-content-a432"
+            >
+              <i
+                aria-hidden="true"
+                class="material-icons ui-buttonicon-icon-74a9 ui-buttonicon-medium-74a9 material-icons"
+              >
+                close
+              </i>
+            </span>
+          </button>
         </div>
         <div
           class="wrapper wrapper"
@@ -1476,11 +1531,22 @@ exports[`<MigrationStateModal /> snapshots Partially succeeded 1`] = `
               class="subtitle"
             />
           </div>
-          <i
-            class="material-icons icon"
+          <button
+            aria-disabled="false"
+            class="ui-button-wrapper-a432 material-icons icon ui-iconbutton-wrapper-7e5b ui-iconbutton-medium-7e5b ui-button-ghost-a432 ui-button-secondary-a432"
+            type="button"
           >
-            close
-          </i>
+            <span
+              class="ui-button-content-a432"
+            >
+              <i
+                aria-hidden="true"
+                class="material-icons ui-buttonicon-icon-74a9 ui-buttonicon-medium-74a9 material-icons"
+              >
+                close
+              </i>
+            </span>
+          </button>
         </div>
         <div
           class="wrapper wrapper"
@@ -1863,11 +1929,22 @@ exports[`<MigrationStateModal /> snapshots Succeeded 1`] = `
               class="subtitle"
             />
           </div>
-          <i
-            class="material-icons icon"
+          <button
+            aria-disabled="false"
+            class="ui-button-wrapper-a432 material-icons icon ui-iconbutton-wrapper-7e5b ui-iconbutton-medium-7e5b ui-button-ghost-a432 ui-button-secondary-a432"
+            type="button"
           >
-            close
-          </i>
+            <span
+              class="ui-button-content-a432"
+            >
+              <i
+                aria-hidden="true"
+                class="material-icons ui-buttonicon-icon-74a9 ui-buttonicon-medium-74a9 material-icons"
+              >
+                close
+              </i>
+            </span>
+          </button>
         </div>
         <div
           class="wrapper wrapper"

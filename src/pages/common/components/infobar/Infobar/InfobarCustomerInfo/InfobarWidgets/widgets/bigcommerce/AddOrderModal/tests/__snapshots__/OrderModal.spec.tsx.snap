@@ -34,11 +34,22 @@ exports[`OrderModal should render Create Order 1`] = `
               class="subtitle"
             />
           </div>
-          <i
-            class="material-icons icon"
+          <button
+            aria-disabled="false"
+            class="ui-button-wrapper-a432 material-icons icon ui-iconbutton-wrapper-7e5b ui-iconbutton-medium-7e5b ui-button-ghost-a432 ui-button-secondary-a432"
+            type="button"
           >
-            close
-          </i>
+            <span
+              class="ui-button-content-a432"
+            >
+              <i
+                aria-hidden="true"
+                class="material-icons ui-buttonicon-icon-74a9 ui-buttonicon-medium-74a9 material-icons"
+              >
+                close
+              </i>
+            </span>
+          </button>
         </div>
         <div
           aria-expanded="false"
@@ -460,11 +471,22 @@ exports[`OrderModal should render Duplicate Order 1`] = `
               class="subtitle"
             />
           </div>
-          <i
-            class="material-icons icon"
+          <button
+            aria-disabled="false"
+            class="ui-button-wrapper-a432 material-icons icon ui-iconbutton-wrapper-7e5b ui-iconbutton-medium-7e5b ui-button-ghost-a432 ui-button-secondary-a432"
+            type="button"
           >
-            close
-          </i>
+            <span
+              class="ui-button-content-a432"
+            >
+              <i
+                aria-hidden="true"
+                class="material-icons ui-buttonicon-icon-74a9 ui-buttonicon-medium-74a9 material-icons"
+              >
+                close
+              </i>
+            </span>
+          </button>
         </div>
         <div
           aria-expanded="false"

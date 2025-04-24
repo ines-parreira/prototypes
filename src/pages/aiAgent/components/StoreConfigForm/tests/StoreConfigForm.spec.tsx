@@ -3,6 +3,7 @@ import { ComponentProps } from 'react'
 import { QueryClientProvider } from '@tanstack/react-query'
 import { fireEvent, screen, waitFor, within } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
+import { AxiosError } from 'axios'
 import { fromJS } from 'immutable'
 import { mockFlags } from 'jest-launchdarkly-mock'
 import { keyBy } from 'lodash'
@@ -14,24 +15,28 @@ import thunk from 'redux-thunk'
 import { SentryTeam } from 'common/const/sentryTeamNames'
 import { logEvent } from 'common/segment'
 import { FeatureFlagKey } from 'config/featureFlags'
+import { useCustomFieldDefinitions } from 'custom-fields/hooks/queries/useCustomFieldDefinitions'
 import { billingState } from 'fixtures/billing'
 import * as useLocalStorageImports from 'hooks/useLocalStorage'
 import { useSearchParam } from 'hooks/useSearchParam'
 import { AiAgentScope, StoreConfiguration } from 'models/aiAgent/types'
 import { HelpCenter } from 'models/helpCenter/types'
 import { IntegrationType } from 'models/integration/types'
+import { INITIAL_FORM_VALUES, ToneOfVoice } from 'pages/aiAgent/constants'
 import { applicationsAutomationSettingsAiAgentEnabledFixture } from 'pages/aiAgent/fixtures/applicationAutomationSettings.fixture'
 import { mockChatChannels } from 'pages/aiAgent/fixtures/chatChannels.fixture'
 import { useAccountStoreConfiguration } from 'pages/aiAgent/hooks/useAccountStoreConfiguration'
 import { useAiAgentEnabled } from 'pages/aiAgent/hooks/useAiAgentEnabled'
 import { useAiAgentOnboardingNotification } from 'pages/aiAgent/hooks/useAiAgentOnboardingNotification'
 import { useConfigurationForm } from 'pages/aiAgent/hooks/useConfigurationForm'
+import { useFileIngestion } from 'pages/aiAgent/hooks/useFileIngestion'
 import { useGetOrCreateSnippetHelpCenter } from 'pages/aiAgent/hooks/useGetOrCreateSnippetHelpCenter'
 import { usePublicResources } from 'pages/aiAgent/hooks/usePublicResources'
 import { useAiAgentFormChangesContext } from 'pages/aiAgent/providers/AiAgentFormChangesContext'
 import AiAgentFormChangesProvider from 'pages/aiAgent/providers/AiAgentFormChangesProvider'
 import { useAiAgentStoreConfigurationContext } from 'pages/aiAgent/providers/AiAgentStoreConfigurationContext'
 import { FormValues } from 'pages/aiAgent/types'
+import * as util from 'pages/aiAgent/util'
 import useSelfServiceChatChannels from 'pages/automate/common/hooks/useSelfServiceChatChannels'
 import history from 'pages/history'
 import { ContactFormFixture } from 'pages/settings/contactForm/fixtures/contacForm'
@@ -43,11 +48,10 @@ import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 import { reportError } from 'utils/errors'
 import { renderWithRouter } from 'utils/testing'
 
-import { INITIAL_FORM_VALUES, ToneOfVoice } from '../../../constants'
-import * as util from '../../../util'
 import { StoreConfigForm } from '../StoreConfigForm'
 
 const queryClient = mockQueryClient()
+
 jest.mock('utils/errors')
 // eslint-disable-next-line @typescript-eslint/no-unsafe-return
 jest.mock('common/segment', () => ({
@@ -77,7 +81,7 @@ jest.mock('../../PublicSourcesSection/PublicSourcesSection', () => ({
 }))
 
 // This mocked component is a child of one of the components rendered in the StoreConfigForm (ChatConfigurationFormComponent).
-// By implementing this mock, we’re isolating the StoreConfigForm for more focused testing, avoiding not relevant rendering and mocking of components and dependencies that are tested elsewhere.
+// By implementing this mock, we're isolating the StoreConfigForm for more focused testing, avoiding not relevant rendering and mocking of components and dependencies that are tested elsewhere.
 jest.mock(
     '../../HandoverCustomization/HandoverCustomizationChatSettingsComponent',
     () => ({
@@ -111,6 +115,7 @@ jest.mock('hooks/useSearchParam', () => ({
     useSearchParam: jest.fn(),
 }))
 jest.mock('pages/aiAgent/hooks/useAiAgentEnabled')
+
 const mockUseSearchParam = jest.mocked(useSearchParam)
 const mockSetSearchParam = jest.fn()
 
@@ -250,6 +255,20 @@ const renderComponent = (
         </Provider>,
     )
 
+const getDrawer = () => screen.getByRole('dialog')
+
+jest.mock('pages/aiAgent/hooks/useFileIngestion', () => ({
+    useFileIngestion: jest.fn(),
+}))
+
+const mockedUseFileIngestion = jest.mocked(useFileIngestion)
+
+jest.mock('custom-fields/hooks/queries/useCustomFieldDefinitions', () => ({
+    useCustomFieldDefinitions: jest.fn(),
+}))
+
+const mockedUseCustomFieldDefinitions = jest.mocked(useCustomFieldDefinitions)
+
 describe('<StoreConfigForm />', () => {
     const storeConfiguration: StoreConfiguration = {
         shopType: 'shopify',
@@ -384,8 +403,35 @@ describe('<StoreConfigForm />', () => {
         mockUseAiAgentOnboardingNotification.mockReturnValue(
             defaultUseAiAgentOnboardingNotification,
         )
+        mockedUsePublicResources.mockReturnValue({
+            sourceItems: [],
+            isSourceItemsListLoading: false,
+        })
+        mockedUseFileIngestion.mockReturnValue({
+            ingestedFiles: [],
+            isLoading: false,
+            isIngesting: false,
+            ingestFile: jest.fn(),
+            deleteIngestedFile: jest.fn(),
+        })
 
         useLocalStorageSpy.mockReturnValue([[], jest.fn()])
+        mockedUseCustomFieldDefinitions.mockReturnValue({
+            data: {
+                data: [
+                    {
+                        id: 123,
+                        name: 'Test Field',
+                        label: 'Test Field',
+                        type: 'text',
+                        required: false,
+                        description: 'Test Description',
+                        managed_type: null,
+                        requirement_type: 'visible',
+                    },
+                ],
+            },
+        } as any)
     })
 
     afterAll(() => {
@@ -1431,6 +1477,57 @@ describe('<StoreConfigForm />', () => {
             expect(reviewDraftsButton).not.toBeInTheDocument()
         })
 
+        it('should update form values when changing tags', async () => {
+            const mockOnSubmit = jest.fn()
+            mockedUseConfigurationForm.mockReturnValue({
+                ...defaultUseConfigurationFormValues,
+                handleOnSave: mockOnSubmit,
+            })
+
+            renderComponent()
+
+            // Add tags
+            await userEvent.click(
+                screen.getByRole('button', { name: 'Add Tag' }),
+            )
+
+            // Save changes
+            const saveButton = screen.getByRole('button', {
+                name: /save changes/i,
+            })
+            await userEvent.click(saveButton)
+
+            expect(mockOnSubmit).toHaveBeenCalled()
+        })
+
+        it('should update form values when changing tags', async () => {
+            mockFlags({
+                [FeatureFlagKey.AiAgentUsesStoreConfigurationCustomFields]:
+                    true,
+            })
+
+            const mockOnSubmit = jest.fn()
+            mockedUseConfigurationForm.mockReturnValue({
+                ...defaultUseConfigurationFormValues,
+                handleOnSave: mockOnSubmit,
+            })
+
+            renderComponent()
+
+            // Add tags
+            await userEvent.click(
+                screen.getByRole('button', { name: 'Add Tag' }),
+            )
+
+            // Save changes
+            const saveButton = screen.getByRole('button', {
+                name: /save changes/i,
+            })
+            await userEvent.click(saveButton)
+
+            expect(mockOnSubmit).toHaveBeenCalled()
+        })
+
         describe('AI Autofill section', () => {
             it('should display the legacy section for tags and hide the new section if the FF is deactivated', () => {
                 mockFlags({
@@ -1479,6 +1576,496 @@ describe('<StoreConfigForm />', () => {
                 expect(customFieldsFormComponent).not.toBeInTheDocument()
                 expect(legacyH2).not.toBeInTheDocument()
                 expect(newH2).toBeInTheDocument()
+            })
+        })
+    })
+
+    describe('Preview Mode', () => {
+        it('should display banner if AI Agent on Preview mode', () => {
+            mockFlags({
+                [FeatureFlagKey.FollowUpAiAgentPreviewMode]: true,
+            })
+            mockedUseAiAgentStoreConfigurationContext.mockReturnValue({
+                storeConfiguration: {
+                    ...storeConfiguration,
+                    chatChannelDeactivatedDatetime: '2024-07-30T12:33:02.750Z',
+                    emailChannelDeactivatedDatetime: '2024-07-30T12:33:02.750Z',
+                    trialModeActivatedDatetime: '2024-07-30T12:33:02.750Z',
+                    previewModeActivatedDatetime: '2024-07-30T12:33:02.750Z',
+                    previewModeValidUntilDatetime: '2024-07-30T12:33:02.750Z',
+                    isPreviewModeActive: true,
+                },
+                isLoading: false,
+                updateStoreConfiguration: mockUpdateStoreConfiguration,
+                createStoreConfiguration: mockCreateStoreConfiguration,
+                isPendingCreateOrUpdate: false,
+            })
+
+            renderComponent({})
+
+            expect(
+                screen.getByText('You’re currently using AI Agent Preview.'),
+            ).toBeInTheDocument()
+            expect(screen.getByText('Review Drafts')).toBeInTheDocument()
+        })
+
+        it('should not show Review Drafts button if Preview ticket views id is null', () => {
+            mockFlags({
+                [FeatureFlagKey.FollowUpAiAgentPreviewMode]: true,
+            })
+            mockedUseAccountStoreConfiguration.mockReturnValue({
+                accountConfiguration: undefined,
+                aiAgentTicketViewId: null,
+                aiAgentPreviewTicketViewId: null,
+            })
+            mockedUseAiAgentStoreConfigurationContext.mockReturnValue({
+                storeConfiguration: {
+                    ...storeConfiguration,
+                    chatChannelDeactivatedDatetime: '2024-07-30T12:33:02.750Z',
+                    emailChannelDeactivatedDatetime: '2024-07-30T12:33:02.750Z',
+                    trialModeActivatedDatetime: '2024-07-30T12:33:02.750Z',
+                    previewModeActivatedDatetime: '2024-07-30T12:33:02.750Z',
+                },
+                isLoading: false,
+                updateStoreConfiguration: mockUpdateStoreConfiguration,
+                createStoreConfiguration: mockCreateStoreConfiguration,
+                isPendingCreateOrUpdate: false,
+            })
+
+            renderComponent({})
+
+            const reviewDraftsButton = screen.queryByText('Review Drafts')
+            expect(reviewDraftsButton).not.toBeInTheDocument()
+        })
+    })
+
+    describe('Ai Agent Settings Revamp', () => {
+        it('should display drawer when AiAgentSettingsRevamp is enabled', async () => {
+            mockFlags({
+                [FeatureFlagKey.AiAgentSettingsRevamp]: true,
+            })
+
+            renderComponent()
+
+            // Click on the Tags row to open the drawer
+            await userEvent.click(screen.getAllByText('Tags')[0])
+
+            expect(getDrawer()).toBeVisible()
+            expect(getDrawer()).toBeInTheDocument()
+            expect(
+                within(getDrawer()).getByText('Save Changes'),
+            ).toBeInTheDocument()
+            expect(within(getDrawer()).getByText('Cancel')).toBeInTheDocument()
+        })
+
+        it('should not display drawer when AiAgentSettingsRevamp is disabled', async () => {
+            mockFlags({
+                [FeatureFlagKey.AiAgentSettingsRevamp]: false,
+            })
+
+            renderComponent()
+
+            expect(screen.queryByRole('dialog')).not.toBeInTheDocument()
+        })
+
+        it('should update form values when saving drawer content', async () => {
+            mockFlags({
+                [FeatureFlagKey.AiAgentSettingsRevamp]: true,
+            })
+
+            const mockOnSubmit = jest.fn()
+            mockedUseConfigurationForm.mockReturnValue({
+                ...defaultUseConfigurationFormValues,
+                handleOnSave: mockOnSubmit,
+            })
+
+            renderComponent()
+
+            // Open the drawer by clicking on Tags
+            await userEvent.click(screen.getAllByText('Tags')[0])
+
+            // Save changes
+            const saveButton = within(getDrawer()).getByRole('button', {
+                name: /save changes/i,
+            })
+            await userEvent.click(saveButton)
+
+            expect(mockOnSubmit).toHaveBeenCalled()
+        })
+
+        it('should update form values when saving drawer content with new tags', async () => {
+            mockFlags({
+                [FeatureFlagKey.AiAgentSettingsRevamp]: true,
+            })
+
+            renderComponent()
+
+            // Open the drawer by clicking on Tags
+            await userEvent.click(screen.getAllByText('Tags')[0])
+
+            await userEvent.click(
+                screen.getByRole('button', { name: /add tag/i }),
+            )
+            await userEvent.click(screen.getByText(/choose tag/i))
+            await userEvent.type(screen.getAllByRole('textbox')[1], 'Test')
+
+            // Save changes
+            const saveButton = within(getDrawer()).getByRole('button', {
+                name: /save changes/i,
+            })
+            await userEvent.click(saveButton)
+
+            expect(updateValueMocked).toHaveBeenCalledWith('tags', [
+                {
+                    name: '',
+                    description: 'Test',
+                },
+            ])
+        })
+
+        it('should update form values when saving drawer content with new ticket fields', async () => {
+            mockFlags({
+                [FeatureFlagKey.AiAgentSettingsRevamp]: true,
+            })
+
+            renderComponent()
+
+            // Open the drawer by clicking on Ticket Fields
+            await userEvent.click(screen.getAllByText('Ticket Fields')[0])
+            await userEvent.click(
+                screen.getByRole('button', { name: /add ticket field/i }),
+            )
+            screen.debug(document.body, Infinity)
+            await userEvent.click(screen.getByText(/test field/i))
+
+            // Save changes
+            const saveButton = within(getDrawer()).getByRole('button', {
+                name: /save changes/i,
+            })
+            await userEvent.click(saveButton)
+
+            expect(updateValueMocked).toHaveBeenCalledWith('customFieldIds', [
+                123,
+            ])
+        })
+
+        it('should not update form values when closing drawer', async () => {
+            mockFlags({
+                [FeatureFlagKey.AiAgentSettingsRevamp]: true,
+            })
+
+            const mockOnSubmit = jest.fn()
+            mockedUseConfigurationForm.mockReturnValue({
+                ...defaultUseConfigurationFormValues,
+                handleOnSave: mockOnSubmit,
+            })
+
+            renderComponent()
+
+            // Open the drawer by clicking on Tags
+            await userEvent.click(screen.getAllByText('Tags')[0])
+
+            // Add tags
+            await userEvent.click(
+                screen.getByRole('button', { name: 'Add Tag' }),
+            )
+
+            // Cancel changes
+            const cancelButton = screen.getByRole('button', { name: /cancel/i })
+            await userEvent.click(cancelButton)
+
+            expect(mockOnSubmit).not.toHaveBeenCalled()
+        })
+
+        it('should switch drawer content when clicking on different features', async () => {
+            mockFlags({
+                [FeatureFlagKey.AiAgentSettingsRevamp]: true,
+            })
+
+            renderComponent()
+
+            // Open Tags drawer
+            await userEvent.click(screen.getAllByText('Tags')[0])
+            expect(within(getDrawer()).getByText('Tags')).toBeVisible()
+
+            // Close drawer
+            const cancelButton = within(getDrawer()).getByRole('button', {
+                name: /cancel/i,
+            })
+            await userEvent.click(cancelButton)
+
+            // Open Ticket Fields drawer
+            await userEvent.click(screen.getAllByText('Ticket Fields')[0])
+            expect(
+                within(getDrawer()).getAllByText('Ticket Fields')[0],
+            ).toBeVisible()
+        })
+
+        it('should not render the drawer when isOpen is false', () => {
+            mockFlags({
+                [FeatureFlagKey.AiAgentSettingsRevamp]: true,
+            })
+
+            renderComponent()
+
+            expect(screen.queryByRole('dialog')).not.toBeInTheDocument()
+        })
+    })
+
+    describe('Agent Deactivation', () => {
+        it('should not deactivate agent when isCreate is true', async () => {
+            mockedUseAiAgentStoreConfigurationContext.mockReturnValue({
+                storeConfiguration: undefined,
+                isLoading: false,
+                updateStoreConfiguration: mockUpdateStoreConfiguration,
+                createStoreConfiguration: mockCreateStoreConfiguration,
+                isPendingCreateOrUpdate: false,
+            })
+
+            renderComponent()
+
+            await waitFor(() => {
+                expect(mockUpdateStoreConfiguration).not.toHaveBeenCalled()
+                expect(mockDispatch).not.toHaveBeenCalled()
+            })
+        })
+
+        it('should deactivate agent silently when silentUpdate is true', async () => {
+            mockedUseConfigurationForm.mockReturnValue({
+                ...defaultUseConfigurationFormValues,
+                formValues: {
+                    ...initialFormValues,
+                    chatChannelDeactivatedDatetime: '2024-07-30T12:33:02.750Z',
+                    emailChannelDeactivatedDatetime: '2024-07-30T12:33:02.750Z',
+                    trialModeActivatedDatetime: '2024-07-30T12:33:02.750Z',
+                    previewModeValidUntilDatetime: '2024-07-30T12:33:02.750Z',
+                },
+            })
+
+            mockedUseAiAgentStoreConfigurationContext.mockReturnValue({
+                storeConfiguration: {
+                    ...storeConfiguration,
+                    chatChannelDeactivatedDatetime: '2024-07-30T12:33:02.750Z',
+                    emailChannelDeactivatedDatetime: '2024-07-30T12:33:02.750Z',
+                    trialModeActivatedDatetime: '2024-07-30T12:33:02.750Z',
+                    previewModeValidUntilDatetime: '2024-07-30T12:33:02.750Z',
+                    isPreviewModeActive: true,
+                },
+                isLoading: false,
+                updateStoreConfiguration: mockUpdateStoreConfiguration,
+                createStoreConfiguration: mockCreateStoreConfiguration,
+                isPendingCreateOrUpdate: false,
+            })
+
+            renderComponent()
+
+            await waitFor(() => {
+                expect(mockUpdateStoreConfiguration).toHaveBeenCalledWith(
+                    expect.objectContaining({
+                        emailChannelDeactivatedDatetime: expect.any(String),
+                        chatChannelDeactivatedDatetime: expect.any(String),
+                        trialModeActivatedDatetime: null,
+                        previewModeActivatedDatetime: null,
+                        previewModeValidUntilDatetime: null,
+                    }),
+                )
+                expect(mockDispatch).not.toHaveBeenCalled()
+            })
+        })
+
+        it('should handle error during deactivation', async () => {
+            const mockError = new Error('Test error')
+            mockedUseConfigurationForm.mockReturnValue({
+                ...defaultUseConfigurationFormValues,
+                formValues: {
+                    ...initialFormValues,
+                    chatChannelDeactivatedDatetime: '2024-07-30T12:33:02.750Z',
+                    emailChannelDeactivatedDatetime: '2024-07-30T12:33:02.750Z',
+                    trialModeActivatedDatetime: '2024-07-30T12:33:02.750Z',
+                    previewModeValidUntilDatetime: '2024-07-30T12:33:02.750Z',
+                },
+            })
+
+            mockedUseAiAgentStoreConfigurationContext.mockReturnValue({
+                storeConfiguration: {
+                    ...storeConfiguration,
+                    chatChannelDeactivatedDatetime: '2024-07-30T12:33:02.750Z',
+                    emailChannelDeactivatedDatetime: '2024-07-30T12:33:02.750Z',
+                    trialModeActivatedDatetime: '2024-07-30T12:33:02.750Z',
+                    previewModeValidUntilDatetime: '2024-07-30T12:33:02.750Z',
+                    isPreviewModeActive: true,
+                },
+                isLoading: false,
+                updateStoreConfiguration: jest
+                    .fn()
+                    .mockRejectedValue(mockError),
+                createStoreConfiguration: mockCreateStoreConfiguration,
+                isPendingCreateOrUpdate: false,
+            })
+
+            renderComponent()
+
+            await waitFor(() => {
+                expect(reportError).toHaveBeenCalledWith(mockError, {
+                    tags: { team: SentryTeam.AI_AGENT },
+                    extra: {
+                        context: 'Error during disabling AI Agent',
+                    },
+                })
+            })
+        })
+    })
+
+    describe('Handover Modal', () => {
+        beforeEach(() => {
+            mockFlags({
+                [FeatureFlagKey.AiAgentChat]: true,
+            })
+        })
+
+        it('should open handover modal when clicking on handover topics link', async () => {
+            renderComponent()
+
+            const handoverLink = screen.getByText('Define')
+            await userEvent.click(handoverLink)
+
+            expect(screen.getByRole('dialog')).toBeInTheDocument()
+            expect(screen.getByText('Handover Topics')).toBeInTheDocument()
+        })
+
+        it('should close handover modal when clicking on close button', async () => {
+            renderComponent()
+
+            const handoverLink = screen.getByText('Define')
+            await userEvent.click(handoverLink)
+
+            const closeButton = screen.getByRole('button', { name: '' })
+            await userEvent.click(closeButton)
+
+            await waitFor(() => {
+                expect(screen.queryByRole('dialog')).not.toBeInTheDocument()
+            })
+        })
+
+        it('should cancel changes when clicking on cancel button', async () => {
+            renderComponent()
+
+            const handoverLink = screen.getByText('Define')
+            await userEvent.click(handoverLink)
+
+            const cancelButton = screen.getByRole('button', { name: 'Cancel' })
+            await userEvent.click(cancelButton)
+
+            await waitFor(() => {
+                expect(mockUpdateStoreConfiguration).not.toHaveBeenCalled()
+                expect(screen.queryByRole('dialog')).not.toBeInTheDocument()
+            })
+        })
+
+        it('should show error notification when saving fails', async () => {
+            const mockError = new AxiosError('Network Error')
+            mockedUseAiAgentStoreConfigurationContext.mockReturnValue({
+                storeConfiguration,
+                isLoading: false,
+                updateStoreConfiguration: jest
+                    .fn()
+                    .mockRejectedValue(mockError),
+                createStoreConfiguration: mockCreateStoreConfiguration,
+                isPendingCreateOrUpdate: false,
+            })
+
+            renderComponent()
+
+            const handoverLink = screen.getByText('Define')
+            await userEvent.click(handoverLink)
+
+            const saveButton = screen.getByRole('button', {
+                name: 'Confirm Topics',
+            })
+            await userEvent.click(saveButton)
+
+            await waitFor(() => {
+                expect(reportError).toHaveBeenCalledWith(mockError, {
+                    tags: { team: SentryTeam.AI_AGENT },
+                    extra: {
+                        accountDomain: 'test-domain',
+                        shopName: 'test-shop',
+                    },
+                })
+            })
+        })
+    })
+
+    describe('External Knowledge Sources', () => {
+        beforeEach(() => {
+            mockFlags({
+                [FeatureFlagKey.AiAgentChat]: true,
+            })
+        })
+
+        it('should filter knowledge source URLs', async () => {
+            mockedUsePublicResources.mockReturnValue({
+                sourceItems: [
+                    {
+                        id: 1,
+                        url: 'https://test.com',
+                        status: 'done',
+                    },
+                    {
+                        id: 2,
+                        url: 'https://testd.com',
+                        status: 'error',
+                    },
+                ],
+                isSourceItemsListLoading: false,
+            })
+
+            mockedUseFileIngestion.mockReturnValue({
+                ingestedFiles: [
+                    {
+                        id: 1,
+                        help_center_id: 1,
+                        snippets_article_ids: [],
+                        filename: 'test.pdf',
+                        google_storage_url: 'https://test.com',
+                        status: 'SUCCESSFUL',
+                        uploaded_datetime: '2024-07-30T12:33:02.750Z',
+                    },
+                    {
+                        id: 2,
+                        help_center_id: 1,
+                        snippets_article_ids: [],
+                        filename: 'testd.pdf',
+                        google_storage_url: 'https://testd.com',
+                        status: 'FAILED',
+                        uploaded_datetime: '2024-07-30T12:33:02.750Z',
+                    },
+                ],
+                isLoading: false,
+                isIngesting: false,
+                ingestFile: jest.fn(),
+                deleteIngestedFile: jest.fn(),
+            })
+
+            const mockOnSubmit = jest.fn()
+            mockedUseConfigurationForm.mockReturnValue({
+                ...defaultUseConfigurationFormValues,
+                handleOnSave: mockOnSubmit,
+            })
+
+            renderComponent()
+
+            await userEvent.click(
+                screen.getByRole('button', { name: 'Save Changes' }),
+            )
+
+            expect(mockOnSubmit).toHaveBeenCalledWith({
+                publicUrls: ['https://test.com'],
+                hasExternalFiles: true,
+                aiAgentMode: 'enabled',
+                onSuccess: expect.any(Function),
+                shopName: 'test-shop',
+                silentNotification: true,
             })
         })
     })

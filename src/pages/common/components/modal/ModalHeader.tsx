@@ -2,6 +2,8 @@ import React, { ReactNode, useContext } from 'react'
 
 import classnames from 'classnames'
 
+import { IconButton } from '@gorgias/merchant-ui-kit'
+
 import { ModalContext } from './Modal'
 
 import css from './ModalHeader.less'
@@ -30,12 +32,13 @@ const ModalHeader = ({
                 <div className={css.subtitle}>{subtitle}</div>
             </div>
             {(isClosable || forceCloseButton) && (
-                <i
-                    className={classnames('material-icons', css.icon)}
+                <IconButton
+                    icon="close"
+                    intent="secondary"
+                    fillStyle="ghost"
                     onClick={onClose}
-                >
-                    close
-                </i>
+                    className={classnames('material-icons', css.icon)}
+                />
             )}
         </div>
     )

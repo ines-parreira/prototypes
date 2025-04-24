@@ -36,13 +36,13 @@ describe('<Modal />', () => {
     })
 
     it('should trigger the provided callback on close', () => {
-        const { getByText } = render(
+        const { getByRole } = render(
             <Modal {...minProps} isOpen={true}>
                 <ModalHeader title="Did you know?" />
             </Modal>,
         )
 
-        fireEvent.click(getByText('close'))
+        fireEvent.click(getByRole('button', { name: '' }))
 
         expect(minProps.onClose).toHaveBeenCalled()
     })
