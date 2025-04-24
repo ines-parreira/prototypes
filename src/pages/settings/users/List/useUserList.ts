@@ -10,6 +10,7 @@ import {
     User,
 } from '@gorgias/api-types'
 
+import { logEvent, SegmentEvent } from 'common/segment'
 import { UserRole } from 'config/types/user'
 import { OrderDirection } from 'models/api/types'
 import { UserSortableProperties } from 'models/user/types'
@@ -129,6 +130,7 @@ export function useUserList(): UseUserListResult {
                 order_by: `${orderBy}:${orderDir}` as ListUsersOrderBy,
                 cursor: undefined,
             })
+            logEvent(SegmentEvent.SettingsUsersSort, { orderBy, orderDir })
         },
         [params],
     )
@@ -140,6 +142,7 @@ export function useUserList(): UseUserListResult {
                 search,
                 cursor: undefined,
             })
+            logEvent(SegmentEvent.SettingsUsersSearch)
         },
         [params],
     )

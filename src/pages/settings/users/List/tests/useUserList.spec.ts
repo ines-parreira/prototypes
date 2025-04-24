@@ -1,4 +1,4 @@
-import { renderHook } from '@testing-library/react-hooks'
+import { act, renderHook } from '@testing-library/react-hooks'
 import axios from 'axios'
 
 import { listUsers } from '@gorgias/api-client'
@@ -8,8 +8,11 @@ import {
     ListUsersRelationshipsItem,
 } from '@gorgias/api-types'
 
+import { logEvent, SegmentEvent } from 'common/segment'
 import { UserRole } from 'config/types/user'
 import { agents } from 'fixtures/agents'
+import { OrderDirection } from 'models/api/types'
+import { UserSortableProperties } from 'models/user/types'
 
 import { STALE_TIME_MS, USERS_PER_PAGE, useUserList } from '../useUserList'
 
@@ -17,6 +20,16 @@ jest.mock('@gorgias/api-queries')
 jest.mock('@gorgias/api-client')
 const mockedUseListUsers = jest.mocked(useListUsers)
 const mockedListUsers = jest.mocked(listUsers)
+
+jest.mock('common/segment', () => {
+    const segmentTracker: Record<string, unknown> =
+        jest.requireActual('common/segment')
+
+    return {
+        ...segmentTracker,
+        logEvent: jest.fn(),
+    }
+})
 
 describe('useUserList', () => {
     beforeEach(() => {
@@ -107,6 +120,29 @@ describe('useUserList', () => {
         expect(typeof result.current.setOrderBy).toBe('function')
     })
 
+    it('should track ordering usage', async () => {
+        mockedUseListUsers.mockReturnValue({
+            data: undefined,
+            isLoading: false,
+            isError: false,
+        } as unknown as ReturnType<typeof useListUsers>)
+
+        const { result, waitForNextUpdate } = renderHook(() => useUserList())
+
+        act(() => {
+            result.current.setOrderBy(
+                UserSortableProperties.Email,
+                OrderDirection.Asc,
+            )
+        })
+        await waitForNextUpdate()
+
+        expect(logEvent).toHaveBeenCalledWith(SegmentEvent.SettingsUsersSort, {
+            orderBy: UserSortableProperties.Email,
+            orderDir: OrderDirection.Asc,
+        })
+    })
+
     it('should provide search function', async () => {
         mockedUseListUsers.mockReturnValue({
             data: undefined,
@@ -118,6 +154,23 @@ describe('useUserList', () => {
         await waitForNextUpdate()
 
         expect(typeof result.current.setSearch).toBe('function')
+    })
+
+    it('should track sorting usage', async () => {
+        mockedUseListUsers.mockReturnValue({
+            data: undefined,
+            isLoading: false,
+            isError: false,
+        } as unknown as ReturnType<typeof useListUsers>)
+
+        const { result, waitForNextUpdate } = renderHook(() => useUserList())
+
+        act(() => {
+            result.current.setSearch('foo')
+        })
+        await waitForNextUpdate()
+
+        expect(logEvent).toHaveBeenCalledWith(SegmentEvent.SettingsUsersSearch)
     })
 
     it('should handle error state', async () => {

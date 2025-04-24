@@ -268,6 +268,8 @@ export enum SegmentEvent {
     SearchQueryRanked = 'search-query-ranked',
     SelfServiceActivatedViaBanner = 'self-service-activated-via-banner',
     SettingsNavigationClicked = 'settings-navigation-clicked',
+    SettingsUsersSearch = 'settings/users/search',
+    SettingsUsersSort = 'settings/users/sort',
     ShopifyCancelOrderCancel = 'shopify/cancel-order/cancel',
     ShopifyCancelOrderOpen = 'shopify/cancel-order/open',
     ShopifyContextDataMissing = 'shopify-context-data-missing',
