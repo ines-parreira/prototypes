@@ -10,6 +10,7 @@ It's built using ReactJS + Redux + many other smaller tools.
     - [Setup NPM to access private packages](#setup-npm-to-access-private-packages)
     - [Prerequisites](#prerequisites)
     - [Installation](#installation)
+        - [PNPM Catalogs](#pnpm-catalogs)
     - [Development](#development)
         - [Storybook](#storybook)
         - [Design tokens](#design-tokens)
@@ -21,7 +22,7 @@ It's built using ReactJS + Redux + many other smaller tools.
     - [Debugging tools](#debugging-tools)
         - [ReactScan](#reactscan)
         - [WhyDidYouRender](#whydidyourender)
-            - [How it’s imported](#how-its-imported)
+            - [How it's imported](#how-its-imported)
             - [How to use it](#how-to-use-it)
     - [Formatting](#formatting)
     - [Platform](#platform)
@@ -57,6 +58,14 @@ cd helpdesk-web-app
 nvm install && nvm use # (This uses the node version specified in the .nvmrc file)
 pnpm install
 ```
+
+### PNPM Catalogs
+
+This project uses [PNPM Catalogs](https://pnpm.io/catalogs) to manage dependency versions across the workspace. Catalogs allow defining dependency versions as reusable constants in `pnpm-workspace.yaml`, which can then be referenced in `package.json` files using the `catalog:` protocol (e.g., `"@gorgias/api-queries": "catalog:rest-api-sdk"`).
+
+This helps maintain unique versions, signal that some dependencies should be changed together, simplifies upgrades, and reduces merge conflicts. You can see the catalog definitions in the `pnpm-workspace.yaml` file and references in the `package.json` files (e.g., `react: catalog:react`).
+
+To update a package whose version is specified in a catalog, you need to update the catalog itself in the `pnpm-workspace.yaml` file manually. The `pnpm update` command [doesn't yet support the catalogs for now](https://pnpm.io/catalogs#caveats).
 
 ## Development
 
@@ -121,7 +130,7 @@ New linting [rules](https://oxc.rs/docs/guide/usage/linter/rules.html) can be ad
 
 ## Debugging tools
 
-To help identify unnecessary React component re-renders and improve performance during development, we’ve added two tools: [ReactScan](https://react-scan.com/) and [whyDidYouRender](https://github.com/welldone-software/why-did-you-render/tree/version-7). These tools are only active in development mode and have no impact on production builds.
+To help identify unnecessary React component re-renders and improve performance during development, we've added two tools: [ReactScan](https://react-scan.com/) and [whyDidYouRender](https://github.com/welldone-software/why-did-you-render/tree/version-7). These tools are only active in development mode and have no impact on production builds.
 
 ### ReactScan
 
@@ -191,9 +200,9 @@ reactScan.scan({
 
 [whyDidYouRender](https://github.com/welldone-software/why-did-you-render/tree/version-7) is a dev-only library that logs re-renders in the console, along with the reason why a component re-rendered (e.g. prop or state changes).
 
-It’s particularly useful for tracking down components that re-render frequently or unexpectedly. We configure it in development mode only, and typically use it with selective tracking (not globally) to avoid console noise.
+It's particularly useful for tracking down components that re-render frequently or unexpectedly. We configure it in development mode only, and typically use it with selective tracking (not globally) to avoid console noise.
 
-#### How it’s imported
+#### How it's imported
 
 `whyDidYouRender` is imported and initialized only in development mode in `src/main/init/index.tsx`:
 
@@ -227,7 +236,7 @@ const MyComponent = () => {
 MyComponent.whyDidYouRender = true
 ```
 
-That’s it — re-render info will now show up in your console whenever `MyComponent` re-renders, including a diff of the changed props or state.
+That's it — re-render info will now show up in your console whenever `MyComponent` re-renders, including a diff of the changed props or state.
 
 You can also customize the behavior further with additional flags. See the [official docs](https://github.com/welldone-software/why-did-you-render#options) for more.
 

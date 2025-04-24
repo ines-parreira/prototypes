@@ -1,0 +1,12 @@
+catalogs:
+  rest-api-sdk:
+    '@gorgias/api-queries': '0.6.30'
+    '@gorgias/api-validators': '0.6.30'
+    '@gorgias/api-client': '0.6.30'
+    '@gorgias/api-types': '0.6.30'
+  react:
+    react: '17.0.2'
+    react-dom: '17.0.2'
+    react-test-renderer: '17.0.2'
+    '@types/react': '17.0.83'
+    '@types/react-dom': '17.0.26'
