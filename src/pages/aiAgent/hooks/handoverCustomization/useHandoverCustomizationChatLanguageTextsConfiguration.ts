@@ -52,14 +52,19 @@ export const useHandoverCustomizationChatLanguageTextsConfiguration = (
                 setMultiLanguageTexts(
                     parseToTextsMultiLanguage(data, defaultLanguage),
                 )
-                setIsLoading(false)
             } catch {
                 setHasLoadingError(true)
-                setIsLoading(false)
                 setMultiLanguageTexts(multiLanguageInitialTextsEmptyData)
+            } finally {
+                setIsLoading(false)
             }
         },
-        [defaultLanguage],
+        [
+            defaultLanguage,
+            setIsLoading,
+            setHasLoadingError,
+            setMultiLanguageTexts,
+        ],
     )
 
     const updateMultiLanguageTexts = async (texts: TextsMultiLanguage) => {
@@ -96,7 +101,7 @@ export const useHandoverCustomizationChatLanguageTextsConfiguration = (
         }
 
         loadTexts()
-    }, [integration])
+    }, [integration.meta.app_id, fetchApplicationTexts])
 
     return {
         multiLanguageTexts,
