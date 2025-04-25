@@ -1,13 +1,25 @@
 import React, { useCallback, useEffect, useState } from 'react'
 
-import { debounce } from 'lodash'
+import { debounce, toPlainObject } from 'lodash'
 
-import { useAgentActivity } from '@gorgias/realtime'
+import { isRealtimeError, useAgentActivity } from '@gorgias/realtime'
 
+import { FeatureFlagKey } from 'config/featureFlags'
+import { useFlag } from 'core/flags'
 import { TYPING_ACTIVITY_AGENT_TIMEOUT_MS } from 'state/newMessage/constants'
+import { reportError } from 'utils/errors'
 
 export type TypingActivityProps = {
     handleTypingActivity: () => void
+}
+
+const handlePubNubError = (error: unknown) => {
+    if (isRealtimeError(error)) {
+        const status = toPlainObject(error?.status)
+        reportError(new Error('Realtime typing status error'), {
+            extra: { status },
+        })
+    }
 }
 
 export default function withTypingActivity<P>(
@@ -16,6 +28,7 @@ export default function withTypingActivity<P>(
     return function WithTypingActivityWrapper(props: P) {
         const [isTyping, setIsTyping] = useState(false)
         const { startTyping, stopTyping } = useAgentActivity()
+        const isCatchPNErrorsEnabled = useFlag(FeatureFlagKey.CatchPNErrors)
 
         // eslint-disable-next-line exhaustive-deps
         const debouncedStopTyping = useCallback(
@@ -25,17 +38,33 @@ export default function withTypingActivity<P>(
             [],
         )
 
-        useEffect(() => {
+        const handleStartTyping = useCallback(async () => {
             if (isTyping) {
-                startTyping()
-            }
-
-            return () => {
-                if (isTyping) {
-                    stopTyping()
+                try {
+                    await startTyping()
+                } catch (error) {
+                    isCatchPNErrorsEnabled && handlePubNubError(error)
                 }
             }
-        }, [isTyping, startTyping, stopTyping])
+        }, [isTyping, startTyping, isCatchPNErrorsEnabled])
+
+        const handleStopTyping = useCallback(async () => {
+            if (isTyping) {
+                try {
+                    await stopTyping()
+                } catch (error) {
+                    isCatchPNErrorsEnabled && handlePubNubError(error)
+                }
+            }
+        }, [isTyping, stopTyping, isCatchPNErrorsEnabled])
+
+        useEffect(() => {
+            handleStartTyping()
+
+            return () => {
+                handleStopTyping()
+            }
+        }, [handleStartTyping, handleStopTyping])
 
         const handleTypingActivity = useCallback(() => {
             setIsTyping(true)

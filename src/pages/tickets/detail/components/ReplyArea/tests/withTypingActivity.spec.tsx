@@ -1,25 +1,42 @@
 import { act, render, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 
-import { useAgentActivity } from '@gorgias/realtime'
+import { useFlag } from 'core/flags'
+import { reportError } from 'utils/errors'
 
 import withTypingActivity, { TypingActivityProps } from '../withTypingActivity'
 
-jest.mock('@gorgias/realtime')
-const mockUseAgentActivity = useAgentActivity as jest.Mock
+jest.mock('utils/errors')
+jest.mock('core/flags')
+jest.mock('@gorgias/realtime', () => ({
+    ...jest.requireActual('@gorgias/realtime'),
+    useAgentActivity: jest.fn().mockImplementation(() => ({
+        startTyping: mockStartTyping,
+        stopTyping: mockStopTyping,
+    })),
+}))
 const mockStartTyping = jest.fn()
 const mockStopTyping = jest.fn()
+const mockUseFlag = useFlag as jest.Mock
 
 const WrappedComponent = ({ handleTypingActivity }: TypingActivityProps) => {
     return <div onClick={handleTypingActivity}>wrapped</div>
 }
 
+class PubNubError extends Error {
+    status: Record<string, unknown>
+    name: string
+
+    constructor(status: Record<string, unknown>) {
+        super()
+        this.status = status
+        this.name = 'PubNubError'
+    }
+}
+
 describe('withTypingActivity', () => {
     beforeEach(() => {
-        mockUseAgentActivity.mockReturnValue({
-            startTyping: mockStartTyping,
-            stopTyping: mockStopTyping,
-        })
+        mockUseFlag.mockReturnValue(true)
     })
 
     it('should handle typing start', async () => {
@@ -81,6 +98,69 @@ describe('withTypingActivity', () => {
         await waitFor(() => {
             expect(mockStartTyping).toHaveBeenCalledTimes(1)
             expect(mockStopTyping).toHaveBeenCalledTimes(1)
+        })
+    })
+
+    it('should handle startTyping rejections and forward status to sentry', async () => {
+        const error = new PubNubError({ reason: 'it failed' })
+
+        mockStartTyping.mockRejectedValueOnce(error)
+
+        const Component = withTypingActivity(WrappedComponent)
+        const { getByText } = render(<Component />)
+
+        act(() => {
+            userEvent.click(getByText('wrapped'))
+        })
+
+        await waitFor(() => {
+            expect(reportError).toHaveBeenCalledWith(
+                new Error('Realtime typing status error'),
+                {
+                    extra: { status: { reason: 'it failed' } },
+                },
+            )
+        })
+    })
+
+    it('should handle stopTyping rejections and forward status to sentry', async () => {
+        jest.useFakeTimers()
+        const error = new PubNubError({ reason: 'it failed' })
+        mockStopTyping.mockRejectedValueOnce(error)
+
+        const Component = withTypingActivity(WrappedComponent)
+        const { getByText } = render(<Component />)
+
+        act(() => {
+            userEvent.click(getByText('wrapped'))
+        })
+
+        jest.advanceTimersByTime(3000)
+        jest.useRealTimers()
+
+        await waitFor(() => {
+            expect(reportError).toHaveBeenCalledWith(
+                new Error('Realtime typing status error'),
+                {
+                    extra: { status: { reason: 'it failed' } },
+                },
+            )
+        })
+    })
+
+    it('should handle errors without status', async () => {
+        const error = new Error('it failed')
+        mockStartTyping.mockRejectedValueOnce(error)
+
+        const Component = withTypingActivity(WrappedComponent)
+        const { getByText } = render(<Component />)
+
+        act(() => {
+            userEvent.click(getByText('wrapped'))
+        })
+
+        await waitFor(() => {
+            expect(reportError).not.toHaveBeenCalled()
         })
     })
 })

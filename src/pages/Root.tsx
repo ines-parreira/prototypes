@@ -14,7 +14,7 @@ import { Router } from 'react-router-dom'
 import { CompatRouter } from 'react-router-dom-v5-compat'
 import { Store } from 'redux'
 
-import { RealtimeProvider } from '@gorgias/realtime'
+import { ExponentialRetryPolicy, RealtimeProvider } from '@gorgias/realtime'
 
 import { appQueryClient } from 'api/queryClient'
 import useEffectOnce from 'hooks/useEffectOnce'
@@ -43,6 +43,13 @@ const PNLogVerbosityWhitelistedAccounts = [
     'yakovishen',
     'walter-test',
 ]
+
+const realtimeRetryPolicy = ExponentialRetryPolicy({
+    minimumDelay: 2,
+    maximumDelay: 10,
+    maximumRetry: 3,
+    excluded: [],
+})
 
 const Root = ({ store }: Props) => {
     const [LDClient, setLDClient] = useState<LDClient>()
@@ -98,6 +105,7 @@ const Root = ({ store }: Props) => {
                             subscriptionWorkerLogVerbosity={
                                 pubNubWorkerLogVerbosity
                             }
+                            retryConfiguration={realtimeRetryPolicy}
                         >
                             <Router history={history}>
                                 <CompatRouter>

@@ -29,6 +29,7 @@ const MockRealtimeProvider = jest
     )
 
 jest.mock('@gorgias/realtime', () => ({
+    ...jest.requireActual('@gorgias/realtime'),
     RealtimeProvider: (props: ComponentProps<typeof RealtimeProvider>) => (
         <MockRealtimeProvider {...props} />
     ),

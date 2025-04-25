@@ -37,6 +37,7 @@ export enum FeatureFlagKey {
     BigCommerceRefundOrder = 'bigcommerce-refund-order',
     BillingSummaryTotalWithCoupons = 'billing-summary-total-with-coupons',
     BotUserEdition = 'bot-user-edition',
+    CatchPNErrors = 'linear.task_SUPXP-3152.catch-pn-errors',
     ChangeAutomateSettingButtomPosition = 'change-automate-settings-button-position',
     ChatAgentAvatarCustomization = 'chat-agent-avatar-customization',
     ChatBackgroundColorStyle = 'chat-background-color-style',
