@@ -161,7 +161,7 @@ export const ConversationLauncherSettings = () => {
                                 css.forwardIcon,
                             )}
                         >
-                            arrow_forward
+                            keyboard_arrow_right
                         </i>
                     </Label>
                 </Box>
