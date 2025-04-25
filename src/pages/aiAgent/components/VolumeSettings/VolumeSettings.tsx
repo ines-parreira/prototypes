@@ -105,7 +105,11 @@ export const VolumeSettings = () => {
 
             <FormProvider {...methods}>
                 <Box className={css.container} flexDirection="row">
-                    <Box className={css.leftColumn} flexDirection="column">
+                    <Box
+                        className={css.leftColumn}
+                        flexDirection="column"
+                        flexGrow={1}
+                    >
                         <p className={css.headTitle}>Chat Widget</p>
                         <ConversationStartersSettings
                             isEnabled={isConversationStartersFeatureEnabled}
