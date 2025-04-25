@@ -54,6 +54,7 @@ export const DEFAULT_FORM_VALUES: FormValues = {
     monitoredEmailIntegrations: null,
     monitoredChatIntegrations: null,
     tags: null,
+    excludedTopics: null,
     signature: null,
     toneOfVoice: null,
     customToneOfVoiceGuidance: null,

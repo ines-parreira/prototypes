@@ -47,7 +47,10 @@ export const getStoreConfigurationFromFormValues = (
         ...dirtyFormValues,
         trialModeActivatedDatetime,
         previewModeActivatedDatetime,
-        excludedTopics: storeConfiguration?.excludedTopics ?? [],
+        excludedTopics:
+            formValues.excludedTopics ??
+            storeConfiguration?.excludedTopics ??
+            [],
         previewModeValidUntilDatetime:
             formValues.previewModeValidUntilDatetime ?? null,
         chatChannelDeactivatedDatetime:

@@ -10,6 +10,7 @@ import {
 
 import { useId } from '@floating-ui/react'
 import classNames from 'classnames'
+import { List } from 'immutable'
 import { useFlags } from 'launchdarkly-react-client-sdk'
 import { Link, useParams } from 'react-router-dom'
 
@@ -28,19 +29,21 @@ import { HelpCenter } from 'models/helpCenter/types'
 import { AiAgentConfigurationModal } from 'pages/aiAgent/AiAgentConfigurationView/AiAgentConfigurationModal'
 import PostCompletionWizardModal from 'pages/aiAgent/AiAgentOnboardingWizard/PostCompletionWizardModal'
 import { TicketPreview } from 'pages/aiAgent/AiAgentOnboardingWizard/TicketPreview'
+import { PublicSourcesSection } from 'pages/aiAgent/components//PublicSourcesSection/PublicSourcesSection'
+import TagList from 'pages/aiAgent/components//TicketTag/TagList'
 import { AIAgentIntroduction } from 'pages/aiAgent/components/AIAgentIntroduction/AIAgentIntroduction'
 import { AiAgentPreviewModeSection } from 'pages/aiAgent/components/AIAgentPreviewModeSection/AiAgentPreviewModeSection'
 import { HandoverTopicsModal } from 'pages/aiAgent/components/HandoverTopicsModel/HandoverTopicsModal'
-import { PublicSourcesSection } from 'pages/aiAgent/components/PublicSourcesSection/PublicSourcesSection'
 import { ChannelsFormComponent } from 'pages/aiAgent/components/StoreConfigForm/FormComponents/ChannelsFormComponent'
 import { CustomFieldsFormComponent } from 'pages/aiAgent/components/StoreConfigForm/FormComponents/CustomFieldsFormComponent'
+import { StoreConfigDrawer } from 'pages/aiAgent/components/StoreConfigForm/FormComponents/StoreConfigDrawer'
 import { StoreConfigUnsavedChangesPrompt } from 'pages/aiAgent/components/StoreConfigForm/FormComponents/StoreConfigUnsavedChangesPrompt'
 import { ToneOfVoiceFormComponent } from 'pages/aiAgent/components/StoreConfigForm/FormComponents/ToneOfVoiceFormComponent'
-import css from 'pages/aiAgent/components/StoreConfigForm/StoreConfigForm.less'
 import { isPreviewModeActivated } from 'pages/aiAgent/components/StoreConfigForm/StoreConfigForm.utils'
-import TagList from 'pages/aiAgent/components/TicketTag/TagList'
 import {
+    EXCLUDED_TOPIC_MAX_LENGTH,
     INITIAL_FORM_VALUES,
+    MAX_EXCLUDED_TOPICS,
     StoreConfigFormSection,
     WIZARD_POST_COMPLETION_QUERY_KEY,
     WIZARD_POST_COMPLETION_STATE,
@@ -64,15 +67,16 @@ import {
     SettingsCardHeader,
     SettingsCardTitle,
 } from 'pages/common/components/SettingsCard'
+import { SettingsFeatureRow } from 'pages/common/components/SettingsCard/SettingsFeatureRow'
 import IconTooltip from 'pages/common/forms/IconTooltip/IconTooltip'
+import ListField from 'pages/common/forms/ListField'
 import history from 'pages/history'
 import { getIntegrationsByTypes } from 'state/integrations/selectors'
 import { notify } from 'state/notifications/actions'
 import { NotificationStatus } from 'state/notifications/types'
 import { reportError } from 'utils/errors'
 
-import { SettingsFeatureRow } from './FormComponents/SettingsFeatureRow'
-import { StoreConfigDrawer } from './FormComponents/StoreConfigDrawer'
+import css from './StoreConfigForm.less'
 
 const AI_SETTINGS_TICKET_VIEW_MODAL_VIEWED =
     'ai-settings-ticket-view-modal-viewed'
@@ -554,14 +558,16 @@ export const StoreConfigForm = ({
 
     const [isDrawerOpen, setIsDrawerOpen] = useState(false)
     const [activeDrawerContent, setActiveDrawerContent] = useState<
-        'tags' | 'customFieldIds'
+        'tags' | 'customFieldIds' | 'excludedTopics'
     >('tags')
     const [activeDrawerValues, setActiveDrawerValues] = useState<{
         tags: Tag[]
         customFieldIds: number[]
+        excludedTopics: string[]
     }>({
         tags: formValues.tags ?? [],
         customFieldIds: formValues.customFieldIds ?? [],
+        excludedTopics: formValues.excludedTopics ?? [],
     })
 
     const onSaveDrawer = async () => {
@@ -582,6 +588,7 @@ export const StoreConfigForm = ({
         setActiveDrawerValues({
             tags: formValues.tags ?? [],
             customFieldIds: formValues.customFieldIds ?? [],
+            excludedTopics: formValues.excludedTopics ?? [],
         })
     }
 
@@ -615,6 +622,30 @@ export const StoreConfigForm = ({
             title: 'Ticket Fields',
             values: formValues.customFieldIds,
         },
+        excludedTopics: {
+            content: (
+                <div>
+                    Define topics for AI Agent to always hand over to agents.
+                    <ListField
+                        className={css.container}
+                        items={List(activeDrawerValues.excludedTopics)}
+                        onChange={(excludedTopics: List<string>) => {
+                            setActiveDrawerValues({
+                                ...activeDrawerValues,
+                                excludedTopics: excludedTopics.toJS(),
+                            })
+                        }}
+                        placeholder="e.g. Invoice and billing, Data privacy, or Complaints"
+                        maxLength={EXCLUDED_TOPIC_MAX_LENGTH}
+                        maxItems={MAX_EXCLUDED_TOPICS}
+                        addLabel="Add Topic"
+                        dataCanduId="ai-agent-configuration-handover-topics"
+                    />
+                </div>
+            ),
+            title: 'Handover Topics',
+            values: formValues.excludedTopics,
+        },
     }
 
     return (
@@ -627,29 +658,50 @@ export const StoreConfigForm = ({
                 >
                     {shouldDisplayGeneralSections && (
                         <>
-                            <AIAgentIntroduction />
-                            <section>
-                                <div className={css.generalSettingsWrapper}>
-                                    <h2 className={css.generalSettingsTitle}>
-                                        General
-                                    </h2>
-                                    <span>
-                                        How should AI Agent send responses?
-                                    </span>
-                                </div>
-                                {(trialModeAvailable ||
-                                    isFollowUpAiAgentPreviewModeEnabled) && (
-                                    <AiAgentPreviewModeSection
-                                        storeConfiguration={storeConfiguration}
-                                        updateValue={updateValue}
-                                        aiAgentMode={aiAgentMode}
-                                        aiAgentPreviewTicketViewId={
-                                            aiAgentPreviewTicketViewId
-                                        }
-                                        isFollowUpAiAgentPreviewModeEnabled={
-                                            isFollowUpAiAgentPreviewModeEnabled
-                                        }
-                                    />
+                            {!isSettingsRevampEnabled && (
+                                <AIAgentIntroduction />
+                            )}
+                            <section
+                                className={classNames({
+                                    [css.section]: isSettingsRevampEnabled,
+                                })}
+                            >
+                                {!isSettingsRevampEnabled && (
+                                    <>
+                                        <div
+                                            className={
+                                                css.generalSettingsWrapper
+                                            }
+                                        >
+                                            <h2
+                                                className={
+                                                    css.generalSettingsTitle
+                                                }
+                                            >
+                                                General
+                                            </h2>
+                                            <span>
+                                                How should AI Agent send
+                                                responses?
+                                            </span>
+                                        </div>
+                                        {(trialModeAvailable ||
+                                            isFollowUpAiAgentPreviewModeEnabled) && (
+                                            <AiAgentPreviewModeSection
+                                                storeConfiguration={
+                                                    storeConfiguration
+                                                }
+                                                updateValue={updateValue}
+                                                aiAgentMode={aiAgentMode}
+                                                aiAgentPreviewTicketViewId={
+                                                    aiAgentPreviewTicketViewId
+                                                }
+                                                isFollowUpAiAgentPreviewModeEnabled={
+                                                    isFollowUpAiAgentPreviewModeEnabled
+                                                }
+                                            />
+                                        )}
+                                    </>
                                 )}
                                 <ToneOfVoiceFormComponent
                                     toneOfVoice={formValues.toneOfVoice}
@@ -760,164 +812,253 @@ export const StoreConfigForm = ({
                                         />
                                     </section>
                                 )}
-                            <section>
-                                <h2
-                                    className={classNames(
-                                        'mb-2',
-                                        css.sectionHeader,
-                                    )}
-                                >
-                                    Handover and exclusion
-                                </h2>
-                                <div
-                                    className={classNames(
-                                        'mb-4',
-                                        css.sectionDescription,
-                                    )}
-                                >
-                                    When AI Agent is not confident in an answer,
-                                    it automatically hands tickets over to your
-                                    team. Choose how AI Agent behaves when
-                                    handing over tickets, and add specific
-                                    handover topics that should never be
-                                    resolved by AI Agent.
-                                </div>
-                                <div className={css.formGroup}>
-                                    <ToggleField
-                                        className={css.featureToggle}
-                                        value={isHandoffToggled}
-                                        onChange={() => {
-                                            if (
-                                                formValues.silentHandover !==
-                                                null
-                                            ) {
-                                                updateValue(
-                                                    'silentHandover',
-                                                    !formValues.silentHandover,
-                                                )
-                                            } else {
-                                                updateValue(
-                                                    'silentHandover',
-                                                    !INITIAL_FORM_VALUES.silentHandover,
-                                                )
-                                            }
-                                        }}
-                                        name={toggleHandoffId}
-                                        caption="When enabled, AI Agent will promptly respond and tell customers their request is being handed over for further assistance. When disabled, AI Agent will not respond before handing over."
-                                        label="Tell customers when handing over"
-                                    />
-                                </div>
-                                <div className={css.formGroup}>
-                                    <Label className={css.subsectionHeader}>
-                                        Handover topics
-                                    </Label>
-                                    <div className={css.formGroupDescription}>
-                                        <a
-                                            href="#"
-                                            onClick={(e) => {
-                                                e.preventDefault()
-                                                setIsHandoverTopicsModalOpen(
-                                                    true,
-                                                )
-                                            }}
-                                            className={css.handoverTopicsLink}
-                                            role="button"
-                                            aria-haspopup="dialog"
-                                            aria-label="Define handover topics"
-                                        >
-                                            Define
-                                        </a>{' '}
-                                        topics that should always be handed over
-                                        to your team.
-                                    </div>
-                                </div>
-                                <div className={css.formGroup}>
-                                    <Label className={css.subsectionHeader}>
-                                        Prevent AI Agent from triggering on
-                                        specific tickets
-                                    </Label>
-                                    <div
-                                        className={
-                                            css.preventAIAgentTriggerDescription
-                                        }
+                            {!isSettingsRevampEnabled && (
+                                <section>
+                                    <h2
+                                        className={classNames(
+                                            'mb-2',
+                                            css.sectionHeader,
+                                        )}
                                     >
-                                        Configure the{' '}
-                                        <Link to="/app/settings/rules/library?auto-tag-ai-ignore">
-                                            Prevent AI Agent from answering
-                                            rule{' '}
-                                        </Link>
-                                        to prevent AI Agent from reviewing
-                                        specific tickets altogether. (e.g.
-                                        tickets from certain email addresses,
-                                        tickets with certain tags).
+                                        Handover and exclusion
+                                    </h2>
+                                    <div
+                                        className={classNames(
+                                            'mb-4',
+                                            css.sectionDescription,
+                                        )}
+                                    >
+                                        When AI Agent is not confident in an
+                                        answer, it automatically hands tickets
+                                        over to your team. Choose how AI Agent
+                                        behaves when handing over tickets, and
+                                        add specific handover topics that should
+                                        never be resolved by AI Agent.
                                     </div>
-                                </div>
-                            </section>
+                                    <div className={css.formGroup}>
+                                        <ToggleField
+                                            className={css.featureToggle}
+                                            value={isHandoffToggled}
+                                            onChange={() => {
+                                                if (
+                                                    formValues.silentHandover !==
+                                                    null
+                                                ) {
+                                                    updateValue(
+                                                        'silentHandover',
+                                                        !formValues.silentHandover,
+                                                    )
+                                                } else {
+                                                    updateValue(
+                                                        'silentHandover',
+                                                        !INITIAL_FORM_VALUES.silentHandover,
+                                                    )
+                                                }
+                                            }}
+                                            name={toggleHandoffId}
+                                            caption="When enabled, AI Agent will promptly respond and tell customers their request is being handed over for further assistance. When disabled, AI Agent will not respond before handing over."
+                                            label="Tell customers when handing over"
+                                        />
+                                    </div>
+                                    <div className={css.formGroup}>
+                                        <Label className={css.subsectionHeader}>
+                                            Handover topics
+                                        </Label>
+                                        <div
+                                            className={css.formGroupDescription}
+                                        >
+                                            <a
+                                                href="#"
+                                                onClick={(e) => {
+                                                    e.preventDefault()
+                                                    setIsHandoverTopicsModalOpen(
+                                                        true,
+                                                    )
+                                                }}
+                                                className={
+                                                    css.handoverTopicsLink
+                                                }
+                                                role="button"
+                                                aria-haspopup="dialog"
+                                                aria-label="Define handover topics"
+                                            >
+                                                Define
+                                            </a>{' '}
+                                            topics that should always be handed
+                                            over to your team.
+                                        </div>
+                                    </div>
+                                    <div className={css.formGroup}>
+                                        <Label className={css.subsectionHeader}>
+                                            Prevent AI Agent from triggering on
+                                            specific tickets
+                                        </Label>
+                                        <div
+                                            className={
+                                                css.preventAIAgentTriggerDescription
+                                            }
+                                        >
+                                            Configure the{' '}
+                                            <Link to="/app/settings/rules/library?auto-tag-ai-ignore">
+                                                Prevent AI Agent from answering
+                                                rule{' '}
+                                            </Link>
+                                            to prevent AI Agent from reviewing
+                                            specific tickets altogether. (e.g.
+                                            tickets from certain email
+                                            addresses, tickets with certain
+                                            tags).
+                                        </div>
+                                    </div>
+                                </section>
+                            )}
 
                             {isSettingsRevampEnabled && (
-                                <section>
-                                    <SettingsCard>
-                                        <SettingsCardHeader>
-                                            <SettingsCardTitle>
-                                                AI ticket tagging
-                                            </SettingsCardTitle>
-                                            <p>
-                                                Tags and Ticket Fields selected
-                                                will be filled out automatically
-                                                by AI Agent, helping categorize
-                                                and prioritize tickets with less
-                                                manual work.
-                                            </p>
-                                        </SettingsCardHeader>
-                                        <SettingsCardContent>
-                                            <SettingsFeatureRow
-                                                title="Tags"
-                                                description="Provide quick instructions in
+                                <>
+                                    <section
+                                        className={classNames({
+                                            [css.section]:
+                                                isSettingsRevampEnabled,
+                                        })}
+                                    >
+                                        <SettingsCard>
+                                            <SettingsCardHeader>
+                                                <SettingsCardTitle>
+                                                    AI ticket tagging
+                                                </SettingsCardTitle>
+                                                <p>
+                                                    Tags and Ticket Fields
+                                                    selected will be filled out
+                                                    automatically by AI Agent,
+                                                    helping categorize and
+                                                    prioritize tickets with less
+                                                    manual work.
+                                                </p>
+                                            </SettingsCardHeader>
+                                            <SettingsCardContent>
+                                                <SettingsFeatureRow
+                                                    title="Tags"
+                                                    description="Provide quick instructions in
                                                     everyday speech, and let AI Agent
                                                     handle the rest, saving you time and
                                                     ensuring consistent categorization."
-                                                nbFeatures={
-                                                    formValues.tags?.length ?? 0
-                                                }
-                                                badgeText={
-                                                    formValues.tags?.length ===
-                                                    0
-                                                        ? 'No tags'
-                                                        : `${formValues.tags?.length} tags`
-                                                }
-                                                onClick={() => {
-                                                    setIsDrawerOpen(true)
-                                                    setActiveDrawerContent(
-                                                        'tags',
-                                                    )
-                                                }}
-                                            />
-                                            <SettingsFeatureRow
-                                                title="Ticket Fields"
-                                                description=" Tags and Ticket Fields selected will be
+                                                    nbFeatures={
+                                                        formValues.tags
+                                                            ?.length ?? 0
+                                                    }
+                                                    badgeText={
+                                                        formValues.tags
+                                                            ?.length === 0
+                                                            ? 'No tags'
+                                                            : `${formValues.tags?.length} tags`
+                                                    }
+                                                    onClick={() => {
+                                                        setIsDrawerOpen(true)
+                                                        setActiveDrawerContent(
+                                                            'tags',
+                                                        )
+                                                    }}
+                                                />
+                                                <SettingsFeatureRow
+                                                    title="Ticket Fields"
+                                                    description=" Tags and Ticket Fields selected will be
                                                         filled out automatically by AI Agent,
                                                         helping categorize and prioritize
                                                         tickets with less manual work."
-                                                nbFeatures={
-                                                    formValues.customFieldIds
-                                                        ?.length ?? 0
-                                                }
-                                                badgeText={
-                                                    formValues.customFieldIds
-                                                        ?.length === 0
-                                                        ? 'No ticket fields'
-                                                        : `${formValues.customFieldIds?.length} ticket fields`
-                                                }
-                                                onClick={() => {
-                                                    setIsDrawerOpen(true)
-                                                    setActiveDrawerContent(
-                                                        'customFieldIds',
-                                                    )
-                                                }}
-                                            />
-                                        </SettingsCardContent>
-                                    </SettingsCard>
-                                </section>
+                                                    nbFeatures={
+                                                        formValues
+                                                            .customFieldIds
+                                                            ?.length ?? 0
+                                                    }
+                                                    badgeText={
+                                                        formValues
+                                                            .customFieldIds
+                                                            ?.length === 0
+                                                            ? 'No ticket fields'
+                                                            : `${formValues.customFieldIds?.length} ticket fields`
+                                                    }
+                                                    onClick={() => {
+                                                        setIsDrawerOpen(true)
+                                                        setActiveDrawerContent(
+                                                            'customFieldIds',
+                                                        )
+                                                    }}
+                                                />
+                                            </SettingsCardContent>
+                                        </SettingsCard>
+                                    </section>
+                                    <section
+                                        className={classNames({
+                                            [css.section]:
+                                                isSettingsRevampEnabled,
+                                        })}
+                                    >
+                                        <SettingsCard>
+                                            <SettingsCardHeader>
+                                                <SettingsCardTitle>
+                                                    Handover and exclusion
+                                                </SettingsCardTitle>
+                                                <p>
+                                                    When AI Agent is not
+                                                    confident in an answer, it
+                                                    automatically hands tickets
+                                                    over to your team. Choose
+                                                    how AI Agent behaves when
+                                                    handing over tickets, and
+                                                    add specific handover topics
+                                                    that should never be
+                                                    resolved by AI Agent.
+                                                </p>
+                                            </SettingsCardHeader>
+                                            <SettingsCardContent>
+                                                <SettingsFeatureRow
+                                                    title="Handover topics"
+                                                    description="Define topics that should always be handed over to your team."
+                                                    badgeText={
+                                                        formValues
+                                                            .excludedTopics
+                                                            ?.length === 0
+                                                            ? 'No topics'
+                                                            : `${formValues.excludedTopics?.length} topics`
+                                                    }
+                                                    nbFeatures={
+                                                        formValues
+                                                            .excludedTopics
+                                                            ?.length ?? 0
+                                                    }
+                                                    onClick={() => {
+                                                        setIsDrawerOpen(true)
+                                                        setActiveDrawerContent(
+                                                            'excludedTopics',
+                                                        )
+                                                    }}
+                                                />
+                                                <SettingsFeatureRow
+                                                    title="Tell customers when handing over"
+                                                    description="When enabled, AI Agent will promptly respond and tell customers their request is being handed over for further assistance. When disabled, AI Agent will not respond before handing over."
+                                                    type="toggle"
+                                                    isChecked={isHandoffToggled}
+                                                    onChange={(value) => {
+                                                        updateValue(
+                                                            'silentHandover',
+                                                            !value,
+                                                        )
+                                                    }}
+                                                />
+                                                <SettingsFeatureRow
+                                                    title="Prevent AI Agent from answering specific tickets"
+                                                    description="Configure the Prevent AI Agent from answering rule
+                                                                    to prevent AI Agent from reviewing
+                                                                    specific tickets altogether. (e.g.
+                                                                    tickets from certain email addresses,
+                                                                    tickets with certain tags)."
+                                                    type="link"
+                                                    link="/app/settings/rules/library?auto-tag-ai-ignore"
+                                                />
+                                            </SettingsCardContent>
+                                        </SettingsCard>
+                                    </section>
+                                </>
                             )}
                         </>
                     )}

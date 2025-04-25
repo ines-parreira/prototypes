@@ -22,6 +22,7 @@ const VALID_FORM_VALUES: ValidFormValues = {
     silentHandover: null,
     monitoredEmailIntegrations: [],
     tags: null,
+    excludedTopics: [],
     signature: 'Signature',
     toneOfVoice: null,
     customToneOfVoiceGuidance: null,

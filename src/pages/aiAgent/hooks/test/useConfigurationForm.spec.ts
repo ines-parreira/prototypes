@@ -32,6 +32,7 @@ const INITIAL_FORM_VALUES: FormValues = {
     signature: null,
     silentHandover: null,
     tags: null,
+    excludedTopics: null,
     ticketSampleRate: null,
     monitoredChatIntegrations: null,
     wizard: undefined,

@@ -321,6 +321,7 @@ describe('<StoreConfigForm />', () => {
         ticketSampleRate: null,
         silentHandover: false,
         tags: [],
+        excludedTopics: [],
         signature: 'This response was created by AI',
         toneOfVoice: ToneOfVoice.Friendly,
         customToneOfVoiceGuidance:
@@ -1735,7 +1736,6 @@ describe('<StoreConfigForm />', () => {
             await userEvent.click(
                 screen.getByRole('button', { name: /add ticket field/i }),
             )
-            screen.debug(document.body, Infinity)
             await userEvent.click(screen.getByText(/test field/i))
 
             // Save changes
@@ -1746,6 +1746,31 @@ describe('<StoreConfigForm />', () => {
 
             expect(updateValueMocked).toHaveBeenCalledWith('customFieldIds', [
                 123,
+            ])
+        })
+
+        it('should update form values when saving drawer content with new handover topics', async () => {
+            mockFlags({
+                [FeatureFlagKey.AiAgentSettingsRevamp]: true,
+            })
+
+            renderComponent()
+
+            // Open the drawer by clicking on Handover Topics
+            await userEvent.click(screen.getByText('Handover topics'))
+            await userEvent.click(
+                screen.getByRole('button', { name: /add topic/i }),
+            )
+            await userEvent.type(screen.getAllByRole('textbox')[1], 'Test')
+
+            // Save changes
+            const saveButton = within(getDrawer()).getByRole('button', {
+                name: /save changes/i,
+            })
+            await userEvent.click(saveButton)
+
+            expect(updateValueMocked).toHaveBeenCalledWith('excludedTopics', [
+                'Test',
             ])
         })
 
