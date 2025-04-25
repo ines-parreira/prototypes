@@ -25,6 +25,7 @@ jest.mock('pages/stats/report-chart-restrictions/useReportChartRestrictions')
 const useReportChartRestrictionsMock = assumeMock(useReportChartRestrictions)
 jest.mock('hooks/reporting/support-performance/useStatsFilters')
 const useStatsFiltersMock = assumeMock(useStatsFilters)
+
 jest.mock(
     'pages/stats/voice-of-customer/product-insights/placeholder/ProductInsightsEditColumns',
 )

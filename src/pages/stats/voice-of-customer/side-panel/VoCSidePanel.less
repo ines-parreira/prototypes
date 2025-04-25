@@ -7,9 +7,12 @@
         grid-template-rows: 64px auto 0px;
     }
 
-    .backdrop {
+    .rootDrawer {
         backdrop-filter: blur(2px);
-        height: 100%;
+
+        > div:first-child {
+            background-color: transparent;
+        }
     }
 
     .header,

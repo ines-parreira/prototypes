@@ -47,7 +47,7 @@ type Props = {
     transitionDurationMs?: number
     containerZIndices?: [number, number]
     className?: string
-    backdropClassName?: string
+    rootClassName?: string
     withFooter?: boolean
     ['data-testid']?: string
 } & Pick<HTMLAttributes<HTMLDivElement>, 'aria-label'>
@@ -63,7 +63,7 @@ const Drawer = ({
     transitionDurationMs = 300,
     containerZIndices = [20, -1],
     className,
-    backdropClassName,
+    rootClassName,
     withFooter = true,
     ['data-testid']: dataTestId,
 }: Props): JSX.Element => {
@@ -84,7 +84,7 @@ const Drawer = ({
 
     const drawer = (
         <div
-            className={classNames(css['drawer-container'], {
+            className={classNames(css['drawer-container'], rootClassName, {
                 [css.allowClickThrough]: !onBackdropClick,
             })}
             style={{
@@ -94,13 +94,10 @@ const Drawer = ({
         >
             {onBackdropClick && (
                 <div
-                    className={classNames(
-                        {
-                            backdrop: true,
-                            opened: open,
-                        },
-                        backdropClassName,
-                    )}
+                    className={classNames({
+                        backdrop: true,
+                        opened: open,
+                    })}
                     style={{
                         transitionDelay: open
                             ? `${transitionDurationMs / 2}ms`

@@ -1,61 +1,58 @@
-import React, { useState } from 'react'
+import React from 'react'
 
 import { IconButton, TabNavigation } from '@gorgias/merchant-ui-kit'
 
+import useAppDispatch from 'hooks/useAppDispatch'
+import useAppSelector from 'hooks/useAppSelector'
 import { Drawer } from 'pages/common/components/Drawer/Drawer'
 import css from 'pages/stats/voice-of-customer/side-panel/VoCSidePanel.less'
+import {
+    closeSidePanel,
+    getSidePanelActiveTab,
+    getSidePanelIsOpen,
+    setSidePanelActiveTab,
+    SidePanelTab,
+} from 'state/ui/stats/sidePanelSlice'
 
-enum TabLabels {
-    insights = 'Insights',
-    trendOverview = 'Trend Overview',
-}
-
-export enum TabKeys {
-    insights = 'insights',
-    trendOverview = 'trendOverview',
-}
-
-type TabsType = Record<
-    TabKeys,
+type VoCSidePanelTabsType = Record<
+    SidePanelTab,
     {
-        value: TabKeys
-        label: TabLabels
+        value: SidePanelTab
+        label: string
         icon: string
         content: () => JSX.Element
     }
 >
 
-const Tabs: TabsType = {
-    [TabKeys.insights]: {
-        value: TabKeys.insights,
-        label: TabLabels.insights,
+export const VoCSidePanelTabs: VoCSidePanelTabsType = {
+    insights: {
+        value: SidePanelTab.insights,
+        label: 'Insights',
         icon: 'psychology',
         content: () => <div>Insights_Content</div>,
     },
-    [TabKeys.trendOverview]: {
-        value: TabKeys.trendOverview,
-        label: TabLabels.trendOverview,
+    trendOverview: {
+        value: SidePanelTab.trendOverview,
+        label: 'Trend Overview',
         icon: 'show_chart',
         content: () => <div>Trend_Overview_Content</div>,
     },
 }
 
 export type SidePanelProps = {
-    isOpen: boolean
     setIsOpen: (value: boolean) => void
-    activeTab?: TabKeys
+    activeTab?: SidePanelTab
 }
 
-export const VoCSidePanel = ({
-    isOpen,
-    setIsOpen,
-    activeTab: passedActiveTab = TabKeys.insights,
-}: SidePanelProps) => {
-    const [activeTab, setActiveTab] = useState(passedActiveTab)
+export const VoCSidePanel = () => {
+    const dispatch = useAppDispatch()
 
-    const toggleOpen = () => {
-        setIsOpen(!isOpen)
-    }
+    const isOpen = useAppSelector(getSidePanelIsOpen)
+    const activeTab = useAppSelector(getSidePanelActiveTab)
+
+    const closePanel = () => dispatch(closeSidePanel())
+    const setActiveTab = (tab: SidePanelTab) =>
+        dispatch(setSidePanelActiveTab(tab))
 
     return (
         <Drawer
@@ -63,9 +60,9 @@ export const VoCSidePanel = ({
             portalRootId={'root'}
             isLoading={false}
             fullscreen={false}
-            onBackdropClick={() => setIsOpen(false)}
+            onBackdropClick={closePanel}
             className={css.drawer}
-            backdropClassName={css.backdrop}
+            rootClassName={css.rootDrawer}
             withFooter={false}
         >
             <Drawer.Header className={css.header}>
@@ -73,11 +70,11 @@ export const VoCSidePanel = ({
                     activeTab={activeTab}
                     onTabChange={setActiveTab}
                     className={css.tabNavigator}
-                    tabs={Object.values(Tabs)}
+                    tabs={Object.values(VoCSidePanelTabs)}
                 />
                 <Drawer.HeaderActions>
                     <IconButton
-                        onClick={toggleOpen}
+                        onClick={closePanel}
                         fillStyle="ghost"
                         intent="secondary"
                         size="medium"
@@ -86,7 +83,7 @@ export const VoCSidePanel = ({
                 </Drawer.HeaderActions>
             </Drawer.Header>
             <Drawer.Content className={css.content}>
-                {Tabs[activeTab].content()}
+                {VoCSidePanelTabs[activeTab].content()}
             </Drawer.Content>
         </Drawer>
     )

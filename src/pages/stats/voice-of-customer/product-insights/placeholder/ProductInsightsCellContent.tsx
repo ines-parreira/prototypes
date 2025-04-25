@@ -2,6 +2,7 @@ import classnames from 'classnames'
 
 import { Skeleton } from '@gorgias/merchant-ui-kit'
 
+import { SegmentEvent } from 'common/segment'
 import { useStatsFilters } from 'hooks/reporting/support-performance/useStatsFilters'
 import { MetricPerProductAndIntentQueryHook } from 'hooks/reporting/voice-of-customer/metricsPerProductAndIntent'
 import { OrderDirection } from 'models/api/types'
@@ -17,6 +18,7 @@ import {
     LeadColumn,
     ProductInsightsColumnConfig,
 } from 'pages/stats/voice-of-customer/product-insights/placeholder/ProductInsightsTableConfig'
+import { VoCSidePanelTrigger } from 'pages/stats/voice-of-customer/side-panel/VoCSidePanelTrigger'
 import { ProductInsightsTableColumns } from 'state/ui/stats/types'
 
 const getCellContent = (
@@ -90,10 +92,22 @@ export const ProductInsightsCellContent = ({
                 <>{cellContent}</>
             ) : (
                 <>
-                    <img src={product.thumbnailUrl} alt={product.name} />
-                    <TruncateCellContent
-                        content={<a href={'#'}>{cellContent}</a>}
+                    <img
+                        src={product.thumbnailUrl}
+                        alt={product.name}
+                        height={20}
+                        width={20}
                     />
+                    <VoCSidePanelTrigger
+                        productId={product.id}
+                        segmentEventName={
+                            SegmentEvent.StatVoCSidePanelIntentClick
+                        }
+                    >
+                        <TruncateCellContent
+                            content={<a href={'#'}>{cellContent}</a>}
+                        />
+                    </VoCSidePanelTrigger>
                 </>
             )}
         </BodyCell>

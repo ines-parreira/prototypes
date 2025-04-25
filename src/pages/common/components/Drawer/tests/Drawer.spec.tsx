@@ -34,16 +34,16 @@ describe('<Drawer/>', () => {
     })
 
     it('should apply custom backdrop styles when provided', () => {
-        const backdropClassName = 'filter: blur(2px)'
+        const rootClassName = 'filter: blur(2px)'
 
         const { container } = render(
-            <Drawer {...props} backdropClassName={backdropClassName}>
+            <Drawer {...props} rootClassName={rootClassName}>
                 Modal content
             </Drawer>,
         )
 
-        const backdrop = container.querySelector('.backdrop')
-        expect(backdrop).toHaveClass(backdropClassName)
+        const backdrop = container.querySelector('.drawer-container')
+        expect(backdrop).toHaveClass(rootClassName)
     })
 
     it('should render without footer when withFooter is false', () => {
