@@ -42,7 +42,7 @@ describe('ConversationLauncherSettings', () => {
     })
 
     it('does not allow opening Advanced settings when toggle is off', () => {
-        render(
+        const { container } = render(
             <Wrapper>
                 <ConversationLauncherSettings />
             </Wrapper>,
@@ -50,9 +50,8 @@ describe('ConversationLauncherSettings', () => {
 
         fireEvent.click(screen.getByText('Advanced settings'))
 
-        expect(
-            screen.queryByText('Floating Input: Advanced Settings'),
-        ).not.toBeInTheDocument()
+        const sidebar = container.querySelector('[class*="sidebar"]')
+        expect(sidebar).toHaveClass('sidebarHidden')
     })
 
     it('opens Advanced settings when toggle is on', () => {
@@ -66,14 +65,14 @@ describe('ConversationLauncherSettings', () => {
 
         expect(
             screen.getByText('Floating Input: Advanced Settings'),
-        ).toBeInTheDocument()
+        ).toBeVisible()
     })
 })
 
 describe('ConversationLauncherAdvancedSettings', () => {
     const mockOnClose = jest.fn()
 
-    it('renders nothing when isOpen is false', () => {
+    it('renders with hidden class when isOpen is false', () => {
         const { container } = render(
             <Wrapper>
                 <ConversationLauncherAdvancedSettings
@@ -83,7 +82,8 @@ describe('ConversationLauncherAdvancedSettings', () => {
             </Wrapper>,
         )
 
-        expect(container).toBeEmptyDOMElement()
+        const sidebar = container.querySelector('[class*="sidebar"]')
+        expect(sidebar).toHaveClass('sidebarHidden')
     })
 
     it('renders toggle and buttons when open', () => {

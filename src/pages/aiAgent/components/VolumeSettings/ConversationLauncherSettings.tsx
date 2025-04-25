@@ -33,10 +33,12 @@ export const ConversationLauncherAdvancedSettings = ({
         onClose()
     }
 
-    if (!isOpen) return null
-
     return (
-        <div className={css.sidebar}>
+        <div
+            className={classNames(css.sidebar, {
+                [css.sidebarHidden]: !isOpen,
+            })}
+        >
             <Box className={css.sidebarHeader}>
                 <p className={css.sidebarTitle}>
                     Floating Input: Advanced Settings

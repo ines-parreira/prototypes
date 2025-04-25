@@ -117,6 +117,18 @@
 
         overflow-y: auto;
         cursor: pointer;
+
+        transform: translateX(0%);
+        opacity: 1;
+        transition:
+            transform 0.3s ease-in,
+            opacity 0.3s ease-in;
+    }
+
+    .sidebarHidden {
+        transform: translateX(100%);
+        opacity: 0;
+        pointer-events: none;
     }
 
     .exitIcon {
@@ -137,7 +149,7 @@
     .sidebarHeader {
         display: flex;
         justify-content: space-between;
-        align-items: flex-start;
+        align-items: center;
         border-bottom: 1px solid var(--neutral-grey-2);
         padding: @layout-spacing-s;
     }
