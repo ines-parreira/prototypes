@@ -71,7 +71,7 @@ export const PendingTasksSection = ({
                 <div className={css.titleContainer}>
                     <CardTitle>
                         <div className={css.title}>
-                            Setup Your Store
+                            Setup your store
                             <i
                                 className={classNames(
                                     'material-icons',

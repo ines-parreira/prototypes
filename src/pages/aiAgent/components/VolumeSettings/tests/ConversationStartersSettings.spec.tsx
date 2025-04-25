@@ -28,7 +28,7 @@ describe('ConversationStartersSettings', () => {
             </Wrapper>,
         )
 
-        expect(screen.getByText('Conversation Starters')).toBeInTheDocument()
+        expect(screen.getByText('Conversation starters')).toBeInTheDocument()
         expect(
             screen.getByText('Enable conversation starters'),
         ).toBeInTheDocument()

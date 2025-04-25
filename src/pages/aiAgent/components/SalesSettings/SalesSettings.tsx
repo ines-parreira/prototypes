@@ -220,7 +220,7 @@ export const SalesSettings = () => {
                                     htmlFor="salesPersuasionLevel"
                                     className={css.title}
                                 >
-                                    Set Persuasion Level
+                                    Set persuasion level
                                 </label>
                                 <IconTooltip>
                                     AI Agent will take into account your custom
@@ -294,7 +294,7 @@ export const SalesSettings = () => {
 
                             <div className={css.maxDiscountContainer}>
                                 <Label htmlFor="percentage-discount">
-                                    Maximum Discount Percentage
+                                    Maximum discount percentage
                                     <IconTooltip>
                                         Set the maximum discount that AI Agent
                                         will offer customers

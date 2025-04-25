@@ -18,7 +18,7 @@ export const ConversationStartersSettings = ({
         <div className={css.wrapper}>
             <Box className={css.containerTitle} flexDirection="column">
                 <Box>
-                    <strong className={css.title}>Conversation Starters</strong>
+                    <strong className={css.title}>Conversation starters</strong>
                 </Box>
                 <Box>
                     <p className={css.body}>

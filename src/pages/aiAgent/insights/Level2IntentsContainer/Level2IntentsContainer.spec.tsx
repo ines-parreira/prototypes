@@ -89,7 +89,7 @@ describe('Level2IntentsContainer', () => {
                 renderComponent()
 
                 expect(
-                    screen.getByText('Back To AI Agent Performance'),
+                    screen.getByText('Back to AI Agent performance'),
                 ).toBeInTheDocument()
                 expect(screen.getAllByText(title).length).toBeGreaterThan(0)
             })
@@ -99,7 +99,7 @@ describe('Level2IntentsContainer', () => {
     it('calls history.push with the correct route on BackLink click', () => {
         renderComponent()
 
-        const backLink = screen.getByText('Back To AI Agent Performance')
+        const backLink = screen.getByText('Back to AI Agent performance')
         fireEvent.click(backLink)
 
         expect(mockHistoryPush).toHaveBeenCalledWith(

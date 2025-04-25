@@ -9,8 +9,8 @@ import { ActivationManageButton } from '../ActivationManageButton'
 describe('<ActivationManageButton />', () => {
     it.each([
         { progress: 0, text: 'Activate AI Agent' },
-        { progress: 50, text: 'Partially Activated' },
-        { progress: 100, text: 'Fully Activated' },
+        { progress: 50, text: 'Partially activated' },
+        { progress: 100, text: 'Fully activated' },
     ])(
         'should render the button with "$text" when progress is $progress',
         ({ progress, text }) => {

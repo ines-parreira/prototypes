@@ -125,7 +125,7 @@ describe('VolumeSettings', () => {
     it('renders conversation starters toggle correctly', () => {
         const result = renderComponent()
 
-        result.getByText('Conversation Starters')
+        result.getByText('Conversation starters')
         result.getByText('Enable conversation starters')
     })
 

@@ -8,9 +8,9 @@ const getCaptionText = (activationProgress: number) => {
     if (activationProgress === 0) {
         return 'Activate AI Agent'
     } else if (activationProgress === 100) {
-        return 'Fully Activated'
+        return 'Fully activated'
     }
-    return 'Partially Activated'
+    return 'Partially activated'
 }
 
 type Props = {

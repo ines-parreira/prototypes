@@ -132,7 +132,7 @@ export const KpiSection = ({
         <OverviewCard data-candu-id="ai-agent-overview-performance-block">
             <div className={css.titleWrapper}>
                 <div className={css.title}>
-                    <CardTitle>AI Agent Performance</CardTitle>
+                    <CardTitle>AI Agent performance</CardTitle>
                     {hasAnalytics && (
                         <NavLink to={analyticsLink} exact>
                             <Button

@@ -70,7 +70,7 @@ const history = createMemoryHistory({
 })
 
 const maxDiscountInput = (): HTMLInputElement =>
-    screen.getByLabelText(/Maximum Discount Percentage/)
+    screen.getByLabelText(/Maximum discount percentage/)
 
 describe('<SalesSettings />', () => {
     beforeEach(() => {
@@ -207,7 +207,7 @@ describe('<SalesSettings />', () => {
         })
         renderComponent()
         expect(
-            screen.queryByText(/Set Persuasion Level/),
+            screen.queryByText(/Set persuasion level/),
         ).not.toBeInTheDocument()
     })
 

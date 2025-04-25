@@ -132,7 +132,7 @@ describe('PersonalityStep - With prepopulated data', () => {
 
         await waitFor(() => {
             expect(
-                screen.queryByText(/Maximum Discount Percentage/),
+                screen.queryByText(/Maximum discount percentage/),
             ).toBeInTheDocument()
         })
 
@@ -269,7 +269,7 @@ describe('PersonalityStep - Empty state', () => {
         renderComponent()
 
         const maxDiscountInput = screen.getByLabelText<HTMLInputElement>(
-            /Maximum Discount Percentage/,
+            /Maximum discount percentage/,
         )
 
         // Remove the default value
@@ -337,7 +337,7 @@ describe('PersonalityStep - Empty state', () => {
 
         await waitFor(() => {
             const maxDiscountInput = screen.getByLabelText<HTMLInputElement>(
-                /Maximum Discount Percentage/,
+                /Maximum discount percentage/,
             )
             fireEvent.change(maxDiscountInput, { target: { value: '0' } })
             expect(maxDiscountInput.value).toBe('0')
@@ -355,7 +355,7 @@ describe('PersonalityStep - Empty state', () => {
 
         await waitFor(() => {
             const maxDiscountInput = screen.getByLabelText<HTMLInputElement>(
-                /Maximum Discount Percentage/,
+                /Maximum discount percentage/,
             )
             fireEvent.change(maxDiscountInput, { target: { value: '101' } })
             expect(maxDiscountInput.value).toBe('101')
@@ -371,7 +371,7 @@ describe('PersonalityStep - Empty state', () => {
 
         await waitFor(() => {
             expect(
-                screen.queryByText(/Maximum Discount Percentage/),
+                screen.queryByText(/Maximum discount percentage/),
             ).toBeInTheDocument()
         })
 
@@ -389,13 +389,13 @@ describe('PersonalityStep - Empty state', () => {
 
         await waitFor(() => {
             expect(
-                screen.queryByText(/Maximum Discount Percentage/),
+                screen.queryByText(/Maximum discount percentage/),
             ).toBeInTheDocument()
         })
 
         await waitFor(() => {
             const maxDiscountInput = screen.getByLabelText<HTMLInputElement>(
-                /Maximum Discount Percentage/,
+                /Maximum discount percentage/,
             )
             fireEvent.change(maxDiscountInput, { target: { value: '90' } })
             expect(maxDiscountInput.value).toBe('90')
@@ -730,7 +730,7 @@ describe('PersonalityStep - Onboarding mutation', () => {
             renderComponent()
 
             const maxDiscountInput = screen.getByLabelText<HTMLInputElement>(
-                /Maximum Discount Percentage/,
+                /Maximum discount percentage/,
             )
             fireEvent.change(maxDiscountInput, { target: { value: '0' } })
             expect(maxDiscountInput.value).toBe('0')

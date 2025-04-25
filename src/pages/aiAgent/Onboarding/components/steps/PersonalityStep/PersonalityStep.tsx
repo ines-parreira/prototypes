@@ -407,7 +407,7 @@ export const PersonalityStep: FC<StepProps> = ({
                             <hr className={css.separator} />
                             <div className={css.percentageSection}>
                                 <Label htmlFor="percentage-discount">
-                                    Maximum Discount Percentage
+                                    Maximum discount percentage
                                     <IconTooltip>
                                         Set the maximum discount that AI Agent
                                         will offer customers

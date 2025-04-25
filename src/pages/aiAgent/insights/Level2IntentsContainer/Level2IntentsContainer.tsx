@@ -33,7 +33,7 @@ export const Level2IntentsContainer = () => {
             <div className={css.section}>
                 <BackLink
                     path={routes.optimize}
-                    label="Back To AI Agent Performance"
+                    label="Back to AI Agent performance"
                 />
                 <AdjustedPeriodFilter />
 
