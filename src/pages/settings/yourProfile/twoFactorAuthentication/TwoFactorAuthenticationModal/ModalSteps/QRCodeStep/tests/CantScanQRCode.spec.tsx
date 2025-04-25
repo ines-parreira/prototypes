@@ -1,6 +1,4 @@
-import React from 'react'
-
-import { fireEvent, render } from '@testing-library/react'
+import { act, fireEvent, render, screen } from '@testing-library/react'
 
 import { authenticatorData } from 'fixtures/authenticatorData'
 
@@ -9,24 +7,43 @@ import CantScanQRCode from '../CantScanQRCode'
 describe('<CantScanQRCode />', () => {
     describe('render()', () => {
         it('should render the component with extra hidden', () => {
-            const { container } = render(
-                <CantScanQRCode authenticatorData={authenticatorData} />,
-            )
+            render(<CantScanQRCode authenticatorData={authenticatorData} />)
 
-            expect(container).toMatchSnapshot()
+            expect(
+                screen.getByText("Can't scan the QR code?"),
+            ).toBeInTheDocument()
+
+            expect(
+                screen.queryByRole('textbox', { name: /Secret Key/ }),
+            ).not.toBeInTheDocument()
+            expect(
+                screen.queryByRole('textbox', { name: /Account Name/ }),
+            ).not.toBeInTheDocument()
+            expect(
+                screen.queryByRole('textbox', { name: /URL/ }),
+            ).not.toBeInTheDocument()
         })
 
         it('should render the component with extra shown', async () => {
-            const { container, findByText, findAllByRole } = render(
-                <CantScanQRCode authenticatorData={authenticatorData} />,
-            )
+            render(<CantScanQRCode authenticatorData={authenticatorData} />)
 
-            const clickableText = await findByText("Can't scan the QR code?")
-            fireEvent.click(clickableText)
+            act(() => {
+                fireEvent.click(
+                    screen.getByRole('button', {
+                        name: "Can't scan the QR code?",
+                    }),
+                )
+            })
 
-            expect((await findAllByRole('textbox')).length).toBe(3)
-
-            expect(container).toMatchSnapshot()
+            expect(
+                screen.getByRole('textbox', { name: /Secret Key/ }),
+            ).toBeInTheDocument()
+            expect(
+                screen.getByRole('textbox', { name: /Account Name/ }),
+            ).toBeInTheDocument()
+            expect(
+                screen.getByRole('textbox', { name: /URL/ }),
+            ).toBeInTheDocument()
         })
     })
 })

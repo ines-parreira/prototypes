@@ -505,15 +505,15 @@ exports[`<TwoFactorAuthenticationModal /> render() Validate verification code sh
                 />
               </div>
               <div
-                class="cantScanQrCodeContainer"
+                style="display: flex; flex-direction: column; align-items: center;"
               >
                 <button
                   aria-disabled="false"
-                  class="wrapper ghost primary medium"
+                  class="ui-button-wrapper-a432 ui-button-ghost-a432 ui-button-primary-a432"
                   type="button"
                 >
                   <span
-                    class="content"
+                    class="ui-button-content-a432"
                   >
                     Can't scan the QR code?
                   </span>
@@ -694,15 +694,15 @@ exports[`<TwoFactorAuthenticationModal /> render() Validate verification code sh
                 />
               </div>
               <div
-                class="cantScanQrCodeContainer"
+                style="display: flex; flex-direction: column; align-items: center;"
               >
                 <button
                   aria-disabled="false"
-                  class="wrapper ghost primary medium"
+                  class="ui-button-wrapper-a432 ui-button-ghost-a432 ui-button-primary-a432"
                   type="button"
                 >
                   <span
-                    class="content"
+                    class="ui-button-content-a432"
                   >
                     Can't scan the QR code?
                   </span>
@@ -898,15 +898,15 @@ exports[`<TwoFactorAuthenticationModal /> render() Validate verification code sh
                 />
               </div>
               <div
-                class="cantScanQrCodeContainer"
+                style="display: flex; flex-direction: column; align-items: center;"
               >
                 <button
                   aria-disabled="false"
-                  class="wrapper ghost primary medium"
+                  class="ui-button-wrapper-a432 ui-button-ghost-a432 ui-button-primary-a432"
                   type="button"
                 >
                   <span
-                    class="content"
+                    class="ui-button-content-a432"
                   >
                     Can't scan the QR code?
                   </span>
@@ -1087,15 +1087,15 @@ exports[`<TwoFactorAuthenticationModal /> render() Validate verification code sh
                 />
               </div>
               <div
-                class="cantScanQrCodeContainer"
+                style="display: flex; flex-direction: column; align-items: center;"
               >
                 <button
                   aria-disabled="false"
-                  class="wrapper ghost primary medium"
+                  class="ui-button-wrapper-a432 ui-button-ghost-a432 ui-button-primary-a432"
                   type="button"
                 >
                   <span
-                    class="content"
+                    class="ui-button-content-a432"
                   >
                     Can't scan the QR code?
                   </span>
@@ -1282,15 +1282,15 @@ exports[`<TwoFactorAuthenticationModal /> render() should render modal with QR C
                 />
               </div>
               <div
-                class="cantScanQrCodeContainer"
+                style="display: flex; flex-direction: column; align-items: center;"
               >
                 <button
                   aria-disabled="false"
-                  class="wrapper ghost primary medium"
+                  class="ui-button-wrapper-a432 ui-button-ghost-a432 ui-button-primary-a432"
                   type="button"
                 >
                   <span
-                    class="content"
+                    class="ui-button-content-a432"
                   >
                     Can't scan the QR code?
                   </span>
@@ -1684,15 +1684,15 @@ exports[`<TwoFactorAuthenticationModal /> render() should render modal with QR C
                 />
               </div>
               <div
-                class="cantScanQrCodeContainer"
+                style="display: flex; flex-direction: column; align-items: center;"
               >
                 <button
                   aria-disabled="false"
-                  class="wrapper ghost primary medium"
+                  class="ui-button-wrapper-a432 ui-button-ghost-a432 ui-button-primary-a432"
                   type="button"
                 >
                   <span
-                    class="content"
+                    class="ui-button-content-a432"
                   >
                     Can't scan the QR code?
                   </span>
@@ -1873,15 +1873,15 @@ exports[`<TwoFactorAuthenticationModal /> render() should render modal with Vali
                 />
               </div>
               <div
-                class="cantScanQrCodeContainer"
+                style="display: flex; flex-direction: column; align-items: center;"
               >
                 <button
                   aria-disabled="false"
-                  class="wrapper ghost primary medium"
+                  class="ui-button-wrapper-a432 ui-button-ghost-a432 ui-button-primary-a432"
                   type="button"
                 >
                   <span
-                    class="content"
+                    class="ui-button-content-a432"
                   >
                     Can't scan the QR code?
                   </span>
@@ -2479,15 +2479,15 @@ exports[`<TwoFactorAuthenticationModal /> render() should render modal with the 
                 />
               </div>
               <div
-                class="cantScanQrCodeContainer"
+                style="display: flex; flex-direction: column; align-items: center;"
               >
                 <button
                   aria-disabled="false"
-                  class="wrapper ghost primary medium"
+                  class="ui-button-wrapper-a432 ui-button-ghost-a432 ui-button-primary-a432"
                   type="button"
                 >
                   <span
-                    class="content"
+                    class="ui-button-content-a432"
                   >
                     Can't scan the QR code?
                   </span>

@@ -1,62 +1,27 @@
-import React, { useEffect, useState } from 'react'
+import { useState } from 'react'
 
-import Clipboard from 'clipboard'
+import { Box, Button } from '@gorgias/merchant-ui-kit'
 
-import { Label } from '@gorgias/merchant-ui-kit'
-
+import { CopyableTextField } from 'core/ui'
 import { AuthenticatorData } from 'models/twoFactorAuthentication/types'
-import Button from 'pages/common/components/button/Button'
-import InputField from 'pages/common/forms/input/InputField'
-import InputGroup from 'pages/common/forms/input/InputGroup'
-
-import css from './CantScanQRCode.less'
 
 type OwnProps = {
     authenticatorData: AuthenticatorData
 }
 
-const authenticatorDataKeyLabelMapper: {
-    [key in keyof AuthenticatorData]: string
-} = {
-    secret_key: 'Secret Key',
-    account_name: 'Account Name',
-    uri: 'URL',
-}
+const authenticatorDataKeyLabelMapper: Record<keyof AuthenticatorData, string> =
+    {
+        secret_key: 'Secret Key',
+        account_name: 'Account Name',
+        uri: 'URL',
+    }
 
 export default function CantScanQRCode({ authenticatorData }: OwnProps) {
     const [displayAuthenticatorData, setDisplayAuthenticatorData] =
         useState(false)
-    const [copiedAuthenticatorField, setCopiedAuthenticatorField] = useState('')
-    const [timeoutReference, setTimeoutReference] = useState(
-        {} as ReturnType<typeof setTimeout>,
-    )
-
-    useEffect(() => {
-        const clipboardCopiedAuthenticatorField = new Clipboard(
-            '.copy-authenticator-field',
-        )
-
-        clipboardCopiedAuthenticatorField.on(
-            'success',
-            (event: Clipboard.Event) => {
-                setCopiedAuthenticatorField(event.text)
-                clearTimeout(timeoutReference)
-
-                setTimeoutReference(
-                    setTimeout(() => {
-                        setCopiedAuthenticatorField('')
-                    }, 5000),
-                )
-            },
-        )
-
-        return () => {
-            clipboardCopiedAuthenticatorField.destroy()
-        }
-    }, [timeoutReference])
 
     return (
-        <div className={css.cantScanQrCodeContainer}>
+        <Box flexDirection="column" alignItems="center">
             <Button
                 fillStyle="ghost"
                 intent="primary"
@@ -68,50 +33,31 @@ export default function CantScanQRCode({ authenticatorData }: OwnProps) {
             </Button>
             {displayAuthenticatorData && (
                 <>
-                    <div className="mt-3 mb-3 text-center">
+                    <Box mt="14px" mb="14px">
                         Manually enter the information below into your
                         authenticator app
-                    </div>
+                    </Box>
                     {Object.entries(authenticatorDataKeyLabelMapper).map(
                         ([key, label], index) => (
-                            <div key={index} className={css.authenticatorData}>
-                                <Label
-                                    className="control-label mb-2"
-                                    htmlFor={`authenticatorField${index}`}
-                                >
-                                    {label}
-                                </Label>
-                                <InputGroup className="mb-3 full-width">
-                                    <InputField
-                                        className="full-width"
-                                        id={`authenticatorField${index}`}
-                                        type="text"
-                                        value={
-                                            authenticatorData[
-                                                key as keyof AuthenticatorData
-                                            ]
-                                        }
-                                        readOnly
-                                    />
-                                    <Button
-                                        intent="secondary"
-                                        className="copy-authenticator-field"
-                                        data-clipboard-target={`#authenticatorField${index}`}
-                                        leadingIcon="file_copy"
-                                    >
-                                        {copiedAuthenticatorField ===
+                            <Box
+                                mb="14px"
+                                w="100%"
+                                maxWidth="370px"
+                                key={index}
+                            >
+                                <CopyableTextField
+                                    label={label}
+                                    value={
                                         authenticatorData[
                                             key as keyof AuthenticatorData
                                         ]
-                                            ? 'Copied!'
-                                            : 'Copy'}
-                                    </Button>
-                                </InputGroup>
-                            </div>
+                                    }
+                                />
+                            </Box>
                         ),
                     )}
                 </>
             )}
-        </div>
+        </Box>
     )
 }
